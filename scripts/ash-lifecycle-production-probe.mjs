@@ -17,6 +17,23 @@ await fs.mkdir(artifactDir, { recursive: true });
 let runtime = await fs.readFile(baseProbeUrl, 'utf8');
 runtime = replaceExactly(
   runtime,
+  "const page = await context.newPage();",
+  `// Observe the site-wide first-visit reset in a separate page before the Ash lifecycle episode.
+  // Its intentional Clear-Site-Data navigation must not contaminate the lifecycle network witness.
+  if (!['localhost', '127.0.0.1'].includes(new URL(base).hostname)) {
+    const epochPage = await context.newPage();
+    await epochPage.goto(\`\${base}/site-epoch-reset.html?return=%2F\`, { waitUntil:'domcontentloaded', timeout:30_000 });
+    await epochPage.waitForFunction(
+      () => localStorage.getItem('td613.site.browser-reset.epoch') === 'td613.site.browser-reset/2026-09-27-v1',
+      null, { timeout:45_000 }
+    );
+    await epochPage.close();
+  }
+  const page = await context.newPage();`,
+  'first-visit site epoch before lifecycle network capture'
+);
+runtime = replaceExactly(
+  runtime,
   "const requests = [];\nconst consoleErrors = [];\npage.on('request', request => requests.push({\n  method: request.method(),\n  url: request.url(),\n  resource_type: request.resourceType(),\n  post_data: request.postData() || null\n}));\npage.on('console', message => { if (message.type() === 'error') consoleErrors.push(message.text()); });\npage.on('pageerror', error => consoleErrors.push(error.message));",
   "const requests = [];\nconst httpErrors = [];\nconst requestFailures = [];\nconst consoleErrors = [];\npage.on('request', request => requests.push({\n  method: request.method(),\n  url: request.url(),\n  resource_type: request.resourceType(),\n  post_data: request.postData() || null\n}));\npage.on('response', response => {\n  if (response.status() >= 400) httpErrors.push({\n    status:response.status(),\n    url:response.url(),\n    resource_type:response.request().resourceType()\n  });\n});\npage.on('requestfailed', request => requestFailures.push({\n  method:request.method(),\n  url:request.url(),\n  resource_type:request.resourceType(),\n  failure:request.failure()?.errorText || 'UNKNOWN'\n}));\npage.on('console', message => {\n  if (message.type() === 'error') consoleErrors.push({\n    text:message.text(),\n    location:message.location() || null\n  });\n});\npage.on('pageerror', error => consoleErrors.push({ text:error.message, location:null }));",
   'forensic network and console diagnostics'

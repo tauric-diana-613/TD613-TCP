@@ -51,3 +51,13 @@ test('Flight rest is selectable in preface and close, and copiable in Glyph Bay'
  assert.equal(flight.split('id="bodyPreRest"').length-1,1);
  assert.equal(flight.split('id="ftrRest"').length-1,1);
 });
+
+test('Ash specialist presentation retains historical receipt semantics after the universal epoch',()=>{
+ assert(ash.includes('sitewide_epoch_authoritative:true,legacy_reset_suppressed:true,legacy_bypass:legacyPresentation'));
+ const wrapper=read('scripts/ash-lifecycle-production-probe.mjs');
+ assert(wrapper.includes('first-visit site epoch before lifecycle network capture'));
+ assert(wrapper.includes('site-epoch-reset.html?return=%2F'));
+ assert(wrapper.includes('const page = await context.newPage();'));
+ assert(wrapper.includes('td613.site.browser-reset.epoch'));
+ assert(!wrapper.includes('legacy eviction before first-visit reset'));
+});
