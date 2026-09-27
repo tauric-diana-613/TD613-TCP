@@ -198,3 +198,6 @@ assert.match(gitignore, /(^|\r?\n)\.env(\r?\n|$)/, '.env must remain ignored');
 assert.doesNotMatch(gitignore, /(^|\r?\n)!\.env(\r?\n|$)/, '.env must not be negated');
 
 console.log(`vercel-deploy-hygiene.test.mjs passed with ${deployedApiFiles.length}/11 deployed functions and ${configuredFunctions.length} configured overrides`);
+
+// The universal browser reset and Flight glyph contract run in both PR CI and #405's release-critical checks.
+await import('./sitewide-browser-epoch.test.mjs');
