@@ -169,6 +169,41 @@ runtime = replaceExactly(
   "      stage_imports_settled:true,\n      dependency_imports_settled:true,\n      specialist_navigation_admitted:true",
   'stage-import settlement receipt flag'
 );
+
+// A site-wide destructive epoch intentionally precedes the Ash route in a fresh
+// browser profile. Keep its one-time handshake and navigation aborts observable,
+// but do not misclassify them as Ash custody actions or product resource failures.
+runtime = replaceExactly(
+  runtime,
+  "  'td613.ash.session.epoch'\n]);",
+  "  'td613.ash.session.epoch',\n  'td613.site.browser-reset.epoch'\n]);",
+  'site epoch's explicit local-storage marker'
+);
+runtime = replaceExactly(
+  runtime,
+  "  if (item?.failure !== 'net::ERR_ABORTED' || item?.method !== 'GET') return false;",
+  "  if (item?.failure !== 'net::ERR_ABORTED') return false;",
+  'retain method-specific reset abort classification'
+);
+runtime = replaceExactly(
+  runtime,
+  "  try { url = new URL(item.url); } catch { return false; }\n  const cacheEvictionTransition",
+  "  try { url = new URL(item.url); } catch { return false; }\n  const resetObserved = report.threshold?.local_storage_before_entry?.includes('td613.site.browser-reset.epoch') === true;\n  if (resetObserved && url.origin === new URL(base).origin) {\n    if (item.method === 'POST' && item.resource_type === 'fetch' && url.pathname === '/api/site-epoch-reset') return true;\n    if (item.method === 'GET' && ((item.resource_type === 'script' && url.pathname === '/dome-world/ash-threshold-membrane.js') || (item.resource_type === 'stylesheet' && url.pathname === '/dome-world/ash-threshold-membrane.css'))) return true;\n  }\n  if (item.method !== 'GET') return false;\n  const cacheEvictionTransition",
+  'classify only the observed same-origin site-epoch transition aborts'
+);
+runtime = replaceExactly(
+  runtime,
+  "  const disallowedNonRead = nonReadRequests.filter(item => !/\\/api\\/dome-world\\/ash-custody-register(?:\\?|$)/.test(item.url));",
+  "  const siteResetRequests = nonReadRequests.filter(item => new URL(item.url).pathname === '/api/site-epoch-reset');\n  assert(siteResetRequests.length <= 1 && siteResetRequests.every(item => item.method === 'POST' && item.post_data == null && new URL(item.url).origin === new URL(base).origin), 'Unexpected browser reset request shape');\n  const disallowedNonRead = nonReadRequests.filter(item => !/\\/api\\/dome-world\\/ash-custody-register(?:\\?|$)/.test(item.url) && !siteResetRequests.includes(item));",
+  'distinguish the empty-body site reset handshake from Ash custody writes'
+);
+runtime = replaceExactly(
+  runtime,
+  "  report.network = {\n    total_requests: requests.length,",
+  "  report.network = {\n    site_epoch_reset_requests:siteResetRequests.map(item=>({method:item.method,url:item.url,resource_type:item.resource_type})),\n    total_requests: requests.length,",
+  'keep the reset handshake visible in the terminal receipt'
+);
+
 if (!runtime.includes(syntheticDraft)
   || !runtime.includes("url.searchParams.get('arrival') === 'cleared'")
   || !runtime.includes('ash-keep.html?presentation=legacy')
