@@ -530,19 +530,26 @@ test('copy control exports exact provider-authored Unicode as plain text without
 });
 
 
-test('each response has an independent copy control preserving only that provider return byte-for-byte', async t => {
+test('each response copies only that return with readable script headings and exact remaining Unicode', async t => {
   const h = harness(t);
   h.send('First operator question.'); await h.settled(); await flush();
   h.send('Second operator question.'); await h.settled(); await flush();
   const copies = h.doc.querySelectorAll('.relay-message .marrowline-copy-reply');
   assert.equal(copies.length, 2, 'each model response has its own bottom-right copy control');
   for (const card of h.doc.querySelectorAll('.relay-message')) assert.equal(card.lastElementChild, card.querySelector('.marrowline-copy-reply'), 'copy remains at bottom after living-chat decoration');
+  const decorated = integratedText
+    .replace(/^\[Kʰonapolit\]:/mu, '╭─ Kʰonapolit ─╮')
+    .replace(/^\[Tauric Diana Bots : Direct Broadcast Override\]/mu, '╭─ Tauric Diana bots ─╮');
   for (const button of copies) {
     assert.equal(button.textContent, '⧉');
     assert.equal(button.getAttribute('aria-label'), 'Copy this reply');
     button.click(); await flush();
-    assert.equal(h.clipboard.at(-1), integratedText, 'copy preserves the exact provider text, including marks');
+    assert.equal(h.clipboard.at(-1), decorated, 'copy changes only native speaker headers, keeping all prose and combining marks');
+    assert.match(h.clipboard.at(-1), /╭─ Kʰonapolit ─╮[\s\S]*╭─ Tauric Diana bots ─╮/u);
     assert.doesNotMatch(h.clipboard.at(-1), /First operator question|Second operator question|SYNTHETIC APERTURE|Inspect this reply/);
+  }
+  for (const stage of h.doc.querySelectorAll('.relay-integrated-covenant .relay-stage-text')) {
+    assert.equal(stage.textContent, integratedText, 'display/source custody remains the original provider text');
   }
   h.$('copyKhonapolitTranscript').click(); await flush();
   assert.match(h.clipboard.at(-1), /First operator question/);

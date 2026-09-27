@@ -1,6 +1,7 @@
 import { reviewLoomEvidence } from './holonomy-loom/ai-evidence-review.js';
 import { createMarrowlineThreadLibrary } from './marrowline-threads.js';
 import { DEFAULT_MARROWLINE_TITLE, deriveMarrowlineConversationTitle } from './marrowline-title.js';
+import { formatMarrowlineReplyForCopy } from './marrowline-speaker-frames.js';
 import {
   clearMarrowlineAttachments,
   getMarrowlineAttachments,
@@ -257,13 +258,14 @@ function createReplyCopyControl(doc, entry) {
   copy.title = 'Copy this reply as plain text';
   copy.addEventListener('click', async () => {
     const root = doc.defaultView;
-    // One exact provider return only. No receipt, surrounding turns, DOM
-    // normalization, added headings, or local alteration of combining marks.
-    const text = entry.text != null ? String(entry.text)
+    // Explicit plain-text share formatting only. Archived provider text,
+    // transcript/history, source DOM and receipt retain their original bytes.
+    const original = entry.text != null ? String(entry.text)
       : asArray(entry.relay?.parts).filter(part => part?.present)
         .map(part => String(part.text ?? '')).join('\n\n');
+    const shareText = formatMarrowlineReplyForCopy(original);
     try {
-      await root.navigator.clipboard.writeText(text);
+      await root.navigator.clipboard.writeText(shareText);
       showEphemeralNotice(doc, root, 'Reply copied');
     } catch {
       showEphemeralNotice(doc, root, 'Copy failed');
