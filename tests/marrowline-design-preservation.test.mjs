@@ -9,7 +9,7 @@ import './marrowline-ios-keyboard-contract.test.mjs';
 import './marrowline-threads.test.mjs';
 import { classifyMarrowlineClientFailure, deriveMarrowlineConversationTitle, marrowlineWaitingLabel, installKhonapolitTerminal } from '../app/dome-world/marrowline-terminal.js';
 import { installMarrowlineMobileShell } from '../app/dome-world/marrowline-mobile-shell.js';
-import { installMarrowlineLivingChat } from '../app/dome-world/marrowline-living-chat.js';
+import { installMarrowlineLivingChat, buildMarrowlineReplyFollowupDraft } from '../app/dome-world/marrowline-living-chat.js';
 import { installMarrowlinePhysicalDeviceRepair } from '../app/dome-world/marrowline-physical-device-repair.js';
 
 const html = readFileSync(new URL('../app/dome-world/marrowline.html', import.meta.url), 'utf8');
@@ -266,8 +266,12 @@ test('mobile decoration preserves provider-native Unicode and all five chamber r
   assert.equal(stage.textContent, integratedText);
   assert.notEqual(stage.dataset.flourished, 'true', 'integrated clean prose never inherits whole-stage Zalgo line-height');
   assert.ok(stage.querySelectorAll('.provider-native-line').length >= 3, 'extreme provider-authored lines receive vertical room without rewriting text');
-  const disclosure = h.doc.querySelector('.return-details'); assert.ok(disclosure); disclosure.open = true;
-  assert.equal(disclosure.querySelector('.relay-aperture-header span').textContent, exactHeader);
+  assert.equal(h.doc.querySelector('.return-details,.reply-technical-record,.turn-receipt,.relay-aperture-header'),null,
+    'all three circled disclosures are absent from the chat');
+  assert.deepEqual([...h.doc.querySelectorAll('.relay-message > .reply-next-actions button')].map(x=>x.textContent),
+    ['Check the claims','Make a plan'],'both compact follow-up choices remain');
+  assert.equal(JSON.parse(h.$('khonapolitReceipt').textContent).relay.apertureHeader,exactHeader,
+    'separate Receipt preserves the exact technical header');
   const routes = { speakingPanel: 'speak', invocationPanel: 'keys', receiptPanel: 'receipt', corpusPanel: 'corpus', gatePanel: 'gate' };
   for (const [id, view] of Object.entries(routes)) { const button = h.doc.querySelector(`.mobile-dock [data-mobile-target="${id}"]`); assert.ok(button); button.click(); assert.equal(h.doc.body.dataset.mobileView, view); }
   assert.equal(h.calls.length, 1);
@@ -328,7 +332,9 @@ test('failed follow-up replaces current receipt and retains the previous receipt
   assert.match(h.clipboard.at(-1), /CURRENT_REQUEST_FAILED/);
   assert.match(h.clipboard.at(-1), /SYNTHETIC_MODEL/);
   assert.equal(h.win.__TD613_KHONAPOLIT_LAST_RECEIPT__, null);
-  assert.deepEqual(JSON.parse(h.doc.querySelector('.turn-receipt pre').textContent), prior);
+  assert.equal(h.doc.querySelector('.turn-receipt'),null,'per-reply JSON absent from conversation');
+  assert.deepEqual((await h.saved()).messages.find(x=>x.role==='model').receipt,prior,
+    'the previous receipt remains attached to the archived model turn');
   assert.equal(h.$('khonapolitPrompt').value, 'What does that mean for a newcomer?');
   h.$('retryKhonapolitTask').click(); await h.settled(); await flush();
   assert.equal(JSON.parse(h.$('khonapolitReceipt').textContent).provider.model, 'SYNTHETIC_MODEL');
@@ -601,4 +607,29 @@ test('operator Stop also escapes a response body that never resolves', async t =
   assert.equal((await h.saved()).lastFailure.error, 'operator-cancelled');
   assert.equal(h.doc.querySelectorAll('.relay-message').length, 0);
   assert.equal(h.$('khonapolitSend').dataset.transmissionState, 'ready');
+});
+
+test('long model reply produces a bounded follow-up draft, not a silent 6,000-character dead Send', () => {
+  const source = 'A'.repeat(12000);
+  const draft = buildMarrowlineReplyFollowupDraft('Check the claims.',source);
+  assert.ok(draft.length < 6000);
+  assert.match(draft,/Excerpt only/);
+  assert.ok(draft.includes('A'.repeat(120)));
+  assert.equal(source.length,12000,'original provider return remains intact');
+});
+
+test('follow-up chips fill but never automatically submit; an existing draft wins', async t => {
+  const h = harness(t);
+  h.send('Provide a short reply.'); await h.settled(); await flush();
+  const choices = h.doc.querySelectorAll('.relay-message > .reply-next-actions button');
+  assert.equal(choices.length,2);
+  choices[0].click();
+  assert.match(h.$('khonapolitPrompt').value,/Review the reply quoted below/);
+  assert.equal(h.calls.length,1,'preload has no provider side effect');
+  const preserved=h.$('khonapolitPrompt').value;
+  choices[1].click();
+  assert.equal(h.$('khonapolitPrompt').value,preserved,'later choice cannot erase an unfinished draft');
+  h.$('khonapolitForm').dispatchEvent(new h.win.Event('submit',{bubbles:true,cancelable:true}));
+  await h.settled();
+  assert.equal(h.calls.length,2,'the first actual Send commits the bounded draft');
 });
