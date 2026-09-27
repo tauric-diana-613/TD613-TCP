@@ -59,5 +59,6 @@ test('Ash specialist presentation retains historical receipt semantics after the
  assert(wrapper.includes('site-epoch-reset.html?return=%2F'));
  assert(wrapper.includes('const page = await context.newPage();'));
  assert(wrapper.includes('td613.site.browser-reset.epoch'));
+ assert(wrapper.includes("  'td613.ash.session.epoch',\\n  'td613.site.browser-reset.epoch'\\n]);"), 'Ash local-storage witness must allow the one-time origin marker');
  assert(!wrapper.includes('legacy eviction before first-visit reset'));
 });
