@@ -259,9 +259,13 @@ function createReplyCopyControl(doc, entry) {
     const root = doc.defaultView;
     // One exact provider return only. No receipt, surrounding turns, DOM
     // normalization, added headings, or local alteration of combining marks.
-    const text = entry.text != null ? String(entry.text)
-      : asArray(entry.relay?.parts).filter(part => part?.present)
-        .map(part => String(part.text ?? '')).join('\n\n');
+    const text = entry.relay
+      ? asArray(entry.relay.parts).filter(part => part?.present).map((part) => {
+          const label = String(part.label || part.id || '').trim();
+          const body = String(part.text ?? '');
+          return label ? '╭─ ' + label + ' ─╮\n' + body : body;
+        }).join('\n\n')
+      : String(entry.text ?? '');
     try {
       await root.navigator.clipboard.writeText(text);
       showEphemeralNotice(doc, root, 'Reply copied');
