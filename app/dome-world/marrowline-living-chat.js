@@ -142,6 +142,13 @@ export function installMarrowlineLivingChat(doc = document, environment = window
       actions.className = 'reply-next-actions';
       const actionSummary = doc.createElement('summary');
       actionSummary.textContent = 'More with this reply';
+      // The footer is a flex row on narrow screens. Own the native disclosure
+      // toggle explicitly so a single pointer/keyboard activation cannot
+      // collapse the just-opened menu during layout reflow on Safari/Firefox.
+      actionSummary.addEventListener('click', event => {
+        event.preventDefault();
+        actions.open = !actions.open;
+      });
       actions.append(actionSummary);
       const choices = doc.createElement('div');
       choices.className = 'reply-next-choices';
