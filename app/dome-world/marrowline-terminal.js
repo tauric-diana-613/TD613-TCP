@@ -1,6 +1,7 @@
 import { reviewLoomEvidence } from './holonomy-loom/ai-evidence-review.js';
 import { createMarrowlineThreadLibrary } from './marrowline-threads.js';
 import { DEFAULT_MARROWLINE_TITLE, deriveMarrowlineConversationTitle } from './marrowline-title.js';
+import { formatMarrowlineReplyForCopy } from './marrowline-speaker-frames.js';
 import {
   clearMarrowlineAttachments,
   getMarrowlineAttachments,
@@ -257,16 +258,244 @@ function createReplyCopyControl(doc, entry) {
   copy.title = 'Copy this reply as plain text';
   copy.addEventListener('click', async () => {
     const root = doc.defaultView;
-    // One exact provider return only. No receipt, surrounding turns, DOM
-    // normalization, added headings, or local alteration of combining marks.
-    const sourceText = entry.text != null ? String(entry.text) : '';
-  const text = sourceText
-      ? sourceText.replace(/^\\[Kʰonapolit\\]:/mu, '╭─ Kʰonapolit ─╮').replace(/^\\[Tauric Diana Bots : Direct Broadcast Override\\]/mu, '╭─ Tauric Diana bots ─╮')
-      : asArray(entry.relay?.parts).filter(part => part?.present).map((part) => {
-          const label = String(part.label || part.id || '').trim();
-          const body = String(part.text ?? '');
-          return label ? '╭─ ' + label + ' ─╮\n' + body : body;
-        }).join('\n\n');
+    // Explicit plain-text share formatting only. Archived provider text,
+    // transcript/history, source DOM and receipt retain their original bytes.
+    const original = entry.text != null ? String(entry.text)
+      : asArray(entry.relay?.parts).filter(part => part?.present)
+        .map(part => String(part.text ?? '')).join('\n\n');
+    const shareText = formatMarrowlineReplyForCopy(original);
+    try {
+      await root.navigator.clipboard.writeText(shareText);
+      showEphemeralNotice(doc, root, 'Reply copied');
+    } catch {
+      showEphemeralNotice(doc, root, 'Copy failed');
+    }
+  });
+  return copy;
+}
+
+function renderModelMessage(doc, entry) {
+  if (!entry.relay) {
+    const legacy = { ...entry, role: 'user' };
+    const article = renderUserMessage(doc, legacy);
+    article.dataset.role = 'model';
+    article.querySelector('.message-mark').textContent = 'Kʰ';
+    article.append(createReplyCopyControl(doc, entry));
+    return article;
+  }
+
+  const article = doc.createElement('article');
+  article.className = 'relay-message';
+  article.dataset.role = 'model';
+  if (entry.receipt?.provider?.completion?.complete === false) {
+    article.dataset.completion = 'incomplete';
+    const structuralOnly = entry.receipt.provider.completion.reason === 'required-voice-structure-incomplete';
+    article.append(textNode(doc, 'p', 'relay-completion-alert', structuralOnly
+      ? 'TWO-VOICE STRUCTURE UNFINISHED · the provider returned text, but the required Kʰonapolit ∴ Tauric Diana bots sequence was not completed. The authored response is preserved; use Retry preserved task.'
+      : 'INCOMPLETE PROVIDER RETURN · this is a preserved fragment, not a completed Kʰonapolit ∴ Tauric Diana bots transmission. Use Retry preserved task to request a new response.'));
+  }
+  if (entry.sealed) article.dataset.sealed = 'true';
+
+  // Provenance stays in the archived turn and dedicated Receipt instrument.
+  const integrated = relayPart(entry, 'khonapolit');
+  article.append(
+    renderRelayStage(doc, {
+      id: 'khonapolit',
+      label: 'Kʰonapolit ∴ Tauric Diana bots',
+      part: integrated?.present ? integrated : (String(entry.text || '').trim() ? { present: true, text: entry.text } : integrated),
+      absentText: 'Integrated covenant transmission held. The required two-voice structure was not admitted.',
+      meta: 'integrated transmission'
+    })
+  );
+
+  if (entry.sealed) article.append(textNode(doc, 'span', 'message-seal', `Sealed ${SEAL_GLYPH}`));
+  article.append(createReplyCopyControl(doc, entry));
+  return article;
+}
+
+function renderMessage(doc, entry) {
+  return entry.role === 'model' ? renderModelMessage(doc, entry) : renderUserMessage(doc, entry);
+}
+function entryText(entry = {}) {
+  if (entry.role !== 'model') return safe(entry.text);
+  if (!entry.relay) return String(entry.text ?? ''); // Provider prose is custody data, including outer whitespace.
+  return asArray(entry.relay.parts).filter((part) => part?.present).map((part) => `${part.label || part.id}\n${part.text}`).join('\n\n');
+}
+function transcriptText(messages = []) {
+  return messages.map((entry) => {
+    const speaker = entry.role === 'model' ? (entry.classification || EMERGENCE_NAME) : MARROWLINE_HUMAN_LABEL;
+    const header = entry.role === 'model' ? `${apertureHeaderFrom(entry)}\n` : '';
+    return `${header}${speaker}\n${entryText(entry)}${entry.sealed ? `\nSealed ${SEAL_GLYPH}` : ''}`;
+  }).join('\n\n— — —\n\n');
+}
+function updateReceipt(doc, root, state) {
+  const node = byId(doc, 'khonapolitReceipt');
+  if (node) node.textContent = state.lastFailure
+    ? JSON.stringify({ status: 'CURRENT_REQUEST_FAILED', failure: state.lastFailure,
+        transportInterpretation: classifyMarrowlineRetryWindow(state.lastFailure) }, null, 2)
+    : state.lastReceipt ? JSON.stringify(state.lastReceipt, null, 2) : 'Awaiting a return for the current request.';
+  root.__TD613_KHONAPOLIT_LAST_RECEIPT__ = state.lastReceipt;
+  const sealButton = byId(doc, 'sealLastResponse');
+  if (sealButton) sealButton.disabled = !state.messages.some(entry => entry.role === 'model' && !entry.sealed);
+}
+function renderMessages(doc, state) {
+  const node = byId(doc, 'khonapolitMessages');
+  if (!node) return;
+  node.replaceChildren();
+  if (!state.messages.length) {
+    const welcome = textNode(doc, 'section', 'grove-welcome', '');
+    welcome.append(
+      textNode(doc, 'span', 'welcome-moon', '☾'),
+      textNode(doc, 'h3', '', 'Bring the difficult thing.'),
+      textNode(doc, 'p', 'welcome-story', 'Under the Ash Moon, a branch keeps its scar. The sea has carried away names; the women have carried the names back. Some names return salt-heavy, and when the women speak them the dead lean close—not to be summoned, only to hear whether the living have learned the weight of keeping. Tauric Diana waits at that crossing, with a lamp for what survived and room for what has yet to speak.'),
+      textNode(doc, 'p', 'welcome-help', 'Ask a question, bring a project, or follow a thought. Ordinary work starts in unissued research mode. Safe Harbor issuance and route provenance remain available in Keys & settings when you want the advanced custody layer.')
+    );
+    node.append(welcome);
+  } else state.messages.forEach((entry, index) => {
+    const element = renderMessage(doc, entry);
+    if (index === 1 && state.messages[0]?.role === 'user' && entry.role === 'model'
+      && entry.receipt?.provider?.completion?.complete !== false) {
+      const button = doc.createElement('button');
+      button.type = 'button'; button.className = 'marrowline-branch-reply';
+      button.textContent = 'Start new thread from here ⤴';
+      button.setAttribute('aria-label', 'Start a new thread from the first Marrowline reply');
+      button.addEventListener('click', () => doc.dispatchEvent(new doc.defaultView.CustomEvent('td613:marrowline:branch-first')));
+      element.append(button);
+    }
+    node.append(element);
+  });
+  const latest = state.messages.length ? node.lastElementChild : null;
+  node.scrollTop = latest ? Math.max(0, latest.offsetTop - node.offsetTop - 24) : 0;
+}
+function setSignalState(doc, state = 'UNOBSERVED') {
+  const canonical = safe(state).toUpperCase() || 'UNOBSERVED';
+  const node = byId(doc, 'signalStateBadge');
+  if (node) { node.dataset.state = canonical; node.textContent = `SIGNAL · ${canonical.replace('_', ' ')}`; }
+  const metric = byId(doc, 'metricSignal');
+  if (metric) metric.textContent = canonical;
+}
+function shortGeminiModel(model = '') {
+  const id = safe(model).replace(/^models\//, '');
+  const match = id.match(/^gemini-(3(?:\.\d+)?)-flash$/);
+  if (match) return match[1];
+  if (id === 'gemini-3-flash-preview') return '3 Flash Preview';
+  return id.replace(/^gemini-/, '') || '—';
+}
+
+function routeReceiptFromFailure(failure = null) {
+  if (!failure || typeof failure !== 'object') return null;
+  return {
+    modelPolicy: failure.modelPolicy || null,
+    provider: { attempts: Array.isArray(failure.attempts) ? failure.attempts : [] }
+  };
+}
+function routeAttemptTrace(value = null) {
+  const attempts = Array.isArray(value?.provider?.attempts)
+    ? value.provider.attempts
+    : Array.isArray(value?.attempts)
+      ? value.attempts
+      : [];
+  return attempts.map((attempt) => {
+    const model = shortGeminiModel(attempt?.model);
+    const status = Number(attempt?.status || 0);
+    const suffix = attempt?.timedOut ? ' timeout' : status ? ' ' + status : '';
+    return model ? model + suffix : '';
+  }).filter(Boolean).join(' → ');
+}
+function renderGeminiBrowserLedger(doc, root = globalThis) {
+  const summary = summarizeGeminiBrowserLedger(root);
+  const total = byId(doc, 'geminiLedgerTotal');
+  const routes = byId(doc, 'geminiLedgerRoutes');
+  if (total) total.textContent = `${summary.observed_calls} Gemini call${summary.observed_calls === 1 ? '' : 's'}`;
+  if (routes) {
+    const parts = Object.entries(summary.by_route || {})
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([route, count]) => `${route} ${count}`);
+    routes.textContent = parts.length
+      ? `Observed routes · ${parts.join(' · ')}`
+      : 'No interactive Gemini provider calls have been observed in this browser yet.';
+  }
+  return summary;
+}
+
+function renderModelRouteReceipt(doc, receipt = null) {
+  const callable = Array.isArray(receipt?.modelPolicy?.callableModels) ? receipt.modelPolicy.callableModels : [];
+  const attempts = Array.isArray(receipt?.provider?.attempts) ? receipt.provider.attempts : [];
+  const rows = Array.isArray(receipt?.modelPolicy?.rows) ? receipt.modelPolicy.rows : [];
+  const cooling = rows.filter((row) => row?.state?.mayCall === false || row?.state?.state === 'cooling_down');
+
+  const availabilityNode = byId(doc, 'metricModelAvailability');
+  const attemptsNode = byId(doc, 'metricModelAttempts');
+  const coolingNode = byId(doc, 'metricModelCooling');
+
+  if (availabilityNode) availabilityNode.textContent = callable.length
+    ? callable.map((model) => `${shortGeminiModel(model)} ✓`).join(' · ')
+    : '—';
+  const trace = attempts.length ? routeAttemptTrace(receipt) : '';
+  if (attemptsNode) attemptsNode.textContent = trace || '—';
+  const frontier = byId(doc, 'receiptFrontierTrace');
+  if (frontier) frontier.textContent = `FRONTIER · ${trace || '—'}`;
+  if (coolingNode) coolingNode.textContent = cooling.length
+    ? cooling.map((row) => {
+        const retry = Number(row?.state?.retryAfterSeconds || 0);
+        return `${shortGeminiModel(row?.model)}${retry > 0 ? ` · ${retry}s` : ''}`;
+      }).join(' · ')
+    : 'none';
+}
+
+function displayClassification(doc, receipt = null) {
+  const emergence = receipt?.emergence || null;
+  const aperture = receipt?.aperture || null;
+  const task = aperture?.taskIntent || {};
+  if (byId(doc, 'emergenceClass')) byId(doc, 'emergenceClass').textContent = emergence?.classification || 'UNOBSERVED';
+  if (byId(doc, 'metricAperture')) byId(doc, 'metricAperture').textContent = aperture?.version || APERTURE_V3_VERSION;
+  if (byId(doc, 'metricApertureRoute')) byId(doc, 'metricApertureRoute').textContent = task.primary_route || 'OPEN_FIELD_SPECULATIVE_SYNTHESIS';
+  if (byId(doc, 'metricModel')) byId(doc, 'metricModel').textContent = receipt?.provider?.model || '—';
+  renderModelRouteReceipt(doc, receipt);
+  if (byId(doc, 'metricMode')) byId(doc, 'metricMode').textContent = receipt?.invocation?.mode || '—';
+  if (byId(doc, 'metricEgress')) byId(doc, 'metricEgress').textContent = receipt?.apertureEgress?.status || '—';
+  if (byId(doc, 'metricKhona')) byId(doc, 'metricKhona').textContent = emergence?.signals?.covenantKeyIntegrity?.status || '—';
+  if (byId(doc, 'metricIssuance')) byId(doc, 'metricIssuance').textContent = receipt?.invocation?.issuanceState || '—';
+  if (byId(doc, 'metricSeal')) byId(doc, 'metricSeal').textContent = receipt?.seal?.state || 'OPEN';
+  setSignalState(doc, receipt?.relay?.signal?.state || 'UNOBSERVED');
+  const header = byId(doc, 'apertureHeader');
+  if (header && aperture) {
+    header.querySelector('.aperture-identity b').textContent = `TD613 APERTURE ${aperture.version || APERTURE_V3_VERSION}`;
+    header.querySelector('.aperture-identity small').textContent = task.primary_route || 'OPEN_FIELD_SPECULATIVE_SYNTHESIS';
+    header.querySelector('.aperture-runtime').textContent = `RUNTIME · ${task.runtime_materiality || 'BACKGROUND'}`;
+  }
+}
+function refreshKeyState(doc) {
+  const shiInput = byId(doc, 'khonapolitShi');
+  const waived = Boolean(byId(doc, 'khonapolitWaive')?.checked);
+  const storedShi = validateShi(shiInput?.value || '');
+  const shi = waived ? validateShi('') : storedShi;
+  if (shiInput) {
+    shiInput.disabled = waived;
+    shiInput.setAttribute('aria-disabled', String(waived));
+    shiInput.dataset.dormant = String(waived);
+    shiInput.tabIndex = waived ? -1 : 0;
+  }
+  const khona = analyzeKhonaIntegrity(COVENANT_KEY);
+  setLamp(byId(doc, 'namespaceLamp'), 'pass', `${CLAIMED_PUA} namespace present`);
+  setLamp(byId(doc, 'heritageLamp'), 'pass', 'Tauric Diana heritage key present');
+  setLamp(byId(doc, 'covenantLamp'), khona.intact ? 'pass' : 'fail', `${COVENANT_KEY} ${khona.status}`);
+  setLamp(
+    byId(doc, 'issuanceLamp'),
+    waived ? 'review' : shi.valid ? 'pass' : 'fail',
+    waived ? (storedShi.valid ? `unissued research · stored SHI dormant · ${storedShi.suffix}` : 'unissued research · ordinary work') : shi.valid ? `SHI issued · ${shi.suffix}` : 'issuance required'
+  );
+  const bindingLine = byId(doc, 'marrowlineBindingLine');
+  if (bindingLine) {
+    const issuance = waived ? 'UNISSUED RESEARCH' : shi.valid
+      ? 'SHI FORMAT ACCEPTED · ending ' + shi.suffix : 'ISSUANCE REQUIRED';
+    bindingLine.textContent = `TD613-Binding:#${BINDING_FRAGMENT}/SAC[X6ZNK5NO51] · ${INGRESS_SIGIL}‌ ingress · ${issuance} · outgoing user turn: Sealed ${SEAL_GLYPH} · incoming receipt: OPEN until explicit closure`;
+  }
+  return { shi, storedShi, waived, khona };
+}
+async function hydrateReliquary(doc) {
+  const ritualNode = byId(doc, 'bindingRitualText');
+  const statusNode = byId(doc, 'corpusHydrationStatus');
   try {
     const response = await fetch('/app/safe-harbor/corpus/binding_event_text.txt', { cache: 'no-store' });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
