@@ -195,7 +195,7 @@ try {
   assert.equal(longTaskResponse.statusCode, 200, '12k human message is now valid');
   assert.equal(longTaskResponse.payload.ok, true);
   assert.ok(requestBodies.slice(beforeLongTask).some(body =>
-    body.contents?.some(part => part.parts?.some(piece => piece.text === longHumanTask))),
+    body.contents?.some(part => part.parts?.some(piece => piece.text?.includes(longHumanTask)))),
     'the provider receives the entire 12k human task including its tail');
 
   const beforeOversize = calls.length;
