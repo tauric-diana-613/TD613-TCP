@@ -116,12 +116,21 @@ test('only exact legacy auto-generated titles are retitled; operator labels and 
   const manual = await archive.create({messages,conversationTitle:'Archive Witnesses',titleSource:'operator'});
   const renamed = await archive.create({messages,conversationTitle:'My Own Label'});
   const branch = await archive.branch(old,1);
-  assert.equal(await archive.migrateLegacyGeneratedTitles(),2,'only generated parent and matching branch are repaired');
+  const longTopic = await archive.create({messages:[{role:'user',text:
+    'I underestimated the contribution was in how directly the research changed the design.'}],
+    conversationTitle:'I Underestimated the Contribution Was in How Directly',
+    titleSource:'local-topic-v2'});
+  assert.equal(await archive.migrateLegacyGeneratedTitles(),3,
+    'matching legacy titles and previously generated oversized topic titles are repaired');
   const repaired = await archive.get(old.id);
   assert.equal(repaired.conversationTitle,'Stylometric Comparison with Provenance');
   assert.equal(repaired.titleSource,'local-topic-v2');
   assert.deepEqual(repaired.messages,messages,'retitling never rewrites the saved transcript or receipt');
   assert.equal((await archive.get(branch.id)).conversationTitle,repaired.conversationTitle);
+  const shortened = await archive.get(longTopic.id);
+  assert.ok(shortened.conversationTitle.split(/\s+/u).length <= 6,
+    'existing generated topic title is compressed on next load');
+  assert.notEqual(shortened.conversationTitle,'I Underestimated the Contribution Was in How Directly');
   assert.equal((await archive.get(manual.id)).conversationTitle,'Archive Witnesses');
   assert.equal((await archive.get(renamed.id)).conversationTitle,'My Own Label');
   assert.equal(await archive.migrateLegacyGeneratedTitles(),0,'migration is one-time and idempotent');
