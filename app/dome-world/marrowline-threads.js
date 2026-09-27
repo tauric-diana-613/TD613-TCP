@@ -119,18 +119,21 @@ export async function createMarrowlineThreadLibrary(root = window) {
     }, { parentId: parent.id, branchOf: responseIndex });
   };
   const migrateLegacyGeneratedTitles = async () => {
-    // A one-time exact-match repair of the previous eight-opening-words
-    // algorithm. No provider calls, no transcript edits and no overwrite of
-    // records explicitly marked as manually renamed. Uncertain titles stay.
+    // A one-time exact-match repair of old eight-word titles plus compression
+    // of known topic-v2 auto-titles. No provider calls, transcript edits or
+    // overwrite of manually renamed/uncertain titles.
     let changed = 0;
     for (const thread of await all()) {
-      if (thread.titleSource === 'operator' || thread.titleSource === 'local-topic-v2') continue;
+      if (thread.titleSource === 'operator') continue;
       const first = thread.messages?.find(entry => entry?.role === 'user' && String(entry.text || '').trim());
       if (!first) continue;
       const current = String(thread.conversationTitle || '');
-      if (current !== legacyMarrowlineTitle(first.text) && current !== DEFAULT_MARROWLINE_TITLE) continue;
+      // Also compress the previously installed topical titles: they may have
+      // had nine words. An unmarked record still requires exact legacy match.
+      const generated = thread.titleSource === 'local-topic-v2';
+      if (!generated && current !== legacyMarrowlineTitle(first.text) && current !== DEFAULT_MARROWLINE_TITLE) continue;
       const next = deriveMarrowlineConversationTitle(first.text);
-      if (next === DEFAULT_MARROWLINE_TITLE) continue;
+      if (next === DEFAULT_MARROWLINE_TITLE || (generated && next === current)) continue;
       await put({ ...thread, conversationTitle: next, titleSource: 'local-topic-v2' });
       changed++;
     }
