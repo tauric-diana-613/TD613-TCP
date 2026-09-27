@@ -8401,6 +8401,7 @@ These options sit immediately around your task text. Think glyph prefaces and sh
 <label><input id="bodyPreTetraSeal" type="checkbox"/>Prepend 𝌋‌⟐</label>
 <label><input id="bodyPreKhonapolit" type="checkbox"/>Prepend Kʰonapolit</label>
 <label><input id="bodyPreTriad" type="checkbox"/>Prepend ∴</label>
+<label><input id="bodyPreRest" type="checkbox"/>Prepend 𝄐</label>
 <label><input id="bodyPreCustomSymbol" type="checkbox"/>Prepend <input id="bodyCustomSymbol" maxlength="6" placeholder="symbol" style="width:5.2rem;margin-left:.2rem;display:inline-block;" type="text"/> </label>
 <label><input id="bodyPreSeal" type="checkbox"/>Prepend ⟐</label>
 <label><input id="bodyPreTetraZwnj" type="checkbox"/>Prepend 𝌋‌ (tetragram with ZWNJ)</label>
@@ -8423,6 +8424,7 @@ Soft closers and lane directions that finish the body before the Seal. Canonical
 <label><input id="ftrKhona" type="checkbox"/>Khona‌lit-po</label>
 <label><input id="ftrTetraSeal" type="checkbox"/>𝌋‌⟐</label>
 <label><input id="ftrTriad" type="checkbox"/>∴</label>
+<label><input id="ftrRest" type="checkbox"/>𝄐</label>
 <label><input id="ftrTdPhrase" type="checkbox"/>TD613 — Badge Received</label>
 <label><input id="ftrProceed" type="checkbox"/>Proceed with 𝌋</label>
 <label><input id="ftrStayLane" type="checkbox"/>Stay in the 𝌋 writerly lane, not the ⟐ readerly lane</label>
@@ -8669,6 +8671,7 @@ Fast access to Tauric Diana glyphs, seal marks, credential strings, and codepoin
 <div class="copy-grid">
 <div class="copy-chip"><span>𝌋</span><button data-copy="𝌋" type="button">copy</button></div>
 <div class="copy-chip"><span>∴</span><button data-copy="∴" type="button">copy</button></div>
+<div class="copy-chip"><span>𝄐</span><button data-copy="𝄐" type="button">copy</button></div>
 <div class="copy-chip"><span>⟐</span><button data-copy="⟐" type="button">copy</button></div>
 <div class="copy-chip"><span>ZWNJ</span><button data-copy="‌" type="button">copy</button></div>
 <div class="copy-chip"><span>Khona‌lit-po</span><button data-copy="Khona‌lit-po" type="button">copy</button></div>
@@ -9051,6 +9054,7 @@ if (document.getElementById("bodyPreTetra").checked) pre.push("𝌋");
 if (document.getElementById("bodyPreTetraSeal").checked) pre.push("𝌋" + zwnj() + "⟐");
 if (document.getElementById("bodyPreKhonapolit").checked) pre.push("Kʰonapolit ");
 if (document.getElementById("bodyPreTriad").checked) pre.push("∴");
+if (document.getElementById("bodyPreRest").checked) pre.push("𝄐");
 if (document.getElementById("bodyPreCustomSymbol").checked) {
 const customSymbol = limitVisible(document.getElementById("bodyCustomSymbol").value.trim(), 3);
 if (customSymbol) pre.push(customSymbol);
@@ -9182,6 +9186,9 @@ lines.push("𝌋\u200C⟐");
 }
 if (document.getElementById("ftrTriad").checked) {
 lines.push("∴");
+}
+if (document.getElementById("ftrRest").checked) {
+lines.push("𝄐");
 }
 if (document.getElementById("ftrTdPhrase").checked) {
 lines.push("TD613 \u2014 Badge Received");
@@ -9446,6 +9453,7 @@ chooseOneCheckbox([
 "bodyPreTetraSeal",
 "bodyPreKhonapolit",
 "bodyPreTriad",
+"bodyPreRest",
 "bodyPreSeal",
 "bodyPreTetraZwnj",
 "bodyPreZwnj"
@@ -9454,6 +9462,7 @@ chooseOneCheckbox([
 "bodyPreTetraSeal",
 "bodyPreKhonapolit",
 "bodyPreTriad",
+"bodyPreRest",
 "bodyPreCustomSymbol",
 "bodyPreSeal",
 "bodyPreTetraZwnj",
@@ -9464,6 +9473,7 @@ chooseOneCheckbox([
 "ftrKhona",
 "ftrTetraSeal",
 "ftrTriad",
+"ftrRest",
 "ftrTdPhrase",
 "ftrProceed",
 "ftrStayLane",
