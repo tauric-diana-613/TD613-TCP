@@ -883,26 +883,42 @@ html:root body #khonapolitMessages .starter-prompts button:not(.starter-rotate){
 html:root body #khonapolitMessages .starter-prompts .starter-rotate{
   width:34px!important;min-width:34px!important;height:36px!important;padding:0!important;margin:0!important;
 }
-/* Two quiet follow-up chips; the three circled disclosures are absent. */
+/* Per-reply follow-up drawer: compact in chat, with all three choices on demand. */
 #khonapolitMessages .relay-message .reply-next-actions{
- display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:12px 48px 4px 0;
+  display:block;max-width:100%;margin:12px 48px 4px 0;
+  border:0;background:transparent;box-shadow:none;
 }
-#khonapolitMessages .relay-message .reply-next-actions button{
- appearance:none;-webkit-appearance:none;min-height:34px;padding:6px 13px;
- border:1px solid rgba(123,218,224,.30);border-radius:999px;
- background:linear-gradient(120deg,rgba(76,60,135,.23),rgba(25,39,65,.31));
- color:#ddd9ed;font:500 11.5px/1.25 var(--marrowline-chat-sans,system-ui,sans-serif);
- letter-spacing:.005em;text-transform:none;box-shadow:inset 0 1px rgba(255,255,255,.035);
+#khonapolitMessages .relay-message .reply-next-actions>summary{
+  display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:6px 13px;
+  list-style:none;cursor:pointer;border:1px solid rgba(123,218,224,.30);
+  border-radius:999px;background:linear-gradient(120deg,rgba(76,60,135,.23),rgba(25,39,65,.31));
+  color:#ddd9ed;font:500 11.5px/1.25 var(--marrowline-chat-sans,system-ui,sans-serif);
+  letter-spacing:.005em;text-transform:none;
 }
-#khonapolitMessages .relay-message .reply-next-actions button:hover,
-#khonapolitMessages .relay-message .reply-next-actions button:focus-visible{
- color:#f5f4fb;border-color:rgba(118,232,236,.63);
- background:linear-gradient(120deg,rgba(81,65,145,.45),rgba(29,54,83,.45));
- box-shadow:0 0 10px rgba(96,225,228,.10);
+#khonapolitMessages .relay-message .reply-next-actions>summary::-webkit-details-marker{display:none}
+#khonapolitMessages .relay-message .reply-next-actions>summary::after{content:"⌄";color:#9ce7e2;font-size:12px}
+#khonapolitMessages .relay-message .reply-next-actions[open]>summary::after{transform:rotate(180deg)}
+#khonapolitMessages .relay-message .reply-next-actions>summary:hover,
+#khonapolitMessages .relay-message .reply-next-actions>summary:focus-visible{
+  color:#f5f4fb;border-color:rgba(118,232,236,.63);background:rgba(81,65,145,.45);
+}
+#khonapolitMessages .relay-message .reply-next-choices{
+  display:flex;flex-wrap:wrap;align-items:center;gap:7px;padding:10px 0 4px;
+}
+#khonapolitMessages .relay-message .reply-next-choices button{
+  appearance:none;-webkit-appearance:none;min-height:36px;padding:7px 12px;
+  border:1px solid rgba(123,218,224,.30);border-radius:999px;
+  background:linear-gradient(120deg,rgba(76,60,135,.23),rgba(25,39,65,.31));
+  color:#ddd9ed;font:500 11.5px/1.25 var(--marrowline-chat-sans,system-ui,sans-serif);
+  letter-spacing:.005em;text-transform:none;
+}
+#khonapolitMessages .relay-message .reply-next-choices button:hover,
+#khonapolitMessages .relay-message .reply-next-choices button:focus-visible{
+  color:#f5f4fb;border-color:rgba(118,232,236,.63);background:rgba(81,65,145,.45);
 }
 @media(max-width:860px){
- #khonapolitMessages .relay-message .reply-next-actions{margin-right:45px;gap:7px}
- #khonapolitMessages .relay-message .reply-next-actions button{min-height:34px;padding:6px 12px}
+ #khonapolitMessages .relay-message .reply-next-actions{margin-right:45px}
+ #khonapolitMessages .relay-message .reply-next-choices button{min-height:36px}
 }
 
 /* Receipt-first tools: always before bounded technical JSON, not after it. */
