@@ -57,6 +57,46 @@
   ],
   "headers": [
     {
+      "source": "/api/site-epoch-reset",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/site-epoch-reset.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        },
+        {
+          "key": "X-TD613-Site-Epoch",
+          "value": "td613.site.browser-reset/2026-09-27-v1"
+        }
+      ]
+    },
+    {
+      "source": "/site-epoch-reset.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/site-epoch-preflight.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
       "source": "/",
       "headers": [
         {
@@ -895,6 +935,18 @@
     }
   ],
   "rewrites": [
+    {
+      "source": "/site-epoch-preflight.js",
+      "destination": "/app/site-epoch-preflight.js"
+    },
+    {
+      "source": "/site-epoch-reset.js",
+      "destination": "/app/site-epoch-reset.js"
+    },
+    {
+      "source": "/site-epoch-reset.html",
+      "destination": "/app/site-epoch-reset.html"
+    },
     {
       "source": "/api/dome-world/ash-custody-register",
       "destination": "/api/ash-local-commitment-guard"
