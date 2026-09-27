@@ -15,6 +15,25 @@ assert.deepEqual(givingRedirects, [{
 
 const baselineProjection = structuredClone(config);
 delete baselineProjection.redirects;
+// The origin-wide browser reset is a separately governed route. Admit only these
+// exact four routes, prove their destinations and no-store policy, and remove only
+// these verified entries before comparing Giving's pre-existing routing estate.
+const resetRoutes = new Map([
+  ['/api/site-epoch-reset','/api/dome-world-shell?surface=site-epoch-reset'],
+  ['/site-epoch-preflight.js','/app/site-epoch-preflight.js'],
+  ['/site-epoch-reset.js','/app/site-epoch-reset.js'],
+  ['/site-epoch-reset.html','/app/site-epoch-reset.html']
+]);
+for (const [source,destination] of resetRoutes) {
+  const entries = (config.rewrites || []).filter(entry=>entry.source===source);
+  assert.equal(entries.length,1,'reset route must occur exactly once: '+source);
+  assert.equal(entries[0].destination,destination,'reset route may not be redirected elsewhere: '+source);
+  const headers=(config.headers || []).filter(entry=>entry.source===source);
+  assert.equal(headers.length,1,'reset no-store header must occur exactly once: '+source);
+  assert.equal(headers[0].headers.find(header=>header.key.toLowerCase()==='cache-control')?.value,'no-store, max-age=0');
+}
+baselineProjection.rewrites = baselineProjection.rewrites.filter(entry=>!resetRoutes.has(entry.source));
+baselineProjection.headers = baselineProjection.headers.filter(entry=>!resetRoutes.has(entry.source));
 // Giving's route-integrity hash owns Giving routing, not an unrelated Marrowline
 // function-duration budget. Normalize the separately tested Kʰonapolit duration
 // before hashing so every other Vercel byte remains protected by the baseline.
