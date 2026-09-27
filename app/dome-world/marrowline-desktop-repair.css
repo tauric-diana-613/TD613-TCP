@@ -1219,3 +1219,16 @@ html:root body #khonapolitMessages .starter-prompts .starter-rotate{
     width:34px!important;min-width:34px!important;
   }
 }
+
+/* Final approved masthead fit: title gets a full line; action rail follows beneath. */
+#speakingPanel .vessel-head.marrowline-conversation-masthead{padding:13px 18px 13px!important}
+#speakingPanel .marrowline-title-stack{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:auto auto auto!important;row-gap:2px!important}
+#speakingPanel #marrowlineConversationTitle{grid-column:1!important;grid-row:2!important;font-size:clamp(22px,2.6vw,31px)!important;line-height:1.12!important;margin-top:3px!important}
+#speakingPanel .marrowline-thread-nav{grid-column:1!important;grid-row:3!important;justify-content:flex-end!important;align-self:end!important;margin:6px 0 0!important;padding-top:5px!important;border-top:1px solid rgba(151,220,216,.12)!important}
+#speakingPanel .marrowline-thread-nav>button{min-height:29px!important;padding-block:3px!important}
+@media(max-width:860px){
+ html:root.marrowline-mobile-shell #speakingPanel .marrowline-title-stack{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:auto auto auto!important;row-gap:1px!important}
+ html:root.marrowline-mobile-shell #speakingPanel #marrowlineConversationTitle{font-size:clamp(21px,6.2vw,27px)!important;line-height:1.12!important}
+ html:root.marrowline-mobile-shell #speakingPanel .marrowline-thread-nav{margin-top:6px!important;padding-top:4px!important}
+ html:root.marrowline-mobile-shell #speakingPanel .marrowline-thread-drawer[open]{top:var(--marrowline-thread-top,103px)!important}
+}
