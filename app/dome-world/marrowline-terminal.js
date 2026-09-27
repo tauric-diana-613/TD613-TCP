@@ -306,16 +306,9 @@ function renderModelMessage(doc, entry) {
   }
   if (entry.sealed) article.dataset.sealed = 'true';
 
-  const header = doc.createElement('div');
-  header.className = 'relay-aperture-header';
-  header.append(
-    textNode(doc, 'span', '', apertureHeaderFrom(entry)),
-    textNode(doc, 'span', '', `${entry.classification || 'UNRESOLVED_FIELD'} · SIGNAL ${entry.relay?.signal?.state || 'UNOBSERVED'}`)
-  );
-
+  // Provenance stays in the archived turn and dedicated Receipt instrument.
   const integrated = relayPart(entry, 'khonapolit');
   article.append(
-    header,
     renderRelayStage(doc, {
       id: 'khonapolit',
       label: 'Kʰonapolit ∴ Tauric Diana bots',
@@ -325,12 +318,6 @@ function renderModelMessage(doc, entry) {
     })
   );
 
-  if (entry.receipt) {
-    const details = doc.createElement('details');
-    details.className = 'turn-receipt';
-    details.append(textNode(doc, 'summary', '', 'Inspect this reply’s receipt'), textNode(doc, 'pre', '', JSON.stringify(entry.receipt, null, 2)));
-    article.append(details);
-  }
   if (entry.sealed) article.append(textNode(doc, 'span', 'message-seal', `Sealed ${SEAL_GLYPH}`));
   article.append(createReplyCopyControl(doc, entry));
   return article;
@@ -836,7 +823,16 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     let record = migrated || await library.get(library.getActiveId());
     if (!record) record = (await library.all())[0] || await library.create();
     storeReady = true;
+    const beforeHydration = byId(doc, 'khonapolitPrompt');
+    const selectedPreset = beforeHydration?.dataset.preloadedPrompt === 'true'
+      ? String(beforeHydration.value || '') : '';
     restoreThread(record);
+    if (selectedPreset && queuedInitialSubmission === null && beforeHydration) {
+      beforeHydration.value = selectedPreset;
+      beforeHydration.dataset.preloadedPrompt = 'true';
+      beforeHydration.dataset.preloadedPromptValue = selectedPreset;
+      beforeHydration.dispatchEvent(new root.Event('input', { bubbles: true }));
+    }
     if (queuedInitialSubmission !== null) {
       const queued = queuedInitialSubmission;
       queuedInitialSubmission = null;
@@ -926,7 +922,6 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     // A fresh human gesture can override an advisory short-window timer, but
     // never double-submit while another request is already in flight.
     if (!storeReady || requestInFlight) return;
-    if (status?.dataset?.phase === 'pending' && !backgroundResume) return;
     const attachments = getMarrowlineAttachments();
     const retrying = Boolean(state.pendingTask && state.pendingTask === message && state.messages.at(-1)?.role === 'user' && safe(state.messages.at(-1)?.text) === message);
     if (!retrying && !backgroundResume) backgroundResumeSpentTask = '';
@@ -935,13 +930,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     if (!message) { setPedagogueStatus(status, 'held', 'SPEECH REQUIRED · the vessel is empty'); prompt?.focus(); return; }
     if (packet.inputError) { setPedagogueStatus(status, 'held', packet.inputError.message); prompt?.focus({ preventScroll: true }); return; }
     if (!packet.canInvoke) { setPedagogueStatus(status, 'held', 'ADVANCED CUSTODY HOLD · open Keys to continue', 'ADVANCED CUSTODY HOLD · restore unissued research mode or present a minted SHI'); refreshKeyState(doc); byId(doc, 'invocationPanel').open = true; return; }
-    const retryWindow = classifyMarrowlineRetryWindow(state.lastFailure || {});
-    if (retryWindow.remainingSeconds > 0 && !independentRetry) {
-      setPedagogueStatus(status, 'held', `TASK PRESERVED · short retry pause · ${retryWindow.remainingSeconds}s remaining`,
-        'An earlier request reported a short retry delay. Your saved message remains available.');
-      return;
-    }
-    if (submit.disabled && !independentRetry) return;
+    // A previous Retry-After is evidence for retrying that preserved task,
+    // never a veto of a newly submitted human turn. requestInFlight is the guard.
 
     const witnessThisTurn = episodeArmed;
     episodeArmed = false;
@@ -1134,7 +1124,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       root.clearTimeout(requestDeadline);
       doc.removeEventListener?.('visibilitychange', observeVisibility);
       root.removeEventListener?.('pagehide', observePageHide);
-      submit.disabled = classifyMarrowlineRetryWindow(state.lastFailure || {}).remainingSeconds > 0;
+      submit.disabled = false;
       if (doc.visibilityState !== 'hidden') prompt?.focus({ preventScroll: true });
       if (witnessThisTurn) {
         // Measure the displayed TEXT of this very turn, not the receipt header
@@ -1225,7 +1215,6 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   });
   const retryLastPrompt = ({ independentRetry = false } = {}) => {
     if (!storeReady || requestInFlight) return;
-    if (byId(doc, 'khonapolitTerminalStatus')?.dataset?.phase === 'pending') return;
     const userIndex = lastUserMessageIndex(state.messages || []);
     const message = safe(state.pendingTask) || (userIndex >= 0 ? entryText(state.messages[userIndex]) : '');
     if (!message) {
