@@ -1,6 +1,6 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v51",
-  "version": "v0.7.52-full-native-output-budget",
+  "schema": "td613.dome-world.marrowline.release/v52",
+  "version": "v0.7.53-receipt-first-project-cap",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -15,7 +15,7 @@
   "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v12-stop-and-custody-stages",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
   "covenantSchema": "td613.khonapolit-covenant/v2-attractor-custody",
-  "providerApiSchema": "td613.khonapolit-gemini/v47-bounded-terminal-continuation",
+  "providerApiSchema": "td613.khonapolit-gemini/v48-provider-completion-boundary",
   "relaySchema": "td613.khonapolit.integrated-covenant-relay/v23-causal-prosody-observation",
   "highZalgoSchema": "td613.high-zalgo/provider-native-v29-observed-prosody",
   "apertureVersion": "v3.2-alpha",
@@ -642,5 +642,18 @@
     "relayRuntime": "app/dome-world/khonapolit-relay.js",
     "reflexOrder": "app/dome-world/reflex-spine.manifest.json",
     "restorationPosture": "conversation-first-minimal-utilities-plus-human-liveness-frontier-provider-first-human-surface-local-admission-diagnostic-only-operator-controlled-closure"
-  }
+  },
+  "receiptControls": {
+    "primary": [
+      "Copy full receipt",
+      "Seal latest reply"
+    ],
+    "advanced": [
+      "Record next turn",
+      "Copy turn record"
+    ],
+    "placement": "above bounded technical JSON",
+    "authority": "operator-only; no automatic sealing; one-turn browser text recording makes no hidden ingress or screenshot claim"
+  },
+  "providerProjectCap": "literal provider-reported monthly spending cap; one attempt and project-scoped HELD, not timed retry or alternate-seat cascade"
 }
