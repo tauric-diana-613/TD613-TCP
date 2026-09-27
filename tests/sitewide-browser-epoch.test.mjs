@@ -42,7 +42,7 @@ test('reset endpoint returns destructive header only for same-origin epoch POST'
  }
  assert.equal(config.git.deploymentEnabled,false);
  assert(config.rewrites.some(x=>x.source==='/api/site-epoch-reset'&&x.destination==='/api/dome-world-shell?surface=site-epoch-reset'));
- assert.equal(fs.readdirSync('api').filter(x=>/\\.(js|py)$/.test(x)).length,11);
+ assert.equal(fs.readdirSync('api').filter(x=>/\.(js|py)$/.test(x)).length,11);
 });
 test('Flight rest is selectable in preface and close, and copiable in Glyph Bay',()=>{
  for(const value of ['id="bodyPreRest"','id="ftrRest"','data-copy="𝄐"','pre.push("𝄐")','lines.push("𝄐")'])assert(flight.includes(value),value);
