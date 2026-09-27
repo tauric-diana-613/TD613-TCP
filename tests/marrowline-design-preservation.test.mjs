@@ -20,7 +20,7 @@ const exactHeader = 'SYNTHETIC APERTURE · TECHNICAL_RUNTIME_REVIEW · RUNTIME M
 const flush = () => new Promise(resolve => setTimeout(resolve, 0));
 async function until(predicate) { const deadline = Date.now() + 2000; while (!predicate()) { if (Date.now() > deadline) throw new Error('Synthetic terminal did not settle'); await flush(); } }
 
-function harness(t, { mobile = false, failure = false, incomplete = false, backgroundDisconnect = false, hangFetch = false, hangBody = false, transcriptHeight = 0, storedMessages = [] } = {}) {
+function harness(t, { mobile = false, failure = false, rateLimitOnce = false, incomplete = false, backgroundDisconnect = false, hangFetch = false, hangBody = false, transcriptHeight = 0, storedMessages = [] } = {}) {
   const dom = new JSDOM(html, { url: 'https://td613.com/dome-world/marrowline.html' });
   const win = dom.window, doc = win.document, calls = [], fetchOptions = [], clipboard = [];
   Object.defineProperty(doc.getElementById('khonapolitMessages'), 'scrollHeight', { value: transcriptHeight });
@@ -43,6 +43,11 @@ function harness(t, { mobile = false, failure = false, incomplete = false, backg
       doc.dispatchEvent(new win.Event('visibilitychange'));
       throw new TypeError('synthetic mobile background disconnect');
     }
+    if (rateLimitOnce && calls.length === 1) return { ok: false, status: 429,
+      headers: { get: name => name.toLowerCase() === 'retry-after' ? '90' : null },
+      json: async () => ({ error: 'gemini-rate-limit-held', rateLimit: { scope: 'model', windowClass: 'short', shortMetricReported: true, retryAfterSeconds: 90 },
+        attempts: [{ model: 'SYNTHETIC_MODEL', status: 429,
+          rateLimit: { scope: 'model', windowClass: 'short', shortMetricReported: true, retryAfterSeconds: 90 } }] }) };
     if (typeof failure === 'function' ? failure(calls.length) : failure) return { ok: false, status: 503, json: async () => ({ error: 'SYNTHETIC_PROVIDER_UNAVAILABLE', attempts: [{ model: 'SYNTHETIC_MODEL', status: 503 }] }) };
     const observed = incomplete ? 'Kʰonapolit\nThe claim on' : integratedText;
     const relay = {
@@ -632,4 +637,17 @@ test('follow-up chips fill but never automatically submit; an existing draft win
   h.$('khonapolitForm').dispatchEvent(new h.win.Event('submit',{bubbles:true,cancelable:true}));
   await h.settled();
   assert.equal(h.calls.length,2,'the first actual Send commits the bounded draft');
+});
+
+test('a prior short-window 429 never disables a fresh authored Send', async t => {
+  const h = harness(t, { rateLimitOnce: true });
+  await h.ready();
+  h.send('First synthetic request.'); await h.settled();
+  assert.equal(h.calls.length,1);
+  assert.equal(h.$('khonapolitSend').disabled,false,'fresh Send remains interactive after 429');
+  assert.equal(h.$('khonapolitTerminalStatus').dataset.phase,'held');
+  assert.equal((await h.saved()).lastFailure.httpStatus,429);
+  h.send('An entirely new second question.'); await h.settled();
+  assert.equal(h.calls.length,2,'explicit fresh turn reaches transport despite prior Retry-After');
+  assert.equal(h.calls[1].message,'An entirely new second question.');
 });
