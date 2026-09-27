@@ -909,7 +909,7 @@ html:root body #khonapolitMessages .starter-prompts .starter-rotate{
   letter-spacing:0;text-transform:none;
 }
 #khonapolitMessages .relay-message .reply-next-actions>.reply-next-trigger::after{content:"⌄";color:#9ce7e2;font-size:12px}
-#khonapolitMessages .relay-message .reply-next-actions[open]>summary::after{transform:rotate(180deg)}
+#khonapolitMessages .relay-message .reply-next-actions>.reply-next-trigger[aria-expanded="true"]::after{transform:rotate(180deg)}
 #khonapolitMessages .relay-message .reply-next-actions>.reply-next-trigger:hover,
 #khonapolitMessages .relay-message .reply-next-actions>.reply-next-trigger:focus-visible{
   color:#f5f4fb;text-decoration:underline;text-underline-offset:4px;outline-offset:3px;
