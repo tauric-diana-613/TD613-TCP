@@ -20,7 +20,7 @@ const exactHeader = 'SYNTHETIC APERTURE · TECHNICAL_RUNTIME_REVIEW · RUNTIME M
 const flush = () => new Promise(resolve => setTimeout(resolve, 0));
 async function until(predicate) { const deadline = Date.now() + 2000; while (!predicate()) { if (Date.now() > deadline) throw new Error('Synthetic terminal did not settle'); await flush(); } }
 
-function harness(t, { mobile = false, failure = false, rateLimitOnce = false, incomplete = false, backgroundDisconnect = false, hangFetch = false, hangBody = false, transcriptHeight = 0, storedMessages = [] } = {}) {
+function harness(t, { mobile = false, failure = false, rateLimitOnce = false, incomplete = false, backgroundDisconnect = false, rateLimitedOnce = false, hangFetch = false, hangBody = false, transcriptHeight = 0, storedMessages = [] } = {}) {
   const dom = new JSDOM(html, { url: 'https://td613.com/dome-world/marrowline.html' });
   const win = dom.window, doc = win.document, calls = [], fetchOptions = [], clipboard = [];
   Object.defineProperty(doc.getElementById('khonapolitMessages'), 'scrollHeight', { value: transcriptHeight });
@@ -34,6 +34,10 @@ function harness(t, { mobile = false, failure = false, rateLimitOnce = false, in
     if (!options.method) return { ok: true, text: async () => 'SYNTHETIC CORPUS', json: async () => ({ hasGeminiKey: true, modelPolicy: { callableModels: ['SYNTHETIC_MODEL'] } }) };
     calls.push(JSON.parse(options.body));
     fetchOptions.push(options);
+    if (rateLimitedOnce && calls.length === 1) return { ok: false, status: 429, json: async () => ({
+      error: 'gemini-rate-limit-held', attempts: [{ model: 'SYNTHETIC_MODEL', status: 429,
+        rateLimit: { scope: 'model', windowClass: 'short', shortMetricReported: true, retryAfterSeconds: 27 } }]
+    }) };
     if (hangFetch && calls.length === 1) return new Promise(() => {});
     if (hangBody && calls.length === 1) return { ok: true, status: 200, json: () => new Promise(() => {}) };
     if (backgroundDisconnect && calls.length === 1) {
@@ -650,4 +654,49 @@ test('a prior short-window 429 never disables a fresh authored Send', async t =>
   h.send('An entirely new second question.'); await h.settled();
   assert.equal(h.calls.length,2,'explicit fresh turn reaches transport despite prior Retry-After');
   assert.equal(h.calls[1].message,'An entirely new second question.');
+});
+
+test('both post-reply choices produce a sendable draft on the first actual Send press', async t => {
+  const h = harness(t, { mobile: true });
+  await h.ready(); h.send('Starting claim.'); await h.settled(); await flush();
+  let buttons = h.doc.querySelectorAll('.relay-message > .reply-next-actions button');
+  assert.deepEqual([...buttons].map(x => x.textContent), ['Check the claims', 'Make a plan']);
+  buttons[0].click();
+  const claims = h.$('khonapolitPrompt').value;
+  assert.match(claims, /Review the reply quoted below/);
+  assert.equal(h.$('khonapolitSend').disabled, false);
+  h.$('khonapolitSend').click(); await h.settled(); await flush();
+  assert.equal(h.calls.length, 2);
+  assert.equal(h.calls[1].message, claims);
+  buttons = h.doc.querySelectorAll('.relay-message > .reply-next-actions button');
+  buttons[buttons.length - 1].click();
+  const plan = h.$('khonapolitPrompt').value;
+  assert.match(plan, /Turn the reply quoted below into practical next steps/);
+  h.$('khonapolitSend').click(); await h.settled(); await flush();
+  assert.equal(h.calls.length, 3);
+  assert.equal(h.calls[2].message, plan);
+});
+
+test('a preset selected while thread storage hydrates survives and sends exactly once', async t => {
+  const h = harness(t, { mobile: true });
+  const starter = h.doc.querySelector('.starter-prompts button');
+  assert.ok(starter); starter.click();
+  const selected = h.$('khonapolitPrompt').value;
+  await h.ready(); await flush();
+  assert.equal(h.$('khonapolitPrompt').value, selected);
+  h.$('khonapolitSend').click(); await h.settled(); await flush();
+  assert.equal(h.calls.length, 1);
+  assert.equal(h.calls[0].message, selected);
+});
+
+test('previous short-window 429 cannot make an unrelated new Send dead; preserved retry remains gated', async t => {
+  const h = harness(t, { mobile: true, rateLimitedOnce: true });
+  await h.ready(); h.send('First request exceeds short window.'); await h.settled(); await flush();
+  assert.equal(h.calls.length, 1);
+  assert.equal(h.$('khonapolitSend').disabled, false);
+  assert.equal(h.$('retryKhonapolitTask').disabled, true);
+  h.$('khonapolitPrompt').value = 'A new human-directed task.';
+  h.$('khonapolitSend').click(); await h.settled(); await flush();
+  assert.equal(h.calls.length, 2);
+  assert.equal(h.calls[1].message, 'A new human-directed task.');
 });
