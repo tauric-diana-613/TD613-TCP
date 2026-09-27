@@ -345,6 +345,8 @@ function updateReceipt(doc, root, state) {
         transportInterpretation: classifyMarrowlineRetryWindow(state.lastFailure) }, null, 2)
     : state.lastReceipt ? JSON.stringify(state.lastReceipt, null, 2) : 'Awaiting a return for the current request.';
   root.__TD613_KHONAPOLIT_LAST_RECEIPT__ = state.lastReceipt;
+  const sealButton = byId(doc, 'sealLastResponse');
+  if (sealButton) sealButton.disabled = !state.messages.some(entry => entry.role === 'model' && !entry.sealed);
 }
 function renderMessages(doc, state) {
   const node = byId(doc, 'khonapolitMessages');
@@ -537,6 +539,8 @@ function operatorSeal(doc, root, state, persist = () => {}) {
   if (state.lastReceipt) state.lastReceipt = { ...state.lastReceipt, seal: { state: 'SEALED', glyph: SEAL_GLYPH, suppliedBy: 'operator', sealedAt: new Date().toISOString(), note: 'Closure applied after provider return; not retrofitted into the original binding declaration.' } };
   void persist(); renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, state.lastReceipt);
   byId(doc, 'khonapolitTerminalStatus').textContent = `OPERATOR CLOSURE APPLIED · ${SEAL_GLYPH}`;
+  const receiptStatus = byId(doc, 'receiptActionStatus');
+  if (receiptStatus) receiptStatus.textContent = 'Latest unsealed reply marked closed in this browser.';
   return true;
 }
 function installMobileDock(doc, root) {
@@ -936,7 +940,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     const witnessThisTurn = episodeArmed;
     episodeArmed = false;
     const witnessArm = byId(doc, 'armMarrowlineEpisodeWitness');
-    if (witnessArm) { witnessArm.setAttribute('aria-pressed', 'false'); witnessArm.textContent = 'Witness next reply'; }
+    if (witnessArm) { witnessArm.setAttribute('aria-pressed', 'false'); witnessArm.textContent = 'Record next turn'; }
     const witnessRequestId = witnessThisTurn
       ? (root.crypto?.randomUUID?.() || 'marrowline-local-' + Date.now()) : null;
     const witnessStartedAt = witnessThisTurn ? new Date().toISOString() : null;
@@ -1154,6 +1158,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
           root.__TD613_MARROWLINE_LAST_EPISODE_WITNESS__ = lastEpisodeWitness;
           const copyWitness = byId(doc, 'copyMarrowlineEpisodeWitness');
           if (copyWitness) copyWitness.disabled = false;
+          const receiptStatus = byId(doc, 'receiptActionStatus');
+          if (receiptStatus) receiptStatus.textContent = 'One-turn record ready to copy.';
         } catch (error) {
           // Instrument failure is recorded independently; it must never make
           // a completed user answer disappear or cause a second provider call.
@@ -1167,6 +1173,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
           root.__TD613_MARROWLINE_LAST_EPISODE_WITNESS__ = lastEpisodeWitness;
           const copyWitness = byId(doc, 'copyMarrowlineEpisodeWitness');
           if (copyWitness) copyWitness.disabled = false;
+          const receiptStatus = byId(doc, 'receiptActionStatus');
+          if (receiptStatus) receiptStatus.textContent = 'Turn recording failed; diagnostic record available to copy.';
         }
       }
       if (!cancelledByOperator && state.lastFailure?.backgroundInterrupted === true
@@ -1236,9 +1244,11 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   byId(doc, 'armMarrowlineEpisodeWitness')?.addEventListener('click', () => {
     episodeArmed = !episodeArmed;
     const arm = byId(doc, 'armMarrowlineEpisodeWitness');
+    const receiptStatus = byId(doc, 'receiptActionStatus');
+    if (receiptStatus) receiptStatus.textContent = episodeArmed ? 'Next submitted turn will be recorded locally.' : 'Next-turn recording disarmed.';
     if (arm) {
       arm.setAttribute('aria-pressed', String(episodeArmed));
-      arm.textContent = episodeArmed ? 'Witness armed · next reply' : 'Witness next reply';
+      arm.textContent = episodeArmed ? 'Recording next turn…' : 'Record next turn';
     }
   });
   byId(doc, 'copyMarrowlineEpisodeWitness')?.addEventListener('click', async () => {
@@ -1248,8 +1258,12 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       // person's prompt/return or auto-classify the literary performance.
       await root.navigator.clipboard.writeText(JSON.stringify(lastEpisodeWitness, null, 2));
       showEphemeralNotice(doc, root, 'Copied!');
+      const receiptStatus = byId(doc, 'receiptActionStatus');
+      if (receiptStatus) receiptStatus.textContent = 'One-turn record copied.';
     } catch {
       byId(doc, 'khonapolitTerminalStatus').textContent = 'CLIPBOARD UNAVAILABLE';
+      const receiptStatus = byId(doc, 'receiptActionStatus');
+      if (receiptStatus) receiptStatus.textContent = 'Clipboard unavailable.';
     }
   });
   byId(doc, 'sealLastResponse')?.addEventListener('click', () => operatorSeal(doc, root, state, scheduleSave));
@@ -1262,7 +1276,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     backgroundResumeSpentTask = '';
     episodeArmed = false; lastEpisodeWitness = null; root.__TD613_MARROWLINE_LAST_EPISODE_WITNESS__ = null;
     const witnessArm = byId(doc, 'armMarrowlineEpisodeWitness');
-    if (witnessArm) { witnessArm.setAttribute('aria-pressed', 'false'); witnessArm.textContent = 'Witness next reply'; }
+    if (witnessArm) { witnessArm.setAttribute('aria-pressed', 'false'); witnessArm.textContent = 'Record next turn'; }
     const witnessCopy = byId(doc, 'copyMarrowlineEpisodeWitness');
     if (witnessCopy) witnessCopy.disabled = true;
     state.messages = []; state.lastReceipt = null; state.lastFailure = null; root.__TD613_KHONAPOLIT_LAST_FAILURE__ = null; state.pendingTask = ''; state.conversationTitle = DEFAULT_CONVERSATION_TITLE; clearMarrowlineAttachments(root);
@@ -1308,8 +1322,12 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         : null;
       await root.navigator.clipboard.writeText(payload ? JSON.stringify(payload, null, 2) : '');
       byId(doc, 'khonapolitTerminalStatus').textContent = 'RECEIPT COPIED';
+      const receiptStatus = byId(doc, 'receiptActionStatus');
+      if (receiptStatus) receiptStatus.textContent = 'Full receipt and browser-local call ledger copied.';
     }
-    catch { byId(doc, 'khonapolitTerminalStatus').textContent = 'CLIPBOARD UNAVAILABLE'; }
+    catch { byId(doc, 'khonapolitTerminalStatus').textContent = 'CLIPBOARD UNAVAILABLE';
+      const receiptStatus = byId(doc, 'receiptActionStatus');
+      if (receiptStatus) receiptStatus.textContent = 'Clipboard unavailable.'; }
   });
 
   root.TD613_KHONAPOLIT_TERMINAL = Object.freeze({
