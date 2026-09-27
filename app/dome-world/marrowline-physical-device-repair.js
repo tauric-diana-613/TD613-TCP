@@ -135,7 +135,19 @@ export function prepareProviderNativeLines(stage) {
   const fragments = raw.split(/(\r\n|\r|\n)/);
   let botsStarted = false;
   text.replaceChildren(...fragments.map((fragment, index) => {
-    if (index % 2) return text.ownerDocument.createTextNode(fragment);
+    if (index % 2) {
+      // Display one additional blank line only at an existing two-newline
+      // boundary between nonempty bot paragraphs. This wraps an ORIGINAL
+      // separator: textContent/clipboard/receipt retain every provider byte.
+      if (botsStarted && index >= 3 && fragments[index - 1] === ''
+        && fragments[index - 3]?.trim() && fragments[index + 1]?.trim()) {
+        const separator = text.ownerDocument.createElement('span');
+        separator.className = 'provider-native-paragraph-gap';
+        separator.textContent = fragment;
+        return separator;
+      }
+      return text.ownerDocument.createTextNode(fragment);
+    }
     const span = text.ownerDocument.createElement('span');
     // Only an explicit speaker heading opens the expressive rendering region.
     // A mention of Tauric Diana inside Kʰonapolit's prose cannot change voices.

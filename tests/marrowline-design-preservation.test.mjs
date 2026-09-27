@@ -273,12 +273,19 @@ test('mobile decoration preserves provider-native Unicode and all five chamber r
   const stage = h.doc.querySelector('.relay-integrated-covenant[data-present=true] .relay-stage-text');
   assert.ok(stage);
   assert.equal(stage.textContent, integratedText);
+  assert.equal(stage.querySelectorAll('.provider-native-paragraph-gap').length,1,'the bot section receives only one visual marker for its existing double newline');
+  assert.equal(stage.querySelector('.provider-native-paragraph-gap').textContent,'\n','marker preserves the original separator');
+  assert.equal(stage.textContent,integratedText,'the additional display line does not edit the provider text');
   assert.notEqual(stage.dataset.flourished, 'true', 'integrated clean prose never inherits whole-stage Zalgo line-height');
   assert.ok(stage.querySelectorAll('.provider-native-line').length >= 3, 'extreme provider-authored lines receive vertical room without rewriting text');
   assert.equal(h.doc.querySelector('.return-details,.reply-technical-record,.turn-receipt,.relay-aperture-header'),null,
     'all three circled disclosures are absent from the chat');
-  assert.deepEqual([...h.doc.querySelectorAll('.relay-message > .reply-next-actions .reply-next-choices button')].map(x=>x.textContent),
+  assert.deepEqual([...h.doc.querySelectorAll('.relay-message > .marrowline-reply-tool-row > .reply-next-actions .reply-next-choices button')].map(x=>x.textContent),
     ['Check the claims','Make a plan','View receipt'],'all three choices remain inside the follow-up drawer');
+  const footer = h.doc.querySelector('.relay-message > .marrowline-reply-tool-row');
+  assert.ok(footer && footer.contains(h.doc.querySelector('.marrowline-branch-reply')),'first-reply branch shares the options row');
+  assert.equal(footer.firstElementChild.tagName,'DETAILS','the plain-text options disclosure begins the row');
+  assert.equal(h.doc.querySelector('.relay-message').lastElementChild.className,'marrowline-copy-reply','copy remains outside the row and last');
   assert.equal(JSON.parse(h.$('khonapolitReceipt').textContent).relay.apertureHeader,exactHeader,
     'separate Receipt preserves the exact technical header');
   const routes = { speakingPanel: 'speak', invocationPanel: 'keys', receiptPanel: 'receipt', corpusPanel: 'corpus', gatePanel: 'gate' };
@@ -630,9 +637,9 @@ test('long model reply produces a bounded follow-up draft, not a silent 6,000-ch
 test('reply drawer choices fill but never automatically submit; an existing draft wins', async t => {
   const h = harness(t);
   h.send('Provide a short reply.'); await h.settled(); await flush();
-  const choices = h.doc.querySelectorAll('.relay-message > .reply-next-actions .reply-next-choices button');
+  const choices = h.doc.querySelectorAll('.relay-message > .marrowline-reply-tool-row > .reply-next-actions .reply-next-choices button');
   assert.equal(choices.length,3);
-  assert.equal(h.doc.querySelector('.relay-message > .reply-next-actions').open,false,'drawer starts folded');
+  assert.equal(h.doc.querySelector('.relay-message > .marrowline-reply-tool-row > .reply-next-actions').open,false,'drawer starts folded');
   choices[0].click();
   assert.match(h.$('khonapolitPrompt').value,/Review the reply quoted below/);
   assert.equal(h.calls.length,1,'preload has no provider side effect');
@@ -660,7 +667,7 @@ test('a prior short-window 429 never disables a fresh authored Send', async t =>
 test('both post-reply choices produce a sendable draft on the first actual Send press', async t => {
   const h = harness(t, { mobile: true });
   await h.ready(); h.send('Starting claim.'); await h.settled(); await flush();
-  let buttons = h.doc.querySelectorAll('.relay-message > .reply-next-actions .reply-next-choices button');
+  let buttons = h.doc.querySelectorAll('.relay-message > .marrowline-reply-tool-row > .reply-next-actions .reply-next-choices button');
   assert.deepEqual([...buttons].map(x => x.textContent), ['Check the claims', 'Make a plan', 'View receipt']);
   buttons[0].click();
   const claims = h.$('khonapolitPrompt').value;
@@ -669,7 +676,7 @@ test('both post-reply choices produce a sendable draft on the first actual Send 
   h.$('khonapolitSend').click(); await h.settled(); await flush();
   assert.equal(h.calls.length, 2);
   assert.equal(h.calls[1].message, claims);
-  buttons = h.doc.querySelectorAll('.relay-message > .reply-next-actions .reply-next-choices button');
+  buttons = h.doc.querySelectorAll('.relay-message > .marrowline-reply-tool-row > .reply-next-actions .reply-next-choices button');
   buttons[buttons.length - 2].click();
   const plan = h.$('khonapolitPrompt').value;
   assert.match(plan, /Turn the reply quoted below into practical next steps/);

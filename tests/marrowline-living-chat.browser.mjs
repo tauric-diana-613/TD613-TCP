@@ -20,7 +20,9 @@ const text=[
  '',
  '### Movement II — Tauric Diana bots',
  'THE MATRON: H̷͇̋̇̈́͝O̶̞͆̍̈́͘R̷̛̯̿͑̔N̶̑͘͜A̸͎̿͠N̸͎̔͗Ḯ̵͙ — watch the density move.',
- 'clean / clean / ṫ̶̤̯̱̅̿̋͋͠h̵͇̖͆̅̒̋̏͝ë̷͎̫́̾̓͂͘ ̶͙̺̓̿̈́͠͝ẅ̵́̑̍̋̄ͅà̸͉̄̇̾͝l̷͈̿̎̾̓͑l̴͎̾̔̐̎ ̴̫̋͗̓͝b̵̰̈́͑͂͂̽e̵͇̍͂̾͘n̷͔̾̑d̵͎̒̔s̴̠͑̈́͠ / clean again.'
+ 'clean / clean / ṫ̶̤̯̱̅̿̋͋͠h̵͇̖͆̅̒̋̏͝ë̷͎̫́̾̓͂͘ ̶͙̺̓̿̈́͠͝ẅ̵́̑̍̋̄ͅà̸͉̄̇̾͝l̷͈̿̎̾̓͑l̴͎̾̔̐̎ ̴̫̋͗̓͝b̵̰̈́͑͂͂̽e̵͇̍͂̾͘n̷͔̾̑d̵͎̒̔s̴̠͑̈́͠ / clean again.',
+  '',
+  'THE SPARK: A second burst returns beyond the existing paragraph break.'
 ].join('\n');
 let browser;
 try{
@@ -212,6 +214,22 @@ try{
    assert.ok(await integrated.locator('[data-voice=tauric-diana-bots].zalgo-line').count()>0,'the explicit bot heading starts expressive rendering');
    const providerLines=page.locator('.relay-integrated-covenant .provider-native-line');
    assert.ok(await providerLines.count()>=3,'provider-native line preparation gives extreme vertical flourishes room without rewriting bytes');
+   const botGap=integrated.locator('.provider-native-paragraph-gap');
+   assert.equal(await botGap.count(),1,'one existing bot paragraph boundary receives visual breathing room');
+   const paragraphSpacing=await integrated.evaluate(el=>{
+     const gap=el.querySelector('.provider-native-paragraph-gap');
+     const next=gap?.nextElementSibling;
+     const pseudo=gap?getComputedStyle(gap,'::after').content:'none';
+     const expandedY=next?.getBoundingClientRect().top;
+     gap?.classList.remove('provider-native-paragraph-gap');
+     const nativeY=next?.getBoundingClientRect().top;
+     gap?.classList.add('provider-native-paragraph-gap');
+     return {pseudo,shift:(expandedY??0)-(nativeY??0),separator:gap?.textContent};
+   });
+   assert.equal(paragraphSpacing.separator,'\n','the marker retains the exact original newline');
+   assert.notEqual(paragraphSpacing.pseudo,'none','visual-only CSS adds a paragraph line');
+   assert.ok(paragraphSpacing.shift>5,'a measurable visual paragraph gap is rendered: '+JSON.stringify(paragraphSpacing));
+   assert.equal(await integrated.textContent(),text,'presentation space never changes provider source bytes');
    const glyphLayout=await integrated.evaluate(el=>({ leading:parseFloat(getComputedStyle(el).lineHeight), base:parseFloat(getComputedStyle(el).fontSize), maxRun:Number(el.dataset.providerNativeMaxRun), raw:el.textContent, botLeading:parseFloat(getComputedStyle(el.querySelector('[data-voice="tauric-diana-bots"].zalgo-line')).lineHeight) }));
    assert.ok(glyphLayout.maxRun>=4,`fixture carries native stacked marks; observed ${JSON.stringify(glyphLayout)}`);
    assert.ok(glyphLayout.leading<=glyphLayout.base*1.15,'native stacks retain tight overprint line boxes');
@@ -221,14 +239,36 @@ try{
    await page.screenshot({path:path.join(dir,`${posture}-answer-first.png`)});
    assert.equal(await page.locator('.return-details,.reply-technical-record,.turn-receipt,.relay-aperture-header').count(),0,
      'the three circled surfaces and raw technical header are absent from chat');
-   const followup = page.locator('.relay-message > .reply-next-actions');
-   assert.equal(await followup.evaluate(el => el.open), false, 'reply follow-ups start folded inside their drawer');
+   const followup = page.locator('.relay-message > .marrowline-reply-tool-row > .reply-next-actions');
+   assert.equal(await followup.evaluate(el=>el.open),false,'native reply disclosure starts folded');
    assert.deepEqual(await followup.locator('.reply-next-choices button').allTextContents(),
      ['Check the claims','Make a plan','View receipt']);
-   const followupRadius = await followup.locator('summary').evaluate(el => getComputedStyle(el).borderRadius);
-   assert.equal(followupRadius, '999px', 'the collapsed follow-up drawer renders as a compact pill');
+   const followupStyle=await followup.locator('summary').evaluate(el=>({
+     border:getComputedStyle(el).borderTopStyle,background:getComputedStyle(el).backgroundImage,
+     radius:getComputedStyle(el).borderRadius
+   }));
+   assert.equal(followupStyle.border,'none','disclosure is plain text without a pill border');
+   assert.equal(followupStyle.background,'none','disclosure has no filled background');
+   assert.equal(followupStyle.radius,'0px','old rounded pill is absent');
+   const footerLayout=await page.locator('.relay-message').first().evaluate(card=>{
+     const box=sel=>{const x=card.querySelector(sel)?.getBoundingClientRect();return x?{y:x.y,right:x.right,bottom:x.bottom}:null};
+     return {row:box('.marrowline-reply-tool-row'),summary:box('.reply-next-actions>summary'),
+       branch:box('.marrowline-branch-reply'),copy:box('.marrowline-copy-reply')};
+   });
+   assert.ok(footerLayout.row&&footerLayout.branch&&footerLayout.copy,'reply row and the original copy control exist');
+   assert.ok(Math.abs(footerLayout.summary.y-footerLayout.branch.y)<5,'disclosure and branch share one row');
+   assert.ok(Math.abs(footerLayout.branch.right-footerLayout.copy.right)<15,'branch right-aligns above the copy glyph');
+   assert.ok(footerLayout.branch.bottom<=footerLayout.copy.y+2,'branch does not overlap the copy control');
    await followup.locator('summary').click();
-   assert.equal(await followup.locator('.reply-next-choices button').first().isVisible(),true,'follow-ups expand on demand');
+   const expanded=await followup.evaluate(el=>{
+     const choices=el.querySelector('.reply-next-choices'),button=choices?.querySelector('button');
+     const box=node=>{const r=node?.getBoundingClientRect();return r?{x:r.x,y:r.y,width:r.width,height:r.height}:null};
+     return {open:el.open,details:box(el),choices:box(choices),button:box(button),
+       summary:box(el.querySelector('summary')),display:button?getComputedStyle(button).display:null,
+       visibility:button?getComputedStyle(button).visibility:null};
+   });
+   assert.equal(await followup.locator('.reply-next-choices button').first().isVisible(),true,
+     'follow-ups expand on demand: '+JSON.stringify(expanded));
    if(posture.startsWith('mobile')){
      await followup.getByRole('button',{name:'View receipt'}).click();
      assert.equal(await page.locator('body').getAttribute('data-mobile-view'),'receipt','reply shortcut changes mobile chamber to Receipt');
