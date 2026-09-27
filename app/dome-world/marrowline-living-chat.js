@@ -2,6 +2,18 @@ import { mountLivingGeometry } from './holonomy-loom/living-geometry.js';
 
 const REDDIT_SANS_URL = 'https://fonts.googleapis.com/css2?family=Reddit+Sans:wght@300;400;500;600;700;800&display=swap';
 
+// Reply-local follow-up prompts must not copy an arbitrarily long model return
+// into the 6,000-character human composer. The exact original remains in the
+// transcript/receipt. An older reply may fall outside the bounded model history,
+// so a short excerpt is explicitly identified as an excerpt.
+export function buildMarrowlineReplyFollowupDraft(instruction, replyText) {
+  const source = String(replyText ?? '');
+  const excerpt = source.length > 2400
+    ? source.slice(0, 2400) + '\n[Excerpt only. The selected reply may contain additional text.]'
+    : source;
+  return `${instruction}\n\nSelected reply excerpt for reference:\n${excerpt}`;
+}
+
 function installConversationTypeface(doc) {
   if (!doc?.head) return;
   if (!doc.getElementById('marrowline-reddit-sans')) {
@@ -139,7 +151,7 @@ export function installMarrowlineLivingChat(doc = document, environment = window
         button.addEventListener('click', () => {
           const input = doc.getElementById('khonapolitPrompt');
           if (input.value.trim()) { input.focus({ preventScroll: true }); return; }
-          input.value = `${instruction}\n\nReply to examine:\n${replyText}`;
+          input.value = buildMarrowlineReplyFollowupDraft(instruction, replyText);
           input.dispatchEvent(new environment.Event('input', { bubbles: true }));
           input.focus({ preventScroll: true });
         });
