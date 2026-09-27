@@ -1,3 +1,4 @@
+import { renderMarrowlineSpeakerLine } from './marrowline-speaker-frames.js';
 export const MARROWLINE_PHYSICAL_DEVICE_REPAIR_VERSION = 'td613.dome-world.marrowline-physical-device-repair/v9-native-overprint';
 
 const MOBILE_QUERY = '(max-width: 860px)';
@@ -156,7 +157,7 @@ export function prepareProviderNativeLines(stage) {
     const expressiveLine = botsStarted && /\p{M}/u.test(fragment);
     span.className = expressiveLine ? 'zalgo-line provider-native-line' : 'provider-native-line';
     span.dataset.voice = botsStarted ? 'tauric-diana-bots' : 'khonapolit';
-    span.textContent = fragment;
+    renderMarrowlineSpeakerLine(span, fragment);
     return span;
   }));
   return true;
