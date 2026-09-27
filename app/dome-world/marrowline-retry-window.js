@@ -44,13 +44,18 @@ export function classifyMarrowlineRetryWindow(failure = {}, now = Date.now()) {
     [item.quotaId, item.quota_id, item.metric].map(safe).join(' ')
   ));
   const entitlementMismatchReported = quota.some(item => item.entitlement?.mismatch === true);
+  const projectSpendCapReported = /project.spend.cap|PROJECT_MONTHLY_SPEND_CAP_REACHED/i.test(error)
+    || quota.some(item => item.projectSpendCapReported === true || /project[^\n]*monthly spending cap/i.test(safe(item.messagePreview)))
+    || attempts.some(item => /project[^\n]*monthly spending cap/i.test(safe(item?.error?.message)));
   const observedAt = Number(failure?.observedAt);
   const origin = Number.isFinite(observedAt) && observedAt > 0 && observedAt <= now + 60000 ? observedAt : now;
   const providerHintSeconds = safeSeconds(failure?.rateLimit?.retryAfterSeconds || failure?.retryAfterSeconds)
     || Math.min(...quota.map(item => safeSeconds(item.retryAfterSeconds ?? item.retry_after_seconds)).filter(Boolean), Infinity);
   const safeHint = Number.isFinite(providerHintSeconds) ? providerHintSeconds : 0;
   let kind = 'other', seconds = 0, source = 'none';
-  if (/no-eligible-callable-models|missing-gemini-api-key/i.test(error)) kind = 'other';
+  if (projectSpendCapReported) {
+    kind = 'project-spend-cap'; // A configured project cap is not a cooldown.
+  } else if (/no-eligible-callable-models|missing-gemini-api-key/i.test(error)) kind = 'other';
   else if (/output-quality-held|attractor_structure_not_admitted|provider.incomplete|output.token.limit/i.test(error)) kind = 'return-held';
   else if (hasServiceFailure) {
     // Mixed 429→503 routes are service failures; earlier 429 RetryInfo is not a
@@ -76,7 +81,7 @@ export function classifyMarrowlineRetryWindow(failure = {}, now = Date.now()) {
     reportedModels: Object.freeze(reportedModels),
     remainingSeconds, retryReady: remainingSeconds === 0,
     observedDaily: dailyMetricReported, dailyMetricReported, shortMetricReported, freeTierMetricReported,
-    entitlementMismatchReported, providerDailyExhaustionVerified: false,
+    entitlementMismatchReported, projectSpendCapReported, providerDailyExhaustionVerified: false,
     providerDelayObserved: source === 'provider-retry-delay',
     shortHintDoesNotProveDailyReset: dailyMetricReported && safeHint > 0,
     // For receipts, not a universal UI clock or permission veto.
@@ -91,6 +96,7 @@ export function classifyMarrowlineRetryWindow(failure = {}, now = Date.now()) {
 export function marrowlineRetryMessage(failure = {}, now = Date.now()) {
   const window = classifyMarrowlineRetryWindow(failure, now);
   if (window.kind === 'return-held') return 'The reply was unfinished. Your message is saved.';
+  if (window.kind === 'project-spend-cap') return 'Google reports this API project reached its configured monthly spending cap. This is not a timed cooldown. Check the cap in AI Studio; your message is saved.';
   const models = window.reportedModels.length
     ? ` (${window.reportedModels.length} model${window.reportedModels.length === 1 ? '' : 's'} reported 429)` : '';
   if (window.kind === 'daily-report') return `Gemini reported a daily request metric${models}. Project balance and actual quota usage are unverified here; your message is saved. See Receipt for the exact provider metric.`;

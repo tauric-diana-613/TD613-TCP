@@ -102,7 +102,27 @@
           <small id="marrowlineReceiptGateStatus" role="status" aria-live="polite">A valid-format SHI is required for this browser-local view.</small>
         </div>
         <div id="marrowlineReceiptProtected" hidden>
-          <button type="button" id="marrowlineReceiptLock" class="marrowline-receipt-relock">Close membrane ⟐</button>
+          <div class="receipt-toolbar-head">
+            <span>Receipt controls</span>
+            <button type="button" id="marrowlineReceiptLock" class="marrowline-receipt-relock">Close membrane ⟐</button>
+          </div>
+          <div class="receipt-toolbar" role="group" aria-label="Receipt actions">
+            <button id="copyKhonapolitReceipt" type="button">Copy full receipt</button>
+            <button class="seal-action" id="sealLastResponse" type="button"
+              title="Mark the latest unsealed model reply closed in this conversation; this does not authenticate its provenance.">Seal latest reply ⟐</button>
+          </div>
+          <p class="receipt-toolbar-note">Seal marks the latest unsealed reply closed in your saved conversation. It does not verify the provider or alter the reply’s original text.</p>
+          <details class="receipt-capture-details">
+            <summary>Advanced · one-turn record <span aria-hidden="true">⌄</span></summary>
+            <div class="receipt-capture-body">
+              <p>Record the next sent turn’s browser-visible text and boundaries for comparison. One turn only: no screenshot, hidden provider ingress, or identity proof.</p>
+              <div class="receipt-capture-buttons">
+                <button id="armMarrowlineEpisodeWitness" type="button" aria-pressed="false">Record next turn</button>
+                <button id="copyMarrowlineEpisodeWitness" type="button" disabled>Copy turn record</button>
+              </div>
+            </div>
+          </details>
+          <span id="receiptActionStatus" class="receipt-action-status" role="status" aria-live="polite"></span>
         <section class="frontier-receipt-summary" aria-label="Gemini route receipt">
           <div class="frontier-receipt-line" id="receiptFrontierTrace">FRONTIER · —</div>
           <div class="gemini-consumption-summary">
@@ -140,12 +160,6 @@
           </div>
         </div>
         <pre class="receipt" id="khonapolitReceipt">No provider return has been observed.</pre>
-        <div class="ritual-actions receipt-custody-actions">
-          <button id="armMarrowlineEpisodeWitness" type="button" aria-pressed="false">Witness next reply</button>
-          <button id="copyMarrowlineEpisodeWitness" type="button" disabled>Copy episode witness</button>
-          <button id="copyKhonapolitReceipt" type="button">Copy receipt</button>
-          <button class="seal-action" id="sealLastResponse" type="button">Seal latest return ⟐</button>
-        </div>
         <p class="mode-boundary-note">Outgoing user text is framed with 𝌋‌ and a final “Sealed ⟐” at the provider boundary. The incoming receipt remains OPEN until an explicit Red Deer closure; neither glyph grants issuance, authentication, or provenance proof.</p>
         </div>
       </div>

@@ -1516,6 +1516,34 @@ export default async function handler(req, res) {
     };
     attempts.push(attempt);
 
+    // A literal Google project spending-cap rejection is not a per-model
+    // transient quota. Additional approved seats share the same billed project,
+    // so preserve the first rejection and stop this human turn immediately.
+    if (!result.response.ok && rateLimit?.projectSpendCapReported === true) {
+      res.setHeader('X-TD613-Gemini-Model', model);
+      res.setHeader('X-TD613-Rate-Limit-Scope', 'project');
+      return send(res, 429, {
+        ok: false,
+        error: 'gemini-project-spend-cap-held',
+        status: 'HELD',
+        diagnostic: {
+          stage: 'provider-transport',
+          code: 'PROJECT_MONTHLY_SPEND_CAP_REACHED',
+          scope: 'project',
+          providerErrorStatus: rateLimit.errorStatus || null,
+          reportedQuotaWindow: 'monthly-spend-cap',
+          nextRetryAt: null,
+          note: 'Google rejected the project at its configured monthly cap. No timed reset was reported. Credit balance and the project cap are separate controls.'
+        },
+        rateLimit,
+        attempts,
+        modelPolicy: plan,
+        aperture: apertureReceipt,
+        aperture_egress: apertureEgress,
+        claim_ceiling: packet.claimCeiling
+      });
+    }
+
     if (attempt.status === 503) {
       service503Count += 1;
       // Deliberately pace the *next* existing seat, never re-call this seat.

@@ -171,9 +171,11 @@ function installTerminalHoldNotice(doc = document, root = window) {
       : window.dailyMetricReported ? 'Provider retry hint elapsed · daily reset unverified' : 'Ready to retry';
     if (refresh) {
       refresh.disabled = cooling;
-      refresh.textContent = cooling ? '↻ Retry (paused)' : '↻ Retry message';
-      refresh.title = cooling
-        ? 'Provider-reported retry hint; this timer does not prove a daily quota reset.'
+      refresh.textContent = cooling ? '↻ Retry (paused)'
+        : window.kind === 'project-spend-cap' ? '↻ Retry after cap update' : '↻ Retry message';
+      refresh.title = window.kind === 'project-spend-cap'
+        ? 'Once you change the monthly cap for the API key’s Google project, retry the saved task.'
+        : cooling ? 'Provider-reported retry hint; this timer does not prove a daily quota reset.'
         : 'Retry the saved message once. A provider retry hint is not a guarantee of capacity.';
     }
     if (!cooling) stopClock();
@@ -200,7 +202,8 @@ function installTerminalHoldNotice(doc = document, root = window) {
       stopClock();
       card.replaceChildren();
       const title = doc.createElement('strong');
-      title.textContent = window.kind === 'return-held' ? 'Reply held'
+      title.textContent = window.kind === 'project-spend-cap' ? 'Project spending cap reached'
+        : window.kind === 'return-held' ? 'Reply held'
         : window.kind === 'daily-report' ? 'Provider daily metric · HTTP 429'
         : window.kind === 'rate-window' ? 'Provider short-window limit · 429'
         : window.kind === 'rate-unknown' ? 'Provider request limit · HTTP 429'
@@ -208,7 +211,8 @@ function installTerminalHoldNotice(doc = document, root = window) {
         : 'Reply paused';
       const badge = doc.createElement('span');
       badge.className = 'terminal-hold-badge';
-      badge.textContent = window.kind === 'return-held' ? 'HELD' : 'PAUSED';
+      badge.textContent = window.kind === 'project-spend-cap' ? 'CAP REACHED'
+        : window.kind === 'return-held' ? 'HELD' : 'PAUSED';
       title.append(' ', badge);
       const body = doc.createElement('p');
       body.textContent = explanation;

@@ -30,3 +30,18 @@ test('Receipt model labels are compact human diagnostics, not provider secrets',
   assert.match(terminal, /\^gemini-\(3/);
   assert.doesNotMatch(terminal, /GEMINI_API_KEY/);
 });
+
+
+test('Receipt opens with human controls, bounded JSON, and an explained advanced capture', () => {
+  const css=fs.readFileSync('app/dome-world/marrowline-desktop-repair.css','utf8');
+  for(const id of ['copyKhonapolitReceipt','sealLastResponse','armMarrowlineEpisodeWitness','copyMarrowlineEpisodeWitness']){
+    assert.equal((page.match(new RegExp(`id="${id}"`,'g'))||[]).length,1);
+    assert.ok(page.indexOf(`id="${id}"`)<page.indexOf('id="khonapolitReceipt"'),`${id} above JSON`);
+  }
+  assert.match(page,/Advanced · one-turn record/);
+  assert.match(page,/One turn only: no screenshot, hidden provider ingress/i);
+  assert.match(page,/id="copyMarrowlineEpisodeWitness"[^>]*disabled/);
+  assert.match(page,/Seal marks the latest unsealed reply closed/);
+  assert.match(css,/#receiptPanel #khonapolitReceipt\{max-height:min\(55dvh,600px\)!important/);
+  assert.match(terminal,/receiptActionStatus/);
+});

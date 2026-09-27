@@ -144,3 +144,17 @@ test('503-only inter-seat backoff is bounded, never adds calls or borrows a 429 
   assert.equal(gemini503FailoverDelayMs({ ...options, remainingMs: 1100, service503Count: 1 }), 0);
   assert.equal(gemini503FailoverDelayMs({ ...options, remainingMs: 1600, service503Count: 1 }), 600);
 });
+
+
+test('literal monthly spending cap is an untimed project billing hold, not a model/daily quota', () => {
+  const quota = observeGeminiQuota({error:{code:429,status:'RESOURCE_EXHAUSTED',
+    message:'Your project has exceeded its monthly spending cap. Please go to AI Studio at https://ai.studio/spend to manage your project spend cap.'}},
+    {model:'gemini-3.8-flash',response:response()});
+  assert.equal(quota.projectSpendCapReported,true);
+  assert.equal(quota.scope,'project');
+  assert.equal(quota.windowClass,'monthly-spend-cap');
+  assert.equal(quota.burst,false);
+  assert.equal(quota.daily,false);
+  assert.equal(quota.retryAfterSeconds,0);
+  assert.equal(quota.limit,null);
+});

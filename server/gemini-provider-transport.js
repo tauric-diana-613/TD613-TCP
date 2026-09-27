@@ -36,6 +36,7 @@ export function observeGeminiQuota(payload = {}, { model = '', response = null }
   const status = safeText(error.status, 80);
   const code = safeStatus(error.code);
   const message = safeText(error.message, 900);
+  const projectSpendCapReported = code === 429 && /\bproject\b[^\n]*\bmonthly spending cap\b/i.test(message);
   const details = Array.isArray(error.details) ? error.details : [];
   const violations = [];
   let retryFromDetails = 0;
@@ -85,12 +86,12 @@ export function observeGeminiQuota(payload = {}, { model = '', response = null }
   const observedModels = uniq([...dimensionModels, modelFromMessage]);
   const currentModel = normalizedModel(model);
 
-  let scope = 'unknown';
-  if (violations.length) {
+  let scope = projectSpendCapReported ? 'project' : 'unknown';
+  if (!projectSpendCapReported && violations.length) {
     const everyViolationHasModel = violations.every((violation) => Boolean(violation.dimensions?.model));
     if (everyViolationHasModel && observedModels.length === 1) scope = 'model';
     else if (violations.some((violation) => !violation.dimensions?.model)) scope = 'shared';
-  } else if (modelFromMessage) {
+  } else if (!projectSpendCapReported && modelFromMessage) {
     scope = 'model';
   }
 
@@ -99,14 +100,16 @@ export function observeGeminiQuota(payload = {}, { model = '', response = null }
     || /^quota_exceeded$/i.test(status);
   const shortMetricReported = /(?:per[_ -]?(?:minute|second)|requests[_ -]?per[_ -]?minute|tokens[_ -]?per[_ -]?minute|rate[_ -]?limit)/i.test(cadenceText)
     || /^(?:rate_limit_exceeded|too_many_requests)$/i.test(status);
-  const windowClass = daily && shortMetricReported ? 'mixed' : daily ? 'daily' : shortMetricReported ? 'short' : 'unknown';
+  const windowClass = projectSpendCapReported ? 'monthly-spend-cap'
+    : daily && shortMetricReported ? 'mixed' : daily ? 'daily' : shortMetricReported ? 'short' : 'unknown';
   // A 27s RetryInfo on a *daily* quota does not make the daily quota a 27s bucket.
-  const burst = shortMetricReported || (retryAfterSeconds > 0 && retryAfterSeconds <= 60 && !daily);
+  const burst = !projectSpendCapReported && (shortMetricReported || (retryAfterSeconds > 0 && retryAfterSeconds <= 60 && !daily));
   // An absent limit is UNKNOWN, not the numeric value zero (Number('') === 0).
   const limit = limitFromMessage !== '' ? Number(limitFromMessage) : null;
 
   return Object.freeze({
     observed: code === 429 || status === 'RESOURCE_EXHAUSTED' || Boolean(violations.length) || /quota|rate limit|resource exhausted/i.test(message),
+    projectSpendCapReported,
     scope,
     metric: metrics[0] || null,
     quotaId: quotaIds[0] || null,
