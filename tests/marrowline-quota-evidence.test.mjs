@@ -90,3 +90,20 @@ test('provider daily metric may carry an advisory retry timer without asserting 
   assert.equal(first.shortHintDoesNotProveDailyReset,true);
   assert.equal(first.providerDailyExhaustionVerified,false);
 });
+
+
+test('project monthly spending cap has no fake cooldown even after thirty minutes', () => {
+  const error={status:'RESOURCE_EXHAUSTED',code:429,
+    message:'Your project has exceeded its monthly spending cap. Please go to AI Studio at https://ai.studio/spend to manage your project spend cap.'};
+  const q=observeGeminiQuota({error},{model:'gemini-3.8-flash',response:{headers:{get:()=>null}}});
+  const failed={status:'HELD',error:'gemini-project-spend-cap-held',httpStatus:429,observedAt:now,
+    diagnostic:{code:'PROJECT_MONTHLY_SPEND_CAP_REACHED'},
+    attempts:[{model:'gemini-3.8-flash',status:429,rateLimit:q,error}]};
+  const window=classifyMarrowlineRetryWindow(failed,now+30*60*1000);
+  assert.equal(window.kind,'project-spend-cap');
+  assert.equal(window.projectSpendCapReported,true);
+  assert.equal(window.retryAt,null);
+  assert.equal(window.remainingSeconds,0);
+  assert.match(marrowlineRetryMessage(failed,now),/configured monthly spending cap/);
+  assert.doesNotMatch(marrowlineRetryMessage(failed,now),/daily reset|Retry in/i);
+});
