@@ -887,7 +887,7 @@ html:root body #khonapolitMessages .starter-prompts .starter-rotate{
    The original newline stays in textContent; only the CSS pseudo adds visual
    air. Do not alter provider bytes, clipboard exports, or tight Zalgo line-height. */
 #khonapolitMessages .relay-integrated-covenant .provider-native-paragraph-gap::after{
-  content:"\\A";
+  content:"\A";
   white-space:pre;
 }
 
