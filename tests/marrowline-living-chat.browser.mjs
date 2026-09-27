@@ -223,8 +223,10 @@ try{
      'the three circled surfaces and raw technical header are absent from chat');
    assert.deepEqual(await page.locator('.relay-message > .reply-next-actions button').allTextContents(),
      ['Check the claims','Make a plan']);
-   assert.match(await page.locator('#khonapolitReceipt').textContent(),/TECHNICAL_RUNTIME_REVIEW/,
-     'technical provenance remains in the dedicated Receipt instrument');
+   assert.match(await page.locator('#khonapolitReceipt').textContent(),/SYNTHETIC_MODEL/,
+     'the separate Receipt instrument retains the provider record');
+   assert.match(await page.evaluate(() => window.__TD613_MARROWLINE_THREADS__.current().messages.find(x => x.role === 'model')?.relay?.apertureHeader || ''),/TECHNICAL_RUNTIME_REVIEW/,
+     'the archived turn preserves the original technical aperture header');
 
    if(posture.startsWith('mobile')){
     await page.locator('.mobile-dock [data-mobile-target="gatePanel"]').click();
