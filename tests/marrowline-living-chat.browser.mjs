@@ -223,6 +223,9 @@ try{
      'the three circled surfaces and raw technical header are absent from chat');
    assert.deepEqual(await page.locator('.relay-message > .reply-next-actions button').allTextContents(),
      ['Check the claims','Make a plan']);
+   const followupRadius = await page.locator('.relay-message > .reply-next-actions button').first()
+     .evaluate(el => getComputedStyle(el).borderRadius);
+   assert.equal(followupRadius, '999px', 'the follow-up controls render as compact pill chips, not the prior clunky blocks');
    assert.match(await page.locator('#khonapolitReceipt').textContent(),/SYNTHETIC_MODEL/,
      'the separate Receipt instrument retains the provider record');
    assert.match(await page.evaluate(() => window.__TD613_MARROWLINE_THREADS__.current().messages.find(x => x.role === 'model')?.relay?.apertureHeader || ''),/TECHNICAL_RUNTIME_REVIEW/,
