@@ -1,5 +1,6 @@
 import { reviewLoomEvidence } from './holonomy-loom/ai-evidence-review.js';
 import { createMarrowlineThreadLibrary } from './marrowline-threads.js';
+import { DEFAULT_MARROWLINE_TITLE, deriveMarrowlineConversationTitle } from './marrowline-title.js';
 import {
   clearMarrowlineAttachments,
   getMarrowlineAttachments,
@@ -129,21 +130,8 @@ function startPedagogueStatus(status, root = globalThis, attachmentCount = 0) {
 }
 function asArray(value) { return Array.isArray(value) ? value : []; }
 
-const DEFAULT_CONVERSATION_TITLE = 'The speaking grove';
-export function deriveMarrowlineConversationTitle(text = '', seed = '') {
-  // Name by the Red Deer's actual subject, never a random motif in the model's
-  // second voice. This is deterministic, local, and consumes zero provider calls.
-  const authored = String(seed || text || '').replace(/^𝌋\u200c/u, '').replace(/⟐\s*$/u, '')
-    .replace(/^[\s"'“”‘’#*]+/u, '').replace(/\s+/gu, ' ').trim();
-  if (!authored) return DEFAULT_CONVERSATION_TITLE;
-  const subject = authored.replace(/^(?:please\s+)?(?:write\s+(?:me\s+)?|tell\s+me\s+|can\s+you\s+|could\s+you\s+|help\s+me\s+)/iu, '')
-    .replace(/^(?:a\s+|an\s+)?(?:(?:poem|story|scene)\s+(?:about|of)\s+)/iu, '');
-  const first = (subject || authored).split(/(?<=[.!?])\s+|[\n\r]/u)[0].replace(/[\s.,;:!?–—-]+$/u, '').trim();
-  const words = first.split(/\s+/u);
-  const bounded = words.slice(0, 8).join(' ').slice(0, 64).trimEnd();
-  const title = bounded.replace(/[\s.,;:!?–—-]+$/u, '');
-  return title ? title[0].toLocaleUpperCase('en-US') + title.slice(1) : DEFAULT_CONVERSATION_TITLE;
-}
+const DEFAULT_CONVERSATION_TITLE = DEFAULT_MARROWLINE_TITLE;
+export { deriveMarrowlineConversationTitle } from './marrowline-title.js';
 
 function syncConversationTitle(doc, state = {}) {
   const node = byId(doc, 'marrowlineConversationTitle');
@@ -780,7 +768,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     if (!record) return;
     const name = root.prompt?.('Conversation title', record.conversationTitle)?.trim().slice(0, 100);
     if (!name) return;
-    const updated = await threadLibrary.put({ ...record, conversationTitle: name });
+    const updated = await threadLibrary.put({ ...record, conversationTitle: name, titleSource: 'operator' });
     if (activeThread?.id === threadId) { activeThread = updated; state.conversationTitle = name; syncConversationTitle(doc, state); }
     await renderThreadLibrary();
   };
@@ -826,6 +814,9 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     await library.migrateLegacyBranchTitles();
     let record = migrated || await library.get(library.getActiveId());
     if (!record) record = (await library.all())[0] || await library.create();
+    // Only exact legacy auto-titles are repaired; human-renamed subjects stay put.
+    await library.migrateLegacyGeneratedTitles();
+    record = await library.get(record.id) || record;
     storeReady = true;
     const beforeHydration = byId(doc, 'khonapolitPrompt');
     const selectedPreset = beforeHydration?.dataset.preloadedPrompt === 'true'
@@ -1069,6 +1060,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       if (!safe(state.conversationTitle) || state.conversationTitle === DEFAULT_CONVERSATION_TITLE) {
         const firstOperatorTurn = state.messages.find((item) => item?.role === 'user' && safe(item?.text));
         state.conversationTitle = deriveMarrowlineConversationTitle(firstOperatorTurn?.text || message);
+        activeThread = { ...activeThread, titleSource: 'local-topic-v2' };
       }
       if (attachments.length) attachments.forEach(item => removeMarrowlineAttachment(item.id, root));
       void scheduleSave(); syncRecoveryControls(doc, state); renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, receipt); syncConversationTitle(doc, state);
