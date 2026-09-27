@@ -4,6 +4,8 @@
  * unavailable. Neither is an account, backup, or cross-device sync service.
  * Exact provider text and receipts are copied, never regenerated on branching.
  */
+import { DEFAULT_MARROWLINE_TITLE, deriveMarrowlineConversationTitle, legacyMarrowlineTitle } from './marrowline-title.js';
+
 export const MARROWLINE_THREADS_SCHEMA = 'td613.marrowline.local-threads/v1';
 export const MARROWLINE_THREADS_DB = 'td613-marrowline-conversations-v1';
 const STORE = 'threads';
@@ -13,7 +15,7 @@ const FALLBACK_KEY = 'TD613_MARROWLINE_LOCAL_THREADS_V1';
 const ACTIVE_KEY = 'td613-marrowline-active-thread-v1';
 const copy = value => value == null ? value : JSON.parse(JSON.stringify(value));
 const timestamp = () => new Date().toISOString();
-const empty = () => ({ messages: [], lastReceipt: null, pendingTask: '', lastFailure: null, conversationTitle: 'The speaking grove', draft: '' });
+const empty = () => ({ messages: [], lastReceipt: null, pendingTask: '', lastFailure: null, conversationTitle: DEFAULT_MARROWLINE_TITLE, titleSource: null, draft: '' });
 function newId(root) {
   return root.crypto?.randomUUID?.() || 'thread-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
 }
@@ -87,7 +89,8 @@ export function threadFromState(root, state = empty(), { parentId = null, branch
   return {
     ...copy(empty()), ...copy(state), schema: MARROWLINE_THREADS_SCHEMA,
     id: newId(root), parentId, branchOf, createdAt: time, updatedAt: time,
-    conversationTitle: title || state.conversationTitle || 'The speaking grove',
+    conversationTitle: title || state.conversationTitle || DEFAULT_MARROWLINE_TITLE,
+    titleSource: state.titleSource || null,
     messages: copy(Array.isArray(state.messages) ? state.messages : [])
   };
 }
@@ -111,8 +114,27 @@ export async function createMarrowlineThreadLibrary(root = window) {
       ...empty(),
       messages: copy(parent.messages.slice(0, 2)),
       lastReceipt: copy(answer.receipt || null),
-      conversationTitle: parent.conversationTitle || 'The speaking grove'
+      conversationTitle: parent.conversationTitle || DEFAULT_MARROWLINE_TITLE,
+      titleSource: parent.titleSource || null
     }, { parentId: parent.id, branchOf: responseIndex });
+  };
+  const migrateLegacyGeneratedTitles = async () => {
+    // A one-time exact-match repair of the previous eight-opening-words
+    // algorithm. No provider calls, no transcript edits and no overwrite of
+    // records explicitly marked as manually renamed. Uncertain titles stay.
+    let changed = 0;
+    for (const thread of await all()) {
+      if (thread.titleSource === 'operator' || thread.titleSource === 'local-topic-v2') continue;
+      const first = thread.messages?.find(entry => entry?.role === 'user' && String(entry.text || '').trim());
+      if (!first) continue;
+      const current = String(thread.conversationTitle || '');
+      if (current !== legacyMarrowlineTitle(first.text) && current !== DEFAULT_MARROWLINE_TITLE) continue;
+      const next = deriveMarrowlineConversationTitle(first.text);
+      if (next === DEFAULT_MARROWLINE_TITLE) continue;
+      await put({ ...thread, conversationTitle: next, titleSource: 'local-topic-v2' });
+      changed++;
+    }
+    return changed;
   };
   const migrateLegacyBranchTitles = async () => {
     // v1 generated a mechanical " · Branch" suffix. Only remove it when it
@@ -143,7 +165,7 @@ export async function createMarrowlineThreadLibrary(root = window) {
     return record;
   };
   return Object.freeze({
-    backend: adapter.kind, get, all, put, create, branch, remove, migrate, migrateLegacyBranchTitles,
+    backend: adapter.kind, get, all, put, create, branch, remove, migrate, migrateLegacyBranchTitles, migrateLegacyGeneratedTitles,
     getActiveId: () => { try { return root.localStorage.getItem(ACTIVE_KEY); } catch { return null; } },
     setActiveId: value => { try { if (value) root.localStorage.setItem(ACTIVE_KEY, value); else root.localStorage.removeItem(ACTIVE_KEY); } catch {} },
     close: adapter.close

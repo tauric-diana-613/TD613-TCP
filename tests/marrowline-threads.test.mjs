@@ -106,3 +106,25 @@ test('migration strips only the old generated branch suffix, preserving manually
   assert.equal((await archive.get(authored.id)).conversationTitle, 'Studying a Branch');
   archive.close();
 });
+
+test('only exact legacy auto-generated titles are retitled; operator labels and content survive', async () => {
+  const archive = await createMarrowlineThreadLibrary(browser());
+  const prompt = 'An anonymous archive receives two passages whose syntax and metaphors feel uncannily alike. The board declares authorship theft from resemblance alone. Design a cautious stylometric comparison with provenance, alternative explanations and limitations.';
+  const oldTitle = 'An anonymous archive receives two passages whose syntax';
+  const messages = [{role:'user',text:prompt}, {role:'model',text:glyph,receipt:{provider:{completion:{complete:true}}}}];
+  const old = await archive.create({messages,conversationTitle:oldTitle});
+  const manual = await archive.create({messages,conversationTitle:'Archive Witnesses',titleSource:'operator'});
+  const renamed = await archive.create({messages,conversationTitle:'My Own Label'});
+  const branch = await archive.branch(old,1);
+  assert.equal(await archive.migrateLegacyGeneratedTitles(),2,'only generated parent and matching branch are repaired');
+  const repaired = await archive.get(old.id);
+  assert.equal(repaired.conversationTitle,'Stylometric Comparison with Provenance');
+  assert.equal(repaired.titleSource,'local-topic-v2');
+  assert.deepEqual(repaired.messages,messages,'retitling never rewrites the saved transcript or receipt');
+  assert.equal((await archive.get(branch.id)).conversationTitle,repaired.conversationTitle);
+  assert.equal((await archive.get(manual.id)).conversationTitle,'Archive Witnesses');
+  assert.equal((await archive.get(renamed.id)).conversationTitle,'My Own Label');
+  assert.equal(await archive.migrateLegacyGeneratedTitles(),0,'migration is one-time and idempotent');
+  archive.close();
+});
+

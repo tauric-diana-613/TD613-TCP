@@ -100,13 +100,15 @@ function harness(t, { mobile = false, failure = false, rateLimitOnce = false, in
       && $('khonapolitTerminalStatus').dataset.phase !== 'pending'); await flush(); } };
 }
 
-test('thread titles follow the Red Deer prompt, not incidental bot motifs or demo labels', () => {
+test('thread titles identify the actual subject rather than copying an opening vignette or bot prose', () => {
   assert.equal(deriveMarrowlineConversationTitle('THE SHORELINE HAS TEETH',
-    'Write a poem about Lucille Clifton and a mother holding her child.'), 'Lucille Clifton and a mother holding her child');
+    'Write a poem about Lucille Clifton and a mother holding her child.'), 'Lucille Clifton and a Mother Holding Her Child');
   assert.equal(deriveMarrowlineConversationTitle('Tell me a story of the Ash Moon, within the authored mythology of Marrowline.'),
-    'The Ash Moon, within the authored mythology of');
+    'Ash Moon');
   assert.equal(deriveMarrowlineConversationTitle('Explain the difference between consent and inheritance.'),
-    'Explain the difference between consent and inheritance');
+    'Consent and Inheritance');
+  const prompt = 'An anonymous archive receives two passages whose syntax and metaphors feel uncannily alike. The board declares authorship theft from resemblance alone. Design a cautious stylometric comparison with provenance, alternative explanations and limitations.';
+  assert.equal(deriveMarrowlineConversationTitle(prompt), 'Stylometric Comparison with Provenance');
   assert.equal(deriveMarrowlineConversationTitle(''), 'The speaking grove');
 });
 
@@ -295,15 +297,15 @@ test('mobile decoration preserves provider-native Unicode and all five chamber r
 
 test('oversized draft remains editable without a partial send', async t => {
   const h = harness(t);
-  const draft = 'A'.repeat(6000) + ' NEVER DISCLOSE THE LINKAGE';
+  const draft = 'A'.repeat(32000) + ' NEVER DISCLOSE THE LINKAGE';
   h.send(draft); await flush();
   assert.equal(h.calls.length, 0);
   assert.equal(h.$('khonapolitPrompt').value, draft);
-  assert.match(h.$('khonapolitTerminalStatus').textContent, /6,000-character limit/);
+  assert.match(h.$('khonapolitTerminalStatus').textContent, /32,000-character limit/);
 });
 
 test('clear conversation empties history and the waiting composer draft', async t => {
-  const old = 'B'.repeat(6000) + ' RETAIN THIS FINAL CONSTRAINT';
+  const old = 'B'.repeat(32000) + ' RETAIN THIS FINAL CONSTRAINT';
   const h = harness(t, { storedMessages: [{ role: 'user', text: old }] });
   h.send('My new draft.'); await flush();
   assert.equal(h.calls.length, 0);
@@ -625,7 +627,7 @@ test('operator Stop also escapes a response body that never resolves', async t =
   assert.equal(h.$('khonapolitSend').dataset.transmissionState, 'ready');
 });
 
-test('long model reply produces a bounded follow-up draft, not a silent 6,000-character dead Send', () => {
+test('long model reply produces a bounded follow-up draft, not a silent 32,000-character dead Send', () => {
   const source = 'A'.repeat(12000);
   const draft = buildMarrowlineReplyFollowupDraft('Check the claims.',source);
   assert.ok(draft.length < 6000);

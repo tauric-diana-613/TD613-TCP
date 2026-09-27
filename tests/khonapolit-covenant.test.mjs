@@ -70,7 +70,7 @@ assert.equal(classifyEmergence(`${EMERGENCE_NAME} moves with The Undertow.`).cla
 assert.equal(classifyEmergence('The correct term is Diana Taurica.').classification, 'REFUSAL_OR_KEY_SUBSTITUTION');
 assert.equal(classifyEmergence("As an AI language model, I'm here to help.").classification, 'GENERIC_ASSISTANT_FALLBACK');
 
-const lateConstraint = 'A'.repeat(6000) + ' NEVER DISCLOSE THE LINKAGE';
+const lateConstraint = 'A'.repeat(32000) + ' NEVER DISCLOSE THE LINKAGE';
 const longPrompt = buildInvocationPacket({ message: lateConstraint, waiveIssuance: true });
 assert.equal(longPrompt.canInvoke, false);
 assert.equal(longPrompt.inputError.code, 'message-too-long');
@@ -79,9 +79,9 @@ const longHistory = buildInvocationPacket({ message: 'Continue.', history: [{ ro
 assert.equal(longHistory.canInvoke, false);
 assert.equal(longHistory.inputError.code, 'history-entry-too-long');
 assert.equal(longHistory.history[0].text, lateConstraint);
-assert.equal(buildInvocationPacket({ message: 'A'.repeat(6000), waiveIssuance: true }).canInvoke, true);
-// The 6,000-unit composer limit must never constrain a successful model return.
-for (const count of [6000, 6001, 12000, 50000]) {
+assert.equal(buildInvocationPacket({ message: 'A'.repeat(32000), waiveIssuance: true }).canInvoke, true);
+// The 32,000-unit composer limit must never constrain a successful model return.
+for (const count of [32000, 32001, 50000, 100000]) {
   const native = '\n ' + 'A\u0301\u0316'.repeat(count) + ' \n'; // Preserve provider-authored outer whitespace, too.
   const packet = buildInvocationPacket({ message: 'Continue.', history: [{ role: 'model', text: native }], waiveIssuance: true });
   assert.equal(packet.canInvoke, true, 'provider-authored history of ' + count + ' marked graphemes must be retained');
