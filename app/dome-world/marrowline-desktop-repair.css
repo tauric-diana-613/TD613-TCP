@@ -883,27 +883,46 @@ html:root body #khonapolitMessages .starter-prompts button:not(.starter-rotate){
 html:root body #khonapolitMessages .starter-prompts .starter-rotate{
   width:34px!important;min-width:34px!important;height:36px!important;padding:0!important;margin:0!important;
 }
-/* Per-reply follow-up drawer: compact in chat, with all three choices on demand. */
-#khonapolitMessages .relay-message .reply-next-actions{
-  display:block;max-width:100%;margin:12px 48px 4px 0;
+/* One presentation-only extra visual line at existing bot paragraph breaks.
+   The original newline stays in textContent; only the CSS pseudo adds visual
+   air. Do not alter provider bytes, clipboard exports, or tight Zalgo line-height. */
+#khonapolitMessages .relay-integrated-covenant .provider-native-paragraph-gap::after{
+  content:"\\A";
+  white-space:pre;
+}
+
+/* Reply footer: quiet text disclosure left, first-reply branch right.
+   Copy stays in its original bottom-right position, below this row. */
+#khonapolitMessages .relay-message .marrowline-reply-tool-row{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:8px;
+  margin:12px 14px 52px;min-width:0;
+}
+#khonapolitMessages .relay-message .marrowline-reply-tool-row>.reply-next-actions{
+  display:block;flex:1 1 auto;min-width:0;max-width:100%;margin:0;
   border:0;background:transparent;box-shadow:none;
 }
 #khonapolitMessages .relay-message .reply-next-actions>summary{
-  display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:6px 13px;
-  list-style:none;cursor:pointer;border:1px solid rgba(123,218,224,.30);
-  border-radius:999px;background:linear-gradient(120deg,rgba(76,60,135,.23),rgba(25,39,65,.31));
-  color:#ddd9ed;font:500 11.5px/1.25 var(--marrowline-chat-sans,system-ui,sans-serif);
-  letter-spacing:.005em;text-transform:none;
+  display:inline-flex;align-items:center;gap:6px;min-height:35px;padding:6px 0;
+  list-style:none;cursor:pointer;border:0!important;border-radius:0!important;
+  background:transparent!important;box-shadow:none!important;
+  color:#b9ced0;font:500 11.5px/1.25 var(--marrowline-chat-sans,system-ui,sans-serif);
+  letter-spacing:0;text-transform:none;
 }
 #khonapolitMessages .relay-message .reply-next-actions>summary::-webkit-details-marker{display:none}
 #khonapolitMessages .relay-message .reply-next-actions>summary::after{content:"⌄";color:#9ce7e2;font-size:12px}
 #khonapolitMessages .relay-message .reply-next-actions[open]>summary::after{transform:rotate(180deg)}
 #khonapolitMessages .relay-message .reply-next-actions>summary:hover,
 #khonapolitMessages .relay-message .reply-next-actions>summary:focus-visible{
-  color:#f5f4fb;border-color:rgba(118,232,236,.63);background:rgba(81,65,145,.45);
+  color:#f5f4fb;text-decoration:underline;text-underline-offset:4px;outline-offset:3px;
+}
+#khonapolitMessages .relay-message .marrowline-reply-tool-row .marrowline-branch-reply{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  flex:0 1 auto!important;margin:0!important;min-height:35px!important;
+  padding:7px 10px!important;max-width:58%;text-align:center;
+  font-size:10.5px!important;line-height:1.25!important;white-space:normal;
 }
 #khonapolitMessages .relay-message .reply-next-choices{
-  display:flex;flex-wrap:wrap;align-items:center;gap:7px;padding:10px 0 4px;
+  display:flex;flex-wrap:wrap;align-items:center;gap:7px;padding:9px 0 4px;
 }
 #khonapolitMessages .relay-message .reply-next-choices button{
   appearance:none;-webkit-appearance:none;min-height:36px;padding:7px 12px;
@@ -917,8 +936,11 @@ html:root body #khonapolitMessages .starter-prompts .starter-rotate{
   color:#f5f4fb;border-color:rgba(118,232,236,.63);background:rgba(81,65,145,.45);
 }
 @media(max-width:860px){
- #khonapolitMessages .relay-message .reply-next-actions{margin-right:45px}
- #khonapolitMessages .relay-message .reply-next-choices button{min-height:36px}
+  #khonapolitMessages .relay-message .marrowline-reply-tool-row{margin:12px 9px 52px;gap:6px}
+  #khonapolitMessages .relay-message .reply-next-choices button{min-height:36px}
+  #khonapolitMessages .relay-message .marrowline-reply-tool-row .marrowline-branch-reply{
+    font-size:10px!important;padding:7px 8px!important;max-width:57%;
+  }
 }
 
 /* Receipt-first tools: always before bounded technical JSON, not after it. */
