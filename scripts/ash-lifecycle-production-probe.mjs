@@ -177,7 +177,7 @@ runtime = replaceExactly(
   runtime,
   "  'td613.ash.session.epoch'\n]);",
   "  'td613.ash.session.epoch',\n  'td613.site.browser-reset.epoch'\n]);",
-  'site epoch's explicit local-storage marker'
+  'site epoch explicit local-storage marker'
 );
 runtime = replaceExactly(
   runtime,
