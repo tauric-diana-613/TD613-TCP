@@ -138,20 +138,25 @@ export function installMarrowlineLivingChat(doc = document, environment = window
 
       // Reply-local options belong in their compact drawer, not in the
       // model's reading flow. Technical provenance remains in Receipt.
-      const actions = doc.createElement('details');
+      const actions = doc.createElement('div');
       actions.className = 'reply-next-actions';
-      const actionSummary = doc.createElement('summary');
+      const actionSummary = doc.createElement('button');
+      actionSummary.type = 'button';
+      actionSummary.className = 'reply-next-trigger';
       actionSummary.textContent = 'More with this reply';
-      // The footer is a flex row on narrow screens. Own the native disclosure
-      // toggle explicitly so a single pointer/keyboard activation cannot
-      // collapse the just-opened menu during layout reflow on Safari/Firefox.
-      actionSummary.addEventListener('click', event => {
-        event.preventDefault();
-        actions.open = !actions.open;
-      });
+      actionSummary.setAttribute('aria-expanded', 'false');
       actions.append(actionSummary);
       const choices = doc.createElement('div');
       choices.className = 'reply-next-choices';
+      choices.hidden = true;
+      const closeChoices = () => {
+        choices.hidden = true;
+        actionSummary.setAttribute('aria-expanded', 'false');
+      };
+      actionSummary.addEventListener('click', () => {
+        choices.hidden = !choices.hidden;
+        actionSummary.setAttribute('aria-expanded', String(!choices.hidden));
+      });
       choices.setAttribute('role', 'group');
       choices.setAttribute('aria-label', 'Follow-up options for this reply');
       const replyText = card.querySelector('.relay-khonapolit .relay-stage-text')?.textContent || '';
@@ -166,7 +171,7 @@ export function installMarrowlineLivingChat(doc = document, environment = window
           if (input.value.trim()) { input.focus({ preventScroll: true }); return; }
           input.value = buildMarrowlineReplyFollowupDraft(instruction, replyText);
           input.dispatchEvent(new environment.Event('input', { bubbles: true }));
-          actions.open = false;
+          closeChoices();
           input.focus({ preventScroll: true });
         });
         choices.append(button);
@@ -175,7 +180,7 @@ export function installMarrowlineLivingChat(doc = document, environment = window
       receiptButton.type = 'button';
       receiptButton.textContent = 'View receipt';
       receiptButton.addEventListener('click', () => {
-        actions.open = false;
+        closeChoices();
         openPanel('receiptPanel');
       });
       choices.append(receiptButton);
