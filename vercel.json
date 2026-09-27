@@ -936,6 +936,10 @@
   ],
   "rewrites": [
     {
+      "source": "/api/site-epoch-reset",
+      "destination": "/api/dome-world-shell?surface=site-epoch-reset"
+    },
+    {
       "source": "/site-epoch-preflight.js",
       "destination": "/app/site-epoch-preflight.js"
     },
