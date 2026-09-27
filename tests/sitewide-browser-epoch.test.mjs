@@ -17,7 +17,7 @@ test('one universal epoch loads before station code',()=>{
    const p=path.join(dir,item.name).replaceAll('\\','/');
    if(item.isDirectory()){if(!/(^|\/)(fixtures|reference)(\/|$)/.test(p))walk(p);continue}
    if(!p.endsWith('.html')||p.endsWith('/site-epoch-reset.html'))continue;
-   if(p==='app/dome-world/ash-keep.html')continue; // P0 frozen source: server shell injects the preflight.
+   if(p==='app/dome-world/ash-keep.html'||p==='app/dome-world/ash-keep-source.html')continue; // Frozen mirror pair: server shell injects the preflight.
    const src=read(p);
    if(src.toLowerCase().includes('<head')&&!src.includes('id="td613-sitewide-reset-preflight"'))missing.push(p);
  }}walk('app');
