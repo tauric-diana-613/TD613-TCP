@@ -2,6 +2,18 @@ import { mountLivingGeometry } from './holonomy-loom/living-geometry.js';
 
 const REDDIT_SANS_URL = 'https://fonts.googleapis.com/css2?family=Reddit+Sans:wght@300;400;500;600;700;800&display=swap';
 
+// Reply-local follow-up prompts must not copy an arbitrarily long model return
+// into the 6,000-character human composer. The exact original remains in the
+// transcript/receipt. An older reply may fall outside the bounded model history,
+// so a short excerpt is explicitly identified as an excerpt.
+export function buildMarrowlineReplyFollowupDraft(instruction, replyText) {
+  const source = String(replyText ?? '');
+  const excerpt = source.length > 2400
+    ? source.slice(0, 2400) + '\n[Excerpt only. The selected reply may contain additional text.]'
+    : source;
+  return `${instruction}\n\nSelected reply excerpt for reference:\n${excerpt}`;
+}
+
 function installConversationTypeface(doc) {
   if (!doc?.head) return;
   if (!doc.getElementById('marrowline-reddit-sans')) {
@@ -124,16 +136,11 @@ export function installMarrowlineLivingChat(doc = document, environment = window
       if (card.dataset.livingDecorated === 'true') return;
       card.dataset.livingDecorated = 'true';
 
-      const details = doc.createElement('details');
-      details.className = 'return-details';
-      const summary = doc.createElement('summary');
-      summary.textContent = 'Take this further';
-      details.append(summary);
-      const hint = doc.createElement('p');
-      hint.className = 'reply-action-hint';
-      hint.textContent = 'Choose a starting point, then edit your message before sending.';
+      // Two optional draft-producing choices remain. Receipt and technical
+      // provenance live in the archived turn and dedicated Receipt chamber.
       const actions = doc.createElement('div');
       actions.className = 'reply-next-actions';
+      actions.setAttribute('aria-label', 'Follow-up prompts');
       const replyText = card.querySelector('.relay-khonapolit .relay-stage-text')?.textContent || '';
       for (const [label, instruction] of [
         ['Check the claims', 'Review the reply quoted below. Separate supported claims from assumptions, identify missing evidence, and explain what would verify or change the conclusion.'],
@@ -143,29 +150,13 @@ export function installMarrowlineLivingChat(doc = document, environment = window
         button.type = 'button'; button.textContent = label;
         button.addEventListener('click', () => {
           const input = doc.getElementById('khonapolitPrompt');
-          // Never overwrite an unfinished draft or submit a provider request.
-          if (input.value.trim()) {
-            hint.textContent = 'Your draft is still in the composer. Send it or clear it before choosing a starting point.';
-            input.focus({ preventScroll: true }); return;
-          }
-          input.value = `${instruction}\n\nReply to examine:\n${replyText}`;
+          if (input.value.trim()) { input.focus({ preventScroll: true }); return; }
+          input.value = buildMarrowlineReplyFollowupDraft(instruction, replyText);
           input.dispatchEvent(new environment.Event('input', { bubbles: true }));
           input.focus({ preventScroll: true });
         });
         actions.append(button);
       }
-      details.append(hint, actions);
-      const technical = doc.createElement('details');
-      technical.className = 'reply-technical-record';
-      const technicalSummary = doc.createElement('summary');
-      technicalSummary.textContent = 'Technical record';
-      technical.append(technicalSummary);
-      const header = card.querySelector('.relay-aperture-header');
-      if (header) technical.append(header);
-      const receipt = card.querySelector('.turn-receipt');
-      if (receipt) technical.append(receipt);
-      details.append(technical);
-
       const integrated = card.querySelector('.relay-khonapolit[data-present="true"]');
       card.querySelectorAll('.relay-stage[data-present="false"]').forEach(stage => technical.append(stage));
 
@@ -177,7 +168,7 @@ export function installMarrowlineLivingChat(doc = document, environment = window
         if (meta) meta.textContent = 'integrated transmission';
         card.append(integrated);
       }
-      card.append(details);
+      card.append(actions);
       // The first-reply branch affordance follows the actual response; ⧉
       // remains last and continues to copy this one provider return only.
       const branch = card.querySelector('.marrowline-branch-reply');

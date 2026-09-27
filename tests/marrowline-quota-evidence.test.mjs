@@ -45,14 +45,17 @@ test('paid project reporting FreeTier per-day metric is quota-reconciliation, no
     attempts: [{ model: 'gemini-3.8-flash', status: 429, rateLimit: rate }] };
   const window = classifyMarrowlineRetryWindow(failure, now);
   assert.equal(window.kind, 'daily-report');
-  assert.equal(window.remainingSeconds, 0);
-  assert.equal(window.retryAt, null);
+  assert.equal(window.remainingSeconds, 27, 'provider Retry-After is presented as an observed next-attempt hint');
+  assert.equal(window.retryAt, now + 27000);
+  assert.equal(window.shortHintDoesNotProveDailyReset, true);
   assert.equal(window.providerHintSeconds, 27);
   assert.match(window.publishedDailyResetPolicy, /midnight America\/Los_Angeles/);
   assert.equal(window.providerDailyExhaustionVerified, false);
   assert.equal(window.freeTierMetricReported, true);
-  assert.equal(marrowlineRetryMessage(failure, now), 'A daily request limit was reported. Your message is saved; see the receipt for details.');
-  assert.doesNotMatch(marrowlineRetryMessage(failure, now), /Gemini|Google|Free Tier|midnight|27s/i);
+  assert.match(marrowlineRetryMessage(failure, now), /Gemini reported a daily request metric \(1 model reported 429\)/);
+  assert.match(marrowlineRetryMessage(failure, now), /Project balance and actual quota usage are unverified/);
+  assert.doesNotMatch(marrowlineRetryMessage(failure, now), /Free Tier|midnight|27s|quota exhausted/i);
+  assert.deepEqual(window.reportedModels, ['gemini-3.8-flash']);
 });
 
 test('browser ledger does not turn a 429 daily metric or a stale FreeTier limit into actual exhausted project quota', () => {
@@ -71,4 +74,19 @@ test('browser ledger does not turn a 429 daily metric or a stale FreeTier limit 
   assert.deepEqual(hints.daily_quota_observed_models, []);
   assert.deepEqual(hints.hard_budget_observed_models, []);
   assert.equal(hints.provider_daily_total, null);
+});
+
+test('provider daily metric may carry an advisory retry timer without asserting daily renewal', () => {
+  const {payload,response}=providerError(19);
+  const rate=observeGeminiQuota(payload,{model:'gemini-3.8-flash',response});
+  const failure={error:'gemini-rate-limit-held',httpStatus:429,observedAt:now,
+    attempts:[{model:'gemini-3.8-flash',status:429,rateLimit:rate}]};
+  const first=classifyMarrowlineRetryWindow(failure,now);
+  const later=classifyMarrowlineRetryWindow(failure,now+(rate.retryAfterSeconds+1)*1000);
+  assert.equal(first.providerDelayObserved,true);
+  assert.equal(first.remainingSeconds,rate.retryAfterSeconds,
+    'the clock mirrors the observer-selected provider RetryInfo, not an invented header value');
+  assert.equal(later.remainingSeconds,0);
+  assert.equal(first.shortHintDoesNotProveDailyReset,true);
+  assert.equal(first.providerDailyExhaustionVerified,false);
 });

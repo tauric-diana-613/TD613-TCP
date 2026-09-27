@@ -57,21 +57,28 @@ export function classifyMarrowlineRetryWindow(failure = {}, now = Date.now()) {
     // service cooldown. Any real 503 retry hint remains in the raw attempt receipt.
     kind = 'service-busy';
   } else if (dailyMetricReported && (all429 || Number(failure?.httpStatus) === 429)) {
-    kind = 'daily-report'; // Provider names a daily metric, but project usage remains unverified.
+    kind = 'daily-report'; // A named daily metric does not prove account usage or balance.
+    // A real provider Retry-After can suggest the next attempt, but does not
+    // establish that a reported daily metric resets when this short clock ends.
+    if (safeHint > 0) { seconds = safeHint; source = 'provider-retry-delay'; }
   } else if (all429 || /shared.rate.limit|rate.limit.held/.test(error) || Number(failure?.httpStatus) === 429) {
     kind = shortMetricReported ? 'rate-window' : 'rate-unknown';
-    if (kind === 'rate-window' && safeHint > 0) {
+    if (safeHint > 0) {
       seconds = safeHint; source = 'provider-retry-delay';
     }
   }
+  const reportedModels = [...new Set(attempts.filter(item => Number(item?.status) === 429)
+    .map(item => String(item?.model || '').trim()).filter(Boolean))];
   const retryAt = seconds ? origin + seconds * 1000 : null;
   const remainingSeconds = retryAt ? Math.max(0, Math.ceil((retryAt - now) / 1000)) : 0;
   return Object.freeze({
     schema: MARROWLINE_RETRY_WINDOW_SCHEMA, kind, source, seconds, retryAt,
+    reportedModels: Object.freeze(reportedModels),
     remainingSeconds, retryReady: remainingSeconds === 0,
     observedDaily: dailyMetricReported, dailyMetricReported, shortMetricReported, freeTierMetricReported,
     entitlementMismatchReported, providerDailyExhaustionVerified: false,
     providerDelayObserved: source === 'provider-retry-delay',
+    shortHintDoesNotProveDailyReset: dailyMetricReported && safeHint > 0,
     // For receipts, not a universal UI clock or permission veto.
     providerHintSeconds: safeHint, publishedDailyResetPolicy: dailyMetricReported
       ? 'midnight America/Los_Angeles; calendar policy, not a verified account reset'
@@ -84,9 +91,11 @@ export function classifyMarrowlineRetryWindow(failure = {}, now = Date.now()) {
 export function marrowlineRetryMessage(failure = {}, now = Date.now()) {
   const window = classifyMarrowlineRetryWindow(failure, now);
   if (window.kind === 'return-held') return 'The reply was unfinished. Your message is saved.';
-  if (window.kind === 'daily-report') return 'A daily request limit was reported. Your message is saved; see the receipt for details.';
-  if (window.kind === 'rate-window') return 'A short request limit was reached. Your message is saved.';
-  if (window.kind === 'rate-unknown') return 'A request limit was reported. Your message is saved; see the receipt for details.';
+  const models = window.reportedModels.length
+    ? ` (${window.reportedModels.length} model${window.reportedModels.length === 1 ? '' : 's'} reported 429)` : '';
+  if (window.kind === 'daily-report') return `Gemini reported a daily request metric${models}. Project balance and actual quota usage are unverified here; your message is saved. See Receipt for the exact provider metric.`;
+  if (window.kind === 'rate-window') return `Gemini reported a short-window request limit${models}. Your message is saved; a provider delay applies to retrying that task.`;
+  if (window.kind === 'rate-unknown') return `Gemini returned HTTP 429${models}. Project balance and effective quota are unverified here; your message is saved. See Receipt for the provider response.`;
   if (window.kind === 'service-busy') return 'The service could not answer just now. Your message is saved; try again.';
   return '';
 }

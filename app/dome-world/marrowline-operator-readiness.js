@@ -165,14 +165,16 @@ function installTerminalHoldNotice(doc = document, root = window) {
     const window = classifyMarrowlineRetryWindow(failure, Date.now());
     const cooling = window.remainingSeconds > 0;
     if (retry) retry.disabled = cooling;
-    if (send && status.dataset.phase !== 'pending') send.disabled = cooling;
+    // Provider Retry-After gates only preserved-task Retry, not a new Send.
     if (countdown) countdown.textContent = cooling
-      ? `Retry in ${window.remainingSeconds}s`
-      : 'Ready to retry';
+      ? `Provider suggests retry in ${window.remainingSeconds}s${window.dailyMetricReported ? ' · daily reset unverified' : ''}`
+      : window.dailyMetricReported ? 'Provider retry hint elapsed · daily reset unverified' : 'Ready to retry';
     if (refresh) {
       refresh.disabled = cooling;
       refresh.textContent = cooling ? '↻ Retry (paused)' : '↻ Retry message';
-      refresh.title = cooling ? 'The reported short retry delay has not elapsed.' : 'Retry the saved message once.';
+      refresh.title = cooling
+        ? 'Provider-reported retry hint; this timer does not prove a daily quota reset.'
+        : 'Retry the saved message once. A provider retry hint is not a guarantee of capacity.';
     }
     if (!cooling) stopClock();
   };
@@ -199,9 +201,9 @@ function installTerminalHoldNotice(doc = document, root = window) {
       card.replaceChildren();
       const title = doc.createElement('strong');
       title.textContent = window.kind === 'return-held' ? 'Reply held'
-        : window.kind === 'daily-report' ? 'Daily limit reported'
-        : window.kind === 'rate-window' ? 'Short request limit'
-        : window.kind === 'rate-unknown' ? 'Request limit reported'
+        : window.kind === 'daily-report' ? 'Provider daily metric · HTTP 429'
+        : window.kind === 'rate-window' ? 'Provider short-window limit · 429'
+        : window.kind === 'rate-unknown' ? 'Provider request limit · HTTP 429'
         : window.kind === 'service-busy' ? 'Service unavailable'
         : 'Reply paused';
       const badge = doc.createElement('span');

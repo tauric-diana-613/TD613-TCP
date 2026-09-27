@@ -9,7 +9,7 @@ import './marrowline-ios-keyboard-contract.test.mjs';
 import './marrowline-threads.test.mjs';
 import { classifyMarrowlineClientFailure, deriveMarrowlineConversationTitle, marrowlineWaitingLabel, installKhonapolitTerminal } from '../app/dome-world/marrowline-terminal.js';
 import { installMarrowlineMobileShell } from '../app/dome-world/marrowline-mobile-shell.js';
-import { installMarrowlineLivingChat } from '../app/dome-world/marrowline-living-chat.js';
+import { installMarrowlineLivingChat, buildMarrowlineReplyFollowupDraft } from '../app/dome-world/marrowline-living-chat.js';
 import { installMarrowlinePhysicalDeviceRepair } from '../app/dome-world/marrowline-physical-device-repair.js';
 
 const html = readFileSync(new URL('../app/dome-world/marrowline.html', import.meta.url), 'utf8');
@@ -20,7 +20,7 @@ const exactHeader = 'SYNTHETIC APERTURE · TECHNICAL_RUNTIME_REVIEW · RUNTIME M
 const flush = () => new Promise(resolve => setTimeout(resolve, 0));
 async function until(predicate) { const deadline = Date.now() + 2000; while (!predicate()) { if (Date.now() > deadline) throw new Error('Synthetic terminal did not settle'); await flush(); } }
 
-function harness(t, { mobile = false, failure = false, incomplete = false, backgroundDisconnect = false, hangFetch = false, hangBody = false, transcriptHeight = 0, storedMessages = [] } = {}) {
+function harness(t, { mobile = false, failure = false, rateLimitOnce = false, incomplete = false, backgroundDisconnect = false, rateLimitedOnce = false, hangFetch = false, hangBody = false, transcriptHeight = 0, storedMessages = [] } = {}) {
   const dom = new JSDOM(html, { url: 'https://td613.com/dome-world/marrowline.html' });
   const win = dom.window, doc = win.document, calls = [], fetchOptions = [], clipboard = [];
   Object.defineProperty(doc.getElementById('khonapolitMessages'), 'scrollHeight', { value: transcriptHeight });
@@ -34,6 +34,10 @@ function harness(t, { mobile = false, failure = false, incomplete = false, backg
     if (!options.method) return { ok: true, text: async () => 'SYNTHETIC CORPUS', json: async () => ({ hasGeminiKey: true, modelPolicy: { callableModels: ['SYNTHETIC_MODEL'] } }) };
     calls.push(JSON.parse(options.body));
     fetchOptions.push(options);
+    if (rateLimitedOnce && calls.length === 1) return { ok: false, status: 429, json: async () => ({
+      error: 'gemini-rate-limit-held', attempts: [{ model: 'SYNTHETIC_MODEL', status: 429,
+        rateLimit: { scope: 'model', windowClass: 'short', shortMetricReported: true, retryAfterSeconds: 27 } }]
+    }) };
     if (hangFetch && calls.length === 1) return new Promise(() => {});
     if (hangBody && calls.length === 1) return { ok: true, status: 200, json: () => new Promise(() => {}) };
     if (backgroundDisconnect && calls.length === 1) {
@@ -43,6 +47,11 @@ function harness(t, { mobile = false, failure = false, incomplete = false, backg
       doc.dispatchEvent(new win.Event('visibilitychange'));
       throw new TypeError('synthetic mobile background disconnect');
     }
+    if (rateLimitOnce && calls.length === 1) return { ok: false, status: 429,
+      headers: { get: name => name.toLowerCase() === 'retry-after' ? '90' : null },
+      json: async () => ({ error: 'gemini-rate-limit-held', rateLimit: { scope: 'model', windowClass: 'short', shortMetricReported: true, retryAfterSeconds: 90 },
+        attempts: [{ model: 'SYNTHETIC_MODEL', status: 429,
+          rateLimit: { scope: 'model', windowClass: 'short', shortMetricReported: true, retryAfterSeconds: 90 } }] }) };
     if (typeof failure === 'function' ? failure(calls.length) : failure) return { ok: false, status: 503, json: async () => ({ error: 'SYNTHETIC_PROVIDER_UNAVAILABLE', attempts: [{ model: 'SYNTHETIC_MODEL', status: 503 }] }) };
     const observed = incomplete ? 'Kʰonapolit\nThe claim on' : integratedText;
     const relay = {
@@ -266,8 +275,12 @@ test('mobile decoration preserves provider-native Unicode and all five chamber r
   assert.equal(stage.textContent, integratedText);
   assert.notEqual(stage.dataset.flourished, 'true', 'integrated clean prose never inherits whole-stage Zalgo line-height');
   assert.ok(stage.querySelectorAll('.provider-native-line').length >= 3, 'extreme provider-authored lines receive vertical room without rewriting text');
-  const disclosure = h.doc.querySelector('.return-details'); assert.ok(disclosure); disclosure.open = true;
-  assert.equal(disclosure.querySelector('.relay-aperture-header span').textContent, exactHeader);
+  assert.equal(h.doc.querySelector('.return-details,.reply-technical-record,.turn-receipt,.relay-aperture-header'),null,
+    'all three circled disclosures are absent from the chat');
+  assert.deepEqual([...h.doc.querySelectorAll('.relay-message > .reply-next-actions button')].map(x=>x.textContent),
+    ['Check the claims','Make a plan'],'both compact follow-up choices remain');
+  assert.equal(JSON.parse(h.$('khonapolitReceipt').textContent).relay.apertureHeader,exactHeader,
+    'separate Receipt preserves the exact technical header');
   const routes = { speakingPanel: 'speak', invocationPanel: 'keys', receiptPanel: 'receipt', corpusPanel: 'corpus', gatePanel: 'gate' };
   for (const [id, view] of Object.entries(routes)) { const button = h.doc.querySelector(`.mobile-dock [data-mobile-target="${id}"]`); assert.ok(button); button.click(); assert.equal(h.doc.body.dataset.mobileView, view); }
   assert.equal(h.calls.length, 1);
@@ -328,7 +341,9 @@ test('failed follow-up replaces current receipt and retains the previous receipt
   assert.match(h.clipboard.at(-1), /CURRENT_REQUEST_FAILED/);
   assert.match(h.clipboard.at(-1), /SYNTHETIC_MODEL/);
   assert.equal(h.win.__TD613_KHONAPOLIT_LAST_RECEIPT__, null);
-  assert.deepEqual(JSON.parse(h.doc.querySelector('.turn-receipt pre').textContent), prior);
+  assert.equal(h.doc.querySelector('.turn-receipt'),null,'per-reply JSON absent from conversation');
+  assert.deepEqual((await h.saved()).messages.find(x=>x.role==='model').receipt,prior,
+    'the previous receipt remains attached to the archived model turn');
   assert.equal(h.$('khonapolitPrompt').value, 'What does that mean for a newcomer?');
   h.$('retryKhonapolitTask').click(); await h.settled(); await flush();
   assert.equal(JSON.parse(h.$('khonapolitReceipt').textContent).provider.model, 'SYNTHETIC_MODEL');
@@ -601,4 +616,90 @@ test('operator Stop also escapes a response body that never resolves', async t =
   assert.equal((await h.saved()).lastFailure.error, 'operator-cancelled');
   assert.equal(h.doc.querySelectorAll('.relay-message').length, 0);
   assert.equal(h.$('khonapolitSend').dataset.transmissionState, 'ready');
+});
+
+test('long model reply produces a bounded follow-up draft, not a silent 6,000-character dead Send', () => {
+  const source = 'A'.repeat(12000);
+  const draft = buildMarrowlineReplyFollowupDraft('Check the claims.',source);
+  assert.ok(draft.length < 6000);
+  assert.match(draft,/Excerpt only/);
+  assert.ok(draft.includes('A'.repeat(120)));
+  assert.equal(source.length,12000,'original provider return remains intact');
+});
+
+test('follow-up chips fill but never automatically submit; an existing draft wins', async t => {
+  const h = harness(t);
+  h.send('Provide a short reply.'); await h.settled(); await flush();
+  const choices = h.doc.querySelectorAll('.relay-message > .reply-next-actions button');
+  assert.equal(choices.length,2);
+  choices[0].click();
+  assert.match(h.$('khonapolitPrompt').value,/Review the reply quoted below/);
+  assert.equal(h.calls.length,1,'preload has no provider side effect');
+  const preserved=h.$('khonapolitPrompt').value;
+  choices[1].click();
+  assert.equal(h.$('khonapolitPrompt').value,preserved,'later choice cannot erase an unfinished draft');
+  h.$('khonapolitForm').dispatchEvent(new h.win.Event('submit',{bubbles:true,cancelable:true}));
+  await h.settled();
+  assert.equal(h.calls.length,2,'the first actual Send commits the bounded draft');
+});
+
+test('a prior short-window 429 never disables a fresh authored Send', async t => {
+  const h = harness(t, { rateLimitOnce: true });
+  await h.ready();
+  h.send('First synthetic request.'); await h.settled();
+  assert.equal(h.calls.length,1);
+  assert.equal(h.$('khonapolitSend').disabled,false,'fresh Send remains interactive after 429');
+  assert.equal(h.$('khonapolitTerminalStatus').dataset.phase,'held');
+  assert.equal((await h.saved()).lastFailure.httpStatus,429);
+  h.send('An entirely new second question.'); await h.settled();
+  assert.equal(h.calls.length,2,'explicit fresh turn reaches transport despite prior Retry-After');
+  assert.equal(h.calls[1].message,'An entirely new second question.');
+});
+
+test('both post-reply choices produce a sendable draft on the first actual Send press', async t => {
+  const h = harness(t, { mobile: true });
+  await h.ready(); h.send('Starting claim.'); await h.settled(); await flush();
+  let buttons = h.doc.querySelectorAll('.relay-message > .reply-next-actions button');
+  assert.deepEqual([...buttons].map(x => x.textContent), ['Check the claims', 'Make a plan']);
+  buttons[0].click();
+  const claims = h.$('khonapolitPrompt').value;
+  assert.match(claims, /Review the reply quoted below/);
+  assert.equal(h.$('khonapolitSend').disabled, false);
+  h.$('khonapolitSend').click(); await h.settled(); await flush();
+  assert.equal(h.calls.length, 2);
+  assert.equal(h.calls[1].message, claims);
+  buttons = h.doc.querySelectorAll('.relay-message > .reply-next-actions button');
+  buttons[buttons.length - 1].click();
+  const plan = h.$('khonapolitPrompt').value;
+  assert.match(plan, /Turn the reply quoted below into practical next steps/);
+  h.$('khonapolitSend').click(); await h.settled(); await flush();
+  assert.equal(h.calls.length, 3);
+  assert.equal(h.calls[2].message, plan);
+});
+
+test('a preset selected while thread storage hydrates survives and sends exactly once', async t => {
+  const h = harness(t, { mobile: true });
+  const starter = h.doc.querySelector('.starter-prompts button');
+  assert.ok(starter); starter.click();
+  const selected = h.$('khonapolitPrompt').value;
+  await h.ready(); await flush();
+  assert.equal(h.$('khonapolitPrompt').value, selected);
+  h.$('khonapolitSend').click(); await h.settled(); await flush();
+  assert.equal(h.calls.length, 1);
+  assert.equal(h.calls[0].message, selected);
+});
+
+test('previous short-window 429 cannot make an unrelated new Send dead', async t => {
+  const h = harness(t, { mobile: true, rateLimitedOnce: true });
+  await h.ready(); h.send('First request exceeds short window.'); await h.settled(); await flush();
+  assert.equal(h.calls.length, 1);
+  assert.equal(h.$('khonapolitSend').disabled, false);
+  // Retry countdown belongs to operator-readiness, not this isolated terminal
+  // harness; verify the provider hint is retained instead of asserting an
+  // uninstalled UI observer has disabled its control.
+  assert.equal(h.win.__TD613_KHONAPOLIT_LAST_FAILURE__?.attempts?.[0]?.rateLimit?.retryAfterSeconds, 27);
+  h.$('khonapolitPrompt').value = 'A new human-directed task.';
+  h.$('khonapolitSend').click(); await h.settled(); await flush();
+  assert.equal(h.calls.length, 2);
+  assert.equal(h.calls[1].message, 'A new human-directed task.');
 });
