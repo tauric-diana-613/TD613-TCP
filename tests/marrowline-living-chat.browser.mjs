@@ -219,8 +219,12 @@ try{
    assert.ok(glyphLayout.botLeading>=glyphLayout.base*1.035,'tight 1.04 line boxes remain present and allow native stacks to collide');
    assert.equal(glyphLayout.raw,text,'overprinting leaves provider codepoints unchanged');
    await page.screenshot({path:path.join(dir,`${posture}-answer-first.png`)});
-   await page.locator('.return-details > summary').click();
-   assert.match(await page.locator('.relay-aperture-header').last().textContent(),/TECHNICAL_RUNTIME_REVIEW/);
+   assert.equal(await page.locator('.return-details,.reply-technical-record,.turn-receipt,.relay-aperture-header').count(),0,
+     'the three circled surfaces and raw technical header are absent from chat');
+   assert.deepEqual(await page.locator('.relay-message > .reply-next-actions button').allTextContents(),
+     ['Check the claims','Make a plan']);
+   assert.match(await page.locator('#khonapolitReceipt').textContent(),/TECHNICAL_RUNTIME_REVIEW/,
+     'technical provenance remains in the dedicated Receipt instrument');
 
    if(posture.startsWith('mobile')){
     await page.locator('.mobile-dock [data-mobile-target="gatePanel"]').click();
