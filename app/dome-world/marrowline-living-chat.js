@@ -183,11 +183,15 @@ export function installMarrowlineLivingChat(doc = document, environment = window
         if (meta) meta.textContent = 'integrated transmission';
         card.append(integrated);
       }
-      card.append(actions);
-      // The first-reply branch affordance follows the actual response; ⧉
-      // remains last and continues to copy this one provider return only.
+      // A single footer row keeps the understated disclosure on the left
+      // and the first-reply branch action aligned right above the copy glyph.
+      const toolRow = doc.createElement('div');
+      toolRow.className = 'marrowline-reply-tool-row';
+      toolRow.append(actions);
       const branch = card.querySelector('.marrowline-branch-reply');
-      if (branch) card.append(branch);
+      if (branch) toolRow.append(branch);
+      card.append(toolRow);
+      // Keep the native single-reply copy control last and outside the drawer.
       const replyCopy = card.querySelector('.marrowline-copy-reply');
       if (replyCopy) card.append(replyCopy);
     });
