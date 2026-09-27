@@ -79,6 +79,29 @@ try{
    assert.equal(posts,0);
    assert.equal(await page.locator('#khonapolitWaive').isChecked(),true,'ordinary workspace starts in explicit unissued research mode');
    assert.equal(await page.locator('#khonapolitMessages').evaluate(e=>e.scrollTop),0,'welcome remains at the top');
+   assert.equal(await page.locator('#speakingPanel .vessel-head [data-living-target="invocationPanel"]').count(),0,
+     'redundant Keys & settings header button is absent, not merely hidden or relocated');
+   assert.equal(await page.locator('.mobile-dock [data-mobile-target="invocationPanel"]').count(),1,
+     'the sole intended mobile Keys navigation stays available');
+   const masthead=await page.locator('#speakingPanel .vessel-head').evaluate(head=>{
+     const bounds=sel=>{const rect=head.querySelector(sel)?.getBoundingClientRect();return rect?
+       {left:rect.left,right:rect.right,top:rect.top,bottom:rect.bottom,width:rect.width,height:rect.height}:null;};
+     const radius=id=>getComputedStyle(head.querySelector(id)).borderTopLeftRadius;
+     return {head:bounds('.marrowline-title-stack'),title:bounds('#marrowlineConversationTitle'),
+       nav:bounds('.marrowline-thread-nav'),archive:bounds('#marrowlineThreadOpen'),
+       fresh:bounds('#marrowlineNewThread'),archiveRadius:radius('#marrowlineThreadOpen'),
+       freshRadius:radius('#marrowlineNewThread')};
+   });
+   assert.ok(masthead.head&&masthead.title&&masthead.nav&&masthead.archive&&masthead.fresh,
+     'full-width title and both conversation actions exist');
+   assert.ok(masthead.title.width>=masthead.head.width*.95,
+     'title receives the room freed by removing the settings button');
+   assert.ok(masthead.nav.top>=masthead.title.bottom-2,
+     'action rail sits below title rather than competing for width');
+   assert.ok(masthead.archive.bottom<=masthead.nav.bottom+2&&masthead.fresh.bottom<=masthead.nav.bottom+2,
+     'both actions fit inside the rail');
+   assert.ok(parseFloat(masthead.archiveRadius)<=8&&parseFloat(masthead.freshRadius)<=8,
+     'archive and New are refined squared controls, not capsule buttons');
    const initial=await page.locator('#khonapolitPrompt').boundingBox();
    assert.ok(initial&&initial.y>=0&&initial.y+initial.height<=viewport.height,'composer is visible on first screen');
    assert.equal(await page.locator('.living-geometry-canvas').count(),1);
@@ -350,6 +373,8 @@ try{
    assert.equal(await page.evaluate(()=>window.__TD613_MARROWLINE_THREADS__.current().messages.length),2);
    assert.equal(await page.locator('.relay-integrated-covenant .relay-stage-text').last().textContent(),text,
      'branch inherits exact original provider text');
+   assert.ok((await page.locator('#marrowlineConversationTitle').textContent()).trim().split(/\s+/u).length<=6,
+     'generated conversation title is six words or fewer');
    await page.locator('#marrowlineThreadOpen').click();
    await page.locator(`#marrowlineThreadList [data-thread-id="${parentId}"] .marrowline-thread-open`).click();
    await page.waitForFunction(id=>window.__TD613_MARROWLINE_THREADS__?.current()?.id===id,parentId);
