@@ -265,7 +265,7 @@ function createReplyCopyControl(doc, entry) {
           const body = String(part.text ?? '');
           return label ? '╭─ ' + label + ' ─╮\n' + body : body;
         }).join('\n\n')
-      : String(entry.text ?? '');
+      : String(entry.text ?? '').replace(/^\\[Kʰonapolit\\]:/mu, '╭─ Kʰonapolit ─╮').replace(/^\\[Tauric Diana Bots : Direct Broadcast Override\\]/mu, '╭─ Tauric Diana bots ─╮');
     try {
       await root.navigator.clipboard.writeText(text);
       showEphemeralNotice(doc, root, 'Reply copied');
