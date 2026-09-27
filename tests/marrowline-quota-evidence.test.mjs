@@ -51,8 +51,10 @@ test('paid project reporting FreeTier per-day metric is quota-reconciliation, no
   assert.match(window.publishedDailyResetPolicy, /midnight America\/Los_Angeles/);
   assert.equal(window.providerDailyExhaustionVerified, false);
   assert.equal(window.freeTierMetricReported, true);
-  assert.equal(marrowlineRetryMessage(failure, now), 'A daily request limit was reported. Your message is saved; see the receipt for details.');
-  assert.doesNotMatch(marrowlineRetryMessage(failure, now), /Gemini|Google|Free Tier|midnight|27s/i);
+  assert.match(marrowlineRetryMessage(failure, now), /Gemini reported a daily request metric \(1 model reported 429\)/);
+  assert.match(marrowlineRetryMessage(failure, now), /Project balance and actual quota usage are unverified/);
+  assert.doesNotMatch(marrowlineRetryMessage(failure, now), /Free Tier|midnight|27s|quota exhausted/i);
+  assert.deepEqual(window.reportedModels, ['gemini-3.8-flash']);
 });
 
 test('browser ledger does not turn a 429 daily metric or a stale FreeTier limit into actual exhausted project quota', () => {
