@@ -883,9 +883,24 @@ html:root body #khonapolitMessages .starter-prompts button:not(.starter-rotate){
 html:root body #khonapolitMessages .starter-prompts .starter-rotate{
   width:34px!important;min-width:34px!important;height:36px!important;padding:0!important;margin:0!important;
 }
-/* Two quiet follow-up chips; the three circled disclosures are absent. */
+/* Fold contextual reply actions; leave the original provider text and copy glyph unobstructed. */
+#khonapolitMessages .relay-message .reply-next-drawer{
+ margin:12px 48px 5px 13px;min-width:0;width:fit-content;max-width:calc(100% - 64px);
+ border:1px solid rgba(123,218,224,.27);border-radius:13px;
+ background:linear-gradient(120deg,rgba(52,43,103,.25),rgba(20,41,62,.24));
+ color:#ddd9ed;font:500 11.5px/1.3 var(--marrowline-chat-sans,system-ui,sans-serif);
+}
+#khonapolitMessages .relay-message .reply-next-drawer > summary{
+ display:flex;align-items:center;justify-content:space-between;gap:15px;cursor:pointer;list-style:none;
+ min-height:35px;padding:7px 12px;color:#cde6e3;
+}
+#khonapolitMessages .relay-message .reply-next-drawer > summary::-webkit-details-marker{display:none}
+#khonapolitMessages .relay-message .reply-next-drawer > summary span{color:#8ce4e2;transition:transform .15s ease}
+#khonapolitMessages .relay-message .reply-next-drawer[open] > summary span{transform:rotate(180deg)}
+#khonapolitMessages .relay-message .reply-next-drawer > summary:focus-visible{outline:2px solid #96f2e9;outline-offset:3px;border-radius:13px}
 #khonapolitMessages .relay-message .reply-next-actions{
- display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:12px 48px 4px 0;
+ display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:0;padding:10px 11px 11px;
+ border-top:1px solid rgba(123,218,224,.17);
 }
 #khonapolitMessages .relay-message .reply-next-actions button{
  appearance:none;-webkit-appearance:none;min-height:34px;padding:6px 13px;
