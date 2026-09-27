@@ -22,7 +22,7 @@ runtime = replaceExactly(
   // Its intentional Clear-Site-Data navigation must not contaminate the lifecycle network witness.
   if (!['localhost', '127.0.0.1'].includes(new URL(base).hostname)) {
     const epochPage = await context.newPage();
-    await epochPage.goto(\`${base}/site-epoch-reset.html?return=%2F\`, { waitUntil:'domcontentloaded', timeout:30_000 });
+    await epochPage.goto(\`\${base}/site-epoch-reset.html?return=%2F\`, { waitUntil:'domcontentloaded', timeout:30_000 });
     await epochPage.waitForFunction(
       () => localStorage.getItem('td613.site.browser-reset.epoch') === 'td613.site.browser-reset/2026-09-27-v1',
       null, { timeout:45_000 }
