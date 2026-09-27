@@ -232,6 +232,33 @@ try{
      'the archived turn preserves the original technical aperture header');
 
    if(posture.startsWith('mobile')){
+    await page.locator('.mobile-dock [data-mobile-target="receiptPanel"]').click();
+    await page.locator('#marrowlineReceiptShi').fill('TD613-SH-9B07D8B-ABCDEF12');
+    await page.locator('#marrowlineReceiptUnlock').click();
+    assert.equal(await page.locator('#marrowlineReceiptProtected').isVisible(),true,'local format membrane allows operator receipt inspection');
+    assert.equal(await page.locator('#receiptPanel .receipt-capture-details').evaluate(el=>el.open),false,'advanced capture starts folded');
+    const toolbar=await page.locator('#receiptPanel .receipt-toolbar').boundingBox();
+    const technical=await page.locator('#khonapolitReceipt').boundingBox();
+    assert.ok(toolbar&&technical&&toolbar.y+toolbar.height<technical.y,'human controls appear above the technical JSON');
+    assert.equal(await page.locator('#copyKhonapolitReceipt').evaluate(el=>getComputedStyle(el).borderRadius),'999px','receipt action is a compact pill');
+    assert.equal(await page.locator('#sealLastResponse').isEnabled(),true,'an unsealed reply can be explicitly closed');
+    await page.locator('#receiptPanel .receipt-capture-details > summary').click();
+    assert.equal(await page.locator('#armMarrowlineEpisodeWitness').isVisible(),true,'one-turn recorder is explained on demand');
+    assert.equal(await page.locator('#copyMarrowlineEpisodeWitness').isEnabled(),false,'no fictitious record exists before next-turn capture');
+    await page.locator('#receiptPanel .receipt-capture-details > summary').click();
+    await page.screenshot({path:path.join(dir,`${posture}-receipt-top.png`)});
+    const technicalLayout=await page.locator('#khonapolitReceipt').evaluate(el=>{
+      const original=el.textContent;
+      el.textContent=JSON.stringify({fixture:'LONG_RECEIPT_ONLY',attempts:Array.from({length:150},(_,i)=>({ordinal:i,status:429}))},null,2);
+      const value={height:el.getBoundingClientRect().height,scrollHeight:el.scrollHeight,clientHeight:el.clientHeight};
+      el.textContent=original;return value;
+    });
+    assert.ok(technicalLayout.scrollHeight>technicalLayout.clientHeight,'long receipt scrolls inside a bounded panel');
+    assert.ok(technicalLayout.height<viewport.height*.65,'JSON does not push controls under a full screen');
+    await page.locator('.mobile-dock [data-mobile-target="speakingPanel"]').click();
+   }
+
+   if(posture.startsWith('mobile')){
     await page.locator('.mobile-dock [data-mobile-target="gatePanel"]').click();
     await page.locator('#marrowlineOperatorToken').fill('SYNTHETIC_OPERATOR');
     await page.locator('#marrowlineForm button[type="submit"]').click();
