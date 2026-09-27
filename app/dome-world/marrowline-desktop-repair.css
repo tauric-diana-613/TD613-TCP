@@ -1232,3 +1232,15 @@ html:root body #khonapolitMessages .starter-prompts .starter-rotate{
  html:root.marrowline-mobile-shell #speakingPanel .marrowline-thread-nav{margin-top:6px!important;padding-top:4px!important}
  html:root.marrowline-mobile-shell #speakingPanel .marrowline-thread-drawer[open]{top:var(--marrowline-thread-top,103px)!important}
 }
+
+
+/* Final mobile masthead polish: shorten the stage, keep the title dominant, quiet the geometry. */
+@media(max-width:860px){
+ html:root.marrowline-mobile-shell .marrowline-living-geometry{opacity:.10!important;filter:saturate(.55) brightness(.72)!important}
+ html:root.marrowline-mobile-shell #speakingPanel .vessel-head.marrowline-conversation-masthead{padding:8px 15px 9px!important;min-height:0!important}
+ html:root.marrowline-mobile-shell #speakingPanel .marrowline-title-stack{grid-template-rows:auto auto auto!important;row-gap:0!important}
+ html:root.marrowline-mobile-shell #speakingPanel .marrowline-title-stack>small{font-size:8px!important;line-height:1.2!important;letter-spacing:.04em!important}
+ html:root.marrowline-mobile-shell #speakingPanel #marrowlineConversationTitle{font-size:clamp(19px,5.4vw,24px)!important;line-height:1.08!important;margin-top:2px!important;letter-spacing:-.018em!important}
+ html:root.marrowline-mobile-shell #speakingPanel .marrowline-thread-nav{margin-top:3px!important;padding-top:3px!important}
+ html:root.marrowline-mobile-shell #speakingPanel .marrowline-thread-nav>button{min-height:26px!important;padding-block:2px!important;font-size:9.5px!important}
+}
