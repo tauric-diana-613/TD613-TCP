@@ -136,8 +136,18 @@ export function installMarrowlineLivingChat(doc = document, environment = window
       if (card.dataset.livingDecorated === 'true') return;
       card.dataset.livingDecorated = 'true';
 
-      // Two optional draft-producing choices remain. Receipt and technical
-      // provenance live in the archived turn and dedicated Receipt chamber.
+      // Keep follow-ups folded beside each reply, away from provider prose.
+      // The dedicated Receipt chamber owns the technical instrument; opening
+      // it never creates an issuance, seal, or another provider request.
+      const replyDrawer = doc.createElement('details');
+      replyDrawer.className = 'reply-next-drawer';
+      const replySummary = doc.createElement('summary');
+      replySummary.textContent = 'Reply options';
+      const chevron = doc.createElement('span');
+      chevron.setAttribute('aria-hidden', 'true');
+      chevron.textContent = '⌄';
+      replySummary.append(chevron);
+      replyDrawer.append(replySummary);
       const actions = doc.createElement('div');
       actions.className = 'reply-next-actions';
       actions.setAttribute('aria-label', 'Follow-up prompts');
@@ -157,6 +167,26 @@ export function installMarrowlineLivingChat(doc = document, environment = window
         });
         actions.append(button);
       }
+      const receipts = doc.createElement('button');
+      receipts.type = 'button';
+      receipts.textContent = 'Open Receipts';
+      receipts.addEventListener('click', event => {
+        event.stopPropagation(); // Desktop's outside-click dismissal must not reclose the instrument.
+        const mobileReceipt = doc.querySelector('.mobile-dock [data-mobile-target="receiptPanel"]');
+        if (doc.documentElement.classList.contains('marrowline-mobile-shell') && mobileReceipt) {
+          mobileReceipt.click(); // The mobile shell owns chamber state and dock highlighting.
+          return;
+        }
+        const desktopReceipt = doc.querySelector('#marrowlineDesktopToolTabs [data-target="receiptPanel"]');
+        const tools = doc.querySelector('.living-tools');
+        if (desktopReceipt) {
+          if (tools?.dataset.desktopOpen !== 'true' || tools?.dataset.desktopActive !== 'receiptPanel') desktopReceipt.click();
+          return;
+        }
+        openPanel('receiptPanel');
+      });
+      actions.append(receipts);
+      replyDrawer.append(actions);
       const integrated = card.querySelector('.relay-khonapolit[data-present="true"]');
       card.querySelectorAll('.relay-stage[data-present="false"]').forEach(stage => technical.append(stage));
 
@@ -168,7 +198,7 @@ export function installMarrowlineLivingChat(doc = document, environment = window
         if (meta) meta.textContent = 'integrated transmission';
         card.append(integrated);
       }
-      card.append(actions);
+      card.append(replyDrawer);
       // The first-reply branch affordance follows the actual response; ⧉
       // remains last and continues to copy this one provider return only.
       const branch = card.querySelector('.marrowline-branch-reply');
