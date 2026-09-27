@@ -240,10 +240,10 @@ try{
    assert.equal(await page.locator('.return-details,.reply-technical-record,.turn-receipt,.relay-aperture-header').count(),0,
      'the three circled surfaces and raw technical header are absent from chat');
    const followup = page.locator('.relay-message > .marrowline-reply-tool-row > .reply-next-actions');
-   assert.equal(await followup.locator('.reply-next-trigger').getAttribute('aria-expanded'),'false','reply options start collapsed');
+   assert.equal(await followup.evaluate(el=>el.open),false,'native reply disclosure starts folded');
    assert.deepEqual(await followup.locator('.reply-next-choices button').allTextContents(),
      ['Check the claims','Make a plan','View receipt']);
-   const followupStyle=await followup.locator('.reply-next-trigger').evaluate(el=>({
+   const followupStyle=await followup.locator('summary').evaluate(el=>({
      border:getComputedStyle(el).borderTopStyle,background:getComputedStyle(el).backgroundImage,
      radius:getComputedStyle(el).borderRadius
    }));
@@ -252,18 +252,19 @@ try{
    assert.equal(followupStyle.radius,'0px','old rounded pill is absent');
    const footerLayout=await page.locator('.relay-message').first().evaluate(card=>{
      const box=sel=>{const x=card.querySelector(sel)?.getBoundingClientRect();return x?{y:x.y,right:x.right,bottom:x.bottom}:null};
-     return {row:box('.marrowline-reply-tool-row'),summary:box('.reply-next-trigger'),
+     return {row:box('.marrowline-reply-tool-row'),summary:box('.reply-next-actions>summary'),
        branch:box('.marrowline-branch-reply'),copy:box('.marrowline-copy-reply')};
    });
    assert.ok(footerLayout.row&&footerLayout.branch&&footerLayout.copy,'reply row and the original copy control exist');
    assert.ok(Math.abs(footerLayout.summary.y-footerLayout.branch.y)<5,'disclosure and branch share one row');
    assert.ok(Math.abs(footerLayout.branch.right-footerLayout.copy.right)<15,'branch right-aligns above the copy glyph');
    assert.ok(footerLayout.branch.bottom<=footerLayout.copy.y+2,'branch does not overlap the copy control');
+   await followup.locator('summary').click();
    const expanded=await followup.evaluate(el=>{
      const choices=el.querySelector('.reply-next-choices'),button=choices?.querySelector('button');
      const box=node=>{const r=node?.getBoundingClientRect();return r?{x:r.x,y:r.y,width:r.width,height:r.height}:null};
-     return {expanded:el.querySelector('.reply-next-trigger')?.getAttribute('aria-expanded'),hidden:choices?.hidden,details:box(el),choices:box(choices),button:box(button),
-       trigger:box(el.querySelector('.reply-next-trigger')),display:button?getComputedStyle(button).display:null,
+     return {open:el.open,details:box(el),choices:box(choices),button:box(button),
+       summary:box(el.querySelector('summary')),display:button?getComputedStyle(button).display:null,
        visibility:button?getComputedStyle(button).visibility:null};
    });
    assert.equal(await followup.locator('.reply-next-choices button').first().isVisible(),true,
@@ -272,7 +273,7 @@ try{
      await followup.getByRole('button',{name:'View receipt'}).click();
      assert.equal(await page.locator('body').getAttribute('data-mobile-view'),'receipt','reply shortcut changes mobile chamber to Receipt');
      assert.equal(await page.locator('#receiptPanel').evaluate(el=>el.open),true,'reply shortcut opens Receipt');
-   } else await followup.locator('.reply-next-trigger').click();
+   } else await followup.locator('summary').click();
    assert.match(await page.locator('#khonapolitReceipt').textContent(),/SYNTHETIC_MODEL/,
      'the separate Receipt instrument retains the provider record');
    assert.match(await page.evaluate(() => window.__TD613_MARROWLINE_THREADS__.current().messages.find(x => x.role === 'model')?.relay?.apertureHeader || ''),/TECHNICAL_RUNTIME_REVIEW/,
