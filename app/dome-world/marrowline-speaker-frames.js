@@ -1,7 +1,8 @@
 /**
  * Source-preserving, presentation-only speaker frames for native Marrowline
  * returns. Match headings, not ordinary mentions of a speaker in prose.
- * Never change or generate provider text, Unicode, receipts, or clipboard data.
+ * Provider text, Unicode and receipts remain unchanged; clipboard has a
+ * separate explicitly requested, plain-text script-heading presentation.
  */
 const HEADINGS = Object.freeze([
   {
@@ -32,4 +33,21 @@ export function renderMarrowlineSpeakerLine(span, line = '') {
   span.append(label);
   if (parsed.remainder) span.append(span.ownerDocument.createTextNode(parsed.remainder));
   return label;
+}
+
+/**
+ * Copy-facing text only: show the same corner-glyph voice names in pasted
+ * replies as on screen. Archived provider data, source textContent, prompts
+ * and receipts remain unchanged. Never decorate ordinary prose mentions.
+ */
+export function formatMarrowlineReplyForCopy(text = '') {
+  return String(text ?? '').split(/(\r\n|\n|\r)/u).map((fragment, index) => {
+    if (index % 2) return fragment;
+    const heading = findMarrowlineSpeakerHeading(fragment);
+    if (!heading) return fragment;
+    const frame = heading.voice === 'khonapolit'
+      ? '╭─ Kʰonapolit ─╮' : '╭─ Tauric Diana bots ─╮';
+    // Retain every code point following an inline native speaker heading.
+    return frame + (heading.remainder ? (heading.remainder.startsWith(' ') ? '' : ' ') + heading.remainder : '');
+  }).join('');
 }
