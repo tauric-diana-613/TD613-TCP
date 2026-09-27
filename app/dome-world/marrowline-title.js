@@ -46,8 +46,8 @@ function subjectOf(clause) {
     .replace(/[\s"'“”‘’#*.,;:!?–—-]+$/u, '').trim();
 }
 function compact(phrase) {
-  let title = phrase.split(/\s+/u).filter(Boolean).slice(0, 9).join(' ');
-  if (title.length > 58) title = title.slice(0, 58).replace(/\s+\S*$/u, '').trim();
+  let title = phrase.split(/\s+/u).filter(Boolean).slice(0, 6).join(' ');
+  if (title.length > 48) title = title.slice(0, 48).replace(/\s+\S*$/u, '').trim();
   title = title.replace(/\s+(?:and|or|with|of|for|in|on|to|the|a|an)$/iu, '')
     .replace(/[\s.,;:!?–—-]+$/u, '');
   return title ? title.split(/\s+/u).map((word, i) => {

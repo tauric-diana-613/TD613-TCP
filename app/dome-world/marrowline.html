@@ -32,13 +32,15 @@
   <div class="living-workspace">
   <section class="terminal-layout" aria-label="Kʰonapolit conversational chamber">
     <section class="ritual-panel speaking-vessel" id="speakingPanel">
-      <div class="vessel-head">
-        <div>
+      <div class="vessel-head marrowline-conversation-masthead">
+        <div class="marrowline-title-stack">
           <small>Kʰonapolit · model-mediated conversation</small>
           <h2 id="marrowlineConversationTitle">The speaking grove</h2>
-          <div class="marrowline-thread-nav"><button type="button" id="marrowlineThreadOpen" aria-controls="marrowlineThreadDrawer" aria-label="Open saved conversations">Conversations</button><button type="button" id="marrowlineNewThread" aria-label="Start new conversation">＋ New</button></div>
+          <nav class="marrowline-thread-nav" aria-label="Conversation actions">
+            <button type="button" id="marrowlineThreadOpen" aria-controls="marrowlineThreadDrawer" aria-expanded="false" aria-label="Open saved conversations"><span class="marrowline-thread-glyph" aria-hidden="true">▤</span><span>Conversations</span></button>
+            <button type="button" id="marrowlineNewThread" aria-label="Start new conversation"><span class="marrowline-thread-glyph" aria-hidden="true">＋</span><span>New</span></button>
+          </nav>
         </div>
-        <button type="button" class="quiet-action" data-living-target="invocationPanel">Keys & settings</button>
       </div>
       <details class="marrowline-thread-drawer" id="marrowlineThreadDrawer">
          <summary>Saved conversations · this browser</summary>

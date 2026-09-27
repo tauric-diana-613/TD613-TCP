@@ -1,3 +1,4 @@
+import { renderMarrowlineSpeakerLine } from './marrowline-speaker-frames.js';
 export const MARROWLINE_MOBILE_SHELL_VERSION = 'td613.dome-world.marrowline-mobile-shell/v3-first-tap-preloaded-send';
 export const MARROWLINE_MOBILE_QUERY = '(max-width: 860px)';
 
@@ -94,7 +95,7 @@ function prepareProviderNativeStage(card) {
     const expressiveLine = botsStarted && /\p{M}/u.test(fragment);
     span.className = expressiveLine ? 'zalgo-line provider-native-line' : 'provider-native-line';
     span.dataset.voice = botsStarted ? 'tauric-diana-bots' : 'khonapolit';
-    span.textContent = fragment;
+    renderMarrowlineSpeakerLine(span, fragment);
     return span;
   }));
 }

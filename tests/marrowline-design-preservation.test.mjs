@@ -102,7 +102,7 @@ function harness(t, { mobile = false, failure = false, rateLimitOnce = false, in
 
 test('thread titles identify the actual subject rather than copying an opening vignette or bot prose', () => {
   assert.equal(deriveMarrowlineConversationTitle('THE SHORELINE HAS TEETH',
-    'Write a poem about Lucille Clifton and a mother holding her child.'), 'Lucille Clifton and a Mother Holding Her Child');
+    'Write a poem about Lucille Clifton and a mother holding her child.'), 'Lucille Clifton and a Mother Holding');
   assert.equal(deriveMarrowlineConversationTitle('Tell me a story of the Ash Moon, within the authored mythology of Marrowline.'),
     'Ash Moon');
   assert.equal(deriveMarrowlineConversationTitle('Explain the difference between consent and inheritance.'),
@@ -110,6 +110,11 @@ test('thread titles identify the actual subject rather than copying an opening v
   const prompt = 'An anonymous archive receives two passages whose syntax and metaphors feel uncannily alike. The board declares authorship theft from resemblance alone. Design a cautious stylometric comparison with provenance, alternative explanations and limitations.';
   assert.equal(deriveMarrowlineConversationTitle(prompt), 'Stylometric Comparison with Provenance');
   assert.equal(deriveMarrowlineConversationTitle(''), 'The speaking grove');
+  for (const title of [
+    deriveMarrowlineConversationTitle('I underestimated the contribution was in how directly the research developed.'),
+    deriveMarrowlineConversationTitle('Compare the funding, provenance, and accountability mechanisms for these three systems.'),
+    deriveMarrowlineConversationTitle('Write a poem about Lucille Clifton and a mother holding her child.')
+  ]) assert.ok(title.trim().split(/\s+/u).length <= 6, `generated title exceeds six words: ${title}`);
 });
 
 test('Receipts remain inside a local SHI-format membrane without changing issuance mode', async t => {
@@ -186,6 +191,13 @@ test('ordinary work starts truly unissued while advanced custody can still hold 
   const h = harness(t);
   assert.ok(h.doc.querySelector('.grove-welcome'));
   assert.equal(h.$('marrowlineConversationTitle').textContent, 'The speaking grove');
+  assert.equal(h.doc.querySelector('#speakingPanel .vessel-head [data-living-target="invocationPanel"]'),null,
+    'redundant Keys & settings button is physically absent from conversation masthead');
+  assert.equal(h.doc.querySelectorAll('#marrowlineThreadOpen, #marrowlineNewThread').length,2,
+    'archive and new conversation controls retain their original actionable IDs');
+  assert.ok(h.doc.querySelector('.mobile-dock [data-mobile-target="invocationPanel"]'),
+    'the one intended mobile Keys tab remains available');
+
   assert.equal(h.$('khonapolitWaive').checked, true, 'ordinary blank workspace begins in explicit unissued research posture');
   assert.equal(h.$('khonapolitShi').disabled, true, 'checked unissued mode makes the SHI field dormant');
   assert.equal(h.$('khonapolitMode'), null, 'ordinary UI exposes one fixed dual-channel route instead of voice-selection steering');
