@@ -15,7 +15,7 @@ test('one universal epoch loads before station code',()=>{
  const missing=[];
  function walk(dir){for(const item of fs.readdirSync(dir,{withFileTypes:true})){
    const p=path.join(dir,item.name).replaceAll('\\','/');
-   if(item.isDirectory()){if(!p.includes('/fixtures/')&&!p.includes('/reference/'))walk(p);continue}
+   if(item.isDirectory()){if(!/(^|\\/)(fixtures|reference)(\\/|$)/.test(p))walk(p);continue}
    if(!p.endsWith('.html')||p.endsWith('/site-epoch-reset.html'))continue;
    const src=read(p);
    if(src.toLowerCase().includes('<head')&&!src.includes('id="td613-sitewide-reset-preflight"'))missing.push(p);
