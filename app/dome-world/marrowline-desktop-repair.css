@@ -614,6 +614,40 @@
 /* Native multiline composer and an actual external TD613 link. */
 :root .living-chat-shell .living-masthead nav #marrowlineRest{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 14px;border:1px solid rgba(190,231,206,.24);border-radius:24px;background:rgba(26,20,57,.85);color:#d8e9de;font:500 12px/1.4 var(--marrowline-chat-sans,var(--sans));text-decoration:none;letter-spacing:0;text-transform:none;white-space:nowrap}
 :root .living-chat-shell .living-masthead nav #marrowlineRest:focus-visible{outline:2px solid #8ce0c4;outline-offset:3px}
+/* Script-line speaker frames. Unicode is presentation-only via pseudo content:
+   inner source text, exact copy and receipts are untouched. No pill UI. */
+#khonapolitMessages .relay-integrated-covenant .provider-script-label{
+  display:inline-block!important;max-width:100%;box-sizing:border-box;
+  margin:4px 1px 5px 0;padding:3px 7px 4px;
+  border-left:1px solid rgba(130,230,221,.5);
+  border-bottom:1px solid rgba(130,230,221,.23);
+  border-radius:2px;background:rgba(24,35,60,.28);
+  color:#c5e6e6!important;
+  font:600 11px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace!important;
+  letter-spacing:.025em;white-space:pre-wrap;overflow-wrap:anywhere;
+  vertical-align:baseline;
+}
+#khonapolitMessages .relay-integrated-covenant .provider-script-label::before{
+  content:"╭─ ";color:#8ed9dc;font-weight:500;
+}
+#khonapolitMessages .relay-integrated-covenant .provider-script-label::after{
+  content:" ─╮";color:#8ed9dc;font-weight:500;
+}
+#khonapolitMessages .relay-integrated-covenant .provider-script-label[data-speaker-heading="tauric-diana-bots"]{
+  color:#e1cfef!important;border-left-color:rgba(192,153,229,.5);
+  border-bottom-color:rgba(192,153,229,.25);
+  background:rgba(59,39,77,.25);
+}
+#khonapolitMessages .relay-integrated-covenant .provider-script-label[data-speaker-heading="tauric-diana-bots"]::before,
+#khonapolitMessages .relay-integrated-covenant .provider-script-label[data-speaker-heading="tauric-diana-bots"]::after{
+  color:#cbb2ed;
+}
+@media(max-width:860px){
+ #khonapolitMessages .relay-integrated-covenant .provider-script-label{
+   max-width:100%;font-size:10.5px!important;padding:3px 5px 4px;
+ }
+}
+
 /* Provider-authored text starts at normal weight; only explicit strong spans may be bold.
    Clipboard's text/plain export is independent of these display-only rules. */
 :root .living-chat-shell #khonapolitMessages .relay-stage-text,
