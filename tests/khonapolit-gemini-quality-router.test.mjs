@@ -186,6 +186,18 @@ try {
   assert.match(res.payload.text, /THE RED DEER HAS READ THE MENU/);
   assert.doesNotMatch(res.text, /DO_NOT_COPY_PROVIDER_FIELDS/);
 
+  // A prompt above the old 6k ceiling must reach the existing provider route
+  // intact (including a final constraint). No separate title-generation call.
+  const longHumanTask = 'A'.repeat(12000) + ' KEEP THIS FINAL OPERATOR CONSTRAINT';
+  const beforeLongTask = requestBodies.length;
+  const longTaskResponse = response();
+  await handler({ ...req, body: { ...req.body, message: longHumanTask } }, longTaskResponse);
+  assert.equal(longTaskResponse.statusCode, 200, '12k human message is now valid');
+  assert.equal(longTaskResponse.payload.ok, true);
+  assert.ok(requestBodies.slice(beforeLongTask).some(body =>
+    body.contents?.some(part => part.parts?.some(piece => piece.text === longHumanTask))),
+    'the provider receives the entire 12k human task including its tail');
+
   const beforeOversize = calls.length;
   for (const body of [
     { ...req.body, message: 'A'.repeat(32000) + ' NEVER DISCLOSE THE LINKAGE' },
