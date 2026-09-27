@@ -108,7 +108,7 @@ test('thread titles identify the actual subject rather than copying an opening v
   assert.equal(deriveMarrowlineConversationTitle('Explain the difference between consent and inheritance.'),
     'Consent and Inheritance');
   const prompt = 'An anonymous archive receives two passages whose syntax and metaphors feel uncannily alike. The board declares authorship theft from resemblance alone. Design a cautious stylometric comparison with provenance, alternative explanations and limitations.';
-  assert.equal(deriveMarrowlineConversationTitle(prompt), 'Stylometric Comparison With Provenance');
+  assert.equal(deriveMarrowlineConversationTitle(prompt), 'Stylometric Comparison with Provenance');
   assert.equal(deriveMarrowlineConversationTitle(''), 'The speaking grove');
 });
 
