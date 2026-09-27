@@ -499,6 +499,8 @@
     "stopTransmission": "Send becomes same-size outlined-square Stop while request is active; browser AbortController plus abort-race guard for unresolved response/body promises; preserves task, attachments and prior history; no automatic retry after operator cancel",
     "mobileComposer": "vertical + above Send/Stop in a dedicated left column beside the textarea, aligned to its top; compact glyph-only flat violet circle with thin cyan rim; utilities in reserved lower-right textarea space; no lower action band or overlap with text or dock",
     "replyActions": "plain-text reply-local drawer left; first-reply branch right in same row above the original copy glyph; Check the claims, Make a plan and View receipt remain inside the drawer",
+    "conversationTitles": "task-subject-based deterministic local titles, legacy auto-title exact-match migration, operator renames preserved; zero Gemini title calls",
+    "outgoingPromptLimit": "32000 UTF-16 code units across UI/client/server, exact tail retained; 3000000-byte serialized history ceiling unchanged; provider output unrestricted by composer limit",
     "botParagraphDisplay": "one additional CSS-only visual newline at existing exactly-double-newline Tauric Diana bot paragraph boundaries; original provider textContent, receipt and plain-text copy remain byte-identical; 1.04 native overprint unchanged",
     "inlineTechnicalRecord": "removed from chat; archived turn provenance and dedicated Receipt preserved",
     "retryPolicy": "new explicit Send never disabled by prior Retry-After; preserved-task retry honors provider delay",
