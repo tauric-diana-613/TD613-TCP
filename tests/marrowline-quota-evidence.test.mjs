@@ -82,9 +82,10 @@ test('provider daily metric may carry an advisory retry timer without asserting 
   const failure={error:'gemini-rate-limit-held',httpStatus:429,observedAt:now,
     attempts:[{model:'gemini-3.8-flash',status:429,rateLimit:rate}]};
   const first=classifyMarrowlineRetryWindow(failure,now);
-  const later=classifyMarrowlineRetryWindow(failure,now+20000);
+  const later=classifyMarrowlineRetryWindow(failure,now+(rate.retryAfterSeconds+1)*1000);
   assert.equal(first.providerDelayObserved,true);
-  assert.equal(first.remainingSeconds,19);
+  assert.equal(first.remainingSeconds,rate.retryAfterSeconds,
+    'the clock mirrors the observer-selected provider RetryInfo, not an invented header value');
   assert.equal(later.remainingSeconds,0);
   assert.equal(first.shortHintDoesNotProveDailyReset,true);
   assert.equal(first.providerDailyExhaustionVerified,false);
