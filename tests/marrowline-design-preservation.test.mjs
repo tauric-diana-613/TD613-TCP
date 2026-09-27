@@ -114,7 +114,7 @@ test('thread titles identify the actual subject rather than copying an opening v
     deriveMarrowlineConversationTitle('I underestimated the contribution was in how directly the research developed.'),
     deriveMarrowlineConversationTitle('Compare the funding, provenance, and accountability mechanisms for these three systems.'),
     deriveMarrowlineConversationTitle('Write a poem about Lucille Clifton and a mother holding her child.')
-  ]) assert.ok(title.trim().split(/\\s+/u).length<=6, `generated title exceeds six words: ${title}`);
+  ]) assert.ok(title.trim().split(/\s+/u).length <= 6, `generated title exceeds six words: ${title}`);
 });
 
 test('Receipts remain inside a local SHI-format membrane without changing issuance mode', async t => {
