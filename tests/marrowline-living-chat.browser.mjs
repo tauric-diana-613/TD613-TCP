@@ -259,7 +259,15 @@ try{
    assert.ok(Math.abs(footerLayout.summary.y-footerLayout.branch.y)<5,'disclosure and branch share one row');
    assert.ok(Math.abs(footerLayout.branch.right-footerLayout.copy.right)<15,'branch right-aligns above the copy glyph');
    assert.ok(footerLayout.branch.bottom<=footerLayout.copy.y+2,'branch does not overlap the copy control');
-   assert.equal(await followup.locator('.reply-next-choices button').first().isVisible(),true,'follow-ups expand on demand');
+   const expanded=await followup.evaluate(el=>{
+     const choices=el.querySelector('.reply-next-choices'),button=choices?.querySelector('button');
+     const box=node=>{const r=node?.getBoundingClientRect();return r?{x:r.x,y:r.y,width:r.width,height:r.height}:null};
+     return {open:el.open,details:box(el),choices:box(choices),button:box(button),
+       summary:box(el.querySelector('summary')),display:button?getComputedStyle(button).display:null,
+       visibility:button?getComputedStyle(button).visibility:null};
+   });
+   assert.equal(await followup.locator('.reply-next-choices button').first().isVisible(),true,
+     'follow-ups expand on demand: '+JSON.stringify(expanded));
    if(posture.startsWith('mobile')){
      await followup.getByRole('button',{name:'View receipt'}).click();
      assert.equal(await page.locator('body').getAttribute('data-mobile-view'),'receipt','reply shortcut changes mobile chamber to Receipt');
