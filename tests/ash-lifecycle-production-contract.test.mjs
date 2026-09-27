@@ -13,6 +13,8 @@ const localClosureServer = read('scripts/ash-keep-local-closure-server.mjs');
 const domeGuard = read('api/dome-world-engine-guard.py');
 const vercelConfig = read('vercel.json');
 const probe = `${lifecycleCompiler}\n${lifecycleBase}`;
+assert.ok(lifecycleCompiler.includes("'td613.site.browser-reset.epoch'"), 'Production Ash lifecycle must explicitly admit the one origin-wide reset marker.');
+assert.ok(lifecycleCompiler.includes("localStorage.getItem('td613.site.browser-reset.epoch') === 'td613.site.browser-reset/2026-09-27-v1'"), 'First-visit destructive reset must still require the exact current epoch value.');
 const compatibilityRunner = read('scripts/run-ash-keep-a1-production-probe.mjs');
 const convergenceRunner = read('scripts/run-ash-constitutional-convergence-probe.mjs');
 const shell = read('api/dome-world-shell.js');
