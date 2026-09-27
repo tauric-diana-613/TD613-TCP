@@ -83,7 +83,7 @@ runtime = replaceExactly(
 runtime = replaceExactly(
   runtime,
   "const ALLOWED_LOCAL_KEYS = new Set([\n  'td613.ash-keep.current-case',\n  'td613.ash-keep.preferences'\n]);",
-  "const ALLOWED_LOCAL_KEYS = new Set([\n  'td613.ash-keep.current-case',\n  'td613.ash-keep.preferences',\n  'td613.ash.cache-flush.epoch',\n  'td613.ash.cache-flush.aia3.epoch',\n  'td613.ash.cache-preflight.epoch',\n  'td613.ash.session.epoch'\n]);",
+  "const ALLOWED_LOCAL_KEYS = new Set([\n  'td613.ash-keep.current-case',\n  'td613.ash-keep.preferences',\n  'td613.ash.cache-flush.epoch',\n  'td613.ash.cache-flush.aia3.epoch',\n  'td613.ash.cache-preflight.epoch',\n  'td613.ash.session.epoch',\n  'td613.site.browser-reset.epoch'\n]);",
   'bounded legacy and AIA3 maintenance marker allowance'
 );
 runtime = replaceExactly(
