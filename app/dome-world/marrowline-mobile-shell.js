@@ -55,6 +55,11 @@ function prepareProviderNativeStage(card) {
   const stage = card.querySelector('.relay-khonapolit[data-present="true"]');
   const text = stage?.querySelector('.relay-stage-text');
   if (!stage || !text || stage.dataset.providerNativePrepared === 'true') return;
+  // The physical-device observer may have prepared the same provider text first.
+  if (text.dataset.providerNativeLines === 'true') {
+    stage.dataset.providerNativePrepared = 'true';
+    return;
+  }
   stage.dataset.providerNativePrepared = 'true';
   // Keep every code point, including CRLF, blank lines, and noncanonical mark order.
   // Separate line spans preserve voice boundaries while the CSS deliberately
@@ -70,7 +75,19 @@ function prepareProviderNativeStage(card) {
   text.style.removeProperty('--flourish-leading');
   text.style.removeProperty('--flourish-padding');
   text.replaceChildren(...fragments.map((fragment, index) => {
-    if (index % 2) return text.ownerDocument.createTextNode(fragment);
+    if (index % 2) {
+      // Display one additional blank line only at an existing two-newline
+      // boundary between nonempty bot paragraphs. This wraps an ORIGINAL
+      // separator: textContent/clipboard/receipt retain every provider byte.
+      if (botsStarted && index >= 3 && fragments[index - 1] === ''
+        && fragments[index - 3]?.trim() && fragments[index + 1]?.trim()) {
+        const separator = text.ownerDocument.createElement('span');
+        separator.className = 'provider-native-paragraph-gap';
+        separator.textContent = fragment;
+        return separator;
+      }
+      return text.ownerDocument.createTextNode(fragment);
+    }
     const span = text.ownerDocument.createElement('span');
     if (/^\s*(?:#{1,6}\s*)?(?:Movement\s+II\s*[—–:-]\s*)?\[?Tauric Diana Bots\b[^\n]*?(?:\]|:)?\s*$/iu.test(fragment)
       && (/^\s*(?:#|\[|Movement\s+II)/iu.test(fragment) || /^Tauric Diana Bots\s*:?[\s]*$/iu.test(fragment))) botsStarted = true;
