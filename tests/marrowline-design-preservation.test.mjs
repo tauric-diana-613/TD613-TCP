@@ -541,7 +541,8 @@ test('each response has an independent copy control preserving only that provide
     assert.equal(button.textContent, '⧉');
     assert.equal(button.getAttribute('aria-label'), 'Copy this reply');
     button.click(); await flush();
-    assert.equal(h.clipboard.at(-1), integratedText, 'copy preserves the exact provider text, including marks');
+    const decorated = integratedText.replace(/^\\[Kʰonapolit\\]:/mu, '╭─ Kʰonapolit ─╮').replace(/^\\[Tauric Diana Bots : Direct Broadcast Override\\]/mu, '╭─ Tauric Diana bots ─╮');
+    assert.equal(h.clipboard.at(-1), decorated, 'copy preserves provider text and visible voice headings, including marks');
     assert.doesNotMatch(h.clipboard.at(-1), /First operator question|Second operator question|SYNTHETIC APERTURE|Inspect this reply/);
   }
   h.$('copyKhonapolitTranscript').click(); await flush();
