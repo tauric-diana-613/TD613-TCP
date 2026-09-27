@@ -167,12 +167,14 @@ function installTerminalHoldNotice(doc = document, root = window) {
     if (retry) retry.disabled = cooling;
     // Provider Retry-After gates only preserved-task Retry, not a new Send.
     if (countdown) countdown.textContent = cooling
-      ? `Retry in ${window.remainingSeconds}s`
-      : 'Ready to retry';
+      ? `Provider suggests retry in ${window.remainingSeconds}s${window.dailyMetricReported ? ' · daily reset unverified' : ''}`
+      : window.dailyMetricReported ? 'Provider retry hint elapsed · daily reset unverified' : 'Ready to retry';
     if (refresh) {
       refresh.disabled = cooling;
       refresh.textContent = cooling ? '↻ Retry (paused)' : '↻ Retry message';
-      refresh.title = cooling ? 'The reported short retry delay has not elapsed.' : 'Retry the saved message once.';
+      refresh.title = cooling
+        ? 'Provider-reported retry hint; this timer does not prove a daily quota reset.'
+        : 'Retry the saved message once. A provider retry hint is not a guarantee of capacity.';
     }
     if (!cooling) stopClock();
   };
