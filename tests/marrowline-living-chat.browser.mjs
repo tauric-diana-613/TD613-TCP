@@ -221,11 +221,19 @@ try{
    await page.screenshot({path:path.join(dir,`${posture}-answer-first.png`)});
    assert.equal(await page.locator('.return-details,.reply-technical-record,.turn-receipt,.relay-aperture-header').count(),0,
      'the three circled surfaces and raw technical header are absent from chat');
-   assert.deepEqual(await page.locator('.relay-message > .reply-next-actions button').allTextContents(),
-     ['Check the claims','Make a plan']);
-   const followupRadius = await page.locator('.relay-message > .reply-next-actions button').first()
-     .evaluate(el => getComputedStyle(el).borderRadius);
-   assert.equal(followupRadius, '999px', 'the follow-up controls render as compact pill chips, not the prior clunky blocks');
+   const followup = page.locator('.relay-message > .reply-next-actions');
+   assert.equal(await followup.evaluate(el => el.open), false, 'reply follow-ups start folded inside their drawer');
+   assert.deepEqual(await followup.locator('.reply-next-choices button').allTextContents(),
+     ['Check the claims','Make a plan','View receipt']);
+   const followupRadius = await followup.locator('summary').evaluate(el => getComputedStyle(el).borderRadius);
+   assert.equal(followupRadius, '999px', 'the collapsed follow-up drawer renders as a compact pill');
+   await followup.locator('summary').click();
+   assert.equal(await followup.locator('.reply-next-choices button').first().isVisible(),true,'follow-ups expand on demand');
+   if(posture.startsWith('mobile')){
+     await followup.getByRole('button',{name:'View receipt'}).click();
+     assert.equal(await page.locator('body').getAttribute('data-mobile-view'),'receipt','reply shortcut changes mobile chamber to Receipt');
+     assert.equal(await page.locator('#receiptPanel').evaluate(el=>el.open),true,'reply shortcut opens Receipt');
+   } else await followup.locator('summary').click();
    assert.match(await page.locator('#khonapolitReceipt').textContent(),/SYNTHETIC_MODEL/,
      'the separate Receipt instrument retains the provider record');
    assert.match(await page.evaluate(() => window.__TD613_MARROWLINE_THREADS__.current().messages.find(x => x.role === 'model')?.relay?.apertureHeader || ''),/TECHNICAL_RUNTIME_REVIEW/,

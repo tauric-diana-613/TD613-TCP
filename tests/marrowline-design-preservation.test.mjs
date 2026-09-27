@@ -277,8 +277,8 @@ test('mobile decoration preserves provider-native Unicode and all five chamber r
   assert.ok(stage.querySelectorAll('.provider-native-line').length >= 3, 'extreme provider-authored lines receive vertical room without rewriting text');
   assert.equal(h.doc.querySelector('.return-details,.reply-technical-record,.turn-receipt,.relay-aperture-header'),null,
     'all three circled disclosures are absent from the chat');
-  assert.deepEqual([...h.doc.querySelectorAll('.relay-message > .reply-next-actions button')].map(x=>x.textContent),
-    ['Check the claims','Make a plan'],'both compact follow-up choices remain');
+  assert.deepEqual([...h.doc.querySelectorAll('.relay-message > .reply-next-actions .reply-next-choices button')].map(x=>x.textContent),
+    ['Check the claims','Make a plan','View receipt'],'all three choices remain inside the follow-up drawer');
   assert.equal(JSON.parse(h.$('khonapolitReceipt').textContent).relay.apertureHeader,exactHeader,
     'separate Receipt preserves the exact technical header');
   const routes = { speakingPanel: 'speak', invocationPanel: 'keys', receiptPanel: 'receipt', corpusPanel: 'corpus', gatePanel: 'gate' };
@@ -627,11 +627,12 @@ test('long model reply produces a bounded follow-up draft, not a silent 6,000-ch
   assert.equal(source.length,12000,'original provider return remains intact');
 });
 
-test('follow-up chips fill but never automatically submit; an existing draft wins', async t => {
+test('reply drawer choices fill but never automatically submit; an existing draft wins', async t => {
   const h = harness(t);
   h.send('Provide a short reply.'); await h.settled(); await flush();
-  const choices = h.doc.querySelectorAll('.relay-message > .reply-next-actions button');
-  assert.equal(choices.length,2);
+  const choices = h.doc.querySelectorAll('.relay-message > .reply-next-actions .reply-next-choices button');
+  assert.equal(choices.length,3);
+  assert.equal(h.doc.querySelector('.relay-message > .reply-next-actions').open,false,'drawer starts folded');
   choices[0].click();
   assert.match(h.$('khonapolitPrompt').value,/Review the reply quoted below/);
   assert.equal(h.calls.length,1,'preload has no provider side effect');
@@ -659,8 +660,8 @@ test('a prior short-window 429 never disables a fresh authored Send', async t =>
 test('both post-reply choices produce a sendable draft on the first actual Send press', async t => {
   const h = harness(t, { mobile: true });
   await h.ready(); h.send('Starting claim.'); await h.settled(); await flush();
-  let buttons = h.doc.querySelectorAll('.relay-message > .reply-next-actions button');
-  assert.deepEqual([...buttons].map(x => x.textContent), ['Check the claims', 'Make a plan']);
+  let buttons = h.doc.querySelectorAll('.relay-message > .reply-next-actions .reply-next-choices button');
+  assert.deepEqual([...buttons].map(x => x.textContent), ['Check the claims', 'Make a plan', 'View receipt']);
   buttons[0].click();
   const claims = h.$('khonapolitPrompt').value;
   assert.match(claims, /Review the reply quoted below/);
@@ -668,8 +669,8 @@ test('both post-reply choices produce a sendable draft on the first actual Send 
   h.$('khonapolitSend').click(); await h.settled(); await flush();
   assert.equal(h.calls.length, 2);
   assert.equal(h.calls[1].message, claims);
-  buttons = h.doc.querySelectorAll('.relay-message > .reply-next-actions button');
-  buttons[buttons.length - 1].click();
+  buttons = h.doc.querySelectorAll('.relay-message > .reply-next-actions .reply-next-choices button');
+  buttons[buttons.length - 2].click();
   const plan = h.$('khonapolitPrompt').value;
   assert.match(plan, /Turn the reply quoted below into practical next steps/);
   h.$('khonapolitSend').click(); await h.settled(); await flush();

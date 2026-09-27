@@ -498,7 +498,7 @@
     },
     "stopTransmission": "Send becomes same-size outlined-square Stop while request is active; browser AbortController plus abort-race guard for unresolved response/body promises; preserves task, attachments and prior history; no automatic retry after operator cancel",
     "mobileComposer": "vertical + above Send/Stop in a dedicated left column beside the textarea, aligned to its top; compact glyph-only flat violet circle with thin cyan rim; utilities in reserved lower-right textarea space; no lower action band or overlap with text or dock",
-    "replyActions": "two discreet inline prompt chips, no Take this further explanatory panel",
+    "replyActions": "collapsed reply-local drawer with Check the claims, Make a plan and View receipt; receipt shortcut opens existing instrument without issuing or copying provenance",
     "inlineTechnicalRecord": "removed from chat; archived turn provenance and dedicated Receipt preserved",
     "retryPolicy": "new explicit Send never disabled by prior Retry-After; preserved-task retry honors provider delay",
     "quotaFailureCopy": "observed Gemini 429 and model count; account balance and actual quota unverified",
