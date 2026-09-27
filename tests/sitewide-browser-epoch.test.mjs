@@ -17,10 +17,12 @@ test('one universal epoch loads before station code',()=>{
    const p=path.join(dir,item.name).replaceAll('\\','/');
    if(item.isDirectory()){if(!/(^|\/)(fixtures|reference)(\/|$)/.test(p))walk(p);continue}
    if(!p.endsWith('.html')||p.endsWith('/site-epoch-reset.html'))continue;
+   if(p==='app/dome-world/ash-keep.html')continue; // P0 frozen source: server shell injects the preflight.
    const src=read(p);
    if(src.toLowerCase().includes('<head')&&!src.includes('id="td613-sitewide-reset-preflight"'))missing.push(p);
  }}walk('app');
  assert.deepEqual(missing,[]);
+ assert(ash.includes('additions.push(SITE_RESET_BOOT)'), 'P0 frozen Ash must get its reset at delivery, not through a source mutation');
  new vm.Script(preflight);new vm.Script(reset);
  assert(preflight.includes(epoch));
  assert(preflight.indexOf("location.replace(destination.href)")>0);
