@@ -253,4 +253,42 @@ try {
   clearGeminiModelState();
 }
 
+// One explicit Google project-cap rejection must not consume four extra model calls.
+{
+  const previousFetch=globalThis.fetch;
+  const previousKey=process.env.GEMINI_API_KEY;
+  const generationCalls=[];
+  clearGeminiModelState();
+  process.env.GEMINI_API_KEY='synthetic-project-cap-test-key';
+  globalThis.fetch=async (url)=>{
+    if(String(url).includes('/models?'))return {ok:true,status:200,async json(){return {models:['gemini-3.8-flash','gemini-3.5-flash','gemini-3.6-flash','gemini-3.7-flash','gemini-3-flash-preview'].map(id=>({name:'models/'+id,supportedGenerationMethods:['generateContent']}))}}};
+    generationCalls.push(String(url));
+    return {ok:false,status:429,headers:{get:()=>null},async json(){return {error:{
+      code:429,status:'RESOURCE_EXHAUSTED',
+      message:'Your project has exceeded its monthly spending cap. Please go to AI Studio at https://ai.studio/spend to manage your project spend cap.'
+    }}}};
+  };
+  try{
+    const req={method:'POST',headers:{'x-forwarded-for':'203.0.113.181'},
+      body:{message:'Synthetic project cap transport case.',history:[],mode:'issued-conjunction',waiveIssuance:true}};
+    const res=response();
+    await handler(req,res);
+    assert.equal(res.statusCode,429);
+    assert.equal(res.payload.error,'gemini-project-spend-cap-held');
+    assert.equal(res.payload.diagnostic.code,'PROJECT_MONTHLY_SPEND_CAP_REACHED');
+    assert.equal(res.payload.diagnostic.nextRetryAt,null);
+    assert.equal(res.payload.rateLimit.scope,'project');
+    assert.equal(res.payload.rateLimit.projectSpendCapReported,true);
+    assert.equal(res.payload.attempts.length,1);
+    assert.equal(res.payload.gemini_consumption.call_count,1);
+    assert.equal(res.headers['X-TD613-Rate-Limit-Scope'],'project');
+    assert.equal(generationCalls.length,1,'no second model is called under one project billing cap');
+  }finally{
+    globalThis.fetch=previousFetch;
+    if(previousKey===undefined)delete process.env.GEMINI_API_KEY;
+    else process.env.GEMINI_API_KEY=previousKey;
+    clearGeminiModelState();
+  }
+}
+
 console.log('khonapolit-gemini-quality-router.test.mjs passed');
