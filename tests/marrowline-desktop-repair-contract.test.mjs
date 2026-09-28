@@ -158,7 +158,7 @@ test('staged attachments have two temporary access points and the composer contr
   assert.equal(composerAttachments.hidden, true, 'cleared/successfully consumed staging removes the composer control');
   assert.equal(replyAttachments.hidden, true, 'cleared/successfully consumed staging removes the reply action');
 
-  assert.match(css, /#marrowlineComposerAttachments\{[\s\S]*grid-column:2!important;grid-row:2!important;justify-self:start!important/,
+  assert.match(css, /\.marrowline-composer-attachments\{[\s\S]*grid-column:2!important;grid-row:2!important;justify-self:start!important/,
     'composer Attachments shares the textarea column rather than the +\/Send column');
   assert.match(css, /\.reply-next-choices button\{[\s\S]*height:28px;[\s\S]*font:560 9\.75px\/1/,
     'More-with-this-reply actions use the smaller preloaded-prompt-derived button grammar');
