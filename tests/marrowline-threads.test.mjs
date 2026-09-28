@@ -37,7 +37,7 @@ test('local Marrowline archive persists full untrimmed messages across browser r
   first.close(); second.close();
 });
 
-test('first complete reply branches without mutating parent or inheriting later turns', async () => {
+test('any model reply branches without mutating parent or inheriting later turns', async () => {
   const archive = await createMarrowlineThreadLibrary(browser());
   const parent = await archive.create({
     conversationTitle: 'Original',
@@ -48,32 +48,39 @@ test('first complete reply branches without mutating parent or inheriting later 
       { role: 'model', text: 'Later answer' }
     ]
   });
-  const branch = await archive.branch(parent, 1);
-  assert.equal(branch.schema, MARROWLINE_THREADS_SCHEMA);
-  assert.equal(branch.parentId, parent.id);
-  assert.equal(branch.branchOf, 1);
-  assert.equal(branch.conversationTitle, 'Original', 'branch status is represented by parentId, never forced into the title');
-  assert.deepEqual(branch.messages, parent.messages.slice(0, 2));
-  assert.equal(branch.messages[1].text, glyph);
-  branch.messages.push({ role: 'user', text: 'Independent branch continuation' });
-  await archive.put(branch);
+  const firstBranch = await archive.branch(parent, 1);
+  assert.equal(firstBranch.schema, MARROWLINE_THREADS_SCHEMA);
+  assert.equal(firstBranch.parentId, parent.id);
+  assert.equal(firstBranch.branchOf, 1);
+  assert.equal(firstBranch.conversationTitle, 'Original', 'branch status is represented by parentId, never forced into the title');
+  assert.deepEqual(firstBranch.messages, parent.messages.slice(0, 2));
+  assert.equal(firstBranch.messages[1].text, glyph);
+
+  const laterBranch = await archive.branch(parent, 3);
+  assert.equal(laterBranch.branchOf, 3);
+  assert.deepEqual(laterBranch.messages, parent.messages.slice(0, 4), 'later branch copies only through the selected model reply');
+
+  laterBranch.messages.push({ role: 'user', text: 'Independent branch continuation' });
+  await archive.put(laterBranch);
   const original = await archive.get(parent.id);
   assert.equal(original.messages.length, 4);
-  assert.equal((await archive.get(branch.id)).messages.length, 3);
+  assert.equal((await archive.get(laterBranch.id)).messages.length, 5);
   await archive.remove(parent.id);
-  assert.equal((await archive.get(branch.id)).messages.length, 3, 'deleting a parent preserves its existing branch');
+  assert.equal((await archive.get(laterBranch.id)).messages.length, 5, 'deleting a parent preserves its existing branch');
   archive.close();
 });
 
-test('first response must be complete, and a later response cannot create a first-response branch', async () => {
+test('branching requires a real model reply but does not reject an observed incomplete reply', async () => {
   const archive = await createMarrowlineThreadLibrary(browser());
   const source = await archive.create({ messages: [
     { role: 'user', text: 'First' },
     { role: 'model', text: 'Partial', receipt: { provider: { completion: { complete: false } } } },
+    { role: 'user', text: 'Second' },
     { role: 'model', text: 'Later' }
   ] });
-  await assert.rejects(() => archive.branch(source, 1), /complete first/);
-  await assert.rejects(() => archive.branch(source, 2), /complete first/);
+  assert.equal((await archive.branch(source, 1)).branchOf, 1);
+  assert.equal((await archive.branch(source, 3)).branchOf, 3);
+  await assert.rejects(() => archive.branch(source, 2), /Marrowline reply/);
   archive.close();
 });
 
@@ -124,12 +131,12 @@ test('only exact legacy auto-generated titles are retitled; operator labels and 
     'matching legacy titles and previously generated oversized topic titles are repaired');
   const repaired = await archive.get(old.id);
   assert.equal(repaired.conversationTitle,'Stylometric Comparison with Provenance');
-  assert.equal(repaired.titleSource,'local-topic-v2');
+  assert.equal(repaired.titleSource,'local-topic-v3-after-return');
   assert.deepEqual(repaired.messages,messages,'retitling never rewrites the saved transcript or receipt');
   assert.equal((await archive.get(branch.id)).conversationTitle,repaired.conversationTitle);
   const shortened = await archive.get(longTopic.id);
-  assert.ok(shortened.conversationTitle.split(/\s+/u).length <= 6,
-    'existing generated topic title is compressed on next load');
+  assert.ok(shortened.conversationTitle.split(/\s+/u).length <= 5,
+    'existing generated topic title is compressed to five words on next load');
   assert.notEqual(shortened.conversationTitle,'I Underestimated the Contribution Was in How Directly');
   assert.equal((await archive.get(manual.id)).conversationTitle,'Archive Witnesses');
   assert.equal((await archive.get(renamed.id)).conversationTitle,'My Own Label');
@@ -137,3 +144,17 @@ test('only exact legacy auto-generated titles are retitled; operator labels and 
   archive.close();
 });
 
+
+
+test('empty default records from the old load/New behavior are pruned without touching real drafts or renamed threads', async () => {
+  const archive = await createMarrowlineThreadLibrary(browser());
+  const phantom = await archive.create();
+  const draft = await archive.create({ draft: 'keep this draft' });
+  const renamed = await archive.create({ conversationTitle: 'Named Empty Thread', titleSource: 'operator' });
+  assert.equal((await archive.all()).length, 3);
+  assert.equal(await archive.pruneEmptyGeneratedThreads(), 1);
+  assert.equal(await archive.get(phantom.id), null);
+  assert.equal((await archive.get(draft.id)).draft, 'keep this draft');
+  assert.equal((await archive.get(renamed.id)).conversationTitle, 'Named Empty Thread');
+  archive.close();
+});
