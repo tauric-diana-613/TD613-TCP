@@ -121,7 +121,7 @@ export async function stageMarrowlineAttachments(fileList, { kind = 'file', envi
     if (size > MARROWLINE_ATTACHMENT_LIMITS.singleBytes) throw new Error(`${cleanName(file?.name)} is larger than Marrowline’s 1.5 MB per-attachment limit.`);
     if (!validKindMime(kind, mime)) {
       throw new Error(kind === 'photo'
-        ? 'Choose a JPEG, PNG, WebP, HEIC/HEIF, or GIF image.'
+        ? 'Choose a JPEG, PNG, WebP, AVIF, HEIC/HEIF, or GIF image.'
         : 'Choose a TXT, Markdown, CSV, JSON, or PDF file.');
     }
     total += size;
