@@ -52,7 +52,8 @@ try {
     page.on('pageerror', error => runtimeErrors.push(error.message));
     page.on('request', request => {
       const url = new URL(request.url());
-      if (request.method() === 'POST' && !(url.pathname === '/api/khonapolit' && url.searchParams.get('operation') === 'loom-task')) unexpected.push({ url: request.url(), method: request.method() });
+      const siteEpochReset = url.pathname === '/api/site-epoch-reset' && request.method() === 'POST' && url.origin === new URL(base).origin;
+      if (request.method() === 'POST' && !siteEpochReset && !(url.pathname === '/api/khonapolit' && url.searchParams.get('operation') === 'loom-task')) unexpected.push({ url: request.url(), method: request.method() });
       if (url.hostname === 'generativelanguage.googleapis.com') unexpected.push({ direct_provider_request: request.url() });
     });
     await page.route(url => url.pathname === '/api/khonapolit' && url.searchParams.get('operation') === 'loom-task', async route => {
