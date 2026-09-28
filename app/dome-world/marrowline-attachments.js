@@ -154,14 +154,19 @@ function installStyle(doc) {
   const style = doc.createElement('style');
   style.id = STYLE_ID;
   style.textContent = `
-#marrowlineAttachmentTray{display:flex;align-items:center;gap:7px;flex-wrap:wrap;width:100%;margin:3px 0 7px;padding:0;min-height:0}
+#marrowlineAttachmentTray{position:relative;display:block;min-width:0;margin:0;padding:0}
 #marrowlineAttachmentTray[hidden]{display:none!important}
-.marrowline-attachment-chip{display:inline-flex;align-items:center;gap:6px;max-width:min(100%,360px);min-height:34px;padding:5px 7px 5px 10px;border:1px solid rgba(159,228,204,.28);border-radius:999px;background:rgba(36,55,66,.72);color:#e8f4ed;font:500 11px/1.3 var(--sans,system-ui,sans-serif)}
-.marrowline-attachment-chip b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:220px;font-weight:650}
-.marrowline-attachment-chip small{color:#9fbeb2;font:500 9px/1.2 var(--sans,system-ui,sans-serif);white-space:nowrap}
-.marrowline-attachment-remove{display:inline-grid!important;place-items:center!important;width:25px!important;height:25px!important;min-width:25px!important;min-height:25px!important;margin:0!important;padding:0!important;border:0!important;border-radius:50%!important;background:transparent!important;color:#c6dcd2!important;font:700 15px/1 var(--sans,system-ui,sans-serif)!important;text-transform:none!important;letter-spacing:0!important}
+#marrowlineAttachmentToggle{cursor:pointer}
+.marrowline-attachment-menu{position:absolute;z-index:2147483150;left:0;bottom:calc(100% + 7px);width:min(330px,calc(100vw - 28px));max-height:min(42dvh,340px);overflow:auto;padding:7px;border:1px solid rgba(131,215,214,.4);border-radius:12px;background:#17132f;color:#d8e5df;box-shadow:0 22px 65px rgba(0,0,0,.72)}
+.marrowline-attachment-menu[hidden]{display:none!important}
+.marrowline-attachment-list{display:grid;gap:4px}
+.marrowline-attachment-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;align-items:center;min-width:0;padding:8px 7px;border-top:1px solid rgba(255,255,255,.06)}
+.marrowline-attachment-row:first-child{border-top:0}
+.marrowline-attachment-copy{display:grid;min-width:0;gap:2px}
+.marrowline-attachment-copy b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#eef4f2;font:600 11px/1.25 var(--marrowline-chat-sans,system-ui,sans-serif)}
+.marrowline-attachment-copy small{color:#9fb7b3;font:500 9px/1.25 var(--marrowline-chat-sans,system-ui,sans-serif)}
+.marrowline-attachment-remove{display:inline-grid!important;place-items:center!important;width:28px!important;height:28px!important;min-width:28px!important;min-height:28px!important;margin:0!important;padding:0!important;border:0!important;border-radius:6px!important;background:transparent!important;color:#c6dcd2!important;font:700 15px/1 var(--marrowline-chat-sans,system-ui,sans-serif)!important;text-transform:none!important;letter-spacing:0!important}
 .marrowline-attachment-remove:hover,.marrowline-attachment-remove:focus-visible{background:rgba(255,255,255,.08)!important;color:#fff!important}
-@media(max-width:860px){.marrowline-attachment-chip{max-width:100%}.marrowline-attachment-chip b{max-width:170px}}
 `;
   doc.head.append(style);
 }
@@ -175,31 +180,99 @@ export function installMarrowlineAttachmentTray(doc = document, environment = wi
   if (!tray) {
     tray = doc.createElement('div');
     tray.id = 'marrowlineAttachmentTray';
-    tray.setAttribute('aria-live', 'polite');
     tray.setAttribute('aria-label', 'Attachments staged for your next Marrowline message');
     tray.hidden = true;
+
+    const toggle = doc.createElement('button');
+    toggle.id = 'marrowlineAttachmentToggle';
+    toggle.className = 'marrowline-attachment-toggle';
+    toggle.type = 'button';
+    toggle.setAttribute('aria-haspopup', 'dialog');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-controls', 'marrowlineAttachmentMenu');
+    const glyph = doc.createElement('span');
+    glyph.className = 'marrowline-thread-glyph';
+    glyph.setAttribute('aria-hidden', 'true');
+    glyph.textContent = '▱';
+    const label = doc.createElement('span');
+    label.textContent = 'Attachments';
+    toggle.append(glyph, label);
+
+    const menu = doc.createElement('div');
+    menu.id = 'marrowlineAttachmentMenu';
+    menu.className = 'marrowline-attachment-menu';
+    menu.hidden = true;
+    menu.setAttribute('role', 'dialog');
+    menu.setAttribute('aria-label', 'Staged attachments');
+    const list = doc.createElement('div');
+    list.className = 'marrowline-attachment-list';
+    menu.append(list);
+    tray.append(toggle, menu);
     actions.before(tray);
+
+    const close = () => {
+      menu.hidden = true;
+      toggle.setAttribute('aria-expanded', 'false');
+    };
+    toggle.addEventListener('click', () => {
+      const opening = menu.hidden;
+      menu.hidden = !opening;
+      toggle.setAttribute('aria-expanded', String(opening));
+    });
+    doc.addEventListener('click', event => {
+      if (!menu.hidden && !tray.contains(event.target)) close();
+    });
+    doc.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && !menu.hidden) {
+        close();
+        toggle.focus?.({ preventScroll: true });
+      }
+    });
   }
+
+  const toggle = doc.getElementById('marrowlineAttachmentToggle');
+  const menu = doc.getElementById('marrowlineAttachmentMenu');
+  const list = menu?.querySelector('.marrowline-attachment-list');
+  const status = doc.getElementById('khonapolitTerminalStatus');
   const render = () => {
     const state = attachmentState();
-    tray.replaceChildren();
-    tray.hidden = state.count === 0;
+    const dispatching = status?.dataset.phase === 'pending';
+    if (list) list.replaceChildren();
+    tray.hidden = state.count === 0 || dispatching;
+    if (tray.hidden && menu) {
+      menu.hidden = true;
+      toggle?.setAttribute('aria-expanded', 'false');
+    }
+    if (toggle) toggle.setAttribute('aria-label', `Open ${state.count} staged attachment${state.count === 1 ? '' : 's'}`);
     for (const item of state.attachments) {
-      const chip = doc.createElement('span');
-      chip.className = 'marrowline-attachment-chip';
-      chip.dataset.attachmentId = item.id;
-      const kind = doc.createElement('span'); kind.textContent = item.kind === 'photo' ? 'Photo' : 'File';
-      const name = doc.createElement('b'); name.textContent = item.name;
-      const size = doc.createElement('small'); size.textContent = formatBytes(item.size_bytes);
+      const row = doc.createElement('div');
+      row.className = 'marrowline-attachment-row';
+      row.dataset.attachmentId = item.id;
+      const copy = doc.createElement('span');
+      copy.className = 'marrowline-attachment-copy';
+      const name = doc.createElement('b');
+      name.textContent = item.name;
+      const meta = doc.createElement('small');
+      meta.textContent = `${item.kind === 'photo' ? 'Photo' : 'File'} · ${formatBytes(item.size_bytes)}`;
+      copy.append(name, meta);
       const remove = doc.createElement('button');
-      remove.type = 'button'; remove.className = 'marrowline-attachment-remove'; remove.textContent = '×';
+      remove.type = 'button';
+      remove.className = 'marrowline-attachment-remove';
+      remove.textContent = '×';
       remove.setAttribute('aria-label', `Remove ${item.name}`);
       remove.addEventListener('click', () => removeMarrowlineAttachment(item.id, environment));
-      chip.append(kind, name, size, remove);
-      tray.append(chip);
+      row.append(copy, remove);
+      list?.append(row);
     }
   };
   environment.addEventListener?.(CHANGE_EVENT, render);
+  const Observer = environment.MutationObserver;
+  if (status && typeof Observer === 'function') {
+    const observer = new Observer(render);
+    observer.observe(status, { attributes: true, attributeFilter: ['data-phase'] });
+    environment.__TD613_MARROWLINE_ATTACHMENT_STATUS_OBSERVER__?.disconnect?.();
+    environment.__TD613_MARROWLINE_ATTACHMENT_STATUS_OBSERVER__ = observer;
+  }
   render();
   environment.__TD613_MARROWLINE_ATTACHMENT_STATE__ = () => attachmentState();
   return true;
