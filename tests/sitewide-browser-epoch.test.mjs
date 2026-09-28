@@ -30,7 +30,9 @@ test('one universal epoch loads before station code',()=>{
 test('browser data purge includes conversations, Ash, storage, workers, and caches',()=>{
  for(const token of ['Clear-Site-Data','td613-marrowline-conversations-v1','td613-ash-keep','indexedDB.deleteDatabase','localStorage.clear()','sessionStorage.clear()','serviceWorker.getRegistrations','caches.delete'])assert(reset.includes(token)||read('lib/site-epoch-reset.js').includes(token),token);
  assert(reset.includes('Blocked by another open tab'));
- assert(reset.includes('td613.ash.cache-preflight.epoch'));
+ assert(!reset.includes('td613.ash.cache-preflight.epoch'));
+ assert(!reset.includes('td613.ash.cache-flush.aia3.epoch'));
+ assert(!reset.includes('td613.ash.cache-flush.epoch'));
  assert(ash.includes('sitewide_epoch_authoritative:true'));
  assert(ash.includes('legacy_reset_suppressed:true'));
 });
@@ -52,13 +54,13 @@ test('Flight rest is selectable in preface and close, and copiable in Glyph Bay'
  assert.equal(flight.split('id="ftrRest"').length-1,1);
 });
 
-test('Ash specialist presentation retains historical receipt semantics after the universal epoch',()=>{
- assert(ash.includes('sitewide_epoch_authoritative:true,legacy_reset_suppressed:true,legacy_bypass:legacyPresentation'));
- const wrapper=read('scripts/ash-lifecycle-production-probe.mjs');
- assert(wrapper.includes('first-visit site epoch before lifecycle network capture'));
- assert(wrapper.includes('site-epoch-reset.html?return=%2F'));
- assert(wrapper.includes('const page = await context.newPage();'));
- assert(wrapper.includes('td613.site.browser-reset.epoch'));
- assert(wrapper.includes("  'td613.ash.session.epoch',\\n  'td613.site.browser-reset.epoch'\\n]);"), 'Ash local-storage witness must allow the one-time origin marker');
- assert(!wrapper.includes('legacy eviction before first-visit reset'));
+test('Ash specialist presentation is compatibility-only after the universal epoch',()=>{
+ assert(ash.includes('retired:true'));
+ assert(ash.includes('sitewide_epoch_authoritative:true'));
+ assert(ash.includes("window.__td613AshAia3Preflight=Promise.resolve(receipt)"));
+ assert(!ash.includes('Clear-Site-Data'));
+ assert(!ash.includes('caches.keys'));
+ assert(!ash.includes('getRegistrations'));
+ assert(!ash.includes('location.replace(recoveryBridge)'));
+ assert(!ash.includes("url.searchParams.set('surface','cache-evict')"));
 });
