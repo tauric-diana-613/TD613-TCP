@@ -1065,7 +1065,7 @@ html:root body #khonapolitMessages .starter-prompts .starter-rotate{
   font-size:10.5px!important;line-height:1.25!important;white-space:normal;
 }
 #khonapolitMessages .relay-message .reply-next-choices{
-  display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:7px 0 3px;
+  display:grid;grid-template-columns:max-content max-content;align-items:center;justify-content:start;gap:6px;padding:7px 0 3px;
 }
 #khonapolitMessages .relay-message .reply-next-choices button{
   appearance:none;-webkit-appearance:none;box-sizing:border-box;min-width:0;width:auto;
