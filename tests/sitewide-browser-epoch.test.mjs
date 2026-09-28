@@ -33,6 +33,7 @@ test('browser data purge includes conversations, Ash, storage, workers, and cach
  assert(reset.includes('td613.ash.cache-preflight.epoch'));
  assert(ash.includes('sitewide_epoch_authoritative:true'));
  assert(ash.includes('legacy_reset_suppressed:true'));
+ assert(ash.includes('legacy_bypass:legacyPresentation'), 'Site-wide epoch must preserve the canonicalized Ash legacy presentation receipt without rerunning eviction');
 });
 test('reset endpoint returns destructive header only for same-origin epoch POST',()=>{
  function response(){const h={};return{h,setHeader(k,v){h[k.toLowerCase()]=v},end(body){this.body=JSON.parse(body)}}}
