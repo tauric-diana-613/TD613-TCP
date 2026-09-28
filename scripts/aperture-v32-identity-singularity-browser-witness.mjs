@@ -5,6 +5,7 @@ import { appendFileSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { performance } from 'node:perf_hooks';
 import { chromium, firefox, webkit } from 'playwright';
+import { settleSiteEpochBaseline } from './site-epoch-browser-baseline.mjs';
 import {
   APERTURE_V32_IDENTITY_SAMPLE_SCHEDULE,
   remainingWaitMs,
@@ -347,6 +348,7 @@ try {
   });
 
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 }, colorScheme: 'dark', reducedMotion: 'reduce' });
+  report.site_epoch_baseline = await settleSiteEpochBaseline(context, base);
   let contextClosed = false;
   context.on('close', () => {
     contextClosed = true;
