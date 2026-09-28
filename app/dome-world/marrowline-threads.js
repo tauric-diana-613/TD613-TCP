@@ -15,7 +15,7 @@ const FALLBACK_KEY = 'TD613_MARROWLINE_LOCAL_THREADS_V1';
 const ACTIVE_KEY = 'td613-marrowline-active-thread-v1';
 const copy = value => value == null ? value : JSON.parse(JSON.stringify(value));
 const timestamp = () => new Date().toISOString();
-const empty = () => ({ messages: [], lastReceipt: null, pendingTask: '', lastFailure: null, conversationTitle: DEFAULT_MARROWLINE_TITLE, titleSource: null, draft: '' });
+const empty = () => ({ messages: [], lastReceipt: null, pendingTask: '', lastFailure: null, conversationTitle: '', titleSource: null, draft: '' });
 function newId(root) {
   return root.crypto?.randomUUID?.() || 'thread-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
 }
@@ -89,7 +89,7 @@ export function threadFromState(root, state = empty(), { parentId = null, branch
   return {
     ...copy(empty()), ...copy(state), schema: MARROWLINE_THREADS_SCHEMA,
     id: newId(root), parentId, branchOf, createdAt: time, updatedAt: time,
-    conversationTitle: title || state.conversationTitle || DEFAULT_MARROWLINE_TITLE,
+    conversationTitle: title ?? state.conversationTitle ?? '',
     titleSource: state.titleSource || null,
     messages: copy(Array.isArray(state.messages) ? state.messages : [])
   };
@@ -116,7 +116,7 @@ export async function createMarrowlineThreadLibrary(root = window) {
       ...empty(),
       messages: copy(parent.messages.slice(0, index + 1)),
       lastReceipt: copy(answer.receipt || null),
-      conversationTitle: parent.conversationTitle || DEFAULT_MARROWLINE_TITLE,
+      conversationTitle: parent.conversationTitle || '',
       titleSource: parent.titleSource || null
     }, { parentId: parent.id, branchOf: index });
   };
@@ -126,15 +126,15 @@ export async function createMarrowlineThreadLibrary(root = window) {
     // overwrite of manually renamed/uncertain titles.
     let changed = 0;
     for (const thread of await all()) {
-      if (thread.titleSource === 'operator' || thread.titleSource === 'pending-return') continue;
+      if (thread.titleSource === 'operator') continue;
       const first = thread.messages?.find(entry => entry?.role === 'user' && String(entry.text || '').trim());
       const hasReply = thread.messages?.some(entry => entry?.role === 'model');
       if (!first || !hasReply) continue;
       const current = String(thread.conversationTitle || '');
-      // Also compress the previously installed topical titles: they may have
-      // had nine words. An unmarked record still requires exact legacy match.
-      const generated = ['local-topic-v2','local-topic-v3-after-return'].includes(thread.titleSource);
-      if (!generated && current !== legacyMarrowlineTitle(first.text) && current !== DEFAULT_MARROWLINE_TITLE) continue;
+      // Completed legacy/provisional records are eligible for deterministic
+      // repair. Blank is an intentional "not named yet" value, never a title.
+      const generated = ['local-topic-v2','local-topic-v3-after-return','pending-return'].includes(thread.titleSource);
+      if (!generated && current && current !== legacyMarrowlineTitle(first.text) && current !== DEFAULT_MARROWLINE_TITLE) continue;
       const next = deriveMarrowlineConversationTitle(first.text);
       if (next === DEFAULT_MARROWLINE_TITLE || (generated && next === current)) continue;
       await put({ ...thread, conversationTitle: next, titleSource: 'local-topic-v3-after-return' });
@@ -143,19 +143,29 @@ export async function createMarrowlineThreadLibrary(root = window) {
     return changed;
   };
   const pruneEmptyGeneratedThreads = async () => {
-    // Remove only records that carry literally no human/model/draft/failure
-    // content and retain the old default auto-title. These are the phantom
-    // records previously created by page load/New before any conversation.
+    // "The speaking grove" is presentation language, never durable thread data.
+    // Delete truly empty legacy phantoms. Preserve meaningful interrupted work
+    // by converting its old/default title into an explicitly untitled
+    // provisional record; completed records are named by the migration below.
     let removed = 0;
     for (const thread of await all()) {
-      const emptyMessages = !Array.isArray(thread.messages) || thread.messages.length === 0;
+      if (thread.titleSource === 'operator') continue;
+      const messages = Array.isArray(thread.messages) ? thread.messages : [];
+      const emptyMessages = messages.length === 0;
       const emptyDraft = !String(thread.draft || '').trim();
       const emptyPending = !String(thread.pendingTask || '').trim();
       const noFailure = !thread.lastFailure;
-      const defaultTitle = !thread.titleSource && (!thread.conversationTitle || thread.conversationTitle === DEFAULT_MARROWLINE_TITLE);
-      if (emptyMessages && emptyDraft && emptyPending && noFailure && defaultTitle) {
+      const hasReply = messages.some(entry => entry?.role === 'model');
+      const storedTitle = String(thread.conversationTitle || '').trim();
+      const defaultTitle = !storedTitle || storedTitle === DEFAULT_MARROWLINE_TITLE;
+      if (!defaultTitle) continue;
+      if (emptyMessages && emptyDraft && emptyPending && noFailure) {
         await remove(thread.id);
         removed++;
+        continue;
+      }
+      if (!hasReply && (storedTitle || thread.titleSource !== 'pending-return')) {
+        await put({ ...thread, conversationTitle: '', titleSource: 'pending-return' });
       }
     }
     return removed;
