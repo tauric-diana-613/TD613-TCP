@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { chromium, firefox, webkit } from 'playwright';
+import { settleSiteEpochBaseline } from './site-epoch-browser-baseline.mjs';
 
 const scriptsDir = path.dirname(fileURLToPath(import.meta.url));
 const legacyWitnessPath = path.join(scriptsDir, 'holonomy-loom-hosted-product-integration-browser-witness.mjs');
@@ -92,7 +93,9 @@ function detailsOpen(locator) {
 
 const browser = await browserType.launch({ headless: true });
 try {
-  const page = await browser.newPage({ viewport: { width: 1280, height: 820 }, colorScheme: 'dark' });
+  const context = await browser.newContext({ viewport: { width: 1280, height: 820 }, colorScheme: 'dark' });
+  report.site_epoch_baseline = await settleSiteEpochBaseline(context, base);
+  const page = await context.newPage();
   page.on('pageerror', error => report.page_errors.push(error.message));
   page.on('console', message => {
     if (message.type() === 'error') report.console_errors.push(message.text());
