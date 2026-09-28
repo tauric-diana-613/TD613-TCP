@@ -17,40 +17,41 @@ repeating the same browser matrix after deployment ≠ stronger evidence
 
 1. Develop and validate without Vercel deployment.
 2. Complete the packet on an exact pull-request head.
-3. Require scope-aligned three-engine evidence before merge through `TD613 Consolidated Validation`.
+3. Pass the fast automatic contract/smoke lane. Deep Chromium/Firefox/WebKit, Ash, Dome-World, and Flow-Core estates are manual diagnostics, not merge authority.
 4. Merge the exact green head and identify the exact current `main` commit.
 5. Receive one explicit operator release gesture in chat.
 6. The assistant/Codex invokes issue #405 with that exact SHA.
 7. One Vercel deployment is attempted.
-8. When the bounded Git fallback is used, the one deployable release commit must first receive bounded GitHub/Vercel adoption acknowledgement for that exact transient SHA; the lock is then restored before any production-source waiting or browser observation begins.
-9. The deployed application bytes are compared with the authorized packet.
-10. The authorized source receipt must remain stable through a bounded stale-queue window, then exact application bytes are reconfirmed.
-11. One scope-aligned bounded Chromium production confirmation observes the released surface: Giving for Giving-only packets, or desktop/mobile and Ash lifecycle continuity for full-product packets.
-12. A final source-receipt guard confirms production still belongs to the authorized packet before the release is sealed.
+8. When the bounded Git fallback is used, the one deployable release commit must receive bounded GitHub/Vercel adoption acknowledgement for that exact transient SHA; the lock is restored before production-source waiting begins.
+9. Verify the authorized source receipt and exact deployed application bytes.
+10. Hold the authorized source stable through the bounded stale-queue window and reconfirm exact application bytes.
+11. Giving/practice scopes may run their bounded Chromium product consequence witness. Full-product scope requires no Ash, Flow-Core, or cross-browser release ceremony.
+12. A final source-receipt guard confirms production still belongs to the authorized packet before sealing.
 
 ```text
 operator authorization → assistant/Codex execution → one Vercel deployment
-one deployable fallback commit → bounded Vercel adoption acknowledgement → relock → production observation
+one deployable fallback commit → bounded Vercel adoption acknowledgement → relock → exact-source verification
 ```
 
-The operator is not required to operate Vercel, GitHub Actions, or deployment plumbing. The operator authorizes. The assistant/Codex transports that authorization through the governed conduit, executes, observes, relocks, and reports. Relay identity does not create release authority.
+The operator is not required to operate Vercel, GitHub Actions, or deployment plumbing. The operator authorizes. The assistant/Codex transports that authorization through the governed conduit, executes, observes exact source, relocks, and reports. Relay identity does not create release authority.
 
 ## Evidence placement
 
-The costly cross-browser proof belongs before merge, where a defect can still stop promotion without creating a public release.
+The default pull-request lane is deliberately small. Release/smoke, current Marrowline/Gemini contracts, and exact deployment plumbing run automatically. Deep browser and historical product estates remain callable by explicit diagnostic dispatch.
 
 ```text
-Giving-only premerge authority = Giving Chromium + Firefox + WebKit
-full-product premerge authority = full-product Chromium + Firefox + WebKit
-Giving-only production confirmation = one Giving Chromium witness
-full-product production confirmation = one Chromium desktop/mobile witness + Ash lifecycle observation
+ordinary PR authority = fast contract/smoke lane
+deep Chromium + Firefox + WebKit = manual diagnostic
+Ash / Dome-World / Flow-Core deep estate = manual diagnostic
+Giving/practice browser witness = manual diagnostic unless the release scope itself requires its bounded Chromium consequence check
+full-product production release = exact-source receipt + exact application bytes + stability guards
 ```
 
-The premerge witness must cover every principal journey affected by the classified packet, plus static truth, reduced motion, accessibility-relevant controls, and the relevant generation contracts. A Giving-only diff runs the common release membrane, Giving contracts, and the Giving export journey across Chromium, Firefox, and WebKit; it does not invoke Ash, Dome-World, or Flow-Core product suites. A full-product diff invokes the full Ash, Dome-World, Flow-Core, and related matrix. Classification fails closed to the full-product witness whenever any changed application file falls outside Giving.
+A manual diagnostic may discover a real defect and justify a repair. Its absence does not block an unrelated merge or release, and historical Ash closure law does not acquire veto power over Marrowline or another product merely because both live in the repository.
 
-The production confirmation follows the same classification. Giving-only releases run the bounded Giving Chromium probe and do not start Ash. Full-product releases retain the bounded registry, Archive, desktop/mobile, and Ash lifecycle observation. Production verifies deployment identity and a bounded live consequence path; it does not replay the entire cross-browser estate.
+Giving and practice retain bounded product-specific Chromium confirmation where that confirmation establishes a live consequence of the released scope. Full-product release no longer starts Ash registry, Archive, lifecycle, Flow-Core, or three-engine ceremony. Provider/literary quality is likewise separate manual observation, never deployment-success authority.
 
-This separation preserves evidence while avoiding repeated browser downloads, duplicated local servers, repeated fixture construction, and parallel workflows proving the same source packet.
+This placement preserves useful deep diagnostics while avoiding repeated browser downloads, fixture construction, local servers, stale migration contracts, and unrelated product witnesses on every change.
 
 ## Cost and attempt ceiling
 
@@ -119,7 +120,7 @@ When the token bridge is absent, the gate may use the repository's **bounded Git
 7. observe exact application-content parity against the authorized source packet;
 8. require the source receipt to remain unchanged through the bounded stale-queue stability window;
 9. reconfirm exact application bytes after that window;
-10. run the scope-aligned non-provider production witness, record the live-AI canary as deferred explicit observation with zero automatic Gemini calls, and perform one final source-receipt guard.
+10. run any scope-required Giving/practice Chromium consequence check, record provider/literary observation as manual-only with zero automatic Gemini calls, and perform one final source-receipt guard.
 
 ```text
 direct token bridge OR bounded Git fallback
@@ -146,65 +147,35 @@ After production first matches the authorized source packet:
 ```text
 authorized source receipt = stable through bounded queue window
 → exact application bytes = reconfirmed
-→ scope-aligned non-provider production witness
-→ live AI witness = deferred explicit observation (0 automatic Gemini calls)
+→ Giving/practice consequence witness only when applicable
+→ provider/literary diagnostics = manual-only (0 automatic Gemini calls)
 → post-witness source receipt = still authorized packet
 ```
 
 Any later stale deployment that replaces the authorized receipt holds the release. Production cannot be sealed from a momentary match that is displaced during the stability window.
 
-## Explicit production AI observation
+## Manual provider / literary observation
 
-Live provider liveness is **not** deployment-success authority.
+Live provider liveness, Marrowline literary quality, native typography, and Loom answer quality are **not** deployment-success authority.
 
-The Vercel Operator Release already establishes deployment success from the exact-source receipt, exact served application bytes, bounded stale-queue stability, scope-aligned Chromium production checks, and lifecycle observations. A later Gemini `429`, `503`, provider timeout, or other provider-transport event cannot invalidate those already-observed deployment facts.
+The Vercel Operator Release establishes deployment success from exact-source receipt, exact served application bytes, bounded stale-queue stability, and final source ownership. A later Gemini `429`, `503`, timeout, stylistic miss, or successful sample cannot rewrite those deployment facts.
 
-Therefore the deployment workflow spends:
+Therefore:
 
 ```text
 automatic Gemini calls during Vercel deployment = 0
-live provider liveness = deferred explicit observation
+permanent production-reobserve workflow = retired
+Dollhouse production-trial listener = retired
+provider/literary observation = operator-directed manual diagnostic
 provider failure ≠ deployment failure
+diagnostic success ≠ retroactive release promotion
 ```
 
-The live Loom/Marrowline canary remains available as a separate read-only authority surface. After a fresh explicit operator gesture in chat, the assistant/Codex may post to issue #405:
-
-```text
-/td613-production-reobserve PRODUCTION <40-character-deployed-source-sha> <prior-release-run-id>
-```
-
-The observation conduit accepts only:
-
-- issue #405;
-- the repository owner or the exact installed `chatgpt-codex-connector[bot]` carrying the operator gesture;
-- a 40-character source SHA;
-- the numeric workflow-run ID of a terminal governed Vercel Operator Release;
-- an unchanged production source receipt matching the named source packet;
-- the same release concurrency group used by deployment, preventing observation and deployment from overlapping.
-
-The prior release may be GREEN or historically HELD. The prior run is an identity/custody anchor, not permission to rewrite its state.
-
-The observation workflow has `contents: read`, `actions: read`, and `issues: write` only. It carries no Vercel credential, no Git push route, no lock-opening assignment, and no deployment invocation. It checks exact application bytes before the live Loom/Marrowline witness, checks source ownership again afterward, and reconfirms exact bytes after the witness.
-
-The explicit canary itself is bounded to two provider requests maximum: one pinned Marrowline seat and one pinned Loom seat. It no longer hashes a release SHA into an arbitrary model seat. Defaults are task-aligned and caller-overridable:
-
-```text
-Marrowline default = gemini-3.8-flash
-Loom default = gemini-3.5-flash
-max provider requests = 2
-deployment_count = 0
-deployment_authority = false
-retroactive_release_rewrite = false
-counts_as_human_evidence = false
-```
-
-Temporal non-retroactivity remains mandatory. A later successful or failed provider-backed witness supplements the deployment record; it cannot relabel the historical release, erase an earlier provider outage, create deployment authority, or justify an automatic redeploy.
-
-This separation prevents a scarce or unstable provider quota from turning an already-verified application deployment RED merely because a live AI service happened to be unavailable at the end of the release ritual.
+The diagnostic script may remain in the repository for a deliberately invoked investigation. It carries no standing GitHub Actions listener, deployment authority, release concurrency claim, or automatic retry authority. Temporal non-retroactivity remains mandatory: a later provider sample supplements understanding; it does not relabel an earlier release.
 
 ## Independent relock safety
 
-`vercel-relock-safety.yml` remains separate because its authority differs from validation, deployment, and explicit production AI observation.
+`vercel-relock-safety.yml` remains separate because its break-glass relock authority differs from validation and deployment. The same listener file also houses explicitly named, dormant SRC/Wendbine research intake gates; those commands carry no Vercel authority.
 
 Ordinary production release and emergency relock recovery use different issue #405 commands:
 
@@ -226,7 +197,7 @@ Operator Release retains workflow-level `td613-vercel-production-release` serial
 
 The installed ChatGPT/Codex connector may transport either exact #405 command only after the human operator explicitly authorizes the corresponding release or recovery action in chat. Duplicate connector delivery does not widen authority: a release remains bound to exact current main, while relock recovery is idempotent when the Git deployment lock is already closed.
 
-Combining this membrane into the validator would widen validator write authority. Deleting it would leave an interrupted fallback capable of stranding the lock open. Explicit production AI observation likewise remains separate because granting its read-only observational authority to the deployment workflow would make a later witness indistinguishable from a second release attempt. These therefore remain distinct members of the five durable workflow authority surfaces.
+Combining the relock membrane into the validator would widen validator write authority. Deleting it would leave an interrupted fallback capable of stranding the lock open. Provider observation no longer needs a durable Actions surface. The durable workflow estate therefore remains intentionally small.
 
 ## Required terminal receipt
 
@@ -238,17 +209,16 @@ deployment_count = 1
 exact_source_content = PASS
 stale_queue_stability_window = PASS
 post_witness_source_guard = PASS
-premerge_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE
+premerge_deep_browser_diagnostics = MANUAL_ONLY_NOT_RELEASE_AUTHORITY
+premerge_witness_scope = FAST_CONTRACT_LANE
 validation_scope = giving OR practice OR full
 production_giving_history = PASS OR NOT_APPLICABLE
 production_practice_fixture = PASS OR NOT_APPLICABLE
-production_chromium_desktop_mobile = PASS OR NOT_APPLICABLE
-ash_lifecycle_deployed_observation = PASS OR NOT_APPLICABLE
+production_full_product_browser_witness = NOT_REQUIRED_EXACT_SOURCE_ONLY OR NOT_APPLICABLE
+ash_production_ceremony = RETIRED
 application_tree_drift = none
 git_auto_deploy = disabled
 ```
-
-For a provider-held unchanged-source re-observation, the supplementary receipt instead names the prior held run, preserves `prior_release_state = HELD_UNCHANGED`, records `deployment_count = 0`, and binds exact-source evidence on both sides of the live witness. That supplementary receipt does not replace the historical release receipt.
 
 Gate acceptance alone is not a terminal receipt. Deployment success does not become human empirical evidence, child-study authority, custody authority, future release authority, public-route promotion, or program closure.
 
@@ -265,15 +235,20 @@ partial surface success ≠ whole-product release success
 
 ## Cache-epoch storage boundary
 
-`td613.ash.cache-flush.epoch` is maintenance state used only to make one-time mass eviction idempotent. It remains outside Case Maps, receipts, Save Points, Capsules, source material, and user-authored content.
+The September 27 site-wide browser epoch is the sole stale-client eviction authority while its migration window remains open. It is one-time per browser-profile/site-data lifetime and exists only to clear the pre-reset stale state.
+
+Ash-specific mass-eviction epochs are retired. Ash may retain historical labels and receipts for provenance, but runtime Ash code may not clear browser caches, unregister service workers, invoke an Ash eviction endpoint, redirect through an eviction recovery bridge, or seed Ash eviction markers.
 
 ```text
-cache epoch marker = permitted maintenance state
-cache epoch marker ≠ case data
-cache eviction ≠ IndexedDB deletion
-cache eviction ≠ local-custody erasure
+site-wide epoch = temporary stale-client migration authority
+Ash mass eviction = RETIRED
+Ash cache-preflight compatibility receipt = non-destructive
+cache migration ≠ ongoing product governance
+cache migration ≠ case data
 ```
 
-For A12–A15, graph-wide mass eviction remains reserved for A15 postclosure. A12–A14 use ordinary monotonic asset-version advancement only.
+Once the stale-client migration window is deliberately closed, the site-wide preflight/reset may itself be retired in a separate bounded change.
+
+Sealed ⟐
 
 Sealed ⟐
