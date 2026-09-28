@@ -11,6 +11,7 @@ const reset=read('app/site-epoch-reset.js');
 const flight=read('app/safe-harbor/td613-flight.html');
 const ash=read('lib/dome-world-shell-core.js');
 const config=JSON.parse(read('vercel.json'));
+const localClosure=read('scripts/ash-keep-local-closure-server.mjs');
 test('one universal epoch loads before station code',()=>{
  const missing=[];
  function walk(dir){for(const item of fs.readdirSync(dir,{withFileTypes:true})){
@@ -45,6 +46,16 @@ test('reset endpoint returns destructive header only for same-origin epoch POST'
  assert.equal(config.git.deploymentEnabled,false);
  assert(config.rewrites.some(x=>x.source==='/api/site-epoch-reset'&&x.destination==='/api/dome-world-shell?surface=site-epoch-reset'));
  assert.equal(fs.readdirSync('api').filter(x=>/\.(js|py)$/.test(x)).length,11);
+ for(const mapping of [
+   "pathname === '/site-epoch-preflight.js'",
+   "return 'app/site-epoch-preflight.js'",
+   "pathname === '/site-epoch-reset.js'",
+   "return 'app/site-epoch-reset.js'",
+   "pathname === '/site-epoch-reset.html'",
+   "return 'app/site-epoch-reset.html'",
+   "url.pathname === '/api/site-epoch-reset'",
+   "handleSiteEpochReset(req, res)"
+ ]) assert(localClosure.includes(mapping), 'local closure server must preserve production site-epoch geometry: '+mapping);
 });
 test('Flight rest is selectable in preface and close, and copiable in Glyph Bay',()=>{
  for(const value of ['id="bodyPreRest"','id="ftrRest"','data-copy="𝄐"','pre.push("𝄐")','lines.push("𝄐")'])assert(flight.includes(value),value);
