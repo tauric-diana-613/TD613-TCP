@@ -5,6 +5,7 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { stabilizeAshKeepSource } from '../app/dome-world/ash-keep-delivery-transform.js';
 import { injectAshKeepLifecycle, ASH_LIFECYCLE_ASSET_EPOCH, ASH_MASS_EVICTION_EPOCH } from '../api/dome-world-shell.js';
+import handleSiteEpochReset from '../lib/site-epoch-reset.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, '..');
@@ -78,6 +79,12 @@ function resolvePublicPath(pathname) {
   // The local closure server must preserve that URL geometry for nested
   // Dome-World ES-module imports such as ../../gemini-consumption-ledger.js.
   if (pathname === '/gemini-consumption-ledger.js') return 'app/gemini-consumption-ledger.js';
+  // Match the exact public-root rewrites in vercel.json for the one-time
+  // browser epoch. Browser witnesses must exercise the same URL geometry as
+  // production rather than 404ing the preflight and accidentally bypassing it.
+  if (pathname === '/site-epoch-preflight.js') return 'app/site-epoch-preflight.js';
+  if (pathname === '/site-epoch-reset.js') return 'app/site-epoch-reset.js';
+  if (pathname === '/site-epoch-reset.html') return 'app/site-epoch-reset.html';
   for (const [publicPrefix, repositoryPrefix] of ROUTE_PREFIXES) {
     if (pathname.startsWith(publicPrefix)) return `${repositoryPrefix}${pathname.slice(publicPrefix.length)}`;
   }
@@ -230,6 +237,9 @@ self.addEventListener('fetch', event => {
   }
   if (req.method === 'POST' && url.pathname === ASH_CUSTODY_REGISTER_ROUTE) {
     return sendGuardedCustodyRegistration(req, res);
+  }
+  if (req.method === 'POST' && url.pathname === '/api/site-epoch-reset') {
+    return handleSiteEpochReset(req, res);
   }
   if (req.method !== 'GET' && req.method !== 'HEAD') return sendJson(res, 405, { ok: false, error: 'method-not-allowed' });
 
