@@ -105,18 +105,21 @@ export async function createMarrowlineThreadLibrary(root = window) {
   const remove = id => adapter.remove(id);
   const create = async (state = empty(), args = {}) => put(threadFromState(root, state, args));
   const branch = async (parent, responseIndex) => {
-    const first = parent?.messages?.[0];
-    const answer = parent?.messages?.[responseIndex];
-    if (responseIndex !== 1 || first?.role !== 'user' || answer?.role !== 'model'
+    const index = Number(responseIndex);
+    const answer = parent?.messages?.[index];
+    const priorHuman = Array.isArray(parent?.messages)
+      ? parent.messages.slice(0, index).some(entry => entry?.role === 'user')
+      : false;
+    if (!Number.isInteger(index) || index < 1 || !priorHuman || answer?.role !== 'model'
         || answer.receipt?.provider?.completion?.complete === false)
-      throw new Error('A complete first Marrowline response is required to branch');
+      throw new Error('A complete Marrowline reply is required to branch');
     return create({
       ...empty(),
-      messages: copy(parent.messages.slice(0, 2)),
+      messages: copy(parent.messages.slice(0, index + 1)),
       lastReceipt: copy(answer.receipt || null),
       conversationTitle: parent.conversationTitle || DEFAULT_MARROWLINE_TITLE,
       titleSource: parent.titleSource || null
-    }, { parentId: parent.id, branchOf: responseIndex });
+    }, { parentId: parent.id, branchOf: index });
   };
   const migrateLegacyGeneratedTitles = async () => {
     // A one-time exact-match repair of old eight-word titles plus compression
@@ -130,14 +133,32 @@ export async function createMarrowlineThreadLibrary(root = window) {
       const current = String(thread.conversationTitle || '');
       // Also compress the previously installed topical titles: they may have
       // had nine words. An unmarked record still requires exact legacy match.
-      const generated = thread.titleSource === 'local-topic-v2';
+      const generated = ['local-topic-v2','local-topic-v3-after-return'].includes(thread.titleSource);
       if (!generated && current !== legacyMarrowlineTitle(first.text) && current !== DEFAULT_MARROWLINE_TITLE) continue;
       const next = deriveMarrowlineConversationTitle(first.text);
       if (next === DEFAULT_MARROWLINE_TITLE || (generated && next === current)) continue;
-      await put({ ...thread, conversationTitle: next, titleSource: 'local-topic-v2' });
+      await put({ ...thread, conversationTitle: next, titleSource: 'local-topic-v3-after-return' });
       changed++;
     }
     return changed;
+  };
+  const pruneEmptyGeneratedThreads = async () => {
+    // Remove only records that carry literally no human/model/draft/failure
+    // content and retain the old default auto-title. These are the phantom
+    // records previously created by page load/New before any conversation.
+    let removed = 0;
+    for (const thread of await all()) {
+      const emptyMessages = !Array.isArray(thread.messages) || thread.messages.length === 0;
+      const emptyDraft = !String(thread.draft || '').trim();
+      const emptyPending = !String(thread.pendingTask || '').trim();
+      const noFailure = !thread.lastFailure;
+      const defaultTitle = !thread.titleSource && (!thread.conversationTitle || thread.conversationTitle === DEFAULT_MARROWLINE_TITLE);
+      if (emptyMessages && emptyDraft && emptyPending && noFailure && defaultTitle) {
+        await remove(thread.id);
+        removed++;
+      }
+    }
+    return removed;
   };
   const migrateLegacyBranchTitles = async () => {
     // v1 generated a mechanical " · Branch" suffix. Only remove it when it
@@ -168,7 +189,7 @@ export async function createMarrowlineThreadLibrary(root = window) {
     return record;
   };
   return Object.freeze({
-    backend: adapter.kind, get, all, put, create, branch, remove, migrate, migrateLegacyBranchTitles, migrateLegacyGeneratedTitles,
+    backend: adapter.kind, get, all, put, create, branch, remove, migrate, pruneEmptyGeneratedThreads, migrateLegacyBranchTitles, migrateLegacyGeneratedTitles,
     getActiveId: () => { try { return root.localStorage.getItem(ACTIVE_KEY); } catch { return null; } },
     setActiveId: value => { try { if (value) root.localStorage.setItem(ACTIVE_KEY, value); else root.localStorage.removeItem(ACTIVE_KEY); } catch {} },
     close: adapter.close
