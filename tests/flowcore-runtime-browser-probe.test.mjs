@@ -49,10 +49,10 @@ test('production content observer binds deployed bytes to the selected source pa
 
 test('one explicit exact-head dispatch retains front-line per-engine browser evidence and one convergence owner', () => {
   assert.match(consolidated, /workflow_dispatch:/);
-  assert.match(consolidated, /types:\s*\[opened, synchronize, reopened, ready_for_review\]/);
+  assert.match(consolidated, /types:\s*\[opened, synchronize, reopened\]/);
   assert.match(consolidated, /full-browser/);
   assert.match(consolidated, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
-  assert.match(consolidated, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
+  assert.doesNotMatch(consolidated, /github\.event\.action == 'ready_for_review'/);
 
   const shardHeader = consolidated.match(/  ash_browser_shard:[\s\S]*?    runs-on:/)?.[0] || '';
   assert.match(shardHeader, /needs: scope/);
