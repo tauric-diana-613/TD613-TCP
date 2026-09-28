@@ -158,6 +158,17 @@ test('staged attachments have two temporary access points and the composer contr
   assert.equal(composerAttachments.hidden, true, 'cleared/successfully consumed staging removes the composer control');
   assert.equal(replyAttachments.hidden, true, 'cleared/successfully consumed staging removes the reply action');
 
+  const photoBytes = new Uint8Array([0xff, 0xd8, 0xff, 0xd9]);
+  await stageMarrowlineAttachments([{
+    name: 'grove-photo.jpg', type: 'image/jpeg', size: photoBytes.byteLength,
+    arrayBuffer: async () => photoBytes.buffer
+  }], { kind: 'photo', environment: window });
+  assert.equal(composerAttachments.hidden, false, 'staging a photo reveals the composer Attachments control');
+  assert.equal(replyAttachments.hidden, false, 'staging a photo reveals Attachments in More with this reply');
+  assert.equal(document.querySelector('#marrowlineAttachmentTray [data-attachment-id]')?.textContent.includes('grove-photo.jpg'), true,
+    'photo uses the same staged attachment drawer');
+  clearMarrowlineAttachments(window);
+
   assert.match(css, /\.marrowline-composer-attachments\{[\s\S]*grid-column:2!important;grid-row:2!important;justify-self:start!important/,
     'composer Attachments shares the textarea column rather than the +\/Send column');
   assert.match(css, /\.reply-next-choices button\{[\s\S]*height:28px;[\s\S]*font:560 9\.75px\/1/,
