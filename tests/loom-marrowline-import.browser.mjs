@@ -56,7 +56,8 @@ try {
       const url = new URL(request.url());
       const isLoomTask = url.pathname === '/api/khonapolit' && url.searchParams.get('operation') === 'loom-task';
       const isMarrowline = url.pathname === '/api/dome-world/khonapolit';
-      if (!['GET', 'HEAD'].includes(request.method()) && !isLoomTask && !isMarrowline) unexpected.push({ method: request.method(), url: request.url() });
+      const isSiteEpochReset = url.pathname === '/api/site-epoch-reset' && request.method() === 'POST' && url.origin === new URL(base).origin;
+      if (!['GET', 'HEAD'].includes(request.method()) && !isLoomTask && !isMarrowline && !isSiteEpochReset) unexpected.push({ method: request.method(), url: request.url() });
       if (url.hostname === 'generativelanguage.googleapis.com') unexpected.push({ direct_provider_request: request.url() });
     });
     await page.route(url => url.pathname === '/api/khonapolit' && url.searchParams.get('operation') === 'loom-task', async route => {
