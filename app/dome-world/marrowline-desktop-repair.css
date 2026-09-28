@@ -1244,3 +1244,18 @@ html:root body #khonapolitMessages .starter-prompts .starter-rotate{
  html:root.marrowline-mobile-shell #speakingPanel .marrowline-thread-nav{margin-top:3px!important;padding-top:3px!important}
  html:root.marrowline-mobile-shell #speakingPanel .marrowline-thread-nav>button{min-height:26px!important;padding-block:2px!important;font-size:9.5px!important}
 }
+
+/* Attachment ingress receipts: visible proof of provider-bound carriage without retaining raw bytes. */
+#khonapolitMessages .marrowline-attachment-receipt{
+  display:grid;gap:3px;margin:0 14px 10px;padding:8px 10px;
+  border:1px solid rgba(120,224,204,.24);border-radius:10px;
+  background:rgba(20,34,45,.58);color:#d8eee6;
+  font:600 10px/1.35 var(--marrowline-chat-sans,system-ui,sans-serif);
+}
+#khonapolitMessages .marrowline-attachment-receipt small{
+  color:#9fbeb2;font:500 9px/1.45 var(--marrowline-chat-sans,system-ui,sans-serif);
+  overflow-wrap:anywhere;
+}
+#khonapolitMessages .marrowline-attachment-receipt[data-state="review"]{
+  border-color:rgba(242,194,92,.38);color:#f3db9a;
+}
