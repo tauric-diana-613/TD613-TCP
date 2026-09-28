@@ -83,6 +83,9 @@ try {
       const input = request.postDataJSON();
       marrowlineCalls.push(input);
       report.intercepted_marrowline_requests++;
+      const attachmentReceipt = Array.isArray(input.attachments)
+        ? input.attachments.map(({ data_base64, ...item }) => ({ ...item, sha256: 'sha256:mock-ui-witness' }))
+        : [];
       const relay = {
         schema: 'td613.khonapolit.integrated-covenant-relay/v4-soft-quality-admission',
         apertureHeader: 'SYNTHETIC ATTACHMENT ROUTE',
@@ -95,7 +98,14 @@ try {
         ok: true,
         text: integratedText,
         relay,
-        receipt: { provider: { model: 'MOCK_MARROWLINE' }, relay, seal: { state: 'OPEN' }, emergence: { classification: 'SYNTHETIC' } }
+        receipt: {
+          invocation: { attachmentCount: attachmentReceipt.length },
+          attachments: attachmentReceipt,
+          provider: { model: 'MOCK_MARROWLINE' },
+          relay,
+          seal: { state: 'OPEN' },
+          emergence: { classification: 'SYNTHETIC' }
+        }
       } });
     });
 
@@ -354,6 +364,25 @@ try {
       assert.match(await page.locator('#marrowlineContextLoom').textContent(), /Open Loom in a new tab/);
       assert.equal(await page.locator('#khonapolitPrompt').isVisible(), true);
 
+      let directAttachmentSendObserved = false;
+      if (engine !== 'webkit') {
+        const directChooserPromise = page.waitForEvent('filechooser');
+        await page.locator('#marrowlineContextFile').click();
+        const directChooser = await directChooserPromise;
+        await directChooser.setFiles({ name: 'direct-operator-note.txt', mimeType: 'text/plain', buffer: Buffer.from('MARROWLINE_DIRECT_PLUS_CANARY_613') });
+        await page.waitForFunction(() => document.querySelectorAll('#marrowlineAttachmentTray [data-attachment-id]').length === 1);
+        await page.locator('#khonapolitPrompt').fill('Use the directly attached note as user-supplied context.');
+        await activate(page.locator('#khonapolitSend'));
+        await page.waitForFunction(() => document.querySelector('#khonapolitTerminalStatus')?.dataset.phase === 'received');
+        const directCall = marrowlineCalls.at(-1);
+        assert.equal(directCall.attachments?.length, 1, 'direct Marrowline plus carries one selected file on explicit send');
+        assert.equal(Buffer.from(directCall.attachments[0].data_base64, 'base64').toString('utf8'), 'MARROWLINE_DIRECT_PLUS_CANARY_613');
+        assert.match(await page.locator('.relay-message').last().textContent(), /Attachment ingress receipted · 1/);
+        assert.match(await page.locator('.relay-message').last().textContent(), /direct-operator-note\.txt/);
+        assert.equal(await page.locator('#marrowlineAttachmentTray [data-attachment-id]').count(), 0, 'direct successful send clears ephemeral attachment bytes');
+        directAttachmentSendObserved = true;
+      }
+
       report.checks.push({
         posture,
         status: 'PASS',
@@ -367,7 +396,8 @@ try {
         context_menu_exact_three: true,
         attachment_selection_calls: 0,
         explicit_attachment_send_calls: engine === 'webkit' ? 0 : 1,
-        attachment_coverage: engine === 'webkit' ? 'CONTROL_ONLY_NATIVE_FILE_INGESTION_UNOBSERVED' : 'FILE_PHOTO_FULL_MOCKED_UI',
+        attachment_coverage: engine === 'webkit' ? 'CONTROL_ONLY_NATIVE_FILE_INGESTION_UNOBSERVED' : 'FILE_PHOTO_FULL_MOCKED_UI_PLUS_DIRECT_FILE_SEND',
+        direct_attachment_send_observed: directAttachmentSendObserved,
         explicit_run_calls: 1,
         transcript_custody_visible: true,
         starter_carousel_present: true,
