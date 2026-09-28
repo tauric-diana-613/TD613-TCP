@@ -3,7 +3,6 @@ import fs from 'node:fs';
 
 const source = fs.readFileSync('scripts/loom-production-canary.mjs', 'utf8');
 const releaseWorkflow = fs.readFileSync('.github/workflows/vercel-operator-release.yml', 'utf8');
-const reobserveWorkflow = fs.readFileSync('.github/workflows/vercel-production-reobserve.yml', 'utf8');
 const qualityServer = fs.readFileSync('server/khonapolit-quality.js', 'utf8');
 const loomServer = fs.readFileSync('server/loom-task.js', 'utf8');
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
@@ -33,18 +32,12 @@ assert.ok(
   'remote witness margin must remain bounded rather than silently widening provider execution authority'
 );
 assert.doesNotMatch(releaseWorkflow, /node scripts\/loom-production-canary\.mjs/, 'Vercel deployment success must not automatically spend Gemini quota or depend on provider liveness');
-assert.match(releaseWorkflow, /Defer live AI canary to explicit observation lane/);
+assert.match(releaseWorkflow, /Record live AI observation as manual-only/);
 assert.match(releaseWorkflow, /automatic_provider_calls:\s*0/);
-assert.match(releaseWorkflow, /production_loom_demo1_canary = .*DEFERRED_EXPLICIT_OBSERVATION/);
-const outerTimeoutMatch = reobserveWorkflow.match(/timeout --foreground --signal=INT --kill-after=10s (\d+)s node scripts\/loom-production-canary\.mjs/);
-assert.ok(outerTimeoutMatch, 'explicit production AI observation must retain a bounded outer canary timeout');
-const outerTimeoutMs = Number(outerTimeoutMatch[1]) * 1000;
-const requiredSerialBudgetMs = witnessTimeoutMs * 2 + 15000;
-assert.ok(
-  outerTimeoutMs >= requiredSerialBudgetMs,
-  `outer canary timeout ${outerTimeoutMs}ms cannot preempt two strict serial ${witnessTimeoutMs}ms witnesses plus 15s orchestration margin`
-);
-assert.ok(outerTimeoutMs >= 600000, 'outer release witness must cover serial Marrowline and Loom live routes under the streamed completion wall');
+assert.match(releaseWorkflow, /production_loom_demo1_canary = .*MANUAL_ONLY/);
+assert.equal(fs.existsSync('.github/workflows/vercel-production-reobserve.yml'), false,
+  'Provider canary must not regain a permanent Actions authority surface.');
+assert.doesNotMatch(releaseWorkflow, /td613-production-reobserve|td613-marrowline-dollhouse-trial/);
 
 assert.match(source, /releaseCanary \? \{ 'x-td613-release-canary': '1' \} : \{\}/);
 assert.match(source, /'x-td613-canary-model': canaryModel/);
@@ -100,16 +93,9 @@ assert.match(source, /PROVIDER_LIVENESS_HELD_NONBLOCKING/);
 assert.match(source, /httpStatus === 504/);
 assert.match(source, /payload\?\.diagnostic\?\.code === 'DEADLINE_EXCEEDED'/);
 assert.match(source, /loom_provider_liveness_nonblocking: loomProviderLivenessHeld/);
-assert.match(reobserveWorkflow, /Classify bounded live AI observation/);
-assert.match(reobserveWorkflow, /marrowline_status=PASS/);
-assert.match(reobserveWorkflow, /marrowline_local_admission=\$\{localAdmission\}/);
-assert.match(reobserveWorkflow, /marrowline\?\.answer_nonempty !== true/);
-assert.match(reobserveWorkflow, /marrowline\?\.human_surface_returned !== true/);
-assert.doesNotMatch(reobserveWorkflow, /marrowline\?\.relay_admitted !== true/);
-assert.match(reobserveWorkflow, /loom_status=\$\{loomStatus\}/);
-assert.match(reobserveWorkflow, /production_loom_demo1_canary = \$LOOM_STATUS/);
-assert.match(reobserveWorkflow, /marrowline_live_route = \$MARROWLINE_STATUS/);
-assert.match(reobserveWorkflow, /marrowline_local_admission = \$MARROWLINE_LOCAL_ADMISSION/);
+assert.match(releaseWorkflow, /observation_route:\s*'OPERATOR_DIRECTED_MANUAL_DIAGNOSTIC'/);
+assert.match(releaseWorkflow, /ash_production_ceremony = RETIRED/);
+
 
 
 console.log('loom-production-canary-isolation.test.mjs passed');
