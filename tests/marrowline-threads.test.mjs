@@ -146,15 +146,43 @@ test('only exact legacy auto-generated titles are retitled; operator labels and 
 
 
 
-test('empty default records from the old load/New behavior are pruned without touching real drafts or renamed threads', async () => {
+test('speaking-grove placeholder is never durable: empty phantoms are pruned and interrupted work becomes untitled', async () => {
   const archive = await createMarrowlineThreadLibrary(browser());
-  const phantom = await archive.create();
-  const draft = await archive.create({ draft: 'keep this draft' });
+  const phantom = await archive.create({ conversationTitle: 'The speaking grove' });
+  const draft = await archive.create({ draft: 'keep this draft', conversationTitle: 'The speaking grove' });
+  const interrupted = await archive.create({
+    messages: [{ role: 'user', text: 'Preserve this interrupted task.' }],
+    pendingTask: 'Preserve this interrupted task.',
+    conversationTitle: 'The speaking grove'
+  });
+  const completed = await archive.create({
+    messages: [
+      { role: 'user', text: 'Explain the archive threshold carefully.' },
+      { role: 'model', text: glyph }
+    ],
+    conversationTitle: 'The speaking grove'
+  });
   const renamed = await archive.create({ conversationTitle: 'Named Empty Thread', titleSource: 'operator' });
-  assert.equal((await archive.all()).length, 3);
+
+  assert.equal((await archive.all()).length, 5);
   assert.equal(await archive.pruneEmptyGeneratedThreads(), 1);
   assert.equal(await archive.get(phantom.id), null);
-  assert.equal((await archive.get(draft.id)).draft, 'keep this draft');
+
+  const repairedDraft = await archive.get(draft.id);
+  assert.equal(repairedDraft.draft, 'keep this draft');
+  assert.equal(repairedDraft.conversationTitle, '');
+  assert.equal(repairedDraft.titleSource, 'pending-return');
+
+  const repairedInterrupted = await archive.get(interrupted.id);
+  assert.equal(repairedInterrupted.conversationTitle, '');
+  assert.equal(repairedInterrupted.titleSource, 'pending-return');
+
+  assert.equal(await archive.migrateLegacyGeneratedTitles(), 1);
+  const repairedCompleted = await archive.get(completed.id);
+  assert.notEqual(repairedCompleted.conversationTitle, 'The speaking grove');
+  assert.ok(repairedCompleted.conversationTitle.split(/\s+/u).length <= 5);
+  assert.equal(repairedCompleted.titleSource, 'local-topic-v3-after-return');
+
   assert.equal((await archive.get(renamed.id)).conversationTitle, 'Named Empty Thread');
   archive.close();
 });
