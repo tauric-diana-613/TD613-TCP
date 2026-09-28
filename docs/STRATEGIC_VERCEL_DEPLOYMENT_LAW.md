@@ -250,5 +250,3 @@ cache migration ≠ case data
 Once the stale-client migration window is deliberately closed, the site-wide preflight/reset may itself be retired in a separate bounded change.
 
 Sealed ⟐
-
-Sealed ⟐
