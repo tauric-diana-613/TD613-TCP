@@ -126,9 +126,10 @@ export async function createMarrowlineThreadLibrary(root = window) {
     // overwrite of manually renamed/uncertain titles.
     let changed = 0;
     for (const thread of await all()) {
-      if (thread.titleSource === 'operator') continue;
+      if (thread.titleSource === 'operator' || thread.titleSource === 'pending-return') continue;
       const first = thread.messages?.find(entry => entry?.role === 'user' && String(entry.text || '').trim());
-      if (!first) continue;
+      const hasReply = thread.messages?.some(entry => entry?.role === 'model');
+      if (!first || !hasReply) continue;
       const current = String(thread.conversationTitle || '');
       // Also compress the previously installed topical titles: they may have
       // had nine words. An unmarked record still requires exact legacy match.
