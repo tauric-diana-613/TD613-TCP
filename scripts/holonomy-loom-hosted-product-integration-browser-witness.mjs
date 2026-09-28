@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { chromium, firefox, webkit } from 'playwright';
+import { settleSiteEpochBaseline, siteEpochStoragePosture } from './site-epoch-browser-baseline.mjs';
 
 const base = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/+$/, '');
 const browserName = String(process.env.TD613_BROWSER || 'chromium').toLowerCase();
@@ -61,7 +62,9 @@ const check = (name, pass, detail = null) => report.checks.push({ name, status: 
 
 const browser = await browserType.launch({ headless: true });
 try {
-  const page = await browser.newPage({ viewport: { width: 1280, height: 820 }, colorScheme: 'dark' });
+  const context = await browser.newContext({ viewport: { width: 1280, height: 820 }, colorScheme: 'dark' });
+  report.site_epoch_baseline = await settleSiteEpochBaseline(context, base);
+  const page = await context.newPage();
   page.on('pageerror', error => report.page_errors.push(error.message));
   page.on('console', message => {
     if (message.type() === 'error') report.console_errors.push(message.text());
@@ -144,23 +147,21 @@ try {
   check('no external request after interaction', externalRequests.length === 0, report.request_summary);
   check('no mutation request after interaction', mutationRequests.length === 0, report.request_summary);
 
+  const storagePosture = await siteEpochStoragePosture(page);
   const persistence = await page.evaluate(async () => ({
-    localStorage: localStorage.length,
-    sessionStorage: sessionStorage.length,
     cookie: document.cookie,
     indexedDB: typeof indexedDB?.databases === 'function' ? (await indexedDB.databases()).length : 0,
     cacheKeys: typeof caches?.keys === 'function' ? (await caches.keys()).length : 0,
     serviceWorkerControlled: Boolean(navigator.serviceWorker?.controller)
   }));
-  report.persistence = persistence;
-  check('hosted Loom adds no browser persistence in fresh context',
-    persistence.localStorage === 0
-      && persistence.sessionStorage === 0
+  report.persistence = { ...storagePosture, ...persistence };
+  check('hosted Loom adds no product browser persistence after the site epoch',
+    storagePosture.product_persistence_absent === true
       && persistence.cookie === ''
       && persistence.indexedDB === 0
       && persistence.cacheKeys === 0
       && persistence.serviceWorkerControlled === false,
-    persistence);
+    report.persistence);
 
   const desktopShot = path.join(artifactDir, `holonomy-loom-hosted-${browserName}-desktop.png`);
   await page.screenshot({ path: desktopShot, fullPage: true });
