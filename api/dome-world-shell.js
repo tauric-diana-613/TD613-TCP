@@ -33,29 +33,26 @@ export const ASH_LIFECYCLE_ASSET_EPOCH = '20260727-a15-postclosure-v1';
 export const ASH_LIFECYCLE_SOURCE_MODULE = '/dome-world/ash-lifecycle.js';
 export const ASH_LIFECYCLE_MODULE = `${ASH_LIFECYCLE_SOURCE_MODULE}?v=${ASH_LIFECYCLE_ASSET_EPOCH}`;
 export const ASH_WORKSPACE_BRIDGE_MODULE = '/dome-world/ash-workspace-bridge.js';
-export const ASH_MASS_EVICTION_EPOCH = 'td613.ash.cache-flush/2026-07-27-a15-postclosure-v1';
+// Compatibility export only; operational mass eviction is retired.
+export const ASH_MASS_EVICTION_EPOCH = 'RETIRED_SITE_EPOCH_AUTHORITY';
 
 const OLD_ASSET_EPOCH = '20260724-a12-release-v1';
-const OLD_MASS_EVICTION_EPOCH = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1';
-const OLD_MARKER = 'a11-postclosure-v1';
-const NEW_MARKER = 'a15-postclosure-v1';
 
 /* Historical A12 baseline: ASH_LIFECYCLE_ASSET_EPOCH = '20260724-a12-release-v1' */
-/* Historical A11 baseline: ASH_MASS_EVICTION_EPOCH = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1' */
+/* Historical Ash eviction epochs remain in receipts only; they have no runtime authority. */
 /* Rendered core marker: data-glyph="∴" */
-/* Inherited core contract markers: ash-cache-preflight Clear-Site-Data case_data_preserved:true session_epoch_preserved_or_migrated visible_url:canonicalPath */
 
 export const ASH_SHELL_CORE_CONTRACT_MARKERS = Object.freeze([
   "const legacyPresentation=incoming.searchParams.get('presentation')==='legacy'",
-  "legacy_bypass:true",
+  "legacy_bypass:legacyPresentation",
   "__td613AshAia3PreflightReceipt",
+  "Promise.resolve(receipt)",
+  "retired:true",
+  "sitewide_epoch_authoritative:true",
+  "RETIRED_SITE_EPOCH_AUTHORITY",
   "Preparing Ash",
   "td613-ash-preparing-shell",
   "await globalThis.__td613AshAia3Preflight",
-  "const recoveryBridge='/safe-harbor/ash-keep-recovery.html'",
-  "controllerPresent=Boolean(navigator.serviceWorker?.controller)",
-  "cross_scope_recovery_required:controllerPresent",
-  "location.replace(recoveryBridge)",
   "if(location.pathname!==canonicalPath||location.search){history.replaceState(null,'',canonicalPath+location.hash)}",
   "ash-a7-a11-recompiler-core.js?v=${ASH_LIFECYCLE_ASSET_EPOCH}",
   "ash-a7-home-recompilation.js?v=${ASH_LIFECYCLE_ASSET_EPOCH}",
@@ -67,10 +64,7 @@ export const ASH_SHELL_CORE_CONTRACT_MARKERS = Object.freeze([
 
 function rewriteEpochs(value) {
   if (typeof value !== 'string') return value;
-  return value
-    .replaceAll(OLD_ASSET_EPOCH, ASH_LIFECYCLE_ASSET_EPOCH)
-    .replaceAll(OLD_MASS_EVICTION_EPOCH, ASH_MASS_EVICTION_EPOCH)
-    .replaceAll(OLD_MARKER, NEW_MARKER);
+  return value.replaceAll(OLD_ASSET_EPOCH, ASH_LIFECYCLE_ASSET_EPOCH);
 }
 
 function rewriteHeaderValue(value) {

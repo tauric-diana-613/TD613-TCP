@@ -201,7 +201,7 @@ node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/giving-bikin
 - observed authority cannot widen beyond the fixture declaration;
 - same-endpoint route divergence remains measurable without becoming a transport, curvature, or geometric-holonomy claim.
 
-The broader `tests/pedagogue-design-gate.test.mjs` suite remains the deeper architecture/integration witness. A `practice` Vercel release runs both contracts before deployment, then verifies exact deployed bytes and performs one bounded production Chromium practice observation. Live Ash production probes remain reserved for `full` scope.
+The broader `tests/pedagogue-design-gate.test.mjs` suite remains the deeper architecture/integration witness. A `practice` Vercel release runs both contracts before deployment, then verifies exact deployed bytes and performs one bounded production Chromium practice observation. Full-product release no longer invokes Ash production probes; Ash remains available only through explicitly dispatched diagnostics.
 
 Production provenance is intentionally split by claim type. A Giving product release remains strict: `td613.giving.release-source/v1` identifies the independently qualified Giving product packet when `match-source` is required. A practice-on-Giving release uses `observe-existing`: it requires a valid prior Giving release receipt and a ready Giving surface, while the repository-wide `flowcore-release-content-probe.mjs` separately proves that the current practice source packet's deployed application bytes match the authorized SHA. The shared practice packet therefore does not impersonate a new Giving product release.
 

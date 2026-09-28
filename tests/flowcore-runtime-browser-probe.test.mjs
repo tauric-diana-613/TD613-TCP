@@ -72,13 +72,12 @@ test('one explicit exact-head dispatch retains front-line per-engine browser evi
     'Flow-Core runtime evidence must not regain an independent workflow.');
 });
 
-test('production release uses bounded confirmation rather than replaying the matrix', () => {
+test('production release keeps Flow-Core browser diagnostics outside release authority', () => {
   assert.match(release, /^\s{2}issue_comment:\s*$/m);
   assert.match(release, /flowcore-release-content-probe\.mjs/);
-  assert.match(release, /playwright install --with-deps chromium/);
-  assert.match(release, /ash-a13-demo-registry-browser-probe\.mjs/);
-  assert.match(release, /ash-lifecycle-production-probe\.mjs/);
-  assert.doesNotMatch(release, /flowcore-runtime-browser-probe\.mjs/);
+  assert.match(release, /ash_production_ceremony = RETIRED/);
+  assert.match(release, /premerge_deep_browser_diagnostics = MANUAL_ONLY_NOT_RELEASE_AUTHORITY/);
+  assert.doesNotMatch(release, /ash-a13-demo-registry-browser-probe\.mjs|ash-lifecycle-production-probe\.mjs|flowcore-runtime-browser-probe\.mjs/);
   assert.doesNotMatch(release, /playwright install --with-deps chromium firefox webkit/);
   assert.doesNotMatch(release, /TD613_BROWSERS: chromium,firefox,webkit/);
 });

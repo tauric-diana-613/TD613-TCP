@@ -69,6 +69,8 @@ performed_via_github_app != null
 
 A workflow or agent must not infer contemporaneous human presence from an app-mediated comment. If a trial requires direct owner authority, require both the owner login and `performed_via_github_app == null`. Issue #405 remains governed by its own explicitly reviewed connector-as-transport release law and is not widened or narrowed by this experimental-trial rule.
 
+No durable Dollhouse production-trial workflow currently exists. This provenance rule is a reusable safety constraint for any future explicitly designed experiment; it is not authority to recreate retired #1172 listeners, commands, or production-observation plumbing.
+
 ### Detached delegation gate
 
 Before detached OpenAI activity performs task-specific repository inspection, review generation, mutation, or comment posting, it must read `.td613/openai-delegation-gate.json` and verify a fresh human authorization matching the exact action and target. The gate's top-level `CLOSED` state applies to this detached-delegation class. If that gate is `CLOSED`, missing, expired, mismatched, or ambiguous, the detached process must terminate without widening its inspection or producing repository output.

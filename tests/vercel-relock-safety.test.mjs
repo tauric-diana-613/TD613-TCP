@@ -27,5 +27,7 @@ assert.match(safety, /safety-relock Vercel/);
 assert.match(safety, /deployment_count = 0/);
 assert.match(safety, /git_auto_deploy = disabled/);
 assert.doesNotMatch(safety, /vercel@latest deploy|deploymentEnabled = true/);
+assert.doesNotMatch(safety, /confirm-production-practice|td613-vercel-confirm|td613-production-reobserve|td613-marrowline-dollhouse-trial/,
+  'Recovery/research listener must not resurrect retired confirmation or provider-observation gates.');
 
 console.log('vercel-relock-safety.test.mjs passed');
