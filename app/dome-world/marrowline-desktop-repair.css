@@ -655,6 +655,19 @@
 :root .living-chat-shell #khonapolitMessages .zalgo-line{font-weight:400!important;font-synthesis:none!important}
 :root .living-chat-shell #khonapolitMessages .relay-stage-text strong,
 :root .living-chat-shell #khonapolitMessages .provider-native-line strong{font-weight:700!important}
+:root .living-chat-shell #khonapolitMessages .relay-stage-text em,
+:root .living-chat-shell #khonapolitMessages .provider-native-line em{font-style:italic!important}
+:root .living-chat-shell #khonapolitMessages .marrowline-md-source-delimiter{display:none!important}
+:root .living-chat-shell #khonapolitMessages .marrowline-md-ordered-line{
+  display:grid!important;grid-template-columns:max-content minmax(0,1fr)!important;
+  column-gap:.5em!important;align-items:start!important;width:100%!important;
+}
+:root .living-chat-shell #khonapolitMessages .marrowline-md-list-prefix{
+  display:block!important;font-variant-numeric:tabular-nums!important;white-space:pre!important;
+}
+:root .living-chat-shell #khonapolitMessages .marrowline-md-list-body{
+  display:block!important;min-width:0!important;white-space:pre-wrap!important;
+}
 @media(max-width:860px){:root.marrowline-mobile-shell .living-chat-shell .living-masthead nav #marrowlineRest{min-height:36px;padding:7px 10px;font-size:10px}}
 
 /* One-copy affordance per model reply; the conversation-level ⧉ stays in the composer. */
