@@ -63,6 +63,16 @@ try{
   });
   try{
    await page.goto(`${base}/dome-world/marrowline.html`,{waitUntil:'domcontentloaded'});
+   // Every isolated browser posture is a fresh browser profile. The origin-wide
+   // epoch is therefore expected to detour through /site-epoch-reset.html once
+   // before returning to Marrowline. Prove that destructive first-visit
+   // settlement completed instead of racing the app's 12-second UI assertions.
+   await page.waitForFunction(
+     epoch => location.pathname === '/dome-world/marrowline.html'
+       && localStorage.getItem('td613.site.browser-reset.epoch') === epoch,
+     'td613.site.browser-reset/2026-09-27-v1',
+     { timeout:45_000 }
+   );
    await page.locator('.starter-prompts button').first().waitFor();
    await page.waitForFunction(()=>document.documentElement.classList.contains('marrowline-room-ready'));
    await page.waitForFunction(()=>document.querySelector('#marrowlineLivingGeometry')?.dataset.geometryReady==='true');
