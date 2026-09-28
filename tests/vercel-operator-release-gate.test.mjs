@@ -162,7 +162,7 @@ for (const stepName of ['Validate Dome-World static surfaces', 'Validate Phase I
 assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
 
 assert.match(law, /operator authorization → assistant\/Codex execution → one Vercel deployment/);
-assert.match(law, /one deployable fallback commit → bounded Vercel adoption acknowledgement → relock → production observation/);
+assert.match(law, /one deployable fallback commit → bounded Vercel adoption acknowledgement → relock → exact-source verification/);
 assert.match(law, /The operator is not required to operate Vercel, GitHub Actions, or deployment plumbing/);
 assert.match(law, /direct token bridge/);
 assert.match(law, /bounded Git fallback/);
