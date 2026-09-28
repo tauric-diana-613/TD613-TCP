@@ -110,9 +110,8 @@ export async function createMarrowlineThreadLibrary(root = window) {
     const priorHuman = Array.isArray(parent?.messages)
       ? parent.messages.slice(0, index).some(entry => entry?.role === 'user')
       : false;
-    if (!Number.isInteger(index) || index < 1 || !priorHuman || answer?.role !== 'model'
-        || answer.receipt?.provider?.completion?.complete === false)
-      throw new Error('A complete Marrowline reply is required to branch');
+    if (!Number.isInteger(index) || index < 1 || !priorHuman || answer?.role !== 'model')
+      throw new Error('A Marrowline reply is required to branch');
     return create({
       ...empty(),
       messages: copy(parent.messages.slice(0, index + 1)),
