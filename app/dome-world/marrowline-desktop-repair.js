@@ -192,12 +192,14 @@ function installUniversalContextPlus(doc, root) {
   // reserved space at the prompt's lower right, without a second action band.
   const actionRow = form.querySelector('.composer-actions');
   const sendButton = byId(doc, 'khonapolitSend');
+  const attachmentTray = byId(doc, 'marrowlineAttachmentTray');
   if (actionRow && sendButton) {
     const controlStack = doc.createElement('div');
     controlStack.className = 'marrowline-composer-control-stack';
     controlStack.append(plus, sendButton);
     row.prepend(controlStack);
     row.append(actionRow);
+    if (attachmentTray) row.append(attachmentTray);
   } else row.prepend(plus);
 
   const menu = doc.createElement('div');
