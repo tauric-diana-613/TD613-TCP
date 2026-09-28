@@ -43,3 +43,22 @@ test('copy-facing frames match the visible speaker names and preserve the native
   assert.equal(formatMarrowlineReplyForCopy('Kʰonapolit: An inline prelude.'),'╭─ Kʰonapolit ─╮ An inline prelude.');
   assert.equal(formatMarrowlineReplyForCopy('Unlabeled provider prose.'),'Unlabeled provider prose.');
 });
+
+
+test('reply markdown renders bold italics and numbered rows without rewriting source or enabling strikethrough', () => {
+  const doc = new JSDOM('<div></div>').window.document;
+  const raw = '1. He is a **slave** (*servus*), an ***ontological hybrid***.';
+  const span = doc.createElement('span');
+  renderMarrowlineSpeakerLine(span, raw);
+  assert.equal(span.textContent, raw, 'presentation DOM retains the exact provider source including Markdown delimiters');
+  assert.equal(span.querySelectorAll('.marrowline-md-ordered-line').length, 1, 'numbered line receives hanging-list presentation');
+  assert.equal(span.querySelector('strong')?.textContent, 'slave', 'bold renders in chat');
+  assert.equal(span.querySelectorAll('em').length, 2, 'italic and bold-italic both render in chat');
+  assert.equal(span.querySelector('s'), null, 'strikethrough is outside the admitted presentation subset');
+
+  const zalgo = doc.createElement('span');
+  const native = 'T̸̕e̴̟x̶̿t̴̪ ~~remains literal~~';
+  renderMarrowlineSpeakerLine(zalgo, native);
+  assert.equal(zalgo.textContent, native, 'combining marks and literal tildes remain exact');
+  assert.equal(zalgo.querySelector('s'), null, 'literal tildes never become strikethrough');
+});
