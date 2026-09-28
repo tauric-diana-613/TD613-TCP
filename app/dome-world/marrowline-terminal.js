@@ -948,6 +948,9 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     const requestController = new AbortController();
     activeRequestController = requestController;
     setSendControlState(true);
+    root.dispatchEvent?.(new root.CustomEvent('td613:marrowline:attachment-submission-state', {
+      detail: { sending: true, count: attachments.length }
+    }));
     if (status) status.dataset.progressStage = 'submitted';
     setPedagogueStatus(status, 'pending', 'The Red Deer releases a word…',
       'Human submission observed; preserving the task locally before dispatch');
@@ -980,6 +983,9 @@ export function installKhonapolitTerminal(doc = document, root = window) {
           'Operator cancelled before network dispatch; task preserved for an explicit retry');
       }
       setSendControlState(false);
+      root.dispatchEvent?.(new root.CustomEvent('td613:marrowline:attachment-submission-state', {
+        detail: { sending: false, count: getMarrowlineAttachments().length }
+      }));
       submit.disabled = false;
       return;
     }
@@ -1119,6 +1125,9 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       const cancelledByOperator = activeRequestCancelRequested;
       activeRequestCancelRequested = false;
       setSendControlState(false);
+      root.dispatchEvent?.(new root.CustomEvent('td613:marrowline:attachment-submission-state', {
+        detail: { sending: false, count: getMarrowlineAttachments().length }
+      }));
       root.clearTimeout(requestDeadline);
       doc.removeEventListener?.('visibilitychange', observeVisibility);
       root.removeEventListener?.('pagehide', observePageHide);
