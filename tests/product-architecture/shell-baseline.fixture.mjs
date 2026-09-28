@@ -74,7 +74,7 @@ const versionedModules = [
 assert.equal(ASH_KEEP_SHELL_VERSION, 'td613.ash-keep.shell/v0.6-first-paint');
 assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, '20260724-a12-release-v1');
 assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260724-a12-release-v1');
-assert.equal(ASH_MASS_EVICTION_EPOCH, 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1');
+assert.equal(ASH_MASS_EVICTION_EPOCH, 'RETIRED_SITE_EPOCH_AUTHORITY');
 assert.match(renderedKeep, /<title>TD613 Ash<\/title>/);
 assert.match(renderedKeep, /rel="canonical" href="\/dome-world\/ash-threshold\.html"/);
 assert.match(renderedKeep, /id="td613-ash-preparing-shell"/);
@@ -89,9 +89,12 @@ for (const module of versionedModules) {
 for (const source of ['/dome-world/ash-keep.js', '/dome-world/ash-convergence.js', '/dome-world/ash-lifecycle.js', '/dome-world/ash-workspace-bridge.js', '/dome-world/ash-case-controls.js']) {
   assert.doesNotMatch(renderedKeep, new RegExp(`src="${source.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`));
 }
-assert.match(renderedKeep, /name="ash-cache-preflight" content="a11-postclosure-v1"/);
+assert.match(renderedKeep, /name="ash-cache-preflight" content="retired-site-epoch-authority"/);
 assert.match(renderedKeep, /Preparing Ash/);
-assert.match(renderedKeep, /session_epoch_preserved_or_migrated/);
+assert.match(renderedKeep, /retired:true/);
+assert.match(renderedKeep, /sitewide_epoch_authoritative:true/);
+assert.match(renderedKeep, /Promise\.resolve\(receipt\)/);
+assert.doesNotMatch(renderedKeep, /Clear-Site-Data|caches\.keys|getRegistrations|surface.*cache-evict|location\.replace\(recoveryBridge\)/);
 assert.match(renderedKeep, /name="ash-lifecycle" content="v0\.1"/);
 assert.match(renderedKeep, /name="ash-constitutional-composition" content="v0\.1"/);
 assert.doesNotMatch(renderedKeep, /window\.stop\(\)/);
