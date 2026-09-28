@@ -50,10 +50,6 @@
   let marked=false;
   try{
     localStorage.setItem(K,E);marked=localStorage.getItem(K)===E;
-    // Legacy Ash-specific eviction must not run after a successful whole-site epoch.
-    localStorage.setItem('td613.ash.cache-flush.aia3.epoch','td613.ash.cache-flush/2026-07-27-a15-postclosure-v1');
-    localStorage.setItem('td613.ash.cache-preflight.epoch','td613.ash.cache-flush/2026-07-27-a15-postclosure-v1');
-    localStorage.setItem('td613.ash.cache-flush.epoch','td613.ash.cache-flush/2026-07-18-canonical-membrane-v7');
   }catch{}
   if(!marked)try{sessionStorage.setItem(K,E);marked=sessionStorage.getItem(K)===E}catch{}
   status.textContent='Old TD613 browser data cleared. Opening a fresh session…';
