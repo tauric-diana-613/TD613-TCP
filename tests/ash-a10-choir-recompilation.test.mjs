@@ -48,7 +48,7 @@ for (const path of [
 
 for (const marker of ['node tests/ash-a10-choir-recompilation.test.mjs','TD613_ASH_STAGES=\'A7,A8,A9,A10,A11\'','scripts/ash-a7-a11-browser-probe.mjs','Full-product exact-head Chromium Firefox WebKit witness']) assert.ok(workflow.includes(marker), `Consolidated A10 witness missing ${marker}`);
 assert.match(workflow, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
-assert.match(workflow, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
+assert.doesNotMatch(workflow, /github\.event\.action == 'ready_for_review'/);
 for (const marker of ['Choir and Rebuild Test recompilation','singleton-first','Shared','Pair-emergent','Contradictory','Missing','Unresolved','human interpretation required: true','human closure required: true']) assert.ok(receipt.includes(marker));
 assert.equal(vercel.git?.deploymentEnabled, false);
 console.log(JSON.stringify({ok:true,schema:'td613.ash.a10-choir-contract/v0.1',residue_classes:5,native_choir_preserved:true,automatic_assay:false,automatic_rebuild_test:false,stage_import_settlement_bound:true,raw_content_transport:false,authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'}, null, 2));
