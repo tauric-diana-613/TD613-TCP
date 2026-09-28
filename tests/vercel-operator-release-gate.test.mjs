@@ -138,7 +138,7 @@ assert.match(workflow, /No additional deployment attempt is authorized by this f
 assert.match(workflow, /Sealed ⟐/);
 assert.doesNotMatch(workflow, /safe-harbor-gen3-wave-[ab]-production-probe|flowcore-runtime-browser-probe\.mjs|ash-keep-aia3-task-journey-v3\.mjs|ash-keep-aia2-task-journey/);
 
-assert.match(consolidated, /types:\s*\[opened, synchronize, reopened, ready_for_review\]/);
+assert.match(consolidated, /types:\s*\[opened, synchronize, reopened\]/);
 assert.match(consolidated, /Full-product exact-head Chromium Firefox WebKit witness/);
 assert.match(consolidated, /Giving\/practice exact-head Chromium Firefox WebKit witness/);
 assert.match(consolidated, /Classify exact-head browser witness scope/);
@@ -146,12 +146,12 @@ assert.match(consolidated, /practice_fixture_changed:\s*\$\{\{ steps\.classify\.
 assert.match(consolidated, /contracts:\n\s+name: Static, constitutional, and release contracts\n\s+needs: scope/);
 assert.match(consolidated, /needs\.scope\.outputs\.validation_scope == 'giving'/);
 assert.match(consolidated, /needs\.scope\.outputs\.validation_scope == 'practice'/);
-assert.match(consolidated, /needs\.scope\.outputs\.validation_scope == 'full'/);
+assert.match(consolidated, /inputs\.mode == 'full-browser'/);
 assert.match(consolidated, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
-assert.match(consolidated, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
+assert.doesNotMatch(consolidated, /github\.event\.action == 'ready_for_review'/);
 assert.match(consolidated, /ash_browser_shard:[\s\S]*?needs: scope/);
-assert.match(consolidated, /ash_browser_shard:[\s\S]*?needs\.scope\.outputs\.validation_scope == 'full'/);
-assert.match(consolidated, /giving_browser:[\s\S]*?needs\.scope\.outputs\.validation_scope == 'giving'[\s\S]*?needs\.scope\.outputs\.validation_scope == 'practice'/);
+assert.match(consolidated, /ash_browser_shard:[\s\S]*?github\.event_name == 'workflow_dispatch'[\s\S]*?inputs\.mode == 'full-browser'/);
+assert.match(consolidated, /giving_browser:[\s\S]*?github\.event_name == 'workflow_dispatch'[\s\S]*?inputs\.mode == 'giving-browser'/);
 assert.match(consolidated, /browser: \[chromium, firefox, webkit\]/);
 assert.match(consolidated, /max-parallel: 3/);
 assert.match(consolidated, /playwright install --with-deps "\$\{\{ matrix\.browser \}\}"/);
@@ -164,7 +164,7 @@ assert.match(consolidated, /ash-a13-demo-registry-browser-probe\.mjs/);
 assert.match(consolidated, /ash-a14-archive-browser-probe\.mjs/);
 assert.match(consolidated, /giving-browser-probe\.mjs/);
 for (const stepName of ['Validate Dome-World static surfaces', 'Validate Phase IV static surfaces', 'Validate Ash core and ingress surfaces', 'Validate Ash A9 Work', 'Validate Flow-Core P0-P10 completion']) {
-  assert.match(consolidated, new RegExp(`${stepName.replaceAll('-', '\\-')}\\n\\s+if: needs\\.scope\\.outputs\\.validation_scope != 'giving'`));
+  assert.match(consolidated, new RegExp(`${stepName.replaceAll('-', '\\-')}\\n\\s+if: github\\.event_name == 'workflow_dispatch' && inputs\\.mode == 'full-browser'`));
 }
 assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
 
