@@ -327,6 +327,14 @@ function installUniversalContextPlus(doc, root) {
   const stage = async (input, kind) => {
     try {
       const state = await stageMarrowlineAttachments(input.files, { kind, environment: root });
+      // Safari/iOS photo pickers and ordinary file pickers share one staged
+      // attachment law. Synchronize both human entry points directly from the
+      // returned state instead of relying on event timing alone.
+      syncAttachmentAccess(state);
+      const staged = Number(state?.count || 0) > 0 && !attachmentSubmissionActive;
+      doc.querySelectorAll('.relay-message .reply-attachment-access').forEach(button => {
+        button.hidden = !staged;
+      });
       setStatus(`ATTACHMENT${state.count === 1 ? '' : 'S'} STAGED · ${state.count} ready for the next message · nothing sent yet`);
     } catch (error) {
       setStatus(`ATTACHMENT HELD · ${safe(error?.message || error)}`);
