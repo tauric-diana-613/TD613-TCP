@@ -274,6 +274,21 @@ function createReplyCopyControl(doc, entry) {
   return copy;
 }
 
+function bindReplyAttachmentSummaries(article, entry = {}) {
+  const summaries = Array.isArray(entry.attachments)
+    ? entry.attachments.map(item => ({
+        id: safe(item?.id),
+        name: safe(item?.name) || 'attachment',
+        kind: item?.kind === 'photo' ? 'photo' : 'file',
+        mime_type: safe(item?.mime_type),
+        size_bytes: Number(item?.size_bytes || 0)
+      }))
+    : [];
+  article.dataset.attachmentCount = String(summaries.length);
+  article.__TD613_MARROWLINE_ATTACHMENTS__ = summaries;
+  return article;
+}
+
 function renderModelMessage(doc, entry) {
   if (!entry.relay) {
     const legacy = { ...entry, role: 'user' };
@@ -281,7 +296,7 @@ function renderModelMessage(doc, entry) {
     article.dataset.role = 'model';
     article.querySelector('.message-mark').textContent = 'Kʰ';
     article.append(createReplyCopyControl(doc, entry));
-    return article;
+    return bindReplyAttachmentSummaries(article, entry);
   }
 
   const article = doc.createElement('article');
@@ -310,7 +325,7 @@ function renderModelMessage(doc, entry) {
 
   if (entry.sealed) article.append(textNode(doc, 'span', 'message-seal', `Sealed ${SEAL_GLYPH}`));
   article.append(createReplyCopyControl(doc, entry));
-  return article;
+  return bindReplyAttachmentSummaries(article, entry);
 }
 
 function renderMessage(doc, entry) {
@@ -920,6 +935,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     // never double-submit while another request is already in flight.
     if (!storeReady || requestInFlight) return;
     const attachments = getMarrowlineAttachments();
+    const attachmentSummaries = attachments.map(({ data_base64, ...summary }) => ({ ...summary }));
     const retrying = Boolean(state.pendingTask && state.pendingTask === message && state.messages.at(-1)?.role === 'user' && safe(state.messages.at(-1)?.text) === message);
     if (!retrying && !backgroundResume) backgroundResumeSpentTask = '';
     const historyForPacket = retrying ? state.messages.slice(0, -1) : state.messages;
@@ -951,7 +967,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     if (status) status.dataset.progressStage = 'submitted';
     setPedagogueStatus(status, 'pending', 'The Red Deer releases a word…',
       'Human submission observed; preserving the task locally before dispatch');
-    if (!retrying) state.messages.push({ role: 'user', text: message, mode, sealed: false });
+    if (!retrying) state.messages.push({ role: 'user', text: message, mode, sealed: false, attachments: attachmentSummaries });
     // A suspended page can be restored as a preserved task. An old HTTP return
     // is never silently assumed to have arrived after a browser restart.
     state.pendingTask = message;
@@ -1052,7 +1068,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       const entry = {
         role: 'model', receipt, text: payload.text || '', relay: payload.relay, aperture: receipt?.aperture || null,
         apertureHeader: payload.relay?.apertureHeader || apertureV3DisplayHeader(receipt?.aperture || {}), mode,
-        model: receipt?.provider?.model || 'AI route', classification: receipt?.emergence?.classification || 'UNRESOLVED_FIELD', sealed: false
+        model: receipt?.provider?.model || 'AI route', classification: receipt?.emergence?.classification || 'UNRESOLVED_FIELD',
+        attachments: attachmentSummaries, sealed: false
       };
       delete byId(doc, 'khonapolitMessages').dataset.forceFollow;
       const incompleteReturn = receipt?.provider?.completion?.complete === false;
