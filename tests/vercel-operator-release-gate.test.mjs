@@ -22,7 +22,7 @@ assert.match(workflow, /classify-validation-scope\.mjs --github-output/);
 assert.match(workflow, /validation_scope = \$\{\{ steps\.scope\.outputs\.validation_scope \}\}/);
 assert.match(workflow, /Verify Giving-only release contracts[\s\S]*if: steps\.scope\.outputs\.validation_scope == 'giving'/);
 assert.match(workflow, /Verify canonical practice fixture release contracts[\s\S]*if: steps\.scope\.outputs\.validation_scope == 'practice'/);
-assert.match(workflow, /Verify full-product release contracts[\s\S]*if: steps\.scope\.outputs\.validation_scope == 'full'/);
+assert.doesNotMatch(workflow, /Verify full-product release contracts|ash-a12-command-rationalization\.test\.mjs|ash-keep-production-closure-contract\.test\.mjs/);
 const givingReleaseContracts = workflow.match(/- name: Verify Giving-only release contracts[\s\S]*?(?=\n\s+- name:)/)?.[0] || '';
 const practiceReleaseContracts = workflow.match(/- name: Verify canonical practice fixture release contracts[\s\S]*?(?=\n\s+- name:)/)?.[0] || '';
 assert.doesNotMatch(givingReleaseContracts, /ash-|dome-world|flowcore/i, 'Giving release contracts must not invoke another product lane');
@@ -53,7 +53,7 @@ const adoptionIndex = workflow.indexOf('- name: Await Vercel adoption of exact G
 const relockIndex = workflow.indexOf('- name: Restore the Git deployment lock immediately after Vercel adoption');
 const resolveIndex = workflow.indexOf('- name: Resolve deployed production URL');
 const exactIndex = workflow.indexOf('- name: Verify deployed bytes match the authorized source packet');
-const browserInstallIndex = workflow.indexOf('- name: Install one production browser engine');
+const browserInstallIndex = workflow.indexOf('- name: Install one production browser engine for Giving/practice only');
 assert.ok(releaseIndex >= 0 && adoptionIndex > releaseIndex, 'fallback adoption acknowledgement must follow the single deployable release commit');
 assert.ok(relockIndex > adoptionIndex, 'fallback relock must follow bounded Vercel adoption acknowledgement');
 assert.ok(resolveIndex > relockIndex, 'fallback must be relocked before production URL observation begins');
@@ -66,16 +66,13 @@ for (const testFile of [
   'vercel-deploy-hygiene.test.mjs',
   'vercel-relock-safety.test.mjs',
   'release-plumbing.test.mjs',
-  'ash-a12-command-rationalization.test.mjs',
-  'ash-a13-unified-demo-registry.test.mjs',
-  'ash-a14-archive-accession.test.mjs',
-  'ash-lifecycle-production-contract.test.mjs',
-  'ash-keep-production-closure-contract.test.mjs'
+  'product-architecture/shell.test.mjs',
+  'giving-validation-scope.test.mjs'
 ]) assert.match(workflow, new RegExp(testFile.replaceAll('.', '\\.')));
 
 assert.equal((workflow.match(/flowcore-release-content-probe\.mjs/g) || []).length, 2,
   'production exact-source bytes must be checked before and after the stale-queue stability window');
-assert.match(workflow, /playwright install --with-deps chromium/);
+assert.match(workflow, /Install one production browser engine for Giving\/practice only[\s\S]*if: steps\.scope\.outputs\.validation_scope == 'giving' \|\| steps\.scope\.outputs\.validation_scope == 'practice'[\s\S]*playwright install --with-deps chromium/);
 assert.doesNotMatch(workflow, /playwright install --with-deps chromium firefox webkit/);
 assert.doesNotMatch(workflow, /for browser in chromium firefox webkit/);
 assert.match(workflow, /Confirm deployed Campaign Deputy Giving History exports on Chromium[\s\S]*if: steps\.scope\.outputs\.validation_scope == 'giving'[\s\S]*giving-browser-probe\.mjs/);
@@ -110,24 +107,20 @@ assert.match(workflow, /stale_queue_stability_window = PASS/);
 assert.match(workflow, /post_witness_source_guard = PASS/);
 assert.match(workflow, /artifacts\/exact-source-stable\//);
 
-assert.match(workflow, /ash-a13-demo-registry-browser-probe\.mjs/);
-assert.match(workflow, /ash-a14-archive-browser-probe\.mjs/);
-assert.match(workflow, /ash-lifecycle-production-probe\.mjs/);
-assert.match(workflow, /Confirm deployed A14[\s\S]*if: steps\.scope\.outputs\.validation_scope == 'full'[\s\S]*ash-a13-demo-registry-browser-probe\.mjs/);
-assert.match(workflow, /Observe deployed Ash lifecycle[\s\S]*if: steps\.scope\.outputs\.validation_scope == 'full'[\s\S]*ash-lifecycle-production-probe\.mjs/);
+assert.doesNotMatch(workflow, /ash-a13-demo-registry-browser-probe\.mjs|ash-a14-archive-browser-probe\.mjs|ash-lifecycle-production-probe\.mjs/);
+assert.doesNotMatch(workflow, /Confirm deployed A14|Observe deployed Ash lifecycle/);
 assert.match(workflow, /production_giving_history = \$\{\{ steps\.scope\.outputs\.validation_scope == 'giving'/);
 assert.match(workflow, /production_practice_fixture = \$\{\{ steps\.scope\.outputs\.validation_scope == 'practice'/);
-assert.match(workflow, /production_a14_registry_archive = \$\{\{ steps\.scope\.outputs\.validation_scope == 'full'/);
-assert.match(workflow, /production_chromium_desktop_mobile = \$\{\{ steps\.scope\.outputs\.validation_scope == 'full'/);
-assert.match(workflow, /premerge_scope_aligned_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE/);
-assert.match(workflow, /premerge_witness_scope = THREE_ENGINE_SHARDS; INDIVIDUAL_JOURNEYS_SEE_EXACT_HEAD_CI_ARTIFACTS/);
-assert.match(workflow, /heavy_webkit_import_journey = .*UNOBSERVED_SEE_EXACT_HEAD_CI_ARTIFACT/);
-assert.match(workflow, /production_confirmation = scope-aligned Chromium witness; live AI deferred to explicit observation/);
+assert.match(workflow, /production_full_product_browser_witness = \$\{\{ steps\.scope\.outputs\.validation_scope == 'full' && 'NOT_REQUIRED_EXACT_SOURCE_ONLY'/);
+assert.match(workflow, /ash_production_ceremony = RETIRED/);
+assert.match(workflow, /premerge_deep_browser_diagnostics = MANUAL_ONLY_NOT_RELEASE_AUTHORITY/);
+assert.match(workflow, /premerge_witness_scope = FAST_CONTRACT_LANE/);
+assert.match(workflow, /production_confirmation = exact-source receipt \+ exact application bytes \+ source-stability guards/);
 assert.doesNotMatch(workflow, /Full-product releases must also complete one real Loom Demo 1 submission before sealing/);
 assert.match(workflow, /literary_benchmark_authority: false/);
 assert.match(workflow, /literary_benchmark = NOT_ESTABLISHED_BY_DEPLOYMENT/);
 assert.match(workflow, /model_output_length_and_voice_quality = UNMEASURED_BY_DEPLOYMENT/);
-assert.match(workflow, /Browser shard completion does not convert an explicitly UNOBSERVED journey into a PASS/);
+assert.match(workflow, /Deep browser estates, Ash lifecycle ceremony, literary quality/);
 assert.match(workflow, /exact_source_content = PASS/);
 assert.match(workflow, /source_packet_commit = \$\{\{ steps\.authorize\.outputs\.selected_sha \}\}/);
 assert.match(workflow, /counts_as_human_evidence = false/);
@@ -174,9 +167,9 @@ assert.match(law, /The operator is not required to operate Vercel, GitHub Action
 assert.match(law, /direct token bridge/);
 assert.match(law, /bounded Git fallback/);
 assert.match(law, /source_packet_commit/);
-assert.match(law, /scope-aligned three-engine evidence before merge/i);
-assert.match(law, /scope-aligned bounded Chromium production confirmation/i);
+assert.match(law, /deep browser diagnostics.*manual/i);
+assert.match(law, /exact-source.*deployment/i);
 assert.match(law, /stale-queue stability window/i);
 assert.match(law, /independent relock safety/i);
 
-console.log('vercel-operator-release-gate.test.mjs passed for one-commit fallback admission, bounded Vercel adoption acknowledgement, relock, stale-queue stability, and bounded scope-aligned production confirmation');
+console.log('vercel-operator-release-gate.test.mjs passed for exact-source one-deploy release law with manual deep diagnostics and retired Ash ceremony');
