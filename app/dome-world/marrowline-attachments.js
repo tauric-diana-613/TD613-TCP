@@ -3,7 +3,8 @@ export const MARROWLINE_ATTACHMENT_STATE_SCHEMA = 'td613.marrowline.attachment-s
 export const MARROWLINE_ATTACHMENT_LIMITS = Object.freeze({
   count: 6,
   totalBytes: 2_500_000,
-  singleBytes: 1_500_000
+  singleFileBytes: 1_500_000,
+  singlePhotoBytes: 2_500_000
 });
 
 const FILE_MIMES = new Set([
@@ -118,7 +119,12 @@ export async function stageMarrowlineAttachments(fileList, { kind = 'file', envi
     const size = Number(file?.size || 0);
     const mime = inferredMime(file);
     if (!Number.isSafeInteger(size) || size <= 0) throw new Error('Empty attachments cannot be staged.');
-    if (size > MARROWLINE_ATTACHMENT_LIMITS.singleBytes) throw new Error(`${cleanName(file?.name)} is larger than Marrowline’s 1.5 MB per-attachment limit.`);
+    const singleLimit = kind === 'photo'
+      ? MARROWLINE_ATTACHMENT_LIMITS.singlePhotoBytes
+      : MARROWLINE_ATTACHMENT_LIMITS.singleFileBytes;
+    if (size > singleLimit) throw new Error(kind === 'photo'
+      ? `${cleanName(file?.name)} is larger than Marrowline’s 2.5 MB photo envelope.`
+      : `${cleanName(file?.name)} is larger than Marrowline’s 1.5 MB per-file limit.`);
     if (!validKindMime(kind, mime)) {
       throw new Error(kind === 'photo'
         ? 'Choose a JPEG, PNG, WebP, AVIF, HEIC/HEIF, or GIF image.'

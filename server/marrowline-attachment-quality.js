@@ -33,7 +33,8 @@ export const MARROWLINE_ATTACHMENT_API_VERSION = 'td613.marrowline-attachment-in
 export const MARROWLINE_ATTACHMENT_SCHEMA = 'td613.marrowline.attachment/v0.1';
 export const MARROWLINE_ATTACHMENT_MAX_COUNT = 6;
 export const MARROWLINE_ATTACHMENT_MAX_TOTAL_BYTES = 2_500_000;
-export const MARROWLINE_ATTACHMENT_MAX_SINGLE_BYTES = 1_500_000;
+export const MARROWLINE_ATTACHMENT_MAX_SINGLE_FILE_BYTES = 1_500_000;
+export const MARROWLINE_ATTACHMENT_MAX_SINGLE_PHOTO_BYTES = 2_500_000;
 
 const WALL_TIMEOUT_MS = 210000;
 const RESPONSE_RESERVE_MS = 5000;
@@ -41,7 +42,7 @@ const STRUCTURAL_REPAIR_TIMEOUT_MS = 30000;
 const MIN_STRUCTURAL_REPAIR_BUDGET_MS = 4000;
 const MAX_BODY_CHARACTERS = 3_700_000;
 const FILE_MIMES = new Set(['text/plain', 'text/markdown', 'text/csv', 'application/json', 'application/pdf']);
-const PHOTO_MIMES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif', 'image/gif']);
+const PHOTO_MIMES = new Set(['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/avif', 'image/heic', 'image/heif', 'image/x-heic', 'image/x-heif', 'image/gif']);
 const safe = (value = '') => String(value ?? '').trim();
 const sha256 = value => crypto.createHash('sha256').update(value).digest('hex');
 
@@ -105,7 +106,10 @@ export function normalizeMarrowlineAttachments(value) {
     if (!/^[A-Za-z0-9_-]{1,80}$/.test(id) || ids.has(id)) throw new TypeError('invalid-attachment-id');
     if (!name || name.length > 240 || /[\u0000-\u001f\u007f]/.test(name)) throw new TypeError('invalid-attachment-name');
     if (!allowedMime(kind, mime_type)) throw new TypeError('unsupported-attachment-type');
-    if (!Number.isSafeInteger(size_bytes) || size_bytes <= 0 || size_bytes > MARROWLINE_ATTACHMENT_MAX_SINGLE_BYTES) throw new TypeError('invalid-attachment-size');
+    const singleLimit = kind === 'photo'
+      ? MARROWLINE_ATTACHMENT_MAX_SINGLE_PHOTO_BYTES
+      : MARROWLINE_ATTACHMENT_MAX_SINGLE_FILE_BYTES;
+    if (!Number.isSafeInteger(size_bytes) || size_bytes <= 0 || size_bytes > singleLimit) throw new TypeError('invalid-attachment-size');
     const bytes = decodeBase64(raw.data_base64);
     if (bytes.length !== size_bytes) throw new TypeError('attachment-size-mismatch');
     total += size_bytes;
