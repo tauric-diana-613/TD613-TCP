@@ -11,6 +11,7 @@ export async function settleSiteEpochBaseline(context, base, { returnPath = '/' 
   const origin = new URL(base).origin;
   const page = await context.newPage();
   const resetUrl = new URL('/site-epoch-reset.html', origin);
+  const expectedReturn = new URL(returnPath, origin);
   resetUrl.searchParams.set('return', returnPath);
   try {
     await page.goto(resetUrl.href, { waitUntil: 'domcontentloaded', timeout: 60_000 });
@@ -19,14 +20,21 @@ export async function settleSiteEpochBaseline(context, base, { returnPath = '/' 
     // tearing down, so do not receipt storage until the return navigation owns
     // the page and its DOMContentLoaded boundary has settled.
     await page.waitForURL(
-      candidate => candidate.origin === origin && candidate.pathname !== '/site-epoch-reset.html',
+      candidate => candidate.origin === origin && candidate.pathname === expectedReturn.pathname,
       { waitUntil: 'domcontentloaded', timeout: 60_000 }
     );
-    await page.waitForFunction(({ key, epoch, origin: expectedOrigin }) => {
+    await page.waitForFunction(({ key, epoch, origin: expectedOrigin, pathname }) => {
+      const current = new URL(location.href);
       return location.origin === expectedOrigin
-        && location.pathname !== '/site-epoch-reset.html'
+        && location.pathname === pathname
+        && !current.searchParams.has('td613_site_epoch')
         && localStorage.getItem(key) === epoch;
-    }, { key: SITE_EPOCH_KEY, epoch: SITE_EPOCH, origin }, { timeout: 60_000 });
+    }, {
+      key: SITE_EPOCH_KEY,
+      epoch: SITE_EPOCH,
+      origin,
+      pathname: expectedReturn.pathname
+    }, { timeout: 60_000 });
     const receipt = await page.evaluate(({ expected, key, epoch }) => {
       const local = Object.fromEntries(Object.keys(localStorage).sort().map(name => [name, localStorage.getItem(name)]));
       const session = Object.fromEntries(Object.keys(sessionStorage).sort().map(name => [name, sessionStorage.getItem(name)]));
