@@ -59,8 +59,8 @@ assert.match(consolidated, /github\.event_name == 'workflow_dispatch' && inputs\
 assert.doesNotMatch(consolidated, /github\.event\.action == 'ready_for_review'/);
 assert.doesNotMatch(consolidated, /github\.event\.action == 'synchronize'[\s\S]*playwright install/);
 assert.doesNotMatch(consolidated, /workflow_run:/);
-for (const token of ['Vercel Operator Release','Verify deployed bytes match the authorized source packet','Confirm deployed A14 six-demo registry and Archive on Chromium desktop and mobile','Observe deployed Ash lifecycle without promotion','ash-a14-archive-browser-probe.mjs','ash-lifecycle-production-probe.mjs','production_a14_registry_archive =','production_chromium_desktop_mobile =','premerge_scope_aligned_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE']) assert.ok(releaseWorkflow.includes(token), `Bounded release omitted ${token}`);
-assert.doesNotMatch(releaseWorkflow, /for browser in chromium firefox webkit|playwright install --with-deps chromium firefox webkit|ash-keep-aia3-task-journey-v3\.mjs/);
+for (const token of ['Vercel Operator Release','Verify deployed bytes match the authorized source packet','premerge_deep_browser_diagnostics = MANUAL_ONLY_NOT_RELEASE_AUTHORITY','ash_production_ceremony = RETIRED']) assert.ok(releaseWorkflow.includes(token), `Lean release omitted ${token}`);
+assert.doesNotMatch(releaseWorkflow, /Confirm deployed A14|Observe deployed Ash lifecycle|ash-a14-archive-browser-probe\.mjs|ash-lifecycle-production-probe\.mjs|for browser in chromium firefox webkit|playwright install --with-deps chromium firefox webkit|ash-keep-aia3-task-journey-v3\.mjs/);
 
 for (const token of ['td613.ash.constitutional-convergence-observation/v0.1','promotion_authorized: false','APERTURE_REBUILD','HUSH_CANDIDATE','DELETE_PARTIAL_HOLD','DRY_AUDIT_ONLY','first_tab_released_at','second_tab_acquired_at','acquired_after_release','td613.ash.cache-flush.aia3.epoch','td613.ash.cache-preflight.epoch','provider_recipient_cinder_transport_requests']) assert.ok(convergenceProbe.includes(token));
 assert.match(lifecycleRunner, /ash-lifecycle-production-probe-base\.mjs/);
@@ -70,4 +70,4 @@ assert.match(lifecycleProbe, /draft_body_sha256/);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-production-closure.yml'), false);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
 
-console.log('ash-keep-production-closure-contract.test.mjs passed under A14 consolidated and bounded release lanes');
+console.log('ash-keep-production-closure-contract.test.mjs passed with manual Ash closure diagnostics separated from exact-source Vercel release');
