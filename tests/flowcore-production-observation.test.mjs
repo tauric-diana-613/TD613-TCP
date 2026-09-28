@@ -31,18 +31,17 @@ test('Flow-Core cross-browser evidence starts at the front of one exact-head dis
   assert.equal(workflowDirectory.some(name => /repair-once|one-use|receipt-diagnostic/i.test(name)), false);
 });
 
-test('production release verifies source and bounded live consequence without replaying the matrix', () => {
+test('production release verifies exact source while deep browser evidence remains manual', () => {
   assert.match(releaseWorkflow, /^\s{2}issue_comment:\s*$/m);
   assert.doesNotMatch(releaseWorkflow, /^\s{2}(push|pull_request|workflow_dispatch):\s*$/m);
   assert.match(releaseWorkflow, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-release '\)/);
   assert.match(releaseWorkflow, /source_packet_commit = \$\{\{ steps\.authorize\.outputs\.selected_sha \}\}/);
   assert.match(releaseWorkflow, /TD613_CANONICAL_PRODUCTION_URL: https:\/\/td613\.com/);
   assert.match(releaseWorkflow, /flowcore-release-content-probe\.mjs/);
-  assert.match(releaseWorkflow, /playwright install --with-deps chromium/);
-  assert.match(releaseWorkflow, /ash-a13-demo-registry-browser-probe\.mjs/);
-  assert.match(releaseWorkflow, /ash-lifecycle-production-probe\.mjs/);
-  assert.match(releaseWorkflow, /premerge_scope_aligned_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE/);
-  assert.doesNotMatch(releaseWorkflow, /flowcore-runtime-browser-probe\.mjs/);
+  assert.match(releaseWorkflow, /premerge_deep_browser_diagnostics = MANUAL_ONLY_NOT_RELEASE_AUTHORITY/);
+  assert.match(releaseWorkflow, /production_full_product_browser_witness = .*NOT_REQUIRED_EXACT_SOURCE_ONLY/);
+  assert.match(releaseWorkflow, /ash_production_ceremony = RETIRED/);
+  assert.doesNotMatch(releaseWorkflow, /ash-a13-demo-registry-browser-probe\.mjs|ash-lifecycle-production-probe\.mjs|flowcore-runtime-browser-probe\.mjs/);
   assert.doesNotMatch(releaseWorkflow, /TD613_BROWSERS: chromium,firefox,webkit/);
 });
 
