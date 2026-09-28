@@ -104,12 +104,9 @@ export function installMarrowlineLivingChat(doc = document, environment = window
 
   let attachmentSubmissionActive = false;
   const syncReplyAttachmentAccess = () => {
-    const cards = [...messages.querySelectorAll('.relay-message')];
-    const latest = cards.at(-1) || null;
     const staged = Number(attachmentState()?.count || 0) > 0 && !attachmentSubmissionActive;
-    cards.forEach(card => {
-      const button = card.querySelector('.reply-attachment-access');
-      if (button) button.hidden = !(staged && card === latest);
+    messages.querySelectorAll('.relay-message .reply-attachment-access').forEach(button => {
+      button.hidden = !staged;
     });
   };
 
