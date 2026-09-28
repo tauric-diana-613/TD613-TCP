@@ -38,14 +38,22 @@ try {
   // Let its ES-module graph settle before navigating away: WebKit otherwise reports a
   // late aborted import after the evidence error buffer has been cleared.
   await page.waitForFunction(() => document.documentElement.dataset.ashModuleGraph === 'ready');
-  await page.evaluate(async () => {
+  await page.waitForFunction(
+    epoch => localStorage.getItem('td613.site.browser-reset.epoch') === epoch,
+    'td613.site.browser-reset/2026-09-27-v1'
+  );
+  await page.evaluate(async epoch => {
+    // This witness intentionally clears Ash state to observe a fresh canonical
+    // first paint. Keep the already-earned origin-wide epoch marker so an
+    // Ash-specific fixture reset cannot manufacture a second destructive purge.
     localStorage.clear();
     sessionStorage.clear();
+    localStorage.setItem('td613.site.browser-reset.epoch', epoch);
     await new Promise(resolve => {
       const request = indexedDB.deleteDatabase('td613-ash-keep');
       request.onsuccess = request.onerror = request.onblocked = () => resolve();
     });
-  });
+  }, 'td613.site.browser-reset/2026-09-27-v1');
   await page.goto('about:blank', { waitUntil:'load' });
   errors.length = 0;
   httpErrors.length = 0;
