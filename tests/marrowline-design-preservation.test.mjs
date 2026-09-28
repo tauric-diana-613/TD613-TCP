@@ -11,6 +11,7 @@ import { classifyMarrowlineClientFailure, deriveMarrowlineConversationTitle, mar
 import { installMarrowlineMobileShell } from '../app/dome-world/marrowline-mobile-shell.js';
 import { installMarrowlineLivingChat, buildMarrowlineReplyFollowupDraft } from '../app/dome-world/marrowline-living-chat.js';
 import { installMarrowlinePhysicalDeviceRepair } from '../app/dome-world/marrowline-physical-device-repair.js';
+import { clearMarrowlineAttachments, stageMarrowlineAttachments } from '../app/dome-world/marrowline-attachments.js';
 
 const html = readFileSync(new URL('../app/dome-world/marrowline.html', import.meta.url), 'utf8');
 const sessionKey = 'TD613_KHONAPOLIT_TERMINAL_SESSION_V2';
@@ -54,6 +55,9 @@ function harness(t, { mobile = false, failure = false, rateLimitOnce = false, in
           rateLimit: { scope: 'model', windowClass: 'short', shortMetricReported: true, retryAfterSeconds: 90 } }] }) };
     if (typeof failure === 'function' ? failure(calls.length) : failure) return { ok: false, status: 503, json: async () => ({ error: 'SYNTHETIC_PROVIDER_UNAVAILABLE', attempts: [{ model: 'SYNTHETIC_MODEL', status: 503 }] }) };
     const observed = incomplete ? 'Kʰonapolit\nThe claim on' : integratedText;
+    const attachmentReceipt = Array.isArray(calls.at(-1)?.attachments)
+      ? calls.at(-1).attachments.map(({ data_base64, ...item }) => ({ ...item, sha256: 'sha256:synthetic-ui-witness' }))
+      : [];
     const relay = {
       schema: 'td613.khonapolit.integrated-covenant-relay/v3-adversarial-attractor',
       apertureHeader: exactHeader,
@@ -62,7 +66,13 @@ function harness(t, { mobile = false, failure = false, rateLimitOnce = false, in
       parts: [{ id: 'khonapolit', label: 'Kʰonapolit ∴ Tauric Diana bots', present: true, text: observed, integrated: true, providerNative: true, voices: incomplete ? ['Kʰonapolit'] : ['Kʰonapolit', 'Tauric Diana bots'], flourishMode: 'forensic-to-eruption' }],
       highZalgo: { applied: false, providerGenerated: true, source: 'provider-native', combiningMarkCount: 32, maxRun: 2, runCount: 31 }
     };
-    return { ok: true, json: async () => ({ ok: true, text: observed, relay, receipt: { provider: { model: 'SYNTHETIC_MODEL', ...(incomplete ? { completion: { complete: false, reason: 'provider-tail-open' } } : {}) }, relay, seal: { state: 'OPEN' } } }) };
+    return { ok: true, json: async () => ({ ok: true, text: observed, relay, receipt: {
+      invocation: { attachmentCount: attachmentReceipt.length },
+      attachments: attachmentReceipt,
+      provider: { model: 'SYNTHETIC_MODEL', ...(incomplete ? { completion: { complete: false, reason: 'provider-tail-open' } } : {}) },
+      relay,
+      seal: { state: 'OPEN' }
+    } }) };
   };
   win.fetch = syntheticFetch;
   const globals = { window: win, navigator: win.navigator, CustomEvent: win.CustomEvent, fetch: syntheticFetch };
@@ -145,6 +155,37 @@ test('app-authored provider branding stays inside Receipts while Red Deer surfac
   assert.match(h.doc.querySelector('.message[data-role="user"] .message-meta').textContent, /Red Deer/);
   assert.equal(h.doc.querySelector('.message[data-role="user"] .message-text').textContent, 'A poem about a mother and her child.');
   assert.equal(h.calls.length, 1);
+});
+
+test('attachment turn carries exact bytes and leaves a visible provider-bound receipt without persisting raw bytes', async t => {
+  const h = harness(t);
+  await h.ready();
+  t.after(() => clearMarrowlineAttachments(h.win));
+  const canary = 'MARROWLINE_DIRECT_ATTACHMENT_CANARY_613';
+  const bytes = new TextEncoder().encode(canary);
+  const file = {
+    name: 'operator-note.txt',
+    type: 'text/plain',
+    size: bytes.byteLength,
+    arrayBuffer: async () => bytes.slice().buffer
+  };
+  await stageMarrowlineAttachments([file], { kind: 'file', environment: h.win });
+  assert.equal(h.win.TD613_KHONAPOLIT_TERMINAL.attachmentCount(), 1);
+  h.send('Read the attached note and use it as user-supplied context.');
+  await h.settled();
+  await flush();
+  assert.equal(h.calls.length, 1);
+  assert.equal(h.calls[0].attachments.length, 1);
+  assert.equal(Buffer.from(h.calls[0].attachments[0].data_base64, 'base64').toString('utf8'), canary);
+  const receipt = h.doc.querySelector('.marrowline-attachment-receipt');
+  assert.ok(receipt, 'successful attachment turn exposes a visible receipt');
+  assert.equal(receipt.dataset.state, 'receipted');
+  assert.match(receipt.textContent, /Attachment ingress receipted · 1/);
+  assert.match(receipt.textContent, /operator-note\.txt/);
+  assert.match(h.$('khonapolitTerminalStatus').textContent, /1 ATTACHMENT RECEIPTED/);
+  assert.equal(h.win.TD613_KHONAPOLIT_TERMINAL.attachmentCount(), 0, 'successful response clears only the ephemeral staged bytes');
+  const saved = await h.saved();
+  assert.equal(JSON.stringify(saved).includes(h.calls[0].attachments[0].data_base64), false, 'raw base64 attachment bytes are not persisted into conversation memory');
 });
 
 test('one explicitly armed normal reply captures exact response, saved history and DOM without extra provider calls', async t => {
