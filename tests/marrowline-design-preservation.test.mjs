@@ -135,6 +135,23 @@ test('landing and New stay transient until a human turn is actually sent', async
   assert.ok(saved.conversationTitle.split(/\s+/u).length <= 5, 'processed title is capped at five words');
 });
 
+test('failed first turn persists an untitled provisional record rather than a speaking-grove conversation', async t => {
+  const h = harness(t, { failure: true });
+  await h.ready();
+  h.send('Keep this failed first task recoverable.');
+  await h.settled(); await flush();
+
+  const saved = await h.saved();
+  assert.ok(saved?.id, 'failed sent work remains recoverable');
+  assert.equal(saved.titleSource, 'pending-return');
+  assert.equal(saved.conversationTitle, '', 'The speaking grove is presentation-only and never durable');
+
+  h.$('marrowlineThreadOpen').click();
+  await flush();
+  assert.doesNotMatch(h.$('marrowlineThreadList').textContent, /The speaking grove/);
+  assert.match(h.$('marrowlineThreadList').textContent, /Unfinished conversation/);
+});
+
 test('Receipts remain inside a local SHI-format membrane without changing issuance mode', async t => {
   const h = harness(t);
   await h.ready();
