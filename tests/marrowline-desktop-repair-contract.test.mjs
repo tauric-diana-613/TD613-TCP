@@ -158,15 +158,26 @@ test('staged attachments have two temporary access points and the composer contr
   assert.equal(composerAttachments.hidden, true, 'cleared/successfully consumed staging removes the composer control');
   assert.equal(replyAttachments.hidden, true, 'cleared/successfully consumed staging removes the reply action');
 
-  const photoBytes = new Uint8Array([0xff, 0xd8, 0xff, 0xd9]);
-  await stageMarrowlineAttachments([{
+  // Exercise the actual Upload photo input path with a realistic payload that
+  // exceeds the old 1.5 MB generic-file ceiling. No file is staged first: this
+  // witness must prove that a photo alone earns both Attachments entry points.
+  const photoBytes = new Uint8Array(1_600_000);
+  photoBytes[0] = 0xff; photoBytes[1] = 0xd8; photoBytes[photoBytes.length - 2] = 0xff; photoBytes[photoBytes.length - 1] = 0xd9;
+  const photoInput = document.querySelector('#marrowlineComposerPhotoInput');
+  Object.defineProperty(photoInput, 'files', { configurable: true, value: [{
     name: 'grove-photo.jpg', type: 'image/jpeg', size: photoBytes.byteLength,
     arrayBuffer: async () => photoBytes.buffer
-  }], { kind: 'photo', environment: window });
-  assert.equal(composerAttachments.hidden, false, 'staging a photo reveals the composer Attachments control');
-  assert.equal(replyAttachments.hidden, false, 'staging a photo reveals Attachments in More with this reply');
+  }] });
+  photoInput.dispatchEvent(new window.Event('change', { bubbles: true }));
+  const photoDeadline = Date.now() + 3000;
+  while (composerAttachments.hidden && Date.now() < photoDeadline) {
+    await new Promise(resolve => setTimeout(resolve, 0));
+  }
+  assert.equal(composerAttachments.hidden, false, 'photo-only picker path reveals the composer Attachments control');
+  assert.equal(replyAttachments.hidden, false, 'photo-only picker path reveals Attachments in More with this reply');
   assert.equal(document.querySelector('#marrowlineAttachmentTray [data-attachment-id]')?.textContent.includes('grove-photo.jpg'), true,
-    'photo uses the same staged attachment drawer');
+    'photo-only picker path uses the same staged attachment drawer');
+  assert.equal(window.__TD613_MARROWLINE_ATTACHMENT_STATE__?.().attachments[0]?.kind, 'photo');
   clearMarrowlineAttachments(window);
 
   assert.match(css, /\.marrowline-composer-attachments\{[\s\S]*grid-column:2!important;grid-row:2!important;justify-self:start!important/,
