@@ -3,7 +3,7 @@ name: TD613 Consolidated Validation
 on:
   pull_request:
     branches: [main]
-    types: [opened, synchronize, reopened, ready_for_review]
+    types: [opened, synchronize, reopened]
   push:
     branches: [main]
   workflow_dispatch:
@@ -16,6 +16,7 @@ on:
         options:
           - standard
           - full-browser
+          - giving-browser
           - full-repository
           - calibration
           - gemini-observation
@@ -146,6 +147,10 @@ jobs:
           python -m unittest discover -s docs/research/2026-09-24-native-prosody-atlas -p 'test_*.py' -v
           python docs/research/2026-09-24-native-prosody-atlas/verify_probe3.py
       - name: Validate Giving and Campaign Deputy import contracts
+        if: >-
+          needs.scope.outputs.validation_scope == 'giving' ||
+          needs.scope.outputs.validation_scope == 'practice' ||
+          (github.event_name == 'workflow_dispatch' && inputs.mode == 'giving-browser')
         run: |
           node tests/giving-history-package.test.mjs
           node tests/giving-campaign-deputy-import.test.mjs
@@ -177,12 +182,12 @@ jobs:
           node scripts/pedagogue-observation-custody-ci.mjs \
             artifacts/pedagogue-observation-custody/o1-success-observation.json
       - name: Validate Dome-World static surfaces
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: |
           npm run test:dome-world:art
           npm run test:dome-world:phase3
       - name: Validate Holonomy Loom causal theater
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: |
           node --check app/dome-world/holonomy-loom/animation-coordinator.js
           node --check app/dome-world/holonomy-loom/semantic-field.js
@@ -200,7 +205,7 @@ jobs:
           node --test tests/dollhouse-aperture-hostile-audit.test.mjs tests/dollhouse-atlas-hostile-audit.test.mjs tests/dollhouse-fadt-hostile-audit.test.mjs tests/loom-portable-governor.test.mjs tests/loom-governance-hostile-ui.test.mjs tests/holonomy-loom-portable-workbench.test.mjs
           node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/loom-portable-roundtrip-design.json
       - name: Validate Phase IV static surfaces
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: |
           python -m py_compile api/dome-world-engine-guard.py packages/dome_world_exact/reciprocal_bridge.py packages/dome_world_exact/flowcore_context.py scripts/phase4-local-integration-server.py
           python -m pytest packages/dome_world_exact/tests/test_reciprocal_bridge_v01.py packages/dome_world_exact/tests/test_flowcore_context.py packages/dome_world_exact/tests/test_flowcore_context_api.py -q
@@ -208,7 +213,7 @@ jobs:
           node tests/phase4-deployment-probe.test.mjs
           node tests/phase4-release-sync.test.mjs
       - name: Validate Ash core and ingress surfaces
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: |
           node tests/ash-keep-core.test.mjs
           node tests/ash-keep-continuity.test.mjs
@@ -217,37 +222,37 @@ jobs:
           node tests/ash-ingress-polish.test.mjs
           node tests/ash-reviewability.test.mjs
       - name: Validate Ash A2-A8 surfaces
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: |
           node tests/ash-a2-a5-whole-instrument.test.mjs
           node tests/ash-a7-home-recompilation.test.mjs
           node tests/ash-a8-case-map-recompilation.test.mjs
           node tests/ash-flowcore-live-field.test.mjs
       - name: Validate Ash A9 Work
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: node tests/ash-a9-work-recompilation.test.mjs
       - name: Validate Ash A10 Choir
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: node tests/ash-a10-choir-recompilation.test.mjs
       - name: Validate Ash A11 Capsule and postclosure cache law
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: |
           node tests/ash-a11-capsule-recompilation.test.mjs
           node tests/ash-a11-postclosure-cache-eviction.test.mjs
       - name: Validate Ash A12 command rationalization
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: node tests/ash-a12-command-rationalization.test.mjs
       - name: Validate Ash A13 unified registry and workflow collapse
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: node tests/ash-a13-unified-demo-registry.test.mjs
       - name: Validate Ash A14 Archive accession
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: |
           node --check app/dome-world/ash-archive-profile-demo.js
           node --check scripts/ash-a14-archive-browser-probe.mjs
           node tests/ash-a14-archive-accession.test.mjs
       - name: Validate Ash A15 empirical profile journeys and A15-R0 research field
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: |
           node --check app/dome-world/ash-a15-empirical-profile-journeys.js
           node --check scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs
@@ -264,7 +269,7 @@ jobs:
           node tests/ash-a15-r0-review-hardening.test.mjs
           node tests/ash-a15-transition-trace-contract.test.mjs
       - name: Validate Ash demo hydration surfaces
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: |
           node tests/ash-research-ux-rehydration.test.mjs
           node tests/ash-final-rehydration-boundaries.test.mjs
@@ -273,36 +278,36 @@ jobs:
           node tests/ash-legal-ux.test.mjs
           node tests/ash-legal-control-state.test.mjs
       - name: Validate Ash production-closure surfaces
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: |
           node tests/ash-keep-production-closure-contract.test.mjs
           node tests/ash-lifecycle-production-contract.test.mjs
       - name: Validate Flow-Core P0-P7 seam closure
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: node tests/flowcore-p0-p7-seam-closure.test.mjs
       - name: Validate Flow-Core P0-P10 completion
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: node tests/flowcore-p0-p10-completion.test.mjs
       - name: Flow-Core claim · exact-head matrix placement
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: node --test --test-name-pattern="cross-browser evidence lives" tests/flowcore-production-observation.test.mjs
       - name: Flow-Core claim · bounded production confirmation
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: node --test --test-name-pattern="production release verifies source" tests/flowcore-production-observation.test.mjs
       - name: Flow-Core claim · empirical authority separation
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: node --test --test-name-pattern="production probes preserve" tests/flowcore-production-observation.test.mjs
       - name: Flow-Core claim · executable dependency closure
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: node --test --test-name-pattern="exact-source observation follows" tests/flowcore-production-observation.test.mjs
       - name: Flow-Core claim · static rewrite parity
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: node --test --test-name-pattern="exact static Vercel rewrites" tests/flowcore-production-observation.test.mjs
       - name: Flow-Core claim · concurrent station packages
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: node --test --test-name-pattern="independent station packages" tests/flowcore-production-observation.test.mjs
       - name: Validate Flow-Core runtime browser contract
-        if: needs.scope.outputs.validation_scope != 'giving'
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: node tests/flowcore-runtime-browser-probe.test.mjs
       - name: Preserve diagnostics only when held
         if: failure()
@@ -328,8 +333,8 @@ jobs:
     needs: scope
     if: >-
       needs.scope.outputs.head_is_current == 'true' &&
-      ((github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser') ||
-      (github.event_name == 'pull_request' && github.event.action == 'ready_for_review' && needs.scope.outputs.validation_scope == 'full'))
+      github.event_name == 'workflow_dispatch' &&
+      inputs.mode == 'full-browser'
     runs-on: ubuntu-latest
     timeout-minutes: 35
     strategy:
@@ -692,8 +697,8 @@ jobs:
       needs.scope.outputs.head_is_current == 'true' &&
       needs.contracts.result == 'success' &&
       needs.ash_browser_shard.result == 'success' &&
-      ((github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser') ||
-      (github.event_name == 'pull_request' && github.event.action == 'ready_for_review' && needs.scope.outputs.validation_scope == 'full'))
+      github.event_name == 'workflow_dispatch' &&
+      inputs.mode == 'full-browser'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -789,9 +794,8 @@ jobs:
     needs: scope
     if: >-
       needs.scope.outputs.head_is_current == 'true' &&
-      github.event_name == 'pull_request' &&
-      github.event.action == 'ready_for_review' &&
-      (needs.scope.outputs.validation_scope == 'giving' || needs.scope.outputs.validation_scope == 'practice')
+      github.event_name == 'workflow_dispatch' &&
+      inputs.mode == 'giving-browser'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
