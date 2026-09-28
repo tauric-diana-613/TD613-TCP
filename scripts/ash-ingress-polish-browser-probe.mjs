@@ -54,6 +54,14 @@ try {
       request.onsuccess = request.onerror = request.onblocked = () => resolve();
     });
   }, 'td613.site.browser-reset/2026-09-27-v1');
+  // Clear-Site-Data completion can settle after the response that triggered the
+  // first-visit purge. From this point forward the witness is explicitly testing
+  // the already-reset browser state, so bind the earned epoch before every
+  // subsequent document script executes rather than racing asynchronous storage
+  // eviction against the second canonical navigation.
+  await context.addInitScript(epoch => {
+    try { localStorage.setItem('td613.site.browser-reset.epoch', epoch); } catch {}
+  }, 'td613.site.browser-reset/2026-09-27-v1');
   await page.goto('about:blank', { waitUntil:'load' });
   errors.length = 0;
   httpErrors.length = 0;
