@@ -42,6 +42,19 @@ async function openKeep() {
   }
 }
 
+async function waitForSiteEpochSettlement() {
+  await page.waitForFunction(
+    epoch => {
+      const governedAshPath = location.pathname.endsWith('/dome-world/ash-threshold.html')
+        || location.pathname.endsWith('/dome-world/ash-keep.html');
+      return governedAshPath
+        && localStorage.getItem('td613.site.browser-reset.epoch') === epoch;
+    },
+    'td613.site.browser-reset/2026-09-27-v1',
+    { timeout:60_000 }
+  );
+}
+
 const report = {
   schema:'td613.ash.reviewability-browser/v0.7-post-refresh-title-ownership',
   browser:browserName,
@@ -53,14 +66,18 @@ const report = {
 
 try {
   await openKeep();
-  await page.evaluate(async () => {
+  await waitForSiteEpochSettlement();
+  await page.evaluate(async epoch => {
+    // Reset only the Ash fixture state. Preserve the already-earned global
+    // browser epoch so this test cannot trigger a second destructive purge.
     localStorage.clear();
     sessionStorage.clear();
+    localStorage.setItem('td613.site.browser-reset.epoch', epoch);
     await new Promise(resolve => {
       const request = indexedDB.deleteDatabase('td613-ash-keep');
       request.onsuccess = request.onerror = request.onblocked = () => resolve();
     });
-  });
+  }, 'td613.site.browser-reset/2026-09-27-v1');
   await openKeep();
 
   await page.waitForFunction(() => window.__td613AshReviewability?.version
