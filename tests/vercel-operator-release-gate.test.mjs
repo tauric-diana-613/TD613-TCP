@@ -167,7 +167,7 @@ assert.match(law, /The operator is not required to operate Vercel, GitHub Action
 assert.match(law, /direct token bridge/);
 assert.match(law, /bounded Git fallback/);
 assert.match(law, /source_packet_commit/);
-assert.match(law, /deep browser diagnostics.*manual/i);
+assert.match(law, /Deep Chromium\/Firefox\/WebKit[\s\S]*manual diagnostic/i);
 assert.match(law, /exact-source.*deployment/i);
 assert.match(law, /stale-queue stability window/i);
 assert.match(law, /independent relock safety/i);
