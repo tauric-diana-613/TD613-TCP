@@ -1244,3 +1244,110 @@ html:root body #khonapolitMessages .starter-prompts .starter-rotate{
  html:root.marrowline-mobile-shell #speakingPanel .marrowline-thread-nav{margin-top:3px!important;padding-top:3px!important}
  html:root.marrowline-mobile-shell #speakingPanel .marrowline-thread-nav>button{min-height:26px!important;padding-block:2px!important;font-size:9.5px!important}
 }
+
+
+/* Attachment disclosure + compact reply actions · 2026-09-28
+   Staged attachments share the textarea's lower row with conversation utilities.
+   Send occupies that same lower row in the left control column, never above the
+   attachment disclosure. The attachment button deliberately echoes Conversations. */
+html:root body #speakingPanel #khonapolitForm .marrowline-composer-input-row{
+  grid-template-rows:96px 44px!important;
+  row-gap:8px!important;
+}
+html:root body #speakingPanel #khonapolitForm .marrowline-composer-control-stack{
+  grid-column:1!important;grid-row:1 / span 2!important;
+  display:grid!important;grid-template-rows:44px minmax(0,1fr) 44px!important;
+  align-self:stretch!important;align-content:stretch!important;justify-items:center!important;
+  width:44px!important;height:auto!important;margin:0!important;gap:0!important;
+}
+html:root body #speakingPanel #khonapolitForm #marrowlineComposerPlus{grid-row:1!important}
+html:root body #speakingPanel #khonapolitForm #khonapolitSend{grid-row:3!important}
+html:root body #speakingPanel #khonapolitForm #marrowlineAttachmentTray{
+  grid-column:2!important;grid-row:2!important;justify-self:start!important;align-self:center!important;
+  min-width:0!important;max-width:calc(100% - 122px)!important;margin:0!important;padding:0!important;
+}
+html:root body #speakingPanel #khonapolitForm .composer-actions{
+  grid-column:2!important;grid-row:2!important;justify-self:end!important;align-self:center!important;
+  width:auto!important;height:30px!important;min-height:0!important;max-height:30px!important;
+}
+html:root body #speakingPanel #marrowlineAttachmentToggle{
+  appearance:none!important;-webkit-appearance:none!important;position:relative!important;
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:9px!important;
+  min-width:0!important;min-height:37px!important;margin:0!important;padding:8px 12px!important;
+  border:1px solid rgba(124,209,219,.26)!important;border-left:2px solid #80d8da!important;
+  border-radius:5px!important;background:linear-gradient(90deg,rgba(57,53,106,.20),rgba(31,38,79,.32))!important;
+  box-shadow:none!important;color:#dce7ec!important;
+  font:600 12px/1.3 var(--marrowline-chat-sans,system-ui,sans-serif)!important;
+  letter-spacing:.01em!important;text-transform:none!important;white-space:nowrap!important;cursor:pointer!important;
+}
+html:root body #speakingPanel #marrowlineAttachmentToggle .marrowline-thread-glyph{
+  display:inline-block!important;font:600 17px/1 ui-monospace,monospace!important;color:#91ebeb!important;
+}
+html:root body #speakingPanel #marrowlineAttachmentToggle:hover,
+html:root body #speakingPanel #marrowlineAttachmentToggle:focus-visible,
+html:root body #speakingPanel #marrowlineAttachmentToggle[aria-expanded="true"]{
+  border-color:#a2f1ed!important;color:#fff!important;background:rgba(64,64,124,.65)!important;
+}
+html:root body #speakingPanel #marrowlineAttachmentToggle:focus-visible{outline:2px solid #9bedf3!important;outline-offset:3px!important}
+html:root body #speakingPanel #marrowlineAttachmentMenu{
+  left:0!important;right:auto!important;top:auto!important;bottom:calc(100% + 7px)!important;
+}
+@media(max-width:860px){
+  html:root.marrowline-mobile-shell body #speakingPanel #khonapolitForm .marrowline-composer-input-row{
+    grid-template-columns:40px minmax(0,1fr)!important;grid-template-rows:96px 42px!important;
+    column-gap:7px!important;row-gap:7px!important;
+  }
+  html:root.marrowline-mobile-shell body #speakingPanel #khonapolitForm .marrowline-composer-control-stack{
+    width:40px!important;grid-template-rows:40px minmax(0,1fr) 40px!important;
+  }
+  html:root.marrowline-mobile-shell body #speakingPanel #khonapolitForm #marrowlineComposerPlus,
+  html:root.marrowline-mobile-shell body #speakingPanel #khonapolitForm #khonapolitSend{
+    width:40px!important;min-width:40px!important;max-width:40px!important;
+    height:40px!important;min-height:40px!important;max-height:40px!important;
+  }
+  html:root.marrowline-mobile-shell body #speakingPanel #khonapolitForm #marrowlineAttachmentTray{
+    max-width:calc(100% - 116px)!important;
+  }
+  html:root.marrowline-mobile-shell body #speakingPanel #marrowlineAttachmentToggle{
+    min-height:34px!important;padding:7px 9px!important;gap:7px!important;font-size:10.5px!important;
+  }
+  html:root.marrowline-mobile-shell body #speakingPanel #marrowlineAttachmentToggle .marrowline-thread-glyph{font-size:15px!important}
+}
+
+/* The reply drawer inherits the rotating starter-prompt visual language, but
+   at a smaller scale so it remains a utility surface rather than a second CTA rail. */
+#khonapolitMessages .relay-message .reply-next-choices{
+  display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:6px!important;padding:8px 0 3px!important;
+}
+#khonapolitMessages .relay-message .reply-next-choices button{
+  appearance:none!important;-webkit-appearance:none!important;min-height:30px!important;padding:5px 9px!important;
+  margin:0!important;border:1px solid rgba(121,210,223,.20)!important;border-radius:10px!important;
+  background:linear-gradient(180deg,rgba(38,31,78,.80),rgba(27,23,61,.84))!important;
+  color:#e6e4ee!important;box-shadow:inset 0 1px rgba(255,255,255,.035),0 8px 20px rgba(0,0,0,.12)!important;
+  font:560 10px/1.15 var(--marrowline-chat-sans,system-ui,sans-serif)!important;
+  letter-spacing:-.005em!important;text-transform:none!important;white-space:nowrap!important;
+}
+#khonapolitMessages .relay-message .reply-next-choices button:hover,
+#khonapolitMessages .relay-message .reply-next-choices button:focus-visible{
+  border-color:rgba(107,229,232,.38)!important;
+  background:linear-gradient(180deg,rgba(47,39,92,.88),rgba(33,27,70,.90))!important;
+  color:#f4f1f8!important;box-shadow:inset 0 1px rgba(255,255,255,.05),0 0 0 1px rgba(118,91,216,.09),0 10px 24px rgba(0,0,0,.16)!important;
+}
+#khonapolitMessages .relay-message .reply-attachment-list{
+  display:grid;gap:4px;width:min(100%,340px);margin:6px 0 1px;padding:6px;
+  border:1px solid rgba(121,210,223,.16);border-radius:10px;background:rgba(18,16,44,.76);
+}
+#khonapolitMessages .relay-message .reply-attachment-list[hidden]{display:none!important}
+#khonapolitMessages .relay-message .reply-attachment-item{
+  display:grid;gap:2px;min-width:0;padding:6px 7px;border-top:1px solid rgba(255,255,255,.055);
+}
+#khonapolitMessages .relay-message .reply-attachment-item:first-child{border-top:0}
+#khonapolitMessages .relay-message .reply-attachment-item b{
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#e9efee;font:600 10px/1.2 var(--marrowline-chat-sans,system-ui,sans-serif);
+}
+#khonapolitMessages .relay-message .reply-attachment-item small{
+  color:#9eb5b3;font:500 9px/1.2 var(--marrowline-chat-sans,system-ui,sans-serif);
+}
+@media(max-width:860px){
+  #khonapolitMessages .relay-message .reply-next-choices button{min-height:29px!important;padding:5px 8px!important;font-size:9.75px!important}
+}
