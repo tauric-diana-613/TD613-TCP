@@ -7,6 +7,8 @@ import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 import { GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE, withGeminiGenerationProfile } from '../server/gemini-generation-envelope.js';
 import marrowlineAttachmentHandler, {
   MARROWLINE_ATTACHMENT_MAX_COUNT,
+  MARROWLINE_ATTACHMENT_MAX_SINGLE_FILE_BYTES,
+  MARROWLINE_ATTACHMENT_MAX_SINGLE_PHOTO_BYTES,
   MARROWLINE_ATTACHMENT_SCHEMA,
   buildAttachmentGeminiRequest,
   buildAttachmentGeminiTerminalRepairRequest,
@@ -70,6 +72,30 @@ test('Marrowline keeps file and photo MIME classes non-interchangeable', () => {
   assert.equal(normalizeMarrowlineAttachments([photo])[0].kind, 'photo');
   assert.throws(() => normalizeMarrowlineAttachments([{ ...photo, kind: 'file' }]), /unsupported-attachment-type/);
   assert.throws(() => normalizeMarrowlineAttachments([{ ...attachment(), kind: 'photo' }]), /unsupported-attachment-type/);
+});
+
+test('photo capacity may use the full envelope while ordinary files retain the smaller single-file ceiling', () => {
+  assert.equal(MARROWLINE_ATTACHMENT_MAX_SINGLE_FILE_BYTES, 1_500_000);
+  assert.equal(MARROWLINE_ATTACHMENT_MAX_SINGLE_PHOTO_BYTES, 2_500_000);
+  const bytes = Buffer.alloc(1_600_000, 0x61);
+  const photo = attachment({
+    id: 'att_realistic_photo_613',
+    name: 'iphone-photo.jpg',
+    kind: 'photo',
+    mime_type: 'image/jpeg',
+    bytes
+  });
+  assert.equal(normalizeMarrowlineAttachments([photo])[0].size_bytes, bytes.length,
+    'a realistic photo above the old generic-file ceiling remains admissible');
+  const file = attachment({
+    id: 'att_large_file_613',
+    name: 'large-note.txt',
+    kind: 'file',
+    mime_type: 'text/plain',
+    bytes
+  });
+  assert.throws(() => normalizeMarrowlineAttachments([file]), /invalid-attachment-size/,
+    'ordinary file ceiling remains bounded at 1.5 MB');
 });
 
 
