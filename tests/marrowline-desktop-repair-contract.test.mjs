@@ -109,6 +109,7 @@ test('staged attachments have two temporary access points and the composer contr
   const { document } = window;
   window.matchMedia = () => ({ matches: false, addEventListener() {}, removeEventListener() {} });
   window.HTMLElement.prototype.scrollIntoView = function () {};
+  clearMarrowlineAttachments(window);
   t.after(() => {
     clearMarrowlineAttachments(window);
     window.__TD613_MARROWLINE_TRANSCRIPT_CUSTODY_OBSERVER__?.disconnect?.();
