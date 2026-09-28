@@ -182,7 +182,7 @@ test('attachment turn carries exact bytes and leaves a visible provider-bound re
   assert.equal(receipt.dataset.state, 'receipted');
   assert.match(receipt.textContent, /Attachment ingress receipted · 1/);
   assert.match(receipt.textContent, /operator-note\.txt/);
-  assert.match(h.$('khonapolitTerminalStatus').textContent, /1 ATTACHMENT RECEIPTED/);
+  assert.match(h.$('khonapolitTerminalStatus').textContent, /1 attachment receipted/i);
   assert.equal(h.win.TD613_KHONAPOLIT_TERMINAL.attachmentCount(), 0, 'successful response clears only the ephemeral staged bytes');
   const saved = await h.saved();
   assert.equal(JSON.stringify(saved).includes(h.calls[0].attachments[0].data_base64), false, 'raw base64 attachment bytes are not persisted into conversation memory');
