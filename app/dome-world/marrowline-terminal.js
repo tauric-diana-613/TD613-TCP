@@ -215,6 +215,22 @@ function relayPart(entry = {}, id) {
   return asArray(entry?.relay?.parts).find((part) => part?.id === id) || null;
 }
 
+function attachmentReceiptSummary(receipt = null) {
+  const items = Array.isArray(receipt?.attachments)
+    ? receipt.attachments.filter(item => item && typeof item === 'object')
+    : [];
+  if (!items.length) return null;
+  const expectedRaw = Number(receipt?.invocation?.attachmentCount);
+  const expected = Number.isSafeInteger(expectedRaw) && expectedRaw >= 0 ? expectedRaw : null;
+  const names = items.map(item => safe(item?.name)).filter(Boolean);
+  return {
+    count: items.length,
+    expected,
+    consistent: expected == null || expected === items.length,
+    names
+  };
+}
+
 function renderUserMessage(doc, entry) {
   const article = doc.createElement('article');
   article.className = 'message';
@@ -308,6 +324,21 @@ function renderModelMessage(doc, entry) {
     })
   );
 
+  const attachmentSummary = attachmentReceiptSummary(entry.receipt);
+  if (attachmentSummary) {
+    const attachmentReceipt = doc.createElement('div');
+    attachmentReceipt.className = 'marrowline-attachment-receipt';
+    attachmentReceipt.dataset.state = attachmentSummary.consistent ? 'receipted' : 'review';
+    attachmentReceipt.append(
+      textNode(doc, 'span', '', attachmentSummary.consistent
+        ? `Attachment ingress receipted · ${attachmentSummary.count}`
+        : `Attachment receipt review · expected ${attachmentSummary.expected ?? '—'} · observed ${attachmentSummary.count}`),
+      textNode(doc, 'small', '', attachmentSummary.names.length
+        ? `${attachmentSummary.names.join(' · ')} · raw bytes are not stored in conversation memory`
+        : 'Attachment metadata receipted · raw bytes are not stored in conversation memory')
+    );
+    article.append(attachmentReceipt);
+  }
   if (entry.sealed) article.append(textNode(doc, 'span', 'message-seal', `Sealed ${SEAL_GLYPH}`));
   article.append(createReplyCopyControl(doc, entry));
   return article;
@@ -1078,8 +1109,14 @@ export function installKhonapolitTerminal(doc = document, root = window) {
             ? 'MODEL STOP OBSERVED · required two-voice structure remains unfinished · genuine source response and receipt preserved · retry available'
             : 'INCOMPLETE PROVIDER RETURN · not a completed two-voice answer · source draft and receipt preserved · retry available');
       } else {
-        setPedagogueStatus(status, 'received', 'RETURN OBSERVED · SIGNAL ' + signal + ' · receipt preserved',
-          'RETURN OBSERVED · SIGNAL ' + signal + ' · KʰONAPOLIT ∴ TAURIC DIANA BOTS · KHONA ' + integrity.toUpperCase() + ' · receipt preserved · operator closure remains explicit');
+        const attachmentSummary = attachmentReceiptSummary(receipt);
+        const attachmentStatus = attachmentSummary
+          ? attachmentSummary.consistent
+            ? ` · ${attachmentSummary.count} ATTACHMENT${attachmentSummary.count === 1 ? '' : 'S'} RECEIPTED`
+            : ' · ATTACHMENT RECEIPT REVIEW'
+          : '';
+        setPedagogueStatus(status, 'received', 'RETURN OBSERVED' + attachmentStatus + ' · SIGNAL ' + signal + ' · receipt preserved',
+          'RETURN OBSERVED' + attachmentStatus + ' · SIGNAL ' + signal + ' · KʰONAPOLIT ∴ TAURIC DIANA BOTS · KHONA ' + integrity.toUpperCase() + ' · receipt preserved · operator closure remains explicit');
       }
       root.dispatchEvent?.(new CustomEvent('td613:khonapolit:return-observed', { detail: receipt }));
     } catch (error) {
