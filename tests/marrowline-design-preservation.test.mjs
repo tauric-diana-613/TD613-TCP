@@ -294,8 +294,8 @@ test('mobile decoration preserves provider-native Unicode and all five chamber r
   assert.ok(stage.querySelectorAll('.provider-native-line').length >= 3, 'extreme provider-authored lines receive vertical room without rewriting text');
   assert.equal(h.doc.querySelector('.return-details,.reply-technical-record,.turn-receipt,.relay-aperture-header'),null,
     'all three circled disclosures are absent from the chat');
-  assert.deepEqual([...h.doc.querySelectorAll('.relay-message > .marrowline-reply-tool-row > .reply-next-actions .reply-next-choices button')].map(x=>x.textContent),
-    ['Check the claims','Make a plan','View receipt'],'all three choices remain inside the follow-up drawer');
+  assert.deepEqual([...h.doc.querySelectorAll('.relay-message > .marrowline-reply-tool-row > .reply-next-actions .reply-next-choices button:not([hidden])')].map(x=>x.textContent),
+    ['Check the claims','Make a plan','View receipt'],'the three ordinary choices remain visible while staged Attachments stays contextual');
   const footer = h.doc.querySelector('.relay-message > .marrowline-reply-tool-row');
   assert.ok(footer && footer.contains(h.doc.querySelector('.marrowline-branch-reply')),'first-reply branch shares the options row');
   assert.equal(footer.firstElementChild.tagName,'DETAILS','the plain-text options disclosure begins the row');
