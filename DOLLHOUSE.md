@@ -56,13 +56,13 @@ PEDAGOGUE != APERTURE != ATLAS != FADT
 Their outputs meet at Loom / Flow-Core through explicit bounded contracts. None receives automatic release, redesign, merge, deployment, provider, or Vercel authority.
 
 
-## Experimental production-trial authority
+## Experimental production-trial authority · RETIRED
 
-A Dollhouse production trial is an experimental observation surface, not a release surface. Its issue-comment trigger requires a direct repository-owner GitHub gesture whose raw event records `performed_via_github_app == null`.
+Dollhouse remains a controlled research laboratory, but it no longer owns a permanent production-trial workflow or issue-comment listener. The former #1172 production-trial command is historical evidence only and must not be reconstructed from old receipts or research notes.
 
-An app-mediated issue comment—including one transported through the ChatGPT/Codex connector—does not itself establish contemporaneous operator presence for this trial. Amari may prepare the trial, inspect repository evidence, and analyze results under a direct chat instruction, but the #1172 production-trial execution gesture remains non-app owner-only.
+Any future production-facing Dollhouse experiment requires a newly designed, explicitly bounded observation plan under the then-current repository law. It receives no standing deployment, provider, Vercel, GitHub Actions, or connector authority merely because the older trial once existed.
 
-This restriction is intentionally narrower than issue #405. The canonical Vercel release gate separately reviews and permits connector transport after explicit operator authorization; Dollhouse inherits no such exception.
+The historical GitHub-App provenance lesson remains useful: a visible owner login does not by itself prove a direct non-app human gesture when a future experiment explicitly requires that property. That general provenance rule lives in `AGENTS.md`; it does not keep the retired Dollhouse listener alive.
 
 ## Portable AIA operational roundtrip candidate
 
