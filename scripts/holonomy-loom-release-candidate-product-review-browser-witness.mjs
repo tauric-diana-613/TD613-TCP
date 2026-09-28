@@ -4,6 +4,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { promisify } from 'node:util';
 import { chromium, firefox, webkit } from 'playwright';
+import { settleSiteEpochBaseline } from './site-epoch-browser-baseline.mjs';
 import {
   compileHolonomyLoomReleaseCandidateReview,
   loadReleaseCandidateInputs,
@@ -162,7 +163,9 @@ check('human-readable review packet preserves release-authority disclaimer', /no
 
 const browser = await browserType.launch({ headless: true });
 try {
-  const page = await browser.newPage({ viewport: { width: 1280, height: 820 }, colorScheme: 'dark' });
+  const context = await browser.newContext({ viewport: { width: 1280, height: 820 }, colorScheme: 'dark' });
+  report.site_epoch_baseline = await settleSiteEpochBaseline(context, base);
+  const page = await context.newPage();
   page.on('pageerror', error => report.page_errors.push(error.message));
   page.on('console', message => {
     if (message.type() === 'error') report.console_errors.push(message.text());
