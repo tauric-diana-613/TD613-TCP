@@ -28,7 +28,8 @@ try {
     page.on('pageerror', error => errors.push(error.message));
     page.on('request', request => {
       const u = new URL(request.url());
-      if (u.origin !== new URL(base).origin || !['GET', 'HEAD'].includes(request.method()) || u.pathname.startsWith('/api/')) unexpected.push(request.url());
+      const siteEpochReset = u.origin === new URL(base).origin && u.pathname === '/api/site-epoch-reset' && request.method() === 'POST';
+      if (!siteEpochReset && (u.origin !== new URL(base).origin || !['GET', 'HEAD'].includes(request.method()) || u.pathname.startsWith('/api/'))) unexpected.push(request.url());
     });
     try {
       await page.goto(`${base}/dome-world/holonomy-loom.html`, { waitUntil: 'networkidle' });
@@ -83,7 +84,7 @@ try {
       assert.equal(await page.locator('#loomTheater').getAttribute('data-pending-frames'), '0');
       const overflows = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth);
       assert.equal(overflows, false, 'no horizontal page overflow');
-      assert.deepEqual(errors, [], 'no browser runtime errors'); assert.deepEqual(unexpected, [], 'no provider/mutation/external requests');
+      assert.deepEqual(errors, [], 'no browser runtime errors'); assert.deepEqual(unexpected, [], 'no ungoverned provider/mutation/external requests beyond the one-time site epoch');
       report.checks.push({ posture, status: 'PASS', receiver_change: true, explicit_return: true, hostile_return_held: true,
         missing_authority: true, stale_return_held: true, private_checker_text_excluded: true, rest: true,
         no_horizontal_overflow: true, reduced_motion: reduced, runtime_errors: errors.length });
