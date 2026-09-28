@@ -26,6 +26,15 @@ test('desktop Marrowline is conversation-first and instruments are on demand', (
   assert.equal(release.desktop.posture, 'conversation-first-single-column');
 });
 
+test('lore-bearing demo prompts preserve canonical Flow-Core glyphs and Palantir attribution', () => {
+  const flow = "['Flow-Core labor dispute', '米, à, 出, hõt, cōl, 上, 下, and 𝄐 file a labor complaint against an animation coordinator that uses their glyphs as decorative status lights. Let each relation testify to what semantic work it actually performs, then redesign the scheduler so cadence serves meaning rather than consuming it.']";
+  const palantir = "['Palantir ontology hearing', 'A city adopts an ontology platform by Palantir that promises one clean object model for people, places, risks, and events. Conduct a hostile-but-fair architecture hearing: distinguish useful relational integration from the power to make the ontology’s categories operationally real, and identify what governance would keep a graph from quietly becoming jurisdiction.']";
+  assert.ok(js.includes(flow));
+  assert.ok(js.includes(palantir));
+  assert.equal(js.includes("'Flow-Core labor dispute', 'À,"), false, 'à must never be capitalized into a different glyph');
+  for (const glyph of ['米', 'à', '出', 'hõt', 'cōl', '上', '下', '𝄐']) assert.ok(flow.includes(glyph), glyph);
+});
+
 test('isolated 56-prompt shuffle bag never repeats early or across the cycle seam', () => {
   const dom = new JSDOM('<div id="khonapolitMessages"><div class="starter-prompts"><button>Follow a memory</button><button>Meet the Ash Moon</button></div></div><textarea id="khonapolitPrompt"></textarea>');
   const { document } = dom.window;
