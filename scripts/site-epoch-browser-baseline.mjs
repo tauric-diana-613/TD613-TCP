@@ -14,8 +14,18 @@ export async function settleSiteEpochBaseline(context, base, { returnPath = '/' 
   resetUrl.searchParams.set('return', returnPath);
   try {
     await page.goto(resetUrl.href, { waitUntil: 'domcontentloaded', timeout: 60_000 });
+    // The reset script writes its marker immediately before location.replace().
+    // Firefox can expose that marker while the reset document is already
+    // tearing down, so do not receipt storage until the return navigation owns
+    // the page and its DOMContentLoaded boundary has settled.
+    await page.waitForURL(
+      candidate => candidate.origin === origin && candidate.pathname !== '/site-epoch-reset.html',
+      { waitUntil: 'domcontentloaded', timeout: 60_000 }
+    );
     await page.waitForFunction(({ key, epoch, origin: expectedOrigin }) => {
-      return location.origin === expectedOrigin && localStorage.getItem(key) === epoch;
+      return location.origin === expectedOrigin
+        && location.pathname !== '/site-epoch-reset.html'
+        && localStorage.getItem(key) === epoch;
     }, { key: SITE_EPOCH_KEY, epoch: SITE_EPOCH, origin }, { timeout: 60_000 });
     const receipt = await page.evaluate(({ expected, key, epoch }) => {
       const local = Object.fromEntries(Object.keys(localStorage).sort().map(name => [name, localStorage.getItem(name)]));
