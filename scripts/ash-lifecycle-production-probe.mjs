@@ -23,9 +23,22 @@ runtime = replaceExactly(
   const epochPage = await context.newPage();
   await epochPage.goto(\`\${base}/site-epoch-reset.html?return=%2F\`, { waitUntil:'domcontentloaded', timeout:30_000 });
   await epochPage.waitForFunction(
-    () => localStorage.getItem('td613.site.browser-reset.epoch') === 'td613.site.browser-reset/2026-09-27-v1',
+    () => location.pathname === '/'
+      && !new URL(location.href).searchParams.has('td613_site_epoch')
+      && localStorage.getItem('td613.site.browser-reset.epoch') === 'td613.site.browser-reset/2026-09-27-v1',
     null, { timeout:45_000 }
   );
+  // Clear-Site-Data may finish asynchronously relative to the response that
+  // triggered it. The lifecycle episode begins only after the destructive
+  // first-visit reset has earned its marker; re-bind that earned epoch before
+  // every subsequent document script so the lifecycle network witness cannot
+  // manufacture a second reset POST while storage eviction settles.
+  await context.addInitScript(({ key, epoch }) => {
+    try { localStorage.setItem(key, epoch); } catch {}
+  }, {
+    key:'td613.site.browser-reset.epoch',
+    epoch:'td613.site.browser-reset/2026-09-27-v1'
+  });
   await epochPage.close();
   const page = await context.newPage();`,
   'first-visit site epoch before lifecycle network capture'
