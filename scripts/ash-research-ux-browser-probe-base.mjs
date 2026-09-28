@@ -21,8 +21,14 @@ function installObservers(page, report) {
   });
   page.on('request', request => {
     const url = request.url();
-    if (new URL(url).origin !== new URL(base).origin) report.external_requests.push(url);
-    if (!['GET', 'HEAD'].includes(request.method())) report.non_read_requests.push(`${request.method()} ${url}`);
+    const parsed = new URL(url);
+    const baseOrigin = new URL(base).origin;
+    if (parsed.origin !== baseOrigin) report.external_requests.push(url);
+    const governedSiteEpoch = parsed.origin === baseOrigin
+      && parsed.pathname === '/api/site-epoch-reset'
+      && request.method() === 'POST';
+    if (governedSiteEpoch) report.site_epoch_requests.push(`${request.method()} ${url}`);
+    else if (!['GET', 'HEAD'].includes(request.method())) report.non_read_requests.push(`${request.method()} ${url}`);
   });
 }
 
@@ -141,6 +147,7 @@ const report = {
   http_errors:[],
   external_requests:[],
   non_read_requests:[],
+  site_epoch_requests:[],
   observations:{},
   authority:{ counts_as_human_evidence:false, authorizes_provider_use:false, authorizes_transport:false, authorizes_release:false, authorizes_child_study:false }
 };
@@ -234,6 +241,7 @@ try {
   assert(report.http_errors.length === 0, `HTTP errors: ${report.http_errors.join(' | ')}`);
   assert(report.external_requests.length === 0, `External requests: ${report.external_requests.join(' | ')}`);
   assert(report.non_read_requests.length === 0, `Non-read requests: ${report.non_read_requests.join(' | ')}`);
+  assert(report.site_epoch_requests.length === 1, `Expected one governed first-visit site epoch POST, observed: ${report.site_epoch_requests.join(' | ')}`);
 
   await page.screenshot({ path:path.join(outputDir, `${browserName}-research-hydration-ledger.png`), fullPage:true });
   report.status = 'PASS';
