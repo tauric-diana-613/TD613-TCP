@@ -670,7 +670,10 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       const row = doc.createElement('div'); row.className = 'marrowline-thread-row';
       row.dataset.threadId = thread.id;
       const open = doc.createElement('button'); open.type = 'button'; open.className = 'marrowline-thread-open';
-      open.textContent = (thread.parentId ? '⤴ ' : '') + (thread.conversationTitle || DEFAULT_CONVERSATION_TITLE);
+      const threadLabel = thread.titleSource === 'pending-return'
+        ? 'Unfinished conversation'
+        : (thread.conversationTitle || DEFAULT_CONVERSATION_TITLE);
+      open.textContent = (thread.parentId ? '⤴ ' : '') + threadLabel;
       open.setAttribute('aria-current', thread.id === activeThread?.id ? 'true' : 'false');
       open.addEventListener('click', () => void switchThread(thread.id));
       const rename = doc.createElement('button'); rename.type = 'button'; rename.textContent = '✎';
@@ -982,6 +985,18 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     updateReceipt(doc, root, state); displayClassification(doc, null);
     delete byId(doc, 'khonapolitMessages').dataset.forceFollow;
     prompt.value = ''; prompt.style.height = ''; submit.disabled = false;
+    if (!activeThread) {
+      activeThread = await threadLibrary.create({
+        messages: state.messages,
+        lastReceipt: state.lastReceipt,
+        pendingTask: state.pendingTask,
+        lastFailure: state.lastFailure,
+        conversationTitle: state.conversationTitle,
+        titleSource: 'pending-return',
+        draft: ''
+      });
+      threadLibrary.setActiveId(activeThread.id);
+    }
     const persisted = await scheduleSave();
     syncRecoveryControls(doc, state); renderMessages(doc, state);
     if (!persisted || activeRequestCancelRequested) {
