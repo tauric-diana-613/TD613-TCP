@@ -11,14 +11,13 @@ const required = [
   'pages.yml',
   'td613-ci.yml',
   'vercel-operator-release.yml',
-  'vercel-production-reobserve.yml',
   'vercel-relock-safety.yml',
 ].sort();
 
 assert.deepEqual(
   workflows,
   required,
-  `Workflow estate must remain exactly five durable authority surfaces. Found: ${workflows.join(', ')}`,
+  `Workflow estate must remain exactly four durable authority surfaces. Found: ${workflows.join(', ')}`,
 );
 
 const retired = [
@@ -29,6 +28,7 @@ const retired = [
   'ash-keep-aia3-production-observation.yml',
   'dome-world-phase4.yml',
   'vercel-deployment-law.yml',
+  'vercel-production-reobserve.yml',
 ];
 for (const name of retired) {
   assert.ok(!workflows.includes(name), `Superseded workflow returned: ${name}`);
@@ -136,7 +136,6 @@ assert.doesNotMatch(pages, /pull_request:/, 'GitHub Pages must not duplicate PR 
 assert.doesNotMatch(pages, /push:\s*[\s\S]*branches:\s*\[\s*main\s*\]/, 'GitHub Pages must remain explicitly dispatched.');
 
 const release = readFileSync(join(workflowDir, 'vercel-operator-release.yml'), 'utf8');
-const reobserve = readFileSync(join(workflowDir, 'vercel-production-reobserve.yml'), 'utf8');
 const relock = readFileSync(join(workflowDir, 'vercel-relock-safety.yml'), 'utf8');
 assert.match(release, /deployment_ceiling = 1/);
 assert.match(relock, /deployment_count = 0/);
@@ -149,60 +148,16 @@ assert.match(relock, /relock-safety:[\s\S]*?concurrency:\n\s+group: td613-vercel
   'the admitted relock job itself remains serialized against deployment');
 
 
-// Live Gemini observation is deliberately a fifth authority surface because provider
-// liveness is not deployment-success authority. It shares release serialization but
-// inherits neither deployment nor contents-write authority.
+// Provider/literary observation is now an operator-directed manual diagnostic,
+// not a durable workflow authority surface.
 assert.doesNotMatch(release, /node scripts\/loom-production-canary\.mjs/,
   'Vercel deployment success must not automatically spend Gemini quota.');
-assert.match(release, /Defer live AI canary to explicit observation lane/);
+assert.match(release, /Record live AI observation as manual-only/);
 assert.match(release, /automatic_provider_calls:\s*0/);
-assert.match(reobserve, /name:\s*Vercel Explicit Production AI Observation/);
-assert.match(reobserve, /github\.event\.issue\.number == 405/);
-assert.match(reobserve, /startsWith\(github\.event\.comment\.body, '\/td613-production-reobserve '\)/);
-assert.match(reobserve, /group:\s*td613-vercel-production-release/);
-assert.match(reobserve, /^\s{2}contents:\s*read$/m);
-assert.match(reobserve, /^\s{2}actions:\s*read$/m);
-assert.match(reobserve, /^\s{2}issues:\s*write$/m);
-assert.doesNotMatch(reobserve, /^\s{2}contents:\s*write$/m);
-assert.doesNotMatch(reobserve, /VERCEL_TOKEN|vercel@latest deploy|deploymentEnabled\s*=\s*true|git push/,
-  'Observation-only authority must contain no deployment, lock-opening, or source-mutation path.');
-assert.match(reobserve, /Admit a prior governed release as observation anchor/);
-assert.match(reobserve, /\['success', 'failure'\]\.includes\(run\.conclusion\)/,
-  'Explicit observation may bind either a successful or historically held governed release.');
-assert.match(reobserve, /prior_release_workflow_run:\s*releaseRunId/);
-assert.match(reobserve, /deployment_authority:\s*false/);
-assert.match(reobserve, /retroactive_release_rewrite:\s*false/);
-assert.match(reobserve, /Verify exact source receipt before re-observation/);
-assert.match(reobserve, /Verify deployed bytes before re-observation/);
-assert.match(reobserve, /Re-observe Loom Demo 1 and independent Marrowline live route/);
-assert.match(reobserve, /Confirm exact source receipt after re-observation/);
-assert.match(reobserve, /Reconfirm deployed bytes after re-observation/);
-assert.equal((reobserve.match(/flowcore-release-content-probe\.mjs/g) || []).length, 2,
-  'Explicit observation must bind exact deployed application bytes on both sides of the live witness.');
-assert.equal((reobserve.match(/loom-production-canary\.mjs/g) || []).length, 1,
-  'One explicit observation gesture may spend exactly one Loom/Marrowline live canary.');
-assert.match(reobserve, /deployment_count = 0/);
-assert.match(reobserve, /prior_release_state = PRESERVED_AS_RECORDED/);
-assert.match(reobserve, /retroactive_release_rewrite = false/);
-assert.match(reobserve, /counts_as_human_evidence = false/);
-assert.match(reobserve, /No Vercel deployment occurred\. Sealed ⟐/);
-
-assert.match(reobserve, /github\.event\.issue\.number == 1172/);
-assert.match(reobserve, /startsWith\(github\.event\.comment\.body, '\/td613-marrowline-dollhouse-trial '\)/);
-assert.match(reobserve, /github\.event\.comment\.user\.login == github\.repository_owner/);
-assert.match(reobserve, /github\.event\.comment\.performed_via_github_app == null/);
-assert.match(reobserve, /Dollhouse production trial rejects GitHub-App-mediated comments/);
-assert.doesNotMatch(reobserve, /issue\.number == 1172[\s\S]{0,260}chatgpt-codex-connector\[bot\]/,
-  'Experimental Dollhouse production trials must not accept an app-mediated issue comment as operator authority.');
-assert.match(reobserve, /name:\s*Marrowline Dollhouse four-agent production trial/);
-assert.match(reobserve, /Verify Dollhouse trial has no release authority/);
-assert.match(reobserve, /run-pedagogue-design-gate\.mjs tests\/fixtures\/pedagogue\/marrowline-living-chat-design\.json/);
-assert.match(reobserve, /marrowline-dollhouse-trial-contract\.test\.mjs/);
-assert.match(reobserve, /run-marrowline-dollhouse-production-trial\.mjs/);
-assert.match(reobserve, /td613-marrowline-dollhouse-trial-evidence/);
-assert.match(reobserve, /deployment_authority = false/);
-assert.match(reobserve, /counts_as_human_evidence = false/);
-assert.match(reobserve, /No production mutation occurred\. ⟐/);
+assert.match(release, /observation_route:\s*'OPERATOR_DIRECTED_MANUAL_DIAGNOSTIC'/);
+assert.doesNotMatch(release, /td613-production-reobserve|td613-marrowline-dollhouse-trial/);
+assert.equal(workflows.includes('vercel-production-reobserve.yml'), false,
+  'The obsolete provider reobserve / frozen Dollhouse listener must remain retired.');
 
 // Wendbine explicit operator gate contract: one user gesture, own issue, no cron and no release authority.
 const wendbineGate = relock.split('  wendbine-operator-sync:')[1] || '';
@@ -263,4 +218,4 @@ assert.doesNotMatch(consolidated, /^\s*schedule:\s*$/m,
 assert.doesNotMatch(wendbineGate, /cron:|deployment_count|vercel-operator-release\.yml/,
  'Wendbine intake carries no autonomous timing or Vercel release authority.');
 
-console.log('Workflow estate closed at 5/5 durable workflows: validation, release, explicit production AI observation, relock safety, and Pages remain authority-distinct.');
+console.log('Workflow estate closed at 4/4 durable workflows: validation, release, relock/research safety, and Pages remain authority-distinct.');
