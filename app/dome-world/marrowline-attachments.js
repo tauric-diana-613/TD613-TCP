@@ -15,10 +15,14 @@ const FILE_MIMES = new Set([
 ]);
 const PHOTO_MIMES = new Set([
   'image/jpeg',
+  'image/jpg',
   'image/png',
   'image/webp',
+  'image/avif',
   'image/heic',
   'image/heif',
+  'image/x-heic',
+  'image/x-heif',
   'image/gif'
 ]);
 const EXTENSION_MIMES = Object.freeze({
@@ -32,6 +36,7 @@ const EXTENSION_MIMES = Object.freeze({
   '.jpeg': 'image/jpeg',
   '.png': 'image/png',
   '.webp': 'image/webp',
+  '.avif': 'image/avif',
   '.heic': 'image/heic',
   '.heif': 'image/heif',
   '.gif': 'image/gif'
@@ -154,14 +159,15 @@ function installStyle(doc) {
   const style = doc.createElement('style');
   style.id = STYLE_ID;
   style.textContent = `
-#marrowlineAttachmentTray{display:flex;align-items:center;gap:7px;flex-wrap:wrap;width:100%;margin:3px 0 7px;padding:0;min-height:0}
+#marrowlineAttachmentTray{display:flex;flex-direction:column;align-items:stretch;gap:4px;width:100%;margin:3px 0 7px;padding:0;min-height:0}
 #marrowlineAttachmentTray[hidden]{display:none!important}
-.marrowline-attachment-chip{display:inline-flex;align-items:center;gap:6px;max-width:min(100%,360px);min-height:34px;padding:5px 7px 5px 10px;border:1px solid rgba(159,228,204,.28);border-radius:999px;background:rgba(36,55,66,.72);color:#e8f4ed;font:500 11px/1.3 var(--sans,system-ui,sans-serif)}
-.marrowline-attachment-chip b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:220px;font-weight:650}
+.marrowline-attachment-chip{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:8px;width:100%;max-width:none;min-height:30px;padding:5px 0;border:0;border-radius:0;background:transparent;color:#e8f4ed;font:500 11px/1.3 var(--sans,system-ui,sans-serif)}
+.marrowline-attachment-chip>span:first-child{color:#9fbeb2;font-size:10px;white-space:nowrap}
+.marrowline-attachment-chip b{min-width:0;max-width:none;overflow:visible;text-overflow:clip;white-space:normal;overflow-wrap:anywhere;font-weight:650}
 .marrowline-attachment-chip small{color:#9fbeb2;font:500 9px/1.2 var(--sans,system-ui,sans-serif);white-space:nowrap}
 .marrowline-attachment-remove{display:inline-grid!important;place-items:center!important;width:25px!important;height:25px!important;min-width:25px!important;min-height:25px!important;margin:0!important;padding:0!important;border:0!important;border-radius:50%!important;background:transparent!important;color:#c6dcd2!important;font:700 15px/1 var(--sans,system-ui,sans-serif)!important;text-transform:none!important;letter-spacing:0!important}
 .marrowline-attachment-remove:hover,.marrowline-attachment-remove:focus-visible{background:rgba(255,255,255,.08)!important;color:#fff!important}
-@media(max-width:860px){.marrowline-attachment-chip{max-width:100%}.marrowline-attachment-chip b{max-width:170px}}
+@media(max-width:860px){.marrowline-attachment-chip{grid-template-columns:auto minmax(0,1fr) auto auto;gap:7px}.marrowline-attachment-chip b{max-width:none}}
 `;
   doc.head.append(style);
 }
