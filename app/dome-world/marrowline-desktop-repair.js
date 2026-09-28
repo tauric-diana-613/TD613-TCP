@@ -7,7 +7,7 @@ import {
 import { peekLastConsumedLoomAiHandoff } from './holonomy-loom/ai-handoff.js';
 import { MARROWLINE_MISSION_ASSAYS } from './marrowline-mission-assays.js';
 
-export const MARROWLINE_DESKTOP_REPAIR_VERSION = 'td613.dome-world.marrowline-desktop-repair/v7-mission-shuffle';
+export const MARROWLINE_DESKTOP_REPAIR_VERSION = 'td613.dome-world.marrowline-desktop-repair/v8-two-attachment-controls';
 
 const STARTER_ASSAYS = Object.freeze([
   ['Ash Moon subpoena', 'The Chairman has subpoenaed the Ash Moon. Give the strongest version of the claim that ash is merely compression, then identify the surviving non-equivalence. Keep Rex Nemorensis and Eclipse–Omega structurally meaningful.'],
@@ -200,6 +200,78 @@ function installUniversalContextPlus(doc, root) {
     row.append(actionRow);
   } else row.prepend(plus);
 
+  // Attachment access has two temporary human entry points: this composer
+  // control and the latest reply's More-with-this-reply drawer. Both expose
+  // the same staged browser-memory tray; neither creates a second attachment
+  // store or persists raw bytes after the existing send lifecycle clears them.
+  const attachmentButton = doc.createElement('button');
+  attachmentButton.type = 'button';
+  attachmentButton.id = 'marrowlineComposerAttachments';
+  attachmentButton.className = 'marrowline-composer-attachments';
+  attachmentButton.hidden = true;
+  attachmentButton.setAttribute('aria-controls', 'marrowlineAttachmentDrawer');
+  attachmentButton.setAttribute('aria-expanded', 'false');
+  attachmentButton.setAttribute('aria-label', 'Open staged attachments');
+  const attachmentGlyph = doc.createElement('span');
+  attachmentGlyph.className = 'marrowline-composer-attachments-glyph';
+  attachmentGlyph.setAttribute('aria-hidden', 'true');
+  attachmentGlyph.textContent = '▤';
+  const attachmentLabel = doc.createElement('span');
+  attachmentLabel.textContent = 'Attachments';
+  attachmentButton.append(attachmentGlyph, attachmentLabel);
+  row.append(attachmentButton);
+
+  const attachmentDrawer = doc.createElement('section');
+  attachmentDrawer.id = 'marrowlineAttachmentDrawer';
+  attachmentDrawer.className = 'marrowline-attachment-drawer';
+  attachmentDrawer.hidden = true;
+  attachmentDrawer.setAttribute('role', 'region');
+  attachmentDrawer.setAttribute('aria-label', 'Attachments staged for the next message');
+  const attachmentDrawerHead = doc.createElement('div');
+  attachmentDrawerHead.className = 'marrowline-attachment-drawer-head';
+  const attachmentDrawerTitle = doc.createElement('strong');
+  attachmentDrawerTitle.textContent = 'Attachments';
+  const attachmentDrawerNote = doc.createElement('span');
+  attachmentDrawerNote.textContent = 'Staged in this browser until explicit Send';
+  attachmentDrawerHead.append(attachmentDrawerTitle, attachmentDrawerNote);
+  attachmentDrawer.append(attachmentDrawerHead);
+  const attachmentTray = byId(doc, 'marrowlineAttachmentTray');
+  if (attachmentTray) attachmentDrawer.append(attachmentTray);
+  form.append(attachmentDrawer);
+
+  let attachmentSubmissionActive = false;
+  const closeAttachmentDrawer = () => {
+    attachmentDrawer.hidden = true;
+    attachmentButton.setAttribute('aria-expanded', 'false');
+  };
+  const syncAttachmentAccess = (state = attachmentState()) => {
+    const count = Number(state?.count || 0);
+    attachmentButton.dataset.attachmentCount = String(count);
+    attachmentButton.hidden = count === 0 || attachmentSubmissionActive;
+    attachmentButton.setAttribute('aria-label', count === 1 ? 'Open 1 staged attachment' : `Open ${count} staged attachments`);
+    attachmentDrawerNote.textContent = count === 1
+      ? '1 item staged in this browser until explicit Send'
+      : `${count} items staged in this browser until explicit Send`;
+    if (attachmentButton.hidden) closeAttachmentDrawer();
+  };
+  const toggleAttachmentDrawer = force => {
+    if (attachmentButton.hidden) return false;
+    const opening = typeof force === 'boolean' ? force : attachmentDrawer.hidden;
+    attachmentDrawer.hidden = !opening;
+    attachmentButton.setAttribute('aria-expanded', String(opening));
+    return opening;
+  };
+  attachmentButton.addEventListener('click', () => toggleAttachmentDrawer());
+  root.addEventListener?.(MARROWLINE_ATTACHMENT_CHANGE_EVENT, event => syncAttachmentAccess(event.detail || attachmentState()));
+  root.addEventListener?.('td613:marrowline:attachment-submission-state', event => {
+    attachmentSubmissionActive = Boolean(event.detail?.sending);
+    syncAttachmentAccess();
+  });
+  root.addEventListener?.('td613:marrowline:attachments-open-request', () => {
+    if (toggleAttachmentDrawer(true)) attachmentButton.focus?.({ preventScroll: true });
+  });
+  syncAttachmentAccess();
+
   const menu = doc.createElement('div');
   menu.id = 'marrowlineContextMenu';
   menu.className = 'marrowline-context-menu';
@@ -276,8 +348,8 @@ function installUniversalContextPlus(doc, root) {
     plus.setAttribute('aria-expanded', String(opening));
     if (opening) { refreshLoom(); nextFrame(position); }
   });
-  root.addEventListener?.(MARROWLINE_ATTACHMENT_CHANGE_EVENT, () => {
-    const state = attachmentState();
+  root.addEventListener?.(MARROWLINE_ATTACHMENT_CHANGE_EVENT, event => {
+    const state = event.detail || attachmentState();
     plus.dataset.attachmentCount = String(state.count || 0);
   });
   root.addEventListener?.('td613:marrowline:loom-pocket-ready', refreshLoom);
@@ -285,7 +357,11 @@ function installUniversalContextPlus(doc, root) {
     if (menu.hidden || menu.contains(event.target) || plus.contains(event.target)) return;
     close();
   });
-  doc.addEventListener('keydown', event => { if (event.key === 'Escape' && !menu.hidden) { close(); plus.focus(); } });
+  doc.addEventListener('keydown', event => {
+    if (event.key !== 'Escape') return;
+    if (!menu.hidden) { close(); plus.focus(); return; }
+    if (!attachmentDrawer.hidden) { closeAttachmentDrawer(); attachmentButton.focus(); }
+  });
   root.addEventListener?.('resize', () => { if (!menu.hidden) position(); });
   refreshLoom();
   return true;
