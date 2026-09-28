@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { chromium, firefox, webkit } from 'playwright';
+import { settleSiteEpochBaseline } from './site-epoch-browser-baseline.mjs';
 
 const base = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/+$/, '');
 const browserName = String(process.env.TD613_BROWSER || 'chromium').toLowerCase();
@@ -62,7 +63,9 @@ const check = (name, pass, detail = null) => report.checks.push({ name, status: 
 const browser = await browserType.launch({ headless: true });
 
 try {
-  const page = await browser.newPage({ viewport: { width: 1280, height: 820 }, colorScheme: 'dark', reducedMotion: 'no-preference' });
+  const context = await browser.newContext({ viewport: { width: 1280, height: 820 }, colorScheme: 'dark', reducedMotion: 'no-preference' });
+  report.site_epoch_baseline = await settleSiteEpochBaseline(context, base);
+  const page = await context.newPage();
 
   await page.addInitScript(() => {
     window.__td613GlyphWitness = { clipboardMode: 'resolve', clipboardWrites: 0 };
