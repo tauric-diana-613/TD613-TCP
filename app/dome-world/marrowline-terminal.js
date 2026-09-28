@@ -688,8 +688,11 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   const scheduleSave = () => {
     if (!threadLibrary || !activeThread) return saveChain;
     // Snapshot at scheduling time; later turns cannot mutate a queued receipt.
+    const persistedTitle = activeThread.titleSource === 'pending-return'
+      ? ''
+      : state.conversationTitle;
     const snapshot = JSON.parse(JSON.stringify({ ...activeThread, messages: state.messages, lastReceipt: state.lastReceipt,
-      pendingTask: state.pendingTask, lastFailure: state.lastFailure, conversationTitle: state.conversationTitle,
+      pendingTask: state.pendingTask, lastFailure: state.lastFailure, conversationTitle: persistedTitle,
       draft: byId(doc, 'khonapolitPrompt')?.value || '' }));
     saveChain = saveChain.catch(() => false).then(() => threadLibrary.put(snapshot)).then(record => {
       if (activeThread?.id === record.id) activeThread = record;
@@ -991,7 +994,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         lastReceipt: state.lastReceipt,
         pendingTask: state.pendingTask,
         lastFailure: state.lastFailure,
-        conversationTitle: state.conversationTitle,
+        conversationTitle: '',
         titleSource: 'pending-return',
         draft: ''
       });
