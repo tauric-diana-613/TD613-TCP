@@ -1,4 +1,8 @@
 import { mountLivingGeometry } from './holonomy-loom/living-geometry.js';
+import {
+  MARROWLINE_ATTACHMENT_CHANGE_EVENT,
+  attachmentState
+} from './marrowline-attachments.js';
 
 const REDDIT_SANS_URL = 'https://fonts.googleapis.com/css2?family=Reddit+Sans:wght@300;400;500;600;700;800&display=swap';
 
@@ -98,6 +102,17 @@ export function installMarrowlineLivingChat(doc = document, environment = window
   });
   markFlourishes(prompt);
 
+  let attachmentSubmissionActive = false;
+  const syncReplyAttachmentAccess = () => {
+    const cards = [...messages.querySelectorAll('.relay-message')];
+    const latest = cards.at(-1) || null;
+    const staged = Number(attachmentState()?.count || 0) > 0 && !attachmentSubmissionActive;
+    cards.forEach(card => {
+      const button = card.querySelector('.reply-attachment-access');
+      if (button) button.hidden = !(staged && card === latest);
+    });
+  };
+
   const decorate = () => {
     messages.querySelectorAll('.message-body').forEach((node) => {
       if (node.closest?.('.relay-message')) {
@@ -172,6 +187,16 @@ export function installMarrowlineLivingChat(doc = document, environment = window
         openPanel('receiptPanel');
       });
       choices.append(receiptButton);
+      const attachmentButton = doc.createElement('button');
+      attachmentButton.type = 'button';
+      attachmentButton.className = 'reply-attachment-access';
+      attachmentButton.textContent = 'Attachments';
+      attachmentButton.hidden = true;
+      attachmentButton.addEventListener('click', () => {
+        actions.open = false;
+        environment.dispatchEvent?.(new environment.CustomEvent('td613:marrowline:attachments-open-request'));
+      });
+      choices.append(attachmentButton);
       actions.append(choices);
       const integrated = card.querySelector('.relay-khonapolit[data-present="true"]');
 
@@ -195,10 +220,18 @@ export function installMarrowlineLivingChat(doc = document, environment = window
       const replyCopy = card.querySelector('.marrowline-copy-reply');
       if (replyCopy) card.append(replyCopy);
     });
+    syncReplyAttachmentAccess();
   };
   decorate();
   const observer = new environment.MutationObserver(decorate);
   observer.observe(messages, { childList: true, subtree: true });
+  const onAttachmentChange = () => syncReplyAttachmentAccess();
+  const onAttachmentSubmission = event => {
+    attachmentSubmissionActive = Boolean(event.detail?.sending);
+    syncReplyAttachmentAccess();
+  };
+  environment.addEventListener?.(MARROWLINE_ATTACHMENT_CHANGE_EVENT, onAttachmentChange);
+  environment.addEventListener?.('td613:marrowline:attachment-submission-state', onAttachmentSubmission);
 
   const status = doc.getElementById('khonapolitTerminalStatus');
   let lastPhase = 'prepared';
@@ -218,7 +251,13 @@ export function installMarrowlineLivingChat(doc = document, environment = window
   const importObserver = new environment.MutationObserver(() => geometry?.setVisible(doc.documentElement.dataset.loomTaskImport !== 'active'));
   importObserver.observe(doc.documentElement, { attributes: true, attributeFilter: ['data-loom-task-import'] });
   geometry?.setVisible(doc.documentElement.dataset.loomTaskImport !== 'active');
-  return { openPanel, inspect: () => geometry?.inspect() ?? null, dispose() { observer.disconnect(); statusObserver.disconnect(); importObserver.disconnect(); environment.removeEventListener('td613:marrowline:mobile-view', onView); geometry?.dispose(); } };
+  return { openPanel, inspect: () => geometry?.inspect() ?? null, dispose() {
+    observer.disconnect(); statusObserver.disconnect(); importObserver.disconnect();
+    environment.removeEventListener('td613:marrowline:mobile-view', onView);
+    environment.removeEventListener?.(MARROWLINE_ATTACHMENT_CHANGE_EVENT, onAttachmentChange);
+    environment.removeEventListener?.('td613:marrowline:attachment-submission-state', onAttachmentSubmission);
+    geometry?.dispose();
+  } };
 }
 
 if (typeof window !== 'undefined' && typeof document !== 'undefined') {
