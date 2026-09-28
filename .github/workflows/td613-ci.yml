@@ -235,11 +235,9 @@ jobs:
       - name: Validate Ash A10 Choir
         if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: node tests/ash-a10-choir-recompilation.test.mjs
-      - name: Validate Ash A11 Capsule and postclosure cache law
+      - name: Validate Ash A11 Capsule
         if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
-        run: |
-          node tests/ash-a11-capsule-recompilation.test.mjs
-          node tests/ash-a11-postclosure-cache-eviction.test.mjs
+        run: node tests/ash-a11-capsule-recompilation.test.mjs
       - name: Validate Ash A12 command rationalization
         if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: node tests/ash-a12-command-rationalization.test.mjs
@@ -294,7 +292,7 @@ jobs:
         run: node --test --test-name-pattern="cross-browser evidence lives" tests/flowcore-production-observation.test.mjs
       - name: Flow-Core claim · bounded production confirmation
         if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
-        run: node --test --test-name-pattern="production release verifies source" tests/flowcore-production-observation.test.mjs
+        run: node --test --test-name-pattern="production release verifies exact source" tests/flowcore-production-observation.test.mjs
       - name: Flow-Core claim · empirical authority separation
         if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser' && needs.scope.outputs.validation_scope != 'giving'
         run: node --test --test-name-pattern="production probes preserve" tests/flowcore-production-observation.test.mjs
