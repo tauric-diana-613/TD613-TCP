@@ -101,8 +101,12 @@ function stopPedagogueStatus(root = globalThis) {
 function setPedagogueStatus(status, phase, text, title = '') {
   if (!status) return;
   const detail = title || text;
+  const attachmentReceipt = phase === 'received' ? String(text || '').match(/(\d+) ATTACHMENTS? RECEIPTED/i) : null;
   status.dataset.phase = phase;
   status.textContent = phase === 'pending' ? text
+    : phase === 'received' && attachmentReceipt
+      ? `Reply received · ${attachmentReceipt[1]} attachment${attachmentReceipt[1] === '1' ? '' : 's'} receipted`
+    : phase === 'received' && /ATTACHMENT RECEIPT REVIEW/i.test(String(text || '')) ? 'Reply received · attachment receipt review'
     : phase === 'received' ? 'Reply received'
     : phase === 'prepared' ? 'Ready'
     : phase === 'held' && /^TASK PRESERVED/.test(text) ? 'TASK PRESERVED'
