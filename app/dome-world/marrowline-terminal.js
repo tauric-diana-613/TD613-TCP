@@ -353,15 +353,7 @@ function renderMessages(doc, state) {
     node.append(welcome);
   } else state.messages.forEach((entry, index) => {
     const element = renderMessage(doc, entry);
-    if (index === 1 && state.messages[0]?.role === 'user' && entry.role === 'model'
-      && entry.receipt?.provider?.completion?.complete !== false) {
-      const button = doc.createElement('button');
-      button.type = 'button'; button.className = 'marrowline-branch-reply';
-      button.textContent = 'Start new thread from here ⤴';
-      button.setAttribute('aria-label', 'Start a new thread from the first Marrowline reply');
-      button.addEventListener('click', () => doc.dispatchEvent(new doc.defaultView.CustomEvent('td613:marrowline:branch-first')));
-      element.append(button);
-    }
+    if (entry.role === 'model') element.dataset.messageIndex = String(index);
     node.append(element);
   });
   const latest = state.messages.length ? node.lastElementChild : null;
@@ -730,6 +722,31 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     threadLibrary.setActiveId(record.id);
     void renderThreadLibrary();
   };
+  const resetTransientThread = () => {
+    activeThread = null;
+    state.messages = [];
+    state.lastReceipt = null;
+    state.lastFailure = null;
+    state.pendingTask = '';
+    state.conversationTitle = DEFAULT_CONVERSATION_TITLE;
+    root.__TD613_KHONAPOLIT_LAST_FAILURE__ = null;
+    const prompt = byId(doc, 'khonapolitPrompt');
+    if (prompt) { prompt.value = ''; prompt.style.height = ''; }
+    renderMessages(doc, state);
+    updateReceipt(doc, root, state);
+    displayClassification(doc, null);
+    syncRecoveryControls(doc, state);
+    syncConversationTitle(doc, state);
+    const status = byId(doc, 'khonapolitTerminalStatus');
+    if (status) {
+      status.dataset.progressStage = 'prepared';
+      setPedagogueStatus(status, 'prepared', 'READY · ask at the shoreline');
+    }
+    setSendControlState(false);
+    if (sendControl) sendControl.disabled = false;
+    threadLibrary?.setActiveId(null);
+    void renderThreadLibrary();
+  };
   const canChangeThread = () => {
     if (requestInFlight) { showEphemeralNotice(doc, root, 'Finish reply first'); return false; }
     if (getMarrowlineAttachments().length) {
@@ -750,7 +767,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   const newThread = async () => {
     if (!canChangeThread()) return;
     if (!await scheduleSave()) return;
-    restoreThread(await threadLibrary.create());
+    resetTransientThread();
     byId(doc, 'marrowlineThreadDrawer')?.removeAttribute('open');
   };
   const deleteThread = async threadId => {
@@ -760,7 +777,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     await threadLibrary.remove(threadId);
     if (activeThread?.id === threadId) {
       const survivors = await threadLibrary.all();
-      restoreThread(survivors[0] || await threadLibrary.create());
+      if (survivors[0]) restoreThread(survivors[0]); else resetTransientThread();
     } else await renderThreadLibrary();
   };
   const renameThread = async threadId => {
@@ -774,12 +791,13 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     if (activeThread?.id === threadId) { activeThread = updated; state.conversationTitle = name; syncConversationTitle(doc, state); }
     await renderThreadLibrary();
   };
-  const branchFromFirst = async () => {
-    if (!canChangeThread() || !activeThread) return;
+  const branchFromReply = async responseIndex => {
+    const index = Number(responseIndex);
+    if (!canChangeThread() || !activeThread || !Number.isInteger(index)) return;
     if (!await scheduleSave()) return;
-    restoreThread(await threadLibrary.branch(activeThread, 1));
+    restoreThread(await threadLibrary.branch(activeThread, index));
   };
-  doc.addEventListener('td613:marrowline:branch-first', () => void branchFromFirst());
+  doc.addEventListener('td613:marrowline:branch-reply', event => void branchFromReply(event.detail?.responseIndex));
   byId(doc, 'marrowlineNewThread')?.addEventListener('click', () => void newThread());
   byId(doc, 'marrowlineThreadOpen')?.setAttribute('aria-expanded', 'false');
   const conversationToggle = byId(doc, 'marrowlineThreadOpen');
@@ -813,17 +831,18 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   const threadReady = createMarrowlineThreadLibrary(root).then(async library => {
     threadLibrary = library;
     const migrated = await library.migrate();
+    await library.pruneEmptyGeneratedThreads();
     await library.migrateLegacyBranchTitles();
     let record = migrated || await library.get(library.getActiveId());
-    if (!record) record = (await library.all())[0] || await library.create();
+    if (!record) record = (await library.all())[0] || null;
     // Only exact legacy auto-titles are repaired; human-renamed subjects stay put.
     await library.migrateLegacyGeneratedTitles();
-    record = await library.get(record.id) || record;
+    if (record) record = await library.get(record.id) || record;
     storeReady = true;
     const beforeHydration = byId(doc, 'khonapolitPrompt');
     const selectedPreset = beforeHydration?.dataset.preloadedPrompt === 'true'
       ? String(beforeHydration.value || '') : '';
-    restoreThread(record);
+    if (record) restoreThread(record); else resetTransientThread();
     if (selectedPreset && queuedInitialSubmission === null && beforeHydration) {
       beforeHydration.value = selectedPreset;
       beforeHydration.dataset.preloadedPrompt = 'true';
@@ -849,7 +868,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     current: () => activeThread,
     list: async () => threadLibrary ? threadLibrary.all() : [],
     flush: () => saveChain,
-    switch: switchThread, create: newThread, branch: branchFromFirst,
+    switch: switchThread, create: newThread, branch: branchFromReply,
     remove: deleteThread, backend: () => threadLibrary?.backend || null
   });
   // A deliberate, single-use browser-local observation; not restored as if an
@@ -1065,10 +1084,25 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       if (activeRequestCancelRequested) throw new Error('operator-cancelled');
       state.messages.push(entry); state.pendingTask = incompleteReturn ? message : ''; state.lastReceipt = receipt;
       if (witnessThisTurn) witnessSavedText = entry.text;
+      let nextTitleSource = activeThread?.titleSource || null;
       if (!safe(state.conversationTitle) || state.conversationTitle === DEFAULT_CONVERSATION_TITLE) {
         const firstOperatorTurn = state.messages.find((item) => item?.role === 'user' && safe(item?.text));
         state.conversationTitle = deriveMarrowlineConversationTitle(firstOperatorTurn?.text || message);
-        activeThread = { ...activeThread, titleSource: 'local-topic-v2' };
+        nextTitleSource = 'local-topic-v3-after-return';
+      }
+      if (!activeThread) {
+        activeThread = await threadLibrary.create({
+          messages: state.messages,
+          lastReceipt: state.lastReceipt,
+          pendingTask: state.pendingTask,
+          lastFailure: state.lastFailure,
+          conversationTitle: state.conversationTitle,
+          titleSource: nextTitleSource,
+          draft: ''
+        });
+        threadLibrary.setActiveId(activeThread.id);
+      } else if (nextTitleSource !== activeThread.titleSource) {
+        activeThread = { ...activeThread, titleSource: nextTitleSource };
       }
       if (attachments.length) attachments.forEach(item => removeMarrowlineAttachment(item.id, root));
       void scheduleSave(); syncRecoveryControls(doc, state); renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, receipt); syncConversationTitle(doc, state);
