@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { chromium, firefox, webkit } from 'playwright';
+import { settleSiteEpochBaseline, siteEpochStoragePosture } from './site-epoch-browser-baseline.mjs';
 
 const base = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/+$/, '');
 const previewPath = process.env.TD613_A15_R0_PATH || '/app/dome-world/previews/a15-r0/index.html';
@@ -33,7 +34,8 @@ const report = {
   deployment_authorized: false,
   human_selection_required: true,
   human_closure_required: true,
-  arbitrary_sleep_used_for_action_settlement: false
+  arbitrary_sleep_used_for_action_settlement: false,
+  site_epoch_baseline: null
 };
 
 function check(name, pass, detail = null) {
@@ -103,11 +105,13 @@ const executablePath = browserName === 'chromium'
 report.browser_runtime = executablePath ? 'installed-chromium' : `playwright-managed-${browserName}`;
 const browser = await browserType.launch({ headless: true, ...(executablePath ? { executablePath } : {}) });
 try {
-  const page = await browser.newPage({
+  const context = await browser.newContext({
     viewport: { width: 1280, height: 820 },
     colorScheme: 'dark',
     reducedMotion: 'no-preference'
   });
+  report.site_epoch_baseline = await settleSiteEpochBaseline(context, base);
+  const page = await context.newPage();
 
   page.on('console', message => {
     if (message.type() === 'error') report.console_errors.push(message.text());
@@ -163,12 +167,8 @@ try {
     'SOURCE_A_DERIVED_REPAIR != TD613_PREPUBLICATION_POSSESSION',
     'BOUNDED_SYNTHETIC_IDENTIFIABILITY != UNIVERSAL_IDENTIFIABILITY'
   ].every(scar => mediatedCertificate?.scars?.includes(scar)));
-  const storagePosture = await page.evaluate(() => ({
-    local_storage_keys: Object.keys(localStorage),
-    session_storage_keys: Object.keys(sessionStorage)
-  }));
-  check('mediator assay accumulates no browser persistence', storagePosture.local_storage_keys.length === 0
-    && storagePosture.session_storage_keys.length === 0, storagePosture);
+  const storagePosture = await siteEpochStoragePosture(page);
+  check('mediator assay accumulates no product browser persistence', storagePosture.product_persistence_absent === true, storagePosture);
 
   for (const truth of [
     'Preview',
