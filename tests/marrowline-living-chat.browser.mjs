@@ -264,7 +264,7 @@ try{
      'the three circled surfaces and raw technical header are absent from chat');
    const followup = page.locator('.relay-message > .marrowline-reply-tool-row > .reply-next-actions');
    assert.equal(await followup.evaluate(el=>el.open),false,'native reply disclosure starts folded');
-   assert.deepEqual(await followup.locator('.reply-next-choices button').allTextContents(),
+   assert.deepEqual(await followup.locator('.reply-next-choices button:not([hidden])').allTextContents(),
      ['Check the claims','Make a plan','View receipt']);
    const followupStyle=await followup.locator('summary').evaluate(el=>({
      border:getComputedStyle(el).borderTopStyle,background:getComputedStyle(el).backgroundImage,
