@@ -2,7 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { JSDOM } from 'jsdom';
-import { installStarterCarousel } from '../app/dome-world/marrowline-desktop-repair.js';
+import { installMarrowlineDesktopRepair, installStarterCarousel } from '../app/dome-world/marrowline-desktop-repair.js';
+import { installMarrowlineLivingChat } from '../app/dome-world/marrowline-living-chat.js';
+import { clearMarrowlineAttachments, stageMarrowlineAttachments } from '../app/dome-world/marrowline-attachments.js';
 import { MARROWLINE_MISSION_ASSAYS } from '../app/dome-world/marrowline-mission-assays.js';
 
 const js = fs.readFileSync('app/dome-world/marrowline-desktop-repair.js', 'utf8');
@@ -99,6 +101,66 @@ test('composer has one universal plus with exactly file photo and Loom actions',
   assert.deepEqual(release.composer.plusActions, ['UPLOAD_FILE', 'UPLOAD_PHOTO', 'LOOM']);
   assert.equal(release.composer.loomDormantAction, 'open-loom-in-new-tab');
   assert.equal(release.composer.loomAwakeAction, 'continue-staged-loom-handoff');
+});
+
+test('staged attachments have two temporary access points and the composer control aligns with the textarea column', async t => {
+  const dom = new JSDOM(page, { url: 'https://td613.com/dome-world/marrowline.html' });
+  const { window } = dom;
+  const { document } = window;
+  window.matchMedia = () => ({ matches: false, addEventListener() {}, removeEventListener() {} });
+  window.HTMLElement.prototype.scrollIntoView = function () {};
+  t.after(() => {
+    clearMarrowlineAttachments(window);
+    window.__TD613_MARROWLINE_TRANSCRIPT_CUSTODY_OBSERVER__?.disconnect?.();
+    window.__TD613_MARROWLINE_STARTER_CAROUSEL_OBSERVER__?.disconnect?.();
+    dom.window.close();
+  });
+
+  const relay = document.createElement('article');
+  relay.className = 'relay-message';
+  relay.innerHTML = '<section class="relay-khonapolit" data-present="true"><div class="relay-stage-head"><span>Kʰonapolit</span><small>synthetic</small></div><div class="relay-stage-text">Synthetic reply.</div></section><button class="marrowline-copy-reply" type="button">Copy</button>';
+  document.querySelector('#khonapolitMessages').append(relay);
+
+  installMarrowlineDesktopRepair(document, window);
+  const living = installMarrowlineLivingChat(document, window);
+  t.after(() => living?.dispose?.());
+
+  const composerAttachments = document.querySelector('#marrowlineComposerAttachments');
+  const replyAttachments = document.querySelector('.reply-attachment-access');
+  assert.ok(composerAttachments, 'composer-level Attachments control exists');
+  assert.ok(replyAttachments, 'reply-drawer Attachments control exists');
+  assert.equal(composerAttachments.hidden, true, 'composer control starts absent without staged material');
+  assert.equal(replyAttachments.hidden, true, 'reply action starts absent without staged material');
+
+  const bytes = new TextEncoder().encode('attachment canary');
+  await stageMarrowlineAttachments([{
+    name: 'canary.txt', type: 'text/plain', size: bytes.byteLength,
+    arrayBuffer: async () => bytes.buffer
+  }], { kind: 'file', environment: window });
+
+  assert.equal(composerAttachments.hidden, false, 'staging a file reveals the composer Attachments control');
+  assert.equal(replyAttachments.hidden, false, 'staging a file reveals Attachments in More with this reply');
+  composerAttachments.click();
+  assert.equal(document.querySelector('#marrowlineAttachmentDrawer').hidden, false, 'either access point opens the shared staged attachment drawer');
+  assert.equal(document.querySelectorAll('#marrowlineAttachmentTray [data-attachment-id]').length, 1);
+
+  window.dispatchEvent(new window.CustomEvent('td613:marrowline:attachment-submission-state', { detail: { sending: true, count: 1 } }));
+  assert.equal(composerAttachments.hidden, true, 'Send handoff hides the composer Attachments control immediately');
+  assert.equal(replyAttachments.hidden, true, 'Send handoff hides the reply-drawer Attachments control immediately');
+  assert.equal(document.querySelector('#marrowlineAttachmentDrawer').hidden, true, 'open attachment drawer closes at Send handoff');
+
+  window.dispatchEvent(new window.CustomEvent('td613:marrowline:attachment-submission-state', { detail: { sending: false, count: 1 } }));
+  assert.equal(composerAttachments.hidden, false, 'a held send can restore access to the preserved staged file');
+  assert.equal(replyAttachments.hidden, false, 'a held send can restore the matching reply action');
+
+  clearMarrowlineAttachments(window);
+  assert.equal(composerAttachments.hidden, true, 'cleared/successfully consumed staging removes the composer control');
+  assert.equal(replyAttachments.hidden, true, 'cleared/successfully consumed staging removes the reply action');
+
+  assert.match(css, /#marrowlineComposerAttachments\{[\s\S]*grid-column:2!important;grid-row:2!important;justify-self:start!important/,
+    'composer Attachments shares the textarea column rather than the +\/Send column');
+  assert.match(css, /\.reply-next-choices button\{[\s\S]*height:28px;[\s\S]*font:560 9\.75px\/1/,
+    'More-with-this-reply actions use the smaller preloaded-prompt-derived button grammar');
 });
 
 test('starter carousel keeps its left rail while using one compact glass control grammar', () => {
