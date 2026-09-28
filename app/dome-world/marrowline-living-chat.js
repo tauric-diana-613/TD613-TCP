@@ -1,6 +1,9 @@
 import { mountLivingGeometry } from './holonomy-loom/living-geometry.js';
 
 const REDDIT_SANS_URL = 'https://fonts.googleapis.com/css2?family=Reddit+Sans:wght@300;400;500;600;700;800&display=swap';
+const compactAttachmentSize = value => value < 1024 ? `${value} B`
+  : value < 1024 * 1024 ? `${Math.ceil(value / 1024)} KB`
+  : `${(value / (1024 * 1024)).toFixed(1)} MB`;
 
 // Reply-local follow-up prompts must not copy an arbitrarily long model return
 // into a potentially large human composer draft. The exact original remains in the
@@ -164,6 +167,37 @@ export function installMarrowlineLivingChat(doc = document, environment = window
         });
         choices.append(button);
       }
+      const attachments = Array.isArray(card.__TD613_MARROWLINE_ATTACHMENTS__)
+        ? card.__TD613_MARROWLINE_ATTACHMENTS__
+        : [];
+      let attachmentList = null;
+      if (attachments.length) {
+        const attachmentButton = doc.createElement('button');
+        attachmentButton.type = 'button';
+        attachmentButton.className = 'reply-attachments-toggle';
+        attachmentButton.textContent = 'Attachments';
+        attachmentButton.setAttribute('aria-expanded', 'false');
+        attachmentList = doc.createElement('div');
+        attachmentList.className = 'reply-attachment-list';
+        attachmentList.hidden = true;
+        attachmentList.setAttribute('aria-label', 'Attachments used for this reply');
+        for (const item of attachments) {
+          const row = doc.createElement('span');
+          row.className = 'reply-attachment-item';
+          const name = doc.createElement('b');
+          name.textContent = item.name || 'attachment';
+          const meta = doc.createElement('small');
+          meta.textContent = `${item.kind === 'photo' ? 'Photo' : 'File'} · ${compactAttachmentSize(Number(item.size_bytes || 0))}`;
+          row.append(name, meta);
+          attachmentList.append(row);
+        }
+        attachmentButton.addEventListener('click', () => {
+          const opening = attachmentList.hidden;
+          attachmentList.hidden = !opening;
+          attachmentButton.setAttribute('aria-expanded', String(opening));
+        });
+        choices.append(attachmentButton);
+      }
       const receiptButton = doc.createElement('button');
       receiptButton.type = 'button';
       receiptButton.textContent = 'View receipt';
@@ -173,6 +207,7 @@ export function installMarrowlineLivingChat(doc = document, environment = window
       });
       choices.append(receiptButton);
       actions.append(choices);
+      if (attachmentList) actions.append(attachmentList);
       const integrated = card.querySelector('.relay-khonapolit[data-present="true"]');
 
       if (integrated) {
