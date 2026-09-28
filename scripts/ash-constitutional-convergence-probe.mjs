@@ -10,6 +10,7 @@ const keepUrl = `${base}/dome-world/ash-keep.html`;
 const allowedLocalKeys = new Set(['td613.ash-keep.current-case', 'td613.ash-keep.preferences', 'td613.ash.cache-flush.epoch']);
 allowedLocalKeys.add('td613.ash.cache-flush.aia3.epoch');
 allowedLocalKeys.add('td613.ash.cache-preflight.epoch');
+allowedLocalKeys.add('td613.site.browser-reset.epoch');
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
