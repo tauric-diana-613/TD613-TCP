@@ -11,10 +11,10 @@ const workflowDirectory = fs.readdirSync('.github/workflows');
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 
 test('Flow-Core cross-browser evidence starts at the front of one exact-head dispatch and converges once', () => {
-  assert.match(consolidatedWorkflow, /types:\s*\[opened, synchronize, reopened, ready_for_review\]/);
+  assert.match(consolidatedWorkflow, /types:\s*\[opened, synchronize, reopened\]/);
   assert.match(consolidatedWorkflow, /mode:\s*[\s\S]*full-browser/);
   assert.match(consolidatedWorkflow, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
-  assert.match(consolidatedWorkflow, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
+  assert.doesNotMatch(consolidatedWorkflow, /github\.event\.action == 'ready_for_review'/);
   assert.match(consolidatedWorkflow, /ash_browser_shard:[\s\S]*?needs: scope/);
   assert.match(consolidatedWorkflow, /browser: \[chromium, firefox, webkit\]/);
   assert.match(consolidatedWorkflow, /max-parallel: 3/);

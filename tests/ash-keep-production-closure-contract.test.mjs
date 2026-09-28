@@ -56,7 +56,7 @@ assert.doesNotMatch(premiumFlight, /production_promotion_authorized:\s*true|tran
 
 for (const token of ['TD613 Consolidated Validation','tests/ash-keep-production-closure-contract.test.mjs','scripts/run-ash-constitutional-convergence-handshake.mjs','Run bounded closure and constitutional convergence once','Full-product exact-head Chromium Firefox WebKit witness']) assert.ok(consolidated.includes(token), `Consolidated closure omitted ${token}`);
 assert.match(consolidated, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
-assert.match(consolidated, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
+assert.doesNotMatch(consolidated, /github\.event\.action == 'ready_for_review'/);
 assert.doesNotMatch(consolidated, /github\.event\.action == 'synchronize'[\s\S]*playwright install/);
 assert.doesNotMatch(consolidated, /workflow_run:/);
 for (const token of ['Vercel Operator Release','Verify deployed bytes match the authorized source packet','Confirm deployed A14 six-demo registry and Archive on Chromium desktop and mobile','Observe deployed Ash lifecycle without promotion','ash-a14-archive-browser-probe.mjs','ash-lifecycle-production-probe.mjs','production_a14_registry_archive =','production_chromium_desktop_mobile =','premerge_scope_aligned_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE']) assert.ok(releaseWorkflow.includes(token), `Bounded release omitted ${token}`);
