@@ -184,6 +184,20 @@ export function installMarrowlineLivingChat(doc = document, environment = window
         openPanel('receiptPanel');
       });
       choices.append(receiptButton);
+      const branchButton = doc.createElement('button');
+      branchButton.type = 'button';
+      branchButton.className = 'reply-branch-action';
+      branchButton.textContent = 'Branch';
+      branchButton.setAttribute('aria-label', 'Branch a new conversation from this reply');
+      branchButton.addEventListener('click', () => {
+        const responseIndex = Number(card.dataset.messageIndex);
+        if (!Number.isInteger(responseIndex)) return;
+        actions.open = false;
+        doc.dispatchEvent(new environment.CustomEvent('td613:marrowline:branch-reply', {
+          detail: { responseIndex }
+        }));
+      });
+      choices.append(branchButton);
       const attachmentButton = doc.createElement('button');
       attachmentButton.type = 'button';
       attachmentButton.className = 'reply-attachment-access';
@@ -205,13 +219,11 @@ export function installMarrowlineLivingChat(doc = document, environment = window
         if (meta) meta.textContent = 'integrated transmission';
         card.append(integrated);
       }
-      // A single footer row keeps the understated disclosure on the left
-      // and the first-reply branch action aligned right above the copy glyph.
+      // The footer contains only the disclosure. Branching is reply-local
+      // inside More with this reply, alongside the other actions.
       const toolRow = doc.createElement('div');
       toolRow.className = 'marrowline-reply-tool-row';
       toolRow.append(actions);
-      const branch = card.querySelector('.marrowline-branch-reply');
-      if (branch) toolRow.append(branch);
       card.append(toolRow);
       // Keep the native single-reply copy control last and outside the drawer.
       const replyCopy = card.querySelector('.marrowline-copy-reply');

@@ -102,7 +102,7 @@ function harness(t, { mobile = false, failure = false, rateLimitOnce = false, in
 
 test('thread titles identify the actual subject rather than copying an opening vignette or bot prose', () => {
   assert.equal(deriveMarrowlineConversationTitle('THE SHORELINE HAS TEETH',
-    'Write a poem about Lucille Clifton and a mother holding her child.'), 'Lucille Clifton and a Mother Holding');
+    'Write a poem about Lucille Clifton and a mother holding her child.'), 'Lucille Clifton and a Mother');
   assert.equal(deriveMarrowlineConversationTitle('Tell me a story of the Ash Moon, within the authored mythology of Marrowline.'),
     'Ash Moon');
   assert.equal(deriveMarrowlineConversationTitle('Explain the difference between consent and inheritance.'),
@@ -114,7 +114,25 @@ test('thread titles identify the actual subject rather than copying an opening v
     deriveMarrowlineConversationTitle('I underestimated the contribution was in how directly the research developed.'),
     deriveMarrowlineConversationTitle('Compare the funding, provenance, and accountability mechanisms for these three systems.'),
     deriveMarrowlineConversationTitle('Write a poem about Lucille Clifton and a mother holding her child.')
-  ]) assert.ok(title.trim().split(/\s+/u).length <= 6, `generated title exceeds six words: ${title}`);
+  ]) assert.ok(title.trim().split(/\s+/u).length <= 5, `generated title exceeds five words: ${title}`);
+});
+
+test('landing and New stay transient until a human turn is actually sent', async t => {
+  const h = harness(t);
+  await h.ready();
+  assert.equal(h.win.__TD613_MARROWLINE_THREADS__.current(), null, 'homepage does not manufacture a durable thread');
+  assert.deepEqual(await h.win.__TD613_MARROWLINE_THREADS__.list(), [], 'empty archive remains empty on landing');
+  h.$('marrowlineNewThread').click();
+  await flush();
+  assert.equal(h.win.__TD613_MARROWLINE_THREADS__.current(), null, 'New resets to another transient workspace');
+  assert.deepEqual(await h.win.__TD613_MARROWLINE_THREADS__.list(), [], 'New does not autosave an empty speaking-grove record');
+
+  h.send('Explain why a provisional title must wait for the reply.');
+  await h.settled(); await flush();
+  const saved = await h.saved();
+  assert.ok(saved?.id, 'first sent conversation becomes durable');
+  assert.equal(saved.titleSource, 'local-topic-v3-after-return', 'topical title becomes authoritative only after the return');
+  assert.ok(saved.conversationTitle.split(/\s+/u).length <= 5, 'processed title is capped at five words');
 });
 
 test('Receipts remain inside a local SHI-format membrane without changing issuance mode', async t => {
@@ -295,9 +313,10 @@ test('mobile decoration preserves provider-native Unicode and all five chamber r
   assert.equal(h.doc.querySelector('.return-details,.reply-technical-record,.turn-receipt,.relay-aperture-header'),null,
     'all three circled disclosures are absent from the chat');
   assert.deepEqual([...h.doc.querySelectorAll('.relay-message > .marrowline-reply-tool-row > .reply-next-actions .reply-next-choices button:not([hidden])')].map(x=>x.textContent),
-    ['Check the claims','Make a plan','View receipt'],'the three ordinary choices remain visible while staged Attachments stays contextual');
+    ['Check the claims','Make a plan','View receipt','Branch'],'Branch is an ordinary reply-local choice while staged Attachments stays contextual');
   const footer = h.doc.querySelector('.relay-message > .marrowline-reply-tool-row');
-  assert.ok(footer && footer.contains(h.doc.querySelector('.marrowline-branch-reply')),'first-reply branch shares the options row');
+  assert.ok(footer && footer.querySelector('.reply-branch-action'),'Branch lives inside More with this reply');
+  assert.equal(h.doc.querySelector('.marrowline-branch-reply'),null,'retired standalone first-reply branch is absent');
   assert.equal(footer.firstElementChild.tagName,'DETAILS','the plain-text options disclosure begins the row');
   assert.equal(h.doc.querySelector('.relay-message').lastElementChild.className,'marrowline-copy-reply','copy remains outside the row and last');
   assert.equal(JSON.parse(h.$('khonapolitReceipt').textContent).relay.apertureHeader,exactHeader,

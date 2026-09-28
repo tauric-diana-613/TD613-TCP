@@ -219,7 +219,8 @@ try{
    }
    assert.equal(posts,1,'blank-workspace task sends once through the explicit Send control');
    assert.equal(await page.locator('.message-meta span').first().textContent(),'Red Deer','human message is named Red Deer');
-   assert.equal(await page.locator('.marrowline-branch-reply').count(),1,'only the first model response offers a branch');
+   assert.equal(await page.locator('.reply-branch-action').count(),1,'the model reply exposes Branch inside its reply drawer');
+   assert.equal(await page.locator('.marrowline-branch-reply').count(),0,'the retired standalone first-reply branch is absent');
    assert.equal(await page.locator('#marrowlinePortableActions').count(),0,'ordinary Chat never materializes the retired portable handoff panel after a turn');
    assert.equal(await page.locator('#copyKhonapolitPortable').count(),0);
    assert.equal(await page.locator('#exportKhonapolitPortable').count(),0);
@@ -265,7 +266,7 @@ try{
    const followup = page.locator('.relay-message > .marrowline-reply-tool-row > .reply-next-actions');
    assert.equal(await followup.evaluate(el=>el.open),false,'native reply disclosure starts folded');
    assert.deepEqual(await followup.locator('.reply-next-choices button:not([hidden])').allTextContents(),
-     ['Check the claims','Make a plan','View receipt']);
+     ['Check the claims','Make a plan','View receipt','Branch']);
    const followupStyle=await followup.locator('summary').evaluate(el=>({
      border:getComputedStyle(el).borderTopStyle,background:getComputedStyle(el).backgroundImage,
      radius:getComputedStyle(el).borderRadius
@@ -274,14 +275,12 @@ try{
    assert.equal(followupStyle.background,'none','disclosure has no filled background');
    assert.equal(followupStyle.radius,'0px','old rounded pill is absent');
    const footerLayout=await page.locator('.relay-message').first().evaluate(card=>{
-     const box=sel=>{const x=card.querySelector(sel)?.getBoundingClientRect();return x?{y:x.y,right:x.right,bottom:x.bottom}:null};
+     const box=sel=>{const x=card.querySelector(sel)?.getBoundingClientRect();return x?{y:x.y,right:x.right,bottom:x.bottom,width:x.width}:null};
      return {row:box('.marrowline-reply-tool-row'),summary:box('.reply-next-actions>summary'),
-       branch:box('.marrowline-branch-reply'),copy:box('.marrowline-copy-reply')};
+       branch:box('.reply-next-actions .reply-branch-action'),copy:box('.marrowline-copy-reply')};
    });
-   assert.ok(footerLayout.row&&footerLayout.branch&&footerLayout.copy,'reply row and the original copy control exist');
-   assert.ok(Math.abs(footerLayout.summary.y-footerLayout.branch.y)<5,'disclosure and branch share one row');
-   assert.ok(Math.abs(footerLayout.branch.right-footerLayout.copy.right)<15,'branch right-aligns above the copy glyph');
-   assert.ok(footerLayout.branch.bottom<=footerLayout.copy.y+2,'branch does not overlap the copy control');
+   assert.ok(footerLayout.row&&footerLayout.copy,'reply row and the original copy control exist');
+   assert.equal(footerLayout.branch?.width ?? 0,0,'Branch stays folded inside More with this reply until opened');
    await followup.locator('summary').click();
    const expanded=await followup.evaluate(el=>{
      const choices=el.querySelector('.reply-next-choices'),button=choices?.querySelector('button');
@@ -366,15 +365,17 @@ try{
    // Branching, switching and reload use the local archive only: no live
    // provider calls, no overwritten parent turn and no typography rewrite.
    const parentId=await page.evaluate(()=>window.__TD613_MARROWLINE_THREADS__.current().id);
-   await page.locator('.marrowline-branch-reply').click();
+   const branchDrawer=page.locator('.relay-message').first().locator('.reply-next-actions');
+   if(!await branchDrawer.evaluate(el=>el.open))await branchDrawer.locator('summary').click();
+   await branchDrawer.getByRole('button',{name:'Branch',exact:true}).click();
    await page.waitForFunction(id=>window.__TD613_MARROWLINE_THREADS__?.current()?.parentId===id,parentId);
    const branchId=await page.evaluate(()=>window.__TD613_MARROWLINE_THREADS__.current().id);
    assert.notEqual(branchId,parentId);
    assert.equal(await page.evaluate(()=>window.__TD613_MARROWLINE_THREADS__.current().messages.length),2);
    assert.equal(await page.locator('.relay-integrated-covenant .relay-stage-text').last().textContent(),text,
      'branch inherits exact original provider text');
-   assert.ok((await page.locator('#marrowlineConversationTitle').textContent()).trim().split(/\s+/u).length<=6,
-     'generated conversation title is six words or fewer');
+   assert.ok((await page.locator('#marrowlineConversationTitle').textContent()).trim().split(/\s+/u).length<=5,
+     'generated conversation title is five words or fewer');
    await page.locator('#marrowlineThreadOpen').click();
    await page.locator(`#marrowlineThreadList [data-thread-id="${parentId}"] .marrowline-thread-open`).click();
    await page.waitForFunction(id=>window.__TD613_MARROWLINE_THREADS__?.current()?.id===id,parentId);
@@ -387,8 +388,10 @@ try{
    assert.equal((await page.evaluate(()=>window.__TD613_MARROWLINE_THREADS__.list())).length,2);
    assert.equal(posts,2,'restoring an archived thread makes no provider request');
    await page.locator('#marrowlineNewThread').click();
-   await page.waitForFunction(id=>window.__TD613_MARROWLINE_THREADS__?.current()?.id!==id,parentId);
-   assert.equal(await page.evaluate(()=>window.__TD613_MARROWLINE_THREADS__.current().messages.length),0);
+   await page.waitForFunction(()=>window.__TD613_MARROWLINE_THREADS__?.current()===null);
+   assert.equal((await page.evaluate(()=>window.__TD613_MARROWLINE_THREADS__.list())).length,2,
+     'New opens a transient workspace without manufacturing an empty saved thread');
+   assert.equal(await page.locator('.grove-welcome').count(),1,'transient New returns to the blank welcome state');
    await page.locator('#marrowlineThreadOpen').click();
    await page.locator(`#marrowlineThreadList [data-thread-id="${parentId}"] .marrowline-thread-open`).click();
    await page.waitForFunction(id=>window.__TD613_MARROWLINE_THREADS__?.current()?.id===id,parentId);

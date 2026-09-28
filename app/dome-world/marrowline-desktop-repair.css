@@ -707,8 +707,6 @@
 .marrowline-thread-row .marrowline-thread-open{flex:1;min-width:0;text-align:left;overflow-wrap:anywhere}
 .marrowline-thread-row .marrowline-thread-open[aria-current="true"]{background:rgba(115,88,188,.32);color:#fff}
 .marrowline-thread-row button:not(.marrowline-thread-open){min-width:34px}
-.marrowline-branch-reply{display:block!important;margin:5px 14px 13px!important;padding:8px 11px!important;border:1px solid rgba(140,224,196,.3)!important;border-radius:12px!important;background:rgba(27,28,61,.76)!important;color:#cdebe3!important;font:550 11px/1.25 var(--marrowline-chat-sans,system-ui,sans-serif)!important;letter-spacing:0!important;text-transform:none!important}
-#khonapolitMessages .relay-message .marrowline-branch-reply{margin-left:14px!important;margin-right:14px!important}
 @media(max-width:860px){.marrowline-thread-nav button{min-height:30px;font-size:10px}.marrowline-thread-drawer{margin:0 8px}}
 
 /* 2026-09-26 unified mobile composer, elevated threads and receipt membrane. */
@@ -761,7 +759,6 @@
   outline-offset:-5px!important;border-radius:10px!important;
 }
 #khonapolitMessages .relay-message .return-details{padding-right:51px!important}
-#khonapolitMessages .relay-message .marrowline-branch-reply{margin-right:55px!important}
 #khonapolitMessages .message[data-role="model"]{position:relative!important;padding-bottom:36px!important}
 
 .marrowline-chat-kinesis[data-phase="received"] .kinesis-orbit *,
@@ -803,7 +800,6 @@
   outline-offset:-4px!important;text-shadow:0 0 11px rgba(129,235,241,.54)!important;
 }
 #khonapolitMessages .relay-message .return-details{padding-right:51px!important}
-#khonapolitMessages .relay-message .marrowline-branch-reply{margin-bottom:12px!important}
 #khonapolitMessages .message[data-role="model"] .message-body{padding-bottom:40px!important}
 
 /* The thread drawer overlays the transcript, never occupies a grid row,
@@ -985,8 +981,7 @@ html:root body #khonapolitMessages .starter-prompts .starter-rotate{
   white-space:pre;
 }
 
-/* Reply footer: quiet text disclosure left, first-reply branch right.
-   Copy stays in its original bottom-right position, below this row. */
+/* Reply footer: quiet text disclosure; reply-local actions, including Branch, stay inside the drawer. */
 #khonapolitMessages .relay-message .marrowline-reply-tool-row{
   display:flex;align-items:flex-start;justify-content:space-between;gap:8px;
   margin:12px 14px 52px;min-width:0;
@@ -1007,12 +1002,6 @@ html:root body #khonapolitMessages .starter-prompts .starter-rotate{
 #khonapolitMessages .relay-message .reply-next-actions>summary:hover,
 #khonapolitMessages .relay-message .reply-next-actions>summary:focus-visible{
   color:#f5f4fb;text-decoration:underline;text-underline-offset:4px;outline-offset:3px;
-}
-#khonapolitMessages .relay-message .marrowline-reply-tool-row .marrowline-branch-reply{
-  display:inline-flex!important;align-items:center!important;justify-content:center!important;
-  flex:0 1 auto!important;margin:0!important;min-height:35px!important;
-  padding:7px 10px!important;max-width:58%;text-align:center;
-  font-size:10.5px!important;line-height:1.25!important;white-space:normal;
 }
 #khonapolitMessages .relay-message .reply-next-choices{
   display:grid;grid-template-columns:max-content max-content;align-items:center;justify-content:start;gap:6px;padding:7px 0 3px;
@@ -1036,10 +1025,7 @@ html:root body #khonapolitMessages .starter-prompts .starter-rotate{
 @media(max-width:860px){
   #khonapolitMessages .relay-message .marrowline-reply-tool-row{margin:12px 9px 52px;gap:6px}
   #khonapolitMessages .relay-message .reply-next-choices button{min-height:27px;height:27px;padding-inline:8px;font-size:9.5px}
-  #khonapolitMessages .relay-message .marrowline-reply-tool-row .marrowline-branch-reply{
-    font-size:10px!important;padding:7px 8px!important;max-width:57%;
   }
-}
 
 /* Receipt-first tools: always before bounded technical JSON, not after it. */
 #receiptPanel #marrowlineReceiptProtected{min-width:0}
