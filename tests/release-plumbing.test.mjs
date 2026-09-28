@@ -109,30 +109,10 @@ assert.equal((relock.match(/deploymentEnabled: false/g) || []).length, 1);
 assert.doesNotMatch(relock, /vercel@latest deploy/);
 assert.match(relock, /deployment_count = 0/);
 
-const confirmationIndex = relock.indexOf('  confirm-production-practice:');
 const zenodoSyncIndex = relock.indexOf('  src-zenodo-sync:');
-assert.ok(confirmationIndex >= 0, 'zero-deploy production practice confirmation job must remain in the existing relock workflow');
-assert.ok(zenodoSyncIndex > confirmationIndex, 'SRC Zenodo sync must remain a separately addressable job after production confirmation');
-const confirmation = relock.slice(confirmationIndex, zenodoSyncIndex);
-assert.match(confirmation, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-confirm '\)/,
-  'production confirmation requires its own exact #405 command');
-assert.match(confirmation, /github\.event\.comment\.user\.login == 'chatgpt-codex-connector\[bot\]'/,
-  'the narrow chat relay may transport the zero-deploy confirmation gesture');
-assert.match(confirmation, /^\s{6}contents:\s*read\s*$/m,
-  'confirmation job must downgrade repository permissions to read-only');
-assert.match(confirmation, /deployment_ceiling = 0/);
-assert.match(confirmation, /deployment_count = 0/);
-assert.match(confirmation, /TD613_PRODUCTION_OBSERVATION: 'true'/);
-assert.match(confirmation, /TD613_PRACTICE_OBSERVATION: 'true'/);
-assert.match(confirmation, /Verify deployed source packet before browser observation/);
-assert.match(confirmation, /Reconfirm deployed source packet after browser observation/);
-assert.match(confirmation, /repository_write_authority = false/);
-assert.doesNotMatch(confirmation, /vercel@latest deploy/,
-  'zero-deploy confirmation may not contain a Vercel deployment command');
-assert.doesNotMatch(confirmation, /^\s*git push\b/m,
-  'zero-deploy confirmation may not push repository state');
-assert.doesNotMatch(confirmation, /deploymentEnabled = true/,
-  'zero-deploy confirmation may never open the Vercel Git gate');
+assert.ok(zenodoSyncIndex >= 0, 'SRC Zenodo sync must remain a separately addressable manual job.');
+assert.doesNotMatch(relock, /confirm-production-practice|td613-vercel-confirm/,
+  'The redundant zero-deploy production-confirmation gate must remain retired.');
 
 const zenodoSync = relock.slice(zenodoSyncIndex);
 assert.match(zenodoSync, /github\.event\.issue\.number == 758/,
@@ -181,4 +161,4 @@ assert.match(zenodoSync, /automatic_retry = not authorized/,
 assert.equal(fs.existsSync('.githooks/commit-msg'), true, 'commit-msg hook must exist in .githooks');
 assert.equal(fs.existsSync('.githooks/pre-push'), true, 'pre-push hook must exist in .githooks');
 
-console.log('release-plumbing.test.mjs passed with exact chat relay allowlisting, release-canary-bound exact source, adoption-gated fallback relock, zero-deploy production confirmation, and operator-gated live SRC Zenodo intake');
+console.log('release-plumbing.test.mjs passed with exact release authority, break-glass relock, retired redundant confirmation, and operator-gated SRC/Wendbine research intake');
