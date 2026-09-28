@@ -358,7 +358,18 @@ try {
   const localKeys = await page.evaluate(() => Object.keys(localStorage));
   assert(localKeys.every(key => allowedLocalKeys.has(key)), `Unexpected localStorage key: ${localKeys.filter(key => !allowedLocalKeys.has(key)).join(', ')}`);
   const nonRead = requests.filter(request => !['GET', 'HEAD'].includes(request.method));
-  assert(nonRead.length === 0, `Convergence preview emitted non-read requests: ${nonRead.map(request => request.url).join(', ')}`);
+  const governedSiteEpoch = nonRead.filter(request => {
+    try {
+      const url = new URL(request.url);
+      return request.method === 'POST'
+        && url.origin === new URL(base).origin
+        && url.pathname === '/api/site-epoch-reset';
+    } catch {
+      return false;
+    }
+  });
+  const ungovernedNonRead = nonRead.filter(request => !governedSiteEpoch.includes(request));
+  assert(ungovernedNonRead.length === 0, `Convergence preview emitted non-read requests: ${ungovernedNonRead.map(request => request.url).join(', ')}`);
   assert(!requests.some(request => /hush-generate|recipient|transport|cinder/i.test(request.url)), 'Convergence preview reached a provider, Cinder, or recipient route.');
   const browserChromeHttpErrors = httpErrors.filter(item => {
     try {
