@@ -1272,23 +1272,31 @@ html:root body #speakingPanel #khonapolitForm .composer-actions{
 }
 html:root body #speakingPanel #marrowlineAttachmentToggle{
   appearance:none!important;-webkit-appearance:none!important;position:relative!important;
-  display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:9px!important;
-  min-width:0!important;min-height:37px!important;margin:0!important;padding:8px 12px!important;
-  border:1px solid rgba(124,209,219,.26)!important;border-left:2px solid #80d8da!important;
-  border-radius:5px!important;background:linear-gradient(90deg,rgba(57,53,106,.20),rgba(31,38,79,.32))!important;
-  box-shadow:none!important;color:#dce7ec!important;
-  font:600 12px/1.3 var(--marrowline-chat-sans,system-ui,sans-serif)!important;
-  letter-spacing:.01em!important;text-transform:none!important;white-space:nowrap!important;cursor:pointer!important;
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;
+  min-width:0!important;min-height:32px!important;margin:0!important;padding:4px 10px!important;
+  border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;
+  color:#bfc9d2!important;font:550 10.5px/1.25 var(--marrowline-chat-sans,system-ui,sans-serif)!important;
+  letter-spacing:.015em!important;text-transform:none!important;white-space:nowrap!important;cursor:pointer!important;
+}
+html:root body #speakingPanel #marrowlineAttachmentToggle::after{
+  content:"";position:absolute;left:10px;right:10px;bottom:1px;height:1px;background:transparent;
+  transition:background-color .16s ease;
 }
 html:root body #speakingPanel #marrowlineAttachmentToggle .marrowline-thread-glyph{
-  display:inline-block!important;font:600 17px/1 ui-monospace,monospace!important;color:#91ebeb!important;
+  display:inline-block!important;color:#8edbd8!important;
+  font:500 14px/1 ui-monospace,SFMono-Regular,Menlo,monospace!important;
 }
 html:root body #speakingPanel #marrowlineAttachmentToggle:hover,
 html:root body #speakingPanel #marrowlineAttachmentToggle:focus-visible,
 html:root body #speakingPanel #marrowlineAttachmentToggle[aria-expanded="true"]{
-  border-color:#a2f1ed!important;color:#fff!important;background:rgba(64,64,124,.65)!important;
+  background:transparent!important;color:#fff!important;border-color:rgba(173,157,215,.23)!important;
 }
-html:root body #speakingPanel #marrowlineAttachmentToggle:focus-visible{outline:2px solid #9bedf3!important;outline-offset:3px!important}
+html:root body #speakingPanel #marrowlineAttachmentToggle:hover::after,
+html:root body #speakingPanel #marrowlineAttachmentToggle:focus-visible::after,
+html:root body #speakingPanel #marrowlineAttachmentToggle[aria-expanded="true"]::after{background:#91dedb!important}
+html:root body #speakingPanel #marrowlineAttachmentToggle:focus-visible{
+  outline:1px solid rgba(151,231,227,.82)!important;outline-offset:2px!important;
+}
 html:root body #speakingPanel #marrowlineAttachmentMenu{
   left:0!important;right:auto!important;top:auto!important;bottom:calc(100% + 7px)!important;
 }
@@ -1308,10 +1316,6 @@ html:root body #speakingPanel #marrowlineAttachmentMenu{
   html:root.marrowline-mobile-shell body #speakingPanel #khonapolitForm #marrowlineAttachmentTray{
     max-width:calc(100% - 116px)!important;
   }
-  html:root.marrowline-mobile-shell body #speakingPanel #marrowlineAttachmentToggle{
-    min-height:34px!important;padding:7px 9px!important;gap:7px!important;font-size:10.5px!important;
-  }
-  html:root.marrowline-mobile-shell body #speakingPanel #marrowlineAttachmentToggle .marrowline-thread-glyph{font-size:15px!important}
 }
 
 /* The reply drawer inherits the rotating starter-prompt visual language, but
