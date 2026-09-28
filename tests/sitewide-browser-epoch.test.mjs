@@ -12,6 +12,7 @@ const flight=read('app/safe-harbor/td613-flight.html');
 const ash=read('lib/dome-world-shell-core.js');
 const config=JSON.parse(read('vercel.json'));
 const localClosure=read('scripts/ash-keep-local-closure-server.mjs');
+const epochBaseline=read('scripts/site-epoch-browser-baseline.mjs');
 test('one universal epoch loads before station code',()=>{
  const missing=[];
  function walk(dir){for(const item of fs.readdirSync(dir,{withFileTypes:true})){
@@ -72,5 +73,9 @@ test('Ash specialist presentation retains historical receipt semantics after the
  assert(wrapper.includes('td613.site.browser-reset.epoch'));
  assert(wrapper.includes("  'td613.ash.session.epoch',\\n  'td613.site.browser-reset.epoch'\\n]);"), 'Ash local-storage witness must allow the one-time origin marker');
  assert(!wrapper.includes("if (!['localhost', '127.0.0.1'].includes(new URL(base).hostname))"), 'local closure now supports the site epoch and may not bypass first-visit reset isolation');
+ assert(wrapper.includes("!new URL(location.href).searchParams.has('td613_site_epoch')"), 'lifecycle witness must wait through reset return cleanup before opening the measured page');
+ assert(wrapper.includes('await context.addInitScript'), 'lifecycle witness must bind the earned epoch before subsequent document scripts');
+ assert(epochBaseline.includes("!current.searchParams.has('td613_site_epoch')"), 'shared browser baseline must not sample storage during reset return navigation');
+ assert(epochBaseline.includes('candidate.pathname === expectedReturn.pathname'), 'shared browser baseline must settle on the requested return route');
  assert(!wrapper.includes('legacy eviction before first-visit reset'));
 });
