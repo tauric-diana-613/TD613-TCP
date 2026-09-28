@@ -20,15 +20,13 @@ runtime = replaceExactly(
   "const page = await context.newPage();",
   `// Observe the site-wide first-visit reset in a separate page before the Ash lifecycle episode.
   // Its intentional Clear-Site-Data navigation must not contaminate the lifecycle network witness.
-  if (!['localhost', '127.0.0.1'].includes(new URL(base).hostname)) {
-    const epochPage = await context.newPage();
-    await epochPage.goto(\`\${base}/site-epoch-reset.html?return=%2F\`, { waitUntil:'domcontentloaded', timeout:30_000 });
-    await epochPage.waitForFunction(
-      () => localStorage.getItem('td613.site.browser-reset.epoch') === 'td613.site.browser-reset/2026-09-27-v1',
-      null, { timeout:45_000 }
-    );
-    await epochPage.close();
-  }
+  const epochPage = await context.newPage();
+  await epochPage.goto(\`\${base}/site-epoch-reset.html?return=%2F\`, { waitUntil:'domcontentloaded', timeout:30_000 });
+  await epochPage.waitForFunction(
+    () => localStorage.getItem('td613.site.browser-reset.epoch') === 'td613.site.browser-reset/2026-09-27-v1',
+    null, { timeout:45_000 }
+  );
+  await epochPage.close();
   const page = await context.newPage();`,
   'first-visit site epoch before lifecycle network capture'
 );
