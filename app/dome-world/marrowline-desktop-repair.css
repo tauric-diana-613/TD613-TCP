@@ -884,11 +884,11 @@ html:root body #speakingPanel #khonapolitForm #khonapolitSend:disabled{opacity:.
 html:root body #speakingPanel #khonapolitForm #khonapolitSend:focus-visible{outline:2px solid #a5faff!important;outline-offset:3px!important}
 html:root body #speakingPanel #khonapolitForm .marrowline-composer-attachments{
   position:relative!important;grid-column:2!important;grid-row:2!important;justify-self:start!important;align-self:center!important;
-  display:inline-flex!important;align-items:center!important;gap:6px!important;
-  min-width:0!important;min-height:30px!important;width:auto!important;height:30px!important;
-  margin:0!important;padding:3px 8px 3px 0!important;border:0!important;border-radius:0!important;
+  display:inline-flex!important;align-items:center!important;gap:5px!important;
+  min-width:0!important;min-height:28px!important;width:auto!important;height:28px!important;
+  margin:0!important;padding:2px 8px 2px 0!important;border:0!important;border-radius:0!important;
   background:transparent!important;box-shadow:none!important;color:#c5ccd6!important;
-  font:550 10px/1.2 var(--marrowline-chat-sans,system-ui,sans-serif)!important;
+  font:550 9.75px/1.2 var(--marrowline-chat-sans,system-ui,sans-serif)!important;
   letter-spacing:.01em!important;text-transform:none!important;white-space:nowrap!important;cursor:pointer!important;
 }
 html:root body #speakingPanel #khonapolitForm .marrowline-composer-attachments[hidden]{display:none!important}
@@ -934,69 +934,6 @@ html:root body #speakingPanel #khonapolitForm .composer-actions{
   grid-column:2!important;grid-row:2!important;justify-self:end!important;
   width:auto!important;height:30px!important;min-height:0!important;max-height:30px!important;
   margin:0!important;padding:0!important;gap:0!important;align-items:center!important;overflow:visible!important;
-}
-/* The second Attachments control occupies the textarea column, not the
-   +/Send column. This binds its left edge to the textarea border above. */
-html:root body #speakingPanel #khonapolitForm #marrowlineComposerAttachments{
-  position:relative!important;grid-column:2!important;grid-row:2!important;justify-self:start!important;align-self:center!important;
-  box-sizing:border-box!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:5px!important;
-  width:auto!important;min-width:0!important;height:28px!important;min-height:28px!important;
-  margin:0!important;padding:0 8px!important;border:0!important;border-radius:0!important;
-  background:transparent!important;box-shadow:none!important;color:#c5ccd6!important;
-  font:550 9.75px/1.2 var(--marrowline-chat-sans,system-ui,sans-serif)!important;
-  letter-spacing:.01em!important;text-transform:none!important;white-space:nowrap!important;
-}
-html:root body #speakingPanel #khonapolitForm #marrowlineComposerAttachments[hidden]{display:none!important}
-html:root body #speakingPanel #khonapolitForm #marrowlineComposerAttachments::after{
-  content:"";position:absolute;left:8px;right:8px;bottom:0;height:1px;background:transparent;
-}
-html:root body #speakingPanel #khonapolitForm #marrowlineComposerAttachments:hover,
-html:root body #speakingPanel #khonapolitForm #marrowlineComposerAttachments:focus-visible,
-html:root body #speakingPanel #khonapolitForm #marrowlineComposerAttachments[aria-expanded="true"]{
-  color:#fff!important;
-}
-html:root body #speakingPanel #khonapolitForm #marrowlineComposerAttachments:focus-visible{
-  outline:1px solid rgba(151,231,227,.82)!important;outline-offset:2px!important;
-}
-html:root body #speakingPanel #khonapolitForm #marrowlineComposerAttachments:hover::after,
-html:root body #speakingPanel #khonapolitForm #marrowlineComposerAttachments:focus-visible::after,
-html:root body #speakingPanel #khonapolitForm #marrowlineComposerAttachments[aria-expanded="true"]::after{
-  background:#91dedb;
-}
-html:root body #speakingPanel #khonapolitForm .marrowline-composer-attachments-glyph{
-  color:#8edbd8!important;font:500 13px/1 ui-monospace,SFMono-Regular,Menlo,monospace!important;
-}
-html:root body #speakingPanel #khonapolitForm #marrowlineAttachmentDrawer{
-  position:absolute!important;z-index:18!important;left:66px!important;right:14px!important;bottom:43px!important;
-  box-sizing:border-box!important;max-height:min(38dvh,280px)!important;overflow:auto!important;
-  padding:10px 11px!important;border:1px solid rgba(148,132,194,.26)!important;border-radius:12px!important;
-  background:linear-gradient(160deg,#1a1531,#121025)!important;
-  box-shadow:0 18px 44px rgba(0,0,0,.60)!important;
-  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-}
-html:root body #speakingPanel #khonapolitForm #marrowlineAttachmentDrawer[hidden]{display:none!important}
-html:root body #speakingPanel #khonapolitForm .marrowline-attachment-drawer-head{
-  display:flex!important;align-items:baseline!important;justify-content:space-between!important;gap:10px!important;
-  margin:0 0 8px!important;padding:0 1px 7px!important;border-bottom:1px solid rgba(151,220,216,.13)!important;
-}
-html:root body #speakingPanel #khonapolitForm .marrowline-attachment-drawer-head strong{
-  color:#eef0f4!important;font:600 11px/1.25 var(--marrowline-chat-sans,system-ui,sans-serif)!important;
-}
-html:root body #speakingPanel #khonapolitForm .marrowline-attachment-drawer-head span{
-  color:#93aaa7!important;font:500 9px/1.3 var(--marrowline-chat-sans,system-ui,sans-serif)!important;text-align:right!important;
-}
-html:root body #speakingPanel #khonapolitForm #marrowlineAttachmentTray{
-  display:flex!important;align-items:center!important;gap:7px!important;flex-wrap:wrap!important;
-  width:100%!important;margin:0!important;padding:0!important;
-}
-html:root body #speakingPanel #khonapolitForm #marrowlineAttachmentTray[hidden]{display:none!important}
-@media(max-width:860px){
-  html:root.marrowline-mobile-shell body #speakingPanel #khonapolitForm #marrowlineComposerAttachments{
-    height:27px!important;min-height:27px!important;padding-inline:7px!important;font-size:9.5px!important;
-  }
-  html:root.marrowline-mobile-shell body #speakingPanel #khonapolitForm #marrowlineAttachmentDrawer{
-    left:62px!important;right:12px!important;bottom:42px!important;max-height:min(34dvh,240px)!important;
-  }
 }
 html:root body #speakingPanel #khonapolitForm .marrowline-conversation-utilities{
   display:flex!important;gap:10px!important;margin:0!important;
