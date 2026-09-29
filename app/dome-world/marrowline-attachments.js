@@ -93,13 +93,18 @@ function canvasToBlob(canvas, type, quality) {
 
 async function loadPhotoBitmap(file, environment = globalThis) {
   if (typeof environment.createImageBitmap === 'function') {
-    const bitmap = await environment.createImageBitmap(file);
-    return {
-      width: bitmap.width,
-      height: bitmap.height,
-      draw: (context, width, height) => context.drawImage(bitmap, 0, 0, width, height),
-      close: () => bitmap.close?.()
-    };
+    try {
+      const bitmap = await environment.createImageBitmap(file);
+      return {
+        width: bitmap.width,
+        height: bitmap.height,
+        draw: (context, width, height) => context.drawImage(bitmap, 0, 0, width, height),
+        close: () => bitmap.close?.()
+      };
+    } catch {
+      // Safari may expose createImageBitmap while declining HEIC/HEIF there.
+      // Fall through to the native image decoder before holding the photo.
+    }
   }
   const doc = environment.document;
   const URLApi = environment.URL;
