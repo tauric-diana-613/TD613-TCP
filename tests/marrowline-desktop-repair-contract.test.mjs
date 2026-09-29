@@ -372,14 +372,14 @@ test('ordinary conversation chrome uses Send left and a minimalist retry copy cl
 });
 
 
-test('Gate actions stay left aligned with one primary row and compact secondary controls', () => {
-  assert.match(css, /Gate action hierarchy v2/);
-  assert.match(css, /#gatePanel \.ritual-actions\{[\s\S]*grid-template-columns:minmax\(0,1fr\) minmax\(0,1fr\)!important/);
-  assert.match(css, /#gatePanel \.ritual-actions button\{[\s\S]*text-align:left!important/);
-  assert.match(css, /#gatePanel \.ritual-actions button\.primary\{[\s\S]*grid-column:1\/-1!important;[\s\S]*min-height:44px!important/);
-  assert.match(css, /#gatePanel \.ritual-actions #buildLocalMarrowline,[\s\S]*#gatePanel \.ritual-actions #copyMarrowlineReceipt\{[\s\S]*min-height:36px!important/);
-  assert.match(css, /marrowline-mobile-shell body\[data-mobile-view="gate"\] #gatePanel \.ritual-actions button\.primary\{[\s\S]*min-height:48px!important/);
-  assert.match(css, /marrowline-mobile-shell body\[data-mobile-view="gate"\] #gatePanel \.ritual-actions #buildLocalMarrowline,[\s\S]*#copyMarrowlineReceipt\{[\s\S]*min-height:40px!important/);
+test('final Marrowline chrome preserves the Gate single-sequence hierarchy', () => {
+  assert.match(css, /Gate handoff completion/);
+  assert.match(css, /#gatePanel \.panel-body\.gate-grid\{grid-template-columns:minmax\(0,1fr\)!important/);
+  assert.match(css, /#gatePanel #marrowlineForm \.marrowline-operator-field\[hidden\][\s\S]*display:none!important/);
+  assert.match(css, /#gatePanel \.ritual-actions\{grid-template-columns:minmax\(0,1fr\) auto!important/);
+  assert.match(css, /#gatePanel \.ritual-actions button\.primary\{grid-column:1!important/);
+  assert.match(css, /#gatePanel \.ritual-actions #copyMarrowlineReceipt\{grid-column:2!important;min-width:112px!important/);
+  assert.match(css, /marrowline-mobile-shell body\[data-mobile-view="gate"\] #gatePanel \.ritual-actions\{[\s\S]*grid-template-columns:minmax\(0,1fr\) auto!important/);
 });
 
 test('room boot loads the desktop repair and separates Zalgo aesthetics from structural admission', () => {
