@@ -43,6 +43,13 @@
     return '<div data-td613-flight-clipboard="semantic-paragraphs">' + rendered.join('') + '</div>';
   }
 
+  function exactWhitespaceHtml(value) {
+    const plain = normalizeLineEndings(value);
+    return '<div data-td613-flight-clipboard="exact-whitespace" style="white-space:pre-wrap">' +
+      escapeHtml(plain).replace(/\n/gu, '<br>') +
+      '</div>';
+  }
+
   function mobileLayout() {
     return Boolean(window.matchMedia && window.matchMedia(MOBILE_QUERY).matches);
   }
@@ -130,7 +137,7 @@
 
   async function writeStructuredClipboard(value) {
     const plain = normalizeLineEndings(value);
-    const html = semanticParagraphHtml(plain);
+    const html = exactWhitespaceHtml(plain);
     const clipboard = navigator.clipboard;
 
     if (clipboard && typeof clipboard.write === 'function' && typeof window.ClipboardItem === 'function') {
@@ -164,20 +171,26 @@
 
   async function copyTextWithFidelity(value, label, sourceTextarea) {
     const plain = normalizeLineEndings(value);
+    const desktopOutput = Boolean(sourceTextarea && !mobileLayout());
+    const modernStructuredClipboard = desktopOutput
+      && navigator.clipboard
+      && typeof navigator.clipboard.write === 'function'
+      && typeof window.ClipboardItem === 'function';
     try {
-      // The desktop Output button owns the real synchronous copy event and writes
-      // both mandatory clipboard representations. Plain text keeps the exact textarea
-      // bytes; rich paste targets receive semantic paragraphs instead of a flat <br>
-      // stream. Mobile remains on its already-working writeText path.
-      const mode = sourceTextarea && !mobileLayout()
-        ? desktopStructuredCopy(sourceTextarea, plain).mode
-        : await writeClipboard(plain);
+      // Prefer the modern dual-MIME clipboard on desktop. Its HTML flavor carries
+      // every newline as an explicit <br>, while text/plain keeps the exact canonical
+      // bytes. This avoids desktop paste targets collapsing blank paragraph boundaries.
+      const mode = modernStructuredClipboard
+        ? await writeStructuredClipboard(plain)
+        : desktopOutput
+          ? desktopStructuredCopy(sourceTextarea, plain).mode
+          : await writeClipboard(plain);
       setCopyStatus(label, mode);
       return { ok: true, mode, text: plain };
     } catch (error) {
       try {
-        const mode = sourceTextarea && !mobileLayout()
-          ? await writeStructuredClipboard(plain)
+        const mode = desktopOutput
+          ? desktopStructuredCopy(sourceTextarea, plain).mode
           : await writeClipboard(plain);
         setCopyStatus(label, mode);
         return { ok: true, mode, text: plain };
@@ -309,6 +322,7 @@
       copyText: copyTextWithFidelity,
       normalizeLineEndings,
       semanticParagraphHtml,
+      exactWhitespaceHtml,
       mobileLayout,
       desktopStructuredCopy,
       writeStructuredClipboard,
