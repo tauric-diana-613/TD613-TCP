@@ -204,6 +204,9 @@ function pocketize(root, packet, doc, environment) {
   updateAttachmentLabel();
 
   const stageInput = async (input, kind) => {
+    environment.dispatchEvent?.(new environment.CustomEvent('td613:marrowline:attachment-staging-state', {
+      detail: { staging: true, kind }
+    }));
     try {
       const state = await stageMarrowlineAttachments(input.files, { kind, environment });
       closeMenu(toggle, menu);
@@ -214,6 +217,9 @@ function pocketize(root, packet, doc, environment) {
       setTerminalStatus(doc, `ATTACHMENT HELD · ${error.message}`);
       toggle.focus?.();
     } finally {
+      environment.dispatchEvent?.(new environment.CustomEvent('td613:marrowline:attachment-staging-state', {
+        detail: { staging: false, kind, count: attachmentState().count }
+      }));
       input.value = '';
     }
   };

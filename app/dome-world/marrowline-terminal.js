@@ -644,6 +644,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   let activeThread = null;
   let storeReady = false;
   let requestInFlight = false;
+  let attachmentStagingActive = false;
   let activeRequestController = null;
   let activeRequestCancelRequested = false;
   const sendControl = byId(doc, 'khonapolitSend');
@@ -657,6 +658,15 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     if (generating) sendControl.disabled = false;
   };
   setSendControlState(false);
+  root.addEventListener?.('td613:marrowline:attachment-staging-state', event => {
+    attachmentStagingActive = Boolean(event.detail?.staging);
+    if (sendControl && !requestInFlight) sendControl.disabled = !storeReady || attachmentStagingActive;
+    const status = byId(doc, 'khonapolitTerminalStatus');
+    if (attachmentStagingActive && status) {
+      setPedagogueStatus(status, 'pending', 'Preparing attachment…',
+        'The selected attachment is still being prepared in this browser; Send will unlock when staging is complete.');
+    }
+  });
   let saveChain = Promise.resolve(true);
   let queuedInitialSubmission = null;
   if (sendControl) sendControl.disabled = true;
@@ -944,6 +954,11 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     // A fresh human gesture can override an advisory short-window timer, but
     // never double-submit while another request is already in flight.
     if (!storeReady || requestInFlight) return;
+    if (attachmentStagingActive) {
+      setPedagogueStatus(status, 'pending', 'Preparing attachment…',
+        'The selected attachment is still being prepared in this browser; Send will unlock when staging is complete.');
+      return;
+    }
     const attachments = getMarrowlineAttachments();
     const retrying = Boolean(state.pendingTask && state.pendingTask === message && state.messages.at(-1)?.role === 'user' && safe(state.messages.at(-1)?.text) === message);
     if (!retrying && !backgroundResume) backgroundResumeSpentTask = '';

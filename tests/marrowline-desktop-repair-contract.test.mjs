@@ -158,11 +158,32 @@ test('staged attachments have two temporary access points and the composer contr
   assert.equal(composerAttachments.hidden, true, 'cleared/successfully consumed staging removes the composer control');
   assert.equal(replyAttachments.hidden, true, 'cleared/successfully consumed staging removes the reply action');
 
-  // Exercise the actual Upload photo input path with a realistic payload that
-  // exceeds the old 1.5 MB generic-file ceiling. No file is staged first: this
-  // witness must prove that a photo alone earns both Attachments entry points.
-  const photoBytes = new Uint8Array(1_600_000);
+  // Exercise the actual Upload photo input path with a mobile-sized payload
+  // that exceeds the full 2.5 MB wire envelope. This must be normalized in the
+  // browser, then reveal both Attachments entry points without staging a file first.
+  const photoBytes = new Uint8Array(4_200_000);
   photoBytes[0] = 0xff; photoBytes[1] = 0xd8; photoBytes[photoBytes.length - 2] = 0xff; photoBytes[photoBytes.length - 1] = 0xd9;
+  const nativeCreateElement = document.createElement.bind(document);
+  document.createElement = tag => {
+    if (String(tag).toLowerCase() !== 'canvas') return nativeCreateElement(tag);
+    return {
+      width: 0, height: 0,
+      getContext: () => ({ fillStyle: '', fillRect() {}, drawImage() {} }),
+      toBlob: callback => callback({ size: 1_200_000, type: 'image/jpeg' })
+    };
+  };
+  window.createImageBitmap = async () => ({ width: 4032, height: 3024, close() {} });
+  window.File = class {
+    constructor(parts, name, options = {}) {
+      this.name = name;
+      this.type = options.type || 'application/octet-stream';
+      this.size = 1_200_000;
+      this.lastModified = options.lastModified || Date.now();
+      this.bytes = new Uint8Array(this.size);
+    }
+    async arrayBuffer() { return this.bytes.buffer; }
+  };
+
   const photoInput = document.querySelector('#marrowlineComposerPhotoInput');
   Object.defineProperty(photoInput, 'files', { configurable: true, value: [{
     name: 'grove-photo.jpg', type: 'image/jpeg', size: photoBytes.byteLength,
@@ -173,11 +194,14 @@ test('staged attachments have two temporary access points and the composer contr
   while (composerAttachments.hidden && Date.now() < photoDeadline) {
     await new Promise(resolve => setTimeout(resolve, 0));
   }
-  assert.equal(composerAttachments.hidden, false, 'photo-only picker path reveals the composer Attachments control');
-  assert.equal(replyAttachments.hidden, false, 'photo-only picker path reveals Attachments in More with this reply');
+  assert.equal(composerAttachments.hidden, false, 'oversized photo-only picker path reveals the composer Attachments control after normalization');
+  assert.equal(replyAttachments.hidden, false, 'oversized photo-only picker path reveals Attachments in More with this reply');
+  const stagedPhoto = window.__TD613_MARROWLINE_ATTACHMENT_STATE__?.().attachments[0];
+  assert.equal(stagedPhoto?.kind, 'photo');
+  assert.equal(stagedPhoto?.mime_type, 'image/jpeg');
+  assert.equal(stagedPhoto?.size_bytes, 1_200_000);
   assert.equal(document.querySelector('#marrowlineAttachmentTray [data-attachment-id]')?.textContent.includes('grove-photo.jpg'), true,
-    'photo-only picker path uses the same staged attachment drawer');
-  assert.equal(window.__TD613_MARROWLINE_ATTACHMENT_STATE__?.().attachments[0]?.kind, 'photo');
+    'normalized photo-only picker path uses the same staged attachment drawer');
   clearMarrowlineAttachments(window);
 
   assert.match(css, /\.marrowline-composer-attachments\{[\s\S]*grid-column:2!important;grid-row:2!important;justify-self:start!important/,
@@ -216,6 +240,15 @@ test('current Marrowline skin is render-blocking before room-ready reveal', () =
   assert.match(page, /<link rel="stylesheet" href="\.\/marrowline-desktop-repair\.css" data-marrowline-desktop-repair="render-blocking-current-shell" \/>/);
   assert.match(mobileShellCss, /html:not\(\.marrowline-room-ready\) body\{visibility:hidden!important\}/);
   assert.match(boot, /firstPaintHeldUntilRoomReady: true/);
+});
+
+test('Send cannot outrun asynchronous attachment staging', () => {
+  assert.match(js, /td613:marrowline:attachment-staging-state/);
+  assert.match(terminalJs, /let attachmentStagingActive = false/);
+  assert.match(terminalJs, /sendControl\.disabled = !storeReady \|\| attachmentStagingActive/);
+  assert.match(terminalJs, /if \(attachmentStagingActive\) \{[\s\S]*Preparing attachment/);
+  assert.match(js, /detail: \{ staging: true, kind \}/);
+  assert.match(js, /detail: \{ staging: false, kind, count: attachmentState\(\)\.count \}/);
 });
 
 test('clearing a conversation also empties the composer draft', () => {

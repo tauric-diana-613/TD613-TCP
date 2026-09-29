@@ -325,6 +325,10 @@ function installUniversalContextPlus(doc, root) {
     loomItem.small.textContent = awake ? 'Continue the Loom handoff already staged here' : 'Open Loom in a new tab';
   };
   const stage = async (input, kind) => {
+    root.dispatchEvent?.(new root.CustomEvent('td613:marrowline:attachment-staging-state', {
+      detail: { staging: true, kind }
+    }));
+    setStatus(kind === 'photo' ? 'PREPARING PHOTO · keep this tab open' : 'PREPARING ATTACHMENT · keep this tab open');
     try {
       const state = await stageMarrowlineAttachments(input.files, { kind, environment: root });
       // Safari/iOS photo pickers and ordinary file pickers share one staged
@@ -339,6 +343,9 @@ function installUniversalContextPlus(doc, root) {
     } catch (error) {
       setStatus(`ATTACHMENT HELD · ${safe(error?.message || error)}`);
     } finally {
+      root.dispatchEvent?.(new root.CustomEvent('td613:marrowline:attachment-staging-state', {
+        detail: { staging: false, kind, count: attachmentState().count }
+      }));
       input.value = '';
       close();
       byId(doc, 'khonapolitPrompt')?.focus?.({ preventScroll: true });
