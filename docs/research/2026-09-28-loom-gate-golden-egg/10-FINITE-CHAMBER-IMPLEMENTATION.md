@@ -62,3 +62,16 @@ The operator explicitly identified **Marrowline Gate only** and **Holonomy Loom*
 A desktop cloud-browser inspection of both production pages succeeded after the local-browser failures above. In Marrowline, opening Gate reveals a narrow right drawer with three simultaneous, text-heavy comparison columns. Each column is roughly a hundred pixels wide, producing excessive wrapping and a long introductory scroll before the actual controls. The drawer overlays the conversation. In Loom's initial desktop viewport, an oversized hero, repeated instructional blocks and nested panels dominate; the task editor competes with a tall route panel. These are observed layout problems, not a completed usability study. Mobile and the new chamber remain unverified visually.
 
 Next UI work: make Gate a readable single-column sequence within its drawer, with a concise mode choice, nearby inputs/action, then outcome; put detailed comparison prose and raw evidence behind optional disclosure. Preserve explicit distinctions between local control, public boundary and authorized operator control. For Loom, shorten the hero and consolidate instructions, reduce nested framing, prioritize the task and its next action, and keep the route explanation and optional laboratory subordinate. Preserve existing behavior and scientific limits. Verify actual renders at desktop and 390px, keyboard access, scroll/overflow and relevant end-to-end flows before declaring UX finished. Do not equate this implementation's passing mathematical tests with completion of either redesign.
+
+
+## 2026-09-29 continuation — targeted UX implementation
+
+The operator-authorized continuation now changes only the previously identified weak surfaces:
+
+- **Marrowline Gate** is rendered as one vertical sequence: choose one declared condition, use its nearby action, read the observed outcome, then open comparison prose or matrix/raw receipt only when needed. Local seed and operator token fields are contextual to their selected condition. Public and operator fires remain the same declared endpoint experiment; local remains no-network.
+- **Holonomy Loom** now gives the task editor the primary vertical position. The living route remains visible and inspectable rather than disappearing, but it is visually subordinate beneath the task. The hero, demo invitation, laboratory entry, observer chamber and repeated supporting chrome are compacted. The 420px/760px CSS contracts keep controls one-column where needed and preserve 16px task input text.
+- **Finite observer chamber** remains optional inside the laboratory, synthetic-only, explicit Run/Rest, stale-invalidating, and zero empirical credit.
+
+Static/DOM contract tests are part of the normal PR validation lane. They establish source behavior and declared responsive constraints only. No claim of human-comprehension improvement, pixel-perfect physical-device rendering, empirical privacy, Golden Egg acquisition or Western Horizon reopening follows from those tests. If the repository's current release policy scope-skips deep browser estates, that skipped diagnostic remains a limitation rather than a fabricated witness.
+
+Golden Egg remains UNEARNED; Western Horizon remains 𝄐.
