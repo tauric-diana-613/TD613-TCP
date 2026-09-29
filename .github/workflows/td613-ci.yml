@@ -940,6 +940,8 @@ jobs:
         if: steps.layout_scope.outputs.changed == 'true'
         run: |
           node --test \
+            tests/loom-task.test.mjs \
+            tests/loom-ai-workspace-dom.test.mjs \
             tests/loom-ai-handoff.test.mjs \
             tests/marrowline-instrument-panel.test.mjs \
             tests/marrowline-desktop-repair-contract.test.mjs \
