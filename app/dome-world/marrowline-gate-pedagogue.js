@@ -202,7 +202,12 @@ function ensureTechnicalEvidenceDisclosure(doc, gate) {
   if (!gate || !output || output.closest('.gate-technical-evidence')) return null;
   const details = doc.createElement('details');
   details.className = 'gate-technical-evidence';
-  const summary = text(doc, 'summary', 'Inspect matrix & technical receipt');
+  const summary = doc.createElement('summary');
+  summary.append(
+    text(doc, 'span', 'Inspect matrix & technical receipt', 'gate-technical-evidence-label'),
+    text(doc, 'span', '▽', 'gate-technical-evidence-glyph')
+  );
+  summary.querySelector('.gate-technical-evidence-glyph')?.setAttribute('aria-hidden', 'true');
   details.append(summary, output);
   gate.querySelector('.panel-body.gate-grid')?.append(details);
   return details;
