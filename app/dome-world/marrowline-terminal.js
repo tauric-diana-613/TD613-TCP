@@ -1425,13 +1425,16 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       return;
     }
     const clearedThreadId = activeThread?.id || null;
-    // Drain writes that belong to the pre-clear conversation before deleting it.
-    // Saving the emptied state would manufacture a durable placeholder thread.
-    await saveChain.catch(() => false);
-    if (clearedThreadId && threadLibrary) await threadLibrary.remove(clearedThreadId);
+    // Detach the cleared conversation immediately. Any writes already queued
+    // for its pre-clear state must finish before archive deletion so they cannot
+    // resurrect a durable empty placeholder afterward.
     activeThread = null;
     threadLibrary?.setActiveId(null);
     try { root.sessionStorage.removeItem(SESSION_KEY); } catch {}
+    const removeClearedThread = saveChain.catch(() => false).then(async () => {
+      if (clearedThreadId && threadLibrary) await threadLibrary.remove(clearedThreadId);
+      await renderThreadLibrary();
+    });
     backgroundResumeTask = '';
     backgroundResumeSpentTask = '';
     episodeArmed = false; lastEpisodeWitness = null; root.__TD613_MARROWLINE_LAST_EPISODE_WITNESS__ = null;
@@ -1448,7 +1451,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       delete prompt.dataset.preloadedPromptValue;
     }
     renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, null); syncRecoveryControls(doc, state); syncConversationTitle(doc, state);
-    await renderThreadLibrary();
+    void removeClearedThread.catch(() => {});
     stopPedagogueStatus(root);
     const terminalStatus = byId(doc, 'khonapolitTerminalStatus');
     if (terminalStatus) {
