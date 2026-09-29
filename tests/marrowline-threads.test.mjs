@@ -123,8 +123,10 @@ test('only exact legacy auto-generated titles are retitled; operator labels and 
   const manual = await archive.create({messages,conversationTitle:'Archive Witnesses',titleSource:'operator'});
   const renamed = await archive.create({messages,conversationTitle:'My Own Label'});
   const branch = await archive.branch(old,1);
-  const longTopic = await archive.create({messages:[{role:'user',text:
-    'I underestimated the contribution was in how directly the research changed the design.'}],
+  const longTopic = await archive.create({messages:[
+    {role:'user',text:'I underestimated the contribution was in how directly the research changed the design.'},
+    {role:'model',text:glyph,receipt:{provider:{completion:{complete:true}}}}
+  ],
     conversationTitle:'I Underestimated the Contribution Was in How Directly',
     titleSource:'local-topic-v2'});
   const clippedQuestion = await archive.create({messages:[
