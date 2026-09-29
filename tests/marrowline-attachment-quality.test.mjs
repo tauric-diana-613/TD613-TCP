@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { Buffer } from 'node:buffer';
 import crypto from 'node:crypto';
 import { frameMarrowlineUserTurn } from '../app/dome-world/khonapolit-covenant.js';
+import { clearMarrowlineAttachments, stageMarrowlineAttachments } from '../app/dome-world/marrowline-attachments.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 import { GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE, withGeminiGenerationProfile } from '../server/gemini-generation-envelope.js';
 import marrowlineAttachmentHandler, {
@@ -48,6 +49,50 @@ test('attachments precede the canonical final sealed user text; the relay cue st
   assert.match(cue, /both mandatory visible registers/);
   assert.match(cue, /native High-Zalgo speech in their first sentence on EVERY turn/);
   assert.match(cue, /sustained deep overlapping vertical flourishes are primary/);
+});
+
+test('client photo staging normalizes an oversized mobile image into the bounded wire envelope', async t => {
+  const environment = {
+    crypto: { randomUUID: () => '61300000-0000-4000-8000-000000000613' },
+    btoa: value => Buffer.from(value, 'binary').toString('base64'),
+    document: {
+      createElement(tag) {
+        assert.equal(tag, 'canvas');
+        return {
+          width: 0,
+          height: 0,
+          getContext: () => ({ fillStyle: '', fillRect() {}, drawImage() {} }),
+          toBlob: callback => callback({ size: 1_100_000, type: 'image/jpeg' })
+        };
+      }
+    },
+    createImageBitmap: async () => ({ width: 4032, height: 3024, close() {} }),
+    File: class {
+      constructor(parts, name, options = {}) {
+        this.name = name;
+        this.type = options.type || 'application/octet-stream';
+        this.size = 1_100_000;
+        this.bytes = new Uint8Array(this.size);
+      }
+      async arrayBuffer() { return this.bytes.buffer; }
+    }
+  };
+  clearMarrowlineAttachments(environment);
+  t.after(() => clearMarrowlineAttachments(environment));
+
+  const selected = {
+    name: 'iphone-camera.heic',
+    type: 'image/heic',
+    size: 4_200_000,
+    arrayBuffer: async () => new Uint8Array(4_200_000).buffer
+  };
+  const state = await stageMarrowlineAttachments([selected], { kind: 'photo', environment });
+  assert.equal(state.count, 1);
+  assert.equal(state.attachments[0].kind, 'photo');
+  assert.equal(state.attachments[0].mime_type, 'image/jpeg');
+  assert.equal(state.attachments[0].name, 'iphone-camera.jpg');
+  assert.equal(state.attachments[0].size_bytes, 1_100_000);
+  assert.ok(state.total_bytes <= MARROWLINE_ATTACHMENT_MAX_SINGLE_PHOTO_BYTES);
 });
 
 test('Marrowline attachment normalizer admits exact declared bytes and strips no custody fields', () => {
