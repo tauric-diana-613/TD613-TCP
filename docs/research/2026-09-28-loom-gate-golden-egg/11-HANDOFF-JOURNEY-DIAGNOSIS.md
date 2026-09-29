@@ -39,3 +39,10 @@ Keep the adversarial chamber adjacent to the journey. Apply the existing cabinet
 Golden Egg still requires L, R, J, empirically bound G and observed matched C within the qualified same-episode comparison. Western Horizon remains at empirical-shore rest. This note records a corrected diagnosis and implementation priorities; no claimed UX repair, empirical acquisition, merge or deployment follows from it.
 
 ⟐
+
+
+## 2026-09-29 implementation note
+
+The targeted UI portion of this handoff has now been implemented without broadening the journey's scientific authority. Gate's presentation follows condition → action → observed outcome → optional technical evidence. Loom's task editor precedes a compact but still visible route room; laboratory/observer research remains optional. These changes do **not** answer the broader hostile-reconstruction, multi-turn latest-result, durable recovery, candidate-return, G-binding or matched-return questions listed above. The constructive journey diagnosis therefore remains active even after the presentation repair.
+
+Validation authority remains split: source/DOM/contract tests may establish the implementation contract; any deep browser job skipped by current release policy remains unobserved, and deployment receipts establish exact-source publication rather than usability or empirical privacy. Golden Egg remains UNEARNED. ⟐
