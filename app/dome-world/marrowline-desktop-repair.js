@@ -540,7 +540,7 @@ function installDesktopInstrumentTabs(doc, root) {
   tabs.className = 'desktop-tool-tabs';
   tabs.setAttribute('aria-label', 'Marrowline instruments');
   const specs = [
-    ['invocationPanel', 'Keys'], ['receiptPanel', 'Receipt'], ['corpusPanel', 'Stories'], ['gatePanel', 'Gate']
+    ['invocationPanel', 'Keys'], ['gatePanel', 'Gate'], ['corpusPanel', 'Stories'], ['receiptPanel', 'Receipt']
   ];
   const close = () => {
     tools.dataset.desktopOpen = 'false';
