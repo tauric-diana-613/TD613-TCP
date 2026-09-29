@@ -375,7 +375,7 @@ test('mobile decoration preserves provider-native Unicode and all five chamber r
   assert.equal(h.doc.querySelector('.return-details,.reply-technical-record,.turn-receipt,.relay-aperture-header'),null,
     'all three circled disclosures are absent from the chat');
   assert.deepEqual([...h.doc.querySelectorAll('.relay-message > .marrowline-reply-tool-row > .reply-next-actions .reply-next-choices button:not([hidden])')].map(x=>x.textContent),
-    ['Check the claims','Make a plan','View receipt','Branch'],'Branch is an ordinary reply-local choice while staged Attachments stays contextual');
+    ['Check the claims','Make a plan','Receipts','Branch'],'Branch is an ordinary reply-local choice while staged Attachments stays contextual');
   const footer = h.doc.querySelector('.relay-message > .marrowline-reply-tool-row');
   assert.ok(footer && footer.querySelector('.reply-branch-action'),'Branch lives inside More with this reply');
   assert.equal(h.doc.querySelector('.marrowline-branch-reply'),null,'retired standalone first-reply branch is absent');
@@ -770,7 +770,7 @@ test('both post-reply choices produce a sendable draft on the first actual Send 
   const h = harness(t, { mobile: true });
   await h.ready(); h.send('Starting claim.'); await h.settled(); await flush();
   let buttons = h.doc.querySelectorAll('.relay-message > .marrowline-reply-tool-row > .reply-next-actions .reply-next-choices button');
-  assert.deepEqual([...buttons].map(x => x.textContent), ['Check the claims', 'Make a plan', 'View receipt']);
+  assert.deepEqual([...buttons].map(x => x.textContent), ['Check the claims', 'Make a plan', 'Receipts']);
   buttons[0].click();
   const claims = h.$('khonapolitPrompt').value;
   assert.match(claims, /Review the reply quoted below/);
