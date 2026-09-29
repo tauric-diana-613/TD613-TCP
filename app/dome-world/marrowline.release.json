@@ -454,12 +454,14 @@
     "utilityRail": [
       "RETRY_LAST_PROMPT",
       "COPY_CONVERSATION",
-      "CLEAR_CONVERSATION"
+      "CLEAR_CONVERSATION",
+      "HOME_LANDING"
     ],
     "utilityGlyphs": [
       "↻",
       "⧉",
-      "✕"
+      "✕",
+      "𖠿"
     ],
     "copyFeedback": "center-screen-tiny-green-Copied-1500ms",
     "clearConfirmation": "center-screen-modal-Clear-conversation-Yes-No-with-backdrop",
@@ -508,7 +510,8 @@
     "retryPolicy": "new explicit Send never disabled by prior Retry-After; preserved-task retry honors provider delay",
     "quotaFailureCopy": "observed Gemini 429 and model count; account balance and actual quota unverified",
     "presetHydration": "preloaded prompt survives asynchronous thread storage hydration",
-    "replyPresetBudget": "full small reply or explicitly labeled 2400-character excerpt; 6000-character human composer never overflowed by follow-up"
+    "replyPresetBudget": "full small reply or explicitly labeled 2400-character excerpt; 6000-character human composer never overflowed by follow-up",
+    "homeLandingAction": "𖠿 delegates to the existing marrowlineNewThread control; it uses the same transient unsaved The speaking grove landing path and preserves the same request/attachment thread-change guards as New +"
   },
   "desktop": {
     "posture": "conversation-with-persistent-instruments",
