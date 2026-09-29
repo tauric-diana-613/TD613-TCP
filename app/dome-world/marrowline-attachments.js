@@ -81,6 +81,97 @@ async function fileBase64(file, environment = globalThis) {
   return encode(binary);
 }
 
+function canvasToBlob(canvas, type, quality) {
+  return new Promise((resolve, reject) => {
+    if (typeof canvas?.toBlob !== 'function') {
+      reject(new Error('This browser cannot prepare the selected photo for Marrowline.'));
+      return;
+    }
+    canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('This browser could not prepare the selected photo.')), type, quality);
+  });
+}
+
+async function loadPhotoBitmap(file, environment = globalThis) {
+  if (typeof environment.createImageBitmap === 'function') {
+    const bitmap = await environment.createImageBitmap(file);
+    return {
+      width: bitmap.width,
+      height: bitmap.height,
+      draw: (context, width, height) => context.drawImage(bitmap, 0, 0, width, height),
+      close: () => bitmap.close?.()
+    };
+  }
+  const doc = environment.document;
+  const URLApi = environment.URL;
+  if (!doc?.createElement || !URLApi?.createObjectURL) throw new Error('This browser cannot prepare the selected photo for Marrowline.');
+  const image = doc.createElement('img');
+  const url = URLApi.createObjectURL(file);
+  try {
+    await new Promise((resolve, reject) => {
+      image.onload = resolve;
+      image.onerror = () => reject(new Error('The selected photo could not be decoded.'));
+      image.src = url;
+    });
+    return {
+      width: image.naturalWidth || image.width,
+      height: image.naturalHeight || image.height,
+      draw: (context, width, height) => context.drawImage(image, 0, 0, width, height),
+      close: () => {}
+    };
+  } finally {
+    URLApi.revokeObjectURL(url);
+  }
+}
+
+async function fitPhotoToEnvelope(file, maxBytes, environment = globalThis) {
+  const size = Number(file?.size || 0);
+  if (size <= maxBytes) return file;
+  const doc = environment.document;
+  if (!doc?.createElement) throw new Error(`${cleanName(file?.name)} is too large to prepare in this browser.`);
+
+  let bitmap;
+  try {
+    bitmap = await loadPhotoBitmap(file, environment);
+    const sourceWidth = Number(bitmap.width || 0);
+    const sourceHeight = Number(bitmap.height || 0);
+    if (!sourceWidth || !sourceHeight) throw new Error('The selected photo has no readable dimensions.');
+
+    const maxDimension = 2560;
+    const dimensionScale = Math.min(1, maxDimension / Math.max(sourceWidth, sourceHeight));
+    const sizeScale = Math.min(1, Math.sqrt((maxBytes * 0.86) / Math.max(size, 1)));
+    let scale = Math.min(dimensionScale, sizeScale);
+    const qualities = [0.86, 0.78, 0.70, 0.62, 0.54];
+
+    for (let pass = 0; pass < 6; pass += 1) {
+      const width = Math.max(1, Math.round(sourceWidth * scale));
+      const height = Math.max(1, Math.round(sourceHeight * scale));
+      const canvas = doc.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const context = canvas.getContext?.('2d', { alpha: false });
+      if (!context) throw new Error('This browser cannot prepare the selected photo for Marrowline.');
+      context.fillStyle = '#fff';
+      context.fillRect(0, 0, width, height);
+      bitmap.draw(context, width, height);
+
+      for (const quality of qualities) {
+        const blob = await canvasToBlob(canvas, 'image/jpeg', quality);
+        if (blob.size > 0 && blob.size <= maxBytes) {
+          const FileCtor = environment.File || globalThis.File;
+          const sourceName = cleanName(file?.name).replace(/\.[^.]+$/, '');
+          return typeof FileCtor === 'function'
+            ? new FileCtor([blob], `${sourceName || 'photo'}.jpg`, { type: 'image/jpeg', lastModified: Date.now() })
+            : Object.assign(blob, { name: `${sourceName || 'photo'}.jpg` });
+        }
+      }
+      scale *= 0.78;
+    }
+  } finally {
+    bitmap?.close?.();
+  }
+  throw new Error(`${cleanName(file?.name)} is too large to fit Marrowline’s photo envelope.`);
+}
+
 function notify(environment = globalThis) {
   const detail = attachmentState();
   if (typeof environment.CustomEvent === 'function') environment.dispatchEvent?.(new environment.CustomEvent(CHANGE_EVENT, { detail }));
@@ -115,16 +206,23 @@ export async function stageMarrowlineAttachments(fileList, { kind = 'file', envi
 
   const next = [];
   let total = attachments.reduce((sum, item) => sum + item.size_bytes, 0);
-  for (const file of files) {
+  for (const selectedFile of files) {
+    const initialSize = Number(selectedFile?.size || 0);
+    if (!Number.isSafeInteger(initialSize) || initialSize <= 0) throw new Error('Empty attachments cannot be staged.');
+    const remainingBytes = MARROWLINE_ATTACHMENT_LIMITS.totalBytes - total;
+    const singleLimit = kind === 'photo'
+      ? Math.min(MARROWLINE_ATTACHMENT_LIMITS.singlePhotoBytes, remainingBytes)
+      : MARROWLINE_ATTACHMENT_LIMITS.singleFileBytes;
+    if (singleLimit <= 0) throw new Error('The staged attachments exceed Marrowline’s 2.5 MB total attachment limit.');
+
+    const file = kind === 'photo'
+      ? await fitPhotoToEnvelope(selectedFile, singleLimit, environment)
+      : selectedFile;
     const size = Number(file?.size || 0);
     const mime = inferredMime(file);
-    if (!Number.isSafeInteger(size) || size <= 0) throw new Error('Empty attachments cannot be staged.');
-    const singleLimit = kind === 'photo'
-      ? MARROWLINE_ATTACHMENT_LIMITS.singlePhotoBytes
-      : MARROWLINE_ATTACHMENT_LIMITS.singleFileBytes;
-    if (size > singleLimit) throw new Error(kind === 'photo'
-      ? `${cleanName(file?.name)} is larger than Marrowline’s 2.5 MB photo envelope.`
-      : `${cleanName(file?.name)} is larger than Marrowline’s 1.5 MB per-file limit.`);
+    if (kind !== 'photo' && size > singleLimit) {
+      throw new Error(`${cleanName(file?.name)} is larger than Marrowline’s 1.5 MB per-file limit.`);
+    }
     if (!validKindMime(kind, mime)) {
       throw new Error(kind === 'photo'
         ? 'Choose a JPEG, PNG, WebP, AVIF, HEIC/HEIF, or GIF image.'
