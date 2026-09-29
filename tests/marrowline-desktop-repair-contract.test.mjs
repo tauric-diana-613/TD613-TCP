@@ -379,13 +379,16 @@ test('each model reply owns an accessible copy control; composer copy stays conv
   assert.equal(release.composer.replyCopy.includes('exact provider-authored text only'), true);
 });
 
-test('ordinary conversation chrome uses Send left and a minimalist retry copy clear rail right', () => {
+test('ordinary conversation chrome uses Send left and a minimalist retry copy clear home rail right', () => {
   assert.match(js, /legacyActions\.hidden = true/);
   assert.match(js, /legacyActions\.setAttribute\('aria-hidden', 'true'\)/);
-  for (const id of ['marrowlineRetryLast', 'marrowlineCopyConversation', 'marrowlineSessionClear']) assert.match(js, new RegExp(id));
+  for (const id of ['marrowlineRetryLast', 'marrowlineCopyConversation', 'marrowlineSessionClear', 'marrowlineHomeLanding']) assert.match(js, new RegExp(id));
   assert.match(js, /'↻'/);
   assert.match(js, /'⧉'/);
   assert.match(js, /'✕'/);
+  assert.match(js, /'𖠿'/);
+  assert.match(js, /home\.addEventListener\('click', \(\) => byId\(doc, 'marrowlineNewThread'\)\?\.click\(\)\)/);
+  assert.deepEqual(release.composer.utilityGlyphs, ['↻','⧉','✕','𖠿']);
   assert.match(js, /question\.textContent = 'Clear conversation\?'/);
   assert.doesNotMatch(js, /root\.confirm\('Clear this Marrowline conversation\?/);
   assert.match(js, /clearLegacy\.click\(\)/);
