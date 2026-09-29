@@ -86,6 +86,8 @@ test('Pedagogue Gate is a single-column condition → action → outcome sequenc
   assert.match(css, /#gatePanel \.panel-body\.gate-grid\{[\s\S]*grid-template-columns:minmax\(0,1fr\)!important/);
   assert.match(css, /#gatePanel #marrowlineForm \.marrowline-operator-field\[hidden\][\s\S]*display:none!important/);
   assert.match(css, /#gatePanel \.gate-technical-evidence/);
+  assert.match(css, /\.gate-technical-evidence-glyph\{[\s\S]*color:#72f2ef[\s\S]*font:400 1rem\/1/);
+  assert.match(css, /\.gate-technical-evidence\[open\] \.gate-technical-evidence-glyph\{[\s\S]*rotate\(180deg\)/);
   assert.match(css, /body\[data-mobile-view="gate"\] #gatePanel \.ritual-actions\{[\s\S]*grid-template-columns:minmax\(0,1fr\) auto!important/);
 });
 
@@ -140,6 +142,9 @@ test('human-facing Gate guide selects one condition at a time and keeps technica
     const technical = window.document.querySelector('.gate-technical-evidence');
     assert.ok(technical);
     assert.equal(technical.open, false);
+    const technicalGlyph = technical.querySelector('.gate-technical-evidence-glyph');
+    assert.equal(technicalGlyph?.textContent, '▽');
+    assert.equal(technicalGlyph?.getAttribute('aria-hidden'), 'true');
     assert.ok(technical.querySelector('.gate-output'));
     assert.ok(technical.querySelector('#marrowlineReceipt'));
 
