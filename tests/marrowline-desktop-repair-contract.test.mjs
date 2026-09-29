@@ -17,15 +17,12 @@ const terminalJs = fs.readFileSync('app/dome-world/marrowline-terminal.js', 'utf
 const physicalJs = fs.readFileSync('app/dome-world/marrowline-physical-device-repair.js', 'utf8');
 const release = JSON.parse(fs.readFileSync('app/dome-world/marrowline.release.json', 'utf8'));
 
-test('desktop Marrowline is conversation-first and instruments are on demand', () => {
-  assert.match(css, /\.living-workspace\{display:block/);
-  assert.match(css, /\.living-tools\{display:none!important\}/);
-  assert.match(css, /living-tools\[data-desktop-open="true"\]/);
-  assert.match(css, /min-height:260px!important/);
-  assert.match(css, /\.marrowline-living-geometry\{opacity:\.28/);
-  for (const label of ['Keys', 'Receipt', 'Stories', 'Gate']) assert.match(js, new RegExp(`'${label}'`));
-  assert.equal(release.desktop.persistentRightTelemetryColumn, false);
-  assert.equal(release.desktop.posture, 'conversation-first-single-column');
+test('desktop instruments have a persistent adjacent panel and Gate default', () => {
+  assert.match(css, /grid-template-columns:minmax\(0,2fr\) minmax\(300px,1fr\)/);
+  assert.match(css, /html:root #speakingPanel #khonapolitMessages\{flex:1 1 0;min-height:0!important/);
+  assert.deepEqual(release.desktop.instrumentTabs, ['Gate', 'Keys', 'Stories', 'Receipts']);
+  assert.equal(release.desktop.persistentInstrumentPanel, true);
+  assert.equal(release.desktop.posture, 'conversation-with-persistent-instruments');
 });
 
 test('lore-bearing demo prompts preserve canonical Flow-Core glyphs and Palantir attribution', () => {
@@ -260,7 +257,7 @@ test('clearing a conversation also empties the composer draft', () => {
 
 test('clearing a conversation removes the obsolete visible status strip', () => {
   assert.doesNotMatch(terminalJs, /SESSION CLEARED · binding corpus remains intact/);
-  assert.match(terminalJs, /if \(terminalStatus\) terminalStatus\.textContent = ''/);
+  assert.match(terminalJs, /if \(terminalStatus\) \{\s*terminalStatus\.textContent = ''/);
   assert.match(css, /#khonapolitTerminalStatus:empty\{\s*display:none!important/);
 });
 
@@ -274,33 +271,27 @@ test('conversation actions dismiss and ordinary Chat carries no portable failure
   assert.equal(release.composer.portableFailureActions, 'not-rendered-in-ordinary-chat-explicit-portability-helpers-remain-programmatic');
 });
 
-test('Send retains its accessible label and gains moonlit amethyst/cyan radiance with reduced-motion rest', () => {
-  assert.match(page, /<button class="primary" id="khonapolitSend" type="submit">Send<\/button>/);
-  assert.match(css, /#khonapolitForm \.composer-actions #khonapolitSend::before/);
-  assert.match(css, /content:"↑"!important/);
-  assert.match(css, /background:#5d49a7!important/);
-  assert.match(css, /border:2px solid #7ce6ec!important/);
-  assert.match(css, /#khonapolitSend::after\\{content:none!important;display:none!important\\}/);
-  assert.doesNotMatch(css, /@keyframes marrowline-send-halo/);
-  assert.doesNotMatch(css, /@keyframes marrowline-arrow-shimmer/);
+test('Send retains its accessible label and reduced-motion support', () => {
+  const dom = new JSDOM(page);
+  const send = dom.window.document.querySelector('#khonapolitSend');
+  assert.equal(send.getAttribute('aria-label'), 'Send message');
+  assert.equal(send.type, 'submit');
   assert.match(css, /prefers-reduced-motion:reduce/);
+  assert.match(css, /#khonapolitSend::after\{content:none!important;display:none!important/);
   assert.equal(release.composer.mobileSendGlyph, '↑');
   assert.match(css, /\[data-transmission-state="generating"\]::before/);
-  assert.match(css, /content:"↑"!important/);
-  assert.match(css, /background:none!important;background-image:none!important/);
-  assert.match(css, /marrowline-send-circular-breath/);
-  assert.match(css, /marrowline-pearl-shimmer/);
+  dom.window.close();
 });
 
 test('a compact Send/attachment row retains right utilities and one visually presented in-chat progress surface', () => {
   assert.match(js, /controlStack\.className = 'marrowline-composer-control-stack'/);
   assert.match(js, /controlStack\.append\(plus, sendButton\)/);
-  assert.match(css, /#khonapolitForm \.composer-actions \.marrowline-composer-control-stack/);
-  assert.match(css, /grid-template-rows:43px 45px!important/);
-  assert.match(css, /margin-top:-51px!important/);
+  assert.match(css, /#khonapolitForm \.marrowline-composer-control-stack/);
+  assert.match(css, /grid-template-rows:44px 44px!important/);
+  assert.match(css, /grid-column:1!important;grid-row:1!important;display:grid!important/);
   assert.match(css, /#khonapolitForm \.composer-actions #khonapolitTerminalStatus\{/);
   assert.match(css, /clip-path:inset\(50%\)!important/);
-  assert.match(css, /#khonapolitForm \.composer-actions \.marrowline-conversation-utilities/);
+  assert.match(css, /#khonapolitForm \.marrowline-conversation-utilities/);
   assert.match(physicalJs, /const card = doc\.createElement\('section'\)/);
   assert.match(physicalJs, /label\.textContent = safe\(status\.textContent\)/);
   assert.match(physicalJs, /if \(!card\.isConnected\) messages\.append\(card\)/);
@@ -342,7 +333,7 @@ test('each model reply owns an accessible copy control; composer copy stays conv
   assert.match(terminalJs, /clipboard\.writeText\(transcriptText\(state\.messages\)\)/);
   assert.match(css, /#khonapolitMessages \.relay-message \.marrowline-copy-reply/);
   assert.match(css, /#khonapolitMessages \.message\[data-role="model"\] \.marrowline-copy-reply/);
-  assert.equal(release.composer.replyCopy.includes('single provider-authored text'), true);
+  assert.equal(release.composer.replyCopy.includes('exact provider-authored text only'), true);
 });
 
 test('ordinary conversation chrome uses Send left and a minimalist retry copy clear rail right', () => {
@@ -358,8 +349,8 @@ test('ordinary conversation chrome uses Send left and a minimalist retry copy cl
   assert.match(js, /conversationChrome: 'send-left-retry-copy-clear-right'/);
   assert.match(css, /\.marrowline-conversation-utilities/);
   assert.match(css, /\.marrowline-ephemeral-notice/);
-  assert.match(page, /id="khonapolitSend" type="submit">Send<\/button>/);
-  assert.match(page, /id="sealLastResponse"[^>]*>Seal latest return ⟐<\/button>/);
+  assert.match(page, /id="khonapolitSend"[^>]*aria-label="Send message"/);
+  assert.match(page, /id="sealLastResponse"[^>]*>Seal latest reply ⟐<\/button>/);
   assert.match(page, /incoming receipt remains OPEN until an explicit Red Deer closure/);
   assert.equal(release.composer.copyFeedback, 'center-screen-tiny-green-Copied-1500ms');
   assert.equal(release.composer.clearConfirmation, 'center-screen-modal-Clear-conversation-Yes-No-with-backdrop');
@@ -384,10 +375,10 @@ test('final Marrowline chrome preserves the Gate single-sequence hierarchy', () 
 
 test('room boot loads the desktop repair and separates Zalgo aesthetics from structural admission', () => {
   assert.match(boot, /import\('\.\/marrowline-desktop-repair\.js'\)/);
-  assert.match(boot, /desktopWorkspace: 'conversation-first-instruments-on-demand'/);
+  assert.match(boot, /desktopWorkspace: 'conversation-with-persistent-instruments'/);
   assert.match(release.relay.zalgoQualityPolicy.zeroMarkPosture, /exact nonempty provider bytes remain visible/i);
   assert.equal(release.relay.zalgoQualityPolicy.thinOrSparsePosture, 'PARTIAL-visible-with-quality-warning-no-repaint');
-  assert.match(release.qualityFloor.hardStructuralHold, /tauric-diana-zalgo-absent/);
+  assert.match(release.qualityFloor.hardStructuralHold, /Tauric Diana Zalgo absence\/underflow/);
   assert.doesNotMatch(release.qualityFloor.hardStructuralHold, /zalgo-field-thin|zalgo-mechanical-clone|zalgo-sparse-keyword-targeting/);
   assert.equal(release.qualityFloor.providerCallCeiling, 5);
   assert.match(release.qualityFloor.providerCallCeilingMeaning, /structural seam/i);
@@ -410,8 +401,8 @@ test('room boot loads the desktop repair and separates Zalgo aesthetics from str
   assert.equal(release.qualityFloor.structuralRepairPolicy.localMutation, false);
   assert.equal(release.qualityFloor.structuralRepairPolicy.localZalgoGeneration, false);
   assert.equal(release.qualityFloor.releaseWitnessPolicy.automaticLiveProviderCalls, 0);
-  assert.equal(release.qualityFloor.releaseWitnessPolicy.automaticAiWitness, 'DEFERRED_EXPLICIT_OBSERVATION');
-  assert.equal(release.qualityFloor.releaseWitnessPolicy.explicitObservationMaxProviderAttempts, 2);
+  assert.equal(release.qualityFloor.releaseWitnessPolicy.automaticAiWitness, 'MANUAL_ONLY');
+  assert.equal(release.qualityFloor.releaseWitnessPolicy.permanentReobserveWorkflow, false);
 });
 
 test('desktop and mobile Chat share the same Reddit Sans Zalgo type guard before first reveal', () => {

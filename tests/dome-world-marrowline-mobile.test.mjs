@@ -31,7 +31,7 @@ assert.deepEqual(
 assert.match(document.querySelector('.relay-legend')?.textContent || '', /Kʰonapolit → Tauric Diana bots/);
 assert.doesNotMatch(document.querySelector('.relay-legend')?.textContent || '', /Gemini instrument/);
 assert.equal(document.getElementById('metricAperture')?.textContent, 'v3.2-alpha');
-assert.equal(document.querySelector('.prompt-label textarea')?.getAttribute('enterkeyhint'), 'send');
+assert.equal(document.querySelector('.prompt-label textarea')?.getAttribute('enterkeyhint'), 'enter');
 assert.equal(document.getElementById('providerLamp')?.textContent, 'provider checking');
 assert.match(document.querySelector('.route-card strong')?.textContent || '', /Aperture → Kʰonapolit → Tauric Diana bots → OPEN/);
 assert.doesNotMatch(document.querySelector('.route-card strong')?.textContent || '', /Gemini/);
@@ -95,6 +95,6 @@ assert.equal(prepareProviderNativeLines(prepped), false);
 assert.equal(preppedText.dataset.providerNativeMaxRun, '4');
 assert.equal(preppedText.textContent, nativeText);
 assert.equal(preppedText.firstChild, existingNode, 'telemetry backfill leaves existing nodes untouched');
-assert.match(shellRuntime, /dataset\\.providerNativeMaxRun/, 'mobile preparer independently records native mark depth');
+assert.match(shellRuntime, /dataset\.providerNativeMaxRun/, 'mobile preparer independently records native mark depth');
 
 console.log('dome-world-marrowline-mobile: integrated relay, provider provenance boundary, transcript scroll, composer, and native cadence custody ok');

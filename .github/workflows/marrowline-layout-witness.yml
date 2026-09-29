@@ -1,0 +1,35 @@
+name: Marrowline layout witness
+on:
+  pull_request:
+    paths:
+      - 'app/dome-world/marrowline-desktop-repair.*'
+      - 'app/dome-world/marrowline.html'
+      - 'scripts/marrowline-instrument-layout-witness.mjs'
+      - 'tests/marrowline-instrument-panel.test.mjs'
+      - '.github/workflows/marrowline-layout-witness.yml'
+permissions:
+  contents: read
+jobs:
+  layout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts
+      - run: npm install --no-save --package-lock=false playwright@1.53.2
+      - run: npx playwright install --with-deps chromium
+      - run: node --test tests/marrowline-instrument-panel.test.mjs
+      - name: Offline browser layout witness
+        run: |
+          node scripts/serve-td613-localhost.mjs 6131 > /tmp/marrowline-layout-server.log 2>&1 &
+          node scripts/marrowline-instrument-layout-witness.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: marrowline-layout-${{ github.event.pull_request.head.sha }}
+          path: artifacts/marrowline-layout

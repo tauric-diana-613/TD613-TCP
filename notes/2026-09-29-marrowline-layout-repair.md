@@ -20,3 +20,9 @@ Existing desktop contract suite and mobile suite contain stale baseline assertio
 Pending: desktop contract reconciliation, current Pedagogue validation, browser screenshots and geometry at desktop + 390px, exact-head CI, merge, ONE #405 release and receipt/relock verification. Draft PR must remain unmerged until these gates are met.
 
 Deeper Loom import/continuation/export semantics are a subsequent packet. This change does not establish governed context continuity, provider quality, empirical Golden Egg, or a new Gate authority.
+
+## Validation update
+
+26 focused Marrowline checks PASS. Pedagogue suite: 52 PASS, 1 existing skip. Reconciled stale assertions against main: current Send aria-label, 44px composer grid, explicit reply seal label, exact provider-byte copy wording, multiline status reset, manual-only provider observation policy, enterkeyhint=enter, and corrected an overescaped telemetry regex. No provider execution or release contracts changed.
+
+Prepared a scoped offline CI browser witness (desktop 1440×900, 1024×650, 900×550 and simulated mobile 390×844). It blocks /api/ calls, visits instruments, checks overlap/overflow/composer geometry, and saves screenshots for visual review. Screenshot review remains required; geometric PASS alone does not certify UX.
