@@ -319,9 +319,26 @@
   min-height:38px;
   display:flex;
   align-items:center;
+  justify-content:space-between;
+  gap:12px;
   cursor:pointer;
   color:#b7c8c8;
   font:600 .72rem/1.3 var(--marrowline-chat-sans,system-ui,sans-serif);
+  list-style:none;
+}
+#gatePanel .gate-technical-evidence>summary::-webkit-details-marker{display:none}
+#gatePanel .gate-technical-evidence-glyph{
+  flex:0 0 auto;
+  color:#72f2ef;
+  font:400 1rem/1 var(--marrowline-chat-sans,system-ui,sans-serif);
+  font-style:normal;
+  text-shadow:0 0 10px rgba(88,238,235,.28);
+  transform:none;
+  transition:transform .16s ease,color .16s ease;
+}
+#gatePanel .gate-technical-evidence[open] .gate-technical-evidence-glyph{
+  transform:rotate(180deg);
+  color:#9df8f4;
 }
 #gatePanel .gate-technical-evidence .gate-output{
   margin:0!important;
