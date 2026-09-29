@@ -194,3 +194,33 @@ test('speaking-grove placeholder is never durable: empty phantoms are pruned and
   assert.equal((await archive.get(renamed.id)).conversationTitle, 'Named Empty Thread');
   archive.close();
 });
+
+
+test('read-only conversation access preserves activity order while meaningful edits advance recency', async () => {
+  const archive = await createMarrowlineThreadLibrary(browser());
+  const waitTick = () => new Promise(resolve => setTimeout(resolve, 4));
+  const first = await archive.create({ conversationTitle: 'First', messages: [{ role: 'user', text: 'First task' }] });
+  await waitTick();
+  const second = await archive.create({ conversationTitle: 'Second', messages: [{ role: 'user', text: 'Second task' }] });
+  await waitTick();
+  const third = await archive.create({ conversationTitle: 'Third', messages: [{ role: 'user', text: 'Third task' }] });
+
+  assert.deepEqual((await archive.all()).map(thread => thread.id), [third.id, second.id, first.id],
+    'archive starts newest meaningful activity first');
+
+  const openedFirst = await archive.get(first.id);
+  await waitTick();
+  const readOnlySave = await archive.put({ ...openedFirst });
+  assert.equal(readOnlySave.updatedAt, openedFirst.updatedAt,
+    'opening then leaving an unchanged conversation must not rewrite its activity timestamp');
+  assert.deepEqual((await archive.all()).map(thread => thread.id), [third.id, second.id, first.id],
+    'read-only navigation must not move an older conversation to the top');
+
+  await waitTick();
+  const editedFirst = await archive.put({ ...openedFirst, draft: 'Meaningful new draft activity' });
+  assert.notEqual(editedFirst.updatedAt, openedFirst.updatedAt,
+    'a durable draft mutation advances the activity timestamp');
+  assert.equal((await archive.all())[0].id, first.id,
+    'meaningful conversation activity moves the thread to the top');
+  archive.close();
+});
