@@ -380,7 +380,8 @@ test('a single slow generation can complete beyond the old 50s Loom ceiling, ins
   assert.equal(result.status, 200);
   assert.equal(calls, 1);
   assert.equal(result.body.observations.elapsed_ms, 90000);
-  assert.equal(LOOM_TASK_TIMEOUT_MS, 210000);\n  assert.equal(result.body.observations.deadline_ms, LOOM_TASK_TIMEOUT_MS);
+  assert.equal(LOOM_TASK_TIMEOUT_MS, 210000);
+  assert.equal(result.body.observations.deadline_ms, LOOM_TASK_TIMEOUT_MS);
   assert.equal(result.body.observations.stage_elapsed_ms['provider-transport'], 90000);
 });
 
@@ -399,6 +400,8 @@ test('the 210s Loom wall gives a stalled primary a bounded 50s window and preser
   t.mock.timers.tick(5000);
   await new Promise(resolve => setImmediate(resolve));
   t.mock.timers.tick(50000);
+  await new Promise(resolve => setImmediate(resolve));
+  t.mock.timers.tick(LOOM_TASK_TRANSIENT_BACKOFF_MS[0]);
   await new Promise(resolve => setImmediate(resolve));
   const result = await pending;
   assert.equal(result.status, 200);
