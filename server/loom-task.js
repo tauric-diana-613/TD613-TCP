@@ -1,13 +1,15 @@
 import { GEMINI_MODEL_POLICY_VERSION, resolveGeminiProviderPlan, recordGeminiModelOutcome } from './gemini-model-policy.js';
 import { geminiGenerateContentUrl, geminiMayFailOver, geminiRequestHeaders } from './gemini-provider-transport.js';
-import { consumeRateSlot } from './khonapolit-quality.js';
+import { allocateKhonapolitAttemptTimeout, consumeRateSlot } from './khonapolit-quality.js';
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 
 export const LOOM_TASK_SCHEMA = 'td613.loom.ai-task/v0.1';
 export const LOOM_TASK_RESULT_SCHEMA = 'td613.loom.ai-task-result/v0.1';
 export const LOOM_TASK_DIAGNOSTIC_SCHEMA = 'td613.loom.ai-task-diagnostic/v0.1';
-// Retain the validated shared-function deadline; the browser allows 55s and Vercel 60s.
-export const LOOM_TASK_TIMEOUT_MS = 50000;
+// The shared Kʰonapolit function now has a 240s production ceiling. Keep Loom
+// inside the same bounded provider geometry as Marrowline: 210s for server work,
+// leaving return-flight margin for the 225s browser deadline and 240s host wall.
+export const LOOM_TASK_TIMEOUT_MS = 210000;
 // Stateless resilience must survive Vercel cold starts. One Loom submission may walk
 // the full approved Gemini 3 frontier within the same bounded deadline when earlier
 // candidates fail at transport. Deterministic output-admission failures remain terminal.
@@ -263,14 +265,17 @@ export function createLoomTaskHandler({ env = process.env, fetchImpl = (...args)
         const elapsedBeforeAttempt = Math.max(0, now() - started);
         const remainingGlobalMs = Math.max(1, deadlineMs - elapsedBeforeAttempt);
         const remainingAttempts = Math.max(1, models.length - index);
-        // A single eligible model retains the whole bounded host runway. With fallbacks,
-        // the primary receives two thirds of the remaining request time and must leave a
-        // request-local reserve for at least one diversified eligible model after a stall.
+        // A lone eligible model may use the remaining Loom wall. With a frontier,
+        // reuse the shared human-liveness allocator so a stalled seat cannot consume the
+        // entire request and later eligible models retain real completion windows.
         const attemptTimeoutMs = models.length === 1
           ? remainingGlobalMs
-          : index === 0
-            ? Math.max(1, Math.floor(remainingGlobalMs * 2 / 3))
-            : Math.max(1, Math.floor(remainingGlobalMs / remainingAttempts));
+          : allocateKhonapolitAttemptTimeout({
+              remainingMs: remainingGlobalMs,
+              index,
+              modelCount: models.length,
+              fairShare: true
+            });
         const attemptStartedAt = now();
         const attemptController = new AbortController();
         const relayGlobalAbort = () => attemptController.abort();
