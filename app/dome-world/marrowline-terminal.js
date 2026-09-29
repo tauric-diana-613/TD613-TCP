@@ -1464,7 +1464,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       delete prompt.dataset.preloadedPromptValue;
     }
     renderMessages(doc, state); updateReceipt(doc, root, state); displayClassification(doc, null); syncRecoveryControls(doc, state); syncConversationTitle(doc, state);
-    void removeClearedThread.catch(() => {});
+    await removeClearedThread.catch(() => {});
     stopPedagogueStatus(root);
     const terminalStatus = byId(doc, 'khonapolitTerminalStatus');
     if (terminalStatus) {
