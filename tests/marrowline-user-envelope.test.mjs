@@ -30,7 +30,8 @@ test('provider-bound Marrowline user turns retain ingress and use a glyph-only c
 });
 
 test('human-facing wrapper disclosures describe the same glyph-only provider envelope', () => {
-  assert.match(page, /outgoing prompt: ⟐/);
+  assert.match(page, /Provider request · issuance preview/);
+  assert.match(page, /user turn framing: 𝌋‌ … ⟐/);
   assert.match(page, /final “⟐” on its own line at the provider boundary/);
   assert.doesNotMatch(page, /outgoing prompt: Sealed ⟐/);
   assert.doesNotMatch(page, /final “Sealed ⟐” at the provider boundary/);
