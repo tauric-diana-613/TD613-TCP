@@ -943,7 +943,7 @@ jobs:
             tests/loom-ai-handoff.test.mjs \
             tests/marrowline-instrument-panel.test.mjs \
             tests/marrowline-desktop-repair-contract.test.mjs \
-            tests/marrowline-threads.test.mjs \
+            tests/marrowline-thread-recency.test.mjs \
             tests/dome-world-marrowline-mobile.test.mjs
           node tests/workflow-estate.test.mjs
           node tests/gemini-observation-dispatch.test.mjs
