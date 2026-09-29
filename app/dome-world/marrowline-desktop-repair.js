@@ -540,7 +540,7 @@ function installDesktopInstrumentTabs(doc, root) {
   tabs.className = 'desktop-tool-tabs';
   tabs.setAttribute('aria-label', 'Marrowline instruments');
   const specs = [
-    ['invocationPanel', 'Keys'], ['receiptPanel', 'Receipt'], ['corpusPanel', 'Stories'], ['gatePanel', 'Gate']
+    ['invocationPanel', 'Keys'], ['gatePanel', 'Gate'], ['corpusPanel', 'Stories'], ['receiptPanel', 'Receipt']
   ];
   const close = () => {
     tools.dataset.desktopOpen = 'false';
@@ -563,7 +563,7 @@ function installDesktopInstrumentTabs(doc, root) {
   });
   head.append(tabs);
   const x = doc.createElement('button');
-  x.type = 'button'; x.className = 'desktop-tools-close'; x.textContent = '×'; x.setAttribute('aria-label', 'Close instruments'); x.addEventListener('click', close);
+  x.type = 'button'; x.className = 'desktop-tools-close'; x.textContent = 'x'; x.setAttribute('aria-label', 'Close instruments'); x.addEventListener('click', close);
   tools.prepend(x);
   doc.addEventListener('click', event => { if (tools.dataset.desktopOpen === 'true' && !tools.contains(event.target) && !tabs.contains(event.target)) close(); });
   doc.addEventListener('keydown', event => { if (event.key === 'Escape' && tools.dataset.desktopOpen === 'true') close(); });
