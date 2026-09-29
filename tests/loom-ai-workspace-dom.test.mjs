@@ -2,7 +2,8 @@
  * These checks exercise client behavior; they provide no live Gemini or visual-browser evidence.
  */
 import test from 'node:test';
-import assert from 'node:assert/strict';\nimport fs from 'node:fs';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import { JSDOM } from 'jsdom';
 import { File } from 'node:buffer';
 import { webcrypto } from 'node:crypto';
