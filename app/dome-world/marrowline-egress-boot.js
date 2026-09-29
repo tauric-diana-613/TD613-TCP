@@ -151,7 +151,7 @@ async function bootMarrowlineRoom(doc = document, root = window) {
     }),
     layout: Object.freeze({
       mobileViewport: 'bounded-visual-viewport',
-      desktopWorkspace: 'conversation-first-instruments-on-demand',
+      desktopWorkspace: 'conversation-with-persistent-instruments',
       transcriptScrollOwner: '#khonapolitMessages',
       composerOcclusion: false,
       dockOcclusion: false,

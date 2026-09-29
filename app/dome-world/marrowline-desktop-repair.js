@@ -530,44 +530,60 @@ function installTranscriptCustody(doc, root) {
   return true;
 }
 
-function installDesktopInstrumentTabs(doc, root) {
-  if (root.matchMedia?.('(max-width:860px)')?.matches) return false;
-  const head = doc.querySelector('.vessel-head');
+export function installDesktopInstrumentTabs(doc, root) {
   const tools = doc.querySelector('.living-tools');
-  if (!head || !tools || byId(doc, 'marrowlineDesktopToolTabs')) return false;
+  if (!tools || byId(doc, 'marrowlineDesktopToolTabs')) return false;
   const tabs = doc.createElement('nav');
   tabs.id = 'marrowlineDesktopToolTabs';
   tabs.className = 'desktop-tool-tabs';
   tabs.setAttribute('aria-label', 'Marrowline instruments');
+  tabs.setAttribute('role', 'tablist');
   const specs = [
-    ['invocationPanel', 'Keys'], ['gatePanel', 'Gate'], ['corpusPanel', 'Stories'], ['receiptPanel', 'Receipt']
+    ['gatePanel', 'Gate'], ['invocationPanel', 'Keys'], ['corpusPanel', 'Stories'], ['receiptPanel', 'Receipts']
   ];
-  const close = () => {
-    tools.dataset.desktopOpen = 'false';
-    delete tools.dataset.desktopActive;
-    tabs.querySelectorAll('button').forEach(button => button.setAttribute('aria-pressed', 'false'));
+  const media = root.matchMedia?.('(max-width:860px)');
+  const select = targetId => {
+    tools.dataset.desktopActive = targetId;
+    tools.dataset.desktopOpen = 'true';
+    specs.forEach(([id]) => {
+      const panel = byId(doc, id);
+      const button = tabs.querySelector(`[data-target="${id}"]`);
+      const active = id === targetId;
+      if (panel?.tagName === 'DETAILS' && !media?.matches) panel.open = active;
+      button?.setAttribute('aria-selected', String(active));
+      button?.setAttribute('aria-pressed', String(active));
+      if (button) button.tabIndex = active ? 0 : -1;
+    });
   };
-  specs.forEach(([targetId, label]) => {
+  specs.forEach(([targetId, label], index) => {
     const button = doc.createElement('button');
-    button.type = 'button'; button.textContent = label; button.dataset.target = targetId; button.setAttribute('aria-pressed', 'false');
-    button.addEventListener('click', event => {
-      event.stopPropagation();
-      const same = tools.dataset.desktopOpen === 'true' && tools.dataset.desktopActive === targetId;
-      if (same) { close(); return; }
-      [...tools.children].filter(panel => panel.tagName === 'DETAILS').forEach(panel => { panel.open = panel.id === targetId; });
-      tools.dataset.desktopActive = targetId;
-      tools.dataset.desktopOpen = 'true';
-      tabs.querySelectorAll('button').forEach(other => other.setAttribute('aria-pressed', String(other === button)));
+    button.type = 'button'; button.textContent = label; button.dataset.target = targetId;
+    button.id = `marrowlineInstrumentTab-${targetId}`;
+    button.setAttribute('role', 'tab');
+    button.setAttribute('aria-controls', targetId);
+    button.addEventListener('click', () => select(targetId));
+    button.addEventListener('keydown', event => {
+      const next = event.key === 'ArrowRight' ? (index + 1) % specs.length
+        : event.key === 'ArrowLeft' ? (index + specs.length - 1) % specs.length
+        : event.key === 'Home' ? 0 : event.key === 'End' ? specs.length - 1 : null;
+      if (next === null) return;
+      event.preventDefault(); select(specs[next][0]); tabs.children[next].focus();
     });
     tabs.append(button);
   });
-  head.append(tabs);
-  const x = doc.createElement('button');
-  x.type = 'button'; x.className = 'desktop-tools-close'; x.textContent = 'x'; x.setAttribute('aria-label', 'Close instruments'); x.addEventListener('click', close);
-  tools.prepend(x);
-  doc.addEventListener('click', event => { if (tools.dataset.desktopOpen === 'true' && !tools.contains(event.target) && !tabs.contains(event.target)) close(); });
-  doc.addEventListener('keydown', event => { if (event.key === 'Escape' && tools.dataset.desktopOpen === 'true') close(); });
-  close();
+  tools.prepend(tabs);
+  const syncViewport = () => {
+    const mobile = Boolean(media?.matches);
+    specs.forEach(([id]) => {
+      const panel = byId(doc, id);
+      if (!panel) return;
+      if (mobile) { panel.removeAttribute('role'); panel.removeAttribute('aria-labelledby'); }
+      else { panel.setAttribute('role', 'tabpanel'); panel.setAttribute('aria-labelledby', `marrowlineInstrumentTab-${id}`); }
+    });
+    if (!mobile) select(tools.dataset.desktopActive || 'gatePanel');
+  };
+  media?.addEventListener?.('change', syncViewport);
+  syncViewport();
   return true;
 }
 

@@ -510,23 +510,24 @@
     "replyPresetBudget": "full small reply or explicitly labeled 2400-character excerpt; 6000-character human composer never overflowed by follow-up"
   },
   "desktop": {
-    "posture": "conversation-first-single-column",
-    "instrumentSurface": "on-demand-drawer-tabs",
+    "posture": "conversation-with-persistent-instruments",
+    "instrumentSurface": "adjacent-panel-gate-default",
     "instrumentTabs": [
+      "Gate",
       "Keys",
-      "Receipt",
       "Stories",
-      "Gate"
+      "Receipts"
     ],
     "persistentRightTelemetryColumn": false,
-    "transcriptMinimumHeightPx": 260,
+    "transcriptMinimumHeightPx": 0,
     "portableFailurePanelMayCollapseTranscript": false,
     "backgroundGeometry": "subdued",
     "firstPaint": "base-surface-hidden-until-room-ready-with-current-desktop-repair-css-render-blocking",
     "conversationTypeface": "Reddit Sans",
     "conversationChrome": "send-left-minimal-utility-rail-right",
     "operatorSeal": "receipt-instrument-explicit-operator",
-    "portableFailurePanelRendered": false
+    "portableFailurePanelRendered": false,
+    "persistentInstrumentPanel": true
   },
   "mobile": {
     "posture": "bounded-conversation-shell",
@@ -565,7 +566,15 @@
     "universalComposerPlus": true,
     "conversationChrome": "send-left-minimal-utility-rail-right",
     "operatorSeal": "receipt-instrument-explicit-operator",
-    "dockVisibility": "visible whenever observed keyboard occupancy is false; composer focus alone cannot hide chamber navigation"
+    "dockVisibility": "visible whenever observed keyboard occupancy is false; composer focus alone cannot hide chamber navigation",
+    "navigationOrder": [
+      "Keys",
+      "Gate",
+      "Chat",
+      "Stories",
+      "Receipts"
+    ],
+    "initialView": "speak"
   },
   "jurisdiction": {
     "mode": "issued-covenant-terminal-plus-aperture-v3-routing-plus-live-marrowline-ingress",
