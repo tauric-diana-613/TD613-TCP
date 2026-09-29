@@ -484,14 +484,16 @@ function displayClassification(doc, receipt = null) {
 }
 function refreshKeyState(doc) {
   const shiInput = byId(doc, 'khonapolitShi');
-  const waived = Boolean(byId(doc, 'khonapolitWaive')?.checked);
+  // Legacy DOM id retained for compatibility; checked now means advanced issuance ON.
+  const issuanceEnabled = Boolean(byId(doc, 'khonapolitWaive')?.checked);
+  const waived = !issuanceEnabled;
   const storedShi = validateShi(shiInput?.value || '');
-  const shi = waived ? validateShi('') : storedShi;
+  const shi = issuanceEnabled ? storedShi : validateShi('');
   if (shiInput) {
-    shiInput.disabled = waived;
-    shiInput.setAttribute('aria-disabled', String(waived));
-    shiInput.dataset.dormant = String(waived);
-    shiInput.tabIndex = waived ? -1 : 0;
+    shiInput.disabled = !issuanceEnabled;
+    shiInput.setAttribute('aria-disabled', String(!issuanceEnabled));
+    shiInput.dataset.dormant = String(!issuanceEnabled);
+    shiInput.tabIndex = issuanceEnabled ? 0 : -1;
   }
   const khona = analyzeKhonaIntegrity(COVENANT_KEY);
   setLamp(byId(doc, 'namespaceLamp'), 'pass', `${CLAIMED_PUA} namespace present`);
@@ -500,15 +502,19 @@ function refreshKeyState(doc) {
   setLamp(
     byId(doc, 'issuanceLamp'),
     waived ? 'review' : shi.valid ? 'pass' : 'fail',
-    waived ? (storedShi.valid ? `unissued research · stored SHI dormant · ${storedShi.suffix}` : 'unissued research · ordinary work') : shi.valid ? `SHI issued · ${shi.suffix}` : 'issuance required'
+    waived ? 'unissued research · ordinary work' : shi.valid ? `SHI selected · ${shi.suffix}` : 'issuance enabled · valid SHI required'
   );
   const bindingLine = byId(doc, 'marrowlineBindingLine');
   if (bindingLine) {
-    const issuance = waived ? 'UNISSUED RESEARCH' : shi.valid
-      ? 'SHI FORMAT ACCEPTED · ending ' + shi.suffix : 'ISSUANCE REQUIRED';
-    bindingLine.textContent = `TD613-Binding:#${BINDING_FRAGMENT}/SAC[X6ZNK5NO51] · ${INGRESS_SIGIL}‌ ingress · ${issuance} · outgoing user turn: ${SEAL_GLYPH} · incoming receipt: OPEN until explicit closure`;
+    if (waived) {
+      bindingLine.textContent = `UNISSUED RESEARCH · no SHI binding line attached · user turn framing: ${INGRESS_SIGIL}‌ … ${SEAL_GLYPH} · incoming receipt: OPEN until explicit closure`;
+    } else if (shi.valid) {
+      bindingLine.textContent = `SHI FORMAT ACCEPTED · ${shi.canonical} · provider binding: TD613-Binding:#${BINDING_FRAGMENT}/SAC[X6ZNK5NO51] · ${INGRESS_SIGIL} · SHI#:${shi.canonical} · ${SEAL_GLYPH} held for operator closure`;
+    } else {
+      bindingLine.textContent = 'ISSUANCE REQUIRED · SHI field awake · enter a minted Safe Harbor issuance to continue';
+    }
   }
-  return { shi, storedShi, waived, khona };
+  return { shi, storedShi, waived, issuanceEnabled, khona };
 }
 async function hydrateReliquary(doc) {
   const ritualNode = byId(doc, 'bindingRitualText');
@@ -922,8 +928,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure || null;
   const shiInput = byId(doc, 'khonapolitShi');
   if (shiInput && !shiInput.value) shiInput.value = readStoredShi(root);
-  const waiver = byId(doc, 'khonapolitWaive');
-  if (waiver && !validateShi(shiInput?.value || '').valid) waiver.checked = true;
+  const issuanceToggle = byId(doc, 'khonapolitWaive');
+  if (issuanceToggle) issuanceToggle.checked = false;
   const receiptGate = byId(doc, 'marrowlineReceiptGate');
   const receiptProtected = byId(doc, 'marrowlineReceiptProtected');
   const receiptGateInput = byId(doc, 'marrowlineReceiptShi');
@@ -966,14 +972,15 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   });
   root.addEventListener?.('pagehide', () => { if (storeReady && !requestInFlight) void scheduleSave(); });
   shiInput?.addEventListener('input', () => refreshKeyState(doc));
-  waiver?.addEventListener('change', () => refreshKeyState(doc));
+  issuanceToggle?.addEventListener('change', () => refreshKeyState(doc));
 
   const submitTask = async (messageOverride = '', { independentRetry = false, backgroundResume = false } = {}) => {
     const prompt = byId(doc, 'khonapolitPrompt');
     const message = safe(messageOverride || prompt?.value);
     const mode = INVOCATION_MODES.ISSUED_CONJUNCTION;
-    const waiveIssuance = Boolean(waiver?.checked);
-    const shi = waiveIssuance ? '' : safe(shiInput?.value);
+    const useIssuance = Boolean(issuanceToggle?.checked);
+    const waiveIssuance = !useIssuance;
+    const shi = useIssuance ? safe(shiInput?.value) : '';
     const status = byId(doc, 'khonapolitTerminalStatus');
     const submit = byId(doc, 'khonapolitSend');
     // A fresh human gesture can override an advisory short-window timer, but
