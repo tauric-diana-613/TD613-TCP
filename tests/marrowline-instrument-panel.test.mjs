@@ -47,3 +47,31 @@ for (const startsMobile of [false, true]) {
     dom.window.close();
   });
 }
+
+const { appendLoomGateNextStep } = await import('../app/dome-world/marrowline-loom-import.js');
+for (const mobile of [false, true]) {
+  test(`Loom demo next step navigates without executing Gate (mobile: ${mobile})`, () => {
+    const dom = new JSDOM(html);
+    const doc = dom.window.document;
+    dom.window.matchMedia = () => ({ matches: mobile, addEventListener() {} });
+    installDesktopInstrumentTabs(doc, dom.window);
+    doc.documentElement.classList.toggle('marrowline-mobile-shell', mobile);
+    const root = doc.createElement('section');
+    root.innerHTML = '<button class="loom-import-close" type="button">Close</button><div id="answer">Admitted result</div>';
+    doc.body.append(root);
+    let closed = 0, navigated = 0, submitted = 0;
+    root.querySelector('button').addEventListener('click', () => closed++);
+    const target = doc.querySelector(mobile ? '.mobile-dock [data-mobile-target="gatePanel"]' : '#marrowlineDesktopToolTabs [data-target="gatePanel"]');
+    target.addEventListener('click', () => navigated++);
+    doc.addEventListener('submit', () => submitted++);
+    const button = appendLoomGateNextStep(root.querySelector('#answer'), root);
+    assert.equal(button.type, 'button');
+    button.click();
+    assert.equal(closed, 1);
+    assert.equal(navigated, 1);
+    assert.equal(submitted, 0);
+    assert.equal(doc.activeElement, target);
+    assert.match(root.textContent, /Admitted result/);
+    dom.window.close();
+  });
+}

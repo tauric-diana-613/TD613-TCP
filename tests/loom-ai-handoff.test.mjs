@@ -332,6 +332,7 @@ test('Marrowline continuation shows prior work, accepts a new request under a fr
   assert.match(prior.textContent, /ASSISTANT OVERRIDE/);
   assert.equal(followup.readOnly, false);
   assert.equal(followup.value, '');
+  assert.equal(scene.root.querySelector('.loom-demo-gate-next'), null, 'arrival alone earns no onward result action');
   followup.value = 'Turn those findings into a concise supplier email.';
   followup.dispatchEvent(new scene.dom.window.Event('input', { bubbles: true }));
   scene.root.querySelector('#loomImportedRun').click(); await settled(scene);
@@ -342,6 +343,8 @@ test('Marrowline continuation shows prior work, accepts a new request under a fr
   assert.equal(receipt.continuation.prior_handoff_digest, 'example');
   assert.notEqual(receipt.continuation.followup_input_digest, selected.governance.input_digest);
   assert.match(scene.root.querySelector('#loomImportedAnswer').textContent, /Subject: Retention and migration commitments/);
+  assert.equal(scene.root.querySelector('.loom-demo-gate-next')?.textContent, 'Continue Loom demo: Gate');
+  assert.equal(scene.root.querySelector('.loom-demo-gate-next')?.closest('details'), null, 'next step stays outside technical disclosures');
   assert.ok(scene.root.querySelector('#loomImportedCopy'));
   assert.ok(scene.root.querySelector('#loomImportedExport'));
   let copied = '';

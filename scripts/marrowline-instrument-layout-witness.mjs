@@ -47,6 +47,25 @@ try {
         }
         results.push({width,height,mobileDefault:'speak',navigation:'all five visited'});
       }
+      // Explicitly synthetic UI fixture: tests onward navigation only, never a provider result.
+      if (width === 1440 || width === 390) {
+        if (width === 390) await page.locator('.mobile-dock [data-mobile-target="speakingPanel"]').click();
+        await page.evaluate(async () => {
+          const { appendLoomGateNextStep } = await import('/dome-world/marrowline-loom-import.js');
+          const root = document.createElement('section');
+          root.className = 'loom-import-workspace';
+          root.innerHTML = '<button type="button" class="loom-import-close">Close fixture</button><div class="fixture-answer">Synthetic layout fixture — no AI request or empirical result.</div>';
+          document.querySelector('#khonapolitMessages').append(root);
+          root.querySelector('button').addEventListener('click', () => { root.hidden = true; });
+          appendLoomGateNextStep(root.querySelector('.fixture-answer'), root);
+        });
+        const onward = page.getByRole('button', { name: 'Continue Loom demo: Gate', exact: true });
+        await onward.scrollIntoViewIfNeeded();
+        await page.screenshot({path:`${out}/${width}x${height}-loom-next-fixture.png`});
+        await onward.click();
+        if (width === 390) assert.equal(await page.locator('body').getAttribute('data-mobile-view'), 'gate');
+        else assert.equal(await page.getByRole('tab', {name:'Gate',exact:true}).getAttribute('aria-selected'), 'true');
+      }
     } catch (error) {
       await page.screenshot({ path: `${out}/${width}x${height}-failure.png`, fullPage:true });
       throw error;

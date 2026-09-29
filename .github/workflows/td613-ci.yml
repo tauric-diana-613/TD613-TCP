@@ -909,36 +909,6 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-  gemini_observation:
-    name: Explicit credential-scoped Gemini model observation
-    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'gemini-observation' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    environment: gemini-observation
-    permissions:
-      contents: read
-    timeout-minutes: 3
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.sha }}
-          persist-credentials: false
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - name: Observe models.list only
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          TD613_GEMINI_OBSERVATION_ACTIONS: 'true'
-        run: node scripts/observe-gemini-models.mjs > gemini-observation.json
-      - name: Preserve sanitized observation receipt
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gemini-observation-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
-          path: gemini-observation.json
-          if-no-files-found: error
-          retention-days: 7
-
   marrowline_layout:
     name: Offline Marrowline layout regression
     needs: scope
@@ -978,3 +948,34 @@ jobs:
         with:
           name: marrowline-layout-${{ github.event.pull_request.head.sha }}
           path: artifacts/marrowline-layout
+
+
+  gemini_observation:
+    name: Explicit credential-scoped Gemini model observation
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'gemini-observation' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: gemini-observation
+    permissions:
+      contents: read
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Observe models.list only
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TD613_GEMINI_OBSERVATION_ACTIONS: 'true'
+        run: node scripts/observe-gemini-models.mjs > gemini-observation.json
+      - name: Preserve sanitized observation receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gemini-observation-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: gemini-observation.json
+          if-no-files-found: error
+          retention-days: 7

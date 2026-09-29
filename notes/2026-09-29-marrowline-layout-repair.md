@@ -26,3 +26,11 @@ Deeper Loom import/continuation/export semantics are a subsequent packet. This c
 26 focused Marrowline checks PASS. Pedagogue suite: 52 PASS, 1 existing skip. Reconciled stale assertions against main: current Send aria-label, 44px composer grid, explicit reply seal label, exact provider-byte copy wording, multiline status reset, manual-only provider observation policy, enterkeyhint=enter, and corrected an overescaped telemetry regex. No provider execution or release contracts changed.
 
 Prepared a scoped offline CI browser witness (desktop 1440×900, 1024×650, 900×550 and simulated mobile 390×844). It blocks /api/ calls, visits instruments, checks overlap/overflow/composer geometry, and saves screenshots for visual review. Screenshot review remains required; geometric PASS alone does not certify UX.
+
+## Browser and onward-action update
+
+At remote head eb21479d19f2f15f24e3874331875565f8fe9c29, the offline layout browser job passed all four viewport sizes; screenshots/geometry are artifact 11060765108 from run 36625150742. Inspected 1024×650 Keys, 900×550 Gate and 390×844 Chat screenshots. Desktop utility clipping and overlay overlap are repaired in this witness. The mobile screenshot exposed a preexisting 34px header-button width combined with restored text; widths now expand to fit labels. Recheck pending on next head.
+
+Operator added a pink “Continue Loom demo: Gate” result action. It appears only after admitted imported Loom continuation returns, outside technical disclosures; arrival and ordinary chat do not manufacture it. Clicking closes the imported pocket and selects the existing Gate navigation control with focus, without submitting either form or transporting additional material. The explanation says the Loom answer stays in its workspace and nothing is sent. Future replacement of the imported pocket with fully integrated Chat remains the deeper seam packet.
+
+55 focused tests PASS including Loom handoff and result-action timing/navigation. Latest CI failure was a workflow-text parser treating all trailing jobs as Gemini observation steps; layout job moved before the final Gemini observation job. Both workflow-estate and Gemini-observation-dispatch tests PASS. Existing broader design-preservation suite also has inherited stale assertions (SHI inversion and added Branch/Attachments choices); not represented as passing.

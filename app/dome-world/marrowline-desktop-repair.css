@@ -1372,3 +1372,12 @@ html:root body #khonapolitMessages .starter-prompts .starter-rotate{
   html:root .living-chat-shell{grid-template-rows:auto minmax(0,1fr)}
 }
 @media(max-width:860px){.desktop-tool-tabs{display:none!important}}
+
+/* Loom demo onward navigation belongs to its admitted result, outside receipts. */
+.loom-import-workspace .loom-demo-gate-step{margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,115,201,.24)}
+.loom-import-workspace .loom-demo-gate-next{min-height:44px;padding:10px 16px;border:1px solid #f38ec8;border-radius:12px;background:#351a35;color:#ffb5e1;font:600 14px/1.3 system-ui,sans-serif;cursor:pointer}
+.loom-import-workspace .loom-demo-gate-next:focus-visible{outline:2px solid #ffb5e1;outline-offset:4px}
+.loom-import-workspace .loom-demo-gate-step p{margin:8px 0 0;color:#c4b6c4;font-size:12px;line-height:1.5}
+@media(max-width:860px){
+ html:root.marrowline-mobile-shell #speakingPanel .marrowline-thread-nav>button{width:auto!important;min-width:34px!important;white-space:nowrap}
+}
