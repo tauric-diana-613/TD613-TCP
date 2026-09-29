@@ -289,7 +289,7 @@ test('receiver deadline and operator cancellation remain distinguishable and rel
     const receipt = JSON.parse(scene.root.querySelector('#loomImportedReceipt').textContent);
     assert.equal(receipt.state, deadlineReached ? 'CLIENT_DEADLINE' : 'WAIT_CANCELLED');
     assert.equal(receipt.client_fetch_invoked, true);
-    assert.match(scene.root.querySelector('[role=status]').textContent, deadlineReached ? /exceeded 55 seconds/ : /Stopped waiting/);
+    assert.match(scene.root.querySelector('[role=status]').textContent, deadlineReached ? /exceeded 225 seconds/ : /Stopped waiting/);
     assert.equal(scene.root.querySelector('.loom-import-progress').hidden, true);
     assert.equal(scene.root.querySelector('#loomImportedRun').disabled, false);
     scene.workspace.destroy(); scene.dom.window.close();
