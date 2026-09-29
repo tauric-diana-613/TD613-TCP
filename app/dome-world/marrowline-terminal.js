@@ -726,15 +726,28 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       row.append(open, rename, del); list.append(row);
     }
   };
+  const threadContentSnapshot = record => ({
+    messages: Array.isArray(record?.messages) ? record.messages : [],
+    lastReceipt: record?.lastReceipt || null,
+    pendingTask: record?.pendingTask || '',
+    lastFailure: record?.lastFailure || null,
+    conversationTitle: record?.conversationTitle || '',
+    titleSource: record?.titleSource || null,
+    draft: record?.draft || '',
+    parentId: record?.parentId || null,
+    branchOf: record?.branchOf ?? null
+  });
   const scheduleSave = () => {
     if (!threadLibrary || !activeThread) return saveChain;
     // Snapshot at scheduling time; later turns cannot mutate a queued receipt.
+    // A passive read/switch is not thread activity and must not touch updatedAt.
     const persistedTitle = activeThread.titleSource === 'pending-return'
       ? ''
       : state.conversationTitle;
     const snapshot = JSON.parse(JSON.stringify({ ...activeThread, messages: state.messages, lastReceipt: state.lastReceipt,
       pendingTask: state.pendingTask, lastFailure: state.lastFailure, conversationTitle: persistedTitle,
       draft: byId(doc, 'khonapolitPrompt')?.value || '' }));
+    if (JSON.stringify(threadContentSnapshot(snapshot)) === JSON.stringify(threadContentSnapshot(activeThread))) return saveChain;
     saveChain = saveChain.catch(() => false).then(() => threadLibrary.put(snapshot)).then(record => {
       if (activeThread?.id === record.id) activeThread = record;
       if (byId(doc, 'marrowlineThreadDrawer')?.open) void renderThreadLibrary().catch(() => {});
