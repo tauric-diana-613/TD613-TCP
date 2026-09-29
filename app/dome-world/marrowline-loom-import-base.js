@@ -89,7 +89,7 @@ export function mountMarrowlineLoomTask(root, packet, environment = window) {
     const pending = new AbortController(); controller = pending;
     const schedule = environment.setTimeout?.bind(environment) ?? setTimeout;
     const unschedule = environment.clearTimeout?.bind(environment) ?? clearTimeout;
-    const deadline = schedule(() => pending.abort('deadline'), 55000);
+    const deadline = schedule(() => pending.abort('deadline'), 225000);
     run.disabled = true; task.disabled = true; cancel.hidden = false; status.textContent = 'Marrowline is working with your selected material. The answer will appear here; you can stop waiting at any time.'; progress.hidden = false; answer.setAttribute('aria-busy', 'true'); run.textContent = 'Working on your task…';
     const started_at = new Date().toISOString(); let providerFailure = null; let clientFetchInvoked = false;
     try {
@@ -109,7 +109,7 @@ export function mountMarrowlineLoomTask(root, packet, environment = window) {
       acceptedReceipt = { handoff: packet.handoff_receipt, request_id, started_at, returned_at: new Date().toISOString(), response: output, client_fetch_invoked: clientFetchInvoked, governance: governor.inspect() }; receipt.textContent = JSON.stringify(acceptedReceipt, null, 2);
     } catch (error) {
       if (destroyed) return;
-      status.textContent = pending.signal.aborted ? (pending.signal.reason === 'deadline' ? 'The AI request exceeded 55 seconds. Your task remains here; you can try again when ready. A request already received by the provider may still finish there.' : 'Stopped waiting. A request already received by the provider may still finish there.') : `Task held: ${error.message}`;
+      status.textContent = pending.signal.aborted ? (pending.signal.reason === 'deadline' ? 'The AI request exceeded 225 seconds. Your task remains here; you can try again when ready. A request already received by the provider may still finish there.' : 'Stopped waiting. A request already received by the provider may still finish there.') : `Task held: ${error.message}`;
       receipt.textContent = JSON.stringify({ handoff: packet.handoff_receipt, request_id, started_at, state: pending.signal.aborted ? (pending.signal.reason === 'deadline' ? 'CLIENT_DEADLINE' : 'WAIT_CANCELLED') : 'HELD', reason: status.textContent, client_fetch_invoked: clientFetchInvoked, governance: governor?.inspect() ?? null, ...(!clientFetchInvoked && acceptedReceipt ? { retained_answer_receipt: acceptedReceipt } : {}), ...(providerFailure ? { provider_failure: providerFailure } : {}) }, null, 2);
     } finally { unschedule(deadline); if (!destroyed) { controller = undefined; run.disabled = false; task.disabled = false; cancel.hidden = true; progress.hidden = true; answer.setAttribute('aria-busy', 'false'); run.textContent = 'Run with Flow-Core AI'; } }
   });

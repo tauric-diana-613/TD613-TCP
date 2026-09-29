@@ -164,7 +164,7 @@ function enhanceContinuation(root, packet, environment, baseWorkspace = null) {
     const pending = new AbortController(); controller = pending;
     const schedule = environment.setTimeout?.bind(environment) ?? setTimeout;
     const unschedule = environment.clearTimeout?.bind(environment) ?? clearTimeout;
-    const deadline = schedule(() => pending.abort('deadline'), 55000);
+    const deadline = schedule(() => pending.abort('deadline'), 225000);
     run.disabled = true; followup.disabled = true; cancel.hidden = false; run.textContent = 'Working on your continuation…';
     status.textContent = 'Marrowline is continuing from the admitted Loom work under a fresh request binding.';
     const started_at = new Date().toISOString();
@@ -197,9 +197,9 @@ function enhanceContinuation(root, packet, environment, baseWorkspace = null) {
         const raw = doc.createElement('pre'); raw.textContent = error.candidate.answer; details.append(summary,raw); answer.append(details);
         if (answerTitle) { answerTitle.hidden = false; answerTitle.textContent = 'Answer needs review'; }
       }
-      if (pending.signal.aborted) status.textContent = pending.signal.reason === 'deadline' ? 'The continuation exceeded 55 seconds. The prior Loom work and your new request remain here.' : 'Stopped waiting. The continuation remains here.';
+      if (pending.signal.aborted) status.textContent = pending.signal.reason === 'deadline' ? 'The continuation exceeded 225 seconds. The prior Loom work and your new request remain here.' : 'Stopped waiting. The continuation remains here.';
       else status.textContent = `Task held: ${error.message}`;
-      if (receipt) receipt.textContent = JSON.stringify({ handoff: packet.handoff_receipt, request_id, state: pending.signal.aborted ? 'WAIT_CANCELLED' : 'HELD', reason: status.textContent, continuation: { prior_handoff_digest: packet.handoff_receipt?.digest ?? null, followup_input_digest: freshGovernance?.input_digest ?? null }, ...(error.evidenceReview ? { evidence_review: error.evidenceReview, flagged_response: error.candidate } : {}), ...(providerFailure ? { provider_failure: providerFailure } : {}) }, null, 2);
+      if (receipt) receipt.textContent = JSON.stringify({ handoff: packet.handoff_receipt, request_id, state: pending.signal.aborted ? (pending.signal.reason === 'deadline' ? 'CLIENT_DEADLINE' : 'WAIT_CANCELLED') : 'HELD', reason: status.textContent, continuation: { prior_handoff_digest: packet.handoff_receipt?.digest ?? null, followup_input_digest: freshGovernance?.input_digest ?? null }, ...(error.evidenceReview ? { evidence_review: error.evidenceReview, flagged_response: error.candidate } : {}), ...(providerFailure ? { provider_failure: providerFailure } : {}) }, null, 2);
     } finally { unschedule(deadline); controller = null; run.disabled = false; followup.disabled = false; cancel.hidden = true; run.textContent = 'Continue with Flow-Core AI'; }
   });
 

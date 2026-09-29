@@ -25,6 +25,7 @@ export function projectLoomRequestEvent(event) {
 }
 
 export function mountLoomAiWorkspace(root, environment = window) {
+  const LOOM_AI_CLIENT_TIMEOUT_MS = 225000;
   if (!root) return;
   root.innerHTML = `<div class="ai-demo-welcome"><button type="button" id="aiDemoInvitation" class="ai-demo-invitation" aria-expanded="false" aria-controls="aiProjectChoices"><span class="ai-invitation-orbit" aria-hidden="true">↗</span><span><strong>Try a live AI demo</strong><small>Three fictional projects. Real work, on your terms.</small></span><span class="ai-invitation-arrow" aria-hidden="true">＋</span></button><p class="ai-muted">Open a project to explore it. Only Run sends the selected work to the AI runtime.</p></div>
     <div id="aiProjectChoices" class="ai-projects" aria-label="AI demo projects" hidden></div>
@@ -181,7 +182,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
       if(disposed||version!==currentVersion)return;if(stopRequested)throw new DOMException('Stopped','AbortError');
       if(!admission.allowed)throw new Error('The AIA task binding changed. Prepare the task again.');
       routeFacts.binding_verified=true;
-      controller=new AbortController();const deadline=environment.setTimeout(()=>{clientDeadlineExceeded=true;controller?.abort();},55000);const started=environment.performance.now();
+      controller=new AbortController();const deadline=environment.setTimeout(()=>{clientDeadlineExceeded=true;controller?.abort();},LOOM_AI_CLIENT_TIMEOUT_MS);const started=environment.performance.now();
       let response,result;
       try {routeFacts.outbound_submitted=true;project('pending',{request_id:requestId,provider_call_observed:false,note:`${prepared.request.documents.length} documents submitted to the Loom provider route.`});status('Flow-Core AI is working on your selected task. Waiting for the response…');response=await environment.fetch('/api/khonapolit?operation=loom-task',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(prepared.request),signal:controller.signal});if(disposed)return;const raw=await response.text();if(disposed)return;routeFacts.response_received=true;if(raw.length>131072)throw new Error('The reply exceeded the admitted response size.');try{result=JSON.parse(raw);ingestGeminiConsumption(result,environment);}catch{throw new Error('The provider route returned an unreadable response.');}}finally{environment.clearTimeout(deadline);controller=null;}
       $('aiElapsed').textContent=`${((environment.performance.now()-started)/1000).toFixed(1)} s`;
@@ -209,9 +210,9 @@ export function mountLoomAiWorkspace(root, environment = window) {
         $('aiPortableDrawer').open=true;$('aiPortableLead').textContent='Prepare the original task to try another receiver. The flagged answer will not travel.';
         revealResult();
       }
-      project('held',{request_id:requestId,note:error.name==='AbortError'?(clientDeadlineExceeded?'Client waiting deadline reached after 55 seconds.':'Operator stopped waiting.'):String(error.message).slice(0,300),...(error.loomFailure?{provider_failure:error.loomFailure,observations:error.loomFailure.observations}:{})});
+      project('held',{request_id:requestId,note:error.name==='AbortError'?(clientDeadlineExceeded?'Client waiting deadline reached after 225 seconds.':'Operator stopped waiting.'):String(error.message).slice(0,300),...(error.loomFailure?{provider_failure:error.loomFailure,observations:error.loomFailure.observations}:{})});
       if(error.loomFailure){$('aiPortableDrawer').open=true;$('aiPortableLead').textContent='No AI answer returned here. Your selected task, documents and rules are still available. Retry later, or prepare this exact working packet for another receiver.';}
-      status(error.name==='AbortError'?(clientDeadlineExceeded?'No complete response arrived within 55 seconds. Your task is still here.':'Stopped waiting for this request. Material already submitted cannot be recalled.'):String(error.message).slice(0,300),true);
+      status(error.name==='AbortError'?(clientDeadlineExceeded?'No complete response arrived within 225 seconds. Your task is still here.':'Stopped waiting for this request. Material already submitted cannot be recalled.'):String(error.message).slice(0,300),true);
     }finally{if(!disposed)lock(false);}
   });
   function revealResult(){ $('aiResult').scrollIntoView?.({behavior:reduced.matches?'auto':'smooth',block:'start'});$('aiResult').focus?.({preventScroll:true}); }
