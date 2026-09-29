@@ -100,6 +100,31 @@ test('composer has one universal plus with exactly file photo and Loom actions',
   assert.equal(release.composer.loomAwakeAction, 'continue-staged-loom-handoff');
 });
 
+test('Loom demo attention uses one pink backglow while the plus glyph keeps ordinary ink', () => {
+  assert.match(js, /doc\.documentElement\?\.dataset\?\.loomTaskImport === 'staged'/);
+  assert.match(js, /let loomCueAcknowledged = false/);
+  assert.match(js, /plus\.dataset\.loomAttention = String\(awake && !loomCueAcknowledged\)/);
+  assert.match(js, /loomCueAcknowledged = true;\s*plus\.dataset\.loomAttention = 'false'/);
+  assert.match(js, /loomItem\.text\.textContent = awake \? 'Loom demo' : 'Loom'/);
+  assert.match(css, /\.marrowline-composer-plus\{[^}]*color:#e6ece8/);
+  assert.match(css, /\.marrowline-composer-plus\[data-loom-attention="true"\]\{animation:marrowline-loom-demo-attention/);
+  assert.match(css, /#marrowlineContextLoom\[data-loom-awake="true"\]\{color:#ffb5e1\}/);
+  assert.match(css, /#marrowlineContextLoom\[data-loom-awake="true"\] small\{color:#f38ec8\}/);
+  assert.doesNotMatch(css, /marrowline-composer-plus\[data-loom-awake="true"\][^{]*\{[^}]*color:/);
+  assert.doesNotMatch(css, /marrowline-composer-plus\[data-loom-awake="true"\]::after/);
+  assert.match(css, /\.loom-import-workspace \.loom-demo-gate-next\{[^}]*border:1px solid #f38ec8[^}]*color:#ffb5e1/);
+});
+
+test('reply-local Receipts selects the real desktop tab or mobile dock and snaps the panel', () => {
+  assert.match(livingChatJs, /receiptButton\.textContent = 'Receipts'/);
+  assert.match(livingChatJs, /openPanel\('receiptPanel', true\)/);
+  assert.match(livingChatJs, /#marrowlineDesktopToolTabs \[data-target="\$\{id\}"\]/);
+  assert.match(livingChatJs, /\.mobile-dock \[data-mobile-target="\$\{id\}"\]/);
+  assert.match(livingChatJs, /target\.scrollIntoView\?\.\(\{ block: 'start', behavior \}\)/);
+  assert.match(livingChatJs, /desktopTab\.click\(\)/);
+  assert.match(livingChatJs, /dockButton\?\.click\(\)/);
+});
+
 test('staged attachments have two temporary access points and the composer control aligns with the textarea column', async t => {
   const dom = new JSDOM(page, { url: 'https://td613.com/dome-world/marrowline.html' });
   const { window } = dom;
