@@ -28,7 +28,7 @@
     <nav aria-label="Chamber navigation"><a href="./">← Dome-World</a><a id="marrowlineRest" href="https://td613.com/" target="_blank" rel="noopener noreferrer" aria-label="Open TD613.com in a new tab">TD613</a></nav>
   </header>
   <header class="threshold">
-    <div class="threshold-copy"><div class="threshold-kicker">Beneath the Ash Moon</div><h1>A place for what returns.</h1><p class="threshold-lede">The sea takes a name. The grove keeps a place for it.<br />Under the Ash Moon, what survives can speak.</p></div>
+    <div class="threshold-copy"><div class="threshold-kicker">Beneath the Ash Moon</div><h1>A place for what returns.</h1><p class="threshold-lede">The sea takes a name. The grove keeps a place for it. Under the Ash Moon, what survives the shoreline can speak.</p></div>
     <span class="threshold-seal" aria-hidden="true">☾</span>
   </header>
   <div class="living-workspace">
@@ -77,10 +77,11 @@
         <p class="panel-note">Ordinary work starts in unissued research mode. Safe Harbor issuance remains an optional advanced custody choice; neither posture proves identity.</p>
         <div class="issuance-block">
           <label class="field-label" for="khonapolitShi">Minted Safe Harbor Issuance
-            <input id="khonapolitShi" type="text" spellcheck="false" autocomplete="off" placeholder="TD613-SH-9B07D8B-XXXXXXXX" />
+            <input id="khonapolitShi" type="text" spellcheck="false" autocomplete="off" placeholder="TD613-SH-9B07D8B-XXXXXXXX" disabled aria-disabled="true" data-dormant="true" tabindex="-1" />
           </label>
-          <label class="checkbox-line"><input id="khonapolitWaive" type="checkbox" checked /> <span>Use unissued research mode. This creates no badge, completed custody, or authentication claim.</span></label>
-          <div class="binding-line" id="marrowlineBindingLine">TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋‌ ingress · SHI: unissued research · outgoing prompt: ⟐ · incoming receipt: OPEN until explicit closure</div>
+          <label class="checkbox-line"><input id="khonapolitWaive" type="checkbox" /> <span>Use a minted Safe Harbor issuance. Check to wake the SHI field; leave unchecked for unissued research mode. Format acceptance does not authenticate identity.</span></label>
+          <small class="binding-line-label">Provider request · issuance preview</small>
+          <div class="binding-line" id="marrowlineBindingLine">UNISSUED RESEARCH · no SHI binding line attached · user turn framing: 𝌋‌ … ⟐ · incoming receipt: OPEN until explicit closure</div>
           <p class="issuance-help">Need SHI#? Visit <a href="/safe-harbor/index.html">TD613 Safe Harbor</a>.</p>
         </div>
         <div class="route-card">
@@ -244,9 +245,9 @@
 <nav class="mobile-dock" aria-label="Marrowline mobile chambers">
   <button type="button" data-mobile-target="speakingPanel"><span>𝌋‌</span>Chat</button>
   <button type="button" data-mobile-target="invocationPanel"><span>⌁</span>Keys</button>
-  <button type="button" data-mobile-target="receiptPanel"><span>∴</span>Receipt</button>
-  <button type="button" data-mobile-target="corpusPanel"><span>☾</span>Stories</button>
   <button type="button" data-mobile-target="gatePanel"><span>⟁</span>Gate</button>
+  <button type="button" data-mobile-target="corpusPanel"><span>☾</span>Stories</button>
+  <button type="button" data-mobile-target="receiptPanel"><span>∴</span>Receipt</button>
 </nav>
 <script type="module" src="./marrowline-egress-boot.js"></script>
 <script type="module" src="./marrowline-loom-import.js"></script>
