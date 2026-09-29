@@ -202,14 +202,14 @@ test('Receipts remain inside a local SHI-format membrane without changing issuan
   await h.ready();
   assert.equal(h.$('marrowlineReceiptProtected').hidden, true);
   assert.equal(h.$('marrowlineReceiptGate').hidden, false);
-  assert.equal(h.$('khonapolitWaive').checked, true);
+  assert.equal(h.$('khonapolitWaive').checked, false);
   h.$('marrowlineReceiptShi').value = 'not-an-shi';
   h.$('marrowlineReceiptUnlock').click();
   assert.equal(h.$('marrowlineReceiptProtected').hidden, true, 'invalid format cannot open receipt UI');
   h.$('marrowlineReceiptShi').value = 'TD613-SH-9B07D8B-ABCDEF12';
   h.$('marrowlineReceiptUnlock').click();
   assert.equal(h.$('marrowlineReceiptProtected').hidden, false, 'valid format opens local presentation only');
-  assert.equal(h.$('khonapolitWaive').checked, true, 'reading a receipt does not issue this conversation');
+  assert.equal(h.$('khonapolitWaive').checked, false, 'reading a receipt does not enable issuance for this conversation');
   assert.equal(h.calls.length, 0, 'opening receipts consumes no model credits');
   h.$('marrowlineReceiptLock').click();
   assert.equal(h.$('marrowlineReceiptProtected').hidden, true);
@@ -278,8 +278,8 @@ test('ordinary work starts truly unissued while advanced custody can still hold 
   assert.ok(h.doc.querySelector('.mobile-dock [data-mobile-target="invocationPanel"]'),
     'the one intended mobile Keys tab remains available');
 
-  assert.equal(h.$('khonapolitWaive').checked, true, 'ordinary blank workspace begins in explicit unissued research posture');
-  assert.equal(h.$('khonapolitShi').disabled, true, 'checked unissued mode makes the SHI field dormant');
+  assert.equal(h.$('khonapolitWaive').checked, false, 'ordinary blank workspace begins unissued with advanced issuance asleep');
+  assert.equal(h.$('khonapolitShi').disabled, true, 'unchecked advanced issuance leaves the SHI field dormant');
   assert.equal(h.$('khonapolitMode'), null, 'ordinary UI exposes one fixed dual-channel route instead of voice-selection steering');
   assert.match(h.doc.querySelector('.welcome-help').textContent, /Ordinary work starts in unissued research mode/);
   assert.ok(h.$('retryKhonapolitTask'));
@@ -653,7 +653,7 @@ test('SHI-gated Receipts remain a local format membrane and cannot issue the cur
   const gate = h.$('marrowlineReceiptGate'), protectedReceipt = h.$('marrowlineReceiptProtected');
   assert.equal(gate.hidden, false);
   assert.equal(protectedReceipt.hidden, true);
-  assert.equal(h.$('khonapolitWaive').checked, true);
+  assert.equal(h.$('khonapolitWaive').checked, false);
   h.$('marrowlineReceiptShi').value = 'invalid';
   h.$('marrowlineReceiptUnlock').click(); await flush();
   assert.equal(protectedReceipt.hidden, true, 'invalid format stays on the membrane');
