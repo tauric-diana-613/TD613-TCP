@@ -65,7 +65,16 @@ export function deriveMarrowlineConversationTitle(text = '', seed = '') {
   // A setup/vignette is not the actual instruction: prefer the last explicit
   // operator request, including "Design..." after several scenario sentences.
   const requests = clauses.filter(x => TASK.test(x) || /^(?:what|why|how|which|who|when|where)\b/iu.test(x));
-  let subject = subjectOf(requests.at(-1) || clauses[0] || authored);
+  const request = requests.at(-1) || clauses[0] || authored;
+  // Short natural questions already fit the five-word masthead contract.
+  // Preserve their grammar rather than amputating the interrogative/auxiliary:
+  // "What does this photo mean?" should remain a readable question-title.
+  const question = request.replace(/[\s"'“”‘’#*.,;:!?–—-]+$/u, '').trim();
+  if (/^(?:what|why|how|which|who|when|where)\b/iu.test(question)
+      && question.split(/\s+/u).filter(Boolean).length <= 5) {
+    return compact(question);
+  }
+  let subject = subjectOf(request);
   if (!hasMeaning(subject)) {
     const about = authored.match(/\b(?:about|regarding|concerning|between)\s+([^.!?;]+)/iu);
     subject = subjectOf(about?.[1] || clauses[0] || authored);
