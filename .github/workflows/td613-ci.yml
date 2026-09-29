@@ -128,7 +128,7 @@ jobs:
           node --test tests/gemini-provider-quota-scope.test.mjs tests/marrowline-quota-evidence.test.mjs tests/marrowline-five-seat-frontier-cascade.test.mjs
           node tests/gemini-lifecycle-admission.test.mjs
           node tests/hush-gemini-quality-router.test.mjs
-          node tests/khonapolit-covenant.test.mjs
+          node --test tests/marrowline-user-envelope.test.mjs
           node tests/khonapolit-gemini-quality-router.test.mjs
           node --check app/dome-world/marrowline-episode-witness.js
           node --test tests/marrowline-episode-witness.test.mjs
