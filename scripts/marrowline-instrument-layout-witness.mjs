@@ -11,9 +11,12 @@ try {
   for (const [width, height] of [[1440,900], [1024,650], [900,550], [390,844]]) {
     const context = await browser.newContext({ viewport: { width, height }, reducedMotion: 'reduce' });
     const page = await context.newPage();
+    page.setDefaultTimeout(15000);
+    page.on('pageerror', error => console.error(error.message));
     await page.route('**/api/**', route => route.fulfill({ status: 503, contentType: 'application/json', body: '{"error":"offline layout witness"}' }));
     try {
-      await page.goto('http://127.0.0.1:6131/dome-world/marrowline.html');
+      const response = await page.goto('http://127.0.0.1:6131/dome-world/marrowline.html');
+      assert.equal(response.status(), 200, 'local application must be served');
       await page.locator('html.marrowline-room-ready').waitFor({ timeout: 30000 });
       await page.locator('#marrowlineDesktopToolTabs').waitFor({ state: 'attached' });
       if (width > 860) {

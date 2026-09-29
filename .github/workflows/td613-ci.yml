@@ -938,3 +938,43 @@ jobs:
           path: gemini-observation.json
           if-no-files-found: error
           retention-days: 7
+
+  marrowline_layout:
+    name: Offline Marrowline layout regression
+    needs: scope
+    if: github.event_name == 'pull_request' && needs.scope.outputs.head_is_current == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: Select bounded layout scope
+        id: layout_scope
+        run: |
+          if git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" | grep -Eq '^(app/dome-world/marrowline-desktop-repair\.(js|css)|app/dome-world/marrowline\.html|scripts/marrowline-instrument-layout-witness\.mjs|tests/marrowline-instrument-panel\.test\.mjs)$'; then
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/setup-node@v4
+        if: steps.layout_scope.outputs.changed == 'true'
+        with:
+          node-version: '22'
+      - if: steps.layout_scope.outputs.changed == 'true'
+        run: npm ci --ignore-scripts
+      - if: steps.layout_scope.outputs.changed == 'true'
+        run: npm install --no-save --package-lock=false playwright@1.53.2
+      - if: steps.layout_scope.outputs.changed == 'true'
+        run: npx playwright install --with-deps chromium
+      - if: steps.layout_scope.outputs.changed == 'true'
+        run: node --test tests/marrowline-instrument-panel.test.mjs
+      - name: Offline browser layout witness
+        if: steps.layout_scope.outputs.changed == 'true'
+        run: |
+          python3 -m http.server 6131 --directory app > /tmp/marrowline-layout-server.log 2>&1 &
+          node scripts/marrowline-instrument-layout-witness.mjs
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.layout_scope.outputs.changed == 'true'
+        with:
+          name: marrowline-layout-${{ github.event.pull_request.head.sha }}
+          path: artifacts/marrowline-layout
