@@ -1,5 +1,7 @@
 # STATE — resumable research checkpoint
 
+**Implementation continuation:** see [10-FINITE-CHAMBER-IMPLEMENTATION](10-FINITE-CHAMBER-IMPLEMENTATION.md) for the subsequent bounded synthetic chamber, verification and remaining rendered UI/release work. The sections below preserve the initial documentary checkpoint; they do not deny later explicitly authorized implementation.
+
 Date: 2026-09-28 America/New_York.
 Branch: `research/loom-gate-golden-egg-20260928`.
 Base: `2878307955f60f9eaac957766b62a7f89af4b5ef`.
