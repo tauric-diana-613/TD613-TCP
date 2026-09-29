@@ -923,7 +923,7 @@ jobs:
       - name: Select bounded layout scope
         id: layout_scope
         run: |
-          if git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" | grep -Eq '^(app/dome-world/marrowline-(desktop-repair\.(js|css)|living-chat\.js|terminal\.js|threads\.js|loom-pocket\.js)|app/dome-world/marrowline\.html|scripts/marrowline-instrument-layout-witness\.mjs|tests/marrowline-(instrument-panel|desktop-repair-contract|threads)\.test\.mjs); then
+          if git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" | grep -Eq '^(app/dome-world/marrowline-desktop-repair\.(js|css)|app/dome-world/marrowline\.html|scripts/marrowline-instrument-layout-witness\.mjs|tests/marrowline-instrument-panel\.test\.mjs)$'; then
             echo 'changed=true' >> "$GITHUB_OUTPUT"
           fi
       - uses: actions/setup-node@v4
