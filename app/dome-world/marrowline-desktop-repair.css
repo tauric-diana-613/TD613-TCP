@@ -1309,3 +1309,21 @@ html:root body #khonapolitMessages .starter-prompts .starter-rotate{
  html:root.marrowline-mobile-shell #speakingPanel .marrowline-thread-nav{margin-top:3px!important;padding-top:3px!important}
  html:root.marrowline-mobile-shell #speakingPanel .marrowline-thread-nav>button{min-height:26px!important;padding-block:2px!important;font-size:9.5px!important}
 }
+
+
+/* Gate handoff completion: desktop/mobile chrome must not re-expand the v3 single-sequence pedagogue. */
+#gatePanel .panel-body.gate-grid{grid-template-columns:minmax(0,1fr)!important;gap:12px!important}
+#gatePanel #marrowlineForm .marrowline-operator-field[hidden],
+#gatePanel #marrowlineForm>.field-label[hidden],
+#gatePanel .ritual-actions button[hidden]{display:none!important}
+#gatePanel .ritual-actions{grid-template-columns:minmax(0,1fr) auto!important;margin-top:2px!important}
+#gatePanel .ritual-actions button.primary{grid-column:1!important}
+#gatePanel .ritual-actions #copyMarrowlineReceipt{grid-column:2!important;min-width:112px!important}
+#gatePanel .gate-technical-evidence{grid-column:1/-1!important}
+@media(max-width:860px){
+  html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel .ritual-actions{
+    grid-template-columns:minmax(0,1fr) auto!important;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel .ritual-actions button.primary{grid-column:1!important}
+  html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel .ritual-actions #copyMarrowlineReceipt{grid-column:2!important;min-width:102px!important}
+}

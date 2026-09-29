@@ -4,7 +4,7 @@ import {
   buildMarrowlineGateAssayReceipt
 } from './marrowline-gate-assay.js';
 
-export const MARROWLINE_GATE_PEDAGOGUE_VERSION = 'td613.dome-world.marrowline-gate-pedagogue/v1';
+export const MARROWLINE_GATE_PEDAGOGUE_VERSION = 'td613.dome-world.marrowline-gate-pedagogue/v2-single-sequence';
 
 function byId(doc, id) { return doc.getElementById(id); }
 function text(doc, tag, value, className = '') {
@@ -38,6 +38,19 @@ function modeCard(doc, { mode, eyebrow, title, body }) {
   return card;
 }
 
+function modeChoice(doc, { mode, title, hint }) {
+  const button = doc.createElement('button');
+  button.type = 'button';
+  button.className = 'gate-mode-choice';
+  button.dataset.gateMode = mode;
+  button.setAttribute('aria-pressed', 'false');
+  button.append(
+    text(doc, 'strong', title),
+    text(doc, 'small', hint)
+  );
+  return button;
+}
+
 function buildGuide(doc) {
   const section = doc.createElement('section');
   section.id = 'marrowlineGatePedagogue';
@@ -48,45 +61,37 @@ function buildGuide(doc) {
   header.className = 'gate-pedagogue-head';
   header.append(
     text(doc, 'small', 'Adversarial boundary assay'),
-    text(doc, 'h3', 'Three ways to challenge one Gate')
+    text(doc, 'h3', 'Choose the Gate condition')
   );
   header.querySelector('h3').id = 'marrowlineGatePedagogueTitle';
 
   const consequence = text(
     doc,
     'p',
-    'Start with the consequence, not the jargon: choose whether you want no network crossing, the public absorbing route, or the human-operator control. Then read what actually answered.',
+    'Local stays in this browser. Public crosses the absorbing boundary. Operator tests the separately authorized bypass.',
     'gate-pedagogue-lede'
   );
 
-  const cards = doc.createElement('div');
-  cards.className = 'gate-assay-cards';
-  cards.append(
-    modeCard(doc, {
+  const choices = doc.createElement('div');
+  choices.className = 'gate-mode-choices';
+  choices.setAttribute('role', 'group');
+  choices.setAttribute('aria-label', 'Gate condition');
+  choices.append(
+    modeChoice(doc, {
       mode: MARROWLINE_GATE_MODES.LOCAL_CONTROL,
-      eyebrow: 'Control 0 · stays here',
-      title: 'Build local fallback',
-      body: 'Construct the deterministic reference in this browser. Useful as a control; it is not evidence that the live boundary answered.'
+      title: 'Local control',
+      hint: 'No network crossing'
     }),
-    modeCard(doc, {
+    modeChoice(doc, {
       mode: MARROWLINE_GATE_MODES.PUBLIC_ABSORPTION,
-      eyebrow: 'Treatment · crosses the boundary',
-      title: 'Fire with the token blank',
-      body: 'Send one real request to the declared Marrowline endpoint and let the canonical absorbing route answer. Observe route, egress, digest and matrix.'
+      title: 'Public boundary',
+      hint: 'Blank token · live endpoint'
     }),
-    modeCard(doc, {
+    modeChoice(doc, {
       mode: MARROWLINE_GATE_MODES.OPERATOR_BYPASS_CONTROL,
-      eyebrow: 'Control 1 · same endpoint',
-      title: 'Fire with your operator token',
-      body: 'Send one request to the same endpoint with the one-fire operator credential. The server—not the browser—decides whether the bypass is admitted.'
+      title: 'Operator control',
+      hint: 'One-fire token · same endpoint'
     })
-  );
-
-  const law = text(
-    doc,
-    'p',
-    'The useful adversarial comparison is public absorption ↔ authorized operator bypass on the same endpoint. Same endpoint does not mean same route, and a local fallback does not count as a network crossing.',
-    'gate-assay-law'
   );
 
   const result = doc.createElement('section');
@@ -96,19 +101,47 @@ function buildGuide(doc) {
   result.setAttribute('aria-live', 'polite');
   result.dataset.mode = MARROWLINE_GATE_MODES.UNOBSERVED;
   result.append(
-    text(doc, 'small', 'What happened'),
+    text(doc, 'small', 'Observed outcome'),
     text(doc, 'strong', 'No Gate result observed yet', 'gate-assay-result-title'),
-    text(doc, 'p', 'Choose a control and fire it. Marrowline will translate the resulting receipt here.', 'gate-assay-result-copy'),
+    text(doc, 'p', 'Choose a condition, use its nearby action, then read what actually answered.', 'gate-assay-result-copy'),
     text(doc, 'p', 'Nothing has been compared yet.', 'gate-assay-result-compare')
   );
 
   const details = doc.createElement('details');
   details.className = 'gate-assay-details';
-  const summary = text(doc, 'summary', 'What this Gate can establish now');
+  const summary = text(doc, 'summary', 'Compare the three conditions & limits');
+  const cards = doc.createElement('div');
+  cards.className = 'gate-assay-cards';
+  cards.append(
+    modeCard(doc, {
+      mode: MARROWLINE_GATE_MODES.LOCAL_CONTROL,
+      eyebrow: 'Control 0 · stays here',
+      title: 'Build local fallback',
+      body: 'Constructs the deterministic reference in this browser. It cannot establish that the live boundary answered.'
+    }),
+    modeCard(doc, {
+      mode: MARROWLINE_GATE_MODES.PUBLIC_ABSORPTION,
+      eyebrow: 'Treatment · crosses boundary',
+      title: 'Fire with token blank',
+      body: 'Sends one request to the declared endpoint and observes the canonical absorbing route, egress, digest and matrix.'
+    }),
+    modeCard(doc, {
+      mode: MARROWLINE_GATE_MODES.OPERATOR_BYPASS_CONTROL,
+      eyebrow: 'Control 1 · same endpoint',
+      title: 'Fire with operator token',
+      body: 'Sends one request to that endpoint with the one-fire credential. The server decides whether bypass is admitted.'
+    })
+  );
+  const law = text(
+    doc,
+    'p',
+    'Public absorption and authorized operator bypass share an endpoint but not necessarily a route. Local fallback remains a no-network control.',
+    'gate-assay-law'
+  );
   const capability = text(
     doc,
     'p',
-    'Within the declared Marrowline endpoint, this is a human-operated adversarial boundary assay: it can compare a deterministic local control, live public absorption, and an authorized server-token bypass control while preserving the observed route and Aperture-egress outcome for each tested fire.'
+    'This Gate can compare the declared endpoint’s local control, public absorption and authorized bypass while preserving observed route and Aperture-egress evidence. It does not measure hostile reconstruction across the full Loom → Marrowline → return journey.'
   );
   const falsifierTitle = text(doc, 'strong', 'Immediate falsifiers');
   const list = doc.createElement('ul');
@@ -116,19 +149,63 @@ function buildGuide(doc) {
     'A local fallback claims that a network response occurred.',
     'A blank-token public fire is labeled operator-authorized.',
     'The one-fire operator token appears in a persisted or copied receipt.',
-    'Public absorption and an admitted operator bypass become indistinguishable in the returned route evidence.',
+    'Public absorption and an admitted operator bypass become indistinguishable in returned route evidence.',
     'An Aperture-egress status is shown when no egress observation exists.'
   ]) list.append(text(doc, 'li', item));
-  const ceiling = text(
-    doc,
-    'p',
-    `Current boundary: ${MARROWLINE_GATE_ASSAY_CLAIM_CEILING}`,
-    'gate-assay-ceiling'
-  );
-  details.append(summary, capability, falsifierTitle, list, ceiling);
+  const ceiling = text(doc, 'p', `Current boundary: ${MARROWLINE_GATE_ASSAY_CLAIM_CEILING}`, 'gate-assay-ceiling');
+  details.append(summary, cards, law, capability, falsifierTitle, list, ceiling);
 
-  section.append(header, consequence, cards, law, result, details);
+  section.append(header, consequence, choices, result, details);
   return section;
+}
+
+function applySelectedMode(doc, gate, mode, { focus = false } = {}) {
+  const form = byId(doc, 'marrowlineForm');
+  if (!gate || !form) return mode;
+  const submit = form.querySelector('button[type="submit"]');
+  const local = byId(doc, 'buildLocalMarrowline');
+  const token = byId(doc, 'marrowlineOperatorToken');
+  const tokenField = token?.closest?.('label') || null;
+  const seedField = byId(doc, 'marrowlineSeed')?.closest?.('label') || null;
+  if (submit && !submit.id) submit.id = 'marrowlineLiveGateFire';
+
+  gate.dataset.selectedGateMode = mode;
+  gate.querySelectorAll('.gate-mode-choice').forEach((button) => {
+    button.setAttribute('aria-pressed', String(button.dataset.gateMode === mode));
+  });
+
+  const localMode = mode === MARROWLINE_GATE_MODES.LOCAL_CONTROL;
+  const operatorMode = mode === MARROWLINE_GATE_MODES.OPERATOR_BYPASS_CONTROL;
+  if (submit) {
+    submit.hidden = localMode;
+    submit.textContent = operatorMode ? 'Fire operator control' : 'Fire public boundary';
+  }
+  if (local) {
+    local.hidden = !localMode;
+    local.classList.toggle('primary', localMode);
+    local.textContent = 'Build local control';
+  }
+  if (seedField) seedField.hidden = !localMode;
+  if (tokenField) tokenField.hidden = !operatorMode;
+  if (token && !operatorMode) token.value = '';
+
+  if (focus) {
+    if (localMode) local?.focus?.();
+    else if (operatorMode) token?.focus?.();
+    else submit?.focus?.();
+  }
+  return mode;
+}
+
+function ensureTechnicalEvidenceDisclosure(doc, gate) {
+  const output = gate?.querySelector('.gate-output');
+  if (!gate || !output || output.closest('.gate-technical-evidence')) return null;
+  const details = doc.createElement('details');
+  details.className = 'gate-technical-evidence';
+  const summary = text(doc, 'summary', 'Inspect matrix & technical receipt');
+  details.append(summary, output);
+  gate.querySelector('.panel-body.gate-grid')?.append(details);
+  return details;
 }
 
 function parseReceipt(node) {
@@ -167,6 +244,25 @@ export function installMarrowlineGatePedagogue(doc = document, root = window) {
 
   const form = byId(doc, 'marrowlineForm');
   form?.setAttribute('aria-describedby', 'marrowlineGatePedagogueTitle marrowlineGatePlainResult');
+  ensureTechnicalEvidenceDisclosure(doc, gate);
+
+  const defaultMode = byId(doc, 'marrowlineOperatorToken')?.value
+    ? MARROWLINE_GATE_MODES.OPERATOR_BYPASS_CONTROL
+    : MARROWLINE_GATE_MODES.PUBLIC_ABSORPTION;
+  applySelectedMode(doc, gate, defaultMode);
+  guide.querySelectorAll('.gate-mode-choice').forEach((button) => {
+    button.addEventListener('click', () => applySelectedMode(doc, gate, button.dataset.gateMode, { focus: true }));
+  });
+  form?.addEventListener('submit', (event) => {
+    if (gate.dataset.selectedGateMode !== MARROWLINE_GATE_MODES.OPERATOR_BYPASS_CONTROL) return;
+    const token = byId(doc, 'marrowlineOperatorToken');
+    if (String(token?.value || '').trim()) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    const status = byId(doc, 'marrowlineStatus');
+    if (status) status.textContent = 'OPERATOR CONTROL HELD · enter the one-fire token or choose Public boundary';
+    token?.focus?.();
+  }, { capture: true });
 
   let lastText = '';
   const inspect = () => {
@@ -200,6 +296,8 @@ export function installMarrowlineGatePedagogue(doc = document, root = window) {
       MARROWLINE_GATE_MODES.OPERATOR_BYPASS_CONTROL
     ]),
     sameEndpointNotSameRoute: true,
+    singleColumnSequence: true,
+    technicalEvidenceCollapsedByDefault: true,
     localFallbackNotNetworkEvidence: true,
     operatorAuthorizationServerDecided: true,
     claimCeiling: MARROWLINE_GATE_ASSAY_CLAIM_CEILING,

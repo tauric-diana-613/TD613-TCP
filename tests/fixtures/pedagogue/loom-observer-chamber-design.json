@@ -1,0 +1,338 @@
+{
+  "schema": "td613.pedagogue-design-fixture/v0.1",
+  "design_id": "loom-observer-chamber-v01",
+  "surface_reference": "Loom/Observer chamber",
+  "governance_context": "TD613",
+  "determinism": {
+    "frozenClock": "2026-09-29T01:50:00Z",
+    "idSeed": "loom-observer-chamber-v01",
+    "idScope": "Loom/Observer chamber"
+  },
+  "scene_input": {
+    "scene_kind": "GENERIC",
+    "station_owner": "Dome-World",
+    "source_status": "E2",
+    "observation_status": "OBSERVED",
+    "world_state_reference": "loom_observer_synthetic_v01",
+    "provenance": {
+      "source_references": [
+        "app/dome-world/holonomy-loom/observer-channel.js",
+        "app/dome-world/holonomy-loom/observer-chamber.js"
+      ],
+      "evidence_basis": [
+        "declared finite synthetic populations",
+        "explicit observer capture boundary"
+      ],
+      "transformations": [
+        "consequence before mathematical terminology"
+      ],
+      "station_owners": [
+        "Dome-World"
+      ]
+    },
+    "visible_condition": {
+      "plain_language": "A fictional secret can be disclosed by prior knowledge, a side channel, or joined clues.",
+      "surface_reference": "Loom/Observer chamber"
+    },
+    "available_affordances": [
+      {
+        "action_id": "calculate_synthetic_view",
+        "purpose": "Calculate only a selected synthetic population and observer view.",
+        "authorized_by_station": "Human",
+        "reversible": true
+      }
+    ],
+    "route_topology": {
+      "entry": "Loom laboratory",
+      "exit": "Rest or return to workspace",
+      "same_endpoint_not_same_history": true,
+      "missing_inputs": [
+        "human comprehension unmeasured"
+      ],
+      "steps": [
+        {
+          "step_id": "step0",
+          "label": "See the synthetic boundary",
+          "phase": "NOTICE",
+          "required_fields": [
+            "fictional inputs",
+            "no conversation access"
+          ],
+          "dependencies": [],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 0,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "step1",
+          "label": "Choose a case and observer, then calculate",
+          "phase": "ACT",
+          "required_fields": [
+            "case",
+            "selected channels"
+          ],
+          "dependencies": [
+            "step0"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "step2",
+          "label": "Compare disclosure and task accuracy",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "baseline additional total",
+            "missingness",
+            "task accuracy"
+          ],
+          "dependencies": [
+            "step1"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "step3",
+          "label": "Inspect mathematics if wanted",
+          "phase": "NAME",
+          "required_fields": [
+            "subset lattice",
+            "declared population"
+          ],
+          "dependencies": [
+            "step2"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "step4",
+          "label": "Clear the calculation or return",
+          "phase": "REST",
+          "required_fields": [
+            "rest",
+            "return"
+          ],
+          "dependencies": [
+            "step3"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        }
+      ]
+    },
+    "causal_structure": {
+      "input": "explicit selection of a synthetic case and channels",
+      "operator": "finite enumeration",
+      "observable": "baseline, additional, total and authorized accuracy",
+      "authority": "Human gesture; no release authority",
+      "equations": []
+    },
+    "research_frame": {
+      "question": "Can disclosure be inspected without promoting a finite calculation into empirical evidence?",
+      "hypothesis": "Separate baseline, additional and total quantities retain the critical distinctions.",
+      "observable_behavior": [
+        "missing capture remains HELD",
+        "rest clears the result"
+      ],
+      "alternative_explanations": [
+        "familiarity with information theory may affect comprehension"
+      ],
+      "expected_failure_modes": [
+        "zero additional interpreted as privacy",
+        "missing channel treated as zero"
+      ],
+      "falsifier": [
+        "selected missing capture receives a complete score"
+      ],
+      "abstention_conditions": [
+        "finite population or channel boundary absent"
+      ]
+    },
+    "missingness": [
+      "real-world capture and comprehension unmeasured"
+    ],
+    "contradictions": [],
+    "claim_ceiling": {
+      "allowed_claims": [
+        "finite calculations under a declared law"
+      ],
+      "forbidden_claims": [
+        "real conversation is private",
+        "Golden Egg earned",
+        "empirical geometry measured"
+      ]
+    },
+    "technical_terms_withheld": [
+      "mutual information",
+      "conditional entropy",
+      "signed excess"
+    ]
+  },
+  "baseline_route_steps": [
+    {
+      "step_id": "step0",
+      "label": "See the synthetic boundary",
+      "phase": "NOTICE",
+      "required_fields": [
+        "fictional inputs",
+        "no conversation access"
+      ],
+      "dependencies": [],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 0,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "step1",
+      "label": "Choose a case and observer, then calculate",
+      "phase": "ACT",
+      "required_fields": [
+        "case",
+        "selected channels"
+      ],
+      "dependencies": [
+        "step0"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "step2",
+      "label": "Compare disclosure and task accuracy",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": [
+        "baseline additional total",
+        "missingness",
+        "task accuracy"
+      ],
+      "dependencies": [
+        "step1"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "step3",
+      "label": "Inspect mathematics if wanted",
+      "phase": "NAME",
+      "required_fields": [
+        "subset lattice",
+        "declared population"
+      ],
+      "dependencies": [
+        "step2"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "step4",
+      "label": "Clear the calculation or return",
+      "phase": "REST",
+      "required_fields": [
+        "rest",
+        "return"
+      ],
+      "dependencies": [
+        "step3"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    }
+  ],
+  "action": {
+    "action_id": "calculate_synthetic_view"
+  },
+  "world_delta": {
+    "observation_status": "OBSERVED",
+    "causal_trace": [
+      "operator chooses fictional case",
+      "operator selects channels",
+      "operator calculates",
+      "finite result preserves scope"
+    ],
+    "losses": [],
+    "missingness": [
+      "human comprehension unmeasured"
+    ],
+    "contradictions": [],
+    "unresolved_relations": [
+      "empirical episode and geometric binding remain HELD"
+    ],
+    "glyph_candidates": [],
+    "static_equivalent": {
+      "summary": "Compare known, added and total disclosure; rest clears the calculation.",
+      "steps": [
+        "choose",
+        "calculate",
+        "inspect",
+        "rest"
+      ]
+    }
+  },
+  "name": {
+    "plain_language": "A small extra disclosure does not mean the secret is unknown.",
+    "glyph_relation": null,
+    "technical_term": "baseline-aware information",
+    "non_equivalence": [
+      "calculation is not capture",
+      "utility is not confidentiality"
+    ]
+  },
+  "transfer_context": {
+    "context": {
+      "surface": "Loom observer review"
+    },
+    "shared_relation_candidate": "preserve baseline and missingness separately from increment",
+    "observable_correspondence": [
+      "zero incremental disclosure with full prior exposure"
+    ],
+    "alternative_explanations": [
+      "prior already determines secret"
+    ],
+    "abstention_conditions": [
+      "unqualified empirical population"
+    ]
+  },
+  "design_evidence_scope": "Declared structural design only; no measured comprehension or usability improvement."
+}

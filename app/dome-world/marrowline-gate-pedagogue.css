@@ -239,3 +239,109 @@
     font-size:.68rem!important;
   }
 }
+
+
+/* Gate single-sequence UX v3: one condition, one nearby action, outcome, then optional evidence. */
+.gate-pedagogue{
+  gap:10px;
+  margin-bottom:12px;
+  padding:12px;
+}
+.gate-pedagogue-lede{font-size:.76rem;line-height:1.45}
+.gate-mode-choices{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:6px;
+  margin:1px 0 2px;
+}
+.gate-mode-choice{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:8px 12px;
+  width:100%;
+  min-height:42px;
+  margin:0;
+  padding:8px 10px;
+  border:1px solid rgba(144,121,216,.20);
+  border-radius:10px;
+  background:rgba(15,14,39,.68);
+  color:#e9e6ef;
+  text-align:left;
+  box-shadow:none;
+}
+.gate-mode-choice strong{font:650 .78rem/1.2 var(--marrowline-chat-sans,system-ui,sans-serif)}
+.gate-mode-choice small{color:#9fb2b7;font:500 .66rem/1.25 var(--marrowline-chat-sans,system-ui,sans-serif);text-align:right}
+.gate-mode-choice[aria-pressed="true"]{
+  border-color:rgba(93,231,226,.48);
+  background:linear-gradient(180deg,rgba(24,64,72,.54),rgba(25,24,60,.66));
+  box-shadow:inset 3px 0 rgba(91,232,225,.62);
+}
+.gate-assay-cards{grid-template-columns:1fr}
+.gate-assay-details[open]{gap:10px}
+.gate-assay-card{padding:9px 10px}
+#gatePanel .panel-body.gate-grid{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:12px!important;
+}
+#gatePanel .gate-controls{gap:10px!important}
+#gatePanel .gate-controls>.panel-note{
+  margin:0!important;
+  font-size:.7rem!important;
+  line-height:1.45!important;
+}
+#gatePanel #marrowlineForm{gap:9px!important}
+#gatePanel #marrowlineForm .marrowline-operator-field[hidden],
+#gatePanel #marrowlineForm>.field-label[hidden],
+#gatePanel .ritual-actions button[hidden]{display:none!important}
+#gatePanel .ritual-actions{
+  grid-template-columns:minmax(0,1fr) auto!important;
+  align-items:stretch!important;
+  margin:2px 0 0!important;
+}
+#gatePanel .ritual-actions button.primary{
+  grid-column:1!important;
+  min-height:44px!important;
+}
+#gatePanel .ritual-actions #copyMarrowlineReceipt{
+  grid-column:2!important;
+  align-self:stretch!important;
+  min-width:112px!important;
+}
+#gatePanel .gate-technical-evidence{
+  grid-column:1/-1;
+  margin:0!important;
+  padding:0!important;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+#gatePanel .gate-technical-evidence>summary{
+  min-height:38px;
+  display:flex;
+  align-items:center;
+  cursor:pointer;
+  color:#b7c8c8;
+  font:600 .72rem/1.3 var(--marrowline-chat-sans,system-ui,sans-serif);
+}
+#gatePanel .gate-technical-evidence .gate-output{
+  margin:0!important;
+  padding-top:8px;
+}
+@media(min-width:861px){
+  #gatePanel .panel-body.gate-grid{grid-template-columns:minmax(0,1fr)!important}
+}
+@media(max-width:860px){
+  .gate-pedagogue{padding:11px}
+  .gate-mode-choice{grid-template-columns:1fr;gap:3px}
+  .gate-mode-choice small{text-align:left}
+  html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel .ritual-actions{
+    grid-template-columns:minmax(0,1fr) auto!important;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel .ritual-actions button.primary{
+    grid-column:1!important;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel .ritual-actions #copyMarrowlineReceipt{
+    grid-column:2!important;
+    min-width:102px!important;
+  }
+}
