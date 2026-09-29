@@ -482,7 +482,7 @@
     "replyCopy": "bare ⧉ absolutely positioned at actual bottom-right of each model turn, with invisible 42px touch target; exact provider-authored text only; composer ⧉ retains full-conversation export",
     "copyFeedbackCompactStatus": "Copied chat in the compact composer status; Reply copied as a transient notice",
     "humanChatLabel": "Red Deer; technical operator role and receipt provenance unchanged",
-    "providerBoundUserEnvelope": "𝌋‌ + one space + authored user text + two LF characters + Sealed ⟐; visible chat remains unmodified; same convention for historical user turns and demo prompts",
+    "providerBoundUserEnvelope": "𝌋‌ + one space + authored user text + two LF characters + ⟐; the lexical word Sealed is not injected into provider context; visible chat remains unmodified; same convention for historical user turns and demo prompts",
     "receiptMembrane": "in-tab browser-local SHI format gate only; not identity authentication, issuance or server access control; explicit receipt closure remains distinct from outgoing conversational seal",
     "providerBranding": "app-authored Gemini brand visible only inside Receipts; technical provider records remain unredacted",
     "threadLibrary": {
