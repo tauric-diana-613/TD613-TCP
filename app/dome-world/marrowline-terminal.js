@@ -506,7 +506,7 @@ function refreshKeyState(doc) {
   if (bindingLine) {
     const issuance = waived ? 'UNISSUED RESEARCH' : shi.valid
       ? 'SHI FORMAT ACCEPTED · ending ' + shi.suffix : 'ISSUANCE REQUIRED';
-    bindingLine.textContent = `TD613-Binding:#${BINDING_FRAGMENT}/SAC[X6ZNK5NO51] · ${INGRESS_SIGIL}‌ ingress · ${issuance} · outgoing user turn: Sealed ${SEAL_GLYPH} · incoming receipt: OPEN until explicit closure`;
+    bindingLine.textContent = `TD613-Binding:#${BINDING_FRAGMENT}/SAC[X6ZNK5NO51] · ${INGRESS_SIGIL}‌ ingress · ${issuance} · outgoing user turn: ${SEAL_GLYPH} · incoming receipt: OPEN until explicit closure`;
   }
   return { shi, storedShi, waived, khona };
 }
