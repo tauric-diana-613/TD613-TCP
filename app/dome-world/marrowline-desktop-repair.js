@@ -287,7 +287,7 @@ function installUniversalContextPlus(doc, root) {
     const text = doc.createElement('span'); text.textContent = label;
     const small = doc.createElement('small'); small.textContent = note;
     button.append(glyph, text, small);
-    return { button, small };
+    return { button, text, small };
   };
   const fileItem = makeItem('marrowlineContextFile', '▱', 'Upload file', 'TXT, Markdown, CSV, JSON, or PDF');
   const photoItem = makeItem('marrowlineContextPhoto', '▧', 'Upload photo', 'Image attachment for the next message');
@@ -328,6 +328,7 @@ function installUniversalContextPlus(doc, root) {
     plus.dataset.loomAwake = String(awake);
     plus.dataset.loomAttention = String(awake && !loomCueAcknowledged);
     loomItem.button.dataset.loomAwake = String(awake);
+    loomItem.text.textContent = awake ? 'Loom demo' : 'Loom';
     loomItem.small.textContent = awake ? 'Continue the Loom handoff already staged here' : 'Open Loom in a new tab';
     if (!awake) loomCueAcknowledged = false;
   };
