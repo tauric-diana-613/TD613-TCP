@@ -127,8 +127,14 @@ test('only exact legacy auto-generated titles are retitled; operator labels and 
     'I underestimated the contribution was in how directly the research changed the design.'}],
     conversationTitle:'I Underestimated the Contribution Was in How Directly',
     titleSource:'local-topic-v2'});
-  assert.equal(await archive.migrateLegacyGeneratedTitles(),3,
-    'matching legacy titles and previously generated oversized topic titles are repaired');
+  const clippedQuestion = await archive.create({messages:[
+      {role:'user',text:'What does this photo mean?'},
+      {role:'model',text:glyph,receipt:{provider:{completion:{complete:true}}}}
+    ],
+    conversationTitle:'This Photo Mean',
+    titleSource:'local-topic-v3-after-return'});
+  assert.equal(await archive.migrateLegacyGeneratedTitles(),4,
+    'matching legacy titles, clipped natural questions, and previously generated oversized topic titles are repaired');
   const repaired = await archive.get(old.id);
   assert.equal(repaired.conversationTitle,'Stylometric Comparison with Provenance');
   assert.equal(repaired.titleSource,'local-topic-v3-after-return');
@@ -140,6 +146,8 @@ test('only exact legacy auto-generated titles are retitled; operator labels and 
   assert.notEqual(shortened.conversationTitle,'I Underestimated the Contribution Was in How Directly');
   assert.equal((await archive.get(manual.id)).conversationTitle,'Archive Witnesses');
   assert.equal((await archive.get(renamed.id)).conversationTitle,'My Own Label');
+  assert.equal((await archive.get(clippedQuestion.id)).conversationTitle,'What Does This Photo Mean',
+    'existing generated question titles recover the interrogative and auxiliary on next load');
   assert.equal(await archive.migrateLegacyGeneratedTitles(),0,'migration is one-time and idempotent');
   archive.close();
 });

@@ -10,6 +10,7 @@ import './marrowline-threads.test.mjs';
 import { classifyMarrowlineClientFailure, deriveMarrowlineConversationTitle, marrowlineWaitingLabel, installKhonapolitTerminal } from '../app/dome-world/marrowline-terminal.js';
 import { installMarrowlineMobileShell } from '../app/dome-world/marrowline-mobile-shell.js';
 import { installMarrowlineLivingChat, buildMarrowlineReplyFollowupDraft } from '../app/dome-world/marrowline-living-chat.js';
+import { attachmentState, clearMarrowlineAttachments, stageMarrowlineAttachments } from '../app/dome-world/marrowline-attachments.js';
 import { installMarrowlinePhysicalDeviceRepair } from '../app/dome-world/marrowline-physical-device-repair.js';
 
 const html = readFileSync(new URL('../app/dome-world/marrowline.html', import.meta.url), 'utf8');
@@ -33,6 +34,7 @@ function harness(t, { mobile = false, failure = false, rateLimitOnce = false, in
     if (String(url).includes('/giving/history/release-source.json')) return { ok: true, status: 200, json: async () => ({ source_packet_commit: 'a'.repeat(40) }) };
     if (!options.method) return { ok: true, text: async () => 'SYNTHETIC CORPUS', json: async () => ({ hasGeminiKey: true, modelPolicy: { callableModels: ['SYNTHETIC_MODEL'] } }) };
     calls.push(JSON.parse(options.body));
+    const submitted = calls.at(-1);
     fetchOptions.push(options);
     if (rateLimitedOnce && calls.length === 1) return { ok: false, status: 429, json: async () => ({
       error: 'gemini-rate-limit-held', attempts: [{ model: 'SYNTHETIC_MODEL', status: 429,
@@ -62,7 +64,16 @@ function harness(t, { mobile = false, failure = false, rateLimitOnce = false, in
       parts: [{ id: 'khonapolit', label: 'Kʰonapolit ∴ Tauric Diana bots', present: true, text: observed, integrated: true, providerNative: true, voices: incomplete ? ['Kʰonapolit'] : ['Kʰonapolit', 'Tauric Diana bots'], flourishMode: 'forensic-to-eruption' }],
       highZalgo: { applied: false, providerGenerated: true, source: 'provider-native', combiningMarkCount: 32, maxRun: 2, runCount: 31 }
     };
-    return { ok: true, json: async () => ({ ok: true, text: observed, relay, receipt: { provider: { model: 'SYNTHETIC_MODEL', ...(incomplete ? { completion: { complete: false, reason: 'provider-tail-open' } } : {}) }, relay, seal: { state: 'OPEN' } } }) };
+    const attachmentReceipt = Array.isArray(submitted?.attachments)
+      ? submitted.attachments.map(item => ({
+          id: item.id, name: item.name, kind: item.kind, mime_type: item.mime_type,
+          size_bytes: item.size_bytes, sha256: 'synthetic-' + item.id
+        }))
+      : [];
+    return { ok: true, json: async () => ({ ok: true, text: observed, relay, receipt: {
+      provider: { model: 'SYNTHETIC_MODEL', ...(incomplete ? { completion: { complete: false, reason: 'provider-tail-open' } } : {}) },
+      relay, seal: { state: 'OPEN' }, ...(attachmentReceipt.length ? { attachments: attachmentReceipt } : {})
+    } }) };
   };
   win.fetch = syntheticFetch;
   const globals = { window: win, navigator: win.navigator, CustomEvent: win.CustomEvent, fetch: syntheticFetch };
@@ -107,6 +118,8 @@ test('thread titles identify the actual subject rather than copying an opening v
     'Ash Moon');
   assert.equal(deriveMarrowlineConversationTitle('Explain the difference between consent and inheritance.'),
     'Consent and Inheritance');
+  assert.equal(deriveMarrowlineConversationTitle('What does this photo mean?'),
+    'What Does This Photo Mean');
   const prompt = 'An anonymous archive receives two passages whose syntax and metaphors feel uncannily alike. The board declares authorship theft from resemblance alone. Design a cautious stylometric comparison with provenance, alternative explanations and limitations.';
   assert.equal(deriveMarrowlineConversationTitle(prompt), 'Stylometric Comparison with Provenance');
   assert.equal(deriveMarrowlineConversationTitle(''), 'The speaking grove');
@@ -115,6 +128,38 @@ test('thread titles identify the actual subject rather than copying an opening v
     deriveMarrowlineConversationTitle('Compare the funding, provenance, and accountability mechanisms for these three systems.'),
     deriveMarrowlineConversationTitle('Write a poem about Lucille Clifton and a mother holding her child.')
   ]) assert.ok(title.trim().split(/\s+/u).length <= 5, `generated title exceeds five words: ${title}`);
+});
+
+test('photo replies keep a reply-local Attachments action after send clears raw bytes', async t => {
+  clearMarrowlineAttachments(globalThis);
+  const h = harness(t);
+  await h.ready();
+  const bytes = new Uint8Array([0xff, 0xd8, 0x54, 0x44, 0x36, 0x31, 0x33, 0xff, 0xd9]);
+  await stageMarrowlineAttachments([{
+    name: 'meaning-photo.jpg',
+    type: 'image/jpeg',
+    size: bytes.byteLength,
+    arrayBuffer: async () => bytes.buffer
+  }], { kind: 'photo', environment: h.win });
+  assert.equal(attachmentState().count, 1, 'photo is staged before Send');
+
+  h.send('What does this photo mean?');
+  await h.settled(); await flush();
+
+  assert.equal(attachmentState().count, 0, 'successful send clears raw staged bytes');
+  const reply = h.doc.querySelector('.relay-message');
+  const attachmentButton = reply?.querySelector('.reply-attachment-access');
+  assert.ok(attachmentButton, 'reply owns an Attachments action');
+  assert.equal(attachmentButton.hidden, false, 'receipt-backed Attachments remains visible after staged bytes clear');
+  attachmentButton.click();
+  const receiptPanel = reply.querySelector('.reply-attachment-receipt');
+  assert.equal(receiptPanel.hidden, false, 'reply-local attachment receipt opens from the drawer');
+  assert.match(receiptPanel.textContent, /Photo/);
+  assert.match(receiptPanel.textContent, /meaning-photo\.jpg/);
+
+  const saved = await h.saved();
+  assert.equal(saved.conversationTitle, 'What Does This Photo Mean',
+    'five-word natural question survives as a readable conversation title');
 });
 
 test('landing and New stay transient until a human turn is actually sent', async t => {

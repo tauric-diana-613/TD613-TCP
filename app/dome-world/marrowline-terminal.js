@@ -274,11 +274,34 @@ function createReplyCopyControl(doc, entry) {
   return copy;
 }
 
+function modelAttachmentReceipt(entry = {}) {
+  const source = Array.isArray(entry.receipt?.attachments) ? entry.receipt.attachments : [];
+  return source.map(item => ({
+    id: safe(item?.id),
+    name: safe(item?.name),
+    kind: safe(item?.kind),
+    mime_type: safe(item?.mime_type),
+    size_bytes: Number(item?.size_bytes || 0),
+    sha256: safe(item?.sha256)
+  })).filter(item => item.name && item.size_bytes > 0);
+}
+function bindModelAttachmentReceipt(article, entry) {
+  const receipt = modelAttachmentReceipt(entry);
+  if (!receipt.length) return receipt;
+  // Receipt metadata survives the send; raw attachment bytes intentionally do not.
+  // Living Chat can therefore keep the reply-local Attachments action without
+  // turning the conversation archive into a duplicate binary store.
+  article.dataset.attachmentReceipt = JSON.stringify(receipt);
+  article.dataset.attachmentCount = String(receipt.length);
+  return receipt;
+}
+
 function renderModelMessage(doc, entry) {
   if (!entry.relay) {
     const legacy = { ...entry, role: 'user' };
     const article = renderUserMessage(doc, legacy);
     article.dataset.role = 'model';
+    bindModelAttachmentReceipt(article, entry);
     article.querySelector('.message-mark').textContent = 'Kʰ';
     article.append(createReplyCopyControl(doc, entry));
     return article;
@@ -287,6 +310,7 @@ function renderModelMessage(doc, entry) {
   const article = doc.createElement('article');
   article.className = 'relay-message';
   article.dataset.role = 'model';
+  bindModelAttachmentReceipt(article, entry);
   if (entry.receipt?.provider?.completion?.complete === false) {
     article.dataset.completion = 'incomplete';
     const structuralOnly = entry.receipt.provider.completion.reason === 'required-voice-structure-incomplete';
