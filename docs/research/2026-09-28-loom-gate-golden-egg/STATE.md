@@ -39,3 +39,12 @@ Next action: independent human/reviewer reconstruction using HANDOFF-ACTIVATION,
 **Golden Egg: UNEARNED. Western Horizon: empirical-shore 𝄐. Human closure: REQUIRED.**
 
 ⟐
+
+
+## Implementation continuation — 2026-09-29
+
+PR #1387 subsequently gained the bounded finite observer chamber and targeted presentation repairs for **Marrowline Gate only** and **Holonomy Loom**, preserving the rest of Marrowline. Gate now uses one selected condition and one nearby action before outcome/optional evidence; Loom is task-first with its living route retained as subordinate visible evidence and the synthetic chamber kept inside the optional laboratory.
+
+This changes product presentation and executable finite fixtures, not the scientific state above. The complete Loom → Portable AIA → Marrowline continuation → origin-return journey still has unresolved continuity, recovery, return-candidate and empirical measurement questions documented in 11-HANDOFF-JOURNEY-DIAGNOSIS.md. CI/release publication cannot satisfy the Golden Egg or reopen Western Horizon.
+
+**Golden Egg: UNEARNED. Western Horizon: empirical-shore 𝄐.**
