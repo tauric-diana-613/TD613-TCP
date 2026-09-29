@@ -77,7 +77,7 @@ try{
    // its first frame, rather than toggling a live ambient clock after boot.
    await page.waitForFunction(()=>document.querySelector('#marrowlineLivingGeometry')?.dataset.pendingFrames==='0');
    assert.equal(posts,0);
-   assert.equal(await page.locator('#khonapolitWaive').isChecked(),true,'ordinary workspace starts in explicit unissued research mode');
+   assert.equal(await page.locator('#khonapolitWaive').isChecked(),false,'ordinary workspace starts with Safe Harbor issuance asleep');
    assert.equal(await page.locator('#khonapolitMessages').evaluate(e=>e.scrollTop),0,'welcome remains at the top');
    assert.equal(await page.locator('#speakingPanel .vessel-head [data-living-target="invocationPanel"]').count(),0,
      'redundant Keys & settings header button is absent, not merely hidden or relocated');
