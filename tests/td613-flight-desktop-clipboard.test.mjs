@@ -12,7 +12,7 @@ const injector = fs.readFileSync(injectorPath, 'utf8');
 const OLD_PHRASE = 'When authoring, stay academically rigorous yet grounded in high speculation.';
 const NEW_PHRASE = 'When reasoning and authoring, stay academically rigorous, and rigorous (but imaginative) to forensic AI empiricism, yet both rigors grounded in high speculation.';
 const SOURCE_SCRIPT_TAG = '<script src="/safe-harbor/td613-flight-clipboard-fidelity.js?v=20260722-desktop-linebreak-v1"></script>';
-const SERVED_SCRIPT_URL = '/safe-harbor/td613-flight-clipboard-fidelity.js?v=20260817-desktop-semantic-paragraph-v4';
+const SERVED_SCRIPT_URL = '/safe-harbor/td613-flight-clipboard-fidelity.js?v=20260929-desktop-linebreak-v5';
 
 assert.equal(html.includes(OLD_PHRASE), false, 'legacy Flight phrase must be absent');
 assert.ok((html.split(NEW_PHRASE).length - 1) >= 2, 'visible label and generated phrase must both use the new wording');
@@ -21,7 +21,7 @@ assert.match(html, /blocks\.join\("\\n\\n"\)/u, 'Flight builder must create lite
 assert.ok(injector.includes(SERVED_SCRIPT_URL), 'production Flight injector must serve the current clipboard asset epoch');
 assert.match(injector, /CLIPBOARD_ASSET_SOURCE/u);
 assert.match(injector, /CLIPBOARD_ASSET_CURRENT/u);
-assert.match(source, /td613\.flight\.clipboard-fidelity\/2026-08-17-v4/u);
+assert.match(source, /td613\.flight\.clipboard-fidelity\/2026-09-29-v5/u);
 assert.match(source, /desktop-dual-mime-copy/u);
 assert.match(source, /mobile-writeText/u);
 assert.match(source, /semanticParagraphHtml/u);
@@ -255,7 +255,7 @@ function createHarness({ mobile = false } = {}) {
 {
   const harness = createHarness({ mobile: false });
   const sample = 'Paragraph one.\n\nParagraph two.\nLine two.\n\nFinal paragraph.';
-  const expectedHtml = '<div data-td613-flight-clipboard="semantic-paragraphs"><p>Paragraph one.</p><p>Paragraph two.<br>Line two.</p><p>Final paragraph.</p></div>';
+  const expectedHtml = '<div data-td613-flight-clipboard="exact-linebreaks" style="white-space:pre-wrap">Paragraph one.<br><br>Paragraph two.<br>Line two.<br><br>Final paragraph.</div>';
   harness.output.value = sample;
   harness.output.setSelectionRange(4, 11, 'forward');
 
@@ -266,7 +266,7 @@ function createHarness({ mobile = false } = {}) {
   assert.deepEqual(
     harness.clipboardEvents,
     [{ plain: sample, html: expectedHtml }],
-    'desktop Output copy must explicitly put exact plain text and semantic paragraph HTML on the real copy-event clipboard'
+    'desktop Output copy must explicitly put exact plain text and exact line-break HTML on the real copy-event clipboard'
   );
   assert.deepEqual(harness.nativeCopies, [], 'desktop Output copy must cancel default textarea serialization after owning clipboardData');
   assert.deepEqual(harness.textWrites, [], 'successful desktop copy-event override must not detour through async writeText');
@@ -282,8 +282,8 @@ function createHarness({ mobile = false } = {}) {
   const api = harness.context.window.TD613FlightClipboardFidelity;
   assert.equal(
     api.semanticParagraphHtml('A & <B>\ninside\n\nC\n\n\nD'),
-    '<div data-td613-flight-clipboard="semantic-paragraphs"><p>A &amp; &lt;B&gt;<br>inside</p><p>C</p><p><br></p><p>D</p></div>',
-    'semantic HTML must escape text, keep single newlines inside a paragraph, and preserve additional blank lines explicitly'
+    '<div data-td613-flight-clipboard="exact-linebreaks" style="white-space:pre-wrap">A &amp; &lt;B&gt;<br>inside<br><br>C<br><br><br>D</div>',
+    'desktop rich HTML must escape text and preserve every literal newline explicitly'
   );
 }
 
