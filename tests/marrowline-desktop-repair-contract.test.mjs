@@ -365,7 +365,7 @@ test('ordinary conversation chrome uses Send left and a minimalist retry copy cl
   assert.equal(release.composer.clearConfirmation, 'center-screen-modal-Clear-conversation-Yes-No-with-backdrop');
   assert.equal(release.composer.operatorVoiceSelection, false);
   assert.equal(release.composer.fixedConversationRoute, 'Kʰonapolit → Tauric Diana bots');
-  assert.equal(release.composer.unissuedResearchMode, 'checked-by-default-disables-and-excludes-shi');
+  assert.equal(release.composer.unissuedResearchMode, 'unchecked-by-default; checking enables SHI; unchecked excludes SHI');
   assert.match(css, /\.marrowline-clear-backdrop\{position:fixed;inset:0/);
   assert.match(css, /\.marrowline-clear-confirmation\{position:fixed;left:50%;top:50%;transform:translate\(-50%,-50%\)/);
   assert.match(js, /operatorSeal: 'receipt-instrument-explicit-operator'/);
