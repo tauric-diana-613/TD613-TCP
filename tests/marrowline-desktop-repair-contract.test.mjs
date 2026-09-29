@@ -235,6 +235,20 @@ test('staged attachments have two temporary access points and the composer contr
     'More-with-this-reply actions use the smaller preloaded-prompt-derived button grammar');
 });
 
+test('Clear conversation deletes the active archive record and returns to transient landing state', () => {
+  const clearStart = terminalJs.indexOf("byId(doc, 'clearKhonapolitSession')?.addEventListener");
+  const clearEnd = terminalJs.indexOf("byId(doc, 'copyKhonapolitTranscript')?.addEventListener", clearStart);
+  assert.ok(clearStart >= 0 && clearEnd > clearStart, 'clear handler remains inspectable');
+  const clearHandler = terminalJs.slice(clearStart, clearEnd);
+  assert.match(clearHandler, /threadLibrary\.remove\(clearedThreadId\)/,
+    'Clear conversation deletes its durable archive record');
+  assert.match(clearHandler, /activeThread = null/);
+  assert.match(clearHandler, /setActiveId\(null\)/);
+  assert.match(clearHandler, /sessionStorage\.removeItem\(SESSION_KEY\)/);
+  assert.doesNotMatch(clearHandler, /scheduleSave\(/,
+    'cleared empty state must never be saved back as a speaking-grove phantom');
+});
+
 test('starter carousel keeps its left rail while using one compact glass control grammar', () => {
   const assayRows = js.match(/^  \['[^\n]+$/gm) || [];
   assert.equal(assayRows.length + MARROWLINE_MISSION_ASSAYS.length, release.composer.starterCarousel.assayPrompts);
