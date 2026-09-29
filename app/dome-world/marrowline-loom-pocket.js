@@ -28,7 +28,7 @@ function installStyle(doc) {
 .marrowline-aia-pocket-control{position:relative;z-index:72;display:flex;align-items:center;gap:7px;order:0;flex:none}
 .marrowline-aia-plus{display:inline-grid;place-items:center;width:44px;height:44px;min-width:44px;padding:0;border:1px solid rgba(155,222,197,.48);border-radius:50%;background:rgba(31,52,60,.78);color:#e8f5ec;font:400 25px/1 var(--sans,system-ui,sans-serif);text-transform:none;letter-spacing:0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.025)}
 .marrowline-aia-plus:hover,.marrowline-aia-plus:focus-visible{border-color:#9fe4cc;background:rgba(50,83,83,.9)}
-.marrowline-aia-plus::after{content:'';position:absolute;right:1px;top:1px;width:9px;height:9px;border-radius:50%;background:#9fe4cc;box-shadow:0 0 14px rgba(159,228,204,.8)}
+.marrowline-aia-plus::after{content:none}
 .marrowline-aia-ready-label{color:#a9cabd;font:600 10px/1.25 var(--sans,system-ui,sans-serif);letter-spacing:.04em;white-space:nowrap}
 .marrowline-aia-menu{position:fixed;z-index:2147483000;display:grid;gap:4px;width:min(340px,calc(100vw - 28px));max-height:min(62dvh,500px);overflow:auto;padding:11px;border:1px solid rgba(150,213,191,.42);border-radius:16px;background:#211a46f7;box-shadow:0 18px 64px rgba(0,0,0,.7);overscroll-behavior:contain;pointer-events:auto}
 .marrowline-aia-menu[hidden]{display:none!important}
