@@ -494,7 +494,8 @@
       "requestBinding": "switch/create/delete/branch blocked while provider request is in flight or attachments are staged",
       "history": "full archive preserved locally; conversation list remains sorted by real persisted activity, while passive thread reads/switches leave updatedAt unchanged; provider request context retains existing bounded recent-history behavior",
       "scope": "same-browser, same-device; no account or cross-device synchronization",
-      "titlePolicy": "local prompt-first subject title with no API call; existing titles and user renames preserved"
+      "titlePolicy": "local prompt-first subject title with no API call; existing titles and user renames preserved",
+      "activityOrder": "newest meaningful durable thread activity first; read-only opening/navigation never rewrites updatedAt or changes list order"
     },
     "stopTransmission": "Send becomes same-size outlined-square Stop while request is active; browser AbortController plus abort-race guard for unresolved response/body promises; preserves task, attachments and prior history; no automatic retry after operator cancel",
     "mobileComposer": "vertical + above Send/Stop in a dedicated left column beside the textarea, aligned to its top; compact glyph-only flat violet circle with thin cyan rim; utilities in reserved lower-right textarea space; no lower action band or overlap with text or dock",
