@@ -934,6 +934,33 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   const receiptProtected = byId(doc, 'marrowlineReceiptProtected');
   const receiptGateInput = byId(doc, 'marrowlineReceiptShi');
   const receiptGateStatus = byId(doc, 'marrowlineReceiptGateStatus');
+
+  // iOS Safari auto-zooms focused form controls whose rendered text is below
+  // its focus threshold. Keep this one Receipt ingress field visually untouched:
+  // temporarily cap viewport zoom only for the focus gesture, then restore the
+  // exact authored viewport string on blur.
+  if (receiptGateInput) {
+    const viewportMeta = doc.querySelector('meta[name="viewport"]');
+    let receiptViewportBeforeFocus = null;
+    const lockReceiptFocusZoom = () => {
+      if (!root.matchMedia?.('(max-width: 860px)')?.matches || !viewportMeta || receiptViewportBeforeFocus !== null) return;
+      receiptViewportBeforeFocus = viewportMeta.getAttribute('content') || '';
+      const withoutMaximum = receiptViewportBeforeFocus
+        .replace(/\s*,?\s*maximum-scale\s*=\s*[^,]+/giu, '')
+        .replace(/^\s*,|,\s*$/gu, '');
+      viewportMeta.setAttribute('content', [withoutMaximum, 'maximum-scale=1'].filter(Boolean).join(', '));
+    };
+    const restoreReceiptFocusZoom = () => {
+      if (!viewportMeta || receiptViewportBeforeFocus === null) return;
+      viewportMeta.setAttribute('content', receiptViewportBeforeFocus);
+      receiptViewportBeforeFocus = null;
+    };
+    receiptGateInput.addEventListener('touchstart', lockReceiptFocusZoom, { passive: true });
+    receiptGateInput.addEventListener('pointerdown', lockReceiptFocusZoom, { passive: true });
+    receiptGateInput.addEventListener('focus', lockReceiptFocusZoom);
+    receiptGateInput.addEventListener('blur', restoreReceiptFocusZoom);
+    root.addEventListener?.('pagehide', restoreReceiptFocusZoom);
+  }
   const lockReceipts = () => {
     if (receiptGate) receiptGate.hidden = false;
     if (receiptProtected) receiptProtected.hidden = true;

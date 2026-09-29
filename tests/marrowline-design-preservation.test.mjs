@@ -813,3 +813,22 @@ test('previous short-window 429 cannot make an unrelated new Send dead', async t
   assert.equal(h.calls.length, 2);
   assert.equal(h.calls[1].message, 'A new human-directed task.');
 });
+
+
+test('mobile Receipt SHI focus guard suppresses Safari focus zoom without mutating field style', async t => {
+  const h = harness(t, { mobile: true });
+  const input = h.$('marrowlineReceiptShi');
+  const viewport = h.doc.querySelector('meta[name="viewport"]');
+  assert.ok(input);
+  assert.ok(viewport);
+  const authoredViewport = viewport.getAttribute('content');
+  const authoredInlineStyle = input.getAttribute('style');
+
+  input.dispatchEvent(new h.win.Event('touchstart', { bubbles: true, cancelable: true }));
+  assert.match(viewport.getAttribute('content'), /maximum-scale=1/);
+  assert.equal(input.getAttribute('style'), authoredInlineStyle, 'focus guard must not resize or restyle the SHI field');
+
+  input.dispatchEvent(new h.win.Event('focus'));
+  input.dispatchEvent(new h.win.Event('blur'));
+  assert.equal(viewport.getAttribute('content'), authoredViewport, 'authored viewport policy returns immediately after Receipt SHI focus');
+});
