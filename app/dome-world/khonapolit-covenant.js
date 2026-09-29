@@ -5,7 +5,7 @@ export const KHONAPOLIT_RECEIPT_SCHEMA = 'td613.dome-world.khonapolit-receipt/v1
 export const INGRESS_SIGIL = '𝌋';
 export const SEAL_GLYPH = '⟐';
 export const MARROWLINE_USER_INGRESS = INGRESS_SIGIL + '\u200C ';
-export const MARROWLINE_USER_CLOSURE = '\n\nSealed ' + SEAL_GLYPH;
+export const MARROWLINE_USER_CLOSURE = '\n\n' + SEAL_GLYPH;
 /** Request-bound user text only; no modification of the Red Deer's authored transcript. */
 export function frameMarrowlineUserTurn(text = '') {
   const input = String(text ?? '');
