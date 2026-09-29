@@ -366,25 +366,25 @@ test('timeout and cancellation diagnostics retain the exact interrupted stage', 
   assert.equal(cancelled.body.observations.provider_calls, 0);
 });
 
-test('a single slow generation can complete after the old 32s ceiling, inside the host budget', async t => {
+test('a single slow generation can complete beyond the old 50s Loom ceiling, inside the host budget', async t => {
   t.mock.timers.enable({ apis: ['setTimeout', 'Date'], now: 0 });
   let calls = 0;
   const h = harness({ fetchImpl: () => {
     calls += 1;
-    return new Promise(resolve => setTimeout(() => resolve({ ok: true, status: 200, json: async () => payload() }), 40000));
+    return new Promise(resolve => setTimeout(() => resolve({ ok: true, status: 200, json: async () => payload() }), 90000));
   } });
   const pending = h.run();
   await new Promise(resolve => setImmediate(resolve));
-  t.mock.timers.tick(40000);
+  t.mock.timers.tick(90000);
   const result = await pending;
   assert.equal(result.status, 200);
   assert.equal(calls, 1);
-  assert.equal(result.body.observations.elapsed_ms, 40000);
-  assert.equal(result.body.observations.deadline_ms, LOOM_TASK_TIMEOUT_MS);
-  assert.equal(result.body.observations.stage_elapsed_ms['provider-transport'], 40000);
+  assert.equal(result.body.observations.elapsed_ms, 90000);
+  assert.equal(LOOM_TASK_TIMEOUT_MS, 210000);\n  assert.equal(result.body.observations.deadline_ms, LOOM_TASK_TIMEOUT_MS);
+  assert.equal(result.body.observations.stage_elapsed_ms['provider-transport'], 90000);
 });
 
-test('the 50s total deadline reserves request-local time for a diversified fallback when the primary stalls', async t => {
+test('the 210s Loom wall gives a stalled primary a bounded 50s window and preserves fallback runway', async t => {
   t.mock.timers.enable({ apis: ['setTimeout', 'Date'], now: 0 });
   let calls = 0;
   const h = harness({
@@ -398,16 +398,15 @@ test('the 50s total deadline reserves request-local time for a diversified fallb
   const pending = h.run();
   t.mock.timers.tick(5000);
   await new Promise(resolve => setImmediate(resolve));
-  t.mock.timers.tick(30000);
+  t.mock.timers.tick(50000);
   await new Promise(resolve => setImmediate(resolve));
-  t.mock.timers.tick(15000);
   const result = await pending;
   assert.equal(result.status, 200);
   assert.equal(calls, 2);
   assert.equal(result.body.observations.provider_calls, 2);
   assert.equal(result.body.observations.model, 'gemini-second');
   assert.equal(result.body.observations.provider_attempt_timings[0].timed_out, true);
-  assert.ok(result.body.observations.provider_attempt_timings[0].timeout_ms < 45000);
+  assert.equal(result.body.observations.provider_attempt_timings[0].timeout_ms, 50000);
   assert.equal(result.body.observations.provider_attempt_timings[1].status, 200);
   assert.ok(result.body.observations.elapsed_ms < LOOM_TASK_TIMEOUT_MS);
 });
