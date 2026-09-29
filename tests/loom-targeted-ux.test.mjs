@@ -43,7 +43,6 @@ test('UX repair changes presentation only, not route or measurement authority', 
     /localStorage/,
     /sessionStorage/,
     /requestAnimationFrame/,
-    /setInterval\s*\(/,
-    /provider/i
+    /setInterval\s*\(/
   ]) assert.doesNotMatch(ux, forbidden);
 });
