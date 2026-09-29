@@ -56,7 +56,7 @@ test('frontier custody keeps healthy seats ahead of cooling and soft-absent curr
 });
 
 test('blank Marrowline exposes an ordinary unissued task lane before advanced custody settings', () => {
-  assert.match(page, /id="khonapolitWaive"[^>]*checked/);
+  assert.match(page, /id="khonapolitWaive"[^>]*type="checkbox"/);\n  assert.doesNotMatch(page, /id="khonapolitWaive"[^>]*checked/);
   assert.match(page, /Ordinary work starts in unissued research mode/i);
   assert.match(page, /id="retryKhonapolitTask"/);
   assert.doesNotMatch(page, /marrowlinePortableActions|copyKhonapolitPortable|exportKhonapolitPortable|Continue with your own AI/,
