@@ -163,7 +163,7 @@ test('independent Marrowline origin has frontier-only fallback, ordinary entry a
   assert.equal(allocateKhonapolitAttemptTimeout({ remainingMs: 205000, index: 0, modelCount: 1, fairShare: true }), 50000);
   const page = fs.readFileSync('app/dome-world/marrowline.html', 'utf8');
   const living = fs.readFileSync('app/dome-world/marrowline-living-chat.js', 'utf8');
-  assert.match(page, /id="khonapolitWaive"[^>]*checked/);
+  assert.match(page, /id="khonapolitWaive"[^>]*type="checkbox"/);\n  assert.doesNotMatch(page, /id="khonapolitWaive"[^>]*checked/);
   assert.match(page, /Ordinary work starts in unissued research mode/i);
   assert.match(page, /id="retryKhonapolitTask"/);
   assert.doesNotMatch(page, /marrowlinePortableActions|copyKhonapolitPortable|exportKhonapolitPortable|Continue with your own AI/);
