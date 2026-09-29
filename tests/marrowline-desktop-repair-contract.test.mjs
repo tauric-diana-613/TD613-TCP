@@ -14,6 +14,7 @@ const page = fs.readFileSync('app/dome-world/marrowline.html', 'utf8');
 const mobileShellCss = fs.readFileSync('app/dome-world/marrowline-mobile-shell.css', 'utf8');
 const livingChatJs = fs.readFileSync('app/dome-world/marrowline-living-chat.js', 'utf8');
 const terminalJs = fs.readFileSync('app/dome-world/marrowline-terminal.js', 'utf8');
+const threadsJs = fs.readFileSync('app/dome-world/marrowline-threads.js', 'utf8');
 const physicalJs = fs.readFileSync('app/dome-world/marrowline-physical-device-repair.js', 'utf8');
 const loomPocketJs = fs.readFileSync('app/dome-world/marrowline-loom-pocket.js', 'utf8');
 const release = JSON.parse(fs.readFileSync('app/dome-world/marrowline.release.json', 'utf8'));
@@ -421,13 +422,11 @@ test('clear conversation returns to a transient landing state without persisting
 });
 
 test('passive conversation reads never reorder the archive as recent activity', () => {
-  assert.match(terminalJs, /const threadContentSnapshot = record =>/);
-  assert.match(terminalJs, /A passive read\/switch is not thread activity and must not touch updatedAt/);
-  assert.match(terminalJs, /JSON\.stringify\(threadContentSnapshot\(snapshot\)\) === JSON\.stringify\(threadContentSnapshot\(activeThread\)\)/);
-  assert.match(terminalJs, /return saveChain/);
+  assert.match(threadsJs, /delete value\.updatedAt/);
+  assert.match(threadsJs, /if \(existing && comparable\(existing\) === comparable\(normalized\)\) return copy\(existing\)/);
+  assert.match(threadsJs, /\(b\.updatedAt \|\| ''\)\.localeCompare\(a\.updatedAt \|\| ''\)/);
   assert.match(release.composer.threadLibrary.history, /passive thread reads\/switches leave updatedAt unchanged/i);
 });
-
 test('final Marrowline chrome preserves the Gate single-sequence hierarchy', () => {
   assert.match(css, /Gate handoff completion/);
   assert.match(css, /#gatePanel \.panel-body\.gate-grid\{grid-template-columns:minmax\(0,1fr\)!important/);
