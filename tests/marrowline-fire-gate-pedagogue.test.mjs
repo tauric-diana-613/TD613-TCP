@@ -79,22 +79,28 @@ test('adversarial receipt keeps the comparison and falsifiers explicit', () => {
   assert.match(assay.claimCeiling, /human-operated-adversarial-boundary-assay/);
 });
 
-test('Pedagogue Gate instrument keeps Depth/Breadth paired and secondary actions compact on mobile and desktop', async () => {
+test('Pedagogue Gate is a single-column condition → action → outcome sequence', async () => {
   const css = await readFile(pedagogueCssUrl, 'utf8');
-  assert.match(css, /Pedagogue instrument geometry v2/);
-  assert.match(css, /#gatePanel #marrowlineForm \.row\{[\s\S]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)!important/);
-  assert.match(css, /#gatePanel \.ritual-actions #buildLocalMarrowline,[\s\S]*#gatePanel \.ritual-actions #copyMarrowlineReceipt\{[\s\S]*grid-column:auto!important/);
-  assert.match(css, /body\[data-mobile-view="gate"\] #gatePanel #marrowlineForm \.row\{[\s\S]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)!important/);
-  assert.match(css, /body\[data-mobile-view="gate"\] #gatePanel \.ritual-actions #buildLocalMarrowline,[\s\S]*#gatePanel \.ritual-actions #copyMarrowlineReceipt\{[\s\S]*grid-column:auto!important/);
+  assert.match(css, /Gate single-sequence UX v3/);
+  assert.match(css, /\.gate-mode-choices\{[\s\S]*grid-template-columns:1fr/);
+  assert.match(css, /#gatePanel \.panel-body\.gate-grid\{[\s\S]*grid-template-columns:minmax\(0,1fr\)!important/);
+  assert.match(css, /#gatePanel #marrowlineForm \.marrowline-operator-field\[hidden\][\s\S]*display:none!important/);
+  assert.match(css, /#gatePanel \.gate-technical-evidence/);
+  assert.match(css, /body\[data-mobile-view="gate"\] #gatePanel \.ritual-actions\{[\s\S]*grid-template-columns:minmax\(0,1fr\) auto!important/);
 });
 
-test('human-facing Gate guide translates changing receipts while leaving technical receipt intact', async () => {
+test('human-facing Gate guide selects one condition at a time and keeps technical evidence optional', async () => {
   const dom = new JSDOM(`<!doctype html><html><head></head><body>
-    <details id="gatePanel"><div class="gate-controls">
+    <details id="gatePanel"><div class="panel-body gate-grid"><section class="gate-controls">
       <p class="panel-note">existing note</p>
-      <form id="marrowlineForm"></form>
-    </div></details>
-    <pre id="marrowlineReceipt"></pre>
+      <form id="marrowlineForm">
+        <label class="field-label" for="marrowlineSeed">Seed<input id="marrowlineSeed"></label>
+        <label class="field-label marrowline-operator-field" for="marrowlineOperatorToken">Token<input id="marrowlineOperatorToken"></label>
+        <div class="row"><select id="marrowlineDepth"><option>4</option></select><select id="marrowlineBreadth"><option>6</option></select></div>
+        <div class="ritual-actions"><button type="submit">Fire live Marrowline</button><button id="buildLocalMarrowline" type="button">Build local fallback</button><button id="copyMarrowlineReceipt" type="button">Copy gate receipt</button></div>
+      </form>
+      <div id="marrowlineStatus"></div>
+    </section><section class="gate-output"><canvas id="marrowlineCanvas"></canvas><div id="marrowlineRail"></div><pre id="marrowlineReceipt"></pre></section></div></details>
   </body></html>`, { url: 'https://td613.com/dome-world/marrowline.html' });
   const { window } = dom;
   const before = Object.getOwnPropertyDescriptor(globalThis, 'CustomEvent');
@@ -103,8 +109,39 @@ test('human-facing Gate guide translates changing receipts while leaving technic
     const installed = installMarrowlineGatePedagogue(window.document, window);
     assert.equal(installed.consequenceBeforeOntology, true);
     assert.equal(installed.sameEndpointNotSameRoute, true);
-    assert.ok(window.document.getElementById('marrowlineGatePedagogue'));
-    assert.match(window.document.getElementById('marrowlineGatePedagogue').textContent, /Three ways to challenge one Gate/);
+    assert.equal(installed.singleColumnSequence, true);
+    assert.equal(installed.technicalEvidenceCollapsedByDefault, true);
+    const guide = window.document.getElementById('marrowlineGatePedagogue');
+    assert.match(guide.textContent, /Choose the Gate condition/);
+    assert.equal(guide.querySelectorAll('.gate-mode-choice').length, 3);
+
+    const submit = window.document.querySelector('#marrowlineForm button[type="submit"]');
+    const local = window.document.getElementById('buildLocalMarrowline');
+    const tokenField = window.document.getElementById('marrowlineOperatorToken').closest('label');
+    const seedField = window.document.getElementById('marrowlineSeed').closest('label');
+    assert.equal(window.document.getElementById('gatePanel').dataset.selectedGateMode, MARROWLINE_GATE_MODES.PUBLIC_ABSORPTION);
+    assert.equal(submit.textContent, 'Fire public boundary');
+    assert.equal(submit.hidden, false);
+    assert.equal(local.hidden, true);
+    assert.equal(tokenField.hidden, true);
+    assert.equal(seedField.hidden, true);
+
+    guide.querySelector(`[data-gate-mode="${MARROWLINE_GATE_MODES.LOCAL_CONTROL}"]`).click();
+    assert.equal(local.hidden, false);
+    assert.equal(submit.hidden, true);
+    assert.equal(seedField.hidden, false);
+
+    guide.querySelector(`[data-gate-mode="${MARROWLINE_GATE_MODES.OPERATOR_BYPASS_CONTROL}"]`).click();
+    assert.equal(submit.hidden, false);
+    assert.equal(submit.textContent, 'Fire operator control');
+    assert.equal(tokenField.hidden, false);
+    assert.equal(seedField.hidden, true);
+
+    const technical = window.document.querySelector('.gate-technical-evidence');
+    assert.ok(technical);
+    assert.equal(technical.open, false);
+    assert.ok(technical.querySelector('.gate-output'));
+    assert.ok(technical.querySelector('#marrowlineReceipt'));
 
     const receiptNode = window.document.getElementById('marrowlineReceipt');
     const publicReceipt = {
