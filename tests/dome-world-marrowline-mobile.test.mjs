@@ -26,7 +26,7 @@ assert.ok(document.getElementById('gatePanel'));
 assert.equal(document.querySelectorAll('.mobile-dock [data-mobile-target]').length, 5);
 assert.deepEqual(
   [...document.querySelectorAll('.mobile-dock [data-mobile-target]')].map((node) => node.dataset.mobileTarget),
-  ['speakingPanel', 'invocationPanel', 'receiptPanel', 'corpusPanel', 'gatePanel']
+  ['speakingPanel', 'invocationPanel', 'gatePanel', 'corpusPanel', 'receiptPanel']
 );
 assert.match(document.querySelector('.relay-legend')?.textContent || '', /Kʰonapolit → Tauric Diana bots/);
 assert.doesNotMatch(document.querySelector('.relay-legend')?.textContent || '', /Gemini instrument/);
