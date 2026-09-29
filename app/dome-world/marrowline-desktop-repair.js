@@ -287,7 +287,7 @@ function installUniversalContextPlus(doc, root) {
     const text = doc.createElement('span'); text.textContent = label;
     const small = doc.createElement('small'); small.textContent = note;
     button.append(glyph, text, small);
-    return { button, small };
+    return { button, text, small };
   };
   const fileItem = makeItem('marrowlineContextFile', '▱', 'Upload file', 'TXT, Markdown, CSV, JSON, or PDF');
   const photoItem = makeItem('marrowlineContextPhoto', '▧', 'Upload photo', 'Image attachment for the next message');
@@ -318,11 +318,19 @@ function installUniversalContextPlus(doc, root) {
     if (typeof root.requestAnimationFrame === 'function') root.requestAnimationFrame(callback);
     else (root.setTimeout ?? setTimeout)(callback, 0);
   };
+  let loomCueAcknowledged = false;
   const refreshLoom = () => {
     let awake = false;
-    try { awake = Boolean(peekLastConsumedLoomAiHandoff()); } catch {}
+    try {
+      awake = doc.documentElement?.dataset?.loomTaskImport === 'staged'
+        && Boolean(peekLastConsumedLoomAiHandoff());
+    } catch {}
     plus.dataset.loomAwake = String(awake);
+    plus.dataset.loomAttention = String(awake && !loomCueAcknowledged);
+    loomItem.button.dataset.loomAwake = String(awake);
+    loomItem.text.textContent = awake ? 'Loom demo' : 'Loom';
     loomItem.small.textContent = awake ? 'Continue the Loom handoff already staged here' : 'Open Loom in a new tab';
+    if (!awake) loomCueAcknowledged = false;
   };
   const stage = async (input, kind) => {
     root.dispatchEvent?.(new root.CustomEvent('td613:marrowline:attachment-staging-state', {
@@ -361,13 +369,23 @@ function installUniversalContextPlus(doc, root) {
     const opening = menu.hidden;
     menu.hidden = !opening;
     plus.setAttribute('aria-expanded', String(opening));
-    if (opening) { refreshLoom(); nextFrame(position); }
+    if (opening) {
+      refreshLoom();
+      if (plus.dataset.loomAwake === 'true') {
+        loomCueAcknowledged = true;
+        plus.dataset.loomAttention = 'false';
+      }
+      nextFrame(position);
+    }
   });
   root.addEventListener?.(MARROWLINE_ATTACHMENT_CHANGE_EVENT, event => {
     const state = event.detail || attachmentState();
     plus.dataset.attachmentCount = String(state.count || 0);
   });
-  root.addEventListener?.('td613:marrowline:loom-pocket-ready', refreshLoom);
+  root.addEventListener?.('td613:marrowline:loom-pocket-ready', () => {
+    loomCueAcknowledged = false;
+    refreshLoom();
+  });
   doc.addEventListener('click', event => {
     if (menu.hidden || menu.contains(event.target) || plus.contains(event.target)) return;
     close();
@@ -530,44 +548,60 @@ function installTranscriptCustody(doc, root) {
   return true;
 }
 
-function installDesktopInstrumentTabs(doc, root) {
-  if (root.matchMedia?.('(max-width:860px)')?.matches) return false;
-  const head = doc.querySelector('.vessel-head');
+export function installDesktopInstrumentTabs(doc, root) {
   const tools = doc.querySelector('.living-tools');
-  if (!head || !tools || byId(doc, 'marrowlineDesktopToolTabs')) return false;
+  if (!tools || byId(doc, 'marrowlineDesktopToolTabs')) return false;
   const tabs = doc.createElement('nav');
   tabs.id = 'marrowlineDesktopToolTabs';
   tabs.className = 'desktop-tool-tabs';
   tabs.setAttribute('aria-label', 'Marrowline instruments');
+  tabs.setAttribute('role', 'tablist');
   const specs = [
-    ['invocationPanel', 'Keys'], ['gatePanel', 'Gate'], ['corpusPanel', 'Stories'], ['receiptPanel', 'Receipt']
+    ['gatePanel', 'Gate'], ['invocationPanel', 'Keys'], ['corpusPanel', 'Stories'], ['receiptPanel', 'Receipts']
   ];
-  const close = () => {
-    tools.dataset.desktopOpen = 'false';
-    delete tools.dataset.desktopActive;
-    tabs.querySelectorAll('button').forEach(button => button.setAttribute('aria-pressed', 'false'));
+  const media = root.matchMedia?.('(max-width:860px)');
+  const select = targetId => {
+    tools.dataset.desktopActive = targetId;
+    tools.dataset.desktopOpen = 'true';
+    specs.forEach(([id]) => {
+      const panel = byId(doc, id);
+      const button = tabs.querySelector(`[data-target="${id}"]`);
+      const active = id === targetId;
+      if (panel?.tagName === 'DETAILS' && !media?.matches) panel.open = active;
+      button?.setAttribute('aria-selected', String(active));
+      button?.setAttribute('aria-pressed', String(active));
+      if (button) button.tabIndex = active ? 0 : -1;
+    });
   };
-  specs.forEach(([targetId, label]) => {
+  specs.forEach(([targetId, label], index) => {
     const button = doc.createElement('button');
-    button.type = 'button'; button.textContent = label; button.dataset.target = targetId; button.setAttribute('aria-pressed', 'false');
-    button.addEventListener('click', event => {
-      event.stopPropagation();
-      const same = tools.dataset.desktopOpen === 'true' && tools.dataset.desktopActive === targetId;
-      if (same) { close(); return; }
-      [...tools.children].filter(panel => panel.tagName === 'DETAILS').forEach(panel => { panel.open = panel.id === targetId; });
-      tools.dataset.desktopActive = targetId;
-      tools.dataset.desktopOpen = 'true';
-      tabs.querySelectorAll('button').forEach(other => other.setAttribute('aria-pressed', String(other === button)));
+    button.type = 'button'; button.textContent = label; button.dataset.target = targetId;
+    button.id = `marrowlineInstrumentTab-${targetId}`;
+    button.setAttribute('role', 'tab');
+    button.setAttribute('aria-controls', targetId);
+    button.addEventListener('click', () => select(targetId));
+    button.addEventListener('keydown', event => {
+      const next = event.key === 'ArrowRight' ? (index + 1) % specs.length
+        : event.key === 'ArrowLeft' ? (index + specs.length - 1) % specs.length
+        : event.key === 'Home' ? 0 : event.key === 'End' ? specs.length - 1 : null;
+      if (next === null) return;
+      event.preventDefault(); select(specs[next][0]); tabs.children[next].focus();
     });
     tabs.append(button);
   });
-  head.append(tabs);
-  const x = doc.createElement('button');
-  x.type = 'button'; x.className = 'desktop-tools-close'; x.textContent = 'x'; x.setAttribute('aria-label', 'Close instruments'); x.addEventListener('click', close);
-  tools.prepend(x);
-  doc.addEventListener('click', event => { if (tools.dataset.desktopOpen === 'true' && !tools.contains(event.target) && !tabs.contains(event.target)) close(); });
-  doc.addEventListener('keydown', event => { if (event.key === 'Escape' && tools.dataset.desktopOpen === 'true') close(); });
-  close();
+  tools.prepend(tabs);
+  const syncViewport = () => {
+    const mobile = Boolean(media?.matches);
+    specs.forEach(([id]) => {
+      const panel = byId(doc, id);
+      if (!panel) return;
+      if (mobile) { panel.removeAttribute('role'); panel.removeAttribute('aria-labelledby'); }
+      else { panel.setAttribute('role', 'tabpanel'); panel.setAttribute('aria-labelledby', `marrowlineInstrumentTab-${id}`); }
+    });
+    if (!mobile) select(tools.dataset.desktopActive || 'gatePanel');
+  };
+  media?.addEventListener?.('change', syncViewport);
+  syncViewport();
   return true;
 }
 

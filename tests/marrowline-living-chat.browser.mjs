@@ -266,7 +266,7 @@ try{
    const followup = page.locator('.relay-message > .marrowline-reply-tool-row > .reply-next-actions');
    assert.equal(await followup.evaluate(el=>el.open),false,'native reply disclosure starts folded');
    assert.deepEqual(await followup.locator('.reply-next-choices button:not([hidden])').allTextContents(),
-     ['Check the claims','Make a plan','View receipt','Branch']);
+     ['Check the claims','Make a plan','Receipts','Branch']);
    const followupStyle=await followup.locator('summary').evaluate(el=>({
      border:getComputedStyle(el).borderTopStyle,background:getComputedStyle(el).backgroundImage,
      radius:getComputedStyle(el).borderRadius
@@ -291,11 +291,16 @@ try{
    });
    assert.equal(await followup.locator('.reply-next-choices button').first().isVisible(),true,
      'follow-ups expand on demand: '+JSON.stringify(expanded));
+   await followup.getByRole('button',{name:'Receipts'}).click();
    if(posture.startsWith('mobile')){
-     await followup.getByRole('button',{name:'View receipt'}).click();
-     assert.equal(await page.locator('body').getAttribute('data-mobile-view'),'receipt','reply shortcut changes mobile chamber to Receipt');
-     assert.equal(await page.locator('#receiptPanel').evaluate(el=>el.open),true,'reply shortcut opens Receipt');
-   } else await followup.locator('summary').click();
+     assert.equal(await page.locator('body').getAttribute('data-mobile-view'),'receipt','reply shortcut changes mobile chamber to Receipts');
+     assert.equal(await page.locator('#receiptPanel').evaluate(el=>el.open),true,'reply shortcut opens Receipts');
+     assert.equal(await page.locator('.mobile-dock [data-mobile-target="receiptPanel"]').getAttribute('data-active'),'true','reply shortcut activates the mobile Receipts dock target');
+   } else {
+     assert.equal(await page.locator('.living-tools').getAttribute('data-desktop-active'),'receiptPanel','reply shortcut selects the persistent desktop Receipts instrument');
+     assert.equal(await page.locator('#marrowlineDesktopToolTabs [data-target="receiptPanel"]').getAttribute('aria-selected'),'true','reply shortcut selects the desktop Receipts tab');
+     assert.equal(await page.locator('#receiptPanel').evaluate(el=>el.open),true,'reply shortcut opens the desktop Receipts panel');
+   }
    assert.match(await page.locator('#khonapolitReceipt').textContent(),/SYNTHETIC_MODEL/,
      'the separate Receipt instrument retains the provider record');
    assert.match(await page.evaluate(() => window.__TD613_MARROWLINE_THREADS__.current().messages.find(x => x.role === 'model')?.relay?.apertureHeader || ''),/TECHNICAL_RUNTIME_REVIEW/,

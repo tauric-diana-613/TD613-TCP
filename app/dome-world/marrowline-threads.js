@@ -98,7 +98,19 @@ export async function createMarrowlineThreadLibrary(root = window) {
   let adapter;
   if (root.indexedDB) adapter = indexedAdapter(await openMarrowlineThreadDB(root));
   else adapter = fallbackAdapter(root);
-  const put = async record => adapter.put(copy({ ...record, schema: MARROWLINE_THREADS_SCHEMA, updatedAt: timestamp() }));
+  const comparable = record => {
+    const value = copy(record || {});
+    delete value.updatedAt;
+    return JSON.stringify(value);
+  };
+  const put = async record => {
+    const normalized = copy({ ...record, schema: MARROWLINE_THREADS_SCHEMA });
+    const existing = normalized.id ? await adapter.get(normalized.id) : null;
+    // Merely opening/reading a conversation is not thread activity. Preserve
+    // its prior recency unless some durable conversation content actually changed.
+    if (existing && comparable(existing) === comparable(normalized)) return copy(existing);
+    return adapter.put({ ...normalized, updatedAt: timestamp() });
+  };
   const get = id => adapter.get(id);
   const all = async () => (await adapter.all()).sort((a, b) =>
     (b.updatedAt || '').localeCompare(a.updatedAt || '') || a.id.localeCompare(b.id));

@@ -88,11 +88,27 @@ export function installMarrowlineLivingChat(doc = document, environment = window
     const target = doc.getElementById(id);
     if (!target) return;
     if (target.tagName === 'DETAILS') target.open = true;
-    if (doc.documentElement.classList.contains('marrowline-mobile-shell')) {
-      doc.querySelector(`.mobile-dock [data-mobile-target="${id}"]`)?.click();
-    } else target.scrollIntoView?.({ block: 'nearest', behavior: environment.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ? 'auto' : 'smooth' });
+    const behavior = environment.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ? 'auto' : 'smooth';
+    const mobile = doc.documentElement.classList.contains('marrowline-mobile-shell');
+    if (mobile) {
+      const dockButton = doc.querySelector(`.mobile-dock [data-mobile-target="${id}"]`);
+      dockButton?.click();
+      target.scrollIntoView?.({ block: 'start', behavior });
+      if (focus) dockButton?.focus?.({ preventScroll: true });
+    } else {
+      const desktopTab = doc.querySelector(`#marrowlineDesktopToolTabs [data-target="${id}"]`);
+      if (desktopTab) {
+        desktopTab.click();
+        const tools = doc.querySelector('.living-tools');
+        if (typeof tools?.scrollTo === 'function') tools.scrollTo({ top: 0, behavior });
+        else if (tools) tools.scrollTop = 0;
+        if (focus) desktopTab.focus?.({ preventScroll: true });
+      } else {
+        target.scrollIntoView?.({ block: 'nearest', behavior });
+        if (focus) target.querySelector('input,select,button')?.focus?.({ preventScroll: true });
+      }
+    }
     geometry?.update({ view: viewMap[id] || 'speak' });
-    if (focus) target.querySelector('input,select,button')?.focus({ preventScroll: true });
   };
   doc.querySelectorAll('[data-living-target]').forEach(button => button.addEventListener('click', () => openPanel(button.dataset.livingTarget)));
 
@@ -196,10 +212,10 @@ export function installMarrowlineLivingChat(doc = document, environment = window
       }
       const receiptButton = doc.createElement('button');
       receiptButton.type = 'button';
-      receiptButton.textContent = 'View receipt';
+      receiptButton.textContent = 'Receipts';
       receiptButton.addEventListener('click', () => {
         actions.open = false;
-        openPanel('receiptPanel');
+        openPanel('receiptPanel', true);
       });
       choices.append(receiptButton);
       const branchButton = doc.createElement('button');

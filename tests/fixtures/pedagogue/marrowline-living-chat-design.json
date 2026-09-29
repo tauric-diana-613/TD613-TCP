@@ -25,12 +25,16 @@
         "app/dome-world/holonomy-loom/ai-workspace.js",
         "app/dome-world/marrowline-loom-import.js",
         "tests/marrowline-design-preservation.test.mjs",
-        "tests/loom-ai-handoff.test.mjs"
+        "tests/loom-ai-handoff.test.mjs",
+        "app/dome-world/marrowline-desktop-repair.js",
+        "tests/marrowline-instrument-panel.test.mjs",
+        "scripts/marrowline-instrument-layout-witness.mjs"
       ],
       "evidence_basis": [
         "Existing explicit issuance-or-waiver and operator seal controls",
         "Static DOM control preservation; runtime synthetic checks are separate from human comprehension",
-        "2026-09-17 live skeptical episode: held first call, successful retry, held follow-up; stale success receipt and bottom-positioned response observed."
+        "2026-09-17 live skeptical episode: held first call, successful retry, held follow-up; stale success receipt and bottom-positioned response observed.",
+        "2026-09-29 operator desktop screenshots: short viewport clips composer utilities; popup Keys occludes conversation. New DOM tests establish navigation mechanics only; visual branch witness and human comprehension remain separate."
       ],
       "transformations": [
         "Move connection and provenance into reachable disclosures",
@@ -42,7 +46,8 @@
         "Completed replies open at their beginning; pending animation cannot pull a completed reply to its end.",
         "Replace route-first reply disclosure with Take this further: editable, explicitly unsent claim-review and practical-plan drafts quoting the selected reply; preserve unfinished drafts.",
         "Retain exact per-reply receipt and route under a nested Technical record; do not infer truth or completion from transport success.",
-        "Keep utilities below the textarea and compact prompt refresh in one grid row; progress notices cannot force transcript follow."
+        "Keep utilities below the textarea and compact prompt refresh in one grid row; progress notices cannot force transcript follow.",
+        "Place desktop instruments in an adjacent persistent panel with Gate selected initially; keep ordinary Chat visible. Mobile Chat remains the landing view in the center of Keys, Gate, Chat, Stories, Receipts. Tab navigation alone invokes no Gate run, Send, custody write, or authority grant."
       ],
       "station_owners": [
         "Dome-World"

@@ -123,8 +123,10 @@ test('only exact legacy auto-generated titles are retitled; operator labels and 
   const manual = await archive.create({messages,conversationTitle:'Archive Witnesses',titleSource:'operator'});
   const renamed = await archive.create({messages,conversationTitle:'My Own Label'});
   const branch = await archive.branch(old,1);
-  const longTopic = await archive.create({messages:[{role:'user',text:
-    'I underestimated the contribution was in how directly the research changed the design.'}],
+  const longTopic = await archive.create({messages:[
+    {role:'user',text:'I underestimated the contribution was in how directly the research changed the design.'},
+    {role:'model',text:glyph,receipt:{provider:{completion:{complete:true}}}}
+  ],
     conversationTitle:'I Underestimated the Contribution Was in How Directly',
     titleSource:'local-topic-v2'});
   const clippedQuestion = await archive.create({messages:[
@@ -192,5 +194,35 @@ test('speaking-grove placeholder is never durable: empty phantoms are pruned and
   assert.equal(repairedCompleted.titleSource, 'local-topic-v3-after-return');
 
   assert.equal((await archive.get(renamed.id)).conversationTitle, 'Named Empty Thread');
+  archive.close();
+});
+
+
+test('read-only conversation access preserves activity order while meaningful edits advance recency', async () => {
+  const archive = await createMarrowlineThreadLibrary(browser());
+  const waitTick = () => new Promise(resolve => setTimeout(resolve, 4));
+  const first = await archive.create({ conversationTitle: 'First', messages: [{ role: 'user', text: 'First task' }] });
+  await waitTick();
+  const second = await archive.create({ conversationTitle: 'Second', messages: [{ role: 'user', text: 'Second task' }] });
+  await waitTick();
+  const third = await archive.create({ conversationTitle: 'Third', messages: [{ role: 'user', text: 'Third task' }] });
+
+  assert.deepEqual((await archive.all()).map(thread => thread.id), [third.id, second.id, first.id],
+    'archive starts newest meaningful activity first');
+
+  const openedFirst = await archive.get(first.id);
+  await waitTick();
+  const readOnlySave = await archive.put({ ...openedFirst });
+  assert.equal(readOnlySave.updatedAt, openedFirst.updatedAt,
+    'opening then leaving an unchanged conversation must not rewrite its activity timestamp');
+  assert.deepEqual((await archive.all()).map(thread => thread.id), [third.id, second.id, first.id],
+    'read-only navigation must not move an older conversation to the top');
+
+  await waitTick();
+  const editedFirst = await archive.put({ ...openedFirst, draft: 'Meaningful new draft activity' });
+  assert.notEqual(editedFirst.updatedAt, openedFirst.updatedAt,
+    'a durable draft mutation advances the activity timestamp');
+  assert.equal((await archive.all())[0].id, first.id,
+    'meaningful conversation activity moves the thread to the top');
   archive.close();
 });
