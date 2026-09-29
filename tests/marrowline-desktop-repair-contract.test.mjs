@@ -15,6 +15,7 @@ const mobileShellCss = fs.readFileSync('app/dome-world/marrowline-mobile-shell.c
 const livingChatJs = fs.readFileSync('app/dome-world/marrowline-living-chat.js', 'utf8');
 const terminalJs = fs.readFileSync('app/dome-world/marrowline-terminal.js', 'utf8');
 const physicalJs = fs.readFileSync('app/dome-world/marrowline-physical-device-repair.js', 'utf8');
+const loomPocketJs = fs.readFileSync('app/dome-world/marrowline-loom-pocket.js', 'utf8');
 const release = JSON.parse(fs.readFileSync('app/dome-world/marrowline.release.json', 'utf8'));
 
 test('desktop instruments have a persistent adjacent panel and Gate default', () => {
@@ -108,11 +109,13 @@ test('Loom demo attention uses one pink backglow while the plus glyph keeps ordi
   assert.match(js, /loomItem\.text\.textContent = awake \? 'Loom demo' : 'Loom'/);
   assert.match(css, /\.marrowline-composer-plus\{[^}]*color:#e6ece8/);
   assert.match(css, /\.marrowline-composer-plus\[data-loom-attention="true"\]\{animation:marrowline-loom-demo-attention/);
-  assert.match(css, /#marrowlineContextLoom\[data-loom-awake="true"\]\{color:#ffb5e1\}/);
+  assert.match(css, /#marrowlineContextLoom\[data-loom-awake="true"\]>span:nth-child\(2\)\{color:#ffb5e1\}/);
   assert.match(css, /#marrowlineContextLoom\[data-loom-awake="true"\] small\{color:#f38ec8\}/);
   assert.doesNotMatch(css, /marrowline-composer-plus\[data-loom-awake="true"\][^{]*\{[^}]*color:/);
   assert.doesNotMatch(css, /marrowline-composer-plus\[data-loom-awake="true"\]::after/);
   assert.match(css, /\.loom-import-workspace \.loom-demo-gate-next\{[^}]*border:1px solid #f38ec8[^}]*color:#ffb5e1/);
+  assert.match(loomPocketJs, /\.marrowline-aia-plus::after\{content:none\}/,
+    'legacy Loom-pocket plus carries no competing green attention dot');
 });
 
 test('reply-local Receipts selects the real desktop tab or mobile dock and snaps the panel', () => {
