@@ -93,7 +93,7 @@ details[open]>summary i{transform:rotate(180deg)}
 .checkbox-line{display:flex;gap:.58rem;align-items:flex-start;color:var(--ash-dim);font:.72rem/1.42 var(--sans);margin:.75rem 0}
 .checkbox-line input{width:17px;height:17px;min-height:0;flex:0 0 auto;margin-top:.1rem;accent-color:var(--bio)}
 .issuance-block{padding:12px;border:1px solid rgba(201,181,129,.22);background:linear-gradient(135deg,rgba(201,181,129,.07),rgba(0,0,0,.18))}
-.binding-line{margin-top:8px;padding:9px 10px;border-left:2px solid var(--copper);background:rgba(0,0,0,.22);color:#c9d4c7;font:.6rem/1.55 var(--mono);overflow-wrap:anywhere}
+.binding-line-label{display:block;margin-top:9px;color:rgba(201,181,129,.72);font:700 .48rem/1.2 var(--mono);letter-spacing:.12em;text-transform:uppercase}.binding-line{margin-top:4px;padding:9px 10px;border-left:2px solid var(--copper);background:rgba(0,0,0,.22);color:#c9d4c7;font:.6rem/1.55 var(--mono);overflow-wrap:anywhere}
 .route-card,.emergence-card{padding:13px;border:1px solid rgba(155,139,212,.24);background:linear-gradient(145deg,rgba(155,139,212,.08),rgba(0,0,0,.18))}
 .claim-ceiling{margin-top:11px;padding:10px;border-left:3px solid var(--blood);background:rgba(143,36,52,.08);color:#d9bdc1;font:.68rem/1.55 var(--sans)}
 .status{min-height:1.4em;margin-top:9px;color:var(--copper-bright);font:.61rem/1.45 var(--mono);overflow-wrap:anywhere}

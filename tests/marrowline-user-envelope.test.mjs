@@ -30,13 +30,14 @@ test('provider-bound Marrowline user turns retain ingress and use a glyph-only c
 });
 
 test('human-facing wrapper disclosures describe the same glyph-only provider envelope', () => {
-  assert.match(page, /outgoing prompt: ⟐/);
+  assert.match(page, /Provider request · issuance preview/);
+  assert.match(page, /user turn framing: 𝌋‌ … ⟐/);
   assert.match(page, /final “⟐” on its own line at the provider boundary/);
   assert.doesNotMatch(page, /outgoing prompt: Sealed ⟐/);
   assert.doesNotMatch(page, /final “Sealed ⟐” at the provider boundary/);
 
-  assert.match(terminal, /outgoing user turn: \$\{SEAL_GLYPH\}/);
-  assert.doesNotMatch(terminal, /outgoing user turn: Sealed \$\{SEAL_GLYPH\}/);
+  assert.match(terminal, /user turn framing: \$\{INGRESS_SIGIL\}‌ … \$\{SEAL_GLYPH\}/);
+  assert.doesNotMatch(terminal, /user turn framing: .*Sealed \$\{SEAL_GLYPH\}/);
 
   assert.match(release.composer.providerBoundUserEnvelope, /two LF characters \+ ⟐/);
   assert.match(release.composer.providerBoundUserEnvelope, /lexical word Sealed is not injected into provider context/);
