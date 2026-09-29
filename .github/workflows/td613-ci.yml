@@ -936,8 +936,20 @@ jobs:
         run: npm install --no-save --package-lock=false playwright@1.53.2
       - if: steps.layout_scope.outputs.changed == 'true'
         run: npx playwright install --with-deps chromium
-      - if: steps.layout_scope.outputs.changed == 'true'
-        run: node --test tests/marrowline-instrument-panel.test.mjs
+      - name: Run bounded Marrowline handoff contracts
+        if: steps.layout_scope.outputs.changed == 'true'
+        run: |
+          node --test \
+            tests/loom-ai-handoff.test.mjs \
+            tests/marrowline-instrument-panel.test.mjs \
+            tests/marrowline-desktop-repair-contract.test.mjs \
+            tests/dome-world-marrowline-mobile.test.mjs
+          node tests/workflow-estate.test.mjs
+          node tests/gemini-observation-dispatch.test.mjs
+          node scripts/run-pedagogue-design-gate.mjs \
+            tests/fixtures/pedagogue/marrowline-living-chat-design.json
+          node scripts/run-pedagogue-design-gate.mjs \
+            tests/fixtures/pedagogue/marrowline-fire-gate-design.json
       - name: Offline browser layout witness
         if: steps.layout_scope.outputs.changed == 'true'
         run: |
