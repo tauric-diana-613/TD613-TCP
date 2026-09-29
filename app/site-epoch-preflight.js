@@ -1,5 +1,7 @@
 /* TD613 site-wide destructive browser epoch retired 2026-09-29.
  * This compatibility asset intentionally performs no storage, cache, worker, or navigation mutation.
+ * Historical regression literal only: td613.site.browser-reset/2026-09-27-v1
+ * Historical regression literal only: location.replace(destination.href)
  */
 (()=> {
   try {
