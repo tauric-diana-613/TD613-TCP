@@ -417,7 +417,7 @@ test('clear conversation returns to a transient landing state without persisting
   assert.match(clearHandler, /root\.sessionStorage\.removeItem\(SESSION_KEY\)/);
   assert.doesNotMatch(clearHandler, /scheduleSave\(\)/, 'clear may not autosave the emptied active thread');
   assert.match(release.composer.clearDraftPolicy, /clear-conversation-empties-composer/i);
-  assert.match(release.threads.conversationTitles, /fresh\/New\/Clear state is transient and unsaved/i);
+  assert.match(release.composer.conversationTitles, /fresh\/New\/Clear state is transient and unsaved/i);
 });
 
 test('passive conversation reads never reorder the archive as recent activity', () => {
@@ -425,7 +425,7 @@ test('passive conversation reads never reorder the archive as recent activity', 
   assert.match(terminalJs, /A passive read\/switch is not thread activity and must not touch updatedAt/);
   assert.match(terminalJs, /JSON\.stringify\(threadContentSnapshot\(snapshot\)\) === JSON\.stringify\(threadContentSnapshot\(activeThread\)\)/);
   assert.match(terminalJs, /return saveChain/);
-  assert.match(release.threads.history, /passive thread reads\/switches leave updatedAt unchanged/i);
+  assert.match(release.composer.threadLibrary.history, /passive thread reads\/switches leave updatedAt unchanged/i);
 });
 
 test('final Marrowline chrome preserves the Gate single-sequence hierarchy', () => {
