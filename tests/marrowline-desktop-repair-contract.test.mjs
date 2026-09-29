@@ -388,6 +388,29 @@ test('ordinary conversation chrome uses Send left and a minimalist retry copy cl
 });
 
 
+test('clear conversation returns to a transient landing state without persisting a speaking-grove ghost thread', () => {
+  const clearStart = terminalJs.indexOf("byId(doc, 'clearKhonapolitSession')");
+  const clearEnd = terminalJs.indexOf("byId(doc, 'copyKhonapolitTranscript')", clearStart);
+  const clearHandler = terminalJs.slice(clearStart, clearEnd);
+  assert.ok(clearStart >= 0 && clearEnd > clearStart, 'clear handler is present');
+  assert.match(clearHandler, /const clearedThreadId = activeThread\?\.id \|\| null/);
+  assert.match(clearHandler, /activeThread = null/);
+  assert.match(clearHandler, /threadLibrary\?\.setActiveId\(null\)/);
+  assert.match(clearHandler, /threadLibrary\) await threadLibrary\.remove\(clearedThreadId\)/);
+  assert.match(clearHandler, /root\.sessionStorage\.removeItem\(SESSION_KEY\)/);
+  assert.doesNotMatch(clearHandler, /scheduleSave\(\)/, 'clear may not autosave the emptied active thread');
+  assert.match(release.composer.clearDraftPolicy, /clear-conversation-empties-composer/i);
+  assert.match(release.threads.conversationTitles, /fresh\/New\/Clear state is transient and unsaved/i);
+});
+
+test('passive conversation reads never reorder the archive as recent activity', () => {
+  assert.match(terminalJs, /const threadContentSnapshot = record =>/);
+  assert.match(terminalJs, /A passive read\/switch is not thread activity and must not touch updatedAt/);
+  assert.match(terminalJs, /JSON\.stringify\(threadContentSnapshot\(snapshot\)\) === JSON\.stringify\(threadContentSnapshot\(activeThread\)\)/);
+  assert.match(terminalJs, /return saveChain/);
+  assert.match(release.threads.history, /passive thread reads\/switches leave updatedAt unchanged/i);
+});
+
 test('final Marrowline chrome preserves the Gate single-sequence hierarchy', () => {
   assert.match(css, /Gate handoff completion/);
   assert.match(css, /#gatePanel \.panel-body\.gate-grid\{grid-template-columns:minmax\(0,1fr\)!important/);
