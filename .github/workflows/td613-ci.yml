@@ -923,7 +923,7 @@ jobs:
       - name: Select bounded layout scope
         id: layout_scope
         run: |
-          if git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" | grep -Eq '^(app/dome-world/marrowline-(desktop-repair\.(js|css)|living-chat\.js|terminal\.js|threads\.js|loom-pocket\.js)|app/dome-world/marrowline\.html|scripts/marrowline-instrument-layout-witness\.mjs|tests/marrowline-(instrument-panel|desktop-repair-contract|threads)\.test\.mjs); then
+          if git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" | grep -Eq '^(app/dome-world/marrowline-(desktop-repair\.(js|css)|living-chat\.js|terminal\.js|threads\.js|loom-pocket\.js)|app/dome-world/marrowline\.html|scripts/marrowline-instrument-layout-witness\.mjs|tests/marrowline-(instrument-panel|desktop-repair-contract|threads)\.test\.mjs); then; then
             echo 'changed=true' >> "$GITHUB_OUTPUT"
           fi
       - uses: actions/setup-node@v4
@@ -944,74 +944,6 @@ jobs:
             tests/marrowline-instrument-panel.test.mjs \
             tests/marrowline-desktop-repair-contract.test.mjs \
             tests/marrowline-threads.test.mjs \
-            tests/dome-world-marrowline-mobile.test.mjs
-          node tests/workflow-estate.test.mjs
-          node tests/gemini-observation-dispatch.test.mjs
-          node scripts/run-pedagogue-design-gate.mjs \
-            tests/fixtures/pedagogue/marrowline-living-chat-design.json
-          node scripts/run-pedagogue-design-gate.mjs \
-            tests/fixtures/pedagogue/marrowline-fire-gate-design.json
-      - name: Offline browser layout witness
-        if: steps.layout_scope.outputs.changed == 'true'
-        run: |
-          python3 -m http.server 6131 --directory app > /tmp/marrowline-layout-server.log 2>&1 &
-          node scripts/marrowline-instrument-layout-witness.mjs
-      - uses: actions/upload-artifact@v4
-        if: always() && steps.layout_scope.outputs.changed == 'true'
-        with:
-          name: marrowline-layout-${{ github.event.pull_request.head.sha }}
-          path: artifacts/marrowline-layout
-
-
-  gemini_observation:
-    name: Explicit credential-scoped Gemini model observation
-    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'gemini-observation' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    environment: gemini-observation
-    permissions:
-      contents: read
-    timeout-minutes: 3
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.sha }}
-          persist-credentials: false
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - name: Observe models.list only
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          TD613_GEMINI_OBSERVATION_ACTIONS: 'true'
-        run: node scripts/observe-gemini-models.mjs > gemini-observation.json
-      - name: Preserve sanitized observation receipt
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gemini-observation-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
-          path: gemini-observation.json
-          if-no-files-found: error
-          retention-days: 7
-; then
-            echo 'changed=true' >> "$GITHUB_OUTPUT"
-          fi
-      - uses: actions/setup-node@v4
-        if: steps.layout_scope.outputs.changed == 'true'
-        with:
-          node-version: '22'
-      - if: steps.layout_scope.outputs.changed == 'true'
-        run: npm ci --ignore-scripts
-      - if: steps.layout_scope.outputs.changed == 'true'
-        run: npm install --no-save --package-lock=false playwright@1.53.2
-      - if: steps.layout_scope.outputs.changed == 'true'
-        run: npx playwright install --with-deps chromium
-      - name: Run bounded Marrowline handoff contracts
-        if: steps.layout_scope.outputs.changed == 'true'
-        run: |
-          node --test \
-            tests/loom-ai-handoff.test.mjs \
-            tests/marrowline-instrument-panel.test.mjs \
-            tests/marrowline-desktop-repair-contract.test.mjs \
             tests/dome-world-marrowline-mobile.test.mjs
           node tests/workflow-estate.test.mjs
           node tests/gemini-observation-dispatch.test.mjs
