@@ -199,7 +199,7 @@ function enhanceContinuation(root, packet, environment, baseWorkspace = null) {
       }
       if (pending.signal.aborted) status.textContent = pending.signal.reason === 'deadline' ? 'The continuation exceeded 225 seconds. The prior Loom work and your new request remain here.' : 'Stopped waiting. The continuation remains here.';
       else status.textContent = `Task held: ${error.message}`;
-      if (receipt) receipt.textContent = JSON.stringify({ handoff: packet.handoff_receipt, request_id, state: pending.signal.aborted ? 'WAIT_CANCELLED' : 'HELD', reason: status.textContent, continuation: { prior_handoff_digest: packet.handoff_receipt?.digest ?? null, followup_input_digest: freshGovernance?.input_digest ?? null }, ...(error.evidenceReview ? { evidence_review: error.evidenceReview, flagged_response: error.candidate } : {}), ...(providerFailure ? { provider_failure: providerFailure } : {}) }, null, 2);
+      if (receipt) receipt.textContent = JSON.stringify({ handoff: packet.handoff_receipt, request_id, state: pending.signal.aborted ? (pending.signal.reason === 'deadline' ? 'CLIENT_DEADLINE' : 'WAIT_CANCELLED') : 'HELD', reason: status.textContent, continuation: { prior_handoff_digest: packet.handoff_receipt?.digest ?? null, followup_input_digest: freshGovernance?.input_digest ?? null }, ...(error.evidenceReview ? { evidence_review: error.evidenceReview, flagged_response: error.candidate } : {}), ...(providerFailure ? { provider_failure: providerFailure } : {}) }, null, 2);
     } finally { unschedule(deadline); controller = null; run.disabled = false; followup.disabled = false; cancel.hidden = true; run.textContent = 'Continue with Flow-Core AI'; }
   });
 
