@@ -1,0 +1,57 @@
+{
+  "claim": "PUBLIC_FAILURE_REPAIR_DISCIPLINE_ADDED_AS_DELTA_OBSERVATION",
+  "claim_ceiling": [
+    "DELTA_SNAPSHOT != EXHAUSTIVE_CENSUS",
+    "LOCAL_COMPARATIVE_PERFORMANCE != GLOBAL_SUPERIORITY",
+    "CORRELATION != TRUTH_CLAIM",
+    "REPAIR_PATH != RECEIVER_COMPLIANCE",
+    "TD613_COMPARABILITY != TD613_DERIVATION"
+  ],
+  "counts": {
+    "concept_nodes": 22,
+    "public_posts": 2,
+    "recurrent_concepts_support_gte_2": 2,
+    "recurrent_cooccurrence_edges_support_gte_2": 1,
+    "typed_relation_edges": 14
+  },
+  "coverage_state": "PUBLIC_SEARCH_SNAPSHOT_NOT_EXHAUSTIVE_CENSUS",
+  "parent_snapshot_id": "wendbine-public-reddit-48h-20260911T092700Z-v01",
+  "normalized_spine": [
+    "failure as study object",
+    "assumption / breakpoint exposure",
+    "purpose-indexed comparison",
+    "alternative construction",
+    "testing and retention",
+    "correlation / truth separation",
+    "provenance review",
+    "repair-path preservation",
+    "iterative version openness"
+  ],
+  "publication_day_buckets": {
+    "2026-09-13": 2
+  },
+  "schema": "wendbine-public-topology-index/v0.1",
+  "snapshot_id": "wendbine-public-reddit-delta-20260913T234421Z-v02",
+  "source_bound_landmarks": {
+    "failure_driven_comparative_engineering": "reddit:t3_1wfliaj",
+    "builder_boundary_provenance_repair": "reddit:t3_1wfmmo7"
+  },
+  "state": "COMPILED_PUBLIC_DELTA_TOPOLOGY",
+  "strongest_recurrences": [
+    {
+      "concept": "iterative_improvement",
+      "source_count": 2
+    },
+    {
+      "concept": "testing",
+      "source_count": 2
+    }
+  ],
+  "typed_relation_counts": {
+    "G_O": 1,
+    "G_P": 1,
+    "G_R": 7,
+    "G_T": 2,
+    "G_X": 3
+  }
+}
