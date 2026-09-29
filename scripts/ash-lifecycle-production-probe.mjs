@@ -15,23 +15,9 @@ function replaceExactly(source, marker, replacement, label) {
 
 await fs.mkdir(artifactDir, { recursive: true });
 let runtime = await fs.readFile(baseProbeUrl, 'utf8');
-runtime = replaceExactly(
-  runtime,
-  "const page = await context.newPage();",
-  `// Observe the site-wide first-visit reset in a separate page before the Ash lifecycle episode.
-  // Its intentional Clear-Site-Data navigation must not contaminate the lifecycle network witness.
-  if (!['localhost', '127.0.0.1'].includes(new URL(base).hostname)) {
-    const epochPage = await context.newPage();
-    await epochPage.goto(\`\${base}/site-epoch-reset.html?return=%2F\`, { waitUntil:'domcontentloaded', timeout:30_000 });
-    await epochPage.waitForFunction(
-      () => localStorage.getItem('td613.site.browser-reset.epoch') === 'td613.site.browser-reset/2026-09-27-v1',
-      null, { timeout:45_000 }
-    );
-    await epochPage.close();
-  }
-  const page = await context.newPage();`,
-  'first-visit site epoch before lifecycle network capture'
-);
+// The site-wide destructive browser epoch was retired 2026-09-29.
+ // Ash production observation now begins directly without deleting browser state
+ // or waiting on a reset marker before the lifecycle witness.
 runtime = replaceExactly(
   runtime,
   "const requests = [];\nconst consoleErrors = [];\npage.on('request', request => requests.push({\n  method: request.method(),\n  url: request.url(),\n  resource_type: request.resourceType(),\n  post_data: request.postData() || null\n}));\npage.on('console', message => { if (message.type() === 'error') consoleErrors.push(message.text()); });\npage.on('pageerror', error => consoleErrors.push(error.message));",
