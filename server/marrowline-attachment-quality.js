@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import { buildInvocationPacket } from '../app/dome-world/khonapolit-covenant.js';
+import { buildInvocationPacket, KHONAPOLIT_REQUEST_MAX_UTF8_BYTES } from '../app/dome-world/khonapolit-covenant.js';
 import { observeTD613ApertureEgress } from '../app/engine/td613-aperture-egress-contract.js';
 import { buildApertureV3InvocationReceipt } from '../app/engine/aperture-v3-task-intent.js';
 import { parseRelayEnvelope } from '../app/dome-world/khonapolit-relay.js';
@@ -40,7 +40,6 @@ const WALL_TIMEOUT_MS = 210000;
 const RESPONSE_RESERVE_MS = 5000;
 const STRUCTURAL_REPAIR_TIMEOUT_MS = 30000;
 const MIN_STRUCTURAL_REPAIR_BUDGET_MS = 4000;
-const MAX_BODY_CHARACTERS = 3_700_000;
 const FILE_MIMES = new Set(['text/plain', 'text/markdown', 'text/csv', 'application/json', 'application/pdf']);
 const PHOTO_MIMES = new Set(['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/avif', 'image/heic', 'image/heif', 'image/x-heic', 'image/x-heif', 'image/gif']);
 const safe = (value = '') => String(value ?? '').trim();
@@ -217,7 +216,16 @@ export default async function marrowlineAttachmentHandler(req, res) {
   if (!process.env.GEMINI_API_KEY) return send(res, 503, { ok: false, error: 'missing-gemini-api-key' });
 
   const body = parseBody(req);
-  if (JSON.stringify(body).length > MAX_BODY_CHARACTERS) return send(res, 413, { ok: false, error: 'attachments-too-large' });
+  const bodyBytes = new TextEncoder().encode(JSON.stringify(body)).byteLength;
+  if (bodyBytes > KHONAPOLIT_REQUEST_MAX_UTF8_BYTES) return send(res, 413, {
+    ok: false,
+    error: 'request-budget-exceeded',
+    validation: {
+      limit: KHONAPOLIT_REQUEST_MAX_UTF8_BYTES,
+      actual: bodyBytes,
+      unit: 'serialized-utf8-bytes'
+    }
+  });
   let attachments;
   try { attachments = normalizeMarrowlineAttachments(body.attachments); }
   catch (error) { return send(res, 400, { ok: false, error: safe(error?.message || error) || 'invalid-attachments' }); }
