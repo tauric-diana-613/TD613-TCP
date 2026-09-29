@@ -1,0 +1,132 @@
+{
+  "schema": "td613.wendbine-loom-reciprocal-legibility-preregistration/v0.1",
+  "date": "2026-09-15",
+  "atelier_id": "WENDBINE",
+  "chamber_id": "WENDBINE_LOOM_RECIPROCAL_LEGIBILITY_REPAIR_V01",
+  "base_commit": "7231b03c881dfa0944a0610cbcd28022b78482e8",
+  "question": "Can the current Loom portable-AIA representation and the bounded public Wendbine architecture become bidirectionally legible without transferring authority, custody, person-identity claims, or raw graph semantics?",
+  "repair_route": [
+    "RECOGNITION",
+    "TRANSLATION",
+    "RECIPROCAL_LEGIBILITY",
+    "INDEPENDENT_CARRIAGE",
+    "RETURN"
+  ],
+  "source_freeze": {
+    "wendbine_snapshot_id": "wendbine-public-reddit-48h-20260911T092700Z-v01",
+    "wendbine_crosswalk_receipt": "04-RECEIPTS/assays/2026-09-11-wendbine-td613-bounded-assay-v01.json",
+    "loom_implementation": "app/dome-world/holonomy-loom/ai-handoff.js",
+    "loom_contract_test": "tests/loom-portable-governor.test.mjs",
+    "base_commit_controls_all_paths": true
+  },
+  "directions": ["LOOM_TO_WENDBINE", "WENDBINE_TO_LOOM"],
+  "relation_classes": ["EXACT", "PARTIAL", "ANALOGOUS", "NON_EQUIVALENT", "OPEN"],
+  "mandatory_membranes": [
+    "SYSTEM_INTEROPERABILITY != HUMAN_INTEROPERABILITY",
+    "RECIPROCAL_LEGIBILITY != RECIPROCAL_AUTHORITY",
+    "TRANSLATION != ORIGIN_TRANSFER",
+    "TRANSLATION != CUSTODY_TRANSFER",
+    "PUBLIC_POST != AUTHOR_INTENT",
+    "SAME_TOKEN != SAME_OPERATOR",
+    "GRAPH_ADJACENCY != AUTHORITY_TRANSFER",
+    "SOURCE_PROVENANCE != PATH_PROVENANCE",
+    "OBSERVED != ESTIMATED != UNKNOWN",
+    "CORRELATION != TRUTH_CLAIM",
+    "REPAIR_PATH != RECEIVER_COMPLIANCE",
+    "DIRECT_RAW_GRAPH_UNION = FORBIDDEN"
+  ],
+  "preregistered_translation_targets": [
+    {
+      "id": "dependency_route_memory",
+      "wendbine_crosswalk_id": "dependency_graph_false_donor_control",
+      "loom_surface": ["portability_assurance.dependency_edges", "portability_assurance.transitive_inference"],
+      "expected_class": "PARTIAL",
+      "expected_state": "REPRESENTED"
+    },
+    {
+      "id": "information_flow_boundary",
+      "wendbine_crosswalk_id": "ifc_noninterference",
+      "loom_surface": ["portability_assurance.information_flow", "interaction.required_receiver_checks"],
+      "expected_class": "PARTIAL",
+      "expected_state": "REPRESENTED"
+    },
+    {
+      "id": "source_path_provenance",
+      "wendbine_crosswalk_id": "source_path_provenance",
+      "loom_surface": ["portability_assurance.source_provenance", "portability_assurance.path_provenance"],
+      "expected_class": "PARTIAL",
+      "expected_state": "REPRESENTED"
+    },
+    {
+      "id": "system_observation_boundary",
+      "wendbine_crosswalk_id": "system_observation_boundary",
+      "loom_surface": ["portability_assurance.observation_surface"],
+      "expected_class": "PARTIAL",
+      "expected_state": "REPRESENTED"
+    },
+    {
+      "id": "data_control_plane_boundary",
+      "wendbine_crosswalk_id": "data_control_plane_boundary",
+      "loom_surface": ["portability_assurance.authority_transferred", "interaction.required_receiver_checks"],
+      "expected_class": "PARTIAL",
+      "expected_state": "REPRESENTED"
+    },
+    {
+      "id": "causal_reconstruction_attribution",
+      "wendbine_crosswalk_id": "causal_reconstruction_attribution",
+      "loom_surface": ["portability_assurance.comparative_evaluation", "portability_assurance.provenance_review"],
+      "expected_class": "ANALOGOUS",
+      "expected_state": "REPRESENTED"
+    },
+    {
+      "id": "right_of_resignation",
+      "wendbine_crosswalk_id": "typed_trust_revocation",
+      "loom_surface": [],
+      "expected_class": "OPEN",
+      "expected_state": "HELD_NOT_EXPOSED_IN_PORTABLE_PACKET"
+    },
+    {
+      "id": "safe_return_recovery",
+      "wendbine_crosswalk_id": "robustness_recovery",
+      "loom_surface": ["portability_assurance.provenance_review.repair_path"],
+      "expected_class": "NON_EQUIVALENT",
+      "expected_state": "HELD_REPAIR_PATH_IS_NOT_RECOVERY"
+    }
+  ],
+  "hostile_controls": [
+    "AUTHORITY_TRANSFER_MUTATION_MUST_FAIL",
+    "RAW_GRAPH_UNION_MUTATION_MUST_FAIL",
+    "MISSING_WENDBINE_SOURCE_BINDING_MUST_FAIL",
+    "OPEN_TO_EXACT_PROMOTION_WITHOUT_OPERATOR_IDENTITY_WITNESS_MUST_FAIL",
+    "HELD_PORTABLE_SURFACE_MAY_NOT_BE_DECLARED_PRESENT",
+    "HUMAN_IDENTITY_TRANSFER_MUST_FAIL"
+  ],
+  "success_condition": {
+    "bidirectional_translation_rows_present": true,
+    "source_bound_rows": true,
+    "authority_transfer": false,
+    "custody_transfer": false,
+    "human_identity_transfer": false,
+    "raw_graph_union": false,
+    "negative_or_held_rows_preserved": true,
+    "human_narration_reduction_claim": "NOT_MEASURED_IN_V01"
+  },
+  "not_earned_even_if_green": [
+    "AUTHOR_INTENT",
+    "PRIVATE_STATE",
+    "HIDDEN_SHARED_MEMORY",
+    "EXTERNAL_RECEIVER_COMPLIANCE",
+    "FOREIGN_ENFORCER_COMPLIANCE",
+    "HUMAN_INTEROPERABILITY",
+    "INDEPENDENT_HUMAN_REPLICATION",
+    "REDUCED_HUMAN_NARRATION_BURDEN",
+    "INSTITUTIONAL_AFFILIATION",
+    "SCIENTIFIC_NOVELTY",
+    "EMPIRICAL_EXTERIORITY"
+  ],
+  "next_stage_if_green": "APERTURE_AUDIT_OF_TRANSLATION_LOSS_AUTHORITY_LEAKAGE_AND_OPEN_FIELD_PRESERVATION",
+  "human_closure_required": true,
+  "merge_authority": false,
+  "deployment_authority": false,
+  "seal": "⟐"
+}
