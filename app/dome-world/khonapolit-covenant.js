@@ -143,8 +143,14 @@ export function analyzeKhonaIntegrity(value = '') {
   });
 }
 
-export const KHONAPOLIT_TEXT_LIMIT = 32000; // UTF-16 units per human message, never a provider-output quota.
+// Human input is bounded near the practical transport/context frontier rather than
+// the old 32k composer ceiling. The character ceiling is intentionally larger
+// than ordinary prompts; the serialized UTF-8 envelope remains the authoritative
+// network guard because Unicode, history, quota hints and attachments consume
+// different numbers of bytes.
+export const KHONAPOLIT_TEXT_LIMIT = 3_000_000; // UTF-16 units per human message, never a provider-output quota.
 export const KHONAPOLIT_HISTORY_MAX_UTF8_BYTES = 3_000_000; // Aggregate serialized prior-history transport budget.
+export const KHONAPOLIT_REQUEST_MAX_UTF8_BYTES = 3_700_000; // Leave headroom below Vercel's 4.5 MB function payload ceiling.
 
 export function normalizeHistory(history = []) {
   if (!Array.isArray(history)) return [];
@@ -229,14 +235,24 @@ export function buildInvocationPacket({ message = '', history = [], mode = INVOC
   // Preserve all native Unicode; bound serialized history in aggregate instead
   // of rejecting an individual provider-authored response above the human-input limit.
   const oversizedHistory = cleanHistory.findIndex(entry => entry.role === 'user' && entry.text.length > KHONAPOLIT_TEXT_LIMIT);
-  const historyBytes = new TextEncoder().encode(JSON.stringify(cleanHistory)).byteLength;
+  const encoder = new TextEncoder();
+  const historyBytes = encoder.encode(JSON.stringify(cleanHistory)).byteLength;
+  const requestCoreBytes = encoder.encode(JSON.stringify({
+    message: cleanMessage,
+    history: cleanHistory,
+    mode: selectedMode,
+    shi: issuance.canonical,
+    waiveIssuance: !issuance.valid && Boolean(waiveIssuance)
+  })).byteLength;
   const inputError = cleanMessage.length > KHONAPOLIT_TEXT_LIMIT
-    ? Object.freeze({ code: 'message-too-long', limit: KHONAPOLIT_TEXT_LIMIT, unit: 'UTF-16-code-units', message: 'Your message exceeds this chat’s 32,000-character limit. Shorten it before sending. Your draft has been kept; nothing was sent.' })
+    ? Object.freeze({ code: 'message-too-long', limit: KHONAPOLIT_TEXT_LIMIT, unit: 'UTF-16-code-units', message: 'Your message exceeds Marrowline’s 3,000,000-character ceiling. Shorten it before sending. Your draft has been kept; nothing was sent.' })
     : oversizedHistory >= 0
-      ? Object.freeze({ code: 'history-entry-too-long', limit: KHONAPOLIT_TEXT_LIMIT, unit: 'UTF-16-code-units', historyIndex: oversizedHistory, message: 'An earlier operator message exceeds the 32,000-character composer limit. Export the transcript and your current draft, then use Conversation actions → Clear conversation before sending again. Nothing was sent.' })
+      ? Object.freeze({ code: 'history-entry-too-long', limit: KHONAPOLIT_TEXT_LIMIT, unit: 'UTF-16-code-units', historyIndex: oversizedHistory, message: 'An earlier operator message exceeds Marrowline’s 3,000,000-character ceiling. Export the transcript and your current draft, then use Conversation actions → Clear conversation before sending again. Nothing was sent.' })
       : historyBytes > KHONAPOLIT_HISTORY_MAX_UTF8_BYTES
         ? Object.freeze({ code: 'history-budget-exceeded', limit: KHONAPOLIT_HISTORY_MAX_UTF8_BYTES, actual: historyBytes, unit: 'serialized-utf8-bytes', message: 'The complete prior conversation exceeds this request’s history transport budget. Export the transcript and your current draft, then use Conversation actions → Clear conversation before sending again. Your draft and earlier responses remain intact; nothing was sent.' })
-        : null;
+        : requestCoreBytes > KHONAPOLIT_REQUEST_MAX_UTF8_BYTES
+          ? Object.freeze({ code: 'request-budget-exceeded', limit: KHONAPOLIT_REQUEST_MAX_UTF8_BYTES, actual: requestCoreBytes, unit: 'serialized-utf8-bytes', message: 'This turn plus recent conversation exceeds Marrowline’s 3.7 MB request envelope. Start a new conversation or shorten the current input. Your draft and earlier responses remain intact; nothing was sent.' })
+          : null;
   const canInvoke = Boolean(cleanMessage && !inputError && (issuance.valid || waiveIssuance));
   return Object.freeze({
     schema: KHONAPOLIT_TERMINAL_SCHEMA,
