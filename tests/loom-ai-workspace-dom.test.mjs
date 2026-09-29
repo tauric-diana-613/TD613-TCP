@@ -2,13 +2,20 @@
  * These checks exercise client behavior; they provide no live Gemini or visual-browser evidence.
  */
 import test from 'node:test';
-import assert from 'node:assert/strict';
+import assert from 'node:assert/strict';\nimport fs from 'node:fs';
 import { JSDOM } from 'jsdom';
 import { File } from 'node:buffer';
 import { webcrypto } from 'node:crypto';
 // Import before supplying any browser globals: auto-mount must not run in the harness.
 import { mountLoomAiWorkspace } from '../app/dome-world/holonomy-loom/ai-workspace.js';
 import { LOOM_AI_PROJECTS } from '../app/dome-world/holonomy-loom/ai-projects.js';
+
+test('Holonomy Loom browser wait extends beyond the retired 55-second ceiling', () => {
+  const source = fs.readFileSync('app/dome-world/holonomy-loom/ai-workspace.js', 'utf8');
+  assert.match(source, /LOOM_AI_CLIENT_TIMEOUT_MS = 225000/);
+  assert.match(source, /setTimeout\(\(\)=>\{clientDeadlineExceeded=true;controller\?\.abort\(\);\},LOOM_AI_CLIENT_TIMEOUT_MS\)/);
+  assert.doesNotMatch(source, /\},55000\);const started=/);
+});
 
 const deferred = () => { let resolve, reject; const promise = new Promise((a,b)=>{resolve=a;reject=b;}); return {promise,resolve,reject}; };
 const until = async (predicate, description='workflow completion') => {
