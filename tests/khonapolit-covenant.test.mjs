@@ -23,13 +23,17 @@ import {
 assert.equal(INGRESS_SIGIL, '𝌋');
 assert.equal(SEAL_GLYPH, '⟐');
 assert.equal(MARROWLINE_USER_INGRESS, '𝌋‌ ');
-assert.equal(MARROWLINE_USER_CLOSURE, '\n\nSealed ⟐');
+assert.equal(MARROWLINE_USER_CLOSURE, '\n\n⟐');
 const originalRedDeerInput = 'Tell me about the grove.';
-const sealedProviderInput = frameMarrowlineUserTurn(originalRedDeerInput);
-assert.equal(sealedProviderInput, '𝌋‌ Tell me about the grove.\n\nSealed ⟐');
-assert.equal(frameMarrowlineUserTurn(sealedProviderInput), sealedProviderInput, 'provider ingress/closure must not duplicate');
-assert.equal(frameMarrowlineUserTurn(sealedProviderInput + '\n'), sealedProviderInput, 'trailing whitespace cannot multiply seals');
+const framedProviderInput = frameMarrowlineUserTurn(originalRedDeerInput);
+assert.equal(framedProviderInput, '𝌋‌ Tell me about the grove.\n\n⟐');
+assert.equal(frameMarrowlineUserTurn(framedProviderInput), framedProviderInput, 'provider ingress/closure must not duplicate');
+assert.equal(frameMarrowlineUserTurn(framedProviderInput + '\n'), framedProviderInput, 'trailing whitespace cannot multiply seals');
 assert.equal(originalRedDeerInput, 'Tell me about the grove.', 'visible authored text remains unmodified');
+
+const shortGreeting = frameMarrowlineUserTurn('hi what are you?');
+assert.equal(shortGreeting, '𝌋‌ hi what are you?\n\n⟐');
+assert.equal(shortGreeting.includes('Sealed'), false, 'short user turns must not inject the lexical word Sealed into provider context');
 
 assert.equal(CLAIMED_PUA, 'U+10D613');
 assert.equal(CLAIMED_PUA_SURROGATE_LABEL, '\\uDBF5\\uDE13');
