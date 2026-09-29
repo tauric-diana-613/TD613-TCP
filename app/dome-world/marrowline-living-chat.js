@@ -18,6 +18,22 @@ export function buildMarrowlineReplyFollowupDraft(instruction, replyText) {
   return `${instruction}\n\nSelected reply excerpt for reference:\n${excerpt}`;
 }
 
+function replyAttachmentReceipt(card) {
+  try {
+    const value = JSON.parse(card?.dataset?.attachmentReceipt || '[]');
+    return Array.isArray(value) ? value.filter(item => item && item.name && Number(item.size_bytes) > 0) : [];
+  } catch {
+    return [];
+  }
+}
+function formatReplyAttachmentBytes(value = 0) {
+  const bytes = Number(value || 0);
+  if (!Number.isFinite(bytes) || bytes <= 0) return '';
+  if (bytes >= 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(bytes >= 10 * 1024 * 1024 ? 0 : 1)} MB`;
+  if (bytes >= 1024) return `${Math.round(bytes / 1024)} KB`;
+  return `${bytes} B`;
+}
+
 function installConversationTypeface(doc) {
   if (!doc?.head) return;
   if (!doc.getElementById('marrowline-reddit-sans')) {
@@ -106,7 +122,8 @@ export function installMarrowlineLivingChat(doc = document, environment = window
   const syncReplyAttachmentAccess = () => {
     const staged = Number(attachmentState()?.count || 0) > 0 && !attachmentSubmissionActive;
     messages.querySelectorAll('.relay-message .reply-attachment-access').forEach(button => {
-      button.hidden = !staged;
+      const historical = button.dataset.hasReceiptAttachments === 'true';
+      button.hidden = !(historical || staged);
     });
   };
 
@@ -147,6 +164,7 @@ export function installMarrowlineLivingChat(doc = document, environment = window
     messages.querySelectorAll('.relay-message').forEach(card => {
       if (card.dataset.livingDecorated === 'true') return;
       card.dataset.livingDecorated = 'true';
+      const receiptAttachments = replyAttachmentReceipt(card);
 
       // Reply-local options belong in their compact drawer, not in the
       // model's reading flow. Technical provenance remains in Receipt.
@@ -202,13 +220,42 @@ export function installMarrowlineLivingChat(doc = document, environment = window
       attachmentButton.type = 'button';
       attachmentButton.className = 'reply-attachment-access';
       attachmentButton.textContent = 'Attachments';
-      attachmentButton.hidden = true;
+      attachmentButton.dataset.hasReceiptAttachments = String(receiptAttachments.length > 0);
+      attachmentButton.hidden = receiptAttachments.length === 0;
+      attachmentButton.setAttribute('aria-expanded', 'false');
+      const attachmentReceiptPanel = doc.createElement('div');
+      attachmentReceiptPanel.className = 'reply-attachment-receipt';
+      attachmentReceiptPanel.hidden = true;
+      attachmentReceiptPanel.setAttribute('role', 'region');
+      attachmentReceiptPanel.setAttribute('aria-label', 'Attachments used for this reply');
+      receiptAttachments.forEach(item => {
+        const row = doc.createElement('div');
+        row.className = 'reply-attachment-receipt-row';
+        const kind = doc.createElement('span');
+        kind.textContent = item.kind === 'photo' ? 'Photo' : 'File';
+        const name = doc.createElement('b');
+        name.textContent = item.name;
+        const size = doc.createElement('small');
+        size.textContent = formatReplyAttachmentBytes(item.size_bytes);
+        row.append(kind, name, size);
+        attachmentReceiptPanel.append(row);
+      });
+      attachmentButton.setAttribute('aria-label', receiptAttachments.length
+        ? `Show ${receiptAttachments.length} attachment${receiptAttachments.length === 1 ? '' : 's'} used for this reply`
+        : 'Open staged attachments');
       attachmentButton.addEventListener('click', () => {
+        if (receiptAttachments.length) {
+          const opening = attachmentReceiptPanel.hidden;
+          attachmentReceiptPanel.hidden = !opening;
+          attachmentButton.setAttribute('aria-expanded', String(opening));
+          return;
+        }
         actions.open = false;
         environment.dispatchEvent?.(new environment.CustomEvent('td613:marrowline:attachments-open-request'));
       });
       choices.append(attachmentButton);
       actions.append(choices);
+      if (receiptAttachments.length) actions.append(attachmentReceiptPanel);
       const integrated = card.querySelector('.relay-khonapolit[data-present="true"]');
 
       if (integrated) {
