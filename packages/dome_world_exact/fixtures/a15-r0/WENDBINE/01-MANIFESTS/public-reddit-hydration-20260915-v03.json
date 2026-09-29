@@ -1,0 +1,49 @@
+{
+  "schema": "wendbine-public-hydration/v0.3",
+  "created_at": "2026-09-15T03:15:00Z",
+  "atelier_id": "WENDBINE",
+  "parent_snapshots": [
+    "wendbine-public-reddit-48h-20260911T092700Z-v01",
+    "wendbine-public-reddit-delta-20260913T234421Z-v02"
+  ],
+  "hydrated_public_source_count": 35,
+  "newly_admitted_public_source_count": 0,
+  "refresh": {
+    "window_start": "2026-09-13T23:44:21Z",
+    "window_end": "2026-09-15T03:15:00Z",
+    "surface": "public Reddit search only",
+    "state": "PUBLIC_SEARCH_NO_ADDITIONAL_SOURCE_BOUND",
+    "known_missingness": "No additional public r/Wendbine post was source-bound during this refresh pass. NOT_RETRIEVED != DID_NOT_EXIST, and this is not an exhaustive subreddit census."
+  },
+  "hydration_policy": {
+    "base_and_delta_are_append_only": true,
+    "source_ids_are_immutable": true,
+    "canonical_urls_are_immutable": true,
+    "typed_relations_are_not_rewritten_by_display_aliases": true,
+    "sticker_taxonomy_is_display_overlay_only": true,
+    "sticker_label_may_not_create_entity_equivalence": true,
+    "sticker_label_may_not_create_operator_equivalence": true,
+    "sticker_label_may_not_transfer_authority": true,
+    "sticker_label_may_not_adjudicate_real_person_identity": true
+  },
+  "sticker_taxonomy_path": "01-MANIFESTS/sticker-label-taxonomy-v01.json",
+  "repair_route_reference": {
+    "pull_request": 1138,
+    "head": "18d06e095707b6198ed2aaae228c48d1f0a44c13",
+    "status": "REFERENCE_ONLY_NOT_IMPORTED",
+    "bounded_result": "BOUNDED_RECIPROCAL_LEGIBILITY_SUPPORTED",
+    "next_stage": "APERTURE_AUDIT_OF_TRANSLATION_LOSS_AUTHORITY_LEAKAGE_AND_OPEN_FIELD_PRESERVATION"
+  },
+  "claim_ceiling": [
+    "PUBLIC_SEARCH_NO_ADDITIONAL_SOURCE_BOUND != NO_NEW_POST_EXISTED",
+    "DISPLAY_ALIAS != PERSON_IDENTITY",
+    "DISPLAY_ALIAS != OPERATOR_IDENTITY",
+    "DISPLAY_ALIAS != AUTHORITY",
+    "TAXONOMY_HYDRATION != SCIENTIFIC_PROMOTION",
+    "REFERENCE_TO_PR_1138 != IMPORT_OF_PR_1138_SCIENCE"
+  ],
+  "human_closure_required": true,
+  "merge_authority": false,
+  "deployment_authority": false,
+  "seal": "⟐"
+}
