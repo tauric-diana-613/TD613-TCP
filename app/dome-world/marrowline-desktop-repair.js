@@ -451,6 +451,7 @@ function installConversationUtilityRail(doc, root) {
   const retry = utility('marrowlineRetryLast', '↻', 'Retry last prompt');
   const copy = utility('marrowlineCopyConversation', '⧉', 'Copy conversation as plain text');
   const clear = utility('marrowlineSessionClear', '✕', 'Clear conversation');
+  const home = utility('marrowlineHomeLanding', '𖠿', 'Return to The speaking grove');
 
   const backdrop = doc.createElement('div');
   backdrop.id = 'marrowlineClearBackdrop';
@@ -500,6 +501,7 @@ function installConversationUtilityRail(doc, root) {
   });
   copy.addEventListener('click', () => copyLegacy.click());
   clear.addEventListener('click', () => confirm.hidden ? openConfirm() : closeConfirm({ focus: true }));
+  home.addEventListener('click', () => byId(doc, 'marrowlineNewThread')?.click());
   yes.addEventListener('click', () => {
     closeConfirm();
     clearLegacy.click();
@@ -510,7 +512,7 @@ function installConversationUtilityRail(doc, root) {
     if (event.key === 'Escape' && !confirm.hidden) closeConfirm({ focus: true });
   });
 
-  rail.append(retry, copy, clear);
+  rail.append(retry, copy, clear, home);
   composer.append(rail);
   doc.body.append(backdrop, confirm);
 
