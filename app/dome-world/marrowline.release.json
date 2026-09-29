@@ -467,7 +467,7 @@
     "clearDraftPolicy": "clear-conversation-empties-composer-and-preloaded-draft-state",
     "fixedConversationRoute": "Kʰonapolit → Tauric Diana bots",
     "operatorVoiceSelection": false,
-    "unissuedResearchMode": "checked-by-default-disables-and-excludes-shi",
+    "unissuedResearchMode": "unchecked-by-default; checking enables SHI; unchecked excludes SHI",
     "safeHarborIssuanceHelp": "/safe-harbor/index.html",
     "fieldMotionControl": "Still the field / Let the field move controls aesthetic living-geometry motion only; Marrowline uses a visible 54s ambient drift and distinct rested opacity without changing application state",
     "gateInstrumentLayout": "Pedagogue instrument geometry v2: paired Depth/Breadth controls plus one primary and two compact secondary Gate actions on mobile and desktop",
