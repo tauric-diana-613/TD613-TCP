@@ -277,7 +277,7 @@ test('receiver deadline and operator cancellation remain distinguishable and rel
   for (const deadlineReached of [true, false]) {
     const scene = ui(); await scene.workspace.ready;
     let expire; let timerCleared = false; let fetchStarted = false;
-    scene.environment.setTimeout = (callback, delay) => { assert.equal(delay, 55000); expire = callback; return 613; };
+    scene.environment.setTimeout = (callback, delay) => { assert.equal(delay, 225000); expire = callback; return 613; };
     scene.environment.clearTimeout = id => { assert.equal(id, 613); timerCleared = true; };
     scene.environment.fetch = async (_url, options) => { fetchStarted = true; return new Promise((_resolve, reject) => options.signal.addEventListener('abort', () => reject(new Error('Aborted')), { once: true })); };
     scene.root.querySelector('#loomImportedRun').click();
