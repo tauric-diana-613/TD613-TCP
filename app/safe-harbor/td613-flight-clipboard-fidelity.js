@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const CONTRACT = 'td613.flight.clipboard-fidelity/2026-08-17-v4';
+  const CONTRACT = 'td613.flight.clipboard-fidelity/2026-09-29-v5';
   const MOBILE_QUERY = '(max-width: 820px)';
   const PAYLOAD_EDITOR_MARKER = 'td613-flight-inline-payload-editor';
 
@@ -21,26 +21,12 @@
 
   function semanticParagraphHtml(value) {
     const plain = normalizeLineEndings(value);
-    if (!plain) return '<div data-td613-flight-clipboard="semantic-paragraphs"></div>';
-
-    const parts = plain.split(/(\n{2,})/u);
-    const rendered = [];
-
-    for (const part of parts) {
-      if (!part) continue;
-      if (/^\n{2,}$/u.test(part)) {
-        // Adjacent <p> elements represent the first paragraph break. Preserve any
-        // additional blank lines beyond that as explicit empty paragraphs.
-        const extraBlankParagraphs = Math.max(0, part.length - 2);
-        for (let index = 0; index < extraBlankParagraphs; index += 1) {
-          rendered.push('<p><br></p>');
-        }
-        continue;
-      }
-      rendered.push('<p>' + escapeHtml(part).replace(/\n/gu, '<br>') + '</p>');
-    }
-
-    return '<div data-td613-flight-clipboard="semantic-paragraphs">' + rendered.join('') + '</div>';
+    // Rich desktop paste targets frequently prefer text/html over text/plain.
+    // Encode every literal newline as <br> so paragraph gaps survive that choice
+    // instead of relying on target-specific margins between adjacent <p> elements.
+    return '<div data-td613-flight-clipboard="exact-linebreaks" style="white-space:pre-wrap">' +
+      escapeHtml(plain).replace(/\n/gu, '<br>') +
+      '</div>';
   }
 
   function mobileLayout() {
