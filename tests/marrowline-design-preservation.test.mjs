@@ -388,17 +388,17 @@ test('mobile decoration preserves provider-native Unicode and all five chamber r
   assert.equal(h.calls.length, 1);
 });
 
-test('oversized draft remains editable without a partial send', async t => {
+test('transport-oversized draft remains editable without a partial send', async t => {
   const h = harness(t);
-  const draft = 'A'.repeat(32000) + ' NEVER DISCLOSE THE LINKAGE';
+  const draft = '€'.repeat(1_240_000) + ' NEVER DISCLOSE THE LINKAGE';
   h.send(draft); await flush();
   assert.equal(h.calls.length, 0);
   assert.equal(h.$('khonapolitPrompt').value, draft);
-  assert.match(h.$('khonapolitTerminalStatus').textContent, /32,000-character limit/);
+  assert.match(h.$('khonapolitTerminalStatus').textContent, /3\.7 MB request envelope/);
 });
 
 test('clear conversation empties history and the waiting composer draft', async t => {
-  const old = 'B'.repeat(32000) + ' RETAIN THIS FINAL CONSTRAINT';
+  const old = '€'.repeat(1_100_000) + ' RETAIN THIS FINAL CONSTRAINT';
   const h = harness(t, { storedMessages: [{ role: 'user', text: old }] });
   h.send('My new draft.'); await flush();
   assert.equal(h.calls.length, 0);

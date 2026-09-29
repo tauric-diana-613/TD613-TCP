@@ -21,6 +21,7 @@ import {
   HERITAGE_KEY,
   INGRESS_SIGIL,
   INVOCATION_MODES,
+  KHONAPOLIT_REQUEST_MAX_UTF8_BYTES,
   SEAL_GLYPH,
   analyzeKhonaIntegrity,
   buildInvocationPacket,
@@ -1090,10 +1091,28 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       // Client correlator only; server/provider identifiers remain separate.
       if (witnessRequestId) requestBody.request_id = witnessRequestId;
       const serializedRequestBody = JSON.stringify(requestBody);
+      const serializedRequestBytes = new TextEncoder().encode(serializedRequestBody).byteLength;
+      // Vercel's function ingress has a 4.5 MB payload ceiling. Hold locally
+      // below that hard edge so a huge prompt, long history, or base64 photo
+      // never disappears into an upstream 413 after Marrowline cleared the composer.
+      if (serializedRequestBytes > KHONAPOLIT_REQUEST_MAX_UTF8_BYTES) {
+        requestStage = 'request-preflight';
+        failurePayload = {
+          error: 'request-budget-exceeded',
+          observedAt: Date.now(),
+          validation: {
+            limit: KHONAPOLIT_REQUEST_MAX_UTF8_BYTES,
+            actual: serializedRequestBytes,
+            unit: 'serialized-utf8-bytes'
+          },
+          diagnostic: { stage: requestStage, code: 'request-budget-exceeded' }
+        };
+        throw Object.assign(new Error('request-budget-exceeded'), { name: 'MarrowlineRequestBudgetError' });
+      }
       // Fetch keepalive is capped near 64 KiB in browsers. Preserve background
       // delivery for ordinary chat while allowing larger attachment/history
       // packets to use the normal request path instead of throwing locally.
-      const backgroundKeepaliveEligible = new TextEncoder().encode(serializedRequestBody).byteLength <= 60 * 1024;
+      const backgroundKeepaliveEligible = serializedRequestBytes <= 60 * 1024;
       const response = await awaitMarrowlineAbortable(fetch(KHONAPOLIT_ENDPOINT, {
         signal: requestController.signal,
         method: 'POST', headers: { 'content-type': 'application/json', Accept: 'application/json' }, cache: 'no-store',
@@ -1200,13 +1219,18 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       renderGeminiBrowserLedger(doc, root);
       stopPedagogueStatus(root);
       if (status) status.dataset.progressStage = activeRequestCancelRequested ? 'cancelled' : 'held';
+      const requestBudgetHeld = state.lastFailure?.error === 'request-budget-exceeded';
       setPedagogueStatus(status, 'held', activeRequestCancelRequested ? 'The Red Deer stills the signal.'
-        : attachments.length
-          ? 'TASK PRESERVED · ' + attachments.length + ' attachment' + (attachments.length === 1 ? '' : 's') + ' held'
-          : 'TASK PRESERVED · retry when ready',
+        : requestBudgetHeld
+          ? 'TASK PRESERVED · request exceeds transport envelope'
+          : attachments.length
+            ? 'TASK PRESERVED · ' + attachments.length + ' attachment' + (attachments.length === 1 ? '' : 's') + ' held'
+            : 'TASK PRESERVED · retry when ready',
         activeRequestCancelRequested
           ? 'Operator cancelled the browser request; no completed reply admitted. Task and attachments preserved for explicit retry.'
-          : 'Request held; task preserved for explicit retry.');
+          : requestBudgetHeld
+            ? 'Current turn, recent history, and attachments together exceed Marrowline’s 3.7 MB request envelope. Start a new conversation, remove attachments, or shorten the current input; nothing was sent.'
+            : 'Request held; task preserved for explicit retry.');
     } finally {
       // Release the actual UI/request lifecycle before any optional evidence
       // collection. A slow source-window witness cannot strand Stop in place.

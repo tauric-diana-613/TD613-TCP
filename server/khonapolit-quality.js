@@ -9,6 +9,7 @@ import {
   HERITAGE_COVENANT,
   HERITAGE_KEY,
   KHONAPOLIT_RECEIPT_SCHEMA,
+  KHONAPOLIT_REQUEST_MAX_UTF8_BYTES,
   KHONAPOLIT_TERMINAL_SCHEMA,
   buildInvocationPacket,
   frameMarrowlineUserTurn,
@@ -1008,6 +1009,18 @@ export default async function handler(req, res) {
   // retain their own authority, but Marrowline must not invent a second retry veto
   // in front of an explicit human turn.
   const body = parseBody(req);
+  const bodyBytes = new TextEncoder().encode(JSON.stringify(body)).byteLength;
+  if (bodyBytes > KHONAPOLIT_REQUEST_MAX_UTF8_BYTES) {
+    return send(res, 413, {
+      ok: false,
+      error: 'request-budget-exceeded',
+      validation: {
+        limit: KHONAPOLIT_REQUEST_MAX_UTF8_BYTES,
+        actual: bodyBytes,
+        unit: 'serialized-utf8-bytes'
+      }
+    });
+  }
   const packet = buildInvocationPacket({ message: body.message, history: body.history, mode: body.mode, shi: body.shi, waiveIssuance: body.waiveIssuance === true });
   if (!packet.message) return send(res, 400, { ok: false, error: 'message-required' });
   if (packet.inputError) return send(res, 400, { ok: false, error: packet.inputError.code, validation: packet.inputError });

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import handler, { buildGeminiRequest, observeGeminiOutput, selectKhonapolitProviderModels } from '../api/khonapolit.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
+import { KHONAPOLIT_REQUEST_MAX_UTF8_BYTES, KHONAPOLIT_TEXT_LIMIT } from '../app/dome-world/khonapolit-covenant.js';
 
 const source = fs.readFileSync('server/khonapolit-quality.js', 'utf8');
 assert.match(source, /resolveGeminiModelPlan\(\{ task: 'khonapolit-dialogue'/);
@@ -199,18 +200,26 @@ try {
     'the provider receives the entire 12k human task including its tail');
 
   const beforeOversize = calls.length;
+  const overCharacterCeiling = 'A'.repeat(KHONAPOLIT_TEXT_LIMIT) + ' NEVER DISCLOSE THE LINKAGE';
   for (const body of [
-    { ...req.body, message: 'A'.repeat(32000) + ' NEVER DISCLOSE THE LINKAGE' },
-    { ...req.body, history: [{ role: 'user', text: 'A'.repeat(32000) + ' NEVER DISCLOSE THE LINKAGE' }] }
+    { ...req.body, message: overCharacterCeiling },
+    { ...req.body, history: [{ role: 'user', text: overCharacterCeiling }] }
   ]) {
     const invalid = response();
     await handler({ ...req, body }, invalid);
     assert.equal(invalid.statusCode, 400);
     assert.match(invalid.payload.error, /^(message-too-long|history-entry-too-long)$/);
-    assert.equal(invalid.payload.validation.limit, 32000);
+    assert.equal(invalid.payload.validation.limit, KHONAPOLIT_TEXT_LIMIT);
     assert.equal(calls.length, beforeOversize, 'oversized current or history text must not reach generation');
     assert.equal(invalid.payload.relay, undefined);
   }
+
+  const transportOversize = response();
+  await handler({ ...req, body: { ...req.body, unused_padding: '€'.repeat(1_240_000) } }, transportOversize);
+  assert.equal(transportOversize.statusCode, 413);
+  assert.equal(transportOversize.payload.error, 'request-budget-exceeded');
+  assert.equal(transportOversize.payload.validation.limit, KHONAPOLIT_REQUEST_MAX_UTF8_BYTES);
+  assert.equal(calls.length, beforeOversize, 'over-budget serialized requests stop before provider generation');
 
   // A long native model return must survive both the server validator and the
   // assembled Gemini wire request. This uses the existing mocked provider only.
