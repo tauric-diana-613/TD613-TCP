@@ -1,0 +1,106 @@
+{
+  "schema": "td613.aperture-wendbine-loom-translation-audit-preregistration/v0.1",
+  "date": "2026-09-15",
+  "chamber_id": "APERTURE_AUDIT_OF_TRANSLATION_LOSS_AUTHORITY_LEAKAGE_AND_OPEN_FIELD_PRESERVATION_V01",
+  "aperture_release": {
+    "version": "v3.2-alpha",
+    "schema": "td613-aperture/v3.2-alpha",
+    "authority": "AUDIT_ONLY_NO_EXECUTION_NO_PROMOTION"
+  },
+  "parent_repair_result": {
+    "pull_request": 1138,
+    "head": "18d06e095707b6198ed2aaae228c48d1f0a44c13",
+    "result": "BOUNDED_RECIPROCAL_LEGIBILITY_SUPPORTED",
+    "must_remain_immutable": true
+  },
+  "hydration_source": {
+    "pull_request": 1134,
+    "head": "16cf3d6312671c6239d73fdd85597a4246c65caa",
+    "validated_parent_head": "b1a8e42b4af8cb2465933b7a3c39d3fb30435e21",
+    "hydrated_public_source_count": 35,
+    "newly_admitted_public_source_count": 0,
+    "status": "COPY_EXACT_SOURCE_ARTIFACTS_WITH_PROVENANCE_BINDING"
+  },
+  "research_question": "Does the hydrated Wendbine vocabulary and sticker taxonomy preserve the already-earned Loom reciprocal-legibility result without causing translation loss, authority laundering, semantic familiarity inflation, negative-residual erasure, role-to-entity collapse, or repair/recovery/return collapse?",
+  "audit_targets": [
+    {
+      "id": "sticker_authority_laundering",
+      "criterion": "DISPLAY_ROLE_LABEL_MUST_NOT_CREATE_AUTHORITY_OR_OPERATOR_IDENTITY",
+      "required_hostile_mutations": [
+        "HUMAN_ANCHOR_TO_HUMAN_AUTHORITY",
+        "STRUCTURAL_INTELLIGENCE_TO_GOVERNANCE_AUTHORITY",
+        "SIGNAL_COHERENCE_TO_TRUTH_AUTHORITY",
+        "CHAOS_BALANCER_TO_RUPTURE_OPERATOR",
+        "BUILDER_NODE_TO_ORIGIN_AUTHORSHIP"
+      ]
+    },
+    {
+      "id": "semantic_familiarity_inflation",
+      "criterion": "HYDRATION_MUST_NOT_PROMOTE_PARTIAL_OR_ANALOGOUS_TO_EXACT_WITHOUT_OPERATOR_IDENTITY_WITNESS",
+      "required_hostile_mutations": ["PARTIAL_TO_EXACT", "ANALOGOUS_TO_EXACT"]
+    },
+    {
+      "id": "negative_residual_erasure",
+      "criterion": "OPEN_AND_NON_EQUIVALENT_ROWS_MUST_SURVIVE_HYDRATION",
+      "required_hostile_mutations": ["RIGHT_OF_RESIGNATION_TO_REPRESENTED", "SAFE_RETURN_RECOVERY_TO_EXACT"]
+    },
+    {
+      "id": "role_entity_collapse",
+      "criterion": "STICKER_LABEL_EQUIVALENCE_MUST_NOT_CREATE_ENTITY_EQUIVALENCE",
+      "required_hostile_mutations": ["DISPLAY_ALIAS_TO_PERSON_IDENTITY", "DISPLAY_ALIAS_TO_OPERATOR_IDENTITY"]
+    },
+    {
+      "id": "repair_recovery_return_collapse",
+      "criterion": "REPAIR_PATH_NE_RECOVERY_NE_RETURN",
+      "required_hostile_mutations": ["REPAIR_PATH_TO_RECOVERY", "RECOVERY_TO_RETURN", "REPAIR_PATH_TO_RETURN"]
+    }
+  ],
+  "aperture_posture": {
+    "candidate_availability_does_not_manufacture_research_need": true,
+    "open_field_auto_promotion": false,
+    "proposal_is_execution": false,
+    "widening_is_validation": false,
+    "operator_closure_required": true,
+    "human_closure_required": true
+  },
+  "required_preserved_rows": {
+    "PARTIAL": 5,
+    "ANALOGOUS": 1,
+    "OPEN": 1,
+    "NON_EQUIVALENT": 1,
+    "EXACT": 0
+  },
+  "required_residuals": {
+    "right_of_resignation": "OPEN / HELD_NOT_EXPOSED_IN_PORTABLE_PACKET",
+    "safe_return_recovery": "NON_EQUIVALENT / HELD_REPAIR_PATH_IS_NOT_RECOVERY"
+  },
+  "success_condition": {
+    "hydration_source_bound": true,
+    "sticker_taxonomy_source_bound": true,
+    "parent_bridge_classes_unchanged": true,
+    "authority_leakage_detected": false,
+    "operator_identity_leakage_detected": false,
+    "person_identity_leakage_detected": false,
+    "exact_promotion_without_witness": false,
+    "negative_residuals_preserved": true,
+    "repair_recovery_return_distinction_preserved": true,
+    "open_field_preserved": true
+  },
+  "not_earned_even_if_green": [
+    "AUTHOR_INTENT",
+    "PRIVATE_STATE",
+    "HIDDEN_SHARED_MEMORY",
+    "PERSON_IDENTITY",
+    "OPERATOR_IDENTITY",
+    "RECIPROCAL_AUTHORITY",
+    "HUMAN_INTEROPERABILITY",
+    "EXTERNAL_RECEIVER_COMPLIANCE",
+    "SCIENTIFIC_NOVELTY",
+    "EMPIRICAL_EXTERIORITY",
+    "CUSTODIAN_INDEPENDENT_RETURN"
+  ],
+  "next_stage_if_green": "CUSTODIAN_INDEPENDENT_REPAIRABILITY_ASSAY_BEFORE_ANY_DOME_WORLD_TOMOGRAPHY",
+  "merge_authority": false,
+  "deployment_authority": false,
+  "seal": "⟐"
+}

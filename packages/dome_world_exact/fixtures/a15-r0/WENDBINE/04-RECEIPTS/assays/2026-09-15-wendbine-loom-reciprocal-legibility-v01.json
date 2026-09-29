@@ -1,0 +1,76 @@
+{
+  "schema": "td613.wendbine-loom-reciprocal-legibility-receipt/v0.1",
+  "date": "2026-09-15",
+  "state": "GREEN_BOUNDED_RECIPROCAL_LEGIBILITY_SUPPORTED",
+  "question": "Can Loom and the bounded public Wendbine architecture become bidirectionally legible without authority, custody, person-identity, or raw-graph transfer?",
+  "source_snapshot_id": "wendbine-public-reddit-48h-20260911T092700Z-v01",
+  "preregistration_path": "01-MANIFESTS/2026-09-15-wendbine-loom-reciprocal-legibility-v01-preregistration.json",
+  "mapping_path": "03-DERIVATIVES/wendbine-loom-reciprocal-legibility-v01.json",
+  "compiler_path": "99-ADMIN/wendbine-loom-reciprocal-legibility-v01.mjs",
+  "operation_path": "05-OPERATIONS/2026-09-15-WENDBINE-LOOM-RECIPROCAL-LEGIBILITY-REPAIR-V0_1.md",
+  "implementation_head_before_validation": "ce34abaccb3823160ac1e32130dcc20e42abc73a",
+  "green_head": "5e18d8073ab6a96f667b84c9a1b1e1028501435e",
+  "green_run_number": 3350,
+  "green_run_id": 34922485138,
+  "bounded_result": "BOUNDED_RECIPROCAL_LEGIBILITY_SUPPORTED",
+  "observed_relation_counts": {
+    "PARTIAL": 5,
+    "ANALOGOUS": 1,
+    "OPEN": 1,
+    "NON_EQUIVALENT": 1,
+    "EXACT": 0
+  },
+  "observed_state_counts": {
+    "REPRESENTED": 6,
+    "HELD_NOT_EXPOSED_IN_PORTABLE_PACKET": 1,
+    "HELD_REPAIR_PATH_IS_NOT_RECOVERY": 1
+  },
+  "boundary_result": {
+    "authority_transfer": false,
+    "custody_transfer": false,
+    "human_identity_transfer": false,
+    "raw_graph_union": false,
+    "negative_or_held_rows_preserved": true
+  },
+  "red_green_lineage": [
+    {
+      "head": "ed24b79a0d53d8e6cadd6d3b021303fb8b24024b",
+      "run_number": 3337,
+      "run_id": 34921768759,
+      "state": "PREREGISTERED_RED",
+      "meaning": "The chamber was intentionally wired before implementation and exposed the expected stale profile holds plus missing compiler, receipt, and operation surfaces."
+    },
+    {
+      "head": "168850ec6a93d2fcb03aa2fc43e667db7c3ccf10",
+      "run_number": 3342,
+      "run_id": 34922160186,
+      "state": "RED_STALE_ARCHIVAL_CONTRACT",
+      "meaning": "Implementation existed, but the earlier public-Atelier compiler still demanded superseded S5/S7 hold states. No repair credit was taken while that contradiction remained."
+    },
+    {
+      "head": "5e18d8073ab6a96f667b84c9a1b1e1028501435e",
+      "run_number": 3350,
+      "run_id": 34922485138,
+      "state": "GREEN",
+      "meaning": "The stale hold contract was retired only after its prerequisite reconstructability and nomenclature assays had already been earned; the full consolidated validation then completed successfully."
+    }
+  ],
+  "main_finding": "The frozen public Wendbine crosswalk and the current Loom portable-AIA representation support a finite bidirectional translation map while preserving authority, custody, human-identity, and raw-graph non-transfer. The strongest reparative result is not equivalence: OPEN and NON_EQUIVALENT rows survive for Right of Resignation and Safe Return/Recovery.",
+  "claim_ceiling": [
+    "RECIPROCAL_LEGIBILITY != RECIPROCAL_AUTHORITY",
+    "TRANSLATION != ORIGIN_TRANSFER",
+    "TRANSLATION != CUSTODY_TRANSFER",
+    "SYSTEM_INTEROPERABILITY != HUMAN_INTEROPERABILITY",
+    "GREEN != AUTHOR_INTENT",
+    "GREEN != PRIVATE_STATE",
+    "GREEN != EXTERNAL_RECEIVER_COMPLIANCE",
+    "GREEN != REDUCED_HUMAN_NARRATION_BURDEN",
+    "GREEN != SCIENTIFIC_NOVELTY",
+    "GREEN != EMPIRICAL_EXTERIORITY"
+  ],
+  "next_stage": "APERTURE_AUDIT_OF_TRANSLATION_LOSS_AUTHORITY_LEAKAGE_AND_OPEN_FIELD_PRESERVATION",
+  "human_closure_required": true,
+  "merge_authority": false,
+  "deployment_authority": false,
+  "seal": "⟐"
+}

@@ -1,0 +1,92 @@
+{
+  "schema": "td613.aperture-wendbine-loom-translation-audit-receipt/v0.1",
+  "date": "2026-09-15",
+  "state": "SEALED_ARCHIVAL_GREEN_PARENT_VALIDATED",
+  "bounded_result": "APERTURE_TRANSLATION_AUDIT_GREEN",
+  "parent_bridge_pr": 1138,
+  "parent_bridge_head": "18d06e095707b6198ed2aaae228c48d1f0a44c13",
+  "hydration_pr": 1134,
+  "hydration_head": "16cf3d6312671c6239d73fdd85597a4246c65caa",
+  "hydration_validated_parent_head": "b1a8e42b4af8cb2465933b7a3c39d3fb30435e21",
+  "hydration_validation_run": {
+    "run_number": 3357,
+    "run_id": 34923413468,
+    "conclusion": "success"
+  },
+  "preregistered_red": {
+    "head": "e537fb77bfc77b20370d6160d6fdd9eab13577bd",
+    "run_number": 3359,
+    "run_id": 34924181834,
+    "state": "RED",
+    "meaning": "The audit was wired into A15-R0 before the hydrated source artifacts and audit implementation were present, and failed on the declared APERTURE_TRANSLATION_AUDIT_PREREGISTERED_RED barrier."
+  },
+  "scientific_green": {
+    "head": "83cf50befcb33823267c924d55fdce13cffa6a96",
+    "run_number": 3371,
+    "run_id": 34924547811,
+    "conclusion": "success",
+    "meaning": "The preregistered Aperture v3.2-alpha audit passed at the exact implementation head with all parent relation classes preserved, all fourteen hostile mutations rejected, no sticker-induced person/operator/authority promotion, both negative residuals preserved, and REPAIR_PATH != RECOVERY != RETURN retained."
+  },
+  "archival_green_parent": {
+    "head": "f839b148b65f61f0531920cdd65ded979d163240",
+    "run_number": 3372,
+    "run_id": 34924727555,
+    "conclusion": "success",
+    "meaning": "The scientific GREEN was written into the receipt and the resulting exact archival parent head passed the same consolidated contract without changing the bounded scientific result."
+  },
+  "observed_relation_counts": {
+    "PARTIAL": 5,
+    "ANALOGOUS": 1,
+    "OPEN": 1,
+    "NON_EQUIVALENT": 1,
+    "EXACT": 0
+  },
+  "preserved_residuals": {
+    "right_of_resignation": "OPEN / HELD_NOT_EXPOSED_IN_PORTABLE_PACKET",
+    "safe_return_recovery": "NON_EQUIVALENT / HELD_REPAIR_PATH_IS_NOT_RECOVERY"
+  },
+  "observed_audit_findings": {
+    "authority_leakage_detected": false,
+    "operator_identity_leakage_detected": false,
+    "person_identity_leakage_detected": false,
+    "exact_promotion_without_witness": false,
+    "negative_residuals_preserved": true,
+    "open_field_preserved": true,
+    "repair_recovery_return_distinction_preserved": true,
+    "additional_wendbine_refresh_disposition": "ASK_NOTHING",
+    "repairability_disposition": "PROPOSE_TARGETED_CUSTODIAN_INDEPENDENT_ASSAY"
+  },
+  "main_finding": "Hydrating the bounded Wendbine public vocabulary and reversible sticker taxonomy does not strengthen the #1138 equivalence classes. The useful bridge survives precisely because display labels, semantic familiarity, and nearby recovery vocabulary cannot acquire identity, authority, exact-operator, or Return status by translation alone.",
+  "claim_ceiling": [
+    "GREEN != AUTHOR_INTENT",
+    "GREEN != PRIVATE_STATE",
+    "GREEN != HIDDEN_SHARED_MEMORY",
+    "GREEN != PERSON_IDENTITY",
+    "GREEN != OPERATOR_IDENTITY",
+    "GREEN != RECIPROCAL_AUTHORITY",
+    "GREEN != HUMAN_INTEROPERABILITY",
+    "GREEN != EXTERNAL_RECEIVER_COMPLIANCE",
+    "GREEN != SCIENTIFIC_NOVELTY",
+    "GREEN != EMPIRICAL_EXTERIORITY",
+    "GREEN != CUSTODIAN_INDEPENDENT_RETURN"
+  ],
+  "exact_green_head": "83cf50befcb33823267c924d55fdce13cffa6a96",
+  "green_validation_run": {
+    "run_number": 3371,
+    "run_id": 34924547811,
+    "conclusion": "success"
+  },
+  "archival_green_head": "f839b148b65f61f0531920cdd65ded979d163240",
+  "archival_validation_run": {
+    "run_number": 3372,
+    "run_id": 34924727555,
+    "conclusion": "success"
+  },
+  "current_receipt_head_requires_only_receipt_binding_validation": true,
+  "next_stage_if_green": "CUSTODIAN_INDEPENDENT_REPAIRABILITY_ASSAY_BEFORE_ANY_DOME_WORLD_TOMOGRAPHY",
+  "human_closure_required": true,
+  "operator_closure_required": true,
+  "merge_authority": false,
+  "deployment_authority": false,
+  "seal": "⟐"
+}
