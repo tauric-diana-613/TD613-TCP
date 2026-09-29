@@ -2,7 +2,7 @@
 
 U+10D613 · Tauric Diana — Crimean heritage custodianship · 2026-09-28 (America/New_York)
 
-**Status: phase-one research contract candidate; documentary; draft; production authority closed.**
+**Status: phase-one research contract candidate; documentary; implementation authority closed.**
 
 Loom governs a relation, Portable AIA carries bounded operations across receiver change, and Marrowline hosts conversational continuation. Loom Gate asks what the complete declared journey reveals to each specified observer. Golden Egg requires constructive utility and the retained empirical surfaces to coexist in one qualified acquisition.
 

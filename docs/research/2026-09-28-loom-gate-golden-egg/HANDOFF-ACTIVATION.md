@@ -1,6 +1,6 @@
 # Handoff activation — 𝌋
 
-Resume at the draft PR for branch `research/loom-gate-golden-egg-20260928`, based on `2878307955f60f9eaac957766b62a7f89af4b5ef`. Read root AGENTS first, then STATE and this chamber's source ledger. Recheck branch/base and overlapping open work before editing.
+Resume from PR #1386 / branch `research/loom-gate-golden-egg-20260928`, originally based on `2878307955f60f9eaac957766b62a7f89af4b5ef`. This handoff was authored while the PR was a draft; branch/base hashes are checkpoints, not assumptions about current state. Read root AGENTS first, then STATE and this chamber's source ledger, and verify live PR/main plus overlapping open work before editing.
 
 ## What to preserve
 
@@ -21,6 +21,6 @@ Do not restart a broad literature search before resolving these concrete questio
 
 ## Reviewable outcome of this phase
 
-A documentary architecture and falsification cabinet, not an implemented privacy gate. All thirteen files belong to one new research directory. No production changes, empirical credit, merge or deployment.
+A documentary architecture and falsification cabinet, not an implemented privacy gate. All thirteen files belong to one new research directory. The tranche makes no runtime/product implementation and earns no empirical credit. Merge and production publication of these documents, when separately authorized through the governed release path, change publication status only and do not implement Loom Gate.
 
 Marked ⟐

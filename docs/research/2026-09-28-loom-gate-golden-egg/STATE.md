@@ -4,7 +4,7 @@ Date: 2026-09-28 America/New_York.
 Branch: `research/loom-gate-golden-egg-20260928`.
 Base: `2878307955f60f9eaac957766b62a7f89af4b5ef`.
 Research directory: `docs/research/2026-09-28-loom-gate-golden-egg/`.
-Content revision: the commit containing this file; resolve it from the draft PR head. A commit cannot contain its own final hash.
+Content revision: the commit containing this file; while the PR is open resolve it from the live PR head, and after merge resolve it from repository history. Handoff hashes are checkpoints, not current-state claims.
 
 ## Completed in this tranche
 
@@ -18,11 +18,11 @@ Content revision: the commit containing this file; resolve it from the draft PR 
 
 ## Validation
 
-Local verification found thirteen documents and no broken relative document links. Exact finite-model checks confirmed baseline disclosure, length-channel recovery, three-share parity and negative signed redundancy. These are mathematical checks, not empirical conversation tests. Remote commit scope and draft status are verified in the PR handoff.
+Local verification found thirteen documents and no broken relative document links. Exact finite-model checks confirmed baseline disclosure, length-channel recovery, three-share parity and negative signed redundancy. These are mathematical checks, not empirical conversation tests. Remote commit scope and draft status were verified at the initial PR handoff; any later revision or publication requires fresh exact-revision evidence.
 
 ## Not completed / not claimed
 
-No empirical acquisition, independent reviewer, live provider test, runtime implementation, deployment, merge, Golden Egg, or empirical-shore reopening. Adversarial critique is explicitly self-review. Mathematical fixtures concern declared finite models only. Historical CI results are not current validation.
+No empirical acquisition, independent reviewer, live provider test, runtime implementation, Golden Egg, or empirical-shore reopening has occurred. At the initial handoff, no merge or deployment had occurred; any later governed publication is release status rather than scientific evidence and cannot alter those findings. Adversarial critique is explicitly self-review. Mathematical fixtures concern declared finite models only. Historical CI results are not current validation.
 
 ## Blocking scientific questions
 

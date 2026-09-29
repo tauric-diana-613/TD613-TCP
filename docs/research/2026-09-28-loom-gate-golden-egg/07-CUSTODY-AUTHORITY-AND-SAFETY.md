@@ -16,7 +16,7 @@ Separate raw evidence, internal scientific records, and public explanation. Each
 
 ## Explicit scope
 
-This tranche adds research documents only. No runtime, production schema, UI, provider credentials, deployment, merge, child experiment, hostile live test, or automated/detached review is initiated. The historical trap route and fixed header markers are studied as code, not exercised as an exfiltration path.
+This tranche changes research documents only. It adds no runtime, production schema, UI, provider credentials, child experiment, hostile live test, or automated/detached review. Merge and governed publication of these documents may occur only through separately granted operator authority and do not install the proposed Loom Gate or confer empirical credit. The historical trap route and fixed header markers are studied as code, not exercised as an exfiltration path.
 
 Human closure remains necessary for empirical claims and future execution. It must name the operation being approved and its visible consequence; a ceremonial marker alone does not silently broaden scope.
 
