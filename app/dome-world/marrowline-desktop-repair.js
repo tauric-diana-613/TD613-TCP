@@ -318,11 +318,18 @@ function installUniversalContextPlus(doc, root) {
     if (typeof root.requestAnimationFrame === 'function') root.requestAnimationFrame(callback);
     else (root.setTimeout ?? setTimeout)(callback, 0);
   };
+  let loomCueAcknowledged = false;
   const refreshLoom = () => {
     let awake = false;
-    try { awake = Boolean(peekLastConsumedLoomAiHandoff()); } catch {}
+    try {
+      awake = doc.documentElement?.dataset?.loomTaskImport === 'staged'
+        && Boolean(peekLastConsumedLoomAiHandoff());
+    } catch {}
     plus.dataset.loomAwake = String(awake);
+    plus.dataset.loomAttention = String(awake && !loomCueAcknowledged);
+    loomItem.button.dataset.loomAwake = String(awake);
     loomItem.small.textContent = awake ? 'Continue the Loom handoff already staged here' : 'Open Loom in a new tab';
+    if (!awake) loomCueAcknowledged = false;
   };
   const stage = async (input, kind) => {
     root.dispatchEvent?.(new root.CustomEvent('td613:marrowline:attachment-staging-state', {
@@ -361,13 +368,23 @@ function installUniversalContextPlus(doc, root) {
     const opening = menu.hidden;
     menu.hidden = !opening;
     plus.setAttribute('aria-expanded', String(opening));
-    if (opening) { refreshLoom(); nextFrame(position); }
+    if (opening) {
+      refreshLoom();
+      if (plus.dataset.loomAwake === 'true') {
+        loomCueAcknowledged = true;
+        plus.dataset.loomAttention = 'false';
+      }
+      nextFrame(position);
+    }
   });
   root.addEventListener?.(MARROWLINE_ATTACHMENT_CHANGE_EVENT, event => {
     const state = event.detail || attachmentState();
     plus.dataset.attachmentCount = String(state.count || 0);
   });
-  root.addEventListener?.('td613:marrowline:loom-pocket-ready', refreshLoom);
+  root.addEventListener?.('td613:marrowline:loom-pocket-ready', () => {
+    loomCueAcknowledged = false;
+    refreshLoom();
+  });
   doc.addEventListener('click', event => {
     if (menu.hidden || menu.contains(event.target) || plus.contains(event.target)) return;
     close();
