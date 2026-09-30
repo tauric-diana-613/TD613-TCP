@@ -4,7 +4,7 @@ import { requireReusableLoomAnswer } from './ai-evidence-review.js';
 
 export const LOOM_DEMO_ACTIVATION_SCHEMA = 'td613.loom.portable-activation/v0.2';
 export const LOOM_DEMO_REQUEST_SCHEMA = 'td613.loom.demo-request/v0.2';
-export const LOOM_DEMO_STAGE_RECEIPT_SCHEMA = 'td613.loom.demo-stage-receipt/v0.1';
+export const LOOM_DEMO_STAGE_RECEIPT_SCHEMA = 'td613.loom.demo-stage-receipt/v0.2';
 export const LOOM_DEMO_RESULT_COMMITMENT_SCHEMA = 'td613.loom.demo-result-commitment/v0.1';
 const copy = value => JSON.parse(JSON.stringify(value));
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
@@ -37,7 +37,10 @@ export async function createLoomDemoResultCommitment(value, documents, environme
 
 export function validateLoomDemoStageReceipt(receipt, activation) {
   if (!receipt || typeof receipt !== 'object' || Array.isArray(receipt)) throw new Error('LOOM_DEMO_PREDECESSOR_INVALID');
-  exact(receipt, ['schema', 'activation_digest', 'phase', 'request_id', 'request_digest', 'current_input_digest', 'prior_result_digest', 'result_digest', 'expires_at', 'session_bound', 'authority_transferred']);
+  exact(receipt, ['schema', 'activation_digest', 'phase', 'request_id', 'request_digest', 'current_input_digest', 'prior_result_digest', 'result_digest', 'predecessor_receipt_digest', 'expires_at', 'admission_state', 'stage_policy', 'authority_transferred', 'auth']);
+  if (!receipt.auth || typeof receipt.auth !== 'object' || Array.isArray(receipt.auth)) throw new Error('LOOM_DEMO_PREDECESSOR_INVALID');
+  exact(receipt.auth, ['scheme', 'key_id', 'tag']);
+  const expectedPolicy = receipt.phase === 'ACTIVATE' ? 'AIA_ONLY' : 'SELECTED_FILES_BOUND';
   if (receipt.schema !== LOOM_DEMO_STAGE_RECEIPT_SCHEMA ||
       !['ACTIVATE', 'CONTINUE'].includes(receipt.phase) ||
       typeof receipt.request_id !== 'string' ||
@@ -46,10 +49,17 @@ export function validateLoomDemoStageReceipt(receipt, activation) {
       !/^[a-f0-9]{64}$/.test(receipt.current_input_digest) ||
       !(receipt.prior_result_digest === null || /^[a-f0-9]{64}$/.test(receipt.prior_result_digest)) ||
       !/^[a-f0-9]{64}$/.test(receipt.result_digest) ||
+      !(receipt.predecessor_receipt_digest === null || /^[a-f0-9]{64}$/.test(receipt.predecessor_receipt_digest)) ||
       receipt.activation_digest !== activation.activation_digest ||
       receipt.expires_at !== activation.expires_at ||
-      receipt.session_bound !== true ||
-      receipt.authority_transferred !== false) throw new Error('LOOM_DEMO_PREDECESSOR_INVALID');
+      receipt.admission_state !== 'ADMITTED' ||
+      receipt.stage_policy !== expectedPolicy ||
+      receipt.authority_transferred !== false ||
+      receipt.auth.scheme !== 'hmac-sha256' ||
+      receipt.auth.key_id !== 'td613-loom-demo-stage-v1' ||
+      !/^[A-Za-z0-9_-]{43}$/.test(receipt.auth.tag) ||
+      (receipt.phase === 'ACTIVATE' && receipt.predecessor_receipt_digest !== null) ||
+      (receipt.phase === 'CONTINUE' && receipt.predecessor_receipt_digest === null)) throw new Error('LOOM_DEMO_PREDECESSOR_INVALID');
   return copy(receipt);
 }
 
