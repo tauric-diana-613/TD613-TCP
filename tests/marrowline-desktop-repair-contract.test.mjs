@@ -38,7 +38,7 @@ test('Loom Gate continuity precedes the separate adversarial assay and preserves
   assert.match(loomGateContinuityJs, /Atlas/);
   assert.match(loomGateContinuityJs, /FADT/);
   assert.match(loomGateContinuityJs, /SEPARATE EXPERIMENT/);
-  assert.match(loomGateContinuityJs, /Adversarial boundary assay stays below/);
+  assert.match(loomGateContinuityJs, /Adversarial boundary assay preserved for the later Gate pass/);
   assert.match(loomGateContinuityJs, /Browser submission of #1 began; server admission remains unresolved/);
   assert.match(loomGateContinuityJs, /PRIOR EXPORT RETAINED/);
   assert.match(loomGateContinuityCss, /\.loom-gate-consequence-grid\{[\s\S]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
@@ -46,6 +46,8 @@ test('Loom Gate continuity precedes the separate adversarial assay and preserves
   assert.match(loomGateContinuityCss, /\.loom-gate-role\[data-role="aperture"\]/);
   assert.match(loomGateContinuityCss, /\.loom-gate-role\[data-role="atlas"\]/);
   assert.match(loomGateContinuityCss, /\.loom-gate-role\[data-role="fadt"\]/);
+  assert.match(loomGateContinuityCss, /#gatePanel\[data-loom-continuity-active="true"\] #marrowlineGatePedagogue/);
+  assert.match(loomGateContinuityCss, /#gatePanel\[data-loom-continuity-active="true"\] #marrowlineForm/);
   assert.match(loomGateContinuityCss, /@media\(max-width:860px\)\{[\s\S]*\.loom-gate-consequence-grid,\.loom-gate-role-grid\{grid-template-columns:1fr\}/);
 });
 
