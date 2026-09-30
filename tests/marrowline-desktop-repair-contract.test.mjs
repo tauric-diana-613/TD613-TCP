@@ -17,6 +17,8 @@ const terminalJs = fs.readFileSync('app/dome-world/marrowline-terminal.js', 'utf
 const threadsJs = fs.readFileSync('app/dome-world/marrowline-threads.js', 'utf8');
 const physicalJs = fs.readFileSync('app/dome-world/marrowline-physical-device-repair.js', 'utf8');
 const loomPocketJs = fs.readFileSync('app/dome-world/marrowline-loom-pocket.js', 'utf8');
+const loomGateContinuityJs = fs.readFileSync('app/dome-world/marrowline-loom-gate-continuity.js', 'utf8');
+const loomGateContinuityCss = fs.readFileSync('app/dome-world/marrowline-loom-gate-continuity.css', 'utf8');
 const release = JSON.parse(fs.readFileSync('app/dome-world/marrowline.release.json', 'utf8'));
 
 test('desktop instruments have a persistent adjacent panel and Loom Gate default', () => {
@@ -25,6 +27,26 @@ test('desktop instruments have a persistent adjacent panel and Loom Gate default
   assert.deepEqual(release.desktop.instrumentTabs, ['Loom Gate', 'Keys', 'Stories', 'Receipts']);
   assert.equal(release.desktop.persistentInstrumentPanel, true);
   assert.equal(release.desktop.posture, 'conversation-with-persistent-instruments');
+});
+test('Loom Gate continuity precedes the separate adversarial assay and preserves four-role jurisdiction', () => {
+  assert.equal(release.loomGateContinuitySchema, 'td613.dome-world.marrowline-loom-gate-continuity/v0.1');
+  assert.deepEqual(release.mobile.navigationOrder, ['Keys', 'Loom Gate', 'Chat', 'Stories', 'Receipts']);
+  assert.match(page, /data-mobile-target="gatePanel"><span>⟁<\/span>Loom Gate<\/button>/);
+  assert.match(loomGateContinuityJs, /What crossed this Loom Gate\?/);
+  assert.match(loomGateContinuityJs, /Pedagogue/);
+  assert.match(loomGateContinuityJs, /Aperture/);
+  assert.match(loomGateContinuityJs, /Atlas/);
+  assert.match(loomGateContinuityJs, /FADT/);
+  assert.match(loomGateContinuityJs, /SEPARATE EXPERIMENT/);
+  assert.match(loomGateContinuityJs, /Adversarial boundary assay stays below/);
+  assert.match(loomGateContinuityJs, /Browser submission of #1 began; server admission remains unresolved/);
+  assert.match(loomGateContinuityJs, /PRIOR EXPORT RETAINED/);
+  assert.match(loomGateContinuityCss, /\.loom-gate-consequence-grid\{[\s\S]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
+  assert.match(loomGateContinuityCss, /\.loom-gate-role\[data-role="pedagogue"\]/);
+  assert.match(loomGateContinuityCss, /\.loom-gate-role\[data-role="aperture"\]/);
+  assert.match(loomGateContinuityCss, /\.loom-gate-role\[data-role="atlas"\]/);
+  assert.match(loomGateContinuityCss, /\.loom-gate-role\[data-role="fadt"\]/);
+  assert.match(loomGateContinuityCss, /@media\(max-width:860px\)\{[\s\S]*\.loom-gate-consequence-grid,\.loom-gate-role-grid\{grid-template-columns:1fr\}/);
 });
 
 test('lore-bearing demo prompts preserve canonical Flow-Core glyphs and Palantir attribution', () => {
