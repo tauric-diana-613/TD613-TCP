@@ -19,10 +19,10 @@ const physicalJs = fs.readFileSync('app/dome-world/marrowline-physical-device-re
 const loomPocketJs = fs.readFileSync('app/dome-world/marrowline-loom-pocket.js', 'utf8');
 const release = JSON.parse(fs.readFileSync('app/dome-world/marrowline.release.json', 'utf8'));
 
-test('desktop instruments have a persistent adjacent panel and Gate default', () => {
+test('desktop instruments have a persistent adjacent panel and Loom Gate default', () => {
   assert.match(css, /grid-template-columns:minmax\(0,2fr\) minmax\(300px,1fr\)/);
   assert.match(css, /html:root #speakingPanel #khonapolitMessages\{flex:1 1 0;min-height:0!important/);
-  assert.deepEqual(release.desktop.instrumentTabs, ['Gate', 'Keys', 'Stories', 'Receipts']);
+  assert.deepEqual(release.desktop.instrumentTabs, ['Loom Gate', 'Keys', 'Stories', 'Receipts']);
   assert.equal(release.desktop.persistentInstrumentPanel, true);
   assert.equal(release.desktop.posture, 'conversation-with-persistent-instruments');
 });
