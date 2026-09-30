@@ -385,7 +385,7 @@ test('admission-time expiry holds a late provider result without minting a recei
     signingEnvironment:SIGNING_ENVIRONMENT,
     headStoreEnvironment:HEAD_STORE_ENVIRONMENT,
     headStoreFetch:createFakeLoomHeadStore().fetchImpl,
-    clock:()=>activation.expires_at,
+    clock:(()=>{let tick=0;return()=>++tick===1?activation.expires_at-1:activation.expires_at;})(),
     taskHandler:async(req,res)=>{
       calls++;
       res.statusCode=200;
