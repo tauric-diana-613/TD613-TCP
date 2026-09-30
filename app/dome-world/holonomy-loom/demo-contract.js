@@ -36,6 +36,7 @@ export async function createLoomDemoResultCommitment(value, documents, environme
 }
 
 export function validateLoomDemoStageReceipt(receipt, activation) {
+  if (!receipt || typeof receipt !== 'object' || Array.isArray(receipt)) throw new Error('LOOM_DEMO_PREDECESSOR_INVALID');
   exact(receipt, ['schema', 'activation_digest', 'phase', 'request_id', 'request_digest', 'current_input_digest', 'prior_result_digest', 'result_digest', 'expires_at', 'session_bound', 'authority_transferred']);
   if (receipt.schema !== LOOM_DEMO_STAGE_RECEIPT_SCHEMA ||
       !['ACTIVATE', 'CONTINUE'].includes(receipt.phase) ||
