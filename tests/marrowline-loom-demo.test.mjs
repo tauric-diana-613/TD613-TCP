@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import {webcrypto} from 'node:crypto';
 import {JSDOM} from 'jsdom';
 import {createLoomAiGovernance} from '../app/dome-world/holonomy-loom/ai-handoff.js';
-import {bindLoomDemoRequest,loomDemoDigest,loomDemoResult,LOOM_DEMO_STAGE_RECEIPT_SCHEMA} from '../app/dome-world/holonomy-loom/demo-contract.js';
+import {bindLoomDemoRequest,loomDemoDigest,loomDemoReceiptDigest,loomDemoResult,LOOM_DEMO_STAGE_RECEIPT_SCHEMA} from '../app/dome-world/holonomy-loom/demo-contract.js';
 import {installMarrowlineLoomDemo} from '../app/dome-world/marrowline-loom-demo.js';
 import {installMarrowlineDesktopRepair} from '../app/dome-world/marrowline-desktop-repair.js';
 import {getMarrowlineAttachments,clearMarrowlineAttachments,removeMarrowlineAttachment,stageMarrowlineAttachments} from '../app/dome-world/marrowline-attachments.js';
@@ -23,7 +23,7 @@ async function harness({held=false,tamperStageReceipt=false}={}){
   if(deny){bound.governor.close();return {ok:false,status:422,json:async()=>({schema:'td613.loom.ai-task-result/v0.1',request_id:request.request_id,status:'held',answer:'',error:'test-held'})};}
   const out={schema:'td613.loom.ai-task-result/v0.1',request_id:request.request_id,status:'completed',answer:request.phase==='ACTIVATE'?'Rules received; selected files are pending.':requests.length===2?'State B has four workstreams.':'State C has five workstreams.',missing_information:[],used_document_ids:request.phase==='ACTIVATE'?[]:['a'],suggested_next_step:'Inspect the next boundary.'};
   const normalized=loomDemoResult(out,bound.selected.documents);
-  const stage={schema:LOOM_DEMO_STAGE_RECEIPT_SCHEMA,activation_digest:request.activation.activation_digest,phase:request.phase,request_id:request.request_id,request_digest:await loomDemoDigest(request,root),current_input_digest:bound.governance.input_digest,prior_result_digest:bound.receipt.prior_result_digest,result_digest:await loomDemoDigest(normalized,root),expires_at:request.activation.expires_at,session_bound:true,authority_transferred:false};
+  const stage={schema:LOOM_DEMO_STAGE_RECEIPT_SCHEMA,activation_digest:request.activation.activation_digest,phase:request.phase,request_id:request.request_id,request_digest:await loomDemoDigest(request,root),current_input_digest:bound.governance.input_digest,prior_result_digest:bound.receipt.prior_result_digest,result_digest:await loomDemoDigest(normalized,root),predecessor_receipt_digest:request.phase==='CONTINUE'?await loomDemoReceiptDigest(request.predecessor,root):null,expires_at:request.activation.expires_at,admission_state:'ADMITTED',stage_policy:request.phase==='ACTIVATE'?'AIA_ONLY':'SELECTED_FILES_BOUND',authority_transferred:false,auth:{scheme:'hmac-sha256',key_id:'td613-loom-demo-stage-v1',tag:'A'.repeat(43)}};
   if(tamperStageReceipt)stage.request_digest='f'.repeat(64);
   bound.governor.close();
   return {ok:true,status:200,json:async()=>({...out,loom_demo_binding:bound.receipt,loom_demo_stage_receipt:stage})};
