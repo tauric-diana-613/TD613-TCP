@@ -4,6 +4,7 @@ import { renderLoomAiResult } from './holonomy-loom/ai-result-view.js';
 import { readLoomAiFailure, describeLoomAiFailure } from './holonomy-loom/ai-failure.js';
 import { ingestGeminiConsumption } from '../gemini-consumption-ledger.js';
 import { getMarrowlineAttachments, stageMarrowlineAttachments, removeMarrowlineAttachment } from './marrowline-attachments.js';
+import { installMarrowlineLoomGateContinuity } from './marrowline-loom-gate-continuity.js';
 
 const EVENT = 'td613:marrowline:loom-demo-state';
 const byId = (doc, id) => doc.getElementById(id);
@@ -11,6 +12,7 @@ const copy = value => JSON.parse(JSON.stringify(value));
 function element(doc, tag, text, className='') { const node=doc.createElement(tag);node.textContent=text;node.className=className;return node; }
 function button(doc, label, action) { const node=element(doc,'button',label);node.type='button';node.addEventListener('click',action);return node; }
 function gateTarget(doc) {return doc.querySelector(doc.documentElement.classList.contains('marrowline-mobile-shell') ? '.mobile-dock [data-mobile-target="gatePanel"]' : '#marrowlineDesktopToolTabs [data-target="gatePanel"]');}
+function chatTarget(doc) {return doc.querySelector(doc.documentElement.classList.contains('marrowline-mobile-shell') ? '.mobile-dock [data-mobile-target="speakingPanel"]' : null);}
 
 export async function installMarrowlineLoomDemo(packet, doc=document, environment=window) {
   if (environment.__TD613_LOOM_DEMO_CONTROLLER__) return environment.__TD613_LOOM_DEMO_CONTROLLER__;
@@ -18,7 +20,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   const form=byId(doc,'khonapolitForm'), prompt=byId(doc,'khonapolitPrompt'), send=byId(doc,'khonapolitSend'), ordinary=byId(doc,'khonapolitMessages');
   if (!form || !prompt || !send || !ordinary) throw new Error('Loom demo composer unavailable.');
   let phase='ARRIVED', active=false, pending=null, staged=[], busy=false;
-  let latest=packet.continuation?.prior_result ? loomDemoResult(packet.continuation.prior_result, packet.documents) : null, latestBinding=null, lastAccepted=null, predecessor=null;
+  let latest=packet.continuation?.prior_result ? loomDemoResult(packet.continuation.prior_result, packet.documents) : null, latestBinding=null, lastAccepted=null, predecessor=null, lastAdmittedBindingReceipt=null;
   let ordinaryDraft=null, destroyed=false, lastAttempt='NOT_SENT';
   const status=byId(doc,'khonapolitTerminalStatus');
   const setStatus=text=>{if(status)status.textContent=text;};
@@ -47,16 +49,12 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   const close=button(doc,'Close',()=>closeMenu());
   menu.append(title,hint,step1,note1,step2,note2,menuStatus,close);doc.body.append(menu);
 
-  const gate=doc.querySelector('#gatePanel .gate-controls');
-  const gatePanel=element(doc,'section','','loom-demo-gate');gatePanel.id='loomDemoGate';
-  const gateHeading=element(doc,'h3','Your Loom boundary');
-  const gateState=element(doc,'p','Loom arrived. No request sent.');gateState.setAttribute('role','status');
-  const inspect=element(doc,'details','');inspect.append(element(doc,'summary','Inspect task, rules and carried state'));
-  const exact=element(doc,'pre',JSON.stringify(activation,null,2));inspect.append(exact);
-  const exportButton=button(doc,'Export current Loom Portable AIA',()=>exportCurrent());exportButton.disabled=true;
-  const localCheck=button(doc,'Check selected-file binding locally',()=>void checkBinding());
-  const checkState=element(doc,'p','Local checks send nothing. The existing live Gate conditions remain separate actions.');checkState.setAttribute('role','status');
-  gatePanel.append(gateHeading,gateState,inspect,localCheck,checkState,exportButton);gate?.prepend(gatePanel);
+  const gateContinuity=installMarrowlineLoomGateContinuity({
+    doc,root:environment,activation,packet,
+    onExport:()=>exportCurrent(),
+    onLocalCheck:()=>void checkBinding(),
+    onReturnToChat:()=>{const target=chatTarget(doc);if(target){target.click();target.focus?.({preventScroll:true});}else prompt.focus?.({preventScroll:true});}
+  });
 
   const snapshot=()=>({phase,active,busy,pending_steps:!['FILES_STAGED','CONTINUING','DONE','EXPIRED','LEFT'].includes(phase),aia_sent:['AIA_SENT','FILES_STAGED','CONTINUING','DONE'].includes(phase),files_staged:['FILES_STAGED','CONTINUING','DONE'].includes(phase),current_result_request_id:lastAccepted?.request_id??null,predecessor_request_id:predecessor?.request_id??null});
   function emit() {
@@ -69,9 +67,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
     step2.disabled=busy||phase!=='AIA_SENT';
     step1.dataset.completed=String(state.aia_sent);step2.dataset.completed=String(state.files_staged);
     note2.textContent=state.aia_sent?'Selected Loom files only. Local-only documents never enter this route.':'Locked until #1 has returned an admitted response.';
-    gateState.textContent=phase==='ARRIVED'?'Loom arrived. Start with the Portable AIA.':phase==='AIA_SENT'?'AIA response admitted. File contents have not been sent.':phase==='DONE'?'Current continuation admitted under the carried rules.':phase==='EXPIRED'?'This transfer expired. Prepare a fresh handoff in Loom.':phase==='LEFT'?'Loom mode closed. Ordinary Marrowline chat is active.':busy?'Governed request pending.':'Prepared locally. Explicit Send is required.';
-    if(lastAttempt==='HELD')gateState.textContent+=' The latest attempt was held; any previous admitted result remains separate.';
-    exportButton.disabled=!lastAccepted||!active||phase==='EXPIRED'||busy;
+    gateContinuity?.update({phase,lastAttempt,busy,activation,binding:lastAdmittedBindingReceipt,predecessor,result:lastAccepted,packet});
     environment.dispatchEvent(new environment.CustomEvent(EVENT,{detail:state}));
   }
   function closeMenu({focusParent=true}={}){
@@ -187,6 +183,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
           returnedPredecessor.result_digest!==expectedResultDigest)throw new Error('The server stage receipt did not match this request.');
         if(!binding.admit(normalizedResult).allowed)throw new Error('The returned result was held by the Loom governor.');
         predecessor=returnedPredecessor;
+        lastAdmittedBindingReceipt=copy(binding.receipt);
       }finally{environment.clearTimeout(deadline);}
       if(destroyed||!active||controller.signal.aborted)return;
       lastAttempt='ADMITTED';
@@ -196,14 +193,13 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
       const details=element(doc,'details','');details.append(element(doc,'summary','Inspect this request and result binding'),element(doc,'pre',JSON.stringify({binding:binding.receipt,response:output},null,2)));card.append(details);
       staged.forEach(item=>removeMarrowlineAttachment(item.id,environment));staged=[];pending=null;prompt.value='';
       if(operation==='ACTIVATE'){
-        phase='AIA_SENT';consequence.textContent='AIA response admitted. Next: + → Loom demo → #2: Upload Loom demo files.';
-        card.append(button(doc,'#2: Upload Loom demo files',()=>void stageFiles()));
+        phase='AIA_SENT';consequence.textContent='AIA response admitted. Inspect what crossed in Loom Gate, then return to + → Loom demo → #2: Upload Loom demo files.';
+        const inspectGate=button(doc,'Inspect #1 in Loom Gate',()=>{const target=gateTarget(doc);target?.click();target?.focus?.({preventScroll:true});});inspectGate.className='loom-demo-gate-next';card.append(inspectGate);
       }else{
         phase='DONE';latest=loomDemoResult(output,packet.documents);latestBinding?.governor.close();latestBinding=binding;lastAccepted=copy(latest);
-        exportButton.disabled=false;consequence.textContent='Loom rules govern this composer. Ask a follow-up, export the current work from Gate, or leave Loom mode.';
-        const onward=button(doc,'Continue Loom demo: Gate',()=>{const target=gateTarget(doc);target?.click();target?.focus?.({preventScroll:true});});onward.className='loom-demo-gate-next';card.append(onward);
+        consequence.textContent='Loom rules govern this composer. Inspect continuity in Loom Gate, ask a follow-up, export the current work, or leave Loom mode.';
+        const onward=button(doc,'Inspect continuity in Loom Gate',()=>{const target=gateTarget(doc);target?.click();target?.focus?.({preventScroll:true});});onward.className='loom-demo-gate-next';card.append(onward);
       }
-      exact.textContent=JSON.stringify({activation,current_binding:latestBinding?.receipt??null,current_predecessor:predecessor,current_result:lastAccepted},null,2);
       setStatus(operation==='ACTIVATE'?'AIA response admitted · now upload the selected Loom demo files':'Loom continuation admitted · latest result retained');
       card.scrollIntoView?.({block:'start',behavior:'auto'});
     }catch(error){
@@ -228,10 +224,11 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   }
   async function checkBinding(){
     try{
-      const req={schema:LOOM_DEMO_REQUEST_SCHEMA,request_id:environment.crypto.randomUUID(),phase:'CONTINUE',activation,documents:packet.documents,operator_request:'Check the selected file binding locally.',prior_result:latest};
+      if(!predecessor)throw new Error('Admit #1 before checking the file-bearing continuation.');
+      const req={schema:LOOM_DEMO_REQUEST_SCHEMA,request_id:environment.crypto.randomUUID(),phase:'CONTINUE',activation,documents:packet.documents,operator_request:'Check the selected file binding locally.',prior_result:latest,predecessor};
       const binding=await bindLoomDemoRequest(req,environment);binding.governor.close();
-      checkState.textContent='Local file-binding check passed: the selected bytes and portable rules match. No provider call was made.';
-    }catch(error){checkState.textContent=`Local binding held · ${error.message}`;}
+      setStatus('Loom Gate local binding check passed · selected bytes and portable rules match · no provider call made');
+    }catch(error){setStatus(`Loom Gate local binding held · ${error.message}`);}
   }
   function exportCurrent(){
     try{
@@ -251,7 +248,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   doc.addEventListener('click',event=>{if(!menu.hidden&&!menu.contains(event.target)&&!byId(doc,'marrowlineContextLoom')?.contains(event.target))closeMenu({focusParent:false});});
   const expiry=environment.setTimeout(()=>{phase='EXPIRED';pendingController?.abort('expired');menuStatus.textContent='This transfer expired. Prepare a fresh handoff in Loom.';emit();},Math.max(0,activation.expires_at-Date.now()));
   environment.addEventListener('pagehide',()=>pendingController?.abort('pagehide'));
-  const controller={openMenu,stageAia,stageFiles,submit,snapshot,exportPacket:()=>exportLoomDemoCurrent(latestBinding),destroy(){destroyed=true;environment.clearTimeout(expiry);leaveDemo();menu.remove();gatePanel.remove();transcript.remove();banner.remove();}};
+  const controller={openMenu,stageAia,stageFiles,submit,snapshot,exportPacket:()=>exportLoomDemoCurrent(latestBinding),getGateContinuity:()=>gateContinuity?.getCurrent?.()??null,destroy(){destroyed=true;environment.clearTimeout(expiry);leaveDemo();menu.remove();gateContinuity?.destroy?.();transcript.remove();banner.remove();}};
   environment.__TD613_LOOM_DEMO_CONTROLLER__=controller;
   environment.history?.replaceState(null,'',environment.location.pathname+environment.location.search+'#loom-demo');
   emit();setStatus(`${packet.documents.length} selected Loom files arrived · + → Loom demo · start with the Portable AIA`);
