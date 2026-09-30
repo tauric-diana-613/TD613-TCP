@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import {webcrypto} from 'node:crypto';
 import {JSDOM} from 'jsdom';
 import {createLoomAiGovernance} from '../app/dome-world/holonomy-loom/ai-handoff.js';
-import {bindLoomDemoRequest} from '../app/dome-world/holonomy-loom/demo-contract.js';
+import {bindLoomDemoRequest,loomDemoDigest,loomDemoResult,LOOM_DEMO_STAGE_RECEIPT_SCHEMA} from '../app/dome-world/holonomy-loom/demo-contract.js';
 import {installMarrowlineLoomDemo} from '../app/dome-world/marrowline-loom-demo.js';
 import {installMarrowlineDesktopRepair} from '../app/dome-world/marrowline-desktop-repair.js';
 import {getMarrowlineAttachments,clearMarrowlineAttachments,removeMarrowlineAttachment,stageMarrowlineAttachments} from '../app/dome-world/marrowline-attachments.js';
@@ -19,9 +19,13 @@ async function harness({held=false}={}){
  const requests=[];let deny=held;
  root.fetch=async(url,options)=>{
   assert.match(url,/operation=loom-demo-task$/);const request=JSON.parse(options.body);requests.push(request);
-  const bound=await bindLoomDemoRequest(request,root);bound.governor.close();
-  const out=deny?{schema:'td613.loom.ai-task-result/v0.1',request_id:request.request_id,status:'held',answer:'',error:'test-held'}:{schema:'td613.loom.ai-task-result/v0.1',request_id:request.request_id,status:'completed',answer:request.phase==='ACTIVATE'?'Rules received; selected files are pending.':requests.length===2?'State B has four workstreams.':'State C has five workstreams.',missing_information:[],used_document_ids:request.phase==='ACTIVATE'?[]:['a'],suggested_next_step:'Inspect the next boundary.',loom_demo_binding:bound.receipt};
-  return {ok:!deny,status:deny?422:200,json:async()=>out};
+  const bound=await bindLoomDemoRequest(request,root);
+  if(deny){bound.governor.close();return {ok:false,status:422,json:async()=>({schema:'td613.loom.ai-task-result/v0.1',request_id:request.request_id,status:'held',answer:'',error:'test-held'})};}
+  const out={schema:'td613.loom.ai-task-result/v0.1',request_id:request.request_id,status:'completed',answer:request.phase==='ACTIVATE'?'Rules received; selected files are pending.':requests.length===2?'State B has four workstreams.':'State C has five workstreams.',missing_information:[],used_document_ids:request.phase==='ACTIVATE'?[]:['a'],suggested_next_step:'Inspect the next boundary.'};
+  const normalized=loomDemoResult(out,bound.selected.documents);
+  const stage={schema:LOOM_DEMO_STAGE_RECEIPT_SCHEMA,activation_digest:request.activation.activation_digest,phase:request.phase,request_id:request.request_id,request_digest:await loomDemoDigest(request,root),current_input_digest:bound.governance.input_digest,prior_result_digest:bound.receipt.prior_result_digest,result_digest:await loomDemoDigest(normalized,root),expires_at:request.activation.expires_at,session_bound:true,authority_transferred:false};
+  bound.governor.close();
+  return {ok:true,status:200,json:async()=>({...out,loom_demo_binding:bound.receipt,loom_demo_stage_receipt:stage})};
  };
  const controller=await installMarrowlineLoomDemo(packet,doc,root);
  return {dom,root,doc,packet,controller,requests,setHeld(value){deny=value;},close(){controller.destroy();clearMarrowlineAttachments(root);dom.window.close();}};
@@ -43,18 +47,18 @@ test('arrival has no ingress membrane, both numbered steps visible, no request u
  assert.equal(plus.dataset.loomAttention,'true','staging AIA alone cannot dismiss the reminder');
  assert.equal(getMarrowlineAttachments().length,1);assert.equal(h.doc.querySelector('#khonapolitMessages').hidden,true);
  await h.controller.submit();
- assert.equal(h.requests[0].documents.length,0);assert.equal(h.controller.snapshot().phase,'AIA_SENT');assert.equal(h.controller.snapshot().pending_steps,true);
+ assert.equal(h.requests[0].documents.length,0);assert.equal(h.requests[0].predecessor,null);assert.equal(h.controller.snapshot().phase,'AIA_SENT');assert.equal(h.controller.snapshot().pending_steps,true);assert.equal(typeof h.controller.snapshot().predecessor_request_id,'string');
  assert.equal(plus.dataset.loomAttention,'true','admitted activation still requires the selected-file gesture');
  assert.equal(getMarrowlineAttachments().length,0);
  await h.controller.stageFiles();assert.equal(h.controller.snapshot().pending_steps,false);
  assert.equal(plus.dataset.loomAttention,'false','only #2 selected-file staging completes this reminder');
  assert.equal(h.doc.querySelector('#marrowlineContextLoom>span:nth-child(2)').textContent,'Loom');
  assert.equal(getMarrowlineAttachments().length,1);await h.controller.submit();
- assert.equal(h.controller.snapshot().phase,'DONE');assert.deepEqual(h.requests[1].documents,h.packet.documents);
+ assert.equal(h.controller.snapshot().phase,'DONE');assert.deepEqual(h.requests[1].documents,h.packet.documents);assert.equal(h.requests[1].predecessor.phase,'ACTIVATE');
  assert.equal(h.doc.querySelectorAll('#loomDemoMessages .loom-demo-message').length,4);
  assert.equal(h.doc.querySelectorAll('textarea:not([hidden])').length>=1,true);
  h.doc.querySelector('#khonapolitPrompt').value='Which state is current?';await h.controller.submit();
- assert.equal(h.requests[2].prior_result.answer,'State B has four workstreams.');
+ assert.equal(h.requests[2].prior_result.answer,'State B has four workstreams.');assert.equal(h.requests[2].predecessor.phase,'CONTINUE');
  assert.equal(h.controller.exportPacket().continuation.prior_result.answer,'State C has five workstreams.');
  }finally{h.close();}
 });
