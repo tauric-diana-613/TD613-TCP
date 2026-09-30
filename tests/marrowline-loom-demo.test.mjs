@@ -31,35 +31,82 @@ async function harness({held=false,tamperStageReceipt=false}={}){
  const controller=await installMarrowlineLoomDemo(packet,doc,root);
  return {dom,root,doc,packet,controller,requests,setHeld(value){deny=value;},close(){controller.destroy();clearMarrowlineAttachments(root);dom.window.close();}};
 }
-test('arrival has no ingress membrane, both numbered steps visible, no request until Send',async()=>{
+test('Loom demo branches from + and both numbered gestures stage attachment + prompt before explicit Send',async()=>{
  const h=await harness();try{
  assert.equal(h.doc.querySelector('#loomImportedWorkspace'),null);
  const plus=h.doc.querySelector('#marrowlineComposerPlus');
+ const parentMenu=h.doc.querySelector('#marrowlineContextMenu');
+ const loomParent=h.doc.querySelector('#marrowlineContextLoom');
+ const attachmentAccess=h.doc.querySelector('#marrowlineComposerAttachments');
+ const prompt=h.doc.querySelector('#khonapolitPrompt');
+ const send=h.doc.querySelector('#khonapolitSend');
+
  assert.equal(plus.dataset.loomAttention,'true');
- assert.equal(h.requests.length,0);plus.click();
- assert.equal(plus.dataset.loomAttention,'true','opening the real + menu cannot consume the two-step cue');
- h.doc.querySelector('#marrowlineContextLoom').click();
- assert.equal(plus.dataset.loomAttention,'true','opening Loom demo keeps its pending-file reminder');
+ assert.equal(h.requests.length,0);
+ plus.click();
+ assert.equal(parentMenu.hidden,false);
+ assert.equal(plus.dataset.loomAttention,'true','opening + cannot consume the Loom reminder');
+ loomParent.click();
+ assert.equal(parentMenu.hidden,false,'Loom demo opens as a branch of the existing + menu');
+ assert.equal(loomParent.getAttribute('aria-expanded'),'true');
  assert.equal(h.doc.querySelector('#loomDemoMenu').hidden,false);
- const buttons=[...h.doc.querySelectorAll('#loomDemoMenu button')];
- assert.equal(buttons[0].textContent,'#1: Upload portable AIA');assert.equal(buttons[1].textContent,'#2: Upload Loom demo files');assert.equal(buttons[1].disabled,true);
- await h.controller.stageAia();
- assert.equal(h.controller.snapshot().pending_steps,true);assert.equal(h.requests.length,0);
- assert.equal(plus.dataset.loomAttention,'true','staging AIA alone cannot dismiss the reminder');
- assert.equal(getMarrowlineAttachments().length,1);assert.equal(h.doc.querySelector('#khonapolitMessages').hidden,true);
+ const buttons=[...h.doc.querySelectorAll('#loomDemoMenu>button')];
+ assert.equal(buttons[0].textContent,'#1: Upload portable AIA');
+ assert.equal(buttons[1].textContent,'#2: Upload Loom demo files');
+ assert.equal(buttons[1].disabled,true,'#2 is visible from the beginning but waits for admitted #1');
+
+ buttons[0].click();
+ await new Promise(resolve=>setTimeout(resolve,0));
+ assert.equal(h.controller.snapshot().phase,'AIA_STAGED');
+ assert.equal(h.controller.snapshot().pending_steps,true);
+ assert.equal(h.requests.length,0,'#1 staging sends nothing');
+ assert.equal(plus.dataset.loomAttention,'true','staging #1 cannot dismiss the + reminder');
+ assert.equal(attachmentAccess.hidden,false,'#1 wakes the ordinary Attachments surface');
+ assert.equal(getMarrowlineAttachments().length,1);
+ assert.match(prompt.value,/Receive the attached Loom Portable AIA/);
+ assert.match(prompt.value,/wait for my next turn/);
+ assert.equal(send.dataset.loomAttention,'true','explicit Send becomes the consequential next gesture');
+ assert.equal(h.doc.querySelector('#khonapolitMessages').hidden,true);
+
  await h.controller.submit();
- assert.equal(h.requests[0].documents.length,0);assert.equal(h.requests[0].predecessor,null);assert.equal(h.controller.snapshot().phase,'AIA_SENT');assert.equal(h.controller.snapshot().pending_steps,true);assert.equal(typeof h.controller.snapshot().predecessor_request_id,'string');
- assert.equal(plus.dataset.loomAttention,'true','admitted activation still requires the selected-file gesture');
+ assert.equal(h.requests[0].documents.length,0);
+ assert.equal(h.requests[0].predecessor,null);
+ assert.equal(h.controller.snapshot().phase,'AIA_SENT');
+ assert.equal(h.controller.snapshot().pending_steps,true);
+ assert.equal(typeof h.controller.snapshot().predecessor_request_id,'string');
+ assert.equal(plus.dataset.loomAttention,'true','admitted #1 wakes the reminder for #2');
  assert.equal(getMarrowlineAttachments().length,0);
- await h.controller.stageFiles();assert.equal(h.controller.snapshot().pending_steps,false);
- assert.equal(plus.dataset.loomAttention,'false','only #2 selected-file staging completes this reminder');
- assert.equal(h.doc.querySelector('#marrowlineContextLoom>span:nth-child(2)').textContent,'Loom');
- assert.equal(getMarrowlineAttachments().length,1);await h.controller.submit();
- assert.equal(h.controller.snapshot().phase,'DONE');assert.deepEqual(h.requests[1].documents,h.packet.documents);assert.equal(h.requests[1].predecessor.phase,'ACTIVATE');
+
+ plus.click();
+ assert.equal(parentMenu.hidden,false);
+ loomParent.click();
+ assert.equal(parentMenu.hidden,false,'returning for #2 reopens the same Loom branch');
+ const reopened=[...h.doc.querySelectorAll('#loomDemoMenu>button')];
+ assert.equal(reopened[0].dataset.completed,'true');
+ assert.equal(reopened[0].disabled,true);
+ assert.equal(reopened[1].disabled,false,'#2 wakes only after #1 has an admitted response');
+ reopened[1].click();
+ await new Promise(resolve=>setTimeout(resolve,0));
+
+ assert.equal(h.controller.snapshot().phase,'FILES_STAGED');
+ assert.equal(h.controller.snapshot().pending_steps,false);
+ assert.equal(plus.dataset.loomAttention,'false','selecting #2 retires the + reminder only after its files are staged');
+ assert.equal(loomParent.querySelector('span:nth-child(2)').textContent,'Loom');
+ assert.equal(attachmentAccess.hidden,false,'#2 wakes the same ordinary Attachments surface');
+ assert.equal(getMarrowlineAttachments().length,h.packet.documents.length);
+ assert.match(prompt.value,/original Loom task/);
+ assert.match(prompt.value,/selected files/);
+ assert.equal(send.dataset.loomAttention,'true','#2 also requires explicit Send before consequence');
+
+ await h.controller.submit();
+ assert.equal(h.controller.snapshot().phase,'DONE');
+ assert.deepEqual(h.requests[1].documents,h.packet.documents);
+ assert.equal(h.requests[1].predecessor.phase,'ACTIVATE');
  assert.equal(h.doc.querySelectorAll('#loomDemoMessages .loom-demo-message').length,4);
  assert.equal(h.doc.querySelectorAll('textarea:not([hidden])').length>=1,true);
- h.doc.querySelector('#khonapolitPrompt').value='Which state is current?';await h.controller.submit();
- assert.equal(h.requests[2].prior_result.answer,'State B has four workstreams.');assert.equal(h.requests[2].predecessor.phase,'CONTINUE');
+ prompt.value='Which state is current?';await h.controller.submit();
+ assert.equal(h.requests[2].prior_result.answer,'State B has four workstreams.');
+ assert.equal(h.requests[2].predecessor.phase,'CONTINUE');
  assert.equal(h.controller.exportPacket().continuation.prior_result.answer,'State C has five workstreams.');
  }finally{h.close();}
 });
