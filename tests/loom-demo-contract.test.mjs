@@ -13,10 +13,20 @@ import {
   LOOM_DEMO_STAGE_RECEIPT_SCHEMA
 } from '../app/dome-world/holonomy-loom/demo-contract.js';
 import loomDemoReleaseHeld, { createLoomDemoTaskHandler } from '../server/loom-demo-task.js';
+import {
+  LOOM_DEMO_SIGNER_KEY_ID,
+  loomDemoReceiptDigest,
+  loomDemoSigningConfiguration,
+  signLoomDemoStageReceipt,
+  verifyLoomDemoStageReceiptAuthentication
+} from '../server/loom-demo-signing.js';
 import { buildLoomTaskProviderRequest } from '../server/loom-task.js';
 
 const environment = { crypto: webcrypto };
 const copy = value => JSON.parse(JSON.stringify(value));
+const SIGNING_SECRET = 'loom-demo-stage-secret-that-is-independent-and-long-enough';
+const SIGNING_ENVIRONMENT = {};
+const DUMMY_AUTH = Object.freeze({scheme:'hmac-sha256',key_id:LOOM_DEMO_SIGNER_KEY_ID,tag:'A'.repeat(43)});
 
 const result = (requestId, answer='State B: four approved workstreams.', used_document_ids=['a']) => ({
   schema:'td613.loom.ai-task-result/v0.1',
@@ -65,9 +75,12 @@ async function stageReceipt(binding, req, output) {
     current_input_digest:binding.governance.input_digest,
     prior_result_digest:binding.receipt.prior_result_digest,
     result_digest:await loomDemoDigest(admitted,environment),
+    predecessor_receipt_digest:req.phase==='CONTINUE'?'0'.repeat(64):null,
     expires_at:req.activation.expires_at,
-    session_bound:true,
-    authority_transferred:false
+    admission_state:'ADMITTED',
+    stage_policy:req.phase==='ACTIVATE'?'AIA_ONLY':'SELECTED_FILES_BOUND',
+    authority_transferred:false,
+    auth:{...DUMMY_AUTH}
   };
 }
 
@@ -175,13 +188,11 @@ test('altered activation, extra fields, premature contents and uncaptured export
   activated.binding.governor.close();
 });
 
-test('offline adapter enforces same-process activation order and exact stage predecessor before provider invocation',async()=>{
+test('signed stage receipts authenticate cross-instance ancestry before provider invocation',async()=>{
   const {packet,activation}=await fixture();
   let calls=0;
   let invalidReturn=false;
-  const handler=createLoomDemoTaskHandler({
-    environment,
-    taskHandler:async(req,res)=>{
+  const taskHandler=async(req,res)=>{
       calls++;
       res.statusCode=200;
       const activationStage=req.body.documents.length===0;
@@ -190,10 +201,11 @@ test('offline adapter enforces same-process activation order and exact stage pre
         activationStage?'Rules received; selected files are pending.':'State B: four approved workstreams.',
         activationStage?[]:(invalidReturn?['private']:['a'])
       )));
-    }
-  });
+    };
+  const handlerA=createLoomDemoTaskHandler({environment,taskHandler,signingSecret:SIGNING_SECRET,signingEnvironment:SIGNING_ENVIRONMENT});
+  const handlerB=createLoomDemoTaskHandler({environment,taskHandler,signingSecret:SIGNING_SECRET,signingEnvironment:SIGNING_ENVIRONMENT});
 
-  const run=async body=>{
+  const run=async (body,handler=handlerA)=>{
     const req=Object.assign(new EventEmitter(),{
       method:'POST',
       headers:{host:'td613.com',origin:'https://td613.com','content-type':'application/json'},
@@ -214,12 +226,15 @@ test('offline adapter enforces same-process activation order and exact stage pre
     current_input_digest:'0'.repeat(64),
     prior_result_digest:null,
     result_digest:'0'.repeat(64),
+    predecessor_receipt_digest:null,
     expires_at:activation.expires_at,
-    session_bound:true,
-    authority_transferred:false
+    admission_state:'ADMITTED',
+    stage_policy:'AIA_ONLY',
+    authority_transferred:false,
+    auth:{...DUMMY_AUTH}
   },'premature'));
-  assert.equal(premature.status,409);
-  assert.equal(premature.output.error,'loom-demo-activation-required');
+  assert.equal(premature.status,400);
+  assert.equal(premature.output.error,'LOOM_DEMO_PREDECESSOR_AUTH_INVALID');
   assert.equal(calls,0);
 
   const activationRun=await run(request(activation,[],'ACTIVATE',null,null,'activate-live'));
@@ -234,7 +249,7 @@ test('offline adapter enforces same-process activation order and exact stage pre
   assert.equal(rejectedPredecessor.output.error,'loom-demo-predecessor-not-admitted');
   assert.equal(calls,1);
 
-  const good=await run(request(activation,packet.documents,'CONTINUE',null,activationRun.output.loom_demo_stage_receipt,'continue-live'));
+  const good=await run(request(activation,packet.documents,'CONTINUE',null,activationRun.output.loom_demo_stage_receipt,'continue-live'),handlerB);
   assert.equal(good.status,200);
   assert.equal(good.output.loom_demo_binding.contents_verified,true);
   assert.equal(good.output.loom_demo_stage_receipt.phase,'CONTINUE');
@@ -242,14 +257,106 @@ test('offline adapter enforces same-process activation order and exact stage pre
 
   invalidReturn=true;
   const prior=loomDemoResult(good.output,packet.documents);
-  const rejected=await run(request(activation,packet.documents,'CONTINUE',prior,good.output.loom_demo_stage_receipt,'continue-bad-return'));
+  const rejected=await run(request(activation,packet.documents,'CONTINUE',prior,good.output.loom_demo_stage_receipt,'continue-bad-return'),handlerA);
   assert.equal(rejected.status,422);
   assert.equal(rejected.output.status,'held');
   assert.equal(rejected.output.answer,'');
   assert.equal(calls,3);
 });
 
-test('default production adapter is held until cross-instance authenticated receipt admission is implemented',()=>{
+test('Loom stage signer is domain-separated, rejects reused authority, and detects tampering',async()=>{
+  const {activation}=await fixture();
+  const activated=await admittedActivation(activation);
+  const body={...activated.receipt};
+  delete body.auth;
+  body.predecessor_receipt_digest=null;
+  body.admission_state='ADMITTED';
+  body.stage_policy='AIA_ONLY';
+  const signed=signLoomDemoStageReceipt(body,{secret:SIGNING_SECRET,environment:SIGNING_ENVIRONMENT});
+  assert.equal(signed.auth.key_id,LOOM_DEMO_SIGNER_KEY_ID);
+  assert.match(signed.auth.tag,/^[A-Za-z0-9_-]{43}$/);
+  assert.equal(verifyLoomDemoStageReceiptAuthentication(signed,{secret:SIGNING_SECRET,environment:SIGNING_ENVIRONMENT}).request_id,body.request_id);
+  const changed=copy(signed);changed.result_digest='f'.repeat(64);
+  assert.throws(()=>verifyLoomDemoStageReceiptAuthentication(changed,{secret:SIGNING_SECRET,environment:SIGNING_ENVIRONMENT}),/PREDECESSOR_AUTH_INVALID/);
+  const reused={TD613_GIVING_SESSION_SECRET:SIGNING_SECRET};
+  assert.equal(loomDemoSigningConfiguration({secret:SIGNING_SECRET,environment:reused}).configured,false);
+  assert.throws(()=>signLoomDemoStageReceipt(body,{secret:SIGNING_SECRET,environment:reused}),/SIGNING_SECRET_REUSED/);
+  activated.binding.governor.close();
+});
+
+test('missing Loom signer holds before provider invocation',async()=>{
+  const {activation}=await fixture();
+  let calls=0;
+  const handler=createLoomDemoTaskHandler({
+    environment,
+    signingSecret:'',
+    signingEnvironment:{},
+    taskHandler:async()=>{calls++;}
+  });
+  const req=Object.assign(new EventEmitter(),{method:'POST',headers:{host:'td613.com',origin:'https://td613.com','content-type':'application/json'},body:request(activation)});
+  let output;const res={setHeader(){},end(raw){output=JSON.parse(raw);}};
+  await handler(req,res);
+  assert.equal(res.statusCode,503);
+  assert.equal(output.error,'LOOM_DEMO_SIGNING_SECRET_NOT_CONFIGURED');
+  assert.equal(calls,0);
+});
+
+test('admission-time expiry holds a late provider result without minting a receipt',async()=>{
+  const {activation}=await fixture();
+  let calls=0;
+  const handler=createLoomDemoTaskHandler({
+    environment,
+    signingSecret:SIGNING_SECRET,
+    signingEnvironment:SIGNING_ENVIRONMENT,
+    clock:()=>activation.expires_at,
+    taskHandler:async(req,res)=>{
+      calls++;
+      res.statusCode=200;
+      res.end(JSON.stringify(result(req.body.request_id,'Rules received; selected files are pending.',[])));
+    }
+  });
+  const req=Object.assign(new EventEmitter(),{method:'POST',headers:{host:'td613.com',origin:'https://td613.com','content-type':'application/json'},body:request(activation,[],'ACTIVATE',null,null,'late-activate')});
+  let output;const res={setHeader(){},end(raw){output=JSON.parse(raw);}};
+  await handler(req,res);
+  assert.equal(calls,1);
+  assert.equal(res.statusCode,409);
+  assert.equal(output.status,'held');
+  assert.equal(output.error,'loom-demo-expired-before-admission');
+  assert.equal(Object.hasOwn(output,'loom_demo_stage_receipt'),false);
+});
+
+test('stateless authenticated ancestry permits a fork and therefore claims no replay or latest-head exclusion',async()=>{
+  const {packet,activation}=await fixture();
+  let calls=0;
+  const taskHandler=async(req,res)=>{
+    calls++;
+    res.statusCode=200;
+    const activationStage=req.body.documents.length===0;
+    res.end(JSON.stringify(result(req.body.request_id,activationStage?'Rules received; selected files are pending.':`Branch ${req.body.request_id}`,activationStage?[]:['a'])));
+  };
+  const makeHandler=()=>createLoomDemoTaskHandler({environment,taskHandler,signingSecret:SIGNING_SECRET,signingEnvironment:SIGNING_ENVIRONMENT});
+  const run=async(body,handler)=>{
+    const req=Object.assign(new EventEmitter(),{method:'POST',headers:{host:'td613.com',origin:'https://td613.com','content-type':'application/json'},body});
+    let output;const res={setHeader(){},end(raw){output=JSON.parse(raw);}};await handler(req,res);return {status:res.statusCode,output};
+  };
+  const activationRun=await run(request(activation,[],'ACTIVATE',null,null,'fork-root'),makeHandler());
+  assert.equal(activationRun.status,200);
+  const predecessor=activationRun.output.loom_demo_stage_receipt;
+  const left=await run(request(activation,packet.documents,'CONTINUE',null,predecessor,'fork-left'),makeHandler());
+  const right=await run(request(activation,packet.documents,'CONTINUE',null,predecessor,'fork-right'),makeHandler());
+  assert.equal(left.status,200);
+  assert.equal(right.status,200);
+  assert.equal(left.output.loom_demo_stage_receipt.predecessor_receipt_digest,loomDemoReceiptDigest(predecessor));
+  assert.equal(right.output.loom_demo_stage_receipt.predecessor_receipt_digest,loomDemoReceiptDigest(predecessor));
+  const config=loomDemoSigningConfiguration({secret:SIGNING_SECRET,environment:SIGNING_ENVIRONMENT});
+  assert.equal(config.cross_instance_predecessor_authentication,true);
+  assert.equal(config.global_latest_state,false);
+  assert.equal(config.replay_exclusion,false);
+  assert.equal(config.fork_exclusion,false);
+  assert.equal(calls,3);
+});
+
+test('default production adapter stays held after signer implementation until replay/fork and release-law closure',()=>{
   let output;
   const res={setHeader(){},end(raw){output=JSON.parse(raw);}};
   loomDemoReleaseHeld({body:{request_id:'not-admitted'}},res);
