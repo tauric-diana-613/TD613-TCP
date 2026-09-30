@@ -96,10 +96,14 @@ A detached delegated action may occur only after a fresh operator gesture and ex
 
 This is defense-in-depth rather than a claim of cryptographic separation between OpenAI services sharing one installed GitHub App. Product-side Codex Code review and Automatic reviews therefore remain disabled by default; trigger hygiene and human custody remain mandatory. The interactive operator-direct lane is a human-in-the-loop exception to the **detached-process gate**, not an exception to human authorization.
 
-This repository contains product surfaces and shared engines. **Begin with the root shortcuts before discovering architecture by scattered imports:**
+This repository contains product surfaces, shared engines, research records and release workflows. **Begin with the root shortcuts before discovering architecture by scattered imports:**
 
 - [`PEDAGOGUE.md`](PEDAGOGUE.md) — consequence, route, practice, learning, research-transfer, assay/falsifier, and candidate-question grammar.
 - [`APERTURE.md`](APERTURE.md) — observability, identifiability, reconstruction, conditioning, uncertainty geometry, widening, abstention, rejection, and replay audit.
+- [`ATLAS.md`](ATLAS.md) — receiver-relative relations, history quotients, reconstruction/custody, symmetry, finite geometry and continuity across projections.
+- [`FADT.md`](FADT.md) — the finite admissibility descent law: when a rule survives a finite quotient exactly, and the union/intersection gap when it cannot.
+- [`DOLLHOUSE.md`](DOLLHOUSE.md) — the four-role map, bounded adapters, source-only export kit and human-closure boundary.
+- [`dollhouse/lineage/README.md`](dollhouse/lineage/README.md) — immutable source map for the selected FADT, Atlas, Western Horizon, Pedagogue and Aperture research estate.
 
 Before materially redesigning a UI, workflow, ontology, route, custody boundary, or consequential action path, check whether the work should pass through the Flow-Core Pedagogue Design Gate. Before materially widening an observation/reconstruction path or trusting a proposed next measurement, check whether Aperture should audit the admitted deficit and uncertainty geometry.
 
@@ -113,6 +117,62 @@ Pedagogue proposes or reframes
 ```
 
 Neither shortcut grants automatic experiment execution, custody action, route mutation, release, deployment, or promotion authority.
+
+## Four-role Dollhouse order
+
+Use the smallest role set that answers the question, while keeping their jurisdictions distinct:
+
+```text
+Pedagogue  → consequence order, route burden, practice, temporal sequence, and candidate-question framing
+Aperture   → observation geometry, identifiability, conditioning, uncertainty, abstention, and replay
+Atlas      → receiver-relative relation/history preservation, symmetry and continuity across projections
+FADT       → exact finite admissibility after conditioning-state erasure
+```
+
+When a human-facing route changes consequence order and also changes what can be observed, use Pedagogue first, then Aperture. Reach for Atlas when the route has multiple receivers, projections, returns or identity relations. Reach for FADT when a proposed compression or stage erasure may collapse different lawful supports. Agreement between roles is a review finding; it never creates execution, scientific, merge or release authority.
+
+The full mathematical and historical records live in the four root shortcuts and the pinned lineage catalogue. A bounded adapter is an operational witness for its declared input; it is not a substitute for the original theorem, preregistration, receipt, source archive or empirical acquisition contract.
+
+## Source lineage and Dollhouse export
+
+The lineage catalogue uses immutable commit-bound GitHub URLs, original Git blob IDs, byte counts and SHA-256 values. The selected estate contains 678 complete inert source copies across eight declared snapshots. The selection is intentionally bounded; it is not a full repository dependency closure. Historical research, installed main source, merged specifications and unmerged branches retain their original status.
+
+Use the export kit only from a newly created directory outside the repository:
+
+```bash
+node scripts/export-dollhouse.mjs /absolute/new-dollhouse-kit
+node scripts/export-dollhouse.mjs --verify /absolute/new-dollhouse-kit
+```
+
+The default exporter requires committed source bytes. `--allow-working-tree` marks an explicitly uncommitted candidate and records changed bundled paths. It performs static dependency closure, rejects symlinks, dynamic dependencies, path escapes, external packages and oversized members, and never imports or executes archived `.source.md` material. Export verification establishes carried-byte integrity; it does not authenticate upstream origin, promote research, create empirical evidence or grant release authority.
+
+## Loom / Marrowline custody boundary
+
+The three-phase journey is one governed product experience:
+
+```text
+Holonomy Loom origin → Marrowline continuation → Portable AIA export
+```
+
+The native composer and Attachments affordance must keep AIA admission, selected-file staging, ordinary chat and governed continuation visibly distinct. A later result must name its immediate predecessor. Held, stale, malformed, failed or ordinary-chat states cannot silently become the current governed export. Protected/local material stays outside ordinary chat and export unless an explicit reviewed contract permits it.
+
+The default Loom demo server adapter remains `HTTP 503` with `loom-demo-release-not-admitted` while enforcement blockers remain unresolved. A signing secret by itself never lifts that hold. Browser evidence, provider evidence, source contracts and release receipts remain separate classes of evidence.
+
+## Release law
+
+Production releases use the governed GitHub issue #405 workflow. Before a release:
+
+1. verify the current main and exact intended source commit;
+2. require applicable exact-head validation to finish GREEN;
+3. merge only the verified head;
+4. submit one `/td613-vercel-release PRODUCTION <commit>` gesture to issue #405;
+5. accept the deployment only when the receipt confirms exact source, exact application bytes, bounded Vercel adoption, stale-queue stability, post-witness source custody and relock.
+
+The release gate permits one deployment per gesture. Do not bypass it with direct Vercel deployment, Git auto-deploy, force-pushed history or a second gesture. Deployment verification does not establish a complete browser journey, provider quality, human evidence, Western Horizon exteriority or Golden Egg completion.
+
+## Browser witness rule
+
+Source tests and release receipts cannot substitute for a human-facing browser witness. For consequential UI work, exercise the actual route at desktop and approximately 390px, including keyboard/focus movement, scroll, reload/recovery, stale or malformed transfer and the ordinary direct-entry path. Record what the operator can see and what they can reasonably infer. Do not describe a simulated viewport as a physical-device witness.
 
 ## Pedagogue shortcut
 
