@@ -96,7 +96,7 @@ test('Loom demo branches from + and both numbered gestures stage attachment + pr
  gateState=h.controller.getGateContinuity();
  assert.equal(gateState.phase,'AIA_SENT');
  assert.equal(gateState.fadt.state,'FILES ELIGIBLE');
- assert.ok(gateState.crossed.some(item=>/Portable governance activation was sent/.test(item)));
+ assert.ok(gateState.crossed.some(item=>/Portable governance activation has an admitted receiver response/.test(item)));
  assert.ok(gateState.crossed.some(item=>/Selected file bodies have not crossed/.test(item)));
  assert.ok(gateState.atlas.survived.some(item=>/Immediate predecessor retained/.test(item)));
  assert.equal(gateExport.disabled,true,'#1 admission cannot unlock export');
