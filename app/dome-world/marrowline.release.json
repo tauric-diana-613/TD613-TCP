@@ -687,6 +687,31 @@
     "globalLatestState": false,
     "replayExclusion": false,
     "forkExclusion": false,
-    "productionReleaseBarrier": "HELD-until-replay-fork-and-release-law-closure"
+    "authority": "receipt-authentication-only"
+  },
+  "loomDemoHeadStore": {
+    "environmentVariable": "TD613_LOOM_DEMO_NEON_DATABASE_URL",
+    "admittedBackend": "Neon-HTTP-SQL",
+    "table": "td613_loom_demo_heads",
+    "separateFromGivingDatabaseRequired": true,
+    "durableCompareAndSwap": true,
+    "globalLatestStateWhenConfigured": true,
+    "replayExclusionWhenConfigured": true,
+    "forkExclusionWhenConfigured": true,
+    "payloadLogged": false,
+    "storedMaterial": "activation/head/request/phase/lease/expiry custody metadata only"
+  },
+  "loomDemoProductionReadiness": {
+    "default": "HELD",
+    "requires": [
+      "independent Loom signing secret",
+      "independent Loom Neon head store",
+      "exact-head GREEN source validation",
+      "live provider witness",
+      "desktop and approximately-390px browser journey witness",
+      "governed #405 release receipt before production acceptance"
+    ],
+    "sourceConfigurationGate": "both Loom-only authorities must be configured and valid; missing/invalid authority returns HTTP 503 loom-demo-release-not-admitted",
+    "configurationDoesNotGrantReleaseAuthority": true
   }
 }
