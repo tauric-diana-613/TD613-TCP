@@ -122,8 +122,10 @@ export function createLoomDemoTaskHandler({
     const proxy = Object.create(req);
     proxy.body = binding.input;
     const response = Object.create(res);
+    let responseCompletion = null;
     response.setHeader = (...args) => res.setHeader(...args);
-    response.end = async raw => {
+    response.end = raw => {
+      responseCompletion = (async () => {
       try {
         const output = JSON.parse(String(raw));
         if (output.status === 'completed') {
@@ -198,10 +200,14 @@ export function createLoomDemoTaskHandler({
         await releaseReservation();
         return fail(error?.code || error?.message || 'loom-demo-response-held', error?.status || 422);
       }
+      })();
+      return responseCompletion;
     };
 
-    try { await taskHandler(proxy,response); }
-    catch (error) {
+    try {
+      await taskHandler(proxy,response);
+      if (responseCompletion) await responseCompletion;
+    } catch (error) {
       await releaseReservation();
       return fail(error?.code || error?.message || 'loom-demo-provider-held', error?.status || 502);
     } finally {
