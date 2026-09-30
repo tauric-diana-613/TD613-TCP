@@ -156,7 +156,16 @@ Holonomy Loom origin → Marrowline continuation → Portable AIA export
 
 The native composer and Attachments affordance must keep AIA admission, selected-file staging, ordinary chat and governed continuation visibly distinct. A later result must name its immediate predecessor. Held, stale, malformed, failed or ordinary-chat states cannot silently become the current governed export. Protected/local material stays outside ordinary chat and export unless an explicit reviewed contract permits it.
 
-The default Loom demo server adapter remains `HTTP 503` with `loom-demo-release-not-admitted` while enforcement blockers remain unresolved. A signing secret by itself never lifts that hold. Browser evidence, provider evidence, source contracts and release receipts remain separate classes of evidence.
+The Loom demo production adapter is **fail-closed and configuration-gated**. It returns `HTTP 503` with `loom-demo-release-not-admitted` unless both of these Loom-only authorities are configured and valid:
+
+```text
+TD613_LOOM_DEMO_SIGNING_SECRET
+TD613_LOOM_DEMO_NEON_DATABASE_URL
+```
+
+The signing secret authenticates stage receipts and immediate predecessor ancestry. The Loom Neon head store supplies a separate durable compare-and-swap current-head boundary for replay/fork exclusion. The Loom database must remain distinct from `TD613_GIVING_NEON_DATABASE_URL`; Giving custody may not be silently reused as Loom custody. The durable head table stores custody metadata only and must not store prompt, selected-file, or model-answer bodies.
+
+A signing secret by itself never lifts the hold. A configured signer plus configured head store permits the reviewed receiver path to execute, but configuration still grants **zero merge authority and zero deployment authority**. Browser evidence, provider evidence, source contracts, durable-head evidence and release receipts remain separate classes of evidence. Exact-head GREEN source validation plus the governed issue #405 release law and live browser/provider witnessing remain required before production acceptance.
 
 ## Release law
 
