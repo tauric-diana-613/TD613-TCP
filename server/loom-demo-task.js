@@ -13,6 +13,7 @@ import {
 import {
   commitLoomDemoStage,
   loomDemoHeadStoreReadiness,
+  readLoomDemoHead,
   releaseLoomDemoStageReservation,
   reserveLoomDemoStage
 } from './loom-demo-head-store.js';
@@ -172,8 +173,24 @@ export function createLoomDemoTaskHandler({
             });
             reservationReleased = true;
           } catch (error) {
-            binding.governor.close();
-            return fail(error?.code || error?.message || 'LOOM_DEMO_HEAD_COMMIT_HELD', error?.status || 409);
+            let reconciled = false;
+            try {
+              const durable = await readLoomDemoHead({
+                activationDigest: parsed.activation.activation_digest,
+                fetchImpl: headStoreFetch,
+                environment: headStoreEnvironment
+              });
+              reconciled = durable?.head_receipt_digest === receiptDigest &&
+                durable?.head_request_id === parsed.request_id &&
+                durable?.head_phase === parsed.phase;
+            } catch {
+              reconciled = false;
+            }
+            if (!reconciled) {
+              binding.governor.close();
+              return fail(error?.code || error?.message || 'LOOM_DEMO_HEAD_COMMIT_HELD', error?.status || 409);
+            }
+            reservationReleased = true;
           }
 
           res.statusCode = response.statusCode;
