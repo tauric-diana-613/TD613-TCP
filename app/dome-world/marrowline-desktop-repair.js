@@ -386,13 +386,14 @@ function installUniversalContextPlus(doc, root) {
     refreshLoom();
   });
   plus.addEventListener('click', () => {
-    const opening = menu.hidden;
-    menu.hidden = !opening;
-    plus.setAttribute('aria-expanded', String(opening));
-    if (opening) {
-      refreshLoom();
-      nextFrame(position);
+    if (!menu.hidden) {
+      close();
+      return;
     }
+    menu.hidden = false;
+    plus.setAttribute('aria-expanded', 'true');
+    refreshLoom();
+    nextFrame(position);
   });
   root.addEventListener?.(MARROWLINE_ATTACHMENT_CHANGE_EVENT, event => {
     const state = event.detail || attachmentState();
