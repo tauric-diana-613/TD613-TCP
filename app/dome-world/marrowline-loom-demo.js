@@ -35,12 +35,12 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   const restore=button(doc,'Restore staged Loom attachment',()=>void restoreStage());restore.hidden=true;
   banner.append(modeLabel,consequence,restore,leave);form.prepend(banner);
 
-  const menu=element(doc,'section','','loom-demo-menu');menu.id='loomDemoMenu';menu.hidden=true;
-  menu.setAttribute('role','dialog');menu.setAttribute('aria-modal','false');menu.setAttribute('aria-labelledby','loomDemoMenuTitle');
+  const menu=element(doc,'section','','loom-demo-menu marrowline-context-submenu');menu.id='loomDemoMenu';menu.hidden=true;
+  menu.setAttribute('role','menu');menu.setAttribute('aria-labelledby','loomDemoMenuTitle');
   const title=element(doc,'h3','Loom demo');title.id='loomDemoMenuTitle';
   const hint=element(doc,'p','Two sends. Rules first, matching files second. Nothing is sent when you select an option. This local transfer expires after ten minutes; reload requires a fresh handoff.');
   const step1=button(doc,'#1: Upload portable AIA',()=>void stageAia());
-  const note1=element(doc,'small','Task, rules, file commitments and any prior Loom answer. No selected-file contents.');
+  const note1=element(doc,'small','Task, rules, file commitments and prior-result commitment. No selected-file contents.');
   const step2=button(doc,'#2: Upload Loom demo files',()=>void stageFiles());
   const note2=element(doc,'small','Locked until #1 has returned an admitted response.');
   const menuStatus=element(doc,'p','','loom-demo-menu-status');menuStatus.setAttribute('role','status');menuStatus.setAttribute('aria-live','polite');
@@ -74,13 +74,25 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
     exportButton.disabled=!lastAccepted||!active||phase==='EXPIRED'||busy;
     environment.dispatchEvent(new environment.CustomEvent(EVENT,{detail:state}));
   }
-  function closeMenu(){menu.hidden=true;byId(doc,'marrowlineComposerPlus')?.focus?.({preventScroll:true});}
+  function closeMenu({focusParent=true}={}){
+    menu.hidden=true;
+    const parent=byId(doc,'marrowlineContextLoom');
+    parent?.setAttribute?.('aria-expanded','false');
+    if(focusParent)parent?.focus?.({preventScroll:true});
+  }
   function openMenu(){
     if(destroyed)return;
     emit();menu.hidden=false;
-    const anchor=byId(doc,'marrowlineComposerPlus')?.getBoundingClientRect();
-    menu.style.left=`${Math.max(10,Math.min(anchor?.left??10,(environment.innerWidth||390)-Math.min(350,(environment.innerWidth||390)-20)-10))}px`;
-    menu.style.bottom=`${Math.max(10,(environment.innerHeight||844)-(anchor?.top??660)+10)}px`;
+    const anchor=byId(doc,'marrowlineContextLoom')?.getBoundingClientRect();
+    const vw=environment.innerWidth||390, vh=environment.innerHeight||844;
+    const width=Math.min(330,Math.max(260,vw-20));
+    const branchRight=(anchor?.right??10)+8;
+    const canBranchRight=branchRight+width<=vw-10;
+    menu.style.width=`${width}px`;
+    menu.style.left=`${canBranchRight?branchRight:Math.max(10,(anchor?.left??10)-width-8)}px`;
+    menu.style.top=`${Math.max(10,Math.min(anchor?.top??10,vh-Math.min(menu.offsetHeight||280,vh-20)-10))}px`;
+    menu.style.bottom='auto';
+    byId(doc,'marrowlineContextLoom')?.setAttribute?.('aria-expanded','true');
     (phase==='AIA_SENT'?step2:step1).focus?.({preventScroll:true});
   }
   function enter(){
@@ -106,8 +118,8 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
       const file=new environment.File([JSON.stringify(activation,null,2)],'loom-portable-aia-activation.json',{type:'application/json'});
       await stage([file]);enter();pending='ACTIVATE';phase='AIA_STAGED';
       prompt.value='Receive the attached Loom Portable AIA. Acknowledge the task and rules, identify the pending selected files, and wait for my next turn.';
-      consequence.textContent='Send attached Loom first. Then attach your files. The AIA carries any prior answer, but no document contents.';
-      closeMenu();prompt.focus?.({preventScroll:true});emit();
+      consequence.textContent='Send attached Loom first. Then attach your files. The AIA carries governance and a prior-result commitment, but no selected-file contents.';
+      closeMenu({focusParent:false});prompt.focus?.({preventScroll:true});emit();
     }catch(error){menuStatus.textContent=error.message;setStatus(`Loom demo held · ${error.message}`);}
   }
   async function stageFiles(){
@@ -118,7 +130,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
       await stage(files);pending='CONTINUE';phase='FILES_STAGED';
       prompt.value=latest?'Continue the original Loom task from its prior answer. Recheck the answer against these selected files and preserve the portable rules and missing evidence.':'Work on the original Loom task using these selected files under the portable rules.';
       consequence.textContent=`${files.length} selected Loom files staged. Send continues this governed task; local-only files remain excluded.`;
-      closeMenu();prompt.focus?.({preventScroll:true});emit();
+      closeMenu({focusParent:false});prompt.focus?.({preventScroll:true});emit();
     }catch(error){menuStatus.textContent=error.message;setStatus(`Loom demo held · ${error.message}`);}
   }
   async function restoreStage(){
@@ -234,8 +246,9 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   form.addEventListener('submit',event=>{if(!active)return;event.preventDefault();event.stopImmediatePropagation();void submit();},true);
   send.addEventListener('click',event=>{if(!active||!busy)return;event.preventDefault();event.stopImmediatePropagation();pendingController?.abort('operator-stop');},true);
   environment.addEventListener('td613:marrowline:loom-demo-open',openMenu);
+  environment.addEventListener('td613:marrowline:loom-demo-close',()=>closeMenu({focusParent:false}));
   doc.addEventListener('keydown',event=>{if(event.key==='Escape'&&!menu.hidden){event.preventDefault();closeMenu();}});
-  doc.addEventListener('click',event=>{if(!menu.hidden&&!menu.contains(event.target)&&!byId(doc,'marrowlineContextLoom')?.contains(event.target))menu.hidden=true;});
+  doc.addEventListener('click',event=>{if(!menu.hidden&&!menu.contains(event.target)&&!byId(doc,'marrowlineContextLoom')?.contains(event.target))closeMenu({focusParent:false});});
   const expiry=environment.setTimeout(()=>{phase='EXPIRED';pendingController?.abort('expired');menuStatus.textContent='This transfer expired. Prepare a fresh handoff in Loom.';emit();},Math.max(0,activation.expires_at-Date.now()));
   environment.addEventListener('pagehide',()=>pendingController?.abort('pagehide'));
   const controller={openMenu,stageAia,stageFiles,submit,snapshot,exportPacket:()=>exportLoomDemoCurrent(latestBinding),destroy(){destroyed=true;environment.clearTimeout(expiry);leaveDemo();menu.remove();gatePanel.remove();transcript.remove();banner.remove();}};
