@@ -16,7 +16,8 @@ function ensureStylesheet(doc=document){
   link=doc.createElement('link');link.rel='stylesheet';link.href=href;link.dataset.marrowlineLoomGateContinuity=MARROWLINE_LOOM_GATE_CONTINUITY_SCHEMA;doc.head.append(link);return link;
 }
 
-function phaseCopy(phase,lastAttempt){
+function phaseCopy(phase,lastAttempt,busy=false){
+  if(busy)return {eyebrow:'PENDING · no new admission yet',now:phase==='AIA_STAGED'?'The browser submitted #1 and is waiting for an admissible response.':'The browser submitted the current governed continuation and is waiting for an admissible response.',why:'Submission is an observed client event; it cannot be relabeled as server admission or model completion before the bound result returns.',next:'Wait, Stop, or let the bounded request return.'};
   if(lastAttempt==='HELD')return {
     eyebrow:'HELD · prior admitted state preserved',
     now:'The latest attempt did not become current.',
@@ -54,7 +55,7 @@ export function deriveMarrowlineLoomGateContinuity({
   const selectedNames=selected.map(item=>item?.name||item?.id).filter(Boolean);
   const selectedIds=selected.map(item=>item?.id).filter(Boolean);
   const withheld=activation?.governance?.withheld_document_count ?? packet?.governance?.withheld_document_count ?? null;
-  const p=phaseCopy(phase,lastAttempt);
+  const p=phaseCopy(phase,lastAttempt,busy);
   const permission=permissionCopy(phase,lastAttempt);
   const networkGovernance=['AIA_SENT','FILES_STAGED','CONTINUING','DONE'].includes(phase);
   const fileBodiesCrossed=['CONTINUING','DONE'].includes(phase);
@@ -62,9 +63,11 @@ export function deriveMarrowlineLoomGateContinuity({
   const secondAdmitted=phase==='DONE';
 
   const crossed=[];
-  if(networkGovernance)crossed.push('Portable governance activation was sent to the Loom receiver.');
-  else crossed.push('No Loom-demo network send has been admitted from this stage.');
-  if(fileBodiesCrossed)crossed.push(`${selected.length} selected file ${selected.length===1?'body':'bodies'} crossed in the governed continuation.`);
+  if(busy&&phase==='AIA_STAGED')crossed.push('Browser submission of #1 began; server admission remains unresolved.');
+  else if(networkGovernance)crossed.push('Portable governance activation has an admitted receiver response.');
+  else crossed.push('No Loom-demo network result has been admitted from this stage.');
+  if(busy&&phase==='FILES_STAGED')crossed.push(`Browser submission of ${selected.length} selected file ${selected.length===1?'body':'bodies'} began; result admission remains unresolved.`);
+  else if(fileBodiesCrossed)crossed.push(`${selected.length} selected file ${selected.length===1?'body':'bodies'} crossed in the admitted governed continuation.`);
   else crossed.push('Selected file bodies have not crossed in the current admitted stage.');
 
   const stayed=[];
@@ -213,6 +216,7 @@ export function installMarrowlineLoomGateContinuity({
     roleNodes.fadt.body.textContent=`${current.fadt.state} · ${current.fadt.finding}`;
     technical.querySelector('pre').textContent=JSON.stringify({schema:current.schema,phase:current.phase,technical:current.technical,claim_ceiling:current.claimCeiling},null,2);
     exportButton.disabled=current.phase!=='DONE'||current.busy;
+    localCheck.disabled=!['AIA_SENT','FILES_STAGED','CONTINUING','DONE'].includes(current.phase)||current.busy;
     back.textContent=current.phase==='AIA_SENT'?'Back to Chat · do #2':current.phase==='DONE'?'Back to Chat · continue':'Back to Chat';
     gate.dataset.loomContinuityPhase=current.phase;
     root.__TD613_MARROWLINE_LOOM_GATE_CONTINUITY__=copy(current);
