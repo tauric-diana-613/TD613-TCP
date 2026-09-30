@@ -9,7 +9,7 @@ import {installMarrowlineLoomDemo} from '../app/dome-world/marrowline-loom-demo.
 import {installMarrowlineDesktopRepair} from '../app/dome-world/marrowline-desktop-repair.js';
 import {getMarrowlineAttachments,clearMarrowlineAttachments,removeMarrowlineAttachment,stageMarrowlineAttachments} from '../app/dome-world/marrowline-attachments.js';
 const html=fs.readFileSync('app/dome-world/marrowline.html','utf8');
-async function harness({held=false}={}){
+async function harness({held=false,tamperStageReceipt=false}={}){
  const dom=new JSDOM(html,{url:'https://td613.com/dome-world/marrowline.html'}), root=dom.window, doc=root.document;
  Object.defineProperty(root,'crypto',{value:webcrypto});root.File=File;root.Blob=Blob;
  const packet={task:'Compare fictional workstreams.',documents:[{id:'a',name:'a.md',text:'State A has three workstreams.'}],rules:['Use only selected sources.']};
@@ -24,6 +24,7 @@ async function harness({held=false}={}){
   const out={schema:'td613.loom.ai-task-result/v0.1',request_id:request.request_id,status:'completed',answer:request.phase==='ACTIVATE'?'Rules received; selected files are pending.':requests.length===2?'State B has four workstreams.':'State C has five workstreams.',missing_information:[],used_document_ids:request.phase==='ACTIVATE'?[]:['a'],suggested_next_step:'Inspect the next boundary.'};
   const normalized=loomDemoResult(out,bound.selected.documents);
   const stage={schema:LOOM_DEMO_STAGE_RECEIPT_SCHEMA,activation_digest:request.activation.activation_digest,phase:request.phase,request_id:request.request_id,request_digest:await loomDemoDigest(request,root),current_input_digest:bound.governance.input_digest,prior_result_digest:bound.receipt.prior_result_digest,result_digest:await loomDemoDigest(normalized,root),expires_at:request.activation.expires_at,session_bound:true,authority_transferred:false};
+  if(tamperStageReceipt)stage.request_digest='f'.repeat(64);
   bound.governor.close();
   return {ok:true,status:200,json:async()=>({...out,loom_demo_binding:bound.receipt,loom_demo_stage_receipt:stage})};
  };
@@ -71,6 +72,18 @@ test('held AIA does not unlock files; retry retains the staged packet and edited
  assert.throws(()=>h.controller.exportPacket());h.setHeld(false);await h.controller.submit();assert.equal(h.controller.snapshot().phase,'AIA_SENT');
  }finally{h.close();}
 });
+test('receiver rejects a structurally valid stage receipt that does not bind the exact request',async()=>{
+ const h=await harness({tamperStageReceipt:true});try{
+  await h.controller.stageAia();
+  await h.controller.submit();
+  assert.equal(h.controller.snapshot().phase,'AIA_STAGED');
+  assert.equal(h.controller.snapshot().aia_sent,false);
+  assert.equal(h.controller.snapshot().predecessor_request_id,null);
+  assert.equal(getMarrowlineAttachments().length,1);
+  assert.match(h.doc.querySelector('#khonapolitTerminalStatus').textContent,/stage receipt did not match this request/);
+ }finally{h.close();}
+});
+
 test('ordinary extra attachments cannot silently enter governed request; restoring a removed AIA is explicit',async()=>{
  const h=await harness();try{
  await h.controller.stageAia();const attachment=getMarrowlineAttachments()[0];removeMarrowlineAttachment(attachment.id,h.root);
