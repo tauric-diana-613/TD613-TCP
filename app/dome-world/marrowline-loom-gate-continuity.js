@@ -37,6 +37,7 @@ function phaseCopy(phase,lastAttempt){
 }
 
 function permissionCopy(phase,lastAttempt){
+  if(lastAttempt==='HELD'&&phase==='DONE')return {state:'PRIOR EXPORT RETAINED',body:'The held follow-up earned no new authority and did not replace the current admitted result; export of that prior admitted result remains available.'};
   if(lastAttempt==='HELD')return {state:'HELD',body:'No new permission was earned. The route remains at the last admitted stage.'};
   if(['ARRIVED','AIA_STAGED'].includes(phase))return {state:'FILES HELD',body:'#2 file-bearing continuation remains unavailable until #1 has an admitted stage receipt.'};
   if(phase==='AIA_SENT')return {state:'FILES ELIGIBLE',body:'#2 may now be staged because the governance-first activation has an admitted predecessor.'};
@@ -211,7 +212,7 @@ export function installMarrowlineLoomGateContinuity({
     roleNodes.fadt.question.textContent=current.fadt.question;
     roleNodes.fadt.body.textContent=`${current.fadt.state} · ${current.fadt.finding}`;
     technical.querySelector('pre').textContent=JSON.stringify({schema:current.schema,phase:current.phase,technical:current.technical,claim_ceiling:current.claimCeiling},null,2);
-    exportButton.disabled=current.phase!=='DONE'||current.lastAttempt==='HELD'||current.busy;
+    exportButton.disabled=current.phase!=='DONE'||current.busy;
     back.textContent=current.phase==='AIA_SENT'?'Back to Chat · do #2':current.phase==='DONE'?'Back to Chat · continue':'Back to Chat';
     gate.dataset.loomContinuityPhase=current.phase;
     root.__TD613_MARROWLINE_LOOM_GATE_CONTINUITY__=copy(current);
