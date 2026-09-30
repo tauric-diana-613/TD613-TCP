@@ -576,7 +576,7 @@ export function installDesktopInstrumentTabs(doc, root) {
   tabs.setAttribute('aria-label', 'Marrowline instruments');
   tabs.setAttribute('role', 'tablist');
   const specs = [
-    ['gatePanel', 'Gate'], ['invocationPanel', 'Keys'], ['corpusPanel', 'Stories'], ['receiptPanel', 'Receipts']
+    ['gatePanel', 'Loom Gate'], ['invocationPanel', 'Keys'], ['corpusPanel', 'Stories'], ['receiptPanel', 'Receipts']
   ];
   const media = root.matchMedia?.('(max-width:860px)');
   const select = targetId => {
