@@ -376,6 +376,30 @@ test('missing Loom signer holds before provider invocation',async()=>{
   assert.equal(calls,0);
 });
 
+test('missing or Giving-aliased Loom head store holds before provider invocation',async()=>{
+  const {activation}=await fixture();
+  for(const headStoreEnvironment of [
+    {},
+    {TD613_LOOM_DEMO_NEON_DATABASE_URL:HEAD_STORE_URL,TD613_GIVING_NEON_DATABASE_URL:HEAD_STORE_URL}
+  ]){
+    let calls=0;
+    const handler=createLoomDemoTaskHandler({
+      environment,
+      signingSecret:SIGNING_SECRET,
+      signingEnvironment:SIGNING_ENVIRONMENT,
+      headStoreEnvironment,
+      headStoreFetch:createFakeLoomHeadStore().fetchImpl,
+      taskHandler:async()=>{calls++;}
+    });
+    const req=Object.assign(new EventEmitter(),{method:'POST',headers:{host:'td613.com',origin:'https://td613.com','content-type':'application/json'},body:request(activation)});
+    let output;const res={setHeader(){},end(raw){output=JSON.parse(raw);}};
+    await handler(req,res);
+    assert.equal(res.statusCode,503);
+    assert.equal(output.status,'held');
+    assert.equal(calls,0);
+  }
+});
+
 test('admission-time expiry holds a late provider result without minting a receipt',async()=>{
   const {activation}=await fixture();
   let calls=0;
@@ -442,6 +466,45 @@ test('durable Loom head excludes replay and fork before the second provider invo
   assert.equal(readiness.durable_compare_and_swap,true);
   assert.equal(readiness.replay_exclusion,true);
   assert.equal(readiness.fork_exclusion,true);
+});
+
+test('ambiguous head-commit acknowledgement is reconciled only by the exact durable head',async()=>{
+  const {activation}=await fixture();
+  const store=createFakeLoomHeadStore();
+  let loseAck=true;
+  const flakyFetch=async(url,init={})=>{
+    const {query=''}=JSON.parse(init.body||'{}');
+    if(loseAck&&/SET head_receipt_digest=\$3/i.test(query)){
+      loseAck=false;
+      await store.fetchImpl(url,init);
+      throw new Error('simulated-commit-ack-loss');
+    }
+    return store.fetchImpl(url,init);
+  };
+  let calls=0;
+  const handler=createLoomDemoTaskHandler({
+    environment,
+    signingSecret:SIGNING_SECRET,
+    signingEnvironment:SIGNING_ENVIRONMENT,
+    headStoreEnvironment:store.environment,
+    headStoreFetch:flakyFetch,
+    taskHandler:async(req,res)=>{
+      calls++;
+      res.statusCode=200;
+      res.end(JSON.stringify(result(req.body.request_id,'Rules received; selected files are pending.',[])));
+    }
+  });
+  const req=Object.assign(new EventEmitter(),{method:'POST',headers:{host:'td613.com',origin:'https://td613.com','content-type':'application/json'},body:request(activation,[],'ACTIVATE',null,null,'ambiguous-commit')});
+  let output;const res={setHeader(){},end(raw){output=JSON.parse(raw);}};
+  await handler(req,res);
+  assert.equal(calls,1);
+  assert.equal(res.statusCode,200);
+  assert.equal(output.status,'completed');
+  const durable=store.heads.get(activation.activation_digest);
+  assert.equal(durable.head_request_id,'ambiguous-commit');
+  assert.equal(durable.head_receipt_digest,loomDemoReceiptDigest(output.loom_demo_stage_receipt));
+  assert.equal(JSON.stringify(durable).includes('Rules received'),false);
+  assert.equal(JSON.stringify(durable).includes('State A'),false);
 });
 
 test('production readiness requires both independent Loom authorities and default environment remains held',async()=>{
