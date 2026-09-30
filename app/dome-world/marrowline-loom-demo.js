@@ -1,5 +1,5 @@
 import { consumeLoomAiHandoff } from './holonomy-loom/ai-handoff.js';
-import { createLoomDemoActivation, bindLoomDemoRequest, exportLoomDemoCurrent, loomDemoResult, LOOM_DEMO_REQUEST_SCHEMA } from './holonomy-loom/demo-contract.js';
+import { createLoomDemoActivation, bindLoomDemoRequest, exportLoomDemoCurrent, loomDemoResult, validateLoomDemoStageReceipt, LOOM_DEMO_REQUEST_SCHEMA } from './holonomy-loom/demo-contract.js';
 import { renderLoomAiResult } from './holonomy-loom/ai-result-view.js';
 import { readLoomAiFailure, describeLoomAiFailure } from './holonomy-loom/ai-failure.js';
 import { ingestGeminiConsumption } from '../gemini-consumption-ledger.js';
@@ -18,7 +18,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   const form=byId(doc,'khonapolitForm'), prompt=byId(doc,'khonapolitPrompt'), send=byId(doc,'khonapolitSend'), ordinary=byId(doc,'khonapolitMessages');
   if (!form || !prompt || !send || !ordinary) throw new Error('Loom demo composer unavailable.');
   let phase='ARRIVED', active=false, pending=null, staged=[], busy=false;
-  let latest=activation.prior_result, latestBinding=null, lastAccepted=null;
+  let latest=packet.continuation?.prior_result ? loomDemoResult(packet.continuation.prior_result, packet.documents) : null, latestBinding=null, lastAccepted=null, predecessor=null;
   let ordinaryDraft=null, destroyed=false, lastAttempt='NOT_SENT';
   const status=byId(doc,'khonapolitTerminalStatus');
   const setStatus=text=>{if(status)status.textContent=text;};
@@ -58,7 +58,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   const checkState=element(doc,'p','Local checks send nothing. The existing live Gate conditions remain separate actions.');checkState.setAttribute('role','status');
   gatePanel.append(gateHeading,gateState,inspect,localCheck,checkState,exportButton);gate?.prepend(gatePanel);
 
-  const snapshot=()=>({phase,active,busy,pending_steps:!['FILES_STAGED','CONTINUING','DONE','EXPIRED','LEFT'].includes(phase),aia_sent:['AIA_SENT','FILES_STAGED','CONTINUING','DONE'].includes(phase),files_staged:['FILES_STAGED','CONTINUING','DONE'].includes(phase),current_result_request_id:lastAccepted?.request_id??null});
+  const snapshot=()=>({phase,active,busy,pending_steps:!['FILES_STAGED','CONTINUING','DONE','EXPIRED','LEFT'].includes(phase),aia_sent:['AIA_SENT','FILES_STAGED','CONTINUING','DONE'].includes(phase),files_staged:['FILES_STAGED','CONTINUING','DONE'].includes(phase),current_result_request_id:lastAccepted?.request_id??null,predecessor_request_id:predecessor?.request_id??null});
   function emit() {
     const state=snapshot();environment.__TD613_LOOM_DEMO_STATE__=state;
     doc.documentElement.dataset.loomTaskImport=state.pending_steps?'staged':phase.toLowerCase();
@@ -116,7 +116,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
       assertCanStage();
       const files=packet.documents.map(document=>new environment.File([document.text],document.name,{type:'text/plain'}));
       await stage(files);pending='CONTINUE';phase='FILES_STAGED';
-      prompt.value=activation.prior_result?'Continue the original Loom task from its prior answer. Recheck the answer against these selected files and preserve the portable rules and missing evidence.':'Work on the original Loom task using these selected files under the portable rules.';
+      prompt.value=latest?'Continue the original Loom task from its prior answer. Recheck the answer against these selected files and preserve the portable rules and missing evidence.':'Work on the original Loom task using these selected files under the portable rules.';
       consequence.textContent=`${files.length} selected Loom files staged. Send continues this governed task; local-only files remain excluded.`;
       closeMenu();prompt.focus?.({preventScroll:true});emit();
     }catch(error){menuStatus.textContent=error.message;setStatus(`Loom demo held · ${error.message}`);}
@@ -149,7 +149,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
     let binding,controller;
     try{
       assertStaged();
-      const request={schema:LOOM_DEMO_REQUEST_SCHEMA,request_id:environment.crypto.randomUUID(),phase:operation,activation,documents:operation==='CONTINUE'?packet.documents:[],operator_request,prior_result:operation==='CONTINUE'?latest:null};
+      const request={schema:LOOM_DEMO_REQUEST_SCHEMA,request_id:environment.crypto.randomUUID(),phase:operation,activation,documents:operation==='CONTINUE'?packet.documents:[],operator_request,prior_result:operation==='CONTINUE'?latest:null,predecessor:operation==='CONTINUE'?predecessor:null};
       binding=await bindLoomDemoRequest(request,environment);
       busy=true;lastAttempt='PENDING';controller=new AbortController();pendingController=controller;
       send.type='button';send.textContent='■';send.setAttribute('aria-label','Stop Loom request');
@@ -163,7 +163,10 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
         const failure=readLoomAiFailure(output,request.request_id);
         if(!response.ok||failure)throw new Error(describeLoomAiFailure(failure,response.status));
         if(JSON.stringify(output.loom_demo_binding)!==JSON.stringify(binding.receipt))throw new Error('The server binding did not match this request.');
-        if(!binding.governor.receive(output,request.request_id).allowed)throw new Error('The returned result was held by the Loom governor.');
+        const returnedPredecessor=validateLoomDemoStageReceipt(output.loom_demo_stage_receipt,activation);
+        if(returnedPredecessor.phase!==operation||returnedPredecessor.request_id!==request.request_id)throw new Error('The server stage receipt did not match this request.');
+        if(!binding.admit(output).allowed)throw new Error('The returned result was held by the Loom governor.');
+        predecessor=returnedPredecessor;
       }finally{environment.clearTimeout(deadline);}
       if(destroyed||!active||controller.signal.aborted)return;
       lastAttempt='ADMITTED';
@@ -180,7 +183,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
         exportButton.disabled=false;consequence.textContent='Loom rules govern this composer. Ask a follow-up, export the current work from Gate, or leave Loom mode.';
         const onward=button(doc,'Continue Loom demo: Gate',()=>{const target=gateTarget(doc);target?.click();target?.focus?.({preventScroll:true});});onward.className='loom-demo-gate-next';card.append(onward);
       }
-      exact.textContent=JSON.stringify({activation,current_binding:latestBinding?.receipt??null,current_result:lastAccepted},null,2);
+      exact.textContent=JSON.stringify({activation,current_binding:latestBinding?.receipt??null,current_predecessor:predecessor,current_result:lastAccepted},null,2);
       setStatus(operation==='ACTIVATE'?'AIA response admitted · now upload the selected Loom demo files':'Loom continuation admitted · latest result retained');
       card.scrollIntoView?.({block:'start',behavior:'auto'});
     }catch(error){
@@ -213,7 +216,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   function exportCurrent(){
     try{
       if(!active||Date.now()>=activation.expires_at)throw new Error('This Loom session is closed or expired. Prepare a fresh handoff before exporting.');
-      const payload=exportLoomDemoCurrent(latestBinding,lastAccepted);
+      const payload=exportLoomDemoCurrent(latestBinding);
       const url=environment.URL.createObjectURL(new environment.Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));
       const link=element(doc,'a','');link.href=url;link.download='loom-current-portable-aia.json';doc.body.append(link);link.click();link.remove();
       environment.setTimeout(()=>environment.URL.revokeObjectURL(url),1500);
@@ -227,7 +230,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   doc.addEventListener('click',event=>{if(!menu.hidden&&!menu.contains(event.target)&&!byId(doc,'marrowlineContextLoom')?.contains(event.target))menu.hidden=true;});
   const expiry=environment.setTimeout(()=>{phase='EXPIRED';pendingController?.abort('expired');menuStatus.textContent='This transfer expired. Prepare a fresh handoff in Loom.';emit();},Math.max(0,activation.expires_at-Date.now()));
   environment.addEventListener('pagehide',()=>pendingController?.abort('pagehide'));
-  const controller={openMenu,stageAia,stageFiles,submit,snapshot,exportPacket:()=>exportLoomDemoCurrent(latestBinding,lastAccepted),destroy(){destroyed=true;environment.clearTimeout(expiry);leaveDemo();menu.remove();gatePanel.remove();transcript.remove();banner.remove();}};
+  const controller={openMenu,stageAia,stageFiles,submit,snapshot,exportPacket:()=>exportLoomDemoCurrent(latestBinding),destroy(){destroyed=true;environment.clearTimeout(expiry);leaveDemo();menu.remove();gatePanel.remove();transcript.remove();banner.remove();}};
   environment.__TD613_LOOM_DEMO_CONTROLLER__=controller;
   environment.history?.replaceState(null,'',environment.location.pathname+environment.location.search+'#loom-demo');
   emit();setStatus(`${packet.documents.length} selected Loom files arrived · + → Loom demo · start with the Portable AIA`);
