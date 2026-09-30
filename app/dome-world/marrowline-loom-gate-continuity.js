@@ -185,8 +185,12 @@ export function installMarrowlineLoomGateContinuity({
   separator.append(el(doc,'small','SEPARATE EXPERIMENT'),el(doc,'strong','Adversarial boundary assay stays below'),el(doc,'p','The Local / Public / Operator controls test a different boundary. They do not prove this Loom continuity route, and this continuity witness does not prove their later opsec/infosec claims.'));
 
   section.append(head,state,now,consequenceGrid,roleDetails,technical,actions);
-  controls.prepend(separator);
   controls.prepend(section);
+  const adversarial=doc.getElementById('marrowlineGatePedagogue');
+  const form=doc.getElementById('marrowlineForm');
+  if(adversarial)controls.insertBefore(separator,adversarial);
+  else if(form)controls.insertBefore(separator,form);
+  else controls.append(separator);
 
   const replaceList=(host,items)=>{const ul=host.querySelector('ul');ul.replaceChildren(...items.map(item=>el(doc,'li',item)));};
   let current=null;
