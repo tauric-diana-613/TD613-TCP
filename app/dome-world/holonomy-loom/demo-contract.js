@@ -36,11 +36,14 @@ export async function createLoomDemoResultCommitment(value, documents, environme
 }
 
 export function validateLoomDemoStageReceipt(receipt, activation) {
-  exact(receipt, ['schema', 'activation_digest', 'phase', 'request_id', 'result_digest', 'expires_at', 'session_bound', 'authority_transferred']);
+  exact(receipt, ['schema', 'activation_digest', 'phase', 'request_id', 'request_digest', 'current_input_digest', 'prior_result_digest', 'result_digest', 'expires_at', 'session_bound', 'authority_transferred']);
   if (receipt.schema !== LOOM_DEMO_STAGE_RECEIPT_SCHEMA ||
       !['ACTIVATE', 'CONTINUE'].includes(receipt.phase) ||
       typeof receipt.request_id !== 'string' ||
       !/^[a-zA-Z0-9_-]{1,100}$/.test(receipt.request_id) ||
+      !/^[a-f0-9]{64}$/.test(receipt.request_digest) ||
+      !/^[a-f0-9]{64}$/.test(receipt.current_input_digest) ||
+      !(receipt.prior_result_digest === null || /^[a-f0-9]{64}$/.test(receipt.prior_result_digest)) ||
       !/^[a-f0-9]{64}$/.test(receipt.result_digest) ||
       receipt.activation_digest !== activation.activation_digest ||
       receipt.expires_at !== activation.expires_at ||
