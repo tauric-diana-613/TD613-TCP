@@ -15,6 +15,16 @@ export async function loomDemoDigest(value, environment = globalThis) {
   const data = new TextEncoder().encode(typeof value === 'string' ? value : JSON.stringify(value));
   return [...new Uint8Array(await environment.crypto.subtle.digest('SHA-256', data))].map(byte => byte.toString(16).padStart(2, '0')).join('');
 }
+function canonicalLoomDemoJson(value) {
+  if (Array.isArray(value)) return `[${value.map(canonicalLoomDemoJson).join(',')}]`;
+  if (value && typeof value === 'object') return `{${Object.keys(value).sort().map(key => `${JSON.stringify(key)}:${canonicalLoomDemoJson(value[key])}`).join(',')}}`;
+  if (typeof value === 'number' && !Number.isFinite(value)) return 'null';
+  return JSON.stringify(value ?? null);
+}
+export async function loomDemoReceiptDigest(value, environment = globalThis) {
+  const data = new TextEncoder().encode(canonicalLoomDemoJson(value));
+  return [...new Uint8Array(await environment.crypto.subtle.digest('SHA-256', data))].map(byte => byte.toString(16).padStart(2, '0')).join('');
+}
 export function loomDemoResult(value, documents) {
   if (!value) return null;
   const result = Object.fromEntries(['schema', 'request_id', 'status', 'answer', 'missing_information', 'used_document_ids', 'suggested_next_step'].map(key => [key, value[key]]));
