@@ -245,8 +245,8 @@ test('signed stage receipts authenticate cross-instance ancestry before provider
   const forged=copy(activationRun.output.loom_demo_stage_receipt);
   forged.result_digest='f'.repeat(64);
   const rejectedPredecessor=await run(request(activation,packet.documents,'CONTINUE',null,forged,'continue-forged'));
-  assert.equal(rejectedPredecessor.status,409);
-  assert.equal(rejectedPredecessor.output.error,'loom-demo-predecessor-not-admitted');
+  assert.equal(rejectedPredecessor.status,400);
+  assert.equal(rejectedPredecessor.output.error,'LOOM_DEMO_PREDECESSOR_AUTH_INVALID');
   assert.equal(calls,1);
 
   const good=await run(request(activation,packet.documents,'CONTINUE',null,activationRun.output.loom_demo_stage_receipt,'continue-live'),handlerB);
