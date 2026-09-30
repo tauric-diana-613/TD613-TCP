@@ -102,15 +102,16 @@ test('composer has one universal plus with exactly file photo and Loom actions',
   assert.equal(release.composer.loomAwakeAction, 'continue-staged-loom-handoff');
 });
 
-test('Loom demo attention uses one pink backglow while the plus glyph keeps ordinary ink', () => {
+test('Loom demo attention follows pending steps while the plus glyph keeps ordinary ink', () => {
   assert.match(js, /doc\.documentElement\?\.dataset\?\.loomTaskImport === 'staged'/);
-  assert.match(js, /let loomCueAcknowledged = false/);
-  assert.match(js, /plus\.dataset\.loomAttention = String\(awake && !loomCueAcknowledged\)/);
-  assert.match(js, /loomCueAcknowledged = true;\s*plus\.dataset\.loomAttention = 'false'/);
+  assert.match(js, /Boolean\(demo\?\.pending_steps\)/);
+  assert.match(js, /plus\.dataset\.loomAttention = String\(awake\)/);
+  assert.doesNotMatch(js, /loomCueAcknowledged/);
+  assert.match(js, /root\.addEventListener\?\.\('td613:marrowline:loom-demo-state', refreshLoom\)/);
   assert.match(js, /loomItem\.text\.textContent = awake \? 'Loom demo' : 'Loom'/);
   assert.match(css, /\.marrowline-composer-plus\{[^}]*color:#e6ece8/);
-  assert.match(css, /\.marrowline-composer-plus\[data-loom-attention="true"\]\{animation:marrowline-loom-demo-attention/);
-  assert.match(css, /#marrowlineContextLoom\[data-loom-awake="true"\]>span:nth-child\(2\)\{color:#ffb5e1\}/);
+  assert.match(css, /\.marrowline-composer-plus\[data-loom-attention="true"\],#khonapolitSend\[data-loom-attention="true"\]\{animation:marrowline-loom-demo-attention \.8s/);
+  assert.match(css, /#marrowlineContextLoom\[data-loom-awake="true"\]>span:nth-child\(2\)\{color:#ff69c3\}/);
   assert.match(css, /#marrowlineContextLoom\[data-loom-awake="true"\] small\{color:#f38ec8\}/);
   assert.doesNotMatch(css, /marrowline-composer-plus\[data-loom-awake="true"\][^{]*\{[^}]*color:/);
   assert.doesNotMatch(css, /marrowline-composer-plus\[data-loom-awake="true"\]::after/);

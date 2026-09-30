@@ -13,6 +13,7 @@ export const DOLLHOUSE_AGENT_REGISTRY = freeze({
       role: 'consequence-order-route-burden-practice-and-research-transfer',
       invocation: 'PEDAGOGUE.md / npm run pedagogue:design -- <fixture.json>',
       canonical_sources: freeze(['PEDAGOGUE.md', 'app/engine/pedagogue-design-gate.js']),
+      audit_extensions: freeze(['app/engine/pedagogue-gesture-consequence.js::compilePedagogueGestureConsequenceAudit']),
       authority_ceiling: 'recommendation-and-verification-only-human-closure-required'
     }),
     APERTURE: freeze({
@@ -23,6 +24,7 @@ export const DOLLHOUSE_AGENT_REGISTRY = freeze({
       role: 'observability-identifiability-reconstruction-conditioning-and-replay-audit',
       invocation: 'APERTURE.md / installed Aperture lane',
       canonical_sources: freeze(['APERTURE.md', 'app/aperture/release.json']),
+      audit_extensions: freeze(['app/engine/dollhouse-witness-plan.js::auditDollhouseWitnessPlan']),
       authority_ceiling: 'experimental-research-instrument-no-external-reality-or-release-authority'
     }),
     ATLAS: freeze({
@@ -38,6 +40,7 @@ export const DOLLHOUSE_AGENT_REGISTRY = freeze({
         'app/dome-world/holonomy-loom/flowcore-aia-motion.js'
       ]),
       research_lineage_note: 'Atlas research receipts remain separately bound; this adapter does not merge or promote that unmerged estate.',
+      audit_extensions: freeze(['app/engine/dollhouse-continuity-audit.js::runAtlasContinuityAudit']),
       authority_ceiling: 'receiver-relation-audit-only-no-basis-free-geometry-no-release-no-lineage-promotion'
     }),
     FADT: freeze({
@@ -49,6 +52,7 @@ export const DOLLHOUSE_AGENT_REGISTRY = freeze({
       invocation: 'FADT.md / app/engine/dollhouse-atlas-fadt.js::runFadtAgent',
       canonical_sources: freeze(['FADT.md', 'PR #752 · Finite Admissibility Descent Theorem']),
       theorem_lineage_note: 'PR #752 remains theorem ancestry; this adapter operationalizes the finite law without granting merge, deployment, or universal-theorem authority.',
+      audit_extensions: freeze(['app/engine/dollhouse-continuity-audit.js::runFadtStageAudit']),
       authority_ceiling: 'finite-support-descent-audit-only-no-universal-ai-law-no-release-no-source-state-reconstruction'
     })
   }),

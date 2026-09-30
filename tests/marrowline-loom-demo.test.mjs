@@ -6,6 +6,7 @@ import {JSDOM} from 'jsdom';
 import {createLoomAiGovernance} from '../app/dome-world/holonomy-loom/ai-handoff.js';
 import {bindLoomDemoRequest} from '../app/dome-world/holonomy-loom/demo-contract.js';
 import {installMarrowlineLoomDemo} from '../app/dome-world/marrowline-loom-demo.js';
+import {installMarrowlineDesktopRepair} from '../app/dome-world/marrowline-desktop-repair.js';
 import {getMarrowlineAttachments,clearMarrowlineAttachments,removeMarrowlineAttachment,stageMarrowlineAttachments} from '../app/dome-world/marrowline-attachments.js';
 const html=fs.readFileSync('app/dome-world/marrowline.html','utf8');
 async function harness({held=false}={}){
@@ -14,6 +15,7 @@ async function harness({held=false}={}){
  const packet={task:'Compare fictional workstreams.',documents:[{id:'a',name:'a.md',text:'State A has three workstreams.'}],rules:['Use only selected sources.']};
  packet.governance=await createLoomAiGovernance(packet,{withheldDocumentCount:1},root);
  clearMarrowlineAttachments(root);
+ installMarrowlineDesktopRepair(doc,root);
  const requests=[];let deny=held;
  root.fetch=async(url,options)=>{
   assert.match(url,/operation=loom-demo-task$/);const request=JSON.parse(options.body);requests.push(request);
@@ -27,17 +29,26 @@ async function harness({held=false}={}){
 test('arrival has no ingress membrane, both numbered steps visible, no request until Send',async()=>{
  const h=await harness();try{
  assert.equal(h.doc.querySelector('#loomImportedWorkspace'),null);
- assert.equal(h.requests.length,0);h.controller.openMenu();
+ const plus=h.doc.querySelector('#marrowlineComposerPlus');
+ assert.equal(plus.dataset.loomAttention,'true');
+ assert.equal(h.requests.length,0);plus.click();
+ assert.equal(plus.dataset.loomAttention,'true','opening the real + menu cannot consume the two-step cue');
+ h.doc.querySelector('#marrowlineContextLoom').click();
+ assert.equal(plus.dataset.loomAttention,'true','opening Loom demo keeps its pending-file reminder');
  assert.equal(h.doc.querySelector('#loomDemoMenu').hidden,false);
  const buttons=[...h.doc.querySelectorAll('#loomDemoMenu button')];
  assert.equal(buttons[0].textContent,'#1: Upload portable AIA');assert.equal(buttons[1].textContent,'#2: Upload Loom demo files');assert.equal(buttons[1].disabled,true);
  await h.controller.stageAia();
  assert.equal(h.controller.snapshot().pending_steps,true);assert.equal(h.requests.length,0);
+ assert.equal(plus.dataset.loomAttention,'true','staging AIA alone cannot dismiss the reminder');
  assert.equal(getMarrowlineAttachments().length,1);assert.equal(h.doc.querySelector('#khonapolitMessages').hidden,true);
  await h.controller.submit();
  assert.equal(h.requests[0].documents.length,0);assert.equal(h.controller.snapshot().phase,'AIA_SENT');assert.equal(h.controller.snapshot().pending_steps,true);
+ assert.equal(plus.dataset.loomAttention,'true','admitted activation still requires the selected-file gesture');
  assert.equal(getMarrowlineAttachments().length,0);
  await h.controller.stageFiles();assert.equal(h.controller.snapshot().pending_steps,false);
+ assert.equal(plus.dataset.loomAttention,'false','only #2 selected-file staging completes this reminder');
+ assert.equal(h.doc.querySelector('#marrowlineContextLoom>span:nth-child(2)').textContent,'Loom');
  assert.equal(getMarrowlineAttachments().length,1);await h.controller.submit();
  assert.equal(h.controller.snapshot().phase,'DONE');assert.deepEqual(h.requests[1].documents,h.packet.documents);
  assert.equal(h.doc.querySelectorAll('#loomDemoMessages .loom-demo-message').length,4);

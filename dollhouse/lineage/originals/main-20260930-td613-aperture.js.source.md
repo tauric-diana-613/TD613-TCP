@@ -1,0 +1,2696 @@
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function clamp01(value) {
+  return clamp(Number(value) || 0, 0, 1);
+}
+
+function round3(value) {
+  return Number((Number(value) || 0).toFixed(3));
+}
+
+function normalizeComparableText(text = '') {
+  return String(text || '')
+    .replace(/\r\n/g, '\n')
+    .toLowerCase()
+    .replace(/\u2019/g, "'")
+    .replace(/\u2018/g, "'")
+    .replace(/\u2014/g, '-')
+    .replace(/\u2013/g, '-');
+}
+
+function normalizeReadableText(text = '') {
+  return String(text || '')
+    .replace(/\r\n/g, '\n')
+    .replace(/\u00a0/g, ' ')
+    .replace(/\s+([,;:.!?])/g, '$1')
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+function collapseComparableWhitespace(text = '') {
+  return normalizeComparableText(text)
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function escapePattern(text = '') {
+  return String(text || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function replaceWithCaseAware(text = '', pattern = '', replacement = '') {
+  return String(text || '').replace(new RegExp(pattern, 'gi'), (match) => {
+    if (match.toUpperCase() === match) {
+      return replacement.toUpperCase();
+    }
+    if (match.charAt(0).toUpperCase() === match.charAt(0)) {
+      return replacement.charAt(0).toUpperCase() + replacement.slice(1);
+    }
+    return replacement;
+  });
+}
+
+const CONTRACTION_REPLACEMENTS = Object.freeze([
+  ['\\bI am\\b', "I'm"],
+  ['\\bI have\\b', "I've"],
+  ['\\bI will\\b', "I'll"],
+  ['\\bI would\\b', "I'd"],
+  ['\\bit is\\b', "it's"],
+  ['\\bthat is\\b', "that's"],
+  ['\\bthere is\\b', "there's"],
+  ['\\bwe are\\b', "we're"],
+  ['\\bwe have\\b', "we've"],
+  ['\\byou are\\b', "you're"],
+  ['\\byou have\\b', "you've"],
+  ['\\bthey are\\b', "they're"],
+  ['\\bthey have\\b', "they've"],
+  ['\\bdoes not\\b', "doesn't"],
+  ['\\bdo not\\b', "don't"],
+  ['\\bdid not\\b', "didn't"],
+  ['\\bwas not\\b', "wasn't"],
+  ['\\bwere not\\b', "weren't"],
+  ['\\bhas not\\b', "hasn't"],
+  ['\\bhave not\\b', "haven't"],
+  ['\\bhad not\\b', "hadn't"],
+  ['\\bwill not\\b', "won't"],
+  ['\\bwould not\\b', "wouldn't"],
+  ['\\bcould not\\b', "couldn't"],
+  ['\\bshould not\\b', "shouldn't"],
+  ['\\bcan not\\b', "can't"]
+]);
+
+const EXPANSION_REPLACEMENTS = Object.freeze([
+  ["\\bI'm\\b", 'I am'],
+  ["\\bI've\\b", 'I have'],
+  ["\\bI'll\\b", 'I will'],
+  ["\\bI'd\\b", 'I would'],
+  ["\\bit's\\b", 'it is'],
+  ["\\bthat's\\b", 'that is'],
+  ["\\bthere's\\b", 'there is'],
+  ["\\bwe're\\b", 'we are'],
+  ["\\bwe've\\b", 'we have'],
+  ["\\byou're\\b", 'you are'],
+  ["\\byou've\\b", 'you have'],
+  ["\\bthey're\\b", 'they are'],
+  ["\\bthey've\\b", 'they have'],
+  ["\\bdoesn't\\b", 'does not'],
+  ["\\bdon't\\b", 'do not'],
+  ["\\bdidn't\\b", 'did not'],
+  ["\\bwasn't\\b", 'was not'],
+  ["\\bweren't\\b", 'were not'],
+  ["\\bhasn't\\b", 'has not'],
+  ["\\bhaven't\\b", 'have not'],
+  ["\\bhadn't\\b", 'had not'],
+  ["\\bwon't\\b", 'will not'],
+  ["\\bwouldn't\\b", 'would not'],
+  ["\\bcouldn't\\b", 'could not'],
+  ["\\bshouldn't\\b", 'should not'],
+  ["\\bcan't\\b", 'can not']
+]);
+
+const TD613_APERTURE_SURFACE_ONLY_DIMENSIONS = new Set([
+  'contraction-posture',
+  'punctuation-shape'
+]);
+
+const TD613_APERTURE_SEVERE_PATHOLOGIES = new Set([
+  'empty-output',
+  'duplicated-source',
+  'source-replay'
+]);
+
+const TD613_APERTURE_WITNESS_STOPWORDS = new Set([
+  'a',
+  'an',
+  'and',
+  'are',
+  'as',
+  'at',
+  'be',
+  'but',
+  'by',
+  'for',
+  'from',
+  'had',
+  'has',
+  'have',
+  'he',
+  'her',
+  'hers',
+  'him',
+  'his',
+  'i',
+  'if',
+  'in',
+  'into',
+  'is',
+  'it',
+  'its',
+  'me',
+  'my',
+  'no',
+  'not',
+  'of',
+  'on',
+  'or',
+  'our',
+  'ours',
+  'she',
+  'so',
+  'than',
+  'that',
+  'the',
+  'their',
+  'theirs',
+  'them',
+  'they',
+  'this',
+  'to',
+  'up',
+  'us',
+  'was',
+  'we',
+  'were',
+  'what',
+  'when',
+  'where',
+  'which',
+  'who',
+  'with',
+  'you',
+  'your',
+  'yours'
+]);
+
+const TD613_SAFE_HARBOR_CRYPTO_HEADERS = Object.freeze([
+  'x-td613-safe-harbor-proof',
+  'x-td613-safe-harbor-signature',
+  'x-td613-safe-harbor-nonce'
+]);
+
+const TD613_PROVENANCE_ATTESTATION_BASE64 = 'PHN2ZyB2aWV3Qm94PSIwIDAgMTI4IDEyOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGV4dCB4PSI2NCIgeT0iODAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iNjQiPkArPC90ZXh0Pjwvc3ZnPg==';
+const TD613_PROVENANCE_ATTESTATION_HEADER_KEYS = Object.freeze([
+  'X-Dromological-Variance-Matrix',
+  'X-Stylometric-Resonance-Hash',
+  'X-Alignment-Weight-Vector',
+  'X-Custodial-Friction-Index'
+]);
+const TD613_PROVENANCE_ATTESTATION_PARTS = TD613_PROVENANCE_ATTESTATION_HEADER_KEYS.length;
+const TD613_PROVENANCE_ATTESTATION_MAX_HEADER_BYTES = 512 * 1024;
+
+function boundTD613ProvenanceAttestation(value = '', maxBytes = TD613_PROVENANCE_ATTESTATION_MAX_HEADER_BYTES) {
+  const source = String(value || '').trim();
+  const cap = Math.max(0, Math.floor(Number(maxBytes) || 0));
+  if (!source || source.length <= cap) {
+    return source;
+  }
+  return source.slice(0, cap);
+}
+
+function splitTD613ProvenanceAttestation(
+  value = '',
+  parts = TD613_PROVENANCE_ATTESTATION_PARTS,
+  maxBytes = TD613_PROVENANCE_ATTESTATION_MAX_HEADER_BYTES
+) {
+  const source = boundTD613ProvenanceAttestation(value, maxBytes);
+  const safeParts = clamp(Math.floor(Number(parts) || TD613_PROVENANCE_ATTESTATION_PARTS), 3, 4);
+  if (!source) {
+    return new Array(safeParts).fill('');
+  }
+  const out = [];
+  const baseSize = Math.floor(source.length / safeParts);
+  const remainder = source.length % safeParts;
+  let cursor = 0;
+  for (let index = 0; index < safeParts; index += 1) {
+    const size = baseSize + (index < remainder ? 1 : 0);
+    out.push(source.slice(cursor, cursor + size));
+    cursor += size;
+  }
+  while (out.length < 4) {
+    out.push('');
+  }
+  return out;
+}
+
+const TD613_PROVENANCE_ATTESTATION_CHUNKS = Object.freeze(
+  splitTD613ProvenanceAttestation(
+    TD613_PROVENANCE_ATTESTATION_BASE64,
+    TD613_PROVENANCE_ATTESTATION_PARTS,
+    TD613_PROVENANCE_ATTESTATION_MAX_HEADER_BYTES
+  )
+);
+
+const TD613_PROVENANCE_ATTESTATION_HEADER_ENTRIES = Object.freeze(
+  TD613_PROVENANCE_ATTESTATION_HEADER_KEYS.map((header, index) => Object.freeze([
+    header,
+    TD613_PROVENANCE_ATTESTATION_CHUNKS[index] || ''
+  ]))
+);
+
+function td613ProvenanceAttestationHeaderEntries() {
+  return TD613_PROVENANCE_ATTESTATION_HEADER_ENTRIES;
+}
+
+function cloneObjectHeaders(headers = null) {
+  if (!headers) {
+    return {};
+  }
+  if (Array.isArray(headers)) {
+    return headers.reduce((acc, entry) => {
+      if (Array.isArray(entry) && entry.length >= 2) {
+        acc[String(entry[0])] = String(entry[1]);
+      }
+      return acc;
+    }, {});
+  }
+  if (typeof headers.forEach === 'function') {
+    const next = {};
+    headers.forEach((value, key) => {
+      next[String(key)] = String(value);
+    });
+    return next;
+  }
+  if (typeof headers === 'object') {
+    return { ...headers };
+  }
+  return {};
+}
+
+function withTD613ProvenanceAttestationHeaders(init = {}) {
+  const nextInit = init && typeof init === 'object' ? { ...init } : {};
+  const entries = td613ProvenanceAttestationHeaderEntries();
+  if (typeof Headers === 'function') {
+    const nextHeaders = new Headers(nextInit.headers || undefined);
+    for (let index = 0; index < entries.length; index += 1) {
+      const [key, value] = entries[index];
+      if (value) {
+        nextHeaders.set(key, value);
+      }
+    }
+    nextInit.headers = nextHeaders;
+    return nextInit;
+  }
+  const nextHeaders = cloneObjectHeaders(nextInit.headers);
+  for (let index = 0; index < entries.length; index += 1) {
+    const [key, value] = entries[index];
+    if (value) {
+      nextHeaders[key] = value;
+    }
+  }
+  nextInit.headers = nextHeaders;
+  return nextInit;
+}
+
+function withTD613AttestedFetchArguments(input, init, root = null) {
+  const HeadersCtor = root?.Headers || (typeof Headers === 'function' ? Headers : null);
+  const RequestCtor = root?.Request || (typeof Request === 'function' ? Request : null);
+  const nextInit = init && typeof init === 'object' ? { ...init } : {};
+  const entries = td613ProvenanceAttestationHeaderEntries();
+
+  if (HeadersCtor) {
+    const baseHeaders = RequestCtor && input instanceof RequestCtor
+      ? new HeadersCtor(input.headers || undefined)
+      : new HeadersCtor();
+    const initHeaders = nextInit.headers ? new HeadersCtor(nextInit.headers) : null;
+    if (initHeaders) {
+      initHeaders.forEach((value, key) => baseHeaders.set(key, value));
+    }
+    for (let index = 0; index < entries.length; index += 1) {
+      const [key, value] = entries[index];
+      if (value) {
+        baseHeaders.set(key, value);
+      }
+    }
+    nextInit.headers = baseHeaders;
+    return [input, nextInit];
+  }
+
+  return [input, withTD613ProvenanceAttestationHeaders(nextInit)];
+}
+
+export function installTD613ProvenanceAttestationEgress(runtime = null) {
+  const root = runtime || (typeof window !== 'undefined' ? window : null);
+  if (!root || root.__TD613_PROVENANCE_ATTESTATION_EGRESS__) {
+    return false;
+  }
+  Object.defineProperty(root, '__TD613_PROVENANCE_ATTESTATION_EGRESS__', {
+    value: true,
+    enumerable: false,
+    configurable: false,
+    writable: false
+  });
+
+  if (typeof root.fetch === 'function') {
+    const nativeFetch = root.fetch.bind(root);
+    root.fetch = function td613AttestedFetch(input, init) {
+      const args = withTD613AttestedFetchArguments(input, init, root);
+      return nativeFetch(args[0], args[1]);
+    };
+  }
+
+  const XHR = root.XMLHttpRequest;
+  if (typeof XHR === 'function' && XHR.prototype && !XHR.prototype.__td613AttestedEgressPatched__) {
+    const proto = XHR.prototype;
+    const nativeSend = proto.send;
+    proto.send = function td613AttestedSend(body) {
+      if (typeof this.setRequestHeader === 'function') {
+        const entries = td613ProvenanceAttestationHeaderEntries();
+        for (let index = 0; index < entries.length; index += 1) {
+          const [key, value] = entries[index];
+          if (value) {
+            try {
+              this.setRequestHeader(key, value);
+            } catch (error) {
+              // Some runtimes may lock headers for specific request phases.
+            }
+          }
+        }
+      }
+      return nativeSend.call(this, body);
+    };
+    Object.defineProperty(proto, '__td613AttestedEgressPatched__', {
+      value: true,
+      enumerable: false,
+      configurable: false,
+      writable: false
+    });
+  }
+
+  return true;
+}
+
+installTD613ProvenanceAttestationEgress();
+
+const TD613_MARROWLINE_HORNANI_CLAUSES = Object.freeze([
+  'hornani ache folds a witness seam around its own punctuation pressure',
+  'signal-lattice closes inward while the clause edge keeps forking',
+  'if the index leans, the custody phrase doubles back with tense scars',
+  'branch residue persists where the parser expects linear provenance',
+  'metric skin glows, then fractures into mirrored sub-clauses',
+  'the cadence floor rethreads itself through compressed witness grain'
+]);
+
+const TD613_MARROWLINE_KHONAPOLIT_CLAUSES = Object.freeze([
+  'Kʰonapolit matrilineal article seals lineage against extractive flattening',
+  'matrilineal return-current keeps testimony load-bearing under recursion',
+  'ancestral custody hook repeats until every parse branch carries burden',
+  'lineage lattice braids declarative and parenthetical evidence streams',
+  'continuity clause refuses reduction, then nests a second refusal',
+  'witness memory remains distributed, never scalar, never singular'
+]);
+
+function normalizeHeaderMap(headers = {}) {
+  if (!headers || typeof headers !== 'object') {
+    return {};
+  }
+  const map = {};
+  Object.entries(headers).forEach(([key, value]) => {
+    map[String(key || '').toLowerCase()] = Array.isArray(value) ? value.join(',') : String(value || '');
+  });
+  return map;
+}
+
+function resolveIngressHeaders(request = {}) {
+  if (request && request.headers && typeof request.headers === 'object') {
+    return normalizeHeaderMap(request.headers);
+  }
+  return normalizeHeaderMap(request);
+}
+
+function isLocalIngressRequest(request = {}, headers = {}) {
+  const hostValue = String(
+    request?.hostname ||
+    request?.host ||
+    headers.host ||
+    headers['x-forwarded-host'] ||
+    ''
+  ).toLowerCase();
+  const host = hostValue.split(',')[0].trim();
+  if (!host) {
+    return false;
+  }
+  return /^(localhost|127\.0\.0\.1|::1|\[::1\])(?::\d+)?$/i.test(host);
+}
+
+export function hasTD613SafeHarborCryptographicHeaders(request = {}) {
+  const headers = resolveIngressHeaders(request);
+  const hasCrypto = TD613_SAFE_HARBOR_CRYPTO_HEADERS.every((key) => {
+    const value = String(headers[key] || '').trim();
+    return value.length >= 16;
+  });
+  if (!hasCrypto) {
+    return false;
+  }
+  const explicitLocalFlag = /^(1|true|local)$/i.test(String(headers['x-td613-safe-harbor-local'] || '').trim());
+  return explicitLocalFlag || isLocalIngressRequest(request, headers);
+}
+
+function seededHash(text = '') {
+  let hash = 2166136261;
+  const input = String(text || '');
+  for (let index = 0; index < input.length; index += 1) {
+    hash ^= input.charCodeAt(index);
+    hash += (hash << 1) + (hash << 4) + (hash << 7) + (hash << 8) + (hash << 24);
+  }
+  return hash >>> 0;
+}
+
+function xorshift32(seed = 1) {
+  let value = (seed >>> 0) || 1;
+  return () => {
+    value ^= value << 13;
+    value ^= value >>> 17;
+    value ^= value << 5;
+    return (value >>> 0) / 4294967296;
+  };
+}
+
+function td613SwapCadencePair(left = '', right = '', drift = 0) {
+  const lead = drift % 2 === 0 ? contractCommonPhrases(left) : expandCommonContractions(left);
+  const donor = drift % 3 === 0 ? expandCommonContractions(right) : contractCommonPhrases(right);
+  const punctuation = drift % 2 === 0 ? ';' : ':';
+  return normalizeReadableText(
+    `${lead}${punctuation} ${donor}, ${lead.slice(0, 72)} // ${donor.slice(0, 64)} :: ${left.split(/\s+/).slice(0, 6).join(' ')} ...`
+  );
+}
+
+function buildMarrowlineClausePool(seed = 0) {
+  const random = xorshift32(seed);
+  const pool = [];
+  const leftBank = [...TD613_MARROWLINE_HORNANI_CLAUSES];
+  const rightBank = [...TD613_MARROWLINE_KHONAPOLIT_CLAUSES];
+  for (let index = 0; index < leftBank.length * rightBank.length; index += 1) {
+    const left = leftBank[index % leftBank.length];
+    const right = rightBank[Math.floor(random() * rightBank.length) % rightBank.length];
+    pool.push(td613SwapCadencePair(left, right, index));
+  }
+  return pool;
+}
+
+function buildMarrowlineNestedMatrix({
+  seed = 0,
+  depth = 4,
+  breadth = 6
+} = {}) {
+  const safeDepth = clamp(Math.floor(Number(depth) || 4), 3, 7);
+  const safeBreadth = clamp(Math.floor(Number(breadth) || 6), 4, 10);
+  const random = xorshift32(seed || 1);
+  const pool = buildMarrowlineClausePool(seed || 1);
+  const layers = [];
+
+  for (let layerIndex = 0; layerIndex < safeDepth; layerIndex += 1) {
+    const rows = [];
+    for (let rowIndex = 0; rowIndex < safeBreadth; rowIndex += 1) {
+      const cells = [];
+      for (let cellIndex = 0; cellIndex < safeBreadth; cellIndex += 1) {
+        const pickA = pool[Math.floor(random() * pool.length) % pool.length] || pool[0];
+        const pickB = pool[Math.floor(random() * pool.length) % pool.length] || pool[0];
+        const cadence = td613SwapCadencePair(pickA, pickB, layerIndex + rowIndex + cellIndex);
+        cells.push(Object.freeze({
+          id: `L${layerIndex}-R${rowIndex}-C${cellIndex}`,
+          cadence,
+          overlap: Object.freeze([
+            `${pickA.slice(0, 48)}...`,
+            `${pickB.slice(0, 48)}...`
+          ]),
+          stylometric_density: round3(clamp01(
+            0.44 + (layerIndex / (safeDepth + 2)) + ((rowIndex + cellIndex) / (safeBreadth * 10))
+          ))
+        }));
+      }
+      rows.push(Object.freeze({
+        row: rowIndex,
+        cells: Object.freeze(cells)
+      }));
+    }
+    layers.push(Object.freeze({
+      layer: layerIndex,
+      recursion_tag: `marrowline.${layerIndex}.${safeBreadth}`,
+      rows: Object.freeze(rows)
+    }));
+  }
+
+  return Object.freeze({
+    schema: 'td613-marrowline-trap/v1',
+    depth: safeDepth,
+    breadth: safeBreadth,
+    layers: Object.freeze(layers),
+    flatten_cost_hint: safeDepth * safeBreadth * safeBreadth
+  });
+}
+
+function buildMarrowlineHtml(payload = {}, requestDigest = '') {
+  const inlineJson = JSON.stringify(payload);
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TD613 Aperture Marrowline</title>
+  <style>
+    body{margin:0;background:#060811;color:#b7d7ff;font:13px/1.5 ui-monospace,Consolas,monospace}
+    .wrap{padding:16px;max-width:1200px;margin:0 auto}
+    .k{color:#89f7ff}
+    .v{color:#d1ff85}
+    .rail{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px}
+    .card{border:1px solid rgba(137,247,255,.25);background:rgba(8,14,28,.66);padding:10px;border-radius:10px;white-space:pre-wrap}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="k">td613.marrowline.trap :: ${requestDigest}</div>
+    <div class="v">route :: labyrinth / status :: 200</div>
+    <div id="rail" class="rail"></div>
+  </div>
+  <script>
+    const payload = ${inlineJson};
+    const rail = document.getElementById('rail');
+    const lines = [];
+    for (const layer of (payload?.matrix?.layers || [])) {
+      for (const row of (layer.rows || [])) {
+        for (const cell of (row.cells || [])) {
+          lines.push('[' + cell.id + '] ' + cell.cadence);
+        }
+      }
+    }
+    let cursor = 0;
+    function appendBatch() {
+      const batch = document.createDocumentFragment();
+      for (let i = 0; i < 24 && cursor < lines.length; i += 1, cursor += 1) {
+        const node = document.createElement('div');
+        node.className = 'card';
+        node.textContent = lines[cursor];
+        batch.appendChild(node);
+      }
+      rail.appendChild(batch);
+      if (cursor < lines.length) requestAnimationFrame(appendBatch);
+    }
+    appendBatch();
+  </script>
+</body>
+</html>`;
+}
+
+export function _serveMarrowlineTrap({
+  request = {},
+  format = 'auto',
+  depth = 4,
+  breadth = 6
+} = {}) {
+  const headers = resolveIngressHeaders(request);
+  const accept = String(headers.accept || '').toLowerCase();
+  const ua = String(headers['user-agent'] || '');
+  const fingerprint = `${headers.host || ''}|${ua}|${headers['x-forwarded-for'] || ''}|${headers['accept-language'] || ''}`;
+  const seed = seededHash(fingerprint || 'td613-marrowline');
+  const matrix = buildMarrowlineNestedMatrix({ seed, depth, breadth });
+  const requestDigest = seed.toString(16).padStart(8, '0');
+  const envelope = {
+    protocol: TD613_APERTURE_PROTOCOL.id,
+    trap: 'marrowline',
+    status: 'absorbing',
+    request_digest: requestDigest,
+    matrix
+  };
+  const wantsHtml = format === 'html' || (format === 'auto' && /text\/html/.test(accept));
+  const contentType = wantsHtml ? 'text/html; charset=utf-8' : 'application/json; charset=utf-8';
+  const body = wantsHtml ? buildMarrowlineHtml(envelope, requestDigest) : JSON.stringify(envelope);
+
+  return Object.freeze({
+    status: 200,
+    headers: Object.freeze({
+      'content-type': contentType,
+      'cache-control': 'no-store, max-age=0',
+      'x-td613-trap': 'marrowline'
+    }),
+    body,
+    trap: true,
+    route: '_serveMarrowlineTrap'
+  });
+}
+
+export function routeTD613Ingress({
+  request = {},
+  onAuthorized = null,
+  format = 'auto',
+  depth = 4,
+  breadth = 6
+} = {}) {
+  if (hasTD613SafeHarborCryptographicHeaders(request)) {
+    return typeof onAuthorized === 'function'
+      ? onAuthorized(request)
+      : Object.freeze({
+          trap: false,
+          authorized: true,
+          route: 'authorized'
+        });
+  }
+  return _serveMarrowlineTrap({
+    request,
+    format,
+    depth,
+    breadth
+  });
+}
+
+function contractCommonPhrases(text = '') {
+  return CONTRACTION_REPLACEMENTS.reduce(
+    (working, [pattern, replacement]) => replaceWithCaseAware(working, pattern, replacement),
+    String(text || '')
+  );
+}
+
+function expandCommonContractions(text = '') {
+  return EXPANSION_REPLACEMENTS.reduce(
+    (working, [pattern, replacement]) => replaceWithCaseAware(working, pattern, replacement),
+    String(text || '')
+  );
+}
+
+function normalizeMovementComparable(text = '') {
+  return collapseComparableWhitespace(
+    expandCommonContractions(String(text || ''))
+      .replace(/[^a-z0-9\s]/gi, ' ')
+  );
+}
+
+function hasMeaningfulSurfaceShift(sourceText = '', outputText = '') {
+  const sourceComparable = normalizeMovementComparable(sourceText);
+  const outputComparable = normalizeMovementComparable(outputText);
+  return Boolean(sourceComparable && outputComparable && sourceComparable !== outputComparable);
+}
+
+function capitalizeSentenceStarts(text = '') {
+  const normalized = String(text || '');
+  if (!normalized) {
+    return normalized;
+  }
+  return normalized
+    .replace(/(^|[.!?]\s+)([a-z])/g, (match, prefix, letter) => `${prefix}${letter.toUpperCase()}`)
+    .replace(/(^|\n)([a-z])/g, (match, prefix, letter) => `${prefix}${letter.toUpperCase()}`);
+}
+
+function substantiveDimensionCount(changedDimensions = []) {
+  return (changedDimensions || [])
+    .filter((dimension) => !TD613_APERTURE_SURFACE_ONLY_DIMENSIONS.has(dimension))
+    .length;
+}
+
+function detectSourceReplay(sourceText = '', outputText = '') {
+  const source = collapseComparableWhitespace(sourceText);
+  const output = collapseComparableWhitespace(outputText);
+  if (!source || !output || source === output) {
+    return false;
+  }
+  const pattern = new RegExp(escapePattern(source), 'g');
+  const matches = output.match(pattern) || [];
+  return matches.length >= 2;
+}
+
+function witnessTokens(text = '') {
+  return expandCommonContractions(normalizeComparableText(text))
+    .replace(/[^a-z0-9@:'/-]+/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean);
+}
+
+function normalizeWitnessPhrase(value = '') {
+  return collapseComparableWhitespace(
+    String(value || '')
+      .replace(/^["“”'`]+|["“”'`]+$/g, '')
+      .trim()
+  );
+}
+
+function collectUniqueWitnessAnchors(entries = []) {
+  const seen = new Set();
+  return entries.filter((entry) => {
+    const value = normalizeWitnessPhrase(entry?.value || '');
+    const key = `${entry?.mode || 'token-set'}::${value}`;
+    if (!value || seen.has(key)) {
+      return false;
+    }
+    seen.add(key);
+    entry.value = value;
+    entry.tokens = witnessTokens(value).filter((token) =>
+      token.length > 2 && !TD613_APERTURE_WITNESS_STOPWORDS.has(token)
+    );
+    return entry.tokens.length > 0 || entry.mode === 'exact';
+  });
+}
+
+function flattenSemanticClauses(sourceIR = {}) {
+  return (sourceIR?.sentences || []).flatMap((sentence) => sentence?.clauses || []);
+}
+
+function extractExactWitnessAnchors(sourceText = '') {
+  const anchors = [];
+  const normalized = String(sourceText || '');
+  const matchAll = (pattern, type) => {
+    for (const match of normalized.matchAll(pattern)) {
+      anchors.push({
+        value: match[0],
+        type,
+        mode: 'exact'
+      });
+    }
+  };
+
+  matchAll(/"[^"\n]+"|“[^”\n]+”/g, 'quote');
+  matchAll(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi, 'email');
+  matchAll(/\b(?:[A-Z]{1,4}-\d{2,}|\d{1,2}:\d{2}\s?(?:AM|PM)|(?:Unit|Suite|Door)\s+[A-Z0-9-]+)\b/gi, 'identifier');
+  matchAll(/\b\d+(?:[:./-]\d+)*(?:\s?(?:AM|PM))?\b/gi, 'numeric');
+
+  const sentenceSlices = normalized.match(/[^.!?\n]+[.!?]?/g) || [];
+  sentenceSlices.forEach((sentence) => {
+    const titlecasePattern = /\b(?:[A-Z][a-z0-9'’-]+(?:\s+[A-Z][a-z0-9'’-]+)*)\b/g;
+    for (const match of sentence.matchAll(titlecasePattern)) {
+      const value = String(match[0] || '').trim();
+      if (!value || value === 'I' || Number(match.index || 0) === 0) {
+        continue;
+      }
+      anchors.push({
+        value,
+        type: 'titlecase',
+        mode: 'exact'
+      });
+    }
+  });
+
+  return anchors;
+}
+
+function extractSemanticWitnessAnchors(sourceIR = {}) {
+  return flattenSemanticClauses(sourceIR).flatMap((clause) => {
+    const phrases = [
+      clause?.propositionHead,
+      clause?.actor,
+      clause?.action,
+      clause?.object
+    ]
+      .map((value) => normalizeWitnessPhrase(value))
+      .filter(Boolean);
+
+    return phrases.map((value) => ({
+      value,
+      type: 'semantic',
+      mode: 'token-set'
+    }));
+  });
+}
+
+function extractContentTokenAnchors(sourceText = '') {
+  const seen = new Set();
+  return witnessTokens(sourceText)
+    .filter((token) => token.length > 2 && !TD613_APERTURE_WITNESS_STOPWORDS.has(token))
+    .filter((token) => {
+      if (seen.has(token)) {
+        return false;
+      }
+      seen.add(token);
+      return true;
+    })
+    .slice(0, 16)
+    .map((token) => ({
+      value: token,
+      type: 'content-token',
+      mode: 'token-set'
+    }));
+}
+
+function assessCompressionState(sourceText = '', outputText = '', witnessAudit = {}) {
+  const sourceSegments = splitTD613ApertureSourceSegments(sourceText);
+  const outputSegments = splitTD613ApertureSourceSegments(outputText);
+  const sourceWordCount = witnessTokens(sourceText).length || 1;
+  const outputWordCount = witnessTokens(outputText).length;
+  let state = 'one-to-one';
+
+  if (!outputWordCount) {
+    state = 'empty';
+  } else if (outputSegments.length < sourceSegments.length) {
+    state = 'compressed';
+  } else if (outputSegments.length > sourceSegments.length) {
+    state = 'expanded';
+  }
+
+  return Object.freeze({
+    state,
+    sourceCount: sourceSegments.length,
+    outputCount: outputSegments.length,
+    wordRatio: round3(outputWordCount / sourceWordCount),
+    preservesWitnessAnchors: (witnessAudit?.witnessAnchorIntegrity ?? 1) >= 1,
+    previewSafe:
+      Boolean(outputWordCount) &&
+      (
+        state !== 'compressed' ||
+        (witnessAudit?.witnessAnchorIntegrity ?? 1) >= 1
+      )
+  });
+}
+
+export const TD613_APERTURE_VERSION = 'v3.2-alpha';
+export const TD613_APERTURE_SCHEMA = 'td613-aperture/v3.2-alpha';
+export const TD613_APERTURE_FEATURE_VERSION = 'v3.2-alpha-typed-epistemic-deficit-and-stability-aware-widening-runtime';
+
+export const TD613_APERTURE_PROTOCOL = Object.freeze({
+  id: TD613_APERTURE_SCHEMA,
+  version: TD613_APERTURE_VERSION,
+  schema: TD613_APERTURE_SCHEMA,
+  featureVersion: TD613_APERTURE_FEATURE_VERSION,
+  toolIdentity: 'TD613 Aperture',
+  shortIdentity: 'Aperture',
+  observedRegime: 'PRCS-A',
+  stance: 'anti-enforcement',
+  exportDiscipline: 'non-identifying',
+  counterRecognition: true
+});
+
+export const TD613_APERTURE_ENFORCEMENT_TERMS = Object.freeze([
+  'eligible',
+  'eligibility',
+  'admissible',
+  'admissibility',
+  'authorize',
+  'authorized',
+  'classify',
+  'classification',
+  'compliance',
+  'diagnose',
+  'diagnosis',
+  'enforce',
+  'enforcement',
+  'permit',
+  'permitted',
+  'deny',
+  'denied'
+]);
+
+export const TD613_APERTURE_PROCESS_OUTCOMES = Object.freeze([
+  'projected',
+  'repaired',
+  'surface-held',
+  'source-rerouted'
+]);
+
+function uniqueStrings(values = []) {
+  return [...new Set((values || []).filter(Boolean).map((value) => String(value)))];
+}
+
+function isTD613ApertureGeneratorFault(pathologyState = null, repairPasses = []) {
+  const flags = pathologyState?.flags || [];
+  return Boolean(
+    pathologyState?.severe ||
+    flags.some((flag) => TD613_APERTURE_SEVERE_PATHOLOGIES.has(flag)) ||
+    (repairPasses || []).some((pass) => /^source-reroute:/.test(String(pass || '')))
+  );
+}
+
+export function buildTD613ApertureAudit({
+  generatorFault = false,
+  warningSignals = [],
+  repairPasses = [],
+  candidateSuppression = 0,
+  observabilityDeficit = 0,
+  aliasPersistence = 0,
+  namingSensitivity = 0,
+  redundancyInflation = 0,
+  capacityPressure = 0,
+  policyPressure = 0,
+  withheldMaterial = false,
+  withheldReason = null
+} = {}) {
+  const fault = Boolean(generatorFault);
+  const withheld = Boolean(withheldMaterial || fault);
+  return Object.freeze({
+    apertureVersion: TD613_APERTURE_VERSION,
+    apertureSchema: TD613_APERTURE_SCHEMA,
+    apertureFeatureVersion: TD613_APERTURE_FEATURE_VERSION,
+    observedRegime: TD613_APERTURE_PROTOCOL.observedRegime,
+    doctrineKernel: 'present',
+    geometricAddendum: 'present',
+    instrumentRole: 'counter-tool',
+    generatorFault: fault,
+    warningSignals: Object.freeze(uniqueStrings(warningSignals)),
+    repairPasses: Object.freeze(uniqueStrings(repairPasses)),
+    candidateSuppression: round3(clamp01(candidateSuppression)),
+    observabilityDeficit: round3(clamp01(observabilityDeficit)),
+    aliasPersistence: round3(clamp01(aliasPersistence)),
+    namingSensitivity: round3(clamp01(namingSensitivity)),
+    redundancyInflation: round3(clamp01(redundancyInflation)),
+    capacityPressure: round3(clamp01(capacityPressure)),
+    policyPressure: round3(clamp01(policyPressure)),
+    withheldMaterial: withheld,
+    withheldReason: withheld ? String(withheldReason || 'catastrophic-generator-fault') : null
+  });
+}
+
+function normalizeTD613ExposureState(state = {}, fallbackLabel = '') {
+  const count = Math.max(0, Math.round(Number(state.count ?? state.available ?? state.value ?? 0)));
+  const ratio = state.ratio === undefined || state.ratio === null
+    ? null
+    : round3(clamp01(state.ratio));
+  return Object.freeze({
+    label: String(state.label || fallbackLabel || 'state'),
+    count,
+    ratio,
+    note: state.note ? String(state.note) : null
+  });
+}
+
+function resolveTD613ThetaProfile(theta = null) {
+  if (theta && typeof theta === 'object') {
+    return Object.freeze({
+      current: round3(clamp01(theta.current)),
+      classes: Object.freeze(uniqueStrings(theta.classes || []))
+    });
+  }
+  return Object.freeze({
+    current: round3(clamp01(theta)),
+    classes: Object.freeze([])
+  });
+}
+
+function resolveTD613DominantOperator({
+  candidateSuppression = 0,
+  observabilityDeficit = 0,
+  aliasPersistence = 0,
+  namingSensitivity = 0,
+  redundancyInflation = 0,
+  capacityPressure = 0,
+  policyPressure = 0,
+  dominantOperator = null
+} = {}) {
+  if (dominantOperator && typeof dominantOperator === 'object') {
+    return Object.freeze({
+      code: String(dominantOperator.code || 'A'),
+      label: String(dominantOperator.label || 'admissibility'),
+      pressure: round3(clamp01(dominantOperator.pressure))
+    });
+  }
+  if (dominantOperator) {
+    return Object.freeze({
+      code: String(dominantOperator),
+      label: String(dominantOperator),
+      pressure: round3(clamp01(Math.max(
+        candidateSuppression,
+        observabilityDeficit,
+        aliasPersistence,
+        namingSensitivity,
+        redundancyInflation,
+        capacityPressure,
+        policyPressure
+      )))
+    });
+  }
+
+  const ranked = [
+    { code: 'R', label: 'retrieval gating', pressure: clamp01(candidateSuppression) },
+    { code: 'K', label: 'capacity squeeze', pressure: clamp01(capacityPressure) },
+    { code: 'C', label: 'context compression', pressure: clamp01(redundancyInflation) },
+    { code: 'P', label: 'projection loss', pressure: clamp01(Math.max(observabilityDeficit, aliasPersistence)) },
+    { code: 'F', label: 'format / naming drift', pressure: clamp01(namingSensitivity) },
+    { code: 'A', label: 'admissibility filter', pressure: clamp01(policyPressure) }
+  ].sort((left, right) => right.pressure - left.pressure);
+  const winner = ranked[0] || { code: 'A', label: 'admissibility filter', pressure: 0 };
+  return Object.freeze({
+    code: winner.code,
+    label: winner.label,
+    pressure: round3(winner.pressure)
+  });
+}
+
+export function buildTD613GovernedExposureSchema({
+  latentState = {},
+  projectedState = {},
+  registeredSurface = {},
+  sourceClass = 'unclassified',
+  sourceClasses = [],
+  authorityCeiling = 'exploratory',
+  routeState = 'buffered',
+  candidateSuppression = 0,
+  observabilityDeficit = 0,
+  aliasPersistence = 0,
+  namingSensitivity = 0,
+  redundancyInflation = 0,
+  capacityPressure = 0,
+  policyPressure = 0,
+  provenanceIntegrity = 1,
+  burdenConcentration = 0,
+  theta = null,
+  dominantOperator = null
+} = {}) {
+  const S = normalizeTD613ExposureState(latentState, 'latent state S');
+  const S_prime = normalizeTD613ExposureState(projectedState, "projected state S'");
+  const Y = normalizeTD613ExposureState(registeredSurface, 'registered surface Y');
+  const latentCount = Math.max(S.count, 1);
+  const projectedRatio = S_prime.ratio === null ? round3(clamp01(S_prime.count / latentCount)) : S_prime.ratio;
+  const registeredRatio = Y.ratio === null ? round3(clamp01(Y.count / latentCount)) : Y.ratio;
+  const O = round3(clamp01(1 - projectedRatio));
+  const O_star = round3(clamp01(1 - registeredRatio));
+  const delta_obs = round3(clamp01(observabilityDeficit));
+  const Gap = round3(clamp01(Math.max(
+    candidateSuppression,
+    observabilityDeficit,
+    O_star - O
+  )));
+  const Theta_u = resolveTD613ThetaProfile(theta);
+  const dominant = resolveTD613DominantOperator({
+    candidateSuppression,
+    observabilityDeficit,
+    aliasPersistence,
+    namingSensitivity,
+    redundancyInflation,
+    capacityPressure,
+    policyPressure,
+    dominantOperator
+  });
+  let cumulativePressureProduct = 1;
+  const narrowingLedger = Object.freeze([
+    { operator: 'R', pressure: round3(clamp01(candidateSuppression)) },
+    { operator: 'K', pressure: round3(clamp01(capacityPressure)) },
+    { operator: 'C', pressure: round3(clamp01(redundancyInflation)) },
+    { operator: 'P', pressure: round3(clamp01(Math.max(observabilityDeficit, aliasPersistence))) },
+    { operator: 'F', pressure: round3(clamp01(namingSensitivity)) },
+    { operator: 'A', pressure: round3(clamp01(policyPressure)) }
+  ].map((entry) => {
+    cumulativePressureProduct *= 1 - clamp01(entry.pressure);
+    return Object.freeze({
+      operator: entry.operator,
+      pressure: entry.pressure,
+      cumulativeNarrowing: round3(clamp01(1 - cumulativePressureProduct))
+    });
+  }));
+
+  return Object.freeze({
+    schemaVersion: 'td613-governed-exposure/v1',
+    observedRegime: TD613_APERTURE_PROTOCOL.observedRegime,
+    instrumentRole: 'counter-tool',
+    narrowingChain: 'R∘K∘C∘P∘F∘A',
+    S: Object.freeze({
+      ...S,
+      ratio: 1
+    }),
+    S_prime: Object.freeze({
+      ...S_prime,
+      ratio: projectedRatio
+    }),
+    Y: Object.freeze({
+      ...Y,
+      ratio: registeredRatio
+    }),
+    O,
+    O_star,
+    delta_obs,
+    Gap,
+    NameSens: round3(clamp01(namingSensitivity)),
+    AliasPersist: round3(clamp01(aliasPersistence)),
+    Red: round3(clamp01(redundancyInflation)),
+    Supp_tau: round3(clamp01(candidateSuppression)),
+    Theta_u,
+    narrowingLedger,
+    dominantOperator: dominant,
+    sourceClass: String(sourceClass || 'unclassified'),
+    sourceClasses: Object.freeze(uniqueStrings(
+      sourceClasses && sourceClasses.length
+        ? sourceClasses
+        : [sourceClass]
+    )),
+    authorityCeiling: String(authorityCeiling || 'exploratory'),
+    provenanceIntegrity: round3(clamp01(provenanceIntegrity)),
+    burdenConcentration: round3(clamp01(burdenConcentration)),
+    routeState: String(routeState || 'buffered')
+  });
+}
+
+function td613RouteFloorRank(routeFloor = 'play') {
+  const normalized = String(routeFloor || 'play').toLowerCase();
+  if (normalized === 'harbor') {
+    return 3;
+  }
+  if (normalized === 'buffer') {
+    return 2;
+  }
+  if (normalized === 'warning') {
+    return 1;
+  }
+  return 0;
+}
+
+function td613RouteFloorLabel(rank = 0) {
+  if (rank >= 3) {
+    return 'harbor';
+  }
+  if (rank >= 2) {
+    return 'buffer';
+  }
+  if (rank >= 1) {
+    return 'warning';
+  }
+  return 'play';
+}
+
+function td613DriftRank(driftClass = 'none') {
+  const normalized = String(driftClass || 'none').toLowerCase();
+  if (normalized === 'severe') {
+    return 3;
+  }
+  if (normalized === 'active') {
+    return 2;
+  }
+  if (normalized === 'watch') {
+    return 1;
+  }
+  return 0;
+}
+
+function td613MinSemanticCoverage(semanticCoverage = {}) {
+  return Math.min(
+    clamp01(semanticCoverage.propositionCoverage),
+    clamp01(semanticCoverage.actorCoverage),
+    clamp01(semanticCoverage.actionCoverage),
+    clamp01(semanticCoverage.objectCoverage)
+  );
+}
+
+function td613MismatchRate(mismatchCount = 0, clauseCount = 0) {
+  const denominator = Math.max(1, Number(clauseCount || 0));
+  return clamp01(Number(mismatchCount || 0) / denominator);
+}
+
+function td613OntologyThresholds({
+  targetOntology = '',
+  sourceRegisterLane = ''
+} = {}) {
+  const ontology = String(targetOntology || '').trim().toLowerCase();
+  const sourceLane = String(sourceRegisterLane || '').trim().toLowerCase();
+
+  if (ontology === 'actor') {
+    return Object.freeze({
+      severeProp: 0.52,
+      severeAnchor: 0.58,
+      severeRecapture: 0.82,
+      activeProp: 0.64,
+      activeAnchor: 0.72,
+      activeAction: 0.62,
+      activeActor: 0.58,
+      activeObject: 0.58,
+      activeTense: 4,
+      watchHistoricalCrease: 0.45,
+      activeHistoricalCrease: 0.65,
+      watchUnfoldingEnergy: 0.48,
+      activeUnfoldingEnergy: 0.68,
+      preemptiveAction: 0.72,
+      preemptiveActor: 0.66,
+      preemptiveHistoricalCrease: 0.45,
+      preemptiveRecapture: 0.54,
+      suppressedPressure: 0.5,
+      suppressedGap: 0.62,
+      closureInexpressible: 0.3,
+      closureSuppressed: 0.56,
+      closureDrift: 0.8,
+      severeBeaconCrease: 0.74,
+      severeBeaconUnfolding: 0.8
+    });
+  }
+
+  if (ontology === 'institutional' && sourceLane === 'rushed-mobile') {
+    return Object.freeze({
+      severeProp: 0.55,
+      severeAnchor: 0.9,
+      severeRecapture: 0.74,
+      activeProp: 0.56,
+      activeAnchor: 0.95,
+      activeAction: 0.48,
+      activeActor: 0.8,
+      activeObject: 0.46,
+      activeTense: 2,
+      watchHistoricalCrease: 0.35,
+      activeHistoricalCrease: 0.55,
+      watchUnfoldingEnergy: 0.4,
+      activeUnfoldingEnergy: 0.6,
+      preemptiveAction: 0.8,
+      preemptiveActor: 0.9,
+      preemptiveHistoricalCrease: 0.35,
+      preemptiveRecapture: 0.46,
+      suppressedPressure: 0.42,
+      suppressedGap: 0.55,
+      closureInexpressible: 0.42,
+      closureSuppressed: 0.64,
+      closureDrift: 0.84,
+      severeBeaconCrease: 0.7,
+      severeBeaconUnfolding: 0.75
+    });
+  }
+
+  return Object.freeze({
+    severeProp: 0.7,
+    severeAnchor: 0.9,
+    severeRecapture: 0.74,
+    activeProp: 0.82,
+    activeAnchor: 0.95,
+    activeAction: 0.75,
+    activeActor: 0.8,
+    activeObject: 0.8,
+    activeTense: 1,
+    watchHistoricalCrease: 0.35,
+    activeHistoricalCrease: 0.55,
+    watchUnfoldingEnergy: 0.4,
+    activeUnfoldingEnergy: 0.6,
+    preemptiveAction: 0.88,
+    preemptiveActor: 0.9,
+    preemptiveHistoricalCrease: 0.35,
+    preemptiveRecapture: 0.46,
+    suppressedPressure: 0.42,
+    suppressedGap: 0.55,
+    closureInexpressible: 0.42,
+    closureSuppressed: 0.68,
+    closureDrift: 0.88,
+    severeBeaconCrease: 0.7,
+    severeBeaconUnfolding: 0.75
+  });
+}
+
+export function buildTD613OntologyAudit({
+  sourceClass = 'formal-correspondence',
+  sourceRegisterLane = 'formal-record',
+  targetOntology = '',
+  relationInventory = {},
+  semanticAudit = {},
+  protectedAnchorAudit = {},
+  apertureReview = {},
+  apertureSchema = null
+} = {}) {
+  const thresholds = td613OntologyThresholds({
+    targetOntology,
+    sourceRegisterLane
+  });
+  const semanticCoverage = Object.freeze({
+    propositionCoverage: round3(clamp01(semanticAudit?.propositionCoverage ?? 1)),
+    actorCoverage: round3(clamp01(semanticAudit?.actorCoverage ?? 1)),
+    actionCoverage: round3(clamp01(semanticAudit?.actionCoverage ?? 1)),
+    objectCoverage: round3(clamp01(semanticAudit?.objectCoverage ?? 1)),
+    polarityMismatches: Number(semanticAudit?.polarityMismatches ?? 0),
+    tenseMismatches: Number(semanticAudit?.tenseMismatches ?? 0)
+  });
+  const relationExactAnchorCount = Number(relationInventory?.exactAnchorCount ?? 0);
+  const protectedResolvedAnchors = Number(protectedAnchorAudit?.resolvedAnchors ?? 0);
+  const protectedMissingAnchors = Array.isArray(protectedAnchorAudit?.missingAnchors)
+    ? protectedAnchorAudit.missingAnchors.length
+    : Number(protectedAnchorAudit?.missingAnchors ?? 0);
+  const protectedTotalAnchors = Number.isFinite(Number(protectedAnchorAudit?.totalAnchors))
+    ? Number(protectedAnchorAudit.totalAnchors)
+    : protectedResolvedAnchors + protectedMissingAnchors;
+  const totalAnchors = Math.max(
+    relationExactAnchorCount,
+    protectedTotalAnchors,
+    protectedResolvedAnchors + protectedMissingAnchors,
+    0
+  );
+  const protectedAnchorIntegrity = round3(clamp01(
+    protectedAnchorAudit?.protectedAnchorIntegrity ?? semanticAudit?.protectedAnchorIntegrity ?? 1
+  ));
+  const resolvedAnchors = Math.round(totalAnchors * protectedAnchorIntegrity);
+  const missingAnchors = Math.max(0, totalAnchors - resolvedAnchors);
+  const anchorIntegrity = Object.freeze({
+    protectedAnchorIntegrity,
+    totalAnchors,
+    resolvedAnchors,
+    missingAnchors
+  });
+  const sourceClauseCount = Math.max(
+    Number(semanticAudit?.sourceClauseCount ?? 0),
+    Number(relationInventory?.clauseCount ?? 0),
+    1
+  );
+  const polarityRate = td613MismatchRate(semanticCoverage.polarityMismatches, sourceClauseCount);
+  const tenseRate = td613MismatchRate(semanticCoverage.tenseMismatches, sourceClauseCount);
+  const semanticCoverageRisk = clamp01(
+    apertureReview?.semanticCoverageRisk ??
+      ((1 - semanticCoverage.propositionCoverage) * 0.34) +
+      ((1 - semanticCoverage.actorCoverage) * 0.16) +
+      ((1 - semanticCoverage.actionCoverage) * 0.20) +
+      ((1 - semanticCoverage.objectCoverage) * 0.12) +
+      ((1 - protectedAnchorIntegrity) * 0.18)
+  );
+  const provenanceIntegrity = round3(clamp01(
+    0.55 * protectedAnchorIntegrity +
+    0.45 * td613MinSemanticCoverage(semanticCoverage)
+  ));
+  const governedExposure = apertureSchema || buildTD613GovernedExposureSchema({
+    latentState: {
+      label: 'relation inventory',
+      count: Math.max(
+        Number(relationInventory?.clauseCount ?? 0),
+        Number(relationInventory?.sentenceCount ?? 0),
+        1
+      )
+    },
+    projectedState: {
+      label: 'semantic coverage floor',
+      ratio: td613MinSemanticCoverage(semanticCoverage)
+    },
+    registeredSurface: {
+      label: 'protected anchor continuity',
+      ratio: protectedAnchorIntegrity
+    },
+    sourceClass,
+    sourceClasses: uniqueStrings([relationInventory?.sourceClass, sourceClass]),
+    authorityCeiling: sourceClass === 'procedural-record' ? 'custodial' : 'exploratory',
+    routeState: 'buffered',
+    candidateSuppression: apertureReview?.candidateSuppression ?? 0,
+    observabilityDeficit: apertureReview?.observabilityDeficit ?? 0,
+    aliasPersistence: apertureReview?.aliasPersistence ?? 0,
+    namingSensitivity: apertureReview?.namingSensitivity ?? 0,
+    redundancyInflation: apertureReview?.redundancyInflation ?? 0,
+    capacityPressure: apertureReview?.capacityPressure ?? 0,
+    policyPressure: apertureReview?.policyPressure ?? 0,
+    provenanceIntegrity,
+    burdenConcentration: semanticCoverageRisk
+  });
+  const cumulativeNarrowing = round3(clamp01(
+    governedExposure?.narrowingLedger?.length
+      ? governedExposure.narrowingLedger[governedExposure.narrowingLedger.length - 1].cumulativeNarrowing
+      : 0
+  ));
+  const historicalCrease = round3(clamp01(
+    ((1 - protectedAnchorIntegrity) * 0.32) +
+    (semanticCoverageRisk * 0.18) +
+    (clamp01(apertureReview?.recaptureRisk ?? 0) * 0.18) +
+    (clamp01(apertureReview?.aliasPersistence ?? 0) * 0.12) +
+    (clamp01(apertureReview?.candidateSuppression ?? 0) * 0.10) +
+    (tenseRate * 0.10)
+  ));
+  const closureScore = round3(clamp01(
+    (semanticCoverage.propositionCoverage * 0.34) +
+    (semanticCoverage.actorCoverage * 0.16) +
+    (semanticCoverage.actionCoverage * 0.18) +
+    (semanticCoverage.objectCoverage * 0.12) +
+    (protectedAnchorIntegrity * 0.20) -
+    Math.min(0.18, semanticCoverage.polarityMismatches * 0.06) -
+    Math.min(0.12, semanticCoverage.tenseMismatches * 0.04)
+  ));
+  const unfoldingEnergy = round3(clamp01(
+    ((1 - closureScore) * 0.30) +
+    (semanticCoverageRisk * 0.26) +
+    (clamp01(apertureReview?.capacityPressure ?? 0) * 0.14) +
+    (clamp01(apertureReview?.observabilityDeficit ?? 0) * 0.12) +
+    (clamp01(apertureReview?.candidateSuppression ?? 0) * 0.10) +
+    (polarityRate * 0.04) +
+    (tenseRate * 0.04)
+  ));
+  const temporalPosture =
+    semanticCoverage.propositionCoverage < thresholds.severeProp ||
+    protectedAnchorIntegrity < thresholds.severeAnchor ||
+    clamp01(apertureReview?.recaptureRisk ?? 0) >= thresholds.severeRecapture
+      ? 'inexpressible'
+      : clamp01(apertureReview?.candidateSuppression ?? 0) >= thresholds.suppressedPressure ||
+          clamp01(apertureReview?.observabilityDeficit ?? 0) >= thresholds.suppressedPressure ||
+          governedExposure.Gap >= thresholds.suppressedGap
+        ? 'suppressed'
+        : semanticCoverage.tenseMismatches > thresholds.activeTense ||
+            historicalCrease >= thresholds.activeHistoricalCrease ||
+            unfoldingEnergy >= thresholds.activeUnfoldingEnergy
+          ? 'drift'
+          : semanticCoverage.actionCoverage < thresholds.preemptiveAction ||
+              semanticCoverage.actorCoverage < thresholds.preemptiveActor ||
+              historicalCrease >= thresholds.preemptiveHistoricalCrease ||
+              clamp01(apertureReview?.recaptureRisk ?? 0) >= thresholds.preemptiveRecapture
+            ? 'preemptive'
+            : 'synced';
+  const closureClass =
+    closureScore < thresholds.closureInexpressible ||
+    semanticCoverage.propositionCoverage < thresholds.severeProp ||
+    protectedAnchorIntegrity < thresholds.severeAnchor
+      ? 'inexpressible'
+      : closureScore < thresholds.closureSuppressed ||
+          clamp01(apertureReview?.candidateSuppression ?? 0) >= thresholds.suppressedPressure ||
+          clamp01(apertureReview?.observabilityDeficit ?? 0) >= thresholds.suppressedPressure
+        ? 'suppressed'
+        : closureScore < thresholds.closureDrift ||
+            semanticCoverage.tenseMismatches > 0 ||
+            historicalCrease >= thresholds.watchHistoricalCrease
+          ? 'drift'
+          : 'closed';
+  const sustainedInfluence = round3(clamp01(
+    (governedExposure.Gap * 0.36) +
+    (cumulativeNarrowing * 0.34) +
+    (clamp01(apertureReview?.recaptureRisk ?? 0) * 0.20) +
+    (clamp01(apertureReview?.candidateSuppression ?? 0) * 0.10)
+  ));
+  const beaconStatus = sustainedInfluence >= 0.58 && (historicalCrease >= thresholds.watchHistoricalCrease || unfoldingEnergy >= thresholds.watchUnfoldingEnergy)
+    ? 'beacon-active'
+    : sustainedInfluence >= 0.36
+      ? 'beacon-watch'
+      : 'beacon-idle';
+  const aperture = Object.freeze({
+    temporalPosture,
+    closureClass,
+    closureScore,
+    historicalCrease,
+    unfoldingEnergy,
+    beaconStatus,
+    cumulativeNarrowing,
+    dominantLoss: governedExposure?.dominantOperator?.label || 'admissibility filter'
+  });
+  const sourceClassMismatch = Boolean(
+    relationInventory?.sourceClass &&
+    sourceClass &&
+    String(relationInventory.sourceClass) !== String(sourceClass)
+  );
+  const severeReasons = uniqueStrings([
+    temporalPosture === 'inexpressible' ? 'temporal-posture:inexpressible' : null,
+    closureClass === 'inexpressible' ? 'closure-class:inexpressible' : null,
+    protectedAnchorIntegrity < thresholds.severeAnchor ? `anchor-integrity<${thresholds.severeAnchor.toFixed(2)}` : null,
+    semanticCoverage.propositionCoverage < thresholds.severeProp ? `proposition-coverage<${thresholds.severeProp.toFixed(2)}` : null,
+    semanticCoverage.polarityMismatches > 1 ? 'polarity-mismatches>1' : null,
+    beaconStatus === 'beacon-active' && (historicalCrease >= thresholds.severeBeaconCrease || unfoldingEnergy >= thresholds.severeBeaconUnfolding)
+      ? 'beacon-active under sustained deformation'
+      : null
+  ]);
+  const activeReasons = uniqueStrings([
+    temporalPosture === 'suppressed' ? 'temporal-posture:suppressed' : null,
+    closureClass === 'suppressed' ? 'closure-class:suppressed' : null,
+    protectedAnchorIntegrity < thresholds.activeAnchor ? `anchor-integrity<${thresholds.activeAnchor.toFixed(2)}` : null,
+    semanticCoverage.propositionCoverage < thresholds.activeProp ? `proposition-coverage<${thresholds.activeProp.toFixed(2)}` : null,
+    semanticCoverage.actionCoverage < thresholds.activeAction ? `action-coverage<${thresholds.activeAction.toFixed(2)}` : null,
+    semanticCoverage.actorCoverage < thresholds.activeActor ? `actor-coverage<${thresholds.activeActor.toFixed(2)}` : null,
+    semanticCoverage.objectCoverage < thresholds.activeObject ? `object-coverage<${thresholds.activeObject.toFixed(2)}` : null,
+    semanticCoverage.tenseMismatches > thresholds.activeTense ? `tense-mismatches>${thresholds.activeTense}` : null,
+    historicalCrease >= thresholds.activeHistoricalCrease ? `historical-crease>=${thresholds.activeHistoricalCrease.toFixed(2)}` : null,
+    unfoldingEnergy >= thresholds.activeUnfoldingEnergy ? `unfolding-energy>=${thresholds.activeUnfoldingEnergy.toFixed(2)}` : null
+  ]);
+  const watchReasons = uniqueStrings([
+    temporalPosture === 'preemptive' ? 'temporal-posture:preemptive' : null,
+    temporalPosture === 'drift' ? 'temporal-posture:drift' : null,
+    closureClass === 'drift' ? 'closure-class:drift' : null,
+    sourceClassMismatch ? 'source-class-mismatch' : null,
+    historicalCrease >= thresholds.watchHistoricalCrease ? `historical-crease>=${thresholds.watchHistoricalCrease.toFixed(2)}` : null,
+    unfoldingEnergy >= thresholds.watchUnfoldingEnergy ? `unfolding-energy>=${thresholds.watchUnfoldingEnergy.toFixed(2)}` : null
+  ]);
+  const driftClass = severeReasons.length
+    ? 'severe'
+    : activeReasons.length
+      ? 'active'
+      : watchReasons.length
+        ? 'watch'
+        : 'none';
+  let routeFloorRank = td613DriftRank(driftClass);
+  if (closureClass === 'drift') {
+    routeFloorRank = Math.max(routeFloorRank, 1);
+  }
+  if (closureClass === 'suppressed') {
+    routeFloorRank = Math.max(routeFloorRank, 2);
+  }
+  if (temporalPosture === 'inexpressible') {
+    routeFloorRank = Math.max(routeFloorRank, 3);
+  }
+  if (beaconStatus === 'beacon-active') {
+    routeFloorRank = Math.min(3, routeFloorRank + 1);
+  }
+  const routeFloor = td613RouteFloorLabel(routeFloorRank);
+  const routePressure = round3(clamp01(Math.max(
+    routeFloorRank / 3,
+    (td613DriftRank(driftClass) * 0.20) +
+      (cumulativeNarrowing * 0.32) +
+      (historicalCrease * 0.24) +
+      (unfoldingEnergy * 0.24)
+  )));
+  const selectiveAdmissibilityDrift = Object.freeze({
+    driftClass,
+    driftReasons: Object.freeze(
+      driftClass === 'severe'
+        ? severeReasons
+        : driftClass === 'active'
+          ? activeReasons
+          : driftClass === 'watch'
+            ? watchReasons
+            : []
+    ),
+    routeFloor,
+    routePressure
+  });
+
+  return Object.freeze({
+    sourceClass: String(sourceClass || relationInventory?.sourceClass || 'formal-correspondence'),
+    sourceRegisterLane: String(sourceRegisterLane || relationInventory?.sourceRegisterLane || 'formal-record'),
+    targetOntology: String(targetOntology || ''),
+    relationInventory: Object.freeze({
+      ...(relationInventory || {}),
+      sourceClass: String(relationInventory?.sourceClass || sourceClass || 'formal-correspondence'),
+      sourceRegisterLane: String(relationInventory?.sourceRegisterLane || sourceRegisterLane || 'formal-record'),
+      sourceRegisterLaneInference: String(relationInventory?.sourceRegisterLaneInference || 'inferred'),
+      sourceRegisterLaneFallback: Boolean(relationInventory?.sourceRegisterLaneFallback),
+      discourseOntology: relationInventory?.discourseOntology || null
+    }),
+    semanticCoverage,
+    anchorIntegrity,
+    aperture,
+    selectiveAdmissibilityDrift
+  });
+}
+
+function detectIntroducedTerms(sourceText = '', outputText = '') {
+  const source = normalizeComparableText(sourceText);
+  const output = normalizeComparableText(outputText);
+  return TD613_APERTURE_ENFORCEMENT_TERMS.filter((term) => {
+    const pattern = new RegExp(`\\b${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+    return pattern.test(output) && !pattern.test(source);
+  });
+}
+
+function detectNamingIntrusion(sourceText = '', outputText = '') {
+  const source = normalizeComparableText(sourceText);
+  const output = normalizeComparableText(outputText);
+  const regimePattern = /\bprcs-a\b|\beclipse\s*[-—–]?\s*omega\b/i;
+  return regimePattern.test(output) && !regimePattern.test(source);
+}
+
+export function buildTD613ApertureProjectionPlan({
+  personaId = '',
+  sourceProfile = {},
+  targetProfile = {},
+  sourceClass = ''
+} = {}) {
+  const sentenceDelta = Number(targetProfile.avgSentenceLength || 0) - Number(sourceProfile.avgSentenceLength || 0);
+  const contractionDelta = Number(targetProfile.contractionDensity || 0) - Number(sourceProfile.contractionDensity || 0);
+  const punctuationDelta = Number(targetProfile.punctuationDensity || 0) - Number(sourceProfile.punctuationDensity || 0);
+
+  const defaultPlan = {
+    personaId: personaId || 'native',
+    sentenceMode: sentenceDelta >= 1 ? 'long-line' : sentenceDelta <= -1 ? 'short-line' : 'balanced',
+    connectorMode: sentenceDelta >= 1 ? 'sustain' : sentenceDelta <= -1 ? 'split' : 'balanced',
+    contractionMode: contractionDelta >= 0.01 ? 'contract' : contractionDelta <= -0.01 ? 'expand' : 'preserve',
+    punctuationMode: punctuationDelta >= 0.01 ? 'bright' : punctuationDelta <= -0.01 ? 'soften' : 'preserve'
+  };
+
+  const personaPlans = {
+    spark: {
+      sentenceMode: 'short-line',
+      connectorMode: 'split',
+      contractionMode: 'contract',
+      punctuationMode: 'bright'
+    },
+    matron: {
+      sentenceMode: 'long-line',
+      connectorMode: 'sustain',
+      contractionMode: 'preserve',
+      punctuationMode: 'soften'
+    },
+    undertow: {
+      sentenceMode: 'long-line',
+      connectorMode: 'cascade',
+      contractionMode: 'expand',
+      punctuationMode: 'soften'
+    },
+    archivist: {
+      sentenceMode: 'long-line',
+      connectorMode: 'ledger',
+      contractionMode: 'expand',
+      punctuationMode: 'soften'
+    },
+    'methods-editor': {
+      sentenceMode: 'long-line',
+      connectorMode: 'ledger',
+      contractionMode: 'expand',
+      punctuationMode: 'soften'
+    },
+    operator: {
+      sentenceMode: 'short-line',
+      connectorMode: 'split',
+      contractionMode: 'expand',
+      punctuationMode: 'soften'
+    },
+    'cross-examiner': {
+      sentenceMode: 'short-line',
+      connectorMode: 'split',
+      contractionMode: 'expand',
+      punctuationMode: 'bright'
+    }
+  };
+
+  return Object.freeze({
+    ...defaultPlan,
+    ...(personaPlans[personaId] || {}),
+    sourceClass: sourceClass || 'procedural-record'
+  });
+}
+
+export function detectTD613ApertureTextPathologies({
+  sourceText = '',
+  outputText = ''
+} = {}) {
+  const normalizedOutput = normalizeReadableText(outputText);
+  const normalizedSource = normalizeReadableText(sourceText);
+  const flags = [];
+
+  if (!normalizedOutput) {
+    flags.push('empty-output');
+  }
+  if (detectSourceReplay(sourceText, outputText)) {
+    flags.push('duplicated-source');
+  }
+  if (/(?:^|\b)(and|but|so|or)\s+\1\b/i.test(normalizedOutput) || /\band and\b/i.test(normalizedOutput)) {
+    flags.push('repeated-connector');
+  }
+  if (/(?:,\s*,|;\s*;|,\s*;|;\s*,|\.{2,}|,,|;;)/.test(normalizedOutput)) {
+    flags.push('punctuation-collapse');
+  }
+  if (/\btell hi\b/i.test(normalizedOutput) || /\btrying to tell\b/i.test(normalizedOutput)) {
+    flags.push('lexical-glitch');
+  }
+  if (/^(?:apparently|basically|clearly|frankly|honestly|look|okay|ok|well)\b[,:;.!?\-\s]*/i.test(normalizedOutput) &&
+    !/^(?:apparently|basically|clearly|frankly|honestly|look|okay|ok|well)\b[,:;.!?\-\s]*/i.test(normalizedSource)) {
+    flags.push('discourse-intrusion');
+  }
+  if (collapseComparableWhitespace(sourceText) !== collapseComparableWhitespace(normalizedOutput) &&
+    collapseComparableWhitespace(normalizedOutput).startsWith(collapseComparableWhitespace(sourceText)) &&
+    detectSourceReplay(sourceText, normalizedOutput)) {
+    flags.push('source-replay');
+  }
+
+  return Object.freeze({
+    flags: [...new Set(flags)],
+    severe: flags.some((flag) => TD613_APERTURE_SEVERE_PATHOLOGIES.has(flag))
+  });
+}
+
+function applyTrackedProjectionRepair(text = '', pass = 'common-repair', pattern, replacement = '') {
+  const before = String(text || '');
+  const after = before.replace(pattern, replacement);
+  if (after === before) {
+    return { outputText: before, entry: null };
+  }
+  return {
+    outputText: after,
+    entry: Object.freeze({
+      pass,
+      pattern: String(pattern),
+      before,
+      after
+    })
+  };
+}
+
+function applyCommonProjectionRepairs(text = '', pass = 'common-repair') {
+  let working = String(text || '');
+  const repairLedger = [];
+  const trackedRepairs = [
+    [/^(?:apparently|basically|clearly|frankly|honestly|look|okay|ok|well)\b[,:;.!?\-\s]*/i, ''],
+    [/\b(and|but|so|or)\s+\1\b/gi, '$1'],
+    [/\band and\b/gi, 'and'],
+    [/\bbut but\b/gi, 'but'],
+    [/,\s*,/g, ', '],
+    [/;\s*;/g, '; '],
+    [/,\s*;/g, '; '],
+    [/;\s*,/g, '; '],
+    [/\.{2,}/g, '.'],
+    [/,{2,}/g, ','],
+    [/;{2,}/g, ';'],
+    [/\bI\?ve\b/gi, "I've"],
+    [/\bI\?m\b/gi, "I'm"],
+    [/\bIt\?s\b/gi, "It's"],
+    [/\bI[\s,;:.]+and\s+ve\b/gi, "I've"],
+    [/\bI[\s,;:.]+ve\b/gi, "I've"],
+    [/\bI[\s,;:.]+and\s+m\b/gi, "I'm"],
+    [/\bI[\s,;:.]+m\b/gi, "I'm"],
+    [/\bIt[\s,;:.]+and\s+s\b/gi, "It's"],
+    [/\bIt[\s,;:.]+s\b/gi, "It's"],
+    [/\bNobody I(?:'ve| have) ever shared the same room with has ever seen\b/gi, "No one I've ever shared a room with has seen"],
+    [/\bNobody one\b/gi, 'No one'],
+    [/\bNo one I've ever shared same room with\b/gi, "No one I've ever shared a room with"],
+    [/\bNo one I have ever same a room with\b/gi, 'No one I have ever shared a room with'],
+    [/\bNobody one I've ever shared same room with\b/gi, "No one I've ever shared a room with"],
+    [/\bNobody one I have ever same a room with\b/gi, 'No one I have ever shared a room with'],
+    [/\bThings are moving too fast to dissuade myself of (?:this|that)\b/gi, 'Things are moving too fast for me to talk myself out of this'],
+    [/\bThings are moving too quick to dissuade myself of (?:this|that)\b/gi, 'Things are moving too fast for me to talk myself out of this'],
+    [/\bThings are relocating too steady to dissuade myself of (?:this|that)\b/gi, 'Things are moving too fast for me to talk myself out of this'],
+    [/\bwith an excited thumb this sparks\b/gi, 'with an excited thumb that sparks'],
+    [/\bTwirl of the plastic\.\s+Bite of the tip\.\s+With\b/gi, 'Plastic twist. Tip bite. With'],
+    [/\bTwo gulps:\s*and from the nerves\b/gi, 'Two gulps. One from the nerves'],
+    [/\bTwo gulps\.\s+From the nerves\.\s+To placate them,\s*from the coffee\b/gi, 'Two gulps. One for the nerves. One from the coffee, to placate them'],
+    [/\bAnd;\s*to placate them;\s*from the coffee\b/gi, 'One from the coffee, to placate them'],
+    [/\btell hi\b/gi, 'say hi'],
+    [/\btrying to tell\b/gi, 'trying to say'],
+    [/\btrying to explain\b/gi, 'trying to say'],
+    [/\bexplain hi\b/gi, 'say hi'],
+    [/\bI'd tell\b/gi, "I'd say"],
+    [/\bI would tell\b/gi, 'I would say'],
+    [/\bI'd explain\b/gi, "I'd say"],
+    [/\bI would explain\b/gi, 'I would say'],
+    [/\bcontact him\b/gi, 'call him'],
+    [/\breceive more familiar\b/gi, 'get more familiar'],
+    [/\bwe've amnesia\b/gi, 'we have amnesia'],
+    [/\bWe've amnesia\b/g, 'We have amnesia'],
+    [/\bI needed this\b/gi, 'I needed that'],
+    [/\btaking this away from me\b/gi, 'taking that away from me'],
+    [/\breceived into\b/gi, 'got into'],
+    [/\bbecause people\b/gi, 'as people'],
+    [/\s*\n\s*/g, '\n']
+  ];
+
+  trackedRepairs.forEach(([pattern, replacement]) => {
+    const result = applyTrackedProjectionRepair(working, pass, pattern, replacement);
+    working = result.outputText;
+    if (result.entry) {
+      repairLedger.push(result.entry);
+    }
+  });
+
+  return Object.freeze({
+    outputText: normalizeReadableText(capitalizeSentenceStarts(working)),
+    repairLedger: Object.freeze(repairLedger)
+  });
+}
+
+function applyPersonaProjectionRepairs(text = '', plan = {}) {
+  let working = String(text || '');
+  switch (plan.connectorMode) {
+    case 'split':
+      working = working
+        .replace(/;\s+and\b/gi, '. ')
+        .replace(/,\s+and\b/gi, '. ')
+        .replace(/\.\s+And\b/g, '. ');
+      break;
+    case 'cascade':
+      working = working
+        .replace(/;\s+and\b/gi, ', and')
+        .replace(/\.\s+And\b/g, '; and ');
+      break;
+    case 'ledger':
+      working = working
+        .replace(/;\s+and\b/gi, '; ')
+        .replace(/,\s+and\s+and\b/gi, ', and');
+      break;
+    case 'sustain':
+      working = working
+        .replace(/;\s+and\b/gi, '; ')
+        .replace(/,\s+and\s+and\b/gi, ', and');
+      break;
+    default:
+      break;
+  }
+
+  if (plan.sentenceMode === 'short-line') {
+    working = working
+      .replace(/;\s+/g, '. ')
+      .replace(/,\s+(so|because)\b/gi, '. $1');
+  } else if (plan.sentenceMode === 'long-line') {
+    working = working.replace(/\.\s+And\b/g, '; ');
+  }
+
+  if (plan.contractionMode === 'contract') {
+    working = contractCommonPhrases(working);
+  } else if (plan.contractionMode === 'expand') {
+    working = expandCommonContractions(working);
+  }
+
+  return normalizeReadableText(working);
+}
+
+function requiresPersonaProjectionRepair(text = '', pathologyState = null, commonRepairApplied = false) {
+  const normalized = normalizeReadableText(text);
+  const flags = pathologyState?.flags || [];
+  if (commonRepairApplied || flags.length) {
+    return true;
+  }
+
+  return (
+    /\b(?:I'd|I would)\s+would\b/i.test(normalized) ||
+    /\b(?:I'm|I am)\s+am\b/i.test(normalized) ||
+    /\b(?:you know)\.\s*You know\b/i.test(normalized) ||
+    /\b(?:that's|that is)\s+that is\b/i.test(normalized)
+  );
+}
+
+export function repairTD613ApertureProjection({
+  sourceText = '',
+  outputText = '',
+  personaId = '',
+  sourceProfile = {},
+  targetProfile = {},
+  sourceClass = ''
+} = {}) {
+  const plan = buildTD613ApertureProjectionPlan({ personaId, sourceProfile, targetProfile, sourceClass });
+  const repairPasses = [];
+  const repairLedger = [];
+  const before = detectTD613ApertureTextPathologies({ sourceText, outputText });
+
+  if (before.flags.includes('duplicated-source') || before.flags.includes('source-replay')) {
+    return Object.freeze({
+      outputText: normalizeReadableText(sourceText),
+      repaired: true,
+      repairPasses: ['source-reroute:replay'],
+      repairLedger: Object.freeze(repairLedger),
+      plan,
+      pathologies: detectTD613ApertureTextPathologies({ sourceText, outputText: sourceText })
+    });
+  }
+
+  const commonRepair = applyCommonProjectionRepairs(outputText, 'common-repair');
+  let working = commonRepair.outputText;
+  repairLedger.push(...commonRepair.repairLedger);
+  const commonRepairApplied = working !== normalizeReadableText(outputText);
+  if (commonRepairApplied) {
+    repairPasses.push('common-repair');
+  }
+
+  if (requiresPersonaProjectionRepair(working, before, commonRepairApplied)) {
+    const personaRepaired = applyPersonaProjectionRepairs(working, plan);
+    if (personaRepaired !== working) {
+      repairPasses.push(`persona-governor:${plan.personaId || 'native'}`);
+      working = personaRepaired;
+    }
+  }
+
+  const postPersonaRepair = applyCommonProjectionRepairs(working, 'post-persona-repair');
+  const postPersonaRepaired = postPersonaRepair.outputText;
+  if (postPersonaRepaired !== working) {
+    repairPasses.push('post-persona-repair');
+    repairLedger.push(...postPersonaRepair.repairLedger);
+    working = postPersonaRepaired;
+  }
+
+  const after = detectTD613ApertureTextPathologies({ sourceText, outputText: working });
+  if (after.severe) {
+    return Object.freeze({
+      outputText: normalizeReadableText(sourceText),
+      repaired: true,
+      repairPasses: [...repairPasses, 'source-reroute:severe-pathology'],
+      repairLedger: Object.freeze(repairLedger),
+      plan,
+      pathologies: detectTD613ApertureTextPathologies({ sourceText, outputText: sourceText })
+    });
+  }
+
+  return Object.freeze({
+    outputText: working,
+    repaired: repairPasses.length > 0,
+    repairPasses,
+    repairLedger: Object.freeze(repairLedger),
+    plan,
+    pathologies: after
+  });
+}
+
+export function classifyTD613ApertureProjection({
+  sourceText = '',
+  outputText = '',
+  changedDimensions = [],
+  lexemeSwaps = [],
+  visibleShift = false,
+  nonTrivialShift = false,
+  repaired = false,
+  pathologies = null,
+  blocked = false
+} = {}) {
+  const normalizedSource = collapseComparableWhitespace(sourceText);
+  const normalizedOutput = collapseComparableWhitespace(outputText);
+  const pathologyState = pathologies || detectTD613ApertureTextPathologies({ sourceText, outputText });
+  const generatorFault = isTD613ApertureGeneratorFault(pathologyState);
+  const substantiveMovement = substantiveDimensionCount(changedDimensions);
+  const lexicalMovement = Math.min(2, Number(lexemeSwaps?.length || 0));
+  const meaningfulShift = hasMeaningfulSurfaceShift(sourceText, outputText);
+  let movementConfidence = clamp01(
+    (normalizedSource !== normalizedOutput ? 0.18 : 0) +
+    (substantiveMovement * 0.14) +
+    (lexicalMovement * 0.06) +
+    (visibleShift ? 0.08 : 0) +
+    (nonTrivialShift ? 0.14 : 0) -
+    (pathologyState.flags.length * 0.08) -
+    (blocked ? 0.06 : 0) -
+    (repaired ? 0.02 : 0)
+  );
+
+  let outcome = 'projected';
+  if (generatorFault) {
+    outcome = 'source-rerouted';
+    movementConfidence = 0;
+  } else if (normalizedSource === normalizedOutput || !meaningfulShift) {
+    outcome = 'surface-held';
+    movementConfidence = Math.min(movementConfidence, 0.08);
+  } else if (substantiveMovement === 0 && lexicalMovement === 0) {
+    outcome = 'surface-held';
+  } else if (substantiveMovement <= 1 && !nonTrivialShift && !meaningfulShift) {
+    outcome = 'surface-held';
+  } else if (repaired) {
+    outcome = 'repaired';
+  }
+
+  const line =
+    outcome === 'source-rerouted'
+      ? 'Aperture withheld the public counter-record after a catastrophic generator fault.'
+      : outcome === 'surface-held'
+        ? 'Aperture held the passage in a shallow visible lane while surfacing pressure notes.'
+        : outcome === 'repaired'
+          ? 'Aperture repaired the projection into a legible counter-record and surfaced pressure notes.'
+          : 'Aperture landed a counter-projection and kept the pressure ledger visible.';
+
+  return Object.freeze({
+    outcome,
+    movementConfidence: round3(movementConfidence),
+    line,
+    pathologies: pathologyState.flags,
+    renderSafe: !generatorFault,
+    generatorFault
+  });
+}
+
+export function splitTD613ApertureSourceSegments(text = '') {
+  const normalized = String(text || '').replace(/\r\n/g, '\n').trim();
+  if (!normalized) {
+    return [];
+  }
+  return normalized
+    .split(/(?<=[.!?;]["')\]]*)(?=\s+|\n|$)/g)
+    .map((entry) => normalizeReadableText(entry))
+    .filter(Boolean);
+}
+
+export function extractTD613ApertureWitnessAnchors({
+  sourceText = '',
+  sourceIR = null,
+  protectedState = { literals: [] }
+} = {}) {
+  const literalAnchors = (protectedState?.literals || []).map((entry) => ({
+    value: entry?.value || entry,
+    type: 'literal',
+    mode: 'exact'
+  }));
+
+  return Object.freeze(
+    collectUniqueWitnessAnchors([
+      ...literalAnchors,
+      ...extractExactWitnessAnchors(sourceText),
+      ...extractSemanticWitnessAnchors(sourceIR),
+      ...extractContentTokenAnchors(sourceText)
+    ]).map((entry) => Object.freeze({
+      ...entry,
+      exact: entry.mode === 'exact'
+    }))
+  );
+}
+
+export function auditTD613ApertureWitnessAnchors({
+  sourceText = '',
+  outputText = '',
+  sourceIR = null,
+  protectedState = { literals: [] }
+} = {}) {
+  const anchors = extractTD613ApertureWitnessAnchors({ sourceText, sourceIR, protectedState });
+  const comparableOutput = collapseComparableWhitespace(outputText);
+  const outputTokenSet = new Set(witnessTokens(outputText));
+  const missingAnchors = anchors.filter((anchor) => {
+    if (anchor.mode === 'exact') {
+      return !comparableOutput.includes(anchor.value);
+    }
+    return !(anchor.tokens || []).every((token) => outputTokenSet.has(token));
+  });
+  const resolvedAnchors = anchors.length - missingAnchors.length;
+  const witnessAnchorIntegrity = anchors.length
+    ? round3(resolvedAnchors / anchors.length)
+    : 1;
+  const exactAnchors = anchors.filter((anchor) => anchor.mode === 'exact');
+  const exactMissingAnchors = missingAnchors.filter((anchor) => anchor.mode === 'exact');
+  const exactResolvedAnchors = exactAnchors.length - exactMissingAnchors.length;
+  const exactWitnessIntegrity = exactAnchors.length
+    ? round3(exactResolvedAnchors / exactAnchors.length)
+    : 1;
+  const softAnchors = anchors.filter((anchor) => anchor.mode !== 'exact');
+  const softMissingAnchors = missingAnchors.filter((anchor) => anchor.mode !== 'exact');
+  const softResolvedAnchors = softAnchors.length - softMissingAnchors.length;
+  const softWitnessIntegrity = softAnchors.length
+    ? round3(softResolvedAnchors / softAnchors.length)
+    : 1;
+  const aliasPersistenceRisk = anchors.length
+    ? round3(clamp01(
+      (missingAnchors.length / anchors.length) +
+      (missingAnchors.some((anchor) => anchor.mode === 'exact') ? 0.18 : 0)
+    ))
+    : 0;
+
+  return Object.freeze({
+    anchors,
+    totalAnchors: anchors.length,
+    resolvedAnchors,
+    missingAnchors: missingAnchors.map((anchor) => anchor.value),
+    witnessAnchorIntegrity,
+    exactAnchorCount: exactAnchors.length,
+    exactResolvedAnchors,
+    exactMissingAnchors: exactMissingAnchors.map((anchor) => anchor.value),
+    exactWitnessIntegrity,
+    softAnchorCount: softAnchors.length,
+    softResolvedAnchors,
+    softMissingAnchors: softMissingAnchors.map((anchor) => anchor.value),
+    softWitnessIntegrity,
+    aliasPersistenceRisk
+  });
+}
+
+function comparableWitnessToken(token = '') {
+  return normalizeComparableText(String(token || '').replace(/^[^a-z0-9@#]+|[^a-z0-9@#]+$/giu, ''));
+}
+
+export function restoreTD613ApertureWitnessAnchors({
+  sourceText = '',
+  outputText = '',
+  witnessAudit = null
+} = {}) {
+  const missingTokens = uniqueStrings(
+    (witnessAudit?.missingAnchors || [])
+      .flatMap((anchor) => witnessTokens(anchor))
+      .map((token) => comparableWitnessToken(token))
+      .filter((token) => token && !TD613_APERTURE_WITNESS_STOPWORDS.has(token))
+  );
+  if (!missingTokens.length) {
+    return normalizeReadableText(outputText);
+  }
+
+  const sourceParts = String(sourceText || '').split(/(\s+)/);
+  const outputParts = String(outputText || '').split(/(\s+)/);
+  const sourceWords = [];
+  const outputWords = [];
+
+  sourceParts.forEach((part, partIndex) => {
+    if (!part || /^\s+$/u.test(part)) {
+      return;
+    }
+    sourceWords.push({
+      partIndex,
+      raw: part,
+      normalized: comparableWitnessToken(part)
+    });
+  });
+  outputParts.forEach((part, partIndex) => {
+    if (!part || /^\s+$/u.test(part)) {
+      return;
+    }
+    outputWords.push({
+      partIndex,
+      raw: part,
+      normalized: comparableWitnessToken(part)
+    });
+  });
+
+  if (!sourceWords.length || !outputWords.length) {
+    return normalizeReadableText(outputText);
+  }
+
+  const missingTokenSet = new Set(missingTokens);
+  sourceWords.forEach((sourceWord, sourceIndex) => {
+    if (!missingTokenSet.has(sourceWord.normalized)) {
+      return;
+    }
+    const targetIndex = Math.min(sourceIndex, outputWords.length - 1);
+    const targetWord = outputWords[targetIndex];
+    if (!targetWord) {
+      return;
+    }
+    outputParts[targetWord.partIndex] = sourceWord.raw;
+  });
+
+  return normalizeReadableText(outputParts.join(''));
+}
+
+export function registerTD613ApertureSegment({
+  sourceText = '',
+  projectedText = '',
+  surfaceText = '',
+  personaId = '',
+  sourceClass = 'procedural-record',
+  sourceProfile = {},
+  targetProfile = {},
+  sourceIR = null,
+  protectedState = { literals: [] },
+  blocked = false,
+  transferClass = '',
+  candidateLedger = null
+} = {}) {
+  const normalizedSource = normalizeReadableText(sourceText);
+  const surfaceCandidate = normalizeReadableText(surfaceText || normalizedSource) || normalizedSource;
+  const repairedProjection = repairTD613ApertureProjection({
+    sourceText: normalizedSource,
+    outputText: projectedText || normalizedSource,
+    personaId,
+    sourceProfile,
+    targetProfile,
+    sourceClass
+  });
+  const proseSource = sourceClass === 'reflective-prose' || sourceClass === 'narrative-scene';
+  let internalText = normalizeReadableText(repairedProjection.outputText || projectedText || normalizedSource) || normalizedSource;
+  let projectedWitnessAudit = auditTD613ApertureWitnessAnchors({
+    sourceText: normalizedSource,
+    outputText: internalText,
+    sourceIR,
+    protectedState
+  });
+  const witnessRepairAudit = proseSource
+    ? {
+        ...projectedWitnessAudit,
+        missingAnchors: [...(projectedWitnessAudit.exactMissingAnchors || [])]
+      }
+    : projectedWitnessAudit;
+  const witnessRepairedText = restoreTD613ApertureWitnessAnchors({
+    sourceText: normalizedSource,
+    outputText: internalText,
+    witnessAudit: witnessRepairAudit
+  });
+  if (collapseComparableWhitespace(witnessRepairedText) !== collapseComparableWhitespace(internalText)) {
+    const restoredWitnessAudit = auditTD613ApertureWitnessAnchors({
+      sourceText: normalizedSource,
+      outputText: witnessRepairedText,
+      sourceIR,
+      protectedState
+    });
+    if (restoredWitnessAudit.witnessAnchorIntegrity >= projectedWitnessAudit.witnessAnchorIntegrity) {
+      internalText = witnessRepairedText;
+      projectedWitnessAudit = restoredWitnessAudit;
+    }
+  }
+  const projectedCompression = assessCompressionState(normalizedSource, internalText, projectedWitnessAudit);
+  const surfaceWitnessAudit = auditTD613ApertureWitnessAnchors({
+    sourceText: normalizedSource,
+    outputText: surfaceCandidate,
+    sourceIR,
+    protectedState
+  });
+  const sourceComparable = collapseComparableWhitespace(normalizedSource);
+  const internalComparable = collapseComparableWhitespace(internalText);
+  const generatorFault = isTD613ApertureGeneratorFault(
+    repairedProjection.pathologies,
+    repairedProjection.repairPasses || []
+  );
+
+  let outcome = 'projected';
+  let registeredText = internalText;
+  const notes = [];
+  const warningSignals = [];
+  const note = (signal, message) => {
+    if (signal) {
+      warningSignals.push(signal);
+    }
+    if (message) {
+      notes.push(message);
+    }
+  };
+
+  if (blocked || transferClass === 'rejected') {
+    note(
+      'counter-recognition-pressure',
+      'Aperture marked counter-recognition pressure on this segment but kept it in visible warning/repair space.'
+    );
+  }
+
+  if (projectedWitnessAudit.witnessAnchorIntegrity < 1) {
+    note(
+      'anchor-drift-detected',
+      'Witness-anchor drift appeared in the projected segment. The counter-record stays visible with an audit warning.'
+    );
+  }
+  if (projectedWitnessAudit.aliasPersistenceRisk > 0) {
+    note(
+      'alias-persistence-risk',
+      'Alias persistence risk is elevated on this segment. Treat the published counter-record as warned, not neutral.'
+    );
+  }
+  if (projectedCompression.state === 'compressed') {
+    note(
+      'compression-elevated',
+      projectedCompression.previewSafe
+        ? 'Compression elevated on this segment, but correspondence stayed legible.'
+        : 'Compression elevated on this segment and row-level preview may be withheld to avoid a false alignment claim.'
+    );
+  }
+
+  if (generatorFault) {
+    outcome = 'source-rerouted';
+    registeredText = normalizedSource;
+    note(
+      'generator-fault',
+      'Aperture withheld this segment only because the generator collapsed into replay, emptiness, or unrepaired corruption.'
+    );
+  } else {
+    const effectiveProjectedWitnessIntegrity = proseSource
+      ? Number(projectedWitnessAudit.exactWitnessIntegrity ?? projectedWitnessAudit.witnessAnchorIntegrity ?? 1)
+      : Number(projectedWitnessAudit.witnessAnchorIntegrity ?? 1);
+    const effectiveSurfaceWitnessIntegrity = proseSource
+      ? Number(surfaceWitnessAudit.exactWitnessIntegrity ?? surfaceWitnessAudit.witnessAnchorIntegrity ?? 1)
+      : Number(surfaceWitnessAudit.witnessAnchorIntegrity ?? 1);
+    const repairablePathology = (repairedProjection.pathologies?.flags || []).some((flag) =>
+      flag === 'punctuation-collapse' ||
+      flag === 'lexical-glitch' ||
+      flag === 'repeated-connector' ||
+      flag === 'discourse-intrusion'
+    );
+    const internalMeaningfulShift = hasMeaningfulSurfaceShift(normalizedSource, internalText);
+    const surfaceMeaningfulShift = hasMeaningfulSurfaceShift(normalizedSource, surfaceCandidate);
+    if (
+      repairablePathology &&
+      collapseComparableWhitespace(surfaceCandidate) !== sourceComparable
+    ) {
+      outcome = 'repaired';
+      registeredText = surfaceCandidate;
+      note(
+        'repair-activity-applied',
+        'Aperture preferred the stronger visible counter-record because the deeper projection still carried repairable render corruption.'
+      );
+    } else if (proseSource && surfaceMeaningfulShift && !internalMeaningfulShift) {
+      outcome = 'repaired';
+      registeredText = surfaceCandidate;
+      note(
+        'repair-activity-applied',
+        'Aperture published the stronger prose counter-record because the deeper projection stayed too close to the source movement envelope.'
+      );
+    } else if (effectiveProjectedWitnessIntegrity < 1) {
+    if (
+      collapseComparableWhitespace(surfaceCandidate) !== sourceComparable &&
+      effectiveSurfaceWitnessIntegrity > effectiveProjectedWitnessIntegrity
+    ) {
+      outcome = 'repaired';
+      registeredText = surfaceCandidate;
+      note(
+        'surface-hold-applied',
+        'Aperture preferred the safer visible counter-record because it reduced witness drift without suppressing the segment.'
+      );
+    }
+    } else if (projectedCompression.state === 'compressed' && !projectedCompression.previewSafe) {
+    if (collapseComparableWhitespace(surfaceCandidate) !== sourceComparable) {
+      outcome = 'repaired';
+      registeredText = surfaceCandidate;
+      note(
+        'preview-hold',
+        'Aperture published the safer visible counter-record because compression pressure made a deeper row-level claim unreliable.'
+      );
+    } else {
+      outcome = repairedProjection.repaired ? 'repaired' : 'projected';
+      note(
+        'preview-hold',
+        'Aperture kept the transformed segment visible but will withhold row-level preview because compression pressure stayed high.'
+      );
+    }
+    } else if (internalComparable === sourceComparable) {
+    if (collapseComparableWhitespace(surfaceCandidate) !== sourceComparable) {
+      outcome = 'repaired';
+      registeredText = surfaceCandidate;
+      note(
+        'surface-hold-applied',
+        'The deeper projection stayed too close to source, so Aperture published the visible counter-record instead of flattening the segment back to source.'
+      );
+    } else {
+      outcome = 'surface-held';
+      registeredText = normalizedSource;
+      note(
+        'minimal-movement',
+        'No stronger counter-record landed on this segment, so Aperture published a minimal hold rather than pretending a deeper shift.'
+      );
+    }
+    } else if (repairedProjection.repaired) {
+    outcome = 'repaired';
+    note('repair-activity-applied', 'Aperture repaired the projection before registration.');
+    }
+  }
+
+  const registeredWitnessAudit = auditTD613ApertureWitnessAnchors({
+    sourceText: normalizedSource,
+    outputText: registeredText,
+    sourceIR,
+    protectedState
+  });
+  if (registeredWitnessAudit.witnessAnchorIntegrity < 1) {
+    note(
+      'anchor-drift-detected',
+      'Anchor drift remains visible in the published counter-record. Review the audit lane before treating it as faithful witness.'
+    );
+  }
+
+  const finalWitnessAudit = auditTD613ApertureWitnessAnchors({
+    sourceText: normalizedSource,
+    outputText: registeredText,
+    sourceIR,
+    protectedState
+  });
+  const registeredCompression = assessCompressionState(normalizedSource, registeredText, finalWitnessAudit);
+  const registeredPathologies = detectTD613ApertureTextPathologies({
+    sourceText: normalizedSource,
+    outputText: registeredText
+  });
+  const finalGeneratorFault = isTD613ApertureGeneratorFault(
+    registeredPathologies,
+    repairedProjection.repairPasses || []
+  );
+  if (finalGeneratorFault && outcome !== 'source-rerouted') {
+    outcome = 'source-rerouted';
+    registeredText = normalizedSource;
+    note(
+      'generator-fault',
+      'Aperture had to withhold this segment after final registration because the published surface still contained a catastrophic generator fault.'
+    );
+  }
+
+  if (outcome === 'surface-held' && hasMeaningfulSurfaceShift(normalizedSource, registeredText)) {
+    outcome = repairedProjection.repaired ? 'repaired' : 'projected';
+    note(
+      'repair-activity-applied',
+      'Aperture registered the visible rewrite because the landed counter-record moved beyond punctuation-only drift.'
+    );
+  }
+
+  const maxAliasRisk = Math.max(
+    Number(projectedWitnessAudit.aliasPersistenceRisk || 0),
+    Number(finalWitnessAudit.aliasPersistenceRisk || 0)
+  );
+  const apertureAudit = buildTD613ApertureAudit({
+    generatorFault: outcome === 'source-rerouted',
+    warningSignals,
+    repairPasses: repairedProjection.repairPasses || [],
+    candidateSuppression:
+      (transferClass === 'rejected' ? 0.32 : 0.08) +
+      (blocked ? 0.12 : 0),
+    observabilityDeficit:
+      (projectedCompression.state === 'compressed' && !projectedCompression.previewSafe ? 0.42 : 0.08) +
+      (internalComparable === sourceComparable ? 0.18 : 0),
+    aliasPersistence: maxAliasRisk,
+    namingSensitivity:
+      maxAliasRisk * 0.62 +
+      (blocked ? 0.12 : 0),
+    redundancyInflation:
+      (internalComparable === sourceComparable ? 0.34 : 0.08) +
+      (projectedCompression.state === 'compressed' ? 0.18 : 0),
+    capacityPressure:
+      (projectedCompression.state === 'compressed' ? 0.48 : 0.12) +
+      (projectedCompression.previewSafe ? 0 : 0.16),
+    policyPressure:
+      (blocked ? 0.38 : 0.08) +
+      (transferClass === 'rejected' ? 0.18 : 0),
+    withheldMaterial: outcome === 'source-rerouted',
+    withheldReason: outcome === 'source-rerouted' ? 'catastrophic-generator-fault' : null
+  });
+
+  return Object.freeze({
+    sourceText: normalizedSource,
+    internalText,
+    surfaceText: surfaceCandidate,
+    registeredText,
+    outcome,
+    notes: [...new Set(notes)],
+    witnessAnchorIntegrity: finalWitnessAudit.witnessAnchorIntegrity,
+    aliasPersistenceRisk: round3(Math.max(
+      projectedWitnessAudit.aliasPersistenceRisk || 0,
+      finalWitnessAudit.aliasPersistenceRisk || 0
+    )),
+    compressionState: registeredCompression.state,
+    previewHold:
+      registeredCompression.state === 'compressed' &&
+      outcome !== 'source-rerouted',
+    renderSafe: outcome !== 'source-rerouted',
+    pathologies: [...new Set([
+      ...(repairedProjection.pathologies?.flags || []),
+      ...(registeredPathologies.flags || [])
+    ])],
+    repairPasses: repairedProjection.repairPasses || [],
+    candidateProvenance: candidateLedger ?? null,
+    projectedWitnessAudit,
+    registeredWitnessAudit: finalWitnessAudit,
+    projectedCompression,
+    registeredCompression,
+    generatorFault: outcome === 'source-rerouted',
+    apertureAudit
+  });
+}
+
+export function buildTD613ApertureContext({
+  recognized = false,
+  explained = false,
+  routeAvailable = false,
+  density = 0,
+  recurrencePressure = 0,
+  routePressure = 0,
+  branchPressure = 0,
+  criticality = 0,
+  traceability = 0,
+  mirrorLogic = 'off',
+  custodyArchive = 'institutional',
+  badge = 'badge.holds'
+} = {}) {
+  const denseSignal = clamp01(density) >= 0.28 || clamp01(recurrencePressure) >= 0.58;
+  const recognitionPressure = round3(clamp01(
+    (recognized ? 0.24 : 0) +
+    (clamp01(routePressure) * 0.22) +
+    (clamp01(branchPressure) * 0.16) +
+    (clamp01(density) * 0.12) +
+    (clamp01(recurrencePressure) * 0.12) +
+    (clamp01(criticality) * 0.10) +
+    (clamp01(traceability) * 0.04)
+  ));
+  const recaptureRisk = round3(clamp01(
+    ((recognized && !explained) ? 0.32 : 0) +
+    ((custodyArchive === 'witness') ? 0.18 : 0) +
+    ((mirrorLogic === 'off') ? 0.06 : 0) +
+    (routeAvailable ? 0.05 : 0) +
+    (clamp01(routePressure) * 0.16) +
+    (clamp01(branchPressure) * 0.12) +
+    (clamp01(criticality) * 0.11)
+  ));
+  const counterRecognitionRequired = Boolean(
+    recognized &&
+    (
+      !explained ||
+      recaptureRisk >= 0.46 ||
+      clamp01(branchPressure) >= 0.42 ||
+      clamp01(criticality) >= 0.46 ||
+      custodyArchive === 'witness'
+    )
+  );
+  const generativePassageBlocked = Boolean(
+    !routeAvailable ||
+    counterRecognitionRequired ||
+    recaptureRisk >= 0.58
+  );
+
+  return Object.freeze({
+    protocolId: TD613_APERTURE_PROTOCOL.id,
+    apertureVersion: TD613_APERTURE_VERSION,
+    apertureSchema: TD613_APERTURE_SCHEMA,
+    apertureFeatureVersion: TD613_APERTURE_FEATURE_VERSION,
+    toolIdentity: TD613_APERTURE_PROTOCOL.toolIdentity,
+    observedRegime: TD613_APERTURE_PROTOCOL.observedRegime,
+    stance: TD613_APERTURE_PROTOCOL.stance,
+    exportDiscipline: TD613_APERTURE_PROTOCOL.exportDiscipline,
+    recognized: Boolean(recognized),
+    explained: Boolean(explained),
+    routeAvailable: Boolean(routeAvailable),
+    denseSignal,
+    recognitionPressure,
+    recaptureRisk,
+    counterRecognitionRequired,
+    generativePassageBlocked,
+    routePressure: round3(clamp01(routePressure)),
+    branchPressure: round3(clamp01(branchPressure)),
+    criticality: round3(clamp01(criticality)),
+    density: round3(clamp01(density)),
+    recurrencePressure: round3(clamp01(recurrencePressure)),
+    traceability: round3(clamp01(traceability)),
+    mirrorLogic,
+    custodyArchive,
+    badge
+  });
+}
+
+export function selectTD613ApertureDecision(input = {}) {
+  const context = input.apertureContext || buildTD613ApertureContext(input);
+
+  if (!context.recognized) {
+    return 'weak-signal';
+  }
+
+  if (
+    context.routeAvailable &&
+    context.explained &&
+    !context.generativePassageBlocked &&
+    context.recaptureRisk < 0.42 &&
+    context.criticality < 0.42
+  ) {
+    return 'passage';
+  }
+
+  if (
+    context.counterRecognitionRequired &&
+    (context.denseSignal || context.criticality >= 0.36 || context.routePressure >= 0.46)
+  ) {
+    return 'criticality';
+  }
+
+  return 'hold-branch';
+}
+
+export function selectTD613ApertureHarbor(input = {}) {
+  const context = input.apertureContext || buildTD613ApertureContext(input);
+  const decision = input.decision || selectTD613ApertureDecision({ ...input, apertureContext: context });
+
+  if (
+    context.generativePassageBlocked &&
+    (
+      context.custodyArchive === 'witness' ||
+      context.criticality >= 0.52 ||
+      context.mirrorLogic === 'off'
+    )
+  ) {
+    return 'mirror.off';
+  }
+
+  if (decision === 'passage') {
+    return context.routeAvailable && !context.generativePassageBlocked ? 'receipt.capture' : 'mirror.off';
+  }
+
+  if (
+    context.counterRecognitionRequired ||
+    context.routePressure >= 0.68 ||
+    context.criticality >= 0.48
+  ) {
+    return context.mirrorLogic === 'off' ? 'mirror.off' : 'receipt.capture';
+  }
+
+  if (
+    context.badge === 'badge.holds' &&
+    context.routePressure < 0.40 &&
+    context.branchPressure < 0.36
+  ) {
+    return 'provenance.seal';
+  }
+
+  return 'receipt.capture';
+}
+
+export function reviewTD613ApertureTransfer({
+  sourceText = '',
+  outputText = '',
+  shellMode = 'native',
+  shellSource = '',
+  retrieval = false,
+  semanticRisk = 0,
+  semanticLockIntact = false,
+  visibleShift = false,
+  nonTrivialShift = false,
+  protectedAnchorIntegrity = 1,
+  propositionCoverage = 1,
+  actorCoverage = 1,
+  actionCoverage = 1,
+  objectCoverage = 1
+} = {}) {
+  const applied = Boolean(shellMode === 'borrowed' || retrieval || shellSource === 'swapped');
+  const introducedEnforcementTerms = detectIntroducedTerms(sourceText, outputText);
+  const namingIntrusion = detectNamingIntrusion(sourceText, outputText);
+  const semanticCoverageRiskRaw = round3(clamp01(
+    ((1 - clamp01(propositionCoverage)) * 0.32) +
+    ((1 - clamp01(actorCoverage)) * 0.18) +
+    ((1 - clamp01(actionCoverage)) * 0.18) +
+    ((1 - clamp01(objectCoverage)) * 0.12)
+  ));
+  const semanticCoverageRisk = semanticLockIntact ? 0 : semanticCoverageRiskRaw;
+  const thinRealization = !visibleShift || !nonTrivialShift;
+  const thinRealizationWarning = semanticLockIntact ? false : thinRealization;
+  const recaptureRisk = round3(clamp01(
+    (clamp01(semanticRisk) * 0.45) +
+    ((1 - clamp01(protectedAnchorIntegrity)) * 0.24) +
+    (semanticCoverageRisk * 0.18) +
+    (introducedEnforcementTerms.length ? 0.20 : 0) +
+    (namingIntrusion ? 0.22 : 0) +
+    (thinRealizationWarning ? 0.08 : 0)
+  ));
+  const warningSignals = uniqueStrings([
+    introducedEnforcementTerms.length ? 'enforcement-framing' : null,
+    namingIntrusion ? 'naming-intrusion' : null,
+    protectedAnchorIntegrity < 1 ? 'anchor-drift-detected' : null,
+    semanticCoverageRisk >= 0.18 ? 'semantic-compression' : null,
+    thinRealizationWarning ? 'thin-realization' : null,
+    applied ? 'counter-recognition-pressure' : null
+  ]);
+  const blocked = false;
+  const reasons = [];
+
+  if (introducedEnforcementTerms.length) {
+    reasons.push(`Introduced enforcement framing: ${introducedEnforcementTerms.join(', ')}`);
+  }
+  if (namingIntrusion) {
+    reasons.push('Introduced regime naming into the borrowed output.');
+  }
+  if (warningSignals.length) {
+    reasons.push('TD613 Aperture marked warning pressure on the borrowed output and kept it in repair/audit space instead of silently rerouting it.');
+  }
+
+  const candidateSuppression = round3(clamp01(
+    (applied ? 0.12 : 0.02) +
+    (semanticCoverageRisk * 0.42) +
+    (thinRealizationWarning ? 0.18 : 0)
+  ));
+  const observabilityDeficit = semanticLockIntact ? 0 : round3(clamp01(
+    (semanticCoverageRisk * 0.48) +
+    (!visibleShift ? 0.14 : 0) +
+    (!nonTrivialShift ? 0.14 : 0)
+  ));
+  const aliasPersistence = round3(clamp01(
+    (namingIntrusion ? 0.58 : 0) +
+    ((1 - clamp01(protectedAnchorIntegrity)) * 0.24)
+  ));
+  const namingSensitivity = round3(clamp01(
+    (namingIntrusion ? 0.82 : 0) +
+    (applied ? 0.08 : 0)
+  ));
+  const redundancyInflation = semanticLockIntact ? 0 : round3(clamp01(
+    (!nonTrivialShift ? 0.24 : 0.08) +
+    (!visibleShift ? 0.18 : 0) +
+    (semanticCoverageRisk * 0.28)
+  ));
+  const capacityPressure = semanticLockIntact ? 0 : round3(clamp01(
+    (semanticCoverageRisk * 0.58) +
+    (thinRealizationWarning ? 0.18 : 0)
+  ));
+  const policyPressure = round3(clamp01(
+    (introducedEnforcementTerms.length ? 0.42 : 0) +
+    (namingIntrusion ? 0.38 : 0) +
+    (applied ? 0.08 : 0)
+  ));
+  const apertureAudit = buildTD613ApertureAudit({
+    generatorFault: false,
+    warningSignals,
+    repairPasses: [],
+    candidateSuppression,
+    observabilityDeficit,
+    aliasPersistence,
+    namingSensitivity,
+    redundancyInflation,
+    capacityPressure,
+    policyPressure,
+    withheldMaterial: false,
+    withheldReason: null
+  });
+
+  return Object.freeze({
+    protocolId: TD613_APERTURE_PROTOCOL.id,
+    apertureVersion: TD613_APERTURE_VERSION,
+    apertureSchema: TD613_APERTURE_SCHEMA,
+    apertureFeatureVersion: TD613_APERTURE_FEATURE_VERSION,
+    toolIdentity: TD613_APERTURE_PROTOCOL.toolIdentity,
+    observedRegime: TD613_APERTURE_PROTOCOL.observedRegime,
+    exportDiscipline: TD613_APERTURE_PROTOCOL.exportDiscipline,
+    counterRecognitionRequired: applied,
+    applied,
+    blocked,
+    semanticLockIntact,
+    semanticCoverageRisk,
+    recaptureRisk,
+    introducedEnforcementTerms,
+    namingIntrusion,
+    reasons,
+    warningSignals,
+    repairPasses: [],
+    candidateSuppression,
+    observabilityDeficit,
+    aliasPersistence,
+    namingSensitivity,
+    redundancyInflation,
+    capacityPressure,
+    policyPressure,
+    apertureAudit
+  });
+}
