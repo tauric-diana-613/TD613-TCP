@@ -40,6 +40,17 @@ test('Loom demo branches from + and both numbered gestures stage attachment + pr
  const attachmentAccess=h.doc.querySelector('#marrowlineComposerAttachments');
  const prompt=h.doc.querySelector('#khonapolitPrompt');
  const send=h.doc.querySelector('#khonapolitSend');
+ const gateContinuity=h.doc.querySelector('#loomGateContinuity');
+ const gateExport=gateContinuity.querySelector('.loom-gate-primary');
+ assert.ok(gateContinuity,'Phase 2 installs the Loom Gate continuity witness');
+ assert.match(gateContinuity.textContent,/What crossed this Loom Gate\?/);
+ let gateState=h.controller.getGateContinuity();
+ assert.equal(gateState.phase,'ARRIVED');
+ assert.equal(gateState.fadt.state,'FILES HELD');
+ assert.match(gateState.pedagogue.now,/Nothing has been sent to the AI receiver/);
+ assert.ok(gateState.aperture.unresolved.some(item=>/internal reasoning/.test(item)));
+ assert.ok(gateState.atlas.survived.some(item=>/Selected manifest retains 1 declared file id/.test(item)));
+ assert.equal(gateExport.disabled,true);
 
  assert.equal(plus.dataset.loomAttention,'true');
  assert.equal(h.requests.length,0);
@@ -82,6 +93,13 @@ test('Loom demo branches from + and both numbered gestures stage attachment + pr
  assert.equal(typeof h.controller.snapshot().predecessor_request_id,'string');
  assert.equal(plus.dataset.loomAttention,'true','admitted #1 wakes the reminder for #2');
  assert.equal(getMarrowlineAttachments().length,0);
+ gateState=h.controller.getGateContinuity();
+ assert.equal(gateState.phase,'AIA_SENT');
+ assert.equal(gateState.fadt.state,'FILES ELIGIBLE');
+ assert.ok(gateState.crossed.some(item=>/Portable governance activation was sent/.test(item)));
+ assert.ok(gateState.crossed.some(item=>/Selected file bodies have not crossed/.test(item)));
+ assert.ok(gateState.atlas.survived.some(item=>/Immediate predecessor retained/.test(item)));
+ assert.equal(gateExport.disabled,true,'#1 admission cannot unlock export');
 
  plus.click();
  assert.equal(parentMenu.hidden,false);
@@ -103,11 +121,21 @@ test('Loom demo branches from + and both numbered gestures stage attachment + pr
  assert.match(prompt.value,/original Loom task/);
  assert.match(prompt.value,/selected files/);
  assert.equal(send.dataset.loomAttention,'true','#2 also requires explicit Send before consequence');
+ gateState=h.controller.getGateContinuity();
+ assert.equal(gateState.phase,'FILES_STAGED');
+ assert.equal(gateState.fadt.state,'EXPORT HELD');
+ assert.equal(gateExport.disabled,true);
 
  await h.controller.submit();
  assert.equal(h.controller.snapshot().phase,'DONE');
  assert.deepEqual(h.requests[1].documents,h.packet.documents);
  assert.equal(h.requests[1].predecessor.phase,'ACTIVATE');
+ gateState=h.controller.getGateContinuity();
+ assert.equal(gateState.fadt.state,'EXPORT ELIGIBLE');
+ assert.ok(gateState.crossed.some(item=>/1 selected file body crossed/.test(item)));
+ assert.ok(gateState.admitted.some(item=>/Stage #2 selected-file continuation is the current admitted result/.test(item)));
+ assert.ok(gateState.atlas.survived.some(item=>/Current admitted result retained/.test(item)));
+ assert.equal(gateExport.disabled,false);
  assert.equal(h.doc.querySelectorAll('#loomDemoMessages .loom-demo-message').length,4);
  assert.equal(h.doc.querySelectorAll('textarea:not([hidden])').length>=1,true);
  prompt.value='Which state is current?';await h.controller.submit();
@@ -151,7 +179,12 @@ test('failed continuation keeps the previous admitted export and reports hold se
  const h=await harness();try{
  await h.controller.stageAia();await h.controller.submit();await h.controller.stageFiles();await h.controller.submit();
  const prior=h.controller.exportPacket();h.setHeld(true);h.doc.querySelector('#khonapolitPrompt').value='New attempt';await h.controller.submit();
- assert.deepEqual(h.controller.exportPacket(),prior);assert.match(h.doc.querySelector('#loomDemoGate [role=status]').textContent,/latest attempt was held/);
+ assert.deepEqual(h.controller.exportPacket(),prior);
+ assert.match(h.doc.querySelector('#loomGateContinuity [role=status]').textContent,/HELD/);
+ const gate=h.controller.getGateContinuity();
+ assert.equal(gate.phase,'DONE');
+ assert.equal(gate.fadt.state,'PRIOR EXPORT RETAINED');
+ assert.equal(h.doc.querySelector('#loomGateContinuity .loom-gate-primary').disabled,false,'held follow-up cannot confiscate prior admitted export');
  assert.equal(h.requests.at(-1).prior_result.answer,'State B has four workstreams.');
  }finally{h.close();}
 });
