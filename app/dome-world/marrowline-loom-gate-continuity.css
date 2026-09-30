@@ -1,0 +1,204 @@
+.loom-gate-continuity{
+  display:grid;
+  gap:12px;
+  margin:0 0 12px;
+  padding:14px;
+  border:1px solid rgba(255,96,193,.30);
+  border-radius:16px;
+  background:
+    radial-gradient(circle at 100% 0,rgba(255,54,179,.10),transparent 38%),
+    linear-gradient(180deg,rgba(32,14,45,.88),rgba(11,13,31,.90));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.022),0 0 30px rgba(255,45,169,.045);
+}
+.loom-gate-continuity-head{display:grid;gap:3px}
+.loom-gate-continuity-head small,
+.loom-gate-consequence>small,
+.loom-gate-adversarial-separator>small{
+  color:#ff8fd2;
+  font:700 .66rem/1.2 var(--marrowline-chat-sans,system-ui,sans-serif);
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.loom-gate-continuity-head h3{
+  margin:0;
+  color:#f3edf4;
+  font:700 1.04rem/1.22 var(--marrowline-chat-sans,system-ui,sans-serif);
+}
+.loom-gate-continuity-state{
+  margin:0;
+  color:#8ce4d9;
+  font:700 .68rem/1.3 var(--marrowline-chat-sans,system-ui,sans-serif);
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.loom-gate-now{
+  display:grid;
+  gap:5px;
+  padding:12px 13px;
+  border:1px solid rgba(117,229,215,.22);
+  border-radius:13px;
+  background:rgba(4,22,23,.46);
+}
+.loom-gate-now>small{
+  color:#8ce4d9;
+  font:700 .64rem/1.2 var(--marrowline-chat-sans,system-ui,sans-serif);
+  letter-spacing:.12em;
+}
+.loom-gate-now>strong{
+  color:#eef2ef;
+  font:700 .9rem/1.3 var(--marrowline-chat-sans,system-ui,sans-serif);
+}
+.loom-gate-now>p{
+  margin:0;
+  color:#bbc5c5;
+  font:500 .76rem/1.48 var(--marrowline-chat-sans,system-ui,sans-serif);
+}
+.loom-gate-now>.loom-gate-next{color:#ffb0df}
+.loom-gate-consequence-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+.loom-gate-consequence{
+  min-width:0;
+  padding:10px 11px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  background:rgba(7,8,22,.48);
+}
+.loom-gate-consequence:nth-child(1){border-color:rgba(255,99,195,.24)}
+.loom-gate-consequence:nth-child(2){border-color:rgba(154,142,224,.24)}
+.loom-gate-consequence:nth-child(3){border-color:rgba(103,226,216,.24)}
+.loom-gate-consequence:nth-child(4){border-color:rgba(231,198,108,.20)}
+.loom-gate-consequence ul{
+  margin:7px 0 0;
+  padding-left:1rem;
+  display:grid;
+  gap:4px;
+}
+.loom-gate-consequence li{
+  color:#b9c0c5;
+  font:500 .70rem/1.42 var(--marrowline-chat-sans,system-ui,sans-serif);
+}
+.loom-gate-four-role,
+.loom-gate-continuity-technical{
+  margin:0;
+  padding-top:9px;
+  border-top:1px solid rgba(255,255,255,.075);
+}
+.loom-gate-four-role>summary,
+.loom-gate-continuity-technical>summary{
+  cursor:pointer;
+  list-style:none;
+  color:#d9d3df;
+  font:650 .73rem/1.35 var(--marrowline-chat-sans,system-ui,sans-serif);
+}
+.loom-gate-four-role>summary::-webkit-details-marker,
+.loom-gate-continuity-technical>summary::-webkit-details-marker{display:none}
+.loom-gate-four-role>summary::after,
+.loom-gate-continuity-technical>summary::after{
+  content:"▽";
+  float:right;
+  color:#73eee5;
+  font-weight:400;
+}
+.loom-gate-four-role[open]>summary::after,
+.loom-gate-continuity-technical[open]>summary::after{transform:rotate(180deg)}
+.loom-gate-role-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+  margin-top:9px;
+}
+.loom-gate-role{
+  min-width:0;
+  display:grid;
+  gap:5px;
+  padding:10px 11px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:11px;
+  background:rgba(11,11,29,.58);
+}
+.loom-gate-role[data-role="pedagogue"]{box-shadow:inset 2px 0 rgba(255,105,195,.58)}
+.loom-gate-role[data-role="aperture"]{box-shadow:inset 2px 0 rgba(114,242,239,.52)}
+.loom-gate-role[data-role="atlas"]{box-shadow:inset 2px 0 rgba(159,141,235,.54)}
+.loom-gate-role[data-role="fadt"]{box-shadow:inset 2px 0 rgba(231,198,108,.56)}
+.loom-gate-role>strong{
+  color:#f0ebf1;
+  font:700 .77rem/1.25 var(--marrowline-chat-sans,system-ui,sans-serif);
+}
+.loom-gate-role>small{
+  color:#aab0ba;
+  font:600 .64rem/1.35 var(--marrowline-chat-sans,system-ui,sans-serif);
+}
+.loom-gate-role>p{
+  margin:0;
+  color:#bdc3c8;
+  font:500 .69rem/1.44 var(--marrowline-chat-sans,system-ui,sans-serif);
+}
+.loom-gate-continuity-technical pre{
+  max-height:250px;
+  overflow:auto;
+  margin:9px 0 0;
+  padding:10px;
+  border-radius:10px;
+  background:#090914;
+  color:#a8d9d5;
+  font:500 .64rem/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+.loom-gate-continuity-actions{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  gap:7px;
+}
+.loom-gate-continuity-actions button{
+  min-height:40px;
+  padding:8px 11px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.10);
+  background:#21192d;
+  color:#dcd8df;
+  text-align:left;
+  font:650 .70rem/1.25 var(--marrowline-chat-sans,system-ui,sans-serif);
+}
+.loom-gate-continuity-actions .loom-gate-primary{
+  grid-column:1/-1;
+  border-color:rgba(255,79,189,.48);
+  background:linear-gradient(180deg,rgba(91,23,72,.72),rgba(46,17,53,.78));
+  color:#ffc0e6;
+}
+.loom-gate-continuity-actions button:disabled{opacity:.38;cursor:not-allowed}
+.loom-gate-adversarial-separator{
+  display:grid;
+  gap:4px;
+  margin:4px 0 10px;
+  padding:10px 12px;
+  border-top:1px solid rgba(255,255,255,.09);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  background:rgba(10,12,27,.38);
+}
+.loom-gate-adversarial-separator>strong{
+  color:#c5c4d0;
+  font:700 .76rem/1.3 var(--marrowline-chat-sans,system-ui,sans-serif);
+}
+.loom-gate-adversarial-separator>p{
+  margin:0;
+  color:#8f99a6;
+  font:500 .68rem/1.45 var(--marrowline-chat-sans,system-ui,sans-serif);
+}
+#gatePanel[data-loom-continuity-active="true"]>.panel-body>.gate-controls>.panel-note{
+  color:#9ca5af!important;
+  opacity:.68;
+}
+#gatePanel[data-loom-continuity-phase="AIA_SENT"] .loom-gate-continuity,
+#gatePanel[data-loom-continuity-phase="DONE"] .loom-gate-continuity{
+  border-color:rgba(110,232,220,.36);
+}
+@media(max-width:860px){
+  .loom-gate-continuity{padding:12px}
+  .loom-gate-consequence-grid,.loom-gate-role-grid{grid-template-columns:1fr}
+  .loom-gate-continuity-actions{grid-template-columns:1fr}
+  .loom-gate-continuity-actions .loom-gate-primary{grid-column:1}
+}
