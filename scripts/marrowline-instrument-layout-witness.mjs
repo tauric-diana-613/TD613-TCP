@@ -22,7 +22,7 @@ try {
       if (width > 860) {
         await page.getByRole('tab', { name: 'Loom Gate', exact: true }).waitFor();
         assert.equal(await page.getByRole('tab', { name: 'Loom Gate', exact: true }).getAttribute('aria-selected'), 'true');
-        for (const name of ['Gate', 'Keys', 'Stories', 'Receipts']) {
+        for (const name of ['Loom Gate', 'Keys', 'Stories', 'Receipts']) {
           await page.getByRole('tab', { name, exact: true }).click();
           await page.screenshot({ path: `${out}/${width}x${height}-${name}.png` });
           const boxes = await page.evaluate(() => {
