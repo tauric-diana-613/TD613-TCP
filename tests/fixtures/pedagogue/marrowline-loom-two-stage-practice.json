@@ -1,0 +1,68 @@
+{
+  "schema": "td613.pedagogue-practice-fixture/v0.1",
+  "fixture_id": "marrowline.loom-two-stage-practice/v0.1",
+  "surface_reference": "dome-world/marrowline/loom-demo",
+  "operator_label": "Fictional Loom boundary practice case",
+  "manifestly_fictional": true,
+  "runtime_binding": true,
+  "operator_read_only_retrieval_allowed": false,
+  "practice_custody_write_allowed": false,
+  "fictional_payload": {
+    "fictional": true,
+    "container_label": "FICTIONAL — Loom two-stage operator route",
+    "task_label": "Compare two fictional workstreams",
+    "selected_file_labels": ["Fictional selected workstream"],
+    "withheld_file_label": "Fictional local-only note"
+  },
+  "teaching_contrasts": [
+    {
+      "contrast_id": "stage-versus-send",
+      "now": "Selecting either numbered option only prepares a local attachment and draft.",
+      "why": "The operator must see what will travel before choosing Send.",
+      "exact": "Neither arrival, opening the menu, inspecting Gate, nor staging an attachment invokes a provider. Each consequential send requires a separate operator gesture."
+    },
+    {
+      "contrast_id": "rules-first-versus-source-files-second",
+      "now": "Both steps remain visible; selected source files wait until the activation response is admitted.",
+      "why": "Knowing the second step exists does not authorize it before the first boundary completes.",
+      "exact": "#2 remains disabled before activation admission. A held or stopped activation cannot unlock it. Local-only bytes never enter either stage."
+    },
+    {
+      "contrast_id": "governed-versus-ordinary-composer",
+      "now": "One composer can serve different contexts, but only one context is active at a time.",
+      "why": "Physical proximity of files or text does not make them part of the admitted Loom selection.",
+      "exact": "Ordinary chat history and unrelated attachments cannot silently enter the governed request. Leaving Loom restores ordinary chat without importing the Loom transcript."
+    },
+    {
+      "contrast_id": "rest-versus-custody-extension",
+      "now": "Closing an optional menu sends nothing; the transfer still has its declared lifetime.",
+      "why": "A person may pause or exit, but a pause cannot quietly extend custody or resurrect expired material.",
+      "exact": "Closing inspection or the step menu is not Send. Expiry requires a fresh origin handoff. A passing synthetic practice route cannot certify penalty-free resumable rest after expiry."
+    },
+    {
+      "contrast_id": "admitted-result-versus-latest-attempt",
+      "now": "A failed new attempt does not replace the last admitted continuation.",
+      "why": "An export must describe the current governed work rather than the latest text that happened to appear nearby.",
+      "exact": "Export remains bound to the admitted continuation and its lineage. Ordinary chat, failed requests, and fabricated prior answers cannot acquire admitted-result authority."
+    },
+    {
+      "contrast_id": "gate-check-versus-empirical-claim",
+      "now": "A local binding check can compare selected bytes without calling a provider.",
+      "why": "A finite check is useful precisely because its scope is bounded.",
+      "exact": "A file-binding receipt is not universal semantic enforcement, adversarial field efficacy, physical tomography, Golden Egg evidence, provider quality, or release authority."
+    }
+  ],
+  "expected_route_steps": [
+    "arrive-with-local-handoff",
+    "inspect-two-numbered-steps",
+    "stage-portable-aia-locally",
+    "explicit-send-activation",
+    "receive-admitted-activation",
+    "stage-selected-files-locally",
+    "explicit-send-selected-files",
+    "receive-admitted-continuation",
+    "inspect-loom-gate",
+    "export-current-portable-aia"
+  ],
+  "expected_endpoint": "current-governed-portable-aia"
+}

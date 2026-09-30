@@ -1015,6 +1015,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   issuanceToggle?.addEventListener('change', () => refreshKeyState(doc));
 
   const submitTask = async (messageOverride = '', { independentRetry = false, backgroundResume = false } = {}) => {
+    if (doc.documentElement.dataset.loomDemoActive === 'true') return;
     const prompt = byId(doc, 'khonapolitPrompt');
     const message = safe(messageOverride || prompt?.value);
     const mode = INVOCATION_MODES.ISSUED_CONJUNCTION;
