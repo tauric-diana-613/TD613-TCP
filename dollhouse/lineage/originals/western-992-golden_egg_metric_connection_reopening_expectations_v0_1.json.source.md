@@ -1,0 +1,33 @@
+{
+  "schema": "td613.dome-world.golden-egg-metric-connection-reopening-expectations/v0.1",
+  "exact_earned_parent": "c0ef84c5c48af37a8f79d89c80d2e055da707836",
+  "rest_gate": {
+    "formal_combinations": 320,
+    "threshold_feasible": 24,
+    "pareto_minimal": 18,
+    "empirical_joint_realized": 0,
+    "golden_egg_earned": false,
+    "remaining_frontier": "H_INFORMATION_CURVATURE_GEOMETRIC"
+  },
+  "base_vertices": 3,
+  "base_ordered_pairs": 9,
+  "base_ordered_triples": 27,
+  "base_metric_failures": 0,
+  "partition_universe_size": 4,
+  "bell_partition_count": 15,
+  "partition_ordered_pairs": 225,
+  "partition_ordered_triples": 3375,
+  "partition_metric_failures": 0,
+  "face_holonomy": [[3,5],[1,2]],
+  "face_holonomy_determinant_mod31": 1,
+  "face_holonomy_trace_mod31": 5,
+  "positive_partition_displacement": 2,
+  "flat_partition_displacement": 0,
+  "reverse_restored_partition_displacement": 0,
+  "gauge_partition_displacement": 2,
+  "invariant_readout_partition_displacement": 0,
+  "positive_bucket_profile": [2,2],
+  "expected_failures": 0,
+  "allowed_status": "REOPENED_FOR_EXPERIMENT_NOT_SOLVED",
+  "golden_egg_reopening_trigger": "NEWLY_DECLARED_CANDIDATE_GEOMETRY_WITH_METRIC_AND_CONNECTION"
+}

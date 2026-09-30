@@ -1,0 +1,142 @@
+{
+  "schema": "td613.aperture.release/v1",
+  "version": "v3.2-alpha",
+  "apertureSchema": "td613-aperture/v3.2-alpha",
+  "featureVersion": "v3.2-alpha-typed-epistemic-deficit-and-stability-aware-widening-runtime",
+  "doctrineKernelSchema": "td613.aperture.doctrine-kernel/v2.9.4",
+  "domeBridgeSchema": "td613.aperture.reciprocal-receipt-bridge/v3.2-alpha",
+  "phase4BridgeContract": "td613.phase4.reciprocal-bridge/v0.1",
+  "phase4ReadinessStatus": "phase-4-active",
+  "phase4ProductionStatus": "IMPLEMENTED_PRODUCTION_DEMONSTRATED",
+  "domeDiagnosticReceiptSchema": "td613.aperture.diagnostic-receipt/v3.0-alpha",
+  "flowCoreContextReceiptSchema": "td613.flowcore.context-receipt/v0.1",
+  "legacyFlowCoreContextReceiptSchema": "td613.flowcore.context-receipt/vNext",
+  "returnedContextAuditSchema": "td613.aperture.returned-context-audit/v0.1",
+  "roundTripReceiptSchema": "td613.aperture.round-trip-receipt/v3.0-alpha",
+  "bridgePosture": "reciprocal_receipts_without_reciprocal_authority",
+  "composition": {
+    "version": "v0.1",
+    "schema": "td613.aperture.composition-manifest/v0.1",
+    "runtimeSchema": "td613.aperture.composition-runtime/v0.1",
+    "receiptSchema": "td613.aperture.composition-receipt/v0.1",
+    "replaySchema": "td613.aperture.composition-replay/v0.1",
+    "status": "IMPLEMENTED_VALIDATION_GATED",
+    "canonicalBody": "app/aperture/tool.html",
+    "publicShim": "app/aperture/index.html",
+    "bootstrap": "app/aperture/bootstrap.js",
+    "componentOrder": [
+      "release-manifest",
+      "task-intent",
+      "v32-experiment-design",
+      "v31-compatibility",
+      "phase4-reciprocal-bridge"
+    ],
+    "compatibilityAliases": [
+      "TD613_PHASE4_RECIPROCAL_BRIDGE"
+    ],
+    "canonicalBodyRewritten": false,
+    "automaticAuthorityTransfer": false,
+    "operatorClosureRequired": true
+  },
+  "phase5RelationRuntime": "td613.phase5.relation-runtime/v0.1",
+  "phase5RelationEnvelopeSchema": "td613.relation-envelope/v0.1",
+  "phase5RelationConfirmationSchema": "td613.relation-confirmation-receipt/v0.1",
+  "phase5RelationAuditSchema": "td613.aperture.relation-audit/v0.1",
+  "phase5PhasonEventSchema": "td613.phason.relation-event/v0.1",
+  "phase5PhasonChainSchema": "td613.phason.relation-chain/v0.1",
+  "phase5ReplaySchema": "td613.relation-replay-receipt/v0.1",
+  "phase5Status": "IMPLEMENTED_PRODUCTION_DEMONSTRATED",
+  "phase5ProductionStatus": "PRODUCTION_DEMONSTRATED",
+  "phase5Boundaries": {
+    "newServerlessFunction": false,
+    "serverPersistence": false,
+    "operatorConfirmationRequired": true,
+    "automaticAshAction": false,
+    "predictionAuthorized": false,
+    "openFieldAutoPromotion": false,
+    "marrowlineConfirmationAuthority": false
+  },
+  "domeWorld": {
+    "version": "v0.7.0-alpha",
+    "schema": "td613.dome-world/v0.7.0-alpha",
+    "exactReceiptSchema": "td613.dome-world.exact-receipt/v0.4.3"
+  },
+  "observedRegime": "PRCS-A",
+  "eorfd": {
+    "operationalState": "interface_context",
+    "claimAuthority": "design_signal",
+    "targetOperationalState": "verified_runtime_installation"
+  },
+  "compatibility": {
+    "phase4ReceiptSchemaVersion": "v3.0-alpha",
+    "v3ProducerMayEmitV30BridgeReceipts": true,
+    "phase5RelationEnvelopeUnchanged": true
+  },
+  "observatory": {
+    "status": "IMPLEMENTED_PRODUCTION_DEMONSTRATED",
+    "productionStatus": "PRODUCTION_DEMONSTRATED",
+    "capabilityProfile": [
+      "reciprocal-bridge",
+      "admissibility-tomography"
+    ],
+    "domeExperimentSchema": "td613.dome-world.experiment-run/v0.2",
+    "flowCoreContextSeriesSchema": "td613.flowcore.context-series/v0.2",
+    "instrumentAdapterReceiptSchema": "td613.aperture.instrument-adapter-receipt/v0.2",
+    "tomographyReceiptSchema": "td613.aperture.admissibility-tomography-receipt/v0.2",
+    "tomographyReplaySchema": "td613.aperture.tomography-replay/v0.2",
+    "evidenceRecord": {
+      "fields": [
+        "source_status",
+        "evidence_basis",
+        "observations",
+        "missingness",
+        "alternatives",
+        "open_questions",
+        "operator_notes",
+        "closure"
+      ],
+      "researchNotes": {
+        "default": "OFF",
+        "humanOperated": true,
+        "modelContextInjection": false
+      },
+      "legacyLimitingVocabularyCurrent": false
+    }
+  },
+  "experimentDesign": {
+    "status": "IMPLEMENTED_VALIDATION_GATED",
+    "productionStatus": "PRODUCTION_GATED",
+    "contractSchema": "td613.aperture.v32-typed-epistemic-deficit/v0.1",
+    "receiptSchema": "td613.aperture.v32-typed-epistemic-deficit-receipt/v0.1",
+    "deficitClasses": [
+      "STRUCTURAL_RANK_DEFICIT",
+      "NUMERICAL_STABILITY_DEFICIT",
+      "NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT",
+      "NOISE_GEOMETRY_INCOMPLETE",
+      "INVALID_NOISE_GEOMETRY"
+    ],
+    "dispositions": [
+      "PROPOSE",
+      "ABSTAIN",
+      "REJECT",
+      "ASK_NOTHING"
+    ],
+    "classificationReplayStability": "HELD_NOT_YET_WITNESSED",
+    "scalarScore": false,
+    "automaticObservation": false,
+    "automaticExperimentExecution": false,
+    "promotionAuthority": false
+  },
+  "ash": {
+    "version": "v1.0-alpha",
+    "phase": "ASH_KEEP_CASE_MAP_RUNTIME",
+    "status": "IMPLEMENTED_PRODUCTION_DEMONSTRATED",
+    "productionStatus": "PRODUCTION_DEMONSTRATED",
+    "experimentCustodySchema": "td613.ash.experiment-custody-manifest/v0.2",
+    "snapshotBatchSchema": "td613.ash.snapshot-batch-receipt/v0.2",
+    "tomographyResultCustodySchema": "td613.ash.tomography-result-custody/v0.2",
+    "derivativeEligibilitySchema": "td613.ash.derivative-eligibility-receipt/v0.2",
+    "automaticCinder": false,
+    "transport": false
+  }
+}

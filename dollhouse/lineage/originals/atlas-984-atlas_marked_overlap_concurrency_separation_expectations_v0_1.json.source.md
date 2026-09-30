@@ -1,0 +1,21 @@
+{
+  "schema": "td613.dome-world.atlas-marked-overlap-concurrency-separation-expectations/v0.1",
+  "parent_receipt": "c22a588897aa27f55970480218f952697967df80",
+  "ground_size": 8,
+  "rank": 3,
+  "circuit_hyperplanes_A": [[0,4,5],[0,2,3],[0,1,6],[3,5,6],[2,4,7]],
+  "circuit_hyperplanes_B": [[4,5,7],[2,6,7],[1,3,4],[0,1,7],[0,3,5]],
+  "common_ground_incidence_degree_multiset": [3,2,2,2,2,2,1,1],
+  "common_overlap_graph_degree_profile": [4,4,3,3,2],
+  "common_overlap_graph_edges": 8,
+  "overlap_graph_isomorphisms": 4,
+  "mark_preserving_overlap_graph_isomorphisms": 0,
+  "lambda_A": [4,4,3],
+  "lambda_B": [4,4,2],
+  "kappa_A": 11,
+  "kappa_B": 10,
+  "ground_relabelings": 40320,
+  "ground_isomorphism_matches": 0,
+  "common_R": {"3,0":1,"2,0":8,"1,1":5,"1,0":28,"0,5":1,"0,4":8,"0,3":28,"0,2":56,"0,1":70,"0,0":51},
+  "common_T": {"3,0":1,"2,0":5,"1,1":5,"1,0":10,"0,5":1,"0,4":3,"0,3":6,"0,2":10,"0,1":10}
+}

@@ -12,6 +12,45 @@ Pedagogue has three related bodies:
 
 None of these bodies grants autonomous redesign, experiment execution, custody mutation, release, or production authority.
 
+## Mathematical source body · do not substitute the shortcut for it
+
+The actual expanded specification is the [full Flow-Core AIA Pedagogue implementation specification](app/dome-world/docs/flowcore/specifications/FLOWCORE_AIA_PEDAGOGUE_IMPLEMENTATION_SPEC_V0_1.md), not the short `docs/TD613_FLOWCORE_PEDAGOGUE_AIA_IMPLEMENTATION_SPEC.md` navigation shim. Its original Git blob `492ec13010d71010265c9069d590b3309ad45abb` is unchanged by the directory move. The shim's stale specification/plan/roadmap links are repaired; the original shim is separately archived unchanged.
+
+Full sources, not reconstructed summaries:
+
+- [Original full specification, pinned source](https://github.com/tauric-diana-613/TD613-TCP/blob/2b32b9dd9ff9ef960d4764d9fdbe1899782007e5/docs/TD613_FLOWCORE_PEDAGOGUE_AIA_IMPLEMENTATION_SPEC.md) · [exact local text](dollhouse/lineage/originals/pedagogue-spec-original-td613_flowcore_pedagogue_aia_implementation_spec.md.source.md).
+- [Expanded full specification, pinned source](https://github.com/tauric-diana-613/TD613-TCP/blob/9bd0619e136b0e3c830385965f689116f4ec7ee4/app/dome-world/docs/FLOWCORE_AIA_PEDAGOGUE_IMPLEMENTATION_SPEC_V0_1.md) · [exact local text](dollhouse/lineage/originals/pedagogue-spec-expanded-flowcore_aia_pedagogue_implementation_spec_v0_1.md.source.md).
+- [Current kernel](app/engine/flowcore-pedagogue-cycle.js), [Design Gate](app/engine/pedagogue-design-gate.js), [AIA projections](app/engine/flowcore-pedagogue-aia.js), [route burden](app/engine/flowcore-route-burden.js) and [route memory](app/engine/flowcore-pedagogue-route-memory.js) are real implementations, not persona links. [PR #416](https://github.com/tauric-diana-613/TD613-TCP/pull/416) is the verified merged kernel lineage; later research is not retroactively its installed law.
+- Human proving surface: [Information Dome Pedagogue](https://td613.com/dome-world/information-dome-pedagogue.html). This link identifies the source-defined surface; it is not a fresh browser witness.
+- [Full source catalogue and exact-copy archive](dollhouse/lineage/README.md) includes the present mathematics, engines and tests plus archived #677's 144 changed source paths, separately pinned to `43775cee56d4406dc2540347fb4d3de6d8f92e93` (closed without merge).
+
+### Supporting formulations and their domains
+
+The founding specification declares the cycle `NOTICE→ACT→WORLD ANSWERS→NAME→REST→TRANSFER`. Its mathematical objects have distinct statuses:
+
+| Formulation | Meaning and ceiling |
+| --- | --- |
+| `ℒ(x,t \| u,γ,m,s)` | Directional legibility resources indexed by region, time, declared posture, route, modality and scale. High-speculation design object; **not a measurement of understanding**. |
+| `T(x)=Σ_i cos(kd_i·x)+Σ_i cos(kR_θd_i·x)`, `Q(x)=Σ_m=0^9 cos(k_φe_m·x+φ_m)`, `F(x)=‖∇T−∇Q‖` | Supplied triple-overlay reconstruction; implementation concordance separates runtime terms, behavioral reconstruction and derived interpretation. |
+| `a_r∈𝒜(U_r)`, `δ_rs=‖ρ_r→s(a_r)−ρ_s→r(a_s)‖` | Local sections and gluing obstruction; incompatible seams do not diagnose an operator. |
+| `H_γ=transported exit(γ)−entry(γ)` | Declared route-history deformation; identical endpoints do not establish identical history or physical holonomy. |
+| `r_⊥=c_⊥B_⊥n+w(t)`, over `ℚ(τ)=ℚ(√5)` | Exact cut-and-project bridge and declared acceptance-window shift; source bytes can remain fixed while permitted projection changes. |
+| `R_ij=O_ij−(O_∅∪O_i∪O_j)` | Pair-emergence assay retains baseline, both singletons and pair controls. Not a general causality claim. |
+| `R_t=[φ_t,τ_t,γ_t,σ_t,ℓ_t,a_t,c_t,b_t,η_t,κ_t,χ_t]` | Auditable cognitive-narrative **route** representation; thresholds are scene-calibrated, not a learner/person score. |
+| `B_route=∫_𝒫 Q_↓/(P_legibility A_affordance) ds` | Comparative route-burden surrogate, not a law of cognition. |
+| `B_γ,t=∫_γ Q_↓/(P_leg A_aff) ds+αΣδ_rs+β‖H_γ‖+ζN_∂W` | Enriched design surrogate retains seam, history and window-crossing terms. Direct human observation remains primary until calibration/harm resistance is established. |
+| `E_stored=ρVgh`, `W_delivered=η_↑η_↓ρVgh`, `η≤1−T_c/T_h` | Physical engineering ledgers retain dimensional/efficiency discipline; they do not turn the information architecture into a thermodynamic proof of cognition. |
+
+The full specifications retain energy/exergy distinctions, protected recovery floors, route schemas, source-status ladders, tests and exclusions. This table orients the reader; it does not compress those originals out of existence.
+
+### Later hostile research · closure, history and exteriority
+
+Archived #677 preserves the H/C lineage: C1's least fixed-point typed derivational closure `Cl_R(P)`, C4's proposition identifiability over every permitted serialization `L(P)`, later genealogy/acquisition/custody attacks, and C14 **No Window**. Its complete specs, assay declarations, evaluators and hostile tests are in the source catalogue; they are not imported as executable kit dependencies.
+
+C14 constructs admitted twin records with different hidden origins and identical internal bytes. Its science run `32523824211` binds `90f4fde182d53d14d92eb2849ea69a5446b16404`; separate receipt run `32524660837` binds `adec571d0e3f6b366824ab2d10941d22e5f34942`. Preserve those separate witnesses and the documented C4 RED repair, not retrospective all-GREEN history.
+
+The [Western Horizon bridge](dollhouse/lineage/README.md) treats C14 as an independent antecedent to #1001 exteriority convergence. Internal derivational integrity, typed non-amplification and provenance custody cannot bootstrap independent external origin. That boundary complements the implemented pedagogical engine; it does not grant a new experiment or successor stage.
+
 ## Reach rule
 
 Reach for Pedagogue when a product, workflow, ontology, research fixture, or proposed shared mechanism changes one or more of:
@@ -440,6 +479,45 @@ Pedagogue proposes or reframes
 ```
 
 Neither instrument becomes the crown. Neither may silently execute the other's recommendation.
+
+## Gesture → consequence audit
+
+`app/engine/pedagogue-gesture-consequence.js` adds a pure, deterministic review of explicit gesture declarations and observed state snapshots. It supplements the Design Gate; it neither actuates a product nor silently becomes part of its runtime.
+
+Public API:
+
+```javascript
+compilePedagogueGestureConsequenceAudit(declaration)
+```
+
+Input uses `td613.pedagogue-gesture-consequence-case/v0.1`; output uses `td613.pedagogue-gesture-consequence-audit/v0.1`. Cases declare an observation class and source revision, cue-pause/exit availability, an initial bounded state, and ordered steps. Each step carries its action kind, tick, explicit gesture, visible pre-action notice, consequence acknowledgment, bounded item/attempt/result references, and observed state. The closed action vocabulary is `OPEN`, `STAGE`, `SEND`, `WORLD_ANSWER`, `PAUSE_CUE`, `RESUME_CUE`, and `EXIT`.
+
+The auditor keeps these distinctions executable:
+
+- opening or staging cannot silently transmit or create an admitted result;
+- Send requires its own gesture and prior consequence notice, and its declared selection matches what was staged;
+- a world answer refers to a matching pending attempt, while a held attempt preserves the prior admitted result;
+- cue pause changes cue demand alone, keeping custody expiry unchanged;
+- stage, Send, and admission after expiry remain deficits rather than new custody authority;
+- exit can clear staging and cancel a pending attempt without promoting its output;
+- rest/exit omissions, late notices, invisible consequences, state mismatches, and attempt-identity reuse remain distinct findings.
+
+Strict schemas reject missing/extra keys, sparse arrays, accessors, coercion, fractional ticks and malformed identities. Reports are deeply immutable and replay deterministically. They contain no product taxonomy, natural-language comprehension detector, learner profile, user score, automatic redesign, release, or mutation authority.
+
+The observation ceiling is explicit: declared visibility does not establish that a person perceived or understood a notice; the `ADMITTED` observation label does not authenticate a provider result; a synthetic case does not establish production behavior. Actual browser/provider witnesses and authenticated admission remain separately owned evidence.
+
+Two manifestly synthetic proving cases live outside core:
+
+- `tests/fixtures/pedagogue/gesture-consequence-loom-two-stage.json` — a two-stage portable-governance route with a later held continuation;
+- `tests/fixtures/pedagogue/gesture-consequence-revision-review.json` — a bounded document-revision review with an accepted review followed by a held attempt.
+
+Run their shared mechanics and hostile controls with:
+
+```bash
+node --test tests/pedagogue-gesture-consequence.test.mjs
+```
+
+Human closure remains required. CI scope must acknowledge the additive shared engine rather than treating this as a product-only fixture change.
 
 See [`APERTURE.md`](APERTURE.md) for the companion shortcut and the installed Aperture roots.
 

@@ -55,6 +55,51 @@ PEDAGOGUE != APERTURE != ATLAS != FADT
 
 Their outputs meet at Loom / Flow-Core through explicit bounded contracts. None receives automatic release, redesign, merge, deployment, provider, or Vercel authority.
 
+## Bounded audit extensions · 2026-09-30
+
+These additive pure adapters audit declared finite inputs. They do not mutate a
+product, authenticate supplied observations or promote the installed Aperture
+release. Product labels live in proving tests rather than in the generic engines.
+
+| Role | New entrypoint | Bounded question |
+| --- | --- | --- |
+| Pedagogue | `app/engine/pedagogue-gesture-consequence.js` | Did notice precede the declared gesture/consequence, and do pause, expiry, exit and held attempts retain their distinct meanings? |
+| Atlas | `app/engine/dollhouse-continuity-audit.js::runAtlasContinuityAudit` | Which control/result coordinates survived, changed, stayed withheld or remain unknown between declared receiver states? |
+| FADT | `app/engine/dollhouse-continuity-audit.js::runFadtStageAudit` | Does erasing declared stage coordinates collapse different lawful action supports into one occupied fibre? |
+| Aperture | `app/engine/dollhouse-witness-plan.js::auditDollhouseWitnessPlan` | What positive witness, hostile counterexample and unresolved alternative qualify the next proposed observation? |
+
+`app/engine/dollhouse-case-dossier.js::createDollhouseCaseDossier` is a clerk for
+separate findings, source references, evidence classes and disagreements. It
+performs no majority vote, global scoring, artifact authentication or release
+decision. Even unanimous supplied support retains human review. Declared digest
+references require independent byte/authenticity checks outside this clerk.
+
+Run the focused new and inherited hostile contracts:
+
+```bash
+npm run test:dollhouse:audits
+```
+
+Each extension has distinct proving cases and negative controls. A passing
+synthetic contract remains scoped to its declared fixture. Browser observation,
+provider response and empirical acquisition retain separate evidence classes.
+
+## Downloadable source kit
+
+The real discoverable shortcut is [`dollhouse/`](dollhouse/README.md). Canonical
+implementations remain in their existing locations; the exporter assembles their
+static dependency closure and a revision-bound SHA256 manifest.
+
+```bash
+npm run dollhouse:export -- /absolute/new/output-directory
+```
+
+The exporter requires fresh output and rejects missing dependencies, symlinks,
+path escape and unsupported imports. A working-tree candidate must be selected
+explicitly and remains labeled separately from exact committed source. The kit
+includes neither credentials nor user records, and grants no detached task or
+production-trial authority. See the shortcut for verify/replay commands.
+
 
 ## Experimental production-trial authority · RETIRED
 

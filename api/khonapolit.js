@@ -1,6 +1,7 @@
 // Canonical Kʰonapolit boundary. Implementation lives outside /api so one route consumes one Vercel function.
 import geminiReadinessHandler from '../server/gemini-readiness.js';
 import loomTaskHandler from '../server/loom-task.js';
+import loomDemoTaskHandler from '../server/loom-demo-task.js';
 import marrowlineAttachmentHandler from '../server/marrowline-attachment-quality.js';
 import khonapolitHandler from '../server/khonapolit-quality.js';
 import {
@@ -32,6 +33,7 @@ function requestHasAttachments(req = {}) {
 }
 
 export default function handler(req, res) {
+  if (requestedOperation(req) === 'loom-demo-task') return loomDemoTaskHandler(req, res);
   if (requestedOperation(req) === 'loom-task') return loomTaskHandler(req, res);
   if (requestedOperation(req) === 'gemini-readiness') {
     return geminiReadinessHandler(req, res);

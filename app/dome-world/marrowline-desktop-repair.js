@@ -318,21 +318,21 @@ function installUniversalContextPlus(doc, root) {
     if (typeof root.requestAnimationFrame === 'function') root.requestAnimationFrame(callback);
     else (root.setTimeout ?? setTimeout)(callback, 0);
   };
-  let loomCueAcknowledged = false;
   const refreshLoom = () => {
-    let awake = false;
+    const demo = root.__TD613_LOOM_DEMO_STATE__;
+    let awake = Boolean(demo?.pending_steps);
     try {
-      awake = doc.documentElement?.dataset?.loomTaskImport === 'staged'
+      if (!demo) awake = doc.documentElement?.dataset?.loomTaskImport === 'staged'
         && Boolean(peekLastConsumedLoomAiHandoff());
     } catch {}
     plus.dataset.loomAwake = String(awake);
-    plus.dataset.loomAttention = String(awake && !loomCueAcknowledged);
+    plus.dataset.loomAttention = String(awake);
     loomItem.button.dataset.loomAwake = String(awake);
     loomItem.text.textContent = awake ? 'Loom demo' : 'Loom';
-    loomItem.small.textContent = awake ? 'Continue the Loom handoff already staged here' : 'Open Loom in a new tab';
-    if (!awake) loomCueAcknowledged = false;
+    loomItem.small.textContent = awake ? (demo?.aia_sent ? 'Next: #2 · upload the selected Loom demo files' : 'Two steps: #1 portable AIA · #2 selected Loom files') : 'Open Loom in a new tab';
   };
   const stage = async (input, kind) => {
+    if (doc.documentElement.dataset.loomDemoActive === 'true') { setStatus('Finish the governed Loom turn or choose Leave Loom demo before adding ordinary attachments.'); return; }
     root.dispatchEvent?.(new root.CustomEvent('td613:marrowline:attachment-staging-state', {
       detail: { staging: true, kind }
     }));
@@ -362,19 +362,20 @@ function installUniversalContextPlus(doc, root) {
 
   fileInput.addEventListener('change', () => stage(fileInput, 'file'));
   photoInput.addEventListener('change', () => stage(photoInput, 'photo'));
-  fileItem.button.addEventListener('click', () => fileInput.click());
-  photoItem.button.addEventListener('click', () => photoInput.click());
-  loomItem.button.addEventListener('click', () => { close(); openLoom(doc, root); refreshLoom(); });
+  fileItem.button.addEventListener('click', () => { if (root.__TD613_LOOM_DEMO_STATE__?.active) { setStatus('Leave Loom demo before adding ordinary files.'); return; } fileInput.click(); });
+  photoItem.button.addEventListener('click', () => { if (root.__TD613_LOOM_DEMO_STATE__?.active) { setStatus('Leave Loom demo before adding ordinary photos.'); return; } photoInput.click(); });
+  loomItem.button.addEventListener('click', () => {
+    close();
+    if (root.__TD613_LOOM_DEMO_STATE__?.pending_steps) root.dispatchEvent(new root.CustomEvent('td613:marrowline:loom-demo-open'));
+    else openLoom(doc, root);
+    refreshLoom();
+  });
   plus.addEventListener('click', () => {
     const opening = menu.hidden;
     menu.hidden = !opening;
     plus.setAttribute('aria-expanded', String(opening));
     if (opening) {
       refreshLoom();
-      if (plus.dataset.loomAwake === 'true') {
-        loomCueAcknowledged = true;
-        plus.dataset.loomAttention = 'false';
-      }
       nextFrame(position);
     }
   });
@@ -383,9 +384,9 @@ function installUniversalContextPlus(doc, root) {
     plus.dataset.attachmentCount = String(state.count || 0);
   });
   root.addEventListener?.('td613:marrowline:loom-pocket-ready', () => {
-    loomCueAcknowledged = false;
     refreshLoom();
   });
+  root.addEventListener?.('td613:marrowline:loom-demo-state', refreshLoom);
   doc.addEventListener('click', event => {
     if (menu.hidden || menu.contains(event.target) || plus.contains(event.target)) return;
     close();

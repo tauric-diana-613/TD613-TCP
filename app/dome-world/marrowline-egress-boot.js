@@ -123,9 +123,10 @@ async function bootMarrowlineRoom(doc = document, root = window) {
   await import('./marrowline-mobile-shell.js');
   await import('./marrowline-operator-readiness.js');
   await import('./marrowline-gate-pedagogue.js');
-  await import('./marrowline-loom-pocket.js');
   await import('./marrowline-physical-device-repair.js');
   await import('./marrowline-desktop-repair.js');
+  const { bootMarrowlineLoomDemo } = await import('./marrowline-loom-demo.js');
+  await bootMarrowlineLoomDemo(root);
   installCircuitObserver(doc, root);
   const receipt = Object.freeze({
     schema: MARROWLINE_ROOM_BOOT_SCHEMA,
