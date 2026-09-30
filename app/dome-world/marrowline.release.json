@@ -472,7 +472,7 @@
     "unissuedResearchMode": "unchecked-by-default; checking enables SHI; unchecked excludes SHI",
     "safeHarborIssuanceHelp": "/safe-harbor/index.html",
     "fieldMotionControl": "Still the field / Let the field move controls aesthetic living-geometry motion only; Marrowline uses a visible 54s ambient drift and distinct rested opacity without changing application state",
-    "gateInstrumentLayout": "Pedagogue instrument geometry v2: paired Depth/Breadth controls plus one primary and two compact secondary Gate actions on mobile and desktop",
+    "gateInstrumentLayout": "Loom Gate continuity witness precedes the separately preserved adversarial assay; Phase-2 NOW/WHY/NEXT, crossing, admission, receiver continuity and stage-dependent permission are child-legible before optional technical coordinates",
     "mobileStatusMaxWidth": "status is a visually-hidden telemetry node; all operator-facing progress uses the single in-chat vesica piscis indicator",
     "statusPedagogueSequence": [
       "Listening at the shoreline…",
@@ -517,7 +517,7 @@
     "posture": "conversation-with-persistent-instruments",
     "instrumentSurface": "adjacent-panel-gate-default",
     "instrumentTabs": [
-      "Gate",
+      "Loom Gate",
       "Keys",
       "Stories",
       "Receipts"
@@ -573,7 +573,7 @@
     "dockVisibility": "visible whenever observed keyboard occupancy is false; composer focus alone cannot hide chamber navigation",
     "navigationOrder": [
       "Keys",
-      "Gate",
+      "Loom Gate",
       "Chat",
       "Stories",
       "Receipts"
@@ -658,7 +658,8 @@
     "terminalCovenant": "app/dome-world/khonapolit-covenant.js",
     "relayRuntime": "app/dome-world/khonapolit-relay.js",
     "reflexOrder": "app/dome-world/reflex-spine.manifest.json",
-    "restorationPosture": "conversation-first-minimal-utilities-plus-human-liveness-frontier-provider-first-human-surface-local-admission-diagnostic-only-operator-controlled-closure"
+    "restorationPosture": "conversation-first-minimal-utilities-plus-human-liveness-frontier-provider-first-human-surface-local-admission-diagnostic-only-operator-controlled-closure",
+    "loomGateContinuity": "app/dome-world/marrowline-loom-gate-continuity.js"
   },
   "receiptControls": {
     "primary": [
@@ -672,5 +673,6 @@
     "placement": "above bounded technical JSON",
     "authority": "operator-only; no automatic sealing; one-turn browser text recording makes no hidden ingress or screenshot claim"
   },
-  "providerProjectCap": "literal provider-reported monthly spending cap; one attempt and project-scoped HELD, not timed retry or alternate-seat cascade"
+  "providerProjectCap": "literal provider-reported monthly spending cap; one attempt and project-scoped HELD, not timed retry or alternate-seat cascade",
+  "loomGateContinuitySchema": "td613.dome-world.marrowline-loom-gate-continuity/v0.1"
 }
