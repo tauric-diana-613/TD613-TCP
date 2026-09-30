@@ -186,7 +186,7 @@ export function installMarrowlineLoomGateContinuity({
   actions.append(back,localCheck,exportButton);
 
   const separator=el(doc,'aside','','loom-gate-adversarial-separator');
-  separator.append(el(doc,'small','SEPARATE EXPERIMENT'),el(doc,'strong','Adversarial boundary assay stays below'),el(doc,'p','The Local / Public / Operator controls test a different boundary. They do not prove this Loom continuity route, and this continuity witness does not prove their later opsec/infosec claims.'));
+  separator.append(el(doc,'small','SEPARATE EXPERIMENT · DEFERRED'),el(doc,'strong','Adversarial boundary assay preserved for the later Gate pass'),el(doc,'p','The Local / Public / Operator armamentarium tests a different boundary. Phase 2 does not fire it. Its code remains intact for the later opsec/infosec redesign, and this continuity witness supplies it no empirical credit.'));
 
   section.append(head,state,now,consequenceGrid,roleDetails,technical,actions);
   controls.prepend(section);
@@ -219,6 +219,7 @@ export function installMarrowlineLoomGateContinuity({
     localCheck.disabled=!['AIA_SENT','FILES_STAGED','CONTINUING','DONE'].includes(current.phase)||current.busy;
     back.textContent=current.phase==='AIA_SENT'?'Back to Chat · do #2':current.phase==='DONE'?'Back to Chat · continue':'Back to Chat';
     gate.dataset.loomContinuityPhase=current.phase;
+    gate.dataset.loomContinuityActive=String(!['LEFT','EXPIRED'].includes(current.phase));
     root.__TD613_MARROWLINE_LOOM_GATE_CONTINUITY__=copy(current);
     root.dispatchEvent?.(new root.CustomEvent('td613:marrowline:loom-gate-continuity',{detail:copy(current)}));
     return current;
