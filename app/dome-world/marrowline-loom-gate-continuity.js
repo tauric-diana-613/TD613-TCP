@@ -19,7 +19,7 @@ function ensureStylesheet(doc=document){
 function phaseCopy(phase,lastAttempt,busy=false){
   if(busy)return {eyebrow:'PENDING · no new admission yet',now:phase==='AIA_STAGED'?'The browser submitted #1 and is waiting for an admissible response.':'The browser submitted the current governed continuation and is waiting for an admissible response.',why:'Submission is an observed client event; it cannot be relabeled as server admission or model completion before the bound result returns.',next:'Wait, Stop, or let the bounded request return.'};
   if(lastAttempt==='HELD')return {
-    eyebrow:'HELD · prior admitted state preserved',
+    eyebrow:'HELD · stage did not advance',
     now:'The latest attempt did not become current.',
     why:'A held attempt cannot advance Loom stage, replace the admitted predecessor, or widen export authority.',
     next:'Repair or retry the same explicit gesture, or leave Loom mode.'
