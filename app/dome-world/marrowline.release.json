@@ -674,5 +674,19 @@
     "authority": "operator-only; no automatic sealing; one-turn browser text recording makes no hidden ingress or screenshot claim"
   },
   "providerProjectCap": "literal provider-reported monthly spending cap; one attempt and project-scoped HELD, not timed retry or alternate-seat cascade",
-  "loomGateContinuitySchema": "td613.dome-world.marrowline-loom-gate-continuity/v0.1"
+  "loomGateContinuitySchema": "td613.dome-world.marrowline-loom-gate-continuity/v0.1",
+  "loomDemoStageReceiptSchema": "td613.loom.demo-stage-receipt/v0.2",
+  "loomDemoSigner": {
+    "environmentVariable": "TD613_LOOM_DEMO_SIGNING_SECRET",
+    "scheme": "hmac-sha256",
+    "keyId": "td613-loom-demo-stage-v1",
+    "domain": "TD613:LOOM-DEMO:STAGE-RECEIPT:v1",
+    "minimumSecretBytes": 32,
+    "separateAuthorityRequired": true,
+    "crossInstancePredecessorAuthentication": true,
+    "globalLatestState": false,
+    "replayExclusion": false,
+    "forkExclusion": false,
+    "productionReleaseBarrier": "HELD-until-replay-fork-and-release-law-closure"
+  }
 }
