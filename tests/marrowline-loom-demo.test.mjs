@@ -50,6 +50,12 @@ test('Loom demo branches from + and both numbered gestures stage attachment + pr
  assert.equal(parentMenu.hidden,false,'Loom demo opens as a branch of the existing + menu');
  assert.equal(loomParent.getAttribute('aria-expanded'),'true');
  assert.equal(h.doc.querySelector('#loomDemoMenu').hidden,false);
+ plus.click();
+ assert.equal(parentMenu.hidden,true,'closing + closes the parent menu');
+ assert.equal(h.doc.querySelector('#loomDemoMenu').hidden,true,'closing the parent also closes its Loom branch');
+ plus.click();
+ loomParent.click();
+ assert.equal(h.doc.querySelector('#loomDemoMenu').hidden,false);
  const buttons=[...h.doc.querySelectorAll('#loomDemoMenu>button')];
  assert.equal(buttons[0].textContent,'#1: Upload portable AIA');
  assert.equal(buttons[1].textContent,'#2: Upload Loom demo files');
