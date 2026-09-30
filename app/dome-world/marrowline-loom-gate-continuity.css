@@ -188,9 +188,16 @@
   color:#8f99a6;
   font:500 .68rem/1.45 var(--marrowline-chat-sans,system-ui,sans-serif);
 }
-#gatePanel[data-loom-continuity-active="true"]>.panel-body>.gate-controls>.panel-note{
-  color:#9ca5af!important;
-  opacity:.68;
+/* Phase 2 owns the Loom Gate while its continuity route is active.
+   The existing adversarial Local/Public/Operator apparatus remains installed
+   but is intentionally deferred until its separate redesign pass. */
+#gatePanel[data-loom-continuity-active="true"]>.panel-body>.gate-controls>.panel-note,
+#gatePanel[data-loom-continuity-active="true"] #marrowlineGatePedagogue,
+#gatePanel[data-loom-continuity-active="true"] #marrowlineForm,
+#gatePanel[data-loom-continuity-active="true"] #marrowlineStatus,
+#gatePanel[data-loom-continuity-active="true"] .gate-technical-evidence,
+#gatePanel[data-loom-continuity-active="true"]>.panel-body>.gate-output{
+  display:none!important;
 }
 #gatePanel[data-loom-continuity-phase="AIA_SENT"] .loom-gate-continuity,
 #gatePanel[data-loom-continuity-phase="DONE"] .loom-gate-continuity{
