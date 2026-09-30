@@ -1,5 +1,5 @@
 import { consumeLoomAiHandoff } from './holonomy-loom/ai-handoff.js';
-import { createLoomDemoActivation, bindLoomDemoRequest, exportLoomDemoCurrent, loomDemoDigest, loomDemoResult, validateLoomDemoStageReceipt, LOOM_DEMO_REQUEST_SCHEMA } from './holonomy-loom/demo-contract.js';
+import { createLoomDemoActivation, bindLoomDemoRequest, exportLoomDemoCurrent, loomDemoDigest, loomDemoReceiptDigest, loomDemoResult, validateLoomDemoStageReceipt, LOOM_DEMO_REQUEST_SCHEMA } from './holonomy-loom/demo-contract.js';
 import { renderLoomAiResult } from './holonomy-loom/ai-result-view.js';
 import { readLoomAiFailure, describeLoomAiFailure } from './holonomy-loom/ai-failure.js';
 import { ingestGeminiConsumption } from '../gemini-consumption-ledger.js';
@@ -175,12 +175,14 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
         const normalizedResult=loomDemoResult(output,binding.selected.documents);
         const expectedRequestDigest=await loomDemoDigest(request,environment);
         const expectedResultDigest=await loomDemoDigest(normalizedResult,environment);
+        const expectedPredecessorReceiptDigest=operation==='CONTINUE'?await loomDemoReceiptDigest(predecessor,environment):null;
         if(returnedPredecessor.phase!==operation||
           returnedPredecessor.request_id!==request.request_id||
           returnedPredecessor.request_digest!==expectedRequestDigest||
           returnedPredecessor.current_input_digest!==binding.governance.input_digest||
           returnedPredecessor.prior_result_digest!==binding.receipt.prior_result_digest||
-          returnedPredecessor.result_digest!==expectedResultDigest)throw new Error('The server stage receipt did not match this request.');
+          returnedPredecessor.result_digest!==expectedResultDigest||
+          returnedPredecessor.predecessor_receipt_digest!==expectedPredecessorReceiptDigest)throw new Error('The server stage receipt did not match this request.');
         if(!binding.admit(normalizedResult).allowed)throw new Error('The returned result was held by the Loom governor.');
         predecessor=returnedPredecessor;
         lastAdmittedBindingReceipt=copy(binding.receipt);
