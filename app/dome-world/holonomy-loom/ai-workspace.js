@@ -61,13 +61,13 @@ export function mountLoomAiWorkspace(root, environment = window) {
     <div id="aiProjectChoices" class="ai-projects" aria-label="AI demo projects" hidden></div>
     <div class="ai-columns"><section class="ai-composer" aria-label="Your AI task">
       <section id="aiProjectBrief" class="ai-project-brief ai-disclosure" aria-label="Project brief" hidden><p class="mark">PROJECT BRIEF</p><h2 id="aiBriefTitle"></h2><p id="aiBriefText" class="ai-muted"></p><p id="aiBriefRoute" class="ai-muted"></p></section>
-      <div class="ai-task-surface"><label for="aiTask">What should the AI work on?</label><p id="aiTaskCue" class="ai-muted">Edit this box directly. It is the exact instruction the AI will receive when you press Run.</p><textarea id="aiTask" maxlength="12000" placeholder="Ask for a decision, an analysis, a plan. Bring the supporting documents below." aria-describedby="aiTaskCue"></textarea></div>
+      <div class="ai-task-surface"><label id="aiTaskLabel" for="aiTask">What task should travel?</label><p id="aiTaskCue" class="ai-muted">This exact task travels with the selected files and portable rules when you prepare the Portable AIA.</p><textarea id="aiTask" maxlength="12000" placeholder="Ask for a decision, an analysis, a plan. Bring the supporting documents below." aria-describedby="aiTaskCue"></textarea></div>
       <div class="ai-toolbar"><label class="ai-upload">＋ Add documents<input id="aiUpload" type="file" multiple accept=".txt,.md,.csv,.json" aria-label="Add documents"></label><button type="button" id="aiNew">Start my own task</button></div>
       <p class="ai-muted">Text, Markdown, CSV or JSON. New files stay local until you select them.</p>
       <ul id="aiDocuments" class="ai-documents" aria-label="Document sharing"></ul>
       <details id="aiRulesDrawer" class="ai-disclosure"><summary><span>Your portable rules<small>Open to review the instructions and private terms</small></span></summary><label for="aiRules" class="ai-muted">Instructions that travel with the task · one per line</label><textarea id="aiRules" aria-label="Portable rules" rows="3"></textarea><label for="aiPrivate" class="ai-muted">Exact private terms to block locally · one per line</label><textarea id="aiPrivate" aria-label="Local private terms" rows="2"></textarea></details>
-      <div class="ai-send-row"><button type="button" id="aiRun" class="ai-primary">Run with Flow-Core AI ↗</button><button type="button" id="aiStop" hidden>Stop waiting</button><span id="aiSendSummary" class="ai-muted"></span></div>
-      <p class="ai-muted">Sends your task, selected documents and rules to Dome-World’s Flow-Core AI runtime. Local-only documents stay in this tab. Technical route provenance remains available in the request receipt.</p>
+      <div class="ai-send-row"><button type="button" id="aiPreparePortable" class="ai-primary">Prepare Portable AIA</button><button type="button" id="aiRun">Test with Flow-Core AI ↗</button><button type="button" id="aiStop" hidden>Stop waiting</button><span id="aiSendSummary" class="ai-muted"></span></div>
+      <p id="aiRunNote" class="ai-muted">Preparing binds the selected task locally and makes no model request. The optional Flow-Core test sends only the selected task, documents and rules.</p>
       <div id="aiPending" class="ai-pending" hidden><span class="ai-wait-orbit" aria-hidden="true"></span><div><strong id="aiPendingLabel">Preparing your request</strong><span id="aiPendingTime" aria-live="off">The waiting time will appear here.</span></div></div><p id="aiStatus" role="status" aria-live="polite">Choose a project or write your own task.</p>
     </section>
     <aside class="ai-observer" aria-label="Live request field"><div class="ai-phase"><p class="mark">THE ROOM / LIVE ROUTE</p><span class="ai-dot"></span></div>
@@ -79,7 +79,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
       <div class="ai-room-replay"><button type="button" id="aiRoomReplay" disabled>Replay this route</button><button type="button" id="aiRoomLive" hidden>Back to live</button><label id="aiRoomScrubLabel" hidden>Observed event <input id="aiRoomScrub" type="range" min="0" max="0" value="0" aria-label="Replay observed event"></label><p id="aiRoomReplayStatus" class="ai-muted"></p></div><ol id="aiEvents" class="ai-events" aria-label="Request history"></ol>
       <details id="aiInspector" class="ai-inspector"><summary>Inspect this route</summary><p class="ai-muted">The field shows client request events and reported response facts. V, C, P and L retain their separate meanings. Hidden-state reconstructibility remains unmeasured.</p><pre id="aiReceipt">No request yet.</pre></details>
     </aside></div>
-    <details id="aiPortableDrawer" class="ai-disclosure ai-portable-drawer"><summary><span>Continue with another AI<small>Carry this same task and portable rules to another receiver</small></span></summary><p id="aiPortableLead" class="ai-muted">Prepare the current task locally for Marrowline, export, or copy. This step makes no model request.</p><button type="button" id="aiPreparePortable">Prepare portable continuation</button></details>
+    <details id="aiPortableDrawer" class="ai-disclosure ai-portable-drawer"><summary><span>Continue with another AI<small>Carry this same task and portable rules to another receiver</small></span></summary><p id="aiPortableLead" class="ai-muted">Prepare the current demo task locally for Marrowline, export, or copy. This step makes no model request.</p></details>
     <section id="aiResult" class="ai-result" tabindex="-1" aria-label="AI result" hidden><p id="aiResultEyebrow" class="mark">RETURNED THROUGH YOUR LOOM ROUTE</p><h2 id="aiResultTitle">Here’s the work.</h2><div id="aiAnswer" class="ai-answer"></div><details id="aiSubmittedTask" class="ai-submitted-task ai-result-disclosure" hidden><summary>Inspect the exact instruction</summary><p id="aiSubmittedTaskText"></p></details><div id="aiMissing"></div><p id="aiNext"></p><div class="ai-output-actions"><button type="button" id="aiMarrowline" class="ai-primary" disabled>Continue in Marrowline ↗</button><button type="button" id="aiExport" disabled>Export portable AIA</button><button type="button" id="aiCopy" disabled>Copy for another AI</button></div><p class="ai-muted">Marrowline imports the selected task and rules into this tab’s next destination. Portable export carries the same working packet to another receiver.</p></section>`;
   const $ = id => root.querySelector(`#${id}`);
   const portableDefault = 'Prepare the current task locally for Marrowline, export, or copy. This step makes no model request.';
@@ -138,6 +138,17 @@ export function mountLoomAiWorkspace(root, environment = window) {
     workspaceMode = mode;
     root.dataset.loomMode = mode;
     const portable = mode === 'portable';
+    $('aiPreparePortable').classList.toggle('ai-primary', portable);
+    $('aiRun').classList.toggle('ai-primary', !portable);
+    $('aiPreparePortable').textContent = portable ? 'Prepare Portable AIA' : 'Prepare demo as Portable AIA';
+    $('aiRun').textContent = portable ? 'Test with Flow-Core AI ↗' : 'Run demo with Flow-Core AI ↗';
+    $('aiTaskLabel').textContent = portable ? 'What task should travel?' : 'What should the AI work on?';
+    $('aiTaskCue').textContent = portable
+      ? 'This exact task travels with the selected files and portable rules when you prepare the Portable AIA.'
+      : 'Edit this box directly. It is the exact instruction the AI receives when you press Run demo.';
+    $('aiRunNote').textContent = portable
+      ? 'Preparing binds the selected task locally and makes no model request. The optional Flow-Core test sends only the selected task, selected documents and portable rules.'
+      : 'Run demo sends the fictional task, selected documents and rules to Dome-World’s Flow-Core AI runtime. Local-only documents stay in this tab.';
     $('aiPortableMode').setAttribute('aria-selected', String(portable));
     $('aiDemoMode').setAttribute('aria-selected', String(!portable));
     $('aiPortableModePanel').hidden = !portable;
@@ -259,7 +270,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   $('aiNew').addEventListener('click',()=>{load(null);$('aiTask').focus();});
   $('aiUpload').addEventListener('change',async event=>{const uploadVersion=version;try{const incoming=await Promise.all(Array.from(event.target.files).map(readLoomDocument));if(disposed||busy||version!==uploadVersion)throw new Error('Workspace changed while reading the files. Select them again for the current task.');if(documents.length+incoming.length>8)throw new Error('Use up to eight documents in this workspace.');invalidate();documents.push(...incoming);renderDocs();project('prepared');status('Documents opened locally. Select only the files the AI should receive.');}catch(error){if(!disposed)status(error.message,true);}finally{if(!disposed)event.target.value='';}});
   function lock(value){busy=value;replayControls();$('aiStop').hidden=!value;
-    $('aiPending').hidden=!value;$('aiRun').textContent=value?'Working…':'Run with Flow-Core AI ↗';
+    $('aiPending').hidden=!value;
     if(pendingTimer!==null){environment.clearInterval(pendingTimer);pendingTimer=null;}
     if(value){requestStarted=environment.performance.now();const tick=(initial=false)=>{if(initial||!environment.document.hidden)$('aiPendingTime').textContent=`${Math.floor((environment.performance.now()-requestStarted)/1000)} seconds elapsed · you can stop waiting`;};tick(true);pendingTimer=environment.setInterval(()=>tick(),1000);}
     root.setAttribute('aria-busy',String(value));['aiTask','aiRules','aiPrivate','aiUpload','aiNew','aiPreparePortable','aiPortableMode','aiDemoMode','aiShi'].forEach(id=>$(id).disabled=value);root.querySelectorAll('[data-project],#aiDocuments input,#aiDocuments button').forEach(n=>n.disabled=value);summary();refreshIssuance();
