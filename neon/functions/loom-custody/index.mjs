@@ -12,6 +12,7 @@ const RESERVATION_MS=5*60*1000;
 const TEAM='tauric-diana-s-projects';
 const PROJECT='td-613-tcp';
 const ENVIRONMENT='production';
+const OWNER_ID='team_pX5L7AFivMzMU1lH28Y6RIhX';
 const TEAM_ISSUER=`https://oidc.vercel.com/${TEAM}`;
 const GLOBAL_ISSUER='https://oidc.vercel.com';
 const TEAM_AUDIENCE=`https://vercel.com/${TEAM}`;
@@ -92,7 +93,7 @@ async function verifyVercelOidc(token){
   const audiences=Array.isArray(claims.aud)?claims.aud:[claims.aud];
   if(!audiences.some(a=>[TEAM_AUDIENCE,GLOBAL_AUDIENCE].includes(a)))throw new Error('OIDC_AUDIENCE');
   if(claims.sub!==SUBJECT)throw new Error('OIDC_SUBJECT');
-  if(claims.owner!==TEAM||claims.project!==PROJECT||claims.environment!==ENVIRONMENT)throw new Error('OIDC_SCOPE');
+  if(claims.owner!==TEAM||claims.owner_id!==OWNER_ID||claims.project!==PROJECT||claims.environment!==ENVIRONMENT)throw new Error('OIDC_SCOPE');
   if(!Number.isFinite(claims.exp)||claims.exp<now-30)throw new Error('OIDC_EXPIRED');
   if(Number.isFinite(claims.nbf)&&claims.nbf>now+30)throw new Error('OIDC_NOT_YET_VALID');
   return claims;
@@ -146,7 +147,15 @@ async function reserve(body){
   const key=await signerKey();
   let predecessorDigest=null;
   if(phase==='CONTINUE'){
-    verifyReceipt(predecessor,key);
+    const predecessorBody=verifyReceipt(predecessor,key);
+    if(predecessorBody.schema!==RECEIPT_SCHEMA||
+       predecessorBody.activation_digest!==activation_digest||
+       !['ACTIVATE','CONTINUE'].includes(predecessorBody.phase)||
+       predecessorBody.expires_at!==expires_at||
+       predecessorBody.admission_state!=='ADMITTED'||
+       predecessorBody.authority_transferred!==false){
+      return held('LOOM_DEMO_PREDECESSOR_SCOPE_INVALID',409);
+    }
     predecessorDigest=sha256(predecessor);
     if(predecessorDigest!==predecessor_receipt_digest)return held('LOOM_DEMO_PREDECESSOR_DIGEST_MISMATCH',409);
   }else if(predecessor!==null&&predecessor!==undefined){
@@ -180,32 +189,57 @@ async function reserve(body){
 }
 async function commit(body){
   const stage=body.stage_body;
+  const expectedPolicy=stage?.phase==='ACTIVATE'?'AIA_ONLY':'SELECTED_FILES_BOUND';
   if(!stage||stage.schema!==RECEIPT_SCHEMA||
      !/^[a-f0-9]{64}$/.test(String(stage.activation_digest||''))||
+     typeof stage.request_id!=='string'||!/^[a-zA-Z0-9_-]{1,100}$/.test(stage.request_id)||
      !/^[a-f0-9]{64}$/.test(String(stage.request_digest||''))||
+     !/^[a-f0-9]{64}$/.test(String(stage.current_input_digest||''))||
+     !(stage.prior_result_digest===null||/^[a-f0-9]{64}$/.test(String(stage.prior_result_digest||'')))||
      !/^[a-f0-9]{64}$/.test(String(stage.result_digest||''))||
      !['ACTIVATE','CONTINUE'].includes(stage.phase)||
+     !(stage.predecessor_receipt_digest===null||/^[a-f0-9]{64}$/.test(String(stage.predecessor_receipt_digest||'')))||
+     !Number.isSafeInteger(stage.expires_at)||
+     stage.expires_at<=Date.now()||
      stage.admission_state!=='ADMITTED'||
+     stage.stage_policy!==expectedPolicy||
      stage.authority_transferred!==false||
-     stage.expires_at<=Date.now()){
+     (stage.phase==='ACTIVATE'&&stage.predecessor_receipt_digest!==null)||
+     (stage.phase==='CONTINUE'&&stage.predecessor_receipt_digest===null)){
     return held('LOOM_DEMO_HEAD_COMMIT_INVALID',400);
   }
   const key=await signerKey();
   const receipt=signReceipt(stage,key);
   const receiptDigest=sha256(receipt);
-  let rows=await sql(`UPDATE ${HEAD_TABLE}
-    SET head_receipt_digest=$3,
-        head_request_id=$4,
-        head_phase=$5,
-        pending_request_digest=NULL,
-        pending_until=NULL,
-        updated_at=now()
-    WHERE activation_digest=$1
-      AND pending_request_digest=$2
-      AND expires_at>now()
-    RETURNING activation_digest`,[
-      stage.activation_digest,stage.request_digest,receiptDigest,stage.request_id,stage.phase
-    ]);
+  const rows=stage.phase==='ACTIVATE'
+    ? await sql(`UPDATE ${HEAD_TABLE}
+        SET head_receipt_digest=$3,
+            head_request_id=$4,
+            head_phase=$5,
+            pending_request_digest=NULL,
+            pending_until=NULL,
+            updated_at=now()
+        WHERE activation_digest=$1
+          AND pending_request_digest=$2
+          AND head_receipt_digest IS NULL
+          AND expires_at>now()
+        RETURNING activation_digest`,[
+          stage.activation_digest,stage.request_digest,receiptDigest,stage.request_id,stage.phase
+        ])
+    : await sql(`UPDATE ${HEAD_TABLE}
+        SET head_receipt_digest=$3,
+            head_request_id=$4,
+            head_phase=$5,
+            pending_request_digest=NULL,
+            pending_until=NULL,
+            updated_at=now()
+        WHERE activation_digest=$1
+          AND pending_request_digest=$2
+          AND head_receipt_digest=$6
+          AND expires_at>now()
+        RETURNING activation_digest`,[
+          stage.activation_digest,stage.request_digest,receiptDigest,stage.request_id,stage.phase,stage.predecessor_receipt_digest
+        ]);
   if(!rows.length){
     rows=await sql(`SELECT head_receipt_digest,head_request_id,head_phase
       FROM ${HEAD_TABLE}
