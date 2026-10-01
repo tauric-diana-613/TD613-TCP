@@ -86,6 +86,9 @@ try {
       assert.equal(await page.locator('#loomLegacy > summary').isVisible(),false,'laboratory estate stays under Loom Demo rather than competing with the builder');
       assert.match(await page.locator('#aiShiStatus').innerText(),/Issuance held/);
       assert.equal(await page.locator('#aiIssuanceGate a').getAttribute('href'),'/safe-harbor/index.html');
+      assert.equal(await page.locator('.ai-projection-depth').getAttribute('open'),null,'technical governance detail stays optional on entry');
+      assert.equal(await page.locator('#aiProjectionTravel').isVisible(),true);
+      assert.equal(await page.locator('#aiProjectionStay').isVisible(),true);
       assert.equal(await page.locator('#loomLivingGeometry canvas').count(), 1, 'one Dome-Art canvas is mounted under the workspace clock; raster readiness remains a renderer concern');
 
       assert.equal(await page.locator('.ai-observer').isVisible(),false,'the live request theater does not dominate Portable AIA mode');
@@ -96,6 +99,7 @@ try {
       await page.locator('#aiPreparePortable').click();
       await page.waitForFunction(() => document.querySelector('#aiResult') && !document.querySelector('#aiResult').hidden);
       assert.equal(requests.length,0,'local Portable AIA preparation makes no provider request');
+      assert.equal(await page.locator('#aiResultTitle').innerText(),'Your Portable AIA is prepared locally.');
       assert.equal(await page.locator('#aiMarrowline').isDisabled(),true,'Marrowline issuance stays held without SHI in Portable AIA mode');
       assert.equal(await page.locator('#aiExport').isDisabled(),true,'export stays held without SHI in Portable AIA mode');
       assert.match(await page.locator('#aiAnswer').innerText(),/made no model request/i);
