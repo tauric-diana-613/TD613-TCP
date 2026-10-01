@@ -203,7 +203,7 @@ export function getMarrowlineAttachmentSummaries() {
   return attachmentState().attachments.map(item => ({ ...item }));
 }
 
-export async function stageMarrowlineAttachments(fileList, { kind = 'file', environment = globalThis } = {}) {
+export async function stageMarrowlineAttachments(fileList, { kind = 'file', environment = globalThis, onStaged = null } = {}) {
   const files = Array.from(fileList || []);
   if (!files.length) return attachmentState();
   if (!['file', 'photo'].includes(kind)) throw new TypeError('Attachment kind must be file or photo.');
@@ -247,6 +247,9 @@ export async function stageMarrowlineAttachments(fileList, { kind = 'file', envi
     });
   }
   attachments = [...attachments, ...next];
+  // Call ownership is independent of other staging calls finishing during an
+  // asynchronous file read. Notify only after the caller knows its exact ids.
+  onStaged?.(next.map(item=>item.id));
   return notify(environment);
 }
 

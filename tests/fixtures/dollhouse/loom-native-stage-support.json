@@ -1,0 +1,16 @@
+{
+  "states": [
+    {"id":"arrival","conditioning":{"surface":"native-chat","stage":"ARRIVED","admission":"NONE","head":"NONE"},"support":["EXIT","REST","STAGE_AIA"]},
+    {"id":"activation-staged","conditioning":{"surface":"native-chat","stage":"AIA_STAGED","admission":"NONE","head":"NONE"},"support":["EXIT","REST","SEND_AIA"]},
+    {"id":"activation-held","conditioning":{"surface":"native-chat","stage":"AIA_STAGED","admission":"HELD","head":"NONE"},"support":["EXIT","REST","SEND_AIA"]},
+    {"id":"activation-admitted","conditioning":{"surface":"native-chat","stage":"AIA_SENT","admission":"ADMITTED","head":"ACTIVATION"},"support":["EXIT","REST","STAGE_FILES"]},
+    {"id":"files-staged","conditioning":{"surface":"native-chat","stage":"FILES_STAGED","admission":"ADMITTED","head":"ACTIVATION"},"support":["EXIT","REST","SEND_FILES"]},
+    {"id":"files-pending","conditioning":{"surface":"native-chat","stage":"CONTINUING","admission":"PENDING","head":"ACTIVATION"},"support":["EXIT","REST","STOP"]},
+    {"id":"current-admitted","conditioning":{"surface":"native-chat","stage":"DONE","admission":"ADMITTED","head":"CURRENT"},"support":["EXIT","REST","EXPORT_CURRENT","SEND_FOLLOWUP"]},
+    {"id":"followup-held","conditioning":{"surface":"native-chat","stage":"DONE","admission":"HELD","head":"CURRENT"},"support":["EXIT","REST","EXPORT_CURRENT","SEND_FOLLOWUP"]},
+    {"id":"historic-admitted","conditioning":{"surface":"native-chat","stage":"DONE","admission":"ADMITTED","head":"STALE"},"support":["EXIT","REST"]},
+    {"id":"malformed-transfer","conditioning":{"surface":"native-chat","stage":"REJECTED","admission":"MALFORMED","head":"NONE"},"support":["EXIT","REST"]},
+    {"id":"ordinary-entry","conditioning":{"surface":"native-chat","stage":"ORDINARY","admission":"ORDINARY","head":"NONE"},"support":["EXIT","REST","SEND_ORDINARY"]}
+  ],
+  "retain": ["stage","admission","head"]
+}

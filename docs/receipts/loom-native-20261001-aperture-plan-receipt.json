@@ -1,0 +1,487 @@
+{
+  "schema": "td613.dollhouse.witness-plan-receipt/v0.1",
+  "agent": "APERTURE",
+  "adapter_status": "BOUNDED_EXTERNAL_AUDIT",
+  "disposition": "PROPOSE",
+  "basis": [
+    "DERIVED_FROM_DECLARED_PLAN_ONLY",
+    "PER_CLAIM_FINDINGS_RETAINED_WITHOUT_EVIDENCE_CLASS_PROMOTION"
+  ],
+  "source_revision": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f; proposed repair not yet accepted",
+  "source_status": "OPERATOR_DECLARED_UNAUTHENTICATED",
+  "source_revision_authenticated": false,
+  "installed_aperture_identity_changed": false,
+  "claim_verified": false,
+  "claims": [
+    {
+      "claim_id": "native-runtime",
+      "claim_class": "SCOPED_BEHAVIOR",
+      "disposition": "PROPOSE",
+      "basis": [
+        "DECLARED_DISCRIMINATING_OBSERVATION_REQUIRES_SEPARATE_HUMAN_APPROVAL"
+      ],
+      "declaration": {
+        "id": "native-runtime",
+        "claim_class": "SCOPED_BEHAVIOR",
+        "statement": "The proposed route uses native pending feedback, conversation rendering and reply controls.",
+        "extent": "DECLARED_SCOPE_ONLY",
+        "observation_scope": {
+          "description": "One bounded Loom arrival and native Marrowline episode",
+          "objects": [
+            "ACTIVATE",
+            "CONTINUE",
+            "ordinary chat"
+          ],
+          "bounded": true
+        },
+        "instrument": {
+          "id": "source-and-reported-episode",
+          "description": "Inspect source and the root session reported episode; artifact references remain unauthenticated."
+        },
+        "evidence_class": "DECLARATION",
+        "positive_witness": {
+          "description": "Old desktop contrast identifies missing native motion and special assessment rendering.",
+          "artifact_refs": [
+            "docs/receipts/loom-native-20261001-aperture.md"
+          ]
+        },
+        "hostile_counterexample": {
+          "description": "A separate transcript or no visible pending turn refutes native participation.",
+          "artifact_refs": [
+            "docs/receipts/loom-native-20261001-aperture.md#actual-route-witness-schedule"
+          ]
+        },
+        "unresolved_alternatives": [
+          "native response exists only in ordinary chat",
+          "pending event is emitted but native motion or controls do not respond"
+        ],
+        "required_next_observation": {
+          "description": "Exercise two native sends and ordinary direct-entry comparison on the candidate.",
+          "observation_scope": {
+            "description": "The declared repair candidate only",
+            "objects": [
+              "ACTIVATE",
+              "CONTINUE",
+              "ordinary chat"
+            ],
+            "bounded": true
+          },
+          "instrument": {
+            "id": "supported-actual-route-browser",
+            "description": "Observe actual route, controls, response motion and visible consequences without claiming physical-device equivalence."
+          },
+          "evidence_class": "BROWSER_WITNESS",
+          "distinguishes": [
+            "native response exists only in ordinary chat",
+            "pending event is emitted but native motion or controls do not respond"
+          ],
+          "execution": false,
+          "authority": "HUMAN_APPROVAL_REQUIRED"
+        }
+      },
+      "evidence_class": "DECLARATION",
+      "evidence_ceiling": "A stated plan or assertion supplies no independently observed behavior.",
+      "next_evidence_ceiling": "A declared browser observation covers the inspected surface and actions; provider semantics and external origin require their own evidence.",
+      "declared_target_alternatives": [
+        "native response exists only in ordinary chat",
+        "pending event is emitted but native motion or controls do not respond"
+      ],
+      "unresolved_beyond_claim_scope": [
+        "UNOBSERVED_CONTEXT_BEHAVIOR_UNRESOLVED"
+      ],
+      "observation_performed": false,
+      "artifact_references_authenticated": false,
+      "claim_verified": false,
+      "authority": {
+        "execution": false,
+        "automatic_observation": false,
+        "automatic_experiment_execution": false,
+        "provider_authority": false,
+        "release_authority": false,
+        "production_mutation": false,
+        "promotion_authority": false,
+        "human_closure_required": true
+      }
+    },
+    {
+      "claim_id": "mobile-send",
+      "claim_class": "SCOPED_BEHAVIOR",
+      "disposition": "PROPOSE",
+      "basis": [
+        "DECLARED_DISCRIMINATING_OBSERVATION_REQUIRES_SEPARATE_HUMAN_APPROVAL"
+      ],
+      "declaration": {
+        "id": "mobile-send",
+        "claim_class": "SCOPED_BEHAVIOR",
+        "statement": "One explicit Send from a focused preloaded multiline composer starts exactly one visible request in the declared narrow viewport.",
+        "extent": "DECLARED_SCOPE_ONLY",
+        "observation_scope": {
+          "description": "One bounded Loom arrival and native Marrowline episode",
+          "objects": [
+            "390px composer",
+            "focused textarea",
+            "Send",
+            "Stop"
+          ],
+          "bounded": true
+        },
+        "instrument": {
+          "id": "source-and-reported-episode",
+          "description": "Inspect source and the root session reported episode; artifact references remain unauthenticated."
+        },
+        "evidence_class": "DECLARATION",
+        "positive_witness": {
+          "description": "Existing source repairs pointerdown/requestSubmit; user later saw an answer.",
+          "artifact_refs": [
+            "docs/receipts/loom-native-20261001-aperture.md"
+          ]
+        },
+        "hostile_counterexample": {
+          "description": "A first press that only blurs, duplicate request, or obscured Send refutes the scoped behavior.",
+          "artifact_refs": [
+            "docs/receipts/loom-native-20261001-aperture.md#actual-route-witness-schedule"
+          ]
+        },
+        "unresolved_alternatives": [
+          "keyboard blur prevents first Send",
+          "request runs but missing pending feedback looks inert",
+          "custom transcript bypasses native mobile scroll custody"
+        ],
+        "required_next_observation": {
+          "description": "Use a supported approximately 390px actual-route instrument, focus/edit prompt, Send once, scroll, Stop and retry. Physical iPhone behavior remains separate.",
+          "observation_scope": {
+            "description": "The declared repair candidate only",
+            "objects": [
+              "390px composer",
+              "focused textarea",
+              "Send",
+              "Stop"
+            ],
+            "bounded": true
+          },
+          "instrument": {
+            "id": "supported-actual-route-browser",
+            "description": "Observe actual route, controls, response motion and visible consequences without claiming physical-device equivalence."
+          },
+          "evidence_class": "BROWSER_WITNESS",
+          "distinguishes": [
+            "keyboard blur prevents first Send",
+            "request runs but missing pending feedback looks inert",
+            "custom transcript bypasses native mobile scroll custody"
+          ],
+          "execution": false,
+          "authority": "HUMAN_APPROVAL_REQUIRED"
+        }
+      },
+      "evidence_class": "DECLARATION",
+      "evidence_ceiling": "A stated plan or assertion supplies no independently observed behavior.",
+      "next_evidence_ceiling": "A declared browser observation covers the inspected surface and actions; provider semantics and external origin require their own evidence.",
+      "declared_target_alternatives": [
+        "keyboard blur prevents first Send",
+        "request runs but missing pending feedback looks inert",
+        "custom transcript bypasses native mobile scroll custody"
+      ],
+      "unresolved_beyond_claim_scope": [
+        "UNOBSERVED_CONTEXT_BEHAVIOR_UNRESOLVED"
+      ],
+      "observation_performed": false,
+      "artifact_references_authenticated": false,
+      "claim_verified": false,
+      "authority": {
+        "execution": false,
+        "automatic_observation": false,
+        "automatic_experiment_execution": false,
+        "provider_authority": false,
+        "release_authority": false,
+        "production_mutation": false,
+        "promotion_authority": false,
+        "human_closure_required": true
+      }
+    },
+    {
+      "claim_id": "fresh-arrival",
+      "claim_class": "SCOPED_BEHAVIOR",
+      "disposition": "PROPOSE",
+      "basis": [
+        "DECLARED_DISCRIMINATING_OBSERVATION_REQUIRES_SEPARATE_HUMAN_APPROVAL"
+      ],
+      "declaration": {
+        "id": "fresh-arrival",
+        "claim_class": "SCOPED_BEHAVIOR",
+        "statement": "Valid Loom arrival opens fresh native home while saved ordinary threads remain accessible.",
+        "extent": "DECLARED_SCOPE_ONLY",
+        "observation_scope": {
+          "description": "One bounded Loom arrival and native Marrowline episode",
+          "objects": [
+            "returning-user saved thread",
+            "valid handoff",
+            "fresh home"
+          ],
+          "bounded": true
+        },
+        "instrument": {
+          "id": "source-and-reported-episode",
+          "description": "Inspect source and the root session reported episode; artifact references remain unauthenticated."
+        },
+        "evidence_class": "DECLARATION",
+        "positive_witness": {
+          "description": "Operator reports newest thread currently opens instead of home.",
+          "artifact_refs": [
+            "docs/receipts/loom-native-20261001-aperture.md"
+          ]
+        },
+        "hostile_counterexample": {
+          "description": "Arrival selecting an old thread or deleting saved data refutes the repair.",
+          "artifact_refs": [
+            "docs/receipts/loom-native-20261001-aperture.md#actual-route-witness-schedule"
+          ]
+        },
+        "unresolved_alternatives": [
+          "latest saved conversation contaminates Loom arrival",
+          "fresh home works only for first-time users"
+        ],
+        "required_next_observation": {
+          "description": "Create a saved ordinary thread, perform a new Loom handoff, observe initial home and reopen the preserved saved thread.",
+          "observation_scope": {
+            "description": "The declared repair candidate only",
+            "objects": [
+              "returning-user saved thread",
+              "valid handoff",
+              "fresh home"
+            ],
+            "bounded": true
+          },
+          "instrument": {
+            "id": "supported-actual-route-browser",
+            "description": "Observe actual route, controls, response motion and visible consequences without claiming physical-device equivalence."
+          },
+          "evidence_class": "BROWSER_WITNESS",
+          "distinguishes": [
+            "latest saved conversation contaminates Loom arrival",
+            "fresh home works only for first-time users"
+          ],
+          "execution": false,
+          "authority": "HUMAN_APPROVAL_REQUIRED"
+        }
+      },
+      "evidence_class": "DECLARATION",
+      "evidence_ceiling": "A stated plan or assertion supplies no independently observed behavior.",
+      "next_evidence_ceiling": "A declared browser observation covers the inspected surface and actions; provider semantics and external origin require their own evidence.",
+      "declared_target_alternatives": [
+        "latest saved conversation contaminates Loom arrival",
+        "fresh home works only for first-time users"
+      ],
+      "unresolved_beyond_claim_scope": [
+        "UNOBSERVED_CONTEXT_BEHAVIOR_UNRESOLVED"
+      ],
+      "observation_performed": false,
+      "artifact_references_authenticated": false,
+      "claim_verified": false,
+      "authority": {
+        "execution": false,
+        "automatic_observation": false,
+        "automatic_experiment_execution": false,
+        "provider_authority": false,
+        "release_authority": false,
+        "production_mutation": false,
+        "promotion_authority": false,
+        "human_closure_required": true
+      }
+    },
+    {
+      "claim_id": "stage-separation",
+      "claim_class": "FINITE_LITERAL_EXCLUSION",
+      "disposition": "PROPOSE",
+      "basis": [
+        "DECLARED_DISCRIMINATING_OBSERVATION_REQUIRES_SEPARATE_HUMAN_APPROVAL"
+      ],
+      "declaration": {
+        "id": "stage-separation",
+        "claim_class": "FINITE_LITERAL_EXCLUSION",
+        "statement": "ACTIVATE omits selected-file bodies and CONTINUE omits finite declared local-only literals.",
+        "extent": "DECLARED_SCOPE_ONLY",
+        "observation_scope": {
+          "description": "One bounded Loom arrival and native Marrowline episode",
+          "objects": [
+            "ACTIVATE request",
+            "CONTINUE request",
+            "local-only literal bank"
+          ],
+          "bounded": true
+        },
+        "instrument": {
+          "id": "source-and-reported-episode",
+          "description": "Inspect source and the root session reported episode; artifact references remain unauthenticated."
+        },
+        "evidence_class": "DECLARATION",
+        "positive_witness": {
+          "description": "Source stages activation separately from selected file bodies.",
+          "artifact_refs": [
+            "docs/receipts/loom-native-20261001-aperture.md"
+          ]
+        },
+        "hostile_counterexample": {
+          "description": "Injected local literals or selected bodies in ACTIVATE refute finite exclusion.",
+          "artifact_refs": [
+            "docs/receipts/loom-native-20261001-aperture.md#actual-route-witness-schedule"
+          ]
+        },
+        "unresolved_alternatives": [
+          "native runtime serializes all attachments into ACTIVATE",
+          "local-only material enters native history or export"
+        ],
+        "required_next_observation": {
+          "description": "Inspect finite request/export fixture bytes including injected local literals.",
+          "observation_scope": {
+            "description": "The declared repair candidate only",
+            "objects": [
+              "ACTIVATE request",
+              "CONTINUE request",
+              "local-only literal bank"
+            ],
+            "bounded": true
+          },
+          "instrument": {
+            "id": "finite-hostile-custody-harness",
+            "description": "Evaluate finite stage/head/predecessor counterexamples and export bytes; no live behavior follows from this instrument."
+          },
+          "evidence_class": "OFFLINE_TEST",
+          "distinguishes": [
+            "native runtime serializes all attachments into ACTIVATE",
+            "local-only material enters native history or export"
+          ],
+          "execution": false,
+          "authority": "HUMAN_APPROVAL_REQUIRED"
+        }
+      },
+      "evidence_class": "DECLARATION",
+      "evidence_ceiling": "A stated plan or assertion supplies no independently observed behavior.",
+      "next_evidence_ceiling": "A finite offline fixture witnesses only its tested inputs and harness; live behavior and external origin remain unmeasured.",
+      "declared_target_alternatives": [
+        "native runtime serializes all attachments into ACTIVATE",
+        "local-only material enters native history or export"
+      ],
+      "unresolved_beyond_claim_scope": [
+        "UNIVERSAL_SECRECY_UNRESOLVED",
+        "UNTESTED_ENCODING_OR_PROJECTION_LEAKAGE_UNRESOLVED"
+      ],
+      "observation_performed": false,
+      "artifact_references_authenticated": false,
+      "claim_verified": false,
+      "authority": {
+        "execution": false,
+        "automatic_observation": false,
+        "automatic_experiment_execution": false,
+        "provider_authority": false,
+        "release_authority": false,
+        "production_mutation": false,
+        "promotion_authority": false,
+        "human_closure_required": true
+      }
+    },
+    {
+      "claim_id": "latest-predecessor",
+      "claim_class": "SIGNED_PREDECESSOR_CONTINUITY",
+      "disposition": "PROPOSE",
+      "basis": [
+        "DECLARED_DISCRIMINATING_OBSERVATION_REQUIRES_SEPARATE_HUMAN_APPROVAL"
+      ],
+      "declaration": {
+        "id": "latest-predecessor",
+        "claim_class": "SIGNED_PREDECESSOR_CONTINUITY",
+        "statement": "Only newest admitted governed result binds immediate predecessor and current export.",
+        "extent": "DECLARED_SCOPE_ONLY",
+        "observation_scope": {
+          "description": "One bounded Loom arrival and native Marrowline episode",
+          "objects": [
+            "ACTIVATE receipt",
+            "CONTINUE receipt",
+            "failed attempt",
+            "current export"
+          ],
+          "bounded": true
+        },
+        "instrument": {
+          "id": "source-and-reported-episode",
+          "description": "Inspect source and the root session reported episode; artifact references remain unauthenticated."
+        },
+        "evidence_class": "DECLARATION",
+        "positive_witness": {
+          "description": "Existing route validates signed receipt fields before advancement.",
+          "artifact_refs": [
+            "docs/receipts/loom-native-20261001-aperture.md"
+          ]
+        },
+        "hostile_counterexample": {
+          "description": "Stale sibling, malformed receipt or failed attempt changing current export refutes continuity.",
+          "artifact_refs": [
+            "docs/receipts/loom-native-20261001-aperture.md#actual-route-witness-schedule"
+          ]
+        },
+        "unresolved_alternatives": [
+          "native history allows stale or ordinary reply to become governed head",
+          "export serializes an older answer after successful continuation"
+        ],
+        "required_next_observation": {
+          "description": "Exercise finite stale/sibling/held controls; separately acquire current export bytes and live durable-head/provider receipts.",
+          "observation_scope": {
+            "description": "The declared repair candidate only",
+            "objects": [
+              "ACTIVATE receipt",
+              "CONTINUE receipt",
+              "failed attempt",
+              "current export"
+            ],
+            "bounded": true
+          },
+          "instrument": {
+            "id": "finite-hostile-custody-harness",
+            "description": "Evaluate finite stage/head/predecessor counterexamples and export bytes; no live behavior follows from this instrument."
+          },
+          "evidence_class": "OFFLINE_TEST",
+          "distinguishes": [
+            "native history allows stale or ordinary reply to become governed head",
+            "export serializes an older answer after successful continuation"
+          ],
+          "execution": false,
+          "authority": "HUMAN_APPROVAL_REQUIRED"
+        }
+      },
+      "evidence_class": "DECLARATION",
+      "evidence_ceiling": "A stated plan or assertion supplies no independently observed behavior.",
+      "next_evidence_ceiling": "A finite offline fixture witnesses only its tested inputs and harness; live behavior and external origin remain unmeasured.",
+      "declared_target_alternatives": [
+        "native history allows stale or ordinary reply to become governed head",
+        "export serializes an older answer after successful continuation"
+      ],
+      "unresolved_beyond_claim_scope": [
+        "GLOBAL_LATEST_STATE_UNRESOLVED",
+        "REPLAY_RESISTANCE_UNRESOLVED",
+        "SIGNER_AND_SOURCE_AUTHENTICITY_UNVERIFIED"
+      ],
+      "observation_performed": false,
+      "artifact_references_authenticated": false,
+      "claim_verified": false,
+      "authority": {
+        "execution": false,
+        "automatic_observation": false,
+        "automatic_experiment_execution": false,
+        "provider_authority": false,
+        "release_authority": false,
+        "production_mutation": false,
+        "promotion_authority": false,
+        "human_closure_required": true
+      }
+    }
+  ],
+  "authority": {
+    "execution": false,
+    "automatic_observation": false,
+    "automatic_experiment_execution": false,
+    "provider_authority": false,
+    "release_authority": false,
+    "production_mutation": false,
+    "promotion_authority": false,
+    "human_closure_required": true
+  }
+}

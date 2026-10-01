@@ -66,8 +66,8 @@ test('real Loom arrival, inspection, close and staging are local preparation, no
     const menu = h.doc.querySelector('#loomDemoMenu');
     const choices = [...menu.querySelectorAll('button')];
     assert.equal(menu.hidden, false);
-    assert.equal(choices[0].textContent, '#1: Upload portable AIA');
-    assert.equal(choices[1].textContent, '#2: Upload Loom demo files');
+    assert.equal(choices[0].textContent, '1 · Attach Loom handoff');
+    assert.equal(choices[1].textContent, '2 · Attach selected files');
     assert.equal(choices[1].disabled, true);
     h.doc.dispatchEvent(new h.root.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     assert.equal(menu.hidden, true);
@@ -79,27 +79,37 @@ test('real Loom arrival, inspection, close and staging are local preparation, no
     assert.equal(getMarrowlineAttachments().length, 1);
     assert.equal(h.controller.snapshot().aia_sent, false);
     assert.equal(choices[1].disabled, true);
-    assert.match(h.doc.querySelector('.loom-demo-composer-note').textContent, /Send attached Loom first/);
+    assert.equal(h.doc.querySelector('.loom-demo-composer-note'), null);
+    assert.equal(h.doc.querySelector('#loomDemoMessages'), null);
+    assert.equal(h.doc.querySelector('#khonapolitMessages').hidden, false);
+    assert.match(h.doc.querySelector('#khonapolitPrompt').value, /Receive the attached Loom Portable AIA/);
+    assert.match(h.doc.querySelector('#khonapolitTerminalStatus').textContent, /selected files have not been sent/);
+    assert.equal(h.doc.activeElement, h.doc.querySelector('#khonapolitPrompt'));
+    assert.equal(menu.querySelectorAll('button')[2].hidden, true);
     const after = { ...zeroEffects(), retrieval_requests: h.calls() };
     assert.equal(verifyPracticeFixtureLoad(practice, { before, after }).no_effects, true);
   } finally { h.close(); }
 });
 
-test('leaving a staged Loom route is local exit, restoring ordinary chat without importing its transcript', async () => {
+test('ending a staged Loom route is local exit in the submenu, retaining the native conversation', async () => {
   const h = await localRoute();
   try {
     await h.controller.stageAia();
-    assert.equal(h.doc.querySelector('#khonapolitMessages').hidden, true);
-    const leave = [...h.doc.querySelectorAll('.loom-demo-composer-note button')].find(node => node.textContent === 'Leave Loom demo');
+    const transcript = h.doc.querySelector('#khonapolitMessages');
+    transcript.textContent = 'Native conversation remains visible';
+    assert.equal(transcript.hidden, false);
+    h.controller.openMenu();
+    const leave = [...h.doc.querySelectorAll('#loomDemoMenu button')].find(node => node.textContent === 'End Loom continuation');
     assert.ok(leave);
     leave.click();
     assert.equal(h.calls(), 0);
     assert.equal(h.controller.snapshot().phase, 'LEFT');
     assert.equal(h.doc.documentElement.dataset.loomDemoActive, 'false');
     assert.equal(h.doc.querySelector('#khonapolitMessages').hidden, false);
-    assert.equal(h.doc.querySelector('#loomDemoMessages').hidden, true);
+    assert.equal(h.doc.querySelector('#loomDemoMessages'), null);
+    assert.equal(transcript.textContent, 'Native conversation remains visible');
     assert.equal(getMarrowlineAttachments().length, 0);
-    assert.equal(h.doc.querySelector('#khonapolitPrompt').value, '');
+    assert.equal(h.doc.querySelector('#khonapolitPrompt').value, '', 'ending clears the untouched generated attachment draft');
     assert.equal(h.root.location.hash, '');
     assert.throws(() => h.controller.exportPacket());
   } finally { h.close(); }

@@ -31,9 +31,9 @@
     },
     {
       "contrast_id": "governed-versus-ordinary-composer",
-      "now": "One composer can serve different contexts, but only one context is active at a time.",
+      "now": "The native conversation carries the governed continuation; its attachments and send stages remain distinct.",
       "why": "Physical proximity of files or text does not make them part of the admitted Loom selection.",
-      "exact": "Ordinary chat history and unrelated attachments cannot silently enter the governed request. Leaving Loom restores ordinary chat without importing the Loom transcript."
+      "exact": "The handoff begins a fresh native conversation. Earlier conversations and unrelated attachments cannot silently enter the governed request. Ending Loom clears its staged attachments and export authority while retaining the native conversation."
     },
     {
       "contrast_id": "rest-versus-custody-extension",

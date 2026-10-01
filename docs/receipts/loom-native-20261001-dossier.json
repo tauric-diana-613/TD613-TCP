@@ -1,0 +1,175 @@
+{
+  "schema": "td613.dollhouse.case-dossier/v0.1",
+  "case_id": "loom-native-marrowline-20261001",
+  "source_revision": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f",
+  "findings": [
+    {
+      "id": "pedagogue-native-route",
+      "agent": "PEDAGOGUE",
+      "claim_key": "native-route-consequence-order",
+      "verdict": "SUPPORTED",
+      "evidence_class": "OFFLINE_TEST",
+      "observation_scope": {
+        "source": "Baseline c3d403bf1c0ecf90d434f352a041ddffbcee6c3f; uncommitted candidate snapshot SHA256 b8c4a300e6de3282199bf9c5ac9bbbf554fbed0401fb587575fab7125c140fe6. Baseline is not the implementation candidate.",
+        "instrument": "Pedagogue Design Gate, gesture-consequence adapter and real-route synthetic DOM checks",
+        "condition": "Declared task/rules/files/Send order retains rest/exit; Gate is optional and composer membrane absent.",
+        "temporal_window": "2026-10-01 active-session source and synthetic candidate review; pre-release"
+      },
+      "reference": {
+        "artifact": "docs/receipts/loom-native-20261001-pedagogue.md",
+        "sha256": "1232f0a283b04dc85e015883393c49be6ec46fcac9d660f9de289ac42159ca72"
+      },
+      "limitations": [
+        "PASS applies to declared route and offline fixtures; route burden is not an empirical effect size.",
+        "No desktop/mobile browser acceptance, provider-quality finding or execution authority follows."
+      ]
+    },
+    {
+      "id": "aperture-native-observation",
+      "agent": "APERTURE",
+      "claim_key": "native-lifecycle-observability",
+      "verdict": "SUPPORTED",
+      "evidence_class": "OFFLINE_TEST",
+      "observation_scope": {
+        "source": "Baseline c3d403bf1c0ecf90d434f352a041ddffbcee6c3f; uncommitted candidate snapshot SHA256 b8c4a300e6de3282199bf9c5ac9bbbf554fbed0401fb587575fab7125c140fe6. Baseline is not the implementation candidate.",
+        "instrument": "Real terminal/controller/living-chat/in-chat motion observer in JSDOM with mocked provider transport",
+        "condition": "Fresh returning-user arrival, direct entry, pending feedback, explicit Stop and malformed-binding hold distinguished.",
+        "temporal_window": "2026-10-01 active-session source and synthetic candidate review; pre-release"
+      },
+      "reference": {
+        "artifact": "docs/receipts/loom-native-20261001-aperture.md",
+        "sha256": "46ebfb7b0c91ad99389b4bcbe42c43fba5519aba27779dcd5b3ba940ed555cbe"
+      },
+      "limitations": [
+        "JSDOM does not observe layout, hit testing, compositor, iOS keyboard or actual provider completion.",
+        "Physical mobile failure cause remains unidentified; eventual old response load excludes a permanent-failure claim."
+      ]
+    },
+    {
+      "id": "atlas-native-continuity",
+      "agent": "ATLAS",
+      "claim_key": "receiver-controls-and-immediate-predecessor",
+      "verdict": "SUPPORTED",
+      "evidence_class": "OFFLINE_TEST",
+      "observation_scope": {
+        "source": "Baseline c3d403bf1c0ecf90d434f352a041ddffbcee6c3f; uncommitted candidate snapshot SHA256 b8c4a300e6de3282199bf9c5ac9bbbf554fbed0401fb587575fab7125c140fe6. Baseline is not the implementation candidate.",
+        "instrument": "Native provider adapter composition, declared Atlas continuity audit and separately scoped signer/CAS fixtures",
+        "condition": "Native transcript and controls preserved; long prior answer carried as model history; predecessor not origin-root substitution.",
+        "temporal_window": "2026-10-01 active-session source and synthetic candidate review; pre-release"
+      },
+      "reference": {
+        "artifact": "docs/receipts/loom-native-20261001-atlas.md",
+        "sha256": "df17852a4019af29c8cac4eaeccdfb181acc9c15aff8896448ff60c5686dd543"
+      },
+      "limitations": [
+        "DECLARED_CONSISTENCY authenticates no references, globally latest head or upstream origin.",
+        "Deterministic handler/custody substitutes are not live provider, physical mobile or production-quality witnesses."
+      ]
+    },
+    {
+      "id": "fadt-stage-support",
+      "agent": "FADT",
+      "claim_key": "lawful-support-after-presentation-compression",
+      "verdict": "SUPPORTED",
+      "evidence_class": "OFFLINE_TEST",
+      "observation_scope": {
+        "source": "Baseline c3d403bf1c0ecf90d434f352a041ddffbcee6c3f; uncommitted candidate snapshot SHA256 b8c4a300e6de3282199bf9c5ac9bbbf554fbed0401fb587575fab7125c140fe6. Baseline is not the implementation candidate.",
+        "instrument": "runFadtStageAudit on eleven occupied finite declarations, contract admission and native crypto-barrier races",
+        "condition": "Stage/admission/head retained: consistent declarations. Erasing to native surface: exact eight-action gap; erasing head: current/stale gap.",
+        "temporal_window": "2026-10-01 active-session source and synthetic candidate review; pre-release"
+      },
+      "reference": {
+        "artifact": "docs/receipts/loom-native-20261001-fadt.json",
+        "sha256": "97a0412c148e94a30cf7d2e49e37203539d7e3a717f6d632c78248311e4cff99"
+      },
+      "limitations": [
+        "Support remains caller supplied; adapter does not authenticate stage admission or grant any action.",
+        "Source, finite DOM, provider/custody, browser and export-byte evidence remain separate."
+      ]
+    },
+    {
+      "id": "aperture-browser-pending",
+      "agent": "APERTURE",
+      "claim_key": "new-candidate-browser-and-mobile-acceptance",
+      "verdict": "UNKNOWN",
+      "evidence_class": "DECLARATION",
+      "observation_scope": {
+        "source": "Baseline c3d403bf1c0ecf90d434f352a041ddffbcee6c3f; uncommitted candidate snapshot SHA256 b8c4a300e6de3282199bf9c5ac9bbbf554fbed0401fb587575fab7125c140fe6. Baseline is not the implementation candidate.",
+        "instrument": "Bounded actual-route witness schedule; no supported viewport-setting instrument established in this session",
+        "condition": "New candidate desktop and approximately 390px mobile, keyboard/focus/scroll, recovery and actual export bytes await independent witnessing.",
+        "temporal_window": "2026-10-01 active-session source and synthetic candidate review; pre-release"
+      },
+      "reference": {
+        "artifact": "docs/receipts/loom-native-20261001-aperture-plan.json",
+        "sha256": "ba37653a6228c6e11b16e7447fc96254af1f8957a76db86c44a3db4349bbc038"
+      },
+      "limitations": [
+        "Prior desktop/physical-iPhone observations concern the old presentation and do not authenticate this candidate.",
+        "A simulated viewport would remain distinct from a physical-device witness."
+      ]
+    },
+    {
+      "id": "atlas-provider-release-pending",
+      "agent": "ATLAS",
+      "claim_key": "new-candidate-production-native-provider-custody",
+      "verdict": "UNKNOWN",
+      "evidence_class": "DECLARATION",
+      "observation_scope": {
+        "source": "Baseline c3d403bf1c0ecf90d434f352a041ddffbcee6c3f; uncommitted candidate snapshot SHA256 b8c4a300e6de3282199bf9c5ac9bbbf554fbed0401fb587575fab7125c140fe6. Baseline is not the implementation candidate.",
+        "instrument": "Pending exact committed CI, governed #405 release receipt and production journey",
+        "condition": "This pre-release dossier carries no live new-candidate provider response, deployment receipt or acquired production export.",
+        "temporal_window": "2026-10-01 active-session source and synthetic candidate review; pre-release"
+      },
+      "reference": {
+        "artifact": "docs/receipts/loom-native-20261001-atlas.md",
+        "sha256": "df17852a4019af29c8cac4eaeccdfb181acc9c15aff8896448ff60c5686dd543"
+      },
+      "limitations": [
+        "No provider-quality, empirical acquisition, exteriority, Golden Egg or automatic-release claim.",
+        "The operator active-session authorization is separate from this clerk; no further authority is created here."
+      ]
+    }
+  ],
+  "disagreements": [],
+  "agent_coverage": [
+    {
+      "agent": "PEDAGOGUE",
+      "present": true
+    },
+    {
+      "agent": "APERTURE",
+      "present": true
+    },
+    {
+      "agent": "ATLAS",
+      "present": true
+    },
+    {
+      "agent": "FADT",
+      "present": true
+    }
+  ],
+  "unresolved_finding_ids": [
+    "aperture-browser-pending",
+    "atlas-provider-release-pending"
+  ],
+  "evidence_posture": {
+    "evidence_class_is_caller_declared": true,
+    "artifact_bytes_checked": false,
+    "reference_authentication": "UNVERIFIED",
+    "findings_independently_scoped": true,
+    "evidence_classes_aggregated": false,
+    "majority_vote": false,
+    "global_score": null
+  },
+  "decision": "HUMAN_REVIEW_REQUIRED",
+  "authority": {
+    "execute": false,
+    "automatic_redesign": false,
+    "release": false,
+    "merge": false,
+    "deployment": false,
+    "provider": false,
+    "human_closure_required": true
+  }
+}

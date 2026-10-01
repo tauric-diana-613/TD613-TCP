@@ -312,6 +312,7 @@ function renderModelMessage(doc, entry) {
   article.className = 'relay-message';
   article.dataset.role = 'model';
   bindModelAttachmentReceipt(article, entry);
+  if (entry.loomAdmission === 'HELD') article.append(textNode(doc,'p','relay-completion-alert','Reply preserved · Loom admission held. Open Loom Gate for the receipt.'));
   if (entry.receipt?.provider?.completion?.complete === false) {
     article.dataset.completion = 'incomplete';
     const structuralOnly = entry.receipt.provider.completion.reason === 'required-voice-structure-incomplete';
@@ -533,7 +534,7 @@ async function hydrateReliquary(doc) {
 async function probeProvider(doc) {
   const node = byId(doc, 'providerStatus');
   try {
-    const response = await fetch(KHONAPOLIT_ENDPOINT, { cache: 'no-store' });
+    const response = await (root.fetch || fetch)(KHONAPOLIT_ENDPOINT, { cache: 'no-store' });
     const payload = await response.json();
     if (!response.ok || !(payload.hasProviderKey ?? payload.hasGeminiKey)) throw new Error(payload.error || 'provider unavailable');
     const route = payload?.aperture?.taskIntent?.primary_route || 'OPEN_FIELD_SPECULATIVE_SYNTHESIS';
@@ -577,7 +578,7 @@ function installMobileDock(doc, root) {
 function installComposerGrowth(doc) {
   const prompt = byId(doc, 'khonapolitPrompt');
   if (!prompt) return;
-  const resize = () => { prompt.style.height = 'auto'; prompt.style.height = `${Math.min(Math.max(prompt.scrollHeight, 90), Math.round(window.innerHeight * .34))}px`; };
+  const resize = () => { prompt.style.height = 'auto'; prompt.style.height = `${Math.min(Math.max(prompt.scrollHeight, 90), Math.round(doc.defaultView.innerHeight * .34))}px`; };
   prompt.addEventListener('input', resize);
 }
 export function compactMarrowlineHistory(messages = []) {
@@ -670,6 +671,7 @@ async function readMarrowlineSourceWindow(root) {
 export function installKhonapolitTerminal(doc = document, root = window) {
   const form = byId(doc, 'khonapolitForm');
   if (!form) return false;
+  const freshLoomArrival = (root.location?.hash || '').startsWith('#loom=') || root.location?.hash === '#loom-demo';
   const state = loadSession(root);
   let threadLibrary = null;
   let activeThread = null;
@@ -813,6 +815,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       showEphemeralNotice(doc, root, 'Send or remove attachments first');
       return false;
     }
+    if (root.__TD613_LOOM_DEMO_CONTROLLER__?.snapshot().active) root.__TD613_LOOM_DEMO_CONTROLLER__.leaveDemo();
     return storeReady;
   };
   const switchThread = async threadId => {
@@ -902,7 +905,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     const beforeHydration = byId(doc, 'khonapolitPrompt');
     const selectedPreset = beforeHydration?.dataset.preloadedPrompt === 'true'
       ? String(beforeHydration.value || '') : '';
-    if (record) restoreThread(record); else resetTransientThread();
+    if (record && !freshLoomArrival) restoreThread(record); else resetTransientThread();
     if (selectedPreset && queuedInitialSubmission === null && beforeHydration) {
       beforeHydration.value = selectedPreset;
       beforeHydration.dataset.preloadedPrompt = 'true';
@@ -1015,7 +1018,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   issuanceToggle?.addEventListener('change', () => refreshKeyState(doc));
 
   const submitTask = async (messageOverride = '', { independentRetry = false, backgroundResume = false } = {}) => {
-    if (doc.documentElement.dataset.loomDemoActive === 'true') return;
+    const loomTransport = root.__TD613_LOOM_DEMO_CONTROLLER__?.snapshot().active ? root.__TD613_LOOM_DEMO_CONTROLLER__ : null;
     const prompt = byId(doc, 'khonapolitPrompt');
     const message = safe(messageOverride || prompt?.value);
     const mode = INVOCATION_MODES.ISSUED_CONJUNCTION;
@@ -1127,6 +1130,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     let requestStage = 'request';
     let responseStatus = null;
     let receivedReceipt = null;
+    let loomPrepared = null;
     try {
       if (witnessThisTurn) sourceBefore = await awaitMarrowlineAbortable(readMarrowlineSourceWindow(root), requestController.signal);
       if (activeRequestCancelRequested) throw new Error('operator-cancelled');
@@ -1138,7 +1142,14 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       if (attachments.length) requestBody.attachments = attachments;
       // Client correlator only; server/provider identifiers remain separate.
       if (witnessRequestId) requestBody.request_id = witnessRequestId;
-      const serializedRequestBody = JSON.stringify(requestBody);
+      if (loomTransport) {
+        requestStage = 'governed-preflight';
+        try { loomPrepared = await loomTransport.prepareRequest(message, { mode, shi, waiveIssuance }, requestController.signal); }
+        catch (error) { failurePayload = { error: 'loom-binding-held', diagnostic: {stage:requestStage,code:error.message} }; throw error; }
+        requestStage = 'request';
+      }
+      if (activeRequestCancelRequested || requestController.signal.aborted) throw new Error('operator-cancelled');
+      const serializedRequestBody = JSON.stringify(loomPrepared?.request || requestBody);
       const serializedRequestBytes = new TextEncoder().encode(serializedRequestBody).byteLength;
       // Vercel's function ingress has a 4.5 MB payload ceiling. Hold locally
       // below that hard edge so a huge prompt, long history, or base64 photo
@@ -1161,7 +1172,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       // delivery for ordinary chat while allowing larger attachment/history
       // packets to use the normal request path instead of throwing locally.
       const backgroundKeepaliveEligible = serializedRequestBytes <= 60 * 1024;
-      const response = await awaitMarrowlineAbortable(fetch(KHONAPOLIT_ENDPOINT, {
+      const response = await awaitMarrowlineAbortable((root.fetch || fetch)(loomPrepared?.endpoint || KHONAPOLIT_ENDPOINT, {
         signal: requestController.signal,
         method: 'POST', headers: { 'content-type': 'application/json', Accept: 'application/json' }, cache: 'no-store',
         keepalive: backgroundKeepaliveEligible,
@@ -1174,13 +1185,28 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       if (status) status.dataset.progressStage = 'response-arrived';
       setPedagogueStatus(status, 'pending', 'A voice reaches the threshold…',
         'Marrowline HTTP response observed; body still unread and completion unverified');
-      const payload = await awaitMarrowlineAbortable(response.json(), requestController.signal);
+      const transportPayload = await awaitMarrowlineAbortable(response.json(), requestController.signal);
+      const payload = loomTransport ? transportPayload.native_reply : transportPayload;
       if (activeRequestCancelRequested) throw new Error('operator-cancelled');
       requestStage = 'response-processing';
       if (status) status.dataset.progressStage = 'body-received';
       setPedagogueStatus(status, 'pending', 'The signal unfolds before the grove…',
         'HTTP response body observed; checking completion and structure');
       receivedReceipt = payload?.receipt || null;
+      if (loomTransport) {
+        ingestGeminiConsumption(payload || transportPayload, root);
+        try {
+          if (!response.ok) throw new Error(transportPayload.error || `HTTP ${response.status}`);
+          await loomTransport.admitResponse(transportPayload, loomPrepared);
+        } catch (error) {
+          failurePayload = { ...transportPayload, ...(payload || {}), error:transportPayload.error || 'loom-admission-held', httpStatus:response.status, observedAt:Date.now(), diagnostic:{stage:requestStage,code:error.message} };
+          // Provider-authored native bytes can remain visible without becoming
+          // an admitted Loom result or replacing its current export.
+          if (payload?.relay && typeof payload.text === 'string' && payload.text) state.messages.push({role:'model',text:payload.text,relay:payload.relay,receipt:payload.receipt,mode,loomAdmission:'HELD',sealed:false});
+          throw error;
+        }
+        if (activeRequestCancelRequested || requestController.signal.aborted) throw new Error('operator-cancelled');
+      }
       if (status) status.dataset.progressStage = 'receipt-processing';
       setPedagogueStatus(status, 'pending', 'The grove binds the return to its receipt…',
         'Processing the observed receipt and provider-authored transmission');
@@ -1245,8 +1271,9 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         setPedagogueStatus(status, 'received', 'RETURN OBSERVED · SIGNAL ' + signal + ' · receipt preserved',
           'RETURN OBSERVED · SIGNAL ' + signal + ' · KʰONAPOLIT ∴ TAURIC DIANA BOTS · KHONA ' + integrity.toUpperCase() + ' · receipt preserved · operator closure remains explicit');
       }
-      root.dispatchEvent?.(new CustomEvent('td613:khonapolit:return-observed', { detail: receipt }));
+      root.dispatchEvent?.(new root.CustomEvent('td613:khonapolit:return-observed', { detail: receipt }));
     } catch (error) {
+      loomTransport?.rejectAttempt();
       state.pendingTask = message;
       state.lastFailure = activeRequestCancelRequested
         ? { error: 'operator-cancelled', httpStatus: responseStatus, observedAt: Date.now(),
@@ -1280,6 +1307,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
             ? 'Current turn, recent history, and attachments together exceed Marrowline’s 3.7 MB request envelope. Start a new conversation, remove attachments, or shorten the current input; nothing was sent.'
             : 'Request held; task preserved for explicit retry.');
     } finally {
+      loomTransport?.finishAttempt(loomPrepared);
       // Release the actual UI/request lifecycle before any optional evidence
       // collection. A slow source-window witness cannot strand Stop in place.
       stopPedagogueStatus(root);
@@ -1343,7 +1371,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
           if (receiptStatus) receiptStatus.textContent = 'Turn recording failed; diagnostic record available to copy.';
         }
       }
-      if (!cancelledByOperator && state.lastFailure?.backgroundInterrupted === true
+      if (!loomTransport && !cancelledByOperator && state.lastFailure?.backgroundInterrupted === true
         && !backgroundResume
         && backgroundResumeSpentTask !== message) {
         backgroundResumeTask = message;
@@ -1388,6 +1416,11 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     await submitTask();
   });
   const retryLastPrompt = ({ independentRetry = false } = {}) => {
+    const loomState=root.__TD613_LOOM_DEMO_CONTROLLER__?.snapshot();
+    if (loomState?.active && loomState.phase==='AIA_SENT') {
+      setPedagogueStatus(byId(doc,'khonapolitTerminalStatus'),'notice','Handoff received · use + to attach the selected files.');
+      return;
+    }
     if (!storeReady || requestInFlight) return;
     const userIndex = lastUserMessageIndex(state.messages || []);
     const message = safe(state.pendingTask) || (userIndex >= 0 ? entryText(state.messages[userIndex]) : '');
@@ -1438,6 +1471,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       if (requestInFlight) showEphemeralNotice(doc, root, 'Finish reply first');
       return;
     }
+    root.__TD613_LOOM_DEMO_CONTROLLER__?.leaveDemo();
     const clearedThreadId = activeThread?.id || null;
     // Detach the cleared conversation immediately. Any writes already queued
     // for its pre-clear state must finish before archive deletion so they cannot
@@ -1513,7 +1547,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     heritageKey: HERITAGE_KEY, canonicalCovenantPhrase: HERITAGE_COVENANT, covenantKey: COVENANT_KEY,
     bindingFragment: BINDING_FRAGMENT, bindingSha256: BINDING_SHA256, corpusRootSha256: CORPUS_ROOT_SHA256,
     corpusReferences: CORPUS_REFERENCES, surrogateLabel: CLAIMED_PUA_SURROGATE_LABEL, sealLast: () => operatorSeal(doc, root, state, scheduleSave),
-    portableTask: () => buildMarrowlinePortableTask(state), attachmentCount: () => getMarrowlineAttachments().length
+    portableTask: () => buildMarrowlinePortableTask(state), attachmentCount: () => getMarrowlineAttachments().length,
+    ready: threadReady, submitTask, stop: () => { if (requestInFlight) sendControl?.click(); }
   });
   return true;
 }
