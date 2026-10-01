@@ -32,6 +32,14 @@
 #loomAiWorkspace .ai-portable-projection>div{padding:12px 13px;border:1px solid #a58bca31;border-radius:11px;background:#0b0914aa}
 #loomAiWorkspace .ai-portable-projection span{display:block;color:#edbe85;font:700 .61rem/1.3 var(--mono);letter-spacing:.07em}
 #loomAiWorkspace .ai-portable-projection strong{display:block;margin-top:5px;color:#e9e0eb;font:550 .78rem/1.5 var(--sans)}
+#loomAiWorkspace .ai-projection-depth{grid-column:1/-1;border:1px solid #a58bca31;border-radius:11px;background:#0b0914aa;overflow:hidden}
+#loomAiWorkspace .ai-projection-depth>summary{display:flex;align-items:center;min-height:42px;padding:9px 12px;list-style:none;cursor:pointer;color:#d9cde1;font:650 .75rem/1.4 var(--sans)}
+#loomAiWorkspace .ai-projection-depth>summary::-webkit-details-marker{display:none}
+#loomAiWorkspace .ai-projection-depth>summary::after{content:'+';margin-left:auto;color:var(--gold);font:400 21px/1 var(--sans)}
+#loomAiWorkspace .ai-projection-depth[open]>summary::after{content:'−'}
+#loomAiWorkspace .ai-projection-depth-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:0 9px 9px}
+#loomAiWorkspace .ai-projection-depth-grid>div{padding:10px 11px;border-top:1px solid #a58bca28}
+@media(max-width:760px){#loomAiWorkspace .ai-projection-depth-grid{grid-template-columns:1fr}}
 @media(max-width:760px){#loomAiWorkspace .ai-mode-shell{padding:15px;border-radius:15px}#loomAiWorkspace .ai-mode-head{align-items:stretch;flex-direction:column}.ai-mode-tabs{width:100%}#loomAiWorkspace .ai-mode-tabs button{flex:1}#loomAiWorkspace .ai-portable-projection{grid-template-columns:1fr}}
 @media(max-width:500px){#loomAiWorkspace .ai-shi-row{grid-template-columns:1fr}#loomAiWorkspace .ai-shi-row a{width:100%}}
 
