@@ -20,9 +20,9 @@ try {
       await page.locator('html.marrowline-room-ready').waitFor({ timeout: 30000 });
       await page.locator('#marrowlineDesktopToolTabs').waitFor({ state: 'attached' });
       if (width > 860) {
-        await page.getByRole('tab', { name: 'Gate', exact: true }).waitFor();
-        assert.equal(await page.getByRole('tab', { name: 'Gate', exact: true }).getAttribute('aria-selected'), 'true');
-        for (const name of ['Gate', 'Keys', 'Stories', 'Receipts']) {
+        await page.getByRole('tab', { name: 'Loom Gate', exact: true }).waitFor();
+        assert.equal(await page.getByRole('tab', { name: 'Loom Gate', exact: true }).getAttribute('aria-selected'), 'true');
+        for (const name of ['Loom Gate', 'Keys', 'Stories', 'Receipts']) {
           await page.getByRole('tab', { name, exact: true }).click();
           await page.screenshot({ path: `${out}/${width}x${height}-${name}.png` });
           const boxes = await page.evaluate(() => {
@@ -35,7 +35,7 @@ try {
           assert.ok(boxes.utilities.y >= boxes.prompt.bottom - 1, 'utilities follow composer');
           results.push({width,height,name,...boxes});
         }
-        await page.getByRole('tab', {name:'Gate',exact:true}).focus();
+        await page.getByRole('tab', {name:'Loom Gate',exact:true}).focus();
         await page.keyboard.press('ArrowRight');
         assert.equal(await page.getByRole('tab', {name:'Keys',exact:true}).getAttribute('aria-selected'), 'true');
       } else {
@@ -64,7 +64,7 @@ try {
         await page.screenshot({path:`${out}/${width}x${height}-loom-next-fixture.png`});
         await onward.click();
         if (width === 390) assert.equal(await page.locator('body').getAttribute('data-mobile-view'), 'gate');
-        else assert.equal(await page.getByRole('tab', {name:'Gate',exact:true}).getAttribute('aria-selected'), 'true');
+        else assert.equal(await page.getByRole('tab', {name:'Loom Gate',exact:true}).getAttribute('aria-selected'), 'true');
       }
     } catch (error) {
       await page.screenshot({ path: `${out}/${width}x${height}-failure.png`, fullPage:true });

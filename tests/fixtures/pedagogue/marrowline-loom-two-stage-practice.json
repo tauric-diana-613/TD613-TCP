@@ -11,7 +11,9 @@
     "fictional": true,
     "container_label": "FICTIONAL — Loom two-stage operator route",
     "task_label": "Compare two fictional workstreams",
-    "selected_file_labels": ["Fictional selected workstream"],
+    "selected_file_labels": [
+      "Fictional selected workstream"
+    ],
     "withheld_file_label": "Fictional local-only note"
   },
   "teaching_contrasts": [
@@ -44,6 +46,12 @@
       "now": "A failed new attempt does not replace the last admitted continuation.",
       "why": "An export must describe the current governed work rather than the latest text that happened to appear nearby.",
       "exact": "Export remains bound to the admitted continuation and its lineage. Ordinary chat, failed requests, and fabricated prior answers cannot acquire admitted-result authority."
+    },
+    {
+      "contrast_id": "stage-predecessor-versus-content-predecessor",
+      "now": "The #1 acknowledgment proves the activation stage completed; it is not the source-bearing prior Loom answer.",
+      "why": "A stage receipt answers which governed step actually happened. A content predecessor answers which admitted work the next continuation may rely on. Collapsing them would either leak source-derived content into #1 or let a handshake masquerade as substantive prior work.",
+      "exact": "The activation carries only a commitment to any origin prior result. #2 presents the selected source bytes and may present that committed source-bearing result. Later continuations must match the immediately preceding admitted continuation result while separately carrying its stage receipt."
     },
     {
       "contrast_id": "gate-check-versus-empirical-claim",

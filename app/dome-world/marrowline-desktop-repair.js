@@ -292,6 +292,9 @@ function installUniversalContextPlus(doc, root) {
   const fileItem = makeItem('marrowlineContextFile', '▱', 'Upload file', 'TXT, Markdown, CSV, JSON, or PDF');
   const photoItem = makeItem('marrowlineContextPhoto', '▧', 'Upload photo', 'Image attachment for the next message');
   const loomItem = makeItem('marrowlineContextLoom', '⌁', 'Loom', 'Open Loom in a new tab');
+  loomItem.button.setAttribute('aria-haspopup', 'menu');
+  loomItem.button.setAttribute('aria-expanded', 'false');
+  loomItem.button.dataset.submenuParent = 'true';
   menu.append(fileItem.button, photoItem.button, loomItem.button);
   doc.body.append(menu);
 
@@ -306,7 +309,12 @@ function installUniversalContextPlus(doc, root) {
   doc.body.append(fileInput, photoInput);
 
   const setStatus = text => { const node = byId(doc, 'khonapolitTerminalStatus'); if (node) node.textContent = text; };
-  const close = () => { menu.hidden = true; plus.setAttribute('aria-expanded', 'false'); };
+  const close = () => {
+    menu.hidden = true;
+    plus.setAttribute('aria-expanded', 'false');
+    loomItem.button.setAttribute('aria-expanded', 'false');
+    root.dispatchEvent?.(new root.CustomEvent('td613:marrowline:loom-demo-close'));
+  };
   const position = () => {
     const rect = plus.getBoundingClientRect();
     const width = 260;
@@ -328,8 +336,10 @@ function installUniversalContextPlus(doc, root) {
     plus.dataset.loomAwake = String(awake);
     plus.dataset.loomAttention = String(awake);
     loomItem.button.dataset.loomAwake = String(awake);
+    loomItem.button.dataset.loomSubmenu = String(awake);
     loomItem.text.textContent = awake ? 'Loom demo' : 'Loom';
     loomItem.small.textContent = awake ? (demo?.aia_sent ? 'Next: #2 · upload the selected Loom demo files' : 'Two steps: #1 portable AIA · #2 selected Loom files') : 'Open Loom in a new tab';
+    if (!awake) loomItem.button.setAttribute('aria-expanded', 'false');
   };
   const stage = async (input, kind) => {
     if (doc.documentElement.dataset.loomDemoActive === 'true') { setStatus('Finish the governed Loom turn or choose Leave Loom demo before adding ordinary attachments.'); return; }
@@ -365,19 +375,25 @@ function installUniversalContextPlus(doc, root) {
   fileItem.button.addEventListener('click', () => { if (root.__TD613_LOOM_DEMO_STATE__?.active) { setStatus('Leave Loom demo before adding ordinary files.'); return; } fileInput.click(); });
   photoItem.button.addEventListener('click', () => { if (root.__TD613_LOOM_DEMO_STATE__?.active) { setStatus('Leave Loom demo before adding ordinary photos.'); return; } photoInput.click(); });
   loomItem.button.addEventListener('click', () => {
-    close();
-    if (root.__TD613_LOOM_DEMO_STATE__?.pending_steps) root.dispatchEvent(new root.CustomEvent('td613:marrowline:loom-demo-open'));
-    else openLoom(doc, root);
+    const pendingLoom = Boolean(root.__TD613_LOOM_DEMO_STATE__?.pending_steps);
+    if (pendingLoom) {
+      loomItem.button.setAttribute('aria-expanded', 'true');
+      root.dispatchEvent(new root.CustomEvent('td613:marrowline:loom-demo-open'));
+    } else {
+      close();
+      openLoom(doc, root);
+    }
     refreshLoom();
   });
   plus.addEventListener('click', () => {
-    const opening = menu.hidden;
-    menu.hidden = !opening;
-    plus.setAttribute('aria-expanded', String(opening));
-    if (opening) {
-      refreshLoom();
-      nextFrame(position);
+    if (!menu.hidden) {
+      close();
+      return;
     }
+    menu.hidden = false;
+    plus.setAttribute('aria-expanded', 'true');
+    refreshLoom();
+    nextFrame(position);
   });
   root.addEventListener?.(MARROWLINE_ATTACHMENT_CHANGE_EVENT, event => {
     const state = event.detail || attachmentState();
@@ -560,7 +576,7 @@ export function installDesktopInstrumentTabs(doc, root) {
   tabs.setAttribute('aria-label', 'Marrowline instruments');
   tabs.setAttribute('role', 'tablist');
   const specs = [
-    ['gatePanel', 'Gate'], ['invocationPanel', 'Keys'], ['corpusPanel', 'Stories'], ['receiptPanel', 'Receipts']
+    ['gatePanel', 'Loom Gate'], ['invocationPanel', 'Keys'], ['corpusPanel', 'Stories'], ['receiptPanel', 'Receipts']
   ];
   const media = root.matchMedia?.('(max-width:860px)');
   const select = targetId => {

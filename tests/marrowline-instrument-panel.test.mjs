@@ -17,7 +17,7 @@ for (const startsMobile of [false, true]) {
     assert.equal(installDesktopInstrumentTabs(document, dom.window), true);
     assert.equal(installDesktopInstrumentTabs(document, dom.window), false);
     const tabs = [...document.querySelectorAll('#marrowlineDesktopToolTabs [role=tab]')];
-    assert.deepEqual(tabs.map(tab => tab.textContent), ['Gate', 'Keys', 'Stories', 'Receipts']);
+    assert.deepEqual(tabs.map(tab => tab.textContent), ['Loom Gate', 'Keys', 'Stories', 'Receipts']);
     assert.equal(tabs[0].closest('.living-tools') !== null, true);
     if (startsMobile) {
       assert.equal(document.querySelector('#gatePanel').hasAttribute('role'), false);

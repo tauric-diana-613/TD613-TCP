@@ -472,7 +472,7 @@
     "unissuedResearchMode": "unchecked-by-default; checking enables SHI; unchecked excludes SHI",
     "safeHarborIssuanceHelp": "/safe-harbor/index.html",
     "fieldMotionControl": "Still the field / Let the field move controls aesthetic living-geometry motion only; Marrowline uses a visible 54s ambient drift and distinct rested opacity without changing application state",
-    "gateInstrumentLayout": "Pedagogue instrument geometry v2: paired Depth/Breadth controls plus one primary and two compact secondary Gate actions on mobile and desktop",
+    "gateInstrumentLayout": "Loom Gate continuity witness precedes the separately preserved adversarial assay; Phase-2 NOW/WHY/NEXT, crossing, admission, receiver continuity and stage-dependent permission are child-legible before optional technical coordinates",
     "mobileStatusMaxWidth": "status is a visually-hidden telemetry node; all operator-facing progress uses the single in-chat vesica piscis indicator",
     "statusPedagogueSequence": [
       "Listening at the shoreline…",
@@ -517,7 +517,7 @@
     "posture": "conversation-with-persistent-instruments",
     "instrumentSurface": "adjacent-panel-gate-default",
     "instrumentTabs": [
-      "Gate",
+      "Loom Gate",
       "Keys",
       "Stories",
       "Receipts"
@@ -573,7 +573,7 @@
     "dockVisibility": "visible whenever observed keyboard occupancy is false; composer focus alone cannot hide chamber navigation",
     "navigationOrder": [
       "Keys",
-      "Gate",
+      "Loom Gate",
       "Chat",
       "Stories",
       "Receipts"
@@ -658,7 +658,8 @@
     "terminalCovenant": "app/dome-world/khonapolit-covenant.js",
     "relayRuntime": "app/dome-world/khonapolit-relay.js",
     "reflexOrder": "app/dome-world/reflex-spine.manifest.json",
-    "restorationPosture": "conversation-first-minimal-utilities-plus-human-liveness-frontier-provider-first-human-surface-local-admission-diagnostic-only-operator-controlled-closure"
+    "restorationPosture": "conversation-first-minimal-utilities-plus-human-liveness-frontier-provider-first-human-surface-local-admission-diagnostic-only-operator-controlled-closure",
+    "loomGateContinuity": "app/dome-world/marrowline-loom-gate-continuity.js"
   },
   "receiptControls": {
     "primary": [
@@ -672,5 +673,64 @@
     "placement": "above bounded technical JSON",
     "authority": "operator-only; no automatic sealing; one-turn browser text recording makes no hidden ingress or screenshot claim"
   },
-  "providerProjectCap": "literal provider-reported monthly spending cap; one attempt and project-scoped HELD, not timed retry or alternate-seat cascade"
+  "providerProjectCap": "literal provider-reported monthly spending cap; one attempt and project-scoped HELD, not timed retry or alternate-seat cascade",
+  "loomGateContinuitySchema": "td613.dome-world.marrowline-loom-gate-continuity/v0.1",
+  "loomDemoStageReceiptSchema": "td613.loom.demo-stage-receipt/v0.2",
+  "loomDemoSigner": {
+    "authorityLocation": "Neon custody service",
+    "table": "td613_loom_demo_signer",
+    "scheme": "hmac-sha256",
+    "keyId": "td613-loom-demo-stage-v1",
+    "domain": "TD613:LOOM-DEMO:STAGE-RECEIPT:v1",
+    "minimumSecretBytes": 32,
+    "secretPresentInVercel": false,
+    "crossInstancePredecessorAuthentication": true,
+    "authority": "receipt-authentication-only"
+  },
+  "loomDemoHeadStore": {
+    "authorityLocation": "Neon custody service",
+    "project": "td613-loom-demo",
+    "database": "neondb",
+    "table": "td613_loom_demo_heads",
+    "durableCompareAndSwap": true,
+    "globalLatestState": true,
+    "replayExclusion": true,
+    "forkExclusion": true,
+    "payloadLogged": false,
+    "storedMaterial": "activation/head/request/phase/lease/expiry custody metadata only"
+  },
+  "loomDemoProductionReadiness": {
+    "default": "HELD",
+    "requires": [
+      "Vercel production workload OIDC identity",
+      "admitted immutable Neon Loom custody endpoint",
+      "Neon signer table and durable head table",
+      "exact-head GREEN source validation",
+      "live provider witness",
+      "desktop and approximately-390px browser journey witness",
+      "governed #405 release receipt before production acceptance"
+    ],
+    "sourceConfigurationGate": "VERCEL_OIDC_TOKEN plus an admitted non-placeholder Neon custody endpoint; no Loom DB password or Loom signing secret is stored in Vercel",
+    "configurationDoesNotGrantReleaseAuthority": true
+  },
+  "loomDemoCustody": {
+    "client": "server/loom-demo-custody-client.js",
+    "serviceSource": "neon/functions/loom-custody/index.mjs",
+    "requestSchema": "td613.loom.demo-custody-request/v0.1",
+    "responseSchema": "td613.loom.demo-custody-response/v0.1",
+    "workloadIdentity": "VERCEL_OIDC_TOKEN",
+    "requiredOwner": "tauric-diana-s-projects",
+    "requiredOwnerId": "team_pX5L7AFivMzMU1lH28Y6RIhX",
+    "requiredProject": "td-613-tcp",
+    "requiredEnvironment": "production",
+    "vercelProjectSecretsRequired": false,
+    "authoritySplit": "Vercel executes provider; Neon authenticates/signs/reserves/commits custody",
+    "endpoint": "https://br-round-union-b5v3ludi-loomcustody.compute.c-7.us-east-2.aws.neon.tech/",
+    "neonProject": "late-glade-40477105",
+    "neonBranch": "br-round-union-b5v3ludi",
+    "neonFunctionSlug": "loomcustody",
+    "signerTable": "td613_loom_demo_signer",
+    "headTable": "td613_loom_demo_heads",
+    "endpointBoundInSource": true
+  }
 }

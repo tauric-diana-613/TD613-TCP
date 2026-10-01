@@ -17,14 +17,38 @@ const terminalJs = fs.readFileSync('app/dome-world/marrowline-terminal.js', 'utf
 const threadsJs = fs.readFileSync('app/dome-world/marrowline-threads.js', 'utf8');
 const physicalJs = fs.readFileSync('app/dome-world/marrowline-physical-device-repair.js', 'utf8');
 const loomPocketJs = fs.readFileSync('app/dome-world/marrowline-loom-pocket.js', 'utf8');
+const loomGateContinuityJs = fs.readFileSync('app/dome-world/marrowline-loom-gate-continuity.js', 'utf8');
+const loomGateContinuityCss = fs.readFileSync('app/dome-world/marrowline-loom-gate-continuity.css', 'utf8');
 const release = JSON.parse(fs.readFileSync('app/dome-world/marrowline.release.json', 'utf8'));
 
-test('desktop instruments have a persistent adjacent panel and Gate default', () => {
+test('desktop instruments have a persistent adjacent panel and Loom Gate default', () => {
   assert.match(css, /grid-template-columns:minmax\(0,2fr\) minmax\(300px,1fr\)/);
   assert.match(css, /html:root #speakingPanel #khonapolitMessages\{flex:1 1 0;min-height:0!important/);
-  assert.deepEqual(release.desktop.instrumentTabs, ['Gate', 'Keys', 'Stories', 'Receipts']);
+  assert.deepEqual(release.desktop.instrumentTabs, ['Loom Gate', 'Keys', 'Stories', 'Receipts']);
   assert.equal(release.desktop.persistentInstrumentPanel, true);
   assert.equal(release.desktop.posture, 'conversation-with-persistent-instruments');
+});
+test('Loom Gate continuity precedes the separate adversarial assay and preserves four-role jurisdiction', () => {
+  assert.equal(release.loomGateContinuitySchema, 'td613.dome-world.marrowline-loom-gate-continuity/v0.1');
+  assert.deepEqual(release.mobile.navigationOrder, ['Keys', 'Loom Gate', 'Chat', 'Stories', 'Receipts']);
+  assert.match(page, /data-mobile-target="gatePanel"><span>⟁<\/span>Loom Gate<\/button>/);
+  assert.match(loomGateContinuityJs, /What crossed this Loom Gate\?/);
+  assert.match(loomGateContinuityJs, /Pedagogue/);
+  assert.match(loomGateContinuityJs, /Aperture/);
+  assert.match(loomGateContinuityJs, /Atlas/);
+  assert.match(loomGateContinuityJs, /FADT/);
+  assert.match(loomGateContinuityJs, /SEPARATE EXPERIMENT/);
+  assert.match(loomGateContinuityJs, /Adversarial boundary assay preserved for the later Gate pass/);
+  assert.match(loomGateContinuityJs, /Browser submission of #1 began; server admission remains unresolved/);
+  assert.match(loomGateContinuityJs, /PRIOR EXPORT RETAINED/);
+  assert.match(loomGateContinuityCss, /\.loom-gate-consequence-grid\{[\s\S]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
+  assert.match(loomGateContinuityCss, /\.loom-gate-role\[data-role="pedagogue"\]/);
+  assert.match(loomGateContinuityCss, /\.loom-gate-role\[data-role="aperture"\]/);
+  assert.match(loomGateContinuityCss, /\.loom-gate-role\[data-role="atlas"\]/);
+  assert.match(loomGateContinuityCss, /\.loom-gate-role\[data-role="fadt"\]/);
+  assert.match(loomGateContinuityCss, /#gatePanel\[data-loom-continuity-active="true"\] #marrowlineGatePedagogue/);
+  assert.match(loomGateContinuityCss, /#gatePanel\[data-loom-continuity-active="true"\] #marrowlineForm/);
+  assert.match(loomGateContinuityCss, /@media\(max-width:860px\)\{[\s\S]*\.loom-gate-consequence-grid,\.loom-gate-role-grid\{grid-template-columns:1fr\}/);
 });
 
 test('lore-bearing demo prompts preserve canonical Flow-Core glyphs and Palantir attribution', () => {
@@ -102,17 +126,21 @@ test('composer has one universal plus with exactly file photo and Loom actions',
   assert.equal(release.composer.loomAwakeAction, 'continue-staged-loom-handoff');
 });
 
-test('Loom demo attention follows pending steps while the plus glyph keeps ordinary ink', () => {
+test('Loom demo attention follows pending steps and the two-step route branches from the Loom menu item', () => {
   assert.match(js, /doc\.documentElement\?\.dataset\?\.loomTaskImport === 'staged'/);
   assert.match(js, /Boolean\(demo\?\.pending_steps\)/);
   assert.match(js, /plus\.dataset\.loomAttention = String\(awake\)/);
   assert.doesNotMatch(js, /loomCueAcknowledged/);
   assert.match(js, /root\.addEventListener\?\.\('td613:marrowline:loom-demo-state', refreshLoom\)/);
+  assert.match(js, /loomItem\.button\.setAttribute\('aria-haspopup', 'menu'\)/);
+  assert.match(js, /loomItem\.button\.setAttribute\('aria-expanded', 'true'\)/);
   assert.match(js, /loomItem\.text\.textContent = awake \? 'Loom demo' : 'Loom'/);
   assert.match(css, /\.marrowline-composer-plus\{[^}]*color:#e6ece8/);
-  assert.match(css, /\.marrowline-composer-plus\[data-loom-attention="true"\],#khonapolitSend\[data-loom-attention="true"\]\{animation:marrowline-loom-demo-attention \.8s/);
+  assert.match(css, /\.marrowline-composer-plus\[data-loom-attention="true"\],#khonapolitSend\[data-loom-attention="true"\]\{animation:marrowline-loom-demo-attention \.62s/);
   assert.match(css, /#marrowlineContextLoom\[data-loom-awake="true"\]>span:nth-child\(2\)\{color:#ff69c3\}/);
   assert.match(css, /#marrowlineContextLoom\[data-loom-awake="true"\] small\{color:#f38ec8\}/);
+  assert.match(css, /#marrowlineContextLoom\[data-submenu-parent="true"\]\[data-loom-submenu="true"\]::after\{content:"›"/);
+  assert.match(css, /\.marrowline-context-submenu\{position:fixed/);
   assert.doesNotMatch(css, /marrowline-composer-plus\[data-loom-awake="true"\][^{]*\{[^}]*color:/);
   assert.doesNotMatch(css, /marrowline-composer-plus\[data-loom-awake="true"\]::after/);
   assert.match(css, /\.loom-import-workspace \.loom-demo-gate-next\{[^}]*border:1px solid #f38ec8[^}]*color:#ffb5e1/);
