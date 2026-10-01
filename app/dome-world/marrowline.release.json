@@ -724,6 +724,13 @@
     "requiredProject": "td-613-tcp",
     "requiredEnvironment": "production",
     "vercelProjectSecretsRequired": false,
-    "authoritySplit": "Vercel executes provider; Neon authenticates/signs/reserves/commits custody"
+    "authoritySplit": "Vercel executes provider; Neon authenticates/signs/reserves/commits custody",
+    "endpoint": "https://br-round-union-b5v3ludi-loomcustody.compute.c-7.us-east-2.aws.neon.tech/",
+    "neonProject": "late-glade-40477105",
+    "neonBranch": "br-round-union-b5v3ludi",
+    "neonFunctionSlug": "loomcustody",
+    "signerTable": "td613_loom_demo_signer",
+    "headTable": "td613_loom_demo_heads",
+    "endpointBoundInSource": true
   }
 }
