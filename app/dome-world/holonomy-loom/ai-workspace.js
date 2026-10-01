@@ -42,7 +42,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
         <label for="aiShi">Safe Harbor issuance</label>
         <div class="ai-shi-row"><input id="aiShi" type="text" inputmode="text" autocomplete="off" maxlength="64" placeholder="TD613-SH-9B07D8B-XXXXXXXX" aria-describedby="aiShiStatus aiShiClaim"><a href="/safe-harbor/index.html" target="_blank" rel="noopener noreferrer">Create SHI →</a></div>
         <p id="aiShiStatus" role="status">Issuance held · local preparation remains available.</p>
-        <p id="aiShiClaim" class="ai-muted">A minted SHI wakes Loom’s issuance controls after a local format check. This does not verify identity. Portable AIA v0.1 currently carries no SHI field.</p>
+        <p id="aiShiClaim" class="ai-muted">A minted SHI wakes Loom’s issuance controls after a local format check. This does not authenticate civil identity. Portable AIA v0.1 currently carries no SHI field.</p>
       </div>
     </section>
     <section id="aiDemoModePanel" class="ai-mode-panel" role="tabpanel" aria-labelledby="aiDemoMode" hidden>
