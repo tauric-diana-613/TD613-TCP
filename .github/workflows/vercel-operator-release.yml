@@ -129,11 +129,19 @@ jobs:
 
       - name: Choose one bounded Vercel release route
         id: mode
+        shell: bash
         run: |
-          if [[ -n "${VERCEL_TOKEN:-}" ]]; then
-            echo 'mode=direct-token' >> "$GITHUB_OUTPUT"
-          else
+          set -euo pipefail
+          if [[ -z "${VERCEL_TOKEN:-}" ]]; then
             echo 'mode=git-fallback' >> "$GITHUB_OUTPUT"
+            echo 'token_probe=absent' >> "$GITHUB_OUTPUT"
+          elif npx --yes vercel@latest whoami --token "$VERCEL_TOKEN" >/dev/null 2>&1; then
+            echo 'mode=direct-token' >> "$GITHUB_OUTPUT"
+            echo 'token_probe=valid' >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::VERCEL_TOKEN failed Vercel identity validation; preserving the governed Git-fallback release path."
+            echo 'mode=git-fallback' >> "$GITHUB_OUTPUT"
+            echo 'token_probe=invalid' >> "$GITHUB_OUTPUT"
           fi
 
       - name: Materialize the exact-source receipt

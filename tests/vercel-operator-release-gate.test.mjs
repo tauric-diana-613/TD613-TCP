@@ -33,6 +33,12 @@ assert.match(workflow, /^\s{2}contents: write$/m);
 assert.match(workflow, /mode=direct-token/);
 assert.match(workflow, /mode=git-fallback/);
 assert.match(workflow, /secrets\.VERCEL_TOKEN/);
+assert.match(workflow, /vercel@latest whoami --token "\$VERCEL_TOKEN"/,
+  'a present Vercel token must prove usable identity before direct-token mode is selected');
+assert.match(workflow, /VERCEL_TOKEN failed Vercel identity validation; preserving the governed Git-fallback release path/,
+  'an unusable Vercel token must preserve the already-governed Git fallback instead of aborting release');
+assert.match(workflow, /token_probe=invalid/,
+  'release routing must retain a bounded diagnostic coordinate for invalid token fallback');
 assert.match(workflow, /VERCEL_PROJECT: td-613-tcp/);
 assert.match(workflow, /VERCEL_SCOPE: tauric-diana-s-projects/);
 assert.equal((workflow.match(/vercel@latest deploy/g) || []).length, 1);
