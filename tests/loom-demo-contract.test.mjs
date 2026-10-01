@@ -12,8 +12,16 @@ import {
   LOOM_DEMO_REQUEST_SCHEMA,
   LOOM_DEMO_STAGE_RECEIPT_SCHEMA
 } from '../app/dome-world/holonomy-loom/demo-contract.js';
-import loomDemoReleaseHeld, { createLoomDemoTaskHandler, loomDemoProductionReadiness } from '../server/loom-demo-task.js';
-import { loomDemoHeadStoreReadiness } from '../server/loom-demo-head-store.js';
+import loomDemoProductionHandler, { createLoomDemoTaskHandler, loomDemoProductionReadiness } from '../server/loom-demo-task.js';
+import {
+  commitLoomDemoStage,
+  releaseLoomDemoStageReservation,
+  reserveLoomDemoStage
+} from '../server/loom-demo-head-store.js';
+import {
+  LOOM_DEMO_CUSTODY_RESPONSE_SCHEMA,
+  loomDemoCustodyReadiness
+} from '../server/loom-demo-custody-client.js';
 import {
   LOOM_DEMO_SIGNER_KEY_ID,
   loomDemoReceiptDigest,
@@ -30,6 +38,8 @@ const SIGNING_ENVIRONMENT = {};
 const DUMMY_AUTH = Object.freeze({scheme:'hmac-sha256',key_id:LOOM_DEMO_SIGNER_KEY_ID,tag:'A'.repeat(43)});
 const HEAD_STORE_URL = 'postgresql://loom:test@ep-loom-demo-test.neon.tech/td613_loom?sslmode=require';
 const HEAD_STORE_ENVIRONMENT = Object.freeze({TD613_LOOM_DEMO_NEON_DATABASE_URL:HEAD_STORE_URL});
+const CUSTODY_URL = 'https://loom-custody.test/';
+const VERCEL_OIDC_TOKEN = 'fixture-vercel-oidc-token';
 
 function createFakeLoomHeadStore() {
   const heads=new Map();
@@ -84,18 +94,77 @@ function createFakeLoomHeadStore() {
   return {heads,queries,fetchImpl,environment:{...HEAD_STORE_ENVIRONMENT}};
 }
 
-function handlerWithCustody(options={}) {
-  const store=options.store||createFakeLoomHeadStore();
+function createFakeRemoteCustody() {
+  const store=createFakeLoomHeadStore();
+  const response=(status,body)=>({ok:status>=200&&status<300,status,json:async()=>body});
+  const fetchImpl=async(url,init={})=>{
+    assert.equal(url,CUSTODY_URL);
+    assert.equal(init.headers.Authorization,`Bearer ${VERCEL_OIDC_TOKEN}`);
+    const body=JSON.parse(init.body||'{}');
+    const ok=payload=>response(200,{schema:LOOM_DEMO_CUSTODY_RESPONSE_SCHEMA,status:'ok',...payload});
+    const held=(error,status=409)=>response(status,{schema:LOOM_DEMO_CUSTODY_RESPONSE_SCHEMA,status:'held',error,message:error});
+    try{
+      if(body.operation==='reserve'){
+        let predecessorDigest=null;
+        if(body.phase==='CONTINUE'){
+          verifyLoomDemoStageReceiptAuthentication(body.predecessor,{secret:SIGNING_SECRET,environment:SIGNING_ENVIRONMENT});
+          predecessorDigest=loomDemoReceiptDigest(body.predecessor);
+          if(predecessorDigest!==body.predecessor_receipt_digest)return held('LOOM_DEMO_PREDECESSOR_DIGEST_MISMATCH',409);
+        }
+        const reservation=await reserveLoomDemoStage({
+          activationDigest:body.activation_digest,
+          phase:body.phase,
+          requestDigest:body.request_digest,
+          predecessorReceiptDigest:predecessorDigest,
+          expiresAt:body.expires_at,
+          fetchImpl:store.fetchImpl,
+          environment:store.environment
+        });
+        return ok({reservation});
+      }
+      if(body.operation==='commit'){
+        const stage=body.stage_body;
+        const receipt=signLoomDemoStageReceipt(stage,{secret:SIGNING_SECRET,environment:SIGNING_ENVIRONMENT});
+        const receiptDigest=loomDemoReceiptDigest(receipt);
+        await commitLoomDemoStage({
+          activationDigest:stage.activation_digest,
+          phase:stage.phase,
+          requestId:stage.request_id,
+          requestDigest:stage.request_digest,
+          receiptDigest,
+          fetchImpl:store.fetchImpl,
+          environment:store.environment
+        });
+        return ok({stage_receipt:receipt,head:{receipt_digest:receiptDigest,durable:true,payload_logged:false}});
+      }
+      if(body.operation==='release'){
+        await releaseLoomDemoStageReservation({
+          activationDigest:body.activation_digest,
+          requestDigest:body.request_digest,
+          phase:body.phase,
+          fetchImpl:store.fetchImpl,
+          environment:store.environment
+        });
+        return ok({released:true});
+      }
+      return held('LOOM_DEMO_CUSTODY_OPERATION_INVALID',400);
+    }catch(error){
+      return held(error?.code||error?.message||'LOOM_DEMO_CUSTODY_HELD',error?.status||400);
+    }
+  };
+  return {store,fetchImpl};
+}
+
+function makeRemoteHandler({taskHandler,remote=createFakeRemoteCustody(),clock}={}) {
   return {
-    store,
+    remote,
     handler:createLoomDemoTaskHandler({
       environment,
-      signingSecret:SIGNING_SECRET,
-      signingEnvironment:SIGNING_ENVIRONMENT,
-      headStoreEnvironment:store.environment,
-      headStoreFetch:store.fetchImpl,
-      ...options,
-      store:undefined
+      taskHandler,
+      custodyEnvironment:{VERCEL_OIDC_TOKEN},
+      custodyFetch:remote.fetchImpl,
+      custodyUrl:CUSTODY_URL,
+      ...(clock?{clock}:{})
     })
   };
 }
@@ -260,25 +329,25 @@ test('altered activation, extra fields, premature contents and uncaptured export
   activated.binding.governor.close();
 });
 
-test('signed stage receipts authenticate cross-instance ancestry before provider invocation',async()=>{
+test('remote Neon custody authenticates cross-instance ancestry before provider invocation',async()=>{
   const {packet,activation}=await fixture();
+  const remote=createFakeRemoteCustody();
   let calls=0;
   let invalidReturn=false;
   const taskHandler=async(req,res)=>{
-      calls++;
-      res.statusCode=200;
-      const activationStage=req.body.documents.length===0;
-      res.end(JSON.stringify(result(
-        req.body.request_id,
-        activationStage?'Rules received; selected files are pending.':'State B: four approved workstreams.',
-        activationStage?[]:(invalidReturn?['private']:['a'])
-      )));
-    };
-  const store=createFakeLoomHeadStore();
-  const handlerA=createLoomDemoTaskHandler({environment,taskHandler,signingSecret:SIGNING_SECRET,signingEnvironment:SIGNING_ENVIRONMENT,headStoreEnvironment:store.environment,headStoreFetch:store.fetchImpl});
-  const handlerB=createLoomDemoTaskHandler({environment,taskHandler,signingSecret:SIGNING_SECRET,signingEnvironment:SIGNING_ENVIRONMENT,headStoreEnvironment:store.environment,headStoreFetch:store.fetchImpl});
+    calls++;
+    res.statusCode=200;
+    const activationStage=req.body.documents.length===0;
+    res.end(JSON.stringify(result(
+      req.body.request_id,
+      activationStage?'Rules received; selected files are pending.':'State B: four approved workstreams.',
+      activationStage?[]:(invalidReturn?['private']:['a'])
+    )));
+  };
+  const handlerA=makeRemoteHandler({taskHandler,remote}).handler;
+  const handlerB=makeRemoteHandler({taskHandler,remote}).handler;
 
-  const run=async (body,handler=handlerA)=>{
+  const run=async(body,handler=handlerA)=>{
     const req=Object.assign(new EventEmitter(),{
       method:'POST',
       headers:{host:'td613.com',origin:'https://td613.com','content-type':'application/json'},
@@ -322,7 +391,10 @@ test('signed stage receipts authenticate cross-instance ancestry before provider
   assert.equal(rejectedPredecessor.output.error,'LOOM_DEMO_PREDECESSOR_AUTH_INVALID');
   assert.equal(calls,1);
 
-  const good=await run(request(activation,packet.documents,'CONTINUE',null,activationRun.output.loom_demo_stage_receipt,'continue-live'),handlerB);
+  const good=await run(request(
+    activation,packet.documents,'CONTINUE',null,
+    activationRun.output.loom_demo_stage_receipt,'continue-live'
+  ),handlerB);
   assert.equal(good.status,200);
   assert.equal(good.output.loom_demo_binding.contents_verified,true);
   assert.equal(good.output.loom_demo_stage_receipt.phase,'CONTINUE');
@@ -330,14 +402,17 @@ test('signed stage receipts authenticate cross-instance ancestry before provider
 
   invalidReturn=true;
   const prior=loomDemoResult(good.output,packet.documents);
-  const rejected=await run(request(activation,packet.documents,'CONTINUE',prior,good.output.loom_demo_stage_receipt,'continue-bad-return'),handlerA);
+  const rejected=await run(request(
+    activation,packet.documents,'CONTINUE',prior,
+    good.output.loom_demo_stage_receipt,'continue-bad-return'
+  ),handlerA);
   assert.equal(rejected.status,422);
   assert.equal(rejected.output.status,'held');
   assert.equal(rejected.output.answer,'');
   assert.equal(calls,3);
 });
 
-test('Loom stage signer is domain-separated, rejects reused authority, and detects tampering',async()=>{
+test('offline signer primitive remains domain-separated and detects tampering',async()=>{
   const {activation}=await fixture();
   const activated=await admittedActivation(activation);
   const body={...activated.receipt};
@@ -348,75 +423,65 @@ test('Loom stage signer is domain-separated, rejects reused authority, and detec
   const signed=signLoomDemoStageReceipt(body,{secret:SIGNING_SECRET,environment:SIGNING_ENVIRONMENT});
   assert.equal(signed.auth.key_id,LOOM_DEMO_SIGNER_KEY_ID);
   assert.match(signed.auth.tag,/^[A-Za-z0-9_-]{43}$/);
-  assert.equal(verifyLoomDemoStageReceiptAuthentication(signed,{secret:SIGNING_SECRET,environment:SIGNING_ENVIRONMENT}).request_id,body.request_id);
+  assert.equal(
+    verifyLoomDemoStageReceiptAuthentication(signed,{secret:SIGNING_SECRET,environment:SIGNING_ENVIRONMENT}).request_id,
+    body.request_id
+  );
   const changed=copy(signed);changed.result_digest='f'.repeat(64);
-  assert.throws(()=>verifyLoomDemoStageReceiptAuthentication(changed,{secret:SIGNING_SECRET,environment:SIGNING_ENVIRONMENT}),/PREDECESSOR_AUTH_INVALID/);
+  assert.throws(
+    ()=>verifyLoomDemoStageReceiptAuthentication(changed,{secret:SIGNING_SECRET,environment:SIGNING_ENVIRONMENT}),
+    /PREDECESSOR_AUTH_INVALID/
+  );
   const reused={TD613_GIVING_SESSION_SECRET:SIGNING_SECRET};
   assert.equal(loomDemoSigningConfiguration({secret:SIGNING_SECRET,environment:reused}).configured,false);
-  assert.throws(()=>signLoomDemoStageReceipt(body,{secret:SIGNING_SECRET,environment:reused}),/SIGNING_SECRET_REUSED/);
+  assert.throws(
+    ()=>signLoomDemoStageReceipt(body,{secret:SIGNING_SECRET,environment:reused}),
+    /SIGNING_SECRET_REUSED/
+  );
   activated.binding.governor.close();
 });
 
-test('missing Loom signer holds before provider invocation',async()=>{
+test('missing Vercel workload identity holds before provider invocation',async()=>{
   const {activation}=await fixture();
   let calls=0;
+  const remote=createFakeRemoteCustody();
   const handler=createLoomDemoTaskHandler({
     environment,
-    signingSecret:'',
-    signingEnvironment:{},
-    headStoreEnvironment:HEAD_STORE_ENVIRONMENT,
-    headStoreFetch:createFakeLoomHeadStore().fetchImpl,
+    custodyEnvironment:{},
+    custodyFetch:remote.fetchImpl,
+    custodyUrl:CUSTODY_URL,
     taskHandler:async()=>{calls++;}
   });
-  const req=Object.assign(new EventEmitter(),{method:'POST',headers:{host:'td613.com',origin:'https://td613.com','content-type':'application/json'},body:request(activation)});
+  const req=Object.assign(new EventEmitter(),{
+    method:'POST',
+    headers:{host:'td613.com',origin:'https://td613.com','content-type':'application/json'},
+    body:request(activation)
+  });
   let output;const res={setHeader(){},end(raw){output=JSON.parse(raw);}};
   await handler(req,res);
   assert.equal(res.statusCode,503);
-  assert.equal(output.error,'LOOM_DEMO_SIGNING_SECRET_NOT_CONFIGURED');
+  assert.equal(output.error,'loom-demo-release-not-admitted');
   assert.equal(calls,0);
 });
 
-test('missing or Giving-aliased Loom head store holds before provider invocation',async()=>{
+test('admission-time expiry releases remote reservation without minting a receipt',async()=>{
   const {activation}=await fixture();
-  for(const headStoreEnvironment of [
-    {},
-    {TD613_LOOM_DEMO_NEON_DATABASE_URL:HEAD_STORE_URL,TD613_GIVING_NEON_DATABASE_URL:HEAD_STORE_URL}
-  ]){
-    let calls=0;
-    const handler=createLoomDemoTaskHandler({
-      environment,
-      signingSecret:SIGNING_SECRET,
-      signingEnvironment:SIGNING_ENVIRONMENT,
-      headStoreEnvironment,
-      headStoreFetch:createFakeLoomHeadStore().fetchImpl,
-      taskHandler:async()=>{calls++;}
-    });
-    const req=Object.assign(new EventEmitter(),{method:'POST',headers:{host:'td613.com',origin:'https://td613.com','content-type':'application/json'},body:request(activation)});
-    let output;const res={setHeader(){},end(raw){output=JSON.parse(raw);}};
-    await handler(req,res);
-    assert.equal(res.statusCode,503);
-    assert.equal(output.status,'held');
-    assert.equal(calls,0);
-  }
-});
-
-test('admission-time expiry holds a late provider result without minting a receipt',async()=>{
-  const {activation}=await fixture();
+  const remote=createFakeRemoteCustody();
   let calls=0;
-  const handler=createLoomDemoTaskHandler({
-    environment,
-    signingSecret:SIGNING_SECRET,
-    signingEnvironment:SIGNING_ENVIRONMENT,
-    headStoreEnvironment:HEAD_STORE_ENVIRONMENT,
-    headStoreFetch:createFakeLoomHeadStore().fetchImpl,
-    clock:(()=>{let tick=0;return()=>++tick===1?activation.expires_at-1:activation.expires_at;})(),
+  const clock=(()=>{let tick=0;return()=>++tick===1?activation.expires_at-1:activation.expires_at;})();
+  const handler=makeRemoteHandler({
+    remote,clock,
     taskHandler:async(req,res)=>{
       calls++;
       res.statusCode=200;
       res.end(JSON.stringify(result(req.body.request_id,'Rules received; selected files are pending.',[])));
     }
+  }).handler;
+  const req=Object.assign(new EventEmitter(),{
+    method:'POST',
+    headers:{host:'td613.com',origin:'https://td613.com','content-type':'application/json'},
+    body:request(activation,[],'ACTIVATE',null,null,'late-activate')
   });
-  const req=Object.assign(new EventEmitter(),{method:'POST',headers:{host:'td613.com',origin:'https://td613.com','content-type':'application/json'},body:request(activation,[],'ACTIVATE',null,null,'late-activate')});
   let output;const res={setHeader(){},end(raw){output=JSON.parse(raw);}};
   await handler(req,res);
   assert.equal(calls,1);
@@ -424,119 +489,106 @@ test('admission-time expiry holds a late provider result without minting a recei
   assert.equal(output.status,'held');
   assert.equal(output.error,'loom-demo-expired-before-admission');
   assert.equal(Object.hasOwn(output,'loom_demo_stage_receipt'),false);
+  assert.equal(remote.store.heads.has(activation.activation_digest),false);
 });
 
-test('durable Loom head excludes replay and fork before the second provider invocation',async()=>{
+test('remote durable head excludes replay and fork before a second provider invocation',async()=>{
   const {packet,activation}=await fixture();
-  const store=createFakeLoomHeadStore();
+  const remote=createFakeRemoteCustody();
   let calls=0;
   const taskHandler=async(req,res)=>{
     calls++;
     res.statusCode=200;
     const activationStage=req.body.documents.length===0;
-    res.end(JSON.stringify(result(req.body.request_id,activationStage?'Rules received; selected files are pending.':`Branch ${req.body.request_id}`,activationStage?[]:['a'])));
+    res.end(JSON.stringify(result(
+      req.body.request_id,
+      activationStage?'Rules received; selected files are pending.':`Branch ${req.body.request_id}`,
+      activationStage?[]:['a']
+    )));
   };
-  const makeHandler=()=>createLoomDemoTaskHandler({
-    environment,taskHandler,
-    signingSecret:SIGNING_SECRET,signingEnvironment:SIGNING_ENVIRONMENT,
-    headStoreEnvironment:store.environment,headStoreFetch:store.fetchImpl
-  });
+  const makeHandler=()=>makeRemoteHandler({taskHandler,remote}).handler;
   const run=async(body,handler)=>{
-    const req=Object.assign(new EventEmitter(),{method:'POST',headers:{host:'td613.com',origin:'https://td613.com','content-type':'application/json'},body});
-    let output;const res={setHeader(){},end(raw){output=JSON.parse(raw);}};await handler(req,res);return {status:res.statusCode,output};
+    const req=Object.assign(new EventEmitter(),{
+      method:'POST',
+      headers:{host:'td613.com',origin:'https://td613.com','content-type':'application/json'},
+      body
+    });
+    let output;const res={setHeader(){},end(raw){output=JSON.parse(raw);}};
+    await handler(req,res);return {status:res.statusCode,output};
   };
+
   const activationRun=await run(request(activation,[],'ACTIVATE',null,null,'fork-root'),makeHandler());
   assert.equal(activationRun.status,200);
   const predecessor=activationRun.output.loom_demo_stage_receipt;
   const left=await run(request(activation,packet.documents,'CONTINUE',null,predecessor,'fork-left'),makeHandler());
   assert.equal(left.status,200);
   assert.equal(left.output.loom_demo_stage_receipt.predecessor_receipt_digest,loomDemoReceiptDigest(predecessor));
+
   const callsAfterLeft=calls;
   const right=await run(request(activation,packet.documents,'CONTINUE',null,predecessor,'fork-right'),makeHandler());
   assert.equal(right.status,409);
-  assert.equal(right.output.status,'held');
   assert.equal(right.output.error,'LOOM_DEMO_HEAD_CONFLICT');
-  assert.equal(calls,callsAfterLeft,'stale/forked continuation is rejected before provider invocation');
+  assert.equal(calls,callsAfterLeft);
+
   const replay=await run(request(activation,packet.documents,'CONTINUE',null,predecessor,'fork-left-replay'),makeHandler());
   assert.equal(replay.status,409);
   assert.equal(replay.output.error,'LOOM_DEMO_HEAD_CONFLICT');
   assert.equal(calls,callsAfterLeft);
-  assert.equal(store.heads.get(activation.activation_digest).head_receipt_digest,loomDemoReceiptDigest(left.output.loom_demo_stage_receipt));
-  const readiness=loomDemoHeadStoreReadiness(store.environment);
-  assert.equal(readiness.durable_compare_and_swap,true);
-  assert.equal(readiness.replay_exclusion,true);
-  assert.equal(readiness.fork_exclusion,true);
+  assert.equal(
+    remote.store.heads.get(activation.activation_digest).head_receipt_digest,
+    loomDemoReceiptDigest(left.output.loom_demo_stage_receipt)
+  );
 });
 
-test('ambiguous head-commit acknowledgement is reconciled only by the exact durable head',async()=>{
-  const {activation}=await fixture();
-  const store=createFakeLoomHeadStore();
-  let loseAck=true;
-  const flakyFetch=async(url,init={})=>{
-    const {query=''}=JSON.parse(init.body||'{}');
-    if(loseAck&&/SET head_receipt_digest=\$3/i.test(query)){
-      loseAck=false;
-      await store.fetchImpl(url,init);
-      throw new Error('simulated-commit-ack-loss');
-    }
-    return store.fetchImpl(url,init);
+test('remote custody client sends only workload identity plus bounded custody metadata',async()=>{
+  const observed=[];
+  const fetchImpl=async(url,init)=>{
+    observed.push({url,headers:copy(init.headers),body:JSON.parse(init.body)});
+    return {
+      ok:true,status:200,
+      json:async()=>({
+        schema:LOOM_DEMO_CUSTODY_RESPONSE_SCHEMA,
+        status:'ok',
+        reservation:{activation_digest:'a'.repeat(64),phase:'ACTIVATE',request_digest:'b'.repeat(64)}
+      })
+    };
   };
-  let calls=0;
-  const handler=createLoomDemoTaskHandler({
-    environment,
-    signingSecret:SIGNING_SECRET,
-    signingEnvironment:SIGNING_ENVIRONMENT,
-    headStoreEnvironment:store.environment,
-    headStoreFetch:flakyFetch,
-    taskHandler:async(req,res)=>{
-      calls++;
-      res.statusCode=200;
-      res.end(JSON.stringify(result(req.body.request_id,'Rules received; selected files are pending.',[])));
-    }
+  const readiness=loomDemoCustodyReadiness({
+    environment:{VERCEL_OIDC_TOKEN},
+    url:CUSTODY_URL
   });
-  const req=Object.assign(new EventEmitter(),{method:'POST',headers:{host:'td613.com',origin:'https://td613.com','content-type':'application/json'},body:request(activation,[],'ACTIVATE',null,null,'ambiguous-commit')});
-  let output;const res={setHeader(){},end(raw){output=JSON.parse(raw);}};
-  await handler(req,res);
-  assert.equal(calls,1);
-  assert.equal(res.statusCode,200);
-  assert.equal(output.status,'completed');
-  const durable=store.heads.get(activation.activation_digest);
-  assert.equal(durable.head_request_id,'ambiguous-commit');
-  assert.equal(durable.head_receipt_digest,loomDemoReceiptDigest(output.loom_demo_stage_receipt));
-  assert.equal(JSON.stringify(durable).includes('Rules received'),false);
-  assert.equal(JSON.stringify(durable).includes('State A'),false);
+  assert.equal(readiness.admitted,true);
+  assert.equal(readiness.vercel_project_secrets_required,false);
+  const client=(await import('../server/loom-demo-custody-client.js'));
+  await client.reserveLoomDemoCustodyStage({
+    activation_digest:'a'.repeat(64),
+    phase:'ACTIVATE',
+    request_digest:'b'.repeat(64),
+    predecessor:null,
+    predecessor_receipt_digest:null,
+    expires_at:Date.now()+60_000
+  },{
+    environment:{VERCEL_OIDC_TOKEN},
+    fetchImpl,
+    url:CUSTODY_URL
+  });
+  assert.equal(observed.length,1);
+  assert.equal(observed[0].headers.Authorization,`Bearer ${VERCEL_OIDC_TOKEN}`);
+  assert.equal(JSON.stringify(observed[0]).includes(SIGNING_SECRET),false);
+  assert.equal(JSON.stringify(observed[0]).includes(HEAD_STORE_URL),false);
 });
 
-test('production readiness requires both independent Loom authorities and default environment remains held',async()=>{
+test('production remains held without Vercel OIDC even after source admits a custody endpoint',async()=>{
   const absent=loomDemoProductionReadiness({});
   assert.equal(absent.admitted,false);
-  assert.equal(absent.signer.configured,false);
-  assert.equal(absent.head_store.configured,false);
-
-  const reusedStore=loomDemoProductionReadiness({
-    TD613_LOOM_DEMO_SIGNING_SECRET:SIGNING_SECRET,
-    TD613_LOOM_DEMO_NEON_DATABASE_URL:HEAD_STORE_URL,
-    TD613_GIVING_NEON_DATABASE_URL:HEAD_STORE_URL
-  });
-  assert.equal(reusedStore.admitted,false);
-  assert.equal(reusedStore.head_store.error,'LOOM_DEMO_HEAD_STORE_REUSES_GIVING');
-
-  const ready=loomDemoProductionReadiness({
-    TD613_LOOM_DEMO_SIGNING_SECRET:SIGNING_SECRET,
-    TD613_LOOM_DEMO_NEON_DATABASE_URL:HEAD_STORE_URL
-  });
-  assert.equal(ready.admitted,true);
-  assert.equal(ready.cross_instance_predecessor_authentication,true);
-  assert.equal(ready.durable_single_head,true);
-  assert.equal(ready.replay_exclusion,true);
-  assert.equal(ready.fork_exclusion,true);
-  assert.equal(ready.provider_and_browser_witness_required,true);
+  assert.equal(absent.vercel_oidc,false);
 
   let output;
   const res={setHeader(){},end(raw){output=JSON.parse(raw);}};
-  await loomDemoReleaseHeld({body:{request_id:'not-admitted'}},res);
+  await loomDemoProductionHandler({body:{request_id:'not-admitted'}},res);
   assert.equal(res.statusCode,503);
   assert.equal(output.status,'held');
   assert.equal(output.answer,'');
   assert.equal(output.error,'loom-demo-release-not-admitted');
 });
+
