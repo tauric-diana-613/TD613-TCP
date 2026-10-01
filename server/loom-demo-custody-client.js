@@ -12,12 +12,24 @@ export class LoomDemoCustodyError extends Error {
   }
 }
 
+export function readLoomDemoVercelOidcToken({
+  environment=process.env,
+  requestHeaders={},
+  oidcToken=''
+}={}){
+  const headerValue=requestHeaders?.['x-vercel-oidc-token']??requestHeaders?.['X-Vercel-Oidc-Token'];
+  const headerToken=Array.isArray(headerValue)?headerValue[0]:headerValue;
+  return String(oidcToken||headerToken||environment?.VERCEL_OIDC_TOKEN||'');
+}
+
 async function callCustody(operation,payload,{
   fetchImpl=fetch,
   environment=process.env,
+  requestHeaders={},
+  oidcToken='',
   url=LOOM_DEMO_CUSTODY_URL
 }={}){
-  const token=String(environment.VERCEL_OIDC_TOKEN||'');
+  const token=readLoomDemoVercelOidcToken({environment,requestHeaders,oidcToken});
   if(!token) throw new LoomDemoCustodyError('LOOM_DEMO_VERCEL_OIDC_UNAVAILABLE','Vercel workload identity is unavailable',503);
   if(!/^https:\/\//.test(String(url||''))||String(url).includes('__TD613_')) {
     throw new LoomDemoCustodyError('LOOM_DEMO_CUSTODY_URL_NOT_CONFIGURED','Neon Loom custody service is not configured',503);
@@ -70,9 +82,11 @@ export async function releaseLoomDemoCustodyStage(input,options={}){
 
 export function loomDemoCustodyReadiness({
   environment=process.env,
+  requestHeaders={},
+  oidcToken='',
   url=LOOM_DEMO_CUSTODY_URL
 }={}){
-  const oidc=Boolean(environment.VERCEL_OIDC_TOKEN);
+  const oidc=Boolean(readLoomDemoVercelOidcToken({environment,requestHeaders,oidcToken}));
   const endpoint=/^https:\/\//.test(String(url||''))&&!String(url).includes('__TD613_');
   return Object.freeze({
     admitted:Boolean(oidc&&endpoint),
