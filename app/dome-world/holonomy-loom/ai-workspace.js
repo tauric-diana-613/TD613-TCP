@@ -147,7 +147,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     $('aiTaskLabel').textContent = portable ? 'What task should travel?' : 'What should the AI work on?';
     $('aiTaskCue').textContent = portable
       ? 'This exact task travels with the selected files and portable rules when you prepare the Portable AIA.'
-      : 'Edit this box directly. It is the exact instruction the AI receives when you press Run demo.';
+      : 'Edit this box directly. It is the exact instruction the AI will receive when you press Run demo.';
     $('aiRunNote').textContent = portable
       ? 'Preparing binds the selected task locally and makes no model request. The optional Flow-Core test sends only the selected task, selected documents and portable rules.'
       : 'Run demo sends the fictional task, selected documents and rules to Dome-World’s Flow-Core AI runtime. Local-only documents stay in this tab.';
