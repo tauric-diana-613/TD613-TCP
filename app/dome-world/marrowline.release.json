@@ -677,41 +677,53 @@
   "loomGateContinuitySchema": "td613.dome-world.marrowline-loom-gate-continuity/v0.1",
   "loomDemoStageReceiptSchema": "td613.loom.demo-stage-receipt/v0.2",
   "loomDemoSigner": {
-    "environmentVariable": "TD613_LOOM_DEMO_SIGNING_SECRET",
+    "authorityLocation": "Neon custody service",
+    "table": "td613_loom_demo_signer",
     "scheme": "hmac-sha256",
     "keyId": "td613-loom-demo-stage-v1",
     "domain": "TD613:LOOM-DEMO:STAGE-RECEIPT:v1",
     "minimumSecretBytes": 32,
-    "separateAuthorityRequired": true,
+    "secretPresentInVercel": false,
     "crossInstancePredecessorAuthentication": true,
-    "globalLatestState": false,
-    "replayExclusion": false,
-    "forkExclusion": false,
     "authority": "receipt-authentication-only"
   },
   "loomDemoHeadStore": {
-    "environmentVariable": "TD613_LOOM_DEMO_NEON_DATABASE_URL",
-    "admittedBackend": "Neon-HTTP-SQL",
+    "authorityLocation": "Neon custody service",
+    "project": "td613-loom-demo",
+    "database": "neondb",
     "table": "td613_loom_demo_heads",
-    "separateFromGivingDatabaseRequired": true,
     "durableCompareAndSwap": true,
-    "globalLatestStateWhenConfigured": true,
-    "replayExclusionWhenConfigured": true,
-    "forkExclusionWhenConfigured": true,
+    "globalLatestState": true,
+    "replayExclusion": true,
+    "forkExclusion": true,
     "payloadLogged": false,
     "storedMaterial": "activation/head/request/phase/lease/expiry custody metadata only"
   },
   "loomDemoProductionReadiness": {
     "default": "HELD",
     "requires": [
-      "independent Loom signing secret",
-      "independent Loom Neon head store",
+      "Vercel production workload OIDC identity",
+      "admitted immutable Neon Loom custody endpoint",
+      "Neon signer table and durable head table",
       "exact-head GREEN source validation",
       "live provider witness",
       "desktop and approximately-390px browser journey witness",
       "governed #405 release receipt before production acceptance"
     ],
-    "sourceConfigurationGate": "both Loom-only authorities must be configured and valid; missing/invalid authority returns HTTP 503 loom-demo-release-not-admitted",
+    "sourceConfigurationGate": "VERCEL_OIDC_TOKEN plus an admitted non-placeholder Neon custody endpoint; no Loom DB password or Loom signing secret is stored in Vercel",
     "configurationDoesNotGrantReleaseAuthority": true
+  },
+  "loomDemoCustody": {
+    "client": "server/loom-demo-custody-client.js",
+    "serviceSource": "neon/functions/loom-custody/index.mjs",
+    "requestSchema": "td613.loom.demo-custody-request/v0.1",
+    "responseSchema": "td613.loom.demo-custody-response/v0.1",
+    "workloadIdentity": "VERCEL_OIDC_TOKEN",
+    "requiredOwner": "tauric-diana-s-projects",
+    "requiredOwnerId": "team_pX5L7AFivMzMU1lH28Y6RIhX",
+    "requiredProject": "td-613-tcp",
+    "requiredEnvironment": "production",
+    "vercelProjectSecretsRequired": false,
+    "authoritySplit": "Vercel executes provider; Neon authenticates/signs/reserves/commits custody"
   }
 }
