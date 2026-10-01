@@ -89,6 +89,8 @@ try {
       assert.equal(await page.locator('#loomLivingGeometry canvas').count(), 1, 'one Dome-Art canvas is mounted under the workspace clock; raster readiness remains a renderer concern');
 
       await page.locator('#aiTask').fill('Prepare a bounded Portable AIA and keep the unselected material local.');
+      await page.locator('#aiPortableDrawer > summary').click();
+      assert.equal(await page.locator('#aiPreparePortable').isVisible(),true,'local preparation is reachable through its disclosure');
       await page.locator('#aiPreparePortable').click();
       await page.waitForFunction(() => document.querySelector('#aiResult') && !document.querySelector('#aiResult').hidden);
       assert.equal(requests.length,0,'local Portable AIA preparation makes no provider request');
