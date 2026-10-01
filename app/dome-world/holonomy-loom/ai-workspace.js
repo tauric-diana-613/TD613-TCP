@@ -8,6 +8,7 @@ import { readLoomAiFailure, describeLoomAiFailure } from './ai-failure.js';
 import { AnimationCoordinator } from './animation-coordinator.js';
 import { mountLivingGeometry } from './living-geometry.js';
 import { ingestGeminiConsumption } from '../../gemini-consumption-ledger.js';
+import { validateShi } from '../khonapolit-covenant.js';
 
 // Provider output supplies content only. This local event grammar alone owns motion.
 export function projectLoomRequestEvent(event) {
@@ -27,7 +28,36 @@ export function projectLoomRequestEvent(event) {
 export function mountLoomAiWorkspace(root, environment = window) {
   const LOOM_AI_CLIENT_TIMEOUT_MS = 225000;
   if (!root) return;
-  root.innerHTML = `<div class="ai-demo-welcome"><button type="button" id="aiDemoInvitation" class="ai-demo-invitation" aria-expanded="false" aria-controls="aiProjectChoices"><span class="ai-invitation-orbit" aria-hidden="true">↗</span><span><strong>Try a live AI demo</strong><small>Three fictional projects. Real work, on your terms.</small></span><span class="ai-invitation-arrow" aria-hidden="true">＋</span></button><p class="ai-muted">Open a project to explore it. Only Run sends the selected work to the AI runtime.</p></div>
+  root.innerHTML = `<section class="ai-mode-shell" aria-labelledby="aiModeTitle">
+    <div class="ai-mode-head">
+      <div><p class="mark">PORTABLE GOVERNANCE</p><h2 id="aiModeTitle">Choose how to enter Loom.</h2><p class="ai-muted">Build a Portable AIA for your own task, or practice the same governed route with fictional material.</p></div>
+      <div class="ai-mode-tabs" role="tablist" aria-label="Holonomy Loom mode">
+        <button type="button" id="aiPortableMode" role="tab" aria-selected="true" aria-controls="aiPortableModePanel">Portable AIA</button>
+        <button type="button" id="aiDemoMode" role="tab" aria-selected="false" aria-controls="aiDemoModePanel">Loom Demo</button>
+      </div>
+    </div>
+    <section id="aiPortableModePanel" class="ai-mode-panel" role="tabpanel" aria-labelledby="aiPortableMode">
+      <div class="ai-mode-copy"><h3>Build the packet before it moves.</h3><p>Choose the task, the files that may travel, what stays local, and the rules that accompany the work. Understanding and local preparation stay open.</p></div>
+      <div id="aiIssuanceGate" class="ai-issuance-gate" data-state="held">
+        <label for="aiShi">Safe Harbor issuance</label>
+        <div class="ai-shi-row"><input id="aiShi" type="text" inputmode="text" autocomplete="off" maxlength="64" placeholder="TD613-SH-9B07D8B-XXXXXXXX" aria-describedby="aiShiStatus aiShiClaim"><a href="/safe-harbor/index.html" target="_blank" rel="noopener noreferrer">Create SHI →</a></div>
+        <p id="aiShiStatus" role="status">Issuance held · local preparation remains available.</p>
+        <p id="aiShiClaim" class="ai-muted">A valid-format minted SHI wakes Loom’s issuance controls. This local format check does not authenticate civil identity, and Portable AIA v0.1 does not embed an SHI into its JSON packet.</p>
+      </div>
+    </section>
+    <section id="aiDemoModePanel" class="ai-mode-panel" role="tabpanel" aria-labelledby="aiDemoMode" hidden>
+      <h3>Practice the real route with fictional material.</h3>
+      <p>Use the same selection, local-only, portable-rule and Marrowline handoff mechanics without turning the practice case into production authority.</p>
+      <p class="ai-muted">Demo mode waives Loom’s SHI issuance UI only for this fictional practice traversal. It does not authenticate identity or widen authority outside the demo.</p>
+    </section>
+    <section id="aiPortableProjection" class="ai-portable-projection" aria-label="What this Portable AIA would carry">
+      <div><span>WHAT WILL TRAVEL?</span><strong id="aiProjectionTravel">Task · 0 selected documents · 0 portable rules</strong></div>
+      <div><span>WHAT STAYS HERE?</span><strong id="aiProjectionStay">0 local-only documents · private-term checks remain local</strong></div>
+      <div><span>WHAT DOES LOOM BIND?</span><strong>Selected task, selected file bytes and portable rules are bound together when prepared.</strong></div>
+      <div><span>WHAT REMAINS UNVERIFIED?</span><strong>Foreign-host enforcement, downstream retention and hidden model state remain outside this local binding.</strong></div>
+    </section>
+  </section>
+  <div id="aiDemoWelcome" class="ai-demo-welcome" hidden><button type="button" id="aiDemoInvitation" class="ai-demo-invitation" aria-expanded="false" aria-controls="aiProjectChoices"><span class="ai-invitation-orbit" aria-hidden="true">↗</span><span><strong>Choose a fictional demo</strong><small>Three practice projects. Same route mechanics, fictional material.</small></span><span class="ai-invitation-arrow" aria-hidden="true">＋</span></button><p class="ai-muted">Loading a demo sends nothing. Only an explicit Run or handoff gesture can cross a boundary.</p></div>
     <div id="aiProjectChoices" class="ai-projects" aria-label="AI demo projects" hidden></div>
     <div class="ai-columns"><section class="ai-composer" aria-label="Your AI task">
       <section id="aiProjectBrief" class="ai-project-brief ai-disclosure" aria-label="Project brief" hidden><p class="mark">PROJECT BRIEF</p><h2 id="aiBriefTitle"></h2><p id="aiBriefText" class="ai-muted"></p><p id="aiBriefRoute" class="ai-muted"></p></section>
@@ -54,8 +84,13 @@ export function mountLoomAiWorkspace(root, environment = window) {
   const $ = id => root.querySelector(`#${id}`);
   const portableDefault = 'Prepare the current task locally for Marrowline, export, or copy. This step makes no model request.';
   let documents = [], busy = false, stopRequested = false, disposed = false, events = [], lastPacket = null, acceptedTask = null, resultView = null, controller = null, taskGovernor = null, version = 0;
-  let pendingTimer = null, requestStarted = null, fieldStill = false, projectTitle = 'Your own task', replayIndex = null, sceneHistory = [];
+  let pendingTimer = null, requestStarted = null, fieldStill = false, projectTitle = 'Your own task', replayIndex = null, sceneHistory = [], workspaceMode = 'portable';
   let routeFacts = {outbound_submitted:false,response_received:false,binding_verified:false};
+  const readStoredShi = () => {
+    try { return environment.localStorage?.getItem('TD613_FLIGHT_SHI') || environment.sessionStorage?.getItem('TD613_FLIGHT_SHI') || ''; }
+    catch { return ''; }
+  };
+  $('aiShi').value = readStoredShi();
   const lines = id => $(id).value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
   const coordinator = new AnimationCoordinator({ durationMs: 4000, maxFps: 24, onState: state => { root.dataset.pendingFrames = String(state.pendingFrames); } });
   coordinator.setContinuous(true);
@@ -63,6 +98,66 @@ export function mountLoomAiWorkspace(root, environment = window) {
   const legacy = environment.document.querySelector('#loomLegacy');
   const invitation = $('aiDemoInvitation');
   const laboratoryInvitation = legacy?.querySelector('summary');
+  const currentShi = () => validateShi($('aiShi')?.value || '');
+  const issuanceReady = () => workspaceMode === 'demo' || currentShi().valid;
+  function refreshTransferActions() {
+    const awake = Boolean(acceptedTask) && issuanceReady() && !busy;
+    ['aiMarrowline','aiExport','aiCopy'].forEach(id => { $(id).disabled = !awake; });
+  }
+  function refreshProjection() {
+    const selected = documents.filter(document => document.share).length;
+    const local = documents.length - selected;
+    const rules = lines('aiRules').length;
+    $('aiProjectionTravel').textContent = `Task · ${selected} selected ${selected===1?'document':'documents'} · ${rules} portable ${rules===1?'rule':'rules'}`;
+    $('aiProjectionStay').textContent = `${local} local-only ${local===1?'document':'documents'} · private-term checks remain local`;
+  }
+  function refreshIssuance() {
+    const shi = currentShi();
+    const gate = $('aiIssuanceGate');
+    if (workspaceMode === 'demo') {
+      gate.dataset.state = 'practice';
+      $('aiShiStatus').textContent = 'Practice route · SHI issuance UI is not required for this fictional traversal.';
+    } else if (shi.valid) {
+      gate.dataset.state = 'ready';
+      $('aiShiStatus').textContent = `SHI FORMAT ACCEPTED · ending ${shi.suffix} · issuance controls may wake after local preparation.`;
+    } else {
+      gate.dataset.state = 'held';
+      $('aiShiStatus').textContent = shi.supplied ? 'SHI format not recognized · issuance remains held.' : 'Issuance held · local preparation remains available.';
+    }
+    refreshTransferActions();
+  }
+  function issuanceHold() {
+    if (workspaceMode !== 'portable' || currentShi().valid) return false;
+    refreshIssuance();
+    status('Portable AIA prepared locally. Issuance remains held until a valid-format minted SHI is present. Create SHI in Safe Harbor, or use Loom Demo for fictional practice.');
+    $('aiIssuanceGate').scrollIntoView?.({behavior:'smooth',block:'nearest'});
+    return true;
+  }
+  function setMode(mode, {announce=true} = {}) {
+    if (busy || !['portable','demo'].includes(mode)) return;
+    workspaceMode = mode;
+    root.dataset.loomMode = mode;
+    const portable = mode === 'portable';
+    $('aiPortableMode').setAttribute('aria-selected', String(portable));
+    $('aiDemoMode').setAttribute('aria-selected', String(!portable));
+    $('aiPortableModePanel').hidden = !portable;
+    $('aiDemoModePanel').hidden = portable;
+    $('aiDemoWelcome').hidden = portable;
+    if (legacy) {
+      if (portable) legacy.open = false;
+      legacy.hidden = portable;
+    }
+    if (portable) {
+      $('aiProjectChoices').hidden = true;
+      invitation.setAttribute('aria-expanded','false');
+    }
+    geometry?.update({view: portable ? 'portable-aia' : 'demo-entry'});
+    refreshIssuance();
+    refreshProjection();
+    if (announce) status(portable
+      ? 'Portable AIA mode. Build and prepare locally; issuance waits for a valid-format minted SHI.'
+      : 'Loom Demo mode. Choose a fictional practice project or use the same builder below.');
+  }
   coordinator.registerPass('finite-welcome-invitations', ({ packet, progress, reducedMotion, rest }) => {
     const focus = packet.presentation?.welcome && !reducedMotion && !rest ? Math.sin(Math.PI * progress) : 0;
     invitation.style.setProperty('--invitation-focus', String(focus));
@@ -120,7 +215,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   }
   function invalidate(){resultView=null;taskGovernor?.close();taskGovernor=null;version++;acceptedTask=null;$('aiAnswer').textContent='';$('aiMissing').replaceChildren();$('aiNext').textContent='';$('aiSubmittedTask').hidden=true;$('aiSubmittedTaskText').textContent='';['aiMarrowline','aiExport','aiCopy'].forEach(id=>$(id).disabled=true);$('aiResult').hidden=true;}
   function status(message,error=false){$('aiStatus').textContent=message;$('aiStatus').classList.toggle('ai-error',error);}
-  function summary(){const shared=documents.filter(d=>d.share).length;$('aiSharedCount').textContent=shared;$('aiLocalCount').textContent=documents.length-shared;$('aiSendSummary').textContent=`${shared} selected · ${documents.length-shared} kept here`;$('aiRun').disabled=busy||!$('aiTask').value.trim();}
+  function summary(){const shared=documents.filter(d=>d.share).length;$('aiSharedCount').textContent=shared;$('aiLocalCount').textContent=documents.length-shared;$('aiSendSummary').textContent=`${shared} selected · ${documents.length-shared} kept here`;$('aiRun').disabled=busy||!$('aiTask').value.trim();refreshProjection();refreshTransferActions();}
   function showProjectBrief(projectData){
     const brief=$('aiProjectBrief');
     if(!projectData){brief.hidden=true;$('aiBriefTitle').textContent='';$('aiBriefText').textContent='';$('aiBriefRoute').textContent='';return;}
@@ -167,7 +262,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     $('aiPending').hidden=!value;$('aiRun').textContent=value?'Working…':'Run with Flow-Core AI ↗';
     if(pendingTimer!==null){environment.clearInterval(pendingTimer);pendingTimer=null;}
     if(value){requestStarted=environment.performance.now();const tick=(initial=false)=>{if(initial||!environment.document.hidden)$('aiPendingTime').textContent=`${Math.floor((environment.performance.now()-requestStarted)/1000)} seconds elapsed · you can stop waiting`;};tick(true);pendingTimer=environment.setInterval(()=>tick(),1000);}
-    root.setAttribute('aria-busy',String(value));['aiTask','aiRules','aiPrivate','aiUpload','aiNew','aiPreparePortable'].forEach(id=>$(id).disabled=value);root.querySelectorAll('[data-project],#aiDocuments input,#aiDocuments button').forEach(n=>n.disabled=value);summary();
+    root.setAttribute('aria-busy',String(value));['aiTask','aiRules','aiPrivate','aiUpload','aiNew','aiPreparePortable','aiPortableMode','aiDemoMode','aiShi'].forEach(id=>$(id).disabled=value);root.querySelectorAll('[data-project],#aiDocuments input,#aiDocuments button').forEach(n=>n.disabled=value);summary();refreshIssuance();
   }
   $('aiRun').addEventListener('click',async()=>{
     if(busy)return;stopRequested=false;routeFacts={outbound_submitted:false,response_received:false,binding_verified:false};sceneHistory=[];invalidate();resetPortableCue();const currentVersion=version;lock(true);project('checking');
@@ -198,7 +293,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
       const quality=assessLoomProjectAnswer(unchangedProject?.id,result);
       if(quality.applicable){const section=environment.document.createElement('section');section.className='ai-result-next';const heading=environment.document.createElement('h3');heading.textContent='Independent fee check';const note=environment.document.createElement('p');note.textContent=quality.reason;const table=environment.document.createElement('table');const header=table.createTHead().insertRow();for(const name of ['12-month fees','Calculated from sources','Found in AI answer']){const cell=environment.document.createElement('th');cell.textContent=name;header.append(cell);}for(const [index,check] of quality.checks.entries()){const row=table.insertRow();for(const value of [index===0?'Vendor A':'Vendor B',check.expected.toLocaleString('en-US',{minimumFractionDigits:2}),check.reported===null?'Review the text':check.reported.toLocaleString('en-US',{minimumFractionDigits:2})])row.insertCell().textContent=value;}const assumptions=environment.document.createElement('p');assumptions.className='ai-muted';assumptions.textContent=quality.assumptions.join(' ');section.append(heading,note,table,assumptions);$('aiAnswer').append(section);}$('aiResult').hidden=false;
       project('completed',{request_id:requestId,used_document_ids:result.used_document_ids,missing_information:result.missing_information,project_quality:quality.applicable?quality:null,observations:result.observations,local_receipt:prepared.localReceipt,aia:{input_digest:shared.governance.input_digest,projection_family_verified:shared.governance.verification,fadt_admission:admission.allowed}});
-      ['aiMarrowline','aiExport','aiCopy'].forEach(id=>$(id).disabled=false);status('Your answer is ready. The evidence overview comes first; the exact instruction remains inspectable.');revealResult();
+      refreshTransferActions();status(issuanceReady()?'Your answer is ready. The evidence overview comes first; the exact instruction remains inspectable.':'Your answer is ready. Review it here; Portable AIA issuance remains held until a valid-format minted SHI is present.');revealResult();
     }catch(error){
       if(disposed)return;
       if(error.evidenceReview){
@@ -216,24 +311,29 @@ export function mountLoomAiWorkspace(root, environment = window) {
     }finally{if(!disposed)lock(false);}
   });
   function revealResult(){ $('aiResult').scrollIntoView?.({behavior:reduced.matches?'auto':'smooth',block:'start'});$('aiResult').focus?.({preventScroll:true}); }
-  $('aiPreparePortable').addEventListener('click',async()=>{if(busy)return;stopRequested=false;invalidate();const portableVersion=version;lock(true);try{const prepared=buildLoomAiRequest({task:$('aiTask').value,documents,rules:lines('aiRules'),protectedTerms:lines('aiPrivate')},environment.crypto.randomUUID());const shared={task:prepared.request.task,documents:prepared.request.documents,rules:prepared.request.rules};shared.governance=await createLoomAiGovernance(shared,{withheldDocumentCount:prepared.localReceipt.withheld_document_ids.length},environment);if(disposed||version!==portableVersion)return;if(stopRequested){status('Portable preparation stopped.');return;}acceptedTask=shared;$('aiResultEyebrow').textContent='PORTABLE TASK / PREPARED LOCALLY';$('aiResult').setAttribute('aria-label','Portable continuation');$('aiResultTitle').textContent='Your task, ready for another receiver.';$('aiAnswer').textContent='Your selected documents and AIA rules are bound together. Continue in Marrowline or export the packet. This preparation made no model request.';$('aiResult').hidden=false;['aiMarrowline','aiExport','aiCopy'].forEach(id=>$(id).disabled=false);status('Portable task prepared locally. Choose its destination below.');revealResult();}catch(error){if(!disposed)status(error.message,true);}finally{if(!disposed)lock(false);}});
+  $('aiPreparePortable').addEventListener('click',async()=>{if(busy)return;stopRequested=false;invalidate();const portableVersion=version;lock(true);try{const prepared=buildLoomAiRequest({task:$('aiTask').value,documents,rules:lines('aiRules'),protectedTerms:lines('aiPrivate')},environment.crypto.randomUUID());const shared={task:prepared.request.task,documents:prepared.request.documents,rules:prepared.request.rules};shared.governance=await createLoomAiGovernance(shared,{withheldDocumentCount:prepared.localReceipt.withheld_document_ids.length},environment);if(disposed||version!==portableVersion)return;if(stopRequested){status('Portable preparation stopped.');return;}acceptedTask=shared;$('aiResultEyebrow').textContent='PORTABLE TASK / PREPARED LOCALLY';$('aiResult').setAttribute('aria-label','Portable continuation');$('aiResultTitle').textContent='Your task, ready for another receiver.';$('aiAnswer').textContent='Your selected documents and portable rules are bound together locally. Preparing made no model request. Portable AIA v0.1 carries the task, selected documents, rules and Loom governance; it does not embed civil-identity verification.';$('aiResult').hidden=false;refreshTransferActions();status(issuanceReady()?(workspaceMode==='demo'?'Practice Portable AIA prepared. Demo destination controls are awake for this fictional route.':'Portable AIA prepared locally. SHI format accepted for this issuance gesture; choose a destination.'):'Portable AIA prepared locally. Issuance remains held; create or present a valid-format minted SHI, or use Loom Demo for fictional practice.');revealResult();}catch(error){if(!disposed)status(error.message,true);}finally{if(!disposed)lock(false);refreshIssuance();}});
   $('aiStop').addEventListener('click',()=>{stopRequested=true;taskGovernor?.rest();controller?.abort();status('Stopped waiting. Material already submitted cannot be recalled.');});
-  $('aiMarrowline').addEventListener('click',async()=>{if(!acceptedTask)return;try{const transferVersion=version;const task=acceptedTask;const url=await createLoomAiHandoff(task,environment);if(disposed||version!==transferVersion||acceptedTask!==task){status('Workspace changed. Prepare the current task before transferring.',true);return;}environment.location.assign(url);}catch(error){status(error.message,true);}});
-  $('aiExport').addEventListener('click',()=>{if(!acceptedTask)return;try{const blob=new Blob([JSON.stringify(createPortableLoomAiPacket(acceptedTask),null,2)],{type:'application/json'});const url=environment.URL.createObjectURL(blob);const link=environment.document.createElement('a');link.href=url;link.download='loom-portable-aia.json';link.click();environment.setTimeout(()=>environment.URL.revokeObjectURL(url),1000);status('Portable AIA exported with the selected task, documents and rules.');}catch(error){status(error.message,true);}});
-  $('aiCopy').addEventListener('click',async()=>{if(!acceptedTask)return;try{await environment.navigator.clipboard.writeText(createPortableLoomAiPrompt(acceptedTask));status('Task and portable rules copied. Paste into your chosen AI receiver.');}catch{status('Clipboard access was unavailable. Export the packet instead.',true);}});
+  $('aiMarrowline').addEventListener('click',async()=>{if(!acceptedTask||issuanceHold())return;try{const transferVersion=version;const task=acceptedTask;const url=await createLoomAiHandoff(task,environment);if(disposed||version!==transferVersion||acceptedTask!==task){status('Workspace changed. Prepare the current task before transferring.',true);return;}environment.location.assign(url);}catch(error){status(error.message,true);}});
+  $('aiExport').addEventListener('click',()=>{if(!acceptedTask||issuanceHold())return;try{const blob=new Blob([JSON.stringify(createPortableLoomAiPacket(acceptedTask),null,2)],{type:'application/json'});const url=environment.URL.createObjectURL(blob);const link=environment.document.createElement('a');link.href=url;link.download='loom-portable-aia.json';link.click();environment.setTimeout(()=>environment.URL.revokeObjectURL(url),1000);status('Portable AIA download requested with the selected task, documents and rules. The browser handles saving.');}catch(error){status(error.message,true);}});
+  $('aiCopy').addEventListener('click',async()=>{if(!acceptedTask||issuanceHold())return;try{await environment.navigator.clipboard.writeText(createPortableLoomAiPrompt(acceptedTask));status('Task and portable rules copied. Paste into your chosen AI receiver.');}catch{status('Clipboard access was unavailable. Export the packet instead.',true);}});
   function setView(auditor){geometry?.update({view:auditor?'auditor':'compose'});resultView?.setView(auditor);$('aiInspector').open=auditor;$('aiChild').setAttribute('aria-pressed',String(!auditor));$('aiAuditor').setAttribute('aria-pressed',String(auditor));if(lastPacket)showPacket(replayIndex===null?lastPacket:sceneHistory[replayIndex],{replay:replayIndex!==null});}
   $('aiStillField').addEventListener('click',()=>{fieldStill=!fieldStill;$('aiStillField').setAttribute('aria-pressed',String(fieldStill));$('aiStillField').textContent=fieldStill?'Let the field move':'Still the field';if(lastPacket)showPacket(replayIndex===null?lastPacket:sceneHistory[replayIndex],{replay:replayIndex!==null});});
   $('aiChild').addEventListener('click',()=>setView(false));$('aiAuditor').addEventListener('click',()=>setView(true));
   $('aiRoomReplay').addEventListener('click',()=>{if(busy||!sceneHistory.length)return;replayIndex=0;$('aiRoomScrub').value='0';replayControls();showPacket(sceneHistory[0],{replay:true});});
   $('aiRoomScrub').addEventListener('input',()=>{if(busy||replayIndex===null)return;replayIndex=Math.max(0,Math.min(sceneHistory.length-1,Number($('aiRoomScrub').value)||0));showPacket(sceneHistory[replayIndex],{replay:true});});
   $('aiRoomLive').addEventListener('click',()=>{replayIndex=null;replayControls();if(lastPacket)showPacket(lastPacket);});
+  $('aiPortableMode').addEventListener('click',()=>setMode('portable'));
+  $('aiDemoMode').addEventListener('click',()=>setMode('demo'));
+  $('aiShi').addEventListener('input',()=>refreshIssuance());
   load(null);
+  setMode('portable',{announce:false});
+  status('Portable AIA mode. Build and prepare locally; issuance waits for a valid-format minted SHI.');
   // A local entrance gesture has no request or evidence authority. It settles
   // after four seconds; subsequent packets retain their actual rest posture.
   coordinator.setPacket({ ...lastPacket, scene: { ...lastPacket.scene, id: 'ai-welcome' }, geometry: { rest: false }, presentation: { welcome: true } });
   legacyChange();
   environment.document.documentElement.dataset.loomBoot='ready';
   const dispose=()=>{disposed=true;if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();room.dispose();geometry?.dispose();legacy?.removeEventListener('toggle',legacyChange);coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);};
-  environment.addEventListener('pagehide',dispose,{once:true});return {dispose,inspect:()=>({events:[...events],clock:coordinator.inspect(),replay:{index:replayIndex,count:sceneHistory.length},geometry:geometry?.inspect()})};
+  environment.addEventListener('pagehide',dispose,{once:true});return {dispose,inspect:()=>({mode:workspaceMode,shi_format:currentShi(),events:[...events],clock:coordinator.inspect(),replay:{index:replayIndex,count:sceneHistory.length},geometry:geometry?.inspect()})};
 }
 if(typeof document!=='undefined')mountLoomAiWorkspace(document.querySelector('#loomAiWorkspace'));
