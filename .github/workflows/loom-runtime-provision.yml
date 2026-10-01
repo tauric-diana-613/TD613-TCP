@@ -23,7 +23,7 @@ jobs:
       EXPECTED_PR_SHA: '8ee69e58fb7d06251302c749426249135247cfbb'
       VERCEL_PROJECT: td-613-tcp
       VERCEL_SCOPE: tauric-diana-s-projects
-      BRIDGE_URL: __TD613_NEON_BRIDGE_URL__
+      BRIDGE_URL: https://br-round-union-b5v3ludi-loomprov.compute.c-7.us-east-2.aws.neon.tech/
       BRIDGE_AUDIENCE: td613-loom-provision-v1
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       GH_TOKEN: ${{ github.token }}
@@ -53,7 +53,7 @@ jobs:
       - name: Provision Loom Production runtime custody
         run: |
           set -euo pipefail
-          [[ "$BRIDGE_URL" != '__TD613_NEON_BRIDGE_URL__' ]] || { echo 'Neon OIDC bridge has not been armed.' >&2; exit 1; }
+          [[ "$BRIDGE_URL" != 'https://br-round-union-b5v3ludi-loomprov.compute.c-7.us-east-2.aws.neon.tech/' ]] || { echo 'Neon OIDC bridge has not been armed.' >&2; exit 1; }
 
           OIDC_JSON="$(curl --fail --silent --show-error             -H "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}"             "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=${BRIDGE_AUDIENCE}")"
           OIDC_TOKEN="$(jq -er '.value' <<< "$OIDC_JSON")"
