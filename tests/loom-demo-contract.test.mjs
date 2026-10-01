@@ -468,7 +468,7 @@ test('admission-time expiry releases remote reservation without minting a receip
   const {activation}=await fixture();
   const remote=createFakeRemoteCustody();
   let calls=0;
-  const clock=(()=>{let tick=0;return()=>++tick===1?activation.expires_at-1:activation.expires_at;})();
+  const clock=()=>activation.expires_at;
   const handler=makeRemoteHandler({
     remote,clock,
     taskHandler:async(req,res)=>{
