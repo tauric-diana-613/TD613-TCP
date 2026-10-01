@@ -106,9 +106,8 @@ try {
       await page.locator('#aiShi').fill('');
       assert.equal(await page.locator('#aiExport').isDisabled(),true,'removing SHI restores the Portable AIA issuance hold');
 
-      await page.locator('#aiStillField').click();
-      await page.waitForFunction(() => document.querySelector('#loomAiWorkspace')?.dataset.pendingFrames === '0');
-      assert.equal(requests.length, 0, 'explicit rest settles without making a request');
+      assert.equal(await page.locator('#aiStillField').isVisible(),false,'observer-only motion controls stay out of Portable AIA mode');
+      assert.equal(requests.length, 0, 'local preparation and SHI format checks make no provider request');
       await page.screenshot({ path: path.join(dir, `${posture}-portable-aia-held.png`), fullPage: true });
 
       await page.locator('#aiDemoMode').click();
