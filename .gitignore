@@ -17,3 +17,4 @@ Crashpad/
 .vercel
 .env*
 .superdesign/tmp/
+.neon
