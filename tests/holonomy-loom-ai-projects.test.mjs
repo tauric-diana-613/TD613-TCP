@@ -10,7 +10,7 @@ test('three substantial fictional projects exercise distinct useful AI tasks', (
   assert.deepEqual(LOOM_AI_PROJECTS.map(p => p.id), ['vendor-diligence', 'participant-research', 'incident-response']);
   for (const project of LOOM_AI_PROJECTS) {
     assert.match(project.task, /fictional/i);
-    assert.match(project.task, /JSON/);
+    assert.doesNotMatch(project.task, /JSON|response schema|result fields/i, 'portable sample tasks must request the work rather than the Phase 1 transport format');
     assert.ok(project.task.length >= 800);
     assert.equal(project.documents.length, 4);
     assert.equal(new Set(project.documents.map(d => d.id)).size, 4);
