@@ -1,6 +1,6 @@
 export const LOOM_DEMO_CUSTODY_REQUEST_SCHEMA = 'td613.loom.demo-custody-request/v0.1';
 export const LOOM_DEMO_CUSTODY_RESPONSE_SCHEMA = 'td613.loom.demo-custody-response/v0.1';
-export const LOOM_DEMO_CUSTODY_URL = '__TD613_LOOM_CUSTODY_URL__';
+export const LOOM_DEMO_CUSTODY_URL = 'https://br-round-union-b5v3ludi-loomcustody.compute.c-7.us-east-2.aws.neon.tech/';
 
 export class LoomDemoCustodyError extends Error {
   constructor(code,message,status=503,details={}){
