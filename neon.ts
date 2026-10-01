@@ -20,6 +20,11 @@ export default defineConfig({
 
      api: { name: "api", source: "./hello.ts" },
 
+     loomcustody: {
+       name: "loomcustody",
+       source: "./neon/functions/loom-custody/index.mjs",
+     },
+
    },
 
  },
