@@ -1,7 +1,6 @@
 import crypto from 'node:crypto';
 
 export const LOOM_DEMO_HEAD_STORE_ENV = 'TD613_LOOM_DEMO_NEON_DATABASE_URL';
-export const LOOM_DEMO_HEAD_STORE_INTEGRATION_ENV = 'DATABASE_URL_UNPOOLED';
 export const LOOM_DEMO_HEAD_TABLE = 'td613_loom_demo_heads';
 export const LOOM_DEMO_RESERVATION_MS = 5 * 60 * 1000;
 
@@ -29,23 +28,14 @@ function parseNeon(connectionString, label) {
   return parsed;
 }
 
-function canonicalNeonHost(hostname) {
-  const parts=String(hostname||'').toLowerCase().split('.');
-  if(parts[0]) parts[0]=parts[0].replace(/-pooler$/,'');
-  return parts.join('.');
-}
-
 function sameDatabase(left,right) {
-  return canonicalNeonHost(left.hostname)===canonicalNeonHost(right.hostname) &&
+  return left.hostname.toLowerCase()===right.hostname.toLowerCase() &&
     left.pathname.replace(/\/+$/,'')===right.pathname.replace(/\/+$/,'');
 }
 
 export function loomDemoHeadStoreConfiguration(environment=process.env) {
-  const explicit=String(environment[LOOM_DEMO_HEAD_STORE_ENV]||'');
-  const integrated=String(environment[LOOM_DEMO_HEAD_STORE_INTEGRATION_ENV]||'');
-  const connectionString=explicit||integrated;
+  const connectionString=String(environment[LOOM_DEMO_HEAD_STORE_ENV]||'');
   if(!connectionString) throw new LoomDemoHeadStoreError('LOOM_DEMO_HEAD_STORE_NOT_CONFIGURED','Dedicated Loom durable head custody is not configured',503);
-  const source=explicit?LOOM_DEMO_HEAD_STORE_ENV:LOOM_DEMO_HEAD_STORE_INTEGRATION_ENV;
   const parsed=parseNeon(connectionString,'Loom head store');
   const giving=String(environment.TD613_GIVING_NEON_DATABASE_URL||'');
   if(giving){
@@ -54,7 +44,7 @@ export function loomDemoHeadStoreConfiguration(environment=process.env) {
       throw new LoomDemoHeadStoreError('LOOM_DEMO_HEAD_STORE_REUSES_GIVING','Loom durable custody must not reuse the Giving database',503);
     }
   }
-  return Object.freeze({connectionString,source,endpoint:`https://${parsed.hostname}/sql`,database_digest:sha256(`${canonicalNeonHost(parsed.hostname)}${parsed.pathname}`)});
+  return Object.freeze({connectionString,endpoint:`https://${parsed.hostname}/sql`,database_digest:sha256(`${parsed.hostname}${parsed.pathname}`)});
 }
 
 function rowsFromNeon(body) {
@@ -262,9 +252,7 @@ export function loomDemoHeadStoreReadiness(environment=process.env) {
     const config=loomDemoHeadStoreConfiguration(environment);
     return Object.freeze({
       configured:true,
-      environment_variable:config.source,
-      explicit_environment_variable:LOOM_DEMO_HEAD_STORE_ENV,
-      integration_environment_variable:LOOM_DEMO_HEAD_STORE_INTEGRATION_ENV,
+      environment_variable:LOOM_DEMO_HEAD_STORE_ENV,
       database_digest:config.database_digest,
       durable_compare_and_swap:true,
       replay_exclusion:true,
@@ -274,9 +262,7 @@ export function loomDemoHeadStoreReadiness(environment=process.env) {
   }catch(error){
     return Object.freeze({
       configured:false,
-      environment_variable:null,
-      explicit_environment_variable:LOOM_DEMO_HEAD_STORE_ENV,
-      integration_environment_variable:LOOM_DEMO_HEAD_STORE_INTEGRATION_ENV,
+      environment_variable:LOOM_DEMO_HEAD_STORE_ENV,
       error:error?.code||error?.message||'LOOM_DEMO_HEAD_STORE_NOT_CONFIGURED',
       database_digest:null,
       durable_compare_and_swap:false,
@@ -287,4 +273,4 @@ export function loomDemoHeadStoreReadiness(environment=process.env) {
   }
 }
 
-export const _loomDemoHeadStoreInternals=Object.freeze({rowsFromNeon,sameDatabase,canonicalNeonHost});
+export const _loomDemoHeadStoreInternals=Object.freeze({rowsFromNeon,sameDatabase});
