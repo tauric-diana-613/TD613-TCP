@@ -156,16 +156,21 @@ Holonomy Loom origin → Marrowline continuation → Portable AIA export
 
 The native composer and Attachments affordance must keep AIA admission, selected-file staging, ordinary chat and governed continuation visibly distinct. A later result must name its immediate predecessor. Held, stale, malformed, failed or ordinary-chat states cannot silently become the current governed export. Protected/local material stays outside ordinary chat and export unless an explicit reviewed contract permits it.
 
-The Loom demo production adapter is **fail-closed and configuration-gated**. It returns `HTTP 503` with `loom-demo-release-not-admitted` unless both of these Loom-only authorities are configured and valid:
+The Loom demo production adapter is **fail-closed and workload-identity gated**. Production Vercel functions must not carry a Loom database password or Loom signing secret. Instead:
 
 ```text
-TD613_LOOM_DEMO_SIGNING_SECRET
-TD613_LOOM_DEMO_NEON_DATABASE_URL
+browser-carried Loom activation / selected files
+→ Vercel provider route
+→ Vercel built-in OIDC workload identity
+→ dedicated Neon Loom custody service
+→ Neon-owned signer + durable compare-and-swap current head
 ```
 
-The signing secret authenticates stage receipts and immediate predecessor ancestry. The Loom Neon head store supplies a separate durable compare-and-swap current-head boundary for replay/fork exclusion. The Loom database must remain distinct from `TD613_GIVING_NEON_DATABASE_URL`; Giving custody may not be silently reused as Loom custody. The durable head table stores custody metadata only and must not store prompt, selected-file, or model-answer bodies.
+The Vercel workload token is the platform-provided `VERCEL_OIDC_TOKEN`; do not replace it with a user-created project secret. The Neon custody service must verify the exact TD613 Vercel owner, project and `production` environment before any custody mutation. Neon owns the HMAC key in `td613_loom_demo_signer` and current-head metadata in `td613_loom_demo_heads`. The head table stores custody metadata only and must not store prompt, selected-file or model-answer bodies.
 
-A signing secret by itself never lifts the hold. A configured signer plus configured head store permits the reviewed receiver path to execute, but configuration still grants **zero merge authority and zero deployment authority**. Browser evidence, provider evidence, source contracts, durable-head evidence and release receipts remain separate classes of evidence. Exact-head GREEN source validation plus the governed issue #405 release law and live browser/provider witnessing remain required before production acceptance.
+The legacy `TD613_LOOM_DEMO_SIGNING_SECRET` and `TD613_LOOM_DEMO_NEON_DATABASE_URL` paths are permitted only as bounded offline/reference test primitives. They are not production Vercel configuration and must not be reintroduced as production secrets merely because the local primitives remain useful for hostile tests.
+
+An admitted Neon custody endpoint plus valid Vercel workload identity permits the reviewed receiver path to execute, but this grants **zero merge authority and zero deployment authority**. Browser evidence, provider evidence, source contracts, workload-identity evidence, durable-head evidence and release receipts remain separate classes of evidence. Exact-head GREEN source validation plus the governed issue #405 release law and live browser/provider witnessing remain required before production acceptance.
 
 ## Release law
 
