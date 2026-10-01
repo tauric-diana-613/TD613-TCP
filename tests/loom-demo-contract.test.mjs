@@ -20,6 +20,7 @@ import {
 } from '../server/loom-demo-head-store.js';
 import {
   LOOM_DEMO_CUSTODY_RESPONSE_SCHEMA,
+  LOOM_DEMO_CUSTODY_URL,
   loomDemoCustodyReadiness
 } from '../server/loom-demo-custody-client.js';
 import {
@@ -579,9 +580,20 @@ test('remote custody client sends only workload identity plus bounded custody me
 });
 
 test('production remains held without Vercel OIDC even after source admits a custody endpoint',async()=>{
+  assert.equal(
+    LOOM_DEMO_CUSTODY_URL,
+    'https://br-round-union-b5v3ludi-loomcustody.compute.c-7.us-east-2.aws.neon.tech/'
+  );
   const absent=loomDemoProductionReadiness({});
   assert.equal(absent.admitted,false);
   assert.equal(absent.vercel_oidc,false);
+  assert.equal(absent.neon_custody_endpoint,true);
+
+  const workloadReady=loomDemoProductionReadiness({VERCEL_OIDC_TOKEN:'fixture-workload-token'});
+  assert.equal(workloadReady.admitted,true);
+  assert.equal(workloadReady.vercel_oidc,true);
+  assert.equal(workloadReady.neon_custody_endpoint,true);
+  assert.equal(workloadReady.vercel_project_secrets_required,false);
 
   let output;
   const res={setHeader(){},end(raw){output=JSON.parse(raw);}};
