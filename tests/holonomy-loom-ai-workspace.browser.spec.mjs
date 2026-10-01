@@ -88,9 +88,11 @@ try {
       assert.equal(await page.locator('#aiIssuanceGate a').getAttribute('href'),'/safe-harbor/index.html');
       assert.equal(await page.locator('#loomLivingGeometry canvas').count(), 1, 'one Dome-Art canvas is mounted under the workspace clock; raster readiness remains a renderer concern');
 
+      assert.equal(await page.locator('.ai-observer').isVisible(),false,'the live request theater does not dominate Portable AIA mode');
+      assert.equal(await page.locator('#aiPreparePortable').isVisible(),true,'Portable AIA preparation is a first-class composer gesture');
+      assert.equal(await page.locator('#aiPreparePortable').evaluate(node=>node.classList.contains('ai-primary')),true,'local preparation is the primary Portable AIA gesture');
+      assert.equal(await page.locator('#aiRun').evaluate(node=>node.classList.contains('ai-primary')),false,'Flow-Core is optional testing in Portable AIA mode');
       await page.locator('#aiTask').fill('Prepare a bounded Portable AIA and keep the unselected material local.');
-      await page.locator('#aiPortableDrawer > summary').click();
-      assert.equal(await page.locator('#aiPreparePortable').isVisible(),true,'local preparation is reachable through its disclosure');
       await page.locator('#aiPreparePortable').click();
       await page.waitForFunction(() => document.querySelector('#aiResult') && !document.querySelector('#aiResult').hidden);
       assert.equal(requests.length,0,'local Portable AIA preparation makes no provider request');
@@ -111,6 +113,8 @@ try {
 
       await page.locator('#aiDemoMode').click();
       assert.equal(await page.locator('#aiDemoWelcome').isVisible(),true,'Loom Demo reveals the fictional practice chooser');
+      assert.equal(await page.locator('.ai-observer').isVisible(),true,'live request theater returns inside Loom Demo');
+      assert.equal(await page.locator('#aiRun').evaluate(node=>node.classList.contains('ai-primary')),true,'Run becomes the primary demo gesture');
       assert.equal(await page.locator('#loomLegacy > summary').isVisible(),true,'laboratory estate belongs to Loom Demo');
       assert.match(await page.locator('#aiDemoModePanel').innerText(),/fictional practice traversal/i);
       await page.locator('#aiDemoInvitation').click();
