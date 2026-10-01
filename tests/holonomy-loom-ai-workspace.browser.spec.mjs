@@ -80,15 +80,46 @@ try {
       const loaded = await page.goto(`${base}/dome-world/holonomy-loom.html`, { waitUntil: 'networkidle' });
       assert.equal(loaded.status(), 200);
       await page.locator('#loomAiWorkspace').waitFor({ state: 'visible' });
-      await page.locator('#aiDemoInvitation').waitFor({ state: 'visible' });
-      assert.equal(await page.locator('#aiProjectChoices').isVisible(), false, 'demo projects wait for the invitation gesture after the workspace mounts');
-      assert.equal(await page.locator('#aiDemoInvitation').isVisible(), true, 'the mounted invitation is the human interaction boundary for this witness');
+      assert.equal(await page.locator('#aiPortableMode').getAttribute('aria-selected'),'true','Portable AIA is the default product mode');
+      assert.equal(await page.locator('#aiDemoMode').getAttribute('aria-selected'),'false');
+      assert.equal(await page.locator('#aiDemoWelcome').isVisible(),false,'fictional demo chooser stays out of the primary Portable AIA path');
+      assert.equal(await page.locator('#loomLegacy > summary').isVisible(),false,'laboratory estate stays under Loom Demo rather than competing with the builder');
+      assert.match(await page.locator('#aiShiStatus').innerText(),/Issuance held/);
+      assert.equal(await page.locator('#aiIssuanceGate a').getAttribute('href'),'/safe-harbor/index.html');
+      assert.equal(await page.locator('.ai-projection-depth').getAttribute('open'),null,'technical governance detail stays optional on entry');
+      assert.equal(await page.locator('#aiProjectionTravel').isVisible(),true);
+      assert.equal(await page.locator('#aiProjectionStay').isVisible(),true);
       assert.equal(await page.locator('#loomLivingGeometry canvas').count(), 1, 'one Dome-Art canvas is mounted under the workspace clock; raster readiness remains a renderer concern');
-      await page.locator('#aiStillField').click();
-      await page.waitForFunction(() => document.querySelector('#loomAiWorkspace')?.dataset.pendingFrames === '0');
-      assert.equal(requests.length, 0, 'explicit rest settles without making a request');
-      assert.equal(await page.locator('#loomLegacy > summary').isVisible(), true);
-      await page.screenshot({ path: path.join(dir, `${posture}-welcome-settled.png`), fullPage: true });
+
+      assert.equal(await page.locator('.ai-observer').isVisible(),false,'the live request theater does not dominate Portable AIA mode');
+      assert.equal(await page.locator('#aiPreparePortable').isVisible(),true,'Portable AIA preparation is a first-class composer gesture');
+      assert.equal(await page.locator('#aiPreparePortable').evaluate(node=>node.classList.contains('ai-primary')),true,'local preparation is the primary Portable AIA gesture');
+      assert.equal(await page.locator('#aiRun').evaluate(node=>node.classList.contains('ai-primary')),false,'Flow-Core is optional testing in Portable AIA mode');
+      await page.locator('#aiTask').fill('Prepare a bounded Portable AIA and keep the unselected material local.');
+      await page.locator('#aiPreparePortable').click();
+      await page.waitForFunction(() => document.querySelector('#aiResult') && !document.querySelector('#aiResult').hidden);
+      assert.equal(requests.length,0,'local Portable AIA preparation makes no provider request');
+      assert.equal(await page.locator('#aiResultTitle').innerText(),'Your Portable AIA is prepared locally.');
+      assert.equal(await page.locator('#aiMarrowline').isDisabled(),true,'Marrowline issuance stays held without SHI in Portable AIA mode');
+      assert.equal(await page.locator('#aiExport').isDisabled(),true,'export stays held without SHI in Portable AIA mode');
+      assert.match(await page.locator('#aiAnswer').innerText(),/made no model request/i);
+      assert.match(await page.locator('#aiAnswer').innerText(),/does not embed civil-identity verification/i);
+      await page.locator('#aiShi').fill('TD613-SH-9B07D8B-A1B2C3D4');
+      assert.match(await page.locator('#aiShiStatus').innerText(),/SHI FORMAT ACCEPTED/);
+      assert.equal(await page.locator('#aiExport').isEnabled(),true,'valid-format SHI wakes a prepared issuance gesture');
+      await page.locator('#aiShi').fill('');
+      assert.equal(await page.locator('#aiExport').isDisabled(),true,'removing SHI restores the Portable AIA issuance hold');
+
+      assert.equal(await page.locator('#aiStillField').isVisible(),false,'observer-only motion controls stay out of Portable AIA mode');
+      assert.equal(requests.length, 0, 'local preparation and SHI format checks make no provider request');
+      await page.screenshot({ path: path.join(dir, `${posture}-portable-aia-held.png`), fullPage: true });
+
+      await page.locator('#aiDemoMode').click();
+      assert.equal(await page.locator('#aiDemoWelcome').isVisible(),true,'Loom Demo reveals the fictional practice chooser');
+      assert.equal(await page.locator('.ai-observer').isVisible(),true,'live request theater returns inside Loom Demo');
+      assert.equal(await page.locator('#aiRun').evaluate(node=>node.classList.contains('ai-primary')),true,'Run becomes the primary demo gesture');
+      assert.equal(await page.locator('#loomLegacy > summary').isVisible(),true,'laboratory estate belongs to Loom Demo');
+      assert.match(await page.locator('#aiDemoModePanel').innerText(),/fictional practice traversal/i);
       await page.locator('#aiDemoInvitation').click();
       assert.equal(await page.locator('#aiDemoInvitation').getAttribute('aria-expanded'), 'true');
       await page.locator('#aiProjectChoices button').first().click();
@@ -129,6 +160,10 @@ try {
       assert.equal(await page.locator('#aiAnswer').isVisible(), true);
       assert.equal(await page.locator('#aiMarrowline').isEnabled(), true);
       assert.equal(await page.locator('#aiExport').isEnabled(), true);
+      await page.locator('#aiPortableMode').click();
+      assert.equal(await page.locator('#aiExport').isDisabled(),true,'Demo practice waiver narrows immediately when returning to Portable AIA without SHI');
+      await page.locator('#aiDemoMode').click();
+      assert.equal(await page.locator('#aiExport').isEnabled(),true,'same admitted fictional result remains usable inside Demo practice');
       await page.screenshot({ path: path.join(dir, `${posture}-mock-provider-completed.png`), fullPage: true });
       // Test the actual export handler and inspect its generated bytes, not a helper's reconstructed packet.
       const downloadPromise = page.waitForEvent('download');
@@ -162,7 +197,9 @@ try {
       assert.deepEqual(unexpected, [], 'no direct browser-to-provider or unrelated mutation requests');
       await page.locator('#aiLivingRoom').screenshot({path:path.join(dir,`${posture}-living-room-held.png`)});
       await page.screenshot({ path: path.join(dir, `${posture}-mock-provider-held.png`), fullPage: true });
-      report.checks.push({ posture, status: 'PASS', intercepted_requests: requests.length, project_selection_has_no_egress: true,
+      report.checks.push({ posture, status: 'PASS', intercepted_requests: requests.length, portable_aia_default: true,
+        unissued_local_preparation_open: true, portable_issuance_held_without_shi: true, shi_format_wakes_prepared_issuance: true,
+        demo_waiver_narrows_on_portable_return: true, project_selection_has_no_egress: true,
         local_source_excluded: true, one_click_one_post: true, duplicate_click_disabled: true, completed_answer_visible: true,
         export_checked: true, uploaded_document_local_by_default: true, marrowline_control_enabled: true, provider_failure_held: true, no_horizontal_overflow: true,
         reduced_motion: reducedMotion, runtime_errors: runtimeErrors.length });

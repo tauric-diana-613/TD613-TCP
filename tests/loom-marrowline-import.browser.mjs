@@ -102,7 +102,10 @@ try {
     try {
       const loaded = await page.goto(`${base}/dome-world/holonomy-loom.html`, { waitUntil: 'networkidle' });
       assert.equal(loaded.status(), 200);
-      assert.equal(await page.locator('#aiProjectChoices').isVisible(), false, 'demo projects wait for the invitation gesture');
+      assert.equal(await page.locator('#aiPortableMode').getAttribute('aria-selected'),'true','Portable AIA is the default Loom entry');
+      assert.equal(await page.locator('#aiDemoWelcome').isVisible(),false);
+      await page.locator('#aiDemoMode').click();
+      assert.equal(await page.locator('#aiDemoWelcome').isVisible(),true,'fictional fixture lives under Loom Demo');
       await page.locator('#aiDemoInvitation').click();
       assert.equal(await page.locator('#aiDemoInvitation').getAttribute('aria-expanded'), 'true');
       await page.locator('#aiProjectChoices button').first().click();
@@ -111,10 +114,14 @@ try {
       await localChoice.waitFor({ state: 'visible' });
       assert.equal(await localChoice.isChecked(), false);
       assert.equal(calls.length, 0);
-      await page.locator('#aiPortableDrawer > summary').click();
+      await page.locator('#aiPortableMode').click();
+      assert.equal(await page.locator('#aiMarrowline').isDisabled(),true,'Portable AIA issuance remains held before preparation + SHI');
+      await page.locator('#aiShi').fill('TD613-SH-9B07D8B-A1B2C3D4');
+      assert.match(await page.locator('#aiShiStatus').innerText(),/SHI FORMAT ACCEPTED/);
       await page.locator('#aiPreparePortable').click();
       await page.waitForFunction(() => document.querySelector('#aiMarrowline')?.disabled === false);
       assert.equal(calls.length, 0, 'preparing portable task makes zero provider requests');
+      assert.equal(await page.locator('#aiPortableMode').getAttribute('aria-selected'),'true','handoff is issued from Portable AIA mode, not the Demo waiver');
       const downloadPromise = page.waitForEvent('download');
       await page.locator('#aiExport').click();
       const download = await downloadPromise;

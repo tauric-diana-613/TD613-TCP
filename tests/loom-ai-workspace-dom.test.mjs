@@ -51,12 +51,74 @@ function harness(t, responder=(request)=>response(admitted(request)), reduced=fa
   t.after(()=>{dispose();window.close();if(beforeRaf===undefined)delete globalThis.requestAnimationFrame;else globalThis.requestAnimationFrame=beforeRaf;if(beforeCancel===undefined)delete globalThis.cancelAnimationFrame;else globalThis.cancelAnimationFrame=beforeCancel;});
   const $=selector=>root.querySelector(selector);
   const change=(selector,value)=>{const element=$(selector);element.value=value;element.dispatchEvent(new window.Event('input',{bubbles:true}));};
-  const load=(index=0)=>{if($("#aiProjectChoices").hidden)$("#aiDemoInvitation").click();$(`[data-project="${LOOM_AI_PROJECTS[index].id}"]`).click();};
+  const load=(index=0)=>{if(ui.inspect().mode!=='demo')$("#aiDemoMode").click();if($("#aiProjectChoices").hidden)$("#aiDemoInvitation").click();$(`[data-project="${LOOM_AI_PROJECTS[index].id}"]`).click();};
   const upload=file=>{const input=$('#aiUpload');Object.defineProperty(input,'files',{configurable:true,value:[file]});Object.defineProperty(input,'value',{configurable:true,writable:true,value:'fixture-file-selected'});input.dispatchEvent(new window.Event('change',{bubbles:true}));};
   const settled=()=>until(()=>root.getAttribute('aria-busy')!=='true',`request completion: ${$('#aiStatus').textContent}`);
   const submitted=()=>until(()=>calls.length>0||root.getAttribute('aria-busy')!=='true','request dispatch');
   return {window,root,ui,$,calls,frames,change,load,upload,dispose,settled,submitted};
 }
+
+test('Portable AIA is the default mode and keeps comprehension plus local preparation open without SHI',async t=>{
+  const h=harness(t);
+  assert.equal(h.ui.inspect().mode,'portable');
+  assert.equal(h.$('#aiPortableMode').getAttribute('aria-selected'),'true');
+  assert.equal(h.$('#aiDemoMode').getAttribute('aria-selected'),'false');
+  assert.equal(h.$('#aiDemoWelcome').hidden,true);
+  assert.equal(h.$('#aiPortableModePanel').hidden,false);
+  assert.equal(h.$('#aiDemoModePanel').hidden,true);
+  assert.match(h.$('#aiShiStatus').textContent,/Issuance held/);
+  assert.equal(h.$('#aiIssuanceGate').dataset.state,'held');
+  assert.equal(h.$('#aiIssuanceGate a').getAttribute('href'),'/safe-harbor/index.html');
+
+  h.change('#aiTask','Compare the selected evidence and name what remains missing.');
+  h.$('#aiPreparePortable').click();
+  await h.settled();
+  assert.equal(h.calls.length,0,'local Portable AIA preparation makes no provider request');
+  assert.equal(h.$('#aiResult').hidden,false);
+  assert.match(h.$('#aiAnswer').textContent,/made no model request/i);
+  assert.match(h.$('#aiAnswer').textContent,/does not embed civil-identity verification/i);
+  for(const id of ['aiMarrowline','aiExport','aiCopy'])assert.equal(h.$('#'+id).disabled,true,`${id} stays held without SHI in Portable AIA mode`);
+  assert.match(h.$('#aiStatus').textContent,/Issuance remains held/i);
+});
+
+test('a valid-format minted SHI wakes only the prepared Portable AIA issuance gestures',async t=>{
+  const h=harness(t);
+  h.change('#aiTask','Prepare this bounded task for another receiver.');
+  h.$('#aiPreparePortable').click();
+  await h.settled();
+  for(const id of ['aiMarrowline','aiExport','aiCopy'])assert.equal(h.$('#'+id).disabled,true);
+
+  h.change('#aiShi','TD613-SH-9B07D8B-A1B2C3D4');
+  assert.equal(h.ui.inspect().shi_format.valid,true);
+  assert.equal(h.$('#aiIssuanceGate').dataset.state,'ready');
+  assert.match(h.$('#aiShiStatus').textContent,/SHI FORMAT ACCEPTED/);
+  assert.match(h.$('#aiShiClaim').textContent,/does not authenticate civil identity/i);
+  for(const id of ['aiMarrowline','aiExport','aiCopy'])assert.equal(h.$('#'+id).disabled,false,`${id} wakes after preparation + valid-format SHI`);
+
+  h.change('#aiTask',h.$('#aiTask').value+' changed');
+  for(const id of ['aiMarrowline','aiExport','aiCopy'])assert.equal(h.$('#'+id).disabled,true,'editing the bound task invalidates issuance even when SHI format remains valid');
+});
+
+test('Loom Demo exposes the fictional practice route without leaking its waiver back into Portable AIA mode',async t=>{
+  const h=harness(t);
+  h.$('#aiDemoMode').click();
+  assert.equal(h.ui.inspect().mode,'demo');
+  assert.equal(h.$('#aiDemoWelcome').hidden,false);
+  assert.equal(h.$('#aiDemoModePanel').hidden,false);
+  assert.equal(h.$('#aiPortableModePanel').hidden,true);
+  assert.equal(h.$('#aiIssuanceGate').dataset.state,'practice');
+
+  h.load(0);
+  h.$('#aiPreparePortable').click();
+  await h.settled();
+  for(const id of ['aiMarrowline','aiExport','aiCopy'])assert.equal(h.$('#'+id).disabled,false,`${id} is available for the fictional demo traversal`);
+
+  h.$('#aiPortableMode').click();
+  assert.equal(h.ui.inspect().mode,'portable');
+  assert.equal(h.$('#aiDemoWelcome').hidden,true);
+  assert.equal(h.$('#aiIssuanceGate').dataset.state,'held');
+  for(const id of ['aiMarrowline','aiExport','aiCopy'])assert.equal(h.$('#'+id).disabled,true,'Demo waiver cannot survive a return to Portable AIA mode');
+});
 
 test('loading each real practice project sends nothing; a click submits one selected packet',async t=>{
   const h=harness(t);

@@ -66,7 +66,7 @@ test('Pedagogue receives Episode 6 as a human-observed baseline rather than a sy
   assert.equal(continuation.human_gesture_remains_origin, true);
 });
 
-test('Loom human-facing task surface is provider-neutral and unmistakably editable', () => {
+test('Loom human-facing task surface stays provider-neutral and names the active mode consequence', () => {
   const source = workspace();
   const css = workspaceCss();
   assert.doesNotMatch(source, /Provider for this route:\s*Google Gemini\./);
@@ -74,7 +74,8 @@ test('Loom human-facing task surface is provider-neutral and unmistakably editab
   assert.doesNotMatch(source, /Select only the files Gemini should receive/);
   assert.match(source, /id="aiProjectBrief" class="ai-project-brief/);
   assert.match(source, /id="aiTaskCue"/);
-  assert.match(source, /exact instruction the AI will receive/i);
+  assert.match(source, /exact task travels with the selected files and portable rules/i);
+  assert.match(source, /exact instruction the AI will receive when you press Run demo/i);
   assert.match(css, /\.ai-task-surface/);
   assert.match(css, /#loomAiWorkspace textarea#aiTask/);
   assert.match(css, /@media\(max-width:560px\)[\s\S]*ai-project-brief/);
