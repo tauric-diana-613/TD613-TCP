@@ -8,6 +8,7 @@ import {
   LOOM_DEMO_CUSTODY_URL,
   commitLoomDemoCustodyStage,
   loomDemoCustodyReadiness,
+  readLoomDemoVercelOidcToken,
   releaseLoomDemoCustodyStage,
   reserveLoomDemoCustodyStage
 } from './loom-demo-custody-client.js';
@@ -32,9 +33,8 @@ export function createLoomDemoTaskHandler({
   custodyUrl = LOOM_DEMO_CUSTODY_URL,
   clock = () => Date.now()
 } = {}) {
-  const custodyOptions = { environment:custodyEnvironment, fetchImpl:custodyFetch, url:custodyUrl };
-
   return async (req, res) => {
+    let custodyOptions = { environment:custodyEnvironment, fetchImpl:custodyFetch, url:custodyUrl };
     let binding;
     let parsed;
     let reservation = null;
@@ -85,7 +85,9 @@ export function createLoomDemoTaskHandler({
     } catch { return fail('same-origin-required',403); }
     if (!/^application\/json(?:\s*;|$)/i.test(headers['content-type'] || '')) return fail('json-required',415);
 
-    const readiness = loomDemoCustodyReadiness({environment:custodyEnvironment,url:custodyUrl});
+    const oidcToken=readLoomDemoVercelOidcToken({environment:custodyEnvironment,requestHeaders:headers});
+    custodyOptions = { ...custodyOptions, requestHeaders:headers, oidcToken };
+    const readiness = loomDemoCustodyReadiness({environment:custodyEnvironment,requestHeaders:headers,oidcToken,url:custodyUrl});
     if (!readiness.admitted) return fail('loom-demo-release-not-admitted',503);
 
     let requestDigest;
@@ -212,8 +214,8 @@ export function createLoomDemoTaskHandler({
   };
 }
 
-export function loomDemoProductionReadiness(environment=process.env){
-  return loomDemoCustodyReadiness({environment,url:LOOM_DEMO_CUSTODY_URL});
+export function loomDemoProductionReadiness(environment=process.env,requestHeaders={}){
+  return loomDemoCustodyReadiness({environment,requestHeaders,url:LOOM_DEMO_CUSTODY_URL});
 }
 
 const productionHandler = createLoomDemoTaskHandler();
@@ -222,7 +224,7 @@ const productionHandler = createLoomDemoTaskHandler();
 // and the immutable Neon custody endpoint has been admitted in source. Neither a
 // database password nor a Loom signing secret is required in Vercel.
 export default async function loomDemoProductionHandler(req,res){
-  const readiness=loomDemoProductionReadiness(process.env);
+  const readiness=loomDemoProductionReadiness(process.env,req?.headers||{});
   if(!readiness.admitted){
     res.statusCode=503;
     res.setHeader('Content-Type','application/json; charset=utf-8');
