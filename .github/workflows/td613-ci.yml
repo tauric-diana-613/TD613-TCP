@@ -925,7 +925,7 @@ jobs:
       - name: Select bounded layout scope
         id: layout_scope
         run: |
-          if git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" | grep -Eq '^(app/dome-world/marrowline-desktop-repair\.(js|css)|app/dome-world/marrowline\.html|app/dome-world/marrowline-loom-(import(-base)?|demo)\.js|app/dome-world/marrowline-(terminal|egress-boot)\.js|app/dome-world/holonomy-loom/(ai-workspace|demo-contract)\.js|server/loom-(task|demo-task|demo-signing|demo-head-store|demo-custody-client)\.js|neon/functions/loom-custody/index\.mjs|api/khonapolit\.js|scripts/marrowline-instrument-layout-witness\.mjs|tests/(marrowline-instrument-panel|marrowline-desktop-repair-contract|marrowline-loom-demo(-pedagogue)?|loom-task|loom-ai-workspace-dom|loom-ai-handoff|loom-demo-contract)\.test\.mjs)$'; then
+          if git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" | grep -Eq '^(app/dome-world/marrowline-desktop-repair\.(js|css)|app/dome-world/marrowline\.html|app/dome-world/marrowline-loom-(import(-base)?|demo)\.js|app/dome-world/marrowline-(terminal|egress-boot)\.js|app/dome-world/holonomy-loom\.html|app/dome-world/holonomy-loom/(ai-workspace\.(js|css)|demo-contract\.js)|server/loom-(task|demo-task|demo-signing|demo-head-store|demo-custody-client)\.js|neon/functions/loom-custody/index\.mjs|api/khonapolit\.js|scripts/marrowline-instrument-layout-witness\.mjs|tests/(marrowline-instrument-panel|marrowline-desktop-repair-contract|marrowline-loom-demo(-pedagogue)?|loom-task|loom-ai-workspace-dom|loom-ai-handoff|loom-demo-contract)\.test\.mjs)$'; then
             echo 'changed=true' >> "$GITHUB_OUTPUT"
           fi
       - uses: actions/setup-node@v4
@@ -971,6 +971,16 @@ jobs:
             tests/fixtures/pedagogue/marrowline-loom-two-stage-practice.json
           node scripts/run-pedagogue-design-gate.mjs \
             tests/fixtures/pedagogue/loom-native-marrowline-design.json
+      - name: Offline Holonomy Loom portable-governance witness
+        if: steps.layout_scope.outputs.changed == 'true'
+        env:
+          TD613_BROWSER: chromium
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_SOURCE_HEAD: ${{ github.event.pull_request.head.sha }}
+          TD613_ARTIFACT_DIR: artifacts/loom-portable-governance/chromium
+        run: |
+          python3 -m http.server 6130 --directory app > /tmp/loom-portable-governance-server.log 2>&1 &
+          node tests/holonomy-loom-ai-workspace.browser.spec.mjs
       - name: Offline browser layout witness
         if: steps.layout_scope.outputs.changed == 'true'
         run: |
@@ -979,8 +989,10 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always() && steps.layout_scope.outputs.changed == 'true'
         with:
-          name: marrowline-layout-${{ github.event.pull_request.head.sha }}
-          path: artifacts/marrowline-layout
+          name: bounded-layout-${{ github.event.pull_request.head.sha }}
+          path: |
+            artifacts/marrowline-layout
+            artifacts/loom-portable-governance
 
 
   gemini_observation:
