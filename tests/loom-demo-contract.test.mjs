@@ -465,6 +465,40 @@ test('missing Vercel workload identity holds before provider invocation',async()
   assert.equal(calls,0);
 });
 
+test('request-scoped Vercel OIDC header admits remote custody without a project secret',async()=>{
+  const {activation}=await fixture();
+  const remote=createFakeRemoteCustody();
+  let calls=0;
+  const handler=createLoomDemoTaskHandler({
+    environment,
+    custodyEnvironment:{},
+    custodyFetch:remote.fetchImpl,
+    custodyUrl:CUSTODY_URL,
+    taskHandler:async(req,res)=>{
+      calls++;
+      res.statusCode=200;
+      res.end(JSON.stringify(result(req.body.request_id,'Rules received; selected files are pending.',[])));
+    }
+  });
+  const req=Object.assign(new EventEmitter(),{
+    method:'POST',
+    headers:{
+      host:'td613.com',
+      origin:'https://td613.com',
+      'content-type':'application/json',
+      'x-vercel-oidc-token':VERCEL_OIDC_TOKEN
+    },
+    body:request(activation,[],'ACTIVATE',null,null,'header-activate')
+  });
+  let output;const res={setHeader(){},end(raw){output=JSON.parse(raw);}};
+  await handler(req,res);
+  assert.equal(calls,1);
+  assert.equal(res.statusCode,200);
+  assert.equal(output.loom_demo_stage_receipt.phase,'ACTIVATE');
+  assert.equal(output.loom_demo_stage_receipt.admission_state,'ADMITTED');
+  assert.equal(remote.store.heads.has(activation.activation_digest),true);
+});
+
 test('admission-time expiry releases remote reservation without minting a receipt',async()=>{
   const {activation}=await fixture();
   const remote=createFakeRemoteCustody();
@@ -554,8 +588,10 @@ test('remote custody client sends only workload identity plus bounded custody me
       })
     };
   };
+  const requestScopedToken='fixture-request-scoped-oidc-token';
   const readiness=loomDemoCustodyReadiness({
-    environment:{VERCEL_OIDC_TOKEN},
+    environment:{VERCEL_OIDC_TOKEN:'lower-priority-env-token'},
+    requestHeaders:{'x-vercel-oidc-token':requestScopedToken},
     url:CUSTODY_URL
   });
   assert.equal(readiness.admitted,true);
@@ -569,12 +605,13 @@ test('remote custody client sends only workload identity plus bounded custody me
     predecessor_receipt_digest:null,
     expires_at:Date.now()+60_000
   },{
-    environment:{VERCEL_OIDC_TOKEN},
+    environment:{VERCEL_OIDC_TOKEN:'lower-priority-env-token'},
+    requestHeaders:{'x-vercel-oidc-token':requestScopedToken},
     fetchImpl,
     url:CUSTODY_URL
   });
   assert.equal(observed.length,1);
-  assert.equal(observed[0].headers.Authorization,`Bearer ${VERCEL_OIDC_TOKEN}`);
+  assert.equal(observed[0].headers.Authorization,`Bearer ${requestScopedToken}`);
   assert.equal(JSON.stringify(observed[0]).includes(SIGNING_SECRET),false);
   assert.equal(JSON.stringify(observed[0]).includes(HEAD_STORE_URL),false);
 });
@@ -594,6 +631,15 @@ test('production remains held without Vercel OIDC even after source admits a cus
   assert.equal(workloadReady.vercel_oidc,true);
   assert.equal(workloadReady.neon_custody_endpoint,true);
   assert.equal(workloadReady.vercel_project_secrets_required,false);
+
+  const requestScopedReady=loomDemoProductionReadiness(
+    {},
+    {'x-vercel-oidc-token':'fixture-request-scoped-token'}
+  );
+  assert.equal(requestScopedReady.admitted,true);
+  assert.equal(requestScopedReady.vercel_oidc,true);
+  assert.equal(requestScopedReady.neon_custody_endpoint,true);
+  assert.equal(requestScopedReady.vercel_project_secrets_required,false);
 
   let output;
   const res={setHeader(){},end(raw){output=JSON.parse(raw);}};
