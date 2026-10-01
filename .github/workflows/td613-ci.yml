@@ -953,6 +953,8 @@ jobs:
             tests/loom-demo-neon-custody.test.mjs \
             tests/marrowline-loom-demo.test.mjs \
             tests/marrowline-loom-demo-pedagogue.test.mjs \
+            tests/loom-gate-action-feedback.test.mjs \
+            tests/holonomy-loom-ai-projects.test.mjs \
             tests/loom-marrowline-native-provider.test.mjs \
             tests/loom-native-stage-support.test.mjs \
             tests/loom-native-terminal-races.test.mjs \

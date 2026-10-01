@@ -170,6 +170,14 @@
   color:#ffc0e6;
 }
 .loom-gate-continuity-actions button:disabled{opacity:.38;cursor:not-allowed}
+.loom-gate-action-status{
+  margin:0;
+  color:#8ce4d9;
+  font:600 .76rem/1.45 var(--marrowline-chat-sans,system-ui,sans-serif);
+  overflow-wrap:anywhere;
+}
+.loom-gate-action-status[hidden]{display:none!important}
+.loom-gate-action-status[data-outcome="HELD"]{color:#ffc0e6}
 .loom-gate-adversarial-separator{
   display:grid;
   gap:4px;

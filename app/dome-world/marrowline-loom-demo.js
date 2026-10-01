@@ -212,11 +212,17 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   }
   async function checkBinding(){
     try{
+      if(destroyed||!active||['EXPIRED','LEFT'].includes(phase)||Date.now()>=activation.expires_at)throw new Error('This Loom transfer is closed. Prepare a fresh handoff.');
+      if(busy)throw new Error('Wait for or stop the current request before checking.');
       if(!predecessor)throw new Error('Admit #1 before checking the file-bearing continuation.');
+      const checkGeneration=stageGeneration, checkPhase=phase, checkPredecessor=predecessor;
+      gateContinuity?.reportAction('PENDING','Checking selected-file binding locally · no provider call.');
       const req={schema:LOOM_DEMO_REQUEST_SCHEMA,request_id:environment.crypto.randomUUID(),phase:'CONTINUE',activation,documents:packet.documents,operator_request:'Check the selected file binding locally.',prior_result:latest,predecessor};
       const binding=await bindLoomDemoRequest(req,environment);binding.governor.close();
-      setStatus('Loom Gate local binding check passed · selected bytes and portable rules match · no provider call made');
-    }catch(error){setStatus(`Loom Gate local binding held · ${error.message}`);}
+      if(destroyed||!active||stageGeneration!==checkGeneration||phase!==checkPhase||predecessor!==checkPredecessor||['EXPIRED','LEFT'].includes(phase)||busy||Date.now()>=activation.expires_at)throw new Error('The Loom state changed during the local check. Check the current stage again.');
+      const message='Local check passed · selected bytes and portable rules match · no provider call made.';
+      gateContinuity?.reportAction('PASSED',message);setStatus(message);
+    }catch(error){const message=`Local check held · ${error.message}`;gateContinuity?.reportAction('HELD',message);setStatus(message);}
   }
   function exportPacket(){
     if(!active||phase!=='DONE'||Date.now()>=activation.expires_at)throw new Error('This Loom session has no current export. Prepare a fresh handoff before exporting.');
@@ -229,8 +235,9 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
       const url=environment.URL.createObjectURL(new environment.Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));
       const link=element(doc,'a','');link.href=url;link.download='loom-current-portable-aia.json';doc.body.append(link);link.click();link.remove();
       environment.setTimeout(()=>environment.URL.revokeObjectURL(url),1500);
-      setStatus('Current Loom Portable AIA exported. No onward execution occurred.');
-    }catch(error){setStatus(`Loom export held · ${error.message}`);}
+      const message='Download requested · current Loom Portable AIA prepared. Your browser handles saving the file; no onward execution occurred.';
+      gateContinuity?.reportAction('DOWNLOAD_REQUESTED',message);setStatus(message);
+    }catch(error){const message=`Loom export held · ${error.message}`;gateContinuity?.reportAction('HELD',message);setStatus(message);}
   }
   environment.addEventListener('td613:marrowline:loom-demo-open',openMenu);
   environment.addEventListener('td613:marrowline:loom-demo-close',()=>closeMenu({focusParent:false}));

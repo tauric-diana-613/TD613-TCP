@@ -184,11 +184,13 @@ export function installMarrowlineLoomGateContinuity({
   const back=button(doc,'Back to Chat',onReturnToChat,'loom-gate-secondary');
   const exportButton=button(doc,'Export current Loom Portable AIA',onExport,'loom-gate-primary');exportButton.disabled=true;
   actions.append(back,localCheck,exportButton);
+  const actionStatus=el(doc,'p','','loom-gate-action-status');actionStatus.id='loomGateActionStatus';actionStatus.hidden=true;
+  actionStatus.setAttribute('role','status');actionStatus.setAttribute('aria-live','polite');actionStatus.setAttribute('aria-atomic','true');
 
   const separator=el(doc,'aside','','loom-gate-adversarial-separator');
   separator.append(el(doc,'small','SEPARATE EXPERIMENT · DEFERRED'),el(doc,'strong','Adversarial boundary assay preserved for the later Gate pass'),el(doc,'p','The Local / Public / Operator armamentarium tests a different boundary. Phase 2 does not fire it. Its code remains intact for the later opsec/infosec redesign, and this continuity witness supplies it no empirical credit.'));
 
-  section.append(head,state,now,consequenceGrid,roleDetails,technical,actions);
+  section.append(head,state,now,consequenceGrid,roleDetails,technical,actions,actionStatus);
   controls.prepend(section);
   const adversarial=doc.getElementById('marrowlineGatePedagogue');
   const form=doc.getElementById('marrowlineForm');
@@ -198,8 +200,16 @@ export function installMarrowlineLoomGateContinuity({
 
   const replaceList=(host,items)=>{const ul=host.querySelector('ul');ul.replaceChildren(...items.map(item=>el(doc,'li',item)));};
   let current=null;
+  const reportAction=(outcome,message)=>{
+    if(!['PENDING','PASSED','HELD','DOWNLOAD_REQUESTED'].includes(outcome)||typeof message!=='string'||!message.trim())throw new TypeError('Gate action feedback requires a bounded outcome and message.');
+    actionStatus.dataset.outcome=outcome;actionStatus.textContent=message;actionStatus.hidden=false;
+  };
   const update=input=>{
+    const previous=current;
     current=deriveMarrowlineLoomGateContinuity({...input,activation,packet});
+    if(previous&&(previous.phase!==current.phase||previous.lastAttempt!==current.lastAttempt||previous.busy!==current.busy)){
+      actionStatus.hidden=true;actionStatus.textContent='';delete actionStatus.dataset.outcome;
+    }
     state.textContent=current.pedagogue.eyebrow;
     nowText.textContent=current.pedagogue.now;
     why.textContent=current.pedagogue.why;
@@ -225,5 +235,5 @@ export function installMarrowlineLoomGateContinuity({
     return current;
   };
   const destroy=()=>{section.remove();separator.remove();delete gate.dataset.loomContinuityActive;delete gate.dataset.loomContinuityPhase;delete root.__TD613_MARROWLINE_LOOM_GATE_CONTINUITY__;};
-  return Object.freeze({schema:MARROWLINE_LOOM_GATE_CONTINUITY_SCHEMA,update,destroy,getCurrent:()=>copy(current)});
+  return Object.freeze({schema:MARROWLINE_LOOM_GATE_CONTINUITY_SCHEMA,update,reportAction,destroy,getCurrent:()=>copy(current)});
 }
