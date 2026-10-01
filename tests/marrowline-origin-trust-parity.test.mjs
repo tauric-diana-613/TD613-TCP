@@ -94,7 +94,7 @@ test('independent-task recovery keeps the original draft and offers retry withou
   assert.match(terminal, /retryKhonapolitTask/);
   assert.doesNotMatch(terminal, /copyKhonapolitPortable|exportKhonapolitPortable/,
     'ordinary terminal listeners must not recreate the retired portable buttons');
-  assert.match(terminal, /Your task is still here/i);
+  assert.match(terminal, /TASK PRESERVED/i);
   assert.match(terminal, /prompt\.value\s*=\s*message/,
     'failed transport must restore the exact submitted task to the composer');
 });

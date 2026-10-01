@@ -128,13 +128,13 @@ test('composer has one universal plus with exactly file photo and Loom actions',
 
 test('Loom demo attention follows pending steps and the two-step route branches from the Loom menu item', () => {
   assert.match(js, /doc\.documentElement\?\.dataset\?\.loomTaskImport === 'staged'/);
-  assert.match(js, /Boolean\(demo\?\.pending_steps\)/);
-  assert.match(js, /plus\.dataset\.loomAttention = String\(awake\)/);
+  assert.match(js, /Boolean\(demo\?\.pending_steps && !demo\?\.busy\)/);
+  assert.match(js, /plus\.dataset\.loomAttention = String\(awake && !cuePaused\)/);
   assert.doesNotMatch(js, /loomCueAcknowledged/);
   assert.match(js, /root\.addEventListener\?\.\('td613:marrowline:loom-demo-state', refreshLoom\)/);
   assert.match(js, /loomItem\.button\.setAttribute\('aria-haspopup', 'menu'\)/);
   assert.match(js, /loomItem\.button\.setAttribute\('aria-expanded', 'true'\)/);
-  assert.match(js, /loomItem\.text\.textContent = awake \? 'Loom demo' : 'Loom'/);
+  assert.match(js, /loomItem\.text\.textContent = demo && !\['LEFT','EXPIRED'\]\.includes\(demo\.phase\) \? 'Loom demo' : 'Loom'/);
   assert.match(css, /\.marrowline-composer-plus\{[^}]*color:#e6ece8/);
   assert.match(css, /\.marrowline-composer-plus\[data-loom-attention="true"\],#khonapolitSend\[data-loom-attention="true"\]\{animation:marrowline-loom-demo-attention \.62s/);
   assert.match(css, /#marrowlineContextLoom\[data-loom-awake="true"\]>span:nth-child\(2\)\{color:#ff69c3\}/);

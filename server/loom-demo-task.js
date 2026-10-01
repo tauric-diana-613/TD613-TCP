@@ -12,7 +12,7 @@ import {
   releaseLoomDemoCustodyStage,
   reserveLoomDemoCustodyStage
 } from './loom-demo-custody-client.js';
-import { createLoomTaskHandler } from './loom-task.js';
+import { createLoomMarrowlineTaskHandler } from './loom-marrowline-task.js';
 
 const digest = value => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 
@@ -26,7 +26,7 @@ const digest = value => createHash('sha256').update(JSON.stringify(value)).diges
 // A completed result is not released to the browser until the remote durable
 // commit has succeeded. No prompt/file/result body is stored in the custody DB.
 export function createLoomDemoTaskHandler({
-  taskHandler = createLoomTaskHandler(),
+  taskHandler = createLoomMarrowlineTaskHandler(),
   environment = globalThis,
   custodyEnvironment = process.env,
   custodyFetch = (...args) => fetch(...args),
@@ -39,6 +39,7 @@ export function createLoomDemoTaskHandler({
     let parsed;
     let reservation = null;
     let reservationReleased = false;
+    let nativeReply = null;
 
     const fail = (code, status = 400) => {
       res.statusCode = status;
@@ -49,7 +50,8 @@ export function createLoomDemoTaskHandler({
         request_id: parsed?.request_id ?? req.body?.request_id ?? null,
         status: 'held',
         answer: '',
-        error: code
+        error: code,
+        ...(nativeReply ? { native_reply: nativeReply } : {})
       }));
     };
 
@@ -123,6 +125,8 @@ export function createLoomDemoTaskHandler({
 
     const proxy = Object.create(req);
     proxy.body = binding.input;
+    proxy.marrowline = binding.marrowline;
+    proxy.loomPriorResult = binding.priorResult;
     const response = Object.create(res);
     let responseCompletion = null;
     response.setHeader = (...args) => res.setHeader(...args);
@@ -131,6 +135,7 @@ export function createLoomDemoTaskHandler({
       responseCompletion = (async () => {
         try {
           const output = JSON.parse(String(raw));
+          nativeReply = output.native_reply ?? null;
           if (output.status === 'completed') {
             if (clock() >= parsed.activation.expires_at) {
               binding.governor.close();

@@ -295,7 +295,8 @@ test('latest admitted continuation must match the immediately preceding continua
 
   const secondReq=request(activation,packet.documents,'CONTINUE',latest,firstReceipt,'continue-2');
   const second=await bindLoomDemoRequest(secondReq,environment);
-  assert.match(second.input.task,/State B: four approved workstreams/);
+  assert.equal(second.priorResult.answer,latest.answer);
+  assert.equal(second.input.task.includes(latest.answer),false);
   assert.equal(second.receipt.prior_result_digest,firstReceipt.result_digest);
 
   const altered=copy(latest);
@@ -649,4 +650,3 @@ test('production remains held without Vercel OIDC even after source admits a cus
   assert.equal(output.answer,'');
   assert.equal(output.error,'loom-demo-release-not-admitted');
 });
-

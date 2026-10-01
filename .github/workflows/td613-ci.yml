@@ -952,7 +952,13 @@ jobs:
             tests/loom-demo-contract.test.mjs \
             tests/loom-demo-neon-custody.test.mjs \
             tests/marrowline-loom-demo.test.mjs \
-            tests/marrowline-loom-demo-pedagogue.test.mjs
+            tests/marrowline-loom-demo-pedagogue.test.mjs \
+            tests/loom-marrowline-native-provider.test.mjs \
+            tests/loom-native-stage-support.test.mjs \
+            tests/loom-native-terminal-races.test.mjs \
+            tests/loom-native-observation.test.mjs \
+            tests/loom-native-route-consequence.test.mjs \
+            tests/loom-native-mobile-witness.test.mjs
           node tests/workflow-estate.test.mjs
           node tests/gemini-observation-dispatch.test.mjs
           node scripts/run-pedagogue-design-gate.mjs \
@@ -961,6 +967,8 @@ jobs:
             tests/fixtures/pedagogue/marrowline-fire-gate-design.json
           node scripts/run-pedagogue-design-gate.mjs \
             tests/fixtures/pedagogue/marrowline-loom-two-stage-practice.json
+          node scripts/run-pedagogue-design-gate.mjs \
+            tests/fixtures/pedagogue/loom-native-marrowline-design.json
       - name: Offline browser layout witness
         if: steps.layout_scope.outputs.changed == 'true'
         run: |

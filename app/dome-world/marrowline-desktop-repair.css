@@ -27,7 +27,8 @@
 .marrowline-context-menu #marrowlineContextLoom[data-submenu-parent="true"][data-loom-submenu="true"]::after{content:"›";position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#ff79c9;font:400 22px/1 ui-monospace,SFMono-Regular,Menlo,monospace;text-shadow:0 0 12px rgba(255,45,169,.42)}
 .marrowline-context-menu #marrowlineContextLoom[aria-expanded="true"]{background:#2c2036;box-shadow:inset 2px 0 #ff4fbd}
 .marrowline-context-submenu{position:fixed;z-index:2147483210;box-sizing:border-box;display:grid;grid-template-columns:1fr;gap:5px;padding:10px;border:1px solid rgba(255,79,189,.36);border-radius:14px;background:rgba(24,15,31,.98);box-shadow:0 20px 60px rgba(0,0,0,.66),0 0 32px rgba(255,45,169,.12);color:#e9eaed;font-family:var(--marrowline-chat-sans,system-ui,sans-serif)}
-.marrowline-context-submenu[hidden]{display:none!important}
+.marrowline-context-submenu[hidden],.marrowline-context-submenu>button[hidden],.marrowline-context-menu button[hidden]{display:none!important}
+.marrowline-context-submenu{max-height:calc(100dvh - 20px);overflow-y:auto}
 .marrowline-context-submenu h3{margin:1px 4px 0;color:#ff91d2;font:650 12px/1.25 var(--marrowline-chat-sans,system-ui,sans-serif);letter-spacing:.02em}
 .marrowline-context-submenu>p{margin:0 4px 5px;color:#a9a1b4;font:400 10px/1.45 var(--marrowline-chat-sans,system-ui,sans-serif)}
 .marrowline-context-submenu>button{appearance:none;-webkit-appearance:none;display:block;width:100%;min-height:46px;padding:9px 11px;border:1px solid rgba(255,255,255,.09);border-radius:10px;background:#20182b;color:#f4eef4;text-align:left;font:620 12px/1.25 var(--marrowline-chat-sans,system-ui,sans-serif);text-transform:none;letter-spacing:0;cursor:pointer}
@@ -1398,4 +1399,18 @@ html:root body #khonapolitMessages .starter-prompts .starter-rotate{
 .loom-import-workspace .loom-demo-gate-step p{margin:8px 0 0;color:#c4b6c4;font-size:12px;line-height:1.5}
 @media(max-width:860px){
  html:root.marrowline-mobile-shell #speakingPanel .marrowline-thread-nav>button{width:auto!important;min-width:34px!important;white-space:nowrap}
+}
+
+/* Native context cue: border opacity can blink despite the mobile shell's
+   important shadow rules. Stop on staging; reduced motion stays static. */
+@keyframes marrowline-loom-plus-cue{0%,100%{opacity:1}50%{opacity:.45}}
+html:root body #speakingPanel #khonapolitForm #marrowlineComposerPlus[data-loom-attention="true"]{
+  border-color:#ff3ab7!important;background:#5b1748!important;color:#fff!important;
+  box-shadow:0 0 18px rgba(255,45,169,.72)!important;
+  animation:marrowline-loom-plus-cue .62s ease-in-out infinite!important;
+}
+html:root[data-loom-cue-paused="true"] #khonapolitSend[data-loom-attention="true"]{animation:none!important}
+@media(prefers-reduced-motion:reduce){
+  html:root body #speakingPanel #khonapolitForm #marrowlineComposerPlus[data-loom-attention="true"],
+  #khonapolitSend[data-loom-attention="true"]{animation:none!important}
 }
