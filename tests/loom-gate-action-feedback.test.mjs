@@ -37,7 +37,7 @@ async function harness(t){
     controller.finishAttempt(prepared);clearMarrowlineAttachments(root);
   };
   return {root,doc,controller,admit,blobs,downloads,expiry:()=>expiry(),calls:()=>providerCalls,
-    status:()=>doc.getElementById('loomGateActionStatus'),check:()=>doc.querySelector('#loomGateContinuity .loom-gate-secondary:nth-child(2)'),export:()=>doc.querySelector('#loomGateContinuity .loom-gate-primary')};
+    status:()=>doc.getElementById('loomGateActionStatus'),check:()=>doc.getElementById('loomGateLocalCheck'),export:()=>doc.getElementById('loomGateExportCurrent')};
 }
 
 test('Gate local-check and export feedback remains visible in Gate with no composer apparatus or save-completion claim',async t=>{
