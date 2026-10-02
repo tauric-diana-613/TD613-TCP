@@ -98,6 +98,9 @@ test('Loom demo branches from + and both numbered gestures stage attachment + pr
  assert.equal(h.doc.querySelector('.loom-demo-composer-note'),null);
 
  await h.controller.submit();
+ const firstGovernedCard=[...h.doc.querySelectorAll('#khonapolitMessages article.relay-message')].at(-1);
+ assert.equal(firstGovernedCard?.dataset.loomReadingRequestId,h.requests[0].request_id,'#1 admitted receiver return carries its exact Loom work-unit marker');
+ assert.equal(firstGovernedCard?.dataset.loomReadingPhase,'ACTIVATE');
  assert.equal(h.requests[0].documents.length,0);
  assert.equal(h.requests[0].predecessor,null);
  assert.equal(h.controller.snapshot().phase,'AIA_SENT');
@@ -139,6 +142,9 @@ test('Loom demo branches from + and both numbered gestures stage attachment + pr
  assert.equal(gateExport.disabled,true);
 
  await h.controller.submit();
+ const secondGovernedCard=[...h.doc.querySelectorAll('#khonapolitMessages article.relay-message')].at(-1);
+ assert.equal(secondGovernedCard?.dataset.loomReadingRequestId,h.requests[1].request_id,'#2 admitted receiver return carries the current Loom work-unit marker');
+ assert.equal(secondGovernedCard?.dataset.loomReadingPhase,'CONTINUE');
  assert.equal(h.controller.snapshot().phase,'DONE');
  assert.deepEqual(h.requests[1].documents,h.packet.documents);
  assert.equal(h.requests[1].predecessor.phase,'ACTIVATE');
@@ -151,6 +157,8 @@ test('Loom demo branches from + and both numbered gestures stage attachment + pr
  assert.equal(h.doc.querySelectorAll('#khonapolitMessages article[data-role]').length,4);
  assert.equal(h.doc.querySelectorAll('textarea:not([hidden])').length>=1,true);
  prompt.value='Which state is current?';await h.controller.submit();
+ const followGovernedCard=[...h.doc.querySelectorAll('#khonapolitMessages article.relay-message')].at(-1);
+ assert.equal(followGovernedCard?.dataset.loomReadingRequestId,h.requests[2].request_id,'later governed continuation gets a new work-unit marker rather than inheriting the old one');
  assert.equal(h.requests[2].prior_result.answer,'State B has four workstreams.');
  assert.equal(h.requests[2].predecessor.phase,'CONTINUE');
  assert.equal(h.controller.exportPacket().continuation.prior_result.answer,'State C has five workstreams.');

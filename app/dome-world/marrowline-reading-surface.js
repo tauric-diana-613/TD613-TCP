@@ -6,7 +6,8 @@
  * This module derives a sibling DOM reading view from its textContent.
  * No provider text is normalized, rewritten, or admitted by this renderer.
  */
-export const MARROWLINE_READING_SURFACE_SCHEMA = 'td613.marrowline.reading-surface/v0.1';
+export const MARROWLINE_READING_SURFACE_SCHEMA = 'td613.marrowline.reading-surface/v0.2';
+export const MARROWLINE_LOOM_READING_WORK_UNIT_SCHEMA = 'td613.marrowline.loom-reading-work-unit/v0.1';
 
 function text(doc, value='') { return doc.createTextNode(String(value ?? '')); }
 
@@ -101,24 +102,56 @@ export function renderMarrowlineReadingView(doc, raw='') {
   return root;
 }
 
-export function installMarrowlineReadingSurface(stage, environment=window) {
-  if(!stage||stage.dataset.readingSurface==='true')return null;
+export function resolveMarrowlineLoomReadingAuthority(card, environment=window) {
+  const requestId=String(card?.dataset?.loomReadingRequestId || '');
+  const phase=String(card?.dataset?.loomReadingPhase || '');
+  const expiresAt=Number(card?.dataset?.loomReadingExpiresAt || 0);
+  const schema=String(card?.dataset?.loomReadingSchema || '');
+  if(schema!==MARROWLINE_LOOM_READING_WORK_UNIT_SCHEMA || !requestId || !['ACTIVATE','CONTINUE'].includes(phase))return null;
+  if(Number.isFinite(expiresAt) && expiresAt>0 && Date.now()>=expiresAt)return null;
+  const controller=environment?.__TD613_LOOM_DEMO_CONTROLLER__;
+  const state=controller?.snapshot?.();
+  if(!state?.active || ['EXPIRED','LEFT'].includes(String(state.phase || '')))return null;
+  const admittedIds=new Set([state.current_result_request_id,state.predecessor_request_id].filter(Boolean).map(String));
+  if(!admittedIds.has(requestId))return null;
+  return Object.freeze({schema:MARROWLINE_LOOM_READING_WORK_UNIT_SCHEMA,request_id:requestId,phase,expires_at:expiresAt||null});
+}
+
+export function removeMarrowlineReadingSurface(stage) {
+  if(!stage)return false;
+  const shell=stage.querySelector(':scope > .marrowline-reading-surface');
+  const source=stage.querySelector(':scope > .relay-stage-text');
+  if(!shell)return false;
+  shell.remove();
+  if(source){
+    source.hidden=false;
+    delete source.dataset.custodySurface;
+    source.removeAttribute('aria-label');
+  }
+  delete stage.dataset.readingSurface;
+  delete stage.dataset.readingSourceLength;
+  return true;
+}
+
+export function installMarrowlineReadingSurface(stage, environment=window, authority=null) {
+  if(!stage||stage.dataset.readingSurface==='true'||!authority?.request_id||!['ACTIVATE','CONTINUE'].includes(String(authority.phase||'')))return null;
   const source=stage.querySelector('.relay-stage-text');
   if(!source)return null;
   const doc=stage.ownerDocument,raw=String(source.textContent ?? '');
   const shell=doc.createElement('section');shell.className='marrowline-reading-surface';shell.dataset.schema=MARROWLINE_READING_SURFACE_SCHEMA;
+  shell.dataset.loomRequestId=String(authority.request_id);shell.dataset.loomPhase=String(authority.phase);
   const tools=doc.createElement('div');tools.className='marrowline-reading-tools';tools.setAttribute('role','group');tools.setAttribute('aria-label','Reply presentation');
-  const readingButton=doc.createElement('button');readingButton.type='button';readingButton.textContent='Reading view';readingButton.setAttribute('aria-pressed','true');
-  const exactButton=doc.createElement('button');exactButton.type='button';exactButton.textContent='Exact return';exactButton.setAttribute('aria-pressed','false');
+  const readingButton=doc.createElement('button');readingButton.type='button';readingButton.textContent='Reading';readingButton.setAttribute('aria-pressed','true');
+  const exactButton=doc.createElement('button');exactButton.type='button';exactButton.textContent='Exact';exactButton.setAttribute('aria-pressed','false');
   const copyExact=doc.createElement('button');copyExact.type='button';copyExact.textContent='Copy exact';copyExact.className='marrowline-copy-exact';
-  const claim=doc.createElement('small');claim.className='marrowline-reading-claim';claim.textContent='Presentation only · Exact return remains the custody source.';
+  const claim=doc.createElement('small');claim.className='marrowline-reading-claim';claim.textContent='Loom return · exact remains the custody source.';
   const status=doc.createElement('span');status.className='marrowline-reading-status';status.setAttribute('role','status');status.setAttribute('aria-live','polite');
 
   const reading=renderMarrowlineReadingView(doc,raw);
   source.hidden=true;
   source.dataset.custodySurface='exact-provider-return';
   source.setAttribute('aria-label','Exact provider return');
-  shell.append(tools,claim,reading,status);
+  shell.append(reading,tools,claim,status);
   tools.append(readingButton,exactButton,copyExact);
   source.before(shell);
 

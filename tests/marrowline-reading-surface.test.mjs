@@ -3,8 +3,11 @@ import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
 import {
   MARROWLINE_READING_SURFACE_SCHEMA,
+  MARROWLINE_LOOM_READING_WORK_UNIT_SCHEMA,
   renderMarrowlineReadingView,
-  installMarrowlineReadingSurface
+  installMarrowlineReadingSurface,
+  removeMarrowlineReadingSurface,
+  resolveMarrowlineLoomReadingAuthority
 } from '../app/dome-world/marrowline-reading-surface.js';
 
 const fixture = [
@@ -55,18 +58,18 @@ test('dual surface leaves canonical provider text untouched across reading/exact
   const dom=new JSDOM('<body></body>',{url:'https://td613.com/dome-world/marrowline.html'});
   const {section,source}=stage(dom);
   const before=source.textContent;
-  const mounted=installMarrowlineReadingSurface(section,dom.window);
+  const mounted=installMarrowlineReadingSurface(section,dom.window,{request_id:'req-current',phase:'CONTINUE'});
   assert.ok(mounted);
   assert.equal(mounted.raw,before);
   assert.equal(source.textContent,before);
   assert.equal(source.dataset.custodySurface,'exact-provider-return');
   assert.equal(source.hidden,true);
   assert.equal(mounted.reading.hidden,false);
-  section.querySelector('button:nth-child(2)').click();
+  [...section.querySelectorAll('button')].find(button=>button.textContent==='Exact').click();
   assert.equal(source.hidden,false);
   assert.equal(mounted.reading.hidden,true);
   assert.equal(source.textContent,before);
-  section.querySelector('button:nth-child(1)').click();
+  [...section.querySelectorAll('button')].find(button=>button.textContent==='Reading').click();
   assert.equal(source.hidden,true);
   assert.equal(mounted.reading.hidden,false);
   assert.equal(source.textContent,before);
@@ -78,7 +81,7 @@ test('Copy exact emits the untouched provider return rather than reading-view te
   const {section,source}=stage(dom);
   let copied=null;
   Object.defineProperty(dom.window.navigator,'clipboard',{configurable:true,value:{writeText:async value=>{copied=value;}}});
-  installMarrowlineReadingSurface(section,dom.window);
+  installMarrowlineReadingSurface(section,dom.window,{request_id:'req-current',phase:'CONTINUE'});
   const copy=[...section.querySelectorAll('button')].find(button=>button.textContent==='Copy exact');
   await copy.click();
   await Promise.resolve();
@@ -91,10 +94,65 @@ test('Copy exact emits the untouched provider return rather than reading-view te
 test('reading surface installs only once and keeps exact source node canonical',()=>{
   const dom=new JSDOM('<body></body>',{url:'https://td613.com/dome-world/marrowline.html'});
   const {section,source}=stage(dom,'### One\r\n\r\nTwo');
-  const first=installMarrowlineReadingSurface(section,dom.window);
-  const second=installMarrowlineReadingSurface(section,dom.window);
+  const first=installMarrowlineReadingSurface(section,dom.window,{request_id:'req-current',phase:'CONTINUE'});
+  const second=installMarrowlineReadingSurface(section,dom.window,{request_id:'req-current',phase:'CONTINUE'});
   assert.ok(first);assert.equal(second,null);
   assert.equal(section.querySelectorAll('.marrowline-reading-surface').length,1);
   assert.equal(source.textContent,'### One\r\n\r\nTwo');
+  dom.window.close();
+});
+
+
+function governedCard(dom,{requestId='req-current',phase='CONTINUE',expiresAt=Date.now()+60_000}={}){
+  const card=dom.window.document.createElement('article');
+  card.dataset.loomReadingSchema=MARROWLINE_LOOM_READING_WORK_UNIT_SCHEMA;
+  card.dataset.loomReadingRequestId=requestId;
+  card.dataset.loomReadingPhase=phase;
+  card.dataset.loomReadingExpiresAt=String(expiresAt);
+  return card;
+}
+
+test('reading authority requires both a current Loom controller and the current admitted work unit',()=>{
+  const dom=new JSDOM('<body></body>',{url:'https://td613.com/dome-world/marrowline.html'});
+  const ordinary=dom.window.document.createElement('article');
+  assert.equal(resolveMarrowlineLoomReadingAuthority(ordinary,dom.window),null,'ordinary integrated/native reply has no authority');
+
+  const historical=governedCard(dom,{requestId:'req-old'});
+  assert.equal(resolveMarrowlineLoomReadingAuthority(historical,dom.window),null,'saved Loom marker alone cannot restore authority after reload');
+
+  dom.window.__TD613_LOOM_DEMO_CONTROLLER__={snapshot:()=>({
+    active:true,phase:'DONE',current_result_request_id:'req-current',predecessor_request_id:'req-current'
+  })};
+  assert.equal(resolveMarrowlineLoomReadingAuthority(historical,dom.window),null,'historical Loom contact cannot inherit current work-unit authority');
+
+  const current=governedCard(dom);
+  assert.equal(resolveMarrowlineLoomReadingAuthority(current,dom.window)?.request_id,'req-current','current admitted work unit is eligible');
+
+  dom.window.history.replaceState(null,'','/dome-world/marrowline.html#loom-demo');
+  const forged=dom.window.document.createElement('article');
+  assert.equal(resolveMarrowlineLoomReadingAuthority(forged,dom.window),null,'route/hash text cannot manufacture message ancestry');
+
+  const expired=governedCard(dom,{expiresAt:Date.now()-1});
+  assert.equal(resolveMarrowlineLoomReadingAuthority(expired,dom.window),null,'expired work unit is held');
+
+  dom.window.__TD613_LOOM_DEMO_CONTROLLER__={snapshot:()=>({
+    active:true,phase:'EXPIRED',current_result_request_id:'req-current',predecessor_request_id:'req-current'
+  })};
+  assert.equal(resolveMarrowlineLoomReadingAuthority(current,dom.window),null,'expired route state cannot manufacture current custody UI');
+  dom.window.close();
+});
+
+test('installer fails closed without Loom authority and removal restores exact source',()=>{
+  const dom=new JSDOM('<body></body>',{url:'https://td613.com/dome-world/marrowline.html'});
+  const {section,source}=stage(dom,'Exact bytes');
+  assert.equal(installMarrowlineReadingSurface(section,dom.window),null);
+  assert.equal(source.hidden,false);
+  const mounted=installMarrowlineReadingSurface(section,dom.window,{request_id:'req-current',phase:'CONTINUE'});
+  assert.ok(mounted);
+  assert.equal(source.hidden,true);
+  assert.equal(removeMarrowlineReadingSurface(section),true);
+  assert.equal(source.hidden,false);
+  assert.equal(section.querySelector('.marrowline-reading-surface'),null);
+  assert.equal(source.textContent,'Exact bytes');
   dom.window.close();
 });
