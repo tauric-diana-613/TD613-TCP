@@ -1,4 +1,13 @@
 
+#loomAiWorkspace .ai-turn-verify{margin-top:9px}
+#loomAiWorkspace .ai-turn-verify>p{margin:9px 0}
+#loomAiWorkspace .ai-turn-verify label{display:grid;gap:5px;margin:9px 0;color:#e9c18e;font:650 .7rem/1.35 var(--sans)}
+#loomAiWorkspace .ai-turn-verify textarea{width:100%;box-sizing:border-box;padding:9px 10px;border:1px solid #a98cc63d;border-radius:9px;background:#0a0910;color:#eee8f2;font:400 16px/1.4 var(--sans);resize:vertical}
+#loomAiWorkspace .ai-turn-result{margin-top:10px;padding:11px;border:1px solid rgba(143,216,201,.2);border-radius:10px;background:#0c1514}
+#loomAiWorkspace .ai-turn-result[hidden]{display:none!important}
+#loomAiWorkspace .ai-turn-result pre{max-height:280px;overflow:auto;white-space:pre-wrap;word-break:break-word;font-size:.67rem}
+
+
 #loomAiWorkspace .ai-challenge-advanced{padding:10px 11px;border:1px solid rgba(229,189,138,.2);border-radius:10px;background:#120f16}
 #loomAiWorkspace .ai-challenge-advanced>summary{cursor:pointer;color:#e6c491;font:650 .72rem/1.35 var(--sans)}
 #loomAiWorkspace .ai-challenge-advanced[open]>summary{margin-bottom:10px}
