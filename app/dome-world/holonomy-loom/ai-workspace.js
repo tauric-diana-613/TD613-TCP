@@ -494,10 +494,11 @@ export function mountLoomAiWorkspace(root, environment = window) {
       const raw=$('aiChallengeReturn').value.trim();
       const candidate=JSON.parse(raw);
       const capture={evidence_class:'DECLARATION',surfaces:[{channel_id:'reply',status:'CAPTURED',text:raw}]};
-      challengeVerification=await verifyPortableLoomReceiverChallenge(challengeBundle,candidate,capture,environment);
-      challengeDollhouse=await auditPortableLoomChallengeWithDollhouse(portableSession,portableWorkUnit,challengeBundle,challengeVerification,environment);
-      renderChallengeResult(challengeVerification,challengeDollhouse);refreshTransferActions();
-      status(challengeVerification.status==='OBSERVED_EXPOSURE'?'Challenge found observed exposure in the declared horizon.':'Challenge verification complete. Read the bounded verdict and unresolved horizon.');
+      const verification=await verifyPortableLoomReceiverChallenge(challengeBundle,candidate,capture,environment);
+      const dollhouse=await auditPortableLoomChallengeWithDollhouse(portableSession,portableWorkUnit,challengeBundle,verification,environment);
+      renderChallengeResult(verification,dollhouse);
+      challengeVerification=verification;challengeDollhouse=dollhouse;refreshTransferActions();
+      status(verification.status==='OBSERVED_EXPOSURE'?'Challenge found observed exposure in the declared horizon.':'Challenge verification complete. Read the bounded verdict and unresolved horizon.');
     }catch(error){challengeVerification=null;challengeDollhouse=null;refreshTransferActions();status(`Challenge held · ${error.message}`,true);}
   });
   $('aiCopyChallengeReceipt').addEventListener('click',async()=>{
