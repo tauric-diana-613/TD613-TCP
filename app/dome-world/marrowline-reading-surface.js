@@ -61,7 +61,7 @@ export function renderMarrowlineReadingView(doc, raw='') {
   const flushAll=()=>{flushParagraph(doc,root,paragraph);flushList(doc,root,list);};
   for(const line of lines){
     if(fence){
-      if(/^\s*\`\`\`\s*$/u.test(line)){
+      if(/^\s*```\s*$/u.test(line)){
         const pre=doc.createElement('pre'),code=doc.createElement('code');
         code.textContent=fence.lines.join('\n');pre.append(code);root.append(pre);fence=null;
       }else fence.lines.push(line);
@@ -74,7 +74,7 @@ export function renderMarrowlineReadingView(doc, raw='') {
       }else math.push(line);
       continue;
     }
-    if(/^\s*\`\`\`/u.test(line)){flushAll();fence={lines:[]};continue;}
+    if(/^\s*```/u.test(line)){flushAll();fence={lines:[]};continue;}
     if(/^\s*\$\$\s*$/u.test(line)){flushAll();math=[];continue;}
     if(!line.trim()){flushAll();continue;}
 
