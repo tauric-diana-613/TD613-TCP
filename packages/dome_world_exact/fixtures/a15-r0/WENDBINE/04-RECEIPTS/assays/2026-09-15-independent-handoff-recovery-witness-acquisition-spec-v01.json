@@ -1,0 +1,60 @@
+{
+  "schema": "td613.independent-handoff-recovery-witness-acquisition-spec-receipt/v0.1",
+  "phase": "RECEIPT_BINDING_GREEN_RECORDED_AWAITING_SEAL_VALIDATION",
+  "parent_tomography": {
+    "pr": 1143,
+    "sealed_head": "cf6232fe74c2adf319f009ab78942b3aa396f428",
+    "result": "BOUNDED_FORMAL_OPEN_RESIDUAL_TOMOGRAPHY_SUPPORTED"
+  },
+  "preregistration_red": {
+    "run_id": 34932133102,
+    "run_url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/34932133102",
+    "head": "3bb06da4a0ddbc9ce39f7bf41fb21049feb756a8",
+    "expected_failure": true,
+    "failed_job": "a15-r0 / a15-r0",
+    "observed_deficits": [
+      "WITNESS_ACQUISITION_SPEC_MISSING",
+      "WITNESS_ACQUISITION_VALIDATOR_MISSING",
+      "WITNESS_ACQUISITION_RECEIPT_MISSING",
+      "WITNESS_ACQUISITION_OPERATION_MISSING"
+    ]
+  },
+  "maximum_green": "BOUNDED_INDEPENDENT_HANDOFF_RECOVERY_WITNESS_ACQUISITION_SPEC_SUPPORTED",
+  "scope": "SPECIFICATION_ONLY",
+  "witness_acquired": false,
+  "right_of_resignation": "OPEN",
+  "safe_return_recovery": "NON_EQUIVALENT",
+  "future_episode_initial_state": "NOT_ACQUIRED",
+  "right_of_resignation_promotion_authority": false,
+  "recovery_promotion_authority": false,
+  "return_promotion_authority": false,
+  "human_replication_promotion_authority": false,
+  "empirical_exteriority_promotion_authority": false,
+  "claim_ceiling": [
+    "ACQUISITION_SPECIFICATION != WITNESS_ACQUISITION",
+    "SPEC_COMPLETE != EPISODE_OBSERVED",
+    "GENERIC_REVOCATION != RIGHT_OF_RESIGNATION",
+    "REPAIR_PATH != RECOVERY != RETURN",
+    "CANDIDATE != RETURN",
+    "INDEPENDENT_MACHINE_VALIDATION != INDEPENDENT_HUMAN_EXECUTION",
+    "GREEN != RIGHT_OF_RESIGNATION",
+    "GREEN != RECOVERY",
+    "GREEN != CUSTODIAN_INDEPENDENT_RETURN",
+    "GREEN != EMPIRICAL_EXTERIORITY"
+  ],
+  "scientific_green": {
+    "head": "5a866943b245092beb4376aa21b7e52f851f9831",
+    "run_number": 3387,
+    "run_id": 34935100382,
+    "conclusion": "success",
+    "meaning": "The bounded witness-acquisition specification survived the consolidated A15-R0 hostile path after the parent exteriority-authority field binding was corrected without changing the preregistration or widening any claim."
+  },
+  "receipt_binding_green": {
+    "head": "e04f8be69dac33f8f4b6a77107c93a65d0cf23b1",
+    "run_number": 3388,
+    "run_id": 34935275560,
+    "conclusion": "success",
+    "meaning": "The exact receipt-bearing head preserved the scientific GREEN and passed the same consolidated validation without widening authority."
+  },
+  "next_lawful_move_after_green": "ACQUIRE_INDEPENDENT_EXECUTION_WITNESSES_UNDER_THIS_SPEC_BEFORE_ANY_RIGHT_OF_RESIGNATION_RECOVERY_OR_RETURN_PROMOTION"
+}

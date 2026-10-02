@@ -1,0 +1,78 @@
+{
+  "schema": "td613.independent-handoff-recovery-witness-acquisition-spec-preregistration/v0.1",
+  "created_at": "2026-09-15T05:22:00Z",
+  "parent_tomography": {
+    "pr": 1143,
+    "sealed_head": "cf6232fe74c2adf319f009ab78942b3aa396f428",
+    "result": "BOUNDED_FORMAL_OPEN_RESIDUAL_TOMOGRAPHY_SUPPORTED"
+  },
+  "research_question": "Can the two archive-limited open residuals be converted into a bounded, independently executable witness-acquisition specification that says exactly what must be observed, what must remain independent of custodian narration, and what defeats the claim, without treating specification completeness as witness acquisition, Right of Resignation, Recovery, Return, or empirical exteriority?",
+  "scope": "SPECIFICATION_ONLY",
+  "maximum_green": "BOUNDED_INDEPENDENT_HANDOFF_RECOVERY_WITNESS_ACQUISITION_SPEC_SUPPORTED",
+  "required_lanes": {
+    "right_of_resignation": {
+      "parent_state": "OPEN",
+      "required_witness_families": [
+        "EXPLICIT_POST_PARTICIPATION_EXIT_OR_REVOCATION_OPERATOR",
+        "EXECUTED_POST_PARTICIPATION_WITHDRAWAL_RECEIPT",
+        "INDEPENDENT_CONTINUATION_WITHOUT_CUSTODIAN_AUTHORITY",
+        "POST_EXIT_ROUTE_USEFULNESS_WITNESS"
+      ],
+      "defeat_conditions": [
+        "GENERIC_REVOCATION_ONLY",
+        "CUSTODIAN_NARRATION_REQUIRED_AFTER_EXIT",
+        "CONTINUATION_REQUIRES_ORIGINATING_CUSTODIAN_AUTHORITY",
+        "NO_EXECUTED_WITHDRAWAL_RECEIPT"
+      ]
+    },
+    "safe_return_recovery": {
+      "parent_state": "NON_EQUIVALENT",
+      "required_witness_families": [
+        "EXPLICIT_RECOVERY_TRANSITION_SPECIFICATION",
+        "EXECUTED_RECOVERY_RECEIPT",
+        "VALIDATED_POST_RECOVERY_STATE",
+        "DECLARED_DEFEAT_OR_ROLLBACK_CONDITION"
+      ],
+      "defeat_conditions": [
+        "REPAIR_PATH_SUBSTITUTED_FOR_RECOVERY",
+        "NO_EXECUTED_RECOVERY_RECEIPT",
+        "POST_RECOVERY_STATE_UNVALIDATED",
+        "NO_DECLARED_DEFEAT_OR_ROLLBACK_CONDITION"
+      ]
+    }
+  },
+  "acquisition_invariants": [
+    "PREREGISTRATION_PRECEDES_EXECUTION",
+    "WITNESS_IDENTITY_AND_SOURCE_CLASS_RECORDED",
+    "CUSTODIAN_NARRATION_IS_NOT_INDEPENDENT_WITNESS",
+    "OBSERVED_WITNESS_MUST_BIND_TO_EPISODE_AND_TIME",
+    "ABSENCE_OF_ADMITTED_WITNESS_IS_NOT_WITNESS_OF_ABSENCE",
+    "FAILED_OR_HELD_EPISODES_REMAIN_RETAINED",
+    "RIGHT_OF_RESIGNATION_LANE_REMAINS_DISTINCT_FROM_RECOVERY_LANE"
+  ],
+  "future_episode_states": [
+    "NOT_ACQUIRED",
+    "HELD",
+    "FAILED",
+    "CANDIDATE"
+  ],
+  "forbidden_future_state": "PROVEN_BY_SPECIFICATION",
+  "witness_acquisition_authority": false,
+  "human_replication_authority": false,
+  "right_of_resignation_promotion_authority": false,
+  "recovery_promotion_authority": false,
+  "return_promotion_authority": false,
+  "empirical_exteriority_authority": false,
+  "claim_ceiling": [
+    "ACQUISITION_SPECIFICATION != WITNESS_ACQUISITION",
+    "SPEC_COMPLETE != EPISODE_OBSERVED",
+    "GENERIC_REVOCATION != RIGHT_OF_RESIGNATION",
+    "REPAIR_PATH != RECOVERY != RETURN",
+    "CANDIDATE != RETURN",
+    "INDEPENDENT_MACHINE_VALIDATION != INDEPENDENT_HUMAN_EXECUTION",
+    "GREEN != RIGHT_OF_RESIGNATION",
+    "GREEN != RECOVERY",
+    "GREEN != CUSTODIAN_INDEPENDENT_RETURN",
+    "GREEN != EMPIRICAL_EXTERIORITY"
+  ]
+}
