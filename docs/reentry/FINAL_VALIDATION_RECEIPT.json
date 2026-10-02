@@ -1,9 +1,9 @@
 {
   "schema": "td613.loom.reentry-final-validation/v0.2",
-  "implemented_source_sha": "9d0e04d9fbac02c96c1ab6124f9b5b9f99923490",
-  "implemented_tree_sha": "7d65d622f38d5a4c952633980ae5b128e11c1c67",
-  "github_run_id": 37033677043,
-  "github_run_url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/37033677043",
+  "implemented_source_sha": "7f7008f99ce8dd563ce31c34e2ff3d6bf76d9f8c",
+  "implemented_tree_sha": "e69ef180e065ff426b77c0b7a410bff58cf5ff92",
+  "github_run_id": 37035683376,
+  "github_run_url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/37035683376",
   "github_conclusion": "success",
   "executed_jobs": [
     "Static, constitutional, and release contracts",
@@ -22,19 +22,19 @@
     "synthetic Hush pilot"
   ],
   "local_focused_tests": {
-    "passed": 176,
+    "passed": 177,
     "failed": 0,
-    "stdout_sha256": "eb893006434a06cbe9dbb451eb59128945827ac8fbbc04f15c3f4ddc0f690ab3"
+    "stdout_sha256": "5a976db68c4d2874384db6d584702dad82ddfa985d12f02fcdc036a8fb674f44"
   },
   "adjacent_tests": {
     "passed": 46,
     "failed": 0
   },
   "browser_receipt": "docs/reentry/browser-evidence/candidate/receipt.json",
-  "browser_receipt_sha256": "afe8ed38bbe920ebbf0e6cc9ba50c624a7f3bd2f04b76b1133cb35fc545e3b0a",
+  "browser_receipt_sha256": "85d263507adeb6df35f0087872a82e6924c7a10eeb296c4a77388776a5b67eb7",
   "browser_source_bytes": {
     "app/dome-world/holonomy-loom.html": "eb725f3b6c2091bb6fe7be1e9ab924e7a27c221781501fd9f7565842332745f9",
-    "app/dome-world/holonomy-loom/ai-workspace.js": "3d066ec6eda4f71f65dc5275b9fb1533290baddf6deef1b1c43de22670337a01",
+    "app/dome-world/holonomy-loom/ai-workspace.js": "77bbdc7f717eedbafdfc4379f26edaa0a332283946e5c0ec8e02a25e321139e4",
     "app/dome-world/holonomy-loom/ai-workspace.css": "118d746388b73948e4bceb3d2940e240ae6ade377c198cba4f5e613747a343bf",
     "app/dome-world/holonomy-loom/reentry-workspace.js": "6de1cc529b893ddd197ed404f893c0b66d85a5e927338811cd7449547fcb362f",
     "app/dome-world/holonomy-loom/reentry-workspace.css": "0f793123c737f85a94505df363768c70f6ff361f931c189b6cf02584cc783f7a",
@@ -48,5 +48,6 @@
   "production_relock_sha": "de0cbe3589f3f9055061370279d7e41b4ccb980a",
   "source_authenticated_foreign_execution": false,
   "restored_export_custody_authoritative": false,
-  "claim_ceiling": "Exact local/source/browser findings only. No provider enforcement, comprehension, physical device, universal secrecy, global fork exclusion, exteriority or Golden Egg realization."
+  "claim_ceiling": "Exact local/source/browser findings only. No provider enforcement, comprehension, physical device, universal secrecy, global fork exclusion, exteriority or Golden Egg realization.",
+  "last_custody_guard": "New-root consent and final preparation compare both immutable session and pending-excursion identity. Pending registration or discard revokes consent."
 }

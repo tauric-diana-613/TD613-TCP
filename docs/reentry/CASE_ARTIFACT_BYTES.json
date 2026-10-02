@@ -1,7 +1,7 @@
 {
   "schema": "td613.reentry.dossier-artifact-byte-check/v0.1",
-  "source_revision": "9d0e04d9fbac02c96c1ab6124f9b5b9f99923490",
-  "root_browser_source": "9d0e04d9fbac02c96c1ab6124f9b5b9f99923490",
+  "source_revision": "7f7008f99ce8dd563ce31c34e2ff3d6bf76d9f8c",
+  "root_browser_source": "7f7008f99ce8dd563ce31c34e2ff3d6bf76d9f8c",
   "root_application_bytes_match_current_commit": true,
   "status": "PASS",
   "scope": "Local referenced bytes hashed by this separate script. Dossier clerk does not perform these checks.",
@@ -50,8 +50,8 @@
     },
     {
       "artifact": "docs/reentry/browser-evidence/candidate/receipt.json",
-      "bytes": 3385,
-      "sha256": "afe8ed38bbe920ebbf0e6cc9ba50c624a7f3bd2f04b76b1133cb35fc545e3b0a"
+      "bytes": 3513,
+      "sha256": "85d263507adeb6df35f0087872a82e6924c7a10eeb296c4a77388776a5b67eb7"
     }
   ]
 }
