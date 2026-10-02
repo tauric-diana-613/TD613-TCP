@@ -1,0 +1,240 @@
+{
+  "schema": "td613.dollhouse.case-dossier/v0.1",
+  "case_id": "portable-loom-reentry-authenticated-local-ancestry",
+  "source_revision": "9d0e04d9fbac02c96c1ab6124f9b5b9f99923490",
+  "findings": [
+    {
+      "id": "pedagogue-prior-veto",
+      "agent": "PEDAGOGUE",
+      "claim_key": "prior_surface.new_root_notice",
+      "verdict": "CONTRADICTED",
+      "evidence_class": "BROWSER_WITNESS",
+      "observation_scope": {
+        "source": "docs/reentry/browser-evidence/pedagogue-resumed/receipt.json",
+        "instrument": "Independent PEDAGOGUE review / stated local instrument",
+        "condition": "Original working-tree prototype; offscreen consequence and unacknowledged replacement.",
+        "temporal_window": "2026-10-02 resumed session; exact source/time coordinates remain inside each artifact"
+      },
+      "reference": {
+        "artifact": "docs/reentry/browser-evidence/pedagogue-resumed/receipt.json",
+        "sha256": "5ad4ec43a7f49ecbcb967ee3b0037c1885604ea67a20ed05c583307337e7c6e7"
+      },
+      "limitations": [
+        "Historical failed surface, not a finding about the repaired source.",
+        "Visible exposure does not measure comprehension."
+      ]
+    },
+    {
+      "id": "pedagogue-repair",
+      "agent": "PEDAGOGUE",
+      "claim_key": "repaired_surface.new_root_notice_and_gesture",
+      "verdict": "SUPPORTED",
+      "evidence_class": "BROWSER_WITNESS",
+      "observation_scope": {
+        "source": "docs/reentry/browser-evidence/pedagogue-repair/receipt.json",
+        "instrument": "Independent PEDAGOGUE review / stated local instrument",
+        "condition": "Desktop/390px actual rendered exposure, denied/acknowledged replacement, private Save and admission.",
+        "temporal_window": "2026-10-02 resumed session; exact source/time coordinates remain inside each artifact"
+      },
+      "reference": {
+        "artifact": "docs/reentry/browser-evidence/pedagogue-repair/receipt.json",
+        "sha256": "d519dc6c92453b945bfa31cbd05b31d23ffaef5780a7e4e3dc3f434068bb5e50"
+      },
+      "limitations": [
+        "This independent route is source-pinned by its served-byte receipt. Later metadata repairs receive separate root witnessing.",
+        "No human comprehension or physical-device measurement."
+      ]
+    },
+    {
+      "id": "aperture-integrity",
+      "agent": "APERTURE",
+      "claim_key": "local_binding_and_episode_reservation",
+      "verdict": "SUPPORTED",
+      "evidence_class": "OFFLINE_TEST",
+      "observation_scope": {
+        "source": "docs/reentry/APERTURE_FINDINGS.md",
+        "instrument": "Independent APERTURE review / stated local instrument",
+        "condition": "Independent substitution, omission, concurrency and source-coordinate controls.",
+        "temporal_window": "2026-10-02 resumed session; exact source/time coordinates remain inside each artifact"
+      },
+      "reference": {
+        "artifact": "docs/reentry/APERTURE_FINDINGS.md",
+        "sha256": "f2a2a8142235349e2f14ab990f2ac64784a1b7e7603082426154ca17f923b1db"
+      },
+      "limitations": [
+        "Synthetic local tests, not receiver-origin authentication.",
+        "Acquisition class metadata is declared."
+      ]
+    },
+    {
+      "id": "aperture-exterior",
+      "agent": "APERTURE",
+      "claim_key": "foreign_execution_and_enforcement",
+      "verdict": "HELD",
+      "evidence_class": "DECLARATION",
+      "observation_scope": {
+        "source": "docs/reentry/EVIDENCE_AND_HOLDS.md",
+        "instrument": "Independent APERTURE review / stated local instrument",
+        "condition": "Local supplied capture and recomputation leave observationally equivalent fabricated histories.",
+        "temporal_window": "2026-10-02 resumed session; exact source/time coordinates remain inside each artifact"
+      },
+      "reference": {
+        "artifact": "docs/reentry/EVIDENCE_AND_HOLDS.md",
+        "sha256": "65e7f394ff4419a84207abd7acf698de788d25773f65f26e5dd03d8773dd94fd"
+      },
+      "limitations": [
+        "Requires separately qualified host/action/custody witnesses.",
+        "Another transformation f(A) is not an exogenous witness."
+      ]
+    },
+    {
+      "id": "atlas-relations",
+      "agent": "ATLAS",
+      "claim_key": "local_parents_scope_and_continuation",
+      "verdict": "SUPPORTED",
+      "evidence_class": "BROWSER_WITNESS",
+      "observation_scope": {
+        "source": "docs/reentry/browser-evidence/atlas-scope-fourth/receipt.json",
+        "instrument": "Independent ATLAS review / stated local instrument",
+        "condition": "Independent desktop/390px fixed foreign anchor, distinct local parents, explicit sources and retained scopes.",
+        "temporal_window": "2026-10-02 resumed session; exact source/time coordinates remain inside each artifact"
+      },
+      "reference": {
+        "artifact": "docs/reentry/browser-evidence/atlas-scope-fourth/receipt.json",
+        "sha256": "c1360a1ebf9d188592882492adf7060ce960097f0a52825d3b8a4fe45ad49797"
+      },
+      "limitations": [
+        "Recorded route and content equality do not identify hidden foreign history.",
+        "Six guarded file hashes are not full dependency closure."
+      ]
+    },
+    {
+      "id": "atlas-restoration",
+      "agent": "ATLAS",
+      "claim_key": "global_fork_exclusion_and_imported_authority",
+      "verdict": "HELD",
+      "evidence_class": "DECLARATION",
+      "observation_scope": {
+        "source": "docs/reentry/RELATION_MAP.md",
+        "instrument": "Independent ATLAS review / stated local instrument",
+        "condition": "Process-local issued capabilities and review-only exports.",
+        "temporal_window": "2026-10-02 resumed session; exact source/time coordinates remain inside each artifact"
+      },
+      "reference": {
+        "artifact": "docs/reentry/RELATION_MAP.md",
+        "sha256": "dd48f8fb861fedce67156f6bf34fc469da4c6fe6a1d1d7649e2c07f44dc98e20"
+      },
+      "limitations": [
+        "No independently authenticated durable current-head service in this lane.",
+        "Session continuity is not content or evidence continuity."
+      ]
+    },
+    {
+      "id": "fadt-retention",
+      "agent": "FADT",
+      "claim_key": "finite_action_support_after_history_erasure",
+      "verdict": "SUPPORTED",
+      "evidence_class": "OFFLINE_TEST",
+      "observation_scope": {
+        "source": "docs/reentry/FADT_RESUME_FINDINGS.md",
+        "instrument": "Independent FADT review / stated local instrument",
+        "condition": "Actual clean-only vs linked-exposure-then-clean admission controls plus occupied finite fibres.",
+        "temporal_window": "2026-10-02 resumed session; exact source/time coordinates remain inside each artifact"
+      },
+      "reference": {
+        "artifact": "docs/reentry/FADT_RESUME_FINDINGS.md",
+        "sha256": "1cd2c48579c2691a4189e8ba552acc2b01e1e6217dae456054eb335aede81e28"
+      },
+      "limitations": [
+        "Supports are declared finite inputs; model consistency supplies no action authority.",
+        "Equality applies only to the selected action coordinate."
+      ]
+    },
+    {
+      "id": "missing-runtime-class",
+      "agent": "FADT",
+      "claim_key": "runtime_gesture_and_semantic_field_input",
+      "verdict": "HELD",
+      "evidence_class": "DECLARATION",
+      "observation_scope": {
+        "source": "docs/reentry/FADT_RESUME_FINDINGS.md",
+        "instrument": "Independent FADT review / stated local instrument",
+        "condition": "Challenge adapter has no captured operator gesture trace or Portable-AIA semantic field.",
+        "temporal_window": "2026-10-02 resumed session; exact source/time coordinates remain inside each artifact"
+      },
+      "reference": {
+        "artifact": "docs/reentry/FADT_RESUME_FINDINGS.md",
+        "sha256": "1cd2c48579c2691a4189e8ba552acc2b01e1e6217dae456054eb335aede81e28"
+      },
+      "limitations": [
+        "HELD_INPUT_CLASS retained without compatibility object fabrication.",
+        "Independent browser collaboration does not manufacture runtime input."
+      ]
+    },
+    {
+      "id": "final-root-route",
+      "agent": "PEDAGOGUE",
+      "claim_key": "final_candidate.rendered_route",
+      "verdict": "SUPPORTED",
+      "evidence_class": "BROWSER_WITNESS",
+      "observation_scope": {
+        "source": "docs/reentry/browser-evidence/candidate/receipt.json",
+        "instrument": "Independent PEDAGOGUE review / stated local instrument",
+        "condition": "Exact committed application bytes; multiple tasks, large source set, admission, descendant assays, HOLD and recovery.",
+        "temporal_window": "2026-10-02 resumed session; exact source/time coordinates remain inside each artifact"
+      },
+      "reference": {
+        "artifact": "docs/reentry/browser-evidence/candidate/receipt.json",
+        "sha256": "afe8ed38bbe920ebbf0e6cc9ba50c624a7f3bd2f04b76b1133cb35fc545e3b0a"
+      },
+      "limitations": [
+        "Synthetic returns and simulated viewport; foreign execution and comprehension unmeasured.",
+        "No release or production acceptance authority."
+      ]
+    }
+  ],
+  "disagreements": [],
+  "agent_coverage": [
+    {
+      "agent": "PEDAGOGUE",
+      "present": true
+    },
+    {
+      "agent": "APERTURE",
+      "present": true
+    },
+    {
+      "agent": "ATLAS",
+      "present": true
+    },
+    {
+      "agent": "FADT",
+      "present": true
+    }
+  ],
+  "unresolved_finding_ids": [
+    "pedagogue-prior-veto",
+    "aperture-exterior",
+    "atlas-restoration",
+    "missing-runtime-class"
+  ],
+  "evidence_posture": {
+    "evidence_class_is_caller_declared": true,
+    "artifact_bytes_checked": false,
+    "reference_authentication": "UNVERIFIED",
+    "findings_independently_scoped": true,
+    "evidence_classes_aggregated": false,
+    "majority_vote": false,
+    "global_score": null
+  },
+  "decision": "HUMAN_REVIEW_REQUIRED",
+  "authority": {
+    "execute": false,
+    "automatic_redesign": false,
+    "release": false,
+    "merge": false,
+    "deployment": false,
+    "provider": false,
+    "human_closure_required": true
+  }
+}

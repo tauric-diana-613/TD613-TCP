@@ -1,9 +1,9 @@
 {
   "schema": "td613.loom.reentry-browser-witness/v0.2",
   "status": "PASS",
-  "source_sha": "e6ca876653889cda7766dea46801c6caebe8b91f",
-  "source_tree": "cf27fac03ad5f701e02ec35a071c6bb11f711eaf",
-  "observed_at": "2026-10-02T16:13:42.269Z",
+  "source_sha": "9d0e04d9fbac02c96c1ab6124f9b5b9f99923490",
+  "source_tree": "7d65d622f38d5a4c952633980ae5b128e11c1c67",
+  "observed_at": "2026-10-02T16:34:10.922Z",
   "browser": "Chromium",
   "context": "LOCAL_RENDERED_UI_WITH_SYNTHETIC_FOREIGN_CAPTURES",
   "live_provider_calls": 0,
@@ -75,7 +75,7 @@
     }
   ],
   "failures": [],
-  "application_matches_commit": false,
-  "source_class": "WORKING_TREE_CANDIDATE",
-  "witness_harness_sha256": "be3a4e0c85c74330ff9e2099425a883336f44f2694124f87e5806a56f9d47673"
+  "application_matches_commit": true,
+  "source_class": "EXACT_COMMITTED_APPLICATION_BYTES",
+  "witness_harness_sha256": "791d8caeadeec8da8246e60bb0cb19f3fcc19111dd8ab02cde6c43d6769fb106"
 }
