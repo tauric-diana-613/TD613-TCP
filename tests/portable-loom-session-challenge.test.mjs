@@ -340,7 +340,10 @@ test('Dollhouse challenge dossier keeps four roles independent and FADT proves p
   assert.equal(audit.dossier.evidence_posture.majority_vote, false);
   assert.equal(audit.evidence_class_promotion, false);
   assert.equal(audit.hidden_host_internals_claimed_observed, false);
+  assert.equal(audit.subagent_coverage.find(item=>item.id==='dollhouse-portable-aia-roundtrip').status,'HELD_INPUT_CLASS');
+  assert.match(audit.subagent_coverage.find(item=>item.id==='dollhouse-portable-aia-roundtrip').input_class,/does not fabricate one/);
   assert.match(audit.claim_ceiling.join(' '), /agreement is not evidence multiplication/);
+  assert.match(audit.claim_ceiling.join(' '), /outside its admitted input class is held/);
 });
 
 test('browser-unpinned source stays explicitly held in the Dollhouse dossier instead of fabricating a Git SHA', async()=>{
