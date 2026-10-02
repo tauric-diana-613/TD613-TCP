@@ -180,10 +180,10 @@ export function installMarrowlineLoomGateContinuity({
   const technical=doc.createElement('details');technical.className='loom-gate-continuity-technical';
   technical.append(el(doc,'summary','Inspect continuity coordinates'),el(doc,'pre',''));
   const actions=el(doc,'div','','loom-gate-continuity-actions');
-  const localCheck=button(doc,'Check selected-file binding locally',onLocalCheck,'loom-gate-secondary');
-  const returnLoom=button(doc,'Return to original Loom tab',onReturnToLoom,'loom-gate-secondary');
-  const back=button(doc,'Back to Chat',onReturnToChat,'loom-gate-secondary');
-  const exportButton=button(doc,'Export current Loom Portable AIA',onExport,'loom-gate-primary');exportButton.disabled=true;
+  const localCheck=button(doc,'Check selected-file binding locally',onLocalCheck,'loom-gate-secondary');localCheck.id='loomGateLocalCheck';
+  const returnLoom=button(doc,'Return to original Loom tab',onReturnToLoom,'loom-gate-secondary');returnLoom.id='loomGateReturnToLoom';
+  const back=button(doc,'Back to Chat',onReturnToChat,'loom-gate-secondary');back.id='loomGateBackToChat';
+  const exportButton=button(doc,'Export current Loom Portable AIA',onExport,'loom-gate-primary');exportButton.id='loomGateExportCurrent';exportButton.disabled=true;
   actions.append(returnLoom,back,localCheck,exportButton);
   const actionStatus=el(doc,'p','','loom-gate-action-status');actionStatus.id='loomGateActionStatus';actionStatus.hidden=true;
   actionStatus.setAttribute('role','status');actionStatus.setAttribute('aria-live','polite');actionStatus.setAttribute('aria-atomic','true');
