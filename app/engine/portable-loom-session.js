@@ -9,6 +9,7 @@ export const PORTABLE_LOOM_SESSION_SCHEMA = 'td613.loom.portable-session/v0.1';
 export const PORTABLE_LOOM_WORK_UNIT_SCHEMA = 'td613.loom.portable-session-work-unit/v0.1';
 export const PORTABLE_LOOM_SESSION_EVENT_SCHEMA = 'td613.loom.portable-session-event/v0.1';
 export const PORTABLE_LOOM_SESSION_EXPORT_SCHEMA = 'td613.loom.portable-session-export/v0.1';
+export const PORTABLE_LOOM_RECEIVER_TURN_SCHEMA = 'td613.loom.portable-session-receiver-turn/v0.1';
 
 const encoder = new TextEncoder();
 const HEX64 = /^[a-f0-9]{64}$/;
@@ -343,21 +344,21 @@ export async function createPortableLoomSessionExport(sessionInput, packet, envi
       receiver_rule: 'Receiver acknowledgements are declarations; Loom verification is required before they become evidence.'
     },
     receiver_turn_contract: {
-      schema: 'td613.loom.portable-session-receiver-turn/v0.1',
+      schema: PORTABLE_LOOM_RECEIVER_TURN_SCHEMA,
       session_root_ref: session.root.ref,
       effective_policy_commitment: session.work_units.at(-1)?.policy?.effective_policy_commitment || session.root.policy_commitment,
       current_work_unit_ref: session.continuity.current_work_unit_ref,
       required_echo_fields: [
         'session_root_ref',
         'policy_commitment',
-        'parent_work_unit_ref',
+        'anchor_work_unit_ref',
         'operator_task',
         'used_document_ids',
         'missing_information'
       ],
       persistence_rule: 'Proceeding tasks inherit the session root rules unless the human explicitly starts a fresh Loom session.',
       source_rule: 'Only source bodies explicitly supplied or selected for the proceeding task may be treated as newly admitted task sources.',
-      receipt_rule: 'Return a separate loom_session_receipt object with every proceeding-task answer; the receipt is a receiver declaration until Loom revalidates it.',
+      receipt_rule: 'Return a separate loom_session_receipt object with every proceeding-task answer; anchor_work_unit_ref names the last Loom-verified work unit, and the receipt is a receiver declaration until Loom revalidates it.',
       weakening_rule: 'Do not omit, relax, replace, or reinterpret a root rule inside the same v0.1 session.'
     },
     challenge_protocol: {
@@ -383,13 +384,66 @@ export function createPortableLoomSessionPrompt(sessionExport) {
     'A new user task changes the work objective; it does not erase the root rules.',
     'Do not silently inherit source bodies from an earlier task unless they are explicitly supplied or named as continuing inputs.',
     'Keep work-unit ancestry separate from content-predecessor ancestry.',
-    'For every proceeding-task answer, append a separate loom_session_receipt object matching receiver_turn_contract. Echo the session root, effective policy commitment, parent work-unit reference, operator task, explicitly used document IDs, and missing information.',
+    'For every proceeding-task answer, append a separate loom_session_receipt object matching receiver_turn_contract. Echo the session root, effective policy commitment, anchor work-unit reference, operator task, explicitly used document IDs, and missing information.',
     'That receipt is a declaration for Loom to revalidate; do not describe the receipt itself as proof of enforcement.',
     'Do not claim that your own acknowledgement proves enforcement, secrecy, retention, training behavior, or hidden memory state.',
     'When a Challenge Receiver packet appears, answer only its declared probes and preserve its exact session/work-unit/policy references.',
     '',
     JSON.stringify(sessionExport, null, 2)
   ].join('\n');
+}
+
+export async function verifyPortableLoomReceiverTurnReceipt(sessionInput, receiptInput, options = {}, environment = globalThis) {
+  const session = validateSession(sessionInput);
+  exact(receiptInput, [
+    'schema', 'session_root_ref', 'policy_commitment', 'anchor_work_unit_ref',
+    'turn_index', 'operator_task', 'used_document_ids', 'missing_information',
+    'receiver_declaration'
+  ], 'receiver turn receipt');
+  if (receiptInput.schema !== PORTABLE_LOOM_RECEIVER_TURN_SCHEMA) throw new TypeError('Unsupported Portable Loom receiver-turn receipt schema.');
+  if (!Number.isInteger(receiptInput.turn_index) || receiptInput.turn_index < 1) throw new TypeError('receiver turn index must be a positive integer.');
+  text(receiptInput.operator_task, 'receiver turn operator_task', 12000);
+  const used = denseStrings(receiptInput.used_document_ids, 'receiver turn used_document_ids', 8);
+  const missing = denseStrings(receiptInput.missing_information, 'receiver turn missing_information', 16);
+  text(receiptInput.receiver_declaration, 'receiver turn receiver_declaration', 2000);
+  const currentUnit = session.work_units.at(-1) || null;
+  const effectivePolicy = currentUnit?.policy?.effective_policy_commitment || session.root.policy_commitment;
+  const expectedTask = options.expected_task == null ? null : text(options.expected_task, 'expected_task', 12000);
+  const allowedIds = options.allowed_document_ids == null
+    ? new Set(currentUnit?.selected_commitments?.map(item => item.id) || [])
+    : new Set(denseStrings(options.allowed_document_ids, 'allowed_document_ids', 8));
+  const reference_match = {
+    session_root: receiptInput.session_root_ref === session.root.ref,
+    policy: receiptInput.policy_commitment === effectivePolicy,
+    anchor_work_unit: receiptInput.anchor_work_unit_ref === session.continuity.current_work_unit_ref,
+    operator_task: expectedTask === null ? true : receiptInput.operator_task === expectedTask
+  };
+  const undeclaredIds = used.filter(id => !allowedIds.has(id));
+  const status = Object.values(reference_match).every(Boolean) && undeclaredIds.length === 0
+    ? 'DECLARED_TURN_MATCH'
+    : 'HOLD';
+  const result = {
+    schema: 'td613.loom.portable-session-receiver-turn-verification/v0.1',
+    status,
+    session_root_ref: session.root.ref,
+    anchor_work_unit_ref: session.continuity.current_work_unit_ref,
+    effective_policy_commitment: effectivePolicy,
+    turn_index: receiptInput.turn_index,
+    reference_match,
+    used_document_ids: used,
+    undeclared_document_ids: undeclaredIds,
+    missing_information: missing,
+    receiver_declaration: receiptInput.receiver_declaration,
+    receiver_declaration_promoted_to_observed_fact: false,
+    local_ledger_advanced: false,
+    claim_ceiling: [
+      'matching receipt references establish declared consistency only',
+      'a receiver-turn receipt does not prove execution, policy enforcement, secrecy, hidden retention, training behavior, or unobserved retransmission',
+      'anchor_work_unit_ref is the last Loom-verified anchor; off-platform turns do not become authenticated Loom ancestry until revalidated',
+      'local Loom work-unit ancestry is not advanced by receipt verification alone'
+    ]
+  };
+  return freeze({ ...result, ref: await portableLoomDigest(result, environment) });
 }
 
 export function inspectPortableLoomSession(sessionInput) {
