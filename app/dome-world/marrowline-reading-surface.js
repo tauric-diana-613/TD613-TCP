@@ -111,13 +111,14 @@ export function installMarrowlineReadingSurface(stage, environment=window) {
   const readingButton=doc.createElement('button');readingButton.type='button';readingButton.textContent='Reading view';readingButton.setAttribute('aria-pressed','true');
   const exactButton=doc.createElement('button');exactButton.type='button';exactButton.textContent='Exact return';exactButton.setAttribute('aria-pressed','false');
   const copyExact=doc.createElement('button');copyExact.type='button';copyExact.textContent='Copy exact';copyExact.className='marrowline-copy-exact';
+  const claim=doc.createElement('small');claim.className='marrowline-reading-claim';claim.textContent='Presentation only · Exact return remains the custody source.';
   const status=doc.createElement('span');status.className='marrowline-reading-status';status.setAttribute('role','status');status.setAttribute('aria-live','polite');
 
   const reading=renderMarrowlineReadingView(doc,raw);
   source.hidden=true;
   source.dataset.custodySurface='exact-provider-return';
   source.setAttribute('aria-label','Exact provider return');
-  shell.append(tools,reading,status);
+  shell.append(tools,claim,reading,status);
   tools.append(readingButton,exactButton,copyExact);
   source.before(shell);
 
