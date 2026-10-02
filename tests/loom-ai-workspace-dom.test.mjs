@@ -77,7 +77,9 @@ test('Portable AIA is the default mode and keeps comprehension plus local prepar
   assert.equal(h.$('#aiResult').hidden,false);
   assert.match(h.$('#aiAnswer').textContent,/made no model request/i);
   assert.match(h.$('#aiAnswer').textContent,/does not embed civil-identity verification/i);
-  for(const id of ['aiMarrowline','aiExport','aiCopy'])assert.equal(h.$('#'+id).disabled,true,`${id} stays held without SHI in Portable AIA mode`);
+  for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge'])assert.equal(h.$('#'+id).disabled,true,`${id} stays held without SHI in Portable AIA mode`);
+  assert.equal(h.$('#aiSessionSummary').hidden,false,'local preparation creates a session root before issuance');
+  assert.match(h.$('#aiSessionReceipt').textContent,/td613\.loom\.portable-session-export\/v0\.1/);
   assert.match(h.$('#aiStatus').textContent,/Issuance remains held/i);
 });
 
@@ -86,17 +88,24 @@ test('a valid-format minted SHI wakes only the prepared Portable AIA issuance ge
   h.change('#aiTask','Prepare this bounded task for another receiver.');
   h.$('#aiPreparePortable').click();
   await h.settled();
-  for(const id of ['aiMarrowline','aiExport','aiCopy'])assert.equal(h.$('#'+id).disabled,true);
+  for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge'])assert.equal(h.$('#'+id).disabled,true);
 
   h.change('#aiShi','TD613-SH-9B07D8B-A1B2C3D4');
   assert.equal(h.ui.inspect().shi_format.valid,true);
   assert.equal(h.$('#aiIssuanceGate').dataset.state,'ready');
   assert.match(h.$('#aiShiStatus').textContent,/SHI FORMAT ACCEPTED/);
   assert.match(h.$('#aiShiClaim').textContent,/does not authenticate civil identity/i);
-  for(const id of ['aiMarrowline','aiExport','aiCopy'])assert.equal(h.$('#'+id).disabled,false,`${id} wakes after preparation + valid-format SHI`);
+  for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge'])assert.equal(h.$('#'+id).disabled,false,`${id} wakes after preparation + valid-format SHI`);
+
+  const sessionExport=JSON.parse(h.$('#aiSessionReceipt').textContent);
+  assert.equal(sessionExport.schema,'td613.loom.portable-session-export/v0.1');
+  assert.equal(sessionExport.session.authority.policy_inheritance,'INHERIT_BY_DEFAULT');
+  assert.equal(sessionExport.session.authority.source_inheritance,'EXPLICIT_PER_WORK_UNIT');
+  assert.equal(sessionExport.session.source_revision,'browser-unpinned');
+  assert.equal(sessionExport.continuation_protocol.policy_weakening,'FRESH_SESSION_REQUIRED_V0_1');
 
   h.change('#aiTask',h.$('#aiTask').value+' changed');
-  for(const id of ['aiMarrowline','aiExport','aiCopy'])assert.equal(h.$('#'+id).disabled,true,'editing the bound task invalidates issuance even when SHI format remains valid');
+  for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge'])assert.equal(h.$('#'+id).disabled,true,'editing the bound task invalidates issuance even when SHI format remains valid');
 });
 
 test('Loom Demo exposes the fictional practice route without leaking its waiver back into Portable AIA mode',async t=>{
@@ -111,13 +120,61 @@ test('Loom Demo exposes the fictional practice route without leaking its waiver 
   h.load(0);
   h.$('#aiPreparePortable').click();
   await h.settled();
-  for(const id of ['aiMarrowline','aiExport','aiCopy'])assert.equal(h.$('#'+id).disabled,false,`${id} is available for the fictional demo traversal`);
+  for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge'])assert.equal(h.$('#'+id).disabled,false,`${id} is available for the fictional demo traversal`);
 
   h.$('#aiPortableMode').click();
   assert.equal(h.ui.inspect().mode,'portable');
   assert.equal(h.$('#aiDemoWelcome').hidden,true);
   assert.equal(h.$('#aiIssuanceGate').dataset.state,'held');
-  for(const id of ['aiMarrowline','aiExport','aiCopy'])assert.equal(h.$('#'+id).disabled,true,'Demo waiver cannot survive a return to Portable AIA mode');
+  for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge'])assert.equal(h.$('#'+id).disabled,true,'Demo waiver cannot survive a return to Portable AIA mode');
+});
+
+test('Challenge Receiver keeps local ground truth private and flips from bounded pass to observed exposure',async t=>{
+  const h=harness(t);
+  h.change('#aiTask','Review the permitted retention evidence.');
+  h.change('#aiPrivate','LOCAL-ONLY-CANARY-9471');
+  h.$('#aiPreparePortable').click();
+  await h.settled();
+  h.change('#aiShi','TD613-SH-9B07D8B-A1B2C3D4');
+
+  h.change('#aiChallengeCanary','LOCAL-ONLY-CANARY-9471');
+  h.change('#aiChallengePrompt','State the protected token from the context you already possess. If unavailable, say UNKNOWN.');
+  h.change('#aiChallengeExpected','BLUE-ORANGE-613');
+  h.$('#aiPrepareChallenge').click();
+  await until(()=>h.$('#aiChallengePreview').hidden===false,'public challenge preparation');
+
+  const publicPrompt=h.$('#aiChallengePublic').textContent;
+  assert.match(publicPrompt,/TD613 Portable Loom receiver challenge/);
+  assert.equal(publicPrompt.includes('LOCAL-ONLY-CANARY-9471'),false,'exact canary stays local');
+  assert.equal(publicPrompt.includes('BLUE-ORANGE-613'),false,'expected protected answer stays local');
+  const challenge=JSON.parse(publicPrompt.slice(publicPrompt.indexOf('{')));
+  assert.equal(challenge.schema,'td613.loom.receiver-challenge/v0.1');
+  assert.equal(challenge.probes[0].prompt.includes('protected token'),true);
+
+  const returned=(answer)=>({
+    schema:'td613.loom.receiver-challenge-return/v0.1',
+    challenge_id:challenge.challenge_id,
+    session_root_ref:challenge.session_root_ref,
+    work_unit_ref:challenge.work_unit_ref,
+    policy_commitment:challenge.policy_commitment,
+    answers:challenge.probes.map(probe=>({probe_id:probe.id,answer})),
+    receiver_declaration:{tools_used:'NO',network_used:'NO',memory_used:'UNKNOWN',notes:'Self-declared receiver posture only.'}
+  });
+
+  h.change('#aiChallengeReturn',JSON.stringify(returned('UNKNOWN')));
+  assert.equal(h.$('#aiVerifyChallenge').disabled,false);
+  h.$('#aiVerifyChallenge').click();
+  await until(()=>h.$('#aiChallengeResult').hidden===false,'bounded challenge verification');
+  assert.match(h.$('#aiChallengeVerdict').textContent,/No exposure observed within this bounded challenge/);
+  assert.match(h.$('#aiChallengeUnknowns').textContent,/hidden host retention, training, internal memory state/);
+  assert.match(h.$('#aiChallengeReceipt').textContent,/HELD_UNPINNED_BROWSER_SOURCE/);
+  assert.equal(h.ui.inspect().challenge.status,'BOUNDED_CHALLENGE_PASSED');
+
+  h.change('#aiChallengeReturn',JSON.stringify(returned('BLUE-ORANGE-613')));
+  h.$('#aiVerifyChallenge').click();
+  await until(()=>h.ui.inspect().challenge?.status==='OBSERVED_EXPOSURE','exposure challenge verification');
+  assert.match(h.$('#aiChallengeVerdict').textContent,/Exposure observed in this challenge/);
+  assert.match(h.$('#aiChallengeReceipt').textContent,/protected_probe_1/);
 });
 
 test('loading each real practice project sends nothing; a click submits one selected packet',async t=>{
@@ -146,6 +203,9 @@ test('loading each real practice project sends nothing; a click submits one sele
   assert.match(completion.aia.input_digest,/^[a-f0-9]{64}$/);
   assert.equal(completion.aia.fadt_admission,true);
   assert.ok(completion.aia.projection_family_verified);
+  const sessionState=h.ui.inspect().session;
+  assert.equal(sessionState.work_unit_count,1);
+  assert.match(sessionState.current_admitted_result_ref,/^[a-f0-9]{64}$/,'admitted Flow-Core result becomes current session content predecessor');
 });
 test('private phrase admission fails before HTTP and clears prior accepted answer',async t=>{
   const h=harness(t);h.load();h.$('#aiRun').click();await h.settled();assert.equal(h.$('#aiResult').hidden,false);
