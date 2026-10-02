@@ -89,14 +89,15 @@ export const CLAIM_CEILING_REGISTRY = freeze([
   freeze({
     id: 'empirical-exteriority',
     prior_ceiling: 'empirical exteriority',
-    state: CLAIM_CEILING_STATES.HELD,
-    earned_coordinate: 'TD613 can prove internal integrity, source custody, bounded route behavior, and selected external service interactions. Those are not equivalent to independent external origin.',
-    current_ceiling: 'Western Horizon empirical-shore rest remains in force: transformations of the admitted record cannot bootstrap exterior origin.',
-    next_witness: 'An independent exogenous witness X carrying origin information not derivable from admitted record A; useful exteriority requires I(Ω;X|A)>0.',
+    state: CLAIM_CEILING_STATES.SPLIT,
+    earned_coordinate: 'Western Horizon crossed its earlier no-new-substrate rest condition in closed, unmerged PR #1003: a live independently hosted 2026 empirical publication was admitted as a materially new exogenous witness, and exact-head CI run 33629043531 passed. PRs #1004 and #1005 then added two further independent empirical provenance witnesses, each exact-head GREEN.',
+    current_ceiling: 'The research field is reopened, but empirical exteriority itself remains unearned: recorded external witnesses and provenance observability do not identify the hidden external origin of the exact TD613 admitted artifact or measure I(Ω;X|A) for that target episode.',
+    next_witness: 'Bind a genuinely independent, non-derivative witness X to the exact target origin variable and admitted artifact A in one preregistered episode, then measure conditional discriminatory information with I(Ω;X|A)>0 without substituting cross-study provenance evidence for target-origin evidence.',
     evidence: evidence(
-      {kind:'DOC',ref:'DOLLHOUSE.md',note:'Golden Egg / Western Horizon empirical credit remains independently governed'},
-      {kind:'DOC',ref:'dollhouse/lineage/README.md',note:'preserved Western Horizon / No-Window lineage'},
-      {kind:'SOURCE',ref:'app/engine/portable-loom-session.js',note:'no empirical exteriority is granted by session continuity'}
+      {kind:'UNMERGED_GREEN_PR',ref:'#1003 / run 33629043531',note:'EntroBench live external retrieval satisfied the materially-new-evidentiary-substrate reopening condition'},
+      {kind:'UNMERGED_GREEN_PR',ref:'#1004 / run 33630246352',note:'AgentMark added an independent empirical provenance-carrier witness'},
+      {kind:'UNMERGED_GREEN_PR',ref:'#1005 / run 33632056113',note:'TTP-Detect added independent receiver-indexed provenance observability'},
+      {kind:'UNMERGED_RESEARCH_LAW',ref:'#1007',note:'formal target remains I(Ω;X|A)>0; synthetic positive CMI carries zero empirical target-origin credit'}
     )
   }),
   freeze({
