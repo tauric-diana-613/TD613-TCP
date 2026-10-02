@@ -13,7 +13,7 @@ function text(doc, value='') { return doc.createTextNode(String(value ?? '')); }
 function appendInline(parent, value='') {
   const source=String(value ?? '');
   // Deliberately small safe subset. Links/HTML are never interpreted.
-  const pattern=/(\`([^\`\n]+?)\`|\*\*\*([^*\n]+?)\*\*\*|\*\*([^*\n]+?)\*\*|\*([^*\n]+?)\*)/gu;
+  const pattern=/(`([^`\n]+?)`|\*\*\*([^*\n]+?)\*\*\*|\*\*([^*\n]+?)\*\*|\*([^*\n]+?)\*)/gu;
   let cursor=0;
   for(const match of source.matchAll(pattern)){
     const index=Number(match.index||0);
