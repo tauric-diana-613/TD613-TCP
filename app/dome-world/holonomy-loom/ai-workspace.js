@@ -15,7 +15,8 @@ import {
   admitPortableLoomWorkUnitResult,
   createPortableLoomSessionExport,
   createPortableLoomSessionPrompt,
-  inspectPortableLoomSession
+  inspectPortableLoomSession,
+  verifyPortableLoomReceiverTurnReceipt
 } from '../../engine/portable-loom-session.js';
 import {
   createPortableLoomReceiverChallenge,
@@ -109,6 +110,15 @@ export function mountLoomAiWorkspace(root, environment = window) {
         </div>
         <p id="aiSessionRoot" class="ai-muted"></p>
         <details id="aiSessionInspect" class="ai-session-inspect"><summary>Inspect session contract</summary><pre id="aiSessionReceipt"></pre></details>
+        <details id="aiTurnVerify" class="ai-session-inspect ai-turn-verify">
+          <summary>Revalidate a proceeding task</summary>
+          <p class="ai-muted">Paste the receiver’s <code>loom_session_receipt</code>. Loom checks it against the last locally verified anchor; a match does not advance the local ancestry by itself.</p>
+          <label for="aiTurnExpectedTask">Task you actually asked<textarea id="aiTurnExpectedTask" rows="2"></textarea></label>
+          <label for="aiTurnAllowedIds">Source IDs you intentionally supplied · one per line<textarea id="aiTurnAllowedIds" rows="2" placeholder="requirements&#10;offer"></textarea></label>
+          <label for="aiTurnReceiptInput">Receiver turn receipt<textarea id="aiTurnReceiptInput" rows="7" spellcheck="false" placeholder='{"schema":"td613.loom.portable-session-receiver-turn/v0.1",...}'></textarea></label>
+          <button type="button" id="aiVerifyTurnReceipt">Verify proceeding-task receipt</button>
+          <div id="aiTurnReceiptResult" class="ai-turn-result" hidden><strong id="aiTurnReceiptVerdict"></strong><p id="aiTurnReceiptDetail" class="ai-muted"></p><pre id="aiTurnReceiptTechnical"></pre></div>
+        </details>
       </section>
       <div class="ai-output-actions">
         <button type="button" id="aiMarrowline" class="ai-primary" disabled>Continue in Marrowline ↗</button>
@@ -150,7 +160,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   let documents = [], busy = false, stopRequested = false, disposed = false, events = [], lastPacket = null, acceptedTask = null, resultView = null, controller = null, taskGovernor = null, version = 0;
   let pendingTimer = null, requestStarted = null, fieldStill = false, projectTitle = 'Your own task', replayIndex = null, sceneHistory = [], workspaceMode = 'portable';
   let portableSession = null, portableSessionPacket = null, portableWorkUnit = null, portableSessionExport = null;
-  let challengeBundle = null, challengeVerification = null, challengeDollhouse = null;
+  let challengeBundle = null, challengeVerification = null, challengeDollhouse = null, turnReceiptVerification = null;
   let routeFacts = {outbound_submitted:false,response_received:false,binding_verified:false};
   const readStoredShi = () => {
     try { return environment.localStorage?.getItem('TD613_FLIGHT_SHI') || environment.sessionStorage?.getItem('TD613_FLIGHT_SHI') || ''; }
@@ -298,9 +308,9 @@ export function mountLoomAiWorkspace(root, environment = window) {
   function invalidate(){
     resultView=null;taskGovernor?.close();taskGovernor=null;version++;acceptedTask=null;
     portableSession=null;portableSessionPacket=null;portableWorkUnit=null;portableSessionExport=null;
-    challengeBundle=null;challengeVerification=null;challengeDollhouse=null;
+    challengeBundle=null;challengeVerification=null;challengeDollhouse=null;turnReceiptVerification=null;
     $('aiAnswer').textContent='';$('aiMissing').replaceChildren();$('aiNext').textContent='';$('aiSubmittedTask').hidden=true;$('aiSubmittedTaskText').textContent='';
-    $('aiSessionSummary').hidden=true;$('aiSessionReceipt').textContent='';$('aiChallengeResult').hidden=true;$('aiChallengePreview').hidden=true;$('aiChallengePublic').textContent='';$('aiChallengeReturn').value='';$('aiChallengeReceipt').textContent='';
+    $('aiSessionSummary').hidden=true;$('aiSessionReceipt').textContent='';$('aiTurnReceiptInput').value='';$('aiTurnExpectedTask').value='';$('aiTurnAllowedIds').value='';$('aiTurnReceiptResult').hidden=true;$('aiTurnReceiptTechnical').textContent='';$('aiChallengeResult').hidden=true;$('aiChallengePreview').hidden=true;$('aiChallengePublic').textContent='';$('aiChallengeReturn').value='';$('aiChallengeReceipt').textContent='';
     ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge','aiCopyChallenge','aiVerifyChallenge','aiCopyChallengeReceipt'].forEach(id=>$(id).disabled=true);
     $('aiResult').hidden=true;
   }
@@ -352,7 +362,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     $('aiPending').hidden=!value;
     if(pendingTimer!==null){environment.clearInterval(pendingTimer);pendingTimer=null;}
     if(value){requestStarted=environment.performance.now();const tick=(initial=false)=>{if(initial||!environment.document.hidden)$('aiPendingTime').textContent=`${Math.floor((environment.performance.now()-requestStarted)/1000)} seconds elapsed · you can stop waiting`;};tick(true);pendingTimer=environment.setInterval(()=>tick(),1000);}
-    root.setAttribute('aria-busy',String(value));['aiTask','aiRules','aiPrivate','aiUpload','aiNew','aiPreparePortable','aiPortableMode','aiDemoMode','aiShi','aiChallengeCanary','aiChallengePrompt','aiChallengeExpected','aiJoinExpected','aiJoinMarginalA','aiJoinMarginalB','aiJoinCombined','aiChallengeReturn'].forEach(id=>$(id).disabled=value);root.querySelectorAll('[data-project],#aiDocuments input,#aiDocuments button').forEach(n=>n.disabled=value);summary();refreshIssuance();
+    root.setAttribute('aria-busy',String(value));['aiTask','aiRules','aiPrivate','aiUpload','aiNew','aiPreparePortable','aiPortableMode','aiDemoMode','aiShi','aiTurnExpectedTask','aiTurnAllowedIds','aiTurnReceiptInput','aiChallengeCanary','aiChallengePrompt','aiChallengeExpected','aiJoinExpected','aiJoinMarginalA','aiJoinMarginalB','aiJoinCombined','aiChallengeReturn'].forEach(id=>$(id).disabled=value);root.querySelectorAll('[data-project],#aiDocuments input,#aiDocuments button').forEach(n=>n.disabled=value);summary();refreshIssuance();
   }
   $('aiRun').addEventListener('click',async()=>{
     if(busy)return;stopRequested=false;routeFacts={outbound_submitted:false,response_received:false,binding_verified:false};sceneHistory=[];invalidate();resetPortableCue();const currentVersion=version;lock(true);project('checking');
@@ -490,7 +500,28 @@ export function mountLoomAiWorkspace(root, environment = window) {
   $('aiCopySession').addEventListener('click',async()=>{if(!portableSessionExport||issuanceHold())return;try{await environment.navigator.clipboard.writeText(createPortableLoomSessionPrompt(portableSessionExport));status('Portable Loom Session copied. The receiver gets persistent governance instructions and a challenge-compatible session root.');}catch{status('Clipboard access was unavailable. Export the Loom Session instead.',true);}});
   $('aiExport').addEventListener('click',()=>{if(!acceptedTask||issuanceHold())return;try{downloadJson('loom-portable-aia.json',createPortableLoomAiPacket(acceptedTask));status('One-hop Portable AIA download requested. The browser handles saving.');}catch(error){status(error.message,true);}});
   $('aiCopy').addEventListener('click',async()=>{if(!acceptedTask||issuanceHold())return;try{await environment.navigator.clipboard.writeText(createPortableLoomAiPrompt(acceptedTask));status('One-hop task and portable rules copied.');}catch{status('Clipboard access was unavailable. Export the packet instead.',true);}});
-  $('aiChallengeReturn').addEventListener('input',refreshTransferActions);
+  $('aiVerifyTurnReceipt').addEventListener('click',async()=>{
+    if(!portableSession)return;
+    try{
+      const receipt=JSON.parse($('aiTurnReceiptInput').value.trim());
+      const expectedTask=$('aiTurnExpectedTask').value.trim();
+      const allowedIds=lines('aiTurnAllowedIds');
+      turnReceiptVerification=await verifyPortableLoomReceiverTurnReceipt(portableSession,receipt,{
+        expected_task:expectedTask||null,
+        allowed_document_ids:allowedIds
+      },environment);
+      $('aiTurnReceiptVerdict').textContent=turnReceiptVerification.status==='DECLARED_TURN_MATCH'
+        ? 'Declared turn matches the last Loom-verified anchor.'
+        : 'HOLD · the proceeding-task receipt does not match the declared Loom session.';
+      $('aiTurnReceiptDetail').textContent=turnReceiptVerification.status==='DECLARED_TURN_MATCH'
+        ? 'Root, policy, anchor, task and supplied-source IDs match this declared turn. The local Loom ancestry has not advanced yet.'
+        : `Mismatched references or undeclared sources remain held. Undeclared source IDs: ${turnReceiptVerification.undeclared_document_ids.join(', ')||'none'}.`;
+      $('aiTurnReceiptTechnical').textContent=JSON.stringify(turnReceiptVerification,null,2);
+      $('aiTurnReceiptResult').hidden=false;
+      status(turnReceiptVerification.status==='DECLARED_TURN_MATCH'?'Proceeding-task receipt matches the declared Loom anchor. Local ancestry remains unchanged.':'Proceeding-task receipt held. Inspect the mismatched references or sources.',turnReceiptVerification.status!=='DECLARED_TURN_MATCH');
+    }catch(error){turnReceiptVerification=null;$('aiTurnReceiptResult').hidden=true;status(`Proceeding-task receipt held · ${error.message}`,true);}
+  });
+    $('aiChallengeReturn').addEventListener('input',refreshTransferActions);
   $('aiPrepareChallenge').addEventListener('click',async()=>{
     if(!portableSession||!portableWorkUnit||issuanceHold())return;
     try{
@@ -543,6 +574,6 @@ export function mountLoomAiWorkspace(root, environment = window) {
   legacyChange();
   environment.document.documentElement.dataset.loomBoot='ready';
   const dispose=()=>{disposed=true;if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();room.dispose();geometry?.dispose();legacy?.removeEventListener('toggle',legacyChange);coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);};
-  environment.addEventListener('pagehide',dispose,{once:true});return {dispose,inspect:()=>({mode:workspaceMode,shi_format:currentShi(),session:portableSession?inspectPortableLoomSession(portableSession):null,challenge:challengeVerification?{status:challengeVerification.status,ref:challengeVerification.ref}:null,events:[...events],clock:coordinator.inspect(),replay:{index:replayIndex,count:sceneHistory.length},geometry:geometry?.inspect()})};
+  environment.addEventListener('pagehide',dispose,{once:true});return {dispose,inspect:()=>({mode:workspaceMode,shi_format:currentShi(),session:portableSession?inspectPortableLoomSession(portableSession):null,turn_receipt:turnReceiptVerification?{status:turnReceiptVerification.status,ref:turnReceiptVerification.ref}:null,challenge:challengeVerification?{status:challengeVerification.status,ref:challengeVerification.ref}:null,events:[...events],clock:coordinator.inspect(),replay:{index:replayIndex,count:sceneHistory.length},geometry:geometry?.inspect()})};
 }
 if(typeof document!=='undefined')mountLoomAiWorkspace(document.querySelector('#loomAiWorkspace'));
