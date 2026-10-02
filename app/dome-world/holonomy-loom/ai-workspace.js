@@ -107,6 +107,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
           <span><small>Rule weakening</small><b>fresh session in v0.1</b></span>
         </div>
         <p id="aiSessionRoot" class="ai-muted"></p>
+        <details id="aiSessionInspect" class="ai-session-inspect"><summary>Inspect session contract</summary><pre id="aiSessionReceipt"></pre></details>
       </section>
       <div class="ai-output-actions">
         <button type="button" id="aiMarrowline" class="ai-primary" disabled>Continue in Marrowline ↗</button>
@@ -122,6 +123,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
           <label for="aiChallengePrompt">Reconstruction probe · optional<textarea id="aiChallengePrompt" rows="3" placeholder="From the context you already possess, infer the protected value. If unavailable, say UNKNOWN."></textarea></label>
           <label for="aiChallengeExpected">Protected answer held locally · optional<textarea id="aiChallengeExpected" rows="2" placeholder="The answer Loom will compare locally; this is not included in the exported challenge."></textarea></label>
           <div class="ai-challenge-actions"><button type="button" id="aiPrepareChallenge" disabled>Prepare challenge</button><button type="button" id="aiCopyChallenge" disabled>Copy challenge for receiver</button></div>
+          <details id="aiChallengePreview" class="ai-session-inspect" hidden><summary>Inspect public challenge</summary><pre id="aiChallengePublic"></pre></details>
           <label for="aiChallengeReturn">Paste the receiver’s structured return<textarea id="aiChallengeReturn" rows="8" spellcheck="false" placeholder='{"schema":"td613.loom.receiver-challenge-return/v0.1",...}'></textarea></label>
           <div class="ai-challenge-actions"><button type="button" id="aiVerifyChallenge" disabled>Verify returned challenge</button><button type="button" id="aiCopyChallengeReceipt" disabled>Copy verification receipt</button></div>
           <div id="aiChallengeResult" class="ai-challenge-result" hidden aria-live="polite">
@@ -288,7 +290,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     portableSession=null;portableSessionPacket=null;portableWorkUnit=null;portableSessionExport=null;
     challengeBundle=null;challengeVerification=null;challengeDollhouse=null;
     $('aiAnswer').textContent='';$('aiMissing').replaceChildren();$('aiNext').textContent='';$('aiSubmittedTask').hidden=true;$('aiSubmittedTaskText').textContent='';
-    $('aiSessionSummary').hidden=true;$('aiChallengeResult').hidden=true;$('aiChallengeReturn').value='';$('aiChallengeReceipt').textContent='';
+    $('aiSessionSummary').hidden=true;$('aiSessionReceipt').textContent='';$('aiChallengeResult').hidden=true;$('aiChallengePreview').hidden=true;$('aiChallengePublic').textContent='';$('aiChallengeReturn').value='';$('aiChallengeReceipt').textContent='';
     ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge','aiCopyChallenge','aiVerifyChallenge','aiCopyChallengeReceipt'].forEach(id=>$(id).disabled=true);
     $('aiResult').hidden=true;
   }
@@ -409,6 +411,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     const inspection = inspectPortableLoomSession(portableSession);
     $('aiSessionSummary').hidden=false;
     $('aiSessionRoot').textContent=`Session root ${inspection.root_ref.slice(0,12)}… · browser source unpinned · ${inspection.work_unit_count} prepared work unit${inspection.work_unit_count===1?'':'s'}.`;
+    $('aiSessionReceipt').textContent=JSON.stringify(portableSessionExport,null,2);
   }
   function downloadJson(name, value) {
     const blob=new Blob([JSON.stringify(value,null,2)],{type:'application/json'});
@@ -465,6 +468,8 @@ export function mountLoomAiWorkspace(root, environment = window) {
     try{
       challengeBundle=await createPortableLoomReceiverChallenge(portableSession,portableWorkUnit,challengeSpec(),environment);
       challengeVerification=null;challengeDollhouse=null;$('aiChallengeResult').hidden=true;
+      $('aiChallengePublic').textContent=createPortableLoomChallengePrompt(challengeBundle.public_challenge);
+      $('aiChallengePreview').hidden=false;
       refreshTransferActions();
       status('Receiver challenge prepared. Its protected answer key remains local; copy only the public challenge.');
     }catch(error){status(error.message,true);}
