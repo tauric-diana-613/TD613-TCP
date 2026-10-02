@@ -17,7 +17,7 @@ function ensureStylesheet(doc=document){
 }
 
 function phaseCopy(phase,lastAttempt,busy=false){
-  if(busy)return {eyebrow:'PENDING · no new receiver binding yet',now:phase==='AIA_STAGED'?'The browser submitted #1 and is waiting for a receiver response that passes this route's checks.':'The browser submitted the current governed continuation and is waiting for a receiver response that passes this route's checks.',why:'Submission is an observed client event; it cannot be relabeled as server receipt or model completion before the bound result returns.',next:'Wait, Stop, or let the bounded request return.'};
+  if(busy)return {eyebrow:'PENDING · no new receiver binding yet',now:phase==='AIA_STAGED'?'The browser submitted #1 and is waiting for a receiver response that passes the route checks.':'The browser submitted the current governed continuation and is waiting for a receiver response that passes the route checks.',why:'Submission is an observed client event; it cannot be relabeled as server receipt or model completion before the bound result returns.',next:'Wait, Stop, or let the bounded request return.'};
   if(lastAttempt==='HELD')return {
     eyebrow:'HELD · stage did not advance',
     now:'The latest attempt did not become current.',
