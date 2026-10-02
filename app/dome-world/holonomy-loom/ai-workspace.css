@@ -1,4 +1,9 @@
 
+#loomAiWorkspace .ai-challenge-advanced{padding:10px 11px;border:1px solid rgba(229,189,138,.2);border-radius:10px;background:#120f16}
+#loomAiWorkspace .ai-challenge-advanced>summary{cursor:pointer;color:#e6c491;font:650 .72rem/1.35 var(--sans)}
+#loomAiWorkspace .ai-challenge-advanced[open]>summary{margin-bottom:10px}
+
+
 /* Portable Loom Session + Challenge Receiver */
 #loomAiWorkspace .ai-session-summary{margin:18px 0 12px;padding:15px 16px;border:1px solid rgba(137,216,201,.28);border-radius:14px;background:linear-gradient(135deg,rgba(11,31,29,.9),rgba(18,14,27,.88))}
 #loomAiWorkspace .ai-session-summary[hidden]{display:none!important}
