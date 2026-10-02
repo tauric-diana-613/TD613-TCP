@@ -198,6 +198,7 @@ try {
       await uploadChoice.waitFor({ state: 'visible' });
       assert.equal(await uploadChoice.isChecked(), false, 'uploaded document starts local-only');
       assert.equal(await page.locator('#aiRun').isEnabled(), true);
+      if(await page.locator('#aiNewRootNotice').isVisible())await page.locator('#aiNewRootConfirm').check();
       await page.locator('#aiRun').click();
       await bounded(receivedRequest);
       assert.equal(requests.length, 1, 'one deliberate Run gesture makes one POST');
@@ -250,6 +251,7 @@ try {
       mode = 'failure';
       receivedRequest = new Promise(resolve => { observedRequest = resolve; });
       responseGate = new Promise(resolve => { releaseResponse = resolve; });
+      await page.locator('#aiNewRootConfirm').check();
       await page.locator('#aiRun').click(); await bounded(receivedRequest);
       assert.equal(requests.length, 2, 'second deliberate gesture makes one additional POST');
       releaseResponse();

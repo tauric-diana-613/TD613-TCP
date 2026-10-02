@@ -197,3 +197,6 @@ Those are local source-test witnesses. The live desktop screenshot above
 documents the inherited production behavior, not deployed repaired bytes.
 
 ⟐
+
+
+Resumption custody note (2026-10-02): the earlier referenced `fadt-mixed-policy-hold-joined-exposure.jpg` did not reach the saved checkpoint and was lost in the temporary runtime reset. The written observation remains historical; that missing image cannot be recreated as the original witness. Fresh independent production screenshots and their exact scope are retained in [FADT_RESUME_FINDINGS.md](FADT_RESUME_FINDINGS.md).

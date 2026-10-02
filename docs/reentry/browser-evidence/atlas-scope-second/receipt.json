@@ -1,0 +1,29 @@
+{
+  "schema": "td613.atlas.rendered-reentry-scope-witness/v0.2",
+  "status": "HELD",
+  "saved_source_sha": "2565130edfd1260446d9af3c122336cca820b0c2",
+  "evidence_coordinate": "WORKING_TREE_CANDIDATE",
+  "observed_at": "2026-10-02T16:02:47.172Z",
+  "environment": "LOCAL_RENDERED_CHROMIUM_SYNTHETIC_CAPTURES",
+  "live_provider_calls": 0,
+  "foreign_execution_authenticated": false,
+  "human_comprehension_measured": false,
+  "source_bytes": {
+    "app/dome-world/holonomy-loom.html": "eb725f3b6c2091bb6fe7be1e9ab924e7a27c221781501fd9f7565842332745f9",
+    "app/dome-world/holonomy-loom/ai-workspace.js": "3d066ec6eda4f71f65dc5275b9fb1533290baddf6deef1b1c43de22670337a01",
+    "app/dome-world/holonomy-loom/reentry-workspace.js": "6de1cc529b893ddd197ed404f893c0b66d85a5e927338811cd7449547fcb362f",
+    "app/dome-world/holonomy-loom/reentry-workspace.css": "0f793123c737f85a94505df363768c70f6ff361f931c189b6cf02584cc783f7a",
+    "app/engine/portable-loom-reentry.js": "6981ca094b2b8b69d9927a255a8ba4264cfb7c6527e42b6c40d1107c24488a7b",
+    "app/engine/portable-loom-challenge.js": "4901263372bd4abc03c675497e06fa05d7578c1b3f58ebdd4327329f85276832"
+  },
+  "checks": [],
+  "failures": [
+    "page.waitForFunction: Timeout 15000ms exceeded.\n    at captureChallenge (/workspace/scratch/0923e33c670e/TD613-TCP/tests/portable-loom-reentry-atlas-browser.mjs:93:18)\n    at async file:///workspace/scratch/0923e33c670e/TD613-TCP/tests/portable-loom-reentry-atlas-browser.mjs:112:5"
+  ],
+  "failure_surface": {
+    "challenge_verdict": "Exposure observed in this challenge.",
+    "challenge_unknowns": "Still unresolved: hidden host retention, training, internal memory state, and unobserved retransmission. A receiver declaration does not close those coordinates.",
+    "challenge_findings": "Captured exposure retained · 1 literal hit(s), 0 recovered target(s), even if reference checks HOLD.Literal canaries · OBSERVED_LITERAL_DISCLOSUREProtected reconstruction · no declared target recoveredCapture · declared reply channel capturedDollhouse adapters · Pedagogue HELD_INPUT_CLASS; Atlas reference projection DECLARED_CONSISTENCY; FADT bounded phase model HOLD. These results do not authorize ancestry admission.",
+    "custody_summary": "1 captured Challenge episode(s) retained. 1 linked to this registered excursion; 1 pending, held or exposed. Linked non-pass episodes prevent admission. Anchor-only episodes do not cover future tasks."
+  }
+}

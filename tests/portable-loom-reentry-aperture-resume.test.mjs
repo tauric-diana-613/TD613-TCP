@@ -4,7 +4,8 @@ import { webcrypto } from 'node:crypto';
 import { createLoomAiGovernance, createPortableLoomAiPacket } from '../app/dome-world/holonomy-loom/ai-handoff-base.js';
 import { createPortableLoomSession, createPortableLoomWorkUnit, portableLoomDigest } from '../app/engine/portable-loom-session.js';
 import { createPortableLoomReentryCustodian, LOOM_REENTRY_RETURN_SCHEMA } from '../app/engine/portable-loom-reentry.js';
-import { createPortableLoomReceiverChallenge, PORTABLE_LOOM_CHALLENGE_RETURN_SCHEMA } from '../app/engine/portable-loom-challenge.js';
+import { createPortableLoomReceiverChallenge, verifyPortableLoomReceiverChallenge,
+  auditPortableLoomChallengeWithDollhouse, PORTABLE_LOOM_CHALLENGE_RETURN_SCHEMA } from '../app/engine/portable-loom-challenge.js';
 
 // Finite synthetic engine witnesses. No provider response or browser observation.
 const SOURCE = '2565130edfd1260446d9af3c122336cca820b0c2';
@@ -236,6 +237,10 @@ test('closing during challenge qualification cannot mutate closed custody after 
   gate.release(); const returned = await recording;
   assert.equal(returned.status, 'HELD');
   assert.equal(returned.reason, 'CUSTODY_LANE_CLOSED_DURING_CHALLENGE');
+  if (returned.ref !== null) {
+    const { ref, ...body } = returned;
+    assert.equal(ref, await portableLoomDigest(body, normal), 'Closed result must not carry another classification\'s digest.');
+  }
   assert.equal(f.custody.current(), closedState);
   assert.equal(f.custody.inspect().status, 'CLOSED');
   assert.equal(f.custody.inspect().work_unit_count, 0);
@@ -279,4 +284,15 @@ test('capture intent snapshot does not retroactively cover another task register
   assert.equal(candidate.challenge_scope, 'REGISTERED_EPISODES_ONLY_NO_FOREIGN_TURN_COVERAGE');
   assert.equal(candidate.status, 'ADMISSION_CANDIDATE');
   assert.equal(candidate.evidence.foreign_execution, 'UNRESOLVED');
+});
+
+test('Aperture dossier carries the actual declared source coordinate without relabeling session root', async () => {
+  const f = await fixture(), raw = await evidence(f);
+  const verification = await verifyPortableLoomReceiverChallenge(raw.bundle, raw.candidate, raw.capture, normal);
+  const dossier = await auditPortableLoomChallengeWithDollhouse(f.prepared.session, f.prepared.work_unit,
+    raw.bundle, verification, normal);
+  assert.notEqual(f.prepared.session.source_revision, f.prepared.session.root.ref);
+  assert.equal(dossier.aperture.source_revision, f.prepared.session.source_revision);
+  assert.equal(dossier.aperture.source_revision_authenticated, false);
+  assert.equal(dossier.aperture.claim_verified, false);
 });

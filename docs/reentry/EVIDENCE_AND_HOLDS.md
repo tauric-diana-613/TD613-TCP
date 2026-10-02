@@ -2,13 +2,13 @@
 
 ## Actual implementation boundary
 
-This document describes the resumed working v0.2 candidate inspected on 2026-10-02 from saved checkout HEAD `2565130edfd1260446d9af3c122336cca820b0c2` (PR #1406), including the subsequent uncommitted challenge-history repair. Saved GitHub source, these inspected working bytes, finite test fixtures and production browser observations are separate coordinates. This is a source audit, not production acceptance. Exact inspected Git blobs at this audit checkpoint:
+This document describes the resumed working v0.2 candidate inspected on 2026-10-02. Resumption began from saved `2565130edfd1260446d9af3c122336cca820b0c2` (PR #1406); final Aperture inspection used checkout HEAD `e6ca876653889cda7766dea46801c6caebe8b91f` plus the subsequent uncommitted receipt/source-coordinate repairs. Saved GitHub source, these inspected working bytes, finite test fixtures and production browser observations are separate coordinates. This is a source audit, not production acceptance. Exact inspected Git blobs at this audit checkpoint:
 
 | Source | Inspected blob |
 | --- | --- |
-| `app/engine/portable-loom-reentry.js` | `e3d581d203489a0e21bae07316ca0d28fc9cdc0e` |
-| `app/dome-world/holonomy-loom/reentry-workspace.js` | `ff6cb84d012ca7fc57d9772c44a7f3cb65c4b488` |
-| `app/engine/portable-loom-challenge.js` | `cbd3be9da63192d12d43f260cb3efe783bb2f78e` |
+| `app/engine/portable-loom-reentry.js` | `fad6f1cbfbd3a16208c0e12fa927f5acc435b358` |
+| `app/dome-world/holonomy-loom/reentry-workspace.js` | `c724cc912c29f0fd0deee4d6f3dbee09ce13e8ed` |
+| `app/engine/portable-loom-challenge.js` | `b55c1504c158c388a34c27a6213e91557ae1079f` |
 
 The active engine schemas are `td613.loom.local-custody/v0.2`, `td613.loom.reentry-excursion/v0.2`, `td613.loom.bound-receiver-turn/v0.2`, `td613.loom.reentry-candidate/v0.2`, and `td613.loom.admitted-returned-work/v0.2`. These establish a **live-process local custody lane**. They deliberately establish zero foreign execution authentication, global latest-state authority, global fork exclusion or imported-record authority.
 
@@ -118,7 +118,7 @@ A Challenge Receiver episode is not mandatory for local returned-artifact admiss
 | `evidence` | Snapshot of exact supplied bundle/return/capture, or malformed-attempt data | Locally observed supplied data; foreign provenance and declared evidence-class labels remain unverified. Private keys remain local. |
 | `evidence_class`, `ref` | `LOCALLY_CAPTURED_CHALLENGE_EPISODE` with locally computed full-record digest | During pending qualification `ref` and `verification` are null. Ref integrity supplies no acquisition/authorship proof. |
 
-Registration reserves history and increments custody revision before the first digest wait. This immediately invalidates an older candidate. Completion replaces only its own `episode_id`; concurrent completions preserve the other records. Cancelling an excursion or registering another one retires the old record's applicability without deleting its history or making its adverse finding disappear. A qualification finishing after cancellation retains its original scope. Closing during qualification cannot mutate the closed state after the await; the returned attempt reports `CUSTODY_LANE_CLOSED_DURING_CHALLENGE`, while the closed private record preserves its pending reservation.
+Registration reserves history and increments custody revision before the first digest wait. This immediately invalidates an older candidate. Completion replaces only its own `episode_id`; concurrent completions preserve the other records. Cancelling an excursion or registering another one retires the old record's applicability without deleting its history or making its adverse finding disappear. A qualification finishing after cancellation retains its original scope. Closing during qualification cannot mutate the closed state after the await; the returned attempt reports `CUSTODY_LANE_CLOSED_DURING_CHALLENGE` with `ref: null`, while the closed private record preserves its pending reservation. It must not carry a digest from the pre-HOLD body.
 
 Check conservatively applies a scoped adverse record to the complete active excursion; this is an admission restriction, not a claim that the probe covered every turn. The required discriminating witness for actual foreign-turn coverage would bind task/turn/episode and exact capture through an independently qualified acquisition channel. Root/policy/anchor equality alone supplies no such witness.
 
@@ -197,6 +197,8 @@ Western Horizon remains in force. If admitted A leaves origin Ω non-identifiabl
 
 ## Handoff and empirical ceilings
 
-Current source contracts, finite tests, native browser witnesses, provider samples and independent empirical acquisition remain separate. `APERTURE_BROWSER_FINDINGS.md` records production desktop v0.1 observations. `tests/portable-loom-reentry-aperture.test.mjs` records fourteen finite v0.2 hostile controls; `tests/portable-loom-reentry-aperture-resume.test.mjs` adds fourteen challenge-history omission/lifecycle/concurrency/coverage controls. Together they passed 28/28 on the resumed working candidate. They must never be collapsed into a production v0.2 journey witness.
+Current source contracts, finite tests, native browser witnesses, provider samples and independent empirical acquisition remain separate. `APERTURE_BROWSER_FINDINGS.md` records production desktop v0.1 observations. `tests/portable-loom-reentry-aperture.test.mjs` records fourteen finite v0.2 hostile controls; `tests/portable-loom-reentry-aperture-resume.test.mjs` adds fifteen challenge-history omission/lifecycle/concurrency/coverage/source controls. Together they passed 29/29 on the inspected working candidate after the receipt/source-coordinate repairs. They must never be collapsed into a production v0.2 journey witness.
+
+The challenge dossier now carries the actual `session.source_revision` into Aperture's witness-plan rather than substituting a root hash. A 40hex source declaration permits the declared case-dossier schema but is labeled `DECLARED_GIT_SHA_UNAUTHENTICATED` and `UNVERIFIED_BY_THIS_ADAPTER`. The SHA-shaped string is not verification of running/deployed source. The fresh browser's inherited source/gesture defects and candidate repairs remain separately identified in `APERTURE_BROWSER_FINDINGS.md`.
 
 Portable-AIA roundtrip remains `HELD_INPUT_CLASS` absent its actual semantic-field object. The Aperture witness-plan adapter reports readiness of a declared next-observation plan, authenticates no references and changes no installed Aperture identity. Candidate/admission do not claim Golden Egg realization, universal secrecy, foreign-provider enforcement, empirical exteriority, hidden-host introspection or measured human comprehension.

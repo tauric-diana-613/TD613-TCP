@@ -84,6 +84,10 @@ test('challenge Pedagogue holds without inventing STAGE/SEND gesture observation
   assert.equal(audit.dossier.findings.find(item => item.agent === 'PEDAGOGUE').verdict, 'HELD');
   assert.equal(audit.dossier.decision, 'HUMAN_REVIEW_REQUIRED');
   assert.equal(JSON.stringify(f.session), before);
+  assert.equal(audit.aperture.source_revision,f.session.source_revision);
+  assert.notEqual(audit.aperture.source_revision,f.session.root.ref);
+  assert.equal(audit.dossier_source_revision.status,'DECLARED_GIT_SHA_UNAUTHENTICATED');
+  assert.equal(audit.dossier_source_revision.source_authentication,'UNVERIFIED_BY_THIS_ADAPTER');
 });
 
 for (const [field, coordinate] of [

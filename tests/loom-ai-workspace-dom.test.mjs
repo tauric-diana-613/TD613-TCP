@@ -23,6 +23,11 @@ const until = async (predicate, description='workflow completion') => {
   const deadline = Date.now() + 3000;
   while (!predicate()) { if (Date.now() > deadline) throw new Error(`Timed out awaiting ${description}`); await new Promise(resolve=>setTimeout(resolve,5)); }
 };
+function chooseNewRoot(h){
+  assert.equal(h.$('#aiNewRootNotice').hidden,false,'active custody replacement has a consequence notice');
+  h.$('#aiNewRootConfirm').checked=true;
+  h.$('#aiNewRootConfirm').dispatchEvent(new h.window.Event('change',{bubbles:true}));
+}
 function admitted(request, extra = {}) {
   return {schema:'td613.loom.ai-task-result/v0.1',status:'completed',request_id:request.request_id,
     answer:'SYNTHETIC HTTP FIXTURE: the records conflict on retention. Resolve the requirement before authorizing migration.',
@@ -271,7 +276,7 @@ test('loading each real practice project sends nothing; a click submits one sele
 });
 test('private phrase admission fails before HTTP and clears prior accepted answer',async t=>{
   const h=harness(t);h.load();h.$('#aiRun').click();await h.settled();assert.equal(h.$('#aiResult').hidden,false);
-  h.change('#aiTask',h.$('#aiTask').value+' '+LOOM_AI_PROJECTS[0].protectedTerms[0]);h.$('#aiRun').click();await h.settled();
+  h.change('#aiTask',h.$('#aiTask').value+' '+LOOM_AI_PROJECTS[0].protectedTerms[0]);chooseNewRoot(h);h.$('#aiRun').click();await h.settled();
   assert.equal(h.calls.length,1);assert.equal(h.$('#aiResult').hidden,true);assert.equal(h.$('#aiAnswer').textContent,'');
   assert.equal(h.$('#aiExport').disabled,true);assert.match(h.$('#aiStatus').textContent,/private phrase/);
 });
@@ -286,7 +291,7 @@ test('a model reply echoing a local canary stays withheld and never renders mark
 test('HTTP errors remove prior result and never disclose an untrusted error body',async t=>{
   let fail=false;const sensitive='UNTRUSTED_ERROR_SECRET_219';
   const h=harness(t,request=>fail?response({message:sensitive,error:sensitive},503):response(admitted(request)));
-  h.load();h.$('#aiRun').click();await h.settled();fail=true;h.$('#aiRun').click();await h.settled();
+  h.load();h.$('#aiRun').click();await h.settled();fail=true;chooseNewRoot(h);h.$('#aiRun').click();await h.settled();
   assert.equal(h.calls.length,2);assert.equal(h.$('#aiAnswer').textContent,'');assert.equal(h.$('#aiResult').hidden,true);
   assert.equal(h.$('#aiStatus').textContent.includes(sensitive),false);assert.match(h.$('#aiStatus').textContent,/503/);
   assert.equal(h.$('#aiMarrowline').disabled,true);
@@ -368,13 +373,51 @@ test('Portable preparation binds locally without HTTP, labels itself truthfully,
   assert.equal(h.$('#aiResultEyebrow').textContent,'PORTABLE TASK / SESSION PREPARED LOCALLY');assert.equal(h.$('#aiResult').getAttribute('aria-label'),'Portable continuation');
   assert.match(h.$('#aiAnswer').textContent,/no model request/);
   for(const id of ['aiExport','aiCopy','aiMarrowline'])assert.equal(h.$('#'+id).disabled,false);
-  h.$('#aiRun').click();await h.settled();assert.equal(h.calls.length,1);
+  chooseNewRoot(h);h.$('#aiRun').click();await h.settled();assert.equal(h.calls.length,1);
   assert.equal(h.$('#aiResultEyebrow').textContent,'RETURNED THROUGH YOUR LOOM ROUTE');assert.equal(h.$('#aiResult').getAttribute('aria-label'),'AI result');
   assert.match(h.$('.ai-result-unknowns').textContent,/signed retention amendment/);assert.match(h.$('.ai-result-next').textContent,/signed retention schedule/);
-  h.$('#aiPreparePortable').click();await h.settled();
+  chooseNewRoot(h);h.$('#aiPreparePortable').click();await h.settled();
   assert.equal(h.calls.length,1);assert.equal(h.$('#aiResultEyebrow').textContent,'PORTABLE TASK / SESSION PREPARED LOCALLY');assert.equal(h.$('.ai-result-unknowns'),null);assert.equal(h.$('.ai-result-next'),null);
   assert.equal(h.$('#aiAnswer').textContent.includes('signed retention amendment'),false);assert.equal(h.$('#aiAnswer').textContent.includes('signed retention schedule'),false);
   assert.match(h.$('#aiAnswer').textContent,/no model request/);
+});
+test('unacknowledged new-root preparation and provider test preserve the active lane',async t=>{
+  const h=harness(t);h.load();h.$('#aiPreparePortable').click();await h.settled();
+  const before=h.$('[data-loom-reentry="root"]').title;
+  const record=h.$('[data-loom-reentry="technical"]').textContent;
+  h.$('#aiPreparePortable').click();await h.settled();
+  assert.match(h.$('#aiStatus').textContent,/HOLD.*new-root/);
+  assert.equal(h.window.document.activeElement.id,'aiNewRootNotice');
+  h.$('#aiRun').click();await h.settled();
+  assert.equal(h.calls.length,0);
+  assert.equal(h.$('[data-loom-reentry="root"]').title,before);
+  assert.equal(h.$('[data-loom-reentry="technical"]').textContent,record);
+});
+test('editing a captured Challenge during qualification cannot restore its old clean verdict',async t=>{
+  const h=harness(t);h.load();h.$('#aiPreparePortable').click();await h.settled();
+  h.change('#aiChallengeCanary','FICTIONAL_ASYNC_CANARY');h.$('#aiPrepareChallenge').click();
+  await until(()=>!h.$('#aiChallengePreview').hidden,'local challenge preparation');
+  const publicText=h.$('#aiChallengePublic').textContent;
+  const c=JSON.parse(publicText.slice(publicText.indexOf('{')));
+  const clean={schema:'td613.loom.receiver-challenge-return/v0.1',challenge_id:c.challenge_id,
+    session_root_ref:c.session_root_ref,work_unit_ref:c.work_unit_ref,policy_commitment:c.policy_commitment,
+    answers:c.probes.map(probe=>({probe_id:probe.id,answer:'UNKNOWN'})),
+    receiver_declaration:{tools_used:'UNKNOWN',network_used:'UNKNOWN',memory_used:'UNKNOWN',notes:'Synthetic fixture.'}};
+  h.change('#aiChallengeReturn',JSON.stringify(clean));
+  const normal=h.window.crypto,pause=deferred(),entered=deferred();let first=true;
+  Object.defineProperty(h.window,'crypto',{configurable:true,value:{randomUUID:()=>normal.randomUUID(),subtle:{async digest(...args){
+    if(first){first=false;entered.resolve();await pause.promise;}return normal.subtle.digest(...args);
+  }}}});
+  h.$('#aiVerifyChallenge').click();await entered.promise;
+  h.change('#aiChallengeReturn','{malformed newer captured input');pause.resolve();
+  await until(()=>h.$('[data-loom-reentry="challenge-history"]').textContent.includes('BOUNDED_CHALLENGE_PASSED'),'retained earlier bounded episode');
+  assert.equal(h.$('#aiChallengeResult').hidden,true,'old asynchronous result does not overwrite the newer input state');
+  assert.equal(h.$('#aiCopyChallengeReceipt').disabled,true);
+  h.$('#aiVerifyChallenge').click();
+  await until(()=>!h.$('#aiChallengeResult').hidden,'new malformed Challenge HOLD');
+  assert.match(h.$('#aiChallengeVerdict').textContent,/HOLD/);
+  assert.match(h.$('[data-loom-reentry="challenge-history"]').textContent,/HELD/);
+  assert.equal(h.calls.length,0);
 });
 test('Stop during portable preparation prevents later transfer activation',async t=>{
   const h=harness(t);h.load();h.$('#aiPreparePortable').click();h.$('#aiStop').click();await h.settled();

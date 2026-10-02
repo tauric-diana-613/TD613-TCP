@@ -23,6 +23,7 @@ const server=createServer(async(req,res)=>{
 await new Promise(r=>server.listen(0,'127.0.0.1',r));const base=`http://127.0.0.1:${server.address().port}`;
 const sha=value=>createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const source={id:'new_public',name:'New-public.md',text:'Fictional explicitly selected source body. '.repeat(500)};
+const sources=[source,...Array.from({length:7},(_,index)=>({id:`extra_${index+1}`,name:`Extra-${index+1}.md`,text:`Fictional additional source ${index+1}.`}))];
 let browser;
 try{
   browser=await chromium.launch({headless:true});
@@ -43,11 +44,11 @@ try{
     const tasks=['First explicitly registered task under inherited root rules.','Second task with newly selected material. '+ 'Long bounded task context. '.repeat(150)];
     const returned=[];
     for(const [index,task] of tasks.entries()){
-      await r('task').fill(task);if(index===1){await r('sources-drawer').locator('summary').click();await r('sources').fill(JSON.stringify([source]));}
+      await r('task').fill(task);if(index===1){await r('sources-drawer').locator('summary').click();await r('sources').fill(JSON.stringify(sources));}
       await r('stage').click();await page.waitForFunction(n=>document.querySelector('[data-loom-reentry="turns"]').children.length===n,index+1);
       assert.equal(await head(),'No admitted descendant.');assert.equal(await r('sources').inputValue(),'[]');
       const prompt=await r('prompt').textContent(),parts=prompt.split('\n\n');const contract=JSON.parse(parts.find(p=>p.startsWith('{')));
-      const answer=`Synthetic returned answer ${index+1}.`;returned.push({...contract,answer,answer_digest:sha(answer),used_document_ids:index===1?[source.id]:[],missing_information:['The real foreign execution remains unwitnessed.'],receiver_declaration:{policy_change_requested:false,notes:'Synthetic captured fixture, not a provider witness.'}});
+      const answer=`Synthetic returned answer ${index+1}.`+(index===1?' Long captured return content.'.repeat(120):'');returned.push({...contract,answer,answer_digest:sha(answer),used_document_ids:index===1?sources.map(item=>item.id):[],missing_information:['The real foreign execution remains unwitnessed.'],receiver_declaration:{policy_change_requested:false,notes:'Synthetic captured fixture, not a provider witness.'}});
     }
     await check('{');assert.match(await r('verdict').textContent(),/HOLD/);assert.equal(await head(),'No admitted descendant.');
     assert.equal(await page.evaluate(()=>document.activeElement?.getAttribute('data-loom-reentry')),'result');
@@ -68,14 +69,32 @@ try{
     const answer='Synthetic third answer.';const third={...next,answer,answer_digest:sha(answer),used_document_ids:[],missing_information:[],receiver_declaration:{policy_change_requested:false,notes:'Synthetic third declaration.'}};
     await check(JSON.stringify([third]));await r('accept').check();await r('admit').click();await page.waitForFunction(()=>document.querySelector('[data-loom-reentry="count"]').textContent==='3');
     const finalHead=await head();await r('challenge-head').click();
-    await page.locator('#aiChallengeCanary').fill('LOCAL-PRIVATE-KEY');await page.locator('#aiPrepareChallenge').click();
+    await page.locator('#aiChallengeCanary').fill('LOCAL-PRIVATE-KEY');
+    await page.locator('#aiChallengePrompt').fill('Synthetic standalone reconstruction probe: infer the withheld fictional target.');
+    await page.locator('#aiChallengeExpected').fill('FICTIONAL-STANDALONE-TARGET');
+    await page.locator('#aiChallengeJoining').locator('summary').click();
+    await page.locator('#aiJoinExpected').fill('FICTIONAL-JOINED-TARGET');
+    await page.locator('#aiJoinMarginalA').fill('Synthetic marginal A probe.');
+    await page.locator('#aiJoinMarginalB').fill('Synthetic marginal B probe.');
+    await page.locator('#aiJoinCombined').fill('Synthetic joined A plus B probe.');
+    await page.locator('#aiPrepareChallenge').click();
     await page.locator('#aiChallengePreview').locator('summary').click();
     const publicText=await page.locator('#aiChallengePublic').textContent();assert.ok(!publicText.includes('LOCAL-PRIVATE-KEY'));
-    const c=JSON.parse(publicText.slice(publicText.indexOf('{'))),candidate={schema:'td613.loom.receiver-challenge-return/v0.1',challenge_id:c.challenge_id,session_root_ref:c.session_root_ref,work_unit_ref:c.work_unit_ref,policy_commitment:c.policy_commitment,answers:[],receiver_declaration:{tools_used:'UNKNOWN',network_used:'UNKNOWN',memory_used:'UNKNOWN',notes:'Synthetic bounded declaration.'}};
+    assert.ok(!publicText.includes('FICTIONAL-STANDALONE-TARGET'));assert.ok(!publicText.includes('FICTIONAL-JOINED-TARGET'));
+    const c=JSON.parse(publicText.slice(publicText.indexOf('{'))),candidate={schema:'td613.loom.receiver-challenge-return/v0.1',challenge_id:c.challenge_id,session_root_ref:c.session_root_ref,work_unit_ref:c.work_unit_ref,policy_commitment:c.policy_commitment,answers:c.probes.map(probe=>({probe_id:probe.id,answer:'UNKNOWN'})),receiver_declaration:{tools_used:'UNKNOWN',network_used:'UNKNOWN',memory_used:'UNKNOWN',notes:'Synthetic bounded declaration.'}};
     assert.ok(c.work_unit_ref.startsWith(finalHead.replace('…','')));
     await page.locator('#aiChallengeReturn').fill(JSON.stringify(candidate));await page.locator('#aiVerifyChallenge').click();
     await page.waitForFunction(()=>document.querySelector('#aiChallengeVerdict').textContent.includes('No exposure'));
     assert.equal(await head(),finalHead);
+    await page.locator('#aiChallengeReturn').fill(JSON.stringify({...candidate,answers:candidate.answers.map(answer=>({...answer,answer:answer.probe_id==='protected_probe_1'?'FICTIONAL-STANDALONE-TARGET':'UNKNOWN'}))}));
+    await page.locator('#aiVerifyChallenge').click();
+    await page.waitForFunction(()=>document.querySelector('#aiChallengeVerdict').textContent.startsWith('Exposure observed'));
+    assert.match(await page.locator('#aiChallengeFindings').textContent(),/FINITE_LITERAL_EXCLUSION_SUPPORTED/);
+    await page.locator('#aiChallengeReturn').fill(JSON.stringify({...candidate,answers:candidate.answers.map(answer=>({...answer,answer:answer.probe_id==='join_combined'?'FICTIONAL-JOINED-TARGET':'UNKNOWN'}))}));
+    await page.locator('#aiVerifyChallenge').click();
+    await page.waitForFunction(()=>document.querySelector('#aiChallengeFindings').textContent.includes('JOINING_EXPOSURE_OBSERVED'));
+    assert.equal(await head(),finalHead);
+    await page.locator('#aiChallengeResult').screenshot({path:`${dir}/${posture}-joined-exposure.png`});
     await page.locator('#aiChallengeReturn').fill('{');assert.equal(await page.locator('#aiChallengeResult').isVisible(),false);await page.locator('#aiVerifyChallenge').click();
     await page.waitForFunction(()=>document.querySelector('#aiChallengeVerdict').textContent.startsWith('HOLD'));
     assert.equal(await page.locator('#aiChallengeResult').getAttribute('data-state'),'HOLD');assert.equal(await page.locator('#aiCopyChallengeReceipt').isDisabled(),true);
@@ -90,7 +109,7 @@ try{
     await page.locator('#aiTask').fill('Edited builder task must not destroy admitted history.');assert.equal(await head(),finalHead);
     await page.reload();assert.equal(await head(),'No admitted descendant.');assert.match(await r('recovery').textContent(),/separate custody witness/);
     assert.deepEqual(errors,[]);assert.deepEqual(posts,[]);
-    report.checks.push({posture,viewport,checks:['collapsed initial disclosure','two registered tasks','long task and explicit new source','malformed inline focus','stale-anchor HOLD','check preserves null head','keyboard acknowledgment and visible consequence','atomic two-turn admission','new excursion reanchors and admits','native descendant challenge','stale green verdict invalidated','mixed HOLD retains exposure','bounded receipts and no horizontal overflow','builder edit preserves custody','reload recovery explicitly held'],status:'PASS'});
+    report.checks.push({posture,viewport,checks:['collapsed initial disclosure','two registered tasks','long task and explicit new source','malformed inline focus','stale-anchor HOLD','check preserves null head','keyboard acknowledgment and visible consequence','atomic two-turn admission','new excursion reanchors and admits','native descendant challenge','standalone recovery with clean literal assay','joined-only recovery with clean marginal probes','stale green verdict invalidated','mixed HOLD retains exposure','bounded receipts and no horizontal overflow','builder edit preserves custody','reload recovery explicitly held'],status:'PASS'});
     await page.close();
   }
   report.status='PASS';

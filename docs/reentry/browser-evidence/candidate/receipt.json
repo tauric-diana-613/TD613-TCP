@@ -1,0 +1,81 @@
+{
+  "schema": "td613.loom.reentry-browser-witness/v0.2",
+  "status": "PASS",
+  "source_sha": "e6ca876653889cda7766dea46801c6caebe8b91f",
+  "source_tree": "cf27fac03ad5f701e02ec35a071c6bb11f711eaf",
+  "observed_at": "2026-10-02T16:13:42.269Z",
+  "browser": "Chromium",
+  "context": "LOCAL_RENDERED_UI_WITH_SYNTHETIC_FOREIGN_CAPTURES",
+  "live_provider_calls": 0,
+  "human_comprehension_measured": false,
+  "source_bytes": {
+    "app/dome-world/holonomy-loom.html": "eb725f3b6c2091bb6fe7be1e9ab924e7a27c221781501fd9f7565842332745f9",
+    "app/dome-world/holonomy-loom/ai-workspace.js": "3d066ec6eda4f71f65dc5275b9fb1533290baddf6deef1b1c43de22670337a01",
+    "app/dome-world/holonomy-loom/ai-workspace.css": "118d746388b73948e4bceb3d2940e240ae6ade377c198cba4f5e613747a343bf",
+    "app/dome-world/holonomy-loom/reentry-workspace.js": "6de1cc529b893ddd197ed404f893c0b66d85a5e927338811cd7449547fcb362f",
+    "app/dome-world/holonomy-loom/reentry-workspace.css": "0f793123c737f85a94505df363768c70f6ff361f931c189b6cf02584cc783f7a",
+    "app/engine/portable-loom-session.js": "d718813f0e3679a2e0394f2f11c48c5ccbe319fc7a5f769875f11abf3dcf4b27",
+    "app/engine/portable-loom-reentry.js": "78bd11b156d19b71ce4901b9c22b215ca94b72436888a0e9530b56f67b39d3f7",
+    "app/engine/portable-loom-challenge.js": "df0a95cb7e7913a5f7d7dbd797b487770196ec405828899d9bca2ec842f83f0e"
+  },
+  "checks": [
+    {
+      "posture": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "checks": [
+        "collapsed initial disclosure",
+        "two registered tasks",
+        "long task and explicit new source",
+        "malformed inline focus",
+        "stale-anchor HOLD",
+        "check preserves null head",
+        "keyboard acknowledgment and visible consequence",
+        "atomic two-turn admission",
+        "new excursion reanchors and admits",
+        "native descendant challenge",
+        "standalone recovery with clean literal assay",
+        "joined-only recovery with clean marginal probes",
+        "stale green verdict invalidated",
+        "mixed HOLD retains exposure",
+        "bounded receipts and no horizontal overflow",
+        "builder edit preserves custody",
+        "reload recovery explicitly held"
+      ],
+      "status": "PASS"
+    },
+    {
+      "posture": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "checks": [
+        "collapsed initial disclosure",
+        "two registered tasks",
+        "long task and explicit new source",
+        "malformed inline focus",
+        "stale-anchor HOLD",
+        "check preserves null head",
+        "keyboard acknowledgment and visible consequence",
+        "atomic two-turn admission",
+        "new excursion reanchors and admits",
+        "native descendant challenge",
+        "standalone recovery with clean literal assay",
+        "joined-only recovery with clean marginal probes",
+        "stale green verdict invalidated",
+        "mixed HOLD retains exposure",
+        "bounded receipts and no horizontal overflow",
+        "builder edit preserves custody",
+        "reload recovery explicitly held"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "failures": [],
+  "application_matches_commit": false,
+  "source_class": "WORKING_TREE_CANDIDATE",
+  "witness_harness_sha256": "be3a4e0c85c74330ff9e2099425a883336f44f2694124f87e5806a56f9d47673"
+}

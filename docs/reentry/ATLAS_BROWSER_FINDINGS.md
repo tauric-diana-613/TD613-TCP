@@ -61,3 +61,35 @@ Reload visibly loses the prepared browser session. Recovery must remain HELD abs
 - Human comprehension, Golden Egg realization, global latest state or empirical exteriority.
 
 ⟐
+## Independent rendered v0.2 scope witness — 2026-10-02
+
+The local candidate was played independently through rendered Chromium at desktop **1280×900** and mobile **390×844** using `tests/portable-loom-reentry-atlas-browser.mjs`. Final receipt: [atlas-scope-fourth/receipt.json](browser-evidence/atlas-scope-fourth/receipt.json), **PASS / both postures**. Context is synthetic pasted returns on a local static server; provider requests, foreign execution authentication and measured human comprehension remain absent.
+
+The receipt began at saved repository coordinate `2565130edfd1260446d9af3c122336cca820b0c2` with working application changes. Its six targeted application-byte hashes remained stable throughout the accepted witness, and all subsequently matched committed source `e6ca876653889cda7766dea46801c6caebe8b91f`: [source-qualification.json](browser-evidence/atlas-scope-fourth/source-qualification.json). This qualifies the listed application files; it does not fingerprint the entire loaded dependency graph. Production remains the separately governed v0.1 coordinate.
+
+Every contract/technical-record extraction in this witness first opened the actual progressive-disclosure surface and asserted visible rendering. No hidden DOM value supplies these encounter findings.
+
+| Visible route | Desktop and 390px consequence |
+| --- | --- |
+| Register two tasks, first selecting source A and second newly selecting B | Both carried contracts retain the same departure anchor/excursion, with distinct intent and explicit source commitments; admitted head stays absent |
+| Paste a literal canary exposure while the registered excursion is active | Exposure visibly retained in Challenge history; the optional attach box remains clear |
+| Check both returned tasks with that box clear | **HOLD** from registered Challenge status; no ancestor or prefix admitted |
+| Explicitly discard pending tasks and register two fresh tasks | Old exposure remains visibly a **prior registered excursion**; new excursion has a distinct reference under the same departure anchor |
+| Check the newly registered, bound returns | Ready for local admission; historical episode has zero links to this new excursion, without being erased or exonerated |
+| Review consequence, acknowledge by keyboard, then Admit | Two descendants installed; displayed exact record preserves receiver anchor A, local L₁→L₂ parent and distinct result/content predecessor |
+| Prepare and check a bounded clean native Challenge for current L₂ | Challenge refers to L₂; history labels it **anchor only; no future-turn coverage**; head unchanged |
+| Prepare an explicit empty-source continuation | Latest admitted answer travels separately from the new task; no selected body/private challenge key, no pending turn and no head change |
+| Reload | Admitted state disappears; recovery text requires a separate custody witness and grants no imported authority |
+
+The desktop and mobile fixtures produced equal exact admitted-result digests because their synthetic answer/declaration records were equal, while root and admitted-unit identities differed. The second result digest in both postures is `58fce65c0f221d55dfa19da07ff02da6e0847734caf74b5de3bceef5117be919`; desktop L₂ is `00418f72852b829600b73db0cbe948f9fd680453515d2ac51de156a9eba13d40`, while mobile L₂ is `59a53c69386b42e34b4ae75278eefc44e0dd419b9074bce3873013963ac67cd5`. Equality holds only in the retained-content coordinate. It supplies no cross-session ancestry or foreign state identity.
+
+Retained rendered surfaces:
+
+- [Desktop linked-exposure HOLD](browser-evidence/atlas-scope-fourth/desktop-unchecked-exposure-hold.png)
+- [Mobile linked-exposure HOLD](browser-evidence/atlas-scope-fourth/mobile-unchecked-exposure-hold.png)
+- [Desktop prior-versus-anchor-only episode scopes](browser-evidence/atlas-scope-fourth/desktop-episode-scopes.png)
+- [Mobile prior-versus-anchor-only episode scopes](browser-evidence/atlas-scope-fourth/mobile-episode-scopes.png)
+
+The first two attempts are retained in `browser-evidence/atlas-scope-candidate/receipt.json` and `atlas-scope-second/receipt.json`: the witness waited case-sensitively for “exposure” while the product correctly displayed “Exposure observed in this challenge.” The third receipt in `atlas-scope-third/receipt.json` records a premature harness assertion while the visible status still said “Check required.” The witness now waits for asynchronous Check completion and its final bounded verdict. These are corrected witness-script failures, not product verdict failures. The accepted fourth run also guarded targeted source bytes and recorded no page errors or attempted provider/nonlocal requests.
+
+The finite route does not assay every source size, keyboard path, capture channel or reconstruction/joining episode. It establishes the rendered consequences above and the exact retained synthetic relations, not operator comprehension or foreign-policy enforcement.

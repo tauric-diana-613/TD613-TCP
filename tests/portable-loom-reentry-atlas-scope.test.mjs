@@ -239,3 +239,26 @@ test('Atlas private scope archive survives admission while public continuation c
   assert.equal(custodian.inspect().pending_turn_count, 0);
   await assert.rejects(() => custodian.continuation({ task: 'Attempt old source inheritance.', source_ids: [docA.id] }), /HELD_SOURCE_NOT_IN_LATEST_ADMITTED_TURN/);
 });
+
+test('Atlas equal content commitments across sessions do not collapse authenticated local unit identity', async () => {
+  const left = await fixture(), right = await fixture();
+  const events = [];
+  for (const { custodian } of [left, right]) {
+    const excursion = await stage(custodian, 'Identical fictional task and returned content.', [docA]);
+    const candidate = await custodian.check({ returns: [await returned(excursion)], challenge: null });
+    events.push(await custodian.admit(candidate, decision(candidate)));
+  }
+  const [leftUnit, rightUnit] = events.map(event => event.work_units[0]);
+  assert.equal(leftUnit.admitted_result_ref, rightUnit.admitted_result_ref, 'equality established only in exact retained content/declaration coordinate');
+  assert.notEqual(leftUnit.session_root_ref, rightUnit.session_root_ref);
+  assert.notEqual(leftUnit.ref, rightUnit.ref);
+  const leftNext = await stage(left.custodian, 'Next task on the left session only.', []);
+  assert.equal(leftNext.anchor_work_unit_ref, leftUnit.ref);
+  assert.notEqual(leftNext.anchor_work_unit_ref, rightUnit.ref);
+  assert.equal(leftNext.content_predecessor_ref, rightUnit.admitted_result_ref, 'same content digest grants no right-session ancestry');
+  const carrier = await left.custodian.continuation({ task: 'Explicit left-session continuation.', source_ids: [] });
+  assert.equal(carrier.session_root_ref, leftUnit.session_root_ref);
+  assert.equal(carrier.anchor_work_unit_ref, leftUnit.ref);
+  assert.equal(carrier.preceding_result.work_unit_ref, leftUnit.ref);
+  assert.notEqual(carrier.preceding_result.work_unit_ref, rightUnit.ref);
+});

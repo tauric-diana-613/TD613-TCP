@@ -264,7 +264,7 @@ export async function createPortableLoomReentryCustodian(session, packet, option
     catch(error){reason=error.message;}
     const body={...pending,status,reason,verification};delete body.ref;
     const record=freeze({...body,ref:await portableLoomDigest(body,environment)});
-    if(disposed)return freeze({...record,status:'HELD',reason:'CUSTODY_LANE_CLOSED_DURING_CHALLENGE'});
+    if(disposed)return freeze({...record,status:'HELD',reason:'CUSTODY_LANE_CLOSED_DURING_CHALLENGE',ref:null});
     state=freeze({...state,challenge_history:state.challenge_history.map(item=>item.episode_id===episodeId?record:item)});revision++;
     return record;
   }

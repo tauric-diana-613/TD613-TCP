@@ -1,0 +1,23 @@
+{
+  "schema": "td613.atlas.rendered-reentry-scope-witness/v0.2",
+  "status": "HELD",
+  "saved_source_sha": "2565130edfd1260446d9af3c122336cca820b0c2",
+  "evidence_coordinate": "WORKING_TREE_CANDIDATE",
+  "observed_at": "2026-10-02T16:01:43.806Z",
+  "environment": "LOCAL_RENDERED_CHROMIUM_SYNTHETIC_CAPTURES",
+  "live_provider_calls": 0,
+  "foreign_execution_authenticated": false,
+  "human_comprehension_measured": false,
+  "source_bytes": {
+    "app/dome-world/holonomy-loom.html": "eb725f3b6c2091bb6fe7be1e9ab924e7a27c221781501fd9f7565842332745f9",
+    "app/dome-world/holonomy-loom/ai-workspace.js": "bb8b875785f70e102de2b026c51e8b4f38bbd9c4ffcfa6d1fbb6a8ccf336eab0",
+    "app/dome-world/holonomy-loom/reentry-workspace.js": "777f36ab26e40186d3ec7168ea5cfe75c9d35f73bcca494c8980020272f73449",
+    "app/dome-world/holonomy-loom/reentry-workspace.css": "0f793123c737f85a94505df363768c70f6ff361f931c189b6cf02584cc783f7a",
+    "app/engine/portable-loom-reentry.js": "003d9a6efa789c61c8fa1200c3b96412053c068677e63b4b4852ce021797827c",
+    "app/engine/portable-loom-challenge.js": "4901263372bd4abc03c675497e06fa05d7578c1b3f58ebdd4327329f85276832"
+  },
+  "checks": [],
+  "failures": [
+    "page.waitForFunction: Timeout 15000ms exceeded.\n    at captureChallenge (/workspace/scratch/0923e33c670e/TD613-TCP/tests/portable-loom-reentry-atlas-browser.mjs:92:18)\n    at async file:///workspace/scratch/0923e33c670e/TD613-TCP/tests/portable-loom-reentry-atlas-browser.mjs:111:5"
+  ]
+}

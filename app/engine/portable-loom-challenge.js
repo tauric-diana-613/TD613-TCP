@@ -475,7 +475,7 @@ function pedagogueInputHold(challenge) {
   };
 }
 
-function aperturePlan(challenge, verification) {
+function aperturePlan(challenge, verification, sourceRevision) {
   const capturedRefs = verification.capture.captured_channel_ids.map(id => `capture:${id}`);
   const literalRefs = verification.literal_exclusion.hits.map(hit => `literal-hit:${hit.canary_id}:${hit.channel_id}`);
   const probeRefs = verification.protected_reconstruction.probes.filter(item => item.status === 'MEASURED').map(item => `probe:${item.probe_id}`);
@@ -520,7 +520,7 @@ function aperturePlan(challenge, verification) {
   });
   return {
     schema: DOLLHOUSE_WITNESS_PLAN_SCHEMA,
-    source_revision: verification.session_root_ref,
+    source_revision: sourceRevision,
     execution: false,
     claims: [
       claim(
@@ -642,7 +642,7 @@ export async function auditPortableLoomChallengeWithDollhouse(session, unit, bun
   if (verification?.schema !== PORTABLE_LOOM_CHALLENGE_VERIFICATION_SCHEMA) throw new TypeError('Verified receiver challenge required.');
   const challenge = bundle.public_challenge;
   const pedagogue = pedagogueInputHold(challenge);
-  const aperture = auditDollhouseWitnessPlan(aperturePlan(challenge, verification));
+  const aperture = auditDollhouseWitnessPlan(aperturePlan(challenge, verification, session.source_revision));
   const atlas = atlasChallengeReturn(session, unit, verification);
   const fadt = fadtPair(verification);
   const evidenceClass = verification.evidence_class;
@@ -697,7 +697,8 @@ export async function auditPortableLoomChallengeWithDollhouse(session, unit, bun
     dossier_source_revision: {
       declared: session.source_revision,
       exact_git_sha_available: sourceRevisionPinned,
-      status: sourceRevisionPinned ? 'PINNED' : 'HELD_UNPINNED_BROWSER_SOURCE'
+      status: sourceRevisionPinned ? 'DECLARED_GIT_SHA_UNAUTHENTICATED' : 'HELD_UNPINNED_BROWSER_SOURCE',
+      source_authentication: 'UNVERIFIED_BY_THIS_ADAPTER'
     },
     global_verdict: verification.status,
     majority_vote: false,

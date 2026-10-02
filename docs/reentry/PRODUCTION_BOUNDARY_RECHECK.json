@@ -1,0 +1,66 @@
+{
+  "schema": "td613.loom.production-boundary-recheck/v0.1",
+  "observed_at": "2026-10-02T16:04:33.391424+00:00",
+  "main_sha": "de0cbe3589f3f9055061370279d7e41b4ccb980a",
+  "source_packet_sha": "29a4f0fb67be67a62e0eb170f4b5957cbf38cd2d",
+  "historical_release_commit": "dd4684be7410d6d3a3eef561bbfddf041ba5dd5e",
+  "historical_release_receipt": "https://github.com/tauric-diana-613/TD613-TCP/issues/405#issuecomment-5943621661",
+  "current_byte_status": "PASS",
+  "scope": "Six inspected live bytes compared to GitHub-fetched relock; historical deployment-count/stability/provider-call claims belong to the linked #405 receipt, not to this current HTTP sample.",
+  "files": [
+    {
+      "path": "app/dome-world/holonomy-loom.html",
+      "url": "https://td613.com/dome-world/holonomy-loom.html",
+      "http_status": 200,
+      "bytes": 29669,
+      "sha256": "47f23250c668b9fcd02090edd2cf3f81cf0d4913954e64685e8061e0cce8c9f6",
+      "commit_sha256": "47f23250c668b9fcd02090edd2cf3f81cf0d4913954e64685e8061e0cce8c9f6",
+      "match": true
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/ai-workspace.js",
+      "url": "https://td613.com/dome-world/holonomy-loom/ai-workspace.js",
+      "http_status": 200,
+      "bytes": 63248,
+      "sha256": "3cdd00236ac834bb9eb36b567a9eb6c6c9c0189933364c439c5b981e0cc412d2",
+      "commit_sha256": "3cdd00236ac834bb9eb36b567a9eb6c6c9c0189933364c439c5b981e0cc412d2",
+      "match": true
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/ai-workspace.css",
+      "url": "https://td613.com/dome-world/holonomy-loom/ai-workspace.css",
+      "http_status": 200,
+      "bytes": 27623,
+      "sha256": "39fb47648970dfcbb40c0bebb2ef1d181cc683cb8df5b95c7b1a3b7d7c20e44b",
+      "commit_sha256": "39fb47648970dfcbb40c0bebb2ef1d181cc683cb8df5b95c7b1a3b7d7c20e44b",
+      "match": true
+    },
+    {
+      "path": "app/engine/portable-loom-session.js",
+      "url": "https://td613.com/engine/portable-loom-session.js",
+      "http_status": 200,
+      "bytes": 23346,
+      "sha256": "e602c99f67effbc643d6f6393de93ff85d0ced4dd9348036f5dc6df5a5b0541a",
+      "commit_sha256": "e602c99f67effbc643d6f6393de93ff85d0ced4dd9348036f5dc6df5a5b0541a",
+      "match": true
+    },
+    {
+      "path": "app/engine/portable-loom-challenge.js",
+      "url": "https://td613.com/engine/portable-loom-challenge.js",
+      "http_status": 200,
+      "bytes": 33550,
+      "sha256": "d9a061d25f28cca0b7504e7a864334b3786de7e299220c1af5b5725f4bbcb29f",
+      "commit_sha256": "d9a061d25f28cca0b7504e7a864334b3786de7e299220c1af5b5725f4bbcb29f",
+      "match": true
+    },
+    {
+      "path": "app/giving/history/release-source.json",
+      "url": "https://td613.com/giving/history/release-source.json",
+      "http_status": 200,
+      "bytes": 119,
+      "sha256": "33ec1f8f46b59ec8369d7c89abeb087f69d82a7003f2d818b6f7e7f06dbd2041",
+      "commit_sha256": "33ec1f8f46b59ec8369d7c89abeb087f69d82a7003f2d818b6f7e7f06dbd2041",
+      "match": true
+    }
+  ]
+}
