@@ -343,6 +343,37 @@ test('Dollhouse challenge dossier keeps four roles independent and FADT proves p
   assert.match(audit.claim_ceiling.join(' '), /agreement is not evidence multiplication/);
 });
 
+test('browser-unpinned source stays explicitly held in the Dollhouse dossier instead of fabricating a Git SHA', async()=>{
+  const packet = await packetFixture();
+  const session = await createPortableLoomSession(packet, {
+    session_id: 'session_unpinned',
+    source_revision: 'browser-unpinned',
+    created_at: 2000
+  }, environment);
+  const prepared = await createPortableLoomWorkUnit(session, {
+    work_unit_id: 'work_unpinned',
+    request_id: 'request_unpinned',
+    task: 'Continue under the same governance root.',
+    documents: [{ id: 'offer', name: 'Offer.md', text: 'Vendor proposes 14-day retention with export.' }],
+    add_rules: [],
+    withheld_document_count: 2
+  }, environment);
+  const admitted = await admitPortableLoomWorkUnitResult(
+    prepared.session,
+    prepared.work_unit,
+    result('request_unpinned', 'Bounded review complete.', ['offer']),
+    environment
+  );
+  const unit = admitted.session.work_units.at(-1);
+  const bundle = await createPortableLoomReceiverChallenge(admitted.session, unit, challengeSpec({challenge_id:'challenge_unpinned'}), environment);
+  const verification = await verifyPortableLoomReceiverChallenge(bundle, candidate(bundle.public_challenge), capture(), environment);
+  const audit = await auditPortableLoomChallengeWithDollhouse(admitted.session, unit, bundle, verification, environment);
+  assert.equal(audit.dossier, null);
+  assert.equal(audit.dossier_source_revision.declared, 'browser-unpinned');
+  assert.equal(audit.dossier_source_revision.exact_git_sha_available, false);
+  assert.equal(audit.dossier_source_revision.status, 'HELD_UNPINNED_BROWSER_SOURCE');
+});
+
 test('optional finite-channel calculation stays synthetic and earns zero empirical credit', async()=>{
   const { session, work_unit } = await admittedWorkUnit();
   const model = {
