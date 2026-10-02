@@ -188,6 +188,14 @@ The release gate permits one deployment per gesture. Do not bypass it with direc
 
 Source tests and release receipts cannot substitute for a human-facing browser witness. For consequential UI work, exercise the actual route at desktop and approximately 390px, including keyboard/focus movement, scroll, reload/recovery, stale or malformed transfer and the ordinary direct-entry path. Record what the operator can see and what they can reasonably infer. Do not describe a simulated viewport as a physical-device witness.
 
+## Portable Loom returned-work custody
+
+The v0.2 re-entry lane is a live-process local custody operation, separate from v0.1 preparation and foreign receipt declarations. Begin with [the field/relation law](docs/reentry/RELATION_MAP.md), [evidence and HOLDs](docs/reentry/EVIDENCE_AND_HOLDS.md), and [the durable handoff](docs/PORTABLE_LOOM_REENTRY_HANDOFF.md). Registration, Check, Challenge and carrier continuation cannot advance its admitted head. Only an issued exact candidate plus explicit reviewed admission and final head/revision/expiry compare-and-swap can do so. Parsed exports carry review material, not a live custody capability or global fork exclusion.
+
+Retain every captured Challenge attempt in its actual scope. An optional latest attachment cannot erase linked exposure, HOLD or pending qualification. Anchor-only and retired-excursion episodes do not cover future turns. A new-root gesture replaces the active local lane and requires adjacent consequence, private Save opportunity and explicit acknowledgment; builder edits alone preserve it.
+
+Runtime Challenge data lacks a captured operator gesture trace and Portable-AIA semantic field. Keep the corresponding Pedagogue/roundtrip `HELD_INPUT_CLASS`; do not synthesize compatibility inputs. A source SHA-shaped declaration is not source authentication, and a session-root digest is never a source revision. Independent rendered audits may supply their own browser evidence without upgrading the runtime adapter's input class.
+
 ## Pedagogue shortcut
 
 Canonical repository house:

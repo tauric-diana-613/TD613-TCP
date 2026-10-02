@@ -86,6 +86,12 @@ provider response and empirical acquisition retain separate evidence classes.
 
 ## Downloadable source kit
 
+### Portable Loom re-entry collaboration
+
+The returned-work lane uses independent encounters, evidence audits, relation maps and finite erasure counterexamples. [The re-entry handoff](docs/PORTABLE_LOOM_REENTRY_HANDOFF.md) records their actual inputs and findings; [the success coordinates](docs/reentry/SUCCESS_COORDINATES.md) link the custody law and witnesses. A browser-observed route and a runtime adapter's missing input class remain different coordinates. Runtime Challenge data supplies no captured operator gesture trace and no Portable-AIA semantic field: Pedagogue and the roundtrip adapter retain explicit `HELD_INPUT_CLASS`. An independent Pedagogue browser witness does not retroactively manufacture that absent input.
+
+Retain disagreement and veto repair as separate source/time-bound findings. The case-dossier clerk checks neither referenced bytes nor upstream authenticity; a separately recorded byte check qualifies artifact integrity only. No role count, unanimous verdict, local ancestry advance or recorded route creates foreign enforcement or empirical exteriority evidence.
+
 The real discoverable shortcut is [`dollhouse/`](dollhouse/README.md). Canonical
 implementations remain in their existing locations; the exporter assembles their
 static dependency closure and a revision-bound SHA256 manifest.

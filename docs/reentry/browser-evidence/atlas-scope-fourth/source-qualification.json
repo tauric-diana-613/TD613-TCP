@@ -1,0 +1,47 @@
+{
+  "schema": "td613.atlas.browser-source-qualification/v0.1",
+  "status": "PASS",
+  "exact_source_sha": "e6ca876653889cda7766dea46801c6caebe8b91f",
+  "witness_receipt": "receipt.json",
+  "witness_receipt_sha256": "c1360a1ebf9d188592882492adf7060ce960097f0a52825d3b8a4fe45ad49797",
+  "scope": "SIX_TARGETED_APPLICATION_FILES_IN_WITNESS_RECEIPT",
+  "full_dependency_graph_bytes_claimed": false,
+  "files": [
+    {
+      "path": "app/dome-world/holonomy-loom.html",
+      "observed_sha256": "eb725f3b6c2091bb6fe7be1e9ab924e7a27c221781501fd9f7565842332745f9",
+      "committed_sha256": "eb725f3b6c2091bb6fe7be1e9ab924e7a27c221781501fd9f7565842332745f9",
+      "match": true
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/ai-workspace.js",
+      "observed_sha256": "3d066ec6eda4f71f65dc5275b9fb1533290baddf6deef1b1c43de22670337a01",
+      "committed_sha256": "3d066ec6eda4f71f65dc5275b9fb1533290baddf6deef1b1c43de22670337a01",
+      "match": true
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/reentry-workspace.js",
+      "observed_sha256": "6de1cc529b893ddd197ed404f893c0b66d85a5e927338811cd7449547fcb362f",
+      "committed_sha256": "6de1cc529b893ddd197ed404f893c0b66d85a5e927338811cd7449547fcb362f",
+      "match": true
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/reentry-workspace.css",
+      "observed_sha256": "0f793123c737f85a94505df363768c70f6ff361f931c189b6cf02584cc783f7a",
+      "committed_sha256": "0f793123c737f85a94505df363768c70f6ff361f931c189b6cf02584cc783f7a",
+      "match": true
+    },
+    {
+      "path": "app/engine/portable-loom-reentry.js",
+      "observed_sha256": "6981ca094b2b8b69d9927a255a8ba4264cfb7c6527e42b6c40d1107c24488a7b",
+      "committed_sha256": "6981ca094b2b8b69d9927a255a8ba4264cfb7c6527e42b6c40d1107c24488a7b",
+      "match": true
+    },
+    {
+      "path": "app/engine/portable-loom-challenge.js",
+      "observed_sha256": "4901263372bd4abc03c675497e06fa05d7578c1b3f58ebdd4327329f85276832",
+      "committed_sha256": "4901263372bd4abc03c675497e06fa05d7578c1b3f58ebdd4327329f85276832",
+      "match": true
+    }
+  ]
+}

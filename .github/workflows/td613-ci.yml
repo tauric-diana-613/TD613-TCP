@@ -971,6 +971,18 @@ jobs:
             tests/fixtures/pedagogue/marrowline-loom-two-stage-practice.json
           node scripts/run-pedagogue-design-gate.mjs \
             tests/fixtures/pedagogue/loom-native-marrowline-design.json
+      - name: Portable Loom returned-work hostile custody contracts
+        if: steps.layout_scope.outputs.changed == 'true'
+        run: |
+          node --test tests/portable-loom-session-challenge.test.mjs \
+            tests/portable-loom-reentry-*.test.mjs \
+            tests/portable-loom-challenge-dollhouse-boundaries.test.mjs \
+            tests/pedagogue-reentry-staging.test.mjs
+      - name: Portable Loom returned-work desktop and 390px witness
+        if: steps.layout_scope.outputs.changed == 'true'
+        env:
+          TD613_REENTRY_ARTIFACT_DIR: artifacts/loom-reentry
+        run: node tests/portable-loom-reentry.browser.mjs
       - name: Offline Holonomy Loom portable-governance witness
         if: steps.layout_scope.outputs.changed == 'true'
         env:
@@ -993,6 +1005,7 @@ jobs:
           path: |
             artifacts/marrowline-layout
             artifacts/loom-portable-governance
+            artifacts/loom-reentry
 
 
   gemini_observation:

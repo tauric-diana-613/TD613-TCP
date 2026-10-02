@@ -1,0 +1,147 @@
+{
+  "schema": "td613.loom.reentry-final-validation/v0.3",
+  "implemented_source_sha": "a9f89a980adeba30046acea2b13187a6b4d271cc",
+  "implemented_tree_sha": "0c328a6ea42b45beef432909920647533b8cf849",
+  "source_validation": {
+    "github_run_id": 37038296667,
+    "github_run_url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/37038296667",
+    "conclusion": "success",
+    "event": "pull_request",
+    "exact_head": true,
+    "returned_work_contracts": {
+      "passed": 150,
+      "failed": 0
+    },
+    "executed_jobs": [
+      "Static, constitutional, and release contracts",
+      "Offline Marrowline layout regression"
+    ],
+    "executed_browser_steps": [
+      "Portable Loom returned-work desktop and 390px witness",
+      "Offline Holonomy Loom portable-governance witness",
+      "Offline browser layout witness"
+    ],
+    "skipped_are_not_claimed": [
+      "explicit full-repository validation",
+      "full-product exact-head browser estate",
+      "credential-scoped Gemini model observation",
+      "self-hosted calibration",
+      "synthetic Hush custody pilot"
+    ]
+  },
+  "actions_artifact": {
+    "artifact_id": 11240589061,
+    "name": "bounded-layout-a9f89a980adeba30046acea2b13187a6b4d271cc",
+    "digest": "sha256:baddc100aaa42aa1770b08cb1c0a790de68c56ea1d94294d2f6930cf045c1aa7",
+    "size_in_bytes": 15968711,
+    "expires_at": "2026-12-31T17:05:01Z",
+    "loom_reentry_receipt_sha256": "fb065e4e781a85b7cca2886ab0638080c88ca3297f25de48417bcd2892c2ed78",
+    "portable_governance_receipt_sha256": "ada6f57553df5d187d200593216370216724cdc89818709724a5271f8694457e"
+  },
+  "browser_witness": {
+    "schema": "td613.loom.reentry-browser-witness/v0.2",
+    "status": "PASS",
+    "source_sha": "a9f89a980adeba30046acea2b13187a6b4d271cc",
+    "source_tree": "0c328a6ea42b45beef432909920647533b8cf849",
+    "observed_at": "2026-10-02T17:06:25.195Z",
+    "browser": "Chromium",
+    "context": "LOCAL_RENDERED_UI_WITH_SYNTHETIC_FOREIGN_CAPTURES",
+    "live_provider_calls": 0,
+    "human_comprehension_measured": false,
+    "application_matches_commit": true,
+    "source_class": "EXACT_COMMITTED_APPLICATION_BYTES",
+    "source_bytes": {
+      "app/dome-world/holonomy-loom.html": "eb725f3b6c2091bb6fe7be1e9ab924e7a27c221781501fd9f7565842332745f9",
+      "app/dome-world/holonomy-loom/ai-workspace.js": "77bbdc7f717eedbafdfc4379f26edaa0a332283946e5c0ec8e02a25e321139e4",
+      "app/dome-world/holonomy-loom/ai-workspace.css": "118d746388b73948e4bceb3d2940e240ae6ade377c198cba4f5e613747a343bf",
+      "app/dome-world/holonomy-loom/reentry-workspace.js": "6de1cc529b893ddd197ed404f893c0b66d85a5e927338811cd7449547fcb362f",
+      "app/dome-world/holonomy-loom/reentry-workspace.css": "0f793123c737f85a94505df363768c70f6ff361f931c189b6cf02584cc783f7a",
+      "app/engine/portable-loom-session.js": "d718813f0e3679a2e0394f2f11c48c5ccbe319fc7a5f769875f11abf3dcf4b27",
+      "app/engine/portable-loom-reentry.js": "32e06541343c30b61005f299a20d134bd07cd3c7f7852c0454f239323abf34e5",
+      "app/engine/portable-loom-challenge.js": "df0a95cb7e7913a5f7d7dbd797b487770196ec405828899d9bca2ec842f83f0e"
+    },
+    "postures": [
+      {
+        "name": "desktop",
+        "viewport": {
+          "width": 1280,
+          "height": 900
+        },
+        "status": "PASS"
+      },
+      {
+        "name": "mobile",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "status": "PASS"
+      }
+    ],
+    "failures": []
+  },
+  "portable_governance_witness": {
+    "status": "PASS",
+    "source_sha": "a9f89a980adeba30046acea2b13187a6b4d271cc",
+    "checkout_sha": "a9f89a980adeba30046acea2b13187a6b4d271cc",
+    "working_tree_dirty": false,
+    "context": "REAL_LOCAL_UI_WITH_MOCK_PROVIDER_RESPONSE",
+    "live_provider_calls": 0,
+    "intercepted_task_requests": 4,
+    "human_comprehension_measured": false,
+    "desktop": "PASS",
+    "mobile_reduced": "PASS",
+    "runtime_errors": 0
+  },
+  "adversarial_review": {
+    "reviewer_mode": "SINGLE_REVIEWER_ROLE_BASED_ANALYSIS",
+    "prior_independent_role_findings_relabelled": false,
+    "defect_found": "Direct Check accepted an attached Challenge that had not first entered current-excursion challenge_history, permitting an adverse unretained attachment to be omitted before a later clean direct attachment.",
+    "repair": "Any non-null attached Challenge must match exact retained evidence for the active excursion; otherwise Check adds UNREGISTERED_ATTACHED_CHALLENGE and cannot issue an admission capability.",
+    "regression": "adverse direct attachment -> later clean direct attachment remains HELD; retained clean attachment remains usable only after recordChallenge",
+    "application_bytes_changed_from_prior_source": true
+  },
+  "historical_source_validation": {
+    "implemented_source_sha": "7f7008f99ce8dd563ce31c34e2ff3d6bf76d9f8c",
+    "implemented_tree_sha": "e69ef180e065ff426b77c0b7a410bff58cf5ff92",
+    "github_run_id": 37035683376,
+    "final_evidence_head": "dbf1a7630c3d2630f9bd3c5485e5b9aada0a9970",
+    "evidence_head_run_id": 37036344757,
+    "status": "HISTORICAL_AFTER_APPLICATION_BYTE_CHANGE"
+  },
+  "production_boundary": {
+    "inherited_source_sha": "29a4f0fb67be67a62e0eb170f4b5957cbf38cd2d",
+    "inherited_release_sha": "dd4684be7410d6d3a3eef561bbfddf041ba5dd5e",
+    "main_relock_sha": "de0cbe3589f3f9055061370279d7e41b4ccb980a",
+    "issue_737_merge_authority": 0,
+    "issue_737_405_release_authority": 0,
+    "issue_737_vercel_deployment_authority": 0,
+    "merge_gestures_in_chat_review": 0,
+    "deployment_gestures_in_chat_review": 0,
+    "live_provider_calls_in_chat_review": 0,
+    "issue_405_unchanged": true
+  },
+  "held": [
+    "authenticated foreign execution and enforcement",
+    "semantic obedience and exhaustive source use",
+    "hidden retention/training/memory/unobserved retransmission",
+    "human comprehension",
+    "physical-device behavior",
+    "authoritative restored/exported custody",
+    "global fork exclusion / globally latest state",
+    "operator-bound capture beyond current local supplied capture class",
+    "runtime Pedagogue gesture trace where absent",
+    "runtime Portable-AIA semantic-field object where absent",
+    "exteriority and Golden Egg realization"
+  ],
+  "claim_ceiling": [
+    "REVALIDATION != ADMISSION",
+    "ADMISSION != PROOF_OF_FOREIGN_ENFORCEMENT",
+    "TURN_RECEIPT_MATCH != AUTHENTICATED_FOREIGN_ANCESTRY",
+    "SESSION_CONTINUITY != CONTENT_CONTINUITY",
+    "ROUTE_RETURN != STATE_IDENTITY",
+    "DOLLHOUSE_ROLE_AGREEMENT != EVIDENCE_MULTIPLICATION",
+    "ANOTHER_TRANSFORMATION_F(A) != EXOGENOUS_WITNESS"
+  ],
+  "decision": "SOURCE_CANDIDATE_GREEN_WITHIN_LOCAL_CUSTODY_SCOPE; HUMAN_REVIEW_REQUIRED; MERGE_HELD; RELEASE_HELD"
+}

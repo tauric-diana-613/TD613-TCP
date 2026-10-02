@@ -16,6 +16,8 @@ Golden Egg remains UNEARNED: its inherited standard requires L≤0.5 bits, R≤0
 
 ## Scope and verification
 
+The Portable Loom re-entry implementation and independent browser/hostile findings are indexed in [the working handoff](../../docs/PORTABLE_LOOM_REENTRY_HANDOFF.md). They are new bounded runtime/research records, separate from the 678 selected archival originals below. Their appearance does not modify the pinned catalogue, promote unmerged source estates, prove foreign enforcement or complete the Western Horizon/Golden Egg empirical acquisition contract.
+
 [source-records.json](source-records.json) records commit, original path/blob, byte count and SHA-256 for every copy. The selected families are not a full dependency closure. Each snapshot also links its full immutable repository archive. Historical evaluators/tests are documents here, not installed or executed research. The original Aperture essays are not supplied in full by the embedded excerpts; this index does not invent them.
 
 ## fadt-752
