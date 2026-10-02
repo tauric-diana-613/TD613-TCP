@@ -636,10 +636,19 @@ export async function auditPortableLoomChallengeWithDollhouse(session, unit, bun
     majority_vote: false,
     evidence_class_promotion: false,
     hidden_host_internals_claimed_observed: false,
+    subagent_coverage: [
+      { id:'pedagogue-gesture-consequence', status:'EXECUTED', input_class:'instrumented challenge state transitions' },
+      { id:'aperture-witness-plan', status:'EXECUTED', input_class:'bounded challenge claims and captured horizon' },
+      { id:'atlas-continuity-audit', status:'EXECUTED', input_class:'portable session/work-unit references and controls' },
+      { id:'fadt-stage-audit', status:'EXECUTED', input_class:'finite occupied challenge stages and action support' },
+      { id:'dollhouse-case-dossier', status:dossier?'EXECUTED':'HELD_UNPINNED_SOURCE', input_class:'four role findings with exact source revision requirement' },
+      { id:'dollhouse-portable-aia-roundtrip', status:'HELD_INPUT_CLASS', input_class:'requires td613.loom.semantic-field/v0.1; Portable Session v0.1 does not fabricate one' }
+    ],
     claim_ceiling: [
       ...challengeCeiling(),
       'Dollhouse findings remain independently scoped; agreement is not evidence multiplication',
-      'role consensus cannot promote a provider response or browser witness into external-origin proof'
+      'role consensus cannot promote a provider response or browser witness into external-origin proof',
+      'a subagent outside its admitted input class is held rather than fed a fabricated compatibility object'
     ]
   });
 }
