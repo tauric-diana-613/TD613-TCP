@@ -393,6 +393,20 @@ test('unacknowledged new-root preparation and provider test preserve the active 
   assert.equal(h.$('[data-loom-reentry="root"]').title,before);
   assert.equal(h.$('[data-loom-reentry="technical"]').textContent,record);
 });
+test('a task registered after new-root acknowledgment revokes replacement consent',async t=>{
+  const h=harness(t);h.load();h.$('#aiPreparePortable').click();await h.settled();
+  const before=h.$('[data-loom-reentry="root"]').title;
+  chooseNewRoot(h);
+  h.change('[data-loom-reentry="task"]','A pending task registered after replacement acknowledgment.');
+  h.$('[data-loom-reentry="stage"]').click();
+  await until(()=>h.$('[data-loom-reentry="turns"]').children.length===1,'new pending registration');
+  h.$('#aiPreparePortable').click();await h.settled();
+  assert.match(h.$('#aiStatus').textContent,/HOLD.*new-root/);
+  assert.equal(h.$('#aiNewRootConfirm').checked,false);
+  assert.equal(h.$('[data-loom-reentry="root"]').title,before);
+  assert.equal(h.$('[data-loom-reentry="turns"]').children.length,1);
+  assert.equal(h.calls.length,0);
+});
 test('editing a captured Challenge during qualification cannot restore its old clean verdict',async t=>{
   const h=harness(t);h.load();h.$('#aiPreparePortable').click();await h.settled();
   h.change('#aiChallengeCanary','FICTIONAL_ASYNC_CANARY');h.$('#aiPrepareChallenge').click();

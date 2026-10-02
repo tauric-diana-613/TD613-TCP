@@ -107,9 +107,19 @@ try{
     const layout=await page.evaluate(()=>({viewport:innerWidth,document:document.documentElement.scrollWidth,pre:[...document.querySelectorAll('.loom-reentry pre')].map(e=>({height:e.getBoundingClientRect().height,max:getComputedStyle(e).maxHeight}))}));
     assert.ok(layout.document<=layout.viewport+1,JSON.stringify(layout));assert.ok(layout.pre.every(p=>p.height<=420));
     await page.locator('#aiTask').fill('Edited builder task must not destroy admitted history.');assert.equal(await head(),finalHead);
+    await r('task').fill('Pending task registered before replacement review.');await r('stage').click();
+    await page.waitForFunction(()=>document.querySelector('[data-loom-reentry="turns"]').children.length===1);
+    await page.locator('#aiNewRootConfirm').check();
+    await r('task').fill('Additional pending task registered after replacement review.');await r('stage').click();
+    await page.waitForFunction(()=>document.querySelector('[data-loom-reentry="turns"]').children.length===2);
+    await page.locator('#aiPreparePortable').click();
+    assert.match(await page.locator('#aiStatus').textContent(),/HOLD.*new-root/);
+    assert.equal(await page.locator('#aiNewRootConfirm').isChecked(),false);assert.equal(await head(),finalHead);
+    assert.equal(await page.evaluate(()=>document.activeElement?.id),'aiNewRootNotice');
+    await page.locator('#aiNewRootNotice').screenshot({path:`${dir}/${posture}-stale-replacement-hold.png`});
     await page.reload();assert.equal(await head(),'No admitted descendant.');assert.match(await r('recovery').textContent(),/separate custody witness/);
     assert.deepEqual(errors,[]);assert.deepEqual(posts,[]);
-    report.checks.push({posture,viewport,checks:['collapsed initial disclosure','two registered tasks','long task and explicit new source','malformed inline focus','stale-anchor HOLD','check preserves null head','keyboard acknowledgment and visible consequence','atomic two-turn admission','new excursion reanchors and admits','native descendant challenge','standalone recovery with clean literal assay','joined-only recovery with clean marginal probes','stale green verdict invalidated','mixed HOLD retains exposure','bounded receipts and no horizontal overflow','builder edit preserves custody','reload recovery explicitly held'],status:'PASS'});
+    report.checks.push({posture,viewport,checks:['collapsed initial disclosure','two registered tasks','long task and explicit new source','malformed inline focus','stale-anchor HOLD','check preserves null head','keyboard acknowledgment and visible consequence','atomic two-turn admission','new excursion reanchors and admits','native descendant challenge','standalone recovery with clean literal assay','joined-only recovery with clean marginal probes','stale green verdict invalidated','mixed HOLD retains exposure','bounded receipts and no horizontal overflow','builder edit preserves custody','pending registration revokes new-root acknowledgment','reload recovery explicitly held'],status:'PASS'});
     await page.close();
   }
   report.status='PASS';
