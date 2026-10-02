@@ -1,4 +1,5 @@
 import { mountLivingGeometry } from './holonomy-loom/living-geometry.js';
+import { installMarrowlineReadingSurface } from './marrowline-reading-surface.js';
 import {
   MARROWLINE_ATTACHMENT_CHANGE_EVENT,
   attachmentState
@@ -281,6 +282,10 @@ export function installMarrowlineLivingChat(doc = document, environment = window
         const meta = integrated.querySelector('.relay-stage-head small');
         if (meta) meta.textContent = 'integrated transmission';
         card.append(integrated);
+        // Derive a professional reading layer without mutating the canonical
+        // provider-return node used by custody, receipts, copy, follow-up and
+        // morphology witnesses.
+        installMarrowlineReadingSurface(integrated, environment);
       }
       // The footer contains only the disclosure. Branching is reply-local
       // inside More with this reply, alongside the other actions.
