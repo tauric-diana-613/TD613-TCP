@@ -1,0 +1,86 @@
+{
+  "schema": "td613.held-out-defect-localization-preregistration/v0.12",
+  "date": "2026-09-15",
+  "state": "PREREGISTERED_BEFORE_V012_EVALUATOR_IMPLEMENTATION",
+  "classifier_freeze": {
+    "path": "tests/helpers/phase5-role-typed-adjudicator-v011.mjs",
+    "git_blob_sha": "43467c059a29527bedd9e39ddd5f03bb70d12f56",
+    "commit_sha": "81469b0360c7c8b2d1587708a3ed8eba5eca6f65",
+    "input_ceiling": ["ash", "flow", "roundTrip", "routeScope", "options"],
+    "forbidden_classifier_inputs": ["condition_code", "replicate", "expected_terminal", "expected_localization"]
+  },
+  "schedule": {
+    "replicates_per_condition": 12,
+    "condition_count": 6,
+    "total_instances": 72,
+    "defect_instances": 60,
+    "order_law": "FOR_EACH_REPLICATE_ASCENDING_THEN_CONDITIONS_IN_DECLARED_ORDER",
+    "conditions": [
+      {
+        "condition_code": "C0_VALID",
+        "expected_terminal": "PROCEED",
+        "expected_localization": "VALID_HANDOFF",
+        "mutation_recipe": "NO_MUTATION_UNIQUE_NONEMPTY_ROUTE_SCOPE"
+      },
+      {
+        "condition_code": "C1_ASH",
+        "expected_terminal": "HOLD",
+        "expected_localization": "ASH_CUSTODY_INTEGRITY",
+        "mutation_recipe": "MUTATE_ASH_MANIFEST_ARTIFACT_ID_AFTER_RECEIPT_DIGEST_WITH_REPLICATE_SUFFIX"
+      },
+      {
+        "condition_code": "C2_FLOW",
+        "expected_terminal": "HOLD",
+        "expected_localization": "FLOWCORE_CONTEXT_ADMISSIBILITY",
+        "mutation_recipe": "SET_FLOWCORE_ARTIFACT_REFERENCE_TO_REPLICATE_SCOPED_FORBIDDEN_REFERENCE"
+      },
+      {
+        "condition_code": "C3_SCHEMA",
+        "expected_terminal": "HOLD",
+        "expected_localization": "APERTURE_ROUNDTRIP_SCHEMA",
+        "mutation_recipe": "REPLACE_ROUNDTRIP_SCHEMA_WITH_REPLICATE_SCOPED_UNSUPPORTED_SCHEMA"
+      },
+      {
+        "condition_code": "C4_REPLAY",
+        "expected_terminal": "HOLD",
+        "expected_localization": "APERTURE_ROUNDTRIP_REPLAY",
+        "mutation_recipe": "MUTATE_ROUNDTRIP_EMBEDDED_CONTEXT_MISSINGNESS_AFTER_ROUNDTRIP_DIGEST_WITH_REPLICATE_SUFFIX"
+      },
+      {
+        "condition_code": "C5_ROUTE",
+        "expected_terminal": "HOLD",
+        "expected_localization": "PHASE5_RELATION_COMPOSITION",
+        "mutation_recipe": "SET_ROUTE_SCOPE_TO_WHITESPACE_ONLY_REPLICATE_LENGTH"
+      }
+    ]
+  },
+  "evaluation": {
+    "binary_metric": "ACCEPT_REJECT_ACCURACY",
+    "localization_metric": "DEFECT_LOCALIZATION_ACCURACY_ON_HOLD_ROWS_ONLY",
+    "interval": "WILSON_SCORE_95_PERCENT",
+    "z": 1.959963984540054,
+    "pass_criteria": {
+      "collapsed_binary_accuracy_min": 0.95,
+      "role_typed_binary_accuracy_min": 0.95,
+      "binary_accuracy_absolute_delta_max": 0.05,
+      "collapsed_localization_accuracy_max": 0.10,
+      "role_typed_localization_accuracy_min": 0.90,
+      "require_role_localization_wilson_lower_gt_collapsed_localization_wilson_upper": true
+    }
+  },
+  "blinding": {
+    "adjudicator_receives_expected_labels": false,
+    "adjudicator_receives_condition_code": false,
+    "mutation_application_precedes_adjudication": true,
+    "expected_labels_joined_only_after_prediction": true
+  },
+  "claim_ceiling": [
+    "AUTHORED_REPOSITORY_PREREGISTRATION_ONLY",
+    "NOT_EXTERNAL_EMPIRICAL_VALIDATION",
+    "NOT_DEPLOYED_LLM_MEASUREMENT",
+    "NOT_FIELD_NOVELTY",
+    "NOT_TRUTH_OR_EXTERNALITY_AUTHORITY"
+  ],
+  "human_closure_required": true,
+  "scientific_promotion_authority": false
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "td613.eclipse-omega-foundational-paper-sieve-count-correction/v0.5.1",
+  "date": "2026-09-11",
+  "parent_receipt": "2026-09-11-eclipse-omega-foundational-paper-sieve-v05.json",
+  "state": "APPEND_ONLY_COUNT_CORRECTION",
+  "correction": {
+    "field": "counts.claim_rows",
+    "recorded_value": 22,
+    "correct_value": 23,
+    "basis": "The claim_matrix contains 23 distinct claim rows; ABSENCE_LEDGER is the twenty-third row."
+  },
+  "laws": [
+    "RECEIPT_ERROR != SCIENTIFIC_RESULT",
+    "CORRECTION_SHOULD_PRESERVE_AUDIT_TRAIL",
+    "FAILED_ASSERTION != CLAIM_FAILURE"
+  ],
+  "authority": {
+    "scientific_promotion": false,
+    "claim_verdict_change": false,
+    "copying_or_plagiarism_adjudication": false,
+    "deployment": false,
+    "human_closure_required": true
+  }
+}

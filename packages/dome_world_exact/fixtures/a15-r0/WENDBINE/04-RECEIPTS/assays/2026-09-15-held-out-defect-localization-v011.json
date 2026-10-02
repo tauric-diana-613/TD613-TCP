@@ -1,0 +1,54 @@
+{
+  "schema": "td613.held-out-defect-localization/v0.11",
+  "date": "2026-09-15",
+  "state": "SOURCE_BOUND_HELD_OUT_DEFECT_MATRIX_ZERO_NOVELTY_PROMOTION",
+  "question": "On defects not used in v0.10's three-world construction, does role-typed stage-local adjudication improve defect localization beyond a collapsed terminal-only classifier without changing accept/reject accuracy?",
+  "training_worlds_excluded": [
+    "FLOWCORE_AUTHORITY_BREACH",
+    "CROSS_FAMILY_REFERENCE_MISMATCH",
+    "APERTURE_JURISDICTION_BREACH"
+  ],
+  "held_out_matrix": [
+    {"id":"VALID_CONTROL","expected_terminal":"PROCEED","expected_localization":"VALID_HANDOFF"},
+    {"id":"ASH_DIGEST_TAMPER","expected_terminal":"HOLD","expected_localization":"ASH_CUSTODY_INTEGRITY"},
+    {"id":"FLOWCORE_ARTIFACT_BLINDNESS_BREACH","expected_terminal":"HOLD","expected_localization":"FLOWCORE_CONTEXT_ADMISSIBILITY"},
+    {"id":"APERTURE_SCHEMA_BREACH","expected_terminal":"HOLD","expected_localization":"APERTURE_ROUNDTRIP_SCHEMA"},
+    {"id":"APERTURE_REPLAY_FAILURE","expected_terminal":"HOLD","expected_localization":"APERTURE_ROUNDTRIP_REPLAY"},
+    {"id":"PHASE5_ROUTE_CONTRACT_FAILURE","expected_terminal":"HOLD","expected_localization":"PHASE5_RELATION_COMPOSITION"}
+  ],
+  "scores": {
+    "case_count": 6,
+    "defect_case_count": 5,
+    "collapsed_terminal_accept_reject_accuracy": 1.0,
+    "role_typed_accept_reject_accuracy": 1.0,
+    "collapsed_defect_localization_accuracy": 0.0,
+    "role_typed_defect_localization_accuracy": 1.0,
+    "accept_reject_accuracy_delta": 0.0,
+    "defect_localization_accuracy_delta": 1.0
+  },
+  "interpretation": "On this bounded authored held-out matrix, stage-local role typing adds defect-localization resolution while preserving the same binary accept/reject decisions. This is a repository-local diagnostic result, not a deployed-system or field-generalization claim.",
+  "laws": [
+    "ACCEPT_REJECT_ACCURACY != DEFECT_LOCALIZATION_ACCURACY",
+    "SAME_BINARY_DECISION != SAME_ADJUDICATION_RESOLUTION",
+    "HELD_OUT_AUTHORED_MATRIX != EXTERNAL_EMPIRICAL_VALIDATION",
+    "LOCALIZATION_GAIN != TRUTH_GAIN",
+    "LOCALIZATION_GAIN != SCIENTIFIC_OPERATOR_PROMOTION",
+    "INTEGRITY_DEFECT != AUTHORITY_DEFECT",
+    "SCHEMA_DEFECT != REPLAY_DEFECT",
+    "COMPONENT_VALIDITY != COMPOSITION_VALIDITY"
+  ],
+  "verdict": "ROLE_TYPED_BOUNDARIES_EARN_BOUNDED_DIAGNOSTIC_VALUE_WHEN_THEY_IMPROVE_HELD_OUT_DEFECT_LOCALIZATION_WITHOUT_CHANGING_BINARY_DISPOSITION",
+  "next_test": "Blind the defect labels before adjudication and generate the held-out mutation schedule from a preregistered matrix independent of the classifier implementation; then estimate localization performance with confidence intervals across repeated mutation instances.",
+  "authority": {
+    "scientific_promotion": false,
+    "field_novelty": false,
+    "deployed_llm_architecture_inference": false,
+    "externality_inference": false,
+    "empirical_generalization": false,
+    "monitoring_or_causal_link_inferred": false,
+    "copying_or_plagiarism_adjudication": false,
+    "deployment": false,
+    "vercel": false,
+    "human_closure_required": true
+  }
+}
