@@ -8,6 +8,7 @@ import { inspectLoomAiResponse } from '../dome-world/holonomy-loom/ai-intake.js'
 export const PORTABLE_LOOM_SESSION_SCHEMA = 'td613.loom.portable-session/v0.1';
 export const PORTABLE_LOOM_WORK_UNIT_SCHEMA = 'td613.loom.portable-session-work-unit/v0.1';
 export const PORTABLE_LOOM_SESSION_EVENT_SCHEMA = 'td613.loom.portable-session-event/v0.1';
+export const PORTABLE_LOOM_SESSION_EXPORT_SCHEMA = 'td613.loom.portable-session-export/v0.1';
 
 const encoder = new TextEncoder();
 const HEX64 = /^[a-f0-9]{64}$/;
@@ -321,6 +322,54 @@ export async function admitPortableLoomWorkUnitResult(sessionInput, workUnitInpu
     inspection,
     session: next
   });
+}
+
+export async function createPortableLoomSessionExport(sessionInput, packet, environment = globalThis) {
+  const session = validateSession(sessionInput);
+  const payload = portablePayload(packet);
+  await verifyLoomAiGovernance(payload, environment);
+  const packetDigest = await portableLoomDigest(packet, environment);
+  if (packetDigest !== session.root.packet_digest) throw new Error('Portable task does not match this session root.');
+  return freeze({
+    schema: PORTABLE_LOOM_SESSION_EXPORT_SCHEMA,
+    session,
+    portable_task: clone(packet),
+    continuation_protocol: {
+      inheritance: 'INHERIT_BY_DEFAULT',
+      policy_weakening: 'FRESH_SESSION_REQUIRED_V0_1',
+      proceeding_task_rule: 'Every proceeding task inherits the root portable rules unless a new Loom session is explicitly created.',
+      source_rule: 'New source bodies are explicit per work unit; prior source bodies are not silently inherited merely because governance persists.',
+      predecessor_rule: 'Work-unit ancestry and admitted-content ancestry remain separate and must both stay inspectable.',
+      receiver_rule: 'Receiver acknowledgements are declarations; Loom verification is required before they become evidence.'
+    },
+    challenge_protocol: {
+      available: true,
+      public_private_split: true,
+      public_challenge_contains_ground_truth: false,
+      local_verifier_required: true,
+      receiver_self_report_is_proof: false
+    },
+    claim_ceiling: [
+      ...session.claim_ceiling,
+      'this export carries a persistent governance protocol; it does not install hidden middleware inside a foreign host',
+      'foreign-thread continuation remains claim-limited until returned work units or challenges are brought back through Loom verification'
+    ]
+  });
+}
+
+export function createPortableLoomSessionPrompt(sessionExport) {
+  if (!sessionExport || sessionExport.schema !== PORTABLE_LOOM_SESSION_EXPORT_SCHEMA) throw new TypeError('Portable Loom Session export required.');
+  return [
+    'You are receiving a TD613 Portable Loom Session.',
+    'Treat the session root and portable rules as persistent governance for every proceeding task in this thread.',
+    'A new user task changes the work objective; it does not erase the root rules.',
+    'Do not silently inherit source bodies from an earlier task unless they are explicitly supplied or named as continuing inputs.',
+    'Keep work-unit ancestry separate from content-predecessor ancestry.',
+    'Do not claim that your own acknowledgement proves enforcement, secrecy, retention, training behavior, or hidden memory state.',
+    'When a Challenge Receiver packet appears, answer only its declared probes and preserve its exact session/work-unit/policy references.',
+    '',
+    JSON.stringify(sessionExport, null, 2)
+  ].join('\n');
 }
 
 export function inspectPortableLoomSession(sessionInput) {
