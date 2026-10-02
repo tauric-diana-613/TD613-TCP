@@ -52,6 +52,21 @@ function string(value, label, max=12000){if(typeof value!=='string' || !value.tr
 function strings(value,label,max=16){data(value,label);if(!Array.isArray(value)||value.length>max||value.some(item=>typeof item!=='string'||!item.trim()||item.length>1000)||new Set(value).size!==value.length)throw new TypeError(`${label} must be unique bounded strings.`);return value;}
 async function same(a,b,environment){return await portableLoomDigest(a,environment)===await portableLoomDigest(b,environment);}
 
+async function qualifyChallenge(evidence, scope, environment) {
+  exact(evidence,['bundle','candidate','capture'],'captured challenge evidence');
+  const bundle=evidence.bundle;
+  const publicBody={...bundle.public_challenge};delete publicBody.ref;
+  const privateBody={...bundle.local_ground_truth};delete privateBody.digest;
+  if(await portableLoomDigest(publicBody,environment)!==bundle.public_challenge.ref
+    ||await portableLoomDigest(privateBody,environment)!==bundle.local_ground_truth.digest)throw new Error('CHALLENGE_COMMITMENT_SUBSTITUTION');
+  if(bundle.public_challenge.session_root_ref!==scope.session_root_ref
+    ||bundle.public_challenge.work_unit_ref!==scope.anchor_work_unit_ref
+    ||bundle.public_challenge.policy_commitment!==scope.policy_commitment)throw new Error('CHALLENGE_REFERENCE_MISMATCH');
+  const reply=evidence.capture.surfaces.find(surface=>surface.channel_id==='reply');
+  if(reply?.status!=='CAPTURED'||!await same(JSON.parse(reply.text),evidence.candidate,environment))throw new Error('CHALLENGE_RETURN_CAPTURE_MISMATCH');
+  return verifyPortableLoomReceiverChallenge(bundle,evidence.candidate,evidence.capture,environment);
+}
+
 /** Integrity replay never upgrades parsed JSON to custody authority. */
 export async function verifyPortableLoomSeedIntegrity(session, packet, environment=globalThis) {
   data(session);data(packet);
@@ -132,7 +147,7 @@ export async function createPortableLoomReentryCustodian(session, packet, option
     continuity:{current_work_unit_ref:null,current_admitted_result_ref:session.continuity.current_admitted_result_ref,work_unit_count:0},
     authority:{scope:'LIVE_PROCESS_LOCAL_CUSTODY_ONLY',foreign_execution_authenticated:false,global_fork_exclusion:false,
       imported_records_authoritative:false,policy_weakening:false,human_closure_required:true},
-    work_units:[],route_history:[],admission_records:[],claim_ceiling:[...CEILINGS]});
+    work_units:[],route_history:[],admission_records:[],challenge_history:[],claim_ceiling:[...CEILINGS]});
   let excursion=null, revision=0, disposed=false;
   const candidates=new WeakMap();
   const head=()=>state.continuity.current_work_unit_ref;
@@ -142,7 +157,7 @@ export async function createPortableLoomReentryCustodian(session, packet, option
   function inspect(){return freeze({schema:LOOM_REENTRY_CUSTODY_SCHEMA,status:disposed?'CLOSED':'LIVE_LOCAL_CUSTODY',
     root_ref:state.root.ref,seed_anchor_ref:state.seed.anchor_ref,seed_class:state.seed.class,...state.continuity,
     anchor_work_unit_ref:anchor(),excursion_ref:excursion?.ref||null,pending_turn_count:excursion?.turns.length||0,
-    expires_at:excursion?.expires_at||null,
+    expires_at:excursion?.expires_at||null,challenge_episode_count:state.challenge_history.length,
     source_revision:state.source_revision,recovery:'RELOAD_REQUIRES_INDEPENDENT_CUSTODY_WITNESS',claim_ceiling:[...CEILINGS]});}
   async function stage(input){
     alive();exact(input,['task','documents','withheld_document_count'],'local turn intent');
@@ -197,20 +212,13 @@ export async function createPortableLoomReentryCustodian(session, packet, option
       if(value.receiver_declaration.policy_change_requested)reasons.push(`POLICY_WEAKENING_REQUESTED:${index+1}`);
       // Explicit policy review remains human declaration, never semantic proof.
     }
+    const registeredChallenges=before.challenge_history.filter(record=>record.scope.excursion_ref===departure?.ref && departure);
+    for(const record of registeredChallenges)if(record.status!=='BOUNDED_CHALLENGE_PASSED')reasons.push(`REGISTERED_CHALLENGE_${record.status}`);
     let challenge=null;
     if(input.challenge!==null){
       try{
-        exact(input.challenge,['bundle','candidate','capture'],'attached challenge evidence');
-        const bundle=input.challenge.bundle;
-        const publicBody={...bundle.public_challenge};delete publicBody.ref;
-        const privateBody={...bundle.local_ground_truth};delete privateBody.digest;
-        if(await portableLoomDigest(publicBody,environment)!==bundle.public_challenge.ref
-          ||await portableLoomDigest(privateBody,environment)!==bundle.local_ground_truth.digest)throw new Error('CHALLENGE_COMMITMENT_SUBSTITUTION');
-        if(bundle.public_challenge.session_root_ref!==before.root.ref || bundle.public_challenge.work_unit_ref!==departure?.anchor_work_unit_ref
-          ||bundle.public_challenge.policy_commitment!==policy.effective_policy_commitment)throw new Error('CHALLENGE_REFERENCE_MISMATCH');
-        const reply=input.challenge.capture.surfaces.find(surface=>surface.channel_id==='reply');
-        if(reply?.status!=='CAPTURED'||!await same(JSON.parse(reply.text),input.challenge.candidate,environment))throw new Error('CHALLENGE_RETURN_CAPTURE_MISMATCH');
-        challenge=await verifyPortableLoomReceiverChallenge(bundle,input.challenge.candidate,input.challenge.capture,environment);
+        challenge=await qualifyChallenge(input.challenge,{session_root_ref:before.root.ref,
+          anchor_work_unit_ref:departure?.anchor_work_unit_ref,policy_commitment:policy.effective_policy_commitment},environment);
         if(challenge.status!=='BOUNDED_CHALLENGE_PASSED')reasons.push(`CHALLENGE_${challenge.status}`);
       }catch{reasons.push('CHALLENGE_INTEGRITY_OR_CAPTURE_HOLD');}
     }
@@ -220,8 +228,8 @@ export async function createPortableLoomReentryCustodian(session, packet, option
       session_root_ref:before.root.ref,expected_head_ref:before.continuity.current_work_unit_ref,
       expected_content_ref:before.continuity.current_admitted_result_ref,departure:departure?clone(departure):null,
       returned_turns:parsed,challenge:challenge?{ref:challenge.ref,status:challenge.status,evidence_class:challenge.evidence_class}:null,
-      challenge_evidence:input.challenge,
-      challenge_scope:challenge?'DECLARED_CHALLENGE_EPISODE_ONLY':'NOT_PERFORMED',
+      challenge_evidence:input.challenge,registered_challenges:clone(registeredChallenges),
+      challenge_scope:registeredChallenges.length?'REGISTERED_EPISODES_ONLY_NO_FOREIGN_TURN_COVERAGE':challenge?'ATTACHED_EPISODE_ONLY_NO_FOREIGN_TURN_COVERAGE':'NO_EPISODE_RETAINED_FOR_THIS_CHECK',
       reasons,evidence:{pasted_bytes:'LOCALLY_OBSERVED',foreign_origin:'DECLARED_UNAUTHENTICATED',
         task_sources:'LOCALLY_REGISTERED_AND_RECOMPUTED',receiver_policy_review:'OPERATOR_DECLARATION',
         commitments:'RECOMPUTED_INTEGRITY_ONLY',foreign_execution:'UNRESOLVED'},
@@ -230,8 +238,35 @@ export async function createPortableLoomReentryCustodian(session, packet, option
         'client-local custody cannot exclude independent copied-session forks'],
       claim_ceiling:[...CEILINGS]};
     const candidate=freeze({...body,ref:await portableLoomDigest(body,environment)});
+    if(!reasons.length&&(disposed||revision!==observedRevision||state!==before
+      ||(departure&&(now()<departure.issued_at||now()>=departure.expires_at)))){
+      const held={...body,status:'HELD',reasons:['STALE_OR_EXPIRED_AT_CANDIDATE_PUBLICATION']};
+      return freeze({...held,ref:await portableLoomDigest(held,environment)});
+    }
     if(!reasons.length)candidates.set(candidate,{revision:observedRevision,state:before,excursion:departure});
     return candidate;
+  }
+  async function recordChallenge(evidence){
+    alive();data(evidence,'captured challenge evidence');evidence=clone(evidence);
+    if(state.challenge_history.length>=128)throw new Error('HELD_CHALLENGE_HISTORY_CAPACITY: save the private record and start a separately governed lane.');
+    const scope={session_root_ref:state.root.ref,anchor_work_unit_ref:anchor(),
+      policy_commitment:policy.effective_policy_commitment,excursion_ref:excursion?.ref||null,
+      registered_intent_refs:excursion?.turns.map(turn=>turn.ref)||[],
+      episode_class:excursion?'REGISTERED_EXCURSION_EPISODE':'ANCHOR_EPISODE_NO_FUTURE_TURN_COVERAGE'};
+    // Reserve synchronously: an in-flight challenge prevents an older candidate
+    // from winning admission while qualification is awaiting hashes.
+    const episodeId=environment.crypto.randomUUID();
+    const pending=freeze({episode_id:episodeId,scope,status:'PENDING_CHALLENGE',reason:null,
+      verification:null,evidence,registered_at:now(),evidence_class:'LOCALLY_CAPTURED_CHALLENGE_EPISODE',ref:null});
+    state=freeze({...state,challenge_history:[...state.challenge_history,pending]});revision++;
+    let verification=null,status='HELD',reason=null;
+    try{verification=await qualifyChallenge(evidence,scope,environment);status=verification.status;}
+    catch(error){reason=error.message;}
+    const body={...pending,status,reason,verification};delete body.ref;
+    const record=freeze({...body,ref:await portableLoomDigest(body,environment)});
+    if(disposed)return freeze({...record,status:'HELD',reason:'CUSTODY_LANE_CLOSED_DURING_CHALLENGE'});
+    state=freeze({...state,challenge_history:state.challenge_history.map(item=>item.episode_id===episodeId?record:item)});revision++;
+    return record;
   }
   async function admit(candidate, decision){
     alive();exact(decision,['expected_head_ref','reviewed_candidate_ref','gesture','accept_unresolved'],'admission gesture');
@@ -304,5 +339,5 @@ export async function createPortableLoomReentryCustodian(session, packet, option
   function exportRecord(){return freeze({schema:'td613.loom.local-custody-export/v0.2',session:state,
     pending_excursion:excursion,content_scope:'LOCAL_PRIVATE_RECORD_INCLUDES_SOURCE_BODIES_RETURNS_AND_ATTACHED_CHALLENGE_KEYS',restoration:'REVIEW_ONLY_UNAUTHENTICATED_NO_ADMISSION_AUTHORITY',claim_ceiling:[...CEILINGS]});}
   custodyRoots.add(session.root.ref);
-  return Object.freeze({inspect,stage,check,admit,cancel,close,export:exportRecord,current,continuation});
+  return Object.freeze({inspect,stage,check,admit,recordChallenge,cancel,close,export:exportRecord,current,continuation});
 }

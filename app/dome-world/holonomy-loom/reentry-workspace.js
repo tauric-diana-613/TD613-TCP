@@ -70,7 +70,9 @@ export function mountPortableLoomReentryWorkspace(root, {
         <p id="loomReentryReturnsCue">Keep each returned JSON object unchanged and wrap the ordered returns in an array. A matching declaration can still be held for missing or insufficient evidence.</p>
         <details data-loom-reentry="rules-drawer"><summary>Review the exact inherited rules</summary><ul class="loom-reentry-rules" data-loom-reentry="rules"></ul></details>
         <label class="loom-reentry-review"><input type="checkbox" data-loom-reentry="policy-review"><span>I reviewed these returned answers against the exact inherited rules. This review remains an operator declaration.</span></label>
-        <label class="loom-reentry-review" data-loom-reentry="challenge-option" hidden><input type="checkbox" data-loom-reentry="attach-challenge"><span>Attach the current captured Challenge Receiver episode. Its result stays bounded to that episode.</span></label>
+        <p data-loom-reentry="challenge-history-summary">No captured Challenge episodes in this custody lane. A clean or absent assay cannot prove foreign enforcement.</p>
+        <details data-loom-reentry="challenge-history-drawer" hidden><summary>Inspect recorded Challenge episodes and their scope</summary><ol class="loom-reentry-turns" data-loom-reentry="challenge-history"></ol></details>
+        <label class="loom-reentry-review" data-loom-reentry="challenge-option" hidden><input type="checkbox" data-loom-reentry="attach-challenge"><span>Recheck the current captured Challenge episode with this return. Recorded episodes linked to this excursion remain part of Check even when this box is clear.</span></label>
         <p>Check leaves admitted history unchanged. A candidate requires all registered returns, matching commitments and explicit policy review.</p>
         <div class="loom-reentry-actions"><button type="button" data-loom-reentry="check" disabled>Check returned work</button></div>
       </div>
@@ -100,6 +102,7 @@ export function mountPortableLoomReentryWorkspace(root, {
         <button type="button" data-loom-reentry="challenge-head" hidden>Challenge current anchor</button>
         <button type="button" data-loom-reentry="save" disabled>Save private custody record</button>
       </div>
+      <p>Private Save includes selected source bodies, pasted returns and local challenge answer keys. Keep the file here; do not send it to a receiver. Reloaded records remain review-only.</p>
       <p>Discard removes only this tab's pending registration and candidate. Work already copied or submitted to a receiver cannot be recalled.</p>
       <details><summary>Inspect local custody and evidence</summary><pre data-loom-reentry="technical">No local custody lane yet.</pre></details>
     </div>
@@ -151,6 +154,18 @@ export function mountPortableLoomReentryWorkspace(root, {
       $('anchor').textContent = `Departure anchor ${compact(view.anchor_work_unit_ref)} · seed: ${view.seed_class === 'VERIFIED_PREPARATION' ? 'verified local preparation' : 'verified local result'}. Preparation and admission are separate states.`;
       $('technical').textContent = JSON.stringify({ custody: custodian.export(), candidate }, null, 2);
     }
+    const episodes=custodian?.current().challenge_history||[];
+    const linked=episodes.filter(item=>excursion && item.scope.excursion_ref===excursion.ref);
+    const held=linked.filter(item=>item.status!=='BOUNDED_CHALLENGE_PASSED');
+    $('challenge-history-summary').textContent=episodes.length
+      ? `${episodes.length} captured Challenge episode(s) retained. ${linked.length} linked to this registered excursion; ${held.length} pending, held or exposed. Linked non-pass episodes prevent admission. Anchor-only episodes do not cover future tasks.`
+      : 'No captured Challenge episodes in this custody lane. A clean or absent assay cannot prove foreign enforcement.';
+    $('challenge-history-drawer').hidden=!episodes.length;
+    $('challenge-history').replaceChildren(...episodes.map(item=>{
+      const row=root.ownerDocument.createElement('li');
+      row.textContent=`${item.status} · ${item.scope.excursion_ref===excursion?.ref?'current registered excursion':item.scope.excursion_ref?'prior registered excursion':'anchor only; no future-turn coverage'} · ${compact(item.ref)}${item.reason?` · ${item.reason}`:''}`;
+      return row;
+    }));
     const hasChallenge = !!challengeEvidence();
     $('challenge-option').hidden = !hasChallenge;
     if (!hasChallenge) $('attach-challenge').checked = false;
@@ -333,7 +348,16 @@ export function mountPortableLoomReentryWorkspace(root, {
     $('result').hidden = true; $('prompt-drawer').hidden = true; $('turns').hidden = true; $('expiry').hidden = true; renderState();
   }
   function setChallenge(evidence) { const needsCheck=Boolean(candidate); suppliedChallenge = evidence; invalidate(needsCheck?'Challenge evidence changed. Check this exact candidate again before admission.':null); }
+  async function recordChallenge(evidence){
+    if(disposed||!custodian)return null;
+    const lane=custodian;suppliedChallenge=evidence;
+    invalidate('Challenge episode captured. Check the returned work again before admission.');
+    const pending=lane.recordChallenge(evidence);renderState();
+    const record=await pending;
+    if(!disposed&&custodian===lane)invalidate('Challenge episode retained with its scope. Check returned work before admission.');
+    return record;
+  }
   function dispose() { disposed = true; generation += 1; clearExpiry(); custodian?.close(); busy = false; pendingOperation = null; cleanups.splice(0).forEach(cleanup => cleanup()); renderState(); }
   renderState();
-  return Object.freeze({ setSession, clearSession, setChallenge, dispose, getRecord: () => custodian?.export() || null, inspect: () => ({ custody: custodian?.inspect() || null, candidate, excursion, carrier, resting, busy, reviewed_candidate_ref: reviewedRef }) });
+  return Object.freeze({ setSession, clearSession, setChallenge, recordChallenge, dispose, getRecord: () => custodian?.export() || null, inspect: () => ({ custody: custodian?.inspect() || null, candidate, excursion, carrier, resting, busy, reviewed_candidate_ref: reviewedRef }) });
 }

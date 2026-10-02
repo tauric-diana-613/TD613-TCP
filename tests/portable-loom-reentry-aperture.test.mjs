@@ -192,7 +192,7 @@ test('valid fractional reconstruction threshold survives JSON validation and sta
   const candidate = await f.custody.check(input);
   assert.equal(candidate.status, 'ADMISSION_CANDIDATE');
   assert.equal(candidate.challenge.status, 'BOUNDED_CHALLENGE_PASSED');
-  assert.equal(candidate.challenge_scope, 'DECLARED_CHALLENGE_EPISODE_ONLY');
+  assert.equal(candidate.challenge_scope, 'ATTACHED_EPISODE_ONLY_NO_FOREIGN_TURN_COVERAGE');
 });
 
 test('mutated private threshold and swapped reply capture cannot masquerade as an attached clean episode', async () => {

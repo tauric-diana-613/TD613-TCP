@@ -2,17 +2,17 @@
 
 ## Actual implementation boundary
 
-This document describes the working v0.2 candidate inspected at checkout HEAD `4af43132fa5db6d416fd795c620f3e5b975b60c3`, including uncommitted candidate code. It supplies a source audit, not production acceptance. Exact inspected Git blobs:
+This document describes the resumed working v0.2 candidate inspected on 2026-10-02 from saved checkout HEAD `2565130edfd1260446d9af3c122336cca820b0c2` (PR #1406), including the subsequent uncommitted challenge-history repair. Saved GitHub source, these inspected working bytes, finite test fixtures and production browser observations are separate coordinates. This is a source audit, not production acceptance. Exact inspected Git blobs at this audit checkpoint:
 
 | Source | Inspected blob |
 | --- | --- |
-| `app/engine/portable-loom-reentry.js` | `ce1095dd51dbe819e6b204cd29e929e68ce70779` |
-| `app/dome-world/holonomy-loom/reentry-workspace.js` | `ad1ea3a010b8f83d05396565d93f3a11532cb638` |
-| `app/engine/portable-loom-challenge.js` | `f664413eb05909350ceadbe838d1c36de956f963` |
+| `app/engine/portable-loom-reentry.js` | `e3d581d203489a0e21bae07316ca0d28fc9cdc0e` |
+| `app/dome-world/holonomy-loom/reentry-workspace.js` | `ff6cb84d012ca7fc57d9772c44a7f3cb65c4b488` |
+| `app/engine/portable-loom-challenge.js` | `cbd3be9da63192d12d43f260cb3efe783bb2f78e` |
 
 The active engine schemas are `td613.loom.local-custody/v0.2`, `td613.loom.reentry-excursion/v0.2`, `td613.loom.bound-receiver-turn/v0.2`, `td613.loom.reentry-candidate/v0.2`, and `td613.loom.admitted-returned-work/v0.2`. These establish a **live-process local custody lane**. They deliberately establish zero foreign execution authentication, global latest-state authority, global fork exclusion or imported-record authority.
 
-`stage()` registers exact intent before the task leaves and keeps the admitted head unchanged. `check()` compares raw declared returns and optional raw challenge evidence against that registration and leaves the head unchanged. `admit()` alone appends returned-artifact descendants and changes `continuity.current_work_unit_ref` under an exact-candidate capability, live revision/head guard, explicit review gesture and final lifetime check.
+`stage()` registers exact intent before the task leaves and keeps the admitted head unchanged. `recordChallenge()` retains every locally captured attempt in its exact local scope, reserving a pending record synchronously before qualification awaits. `check()` compares raw declared returns, every registered episode linked to the current excursion and any additionally attached raw challenge against that registration; it leaves the head unchanged. `admit()` alone appends returned-artifact descendants and changes `continuity.current_work_unit_ref` under an exact-candidate capability, live revision/head guard, explicit review gesture and final lifetime check.
 
 The legacy seed's verified preparation/result reference is stored separately. Before the first v0.2 admission, `continuity.current_work_unit_ref` is null even though `seed.anchor_ref` exists. A prepared seed supplies a verified local preparation anchor; it supplies no newly admitted returned ancestry.
 
@@ -25,6 +25,7 @@ The legacy seed's verified preparation/result reference is stored separately. Be
 | `RECOMPUTED` | Loom independently recomputed a digest, shape/relation comparison or bounded assay from supplied/held data. It proves that computation's result under this implementation. |
 | `DECLARED` | Receiver or operator supplied a claim. The claim's presence is observed; its asserted foreign fact remains unverified. |
 | `CHALLENGED` | A bounded declared episode was compared with local ground truth and its capture. This label retains positive/negative/incomplete outcomes and scope; it grants no universal safety theorem. |
+| `PENDING_CHALLENGE` | A captured attempt has been reserved in the local scope, but its qualification is incomplete. It invalidates older candidates and prevents current-scope admission while pending. |
 | `HELD` | The requested local transition lacks a required relation, evidence item, live capability, review gesture or lifecycle condition. It leaves the admitted head unchanged. |
 | `ADMISSION_CANDIDATE` | This exact returned record matched the current local registration and required review declarations; ancestry has yet to advance. |
 | `ADMITTED` | The local custodian executed its guarded append/head transition. Returned content remains `DECLARED_RETURNED_CONTENT`; admission authenticates the local transition, not foreign execution. |
@@ -44,7 +45,7 @@ These labels describe different coordinates. A receiver declaration can be retai
 | `seed.anchor_ref`, `seed.class`, `seed.content_ref` | Required | Replay-verified legacy preparation/result class and separate content relation | Seed preparation never implies foreign execution or admitted returned descendant. |
 | `continuity.current_work_unit_ref`, `current_admitted_result_ref`, `work_unit_count` | Required | Local live closure's current admitted coordinates | Copied/browser-restored records cannot become authoritative heads. |
 | `authority` | Required | Explicit local scope, no imported authority, no global fork/execution authentication | No hidden remote authority transfers through this record. |
-| `work_units`, `route_history`, `admission_records`, `claim_ceiling` | Required | Locally appended history, full admitted candidate records and retained limitations | Recorded route is neither unchanged-state nor exteriority proof. Admission records may contain private challenge ground truth and remain private/local review material. |
+| `work_units`, `route_history`, `admission_records`, `challenge_history`, `claim_ceiling` | Required | Locally appended history, full admitted candidate/episode records and retained limitations | Recorded route is neither unchanged-state nor exteriority proof. Admission and challenge records may contain private challenge ground truth and remain private/local review material. |
 
 Live WeakSet branding is a process-local custody marker, not a cryptographic signature. Legacy derived sessions retain that marker only if the input session was already live. Seed integrity replay by itself never upgrades parsed JSON. A consumed-root registry refuses another lane for the same root in this module/process, including reopening after closure; separate processes remain beyond its exclusion scope.
 
@@ -91,8 +92,10 @@ An ordinary foreign model may be unable to compute SHA256. Missing/wrong `answer
 | `returned_turns`, candidate `ref` | Exact retained capture/parsed return plus recomputed digest | Imported/reformatted candidate objects lose the WeakMap capability, even with a valid digest. |
 | `evidence`, `unresolved_alternatives`, `claim_ceiling` | Typed local observations/recomputation and retained residues | They travel with admission; no status-based evidence-class promotion. |
 | Attached raw `bundle`, `candidate`, `capture` | Optional declared challenge data | If selected, commitments and public/private projection are recomputed; exact structured return must match captured `reply`. |
-| Candidate `challenge.{ref,status,evidence_class}`, `challenge_scope` | Bounded challenge result/reference | `evidence_class` is supplied metadata; this engine does not authenticate its acquisition source. `DECLARED_CHALLENGE_EPISODE_ONLY` limits its use. |
+| Candidate `challenge.{ref,status,evidence_class}` | Optional attached bounded challenge result/reference | `evidence_class` is supplied metadata; this engine does not authenticate its acquisition source. A registered history can be present while this optional reference is null. |
 | Candidate `challenge_evidence` | Retained exact raw optional bundle/return/capture | Private local evidence needed to replay the selected assay; ground truth is excluded from public continuation carriers. |
+| Candidate `registered_challenges` | All retained episodes whose local `scope.excursion_ref` equals this departure | Includes pending, malformed/HELD, clean and exposed attempts. The optional checkbox cannot erase any scoped record. |
+| Candidate `challenge_scope` | Aggregate local scope classification | `REGISTERED_EPISODES_ONLY_NO_FOREIGN_TURN_COVERAGE`, `ATTACHED_EPISODE_ONLY_NO_FOREIGN_TURN_COVERAGE`, or `NO_EPISODE_RETAINED_FOR_THIS_CHECK`. None asserts empirical coverage of the foreign task range. When registered and attached evidence coexist, both raw record fields remain authoritative for their respective contents. |
 | Admitted `predecessor_work_unit_ref` | Locally authenticated transition relation | Points to preceding local unit or explicit seed for the first returned unit. |
 | Admitted `content_predecessor_ref` | Separate content relation | Points to preceding admitted result; null can coexist with a valid preparation seed. |
 | `receiver_anchor_work_unit_ref`, `foreign_turn_index` | Receiver-declared departure anchor plus local order | Batched returns can echo the same departure anchor while local parent refs advance; foreign ancestry remains unauthenticated. |
@@ -101,7 +104,23 @@ An ordinary foreign model may be unable to compute SHA256. Missing/wrong `answer
 | `captured_return`, `capture_digest`, `receipt_digest`, `candidate_ref`, unit `ref` | Raw/semantic/decision identities remain distinct | Canonical equal parsed returns can have different raw captures; digest integrity supplies no origin theorem. |
 | Admission event `local_ledger_advanced` | Observed local operation | True only after guarded atomic append; `foreign_execution_authenticated` remains false. |
 
-Challenge evidence is optional. A missing challenge is explicitly `NOT_PERFORMED`; it never becomes a clean challenge result. Selecting an attached exposure/incomplete episode produces HOLD. If an operator excludes an available episode, this tranche cannot claim that all known adverse observations were adjudicated: the accepted artifact remains scoped to the selected evidence. The UI's attachment choice must never support a broader enforcement/safety claim.
+A Challenge Receiver episode is not mandatory for local returned-artifact admission. Absence of a retained episode never becomes a clean result. Once an attempt is captured in the live lane, however, its applicable evidence is mandatory: Check automatically incorporates all registered records linked to the current excursion, even with `input.challenge: null`. Any pending, malformed/HELD, exposed or incomplete linked episode holds the batch. A later clean record is appended alongside the earlier adverse record and cannot replace it. This law preserves known local evidence; it does not establish that every foreign output or episode was captured.
+
+### Captured challenge history and applicability
+
+| Retained field | Classification | Exact limit |
+| --- | --- | --- |
+| `episode_id`, `registered_at` | Locally issued capture-registration identity/time | The local clock and nonce authenticate no foreign episode origin. |
+| `scope.session_root_ref`, `anchor_work_unit_ref`, `policy_commitment` | Locally bound custody coordinates | Qualification compares declared challenge references against these coordinates. |
+| `scope.excursion_ref`, `registered_intent_refs` | Exact local active excursion and intent-list snapshot at capture | Association does not prove the probe interrogated those foreign turns. Later registered intents do not retroactively enter this capture snapshot. |
+| `scope.episode_class` | `REGISTERED_EXCURSION_EPISODE` or `ANCHOR_EPISODE_NO_FUTURE_TURN_COVERAGE` | An anchor-only record has null excursion and an empty intent list; it supplies no future-task coverage. |
+| `status`, `reason`, `verification` | Pending, recomputed bounded outcome or qualification HOLD | A malformed attempt remains recorded as HELD. It cannot be represented as no attempt or PASS. |
+| `evidence` | Snapshot of exact supplied bundle/return/capture, or malformed-attempt data | Locally observed supplied data; foreign provenance and declared evidence-class labels remain unverified. Private keys remain local. |
+| `evidence_class`, `ref` | `LOCALLY_CAPTURED_CHALLENGE_EPISODE` with locally computed full-record digest | During pending qualification `ref` and `verification` are null. Ref integrity supplies no acquisition/authorship proof. |
+
+Registration reserves history and increments custody revision before the first digest wait. This immediately invalidates an older candidate. Completion replaces only its own `episode_id`; concurrent completions preserve the other records. Cancelling an excursion or registering another one retires the old record's applicability without deleting its history or making its adverse finding disappear. A qualification finishing after cancellation retains its original scope. Closing during qualification cannot mutate the closed state after the await; the returned attempt reports `CUSTODY_LANE_CLOSED_DURING_CHALLENGE`, while the closed private record preserves its pending reservation.
+
+Check conservatively applies a scoped adverse record to the complete active excursion; this is an admission restriction, not a claim that the probe covered every turn. The required discriminating witness for actual foreign-turn coverage would bind task/turn/episode and exact capture through an independently qualified acquisition channel. Root/policy/anchor equality alone supplies no such witness.
 
 Full admitted candidates live in private `admission_records`; exact raw returns and selected source bodies remain replayable there. A local custody export is a **private review record**, containing any retained local challenge ground truth. It must never be labeled or routed as a public foreign-carriage packet. Public governed continuation carries the latest admitted result and deliberately selected source bodies and excludes private candidate/assay records. Saving a local/private record supplies no restoration authority.
 
@@ -116,10 +135,12 @@ The engine sometimes throws a bounded validation exception; the native gesture l
 | Open lane | `HELD_SEED_POLICY_EXTENSION` | Seed rule additions require an independent reviewed policy lane. |
 | Register | Invalid shape/body/count/limits; `HELD_EXPIRED`; sixteen-turn/128-unit bounds | No extra intent or changed admitted head. |
 | Register | `HELD_STALE_LOCAL_STATE`; `HELD_EXPIRED_OR_CLOCK_REVERSED` | Async race/expiry cannot publish the registered operation. |
+| Record challenge | Invalid plain-data descriptor; `HELD_CHALLENGE_HISTORY_CAPACITY`; qualification reason or `CUSTODY_LANE_CLOSED_DURING_CHALLENGE` | Untrusted accessors are never invoked; bounded history cannot overwrite earlier observations; a closed lane cannot mutate after qualification. |
 | Check | `NO_REGISTERED_EXCURSION`; `EXPIRED_OR_CLOCK_REVERSED`; `INCOMPLETE_REGISTERED_TURN_RANGE` | No retrofitted or partial-range ancestry advance. |
 | Check | `POLICY_REVIEW_REQUIRED:n`; `MALFORMED_OR_UNBOUND_RETURN:n` | Unsupported or unreviewed return remains unadmitted. |
 | Check | `SUBSTITUTED_*:n`; `ANSWER_SUBSTITUTION:n`; `UNDECLARED_SOURCE:n`; `POLICY_WEAKENING_REQUESTED:n` | Registration, answer and source/policy boundaries remain fixed. |
 | Check | `CHALLENGE_INTEGRITY_OR_CAPTURE_HOLD`; `CHALLENGE_*` exposure/incomplete/reference status | Changed or adverse attached episode cannot supply a clean admission candidate. |
+| Check | `REGISTERED_CHALLENGE_PENDING_CHALLENGE`, `REGISTERED_CHALLENGE_HELD`, `REGISTERED_CHALLENGE_OBSERVED_EXPOSURE`, or another non-clean registered status | Checkbox omission and later clean attempts cannot erase a known current-excursion blocker. |
 | Check | `STALE_LOCAL_STATE` | Cancel/register/close races invalidate candidate issuance. |
 | Admit | `UNISSUED_OR_INSUFFICIENT_CANDIDATE`; `STALE_OR_REPLAYED_CANDIDATE` | Parsed copies, held candidates and consumed/stale capabilities cannot mutate history. |
 | Admit | `HEAD_COMPARE_AND_SWAP_FAILED` | Changed head/revision/excursion, concurrent loser or closed lane cannot append. |
@@ -140,7 +161,7 @@ The scientific object here is a typed comparison of projections through heteroge
 | Proceeding task | Local registered index and previous intent | Another explicit task | Receiver-internal intermediate history remains unobserved | Register next task with new explicit source selection. |
 | Additional sources | Per-task selected bodies/commitments | New local support supplied deliberately | Earlier source bodies remain unselected; content context is separate | Carry this task's selected supports only. |
 | Receiver return | Echo references, raw answer, declared missingness | Locally observed supplied capture plus receiver declaration | Same bytes admit distinct foreign histories | Check exact recorded return. |
-| Challenge Receiver | Episode/root/anchor/policy, public/private projection | Bounded literal/reconstruction/joined result from exact selected capture | Untested encodings/contexts/horizons and hidden host remain open | Record PASS/exposure/HOLD without ancestry mutation. |
+| Challenge Receiver | Episode/root/anchor/policy, public/private projection, exact local excursion/intent snapshot | Locally captured attempt followed by bounded literal/reconstruction/joined result or HOLD | Local association is not foreign-turn coverage; untested encodings/contexts/horizons and hidden host remain open | Retain every attempt; linked pending/adverse results block admission without ancestry mutation. |
 | Re-entry candidate | All required input/return/predecessor relations and explicit residues | Recomputed consistency; operator policy review declaration | Review cannot identify foreign execution | Present consequence; await exact admission gesture. |
 | Local admission | Root policy, separately retained work/content predecessors | Atomic local append and new head | Declared receiver content remains declared | Continue from current admitted artifact. |
 | Continuation carrier | Latest admitted result plus new task/frozen rules/explicit selected supports | Read-only carrier construction | Carrier records no next foreign turn and no new ancestry | Inspect/copy carrier; use registration route for another admissible return. |
@@ -176,6 +197,6 @@ Western Horizon remains in force. If admitted A leaves origin Ω non-identifiabl
 
 ## Handoff and empirical ceilings
 
-Current source contracts, finite tests, native browser witnesses, provider samples and independent empirical acquisition remain separate. `APERTURE_BROWSER_FINDINGS.md` records production desktop v0.1 observations; `tests/portable-loom-reentry-aperture.test.mjs` records fourteen finite v0.2 hostile controls. They must never be collapsed into a production v0.2 journey witness.
+Current source contracts, finite tests, native browser witnesses, provider samples and independent empirical acquisition remain separate. `APERTURE_BROWSER_FINDINGS.md` records production desktop v0.1 observations. `tests/portable-loom-reentry-aperture.test.mjs` records fourteen finite v0.2 hostile controls; `tests/portable-loom-reentry-aperture-resume.test.mjs` adds fourteen challenge-history omission/lifecycle/concurrency/coverage controls. Together they passed 28/28 on the resumed working candidate. They must never be collapsed into a production v0.2 journey witness.
 
 Portable-AIA roundtrip remains `HELD_INPUT_CLASS` absent its actual semantic-field object. The Aperture witness-plan adapter reports readiness of a declared next-observation plan, authenticates no references and changes no installed Aperture identity. Candidate/admission do not claim Golden Egg realization, universal secrecy, foreign-provider enforcement, empirical exteriority, hidden-host introspection or measured human comprehension.

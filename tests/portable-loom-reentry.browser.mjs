@@ -11,8 +11,11 @@ import {chromium} from 'playwright';
 const dir=process.env.TD613_REENTRY_ARTIFACT_DIR||'docs/reentry/browser-evidence/candidate';
 await mkdir(dir,{recursive:true});
 const files=['app/dome-world/holonomy-loom.html','app/dome-world/holonomy-loom/ai-workspace.js','app/dome-world/holonomy-loom/ai-workspace.css','app/dome-world/holonomy-loom/reentry-workspace.js','app/dome-world/holonomy-loom/reentry-workspace.css','app/engine/portable-loom-session.js','app/engine/portable-loom-reentry.js','app/engine/portable-loom-challenge.js'];
-const report={schema:'td613.loom.reentry-browser-witness/v0.2',status:'HELD',source_sha:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),observed_at:new Date().toISOString(),browser:'Chromium',context:'LOCAL_RENDERED_UI_WITH_SYNTHETIC_FOREIGN_CAPTURES',live_provider_calls:0,human_comprehension_measured:false,source_bytes:{},checks:[],failures:[]};
+const report={schema:'td613.loom.reentry-browser-witness/v0.2',status:'HELD',source_sha:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),source_tree:execFileSync('git',['rev-parse','HEAD^{tree}'],{encoding:'utf8'}).trim(),observed_at:new Date().toISOString(),browser:'Chromium',context:'LOCAL_RENDERED_UI_WITH_SYNTHETIC_FOREIGN_CAPTURES',live_provider_calls:0,human_comprehension_measured:false,source_bytes:{},checks:[],failures:[]};
 for(const file of files)report.source_bytes[file]=createHash('sha256').update(await readFile(file)).digest('hex');
+report.application_matches_commit=files.every(file=>report.source_bytes[file]===createHash('sha256').update(execFileSync('git',['show',`HEAD:${file}`])).digest('hex'));
+report.source_class=report.application_matches_commit?'EXACT_COMMITTED_APPLICATION_BYTES':'WORKING_TREE_CANDIDATE';
+report.witness_harness_sha256=createHash('sha256').update(await readFile('tests/portable-loom-reentry.browser.mjs')).digest('hex');
 const app=resolve('app');
 const server=createServer(async(req,res)=>{
   try{const file=resolve(app,'.'+new URL(req.url,'http://localhost').pathname);if(!file.startsWith(app+'/'))throw new Error('outside static root');res.setHeader('Content-Type',({'.js':'text/javascript','.css':'text/css','.html':'text/html','.json':'application/json','.svg':'image/svg+xml'})[extname(file)]||'application/octet-stream');res.end(await readFile(file));}catch{res.statusCode=404;res.end();}
@@ -29,7 +32,7 @@ try{
     await page.route('**/*',route=>{const req=route.request();if(req.method()!=='GET'||!req.url().startsWith(base)){posts.push({method:req.method(),url:req.url()});return route.abort();}return route.continue();});
     const r=key=>page.locator(`[data-loom-reentry="${key}"]`);
     const head=()=>r('head').textContent();
-    const check=async(text)=>{await r('returns').fill(text);await r('policy-review').check();await r('check').click();await r('result').waitFor({state:'visible'});};
+    const check=async(text)=>{await r('returns').fill(text);if(!(await r('policy-review').isChecked()))await r('policy-review').check();await r('check').click();await page.waitForFunction(()=>{const v=document.querySelector('[data-loom-reentry="verdict"]').textContent;return v.startsWith('HOLD')||v==='Ready for local admission.';});};
     await page.goto(`${base}/dome-world/holonomy-loom.html`);
     await page.locator('#aiDemoMode').click();await page.locator('#aiDemoInvitation').click();await page.locator('[data-project="participant-research"]').click();
     await page.locator('#aiPreparePortable').click();await r('stage').waitFor({state:'attached'});

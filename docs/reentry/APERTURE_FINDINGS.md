@@ -4,7 +4,7 @@
 
 This report separates locally admitted returned artifacts from authenticated foreign execution. A local operation can admit exact returned bytes as a descendant while preserving declarations as declarations. It cannot reconstruct hidden receiver history, establish universal secrecy, or authenticate external origin by hashing those bytes again.
 
-Inspected checkout: `3ef1ba86701843f7fde2fec29ede2bab038d934b`. Inspected Git blob identities:
+Initial inherited audit checkout: `3ef1ba86701843f7fde2fec29ede2bab038d934b`. The following are historical inspected Git blob identities; the resumed working candidate is identified in the final section and in `EVIDENCE_AND_HOLDS.md`.
 
 | Artifact | Git blob |
 | --- | --- |
@@ -33,7 +33,7 @@ A finite Node/WebCrypto fixture used fictional task/source bodies, the installed
 
 The inherited `validateSession` checks types, exact outer fields, digest syntax, count and limited shape. It does not recompute root, policy, unit, governance or admitted-result commitments, replay predecessor order, prove authority equality, or establish a trusted restoration origin. `validateWorkUnit` similarly accepts a schema/root/ref without reconstructing its body. A new re-entry law must not use these checks as its authenticity boundary.
 
-The inherited challenge verifier checks selected reference fields but does not recompute `public_challenge.ref` or `local_ground_truth.digest`. The verification record also does not retain capture/return digests sufficient to reconstruct exact correspondence. A receiver-declared evidence-class label remains caller metadata, even when spelled `BROWSER_WITNESS` or `EMPIRICAL_ACQUISITION`.
+At that inherited checkpoint, the challenge verifier checked selected reference fields without recomputing `public_challenge.ref` or `local_ground_truth.digest`. The working repair now recomputes those commitments and their public/private projection compatibility. A receiver-declared evidence-class label remains caller metadata, even when spelled `BROWSER_WITNESS` or `EMPIRICAL_ACQUISITION`.
 
 ## What can lawfully become an admission candidate
 
@@ -43,13 +43,13 @@ The attainable claim is:
 
 This claim establishes local protocol execution and artifact relations. It does not establish that a foreign receiver used only these sources, preserved rules internally, avoided hidden retransmission, or supplied a globally latest authenticated foreign history.
 
-The proposed v0.2 boundary uses a separate local custody closure. Preparing an intent reserves a next operation and nonce without advancing admitted head. Receipt matching may classify a declaration; only an explicit, current-head-guarded admission gesture appends the locally admitted descendant and consumes the intent. The current head changes atomically with that append. Exported/restored unsigned JSON cannot recreate the closure's authority. It remains inspectable but `HELD_UNAUTHENTICATED_RESTORATION` for ancestry mutation.
+The implemented v0.2 candidate uses a separate local custody closure. Preparing an intent reserves a next operation and nonce without advancing admitted head. Receipt matching may classify a declaration; only an explicit, current-head-guarded admission gesture appends the locally admitted descendant and consumes the intent. The current head changes atomically with that append. Exported/restored unsigned JSON cannot recreate the closure's authority. It remains inspectable but custody creation reports `HELD_IMPORTED_CUSTODY`.
 
-Before egress, register exact operator task, selected source bodies/commitments, root/policy/anchor, foreign route identity, intended receiver turn coordinate, missingness policy, expiry and an unpredictable intent nonce. Registering those after the answer arrived would permit retrofitted intent and provides a weaker claim. An opaque request identifier is useful only when Loom independently retained the intent it identifies; mere receiver echo proves no such retention.
+Before egress, this lane registers exact operator task, selected source bodies/commitments, root/policy/anchor, locally intended turn order, aggregate withholding, expiry and an unpredictable intent nonce. It does not authenticate foreign route identity or receiver-local history. Registering intent after the answer arrived would permit retrofitting and provides a weaker claim. An opaque request identifier is useful only when Loom independently retained the intent it identifies; mere receiver echo proves no such retention.
 
 An answer digest in a bound v0.2 return binds that declaration to one answer body. Loom recomputes it. It prevents unnoticed answer substitution relative to that receipt; it does not authenticate who authored the answer or prove that the receiver originally returned it. Where a separately captured channel is used, its provenance and exact-return correspondence remain separately qualified.
 
-The parent implementation design names `intent_ref` and `excursion_ref`, exact root/policy/anchor/turn index, task and source-commitment digests, exact answer and answer digest, used IDs, missingness and `receiver_declaration.policy_change_requested`. This is a proposed v0.2 binding contract at this report's checkpoint. A false policy-change declaration plus an operator review gesture supports local review closure only. It supplies no semantic enforcement theorem. Raw pasted JSON remains locally observed supplied material with provenance `DECLARATION`.
+The implemented binding contract names `intent_ref` and `excursion_ref`, exact root/policy/anchor/turn index, task and source-commitment digests, exact answer and answer digest, used IDs, missingness and `receiver_declaration.policy_change_requested`. A false policy-change declaration plus an operator review gesture supports local review closure only. It supplies no semantic enforcement theorem. Raw pasted JSON remains locally observed supplied material with unauthenticated foreign provenance.
 
 For a batch, a contiguous turn range must preserve each individual task, explicit sources, return, nonce and declared predecessor relation. An unobserved intermediate turn stays unobserved. Admission capabilities remain keyed inside the local closure and consumed under a version/current-head compare-and-swap before and after asynchronous checks. This prevents races within that instance; it supplies no global fork exclusion among separate copied or independently constructed custody instances.
 
@@ -64,7 +64,7 @@ For a batch, a contiguous turn range must preserve each individual task, explici
 | Effective policy | Required | Freeze registered policy; compare return echo and recomputed policy bytes | Equivalent-looking prose cannot be crowned semantically equal. |
 | Last locally verified seed / admitted anchor | Required | Compare against authoritative local closure and current head | A prepared seed reference carries no admitted-content ancestry. |
 | Intent ID / nonce | Required | Locally generated and retained before egress; one consumable intent | Public echo supplies declaration binding, not receiver identity. |
-| Foreign route / receiver history identity | Required for ordered continuations | Intent-registered route coordinate; receiver-local history separately declared | Identical route label can name different hidden sessions. |
+| Foreign route / receiver history identity | Unresolved, not authenticated by this lane | `excursion_ref` identifies local departure registration; no receiver-internal history object is acquired | Identical local departure echoes can arise from different hidden sessions or no receiver execution. |
 | Turn index or declared range | Required | Exact registered expected coordinate, next-order check, replay table | Captures need independent coverage before a whole range is called observed. |
 | Exact operator task | Required | Locally observed intent, exact body/digest comparison | Task digest cannot prove receiver processed the task. |
 | Intentionally selected source IDs | Required | Explicit per-intent local selection; ID-set comparison | Receiver-reported use remains unverified. |
@@ -74,14 +74,14 @@ For a batch, a contiguous turn range must preserve each individual task, explici
 | Returned receipt | Required | Strict schema, root/policy/nonce/anchor/task/source/answer comparisons | Valid-looking receipt remains receiver declaration. |
 | Used source claims | Required as declared claims | Subset of intentionally selected sources; exact IDs | Subset membership supplies consistency, not evidence of actual model use. |
 | Missing-information declaration | Required, possibly empty | Preserve receiver declaration independently from local missingness | Receiver omission can coexist with unreported knowledge. |
-| Receiver declaration | Required | Retain exact bytes with `promoted_to_observed_fact: false` | Tools, network, memory and policy compliance remain self-report. |
-| Challenge bundle | Optional; mandatory if cited | Local public/private commitments, roots/anchors/policy and raw inputs revalidated | No challenge is invented merely to create an admission PASS. |
-| Challenge return/capture | Optional; mandatory if challenged | Bind to the same declared episode; recompute all outcomes from raw data | Caller metadata alone cannot authenticate instrument origin or complete horizon. |
+| Receiver declaration | Required | Retain exact `policy_change_requested`/`notes` and candidate foreign-origin ceiling; challenge verifier additionally emits `promoted_to_observed_fact: false` | Tools, network, memory and policy compliance remain self-report. |
+| Challenge bundle | Optional until captured; applicable retained evidence mandatory | Local public/private commitments, roots/anchors/policy and raw inputs revalidated | No challenge is invented merely to create an admission PASS. |
+| Challenge return/capture | Retained for every captured attempt, including malformed data | Bind to the same declared episode; recompute outcomes or retain qualification HOLD | Caller metadata alone cannot authenticate instrument origin or complete horizon. |
 | Evidence classes | Required | Typed per field; immutable local class boundary | Four role agreement creates zero evidence-class promotion. |
 | Unresolved alternatives | Required | Preserve explicit list beside admitted record | Admission cannot erase uncertainty by changing its status label. |
 | Proposed work-unit predecessor | Required | Current admitted head (or explicit seed-origin case); guarded at gesture time | Same session root supplies no fork exclusion outside local custody. |
 | Proposed content predecessor | Required | Current admitted result/content relation, separately compared | Work-unit predecessor and answer predecessor have different domains. |
-| Route history | Required | Locally logged transition plus receiver-declared segment | Recorded route supplies no unchanged-state or truth proof. |
+| Route history | Required local admission history | Locally logged `LOCAL_ADMISSION` transition with intent/receiver-anchor/local-parent/result/candidate refs | It is not a trace of foreign intermediate actions; recorded route supplies no unchanged-state or truth proof. |
 | Candidate digest | Required | Recompute canonical full candidate including class/residue/predecessor coordinates | A fresh hash of fabricated data remains fabricated data. |
 | Expiry / pause / exit / consumed state | Required | Local clock and lifecycle checks; retained distinct states | Browser timing and lifecycle are local instrument claims. |
 
@@ -130,11 +130,11 @@ If rule addition later becomes necessary, expose it as a reviewed local operatio
 
 ## Challenge law after admission
 
-A newly admitted descendant can become the exact subject of a fresh Challenge Receiver episode. Bind its local root, work-unit, content predecessor and frozen policy to that episode; keep ground truth local. Checking the challenge never advances session ancestry. A bounded clean result supplies finite-scoped evidence; literal or standalone/joined exposure remains exposure; missing required capture remains HELD.
+A newly admitted descendant can become the exact subject of a fresh Challenge Receiver episode. The current challenge schema binds root, work-unit and frozen policy; the local ledger separately preserves the content-predecessor relation. Ground truth stays local. Checking the challenge never advances session ancestry. A bounded clean result supplies finite-scoped evidence; literal or standalone/joined exposure remains exposure; missing required capture remains HELD.
 
 When a challenge is attached to a re-entry candidate, retain the raw public/private bundle, raw return and raw capture in local/private custody; recompute commitments and classifications. A previously serialized PASS or four-role dossier is insufficient. Candidate record changes require revalidation before admission. Protected ground truth must stay outside exported public continuation records, while a digest/ref and explicit missingness/claim ceiling can remain inspectable.
 
-No challenge is mandatory merely to theatricalize admission. Exact registered-return consistency can support a bounded local artifact admission. Challenge success supplies no foreign-enforcement authenticity and cannot substitute for a missing intent/nonce/source/answer relation.
+No challenge is mandatory merely to theatricalize admission. Exact registered-return consistency can support a bounded local artifact admission. Once an attempt is captured in a current excursion, its evidence cannot be optionalized away: Check includes every matching registry record even with the attachment checkbox unchecked. Pending, HELD, incomplete or exposed records block admission; later clean records never replace them. Challenge success supplies no foreign-enforcement authenticity and cannot substitute for a missing intent/nonce/source/answer relation.
 
 ## Adapter participation and ceilings
 
@@ -186,8 +186,24 @@ The suite intentionally demonstrates a residual: a return can contain natural-la
 
 The current v0.2 receiver return requires `answer_digest = SHA256(UTF8(canonical JSON string(answer)))`. Echoing supplied root/task/source/intent commitments requires no new computation. Hashing a newly generated answer requires a real computation facility; an ordinary foreign chat model cannot be assumed capable of producing a correct SHA256 digest from reasoning alone.
 
-The current supported admission route therefore requires a receiver with a trusted local computation tool/adapter capable of forming the declaration correctly. If that facility is unavailable, the receiver may return an unbound declaration for review. Admission stays HELD. Loom must never fill the missing digest and preserve the **receiver-bound** evidence label, nor encourage a model to invent a plausible 64-character hash.
+The current supported admission route therefore requires a receiver with an actual computation tool/adapter capable of forming the declaration correctly. That computation authenticates no receiver origin. If the facility is unavailable, the receiver may return an unbound declaration for review. Admission stays HELD. Loom must never fill the missing digest and preserve the **receiver-bound** evidence label, nor encourage a model to invent a plausible 64-character hash.
 
 A future, separately specified **operator-bound capture** route could retain utility without a tool-enabled receiver. Loom would register intent before egress, accept the exact operator-supplied returned answer plus the legacy declaration, locally commit the arrival capture, preserve `RECEIVER_ANSWER_BINDING_ABSENT`, require explicit operator association/review, and admit under the weaker `OPERATOR_BOUND_CAPTURE` evidence class. This supports a local captured-artifact relation; it authenticates neither receiver authorship nor the answer's foreign execution. The raw legacy receipt remains unbound forever; local capture commitment does not retroactively change its evidence class.
 
 That future route remains a design HOLD in this tranche. It requires distinct schema, consequence language, substitution tests, arrival-capture custody and operator association law. Its merits arise from the fact that receiver-provided SHA256 is already an unauthenticated declaration: local computation can supply integrity, while neither computation location supplies foreign origin proof. The distinction needed for lawful action must be explicit before adopting the weaker route.
+
+## Resumed challenge-history audit · 2026-10-02
+
+The session resumed from saved PR #1406 HEAD `2565130edfd1260446d9af3c122336cca820b0c2`. The source audit in `EVIDENCE_AND_HOLDS.md` identifies exact inspected working blobs after the challenge-history repair; those bytes are not represented as deployed production. The original fourteen Aperture tests were rerun after the schema-language update. The new independent suite `tests/portable-loom-reentry-aperture-resume.test.mjs` adds fourteen finite synthetic controls. Together they passed 28/28 against the resumed candidate.
+
+The saved design permitted optional attachment omission to drop an available adverse challenge. The working repair replaces this with append-only local episode custody: `recordChallenge()` first snapshots plain supplied data and synchronously reserves `PENDING_CHALLENGE`, before any hash await. It captures exact root/anchor/policy, excursion and currently registered intent refs. This reservation increments revision, so an older admission capability or an admission already computing its descendant cannot win the final guarded append. The final episode replaces only its own reservation; simultaneous completion cannot overwrite another episode.
+
+Check consumes all records associated with the current excursion. Passing `challenge: null` or clearing the checkbox does not erase known exposure, malformed HOLD or incomplete observation. Later bounded PASS is a separate record. The finite joined fixture has clean literal exclusion and clean marginal probes but joined-only reconstruction; that exposure remains an admission blocker. Evidence classes remain separate: local capture registration, recomputed synthetic outcome and unresolved foreign execution never become foreign enforcement proof.
+
+Scope is exact and conservative. A pre-registration anchor-only episode is `ANCHOR_EPISODE_NO_FUTURE_TURN_COVERAGE`, with null excursion and no registered intent refs. An episode captured after the first task preserves only that intent snapshot even if another task is later registered. Current-excursion blockers conservatively hold the entire admission batch; this restriction does not claim the probe covered every task. Cancellation changes applicability but preserves the historical record. Qualification completing after cancellation retains the old excursion scope. Closing during qualification returns HOLD without mutating the closed state after the await; its pending reservation remains reviewable.
+
+Aggregate `challenge_scope` now distinguishes registered episodes, attached-only episodes and no episode retained for this Check. The prior `NOT_PERFORMED` value was too coarse when the registry contained an episode but the optional attachment was null. Both registered and separately attached raw fields remain visible even when the aggregate label gives registry precedence.
+
+Residual twin histories still survive. A challenge captured during an excursion may be copied from an older same-anchor interaction; local capture time and intent association do not authenticate foreign task coverage. A receiver can fabricate the same bound task/answer/source echoes without performing the task. A caller can label synthetic capture empirical. Useful additional witnesses must bind independent receiver identity, exact task/turn/episode and continuous raw acquisition custody. More hashes, record labels or another transformation of the same declaration do not discriminate those histories.
+
+Full challenge records and candidate records remain private review-only export data; governed public continuation excludes them. The repaired registry establishes known-local-evidence retention and a local admission fence. It does not establish comprehensive foreign capture, global fork exclusion, hidden retention/training/memory absence, universal secrecy, Golden Egg credit or exteriority.
