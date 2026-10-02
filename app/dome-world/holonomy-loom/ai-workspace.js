@@ -53,7 +53,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
       </div>
     </div>
     <section id="aiPortableModePanel" class="ai-mode-panel" role="tabpanel" aria-labelledby="aiPortableMode">
-      <div class="ai-mode-copy"><h3>Build the packet before it moves.</h3><p>Choose the task, the files that may travel, what stays local, and the rules that accompany the work. Understanding and local preparation stay open.</p></div>
+      <div class="ai-mode-copy"><h3>Build the packet before it moves.</h3><p>Choose the task, the files that may travel, what stays local, and the rules that accompany the work. Understanding and local preparation stay open.</p><p id="aiFirstUseGuide" class="ai-muted"><strong>New here?</strong> Loom Demo practices the same packet-and-return route with fictional material and needs no SHI. For your own packet, a minted SHI only wakes issuance controls after a local format check; it does not establish civil identity or foreign-host enforcement.</p></div>
       <div id="aiIssuanceGate" class="ai-issuance-gate" data-state="held">
         <label for="aiShi">Safe Harbor issuance</label>
         <div class="ai-shi-row"><input id="aiShi" type="text" inputmode="text" autocomplete="off" maxlength="64" placeholder="TD613-SH-9B07D8B-XXXXXXXX" aria-describedby="aiShiStatus aiShiClaim"><a href="/safe-harbor/index.html" target="_blank" rel="noopener noreferrer">Create SHI →</a></div>
