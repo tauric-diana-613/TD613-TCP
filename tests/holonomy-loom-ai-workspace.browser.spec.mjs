@@ -145,7 +145,11 @@ try {
       await page.waitForFunction(()=>document.querySelector('#aiChallengeResult')?.hidden===false);
       assert.match(await page.locator('#aiChallengeVerdict').innerText(),/No exposure observed within this bounded challenge/);
       assert.match(await page.locator('#aiChallengeUnknowns').innerText(),/hidden host retention, training, internal memory state/);
+      const receiptDetails=page.locator('#aiChallengeResult details');
+      await receiptDetails.locator('summary').click();
+      assert.equal(await page.locator('#aiChallengeReceipt').isVisible(),true,'operator can inspect the exact Dollhouse receipt on demand');
       assert.match(await page.locator('#aiChallengeReceipt').innerText(),/HELD_INPUT_CLASS/,'Dollhouse receipt exposes roundtrip subagent input-class hold rather than hiding it');
+      await receiptDetails.locator('summary').click();
       await page.screenshot({ path: path.join(dir, `${posture}-portable-session-challenge.png`), fullPage: true });
 
       await page.locator('#aiShi').fill('');
