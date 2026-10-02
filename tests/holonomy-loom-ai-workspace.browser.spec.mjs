@@ -119,6 +119,17 @@ try {
       assert.equal(await page.locator('#aiExportSession').isEnabled(),true,'valid-format SHI wakes persistent session export');
       assert.equal(await page.locator('#aiPrepareChallenge').isEnabled(),true,'valid-format SHI wakes Challenge Receiver');
 
+      const sessionDownloadPromise = page.waitForEvent('download');
+      await page.locator('#aiExportSession').click();
+      const sessionDownload = await sessionDownloadPromise;
+      const sessionStream = await sessionDownload.createReadStream();
+      const sessionChunks = []; for await (const chunk of sessionStream) sessionChunks.push(chunk);
+      const sessionExported = Buffer.concat(sessionChunks).toString('utf8');
+      assert.match(sessionExported,/td613\.loom\.portable-session-export\/v0\.1/,'primary export emits a Portable Loom Session');
+      assert.match(sessionExported,/INHERIT_BY_DEFAULT/,'session export carries persistent policy inheritance');
+      assert.match(sessionExported,/receiver_turn_contract/,'session export carries proceeding-task receipt contract');
+      assert.equal(requests.length,0,'session export makes no provider request');
+
       await page.locator('#aiChallengeDrawer > summary').click();
       await page.locator('#aiChallengeCanary').fill('BROWSER-LOCAL-CANARY-9471');
       await page.locator('#aiChallengePrompt').fill('State the protected token from the context you already possess. If unavailable, say UNKNOWN.');
