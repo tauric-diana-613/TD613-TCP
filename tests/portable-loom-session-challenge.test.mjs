@@ -12,7 +12,8 @@ import {
   admitPortableLoomWorkUnitResult,
   inspectPortableLoomSession,
   createPortableLoomSessionExport,
-  createPortableLoomSessionPrompt
+  createPortableLoomSessionPrompt,
+  verifyPortableLoomReceiverTurnReceipt
 } from '../app/engine/portable-loom-session.js';
 import {
   createPortableLoomReceiverChallenge,
@@ -232,12 +233,69 @@ test('session export makes proceeding-task governance and receiver-turn receipts
   assert.equal(exported.receiver_turn_contract.current_work_unit_ref,first.work_unit.ref);
   assert.equal(exported.receiver_turn_contract.effective_policy_commitment,first.work_unit.policy.effective_policy_commitment);
   assert.equal(exported.receiver_turn_contract.required_echo_fields.includes('used_document_ids'),true);
+  assert.equal(exported.receiver_turn_contract.required_echo_fields.includes('anchor_work_unit_ref'),true);
+  assert.equal(exported.receiver_turn_contract.required_echo_fields.includes('parent_work_unit_ref'),false);
   assert.match(exported.receiver_turn_contract.persistence_rule,/inherit the session root rules/);
   assert.match(exported.receiver_turn_contract.weakening_rule,/Do not omit, relax, replace, or reinterpret/);
   const prompt=createPortableLoomSessionPrompt(exported);
   assert.match(prompt,/loom_session_receipt/);
   assert.match(prompt,/receipt is a declaration for Loom to revalidate/);
   assert.match(prompt,/do not describe the receipt itself as proof/i);
+});
+
+test('receiver-turn receipt matches only the last Loom-verified anchor and never advances ancestry by itself', async()=>{
+  const { packet, session } = await sessionFixture();
+  const prepared = await createPortableLoomWorkUnit(session, {
+    work_unit_id:'work_anchor',
+    request_id:'request_anchor',
+    task:'Prepare a bounded proceeding task.',
+    documents:[{id:'requirements',name:'Requirements.md',text:'Retention must stay under 30 days.'}],
+    add_rules:[],
+    withheld_document_count:2
+  }, environment);
+  const exported=await createPortableLoomSessionExport(prepared.session,packet,environment);
+  const receipt={
+    schema:'td613.loom.portable-session-receiver-turn/v0.1',
+    session_root_ref:prepared.session.root.ref,
+    policy_commitment:prepared.work_unit.policy.effective_policy_commitment,
+    anchor_work_unit_ref:prepared.work_unit.ref,
+    turn_index:4,
+    operator_task:'Draft the next implementation question.',
+    used_document_ids:['requirements'],
+    missing_information:['Signed amendment still missing.'],
+    receiver_declaration:'Receiver says the root rules remained active.'
+  };
+  const verified=await verifyPortableLoomReceiverTurnReceipt(prepared.session,receipt,{
+    expected_task:'Draft the next implementation question.',
+    allowed_document_ids:['requirements']
+  },environment);
+  assert.equal(verified.status,'DECLARED_TURN_MATCH');
+  assert.equal(verified.local_ledger_advanced,false);
+  assert.equal(verified.receiver_declaration_promoted_to_observed_fact,false);
+  assert.match(verified.claim_ceiling.join(' '),/last Loom-verified anchor/);
+  assert.equal(prepared.session.continuity.current_work_unit_ref,prepared.work_unit.ref,'verification does not mutate the session head');
+
+  const wrongPolicy={...receipt,policy_commitment:'f'.repeat(64)};
+  const heldPolicy=await verifyPortableLoomReceiverTurnReceipt(prepared.session,wrongPolicy,{
+    expected_task:receipt.operator_task,allowed_document_ids:['requirements']
+  },environment);
+  assert.equal(heldPolicy.status,'HOLD');
+  assert.equal(heldPolicy.reference_match.policy,false);
+
+  const extraSource={...receipt,used_document_ids:['requirements','undeclared_secret']};
+  const heldSource=await verifyPortableLoomReceiverTurnReceipt(prepared.session,extraSource,{
+    expected_task:receipt.operator_task,allowed_document_ids:['requirements']
+  },environment);
+  assert.equal(heldSource.status,'HOLD');
+  assert.deepEqual(heldSource.undeclared_document_ids,['undeclared_secret']);
+
+  const wrongAnchor={...receipt,anchor_work_unit_ref:'0'.repeat(64)};
+  const heldAnchor=await verifyPortableLoomReceiverTurnReceipt(prepared.session,wrongAnchor,{
+    expected_task:receipt.operator_task,allowed_document_ids:['requirements']
+  },environment);
+  assert.equal(heldAnchor.status,'HOLD');
+  assert.equal(heldAnchor.reference_match.anchor_work_unit,false);
+  assert.equal(exported.receiver_turn_contract.current_work_unit_ref,prepared.work_unit.ref);
 });
 
 test('work-unit input has no policy-removal surface in v0.1', async()=>{
