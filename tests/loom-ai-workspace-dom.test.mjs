@@ -107,6 +107,32 @@ test('a valid-format minted SHI wakes only the prepared Portable AIA issuance ge
   assert.equal(sessionExport.receiver_turn_contract.session_root_ref,sessionExport.session.root.ref);
   assert.match(sessionExport.receiver_turn_contract.receipt_rule,/receiver declaration until Loom revalidates/);
 
+  const proceedingTask='Draft the proceeding implementation checklist.';
+  const turnReceipt={
+    schema:'td613.loom.portable-session-receiver-turn/v0.1',
+    session_root_ref:sessionExport.session.root.ref,
+    policy_commitment:sessionExport.receiver_turn_contract.effective_policy_commitment,
+    anchor_work_unit_ref:sessionExport.receiver_turn_contract.current_work_unit_ref,
+    turn_index:2,
+    operator_task:proceedingTask,
+    used_document_ids:[],
+    missing_information:['No new source bodies were supplied.'],
+    receiver_declaration:'Receiver declaration only.'
+  };
+  h.change('#aiTurnExpectedTask',proceedingTask);
+  h.change('#aiTurnReceiptInput',JSON.stringify(turnReceipt));
+  h.$('#aiVerifyTurnReceipt').click();
+  await until(()=>h.$('#aiTurnReceiptResult').hidden===false,'proceeding-task receipt verification');
+  assert.match(h.$('#aiTurnReceiptVerdict').textContent,/matches the last Loom-verified anchor/);
+  assert.equal(h.ui.inspect().turn_receipt.status,'DECLARED_TURN_MATCH');
+  assert.equal(h.ui.inspect().session.current_work_unit_ref,sessionExport.receiver_turn_contract.current_work_unit_ref,'receipt verification does not advance local ancestry');
+
+  h.change('#aiTurnReceiptInput',JSON.stringify({...turnReceipt,used_document_ids:['undeclared_secret']}));
+  h.$('#aiVerifyTurnReceipt').click();
+  await until(()=>h.ui.inspect().turn_receipt?.status==='HOLD','undeclared-source proceeding turn hold');
+  assert.match(h.$('#aiTurnReceiptVerdict').textContent,/HOLD/);
+  assert.match(h.$('#aiTurnReceiptDetail').textContent,/undeclared_secret/);
+
   h.change('#aiTask',h.$('#aiTask').value+' changed');
   for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge'])assert.equal(h.$('#'+id).disabled,true,'editing the bound task invalidates issuance even when SHI format remains valid');
 });
