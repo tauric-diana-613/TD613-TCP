@@ -246,9 +246,16 @@ coordinate remains unresolved. Examples in the current registry include:
 - human-operated route observation: present, while measured comprehension requires
   its own preregistered human study.
 
-Hidden retention/training/internal memory, empirical exteriority, and complete
-same-episode Golden Egg realization remain HELD in this registry because the
-current admitted evidence does not satisfy those evidence classes.
+The Western Horizon research field itself is no longer at the old no-new-substrate
+rest: closed unmerged PR #1003 admitted a live external empirical witness and
+earned exact-head GREEN in run 33629043531, followed by independently GREEN
+provenance witnesses in #1004 and #1005. That lifts the old *reopening* ceiling,
+while empirical exteriority of the exact target artifact remains a higher,
+separate claim.
+
+Hidden retention/training/internal memory and complete same-episode Golden Egg
+realization remain HELD because the current admitted evidence does not satisfy
+those evidence classes.
 
 `DOLLHOUSE_ROLE_AGREEMENT != EVIDENCE_MULTIPLICATION`.
 
