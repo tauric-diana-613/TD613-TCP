@@ -110,6 +110,8 @@ try {
       assert.match(sessionContract,/INHERIT_BY_DEFAULT/);
       assert.match(sessionContract,/EXPLICIT_PER_WORK_UNIT/);
       assert.match(sessionContract,/browser-unpinned/);
+      await page.locator('#aiSessionInspect > summary').click();
+      assert.equal(await page.locator('#aiSessionReceipt').isVisible(),false,'exact session contract returns to progressive disclosure after inspection');
       assert.match(await page.locator('#aiAnswer').innerText(),/made no model request/i);
       assert.match(await page.locator('#aiAnswer').innerText(),/does not embed civil-identity verification/i);
 
@@ -142,6 +144,8 @@ try {
       assert.equal(publicPrompt.includes('BROWSER-LOCAL-CANARY-9471'),false,'public challenge excludes exact local canary');
       assert.equal(publicPrompt.includes('BLUE-ORANGE-613'),false,'public challenge excludes local reconstruction answer');
       const publicChallenge=JSON.parse(publicPrompt.slice(publicPrompt.indexOf('{')));
+      await page.locator('#aiChallengePreview > summary').click();
+      assert.equal(await page.locator('#aiChallengePublic').isVisible(),false,'exact public challenge returns to progressive disclosure after inspection');
       const receiverReturn={
         schema:'td613.loom.receiver-challenge-return/v0.1',
         challenge_id:publicChallenge.challenge_id,
