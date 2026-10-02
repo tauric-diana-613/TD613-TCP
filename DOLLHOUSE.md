@@ -263,4 +263,48 @@ those evidence classes.
 
 `HISTORICAL_DEVICE_WITNESS != CURRENT_BUILD_DEVICE_CLOSURE`.
 
+## Western Horizon Method Lab
+
+The public [Western Horizon Method Lab](app/dome-world/western-method-lab.html)
+turns the externally learned method lineage already admitted through #1003–#1005
+and TD613's own #1006–#1007 design work into a merged, reusable observation
+contract.
+
+The accession rule is intentionally narrower than the informal phrase "take the
+machinery":
+
+```text
+PUBLIC_METHOD_REIMPLEMENTATION
+!=
+THIRD_PARTY_SOURCE_CODE_IMPORT
+
+METHOD_INSTALLATION
+!=
+EMPIRICAL_EXTERIORITY
+
+RECEIVER_SWAP_DESIGN
+!=
+RECEIVER_EFFECT_OBSERVED
+
+POSITIVE_INFORMATION_GAIN
+!=
+TARGET_ORIGIN_PROOF
+```
+
+The implementation imports no third-party source code or private material. It
+registers supplied route observations, preserves distinct provenance-carrier
+layers, validates receiver-swap designs in which receiver apparatus is the sole
+allowed change, and records information-gain claims without promoting method
+readiness into exteriority or Golden Egg credit.
+
+The four Dollhouse roles remain independent over this surface:
+
+- Pedagogue preserves consequence before ontology;
+- Aperture keeps observability separate from identifiability;
+- Atlas keeps route, carrier, receiver, source and time relations distinct;
+- FADT rejects erasure that would manufacture admissibility.
+
+The lab is tested inside the existing Claim Ceiling Observatory audit so this
+method accession cannot drift outside the same claim-ceiling membrane.
+
 Sealed ⟐
