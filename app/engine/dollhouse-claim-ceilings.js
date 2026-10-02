@@ -79,7 +79,7 @@ export const CLAIM_CEILING_REGISTRY = freeze([
     prior_ceiling: 'physical-device behavior',
     state: CLAIM_CEILING_STATES.EARNED_BOUNDED,
     earned_coordinate: 'Physical-iPhone production behavior has been observed repeatedly and preserved in the Marrowline release ledger for named dated episodes, including keyboard, dock, zoom, Zalgo rendering, timing and layout failures.',
-    current_ceiling: 'Historical physical-device evidence does not automatically validate every later build, route, iOS revision, device class, keyboard state, or post-repair interaction.',
+    current_ceiling: 'Historical physical-device evidence does not automatically validate every later build, route, iOS revision, device class, keyboard state, or post-repair interaction; exact-current-build physical-device closure remains unearned until a fresh bound episode is observed.',
     next_witness: 'Exact-current-build end-to-end physical-device replay with route, browser/iOS version, viewport, interaction trace, screenshots, and source receipt bound to one episode.',
     evidence: evidence(
       {kind:'SOURCE',ref:'app/dome-world/marrowline.release.json',note:'multiple dated physical-iPhone humanOperatorObservation entries'},
