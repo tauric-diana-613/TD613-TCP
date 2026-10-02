@@ -138,7 +138,8 @@ export function installMarrowlineReadingSurface(stage, environment=window, autho
   const source=stage.querySelector('.relay-stage-text');
   if(!source)return null;
   const doc=stage.ownerDocument,raw=String(source.textContent ?? '');
-  const shell=doc.createElement('section');shell.className='marrowline-reading-surface';shell.dataset.schema=MARROWLINE_READING_SURFACE_SCHEMA;\n  shell.dataset.loomRequestId=String(authority.request_id);shell.dataset.loomPhase=String(authority.phase);
+  const shell=doc.createElement('section');shell.className='marrowline-reading-surface';shell.dataset.schema=MARROWLINE_READING_SURFACE_SCHEMA;
+  shell.dataset.loomRequestId=String(authority.request_id);shell.dataset.loomPhase=String(authority.phase);
   const tools=doc.createElement('div');tools.className='marrowline-reading-tools';tools.setAttribute('role','group');tools.setAttribute('aria-label','Reply presentation');
   const readingButton=doc.createElement('button');readingButton.type='button';readingButton.textContent='Reading';readingButton.setAttribute('aria-pressed','true');
   const exactButton=doc.createElement('button');exactButton.type='button';exactButton.textContent='Exact';exactButton.setAttribute('aria-pressed','false');
