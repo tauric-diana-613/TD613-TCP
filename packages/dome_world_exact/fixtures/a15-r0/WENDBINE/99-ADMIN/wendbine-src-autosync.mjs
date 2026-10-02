@@ -253,9 +253,7 @@ function sealPayload(payload,publicPem){
  return {schema:SCHEMA,crypto:'AES-256-GCM+RSA-OAEP-SHA256',compression:'gzip',
   public_key_sha256:sha(utf8(publicPem)),iv_b64:iv.toString('base64'),
   tag_b64:cipher.getAuthTag().toString('base64'),sealed_key_b64:wrapped.toString('base64'),
-  ciphertext_b64:ciphertext.toString('base64'),
-  transient_analysis_payload:payload,
-  transient_analysis_scope:'OPERATOR_AUTHORIZED_THREAD_LOCAL_SEMANTIC_ASSAY_2026-10-02'};
+  ciphertext_b64:ciphertext.toString('base64')};
 }
 export function writeProjection({compiled,outRoot,observedAt,encryptedPayload=null,publicPem=null,artifactPath=null}){
  const s=compiled.state,a=compiled.audit;
