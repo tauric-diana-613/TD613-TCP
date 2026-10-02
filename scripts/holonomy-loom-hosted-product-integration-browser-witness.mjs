@@ -77,6 +77,7 @@ try {
   const laboratory = page.locator('#loomLegacy');
   check('local laboratory starts optional and closed', !(await detailsOpen(laboratory)));
   await laboratory.locator(':scope > summary').click();
+  await page.locator('#loomPracticeFixtures > summary').click();
   check('local laboratory opens by explicit choice', await detailsOpen(laboratory));
   check('local checker instruction visible', await page.getByText('Before you send it, check what this message carries.', { exact: true }).isVisible());
   check('host boundary declared', await html.getAttribute('data-route-mode') === 'TD613_HOSTED');

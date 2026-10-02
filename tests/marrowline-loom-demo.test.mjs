@@ -4,18 +4,20 @@ import fs from 'node:fs';
 import {webcrypto} from 'node:crypto';
 import {JSDOM} from 'jsdom';
 import {createLoomAiGovernance} from '../app/dome-world/holonomy-loom/ai-handoff.js';
-import {bindLoomDemoRequest,loomDemoDigest,loomDemoReceiptDigest,loomDemoResult,LOOM_DEMO_STAGE_RECEIPT_SCHEMA} from '../app/dome-world/holonomy-loom/demo-contract.js';
+import {bindLoomDemoRequest,loomDemoDigest,loomDemoReceiptDigest,loomDemoResult,inspectLoomDemoExport,LOOM_DEMO_STAGE_RECEIPT_SCHEMA} from '../app/dome-world/holonomy-loom/demo-contract.js';
 import {installKhonapolitTerminal} from '../app/dome-world/marrowline-terminal.js';
 import {installMarrowlineLoomDemo} from '../app/dome-world/marrowline-loom-demo.js';
 import {installMarrowlineDesktopRepair} from '../app/dome-world/marrowline-desktop-repair.js';
 import {getMarrowlineAttachments,clearMarrowlineAttachments,removeMarrowlineAttachment,stageMarrowlineAttachments} from '../app/dome-world/marrowline-attachments.js';
 const html=fs.readFileSync('app/dome-world/marrowline.html','utf8');
-async function harness({held=false,tamperStageReceipt=false}={}){
+async function harness({held=false,tamperStageReceipt=false,originalResult=false,sourceRevision=null}={}){
  const dom=new JSDOM(html,{url:'https://td613.com/dome-world/marrowline.html'}), root=dom.window, doc=root.document;
  root.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){}});root.requestAnimationFrame=callback=>root.setTimeout(callback,0);
  Object.defineProperty(root,'crypto',{value:webcrypto});root.File=File;root.Blob=Blob;
  const packet={task:'Compare fictional workstreams.',documents:[{id:'a',name:'a.md',text:'State A has three workstreams.'}],rules:['Use only selected sources.']};
  packet.governance=await createLoomAiGovernance(packet,{withheldDocumentCount:1},root);
+ if(originalResult)packet.continuation={prior_result:{schema:'td613.loom.ai-task-result/v0.1',request_id:'loom-origin',status:'completed',answer:'Original Loom answer: State A has three workstreams.',missing_information:['Independent effect remains unobserved.'],used_document_ids:['a'],suggested_next_step:'Recheck the selected file.'}};
+ if(sourceRevision)packet.receipt={id:'origin-source-declaration',source_revision:sourceRevision,digest:packet.governance.input_digest};
  clearMarrowlineAttachments(root);
  installMarrowlineDesktopRepair(doc,root);
  const requests=[];let deny=held;
@@ -207,6 +209,59 @@ test('failed continuation keeps the previous admitted export and reports hold se
  assert.equal(gate.fadt.state,'PRIOR EXPORT RETAINED');
  assert.equal(h.doc.querySelector('#loomGateContinuity .loom-gate-primary').disabled,false,'held follow-up cannot confiscate prior admitted export');
  assert.equal(h.requests.at(-1).prior_result.answer,'State B has four workstreams.');
+ }finally{h.close();}
+});
+
+test('native exports after both continuations preserve original answer, latest answer, exact receipt path and review-only recovery',async()=>{
+ const h=await harness({originalResult:true});try{
+ await h.controller.stageAia();await h.controller.submit();await h.controller.stageFiles();await h.controller.submit();
+ const first=h.controller.exportPacket(), original=h.packet.continuation.prior_result;
+ assert.deepEqual(first.loom_demo_provenance.original_result,original);
+ assert.equal(first.loom_demo_provenance.activation.task,h.packet.task);
+ assert.deepEqual(first.documents,h.packet.documents);assert.deepEqual(first.rules,h.packet.rules);
+ assert.equal(first.loom_demo_provenance.stages.length,2);
+ assert.equal(first.loom_demo_provenance.stages[1].content_predecessor_request_id,'loom-origin');
+ assert.equal(first.continuation.prior_result.answer,'State B has four workstreams.');
+ assert.equal((await inspectLoomDemoExport(JSON.parse(JSON.stringify(first)),h.root)).status,'REVIEW_ONLY_CONSISTENCY');
+ h.doc.querySelector('#khonapolitPrompt').value='Continue from the latest reply.';await h.controller.submit();
+ const second=h.controller.exportPacket(), metadata=second.loom_demo_provenance;
+ assert.deepEqual(metadata.original_result,original);
+ assert.equal(second.continuation.prior_result.answer,'State C has five workstreams.');
+ assert.equal(metadata.stages.length,3);
+ assert.equal(metadata.stages[2].content_predecessor_request_id,h.requests[1].request_id);
+ assert.equal(metadata.stages[2].predecessor_request_id,h.requests[1].request_id);
+ assert.equal(metadata.stages[2].receipt.predecessor_receipt_digest,await loomDemoReceiptDigest(metadata.stages[1].receipt,h.root));
+ assert.equal(metadata.exclusions.withheld_document_count,1);
+ assert.equal(metadata.exclusions.local_document_bodies,'NOT_CARRIED');
+ assert.deepEqual(metadata.source_revision,{value:null,state:'UNOBSERVED',authenticated:false});
+ assert.deepEqual(metadata.missingness,['SOURCE_REVISION_UNOBSERVED']);
+ const carried=JSON.parse(JSON.stringify(second)), clock=Date.now;
+ let inspected;
+ try{Date.now=()=>metadata.activation.expires_at+1;inspected=await inspectLoomDemoExport(carried,h.root);assert.throws(()=>h.controller.exportPacket(),/no current export/);}finally{Date.now=clock;}
+ assert.equal(inspected.status,'REVIEW_ONLY_CONSISTENCY');assert.equal(inspected.restore_authority,false);assert.equal(inspected.live_custody_capability,false);
+ h.controller.leaveDemo();assert.throws(()=>h.controller.exportPacket(),/no current export/);
+ assert.equal((await inspectLoomDemoExport(carried,h.root)).status,'REVIEW_ONLY_CONSISTENCY');
+ const observed=h.controller.getObservedProvenance();observed.stages.length=0;
+ assert.equal(h.controller.getObservedProvenance().stages.length,3,'inspection copies cannot alter the live accepted path');
+ }finally{h.close();}
+});
+
+test('parsed export changes to original work, carried stage order, latest binding and ceilings are held',async()=>{
+ const h=await harness({originalResult:true,sourceRevision:'9824dfa0f427c8b944ff5c7fdfd43719b2b41418'});try{
+ await h.controller.stageAia();await h.controller.submit();await h.controller.stageFiles();await h.controller.submit();
+ h.doc.querySelector('#khonapolitPrompt').value='Follow up.';await h.controller.submit();
+ const packet=h.controller.exportPacket();
+ assert.equal(packet.loom_demo_provenance.source_revision.state,'CARRIED_ORIGIN_DECLARATION');
+ for(const change of [
+  value=>{value.loom_demo_provenance.original_result.answer='Forged original.';},
+  value=>{value.loom_demo_provenance.activation.task='Forged original task.';},
+  value=>{value.loom_demo_provenance.stages.reverse();},
+  value=>{value.loom_demo_provenance.stages[2].content_predecessor_request_id='loom-origin';},
+  value=>{value.loom_demo_provenance.stages[2].receipt.predecessor_receipt_digest='0'.repeat(64);},
+  value=>{value.continuation.prior_result.answer='Older substituted answer.';},
+  value=>{value.loom_demo_provenance.exclusions.withheld_document_count=0;},
+  value=>{value.loom_demo_provenance.authority.restore_authority=true;}
+ ]){const forged=JSON.parse(JSON.stringify(packet));change(forged);assert.equal((await inspectLoomDemoExport(forged,h.root)).status,'HELD');}
  }finally{h.close();}
 });
 test('direct ordinary chat and page entry do not install a demo or send protected inputs',()=>{

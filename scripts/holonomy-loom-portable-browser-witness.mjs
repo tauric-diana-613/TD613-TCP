@@ -35,6 +35,7 @@ try {
       const laboratory = page.locator('#loomLegacy');
       assert.equal(await laboratory.evaluate(node => node.open), false, 'legacy laboratory starts optional and closed');
       await laboratory.locator(':scope > summary').click();
+      await page.locator('#loomPracticeFixtures > summary').click();
       assert.equal(await laboratory.evaluate(node => node.open), true, 'explicitly open local laboratory before its witness');
       const clientFixture = page.locator('#ltLoadClient');
       await clientFixture.waitFor({ state: 'visible' });

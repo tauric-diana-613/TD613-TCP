@@ -74,7 +74,7 @@ function portableInput(packet) {
 }
 
 function exportPortable(packet, doc, environment) {
-  const payload = createPortableLoomAiPacket(portableInput(packet));
+  const payload = createPortableLoomAiPacket(portableInput(packet), { priorResult: packet.continuation?.prior_result });
   const BlobCtor = environment.Blob ?? doc.defaultView?.Blob;
   const URLApi = environment.URL ?? doc.defaultView?.URL;
   if (!BlobCtor || !URLApi?.createObjectURL) throw new Error('Export unavailable in this browser');
@@ -249,7 +249,7 @@ function pocketize(root, packet, doc, environment) {
     host.dataset.loomPocketOpen = 'true';
     doc.documentElement.dataset.loomTaskImport = 'active';
     const status = root.querySelector('[role=status]');
-    if (review && status) status.textContent = 'Review only. Nothing has been sent. Run with Flow-Core AI remains a separate action.';
+    if (review && status) status.textContent = 'Review only. Nothing has been sent. Run model test remains a separate action.';
     if (review) {
       const docs = byId(doc, 'loomImportedDocuments'); if (docs) docs.open = true;
       const rules = byId(doc, 'loomImportedRules'); if (rules) rules.open = true;

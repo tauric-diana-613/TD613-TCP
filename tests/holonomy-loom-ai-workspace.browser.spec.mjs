@@ -36,7 +36,7 @@ const uploadCanary = 'LOCAL-UPLOAD-CANARY-DO-NOT-SEND-613';
 const fixtureAnswer = '[MOCK PROVIDER RESPONSE — UI WITNESS] Supplier analysis: stated account fees and migration overages require separate arithmetic. Retention terms conflict; obtain a signed resolution before pilot approval.';
 let browser;
 try {
-  browser = await browserType.launch({ headless: true, ...(engine === 'chromium' ? { executablePath: browserType.executablePath() } : {}) });
+  browser = await browserType.launch({ headless: true, ...(engine === 'chromium' ? { executablePath: process.env.TD613_BROWSER_EXECUTABLE_PATH || browserType.executablePath() } : {}) });
   for (const [posture, viewport, reducedMotion] of [
     ['desktop', { width: 1280, height: 900 }, 'no-preference'],
     ['mobile-reduced', { width: 390, height: 844 }, 'reduce']
@@ -83,7 +83,8 @@ try {
       assert.equal(await page.locator('#aiPortableMode').getAttribute('aria-selected'),'true','Portable AIA is the default product mode');
       assert.equal(await page.locator('#aiDemoMode').getAttribute('aria-selected'),'false');
       assert.equal(await page.locator('#aiDemoWelcome').isVisible(),false,'fictional demo chooser stays out of the primary Portable AIA path');
-      assert.equal(await page.locator('#loomLegacy > summary').isVisible(),false,'laboratory estate stays under Loom Demo rather than competing with the builder');
+      assert.equal(await page.locator('#loomLegacy > summary').isVisible(),true,'Instrument Lab has an independent entrance in Portable mode');
+      assert.equal(await page.locator('#loomLegacy').evaluate(node=>node.open),false,'Instrument Lab remains closed by default');
       assert.match(await page.locator('#aiShiStatus').innerText(),/Issuance held/);
       assert.equal(await page.locator('#aiIssuanceGate a').getAttribute('href'),'/safe-harbor/index.html');
       assert.equal(await page.locator('.ai-projection-depth').getAttribute('open'),null,'technical governance detail stays optional on entry');
@@ -179,7 +180,7 @@ try {
       assert.equal(await page.locator('#aiDemoWelcome').isVisible(),true,'Loom Demo reveals the fictional practice chooser');
       assert.equal(await page.locator('.ai-observer').isVisible(),true,'live request theater returns inside Loom Demo');
       assert.equal(await page.locator('#aiRun').evaluate(node=>node.classList.contains('ai-primary')),true,'Run becomes the primary demo gesture');
-      assert.equal(await page.locator('#loomLegacy > summary').isVisible(),true,'laboratory estate belongs to Loom Demo');
+      assert.equal(await page.locator('#loomLegacy > summary').isVisible(),true,'Instrument Lab remains independently available during practice');
       assert.match(await page.locator('#aiDemoModePanel').innerText(),/fictional practice traversal/i);
       await page.locator('#aiDemoInvitation').click();
       assert.equal(await page.locator('#aiDemoInvitation').getAttribute('aria-expanded'), 'true');

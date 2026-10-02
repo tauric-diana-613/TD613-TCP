@@ -1,4 +1,4 @@
-import { normalizeLoomAiTask, createLoomAiGovernance, verifyLoomAiGovernance, createLoomAiTaskGovernor, createPortableLoomAiPacket, LOOM_HANDOFF_TTL_MS } from './ai-handoff.js';
+import { normalizeLoomAiTask, createLoomAiGovernance, verifyLoomAiGovernance, createLoomAiTaskGovernor, createPortableLoomAiPacket, inspectPortableLoomReceiverAssurance, LOOM_HANDOFF_TTL_MS } from './ai-handoff.js';
 import { inspectLoomAiResponse } from './ai-intake.js';
 import { requireReusableLoomAnswer } from './ai-evidence-review.js';
 import { INVOCATION_MODES } from '../khonapolit-covenant.js';
@@ -7,6 +7,8 @@ export const LOOM_DEMO_ACTIVATION_SCHEMA = 'td613.loom.portable-activation/v0.2'
 export const LOOM_DEMO_REQUEST_SCHEMA = 'td613.loom.demo-request/v0.2';
 export const LOOM_DEMO_STAGE_RECEIPT_SCHEMA = 'td613.loom.demo-stage-receipt/v0.2';
 export const LOOM_DEMO_RESULT_COMMITMENT_SCHEMA = 'td613.loom.demo-result-commitment/v0.1';
+export const LOOM_DEMO_EXPORT_PROVENANCE_SCHEMA = 'td613.loom.demo-export-provenance/v0.1';
+export const LOOM_DEMO_EXPORT_INSPECTION_SCHEMA = 'td613.loom.demo-export-inspection/v0.1';
 const copy = value => JSON.parse(JSON.stringify(value));
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 function exact(value, fields) {
@@ -199,7 +201,7 @@ export async function bindLoomDemoRequest(request, environment = globalThis) {
   };
 }
 
-export function exportLoomDemoCurrent(binding, result = undefined) {
+export function exportLoomDemoCurrent(binding, result = undefined, context = undefined) {
   if (!binding || binding.receipt?.phase !== 'CONTINUE' || typeof binding.getAdmittedResult !== 'function') throw new Error('LOOM_DEMO_CURRENT_RESULT_NOT_ADMITTED');
   const admitted = binding.getAdmittedResult();
   if (!admitted) throw new Error('LOOM_DEMO_CURRENT_RESULT_NOT_ADMITTED');
@@ -207,5 +209,167 @@ export function exportLoomDemoCurrent(binding, result = undefined) {
     const candidate = loomDemoResult(result, binding.selected.documents);
     if (!same(candidate, admitted)) throw new Error('LOOM_DEMO_EXPORT_RESULT_MISMATCH');
   }
-  return createPortableLoomAiPacket({ ...binding.selected, governance: binding.governance }, { priorResult: admitted });
+  const packet = createPortableLoomAiPacket({ ...binding.selected, governance: binding.governance }, { priorResult: admitted });
+  if (context !== undefined) {
+    const original = normalizeLoomAiTask({ task: context.origin?.task, documents: context.origin?.documents,
+      rules: context.origin?.rules, governance: context.origin?.governance });
+    const activation = context.activation;
+    const originalResult = loomDemoResult(context.origin?.continuation?.prior_result, original.documents);
+    if (!activation || activation.activation_digest !== binding.receipt.activation_digest
+      || original.task !== activation.task || !same(original.rules, activation.rules)
+      || !same(original.documents, binding.selected.documents) || !same(original.governance, activation.governance)
+      || !Array.isArray(context.stages) || !context.stages.length || context.stages.length > 128) throw new Error('LOOM_DEMO_EXPORT_HISTORY_CHANGED');
+    const stages = context.stages.map(stage => {
+      const receipt = validateLoomDemoStageReceipt(stage.receipt, activation);
+      if (stage.receiver !== 'MARROWLINE' || typeof stage.observed_at !== 'string'
+        || !Number.isFinite(Date.parse(stage.observed_at)) || !same(stage.binding?.activation_digest, activation.activation_digest)) throw new Error('LOOM_DEMO_EXPORT_HISTORY_CHANGED');
+      return copy({ receipt, binding: stage.binding, receiver: stage.receiver, observed_at: stage.observed_at,
+        predecessor_request_id: stage.predecessor_request_id, content_predecessor_request_id: stage.content_predecessor_request_id });
+    });
+    if (stages.at(-1).receipt.request_id !== admitted.request_id
+      || !same(stages.at(-1).binding, binding.receipt)) throw new Error('LOOM_DEMO_EXPORT_HISTORY_NOT_CURRENT');
+    const source = context.origin?.receipt?.source_revision;
+    const sourceKnown = typeof source === 'string' && /^[a-f0-9]{40}$/.test(source);
+    packet.loom_demo_provenance = {
+      schema: LOOM_DEMO_EXPORT_PROVENANCE_SCHEMA, case_id: activation.activation_digest,
+      origin_input_digest: activation.governance.input_digest,
+      source_revision: { value: sourceKnown ? source : null, state: sourceKnown ? 'CARRIED_ORIGIN_DECLARATION' : 'UNOBSERVED', authenticated: false },
+      activation: copy(activation), original_result: originalResult,
+      latest_request_id: admitted.request_id, latest_result_digest: stages.at(-1).receipt.result_digest,
+      stages,
+      exclusions: { withheld_document_count: activation.governance.withheld_document_count,
+        local_document_bodies: 'NOT_CARRIED', protected_terms: 'NOT_CARRIED', scope: 'ORIGIN_SELECTED_INPUT_BOUNDARY' },
+      missingness: sourceKnown ? [] : ['SOURCE_REVISION_UNOBSERVED'],
+      authority: { scope: 'EXPORTED_REVIEW_MATERIAL_ONLY', live_custody_capability: false, restore_authority: false,
+        receipt_signatures_verified_by_export: false, foreign_origin_authenticated: false }
+    };
+  }
+  return packet;
+}
+
+export async function exportLoomDemoOrigin(input, environment = globalThis, { priorResult } = {}) {
+  const packet = createPortableLoomAiPacket(input, { priorResult });
+  await verifyLoomAiGovernance(packetInputForReview(packet), environment);
+  const original = loomDemoResult(packet.continuation?.prior_result, packet.documents);
+  if (!original) throw new Error('LOOM_DEMO_ORIGINAL_RESULT_UNOBSERVED');
+  const source = packet.receipt?.source_revision, known = typeof source === 'string' && /^[a-f0-9]{40}$/.test(source);
+  packet.loom_demo_provenance = {
+    schema: LOOM_DEMO_EXPORT_PROVENANCE_SCHEMA, case_id: null, origin_input_digest: packet.governance.input_digest,
+    source_revision: { value: known ? source : null, state: known ? 'CARRIED_ORIGIN_DECLARATION' : 'UNOBSERVED', authenticated: false },
+    activation: null, original_result: original, latest_request_id: original.request_id,
+    latest_result_digest: await loomDemoDigest(original, environment), stages: [],
+    exclusions: { withheld_document_count: packet.governance.withheld_document_count,
+      local_document_bodies: 'NOT_CARRIED', protected_terms: 'NOT_CARRIED', scope: 'ORIGIN_SELECTED_INPUT_BOUNDARY' },
+    missingness: known ? [] : ['SOURCE_REVISION_UNOBSERVED'],
+    authority: { scope: 'EXPORTED_REVIEW_MATERIAL_ONLY', live_custody_capability: false, restore_authority: false,
+      receipt_signatures_verified_by_export: false, foreign_origin_authenticated: false }
+  };
+  return packet;
+}
+function packetInputForReview(packet) {
+  return { task: packet.task, documents: packet.documents, rules: packet.rules, governance: packet.governance };
+}
+function snapshotReviewData(value, seen = new Set(), depth = 0, budget = { items: 0, characters: 0 }) {
+  if (depth > 40 || ++budget.items > 50000) throw new Error('LOOM_DEMO_EXPORT_EVIDENCE_LIMIT');
+  if (value === null || typeof value === 'boolean') return value;
+  if (typeof value === 'number' && Number.isFinite(value)) return value;
+  if (typeof value === 'string') { budget.characters += value.length; if (budget.characters > 2000000) throw new Error('LOOM_DEMO_EXPORT_EVIDENCE_LIMIT'); return value; }
+  if (!value || typeof value !== 'object' || seen.has(value)) throw new Error('LOOM_DEMO_EXPORT_NON_DATA');
+  const array = Array.isArray(value), keys = Reflect.ownKeys(value);
+  if (!array && Object.getPrototypeOf(value) !== Object.prototype) throw new Error('LOOM_DEMO_EXPORT_NON_DATA');
+  if (array && (value.length > 1024 || keys.length !== value.length + 1)) throw new Error('LOOM_DEMO_EXPORT_SPARSE_DATA');
+  seen.add(value); const output = array ? [] : {};
+  for (const key of keys) {
+    if (array && key === 'length') continue;
+    const descriptor = Object.getOwnPropertyDescriptor(value, key);
+    if (typeof key !== 'string' || key === '__proto__' || !descriptor.enumerable || descriptor.get || descriptor.set
+      || (array && (!/^(0|[1-9][0-9]*)$/.test(key) || Number(key) >= value.length))) throw new Error('LOOM_DEMO_EXPORT_NON_DATA');
+    output[key] = snapshotReviewData(descriptor.value, seen, depth + 1, budget);
+  }
+  if (array) for (let index = 0; index < value.length; index++) if (!Object.hasOwn(value, index)) throw new Error('LOOM_DEMO_EXPORT_SPARSE_DATA');
+  seen.delete(value); return output;
+}
+
+// Parsed/expired exports can be checked and inspected without reopening a live
+// controller or invoking the signer/head service. Chain integrity is not custody.
+export async function inspectLoomDemoExport(packet, environment = globalThis) {
+  const held = reason => ({ schema: LOOM_DEMO_EXPORT_INSPECTION_SCHEMA, status: 'HELD', reason,
+    review_only: true, live_custody_capability: false, restore_authority: false, receipt_signatures_verified: false });
+  try {
+    packet = snapshotReviewData(packet);
+    if ((await inspectPortableLoomReceiverAssurance(packet, environment)).outcome !== 'ADMITTED') throw new Error('LOOM_DEMO_EXPORT_PORTABLE_ASSURANCE_HELD');
+    const provenance = packet?.loom_demo_provenance;
+    exact(provenance, ['schema', 'case_id', 'origin_input_digest', 'source_revision', 'activation', 'original_result',
+      'latest_request_id', 'latest_result_digest', 'stages', 'exclusions', 'missingness', 'authority']);
+    if (packet.schema !== 'td613.loom.portable-task/v0.1' || provenance.schema !== LOOM_DEMO_EXPORT_PROVENANCE_SCHEMA) throw new Error('LOOM_DEMO_EXPORT_PROVENANCE_INVALID');
+    const activation = provenance.activation;
+    if (activation === null) {
+      await verifyLoomAiGovernance(packetInputForReview(packet), environment);
+      const latest = loomDemoResult(packet.continuation?.prior_result, packet.documents);
+      if (!latest || !same(latest, provenance.original_result) || provenance.case_id !== null
+        || provenance.origin_input_digest !== packet.governance.input_digest || !same(provenance.stages, [])
+        || provenance.latest_request_id !== latest.request_id
+        || provenance.latest_result_digest !== await loomDemoDigest(latest, environment)) throw new Error('LOOM_DEMO_EXPORT_ORIGIN_CHANGED');
+      const rebuilt = await exportLoomDemoOrigin({ ...packetInputForReview(packet),
+        ...(packet.receipt !== undefined ? { receipt: packet.receipt } : {}) }, environment, { priorResult: latest });
+      if (!same(provenance, rebuilt.loom_demo_provenance)) throw new Error('LOOM_DEMO_EXPORT_CEILING_CHANGED');
+      return { schema: LOOM_DEMO_EXPORT_INSPECTION_SCHEMA, status: 'REVIEW_ONLY_CONSISTENCY', case_id: null,
+        original_request_id: latest.request_id, latest_request_id: latest.request_id, observed_stage_count: 0,
+        source_revision: copy(provenance.source_revision), missingness: copy(provenance.missingness),
+        review_only: true, live_custody_capability: false, restore_authority: false, receipt_signatures_verified: false,
+        native_request_digests_recomputed: false, foreign_origin_authenticated: false };
+    }
+    if (!Number.isSafeInteger(activation?.issued_at) || activation.issued_at < 0) throw new Error('LOOM_DEMO_EXPORT_TIME_INVALID');
+    const originalResult = loomDemoResult(provenance.original_result, packet.documents);
+    const rebuilt = await createLoomDemoActivation({ task: activation.task, documents: packet.documents, rules: activation.rules,
+      governance: activation.governance, continuation: originalResult ? { prior_result: originalResult } : null,
+      handoff_receipt: { issued_at: activation.issued_at } }, environment);
+    if (!same(rebuilt, activation) || provenance.case_id !== activation.activation_digest
+      || provenance.origin_input_digest !== activation.governance.input_digest
+      || !same(packet.rules, activation.rules)) throw new Error('LOOM_DEMO_EXPORT_ORIGIN_CHANGED');
+    await verifyLoomAiGovernance({ task: packet.task, documents: packet.documents, rules: packet.rules, governance: packet.governance }, environment);
+    const latest = loomDemoResult(packet.continuation?.prior_result, packet.documents);
+    if (!latest || !Array.isArray(provenance.stages) || !provenance.stages.length || provenance.stages.length > 128) throw new Error('LOOM_DEMO_EXPORT_HISTORY_MISSING');
+    let previous = null, previousTime = activation.issued_at, previousContentId = originalResult?.request_id ?? null;
+    const requestIds = new Set();
+    for (const [index, stage] of provenance.stages.entries()) {
+      exact(stage, ['receipt', 'binding', 'receiver', 'observed_at', 'predecessor_request_id', 'content_predecessor_request_id']);
+      const receipt = validateLoomDemoStageReceipt(stage.receipt, activation), at = Date.parse(stage.observed_at);
+      if (stage.receiver !== 'MARROWLINE' || !Number.isFinite(at) || at < previousTime || at >= activation.expires_at
+        || requestIds.has(receipt.request_id) || receipt.phase !== (index ? 'CONTINUE' : 'ACTIVATE')
+        || stage.predecessor_request_id !== (previous?.request_id ?? null)
+        || stage.content_predecessor_request_id !== (index ? previousContentId : null)
+        || receipt.predecessor_receipt_digest !== (previous ? await loomDemoReceiptDigest(previous, environment) : null)
+        || receipt.prior_result_digest !== (index ? index === 1 ? activation.prior_result_commitment?.sha256 ?? null : previous.result_digest : null)) throw new Error('LOOM_DEMO_EXPORT_CHAIN_CHANGED');
+      const binding = stage.binding;
+      exact(binding, ['schema', 'phase', 'activation_digest', 'origin_input_digest', 'current_input_digest', 'selected_ids',
+        'rules_preserved', 'contents_verified', 'predecessor_phase', 'predecessor_request_id', 'prior_result_digest', 'authority_transferred']);
+      if (binding.schema !== 'td613.loom.demo-binding/v0.2' || binding.phase !== receipt.phase
+        || binding.activation_digest !== activation.activation_digest || binding.origin_input_digest !== activation.governance.input_digest
+        || binding.current_input_digest !== receipt.current_input_digest || binding.prior_result_digest !== receipt.prior_result_digest
+        || !same(binding.selected_ids, index ? packet.documents.map(item => item.id) : [])
+        || binding.rules_preserved !== true || binding.contents_verified !== Boolean(index) || binding.authority_transferred !== false
+        || binding.predecessor_phase !== (previous?.phase ?? null) || binding.predecessor_request_id !== (previous?.request_id ?? null)) throw new Error('LOOM_DEMO_EXPORT_BINDING_CHANGED');
+      requestIds.add(receipt.request_id); previous = receipt; previousTime = at;
+      if (index) previousContentId = receipt.request_id;
+    }
+    if (previous.phase !== 'CONTINUE' || previous.request_id !== latest.request_id
+      || provenance.latest_request_id !== latest.request_id || provenance.latest_result_digest !== previous.result_digest
+      || previous.result_digest !== await loomDemoDigest(latest, environment)
+      || previous.current_input_digest !== packet.governance.input_digest) throw new Error('LOOM_DEMO_EXPORT_NOT_LATEST');
+    exact(provenance.source_revision, ['value', 'state', 'authenticated']);
+    const sourceKnown = typeof provenance.source_revision.value === 'string' && /^[a-f0-9]{40}$/.test(provenance.source_revision.value);
+    if (provenance.source_revision.authenticated !== false || provenance.source_revision.state !== (sourceKnown ? 'CARRIED_ORIGIN_DECLARATION' : 'UNOBSERVED')
+      || (!sourceKnown && provenance.source_revision.value !== null)
+      || !same(provenance.missingness, sourceKnown ? [] : ['SOURCE_REVISION_UNOBSERVED'])
+      || !same(provenance.exclusions, { withheld_document_count: activation.governance.withheld_document_count,
+        local_document_bodies: 'NOT_CARRIED', protected_terms: 'NOT_CARRIED', scope: 'ORIGIN_SELECTED_INPUT_BOUNDARY' })
+      || !same(provenance.authority, { scope: 'EXPORTED_REVIEW_MATERIAL_ONLY', live_custody_capability: false, restore_authority: false,
+        receipt_signatures_verified_by_export: false, foreign_origin_authenticated: false })) throw new Error('LOOM_DEMO_EXPORT_CEILING_CHANGED');
+    return { schema: LOOM_DEMO_EXPORT_INSPECTION_SCHEMA, status: 'REVIEW_ONLY_CONSISTENCY', case_id: provenance.case_id,
+      original_request_id: originalResult?.request_id ?? null, latest_request_id: latest.request_id,
+      observed_stage_count: provenance.stages.length, source_revision: copy(provenance.source_revision), missingness: copy(provenance.missingness),
+      review_only: true, live_custody_capability: false, restore_authority: false, receipt_signatures_verified: false,
+      native_request_digests_recomputed: false, foreign_origin_authenticated: false };
+  } catch (error) { return held(error.message); }
 }

@@ -277,7 +277,7 @@ test('receiver task expansion and disclosures preserve combining marks and exact
   const expand = scene.root.querySelector('#loomImportedExpand');
   assert.equal(task.value, flourish); assert.equal(task.rows, 3);
   assert.match(scene.root.querySelector('#loomImportedBoundary').textContent, /2 local-only documents stayed out/);
-  assert.match(scene.root.textContent, /Flow-Core AI runtime/);
+  assert.match(scene.root.textContent, /model receiver route/);
   assert.equal(scene.root.textContent.includes('Google Gemini'), false);
   for (const id of ['loomImportedDocuments', 'loomImportedRules', 'loomImportedReceiptDetails']) {
     const drawer = scene.root.querySelector('#' + id); assert.equal(drawer.open, false); drawer.open = true;
@@ -310,7 +310,7 @@ test('pending receiver request gives visible progress until admitted answer repl
   assert.equal(scene.root.querySelector('.loom-import-progress').hidden, true);
   assert.equal(scene.root.querySelector('#loomImportedAnswer').getAttribute('aria-busy'), 'false');
   assert.equal(scene.root.querySelector('h3').hidden, false);
-  assert.equal(scene.root.querySelector('#loomImportedRun').textContent, 'Run with Flow-Core AI');
+  assert.equal(scene.root.querySelector('#loomImportedRun').textContent, 'Run model test');
   scene.workspace.destroy(); scene.dom.window.close();
 });
 

@@ -1,11 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { webcrypto } from 'node:crypto';
 import { JSDOM } from 'jsdom';
 import { installMarrowlineDesktopRepair, installStarterCarousel } from '../app/dome-world/marrowline-desktop-repair.js';
 import { installMarrowlineLivingChat } from '../app/dome-world/marrowline-living-chat.js';
 import { clearMarrowlineAttachments, stageMarrowlineAttachments } from '../app/dome-world/marrowline-attachments.js';
 import { MARROWLINE_MISSION_ASSAYS } from '../app/dome-world/marrowline-mission-assays.js';
+import { createLoomAiHandoff, consumeLoomAiHandoff, createLoomAiGovernance, createLoomAiTaskGovernor, createPortableLoomAiPacket } from '../app/dome-world/holonomy-loom/ai-handoff.js';
+import { installMarrowlineLoomPocket } from '../app/dome-world/marrowline-loom-pocket.js';
 
 const js = fs.readFileSync('app/dome-world/marrowline-desktop-repair.js', 'utf8');
 const css = fs.readFileSync('app/dome-world/marrowline-desktop-repair.css', 'utf8');
@@ -20,6 +23,42 @@ const loomPocketJs = fs.readFileSync('app/dome-world/marrowline-loom-pocket.js',
 const loomGateContinuityJs = fs.readFileSync('app/dome-world/marrowline-loom-gate-continuity.js', 'utf8');
 const loomGateContinuityCss = fs.readFileSync('app/dome-world/marrowline-loom-gate-continuity.css', 'utf8');
 const release = JSON.parse(fs.readFileSync('app/dome-world/marrowline.release.json', 'utf8'));
+
+test('legacy pocket export preserves the consumed original result after a newer same-input result enters the local cache', async t => {
+  const packet = { task: 'Compare fictional pocket workstreams.', documents: [{ id: 'pocket-source', name: 'pocket.txt', text: 'Three fictional approved workstreams.' }], rules: ['Keep the original source selection.'] };
+  packet.governance = await createLoomAiGovernance(packet, { withheldDocumentCount: 1 }, { crypto: webcrypto });
+  const result = (request_id, answer) => ({ schema: 'td613.loom.ai-task-result/v0.1', request_id, status: 'completed', answer, missing_information: ['Independent effect unobserved.'], used_document_ids: ['pocket-source'], suggested_next_step: 'Review the selected record.' });
+  const original = result('pocket-origin', 'Original pocket answer: three fictional workstreams.');
+  const store = new Map(), sessionStorage = { getItem: key => store.get(key) ?? null, setItem: (key, value) => store.set(key, value), removeItem: key => store.delete(key) };
+  const source = { location: new URL('https://td613.com/dome-world/holonomy-loom.html'), crypto: webcrypto, sessionStorage };
+  const url = await createLoomAiHandoff(packet, source, { priorResult: original });
+  await consumeLoomAiHandoff(url.split('#loom=')[1], { ...source, location: new URL('https://td613.com/dome-world/marrowline.html') });
+  const governor = await createLoomAiTaskGovernor(packet, { crypto: webcrypto });
+  assert.equal((await governor.authorize(packet)).allowed, true);
+  const newer = result('pocket-newer', 'Newer local answer must not replace the consumed handoff.');
+  assert.equal(governor.receive(newer, newer.request_id).allowed, true);
+  assert.equal(createPortableLoomAiPacket(packet).continuation.prior_result.request_id, newer.request_id, 'negative control establishes the competing same-input cache result');
+
+  const dom = new JSDOM(page, { url: 'https://td613.com/dome-world/marrowline.html' }), document = dom.window.document;
+  dom.window.HTMLAnchorElement.prototype.click = function () {};
+  const workspace = document.createElement('section');
+  workspace.id = 'loomImportedWorkspace';workspace.setAttribute('data-loom-import-workspace', '');document.body.append(workspace);
+  let exported, providerCalls = 0;
+  const environment = { crypto: webcrypto, Blob, URL: { createObjectURL(blob) { exported = blob;return 'blob:pocket-regression'; }, revokeObjectURL() {} },
+    innerWidth: 1280, innerHeight: 900, dispatchEvent() {}, setTimeout(callback) { callback(); },
+    fetch() { providerCalls++;throw new Error('Pocket export must not call the provider.'); } };
+  clearMarrowlineAttachments(environment);
+  t.after(() => { governor.close();clearMarrowlineAttachments(environment);dom.window.close(); });
+  assert.equal(installMarrowlineLoomPocket(document, environment), true);
+  document.querySelector('#marrowlineAiaExport').click();
+  assert.ok(exported, 'the visible pocket Export action emits a download');
+  const carried = JSON.parse(await exported.text());
+  assert.deepEqual(carried.continuation.prior_result, original);
+  assert.equal(carried.task, packet.task);assert.deepEqual(carried.documents, packet.documents);assert.deepEqual(carried.rules, packet.rules);
+  assert.deepEqual(carried.governance, packet.governance);
+  assert.equal(carried.portability_assurance.authority_transferred, false);
+  assert.equal(providerCalls, 0);
+});
 
 test('desktop instruments have a persistent adjacent panel and Loom Gate default', () => {
   assert.match(css, /grid-template-columns:minmax\(0,2fr\) minmax\(300px,1fr\)/);

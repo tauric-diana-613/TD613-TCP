@@ -99,6 +99,7 @@ try {
   const laboratory = page.locator('#loomLegacy');
   check('local laboratory starts optional and closed', !(await laboratory.evaluate(node => Boolean(node.open))));
   await laboratory.locator(':scope > summary').click();
+      await page.locator('#loomPracticeFixtures > summary').click();
   check('local laboratory opened explicitly before glyph-control traversal', await laboratory.evaluate(node => Boolean(node.open)));
   const glyphPath = page.locator('#glyphPath');
   const showPath = page.locator('#showPath');
@@ -207,6 +208,7 @@ try {
   const reducedLaboratory = page.locator('#loomLegacy');
   const reopenedByFragment = await reducedLaboratory.evaluate(node => Boolean(node.open));
   if (!reopenedByFragment) await reducedLaboratory.locator(':scope > summary').click();
+  if (!(await page.locator('#loomPracticeFixtures').evaluate(node=>node.open))) await page.locator('#loomPracticeFixtures > summary').click();
   check('reduced-motion laboratory is open before replay after reload',
     await reducedLaboratory.evaluate(node => Boolean(node.open)), { reopened_by_fragment: reopenedByFragment });
   await page.locator('#message').fill('ordinary reduced motion message');

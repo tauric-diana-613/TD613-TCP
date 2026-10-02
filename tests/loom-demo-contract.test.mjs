@@ -7,6 +7,8 @@ import {
   createLoomDemoActivation,
   bindLoomDemoRequest,
   exportLoomDemoCurrent,
+  exportLoomDemoOrigin,
+  inspectLoomDemoExport,
   loomDemoDigest,
   loomDemoResult,
   LOOM_DEMO_REQUEST_SCHEMA,
@@ -257,6 +259,29 @@ test('AIA-first projection carries rules and commitments, never file contents or
   assert.match(provider.systemInstruction.parts[0].text,/Follow the separate rules array/);
   assert.equal(Object.hasOwn(provider,'tools'),false);
   bound.governor.close();
+});
+
+test('origin export preserves full original work and explicit unobserved source while parsed inspection stays review-only',async()=>{
+ const prior=result('origin-result','Original answer: State A has three approved workstreams.',['a']);
+ const {packet}=await fixture({priorResult:prior});
+ const input={task:packet.task,documents:packet.documents,rules:packet.rules,governance:packet.governance};
+ const exported=await exportLoomDemoOrigin(input,environment,{priorResult:prior});
+ assert.equal(exported.task,packet.task);assert.deepEqual(exported.documents,packet.documents);assert.deepEqual(exported.rules,packet.rules);
+ assert.deepEqual(exported.continuation.prior_result,prior);assert.deepEqual(exported.loom_demo_provenance.original_result,prior);
+ assert.equal(exported.loom_demo_provenance.activation,null);assert.deepEqual(exported.loom_demo_provenance.stages,[]);
+ assert.deepEqual(exported.loom_demo_provenance.missingness,['SOURCE_REVISION_UNOBSERVED']);
+ const review=await inspectLoomDemoExport(copy(exported),environment);
+ assert.equal(review.status,'REVIEW_ONLY_CONSISTENCY');assert.equal(review.observed_stage_count,0);
+ assert.equal(review.restore_authority,false);assert.equal(review.receipt_signatures_verified,false);
+ const changed=copy(exported);changed.loom_demo_provenance.original_result.answer='Different original';
+ assert.equal((await inspectLoomDemoExport(changed,environment)).status,'HELD');
+ const forgedAssurance=copy(exported);forgedAssurance.portability_assurance.destination_enforcement='VERIFIED';
+ assert.equal((await inspectLoomDemoExport(forgedAssurance,environment)).status,'HELD');
+ let getterCalls=0;const accessor={get schema(){getterCalls++;return exported.schema;}};
+ assert.equal((await inspectLoomDemoExport(accessor,environment)).status,'HELD');assert.equal(getterCalls,0);
+ const mutable=copy(exported),pending=inspectLoomDemoExport(mutable,environment);
+ mutable.loom_demo_provenance.original_result.answer='Changed during digest await.';
+ assert.equal((await pending).status,'REVIEW_ONLY_CONSISTENCY');
 });
 
 test('files are independently bound and continuation requires the admitted activation stage',async()=>{

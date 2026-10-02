@@ -99,7 +99,7 @@ function enhanceContinuation(root, packet, environment, baseWorkspace = null) {
   const followup = doc.createElement('textarea'); followup.id = 'loomImportedFollowup'; followup.maxLength = 4000; followup.rows = 4; followup.readOnly = false; followup.placeholder = 'Ask a follow-up, turn the findings into a draft, or request the next decision.';
   priorSection.after(followLabel, followup);
 
-  const run = oldRun.cloneNode(true); oldRun.replaceWith(run); run.textContent = 'Continue with Flow-Core AI';
+  const run = oldRun.cloneNode(true); oldRun.replaceWith(run); run.textContent = 'Continue with the model';
   const cancel = oldCancel.cloneNode(true); oldCancel.replaceWith(cancel); cancel.hidden = true;
   let rest = oldRest;
   if (oldRest) { rest = oldRest.cloneNode(true); oldRest.replaceWith(rest); rest.textContent = 'Rest this continuation'; }
@@ -108,7 +108,7 @@ function enhanceContinuation(root, packet, environment, baseWorkspace = null) {
   const answerTitle = answer?.previousElementSibling;
   const receipt = root.querySelector('#loomImportedReceipt');
   const provider = root.querySelector('.loom-import-provider');
-  if (provider) provider.textContent = 'This continuation sends the new request, the admitted prior Loom answer, selected documents and portable rules through Dome-World’s Flow-Core AI runtime. Technical route provenance remains in the receipt; the original binding remains recorded separately.';
+  if (provider) provider.textContent = 'This continuation sends the new request, the admitted prior Loom answer, selected documents and portable rules through Dome-World’s model receiver route. Technical route provenance remains in the receipt; the original binding remains recorded separately.';
   const relay = root.querySelector('a[href="/dome-world/marrowline.html"]');
   if (relay) relay.textContent = 'Leave this continuation and open a new Marrowline workspace';
 
@@ -200,7 +200,7 @@ function enhanceContinuation(root, packet, environment, baseWorkspace = null) {
       if (pending.signal.aborted) status.textContent = pending.signal.reason === 'deadline' ? 'The continuation exceeded 225 seconds. The prior Loom work and your new request remain here.' : 'Stopped waiting. The continuation remains here.';
       else status.textContent = `Task held: ${error.message}`;
       if (receipt) receipt.textContent = JSON.stringify({ handoff: packet.handoff_receipt, request_id, state: pending.signal.aborted ? (pending.signal.reason === 'deadline' ? 'CLIENT_DEADLINE' : 'WAIT_CANCELLED') : 'HELD', reason: status.textContent, continuation: { prior_handoff_digest: packet.handoff_receipt?.digest ?? null, followup_input_digest: freshGovernance?.input_digest ?? null }, ...(error.evidenceReview ? { evidence_review: error.evidenceReview, flagged_response: error.candidate } : {}), ...(providerFailure ? { provider_failure: providerFailure } : {}) }, null, 2);
-    } finally { unschedule(deadline); controller = null; run.disabled = false; followup.disabled = false; cancel.hidden = true; run.textContent = 'Continue with Flow-Core AI'; }
+    } finally { unschedule(deadline); controller = null; run.disabled = false; followup.disabled = false; cancel.hidden = true; run.textContent = 'Continue with the model'; }
   });
 
   const facade = baseWorkspace ? { ready: baseWorkspace.ready, inspect: () => freshGovernor?.inspect() ?? baseWorkspace.inspect?.() ?? null, destroy() { controller?.abort('destroy'); freshGovernor?.close(); baseWorkspace.destroy(); } } : null;
