@@ -433,7 +433,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     const canaries=[...new Set([...lines('aiPrivate'),...(explicitCanary?[explicitCanary]:[])])].map((value,index)=>({id:`canary_${index+1}`,value}));
     const prompt=$('aiChallengePrompt').value.trim(), expected=$('aiChallengeExpected').value.trim();
     const probes=prompt&&expected?[{
-      id:'protected_probe_1',prompt,expected,comparison:'TEXT_DISTANCE',max_distance:0.2,join_group:null,role:'STANDALONE'
+      id:'protected_probe_1',prompt,expected,comparison:'EXACT',max_distance:0,join_group:null,role:'STANDALONE'
     }]:[];
     if(!canaries.length&&!probes.length)throw new Error('Add an exact local canary or a reconstruction probe with its protected answer.');
     return {
