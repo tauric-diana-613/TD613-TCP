@@ -210,4 +210,50 @@ FADT
 
 Golden Egg empirical credit and Western Horizon exteriority remain governed by their existing independent evidence ceilings.
 
+## Claim Ceiling Observatory
+
+The public [Claim Ceiling Observatory](app/dome-world/claim-ceilings.html) records
+evidence-class-specific claim lifts without flattening old ceilings into a single
+binary status.
+
+The machine registry is
+`app/engine/dollhouse-claim-ceilings.js`; the four-role executable report is:
+
+```bash
+npm run dollhouse:claim-ceilings
+```
+
+Its states are deliberately non-equivalent:
+
+```text
+EARNED_BOUNDED
+!=
+SPLIT
+!=
+HELD
+```
+
+A prior ceiling may therefore be surpassed on one coordinate while a higher
+coordinate remains unresolved. Examples in the current registry include:
+
+- historical physical-iPhone production behavior: bounded device evidence exists,
+  while exact-current-build physical-device closure still requires a fresh episode;
+- TD613 cross-instance custody ancestry: authenticated and durable through the
+  Vercel OIDC → Neon signer/head boundary, while foreign-provider content origin
+  remains separate;
+- live provider execution: observed for named production episodes, while hidden
+  provider-side enforcement remains unobserved;
+- human-operated route observation: present, while measured comprehension requires
+  its own preregistered human study.
+
+Hidden retention/training/internal memory, empirical exteriority, and complete
+same-episode Golden Egg realization remain HELD in this registry because the
+current admitted evidence does not satisfy those evidence classes.
+
+`DOLLHOUSE_ROLE_AGREEMENT != EVIDENCE_MULTIPLICATION`.
+
+`TD613_CUSTODY_ANCESTRY != FOREIGN_ORIGIN`.
+
+`HISTORICAL_DEVICE_WITNESS != CURRENT_BUILD_DEVICE_CLOSURE`.
+
 Sealed ⟐
