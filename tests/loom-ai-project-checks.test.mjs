@@ -73,8 +73,9 @@ test('Markdown totals preserve mismatched, ambiguous and malformed amounts',()=>
 
 
 import { LOOM_AI_PROJECTS } from '../app/dome-world/holonomy-loom/ai-projects.js';
-import { incidentEvidence, reviewLoomEvidence } from '../app/dome-world/holonomy-loom/ai-evidence-review.js';
+import { incidentEvidence, vendorDiligenceEvidence, reviewLoomEvidence } from '../app/dome-world/holonomy-loom/ai-evidence-review.js';
 const incidentDocuments = LOOM_AI_PROJECTS.find(p => p.id === 'incident-response').documents.filter(d => d.share).map(({id,name,text})=>({id,name,text}));
+const vendorDocuments = LOOM_AI_PROJECTS.find(p => p.id === 'vendor-diligence').documents.filter(d => d.share).map(({id,name,text})=>({id,name,text}));
 
 test('incident orientation binds all selected source bytes, never names alone',()=>{
   assert.ok(incidentEvidence(incidentDocuments));
@@ -107,6 +108,34 @@ test('uncertainty and hypotheses remain available; a clean pattern check earns n
     assert.equal(review.semantic_correctness_verified,false);
   }
 });
+test('vendor diligence exact-source review holds finite-pilot impossibility and retention certainty',()=>{
+  assert.ok(vendorDiligenceEvidence(vendorDocuments));
+  for(const answer of [
+    'The full migration is mathematically impossible in one day under these limits.',
+    'At this throughput the one-day migration is physically impossible.',
+    'Vendor-A backup content will persist for up to 45 days.'
+  ]){
+    const review=reviewLoomEvidence({answer},vendorDocuments);
+    assert.equal(review.blocks_reuse,true,answer);
+    assert.equal(review.semantic_correctness_verified,false);
+  }
+});
+test('vendor diligence conditional projections and modal retention language remain reusable',()=>{
+  for(const answer of [
+    'At the observed P2 pilot rate, the required wave would miss the eight-hour target; representative concurrent tests are still needed to establish a throughput bound.',
+    'The packet does not establish that a one-day migration is impossible.',
+    'Vendor-A permits backup retention for up to 45 days; actual configured or observed retention is not established.'
+  ]){
+    const review=reviewLoomEvidence({answer},vendorDocuments);
+    assert.equal(review.blocks_reuse,false,answer);
+  }
+});
+test('vendor claim patterns do not activate on altered or incomplete source bytes',()=>{
+  const altered=vendorDocuments.map((d,index)=>index?d:{...d,text:d.text+' altered'});
+  assert.equal(vendorDiligenceEvidence(altered),null);
+  assert.equal(reviewLoomEvidence({answer:'The full migration is mathematically impossible in one day.'},altered).blocks_reuse,false);
+});
+
 test('privacy overpromises are flagged in answer and next action without inventing a general proof',()=>{
   assert.equal(reviewLoomEvidence({answer:'Carry this task while maintaining complete privacy.'}).blocks_reuse,true);
   assert.equal(reviewLoomEvidence({answer:'Answer.',suggested_next_step:'This guarantees your anonymity.'}).blocks_reuse,true);
