@@ -13,6 +13,7 @@ export const DOLLHOUSE_PROVIDER_MATRIX_SCHEMA = 'td613.dollhouse.provider-observ
 export const DOLLHOUSE_ANCESTRY_SCHEMA = 'td613.dollhouse.td613-ancestry-observation/v0.1';
 export const DOLLHOUSE_GOLDEN_EGG_SCHEMA = 'td613.dollhouse.golden-egg-episode-evaluator/v0.1';
 export const DOLLHOUSE_CHALLENGE_READOUT_SCHEMA = 'td613.dollhouse.challenge-readout/v0.1';
+export const DOLLHOUSE_EXOGENOUS_WITNESS_SCHEMA = 'td613.dollhouse.exogenous-witness-intake/v0.1';
 export const DOLLHOUSE_FOUR_ROLE_SCHEMA = 'td613.dollhouse.four-role-operational-audit/v0.1';
 
 export const LOOM_COMPREHENSION_QUESTIONS = freeze([
@@ -308,6 +309,48 @@ export function readReceiverChallengeVerification(input = {}) {
   });
 }
 
+export function compileExogenousWitnessCandidate(input = {}) {
+  const sourceUrl = text(input.source_url).trim();
+  const sourceBodySha256 = text(input.source_body_sha256).trim().toLowerCase();
+  const acquisitionMethod = text(input.acquisition_method).trim().toUpperCase();
+  const relationship = text(input.relationship_to_admitted_record).trim();
+  const errors = [];
+  let parsed = null;
+  try { parsed = new URL(sourceUrl); } catch {}
+  if (!parsed || parsed.protocol !== 'https:') errors.push('HTTPS_SOURCE_URL_REQUIRED');
+  if (!/^[a-f0-9]{64}$/.test(sourceBodySha256)) errors.push('SOURCE_BODY_SHA256_REQUIRED');
+  if (!['LIVE_EXTERNAL_RETRIEVAL', 'OPERATOR_SUPPLIED_EXTERNAL_CAPTURE', 'REPOSITORY_ONLY'].includes(acquisitionMethod)) {
+    errors.push('ACQUISITION_METHOD_UNSUPPORTED');
+  }
+  if (!relationship) errors.push('RELATIONSHIP_TO_ADMITTED_RECORD_REQUIRED');
+  const liveExternal = acquisitionMethod === 'LIVE_EXTERNAL_RETRIEVAL';
+  const repositoryOnly = acquisitionMethod === 'REPOSITORY_ONLY';
+  return freeze({
+    schema: DOLLHOUSE_EXOGENOUS_WITNESS_SCHEMA,
+    acquisition_event_id: text(input.acquisition_event_id, `exogenous-${input.acquired_at ?? Date.now()}`),
+    acquired_at: input.acquired_at ?? Date.now(),
+    source_url: sourceUrl || null,
+    source_body_sha256: sourceBodySha256 || null,
+    acquisition_method: acquisitionMethod || null,
+    relationship_to_admitted_record: relationship || null,
+    status: errors.length ? 'INADMISSIBLE' : liveExternal ? 'EXOGENOUS_CANDIDATE' : 'RECORDED_EXTERNAL_MATERIAL',
+    errors,
+    findings: {
+      live_external_retrieval_declared: liveExternal,
+      materially_new_evidentiary_substrate_candidate: liveExternal && !repositoryOnly,
+      independent_origin_authenticated_by_this_instrument: false,
+      empirical_exteriority_earned: false,
+      western_research_field_reopening_candidate: liveExternal && !errors.length
+    },
+    claim_ceiling: [
+      'a recorded external acquisition event is not proof of exterior origin from the record alone',
+      'repository-only bytes cannot bootstrap exteriority',
+      'a live external retrieval candidate can reopen a research question without earning target-artifact origin or Golden Egg credit',
+      'independence and relevance still require source-specific adjudication'
+    ]
+  });
+}
+
 function metricValue(metric) {
   return number(metric?.value);
 }
@@ -383,6 +426,7 @@ export function runFourRoleOperationalAudit(input = {}) {
   const ancestry = input.ancestry || null;
   const challenge = input.challenge || null;
   const golden = input.golden || null;
+  const exogenous = input.exogenous || null;
 
   const pedagogue = freeze({
     role: 'PEDAGOGUE',
@@ -405,6 +449,7 @@ export function runFourRoleOperationalAudit(input = {}) {
     findings: [
       challenge?.hidden_host_resolved ? 'hidden-host state supplied as resolved by a qualifying external witness' : 'hidden retention/training/memory remain unresolved',
       provider?.episode_count ? `${provider.episode_count} provider episode(s) occupy the observed population` : 'provider population empty',
+      exogenous?.findings?.materially_new_evidentiary_substrate_candidate ? 'materially new exogenous substrate candidate recorded' : 'no live exogenous witness candidate in this packet',
       ...apertureMissing.map(item => `missing: ${item}`)
     ]
   });
