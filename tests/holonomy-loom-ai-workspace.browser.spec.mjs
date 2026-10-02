@@ -125,6 +125,8 @@ try {
       await page.locator('#aiChallengeExpected').fill('BLUE-ORANGE-613');
       await page.locator('#aiPrepareChallenge').click();
       await page.waitForFunction(()=>document.querySelector('#aiChallengePreview')?.hidden===false);
+      await page.locator('#aiChallengePreview > summary').click();
+      assert.equal(await page.locator('#aiChallengePublic').isVisible(),true,'operator can inspect the exact public challenge before copying it');
       const publicPrompt=await page.locator('#aiChallengePublic').innerText();
       assert.equal(publicPrompt.includes('BROWSER-LOCAL-CANARY-9471'),false,'public challenge excludes exact local canary');
       assert.equal(publicPrompt.includes('BLUE-ORANGE-613'),false,'public challenge excludes local reconstruction answer');
