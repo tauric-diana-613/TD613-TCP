@@ -103,6 +103,9 @@ test('a valid-format minted SHI wakes only the prepared Portable AIA issuance ge
   assert.equal(sessionExport.session.authority.source_inheritance,'EXPLICIT_PER_WORK_UNIT');
   assert.equal(sessionExport.session.source_revision,'browser-unpinned');
   assert.equal(sessionExport.continuation_protocol.policy_weakening,'FRESH_SESSION_REQUIRED_V0_1');
+  assert.equal(sessionExport.receiver_turn_contract.schema,'td613.loom.portable-session-receiver-turn/v0.1');
+  assert.equal(sessionExport.receiver_turn_contract.session_root_ref,sessionExport.session.root.ref);
+  assert.match(sessionExport.receiver_turn_contract.receipt_rule,/receiver declaration until Loom revalidates/);
 
   h.change('#aiTask',h.$('#aiTask').value+' changed');
   for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge'])assert.equal(h.$('#'+id).disabled,true,'editing the bound task invalidates issuance even when SHI format remains valid');
