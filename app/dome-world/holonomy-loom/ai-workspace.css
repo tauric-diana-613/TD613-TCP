@@ -194,3 +194,6 @@ body>.wrap{position:relative;z-index:1}
 #loomAiWorkspace .ai-result-disclosure[open]>summary::after{content:'−'}
 #loomAiWorkspace .ai-result-disclosure>pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:360px;overflow:auto}
 @media(max-width:560px){#loomAiWorkspace .ai-project-brief{margin:10px 0;padding:10px 12px}#loomAiWorkspace .ai-project-brief h2{font-size:1.25rem}#loomAiWorkspace .ai-project-brief #aiBriefRoute{display:none}#loomAiWorkspace .ai-task-surface{margin-top:12px;padding:13px 12px}#loomAiWorkspace textarea#aiTask{min-height:220px;font-size:16px;line-height:1.6}#loomAiWorkspace .ai-submitted-task{padding:12px 13px}}
+
+#loomAiWorkspace .ai-challenge-result[data-state="HOLD"]{border-color:#dbb164;background:#211b12}
+#loomAiWorkspace .ai-challenge-result[data-state="EXPOSURE"]{border-color:#eb8989;background:#241414}

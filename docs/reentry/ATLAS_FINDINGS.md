@@ -111,3 +111,33 @@ All five reports retain `result_admission_verified: false`, `commitments_authent
 The repeated task may return under the same root while carrying changed task inputs, receiver assertions and reconstruction exposure. Heterostratigraphic comparison earns meaning by retaining those differences, not by declaring an unchanged identifier an unchanged state. Western Horizon remains at the empirical shore; another internally derived receipt supplies no exogenous witness.
 
 ⟐
+
+## Implementation return — v0.2 continuity and public continuation
+
+The implementation candidate now realizes a separate live-process re-entry custodian. Its admitted-work head begins null; the seed retains the explicit preparation/admitted-result class. Registering tasks and checking returns retain that head. All returned turns must match their individually registered intent/task/source/answer commitments, ordered against one departure anchor. A successfully reviewed batch admits local descendants with distinct work-unit and admitted-content parents. Another excursion explicitly reanchors to the latest admitted descendant.
+
+The retained admitted evidence now includes `selected_documents` and `captured_return`, bound to the source-body commitments, capture digest and receipt digest. This repairs the source-loss seam: after admission the pending excursion disappears, so source bodies and exact captured return cannot depend on a caller retaining an incidental candidate variable. The review-only custody export includes this retained evidence and still grants no restoration authority.
+
+`await custodian.continuation({task, source_ids})` creates a distinct `td613.loom.governed-continuation/v0.2` carrier. Its task is the newly chosen operator task, its preceding result is the latest locally admitted returned answer, and its anchor/content references identify those exact local coordinates. Its rules preserve the effective governance/root commitments. Source IDs explicitly choose only from the latest admitted turn's retained selected documents; empty selection is lawful, and a prior-turn or unknown source ID produces HOLD. It includes neither raw captures nor unselected document bodies. Carrier construction neither changes the admitted head nor registers a new foreign excursion. A follow-on returned task still requires pre-egress registration for admission. This carrier is separate from the original one-hop portable-task export; the original task cannot silently substitute for the new continuation.
+
+The dedicated fictional `tests/portable-loom-reentry-atlas.test.mjs` suite exercises:
+
+- null admitted head through registration/checking;
+- fixed foreign departure anchor versus sequential local work/result predecessor coordinates;
+- an independently verified prior admitted-result seed;
+- different explicitly supplied source bodies on consecutive foreign turns;
+- complete-batch rollback when one returned answer is substituted;
+- incomplete/out-of-order ranges, replay, copied candidates and stale check after further registration;
+- continued registration/admission at the latest local descendant, under the original governance with no implicit source bodies;
+- review-only export and rejected parsed custody restoration;
+- native v0.2 Challenge Receiver and the explicit roundtrip adapter `HELD_INPUT_CLASS`;
+- retained source/capture commitments;
+- explicit public continuation with the latest answer and separately chosen task/sources;
+- declining a pending excursion while preserving admitted ancestry;
+- rejection of a substituted shadow current unit and a noncurrent unit by the native Challenge relation boundary.
+
+All **16 controls passed** on the candidate working tree based at `4af43132fa5db6d416fd795c620f3e5b975b60c3` after the root repair. The hostile shadow-unit control first exposed a genuine native Challenge seam: membership checked only reference equality, allowing a shadow unit with unchanged reference and substituted content predecessor. Native membership now requires the retained unit object itself and the current head; both the shadow unit and a noncurrent parent are rejected. This is a source/offline finding, not a claim about a deployed descendant or foreign challenge episode. Exact-head combined validation remains the root release prerequisite.
+
+The live production encounter remains separately recorded in [ATLAS_BROWSER_FINDINGS.md](ATLAS_BROWSER_FINDINGS.md). It verified clean and hostile **v0.1 receipt checks**, unchanged preparation ancestry, and loss of prepared state on reload. It does not establish browser acceptance of the new v0.2 admission or continuation controls.
+
+The exact implemented fields and cross-stratum transformations are tabulated in [RELATION_MAP.md](RELATION_MAP.md). The final review identified and repaired loss of attached challenge source material after admission: candidates now retain `challenge_evidence`, successful batches retain complete candidates in `admission_records`, and the private review-only export labels its body/return/challenge-key scope explicitly. Public continuation omits that archive. The independent hostile private-archive control passed after repair; imported archive integrity still grants no live custody authority.

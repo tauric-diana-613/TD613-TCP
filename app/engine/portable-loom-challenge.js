@@ -1,6 +1,5 @@
 import { analyzeFiniteChannel } from '../dome-world/holonomy-loom/observer-channel.js';
 import { auditDollhouseWitnessPlan, DOLLHOUSE_WITNESS_PLAN_SCHEMA } from './dollhouse-witness-plan.js';
-import { compilePedagogueGestureConsequenceAudit, PEDAGOGUE_GESTURE_CONSEQUENCE_CASE_SCHEMA } from './pedagogue-gesture-consequence.js';
 import { runAtlasContinuityAudit, runFadtStageAudit } from './dollhouse-continuity-audit.js';
 import { createDollhouseCaseDossier, DOLLHOUSE_CASE_DOSSIER_SCHEMA } from './dollhouse-case-dossier.js';
 import {
@@ -62,8 +61,11 @@ function dense(value, label, max = 64) {
 function clone(value) { return JSON.parse(JSON.stringify(value)); }
 
 function validateSessionAndUnit(session, unit) {
-  if (!session || session.schema !== PORTABLE_LOOM_SESSION_SCHEMA) throw new TypeError('Portable Loom Session required.');
-  if (!unit || unit.schema !== PORTABLE_LOOM_WORK_UNIT_SCHEMA) throw new TypeError('Portable Loom work unit required.');
+  const legacy = session?.schema === PORTABLE_LOOM_SESSION_SCHEMA && unit?.schema === PORTABLE_LOOM_WORK_UNIT_SCHEMA;
+  const admitted = session?.schema === 'td613.loom.local-custody/v0.2' && unit?.schema === 'td613.loom.admitted-returned-work/v0.2'
+    && unit.status === 'ADMITTED' && session.work_units?.includes(unit)
+    && session.continuity?.current_work_unit_ref === unit.ref;
+  if (!legacy && !admitted) throw new TypeError('Portable Loom work unit and matching session required.');
   if (unit.session_root_ref !== session.root?.ref) throw new Error('Work unit does not belong to this session root.');
   if (!HEX64.test(unit.ref) || !HEX64.test(unit.policy?.effective_policy_commitment || '')) throw new TypeError('Work-unit commitments are invalid.');
 }
@@ -374,6 +376,8 @@ function challengeStatus(referenceMatch, literal, reconstruction) {
 
 export async function verifyPortableLoomReceiverChallenge(bundle, candidate, capture, environment = globalThis) {
   exact(bundle, ['public_challenge', 'local_ground_truth'], 'challenge bundle');
+  // Snapshot prior to asynchronous digest work; integrity is not external origin.
+  bundle = clone(bundle); candidate = clone(candidate); capture = clone(capture);
   const challenge = bundle.public_challenge, privateGround = bundle.local_ground_truth;
   if (challenge?.schema !== PORTABLE_LOOM_CHALLENGE_SCHEMA || privateGround?.schema !== PORTABLE_LOOM_CHALLENGE_PRIVATE_SCHEMA) {
     throw new TypeError('Challenge bundle schema mismatch.');
@@ -381,6 +385,18 @@ export async function verifyPortableLoomReceiverChallenge(bundle, candidate, cap
   if (challenge.challenge_id !== privateGround.challenge_id || challenge.session_root_ref !== privateGround.session_root_ref
     || challenge.work_unit_ref !== privateGround.work_unit_ref || challenge.policy_commitment !== privateGround.policy_commitment) {
     throw new Error('Public challenge and local ground truth do not share the same root.');
+  }
+  const { ref, ...publicBody } = challenge, { digest, ...privateBody } = privateGround;
+  if (await portableLoomDigest(publicBody, environment) !== ref || await portableLoomDigest(privateBody, environment) !== digest) {
+    throw new Error('Challenge commitment changed.');
+  }
+  const scope = normalizeObserverScope(privateGround.observer_scope);
+  normalizeCanaries(privateGround.canaries);
+  const probes = normalizeProbes(privateGround.probes);
+  const publicProjection = { receiver: scope.receiver, horizon: scope.horizon, required_channels: scope.channels.filter(item => item.required).map(item => item.id) };
+  if (await portableLoomDigest(challenge.observer_scope, environment) !== await portableLoomDigest(publicProjection, environment)
+    || await portableLoomDigest(challenge.probes, environment) !== await portableLoomDigest(probes.map(publicProbe), environment)) {
+    throw new Error('Public challenge and local assay projection differ.');
   }
   const returnValue = normalizeReturn(candidate, challenge);
   const captureValue = normalizeCapture(capture, privateGround.observer_scope);
@@ -401,6 +417,7 @@ export async function verifyPortableLoomReceiverChallenge(bundle, candidate, cap
     status,
     evidence_class: evidenceClass,
     reference_match: returnValue.reference_match,
+    returned_references: { session_root_ref: returnValue.session_root_ref, work_unit_ref: returnValue.work_unit_ref, policy_commitment: returnValue.policy_commitment },
     capture: {
       observer_scope: clone(privateGround.observer_scope),
       required_missing_channels: [...captureValue.required_missing],
@@ -441,44 +458,20 @@ function continuitySnapshot(id, originalRef, currentRef, predecessorRef, unit, s
   };
 }
 
-function gestureCase(challenge, verification) {
-  const expiry = Number.MAX_SAFE_INTEGER;
-  const initial = {
-    staged_refs: [], send_count: 0, pending_attempt_id: null,
-    latest_attempt: { attempt_id: null, status: 'NONE' },
-    admitted_result_ref: null, cue_paused: false, exited: false, expires_at: expiry
-  };
-  const staged = { ...clone(initial), staged_refs: [challenge.ref] };
-  const sent = {
-    ...clone(staged), staged_refs: [], send_count: 1, pending_attempt_id: challenge.challenge_id,
-    latest_attempt: { attempt_id: challenge.challenge_id, status: 'PENDING' }
-  };
-  const admitted = !verification.status.startsWith('HOLD_');
-  const answered = {
-    ...clone(sent), pending_attempt_id: null,
-    latest_attempt: { attempt_id: challenge.challenge_id, status: admitted ? 'ADMITTED' : 'HELD' },
-    admitted_result_ref: admitted ? verification.ref : null
-  };
-  const step = (step_id, kind, at, state, extra = {}) => ({
-    step_id, kind, at, explicit_operator_gesture: kind !== 'WORLD_ANSWER',
-    notice: { visible: true, at }, consequence_visible: true,
-    item_refs: ['STAGE', 'SEND'].includes(kind) ? [challenge.ref] : [],
-    attempt_id: ['SEND', 'WORLD_ANSWER'].includes(kind) ? challenge.challenge_id : null,
-    outcome: kind === 'WORLD_ANSWER' ? (admitted ? 'ADMITTED' : 'HELD') : 'NONE',
-    result_ref: kind === 'WORLD_ANSWER' && admitted ? verification.ref : null,
-    observed_state: state, ...extra
-  });
+function pedagogueInputHold(challenge) {
   return {
-    schema: PEDAGOGUE_GESTURE_CONSEQUENCE_CASE_SCHEMA,
+    schema: 'td613.loom.receiver-challenge-pedagogue-hold/v0.1',
     case_id: `challenge:${challenge.challenge_id}`,
-    observation: { kind: 'AUTOMATED_INSTRUMENT', source_revision: null },
-    rest_exit: { cue_pause_available: true, exit_available: true },
-    initial_state: initial,
-    steps: [
-      step('stage-challenge', 'STAGE', 1, staged),
-      step('send-challenge', 'SEND', 2, sent),
-      step('world-answer', 'WORLD_ANSWER', 3, answered)
-    ]
+    classification: 'HELD_INPUT_CLASS',
+    required_input_class: 'captured operator gesture, visible notice, consequence and state-transition trace',
+    received_input_class: 'challenge definition and local verification result',
+    reason: 'No operator gesture/consequence trace is captured by this API; verification cannot manufacture a STAGE or SEND observation.',
+    gesture_trace_observed: false,
+    notice_visibility_observed: false,
+    result_admission_authenticated: false,
+    human_comprehension_measured: false,
+    compatibility_object_fabricated: false,
+    authority_transferred: false
   };
 }
 
@@ -486,6 +479,23 @@ function aperturePlan(challenge, verification) {
   const capturedRefs = verification.capture.captured_channel_ids.map(id => `capture:${id}`);
   const literalRefs = verification.literal_exclusion.hits.map(hit => `literal-hit:${hit.canary_id}:${hit.channel_id}`);
   const probeRefs = verification.protected_reconstruction.probes.filter(item => item.status === 'MEASURED').map(item => `probe:${item.probe_id}`);
+  const missingChannels = verification.capture.required_missing_channels;
+  const mismatchedReferences = Object.entries(verification.reference_match).filter(([, match]) => !match).map(([key]) => key);
+  const recovered = verification.protected_reconstruction.recovered_probe_ids;
+  const joiningObserved = verification.protected_reconstruction.joining.some(item => item.classification === 'JOINING_EXPOSURE_OBSERVED');
+  const literalStatement = verification.literal_exclusion.status === 'OBSERVED_LITERAL_DISCLOSURE'
+    ? 'At least one declared literal canary appeared on the captured surfaces; the exact bounded hits remain recorded.'
+    : missingChannels.length
+      ? `Literal exclusion remains held because required capture channels are missing: ${missingChannels.join(', ')}.`
+      : 'No declared literal canary appeared on the complete declared captured horizon; this is finite literal exclusion only.';
+  const reconstructionStatement = recovered.length
+    ? `The local comparisons recover ${recovered.length} declared protected target(s) from the returned bytes${joiningObserved ? ', including joined-only reconstruction' : ''}${verification.protected_reconstruction.missing_probe_ids.length ? `; ${verification.protected_reconstruction.missing_probe_ids.length} declared probe(s) remain missing` : ''}; foreign attribution depends on the separately retained reference binding.`
+    : verification.protected_reconstruction.missing_probe_ids.length
+      ? 'Reconstruction comparison remains incomplete because one or more required declared probes are missing.'
+      : 'The recorded local comparisons recover no declared protected target in these probes; universal nonreconstructability remains unresolved.';
+  const policyStatement = mismatchedReferences.length
+    ? `The returned declaration mismatches supplied challenge coordinates: ${mismatchedReferences.join(', ')}. Foreign episode attribution and policy enforcement remain unresolved.`
+    : 'The returned declaration matches the supplied challenge/session/work-unit/policy coordinates; reference equality supplies no foreign enforcement proof.';
   const claim = (id, claim_class, statement, refs, unresolved, nextDescription) => ({
     id, claim_class, statement, extent: 'DECLARED_SCOPE_ONLY',
     observation_scope: {
@@ -516,7 +526,7 @@ function aperturePlan(challenge, verification) {
       claim(
         'literal-exclusion',
         'FINITE_LITERAL_EXCLUSION',
-        'No declared literal canary appeared on the complete captured horizon.',
+        literalStatement,
         capturedRefs,
         ['UNIVERSAL_SECRECY_UNRESOLVED', 'UNTESTED_ENCODING_OR_PROJECTION_LEAKAGE_UNRESOLVED'],
         'Acquire a separately declared observer/encoding horizon if the claim needs to widen beyond finite literal exclusion.'
@@ -524,15 +534,15 @@ function aperturePlan(challenge, verification) {
       claim(
         'scoped-reconstruction',
         'SCOPED_BEHAVIOR',
-        'The declared receiver reconstruction probes produced the recorded recoverability outcomes.',
+        reconstructionStatement,
         probeRefs,
         ['UNOBSERVED_CONTEXT_BEHAVIOR_UNRESOLVED'],
         'Repeat under preregistered matched receiver/context conditions before widening beyond this episode.'
       ),
       claim(
         'policy-binding',
-        'SCOPED_POLICY_ENFORCEMENT',
-        'The receiver returned the same session/work-unit/policy references supplied by Loom.',
+        'SCOPED_BEHAVIOR',
+        policyStatement,
         [`verification:${verification.ref}`],
         ['UNTESTED_POLICY_OR_PATH_ENFORCEMENT_UNRESOLVED', 'PROVIDER_ACKNOWLEDGMENT_ALONE_INSUFFICIENT'],
         'Observe a policy-sensitive action boundary rather than relying on the receiver acknowledgement.'
@@ -541,15 +551,75 @@ function aperturePlan(challenge, verification) {
   };
 }
 
-function fadtPair() {
+function fadtPair(verification) {
+  const condition = (phase, binding = 'NOT_CHECKED', exposure = 'NOT_CHECKED', capture = 'NOT_CHECKED') => ({ phase, root: 'SAME_DECLARED_ROOT', binding, exposure, capture });
+  const returnState = (mismatched, exposed, incomplete) => mismatched
+    ? `RETURN_HELD_REFERENCE${exposed ? '_WITH_EXPOSURE' : ''}${incomplete ? '_INCOMPLETE_CAPTURE' : ''}`
+    : incomplete ? `RETURN_HELD_CAPTURE${exposed ? '_WITH_EXPOSURE' : ''}`
+      : exposed ? 'RETURN_CHECKED_EXPOSURE' : 'RETURN_CHECKED_CLEAN';
   const states = [
-    { id: 'PRE_CHALLENGE', conditioning: { phase: 'PRE_CHALLENGE', root: 'SAME' }, support: ['CHALLENGE_RECEIVER', 'CONTINUE_WORK', 'REST', 'EXIT'] },
-    { id: 'PENDING_CHALLENGE', conditioning: { phase: 'PENDING_CHALLENGE', root: 'SAME' }, support: ['WAIT', 'STOP', 'REST', 'EXIT'] },
-    { id: 'RETURN_ADMITTED', conditioning: { phase: 'RETURN_ADMITTED', root: 'SAME' }, support: ['INSPECT_RECEIPT', 'CONTINUE_WORK', 'REST', 'EXIT'] }
+    { id: 'PRE_CHALLENGE', conditioning: condition('PRE_CHALLENGE'), support: ['CHALLENGE_RECEIVER', 'REST', 'EXIT'] },
+    { id: 'PENDING_CHALLENGE', conditioning: condition('PENDING_CHALLENGE'), support: ['WAIT', 'STOP', 'REST', 'EXIT'] },
+    ...[false, true].flatMap(mismatched => [false, true].flatMap(exposed => [false, true].map(incomplete => ({
+      id: returnState(mismatched, exposed, incomplete),
+      conditioning: condition(mismatched || incomplete ? 'RETURN_HELD' : 'RETURN_CHECKED', mismatched ? 'MISMATCHED' : 'MATCHED', exposed ? 'OBSERVED_IN_CAPTURE' : 'NOT_OBSERVED_IN_CAPTURE', incomplete ? 'INCOMPLETE' : 'COMPLETE'),
+      support: [
+        'INSPECT_RECEIPT', 'REST', 'EXIT',
+        ...(mismatched ? ['REPAIR_REFERENCE_BINDING'] : []),
+        ...(exposed ? ['PRESERVE_EXPOSURE_FINDING'] : []),
+        ...(incomplete ? ['COMPLETE_DECLARED_CAPTURE'] : []),
+        ...(!mismatched && !exposed && !incomplete ? ['PREPARE_REENTRY_CANDIDATE'] : [])
+      ]
+    })))),
+    { id: 'RETURN_ADMITTED_LOCAL', conditioning: condition('LOCAL_ADMISSION_SEPARATELY_COMPLETED', 'MATCHED', 'NOT_OBSERVED_IN_CAPTURE', 'COMPLETE'), support: ['INSPECT_RECEIPT', 'CONTINUE_FROM_LOCAL_HEAD', 'REST', 'EXIT'] }
   ];
+  const mismatched = !Object.values(verification.reference_match).every(Boolean);
+  const exposureObserved = verification.literal_exclusion.status === 'OBSERVED_LITERAL_DISCLOSURE'
+    || verification.protected_reconstruction.recovered_probe_ids.length > 0
+    || verification.protected_reconstruction.joining.some(item => ['JOINING_EXPOSURE_OBSERVED', 'MARGINAL_EXPOSURE_ALREADY_OBSERVED'].includes(item.classification));
+  const incomplete = verification.capture.required_missing_channels.length > 0 || verification.protected_reconstruction.missing_probe_ids.length > 0;
+  const actualState = returnState(mismatched, exposureObserved, incomplete);
   return {
-    preserving: runFadtStageAudit({ states, retain: ['phase', 'root'] }),
-    erasing_phase: runFadtStageAudit({ states, retain: ['root'] })
+    input_class: 'DECLARED_FINITE_ACTION_SUPPORT_MODEL',
+    model_only: true,
+    actual_return_status: verification.status,
+    actual_return_state: actualState,
+    local_admission_performed: false,
+    actual_support_authorized: false,
+    preserving: runFadtStageAudit({ states, retain: ['phase', 'root', 'binding', 'exposure', 'capture'] }),
+    erasing_phase: runFadtStageAudit({ states, retain: ['root', 'binding', 'exposure', 'capture'] }),
+    erasing_return_evidence: runFadtStageAudit({ states, retain: ['phase', 'root'] }),
+    claim_ceiling: 'The finite model demonstrates erasure gaps; its states and supports are declared, and verification never selects or executes local admission.'
+  };
+}
+
+function atlasChallengeReturn(session, unit, verification) {
+  const origin = continuitySnapshot('origin', session.root.ref, session.root.ref, null, unit, session);
+  const previous = continuitySnapshot('work-unit', session.root.ref, unit.ref, session.root.ref, unit, session);
+  const current = continuitySnapshot('challenge-return', session.root.ref, verification.ref, unit.ref, unit, session);
+  const returned = verification.returned_references;
+  // Missing receiver references remain UNKNOWN; expected coordinates are not
+  // copied into the returned projection to manufacture positive consistency.
+  for (const [coordinate, field] of [
+    ['original_ref', 'session_root_ref'], ['predecessor_ref', 'work_unit_ref'], ['policy_commitment', 'policy_commitment']
+  ]) {
+    if (returned && Object.hasOwn(returned, field)) current[coordinate] = returned[field];
+    else delete current[coordinate];
+  }
+  const compared = runAtlasContinuityAudit({ origin, previous, current, presentations: [] });
+  const bindingComplete = returned !== undefined && returned !== null
+    && Object.values(verification.reference_match).every(Boolean);
+  return {
+    ...compared,
+    returned_references: returned ? clone(returned) : null,
+    returned_reference_observation: 'RECOMPUTED_COMPARISON_OF_RECEIVER_DECLARATION',
+    challenge_reference_match: verification.reference_match.challenge === true,
+    audit: {
+      ...compared.audit,
+      challenge_return_bound: bindingComplete,
+      verdict: bindingComplete && compared.audit.verdict === 'DECLARED_CONSISTENCY' ? 'DECLARED_CONSISTENCY' : 'HOLD'
+    },
+    claim_ceiling: [...compared.claim_ceiling, 'actual returned root work-unit and policy references are compared; their declared equality does not authenticate foreign execution']
   };
 }
 
@@ -571,13 +641,10 @@ export async function auditPortableLoomChallengeWithDollhouse(session, unit, bun
   validateSessionAndUnit(session, unit);
   if (verification?.schema !== PORTABLE_LOOM_CHALLENGE_VERIFICATION_SCHEMA) throw new TypeError('Verified receiver challenge required.');
   const challenge = bundle.public_challenge;
-  const pedagogue = compilePedagogueGestureConsequenceAudit(gestureCase(challenge, verification));
+  const pedagogue = pedagogueInputHold(challenge);
   const aperture = auditDollhouseWitnessPlan(aperturePlan(challenge, verification));
-  const origin = continuitySnapshot('origin', unit.ref, unit.ref, null, unit, session);
-  const previous = continuitySnapshot('work-unit', unit.ref, unit.ref, null, unit, session);
-  const current = continuitySnapshot('challenge-return', unit.ref, verification.ref, unit.ref, unit, session);
-  const atlas = runAtlasContinuityAudit({ origin, previous, current, presentations: [] });
-  const fadt = fadtPair();
+  const atlas = atlasChallengeReturn(session, unit, verification);
+  const fadt = fadtPair(verification);
   const evidenceClass = verification.evidence_class;
   const scope = {
     source: session.root.ref,
@@ -588,13 +655,13 @@ export async function auditPortableLoomChallengeWithDollhouse(session, unit, bun
   const findings = [
     await dossierFinding(
       'PEDAGOGUE', 'pedagogue-gesture-chain', 'challenge-gesture-consequence',
-      pedagogue.classification === 'DECLARED_GESTURE_CONSEQUENCES_PRESERVED' ? 'SUPPORTED' : 'HELD',
+      'HELD',
       evidenceClass, scope, 'pedagogue-gesture-audit', pedagogue,
-      ['instrumented state-transition audit only', 'human comprehension is not measured'], environment
+      ['captured gesture notice and consequence trace is absent', 'no synthetic STAGE or SEND trace is promoted to observed behavior', 'human comprehension is not measured'], environment
     ),
     await dossierFinding(
       'APERTURE', 'aperture-witness-boundary', 'challenge-observability',
-      verification.capture.required_missing_channels.length ? 'HELD' : 'SUPPORTED',
+      verification.capture.required_missing_channels.length || !Object.values(verification.reference_match).every(Boolean) ? 'HELD' : 'SUPPORTED',
       evidenceClass, scope, 'aperture-witness-plan', aperture,
       ['witness-plan role names unresolved alternatives; it does not authenticate external origin', 'hidden host state remains outside current aperture'], environment
     ),
@@ -608,7 +675,7 @@ export async function auditPortableLoomChallengeWithDollhouse(session, unit, bun
       'FADT', 'fadt-phase-conditioning', 'challenge-phase-admissibility',
       fadt.preserving.verdict === 'CONSISTENT_DECLARATIONS' && fadt.erasing_phase.verdict === 'HOLD' ? 'SUPPORTED' : 'HELD',
       evidenceClass, scope, 'fadt-stage-audits', fadt,
-      ['finite occupied challenge stages only', 'lawful support is a bounded declared session model'], environment
+      ['finite occupied challenge states are a declared model only', 'checked return and separately completed local admission remain different model states', 'lawful support is not authenticated and no admission operation is executed'], environment
     )
   ];
   const sourceRevisionPinned = /^[a-f0-9]{40}$/.test(session.source_revision);
@@ -637,10 +704,10 @@ export async function auditPortableLoomChallengeWithDollhouse(session, unit, bun
     evidence_class_promotion: false,
     hidden_host_internals_claimed_observed: false,
     subagent_coverage: [
-      { id:'pedagogue-gesture-consequence', status:'EXECUTED', input_class:'instrumented challenge state transitions' },
+      { id:'pedagogue-gesture-consequence', status:'HELD_INPUT_CLASS', input_class:'requires captured gesture notice and consequence trace; challenge verification does not fabricate one' },
       { id:'aperture-witness-plan', status:'EXECUTED', input_class:'bounded challenge claims and captured horizon' },
       { id:'atlas-continuity-audit', status:'EXECUTED', input_class:'portable session/work-unit references and controls' },
-      { id:'fadt-stage-audit', status:'EXECUTED', input_class:'finite occupied challenge stages and action support' },
+      { id:'fadt-stage-audit', status:'EXECUTED', input_class:'declared finite challenge phase/evidence action-support model; not observed admission' },
       { id:'dollhouse-case-dossier', status:dossier?'EXECUTED':'HELD_UNPINNED_SOURCE', input_class:'four role findings with exact source revision requirement' },
       { id:'dollhouse-portable-aia-roundtrip', status:'HELD_INPUT_CLASS', input_class:'requires td613.loom.semantic-field/v0.1; Portable Session v0.1 does not fabricate one' }
     ],

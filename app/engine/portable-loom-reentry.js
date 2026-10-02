@@ -10,6 +10,7 @@ export const LOOM_REENTRY_RETURN_SCHEMA = 'td613.loom.bound-receiver-turn/v0.2';
 export const LOOM_REENTRY_CANDIDATE_SCHEMA = 'td613.loom.reentry-candidate/v0.2';
 export const LOOM_REENTRY_UNIT_SCHEMA = 'td613.loom.admitted-returned-work/v0.2';
 const HEX = /^[a-f0-9]{64}$/;
+const custodyRoots = new Set();
 const CEILINGS = Object.freeze([
   'REVALIDATION != ADMISSION', 'ADMISSION != PROOF_OF_FOREIGN_ENFORCEMENT',
   'TURN_RECEIPT_MATCH != AUTHENTICATED_FOREIGN_ANCESTRY',
@@ -30,7 +31,7 @@ function data(value, label='record', budget={nodes:0}, depth=0) {
   if(++budget.nodes>50000 || depth>30)throw new TypeError(`${label} exceeds bounded structure.`);
   if(value===null || typeof value==='boolean')return;
   if(typeof value==='string'){if(value.length>300000)throw new TypeError(`${label} exceeds bounded text.`);return;}
-  if(typeof value==='number' && Number.isSafeInteger(value))return;
+  if(typeof value==='number' && Number.isFinite(value))return;
   if(typeof value!=='object')throw new TypeError(`${label} must contain JSON data.`);
   const array=Array.isArray(value), proto=Object.getPrototypeOf(value);
   if(!array && proto!==Object.prototype && proto!==null)throw new TypeError(`${label} must be plain.`);
@@ -119,9 +120,11 @@ export function createPortableLoomReentryPrompt(excursion){
 export async function createPortableLoomReentryCustodian(session, packet, options={}, environment=globalThis){
   if(!isLivePortableLoomSession(session))throw new Error('HELD_IMPORTED_CUSTODY: parsed records have no live local custody authority.');
   await verifyPortableLoomSeedIntegrity(session,packet,environment);
+  if(custodyRoots.has(session.root.ref))throw new Error('HELD_DUPLICATE_LOCAL_CUSTODY: this root already opened an admission lane in this process.');
   const now=options.now || (()=>Date.now()), ttl=options.ttl_ms ?? 15*60*1000;
   if(!Number.isSafeInteger(ttl)||ttl<1000||ttl>3600000)throw new Error('Bounded excursion lifetime required.');
   const seed=session.work_units.at(-1), policy=clone(seed.policy);
+  if(policy.added_rules.length)throw new Error('HELD_SEED_POLICY_EXTENSION: additions require an independent policy review lane.');
   // Freeze effective rules on this lane. There is no removal or addition surface.
   let state=freeze({schema:LOOM_REENTRY_CUSTODY_SCHEMA,session_id:session.session_id,source_revision:session.source_revision,
     root:clone(session.root),seed:{anchor_ref:seed.ref,class:seed.status==='ADMITTED'?'VERIFIED_LOCAL_RESULT':'VERIFIED_PREPARATION',
@@ -129,7 +132,7 @@ export async function createPortableLoomReentryCustodian(session, packet, option
     continuity:{current_work_unit_ref:null,current_admitted_result_ref:session.continuity.current_admitted_result_ref,work_unit_count:0},
     authority:{scope:'LIVE_PROCESS_LOCAL_CUSTODY_ONLY',foreign_execution_authenticated:false,global_fork_exclusion:false,
       imported_records_authoritative:false,policy_weakening:false,human_closure_required:true},
-    work_units:[],route_history:[],claim_ceiling:[...CEILINGS]});
+    work_units:[],route_history:[],admission_records:[],claim_ceiling:[...CEILINGS]});
   let excursion=null, revision=0, disposed=false;
   const candidates=new WeakMap();
   const head=()=>state.continuity.current_work_unit_ref;
@@ -139,6 +142,7 @@ export async function createPortableLoomReentryCustodian(session, packet, option
   function inspect(){return freeze({schema:LOOM_REENTRY_CUSTODY_SCHEMA,status:disposed?'CLOSED':'LIVE_LOCAL_CUSTODY',
     root_ref:state.root.ref,seed_anchor_ref:state.seed.anchor_ref,seed_class:state.seed.class,...state.continuity,
     anchor_work_unit_ref:anchor(),excursion_ref:excursion?.ref||null,pending_turn_count:excursion?.turns.length||0,
+    expires_at:excursion?.expires_at||null,
     source_revision:state.source_revision,recovery:'RELOAD_REQUIRES_INDEPENDENT_CUSTODY_WITNESS',claim_ceiling:[...CEILINGS]});}
   async function stage(input){
     alive();exact(input,['task','documents','withheld_document_count'],'local turn intent');
@@ -163,6 +167,7 @@ export async function createPortableLoomReentryCustodian(session, packet, option
       excursion_ref:ref,evidence_class:'LOCAL_OPERATOR_REGISTRATION'};
     const intent=freeze({...body,ref:await portableLoomDigest(body,environment)});
     if(disposed||revision!==observedRevision||state!==observedState)throw new Error('HELD_STALE_LOCAL_STATE: registration raced with custody change.');
+    if(now()<base.issued_at||now()>=base.expires_at)throw new Error('HELD_EXPIRED_OR_CLOCK_REVERSED: registration exceeded excursion lifetime.');
     excursion=freeze({...base,ref,turns:[...(excursion?.turns||[]),intent]});revision++;
     return excursion;
   }
@@ -210,10 +215,12 @@ export async function createPortableLoomReentryCustodian(session, packet, option
       }catch{reasons.push('CHALLENGE_INTEGRITY_OR_CAPTURE_HOLD');}
     }
     if(disposed||revision!==observedRevision||state!==before)reasons.push('STALE_LOCAL_STATE');
+    if(departure && (now()<departure.issued_at||now()>=departure.expires_at))reasons.push('EXPIRED_OR_CLOCK_REVERSED');
     const body={schema:LOOM_REENTRY_CANDIDATE_SCHEMA,status:reasons.length?'HELD':'ADMISSION_CANDIDATE',
       session_root_ref:before.root.ref,expected_head_ref:before.continuity.current_work_unit_ref,
       expected_content_ref:before.continuity.current_admitted_result_ref,departure:departure?clone(departure):null,
       returned_turns:parsed,challenge:challenge?{ref:challenge.ref,status:challenge.status,evidence_class:challenge.evidence_class}:null,
+      challenge_evidence:input.challenge,
       challenge_scope:challenge?'DECLARED_CHALLENGE_EPISODE_ONLY':'NOT_PERFORMED',
       reasons,evidence:{pasted_bytes:'LOCALLY_OBSERVED',foreign_origin:'DECLARED_UNAUTHENTICATED',
         task_sources:'LOCALLY_REGISTERED_AND_RECOMPUTED',receiver_policy_review:'OPERATOR_DECLARATION',
@@ -246,9 +253,10 @@ export async function createPortableLoomReentryCustodian(session, packet, option
         sequence:next.work_units.length+1,status:'ADMITTED',predecessor_work_unit_ref:parent,content_predecessor_ref:content,
         receiver_anchor_work_unit_ref:candidate.departure.anchor_work_unit_ref,foreign_turn_index:value.turn_index,
         intent_ref:intent.ref,excursion_ref:candidate.departure.ref,task:intent.task,task_digest:intent.task_digest,
-        selected_commitments:intent.selected_commitments,withheld_document_count:intent.withheld_document_count,
+        selected_commitments:intent.selected_commitments,selected_documents:clone(intent.documents),withheld_document_count:intent.withheld_document_count,
         policy:clone(policy),admitted_result:result,admitted_result_ref:resultRef,candidate_ref:candidate.ref,
         receipt_digest:await portableLoomDigest(value,environment),capture_digest:await portableLoomDigest(returned.raw,environment),
+        captured_return:returned.raw,
         evidence:clone(candidate.evidence),claim_ceiling:[...CEILINGS]};
       const unit={...body,ref:await portableLoomDigest(body,environment)};
       next.work_units.push(unit);parent=unit.ref;content=resultRef;
@@ -257,6 +265,7 @@ export async function createPortableLoomReentryCustodian(session, packet, option
         evidence_class:'LOCAL_CUSTODY_TRANSITION',foreign_history_authenticated:false});
     }
     next.continuity={current_work_unit_ref:parent,current_admitted_result_ref:content,work_unit_count:next.work_units.length};
+    next.admission_records.push(clone(candidate));
     // No await after this guard: one atomic process-local compare-and-swap.
     if(disposed||issued.revision!==revision||before!==state||issued.excursion!==excursion)return hold('HEAD_COMPARE_AND_SWAP_FAILED');
     if(now()<excursion.issued_at||now()>=excursion.expires_at)return hold('EXPIRED_OR_CLOCK_REVERSED');
@@ -266,7 +275,34 @@ export async function createPortableLoomReentryCustodian(session, packet, option
   }
   function cancel(){alive();excursion=null;revision++;return inspect();}
   function close(){disposed=true;excursion=null;revision++;}
+  async function continuation(input){
+    alive();exact(input,['task','source_ids'],'governed continuation selection');
+    string(input.task,'continuation task');strings(input.source_ids,'continuation source_ids',8);
+    const observedRevision=revision, observedState=state, latest=state.work_units.at(-1);
+    if(!latest || !head())throw new Error('HELD_NO_ADMITTED_DESCENDANT: admit returned work before continuing from it.');
+    const byId=new Map(latest.selected_documents.map(document=>[document.id,document]));
+    if(input.source_ids.some(id=>!byId.has(id)))throw new Error('HELD_SOURCE_NOT_IN_LATEST_ADMITTED_TURN: explicitly supply new material through registration.');
+    const documents=input.source_ids.map(id=>clone(byId.get(id)));
+    const selected=normalizeLoomAiTask({task:input.task,documents,rules:policy.effective_rules});
+    const commitments=await Promise.all(selected.documents.map(async document=>({id:document.id,name:document.name,
+      sha256:await portableLoomDigest(document.text,environment)})));
+    const body={schema:'td613.loom.governed-continuation/v0.2',session_root_ref:state.root.ref,
+      source_revision:state.source_revision,anchor_work_unit_ref:latest.ref,content_predecessor_ref:latest.admitted_result_ref,
+      original_task_digest:state.root.original_task_digest,root_policy_commitment:state.root.policy_commitment,
+      effective_policy_commitment:policy.effective_policy_commitment,
+      task:selected.task,documents:selected.documents,rules:selected.rules,
+      selected_commitments:commitments,source_commitment_digest:await portableLoomDigest(commitments,environment),
+      preceding_result:{work_unit_ref:latest.ref,result_ref:latest.admitted_result_ref,result:clone(latest.admitted_result)},
+      source_rule:'Only explicitly selected source bodies from the latest admitted turn travel; prior source bodies are not inherited by implication. The preceding result is separately labeled content context, not an additional selected source.',
+      authority:{packet_carriage_only:true,head_advanced:false,receiver_enforcement_authenticated:false,
+        imported_records_authoritative:false,human_closure_required:true},
+      claim_ceiling:[...CEILINGS]};
+    const ref=await portableLoomDigest(body,environment);
+    if(disposed||revision!==observedRevision||state!==observedState)throw new Error('HELD_STALE_LOCAL_STATE: continuation selection raced with custody change.');
+    return freeze({...body,ref});
+  }
   function exportRecord(){return freeze({schema:'td613.loom.local-custody-export/v0.2',session:state,
-    pending_excursion:excursion,restoration:'REVIEW_ONLY_UNAUTHENTICATED_NO_ADMISSION_AUTHORITY',claim_ceiling:[...CEILINGS]});}
-  return Object.freeze({inspect,stage,check,admit,cancel,close,export:exportRecord,current});
+    pending_excursion:excursion,content_scope:'LOCAL_PRIVATE_RECORD_INCLUDES_SOURCE_BODIES_RETURNS_AND_ATTACHED_CHALLENGE_KEYS',restoration:'REVIEW_ONLY_UNAUTHENTICATED_NO_ADMISSION_AUTHORITY',claim_ceiling:[...CEILINGS]});}
+  custodyRoots.add(session.root.ref);
+  return Object.freeze({inspect,stage,check,admit,cancel,close,export:exportRecord,current,continuation});
 }

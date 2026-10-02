@@ -416,7 +416,9 @@ test('Dollhouse challenge dossier keeps four roles independent and FADT proves p
   const verification = await verifyPortableLoomReceiverChallenge(bundle, candidate(bundle.public_challenge), capture(), environment);
   const audit = await auditPortableLoomChallengeWithDollhouse(session, work_unit, bundle, verification, environment);
 
-  assert.equal(audit.pedagogue.classification, 'DECLARED_GESTURE_CONSEQUENCES_PRESERVED');
+  assert.equal(audit.pedagogue.classification, 'HELD_INPUT_CLASS');
+  assert.equal(audit.pedagogue.compatibility_object_fabricated, false);
+  assert.equal(audit.subagent_coverage.find(item=>item.id==='pedagogue-gesture-consequence').status, 'HELD_INPUT_CLASS');
   assert.equal(audit.atlas.audit.verdict, 'DECLARED_CONSISTENCY');
   assert.equal(audit.fadt.preserving.verdict, 'CONSISTENT_DECLARATIONS');
   assert.equal(audit.fadt.erasing_phase.verdict, 'HOLD');

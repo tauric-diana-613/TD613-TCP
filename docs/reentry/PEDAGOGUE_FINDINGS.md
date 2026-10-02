@@ -30,6 +30,8 @@ The malformed return produced the AX-visible global message `Proceeding-task rec
 
 The exact-object contract stays inside a bounded disclosure; retaining JSON behind a scrollable inspector is preferable to making it the primary route. It contains two provenance coordinates that should remain visibly distinct: root governance and work-unit/content predecessors.
 
+Independent extension of the same live browser route used two explicitly synthetic receiver declarations. Turn 1 requested a requirements summary with intentional source ID `requirements`; the live UI returned DECLARED_TURN_MATCH, declaration-not-promoted and `local_ledger_advanced: false` (verification ref `caf358dae354a3c28f1e012f6c40cfa14caed444b97a2d96afe3dc9ccdcbdfaf`). Turn 2 changed the task and allowed source ID to `pilot-new`, retaining the same locally prepared anchor; it again matched while ancestry stayed unchanged (ref `015c954f1a626297ea7958b6589a73b3b2e356193d3d58c285c6924f1c021922`). This observes allowlist checking only: no new source body or foreign execution was supplied or witnessed. Substituting the second declaration's anchor with 64 zeroes yielded an inline HOLD with `reference_match.anchor_work_unit: false` and no ledger advance (ref `48d1f4e7ac645a7e280fcba551ea28ea28461d67ca1ee65c526974b3fca8b124`). The success copy correctly states that matching declaration coordinates leave ancestry unchanged; the generic HOLD explanation still requires the technical receipt to identify the specific substituted anchor.
+
 Reload loss is inherited from the root handoff, not a separately repeated witness by this collaborator. Approximately 390px, keyboard-only traversal and implemented admission remain **UNWITNESSED** in this role report. Source CSS alone cannot close those browser obligations.
 
 ## Minimum route recommendation
@@ -106,3 +108,33 @@ Executed witness: `node --test tests/pedagogue-reentry-staging.test.mjs tests/pe
 ## Acceptance still required
 
 After implementation, witness desktop and approximately 390px: malformed → HOLD, MATCH → ready, altered answer → readiness revoked, successful explicit admission → old/new head, duplicate/replayed admission, stale local state, reload/recovery, keyboard focus, long receipt/task/source-set disclosure, rest/exit and challenge against the new descendant. Record route fixtures as synthetic and production browser observations as browser evidence. Human comprehension, foreign enforcement, Golden Egg and empirical exteriority remain outside this report.
+
+## Additive implementation handoff
+
+`app/dome-world/holonomy-loom/reentry-workspace.js` and `.css` implement the recommended route as an additive drawer. The v0.2 ledger is labeled independently from the legacy seed preparation. The UI retains task registration, exact pasted-return boundaries, policy-review declaration, inline Check/HOLD, candidate-specific admission acknowledgment, fixed-root old/new-head consequence, real excursion deadline, rest preserving that deadline, pending-registration discard and review-only export.
+
+The module owns no admission law: the engine issues immutable candidates and performs compare-and-swap. UI acknowledgment is tied to that issued candidate reference and erased after task/return/source/review/challenge changes. Exact returned-object interior bytes are extracted from the pasted array rather than reconstructed with `JSON.stringify`. String entries may carry their original captured text. None of this authenticates the foreign origin of pasted material.
+
+Post-admission continuation has a distinct progressive disclosure: **carrier only**. It displays the preceding admitted answer, starts source checkboxes clear, permits only the latest turn's explicitly retained source bodies, prepares an inspectable read-only carrier and requires a separate Copy gesture. It registers no new turn. The primary registered-task route remains the path for another admission-eligible return. This separation prevents a copied carrier from masquerading as a registered excursion.
+
+Integration contract:
+
+```js
+const ui = mountPortableLoomReentryWorkspace(container, {
+  environment,
+  onAdmission: (custodySnapshot, latestUnit) => {},
+  onChallenge: (custodySnapshot, latestUnit) => {},
+  getChallenge: () => null
+});
+await ui.setSession(liveSeedSession, seedPacket);
+ui.setChallenge(capturedChallengeEvidence); // invalidates admission readiness
+ui.getRecord(); // review-only exported record, no restoration authority
+ui.clearSession(); // explicit new seed transition only
+ui.dispose();
+```
+
+`setSession` must run when an explicitly established live seed changes, never after `onAdmission`. Ordinary builder edits must not silently destroy the retained local admitted ledger. Legacy one-hop/Marrowline seed controls must remain labeled as seed routes or held after the local head advances; an old seed export cannot impersonate the current admitted descendant.
+
+`tests/portable-loom-reentry-workspace.test.mjs` exercises the real process-local engine in JSDOM. These are source/DOM contracts, not browser witnesses or human comprehension evidence. The existing shared gesture adapter's explicit re-entry input-class HOLD remains in force.
+
+Executed UI-source witness: `node --check app/dome-world/holonomy-loom/reentry-workspace.js` and `node --test tests/portable-loom-reentry-workspace.test.mjs` — syntax PASS, 10 passed, 0 failed. Tests cover unchanged stage/check head, deliberate copy, explicit admission, stale acknowledgment, malformed inline HOLD/focus, policy review/weakening, complete multiple-turn admission, rest/expiry/cancel, imported-custody HOLD, source-explicit carrier continuation and exact pasted-object boundary retention.

@@ -162,3 +162,32 @@ DOLLHOUSE_ROLE_AGREEMENT != EVIDENCE_MULTIPLICATION
 ```
 
 The new operation earns local protocol custody by executing its own lawful transition. Reality retains jurisdiction over claims about the foreign execution that the retained record cannot identify.
+
+## Working v0.2 attack checkpoint
+
+The independent suite `tests/portable-loom-reentry-aperture.test.mjs` now contains **14 passing tests**. Its digest gate suspends the actual WebCrypto-dependent operation so a second operation, clock transition or caller mutation can cross the asynchronous seam. These are finite offline engine witnesses, separately from `APERTURE_BROWSER_FINDINGS.md`.
+
+The attack cycle discovered and the parent repaired:
+
+- Legacy session mutations originally granted the live WeakSet brand to imported JSON. Brand propagation now requires an already live source session; coherent imported preparation stays unbranded and custody creation rejects it.
+- Re-entry check originally iterated mutable caller arrays across digest awaits. Shrinking a two-turn return during the first digest could publish a one-turn candidate and consume the whole excursion. Inputs now snapshot before asynchronous verification.
+- Admission originally checked lifetime only before digest work. It now checks expiry/reverse clock at the final atomic head transition.
+- Registration and check originally published valid-looking results after their lifetime elapsed during digest work. Their final-time qualification now rejects/holds those cases.
+- Recursive JSON validation originally rejected legitimate fractional reconstruction thresholds. Aperture applied the one-line `Number.isFinite` primitive validator correction; specific index/time/count fields retain their integer constraints.
+- Challenge commitment replay originally omitted public/private projection compatibility. The parent verifier now checks the public probe/scope projection against held local ground truth; even recomputing a changed public digest cannot erase that mismatch.
+
+Other controls passed: direct export/restoration rejection; cancellation during check; competing registration; concurrent admission advances exactly once; altered private threshold with old digest; different structured return in the capture channel; and fractional `TEXT_DISTANCE` challenge support.
+
+The parent subsequently added a per-process consumed-root registry: one root cannot open two local custody lanes or reopen after closing in the same module/process. This narrows local fork/replay opportunity; it grants no global latest/fork claim across independent browsers/processes. Seed work units with nonempty `policy.added_rules` are now held on this lane because it lacks a reviewed admission law for natural-language extensions. The independent Aperture fixtures use fresh UUID session roots and still pass 14/14 after these restrictions.
+
+The suite intentionally demonstrates a residual: a return can contain natural-language instructions to ignore root rules while declaring `policy_change_requested: false`. With operator review asserted, it can still become a locally admitted **returned content artifact**. Its policy body remains frozen and foreign execution remains `UNRESOLVED`/unauthenticated. This is evidence that the implementation retains the claim ceiling, rather than evidence of universal semantic detection. Product language must continue to expose that distinction.
+
+## Bound-return ergonomics HOLD
+
+The current v0.2 receiver return requires `answer_digest = SHA256(UTF8(canonical JSON string(answer)))`. Echoing supplied root/task/source/intent commitments requires no new computation. Hashing a newly generated answer requires a real computation facility; an ordinary foreign chat model cannot be assumed capable of producing a correct SHA256 digest from reasoning alone.
+
+The current supported admission route therefore requires a receiver with a trusted local computation tool/adapter capable of forming the declaration correctly. If that facility is unavailable, the receiver may return an unbound declaration for review. Admission stays HELD. Loom must never fill the missing digest and preserve the **receiver-bound** evidence label, nor encourage a model to invent a plausible 64-character hash.
+
+A future, separately specified **operator-bound capture** route could retain utility without a tool-enabled receiver. Loom would register intent before egress, accept the exact operator-supplied returned answer plus the legacy declaration, locally commit the arrival capture, preserve `RECEIVER_ANSWER_BINDING_ABSENT`, require explicit operator association/review, and admit under the weaker `OPERATOR_BOUND_CAPTURE` evidence class. This supports a local captured-artifact relation; it authenticates neither receiver authorship nor the answer's foreign execution. The raw legacy receipt remains unbound forever; local capture commitment does not retroactively change its evidence class.
+
+That future route remains a design HOLD in this tranche. It requires distinct schema, consequence language, substitution tests, arrival-capture custody and operator association law. Its merits arise from the fact that receiver-provided SHA256 is already an unauthenticated declaration: local computation can supply integrity, while neither computation location supplies foreign origin proof. The distinction needed for lawful action must be explicit before adopting the weaker route.
