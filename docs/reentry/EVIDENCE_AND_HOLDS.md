@@ -139,7 +139,7 @@ The engine sometimes throws a bounded validation exception; the native gesture l
 | Check | `NO_REGISTERED_EXCURSION`; `EXPIRED_OR_CLOCK_REVERSED`; `INCOMPLETE_REGISTERED_TURN_RANGE` | No retrofitted or partial-range ancestry advance. |
 | Check | `POLICY_REVIEW_REQUIRED:n`; `MALFORMED_OR_UNBOUND_RETURN:n` | Unsupported or unreviewed return remains unadmitted. |
 | Check | `SUBSTITUTED_*:n`; `ANSWER_SUBSTITUTION:n`; `UNDECLARED_SOURCE:n`; `POLICY_WEAKENING_REQUESTED:n` | Registration, answer and source/policy boundaries remain fixed. |
-| Check | `CHALLENGE_INTEGRITY_OR_CAPTURE_HOLD`; `CHALLENGE_*` exposure/incomplete/reference status | Changed or adverse attached episode cannot supply a clean admission candidate. |
+| Check | `UNREGISTERED_ATTACHED_CHALLENGE`; `CHALLENGE_INTEGRITY_OR_CAPTURE_HOLD`; `CHALLENGE_*` exposure/incomplete/reference status | A direct attachment must match exact evidence already retained for the active excursion; changed, anchor-only, unregistered or adverse attached evidence cannot supply a clean admission candidate. |
 | Check | `REGISTERED_CHALLENGE_PENDING_CHALLENGE`, `REGISTERED_CHALLENGE_HELD`, `REGISTERED_CHALLENGE_OBSERVED_EXPOSURE`, or another non-clean registered status | Checkbox omission and later clean attempts cannot erase a known current-excursion blocker. |
 | Check | `STALE_LOCAL_STATE` | Cancel/register/close races invalidate candidate issuance. |
 | Admit | `UNISSUED_OR_INSUFFICIENT_CANDIDATE`; `STALE_OR_REPLAYED_CANDIDATE` | Parsed copies, held candidates and consumed/stale capabilities cannot mutate history. |

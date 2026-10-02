@@ -186,13 +186,15 @@ async function challengeAttachment(f, departure) {
   return { bundle, candidate, capture: { evidence_class: 'OFFLINE_TEST', surfaces: [{ channel_id: 'reply', status: 'CAPTURED', text: JSON.stringify(candidate) }] } };
 }
 
-test('valid fractional reconstruction threshold survives JSON validation and stays scoped', async () => {
+test('valid fractional reconstruction threshold survives JSON validation only after the attached episode is retained', async () => {
   const f = await fixture(); const departure = await stageOne(f); const input = await checkInput(departure);
   input.challenge = await challengeAttachment(f, departure);
+  const retained = await f.custody.recordChallenge(input.challenge);
+  assert.equal(retained.status, 'BOUNDED_CHALLENGE_PASSED');
   const candidate = await f.custody.check(input);
   assert.equal(candidate.status, 'ADMISSION_CANDIDATE');
   assert.equal(candidate.challenge.status, 'BOUNDED_CHALLENGE_PASSED');
-  assert.equal(candidate.challenge_scope, 'ATTACHED_EPISODE_ONLY_NO_FOREIGN_TURN_COVERAGE');
+  assert.equal(candidate.challenge_scope, 'REGISTERED_EPISODES_ONLY_NO_FOREIGN_TURN_COVERAGE');
 });
 
 test('mutated private threshold and swapped reply capture cannot masquerade as an attached clean episode', async () => {

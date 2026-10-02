@@ -74,12 +74,24 @@ async function assay(f,{literal=false,standalone=false,joined=false,missing=fals
 for(const [name,options] of [['literal leakage',{literal:true}],['clean literal masking standalone recovery',{standalone:true}],['clean marginal probes masking joined recovery',{joined:true}],['missing capture channel',{missing:true}]])test(`attached ${name} prevents admission`,async()=>{
   const f=await route(),candidate=await check(f,f.value,await assay(f,options));assert.equal(candidate.status,'HELD');assert.equal(f.custody.inspect().current_work_unit_ref,null);
 });
-test('clean challenge alone cannot admit; admitted evidence remains locally replayable and private',async()=>{
+test('unregistered attached challenge cannot be replaced by a later clean attachment to obtain admission',async()=>{
+  const f=await route();
+  const adverse=await check(f,f.value,await assay(f,{literal:true}));
+  assert.equal(adverse.status,'HELD');assert.ok(adverse.reasons.includes('UNREGISTERED_ATTACHED_CHALLENGE'));
+  const clean=await check(f,f.value,await assay(f));
+  assert.equal(clean.status,'HELD');assert.ok(clean.reasons.includes('UNREGISTERED_ATTACHED_CHALLENGE'));
+  assert.equal(f.custody.current().challenge_history.length,0);
+  assert.equal((await f.custody.admit(clean,decision(clean))).status,'HELD');
+  assert.equal(f.custody.inspect().current_work_unit_ref,null);
+});
+test('clean retained challenge alone cannot admit; admitted evidence remains locally replayable and private',async()=>{
   const f=await route(),episode=await assay(f);
   assert.equal((await f.custody.admit(episode,decision({ref:'0'.repeat(64),expected_head_ref:null}))).status,'HELD');
+  const retained=await f.custody.recordChallenge(episode);assert.equal(retained.status,'BOUNDED_CHALLENGE_PASSED');
   const candidate=await check(f,f.value,episode);assert.equal(candidate.status,'ADMISSION_CANDIDATE');
   await f.custody.admit(candidate,decision(candidate));const record=f.custody.export();
   assert.equal(record.session.admission_records[0].ref,candidate.ref);assert.deepEqual(record.session.admission_records[0].challenge_evidence,episode);
+  assert.equal(record.session.challenge_history[0].ref,retained.ref);
   const carrier=await f.custody.continuation({task:'Continue under root rules.',source_ids:[]});
   assert.ok(!JSON.stringify(carrier).includes('LOCAL-CANARY'));assert.equal(carrier.documents.length,0);assert.equal(carrier.preceding_result.result.foreign_origin_authenticated,false);
 });

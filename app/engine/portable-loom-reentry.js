@@ -214,6 +214,13 @@ export async function createPortableLoomReentryCustodian(session, packet, option
     }
     const registeredChallenges=before.challenge_history.filter(record=>record.scope.excursion_ref===departure?.ref && departure);
     for(const record of registeredChallenges)if(record.status!=='BOUNDED_CHALLENGE_PASSED')reasons.push(`REGISTERED_CHALLENGE_${record.status}`);
+    if(input.challenge!==null){
+      let retainedForExcursion=false;
+      for(const record of registeredChallenges){
+        if(await same(record.evidence,input.challenge,environment)){retainedForExcursion=true;break;}
+      }
+      if(!retainedForExcursion)reasons.push('UNREGISTERED_ATTACHED_CHALLENGE');
+    }
     let challenge=null;
     if(input.challenge!==null){
       try{
