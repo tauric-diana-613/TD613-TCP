@@ -1,5 +1,9 @@
 import { mountLivingGeometry } from './holonomy-loom/living-geometry.js';
-import { installMarrowlineReadingSurface } from './marrowline-reading-surface.js';
+import {
+  installMarrowlineReadingSurface,
+  removeMarrowlineReadingSurface,
+  resolveMarrowlineLoomReadingAuthority
+} from './marrowline-reading-surface.js';
 import {
   MARROWLINE_ATTACHMENT_CHANGE_EVENT,
   attachmentState
@@ -144,6 +148,14 @@ export function installMarrowlineLivingChat(doc = document, environment = window
     });
   };
 
+  const syncReadingSurfaceForCard = card => {
+    const integrated=card.querySelector('.relay-khonapolit[data-present="true"]');
+    if(!integrated)return;
+    const authority=resolveMarrowlineLoomReadingAuthority(card,environment);
+    if(authority)installMarrowlineReadingSurface(integrated,environment,authority);
+    else removeMarrowlineReadingSurface(integrated);
+  };
+
   const decorate = () => {
     messages.querySelectorAll('.message-body').forEach((node) => {
       if (node.closest?.('.relay-message')) {
@@ -179,6 +191,7 @@ export function installMarrowlineLivingChat(doc = document, environment = window
     }
 
     messages.querySelectorAll('.relay-message').forEach(card => {
+      syncReadingSurfaceForCard(card);
       if (card.dataset.livingDecorated === 'true') return;
       card.dataset.livingDecorated = 'true';
       const receiptAttachments = replyAttachmentReceipt(card);
@@ -282,10 +295,10 @@ export function installMarrowlineLivingChat(doc = document, environment = window
         const meta = integrated.querySelector('.relay-stage-head small');
         if (meta) meta.textContent = 'integrated transmission';
         card.append(integrated);
-        // Derive a professional reading layer without mutating the canonical
-        // provider-return node used by custody, receipts, copy, follow-up and
-        // morphology witnesses.
-        installMarrowlineReadingSurface(integrated, environment);
+        // Loom-only reading presentation is admitted by the current controller
+        // plus this exact work-unit marker. Integrated/native reply identity alone
+        // never manufactures Loom custody semantics.
+        syncReadingSurfaceForCard(card);
       }
       // The footer contains only the disclosure. Branching is reply-local
       // inside More with this reply, alongside the other actions.
@@ -309,6 +322,8 @@ export function installMarrowlineLivingChat(doc = document, environment = window
   };
   environment.addEventListener?.(MARROWLINE_ATTACHMENT_CHANGE_EVENT, onAttachmentChange);
   environment.addEventListener?.('td613:marrowline:attachment-submission-state', onAttachmentSubmission);
+  const onLoomDemoState = () => decorate();
+  environment.addEventListener?.('td613:marrowline:loom-demo-state', onLoomDemoState);
 
   const status = doc.getElementById('khonapolitTerminalStatus');
   let lastPhase = 'prepared';
@@ -333,6 +348,7 @@ export function installMarrowlineLivingChat(doc = document, environment = window
     environment.removeEventListener('td613:marrowline:mobile-view', onView);
     environment.removeEventListener?.(MARROWLINE_ATTACHMENT_CHANGE_EVENT, onAttachmentChange);
     environment.removeEventListener?.('td613:marrowline:attachment-submission-state', onAttachmentSubmission);
+    environment.removeEventListener?.('td613:marrowline:loom-demo-state', onLoomDemoState);
     geometry?.dispose();
   } };
 }
