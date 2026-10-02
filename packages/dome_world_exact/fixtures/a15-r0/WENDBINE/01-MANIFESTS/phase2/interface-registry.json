@@ -11,8 +11,8 @@
     },
     {
       "path": "01-MANIFESTS/phase2/capture-v2.jsonl",
-      "count": 1370,
-      "sha256": "956697c3491e0a02c6707aafe753d3c500e6e8df05f2f59fa7c9146b74c0143f"
+      "count": 2680,
+      "sha256": "1a795d5f37a9d388ca5ccad13f6bbed5bfb3d5e7c81d8142ae049b9207272dd5"
     },
     {
       "path": "01-MANIFESTS/phase2/blob-v1.jsonl",
@@ -21,8 +21,8 @@
     },
     {
       "path": "01-MANIFESTS/phase2/derivative-v1.jsonl",
-      "count": 1370,
-      "sha256": "6e585f8fa297f017d9844d857a1fea64b4265b07dfd7d1f3f0e9afa029362193"
+      "count": 2680,
+      "sha256": "fb12c3097fcf1d541ab9141b54541e348fc128179b415e5ca55b52f5901dcab4"
     },
     {
       "path": "01-MANIFESTS/phase2/rights-decision-v1.jsonl",
@@ -31,18 +31,18 @@
     },
     {
       "path": "01-MANIFESTS/phase2/entity-resolver-v2.jsonl",
-      "count": 1370,
-      "sha256": "b8b5cf08556fa3e77d239a9e0730dc8e520ca0303e799dceafe6f8b39f444ef1"
+      "count": 2680,
+      "sha256": "aac8cb84d2770ab3d033f797a1b368648f85bef9d206c40b680581a3973b6c63"
     },
     {
       "path": "05-OPERATIONS/phase2/version-observations.jsonl",
-      "count": 1370,
-      "sha256": "58d41c84c7f61727855a77ea17898682a6fa6fa5ac28a0eea5c9f3f72b057d63"
+      "count": 2680,
+      "sha256": "d30d6abd4d9fbaa61f0288942a7e4884ccab52a251ce6c7850507f073b2f59d3"
     },
     {
       "path": "05-OPERATIONS/relations/typed-edges.jsonl",
-      "count": 1310,
-      "sha256": "38dd7eb888ed7911aa8b305229417ebe787ee72ae305e263413f8c28a90e53b8"
+      "count": 2620,
+      "sha256": "f6a027c8ee835ce8b3da5cde03617d08dac48fce00376a7d8bfdf91239d30e9d"
     }
   ],
   "epoch_path": "04-RECEIPTS/phase2/current-seal.json",

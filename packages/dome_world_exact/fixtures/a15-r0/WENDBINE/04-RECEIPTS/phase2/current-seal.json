@@ -1,9 +1,9 @@
 {
   "schema": "wendbine-src-seal/v1",
-  "atelier_snapshot_id": "wendbine-20261002214251-312aa0bfc983",
-  "seal_id": "wendbine-seal:312aa0bfc9830c823c91ce8993d2aca0cb8297eed11c881b137f2a979000fc17",
-  "path": "07-ARCHIVE-LEDGER/syncs/wendbine-20261002214251-312aa0bfc983.json",
-  "created_at": "2026-10-02T21:42:51.809Z",
+  "atelier_snapshot_id": "wendbine-20261002220512-58f084b90335",
+  "seal_id": "wendbine-seal:58f084b90335f55ab8ba4d8e580a021570845cfade39e6ad1c9b2d5d96b80292",
+  "path": "07-ARCHIVE-LEDGER/syncs/wendbine-20261002220512-58f084b90335.json",
+  "created_at": "2026-10-02T22:05:12.637Z",
   "projection": "PUBLIC_METADATA_ONLY",
   "file_hashes": [
     {
@@ -13,8 +13,8 @@
     },
     {
       "path": "01-MANIFESTS/phase2/capture-v2.jsonl",
-      "sha256": "956697c3491e0a02c6707aafe753d3c500e6e8df05f2f59fa7c9146b74c0143f",
-      "count": 1370
+      "sha256": "1a795d5f37a9d388ca5ccad13f6bbed5bfb3d5e7c81d8142ae049b9207272dd5",
+      "count": 2680
     },
     {
       "path": "01-MANIFESTS/phase2/blob-v1.jsonl",
@@ -23,8 +23,8 @@
     },
     {
       "path": "01-MANIFESTS/phase2/derivative-v1.jsonl",
-      "sha256": "6e585f8fa297f017d9844d857a1fea64b4265b07dfd7d1f3f0e9afa029362193",
-      "count": 1370
+      "sha256": "fb12c3097fcf1d541ab9141b54541e348fc128179b415e5ca55b52f5901dcab4",
+      "count": 2680
     },
     {
       "path": "01-MANIFESTS/phase2/rights-decision-v1.jsonl",
@@ -33,23 +33,23 @@
     },
     {
       "path": "01-MANIFESTS/phase2/entity-resolver-v2.jsonl",
-      "sha256": "b8b5cf08556fa3e77d239a9e0730dc8e520ca0303e799dceafe6f8b39f444ef1",
-      "count": 1370
+      "sha256": "aac8cb84d2770ab3d033f797a1b368648f85bef9d206c40b680581a3973b6c63",
+      "count": 2680
     },
     {
       "path": "05-OPERATIONS/phase2/version-observations.jsonl",
-      "sha256": "58d41c84c7f61727855a77ea17898682a6fa6fa5ac28a0eea5c9f3f72b057d63",
-      "count": 1370
+      "sha256": "d30d6abd4d9fbaa61f0288942a7e4884ccab52a251ce6c7850507f073b2f59d3",
+      "count": 2680
     },
     {
       "path": "05-OPERATIONS/relations/typed-edges.jsonl",
-      "sha256": "38dd7eb888ed7911aa8b305229417ebe787ee72ae305e263413f8c28a90e53b8",
-      "count": 1310
+      "sha256": "f6a027c8ee835ce8b3da5cde03617d08dac48fce00376a7d8bfdf91239d30e9d",
+      "count": 2620
     }
   ],
-  "interface_registry_sha256": "fd87da10c0da859aaa42fd07203ba92649c1dcc052f05105eaaaafa7743215d0",
-  "registry_index_sha256": "4a1c8b9cad0d4607633ec3729c3065026c527010d6b02b2773aa5b588e7eb645",
+  "interface_registry_sha256": "e7530a7fb6e1d23d4b85f5a816ca51764f7326f6448c0a4b02b63b9c6efddffd",
+  "registry_index_sha256": "4732eb170adaebc39b78012ba74c381846eb8fd366726a1a782ce3f669c6c5a7",
   "private_source_fields_available_to_public_connector": false,
   "source_count": 1310,
-  "capture_count": 1370
+  "capture_count": 2680
 }
