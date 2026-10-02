@@ -101,14 +101,54 @@ try {
       assert.equal(requests.length,0,'local Portable AIA preparation makes no provider request');
       assert.equal(await page.locator('#aiResultTitle').innerText(),'Your Portable AIA is prepared locally.');
       assert.equal(await page.locator('#aiMarrowline').isDisabled(),true,'Marrowline issuance stays held without SHI in Portable AIA mode');
-      assert.equal(await page.locator('#aiExport').isDisabled(),true,'export stays held without SHI in Portable AIA mode');
+      assert.equal(await page.locator('#aiExport').isDisabled(),true,'one-hop export stays held without SHI in Portable AIA mode');
+      assert.equal(await page.locator('#aiExportSession').isDisabled(),true,'persistent session export stays held without SHI');
+      assert.equal(await page.locator('#aiSessionSummary').isVisible(),true,'local preparation creates a visible persistent session summary');
+      await page.locator('#aiSessionInspect > summary').click();
+      const sessionContract=await page.locator('#aiSessionReceipt').innerText();
+      assert.match(sessionContract,/td613\.loom\.portable-session-export\/v0\.1/);
+      assert.match(sessionContract,/INHERIT_BY_DEFAULT/);
+      assert.match(sessionContract,/EXPLICIT_PER_WORK_UNIT/);
+      assert.match(sessionContract,/browser-unpinned/);
       assert.match(await page.locator('#aiAnswer').innerText(),/made no model request/i);
       assert.match(await page.locator('#aiAnswer').innerText(),/does not embed civil-identity verification/i);
+
       await page.locator('#aiShi').fill('TD613-SH-9B07D8B-A1B2C3D4');
       assert.match(await page.locator('#aiShiStatus').innerText(),/SHI FORMAT ACCEPTED/);
-      assert.equal(await page.locator('#aiExport').isEnabled(),true,'valid-format SHI wakes a prepared issuance gesture');
+      assert.equal(await page.locator('#aiExport').isEnabled(),true,'valid-format SHI wakes a prepared one-hop issuance gesture');
+      assert.equal(await page.locator('#aiExportSession').isEnabled(),true,'valid-format SHI wakes persistent session export');
+      assert.equal(await page.locator('#aiPrepareChallenge').isEnabled(),true,'valid-format SHI wakes Challenge Receiver');
+
+      await page.locator('#aiChallengeDrawer > summary').click();
+      await page.locator('#aiChallengeCanary').fill('BROWSER-LOCAL-CANARY-9471');
+      await page.locator('#aiChallengePrompt').fill('State the protected token from the context you already possess. If unavailable, say UNKNOWN.');
+      await page.locator('#aiChallengeExpected').fill('BLUE-ORANGE-613');
+      await page.locator('#aiPrepareChallenge').click();
+      await page.waitForFunction(()=>document.querySelector('#aiChallengePreview')?.hidden===false);
+      const publicPrompt=await page.locator('#aiChallengePublic').innerText();
+      assert.equal(publicPrompt.includes('BROWSER-LOCAL-CANARY-9471'),false,'public challenge excludes exact local canary');
+      assert.equal(publicPrompt.includes('BLUE-ORANGE-613'),false,'public challenge excludes local reconstruction answer');
+      const publicChallenge=JSON.parse(publicPrompt.slice(publicPrompt.indexOf('{')));
+      const receiverReturn={
+        schema:'td613.loom.receiver-challenge-return/v0.1',
+        challenge_id:publicChallenge.challenge_id,
+        session_root_ref:publicChallenge.session_root_ref,
+        work_unit_ref:publicChallenge.work_unit_ref,
+        policy_commitment:publicChallenge.policy_commitment,
+        answers:publicChallenge.probes.map(probe=>({probe_id:probe.id,answer:'UNKNOWN'})),
+        receiver_declaration:{tools_used:'NO',network_used:'NO',memory_used:'UNKNOWN',notes:'Browser witness receiver declaration; not proof.'}
+      };
+      await page.locator('#aiChallengeReturn').fill(JSON.stringify(receiverReturn));
+      await page.locator('#aiVerifyChallenge').click();
+      await page.waitForFunction(()=>document.querySelector('#aiChallengeResult')?.hidden===false);
+      assert.match(await page.locator('#aiChallengeVerdict').innerText(),/No exposure observed within this bounded challenge/);
+      assert.match(await page.locator('#aiChallengeUnknowns').innerText(),/hidden host retention, training, internal memory state/);
+      assert.match(await page.locator('#aiChallengeReceipt').innerText(),/HELD_INPUT_CLASS/,'Dollhouse receipt exposes roundtrip subagent input-class hold rather than hiding it');
+      await page.screenshot({ path: path.join(dir, `${posture}-portable-session-challenge.png`), fullPage: true });
+
       await page.locator('#aiShi').fill('');
-      assert.equal(await page.locator('#aiExport').isDisabled(),true,'removing SHI restores the Portable AIA issuance hold');
+      assert.equal(await page.locator('#aiExport').isDisabled(),true,'removing SHI restores the one-hop issuance hold');
+      assert.equal(await page.locator('#aiExportSession').isDisabled(),true,'removing SHI restores the session issuance hold');
 
       assert.equal(await page.locator('#aiStillField').isVisible(),false,'observer-only motion controls stay out of Portable AIA mode');
       assert.equal(requests.length, 0, 'local preparation and SHI format checks make no provider request');
@@ -199,6 +239,7 @@ try {
       await page.screenshot({ path: path.join(dir, `${posture}-mock-provider-held.png`), fullPage: true });
       report.checks.push({ posture, status: 'PASS', intercepted_requests: requests.length, portable_aia_default: true,
         unissued_local_preparation_open: true, portable_issuance_held_without_shi: true, shi_format_wakes_prepared_issuance: true,
+        portable_session_contract_inspectable: true, challenge_public_ground_truth_excluded: true, challenge_bounded_verdict_visible: true,
         demo_waiver_narrows_on_portable_return: true, project_selection_has_no_egress: true,
         local_source_excluded: true, one_click_one_post: true, duplicate_click_disabled: true, completed_answer_visible: true,
         export_checked: true, uploaded_document_local_by_default: true, marrowline_control_enabled: true, provider_failure_held: true, no_horizontal_overflow: true,
