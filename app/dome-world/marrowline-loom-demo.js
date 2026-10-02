@@ -27,21 +27,34 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   const menu=element(doc,'section','','loom-demo-menu marrowline-context-submenu');menu.id='loomDemoMenu';menu.hidden=true;
   menu.setAttribute('role','menu');menu.setAttribute('aria-labelledby','loomDemoMenuTitle');
   const title=element(doc,'h3','Loom demo');title.id='loomDemoMenuTitle';
-  const hint=element(doc,'p','Two sends. Rules first, matching files second. Nothing is sent when you select an option. This local transfer expires after ten minutes; reload requires a fresh handoff.');
+  const hint=element(doc,'p','Two sends. Rules first, matching files second. Nothing is sent when you select an option. This local transfer expires after ten minutes; reload requires a fresh handoff. The original Loom tab remains the live Check/Admit custody surface.');
+  const activationPreview=doc.createElement('details');activationPreview.className='loom-demo-attachment-preview';
+  const activationSummary=element(doc,'summary','Preview exact Portable AIA JSON before sending');
+  const activationBytes=element(doc,'pre',JSON.stringify(activation,null,2));
+  activationPreview.append(activationSummary,activationBytes);
   const step1=button(doc,'1 · Attach Loom handoff',()=>void stageAia());
   const note1=element(doc,'small','Task, rules, file commitments and prior-result commitment. No selected-file contents.');
   const step2=button(doc,'2 · Attach selected files',()=>void stageFiles());
-  const note2=element(doc,'small','Locked until #1 has returned an admitted response.');
+  const note2=element(doc,'small','Locked until #1 has returned a bound receiver acknowledgement.');
   const menuStatus=element(doc,'p','','loom-demo-menu-status');menuStatus.setAttribute('role','status');menuStatus.setAttribute('aria-live','polite');
   const restore=button(doc,'Restore selected attachments',()=>void restoreStage());restore.hidden=true;
   const leave=button(doc,'End Loom continuation',()=>leaveDemo());
   const close=button(doc,'Close',()=>closeMenu());
-  menu.append(title,hint,step1,note1,step2,note2,menuStatus,restore,leave,close);doc.body.append(menu);
+  menu.append(title,hint,activationPreview,step1,note1,step2,note2,menuStatus,restore,leave,close);doc.body.append(menu);
 
+  const returnToLoom=()=>{
+    try{
+      const opener=environment.opener;
+      if(!opener||opener.closed||opener.location?.origin!==environment.location?.origin)throw new Error('Original Loom tab unavailable. Do not recreate its custody state from this Marrowline tab.');
+      opener.focus();
+      setStatus('Original Loom tab focused · its live Check/Admit custody lane remains authoritative. This Marrowline tab stays open.');
+    }catch(error){setStatus(`Return to Loom held · ${error.message}`);}
+  };
   const gateContinuity=installMarrowlineLoomGateContinuity({
     doc,root:environment,activation,packet,
     onExport:()=>exportCurrent(),
     onLocalCheck:()=>void checkBinding(),
+    onReturnToLoom:()=>returnToLoom(),
     onReturnToChat:()=>{const target=chatTarget(doc);if(target){target.click();target.focus?.({preventScroll:true});}else prompt.focus?.({preventScroll:true});}
   });
 
@@ -55,7 +68,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
     step1.disabled=busy||staging||phase!=='ARRIVED';
     step2.disabled=busy||staging||phase!=='AIA_SENT';
     step1.dataset.completed=String(state.aia_sent);step2.dataset.completed=String(state.files_staged);
-    note2.textContent=state.aia_sent?'Selected Loom files only. Local-only documents never enter this route.':'Locked until #1 has returned an admitted response.';
+    note2.textContent=state.aia_sent?'Selected Loom files only. Local-only documents never enter this route.':'Locked until #1 has returned a bound receiver acknowledgement.';
     gateContinuity?.update({phase,lastAttempt,busy,activation,binding:lastAdmittedBindingReceipt,predecessor,result:lastAccepted,packet});
     environment.dispatchEvent(new environment.CustomEvent(EVENT,{detail:state}));
   }
@@ -173,7 +186,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   }
   async function admitResponse(output, prepared) {
     const {request,binding,operation,signal}=prepared;
-    if(signal?.aborted||destroyed||!active||Date.now()>=activation.expires_at)throw new Error('Stopped waiting. No new result was admitted.');
+    if(signal?.aborted||destroyed||!active||Date.now()>=activation.expires_at)throw new Error('Stopped waiting. No new receiver result was bound.');
     const failure=readLoomAiFailure(output,request.request_id);
     if(failure)throw new Error(describeLoomAiFailure(failure,422));
     const native=output.native_reply;
@@ -185,7 +198,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
     const expectedResultDigest=await loomDemoDigest(normalizedResult,environment);
     const expectedPredecessorReceiptDigest=operation==='CONTINUE'?await loomDemoReceiptDigest(predecessor,environment):null;
     if(returnedPredecessor.phase!==operation||returnedPredecessor.request_id!==request.request_id||returnedPredecessor.request_digest!==expectedRequestDigest||returnedPredecessor.current_input_digest!==binding.governance.input_digest||returnedPredecessor.prior_result_digest!==binding.receipt.prior_result_digest||returnedPredecessor.result_digest!==expectedResultDigest||returnedPredecessor.predecessor_receipt_digest!==expectedPredecessorReceiptDigest)throw new Error('The server stage receipt did not match this request.');
-    if(signal?.aborted||destroyed||!active||Date.now()>=activation.expires_at)throw new Error('Stopped waiting. No new result was admitted.');
+    if(signal?.aborted||destroyed||!active||Date.now()>=activation.expires_at)throw new Error('Stopped waiting. No new receiver result was bound.');
     if(!binding.admit(normalizedResult).allowed)throw new Error('The returned result was held by the Loom governor.');
     predecessor=returnedPredecessor;lastAdmittedBindingReceipt=copy(binding.receipt);lastAttempt='ADMITTED';
     pending=null;staged=[];
@@ -214,7 +227,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
     try{
       if(destroyed||!active||['EXPIRED','LEFT'].includes(phase)||Date.now()>=activation.expires_at)throw new Error('This Loom transfer is closed. Prepare a fresh handoff.');
       if(busy)throw new Error('Wait for or stop the current request before checking.');
-      if(!predecessor)throw new Error('Admit #1 before checking the file-bearing continuation.');
+      if(!predecessor)throw new Error('Complete #1 receiver acknowledgement before checking the file-bearing continuation.');
       const checkGeneration=stageGeneration, checkPhase=phase, checkPredecessor=predecessor;
       gateContinuity?.reportAction('PENDING','Checking selected-file binding locally · no provider call.');
       const req={schema:LOOM_DEMO_REQUEST_SCHEMA,request_id:environment.crypto.randomUUID(),phase:'CONTINUE',activation,documents:packet.documents,operator_request:'Check the selected file binding locally.',prior_result:latest,predecessor};
