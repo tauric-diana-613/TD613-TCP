@@ -1,3 +1,4 @@
+import { MARROWLINE_LOOM_READING_WORK_UNIT_SCHEMA } from './marrowline-reading-surface.js';
 import { reviewLoomEvidence } from './holonomy-loom/ai-evidence-review.js';
 import { createMarrowlineThreadLibrary } from './marrowline-threads.js';
 import { DEFAULT_MARROWLINE_TITLE, deriveMarrowlineConversationTitle } from './marrowline-title.js';
@@ -312,6 +313,15 @@ function renderModelMessage(doc, entry) {
   article.className = 'relay-message';
   article.dataset.role = 'model';
   bindModelAttachmentReceipt(article, entry);
+  const loomReading=entry?.loomReadingWorkUnit;
+  if(loomReading?.schema===MARROWLINE_LOOM_READING_WORK_UNIT_SCHEMA
+    && typeof loomReading.request_id==='string' && loomReading.request_id
+    && ['ACTIVATE','CONTINUE'].includes(String(loomReading.phase||''))){
+    article.dataset.loomReadingSchema=loomReading.schema;
+    article.dataset.loomReadingRequestId=loomReading.request_id;
+    article.dataset.loomReadingPhase=String(loomReading.phase);
+    if(Number.isFinite(Number(loomReading.expires_at))&&Number(loomReading.expires_at)>0)article.dataset.loomReadingExpiresAt=String(Number(loomReading.expires_at));
+  }
   if (entry.loomAdmission === 'HELD') article.append(textNode(doc,'p','relay-completion-alert','Reply preserved · Loom admission held. Open Loom Gate for the receipt.'));
   if (entry.receipt?.provider?.completion?.complete === false) {
     article.dataset.completion = 'incomplete';
@@ -1207,6 +1217,12 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         }
         if (activeRequestCancelRequested || requestController.signal.aborted) throw new Error('operator-cancelled');
       }
+      const loomReadingWorkUnit=loomTransport ? {
+        schema:MARROWLINE_LOOM_READING_WORK_UNIT_SCHEMA,
+        request_id:String(transportPayload?.loom_demo_stage_receipt?.request_id || loomPrepared?.request?.request_id || ''),
+        phase:String(transportPayload?.loom_demo_stage_receipt?.phase || loomPrepared?.request?.phase || ''),
+        expires_at:Number(transportPayload?.loom_demo_stage_receipt?.expires_at || loomPrepared?.request?.activation?.expires_at || 0) || null
+      } : null;
       if (status) status.dataset.progressStage = 'receipt-processing';
       setPedagogueStatus(status, 'pending', 'The grove binds the return to its receipt…',
         'Processing the observed receipt and provider-authored transmission');
@@ -1227,7 +1243,8 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       const entry = {
         role: 'model', receipt, text: payload.text || '', relay: payload.relay, aperture: receipt?.aperture || null,
         apertureHeader: payload.relay?.apertureHeader || apertureV3DisplayHeader(receipt?.aperture || {}), mode,
-        model: receipt?.provider?.model || 'AI route', classification: receipt?.emergence?.classification || 'UNRESOLVED_FIELD', sealed: false
+        model: receipt?.provider?.model || 'AI route', classification: receipt?.emergence?.classification || 'UNRESOLVED_FIELD', sealed: false,
+        ...(loomReadingWorkUnit?.request_id ? {loomReadingWorkUnit} : {})
       };
       delete byId(doc, 'khonapolitMessages').dataset.forceFollow;
       const incompleteReturn = receipt?.provider?.completion?.complete === false;
