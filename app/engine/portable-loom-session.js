@@ -342,6 +342,24 @@ export async function createPortableLoomSessionExport(sessionInput, packet, envi
       predecessor_rule: 'Work-unit ancestry and admitted-content ancestry remain separate and must both stay inspectable.',
       receiver_rule: 'Receiver acknowledgements are declarations; Loom verification is required before they become evidence.'
     },
+    receiver_turn_contract: {
+      schema: 'td613.loom.portable-session-receiver-turn/v0.1',
+      session_root_ref: session.root.ref,
+      effective_policy_commitment: session.work_units.at(-1)?.policy?.effective_policy_commitment || session.root.policy_commitment,
+      current_work_unit_ref: session.continuity.current_work_unit_ref,
+      required_echo_fields: [
+        'session_root_ref',
+        'policy_commitment',
+        'parent_work_unit_ref',
+        'operator_task',
+        'used_document_ids',
+        'missing_information'
+      ],
+      persistence_rule: 'Proceeding tasks inherit the session root rules unless the human explicitly starts a fresh Loom session.',
+      source_rule: 'Only source bodies explicitly supplied or selected for the proceeding task may be treated as newly admitted task sources.',
+      receipt_rule: 'Return a separate loom_session_receipt object with every proceeding-task answer; the receipt is a receiver declaration until Loom revalidates it.',
+      weakening_rule: 'Do not omit, relax, replace, or reinterpret a root rule inside the same v0.1 session.'
+    },
     challenge_protocol: {
       available: true,
       public_private_split: true,
@@ -365,6 +383,8 @@ export function createPortableLoomSessionPrompt(sessionExport) {
     'A new user task changes the work objective; it does not erase the root rules.',
     'Do not silently inherit source bodies from an earlier task unless they are explicitly supplied or named as continuing inputs.',
     'Keep work-unit ancestry separate from content-predecessor ancestry.',
+    'For every proceeding-task answer, append a separate loom_session_receipt object matching receiver_turn_contract. Echo the session root, effective policy commitment, parent work-unit reference, operator task, explicitly used document IDs, and missing information.',
+    'That receipt is a declaration for Loom to revalidate; do not describe the receipt itself as proof of enforcement.',
     'Do not claim that your own acknowledgement proves enforcement, secrecy, retention, training behavior, or hidden memory state.',
     'When a Challenge Receiver packet appears, answer only its declared probes and preserve its exact session/work-unit/policy references.',
     '',
