@@ -23,6 +23,48 @@ test('opaque same-tab transfer carries selected bytes once and leaves no task in
   assert.equal(source.store.size, 0); assert.match(received.handoff_receipt.digest, /^[a-f0-9]{64}$/);
   await assert.rejects(consumeLoomAiHandoff(token(url), receiver), /missing or already opened/);
 });
+test('new same-origin Marrowline tab may consume the opener handoff once while Loom stays live', async () => {
+  const source = env(); source.closed = false;
+  const url = await createLoomAiHandoff(fixture(), source);
+  const receiver = env('/dome-world/marrowline.html');
+  receiver.opener = source;
+  const received = await consumeLoomAiHandoff(token(url), receiver);
+  assert.deepEqual(received.documents, fixture().documents);
+  assert.equal(source.store.size, 0, 'the opener copy is consumed so another child tab cannot replay it');
+  await assert.rejects(consumeLoomAiHandoff(token(url), receiver), /missing or already opened/);
+});
+test('copied child-tab sessionStorage and opener copy are both burned after one handoff', async () => {
+  const source = env(); source.closed = false;
+  const url = await createLoomAiHandoff(fixture(), source);
+  const copiedStore = new Map(source.store);
+  const receiver = env('/dome-world/marrowline.html', copiedStore);
+  receiver.opener = source;
+  const received = await consumeLoomAiHandoff(token(url), receiver);
+  assert.deepEqual(received.documents, fixture().documents);
+  assert.equal(receiver.store.size, 0);
+  assert.equal(source.store.size, 0);
+});
+test('disagreeing child and opener copies HOLD and burn both records', async () => {
+  const source = env(); source.closed = false;
+  const url = await createLoomAiHandoff(fixture(), source);
+  const copiedStore = new Map(source.store);
+  const [key, raw] = [...copiedStore][0];
+  copiedStore.set(key, raw.replace('Housing: 21', 'Housing: 99'));
+  const receiver = env('/dome-world/marrowline.html', copiedStore);
+  receiver.opener = source;
+  await assert.rejects(consumeLoomAiHandoff(token(url), receiver), /copies disagree/);
+  assert.equal(receiver.store.size, 0);
+  assert.equal(source.store.size, 0);
+});
+test('cross-origin opener cannot supply a child-tab handoff', async () => {
+  const source = env(); source.closed = false;
+  const url = await createLoomAiHandoff(fixture(), source);
+  const receiver = env('/dome-world/marrowline.html', new Map(), 'https://other.example');
+  receiver.opener = source;
+  await assert.rejects(consumeLoomAiHandoff(token(url), receiver), /matching|missing/);
+  assert.equal(source.store.size, 1, 'cross-origin child cannot consume the opener record');
+});
+
 test('tampered selected content is held and consumed', async () => {
   const source = env(); const url = await createLoomAiHandoff(fixture(), source);
   const [key, raw] = [...source.store][0]; source.store.set(key, raw.replace('Housing: 21', 'Housing: 99'));

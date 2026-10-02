@@ -71,10 +71,16 @@ test('Loom demo branches from + and both numbered gestures stage attachment + pr
  plus.click();
  loomParent.click();
  assert.equal(h.doc.querySelector('#loomDemoMenu').hidden,false);
+ const preview=h.doc.querySelector('#loomDemoMenu .loom-demo-attachment-preview');
+ assert.ok(preview,'exact Portable AIA JSON preview is available before sending');
+ assert.match(preview.querySelector('summary').textContent,/Preview exact Portable AIA JSON/);
+ assert.match(preview.querySelector('pre').textContent,/td613\.loom/);
+ const returnToLoom=[...h.doc.querySelectorAll('#loomGateContinuity button')].find(button=>button.textContent==='Return to original Loom tab');
+ assert.ok(returnToLoom,'Gate exposes the supported return to the live Loom custody tab');
  const buttons=[...h.doc.querySelectorAll('#loomDemoMenu>button')];
  assert.equal(buttons[0].textContent,'1 · Attach Loom handoff');
  assert.equal(buttons[1].textContent,'2 · Attach selected files');
- assert.equal(buttons[1].disabled,true,'#2 is visible from the beginning but waits for admitted #1');
+ assert.equal(buttons[1].disabled,true,'#2 is visible from the beginning but waits for receiver-bound #1');
 
  buttons[0].click();
  await new Promise(resolve=>setTimeout(resolve,0));
@@ -97,15 +103,15 @@ test('Loom demo branches from + and both numbered gestures stage attachment + pr
  assert.equal(h.controller.snapshot().phase,'AIA_SENT');
  assert.equal(h.controller.snapshot().pending_steps,true);
  assert.equal(typeof h.controller.snapshot().predecessor_request_id,'string');
- assert.equal(plus.dataset.loomAttention,'true','admitted #1 wakes the reminder for #2');
+ assert.equal(plus.dataset.loomAttention,'true','receiver-bound #1 wakes the reminder for #2');
  assert.equal(getMarrowlineAttachments().length,0);
  gateState=h.controller.getGateContinuity();
  assert.equal(gateState.phase,'AIA_SENT');
  assert.equal(gateState.fadt.state,'FILES ELIGIBLE');
- assert.ok(gateState.crossed.some(item=>/Portable governance activation has an admitted receiver response/.test(item)));
+ assert.ok(gateState.crossed.some(item=>/Portable governance activation has a receiver response bound by this browser route/.test(item)));
  assert.ok(gateState.crossed.some(item=>/Selected file bodies have not crossed/.test(item)));
- assert.ok(gateState.atlas.survived.some(item=>/Immediate predecessor retained/.test(item)));
- assert.equal(gateExport.disabled,true,'#1 admission cannot unlock export');
+ assert.ok(gateState.atlas.survived.some(item=>/Immediate receiver predecessor request/.test(item)));
+ assert.equal(gateExport.disabled,true,'#1 receiver acknowledgement cannot unlock export');
 
  plus.click();
  assert.equal(parentMenu.hidden,false);
@@ -114,7 +120,7 @@ test('Loom demo branches from + and both numbered gestures stage attachment + pr
  const reopened=[...h.doc.querySelectorAll('#loomDemoMenu>button')];
  assert.equal(reopened[0].dataset.completed,'true');
  assert.equal(reopened[0].disabled,true);
- assert.equal(reopened[1].disabled,false,'#2 wakes only after #1 has an admitted response');
+ assert.equal(reopened[1].disabled,false,'#2 wakes only after #1 has a bound receiver response');
  reopened[1].click();
  await new Promise(resolve=>setTimeout(resolve,0));
 
@@ -139,8 +145,8 @@ test('Loom demo branches from + and both numbered gestures stage attachment + pr
  gateState=h.controller.getGateContinuity();
  assert.equal(gateState.fadt.state,'EXPORT ELIGIBLE');
  assert.ok(gateState.crossed.some(item=>/1 selected file body crossed/.test(item)));
- assert.ok(gateState.admitted.some(item=>/Stage #2 selected-file continuation is the current admitted result/.test(item)));
- assert.ok(gateState.atlas.survived.some(item=>/Current admitted result retained/.test(item)));
+ assert.ok(gateState.admitted.some(item=>/Stage #2 selected-file continuation is the current bound receiver result/.test(item)));
+ assert.ok(gateState.atlas.survived.some(item=>/Current receiver result request/.test(item)));
  assert.equal(gateExport.disabled,false);
  assert.equal(h.doc.querySelectorAll('#khonapolitMessages article[data-role]').length,4);
  assert.equal(h.doc.querySelectorAll('textarea:not([hidden])').length>=1,true);

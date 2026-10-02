@@ -213,8 +213,26 @@ export async function createLoomAiHandoff(input, environment = window, { priorRe
 export async function consumeLoomAiHandoff(token, environment = window) {
   const origin = context(environment, DESTINATION);
   if (!TOKEN.test(token)) throw new Error('Invalid handoff token');
-  const raw = environment.sessionStorage.getItem(PREFIX + token);
-  environment.sessionStorage.removeItem(PREFIX + token);
+  const key = PREFIX + token;
+  const localStorage = environment.sessionStorage;
+  const localRaw = localStorage.getItem(key);
+  let openerStorage = null, openerRaw = null;
+  try {
+    const opener = environment.opener;
+    if (opener && !opener.closed && opener.location?.origin === environment.location?.origin && opener.sessionStorage) {
+      openerStorage = opener.sessionStorage;
+      openerRaw = openerStorage.getItem(key);
+    }
+  } catch {
+    // Cross-origin or inaccessible opener earns no handoff authority.
+  }
+  // A newly opened same-origin tab may begin with a copied sessionStorage snapshot.
+  // Burn every matching copy exactly once; disagreement is a custody HOLD rather
+  // than permission to choose whichever record is more convenient.
+  localStorage.removeItem(key);
+  openerStorage?.removeItem(key);
+  if (localRaw && openerRaw && localRaw !== openerRaw) throw new Error('Handoff copies disagree. Return to the original Loom tab and prepare a fresh handoff.');
+  const raw = localRaw || openerRaw;
   if (!raw || raw.length > 300000) throw new Error('Handoff missing or already opened. Return to Loom and try again.');
   const record = JSON.parse(raw);
   object(record, 'handoff record');

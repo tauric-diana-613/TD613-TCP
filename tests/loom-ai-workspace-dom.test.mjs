@@ -71,6 +71,9 @@ test('Portable AIA is the default mode and keeps comprehension plus local prepar
   assert.equal(h.$('#aiDemoWelcome').hidden,true);
   assert.equal(h.$('#aiPortableModePanel').hidden,false);
   assert.equal(h.$('#aiDemoModePanel').hidden,true);
+  assert.match(h.$('#aiFirstUseGuide').textContent,/Loom Demo.*fictional material.*needs no SHI/i);
+  assert.match(h.$('#aiFirstUseGuide').textContent,/minted SHI only wakes issuance controls/i);
+  assert.match(h.$('#aiFirstUseGuide').textContent,/does not establish civil identity or foreign-host enforcement/i);
   assert.match(h.$('#aiShiStatus').textContent,/Issuance held/);
   assert.equal(h.$('#aiIssuanceGate').dataset.state,'held');
   assert.equal(h.$('#aiIssuanceGate a').getAttribute('href'),'/safe-harbor/index.html');

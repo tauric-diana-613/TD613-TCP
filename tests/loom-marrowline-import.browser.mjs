@@ -44,22 +44,25 @@ let browser;
 try {
   browser = await browserType.launch({ headless: true, ...(engine === 'chromium' ? { executablePath: browserType.executablePath() } : {}) });
   for (const [posture, viewport, reducedMotion] of [['desktop', { width: 1280, height: 900 }, 'no-preference'], ['mobile-reduced', { width: 390, height: 844 }, 'reduce']]) {
-    const page = await browser.newPage({ viewport, reducedMotion, acceptDownloads: true });
-    page.setDefaultTimeout(12000);
+    let page = await browser.newPage({ viewport, reducedMotion, acceptDownloads: true });
+    let sourcePage = null;
+    const context = page.context();
     // One real click on the starter proves pointer affordance. WebKit's continuously
     // animated Marrowline surface can keep later element rects unstable; dispatch
     // the same registered click handler directly, then assert its visible effects.
     const activate = async locator => engine === 'webkit' ? locator.evaluate(element => element.click()) : locator.click();
     const calls = [], marrowlineCalls = [], errors = [], unexpected = [];
-    page.on('pageerror', error => errors.push(error.message));
-    page.on('request', request => {
+    const watchPage = candidate => { candidate.setDefaultTimeout(12000); candidate.on('pageerror', error => errors.push(error.message)); };
+    watchPage(page);
+    context.on('page', watchPage);
+    context.on('request', request => {
       const url = new URL(request.url());
       const isLoomTask = url.pathname === '/api/khonapolit' && url.searchParams.get('operation') === 'loom-task';
       const isMarrowline = url.pathname === '/api/dome-world/khonapolit';
       if (!['GET', 'HEAD'].includes(request.method()) && !isLoomTask && !isMarrowline) unexpected.push({ method: request.method(), url: request.url() });
       if (url.hostname === 'generativelanguage.googleapis.com') unexpected.push({ direct_provider_request: request.url() });
     });
-    await page.route(url => url.pathname === '/api/khonapolit' && url.searchParams.get('operation') === 'loom-task', async route => {
+    await context.route(url => url.pathname === '/api/khonapolit' && url.searchParams.get('operation') === 'loom-task', async route => {
       const request = route.request();
       assert.equal(request.method(), 'POST');
       assert.match(request.headers()['content-type'], /application\/json/);
@@ -77,7 +80,7 @@ try {
         observations: { model: 'MOCK_PROVIDER_UI_WITNESS', elapsed_ms: 31, provider_calls: 1, source_claims: 'model-reported-unverified' }
       }) });
     });
-    await page.route(url => url.pathname === '/api/dome-world/khonapolit', async route => {
+    await context.route(url => url.pathname === '/api/dome-world/khonapolit', async route => {
       const request = route.request();
       if (request.method() === 'GET') return route.fulfill({ status: 200, json: { ok: true, hasGeminiKey: true, modelPolicy: { callableModels: ['MOCK_MARROWLINE'] } } });
       const input = request.postDataJSON();
@@ -135,10 +138,17 @@ try {
       assert.equal(exported.governance.projections.length, 4);
       assert.equal(exported.governance.withheld_document_count, project.documents.filter(document => !document.share).length + 1);
 
+      sourcePage = page;
+      const popupPromise = page.waitForEvent('popup');
       await page.locator('#aiMarrowline').click();
+      page = await popupPromise;
       await page.waitForURL(url => url.pathname === '/dome-world/marrowline.html');
       await page.locator('#marrowlineComposerPlus').waitFor({ state: 'visible' });
       assert.equal(new URL(page.url()).hash, '', 'opaque token consumed and removed from destination URL');
+      assert.equal(new URL(sourcePage.url()).pathname, '/dome-world/holonomy-loom.html', 'Continue preserves the original Loom tab instead of navigating it away');
+      assert.match(await sourcePage.locator('#aiSessionRoot').textContent(), /Session root/, 'the original Loom tab retains its live session root');
+      assert.equal(await sourcePage.locator('#aiMarrowlineCustodyNote').isVisible(), true, 'custody consequence is visible before leaving Loom');
+      assert.equal(await page.getByRole('button', { name: 'Return to original Loom tab', exact: true }).isVisible(), true, 'Marrowline exposes the supported return to the live Loom tab');
       assert.equal(calls.length, 0, 'arrival makes zero provider requests');
       assert.equal(marrowlineCalls.length, 0, 'arrival makes zero ordinary Marrowline requests');
       assert.equal(await page.locator('html').getAttribute('data-loom-task-import'), 'staged');
@@ -365,6 +375,7 @@ try {
         posture,
         status: 'PASS',
         actual_ui_handoff: true,
+        original_loom_tab_preserved: true,
         document_upload_local_only: true,
         opaque_url_consumed: true,
         arrival_calls: 0,
@@ -396,7 +407,8 @@ try {
       report.failures.push({ posture, error: error.stack });
       await page.screenshot({ path: path.join(dir, `${posture}-failure.png`), fullPage: true }).catch(() => {});
     } finally {
-      await page.close();
+      await page?.close().catch(()=>{});
+      if(sourcePage && sourcePage!==page) await sourcePage.close().catch(()=>{});
     }
   }
   report.status = report.failures.length ? 'HELD' : 'PASS';

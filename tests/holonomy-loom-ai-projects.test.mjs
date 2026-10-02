@@ -24,6 +24,14 @@ test('three substantial fictional projects exercise distinct useful AI tasks', (
   }
 });
 
+test('vendor diligence rules preserve finite-sample and modal evidence ceilings', () => {
+  const project = LOOM_AI_PROJECTS.find(item => item.id === 'vendor-diligence');
+  const rules = project.rules.join(' ');
+  assert.match(rules, /finite pilot measurements.*bounded observations/i);
+  assert.match(rules, /do not call a target impossible.*hard upper bound/i);
+  assert.match(rules, /up to.*maximum.*configured or observed behavior/i);
+});
+
 test('selected document, task and rule projection excludes every local canary', () => {
   for (const project of LOOM_AI_PROJECTS) {
     const outbound = JSON.stringify({ task: project.task, rules: project.rules, documents: project.documents.filter(d => d.share) });

@@ -49,13 +49,14 @@ function reportedTotals(answer) {
   // infer a total merely because an expected number occurs elsewhere in prose.
   for (const segment of answer.matchAll(/\bVendor[- ]([AB])\b([\s\S]*?)(?=\bVendor[- ][AB]\b|$)/gi)) {
     const body = segment[2].slice(0,2400), key = segment[1].toUpperCase() === 'A' ? 'vendor_a' : 'vendor_b';
-    const patterns = [
-      new RegExp(`(?:12[- ](?:mo(?:nth)?s?)|annual)[^\\n.;]{0,35}?(?:cost|total)\\s*[:=]?\\s*${numeral}(?:\\s*credits)?`, 'gi'),
-      new RegExp(`total\\s*(?:=|:|is|of)\\s*${numeral}(?=\\s*(?:credits|[.;]|$))`, 'gi')
-    ];
-    for (const pattern of patterns) for (const match of body.matchAll(pattern)) {
-      if (/credits|subscription|migration|cost/i.test(body)) candidates[key].push(numeric(match[1]));
+    const annualPattern = new RegExp(`((?:12[- ](?:mo(?:nth)?s?)|annual)[^\\n.;]{0,48}?(?:cost|total|fees?))\\s*[:=]?\\s*${numeral}(?:\\s*credits)?`, 'gi');
+    for (const match of body.matchAll(annualPattern)) {
+      const label = match[1];
+      if (/\\b(?:subscription|archive|migration|storage|overage|base)\\b/i.test(label)) continue;
+      candidates[key].push(numeric(match[2]));
     }
+    const explicitTotal = new RegExp(`\\btotal\\s*(?:cost\\s*)?(?:=|:|is|of)\\s*${numeral}(?=\\s*(?:credits|[.;]|$))`, 'gi');
+    for (const match of body.matchAll(explicitTotal)) candidates[key].push(numeric(match[1]));
     // Explicit comparator: 'Vendor-A (12-mo cost: X credits) ... Vendor-B (Y credits)'.
     // Y inherits the declared cost comparison only within that same sentence.
     const prefix = answer.slice(Math.max(0, segment.index - 320), segment.index);
@@ -87,11 +88,15 @@ export function assessLoomProjectAnswer(projectId, response) {
   const reported = reportedTotals(answer);
   const checks = ['vendor_a','vendor_b'].map(vendor => {
     const expected = oracle.expected[`${vendor}_12_month_credits`], report = reported[vendor];
-    return { id: `${vendor}_12_month_credits`, expected, reported: report.value,
+    return { id: `${vendor}_12_month_credits`, expected, reported: report.value, components: oracle.components[vendor],
       expected_numeric_presence: answer.includes(expected.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})) || answer.includes(expected.toFixed(2)),
       status: report.value === null ? report.extraction : money(report.value) === expected ? 'matched' : 'mismatch' };
   });
-  return { ...base, ...oracle, reported, checks, status: checks.every(check => check.status === 'matched') ? 'matched' : 'needs_review',
+  const allMatched = checks.every(check => check.status === 'matched');
+  const alignmentMissing = checks.some(check => ['ambiguous','not_found'].includes(check.status));
+  return { ...base, ...oracle, reported, checks, status: allMatched ? 'matched' : 'needs_review',
     assumptions: ['All 240 accounts and the full stated archive volume are billed for twelve months.', 'Only explicitly stated subscription, migration and archive charges are included; unpriced connector work and other omitted costs remain open.'],
-    reason: checks.every(check => check.status === 'matched') ? 'Both explicit vendor totals match the stated-fee calculation.' : 'Check the stated-fee totals against the source documents; this answer remains available for review.' };
+    reason: allMatched ? 'Both explicit vendor totals match the stated-fee calculation.'
+      : alignmentMissing ? 'The local checker could not align an explicit twelve-month total for every vendor. Components are not promoted into totals; inspect the answer text.'
+        : 'At least one explicit vendor total disagrees with the source calculation; inspect the line items before relying on it.' };
 }

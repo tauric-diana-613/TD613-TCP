@@ -17,20 +17,20 @@ function ensureStylesheet(doc=document){
 }
 
 function phaseCopy(phase,lastAttempt,busy=false){
-  if(busy)return {eyebrow:'PENDING · no new admission yet',now:phase==='AIA_STAGED'?'The browser submitted #1 and is waiting for an admissible response.':'The browser submitted the current governed continuation and is waiting for an admissible response.',why:'Submission is an observed client event; it cannot be relabeled as server admission or model completion before the bound result returns.',next:'Wait, Stop, or let the bounded request return.'};
+  if(busy)return {eyebrow:'PENDING · no new receiver binding yet',now:phase==='AIA_STAGED'?'The browser submitted #1 and is waiting for a receiver response that passes the route checks.':'The browser submitted the current governed continuation and is waiting for a receiver response that passes the route checks.',why:'Submission is an observed client event; it cannot be relabeled as server receipt or model completion before the bound result returns.',next:'Wait, Stop, or let the bounded request return.'};
   if(lastAttempt==='HELD')return {
     eyebrow:'HELD · stage did not advance',
     now:'The latest attempt did not become current.',
-    why:'A held attempt cannot advance Loom stage, replace the admitted predecessor, or widen export authority.',
+    why:'A held attempt cannot advance Loom stage, replace the bound receiver predecessor, or widen export authority.',
     next:'Repair or retry the same explicit gesture, or leave Loom mode.'
   };
   switch(phase){
     case 'ARRIVED': return {eyebrow:'ARRIVED · local handoff only',now:'Loom reached Marrowline. Nothing has been sent to the AI receiver.',why:'The browser holds the task, portable rules, selected-file bodies and commitments locally so you can inspect the route before a network gesture.',next:'Use + → Loom demo → #1 Upload portable AIA.'};
     case 'AIA_STAGED': return {eyebrow:'STAGED · no network crossing yet',now:'The Portable AIA is attached and its prompt is prepared.',why:'Staging changes the local composer only. Explicit Send remains the consequential gesture.',next:'Review the attachment and prompt, then Send #1.'};
-    case 'AIA_SENT': return {eyebrow:'ADMITTED #1 · governance crossed first',now:'The receiver admitted the Portable AIA. Selected file bodies have not crossed in this stage.',why:'The stage receipt binds the admitted activation before file-bearing continuation becomes eligible.',next:'Inspect this boundary here, then return to Chat for #2 Upload Loom demo files.'};
+    case 'AIA_SENT': return {eyebrow:'RECEIVED #1 · governance acknowledgement bound',now:'A receiver response acknowledged the Portable AIA. Selected file bodies have not crossed in this stage.',why:'The local route binds this receiver acknowledgement before file-bearing continuation becomes eligible; foreign enforcement remains unobserved.',next:'Inspect this boundary here, then return to Chat for #2 Upload Loom demo files.'};
     case 'FILES_STAGED': return {eyebrow:'STAGED #2 · files prepared locally',now:'The selected Loom files are attached for the governed continuation.',why:'Their byte commitments were checked against the Loom manifest before this stage became sendable.',next:'Review the selected files and prompt, then explicitly Send #2.'};
-    case 'CONTINUING': return {eyebrow:'PENDING · governed continuation in flight',now:'The file-bearing continuation has been sent and is awaiting an admissible result.',why:'The previous admitted stage remains current while the new result is unresolved.',next:'Wait, Stop, or let the bounded request return.'};
-    case 'DONE': return {eyebrow:'ADMITTED #2 · continuity retained',now:'The selected-file continuation is the current admitted Loom result.',why:'The result is bound to the Loom activation and its immediate admitted predecessor; export may now use this admitted binding.',next:'Inspect continuity, export the current Portable AIA, ask a follow-up, or return to Chat.'};
+    case 'CONTINUING': return {eyebrow:'PENDING · governed continuation in flight',now:'The file-bearing continuation has been sent and is awaiting an admissible result.',why:'The previous bound receiver stage remains current while the new result is unresolved.',next:'Wait, Stop, or let the bounded request return.'};
+    case 'DONE': return {eyebrow:'RECEIVED #2 · continuity bound locally',now:'The selected-file receiver result is current for this Marrowline continuation.',why:'The browser route binds this result to the Loom activation and its immediate receiver predecessor; export may use that local binding without claiming foreign enforcement.',next:'Inspect continuity, export the current Portable AIA, ask a follow-up, or return to Chat.'};
     case 'EXPIRED': return {eyebrow:'EXPIRED · route closed',now:'This Loom transfer can no longer accept another governed stage.',why:'Expiry prevents an old activation from silently becoming a fresh authority surface.',next:'Return to Holonomy Loom and prepare a fresh handoff.'};
     case 'LEFT': return {eyebrow:'REST · continuation ended',now:'The conversation remains in Marrowline; the Loom continuation has ended.',why:'Later ordinary replies cannot replace or export the closed governed result.',next:'Start a fresh Loom handoff only when you want to re-enter the governed route.'};
     default:return {eyebrow:'PREPARED',now:'Loom continuity is available for inspection.',why:'Gate reports only the stage evidence it has received.',next:'Continue with the next explicit operator gesture.'};
@@ -38,13 +38,13 @@ function phaseCopy(phase,lastAttempt,busy=false){
 }
 
 function permissionCopy(phase,lastAttempt){
-  if(lastAttempt==='HELD'&&phase==='DONE')return {state:'PRIOR EXPORT RETAINED',body:'The held follow-up earned no new authority and did not replace the current admitted result; export of that prior admitted result remains available.'};
-  if(lastAttempt==='HELD')return {state:'HELD',body:'No new permission was earned. The route remains at the last admitted stage.'};
-  if(['ARRIVED','AIA_STAGED'].includes(phase))return {state:'FILES HELD',body:'#2 file-bearing continuation remains unavailable until #1 has an admitted stage receipt.'};
-  if(phase==='AIA_SENT')return {state:'FILES ELIGIBLE',body:'#2 may now be staged because the governance-first activation has an admitted predecessor.'};
-  if(phase==='FILES_STAGED')return {state:'EXPORT HELD',body:'Selected files are staged, but export remains unavailable until their continuation result is admitted.'};
-  if(phase==='CONTINUING')return {state:'PRIOR RESULT RETAINED',body:'The pending continuation cannot replace the previously admitted result until admission completes.'};
-  if(phase==='DONE')return {state:'EXPORT ELIGIBLE',body:'The current admitted continuation may be exported; this does not widen foreign-host enforcement.'};
+  if(lastAttempt==='HELD'&&phase==='DONE')return {state:'PRIOR EXPORT RETAINED',body:'The held follow-up earned no new authority and did not replace the current bound receiver result; export of that prior result remains available.'};
+  if(lastAttempt==='HELD')return {state:'HELD',body:'No new permission was earned. The route remains at the last bound receiver stage.'};
+  if(['ARRIVED','AIA_STAGED'].includes(phase))return {state:'FILES HELD',body:'#2 file-bearing continuation remains unavailable until #1 has a bound receiver-stage receipt.'};
+  if(phase==='AIA_SENT')return {state:'FILES ELIGIBLE',body:'#2 may now be staged because the governance-first activation has a bound receiver predecessor.'};
+  if(phase==='FILES_STAGED')return {state:'EXPORT HELD',body:'Selected files are staged, but export remains unavailable until their continuation result passes the route checks and is bound locally.'};
+  if(phase==='CONTINUING')return {state:'PRIOR RESULT RETAINED',body:'The pending continuation cannot replace the previously bound receiver result until the new binding completes.'};
+  if(phase==='DONE')return {state:'EXPORT ELIGIBLE',body:'The current bound receiver continuation may be exported; this does not widen foreign-host enforcement.'};
   return {state:'CLOSED',body:'No consequential Loom permission is currently available from this route.'};
 }
 
@@ -63,21 +63,21 @@ export function deriveMarrowlineLoomGateContinuity({
   const secondAdmitted=phase==='DONE';
 
   const crossed=[];
-  if(busy&&phase==='AIA_STAGED')crossed.push('Browser submission of #1 began; server admission remains unresolved.');
-  else if(networkGovernance)crossed.push('Portable governance activation has an admitted receiver response.');
-  else crossed.push('No Loom-demo network result has been admitted from this stage.');
-  if(busy&&phase==='FILES_STAGED')crossed.push(`Browser submission of ${selected.length} selected file ${selected.length===1?'body':'bodies'} began; result admission remains unresolved.`);
-  else if(fileBodiesCrossed)crossed.push(`${selected.length} selected file ${selected.length===1?'body':'bodies'} crossed in the admitted governed continuation.`);
-  else crossed.push('Selected file bodies have not crossed in the current admitted stage.');
+  if(busy&&phase==='AIA_STAGED')crossed.push('Browser submission of #1 began; server receipt and receiver result remain unresolved.');
+  else if(networkGovernance)crossed.push('Portable governance activation has a receiver response bound by this browser route.');
+  else crossed.push('No Loom-demo receiver result has been bound by this route from this stage.');
+  if(busy&&phase==='FILES_STAGED')crossed.push(`Browser submission of ${selected.length} selected file ${selected.length===1?'body':'bodies'} began; receiver result binding remains unresolved.`);
+  else if(fileBodiesCrossed)crossed.push(`${selected.length} selected file ${selected.length===1?'body':'bodies'} crossed in the locally bound governed continuation.`);
+  else crossed.push('Selected file bodies have not crossed in the current bound receiver stage.');
 
   const stayed=[];
   if(withheld!=null)stayed.push(`${withheld} Loom item${withheld===1?'':'s'} declared local/withheld remain outside this governed send.`);
   stayed.push('Ordinary Marrowline chat history and unrelated attachments are outside the Loom route.');
 
   const admitted=[];
-  if(firstAdmitted)admitted.push('Stage #1 activation has an admitted predecessor receipt.');
-  if(secondAdmitted)admitted.push('Stage #2 selected-file continuation is the current admitted result.');
-  if(!admitted.length)admitted.push('No Loom-demo network result has been admitted yet.');
+  if(firstAdmitted)admitted.push('Stage #1 activation has a bound receiver predecessor receipt.');
+  if(secondAdmitted)admitted.push('Stage #2 selected-file continuation is the current bound receiver result.');
+  if(!admitted.length)admitted.push('No Loom-demo receiver result has been bound yet.');
 
   const unknown=[
     'The model provider’s internal reasoning and hidden state remain unobserved.',
@@ -92,8 +92,8 @@ export function deriveMarrowlineLoomGateContinuity({
   const atlasSurvived=[
     originDigest ? `Origin input digest retained: ${digestShort(originDigest)}` : 'Origin input digest not yet available.',
     `Selected manifest retains ${selectedIds.length} declared file id${selectedIds.length===1?'':'s'}.`,
-    predecessorRequest ? `Immediate predecessor retained: ${predecessorRequest}` : 'No admitted predecessor request yet.',
-    resultRequest ? `Current admitted result retained: ${resultRequest}` : 'No current admitted result yet.'
+    predecessorRequest ? `Immediate receiver predecessor request: ${predecessorRequest}` : 'No receiver predecessor request yet.',
+    resultRequest ? `Current receiver result request: ${resultRequest}` : 'No current receiver result yet.'
   ];
 
   return Object.freeze({
@@ -129,7 +129,7 @@ export function deriveMarrowlineLoomGateContinuity({
       selected_names:Object.freeze(selectedNames),
       withheld_document_count:withheld
     }),
-    claimCeiling:'continuity-witness-for-the-declared-loom-to-marrowline-route; distinguishes-local-staging-network-send-admission-predecessor-and-export-eligibility; does-not-establish-provider-internals-foreign-host-enforcement-global-latest-state-or-external-origin',
+    claimCeiling:'continuity-witness-for-the-declared-loom-to-marrowline-route; distinguishes-local-staging-network-send-receiver-binding-predecessor-and-export-eligibility; does-not-establish-provider-internals-foreign-host-enforcement-global-latest-state-or-external-origin',
     seal:'⟐'
   });
 }
@@ -140,7 +140,7 @@ function list(doc,title,items,className){
 }
 
 export function installMarrowlineLoomGateContinuity({
-  doc=document,root=window,activation={},packet={},onExport=()=>{},onLocalCheck=()=>{},onReturnToChat=()=>{}
+  doc=document,root=window,activation={},packet={},onExport=()=>{},onLocalCheck=()=>{},onReturnToLoom=()=>{},onReturnToChat=()=>{}
 }={}){
   const gate=doc.getElementById('gatePanel');
   const controls=gate?.querySelector('.gate-controls');
@@ -162,7 +162,7 @@ export function installMarrowlineLoomGateContinuity({
   const consequenceGrid=el(doc,'div','','loom-gate-consequence-grid');
   const crossed=list(doc,'WHAT CROSSED',[],'loom-gate-consequence');
   const stayed=list(doc,'WHAT STAYED',[],'loom-gate-consequence');
-  const admitted=list(doc,'WHAT WAS ADMITTED',[],'loom-gate-consequence');
+  const admitted=list(doc,'WHAT THIS ROUTE BOUND LOCALLY',[],'loom-gate-consequence');
   const unknown=list(doc,'STILL UNKNOWN',[],'loom-gate-consequence');
   consequenceGrid.append(crossed,stayed,admitted,unknown);
 
@@ -180,10 +180,11 @@ export function installMarrowlineLoomGateContinuity({
   const technical=doc.createElement('details');technical.className='loom-gate-continuity-technical';
   technical.append(el(doc,'summary','Inspect continuity coordinates'),el(doc,'pre',''));
   const actions=el(doc,'div','','loom-gate-continuity-actions');
-  const localCheck=button(doc,'Check selected-file binding locally',onLocalCheck,'loom-gate-secondary');
-  const back=button(doc,'Back to Chat',onReturnToChat,'loom-gate-secondary');
-  const exportButton=button(doc,'Export current Loom Portable AIA',onExport,'loom-gate-primary');exportButton.disabled=true;
-  actions.append(back,localCheck,exportButton);
+  const localCheck=button(doc,'Check selected-file binding locally',onLocalCheck,'loom-gate-secondary');localCheck.id='loomGateLocalCheck';
+  const returnLoom=button(doc,'Return to original Loom tab',onReturnToLoom,'loom-gate-secondary');returnLoom.id='loomGateReturnToLoom';
+  const back=button(doc,'Back to Chat',onReturnToChat,'loom-gate-secondary');back.id='loomGateBackToChat';
+  const exportButton=button(doc,'Export current Loom Portable AIA',onExport,'loom-gate-primary');exportButton.id='loomGateExportCurrent';exportButton.disabled=true;
+  actions.append(returnLoom,back,localCheck,exportButton);
   const actionStatus=el(doc,'p','','loom-gate-action-status');actionStatus.id='loomGateActionStatus';actionStatus.hidden=true;
   actionStatus.setAttribute('role','status');actionStatus.setAttribute('aria-live','polite');actionStatus.setAttribute('aria-atomic','true');
 
