@@ -1,0 +1,175 @@
+{
+  "schema": "td613.pedagogue-gesture-consequence-case/v0.1",
+  "case_id": "fictional-reentry-pre-admission-staging",
+  "observation": {
+    "kind": "SYNTHETIC_FIXTURE",
+    "source_revision": "3ef1ba86701843f7fde2fec29ede2bab038d934b"
+  },
+  "rest_exit": {
+    "cue_pause_available": true,
+    "exit_available": true
+  },
+  "initial_state": {
+    "staged_refs": [],
+    "send_count": 0,
+    "pending_attempt_id": null,
+    "latest_attempt": {
+      "attempt_id": null,
+      "status": "NONE"
+    },
+    "admitted_result_ref": "fictional-prior-loom-result",
+    "cue_paused": false,
+    "exited": false,
+    "expires_at": 600
+  },
+  "steps": [
+    {
+      "step_id": "fictional-reentry:1",
+      "kind": "OPEN",
+      "at": 10,
+      "explicit_operator_gesture": true,
+      "notice": {
+        "visible": true,
+        "at": 9
+      },
+      "consequence_visible": true,
+      "item_refs": [],
+      "attempt_id": null,
+      "outcome": "NONE",
+      "result_ref": null,
+      "observed_state": {
+        "staged_refs": [],
+        "send_count": 0,
+        "pending_attempt_id": null,
+        "latest_attempt": {
+          "attempt_id": null,
+          "status": "NONE"
+        },
+        "admitted_result_ref": "fictional-prior-loom-result",
+        "cue_paused": false,
+        "exited": false,
+        "expires_at": 600
+      }
+    },
+    {
+      "step_id": "fictional-reentry:2",
+      "kind": "STAGE",
+      "at": 20,
+      "explicit_operator_gesture": true,
+      "notice": {
+        "visible": true,
+        "at": 19
+      },
+      "consequence_visible": true,
+      "item_refs": [
+        "fictional-return-candidate"
+      ],
+      "attempt_id": null,
+      "outcome": "NONE",
+      "result_ref": null,
+      "observed_state": {
+        "staged_refs": [
+          "fictional-return-candidate"
+        ],
+        "send_count": 0,
+        "pending_attempt_id": null,
+        "latest_attempt": {
+          "attempt_id": null,
+          "status": "NONE"
+        },
+        "admitted_result_ref": "fictional-prior-loom-result",
+        "cue_paused": false,
+        "exited": false,
+        "expires_at": 600
+      }
+    },
+    {
+      "step_id": "fictional-reentry:3",
+      "kind": "PAUSE_CUE",
+      "at": 30,
+      "explicit_operator_gesture": true,
+      "notice": {
+        "visible": true,
+        "at": 29
+      },
+      "consequence_visible": true,
+      "item_refs": [],
+      "attempt_id": null,
+      "outcome": "NONE",
+      "result_ref": null,
+      "observed_state": {
+        "staged_refs": [
+          "fictional-return-candidate"
+        ],
+        "send_count": 0,
+        "pending_attempt_id": null,
+        "latest_attempt": {
+          "attempt_id": null,
+          "status": "NONE"
+        },
+        "admitted_result_ref": "fictional-prior-loom-result",
+        "cue_paused": true,
+        "exited": false,
+        "expires_at": 600
+      }
+    },
+    {
+      "step_id": "fictional-reentry:4",
+      "kind": "RESUME_CUE",
+      "at": 40,
+      "explicit_operator_gesture": true,
+      "notice": {
+        "visible": true,
+        "at": 39
+      },
+      "consequence_visible": true,
+      "item_refs": [],
+      "attempt_id": null,
+      "outcome": "NONE",
+      "result_ref": null,
+      "observed_state": {
+        "staged_refs": [
+          "fictional-return-candidate"
+        ],
+        "send_count": 0,
+        "pending_attempt_id": null,
+        "latest_attempt": {
+          "attempt_id": null,
+          "status": "NONE"
+        },
+        "admitted_result_ref": "fictional-prior-loom-result",
+        "cue_paused": false,
+        "exited": false,
+        "expires_at": 600
+      }
+    },
+    {
+      "step_id": "fictional-reentry:5",
+      "kind": "EXIT",
+      "at": 50,
+      "explicit_operator_gesture": true,
+      "notice": {
+        "visible": true,
+        "at": 49
+      },
+      "consequence_visible": true,
+      "item_refs": [],
+      "attempt_id": null,
+      "outcome": "NONE",
+      "result_ref": null,
+      "observed_state": {
+        "staged_refs": [],
+        "send_count": 0,
+        "pending_attempt_id": null,
+        "latest_attempt": {
+          "attempt_id": null,
+          "status": "NONE"
+        },
+        "admitted_result_ref": "fictional-prior-loom-result",
+        "cue_paused": true,
+        "exited": true,
+        "expires_at": 600
+      }
+    }
+  ]
+}

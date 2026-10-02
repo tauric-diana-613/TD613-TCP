@@ -14,6 +14,10 @@ export const PORTABLE_LOOM_RECEIVER_TURN_SCHEMA = 'td613.loom.portable-session-r
 const encoder = new TextEncoder();
 const HEX64 = /^[a-f0-9]{64}$/;
 const ID = /^[a-zA-Z0-9_-]{1,100}$/;
+// Process-local custody provenance. Parsed exports never acquire this mark.
+const liveSessions = new WeakSet();
+function sealSession(value) { const result = freeze(value); liveSessions.add(result); return result; }
+export function isLivePortableLoomSession(value) { return liveSessions.has(value); }
 
 function freeze(value) {
   if (value && typeof value === 'object' && !Object.isFrozen(value)) {
@@ -137,7 +141,7 @@ export async function createPortableLoomSession(packet, options = {}, environmen
     policy_commitment: policyCommitment,
     selected_commitments: selectedCommitments
   }, environment);
-  return freeze({
+  return sealSession({
     schema: PORTABLE_LOOM_SESSION_SCHEMA,
     session_id: sessionId,
     source_revision: sourceRevision,
@@ -266,7 +270,7 @@ export async function createPortableLoomWorkUnit(sessionInput, input, environmen
   next.work_units.push(unit);
   next.continuity.work_unit_count += 1;
   next.continuity.current_work_unit_ref = workUnitRef;
-  return freeze({ session: next, work_unit: unit, task: selected });
+  return freeze({ session: isLivePortableLoomSession(session) ? sealSession(next) : freeze(next), work_unit: unit, task: selected });
 }
 
 function validateWorkUnit(unit, session) {
@@ -321,7 +325,7 @@ export async function admitPortableLoomWorkUnitResult(sessionInput, workUnitInpu
     work_unit_ref: unit.ref,
     result_ref: resultRef,
     inspection,
-    session: next
+    session: isLivePortableLoomSession(session) ? sealSession(next) : freeze(next)
   });
 }
 
