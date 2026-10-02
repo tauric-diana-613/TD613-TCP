@@ -39,7 +39,7 @@ test('Loom Gate continuity precedes the separate adversarial assay and preserves
   assert.match(loomGateContinuityJs, /FADT/);
   assert.match(loomGateContinuityJs, /SEPARATE EXPERIMENT/);
   assert.match(loomGateContinuityJs, /Adversarial boundary assay preserved for the later Gate pass/);
-  assert.match(loomGateContinuityJs, /Browser submission of #1 began; server admission remains unresolved/);
+  assert.match(loomGateContinuityJs, /Browser submission of #1 began; server receipt and receiver result remain unresolved/);
   assert.match(loomGateContinuityJs, /PRIOR EXPORT RETAINED/);
   assert.match(loomGateContinuityCss, /\.loom-gate-consequence-grid\{[\s\S]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
   assert.match(loomGateContinuityCss, /\.loom-gate-role\[data-role="pedagogue"\]/);
