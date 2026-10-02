@@ -611,12 +611,13 @@ export async function auditPortableLoomChallengeWithDollhouse(session, unit, bun
       ['finite occupied challenge stages only', 'lawful support is a bounded declared session model'], environment
     )
   ];
-  const dossier = createDollhouseCaseDossier({
+  const sourceRevisionPinned = /^[a-f0-9]{40}$/.test(session.source_revision);
+  const dossier = sourceRevisionPinned ? createDollhouseCaseDossier({
     schema: DOLLHOUSE_CASE_DOSSIER_SCHEMA,
     case_id: `portable-loom-challenge:${challenge.challenge_id}`,
-    source_revision: /^[a-f0-9]{40}$/.test(session.source_revision) ? session.source_revision : '0'.repeat(40),
+    source_revision: session.source_revision,
     findings
-  });
+  }) : null;
   return freeze({
     schema: PORTABLE_LOOM_CHALLENGE_DOSSIER_SCHEMA,
     challenge_ref: challenge.ref,
@@ -626,6 +627,11 @@ export async function auditPortableLoomChallengeWithDollhouse(session, unit, bun
     atlas,
     fadt,
     dossier,
+    dossier_source_revision: {
+      declared: session.source_revision,
+      exact_git_sha_available: sourceRevisionPinned,
+      status: sourceRevisionPinned ? 'PINNED' : 'HELD_UNPINNED_BROWSER_SOURCE'
+    },
     global_verdict: verification.status,
     majority_vote: false,
     evidence_class_promotion: false,
