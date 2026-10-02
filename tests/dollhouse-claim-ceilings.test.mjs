@@ -32,20 +32,23 @@ assert.match(byId.get('universal-provider-behavior').current_ceiling, /Finite pr
 assert.equal(byId.get('human-comprehension').state, CLAIM_CEILING_STATES.SPLIT);
 assert.match(byId.get('human-comprehension').current_ceiling, /do not by themselves measure comprehension/i);
 
-for (const id of ['hidden-retention-training-memory', 'empirical-exteriority', 'golden-egg-realization']) {
+for (const id of ['hidden-retention-training-memory', 'golden-egg-realization']) {
   assert.equal(byId.get(id).state, CLAIM_CEILING_STATES.HELD, `${id} must remain HELD`);
 }
-assert.match(byId.get('empirical-exteriority').current_ceiling, /Western Horizon empirical-shore rest remains in force/i);
+assert.equal(byId.get('empirical-exteriority').state, CLAIM_CEILING_STATES.SPLIT);
+assert.match(byId.get('empirical-exteriority').earned_coordinate, /PR #1003/i);
+assert.match(byId.get('empirical-exteriority').earned_coordinate, /33629043531/);
+assert.match(byId.get('empirical-exteriority').current_ceiling, /research field is reopened/i);
+assert.match(byId.get('empirical-exteriority').current_ceiling, /empirical exteriority itself remains unearned/i);
 assert.match(byId.get('golden-egg-realization').current_ceiling, /No immutable same-episode record currently establishes/i);
 
 const summary = claimCeilingSummary();
 assert.deepEqual(summary.earned_bounded, ['physical-device-behavior']);
 assert.deepEqual(summary.held, [
   'hidden-retention-training-memory',
-  'empirical-exteriority',
   'golden-egg-realization'
 ]);
-assert.equal(summary.split.length, 4);
+assert.equal(summary.split.length, 5);
 
 const audit = auditClaimCeilingRegistry();
 assert.equal(audit.role_agreement_is_evidence_multiplication, false);
