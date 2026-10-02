@@ -5,7 +5,7 @@ import { OBSERVER_CASES, getObserverCase } from './observer-cases.js';
 export function mountObserverChamber(root) {
   const doc = root.ownerDocument;
   root.innerHTML = `
-    <p class="oc-kicker">LOOM GATE / SYNTHETIC RESEARCH</p>
+    <p class="oc-kicker">INSTRUMENT LAB / SYNTHETIC RESEARCH</p>
     <h2>What could an observer learn?</h2>
     <p>Try a known secret in a small, fully declared world. Compare what an observer already knows, what a route adds, and what becomes visible when clues are joined.</p>
     <p class="oc-boundary">Fictional cases only. This chamber does not read your conversation or call a model. Its results do not certify a real conversation.</p>
@@ -29,7 +29,7 @@ export function mountObserverChamber(root) {
         <details><summary>Declared synthetic population</summary><pre id="ocPopulation"></pre></details>
       </details>
     </section>
-    <p class="oc-ceiling">Golden Egg: UNEARNED · Empirical acquisition: HELD · Western Horizon: 𝄐</p>`;
+    <p class="oc-ceiling">Golden Egg: UNEARNED · Independent empirical acquisition: HELD</p>`;
   const $ = selector => root.querySelector(selector);
   let result = null;
   for (const item of OBSERVER_CASES) {

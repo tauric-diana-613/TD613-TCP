@@ -214,6 +214,7 @@ try {
   const laboratory = page.locator('#loomLegacy');
   check('local laboratory remains optional and closed at arrival', !(await detailsOpen(laboratory)));
   await laboratory.locator(':scope > summary').click();
+      await page.locator('#loomPracticeFixtures > summary').click();
   check('local laboratory opens by explicit operator action', await detailsOpen(laboratory));
   check('ordinary-language task instruction visibly renders', await page.getByText('Before you send it, check what this message carries.', { exact: true }).isVisible());
   check('child-legible operational route visibly renders', await page.getByText('SEE → CHECK → UNDERSTAND → REST', { exact: true }).isVisible());

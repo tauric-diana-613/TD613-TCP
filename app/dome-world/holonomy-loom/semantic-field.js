@@ -112,7 +112,7 @@ const CEILING = freeze([
   'visual pressure is a declared teaching scale, not a measured probability or reconstruction score',
   'a declared route relation is not a transport law or geometric holonomy',
   'no provider hidden-state access, payload recovery, external origin, attribution, or causal-effect claim',
-  'the Western Horizon empirical boundary remains closed',
+  'the independent empirical acquisition boundary remains closed',
   'no automatic release, deployment, or provider authority'
 ]);
 

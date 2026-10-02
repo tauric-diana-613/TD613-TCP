@@ -19,7 +19,7 @@ async function fixture(name) {
   return JSON.parse(await readFile(new URL(`./fixtures/pedagogue/${name}`, import.meta.url), 'utf8'));
 }
 
-for (const name of ['giving-vault-design.json', 'giving-research-dossier-design.json', 'cistern-boundary-design.json']) {
+for (const name of ['giving-vault-design.json', 'giving-research-dossier-design.json', 'cistern-boundary-design.json', 'loom-instrument-platform-design.json']) {
   test(`${name} passes the generic Pedagogue design gate without product authority`, async () => {
     const input = await fixture(name);
     const review = await compilePedagogueDesignReview(input);
@@ -54,6 +54,43 @@ for (const name of ['giving-vault-design.json', 'giving-research-dossier-design.
     assert.equal(review.transfer.authority.automatic_ash_action, false);
   });
 }
+
+test('Loom instrument comparison preserves path difference and evidence limits under equal declared support', async () => {
+  const input = await fixture('loom-instrument-platform-design.json');
+  const review = await compilePedagogueDesignReview(input);
+  assert.equal(Object.values(review.design_gate).every(value => value === true), true);
+  assert.equal(review.burden_comparison.improved_model_count, 4);
+  assert.equal(review.route_memory_comparison.endpoint_equivalent, true);
+  assert.equal(review.route_memory_comparison.exact_route_match, false);
+  assert.equal(review.route_memory_comparison.same_endpoint_not_same_history, true);
+  assert.equal(review.route_memory_comparison.authority.route_history_may_be_discarded, false);
+  const routes = [input.baseline_route_steps, input.scene_input.route_topology.steps];
+  for (const route of routes) for (const step of route) {
+    assert.equal(step.legibility_millipoints, 700);
+    assert.equal(step.affordance_millipoints, 700);
+    assert.equal(step.gluing_obstruction_millipoints, 0);
+  }
+  assert.match(input.scene_input.provenance.evidence_basis.join(' '), /not a recorded operator trajectory or comprehension measurement/);
+  assert.match(review.scene.missingness.join(' '), /No human comprehension measurement/);
+  assert.match(review.scene.claim_ceiling.forbidden_claims.join(' '), /Gate PASS proves live production behavior or comprehension/);
+  assert.ok(input.name.non_equivalence.includes('Cue rest is not request cancellation'));
+  assert.ok(input.name.non_equivalence.includes('Export review is not live custody restoration'));
+});
+
+test('Loom instrument gate detects added mandatory inspection burden instead of treating endpoint equality as improvement', async () => {
+  const input = await fixture('loom-instrument-platform-design.json');
+  input.scene_input.route_topology.steps = structuredClone(input.baseline_route_steps);
+  for (const step of input.scene_input.route_topology.steps) {
+    step.required_fields.push('mandatory extra audit field');
+    step.projection_crossings += 1;
+  }
+  const review = await compilePedagogueDesignReview(input);
+  assert.equal(review.route_memory_comparison.endpoint_equivalent, true);
+  assert.equal(review.design_gate.route_burden_non_worsening, false);
+  assert.ok(Object.values(review.burden_comparison.delta_millipoints).some(value => value > 0));
+  assert.equal(review.design_gate.automatic_redesign_forbidden, true);
+  assert.equal(review.design_gate.human_closure_required, true);
+});
 
 test('AIA surface binding fails closed on inferred authority or fabricated decoys', () => {
   assert.throws(() => compileAiaSurfaceBinding({

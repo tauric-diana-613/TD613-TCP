@@ -14,12 +14,14 @@ function chatTarget(doc) {return doc.querySelector(doc.documentElement.classList
 export async function installMarrowlineLoomDemo(packet, doc=document, environment=window) {
   if (environment.__TD613_LOOM_DEMO_CONTROLLER__) return environment.__TD613_LOOM_DEMO_CONTROLLER__;
   await environment.TD613_KHONAPOLIT_TERMINAL?.ready;
+  packet=copy(packet);
   const activation=await createLoomDemoActivation(packet,environment);
   const form=byId(doc,'khonapolitForm'), prompt=byId(doc,'khonapolitPrompt'), send=byId(doc,'khonapolitSend'), ordinary=byId(doc,'khonapolitMessages');
   if (!form || !prompt || !send || !ordinary) throw new Error('Loom demo composer unavailable.');
   let phase='ARRIVED', active=false, pending=null, staged=[], busy=false, staging=false, stageGeneration=0;
   let latest=packet.continuation?.prior_result ? loomDemoResult(packet.continuation.prior_result, packet.documents) : null, latestBinding=null, lastAccepted=null, predecessor=null, lastAdmittedBindingReceipt=null;
   let destroyed=false, lastAttempt='NOT_SENT', stagedDraft='';
+  const admittedStages=[];
   const status=byId(doc,'khonapolitTerminalStatus');
   const setStatus=text=>{if(status)status.textContent=text;};
 
@@ -170,6 +172,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   async function prepareRequest(operator_request, marrowline, signal) {
     if(busy||destroyed)throw new Error('Wait for the current request first.');
     if(!active||phase==='EXPIRED'||phase==='LEFT')throw new Error('Prepare a fresh Loom handoff before sending.');
+    if(admittedStages.length>=128)throw new Error('This Loom route reached its history bound. Export the current work and prepare a fresh handoff.');
     const operation=pending||(phase==='DONE'?'CONTINUE':null);
     if(!operation)throw new Error('Use + → Loom demo to attach the selected files.');
     // Acquire before the first crypto await. Native terminal also owns one
@@ -200,6 +203,9 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
     if(returnedPredecessor.phase!==operation||returnedPredecessor.request_id!==request.request_id||returnedPredecessor.request_digest!==expectedRequestDigest||returnedPredecessor.current_input_digest!==binding.governance.input_digest||returnedPredecessor.prior_result_digest!==binding.receipt.prior_result_digest||returnedPredecessor.result_digest!==expectedResultDigest||returnedPredecessor.predecessor_receipt_digest!==expectedPredecessorReceiptDigest)throw new Error('The server stage receipt did not match this request.');
     if(signal?.aborted||destroyed||!active||Date.now()>=activation.expires_at)throw new Error('Stopped waiting. No new receiver result was bound.');
     if(!binding.admit(normalizedResult).allowed)throw new Error('The returned result was held by the Loom governor.');
+    admittedStages.push({receipt:copy(returnedPredecessor),binding:copy(binding.receipt),receiver:'MARROWLINE',
+      observed_at:new Date().toISOString(),predecessor_request_id:predecessor?.request_id??null,
+      content_predecessor_request_id:operation==='CONTINUE'?latest?.request_id??null:null});
     predecessor=returnedPredecessor;lastAdmittedBindingReceipt=copy(binding.receipt);lastAttempt='ADMITTED';
     pending=null;staged=[];
     if(operation==='ACTIVATE')phase='AIA_SENT';
@@ -240,7 +246,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   function exportPacket(){
     if(!active||phase!=='DONE'||Date.now()>=activation.expires_at)throw new Error('This Loom session has no current export. Prepare a fresh handoff before exporting.');
     if(busy)throw new Error('Wait for or stop the current request before exporting.');
-    return exportLoomDemoCurrent(latestBinding);
+    return exportLoomDemoCurrent(latestBinding,undefined,{origin:packet,activation,stages:admittedStages});
   }
   function exportCurrent(){
     try{
@@ -259,7 +265,9 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   const expiry=environment.setTimeout(()=>{stageGeneration++;phase='EXPIRED';environment.TD613_KHONAPOLIT_TERMINAL?.stop();menuStatus.textContent='This transfer expired. Prepare a fresh handoff in Loom.';emit();},Math.max(0,activation.expires_at-Date.now()));
   environment.addEventListener('pagehide',()=>{if(active)environment.TD613_KHONAPOLIT_TERMINAL?.stop();});
   environment.addEventListener('td613:marrowline:attachments-changed',()=>emit());
-  const controller={openMenu,stageAia,stageFiles,restoreStage,leaveDemo,submit,prepareRequest,admitResponse,rejectAttempt,finishAttempt,snapshot,exportPacket,getGateContinuity:()=>gateContinuity?.getCurrent?.()??null,destroy(){destroyed=true;environment.clearTimeout(expiry);leaveDemo();menu.remove();gateContinuity?.destroy?.();}};
+  const controller={openMenu,stageAia,stageFiles,restoreStage,leaveDemo,submit,prepareRequest,admitResponse,rejectAttempt,finishAttempt,snapshot,exportPacket,
+    getObservedProvenance:()=>copy({activation,stages:admittedStages,snapshot:snapshot()}),
+    getGateContinuity:()=>gateContinuity?.getCurrent?.()??null,destroy(){destroyed=true;environment.clearTimeout(expiry);leaveDemo();menu.remove();gateContinuity?.destroy?.();}};
   environment.__TD613_LOOM_DEMO_CONTROLLER__=controller;
   environment.history?.replaceState(null,'',environment.location.pathname+environment.location.search+'#loom-demo');
   emit();setStatus(`${packet.documents.length} selected Loom files arrived · + → Loom demo · start with the Portable AIA`);

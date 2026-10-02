@@ -49,9 +49,9 @@ export function mountMarrowlineLoomTask(root, packet, environment = window) {
   const task = add('textarea', ''); task.id = 'loomImportedTask'; label.htmlFor = task.id; task.value = packet.task; task.maxLength = 12000; task.readOnly = true; task.rows = 3;
   expand.addEventListener('click', () => { const expanded = expand.getAttribute('aria-expanded') !== 'true'; expand.setAttribute('aria-expanded', String(expanded)); task.rows = expanded ? 12 : 3; expand.textContent = expanded ? 'Compact task' : 'Expand task'; });
   const actions = add('div', ''); actions.className = 'loom-import-actions';
-  const run = add('button', 'Run with Flow-Core AI', actions); run.type = 'button'; run.id = 'loomImportedRun';
+  const run = add('button', 'Run model test', actions); run.type = 'button'; run.id = 'loomImportedRun';
   const cancel = add('button', 'Stop waiting', actions); cancel.id = 'loomImportedStop'; cancel.type = 'button'; cancel.hidden = true;
-  const provider = add('p', 'This run sends the displayed task, selected documents and rules through Dome-World’s Flow-Core AI runtime. Technical route provenance remains in the receipt.'); provider.className = 'loom-import-provider';
+  const provider = add('p', 'This run sends the displayed task, selected documents and rules through Dome-World’s model receiver route. Technical route provenance remains in the receipt.'); provider.className = 'loom-import-provider';
   const progress = add('div', ''); progress.className = 'loom-import-progress'; progress.hidden = true; progress.setAttribute('aria-hidden', 'true');
   const status = add('div', 'Ready when you are. Opening this context card sent nothing to the AI.'); status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
   const answerTitle = add('h3', 'Marrowline’s answer'); answerTitle.hidden = true;
@@ -111,7 +111,7 @@ export function mountMarrowlineLoomTask(root, packet, environment = window) {
       if (destroyed) return;
       status.textContent = pending.signal.aborted ? (pending.signal.reason === 'deadline' ? 'The AI request exceeded 225 seconds. Your task remains here; you can try again when ready. A request already received by the provider may still finish there.' : 'Stopped waiting. A request already received by the provider may still finish there.') : `Task held: ${error.message}`;
       receipt.textContent = JSON.stringify({ handoff: packet.handoff_receipt, request_id, started_at, state: pending.signal.aborted ? (pending.signal.reason === 'deadline' ? 'CLIENT_DEADLINE' : 'WAIT_CANCELLED') : 'HELD', reason: status.textContent, client_fetch_invoked: clientFetchInvoked, governance: governor?.inspect() ?? null, ...(!clientFetchInvoked && acceptedReceipt ? { retained_answer_receipt: acceptedReceipt } : {}), ...(providerFailure ? { provider_failure: providerFailure } : {}) }, null, 2);
-    } finally { unschedule(deadline); if (!destroyed) { controller = undefined; run.disabled = false; task.disabled = false; cancel.hidden = true; progress.hidden = true; answer.setAttribute('aria-busy', 'false'); run.textContent = 'Run with Flow-Core AI'; } }
+    } finally { unschedule(deadline); if (!destroyed) { controller = undefined; run.disabled = false; task.disabled = false; cancel.hidden = true; progress.hidden = true; answer.setAttribute('aria-busy', 'false'); run.textContent = 'Run model test'; } }
   });
   return { ready, inspect: () => governor?.inspect() ?? null, destroy() { destroyed = true; controller?.abort(); governor?.close(); doc.documentElement.removeAttribute('data-loom-task-import'); root.removeAttribute('data-loom-import-workspace'); root.replaceChildren(); } };
 }

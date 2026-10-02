@@ -10,6 +10,8 @@ import { mountLivingGeometry } from './living-geometry.js';
 import { ingestGeminiConsumption } from '../../gemini-consumption-ledger.js';
 import { validateShi } from '../khonapolit-covenant.js';
 import { mountPortableLoomReentryWorkspace } from './reentry-workspace.js';
+import { mountLoomInstrumentLab } from './instrument-lab.js';
+import { exportLoomDemoOrigin } from './demo-contract.js';
 import {
   createPortableLoomSession,
   createPortableLoomWorkUnit,
@@ -91,8 +93,9 @@ export function mountLoomAiWorkspace(root, environment = window) {
         <p class="ai-muted">This local file includes source bodies, pasted returns and local challenge keys. Keep it private. Saving preserves a review record; it grants no restored admission authority.</p>
         <label><input id="aiNewRootConfirm" type="checkbox"> I choose a new Loom root and accept replacing this active custody lane.</label>
       </div>
-      <div class="ai-send-row"><button type="button" id="aiPreparePortable" class="ai-primary">Prepare Portable AIA</button><button type="button" id="aiRun">Test with Flow-Core AI ↗</button><button type="button" id="aiStop" hidden>Stop waiting</button><span id="aiSendSummary" class="ai-muted"></span></div>
-      <p id="aiRunNote" class="ai-muted">Preparing binds the selected task locally and makes no model request. The optional Flow-Core test sends only the selected task, documents and rules.</p>
+      <div class="ai-send-row"><button type="button" id="aiPreparePortable" class="ai-primary">Prepare Portable AIA</button><button type="button" id="aiRun">Run model test ↗</button><button type="button" id="aiStop" hidden>Stop waiting</button><span id="aiSendSummary" class="ai-muted"></span></div>
+      <label class="ai-muted" for="aiRuntimeProfile">Model runtime profile</label><select id="aiRuntimeProfile" aria-describedby="aiRuntimeProfileNote"><option value="deep">Deep · higher requested reasoning</option><option value="quick">Quick · lower requested reasoning</option></select><p id="aiRuntimeProfileNote" class="ai-muted">Both send the same selected inputs and portable rules. The provider receives a reasoning request; its internal effort and answer quality remain unverified.</p>
+      <p id="aiRunNote" class="ai-muted">Preparing binds the selected task locally and makes no model request. The optional model test sends only the selected task, documents and rules.</p>
       <div id="aiPending" class="ai-pending" hidden><span class="ai-wait-orbit" aria-hidden="true"></span><div><strong id="aiPendingLabel">Preparing your request</strong><span id="aiPendingTime" aria-live="off">The waiting time will appear here.</span></div></div><p id="aiStatus" role="status" aria-live="polite">Choose a project or write your own task.</p>
     </section>
     <aside class="ai-observer" aria-label="Live request field"><div class="ai-phase"><p class="mark">THE ROOM / LIVE ROUTE</p><span class="ai-dot"></span></div>
@@ -271,22 +274,23 @@ export function mountLoomAiWorkspace(root, environment = window) {
     $('aiPreparePortable').classList.toggle('ai-primary', portable);
     $('aiRun').classList.toggle('ai-primary', !portable);
     $('aiPreparePortable').textContent = portable ? 'Prepare Portable AIA' : 'Prepare demo as Portable AIA';
-    $('aiRun').textContent = portable ? 'Test with Flow-Core AI ↗' : 'Run demo with Flow-Core AI ↗';
+    $('aiRun').textContent = portable ? 'Run model test ↗' : 'Run practice model test ↗';
     $('aiTaskLabel').textContent = portable ? 'What task should travel?' : 'What should the AI work on?';
     $('aiTaskCue').textContent = portable
       ? 'This exact task travels with the selected files and portable rules when you prepare the Portable AIA.'
       : 'Edit this box directly. It is the exact instruction the AI will receive when you press Run demo.';
     $('aiRunNote').textContent = portable
-      ? 'Preparing binds the selected task locally and makes no model request. The optional Flow-Core test sends only the selected task, selected documents and portable rules.'
-      : 'Run demo sends the fictional task, selected documents and rules to Dome-World’s Flow-Core AI runtime. Local-only documents stay in this tab.';
+      ? 'Preparing binds the selected task locally and makes no model request. The optional model test sends only the selected task, selected documents and portable rules.'
+      : 'Run demo sends the fictional task, selected documents and rules to Dome-World’s model receiver route. Local-only documents stay in this tab.';
     $('aiPortableMode').setAttribute('aria-selected', String(portable));
     $('aiDemoMode').setAttribute('aria-selected', String(!portable));
     $('aiPortableModePanel').hidden = !portable;
     $('aiDemoModePanel').hidden = portable;
     $('aiDemoWelcome').hidden = portable;
     if (legacy) {
-      if (portable) legacy.open = false;
-      legacy.hidden = portable;
+      // The Lab is an explicit, independent entrance. Mode changes grant no
+      // admission or execution authority and do not open it as a side effect.
+      legacy.hidden = false;
     }
     if (portable) {
       $('aiProjectChoices').hidden = true;
@@ -311,7 +315,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     geometry?.update({ view: opening ? 'choose-demo' : 'compose' });
     if (opening) $('aiProjectChoices').querySelector('button')?.focus();
   });
-  const legacyChange = () => { geometry?.setVisible(!legacy?.open); if (!geometry) coordinator.setVisible(!environment.document.hidden && !legacy?.open); };
+  const legacyChange = () => { geometry?.setVisible(!legacy?.open); coordinator.setVisible(!environment.document.hidden); };
   legacy?.addEventListener('toggle', legacyChange);
   const reduced = environment.matchMedia('(prefers-reduced-motion: reduce)');
   coordinator.setReducedMotion(reduced.matches);
@@ -320,6 +324,13 @@ export function mountLoomAiWorkspace(root, environment = window) {
   const visibility = legacyChange;
   environment.document.addEventListener('visibilitychange', visibility);
   const room = mountLivingRoom($('aiLivingRoom'));
+  const instrumentLab = mountLoomInstrumentLab(environment.document.querySelector('#loomInstrumentLab'), {
+    environment, coordinator,
+    observe: () => ({ mode:workspaceMode, events:[...events], packet:lastPacket, replay:{index:replayIndex},
+      session:portableSession?inspectPortableLoomSession(portableSession):null,
+      reentry:reentry.getRecord(), challenge:challengeVerification,
+      source_revision:portableSession?.source_revision || null })
+  });
   coordinator.registerPass('living-room', snapshot => {
     $('aiPending').style.setProperty('--wait-turn', `${snapshot.reducedMotion ? 0 : (snapshot.motionTimeMs ?? 0) / 2400 * 360}deg`);
     room.render({...snapshot, auditor:$('aiAuditor').getAttribute('aria-pressed')==='true'});
@@ -346,13 +357,13 @@ export function mountLoomAiWorkspace(root, environment = window) {
     lastPacket = projectLoomRequestEvent(event);
     if(phase==='completed'){lastPacket.geometry={rest:false};lastPacket.presentation={settling:true};}
     lastPacket.scene={...lastPacket.scene,project_title:projectTitle,documents:documents.map(d=>({id:d.id,name:d.share?d.name:'Local-only document',share:d.share})),rules_count:lines('aiRules').length};
-    showPacket(lastPacket);
     if(phase!=='prepared'){sceneHistory.push(JSON.parse(JSON.stringify(lastPacket)));sceneHistory=sceneHistory.slice(-30);}
     replayControls();
     $('aiPendingLabel').textContent=phase==='pending'?'Waiting for the AI response':phase==='received'?'Checking the returned answer':'Preparing your selected documents';
     $('aiConsequence').textContent = lastPacket.consequence; $('aiMotionCause').textContent = lastPacket.cause;
     if(phase!=='prepared') {events.push(event);events=events.slice(-30);const li=environment.document.createElement('li');li.textContent=`${phase}: ${extra.note??lastPacket.consequence}`;$('aiEvents').append(li);while($('aiEvents').children.length>30)$('aiEvents').firstChild.remove();}
     $('aiReceipt').textContent=JSON.stringify({schema:'td613.loom.request-observation/v0.1',events,visual_mapping:'request-events/v0.1'},null,2);
+    showPacket(lastPacket);
   }
   function invalidate(){
     newRootAcknowledgedRecord=null;$('aiNewRootConfirm').checked=false;
@@ -423,7 +434,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     $('aiPending').hidden=!value;
     if(pendingTimer!==null){environment.clearInterval(pendingTimer);pendingTimer=null;}
     if(value){requestStarted=environment.performance.now();const tick=(initial=false)=>{if(initial||!environment.document.hidden)$('aiPendingTime').textContent=`${Math.floor((environment.performance.now()-requestStarted)/1000)} seconds elapsed · you can stop waiting`;};tick(true);pendingTimer=environment.setInterval(()=>tick(),1000);}
-    root.setAttribute('aria-busy',String(value));['aiTask','aiRules','aiPrivate','aiUpload','aiNew','aiPreparePortable','aiPortableMode','aiDemoMode','aiShi','aiTurnExpectedTask','aiTurnAllowedIds','aiTurnReceiptInput','aiChallengeCanary','aiChallengePrompt','aiChallengeExpected','aiJoinExpected','aiJoinMarginalA','aiJoinMarginalB','aiJoinCombined','aiChallengeReturn'].forEach(id=>$(id).disabled=value);root.querySelectorAll('[data-project],#aiDocuments input,#aiDocuments button').forEach(n=>n.disabled=value);summary();refreshIssuance();
+    root.setAttribute('aria-busy',String(value));['aiTask','aiRuntimeProfile','aiRules','aiPrivate','aiUpload','aiNew','aiPreparePortable','aiPortableMode','aiDemoMode','aiShi','aiTurnExpectedTask','aiTurnAllowedIds','aiTurnReceiptInput','aiChallengeCanary','aiChallengePrompt','aiChallengeExpected','aiJoinExpected','aiJoinMarginalA','aiJoinMarginalB','aiJoinCombined','aiChallengeReturn'].forEach(id=>$(id).disabled=value);root.querySelectorAll('[data-project],#aiDocuments input,#aiDocuments button').forEach(n=>n.disabled=value);summary();refreshIssuance();
   }
   $('aiRun').addEventListener('click',async()=>{
     if(busy||!rootReplacementAllowed())return;const replacementState=reentry.getRecord();stopRequested=false;routeFacts={outbound_submitted:false,response_received:false,binding_verified:false};sceneHistory=[];invalidate();resetPortableCue();const currentVersion=version;lock(true);project('checking');
@@ -440,7 +451,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
       routeFacts.binding_verified=true;
       controller=new AbortController();const deadline=environment.setTimeout(()=>{clientDeadlineExceeded=true;controller?.abort();},LOOM_AI_CLIENT_TIMEOUT_MS);const started=environment.performance.now();
       let response,result;
-      try {routeFacts.outbound_submitted=true;project('pending',{request_id:requestId,provider_call_observed:false,note:`${prepared.request.documents.length} documents submitted to the Loom provider route.`});status('Flow-Core AI is working on your selected task. Waiting for the response…');response=await environment.fetch('/api/khonapolit?operation=loom-task',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(prepared.request),signal:controller.signal});if(disposed)return;const raw=await response.text();if(disposed)return;routeFacts.response_received=true;if(raw.length>131072)throw new Error('The reply exceeded the admitted response size.');try{result=JSON.parse(raw);ingestGeminiConsumption(result,environment);}catch{throw new Error('The provider route returned an unreadable response.');}}finally{environment.clearTimeout(deadline);controller=null;}
+      try {routeFacts.outbound_submitted=true;project('pending',{request_id:requestId,provider_call_observed:false,note:`${prepared.request.documents.length} documents submitted to the Loom provider route.`});status('The model is working on your selected task. Waiting for the response…');response=await environment.fetch(`/api/khonapolit?operation=loom-task&profile=${$('aiRuntimeProfile').value}`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(prepared.request),signal:controller.signal});if(disposed)return;const raw=await response.text();if(disposed)return;routeFacts.response_received=true;if(raw.length>131072)throw new Error('The reply exceeded the admitted response size.');try{result=JSON.parse(raw);ingestGeminiConsumption(result,environment);}catch{throw new Error('The provider route returned an unreadable response.');}}finally{environment.clearTimeout(deadline);controller=null;}
       $('aiElapsed').textContent=`${((environment.performance.now()-started)/1000).toFixed(1)} s`;
       if(!response.ok){const failure=readLoomAiFailure(result,requestId);const error=new Error(describeLoomAiFailure(failure,response.status));error.loomFailure=failure;throw error;}
       project('received',{request_id:requestId});
@@ -454,7 +465,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
       const unchangedProject=LOOM_AI_PROJECTS.find(p=>p.task===shared.task&&JSON.stringify(p.rules)===JSON.stringify(shared.rules)&&JSON.stringify(p.documents.filter(d=>d.share).map(({id,name,text})=>({id,name,text})))===JSON.stringify(shared.documents));
       const quality=assessLoomProjectAnswer(unchangedProject?.id,result);
       if(quality.applicable){const section=environment.document.createElement('section');section.className='ai-result-next';const heading=environment.document.createElement('h3');heading.textContent='Independent fee check';const note=environment.document.createElement('p');note.textContent=quality.reason;const table=environment.document.createElement('table');const header=table.createTHead().insertRow();for(const name of ['12-month stated fees','Calculated from sources','Explicit total found in AI answer','Local check']){const cell=environment.document.createElement('th');cell.textContent=name;header.append(cell);}for(const [index,check] of quality.checks.entries()){const row=table.insertRow();const reported=check.reported===null?(check.status==='ambiguous'?'Ambiguous · inspect answer':'Could not align explicit total'):check.reported.toLocaleString('en-US',{minimumFractionDigits:2});const verdict=check.status==='matched'?'Matches':check.status==='mismatch'?'Mismatch':check.status==='ambiguous'?'Held · ambiguous':'Held · no explicit total';for(const value of [index===0?'Vendor A':'Vendor B',check.expected.toLocaleString('en-US',{minimumFractionDigits:2}),reported,verdict])row.insertCell().textContent=value;}const components=environment.document.createElement('p');components.className='ai-muted';components.textContent=quality.checks.map((check,index)=>{const c=check.components;return `Vendor ${index===0?'A':'B'} source line items: subscription ${c.annual_subscription.toLocaleString('en-US',{minimumFractionDigits:2})} + migration ${c.migration.toLocaleString('en-US',{minimumFractionDigits:2})} + archive ${c.annual_archive.toLocaleString('en-US',{minimumFractionDigits:2})}.`;}).join(' ');const assumptions=environment.document.createElement('p');assumptions.className='ai-muted';assumptions.textContent=quality.assumptions.join(' ');section.append(heading,note,table,components,assumptions);$('aiAnswer').append(section);}$('aiResult').hidden=false;
-      project('completed',{request_id:requestId,used_document_ids:result.used_document_ids,missing_information:result.missing_information,project_quality:quality.applicable?quality:null,observations:result.observations,local_receipt:prepared.localReceipt,aia:{input_digest:shared.governance.input_digest,projection_family_verified:shared.governance.verification,fadt_admission:admission.allowed}});
+      project('completed',{request_id:requestId,used_document_ids:result.used_document_ids,missing_information:result.missing_information,project_quality:quality.applicable?quality:null,...(result.observations===undefined?{}:{observations:result.observations}),local_receipt:prepared.localReceipt,aia:{input_digest:shared.governance.input_digest,projection_family_verified:shared.governance.verification,fadt_admission:admission.allowed}});
       refreshTransferActions();status(issuanceReady()?'Your answer is ready. The evidence overview comes first; the exact instruction remains inspectable.':'Your answer is ready. Review it here; Portable AIA issuance remains held until a valid-format minted SHI is present.');revealResult();
     }catch(error){
       if(disposed)return;
@@ -491,7 +502,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     portableWorkUnit = preparedUnit.work_unit;
     if(response){
       const admission=await admitPortableLoomWorkUnitResult(portableSession,portableWorkUnit,response,environment);
-      if(admission.status!=='ADMITTED')throw new Error('The accepted Flow-Core result could not be admitted into the Portable Loom Session.');
+      if(admission.status!=='ADMITTED')throw new Error('The accepted model result could not be admitted into the Portable Loom Session.');
       portableSession=admission.session;
       portableWorkUnit=portableSession.work_units.at(-1);
     }
@@ -567,7 +578,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   $('aiMarrowline').addEventListener('click',async()=>{if(!acceptedTask||issuanceHold())return;const destination=environment.open?.('','_blank');if(!destination){status('HOLD · the browser blocked the Marrowline tab. Allow this new tab or use Export/Copy; this Loom custody lane was not left.',true);return;}try{destination.document.title='Opening Marrowline…';const transferVersion=version;const task=acceptedTask;const url=await createLoomAiHandoff(task,environment);if(disposed||version!==transferVersion||acceptedTask!==task){destination.close?.();status('Workspace changed. Prepare the current task before transferring.',true);return;}destination.location.replace(url);status('Marrowline opened in a new tab. Keep this original Loom tab open and return here to Check/Admit returned work.');}catch(error){destination.close?.();status(error.message,true);}});
   $('aiExportSession').addEventListener('click',()=>{if(!portableSessionExport||issuanceHold()||locallyAdmitted)return;try{downloadJson('loom-portable-session.json',portableSessionExport);status('Portable Loom Session download requested. Its root rules persist across proceeding tasks; source bodies remain explicit per work unit.');}catch(error){status(error.message,true);}});
   $('aiCopySession').addEventListener('click',async()=>{if(!portableSessionExport||issuanceHold())return;try{await environment.navigator.clipboard.writeText(createPortableLoomSessionPrompt(portableSessionExport));status('Portable Loom Session copied. The receiver gets persistent governance instructions and a challenge-compatible session root.');}catch{status('Clipboard access was unavailable. Export the Loom Session instead.',true);}});
-  $('aiExport').addEventListener('click',()=>{if(!acceptedTask||issuanceHold())return;try{downloadJson('loom-portable-aia.json',createPortableLoomAiPacket(acceptedTask));status('One-hop Portable AIA download requested. The browser handles saving.');}catch(error){status(error.message,true);}});
+  $('aiExport').addEventListener('click',async()=>{if(!acceptedTask||issuanceHold())return;const task=acceptedTask,token=version;try{const packet=resultView?await exportLoomDemoOrigin(task,environment):createPortableLoomAiPacket(task);if(disposed||version!==token||acceptedTask!==task)return;downloadJson('loom-portable-aia.json',packet);status('Portable AIA download requested. Selected inputs, rules and any original result are preserved for review.');}catch(error){status(error.message,true);}});
   $('aiCopy').addEventListener('click',async()=>{if(!acceptedTask||issuanceHold())return;try{await environment.navigator.clipboard.writeText(createPortableLoomAiPrompt(acceptedTask));status('One-hop task and portable rules copied.');}catch{status('Clipboard access was unavailable. Export the packet instead.',true);}});
   $('aiVerifyTurnReceipt').addEventListener('click',async()=>{
     if(!portableSession)return;
@@ -657,7 +668,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   coordinator.setPacket({ ...lastPacket, scene: { ...lastPacket.scene, id: 'ai-welcome' }, geometry: { rest: false }, presentation: { welcome: true } });
   legacyChange();
   environment.document.documentElement.dataset.loomBoot='ready';
-  const dispose=()=>{disposed=true;reentry.dispose();if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();room.dispose();geometry?.dispose();legacy?.removeEventListener('toggle',legacyChange);coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);};
+  const dispose=()=>{disposed=true;instrumentLab?.dispose();reentry.dispose();if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();room.dispose();geometry?.dispose();legacy?.removeEventListener('toggle',legacyChange);coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);};
   environment.addEventListener('pagehide',dispose,{once:true});return {dispose,inspect:()=>({mode:workspaceMode,shi_format:currentShi(),session:portableSession?inspectPortableLoomSession(portableSession):null,turn_receipt:turnReceiptVerification?{status:turnReceiptVerification.status,ref:turnReceiptVerification.ref}:null,challenge:challengeVerification?{status:challengeVerification.status,ref:challengeVerification.ref}:null,events:[...events],clock:coordinator.inspect(),replay:{index:replayIndex,count:sceneHistory.length},geometry:geometry?.inspect()})};
 }
 if(typeof document!=='undefined')mountLoomAiWorkspace(document.querySelector('#loomAiWorkspace'));

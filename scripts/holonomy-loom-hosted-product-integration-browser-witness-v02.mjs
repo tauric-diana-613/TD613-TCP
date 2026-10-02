@@ -102,6 +102,7 @@ try {
   const laboratory = page.locator('#loomLegacy');
   check('local laboratory starts optional and closed', !(await detailsOpen(laboratory)));
   await laboratory.locator(':scope > summary').click();
+  await page.locator('#loomPracticeFixtures > summary').click();
   check('local laboratory opened explicitly for observer repair', await detailsOpen(laboratory));
   const result = page.locator('#result');
   const promise = page.locator('#promiseDisclosure');

@@ -260,7 +260,7 @@ test('loading each real practice project sends nothing; a click submits one sele
   assert.match(h.$('#aiBriefRoute').textContent,/3 selected documents traveling/);assert.match(h.$('#aiBriefRoute').textContent,/1 document staying here/);assert.match(h.$('#aiBriefRoute').textContent,/longer task below is the working instruction set/);
   h.$('#aiRun').click();await h.settled();
   assert.equal(h.calls.length,1);const call=h.calls[0];
-  assert.equal(call.url,'/api/khonapolit?operation=loom-task');assert.equal(call.options.method,'POST');
+  assert.equal(call.url,'/api/khonapolit?operation=loom-task&profile=deep');assert.equal(call.options.method,'POST');
   assert.deepEqual(call.request.documents,project.documents.filter(d=>d.share===true).map(({share,...document})=>document));
   for(const term of project.protectedTerms)assert.equal(call.options.body.includes(term),false);
   for(const document of project.documents.filter(d=>d.share!==true)){assert.equal(call.options.body.includes(document.text),false);assert.equal(call.request.documents.some(d=>d.id===document.id),false);}
@@ -485,4 +485,13 @@ test('successful incident places evidence before the collapsed exact instruction
   assert.equal(h.$('#aiSubmittedTaskText').textContent,LOOM_AI_PROJECTS[2].task);
   assert.ok(answer.querySelector('.ai-result-takeaway'));
   assert.ok(answer.compareDocumentPosition(task)&4,'orientation and answer precede exact-instruction inspection');
+});
+
+test('an accepted model response without optional telemetry reaches completed state without inventing diagnostics',async t=>{
+  const h=harness(t,request=>{const result=admitted(request);delete result.observations;return response(result);});
+  h.load(0);h.$('#aiRun').click();await h.settled();
+  assert.equal(h.ui.inspect().events.at(-1).phase,'completed');
+  assert.equal(Object.hasOwn(h.ui.inspect().events.at(-1),'observations'),false);
+  assert.equal(h.$('#aiExport').disabled,false);
+  assert.doesNotMatch(h.$('#aiStatus').textContent,/acyclic|held/i);
 });
