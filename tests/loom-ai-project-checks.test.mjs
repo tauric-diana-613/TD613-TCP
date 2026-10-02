@@ -21,6 +21,21 @@ test('bare numeric presence cannot masquerade as a correctly attributed total',(
   assert.equal(result.status,'needs_review');assert.ok(result.checks.every(check=>check.expected_numeric_presence));
   assert.ok(result.checks.every(check=>check.reported===null));
 });
+test('subscription subtotals cannot masquerade as twelve-month totals',()=>{
+  const answer='Vendor-A annual subscription cost: 109,440.00 credits. Vendor-B annual subscription cost: 126,720.00 credits.';
+  const result=assessLoomProjectAnswer('vendor-diligence',{answer});
+  assert.equal(result.status,'needs_review');
+  assert.equal(result.reported.vendor_a.value,null);
+  assert.equal(result.reported.vendor_b.value,null);
+  assert.ok(result.checks.every(check=>check.status==='not_found'));
+});
+test('explicit totals remain extractable when subscription components appear first',()=>{
+  const answer='Vendor-A annual subscription cost: 109,440.00 credits. Vendor-A total cost: 137,591.52 credits. Vendor-B annual subscription cost: 126,720.00 credits. Vendor-B total cost: 145,808.64 credits.';
+  const result=assessLoomProjectAnswer('vendor-diligence',{answer});
+  assert.equal(result.status,'matched');
+  assert.equal(result.reported.vendor_a.value,137591.52);
+  assert.equal(result.reported.vendor_b.value,145808.64);
+});
 test('incompatible totals within one answer remain ambiguous',()=>{
   const result=assessLoomProjectAnswer('vendor-diligence',{answer:'Vendor-A annual cost: 137,591.52 credits. Vendor-B annual cost: 145,808.64 credits. Vendor-A annual cost: 23,280 credits.'});
   assert.equal(result.status,'needs_review');assert.equal(result.reported.vendor_a.value,null);assert.deepEqual(result.reported.vendor_a.candidates,[137591.52,23280]);
