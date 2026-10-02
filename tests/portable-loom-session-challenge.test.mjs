@@ -10,7 +10,9 @@ import {
   createPortableLoomSession,
   createPortableLoomWorkUnit,
   admitPortableLoomWorkUnitResult,
-  inspectPortableLoomSession
+  inspectPortableLoomSession,
+  createPortableLoomSessionExport,
+  createPortableLoomSessionPrompt
 } from '../app/engine/portable-loom-session.js';
 import {
   createPortableLoomReceiverChallenge,
@@ -212,6 +214,30 @@ test('Portable Loom Session roots governance once and proceeding tasks inherit p
   assert.equal(inspection.policy_inheritance, 'INHERIT_BY_DEFAULT');
   assert.equal(inspection.policy_weakening, 'FRESH_SESSION_REQUIRED_V0_1');
   assert.equal(inspection.selected_sources_inherited_implicitly, false);
+});
+
+test('session export makes proceeding-task governance and receiver-turn receipts machine-readable', async()=>{
+  const { packet, session } = await sessionFixture();
+  const first = await createPortableLoomWorkUnit(session, {
+    work_unit_id: 'work_receipt',
+    request_id: 'request_receipt',
+    task: 'Prepare the next bounded task.',
+    documents: [{ id: 'requirements', name: 'Requirements.md', text: 'Retention must stay under 30 days.' }],
+    add_rules: [],
+    withheld_document_count: 2
+  }, environment);
+  const exported = await createPortableLoomSessionExport(first.session, packet, environment);
+  assert.equal(exported.receiver_turn_contract.schema,'td613.loom.portable-session-receiver-turn/v0.1');
+  assert.equal(exported.receiver_turn_contract.session_root_ref,first.session.root.ref);
+  assert.equal(exported.receiver_turn_contract.current_work_unit_ref,first.work_unit.ref);
+  assert.equal(exported.receiver_turn_contract.effective_policy_commitment,first.work_unit.policy.effective_policy_commitment);
+  assert.equal(exported.receiver_turn_contract.required_echo_fields.includes('used_document_ids'),true);
+  assert.match(exported.receiver_turn_contract.persistence_rule,/inherit the session root rules/);
+  assert.match(exported.receiver_turn_contract.weakening_rule,/Do not omit, relax, replace, or reinterpret/);
+  const prompt=createPortableLoomSessionPrompt(exported);
+  assert.match(prompt,/loom_session_receipt/);
+  assert.match(prompt,/receipt is a declaration for Loom to revalidate/);
+  assert.match(prompt,/do not describe the receipt itself as proof/i);
 });
 
 test('work-unit input has no policy-removal surface in v0.1', async()=>{
