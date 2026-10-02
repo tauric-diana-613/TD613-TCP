@@ -48,3 +48,10 @@ node scripts/run-portable-loom-reentry-dossier.mjs
 ```
 
 Receipts report observed SHA256 bytes and the source coordinate; historical working-tree receipts must not be silently relabeled final exact-source evidence. Approximately 390px is a simulated viewport, not a physical-device witness. CI includes returned-work hostile contracts and the rendered desktop/390px root route. Merge and deployment authority remain zero; #405 law is unchanged.
+
+
+## 2026-10-02 Chat-mode adversarial revalidation
+
+The ten answers above were rechecked after the attached-Challenge anti-erasure repair at exact application source `a9f89a980adeba30046acea2b13187a6b4d271cc`, tree `0c328a6ea42b45beef432909920647533b8cf849`. GitHub Actions run [37038296667](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/37038296667) completed success. The returned-work custody contracts reported **150/150**, and the CI-produced `td613.loom.reentry-browser-witness/v0.2` receipt reports PASS at **1280×900** and **390×844**, `application_matches_commit: true`, synthetic captures, and 0 live provider calls. This is CI-executed browser evidence, not a fresh independent browser witness by the Chat reviewer.
+
+The repair adds one exact HOLD rule to questions 3 and 9: an attached Challenge must already match a retained episode for the active excursion. Unregistered or anchor-only direct attachments cannot create an admission candidate. The prior 7f7008f/dbf1a763 evidence remains historical after the application-byte change. Merge/deployment authority remains zero and #405 is unchanged.
