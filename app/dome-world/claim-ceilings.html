@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script id="td613-sitewide-reset-preflight" src="/site-epoch-preflight.js?v=20260927-v1"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#06100d" />
+<meta name="td613-route" content="𝌋‌ U+10D613" />
+<meta name="claim-ceiling" content="evidence-class-specific-lift-with-higher-ceilings-preserved" />
+<title>TD613 · Claim Ceiling Observatory</title>
+<style>
+:root{
+  --bg:#06100d;--panel:#0b1b16;--panel2:#10251e;--text:#e8f0e5;--muted:#aebfb2;--dim:#71857a;
+  --cyan:#77e9d4;--gold:#e0c56f;--rose:#df91a0;--violet:#b6a0ef;--green:#9be38d;--line:rgba(200,235,214,.16);
+  --sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --serif:Iowan Old Style,Palatino Linotype,Book Antiqua,Georgia,serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{background:var(--bg);color:var(--text);font-family:var(--sans);-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;min-height:100vh;background:
+ radial-gradient(circle at 15% 5%,rgba(119,233,212,.11),transparent 28%),
+ radial-gradient(circle at 90% 10%,rgba(224,197,111,.09),transparent 25%),
+ linear-gradient(155deg,#06100d,#091913 56%,#070b09)}
+a{color:var(--cyan)}
+.wrap{width:min(1180px,calc(100% - 24px));margin:auto;padding:clamp(20px,4vw,46px) 0 70px}
+header{border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:22px}
+.kicker{font:700 .68rem/1.2 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+h1{margin:.25rem 0 .6rem;font:400 clamp(2.5rem,8vw,6.2rem)/.9 var(--serif);letter-spacing:-.055em;color:#fff8db}
+.lede{max-width:80ch;margin:0;color:var(--muted);line-height:1.65}
+.law{margin-top:18px;padding:12px 14px;border-left:2px solid var(--cyan);background:rgba(119,233,212,.045);font:650 .82rem/1.55 var(--mono);color:#c8e9df}
+.summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:22px 0}
+.summary>div{border:1px solid var(--line);background:rgba(10,29,23,.74);padding:14px}
+.summary b{display:block;font:400 2rem/1 var(--serif);color:#fff7d7}
+.summary small{display:block;margin-top:5px;font:.68rem/1.4 var(--mono);text-transform:uppercase;letter-spacing:.09em;color:var(--dim)}
+.grid{display:grid;gap:12px}
+.card{border:1px solid var(--line);background:linear-gradient(155deg,rgba(16,42,33,.88),rgba(7,21,17,.94));padding:16px;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}
+.card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.card h2{margin:0;font:500 clamp(1.25rem,3vw,1.8rem)/1.1 var(--serif);color:#fff8db}
+.state{flex:0 0 auto;border:1px solid currentColor;padding:5px 8px;font:700 .63rem/1 var(--mono);letter-spacing:.08em}
+.state[data-state="EARNED_BOUNDED"]{color:var(--green)}
+.state[data-state="SPLIT"]{color:var(--gold)}
+.state[data-state="HELD"]{color:var(--rose)}
+.row{display:grid;grid-template-columns:150px 1fr;gap:14px;border-top:1px solid rgba(255,255,255,.07);padding-top:11px;margin-top:11px}
+.row strong{font:700 .64rem/1.35 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--dim)}
+.row p{margin:0;color:#cedbd1;line-height:1.58}
+.evidence{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.evidence span{border:1px solid rgba(182,160,239,.18);padding:5px 7px;font:600 .64rem/1.25 var(--mono);color:#cdbff0;background:rgba(182,160,239,.045)}
+.roles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:14px}
+.role{border:1px solid rgba(255,255,255,.09);padding:10px;background:rgba(0,0,0,.14)}
+.role b{display:block;font:700 .63rem/1 var(--mono);letter-spacing:.08em;color:var(--cyan)}
+.role p{margin:7px 0 0;font-size:.78rem;line-height:1.45;color:var(--muted)}
+footer{margin-top:26px;padding-top:15px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:18px;color:var(--dim);font-size:.76rem}
+@media(max-width:800px){.summary{grid-template-columns:1fr}.roles{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr}.card-head{display:block}.state{display:inline-block;margin-top:8px}}
+@media(max-width:480px){.roles{grid-template-columns:1fr}.wrap{width:min(100%,calc(100% - 14px))}.card{padding:13px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header>
+  <div class="kicker">𝌋‌ Dollhouse / Claim Ceiling Observatory / ⟐</div>
+  <h1>Raise the ceiling.<br>Keep the witness.</h1>
+  <p class="lede">This surface records where TD613 has actually lifted an older claim ceiling, where a formerly broad ceiling now splits into separately earned and still-unresolved coordinates, and where the empirical boundary remains intact. A role finding can sharpen a claim; four matching roles never multiply evidence.</p>
+  <div class="law">READABLE CLAIM ≠ EVIDENCE CLASS · TD613 CUSTODY ANCESTRY ≠ FOREIGN ORIGIN · HISTORICAL DEVICE WITNESS ≠ CURRENT-BUILD DEVICE CLOSURE · DOLLHOUSE ROLE AGREEMENT ≠ EVIDENCE MULTIPLICATION</div>
+</header>
+
+<section class="summary" aria-label="Claim ceiling summary">
+  <div><b id="earnedCount">—</b><small>earned bounded coordinate</small></div>
+  <div><b id="splitCount">—</b><small>split / lifted in part</small></div>
+  <div><b id="heldCount">—</b><small>higher ceiling still held</small></div>
+</section>
+
+<section id="cards" class="grid" aria-live="polite"></section>
+
+<footer>
+  <span><a href="/dome-world/">← Dome-World</a></span>
+  <span>Human closure remains required. ⟐</span>
+</footer>
+</main>
+
+<script type="module">
+import {
+  CLAIM_CEILING_REGISTRY,
+  CLAIM_CEILING_STATES,
+  auditClaimCeilingRegistry,
+  claimCeilingSummary
+} from '/engine/dollhouse-claim-ceilings.js';
+
+const labels = {
+  [CLAIM_CEILING_STATES.EARNED_BOUNDED]: 'EARNED · BOUNDED',
+  [CLAIM_CEILING_STATES.SPLIT]: 'SPLIT · HIGHER CEILING',
+  [CLAIM_CEILING_STATES.HELD]: 'HELD · EMPIRICAL BOUNDARY'
+};
+
+const summary = claimCeilingSummary();
+document.querySelector('#earnedCount').textContent = summary.earned_bounded.length;
+document.querySelector('#splitCount').textContent = summary.split.length;
+document.querySelector('#heldCount').textContent = summary.held.length;
+
+const audit = auditClaimCeilingRegistry();
+const auditById = new Map(audit.entries.map(entry => [entry.id, entry]));
+
+function make(tag, text, className='') {
+  const el=document.createElement(tag);
+  if(className) el.className=className;
+  if(text!==undefined) el.textContent=text;
+  return el;
+}
+
+for (const item of CLAIM_CEILING_REGISTRY) {
+  const card=make('article',undefined,'card');
+  card.dataset.claimId=item.id;
+
+  const head=make('div',undefined,'card-head');
+  head.append(make('h2',item.prior_ceiling));
+  const state=make('span',labels[item.state],'state');
+  state.dataset.state=item.state;
+  head.append(state);
+  card.append(head);
+
+  for (const [label,value] of [
+    ['Earned coordinate',item.earned_coordinate],
+    ['Current higher ceiling',item.current_ceiling],
+    ['Next lawful witness',item.next_witness]
+  ]) {
+    const row=make('div',undefined,'row');
+    row.append(make('strong',label));
+    row.append(make('p',value));
+    card.append(row);
+  }
+
+  const evidenceWrap=make('div',undefined,'evidence');
+  for (const ev of item.evidence) {
+    const chip=make('span',`${ev.kind} · ${ev.ref}`);
+    chip.title=ev.note;
+    evidenceWrap.append(chip);
+  }
+  card.append(evidenceWrap);
+
+  const roles=make('div',undefined,'roles');
+  for (const finding of auditById.get(item.id).findings) {
+    const role=make('div',undefined,'role');
+    role.append(make('b',finding.role));
+    role.append(make('p',finding.finding));
+    roles.append(role);
+  }
+  card.append(roles);
+  document.querySelector('#cards').append(card);
+}
+</script>
+</body>
+</html>
