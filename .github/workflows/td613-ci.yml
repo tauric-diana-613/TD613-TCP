@@ -941,6 +941,7 @@ jobs:
       - name: Run bounded Marrowline handoff contracts
         if: steps.layout_scope.outputs.changed == 'true'
         run: |
+          node --check app/dome-world/marrowline-reading-surface.js
           node --test \
             tests/loom-task.test.mjs \
             tests/loom-ai-workspace-dom.test.mjs \
