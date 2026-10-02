@@ -12,6 +12,7 @@ import { validateShi } from '../khonapolit-covenant.js';
 import {
   createPortableLoomSession,
   createPortableLoomWorkUnit,
+  admitPortableLoomWorkUnitResult,
   createPortableLoomSessionExport,
   createPortableLoomSessionPrompt,
   inspectPortableLoomSession
@@ -159,7 +160,8 @@ export function mountLoomAiWorkspace(root, environment = window) {
   const issuanceReady = () => workspaceMode === 'demo' || currentShi().valid;
   function refreshTransferActions() {
     const awake = Boolean(acceptedTask) && issuanceReady() && !busy;
-    ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession'].forEach(id => { $(id).disabled = !awake; });
+    ['aiMarrowline','aiExport','aiCopy'].forEach(id => { $(id).disabled = !awake; });
+    ['aiExportSession','aiCopySession'].forEach(id => { $(id).disabled = !awake || !portableSessionExport; });
     $('aiPrepareChallenge').disabled = !awake || !portableSession || !portableWorkUnit;
     $('aiCopyChallenge').disabled = !challengeBundle || busy;
     $('aiVerifyChallenge').disabled = !challengeBundle || !$('aiChallengeReturn').value.trim() || busy;
@@ -368,6 +370,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
       if(!controlReturn.allowed||!inspection.allowed)throw new Error(`Reply held: ${inspection.reasons.map(r=>r.code).join(', ')}.`);
       if(currentVersion!==version)throw new Error('Workspace changed while the request was running. Prepare the current task again.');
       acceptedTask=shared;
+      await establishPortableSession(shared,{requestId,response:result});
       $('aiResultEyebrow').textContent='RETURNED THROUGH YOUR LOOM ROUTE';$('aiResult').setAttribute('aria-label','AI result');$('aiResultTitle').textContent='Here’s the work.';$('aiSubmittedTaskText').textContent=shared.task;$('aiSubmittedTask').hidden=false;resultView=renderLoomAiResult($('aiAnswer'),result,{selectedDocuments:shared.documents,documentNames:Object.fromEntries(shared.documents.map(d=>[d.id,d.name]))});resultView.setView($('aiAuditor').getAttribute('aria-pressed')==='true');
       const unchangedProject=LOOM_AI_PROJECTS.find(p=>p.task===shared.task&&JSON.stringify(p.rules)===JSON.stringify(shared.rules)&&JSON.stringify(p.documents.filter(d=>d.share).map(({id,name,text})=>({id,name,text})))===JSON.stringify(shared.documents));
       const quality=assessLoomProjectAnswer(unchangedProject?.id,result);
@@ -390,7 +393,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
       status(error.name==='AbortError'?(clientDeadlineExceeded?'No complete response arrived within 225 seconds. Your task is still here.':'Stopped waiting for this request. Material already submitted cannot be recalled.'):String(error.message).slice(0,300),true);
     }finally{if(!disposed)lock(false);}
   });
-  async function establishPortableSession(shared) {
+  async function establishPortableSession(shared,{requestId=null,response=null}={}) {
     portableSessionPacket = createPortableLoomAiPacket(shared);
     portableSession = await createPortableLoomSession(portableSessionPacket, {
       session_id: environment.crypto.randomUUID(),
@@ -399,7 +402,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     }, environment);
     const preparedUnit = await createPortableLoomWorkUnit(portableSession, {
       work_unit_id: 'work_1',
-      request_id: environment.crypto.randomUUID(),
+      request_id: requestId || environment.crypto.randomUUID(),
       task: shared.task,
       documents: shared.documents,
       add_rules: [],
@@ -407,6 +410,12 @@ export function mountLoomAiWorkspace(root, environment = window) {
     }, environment);
     portableSession = preparedUnit.session;
     portableWorkUnit = preparedUnit.work_unit;
+    if(response){
+      const admission=await admitPortableLoomWorkUnitResult(portableSession,portableWorkUnit,response,environment);
+      if(admission.status!=='ADMITTED')throw new Error('The accepted Flow-Core result could not be admitted into the Portable Loom Session.');
+      portableSession=admission.session;
+      portableWorkUnit=portableSession.work_units.at(-1);
+    }
     portableSessionExport = await createPortableLoomSessionExport(portableSession, portableSessionPacket, environment);
     const inspection = inspectPortableLoomSession(portableSession);
     $('aiSessionSummary').hidden=false;
