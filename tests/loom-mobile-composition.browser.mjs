@@ -126,23 +126,18 @@ try {
     const context = await browser.newContext({ viewport: posture.viewport, reducedMotion: posture.motion });
     const page = await bindPage(context, posture.name);
     try {
-      const arrival = await geometry(page, ['aiTask', 'aiPreparePortable', 'loomRulesOpen', 'loomBoundaryOpen', 'aiPortableMode', 'aiDemoMode', 'loomToolsOpen']);
+      const arrival = await geometry(page, ['loomBegin', 'aiTask', 'aiPreparePortable', 'loomRulesOpen', 'loomBoundaryOpen', 'aiPortableMode', 'aiDemoMode', 'loomToolsOpen']);
       const fieldGeometry = await page.locator('.loom-glyph-field').evaluate(node => {
         const r = node.getBoundingClientRect();
         return { x: r.x, y: r.y, width: r.width, height: r.height, bottom: r.bottom, right: r.right };
       });
-      if (posture.viewport.width === 390) {
-        record(`${posture.name}: Flow-Core remains a full-width instrument`,
-          fieldGeometry.width >= posture.viewport.width - 48 && fieldGeometry.height >= 200,
-          { viewport: posture.viewport, field: fieldGeometry });
-        record(`${posture.name}: task begins in the arrival viewport and Prepare remains within one natural scroll`,
-          arrival.controls.aiTask.y < arrival.viewport.height && arrival.controls.aiPreparePortable.y < arrival.viewport.height * 2,
-          arrival);
-      } else {
-        record(`${posture.name}: task and Prepare in first viewport`,
-          arrival.controls.aiTask.fully_in_view && arrival.controls.aiPreparePortable.fully_in_view,
-          arrival);
-      }
+      const stageGeometry = await page.locator('.loom-stage').evaluate(node => {
+        const r = node.getBoundingClientRect();
+        return { x: r.x, y: r.y, width: r.width, height: r.height, bottom: r.bottom, right: r.right };
+      });
+      record(`${posture.name}: Flow-Core owns the cinematic arrival scene`,
+        fieldGeometry.width >= posture.viewport.width - 2 && stageGeometry.height >= posture.viewport.height - 60 && arrival.controls.loomBegin.fully_in_view,
+        { viewport: posture.viewport, field: fieldGeometry, stage: stageGeometry, begin: arrival.controls.loomBegin });
       const bounds = await spill(page);
       record(`${posture.name}: no root or visible horizontal spill`, bounds.document_width <= posture.viewport.width && bounds.outside.length === 0, bounds);
       const targets=await tapTargets(page),small=targets.filter(target=>target.width<43.5||target.height<43.5);
@@ -151,6 +146,15 @@ try {
       const chooser = await page.locator('#aiProjectChoices').evaluate(node => ({ hidden: node.hidden, display: getComputedStyle(node).display, rect_count: node.getClientRects().length }));
       record(`${posture.name}: My work withholds Practice chooser`, chooser.hidden && chooser.display === 'none' && chooser.rect_count === 0, chooser);
       await screenshot(page, `${posture.name}-arrival`);
+
+      await page.locator('#loomBegin').click();
+      await page.waitForTimeout(posture.motion === 'reduce' ? 40 : 500);
+      const builderArrival = await geometry(page, ['aiTask', 'aiPreparePortable', 'loomToolsOpen']);
+      record(`${posture.name}: builder follows the cinematic scene without collapsing into it`,
+        builderArrival.controls.aiTask.y < builderArrival.viewport.height &&
+        builderArrival.controls.aiPreparePortable.y < builderArrival.viewport.height * 2,
+        builderArrival);
+      await screenshot(page, `${posture.name}-builder-arrival`);
 
       await page.locator('#loomToolsOpen').focus(); await page.keyboard.press('Enter');
       await page.locator('#loomTools').waitFor({ state: 'visible' });
@@ -172,6 +176,8 @@ try {
       // Deliberately use raw mouse events immediately after task entry. Locator
       // click's stability wait could mask a blur/pending-field layout defect.
       await page.locator('#aiTask').fill('Compare the fictional selected evidence and preserve every missing source.');
+      await page.locator('#aiPreparePortable').scrollIntoViewIfNeeded();
+      await nextPaint(page);
       const beforeClick = await geometry(page, ['aiTask', 'aiPreparePortable']);
       const point = beforeClick.controls.aiPreparePortable;
       await page.mouse.click(point.x + point.width / 2, point.y + point.height / 2);
