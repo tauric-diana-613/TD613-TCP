@@ -136,3 +136,11 @@ PR #1418 first exact head `9c9622feb450a275aa605bd393f247538debcf5c` passed stat
 The first live-provider response in an isolated headless browser used real production API transport and returned HTTP200 with a signed setup receipt. The ahead-of-server client rejected its input binding: an internal canonical v0.2 task literal had been renamed during public-language retirement, changing the derived digest. The literal is restored as a documented legacy wire derivation; public operator copy remains Loom. A frozen deployed-host derivation and a negative-control rename now protect compatibility. That failed attempt counts as failure demand and is not certified as a successful journey.
 
 All deployments remain routed exclusively through issue #405. No direct Vercel deployment was performed. Final provider/returned-state browser acceptance, exact-head GREEN, production bytes, stability and relock remain to be bound by the root after this repair.
+
+## Final live route and CI witness repair
+
+Exact application head b3e62c12df1bef993c0431d55d36ea5b030f421e completed the bounded live route: production API ACTIVATE, CONTINUE B, CONTINUE C all HTTP 200 completed. C used B as immediate content predecessor; selected material, rules, original task and full B/C bodies survived export and Return. Reload retained review-only material without reviving custody or requesting a model. Evidence class: local responsive browser with exact checkout static overrides and unchanged production API request/response transport relay; not served-production frontend, cloud mobile, physical iPhone or measured comprehension. Receipt: loom-live-b3e62c1/receipt.json.
+
+The next commit changes only test witness and this receipt; application runtime remains byte-identical to that live accepted head. Instrument route witness now passes desktop and 390px, 24 checks per posture. It opens current keyboard-accessible Tools panels instead of retired Rules drawers, closes them before primary actions, and uses Setup/Continue labels. Zero-send preparation, selected/local boundaries, immediate predecessor, latest exports, Lab review-only/stale HELD and ordinary chat separation remain protected. No additional provider calls were spent on this test-only repair.
+
+Merge and release remain conditional on exact-head CI GREEN. #405 is the sole production release lane.
