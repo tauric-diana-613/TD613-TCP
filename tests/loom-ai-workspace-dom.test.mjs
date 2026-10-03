@@ -63,7 +63,6 @@ function harness(t, responder=(request)=>response(admitted(request)), reduced=fa
   return {window,root,ui,$,calls,frames,change,load,upload,dispose,settled,submitted};
 }
 
-test('Loom transfer is the default mode and keeps comprehension plus local preparation open',async t=>{
 test('Loom opens on the human task and local preparation exposes the next route',async t=>{
   const h=harness(t);
   assert.equal(h.ui.inspect().mode,'portable');
