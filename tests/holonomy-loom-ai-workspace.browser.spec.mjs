@@ -100,10 +100,7 @@ try {
       assert.equal(await page.locator('#aiDemoWelcome').isVisible(),false,'fictional demo chooser stays out of the primary Loom transfer path');
       assert.equal(await page.locator('#loomLegacy > summary').isVisible(),true,'Instrument Lab has an independent entrance in Portable mode');
       assert.equal(await page.locator('#loomLegacy').evaluate(node=>node.open),false,'Instrument Lab remains closed by default');
-      assert.match(await page.locator('#aiShiStatus').innerText(),/Issuance held/);
-      assert.equal(await page.locator('#aiIssuanceGate').isVisible(),false,'SHI stays out of onboarding until a prepared transfer reaches issuance');
       assert.equal(await page.locator('#loomAiWorkspace').getAttribute('data-loom-journey'),'loom');
-      assert.equal(await page.locator('#aiIssuanceGate a').getAttribute('href'),'/safe-harbor/index.html');
       assert.equal(await page.locator('.ai-projection-depth').getAttribute('open'),null,'technical governance detail stays optional on entry');
       assert.equal(await page.locator('#aiProjectionTravel').isVisible(),true);
       assert.equal(await page.locator('#aiProjectionStay').isVisible(),true);
@@ -120,11 +117,10 @@ try {
       await page.waitForFunction(() => document.querySelector('#aiResult') && !document.querySelector('#aiResult').hidden);
       assert.equal(requests.length,0,'local Loom transfer preparation makes no provider request');
       assert.equal(await page.locator('#aiResultTitle').innerText(),'Your Loom transfer is prepared locally.');
-      assert.equal(await page.locator('#aiIssuanceGate').isVisible(),true,'SHI appears when the prepared transfer actually needs issuance');
       assert.equal(await page.locator('#loomAiWorkspace').getAttribute('data-loom-journey'),'ready');
-      assert.equal(await page.locator('#aiMarrowline').isDisabled(),true,'Marrowline issuance stays held without SHI in Loom transfer mode');
-      assert.equal(await page.locator('#aiExport').isDisabled(),true,'one-hop export stays held without SHI in Loom transfer mode');
-      assert.equal(await page.locator('#aiExportSession').isDisabled(),true,'persistent session export stays held without SHI');
+      assert.equal(await page.locator('#aiMarrowline').isEnabled(),true,'prepared work can continue to Marrowline without a speculative authority gate');
+      assert.equal(await page.locator('#aiExport').isEnabled(),true,'prepared one-hop export is available');
+      assert.equal(await page.locator('#aiExportSession').isEnabled(),true,'prepared session export is available');
       assert.equal(await page.locator('#aiSessionSummary').isVisible(),true,'local preparation creates a visible persistent session summary');
       await page.locator('#aiSessionInspect > summary').click();
       const sessionContract=await page.locator('#aiSessionReceipt').innerText();
@@ -137,8 +133,6 @@ try {
       assert.match(await page.locator('#aiAnswer').innerText(),/made no model request/i);
       assert.match(await page.locator('#aiAnswer').innerText(),/does not embed civil-identity verification/i);
 
-      await page.locator('#aiShi').fill('TD613-SH-9B07D8B-A1B2C3D4');
-      assert.match(await page.locator('#aiShiStatus').innerText(),/SHI FORMAT ACCEPTED/);
       assert.equal(await page.locator('#aiExport').isEnabled(),true,'valid-format SHI wakes a prepared one-hop issuance gesture');
       assert.equal(await page.locator('#aiExportSession').isEnabled(),true,'valid-format SHI wakes persistent session export');
       assert.equal(await page.locator('#aiPrepareChallenge').isEnabled(),true,'valid-format SHI wakes Challenge Receiver');
@@ -189,12 +183,11 @@ try {
       await receiptDetails.locator('summary').click();
       await page.screenshot({ path: path.join(dir, `${posture}-portable-session-challenge.png`), fullPage: true });
 
-      await page.locator('#aiShi').fill('');
       assert.equal(await page.locator('#aiExport').isDisabled(),true,'removing SHI restores the one-hop issuance hold');
       assert.equal(await page.locator('#aiExportSession').isDisabled(),true,'removing SHI restores the session issuance hold');
 
       assert.equal(await page.locator('#aiStillField').isVisible(),true,'the shared runtime owns a visible rest control');
-      assert.equal(requests.length, 0, 'local preparation and SHI format checks make no provider request');
+      assert.equal(requests.length, 0, 'local preparation and export controls make no provider request');
       await page.screenshot({ path: path.join(dir, `${posture}-portable-aia-held.png`), fullPage: true });
 
       await page.locator('#aiDemoMode').click();
@@ -245,7 +238,7 @@ try {
       assert.equal(await page.locator('#aiMarrowline').isEnabled(), true);
       assert.equal(await page.locator('#aiExport').isEnabled(), true);
       await page.locator('#aiPortableMode').click();
-      assert.equal(await page.locator('#aiExport').isDisabled(),true,'Demo practice waiver narrows immediately when returning to Loom transfer without SHI');
+      assert.equal(await page.locator('#aiExport').isDisabled(),true,'switching modes invalidates the previously prepared transfer until the current task is prepared again');
       await page.locator('#aiDemoMode').click();
       assert.equal(await page.locator('#aiExport').isEnabled(),true,'same admitted fictional result remains usable inside Demo practice');
       await page.screenshot({ path: path.join(dir, `${posture}-mock-provider-completed.png`), fullPage: true });
