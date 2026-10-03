@@ -261,16 +261,20 @@ test('saved review bypasses fresh practice on reload without completion or local
   assert.equal(h.requests.length, 0);
 });
 
-test('first use can inspect local material, pause, and leave without completion or custody', async t => {
+
+test('first use explains local material, remixes presentation, and leaves without completion or custody', async t => {
   const h = practiceHarness(t);
   assert.equal(h.root.dataset.firstCrossing, 'active');
-  h.$('#loomFirstCrossingPrivate').click();
-  assert.equal(h.$('#loomFirstCrossingPrivateText').hidden, false);
-  assert.match(h.$('#loomFirstCrossingPrivateText').textContent, /Fictional private scrap/);
-  assert.equal(h.$('#loomFirstCrossingPrivate').hasAttribute('aria-pressed'), false);
+  const privateNote=h.$('#loomFirstCrossingPrivate');
+  assert.equal(privateNote.tagName,'DIV');
+  assert.equal(privateNote.getAttribute('role'),'note');
+  assert.match(privateNote.textContent,/Private note/);
+  assert.match(privateNote.textContent,/Stays out of the AI handoff/);
+  assert.equal(privateNote.hasAttribute('aria-pressed'), false);
+  const before=h.$('#loomFlowcoreMessage').textContent;
   h.$('#loomFirstCrossingPause').click();
-  assert.equal(h.$('#loomFirstCrossingPause').getAttribute('aria-pressed'), 'true');
-  assert.equal(h.ui.inspect().clock.playing, false);
+  assert.notEqual(h.$('#loomFlowcoreMessage').textContent,before,'𝌋 selects a different coherent score');
+  assert.match(h.$('#loomFirstCrossingPause').getAttribute('aria-label'),/Remix Flow-Core choreography/);
   h.$('#loomFirstCrossingLeave').click();
   await until(() => !h.$('.loom-builder-shell').hidden, 'explicit entry to own work');
   assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), null, 'leaving unfinished practice grants no completion');
@@ -278,7 +282,8 @@ test('first use can inspect local material, pause, and leave without completion 
   assert.equal(h.requests.length, 0);
 });
 
-test('selection and readiness require their own published local consequences', async t => {
+
+test('selection and readiness publish consequences before naming the Flow-Core relation', async t => {
   const h = practiceHarness(t);
   h.$('[data-first-crossing-item="brief"]').click();
   await until(() => h.ui.inspect().runtime.view?.event.shared === 1, 'one-source canonical projection');
@@ -289,7 +294,8 @@ test('selection and readiness require their own published local consequences', a
   assert.equal(h.$('#loomFirstCrossingAction').hidden, true, 'new relation stays unnamed while its async projection compiles');
   await until(() => !h.$('#loomFirstCrossingAction').hidden, 'published gathering consequence');
   assert.equal(h.ui.inspect().runtime.view.active_relation, 'gathering');
-  assert.match(h.$('#loomFirstCrossingPrompt').textContent, /à/);
+  assert.doesNotMatch(h.$('#loomFirstCrossingPrompt').textContent, /à/, 'consumer copy leads with consequence, not ontology');
+  assert.match(h.$('.loom-flowcore-legend').textContent,/à/);
   h.$('#loomFirstCrossingAction').click();
   assert.equal(h.$('#loomFirstCrossingStop').hidden, true, 'binding begins without claiming readiness');
   await until(() => !h.$('#loomFirstCrossingStop').hidden, 'published readiness after real binding');
@@ -300,7 +306,8 @@ test('selection and readiness require their own published local consequences', a
   assert.equal(ready.event.local, 1);
   assert.equal(ready.event.outbound_submitted, false);
   assert.equal(ready.event.response_received, false);
-  assert.match(h.$('#loomFirstCrossingPrompt').textContent, /上/);
+  assert.doesNotMatch(h.$('#loomFirstCrossingPrompt').textContent, /上/, 'readiness consequence remains consumer-legible before glyph naming');
+  assert.match(h.$('.loom-flowcore-legend').textContent,/上/);
   assert.equal(h.ui.inspect().session, null);
   assert.equal(h.requests.length, 0);
   assert.equal(h.ui.inspect().clock.pendingFrames, 0, 'reduced motion publishes the equivalent consequence without animation frames');
@@ -338,7 +345,8 @@ test('leaving during an async practice binding prevents late completion or scene
   assert.equal(h.requests.length, 0);
 });
 
-test('replayed practice readiness preserves an existing real Loom root and prepared export', async t => {
+
+test('How it works replay preserves an existing real Loom root and prepared export', async t => {
   const h = practiceHarness(t);
   h.$('#loomFirstCrossingLeave').click();
   await until(() => !h.$('.loom-builder-shell').hidden, 'real builder');
@@ -350,7 +358,7 @@ test('replayed practice readiness preserves an existing real Loom root and prepa
   const originalSession = h.ui.inspect().session;
   const originalExport = h.$('#aiSessionReceipt').textContent;
   h.$('#loomReturnThreshold').click();
-  h.$('#loomReplayFirstCrossing').click();
+  assert.equal(h.root.dataset.firstCrossing,'active','How it works enters the replay directly');
   h.$('[data-first-crossing-item="brief"]').click();
   h.$('[data-first-crossing-item="source"]').click();
   await until(() => !h.$('#loomFirstCrossingAction').hidden, 'replayed gathering');
@@ -365,7 +373,8 @@ test('replayed practice readiness preserves an existing real Loom root and prepa
   assert.equal(h.requests.length, 0);
 });
 
-test('completed First Crossing replay restarts selection in one deliberate gesture', async t => {
+
+test('completed First Crossing reopens from How it works in one deliberate gesture', async t => {
   const h = practiceHarness(t);
   async function finishPractice() {
     h.$('[data-first-crossing-item="brief"]').click();
@@ -377,17 +386,16 @@ test('completed First Crossing replay restarts selection in one deliberate gestu
     assert.equal(h.root.dataset.firstCrossingCue, 'complete');
   }
   await finishPractice();
-  h.$('#loomReplayFirstCrossing').click();
-  assert.equal(h.root.dataset.firstCrossingStep, '0');
-  await finishPractice();
-  assert.match(h.$('#loomReplayFirstCrossing').textContent, /Replay First Crossing/);
-  h.$('#loomReplayFirstCrossing').click();
-  assert.equal(h.root.dataset.firstCrossing, 'active', 'the advertised replay gesture starts practice immediately');
+  assert.equal(h.$('#loomBegin').hidden,false,'completion exposes the live Loom CTA');
+  assert.equal(h.$('#loomReplayFirstCrossing').hidden,true,'replay no longer floats over the completed membrane');
+  h.$('#loomBegin').click();
+  await until(() => !h.$('.loom-builder-shell').hidden,'live builder');
+  h.$('#loomReturnThreshold').click();
+  assert.equal(h.root.dataset.firstCrossing, 'active', 'How it works starts replay immediately');
   assert.equal(h.root.dataset.firstCrossingStep, '0');
   assert.equal(h.root.dataset.firstCrossingCue, 'choose');
   assert.equal(h.$('#loomFirstCrossing').hidden, false);
   assert.equal(h.$('#loomThresholdGate').hidden, true);
-  assert.match(h.$('#loomReplayFirstCrossing').textContent, /Exit replay/);
   for (const item of h.root.querySelectorAll('[data-first-crossing-item]')) {
     assert.equal(item.getAttribute('aria-pressed'), 'false', 'a fresh replay carries no prior selection');
     assert.equal(item.disabled, false);
