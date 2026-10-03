@@ -49,7 +49,6 @@ export function mountLoomAiWorkspace(root, environment = window) {
   if (!root) return;
   root.innerHTML = loomWorkspaceTemplate;
   const $ = id => root.querySelector(`#${id}`);
-  $('loomBegin')?.addEventListener('click', () => $('loomBuilder')?.scrollIntoView({ behavior: environment.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ? 'auto' : 'smooth', block: 'start' }));
   const lines = id => $(id).value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
   let activeWorkspace = 'build', marrowlineChild = null;
   function openWorkspace(name, {focus=false}={}) {
@@ -113,7 +112,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
       $('aiChallengeCanary').focus(); refreshTransferActions();
     }
   });
-  const returnedReview=mountReturnedSessionReview($('loomReturnedSessionReview'), {environment,getOrigin:()=>acceptedTask,getChild:()=>marrowlineChild,getProtectedTerms:()=>lines('aiPrivate'),onReview:()=>openWorkspace('return',{focus:true})});
+  const returnedReview=mountReturnedSessionReview($('loomReturnedSessionReview'), {environment,getOrigin:()=>acceptedTask,getChild:()=>marrowlineChild,getProtectedTerms:()=>lines('aiPrivate'),onReview:review=>openReturnedReviewScene(review)});
   let routeFacts = {outbound_submitted:false,response_received:false,binding_verified:false};
   root.dataset.loomJourney = 'loom';
   root.dataset.flowPhase = 'prepared';
@@ -128,6 +127,21 @@ export function mountLoomAiWorkspace(root, environment = window) {
   const coordinator = new AnimationCoordinator({ durationMs: 4000, maxFps: 60, onState: state => { root.dataset.pendingFrames = String(state.pendingFrames); } });
   coordinator.setContinuous(false);
   const invitation = $('aiDemoInvitation');
+  const FIRST_CROSSING_KEY = 'td613.loom.first-crossing.v1';
+  let thresholdObservation = null;
+  let firstCrossingActive = false;
+  let firstCrossingStep = 0;
+  let firstCrossingEvents = [];
+  let firstCrossingPacket = null;
+  let firstCrossingSelected = new Set();
+  let firstCrossingWasAlreadyComplete = false;
+  let firstCrossingReplayMode = false;
+  let thresholdTimers = [];
+  const thresholdStage = root.querySelector('.loom-stage');
+  const builderShell = root.querySelector('.loom-builder-shell');
+  const firstCrossingItems = [...root.querySelectorAll('[data-first-crossing-item]')];
+  const storageRead = key => { try { return environment.localStorage?.getItem(key) ?? null; } catch { return null; } };
+  const storageWrite = (key,value) => { try { environment.localStorage?.setItem(key,value); } catch {} };
   function refreshTransferActions() {
     const activeRecord=reentry.getRecord(),active=activeRecord?.session;
     $('aiNewRootNotice').hidden=!active;
@@ -218,7 +232,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   environment.document.addEventListener('visibilitychange', visibility);
   const runtime = mountLoomRuntimeStateView($('aiRuntimeState'), {
     environment, coordinator, compatibilityHost: $('aiLivingRoom'), inspectionContent: $('aiRuntimeInspection'),
-    observe: () => ({ events: [...events], replay: { index: replayIndex },
+    observe: () => thresholdObservation ?? ({ events: [...events], replay: { index: replayIndex },
       source_revision: portableSession?.source_revision || 'browser-unpinned' })
   });
   // Deep technical inspection belongs in the session workspace. The endpoint
@@ -267,6 +281,213 @@ export function mountLoomAiWorkspace(root, environment = window) {
     showPacket(lastPacket);
     $('loomRulesOpen').textContent=`Rules · ${lines('aiRules').length}`;
   }
+
+  function openReturnedReviewScene(review){
+    const bypassThreshold=review?.source==='OPENER_RETURN'||environment.location.hash==='#return-review';
+    if(bypassThreshold){
+      clearThresholdTimers();
+      firstCrossingActive=false;
+      firstCrossingReplayMode=false;
+      thresholdObservation=null;
+      root.dataset.firstCrossing='idle';
+      root.dataset.thresholdState='open';
+      root.dataset.thresholdBeat='0';
+      thresholdStage.hidden=true;
+      builderShell.hidden=false;
+      $('loomFirstCrossing').hidden=true;
+      $('loomThresholdGate').hidden=false;
+      $('loomReplayFirstCrossing').hidden=false;
+    }
+    openWorkspace('return',{focus:bypassThreshold});
+  }
+  function clearThresholdTimers(){
+    thresholdTimers.forEach(timer=>environment.clearTimeout(timer));
+    thresholdTimers=[];
+  }
+  function firstCrossingEvent(phase, extra={}){
+    const selected=[...firstCrossingSelected].filter(id=>id!=='private').sort();
+    return {
+      phase,
+      task_present: selected.length>0,
+      selected_document_ids:selected,
+      shared:selected.length,
+      local:1,
+      rules_count:1,
+      outbound_submitted:false,
+      response_received:false,
+      binding_verified:false,
+      at:new Date().toISOString(),
+      ...extra
+    };
+  }
+  function projectFirstCrossing(event,{rest=false}={}){
+    if(!firstCrossingActive)return;
+    firstCrossingEvents.push(event);
+    firstCrossingEvents=firstCrossingEvents.slice(-12);
+    const packet=projectLoomRequestEvent(event);
+    packet.scene={
+      ...packet.scene,
+      id:`first-crossing-${event.phase}-${firstCrossingEvents.length}`,
+      project_title:'First Crossing',
+      rules_count:1,
+      documents:[
+        {id:'brief',name:'Short brief',share:firstCrossingSelected.has('brief')},
+        {id:'source',name:'Public source',share:firstCrossingSelected.has('source')},
+        {id:'private',name:'Private scrap',share:false}
+      ]
+    };
+    packet.geometry={...packet.geometry,rest};
+    thresholdObservation={events:[...firstCrossingEvents],replay:{index:null},source_revision:'browser-unpinned'};
+    firstCrossingPacket=packet;
+    coordinator.setPacket(packet);
+    coordinator.setContinuous(!rest);
+    return packet;
+  }
+  function renderFirstCrossingSelection(){
+    for(const button of firstCrossingItems){
+      const id=button.dataset.firstCrossingItem;
+      button.setAttribute('aria-pressed',String(firstCrossingSelected.has(id)));
+      button.dataset.held=String(id==='private'&&!firstCrossingSelected.has('private'));
+    }
+  }
+  function restoreThresholdField(){
+    firstCrossingActive=false;
+    firstCrossingReplayMode=false;
+    firstCrossingStep=0;
+    firstCrossingEvents=[];
+    firstCrossingPacket=null;
+    firstCrossingSelected=new Set();
+    thresholdObservation=null;
+    root.dataset.firstCrossing='idle';
+    $('loomFirstCrossing').hidden=true;
+    $('loomThresholdGate').hidden=false;
+    $('loomReplayFirstCrossing').hidden=false;
+    $('loomReplayFirstCrossing').textContent='↻ First Crossing';
+    $('loomBegin').hidden=false;
+    firstCrossingItems.forEach(button=>{button.disabled=false;button.setAttribute('aria-pressed','false');delete button.dataset.held;});
+    $('loomFirstCrossingAction').hidden=false;
+    $('loomFirstCrossingStop').hidden=true;
+    if(lastPacket)showPacket(lastPacket);
+  }
+  function completeFirstCrossing(){
+    firstCrossingStep=3;
+    firstCrossingWasAlreadyComplete=true;
+    storageWrite(FIRST_CROSSING_KEY,'complete');
+    $('loomFirstCrossingTitle').textContent='Prepared is not transmitted.';
+    $('loomFirstCrossingPrompt').textContent='You gathered what should travel, kept one thing local, and created readiness without sending anything.';
+    $('loomFirstCrossingAnswer').textContent='First Crossing complete · à gathered · cōl stayed protected · 上 created readiness. Nothing crossed.';
+    $('loomFirstCrossingAction').hidden=true;
+    $('loomFirstCrossingStop').hidden=true;
+    $('loomBegin').hidden=false;
+    $('loomReplayFirstCrossing').hidden=false;
+    $('loomReplayFirstCrossing').textContent='↻ Replay First Crossing';
+    if(firstCrossingPacket){
+      firstCrossingPacket={...firstCrossingPacket,scene:{...firstCrossingPacket.scene,id:'first-crossing-rest'},geometry:{...firstCrossingPacket.geometry,rest:true}};
+      coordinator.setPacket(firstCrossingPacket,{animate:false});
+      coordinator.setContinuous(false);
+    }
+  }
+  function startFirstCrossing({replay=false}={}){
+    clearThresholdTimers();
+    firstCrossingWasAlreadyComplete=firstCrossingWasAlreadyComplete||storageRead(FIRST_CROSSING_KEY)==='complete';
+    firstCrossingReplayMode=Boolean(replay);
+    firstCrossingActive=true;
+    firstCrossingStep=0;
+    firstCrossingEvents=[];
+    firstCrossingPacket=null;
+    firstCrossingSelected=new Set();
+    root.dataset.firstCrossing='active';
+    root.dataset.thresholdState='closed';
+    thresholdStage.hidden=false;
+    builderShell.hidden=true;
+    $('loomThresholdGate').hidden=true;
+    $('loomFirstCrossing').hidden=false;
+    $('loomBegin').hidden=true;
+    $('loomReplayFirstCrossing').hidden=!firstCrossingWasAlreadyComplete;
+    $('loomReplayFirstCrossing').textContent=replay?'Exit replay':'↻ First Crossing';
+    $('loomFirstCrossingTitle').textContent='Choose what travels.';
+    $('loomFirstCrossingPrompt').textContent='Two pieces belong in the crossing. One should stay with you.';
+    $('loomFirstCrossingAnswer').textContent='NOTICE · nothing has moved yet.';
+    $('loomFirstCrossingAction').hidden=false;
+    $('loomFirstCrossingAction').textContent='Gather the two that should travel';
+    $('loomFirstCrossingStop').hidden=true;
+    firstCrossingItems.forEach(button=>{button.disabled=false;button.setAttribute('aria-pressed','false');delete button.dataset.held;});
+    const neutral=firstCrossingEvent('prepared');
+    const packet=projectLoomRequestEvent(neutral);
+    packet.scene={...packet.scene,id:'first-crossing-notice',project_title:'First Crossing',rules_count:1};
+    packet.geometry={...packet.geometry,rest:true};
+    thresholdObservation={events:[],replay:{index:null},source_revision:'browser-unpinned'};
+    coordinator.setPacket(packet,{animate:false});
+    $('loomFirstCrossing').focus?.({preventScroll:true});
+  }
+  function actFirstCrossing(){
+    if(!firstCrossingActive)return;
+    if(firstCrossingStep===0){
+      const correct=firstCrossingSelected.has('brief')&&firstCrossingSelected.has('source')&&!firstCrossingSelected.has('private')&&firstCrossingSelected.size===2;
+      if(!correct){
+        $('loomFirstCrossingAnswer').textContent=firstCrossingSelected.has('private')
+          ? 'That would send something unnecessary. Leave the private scrap here.'
+          : 'The next reader needs both the brief and the source. Try gathering those two.';
+        return;
+      }
+      firstCrossingStep=1;
+      firstCrossingItems.forEach(button=>button.disabled=true);
+      projectFirstCrossing(firstCrossingEvent('prepared'));
+      $('loomFirstCrossingTitle').textContent='They gathered. Nothing crossed.';
+      $('loomFirstCrossingPrompt').textContent='à names the gathering. cōl remains evidenced because the private scrap is still here and inspectable.';
+      $('loomFirstCrossingAnswer').textContent='WORLD ANSWERS → NAME · selection changed the local route; transmission did not occur.';
+      $('loomFirstCrossingAction').textContent='Create readiness locally →';
+      return;
+    }
+    if(firstCrossingStep===1){
+      firstCrossingStep=2;
+      projectFirstCrossing(firstCrossingEvent('checking',{binding_verified:true}));
+      $('loomFirstCrossingTitle').textContent='Ready is not sent.';
+      $('loomFirstCrossingPrompt').textContent='上 names created potential: local work made the packet ready. The private scrap still stays here.';
+      $('loomFirstCrossingAnswer').textContent='No provider call occurred. Preparation ≠ transmission.';
+      $('loomFirstCrossingAction').hidden=true;
+      $('loomFirstCrossingStop').hidden=false;
+      $('loomFirstCrossingStop').textContent='Stop before sending →';
+    }
+  }
+  function openLoomThreshold(){
+    if(!firstCrossingWasAlreadyComplete&&storageRead(FIRST_CROSSING_KEY)!=='complete'){
+      if(!firstCrossingActive)startFirstCrossing();
+      return;
+    }
+    if(firstCrossingActive)restoreThresholdField();
+    clearThresholdTimers();
+    builderShell.hidden=true;
+    thresholdStage.hidden=false;
+    root.dataset.thresholdState='opening';
+    root.dataset.thresholdBeat='1';
+    const reduced=environment.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches===true;
+    const schedule=(delay,fn)=>{const timer=environment.setTimeout(fn,delay);thresholdTimers.push(timer);};
+    if(reduced){
+      schedule(20,()=>{root.dataset.thresholdState='open';root.dataset.thresholdBeat='0';thresholdStage.hidden=true;builderShell.hidden=false;$('aiTask').focus?.({preventScroll:true});});
+      return;
+    }
+    schedule(150,()=>{root.dataset.thresholdBeat='2';});
+    schedule(330,()=>{root.dataset.thresholdBeat='3';});
+    schedule(560,()=>{
+      root.dataset.thresholdState='open';root.dataset.thresholdBeat='0';
+      thresholdStage.hidden=true;builderShell.hidden=false;
+      builderShell.scrollIntoView?.({block:'start',behavior:'auto'});
+      $('aiTask').focus?.({preventScroll:true});
+    });
+  }
+  function returnToThreshold(){
+    clearThresholdTimers();
+    builderShell.hidden=true;
+    thresholdStage.hidden=false;
+    root.dataset.thresholdState='closed';
+    root.dataset.thresholdBeat='0';
+    restoreThresholdField();
+    thresholdStage.scrollIntoView?.({block:'start',behavior:'auto'});
+    $('loomBegin').focus?.({preventScroll:true});
+    visibility();
+  }
+
   function invalidate(){
     setJourney('loom');
     newRootAcknowledgedRecord=null;$('aiNewRootConfirm').checked=false;
@@ -566,15 +787,38 @@ export function mountLoomAiWorkspace(root, environment = window) {
   $('aiRoomLive').addEventListener('click',()=>{replayIndex=null;replayControls();if(lastPacket)showPacket(lastPacket);});
   $('aiPortableMode').addEventListener('click',()=>setMode('portable'));
   $('aiDemoMode').addEventListener('click',()=>setMode('demo'));
+  firstCrossingItems.forEach(button=>button.addEventListener('click',()=>{
+    if(!firstCrossingActive||firstCrossingStep!==0)return;
+    const id=button.dataset.firstCrossingItem;
+    if(firstCrossingSelected.has(id))firstCrossingSelected.delete(id);else firstCrossingSelected.add(id);
+    renderFirstCrossingSelection();
+    $('loomFirstCrossingAnswer').textContent='ACT · your selection changed locally. Nothing has crossed.';
+  }));
+  $('loomFirstCrossingAction').addEventListener('click',actFirstCrossing);
+  $('loomFirstCrossingStop').addEventListener('click',()=>{if(firstCrossingActive&&firstCrossingStep===2)completeFirstCrossing();});
+  $('loomReplayFirstCrossing').addEventListener('click',()=>{
+    if(firstCrossingActive&&firstCrossingReplayMode){restoreThresholdField();return;}
+    startFirstCrossing({replay:true});
+  });
+  $('loomBegin').addEventListener('click',openLoomThreshold);
+  $('loomReturnThreshold').addEventListener('click',returnToThreshold);
+
   load(null);
   setMode('portable',{announce:false});
   status('Loom session mode. Prepare locally, then choose where the prepared work crosses.');
   // A local entrance gesture has no request or evidence authority. It settles
   // after four seconds; subsequent packets retain their actual rest posture.
   coordinator.setPacket({ ...lastPacket, scene: { ...lastPacket.scene, id: 'ai-welcome' }, geometry: { rest: !$('aiTask').value.trim() }, presentation: { welcome: true } });
+  root.dataset.thresholdState='closed';
+  root.dataset.thresholdBeat='0';
+  thresholdStage.hidden=false;
+  builderShell.hidden=true;
+  firstCrossingWasAlreadyComplete=storageRead(FIRST_CROSSING_KEY)==='complete';
+  if(firstCrossingWasAlreadyComplete)restoreThresholdField();
+  else startFirstCrossing();
   visibility();
   environment.document.documentElement.dataset.loomBoot='ready';
-  const dispose=()=>{disposed=true;stageObserver?.disconnect();returnedReview.dispose();marrowlineChild=null;reentry.dispose();if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();runtime.dispose();coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);delete environment.document.documentElement.dataset.loomJourney;delete environment.document.documentElement.dataset.loomFlowPhase;};
+  const dispose=()=>{disposed=true;clearThresholdTimers();stageObserver?.disconnect();returnedReview.dispose();marrowlineChild=null;reentry.dispose();if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();runtime.dispose();coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);delete environment.document.documentElement.dataset.loomJourney;delete environment.document.documentElement.dataset.loomFlowPhase;};
   environment.addEventListener('pagehide',dispose,{once:true});return {dispose,inspect:()=>({mode:workspaceMode,session:portableSession?inspectPortableLoomSession(portableSession):null,turn_receipt:turnReceiptVerification?{status:turnReceiptVerification.status,ref:turnReceiptVerification.ref}:null,challenge:challengeVerification?{status:challengeVerification.status,ref:challengeVerification.ref}:null,events:[...events],clock:coordinator.inspect(),replay:{index:replayIndex,count:sceneHistory.length},runtime:runtime.inspect(),geometry:null})};
 }
 if(typeof document!=='undefined')mountLoomAiWorkspace(document.querySelector('#loomAiWorkspace'));

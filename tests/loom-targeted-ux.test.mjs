@@ -32,7 +32,8 @@ test('cinematic route field and builder are separate scenes while advanced tools
   assert.ok(stage.compareDocumentPosition(builderShell) & doc.defaultView.Node.DOCUMENT_POSITION_FOLLOWING);
   assert.ok(doc.querySelector('#loomBegin'));
   assert.deepEqual([...doc.querySelectorAll('.loom-journey-step strong')].map(node => node.textContent), ['Loom', 'Marrowline', 'Return']);
-  assert.equal(doc.querySelector('#loomBuilder').hidden, false);
+  assert.equal(builderShell.hidden, true, 'Threshold withholds the builder until the crossing gesture');
+  assert.equal(doc.querySelector('#loomBuilder').hidden, false, 'the builder content itself remains intact behind the Threshold');
   assert.equal(doc.querySelector('#aiResult').hidden, true);
   assert.equal(doc.querySelector('#loomReturnWorkspace').hidden, true);
   assert.equal(doc.querySelectorAll('#loomBuilder > details,#aiResult > details').length, 0);
@@ -41,6 +42,29 @@ test('cinematic route field and builder are separate scenes while advanced tools
   }
   assert.match(workspaceSource, /root\.innerHTML\s*=\s*loomWorkspaceTemplate/);
   assert.match(product, /#loomAiWorkspace \.loom-stage\{[\s\S]*?height:calc\(100svh - 52px\)/);
+});
+
+test('Threshold gates Loom while First Crossing remains local, replayable, and grammar-bound', () => {
+  const doc = new JSDOM(loomWorkspaceTemplate).window.document;
+  assert.equal(doc.querySelector('.loom-builder-shell').hidden, true);
+  for (const id of ['loomBegin','loomReturnThreshold','loomFirstCrossing','loomFirstCrossingAction','loomFirstCrossingStop','loomReplayFirstCrossing']) {
+    assert.ok(doc.querySelector(`#${id}`), `Threshold control exists: ${id}`);
+  }
+  assert.equal(doc.querySelectorAll('[data-first-crossing-item]').length, 3);
+  assert.match(workspaceSource, /FIRST_CROSSING_KEY = 'td613\.loom\.first-crossing\.v1'/);
+  assert.match(workspaceSource, /outbound_submitted:false,[\s\S]{0,120}response_received:false/);
+  assert.match(workspaceSource, /First Crossing complete · à gathered · cōl stayed protected · 上 created readiness\. Nothing crossed\./);
+  assert.match(workspaceSource, /root\.dataset\.thresholdState='opening'/);
+  assert.match(workspaceSource, /root\.dataset\.thresholdBeat='3'/);
+  assert.doesNotMatch(workspaceSource, /firstCrossing[\s\S]{0,1200}(?:fetch\s*\(|provider_call_authorized\s*:\s*true)/);
+});
+
+test('Phase 3 return bypasses the entrance Threshold without completing onboarding', () => {
+  assert.match(workspaceSource, /review\?\.source==='OPENER_RETURN'\|\|environment\.location\.hash==='#return-review'/);
+  assert.match(workspaceSource, /root\.dataset\.thresholdState='open'/);
+  assert.match(workspaceSource, /thresholdStage\.hidden=true;[\s\S]{0,120}builderShell\.hidden=false/);
+  assert.match(workspaceSource, /openWorkspace\('return',\{focus:bypassThreshold\}\)/);
+  assert.doesNotMatch(workspaceSource, /openReturnedReviewScene[\s\S]{0,700}storageWrite\(FIRST_CROSSING_KEY/);
 });
 
 test('mobile keeps consequential boundaries and source-defined focus protection', () => {

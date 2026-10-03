@@ -2,6 +2,8 @@ import assert from 'assert';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { FLOWCORE_FLOURISH_VIGNETTES, chooseFlowcoreFlourish } from '../app/gateway-flowcore-flourish.js';
+import { FLOWCORE_GLYPH_REGISTRY } from '../app/dome-world/data/flowcore-glyph-semantics-v01.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot = path.resolve(path.dirname(__filename), '..');
@@ -12,7 +14,17 @@ const apertureShimHtml = fs.readFileSync(path.join(repoRoot, 'app', 'aperture', 
 const assetVersionsSource = fs.readFileSync(path.join(repoRoot, 'app', 'asset-versions.js'), 'utf8');
 const apertureHtml = fs.readFileSync(path.join(repoRoot, 'app', 'aperture', 'tool.html'), 'utf8');
 const harborMainSource = fs.readFileSync(path.join(repoRoot, 'app', 'safe-harbor', 'app', 'main.js'), 'utf8');
+const gatewayFlourishSource = fs.readFileSync(path.join(repoRoot, 'app', 'gateway-flowcore-flourish.js'), 'utf8');
+const chamberBootstrapSource = fs.readFileSync(path.join(repoRoot, 'app', 'chamber-bootstrap.js'), 'utf8');
 
+assert.ok(gatewayHtml.includes('id="ingressFlowcoreFlourish"'), 'gateway ingress exposes the small 𝌋 Flow-Core flourish gesture');
+assert.ok(gatewayHtml.includes('id="ingressFlowcoreCanvas"'), 'gateway ingress includes the bounded grammar-study canvas');
+assert.ok(chamberBootstrapSource.includes('gateway-flowcore-flourish.js'), 'gateway bootstrap loads the Flow-Core flourish module only on the gateway');
+assert.deepEqual(Object.keys(FLOWCORE_FLOURISH_VIGNETTES).sort(), Object.keys(FLOWCORE_GLYPH_REGISTRY.entries).sort(), 'random flourish draws only from the canonical Flow-Core relation registry');
+const deterministicFlourish = chooseFlowcoreFlourish({ crypto: { getRandomValues: out => { out[0] = 7; return out; } } });
+assert.equal(deterministicFlourish.glyph, FLOWCORE_GLYPH_REGISTRY.entries[deterministicFlourish.key].glyph, 'random draw keeps glyph bound to its chosen relation');
+assert.match(gatewayFlourishSource, /no route state, provider activity, or custody claim/);
+assert.doesNotMatch(gatewayFlourishSource, /fetch\s*\(|XMLHttpRequest|WebSocket|Safe Harbor Identity|\bSHI\b/);
 assert.ok(gatewayHtml.includes('id="gatewayPreviewCanvas"'), 'gateway HTML includes the centered Aperture field preview');
 assert.ok(gatewayHtml.includes('id="gatewayPreviewMoire"'), 'gateway HTML exposes the gateway Moire control');
 assert.ok(gatewayHtml.includes('id="gatewayPreviewRun"'), 'gateway HTML exposes the gateway Propagate control');

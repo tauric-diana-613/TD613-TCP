@@ -36,6 +36,7 @@ try {
   browser = await chromium.launch({ headless: true });
   for (const [posture, viewport] of [['desktop', { width: 1280, height: 900 }], ['mobile', { width: 390, height: 844 }]]) {
     const page = await browser.newPage({ viewport, reducedMotion: 'reduce' }), errors = [], rejectedRequests = [];
+    await page.addInitScript(() => { try { localStorage.setItem('td613.loom.first-crossing.v1', 'complete'); } catch {} });
     activePage = page;
     page.setDefaultTimeout(15000);
     page.on('pageerror', error => errors.push(error.message));
@@ -107,6 +108,8 @@ try {
     };
 
     await page.goto(`${base}/dome-world/holonomy-loom.html`);
+    await page.locator('#loomBegin').click();
+    await page.locator('.loom-builder-shell').waitFor({ state: 'visible' });
     await page.locator('#aiDemoMode').click();
     await page.locator('#aiDemoInvitation').click();
     await page.locator('[data-project="participant-research"]').click();

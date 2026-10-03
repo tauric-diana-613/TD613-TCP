@@ -41,6 +41,7 @@ try {
     const context=await browser.newContext({viewport,reducedMotion:'reduce',acceptDownloads:true});
     await context.grantPermissions(['clipboard-read','clipboard-write'],{origin:base});
     const page=await context.newPage(),pageErrors=[],blocked=[];
+    await page.addInitScript(()=>{try{localStorage.setItem('td613.loom.first-crossing.v1','complete');}catch{}});
     page.setDefaultTimeout(12000);
     page.on('pageerror',error=>pageErrors.push(error.message));
     await page.route('**/*',route=>{
@@ -63,6 +64,7 @@ try {
       await r('result').waitFor({state:'visible'});
     };
     await page.goto(`${base}/dome-world/holonomy-loom.html`);
+    await page.locator('#loomBegin').click();await page.locator('.loom-builder-shell').waitFor({state:'visible'});
     await page.locator('#aiDemoMode').click();await page.locator('#aiDemoInvitation').click();
     await page.locator('[data-project="participant-research"]').click();
     await page.locator('#aiPreparePortable').click();

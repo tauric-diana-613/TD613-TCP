@@ -366,3 +366,61 @@ body[data-page-kind="gateway"] .gateway-grid-six .gateway-card:active {
     transform: translate(1.35rem, clamp(3.2rem, 4vw, 4.25rem)) !important;
   }
 }
+
+
+/* Gateway ingress · bounded Flow-Core grammar flourish.
+   The 𝌋 gesture runs a local visual study only; it does not alter ingress,
+   Loom, provider, custody, or authorization state. */
+body[data-page-kind="gateway"] #ingressMembrane{isolation:isolate}
+body[data-page-kind="gateway"] #ingressMembrane>.ingress-layer{position:relative;z-index:4}
+body[data-page-kind="gateway"] .ingress-flowcore-study{
+  position:fixed;inset:0;z-index:2;overflow:hidden;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 52%,rgba(63,96,126,.09),transparent 46%)
+}
+body[data-page-kind="gateway"] .ingress-flowcore-study[hidden]{display:none!important}
+body[data-page-kind="gateway"] #ingressFlowcoreCanvas{
+  position:absolute;inset:0;width:100%;height:100%;opacity:.94;
+  mix-blend-mode:screen
+}
+body[data-page-kind="gateway"] .ingress-flowcore-study-copy{
+  position:absolute;left:50%;bottom:18px;transform:translateX(-50%);
+  width:min(680px,calc(100% - 120px));padding:9px 12px;
+  border-top:1px solid rgba(142,232,230,.15);
+  background:linear-gradient(90deg,transparent,rgba(3,7,11,.72) 12%,rgba(3,7,11,.72) 88%,transparent);
+  text-align:center
+}
+body[data-page-kind="gateway"] .ingress-flowcore-study-copy strong{
+  display:block;color:rgba(223,238,239,.82);font:600 .58rem/1.2 var(--mono);
+  letter-spacing:.075em;text-transform:uppercase
+}
+body[data-page-kind="gateway"] .ingress-flowcore-study-copy p{
+  margin:5px auto 0;max-width:66ch;color:rgba(188,204,211,.68);
+  font:500 .67rem/1.42 var(--sans,system-ui,sans-serif)
+}
+body[data-page-kind="gateway"] .ingress-flowcore-study-copy small{
+  display:block;margin-top:4px;color:rgba(126,143,153,.6);
+  font:500 .48rem/1.3 var(--mono);letter-spacing:.04em
+}
+body[data-page-kind="gateway"] .ingress-flowcore-flourish{
+  position:fixed;left:max(14px,env(safe-area-inset-left));bottom:max(14px,env(safe-area-inset-bottom));
+  z-index:9;display:grid;place-items:center;width:44px;height:44px;padding:0;
+  border:1px solid rgba(142,232,230,.2);border-radius:50%;
+  background:rgba(4,9,13,.56);backdrop-filter:blur(11px);
+  color:rgba(164,229,227,.68);box-shadow:0 0 26px rgba(142,232,230,.045);
+  font:500 18px/1 var(--display,serif);letter-spacing:0
+}
+body[data-page-kind="gateway"] .ingress-flowcore-flourish:hover,
+body[data-page-kind="gateway"] .ingress-flowcore-flourish:focus-visible{
+  color:#e6fbf8;border-color:rgba(142,232,230,.52);
+  box-shadow:0 0 30px rgba(142,232,230,.11);outline:none
+}
+@media(max-width:760px){
+  body[data-page-kind="gateway"] .ingress-flowcore-study-copy{
+    bottom:62px;width:calc(100% - 28px);padding-inline:8px
+  }
+  body[data-page-kind="gateway"] .ingress-flowcore-study-copy p{font-size:.61rem}
+  body[data-page-kind="gateway"] .ingress-flowcore-flourish{width:44px;height:44px;font-size:17px}
+}
+@media(prefers-reduced-motion:reduce){
+  body[data-page-kind="gateway"] #ingressFlowcoreCanvas{opacity:.64}
+}

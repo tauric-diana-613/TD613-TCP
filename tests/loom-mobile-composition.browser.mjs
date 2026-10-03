@@ -91,7 +91,7 @@ async function tapTargets(page) {
     return [{id:node.id||null,label:node.textContent.trim().slice(0,70),width:r.width,height:r.height}];
   }));
 }
-async function bindPage(context, posture, base = served.base) {
+async function bindPage(context, posture, base = served.base, { firstCrossingComplete = true } = {}) {
   const page = await context.newPage();
   page.setDefaultTimeout(12000);
   page.on('pageerror', error => report.page_errors.push({ posture, message: error.message }));
@@ -103,21 +103,74 @@ async function bindPage(context, posture, base = served.base) {
   // Observe scroll API invocations while delegating to the original native
   // operation. This records application motion without changing app state,
   // suppressing movement, fabricating events or substituting a runtime packet.
-  await page.addInitScript(() => {
+  await page.addInitScript(completed => {
+    if (completed) {
+      try { localStorage.setItem('td613.loom.first-crossing.v1', 'complete'); } catch {}
+    } else {
+      try { localStorage.removeItem('td613.loom.first-crossing.v1'); } catch {}
+    }
     window.__LOOM_WITNESS_SCROLL_CALLS = [];
     for (const [owner, method] of [[Element.prototype, 'scrollIntoView'], [window, 'scrollTo'], [window, 'scrollBy']]) {
       const original = owner[method];
       owner[method] = function(...args) { window.__LOOM_WITNESS_SCROLL_CALLS.push({ method, id: this.id || null, at: performance.now() }); return original.apply(this, args); };
     }
-  });
+  }, firstCrossingComplete);
   await page.goto(`${base}/dome-world/holonomy-loom.html`);
-  await page.locator('#aiTask').waitFor({ state: 'visible' });
+  await page.locator(firstCrossingComplete ? '#loomBegin' : '#loomFirstCrossing').waitFor({ state: 'visible' });
   await page.waitForFunction(() => document.documentElement.dataset.loomBoot !== 'loading');
   return page;
 }
 
 try {
   browser = await chromium.launch({ headless: true });
+
+  // First-use witness is separate from the returning-operator composition
+  // loop. It proves the tutorial gate uses local Loom event grammar, makes no
+  // provider request, persists completion, and only then exposes Open Loom.
+  {
+    const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'no-preference' });
+    const page = await bindPage(context, 'first-crossing-mobile', served.base, { firstCrossingComplete: false });
+    try {
+      record('first crossing: builder is withheld before practice completion',
+        await page.locator('.loom-builder-shell').isHidden() && await page.locator('#loomFirstCrossing').isVisible(),
+        { first_crossing_visible: await page.locator('#loomFirstCrossing').isVisible() });
+      await screenshot(page, 'first-crossing-mobile-notice');
+      await page.locator('[data-first-crossing-item="brief"]').click();
+      await page.locator('[data-first-crossing-item="source"]').click();
+      await page.locator('#loomFirstCrossingAction').click();
+      await page.waitForFunction(() => document.querySelector('#aiRuntimeState')?.dataset?.activeRelation === 'gathering');
+      record('first crossing: gathering is a real canonical local relation before transmission',
+        await page.locator('#aiRuntimeState').getAttribute('data-active-relation') === 'gathering' &&
+        /à names the gathering/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
+        { relation: await page.locator('#aiRuntimeState').getAttribute('data-active-relation') });
+      await page.locator('#loomFirstCrossingAction').click();
+      await page.waitForFunction(() => document.querySelector('#aiRuntimeState')?.dataset?.activeRelation === 'created_potential');
+      record('first crossing: readiness is created locally without provider submission',
+        await page.locator('#aiRuntimeState').getAttribute('data-active-relation') === 'created_potential' &&
+        /Preparation ≠ transmission/.test(await page.locator('#loomFirstCrossingAnswer').textContent()),
+        { relation: await page.locator('#aiRuntimeState').getAttribute('data-active-relation') });
+      await page.locator('#loomFirstCrossingStop').click();
+      record('first crossing: completion unlocks Open Loom without inventing a crossing',
+        await page.locator('#loomBegin').isVisible() &&
+        await page.evaluate(() => localStorage.getItem('td613.loom.first-crossing.v1')) === 'complete' &&
+        /Nothing crossed/.test(await page.locator('#loomFirstCrossingAnswer').textContent()),
+        { open_visible: await page.locator('#loomBegin').isVisible() });
+      record('first crossing: tutorial made zero provider or non-GET requests',
+        !report.requests.some(request => request.posture === 'first-crossing-mobile' && request.method !== 'GET'),
+        { requests: report.requests.filter(request => request.posture === 'first-crossing-mobile') });
+      await screenshot(page, 'first-crossing-mobile-complete');
+      await page.locator('#loomBegin').click();
+      await page.locator('.loom-builder-shell').waitFor({ state: 'visible' });
+      record('first crossing: cinematic Threshold opens the real Loom builder after completion',
+        await page.locator('.loom-builder-shell').isVisible() && await page.locator('.loom-stage').isHidden(),
+        { threshold_state: await page.locator('#loomAiWorkspace').getAttribute('data-threshold-state') });
+      await screenshot(page, 'first-crossing-mobile-open');
+    } catch (error) {
+      record('first crossing: traversal completed', false, { error: error.message });
+      await screenshot(page, 'first-crossing-mobile-failure');
+    } finally { await context.close(); }
+  }
+
   for (const posture of [
     { name: 'mobile', viewport: { width: 390, height: 844 }, motion: 'no-preference' },
     { name: 'desktop', viewport: { width: 1280, height: 900 }, motion: 'no-preference' },
@@ -148,7 +201,7 @@ try {
       await screenshot(page, `${posture.name}-arrival`);
 
       await page.locator('#loomBegin').click();
-      await page.waitForTimeout(posture.motion === 'reduce' ? 40 : 500);
+      await page.waitForTimeout(posture.motion === 'reduce' ? 60 : 680);
       const builderArrival = await geometry(page, ['aiTask', 'aiPreparePortable', 'loomToolsOpen']);
       record(`${posture.name}: builder follows the cinematic scene without collapsing into it`,
         builderArrival.controls.aiTask.y < builderArrival.viewport.height &&
@@ -221,6 +274,8 @@ try {
 
       // A fresh route avoids any implicit root replacement after preparation.
       const practice = await bindPage(context, `${posture.name}-practice`);
+      await practice.locator('#loomBegin').click();
+      await practice.locator('.loom-builder-shell').waitFor({ state: 'visible' });
       await practice.locator('#aiDemoMode').click(); await practice.locator('#aiDemoInvitation').click();
       await practice.locator('[data-project="participant-research"]').click();
       record(`${posture.name}: Practice keeps Prepare primary`, await practice.locator('#aiPreparePortable').evaluate(node => node.classList.contains('ai-primary')) && !(await practice.locator('#aiRun').evaluate(node => node.classList.contains('ai-primary'))), { fictional_case: 'participant-research' });
