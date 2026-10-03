@@ -132,6 +132,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   let firstCrossingActive = false;
   let firstCrossingStep = 0;
   let firstCrossingEvents = [];
+  let firstCrossingPacket = null;
   let firstCrossingSelected = new Set();
   let firstCrossingWasAlreadyComplete = false;
   let thresholdTimers = [];
@@ -318,6 +319,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     };
     packet.geometry={...packet.geometry,rest};
     thresholdObservation={events:[...firstCrossingEvents],replay:{index:null},source_revision:'browser-unpinned'};
+    firstCrossingPacket=packet;
     coordinator.setPacket(packet);
     coordinator.setContinuous(!rest);
     return packet;
@@ -333,6 +335,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     firstCrossingActive=false;
     firstCrossingStep=0;
     firstCrossingEvents=[];
+    firstCrossingPacket=null;
     firstCrossingSelected=new Set();
     thresholdObservation=null;
     root.dataset.firstCrossing='idle';
@@ -358,8 +361,11 @@ export function mountLoomAiWorkspace(root, environment = window) {
     $('loomBegin').hidden=false;
     $('loomReplayFirstCrossing').hidden=false;
     $('loomReplayFirstCrossing').textContent='↻ First Crossing';
-    const current=firstCrossingEvents.at(-1);
-    if(current)projectFirstCrossing({...current,at:new Date().toISOString()},{rest:true});
+    if(firstCrossingPacket){
+      firstCrossingPacket={...firstCrossingPacket,scene:{...firstCrossingPacket.scene,id:'first-crossing-rest'},geometry:{...firstCrossingPacket.geometry,rest:true}};
+      coordinator.setPacket(firstCrossingPacket,{animate:false});
+      coordinator.setContinuous(false);
+    }
   }
   function startFirstCrossing({replay=false}={}){
     clearThresholdTimers();
