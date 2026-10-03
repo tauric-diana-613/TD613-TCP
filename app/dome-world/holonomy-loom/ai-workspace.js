@@ -309,7 +309,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     const packet=projectLoomRequestEvent(event);
     packet.scene={
       ...packet.scene,
-      id:\`first-crossing-\${event.phase}-\${firstCrossingEvents.length}\`,
+      id:`first-crossing-${event.phase}-${firstCrossingEvents.length}`,
       project_title:'First Crossing',
       rules_count:1,
       documents:[
