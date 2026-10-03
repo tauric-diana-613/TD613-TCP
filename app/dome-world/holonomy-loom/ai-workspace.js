@@ -279,6 +279,187 @@ export function mountLoomAiWorkspace(root, environment = window) {
     showPacket(lastPacket);
     $('loomRulesOpen').textContent=`Rules · ${lines('aiRules').length}`;
   }
+
+  function clearThresholdTimers(){
+    thresholdTimers.forEach(timer=>environment.clearTimeout(timer));
+    thresholdTimers=[];
+  }
+  function firstCrossingEvent(phase, extra={}){
+    const selected=[...firstCrossingSelected].filter(id=>id!=='private').sort();
+    return {
+      phase,
+      task_present: selected.length>0,
+      selected_document_ids:selected,
+      shared:selected.length,
+      local:1,
+      rules_count:1,
+      outbound_submitted:false,
+      response_received:false,
+      binding_verified:false,
+      at:new Date().toISOString(),
+      ...extra
+    };
+  }
+  function projectFirstCrossing(event,{rest=false}={}){
+    if(!firstCrossingActive)return;
+    firstCrossingEvents.push(event);
+    firstCrossingEvents=firstCrossingEvents.slice(-12);
+    const packet=projectLoomRequestEvent(event);
+    packet.scene={
+      ...packet.scene,
+      id:\`first-crossing-\${event.phase}-\${firstCrossingEvents.length}\`,
+      project_title:'First Crossing',
+      rules_count:1,
+      documents:[
+        {id:'brief',name:'Short brief',share:firstCrossingSelected.has('brief')},
+        {id:'source',name:'Public source',share:firstCrossingSelected.has('source')},
+        {id:'private',name:'Private scrap',share:false}
+      ]
+    };
+    packet.geometry={...packet.geometry,rest};
+    thresholdObservation={events:[...firstCrossingEvents],replay:{index:null},source_revision:'browser-unpinned'};
+    coordinator.setPacket(packet);
+    coordinator.setContinuous(!rest);
+    return packet;
+  }
+  function renderFirstCrossingSelection(){
+    for(const button of firstCrossingItems){
+      const id=button.dataset.firstCrossingItem;
+      button.setAttribute('aria-pressed',String(firstCrossingSelected.has(id)));
+      button.dataset.held=String(id==='private'&&!firstCrossingSelected.has('private'));
+    }
+  }
+  function restoreThresholdField(){
+    firstCrossingActive=false;
+    firstCrossingStep=0;
+    firstCrossingEvents=[];
+    firstCrossingSelected=new Set();
+    thresholdObservation=null;
+    root.dataset.firstCrossing='idle';
+    $('loomFirstCrossing').hidden=true;
+    $('loomThresholdGate').hidden=false;
+    $('loomReplayFirstCrossing').hidden=false;
+    $('loomReplayFirstCrossing').textContent='↻ First Crossing';
+    $('loomBegin').hidden=false;
+    firstCrossingItems.forEach(button=>{button.disabled=false;button.setAttribute('aria-pressed','false');delete button.dataset.held;});
+    $('loomFirstCrossingAction').hidden=false;
+    $('loomFirstCrossingStop').hidden=true;
+    if(lastPacket)showPacket(lastPacket);
+  }
+  function completeFirstCrossing(){
+    firstCrossingStep=3;
+    firstCrossingWasAlreadyComplete=true;
+    storageWrite(FIRST_CROSSING_KEY,'complete');
+    $('loomFirstCrossingTitle').textContent='Prepared is not transmitted.';
+    $('loomFirstCrossingPrompt').textContent='You gathered what should travel, kept one thing local, and created readiness without sending anything.';
+    $('loomFirstCrossingAnswer').textContent='First Crossing complete · à gathered · cōl stayed protected · 上 created readiness. Nothing crossed.';
+    $('loomFirstCrossingAction').hidden=true;
+    $('loomFirstCrossingStop').hidden=true;
+    $('loomBegin').hidden=false;
+    $('loomReplayFirstCrossing').hidden=false;
+    $('loomReplayFirstCrossing').textContent='↻ First Crossing';
+    const current=firstCrossingEvents.at(-1);
+    if(current)projectFirstCrossing({...current,at:new Date().toISOString()},{rest:true});
+  }
+  function startFirstCrossing({replay=false}={}){
+    clearThresholdTimers();
+    firstCrossingWasAlreadyComplete=storageRead(FIRST_CROSSING_KEY)==='complete';
+    firstCrossingActive=true;
+    firstCrossingStep=0;
+    firstCrossingEvents=[];
+    firstCrossingSelected=new Set();
+    root.dataset.firstCrossing='active';
+    root.dataset.thresholdState='closed';
+    thresholdStage.hidden=false;
+    builderShell.hidden=true;
+    $('loomThresholdGate').hidden=true;
+    $('loomFirstCrossing').hidden=false;
+    $('loomBegin').hidden=true;
+    $('loomReplayFirstCrossing').hidden=!firstCrossingWasAlreadyComplete;
+    $('loomReplayFirstCrossing').textContent=replay?'Exit replay':'↻ First Crossing';
+    $('loomFirstCrossingTitle').textContent='Choose what travels.';
+    $('loomFirstCrossingPrompt').textContent='Two pieces belong in the crossing. One should stay with you.';
+    $('loomFirstCrossingAnswer').textContent='NOTICE · nothing has moved yet.';
+    $('loomFirstCrossingAction').hidden=false;
+    $('loomFirstCrossingAction').textContent='Gather the two that should travel';
+    $('loomFirstCrossingStop').hidden=true;
+    firstCrossingItems.forEach(button=>{button.disabled=false;button.setAttribute('aria-pressed','false');delete button.dataset.held;});
+    const neutral=firstCrossingEvent('prepared');
+    const packet=projectLoomRequestEvent(neutral);
+    packet.scene={...packet.scene,id:'first-crossing-notice',project_title:'First Crossing',rules_count:1};
+    packet.geometry={...packet.geometry,rest:true};
+    thresholdObservation={events:[],replay:{index:null},source_revision:'browser-unpinned'};
+    coordinator.setPacket(packet,{animate:false});
+    $('loomFirstCrossing').focus?.({preventScroll:true});
+  }
+  function actFirstCrossing(){
+    if(!firstCrossingActive)return;
+    if(firstCrossingStep===0){
+      const correct=firstCrossingSelected.has('brief')&&firstCrossingSelected.has('source')&&!firstCrossingSelected.has('private')&&firstCrossingSelected.size===2;
+      if(!correct){
+        $('loomFirstCrossingAnswer').textContent=firstCrossingSelected.has('private')
+          ? 'That would send something unnecessary. Leave the private scrap here.'
+          : 'The next reader needs both the brief and the source. Try gathering those two.';
+        return;
+      }
+      firstCrossingStep=1;
+      firstCrossingItems.forEach(button=>button.disabled=true);
+      projectFirstCrossing(firstCrossingEvent('prepared'));
+      $('loomFirstCrossingTitle').textContent='They gathered. Nothing crossed.';
+      $('loomFirstCrossingPrompt').textContent='à names the gathering. cōl remains evidenced because the private scrap is still here and inspectable.';
+      $('loomFirstCrossingAnswer').textContent='WORLD ANSWERS → NAME · selection changed the local route; transmission did not occur.';
+      $('loomFirstCrossingAction').textContent='Create readiness locally →';
+      return;
+    }
+    if(firstCrossingStep===1){
+      firstCrossingStep=2;
+      projectFirstCrossing(firstCrossingEvent('checking',{binding_verified:true}));
+      $('loomFirstCrossingTitle').textContent='Ready is not sent.';
+      $('loomFirstCrossingPrompt').textContent='上 names created potential: local work made the packet ready. The private scrap still stays here.';
+      $('loomFirstCrossingAnswer').textContent='No provider call occurred. Preparation ≠ transmission.';
+      $('loomFirstCrossingAction').hidden=true;
+      $('loomFirstCrossingStop').hidden=false;
+      $('loomFirstCrossingStop').textContent='Stop before sending →';
+    }
+  }
+  function openLoomThreshold(){
+    if(storageRead(FIRST_CROSSING_KEY)!=='complete'){
+      if(!firstCrossingActive)startFirstCrossing();
+      return;
+    }
+    if(firstCrossingActive)restoreThresholdField();
+    clearThresholdTimers();
+    builderShell.hidden=true;
+    thresholdStage.hidden=false;
+    root.dataset.thresholdState='opening';
+    root.dataset.thresholdBeat='1';
+    const reduced=environment.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches===true;
+    const schedule=(delay,fn)=>{const timer=environment.setTimeout(fn,delay);thresholdTimers.push(timer);};
+    if(reduced){
+      schedule(20,()=>{root.dataset.thresholdState='open';root.dataset.thresholdBeat='0';thresholdStage.hidden=true;builderShell.hidden=false;$('aiTask').focus?.({preventScroll:true});});
+      return;
+    }
+    schedule(150,()=>{root.dataset.thresholdBeat='2';});
+    schedule(330,()=>{root.dataset.thresholdBeat='3';});
+    schedule(560,()=>{
+      root.dataset.thresholdState='open';root.dataset.thresholdBeat='0';
+      thresholdStage.hidden=true;builderShell.hidden=false;
+      builderShell.scrollIntoView?.({block:'start',behavior:'auto'});
+      $('aiTask').focus?.({preventScroll:true});
+    });
+  }
+  function returnToThreshold(){
+    clearThresholdTimers();
+    builderShell.hidden=true;
+    thresholdStage.hidden=false;
+    root.dataset.thresholdState='closed';
+    root.dataset.thresholdBeat='0';
+    restoreThresholdField();
+    thresholdStage.scrollIntoView?.({block:'start',behavior:'auto'});
+    $('loomBegin').focus?.({preventScroll:true});
+    visibility();
+  }
+
   function invalidate(){
     setJourney('loom');
     newRootAcknowledgedRecord=null;$('aiNewRootConfirm').checked=false;
