@@ -62,13 +62,13 @@ test('How Loom works is a recoverable handoff preview with a living Flow-Core re
   assert.equal(doc.querySelectorAll('[data-first-crossing-item]').length, 2);
   assert.equal(doc.querySelector('#loomFirstCrossingPrivate').tagName, 'DIV', 'private note is explanatory, not a mystery button');
   assert.equal(doc.querySelector('#loomFirstCrossingPause').textContent, '𝌋');
-  assert.match(templateSource, /What is Flow-Core\?/);
+  assert.match(templateSource, /What is Flow-Core runtime\?/);
   for (const glyph of ['à','米','出','hõt','cōl','上','下','𝄐']) assert.ok(templateSource.includes(glyph), `Flow-Core explainer includes ${glyph}`);
   assert.match(workspaceSource, /nextFlowcoreChoreography/);
   assert.match(workspaceSource, /flowcore_choreography:firstCrossingChoreography/);
   assert.match(workspaceSource, /coordinator\.setContinuous\(true\)/);
   assert.match(workspaceSource, /title:'Choose what AI can use\.'/);
-  assert.match(workspaceSource, /title:'Your Loom is ready\.'/);
+  assert.match(workspaceSource, /title:'You’re ready to try Loom\.'/);
   assert.match(workspaceSource, /Try the live Loom →/);
   assert.doesNotMatch(workspaceSource, /title:'Prepared is not transmitted\.'/);
   assert.doesNotMatch(workspaceSource, /title:'They gathered\. Nothing crossed\.'/);
@@ -263,21 +263,21 @@ test('saved review bypasses fresh practice on reload without completion or local
 });
 
 
-test('first use explains local material, remixes presentation, and leaves without completion or custody', async t => {
+test('first use explains private material, remixes presentation, and skips without completion or custody', async t => {
   const h = practiceHarness(t);
   assert.equal(h.root.dataset.firstCrossing, 'active');
   const privateNote=h.$('#loomFirstCrossingPrivate');
   assert.equal(privateNote.tagName,'DIV');
   assert.equal(privateNote.getAttribute('role'),'note');
   assert.match(privateNote.textContent,/Private note/);
-  assert.match(privateNote.textContent,/Stays out of the AI handoff/);
+  assert.match(privateNote.textContent,/Excluded from the AI request/);
   assert.equal(privateNote.hasAttribute('aria-pressed'), false);
   const before=h.$('#loomFlowcoreMessage').textContent;
   h.$('#loomFirstCrossingPause').click();
   assert.notEqual(h.$('#loomFlowcoreMessage').textContent,before,'𝌋 selects a different coherent score');
-  assert.match(h.$('#loomFirstCrossingPause').getAttribute('aria-label'),/Remix Flow-Core choreography/);
+  assert.match(h.$('#loomFirstCrossingPause').getAttribute('aria-label'),/Remix the Flow-Core animation/);
   h.$('#loomFirstCrossingLeave').click();
-  await until(() => !h.$('.loom-builder-shell').hidden, 'explicit entry to own work');
+  await until(() => !h.$('.loom-builder-shell').hidden, 'skip tutorial to own work');
   assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), null, 'leaving unfinished practice grants no completion');
   assert.equal(h.ui.inspect().session, null, 'practice grants no live session or custody');
   assert.equal(h.requests.length, 0);
