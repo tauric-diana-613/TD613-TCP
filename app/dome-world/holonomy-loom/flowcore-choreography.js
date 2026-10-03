@@ -1,4 +1,4 @@
-// Presentation-only Flow-Core scores for the First Crossing ingress.
+// Presentation-only Flow-Core scores for the Loom tutorial.
 //
 // These scores never create request events, provider claims, custody changes or
 // new Flow-Core semantics. They sequence existing canonical relations into
@@ -50,56 +50,56 @@ export const FLOWCORE_CHOREOGRAPHIES = Object.freeze([
     id:'pattern-to-rest',
     relations:Object.freeze(['recurrence','gathering','protected_continuity','created_potential','release','released_tendency','bounded_emergence','structural_rest']),
     glyphs:'米 → à → cōl → 上 → 出 → 下 → hõt → 𝄐',
-    message:'Pattern returns; useful context gathers; private context stays protected; readiness rises; release moves outward; returned work comes back; review emerges; the field rests.',
+    message:'Flow-Core is previewing a full AI route: revisit, gather context, keep private material out, prepare, send, return, review, rest.',
     family:'phi-gossamer'
   }),
   Object.freeze({
     id:'protected-route',
     relations:Object.freeze(['protected_continuity','recurrence','gathering','created_potential','release','released_tendency','bounded_emergence','structural_rest']),
     glyphs:'cōl → 米 → à → 上 → 出 → 下 → hõt → 𝄐',
-    message:'Protection holds while context recurs and gathers; readiness is created before release; returned work descends into review; the route settles at rest.',
+    message:'Private material stays out while Loom revisits context, gathers the task and reference, prepares the handoff, sends, returns, reviews, and rests.',
     family:'orbital-braid'
   }),
   Object.freeze({
     id:'emergent-route',
     relations:Object.freeze(['recurrence','bounded_emergence','gathering','protected_continuity','created_potential','release','released_tendency','structural_rest']),
     glyphs:'米 → hõt → à → cōl → 上 → 出 → 下 → 𝄐',
-    message:'A recurring pattern opens a bounded possibility; relevant context gathers while private context stays protected; readiness forms; release and return remain separate; the field rests.',
+    message:'This route previews review before sending: revisit, review, gather what AI needs, keep private material out, prepare, send, return, rest.',
     family:'torsion-bloom'
   }),
   Object.freeze({
     id:'gather-and-return',
     relations:Object.freeze(['gathering','protected_continuity','created_potential','release','released_tendency','recurrence','bounded_emergence','structural_rest']),
     glyphs:'à → cōl → 上 → 出 → 下 → 米 → hõt → 𝄐',
-    message:'Context gathers without absorbing what stays private; readiness rises; a chosen release leaves; returned work comes back; recurrence reveals what changed; review emerges; rest remains available.',
+    message:'Your request and reference gather first; private material stays out; sending, return, review, and rest remain separate steps.',
     family:'moire-shear'
   }),
   Object.freeze({
     id:'return-first-memory',
     relations:Object.freeze(['released_tendency','recurrence','gathering','protected_continuity','bounded_emergence','created_potential','release','structural_rest']),
     glyphs:'下 → 米 → à → cōl → hõt → 上 → 出 → 𝄐',
-    message:'Returned work can re-enter memory without becoming authority; context gathers under protection; bounded review creates new readiness; only a later gesture releases; the route rests.',
+    message:'Returned work can be revisited and reviewed without becoming a new instruction; another send still requires a separate action.',
     family:'threnodic-gossamer'
   }),
   Object.freeze({
     id:'release-with-memory',
     relations:Object.freeze(['recurrence','gathering','created_potential','release','protected_continuity','released_tendency','bounded_emergence','structural_rest']),
     glyphs:'米 → à → 上 → 出 → cōl → 下 → hõt → 𝄐',
-    message:'Memory gathers context and creates readiness; release is explicit; protection continues beside the route; returned work comes back for bounded review; the field rests.',
+    message:'Loom revisits context, gathers the handoff, marks it ready, sends only on an explicit step, then brings returned work back for review.',
     family:'phasonic-rise'
   }),
   Object.freeze({
     id:'braided-custody',
     relations:Object.freeze(['protected_continuity','gathering','recurrence','bounded_emergence','created_potential','release','released_tendency','structural_rest']),
     glyphs:'cōl → à → 米 → hõt → 上 → 出 → 下 → 𝄐',
-    message:'Protection is continuous while context gathers and recurrence becomes visible; review can emerge without forcing release; readiness and sending remain separate; returned work settles into rest.',
+    message:'Private material stays out while context gathers; review can happen before a later send, and returned work can settle back into rest.',
     family:'gradient-stampede'
   }),
   Object.freeze({
     id:'quiet-cycle',
     relations:Object.freeze(['structural_rest','recurrence','gathering','protected_continuity','created_potential','release','released_tendency','bounded_emergence']),
     glyphs:'𝄐 → 米 → à → cōl → 上 → 出 → 下 → hõt',
-    message:'Rest is a valid starting state; pattern can recur, context can gather, privacy can hold, readiness can form, release can occur, return can arrive, and review can emerge without collapsing those steps.',
+    message:'The route can begin at rest, then revisit, gather, keep private material out, prepare, send, return, and review.',
     family:'quiet-recurrence'
   })
 ]);
