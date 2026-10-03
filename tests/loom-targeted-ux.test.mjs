@@ -43,6 +43,21 @@ test('cinematic route field and builder are separate scenes while advanced tools
   assert.match(product, /#loomAiWorkspace \.loom-stage\{[\s\S]*?height:calc\(100svh - 52px\)/);
 });
 
+test('Threshold gates Loom while First Crossing remains local, replayable, and grammar-bound', () => {
+  const doc = new JSDOM(loomWorkspaceTemplate).window.document;
+  assert.equal(doc.querySelector('.loom-builder-shell').hidden, true);
+  for (const id of ['loomBegin','loomReturnThreshold','loomFirstCrossing','loomFirstCrossingAction','loomFirstCrossingStop','loomReplayFirstCrossing']) {
+    assert.ok(doc.querySelector(`#${id}`), `Threshold control exists: ${id}`);
+  }
+  assert.equal(doc.querySelectorAll('[data-first-crossing-item]').length, 3);
+  assert.match(workspaceSource, /FIRST_CROSSING_KEY = 'td613\.loom\.first-crossing\.v1'/);
+  assert.match(workspaceSource, /outbound_submitted:false,[\s\S]{0,120}response_received:false/);
+  assert.match(workspaceSource, /First Crossing complete · à gathered · cōl stayed protected · 上 created readiness\. Nothing crossed\./);
+  assert.match(workspaceSource, /root\.dataset\.thresholdState='opening'/);
+  assert.match(workspaceSource, /root\.dataset\.thresholdBeat='3'/);
+  assert.doesNotMatch(workspaceSource, /firstCrossing[\s\S]{0,1200}(?:fetch\s*\(|provider_call_authorized\s*:\s*true)/);
+});
+
 test('mobile keeps consequential boundaries and source-defined focus protection', () => {
   assert.match(product, /@media\(max-width:760px\)/);
   assert.match(product, /@media\(min-width:761px\)/);
