@@ -367,24 +367,41 @@ export function mountPortableLoomReentryWorkspace(root, {
     showResult('Admitted continuation copied.', 'The new task, preceding admitted answer, inherited rules and explicitly selected source bodies were copied. This carrier made no provider request and registered no new foreign turn.', 'CARRIER_COPIED');
   }));
 
-  async function setSession(session, packet) {
+  async function setSession(session, packet, { canCommit = () => true } = {}) {
     if (disposed) throw new Error('Re-entry surface is disposed.');
-    generation += 1; const ticket = generation; clearExpiry(); custodian?.close(); custodian = null;
+    if (busy) throw new Error('HOLD · finish the pending local operation before replacing this custody lane.');
+    if (typeof canCommit !== 'function') throw new TypeError('A custody installation guard must be a function.');
+    // Check the replacement without destroying the active lane or its pending
+    // tasks. Publication and old-lane closure follow successful construction
+    // and the caller's final cancellation/version guard, with no intervening await.
+    generation += 1; const ticket = generation;
     const operation = {}; pendingOperation = operation;
-    excursion = null; candidate = null; reviewedRef = null; suppliedChallenge = null; resting = false; busy = true;
-    $('task').value = ''; $('sources').value = '[]'; $('withheld').value = '0'; $('returns').value = '';
-    $('policy-review').checked = false; $('accept').checked = false; $('attach-challenge').checked = false;
-    $('result').hidden = true; $('prompt-drawer').hidden = true; $('turns').hidden = true; $('expiry').hidden = true;
-    $('root').textContent = 'Checking the new local seed…'; $('root').title = '';
-    $('head').textContent = 'No active admitted descendant.'; $('head').title = ''; $('count').textContent = '0'; $('anchor').textContent = ''; $('technical').textContent = 'New seed custody is being checked.';
+    busy = true;
     renderState();
+    let next = null;
     try {
-      const next = await createCustodian(session, packet, { now }, environment);
-      if (disposed || ticket !== generation) { next.close(); return; }
-      custodian = next; $('rules').replaceChildren();
-      for (const rule of session.work_units.at(-1).policy.effective_rules) { const item = root.ownerDocument.createElement('li'); item.textContent = rule; $('rules').append(item); }
+      next = await createCustodian(session, packet, { now }, environment);
+      if (disposed || ticket !== generation) throw new Error('HOLD · local custody installation was superseded.');
+      if (canCommit() !== true) throw new DOMException('Local custody installation stopped before publication.', 'AbortError');
+      const ruleItems = session.work_units.at(-1).policy.effective_rules.map(rule => {
+        const item = root.ownerDocument.createElement('li'); item.textContent = rule; return item;
+      });
+      clearExpiry(); custodian?.close(); custodian = next; next = null;
+      excursion = null; candidate = null; reviewedRef = null; suppliedChallenge = null; resting = false;
+      $('task').value = ''; $('sources').value = '[]'; $('withheld').value = '0'; $('returns').value = '';
+      $('policy-review').checked = false; $('accept').checked = false; $('attach-challenge').checked = false;
+      $('result').hidden = true; $('prompt-drawer').hidden = true; $('turns').hidden = true; $('expiry').hidden = true;
+      $('rules').replaceChildren(...ruleItems);
       showResult('Local admission lane ready.', 'Register the next foreign task before it leaves. The seed remains a verified local preparation or result; no returned descendant has been admitted.', 'READY');
-    } catch (error) { if (!disposed && ticket === generation) showResult('HOLD · local custody unavailable.', `${error.message} Imported or reloaded records gain no admission authority here.`, 'HELD', [], true); }
+    } catch (error) {
+      next?.close();
+      if (!disposed && ticket === generation) {
+        // A failed replacement cannot consume an earlier review gesture.
+        candidate = null; reviewedRef = null; $('accept').checked = false;
+        showResult('HOLD · local custody replacement stopped.', `${error.message} ${custodian ? 'The previous custody lane and registered tasks remain unchanged. Check any returned work again before admission.' : 'Imported or reloaded records gain no admission authority here.'}`, 'HELD', [], true);
+      }
+      throw error;
+    }
     finally { if (pendingOperation === operation) { pendingOperation = null; busy = false; if (!disposed) renderState(); } }
   }
   function clearSession() {

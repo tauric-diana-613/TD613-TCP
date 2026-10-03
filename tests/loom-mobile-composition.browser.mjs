@@ -102,6 +102,7 @@ async function fieldObservation(page) {
       while(ancestor){opacity*=Number(getComputedStyle(ancestor).opacity);ancestor=ancestor.parentElement;}
       const rendered=style.display!=='none'&&style.visibility!=='hidden'&&opacity>0&&rect.width>0&&rect.height>0;
       return {index,plane:planeNames.find(plane=>node.classList.contains(plane)),relation:node.dataset.flightRelation,
+        evidence:node.dataset.flightEvidence,family:node.dataset.flightFamily,
         glyph:node.textContent,x:Number(node.getAttribute('x')),y:Number(node.getAttribute('y')),opacity,
         rendered,screen_overlap:rendered&&rect.right>Math.max(0,field.left)&&rect.left<Math.min(innerWidth,field.right)&&
           rect.bottom>Math.max(0,field.top)&&rect.top<Math.min(innerHeight,field.bottom),
@@ -113,8 +114,38 @@ async function fieldObservation(page) {
       carriers,planes:Object.fromEntries(planeNames.map(plane=>[plane,{rendered:carriers.filter(node=>node.plane===plane&&node.rendered).length,
         overlapping:carriers.filter(node=>node.plane===plane&&node.screen_overlap).length}])),
       sources:[...root.querySelectorAll('.loom-field-sources [data-source-id]')].map(node=>({id:node.dataset.sourceId,
-        local:node.dataset.sourceLocal,transform:node.getAttribute('transform'),text:node.textContent}))};
+        local:node.dataset.sourceLocal,protected:node.dataset.sourceProtected,transform:node.getAttribute('transform'),text:node.textContent})),
+      supplementary_source_texts:[...root.querySelectorAll('.loom-field-sources text')].map(node=>{
+        const style=getComputedStyle(node),r=node.getBoundingClientRect();
+        return {text:node.textContent,visible:style.display!=='none'&&style.visibility!=='hidden'&&r.width>0&&r.height>0};
+      })};
   });
+}
+async function tutorialComposition(page,name){
+  const observation=await fieldObservation(page);
+  record(`${name}: ingress omits floating source labels and retired technical wording`,
+    observation.supplementary_source_texts.every(item=>!item.visible)&&
+    observation.supplementary_source_texts.every(item=>!/selected sources|private scrap|cōl/.test(item.text)),
+    {source_texts:observation.supplementary_source_texts,evidence_ceiling:'TUTORIAL_ONLY_SOURCE_LABELS_CANONICAL_CARRIERS_REMAIN'});
+  const layout=await page.evaluate(()=>{
+    const selectors={hint:'#loomFirstCrossingAnswer',message:'#loomFlowcoreMessage',objects:'#loomFirstCrossingObjects',
+      private:'#loomFirstCrossingPrivate',actions:'.loom-first-crossing-actions'};
+    const boxes=Object.fromEntries(Object.entries(selectors).map(([key,selector])=>{
+      const node=document.querySelector(selector),r=node.getBoundingClientRect(),s=getComputedStyle(node);
+      return [key,{x:r.x,y:r.y,right:r.right,bottom:r.bottom,width:r.width,height:r.height,
+        visible:r.width>0&&r.height>0&&s.display!=='none'&&s.visibility!=='hidden'&&
+          [...(function*(){for(let ancestor=node.parentElement;ancestor;ancestor=ancestor.parentElement)yield ancestor;})()]
+          .every(ancestor=>getComputedStyle(ancestor).display!=='none'&&getComputedStyle(ancestor).visibility!=='hidden')}];
+    }));
+    const overlaps=[];
+    for(const text of ['hint','message'])for(const control of ['objects','private','actions']){
+      const a=boxes[text],b=boxes[control];
+      if(a.visible&&b.visible&&Math.min(a.right,b.right)-Math.max(a.x,b.x)>1&&Math.min(a.bottom,b.bottom)-Math.max(a.y,b.y)>1)
+        overlaps.push({text,control});
+    }
+    return {boxes,overlaps};
+  });
+  record(`${name}: tutorial hints do not overlap choices or actions`,layout.overlaps.length===0,layout);
 }
 async function observeFiniteConsequence(page,relation,name) {
   await page.waitForFunction(expected=>document.querySelector('#aiRuntimeState')?.dataset.projectionState==='CURRENT'&&
@@ -143,10 +174,12 @@ async function observeFiniteConsequence(page,relation,name) {
       evidence_ceiling:'SCOPED_MOTION_ONLY_UX_AND_COMPREHENSION_REMAIN_SEPARATE'});
   const privateBefore=before.sources.find(source=>source.id==='private'),privateAfter=after.sources.find(source=>source.id==='private');
   record(`${name}: private source remains protected outside selected transport`,privateBefore?.local==='true'&&privateAfter?.local==='true'&&
-    privateBefore.transform===privateAfter.transform&&/cōl/.test(privateAfter.text),{before:privateBefore,after:privateAfter});
+    privateBefore.transform===privateAfter.transform&&privateAfter.protected==='true',
+    {before:privateBefore,after:privateAfter,evidence_ceiling:'RENDERED_SOURCE_COORDINATE_AND_DECLARED_PROTECTION_NOT_PROVIDER_ENFORCEMENT'});
+  await tutorialComposition(page,name);
   return observations;
 }
-async function bindPage(context, posture, base = served.base, { firstCrossingComplete = true } = {}) {
+async function bindPage(context, posture, base = served.base, { firstCrossingComplete = true, skipTutorial = firstCrossingComplete } = {}) {
   const page = await context.newPage();
   page.setDefaultTimeout(12000);
   page.on('pageerror', error => report.page_errors.push({ posture, message: error.message }));
@@ -171,8 +204,14 @@ async function bindPage(context, posture, base = served.base, { firstCrossingCom
     }
   }, firstCrossingComplete);
   await page.goto(`${base}/dome-world/holonomy-loom.html`);
-  await page.locator(firstCrossingComplete ? '#loomBegin' : '#loomFirstCrossing').waitFor({ state: 'visible' });
+  await page.locator('#loomFirstCrossing').waitFor({ state: 'visible' });
   await page.waitForFunction(() => document.documentElement.dataset.loomBoot !== 'loading');
+  // Broader product-composition passes intentionally skip the greeting after
+  // proving it exists. Dedicated First Crossing witnesses pass false and stay.
+  if(skipTutorial){
+    await page.locator('#loomFirstCrossingLeave').click();
+    await page.locator('.loom-builder-shell').waitFor({state:'visible'});
+  }
   return page;
 }
 
@@ -214,58 +253,56 @@ try {
         firstCrossingVisual.objects.length===3&&firstCrossingVisual.objects.every(object=>object.visible&&object.width>=44&&object.height>=44),
         firstCrossingVisual);
       await screenshot(page, 'first-crossing-mobile-notice');
-      await page.locator('#loomFirstCrossingPrivate').click();
-      record('first crossing: local practice material can be inspected without selecting or sending it',
-        await page.locator('#loomFirstCrossingPrivateText').isVisible()&&
-        await page.locator('#loomFirstCrossingPrivate').getAttribute('aria-expanded')==='true'&&
-        await page.locator('[data-first-crossing-item][aria-pressed="true"]').count()===0,
-        {private_text:await page.locator('#loomFirstCrossingPrivateText').textContent()});
-      await page.locator('#loomFirstCrossingPrivate').click();
+      await tutorialComposition(page,'first-crossing-mobile-notice');
+      record('first crossing: private note is explanatory rather than an ambiguous control',
+        await page.locator('#loomFirstCrossingPrivate').evaluate(node=>node.tagName==='DIV'&&!node.hasAttribute('aria-expanded')),
+        { text: await page.locator('#loomFirstCrossingPrivate').textContent() });
       await page.locator('[data-first-crossing-item="brief"]').click();
       await page.locator('[data-first-crossing-item="source"]').click();
       record('first crossing: consequence begins before terminology is named',
-        /Watch the field gather them\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
+        /Preview what AI can use\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
         !/That relation is à/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
         { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
       await observeFiniteConsequence(page,'gathering','first-crossing-mobile-gathering');
+      const remixBefore=await page.locator('#loomFlowcoreMessage').textContent();
+      const ambientBefore=await fieldObservation(page);
       await page.locator('#loomFirstCrossingPause').click();
-      const pausedA=await fieldObservation(page);
       await page.waitForTimeout(240);
-      const pausedB=await fieldObservation(page);
-      record('first crossing: Pause freezes existing frame and retains current relation',
-        pausedB.pending_frames==='0'&&pausedB.relation==='gathering'&&
-        pausedB.carriers.every((node,index)=>node.x===pausedA.carriers[index].x&&node.y===pausedA.carriers[index].y),
-        {before:pausedA,after:pausedB});
-      await screenshot(page,'first-crossing-mobile-paused');
-      await page.locator('#loomFirstCrossingPause').click();
+      const remixAfter=await page.locator('#loomFlowcoreMessage').textContent();
+      const ambientAfter=await fieldObservation(page);
+      record('first crossing: 𝌋 remixes coherent Flow-Core choreography without pausing the field',
+        remixAfter!==remixBefore&&ambientAfter.carriers.length===39&&
+        ambientAfter.carriers.some((node,index)=>node.x!==ambientBefore.carriers[index]?.x||node.y!==ambientBefore.carriers[index]?.y),
+        {before_message:remixBefore,after_message:remixAfter,before:ambientBefore,after:ambientAfter});
+      await screenshot(page,'first-crossing-mobile-remix');
       await page.locator('#loomFirstCrossingAction').waitFor({state:'visible'});
       await page.locator('#loomFirstCrossingAction').click();
       await page.waitForFunction(()=>document.querySelector('#aiRuntimeState')?.dataset?.projectionState==='CURRENT'&&
         document.querySelector('#aiRuntimeState')?.dataset?.activeRelation==='created_potential');
       record('first crossing: readiness consequence begins before 上 is named',
-        /Watch readiness form\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
+        /Check complete\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
         !/created-potential relation is 上/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
         { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
       await observeFiniteConsequence(page,'created_potential','first-crossing-mobile-readiness');
       await page.locator('#loomFirstCrossingStop').waitFor({state:'visible'});
       await page.locator('#loomFirstCrossingStop').click();
       await page.waitForFunction(()=>document.querySelector('#aiRuntimeState')?.dataset?.projectionState==='CURRENT');
-      const restedA=await fieldObservation(page);await page.waitForTimeout(240);const restedB=await fieldObservation(page);
-      record('first crossing: completion holds a stable prepared state without inventing transmission',
-        restedB.pending_frames==='0'&&restedB.relation==='created_potential'&&restedB.carriers.every((node,index)=>node.x===restedA.carriers[index].x&&node.y===restedA.carriers[index].y),
-        {before:restedA,after:restedB});
-      record('first crossing: completion unlocks Open Loom without inventing a crossing',
+      const liveA=await fieldObservation(page);await page.waitForTimeout(240);const liveB=await fieldObservation(page);
+      record('first crossing: completion keeps the field alive without inventing transmission',
+        liveB.carriers.length===39&&liveB.carriers.some((node,index)=>node.x!==liveA.carriers[index]?.x||node.y!==liveA.carriers[index]?.y),
+        {before:liveA,after:liveB});
+      record('first crossing: completion unlocks the live Loom CTA',
         await page.locator('#loomBegin').isVisible() &&
         await page.evaluate(() => localStorage.getItem('td613.loom.first-crossing.v1')) === 'complete' &&
-        /Nothing crossed/.test(await page.locator('#loomFirstCrossingAnswer').textContent()),
-        { open_visible: await page.locator('#loomBegin').isVisible() });
+        /Try the live Loom/.test(await page.locator('#loomBegin').textContent()),
+        { open_visible: await page.locator('#loomBegin').isVisible(), label:await page.locator('#loomBegin').textContent() });
       record('first crossing: tutorial made zero provider or non-GET requests',
         !report.requests.some(request => request.posture === 'first-crossing-mobile' && request.method !== 'GET'),
         { requests: report.requests.filter(request => request.posture === 'first-crossing-mobile') });
       await screenshot(page, 'first-crossing-mobile-complete');
       await page.locator('#loomBegin').click();
       await page.locator('.loom-builder-shell').waitFor({ state: 'visible' });
-      record('first crossing: cinematic Threshold opens the real Loom builder after completion',
+      record('first crossing: completion enters the real Loom builder without a second Threshold membrane',
         await page.locator('.loom-builder-shell').isVisible() && await page.locator('.loom-stage').isHidden(),
         { threshold_state: await page.locator('#loomAiWorkspace').getAttribute('data-threshold-state') });
       await screenshot(page, 'first-crossing-mobile-open');
@@ -313,9 +350,10 @@ try {
     { name: 'mobile-reduced-motion', viewport: { width: 390, height: 844 }, motion: 'reduce' }
   ]) {
     const context = await browser.newContext({ viewport: posture.viewport, reducedMotion: posture.motion });
-    const page = await bindPage(context, posture.name);
+    const page = await bindPage(context, posture.name,served.base,{skipTutorial:false});
     try {
-      const arrival = await geometry(page, ['loomBegin', 'aiTask', 'aiPreparePortable', 'loomRulesOpen', 'loomBoundaryOpen', 'aiPortableMode', 'aiDemoMode', 'loomToolsOpen']);
+      await page.waitForFunction(()=>document.querySelector('#aiRuntimeState')?.dataset.projectionState==='CURRENT');
+      const sceneArrival = await geometry(page, ['loomFirstCrossingLeave']);
       const fieldGeometry = await page.locator('.loom-glyph-field').evaluate(node => {
         const r = node.getBoundingClientRect();
         return { x: r.x, y: r.y, width: r.width, height: r.height, bottom: r.bottom, right: r.right };
@@ -325,8 +363,31 @@ try {
         return { x: r.x, y: r.y, width: r.width, height: r.height, bottom: r.bottom, right: r.right };
       });
       record(`${posture.name}: Flow-Core owns the cinematic arrival scene`,
-        fieldGeometry.width >= posture.viewport.width - 2 && stageGeometry.height >= posture.viewport.height - 60 && arrival.controls.loomBegin.fully_in_view,
-        { viewport: posture.viewport, field: fieldGeometry, stage: stageGeometry, begin: arrival.controls.loomBegin });
+        Math.abs(fieldGeometry.width-stageGeometry.width)<=1&&fieldGeometry.width>=posture.viewport.width*.8&&
+          Math.abs(fieldGeometry.height-stageGeometry.height)<=2&&stageGeometry.height>=Math.min(760,posture.viewport.height-60)&&
+          sceneArrival.controls.loomFirstCrossingLeave.visible&&sceneArrival.controls.loomFirstCrossingLeave.fully_in_view,
+        { viewport: posture.viewport, field: fieldGeometry, stage: stageGeometry, skip: sceneArrival.controls.loomFirstCrossingLeave });
+      await tutorialComposition(page,`${posture.name}-arrival`);
+      await screenshot(page,`${posture.name}-cinematic-arrival`);
+      const ingressFont=await page.locator('#loomFirstCrossingTitle').evaluate(node=>getComputedStyle(node).fontFamily);
+      await page.evaluate(()=>{window.__LOOM_WITNESS_ROOT_NODE=document.getElementById('aiRuntimeState');});
+      await page.locator('#loomFirstCrossingLeave').click();
+      await page.locator('.loom-builder-shell').waitFor({state:'visible'});
+      const frameComposition=await page.locator('.loom-builder-shell').evaluate((node,font)=>{
+        const r=node.getBoundingClientRect(),s=getComputedStyle(node),h=getComputedStyle(node.querySelector('.loom-intro h1')),
+          fill=getComputedStyle(node,'::before').backgroundColor;
+        return {width:r.width,left:r.left,right:r.right,viewport:innerWidth,center_error:Math.abs(r.left+r.width/2-innerWidth/2),
+          font_family:h.fontFamily,ingress_font:font,background:s.backgroundColor,glass_fill:fill,
+          runtime_count:document.querySelectorAll('#aiRuntimeState').length,
+          original_runtime_preserved:document.getElementById('aiRuntimeState')===window.__LOOM_WITNESS_ROOT_NODE,
+          runtime_in_background:document.getElementById('loomWorkspaceField')?.contains(document.getElementById('aiRuntimeState'))};
+      },ingressFont);
+      record(`${posture.name}: workspace retains one live field and matching ingress typography`,
+        frameComposition.runtime_count===1&&frameComposition.original_runtime_preserved&&frameComposition.runtime_in_background&&
+          frameComposition.font_family===frameComposition.ingress_font,frameComposition);
+      if(posture.name==='desktop')record('desktop: workspace is a centered contained transparent frame',
+        frameComposition.width<posture.viewport.width-100&&frameComposition.center_error<=1&&frameComposition.background==='rgba(0, 0, 0, 0)',frameComposition);
+      const arrival = await geometry(page, ['aiTask', 'aiPreparePortable', 'loomRulesOpen', 'loomBoundaryOpen', 'aiPortableMode', 'aiDemoMode', 'loomToolsOpen']);
       const bounds = await spill(page);
       record(`${posture.name}: no root or visible horizontal spill`, bounds.document_width <= posture.viewport.width && bounds.outside.length === 0, bounds);
       const targets=await tapTargets(page),small=targets.filter(target=>target.width<43.5||target.height<43.5);
@@ -336,8 +397,6 @@ try {
       record(`${posture.name}: My work withholds Practice chooser`, chooser.hidden && chooser.display === 'none' && chooser.rect_count === 0, chooser);
       await screenshot(page, `${posture.name}-arrival`);
 
-      await page.locator('#loomBegin').click();
-      await page.waitForTimeout(posture.motion === 'reduce' ? 60 : 680);
       const builderArrival = await geometry(page, ['aiTask', 'aiPreparePortable', 'loomToolsOpen']);
       record(`${posture.name}: builder follows the cinematic scene without collapsing into it`,
         builderArrival.controls.aiTask.y < builderArrival.viewport.height &&
@@ -380,6 +439,14 @@ try {
         record(`${posture.name}: crossing CTA visible and result focused`, crossing.controls.aiMarrowline.fully_in_view && crossing.controls.aiMarrowline.width>=44 && crossing.controls.aiMarrowline.height>=44 && !crossing.controls.aiMarrowline.disabled && await page.evaluate(() => document.activeElement?.id) === 'aiResult', crossing);
         record(`${posture.name}: preparation has no field scroll detour`, !(await page.evaluate(() => window.__LOOM_WITNESS_SCROLL_CALLS.some(call => call.id === 'aiRuntime'))), await page.evaluate(() => window.__LOOM_WITNESS_SCROLL_CALLS));
         record(`${posture.name}: one coordinator frame remains bounded`, Number(await page.locator('#loomAiWorkspace').getAttribute('data-pending-frames')) <= 1, { pending_frames: await page.locator('#loomAiWorkspace').getAttribute('data-pending-frames') });
+        await page.waitForFunction(()=>document.querySelector('#aiRuntimeState')?.dataset.projectionState==='CURRENT');
+        const backgroundBefore=await fieldObservation(page);await page.waitForTimeout(240);const backgroundAfter=await fieldObservation(page);
+        const changed=backgroundAfter.carriers.filter((node,index)=>Math.hypot(node.x-backgroundBefore.carriers[index].x,node.y-backgroundBefore.carriers[index].y)>.01).length;
+        record(`${posture.name}: task progress uses the existing canonical background carriers`,
+          backgroundAfter.carriers.length===39&&backgroundAfter.carriers.every(node=>node.relation===backgroundAfter.relation&&node.evidence==='observed')&&
+          (posture.motion==='reduce'?changed===0&&Number(backgroundAfter.pending_frames)===0:changed>0)&&
+          backgroundAfter.carriers.every(node=>node.family!=='canonical-relation'),
+          {before:backgroundBefore,after:backgroundAfter,changed_carriers:changed,evidence_ceiling:'CLIENT_ROUTE_VISUALIZATION_NOT_HIDDEN_PROVIDER_ACTIVITY'});
         // When an inline inspection is actually available, exercise it. A
         // deliberately demoted hidden disclosure must not become a required
         // gesture. Scroll the actual route; never insert filler or an app packet.
@@ -410,7 +477,6 @@ try {
 
       // A fresh route avoids any implicit root replacement after preparation.
       const practice = await bindPage(context, `${posture.name}-practice`);
-      await practice.locator('#loomBegin').click();
       await practice.locator('.loom-builder-shell').waitFor({ state: 'visible' });
       await practice.locator('#aiDemoMode').click(); await practice.locator('#aiDemoInvitation').click();
       await practice.locator('[data-project="participant-research"]').click();

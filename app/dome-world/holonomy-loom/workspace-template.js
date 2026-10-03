@@ -1,4 +1,4 @@
-export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledby="loomFieldHeading"><div class="loom-stage-copy"><span class="loom-kicker">FLOW-CORE ROUTE FIELD</span><h1 id="loomFieldHeading">Loom</h1><p>Your work stays yours until you choose a crossing.</p></div><section id="aiRuntime" class="ai-runtime" aria-label="Current Loom route"><p class="mark">CURRENT ROUTE</p>
+export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledby="loomFieldHeading"><div class="loom-stage-copy"><span class="loom-kicker">YOUR AI WORKSPACE</span><h1 id="loomFieldHeading">Loom</h1><p>Your work stays yours until you choose a crossing.</p></div><section id="aiRuntime" class="ai-runtime" aria-label="Current Loom route"><p class="mark">CURRENT ROUTE</p>
       <h2 id="aiConsequence" hidden>Your work starts here.</h2>
       <div id="aiRuntimeState" class="ai-runtime-state il-state"></div>
       <div id="aiLivingRoom" hidden aria-hidden="true"></div>
@@ -8,36 +8,46 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
       <div id="aiRuntimeInspection" hidden><div class="ai-view-switch"><button type="button" id="aiChild" aria-pressed="true">Plain language answer</button><button type="button" id="aiAuditor" aria-pressed="false">Auditor answer</button></div><ol id="aiEvents" class="ai-events" aria-label="Request history" hidden></ol><pre id="aiReceipt">No request yet.</pre></div>
     </section>
 <div id="loomThresholdLayer" class="loom-threshold-layer">
-  <div id="loomThresholdGate" class="loom-threshold-gate">
-    <span class="loom-threshold-kicker">LOOM THRESHOLD</span>
-    <p id="loomThresholdCopy">Cross deliberately. The field will show what your gesture actually changes.</p>
-  </div>
+  <div id="loomThresholdGate" class="loom-threshold-gate" hidden></div>
   <section id="loomFirstCrossing" class="loom-first-crossing" aria-labelledby="loomFirstCrossingTitle" hidden tabindex="-1">
     <div class="loom-first-crossing-copy">
-      <span class="loom-threshold-kicker">FIRST CROSSING · PRACTICE</span>
-      <h2 id="loomFirstCrossingTitle">Choose what travels.</h2>
-      <p id="loomFirstCrossingPrompt">Two pieces belong in the crossing. One should stay with you.</p>
+      <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">HOW LOOM WORKS</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 3 · Choose</span></div>
+      <h2 id="loomFirstCrossingTitle">Choose what AI can use.</h2>
+      <p id="loomFirstCrossingPrompt">Select your request and the reference you want AI to use. The private note stays out of the AI request.</p>
+      <p id="loomFlowcoreMessage" class="loom-flowcore-message" aria-live="polite"></p>
     </div>
-    <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="First Crossing practice material">
-      <button type="button" data-first-crossing-item="brief" aria-pressed="false"><span>NOTE</span><strong>Short brief</strong><small>Needed by the next reader.</small></button>
-      <button type="button" data-first-crossing-item="source" aria-pressed="false"><span>SOURCE</span><strong>Public source</strong><small>Supports the brief.</small></button>
-      <button type="button" id="loomFirstCrossingPrivate" aria-expanded="false"><span>STAYS HERE</span><strong>Private scrap</strong><small>Inspect local material</small></button>
+    <details class="loom-flowcore-help">
+      <summary>What is Flow-Core runtime?</summary>
+      <p>Flow-Core is Loom’s visual map of an AI handoff. These eight symbols show when Loom gathers, revisits, sends, reviews, keeps private, marks ready, returns, or rests.</p>
+      <div class="loom-flowcore-legend">
+        <span><b>à</b> Gather</span><span><b>米</b> Revisit</span><span><b>出</b> Send</span><span><b>hõt</b> Review</span>
+        <span><b>cōl</b> Keep private</span><span><b>上</b> Ready</span><span><b>下</b> Return</span><span><b>𝄐</b> Rest</span>
+      </div>
+    </details>
+    <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="How Loom controls an AI handoff">
+      <button type="button" data-first-crossing-item="brief" aria-pressed="false"><span>TASK</span><strong>Your request</strong><small>What you want AI to do.</small></button>
+      <button type="button" data-first-crossing-item="source" aria-pressed="false"><span>REFERENCE</span><strong>Reference</strong><small>Context you want AI to use.</small></button>
+      <div id="loomFirstCrossingPrivate" class="loom-first-crossing-private" role="note"><span>NOT SHARED</span><strong>Private note</strong><small>Excluded from the AI request.</small></div>
     </div>
-    <p id="loomFirstCrossingPrivateText" class="loom-practice-private" hidden></p>
     <div class="loom-first-crossing-actions">
-      <button type="button" id="loomFirstCrossingAction" hidden>Create readiness locally →</button>
-      <button type="button" id="loomFirstCrossingStop" hidden>Stop before sending →</button>
+      <button type="button" id="loomFirstCrossingAction" hidden>Preview AI handoff →</button>
+      <button type="button" id="loomFirstCrossingStop" hidden>Finish tutorial →</button>
     </div>
-    <div class="loom-practice-controls"><button type="button" id="loomFirstCrossingPause" aria-pressed="false">Pause field</button><button type="button" id="loomFirstCrossingLeave">Use my own work →</button></div>
+    <div class="loom-practice-controls">
+      <button type="button" id="loomFirstCrossingBack" hidden>← Start over</button>
+      <button type="button" id="loomReplayFirstCrossing" class="loom-replay-first-crossing" hidden>Start over</button>
+      <button type="button" id="loomFirstCrossingPause" class="loom-field-toggle" aria-label="Remix the Flow-Core animation" title="Remix the Flow-Core animation">𝌋</button>
+      <button type="button" id="loomFirstCrossingLeave">Skip tutorial →</button>
+    </div>
     <p id="loomFirstCrossingAnswer" class="loom-first-crossing-answer" aria-live="polite"></p>
   </section>
-  <button type="button" id="loomReplayFirstCrossing" class="loom-replay-first-crossing">↻ First Crossing</button>
 </div>
 <div class="loom-hero-route" aria-hidden="true"><span data-hero-step="loom"><b>1</b> Loom</span><i>→</i><span data-hero-step="marrowline"><b>2</b> Marrowline</span><i>→</i><span data-hero-step="return"><b>3</b> Return</span></div>
-<button type="button" id="loomBegin" class="loom-begin">Open Loom →</button>
+<button type="button" id="loomBegin" class="loom-begin">Try the live Loom →</button>
 </section>
 <section class="loom-builder-shell" aria-label="Loom builder" hidden>
-<header class="loom-intro"><div><h1 id="loomStageHeading">Holonomy Loom</h1><p>AI work with its sources, boundaries and history.</p></div><div class="loom-intro-actions"><button type="button" id="loomReturnThreshold" class="loom-text-action">Threshold</button><button type="button" id="loomToolsOpen" class="loom-text-action">Tools</button></div></header>
+<div id="loomWorkspaceField" class="loom-workspace-field" aria-label="Current AI request state"></div>
+<header class="loom-intro"><div><h1 id="loomStageHeading">Loom</h1><p>Prepare an AI task, send it through Marrowline, and keep the sources and handoff history attached.</p></div><div class="loom-intro-actions"><button type="button" id="loomReturnThreshold" class="loom-text-action">How it works</button><button type="button" id="loomToolsOpen" class="loom-text-action">Tools</button></div></header>
 <nav class="loom-journey" aria-label="Loom route">
 <button type="button" class="loom-journey-step" id="loomJourneyStep1" data-workspace="build" aria-current="step"><b>1</b><strong>Loom</strong></button><span aria-hidden="true">→</span>
 <button type="button" class="loom-journey-step" id="loomJourneyStep2" data-workspace="crossing" disabled><b>2</b><strong>Marrowline</strong></button><span aria-hidden="true">→</span>
@@ -47,13 +57,13 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
 <div class="loom-workspaces">
 <section id="loomBuilder" class="loom-builder" aria-labelledby="loomBuilderTitle">
 <header class="loom-builder-head"><h2 id="loomBuilderTitle">Your task</h2><div class="ai-mode-tabs" role="tablist" aria-label="Loom mode"><button type="button" id="aiPortableMode" role="tab" aria-selected="true" aria-controls="aiPortableModePanel">My work</button><button type="button" id="aiDemoMode" role="tab" aria-selected="false" aria-controls="aiDemoModePanel">Practice</button></div></header>
-<section id="aiPortableModePanel" role="tabpanel" aria-labelledby="aiPortableMode"><p id="aiFirstUseGuide">Prepare here. Send only when you choose Marrowline.</p></section><section id="aiDemoModePanel" role="tabpanel" aria-labelledby="aiDemoMode" hidden><p>Fictional material. Same route, same boundaries.</p></section>
-<div id="aiDemoWelcome" hidden><button type="button" id="aiDemoInvitation" aria-expanded="false" aria-controls="aiProjectChoices">Choose a practice case ＋</button></div>
+<section id="aiPortableModePanel" role="tabpanel" aria-labelledby="aiPortableMode"><p id="aiFirstUseGuide">Build the task here. Marrowline carries the AI conversation when you continue.</p></section><section id="aiDemoModePanel" role="tabpanel" aria-labelledby="aiDemoMode" hidden><p>Fictional material. Same route, same boundaries.</p></section>
+<div id="aiDemoWelcome" hidden><button type="button" id="aiDemoInvitation" aria-expanded="false" aria-controls="aiProjectChoices">Choose a practice case +</button></div>
 <div id="aiProjectChoices" class="ai-projects" aria-label="Practice projects" hidden></div>
 <section id="aiProjectBrief" class="ai-project-brief" aria-label="Project brief" hidden><h3 id="aiBriefTitle"></h3><p id="aiBriefText"></p><p id="aiBriefRoute"></p></section>
 <section class="ai-composer" aria-label="Your Loom task">
 <label id="aiTaskLabel" for="aiTask">Task</label><textarea id="aiTask" maxlength="12000" placeholder="Ask for a decision, an analysis, a plan…" aria-describedby="aiTaskCue"></textarea><p id="aiTaskCue" class="ai-muted">Your task travels with the material you select.</p>
-<div class="ai-toolbar"><label class="ai-upload">＋ Documents<input id="aiUpload" type="file" multiple accept=".txt,.md,.csv,.json" aria-label="Add documents"></label><button type="button" id="loomRulesOpen">Rules</button><button type="button" id="loomBoundaryOpen" class="loom-text-action">Boundary ↗</button><button type="button" id="aiNew">Clear task</button></div>
+<div class="ai-toolbar"><label class="ai-upload">+ Documents<input id="aiUpload" type="file" multiple accept=".txt,.md,.csv,.json" aria-label="Add documents"></label><button type="button" id="loomRulesOpen">Rules</button><button type="button" id="loomBoundaryOpen" class="loom-text-action">Boundary ↗</button><button type="button" id="aiNew">Clear task</button></div>
 <p class="ai-file-cue">Files stay here until selected.</p><ul id="aiDocuments" class="ai-documents" aria-label="Document sharing"></ul>
 <section id="aiPortableProjection" class="ai-portable-projection" aria-label="Transfer boundary"><div><span>Travels</span><strong id="aiProjectionTravel">Task · 0 documents · 2 rules</strong></div><div><span>Stays here</span><strong id="aiProjectionStay">0 local documents · private checks</strong></div></section>
 <div id="aiNewRootNotice" class="ai-new-root-notice" hidden tabindex="-1"><p>Starting a new root replaces this tab's active Loom custody lane.</p><p id="aiNewRootCoordinate"></p><button type="button" id="aiSaveActiveCustody">Save current private custody record</button><label><input id="aiNewRootConfirm" type="checkbox"> Replace the active root.</label></div>

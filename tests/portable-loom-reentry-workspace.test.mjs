@@ -5,9 +5,9 @@ import { JSDOM } from 'jsdom';
 import { mountPortableLoomReentryWorkspace, parseLoomReentryReturnBatch } from '../app/dome-world/holonomy-loom/reentry-workspace.js';
 import { createLoomAiGovernance, createPortableLoomAiPacket } from '../app/dome-world/holonomy-loom/ai-handoff-base.js';
 import { createPortableLoomSession, createPortableLoomWorkUnit, portableLoomDigest } from '../app/engine/portable-loom-session.js';
-import { LOOM_REENTRY_RETURN_SCHEMA } from '../app/engine/portable-loom-reentry.js';
+import { LOOM_REENTRY_RETURN_SCHEMA, createPortableLoomReentryCustodian } from '../app/engine/portable-loom-reentry.js';
 
-async function harness({ onCheck = () => {} } = {}) {
+async function harness({ onCheck = () => {}, createCustodian = createPortableLoomReentryCustodian } = {}) {
   const dom = new JSDOM('<section id="loomAiWorkspace"><section id="root"></section></section>');
   const root = dom.window.document.getElementById('root');
   let clock = 1000, clipboard = '', admission = null, challenge = null;
@@ -25,7 +25,7 @@ async function harness({ onCheck = () => {} } = {}) {
   const prepared = await createPortableLoomWorkUnit(seed, { work_unit_id: 'seed_1', request_id: 'request_seed_1', task: source.task, documents: source.documents, add_rules: [], withheld_document_count: 1 }, environment);
   const ui = mountPortableLoomReentryWorkspace(root, {
     environment, now: () => clock,
-    onCheck,
+    onCheck, createCustodian,
     onAdmission: (session, unit) => { admission = { session, unit }; },
     onChallenge: (session, unit) => { challenge = { session, unit }; }
   });
@@ -99,7 +99,8 @@ test('source selection and live-versus-imported custody remain visible without o
     h.change('withheld', '1');
     assert.match(h.$('source-selection').textContent, /1 source body selected.*1 deliberately withheld/);
     assert.equal(h.$('inspection').open, false);
-    await h.ui.setSession(structuredClone(h.session), h.packet);
+    h.ui.clearSession();
+    await assert.rejects(h.ui.setSession(structuredClone(h.session), h.packet), /HELD_IMPORTED_CUSTODY/);
     assert.equal(h.root.dataset.custodyState, 'UNAVAILABLE');
     assert.match(h.$('lane-state').textContent, /Imported or reloaded records remain review-only/);
     assert.equal(h.$('stage').disabled, true);
@@ -286,13 +287,65 @@ test('rest preserves registration while the real excursion expiry produces an in
 test('a parsed seed receives explicit recovery HOLD and no imported custody authority', async () => {
   const h = await harness();
   try {
-    await h.ui.setSession(structuredClone(h.session), h.packet);
+    h.ui.clearSession();
+    await assert.rejects(h.ui.setSession(structuredClone(h.session), h.packet), /HELD_IMPORTED_CUSTODY/);
     assert.equal(h.ui.inspect().custody, null);
     assert.equal(h.$('stage').disabled, true);
     assert.equal(h.$('result').dataset.state, 'HELD');
     assert.match(h.$('detail').textContent, /HELD_IMPORTED_CUSTODY/);
     assert.equal(h.$('count').textContent, '0');
     assert.doesNotMatch(h.$('head').textContent, /^[a-f0-9]/);
+  } finally { h.close(); }
+});
+
+test('failed replacement preserves the live custody record, pending registration and editable return', async () => {
+  const h = await harness();
+  try {
+    await stage(h, 'Preserve this registered task.', [{ id: 'pending', name: 'Pending.md', text: 'Retained selected material.' }]);
+    await check(h); h.checked('accept', true);
+    const before = h.ui.getRecord(), pending = h.ui.inspect().excursion;
+    const returned = h.$('returns').value;
+    await assert.rejects(h.ui.setSession(structuredClone(h.session), h.packet), /HELD_IMPORTED_CUSTODY/);
+    assert.deepEqual(h.ui.getRecord(), before);
+    assert.equal(h.ui.inspect().excursion, pending);
+    assert.equal(h.ui.inspect().custody.pending_turn_count, 1);
+    assert.equal(h.$('returns').value, returned);
+    assert.equal(h.root.dataset.custodyState, 'LIVE_PROCESS');
+    assert.equal(h.$('check').disabled, false);
+    assert.equal(h.$('accept').checked, false, 'failed replacement requires a fresh exact-candidate review');
+    assert.equal(h.$('admit').disabled, true);
+    assert.match(h.$('detail').textContent, /previous custody lane and registered tasks remain unchanged/);
+    await check(h); h.checked('accept', true); h.$('admit').click(); await settled(h);
+    assert.equal(h.ui.inspect().custody.work_unit_count, 1, 'the preserved lane still admits its registered return');
+  } finally { h.close(); }
+});
+
+test('late installation cancellation closes only the candidate and preserves the previous lane', async () => {
+  let created = 0, candidateClosed = false, release, entered;
+  const creationStarted = new Promise(resolve => { entered = resolve; });
+  const h = await harness({ createCustodian: async (...args) => {
+    created += 1;
+    if (created === 1) return createPortableLoomReentryCustodian(...args);
+    entered();
+    await new Promise(resolve => { release = resolve; });
+    return { close() { candidateClosed = true; } };
+  } });
+  try {
+    await stage(h, 'Task survives cancellation.');
+    const before = h.ui.getRecord(), pending = h.ui.inspect().excursion;
+    let permitted = true;
+    const installing = h.ui.setSession(h.session, h.packet, { canCommit: () => permitted });
+    await creationStarted;
+    assert.deepEqual(h.ui.getRecord(), before, 'candidate construction does not close or replace the previous lane');
+    assert.equal(h.$('stage').disabled, true, 'pending installation disables competing gestures');
+    permitted = false; release();
+    await assert.rejects(installing, { name: 'AbortError' });
+    assert.equal(candidateClosed, true);
+    assert.deepEqual(h.ui.getRecord(), before);
+    assert.equal(h.ui.inspect().excursion, pending);
+    assert.equal(h.$('check').disabled, false);
+    await stage(h, 'Second task on the original lane.');
+    assert.equal(h.ui.inspect().custody.pending_turn_count, 2, 'the original custodian remains live');
   } finally { h.close(); }
 });
 

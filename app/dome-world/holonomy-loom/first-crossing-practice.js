@@ -16,14 +16,14 @@ export const FIRST_CROSSING_PRACTICE = freeze({
   id: 'loom-first-crossing-v1',
   input_class: 'CANONICAL_FICTIONAL_PRACTICE',
   fictional: true,
-  task: 'Prepare a brief about the fictional garden opening using the public source.',
+  task: 'Use the supporting source to answer the fictional garden-hours question.',
   rules: [
-    'Use only the selected brief and public source. Keep the private scrap local.'
+    'Use only the selected task note and supporting source. Keep the private note out of the AI handoff.'
   ],
   documents: [
-    { id: 'brief', name: 'Short brief', text: 'Fictional brief: explain when the garden opens.', share: true },
-    { id: 'source', name: 'Public source', text: 'Fictional public source: the garden opens at nine.', share: true },
-    { id: 'private', name: 'Private scrap', text: 'Fictional private scrap: PRIVATE_GARDEN_NOTE_613.', share: false }
+    { id: 'brief', name: 'Task note', text: 'Fictional task note: What time does the garden open?', share: true },
+    { id: 'source', name: 'Supporting source', text: 'Fictional supporting source: the garden opens at nine.', share: true },
+    { id: 'private', name: 'Private note', text: 'Fictional private note withheld from the AI handoff.', share: false }
   ],
   protectedTerms: ['PRIVATE_GARDEN_NOTE_613']
 });
@@ -33,7 +33,7 @@ function selectedPracticeIds(selectedIds) {
     || !Object.hasOwn(selectedIds, 0) || !Object.hasOwn(selectedIds, 1)
     || selectedIds.some(id => !['brief', 'source'].includes(id))
     || new Set(selectedIds).size !== 2) {
-    throw new TypeError('FIRST_CROSSING_SELECTION_HELD: select exactly the brief and public source; keep the private scrap local.');
+    throw new TypeError('FIRST_CROSSING_SELECTION_HELD: select exactly the task note and supporting source; keep the private note out of the AI handoff.');
   }
   return [...selectedIds].sort();
 }

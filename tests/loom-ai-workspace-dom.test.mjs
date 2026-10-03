@@ -75,9 +75,9 @@ test('Loom opens on the human task and local preparation exposes the next route'
   assert.equal(h.$('#aiDemoWelcome').hidden,true);
   assert.equal(h.$('#aiPortableModePanel').hidden,false);
   assert.equal(h.$('#aiDemoModePanel').hidden,true);
-  // OLD: route string repeated inside guide. NEW: named route controls plus explicit local preparation.
+  // The guide names the next product surface in ordinary language.
   assert.deepEqual([...h.root.querySelectorAll('.loom-journey-step strong')].map(n=>n.textContent),['Loom','Marrowline','Return']);
-  assert.match(h.$('#aiFirstUseGuide').textContent,/Prepare here.*only when you choose Marrowline/i);
+  assert.match(h.$('#aiFirstUseGuide').textContent,/Build the task here.*Marrowline carries the AI conversation/i);
   assert.equal(h.root.dataset.loomJourney,'loom');
 
   h.change('#aiTask','Compare the selected evidence and name what remains missing.');
@@ -94,6 +94,109 @@ test('Loom opens on the human task and local preparation exposes the next route'
   for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge']){
     assert.equal(h.$('#'+id).disabled,false,`${id} wakes after local preparation`);
   }
+});
+
+function failSessionCreation(h) {
+  let uuidCalls = 0;
+  Object.defineProperty(h.window, 'crypto', { configurable: true, value: {
+    randomUUID() {
+      // Intake has acquired its request ID and governance digest. Fail the
+      // subsequent session-ID acquisition, before any live custody commit.
+      if (++uuidCalls === 2) throw new Error('Controlled session creation failure');
+      return webcrypto.randomUUID();
+    },
+    getRandomValues: value => webcrypto.getRandomValues(value),
+    subtle: webcrypto.subtle
+  } });
+}
+
+function assertFailedPreparationClosed(h) {
+  assert.match(h.$('#aiStatus').textContent, /Controlled session creation failure/);
+  assert.equal(h.ui.inspect().session, null, 'a failed candidate cannot become a prepared session');
+  assert.equal(h.$('#aiSessionSummary').hidden, true);
+  assert.equal(h.$('#aiSessionReceipt').textContent, '');
+  assert.equal(h.$('#aiResult').hidden, true, 'failure cannot expose an empty Ready to cross result');
+  assert.equal(h.$('#aiAnswer').textContent, '');
+  for (const id of ['aiMarrowline', 'aiExport', 'aiCopy', 'aiExportSession', 'aiCopySession', 'aiPrepareChallenge', 'loomJourneyStep2']) {
+    assert.equal(h.$('#'+id).disabled, true, `${id} requires successful preparation`);
+  }
+  assert.equal(h.calls.length, 0, 'failed local preparation makes no provider request');
+}
+
+test('failed session creation keeps every outgoing route closed after intake succeeds', async t => {
+  const h = harness(t);
+  h.$('#loomFirstCrossingLeave').click();
+  h.change('#aiTask', 'Prepare this bounded task for another receiver.');
+  failSessionCreation(h);
+  h.$('#aiPreparePortable').click();
+  await h.settled();
+  assertFailedPreparationClosed(h);
+  assert.equal(h.$('[data-loom-reentry="root"]').textContent, 'Prepare a Loom session first.');
+});
+
+test('failed replacement preparation preserves the prior live custody and pending task', async t => {
+  const h = harness(t);
+  h.$('#loomFirstCrossingLeave').click();
+  h.change('#aiTask', 'Prepare the original custody lane.');
+  h.$('#aiPreparePortable').click();
+  await h.settled();
+  const originalRoot = h.$('[data-loom-reentry="root"]').title;
+  h.change('[data-loom-reentry="task"]', 'Keep this registered task in the original lane.');
+  h.$('[data-loom-reentry="stage"]').click();
+  await until(() => h.$('[data-loom-reentry="turns"]').children.length === 1, 'original pending registration');
+  const originalRecord = h.$('[data-loom-reentry="technical"]').textContent;
+  h.change('#aiTask', 'Prepare a replacement that will fail.');
+  chooseNewRoot(h);
+  failSessionCreation(h);
+  h.$('#aiPreparePortable').click();
+  await h.settled();
+  assertFailedPreparationClosed(h);
+  assert.equal(h.$('[data-loom-reentry="root"]').title, originalRoot, 'failure leaves the prior root intact');
+  assert.equal(h.$('[data-loom-reentry="technical"]').textContent, originalRecord, 'failure preserves the complete prior custody record');
+  assert.equal(h.$('[data-loom-reentry="turns"]').children.length, 1, 'failure retains the registered pending task');
+  assert.equal(h.$('[data-loom-reentry="stage"]').disabled, false, 'the original live custody remains usable');
+});
+
+test('Stop during later session preparation preserves the active custody before publication', async t => {
+  const h = harness(t);
+  h.$('#loomFirstCrossingLeave').click();
+  h.change('#aiTask', 'Prepare the original custody lane.');
+  h.$('#aiPreparePortable').click();
+  await h.settled();
+  const originalRoot = h.$('[data-loom-reentry="root"]').title;
+  const originalRecord = h.$('[data-loom-reentry="technical"]').textContent;
+  h.change('#aiTask', 'Prepare a replacement and stop after intake finishes.');
+  chooseNewRoot(h);
+  const entered = deferred(), release = deferred();
+  t.after(() => release.resolve());
+  Object.defineProperty(h.window, 'crypto', { configurable: true, value: {
+    randomUUID: () => webcrypto.randomUUID(),
+    getRandomValues: value => webcrypto.getRandomValues(value),
+    subtle: { async digest(...args) {
+      const serialized = new TextDecoder().decode(args[1]);
+      if (serialized.includes('"root_packet_digest"')) {
+        entered.resolve();
+        await release.promise;
+      }
+      return webcrypto.subtle.digest(...args);
+    } }
+  } });
+  h.$('#aiPreparePortable').click();
+  await entered.promise;
+  h.$('#aiStop').click();
+  release.resolve();
+  await h.settled();
+  assert.match(h.$('#aiStatus').textContent, /stopp/i);
+  assert.equal(h.ui.inspect().session, null, 'Stop prevents candidate session publication');
+  assert.equal(h.$('#aiSessionSummary').hidden, true);
+  assert.equal(h.$('#aiSessionReceipt').textContent, '');
+  assert.equal(h.$('#aiResult').hidden, true);
+  for (const id of ['aiMarrowline', 'aiExport', 'aiCopy', 'aiExportSession', 'aiCopySession', 'aiPrepareChallenge', 'loomJourneyStep2']) {
+    assert.equal(h.$('#'+id).disabled, true, `${id} stays closed after Stop`);
+  }
+  assert.equal(h.$('[data-loom-reentry="root"]').title, originalRoot, 'Stop preserves the old live root');
+  assert.equal(h.$('[data-loom-reentry="technical"]').textContent, originalRecord, 'Stop leaves the old private custody record intact');
+  assert.equal(h.calls.length, 0);
 });
 
 test('prepared Loom work preserves its session contract and editing invalidates the crossing',async t=>{

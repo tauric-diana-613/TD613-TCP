@@ -36,7 +36,9 @@ try{
     const head=()=>r('head').textContent();
     const check=async(text)=>{await r('returns').fill(text);if(!(await r('policy-review').isChecked()))await r('policy-review').check();await r('check').click();await page.waitForFunction(()=>{const v=document.querySelector('[data-loom-reentry="verdict"]').textContent;return v.startsWith('HOLD')||v==='Ready for local admission.';});};
     await page.goto(`${base}/dome-world/holonomy-loom.html`);
-    await page.locator('#loomBegin').click();await page.locator('.loom-builder-shell').waitFor({state:'visible'});
+    await page.locator('#loomFirstCrossing').waitFor({state:'visible'});
+    await page.locator('#loomFirstCrossingLeave').click();
+    await page.locator('.loom-builder-shell').waitFor({state:'visible'});
     await page.locator('#aiDemoMode').click();await page.locator('#aiDemoInvitation').click();await page.locator('[data-project="participant-research"]').click();
     await page.locator('#aiPreparePortable').click();await r('stage').waitFor({state:'attached'});
     await page.waitForFunction(()=>!document.querySelector('[data-loom-reentry="stage"]').disabled);
@@ -112,7 +114,12 @@ try{
     await page.locator('#aiChallengeResult').screenshot({path:`${dir}/${posture}-mixed-hold-exposure.png`});
     await page.locator('#loomToolsClose').click();
     await r('drawer').scrollIntoViewIfNeeded();
-    const layout=await page.evaluate(()=>({viewport:innerWidth,document:document.documentElement.scrollWidth,pre:[...document.querySelectorAll('.loom-reentry pre')].map(e=>({height:e.getBoundingClientRect().height,max:getComputedStyle(e).maxHeight}))}));
+    const layout=await page.evaluate(()=>({
+      viewport:innerWidth,
+      document:document.documentElement.scrollWidth,
+      pre:[...document.querySelectorAll('.loom-reentry pre')].map(e=>({height:e.getBoundingClientRect().height,max:getComputedStyle(e).maxHeight})),
+      overflow:[...document.querySelectorAll('body *')].map(e=>{const b=e.getBoundingClientRect();return {tag:e.tagName,id:e.id,class:typeof e.className==='string'?e.className:'',left:Math.round(b.left),right:Math.round(b.right),width:Math.round(b.width)};}).filter(b=>b.left<-1||b.right>innerWidth+1).slice(0,24)
+    }));
     assert.ok(layout.document<=layout.viewport+1,JSON.stringify(layout));assert.ok(layout.pre.every(p=>p.height<=420));
     await page.locator('#loomJourneyStep1').click();
     await page.locator('#aiTask').fill('Edited builder task must not destroy admitted history.');assert.equal(await head(),finalHead);
