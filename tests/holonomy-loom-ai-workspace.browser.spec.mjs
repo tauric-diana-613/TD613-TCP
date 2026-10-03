@@ -72,6 +72,19 @@ try {
     const closeTools = async () => {
       if (await page.locator('#loomTools').evaluate(node=>node.open)) await page.locator('#loomToolsClose').click();
     };
+    const showThreshold = async () => {
+      await closeTools();
+      if (!(await page.locator('.loom-stage').isVisible())) {
+        await page.locator('#loomReturnThreshold').click();
+        await page.locator('.loom-stage').waitFor({ state: 'visible' });
+      }
+    };
+    const showBuilder = async () => {
+      if (!(await page.locator('.loom-builder-shell').isVisible())) {
+        await page.locator('#loomBegin').click();
+        await page.locator('.loom-builder-shell').waitFor({ state: 'visible' });
+      }
+    };
     const runtimeErrors = [], requests = [], unexpected = [];
     let mode = 'success';
     let releaseResponse;
@@ -264,7 +277,10 @@ try {
       await page.waitForFunction(() => document.querySelector('#aiRuntimeState')?.dataset.clientPhase === 'pending');
       assert.equal(await page.locator('#aiRuntimeState').getAttribute('data-active-relation'),'release');
       for(const document of fixture.documents.filter(d=>!d.share))assert.equal((await page.locator('#aiRuntimeState').textContent()).includes(document.name),false);
+      await showThreshold();
+      assert.equal(await page.locator('#aiRuntimeState').isVisible(),true,'pending route visualization is visible when the Threshold scene is active');
       await page.locator('#aiRuntimeState').screenshot({path:path.join(dir,`${posture}-runtime-state-pending.png`)});
+      await showBuilder();
       releaseResponse();
       await page.waitForFunction(expected => document.querySelector('#aiAnswer')?.textContent.includes(expected), fixtureAnswer);
       assert.equal(await page.locator('#aiAnswer').isVisible(), true);
@@ -295,15 +311,19 @@ try {
       assert.equal(exported.includes(uploadCanary), false, 'uploaded local-only document excluded from export');
       assert.equal(requests.length, 1, 'export cannot silently call provider again');
       await closeTools();
+      await showThreshold();
       await page.locator('#aiRuntimeState').screenshot({path:path.join(dir,`${posture}-runtime-state-returned.png`)});
       await page.locator('#aiRoomReplay').click();
       assert.match(await page.locator('#aiRoomReplayStatus').innerText(),/Recorded state/);
+      await showBuilder();
       await openTool('session');
       await page.locator('#aiInspector > summary').click();
       await page.locator('#aiAuditor').click();
       assert.equal(requests.length,1,'replay and auditor view make no provider request');
       await closeTools();
+      await showThreshold();
       await page.locator('#aiRoomLive').click();
+      await showBuilder();
       await openTool('session');
       await page.locator('#aiChild').click();
       await closeTools();
@@ -323,6 +343,8 @@ try {
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, 'no horizontal overflow · '+JSON.stringify(overflow));
       assert.deepEqual(runtimeErrors, [], 'no runtime errors');
       assert.deepEqual(unexpected, [], 'no direct browser-to-provider or unrelated mutation requests');
+      await showThreshold();
+      assert.equal(await page.locator('#aiRuntimeState').isVisible(),true,'held route visualization is visible in the Threshold scene');
       await page.locator('#aiRuntimeState').screenshot({path:path.join(dir,`${posture}-runtime-state-held.png`)});
       await page.screenshot({ path: path.join(dir, `${posture}-mock-provider-held.png`), fullPage: true });
       report.checks.push({ posture, status: 'PASS', intercepted_requests: requests.length, loom_task_default: true,
