@@ -134,10 +134,33 @@ try {
       record('first crossing: builder is withheld before practice completion',
         await page.locator('.loom-builder-shell').isHidden() && await page.locator('#loomFirstCrossing').isVisible(),
         { first_crossing_visible: await page.locator('#loomFirstCrossing').isVisible() });
+      const firstCrossingVisual = await page.locator('#loomFirstCrossing').evaluate(node => {
+        const style=getComputedStyle(node);
+        const rect=node.getBoundingClientRect();
+        const visibleChrome=['.loom-field-caption','.loom-instrument-state-mode','.loom-instrument-state-relation','.loom-instrument-state-boundary','.ai-room-replay','.loom-hero-route']
+          .filter(selector => {
+            const el=document.querySelector(selector); if(!el)return false;
+            const s=getComputedStyle(el); const r=el.getBoundingClientRect();
+            return s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0;
+          });
+        const objectStyles=[...node.querySelectorAll('[data-first-crossing-item]')].map(button=>{
+          const s=getComputedStyle(button),r=button.getBoundingClientRect();
+          return {id:button.dataset.firstCrossingItem,border_radius:s.borderRadius,background:s.backgroundColor,width:r.width,height:r.height};
+        });
+        return {
+          background:style.backgroundColor,border_top:style.borderTopWidth,box_shadow:style.boxShadow,
+          width:rect.width,height:rect.height,visible_chrome:visibleChrome,objects:objectStyles
+        };
+      });
+      record('first crossing: no tutorial card or ordinary Loom chrome overlays the field',
+        firstCrossingVisual.background === 'rgba(0, 0, 0, 0)' &&
+        firstCrossingVisual.border_top === '0px' &&
+        firstCrossingVisual.visible_chrome.length === 0 &&
+        firstCrossingVisual.objects.every(object => object.border_radius === '50%' && object.width < 120 && object.height < 120),
+        firstCrossingVisual);
       await screenshot(page, 'first-crossing-mobile-notice');
       await page.locator('[data-first-crossing-item="brief"]').click();
       await page.locator('[data-first-crossing-item="source"]').click();
-      await page.locator('#loomFirstCrossingAction').click();
       await page.waitForFunction(() => document.querySelector('#aiRuntimeState')?.dataset?.activeRelation === 'gathering');
       record('first crossing: gathering is a real canonical local relation before transmission',
         await page.locator('#aiRuntimeState').getAttribute('data-active-relation') === 'gathering' &&
