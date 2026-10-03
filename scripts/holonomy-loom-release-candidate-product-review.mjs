@@ -5,7 +5,8 @@ import { compilePedagogueDesignReview } from '../app/engine/pedagogue-design-gat
 export const REVIEW_SCHEMA = 'td613.holonomy-loom.release-candidate-product-review/v0.1';
 export const REVIEW_EVIDENCE_CLASS = 'MACHINE_RELEASE_CANDIDATE_PRODUCT_REVIEW';
 
-const PRODUCT_HTML_URL = new URL('../app/dome-world/holonomy-loom.html', import.meta.url);
+const PRODUCT_HTML_URL = new URL('../app/dome-world/holonomy-loom/fixtures/legacy-practice.html', import.meta.url);
+const WORKSPACE_HTML_URL = new URL('../app/dome-world/holonomy-loom.html', import.meta.url);
 const ENGINE_URL = new URL('../app/dome-world/holonomy-loom/engine.js', import.meta.url);
 const PEDAGOGUE_FIXTURE_URL = new URL('../tests/fixtures/pedagogue/holonomy-loom-hosted-observer-geometry-design.json', import.meta.url);
 
@@ -59,25 +60,28 @@ function section(review, id, label, checks) {
 }
 
 export async function loadReleaseCandidateInputs() {
-  const [html, engine, fixtureText] = await Promise.all([
+  const [html, workspaceHtml, engine, fixtureText] = await Promise.all([
     readFile(PRODUCT_HTML_URL, 'utf8'),
+    readFile(WORKSPACE_HTML_URL, 'utf8'),
     readFile(ENGINE_URL, 'utf8'),
     readFile(PEDAGOGUE_FIXTURE_URL, 'utf8')
   ]);
-  return { html, engine, fixture: JSON.parse(fixtureText) };
+  return { html, workspaceHtml, engine, fixture: JSON.parse(fixtureText) };
 }
 
 export async function compileHolonomyLoomReleaseCandidateReview({
   html,
+  workspaceHtml,
   engine,
   fixture,
   repositoryHead = process.env.GITHUB_SHA || 'LOCAL_UNBOUND',
   authorityOverrides = {},
   evidenceOverrides = {}
 } = {}) {
-  if (typeof html !== 'string' || typeof engine !== 'string' || !fixture) {
+  if (typeof html !== 'string' || typeof workspaceHtml !== 'string' || typeof engine !== 'string' || !fixture) {
     const loaded = await loadReleaseCandidateInputs();
     html ??= loaded.html;
+    workspaceHtml ??= loaded.workspaceHtml;
     engine ??= loaded.engine;
     fixture ??= loaded.fixture;
   }
@@ -130,8 +134,8 @@ export async function compileHolonomyLoomReleaseCandidateReview({
   };
 
   const sections = [
-    section(null, 'R0', 'Local laboratory child-legible entry', [
-      reviewCheck('R0.1', 'Holonomy Loom title declared', html.includes('<h1>Holonomy Loom</h1>')),
+    section(null, 'R0', 'Fixture-only local rule entry', [
+      reviewCheck('R0.1', 'research fixture title declared', html.includes('<h1>Loom rule fixture</h1>')),
       reviewCheck('R0.2', 'ordinary-language first instruction declared', html.includes(visibleInstruction)),
       reviewCheck('R0.3', 'SEE CHECK UNDERSTAND REST route declared', html.includes('SEE → CHECK → UNDERSTAND → REST')),
       reviewCheck('R0.4', 'CHECK THIS MESSAGE control declared', /id="check"[^>]*>CHECK THIS MESSAGE<\/button>/.test(html)),
@@ -160,7 +164,7 @@ export async function compileHolonomyLoomReleaseCandidateReview({
       reviewCheck('R4.1', 'provider help remains optional closed details', providerDetailsClosedByDefault),
       reviewCheck('R4.2', 'local checker declares no provider call', html.includes('No model is called by this local checker.')),
       reviewCheck('R4.3', 'provider release authority remains false', releaseBoundary.provider_release_authority === false && html.includes('data-provider-release-authority="false"')),
-      reviewCheck('R4.4', 'separate AI workspace transmission is disclosed', html.includes('Its Run button sends only your task, selected documents and portable rules.') && html.includes('id="loomAiWorkspace"'))
+      reviewCheck('R4.4', 'fixture excludes model workspace and the primary workspace boots separately', html.includes('This research fixture has no model workspace.') && !html.includes('id="loomAiWorkspace"') && workspaceHtml.includes('src="./holonomy-loom/ai-workspace.js"'))
     ]),
     section(null, 'R5', 'Rest Return Exit', [
       reviewCheck('R5.1', 'REST control declared', html.includes('id="rest"') && html.includes('>REST</button>')),
@@ -199,7 +203,10 @@ export async function compileHolonomyLoomReleaseCandidateReview({
     status: failedSections.length === 0 ? 'PASS' : 'HELD',
     reviewed_repository_head: repositoryHead,
     reviewed_candidate: {
-      html_path: 'app/dome-world/holonomy-loom.html',
+      scope: 'FIXTURE_ONLY_CHECKER_WITH_SEPARATE_PRIMARY_WORKSPACE_SOURCE',
+      html_path: 'app/dome-world/holonomy-loom/fixtures/legacy-practice.html',
+      workspace_html_path: 'app/dome-world/holonomy-loom.html',
+      workspace_html_sha256: sha256(workspaceHtml),
       html_sha256: htmlHash,
       engine_path: 'app/dome-world/holonomy-loom/engine.js',
       engine_sha256: engineHash,
@@ -218,7 +225,7 @@ export async function compileHolonomyLoomReleaseCandidateReview({
       authority_transferred: pedagogue.aia_surface_family_report?.authority_transferred === true
     },
     claim_ceiling: [
-      'machine-executed release-candidate product review only',
+      'fixture-only local checker review with separate primary workspace source binding; not complete operator-journey acceptance',
       'not human comprehension evidence',
       'not a HUMAN_OPERATOR_PRODUCTION_OBSERVATION_RECORD',
       'not production verification',
@@ -232,19 +239,21 @@ export async function compileHolonomyLoomReleaseCandidateReview({
       'Draft run 2803 R1.4a false negative: raw-source string observer replaced by exported claim-ceiling semantic binding',
       'Draft runs 2815–2818 R3 false negative: Flow-Core NAME metadata exposed exact-tag observer brittleness; closed-details parsing widened without changing closure semantics'
     ],
-    next_dependency_if_pass: 'EXPLICIT_OPERATOR_PRODUCTION_RELEASE_AUTHORIZATION_UNDER_STRATEGIC_VERCEL_DEPLOYMENT_LAW'
+    next_dependency_if_pass: 'PRIMARY_OPERATOR_JOURNEY_ACCEPTANCE_AND_EXACT_HEAD_VALIDATION'
   };
   return Object.freeze(review);
 }
 
 export function renderHolonomyLoomReleaseCandidateReviewMarkdown(review) {
   const lines = [
-    '# Holonomy Loom · Release-Candidate Product Review v0.1',
+    '# Holonomy Loom · Fixture Rule Review v0.1',
     '',
     `**Evidence class:** ${review.evidence.review_evidence_class}`,
     `**Status:** ${review.status}`,
     `**Reviewed repository head:** \`${review.reviewed_repository_head}\``,
-    `**Hosted HTML SHA-256:** \`${review.reviewed_candidate.html_sha256}\``,
+    `**Review scope:** ${review.reviewed_candidate.scope}`,
+    `**Primary workspace HTML SHA-256:** \`${review.reviewed_candidate.workspace_html_sha256}\``,
+    `**Research fixture HTML SHA-256:** \`${review.reviewed_candidate.html_sha256}\``,
     `**Loom engine SHA-256:** \`${review.reviewed_candidate.engine_sha256}\``,
     '',
     '## Checklist'

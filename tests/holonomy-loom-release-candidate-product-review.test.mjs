@@ -29,6 +29,10 @@ assert.equal(baseline.pedagogue.aia_invariants_preserved, true);
 assert.equal(baseline.pedagogue.route_history_explicit, true);
 assert.equal(baseline.pedagogue.route_burden_non_worsening, true);
 assert.equal(baseline.pedagogue.authority_transferred, false);
+assert.equal(baseline.reviewed_candidate.scope, 'FIXTURE_ONLY_CHECKER_WITH_SEPARATE_PRIMARY_WORKSPACE_SOURCE');
+assert.equal(baseline.reviewed_candidate.html_path, 'app/dome-world/holonomy-loom/fixtures/legacy-practice.html');
+assert.equal(baseline.reviewed_candidate.workspace_html_path, 'app/dome-world/holonomy-loom.html');
+assert.match(baseline.reviewed_candidate.workspace_html_sha256, /^[a-f0-9]{64}$/);
 assert.match(baseline.reviewed_candidate.html_sha256, /^[a-f0-9]{64}$/);
 assert.match(baseline.reviewed_candidate.engine_sha256, /^[a-f0-9]{64}$/);
 
@@ -37,7 +41,7 @@ assert.match(markdown, /MACHINE_RELEASE_CANDIDATE_PRODUCT_REVIEW/);
 assert.match(markdown, /not evidence that a human understood the product/i);
 assert.match(markdown, /not a production observation/i);
 assert.match(markdown, /not release authorization/i);
-assert.match(markdown, /EXPLICIT_OPERATOR_PRODUCTION_RELEASE_AUTHORIZATION_UNDER_STRATEGIC_VERCEL_DEPLOYMENT_LAW/);
+assert.match(markdown, /PRIMARY_OPERATOR_JOURNEY_ACCEPTANCE_AND_EXACT_HEAD_VALIDATION/);
 for (const id of ['R0','R1','R2','R3','R4','R5','R6','R7']) assert.match(markdown, new RegExp(`### ${id} .* — PASS`));
 
 async function expectHeld(label, mutation, expectedSection) {

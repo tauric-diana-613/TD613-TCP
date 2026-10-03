@@ -1,4 +1,5 @@
-/** Hostile synthetic custody checks. These do not establish live provider behavior. */
+/** Historical room primitives remain fixture-only. The workspace checks below
+ * exercise the canonical primary route with mocked HTTP, without live-provider evidence. */
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { webcrypto } from 'node:crypto';
@@ -67,7 +68,7 @@ test('unknown source, duplicate source, malformed counts and sparse missingness 
 
 const until=async predicate=>{const end=Date.now()+3000;while(!predicate()){if(Date.now()>end)throw new Error('Synthetic workspace did not settle');await new Promise(r=>setTimeout(r,5));}};
 function harness(t,responder){
-  const dom=new JSDOM('<section id="fixture"></section>',{url:'https://td613.com/dome-world/holonomy-loom.html'});
+  const dom=new JSDOM('<section id="fixture"></section>',{url:'https://td613.com/dome-world/holonomy-loom.html',pretendToBeVisual:true});
   const window=dom.window,root=window.document.querySelector('#fixture'),calls=[],frames=new Map();let sequence=0;
   const oldRaf=globalThis.requestAnimationFrame,oldCancel=globalThis.cancelAnimationFrame;
   globalThis.requestAnimationFrame=fn=>{const id=++sequence;frames.set(id,fn);return id;};globalThis.cancelAnimationFrame=id=>frames.delete(id);
@@ -77,20 +78,23 @@ function harness(t,responder){
   const ui=mountLoomAiWorkspace(root,window),$=selector=>root.querySelector(selector);
   t.after(()=>{ui.dispose();window.close();if(oldRaf===undefined)delete globalThis.requestAnimationFrame;else globalThis.requestAnimationFrame=oldRaf;if(oldCancel===undefined)delete globalThis.cancelAnimationFrame;else globalThis.cancelAnimationFrame=oldCancel;});
   $('#aiDemoInvitation').click();$(`[data-project="${LOOM_AI_PROJECTS[0].id}"]`).click();
-  return {$,calls,ui,root,window,settle:()=>until(()=>root.getAttribute('aria-busy')!=='true')};
+  return {$,calls,ui,root,window,settle:async()=>{await until(()=>root.getAttribute('aria-busy')!=='true');await until(()=>ui.inspect().runtime.status==='CURRENT'&&ui.inspect().runtime.view.phase===ui.inspect().events.at(-1).phase);}};
 }
 const admitted=request=>({schema:'td613.loom.ai-task-result/v0.1',status:'completed',request_id:request.request_id,answer:'Synthetic fixture answer.',missing_information:['Synthetic unresolved condition.'],used_document_ids:request.documents.map(d=>d.id),suggested_next_step:'Inspect the condition.',observations:{provider_calls:1,elapsed_ms:75,source_claims:'model-reported-unverified'}});
 const response=(body,status=200)=>({ok:status===200,status,text:async()=>JSON.stringify(body)});
 
 test('actual workspace replay, scrub and receiver switching never repeat HTTP or selected transport',async t=>{
   const h=harness(t,request=>response(admitted(request)));h.$('#aiRun').click();await h.settle();
+  assert.equal(h.root.querySelectorAll('.lr-world, .lr-courier, #ilState').length,0);
+  assert.equal(h.ui.inspect().runtime.view.state.custody_admitted,false);
   assert.equal(h.calls.length,1);const before=JSON.stringify(h.ui.inspect().events);
   const completion=h.ui.inspect().events.find(e=>e.phase==='completed');assert.equal(completion.aia.fadt_admission,true);
   h.$('#aiRoomReplay').click();assert.equal(h.ui.inspect().replay.index,0);
   for(let i=0;i<h.ui.inspect().replay.count;i++){h.$('#aiRoomScrub').value=String(i);h.$('#aiRoomScrub').dispatchEvent(new h.window.Event('input',{bubbles:true}));h.$('#aiAuditor').click();h.$('#aiChild').click();}
   h.$('#aiStillField').click();h.$('#aiRoomLive').click();
+  await until(()=>h.$('#aiRuntimeState').dataset.clientPhase==='completed');
   assert.equal(h.calls.length,1);assert.equal(JSON.stringify(h.ui.inspect().events),before);
-  for(const doc of LOOM_AI_PROJECTS[0].documents.filter(d=>!d.share)){assert.equal(h.calls[0].options.body.includes(doc.text),false);assert.equal(h.$('#aiLivingRoom').textContent.includes(doc.name),false);}
+  for(const doc of LOOM_AI_PROJECTS[0].documents.filter(d=>!d.share)){assert.equal(h.calls[0].options.body.includes(doc.text),false);assert.equal(h.$('#aiRuntimeState').textContent.includes(doc.name),false);}
 });
 
 test('stopping an in-flight workspace request preserves submission and never fabricates a return',async t=>{
@@ -106,5 +110,5 @@ test('a returned but rejected body is recorded as arrival and kept outside the r
   h.$('#aiRun').click();await h.settle();const held=h.ui.inspect().events.findLast(e=>e.phase==='held');
   assert.equal(held.outbound_submitted,true);assert.equal(held.response_received,true);
   assert.equal(h.$('#aiResult').hidden,true);assert.equal(h.$('#aiAnswer').textContent,'');assert.equal(h.$('#aiExport').disabled,true);
-  assert.equal(h.$('#aiLivingRoom').textContent.includes(LOOM_AI_PROJECTS[0].protectedTerms[0]),false);
+  assert.equal(h.$('#aiRuntimeState').textContent.includes(LOOM_AI_PROJECTS[0].protectedTerms[0]),false);
 });

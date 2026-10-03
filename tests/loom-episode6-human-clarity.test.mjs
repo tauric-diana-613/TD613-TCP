@@ -74,7 +74,7 @@ test('Loom human-facing task surface stays provider-neutral and names the active
   assert.doesNotMatch(source, /Select only the files Gemini should receive/);
   assert.match(source, /id="aiProjectBrief" class="ai-project-brief/);
   assert.match(source, /id="aiTaskCue"/);
-  assert.match(source, /exact task travels with the selected files and portable rules/i);
+  assert.match(source, /exact task travels with the selected files and rules when you prepare the Loom transfer/i);
   assert.match(source, /exact instruction the AI will receive when you press Run demo/i);
   assert.match(css, /\.ai-task-surface/);
   assert.match(css, /#loomAiWorkspace textarea#aiTask/);

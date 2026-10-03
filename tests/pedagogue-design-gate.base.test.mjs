@@ -20,7 +20,7 @@ async function fixture(name) {
 }
 
 for (const name of ['giving-vault-design.json', 'giving-research-dossier-design.json', 'cistern-boundary-design.json', 'loom-instrument-platform-design.json']) {
-  test(`${name} passes the generic Pedagogue design gate without product authority`, async () => {
+  test(`${name} preserves the generic Pedagogue design contracts without product authority`, async () => {
     const input = await fixture(name);
     const review = await compilePedagogueDesignReview(input);
     assert.equal(review.scene_host, 'Dome-World');
@@ -30,7 +30,10 @@ for (const name of ['giving-vault-design.json', 'giving-research-dossier-design.
     assert.equal(review.design_gate.aia_invariants_preserved, true);
     assert.equal(review.design_gate.aia_surface_bound, true);
     assert.equal(review.design_gate.route_history_explicit, true);
-    assert.equal(review.design_gate.route_burden_non_worsening, true);
+    // The primary Loom route removes an easy disclosure step. Its total
+    // demand falls while the existing per-step transport average rises by one.
+    // Preserve that declared-model disagreement instead of forcing a PASS.
+    assert.equal(review.design_gate.route_burden_non_worsening, name !== 'loom-instrument-platform-design.json');
     assert.equal(review.design_gate.user_level_score_forbidden, true);
     assert.equal(review.design_gate.automatic_redesign_forbidden, true);
     assert.equal(review.design_gate.human_closure_required, true);
@@ -58,8 +61,14 @@ for (const name of ['giving-vault-design.json', 'giving-research-dossier-design.
 test('Loom instrument comparison preserves path difference and evidence limits under equal declared support', async () => {
   const input = await fixture('loom-instrument-platform-design.json');
   const review = await compilePedagogueDesignReview(input);
-  assert.equal(Object.values(review.design_gate).every(value => value === true), true);
-  assert.equal(review.burden_comparison.improved_model_count, 4);
+  for (const [key, value] of Object.entries(review.design_gate)) {
+    assert.equal(value, key !== 'route_burden_non_worsening');
+  }
+  assert.equal(review.burden_comparison.improved_model_count, 3);
+  assert.equal(review.burden_comparison.delta_millipoints.AIA_TRANSPORT_SURROGATE, 1);
+  const transport = value => value.model_results.find(result => result.model_id === 'AIA_TRANSPORT_SURROGATE');
+  assert.ok(transport(review.proposed_burden).raw_components.demand_units < transport(review.baseline_burden).raw_components.demand_units);
+  assert.ok(transport(review.proposed_burden).normalized_components_millipoints.transport_surrogate > transport(review.baseline_burden).normalized_components_millipoints.transport_surrogate);
   assert.equal(review.route_memory_comparison.endpoint_equivalent, true);
   assert.equal(review.route_memory_comparison.exact_route_match, false);
   assert.equal(review.route_memory_comparison.same_endpoint_not_same_history, true);

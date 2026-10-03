@@ -5,6 +5,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import http from 'node:http';
 import { execFileSync } from 'node:child_process';
 import { chromium, firefox, webkit } from 'playwright';
 import { LOOM_AI_PROJECTS } from '../app/dome-world/holonomy-loom/ai-projects.js';
@@ -12,7 +13,21 @@ import { LOOM_AI_PROJECTS } from '../app/dome-world/holonomy-loom/ai-projects.js
 const engine = process.env.TD613_BROWSER || 'chromium';
 const browserType = { chromium, firefox, webkit }[engine];
 if (!browserType) throw new TypeError('Unknown witness browser engine');
-const base = process.env.TD613_BASE_URL || 'http://127.0.0.1:6130';
+let server, base = process.env.TD613_BASE_URL;
+if (!base) {
+  const appRoot = path.resolve('app');
+  server = http.createServer(async (req, res) => {
+    try {
+      const file = path.resolve(appRoot, '.' + new URL(req.url, 'http://localhost').pathname);
+      if (!file.startsWith(appRoot + path.sep)) throw new Error('invalid static path');
+      const body = await fs.readFile(file);
+      res.setHeader('Content-Type', ({ '.js': 'text/javascript', '.html': 'text/html', '.css': 'text/css', '.svg': 'image/svg+xml' })[path.extname(file)] || 'application/octet-stream');
+      res.end(body);
+    } catch { res.statusCode = 404; res.end(); }
+  });
+  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  base = `http://127.0.0.1:${server.address().port}`;
+}
 if (!['127.0.0.1', 'localhost'].includes(new URL(base).hostname)) throw new TypeError('Fixture transport witness requires a local server.');
 const dir = process.env.TD613_ARTIFACT_DIR || `artifacts/loom-ai-workspace/${engine}`;
 await fs.mkdir(dir, { recursive: true });
@@ -36,7 +51,7 @@ const uploadCanary = 'LOCAL-UPLOAD-CANARY-DO-NOT-SEND-613';
 const fixtureAnswer = '[MOCK PROVIDER RESPONSE — UI WITNESS] Supplier analysis: stated account fees and migration overages require separate arithmetic. Retention terms conflict; obtain a signed resolution before pilot approval.';
 let browser;
 try {
-  browser = await browserType.launch({ headless: true, ...(engine === 'chromium' ? { executablePath: process.env.TD613_BROWSER_EXECUTABLE_PATH || browserType.executablePath() } : {}) });
+  browser = await browserType.launch({ headless: true, ...(engine === 'chromium' && process.env.TD613_BROWSER_EXECUTABLE_PATH ? { executablePath: process.env.TD613_BROWSER_EXECUTABLE_PATH } : {}) });
   for (const [posture, viewport, reducedMotion] of [
     ['desktop', { width: 1280, height: 900 }, 'no-preference'],
     ['mobile-reduced', { width: 390, height: 844 }, 'reduce']
@@ -80,30 +95,32 @@ try {
       const loaded = await page.goto(`${base}/dome-world/holonomy-loom.html`, { waitUntil: 'networkidle' });
       assert.equal(loaded.status(), 200);
       await page.locator('#loomAiWorkspace').waitFor({ state: 'visible' });
-      assert.equal(await page.locator('#aiPortableMode').getAttribute('aria-selected'),'true','Portable AIA is the default product mode');
+      assert.equal(await page.locator('#aiPortableMode').getAttribute('aria-selected'),'true','Loom transfer is the default product mode');
       assert.equal(await page.locator('#aiDemoMode').getAttribute('aria-selected'),'false');
-      assert.equal(await page.locator('#aiDemoWelcome').isVisible(),false,'fictional demo chooser stays out of the primary Portable AIA path');
+      assert.equal(await page.locator('#aiDemoWelcome').isVisible(),false,'fictional demo chooser stays out of the primary Loom transfer path');
       assert.equal(await page.locator('#loomLegacy > summary').isVisible(),true,'Instrument Lab has an independent entrance in Portable mode');
       assert.equal(await page.locator('#loomLegacy').evaluate(node=>node.open),false,'Instrument Lab remains closed by default');
-      assert.match(await page.locator('#aiShiStatus').innerText(),/Issuance held/);
-      assert.equal(await page.locator('#aiIssuanceGate a').getAttribute('href'),'/safe-harbor/index.html');
+      assert.equal(await page.locator('#loomAiWorkspace').getAttribute('data-loom-journey'),'loom');
       assert.equal(await page.locator('.ai-projection-depth').getAttribute('open'),null,'technical governance detail stays optional on entry');
       assert.equal(await page.locator('#aiProjectionTravel').isVisible(),true);
       assert.equal(await page.locator('#aiProjectionStay').isVisible(),true);
-      assert.equal(await page.locator('#loomLivingGeometry canvas').count(), 1, 'one Dome-Art canvas is mounted under the workspace clock; raster readiness remains a renderer concern');
+      assert.equal(await page.locator('#aiRuntimeState').count(), 1, 'one canonical primary route view is mounted');
+      assert.equal(await page.locator('.lr-world, .lr-courier, #loomLivingGeometry canvas, #ilState, #loomObserverChamber, #loomTheater, #loomPracticeFixtures').count(), 0, 'retired illustrations and nested practice surfaces are absent');
+      assert.equal(await page.locator('#aiLivingRoom').evaluate(node => node.hidden && node.childElementCount === 0), true);
 
-      assert.equal(await page.locator('.ai-observer').isVisible(),false,'the live request theater does not dominate Portable AIA mode');
-      assert.equal(await page.locator('#aiPreparePortable').isVisible(),true,'Portable AIA preparation is a first-class composer gesture');
-      assert.equal(await page.locator('#aiPreparePortable').evaluate(node=>node.classList.contains('ai-primary')),true,'local preparation is the primary Portable AIA gesture');
-      assert.equal(await page.locator('#aiRun').evaluate(node=>node.classList.contains('ai-primary')),false,'Flow-Core is optional testing in Portable AIA mode');
-      await page.locator('#aiTask').fill('Prepare a bounded Portable AIA and keep the unselected material local.');
+      assert.equal(await page.locator('#aiRuntime').isVisible(),true,'the canonical state view follows the same Loom transfer route');
+      assert.equal(await page.locator('#aiPreparePortable').isVisible(),true,'Loom transfer preparation is a first-class composer gesture');
+      assert.equal(await page.locator('#aiPreparePortable').evaluate(node=>node.classList.contains('ai-primary')),true,'local preparation is the primary Loom transfer gesture');
+      assert.equal(await page.locator('#aiRun').evaluate(node=>node.classList.contains('ai-primary')),false,'Flow-Core is optional testing in Loom transfer mode');
+      await page.locator('#aiTask').fill('Prepare a bounded Loom transfer and keep the unselected material local.');
       await page.locator('#aiPreparePortable').click();
       await page.waitForFunction(() => document.querySelector('#aiResult') && !document.querySelector('#aiResult').hidden);
-      assert.equal(requests.length,0,'local Portable AIA preparation makes no provider request');
-      assert.equal(await page.locator('#aiResultTitle').innerText(),'Your Portable AIA is prepared locally.');
-      assert.equal(await page.locator('#aiMarrowline').isDisabled(),true,'Marrowline issuance stays held without SHI in Portable AIA mode');
-      assert.equal(await page.locator('#aiExport').isDisabled(),true,'one-hop export stays held without SHI in Portable AIA mode');
-      assert.equal(await page.locator('#aiExportSession').isDisabled(),true,'persistent session export stays held without SHI');
+      assert.equal(requests.length,0,'local Loom transfer preparation makes no provider request');
+      assert.equal(await page.locator('#aiResultTitle').innerText(),'Your Loom transfer is prepared locally.');
+      assert.equal(await page.locator('#loomAiWorkspace').getAttribute('data-loom-journey'),'ready');
+      assert.equal(await page.locator('#aiMarrowline').isEnabled(),true,'prepared work can continue to Marrowline without a speculative authority gate');
+      assert.equal(await page.locator('#aiExport').isEnabled(),true,'prepared one-hop export is available');
+      assert.equal(await page.locator('#aiExportSession').isEnabled(),true,'prepared session export is available');
       assert.equal(await page.locator('#aiSessionSummary').isVisible(),true,'local preparation creates a visible persistent session summary');
       await page.locator('#aiSessionInspect > summary').click();
       const sessionContract=await page.locator('#aiSessionReceipt').innerText();
@@ -114,13 +131,11 @@ try {
       await page.locator('#aiSessionInspect > summary').click();
       assert.equal(await page.locator('#aiSessionReceipt').isVisible(),false,'exact session contract returns to progressive disclosure after inspection');
       assert.match(await page.locator('#aiAnswer').innerText(),/made no model request/i);
-      assert.match(await page.locator('#aiAnswer').innerText(),/does not embed civil-identity verification/i);
+      assert.match(await page.locator('#aiAnswer').innerText(),/hidden receiver state and downstream behavior remain outside this local binding/i);
 
-      await page.locator('#aiShi').fill('TD613-SH-9B07D8B-A1B2C3D4');
-      assert.match(await page.locator('#aiShiStatus').innerText(),/SHI FORMAT ACCEPTED/);
-      assert.equal(await page.locator('#aiExport').isEnabled(),true,'valid-format SHI wakes a prepared one-hop issuance gesture');
-      assert.equal(await page.locator('#aiExportSession').isEnabled(),true,'valid-format SHI wakes persistent session export');
-      assert.equal(await page.locator('#aiPrepareChallenge').isEnabled(),true,'valid-format SHI wakes Challenge Receiver');
+      assert.equal(await page.locator('#aiExport').isEnabled(),true,'prepared one-hop export stays available without an unrelated authority gate');
+      assert.equal(await page.locator('#aiExportSession').isEnabled(),true,'prepared persistent session export stays available');
+      assert.equal(await page.locator('#aiPrepareChallenge').isEnabled(),true,'Challenge Receiver is available from the prepared Loom session');
 
       const sessionDownloadPromise = page.waitForEvent('download');
       await page.locator('#aiExportSession').click();
@@ -168,20 +183,19 @@ try {
       await receiptDetails.locator('summary').click();
       await page.screenshot({ path: path.join(dir, `${posture}-portable-session-challenge.png`), fullPage: true });
 
-      await page.locator('#aiShi').fill('');
-      assert.equal(await page.locator('#aiExport').isDisabled(),true,'removing SHI restores the one-hop issuance hold');
-      assert.equal(await page.locator('#aiExportSession').isDisabled(),true,'removing SHI restores the session issuance hold');
+      assert.equal(await page.locator('#aiExport').isEnabled(),true,'bounded challenge work does not silently close the prepared export route');
+      assert.equal(await page.locator('#aiExportSession').isEnabled(),true,'bounded challenge work does not silently close the prepared session route');
 
-      assert.equal(await page.locator('#aiStillField').isVisible(),false,'observer-only motion controls stay out of Portable AIA mode');
-      assert.equal(requests.length, 0, 'local preparation and SHI format checks make no provider request');
-      await page.screenshot({ path: path.join(dir, `${posture}-portable-aia-held.png`), fullPage: true });
+      assert.equal(await page.locator('#aiStillField').isVisible(),true,'the shared runtime owns a visible rest control');
+      assert.equal(requests.length, 0, 'local preparation and export controls make no provider request');
+      await page.screenshot({ path: path.join(dir, `${posture}-loom-transfer-prepared.png`), fullPage: true });
 
       await page.locator('#aiDemoMode').click();
-      assert.equal(await page.locator('#aiDemoWelcome').isVisible(),true,'Loom Demo reveals the fictional practice chooser');
-      assert.equal(await page.locator('.ai-observer').isVisible(),true,'live request theater returns inside Loom Demo');
+      assert.equal(await page.locator('#aiDemoWelcome').isVisible(),true,'Practice route reveals the fictional project chooser');
+      assert.equal(await page.locator('#aiRuntime').isVisible(),true,'the same primary view remains in Demo');
       assert.equal(await page.locator('#aiRun').evaluate(node=>node.classList.contains('ai-primary')),true,'Run becomes the primary demo gesture');
       assert.equal(await page.locator('#loomLegacy > summary').isVisible(),true,'Instrument Lab remains independently available during practice');
-      assert.match(await page.locator('#aiDemoModePanel').innerText(),/fictional practice traversal/i);
+      assert.match(await page.locator('#aiDemoModePanel').innerText(),/Practice the real route with fictional material/i);
       await page.locator('#aiDemoInvitation').click();
       assert.equal(await page.locator('#aiDemoInvitation').getAttribute('aria-expanded'), 'true');
       await page.locator('#aiProjectChoices button').first().click();
@@ -214,19 +228,23 @@ try {
       assert.equal(Object.hasOwn(wire, 'protectedTerms'), false);
       assert.equal(serialized.includes(uploadCanary), false, 'uploaded local-only document excluded from wire');
       assert.equal(await page.locator('#aiPending').isVisible(), true);
-      assert.equal(await page.locator('#aiLivingRoom').getAttribute('data-phase'),'pending');
-      assert.match(await page.locator('#aiLivingRoom').textContent(),/YOUR POCKET/);
-      for(const document of fixture.documents.filter(d=>!d.share))assert.equal((await page.locator('#aiLivingRoom').textContent()).includes(document.name),false);
-      await page.locator('#aiLivingRoom').screenshot({path:path.join(dir,`${posture}-living-room-pending.png`)});
+      await page.waitForFunction(() => document.querySelector('#aiRuntimeState')?.dataset.clientPhase === 'pending');
+      assert.equal(await page.locator('#aiRuntimeState').getAttribute('data-active-relation'),'release');
+      for(const document of fixture.documents.filter(d=>!d.share))assert.equal((await page.locator('#aiRuntimeState').textContent()).includes(document.name),false);
+      await page.locator('#aiRuntimeState').screenshot({path:path.join(dir,`${posture}-runtime-state-pending.png`)});
       releaseResponse();
       await page.waitForFunction(expected => document.querySelector('#aiAnswer')?.textContent.includes(expected), fixtureAnswer);
       assert.equal(await page.locator('#aiAnswer').isVisible(), true);
       assert.equal(await page.locator('#aiMarrowline').isEnabled(), true);
       assert.equal(await page.locator('#aiExport').isEnabled(), true);
       await page.locator('#aiPortableMode').click();
-      assert.equal(await page.locator('#aiExport').isDisabled(),true,'Demo practice waiver narrows immediately when returning to Portable AIA without SHI');
+      assert.equal(await page.locator('#aiExport').isDisabled(),true,'switching modes invalidates the previously prepared transfer until the current task is prepared again');
       await page.locator('#aiDemoMode').click();
-      assert.equal(await page.locator('#aiExport').isEnabled(),true,'same admitted fictional result remains usable inside Demo practice');
+      assert.equal(await page.locator('#aiExport').isDisabled(),true,'switching back to practice does not resurrect a crossing invalidated by the intervening mode change');
+      if(await page.locator('#aiNewRootNotice').isVisible()) await page.locator('#aiNewRootConfirm').check();
+      await page.locator('#aiPreparePortable').click();
+      await page.waitForFunction(() => document.querySelector('#aiExport')?.disabled === false);
+      assert.equal(requests.length,1,'re-preparing the fictional work after a mode change remains local');
       await page.screenshot({ path: path.join(dir, `${posture}-mock-provider-completed.png`), fullPage: true });
       // One-hop packet export remains available behind its demoted disclosure.
       await page.locator('.ai-onehop-drawer > summary').click();
@@ -241,14 +259,15 @@ try {
       for (const term of fixture.protectedTerms) assert.equal(exported.includes(term), false, 'export omits private canaries');
       assert.equal(exported.includes(uploadCanary), false, 'uploaded local-only document excluded from export');
       assert.equal(requests.length, 1, 'export cannot silently call provider again');
-      await page.locator('#aiLivingRoom').screenshot({path:path.join(dir,`${posture}-living-room-returned.png`)});
+      await page.locator('#aiRuntimeState').screenshot({path:path.join(dir,`${posture}-runtime-state-returned.png`)});
       await page.locator('#aiRoomReplay').click();
       assert.match(await page.locator('#aiRoomReplayStatus').innerText(),/Recorded state/);
+      await page.locator('#aiInspector > summary').click();
       await page.locator('#aiAuditor').click();
       assert.equal(requests.length,1,'replay and auditor view make no provider request');
       await page.locator('#aiRoomLive').click();
       await page.locator('#aiChild').click();
-      assert.equal(await page.locator('#aiLivingRoom').getAttribute('data-phase'),'completed');
+      await page.waitForFunction(() => document.querySelector('#aiRuntimeState')?.dataset.clientPhase === 'checking');
       mode = 'failure';
       receivedRequest = new Promise(resolve => { observedRequest = resolve; });
       responseGate = new Promise(resolve => { releaseResponse = resolve; });
@@ -258,15 +277,16 @@ try {
       releaseResponse();
       await page.waitForFunction(() => !document.querySelector('#aiRun')?.disabled && /held|failed|unavailable|could not|try again|No answer was admitted/i.test(document.querySelector('#aiStatus')?.textContent || ''));
       assert.equal((await page.locator('#aiAnswer').textContent()).includes(fixtureAnswer), false, 'failed request clears earlier successful answer');
-      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, 'no horizontal overflow');
+      const overflow = await page.evaluate(() => Array.from(document.querySelectorAll('body *')).map(node => { const r=node.getBoundingClientRect(); return {tag:node.tagName,id:node.id,class:node.className?.baseVal ?? node.className ?? '',left:Math.round(r.left),right:Math.round(r.right),width:Math.round(r.width)}; }).filter(r => r.right > innerWidth + 1 || r.left < -1).slice(0,20));
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, 'no horizontal overflow · '+JSON.stringify(overflow));
       assert.deepEqual(runtimeErrors, [], 'no runtime errors');
       assert.deepEqual(unexpected, [], 'no direct browser-to-provider or unrelated mutation requests');
-      await page.locator('#aiLivingRoom').screenshot({path:path.join(dir,`${posture}-living-room-held.png`)});
+      await page.locator('#aiRuntimeState').screenshot({path:path.join(dir,`${posture}-runtime-state-held.png`)});
       await page.screenshot({ path: path.join(dir, `${posture}-mock-provider-held.png`), fullPage: true });
-      report.checks.push({ posture, status: 'PASS', intercepted_requests: requests.length, portable_aia_default: true,
-        unissued_local_preparation_open: true, portable_issuance_held_without_shi: true, shi_format_wakes_prepared_issuance: true,
-        portable_session_contract_inspectable: true, challenge_public_ground_truth_excluded: true, challenge_bounded_verdict_visible: true,
-        demo_waiver_narrows_on_portable_return: true, project_selection_has_no_egress: true,
+      report.checks.push({ posture, status: 'PASS', intercepted_requests: requests.length, loom_task_default: true,
+        local_preparation_open: true, speculative_authority_gate_absent: true, prepared_crossing_available: true,
+        loom_session_contract_inspectable: true, challenge_public_ground_truth_excluded: true, challenge_bounded_verdict_visible: true,
+        practice_route_state_narrows_on_task_return: true, project_selection_has_no_egress: true,
         local_source_excluded: true, one_click_one_post: true, duplicate_click_disabled: true, completed_answer_visible: true,
         export_checked: true, uploaded_document_local_by_default: true, marrowline_control_enabled: true, provider_failure_held: true, no_horizontal_overflow: true,
         reduced_motion: reducedMotion, runtime_errors: runtimeErrors.length });
@@ -280,6 +300,7 @@ try {
   report.failures.push({ posture: 'browser-infrastructure', error: error.stack });
 } finally {
   await browser?.close();
+  if (server) await new Promise(resolve => server.close(resolve));
   await fs.writeFile(path.join(dir, 'receipt.json'), JSON.stringify(report, null, 2) + '\n');
 }
 console.log(JSON.stringify(report));

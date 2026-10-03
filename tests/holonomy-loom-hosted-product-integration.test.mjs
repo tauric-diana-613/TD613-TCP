@@ -8,7 +8,8 @@ import {
   HOLONOMY_LOOM_SCHEMA
 } from '../app/dome-world/holonomy-loom/engine.js';
 
-const hostedPath = 'app/dome-world/holonomy-loom.html';
+const hostedPath = 'app/dome-world/holonomy-loom/fixtures/legacy-practice.html';
+const workspace = fs.readFileSync('app/dome-world/holonomy-loom.html', 'utf8');
 const theaterPath = 'app/dome-world/holonomy-loom/theater.js';
 const enginePath = 'app/dome-world/holonomy-loom/engine.js';
 const legacyWitnessPath = 'scripts/holonomy-loom-hosted-product-integration-browser-witness.mjs';
@@ -36,7 +37,7 @@ assert.equal(
 );
 assert.equal(HOLONOMY_LOOM_SCHEMA, 'td613.holonomy-loom.child-legible-preflight/v0.1');
 
-assert.match(hosted, /<h1>Holonomy Loom<\/h1>/);
+assert.match(hosted, /<h1>Loom rule fixture<\/h1>/);
 assert.match(hosted, /Before you send it, check what this message carries\./);
 assert.match(hosted, /SEE → CHECK → UNDERSTAND → REST/);
 assert.match(hosted, /data-route-mode="TD613_HOSTED"/);
@@ -64,17 +65,17 @@ assert.match(hosted, /COPY CHECKED MESSAGE/);
 assert.match(hosted, /Show me why/);
 assert.match(hosted, /Ask for model help \(optional\)/);
 assert.match(hosted, /No model is called by this local checker\./);
-assert.match(hosted, /<script type="module" src="\.\/holonomy-loom\/ai-workspace\.js"><\/script>/, 'The primary AI task has its own explicit provider-capable workspace.');
-assert.match(hosted, /Its Run button sends only your task, selected documents and portable rules\./);
-assert.match(hosted, /<details id="loomLegacy" class="loom-legacy">/);
-assert.ok(hosted.indexOf('id="loomAiWorkspace"') < hosted.indexOf('id="loomLegacy"'), 'The real AI workspace precedes the optional local laboratory.');
+assert.match(workspace, /<script type="module" src="\.\/holonomy-loom\/ai-workspace\.js"><\/script>/, 'The primary AI task has its own explicit provider-capable workspace.');
+assert.match(hosted, /This research fixture has no model workspace\./);
+assert.match(workspace, /<details id="loomLegacy" class="loom-legacy">/);
+assert.ok(workspace.indexOf('id="loomAiWorkspace"') < workspace.indexOf('id="loomLegacy"'), 'The real AI workspace precedes the optional local laboratory.');
 assert.match(hosted, /GREEN means only that no enabled Loom rule fired\./);
 assert.match(hosted, /Resemblance alone does not establish provenance\./);
 assert.match(hosted, /REST/);
 assert.match(hosted, /RETURN/);
 assert.match(hosted, /EXIT/);
-assert.match(hosted, /href="\/dome-world\/ash-keep\.html"/);
-assert.match(hosted, /from '\.\/holonomy-loom\/engine\.js'/);
+assert.match(hosted, /href="\/dome-world\/holonomy-loom\.html"/);
+assert.match(hosted, /from '\.\.\/engine\.js'/);
 
 for (const forbidden of [
   'fetch(',

@@ -8,7 +8,7 @@ const browserTypes = { chromium, firefox, webkit };
 const browserType = browserTypes[browserName];
 if (!browserType) throw new TypeError(`Unsupported TD613_BROWSER: ${browserName}`);
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/holonomy-loom-hosted-integration';
-const route = '/dome-world/holonomy-loom.html';
+const route = '/dome-world/holonomy-loom/fixtures/legacy-practice.html';
 const url = `${base}${route}`;
 await fs.mkdir(artifactDir, { recursive: true });
 
@@ -42,7 +42,7 @@ const report = {
   status: 'OPEN',
   browser: browserName,
   route,
-  interaction_scope: 'LOCAL_RULE_LABORATORY',
+  interaction_scope: 'FIXTURE_ONLY_LOCAL_RULE_LABORATORY',
   source_status: 'OBSERVED',
   authority_class: 'A1_OBSERVATIONAL',
   production_release_authority: false,
@@ -73,18 +73,14 @@ try {
   await page.goto(url, { waitUntil: 'networkidle', timeout: 60_000 });
   const html = page.locator('html');
   check('hosted route loaded', new URL(page.url()).pathname === route, page.url());
-  check('Holonomy Loom entry label visible', await page.getByRole('heading', { name: 'Holonomy Loom', exact: true }).isVisible());
-  const laboratory = page.locator('#loomLegacy');
-  check('local laboratory starts optional and closed', !(await detailsOpen(laboratory)));
-  await laboratory.locator(':scope > summary').click();
-  await page.locator('#loomPracticeFixtures > summary').click();
-  check('local laboratory opens by explicit choice', await detailsOpen(laboratory));
+  check('research fixture entry label visible', await page.getByRole('heading', { name: 'Loom rule fixture', exact: true }).isVisible());
+  check('legacy practice is isolated from the primary operator workspace', await page.locator('#loomAiWorkspace, #loomInstrumentLab').count() === 0);
   check('local checker instruction visible', await page.getByText('Before you send it, check what this message carries.', { exact: true }).isVisible());
   check('host boundary declared', await html.getAttribute('data-route-mode') === 'TD613_HOSTED');
   check('provider release authority closed', await html.getAttribute('data-provider-release-authority') === 'false');
   check('production release authority closed', await html.getAttribute('data-production-release') === 'false');
   check('mandatory child route visible', await page.getByText('SEE → CHECK → UNDERSTAND → REST', { exact: true }).isVisible());
-  check('return to Ash Keep visible', await page.locator('#ashKeepReturn').isVisible());
+  check('return to primary Loom visible', await page.getByRole('link', { name: 'Return to Holonomy Loom', exact: true }).isVisible());
 
   const protection = page.locator('#protectionRules');
   const providerDisclosure = page.locator('#providerDisclosure');
@@ -115,7 +111,7 @@ try {
   await providerDisclosure.locator('summary').click();
   check('provider disclosure opens only by explicit action', await detailsOpen(providerDisclosure));
   check('local checker disclosure states no model call', (await providerDisclosure.innerText()).includes('No model is called by this local checker.'));
-  check('AI workspace transmission is separately disclosed', (await providerDisclosure.innerText()).includes('Its Run button sends only your task, selected documents and portable rules.'));
+  check('fixture explicitly declares the absence of a model workspace', (await providerDisclosure.innerText()).includes('This research fixture has no model workspace.'));
 
   await page.locator('#message').fill(`ordinary ${canary}`);
   await page.locator('#protected').fill('');

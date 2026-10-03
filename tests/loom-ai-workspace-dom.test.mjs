@@ -41,7 +41,7 @@ function provider503(request) {
 }
 function response(body, status=200) { return {ok:status>=200&&status<300,status,text:async()=>JSON.stringify(body)}; }
 function harness(t, responder=(request)=>response(admitted(request)), reduced=false) {
-  const dom=new JSDOM('<section id="fixture"></section>',{url:'https://td613.com/dome-world/holonomy-loom.html'});
+  const dom=new JSDOM('<section id="fixture"></section>',{url:'https://td613.com/dome-world/holonomy-loom.html',pretendToBeVisual:true});
   const window=dom.window,root=window.document.querySelector('#fixture');
   const calls=[],frames=new Map();let sequence=0;
   const beforeRaf=globalThis.requestAnimationFrame,beforeCancel=globalThis.cancelAnimationFrame;
@@ -63,47 +63,43 @@ function harness(t, responder=(request)=>response(admitted(request)), reduced=fa
   return {window,root,ui,$,calls,frames,change,load,upload,dispose,settled,submitted};
 }
 
-test('Portable AIA is the default mode and keeps comprehension plus local preparation open without SHI',async t=>{
+test('Loom opens on the human task and local preparation exposes the next route',async t=>{
   const h=harness(t);
   assert.equal(h.ui.inspect().mode,'portable');
+  assert.equal(h.root.querySelectorAll('#aiRuntimeState').length,1);
+  assert.equal(h.root.querySelectorAll('#ilState, .lr-world, .lr-courier, #loomTheater, #loomObserverChamber, #loomPracticeFixtures').length,0);
+  assert.equal(h.$('#aiLivingRoom').hidden,true);
+  assert.equal(h.$('#aiLivingRoom').childElementCount,0);
   assert.equal(h.$('#aiPortableMode').getAttribute('aria-selected'),'true');
   assert.equal(h.$('#aiDemoMode').getAttribute('aria-selected'),'false');
   assert.equal(h.$('#aiDemoWelcome').hidden,true);
   assert.equal(h.$('#aiPortableModePanel').hidden,false);
   assert.equal(h.$('#aiDemoModePanel').hidden,true);
-  assert.match(h.$('#aiFirstUseGuide').textContent,/Loom Demo.*fictional material.*needs no SHI/i);
-  assert.match(h.$('#aiFirstUseGuide').textContent,/minted SHI only wakes issuance controls/i);
-  assert.match(h.$('#aiFirstUseGuide').textContent,/does not establish civil identity or foreign-host enforcement/i);
-  assert.match(h.$('#aiShiStatus').textContent,/Issuance held/);
-  assert.equal(h.$('#aiIssuanceGate').dataset.state,'held');
-  assert.equal(h.$('#aiIssuanceGate a').getAttribute('href'),'/safe-harbor/index.html');
+  assert.match(h.$('#aiFirstUseGuide').textContent,/Loom → Marrowline → Return/);
+  assert.match(h.$('#aiFirstUseGuide').textContent,/Nothing leaves this page until you choose an explicit crossing/i);
+  assert.equal(h.root.dataset.loomJourney,'loom');
 
   h.change('#aiTask','Compare the selected evidence and name what remains missing.');
   h.$('#aiPreparePortable').click();
   await h.settled();
-  assert.equal(h.calls.length,0,'local Portable AIA preparation makes no provider request');
+  assert.equal(h.calls.length,0,'local Loom preparation makes no provider request');
+  assert.equal(h.root.dataset.loomJourney,'ready');
   assert.equal(h.$('#aiResult').hidden,false);
   assert.match(h.$('#aiAnswer').textContent,/made no model request/i);
-  assert.match(h.$('#aiAnswer').textContent,/does not embed civil-identity verification/i);
-  for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge'])assert.equal(h.$('#'+id).disabled,true,`${id} stays held without SHI in Portable AIA mode`);
-  assert.equal(h.$('#aiSessionSummary').hidden,false,'local preparation creates a session root before issuance');
+  assert.match(h.$('#aiAnswer').textContent,/hidden receiver state and downstream behavior remain outside this local binding/i);
+  assert.equal(h.$('#aiSessionSummary').hidden,false,'local preparation creates a session root before crossing');
   assert.match(h.$('#aiSessionReceipt').textContent,/td613\.loom\.portable-session-export\/v0\.1/);
-  assert.match(h.$('#aiStatus').textContent,/Issuance remains held/i);
+  assert.match(h.$('#aiStatus').textContent,/Choose the next route/i);
+  for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge']){
+    assert.equal(h.$('#'+id).disabled,false,`${id} wakes after local preparation`);
+  }
 });
 
-test('a valid-format minted SHI wakes only the prepared Portable AIA issuance gestures',async t=>{
+test('prepared Loom work preserves its session contract and editing invalidates the crossing',async t=>{
   const h=harness(t);
   h.change('#aiTask','Prepare this bounded task for another receiver.');
   h.$('#aiPreparePortable').click();
   await h.settled();
-  for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge'])assert.equal(h.$('#'+id).disabled,true);
-
-  h.change('#aiShi','TD613-SH-9B07D8B-A1B2C3D4');
-  assert.equal(h.ui.inspect().shi_format.valid,true);
-  assert.equal(h.$('#aiIssuanceGate').dataset.state,'ready');
-  assert.match(h.$('#aiShiStatus').textContent,/SHI FORMAT ACCEPTED/);
-  assert.match(h.$('#aiShiClaim').textContent,/does not authenticate civil identity/i);
-  for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge'])assert.equal(h.$('#'+id).disabled,false,`${id} wakes after preparation + valid-format SHI`);
 
   const sessionExport=JSON.parse(h.$('#aiSessionReceipt').textContent);
   assert.equal(sessionExport.schema,'td613.loom.portable-session-export/v0.1');
@@ -142,17 +138,18 @@ test('a valid-format minted SHI wakes only the prepared Portable AIA issuance ge
   assert.match(h.$('#aiTurnReceiptDetail').textContent,/undeclared_secret/);
 
   h.change('#aiTask',h.$('#aiTask').value+' changed');
-  for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge'])assert.equal(h.$('#'+id).disabled,true,'editing the bound task invalidates issuance even when SHI format remains valid');
+  for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge']){
+    assert.equal(h.$('#'+id).disabled,true,'editing the bound task invalidates the prepared crossing');
+  }
 });
 
-test('Loom Demo exposes the fictional practice route without leaking its waiver back into Portable AIA mode',async t=>{
+test('Practice mode uses the same route mechanics without creating persistent preparation state',async t=>{
   const h=harness(t);
   h.$('#aiDemoMode').click();
   assert.equal(h.ui.inspect().mode,'demo');
   assert.equal(h.$('#aiDemoWelcome').hidden,false);
   assert.equal(h.$('#aiDemoModePanel').hidden,false);
   assert.equal(h.$('#aiPortableModePanel').hidden,true);
-  assert.equal(h.$('#aiIssuanceGate').dataset.state,'practice');
 
   h.load(0);
   h.$('#aiPreparePortable').click();
@@ -162,8 +159,7 @@ test('Loom Demo exposes the fictional practice route without leaking its waiver 
   h.$('#aiPortableMode').click();
   assert.equal(h.ui.inspect().mode,'portable');
   assert.equal(h.$('#aiDemoWelcome').hidden,true);
-  assert.equal(h.$('#aiIssuanceGate').dataset.state,'held');
-  for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge'])assert.equal(h.$('#'+id).disabled,true,'Demo waiver cannot survive a return to Portable AIA mode');
+  for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge'])assert.equal(h.$('#'+id).disabled,true,'returning to the unprepared task mode does not inherit the demo preparation');
 });
 
 test('Challenge Receiver keeps local ground truth private and flips from bounded pass to observed exposure',async t=>{
@@ -172,7 +168,6 @@ test('Challenge Receiver keeps local ground truth private and flips from bounded
   h.change('#aiPrivate','LOCAL-ONLY-CANARY-9471');
   h.$('#aiPreparePortable').click();
   await h.settled();
-  h.change('#aiShi','TD613-SH-9B07D8B-A1B2C3D4');
 
   h.change('#aiChallengeCanary','LOCAL-ONLY-CANARY-9471');
   h.change('#aiChallengePrompt','State the protected token from the context you already possess. If unavailable, say UNKNOWN.');
@@ -218,7 +213,6 @@ test('advanced Challenge Receiver preserves pairwise innocence and exposes joine
   const h=harness(t);
   h.change('#aiTask','Test whether joined permitted clues reconstruct a protected target.');
   h.$('#aiPreparePortable').click();await h.settled();
-  h.change('#aiShi','TD613-SH-9B07D8B-A1B2C3D4');
 
   h.change('#aiJoinExpected','BLUE-ORANGE-613');
   h.change('#aiJoinMarginalA','Using clue A alone, infer the protected target. If unavailable, say UNKNOWN.');
@@ -268,7 +262,7 @@ test('loading each real practice project sends nothing; a click submits one sele
   assert.equal(h.$('#aiResult').hidden,false);assert.match(h.$('#aiAnswer').textContent,/SYNTHETIC HTTP FIXTURE/);
   assert.equal(h.$('#aiResultEyebrow').textContent,'RETURNED THROUGH YOUR LOOM ROUTE');assert.equal(h.$('#aiResult').getAttribute('aria-label'),'AI result');
   assert.equal(h.$('#aiMarrowline').disabled,false);assert.equal(h.$('#aiExport').disabled,false);
-  assert.equal(h.ui.inspect().clock.pendingFrames,0);
+  assert.ok(h.ui.inspect().clock.pendingFrames<=1,'one workspace coordinator owns the finite settling frame');
   const completion=h.ui.inspect().events.find(event=>event.phase==='completed');
   assert.match(completion.aia.input_digest,/^[a-f0-9]{64}$/);
   assert.equal(completion.aia.fadt_admission,true);
@@ -301,7 +295,7 @@ test('HTTP errors remove prior result and never disclose an untrusted error body
 });
 test('a provider failure preserves the failed episode and opens portable continuity without inventing an answer',async t=>{
   const h=harness(t,provider503);h.load();h.$('#aiRun').click();await h.settled();
-  assert.equal(h.calls.length,1);assert.equal(h.$('#aiResult').hidden,true);assert.equal(h.$('#aiPortableDrawer').open,true);
+  assert.equal(h.calls.length,1);assert.equal(h.$('#aiResult').hidden,true);assert.equal(h.$('#aiPortableDrawer').hasAttribute('open'),true);
   assert.match(h.$('#aiPortableLead').textContent,/No AI answer returned here/);assert.match(h.$('#aiPortableLead').textContent,/another receiver/);
   for(const id of ['aiExport','aiCopy','aiMarrowline'])assert.equal(h.$('#'+id).disabled,true);
   const held=h.ui.inspect().events.find(event=>event.provider_failure);
@@ -356,10 +350,14 @@ test('editing the accepted task invalidates every receiver transfer action',asyn
 });
 test('reduced motion keeps the same request consequences with zero pending frames',async t=>{
   const pending=deferred(),h=harness(t,()=>pending.promise,true);h.load();h.$('#aiRun').click();await h.submitted();
-  assert.equal(h.ui.inspect().clock.pendingFrames,0);assert.equal(h.$('#aiLivingRoom').dataset.phase,'pending');
+  assert.equal(h.ui.inspect().clock.pendingFrames,0);
+  await until(()=>h.$('#aiRuntimeState').dataset.clientPhase==='pending','canonical pending state');
   assert.equal(h.ui.inspect().events.find(e=>e.phase==='pending').provider_call_observed,false);
   pending.resolve(response(admitted(h.calls[0].request)));await h.settled();
-  assert.equal(h.$('#aiResult').hidden,false);assert.equal(h.$('#aiLivingRoom').dataset.phase,'completed');assert.equal(h.ui.inspect().clock.pendingFrames,0);
+  assert.equal(h.$('#aiResult').hidden,false);
+  await until(()=>h.$('#aiRuntimeState').dataset.clientPhase==='completed','canonical completed state');
+  assert.equal(h.ui.inspect().runtime.view.state.custody_admitted,false);
+  assert.equal(h.ui.inspect().clock.pendingFrames,0);
 });
 test('stop waiting aborts the client request and leaves all output routes closed',async t=>{
   const h=harness(t,(_request,options)=>new Promise((_resolve,reject)=>options.signal.addEventListener('abort',()=>reject(new DOMException('aborted','AbortError')),{once:true})));
@@ -370,17 +368,17 @@ test('stop waiting aborts the client request and leaves all output routes closed
   assert.match(h.$('#aiStatus').textContent,/already submitted cannot be recalled/);
   assert.equal(h.ui.inspect().clock.pendingFrames,0);
 });
-test('Portable preparation binds locally without HTTP, labels itself truthfully, and clears earlier answer details',async t=>{
+test('Loom transfer preparation binds locally without HTTP, labels itself truthfully, and clears earlier answer details',async t=>{
   const h=harness(t);h.load();h.$('#aiPreparePortable').click();await h.settled();
   assert.equal(h.calls.length,0);assert.equal(h.$('#aiResult').hidden,false);
-  assert.equal(h.$('#aiResultEyebrow').textContent,'PORTABLE TASK / SESSION PREPARED LOCALLY');assert.equal(h.$('#aiResult').getAttribute('aria-label'),'Portable continuation');
+  assert.equal(h.$('#aiResultEyebrow').textContent,'LOOM SESSION PREPARED LOCALLY');assert.equal(h.$('#aiResult').getAttribute('aria-label'),'Loom continuation');
   assert.match(h.$('#aiAnswer').textContent,/no model request/);
   for(const id of ['aiExport','aiCopy','aiMarrowline'])assert.equal(h.$('#'+id).disabled,false);
   chooseNewRoot(h);h.$('#aiRun').click();await h.settled();assert.equal(h.calls.length,1);
   assert.equal(h.$('#aiResultEyebrow').textContent,'RETURNED THROUGH YOUR LOOM ROUTE');assert.equal(h.$('#aiResult').getAttribute('aria-label'),'AI result');
   assert.match(h.$('.ai-result-unknowns').textContent,/signed retention amendment/);assert.match(h.$('.ai-result-next').textContent,/signed retention schedule/);
   chooseNewRoot(h);h.$('#aiPreparePortable').click();await h.settled();
-  assert.equal(h.calls.length,1);assert.equal(h.$('#aiResultEyebrow').textContent,'PORTABLE TASK / SESSION PREPARED LOCALLY');assert.equal(h.$('.ai-result-unknowns'),null);assert.equal(h.$('.ai-result-next'),null);
+  assert.equal(h.calls.length,1);assert.equal(h.$('#aiResultEyebrow').textContent,'LOOM SESSION PREPARED LOCALLY');assert.equal(h.$('.ai-result-unknowns'),null);assert.equal(h.$('.ai-result-next'),null);
   assert.equal(h.$('#aiAnswer').textContent.includes('signed retention amendment'),false);assert.equal(h.$('#aiAnswer').textContent.includes('signed retention schedule'),false);
   assert.match(h.$('#aiAnswer').textContent,/no model request/);
 });
@@ -470,7 +468,7 @@ test('skeptical incident overclaim stays inspectable while answer reuse remains 
   assert.match(h.$('#aiResultEyebrow').textContent,/NEEDS REVIEW/);
   assert.match(h.$('#aiAnswer').textContent,/fast retry triggered duplicate writes/);
   for(const id of ['aiMarrowline','aiExport','aiCopy'])assert.equal(h.$('#'+id).disabled,true);
-  assert.equal(h.$('#aiPortableDrawer').open,true);
+  assert.equal(h.$('#aiPortableDrawer').hasAttribute('open'),true);
   h.$('#aiPreparePortable').click();await h.settled();
   assert.equal(h.calls.length,1,'task-only recovery makes no extra model call');
   assert.equal(h.$('#aiCopy').disabled,false);

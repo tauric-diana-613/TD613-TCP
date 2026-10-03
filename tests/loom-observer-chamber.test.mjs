@@ -46,12 +46,12 @@ test('every declared case renders, and case change clears stale calculations', (
     assert.equal(root.querySelector('#ocResult').hidden, false);
   }
 });
-test('host integrates one bounded chamber and production module has no transport or storage imports', () => {
-  const html = fs.readFileSync(new URL('../app/dome-world/holonomy-loom.html', import.meta.url), 'utf8');
+test('fixture isolates the bounded chamber and its module has no transport or storage imports', () => {
+  const html = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/fixtures/legacy-practice.html', import.meta.url), 'utf8');
   const doc = new JSDOM(html).window.document;
   assert.equal(doc.querySelectorAll('#loomObserverChamber').length, 1);
-  assert.ok(doc.querySelector('#loomLegacy #loomObserverChamber'));
-  assert.ok(doc.querySelector('script[src="./holonomy-loom/observer-chamber.js"]'));
+  assert.equal(doc.querySelectorAll('#loomAiWorkspace, #loomInstrumentLab').length, 0);
+  assert.ok(doc.querySelector('script[src="../observer-chamber.js"]'));
   for (const file of ['observer-channel.js', 'observer-cases.js', 'observer-chamber.js']) {
     const source = fs.readFileSync(new URL(`../app/dome-world/holonomy-loom/${file}`, import.meta.url), 'utf8');
     assert.doesNotMatch(source, /\b(fetch|XMLHttpRequest|WebSocket|localStorage|sessionStorage|requestAnimationFrame|setInterval)\s*[.(]/);

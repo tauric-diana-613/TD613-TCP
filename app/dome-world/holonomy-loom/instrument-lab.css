@@ -1,25 +1,73 @@
-/* The instrument projects state; it owns no animation clock. */
-#loomLegacy{margin-top:28px;border-top:1px solid rgba(159,218,228,.2);padding-top:0}
-#loomLegacy>.loom-laboratory-invitation{padding:22px 6px;background:transparent;border:0;border-radius:0;box-shadow:none}
-#loomLegacy>.loom-laboratory-invitation strong{font-weight:500;font-size:1.12rem;letter-spacing:.015em}
-#loomLegacy>.loom-laboratory-invitation small{font-weight:400;line-height:1.6;color:var(--muted)}
-#loomLegacy .ai-invitation-orbit{font-size:27px;color:#8adddd;background:none;border:0;box-shadow:none}
-#loomInstrumentLab{--il-cyan:#93e5e1;--il-line:rgba(147,229,225,.2);padding:22px clamp(8px,3vw,28px) 28px;background:linear-gradient(160deg,rgba(10,14,26,.8),rgba(9,9,18,.5));border-top:1px solid var(--il-line)}
-.il-head{max-width:650px}.il-head h2{font:400 clamp(2rem,5vw,3.6rem)/1.08 var(--serif);letter-spacing:-.035em;margin:12px 0 18px}.il-head p:not(.mark){color:#b7c5ce;line-height:1.7;font-size:.95rem}
-.il-state{min-height:230px;margin:30px 0 12px;padding:22px;display:grid;align-content:center;text-align:center;border:1px solid var(--il-line);background:radial-gradient(ellipse at 50% 50%,rgba(80,165,168,.11),transparent 62%);overflow:hidden}
-.il-state svg{width:100%;max-height:230px;overflow:visible}.il-state [data-glyph],.il-state .il-active-glyph{font:400 clamp(3.8rem,12vw,6rem)/1.1 var(--serif);color:var(--il-cyan);text-shadow:0 0 30px rgba(147,229,225,.23)}
-.il-state h3{font:400 1.3rem var(--serif);margin:14px 0 8px}.il-state p{font-size:.82rem;line-height:1.65;color:#a9bdc6;margin:8px auto;max-width:560px}.il-state-note{font:400 .63rem/1.7 var(--mono);color:#95abb7;text-align:center;letter-spacing:.04em}
-.il-boundaries{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:30px 0 42px}.il-boundaries span{color:#93a6b4;font-size:.75rem;line-height:1.6;border-top:1px solid var(--il-line);padding-top:12px}.il-boundaries b{display:block;font-weight:500;color:#d0e5eb;font-size:.88rem;margin-bottom:4px}
-.il-bench h3{font:400 1.7rem var(--serif);margin:10px 0 22px}.il-bench label,#ilAdvisory label{display:block;font-size:.8rem;color:#bfcfd7;margin:14px 0 8px}.il-bench select,#ilAdvisory select{width:100%;min-height:48px;padding:12px;color:#d0eaed;background:#0b121d;border:1px solid var(--il-line);border-radius:0;font:400 1rem var(--sans)}
+/* One runtime projection. All moving geometry receives the host clock. */
+.ai-task-layout{display:block}
+#loomAiWorkspace [hidden]{display:none!important}
+#loomAiWorkspace .ai-composer,#loomAiWorkspace .ai-result{backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none!important}
+#aiRuntime{margin:38px 0 22px;border-top:1px solid rgba(171,217,227,.2);padding-top:18px}
+#aiRuntime>.mark{font-weight:400;color:#9cb6c8;letter-spacing:.16em}
+#aiRuntime .ai-runtime-controls{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin:8px 0 18px}
+#aiRuntime .ai-runtime-controls>p{max-width:60ch;color:#adbacb;font-size:.82rem}
+#aiRuntime .ai-runtime-controls button{border-radius:0;background:transparent;border:0;border-bottom:1px solid rgba(163,215,220,.25);font-weight:400;padding:9px 0;margin-right:20px}
+#loomAiWorkspace .ai-room-replay{border:0;margin:14px 0 0;padding:0;gap:12px}
+#loomAiWorkspace .ai-room-replay button{border-radius:0;background:transparent;border:0;border-bottom:1px solid rgba(163,215,220,.25);font-weight:400;padding:10px 0;margin-right:16px}
+.ai-runtime-state{margin:0;min-height:0;padding:0;overflow:hidden;background:#080b12;border:1px solid rgba(156,214,224,.12)}
+.loom-instrument-state{position:relative;color:#e8eeed;text-align:center}
+#loomAiWorkspace .loom-instrument-state-mode{position:absolute;top:20px;left:24px;z-index:1;margin:0;font:400 .69rem/1.6 var(--mono);letter-spacing:.09em;color:#a7b5c9;text-align:left}
+.loom-glyph-field{display:block;width:100%;height:auto;aspect-ratio:1000/520;max-height:none;overflow:hidden;font-family:Georgia,"Times New Roman",serif}
+.loom-field-caption{padding:0 24px 18px;margin-top:-12px;position:relative}
+#loomAiWorkspace .loom-instrument-state-now{font:400 clamp(1.45rem,3vw,2.3rem)/1.18 var(--serif);letter-spacing:-.015em;margin:0 0 12px;color:#eef2eb}
+#loomAiWorkspace .loom-instrument-state-endpoints{font:400 .82rem/1.65 var(--sans);color:#b4ccd2;margin:0}
+#loomAiWorkspace .loom-instrument-state-next{font:400 .88rem/1.6 var(--sans);color:#cbd5d8;margin:14px auto 0;max-width:65ch}
+#loomAiWorkspace .loom-instrument-state-relation{font:400 .8rem/1.7 var(--sans);color:#aecad0;margin:0 24px 12px}
+#loomAiWorkspace .loom-instrument-state-boundary{font:400 .69rem/1.7 var(--mono);color:#9baebb;margin:0 22px 22px}
+.loom-instrument-state-inspection{border-top:1px solid rgba(156,214,224,.15);padding:0 24px 0;text-align:left;margin:0}
+.loom-instrument-state-inspection>summary{padding:17px 0;font:400 .82rem/1.6 var(--sans);color:#c1d7db}
+.loom-instrument-state-inspection[open]{padding-bottom:24px}
+.loom-instrument-state-inspection p,.loom-instrument-state-inspection dl,.loom-instrument-state-inspection ol{font-size:.82rem;line-height:1.7;color:#b7c6d1}
+.loom-instrument-state-inspection dt{color:#e3eae8;margin-top:14px}.loom-instrument-state-inspection dd{margin:4px 0;overflow-wrap:anywhere}
+.loom-instrument-state-inspection pre{font:400 .74rem/1.7 var(--mono);max-height:380px;overflow:auto;background:#050810;overflow-wrap:anywhere}
+.loom-instrument-state-inspection .ai-view-switch{margin-top:20px}
+
+/* Lab is closed by default, with one flat instrument selector inside. */
+#loomLegacy{margin-top:30px;border-top:1px solid rgba(159,218,228,.2);padding-top:0}
+#loomLegacy>.loom-laboratory-invitation{padding:26px 6px;background:transparent;border:0;border-radius:0;box-shadow:none}
+#loomLegacy>.loom-laboratory-invitation strong{font-weight:400;font-size:1.3rem;letter-spacing:-.01em}
+#loomLegacy>.loom-laboratory-invitation small{font-weight:400;font-size:.82rem;line-height:1.6;color:#a8b6c9}
+#loomLegacy .ai-invitation-orbit{font-size:27px;color:#9ce7e0;background:none;border:0;box-shadow:none}
+#loomInstrumentLab{--il-cyan:#a9e7e4;--il-line:rgba(147,229,225,.2);padding:26px clamp(10px,3vw,32px) 30px;background:#0a0e17;border-top:1px solid var(--il-line)}
+.il-head{max-width:690px}.il-head h2{font:400 clamp(1.7rem,4vw,2.5rem)/1.15 var(--serif);letter-spacing:-.025em;margin:12px 0 14px}.il-head p:not(.mark){color:#b7c5ce;line-height:1.7;font-size:.93rem}
+.il-boundaries{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin:28px 0 36px}
+.il-boundaries>a,.il-boundaries>span{color:#a8bac7;font-size:.8rem;line-height:1.7;border-top:1px solid var(--il-line);padding-top:12px;text-decoration:none}
+.il-boundaries b{display:block;font-weight:500;color:#d0e5eb;font-size:.9rem;margin-bottom:4px}
+.il-boundaries a:hover b{text-decoration:underline;text-underline-offset:4px}
+.il-bench h3{font:400 1.5rem var(--serif);margin:10px 0 22px}
+.il-bench label,#ilAdvisory label{display:block;font-size:.83rem;color:#bfcfd7;margin:14px 0 8px}
+.il-bench select,#ilAdvisory select{width:100%;min-height:48px;padding:12px;color:#d0eaed;background:#0b121d;border:1px solid var(--il-line);border-radius:0;font:400 1rem var(--sans)}
 .il-bench textarea{min-height:180px;font:400 .85rem/1.6 var(--mono);color:#cadbe0;background:#080d16;border:1px solid var(--il-line);border-radius:0;padding:16px}
-#ilScope{font-size:.88rem;color:#98afbd;line-height:1.7;min-height:1.6em}.il-actions{display:flex;gap:8px 18px;flex-wrap:wrap;align-items:center;margin:10px 0 18px}
+#ilScope{font-size:.88rem;color:#aabfcd;line-height:1.7;min-height:1.6em}
+.il-actions{display:flex;gap:8px 20px;flex-wrap:wrap;align-items:center;margin:12px 0 22px}
 #loomInstrumentLab button,.il-actions a,.il-gate>a,.il-upload{min-height:44px;padding:8px 0;margin:0;border:0;border-bottom:1px solid var(--il-line);border-radius:0;background:none;box-shadow:none;color:var(--il-cyan);font:400 .85rem/1.5 var(--sans);letter-spacing:0;text-decoration:none;cursor:pointer}
-#loomInstrumentLab button:disabled{opacity:.45}#ilRun{color:#e7e7cf;border-bottom-color:#c5c299}.il-bench label.il-upload{display:inline-flex;align-items:center;margin:0;position:relative;overflow:hidden}.il-upload input{position:absolute;opacity:0;inset:0;width:100%;cursor:pointer}.il-upload:focus-within{outline:2px solid var(--il-cyan);outline-offset:4px}
-#loomInstrumentLab button[aria-pressed="true"]{border-bottom-color:var(--il-cyan);color:#f0f9f8}.il-note,#ilLimit{font-size:.76rem;line-height:1.7;color:#96aebe}
-#ilStatus{font-size:.84rem;line-height:1.7;min-height:2em;color:#cadbe0}#ilResult{border-top:1px solid var(--il-line);padding-top:22px;margin-top:24px}#ilResult h3{font-size:1.5rem;margin:12px 0}
-#loomInstrumentLab details{padding-top:18px;border-top:1px solid var(--il-line);margin-top:22px}#loomInstrumentLab summary,.il-practice>summary{font-size:.86rem;font-weight:400;line-height:1.7;color:#bed6df}#loomInstrumentLab pre{font:400 .75rem/1.7 var(--mono);word-break:break-word;background:#070c13;color:#c0d1da;max-height:540px}
-.il-gate p{color:#a9bdc6;font-size:.86rem;line-height:1.7}.il-practice{padding:18px 0;margin-top:24px}
-#loomPracticeFixtures .lt-stage,#loomPracticeFixtures .lt-caption,#loomPracticeFixtures .lt-static{display:none}#loomPracticeFixtures .lt-client-lenses{display:none}#loomPracticeFixtures .loom-theater{margin-top:22px}#loomPracticeFixtures .lt-story{padding:12px 0}#loomPracticeFixtures .lt-story h2{font-size:1.6rem}#loomPracticeFixtures .lt-scenes{gap:6px}
-@media(max-width:620px){#loomInstrumentLab{padding:18px 10px 24px}.il-state{padding:18px 10px;min-height:210px}.il-boundaries{grid-template-columns:1fr;gap:10px;margin:24px 0 30px}.il-boundaries span{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:10px}.il-boundaries b{margin:0}.il-head h2{font-size:2.2rem}.il-bench textarea{font-size:16px}.il-state-note{font-size:.6rem}.il-actions{gap:8px 16px}}
-@media(prefers-reduced-motion:reduce){.il-state *{transition:none!important;animation:none!important}}
-@media(forced-colors:active){.il-state,.il-bench select,.il-bench textarea{border:1px solid CanvasText}.il-state [data-glyph]{color:CanvasText;text-shadow:none}}
+#loomInstrumentLab button:disabled{opacity:.45}#ilRun{color:#eee8c6;border-bottom-color:#c5c299}
+.il-bench label.il-upload{display:inline-flex;align-items:center;margin:0;position:relative;overflow:hidden}.il-upload input{position:absolute;opacity:0;inset:0;width:100%;cursor:pointer}.il-upload:focus-within{outline:2px solid var(--il-cyan);outline-offset:4px}
+#loomInstrumentLab button[aria-pressed="true"]{border-bottom-color:var(--il-cyan);color:#f0f9f8}
+.il-note,#ilLimit{font-size:.8rem;line-height:1.7;color:#a6bac8}
+#ilStatus{font-size:.84rem;line-height:1.7;min-height:2em;color:#cadbe0}
+#ilResult{border-top:1px solid var(--il-line);padding-top:22px;margin-top:24px}#ilResult h3{font-size:1.5rem;margin:12px 0}
+#ilExact{margin-top:24px;border-top:1px solid var(--il-line);padding-top:14px}
+#loomInstrumentLab pre{font:400 .75rem/1.7 var(--mono);word-break:break-word;background:#070c13;color:#c0d1da;max-height:540px}
+.il-gate p{color:#b3c5cf;font-size:.86rem;line-height:1.7}
+
+@media(max-width:620px){
+  #aiRuntime{margin-top:26px}
+  #loomAiWorkspace .loom-instrument-state-mode{top:17px;left:16px;font-size:.66rem}
+  .loom-glyph-field{height:330px;aspect-ratio:auto;max-height:none}
+  .loom-field-caption{margin-top:-10px;padding:0 16px 18px}
+  #loomAiWorkspace .loom-instrument-state-now{font-size:1.5rem}
+  #loomAiWorkspace .loom-instrument-state-boundary{font-size:.69rem;margin:0 16px 20px}
+  .loom-instrument-state-inspection{padding-inline:16px}
+  #loomInstrumentLab{padding:20px 14px 24px}
+  .il-boundaries{grid-template-columns:1fr;gap:12px;margin:24px 0 30px}
+  .il-boundaries>a,.il-boundaries>span{padding-top:10px}
+  .il-head h2{font-size:2rem}.il-bench textarea{font-size:16px}.il-actions{gap:8px 18px}
+}
+@media(prefers-reduced-motion:reduce){.ai-runtime-state *{transition:none!important;animation:none!important}}
+@media(forced-colors:active){.ai-runtime-state,.il-bench select,.il-bench textarea{border:1px solid CanvasText}.loom-field-caption,.loom-instrument-state-relation,.loom-instrument-state-boundary{color:CanvasText}}

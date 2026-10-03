@@ -11,7 +11,7 @@ const browserTypes = { chromium, firefox, webkit };
 const browserType = browserTypes[browserName];
 if (!browserType) throw new TypeError(`Unsupported TD613_BROWSER: ${browserName}`);
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/holonomy-loom-hosted-integration';
-const route = '/dome-world/holonomy-loom.html';
+const route = '/dome-world/holonomy-loom/fixtures/legacy-practice.html';
 const url = `${base}${route}`;
 await fs.mkdir(artifactDir, { recursive: true });
 
@@ -34,7 +34,7 @@ const report = {
   status: 'OPEN',
   browser: browserName,
   route,
-  interaction_scope: 'LOCAL_RULE_LABORATORY',
+  interaction_scope: 'FIXTURE_ONLY_LOCAL_RULE_LABORATORY',
   source_status: 'OBSERVED',
   authority_class: 'A1_OBSERVATIONAL',
   observer_repair_scope: 'WITNESS_ONLY',
@@ -99,11 +99,8 @@ try {
   });
 
   await page.goto(url, { waitUntil: 'networkidle', timeout: 60_000 });
-  const laboratory = page.locator('#loomLegacy');
-  check('local laboratory starts optional and closed', !(await detailsOpen(laboratory)));
-  await laboratory.locator(':scope > summary').click();
-  await page.locator('#loomPracticeFixtures > summary').click();
-  check('local laboratory opened explicitly for observer repair', await detailsOpen(laboratory));
+  const laboratory = page.locator('main');
+  check('legacy practice is isolated from the primary operator workspace', await page.locator('#loomAiWorkspace, #loomInstrumentLab').count() === 0);
   const result = page.locator('#result');
   const promise = page.locator('#promiseDisclosure');
   const promiseSummary = promise.locator('summary');
