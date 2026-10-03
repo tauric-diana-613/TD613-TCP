@@ -510,7 +510,6 @@ body:has(#loomAiWorkspace[data-first-crossing="active"]) .loom-topbar a[href*="l
   text-shadow:0 0 14px rgba(186,255,247,.95);animation:loom-remix-breathe 2.4s ease-in-out infinite
 }
 #loomAiWorkspace #loomFirstCrossingPause.loom-field-toggle:active{transform:translateX(-50%) scale(.94)}
-@keyframes loom-remix-breathe{50%{box-shadow:0 0 0 8px rgba(113,255,237,.05),0 0 30px rgba(113,255,237,.78),0 0 70px rgba(113,255,237,.3)}}
 #loomAiWorkspace .loom-first-crossing-actions button,
 #loomAiWorkspace[data-first-crossing="active"] .loom-begin{
   border:1px solid rgba(142,232,230,.42);border-radius:999px;padding:10px 18px;background:rgba(7,18,22,.72);
@@ -537,7 +536,4 @@ body:has(#loomAiWorkspace[data-first-crossing="active"]) .loom-topbar a[href*="l
   #loomAiWorkspace .loom-first-crossing-actions{bottom:86px}
   #loomAiWorkspace .loom-practice-controls{bottom:12px;left:10px;right:10px}
   #loomAiWorkspace .loom-flowcore-help{right:10px;top:10px}
-}
-@media(prefers-reduced-motion:reduce){
-  #loomAiWorkspace #loomFirstCrossingPause.loom-field-toggle{animation:none}
 }
