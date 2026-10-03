@@ -295,7 +295,7 @@ test('HTTP errors remove prior result and never disclose an untrusted error body
 });
 test('a provider failure preserves the failed episode and opens portable continuity without inventing an answer',async t=>{
   const h=harness(t,provider503);h.load();h.$('#aiRun').click();await h.settled();
-  assert.equal(h.calls.length,1);assert.equal(h.$('#aiResult').hidden,true);assert.equal(h.$('#aiPortableDrawer').open,true);
+  assert.equal(h.calls.length,1);assert.equal(h.$('#aiResult').hidden,true);assert.equal(h.$('#aiPortableDrawer').hasAttribute('open'),true);
   assert.match(h.$('#aiPortableLead').textContent,/No AI answer returned here/);assert.match(h.$('#aiPortableLead').textContent,/another receiver/);
   for(const id of ['aiExport','aiCopy','aiMarrowline'])assert.equal(h.$('#'+id).disabled,true);
   const held=h.ui.inspect().events.find(event=>event.provider_failure);
@@ -368,17 +368,17 @@ test('stop waiting aborts the client request and leaves all output routes closed
   assert.match(h.$('#aiStatus').textContent,/already submitted cannot be recalled/);
   assert.equal(h.ui.inspect().clock.pendingFrames,0);
 });
-test('Portable preparation binds locally without HTTP, labels itself truthfully, and clears earlier answer details',async t=>{
+test('Loom transfer preparation binds locally without HTTP, labels itself truthfully, and clears earlier answer details',async t=>{
   const h=harness(t);h.load();h.$('#aiPreparePortable').click();await h.settled();
   assert.equal(h.calls.length,0);assert.equal(h.$('#aiResult').hidden,false);
-  assert.equal(h.$('#aiResultEyebrow').textContent,'PORTABLE TASK / SESSION PREPARED LOCALLY');assert.equal(h.$('#aiResult').getAttribute('aria-label'),'Portable continuation');
+  assert.equal(h.$('#aiResultEyebrow').textContent,'LOOM SESSION PREPARED LOCALLY');assert.equal(h.$('#aiResult').getAttribute('aria-label'),'Loom continuation');
   assert.match(h.$('#aiAnswer').textContent,/no model request/);
   for(const id of ['aiExport','aiCopy','aiMarrowline'])assert.equal(h.$('#'+id).disabled,false);
   chooseNewRoot(h);h.$('#aiRun').click();await h.settled();assert.equal(h.calls.length,1);
   assert.equal(h.$('#aiResultEyebrow').textContent,'RETURNED THROUGH YOUR LOOM ROUTE');assert.equal(h.$('#aiResult').getAttribute('aria-label'),'AI result');
   assert.match(h.$('.ai-result-unknowns').textContent,/signed retention amendment/);assert.match(h.$('.ai-result-next').textContent,/signed retention schedule/);
   chooseNewRoot(h);h.$('#aiPreparePortable').click();await h.settled();
-  assert.equal(h.calls.length,1);assert.equal(h.$('#aiResultEyebrow').textContent,'PORTABLE TASK / SESSION PREPARED LOCALLY');assert.equal(h.$('.ai-result-unknowns'),null);assert.equal(h.$('.ai-result-next'),null);
+  assert.equal(h.calls.length,1);assert.equal(h.$('#aiResultEyebrow').textContent,'LOOM SESSION PREPARED LOCALLY');assert.equal(h.$('.ai-result-unknowns'),null);assert.equal(h.$('.ai-result-next'),null);
   assert.equal(h.$('#aiAnswer').textContent.includes('signed retention amendment'),false);assert.equal(h.$('#aiAnswer').textContent.includes('signed retention schedule'),false);
   assert.match(h.$('#aiAnswer').textContent,/no model request/);
 });
@@ -468,7 +468,7 @@ test('skeptical incident overclaim stays inspectable while answer reuse remains 
   assert.match(h.$('#aiResultEyebrow').textContent,/NEEDS REVIEW/);
   assert.match(h.$('#aiAnswer').textContent,/fast retry triggered duplicate writes/);
   for(const id of ['aiMarrowline','aiExport','aiCopy'])assert.equal(h.$('#'+id).disabled,true);
-  assert.equal(h.$('#aiPortableDrawer').open,true);
+  assert.equal(h.$('#aiPortableDrawer').hasAttribute('open'),true);
   h.$('#aiPreparePortable').click();await h.settled();
   assert.equal(h.calls.length,1,'task-only recovery makes no extra model call');
   assert.equal(h.$('#aiCopy').disabled,false);
