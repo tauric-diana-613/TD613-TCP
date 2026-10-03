@@ -5,7 +5,6 @@ import {
   canonicalLoomAdvisoryFinding
 } from '../app/dome-world/holonomy-loom-advisory-policy.js';
 import khonapolitHandler from './khonapolit-quality.js';
-import { validateShi } from '../app/dome-world/khonapolit-covenant.js';
 
 export const HOLONOMY_LOOM_KHONAPOLIT_ADVISORY_SCHEMA = 'td613.holonomy-loom.khonapolit-advisory-request/v0.1';
 export { HOLONOMY_LOOM_PROVIDER_ADVISORY_SCHEMA };
@@ -128,17 +127,14 @@ export function validateLoomAdvisoryPacket(advisory = {}) {
   return canonical;
 }
 
-export function buildKhonapolitLoomAdvisoryBody({ advisory, issuance = {} } = {}) {
+export function buildKhonapolitLoomAdvisoryBody({ advisory } = {}) {
   const clean = validateLoomAdvisoryPacket(advisory);
-  issuance = snapshotJson(issuance);
-  rejectUnknownKeys(issuance, ['shi', 'waiveIssuance'], 'issuance');
-  if (typeof issuance.shi !== 'string' || !validateShi(issuance.shi).valid) throw new TypeError('valid-format minted SHI required for model assistance');
-  if (issuance.waiveIssuance !== undefined && issuance.waiveIssuance !== false) throw new TypeError('issuance waiver is not available on the advisory route');
 
   const message = [
     'HOLONOMY LOOM · MINIMIZED ADVISORY REQUEST',
     'The operator has explicitly asked Kʰonapolit to explain an already-classified Loom finding.',
-    'No raw draft, raw matched value, selected text, source span, or prior thread history is present in this request.',
+    'This is an unissued research/advisory route. It grants no release, admission, custody, identity, or empirical authority.',
+    'No raw draft, raw matched value, selected text, source span, prior thread history, or SHI is present in this request.',
     '',
     `ACTION: ${clean.action}`,
     `RULE ID: ${clean.rule_id}`,
@@ -163,8 +159,8 @@ export function buildKhonapolitLoomAdvisoryBody({ advisory, issuance = {} } = {}
     message,
     history: Object.freeze([]),
     mode: 'full-invocation',
-    shi: safe(issuance?.shi),
-    waiveIssuance: false
+    shi: '',
+    waiveIssuance: true
   });
 }
 
@@ -202,10 +198,10 @@ export default async function holonomyLoomKhonapolitAdvisoryHandler(req, res) {
 
   try {
     const body = parseBody(req);
-    rejectUnknownKeys(body, ['schema', 'advisory', 'issuance'], 'request');
+    rejectUnknownKeys(body, ['schema', 'advisory'], 'request');
     if (body.schema !== HOLONOMY_LOOM_KHONAPOLIT_ADVISORY_SCHEMA) throw new TypeError('unsupported Loom Kʰonapolit advisory request schema');
     rejectForbiddenKeysDeep(body, 'request');
-    const delegatedBody = buildKhonapolitLoomAdvisoryBody({ advisory: body.advisory, issuance: body.issuance || {} });
+    const delegatedBody = buildKhonapolitLoomAdvisoryBody({ advisory: body.advisory });
 
     req.body = delegatedBody;
     res.setHeader('X-TD613-Holonomy-Loom-Advisory', 'minimized-khonapolit/v0.1');
