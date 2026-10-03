@@ -240,7 +240,10 @@ try {
       await page.locator('#aiPortableMode').click();
       assert.equal(await page.locator('#aiExport').isDisabled(),true,'switching modes invalidates the previously prepared transfer until the current task is prepared again');
       await page.locator('#aiDemoMode').click();
-      assert.equal(await page.locator('#aiExport').isEnabled(),true,'same admitted fictional result remains usable inside Demo practice');
+      assert.equal(await page.locator('#aiExport').isDisabled(),true,'switching back to practice does not resurrect a crossing invalidated by the intervening mode change');
+      await page.locator('#aiPreparePortable').click();
+      await page.waitForFunction(() => document.querySelector('#aiExport')?.disabled === false);
+      assert.equal(requests.length,1,'re-preparing the fictional work after a mode change remains local');
       await page.screenshot({ path: path.join(dir, `${posture}-mock-provider-completed.png`), fullPage: true });
       // One-hop packet export remains available behind its demoted disclosure.
       await page.locator('.ai-onehop-drawer > summary').click();
