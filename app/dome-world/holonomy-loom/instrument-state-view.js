@@ -588,7 +588,8 @@ export function mountLoomInstrumentStateView(root) {
       const seconds = frame.reduced_motion ? 0 : Number(snapshot.motionTimeMs ?? snapshot.timeMs ?? 0)/1000;
       const choreography=snapshot.packet?.presentation?.flowcore_choreography;
       const choreographyRelations=Array.isArray(choreography?.relations)?choreography.relations.filter(key=>view.relations?.[key]):[];
-      const ambientChoreography=frame.relation_key==null&&choreographyRelations.length>0;
+      const choreographyScene=snapshot.packet?.scene?.id?.startsWith('first-crossing-')===true;
+      const ambientChoreography=choreographyScene&&choreographyRelations.length>0;
       root.dataset.flowcoreChoreography=ambientChoreography?String(choreography.id??'ambient'):'evidenced';
       root.dataset.flowcoreMotionFamily=ambientChoreography?String(choreography.family??'heterostratigraphic'):'canonical-relation';
       const breath = frame.reduced_motion ? 0 : Math.sin(seconds*.72);
@@ -679,13 +680,13 @@ export function mountLoomInstrumentStateView(root) {
         const observed=evidencedTrail.findLast(item=>item.relation_key===frame.relation_key);
         const visible=Boolean(observed||ambientRelation);
         if(!visible){setText(node,'');node.setAttribute('visibility','hidden');continue;}
-        const relationKey=observed?.relation_key??ambientRelation;
+        const relationKey=ambientChoreography?ambientRelation:observed?.relation_key;
         const depthClass=node.getAttribute('class');
         const nearPlane=depthClass==='flight-near';
         const midPlane=depthClass==='flight-mid';
-        setText(node,observed?.glyph??view.relations?.[relationKey]?.glyph??'');
+        setText(node,ambientChoreography?(view.relations?.[relationKey]?.glyph??''):(observed?.glyph??''));
         node.setAttribute('data-flight-relation',relationKey);
-        node.setAttribute('data-flight-evidence',observed?'observed':'presentation-only');
+        node.setAttribute('data-flight-evidence',ambientChoreography?'presentation-only':'observed');
         node.setAttribute('visibility','visible');
 
         // Each path follows the canonical relation's graphic/motion grammar.
