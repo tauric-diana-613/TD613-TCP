@@ -630,7 +630,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   // A local entrance gesture has no request or evidence authority. It settles
   // after four seconds; subsequent packets retain their actual rest posture.
   coordinator.setPacket({ ...lastPacket, scene: { ...lastPacket.scene, id: 'ai-welcome' }, geometry: { rest: false }, presentation: { welcome: true } });
-  legacyChange();
+  visibility();
   environment.document.documentElement.dataset.loomBoot='ready';
   const dispose=()=>{disposed=true;reentry.dispose();if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();runtime.dispose();coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);delete environment.document.documentElement.dataset.loomJourney;delete environment.document.documentElement.dataset.loomFlowPhase;};
   environment.addEventListener('pagehide',dispose,{once:true});return {dispose,inspect:()=>({mode:workspaceMode,session:portableSession?inspectPortableLoomSession(portableSession):null,turn_receipt:turnReceiptVerification?{status:turnReceiptVerification.status,ref:turnReceiptVerification.ref}:null,challenge:challengeVerification?{status:challengeVerification.status,ref:challengeVerification.ref}:null,events:[...events],clock:coordinator.inspect(),replay:{index:replayIndex,count:sceneHistory.length},runtime:runtime.inspect(),geometry:null})};
