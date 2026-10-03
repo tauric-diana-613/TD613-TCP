@@ -1162,3 +1162,65 @@ html[data-loom-relation="structural_rest"] #loomAiWorkspace .loom-field-glyph{fi
     justify-self:start;
   }
 }
+
+
+/* Public product identity: keep formal Holonomy Loom text in the DOM for
+   lineage/accessibility, but let the human visual read simply LOOM. */
+.hero h1{
+  font-size:0!important;
+  display:grid!important;
+  grid-template-columns:auto 1fr;
+  align-items:end;
+  column-gap:12px;
+}
+.hero h1::before{
+  content:"HOLONOMY · LINEAGE";
+  align-self:start;
+  margin:.35rem 0 0 .2rem;
+  color:#756c7e;
+  font:500 .58rem/1 var(--mono);
+  letter-spacing:.18em;
+  writing-mode:vertical-rl;
+  text-orientation:mixed;
+}
+.hero h1::after{
+  content:"Loom";
+  display:block;
+  color:#f6eee8;
+  font:400 clamp(5.2rem,14.8vw,11.8rem)/.69 Georgia,"Times New Roman",serif;
+  letter-spacing:-.085em;
+  text-shadow:0 0 70px rgba(201,166,239,.15);
+}
+html:not([data-loom-journey="loom"]) .hero h1::before{
+  margin:0;
+  writing-mode:horizontal-tb;
+  font-size:.5rem;
+}
+html:not([data-loom-journey="loom"]) .hero h1::after{
+  font-size:clamp(2rem,5vw,4.4rem);
+  line-height:.82;
+  color:rgba(247,240,232,.72);
+}
+
+/* One headline wins: the task question is the dominant instruction. */
+#loomAiWorkspace .ai-mode-head h2{
+  max-width:none!important;
+  margin:0 0 8px!important;
+  font:600 .72rem/1.2 var(--mono)!important;
+  letter-spacing:.14em!important;
+  text-transform:uppercase;
+  color:#83798d!important;
+}
+#loomAiWorkspace .ai-mode-head h2::after{content:" · route setup";font-weight:400;color:#625a69}
+#loomAiWorkspace .ai-mode-head>div:first-child>.mark{display:none!important}
+
+@media(max-width:760px){
+  .hero h1::before{
+    writing-mode:horizontal-tb;
+    margin:0 0 12px 2px;
+  }
+  .hero h1::after{
+    font-size:clamp(5rem,24vw,8rem);
+    line-height:.67;
+  }
+}
