@@ -377,7 +377,7 @@ html[data-loom-journey="return"] #loomAiWorkspace .loom-hero-route [data-hero-st
   display:flex;gap:12px;align-items:center;margin-top:13px
 }
 #loomAiWorkspace .loom-first-crossing-actions button{
-  min-height:34px;padding:0;border:0;border-bottom:1px solid rgba(142,232,230,.3);
+  min-height:44px;padding:0 2px;border:0;border-bottom:1px solid rgba(142,232,230,.3);
   border-radius:0;background:transparent;color:#d5e2e2;font:600 .64rem/1 var(--sans)
 }
 #loomAiWorkspace .loom-first-crossing-answer{
