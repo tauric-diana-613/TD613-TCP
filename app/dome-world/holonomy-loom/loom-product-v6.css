@@ -507,7 +507,7 @@ body:has(#loomAiWorkspace[data-first-crossing="active"]) .loom-topbar a[href*="l
   display:grid;place-items:center;padding:0;border:1px solid rgba(171,255,244,.82);border-radius:50%;
   color:#d8fff9;font:500 25px/1 "Loom Flow-Core",var(--sans);background:rgba(8,27,31,.66);
   box-shadow:0 0 0 5px rgba(113,255,237,.07),0 0 22px rgba(113,255,237,.58),0 0 52px rgba(113,255,237,.24);
-  text-shadow:0 0 14px rgba(186,255,247,.95);animation:loom-remix-breathe 2.4s ease-in-out infinite
+  text-shadow:0 0 14px rgba(186,255,247,.95)
 }
 #loomAiWorkspace #loomFirstCrossingPause.loom-field-toggle:active{transform:translateX(-50%) scale(.94)}
 #loomAiWorkspace .loom-first-crossing-actions button,
