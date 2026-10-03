@@ -8,7 +8,6 @@ import { readLoomAiFailure, describeLoomAiFailure } from './ai-failure.js';
 import { AnimationCoordinator } from './animation-coordinator.js';
 import { ingestGeminiConsumption } from '../../gemini-consumption-ledger.js';
 import { mountPortableLoomReentryWorkspace } from './reentry-workspace.js';
-import { mountLoomInstrumentLab } from './instrument-lab.js';
 import { exportLoomDemoOrigin } from './demo-contract.js';
 import {
   createPortableLoomSession,
@@ -46,67 +45,58 @@ export function projectLoomRequestEvent(event) {
 export function mountLoomAiWorkspace(root, environment = window) {
   const LOOM_AI_CLIENT_TIMEOUT_MS = 225000;
   if (!root) return;
-  root.innerHTML = `<nav class="loom-journey" aria-label="Loom three-phase route">
-    <div class="loom-journey-step" id="loomJourneyStep1"><b aria-hidden="true">1</b><span><strong>Loom</strong><small>Choose the work and prepare the crossing.</small></span></div>
-    <div class="loom-journey-step" id="loomJourneyStep2"><b aria-hidden="true">2</b><span><strong>Marrowline</strong><small>Continue from the governed work.</small></span></div>
-    <div class="loom-journey-step" id="loomJourneyStep3"><b aria-hidden="true">3</b><span><strong>Return</strong><small>Bring the latest state home for revalidation.</small></span></div>
-  </nav>
-  <section class="ai-mode-shell" aria-labelledby="aiModeTitle">
-    <div class="ai-mode-head">
-      <div><p class="mark">LOOM SESSION</p><h2 id="aiModeTitle">Begin with the work.</h2><p class="ai-muted">Prepare your own Loom session, or practice the same route with fictional material.</p></div>
-      <div class="ai-mode-tabs" role="tablist" aria-label="Holonomy Loom mode">
-        <button type="button" id="aiPortableMode" role="tab" aria-selected="true" aria-controls="aiPortableModePanel">My task</button>
-        <button type="button" id="aiDemoMode" role="tab" aria-selected="false" aria-controls="aiDemoModePanel">Practice route</button>
-      </div>
-    </div>
-    <section id="aiPortableModePanel" class="ai-mode-panel" role="tabpanel" aria-labelledby="aiPortableMode">
-      <div class="ai-mode-copy"><h3>Prepare the crossing before it moves.</h3><p>Choose the task, the files that may travel, what stays local, and the rules that accompany the work. Understanding and local preparation stay open.</p><p id="aiFirstUseGuide" class="ai-muted"><strong>New here?</strong> The practice route uses fictional material but follows the same Loom → Marrowline → Return mechanics. Nothing leaves this page until you choose an explicit crossing.</p></div>
-    </section>
-    <section id="aiDemoModePanel" class="ai-mode-panel" role="tabpanel" aria-labelledby="aiDemoMode" hidden>
-      <h3>Practice the real route with fictional material.</h3>
-      <p>Use the same selection, local-only, traveling-rule and Marrowline handoff mechanics without turning the practice case into production authority.</p>
-      <p class="ai-muted">Practice mode changes the material, not the route mechanics or evidence ceilings.</p>
-    </section>
-    <section id="aiPortableProjection" class="ai-portable-projection" aria-label="What this Loom transfer would carry">
-      <div><span>WHAT WILL TRAVEL?</span><strong id="aiProjectionTravel">Task · 0 selected documents · 0 traveling rules</strong></div>
-      <div><span>WHAT STAYS HERE?</span><strong id="aiProjectionStay">0 local-only documents · private-term checks remain local</strong></div>
-      <details class="ai-projection-depth"><summary>Inspect governance boundary</summary><div class="ai-projection-depth-grid">
-        <div><span>WHAT DOES LOOM BIND?</span><strong>Selected task, selected file bytes and traveling rules are bound together when prepared.</strong></div>
-        <div><span>WHAT REMAINS UNVERIFIED?</span><strong>Foreign-host enforcement, downstream retention and hidden model state remain outside this local binding.</strong></div>
-      </div></details>
-    </section>
-  </section>
-  <div id="aiDemoWelcome" class="ai-demo-welcome" hidden><button type="button" id="aiDemoInvitation" class="ai-demo-invitation" aria-expanded="false" aria-controls="aiProjectChoices"><span class="ai-invitation-orbit" aria-hidden="true">↗</span><span><strong>Choose a fictional demo</strong><small>Three practice projects. Same route mechanics, fictional material.</small></span><span class="ai-invitation-arrow" aria-hidden="true">＋</span></button><p class="ai-muted">Loading a demo sends nothing. Only an explicit Run or handoff gesture can cross a boundary.</p></div>
-    <div id="aiProjectChoices" class="ai-projects" aria-label="AI demo projects" hidden></div>
-    <div class="ai-task-layout"><section class="ai-composer" aria-label="Your AI task">
-      <section id="aiProjectBrief" class="ai-project-brief ai-disclosure" aria-label="Project brief" hidden><p class="mark">PROJECT BRIEF</p><h2 id="aiBriefTitle"></h2><p id="aiBriefText" class="ai-muted"></p><p id="aiBriefRoute" class="ai-muted"></p></section>
-      <div class="ai-task-surface"><label id="aiTaskLabel" for="aiTask">What task should travel?</label><p id="aiTaskCue" class="ai-muted">This exact task travels with the selected files and rules when you prepare the Loom transfer.</p><textarea id="aiTask" maxlength="12000" placeholder="Ask for a decision, an analysis, a plan. Bring the supporting documents below." aria-describedby="aiTaskCue"></textarea></div>
-      <div class="ai-toolbar"><label class="ai-upload">＋ Add documents<input id="aiUpload" type="file" multiple accept=".txt,.md,.csv,.json" aria-label="Add documents"></label><button type="button" id="aiNew">Start my own task</button></div>
-      <p class="ai-muted">Text, Markdown, CSV or JSON. New files stay local until you select them.</p>
-      <ul id="aiDocuments" class="ai-documents" aria-label="Document sharing"></ul>
-      <details id="aiRulesDrawer" class="ai-disclosure"><summary><span>Rules that travel<small>Open to review the instructions and private terms</small></span></summary><label for="aiRules" class="ai-muted">Instructions that travel with the task · one per line</label><textarea id="aiRules" aria-label="Rules that travel" rows="3"></textarea><label for="aiPrivate" class="ai-muted">Exact private terms to block locally · one per line</label><textarea id="aiPrivate" aria-label="Local private terms" rows="2"></textarea></details>
-      <div id="aiNewRootNotice" class="ai-new-root-notice" hidden tabindex="-1">
-        <p>Preparing or testing a new packet replaces this tab's active Loom root and admission lane. The current admitted head and pending tasks will leave the active route. Editing the builder alone keeps that lane.</p>
-        <p id="aiNewRootCoordinate"></p>
-        <button type="button" id="aiSaveActiveCustody">Save current private custody record</button>
-        <p class="ai-muted">This local file includes source bodies, pasted returns and local challenge keys. Keep it private. Saving preserves a review record; it grants no restored admission authority.</p>
-        <label><input id="aiNewRootConfirm" type="checkbox"> I choose a new Loom root and accept replacing this active custody lane.</label>
-      </div>
-      <div class="ai-send-row"><button type="button" id="aiPreparePortable" class="ai-primary">Prepare transfer</button><button type="button" id="aiRun">Run model test ↗</button><button type="button" id="aiStop" hidden>Stop waiting</button><span id="aiSendSummary" class="ai-muted"></span></div>
-      <label class="ai-muted" for="aiRuntimeProfile">Model runtime profile</label><select id="aiRuntimeProfile" aria-describedby="aiRuntimeProfileNote"><option value="deep">Deep · higher requested reasoning</option><option value="quick">Quick · lower requested reasoning</option></select><p id="aiRuntimeProfileNote" class="ai-muted">Both send the same selected inputs and traveling rules. The provider receives a reasoning request; its internal effort and answer quality remain unverified.</p>
-      <p id="aiRunNote" class="ai-muted">Preparing binds the selected task locally and makes no model request. The optional model test sends only the selected task, documents and rules.</p>
-      <div id="aiPending" class="ai-pending" hidden><span class="ai-wait-orbit" aria-hidden="true"></span><div><strong id="aiPendingLabel">Preparing your request</strong><span id="aiPendingTime" aria-live="off">The waiting time will appear here.</span></div></div><p id="aiStatus" role="status" aria-live="polite">Choose a project or write your own task.</p>
-    </section></div>
+  root.innerHTML = `<section class="loom-stage" aria-labelledby="loomStageHeading">
+    <div class="loom-stage-copy"><span class="loom-kicker">FLOW-CORE ROUTE FIELD</span><h1 id="loomStageHeading">Loom</h1><p>Your work stays yours until you choose a crossing.</p></div>
     <section id="aiRuntime" class="ai-runtime" aria-label="Current Loom route"><p class="mark">CURRENT ROUTE</p>
       <h2 id="aiConsequence" hidden>Your work starts here.</h2>
       <div id="aiRuntimeState" class="ai-runtime-state il-state"></div>
       <div id="aiLivingRoom" hidden aria-hidden="true"></div>
       <p id="aiGapSummary" class="ai-muted"></p><p id="aiMotionCause" class="ai-muted" hidden>The field follows actual request events.</p>
-      <dl class="ai-facts"><div><dt>Selected documents</dt><dd id="aiSharedCount">0</dd></div><div><dt>Kept local</dt><dd id="aiLocalCount">0</dd></div><div><dt>Last round trip</dt><dd id="aiElapsed">—</dd></div></dl>
-      <div class="ai-room-replay"><button type="button" id="aiStillField" aria-pressed="false">Still the field</button><button type="button" id="aiRoomReplay" disabled>Replay this route</button><button type="button" id="aiRoomLive" hidden>Back to live</button><label id="aiRoomScrubLabel" hidden>Observed event <input id="aiRoomScrub" type="range" min="0" max="0" value="0" aria-label="Replay observed event"></label><p id="aiRoomReplayStatus" class="ai-muted"></p></div>
+      <dl id="aiFacts" class="ai-facts" hidden><div><dt>Selected</dt><dd id="aiSharedCount">0</dd></div><div><dt>Local</dt><dd id="aiLocalCount">0</dd></div><div><dt>Round trip</dt><dd id="aiElapsed">—</dd></div></dl>
+      <div class="ai-room-replay"><button type="button" id="aiStillField" aria-pressed="false">Still</button><button type="button" id="aiRoomReplay" disabled>Replay</button><button type="button" id="aiRoomLive" hidden>Live</button><label id="aiRoomScrubLabel" hidden>Observed event <input id="aiRoomScrub" type="range" min="0" max="0" value="0" aria-label="Replay observed event"></label><p id="aiRoomReplayStatus" class="ai-muted"></p></div>
       <div id="aiRuntimeInspection" hidden><div class="ai-view-switch"><button type="button" id="aiChild" aria-pressed="true">Plain language answer</button><button type="button" id="aiAuditor" aria-pressed="false">Auditor answer</button></div><ol id="aiEvents" class="ai-events" aria-label="Request history" hidden></ol><pre id="aiReceipt">No request yet.</pre></div>
     </section>
-    <aside id="aiPortableDrawer" class="ai-route-note" hidden><p id="aiPortableLead" class="ai-muted">Your current work is still available for another receiver.</p></aside>
+    <nav class="loom-journey" aria-label="Loom route">
+      <div class="loom-journey-step" id="loomJourneyStep1"><b aria-hidden="true">1</b><span><strong>Loom</strong></span></div>
+      <div class="loom-journey-step" id="loomJourneyStep2"><b aria-hidden="true">2</b><span><strong>Marrowline</strong></span></div>
+      <div class="loom-journey-step" id="loomJourneyStep3"><b aria-hidden="true">3</b><span><strong>Return</strong></span></div>
+    </nav>
+    <button type="button" id="loomBegin" class="loom-begin">Build the route ↓</button>
+  </section>
+  <section id="loomBuilder" class="loom-builder" aria-labelledby="loomBuilderTitle">
+    <header class="loom-builder-head"><span class="loom-kicker">1 · LOOM</span><h2 id="loomBuilderTitle">Choose what crosses.</h2><p>Write the task, choose the files, keep the rules attached. Everything else stays here.</p></header>
+    <div class="ai-mode-tabs" role="tablist" aria-label="Loom mode">
+      <button type="button" id="aiPortableMode" role="tab" aria-selected="true" aria-controls="aiPortableModePanel">My work</button>
+      <button type="button" id="aiDemoMode" role="tab" aria-selected="false" aria-controls="aiDemoModePanel">Practice</button>
+    </div>
+    <section id="aiPortableModePanel" class="ai-mode-panel" role="tabpanel" aria-labelledby="aiPortableMode"><p id="aiFirstUseGuide">Prepare locally first. Nothing crosses until you choose it.</p></section>
+    <section id="aiDemoModePanel" class="ai-mode-panel" role="tabpanel" aria-labelledby="aiDemoMode" hidden><p>Same route mechanics. Fictional material.</p></section>
+    <section id="aiPortableProjection" class="ai-portable-projection" aria-label="Transfer boundary">
+      <div><span>TRAVELS</span><strong id="aiProjectionTravel">Task · 0 selected documents · 0 traveling rules</strong></div>
+      <div><span>STAYS HERE</span><strong id="aiProjectionStay">0 local-only documents · private-term checks remain local</strong></div>
+      <details class="ai-projection-depth"><summary>Boundary details</summary><div class="ai-projection-depth-grid">
+        <div><span>BOUND LOCALLY</span><strong>Selected task, selected file bytes and traveling rules.</strong></div>
+        <div><span>NOT ESTABLISHED</span><strong>Foreign-host enforcement, downstream retention and hidden model state.</strong></div>
+      </div></details>
+    </section>
+    <div id="aiDemoWelcome" class="ai-demo-welcome" hidden><button type="button" id="aiDemoInvitation" class="ai-demo-invitation" aria-expanded="false" aria-controls="aiProjectChoices"><span><strong>Pick a practice case</strong><small>Three fictional routes.</small></span><span aria-hidden="true">＋</span></button></div>
+    <div id="aiProjectChoices" class="ai-projects" aria-label="Practice projects" hidden></div>
+    <div class="ai-task-layout"><section class="ai-composer" aria-label="Your Loom task">
+      <section id="aiProjectBrief" class="ai-project-brief" aria-label="Project brief" hidden><p class="mark">PRACTICE CASE</p><h2 id="aiBriefTitle"></h2><p id="aiBriefText" class="ai-muted"></p><p id="aiBriefRoute" class="ai-muted"></p></section>
+      <div class="ai-task-surface"><label id="aiTaskLabel" for="aiTask">What should travel?</label><p id="aiTaskCue" class="ai-muted">This exact instruction travels with the files and rules you select.</p><textarea id="aiTask" maxlength="12000" placeholder="Ask for a decision, an analysis, a plan." aria-describedby="aiTaskCue"></textarea></div>
+      <div class="ai-toolbar"><label class="ai-upload">＋ Add documents<input id="aiUpload" type="file" multiple accept=".txt,.md,.csv,.json" aria-label="Add documents"></label><button type="button" id="aiNew">Clear task</button></div>
+      <p class="ai-muted">New files stay local until you select them.</p>
+      <ul id="aiDocuments" class="ai-documents" aria-label="Document sharing"></ul>
+      <details id="aiRulesDrawer"><summary>Rules & local blocks <small>optional</small></summary><label for="aiRules" class="ai-muted">Rules that travel · one per line</label><textarea id="aiRules" aria-label="Rules that travel" rows="3"></textarea><label for="aiPrivate" class="ai-muted">Private terms to block locally · one per line</label><textarea id="aiPrivate" aria-label="Local private terms" rows="2"></textarea></details>
+      <div id="aiNewRootNotice" class="ai-new-root-notice" hidden tabindex="-1">
+        <p>Starting a new root replaces this tab's active Loom custody lane.</p><p id="aiNewRootCoordinate"></p><button type="button" id="aiSaveActiveCustody">Save current private custody record</button><label><input id="aiNewRootConfirm" type="checkbox"> Replace the active root.</label>
+      </div>
+      <div class="ai-send-row"><button type="button" id="aiPreparePortable" class="ai-primary">Prepare transfer</button><button type="button" id="aiRun">Test with model ↗</button><button type="button" id="aiStop" hidden>Stop waiting</button><span id="aiSendSummary" class="ai-muted"></span></div>
+      <div class="loom-model-controls"><label for="aiRuntimeProfile">Model test profile</label><select id="aiRuntimeProfile" aria-describedby="aiRuntimeProfileNote"><option value="deep">Deep reasoning request</option><option value="quick">Quick reasoning request</option></select><p id="aiRuntimeProfileNote">The model test is optional and does not verify hidden provider behavior.</p><p id="aiRunNote">Preparing locally makes no model request.</p></div>
+      <div id="aiPending" class="ai-pending" hidden><span class="ai-wait-orbit" aria-hidden="true"></span><div><strong id="aiPendingLabel">Preparing your request</strong><span id="aiPendingTime" aria-live="off">The waiting time will appear here.</span></div></div><p id="aiStatus" role="status" aria-live="polite">Write a task or choose Practice.</p>
+    </section></div>
+  </section>
+  <aside id="aiPortableDrawer" class="ai-route-note" hidden><p id="aiPortableLead" class="ai-muted">Your current work is still available for another receiver.</p></aside>
     <section id="aiResult" class="ai-result" tabindex="-1" aria-label="AI result" hidden>
       <p id="aiResultEyebrow" class="mark">RETURNED THROUGH YOUR LOOM ROUTE</p><h2 id="aiResultTitle">Here’s the work.</h2><div id="aiAnswer" class="ai-answer"></div>
       <details id="aiSubmittedTask" class="ai-submitted-task ai-result-disclosure" hidden><summary>Inspect the exact instruction</summary><p id="aiSubmittedTaskText"></p></details><div id="aiMissing"></div><p id="aiNext"></p>
@@ -170,8 +160,9 @@ export function mountLoomAiWorkspace(root, environment = window) {
         </div>
       </details>
       <p class="ai-muted">A Loom Session carries persistent governance for proceeding tasks. It does not claim hidden middleware inside a foreign host; Challenge Receiver tests the declared observable episode and keeps the unresolved horizon visible.</p>
-    </section><section id="aiReentryWorkspace" aria-label="Returned work admission"></section>`;
+    </section><section id="aiReentryWorkspace" aria-label="Returned work admission" hidden></section>`;
   const $ = id => root.querySelector(`#${id}`);
+  $('loomBegin').addEventListener('click', () => $('loomBuilder').scrollIntoView({ behavior: environment.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }));
   const portableDefault = 'Prepare the current task locally for Marrowline, export, or copy. This step makes no model request.';
   let documents = [], busy = false, stopRequested = false, disposed = false, events = [], lastPacket = null, acceptedTask = null, resultView = null, controller = null, taskGovernor = null, version = 0;
   let pendingTimer = null, requestStarted = null, fieldStill = false, projectTitle = 'Your own task', replayIndex = null, sceneHistory = [], workspaceMode = 'portable';
@@ -184,7 +175,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   const reentry = mountPortableLoomReentryWorkspace($('aiReentryWorkspace'), {
     environment,
     onAdmission: async (session, unit) => {
-      locallyAdmitted = true; setJourney('return'); challengeSession = session; challengeWorkUnit = unit;
+      locallyAdmitted = true; $('aiReentryWorkspace').hidden=false; setJourney('return'); challengeSession = session; challengeWorkUnit = unit;
       portableSessionExport = reentry.getRecord();
       clearChallenge();
       $('aiSessionSummary').hidden = false;
@@ -218,9 +209,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   const lines = id => $(id).value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
   const coordinator = new AnimationCoordinator({ durationMs: 4000, maxFps: 60, onState: state => { root.dataset.pendingFrames = String(state.pendingFrames); } });
   coordinator.setContinuous(true);
-  const legacy = environment.document.querySelector('#loomLegacy');
   const invitation = $('aiDemoInvitation');
-  const laboratoryInvitation = legacy?.querySelector('summary');
   function refreshTransferActions() {
     const activeRecord=reentry.getRecord(),active=activeRecord?.session;
     $('aiNewRootNotice').hidden=!active;
@@ -272,11 +261,6 @@ export function mountLoomAiWorkspace(root, environment = window) {
     $('aiPortableModePanel').hidden = !portable;
     $('aiDemoModePanel').hidden = portable;
     $('aiDemoWelcome').hidden = portable;
-    if (legacy) {
-      // The Lab is an explicit, independent entrance. Mode changes grant no
-      // admission or execution authority and do not open it as a side effect.
-      legacy.hidden = false;
-    }
     if (portable) {
       $('aiProjectChoices').hidden = true;
       invitation.setAttribute('aria-expanded','false');
@@ -290,7 +274,6 @@ export function mountLoomAiWorkspace(root, environment = window) {
   coordinator.registerPass('finite-welcome-invitations', ({ packet, progress, reducedMotion, rest }) => {
     const focus = packet.presentation?.welcome && !reducedMotion && !rest ? Math.sin(Math.PI * progress) : 0;
     invitation.style.setProperty('--invitation-focus', String(focus));
-    laboratoryInvitation?.style.setProperty('--invitation-focus', String(focus));
   });
   invitation.addEventListener('click', () => {
     const opening = $('aiProjectChoices').hidden;
@@ -298,25 +281,16 @@ export function mountLoomAiWorkspace(root, environment = window) {
     invitation.setAttribute('aria-expanded', String(opening));
     if (opening) $('aiProjectChoices').querySelector('button')?.focus();
   });
-  const legacyChange = () => { coordinator.setVisible(!environment.document.hidden); };
-  legacy?.addEventListener('toggle', legacyChange);
+  const visibility = () => { coordinator.setVisible(!environment.document.hidden); };
   const reduced = environment.matchMedia('(prefers-reduced-motion: reduce)');
   coordinator.setReducedMotion(reduced.matches);
   const motionChange = event => coordinator.setReducedMotion(event.matches);
   reduced.addEventListener('change', motionChange);
-  const visibility = legacyChange;
   environment.document.addEventListener('visibilitychange', visibility);
   const runtime = mountLoomRuntimeStateView($('aiRuntimeState'), {
     environment, coordinator, compatibilityHost: $('aiLivingRoom'), inspectionContent: $('aiRuntimeInspection'),
     observe: () => ({ events: [...events], replay: { index: replayIndex },
       source_revision: portableSession?.source_revision || 'browser-unpinned' })
-  });
-  const instrumentLab = mountLoomInstrumentLab(environment.document.querySelector('#loomInstrumentLab'), {
-    environment, coordinator,
-    observe: () => ({ mode:workspaceMode, events:[...events], packet:lastPacket, replay:{index:replayIndex},
-      session:portableSession?inspectPortableLoomSession(portableSession):null,
-      reentry:reentry.getRecord(), challenge:challengeVerification,
-      source_revision:portableSession?.source_revision || null })
   });
   coordinator.registerPass('workspace-request-status', snapshot => {
     $('aiPending').style.setProperty('--wait-turn', `${snapshot.reducedMotion ? 0 : (snapshot.motionTimeMs ?? 0) / 2400 * 360}deg`);
@@ -345,7 +319,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     lastPacket = projectLoomRequestEvent(event);
     if(phase==='completed'){lastPacket.geometry={rest:false};lastPacket.presentation={settling:true};}
     lastPacket.scene={...lastPacket.scene,project_title:projectTitle,documents:documents.map(d=>({id:d.id,name:d.share?d.name:'Local-only document',share:d.share})),rules_count:lines('aiRules').length};
-    if(phase!=='prepared'){sceneHistory.push(JSON.parse(JSON.stringify(lastPacket)));sceneHistory=sceneHistory.slice(-30);}
+    if(phase!=='prepared'){sceneHistory.push(JSON.parse(JSON.stringify(lastPacket)));sceneHistory=sceneHistory.slice(-30);$('aiFacts').hidden=false;}
     replayControls();
     $('aiPendingLabel').textContent=phase==='pending'?'Waiting for the AI response':phase==='received'?'Checking the returned answer':'Preparing your selected documents';
     $('aiConsequence').textContent = lastPacket.consequence; $('aiMotionCause').textContent = lastPacket.cause;
@@ -504,6 +478,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     challengeSession=portableSession;challengeWorkUnit=portableWorkUnit;locallyAdmitted=false;
     $('aiVerifyTurnReceipt').disabled=false;
     if(!sameReplacementRecord(reentry.getRecord(),replacementState))throw new Error('HELD_STALE_CUSTODY: the active custody record changed during new-root preparation. Review replacement again.');
+    $('aiReentryWorkspace').hidden=false;
     await reentry.setSession(portableSession,portableSessionPacket);
     refreshTransferActions();
   }
@@ -657,7 +632,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   coordinator.setPacket({ ...lastPacket, scene: { ...lastPacket.scene, id: 'ai-welcome' }, geometry: { rest: false }, presentation: { welcome: true } });
   legacyChange();
   environment.document.documentElement.dataset.loomBoot='ready';
-  const dispose=()=>{disposed=true;instrumentLab?.dispose();reentry.dispose();if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();runtime.dispose();legacy?.removeEventListener('toggle',legacyChange);coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);delete environment.document.documentElement.dataset.loomJourney;delete environment.document.documentElement.dataset.loomFlowPhase;};
+  const dispose=()=>{disposed=true;reentry.dispose();if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();runtime.dispose();coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);delete environment.document.documentElement.dataset.loomJourney;delete environment.document.documentElement.dataset.loomFlowPhase;};
   environment.addEventListener('pagehide',dispose,{once:true});return {dispose,inspect:()=>({mode:workspaceMode,session:portableSession?inspectPortableLoomSession(portableSession):null,turn_receipt:turnReceiptVerification?{status:turnReceiptVerification.status,ref:turnReceiptVerification.ref}:null,challenge:challengeVerification?{status:challengeVerification.status,ref:challengeVerification.ref}:null,events:[...events],clock:coordinator.inspect(),replay:{index:replayIndex,count:sceneHistory.length},runtime:runtime.inspect(),geometry:null})};
 }
 if(typeof document!=='undefined')mountLoomAiWorkspace(document.querySelector('#loomAiWorkspace'));

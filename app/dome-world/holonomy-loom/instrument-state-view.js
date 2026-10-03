@@ -496,15 +496,15 @@ export function mountLoomInstrumentStateView(root) {
       const compact = Number(snapshot.viewport?.width ?? 1000) <= 760;
       if (compact !== compactMotion) {
         compactMotion = compact;
-        filaments.forEach((node,index)=>{node.style.display=compact&&index>=16?'none':'';});
-        particles.forEach((node,index)=>{node.style.display=compact&&index>=18?'none':'';});
-        flightGlyphs.forEach((node,index)=>{node.style.display=compact&&index>=20?'none':'';});
-        depth.forEach((node,index)=>{node.style.display=compact&&index>=6?'none':'';});
+        filaments.forEach((node,index)=>{node.style.display=compact&&index>=10?'none':'';});
+        particles.forEach((node,index)=>{node.style.display=compact&&index>=12?'none':'';});
+        flightGlyphs.forEach((node,index)=>{node.style.display=compact&&index>=12?'none':'';});
+        depth.forEach((node,index)=>{node.style.display=compact&&index>=4?'none':'';});
       }
-      const filamentCount = compact ? 16 : filaments.length;
-      const particleCount = compact ? 18 : particles.length;
-      const flightCount = compact ? 20 : flightGlyphs.length;
-      const depthCount = compact ? 6 : depth.length;
+      const filamentCount = compact ? 10 : filaments.length;
+      const particleCount = compact ? 12 : particles.length;
+      const flightCount = compact ? 12 : flightGlyphs.length;
+      const depthCount = compact ? 4 : depth.length;
       root.dataset.clientPhase = view.phase;
       root.dataset.activeRelation = frame.relation_key ?? 'unobserved';
       root.dataset.reducedMotion = String(frame.reduced_motion);
