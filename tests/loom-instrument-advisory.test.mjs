@@ -103,6 +103,8 @@ test('canonical API routing reaches metadata rather than ordinary chat and rejec
   const ready = await routed({ method: 'GET', query: { operation: 'loom-advisory' }, body: { attachments: [{ text: 'PRIVATE_SENTINEL' }] } });
   assert.equal(ready.status, 200);
   assert.equal(ready.body.schema, HOLONOMY_LOOM_KHONAPOLIT_ADVISORY_SCHEMA);
+  assert.equal(ready.body.invocationPosture, 'explicit-unissued-research-waiver');
+  assert.equal(ready.body.shiForwarded, false);
   assert.equal(ready.body.historyForwarded, false);
   assert.equal(ready.body.rawDraftAccepted, false);
   assert.equal(ready.body.deterministicReleaseAuthority, false);
