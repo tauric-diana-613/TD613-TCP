@@ -298,7 +298,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   // pair and canonical relation remain embodied in the cinematic field so the
   // visual scene can communicate the actual route rather than becoming decor.
   const stateTools=root.querySelector('[data-tool-panel="session"]');
-  for(const selector of ['.loom-instrument-state-next','.loom-instrument-state-inspection']) {
+  for(const selector of ['.loom-instrument-state-next','.loom-instrument-state-inspection','.ai-room-replay']) {
     const node=root.querySelector(selector);if(node)stateTools.append(node);
   }
   stateTools.append($('aiFacts'),$('aiGapSummary'));
