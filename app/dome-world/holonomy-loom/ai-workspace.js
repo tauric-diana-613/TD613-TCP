@@ -207,7 +207,12 @@ export function mountLoomAiWorkspace(root, environment = window) {
   let routeFacts = {outbound_submitted:false,response_received:false,binding_verified:false};
   root.dataset.loomJourney = 'loom';
   root.dataset.flowPhase = 'prepared';
-  const setJourney = state => { root.dataset.loomJourney = state; };
+  environment.document.documentElement.dataset.loomJourney = 'loom';
+  environment.document.documentElement.dataset.loomFlowPhase = 'prepared';
+  const setJourney = state => {
+    root.dataset.loomJourney = state;
+    environment.document.documentElement.dataset.loomJourney = state;
+  };
   const lines = id => $(id).value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
   const coordinator = new AnimationCoordinator({ durationMs: 4000, maxFps: 24, onState: state => { root.dataset.pendingFrames = String(state.pendingFrames); } });
   coordinator.setContinuous(true);
@@ -329,6 +334,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   }
   function project(phase, extra={}) {
     root.dataset.flowPhase = phase;
+    environment.document.documentElement.dataset.loomFlowPhase = phase;
     if(phase==='prepared')routeFacts={outbound_submitted:false,response_received:false,binding_verified:false};
     replayIndex=null;
     const event = { phase, ...routeFacts, selected_document_ids:documents.filter(d=>d.share).map(d=>d.id), shared:documents.filter(d=>d.share).length, local:documents.filter(d=>!d.share).length, at:new Date().toISOString(), ...extra };
@@ -647,7 +653,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   coordinator.setPacket({ ...lastPacket, scene: { ...lastPacket.scene, id: 'ai-welcome' }, geometry: { rest: false }, presentation: { welcome: true } });
   legacyChange();
   environment.document.documentElement.dataset.loomBoot='ready';
-  const dispose=()=>{disposed=true;instrumentLab?.dispose();reentry.dispose();if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();runtime.dispose();legacy?.removeEventListener('toggle',legacyChange);coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);};
+  const dispose=()=>{disposed=true;instrumentLab?.dispose();reentry.dispose();if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();runtime.dispose();legacy?.removeEventListener('toggle',legacyChange);coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);delete environment.document.documentElement.dataset.loomJourney;delete environment.document.documentElement.dataset.loomFlowPhase;};
   environment.addEventListener('pagehide',dispose,{once:true});return {dispose,inspect:()=>({mode:workspaceMode,session:portableSession?inspectPortableLoomSession(portableSession):null,turn_receipt:turnReceiptVerification?{status:turnReceiptVerification.status,ref:turnReceiptVerification.ref}:null,challenge:challengeVerification?{status:challengeVerification.status,ref:challengeVerification.ref}:null,events:[...events],clock:coordinator.inspect(),replay:{index:replayIndex,count:sceneHistory.length},runtime:runtime.inspect(),geometry:null})};
 }
 if(typeof document!=='undefined')mountLoomAiWorkspace(document.querySelector('#loomAiWorkspace'));
