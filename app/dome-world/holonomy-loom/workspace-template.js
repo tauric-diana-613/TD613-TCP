@@ -12,18 +12,20 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
     <span class="loom-threshold-kicker">LOOM THRESHOLD</span>
     <p id="loomThresholdCopy">Cross deliberately. The field will show what your gesture actually changes.</p>
   </div>
-  <section id="loomFirstCrossing" class="loom-first-crossing" aria-labelledby="loomFirstCrossingTitle" hidden>
-    <span class="loom-threshold-kicker">FIRST CROSSING · PRACTICE</span>
-    <h2 id="loomFirstCrossingTitle">Choose what travels.</h2>
-    <p id="loomFirstCrossingPrompt">Two pieces belong in the crossing. One should stay with you.</p>
+  <section id="loomFirstCrossing" class="loom-first-crossing" aria-labelledby="loomFirstCrossingTitle" hidden tabindex="-1">
+    <div class="loom-first-crossing-copy">
+      <span class="loom-threshold-kicker">FIRST CROSSING · PRACTICE</span>
+      <h2 id="loomFirstCrossingTitle">Choose what travels.</h2>
+      <p id="loomFirstCrossingPrompt">Two pieces belong in the crossing. One should stay with you.</p>
+    </div>
     <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="First Crossing practice material">
       <button type="button" data-first-crossing-item="brief" aria-pressed="false"><span>NOTE</span><strong>Short brief</strong><small>Needed by the next reader.</small></button>
       <button type="button" data-first-crossing-item="source" aria-pressed="false"><span>SOURCE</span><strong>Public source</strong><small>Supports the brief.</small></button>
       <button type="button" data-first-crossing-item="private" aria-pressed="false"><span>PRIVATE</span><strong>Private scrap</strong><small>Useful to you, unnecessary to send.</small></button>
     </div>
     <div class="loom-first-crossing-actions">
-      <button type="button" id="loomFirstCrossingAction">Gather the two that should travel</button>
-      <button type="button" id="loomFirstCrossingStop" hidden>Stop before sending</button>
+      <button type="button" id="loomFirstCrossingAction" hidden>Create readiness locally →</button>
+      <button type="button" id="loomFirstCrossingStop" hidden>Stop before sending →</button>
     </div>
     <p id="loomFirstCrossingAnswer" class="loom-first-crossing-answer" aria-live="polite"></p>
   </section>
