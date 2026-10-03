@@ -201,7 +201,7 @@ try {
       await screenshot(page, `${posture.name}-arrival`);
 
       await page.locator('#loomBegin').click();
-      await page.waitForTimeout(posture.motion === 'reduce' ? 40 : 500);
+      await page.waitForTimeout(posture.motion === 'reduce' ? 60 : 680);
       const builderArrival = await geometry(page, ['aiTask', 'aiPreparePortable', 'loomToolsOpen']);
       record(`${posture.name}: builder follows the cinematic scene without collapsing into it`,
         builderArrival.controls.aiTask.y < builderArrival.viewport.height &&
@@ -274,6 +274,8 @@ try {
 
       // A fresh route avoids any implicit root replacement after preparation.
       const practice = await bindPage(context, `${posture.name}-practice`);
+      await practice.locator('#loomBegin').click();
+      await practice.locator('.loom-builder-shell').waitFor({ state: 'visible' });
       await practice.locator('#aiDemoMode').click(); await practice.locator('#aiDemoInvitation').click();
       await practice.locator('[data-project="participant-research"]').click();
       record(`${posture.name}: Practice keeps Prepare primary`, await practice.locator('#aiPreparePortable').evaluate(node => node.classList.contains('ai-primary')) && !(await practice.locator('#aiRun').evaluate(node => node.classList.contains('ai-primary'))), { fictional_case: 'participant-research' });
