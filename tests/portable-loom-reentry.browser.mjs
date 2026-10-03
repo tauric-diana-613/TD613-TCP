@@ -29,12 +29,14 @@ try{
   browser=await chromium.launch({headless:true});
   for(const [posture,viewport] of [['desktop',{width:1280,height:900}],['mobile',{width:390,height:844}]]){
     const page=await browser.newPage({viewport,reducedMotion:'reduce'}),errors=[],posts=[];
+    await page.addInitScript(()=>{try{localStorage.setItem('td613.loom.first-crossing.v1','complete');}catch{}});
     page.setDefaultTimeout(12000);page.on('pageerror',e=>errors.push(e.message));
     await page.route('**/*',route=>{const req=route.request();if(req.method()!=='GET'||!req.url().startsWith(base)){posts.push({method:req.method(),url:req.url()});return route.abort();}return route.continue();});
     const r=key=>page.locator(`[data-loom-reentry="${key}"]`);
     const head=()=>r('head').textContent();
     const check=async(text)=>{await r('returns').fill(text);if(!(await r('policy-review').isChecked()))await r('policy-review').check();await r('check').click();await page.waitForFunction(()=>{const v=document.querySelector('[data-loom-reentry="verdict"]').textContent;return v.startsWith('HOLD')||v==='Ready for local admission.';});};
     await page.goto(`${base}/dome-world/holonomy-loom.html`);
+    await page.locator('#loomBegin').click();await page.locator('.loom-builder-shell').waitFor({state:'visible'});
     await page.locator('#aiDemoMode').click();await page.locator('#aiDemoInvitation').click();await page.locator('[data-project="participant-research"]').click();
     await page.locator('#aiPreparePortable').click();await r('stage').waitFor({state:'attached'});
     await page.waitForFunction(()=>!document.querySelector('[data-loom-reentry="stage"]').disabled);
