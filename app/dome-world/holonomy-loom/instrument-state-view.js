@@ -3,6 +3,7 @@ import { AIA_ROUTE_IDS, compileAIAView, verifyAIAInvariants } from '../../engine
 import { compileRouteGraph } from '../../engine/flowcore-route-burden.js';
 import { renderPedagogueScene } from '../flowcore-pedagogue-visual.js';
 import { FLOWCORE_GLYPH_REGISTRY } from '../data/flowcore-glyph-semantics-v01.js';
+import { projectFlowcoreMotionFamily } from './flowcore-choreography.js';
 
 /** A projection of client request observations, not a second request engine.
  * #1017 supplies the canonical scene/phase → graph boundary; its Ash theorem
@@ -590,8 +591,9 @@ export function mountLoomInstrumentStateView(root) {
       const choreographyRelations=Array.isArray(choreography?.relations)?choreography.relations.filter(key=>view.relations?.[key]):[];
       const choreographyScene=snapshot.packet?.scene?.id?.startsWith('first-crossing-')===true;
       const ambientChoreography=choreographyScene&&choreographyRelations.length>0;
+      const motionFamily=ambientChoreography?String(choreography.family??'phi-gossamer'):null;
       root.dataset.flowcoreChoreography=ambientChoreography?String(choreography.id??'ambient'):'evidenced';
-      root.dataset.flowcoreMotionFamily=ambientChoreography?String(choreography.family??'heterostratigraphic'):'canonical-relation';
+      root.dataset.flowcoreMotionFamily=motionFamily??'canonical-relation';
       const breath = frame.reduced_motion ? 0 : Math.sin(seconds*.72);
       const transform = frame.glyph_transform;
       glyphGroup.setAttribute('transform', `translate(${transform.x} ${transform.y+breath*2}) translate(500 260) scale(${transform.scale}) translate(-500 -260)`);
@@ -687,6 +689,7 @@ export function mountLoomInstrumentStateView(root) {
         setText(node,ambientChoreography?(view.relations?.[relationKey]?.glyph??''):(observed?.glyph??''));
         node.setAttribute('data-flight-relation',relationKey);
         node.setAttribute('data-flight-evidence',ambientChoreography?'presentation-only':'observed');
+        node.setAttribute('data-flight-family',motionFamily??'canonical-relation');
         node.setAttribute('visibility','visible');
 
         // Each path follows the canonical relation's graphic/motion grammar.
@@ -761,6 +764,11 @@ export function mountLoomInstrumentStateView(root) {
         }else{
           x=-180+phase*1360;
           y=260+lane*46;
+        }
+
+        if(ambientChoreography&&motionFamily){
+          const familyMotion=projectFlowcoreMotionFamily(motionFamily,{index:i,count:flightCount,seconds,phase,depth:depthClass});
+          x+=familyMotion.dx;y+=familyMotion.dy;roll+=familyMotion.roll;scale*=familyMotion.scale;opacity*=familyMotion.opacity;
         }
 
         // Depth is presentation only: it changes apparent distance, never the
