@@ -42,6 +42,34 @@ finite rest, separated private-material orbit, local practice completion,
 draft preservation on exit and ordinary direct Marrowline entry. They remain
 scoped observations rather than whole-product completion.
 
+## Follow-up source repairs and regression evidence
+
+These are candidate changes owned by this follow-up, not by the #1424 release:
+
+- `ai-workspace.js`: completed replay restarts selection in one gesture;
+  incomplete replay retains its separate exit. Own-work exit invalidates the
+  practice generation, cancels transition timers, directly reveals/focuses the
+  editable task and preserves the real task, session and prepared export.
+- `loom-product-v6.css`: the final relation-caption rule preserves canonical
+  glyph case. Tight text halos and SVG source-label outlines target the
+  contrast competition observed on desktop. Carrier count, planes, topology,
+  trajectories and animation clock remain unchanged. Perceptual acceptance
+  of these contrast changes remains a separate witness requirement.
+- `tests/loom-targeted-ux.test.mjs`: three regressions cover immediate replay,
+  direct editable-task return with existing-root/export preservation, and
+  canonical `à`/`hõt`/`cōl` case through the CSS cascade.
+
+Before the JS repair, the two new route regressions produced 18 passes and
+2 failures: replay returned `idle` instead of `active`, and the builder remained
+hidden on own-work exit. After the repair, root independently ran the targeted
+UX, binding-race and fictional-practice suites: **29/29 passed**. The cinematic
+stage suite separately passed **4/4**. `git diff --check` passed.
+
+These 33 checks are source/DOM contracts, including the single-clock/39-carrier
+invariants. They do not supply a live mobile page, physical-device witness,
+provider chain or measured human comprehension. This follow-up has not merged
+or deployed at this checkpoint.
+
 ## Mobile audit attempts and current HOLD
 
 The operator explicitly requested a live mobile Dollhouse review and authorized

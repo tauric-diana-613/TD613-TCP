@@ -113,7 +113,7 @@
   position:absolute!important;z-index:12!important;
   left:max(20px,calc((100% - 1240px)/2))!important;bottom:20px!important;
   width:auto!important;max-width:46%!important;margin:0!important;color:#5f6a75!important;
-  font:560 .52rem/1.2 var(--mono)!important;letter-spacing:.06em!important;text-transform:uppercase
+  font:560 .52rem/1.2 var(--mono)!important;letter-spacing:.06em!important;text-transform:none
 }
 #loomAiWorkspace .loom-instrument-state-boundary{
   position:absolute!important;z-index:12!important;
@@ -402,9 +402,16 @@ html[data-loom-journey="return"] #loomAiWorkspace .loom-hero-route [data-hero-st
 #loomAiWorkspace .loom-first-crossing-copy .loom-threshold-kicker{font-size:10px;letter-spacing:.13em;color:#94a2ad}
 #loomAiWorkspace .loom-first-crossing-copy h2{
   margin:12px 0 0;font:550 clamp(26px,3.6vw,42px)/1.05 var(--sans);letter-spacing:-.045em;
-  color:#eef6f4;text-shadow:0 2px 24px #05060a
+  color:#eef6f4;text-shadow:0 0 3px #05070a,0 2px 7px #05070a
 }
 #loomAiWorkspace .loom-first-crossing-copy p{margin:12px auto 0;max-width:43ch;color:#b0bcc5;font-size:14px;line-height:1.45}
+/* Keep words readable when history-bearing carriers pass behind them. This
+   outlines the text only; it adds no panel, carrier mask, or motion path. */
+#loomAiWorkspace .loom-first-crossing-copy p,
+#loomAiWorkspace .loom-first-crossing-answer{ text-shadow:0 0 3px #05070a,0 2px 7px #05070a }
+#loomAiWorkspace .loom-field-sources text{
+  paint-order:stroke fill;stroke:#05070a;stroke-width:2px;stroke-linejoin:round
+}
 #loomAiWorkspace .loom-first-crossing-objects{
   position:absolute;left:50%;bottom:126px;transform:translateX(-50%);width:min(560px,calc(100% - 40px));
   display:grid;grid-template-columns:1fr 1fr;gap:16px;pointer-events:none
