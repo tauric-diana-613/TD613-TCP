@@ -59,6 +59,14 @@ test('Threshold gates Loom while First Crossing remains local, replayable, and g
   assert.doesNotMatch(workspaceSource, /firstCrossing[\s\S]{0,1200}(?:fetch\s*\(|provider_call_authorized\s*:\s*true)/);
 });
 
+test('Phase 3 return bypasses the entrance Threshold without completing onboarding', () => {
+  assert.match(workspaceSource, /review\?\.source==='OPENER_RETURN'\|\|environment\.location\.hash==='#return-review'/);
+  assert.match(workspaceSource, /root\.dataset\.thresholdState='open'/);
+  assert.match(workspaceSource, /thresholdStage\.hidden=true;[\s\S]{0,120}builderShell\.hidden=false/);
+  assert.match(workspaceSource, /openWorkspace\('return',\{focus:bypassThreshold\}\)/);
+  assert.doesNotMatch(workspaceSource, /openReturnedReviewScene[\s\S]{0,700}storageWrite\(FIRST_CROSSING_KEY/);
+});
+
 test('mobile keeps consequential boundaries and source-defined focus protection', () => {
   assert.match(product, /@media\(max-width:760px\)/);
   assert.match(product, /@media\(min-width:761px\)/);
