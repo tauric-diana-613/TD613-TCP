@@ -407,7 +407,6 @@ html[data-loom-journey="return"] #loomAiWorkspace #loomJourneyStep3{
   #loomAiWorkspace .loom-reentry-actions button{width:100%}
 }
 @media(max-width:430px){
-  .loom-topbar nav a:first-child{display:none}
   #loomAiWorkspace .loom-stage-copy p{display:none}
   #loomAiWorkspace .ai-toolbar{grid-template-columns:1fr!important}
   #loomAiWorkspace .loom-journey{width:198px!important}
