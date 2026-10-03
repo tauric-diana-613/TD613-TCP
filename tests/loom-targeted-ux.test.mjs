@@ -53,23 +53,31 @@ test('cinematic route field and builder are separate scenes while advanced tools
   assert.match(product, /#loomAiWorkspace \.loom-stage\{[\s\S]*?height:calc\(100svh - 52px\)/);
 });
 
-test('First Crossing retains explicit rest, exit and local inspection alongside selection', () => {
+test('First Crossing is a recoverable consumer ingress with a living Flow-Core remix', () => {
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
   assert.equal(doc.querySelector('.loom-builder-shell').hidden, true);
-  for (const id of ['loomBegin','loomReturnThreshold','loomFirstCrossing','loomFirstCrossingAction','loomFirstCrossingStop','loomReplayFirstCrossing','loomFirstCrossingPause','loomFirstCrossingLeave','loomFirstCrossingPrivate','loomFirstCrossingPrivateText']) {
-    assert.ok(doc.querySelector(`#${id}`), `Threshold control exists: ${id}`);
+  for (const id of ['loomBegin','loomReturnThreshold','loomFirstCrossing','loomFirstCrossingAction','loomFirstCrossingStop','loomFirstCrossingBack','loomFirstCrossingPause','loomFirstCrossingLeave','loomFirstCrossingPrivate','loomFlowcoreMessage']) {
+    assert.ok(doc.querySelector(`#${id}`), `Ingress control exists: ${id}`);
   }
-  assert.equal(doc.querySelectorAll('[data-first-crossing-item]').length, 2, 'only traveling sources are selection controls');
-  assert.equal(doc.querySelector('#loomFirstCrossingPrivate').hasAttribute('aria-pressed'), false, 'local inspection cannot silently select the private material');
-  for (const id of ['loomFirstCrossingPause','loomFirstCrossingLeave']) {
-    assert.equal(doc.querySelector(`#${id}`).hidden, false);
-    assert.equal(doc.querySelector('.loom-first-crossing-actions').contains(doc.querySelector(`#${id}`)), false, 'rest/exit remain outside the stage-dependent primary action group');
-  }
-  assert.match(workspaceSource, /FIRST_CROSSING_KEY = 'td613\.loom\.first-crossing\.v1'/);
-  assert.match(workspaceSource, /outbound_submitted:false,[\s\S]{0,120}response_received:false/);
-  assert.match(workspaceSource, /First Crossing complete · à gathered · cōl stayed protected · 上 created readiness\. Nothing crossed\./);
-  assert.match(workspaceSource, /root\.dataset\.thresholdState='opening'/);
-  assert.match(workspaceSource, /root\.dataset\.thresholdBeat='3'/);
+  assert.equal(doc.querySelectorAll('[data-first-crossing-item]').length, 2);
+  assert.equal(doc.querySelector('#loomFirstCrossingPrivate').tagName, 'DIV', 'private note is explanatory, not a mystery button');
+  assert.equal(doc.querySelector('#loomFirstCrossingPause').textContent, '𝌋');
+  assert.match(templateSource, /What is Flow-Core\?/);
+  for (const glyph of ['à','米','出','hõt','cōl','上','下','𝄐']) assert.ok(templateSource.includes(glyph), `Flow-Core explainer includes ${glyph}`);
+  assert.match(workspaceSource, /nextFlowcoreChoreography/);
+  assert.match(workspaceSource, /flowcore_choreography:firstCrossingChoreography/);
+  assert.match(workspaceSource, /coordinator\.setContinuous\(true\)/);
+  assert.match(workspaceSource, /title:'Choose what AI can use\.'/);
+  assert.match(workspaceSource, /title:'Your Loom is ready\.'/);
+  assert.match(workspaceSource, /Try the live Loom →/);
+  assert.doesNotMatch(workspaceSource, /title:'Prepared is not transmitted\.'/);
+  assert.doesNotMatch(workspaceSource, /title:'They gathered\. Nothing crossed\.'/);
+  assert.doesNotMatch(workspaceSource, /title:'Watch readiness form\.'/);
+  assert.doesNotMatch(workspaceSource, /loomFirstCrossingPrivateText/);
+  assert.doesNotMatch(workspaceSource, /firstCrossingPaused\?'Resume field':'Pause field'/);
+  assert.match(workspaceSource, /function returnToThreshold\(\)\{[\s\S]{0,260}startFirstCrossing\(\{replay:true\}\)/);
+  assert.doesNotMatch(workspaceSource, /root\.dataset\.thresholdState='opening'/);
+  assert.doesNotMatch(workspaceSource, /root\.dataset\.thresholdBeat='3'/);
   assert.doesNotMatch(workspaceSource, /firstCrossing[\s\S]{0,1200}(?:fetch\s*\(|provider_call_authorized\s*:\s*true)/);
 });
 
