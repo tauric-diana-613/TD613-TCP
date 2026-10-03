@@ -63,7 +63,7 @@ function harness(t, responder=(request)=>response(admitted(request)), reduced=fa
   return {window,root,ui,$,calls,frames,change,load,upload,dispose,settled,submitted};
 }
 
-test('Portable AIA is the default mode and keeps comprehension plus local preparation open without SHI',async t=>{
+test('Loom transfer is the default mode and keeps comprehension plus local preparation open without SHI',async t=>{
   const h=harness(t);
   assert.equal(h.ui.inspect().mode,'portable');
   assert.equal(h.root.querySelectorAll('#aiRuntimeState').length,1);
@@ -80,22 +80,26 @@ test('Portable AIA is the default mode and keeps comprehension plus local prepar
   assert.match(h.$('#aiFirstUseGuide').textContent,/does not establish civil identity or foreign-host enforcement/i);
   assert.match(h.$('#aiShiStatus').textContent,/Issuance held/);
   assert.equal(h.$('#aiIssuanceGate').dataset.state,'held');
+  assert.equal(h.$('#aiIssuanceGate').hidden,true,'SHI stays out of onboarding before a transfer is prepared');
+  assert.equal(h.root.dataset.loomJourney,'loom');
   assert.equal(h.$('#aiIssuanceGate a').getAttribute('href'),'/safe-harbor/index.html');
 
   h.change('#aiTask','Compare the selected evidence and name what remains missing.');
   h.$('#aiPreparePortable').click();
   await h.settled();
-  assert.equal(h.calls.length,0,'local Portable AIA preparation makes no provider request');
+  assert.equal(h.calls.length,0,'local Loom transfer preparation makes no provider request');
+  assert.equal(h.$('#aiIssuanceGate').hidden,false,'SHI becomes visible at the crossing it governs');
+  assert.equal(h.root.dataset.loomJourney,'ready');
   assert.equal(h.$('#aiResult').hidden,false);
   assert.match(h.$('#aiAnswer').textContent,/made no model request/i);
   assert.match(h.$('#aiAnswer').textContent,/does not embed civil-identity verification/i);
-  for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge'])assert.equal(h.$('#'+id).disabled,true,`${id} stays held without SHI in Portable AIA mode`);
+  for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge'])assert.equal(h.$('#'+id).disabled,true,`${id} stays held without SHI in Loom transfer mode`);
   assert.equal(h.$('#aiSessionSummary').hidden,false,'local preparation creates a session root before issuance');
   assert.match(h.$('#aiSessionReceipt').textContent,/td613\.loom\.portable-session-export\/v0\.1/);
   assert.match(h.$('#aiStatus').textContent,/Issuance remains held/i);
 });
 
-test('a valid-format minted SHI wakes only the prepared Portable AIA issuance gestures',async t=>{
+test('a valid-format minted SHI wakes only the prepared Loom transfer issuance gestures',async t=>{
   const h=harness(t);
   h.change('#aiTask','Prepare this bounded task for another receiver.');
   h.$('#aiPreparePortable').click();
@@ -149,7 +153,7 @@ test('a valid-format minted SHI wakes only the prepared Portable AIA issuance ge
   for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge'])assert.equal(h.$('#'+id).disabled,true,'editing the bound task invalidates issuance even when SHI format remains valid');
 });
 
-test('Loom Demo exposes the fictional practice route without leaking its waiver back into Portable AIA mode',async t=>{
+test('Loom Demo exposes the fictional practice route without leaking its waiver back into Loom transfer mode',async t=>{
   const h=harness(t);
   h.$('#aiDemoMode').click();
   assert.equal(h.ui.inspect().mode,'demo');
@@ -167,7 +171,7 @@ test('Loom Demo exposes the fictional practice route without leaking its waiver 
   assert.equal(h.ui.inspect().mode,'portable');
   assert.equal(h.$('#aiDemoWelcome').hidden,true);
   assert.equal(h.$('#aiIssuanceGate').dataset.state,'held');
-  for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge'])assert.equal(h.$('#'+id).disabled,true,'Demo waiver cannot survive a return to Portable AIA mode');
+  for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge'])assert.equal(h.$('#'+id).disabled,true,'Demo waiver cannot survive a return to Loom transfer mode');
 });
 
 test('Challenge Receiver keeps local ground truth private and flips from bounded pass to observed exposure',async t=>{
