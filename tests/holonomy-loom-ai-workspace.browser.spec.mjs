@@ -57,6 +57,7 @@ try {
     ['mobile-reduced', { width: 390, height: 844 }, 'reduce']
   ]) {
     const page = await browser.newPage({ viewport, reducedMotion, acceptDownloads: true });
+    await page.addInitScript(() => { try { localStorage.setItem('td613.loom.first-crossing.v1', 'complete'); } catch {} });
     page.setDefaultTimeout(12000);
     // OLD: tools lived in nested disclosures inside the primary route and the
     // builder/result stayed simultaneously visible. REAL: selected bytes,
@@ -108,6 +109,8 @@ try {
       const loaded = await page.goto(`${base}/dome-world/holonomy-loom.html`, { waitUntil: 'networkidle' });
       assert.equal(loaded.status(), 200);
       await page.locator('#loomAiWorkspace').waitFor({ state: 'visible' });
+      await page.locator('#loomBegin').click();
+      await page.locator('.loom-builder-shell').waitFor({ state: 'visible' });
       assert.equal(await page.locator('#aiPortableMode').getAttribute('aria-selected'),'true','Loom transfer is the default product mode');
       assert.equal(await page.locator('#aiDemoMode').getAttribute('aria-selected'),'false');
       assert.equal(await page.locator('#aiDemoWelcome').isVisible(),false,'fictional demo chooser stays out of the primary Loom transfer path');
