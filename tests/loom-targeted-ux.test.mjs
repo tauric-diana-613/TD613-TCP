@@ -120,6 +120,13 @@ test('hidden state actually withholds the Practice chooser despite component dis
   dom.window.close();
 });
 
+test('canonical relation caption preserves Flow-Core case through the product CSS cascade', () => {
+  const dom = new JSDOM(`<style>${product}</style><section id="loomAiWorkspace"><p class="loom-instrument-state-relation">à · gathering · hõt · cōl</p></section>`);
+  const relation = dom.window.document.querySelector('.loom-instrument-state-relation');
+  assert.equal(dom.window.getComputedStyle(relation).textTransform, 'none', 'presentation must preserve canonical lowercase glyphs and relation names');
+  dom.window.close();
+});
+
 test('local preparation selects foreground crossing focus rather than a field detour', () => {
   assert.match(workspaceSource, /function revealResult\(\)\{\s*openWorkspace\('crossing',\{focus:true\}\)/);
   assert.match(workspaceSource, /name==='crossing'\?\$\('aiResult'\)/);
@@ -347,5 +354,66 @@ test('replayed practice readiness preserves an existing real Loom root and prepa
   await until(() => !h.$('.loom-builder-shell').hidden, 'return to existing real work');
   assert.equal(h.$('#aiTask').value, task.value);
   assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), null);
+  assert.equal(h.requests.length, 0);
+});
+
+test('completed First Crossing replay restarts selection in one deliberate gesture', async t => {
+  const h = practiceHarness(t);
+  async function finishPractice() {
+    h.$('[data-first-crossing-item="brief"]').click();
+    h.$('[data-first-crossing-item="source"]').click();
+    await until(() => !h.$('#loomFirstCrossingAction').hidden, 'published gathering');
+    h.$('#loomFirstCrossingAction').click();
+    await until(() => !h.$('#loomFirstCrossingStop').hidden, 'published local readiness');
+    h.$('#loomFirstCrossingStop').click();
+    assert.equal(h.root.dataset.firstCrossingCue, 'complete');
+  }
+  await finishPractice();
+  h.$('#loomReplayFirstCrossing').click();
+  assert.equal(h.root.dataset.firstCrossingStep, '0');
+  await finishPractice();
+  assert.match(h.$('#loomReplayFirstCrossing').textContent, /Replay First Crossing/);
+  h.$('#loomReplayFirstCrossing').click();
+  assert.equal(h.root.dataset.firstCrossing, 'active', 'the advertised replay gesture starts practice immediately');
+  assert.equal(h.root.dataset.firstCrossingStep, '0');
+  assert.equal(h.root.dataset.firstCrossingCue, 'choose');
+  assert.equal(h.$('#loomFirstCrossing').hidden, false);
+  assert.equal(h.$('#loomThresholdGate').hidden, true);
+  assert.match(h.$('#loomReplayFirstCrossing').textContent, /Exit replay/);
+  for (const item of h.root.querySelectorAll('[data-first-crossing-item]')) {
+    assert.equal(item.getAttribute('aria-pressed'), 'false', 'a fresh replay carries no prior selection');
+    assert.equal(item.disabled, false);
+  }
+  assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), 'complete', 'actual prior completion remains recorded');
+  assert.equal(h.ui.inspect().session, null, 'replay creates no real custody root');
+  assert.equal(h.requests.length, 0);
+});
+
+test('own-work exit restores the editable task after a previously opened prepared Threshold', async t => {
+  const h = practiceHarness(t);
+  h.$('#loomFirstCrossingLeave').click();
+  await until(() => !h.$('.loom-builder-shell').hidden, 'first own-work entry');
+  const originalTask = 'Keep the original task and prepared work while I revisit practice.';
+  h.$('#aiTask').value = originalTask;
+  h.$('#aiTask').dispatchEvent(new h.environment.Event('input', { bubbles: true }));
+  h.$('#aiPreparePortable').click();
+  await until(() => h.ui.inspect().session !== null && h.root.getAttribute('aria-busy') !== 'true', 'existing prepared session');
+  const originalSession = h.ui.inspect().session;
+  const originalExport = h.$('#aiSessionReceipt').textContent;
+  assert.equal(h.root.dataset.workspace, 'crossing');
+  h.$('#loomReturnThreshold').click();
+  h.$('#loomReplayFirstCrossing').click();
+  h.$('#loomFirstCrossingLeave').click();
+  await until(() => !h.$('.loom-builder-shell').hidden, 'return to previously opened own work');
+  assert.equal(h.$('#loomBuilder').hidden, false, 'own-work exit restores the editable task surface');
+  assert.equal(h.root.dataset.workspace, 'build');
+  assert.equal(h.environment.document.activeElement, h.$('#aiTask'), 'focus returns to the visible editable task');
+  assert.equal(h.$('.loom-stage').hidden, true);
+  assert.equal(h.$('#loomFirstCrossing').hidden, true);
+  assert.equal(h.root.dataset.firstCrossing, 'idle');
+  assert.equal(h.$('#aiTask').value, originalTask);
+  assert.deepEqual(h.ui.inspect().session, originalSession, 'exiting practice preserves the real prepared root');
+  assert.equal(h.$('#aiSessionReceipt').textContent, originalExport);
+  assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), null, 'exit grants no unearned practice completion');
   assert.equal(h.requests.length, 0);
 });

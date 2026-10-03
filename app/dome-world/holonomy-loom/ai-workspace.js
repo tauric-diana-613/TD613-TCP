@@ -557,6 +557,17 @@ export function mountLoomAiWorkspace(root, environment = window) {
     }
     if(firstCrossingActive)restoreThresholdField();
     clearThresholdTimers();
+    if(skipPractice){
+      // Leaving practice is its own exit gesture. Restore the editable task
+      // directly, including when a prepared transfer was the prior workspace.
+      // Existing task, session and custody state stay bound to that work.
+      root.dataset.thresholdState='open';
+      root.dataset.thresholdBeat='0';
+      thresholdStage.hidden=true;
+      builderShell.hidden=false;
+      openWorkspace('build',{focus:true});
+      return;
+    }
     builderShell.hidden=true;
     thresholdStage.hidden=false;
     root.dataset.thresholdState='opening';
@@ -915,7 +926,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   $('loomFirstCrossingAction').addEventListener('click',actFirstCrossing);
   $('loomFirstCrossingStop').addEventListener('click',completeFirstCrossing);
   $('loomReplayFirstCrossing').addEventListener('click',()=>{
-    if(firstCrossingActive&&firstCrossingReplayMode){restoreThresholdField();return;}
+    if(firstCrossingActive&&firstCrossingReplayMode&&firstCrossingStep<3){restoreThresholdField();return;}
     startFirstCrossing({replay:true});
   });
   $('loomBegin').addEventListener('click',()=>openLoomThreshold());
