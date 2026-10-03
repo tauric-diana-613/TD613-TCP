@@ -140,6 +140,15 @@ export function mountLoomAiWorkspace(root, environment = window) {
   const thresholdStage = root.querySelector('.loom-stage');
   const builderShell = root.querySelector('.loom-builder-shell');
   const firstCrossingItems = [...root.querySelectorAll('[data-first-crossing-item]')];
+  function setFirstCrossingCue(cue,{title,prompt,answer,action=false,stop=false}){
+    if(root.dataset.firstCrossingCue===cue)return;
+    root.dataset.firstCrossingCue=cue;
+    $('loomFirstCrossingTitle').textContent=title;
+    $('loomFirstCrossingPrompt').textContent=prompt;
+    $('loomFirstCrossingAnswer').textContent=answer;
+    $('loomFirstCrossingAction').hidden=!action;
+    $('loomFirstCrossingStop').hidden=!stop;
+  }
   const storageRead = key => { try { return environment.localStorage?.getItem(key) ?? null; } catch { return null; } };
   const storageWrite = (key,value) => { try { environment.localStorage?.setItem(key,value); } catch {} };
   function refreshTransferActions() {
@@ -234,6 +243,44 @@ export function mountLoomAiWorkspace(root, environment = window) {
     environment, coordinator, compatibilityHost: $('aiLivingRoom'), inspectionContent: $('aiRuntimeInspection'),
     observe: () => thresholdObservation ?? ({ events: [...events], replay: { index: replayIndex },
       source_revision: portableSession?.source_revision || 'browser-unpinned' })
+  });
+  coordinator.registerPass('first-crossing-consequence-order', snapshot => {
+    if(!firstCrossingActive || !snapshot.packet.scene?.id?.startsWith('first-crossing-'))return;
+    const projectionCurrent=$('aiRuntimeState').dataset.projectionState==='CURRENT';
+    const consequenceVisible=projectionCurrent && (snapshot.reducedMotion || snapshot.progress>=.48);
+    if(firstCrossingStep===1){
+      if(consequenceVisible){
+        setFirstCrossingCue('gathering-named',{
+          title:'They gathered. Nothing crossed.',
+          prompt:'That relation is à. The private scrap stayed here — cōl.',
+          answer:'WORLD ANSWERS → NAME · the local relation changed; transmission did not occur.',
+          action:true
+        });
+      }else{
+        setFirstCrossingCue('gathering-motion',{
+          title:'Watch the field gather them.',
+          prompt:'The two selected pieces are changing relation. Nothing has left this page.',
+          answer:'WORLD ANSWERS · local relation changing…'
+        });
+      }
+      return;
+    }
+    if(firstCrossingStep===2){
+      if(consequenceVisible){
+        setFirstCrossingCue('potential-named',{
+          title:'Ready is not sent.',
+          prompt:'That created-potential relation is 上. The private scrap still stays here.',
+          answer:'Preparation ≠ transmission. No provider call occurred.',
+          stop:true
+        });
+      }else{
+        setFirstCrossingCue('potential-motion',{
+          title:'Watch readiness form.',
+          prompt:'The gathered packet is changing locally. Nothing is being transmitted.',
+          answer:'WORLD ANSWERS · local readiness changing…'
+        });
+      }
+    }
   });
   // Deep technical inspection belongs in the session workspace. The endpoint
   // pair and canonical relation remain embodied in the cinematic field so the
@@ -360,6 +407,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     thresholdObservation=null;
     root.dataset.firstCrossing='idle';
     root.dataset.firstCrossingStep='idle';
+    delete root.dataset.firstCrossingCue;
     $('loomFirstCrossing').hidden=true;
     $('loomThresholdGate').hidden=false;
     $('loomReplayFirstCrossing').hidden=false;
@@ -375,11 +423,11 @@ export function mountLoomAiWorkspace(root, environment = window) {
     root.dataset.firstCrossingStep='3';
     firstCrossingWasAlreadyComplete=true;
     storageWrite(FIRST_CROSSING_KEY,'complete');
-    $('loomFirstCrossingTitle').textContent='Prepared is not transmitted.';
-    $('loomFirstCrossingPrompt').textContent='You gathered what should travel, kept one thing local, and created readiness without sending anything.';
-    $('loomFirstCrossingAnswer').textContent='First Crossing complete · à gathered · cōl stayed protected · 上 created readiness. Nothing crossed.';
-    $('loomFirstCrossingAction').hidden=true;
-    $('loomFirstCrossingStop').hidden=true;
+    setFirstCrossingCue('complete',{
+      title:'Prepared is not transmitted.',
+      prompt:'You gathered what should travel, kept one thing local, and created readiness without sending anything.',
+      answer:'First Crossing complete · à gathered · cōl stayed protected · 上 created readiness. Nothing crossed.'
+    });
     $('loomBegin').hidden=false;
     $('loomReplayFirstCrossing').hidden=false;
     $('loomReplayFirstCrossing').textContent='↻ Replay First Crossing';
@@ -408,12 +456,12 @@ export function mountLoomAiWorkspace(root, environment = window) {
     $('loomBegin').hidden=true;
     $('loomReplayFirstCrossing').hidden=!firstCrossingWasAlreadyComplete;
     $('loomReplayFirstCrossing').textContent=replay?'Exit replay':'↻ First Crossing';
-    $('loomFirstCrossingTitle').textContent='Choose what travels.';
-    $('loomFirstCrossingPrompt').textContent='Two pieces belong in the crossing. One should stay with you.';
-    $('loomFirstCrossingAnswer').textContent='NOTICE · nothing has moved yet.';
-    $('loomFirstCrossingAction').hidden=true;
+    setFirstCrossingCue('choose',{
+      title:'Choose what travels.',
+      prompt:'Two pieces belong in the crossing. One should stay with you.',
+      answer:'NOTICE · nothing has moved yet.'
+    });
     $('loomFirstCrossingAction').textContent='Create readiness locally →';
-    $('loomFirstCrossingStop').hidden=true;
     firstCrossingItems.forEach(button=>{button.disabled=false;button.setAttribute('aria-pressed','false');delete button.dataset.held;});
     const neutral=firstCrossingEvent('prepared');
     const packet=projectLoomRequestEvent(neutral);
@@ -436,23 +484,24 @@ export function mountLoomAiWorkspace(root, environment = window) {
       firstCrossingStep=1;
       root.dataset.firstCrossingStep='1';
       firstCrossingItems.forEach(button=>button.disabled=true);
+      setFirstCrossingCue('gathering-motion',{
+        title:'Watch the field gather them.',
+        prompt:'The two selected pieces are changing relation. Nothing has left this page.',
+        answer:'WORLD ANSWERS · local relation changing…'
+      });
       projectFirstCrossing(firstCrossingEvent('prepared'));
-      $('loomFirstCrossingTitle').textContent='They gathered. Nothing crossed.';
-      $('loomFirstCrossingPrompt').textContent='à names the gathering. cōl remains evidenced because the private scrap is still here and inspectable.';
-      $('loomFirstCrossingAnswer').textContent='WORLD ANSWERS → NAME · selection changed the local route; transmission did not occur.';
-      $('loomFirstCrossingAction').hidden=false;
       $('loomFirstCrossingAction').textContent='Create readiness locally →';
       return;
     }
     if(firstCrossingStep===1){
       firstCrossingStep=2;
       root.dataset.firstCrossingStep='2';
+      setFirstCrossingCue('potential-motion',{
+        title:'Watch readiness form.',
+        prompt:'The gathered packet is changing locally. Nothing is being transmitted.',
+        answer:'WORLD ANSWERS · local readiness changing…'
+      });
       projectFirstCrossing(firstCrossingEvent('checking',{binding_verified:true}));
-      $('loomFirstCrossingTitle').textContent='Ready is not sent.';
-      $('loomFirstCrossingPrompt').textContent='上 names created potential: local work made the packet ready. The private scrap still stays here.';
-      $('loomFirstCrossingAnswer').textContent='No provider call occurred. Preparation ≠ transmission.';
-      $('loomFirstCrossingAction').hidden=true;
-      $('loomFirstCrossingStop').hidden=false;
       $('loomFirstCrossingStop').textContent='Stop before sending →';
     }
   }
