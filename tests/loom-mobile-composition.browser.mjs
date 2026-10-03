@@ -298,7 +298,7 @@ try {
       record('first crossing: completion unlocks the live Loom CTA',
         await page.locator('#loomBegin').isVisible() &&
         await page.evaluate(() => localStorage.getItem('td613.loom.first-crossing.v1')) === 'complete' &&
-        /Try the live Loom/.test(await page.locator('#loomBegin').textContent()),
+        /Try Loom/.test(await page.locator('#loomBegin').textContent()),
         { open_visible: await page.locator('#loomBegin').isVisible(), label:await page.locator('#loomBegin').textContent() });
       record('first crossing: tutorial made zero provider or non-GET requests',
         !report.requests.some(request => request.posture === 'first-crossing-mobile' && request.method !== 'GET'),
