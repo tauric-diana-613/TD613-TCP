@@ -438,11 +438,12 @@ export function mountLoomInstrumentStateView(root) {
   // in event_relation_history. They share the host coordinator clock and add
   // no event, authority, provider claim, or second animation loop.
   const flightLayer = svgEl('g',{class:'loom-field-flight','aria-hidden':'true'});
-  const flightGlyphs = Array.from({length:21},(_,i)=>{
+  const flightGlyphs = Array.from({length:39},(_,i)=>{
+    const near=i%13===0||i%11===0, mid=!near&&(i%4===0||i%7===0);
     const node=svgEl('text',{
-      x:0,y:0,'font-size':i%7===0?58:i%3===0?38:24,
-      fill:i%5===0?'#f3bd86':i%3===0?'#9ce7e4':'#b69be9',
-      class:i%7===0?'flight-near':i%3===0?'flight-mid':'flight-far'
+      x:0,y:0,'font-size':near?(i%13===0?118:86):mid?48:27,
+      fill:i%9===0?'#f3bd86':i%5===0?'#9ce7e4':'#b69be9',
+      class:near?'flight-near':mid?'flight-mid':'flight-far'
     });
     flightLayer.append(node);return node;
   });
@@ -545,13 +546,17 @@ export function mountLoomInstrumentStateView(root) {
           node.setAttribute('transform',`rotate(${(col-3)*3} ${x} ${y})`);
           continue;
         }
-        const speed=.022+(i%5)*.0045;
+        const speed=.018+(i%7)*.0038;
         const phase=((i/flightGlyphs.length)+(seconds*speed*flightDirection))%1;
         const t=((phase%1)+1)%1;
-        const x=-120+t*1240;
-        const y=72+(i%7)*58+Math.sin(seconds*.42+i*1.73)*34;
-        const roll=Math.sin(seconds*.28+i)*12+(i%2?8:-8);
-        const depth=.62+(i%6)*.09;
+        const x=-190+t*1380;
+        const lane=(i%9)-4;
+        const relationWave=frame.relation_key==='bounded_emergence'?Math.sin(t*Math.PI*2+i*.7)*72:
+          frame.relation_key==='created_potential'?Math.sin(t*Math.PI+i*.41)*46:
+          frame.relation_key==='structural_rest'?0:Math.sin(seconds*.42+i*1.73)*34;
+        const y=260+lane*49+relationWave+Math.sin(seconds*.17+i*.31)*18;
+        const roll=(frame.relation_key==='structural_rest'?0:Math.sin(seconds*.28+i)*16)+(i%2?9:-9);
+        const depth=.48+(i%9)*.085;
         node.setAttribute('x',x.toFixed(2));node.setAttribute('y',y.toFixed(2));
         node.setAttribute('transform',`translate(${x.toFixed(2)} ${y.toFixed(2)}) rotate(${roll.toFixed(2)}) scale(${depth.toFixed(2)}) translate(${-x.toFixed(2)} ${-y.toFixed(2)})`);
       }
