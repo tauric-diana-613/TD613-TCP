@@ -375,10 +375,11 @@ html[data-loom-journey="return"] #loomAiWorkspace .loom-hero-route [data-hero-st
 }
 
 
-/* ===== v7 FIELD-NATIVE FIRST CROSSING =====
-   First Crossing is not a modal/card. The field remains the pedagogue: the
-   operator touches spatial practice objects, the canonical relation changes,
-   and terminology follows the experienced consequence. */
+/* ===== v8 CINEMATIC FIRST CROSSING =====
+   First Crossing is a transparent choreography over the canonical Flow-Core
+   field. Practice material is rendered as lightweight field marks rather than
+   a tutorial panel or three floating form buttons. The shared coordinator
+   controls the temporal consequence; copy names a relation only afterward. */
 #loomAiWorkspace[data-first-crossing="active"] .loom-stage-copy p,
 #loomAiWorkspace[data-first-crossing="active"] .loom-instrument-state-mode,
 #loomAiWorkspace[data-first-crossing="active"] .loom-field-caption,
@@ -398,131 +399,138 @@ html[data-loom-journey="return"] #loomAiWorkspace .loom-hero-route [data-hero-st
 }
 #loomAiWorkspace .loom-first-crossing[hidden]{display:none!important}
 #loomAiWorkspace .loom-first-crossing-copy{
-  position:absolute;z-index:24;left:50%;top:clamp(92px,14vh,132px);transform:translateX(-50%);
-  width:min(580px,calc(100% - 44px));text-align:center;pointer-events:none
+  position:absolute;z-index:24;left:50%;top:clamp(82px,12vh,116px);transform:translateX(-50%);
+  width:min(640px,calc(100% - 44px));text-align:center;pointer-events:none
 }
 #loomAiWorkspace .loom-first-crossing-copy .loom-threshold-kicker{
-  color:#74828d;font-size:.52rem;letter-spacing:.15em
+  color:#71808b;font:650 .48rem/1 var(--mono);letter-spacing:.19em
 }
 #loomAiWorkspace .loom-first-crossing-copy h2{
-  margin:9px 0 0;color:rgba(244,248,248,.96);
-  font:580 clamp(1.55rem,3.7vw,2.7rem)/.98 var(--sans);
-  letter-spacing:-.045em;text-shadow:0 2px 26px rgba(0,0,0,.58)
+  margin:10px 0 0;color:rgba(244,248,248,.97);
+  font:560 clamp(1.7rem,4vw,3rem)/.96 var(--sans);
+  letter-spacing:-.05em;text-shadow:0 2px 30px rgba(0,0,0,.62)
 }
 #loomAiWorkspace .loom-first-crossing-copy p{
-  margin:9px auto 0;max-width:52ch;color:#8a98a3;
-  font:500 clamp(.68rem,1.25vw,.82rem)/1.45 var(--sans)
+  margin:10px auto 0;max-width:56ch;color:#8d9aa4;
+  font:500 clamp(.7rem,1.2vw,.84rem)/1.45 var(--sans)
 }
-#loomAiWorkspace .loom-first-crossing-objects{position:absolute;inset:0;pointer-events:none}
+#loomAiWorkspace .loom-first-crossing-objects{
+  position:absolute;inset:0;pointer-events:none
+}
+#loomAiWorkspace .loom-first-crossing-objects::before{
+  content:"";position:absolute;left:50%;top:31%;bottom:18%;width:1px;transform:translateX(-50%);
+  background:linear-gradient(to bottom,transparent,rgba(142,232,230,.18) 35%,rgba(244,241,214,.16) 66%,transparent);
+  opacity:.28;transition:opacity 260ms ease
+}
+#loomAiWorkspace[data-first-crossing-step="1"] .loom-first-crossing-objects::before,
+#loomAiWorkspace[data-first-crossing-step="2"] .loom-first-crossing-objects::before{opacity:.62}
 #loomAiWorkspace .loom-first-crossing-objects button{
   --fc-x:50%;--fc-y:50%;
   position:absolute;z-index:25;left:var(--fc-x);top:var(--fc-y);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  width:clamp(104px,10vw,138px);height:clamp(104px,10vw,138px);min-width:104px;min-height:104px;
-  transform:translate(-50%,-50%);padding:13px 10px!important;
-  border:0!important;border-radius:50%!important;background:transparent!important;
-  box-shadow:none!important;color:#c9d5d9;text-align:center;pointer-events:auto;
-  transition:
-    left 620ms cubic-bezier(.2,.76,.22,1),
-    top 620ms cubic-bezier(.2,.76,.22,1),
-    transform 260ms ease,
-    opacity 260ms ease,
-    filter 260ms ease
+  display:grid;grid-template-columns:18px minmax(0,1fr);grid-template-rows:auto auto auto;
+  column-gap:9px;align-items:center;width:clamp(140px,14vw,190px);min-height:56px;
+  transform:translate(-50%,-50%);padding:6px 8px!important;
+  border:0!important;border-radius:0!important;background:transparent!important;
+  box-shadow:none!important;color:#cbd7da;text-align:left;pointer-events:auto;
+  transition:left 720ms cubic-bezier(.16,.78,.22,1),top 720ms cubic-bezier(.16,.78,.22,1),
+    opacity 260ms ease,filter 260ms ease,transform 260ms ease
 }
 #loomAiWorkspace .loom-first-crossing-objects button::before{
-  content:"";position:absolute;inset:4px;border-radius:50%;
-  border:1px solid rgba(158,207,215,.18);
-  background:radial-gradient(circle at 50% 48%,rgba(142,232,230,.085),rgba(5,9,14,.08) 52%,transparent 72%);
-  box-shadow:0 0 0 1px rgba(255,255,255,.01),0 0 34px rgba(117,220,218,.03);
-  transition:border-color 220ms ease,box-shadow 220ms ease,transform 220ms ease,background 220ms ease
+  content:"";grid-column:1;grid-row:1 / span 3;width:9px;height:9px;border-radius:50%;
+  border:1px solid rgba(166,218,222,.42);background:rgba(142,232,230,.08);
+  box-shadow:0 0 0 5px rgba(142,232,230,.025),0 0 26px rgba(142,232,230,.13);
+  justify-self:center;transition:transform 220ms ease,border-color 220ms ease,box-shadow 220ms ease,background 220ms ease
 }
 #loomAiWorkspace .loom-first-crossing-objects button::after{
-  content:"";position:absolute;left:50%;top:50%;width:5px;height:5px;border-radius:50%;
-  transform:translate(-50%,-50%);background:#aee9e6;opacity:.42;
-  box-shadow:0 0 18px rgba(142,232,230,.45)
+  content:"";position:absolute;left:22px;top:50%;width:34px;height:1px;transform:translateY(-50%) scaleX(.4);
+  transform-origin:left;background:linear-gradient(90deg,rgba(142,232,230,.44),transparent);
+  opacity:.55;transition:transform 240ms ease,opacity 240ms ease
 }
-#loomAiWorkspace .loom-first-crossing-objects button span,
-#loomAiWorkspace .loom-first-crossing-objects button strong,
-#loomAiWorkspace .loom-first-crossing-objects button small{position:relative;z-index:1}
 #loomAiWorkspace .loom-first-crossing-objects button span{
-  display:block;color:#758894;font:650 .44rem/1 var(--mono);letter-spacing:.13em
+  grid-column:2;grid-row:1;color:#6f818d;font:650 .42rem/1 var(--mono);letter-spacing:.15em
 }
 #loomAiWorkspace .loom-first-crossing-objects button strong{
-  display:block;margin-top:8px;color:#e7efef;font-size:.72rem;font-weight:590
+  grid-column:2;grid-row:2;display:block;margin-top:4px;color:#ebf1f0;font-size:.72rem;font-weight:590
 }
 #loomAiWorkspace .loom-first-crossing-objects button small{
-  display:block;margin-top:5px;max-width:14ch;color:#788994;font-size:.58rem;line-height:1.25
+  grid-column:2;grid-row:3;display:block;margin-top:3px;color:#788892;font-size:.56rem;line-height:1.25
 }
-#loomAiWorkspace .loom-first-crossing-objects button[data-first-crossing-item="brief"]{--fc-x:22%;--fc-y:48%}
-#loomAiWorkspace .loom-first-crossing-objects button[data-first-crossing-item="source"]{--fc-x:78%;--fc-y:48%}
-#loomAiWorkspace .loom-first-crossing-objects button[data-first-crossing-item="private"]{--fc-x:50%;--fc-y:70%}
+#loomAiWorkspace .loom-first-crossing-objects button[data-first-crossing-item="brief"]{--fc-x:24%;--fc-y:50%}
+#loomAiWorkspace .loom-first-crossing-objects button[data-first-crossing-item="source"]{--fc-x:76%;--fc-y:50%}
+#loomAiWorkspace .loom-first-crossing-objects button[data-first-crossing-item="private"]{--fc-x:50%;--fc-y:72%}
 #loomAiWorkspace .loom-first-crossing-objects button[aria-pressed="true"]{
-  filter:brightness(1.18);transform:translate(-50%,-50%) scale(1.04)
+  filter:brightness(1.18);transform:translate(-50%,-50%) scale(1.025)
 }
 #loomAiWorkspace .loom-first-crossing-objects button[aria-pressed="true"]::before{
-  border-color:rgba(142,232,230,.62);
-  background:radial-gradient(circle at 50% 48%,rgba(142,232,230,.14),rgba(5,9,14,.05) 55%,transparent 75%);
-  box-shadow:0 0 38px rgba(142,232,230,.13)
+  border-color:rgba(158,241,235,.86);background:rgba(142,232,230,.19);
+  box-shadow:0 0 0 6px rgba(142,232,230,.045),0 0 34px rgba(142,232,230,.28);
+  transform:scale(1.16)
+}
+#loomAiWorkspace .loom-first-crossing-objects button[aria-pressed="true"]::after{
+  transform:translateY(-50%) scaleX(1);opacity:.85
 }
 #loomAiWorkspace .loom-first-crossing-objects button[data-first-crossing-item="private"][data-held="true"]::before{
-  border-color:rgba(187,161,218,.22);
-  background:radial-gradient(circle at 50% 48%,rgba(178,142,215,.07),rgba(5,9,14,.04) 55%,transparent 75%)
+  border-color:rgba(192,166,221,.42);background:rgba(178,142,215,.07);
+  box-shadow:0 0 0 5px rgba(178,142,215,.018),0 0 22px rgba(178,142,215,.08)
 }
-#loomAiWorkspace[data-first-crossing-step="1"] .loom-first-crossing-objects button[data-first-crossing-item="brief"]{--fc-x:44%;--fc-y:51%}
-#loomAiWorkspace[data-first-crossing-step="1"] .loom-first-crossing-objects button[data-first-crossing-item="source"]{--fc-x:56%;--fc-y:51%}
+#loomAiWorkspace[data-first-crossing-step="1"] .loom-first-crossing-objects button[data-first-crossing-item="brief"]{--fc-x:43%;--fc-y:52%}
+#loomAiWorkspace[data-first-crossing-step="1"] .loom-first-crossing-objects button[data-first-crossing-item="source"]{--fc-x:57%;--fc-y:52%}
 #loomAiWorkspace[data-first-crossing-step="1"] .loom-first-crossing-objects button[data-first-crossing-item="private"]{--fc-x:50%;--fc-y:73%}
-#loomAiWorkspace[data-first-crossing-step="2"] .loom-first-crossing-objects button[data-first-crossing-item="brief"]{--fc-x:46%;--fc-y:43%}
-#loomAiWorkspace[data-first-crossing-step="2"] .loom-first-crossing-objects button[data-first-crossing-item="source"]{--fc-x:54%;--fc-y:43%}
+#loomAiWorkspace[data-first-crossing-step="2"] .loom-first-crossing-objects button[data-first-crossing-item="brief"]{--fc-x:45%;--fc-y:44%}
+#loomAiWorkspace[data-first-crossing-step="2"] .loom-first-crossing-objects button[data-first-crossing-item="source"]{--fc-x:55%;--fc-y:44%}
 #loomAiWorkspace[data-first-crossing-step="2"] .loom-first-crossing-objects button[data-first-crossing-item="private"]{--fc-x:50%;--fc-y:73%}
-#loomAiWorkspace[data-first-crossing-step="3"] .loom-first-crossing-objects button{opacity:.32;filter:saturate(.6)}
+#loomAiWorkspace[data-first-crossing-step="1"] .loom-first-crossing-objects button:not([data-first-crossing-item="private"]),
+#loomAiWorkspace[data-first-crossing-step="2"] .loom-first-crossing-objects button:not([data-first-crossing-item="private"]){
+  opacity:.48;pointer-events:none
+}
+#loomAiWorkspace[data-first-crossing-step="3"] .loom-first-crossing-objects button{opacity:.22;filter:saturate(.55)}
 #loomAiWorkspace .loom-first-crossing-actions{
-  position:absolute;z-index:26;left:50%;bottom:clamp(48px,7vh,76px);
+  position:absolute;z-index:26;left:50%;bottom:clamp(38px,5.5vh,58px);
   display:flex;align-items:center;justify-content:center;gap:16px;transform:translateX(-50%);
   pointer-events:none
 }
 #loomAiWorkspace .loom-first-crossing-actions button{
-  min-width:44px;min-height:44px;padding:0 3px!important;border:0!important;
+  min-width:44px;min-height:44px;padding:0 4px!important;border:0!important;
   border-bottom:1px solid rgba(142,232,230,.34)!important;border-radius:0!important;
-  background:transparent!important;box-shadow:none!important;color:#d9e7e7;
-  font:600 .65rem/1 var(--sans);pointer-events:auto
+  background:transparent!important;box-shadow:none!important;color:#dce8e7;
+  font:600 .66rem/1 var(--sans);pointer-events:auto
 }
 #loomAiWorkspace .loom-first-crossing-answer{
-  position:absolute;z-index:24;left:50%;bottom:20px;transform:translateX(-50%);
+  position:absolute;z-index:24;left:50%;bottom:clamp(88px,11vh,112px);transform:translateX(-50%);
   width:min(760px,calc(100% - 44px));min-height:0!important;margin:0!important;
-  color:#788b96!important;text-align:center;font:560 .55rem/1.35 var(--mono)!important;
-  letter-spacing:.035em;pointer-events:none
+  color:#81929b!important;text-align:center;font:560 .54rem/1.4 var(--mono)!important;
+  letter-spacing:.045em;pointer-events:none
 }
 #loomAiWorkspace[data-first-crossing="active"][data-first-crossing-step="3"] .loom-begin{
-  z-index:27;left:50%;bottom:clamp(48px,7vh,76px);transform:translateX(-50%);
-  font-size:.7rem
+  z-index:27;left:50%;bottom:clamp(38px,5.5vh,58px);transform:translateX(-50%);font-size:.7rem
 }
 
 @media(max-width:760px){
-  #loomAiWorkspace .loom-first-crossing-copy{
-    top:74px;width:calc(100% - 32px)
-  }
-  #loomAiWorkspace .loom-first-crossing-copy .loom-threshold-kicker{font-size:.44rem}
-  #loomAiWorkspace .loom-first-crossing-copy h2{font-size:1.55rem}
-  #loomAiWorkspace .loom-first-crossing-copy p{max-width:31ch;font-size:.66rem}
+  #loomAiWorkspace .loom-first-crossing-copy{top:68px;width:calc(100% - 30px)}
+  #loomAiWorkspace .loom-first-crossing-copy .loom-threshold-kicker{font-size:.43rem}
+  #loomAiWorkspace .loom-first-crossing-copy h2{font-size:1.62rem}
+  #loomAiWorkspace .loom-first-crossing-copy p{max-width:32ch;font-size:.66rem}
   #loomAiWorkspace .loom-first-crossing-objects button{
-    width:92px;height:92px;min-width:92px;min-height:92px;padding:9px 7px!important
+    width:112px;min-height:54px;grid-template-columns:14px minmax(0,1fr);column-gap:6px;padding:5px 4px!important
   }
-  #loomAiWorkspace .loom-first-crossing-objects button span{font-size:.39rem}
-  #loomAiWorkspace .loom-first-crossing-objects button strong{font-size:.66rem}
-  #loomAiWorkspace .loom-first-crossing-objects button small{font-size:.52rem}
-  #loomAiWorkspace .loom-first-crossing-objects button[data-first-crossing-item="brief"]{--fc-x:24%;--fc-y:45%}
-  #loomAiWorkspace .loom-first-crossing-objects button[data-first-crossing-item="source"]{--fc-x:76%;--fc-y:45%}
-  #loomAiWorkspace .loom-first-crossing-objects button[data-first-crossing-item="private"]{--fc-x:50%;--fc-y:66%}
+  #loomAiWorkspace .loom-first-crossing-objects button::before{width:8px;height:8px}
+  #loomAiWorkspace .loom-first-crossing-objects button::after{left:17px;width:24px}
+  #loomAiWorkspace .loom-first-crossing-objects button span{font-size:.37rem}
+  #loomAiWorkspace .loom-first-crossing-objects button strong{font-size:.63rem}
+  #loomAiWorkspace .loom-first-crossing-objects button small{font-size:.49rem}
+  #loomAiWorkspace .loom-first-crossing-objects button[data-first-crossing-item="brief"]{--fc-x:27%;--fc-y:46%}
+  #loomAiWorkspace .loom-first-crossing-objects button[data-first-crossing-item="source"]{--fc-x:73%;--fc-y:46%}
+  #loomAiWorkspace .loom-first-crossing-objects button[data-first-crossing-item="private"]{--fc-x:50%;--fc-y:67%}
   #loomAiWorkspace[data-first-crossing-step="1"] .loom-first-crossing-objects button[data-first-crossing-item="brief"]{--fc-x:39%;--fc-y:50%}
   #loomAiWorkspace[data-first-crossing-step="1"] .loom-first-crossing-objects button[data-first-crossing-item="source"]{--fc-x:61%;--fc-y:50%}
   #loomAiWorkspace[data-first-crossing-step="1"] .loom-first-crossing-objects button[data-first-crossing-item="private"]{--fc-x:50%;--fc-y:68%}
-  #loomAiWorkspace[data-first-crossing-step="2"] .loom-first-crossing-objects button[data-first-crossing-item="brief"]{--fc-x:42%;--fc-y:43%}
-  #loomAiWorkspace[data-first-crossing-step="2"] .loom-first-crossing-objects button[data-first-crossing-item="source"]{--fc-x:58%;--fc-y:43%}
+  #loomAiWorkspace[data-first-crossing-step="2"] .loom-first-crossing-objects button[data-first-crossing-item="brief"]{--fc-x:40%;--fc-y:42%}
+  #loomAiWorkspace[data-first-crossing-step="2"] .loom-first-crossing-objects button[data-first-crossing-item="source"]{--fc-x:60%;--fc-y:46%}
   #loomAiWorkspace[data-first-crossing-step="2"] .loom-first-crossing-objects button[data-first-crossing-item="private"]{--fc-x:50%;--fc-y:68%}
-  #loomAiWorkspace .loom-first-crossing-actions{bottom:46px;width:calc(100% - 28px)}
+  #loomAiWorkspace .loom-first-crossing-actions{bottom:34px;width:calc(100% - 26px)}
   #loomAiWorkspace .loom-first-crossing-actions button{font-size:.61rem}
-  #loomAiWorkspace .loom-first-crossing-answer{bottom:12px;width:calc(100% - 28px);font-size:.48rem!important}
+  #loomAiWorkspace .loom-first-crossing-answer{bottom:88px;width:calc(100% - 26px);font-size:.47rem!important}
   #loomAiWorkspace[data-first-crossing="active"][data-first-crossing-step="3"] .loom-begin{
-    left:50%;bottom:45px;transform:translateX(-50%)
+    left:50%;bottom:34px;transform:translateX(-50%)
   }
 }
