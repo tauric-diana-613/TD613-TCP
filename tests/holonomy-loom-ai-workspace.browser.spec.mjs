@@ -219,8 +219,8 @@ try {
       await page.locator('#loomReturnThreshold').click();
       await page.locator('.loom-stage').waitFor({ state: 'visible' });
       assert.equal(await page.locator('#aiRuntime').isVisible(),true,'opening How it works restores the canonical state view');
-      assert.equal(await page.locator('#loomFirstCrossing').isVisible(),true,'How it works re-enters the First Crossing practice');
-      assert.equal(await page.locator('#aiStillField').isVisible(),false,'First Crossing owns the active ingress controls; the runtime rest control remains withheld rather than duplicated');
+      assert.equal(await page.locator('#loomFirstCrossing').isVisible(),true,'How it works opens the handoff preview');
+      assert.equal(await page.locator('#aiStillField').isVisible(),false,'the handoff preview owns the active ingress controls; the runtime rest control remains withheld rather than duplicated');
       await showBuilder();
       assert.equal(requests.length, 0, 'local preparation, How it works replay, and export controls make no provider request');
       await page.screenshot({ path: path.join(dir, `${posture}-loom-transfer-prepared.png`), fullPage: true });
@@ -303,7 +303,7 @@ try {
       assert.equal(requests.length, 1, 'export cannot silently call provider again');
       await closeTools();
       await openTool('session');
-      assert.equal(await page.locator('#aiRoomReplay').isVisible(),true,'recorded-state replay lives in Session tools rather than the First Crossing membrane');
+      assert.equal(await page.locator('#aiRoomReplay').isVisible(),true,'recorded-state replay lives in Session tools rather than the handoff preview');
       assert.equal(await page.locator('#aiRoomReplay').isEnabled(),true,'recorded request history enables replay');
       await page.locator('#aiRoomReplay').click();
       assert.match(await page.locator('#aiRoomReplayStatus').innerText(),/Recorded state/);
