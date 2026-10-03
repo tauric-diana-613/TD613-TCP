@@ -122,7 +122,7 @@ try {
         && origin.documents.length === 1 && origin.documents[0].text === selectedText && origin.continuation.prior_result.answer.startsWith('Original Loom answer'));
       check('origin excludes local bodies and labels source missingness', !JSON.stringify(origin).includes(privateText) && origin.loom_demo_provenance.missingness.includes('SOURCE_REVISION_UNOBSERVED'));
       check('origin exported representation is inspectable review material', (await inspectLoomDemoExport(origin, environment)).status === 'REVIEW_ONLY_CONSISTENCY');
-      const popup = loom.waitForEvent('popup'); await loom.locator('#aiMarrowline').click(); const marrowline = await popup;
+      const [marrowline] = await Promise.all([context.waitForEvent('page'), loom.locator('#aiMarrowline').click()]);
       await marrowline.waitForURL(url => url.pathname === '/dome-world/marrowline.html');
       await marrowline.waitForFunction(() => Boolean(window.__TD613_LOOM_DEMO_CONTROLLER__));
       check('arrival makes zero native receiver requests', requests.length === 0);
