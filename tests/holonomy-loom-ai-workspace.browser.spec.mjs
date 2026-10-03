@@ -131,7 +131,7 @@ try {
       await page.locator('#aiSessionInspect > summary').click();
       assert.equal(await page.locator('#aiSessionReceipt').isVisible(),false,'exact session contract returns to progressive disclosure after inspection');
       assert.match(await page.locator('#aiAnswer').innerText(),/made no model request/i);
-      assert.match(await page.locator('#aiAnswer').innerText(),/does not embed civil-identity verification/i);
+      assert.match(await page.locator('#aiAnswer').innerText(),/hidden receiver state and downstream behavior remain outside this local binding/i);
 
       assert.equal(await page.locator('#aiExport').isEnabled(),true,'prepared one-hop export stays available without an unrelated authority gate');
       assert.equal(await page.locator('#aiExportSession').isEnabled(),true,'prepared persistent session export stays available');

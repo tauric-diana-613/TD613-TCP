@@ -573,8 +573,13 @@ export function mountLoomInstrumentStateView(root) {
         orbits[i].setAttribute('opacity',rest?.09:continuity?.32:recurrence?.34:(i===0?.42:.2));
         orbits[i].setAttribute('transform',`rotate(${i*58+seconds*rate} 500 260) translate(500 260) scale(1 ${squash+breathe}) translate(-500 -260)`);
       }
+      const particleDirection =
+        relationKey==='protected_continuity' ? -1 :
+        relationKey==='structural_rest' ? 0 :
+        relationKey==='released_tendency' ? -1 : 1;
       for(let i=0;i<particles.length;i++){
-        const t=((i/particles.length+seconds*(direction||1)*.016)%1+1)%1;
+        const particleTime=particleDirection===0 ? 0 : seconds*particleDirection;
+        const t=((i/particles.length+particleTime*.016)%1+1)%1;
         const angle=t*Math.PI*2, radius=185+(i%5)*31;
         particles[i].setAttribute('cx',(500+Math.cos(angle)*radius*1.3).toFixed(2));
         particles[i].setAttribute('cy',(260+Math.sin(angle)*radius*.48).toFixed(2));

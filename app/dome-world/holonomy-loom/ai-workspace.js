@@ -465,11 +465,11 @@ export function mountLoomAiWorkspace(root, environment = window) {
         const original=environment.document.createElement('details');original.className='ai-result-disclosure';
         const summary=environment.document.createElement('summary');summary.textContent='Inspect the flagged AI answer';
         const raw=environment.document.createElement('pre');raw.textContent=error.candidate.answer;original.append(summary,raw);$('aiAnswer').append(original);$('aiResult').hidden=false;
-        $('aiPortableDrawer').hidden=false;$('aiPortableLead').textContent='Prepare the original task to try another receiver. The flagged answer will not travel.';
+        $('aiPortableDrawer').hidden=false;$('aiPortableDrawer').setAttribute('open','');$('aiPortableLead').textContent='Prepare the original task to try another receiver. The flagged answer will not travel.';
         revealResult();
       }
       project('held',{request_id:requestId,note:error.name==='AbortError'?(clientDeadlineExceeded?'Client waiting deadline reached after 225 seconds.':'Operator stopped waiting.'):String(error.message).slice(0,300),...(error.loomFailure?{provider_failure:error.loomFailure,observations:error.loomFailure.observations}:{})});
-      if(error.loomFailure){$('aiPortableDrawer').hidden=false;$('aiPortableLead').textContent='No AI answer returned here. Your selected task, documents and rules are still available. Retry later, or prepare this exact working packet for another receiver.';}
+      if(error.loomFailure){$('aiPortableDrawer').hidden=false;$('aiPortableDrawer').setAttribute('open','');$('aiPortableLead').textContent='No AI answer returned here. Your selected task, documents and rules are still available. Retry later, or prepare this exact working packet for another receiver.';}
       status(error.name==='AbortError'?(clientDeadlineExceeded?'No complete response arrived within 225 seconds. Your task is still here.':'Stopped waiting for this request. Material already submitted cannot be recalled.'):String(error.message).slice(0,300),true);
     }finally{if(!disposed)lock(false);}
   });
