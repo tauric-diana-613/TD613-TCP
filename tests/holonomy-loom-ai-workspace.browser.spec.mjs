@@ -188,14 +188,14 @@ try {
 
       assert.equal(await page.locator('#aiStillField').isVisible(),true,'the shared runtime owns a visible rest control');
       assert.equal(requests.length, 0, 'local preparation and export controls make no provider request');
-      await page.screenshot({ path: path.join(dir, `${posture}-portable-aia-held.png`), fullPage: true });
+      await page.screenshot({ path: path.join(dir, `${posture}-loom-transfer-prepared.png`), fullPage: true });
 
       await page.locator('#aiDemoMode').click();
-      assert.equal(await page.locator('#aiDemoWelcome').isVisible(),true,'Loom Demo reveals the fictional practice chooser');
+      assert.equal(await page.locator('#aiDemoWelcome').isVisible(),true,'Practice route reveals the fictional project chooser');
       assert.equal(await page.locator('#aiRuntime').isVisible(),true,'the same primary view remains in Demo');
       assert.equal(await page.locator('#aiRun').evaluate(node=>node.classList.contains('ai-primary')),true,'Run becomes the primary demo gesture');
       assert.equal(await page.locator('#loomLegacy > summary').isVisible(),true,'Instrument Lab remains independently available during practice');
-      assert.match(await page.locator('#aiDemoModePanel').innerText(),/fictional practice traversal/i);
+      assert.match(await page.locator('#aiDemoModePanel').innerText(),/Practice the real route with fictional material/i);
       await page.locator('#aiDemoInvitation').click();
       assert.equal(await page.locator('#aiDemoInvitation').getAttribute('aria-expanded'), 'true');
       await page.locator('#aiProjectChoices button').first().click();
@@ -278,10 +278,10 @@ try {
       assert.deepEqual(unexpected, [], 'no direct browser-to-provider or unrelated mutation requests');
       await page.locator('#aiRuntimeState').screenshot({path:path.join(dir,`${posture}-runtime-state-held.png`)});
       await page.screenshot({ path: path.join(dir, `${posture}-mock-provider-held.png`), fullPage: true });
-      report.checks.push({ posture, status: 'PASS', intercepted_requests: requests.length, portable_aia_default: true,
-        unissued_local_preparation_open: true, portable_issuance_held_without_shi: true, shi_format_wakes_prepared_issuance: true,
-        portable_session_contract_inspectable: true, challenge_public_ground_truth_excluded: true, challenge_bounded_verdict_visible: true,
-        demo_waiver_narrows_on_portable_return: true, project_selection_has_no_egress: true,
+      report.checks.push({ posture, status: 'PASS', intercepted_requests: requests.length, loom_task_default: true,
+        local_preparation_open: true, speculative_authority_gate_absent: true, prepared_crossing_available: true,
+        loom_session_contract_inspectable: true, challenge_public_ground_truth_excluded: true, challenge_bounded_verdict_visible: true,
+        practice_route_state_narrows_on_task_return: true, project_selection_has_no_egress: true,
         local_source_excluded: true, one_click_one_post: true, duplicate_click_disabled: true, completed_answer_visible: true,
         export_checked: true, uploaded_document_local_by_default: true, marrowline_control_enabled: true, provider_failure_held: true, no_horizontal_overflow: true,
         reduced_motion: reducedMotion, runtime_errors: runtimeErrors.length });
