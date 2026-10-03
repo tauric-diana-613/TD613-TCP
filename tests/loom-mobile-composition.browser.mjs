@@ -127,7 +127,22 @@ try {
     const page = await bindPage(context, posture.name);
     try {
       const arrival = await geometry(page, ['aiTask', 'aiPreparePortable', 'loomRulesOpen', 'loomBoundaryOpen', 'aiPortableMode', 'aiDemoMode', 'loomToolsOpen']);
-      record(`${posture.name}: task and Prepare in first viewport`, arrival.controls.aiTask.fully_in_view && arrival.controls.aiPreparePortable.fully_in_view, arrival);
+      const fieldGeometry = await page.locator('.loom-glyph-field').evaluate(node => {
+        const r = node.getBoundingClientRect();
+        return { x: r.x, y: r.y, width: r.width, height: r.height, bottom: r.bottom, right: r.right };
+      });
+      if (posture.viewport.width === 390) {
+        record(`${posture.name}: Flow-Core remains a full-width instrument`,
+          fieldGeometry.width >= posture.viewport.width - 48 && fieldGeometry.height >= 200,
+          { viewport: posture.viewport, field: fieldGeometry });
+        record(`${posture.name}: task begins in the arrival viewport and Prepare remains within one natural scroll`,
+          arrival.controls.aiTask.y < arrival.viewport.height && arrival.controls.aiPreparePortable.y < arrival.viewport.height * 2,
+          arrival);
+      } else {
+        record(`${posture.name}: task and Prepare in first viewport`,
+          arrival.controls.aiTask.fully_in_view && arrival.controls.aiPreparePortable.fully_in_view,
+          arrival);
+      }
       const bounds = await spill(page);
       record(`${posture.name}: no root or visible horizontal spill`, bounds.document_width <= posture.viewport.width && bounds.outside.length === 0, bounds);
       const targets=await tapTargets(page),small=targets.filter(target=>target.width<43.5||target.height<43.5);
