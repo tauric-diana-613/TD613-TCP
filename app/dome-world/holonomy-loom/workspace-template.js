@@ -8,36 +8,45 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
       <div id="aiRuntimeInspection" hidden><div class="ai-view-switch"><button type="button" id="aiChild" aria-pressed="true">Plain language answer</button><button type="button" id="aiAuditor" aria-pressed="false">Auditor answer</button></div><ol id="aiEvents" class="ai-events" aria-label="Request history" hidden></ol><pre id="aiReceipt">No request yet.</pre></div>
     </section>
 <div id="loomThresholdLayer" class="loom-threshold-layer">
-  <div id="loomThresholdGate" class="loom-threshold-gate">
-    <span class="loom-threshold-kicker">LOOM THRESHOLD</span>
-    <p id="loomThresholdCopy">Cross deliberately. The field will show what your gesture actually changes.</p>
-  </div>
+  <div id="loomThresholdGate" class="loom-threshold-gate" hidden></div>
   <section id="loomFirstCrossing" class="loom-first-crossing" aria-labelledby="loomFirstCrossingTitle" hidden tabindex="-1">
     <div class="loom-first-crossing-copy">
-      <span class="loom-threshold-kicker">FIRST CROSSING · PRACTICE</span>
-      <h2 id="loomFirstCrossingTitle">Choose what travels.</h2>
-      <p id="loomFirstCrossingPrompt">Two pieces belong in the crossing. One should stay with you.</p>
+      <span class="loom-threshold-kicker">HOW LOOM WORKS</span>
+      <h2 id="loomFirstCrossingTitle">Choose what AI can use.</h2>
+      <p id="loomFirstCrossingPrompt">Pick the task note and its reference. Loom keeps the private note out of the AI handoff.</p>
     </div>
-    <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="First Crossing practice material">
-      <button type="button" data-first-crossing-item="brief" aria-pressed="false"><span>NOTE</span><strong>Short brief</strong><small>Needed by the next reader.</small></button>
-      <button type="button" data-first-crossing-item="source" aria-pressed="false"><span>SOURCE</span><strong>Public source</strong><small>Supports the brief.</small></button>
-      <button type="button" id="loomFirstCrossingPrivate" aria-expanded="false"><span>STAYS HERE</span><strong>Private scrap</strong><small>Inspect local material</small></button>
+    <details class="loom-flowcore-help">
+      <summary>What is Flow-Core?</summary>
+      <p>Flow-Core is Loom’s visual route language. The animation changes as your work moves through a handoff.</p>
+      <div class="loom-flowcore-legend">
+        <span><b>à</b> Gather</span><span><b>米</b> Revisit</span><span><b>出</b> Send</span><span><b>hõt</b> Review</span>
+        <span><b>cōl</b> Keep private</span><span><b>上</b> Ready</span><span><b>下</b> Return</span><span><b>𝄐</b> Rest</span>
+      </div>
+    </details>
+    <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="How Loom controls an AI handoff">
+      <button type="button" data-first-crossing-item="brief" aria-pressed="false"><span>TASK</span><strong>Task note</strong><small>The request you want AI to work on.</small></button>
+      <button type="button" data-first-crossing-item="source" aria-pressed="false"><span>REFERENCE</span><strong>Supporting source</strong><small>Context you choose to share with AI.</small></button>
+      <button type="button" id="loomFirstCrossingPrivate" aria-expanded="false"><span>PRIVATE</span><strong>Private note</strong><small>Stays out of the AI handoff.</small></button>
     </div>
     <p id="loomFirstCrossingPrivateText" class="loom-practice-private" hidden></p>
     <div class="loom-first-crossing-actions">
-      <button type="button" id="loomFirstCrossingAction" hidden>Create readiness locally →</button>
-      <button type="button" id="loomFirstCrossingStop" hidden>Stop before sending →</button>
+      <button type="button" id="loomFirstCrossingAction" hidden>Preview AI handoff →</button>
+      <button type="button" id="loomFirstCrossingStop" hidden>Finish tutorial →</button>
     </div>
-    <div class="loom-practice-controls"><button type="button" id="loomFirstCrossingPause" aria-pressed="false">Pause field</button><button type="button" id="loomFirstCrossingLeave">Use my own work →</button></div>
+    <div class="loom-practice-controls">
+      <button type="button" id="loomFirstCrossingBack" hidden>← Back</button>
+      <button type="button" id="loomReplayFirstCrossing" class="loom-replay-first-crossing" hidden>Start over</button>
+      <button type="button" id="loomFirstCrossingPause" class="loom-field-toggle" aria-pressed="false" aria-label="Still the field" title="Still the field">𝌋</button>
+      <button type="button" id="loomFirstCrossingLeave">Skip tutorial →</button>
+    </div>
     <p id="loomFirstCrossingAnswer" class="loom-first-crossing-answer" aria-live="polite"></p>
   </section>
-  <button type="button" id="loomReplayFirstCrossing" class="loom-replay-first-crossing">↻ First Crossing</button>
 </div>
 <div class="loom-hero-route" aria-hidden="true"><span data-hero-step="loom"><b>1</b> Loom</span><i>→</i><span data-hero-step="marrowline"><b>2</b> Marrowline</span><i>→</i><span data-hero-step="return"><b>3</b> Return</span></div>
-<button type="button" id="loomBegin" class="loom-begin">Open Loom →</button>
+<button type="button" id="loomBegin" class="loom-begin">Try Loom →</button>
 </section>
 <section class="loom-builder-shell" aria-label="Loom builder" hidden>
-<header class="loom-intro"><div><h1 id="loomStageHeading">Holonomy Loom</h1><p>AI work with its sources, boundaries and history.</p></div><div class="loom-intro-actions"><button type="button" id="loomReturnThreshold" class="loom-text-action">Threshold</button><button type="button" id="loomToolsOpen" class="loom-text-action">Tools</button></div></header>
+<header class="loom-intro"><div><h1 id="loomStageHeading">Holonomy Loom</h1><p>AI work with its sources, boundaries and history.</p></div><div class="loom-intro-actions"><button type="button" id="loomReturnThreshold" class="loom-text-action">How it works</button><button type="button" id="loomToolsOpen" class="loom-text-action">Tools</button></div></header>
 <nav class="loom-journey" aria-label="Loom route">
 <button type="button" class="loom-journey-step" id="loomJourneyStep1" data-workspace="build" aria-current="step"><b>1</b><strong>Loom</strong></button><span aria-hidden="true">→</span>
 <button type="button" class="loom-journey-step" id="loomJourneyStep2" data-workspace="crossing" disabled><b>2</b><strong>Marrowline</strong></button><span aria-hidden="true">→</span>
