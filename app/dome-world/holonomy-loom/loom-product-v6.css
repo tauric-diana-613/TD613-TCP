@@ -281,3 +281,28 @@ html[data-loom-journey="return"] #loomAiWorkspace .loom-hero-route [data-hero-st
   #loomAiWorkspace .loom-stage-copy p{display:none}
   #loomAiWorkspace .loom-hero-route{width:198px}
 }
+
+
+/* Session-tool material is moved out of the field at runtime. Once moved, it
+   must return to ordinary dialog flow; cinematic absolute coordinates belong
+   only to the stage, never to the Tools workspace. */
+#loomAiWorkspace .loom-tools [data-tool-panel="session"] .loom-instrument-state-inspection{
+  position:static!important;inset:auto!important;z-index:auto!important;
+  top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;
+  width:auto!important;max-width:none!important;max-height:none!important;
+  overflow:visible!important;margin:12px 0!important;padding:0!important;
+  background:transparent!important;box-shadow:none!important
+}
+#loomAiWorkspace .loom-tools [data-tool-panel="session"] .loom-instrument-state-inspection>summary{
+  min-height:44px!important;padding:8px 0!important;text-align:left!important;
+  font-size:12px!important
+}
+#loomAiWorkspace .loom-tools [data-tool-panel="session"] .loom-instrument-state-next:not([hidden]),
+#loomAiWorkspace .loom-tools [data-tool-panel="session"] #aiGapSummary:not([hidden]){
+  position:static!important;inset:auto!important;width:auto!important;max-width:none!important;
+  margin:8px 0!important;text-align:left!important;display:block!important
+}
+#loomAiWorkspace .loom-tools [data-tool-panel="session"] .ai-facts:not([hidden]){
+  position:static!important;inset:auto!important;width:auto!important;max-width:none!important;
+  margin:10px 0!important;display:flex!important;flex-wrap:wrap!important;text-align:left!important
+}
