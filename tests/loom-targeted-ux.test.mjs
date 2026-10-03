@@ -71,3 +71,13 @@ test('cinematic Flow-Core traffic is sourced from evidenced relation history', (
   assert.match(instrumentSource, /view\.event_relation_history/);
   assert.match(instrumentSource, /owns_animation_loop: false/);
 });
+
+test('radical route choreography preserves one obvious next action and a spatial travel decision', () => {
+  assert.match(dromological, /data-loom-journey="ready"[\s\S]*#aiMarrowline:not\(:disabled\)/);
+  assert.match(dromological, /#aiMarrowline:not\(:disabled\)[\s\S]*position:fixed!important/);
+  assert.match(dromological, /Selection bifurcation/);
+  assert.match(dromological, /STAYS HERE/);
+  assert.match(dromological, /TRAVELS/);
+  assert.match(dromological, /selector\(li:has\(input:checked\)\)/);
+  assert.match(instrumentSource, /documentElement\.dataset\.loomRelation/);
+});
