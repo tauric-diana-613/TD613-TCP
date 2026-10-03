@@ -124,7 +124,9 @@ try {
       assert.equal(await page.locator('.lr-world, .lr-courier, #loomLivingGeometry canvas, #ilState, #loomObserverChamber, #loomTheater, #loomPracticeFixtures').count(), 0, 'retired illustrations and nested practice surfaces are absent');
       assert.equal(await page.locator('#aiLivingRoom').evaluate(node => node.hidden && node.childElementCount === 0), true);
 
-      assert.equal(await page.locator('#aiRuntime').isVisible(),true,'the canonical state view follows the same Loom transfer route');
+      assert.equal(await page.locator('#aiRuntime').count(),1,'the canonical state view remains mounted on the same Loom product route');
+      assert.equal(await page.locator('#aiRuntime').isVisible(),false,'opening Loom withholds the Threshold scene rather than duplicating the canonical state view beside the builder');
+      assert.equal(await page.locator('.loom-builder-shell').isVisible(),true,'the builder is the active scene after the Threshold opens');
       assert.equal(await page.locator('#aiPreparePortable').isVisible(),true,'Loom transfer preparation is a first-class composer gesture');
       assert.equal(await page.locator('#aiPreparePortable').evaluate(node=>node.classList.contains('ai-primary')),true,'local preparation is the primary Loom transfer gesture');
       assert.equal(await page.locator('#aiRun').evaluate(node=>node.classList.contains('ai-primary')),false,'Flow-Core is optional testing in Loom transfer mode');
