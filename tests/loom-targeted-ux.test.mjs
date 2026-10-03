@@ -59,6 +59,21 @@ test('Threshold gates Loom while First Crossing remains local, replayable, and g
   assert.doesNotMatch(workspaceSource, /firstCrossing[\s\S]{0,1200}(?:fetch\s*\(|provider_call_authorized\s*:\s*true)/);
 });
 
+test('First Crossing is field-native and suppresses ordinary Loom chrome', () => {
+  const doc = new JSDOM(loomWorkspaceTemplate).window.document;
+  const crossing=doc.querySelector('#loomFirstCrossing');
+  assert.ok(crossing);
+  assert.equal(crossing.querySelectorAll('[data-first-crossing-item]').length,3);
+  assert.match(product, /v7 FIELD-NATIVE FIRST CROSSING/);
+  assert.match(product, /#loomAiWorkspace \.loom-first-crossing\{[\s\S]*?inset:0!important[\s\S]*?border:0!important[\s\S]*?background:transparent!important/);
+  assert.match(product, /#loomAiWorkspace\[data-first-crossing="active"\] \.loom-field-caption,[\s\S]*?\.loom-hero-route\{[\s\S]*?display:none!important/);
+  assert.match(product, /button\[data-first-crossing-item="brief"\]\{--fc-x:22%;--fc-y:48%\}/);
+  assert.match(product, /button::before\{[\s\S]*?border-radius:50%/);
+  assert.match(workspaceSource, /root\.dataset\.firstCrossingStep='0'/);
+  assert.match(workspaceSource, /if\(correct\)\{[\s\S]*?actFirstCrossing\(\)/);
+  assert.doesNotMatch(product, /\.loom-first-crossing\{[^}]*background:rgba\(5,8,12,.67\)/);
+});
+
 test('Phase 3 return bypasses the entrance Threshold without completing onboarding', () => {
   assert.match(workspaceSource, /review\?\.source==='OPENER_RETURN'\|\|environment\.location\.hash==='#return-review'/);
   assert.match(workspaceSource, /root\.dataset\.thresholdState='open'/);
