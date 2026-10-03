@@ -26,19 +26,21 @@ import {
   auditPortableLoomChallengeWithDollhouse
 } from '../../engine/portable-loom-challenge.js';
 
-// Provider output supplies content only. This local event grammar alone owns motion.
+// Provider output supplies content only. This phase grammar supplies human copy;
+// instrument-state-view.js alone assigns Flow-Core relations/glyphs from admitted
+// event facts so the cinematic field cannot diverge from the canonical registry.
 export function projectLoomRequestEvent(event) {
   const grammar = {
-    prepared: ['à', 'Your work stays here until you send.', 'Selected documents gather at the outgoing route.'],
-    checking: ['à', 'Checking what will travel.', 'The local gate checks the selected task and documents.'],
-    pending: ['à', 'Your request is on its way.', 'The selected packet is submitted to the Loom provider route; provider confirmation is pending.'],
-    received: ['à', 'A reply returned. Checking private terms and source references.', 'The return path appears when a response arrives.'],
-    completed: ['𝄐', 'Your result is ready. Private files stayed here.', 'The route settles after response admission; the event trail remains.'],
-    held: ['𝄐', 'This route stopped. Read the reason below.', 'The release route stays closed when a local check or request fails.']
+    prepared: ['Your work stays here until you send.', 'Selected documents gather at the outgoing route.'],
+    checking: ['Checking what will travel.', 'The local gate checks the selected task and documents.'],
+    pending: ['Your request is on its way.', 'The selected packet is submitted to the Loom provider route; provider confirmation is pending.'],
+    received: ['A reply returned. Checking private terms and source references.', 'The return path appears when a response arrives.'],
+    completed: ['Your result is ready. Private files stayed here.', 'The returned work is available for local review; the event trail remains inspectable.'],
+    held: ['This route stopped. Read the reason below.', 'The route stays closed when a local check or request fails.']
   };
   if (!grammar[event.phase]) throw new TypeError('Unknown request event');
-  const [glyph, consequence, cause] = grammar[event.phase];
-  return { scene: { id: `ai-${event.phase}` }, geometry: { rest: ['completed','held'].includes(event.phase) }, glyph, consequence, cause, ...event };
+  const [consequence, cause] = grammar[event.phase];
+  return { scene: { id: `ai-${event.phase}` }, geometry: { rest: ['completed','held'].includes(event.phase) }, consequence, cause, ...event };
 }
 
 export function mountLoomAiWorkspace(root, environment = window) {
