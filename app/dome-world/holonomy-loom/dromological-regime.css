@@ -136,6 +136,7 @@ html:not([data-loom-journey="loom"]) .hero p:last-child{display:none}
 /* Route score changes from horizontal legend to a vertical coordinate after departure. */
 #loomAiWorkspace .loom-journey{
   z-index:50!important;
+  pointer-events:none;
   background:rgba(4,3,8,.84)!important;
   border:0!important;
   border-top:1px solid var(--dr-hair)!important;

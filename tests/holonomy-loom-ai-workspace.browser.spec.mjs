@@ -241,6 +241,7 @@ try {
       assert.equal(await page.locator('#aiExport').isDisabled(),true,'switching modes invalidates the previously prepared transfer until the current task is prepared again');
       await page.locator('#aiDemoMode').click();
       assert.equal(await page.locator('#aiExport').isDisabled(),true,'switching back to practice does not resurrect a crossing invalidated by the intervening mode change');
+      if(await page.locator('#aiNewRootNotice').isVisible()) await page.locator('#aiNewRootConfirm').check();
       await page.locator('#aiPreparePortable').click();
       await page.waitForFunction(() => document.querySelector('#aiExport')?.disabled === false);
       assert.equal(requests.length,1,'re-preparing the fictional work after a mode change remains local');
