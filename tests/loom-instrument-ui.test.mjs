@@ -266,6 +266,7 @@ test('pending projection reserves the field footprint while hiding stale current
   assert.equal(ui.inspect().view, null);
   assert.equal(section.hidden, false, 'compilation must not use display:none and collapse the field');
   assert.equal(section.style.visibility, 'hidden', 'prior pixels stay concealed while their layout is retained');
+  assert.equal(section.style.opacity, '0', 'explicitly visible SVG descendants cannot escape ancestor compositing');
   assert.equal(section.getAttribute('aria-hidden'), 'true');
   assert.ok(section.hasAttribute('inert'));
   assert.equal(root.dataset.activeRelation, undefined);
@@ -278,6 +279,7 @@ test('pending projection reserves the field footprint while hiding stale current
   release();
   await until(() => ui.inspect().status === 'CURRENT');
   assert.equal(section.style.visibility, '');
+  assert.equal(section.style.opacity, '');
   assert.equal(section.hasAttribute('aria-hidden'), false);
   assert.equal(section.hasAttribute('inert'), false);
   assert.equal(root.dataset.activeRelation, 'created_potential');

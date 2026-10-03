@@ -45,6 +45,7 @@ export class AnimationCoordinator {
   #durationMs;
   #frameInterval;
   #passes = new Map();
+  #presentationHolds = new Set();
   #packet = null;
   #viewport = Object.freeze({ width: 1, height: 1, dpr: 1 });
   #timeMs = 0;
@@ -153,7 +154,7 @@ export class AnimationCoordinator {
   }
 
   #schedule() {
-    if (this.#pending || !this.#playing || !this.#visible || this.#destroyed || this.#isStatic()) return;
+    if (this.#pending || !this.#playing || !this.#visible || this.#destroyed || this.#isStatic() || this.#presentationHolds.size) return;
     const pending = { id: null };
     this.#pending = pending;
     try {
@@ -199,6 +200,37 @@ export class AnimationCoordinator {
     };
   }
 
+  /** Reserve the current packet's first visible frame while a projection is
+   * compiled. This scheduling-only operation is safe inside a render pass:
+   * it changes neither its immutable snapshot nor the operator's play intent.
+   * Packet replacement invalidates every outstanding hold.
+   */
+  holdPresentation(packet) {
+    this.#assertActive();
+    if (!packet || packet !== this.#packet) throw new Error('A presentation hold requires the current snapshot packet');
+    const hold = Object.freeze({ packet });
+    this.#presentationHolds.add(hold);
+    this.#cancelPending();
+    return hold;
+  }
+
+  releasePresentation(hold) {
+    this.#assertWritable();
+    if (!this.#presentationHolds.has(hold) || hold.packet !== this.#packet) return false;
+    this.#presentationHolds.delete(hold);
+    if (this.#presentationHolds.size) return true;
+    // Compilation time is not displayed time. Re-anchor the same clock;
+    // pause, seek, reduced motion and visibility retain their existing intent.
+    const wall = this.#readNow();
+    this.#anchorWall = wall;
+    this.#anchorTime = this.#timeMs;
+    this.#anchorMotionTime = this.#motionTimeMs;
+    this.#lastRenderWall = wall;
+    if (this.#visible) this.#render();
+    this.#schedule();
+    return true;
+  }
+
   setPacket(packet, { animate = true } = {}) {
     this.#assertWritable();
     if (typeof animate !== 'boolean') throw new TypeError('animate must be boolean');
@@ -208,6 +240,7 @@ export class AnimationCoordinator {
     const admittedPacket = frozenJson(packet);
     const wall = this.#readNow();
     this.#stop();
+    this.#presentationHolds.clear();
     this.#packet = admittedPacket;
     this.#timeMs = animate && !this.#isStatic() ? 0 : this.#durationMs;
     this.#playing = animate && !this.#isStatic() && this.#visible;
@@ -315,6 +348,7 @@ export class AnimationCoordinator {
   inspect() {
     return Object.freeze({
       pendingFrames: this.#pending === null ? 0 : 1,
+      presentationHeld: this.#presentationHolds.size > 0,
       timeMs: this.#timeMs,
       durationMs: this.#durationMs,
       motionTimeMs: this.#motionTimeMs,
@@ -332,6 +366,7 @@ export class AnimationCoordinator {
     if (this.#destroyed) return;
     this.#stop();
     this.#passes.clear();
+    this.#presentationHolds.clear();
     this.#packet = null;
     this.#destroyed = true;
   }

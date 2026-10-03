@@ -21,12 +21,14 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
     <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="First Crossing practice material">
       <button type="button" data-first-crossing-item="brief" aria-pressed="false"><span>NOTE</span><strong>Short brief</strong><small>Needed by the next reader.</small></button>
       <button type="button" data-first-crossing-item="source" aria-pressed="false"><span>SOURCE</span><strong>Public source</strong><small>Supports the brief.</small></button>
-      <button type="button" data-first-crossing-item="private" aria-pressed="false"><span>PRIVATE</span><strong>Private scrap</strong><small>Useful to you, unnecessary to send.</small></button>
+      <button type="button" id="loomFirstCrossingPrivate" aria-expanded="false"><span>STAYS HERE</span><strong>Private scrap</strong><small>Inspect local material</small></button>
     </div>
+    <p id="loomFirstCrossingPrivateText" class="loom-practice-private" hidden></p>
     <div class="loom-first-crossing-actions">
       <button type="button" id="loomFirstCrossingAction" hidden>Create readiness locally →</button>
       <button type="button" id="loomFirstCrossingStop" hidden>Stop before sending →</button>
     </div>
+    <div class="loom-practice-controls"><button type="button" id="loomFirstCrossingPause" aria-pressed="false">Pause field</button><button type="button" id="loomFirstCrossingLeave">Use my own work →</button></div>
     <p id="loomFirstCrossingAnswer" class="loom-first-crossing-answer" aria-live="polite"></p>
   </section>
   <button type="button" id="loomReplayFirstCrossing" class="loom-replay-first-crossing">↻ First Crossing</button>

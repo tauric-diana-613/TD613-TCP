@@ -31,7 +31,7 @@ export function mountLoomRuntimeStateView(root, {
   Object.assign(statusNode.style, { position: 'absolute', inset: '0', margin: '0', alignContent: 'center', textAlign: 'center', pointerEvents: 'none' });
   statusNode.hidden = true;
   root.append(statusNode);
-  let latestSnapshot = null, lastPacket = null, compiled = null, heldReason = null, generation = 0, disposed = false, status = 'WAITING', hasPublishedView = false;
+  let latestSnapshot = null, lastPacket = null, compiled = null, heldReason = null, generation = 0, disposed = false, status = 'WAITING', hasPublishedView = false, presentationHold = null;
   function setStatus(value) { status = value;if (root.dataset.projectionState !== value) root.dataset.projectionState = value; }
   function inspectionState(value) {
     if (!inspectionSummary) return;
@@ -47,6 +47,9 @@ export function mountLoomRuntimeStateView(root, {
     // prior receipt stays inspectable in its persistent Session workspace.
     section.hidden = false;
     section.style.visibility = 'hidden';
+    // SVG descendants may explicitly override inherited visibility. Hide the
+    // composited scene too, so no prior carrier pixels escape that override.
+    section.style.opacity = '0';
     section.setAttribute('aria-hidden', 'true');
     section.setAttribute('inert', '');
     delete root.dataset.clientPhase; delete root.dataset.activeRelation;
@@ -55,6 +58,7 @@ export function mountLoomRuntimeStateView(root, {
   function exposeCurrentVisual() {
     if (!section) return;
     section.style.removeProperty('visibility');
+    section.style.removeProperty('opacity');
     section.removeAttribute('aria-hidden');
     section.removeAttribute('inert');
   }
@@ -89,6 +93,10 @@ export function mountLoomRuntimeStateView(root, {
       return;
     }
     lastPacket = snapshot.packet;compiled = null;heldReason = null;
+    // The owner reserves this packet's first frame, without a second clock or
+    // an automatic seek/play that could override an operator's pause or scrub.
+    presentationHold = coordinator.holdPresentation?.(snapshot.packet) ?? null;
+    const currentHold = presentationHold;
     const token = ++generation;
     setStatus('COMPILING');root.setAttribute('aria-busy', 'true');
     inspectionState('COMPILING');
@@ -108,9 +116,13 @@ export function mountLoomRuntimeStateView(root, {
     })().then(view => {
       if (disposed || token !== generation || latestSnapshot.packet !== snapshot.packet) return;
       compiled = view;publish(latestSnapshot);
+      if (currentHold !== null) coordinator.releasePresentation(currentHold);
+      if (presentationHold === currentHold) presentationHold = null;
     }).catch(error => {
       if (disposed || token !== generation || latestSnapshot.packet !== snapshot.packet) return;
       compiled = null;heldReason = String(error.message).slice(0, 240);publish(latestSnapshot);
+      if (currentHold !== null) coordinator.releasePresentation(currentHold);
+      if (presentationHold === currentHold) presentationHold = null;
     });
   }
   const unregister = coordinator.registerPass('runtime-state-view', renderSnapshot);
@@ -140,6 +152,8 @@ export function mountLoomRuntimeStateView(root, {
       disposed = true;generation++;unregister();observer?.disconnect();
       doc.removeEventListener('visibilitychange', visibility);environment.removeEventListener?.('resize', measure);
       renderer.destroy();inspection?.remove();statusNode.remove();root.removeAttribute('aria-busy');
+      if (presentationHold !== null) coordinator.releasePresentation(presentationHold);
+      presentationHold = null;
       latestSnapshot = null;lastPacket = null;compiled = null;heldReason = null;
     }
   });

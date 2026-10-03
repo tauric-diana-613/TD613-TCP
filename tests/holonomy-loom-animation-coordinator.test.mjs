@@ -339,3 +339,70 @@ test('empty draft rest and repeated scroll visibility transitions preserve one c
   assert.equal(snapshots.at(-1).progress, 1, 'scroll resume preserves semantic completion rather than replaying the action');
   coordinator.destroy();
 });
+
+test('a packet presentation hold reserves the first frame without consuming compilation time', () => {
+  const { coordinator, queued, advance } = rig({ durationMs: 100 });
+  const first = [], second = [];
+  let hold;
+  coordinator.registerPass('projection', snapshot => {
+    first.push(snapshot);
+    if (!hold) hold = coordinator.holdPresentation(snapshot.packet);
+  });
+  coordinator.registerPass('other-projection', snapshot => second.push(snapshot));
+  coordinator.setPacket(packet());
+  assert.equal(coordinator.inspect().presentationHeld, true);
+  assert.equal(queued.size, 0);
+  advance(10000);
+  assert.equal(coordinator.inspect().timeMs, 0);
+  coordinator.releasePresentation(hold);
+  assert.equal(first.at(-1).progress, 0, 'the first exposed frame precedes playback');
+  assert.equal(first.at(-1), second.at(-1), 'all passes still receive one immutable snapshot');
+  assert.equal(queued.size, 1);
+  advance(40);
+  assert.equal(first.at(-1).timeMs, 40, 'compiler wait creates no clock debt');
+});
+
+test('a presentation hold respects pause, scrub, reduced motion and explicit static loading', () => {
+  for (const mode of ['pause', 'seek', 'reduced', 'static']) {
+    const { coordinator, queued, advance } = rig();
+    let hold;
+    coordinator.registerPass('projection', snapshot => { hold ??= coordinator.holdPresentation(snapshot.packet); });
+    coordinator.setPacket(packet(), { animate: mode !== 'static' });
+    if (mode === 'pause') coordinator.pause();
+    if (mode === 'seek') coordinator.seek(613);
+    if (mode === 'reduced') coordinator.setReducedMotion(true);
+    advance(10000);
+    coordinator.releasePresentation(hold);
+    assert.equal(queued.size, 0, `${mode} must retain operator intent after compilation`);
+    assert.equal(coordinator.inspect().timeMs, mode === 'seek' ? 613 : ['reduced', 'static'].includes(mode) ? 2600 : 0);
+    coordinator.destroy();
+  }
+});
+
+test('hidden presentation completion and replaced holds cannot restart or rewind a current packet', () => {
+  const { coordinator, queued, advance } = rig();
+  let hold, heldPacket;
+  coordinator.registerPass('projection', snapshot => {
+    if (snapshot.packet !== heldPacket) {
+      heldPacket = snapshot.packet;
+      hold = coordinator.holdPresentation(snapshot.packet);
+    }
+  });
+  coordinator.setPacket(packet('earlier'));
+  const obsolete = hold;
+  coordinator.setPacket(packet('current'));
+  assert.equal(coordinator.releasePresentation(obsolete), false);
+  assert.equal(coordinator.inspect().presentationHeld, true);
+  coordinator.setVisible(false);
+  advance(9000);
+  coordinator.releasePresentation(hold);
+  assert.equal(queued.size, 0);
+  assert.equal(coordinator.inspect().timeMs, 0);
+  coordinator.setVisible(true);
+  advance(40);
+  assert.equal(coordinator.inspect().timeMs, 40);
+  coordinator.setVisible(false);
+  coordinator.pause();
+  coordinator.setVisible(true);
+  assert.equal(queued.size, 0, 'explicit hidden pause defeats visibility auto-resume');
+});

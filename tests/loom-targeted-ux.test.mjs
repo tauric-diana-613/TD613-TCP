@@ -1,12 +1,21 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { webcrypto } from 'node:crypto';
 import { JSDOM } from 'jsdom';
 import { loomWorkspaceTemplate } from '../app/dome-world/holonomy-loom/workspace-template.js';
+import { mountLoomAiWorkspace } from '../app/dome-world/holonomy-loom/ai-workspace.js';
+import { createLoomAiGovernance } from '../app/dome-world/holonomy-loom/ai-handoff.js';
+import {
+  createLoomDemoActivation, bindLoomDemoRequest, exportLoomDemoCurrent,
+  loomDemoDigest, loomDemoReceiptDigest, LOOM_DEMO_REQUEST_SCHEMA, LOOM_DEMO_STAGE_RECEIPT_SCHEMA
+} from '../app/dome-world/holonomy-loom/demo-contract.js';
+import { LOOM_RETURN_REVIEW_STORAGE_KEY } from '../app/dome-world/holonomy-loom/returned-session-review.js';
 
 const html = fs.readFileSync(new URL('../app/dome-world/holonomy-loom.html', import.meta.url), 'utf8');
 const product = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/loom-product-v6.css', import.meta.url), 'utf8');
 const workspaceSource = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/ai-workspace.js', import.meta.url), 'utf8');
+const runtimeStateSource = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/runtime-state-view.js', import.meta.url), 'utf8');
 const instrumentSource = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/instrument-state-view.js', import.meta.url), 'utf8');
 const templateSource = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/workspace-template.js', import.meta.url), 'utf8');
 
@@ -44,13 +53,18 @@ test('cinematic route field and builder are separate scenes while advanced tools
   assert.match(product, /#loomAiWorkspace \.loom-stage\{[\s\S]*?height:calc\(100svh - 52px\)/);
 });
 
-test('Threshold gates Loom while First Crossing remains local, replayable, and grammar-bound', () => {
+test('First Crossing retains explicit rest, exit and local inspection alongside selection', () => {
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
   assert.equal(doc.querySelector('.loom-builder-shell').hidden, true);
-  for (const id of ['loomBegin','loomReturnThreshold','loomFirstCrossing','loomFirstCrossingAction','loomFirstCrossingStop','loomReplayFirstCrossing']) {
+  for (const id of ['loomBegin','loomReturnThreshold','loomFirstCrossing','loomFirstCrossingAction','loomFirstCrossingStop','loomReplayFirstCrossing','loomFirstCrossingPause','loomFirstCrossingLeave','loomFirstCrossingPrivate','loomFirstCrossingPrivateText']) {
     assert.ok(doc.querySelector(`#${id}`), `Threshold control exists: ${id}`);
   }
-  assert.equal(doc.querySelectorAll('[data-first-crossing-item]').length, 3);
+  assert.equal(doc.querySelectorAll('[data-first-crossing-item]').length, 2, 'only traveling sources are selection controls');
+  assert.equal(doc.querySelector('#loomFirstCrossingPrivate').hasAttribute('aria-pressed'), false, 'local inspection cannot silently select the private material');
+  for (const id of ['loomFirstCrossingPause','loomFirstCrossingLeave']) {
+    assert.equal(doc.querySelector(`#${id}`).hidden, false);
+    assert.equal(doc.querySelector('.loom-first-crossing-actions').contains(doc.querySelector(`#${id}`)), false, 'rest/exit remain outside the stage-dependent primary action group');
+  }
   assert.match(workspaceSource, /FIRST_CROSSING_KEY = 'td613\.loom\.first-crossing\.v1'/);
   assert.match(workspaceSource, /outbound_submitted:false,[\s\S]{0,120}response_received:false/);
   assert.match(workspaceSource, /First Crossing complete · à gathered · cōl stayed protected · 上 created readiness\. Nothing crossed\./);
@@ -59,23 +73,19 @@ test('Threshold gates Loom while First Crossing remains local, replayable, and g
   assert.doesNotMatch(workspaceSource, /firstCrossing[\s\S]{0,1200}(?:fetch\s*\(|provider_call_authorized\s*:\s*true)/);
 });
 
-test('First Crossing is field-native and suppresses ordinary Loom chrome', () => {
+test('First Crossing leaves spatial consequence to the one canonical renderer', () => {
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
   const crossing=doc.querySelector('#loomFirstCrossing');
   assert.ok(crossing);
-  assert.equal(crossing.querySelectorAll('[data-first-crossing-item]').length,3);
-  assert.match(product, /v7 FIELD-NATIVE FIRST CROSSING/);
+  assert.equal(crossing.querySelectorAll('[data-first-crossing-item]').length,2);
   assert.match(product, /#loomAiWorkspace \.loom-first-crossing\{[\s\S]*?inset:0!important[\s\S]*?border:0!important[\s\S]*?background:transparent!important/);
-  assert.match(product, /#loomAiWorkspace\[data-first-crossing="active"\] \.loom-field-caption,[\s\S]*?\.loom-hero-route\{[\s\S]*?display:none!important/);
-  assert.match(product, /button\[data-first-crossing-item="brief"\]\{--fc-x:22%;--fc-y:48%\}/);
-  assert.match(product, /button::before\{[\s\S]*?border-radius:50%/);
-  assert.match(workspaceSource, /root\.dataset\.firstCrossingStep='0'/);
-  assert.match(workspaceSource, /if\(correct\)\{[\s\S]*?actFirstCrossing\(\)/);
+  assert.doesNotMatch(product, /--fc-x|--fc-y/, 'source controls must not own a second CSS trajectory');
+  assert.doesNotMatch(runtimeStateSource, /coordinator\.seek\(0\);[\s\S]*?coordinator\.play\(\)/, 'async publication must preserve operator pause and scrub');
   assert.doesNotMatch(product, /\.loom-first-crossing\{[^}]*background:rgba\(5,8,12,.67\)/);
 });
 
 test('Phase 3 return bypasses the entrance Threshold without completing onboarding', () => {
-  assert.match(workspaceSource, /review\?\.source==='OPENER_RETURN'\|\|environment\.location\.hash==='#return-review'/);
+  assert.match(workspaceSource, /\['OPENER_RETURN','RELOADED_REVIEW'\]\.includes\(review\?\.source\)\|\|environment\.location\.hash==='#return-review'/);
   assert.match(workspaceSource, /root\.dataset\.thresholdState='open'/);
   assert.match(workspaceSource, /thresholdStage\.hidden=true;[\s\S]{0,120}builderShell\.hidden=false/);
   assert.match(workspaceSource, /openWorkspace\('return',\{focus:bypassThreshold\}\)/);
@@ -146,10 +156,196 @@ test('cinematic Flow-Core traffic remains evidence-bound and single-clock', () =
   assert.match(instrumentSource, /view\.event_relation_history/);
   assert.match(instrumentSource, /owns_animation_loop: false/);
   assert.match(instrumentSource, /const filamentCount = compact \? 10 : filaments\.length/);
-  assert.match(instrumentSource, /const flightCount = compact \? 12 : flightGlyphs\.length/);
+  assert.doesNotMatch(instrumentSource, /flightCount\s*=\s*compact\s*\?\s*12/, 'portrait retains the field depth strata rather than slicing off their carrier population');
 });
 
 test('Loom product chrome does not reintroduce SHI or speculative release authority', () => {
   assert.doesNotMatch(workspaceSource+templateSource, /id="aiShi"|Safe Harbor issuance|validateShi|issuanceHold/);
   assert.match(workspaceSource, /const awake = \(Boolean\(acceptedTask\) \|\| locallyAdmitted\) && !busy/);
+});
+
+const until = async (predicate, label) => {
+  const deadline = Date.now() + 3000;
+  while (!predicate()) {
+    if (Date.now() > deadline) throw new Error(`Timed out awaiting ${label}`);
+    await new Promise(resolve => setTimeout(resolve, 5));
+  }
+};
+
+function practiceHarness(t, { savedReview = null } = {}) {
+  const dom = new JSDOM('<section id="fixture"></section>', { url: 'https://td613.com/dome-world/holonomy-loom.html', pretendToBeVisual: true });
+  const environment = dom.window, root = environment.document.querySelector('#fixture');
+  const frames = new Map(), requests = [];
+  let nextFrame = 0;
+  const priorFrame = globalThis.requestAnimationFrame, priorCancel = globalThis.cancelAnimationFrame;
+  globalThis.requestAnimationFrame = callback => { const id = ++nextFrame; frames.set(id, callback); return id; };
+  globalThis.cancelAnimationFrame = id => frames.delete(id);
+  Object.defineProperty(environment, 'crypto', { configurable: true, value: webcrypto });
+  environment.matchMedia = () => ({ matches: true, addEventListener() {}, removeEventListener() {} });
+  environment.fetch = (...args) => { requests.push(args); throw new Error('Practice attempted an unauthorized provider request'); };
+  if (savedReview) environment.sessionStorage.setItem(LOOM_RETURN_REVIEW_STORAGE_KEY, JSON.stringify(savedReview));
+  const ui = mountLoomAiWorkspace(root, environment);
+  t.after(() => {
+    ui.dispose(); environment.close();
+    if (priorFrame === undefined) delete globalThis.requestAnimationFrame; else globalThis.requestAnimationFrame = priorFrame;
+    if (priorCancel === undefined) delete globalThis.cancelAnimationFrame; else globalThis.cancelAnimationFrame = priorCancel;
+  });
+  return { root, environment, ui, requests, $: selector => root.querySelector(selector) };
+}
+
+async function exportedReviewPacket() {
+  const environment = { crypto: webcrypto };
+  const origin = { task: 'Compare the fictional workstreams.', documents: [{ id: 'a', name: 'workstreams.md', text: 'State A has three workstreams.' }], rules: ['Use only selected sources.'] };
+  origin.governance = await createLoomAiGovernance(origin, { withheldDocumentCount: 1 }, environment);
+  const result = (id, answer, activation = false) => ({ schema: 'td613.loom.ai-task-result/v0.1', request_id: id, status: 'completed', answer,
+    missing_information: activation ? [] : ['Independent effect remains unobserved.'], used_document_ids: activation ? [] : ['a'], suggested_next_step: 'Review the returned work.' });
+  origin.continuation = { prior_result: result('origin', 'State A has three workstreams.') };
+  const activation = await createLoomDemoActivation(origin, environment), stages = [];
+  let previous = null, binder = null;
+  try {
+    for (let index = 0; index < 2; index++) {
+      const phase = index ? 'CONTINUE' : 'ACTIVATE';
+      const request = { schema: LOOM_DEMO_REQUEST_SCHEMA, request_id: `reload-request-${index}`, phase, activation, documents: index ? origin.documents : [],
+        operator_request: index ? 'Continue from the latest work.' : 'Receive the handoff.', prior_result: index ? origin.continuation.prior_result : null, predecessor: previous };
+      binder?.governor.close();
+      binder = await bindLoomDemoRequest(request, environment);
+      const answer = result(request.request_id, index ? 'State B has four workstreams.' : 'Rules received; selected files are pending.', !index);
+      assert.equal(binder.admit(answer).allowed, true);
+      const receipt = { schema: LOOM_DEMO_STAGE_RECEIPT_SCHEMA, activation_digest: activation.activation_digest, phase, request_id: request.request_id,
+        request_digest: await loomDemoDigest(request, environment), current_input_digest: binder.governance.input_digest,
+        prior_result_digest: binder.receipt.prior_result_digest, result_digest: await loomDemoDigest(answer, environment),
+        predecessor_receipt_digest: previous ? await loomDemoReceiptDigest(previous, environment) : null, expires_at: activation.expires_at,
+        admission_state: 'ADMITTED', stage_policy: index ? 'SELECTED_FILES_BOUND' : 'AIA_ONLY', authority_transferred: false,
+        // Synthetic receipt declarations support consistency review, never signature authenticity.
+        auth: { scheme: 'hmac-sha256', key_id: 'td613-loom-demo-stage-v1', tag: 'A'.repeat(43) } };
+      stages.push({ receipt, binding: JSON.parse(JSON.stringify(binder.receipt)), result: answer, receiver: 'MARROWLINE', observed_at: new Date().toISOString(),
+        predecessor_request_id: previous?.request_id ?? null, content_predecessor_request_id: index ? origin.continuation.prior_result.request_id : null });
+      previous = receipt;
+    }
+    return exportLoomDemoCurrent(binder, undefined, { origin, activation, stages });
+  } finally { binder?.governor.close(); }
+}
+
+test('saved review bypasses fresh practice on reload without completion or local admission', async t => {
+  const packet = await exportedReviewPacket();
+  const h = practiceHarness(t, { savedReview: packet });
+  assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), null);
+  await until(() => !h.$('[data-return-review=result]').hidden && !h.$('#loomReturnWorkspace').hidden && h.$('.loom-stage').hidden, 'visible saved Return review');
+  assert.equal(h.$('.loom-builder-shell').hidden, false);
+  assert.equal(h.$('#loomFirstCrossing').hidden, true);
+  assert.equal(h.root.dataset.thresholdState, 'open');
+  assert.equal(h.root.dataset.firstCrossing, 'idle');
+  assert.match(h.$('[data-return-review=history] > article').textContent, /State B has four workstreams/);
+  assert.match(h.$('[data-return-review=boundary]').textContent, /Receipt signatures remain unverified; local custody admission remains HELD/);
+  assert.match(h.$('[data-return-review=boundary]').textContent, /original local record is unavailable/);
+  assert.equal(h.$('#aiReentryWorkspace').hidden, true, 'review does not expose a live admission lane');
+  assert.equal(h.ui.inspect().session, null, 'saved review restores no local session or custody');
+  assert.equal(h.ui.inspect().events.some(event => event.route_event === 'RETURN_ADMITTED'), false);
+  assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), null, 'review grants no practice completion');
+  assert.deepEqual(JSON.parse(h.environment.sessionStorage.getItem(LOOM_RETURN_REVIEW_STORAGE_KEY)), packet, 'review reload preserves the saved packet');
+  assert.equal(h.requests.length, 0);
+});
+
+test('first use can inspect local material, pause, and leave without completion or custody', async t => {
+  const h = practiceHarness(t);
+  assert.equal(h.root.dataset.firstCrossing, 'active');
+  h.$('#loomFirstCrossingPrivate').click();
+  assert.equal(h.$('#loomFirstCrossingPrivateText').hidden, false);
+  assert.match(h.$('#loomFirstCrossingPrivateText').textContent, /Fictional private scrap/);
+  assert.equal(h.$('#loomFirstCrossingPrivate').hasAttribute('aria-pressed'), false);
+  h.$('#loomFirstCrossingPause').click();
+  assert.equal(h.$('#loomFirstCrossingPause').getAttribute('aria-pressed'), 'true');
+  assert.equal(h.ui.inspect().clock.playing, false);
+  h.$('#loomFirstCrossingLeave').click();
+  await until(() => !h.$('.loom-builder-shell').hidden, 'explicit entry to own work');
+  assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), null, 'leaving unfinished practice grants no completion');
+  assert.equal(h.ui.inspect().session, null, 'practice grants no live session or custody');
+  assert.equal(h.requests.length, 0);
+});
+
+test('selection and readiness require their own published local consequences', async t => {
+  const h = practiceHarness(t);
+  h.$('[data-first-crossing-item="brief"]').click();
+  await until(() => h.ui.inspect().runtime.view?.event.shared === 1, 'one-source canonical projection');
+  assert.deepEqual(h.ui.inspect().runtime.view.event.selected_document_ids, ['brief']);
+  assert.equal(h.ui.inspect().runtime.view.event.binding_verified, false);
+  assert.equal(h.$('#loomFirstCrossingAction').hidden, true, 'one selection cannot create readiness');
+  h.$('[data-first-crossing-item="source"]').click();
+  assert.equal(h.$('#loomFirstCrossingAction').hidden, true, 'new relation stays unnamed while its async projection compiles');
+  await until(() => !h.$('#loomFirstCrossingAction').hidden, 'published gathering consequence');
+  assert.equal(h.ui.inspect().runtime.view.active_relation, 'gathering');
+  assert.match(h.$('#loomFirstCrossingPrompt').textContent, /à/);
+  h.$('#loomFirstCrossingAction').click();
+  assert.equal(h.$('#loomFirstCrossingStop').hidden, true, 'binding begins without claiming readiness');
+  await until(() => !h.$('#loomFirstCrossingStop').hidden, 'published readiness after real binding');
+  const ready = h.ui.inspect().runtime.view;
+  assert.equal(ready.active_relation, 'created_potential');
+  assert.equal(ready.event.binding_verified, true);
+  assert.deepEqual(ready.event.selected_document_ids, ['brief','source']);
+  assert.equal(ready.event.local, 1);
+  assert.equal(ready.event.outbound_submitted, false);
+  assert.equal(ready.event.response_received, false);
+  assert.match(h.$('#loomFirstCrossingPrompt').textContent, /上/);
+  assert.equal(h.ui.inspect().session, null);
+  assert.equal(h.requests.length, 0);
+  assert.equal(h.ui.inspect().clock.pendingFrames, 0, 'reduced motion publishes the equivalent consequence without animation frames');
+  h.$('#loomFirstCrossingStop').click();
+  assert.equal(h.root.dataset.firstCrossingCue, 'complete', 'reduced motion retains deliberate legitimate completion');
+  assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), 'complete');
+  assert.equal(h.ui.inspect().session, null);
+  assert.equal(h.requests.length, 0);
+});
+
+test('leaving during an async practice binding prevents late completion or scene takeover', async t => {
+  const h = practiceHarness(t);
+  h.$('[data-first-crossing-item="brief"]').click();
+  h.$('[data-first-crossing-item="source"]').click();
+  await until(() => !h.$('#loomFirstCrossingAction').hidden, 'gathering');
+  let release, entered;
+  const blocked = new Promise(resolve => { release = resolve; });
+  const started = new Promise(resolve => { entered = resolve; });
+  let first = true;
+  Object.defineProperty(h.environment, 'crypto', { configurable: true, value: {
+    randomUUID: () => webcrypto.randomUUID(),
+    getRandomValues: array => webcrypto.getRandomValues(array),
+    subtle: { async digest(...args) { if (first) { first = false; entered(); await blocked; } return webcrypto.subtle.digest(...args); } }
+  } });
+  h.$('#loomFirstCrossingAction').click();
+  await started;
+  h.$('#loomFirstCrossingLeave').click();
+  release();
+  await until(() => !h.$('.loom-builder-shell').hidden, 'leave during local binding');
+  await new Promise(resolve => setTimeout(resolve, 30));
+  assert.equal(h.root.dataset.firstCrossing, 'idle');
+  assert.equal(h.$('#loomFirstCrossing').hidden, true);
+  assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), null);
+  assert.equal(h.ui.inspect().session, null);
+  assert.equal(h.requests.length, 0);
+});
+
+test('replayed practice readiness preserves an existing real Loom root and prepared export', async t => {
+  const h = practiceHarness(t);
+  h.$('#loomFirstCrossingLeave').click();
+  await until(() => !h.$('.loom-builder-shell').hidden, 'real builder');
+  const task = h.$('#aiTask');
+  task.value = 'Prepare the existing real work without replacing it during practice.';
+  task.dispatchEvent(new h.environment.Event('input', { bubbles: true }));
+  h.$('#aiPreparePortable').click();
+  await until(() => h.ui.inspect().session !== null && h.root.getAttribute('aria-busy') !== 'true', 'existing real session');
+  const originalSession = h.ui.inspect().session;
+  const originalExport = h.$('#aiSessionReceipt').textContent;
+  h.$('#loomReturnThreshold').click();
+  h.$('#loomReplayFirstCrossing').click();
+  h.$('[data-first-crossing-item="brief"]').click();
+  h.$('[data-first-crossing-item="source"]').click();
+  await until(() => !h.$('#loomFirstCrossingAction').hidden, 'replayed gathering');
+  h.$('#loomFirstCrossingAction').click();
+  await until(() => !h.$('#loomFirstCrossingStop').hidden, 'replayed actual local binding');
+  assert.deepEqual(h.ui.inspect().session, originalSession, 'practice creates no replacement root or admitted descendant');
+  assert.equal(h.$('#aiSessionReceipt').textContent, originalExport, 'real prepared export remains bound to its original work');
+  h.$('#loomFirstCrossingLeave').click();
+  await until(() => !h.$('.loom-builder-shell').hidden, 'return to existing real work');
+  assert.equal(h.$('#aiTask').value, task.value);
+  assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), null);
+  assert.equal(h.requests.length, 0);
 });

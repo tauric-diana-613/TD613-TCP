@@ -91,6 +91,61 @@ async function tapTargets(page) {
     return [{id:node.id||null,label:node.textContent.trim().slice(0,70),width:r.width,height:r.height}];
   }));
 }
+async function fieldObservation(page) {
+  return page.evaluate(() => {
+    const root=document.querySelector('#aiRuntimeState'),svg=root?.querySelector('.loom-glyph-field');
+    const field=svg?.getBoundingClientRect();
+    const planeNames=['flight-near','flight-mid','flight-far'];
+    const carriers=[...root.querySelectorAll('.loom-field-flight text')].map((node,index)=>{
+      const rect=node.getBoundingClientRect(),style=getComputedStyle(node);
+      let opacity=Number(style.opacity),ancestor=node.parentElement;
+      while(ancestor){opacity*=Number(getComputedStyle(ancestor).opacity);ancestor=ancestor.parentElement;}
+      const rendered=style.display!=='none'&&style.visibility!=='hidden'&&opacity>0&&rect.width>0&&rect.height>0;
+      return {index,plane:planeNames.find(plane=>node.classList.contains(plane)),relation:node.dataset.flightRelation,
+        glyph:node.textContent,x:Number(node.getAttribute('x')),y:Number(node.getAttribute('y')),opacity,
+        rendered,screen_overlap:rendered&&rect.right>Math.max(0,field.left)&&rect.left<Math.min(innerWidth,field.right)&&
+          rect.bottom>Math.max(0,field.top)&&rect.top<Math.min(innerHeight,field.bottom),
+        screen_x:rect.x+rect.width/2,screen_y:rect.y+rect.height/2};
+    });
+    return {observed_ms:performance.now(),projection:root.dataset.projectionState,relation:root.dataset.activeRelation,
+      field:{x:field.x,y:field.y,width:field.width,height:field.height},pending_frames:document.querySelector('#loomAiWorkspace').dataset.pendingFrames,
+      title:document.querySelector('#loomFirstCrossingTitle')?.textContent,prompt:document.querySelector('#loomFirstCrossingPrompt')?.textContent,
+      carriers,planes:Object.fromEntries(planeNames.map(plane=>[plane,{rendered:carriers.filter(node=>node.plane===plane&&node.rendered).length,
+        overlapping:carriers.filter(node=>node.plane===plane&&node.screen_overlap).length}])),
+      sources:[...root.querySelectorAll('.loom-field-sources [data-source-id]')].map(node=>({id:node.dataset.sourceId,
+        local:node.dataset.sourceLocal,transform:node.getAttribute('transform'),text:node.textContent}))};
+  });
+}
+async function observeFiniteConsequence(page,relation,name) {
+  await page.waitForFunction(expected=>document.querySelector('#aiRuntimeState')?.dataset.projectionState==='CURRENT'&&
+    document.querySelector('#aiRuntimeState')?.dataset.activeRelation===expected,relation);
+  const observations=[await fieldObservation(page)];
+  await screenshot(page,`${name}-t0`);
+  for(const target of [1000,2000]){
+    const elapsed=await page.evaluate(initial=>performance.now()-initial,observations[0].observed_ms);
+    await page.waitForTimeout(Math.max(0,target-elapsed));
+    observations.push(await fieldObservation(page));
+    await screenshot(page,`${name}-t${target/1000}`);
+  }
+  const before=observations[0],after=observations.at(-1);
+  const displacements=after.carriers.map((node,index)=>({...node,coordinate_distance:Math.hypot(node.x-before.carriers[index].x,node.y-before.carriers[index].y),
+    screen_distance:Math.hypot(node.screen_x-before.carriers[index].screen_x,node.screen_y-before.carriers[index].screen_y),
+    visible_endpoint:node.screen_overlap||before.carriers[index].screen_overlap,y_change:node.y-before.carriers[index].y}));
+  record(`${name}: all 39 current-evidence carriers retain every depth plane`,observations.every(observation=>observation.projection==='CURRENT'&&
+    observation.relation===relation&&observation.carriers.length===39&&observation.carriers.every(node=>node.rendered&&node.relation===relation)&&
+    Object.values(observation.planes).every(plane=>plane.rendered>0&&plane.overlapping>0)),{observations,evidence_ceiling:'SCOPED_RENDERED_VISIBILITY_AND_CLIPPED_SCREEN_OVERLAP'});
+  const observedMovement=displacements.filter(node=>node.coordinate_distance>40&&node.screen_distance>15&&node.visible_endpoint);
+  record(`${name}: finite canonical consequence produces screen-observable displacement in every plane`,
+    displacements.every(node=>node.coordinate_distance>40)&&observedMovement.length>=12&&
+    ['flight-near','flight-mid','flight-far'].every(plane=>observedMovement.filter(node=>node.plane===plane).length>=2)&&
+    (relation!=='created_potential'||displacements.every(node=>node.y_change<-200)),
+    {sample_elapsed_ms:after.observed_ms-before.observed_ms,observable_displacement_count:observedMovement.length,displacements,
+      evidence_ceiling:'SCOPED_MOTION_ONLY_UX_AND_COMPREHENSION_REMAIN_SEPARATE'});
+  const privateBefore=before.sources.find(source=>source.id==='private'),privateAfter=after.sources.find(source=>source.id==='private');
+  record(`${name}: private source remains protected outside selected transport`,privateBefore?.local==='true'&&privateAfter?.local==='true'&&
+    privateBefore.transform===privateAfter.transform&&/cōl/.test(privateAfter.text),{before:privateBefore,after:privateAfter});
+  return observations;
+}
 async function bindPage(context, posture, base = served.base, { firstCrossingComplete = true } = {}) {
   const page = await context.newPage();
   page.setDefaultTimeout(12000);
@@ -143,9 +198,9 @@ try {
             const s=getComputedStyle(el); const r=el.getBoundingClientRect();
             return s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0;
           });
-        const objectStyles=[...node.querySelectorAll('[data-first-crossing-item]')].map(button=>{
+        const objectStyles=[...node.querySelectorAll('[data-first-crossing-item],#loomFirstCrossingPrivate')].map(button=>{
           const s=getComputedStyle(button),r=button.getBoundingClientRect();
-          return {id:button.dataset.firstCrossingItem,border_radius:s.borderRadius,background:s.backgroundColor,width:r.width,height:r.height};
+          return {id:button.dataset.firstCrossingItem||button.id,width:r.width,height:r.height,visible:s.display!=='none'&&s.visibility!=='hidden'};
         });
         return {
           background:style.backgroundColor,border_top:style.borderTopWidth,box_shadow:style.boxShadow,
@@ -156,23 +211,49 @@ try {
         firstCrossingVisual.background === 'rgba(0, 0, 0, 0)' &&
         firstCrossingVisual.border_top === '0px' &&
         firstCrossingVisual.visible_chrome.length === 0 &&
-        firstCrossingVisual.objects.every(object => object.border_radius === '50%' && object.width < 120 && object.height < 120),
+        firstCrossingVisual.objects.length===3&&firstCrossingVisual.objects.every(object=>object.visible&&object.width>=44&&object.height>=44),
         firstCrossingVisual);
       await screenshot(page, 'first-crossing-mobile-notice');
+      await page.locator('#loomFirstCrossingPrivate').click();
+      record('first crossing: local practice material can be inspected without selecting or sending it',
+        await page.locator('#loomFirstCrossingPrivateText').isVisible()&&
+        await page.locator('#loomFirstCrossingPrivate').getAttribute('aria-expanded')==='true'&&
+        await page.locator('[data-first-crossing-item][aria-pressed="true"]').count()===0,
+        {private_text:await page.locator('#loomFirstCrossingPrivateText').textContent()});
+      await page.locator('#loomFirstCrossingPrivate').click();
       await page.locator('[data-first-crossing-item="brief"]').click();
       await page.locator('[data-first-crossing-item="source"]').click();
-      await page.waitForFunction(() => document.querySelector('#aiRuntimeState')?.dataset?.activeRelation === 'gathering');
-      record('first crossing: gathering is a real canonical local relation before transmission',
-        await page.locator('#aiRuntimeState').getAttribute('data-active-relation') === 'gathering' &&
-        /à names the gathering/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
-        { relation: await page.locator('#aiRuntimeState').getAttribute('data-active-relation') });
+      record('first crossing: consequence begins before terminology is named',
+        /Watch the field gather them\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
+        !/That relation is à/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
+        { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
+      await observeFiniteConsequence(page,'gathering','first-crossing-mobile-gathering');
+      await page.locator('#loomFirstCrossingPause').click();
+      const pausedA=await fieldObservation(page);
+      await page.waitForTimeout(240);
+      const pausedB=await fieldObservation(page);
+      record('first crossing: Pause freezes existing frame and retains current relation',
+        pausedB.pending_frames==='0'&&pausedB.relation==='gathering'&&
+        pausedB.carriers.every((node,index)=>node.x===pausedA.carriers[index].x&&node.y===pausedA.carriers[index].y),
+        {before:pausedA,after:pausedB});
+      await screenshot(page,'first-crossing-mobile-paused');
+      await page.locator('#loomFirstCrossingPause').click();
+      await page.locator('#loomFirstCrossingAction').waitFor({state:'visible'});
       await page.locator('#loomFirstCrossingAction').click();
-      await page.waitForFunction(() => document.querySelector('#aiRuntimeState')?.dataset?.activeRelation === 'created_potential');
-      record('first crossing: readiness is created locally without provider submission',
-        await page.locator('#aiRuntimeState').getAttribute('data-active-relation') === 'created_potential' &&
-        /Preparation ≠ transmission/.test(await page.locator('#loomFirstCrossingAnswer').textContent()),
-        { relation: await page.locator('#aiRuntimeState').getAttribute('data-active-relation') });
+      await page.waitForFunction(()=>document.querySelector('#aiRuntimeState')?.dataset?.projectionState==='CURRENT'&&
+        document.querySelector('#aiRuntimeState')?.dataset?.activeRelation==='created_potential');
+      record('first crossing: readiness consequence begins before 上 is named',
+        /Watch readiness form\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
+        !/created-potential relation is 上/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
+        { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
+      await observeFiniteConsequence(page,'created_potential','first-crossing-mobile-readiness');
+      await page.locator('#loomFirstCrossingStop').waitFor({state:'visible'});
       await page.locator('#loomFirstCrossingStop').click();
+      await page.waitForFunction(()=>document.querySelector('#aiRuntimeState')?.dataset?.projectionState==='CURRENT');
+      const restedA=await fieldObservation(page);await page.waitForTimeout(240);const restedB=await fieldObservation(page);
+      record('first crossing: completion holds a stable prepared state without inventing transmission',
+        restedB.pending_frames==='0'&&restedB.relation==='created_potential'&&restedB.carriers.every((node,index)=>node.x===restedA.carriers[index].x&&node.y===restedA.carriers[index].y),
+        {before:restedA,after:restedB});
       record('first crossing: completion unlocks Open Loom without inventing a crossing',
         await page.locator('#loomBegin').isVisible() &&
         await page.evaluate(() => localStorage.getItem('td613.loom.first-crossing.v1')) === 'complete' &&
@@ -192,6 +273,38 @@ try {
       record('first crossing: traversal completed', false, { error: error.message });
       await screenshot(page, 'first-crossing-mobile-failure');
     } finally { await context.close(); }
+  }
+
+  for(const motion of ['no-preference','reduce']){
+    const posture=motion==='reduce'?'first-crossing-reduced':'first-crossing-exit';
+    const context=await browser.newContext({viewport:{width:390,height:844},reducedMotion:motion});
+    const page=await bindPage(context,posture,served.base,{firstCrossingComplete:false});
+    try{
+      if(motion==='reduce'){
+        await page.locator('[data-first-crossing-item="brief"]').click();
+        await page.locator('[data-first-crossing-item="source"]').click();
+        await page.locator('#loomFirstCrossingAction').waitFor({state:'visible'});
+        const gathering=await fieldObservation(page);
+        await page.locator('#loomFirstCrossingAction').click();
+        await page.locator('#loomFirstCrossingStop').waitFor({state:'visible'});
+        const before=await fieldObservation(page);await page.waitForTimeout(240);const after=await fieldObservation(page);
+        record('first crossing reduced: complete static equivalents preserve canonical distinctions',
+          gathering.relation==='gathering'&&after.relation==='created_potential'&&after.pending_frames==='0'&&after.carriers.length===39&&
+          after.carriers.every((node,index)=>node.rendered&&node.relation==='created_potential'&&node.x===before.carriers[index].x&&node.y===before.carriers[index].y)&&
+          after.sources.find(source=>source.id==='private')?.local==='true',
+          {gathering,before,after,evidence_ceiling:'STATIC_BROWSER_EQUIVALENT_NO_MEASURED_COMPREHENSION'});
+        await screenshot(page,'first-crossing-mobile-reduced-readiness');
+      }
+      await page.locator('#loomFirstCrossingLeave').click();
+      await page.locator('.loom-builder-shell').waitFor({state:'visible'});
+      record(`${posture}: optional practice exits directly into the real builder without completion credit`,
+        await page.locator('#loomFirstCrossing').isHidden()&&
+        await page.evaluate(()=>localStorage.getItem('td613.loom.first-crossing.v1'))!=='complete'&&
+        Number(await page.locator('#loomAiWorkspace').getAttribute('data-pending-frames'))<=1,
+        {practice_visible:await page.locator('#loomFirstCrossing').isVisible(),completion:await page.evaluate(()=>localStorage.getItem('td613.loom.first-crossing.v1'))});
+      await screenshot(page,`${posture}-builder`);
+    }catch(error){record(`${posture}: traversal completed`,false,{error:error.message});await screenshot(page,`${posture}-failure`);}
+    finally{await context.close();}
   }
 
   for (const posture of [

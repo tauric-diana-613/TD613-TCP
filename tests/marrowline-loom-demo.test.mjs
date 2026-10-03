@@ -117,7 +117,8 @@ test('Loom demo branches from + and both numbered gestures stage attachment + pr
  assert.equal(gateState.fadt.state,'FILES ELIGIBLE');
  assert.ok(gateState.crossed.some(item=>/Portable governance activation has a receiver response bound by this browser route/.test(item)));
  assert.ok(gateState.crossed.some(item=>/Selected file bodies have not crossed/.test(item)));
- assert.ok(gateState.atlas.survived.some(item=>/Immediate receiver predecessor request/.test(item)));
+ assert.ok(gateState.atlas.survived.includes(`Current receipt head request (next-send predecessor): ${h.requests[0].request_id}`));
+ assert.ok(gateState.atlas.survived.includes('No substantive content predecessor yet.'));
  assert.equal(gateExport.disabled,true,'#1 receiver acknowledgement cannot unlock export');
 
  plus.click();
@@ -157,6 +158,8 @@ test('Loom demo branches from + and both numbered gestures stage attachment + pr
  assert.ok(gateState.crossed.some(item=>/1 selected file body crossed/.test(item)));
  assert.ok(gateState.admitted.some(item=>/Stage #2 selected-file continuation is the current bound receiver result/.test(item)));
  assert.ok(gateState.atlas.survived.some(item=>/Current receiver result request/.test(item)));
+ assert.equal(gateState.technical.content_predecessor_request_id,null,'local preparation has no fabricated original answer');
+ assert.ok(gateState.atlas.survived.includes('Immediate content predecessor: none · the first continuation began from the prepared task.'));
  assert.equal(gateExport.disabled,false);
  assert.equal(h.doc.querySelectorAll('#khonapolitMessages article[data-role]').length,4);
  assert.equal(h.doc.querySelectorAll('textarea:not([hidden])').length>=1,true);
@@ -166,6 +169,12 @@ test('Loom demo branches from + and both numbered gestures stage attachment + pr
  assert.equal(h.requests[2].prior_result.answer,'State B has four workstreams.');
  assert.equal(h.requests[2].predecessor.phase,'CONTINUE');
  assert.equal(h.controller.exportPacket().continuation.prior_result.answer,'State C has five workstreams.');
+ gateState=h.controller.getGateContinuity();
+ assert.equal(gateState.technical.predecessor_request_id,h.requests[2].request_id,'current receipt head C remains the next-send predecessor');
+ assert.equal(gateState.technical.content_predecessor_request_id,h.requests[1].request_id,'current C retains B as its immediate content parent');
+ assert.ok(gateState.atlas.survived.includes(`Current receipt head request (next-send predecessor): ${h.requests[2].request_id}`));
+ assert.ok(gateState.atlas.survived.includes(`Immediate content predecessor request: ${h.requests[1].request_id}`));
+ assert.ok(!gateState.atlas.survived.includes(`Immediate content predecessor request: ${h.requests[2].request_id}`),'C must never name itself as its content predecessor');
  h.controller.leaveDemo();assert.throws(()=>h.controller.exportPacket(),/no current export/);
  }finally{h.close();}
 });
@@ -223,6 +232,7 @@ test('native exports after both continuations preserve original answer, latest a
  assert.deepEqual(first.documents,h.packet.documents);assert.deepEqual(first.rules,h.packet.rules);
  assert.equal(first.loom_demo_provenance.stages.length,2);
  assert.equal(first.loom_demo_provenance.stages[1].content_predecessor_request_id,'loom-origin');
+ assert.ok(h.controller.getGateContinuity().atlas.survived.includes('Immediate content predecessor request: loom-origin'),'optional original A remains the first continuation content predecessor');
  assert.equal(first.continuation.prior_result.answer,'State B has four workstreams.');
  assert.equal((await inspectLoomDemoExport(JSON.parse(JSON.stringify(first)),h.root)).status,'REVIEW_ONLY_CONSISTENCY');
  h.doc.querySelector('#khonapolitPrompt').value='Continue from the latest reply.';await h.controller.submit();
@@ -243,6 +253,7 @@ test('native exports after both continuations preserve original answer, latest a
  assert.deepEqual(delivered[0].data.packet,second);assert.equal(focused,1);
  assert.match(h.doc.querySelector('#khonapolitTerminalStatus').textContent,/review requested/);
  assert.equal(metadata.stages[2].content_predecessor_request_id,h.requests[1].request_id);
+ assert.ok(h.controller.getGateContinuity().atlas.survived.includes(`Immediate content predecessor request: ${metadata.stages[2].content_predecessor_request_id}`),'displayed C ancestry agrees with the retained exported B→C relation');
  assert.equal(metadata.stages[2].predecessor_request_id,h.requests[1].request_id);
  assert.equal(metadata.stages[2].receipt.predecessor_receipt_digest,await loomDemoReceiptDigest(metadata.stages[1].receipt,h.root));
  assert.equal(metadata.exclusions.withheld_document_count,1);
