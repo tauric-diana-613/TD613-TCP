@@ -516,17 +516,63 @@ export function mountLoomInstrumentStateView(root) {
         const z=(depth.length-i)/depth.length;
         depth[i].setAttribute('transform',`translate(${z*(9+breath*3)} ${z*(10-breath*2)})`);
       }
-      const direction = frame.relation_key==='release'?1:frame.relation_key==='protected_continuity'?-1:0;
+      const relationKey=frame.relation_key;
       for(let i=0;i<filaments.length;i++){
         const centered=i-(filaments.length-1)/2;
         const pulse=frame.reduced_motion?0:Math.sin(seconds*.7+i*.22)*24;
-        const fold=frame.relation_key==='gathering'?1-frame.progress:frame.relation_key==='bounded_emergence'?frame.progress:.6;
-        const spread=36+fold*16;
-        // A braided lens converges or opens with the observed relation. The
-        // strand geometry is presentation, not an asserted transport trace.
-        filaments[i].setAttribute('d',`M-20 ${260+centered*spread/3} C${205+direction*40} ${220+centered*17+pulse} ${375-direction*40} ${270-centered*12} 500 ${260+centered*1.2} C${625+direction*40} ${250+centered*12} ${795-direction*40} ${300-centered*17-pulse} 1020 ${260-centered*spread/3}`);
+        const y=260+centered*8.2;
+        let path='';
+
+        // The field changes topology with the evidenced relation. These curves
+        // are visual grammar only; they do not assert a physical/provider path.
+        if(relationKey==='gathering'){
+          const outer=260+centered*13.5;
+          const throat=260+centered*.72;
+          path=`M-40 ${outer+pulse*.45} C190 ${outer-pulse} 330 ${throat+18} 500 ${throat} C670 ${throat-18} 810 ${260-centered*13.5+pulse} 1040 ${260-centered*13.5-pulse*.45}`;
+        }else if(relationKey==='recurrence'){
+          const amp=58+(i%5)*11;
+          path=`M-30 ${y} C145 ${y-amp+pulse} 280 ${y+amp} 430 ${y} C580 ${y-amp} 720 ${y+amp-pulse} 1030 ${y}`;
+        }else if(relationKey==='release'){
+          const edge=260+centered*15.5;
+          const throat=260+centered*.85;
+          path=`M-40 ${edge} C190 ${edge-pulse*.4} 365 ${throat+12} 500 ${throat} C635 ${throat-12} 810 ${260-centered*15.5+pulse*.4} 1040 ${260-centered*15.5}`;
+        }else if(relationKey==='created_potential'){
+          const x=500+centered*14.8;
+          const lean=centered*2.7;
+          path=`M${x+lean} 590 C${x-26} 470 ${x+18+pulse*.35} 350 ${x} 260 C${x-18-pulse*.25} 170 ${x+22} 65 ${x-lean} -70`;
+        }else if(relationKey==='released_tendency'){
+          const x=500+centered*14.8;
+          const lean=centered*2.7;
+          path=`M${x-lean} -70 C${x+22} 65 ${x-18-pulse*.25} 170 ${x} 260 C${x+18+pulse*.35} 350 ${x-26} 470 ${x+lean} 590`;
+        }else if(relationKey==='protected_continuity'){
+          const rx=170+(i%7)*18,ry=56+(i%5)*9;
+          const tilt=centered*.7;
+          path=`M${500-rx} ${260+tilt} C${500-rx} ${260-ry} ${500+rx} ${260-ry} ${500+rx} ${260+tilt} C${500+rx} ${260+ry} ${500-rx} ${260+ry} ${500-rx} ${260+tilt}`;
+        }else if(relationKey==='bounded_emergence'){
+          const angle=(i/filaments.length)*Math.PI*2;
+          const ex=500+Math.cos(angle)*660;
+          const ey=260+Math.sin(angle)*330;
+          const bend=(i%2?1:-1)*(24+pulse*.35);
+          path=`M500 260 C${500+Math.cos(angle+.42)*150} ${260+Math.sin(angle+.42)*90+bend} ${500+Math.cos(angle-.18)*360} ${260+Math.sin(angle-.18)*185-bend} ${ex} ${ey}`;
+        }else if(relationKey==='structural_rest'){
+          path=`M-30 ${y} C260 ${y+pulse*.05} 740 ${y-pulse*.05} 1030 ${y}`;
+        }else{
+          path=`M-30 ${y} C270 ${y-18} 730 ${y+18} 1030 ${y}`;
+        }
+        filaments[i].setAttribute('d',path);
+        filaments[i].setAttribute('opacity',relationKey==='structural_rest'?(i%7===0?.22:.055):(i%7===0?.58:.12));
       }
-      for(let i=0;i<orbits.length;i++)orbits[i].setAttribute('transform',`rotate(${i*58+seconds*(i%2?-3:3)} 500 260) translate(500 260) scale(1 ${.58+Math.sin(i+seconds*.18)*.06}) translate(-500 -260)`);
+
+      for(let i=0;i<orbits.length;i++){
+        const rest=relationKey==='structural_rest';
+        const recurrence=relationKey==='recurrence';
+        const continuity=relationKey==='protected_continuity';
+        const rate=rest?0:recurrence?(i%2?-9:9):continuity?(i%2?-1.2:1.2):(i%2?-3:3);
+        const squash=continuity?.46:relationKey==='bounded_emergence'?.72:.58;
+        const breathe=rest||frame.reduced_motion?0:Math.sin(i+seconds*.18)*.06;
+        orbits[i].setAttribute('opacity',rest?.09:continuity?.32:recurrence?.34:(i===0?.42:.2));
+        orbits[i].setAttribute('transform',`rotate(${i*58+seconds*rate} 500 260) translate(500 260) scale(1 ${squash+breathe}) translate(-500 -260)`);
+      }
       for(let i=0;i<particles.length;i++){
         const t=((i/particles.length+seconds*(direction||1)*.016)%1+1)%1;
         const angle=t*Math.PI*2, radius=185+(i%5)*31;
