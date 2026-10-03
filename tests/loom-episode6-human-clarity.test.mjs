@@ -12,7 +12,7 @@ const fixture = JSON.parse(read('tests/fixtures/pedagogue/loom-episode6-human-cl
 
 const workspace = () => read('app/dome-world/holonomy-loom/ai-workspace.js');
 const resultView = () => read('app/dome-world/holonomy-loom/ai-result-view.js');
-const workspaceCss = () => read('app/dome-world/holonomy-loom/loom-product-v5.css');
+const workspaceCss = () => read('app/dome-world/holonomy-loom/loom-product-v6.css');
 const marrowBase = () => read('app/dome-world/marrowline-loom-import-base.js');
 const marrowContinuation = () => read('app/dome-world/marrowline-loom-import.js');
 

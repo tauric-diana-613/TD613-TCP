@@ -1,12 +1,4 @@
-export const loomWorkspaceTemplate = `
-<header class="loom-intro"><div><h1 id="loomStageHeading">Holonomy Loom</h1><p>AI work with its sources, boundaries and history.</p></div><button type="button" id="loomToolsOpen" class="loom-text-action">Tools</button></header>
-<nav class="loom-journey" aria-label="Loom route">
-<button type="button" class="loom-journey-step" id="loomJourneyStep1" data-workspace="build" aria-current="step"><b>1</b><strong>Loom</strong></button><span aria-hidden="true">→</span>
-<button type="button" class="loom-journey-step" id="loomJourneyStep2" data-workspace="crossing" disabled><b>2</b><strong>Marrowline</strong></button><span aria-hidden="true">→</span>
-<button type="button" class="loom-journey-step" id="loomJourneyStep3" data-workspace="return"><b>3</b><strong>Return</strong></button>
-</nav>
-<div class="loom-working-surface">
-<section class="loom-stage" aria-label="Flow-Core route field"><section id="aiRuntime" class="ai-runtime" aria-label="Current Loom route"><p class="mark">CURRENT ROUTE</p>
+export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledby="loomFieldHeading"><div class="loom-stage-copy"><span class="loom-kicker">FLOW-CORE ROUTE FIELD</span><h1 id="loomFieldHeading">Loom</h1><p>Your work stays yours until you choose a crossing.</p></div><section id="aiRuntime" class="ai-runtime" aria-label="Current Loom route"><p class="mark">CURRENT ROUTE</p>
       <h2 id="aiConsequence" hidden>Your work starts here.</h2>
       <div id="aiRuntimeState" class="ai-runtime-state il-state"></div>
       <div id="aiLivingRoom" hidden aria-hidden="true"></div>
@@ -14,7 +6,18 @@ export const loomWorkspaceTemplate = `
       <dl id="aiFacts" class="ai-facts" hidden><div><dt>Selected</dt><dd id="aiSharedCount">0</dd></div><div><dt>Local</dt><dd id="aiLocalCount">0</dd></div><div><dt>Round trip</dt><dd id="aiElapsed">—</dd></div></dl>
       <div class="ai-room-replay"><button type="button" id="aiStillField" aria-pressed="false">Still</button><button type="button" id="aiRoomReplay" disabled>Replay</button><button type="button" id="aiRoomLive" hidden>Live</button><label id="aiRoomScrubLabel" hidden>Observed event <input id="aiRoomScrub" type="range" min="0" max="0" value="0" aria-label="Replay observed event"></label><p id="aiRoomReplayStatus" class="ai-muted"></p></div>
       <div id="aiRuntimeInspection" hidden><div class="ai-view-switch"><button type="button" id="aiChild" aria-pressed="true">Plain language answer</button><button type="button" id="aiAuditor" aria-pressed="false">Auditor answer</button></div><ol id="aiEvents" class="ai-events" aria-label="Request history" hidden></ol><pre id="aiReceipt">No request yet.</pre></div>
-    </section></section>
+    </section>
+<div class="loom-hero-route" aria-hidden="true"><span data-hero-step="loom"><b>1</b> Loom</span><i>→</i><span data-hero-step="marrowline"><b>2</b> Marrowline</span><i>→</i><span data-hero-step="return"><b>3</b> Return</span></div>
+<button type="button" id="loomBegin" class="loom-begin">Build the route ↓</button>
+</section>
+<section class="loom-builder-shell" aria-label="Loom builder">
+<header class="loom-intro"><div><h1 id="loomStageHeading">Holonomy Loom</h1><p>AI work with its sources, boundaries and history.</p></div><button type="button" id="loomToolsOpen" class="loom-text-action">Tools</button></header>
+<nav class="loom-journey" aria-label="Loom route">
+<button type="button" class="loom-journey-step" id="loomJourneyStep1" data-workspace="build" aria-current="step"><b>1</b><strong>Loom</strong></button><span aria-hidden="true">→</span>
+<button type="button" class="loom-journey-step" id="loomJourneyStep2" data-workspace="crossing" disabled><b>2</b><strong>Marrowline</strong></button><span aria-hidden="true">→</span>
+<button type="button" class="loom-journey-step" id="loomJourneyStep3" data-workspace="return"><b>3</b><strong>Return</strong></button>
+</nav>
+<div class="loom-working-surface">
 <div class="loom-workspaces">
 <section id="loomBuilder" class="loom-builder" aria-labelledby="loomBuilderTitle">
 <header class="loom-builder-head"><h2 id="loomBuilderTitle">Your task</h2><div class="ai-mode-tabs" role="tablist" aria-label="Loom mode"><button type="button" id="aiPortableMode" role="tab" aria-selected="true" aria-controls="aiPortableModePanel">My work</button><button type="button" id="aiDemoMode" role="tab" aria-selected="false" aria-controls="aiDemoModePanel">Practice</button></div></header>
@@ -41,7 +44,9 @@ export const loomWorkspaceTemplate = `
 <button type="button" id="loomDepartureSave">Save private custody record</button><button type="button" id="loomPreparedInspect">Inspect prepared work</button>
 </section>
 <section id="loomReturnWorkspace" aria-label="Return to Loom" tabindex="-1" hidden><header><h2>Bring the work back.</h2><p>Review the returned session and its immediate predecessor. A held check keeps the local head unchanged.</p></header><div id="loomReturnedSessionReview"></div><button type="button" id="loomLocalCustodyOpen">Local custody · Check & Admit</button><section id="aiReentryWorkspace" aria-label="Local returned work admission" hidden></section></section>
-</div></div>
+</div>
+</div>
+</section>
 <dialog id="loomTools" class="loom-tools" aria-labelledby="loomToolsTitle"><header><h2 id="loomToolsTitle">Loom tools</h2><button type="button" id="loomToolsClose" aria-label="Close Loom tools">×</button></header><nav aria-label="Tool workspaces"><button type="button" data-tool="rules">Rules</button><button type="button" data-tool="boundary">Boundary</button><button type="button" data-tool="session">Session</button><button type="button" data-tool="model">Model test</button><button type="button" data-tool="challenge">Receiver assay</button><button type="button" data-tool="legacy">Compatibility</button></nav>
 <section data-tool-panel="rules" id="aiRulesDrawer"><h3>Traveling rules</h3><p>These rules accompany your task. The defaults below treat sources as data and keep missing evidence visible.</p><label for="aiRules">One rule per line</label><textarea id="aiRules" aria-label="Rules that travel" rows="4"></textarea><h3>Private checks</h3><p>These terms stay here. Matching outgoing material or a local model-test reply holds that local check.</p><label for="aiPrivate">Private terms to block locally</label><textarea id="aiPrivate" aria-label="Local private terms" rows="3"></textarea></section>
 <section data-tool-panel="boundary" hidden><h3>What this boundary establishes</h3><p>Selected task, file bytes and traveling rules are bound locally. Preparation makes no model request.</p><p>Foreign-host enforcement, downstream retention and hidden model state remain unobserved. A public transfer carries selected source bodies; a private custody record can also contain local sources and challenge keys.</p></section>

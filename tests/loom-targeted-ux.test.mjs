@@ -5,7 +5,7 @@ import { JSDOM } from 'jsdom';
 import { loomWorkspaceTemplate } from '../app/dome-world/holonomy-loom/workspace-template.js';
 
 const html = fs.readFileSync(new URL('../app/dome-world/holonomy-loom.html', import.meta.url), 'utf8');
-const product = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/loom-product-v5.css', import.meta.url), 'utf8');
+const product = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/loom-product-v6.css', import.meta.url), 'utf8');
 const workspaceSource = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/ai-workspace.js', import.meta.url), 'utf8');
 const instrumentSource = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/instrument-state-view.js', import.meta.url), 'utf8');
 const templateSource = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/workspace-template.js', import.meta.url), 'utf8');
@@ -21,11 +21,16 @@ test('primary Loom is one product route, not a nested laboratory archive', () =>
   assert.equal(doc.querySelectorAll('link[href*="ai-workspace.css"],link[href*="reentry-workspace.css"],link[href*="loom-product-v3.css"],link[href*="ux-repair.css"],link[href*="cinematic-rescue.css"],link[href*="dromological-regime.css"]').length,0);
 });
 
-test('task and field share the working surface while advanced tools have a separate workspace', () => {
+test('cinematic route field and builder are separate scenes while advanced tools stay secondary', () => {
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
+  const stage = doc.querySelector('.loom-stage');
+  const builderShell = doc.querySelector('.loom-builder-shell');
   const surface = doc.querySelector('.loom-working-surface');
+  assert.ok(stage.contains(doc.querySelector('#aiRuntimeState')));
+  assert.ok(!stage.contains(doc.querySelector('#aiTask')));
   assert.ok(surface.contains(doc.querySelector('#aiTask')));
-  assert.ok(surface.contains(doc.querySelector('#aiRuntimeState')));
+  assert.ok(stage.compareDocumentPosition(builderShell) & doc.defaultView.Node.DOCUMENT_POSITION_FOLLOWING);
+  assert.ok(doc.querySelector('#loomBegin'));
   assert.deepEqual([...doc.querySelectorAll('.loom-journey-step strong')].map(node => node.textContent), ['Loom', 'Marrowline', 'Return']);
   assert.equal(doc.querySelector('#loomBuilder').hidden, false);
   assert.equal(doc.querySelector('#aiResult').hidden, true);
@@ -35,7 +40,7 @@ test('task and field share the working surface while advanced tools have a separ
     assert.ok(doc.querySelector('#loomTools').contains(doc.querySelector(`#${id}`)), `${id} remains accessible in secondary tooling`);
   }
   assert.match(workspaceSource, /root\.innerHTML\s*=\s*loomWorkspaceTemplate/);
-  assert.doesNotMatch(product, /(?:min-)?height\s*:\s*calc\(100(?:s|d)?vh\s*-\s*(?:48|52)px\)/);
+  assert.match(product, /#loomAiWorkspace \.loom-stage\{[\s\S]*?height:calc\(100svh - 52px\)/);
 });
 
 test('mobile keeps consequential boundaries and source-defined focus protection', () => {
@@ -46,10 +51,11 @@ test('mobile keeps consequential boundaries and source-defined focus protection'
   assert.match(product, /\.loom-reentry textarea,\.loom-reentry input:not\(\[type=checkbox\]\)\{[^}]*font-size:16px/);
   assert.match(product, /:focus-visible\{/);
   assert.match(product, /@media\(prefers-reduced-motion:reduce\)/);
-  assert.doesNotMatch(product, /(?:\.loom-instrument-state-boundary|\.ai-facts|#aiGapSummary)\s*\{[^}]*display\s*:\s*none/);
   assert.doesNotMatch(product, /grid-template-columns:116px\s+minmax\(0,1fr\)/);
-  assert.match(product, /\.loom-stage \.loom-glyph-field\{[^}]*height:clamp\(220px,56vw,280px\)/);
-  assert.match(product, /\.ai-room-replay\{position:static;justify-content:flex-end/);
+  assert.match(product, /#loomAiWorkspace \.loom-stage\{[\s\S]*?height:calc\(100svh - 52px\)/);
+  assert.match(product, /@media\(max-width:760px\)[\s\S]*?#loomAiWorkspace \.loom-stage\{[\s\S]*?height:calc\(100svh - 48px\)/);
+  assert.match(product, /#loomAiWorkspace \.loom-instrument-state-boundary\{[\s\S]*?display:block!important/);
+  assert.match(product, /#loomAiWorkspace \.ai-room-replay\{[\s\S]*?position:absolute!important/);
   assert.doesNotMatch(product, /Georgia|Times New Roman|var\(--serif\)/);
 });
 
@@ -72,6 +78,15 @@ test('local preparation selects foreground crossing focus rather than a field de
   assert.doesNotMatch(workspaceSource, /\$\('aiRuntime'\)\.scrollIntoView/);
   assert.match(workspaceSource, /\$\('aiPreparePortable'\)\.classList\.add\('ai-primary'\)/);
   assert.match(workspaceSource, /\$\('aiRun'\)\.classList\.remove\('ai-primary'\)/);
+});
+
+test('cinematic route labels remain on the field while deep inspection stays inside Tools flow', () => {
+  const doc = new JSDOM(loomWorkspaceTemplate).window.document;
+  assert.ok(doc.querySelector('.loom-stage').contains(doc.querySelector('#aiRuntimeState')));
+  assert.match(workspaceSource, /for\(const selector of \['\.loom-instrument-state-next','\.loom-instrument-state-inspection'\]\)/);
+  assert.doesNotMatch(workspaceSource, /stateTools[\s\S]{0,180}loom-instrument-state-endpoints/);
+  assert.doesNotMatch(workspaceSource, /stateTools[\s\S]{0,180}loom-instrument-state-relation/);
+  assert.match(product, /\.loom-tools \[data-tool-panel="session"\] \.loom-instrument-state-inspection\{[\s\S]*?position:static!important/);
 });
 
 test('product shell owns no second animation clock or network authority', () => {
