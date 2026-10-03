@@ -98,8 +98,8 @@ try {
       assert.equal(await page.locator('#aiPortableMode').getAttribute('aria-selected'),'true','Loom transfer is the default product mode');
       assert.equal(await page.locator('#aiDemoMode').getAttribute('aria-selected'),'false');
       assert.equal(await page.locator('#aiDemoWelcome').isVisible(),false,'fictional demo chooser stays out of the primary Loom transfer path');
-      assert.equal(await page.locator('#loomLegacy > summary').isVisible(),true,'Instrument Lab has an independent entrance in Portable mode');
-      assert.equal(await page.locator('#loomLegacy').evaluate(node=>node.open),false,'Instrument Lab remains closed by default');
+      assert.equal(await page.locator('a[href="/dome-world/loom-instrument-lab.html"]').isVisible(),true,'Instrument Lab has an independent utility route in Portable mode');
+      assert.equal(await page.locator('#loomLegacy').count(),0,'Instrument Lab is not nested inside the primary Loom journey');
       assert.equal(await page.locator('#loomAiWorkspace').getAttribute('data-loom-journey'),'loom');
       assert.equal(await page.locator('.ai-projection-depth').getAttribute('open'),null,'technical governance detail stays optional on entry');
       assert.equal(await page.locator('#aiProjectionTravel').isVisible(),true);
@@ -194,8 +194,8 @@ try {
       assert.equal(await page.locator('#aiDemoWelcome').isVisible(),true,'Practice route reveals the fictional project chooser');
       assert.equal(await page.locator('#aiRuntime').isVisible(),true,'the same primary view remains in Demo');
       assert.equal(await page.locator('#aiRun').evaluate(node=>node.classList.contains('ai-primary')),true,'Run becomes the primary demo gesture');
-      assert.equal(await page.locator('#loomLegacy > summary').isVisible(),true,'Instrument Lab remains independently available during practice');
-      assert.match(await page.locator('#aiDemoModePanel').innerText(),/Practice the real route with fictional material/i);
+      assert.equal(await page.locator('a[href="/dome-world/loom-instrument-lab.html"]').isVisible(),true,'Instrument Lab remains independently available during practice');
+      assert.match(await page.locator('#aiDemoModePanel').innerText(),/Same route mechanics\. Fictional material\./i);
       await page.locator('#aiDemoInvitation').click();
       assert.equal(await page.locator('#aiDemoInvitation').getAttribute('aria-expanded'), 'true');
       await page.locator('#aiProjectChoices button').first().click();
