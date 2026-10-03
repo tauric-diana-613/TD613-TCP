@@ -3,13 +3,16 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { webcrypto } from 'node:crypto';
 import { compilePedagogueDesignReview } from '../app/engine/pedagogue-design-gate.js';
+import { JSDOM } from 'jsdom';
+import { loomWorkspaceTemplate } from '../app/dome-world/holonomy-loom/workspace-template.js';
+import { renderLoomAiResult } from '../app/dome-world/holonomy-loom/ai-result-view.js';
 
 const read = path => fs.readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 const fixture = JSON.parse(read('tests/fixtures/pedagogue/loom-episode6-human-clarity-design.json'));
 
 const workspace = () => read('app/dome-world/holonomy-loom/ai-workspace.js');
 const resultView = () => read('app/dome-world/holonomy-loom/ai-result-view.js');
-const workspaceCss = () => read('app/dome-world/holonomy-loom/ai-workspace.css');
+const workspaceCss = () => read('app/dome-world/holonomy-loom/loom-product-v5.css');
 const marrowBase = () => read('app/dome-world/marrowline-loom-import-base.js');
 const marrowContinuation = () => read('app/dome-world/marrowline-loom-import.js');
 
@@ -69,24 +72,29 @@ test('Pedagogue receives Episode 6 as a human-observed baseline rather than a sy
 test('Loom human-facing task surface stays provider-neutral and names the active mode consequence', () => {
   const source = workspace();
   const css = workspaceCss();
+  const dom = new JSDOM(`<style>${css}</style><section id="loomAiWorkspace">${loomWorkspaceTemplate}</section>`);
+  const doc = dom.window.document;
   assert.doesNotMatch(source, /Provider for this route:\s*Google Gemini\./);
   assert.doesNotMatch(source, /Share \$\{doc\.name\} with Gemini/);
   assert.doesNotMatch(source, /Select only the files Gemini should receive/);
-  assert.match(source, /id="aiProjectBrief" class="ai-project-brief/);
-  assert.match(source, /id="aiTaskCue"/);
-  assert.match(source, /exact task travels with the selected files and rules when you prepare the Loom transfer/i);
-  assert.match(source, /exact instruction the AI will receive when you press Run demo/i);
-  assert.match(css, /\.ai-task-surface/);
-  assert.match(css, /#loomAiWorkspace textarea#aiTask/);
-  assert.match(css, /@media\(max-width:560px\)[\s\S]*ai-project-brief/);
+  assert.ok(doc.querySelector('#aiProjectBrief'));
+  assert.equal(doc.querySelector('#aiTask').getAttribute('aria-describedby'), 'aiTaskCue');
+  assert.match(source, /Task and selected material travel together/i);
+  assert.match(source, /Edit the fictional task\. Prepare locally before choosing a crossing/i);
+  assert.match(source, /optional model test sends the fictional task and selected documents/i);
+  assert.equal(dom.window.getComputedStyle(doc.querySelector('#aiTask')).fontSize, '16px');
+  assert.match(css, /@media\(max-width:760px\)/);
+  assert.match(css, /:focus-visible\{/);
+  dom.window.close();
 });
 
 test('returned Loom answer visibly binds itself to the submitted task and keeps one primary reading path', () => {
   const source = workspace();
   const result = resultView();
-  assert.match(source, /id="aiSubmittedTask"/);
-  assert.match(source, /<details id="aiSubmittedTask"/);
-  assert.match(source, /Inspect the exact instruction/);
+  const doc = new JSDOM(loomWorkspaceTemplate).window.document;
+  assert.ok(doc.querySelector('#aiSubmittedTaskText'));
+  assert.ok(doc.querySelector('#loomTools').contains(doc.querySelector('#aiSubmittedTaskText')));
+  assert.match(doc.querySelector('#aiSubmittedTask').textContent, /Exact task/);
   assert.match(source, /\$\('aiSubmittedTaskText'\)\.textContent=shared\.task/);
   assert.doesNotMatch(result, /className\)\s*;?\s*full\.append|ai-result-full/);
   assert.match(result, /Possible next action[^'"`]*optional/i);
@@ -95,11 +103,23 @@ test('returned Loom answer visibly binds itself to the submitted task and keeps 
   assert.match(result, /Technical[^'"`]*exact AI response/i);
 });
 
-test('result disclosure grammar advertises plus/minus state instead of native triangle-only affordance', () => {
+test('optional result inspection uses native disclosure state while preserving exact response and claim ceiling', () => {
   const css = workspaceCss();
-  assert.match(css, /\.ai-result-disclosure>summary::after\s*\{[^}]*content:\s*['"]\+['"]/);
-  assert.match(css, /\.ai-result-disclosure\[open\]>summary::after\s*\{[^}]*content:\s*['"]−['"]/);
-  assert.match(css, /\.ai-result-disclosure>summary::?-webkit-details-marker|summary::-webkit-details-marker/);
+  const dom = new JSDOM('<section id="answer"></section>');
+  const answer = 'SYNTHETIC: preserve this exact returned answer.';
+  renderLoomAiResult(dom.window.document.querySelector('#answer'), {
+    answer, missing_information: ['A signed source remains unavailable.'], used_document_ids: [], suggested_next_step: 'Ask for the missing source.'
+  });
+  const sources = [...dom.window.document.querySelectorAll('details')].find(node => /Sources named by the AI/.test(node.querySelector('summary')?.textContent || ''));
+  assert.ok(sources);
+  assert.equal(sources.open, false);
+  assert.match(sources.querySelector('summary').textContent, /not independently verified/);
+  sources.open = true;
+  assert.equal(sources.open, true);
+  assert.equal(dom.window.document.querySelector('.ai-result-original pre').textContent, answer);
+  assert.match(css, /summary:focus-visible/);
+  assert.match(css, /\.loom-tools summary\{[^}]*min-height:44px/);
+  dom.window.close();
 });
 
 test('Loom continuation lands inside current Marrowline rather than replacing the living chat', () => {

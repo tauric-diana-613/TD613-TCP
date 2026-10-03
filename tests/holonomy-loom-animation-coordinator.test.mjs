@@ -313,3 +313,29 @@ test('explicit continuous motion shares one bounded owner while semantic progres
   coordinator.setReducedMotion(true);
   assert.equal(queued.size, 0);
 });
+
+test('empty draft rest and repeated scroll visibility transitions preserve one clock and relation phase', () => {
+  const { coordinator, queued, advance } = rig({ durationMs: 100, maxFps: 25 });
+  const snapshots = [];
+  coordinator.registerPass('route', value => snapshots.push(value));
+  coordinator.setContinuous(true);
+  coordinator.setPacket({ ...packet('empty-draft', true), phase: 'prepared', task_present: false, shared: 0 });
+  advance(10000);
+  assert.equal(queued.size, 0, 'an empty resting draft carries no idle animation work');
+  coordinator.setPacket({ ...packet('handoff'), phase: 'checking', route_event: 'HANDOFF_DISPATCHED' });
+  advance(100);
+  const visibleTime = coordinator.inspect().motionTimeMs;
+  for (let index = 0; index < 12; index++) {
+    coordinator.setVisible(false); coordinator.setVisible(false);
+    advance(1000);
+    assert.equal(queued.size, 0);
+    coordinator.setVisible(true); coordinator.setVisible(true);
+    assert.equal(queued.size, 1);
+  }
+  advance(40);
+  assert.equal(coordinator.inspect().motionTimeMs, visibleTime + 40);
+  assert.equal(snapshots.at(-1).packet.phase, 'checking');
+  assert.equal(snapshots.at(-1).packet.route_event, 'HANDOFF_DISPATCHED');
+  assert.equal(snapshots.at(-1).progress, 1, 'scroll resume preserves semantic completion rather than replaying the action');
+  coordinator.destroy();
+});

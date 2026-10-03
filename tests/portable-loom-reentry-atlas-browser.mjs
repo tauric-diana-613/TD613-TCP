@@ -48,7 +48,13 @@ try {
       return route.continue();
     });
     const r = key => page.locator(`[data-loom-reentry="${key}"]`);
-    const open = async details => { if (await details.getAttribute('open') === null) await details.locator('summary').first().click(); };
+    // Presentation migration retains all custody witnesses while replacing the
+    // old nested operational drawers with primary sections and one inspection.
+    const open = async surface => {
+      const details = await surface.evaluate(node => node.tagName === 'DETAILS');
+      const target = details ? surface : r('inspection');
+      if (await target.getAttribute('open') === null) await target.locator('summary').first().click();
+    };
     const visibleRecord = async () => {
       await open(r('technical').locator('xpath=..'));
       assert.equal(await r('technical').isVisible(), true);
@@ -106,8 +112,8 @@ try {
     await page.locator('[data-project="participant-research"]').click();
     await page.locator('#aiPreparePortable').click();
     await page.waitForFunction(() => !document.querySelector('[data-loom-reentry="stage"]').disabled);
-    assert.equal(await r('drawer').getAttribute('open'), null);
-    await open(r('drawer'));
+    assert.equal(await r('drawer').evaluate(node=>node.tagName), 'SECTION');
+    assert.equal(await r('task').isVisible(), true);
     const first = await register('First task using only explicit A.', [docs[0]], 1);
     const second = await register('Second task using newly explicit B.', [docs[1]], 2);
     assert.equal(first.anchor_work_unit_ref, second.anchor_work_unit_ref);
@@ -179,7 +185,7 @@ try {
     assert.equal(await r('head').textContent(), head);
     assert.equal((await visibleRecord()).custody.pending_excursion, null);
     await page.reload();
-    await open(r('drawer'));
+    assert.equal(await r('drawer').isVisible(), true);
     assert.equal(await r('head').textContent(), 'No admitted descendant.');
     assert.match(await r('recovery').textContent(), /separate custody witness/);
     assert.deepEqual(errors, []);

@@ -16,7 +16,7 @@ function ensureStylesheet(doc=document){
   link=doc.createElement('link');link.rel='stylesheet';link.href=href;link.dataset.marrowlineLoomGateContinuity=MARROWLINE_LOOM_GATE_CONTINUITY_SCHEMA;doc.head.append(link);return link;
 }
 
-function phaseCopy(phase,lastAttempt,busy=false){
+function phaseCopy(phase,lastAttempt,busy=false,continuations=0){
   if(busy)return {eyebrow:'PENDING · no new receiver binding yet',now:phase==='AIA_STAGED'?'The browser submitted #1 and is waiting for a receiver response that passes the route checks.':'The browser submitted the current governed continuation and is waiting for a receiver response that passes the route checks.',why:'Submission is an observed client event; it cannot be relabeled as server receipt or model completion before the bound result returns.',next:'Wait, Stop, or let the bounded request return.'};
   if(lastAttempt==='HELD')return {
     eyebrow:'HELD · stage did not advance',
@@ -25,12 +25,12 @@ function phaseCopy(phase,lastAttempt,busy=false){
     next:'Repair or retry the same explicit gesture, or leave Loom mode.'
   };
   switch(phase){
-    case 'ARRIVED': return {eyebrow:'ARRIVED · local handoff only',now:'Loom reached Marrowline. Nothing has been sent to the AI receiver.',why:'The browser holds the task, portable rules, selected-file bodies and commitments locally so you can inspect the route before a network gesture.',next:'Use + → Loom demo → #1 Upload portable AIA.'};
-    case 'AIA_STAGED': return {eyebrow:'STAGED · no network crossing yet',now:'The Portable AIA is attached and its prompt is prepared.',why:'Staging changes the local composer only. Explicit Send remains the consequential gesture.',next:'Review the attachment and prompt, then Send #1.'};
-    case 'AIA_SENT': return {eyebrow:'RECEIVED #1 · governance acknowledgement bound',now:'A receiver response acknowledged the Portable AIA. Selected file bodies have not crossed in this stage.',why:'The local route binds this receiver acknowledgement before file-bearing continuation becomes eligible; foreign enforcement remains unobserved.',next:'Inspect this boundary here, then return to Chat for #2 Upload Loom demo files.'};
-    case 'FILES_STAGED': return {eyebrow:'STAGED #2 · files prepared locally',now:'The selected Loom files are attached for the governed continuation.',why:'Their byte commitments were checked against the Loom manifest before this stage became sendable.',next:'Review the selected files and prompt, then explicitly Send #2.'};
+    case 'ARRIVED': return {eyebrow:'ARRIVED · local handoff only',now:'Loom reached Marrowline. Nothing has been sent to the AI receiver.',why:'The browser holds the task, portable rules, selected-file bodies and commitments locally so you can inspect the route before a network gesture.',next:'Use + → Loom route → Setup · Attach Loom handoff.'};
+    case 'AIA_STAGED': return {eyebrow:'STAGED · no network crossing yet',now:'The Loom handoff is attached and its prompt is prepared.',why:'Staging changes the local composer only. Explicit Send remains the consequential gesture.',next:'Review the attachment and prompt, then Send setup.'};
+    case 'AIA_SENT': return {eyebrow:'RECEIVED #1 · governance acknowledgement bound',now:'A receiver response acknowledged the Loom handoff. Selected file bodies have not crossed in this stage.',why:'The local route binds this receiver acknowledgement before file-bearing continuation becomes eligible; foreign enforcement remains unobserved.',next:'Inspect this boundary here, then return to Chat to attach the selected files for continuation 1.'};
+    case 'FILES_STAGED': return {eyebrow:'STAGED #2 · files prepared locally',now:'The selected Loom files are attached for the governed continuation.',why:'Their byte commitments were checked against the Loom manifest before this stage became sendable.',next:'Review the selected files and prompt, then explicitly Send continuation 1.'};
     case 'CONTINUING': return {eyebrow:'PENDING · governed continuation in flight',now:'The file-bearing continuation has been sent and is awaiting an admissible result.',why:'The previous bound receiver stage remains current while the new result is unresolved.',next:'Wait, Stop, or let the bounded request return.'};
-    case 'DONE': return {eyebrow:'RECEIVED #2 · continuity bound locally',now:'The selected-file receiver result is current for this Marrowline continuation.',why:'The browser route binds this result to the Loom activation and its immediate receiver predecessor; export may use that local binding without claiming foreign enforcement.',next:'Inspect continuity, export the current Portable AIA, ask a follow-up, or return to Chat.'};
+    case 'DONE': return {eyebrow:`CONTINUATION ${continuations||1} · continuity bound locally`,now:'The selected-file receiver result is current for this Marrowline continuation.',why:'The browser route binds this result to the Loom activation and its immediate receiver predecessor; export may use that local binding without claiming foreign enforcement.',next:'Inspect continuity, export the current Loom Session, ask a follow-up, or return to Chat.'};
     case 'EXPIRED': return {eyebrow:'EXPIRED · route closed',now:'This Loom transfer can no longer accept another governed stage.',why:'Expiry prevents an old activation from silently becoming a fresh authority surface.',next:'Return to Holonomy Loom and prepare a fresh handoff.'};
     case 'LEFT': return {eyebrow:'REST · continuation ended',now:'The conversation remains in Marrowline; the Loom continuation has ended.',why:'Later ordinary replies cannot replace or export the closed governed result.',next:'Start a fresh Loom handoff only when you want to re-enter the governed route.'};
     default:return {eyebrow:'PREPARED',now:'Loom continuity is available for inspection.',why:'Gate reports only the stage evidence it has received.',next:'Continue with the next explicit operator gesture.'};
@@ -49,13 +49,13 @@ function permissionCopy(phase,lastAttempt){
 }
 
 export function deriveMarrowlineLoomGateContinuity({
-  phase='ARRIVED',lastAttempt=null,busy=false,activation={},binding=null,predecessor=null,result=null,packet={}
+  phase='ARRIVED',lastAttempt=null,busy=false,activation={},binding=null,predecessor=null,result=null,packet={},substantiveContinuationCount=0,contentPredecessorRequestId=null
 }={}){
   const selected=Array.isArray(packet.documents)?packet.documents:[];
   const selectedNames=selected.map(item=>item?.name||item?.id).filter(Boolean);
   const selectedIds=selected.map(item=>item?.id).filter(Boolean);
   const withheld=activation?.governance?.withheld_document_count ?? packet?.governance?.withheld_document_count ?? null;
-  const p=phaseCopy(phase,lastAttempt,busy);
+  const p=phaseCopy(phase,lastAttempt,busy,substantiveContinuationCount);
   const permission=permissionCopy(phase,lastAttempt);
   const networkGovernance=['AIA_SENT','FILES_STAGED','CONTINUING','DONE'].includes(phase);
   const fileBodiesCrossed=['CONTINUING','DONE'].includes(phase);
@@ -125,6 +125,8 @@ export function deriveMarrowlineLoomGateContinuity({
       current_input_digest:currentDigest,
       predecessor_request_id:predecessorRequest,
       current_result_request_id:resultRequest,
+      substantive_continuation_count:substantiveContinuationCount,
+      content_predecessor_request_id:contentPredecessorRequestId,
       selected_ids:Object.freeze(selectedIds),
       selected_names:Object.freeze(selectedNames),
       withheld_document_count:withheld
@@ -183,7 +185,7 @@ export function installMarrowlineLoomGateContinuity({
   const localCheck=button(doc,'Check selected-file binding locally',onLocalCheck,'loom-gate-secondary');localCheck.id='loomGateLocalCheck';
   const returnLoom=button(doc,'Return to original Loom tab',onReturnToLoom,'loom-gate-secondary');returnLoom.id='loomGateReturnToLoom';
   const back=button(doc,'Back to Chat',onReturnToChat,'loom-gate-secondary');back.id='loomGateBackToChat';
-  const exportButton=button(doc,'Export current Loom Portable AIA',onExport,'loom-gate-primary');exportButton.id='loomGateExportCurrent';exportButton.disabled=true;
+  const exportButton=button(doc,'Export current Loom Session',onExport,'loom-gate-primary');exportButton.id='loomGateExportCurrent';exportButton.disabled=true;
   actions.append(returnLoom,back,localCheck,exportButton);
   const actionStatus=el(doc,'p','','loom-gate-action-status');actionStatus.id='loomGateActionStatus';actionStatus.hidden=true;
   actionStatus.setAttribute('role','status');actionStatus.setAttribute('aria-live','polite');actionStatus.setAttribute('aria-atomic','true');

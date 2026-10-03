@@ -70,6 +70,68 @@ test('all eight exact glyphs retain registry grammar; only evidenced relations m
   assert.ok(Object.values(empty.relations).every(item => item.evidenced === false));
 });
 
+test('empty draft defaults remain resting without claiming that operator work gathered', async () => {
+  const input = packet('prepared', { shared: 0, local: 0, task_present: false, selected_document_ids: [], scene: { rules_count: 2 }, geometry: { rest: true } });
+  const view = await compile(input);
+  assert.equal(view.active_relation, null);
+  assert.equal(view.relations.gathering.evidenced, false);
+  assert.equal(view.copy.now, 'Start with your task.');
+  const withTask = await compile({ ...input, task_present: true });
+  assert.equal(withTask.active_relation, 'gathering', 'actual task presence supplies a bounded gathering observation');
+  const withDocument = await compile({ ...input, shared: 1, selected_document_ids: ['brief'] });
+  assert.equal(withDocument.active_relation, 'gathering', 'selected material supplies evidence even before task entry');
+});
+
+test('typed handoff and return actions never fabricate model execution or display-owned admission', async () => {
+  const base = packet('checking', { task_present: true, binding_verified: true, outbound_submitted: false, response_received: false });
+  const expected = {
+    HANDOFF_DISPATCHED: ['release', 'Client dispatched the transfer'],
+    RETURN_CHECKED: ['bounded_emergence', 'Check remains separate from Admit'],
+    RETURN_ADMITTED: ['bounded_emergence', 'Only explicit local admission callback observed'],
+    RETURN_HELD: ['structural_rest', 'Held return retains current local head']
+  };
+  for (const [route_event, [relation, reason]] of Object.entries(expected)) {
+    const view = await compile({ ...base, route_event });
+    assert.equal(view.active_relation, relation, reason);
+    assert.equal(view.state.submitted, false);
+    assert.equal(view.state.answer_observed, false);
+    assert.equal(view.state.local_return_review_completed, false);
+    assert.equal(view.state.custody_admitted, false);
+    assert.equal(view.custody_admission_credit, 0);
+    assert.equal(view.empirical_credit, 0);
+    assert.equal(view.model_reports.status, 'NOT_ADMITTED_FROM_THIS_EVENT');
+    assert.equal(view.scene.contradictions.length, 0);
+    assert.equal(view.event.route_event, route_event);
+    const frame = projectLoomInstrumentStateFrame(view, { reducedMotion: true });
+    assert.equal(frame.descriptor.glyph, FLOWCORE_GLYPH_REGISTRY.entries[relation].glyph);
+    assert.equal(frame.owns_animation_loop, false);
+  }
+  const handoff = await compile({ ...base, route_event: 'HANDOFF_DISPATCHED' });
+  assert.match(handoff.copy.why, /Receiver arrival.*remain unobserved/);
+  const checked = await compile({ ...base, route_event: 'RETURN_CHECKED' });
+  assert.equal(checked.state.local_admission_observed, false);
+  const admitted = await compile({ ...base, route_event: 'RETURN_ADMITTED' });
+  assert.equal(admitted.state.local_admission_observed, true);
+  assert.match(admitted.copy.why, /no independent custody verification/);
+  const conflicting = await compile({ ...base, route_event: 'HANDOFF_DISPATCHED', outbound_submitted: true });
+  assert.equal(conflicting.active_relation, null);
+  assert.match(conflicting.copy.now, /records disagree/);
+  await assert.rejects(compile({ ...base, route_event: 'RECEIVER_EXECUTED' }), /Unknown client route event/);
+});
+
+test('handoff and checked/admitted return keep distinct identities through replay', async () => {
+  const base = packet('checking', { task_present: true, binding_verified: true, outbound_submitted: false, response_received: false });
+  const sent = { ...base, route_event: 'HANDOFF_DISPATCHED' };
+  const checked = { ...base, route_event: 'RETURN_CHECKED' };
+  const admitted = { ...base, route_event: 'RETURN_ADMITTED' };
+  const view = await compile(admitted, { eventHistory: [sent, checked, admitted] });
+  assert.deepEqual(view.event_history.map(event => event.route_event), ['HANDOFF_DISPATCHED', 'RETURN_CHECKED', 'RETURN_ADMITTED']);
+  const replay = await compile(checked, { eventHistory: [sent, checked, admitted], replay: true });
+  assert.equal(replay.state.local_admission_observed, false);
+  assert.deepEqual(replay.event_history.map(event => event.route_event), ['HANDOFF_DISPATCHED', 'RETURN_CHECKED']);
+  assert.equal(replay.active_relation, 'bounded_emergence');
+});
+
 test('binding verified before submission means readiness, never response validation or custody admission', async () => {
   const ready = await compile(packet('checking', { binding_verified: true }));
   assert.equal(ready.active_relation, 'created_potential');
@@ -301,4 +363,27 @@ test('explicit inspection routes render their distinct canonical surfaces after 
   assert.match(surfaces[3], /schemas/);
   ui.update(await compile(input));
   assert.equal(root.querySelector('.loom-instrument-state-projection').hidden, true);
+});
+
+test('renderer retains relocated Session nodes, avoids label churn, and clears empty draft glyphs', async () => {
+  const dom = new JSDOM('<div id="instrument"></div><section id="session"></section>');
+  const root = dom.window.document.querySelector('#instrument');
+  const session = dom.window.document.querySelector('#session');
+  const ui = mountLoomInstrumentStateView(root);
+  const nodes = ['relation', 'endpoints', 'next', 'inspection'].map(name => root.querySelector(`.loom-instrument-state-${name}`));
+  session.append(...nodes);
+  const view = await compile(packet('pending'));
+  ui.update(view, { progress: .3, motionTimeMs: 1200 });
+  const label = nodes[0].firstChild;
+  ui.update(view, { progress: .4, motionTimeMs: 1600 });
+  assert.equal(nodes[0].firstChild, label, 'ticks retain the same static text node');
+  assert.match(session.textContent, /Packet submitted/);
+  const empty = await compile(packet('prepared', { shared: 0, local: 0, task_present: false, selected_document_ids: [], scene: { rules_count: 2 }, geometry: { rest: true } }), { eventHistory: [packet('pending')] });
+  ui.update(empty, { rest: true });
+  assert.equal(root.querySelector('[data-instrument-active-glyph]').textContent, '');
+  assert.ok([...root.querySelectorAll('.loom-field-flight text')].every(node => node.textContent === ''));
+  assert.match(session.textContent, /Choose material/);
+  ui.destroy();
+  assert.equal(session.childElementCount, 0, 'renderer cleans up its owned nodes after composition relocates them');
+  dom.window.close();
 });

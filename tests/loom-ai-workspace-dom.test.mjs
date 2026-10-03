@@ -75,8 +75,9 @@ test('Loom opens on the human task and local preparation exposes the next route'
   assert.equal(h.$('#aiDemoWelcome').hidden,true);
   assert.equal(h.$('#aiPortableModePanel').hidden,false);
   assert.equal(h.$('#aiDemoModePanel').hidden,true);
-  assert.match(h.$('#aiFirstUseGuide').textContent,/Loom → Marrowline → Return/);
-  assert.match(h.$('#aiFirstUseGuide').textContent,/Nothing leaves this page until you choose an explicit crossing/i);
+  // OLD: route string repeated inside guide. NEW: named route controls plus explicit local preparation.
+  assert.deepEqual([...h.root.querySelectorAll('.loom-journey-step strong')].map(n=>n.textContent),['Loom','Marrowline','Return']);
+  assert.match(h.$('#aiFirstUseGuide').textContent,/Prepare here.*only when you choose Marrowline/i);
   assert.equal(h.root.dataset.loomJourney,'loom');
 
   h.change('#aiTask','Compare the selected evidence and name what remains missing.');
@@ -449,8 +450,10 @@ test('Stop during real AIA digest preparation prevents the first HTTP request',a
 test('drawers explain private selection locally and pending UI survives until return',async t=>{
  const pending=deferred(),h=harness(t,()=>pending.promise);h.load();
  assert.match(h.root.querySelectorAll('.ai-file-note')[3].textContent,/fictional/);
- assert.equal(h.$('#aiRulesDrawer').open,false);
- h.$('#aiRulesDrawer').open=true;assert.ok(h.$('#aiRules'));
+ // OLD: Rules <details>. NEW: deliberate modal workspace, same local/travel fields.
+ assert.equal(h.$('#loomTools').hasAttribute('open'),false);
+ h.$('#loomRulesOpen').click();assert.equal(h.$('#loomTools').hasAttribute('open'),true);assert.equal(h.$('#aiRulesDrawer').hidden,false);assert.ok(h.$('#aiRules'));
+ h.$('#loomToolsClose').click();
  h.$('#aiRun').click();await h.submitted();
  assert.equal(h.$('#aiPending').hidden,false);assert.equal(h.$('#aiRun').disabled,true);
  assert.match(h.$('#aiPendingTime').textContent,/seconds elapsed/);

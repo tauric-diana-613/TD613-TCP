@@ -39,12 +39,17 @@ try{
     await page.locator('#aiPreparePortable').click();await r('stage').waitFor({state:'attached'});
     await page.waitForFunction(()=>!document.querySelector('[data-loom-reentry="stage"]').disabled);
     assert.equal(await head(),'No admitted descendant.');
-    assert.equal(await r('drawer').getAttribute('open'),null);
-    await r('drawer').locator('summary').first().click();
+    // OLD: re-entry lived below the prepared result in an outer drawer.
+    // REAL: explicitly visit the local custody route before operating on it.
+    // NEW: primary Return step and contextual local Check/Admit workspace.
+    await page.locator('#loomJourneyStep3').click();
+    await page.locator('#loomLocalCustodyOpen').click();
+    assert.equal(await r('drawer').evaluate(node=>node.tagName),'SECTION');
+    assert.equal(await r('task').isVisible(),true);
     const tasks=['First explicitly registered task under inherited root rules.','Second task with newly selected material. '+ 'Long bounded task context. '.repeat(150)];
     const returned=[];
     for(const [index,task] of tasks.entries()){
-      await r('task').fill(task);if(index===1){await r('sources-drawer').locator('summary').click();await r('sources').fill(JSON.stringify(sources));}
+      await r('task').fill(task);if(index===1){await r('inspect-sources').click();await r('sources').fill(JSON.stringify(sources));}
       await r('stage').click();await page.waitForFunction(n=>document.querySelector('[data-loom-reentry="turns"]').children.length===n,index+1);
       assert.equal(await head(),'No admitted descendant.');assert.equal(await r('sources').inputValue(),'[]');
       const prompt=await r('prompt').textContent(),parts=prompt.split('\n\n');const contract=JSON.parse(parts.find(p=>p.startsWith('{')));
@@ -103,15 +108,21 @@ try{
     await page.waitForFunction(()=>document.querySelector('#aiChallengeFindings').textContent.includes('Captured exposure retained'));
     assert.equal(await page.locator('#aiChallengeResult').getAttribute('data-state'),'HOLD');assert.equal(await head(),finalHead);
     await page.locator('#aiChallengeResult').screenshot({path:`${dir}/${posture}-mixed-hold-exposure.png`});
+    await page.locator('#loomToolsClose').click();
     await r('drawer').scrollIntoViewIfNeeded();
     const layout=await page.evaluate(()=>({viewport:innerWidth,document:document.documentElement.scrollWidth,pre:[...document.querySelectorAll('.loom-reentry pre')].map(e=>({height:e.getBoundingClientRect().height,max:getComputedStyle(e).maxHeight}))}));
     assert.ok(layout.document<=layout.viewport+1,JSON.stringify(layout));assert.ok(layout.pre.every(p=>p.height<=420));
+    await page.locator('#loomJourneyStep1').click();
     await page.locator('#aiTask').fill('Edited builder task must not destroy admitted history.');assert.equal(await head(),finalHead);
+    await page.locator('#loomJourneyStep3').click();
     await r('task').fill('Pending task registered before replacement review.');await r('stage').click();
     await page.waitForFunction(()=>document.querySelector('[data-loom-reentry="turns"]').children.length===1);
+    await page.locator('#loomJourneyStep1').click();
     await page.locator('#aiNewRootConfirm').check();
+    await page.locator('#loomJourneyStep3').click();
     await r('task').fill('Additional pending task registered after replacement review.');await r('stage').click();
     await page.waitForFunction(()=>document.querySelector('[data-loom-reentry="turns"]').children.length===2);
+    await page.locator('#loomJourneyStep1').click();
     await page.locator('#aiPreparePortable').click();
     assert.match(await page.locator('#aiStatus').textContent(),/HOLD.*new-root/);
     assert.equal(await page.locator('#aiNewRootConfirm').isChecked(),false);assert.equal(await head(),finalHead);
@@ -119,7 +130,7 @@ try{
     await page.locator('#aiNewRootNotice').screenshot({path:`${dir}/${posture}-stale-replacement-hold.png`});
     await page.reload();assert.equal(await head(),'No admitted descendant.');assert.match(await r('recovery').textContent(),/separate custody witness/);
     assert.deepEqual(errors,[]);assert.deepEqual(posts,[]);
-    report.checks.push({posture,viewport,checks:['collapsed initial disclosure','two registered tasks','long task and explicit new source','malformed inline focus','stale-anchor HOLD','check preserves null head','keyboard acknowledgment and visible consequence','atomic two-turn admission','new excursion reanchors and admits','native descendant challenge','standalone recovery with clean literal assay','joined-only recovery with clean marginal probes','stale green verdict invalidated','mixed HOLD retains exposure','bounded receipts and no horizontal overflow','builder edit preserves custody','pending registration revokes new-root acknowledgment','reload recovery explicitly held'],status:'PASS'});
+    report.checks.push({posture,viewport,checks:['primary Return route with contextual custody','two registered tasks','long task and explicit new source','malformed inline focus','stale-anchor HOLD','check preserves null head','keyboard acknowledgment and visible consequence','atomic two-turn admission','new excursion reanchors and admits','native descendant challenge','standalone recovery with clean literal assay','joined-only recovery with clean marginal probes','stale green verdict invalidated','mixed HOLD retains exposure','bounded receipts and no horizontal overflow','builder edit preserves custody','pending registration revokes new-root acknowledgment','reload recovery explicitly held'],status:'PASS'});
     await page.close();
   }
   report.status='PASS';

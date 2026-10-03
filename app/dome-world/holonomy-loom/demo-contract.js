@@ -8,6 +8,7 @@ export const LOOM_DEMO_REQUEST_SCHEMA = 'td613.loom.demo-request/v0.2';
 export const LOOM_DEMO_STAGE_RECEIPT_SCHEMA = 'td613.loom.demo-stage-receipt/v0.2';
 export const LOOM_DEMO_RESULT_COMMITMENT_SCHEMA = 'td613.loom.demo-result-commitment/v0.1';
 export const LOOM_DEMO_EXPORT_PROVENANCE_SCHEMA = 'td613.loom.demo-export-provenance/v0.1';
+export const LOOM_DEMO_EXPORT_CONTENT_SCHEMA = 'td613.loom.demo-export-provenance/v0.2';
 export const LOOM_DEMO_EXPORT_INSPECTION_SCHEMA = 'td613.loom.demo-export-inspection/v0.1';
 const copy = value => JSON.parse(JSON.stringify(value));
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
@@ -142,6 +143,10 @@ export async function bindLoomDemoRequest(request, environment = globalThis) {
       origin_input_digest: activation.governance.input_digest,
       prior_result_commitment: activation.prior_result_commitment
     };
+    // v0.2 derives its signed current-input digest from this historical canonical
+    // task text. Public product copy may retire AIA; this wire derivation must
+    // remain byte-compatible with deployed hosts and Neon until a coordinated
+    // protocol-version migration. A UI rename cannot change admission hashes.
     task = ['Receive this Portable AIA activation. Acknowledge its task and portable rules, identify the selected files still pending, and wait for the separate file turn. Do not analyze missing source contents or claim that they have been read. A prior-result commitment is a reference only; its source-bearing answer has not arrived yet. The host, not your acknowledgment, governs permitted inputs and result admission.', `Activation:\n${JSON.stringify(receiverView)}`, `Operator request:\n${request.operator_request}`].join('\n\n');
   } else {
     predecessor = validateLoomDemoStageReceipt(request.predecessor, activation);
@@ -219,19 +224,25 @@ export function exportLoomDemoCurrent(binding, result = undefined, context = und
       || original.task !== activation.task || !same(original.rules, activation.rules)
       || !same(original.documents, binding.selected.documents) || !same(original.governance, activation.governance)
       || !Array.isArray(context.stages) || !context.stages.length || context.stages.length > 128) throw new Error('LOOM_DEMO_EXPORT_HISTORY_CHANGED');
+    const carriesResults = context.stages.every(stage => Object.hasOwn(stage, 'result'));
+    if (!carriesResults && context.stages.some(stage => Object.hasOwn(stage, 'result'))) throw new Error('LOOM_DEMO_EXPORT_PARTIAL_CONTENT_HISTORY');
     const stages = context.stages.map(stage => {
       const receipt = validateLoomDemoStageReceipt(stage.receipt, activation);
       if (stage.receiver !== 'MARROWLINE' || typeof stage.observed_at !== 'string'
         || !Number.isFinite(Date.parse(stage.observed_at)) || !same(stage.binding?.activation_digest, activation.activation_digest)) throw new Error('LOOM_DEMO_EXPORT_HISTORY_CHANGED');
+      const result = carriesResults ? loomDemoResult(stage.result, receipt.phase === 'ACTIVATE' ? [] : original.documents) : null;
+      if (carriesResults && (!result || result.request_id !== receipt.request_id)) throw new Error('LOOM_DEMO_EXPORT_STAGE_RESULT_CHANGED');
       return copy({ receipt, binding: stage.binding, receiver: stage.receiver, observed_at: stage.observed_at,
-        predecessor_request_id: stage.predecessor_request_id, content_predecessor_request_id: stage.content_predecessor_request_id });
+        predecessor_request_id: stage.predecessor_request_id, content_predecessor_request_id: stage.content_predecessor_request_id,
+        ...(carriesResults ? { result } : {}) });
     });
     if (stages.at(-1).receipt.request_id !== admitted.request_id
       || !same(stages.at(-1).binding, binding.receipt)) throw new Error('LOOM_DEMO_EXPORT_HISTORY_NOT_CURRENT');
+    if (carriesResults && !same(stages.at(-1).result, admitted)) throw new Error('LOOM_DEMO_EXPORT_RESULT_MISMATCH');
     const source = context.origin?.receipt?.source_revision;
     const sourceKnown = typeof source === 'string' && /^[a-f0-9]{40}$/.test(source);
     packet.loom_demo_provenance = {
-      schema: LOOM_DEMO_EXPORT_PROVENANCE_SCHEMA, case_id: activation.activation_digest,
+      schema: carriesResults ? LOOM_DEMO_EXPORT_CONTENT_SCHEMA : LOOM_DEMO_EXPORT_PROVENANCE_SCHEMA, case_id: activation.activation_digest,
       origin_input_digest: activation.governance.input_digest,
       source_revision: { value: sourceKnown ? source : null, state: sourceKnown ? 'CARRIED_ORIGIN_DECLARATION' : 'UNOBSERVED', authenticated: false },
       activation: copy(activation), original_result: originalResult,
@@ -301,9 +312,11 @@ export async function inspectLoomDemoExport(packet, environment = globalThis) {
     const provenance = packet?.loom_demo_provenance;
     exact(provenance, ['schema', 'case_id', 'origin_input_digest', 'source_revision', 'activation', 'original_result',
       'latest_request_id', 'latest_result_digest', 'stages', 'exclusions', 'missingness', 'authority']);
-    if (packet.schema !== 'td613.loom.portable-task/v0.1' || provenance.schema !== LOOM_DEMO_EXPORT_PROVENANCE_SCHEMA) throw new Error('LOOM_DEMO_EXPORT_PROVENANCE_INVALID');
+    const carriesResults = provenance.schema === LOOM_DEMO_EXPORT_CONTENT_SCHEMA;
+    if (packet.schema !== 'td613.loom.portable-task/v0.1' || (!carriesResults && provenance.schema !== LOOM_DEMO_EXPORT_PROVENANCE_SCHEMA)) throw new Error('LOOM_DEMO_EXPORT_PROVENANCE_INVALID');
     const activation = provenance.activation;
     if (activation === null) {
+      if (carriesResults) throw new Error('LOOM_DEMO_EXPORT_CONTENT_HISTORY_MISSING');
       await verifyLoomAiGovernance(packetInputForReview(packet), environment);
       const latest = loomDemoResult(packet.continuation?.prior_result, packet.documents);
       if (!latest || !same(latest, provenance.original_result) || provenance.case_id !== null
@@ -333,7 +346,7 @@ export async function inspectLoomDemoExport(packet, environment = globalThis) {
     let previous = null, previousTime = activation.issued_at, previousContentId = originalResult?.request_id ?? null;
     const requestIds = new Set();
     for (const [index, stage] of provenance.stages.entries()) {
-      exact(stage, ['receipt', 'binding', 'receiver', 'observed_at', 'predecessor_request_id', 'content_predecessor_request_id']);
+      exact(stage, ['receipt', 'binding', 'receiver', 'observed_at', 'predecessor_request_id', 'content_predecessor_request_id', ...(carriesResults ? ['result'] : [])]);
       const receipt = validateLoomDemoStageReceipt(stage.receipt, activation), at = Date.parse(stage.observed_at);
       if (stage.receiver !== 'MARROWLINE' || !Number.isFinite(at) || at < previousTime || at >= activation.expires_at
         || requestIds.has(receipt.request_id) || receipt.phase !== (index ? 'CONTINUE' : 'ACTIVATE')
@@ -350,6 +363,12 @@ export async function inspectLoomDemoExport(packet, environment = globalThis) {
         || !same(binding.selected_ids, index ? packet.documents.map(item => item.id) : [])
         || binding.rules_preserved !== true || binding.contents_verified !== Boolean(index) || binding.authority_transferred !== false
         || binding.predecessor_phase !== (previous?.phase ?? null) || binding.predecessor_request_id !== (previous?.request_id ?? null)) throw new Error('LOOM_DEMO_EXPORT_BINDING_CHANGED');
+      if (carriesResults) {
+        const retained = loomDemoResult(stage.result, index ? packet.documents : []);
+        if (!retained || !same(retained, stage.result) || retained.request_id !== receipt.request_id
+          || await loomDemoDigest(retained, environment) !== receipt.result_digest) throw new Error('LOOM_DEMO_EXPORT_STAGE_RESULT_CHANGED');
+        if (index === provenance.stages.length - 1 && !same(retained, latest)) throw new Error('LOOM_DEMO_EXPORT_NOT_LATEST');
+      }
       requestIds.add(receipt.request_id); previous = receipt; previousTime = at;
       if (index) previousContentId = receipt.request_id;
     }
@@ -368,7 +387,8 @@ export async function inspectLoomDemoExport(packet, environment = globalThis) {
         receipt_signatures_verified_by_export: false, foreign_origin_authenticated: false })) throw new Error('LOOM_DEMO_EXPORT_CEILING_CHANGED');
     return { schema: LOOM_DEMO_EXPORT_INSPECTION_SCHEMA, status: 'REVIEW_ONLY_CONSISTENCY', case_id: provenance.case_id,
       original_request_id: originalResult?.request_id ?? null, latest_request_id: latest.request_id,
-      observed_stage_count: provenance.stages.length, source_revision: copy(provenance.source_revision), missingness: copy(provenance.missingness),
+      observed_stage_count: provenance.stages.length, substantive_continuation_count: provenance.stages.length - 1,
+      content_history_retained: carriesResults, content_history_scope: carriesResults ? 'NORMALIZED_ADMITTED_STAGE_RESULTS' : 'RECEIPT_LINKS_ONLY_INTERMEDIATE_CONTENT_UNOBSERVED', source_revision: copy(provenance.source_revision), missingness: copy(provenance.missingness),
       review_only: true, live_custody_capability: false, restore_authority: false, receipt_signatures_verified: false,
       native_request_digests_recomputed: false, foreign_origin_authenticated: false };
   } catch (error) { return held(error.message); }

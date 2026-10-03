@@ -36,6 +36,7 @@ export function parseLoomReentryReturnBatch(raw) {
 /** Human gesture layer; all admission law stays in the process-local custodian. */
 export function mountPortableLoomReentryWorkspace(root, {
   environment = globalThis,
+  onCheck = () => {},
   onAdmission = () => {},
   onChallenge = null,
   getChallenge = () => null,
@@ -43,10 +44,13 @@ export function mountPortableLoomReentryWorkspace(root, {
   now = () => Date.now()
 } = {}) {
   if (!root?.ownerDocument) throw new TypeError('Re-entry workspace element required.');
-  root.innerHTML = `<details class="loom-reentry" data-loom-reentry="drawer">
-    <summary><span>Bring work back into Loom<small>Prepare a task. Check its return. Choose whether to admit.</small></span></summary>
+  // Return is an ordinary product workspace. Exact records and compatibility
+  // carriers share one secondary surface; no operational step nests a drawer.
+  root.innerHTML = `<section class="loom-reentry" data-loom-reentry="drawer" aria-labelledby="loomReentryHeading">
+    <header class="loom-reentry-head"><h2 id="loomReentryHeading">Return to Loom</h2><p>Check the returned work. Review its consequence. Choose whether to admit it.</p></header>
     <div class="loom-reentry-body">
       <p>Check compares a carried return with your local task registration. Admit changes Loom's local admitted history. The foreign assistant's internal enforcement remains unobserved.</p>
+      <p data-loom-reentry="lane-state" role="status">No live local custody lane. Imported or reloaded records remain review-only.</p>
       <dl class="loom-reentry-state">
         <div><dt>Session root</dt><dd data-loom-reentry="root">Prepare a Loom session first.</dd></div>
         <div><dt>Admitted local head</dt><dd data-loom-reentry="head">No admitted descendant.</dd></div>
@@ -55,48 +59,40 @@ export function mountPortableLoomReentryWorkspace(root, {
       <p data-loom-reentry="anchor"></p>
       <p data-loom-reentry="recovery">This working custody lane lives in this tab. Its private record includes selected source bodies, pasted returns and any attached local challenge answer keys. Save it locally before leaving; do not paste it into a receiver. Reloaded or imported records require a separate custody witness and gain no admission authority here.</p>
       <div data-loom-reentry="active">
-        <label for="loomReentryTask">Prepare next foreign task<textarea id="loomReentryTask" data-loom-reentry="task" rows="3" maxlength="12000" placeholder="The exact task you intend to carry to another assistant."></textarea></label>
-        <details data-loom-reentry="sources-drawer"><summary>Choose source bodies for this task · starts empty</summary><div>
-          <p>Include only files intentionally supplied for this task. Prior task files stay unselected. Up to eight objects, each with <code>id</code>, <code>name</code> and <code>text</code>.</p>
-          <label for="loomReentrySources">Selected source bodies · JSON array<textarea id="loomReentrySources" data-loom-reentry="sources" rows="4" maxlength="400000" spellcheck="false">[]</textarea></label>
-          <label for="loomReentryWithheld">Documents deliberately withheld · count only<input id="loomReentryWithheld" data-loom-reentry="withheld" type="number" min="0" max="8" step="1" value="0"></label>
-        </div></details>
-        <p>Prepare registers this task locally and keeps the admitted head unchanged. Copy carries the task, selected sources and return contract to your clipboard; no provider request is made here.</p>
-        <div class="loom-reentry-actions"><button type="button" data-loom-reentry="stage" disabled>Prepare next foreign task</button><button type="button" data-loom-reentry="copy" disabled>Copy task + return contract</button></div>
-        <p data-loom-reentry="expiry" hidden></p>
-        <ol class="loom-reentry-turns" data-loom-reentry="turns" hidden></ol>
-        <details data-loom-reentry="prompt-drawer" hidden><summary>Inspect what will travel</summary><pre data-loom-reentry="prompt"></pre></details>
+        <section class="loom-reentry-step" aria-labelledby="loomReentryRegisterHeading">
+          <h3 id="loomReentryRegisterHeading">Register the next task</h3>
+          <label for="loomReentryTask">Task to carry<textarea id="loomReentryTask" data-loom-reentry="task" rows="3" maxlength="12000" placeholder="The exact task you intend to carry to another assistant."></textarea></label>
+          <p>Sources start empty for each task. Use <a href="#loomReentryInspection" data-loom-reentry="inspect-sources">Sources & exact record</a> to deliberately add source bodies; inherited rules stay attached.</p>
+          <p data-loom-reentry="source-selection">No source bodies selected for the next task.</p>
+          <p>Prepare registers this task locally and keeps the admitted head unchanged. Copy carries the task, selected sources and return contract to your clipboard; no provider request is made here.</p>
+          <div class="loom-reentry-actions"><button type="button" data-loom-reentry="stage" disabled>Prepare next foreign task</button><button type="button" data-loom-reentry="copy" disabled>Copy task + return contract</button></div>
+          <p data-loom-reentry="expiry" hidden></p>
+          <ol class="loom-reentry-turns" data-loom-reentry="turns" hidden></ol>
+        </section>
+        <section class="loom-reentry-step" aria-labelledby="loomReentryCheckHeading">
+        <h3 id="loomReentryCheckHeading">Check returned work</h3>
         <label for="loomReentryReturns">Returned turns · all registered tasks, in order<textarea id="loomReentryReturns" data-loom-reentry="returns" rows="6" maxlength="1600000" spellcheck="false" aria-describedby="loomReentryReturnsCue" placeholder="[ {first returned object}, {second returned object} ]"></textarea></label>
         <p id="loomReentryReturnsCue">Keep each returned JSON object unchanged and wrap the ordered returns in an array. A matching declaration can still be held for missing or insufficient evidence.</p>
-        <details data-loom-reentry="rules-drawer"><summary>Review the exact inherited rules</summary><ul class="loom-reentry-rules" data-loom-reentry="rules"></ul></details>
+        <section data-loom-reentry="rules-drawer" aria-labelledby="loomReentryRulesHeading"><h4 id="loomReentryRulesHeading">Inherited rules</h4><ul class="loom-reentry-rules" data-loom-reentry="rules"></ul></section>
         <label class="loom-reentry-review"><input type="checkbox" data-loom-reentry="policy-review"><span>I reviewed these returned answers against the exact inherited rules. This review remains an operator declaration.</span></label>
         <p data-loom-reentry="challenge-history-summary">No captured Challenge episodes in this custody lane. A clean or absent assay cannot prove foreign enforcement.</p>
-        <details data-loom-reentry="challenge-history-drawer" hidden><summary>Inspect recorded Challenge episodes and their scope</summary><ol class="loom-reentry-turns" data-loom-reentry="challenge-history"></ol></details>
         <label class="loom-reentry-review" data-loom-reentry="challenge-option" hidden><input type="checkbox" data-loom-reentry="attach-challenge"><span>Recheck the current captured Challenge episode with this return. Recorded episodes linked to this excursion remain part of Check even when this box is clear.</span></label>
         <p>Check leaves admitted history unchanged. A candidate requires all registered returns, matching commitments and explicit policy review.</p>
         <div class="loom-reentry-actions"><button type="button" data-loom-reentry="check" disabled>Check returned work</button></div>
+        </section>
       </div>
       <div class="loom-reentry-result" data-loom-reentry="result" role="status" aria-live="polite" tabindex="-1" hidden>
-        <h4 data-loom-reentry="verdict"></h4><p data-loom-reentry="detail"></p><ul class="loom-reentry-turns" data-loom-reentry="reasons" hidden></ul>
+        <h4 data-loom-reentry="verdict"></h4><p data-loom-reentry="detail"></p><ul class="loom-reentry-turns" data-loom-reentry="reasons" hidden></ul><p data-loom-reentry="check-observation-status" hidden></p>
       </div>
       <div data-loom-reentry="admission" hidden>
+        <h3>Review and admit</h3>
         <p class="loom-reentry-notice" data-loom-reentry="notice"></p>
         <p>The pasted return could have been fabricated without foreign execution. Hidden retention, training, memory and retransmission remain unobserved. This local ledger cannot exclude a separately copied session fork.</p>
         <label class="loom-reentry-review"><input type="checkbox" data-loom-reentry="accept"><span>I reviewed this exact candidate and accept its unresolved foreign claims for this local admission.</span></label>
         <div class="loom-reentry-actions"><button type="button" data-loom-reentry="admit" disabled>Admit returned work</button></div>
       </div>
       <p data-loom-reentry="rest-state" hidden>Resting. Registered tasks and the admitted head stay unchanged; the excursion deadline keeps running. Resume or discard pending tasks when ready.</p>
-      <details data-loom-reentry="continuation" hidden><summary>Continue from the admitted answer · carrier only</summary><div>
-        <p>This carrier includes the latest admitted answer and a new task. It registers no foreign turn and advances no ancestry. Use the registered-task controls above when the next return must be eligible for another local admission.</p>
-        <details><summary>Inspect the preceding admitted answer</summary><pre data-loom-reentry="preceding-answer"></pre></details>
-        <label for="loomContinuationTask">Task for this continuation carrier<textarea id="loomContinuationTask" data-loom-reentry="continuation-task" rows="3" maxlength="12000"></textarea></label>
-        <p>Choose source bodies deliberately. Only the latest admitted turn's selected documents are available here; every checkbox starts clear.</p>
-        <div data-loom-reentry="continuation-sources"></div>
-        <p data-loom-reentry="continuation-selection">The prior answer will travel; no source body is selected.</p>
-        <div class="loom-reentry-actions"><button type="button" data-loom-reentry="prepare-carrier" disabled>Prepare continuation carrier</button><button type="button" data-loom-reentry="copy-carrier" disabled>Copy admitted continuation</button></div>
-        <details data-loom-reentry="carrier-preview" hidden><summary>Inspect the exact continuation carrier</summary><pre data-loom-reentry="carrier"></pre></details>
-      </div></details>
-      <div class="loom-reentry-actions">
+      <div class="loom-reentry-actions loom-reentry-tools">
         <button type="button" data-loom-reentry="rest" disabled>Rest</button>
         <button type="button" data-loom-reentry="cancel" disabled>Discard pending tasks</button>
         <button type="button" data-loom-reentry="challenge-head" hidden>Challenge current anchor</button>
@@ -104,9 +100,31 @@ export function mountPortableLoomReentryWorkspace(root, {
       </div>
       <p>Private Save includes selected source bodies, pasted returns and local challenge answer keys. Keep the file here; do not send it to a receiver. Reloaded records remain review-only.</p>
       <p>Discard removes only this tab's pending registration and candidate. Work already copied or submitted to a receiver cannot be recalled.</p>
-      <details><summary>Inspect local custody and evidence</summary><pre data-loom-reentry="technical">No local custody lane yet.</pre></details>
+      <details id="loomReentryInspection" class="loom-reentry-inspection" data-loom-reentry="inspection">
+        <summary>Sources & exact record</summary>
+        <section data-loom-reentry="sources-drawer" aria-labelledby="loomReentrySourcesHeading">
+          <h3 id="loomReentrySourcesHeading">Sources for the next registered task</h3>
+          <p>Include only files intentionally supplied for this task. Prior task files stay unselected. Up to eight objects, each with <code>id</code>, <code>name</code> and <code>text</code>.</p>
+          <label for="loomReentrySources">Selected source bodies · JSON array<textarea id="loomReentrySources" data-loom-reentry="sources" rows="4" maxlength="400000" spellcheck="false">[]</textarea></label>
+          <label for="loomReentryWithheld">Documents deliberately withheld · count only<input id="loomReentryWithheld" data-loom-reentry="withheld" type="number" min="0" max="8" step="1" value="0"></label>
+        </section>
+        <section data-loom-reentry="prompt-drawer" hidden><h3>Exact registered transfer</h3><pre data-loom-reentry="prompt"></pre></section>
+        <section data-loom-reentry="challenge-history-drawer" hidden><h3>Recorded Challenge episodes and scope</h3><ol class="loom-reentry-turns" data-loom-reentry="challenge-history"></ol></section>
+        <section data-loom-reentry="continuation" hidden aria-labelledby="loomCarrierHeading">
+          <h3 id="loomCarrierHeading">Continue from the admitted answer · carrier only</h3>
+          <p>This carrier includes the latest admitted answer and a new task. It registers no foreign turn and advances no ancestry. Use the registered-task controls above when the next return must be eligible for another local admission.</p>
+          <h4>Preceding admitted answer</h4><pre data-loom-reentry="preceding-answer"></pre>
+          <label for="loomContinuationTask">Task for this continuation carrier<textarea id="loomContinuationTask" data-loom-reentry="continuation-task" rows="3" maxlength="12000"></textarea></label>
+          <p>Choose source bodies deliberately. Only the latest admitted turn's selected documents are available here; every checkbox starts clear.</p>
+          <div data-loom-reentry="continuation-sources"></div>
+          <p data-loom-reentry="continuation-selection">The prior answer will travel; no source body is selected.</p>
+          <div class="loom-reentry-actions"><button type="button" data-loom-reentry="prepare-carrier" disabled>Prepare continuation carrier</button><button type="button" data-loom-reentry="copy-carrier" disabled>Copy admitted continuation</button></div>
+          <section data-loom-reentry="carrier-preview" hidden><h4>Exact continuation carrier</h4><pre data-loom-reentry="carrier"></pre></section>
+        </section>
+        <section><h3>Private local custody and evidence</h3><p>This exact record includes local-only source bodies and any challenge answer keys. Keep it here; imported or reloaded records remain review-only.</p><pre data-loom-reentry="technical">No local custody lane yet.</pre></section>
+      </details>
     </div>
-  </details>`;
+  </section>`;
 
   const $ = key => root.querySelector(`[data-loom-reentry="${key}"]`);
   const cleanups = [];
@@ -120,6 +138,7 @@ export function mountPortableLoomReentryWorkspace(root, {
   const challengeEvidence = () => suppliedChallenge || getChallenge();
   const showResult = (title, detail, state = 'HELD', reasons = [], focus = false) => {
     $('result').hidden = false; $('result').dataset.state = state;
+    $('check-observation-status').hidden = true; $('check-observation-status').textContent = '';
     $('verdict').textContent = title; $('detail').textContent = detail;
     $('reasons').replaceChildren();
     for (const reason of reasons) { const item = root.ownerDocument.createElement('li'); item.textContent = reason; $('reasons').append(item); }
@@ -138,14 +157,27 @@ export function mountPortableLoomReentryWorkspace(root, {
       const checkbox = root.ownerDocument.createElement('input'); checkbox.type = 'checkbox'; checkbox.dataset.continuationSource = document.id;
       const span = root.ownerDocument.createElement('span'); span.textContent = `Carry ${document.name} (${document.id})`;
       label.append(checkbox, span);
-      const detail = root.ownerDocument.createElement('details'), summary = root.ownerDocument.createElement('summary'), body = root.ownerDocument.createElement('pre');
-      summary.textContent = `Inspect ${document.name}`; body.textContent = document.text; detail.append(summary, body);
+      const detail = root.ownerDocument.createElement('section'), summary = root.ownerDocument.createElement('h4'), body = root.ownerDocument.createElement('pre');
+      summary.textContent = document.name; body.textContent = document.text; detail.append(summary, body);
       $('continuation-sources').append(label, detail);
     }
     $('continuation-selection').textContent = 'The prior answer will travel; no source body is selected.';
   }
   function renderState() {
     const view = custodian?.inspect();
+    root.dataset.custodyState = disposed ? 'CLOSED' : view ? 'LIVE_PROCESS' : busy ? 'CHECKING' : 'UNAVAILABLE';
+    $('lane-state').textContent = disposed ? 'The live local custody lane is closed. Saved records remain review-only.'
+      : view ? 'Live local custody in this tab. Check leaves the head unchanged; only exact reviewed admission advances it.'
+        : busy ? 'Checking local seed custody. Admission is unavailable until this check completes.'
+          : 'No live local custody lane. Imported or reloaded records remain review-only; they cannot authorize admission here.';
+    try {
+      const sources = JSON.parse($('sources').value);
+      $('source-selection').textContent = Array.isArray(sources)
+        ? `${sources.length} source bod${sources.length === 1 ? 'y' : 'ies'} selected for the next task · ${$('withheld').value} deliberately withheld. Exact bytes are available in Sources & exact record.`
+        : 'Source selection needs a JSON array. Review Sources & exact record before preparing.';
+    } catch {
+      $('source-selection').textContent = 'Source selection is unreadable. Review Sources & exact record before preparing.';
+    }
     if (view) {
       $('root').textContent = compact(view.root_ref); $('root').title = view.root_ref;
       $('head').textContent = view.current_work_unit_ref ? compact(view.current_work_unit_ref) : 'No admitted descendant.';
@@ -221,6 +253,9 @@ export function mountPortableLoomReentryWorkspace(root, {
   for (const key of ['task', 'sources', 'withheld', 'returns']) listen($(key), 'input', () => invalidate('Input changed. Recheck the exact carried return before admission.'));
   for (const key of ['policy-review', 'attach-challenge']) listen($(key), 'change', () => invalidate('Review or challenge selection changed. Check again before admission.'));
   listen($('accept'), 'change', () => { reviewedRef = $('accept').checked && candidate?.status === 'ADMISSION_CANDIDATE' ? candidate.ref : null; renderState(); });
+  listen($('inspect-sources'), 'click', event => {
+    event.preventDefault(); $('inspection').open = true; $('sources').focus();
+  });
 
   listen($('stage'), 'click', () => run(async ticket => {
     const documents = JSON.parse($('sources').value);
@@ -259,6 +294,16 @@ export function mountPortableLoomReentryWorkspace(root, {
       $('notice').textContent = `Admit adds these ${checked.returned_turns.length} exact returned task${checked.returned_turns.length === 1 ? '' : 's'}, answers and selected source commitments as Loom's next local descendants. The admitted head changes from ${compact(checked.expected_head_ref)} to a new descendant after departure anchor ${compact(checked.departure.anchor_work_unit_ref)}. Root rules remain bound to ${compact(checked.departure.policy_commitment)}. The foreign assistant's enforcement remains unobserved.`;
       showResult('Ready for local admission.', 'The carried record matches this local registration. Nothing has been admitted yet. Review the head-changing consequence below.', 'ADMISSION_CANDIDATE', [], true);
     } else showResult('HOLD · returned work remains unadmitted.', 'Check kept the admitted head unchanged. Resolve the stated mismatch or insufficient evidence before another check.', 'HELD', checked.reasons, true);
+    // Observation follows the real local check. A companion display failure
+    // cannot overwrite the candidate, advance the head or substitute a verdict.
+    renderState();
+    try { await onCheck(checked); }
+    catch (error) {
+      if (!disposed && ticket === generation) {
+        $('check-observation-status').textContent = `Local check completed; companion observation refresh held. ${error.message} The checked result and admitted head are unchanged.`;
+        $('check-observation-status').hidden = false;
+      }
+    }
   }));
   listen($('admit'), 'click', () => run(async ticket => {
     if (candidate?.status !== 'ADMISSION_CANDIDATE' || reviewedRef !== candidate.ref || !$('accept').checked) throw new Error('Review this exact candidate before admission.');

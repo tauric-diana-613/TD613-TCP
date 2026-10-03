@@ -99,41 +99,58 @@ try {
     const loom = await context.newPage();
     const checks = [];
     const check = (label, condition) => { assert.equal(Boolean(condition), true, label); checks.push(label); };
+    // OLD: rules/profile/one-hop tools were disclosures embedded in the route.
+    // REAL: deliberate configuration preserves selected bytes, policy and
+    // exclusion; compatibility export earns no extra custody authority.
+    // NEW: visit dedicated tool panels and close them before primary crossing.
+    const openTool = async name => {
+      if (!(await loom.locator('#loomTools').evaluate(node => node.open))) await useKeyboard(loom.locator('#loomToolsOpen'));
+      await useKeyboard(loom.locator(`[data-tool="${name}"]`));
+      check(`${name} tool workspace is accessible`, await loom.locator(`[data-tool-panel="${name}"]`).isVisible());
+    };
+    const closeTools = async () => {
+      if (await loom.locator('#loomTools').evaluate(node => node.open)) await useKeyboard(loom.locator('#loomToolsClose'));
+    };
     try {
       await loom.goto(`${base}/dome-world/holonomy-loom.html`, { waitUntil: 'networkidle' });
       await loom.locator('#aiDemoMode').click(); await loom.locator('#aiNew').click();
-      await loom.locator('#aiTask').fill(task); await loom.locator('#aiRulesDrawer summary').click();
+      await loom.locator('#aiTask').fill(task); await openTool('rules');
       await loom.locator('#aiRules').fill(rules.join('\n')); await loom.locator('#aiPrivate').fill(privateText);
+      await openTool('model');
       await loom.locator('#aiRuntimeProfile').selectOption('quick');
       check('Quick profile preserves the task and portable rules', await loom.locator('#aiTask').inputValue() === task && await loom.locator('#aiRules').inputValue() === rules.join('\n'));
       await loom.locator('#aiRuntimeProfile').selectOption('deep');
       check('Deep profile preserves the same selected task and rules', await loom.locator('#aiTask').inputValue() === task && await loom.locator('#aiRules').inputValue() === rules.join('\n'));
+      await closeTools();
       await loom.locator('#aiUpload').setInputFiles([
         { name: 'selected.txt', mimeType: 'text/plain', buffer: Buffer.from(selectedText) },
         { name: 'local-only.txt', mimeType: 'text/plain', buffer: Buffer.from(privateText) }
       ]);
       await loom.getByRole('checkbox', { name: 'Share selected.txt with the AI', exact: true }).check();
       check('local-only file remains unselected', !(await loom.getByRole('checkbox', { name: 'Share local-only.txt with the AI', exact: true }).isChecked()));
-      await useKeyboard(loom.locator('#aiRun'));
+      await openTool('model'); await useKeyboard(loom.locator('#aiRun')); await closeTools();
       await loom.waitForFunction(() => document.querySelector('#aiExport')?.disabled === false);
-      await loom.locator('.ai-onehop-drawer > summary').click();
+      await openTool('legacy');
       const origin = await downloadJson(loom, loom.locator('#aiExport'), `${name}-origin.json`);
       check('origin task/rules/selected source/original result survive export', origin.task === task && JSON.stringify(origin.rules) === JSON.stringify(rules)
         && origin.documents.length === 1 && origin.documents[0].text === selectedText && origin.continuation.prior_result.answer.startsWith('Original Loom answer'));
       check('origin excludes local bodies and labels source missingness', !JSON.stringify(origin).includes(privateText) && origin.loom_demo_provenance.missingness.includes('SOURCE_REVISION_UNOBSERVED'));
       check('origin exported representation is inspectable review material', (await inspectLoomDemoExport(origin, environment)).status === 'REVIEW_ONLY_CONSISTENCY');
+      await closeTools();
       const [marrowline] = await Promise.all([context.waitForEvent('page'), loom.locator('#aiMarrowline').click()]);
       await marrowline.waitForURL(url => url.pathname === '/dome-world/marrowline.html');
       await marrowline.waitForFunction(() => Boolean(window.__TD613_LOOM_DEMO_CONTROLLER__));
       check('arrival makes zero native receiver requests', requests.length === 0);
       await useKeyboard(marrowline.locator('#marrowlineComposerPlus'));
       await useKeyboard(marrowline.locator('#marrowlineContextLoom'));
-      await useKeyboard(marrowline.getByRole('button', { name: '1 · Attach Loom handoff', exact: true }));
+      // OLD: numeric demo steps; REAL: handoff before selected-file submission;
+      // NEW: native Setup/Continue labels with the same no-send staging contract.
+      await useKeyboard(marrowline.getByRole('button', { name: 'Setup · Attach Loom handoff', exact: true }));
       check('keyboard staging moves focus to native prompt without sending', requests.length === 0 && await marrowline.locator('#khonapolitPrompt').evaluate(node => node === document.activeElement));
       await useKeyboard(marrowline.locator('#khonapolitSend'));
       await marrowline.waitForFunction(() => window.__TD613_LOOM_DEMO_CONTROLLER__.snapshot().phase === 'AIA_SENT');
       await useKeyboard(marrowline.locator('#marrowlineComposerPlus')); await useKeyboard(marrowline.locator('#marrowlineContextLoom'));
-      await useKeyboard(marrowline.getByRole('button', { name: '2 · Attach selected files', exact: true }));
+      await useKeyboard(marrowline.getByRole('button', { name: 'Continue · Attach selected files', exact: true }));
       await useKeyboard(marrowline.locator('#khonapolitSend'));
       await marrowline.waitForFunction(() => window.__TD613_LOOM_DEMO_CONTROLLER__.snapshot().phase === 'DONE' && !window.__TD613_LOOM_DEMO_CONTROLLER__.snapshot().busy);
       if (viewport.width < 861) await useKeyboard(marrowline.locator('.mobile-dock [data-mobile-target="gatePanel"]'));

@@ -240,3 +240,46 @@ test('one bench selector exposes custody and advisory tools without granting gat
   assert.equal(h.fetches(), 0);
   assert.equal(h.ui.inspect().receipt, null);
 });
+
+test('pending projection reserves the field footprint while hiding stale current evidence', async t => {
+  const dom = new JSDOM('<section id="field"></section><section id="session"></section>', { pretendToBeVisual: true });
+  const doc = dom.window.document, root = doc.querySelector('#field'), session = doc.querySelector('#session');
+  let renderPass, delay = false, release;
+  const barrier = new Promise(resolve => { release = resolve; });
+  const ui = mountLoomRuntimeStateView(root, {
+    environment: { crypto: { subtle: { async digest(...args) { if (delay) await barrier; return webcrypto.subtle.digest(...args); } } } },
+    coordinator: { setViewport() {}, registerPass(_name, callback) { renderPass = callback; return () => {}; } },
+    observe: () => ({ source_revision: 'working-tree', events: [] })
+  });
+  t.after(() => { release(); ui.dispose(); dom.window.close(); });
+  const base = { phase: 'prepared', task_present: true, shared: 0, local: 0, selected_document_ids: [],
+    outbound_submitted: false, response_received: false, binding_verified: false, scene: { id: 'draft', rules_count: 2 } };
+  const snapshot = packet => ({ packet, timeMs: 0, progress: 0, reducedMotion: true, viewport: { width: 390, height: 844, dpr: 1 } });
+  renderPass(snapshot(base));
+  await until(() => ui.inspect().status === 'CURRENT');
+  const section = root.querySelector('.loom-instrument-state'), inspection = root.querySelector('.loom-instrument-state-inspection');
+  session.append(inspection);
+  assert.equal(root.dataset.activeRelation, 'gathering');
+  delay = true;
+  renderPass(snapshot({ ...base, binding_verified: true, phase: 'checking' }));
+  assert.equal(ui.inspect().status, 'COMPILING');
+  assert.equal(ui.inspect().view, null);
+  assert.equal(section.hidden, false, 'compilation must not use display:none and collapse the field');
+  assert.equal(section.style.visibility, 'hidden', 'prior pixels stay concealed while their layout is retained');
+  assert.equal(section.getAttribute('aria-hidden'), 'true');
+  assert.ok(section.hasAttribute('inert'));
+  assert.equal(root.dataset.activeRelation, undefined);
+  assert.equal(doc.documentElement.dataset.loomRelation, undefined);
+  assert.match(inspection.querySelector('summary').textContent, /Prior observation.*updating/);
+  const status = root.querySelector('.ai-runtime-state-status');
+  assert.equal(status.hidden, false);
+  assert.equal(status.style.position, 'absolute', 'status must not insert a new flow-height contribution');
+  assert.equal(status.style.pointerEvents, 'none');
+  release();
+  await until(() => ui.inspect().status === 'CURRENT');
+  assert.equal(section.style.visibility, '');
+  assert.equal(section.hasAttribute('aria-hidden'), false);
+  assert.equal(section.hasAttribute('inert'), false);
+  assert.equal(root.dataset.activeRelation, 'created_potential');
+  assert.equal(status.hidden, true);
+});
