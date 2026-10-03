@@ -133,9 +133,9 @@ try {
       assert.match(await page.locator('#aiAnswer').innerText(),/made no model request/i);
       assert.match(await page.locator('#aiAnswer').innerText(),/does not embed civil-identity verification/i);
 
-      assert.equal(await page.locator('#aiExport').isEnabled(),true,'valid-format SHI wakes a prepared one-hop issuance gesture');
-      assert.equal(await page.locator('#aiExportSession').isEnabled(),true,'valid-format SHI wakes persistent session export');
-      assert.equal(await page.locator('#aiPrepareChallenge').isEnabled(),true,'valid-format SHI wakes Challenge Receiver');
+      assert.equal(await page.locator('#aiExport').isEnabled(),true,'prepared one-hop export stays available without an unrelated authority gate');
+      assert.equal(await page.locator('#aiExportSession').isEnabled(),true,'prepared persistent session export stays available');
+      assert.equal(await page.locator('#aiPrepareChallenge').isEnabled(),true,'Challenge Receiver is available from the prepared Loom session');
 
       const sessionDownloadPromise = page.waitForEvent('download');
       await page.locator('#aiExportSession').click();
@@ -183,8 +183,8 @@ try {
       await receiptDetails.locator('summary').click();
       await page.screenshot({ path: path.join(dir, `${posture}-portable-session-challenge.png`), fullPage: true });
 
-      assert.equal(await page.locator('#aiExport').isDisabled(),true,'removing SHI restores the one-hop issuance hold');
-      assert.equal(await page.locator('#aiExportSession').isDisabled(),true,'removing SHI restores the session issuance hold');
+      assert.equal(await page.locator('#aiExport').isEnabled(),true,'bounded challenge work does not silently close the prepared export route');
+      assert.equal(await page.locator('#aiExportSession').isEnabled(),true,'bounded challenge work does not silently close the prepared session route');
 
       assert.equal(await page.locator('#aiStillField').isVisible(),true,'the shared runtime owns a visible rest control');
       assert.equal(requests.length, 0, 'local preparation and export controls make no provider request');
