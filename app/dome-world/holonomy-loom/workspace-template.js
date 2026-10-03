@@ -14,6 +14,7 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
       <span class="loom-threshold-kicker">HOW LOOM WORKS</span>
       <h2 id="loomFirstCrossingTitle">Choose what AI can use.</h2>
       <p id="loomFirstCrossingPrompt">Pick the task note and its reference. Loom keeps the private note out of the AI handoff.</p>
+      <p id="loomFlowcoreMessage" class="loom-flowcore-message" aria-live="polite"></p>
     </div>
     <details class="loom-flowcore-help">
       <summary>What is Flow-Core?</summary>
@@ -26,9 +27,8 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
     <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="How Loom controls an AI handoff">
       <button type="button" data-first-crossing-item="brief" aria-pressed="false"><span>TASK</span><strong>Task note</strong><small>The request you want AI to work on.</small></button>
       <button type="button" data-first-crossing-item="source" aria-pressed="false"><span>REFERENCE</span><strong>Supporting source</strong><small>Context you choose to share with AI.</small></button>
-      <button type="button" id="loomFirstCrossingPrivate" aria-expanded="false"><span>PRIVATE</span><strong>Private note</strong><small>Stays out of the AI handoff.</small></button>
+      <div id="loomFirstCrossingPrivate" class="loom-first-crossing-private" role="note"><span>PRIVATE</span><strong>Private note</strong><small>Stays out of the AI handoff.</small></div>
     </div>
-    <p id="loomFirstCrossingPrivateText" class="loom-practice-private" hidden></p>
     <div class="loom-first-crossing-actions">
       <button type="button" id="loomFirstCrossingAction" hidden>Preview AI handoff →</button>
       <button type="button" id="loomFirstCrossingStop" hidden>Finish tutorial →</button>
@@ -36,7 +36,7 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
     <div class="loom-practice-controls">
       <button type="button" id="loomFirstCrossingBack" hidden>← Back</button>
       <button type="button" id="loomReplayFirstCrossing" class="loom-replay-first-crossing" hidden>Start over</button>
-      <button type="button" id="loomFirstCrossingPause" class="loom-field-toggle" aria-pressed="false" aria-label="Still the field" title="Still the field">𝌋</button>
+      <button type="button" id="loomFirstCrossingPause" class="loom-field-toggle" aria-label="Remix Flow-Core choreography" title="Remix Flow-Core choreography">𝌋</button>
       <button type="button" id="loomFirstCrossingLeave">Skip tutorial →</button>
     </div>
     <p id="loomFirstCrossingAnswer" class="loom-first-crossing-answer" aria-live="polite"></p>
