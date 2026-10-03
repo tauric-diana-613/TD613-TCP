@@ -212,7 +212,11 @@ html[data-loom-journey="return"] #loomAiWorkspace .loom-hero-route [data-hero-st
 #loomAiWorkspace .ai-composer>textarea{height:220px}
 
 @media(max-width:760px){
-  .loom-topbar{height:48px;padding:0 14px}
+  .loom-topbar{height:48px;padding:0 12px;gap:8px}
+  .loom-topbar nav{gap:6px;min-width:0}
+  .loom-topbar nav a{min-width:44px;padding:0 2px;justify-content:center;white-space:nowrap}
+  .loom-wordmark{min-width:0}
+  .loom-topbar{height:48px}
   #loomAiWorkspace .loom-stage{
     min-height:calc(100svh - 48px);height:calc(100svh - 48px);padding:0
   }
