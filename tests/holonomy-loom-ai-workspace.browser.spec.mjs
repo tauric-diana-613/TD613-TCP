@@ -233,7 +233,7 @@ try {
       assert.equal(await page.locator('#aiRuntime').isVisible(),false,'Demo remains in the builder scene until the operator opens How it works');
       assert.equal(await page.locator('#aiPreparePortable').evaluate(node=>node.classList.contains('ai-primary')),true,'Demo preserves local preparation as the primary route gesture');
       assert.equal(await page.locator('a[href="/dome-world/loom-instrument-lab.html"]').first().isVisible(),true,'Instrument Lab remains independently available during Demo');
-      assert.match(await page.locator('#aiDemoModePanel').innerText(),/Fictional material\. Same route, same boundaries\./i);
+      assert.match(await page.locator('#aiDemoModePanel').innerText(),/Choose a fictional example, then try the same controls with your own work\./i);
       await page.locator('#aiDemoInvitation').click();
       assert.equal(await page.locator('#aiDemoInvitation').getAttribute('aria-expanded'), 'true');
       await page.locator('#aiProjectChoices button').first().click();
