@@ -105,3 +105,23 @@ test('finite canonical consequences move current carriers and selected source ma
   assert.equal(bound.empirical_credit,0);
   renderer.destroy();dom.window.close();
 });
+
+test('motion families alter the same 39 carrier geometry under the shared coordinator snapshot', async () => {
+  const event={phase:'prepared',task_present:true,at:'2026-10-03T10:10:00.000Z',request_id:'family-integration',
+    shared:2,local:1,selected_document_ids:['brief','source'],outbound_submitted:false,response_received:false,binding_verified:false,
+    scene:{id:'first-crossing-prepared',rules_count:1,documents:[{id:'brief'},{id:'source'},{id:'private'}]}};
+  const view=await compileLoomInstrumentStateView(event,{cryptoImpl:webcrypto});
+  const dom=new JSDOM('<div id="field"></div>'),root=dom.window.document.querySelector('#field'),renderer=mountLoomInstrumentStateView(root);
+  const relations=['recurrence','gathering','protected_continuity','created_potential','release','released_tendency','bounded_emergence','structural_rest'];
+  const snap=family=>({packet:{...event,presentation:{flowcore_choreography:{id:family,relations,family}}},progress:.47,timeMs:1880,motionTimeMs:1880,
+    reducedMotion:false,viewport:{width:390,height:844,dpr:1}});
+  const read=()=>[...root.querySelectorAll('.loom-field-flight text')].map(node=>({x:Number(node.getAttribute('x')),y:Number(node.getAttribute('y')),family:node.dataset.flightFamily}));
+  renderer.update(view,snap('phi-gossamer'));const phi=read();
+  renderer.update(view,snap('moire-shear'));const moire=read();
+  assert.equal(phi.length,39);assert.equal(moire.length,39);
+  assert.ok(phi.every(node=>node.family==='phi-gossamer'));assert.ok(moire.every(node=>node.family==='moire-shear'));
+  assert.ok(moire.some((node,index)=>Math.hypot(node.x-phi[index].x,node.y-phi[index].y)>8),'family selection must change projected carrier geometry');
+  assert.equal(view.empirical_credit,0,'family projection earns no empirical geometry credit');
+  renderer.destroy();dom.window.close();
+});
+
