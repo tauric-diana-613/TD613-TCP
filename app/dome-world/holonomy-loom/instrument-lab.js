@@ -41,7 +41,7 @@ const benches = [
   {id:'local-execution',label:'Local execution & recovery',scope:'Execute the bounded fictional governor close, fresh-instance and recovery benchmark.'},
   {id:'compression',label:'Representation & action support',scope:'Find lawful distinctions lost by a finite projection.'},
   {id:'export-history',label:'Return & export history',scope:'Inspect a saved Loom result or native continuation chain after return or reload. Review grants no live custody.'},
-  {id:'receiver-assurance',label:'Portable AIA assurance',scope:'Recompute representation and receiver binding separately.'},
+  {id:'receiver-assurance',label:'Receiver assurance',scope:'Recompute representation and receiver binding separately.'},
   {id:'service-resolution',label:'Route resolution',scope:'Inspect one complete service need, recovery and avoidable rework.'},
   {id:'fire-preparation',label:'Fire Gate · prepare',scope:'Prepare a consequential measurement. Execution remains held.'},
   {id:'fire-witness',label:'Fire Gate · witness intake',scope:'Check declared witness consistency. Independent authentication stays separate.'},
