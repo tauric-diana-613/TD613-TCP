@@ -963,3 +963,202 @@ html[data-loom-relation="structural_rest"] .loom-field-flight [data-flight-relat
 }
 html[data-loom-relation="release"] #loomAiWorkspace .loom-field-glyph{filter:drop-shadow(0 0 28px rgba(239,188,127,.19)) drop-shadow(0 0 90px rgba(145,236,232,.09))!important}
 html[data-loom-relation="structural_rest"] #loomAiWorkspace .loom-field-glyph{filter:none!important}
+
+
+/* -------------------------------------------------------------------------
+   Selection bifurcation
+   The same document control becomes a spatial decision: left remains local,
+   right crosses with the work. No duplicate list or inferred classification.
+   ------------------------------------------------------------------------- */
+@supports selector(li:has(input:checked)){
+  #loomAiWorkspace .ai-documents{
+    position:relative;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    grid-auto-flow:row dense;
+    column-gap:clamp(36px,7vw,96px)!important;
+    row-gap:0!important;
+    margin:5vh 0 7vh!important;
+    padding-top:42px!important;
+    border-top:1px solid var(--dr-hair)!important;
+    border-bottom:1px solid var(--dr-hair)!important;
+  }
+  #loomAiWorkspace .ai-documents::before,
+  #loomAiWorkspace .ai-documents::after{
+    position:absolute;
+    top:13px;
+    font:600 .58rem/1 var(--mono);
+    letter-spacing:.15em;
+    text-transform:uppercase;
+  }
+  #loomAiWorkspace .ai-documents::before{
+    content:"STAYS HERE";
+    left:0;
+    color:#7c7284;
+  }
+  #loomAiWorkspace .ai-documents::after{
+    content:"TRAVELS";
+    left:calc(50% + clamp(18px,3.5vw,48px));
+    color:var(--dr-gold);
+  }
+  #loomAiWorkspace .ai-documents>li{
+    position:relative;
+    min-width:0;
+    border:0!important;
+    border-top:1px solid rgba(216,197,230,.11)!important;
+    padding:15px 0 16px!important;
+    background:transparent!important;
+  }
+  #loomAiWorkspace .ai-documents>li:has(input:not(:checked)){grid-column:1}
+  #loomAiWorkspace .ai-documents>li:has(input:checked){grid-column:2}
+  #loomAiWorkspace .ai-documents>li:has(input:checked)::before,
+  #loomAiWorkspace .ai-documents>li:has(input:not(:checked))::before{
+    content:"";
+    position:absolute;
+    top:-1px;
+    width:34px;
+    height:1px;
+  }
+  #loomAiWorkspace .ai-documents>li:has(input:not(:checked))::before{
+    left:0;
+    background:#6f6678;
+  }
+  #loomAiWorkspace .ai-documents>li:has(input:checked)::before{
+    right:0;
+    background:linear-gradient(90deg,var(--dr-gold),var(--dr-cyan));
+    box-shadow:0 0 18px rgba(145,236,232,.12);
+  }
+  #loomAiWorkspace .ai-document-row{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto!important;
+    gap:12px!important;
+    align-items:start!important;
+  }
+  #loomAiWorkspace .ai-document-row>label{
+    display:grid!important;
+    grid-template-columns:18px minmax(0,1fr)!important;
+    gap:10px!important;
+    align-items:start!important;
+    font:400 1rem/1.35 Georgia,serif!important;
+    color:#d8cfda!important;
+  }
+  #loomAiWorkspace .ai-document-row input[type="checkbox"]{
+    appearance:none;
+    width:11px!important;
+    height:11px!important;
+    min-width:11px!important;
+    margin:3px 0 0!important;
+    border:1px solid #72687b!important;
+    border-radius:50%!important;
+    background:transparent!important;
+  }
+  #loomAiWorkspace .ai-document-row input[type="checkbox"]:checked{
+    border-color:var(--dr-gold)!important;
+    background:radial-gradient(circle,var(--dr-gold) 0 35%,transparent 42%)!important;
+    box-shadow:0 0 13px rgba(239,188,127,.25);
+  }
+  #loomAiWorkspace .ai-file-note{margin:0!important;border:0!important;padding:0!important}
+  #loomAiWorkspace .ai-file-note>summary{
+    min-height:auto!important;
+    padding:0!important;
+    border:0!important;
+    color:#766d7e!important;
+  }
+  #loomAiWorkspace .ai-document-preview{
+    margin-top:12px!important;
+    border-top:1px solid rgba(216,197,230,.09)!important;
+  }
+  #loomAiWorkspace .ai-documents>li>button{
+    margin-top:10px!important;
+    padding:4px 0!important;
+    min-height:28px!important;
+    font-size:.63rem!important;
+    color:#716878!important;
+  }
+}
+
+/* Rules are a seam below the selection field rather than a settings card. */
+#loomAiWorkspace #aiRulesDrawer{
+  margin:0 0 7vh!important;
+  border-top:1px solid var(--dr-hair)!important;
+  border-bottom:1px solid var(--dr-hair)!important;
+}
+#loomAiWorkspace #aiRulesDrawer>summary{
+  min-height:64px!important;
+  display:grid!important;
+  grid-template-columns:1fr auto!important;
+  align-items:center!important;
+}
+#loomAiWorkspace #aiRulesDrawer>summary>span{
+  font:400 1.05rem/1.2 Georgia,serif!important;
+}
+#loomAiWorkspace #aiRulesDrawer>summary small{
+  margin-top:5px!important;
+  font:400 .65rem/1.4 var(--mono)!important;
+  letter-spacing:.03em;
+  color:#716878!important;
+}
+#loomAiWorkspace #aiRulesDrawer[open]{
+  padding-bottom:26px!important;
+}
+#loomAiWorkspace #aiRulesDrawer textarea{
+  border:0!important;
+  border-bottom:1px solid rgba(216,197,230,.15)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  padding:12px 0!important;
+}
+
+/* Optional model testing is deliberately a side path, never the visual spine. */
+#loomAiWorkspace .ai-send-row #aiRun{
+  margin-left:auto!important;
+  align-self:center;
+  font:500 .62rem/1 var(--mono)!important;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  opacity:.58;
+}
+#loomAiWorkspace .ai-send-row #aiRun:hover,
+#loomAiWorkspace .ai-send-row #aiRun:focus-visible{opacity:1}
+
+@media(max-width:760px){
+  @supports selector(li:has(input:checked)){
+    #loomAiWorkspace .ai-documents{
+      grid-template-columns:1fr!important;
+      column-gap:0!important;
+      padding-top:0!important;
+      border-top:0!important;
+    }
+    #loomAiWorkspace .ai-documents::before,
+    #loomAiWorkspace .ai-documents::after{display:none}
+    #loomAiWorkspace .ai-documents>li:has(input:not(:checked)),
+    #loomAiWorkspace .ai-documents>li:has(input:checked){grid-column:1}
+    #loomAiWorkspace .ai-documents>li:has(input:not(:checked)){
+      padding-left:20px!important;
+    }
+    #loomAiWorkspace .ai-documents>li:has(input:not(:checked))::after,
+    #loomAiWorkspace .ai-documents>li:has(input:checked)::after{
+      position:absolute;
+      top:18px;
+      right:0;
+      font:600 .52rem/1 var(--mono);
+      letter-spacing:.12em;
+    }
+    #loomAiWorkspace .ai-documents>li:has(input:not(:checked))::after{
+      content:"STAYS";
+      color:#706779;
+    }
+    #loomAiWorkspace .ai-documents>li:has(input:checked)::after{
+      content:"TRAVELS";
+      color:var(--dr-gold);
+    }
+  }
+  #loomAiWorkspace .ai-send-row{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+  }
+  #loomAiWorkspace .ai-send-row #aiRun{
+    margin-left:0!important;
+    justify-self:start;
+  }
+}
