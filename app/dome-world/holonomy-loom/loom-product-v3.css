@@ -43,7 +43,7 @@ main,#loomAiWorkspace{width:100%;min-width:0}
 #loomAiWorkspace .loom-instrument-state-next{display:none!important}
 #loomAiWorkspace .loom-instrument-state-relation{position:absolute!important;z-index:8!important;left:max(var(--loom-pad),calc((100% - var(--loom-max))/2))!important;bottom:30px!important;margin:0!important;width:auto!important;max-width:52%!important;color:#69737d!important;font:600 .55rem/1.2 var(--mono)!important;letter-spacing:.08em!important;text-transform:uppercase!important}
 #loomAiWorkspace .loom-instrument-state-boundary{position:absolute!important;z-index:8!important;right:max(var(--loom-pad),calc((100% - var(--loom-max))/2))!important;bottom:30px!important;margin:0!important;width:auto!important;max-width:38%!important;text-align:right!important;color:#5e6772!important;font:500 .52rem/1.2 var(--mono)!important}
-#loomAiWorkspace .loom-instrument-state-inspection{position:absolute!important;z-index:12!important;top:56px!important;right:max(var(--loom-pad),calc((100% - var(--loom-max))/2))!important;left:auto!important;width:min(360px,calc(100% - (var(--loom-pad)*2)))!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important}
+#loomAiWorkspace .loom-instrument-state-inspection{position:absolute!important;z-index:12!important;top:56px!important;right:max(var(--loom-pad),calc((100% - var(--loom-max))/2))!important;left:auto!important;width:min(360px,calc(100% - (var(--loom-pad)*2)))!important;max-height:calc(100% - 170px)!important;overflow:auto!important;overscroll-behavior:contain!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important}
 #loomAiWorkspace .loom-instrument-state-inspection>summary{padding:8px 0!important;text-align:right!important;color:#6e7883!important;font:600 .62rem/1.2 var(--sans)!important;list-style:none!important}
 #loomAiWorkspace .loom-instrument-state-inspection[open]{padding:12px!important;border:1px solid var(--loom-line)!important;border-radius:12px!important;background:rgba(7,9,13,.94)!important;backdrop-filter:blur(12px)}
 #loomAiWorkspace .ai-facts{position:absolute!important;z-index:8!important;right:max(var(--loom-pad),calc((100% - var(--loom-max))/2))!important;bottom:72px!important;display:flex!important;gap:18px!important;margin:0!important}
@@ -156,7 +156,7 @@ html[data-loom-journey="return"] #loomAiWorkspace #loomJourneyStep3{color:var(--
   #loomAiWorkspace .loom-instrument-state-endpoints{font-size:.52rem!important}
   #loomAiWorkspace .loom-instrument-state-relation{left:14px!important;bottom:18px!important;max-width:70%!important;font-size:.49rem!important}
   #loomAiWorkspace .loom-instrument-state-boundary{display:none!important}
-  #loomAiWorkspace .loom-instrument-state-inspection{top:48px!important;right:14px!important;width:min(300px,calc(100% - 28px))!important}
+  #loomAiWorkspace .loom-instrument-state-inspection{top:48px!important;right:14px!important;width:min(300px,calc(100% - 28px))!important;max-height:calc(100% - 150px)!important}
   #loomAiWorkspace .loom-field-flight{mix-blend-mode:normal}
   #loomAiWorkspace .loom-field-flight .flight-far{display:none}
   #loomAiWorkspace .ai-facts{display:none!important}
