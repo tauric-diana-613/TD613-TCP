@@ -72,13 +72,6 @@ try {
     const closeTools = async () => {
       if (await page.locator('#loomTools').evaluate(node=>node.open)) await page.locator('#loomToolsClose').click();
     };
-    const showThreshold = async () => {
-      await closeTools();
-      if (!(await page.locator('.loom-stage').isVisible())) {
-        await page.locator('#loomReturnThreshold').click();
-        await page.locator('.loom-stage').waitFor({ state: 'visible' });
-      }
-    };
     const showBuilder = async () => {
       if (!(await page.locator('.loom-builder-shell').isVisible())) {
         if (await page.locator('#loomFirstCrossing').isVisible()) await page.locator('#loomFirstCrossingLeave').click();
@@ -278,10 +271,7 @@ try {
       await page.waitForFunction(() => document.querySelector('#aiRuntimeState')?.dataset.clientPhase === 'pending');
       assert.equal(await page.locator('#aiRuntimeState').getAttribute('data-active-relation'),'release');
       for(const document of fixture.documents.filter(d=>!d.share))assert.equal((await page.locator('#aiRuntimeState').textContent()).includes(document.name),false);
-      await showThreshold();
-      assert.equal(await page.locator('#aiRuntimeState').isVisible(),true,'pending route visualization is visible when the How it works scene is active');
-      await page.locator('#aiRuntimeState').screenshot({path:path.join(dir,`${posture}-runtime-state-pending.png`)});
-      await showBuilder();
+      assert.equal(await page.locator('#aiRuntimeState').getAttribute('data-client-phase'),'pending','pending request state remains projected by the canonical renderer');
       releaseResponse();
       await page.waitForFunction(expected => document.querySelector('#aiAnswer')?.textContent.includes(expected), fixtureAnswer);
       assert.equal(await page.locator('#aiAnswer').isVisible(), true);
@@ -312,20 +302,17 @@ try {
       assert.equal(exported.includes(uploadCanary), false, 'uploaded local-only document excluded from export');
       assert.equal(requests.length, 1, 'export cannot silently call provider again');
       await closeTools();
-      await showThreshold();
-      await page.locator('#aiRuntimeState').screenshot({path:path.join(dir,`${posture}-runtime-state-returned.png`)});
+      await openTool('session');
+      assert.equal(await page.locator('#aiRoomReplay').isVisible(),true,'recorded-state replay lives in Session tools rather than the First Crossing membrane');
+      assert.equal(await page.locator('#aiRoomReplay').isEnabled(),true,'recorded request history enables replay');
       await page.locator('#aiRoomReplay').click();
       assert.match(await page.locator('#aiRoomReplayStatus').innerText(),/Recorded state/);
-      await showBuilder();
-      await openTool('session');
+      await page.locator('[data-tool-panel="session"]').screenshot({path:path.join(dir,`${posture}-session-replay.png`)});
       await page.locator('#aiInspector > summary').click();
       await page.locator('#aiAuditor').click();
       assert.equal(requests.length,1,'replay and auditor view make no provider request');
-      await closeTools();
-      await showThreshold();
       await page.locator('#aiRoomLive').click();
-      await showBuilder();
-      await openTool('session');
+      assert.equal(await page.locator('#aiRoomLive').isHidden(),true,'returning live exits replay without reopening First Crossing');
       await page.locator('#aiChild').click();
       await closeTools();
       await page.waitForFunction(() => document.querySelector('#aiRuntimeState')?.dataset.clientPhase === 'checking');
@@ -344,9 +331,11 @@ try {
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, 'no horizontal overflow · '+JSON.stringify(overflow));
       assert.deepEqual(runtimeErrors, [], 'no runtime errors');
       assert.deepEqual(unexpected, [], 'no direct browser-to-provider or unrelated mutation requests');
-      await showThreshold();
-      assert.equal(await page.locator('#aiRuntimeState').isVisible(),true,'held route visualization is visible in the How it works scene');
-      await page.locator('#aiRuntimeState').screenshot({path:path.join(dir,`${posture}-runtime-state-held.png`)});
+      await openTool('session');
+      assert.equal(await page.locator('#aiRoomReplay').isVisible(),true,'held request history remains inspectable in Session tools');
+      assert.equal(await page.locator('#aiRoomReplay').isEnabled(),true,'a held request does not erase recorded request history');
+      await page.locator('[data-tool-panel="session"]').screenshot({path:path.join(dir,`${posture}-session-held.png`)});
+      await closeTools();
       await page.screenshot({ path: path.join(dir, `${posture}-mock-provider-held.png`), fullPage: true });
       report.checks.push({ posture, status: 'PASS', intercepted_requests: requests.length, loom_task_default: true,
         local_preparation_open: true, speculative_authority_gate_absent: true, prepared_crossing_available: true,
