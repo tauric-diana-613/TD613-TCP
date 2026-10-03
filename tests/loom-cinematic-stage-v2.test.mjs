@@ -8,20 +8,26 @@ import { FLOWCORE_GLYPH_REGISTRY } from '../app/dome-world/data/flowcore-glyph-s
 import { compileLoomInstrumentStateView, projectLoomInstrumentStateFrame } from '../app/dome-world/holonomy-loom/instrument-state-view.js';
 
 const html=fs.readFileSync(new URL('../app/dome-world/holonomy-loom.html',import.meta.url),'utf8');
-const product=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/loom-product-v5.css',import.meta.url),'utf8');
+const product=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/loom-product-v6.css',import.meta.url),'utf8');
 const workspace=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/ai-workspace.js',import.meta.url),'utf8');
 const instrument=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/instrument-state-view.js',import.meta.url),'utf8');
 const template=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/workspace-template.js',import.meta.url),'utf8');
 
-test('authored Loom composition pairs the working task and field without the old override cascade',()=>{
-  assert.match(html,/loom-product-v5\.css/);
+test('authored Loom composition preserves a cinematic field scene before the builder',()=>{
+  assert.match(html,/loom-product-v6\.css/);
   assert.doesNotMatch(html,/ai-workspace\.css|reentry-workspace\.css|loom-product-v[34]\.css|ux-repair\.css|cinematic-rescue\.css|dromological-regime\.css|cinematic-stage-v2\.css/);
   const doc=new JSDOM(loomWorkspaceTemplate).window.document;
+  const stage=doc.querySelector('.loom-stage');
+  const builderShell=doc.querySelector('.loom-builder-shell');
   const surface=doc.querySelector('.loom-working-surface');
-  assert.ok(surface.contains(doc.querySelector('#aiRuntimeState')));
+  assert.ok(stage.contains(doc.querySelector('#aiRuntimeState')));
+  assert.ok(!stage.contains(doc.querySelector('#aiTask')));
   assert.ok(surface.contains(doc.querySelector('#aiTask')));
+  assert.ok(stage.compareDocumentPosition(builderShell) & doc.defaultView.Node.DOCUMENT_POSITION_FOLLOWING);
+  assert.ok(doc.querySelector('#loomBegin'));
+  assert.ok(doc.querySelector('.loom-hero-route'));
   assert.ok(doc.querySelector('dialog#loomTools'));
-  assert.doesNotMatch(product,/(?:min-)?height\s*:\s*calc\(100(?:s|d)?vh\s*-\s*(?:48|52)px\)/);
+  assert.match(product,/#loomAiWorkspace \.loom-stage\{[\s\S]*?height:calc\(100svh - 52px\)/);
 });
 
 test('one coordinator remains the animation owner',()=>{
