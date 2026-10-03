@@ -266,6 +266,12 @@ html[data-loom-journey="return"] #loomAiWorkspace .loom-hero-route [data-hero-st
   #loomAiWorkspace .loom-builder-shell{
     width:calc(100% - 28px);padding:44px 0 70px
   }
+  #loomAiWorkspace .loom-builder-shell>.loom-intro{
+    flex-direction:column;align-items:stretch;gap:8px
+  }
+  #loomAiWorkspace .loom-builder-shell>.loom-intro .loom-intro-actions{
+    width:100%;display:flex;justify-content:flex-start;flex-wrap:wrap;gap:8px
+  }
   #loomAiWorkspace .loom-builder-shell>.loom-intro h1{font-size:2rem}
   #loomAiWorkspace .loom-builder-shell>.loom-intro p{font-size:.86rem}
   #loomAiWorkspace .loom-builder-shell>.loom-journey{
