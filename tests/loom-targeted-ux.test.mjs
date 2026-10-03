@@ -32,7 +32,8 @@ test('cinematic route field and builder are separate scenes while advanced tools
   assert.ok(stage.compareDocumentPosition(builderShell) & doc.defaultView.Node.DOCUMENT_POSITION_FOLLOWING);
   assert.ok(doc.querySelector('#loomBegin'));
   assert.deepEqual([...doc.querySelectorAll('.loom-journey-step strong')].map(node => node.textContent), ['Loom', 'Marrowline', 'Return']);
-  assert.equal(doc.querySelector('#loomBuilder').hidden, false);
+  assert.equal(builderShell.hidden, true, 'Threshold withholds the builder until the crossing gesture');
+  assert.equal(doc.querySelector('#loomBuilder').hidden, false, 'the builder content itself remains intact behind the Threshold');
   assert.equal(doc.querySelector('#aiResult').hidden, true);
   assert.equal(doc.querySelector('#loomReturnWorkspace').hidden, true);
   assert.equal(doc.querySelectorAll('#loomBuilder > details,#aiResult > details').length, 0);
