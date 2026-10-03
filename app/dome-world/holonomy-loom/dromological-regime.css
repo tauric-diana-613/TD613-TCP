@@ -676,3 +676,181 @@ html[data-loom-journey="return"] #loomAiWorkspace .ai-crossing-boundary{display:
 @media(prefers-reduced-motion:reduce){
   body::after{transform:none!important}
 }
+
+
+/* -------------------------------------------------------------------------
+   Relation jurisdictions
+   The active relation is written by the canonical state renderer. These
+   atmospheric shifts are static consequences of that evidence, not new motion.
+   ------------------------------------------------------------------------- */
+html{--dr-rel-glyph:"·";--dr-rel-accent:var(--dr-violet);--dr-rel-secondary:var(--dr-cyan);--dr-rel-angle:0deg}
+html[data-loom-relation="gathering"]{--dr-rel-glyph:"à";--dr-rel-accent:#efbc7f;--dr-rel-secondary:#c7a2ef;--dr-rel-angle:-7deg}
+html[data-loom-relation="recurrence"]{--dr-rel-glyph:"米";--dr-rel-accent:#c7a2ef;--dr-rel-secondary:#91ece8;--dr-rel-angle:9deg}
+html[data-loom-relation="release"]{--dr-rel-glyph:"出";--dr-rel-accent:#91ece8;--dr-rel-secondary:#efbc7f;--dr-rel-angle:-12deg}
+html[data-loom-relation="created_potential"]{--dr-rel-glyph:"上";--dr-rel-accent:#efbc7f;--dr-rel-secondary:#e8a0c2;--dr-rel-angle:-3deg}
+html[data-loom-relation="released_tendency"]{--dr-rel-glyph:"下";--dr-rel-accent:#91ece8;--dr-rel-secondary:#c7a2ef;--dr-rel-angle:3deg}
+html[data-loom-relation="protected_continuity"]{--dr-rel-glyph:"cōl";--dr-rel-accent:#c7a2ef;--dr-rel-secondary:#91ece8;--dr-rel-angle:0deg}
+html[data-loom-relation="bounded_emergence"]{--dr-rel-glyph:"hõt";--dr-rel-accent:#e8a0c2;--dr-rel-secondary:#efbc7f;--dr-rel-angle:-5deg}
+html[data-loom-relation="structural_rest"]{--dr-rel-glyph:"𝄐";--dr-rel-accent:#a9a1af;--dr-rel-secondary:#c7a2ef;--dr-rel-angle:0deg}
+
+#loomAiWorkspace .ai-runtime::before{
+  content:var(--dr-rel-glyph);
+  position:absolute;
+  z-index:1;
+  left:50%;
+  top:48%;
+  transform:translate(-50%,-50%) rotate(var(--dr-rel-angle));
+  font:400 clamp(18rem,68vw,72rem)/.65 Georgia,"Times New Roman",serif;
+  letter-spacing:-.08em;
+  color:color-mix(in srgb,var(--dr-rel-accent) 7%,transparent);
+  text-shadow:
+    0 0 120px color-mix(in srgb,var(--dr-rel-secondary) 9%,transparent),
+    0 0 260px color-mix(in srgb,var(--dr-rel-accent) 7%,transparent);
+  white-space:nowrap;
+  pointer-events:none;
+  user-select:none;
+}
+#loomAiWorkspace .ai-runtime::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  background:
+    linear-gradient(var(--dr-rel-angle),
+      transparent 0 28%,
+      color-mix(in srgb,var(--dr-rel-accent) 7%,transparent) 28.15% 28.35%,
+      transparent 28.5% 58%,
+      color-mix(in srgb,var(--dr-rel-secondary) 5%,transparent) 58.1% 58.3%,
+      transparent 58.5%),
+    radial-gradient(ellipse at 50% 50%,transparent 0 24%,color-mix(in srgb,var(--dr-rel-accent) 5%,transparent) 40%,transparent 68%);
+  mix-blend-mode:screen;
+}
+#loomAiWorkspace .ai-runtime>*{position:relative;z-index:2}
+
+/* Relation-specific spatial laws mirror the canonical Flow-Core motion grammar. */
+html[data-loom-relation="gathering"] #loomAiWorkspace .ai-runtime::after{
+  background:
+    conic-gradient(from 15deg at 50% 50%,transparent 0 8%,rgba(239,188,127,.07) 8.2% 8.35%,transparent 8.55% 24%,rgba(199,162,239,.055) 24.2% 24.35%,transparent 24.55% 100%),
+    radial-gradient(circle at 50% 50%,rgba(239,188,127,.10),transparent 7%,rgba(199,162,239,.045) 26%,transparent 54%);
+}
+html[data-loom-relation="release"] #loomAiWorkspace .ai-runtime::after{
+  background:
+    linear-gradient(90deg,transparent 0 46%,rgba(145,236,232,.13) 49.6%,rgba(239,188,127,.07) 50.2%,transparent 54%),
+    linear-gradient(16deg,transparent 0 44%,rgba(145,236,232,.055) 44.2% 44.4%,transparent 44.7%);
+}
+html[data-loom-relation="created_potential"] #loomAiWorkspace .ai-runtime::after{
+  background:
+    linear-gradient(0deg,rgba(239,188,127,.11),transparent 44%),
+    repeating-linear-gradient(0deg,transparent 0 74px,rgba(239,188,127,.045) 75px,transparent 76px);
+  mask-image:linear-gradient(to top,black,transparent 88%);
+}
+html[data-loom-relation="released_tendency"] #loomAiWorkspace .ai-runtime::after{
+  background:
+    linear-gradient(180deg,rgba(145,236,232,.10),transparent 48%),
+    repeating-linear-gradient(180deg,transparent 0 76px,rgba(145,236,232,.04) 77px,transparent 78px);
+  mask-image:linear-gradient(to bottom,black,transparent 90%);
+}
+html[data-loom-relation="protected_continuity"] #loomAiWorkspace .ai-runtime::after{
+  inset:12% 14%;
+  border:1px solid rgba(199,162,239,.10);
+  border-radius:50%;
+  background:radial-gradient(ellipse at center,rgba(145,236,232,.055),transparent 62%);
+  box-shadow:inset 0 0 140px rgba(199,162,239,.035),0 0 140px rgba(145,236,232,.03);
+}
+html[data-loom-relation="bounded_emergence"] #loomAiWorkspace .ai-runtime::after{
+  background:
+    radial-gradient(circle at 50% 50%,rgba(232,160,194,.12) 0 4%,transparent 5% 15%,rgba(239,188,127,.055) 15.2% 15.5%,transparent 16% 31%,rgba(199,162,239,.04) 31.2% 31.45%,transparent 32% 100%);
+}
+html[data-loom-relation="structural_rest"] #loomAiWorkspace .ai-runtime::after{
+  background:
+    linear-gradient(90deg,transparent 0 49.93%,rgba(199,162,239,.09) 49.96% 50.04%,transparent 50.07%),
+    radial-gradient(ellipse at center,rgba(169,161,175,.04),transparent 42%);
+}
+html[data-loom-relation="structural_rest"] #loomAiWorkspace .ai-runtime::before{
+  font-size:clamp(13rem,44vw,48rem);
+  color:rgba(216,211,222,.04);
+}
+
+/* Individual historic relations keep their own visual grammar while sharing
+   one scheduler. The current relation does not overwrite prior route history. */
+#loomAiWorkspace .loom-field-flight text[data-flight-relation="gathering"]{fill:#efbc7f}
+#loomAiWorkspace .loom-field-flight text[data-flight-relation="recurrence"]{fill:#c7a2ef}
+#loomAiWorkspace .loom-field-flight text[data-flight-relation="release"]{fill:#91ece8}
+#loomAiWorkspace .loom-field-flight text[data-flight-relation="created_potential"]{fill:#efbc7f}
+#loomAiWorkspace .loom-field-flight text[data-flight-relation="released_tendency"]{fill:#91ece8}
+#loomAiWorkspace .loom-field-flight text[data-flight-relation="protected_continuity"]{fill:#c7a2ef;letter-spacing:-.08em}
+#loomAiWorkspace .loom-field-flight text[data-flight-relation="bounded_emergence"]{fill:#e8a0c2}
+#loomAiWorkspace .loom-field-flight text[data-flight-relation="structural_rest"]{fill:#b5aeb9}
+
+/* Once the crossing is prepared, the builder visually becomes prior state.
+   It remains accessible by scrolling; nothing is deleted or made irreversible. */
+html[data-loom-journey="ready"] #loomAiWorkspace .ai-mode-shell,
+html[data-loom-journey="ready"] #loomAiWorkspace .ai-portable-projection,
+html[data-loom-journey="ready"] #loomAiWorkspace .ai-composer,
+html[data-loom-journey="marrowline"] #loomAiWorkspace .ai-mode-shell,
+html[data-loom-journey="marrowline"] #loomAiWorkspace .ai-portable-projection,
+html[data-loom-journey="marrowline"] #loomAiWorkspace .ai-composer,
+html[data-loom-journey="return"] #loomAiWorkspace .ai-mode-shell,
+html[data-loom-journey="return"] #loomAiWorkspace .ai-portable-projection,
+html[data-loom-journey="return"] #loomAiWorkspace .ai-composer{
+  opacity:.42;
+  filter:saturate(.46);
+}
+html[data-loom-journey="ready"] #loomAiWorkspace .ai-mode-shell:focus-within,
+html[data-loom-journey="ready"] #loomAiWorkspace .ai-portable-projection:focus-within,
+html[data-loom-journey="ready"] #loomAiWorkspace .ai-composer:focus-within,
+html[data-loom-journey="marrowline"] #loomAiWorkspace .ai-mode-shell:focus-within,
+html[data-loom-journey="marrowline"] #loomAiWorkspace .ai-portable-projection:focus-within,
+html[data-loom-journey="marrowline"] #loomAiWorkspace .ai-composer:focus-within,
+html[data-loom-journey="return"] #loomAiWorkspace .ai-mode-shell:focus-within,
+html[data-loom-journey="return"] #loomAiWorkspace .ai-portable-projection:focus-within,
+html[data-loom-journey="return"] #loomAiWorkspace .ai-composer:focus-within{
+  opacity:1;
+  filter:none;
+}
+
+/* The Marrowline departure pushes the composition toward the destination edge. */
+html[data-loom-journey="marrowline"] #loomAiWorkspace .ai-result{
+  margin-left:auto!important;
+  margin-right:7vw!important;
+}
+html[data-loom-journey="marrowline"] #loomAiWorkspace .ai-crossing-boundary{
+  padding-left:18vw!important;
+  background:linear-gradient(100deg,transparent 0 24%,rgba(145,236,232,.055) 51%,transparent 82%)!important;
+}
+html[data-loom-journey="marrowline"] #loomAiWorkspace .ai-crossing-boundary::before{
+  left:14vw;
+  background:linear-gradient(var(--dr-cyan),var(--dr-violet));
+}
+
+/* Hold is not an error-card aesthetic; motion vocabulary collapses to a seam. */
+html[data-loom-flow-phase="held"] #loomAiWorkspace .loom-field-flight{opacity:.24}
+html[data-loom-flow-phase="held"] #loomAiWorkspace .ai-runtime{
+  background:
+    linear-gradient(90deg,transparent 0 49.95%,rgba(232,160,194,.13) 50%,transparent 50.05%),
+    radial-gradient(ellipse at center,rgba(232,160,194,.035),transparent 48%)!important;
+}
+html[data-loom-flow-phase="held"] #loomAiWorkspace .loom-instrument-state-now{color:#d8c2ce!important}
+
+/* Reduced-motion keeps all relation distinction as composition rather than
+   replacing it with an empty or generic fallback. */
+@media(prefers-reduced-motion:reduce){
+  #loomAiWorkspace .ai-runtime::before{transform:translate(-50%,-50%) rotate(0)!important}
+  #loomAiWorkspace .loom-field-flight text{filter:none!important}
+}
+
+@media(max-width:760px){
+  #loomAiWorkspace .ai-runtime::before{
+    font-size:clamp(14rem,90vw,34rem);
+    top:43%;
+    opacity:.8;
+  }
+  html[data-loom-journey="marrowline"] #loomAiWorkspace .ai-result{
+    margin-right:0!important;
+  }
+  html[data-loom-journey="marrowline"] #loomAiWorkspace .ai-crossing-boundary{
+    padding-left:34px!important;
+  }
+  html[data-loom-journey="marrowline"] #loomAiWorkspace .ai-crossing-boundary::before{left:0}
+}
