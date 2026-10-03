@@ -62,14 +62,14 @@ export function mountLoomAiWorkspace(root, environment = window) {
     </section>
     <section id="aiDemoModePanel" class="ai-mode-panel" role="tabpanel" aria-labelledby="aiDemoMode" hidden>
       <h3>Practice the real route with fictional material.</h3>
-      <p>Use the same selection, local-only, portable-rule and Marrowline handoff mechanics without turning the practice case into production authority.</p>
+      <p>Use the same selection, local-only, traveling-rule and Marrowline handoff mechanics without turning the practice case into production authority.</p>
       <p class="ai-muted">Practice mode changes the material, not the route mechanics or evidence ceilings.</p>
     </section>
     <section id="aiPortableProjection" class="ai-portable-projection" aria-label="What this Loom transfer would carry">
-      <div><span>WHAT WILL TRAVEL?</span><strong id="aiProjectionTravel">Task · 0 selected documents · 0 portable rules</strong></div>
+      <div><span>WHAT WILL TRAVEL?</span><strong id="aiProjectionTravel">Task · 0 selected documents · 0 traveling rules</strong></div>
       <div><span>WHAT STAYS HERE?</span><strong id="aiProjectionStay">0 local-only documents · private-term checks remain local</strong></div>
       <details class="ai-projection-depth"><summary>Inspect governance boundary</summary><div class="ai-projection-depth-grid">
-        <div><span>WHAT DOES LOOM BIND?</span><strong>Selected task, selected file bytes and portable rules are bound together when prepared.</strong></div>
+        <div><span>WHAT DOES LOOM BIND?</span><strong>Selected task, selected file bytes and traveling rules are bound together when prepared.</strong></div>
         <div><span>WHAT REMAINS UNVERIFIED?</span><strong>Foreign-host enforcement, downstream retention and hidden model state remain outside this local binding.</strong></div>
       </div></details>
     </section>
@@ -82,7 +82,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
       <div class="ai-toolbar"><label class="ai-upload">＋ Add documents<input id="aiUpload" type="file" multiple accept=".txt,.md,.csv,.json" aria-label="Add documents"></label><button type="button" id="aiNew">Start my own task</button></div>
       <p class="ai-muted">Text, Markdown, CSV or JSON. New files stay local until you select them.</p>
       <ul id="aiDocuments" class="ai-documents" aria-label="Document sharing"></ul>
-      <details id="aiRulesDrawer" class="ai-disclosure"><summary><span>Your portable rules<small>Open to review the instructions and private terms</small></span></summary><label for="aiRules" class="ai-muted">Instructions that travel with the task · one per line</label><textarea id="aiRules" aria-label="Portable rules" rows="3"></textarea><label for="aiPrivate" class="ai-muted">Exact private terms to block locally · one per line</label><textarea id="aiPrivate" aria-label="Local private terms" rows="2"></textarea></details>
+      <details id="aiRulesDrawer" class="ai-disclosure"><summary><span>Rules that travel<small>Open to review the instructions and private terms</small></span></summary><label for="aiRules" class="ai-muted">Instructions that travel with the task · one per line</label><textarea id="aiRules" aria-label="Rules that travel" rows="3"></textarea><label for="aiPrivate" class="ai-muted">Exact private terms to block locally · one per line</label><textarea id="aiPrivate" aria-label="Local private terms" rows="2"></textarea></details>
       <div id="aiNewRootNotice" class="ai-new-root-notice" hidden tabindex="-1">
         <p>Preparing or testing a new packet replaces this tab's active Loom root and admission lane. The current admitted head and pending tasks will leave the active route. Editing the builder alone keeps that lane.</p>
         <p id="aiNewRootCoordinate"></p>
@@ -91,7 +91,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
         <label><input id="aiNewRootConfirm" type="checkbox"> I choose a new Loom root and accept replacing this active custody lane.</label>
       </div>
       <div class="ai-send-row"><button type="button" id="aiPreparePortable" class="ai-primary">Prepare transfer</button><button type="button" id="aiRun">Run model test ↗</button><button type="button" id="aiStop" hidden>Stop waiting</button><span id="aiSendSummary" class="ai-muted"></span></div>
-      <label class="ai-muted" for="aiRuntimeProfile">Model runtime profile</label><select id="aiRuntimeProfile" aria-describedby="aiRuntimeProfileNote"><option value="deep">Deep · higher requested reasoning</option><option value="quick">Quick · lower requested reasoning</option></select><p id="aiRuntimeProfileNote" class="ai-muted">Both send the same selected inputs and portable rules. The provider receives a reasoning request; its internal effort and answer quality remain unverified.</p>
+      <label class="ai-muted" for="aiRuntimeProfile">Model runtime profile</label><select id="aiRuntimeProfile" aria-describedby="aiRuntimeProfileNote"><option value="deep">Deep · higher requested reasoning</option><option value="quick">Quick · lower requested reasoning</option></select><p id="aiRuntimeProfileNote" class="ai-muted">Both send the same selected inputs and traveling rules. The provider receives a reasoning request; its internal effort and answer quality remain unverified.</p>
       <p id="aiRunNote" class="ai-muted">Preparing binds the selected task locally and makes no model request. The optional model test sends only the selected task, documents and rules.</p>
       <div id="aiPending" class="ai-pending" hidden><span class="ai-wait-orbit" aria-hidden="true"></span><div><strong id="aiPendingLabel">Preparing your request</strong><span id="aiPendingTime" aria-live="off">The waiting time will appear here.</span></div></div><p id="aiStatus" role="status" aria-live="polite">Choose a project or write your own task.</p>
     </section></div>
@@ -108,7 +108,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     <section id="aiResult" class="ai-result" tabindex="-1" aria-label="AI result" hidden>
       <p id="aiResultEyebrow" class="mark">RETURNED THROUGH YOUR LOOM ROUTE</p><h2 id="aiResultTitle">Here’s the work.</h2><div id="aiAnswer" class="ai-answer"></div>
       <details id="aiSubmittedTask" class="ai-submitted-task ai-result-disclosure" hidden><summary>Inspect the exact instruction</summary><p id="aiSubmittedTaskText"></p></details><div id="aiMissing"></div><p id="aiNext"></p>
-      <section id="aiSessionSummary" class="ai-session-summary" hidden aria-label="Portable Loom Session">
+      <section id="aiSessionSummary" class="ai-session-summary" hidden aria-label="Loom Session">
         <p class="mark">LOOM SESSION</p>
         <h3>Continuity can travel with the work.</h3>
         <div class="ai-session-facts">
@@ -243,7 +243,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     const selected = documents.filter(document => document.share).length;
     const local = documents.length - selected;
     const rules = lines('aiRules').length;
-    $('aiProjectionTravel').textContent = `Task · ${selected} selected ${selected===1?'document':'documents'} · ${rules} portable ${rules===1?'rule':'rules'}`;
+    $('aiProjectionTravel').textContent = `Task · ${selected} selected ${selected===1?'document':'documents'} · ${rules} traveling ${rules===1?'rule':'rules'}`;
     $('aiProjectionStay').textContent = `${local} local-only ${local===1?'document':'documents'} · private-term checks remain local`;
   }
   const refreshTransferActionsAfterMutation = () => refreshTransferActions();
@@ -261,7 +261,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
       ? 'This exact task travels with the selected files and rules when you prepare the Loom transfer.'
       : 'Edit this box directly. It is the exact instruction the AI will receive when you press Run demo.';
     $('aiRunNote').textContent = portable
-      ? 'Preparing binds the selected task locally and makes no model request. The optional model test sends only the selected task, selected documents and portable rules.'
+      ? 'Preparing binds the selected task locally and makes no model request. The optional model test sends only the selected task, selected documents and traveling rules.'
       : 'Run demo sends the fictional task, selected documents and rules to Dome-World’s model receiver route. Local-only documents stay in this tab.';
     $('aiPortableMode').setAttribute('aria-selected', String(portable));
     $('aiDemoMode').setAttribute('aria-selected', String(!portable));
@@ -488,7 +488,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     portableWorkUnit = preparedUnit.work_unit;
     if(response){
       const admission=await admitPortableLoomWorkUnitResult(portableSession,portableWorkUnit,response,environment);
-      if(admission.status!=='ADMITTED')throw new Error('The accepted model result could not be admitted into the Portable Loom Session.');
+      if(admission.status!=='ADMITTED')throw new Error('The accepted model result could not be admitted into the Loom Session.');
       portableSession=admission.session;
       portableWorkUnit=portableSession.work_units.at(-1);
     }
@@ -559,13 +559,13 @@ export function mountLoomAiWorkspace(root, environment = window) {
     $('aiChallengeResult').hidden=false;
   }
     function revealResult(){ if($('aiInspector')?.contains(environment.document.activeElement))return; $('aiResult').scrollIntoView?.({behavior:reduced.matches?'auto':'smooth',block:'start'});$('aiResult').focus?.({preventScroll:true}); }
-  $('aiPreparePortable').addEventListener('click',async()=>{if(busy||!rootReplacementAllowed())return;const replacementState=reentry.getRecord();stopRequested=false;invalidate();const portableVersion=version;lock(true);try{const prepared=buildLoomAiRequest({task:$('aiTask').value,documents,rules:lines('aiRules'),protectedTerms:lines('aiPrivate')},environment.crypto.randomUUID());const shared={task:prepared.request.task,documents:prepared.request.documents,rules:prepared.request.rules};shared.governance=await createLoomAiGovernance(shared,{withheldDocumentCount:prepared.localReceipt.withheld_document_ids.length},environment);if(disposed||version!==portableVersion)return;if(stopRequested){status('Portable preparation stopped.');return;}acceptedTask=shared;await establishPortableSession(shared,{replacementState});routeFacts.binding_verified=true;project('checking',{binding_verified:true,note:'Local task binding verified; no model request was made.'});setJourney('ready');$('aiResultEyebrow').textContent='LOOM SESSION PREPARED LOCALLY';$('aiResult').setAttribute('aria-label','Portable continuation');$('aiResultTitle').textContent='Your Loom transfer is prepared locally.';$('aiAnswer').textContent='Your selected documents and portable rules are bound together locally. Preparing made no model request. The Loom transfer envelope carries the task, selected documents, rules and Loom governance; it does not embed civil-identity verification.';$('aiResult').hidden=false;refreshTransferActions();status(workspaceMode==='demo'?'Practice transfer prepared. Choose the next route.':'Loom transfer prepared locally. Choose the next route.');$('aiRuntime').scrollIntoView?.({behavior:reduced.matches?'auto':'smooth',block:'center'});}catch(error){if(!disposed)status(error.message,true);}finally{if(!disposed)lock(false);refreshTransferActionsAfterMutation();}});
+  $('aiPreparePortable').addEventListener('click',async()=>{if(busy||!rootReplacementAllowed())return;const replacementState=reentry.getRecord();stopRequested=false;invalidate();const portableVersion=version;lock(true);try{const prepared=buildLoomAiRequest({task:$('aiTask').value,documents,rules:lines('aiRules'),protectedTerms:lines('aiPrivate')},environment.crypto.randomUUID());const shared={task:prepared.request.task,documents:prepared.request.documents,rules:prepared.request.rules};shared.governance=await createLoomAiGovernance(shared,{withheldDocumentCount:prepared.localReceipt.withheld_document_ids.length},environment);if(disposed||version!==portableVersion)return;if(stopRequested){status('Preparation stopped.');return;}acceptedTask=shared;await establishPortableSession(shared,{replacementState});routeFacts.binding_verified=true;project('checking',{binding_verified:true,note:'Local task binding verified; no model request was made.'});setJourney('ready');$('aiResultEyebrow').textContent='LOOM SESSION PREPARED LOCALLY';$('aiResult').setAttribute('aria-label','Loom continuation');$('aiResultTitle').textContent='Your Loom transfer is prepared locally.';$('aiAnswer').textContent='Your selected documents and traveling rules are bound together locally. Preparing made no model request. The Loom transfer envelope carries only the work you prepared; hidden receiver state and downstream behavior remain outside this local binding.';$('aiResult').hidden=false;refreshTransferActions();status(workspaceMode==='demo'?'Practice transfer prepared. Choose the next route.':'Loom transfer prepared locally. Choose the next route.');$('aiRuntime').scrollIntoView?.({behavior:reduced.matches?'auto':'smooth',block:'center'});}catch(error){if(!disposed)status(error.message,true);}finally{if(!disposed)lock(false);refreshTransferActionsAfterMutation();}});
   $('aiStop').addEventListener('click',()=>{stopRequested=true;taskGovernor?.rest();controller?.abort();status('Stopped waiting. Material already submitted cannot be recalled.');});
   $('aiMarrowline').addEventListener('click',async()=>{if(!acceptedTask)return;const destination=environment.open?.('','_blank');if(!destination){status('HOLD · the browser blocked the Marrowline tab. Allow this new tab or use Export/Copy; this Loom custody lane was not left.',true);return;}try{destination.document.title='Opening Marrowline…';const transferVersion=version;const task=acceptedTask;const url=await createLoomAiHandoff(task,environment);if(disposed||version!==transferVersion||acceptedTask!==task){destination.close?.();status('Workspace changed. Prepare the current task before transferring.',true);return;}destination.location.replace(url);setJourney('marrowline');status('Marrowline opened in a new tab. Keep this original Loom tab open and return here to Check/Admit returned work.');}catch(error){destination.close?.();status(error.message,true);}});
-  $('aiExportSession').addEventListener('click',()=>{if(!portableSessionExport||locallyAdmitted)return;try{downloadJson('loom-portable-session.json',portableSessionExport);status('Portable Loom Session download requested. Its root rules persist across proceeding tasks; source bodies remain explicit per work unit.');}catch(error){status(error.message,true);}});
-  $('aiCopySession').addEventListener('click',async()=>{if(!portableSessionExport)return;try{await environment.navigator.clipboard.writeText(createPortableLoomSessionPrompt(portableSessionExport));status('Portable Loom Session copied. The receiver gets persistent governance instructions and a challenge-compatible session root.');}catch{status('Clipboard access was unavailable. Export the Loom Session instead.',true);}});
+  $('aiExportSession').addEventListener('click',()=>{if(!portableSessionExport||locallyAdmitted)return;try{downloadJson('loom-portable-session.json',portableSessionExport);status('Loom Session download requested. Its root rules persist across proceeding tasks; source bodies remain explicit per work unit.');}catch(error){status(error.message,true);}});
+  $('aiCopySession').addEventListener('click',async()=>{if(!portableSessionExport)return;try{await environment.navigator.clipboard.writeText(createPortableLoomSessionPrompt(portableSessionExport));status('Loom Session copied. The receiver gets persistent governance instructions and a challenge-compatible session root.');}catch{status('Clipboard access was unavailable. Export the Loom Session instead.',true);}});
   $('aiExport').addEventListener('click',async()=>{if(!acceptedTask)return;const task=acceptedTask,token=version;try{const packet=resultView?await exportLoomDemoOrigin(task,environment):createPortableLoomAiPacket(task);if(disposed||version!==token||acceptedTask!==task)return;downloadJson('loom-portable-aia.json',packet);status('Loom transfer download requested. Selected inputs, rules and any original result are preserved for review.');}catch(error){status(error.message,true);}});
-  $('aiCopy').addEventListener('click',async()=>{if(!acceptedTask)return;try{await environment.navigator.clipboard.writeText(createPortableLoomAiPrompt(acceptedTask));status('One-hop task and portable rules copied.');}catch{status('Clipboard access was unavailable. Export the packet instead.',true);}});
+  $('aiCopy').addEventListener('click',async()=>{if(!acceptedTask)return;try{await environment.navigator.clipboard.writeText(createPortableLoomAiPrompt(acceptedTask));status('One-hop task and traveling rules copied.');}catch{status('Clipboard access was unavailable. Export the packet instead.',true);}});
   $('aiVerifyTurnReceipt').addEventListener('click',async()=>{
     if(!portableSession)return;
     try{
