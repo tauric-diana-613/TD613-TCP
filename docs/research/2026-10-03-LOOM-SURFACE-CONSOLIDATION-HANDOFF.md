@@ -36,3 +36,9 @@ LOOM ADMISSION ≠ EMPIRICAL EXECUTION.
 FIRE-GATE EXECUTION ≠ EMPIRICAL CLAIM AUTOMATICALLY EARNED.
 
 Four Dollhouse jurisdictions produce one review finding, not four evidence units. Golden Egg remains UNEARNED. #1412 remains closed and unmerged; WESTERN_HORIZON remains lineage only. Wendbine correspondence carries no copying, authorship, causation, private-access or hidden-communication inference.
+
+## Post-checkpoint update
+
+Draft PR #1413 preserves source b6712b4b86710c88957099deb61119c2d23410dc. Completion focus stealing is repaired by preserving active inspection focus. The actual local desktop/390px Lab browser witness now passes phase-change focus plus Rest/completion/replay/route-switch/reload controls; 51 focused workspace/state/Lab tests pass. Normal-motion clip and final cinematic acceptance remain open. Initial exact-head consolidated CI is RED; inspect its final Offline Marrowline layout job and rerun only on the repaired exact source. Do not merge or release this Draft on the earlier local aggregate alone.
+
+Superdesign CLI authentication succeeded as Personal with telemetry disabled. Canvas: https://superdesign.dev/teams/f0efa856-67f2-486f-8931-8084b77dfe2d/projects/97788be1-da30-4542-8a61-3fc38b74a62b . A source-baseline generation was initially blocked by auto-review as private-source disclosure. GitHub REST confirmed repository private=false; the bounded retry contains only exact published b6712b4b source bytes, not private runtime material. Generation is pending. Do not claim the canvas has a finished redesign until the returned draft is verified. Continue there after preserving the exact context bundle and authored/evidence constraints.
