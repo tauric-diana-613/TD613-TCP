@@ -104,7 +104,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
       <div class="ai-room-replay"><button type="button" id="aiStillField" aria-pressed="false">Still the field</button><button type="button" id="aiRoomReplay" disabled>Replay this route</button><button type="button" id="aiRoomLive" hidden>Back to live</button><label id="aiRoomScrubLabel" hidden>Observed event <input id="aiRoomScrub" type="range" min="0" max="0" value="0" aria-label="Replay observed event"></label><p id="aiRoomReplayStatus" class="ai-muted"></p></div>
       <div id="aiRuntimeInspection" hidden><div class="ai-view-switch"><button type="button" id="aiChild" aria-pressed="true">Plain language answer</button><button type="button" id="aiAuditor" aria-pressed="false">Auditor answer</button></div><ol id="aiEvents" class="ai-events" aria-label="Request history" hidden></ol><pre id="aiReceipt">No request yet.</pre></div>
     </section>
-    <details id="aiPortableDrawer" class="ai-disclosure ai-portable-drawer"><summary><span>Continue with another AI<small>Carry this same task and rules to another receiver</small></span></summary><p id="aiPortableLead" class="ai-muted">Prepare the current work locally for Marrowline, export, or copy. This step makes no model request.</p></details>
+    <aside id="aiPortableDrawer" class="ai-route-note" hidden><p id="aiPortableLead" class="ai-muted">Your current work is still available for another receiver.</p></aside>
     <section id="aiResult" class="ai-result" tabindex="-1" aria-label="AI result" hidden>
       <p id="aiResultEyebrow" class="mark">RETURNED THROUGH YOUR LOOM ROUTE</p><h2 id="aiResultTitle">Here’s the work.</h2><div id="aiAnswer" class="ai-answer"></div>
       <details id="aiSubmittedTask" class="ai-submitted-task ai-result-disclosure" hidden><summary>Inspect the exact instruction</summary><p id="aiSubmittedTaskText"></p></details><div id="aiMissing"></div><p id="aiNext"></p>
@@ -383,7 +383,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     $('aiBriefRoute').textContent=`This demo starts with ${selected} selected ${selected===1?'document':'documents'} traveling and ${local} ${local===1?'document staying':'documents staying'} here. The longer task below is the working instruction set; you can run it as loaded or inspect and edit it.`;
     brief.hidden=false;
   }
-  function resetPortableCue(){ $('aiPortableDrawer').open=false;$('aiPortableLead').textContent=portableDefault; }
+  function resetPortableCue(){ $('aiPortableDrawer').hidden=true;$('aiPortableLead').textContent=portableDefault; }
   function renderDocs(){
     $('aiDocuments').replaceChildren();
     documents.forEach(doc=>{
@@ -461,11 +461,11 @@ export function mountLoomAiWorkspace(root, environment = window) {
         const original=environment.document.createElement('details');original.className='ai-result-disclosure';
         const summary=environment.document.createElement('summary');summary.textContent='Inspect the flagged AI answer';
         const raw=environment.document.createElement('pre');raw.textContent=error.candidate.answer;original.append(summary,raw);$('aiAnswer').append(original);$('aiResult').hidden=false;
-        $('aiPortableDrawer').open=true;$('aiPortableLead').textContent='Prepare the original task to try another receiver. The flagged answer will not travel.';
+        $('aiPortableDrawer').hidden=false;$('aiPortableLead').textContent='Prepare the original task to try another receiver. The flagged answer will not travel.';
         revealResult();
       }
       project('held',{request_id:requestId,note:error.name==='AbortError'?(clientDeadlineExceeded?'Client waiting deadline reached after 225 seconds.':'Operator stopped waiting.'):String(error.message).slice(0,300),...(error.loomFailure?{provider_failure:error.loomFailure,observations:error.loomFailure.observations}:{})});
-      if(error.loomFailure){$('aiPortableDrawer').open=true;$('aiPortableLead').textContent='No AI answer returned here. Your selected task, documents and rules are still available. Retry later, or prepare this exact working packet for another receiver.';}
+      if(error.loomFailure){$('aiPortableDrawer').hidden=false;$('aiPortableLead').textContent='No AI answer returned here. Your selected task, documents and rules are still available. Retry later, or prepare this exact working packet for another receiver.';}
       status(error.name==='AbortError'?(clientDeadlineExceeded?'No complete response arrived within 225 seconds. Your task is still here.':'Stopped waiting for this request. Material already submitted cannot be recalled.'):String(error.message).slice(0,300),true);
     }finally{if(!disposed)lock(false);}
   });
