@@ -63,6 +63,7 @@ function harness(t, responder=(request)=>response(admitted(request)), reduced=fa
   return {window,root,ui,$,calls,frames,change,load,upload,dispose,settled,submitted};
 }
 
+test('Loom transfer is the default mode and keeps comprehension plus local preparation open',async t=>{
   const h=harness(t);
   assert.equal(h.ui.inspect().mode,'portable');
   assert.equal(h.root.querySelectorAll('#aiRuntimeState').length,1);
@@ -74,7 +75,7 @@ function harness(t, responder=(request)=>response(admitted(request)), reduced=fa
   assert.equal(h.$('#aiDemoWelcome').hidden,true);
   assert.equal(h.$('#aiPortableModePanel').hidden,false);
   assert.equal(h.$('#aiDemoModePanel').hidden,true);
-  assert.match(h.$('#aiFirstUseGuide').textContent,/does not establish civil identity or foreign-host enforcement/i);
+  assert.match(h.$('#aiFirstUseGuide').textContent,/Marrowline.*Return mechanics/i);
   assert.equal(h.root.dataset.loomJourney,'loom');
 
   h.change('#aiTask','Compare the selected evidence and name what remains missing.');
@@ -85,11 +86,12 @@ function harness(t, responder=(request)=>response(admitted(request)), reduced=fa
   assert.equal(h.$('#aiResult').hidden,false);
   assert.match(h.$('#aiAnswer').textContent,/made no model request/i);
   assert.match(h.$('#aiAnswer').textContent,/does not embed civil-identity verification/i);
-  assert.equal(h.$('#aiSessionSummary').hidden,false,'local preparation creates a session root before issuance');
+  assert.equal(h.$('#aiSessionSummary').hidden,false,'local preparation creates a session root before crossing');
   assert.match(h.$('#aiSessionReceipt').textContent,/td613\.loom\.portable-session-export\/v0\.1/);
   assert.match(h.$('#aiStatus').textContent,/Choose the next route/i);
 });
 
+test('a prepared Loom transfer wakes its crossing gestures without a speculative authority gate',async t=>{
   const h=harness(t);
   h.change('#aiTask','Prepare this bounded task for another receiver.');
   h.$('#aiPreparePortable').click();
