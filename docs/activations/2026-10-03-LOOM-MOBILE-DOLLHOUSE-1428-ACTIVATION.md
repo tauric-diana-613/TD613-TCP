@@ -26,19 +26,26 @@ PR:
 
 ## Production baseline entering this tranche
 
-The predecessor landing strip #1426 was created before the #1427 rescue and is now stale.
+The predecessor landing strip #1426 was created before the #1427 rescue and is stale. The first #1428 landing-pad commit was then cut after #1427, but **#1429 subsequently changed and redeployed the mobile Loom surface**. This reconciled activation therefore starts from the post-#1429 production relock.
 
-The current production lineage is:
+The production lineage that matters is:
 
-- #1427 exact validated head: `d5034fede10ca043f12a6c43bae903102e135334`
-- #1427 merged source packet: `9e2c024b461f801418099ad00870fed8960a5edc`
-- #405 bounded release commit: `ff4a430d9f1426661dbb9906fdcb490d2274f61a`
-- post-release relock main: `b22e0b305189c2901882fc8addbb9d5ea4463264`
+### #1427 rescue
+- exact validated head: `d5034fede10ca043f12a6c43bae903102e135334`
+- merged source packet: `9e2c024b461f801418099ad00870fed8960a5edc`
+- #405 release commit: `ff4a430d9f1426661dbb9906fdcb490d2274f61a`
+- post-release relock: `b22e0b305189c2901882fc8addbb9d5ea4463264`
+
+### #1429 follow-up
+- exact PR head: `75aa936daf1a3d7883805a4baa8ed9a6c9b45b41`
+- merged source packet: `8adc7ed228f0de578df625b23a7fe2081b3b86ce`
+- #405 release commit: `003c569ceaf40067ed84ff4a1cb7abbda1612c5d`
+- **current production relock main: `23cf62a1d79c4dd5e25ccb6912c6fe65710d7203`**
 - production exact-source receipt/content/stability/post-witness source guard: **PASS**
 - deployment count: **1**
 - Git auto-deploy: **disabled / relocked**
 
-This PR starts from that relock. Do not reconstruct the product from #1425-era screenshots or the original #1426 assumptions.
+This PR is reconciled onto that exact relock. Do not reconstruct the product from #1425-era screenshots, the original #1426 assumptions, or the intermediate #1427 production surface where #1429 later changed copy/motion behavior.
 
 ## First law: recover repository meaning before acting
 
@@ -51,7 +58,8 @@ Read, in this order, before substantive design conclusions:
 5. `ATLAS.md`
 6. `FADT.md`
 7. `docs/LOOM_1427_DOLLHOUSE_BROWSER_REPAIRS_20261003.md`
-8. `docs/activations/2026-10-03-LOOM-MOBILE-DOLLHOUSE-1428-ACTIVATION.md`
+8. inspect PR #1429 / merge `8adc7ed228f0de578df625b23a7fe2081b3b86ce` and its changed files before altering tutorial language or motion semantics;
+9. `docs/activations/2026-10-03-LOOM-MOBILE-DOLLHOUSE-1428-ACTIVATION.md`
 
 Then follow the canonical links those files identify into their supporting lineage/specification/source bodies.
 
@@ -77,9 +85,9 @@ If your platform supports parallel subagents, use them.
 
 Keep independent role findings independently attributable.
 
-## #1427 changes are the baseline, not optional suggestions
+## #1427 + #1429 are the baseline, not optional suggestions
 
-Do not undo, bypass, rename away, or accidentally regress the large #1427 Work-mode tranche.
+Do not undo, bypass, rename away, or accidentally regress the large #1427 Work-mode tranche **or the #1429 follow-up that repaired its mobile language/motion rough edges**.
 
 The following are now baseline product laws or accepted repairs:
 
@@ -134,7 +142,49 @@ The following are now baseline product laws or accepted repairs:
 - subtotal-classification regex defect found during hostile preflight was repaired;
 - governance, reentry, route, reduced-motion, mobile-composition and browser witnesses were updated to the new product.
 
-Treat all of the above as the starting field.
+### #1429 inherited language / interaction law
+
+#1429 responded to the operator's next physical-mobile review. Treat these changes as current production behavior:
+
+- **Practice is now Demo** in consumer-facing UI and tests;
+- “prepare transfer / practice transfer” language moved toward **Prepare AI request / Prepare demo request**;
+- task cues now explain requests/files in ordinary AI-product language rather than internal transfer/crossing grammar;
+- repeated privacy copy was reduced: the boundary remains real without chanting “private” in every sentence;
+- prepared state is labeled **AI REQUEST READY / AI request ready**;
+- the prepared result explains that preparation itself does not send to AI, and the next route is **Continue in Marrowline**;
+- Return copy is framed as reviewing the AI result alongside its sources and conversation history;
+- choosing a Demo collapses the chooser rather than leaving a noisy list open;
+- primary tutorial controls were tightened and oversized pill-like treatment reduced;
+- the mobile witness explicitly exercises a **390×700** short viewport and painted-text bounds, not only a generous 390×844 canvas.
+
+### #1429 inherited Flow-Core temporal law
+
+This is especially important.
+
+The tutorial's 39 carriers must remain alive, but **ambient time alone may not globally swap the carrier identities or the field topology**.
+
+#1429 added an explicit temporal-continuity assay:
+
+- 39 carriers remain present;
+- the eight presentation-only Flow-Core relations may be distributed across those carriers;
+- each carrier's relation/glyph identity remains stable over ambient time unless an actual semantic/recomposition gesture warrants change;
+- prior hard-switch times must not produce global glyph/position pops;
+- field-path topology changes continuously;
+- a carrier that wraps on a nonclosed trajectory must cross its discontinuity at an invisible lifetime edge rather than visibly teleport;
+- the large center glyph is visually subordinate during ambient choreography so the distributed carriers own the living field;
+- `𝌋` may remix the presentation score/choreography, but ordinary clock progression must not itself rewrite the score.
+
+In short:
+
+```text
+continuous motion != semantic mutation
+ambient time != new event
+39-carrier life != synchronized operator flip
+𝌋 remix gesture = permitted presentation recomposition
+evidenced relation = still authoritative
+```
+
+Treat all #1427 and #1429 behavior above as the starting field.
 
 ## Prime directive
 
@@ -451,7 +501,7 @@ At closure report separately:
 - provider evidence;
 - HELD / FAILED / CANDIDATE.
 
-Do not dromologically flatten the #1427 rescue into whatever bug is newest.
+Do not dromologically flatten the #1427 rescue **or the #1429 mobile language/motion correction** into whatever bug is newest.
 
 Take it from here.
 

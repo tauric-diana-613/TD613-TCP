@@ -591,6 +591,9 @@ export function mountLoomInstrumentStateView(root) {
       const choreographyRelations=Array.isArray(choreography?.relations)?choreography.relations.filter(key=>view.relations?.[key]):[];
       const choreographyScene=snapshot.packet?.scene?.id?.startsWith('first-crossing-')===true;
       const ambientChoreography=choreographyScene&&choreographyRelations.length>0;
+      // A large center glyph supports the request reading; the distributed
+      // carriers own the tutorial's living field rather than a static monogram.
+      glyphGroup.setAttribute('opacity',ambientChoreography?'.38':'1');
       // A valid family may bend an evidenced workspace route as well. The
       // illustrative eight-symbol score remains confined to the tutorial;
       // workspace carriers continue to name only their current observed relation.
@@ -607,7 +610,9 @@ export function mountLoomInstrumentStateView(root) {
         const z=(depth.length-i)/depth.length;
         depth[i].setAttribute('transform',`translate(${z*(9+breath*3)} ${z*(10-breath*2)})`);
       }
-      const relationKey=frame.relation_key ?? (ambientChoreography?choreographyRelations[Math.floor(seconds/1.65)%choreographyRelations.length]:null);
+      // Ambient filaments keep one continuous topology. Time must not swap the
+      // whole field's relation every 1.65 seconds without a request event.
+      const relationKey=frame.relation_key ?? (ambientChoreography?'recurrence':null);
       for(let i=0;i<filamentCount;i++){
         const centered=i-(filaments.length-1)/2;
         const pulse=frame.reduced_motion?0:Math.sin(seconds*.7+i*.22)*24;
@@ -687,7 +692,7 @@ export function mountLoomInstrumentStateView(root) {
         // relation identity; the selected family may deform geometry, never truth.
         const observed=evidencedTrail.findLast(item=>item.relation_key===frame.relation_key);
         const ambientRelation=!observed&&ambientChoreography
-          ? choreographyRelations[(i+Math.floor(seconds/1.35))%choreographyRelations.length] : null;
+          ? choreographyRelations[i%choreographyRelations.length] : null;
         const visible=Boolean(observed||ambientRelation);
         if(!visible){setText(node,'');node.setAttribute('visibility','hidden');continue;}
         const relationKey=observed?.relation_key??ambientRelation;
@@ -795,6 +800,13 @@ export function mountLoomInstrumentStateView(root) {
           opacity=Math.min(.12,opacity*.22);
         }
         if(!ambientOnly && finiteTraversal && frame.progress>.65)opacity*=1-(frame.progress-.65)/.35*.65;
+        if(ambientOnly&&finiteTraversal){
+          // Unbounded ambient traversals reset only while invisible. The
+          // smooth lifetime avoids an opaque carrier teleport at phase 1→0;
+          // canonical observed consequences retain their finite route grammar.
+          const smooth=value=>{const t=Math.max(0,Math.min(1,value));return t*t*(3-2*t);};
+          opacity*=smooth(phase/.12)*smooth((1-phase)/.12);
+        }
         node.setAttribute('opacity',opacity.toFixed(3));
         node.setAttribute('x',x.toFixed(2));node.setAttribute('y',y.toFixed(2));
         node.setAttribute('transform',`translate(${x.toFixed(2)} ${y.toFixed(2)}) rotate(${roll.toFixed(2)}) scale(${scale.toFixed(2)}) translate(${-x.toFixed(2)} ${-y.toFixed(2)})`);

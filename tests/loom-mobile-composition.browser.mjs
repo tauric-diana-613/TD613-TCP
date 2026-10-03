@@ -132,7 +132,10 @@ async function tutorialComposition(page,name){
       private:'#loomFirstCrossingPrivate',actions:'.loom-first-crossing-actions'};
     const boxes=Object.fromEntries(Object.entries(selectors).map(([key,selector])=>{
       const node=document.querySelector(selector),r=node.getBoundingClientRect(),s=getComputedStyle(node);
-      return [key,{x:r.x,y:r.y,right:r.right,bottom:r.bottom,width:r.width,height:r.height,
+      const range=document.createRange();range.selectNodeContents(node);
+      const painted=[...range.getClientRects()];
+      const bottom=Math.max(r.bottom,...painted.map(rect=>rect.bottom));
+      return [key,{x:r.x,y:r.y,right:r.right,bottom,width:r.width,height:r.height,
         visible:r.width>0&&r.height>0&&s.display!=='none'&&s.visibility!=='hidden'&&
           [...(function*(){for(let ancestor=node.parentElement;ancestor;ancestor=ancestor.parentElement)yield ancestor;})()]
           .every(ancestor=>getComputedStyle(ancestor).display!=='none'&&getComputedStyle(ancestor).visibility!=='hidden')}];
@@ -143,9 +146,10 @@ async function tutorialComposition(page,name){
       if(a.visible&&b.visible&&Math.min(a.right,b.right)-Math.max(a.x,b.x)>1&&Math.min(a.bottom,b.bottom)-Math.max(a.y,b.y)>1)
         overlaps.push({text,control});
     }
-    return {boxes,overlaps};
+    const footer=document.querySelector('#loomFirstCrossingLeave').getBoundingClientRect();
+    return {boxes,overlaps,footer_bottom:footer.bottom,viewport_height:innerHeight};
   });
-  record(`${name}: tutorial hints do not overlap choices or actions`,layout.overlaps.length===0,layout);
+  record(`${name}: tutorial hints do not overlap choices or actions`,layout.overlaps.length===0&&layout.footer_bottom<=layout.viewport_height,layout);
 }
 async function observeFiniteConsequence(page,relation,name) {
   await page.waitForFunction(expected=>document.querySelector('#aiRuntimeState')?.dataset.projectionState==='CURRENT'&&
@@ -222,7 +226,7 @@ try {
   // loop. It proves the tutorial gate uses local Loom event grammar, makes no
   // provider request, persists completion, and only then exposes Open Loom.
   {
-    const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'no-preference' });
+    const context = await browser.newContext({ viewport: { width: 390, height: 700 }, reducedMotion: 'no-preference' });
     const page = await bindPage(context, 'first-crossing-mobile', served.base, { firstCrossingComplete: false });
     try {
       record('first crossing: builder is withheld before practice completion',
@@ -294,7 +298,7 @@ try {
       record('first crossing: completion unlocks the live Loom CTA',
         await page.locator('#loomBegin').isVisible() &&
         await page.evaluate(() => localStorage.getItem('td613.loom.first-crossing.v1')) === 'complete' &&
-        /Try the live Loom/.test(await page.locator('#loomBegin').textContent()),
+        /Try Loom/.test(await page.locator('#loomBegin').textContent()),
         { open_visible: await page.locator('#loomBegin').isVisible(), label:await page.locator('#loomBegin').textContent() });
       record('first crossing: tutorial made zero provider or non-GET requests',
         !report.requests.some(request => request.posture === 'first-crossing-mobile' && request.method !== 'GET'),
