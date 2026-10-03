@@ -327,7 +327,7 @@ html[data-loom-journey="return"] #loomAiWorkspace #loomJourneyStep3{
 }
 #loomAiWorkspace #aiMarrowline{border-color:rgba(142,232,230,.3)!important;background:#102026!important;color:#edf4f4!important}
 #loomAiWorkspace code,#loomAiWorkspace pre{font-family:var(--mono)!important}
-#loomAiWorkspace pre{max-width:100%;overflow:auto;padding:12px;border:1px solid var(--l-line);border-radius:9px;background:#080c11;color:#bcc5cc;font-size:.67rem;line-height:1.5}
+#loomAiWorkspace pre{max-width:100%;max-height:360px;overflow:auto;padding:12px;border:1px solid var(--l-line);border-radius:9px;background:#080c11;color:#bcc5cc;font-size:.67rem;line-height:1.5}
 #loomAiWorkspace .ai-challenge-body label{display:block;margin:10px 0 5px;color:#89939d;font-size:.68rem}
 #loomAiWorkspace .ai-challenge-actions,#loomAiWorkspace .loom-reentry-actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
 #loomAiWorkspace .ai-challenge-actions button,#loomAiWorkspace .loom-reentry-actions button{
