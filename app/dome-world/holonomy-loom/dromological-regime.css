@@ -1224,3 +1224,73 @@ html:not([data-loom-journey="loom"]) .hero h1::after{
     line-height:.67;
   }
 }
+
+
+/* READY has one unavoidable next action. The existing Marrowline control becomes
+   the crossing seam while the full-screen field owns the viewport; no duplicate
+   control or synthetic stage is introduced. */
+html[data-loom-journey="ready"] #loomAiWorkspace #aiMarrowline:not(:disabled){
+  position:fixed!important;
+  left:50%;
+  bottom:30px;
+  z-index:120;
+  transform:translateX(-50%);
+  width:min(620px,calc(100vw - 56px));
+  min-height:72px!important;
+  padding:22px 76px 20px 28px!important;
+  border:1px solid rgba(239,188,127,.46)!important;
+  border-left:3px solid var(--dr-gold)!important;
+  background:
+    linear-gradient(100deg,rgba(18,10,24,.94),rgba(6,11,15,.91))!important;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  box-shadow:
+    0 20px 70px rgba(0,0,0,.48),
+    0 0 60px rgba(199,162,239,.08),
+    inset 0 0 0 1px rgba(145,236,232,.035)!important;
+  color:var(--dr-ivory)!important;
+  text-align:left;
+  font:400 clamp(1.25rem,2.4vw,2rem)/1 Georgia,serif!important;
+  letter-spacing:-.03em;
+}
+html[data-loom-journey="ready"] #loomAiWorkspace #aiMarrowline:not(:disabled)::before{
+  content:"NEXT · MARROWLINE";
+  display:block;
+  margin-bottom:7px;
+  color:var(--dr-cyan);
+  font:600 .56rem/1 var(--mono);
+  letter-spacing:.16em;
+}
+html[data-loom-journey="ready"] #loomAiWorkspace #aiMarrowline:not(:disabled)::after{
+  content:"↗";
+  position:absolute;
+  right:26px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--dr-gold);
+  font:300 2rem/1 Georgia,serif;
+}
+html[data-loom-journey="ready"] #loomAiWorkspace #aiMarrowline:not(:disabled):focus-visible{
+  outline:1px solid var(--dr-cyan)!important;
+  outline-offset:5px!important;
+}
+html[data-loom-journey="ready"] #loomAiWorkspace #aiMarrowline:not(:disabled):hover{
+  border-color:rgba(145,236,232,.48)!important;
+  border-left-color:var(--dr-cyan)!important;
+}
+@media(max-width:760px){
+  html[data-loom-journey="ready"] #loomAiWorkspace #aiMarrowline:not(:disabled){
+    bottom:66px;
+    width:calc(100vw - 24px);
+    min-height:64px!important;
+    padding:17px 58px 15px 18px!important;
+    font-size:1.25rem!important;
+  }
+  html[data-loom-journey="ready"] #loomAiWorkspace #aiMarrowline:not(:disabled)::before{
+    font-size:.5rem;
+    margin-bottom:5px;
+  }
+  html[data-loom-journey="ready"] #loomAiWorkspace #aiMarrowline:not(:disabled)::after{
+    right:18px;
+  }
+}
