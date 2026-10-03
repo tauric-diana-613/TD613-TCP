@@ -53,7 +53,7 @@ test('cinematic route field and builder are separate scenes while advanced tools
   assert.match(product, /#loomAiWorkspace \.loom-stage\{[\s\S]*?height:calc\(100svh - 52px\)/);
 });
 
-test('First Crossing is a recoverable consumer ingress with a living Flow-Core remix', () => {
+test('How Loom works is a recoverable handoff preview with a living Flow-Core remix', () => {
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
   assert.equal(doc.querySelector('.loom-builder-shell').hidden, true);
   for (const id of ['loomBegin','loomReturnThreshold','loomFirstCrossing','loomFirstCrossingAction','loomFirstCrossingStop','loomFirstCrossingBack','loomFirstCrossingPause','loomFirstCrossingLeave','loomFirstCrossingPrivate','loomFlowcoreMessage']) {
@@ -81,7 +81,7 @@ test('First Crossing is a recoverable consumer ingress with a living Flow-Core r
   assert.doesNotMatch(workspaceSource, /firstCrossing[\s\S]{0,1200}(?:fetch\s*\(|provider_call_authorized\s*:\s*true)/);
 });
 
-test('First Crossing leaves spatial consequence to the one canonical renderer', () => {
+test('The handoff preview leaves spatial consequence to the one canonical renderer', () => {
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
   const crossing=doc.querySelector('#loomFirstCrossing');
   assert.ok(crossing);
@@ -375,7 +375,7 @@ test('How it works replay preserves an existing real Loom root and prepared expo
 });
 
 
-test('completed First Crossing reopens from How it works in one deliberate gesture', async t => {
+test('completed handoff preview reopens from How it works in one deliberate gesture', async t => {
   const h = practiceHarness(t);
   async function finishPractice() {
     h.$('[data-first-crossing-item="brief"]').click();
