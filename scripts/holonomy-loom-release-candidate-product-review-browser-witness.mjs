@@ -179,7 +179,6 @@ try {
     });
   });
 
-  await page.addInitScript(() => { try { localStorage.setItem('td613.loom.first-crossing.v1', 'complete'); } catch {} });
   await page.goto(`${base}${workspaceRoute}`, { waitUntil: 'networkidle', timeout: 60_000 });
 
   const [servedHtmlResponse, servedWorkspaceResponse, servedEngineResponse] = await Promise.all([
@@ -211,13 +210,18 @@ try {
   });
 
   check('primary workspace route loaded', new URL(page.url()).pathname === workspaceRoute, page.url());
-  await page.locator('#loomBegin').waitFor({ state: 'visible', timeout: 10_000 });
-  check('primary workspace arrives at the persistent Loom Threshold', await page.locator('.loom-stage').isVisible() && !(await page.locator('.loom-builder-shell').isVisible()));
-  await page.locator('#loomBegin').click();
+  await page.locator('#loomFirstCrossingLeave').waitFor({ state: 'visible', timeout: 10_000 });
+  check('primary workspace arrives at the visible Loom tutorial', await page.locator('#loomFirstCrossing').isVisible()
+    && await page.locator('.loom-stage').isVisible() && !(await page.locator('.loom-builder-shell').isVisible()));
+  await page.locator('#loomFirstCrossingLeave').click();
   await page.locator('.loom-builder-shell').waitFor({ state: 'visible', timeout: 10_000 });
   await page.locator('#aiTask').waitFor({ state: 'visible', timeout: 10_000 });
-  check('primary AI task workspace visibly renders after the Threshold opens', await page.locator('#loomAiWorkspace').isVisible() && await page.locator('#aiTask').isVisible());
-  check('primary AI Run control renders without automatic invocation', await page.locator('#aiRun').isVisible());
+  check('primary AI task workspace visibly renders after Skip tutorial', await page.locator('#loomAiWorkspace').isVisible() && await page.locator('#aiTask').isVisible());
+  check('optional model test stays outside the primary task route', !(await page.locator('#aiRun').isVisible()));
+  await page.locator('#loomToolsOpen').click();
+  await page.locator('[data-tool="model"]').click();
+  check('optional AI Run control is inspectable without invocation', await page.locator('#aiRun').isVisible());
+  await page.locator('#loomToolsClose').click();
   check('Instrument Lab is separated from the primary journey', await page.locator('#loomLegacy').count() === 0 && await page.locator('a[href="/dome-world/loom-instrument-lab.html"]').count() === 1);
   check('historical checker and observer are absent from the operator page', await page.locator('#loomTheater, #loomObserverChamber, #loomPracticeFixtures, .lr-world, .lr-courier').count() === 0);
   await page.goto(url, { waitUntil: 'networkidle', timeout: 60_000 });

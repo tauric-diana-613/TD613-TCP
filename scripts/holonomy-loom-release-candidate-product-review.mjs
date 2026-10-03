@@ -164,7 +164,8 @@ export async function compileHolonomyLoomReleaseCandidateReview({
       reviewCheck('R4.1', 'provider help remains optional closed details', providerDetailsClosedByDefault),
       reviewCheck('R4.2', 'local checker declares no provider call', html.includes('No model is called by this local checker.')),
       reviewCheck('R4.3', 'provider release authority remains false', releaseBoundary.provider_release_authority === false && html.includes('data-provider-release-authority="false"')),
-      reviewCheck('R4.4', 'fixture excludes model workspace and the primary workspace boots separately', html.includes('This research fixture has no model workspace.') && !html.includes('id="loomAiWorkspace"') && workspaceHtml.includes('src="./holonomy-loom/ai-workspace.js"'))
+      reviewCheck('R4.4', 'fixture excludes model workspace and the primary workspace boots separately', html.includes('This research fixture has no model workspace.') && !html.includes('id="loomAiWorkspace"')
+        && /<script\b(?=[^>]*\btype="module")(?=[^>]*\bsrc="\.\/holonomy-loom\/ai-workspace\.js(?:\?v=[A-Za-z0-9._-]{1,80})?")[^>]*>/.test(workspaceHtml))
     ]),
     section(null, 'R5', 'Rest Return Exit', [
       reviewCheck('R5.1', 'REST control declared', html.includes('id="rest"') && html.includes('>REST</button>')),

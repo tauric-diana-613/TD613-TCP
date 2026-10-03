@@ -9,11 +9,14 @@ import path from 'node:path';
 import http from 'node:http';
 import { execFileSync } from 'node:child_process';
 import { webcrypto } from 'node:crypto';
-import { chromium } from 'playwright';
+import { chromium, firefox, webkit } from 'playwright';
 import { bindLoomDemoRequest, loomDemoDigest, loomDemoReceiptDigest, loomDemoResult,
   inspectLoomDemoExport, LOOM_DEMO_STAGE_RECEIPT_SCHEMA } from '../app/dome-world/holonomy-loom/demo-contract.js';
 
 const environment = { crypto: webcrypto }, appRoot = path.resolve('app');
+const engine = process.env.TD613_BROWSER || 'chromium';
+const browserType = { chromium, firefox, webkit }[engine];
+if (!browserType) throw new TypeError('Unknown witness browser engine');
 const artifactDir = path.resolve(process.env.TD613_ARTIFACT_DIR || 'artifacts/loom-instrument-route-browser');
 await fs.mkdir(artifactDir, { recursive: true });
 let server, browser;
@@ -34,6 +37,7 @@ if (!base) {
 }
 assert.ok(['127.0.0.1', 'localhost'].includes(new URL(base).hostname), 'this witness only targets a local server');
 const report = { schema: 'td613.loom.instrument-route-browser-witness/v0.1', status: 'HELD',
+  engine,
   source_sha: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
   working_tree_dirty: Boolean(execFileSync('git', ['status', '--porcelain'], { encoding: 'utf8' }).trim()),
   observed_at: new Date().toISOString(), scope: 'REAL_LOCAL_BROWSER_MOCK_PROVIDER_AND_CUSTODY',
@@ -56,7 +60,7 @@ async function downloadJson(page, locator, filename) {
 async function useKeyboard(locator) { await locator.focus(); await locator.press('Enter'); }
 
 try {
-  browser = await chromium.launch({ headless: true });
+  browser = await browserType.launch({ headless: true });
   for (const [name, viewport] of [['desktop', { width: 1280, height: 900 }], ['portrait-390', { width: 390, height: 844 }]]) {
     const context = await browser.newContext({ viewport, reducedMotion: 'reduce', acceptDownloads: true });
     const errors = [], unexpected = [], requests = [], heads = new Map();
@@ -97,7 +101,6 @@ try {
       return route.fulfill({ status: 503, json: { ok: false, error: 'UNEXPECTED_MOCK_ROUTE' } });
     });
     const loom = await context.newPage();
-    await loom.addInitScript(() => { try { localStorage.setItem('td613.loom.first-crossing.v1', 'complete'); } catch {} });
     const checks = [];
     const check = (label, condition) => { assert.equal(Boolean(condition), true, label); checks.push(label); };
     // OLD: rules/profile/one-hop tools were disclosures embedded in the route.
@@ -114,7 +117,14 @@ try {
     };
     try {
       await loom.goto(`${base}/dome-world/holonomy-loom.html`, { waitUntil: 'networkidle' });
-      await useKeyboard(loom.locator('#loomBegin')); await loom.locator('.loom-builder-shell').waitFor({ state: 'visible' });
+      // Every direct visit opens the tutorial, including returning visits.
+      // Use its visible Skip tutorial gesture rather than a completion flag or
+      // the hidden final-step button to enter the working surface.
+      await loom.locator('#loomFirstCrossing').waitFor({ state: 'visible' });
+      check('tutorial arrival makes zero provider or custody requests', loomCalls === 0 && requests.length === 0 && ordinaryCalls === 0);
+      check('tutorial offers a visible keyboard exit', await loom.locator('#loomFirstCrossingLeave').isVisible());
+      await useKeyboard(loom.locator('#loomFirstCrossingLeave'));
+      await loom.locator('.loom-builder-shell').waitFor({ state: 'visible' });
       await loom.locator('#aiDemoMode').click(); await loom.locator('#aiNew').click();
       await loom.locator('#aiTask').fill(task); await openTool('rules');
       await loom.locator('#aiRules').fill(rules.join('\n')); await loom.locator('#aiPrivate').fill(privateText);
@@ -124,6 +134,12 @@ try {
       await loom.locator('#aiRuntimeProfile').selectOption('deep');
       check('Deep profile preserves the same selected task and rules', await loom.locator('#aiTask').inputValue() === task && await loom.locator('#aiRules').inputValue() === rules.join('\n'));
       await closeTools();
+      await useKeyboard(loom.locator('#loomReturnThreshold'));
+      await loom.locator('#loomFirstCrossing').waitFor({ state: 'visible' });
+      await useKeyboard(loom.locator('#loomFirstCrossingLeave'));
+      await loom.locator('.loom-builder-shell').waitFor({ state: 'visible' });
+      check('tutorial re-entry preserves the working task and rules without sending', await loom.locator('#aiTask').inputValue() === task
+        && await loom.locator('#aiRules').inputValue() === rules.join('\n') && loomCalls === 0 && requests.length === 0);
       await loom.locator('#aiUpload').setInputFiles([
         { name: 'selected.txt', mimeType: 'text/plain', buffer: Buffer.from(selectedText) },
         { name: 'local-only.txt', mimeType: 'text/plain', buffer: Buffer.from(privateText) }
@@ -150,7 +166,7 @@ try {
       await useKeyboard(marrowline.getByRole('button', { name: 'Setup · Attach Loom handoff', exact: true }));
       check('keyboard staging moves focus to native prompt without sending', requests.length === 0 && await marrowline.locator('#khonapolitPrompt').evaluate(node => node === document.activeElement));
       await useKeyboard(marrowline.locator('#khonapolitSend'));
-      await marrowline.waitForFunction(() => window.__TD613_LOOM_DEMO_CONTROLLER__.snapshot().phase === 'AIA_SENT');
+      await marrowline.waitForFunction(() => window.__TD613_LOOM_DEMO_CONTROLLER__.snapshot().phase === 'AIA_SENT' && !window.__TD613_LOOM_DEMO_CONTROLLER__.snapshot().busy);
       await useKeyboard(marrowline.locator('#marrowlineComposerPlus')); await useKeyboard(marrowline.locator('#marrowlineContextLoom'));
       await useKeyboard(marrowline.getByRole('button', { name: 'Continue · Attach selected files', exact: true }));
       await useKeyboard(marrowline.locator('#khonapolitSend'));
@@ -175,8 +191,31 @@ try {
       await useKeyboard(currentCard.locator('.reply-next-actions summary'));
       check('More with this reply opens by keyboard on exact governed card', await currentCard.locator('.reply-next-actions').evaluate(node => node.open));
       await marrowline.screenshot({ path: path.join(artifactDir, `${name}-native-current.png`), fullPage: true });
+      if (viewport.width < 861) await useKeyboard(marrowline.locator('.mobile-dock [data-mobile-target="gatePanel"]'));
+      await useKeyboard(marrowline.locator('#loomGateReturnToLoom'));
+      await loom.waitForFunction(() => document.querySelector('[data-return-review="status"]')?.textContent.includes('Returned session checked for review.'));
+      check('return opens the original Loom tab at its visible review surface', await loom.locator('#loomReturnWorkspace').isVisible()
+        && await loom.locator('[data-return-review="result"]').isVisible());
+      check('returned current work is C2 with origin input match and explicit admission hold', (await loom.locator('[data-return-review="history"]').textContent()).includes(second.continuation.prior_result.answer)
+        && (await loom.locator('[data-return-review="boundary"]').textContent()).includes('The origin task, selected files and rules match this tab.')
+        && (await loom.locator('[data-return-review="boundary"]').textContent()).includes('local custody admission remains HELD'));
+      const reviewed = await downloadJson(loom, loom.locator('[data-return-review="save"]'), `${name}-returned-review.json`);
+      check('returned review retains exact latest and predecessor history without private material', reviewed.continuation.prior_result.request_id === second.continuation.prior_result.request_id
+        && JSON.stringify(reviewed.loom_demo_provenance.stages) === JSON.stringify(second.loom_demo_provenance.stages)
+        && !JSON.stringify(reviewed).includes(privateText));
+      const reviewedInspection = await inspectLoomDemoExport(reviewed, environment);
+      check('return grants review consistency rather than live custody or restoration', reviewedInspection.status === 'REVIEW_ONLY_CONSISTENCY'
+        && reviewedInspection.live_custody_capability === false && reviewedInspection.restore_authority === false);
+      await loom.screenshot({ path: path.join(artifactDir, `${name}-origin-returned-current.png`), fullPage: true });
       await loom.reload({ waitUntil: 'networkidle' });
       check('reload does not restore admitted work or make issuance current', await loom.locator('#aiExport').isDisabled());
+      await loom.waitForFunction(() => document.querySelector('[data-return-review="status"]')?.textContent.includes('Returned session checked for review.'));
+      check('reload preserves the visible C2 review while origin custody remains unavailable', await loom.locator('[data-return-review="result"]').isVisible()
+        && (await loom.locator('[data-return-review="history"]').textContent()).includes(second.continuation.prior_result.answer)
+        && (await loom.locator('[data-return-review="boundary"]').textContent()).includes('The original local record is unavailable for comparison.')
+        && (await loom.locator('[data-return-review="boundary"]').textContent()).includes('local custody admission remains HELD')
+        && await loom.locator('#aiMarrowline').isDisabled());
+      await loom.screenshot({ path: path.join(artifactDir, `${name}-reloaded-review.png`), fullPage: true });
       await loom.goto(`${base}/dome-world/loom-instrument-lab.html`, { waitUntil: 'networkidle' });
       await loom.locator('#loomInstrumentLab').waitFor({ state: 'visible' });
       check('returned-work inspection moves to the separate Instrument Lab route', await loom.locator('#loomLegacy').count() === 0 && await loom.locator('#aiRuntimeState').count() === 0);

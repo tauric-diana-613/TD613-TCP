@@ -65,7 +65,7 @@ assert.match(hosted, /COPY CHECKED MESSAGE/);
 assert.match(hosted, /Show me why/);
 assert.match(hosted, /Ask for model help \(optional\)/);
 assert.match(hosted, /No model is called by this local checker\./);
-assert.match(workspace, /<script type="module" src="\.\/holonomy-loom\/ai-workspace\.js"><\/script>/, 'The primary AI task has its own explicit provider-capable workspace.');
+assert.match(workspace, /<script type="module" src="\.\/holonomy-loom\/ai-workspace\.js(?:\?v=[A-Za-z0-9._-]{1,80})?"><\/script>/, 'The primary AI task has its own explicit provider-capable workspace.');
 assert.match(hosted, /This research fixture has no model workspace\./);
 assert.doesNotMatch(workspace, /id="loomLegacy"/, 'Instrument Lab must not be nested inside the primary Loom journey.');
 assert.match(workspace, /href="\/dome-world\/loom-instrument-lab\.html"/, 'Instrument Lab remains available as a separate utility route.');

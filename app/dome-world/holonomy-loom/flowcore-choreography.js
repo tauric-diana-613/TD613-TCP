@@ -4,6 +4,7 @@
 // new Flow-Core semantics. They sequence existing canonical relations into
 // coherent illustrative messages and select a Dome-Art-derived motion family
 // for Loom's existing 39-carrier field.
+import { computeHeterostratigraphicPotential, computeGradientMisfit } from './dome-art-lattice.js';
 export const FLOWCORE_CHOREOGRAPHY_SCHEMA = 'td613.loom.flowcore-choreography/v0.1';
 
 export const FLOWCORE_MOTION_FAMILIES = Object.freeze({
@@ -18,22 +19,29 @@ export const FLOWCORE_MOTION_FAMILIES = Object.freeze({
 });
 
 const TAU=Math.PI*2,PHI=(1+Math.sqrt(5))/2;
-export function projectFlowcoreMotionFamily(familyId,{index,count=39,seconds=0,phase=0,depth='flight-far'}={}){
+export function projectFlowcoreMotionFamily(familyId,{index,count=39,seconds=0,phase=0,depth='flight-far',x,y}={}){
   const family=FLOWCORE_MOTION_FAMILIES[familyId];
   if(!family)throw new TypeError(`Unknown Flow-Core motion family: ${familyId}`);
   if(!Number.isInteger(index)||index<0||!Number.isInteger(count)||count<1||index>=count)throw new TypeError('Flow-Core carrier coordinate is outside the bounded family projection.');
   for(const [name,value] of Object.entries({seconds,phase}))if(typeof value!=='number'||!Number.isFinite(value))throw new TypeError(`${name} must be finite.`);
+  for(const [name,value] of Object.entries({x,y}))if(value!==undefined&&(typeof value!=='number'||!Number.isFinite(value)))throw new TypeError(`${name} must be finite when supplied.`);
   const u=(index+.5)/count, t=seconds*family.rate, p=family.phase;
-  // Six coupled phases borrow Dome-Art's triangular Moiré + φ/quasiperiodic
-  // visual vocabulary. This is modeled presentation only: no exact substrate,
-  // empirical geometry, provider route, or exteriority claim is made here.
-  const a0=TAU*(u+t+p), a1=TAU*(u*PHI+t/PHI+p*.7), a2=TAU*(u*Math.sqrt(3)-t*.73+p*.3);
-  const a3=TAU*(u*Math.SQRT2+t*.51-p*.4), a4=TAU*(u*PHI*PHI-t*.37+p*.9), a5=TAU*(u*(2+Math.sqrt(5))+t*.29-p*.2);
-  const moire=(Math.sin(a0)+Math.sin(a2)-Math.cos(a3))/3;
-  const quasi=(Math.sin(a1)+Math.cos(a4)+Math.sin(a5))/3;
-  const torsion=Math.sin(a0-a4)*Math.cos(a2+a5);
-  const shear=Math.sin(a2-a3);
-  const rise=Math.sin(a1+a4)*.5+.5;
+  // Sample the same rotated D3 triangular Moiré, φ counterlayer and finite
+  // gradient used by Dome-World's live lattice. Canonical carrier coordinates
+  // remain the base route; families bend its presentation under the host clock.
+  // This is the live-lattice mathematical sampler, not its tactile simulator or
+  // an exact 6D substrate / empirical geometry / provider-activity claim.
+  const a0=TAU*(u+t+p), a1=TAU*(u*PHI+t/PHI+p*.7);
+  const sampleX=x===undefined?Math.cos(a0)*320:x-500;
+  const sampleY=y===undefined?Math.sin(a1)*240:y-260;
+  const latticeOptions={phase:TAU*(p+phase+t*.37),theta:.055};
+  const lattice=computeHeterostratigraphicPotential(sampleX,sampleY,latticeOptions);
+  const gradient=computeGradientMisfit(sampleX,sampleY,latticeOptions);
+  const moire=lattice.triangular,quasi=lattice.quasiperiodic;
+  const [tx,ty]=gradient.g_triangular,[qx,qy]=gradient.g_quasiperiodic;
+  const torsion=Math.max(-1,Math.min(1,(tx*qy-ty*qx)*1024));
+  const shear=Math.max(-1,Math.min(1,(tx-qx)*32));
+  const rise=(quasi+1)/2;
   const depthGain=depth==='flight-near'?1.35:depth==='flight-mid'?.82:.46;
   const dx=depthGain*family.x*(family.moire*moire+family.quasi*quasi+family.shear*shear*.55);
   const dy=depthGain*family.y*(family.moire*moire-family.quasi*quasi+family.torsion*torsion*.7)+family.rise*(rise-.5)*52;

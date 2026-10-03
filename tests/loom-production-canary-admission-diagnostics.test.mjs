@@ -1,16 +1,27 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import {
+  KHONAPOLIT_MAX_PROVIDER_CALLS,
+  KHONAPOLIT_MAX_STRUCTURAL_REPAIRS,
+  KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS
+} from '../server/khonapolit-quality.js';
 
 const source = readFileSync(new URL('../scripts/loom-production-canary.mjs', import.meta.url), 'utf8');
 
-test('production canary preserves five-seat Marrowline diagnostics without rejected prose or secrets', () => {
+test('production canary preserves five-seat Marrowline plus one repair diagnostics without rejected prose or secrets', () => {
   assert.match(source, /const boundedAdmissionReasons = value => Array\.isArray\(value\)/);
   assert.match(source, /\^\[a-z0-9-\]\{1,96\}\$/);
   assert.match(source, /admission_reasons: boundedAdmissionReasons\(attempt\?\.outputAdmission\?\.reasons\)/);
   assert.match(source, /rejected_attempts: boundedRejectedAttempts\(marrowlinePayload\?\.diagnostic\?\.rejectedAttempts\)/);
   assert.match(source, /admission_reasons=\$\{admissionReasons\}/);
-  assert.match(source, /value\.slice\(0, 5\)\.map\(attempt => \(\{/);
+  assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS, 5);
+  assert.equal(KHONAPOLIT_MAX_STRUCTURAL_REPAIRS, 1);
+  for (const collector of ['boundedMarrowlineAttempts', 'boundedRejectedAttempts']) {
+    const bounded = new RegExp(`const ${collector} = value => Array\\.isArray\\(value\\)\\s*\\? value\\.slice\\(0, (\\d+)\\)\\.map\\(attempt => \\(\\{`).exec(source);
+    assert.ok(bounded, `${collector} remains a bounded diagnostic collector`);
+    assert.equal(Number(bounded[1]), KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS, `${collector} preserves the declared five seats and one repair without widening the observation budget`);
+  }
   assert.match(source, /const boundedModelPlan = value =>/);
   assert.match(source, /callable_models: callableModels/);
   assert.match(source, /excluded_models: excludedModels/);

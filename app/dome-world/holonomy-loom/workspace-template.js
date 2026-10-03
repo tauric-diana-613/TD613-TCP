@@ -1,4 +1,4 @@
-export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledby="loomFieldHeading"><div class="loom-stage-copy"><span class="loom-kicker">FLOW-CORE ROUTE FIELD</span><h1 id="loomFieldHeading">Loom</h1><p>Your work stays yours until you choose a crossing.</p></div><section id="aiRuntime" class="ai-runtime" aria-label="Current Loom route"><p class="mark">CURRENT ROUTE</p>
+export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledby="loomFieldHeading"><div class="loom-stage-copy"><span class="loom-kicker">YOUR AI WORKSPACE</span><h1 id="loomFieldHeading">Loom</h1><p>Your work stays yours until you choose a crossing.</p></div><section id="aiRuntime" class="ai-runtime" aria-label="Current Loom route"><p class="mark">CURRENT ROUTE</p>
       <h2 id="aiConsequence" hidden>Your work starts here.</h2>
       <div id="aiRuntimeState" class="ai-runtime-state il-state"></div>
       <div id="aiLivingRoom" hidden aria-hidden="true"></div>
@@ -46,6 +46,7 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
 <button type="button" id="loomBegin" class="loom-begin">Try the live Loom →</button>
 </section>
 <section class="loom-builder-shell" aria-label="Loom builder" hidden>
+<div id="loomWorkspaceField" class="loom-workspace-field" aria-label="Current AI request state"></div>
 <header class="loom-intro"><div><h1 id="loomStageHeading">Loom</h1><p>Prepare an AI task, send it through Marrowline, and keep the sources and handoff history attached.</p></div><div class="loom-intro-actions"><button type="button" id="loomReturnThreshold" class="loom-text-action">How it works</button><button type="button" id="loomToolsOpen" class="loom-text-action">Tools</button></div></header>
 <nav class="loom-journey" aria-label="Loom route">
 <button type="button" class="loom-journey-step" id="loomJourneyStep1" data-workspace="build" aria-current="step"><b>1</b><strong>Loom</strong></button><span aria-hidden="true">→</span>
@@ -57,12 +58,12 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
 <section id="loomBuilder" class="loom-builder" aria-labelledby="loomBuilderTitle">
 <header class="loom-builder-head"><h2 id="loomBuilderTitle">Your task</h2><div class="ai-mode-tabs" role="tablist" aria-label="Loom mode"><button type="button" id="aiPortableMode" role="tab" aria-selected="true" aria-controls="aiPortableModePanel">My work</button><button type="button" id="aiDemoMode" role="tab" aria-selected="false" aria-controls="aiDemoModePanel">Practice</button></div></header>
 <section id="aiPortableModePanel" role="tabpanel" aria-labelledby="aiPortableMode"><p id="aiFirstUseGuide">Build the task here. Marrowline carries the AI conversation when you continue.</p></section><section id="aiDemoModePanel" role="tabpanel" aria-labelledby="aiDemoMode" hidden><p>Fictional material. Same route, same boundaries.</p></section>
-<div id="aiDemoWelcome" hidden><button type="button" id="aiDemoInvitation" aria-expanded="false" aria-controls="aiProjectChoices">Choose a practice case ＋</button></div>
+<div id="aiDemoWelcome" hidden><button type="button" id="aiDemoInvitation" aria-expanded="false" aria-controls="aiProjectChoices">Choose a practice case +</button></div>
 <div id="aiProjectChoices" class="ai-projects" aria-label="Practice projects" hidden></div>
 <section id="aiProjectBrief" class="ai-project-brief" aria-label="Project brief" hidden><h3 id="aiBriefTitle"></h3><p id="aiBriefText"></p><p id="aiBriefRoute"></p></section>
 <section class="ai-composer" aria-label="Your Loom task">
 <label id="aiTaskLabel" for="aiTask">Task</label><textarea id="aiTask" maxlength="12000" placeholder="Ask for a decision, an analysis, a plan…" aria-describedby="aiTaskCue"></textarea><p id="aiTaskCue" class="ai-muted">Your task travels with the material you select.</p>
-<div class="ai-toolbar"><label class="ai-upload">＋ Documents<input id="aiUpload" type="file" multiple accept=".txt,.md,.csv,.json" aria-label="Add documents"></label><button type="button" id="loomRulesOpen">Rules</button><button type="button" id="loomBoundaryOpen" class="loom-text-action">Boundary ↗</button><button type="button" id="aiNew">Clear task</button></div>
+<div class="ai-toolbar"><label class="ai-upload">+ Documents<input id="aiUpload" type="file" multiple accept=".txt,.md,.csv,.json" aria-label="Add documents"></label><button type="button" id="loomRulesOpen">Rules</button><button type="button" id="loomBoundaryOpen" class="loom-text-action">Boundary ↗</button><button type="button" id="aiNew">Clear task</button></div>
 <p class="ai-file-cue">Files stay here until selected.</p><ul id="aiDocuments" class="ai-documents" aria-label="Document sharing"></ul>
 <section id="aiPortableProjection" class="ai-portable-projection" aria-label="Transfer boundary"><div><span>Travels</span><strong id="aiProjectionTravel">Task · 0 documents · 2 rules</strong></div><div><span>Stays here</span><strong id="aiProjectionStay">0 local documents · private checks</strong></div></section>
 <div id="aiNewRootNotice" class="ai-new-root-notice" hidden tabindex="-1"><p>Starting a new root replaces this tab's active Loom custody lane.</p><p id="aiNewRootCoordinate"></p><button type="button" id="aiSaveActiveCustody">Save current private custody record</button><label><input id="aiNewRootConfirm" type="checkbox"> Replace the active root.</label></div>

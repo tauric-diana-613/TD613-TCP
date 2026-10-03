@@ -36,7 +36,6 @@ try {
   browser = await chromium.launch({ headless: true });
   for (const [posture, viewport] of [['desktop', { width: 1280, height: 900 }], ['mobile', { width: 390, height: 844 }]]) {
     const page = await browser.newPage({ viewport, reducedMotion: 'reduce' }), errors = [], rejectedRequests = [];
-    await page.addInitScript(() => { try { localStorage.setItem('td613.loom.first-crossing.v1', 'complete'); } catch {} });
     activePage = page;
     page.setDefaultTimeout(15000);
     page.on('pageerror', error => errors.push(error.message));
@@ -49,6 +48,11 @@ try {
       return route.continue();
     });
     const r = key => page.locator(`[data-loom-reentry="${key}"]`);
+    const openCustody = async () => {
+      await page.locator('#loomJourneyStep3').click();
+      await page.locator('#loomLocalCustodyOpen').click();
+      await r('drawer').waitFor({ state: 'visible' });
+    };
     // Presentation migration retains all custody witnesses while replacing the
     // old nested operational drawers with primary sections and one inspection.
     const open = async surface => {
@@ -91,6 +95,7 @@ try {
       await r('challenge-head').click();
       await page.locator('#aiChallengeCanary').fill('FICTIONAL_ATLAS_BROWSER_PRIVATE_KEY');
       await page.locator('#aiPrepareChallenge').click();
+      await page.locator('#aiChallengePreview').waitFor({ state: 'visible' });
       await open(page.locator('#aiChallengePreview'));
       assert.equal(await page.locator('#aiChallengePublic').isVisible(), true);
       const publicText = await page.locator('#aiChallengePublic').textContent();
@@ -104,17 +109,21 @@ try {
       await page.locator('#aiVerifyChallenge').click();
       await page.waitForFunction(text => document.querySelector('#aiChallengeVerdict').textContent.toLowerCase().includes(text.toLowerCase()), expectedText);
       await page.waitForFunction(() => !document.querySelector('[data-loom-reentry="challenge-history-summary"]').textContent.includes('0 captured'));
+      await page.locator('#loomToolsClose').click();
       return challenge;
     };
 
     await page.goto(`${base}/dome-world/holonomy-loom.html`);
-    await page.locator('#loomBegin').click();
+    await page.locator('#loomFirstCrossing').waitFor({ state: 'visible' });
+    assert.equal(await page.locator('#loomFirstCrossingLeave').isVisible(), true, 'direct tutorial entry offers a visible exit');
+    await page.locator('#loomFirstCrossingLeave').click();
     await page.locator('.loom-builder-shell').waitFor({ state: 'visible' });
     await page.locator('#aiDemoMode').click();
     await page.locator('#aiDemoInvitation').click();
     await page.locator('[data-project="participant-research"]').click();
     await page.locator('#aiPreparePortable').click();
     await page.waitForFunction(() => !document.querySelector('[data-loom-reentry="stage"]').disabled);
+    await openCustody();
     assert.equal(await r('drawer').evaluate(node=>node.tagName), 'SECTION');
     assert.equal(await r('task').isVisible(), true);
     const first = await register('First task using only explicit A.', [docs[0]], 1);
@@ -188,6 +197,9 @@ try {
     assert.equal(await r('head').textContent(), head);
     assert.equal((await visibleRecord()).custody.pending_excursion, null);
     await page.reload();
+    await page.locator('#loomFirstCrossingLeave').click();
+    await page.locator('.loom-builder-shell').waitFor({ state: 'visible' });
+    await openCustody();
     assert.equal(await r('drawer').isVisible(), true);
     assert.equal(await r('head').textContent(), 'No admitted descendant.');
     assert.match(await r('recovery').textContent(), /separate custody witness/);

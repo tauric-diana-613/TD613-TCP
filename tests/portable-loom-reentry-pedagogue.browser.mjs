@@ -64,11 +64,14 @@ try {
       await r('result').waitFor({state:'visible'});
     };
     await page.goto(`${base}/dome-world/holonomy-loom.html`);
-    await page.locator('#loomBegin').click();await page.locator('.loom-builder-shell').waitFor({state:'visible'});
+    assert.equal(await page.locator('#loomFirstCrossing').isVisible(),true);
+    await page.locator('#loomFirstCrossingLeave').click();await page.locator('.loom-builder-shell').waitFor({state:'visible'});
+    assert.equal(await page.locator('#aiSessionSummary').isVisible(),false,'Skip tutorial grants no prepared session');
     await page.locator('#aiDemoMode').click();await page.locator('#aiDemoInvitation').click();
     await page.locator('[data-project="participant-research"]').click();
     await page.locator('#aiPreparePortable').click();
     await page.waitForFunction(()=>!document.querySelector('[data-loom-reentry="stage"]').disabled);
+    await page.locator('#loomJourneyStep3').click();
     // Return action order stays governed; the old outer/nested drawer-opening
     // ceremony is retired in favor of primary steps and one exact workspace.
     assert.equal(await r('drawer').evaluate(node=>node.tagName),'SECTION');
@@ -103,6 +106,7 @@ try {
       policy_commitment:challenge.policy_commitment,answers:[],receiver_declaration:{tools_used:'UNKNOWN',network_used:'UNKNOWN',memory_used:'UNKNOWN',notes:'Synthetic clean bounded capture.'}}));
     await page.locator('#aiVerifyChallenge').click();
     await page.waitForFunction(()=>document.querySelector('[data-loom-reentry="challenge-history-summary"]').textContent.includes('1 captured'));
+    await page.locator('#loomToolsClose').click();
     assert.equal(await head(),'');
     await check('{');assert.match(await r('verdict').textContent(),/HOLD/);
     assert.equal(await page.evaluate(()=>document.activeElement?.getAttribute('data-loom-reentry')),'result');
@@ -140,7 +144,8 @@ try {
     if(await r('inspection').getAttribute('open')===null)await r('inspection').locator('summary').click();
     assert.equal(await r('continuation-sources').locator('input:checked').count(),0);
     await r('continuation-task').fill('Carry the admitted result into a new fictional discussion without source bodies.');
-    await r('prepare-carrier').click();assert.equal(await r('carrier-preview').isVisible(),true);
+    await r('prepare-carrier').click();await r('carrier-preview').waitFor({state:'visible'});
+    assert.equal(await r('carrier-preview').isVisible(),true);
     const publicCarrierText=await r('carrier').textContent(),publicCarrier=JSON.parse(publicCarrierText);
     assert.ok(publicCarrierText.includes(answer));assert.ok(!publicCarrierText.includes(selected.text));
     assert.ok(!publicCarrierText.includes(localKey));assert.ok(!publicCarrierText.includes('captured_return'));
@@ -156,6 +161,7 @@ try {
     await r('task').fill('Pending registered task must survive a denied new-root gesture.');await r('stage').click();
     await page.waitForFunction(()=>document.querySelector('[data-loom-reentry="verdict"]').textContent==='Task registered locally.');
     assert.equal(await head(),admittedHead);
+    await page.locator('#loomJourneyStep1').click();
     await page.locator('#aiTask').fill('A distinct fictional seed task for new-root replacement.');
     assert.equal(await head(),admittedHead);
     await page.locator('#aiPreparePortable').scrollIntoViewIfNeeded();
@@ -166,7 +172,7 @@ try {
     if(await page.locator('#aiNewRootConfirm').count()) {
       await page.locator('#aiPreparePortable').click();
       assert.equal(await r('root').getAttribute('title'),rootBefore);assert.equal(await head(),admittedHead);
-      assert.equal(await r('count').textContent(),'1');assert.equal(await r('turns').isVisible(),true);
+      assert.equal(await r('count').textContent(),'1');assert.equal(await r('turns').locator(':scope > li').count(),1,'the pending registration survives the denied replacement');
       assert.equal(await page.evaluate(()=>document.activeElement?.id),'aiNewRootNotice');
       assert.match(await page.locator('#aiStatus').textContent(),/HOLD/);
       const deniedNotice=await exposed(page.locator('#aiNewRootNotice'));
@@ -175,13 +181,13 @@ try {
       await page.locator('#aiNewRootConfirm').check();await page.locator('#aiNewRootConfirm').uncheck();
       await page.locator('#aiPreparePortable').click();
       assert.equal(await r('root').getAttribute('title'),rootBefore);assert.equal(await head(),admittedHead);
-      assert.equal(await r('turns').isVisible(),true);
+      assert.equal(await r('turns').locator(':scope > li').count(),1);
       await page.locator('#aiNewRootConfirm').check();
       await page.locator('#aiTask').fill('Builder edit invalidates the previously acknowledged replacement.');
       assert.equal(await page.locator('#aiNewRootConfirm').isChecked(),false);
       await page.locator('#aiPreparePortable').click();
       assert.equal(await r('root').getAttribute('title'),rootBefore);assert.equal(await head(),admittedHead);
-      assert.equal(await r('turns').isVisible(),true);
+      assert.equal(await r('turns').locator(':scope > li').count(),1);
       const adjacentDownloadPromise=page.waitForEvent('download');
       await page.locator('#aiSaveActiveCustody').click();const adjacentDownload=await adjacentDownloadPromise;
       const adjacentRecord=JSON.parse(await readFile(await adjacentDownload.path(),'utf8'));
@@ -216,6 +222,7 @@ try {
 
     // Browser-controlled time is a synthetic expiry assay, not fifteen minutes
     // of human waiting. Rest must neither extend the deadline nor waive HOLD.
+    await page.locator('#loomJourneyStep3').click();
     await page.clock.install({time:new Date()});
     await r('task').fill('Pending fictional task used for rest and expiry.');await r('stage').click();
     await page.waitForFunction(()=>document.querySelector('[data-loom-reentry="verdict"]').textContent==='Task registered locally.');
@@ -233,6 +240,9 @@ try {
       inspectors:[...document.querySelectorAll('.loom-reentry pre')].map(el=>el.getBoundingClientRect().height)}));
     assert.ok(layout.scroll<=layout.width+1);assert.ok(layout.inspectors.every(height=>height<=420));
     await page.reload();
+    await page.locator('#loomFirstCrossingLeave').click();
+    await page.locator('#loomJourneyStep3').click();
+    await page.locator('#loomLocalCustodyOpen').click();
     assert.match(await r('recovery').textContent(),/separate custody witness/);assert.equal(await head(),'');
     assert.deepEqual(pageErrors,[]);assert.deepEqual(blocked,[]);
     report.checks.push({posture,viewport,status:'PASS',malformed,notice_after_check:noticeAfterCheck,notice_at_keyboard_admit:noticeAtAdmit,

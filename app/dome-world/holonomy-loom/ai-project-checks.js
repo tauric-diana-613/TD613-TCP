@@ -52,7 +52,7 @@ function reportedTotals(answer) {
     const annualPattern = new RegExp(`((?:12[- ](?:mo(?:nth)?s?)|annual)[^\\n.;]{0,48}?(?:cost|total|fees?))\\s*[:=]?\\s*${numeral}(?:\\s*credits)?`, 'gi');
     for (const match of body.matchAll(annualPattern)) {
       const label = match[1];
-      if (/\\b(?:subscription|archive|migration|storage|overage|base)\\b/i.test(label)) continue;
+      if (/\b(?:subscription|archive|migration|storage|overage|base)\b/i.test(label)) continue;
       candidates[key].push(numeric(match[2]));
     }
     const explicitTotal = new RegExp(`\\btotal\\s*(?:cost\\s*)?(?:=|:|is|of)\\s*${numeral}(?=\\s*(?:credits|[.;]|$))`, 'gi');

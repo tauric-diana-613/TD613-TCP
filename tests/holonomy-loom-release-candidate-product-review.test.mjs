@@ -75,6 +75,21 @@ await expectHeld('MANDATORY_NAME_DETAILS', async value => ({
   html: value.html.replace(/<details id="whyDetails"([^>]*)>/, '<details id="whyDetails"$1 open>')
 }), 'R3');
 
+for (const [label, source] of [
+  ['EXTERNAL_WORKSPACE_MODULE', 'https://example.invalid/ai-workspace.js'],
+  ['ALTERNATE_WORKSPACE_MODULE', './holonomy-loom/other-workspace.js'],
+  ['OVERSIZED_WORKSPACE_CACHE_TOKEN', './holonomy-loom/ai-workspace.js?v=' + 'a'.repeat(81)]
+]) {
+  await expectHeld(label, async value => ({
+    ...value,
+    workspaceHtml: value.workspaceHtml.replace(/src="\.\/holonomy-loom\/ai-workspace\.js[^\"]*"/, `src="${source}"`)
+  }), 'R4');
+}
+await expectHeld('NON_MODULE_PRIMARY_WORKSPACE', async value => ({
+  ...value,
+  workspaceHtml: value.workspaceHtml.replace('type="module" src="./holonomy-loom/ai-workspace.js', 'type="text/javascript" src="./holonomy-loom/ai-workspace.js')
+}), 'R4');
+
 const providerWidened = await compileHolonomyLoomReleaseCandidateReview({
   ...inputs,
   repositoryHead: 'HOSTILE_PROVIDER_AUTHORITY',

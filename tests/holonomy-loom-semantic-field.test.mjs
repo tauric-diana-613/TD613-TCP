@@ -44,7 +44,7 @@ test('eight fictional scenes run deterministically, remain deeply frozen, and re
     assert.equal(packet.receipt.consequence_authority, false);
     assert.equal(packet.receipt.external_retrieval, false);
     assert.equal(packet.analysis.release_boundary.downstream_platform_governed, false);
-    assert.ok(packet.claim_ceiling.some(value => value.includes('Western Horizon')));
+    assert.ok(packet.claim_ceiling.includes('the independent empirical acquisition boundary remains closed'));
     assert.ok(packet.flow_core.glyph_relations.every(key => HOLONOMY_LOOM_MOTION_KEYS.includes(key)));
     checksums.add(packet.receipt.checksum);
   }

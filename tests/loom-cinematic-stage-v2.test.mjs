@@ -91,7 +91,14 @@ test('finite canonical consequences move current carriers and selected source ma
   assert.notEqual(sourceHalfway.source,sourceInitial.source);
   assert.equal(sourceHalfway.private,sourceInitial.private);
   assert.equal(root.querySelector('[data-source-id="private"]').dataset.sourceLocal,'true');
-  assert.match(root.querySelector('[data-source-id="private"]').textContent,/cōl/);
+  assert.equal(root.querySelector('[data-source-id="private"]').dataset.sourceProtected,'true');
+  assert.doesNotMatch(root.querySelector('[data-source-id="private"]').textContent,/cōl|selected sources/,
+    'ingress omits supplemental technical labels without changing protection');
+  assert.equal(gathered.relations.protected_continuity.glyph,'cōl');
+  assert.equal(gathered.relations.protected_continuity.evidenced,true);
+  renderer.update(gathered,snapshot(gathering,.85));
+  assert.match(root.querySelector('.loom-field-sources').textContent,/Request \+ reference/);
+  assert.doesNotMatch(root.querySelector('.loom-field-sources').textContent,/selected sources/);
   const bound = await compileLoomInstrumentStateView(ready,{eventHistory:[gathering,ready],cryptoImpl:webcrypto});
   renderer.update(bound,snapshot(ready,0));
   const potentialInitial=carriers();
@@ -124,6 +131,14 @@ test('motion families alter the same 39 carrier geometry under the shared coordi
   assert.ok([...root.querySelectorAll('.loom-field-flight text')].every(node=>node.dataset.flightRelation===view.active_relation),
     'motion-family presentation may bend geometry but cannot replace the evidenced relation identity');
   assert.equal(view.empirical_credit,0,'family projection earns no empirical geometry credit');
+  const workspaceEvent={...event,scene:{...event.scene,id:'ai-prepared'}};
+  const workspaceView=await compileLoomInstrumentStateView(workspaceEvent,{cryptoImpl:webcrypto});
+  const workspaceSnapshot=family=>({...snap(family),packet:{...workspaceEvent,presentation:{flowcore_choreography:{id:family,relations,family}}}});
+  renderer.update(workspaceView,workspaceSnapshot('phi-gossamer'));const workspacePhi=read();
+  renderer.update(workspaceView,workspaceSnapshot('moire-shear'));const workspaceMoire=read();
+  assert.ok(workspaceMoire.some((node,index)=>Math.hypot(node.x-workspacePhi[index].x,node.y-workspacePhi[index].y)>8));
+  assert.ok([...root.querySelectorAll('.loom-field-flight text')].every(node=>node.dataset.flightRelation===workspaceView.active_relation&&node.dataset.flightEvidence==='observed'),
+    'workspace family geometry cannot leak the tutorial eight-symbol illustration into current event evidence');
+  assert.equal(root.querySelector('.loom-field-sources').getAttribute('visibility'),'hidden');
   renderer.destroy();dom.window.close();
 });
-

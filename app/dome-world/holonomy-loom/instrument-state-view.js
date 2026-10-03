@@ -3,7 +3,7 @@ import { AIA_ROUTE_IDS, compileAIAView, verifyAIAInvariants } from '../../engine
 import { compileRouteGraph } from '../../engine/flowcore-route-burden.js';
 import { renderPedagogueScene } from '../flowcore-pedagogue-visual.js';
 import { FLOWCORE_GLYPH_REGISTRY } from '../data/flowcore-glyph-semantics-v01.js';
-import { projectFlowcoreMotionFamily } from './flowcore-choreography.js';
+import { FLOWCORE_MOTION_FAMILIES, projectFlowcoreMotionFamily } from './flowcore-choreography.js';
 
 /** A projection of client request observations, not a second request engine.
  * #1017 supplies the canonical scene/phase → graph boundary; its Ash theorem
@@ -591,8 +591,12 @@ export function mountLoomInstrumentStateView(root) {
       const choreographyRelations=Array.isArray(choreography?.relations)?choreography.relations.filter(key=>view.relations?.[key]):[];
       const choreographyScene=snapshot.packet?.scene?.id?.startsWith('first-crossing-')===true;
       const ambientChoreography=choreographyScene&&choreographyRelations.length>0;
-      const motionFamily=ambientChoreography?String(choreography.family??'phi-gossamer'):null;
-      root.dataset.flowcoreChoreography=ambientChoreography?String(choreography.id??'ambient'):'evidenced';
+      // A valid family may bend an evidenced workspace route as well. The
+      // illustrative eight-symbol score remains confined to the tutorial;
+      // workspace carriers continue to name only their current observed relation.
+      const requestedFamily=String(choreography?.family??'');
+      const motionFamily=choreographyRelations.length>0&&Object.hasOwn(FLOWCORE_MOTION_FAMILIES,requestedFamily)?requestedFamily:null;
+      root.dataset.flowcoreChoreography=motionFamily?String(choreography.id??'ambient'):'evidenced';
       root.dataset.flowcoreMotionFamily=motionFamily??'canonical-relation';
       const breath = frame.reduced_motion ? 0 : Math.sin(seconds*.72);
       const transform = frame.glyph_transform;
@@ -771,8 +775,8 @@ export function mountLoomInstrumentStateView(root) {
           y=260+lane*46;
         }
 
-        if(ambientChoreography&&motionFamily){
-          const familyMotion=projectFlowcoreMotionFamily(motionFamily,{index:i,count:flightCount,seconds,phase,depth:depthClass});
+        if(motionFamily){
+          const familyMotion=projectFlowcoreMotionFamily(motionFamily,{index:i,count:flightCount,seconds,phase,depth:depthClass,x,y});
           x+=familyMotion.dx;y+=familyMotion.dy;roll+=familyMotion.roll;scale*=familyMotion.scale;opacity*=familyMotion.opacity;
         }
 
@@ -797,6 +801,8 @@ export function mountLoomInstrumentStateView(root) {
       }
       const practice=snapshot.packet?.scene?.id?.startsWith('first-crossing-')===true;
       const sources=practice ? snapshot.packet.scene.documents??[] : [];
+      const requestAndReferenceSelected=view.event.selected_document_ids?.includes('brief')===true
+        && view.event.selected_document_ids?.includes('source')===true;
       sourceLayer.setAttribute('visibility',practice?'visible':'hidden');
       sourceMarkers.forEach((marker,index)=>{
         const source=sources[index];
@@ -818,8 +824,9 @@ export function mountLoomInstrumentStateView(root) {
         marker.group.setAttribute('data-source-id',source.id);
         marker.group.setAttribute('data-source-local',String(!selected));
         marker.point.setAttribute('opacity',selected?'1':'.35');
-        const combined=selected && (ready || p>.7);
-        setText(marker.label,combined?(selectedIndex===0?`${view.event.shared} selected sources`:''):source.name);
+        const combined=selected && requestAndReferenceSelected && (ready || p>.7);
+        const sourceName=practice ? ({brief:'Your request',source:'Reference',private:'Private note'}[source.id] ?? source.name) : source.name;
+        setText(marker.label,combined?(selectedIndex===0?'Request + reference':''):sourceName);
         marker.label.setAttribute('font-size',compact?'20':'14');
         marker.label.setAttribute('x',combined&&selectedIndex===0?'65':'0');
         // Keep the settled count below the primary glyph, while the actual
@@ -827,9 +834,13 @@ export function mountLoomInstrumentStateView(root) {
         marker.label.setAttribute('y',combined?(390-y).toFixed(2):'30');
         marker.label.setAttribute('opacity',combined?'.75':'.85');
         const protectedLocal=source.id==='private' && view.relations.protected_continuity.evidenced;
+        marker.group.setAttribute('data-source-protected',String(protectedLocal));
         marker.guard.setAttribute('visibility',protectedLocal?'visible':'hidden');
         marker.guard.setAttribute('transform',`rotate(${frame.reduced_motion?0:seconds*9})`);
-        setText(marker.continuity,protectedLocal?view.relations.protected_continuity.glyph:'');
+        // The tutorial explains this protected item with a plain-language note.
+        // Its canonical relation remains in the semantic view, carriers and
+        // inspection; a second floating cōl label adds no readable consequence.
+        setText(marker.continuity,protectedLocal&&!practice?view.relations.protected_continuity.glyph:'');
       });
       setText(title, frame.descriptor ? `${frame.descriptor.label}. ${frame.endpoints.join(' to ')}.` : 'No request relation is established yet.');
       svg.setAttribute('aria-label', title.textContent);

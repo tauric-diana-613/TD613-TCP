@@ -504,7 +504,7 @@ body:has(#loomAiWorkspace[data-first-crossing="active"]) .loom-topbar a[href*="l
 #loomAiWorkspace .loom-flowcore-help{
   position:absolute;z-index:31;right:18px;top:14px;pointer-events:auto;color:#9fb0bb;font-size:12px
 }
-#loomAiWorkspace .loom-flowcore-help summary{cursor:pointer;min-height:40px;display:flex;align-items:center;color:#a9c7ca;list-style:none}
+#loomAiWorkspace .loom-flowcore-help summary{cursor:pointer;min-height:44px;display:flex;align-items:center;color:#a9c7ca;list-style:none}
 #loomAiWorkspace .loom-flowcore-help summary::-webkit-details-marker{display:none}
 #loomAiWorkspace .loom-flowcore-help[open]{
   width:min(330px,calc(100% - 36px));padding:14px 16px;background:rgba(7,12,17,.96);
@@ -554,4 +554,59 @@ body:has(#loomAiWorkspace[data-first-crossing="active"]) .loom-topbar a[href*="l
   #loomAiWorkspace .loom-first-crossing-actions{bottom:86px}
   #loomAiWorkspace .loom-practice-controls{bottom:12px;left:10px;right:10px}
   #loomAiWorkspace .loom-flowcore-help{right:10px;top:10px}
+}
+
+/* Tutorial text and gestures have their own layout rows. The canonical field
+   continues behind them; its supplementary source labels belong in inspection,
+   where they cannot collide with consumer instructions or touch controls. */
+#loomAiWorkspace[data-first-crossing="active"] .loom-field-sources text{display:none}
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing{
+  display:grid;grid-template-rows:auto minmax(160px,1fr) auto auto auto;
+  gap:16px;padding:82px 20px 86px!important
+}
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-copy,
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-answer,
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-objects,
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-actions{
+  position:static;transform:none;width:min(560px,100%);margin:0 auto!important
+}
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-copy{grid-row:1}
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-answer{grid-row:3}
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-objects{grid-row:4}
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-actions{grid-row:5}
+#loomAiWorkspace[data-first-crossing="active"][data-first-crossing-step="3"] .loom-first-crossing-actions{min-height:50px}
+/* The working scene retains the same live renderer and typographic family.
+   A translucent centered frame contains the task; the field keeps its full
+   viewport projection behind it without creating another animation owner. */
+#loomAiWorkspace .loom-builder-shell{
+  position:relative;isolation:isolate;width:min(840px,calc(100% - 48px));
+  margin:36px auto 56px;padding:32px 40px 42px;border:1px solid rgba(142,232,230,.16);
+  border-radius:24px;background:transparent;
+  box-shadow:0 24px 100px rgba(0,0,0,.28)
+}
+#loomAiWorkspace .loom-builder-shell::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;border-radius:inherit;background:rgba(6,11,16,.54);backdrop-filter:blur(10px)}
+#loomAiWorkspace .loom-builder-shell>.loom-intro,
+#loomAiWorkspace .loom-builder-shell>.loom-journey,
+#loomAiWorkspace .loom-builder-shell>.loom-working-surface{position:relative;z-index:1}
+#loomAiWorkspace .loom-workspace-field{
+  position:fixed;inset:52px 0 0;z-index:-1;overflow:hidden;pointer-events:none;opacity:.7
+}
+#loomAiWorkspace .loom-workspace-field .loom-field-caption,
+#loomAiWorkspace .loom-workspace-field .loom-instrument-state-mode,
+#loomAiWorkspace .loom-workspace-field .loom-instrument-state-relation,
+#loomAiWorkspace .loom-workspace-field .loom-instrument-state-boundary,
+#loomAiWorkspace .loom-workspace-field .loom-field-sources text,
+#loomAiWorkspace .loom-workspace-field .loom-field-route-label{display:none!important}
+#loomAiWorkspace .loom-builder-shell>.loom-intro h1{
+  font:550 clamp(28px,3.6vw,42px)/1.05 var(--sans);letter-spacing:-.045em
+}
+#loomAiWorkspace .loom-builder-shell>.loom-intro p{font:400 14px/1.45 var(--sans);max-width:48ch}
+#loomAiWorkspace .loom-builder-head h2{font-weight:550;letter-spacing:-.035em}
+#loomAiWorkspace .loom-builder{padding-top:10px}
+#loomAiWorkspace .ai-composer>textarea{height:176px;background:rgba(5,10,15,.55);border-radius:12px;padding:14px}
+@media(max-width:760px){
+  #loomAiWorkspace[data-first-crossing="active"] .loom-stage{min-height:760px}
+  #loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing{padding:76px 10px 90px!important;gap:14px}
+  #loomAiWorkspace .loom-builder-shell{width:calc(100% - 8px);margin:18px auto 36px;padding:22px 16px 28px;border-radius:18px}
+  #loomAiWorkspace .loom-workspace-field{inset:48px 0 0;opacity:.45}
 }
