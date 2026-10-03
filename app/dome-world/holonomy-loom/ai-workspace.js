@@ -359,6 +359,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     firstCrossingSelected=new Set();
     thresholdObservation=null;
     root.dataset.firstCrossing='idle';
+    root.dataset.firstCrossingStep='idle';
     $('loomFirstCrossing').hidden=true;
     $('loomThresholdGate').hidden=false;
     $('loomReplayFirstCrossing').hidden=false;
@@ -371,6 +372,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   }
   function completeFirstCrossing(){
     firstCrossingStep=3;
+    root.dataset.firstCrossingStep='3';
     firstCrossingWasAlreadyComplete=true;
     storageWrite(FIRST_CROSSING_KEY,'complete');
     $('loomFirstCrossingTitle').textContent='Prepared is not transmitted.';
@@ -397,6 +399,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     firstCrossingPacket=null;
     firstCrossingSelected=new Set();
     root.dataset.firstCrossing='active';
+    root.dataset.firstCrossingStep='0';
     root.dataset.thresholdState='closed';
     thresholdStage.hidden=false;
     builderShell.hidden=true;
@@ -408,8 +411,8 @@ export function mountLoomAiWorkspace(root, environment = window) {
     $('loomFirstCrossingTitle').textContent='Choose what travels.';
     $('loomFirstCrossingPrompt').textContent='Two pieces belong in the crossing. One should stay with you.';
     $('loomFirstCrossingAnswer').textContent='NOTICE · nothing has moved yet.';
-    $('loomFirstCrossingAction').hidden=false;
-    $('loomFirstCrossingAction').textContent='Gather the two that should travel';
+    $('loomFirstCrossingAction').hidden=true;
+    $('loomFirstCrossingAction').textContent='Create readiness locally →';
     $('loomFirstCrossingStop').hidden=true;
     firstCrossingItems.forEach(button=>{button.disabled=false;button.setAttribute('aria-pressed','false');delete button.dataset.held;});
     const neutral=firstCrossingEvent('prepared');
@@ -431,16 +434,19 @@ export function mountLoomAiWorkspace(root, environment = window) {
         return;
       }
       firstCrossingStep=1;
+      root.dataset.firstCrossingStep='1';
       firstCrossingItems.forEach(button=>button.disabled=true);
       projectFirstCrossing(firstCrossingEvent('prepared'));
       $('loomFirstCrossingTitle').textContent='They gathered. Nothing crossed.';
       $('loomFirstCrossingPrompt').textContent='à names the gathering. cōl remains evidenced because the private scrap is still here and inspectable.';
       $('loomFirstCrossingAnswer').textContent='WORLD ANSWERS → NAME · selection changed the local route; transmission did not occur.';
+      $('loomFirstCrossingAction').hidden=false;
       $('loomFirstCrossingAction').textContent='Create readiness locally →';
       return;
     }
     if(firstCrossingStep===1){
       firstCrossingStep=2;
+      root.dataset.firstCrossingStep='2';
       projectFirstCrossing(firstCrossingEvent('checking',{binding_verified:true}));
       $('loomFirstCrossingTitle').textContent='Ready is not sent.';
       $('loomFirstCrossingPrompt').textContent='上 names created potential: local work made the packet ready. The private scrap still stays here.';
@@ -792,7 +798,15 @@ export function mountLoomAiWorkspace(root, environment = window) {
     const id=button.dataset.firstCrossingItem;
     if(firstCrossingSelected.has(id))firstCrossingSelected.delete(id);else firstCrossingSelected.add(id);
     renderFirstCrossingSelection();
-    $('loomFirstCrossingAnswer').textContent='ACT · your selection changed locally. Nothing has crossed.';
+    const correct=firstCrossingSelected.has('brief')&&firstCrossingSelected.has('source')&&!firstCrossingSelected.has('private')&&firstCrossingSelected.size===2;
+    if(correct){
+      $('loomFirstCrossingAnswer').textContent='ACT · watch what the field does with the two you chose.';
+      actFirstCrossing();
+      return;
+    }
+    $('loomFirstCrossingAnswer').textContent=firstCrossingSelected.has('private')
+      ? 'That one can stay with you. Choose only what the next reader needs.'
+      : 'ACT · your selection changed locally. Nothing has crossed.';
   }));
   $('loomFirstCrossingAction').addEventListener('click',actFirstCrossing);
   $('loomFirstCrossingStop').addEventListener('click',()=>{if(firstCrossingActive&&firstCrossingStep===2)completeFirstCrossing();});
