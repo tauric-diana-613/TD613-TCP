@@ -387,7 +387,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     packet.scene={
       ...packet.scene,
       id:`first-crossing-${event.phase}-${firstCrossingEvents.length}`,
-      project_title:'First Crossing',
+      project_title:'AI handoff preview',
       rules_count:FIRST_CROSSING_PRACTICE.rules.length,
       documents:FIRST_CROSSING_PRACTICE.documents.map(item=>({id:item.id,name:item.name,share:firstCrossingSelected.has(item.id)}))
     };
@@ -426,7 +426,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     $('loomFirstCrossing').hidden=true;
     $('loomThresholdGate').hidden=false;
     $('loomReplayFirstCrossing').hidden=false;
-    $('loomReplayFirstCrossing').textContent='↻ First Crossing';
+    $('loomReplayFirstCrossing').textContent='↻ How Loom works';
     $('loomBegin').hidden=false;
     firstCrossingItems.forEach(button=>{button.disabled=false;button.setAttribute('aria-pressed','false');delete button.dataset.held;});
     $('loomFirstCrossingAction').hidden=false;
