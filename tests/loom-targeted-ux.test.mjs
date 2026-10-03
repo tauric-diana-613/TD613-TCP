@@ -112,7 +112,7 @@ test('mobile keeps consequential boundaries and source-defined focus protection'
   assert.match(product, /#loomAiWorkspace \.loom-stage\{[\s\S]*?height:calc\(100svh - 52px\)/);
   assert.match(product, /@media\(max-width:760px\)[\s\S]*?#loomAiWorkspace \.loom-stage\{[\s\S]*?height:calc\(100svh - 48px\)/);
   assert.match(product, /#loomAiWorkspace \.loom-instrument-state-boundary\{[\s\S]*?display:block!important/);
-  assert.match(product, /#loomAiWorkspace \.ai-room-replay\{[\s\S]*?position:absolute!important/);
+  assert.match(product, /\.loom-tools \[data-tool-panel="session"\] \.ai-room-replay\{[\s\S]*?position:static!important/);
   assert.doesNotMatch(product, /Georgia|Times New Roman|var\(--serif\)/);
 });
 
@@ -147,8 +147,9 @@ test('local preparation selects foreground crossing focus rather than a field de
 test('cinematic route labels remain on the field while deep inspection stays inside Tools flow', () => {
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
   assert.ok(doc.querySelector('.loom-stage').contains(doc.querySelector('#aiRuntimeState')));
-  assert.match(workspaceSource, /for\(const selector of \['\.loom-instrument-state-next','\.loom-instrument-state-inspection'\]\)/);
-  assert.doesNotMatch(workspaceSource, /stateTools[\s\S]{0,180}loom-instrument-state-endpoints/);
+  assert.match(workspaceSource, /for\(const selector of \['\.loom-instrument-state-next','\.loom-instrument-state-inspection','\.ai-room-replay'\]\)/);
+  assert.match(workspaceSource, /stateTools[\s\S]{0,260}\.ai-room-replay/);
+  assert.doesNotMatch(workspaceSource, /stateTools[\s\S]{0,220}loom-instrument-state-endpoints/);
   assert.doesNotMatch(workspaceSource, /stateTools[\s\S]{0,180}loom-instrument-state-relation/);
   assert.match(product, /\.loom-tools \[data-tool-panel="session"\] \.loom-instrument-state-inspection\{[\s\S]*?position:static!important/);
 });
