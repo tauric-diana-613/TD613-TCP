@@ -485,11 +485,26 @@ export function mountLoomInstrumentStateView(root) {
   boundary.textContent='Client observations · provider internals unknown · no custody admission';
   section.append(mode, svg, caption, relation, boundary, details);
   root.replaceChildren(section);
-  let current = null, lastFrame = null, destroyed = false;
+  let current = null, lastFrame = null, destroyed = false, compactMotion = null;
   return Object.freeze({
     update(view, snapshot = {}) {
       if (destroyed) throw new Error('Loom instrument state renderer is destroyed.');
       const frame = projectLoomInstrumentStateFrame(view, snapshot);
+      // Mobile keeps the same evidenced relation grammar and the same host
+      // clock, but projects fewer decorative carriers per tick. This lowers
+      // DOM/SVG mutation pressure without inventing a second animation path.
+      const compact = Number(snapshot.viewport?.width ?? 1000) <= 760;
+      if (compact !== compactMotion) {
+        compactMotion = compact;
+        filaments.forEach((node,index)=>{node.style.display=compact&&index>=16?'none':'';});
+        particles.forEach((node,index)=>{node.style.display=compact&&index>=18?'none':'';});
+        flightGlyphs.forEach((node,index)=>{node.style.display=compact&&index>=20?'none':'';});
+        depth.forEach((node,index)=>{node.style.display=compact&&index>=6?'none':'';});
+      }
+      const filamentCount = compact ? 16 : filaments.length;
+      const particleCount = compact ? 18 : particles.length;
+      const flightCount = compact ? 20 : flightGlyphs.length;
+      const depthCount = compact ? 6 : depth.length;
       root.dataset.clientPhase = view.phase;
       root.dataset.activeRelation = frame.relation_key ?? 'unobserved';
       root.dataset.reducedMotion = String(frame.reduced_motion);
@@ -512,12 +527,12 @@ export function mountLoomInstrumentStateView(root) {
       glyphGroup.setAttribute('transform', `translate(${transform.x} ${transform.y+breath*2}) translate(500 260) scale(${transform.scale}) translate(-500 -260)`);
       spectrum.setAttribute('gradientTransform',`rotate(${breath*14} .5 .5)`);
       metal.setAttribute('gradientTransform',`rotate(${breath*8} .5 .5)`);
-      for(let i=0;i<depth.length;i++){
+      for(let i=0;i<depthCount;i++){
         const z=(depth.length-i)/depth.length;
         depth[i].setAttribute('transform',`translate(${z*(9+breath*3)} ${z*(10-breath*2)})`);
       }
       const relationKey=frame.relation_key;
-      for(let i=0;i<filaments.length;i++){
+      for(let i=0;i<filamentCount;i++){
         const centered=i-(filaments.length-1)/2;
         const pulse=frame.reduced_motion?0:Math.sin(seconds*.7+i*.22)*24;
         const y=260+centered*8.2;
@@ -577,7 +592,7 @@ export function mountLoomInstrumentStateView(root) {
         relationKey==='protected_continuity' ? -1 :
         relationKey==='structural_rest' ? 0 :
         relationKey==='released_tendency' ? -1 : 1;
-      for(let i=0;i<particles.length;i++){
+      for(let i=0;i<particleCount;i++){
         const particleTime=particleDirection===0 ? 0 : seconds*particleDirection;
         const t=((i/particles.length+particleTime*.016)%1+1)%1;
         const angle=t*Math.PI*2, radius=185+(i%5)*31;
@@ -586,7 +601,7 @@ export function mountLoomInstrumentStateView(root) {
         particles[i].setAttribute('opacity',(frame.reduced_motion?.3:.23+Math.sin(i+seconds*.4)**2*.52).toFixed(3));
       }
       const evidencedTrail=(view.event_relation_history??[]).filter(item=>item?.glyph&&item?.relation_key);
-      for(let i=0;i<flightGlyphs.length;i++){
+      for(let i=0;i<flightCount;i++){
         const node=flightGlyphs[i],visible=evidencedTrail.length>0;
         if(!visible){node.textContent='';node.setAttribute('visibility','hidden');continue;}
         const observed=evidencedTrail[i%evidencedTrail.length];

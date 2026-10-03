@@ -216,7 +216,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     environment.document.documentElement.dataset.loomJourney = state;
   };
   const lines = id => $(id).value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
-  const coordinator = new AnimationCoordinator({ durationMs: 4000, maxFps: 24, onState: state => { root.dataset.pendingFrames = String(state.pendingFrames); } });
+  const coordinator = new AnimationCoordinator({ durationMs: 4000, maxFps: 60, onState: state => { root.dataset.pendingFrames = String(state.pendingFrames); } });
   coordinator.setContinuous(true);
   const legacy = environment.document.querySelector('#loomLegacy');
   const invitation = $('aiDemoInvitation');
