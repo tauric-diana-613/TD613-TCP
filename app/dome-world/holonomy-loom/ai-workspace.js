@@ -112,7 +112,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
       $('aiChallengeCanary').focus(); refreshTransferActions();
     }
   });
-  const returnedReview=mountReturnedSessionReview($('loomReturnedSessionReview'), {environment,getOrigin:()=>acceptedTask,getChild:()=>marrowlineChild,getProtectedTerms:()=>lines('aiPrivate'),onReview:()=>openWorkspace('return',{focus:true})});
+  const returnedReview=mountReturnedSessionReview($('loomReturnedSessionReview'), {environment,getOrigin:()=>acceptedTask,getChild:()=>marrowlineChild,getProtectedTerms:()=>lines('aiPrivate'),onReview:review=>openReturnedReviewScene(review)});
   let routeFacts = {outbound_submitted:false,response_received:false,binding_verified:false};
   root.dataset.loomJourney = 'loom';
   root.dataset.flowPhase = 'prepared';
@@ -282,6 +282,24 @@ export function mountLoomAiWorkspace(root, environment = window) {
     $('loomRulesOpen').textContent=`Rules · ${lines('aiRules').length}`;
   }
 
+  function openReturnedReviewScene(review){
+    const bypassThreshold=review?.source==='OPENER_RETURN'||environment.location.hash==='#return-review';
+    if(bypassThreshold){
+      clearThresholdTimers();
+      firstCrossingActive=false;
+      firstCrossingReplayMode=false;
+      thresholdObservation=null;
+      root.dataset.firstCrossing='idle';
+      root.dataset.thresholdState='open';
+      root.dataset.thresholdBeat='0';
+      thresholdStage.hidden=true;
+      builderShell.hidden=false;
+      $('loomFirstCrossing').hidden=true;
+      $('loomThresholdGate').hidden=false;
+      $('loomReplayFirstCrossing').hidden=false;
+    }
+    openWorkspace('return',{focus:bypassThreshold});
+  }
   function clearThresholdTimers(){
     thresholdTimers.forEach(timer=>environment.clearTimeout(timer));
     thresholdTimers=[];
