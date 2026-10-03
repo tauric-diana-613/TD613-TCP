@@ -230,7 +230,7 @@ try {
       await page.locator('#aiDemoMode').click();
       assert.equal(await page.locator('#aiDemoWelcome').isVisible(),true,'Practice route reveals the fictional project chooser');
       assert.equal(await page.locator('#aiRuntime').count(),1,'Practice reuses the same canonical state view rather than mounting another one');
-      assert.equal(await page.locator('#aiRuntime').isVisible(),false,'Practice remains in the builder scene until the operator returns to the Threshold');
+      assert.equal(await page.locator('#aiRuntime').isVisible(),false,'Practice remains in the builder scene until the operator opens How it works');
       assert.equal(await page.locator('#aiPreparePortable').evaluate(node=>node.classList.contains('ai-primary')),true,'Practice preserves local preparation as the primary route gesture');
       assert.equal(await page.locator('a[href="/dome-world/loom-instrument-lab.html"]').first().isVisible(),true,'Instrument Lab remains independently available during practice');
       assert.match(await page.locator('#aiDemoModePanel').innerText(),/Fictional material\. Same route, same boundaries\./i);
@@ -312,7 +312,7 @@ try {
       await page.locator('#aiAuditor').click();
       assert.equal(requests.length,1,'replay and auditor view make no provider request');
       await page.locator('#aiRoomLive').click();
-      assert.equal(await page.locator('#aiRoomLive').isHidden(),true,'returning live exits replay without reopening First Crossing');
+      assert.equal(await page.locator('#aiRoomLive').isHidden(),true,'returning live exits replay without reopening the tutorial');
       await page.locator('#aiChild').click();
       await closeTools();
       await page.waitForFunction(() => document.querySelector('#aiRuntimeState')?.dataset.clientPhase === 'checking');
