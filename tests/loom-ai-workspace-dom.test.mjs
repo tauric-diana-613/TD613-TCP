@@ -64,6 +64,7 @@ function harness(t, responder=(request)=>response(admitted(request)), reduced=fa
 }
 
 test('Loom transfer is the default mode and keeps comprehension plus local preparation open',async t=>{
+test('Loom opens on the human task and local preparation exposes the next route',async t=>{
   const h=harness(t);
   assert.equal(h.ui.inspect().mode,'portable');
   assert.equal(h.root.querySelectorAll('#aiRuntimeState').length,1);
@@ -75,29 +76,31 @@ test('Loom transfer is the default mode and keeps comprehension plus local prepa
   assert.equal(h.$('#aiDemoWelcome').hidden,true);
   assert.equal(h.$('#aiPortableModePanel').hidden,false);
   assert.equal(h.$('#aiDemoModePanel').hidden,true);
-  assert.match(h.$('#aiFirstUseGuide').textContent,/Marrowline.*Return mechanics/i);
+  assert.match(h.$('#aiFirstUseGuide').textContent,/Loom → Marrowline → Return/);
+  assert.match(h.$('#aiFirstUseGuide').textContent,/Nothing leaves this page until you choose an explicit crossing/i);
   assert.equal(h.root.dataset.loomJourney,'loom');
 
   h.change('#aiTask','Compare the selected evidence and name what remains missing.');
   h.$('#aiPreparePortable').click();
   await h.settled();
-  assert.equal(h.calls.length,0,'local Loom transfer preparation makes no provider request');
+  assert.equal(h.calls.length,0,'local Loom preparation makes no provider request');
   assert.equal(h.root.dataset.loomJourney,'ready');
   assert.equal(h.$('#aiResult').hidden,false);
   assert.match(h.$('#aiAnswer').textContent,/made no model request/i);
-  assert.match(h.$('#aiAnswer').textContent,/does not embed civil-identity verification/i);
+  assert.match(h.$('#aiAnswer').textContent,/hidden receiver state and downstream behavior remain outside this local binding/i);
   assert.equal(h.$('#aiSessionSummary').hidden,false,'local preparation creates a session root before crossing');
   assert.match(h.$('#aiSessionReceipt').textContent,/td613\.loom\.portable-session-export\/v0\.1/);
   assert.match(h.$('#aiStatus').textContent,/Choose the next route/i);
+  for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge']){
+    assert.equal(h.$('#'+id).disabled,false,`${id} wakes after local preparation`);
+  }
 });
 
-test('a prepared Loom transfer wakes its crossing gestures without a speculative authority gate',async t=>{
+test('prepared Loom work preserves its session contract and editing invalidates the crossing',async t=>{
   const h=harness(t);
   h.change('#aiTask','Prepare this bounded task for another receiver.');
   h.$('#aiPreparePortable').click();
   await h.settled();
-  for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge'])assert.equal(h.$('#'+id).disabled,false,`${id} wakes after local preparation`);
-
 
   const sessionExport=JSON.parse(h.$('#aiSessionReceipt').textContent);
   assert.equal(sessionExport.schema,'td613.loom.portable-session-export/v0.1');
@@ -136,7 +139,9 @@ test('a prepared Loom transfer wakes its crossing gestures without a speculative
   assert.match(h.$('#aiTurnReceiptDetail').textContent,/undeclared_secret/);
 
   h.change('#aiTask',h.$('#aiTask').value+' changed');
-  for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge'])assert.equal(h.$('#'+id).disabled,true,'editing the bound task invalidates the prepared crossing');
+  for(const id of ['aiMarrowline','aiExport','aiCopy','aiExportSession','aiCopySession','aiPrepareChallenge']){
+    assert.equal(h.$('#'+id).disabled,true,'editing the bound task invalidates the prepared crossing');
+  }
 });
 
 test('Practice mode uses the same route mechanics without creating persistent preparation state',async t=>{
