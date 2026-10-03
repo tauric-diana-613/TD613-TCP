@@ -36,7 +36,9 @@ try{
     const head=()=>r('head').textContent();
     const check=async(text)=>{await r('returns').fill(text);if(!(await r('policy-review').isChecked()))await r('policy-review').check();await r('check').click();await page.waitForFunction(()=>{const v=document.querySelector('[data-loom-reentry="verdict"]').textContent;return v.startsWith('HOLD')||v==='Ready for local admission.';});};
     await page.goto(`${base}/dome-world/holonomy-loom.html`);
-    await page.locator('#loomBegin').click();await page.locator('.loom-builder-shell').waitFor({state:'visible'});
+    await page.locator('#loomFirstCrossing').waitFor({state:'visible'});
+    await page.locator('#loomFirstCrossingLeave').click();
+    await page.locator('.loom-builder-shell').waitFor({state:'visible'});
     await page.locator('#aiDemoMode').click();await page.locator('#aiDemoInvitation').click();await page.locator('[data-project="participant-research"]').click();
     await page.locator('#aiPreparePortable').click();await r('stage').waitFor({state:'attached'});
     await page.waitForFunction(()=>!document.querySelector('[data-loom-reentry="stage"]').disabled);
