@@ -15,7 +15,7 @@ async function until(predicate) {
   throw new Error('Synthetic UI did not reach the expected state.');
 }
 function setup(t, patch = {}) {
-  const dom = new JSDOM('<textarea id="aiShi"></textarea><section id="lab"></section>', { url: 'https://td613.invalid/dome-world/holonomy-loom.html' });
+  const dom = new JSDOM('<section id="lab"></section>', { url: 'https://td613.invalid/dome-world/holonomy-loom.html' });
   const root = dom.window.document.querySelector('#lab');
   const downloads = [], revoked = [];
   let fetches = 0;
