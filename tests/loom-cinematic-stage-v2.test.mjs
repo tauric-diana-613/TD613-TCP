@@ -3,13 +3,13 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const html=fs.readFileSync(new URL('../app/dome-world/holonomy-loom.html',import.meta.url),'utf8');
-const product=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/loom-product-v3.css',import.meta.url),'utf8');
+const product=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/loom-product-v4.css',import.meta.url),'utf8');
 const workspace=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/ai-workspace.js',import.meta.url),'utf8');
 const instrument=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/instrument-state-view.js',import.meta.url),'utf8');
 
 test('animation-native shell replaces the override cascade',()=>{
-  assert.match(html,/loom-product-v3\.css/);
-  assert.doesNotMatch(html,/ux-repair\.css|cinematic-rescue\.css|dromological-regime\.css|cinematic-stage-v2\.css/);
+  assert.match(html,/loom-product-v4\\.css/);
+  assert.doesNotMatch(html,/ai-workspace\.css|reentry-workspace\.css|loom-product-v3\.css|ux-repair\.css|cinematic-rescue\.css|dromological-regime\.css|cinematic-stage-v2\.css/);
   assert.match(product,/#loomAiWorkspace \.loom-stage/);
   assert.match(product,/#loomAiWorkspace \.loom-builder/);
 });

@@ -281,7 +281,16 @@ export function mountLoomAiWorkspace(root, environment = window) {
     invitation.setAttribute('aria-expanded', String(opening));
     if (opening) $('aiProjectChoices').querySelector('button')?.focus();
   });
-  const visibility = () => { coordinator.setVisible(!environment.document.hidden); };
+  let stageVisible = true;
+  const visibility = () => { coordinator.setVisible(!environment.document.hidden && stageVisible); };
+  const stageObserver = typeof environment.IntersectionObserver === 'function'
+    ? new environment.IntersectionObserver(entries => {
+        const entry = entries[0];
+        stageVisible = !entry || entry.isIntersecting;
+        visibility();
+      }, { threshold: 0.03 })
+    : null;
+  stageObserver?.observe(root.querySelector('.loom-stage'));
   const reduced = environment.matchMedia('(prefers-reduced-motion: reduce)');
   coordinator.setReducedMotion(reduced.matches);
   const motionChange = event => coordinator.setReducedMotion(event.matches);
@@ -632,7 +641,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   coordinator.setPacket({ ...lastPacket, scene: { ...lastPacket.scene, id: 'ai-welcome' }, geometry: { rest: false }, presentation: { welcome: true } });
   visibility();
   environment.document.documentElement.dataset.loomBoot='ready';
-  const dispose=()=>{disposed=true;reentry.dispose();if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();runtime.dispose();coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);delete environment.document.documentElement.dataset.loomJourney;delete environment.document.documentElement.dataset.loomFlowPhase;};
+  const dispose=()=>{disposed=true;stageObserver?.disconnect();reentry.dispose();if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();runtime.dispose();coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);delete environment.document.documentElement.dataset.loomJourney;delete environment.document.documentElement.dataset.loomFlowPhase;};
   environment.addEventListener('pagehide',dispose,{once:true});return {dispose,inspect:()=>({mode:workspaceMode,session:portableSession?inspectPortableLoomSession(portableSession):null,turn_receipt:turnReceiptVerification?{status:turnReceiptVerification.status,ref:turnReceiptVerification.ref}:null,challenge:challengeVerification?{status:challengeVerification.status,ref:challengeVerification.ref}:null,events:[...events],clock:coordinator.inspect(),replay:{index:replayIndex,count:sceneHistory.length},runtime:runtime.inspect(),geometry:null})};
 }
 if(typeof document!=='undefined')mountLoomAiWorkspace(document.querySelector('#loomAiWorkspace'));
