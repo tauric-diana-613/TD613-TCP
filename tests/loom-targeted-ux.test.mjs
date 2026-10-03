@@ -5,6 +5,9 @@ import { JSDOM } from 'jsdom';
 
 const html = fs.readFileSync(new URL('../app/dome-world/holonomy-loom.html', import.meta.url), 'utf8');
 const ux = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/ux-repair.css', import.meta.url), 'utf8');
+const dromological = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/dromological-regime.css', import.meta.url), 'utf8');
+const workspaceSource = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/ai-workspace.js', import.meta.url), 'utf8');
+const instrumentSource = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/instrument-state-view.js', import.meta.url), 'utf8');
 
 test('the primary Loom page isolates historical checker and observer practice from its closed Instrument Lab', () => {
   const doc = new JSDOM(html).window.document;
@@ -43,4 +46,28 @@ test('UX repair changes presentation only, not route or measurement authority', 
     /requestAnimationFrame/,
     /setInterval\s*\(/
   ]) assert.doesNotMatch(ux, forbidden);
+});
+
+
+test('dromological Loom is a route regime rather than a second animation engine', () => {
+  const doc = new JSDOM(html).window.document;
+  assert.equal(doc.querySelectorAll('link[href$="/dromological-regime.css"]').length, 1);
+  assert.match(dromological, /data-loom-journey="ready"/);
+  assert.match(dromological, /data-loom-journey="marrowline"/);
+  assert.match(dromological, /data-loom-journey="return"/);
+  assert.match(dromological, /min-height:100svh/);
+  assert.doesNotMatch(dromological, /@keyframes|animation\s*:/, 'continuous cinematic motion stays on the existing coordinator');
+});
+
+test('Loom product chrome no longer speculatively SHI-gates the crossing', () => {
+  assert.doesNotMatch(workspaceSource, /id="aiShi"|Safe Harbor issuance|validateShi|issuanceHold/);
+  assert.match(workspaceSource, /Continue the route\./);
+  assert.match(workspaceSource, /const awake = \(Boolean\(acceptedTask\) \|\| locallyAdmitted\) && !busy/);
+});
+
+test('cinematic Flow-Core traffic is sourced from evidenced relation history', () => {
+  assert.match(instrumentSource, /event_relation_history: eventRelationHistory/);
+  assert.match(instrumentSource, /Array\.from\(\{length:39\}/);
+  assert.match(instrumentSource, /view\.event_relation_history/);
+  assert.match(instrumentSource, /owns_animation_loop: false/);
 });
