@@ -1308,3 +1308,180 @@ html[data-loom-journey="ready"] #loomAiWorkspace #aiMarrowline:not(:disabled):ho
   border-top:1px solid rgba(232,160,194,.30)!important;
   border-bottom:1px solid var(--dr-hair)!important;
 }
+
+
+/* -------------------------------------------------------------------------
+   True full-bleed instrument
+   The builder stays human-scale. The evidenced Flow-Core field does not.
+   Escape the legacy 1160px page wrap only for the route instrument so glyph
+   traffic actually traverses the viewport instead of a centered web column.
+   ------------------------------------------------------------------------- */
+#loomAiWorkspace .ai-runtime{
+  width:100vw!important;
+  max-width:none!important;
+  margin-left:calc(50% - 50vw)!important;
+  margin-right:calc(50% - 50vw)!important;
+  overflow:hidden!important;
+  isolation:isolate;
+  background:
+    radial-gradient(ellipse at 50% 46%,rgba(199,162,239,.055),transparent 46%),
+    linear-gradient(90deg,rgba(145,236,232,.018),transparent 18% 82%,rgba(239,188,127,.018)),
+    var(--dr-void)!important;
+}
+#loomAiWorkspace .ai-runtime-state,
+#loomAiWorkspace .loom-instrument-state{
+  width:100vw!important;
+  max-width:none!important;
+  overflow:hidden!important;
+}
+#loomAiWorkspace .loom-glyph-field{
+  width:100vw!important;
+  max-width:none!important;
+  display:block;
+  overflow:visible!important;
+  mask-image:linear-gradient(90deg,transparent 0,black 3.5%,black 96.5%,transparent 100%);
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,black 3.5%,black 96.5%,transparent 100%);
+}
+#loomAiWorkspace .ai-runtime::selection,
+#loomAiWorkspace .loom-glyph-field::selection{background:transparent}
+
+/* Viewport apertures: fixed edge coordinates make the field feel entered,
+   not merely watched. They are static registration marks, not animation. */
+#loomAiWorkspace .loom-instrument-state::before,
+#loomAiWorkspace .loom-instrument-state::after{
+  content:"";
+  position:absolute;
+  top:7vh;
+  bottom:7vh;
+  z-index:4;
+  width:1px;
+  pointer-events:none;
+}
+#loomAiWorkspace .loom-instrument-state::before{
+  left:clamp(16px,3vw,48px);
+  background:linear-gradient(to bottom,transparent,var(--dr-rel-secondary) 20%,rgba(255,255,255,.08) 50%,var(--dr-rel-accent) 80%,transparent);
+}
+#loomAiWorkspace .loom-instrument-state::after{
+  right:clamp(16px,3vw,48px);
+  background:linear-gradient(to bottom,transparent,var(--dr-rel-accent) 20%,rgba(255,255,255,.08) 50%,var(--dr-rel-secondary) 80%,transparent);
+}
+
+/* Near-field relation history is allowed to feel physically close. */
+#loomAiWorkspace .loom-field-flight .flight-near{
+  filter:
+    drop-shadow(0 0 12px color-mix(in srgb,var(--dr-rel-secondary) 24%,transparent))
+    drop-shadow(0 0 42px color-mix(in srgb,var(--dr-rel-accent) 12%,transparent))!important;
+  paint-order:stroke fill;
+  stroke:rgba(247,240,232,.12);
+  stroke-width:.45px;
+}
+#loomAiWorkspace .loom-field-flight .flight-mid{
+  filter:drop-shadow(0 0 16px color-mix(in srgb,var(--dr-rel-secondary) 10%,transparent));
+}
+
+/* Phase is not a badge. It is a registration line cut into the viewport. */
+#loomAiWorkspace .loom-instrument-state-mode{
+  right:clamp(10px,1.6vw,26px)!important;
+  top:50%!important;
+  z-index:7!important;
+  padding:8px 0!important;
+  background:var(--dr-void);
+}
+#loomAiWorkspace .loom-instrument-state-relation{
+  left:clamp(18px,3.5vw,58px)!important;
+  bottom:clamp(18px,3.5vh,44px)!important;
+}
+#loomAiWorkspace .loom-instrument-state-boundary{
+  right:clamp(18px,3.5vw,58px)!important;
+  bottom:clamp(18px,3.5vh,44px)!important;
+}
+#loomAiWorkspace .ai-facts{
+  left:clamp(18px,3.5vw,58px)!important;
+  top:clamp(18px,3.5vh,44px)!important;
+}
+#loomAiWorkspace .ai-room-replay{
+  right:clamp(18px,3.5vw,58px)!important;
+  top:clamp(60px,8vh,92px)!important;
+}
+
+/* The consequence is staged low and wide, like a cinematic lower-third,
+   while the relation owns the center of the frame. */
+#loomAiWorkspace .loom-field-caption{
+  left:clamp(18px,6vw,110px)!important;
+  right:auto!important;
+  bottom:clamp(72px,9vh,120px)!important;
+  width:min(920px,74vw)!important;
+  max-width:none!important;
+  transform:none!important;
+}
+#loomAiWorkspace .loom-instrument-state-now{
+  max-width:12ch!important;
+  font-size:clamp(3.4rem,7.8vw,8.8rem)!important;
+  line-height:.76!important;
+  letter-spacing:-.065em!important;
+}
+#loomAiWorkspace .loom-instrument-state-next{
+  max-width:62ch!important;
+  font-size:clamp(.76rem,1vw,.9rem)!important;
+}
+
+/* The inspection drawer floats above the field as a technical lens rather than
+   pushing the cinematic scene downward. */
+#loomAiWorkspace .loom-instrument-state-inspection{
+  top:clamp(18px,3.5vh,42px)!important;
+  left:50%!important;
+  width:min(680px,58vw)!important;
+  transform:translateX(-50%)!important;
+}
+#loomAiWorkspace .loom-instrument-state-inspection[open]{
+  max-height:72vh;
+  overflow:auto;
+  box-shadow:0 24px 100px rgba(0,0,0,.58),0 0 70px color-mix(in srgb,var(--dr-rel-accent) 8%,transparent);
+}
+
+/* Once a local transfer is prepared, the full-screen field gets first visual
+   claim. Earlier form material remains above in document order and reversible. */
+html[data-loom-journey="ready"] #loomAiWorkspace .ai-runtime{
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb,var(--dr-gold) 20%,transparent),
+    inset 0 -1px 0 color-mix(in srgb,var(--dr-cyan) 14%,transparent);
+}
+html[data-loom-journey="marrowline"] #loomAiWorkspace .ai-runtime{
+  background:
+    radial-gradient(ellipse at 72% 48%,rgba(145,236,232,.075),transparent 39%),
+    radial-gradient(ellipse at 20% 52%,rgba(199,162,239,.045),transparent 46%),
+    var(--dr-void)!important;
+}
+html[data-loom-journey="return"] #loomAiWorkspace .ai-runtime{
+  background:
+    radial-gradient(ellipse at 50% 50%,rgba(199,162,239,.085),transparent 38%),
+    radial-gradient(ellipse at 50% 50%,rgba(145,236,232,.03),transparent 62%),
+    var(--dr-void)!important;
+}
+
+@media(max-width:760px){
+  #loomAiWorkspace .ai-runtime{
+    width:100vw!important;
+    margin-left:calc(50% - 50vw)!important;
+    margin-right:calc(50% - 50vw)!important;
+  }
+  #loomAiWorkspace .loom-glyph-field{
+    width:100vw!important;
+    mask-image:linear-gradient(90deg,transparent 0,black 2%,black 98%,transparent 100%);
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,black 2%,black 98%,transparent 100%);
+  }
+  #loomAiWorkspace .loom-instrument-state::before{left:10px}
+  #loomAiWorkspace .loom-instrument-state::after{right:10px}
+  #loomAiWorkspace .loom-field-caption{
+    left:17px!important;
+    width:calc(100vw - 34px)!important;
+    bottom:12vh!important;
+  }
+  #loomAiWorkspace .loom-instrument-state-now{
+    max-width:9ch!important;
+    font-size:clamp(3.2rem,15vw,6.4rem)!important;
+  }
+  #loomAiWorkspace .loom-instrument-state-inspection{
+    width:calc(100vw - 30px)!important;
+  }
+}
