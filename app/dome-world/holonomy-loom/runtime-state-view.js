@@ -107,7 +107,22 @@ export function mountLoomRuntimeStateView(root, {
       });
     })().then(view => {
       if (disposed || token !== generation || latestSnapshot.packet !== snapshot.packet) return;
-      compiled = view;publish(latestSnapshot);
+      compiled = view;
+      // The finite semantic clock can advance while the async projection is
+      // compiling behind the reserved field. If that happens, replay the same
+      // coordinator from zero once the current projection is actually visible;
+      // otherwise Safari/iPhone can legitimately show only the final static
+      // frame and make a working relation look like a dead animation.
+      const shouldReplayVisibleProjection =
+        latestSnapshot.progress > 0.02 &&
+        latestSnapshot.reducedMotion !== true &&
+        latestSnapshot.packet.geometry?.rest !== true;
+      publish(latestSnapshot);
+      root.dataset.projectionReplay = shouldReplayVisibleProjection ? '1' : '0';
+      if (shouldReplayVisibleProjection) {
+        coordinator.seek(0);
+        coordinator.play();
+      }
     }).catch(error => {
       if (disposed || token !== generation || latestSnapshot.packet !== snapshot.packet) return;
       compiled = null;heldReason = String(error.message).slice(0, 240);publish(latestSnapshot);
