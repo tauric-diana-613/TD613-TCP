@@ -53,6 +53,7 @@ try {
     const activate = async locator => engine === 'webkit' ? locator.evaluate(element => element.click()) : locator.click();
     const calls = [], marrowlineCalls = [], errors = [], unexpected = [];
     const watchPage = candidate => { candidate.setDefaultTimeout(12000); candidate.on('pageerror', error => errors.push(error.message)); };
+    await page.addInitScript(() => { try { localStorage.setItem('td613.loom.first-crossing.v1', 'complete'); } catch {} });
     watchPage(page);
     context.on('page', watchPage);
     context.on('request', request => {
@@ -105,6 +106,9 @@ try {
     try {
       const loaded = await page.goto(`${base}/dome-world/holonomy-loom.html`, { waitUntil: 'networkidle' });
       assert.equal(loaded.status(), 200);
+      assert.equal(await page.locator('.loom-stage').isVisible(),true,'the persistent Threshold owns arrival');
+      await page.locator('#loomBegin').click();
+      await page.locator('.loom-builder-shell').waitFor({state:'visible'});
       assert.equal(await page.locator('#aiPortableMode').getAttribute('aria-selected'),'true','My task is the default Loom entry');
       assert.equal(await page.locator('#aiDemoWelcome').isVisible(),false);
       await page.locator('#aiDemoMode').click();
