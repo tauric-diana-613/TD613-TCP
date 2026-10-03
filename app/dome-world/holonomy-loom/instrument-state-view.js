@@ -586,6 +586,11 @@ export function mountLoomInstrumentStateView(root) {
       // All motion is a projection of the shared client clock and observed
       // relation. No particle, light or cadence claims provider activity.
       const seconds = frame.reduced_motion ? 0 : Number(snapshot.motionTimeMs ?? snapshot.timeMs ?? 0)/1000;
+      const choreography=snapshot.packet?.presentation?.flowcore_choreography;
+      const choreographyRelations=Array.isArray(choreography?.relations)?choreography.relations.filter(key=>view.relations?.[key]):[];
+      const ambientChoreography=frame.relation_key===null&&choreographyRelations.length>0;
+      root.dataset.flowcoreChoreography=ambientChoreography?String(choreography.id??'ambient'):'evidenced';
+      root.dataset.flowcoreMotionFamily=ambientChoreography?String(choreography.family??'heterostratigraphic'):'canonical-relation';
       const breath = frame.reduced_motion ? 0 : Math.sin(seconds*.72);
       const transform = frame.glyph_transform;
       glyphGroup.setAttribute('transform', `translate(${transform.x} ${transform.y+breath*2}) translate(500 260) scale(${transform.scale}) translate(-500 -260)`);
@@ -595,7 +600,7 @@ export function mountLoomInstrumentStateView(root) {
         const z=(depth.length-i)/depth.length;
         depth[i].setAttribute('transform',`translate(${z*(9+breath*3)} ${z*(10-breath*2)})`);
       }
-      const relationKey=frame.relation_key;
+      const relationKey=frame.relation_key ?? (ambientChoreography?choreographyRelations[Math.floor(seconds/1.65)%choreographyRelations.length]:null);
       for(let i=0;i<filamentCount;i++){
         const centered=i-(filaments.length-1)/2;
         const pulse=frame.reduced_motion?0:Math.sin(seconds*.7+i*.22)*24;
@@ -666,17 +671,21 @@ export function mountLoomInstrumentStateView(root) {
       }
       const evidencedTrail=frame.descriptor ? (view.event_relation_history??[]).filter(item=>item?.glyph&&item?.relation_key) : [];
       for(let i=0;i<flightCount;i++){
-        const node=flightGlyphs[i],visible=evidencedTrail.some(item=>item.relation_key===frame.relation_key);
-        if(!visible){setText(node,'');node.setAttribute('visibility','hidden');continue;}
-        // Current consequence owns the field. Older relations remain in the
-        // exact history and replay; they cannot masquerade as current motion.
+        const node=flightGlyphs[i];
+        // First-paint ingress may carry a presentation-only choreography score.
+        // It uses the same 39 carriers and host clock but is explicitly not
+        // appended to event_relation_history and cannot become evidence.
+        const ambientRelation=ambientChoreography?choreographyRelations[(i+Math.floor(seconds/1.35))%choreographyRelations.length]:null;
         const observed=evidencedTrail.findLast(item=>item.relation_key===frame.relation_key);
-        const relationKey=observed.relation_key;
+        const visible=Boolean(observed||ambientRelation);
+        if(!visible){setText(node,'');node.setAttribute('visibility','hidden');continue;}
+        const relationKey=observed?.relation_key??ambientRelation;
         const depthClass=node.getAttribute('class');
         const nearPlane=depthClass==='flight-near';
         const midPlane=depthClass==='flight-mid';
-        setText(node,observed.glyph);
+        setText(node,observed?.glyph??view.relations?.[relationKey]?.glyph??'');
         node.setAttribute('data-flight-relation',relationKey);
+        node.setAttribute('data-flight-evidence',observed?'observed':'presentation-only');
         node.setAttribute('visibility','visible');
 
         // Each path follows the canonical relation's graphic/motion grammar.
@@ -692,7 +701,7 @@ export function mountLoomInstrumentStateView(root) {
 
         const speed=.014+(i%7)*.0033;
         const finiteTraversal=['gathering','release','created_potential','released_tendency','bounded_emergence'].includes(relationKey);
-        const phase=finiteTraversal ? Math.min(1,seed*.18+frame.progress*.82) : ((seed+seconds*speed)%1+1)%1;
+        const phase=ambientChoreography ? ((seed+seconds*(speed*3.4))%1+1)%1 : finiteTraversal ? Math.min(1,seed*.18+frame.progress*.82) : ((seed+seconds*speed)%1+1)%1;
         const lane=(i%9)-4;
         let x=500,y=260,roll=0,scale=.48+(i%9)*.085,opacity=1;
 
@@ -767,7 +776,7 @@ export function mountLoomInstrumentStateView(root) {
         }else{
           opacity=Math.min(.12,opacity*.22);
         }
-        if(finiteTraversal && frame.progress>.65)opacity*=1-(frame.progress-.65)/.35*.65;
+        if(!ambientChoreography && finiteTraversal && frame.progress>.65)opacity*=1-(frame.progress-.65)/.35*.65;
         node.setAttribute('opacity',opacity.toFixed(3));
         node.setAttribute('x',x.toFixed(2));node.setAttribute('y',y.toFixed(2));
         node.setAttribute('transform',`translate(${x.toFixed(2)} ${y.toFixed(2)}) rotate(${roll.toFixed(2)}) scale(${scale.toFixed(2)}) translate(${-x.toFixed(2)} ${-y.toFixed(2)})`);
