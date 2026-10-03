@@ -49,6 +49,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   if (!root) return;
   root.innerHTML = loomWorkspaceTemplate;
   const $ = id => root.querySelector(`#${id}`);
+  $('loomBegin')?.addEventListener('click', () => $('loomBuilder')?.scrollIntoView({ behavior: environment.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ? 'auto' : 'smooth', block: 'start' }));
   const lines = id => $(id).value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
   let activeWorkspace = 'build', marrowlineChild = null;
   function openWorkspace(name, {focus=false}={}) {
