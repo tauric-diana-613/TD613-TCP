@@ -97,6 +97,7 @@ try {
       return route.fulfill({ status: 503, json: { ok: false, error: 'UNEXPECTED_MOCK_ROUTE' } });
     });
     const loom = await context.newPage();
+    await loom.addInitScript(() => { try { localStorage.setItem('td613.loom.first-crossing.v1', 'complete'); } catch {} });
     const checks = [];
     const check = (label, condition) => { assert.equal(Boolean(condition), true, label); checks.push(label); };
     // OLD: rules/profile/one-hop tools were disclosures embedded in the route.
@@ -113,6 +114,7 @@ try {
     };
     try {
       await loom.goto(`${base}/dome-world/holonomy-loom.html`, { waitUntil: 'networkidle' });
+      await useKeyboard(loom.locator('#loomBegin')); await loom.locator('.loom-builder-shell').waitFor({ state: 'visible' });
       await loom.locator('#aiDemoMode').click(); await loom.locator('#aiNew').click();
       await loom.locator('#aiTask').fill(task); await openTool('rules');
       await loom.locator('#aiRules').fill(rules.join('\n')); await loom.locator('#aiPrivate').fill(privateText);
