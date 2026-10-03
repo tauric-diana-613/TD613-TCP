@@ -678,17 +678,22 @@ export function mountLoomInstrumentStateView(root) {
         // First-paint ingress may carry a presentation-only choreography score.
         // It uses the same 39 carriers and host clock but is explicitly not
         // appended to event_relation_history and cannot become evidence.
-        const ambientRelation=ambientChoreography?choreographyRelations[(i+Math.floor(seconds/1.35))%choreographyRelations.length]:null;
+        // The full eight-relation score belongs only to the pre-evidence ingress.
+        // Once a canonical consequence exists, every carrier keeps that evidenced
+        // relation identity; the selected family may deform geometry, never truth.
         const observed=evidencedTrail.findLast(item=>item.relation_key===frame.relation_key);
+        const ambientRelation=!observed&&ambientChoreography
+          ? choreographyRelations[(i+Math.floor(seconds/1.35))%choreographyRelations.length] : null;
         const visible=Boolean(observed||ambientRelation);
         if(!visible){setText(node,'');node.setAttribute('visibility','hidden');continue;}
-        const relationKey=ambientChoreography?ambientRelation:observed?.relation_key;
+        const relationKey=observed?.relation_key??ambientRelation;
+        const ambientOnly=!observed&&Boolean(ambientRelation);
         const depthClass=node.getAttribute('class');
         const nearPlane=depthClass==='flight-near';
         const midPlane=depthClass==='flight-mid';
-        setText(node,ambientChoreography?(view.relations?.[relationKey]?.glyph??''):(observed?.glyph??''));
+        setText(node,observed?.glyph??view.relations?.[relationKey]?.glyph??'');
         node.setAttribute('data-flight-relation',relationKey);
-        node.setAttribute('data-flight-evidence',ambientChoreography?'presentation-only':'observed');
+        node.setAttribute('data-flight-evidence',observed?'observed':'presentation-only');
         node.setAttribute('data-flight-family',motionFamily??'canonical-relation');
         node.setAttribute('visibility','visible');
 
@@ -705,7 +710,7 @@ export function mountLoomInstrumentStateView(root) {
 
         const speed=.014+(i%7)*.0033;
         const finiteTraversal=['gathering','release','created_potential','released_tendency','bounded_emergence'].includes(relationKey);
-        const phase=ambientChoreography ? ((seed+seconds*(speed*3.4))%1+1)%1 : finiteTraversal ? Math.min(1,seed*.18+frame.progress*.82) : ((seed+seconds*speed)%1+1)%1;
+        const phase=ambientOnly ? ((seed+seconds*(speed*3.4))%1+1)%1 : finiteTraversal ? Math.min(1,seed*.18+frame.progress*.82) : ((seed+seconds*speed)%1+1)%1;
         const lane=(i%9)-4;
         let x=500,y=260,roll=0,scale=.48+(i%9)*.085,opacity=1;
 
@@ -785,7 +790,7 @@ export function mountLoomInstrumentStateView(root) {
         }else{
           opacity=Math.min(.12,opacity*.22);
         }
-        if(!ambientChoreography && finiteTraversal && frame.progress>.65)opacity*=1-(frame.progress-.65)/.35*.65;
+        if(!ambientOnly && finiteTraversal && frame.progress>.65)opacity*=1-(frame.progress-.65)/.35*.65;
         node.setAttribute('opacity',opacity.toFixed(3));
         node.setAttribute('x',x.toFixed(2));node.setAttribute('y',y.toFixed(2));
         node.setAttribute('transform',`translate(${x.toFixed(2)} ${y.toFixed(2)}) rotate(${roll.toFixed(2)}) scale(${scale.toFixed(2)}) translate(${-x.toFixed(2)} ${-y.toFixed(2)})`);

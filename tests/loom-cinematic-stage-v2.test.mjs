@@ -121,6 +121,8 @@ test('motion families alter the same 39 carrier geometry under the shared coordi
   assert.equal(phi.length,39);assert.equal(moire.length,39);
   assert.ok(phi.every(node=>node.family==='phi-gossamer'));assert.ok(moire.every(node=>node.family==='moire-shear'));
   assert.ok(moire.some((node,index)=>Math.hypot(node.x-phi[index].x,node.y-phi[index].y)>8),'family selection must change projected carrier geometry');
+  assert.ok([...root.querySelectorAll('.loom-field-flight text')].every(node=>node.dataset.flightRelation===view.active_relation),
+    'motion-family presentation may bend geometry but cannot replace the evidenced relation identity');
   assert.equal(view.empirical_credit,0,'family projection earns no empirical geometry credit');
   renderer.destroy();dom.window.close();
 });
