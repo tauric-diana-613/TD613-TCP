@@ -854,3 +854,112 @@ html[data-loom-flow-phase="held"] #loomAiWorkspace .loom-instrument-state-now{co
   }
   html[data-loom-journey="marrowline"] #loomAiWorkspace .ai-crossing-boundary::before{left:0}
 }
+
+
+/* ----------------------------------------------------------------------
+   FLOW-CORE RELATION GRAMMAR AS SPATIAL GRAMMAR
+   No loops here: relation state switches static geometry while the sole
+   AnimationCoordinator moves the evidenced glyph strata.
+   ---------------------------------------------------------------------- */
+#loomAiWorkspace .ai-runtime::before,
+#loomAiWorkspace .ai-runtime::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+}
+#loomAiWorkspace .ai-runtime-state,
+#loomAiWorkspace .ai-runtime>.mark,
+#loomAiWorkspace .ai-facts,
+#loomAiWorkspace .ai-room-replay,
+#loomAiWorkspace #aiGapSummary{position:relative;z-index:2}
+
+/* à · gathering — a wide field pulls toward a narrow center. */
+html[data-loom-relation="gathering"] #loomAiWorkspace .ai-runtime::before{
+  background:
+    linear-gradient(90deg,rgba(239,188,127,.10),transparent 31%,transparent 69%,rgba(145,236,232,.08)),
+    radial-gradient(ellipse at 50% 50%,rgba(199,162,239,.14),transparent 21%,rgba(4,3,8,0) 48%);
+  clip-path:polygon(0 10%,48% 43%,52% 43%,100% 10%,100% 90%,52% 57%,48% 57%,0 90%);
+}
+html[data-loom-relation="gathering"] .loom-field-flight [data-flight-relation="gathering"]{fill:#efbc7f!important}
+
+/* 米 · recurrence — nested returns share a center without claiming sameness. */
+html[data-loom-relation="recurrence"] #loomAiWorkspace .ai-runtime::before{
+  inset:12% 8%;
+  background:
+    radial-gradient(ellipse at center,transparent 0 17%,rgba(145,236,232,.10) 17.2% 17.6%,transparent 18% 31%,rgba(199,162,239,.11) 31.2% 31.5%,transparent 32% 46%,rgba(239,188,127,.09) 46.2% 46.5%,transparent 47%);
+}
+html[data-loom-relation="recurrence"] .loom-field-flight [data-flight-relation="recurrence"]{fill:#c7a2ef!important}
+
+/* 出 · release — the field is visibly cut open toward the destination. */
+html[data-loom-relation="release"] #loomAiWorkspace .ai-runtime::before{
+  background:
+    linear-gradient(102deg,transparent 0 47.8%,rgba(239,188,127,.42) 47.9% 48%,rgba(145,236,232,.16) 48.1% 48.4%,transparent 48.5%),
+    linear-gradient(90deg,rgba(239,188,127,.045),transparent 42%,rgba(145,236,232,.07));
+}
+html[data-loom-relation="release"] #loomAiWorkspace .ai-runtime::after{
+  left:49%;right:auto;width:28vw;
+  background:linear-gradient(90deg,rgba(239,188,127,.12),transparent);
+  clip-path:polygon(0 42%,100% 0,100% 100%,0 58%);
+}
+html[data-loom-relation="release"] .loom-field-flight [data-flight-relation="release"]{fill:#efbc7f!important}
+
+/* hõt · created potential — a vertical possibility rises but does not cross. */
+html[data-loom-relation="created_potential"] #loomAiWorkspace .ai-runtime::before{
+  inset:auto 0 0;
+  height:78%;
+  background:
+    linear-gradient(90deg,transparent 48.9%,rgba(199,162,239,.17) 49%,rgba(239,188,127,.38) 49.9% 50.1%,rgba(145,236,232,.16) 51%,transparent 51.1%);
+  clip-path:polygon(43% 100%,49.3% 0,50.7% 0,57% 100%);
+}
+html[data-loom-relation="created_potential"] .loom-field-flight [data-flight-relation="created_potential"]{fill:#c7a2ef!important}
+
+/* released tendency — return falls into the local observation plane. */
+html[data-loom-relation="released_tendency"] #loomAiWorkspace .ai-runtime::before{
+  inset:0 0 auto;
+  height:78%;
+  background:
+    linear-gradient(90deg,transparent 48.8%,rgba(145,236,232,.22) 49.1%,rgba(239,188,127,.32) 50%,rgba(199,162,239,.15) 50.9%,transparent 51.2%);
+  clip-path:polygon(49.2% 0,50.8% 0,58% 100%,42% 100%);
+}
+html[data-loom-relation="released_tendency"] .loom-field-flight [data-flight-relation="released_tendency"]{fill:#91ece8!important}
+
+/* cōl · protected continuity — the center is quiet while an enclosing route persists. */
+html[data-loom-relation="protected_continuity"] #loomAiWorkspace .ai-runtime::before{
+  inset:8%;
+  background:
+    radial-gradient(ellipse at 50% 50%,transparent 0 24%,rgba(145,236,232,.13) 24.2% 24.7%,transparent 25% 40%,rgba(199,162,239,.10) 40.2% 40.6%,transparent 41%),
+    linear-gradient(90deg,rgba(145,236,232,.035),transparent 22%,transparent 78%,rgba(239,188,127,.035));
+}
+html[data-loom-relation="protected_continuity"] .loom-field-flight [data-flight-relation="protected_continuity"]{fill:#91ece8!important}
+
+/* bounded emergence — observed work blooms outward, still inside the claim ceiling. */
+html[data-loom-relation="bounded_emergence"] #loomAiWorkspace .ai-runtime::before{
+  inset:5%;
+  background:
+    conic-gradient(from 0deg at 50% 50%,rgba(239,188,127,.08),transparent 8%,rgba(145,236,232,.07) 17%,transparent 27%,rgba(199,162,239,.08) 39%,transparent 51%,rgba(239,188,127,.06) 63%,transparent 78%,rgba(145,236,232,.06) 89%,transparent),
+    radial-gradient(circle at center,rgba(247,240,232,.06),transparent 12%,rgba(199,162,239,.07) 12.3% 12.8%,transparent 13%);
+  clip-path:circle(47% at 50% 50%);
+}
+html[data-loom-relation="bounded_emergence"] .loom-field-flight [data-flight-relation="bounded_emergence"]{fill:#f3d5ad!important}
+
+/* 𝄐 · structural rest — visual demand collapses onto one horizon. */
+html[data-loom-relation="structural_rest"] #loomAiWorkspace .ai-runtime::before{
+  inset:49.9% 6% auto;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--dr-violet) 22%,var(--dr-gold) 50%,var(--dr-cyan) 78%,transparent);
+  opacity:.42;
+  box-shadow:0 0 36px rgba(199,162,239,.14);
+}
+html[data-loom-relation="structural_rest"] #loomAiWorkspace .ai-runtime::after{
+  background:radial-gradient(ellipse at 50% 50%,rgba(4,3,8,0) 0 15%,rgba(4,3,8,.28) 57%,rgba(4,3,8,.72) 100%);
+}
+html[data-loom-relation="structural_rest"] .loom-field-flight [data-flight-relation="structural_rest"]{fill:#83798d!important}
+
+/* The active central glyph is allowed to be monumental. */
+#loomAiWorkspace .loom-field-glyph{
+  filter:drop-shadow(0 0 22px rgba(145,236,232,.14)) drop-shadow(0 0 70px rgba(199,162,239,.08))!important;
+}
+html[data-loom-relation="release"] #loomAiWorkspace .loom-field-glyph{filter:drop-shadow(0 0 28px rgba(239,188,127,.19)) drop-shadow(0 0 90px rgba(145,236,232,.09))!important}
+html[data-loom-relation="structural_rest"] #loomAiWorkspace .loom-field-glyph{filter:none!important}
