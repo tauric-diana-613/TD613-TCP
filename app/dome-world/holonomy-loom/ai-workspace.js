@@ -647,7 +647,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   $('aiDemoMode').addEventListener('click',()=>setMode('demo'));
   load(null);
   setMode('portable',{announce:false});
-  status('Loom session mode. Prepare locally; issuance wakes only when the transfer is ready to cross.');
+  status('Loom session mode. Prepare locally, then choose where the prepared work crosses.');
   // A local entrance gesture has no request or evidence authority. It settles
   // after four seconds; subsequent packets retain their actual rest posture.
   coordinator.setPacket({ ...lastPacket, scene: { ...lastPacket.scene, id: 'ai-welcome' }, geometry: { rest: false }, presentation: { welcome: true } });
