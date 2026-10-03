@@ -60,12 +60,6 @@ export function mountLoomAiWorkspace(root, environment = window) {
     </div>
     <section id="aiPortableModePanel" class="ai-mode-panel" role="tabpanel" aria-labelledby="aiPortableMode">
       <div class="ai-mode-copy"><h3>Prepare the crossing before it moves.</h3><p>Choose the task, the files that may travel, what stays local, and the rules that accompany the work. Understanding and local preparation stay open.</p><p id="aiFirstUseGuide" class="ai-muted"><strong>New here?</strong> Loom Demo practices the same packet-and-return route with fictional material and needs no SHI. For your own packet, a minted SHI only wakes issuance controls after a local format check; it does not establish civil identity or foreign-host enforcement.</p></div>
-      <div id="aiIssuanceGate" class="ai-issuance-gate" data-state="held">
-        <label for="aiShi">Safe Harbor issuance</label>
-        <div class="ai-shi-row"><input id="aiShi" type="text" inputmode="text" autocomplete="off" maxlength="64" placeholder="TD613-SH-9B07D8B-XXXXXXXX" aria-describedby="aiShiStatus aiShiClaim"><a href="/safe-harbor/index.html" target="_blank" rel="noopener noreferrer">Create SHI →</a></div>
-        <p id="aiShiStatus" role="status">Issuance held · local preparation remains available.</p>
-        <p id="aiShiClaim" class="ai-muted">A minted SHI wakes Loom’s issuance controls after a local format check. This does not authenticate civil identity. The current Loom transfer envelope carries no SHI field.</p>
-      </div>
     </section>
     <section id="aiDemoModePanel" class="ai-mode-panel" role="tabpanel" aria-labelledby="aiDemoMode" hidden>
       <h3>Practice the real route with fictional material.</h3>
@@ -134,6 +128,17 @@ export function mountLoomAiWorkspace(root, environment = window) {
           <button type="button" id="aiVerifyTurnReceipt">Verify proceeding-task receipt</button>
           <div id="aiTurnReceiptResult" class="ai-turn-result" hidden><strong id="aiTurnReceiptVerdict"></strong><p id="aiTurnReceiptDetail" class="ai-muted"></p><pre id="aiTurnReceiptTechnical"></pre></div>
         </details>
+      </section>
+      <section class="ai-crossing-boundary" aria-labelledby="aiCrossingTitle">
+        <p class="mark">CROSSING</p>
+        <h3 id="aiCrossingTitle">Issue this prepared work.</h3>
+        <p class="ai-muted">Local preparation is complete. Safe Harbor authority is only requested here, at the boundary it governs.</p>
+        <div id="aiIssuanceGate" class="ai-issuance-gate" data-state="held">
+          <label for="aiShi">Safe Harbor issuance</label>
+          <div class="ai-shi-row"><input id="aiShi" type="text" inputmode="text" autocomplete="off" maxlength="64" placeholder="TD613-SH-9B07D8B-XXXXXXXX" aria-describedby="aiShiStatus aiShiClaim"><a href="/safe-harbor/index.html" target="_blank" rel="noopener noreferrer">Create SHI →</a></div>
+          <p id="aiShiStatus" role="status">Issuance held · local preparation remains available.</p>
+          <p id="aiShiClaim" class="ai-muted">A minted SHI wakes Loom’s issuance controls after a local format check. This does not authenticate civil identity. The current Loom transfer envelope carries no SHI field.</p>
+        </div>
       </section>
       <div class="ai-output-actions">
         <button type="button" id="aiMarrowline" class="ai-primary" disabled>Continue in Marrowline · new tab ↗</button>
@@ -252,7 +257,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   function refreshIssuance() {
     const shi = currentShi();
     const gate = $('aiIssuanceGate');
-    gate.hidden = workspaceMode !== 'portable' || !acceptedTask || shi.valid;
+    gate.hidden = workspaceMode !== 'portable' || !acceptedTask;
     if (workspaceMode === 'demo') {
       gate.dataset.state = 'practice';
       $('aiShiStatus').textContent = 'Practice route · SHI issuance UI is not required for this fictional traversal.';
@@ -582,7 +587,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     $('aiChallengeResult').hidden=false;
   }
     function revealResult(){ if($('aiInspector')?.contains(environment.document.activeElement))return; $('aiResult').scrollIntoView?.({behavior:reduced.matches?'auto':'smooth',block:'start'});$('aiResult').focus?.({preventScroll:true}); }
-  $('aiPreparePortable').addEventListener('click',async()=>{if(busy||!rootReplacementAllowed())return;const replacementState=reentry.getRecord();stopRequested=false;invalidate();const portableVersion=version;lock(true);try{const prepared=buildLoomAiRequest({task:$('aiTask').value,documents,rules:lines('aiRules'),protectedTerms:lines('aiPrivate')},environment.crypto.randomUUID());const shared={task:prepared.request.task,documents:prepared.request.documents,rules:prepared.request.rules};shared.governance=await createLoomAiGovernance(shared,{withheldDocumentCount:prepared.localReceipt.withheld_document_ids.length},environment);if(disposed||version!==portableVersion)return;if(stopRequested){status('Portable preparation stopped.');return;}acceptedTask=shared;await establishPortableSession(shared,{replacementState});setJourney('ready');$('aiResultEyebrow').textContent='LOOM SESSION PREPARED LOCALLY';$('aiResult').setAttribute('aria-label','Portable continuation');$('aiResultTitle').textContent='Your Loom transfer is prepared locally.';$('aiAnswer').textContent='Your selected documents and portable rules are bound together locally. Preparing made no model request. The Loom transfer envelope carries the task, selected documents, rules and Loom governance; it does not embed civil-identity verification.';$('aiResult').hidden=false;refreshTransferActions();status(issuanceReady()?(workspaceMode==='demo'?'Practice transfer prepared. Destination controls are awake for this fictional route.':'Loom transfer prepared locally. SHI format accepted for this issuance gesture; choose a destination.'):'Loom transfer prepared locally. Issuance remains held; create or present a valid-format minted SHI, or use the practice route.');revealResult();}catch(error){if(!disposed)status(error.message,true);}finally{if(!disposed)lock(false);refreshIssuance();}});
+  $('aiPreparePortable').addEventListener('click',async()=>{if(busy||!rootReplacementAllowed())return;const replacementState=reentry.getRecord();stopRequested=false;invalidate();const portableVersion=version;lock(true);try{const prepared=buildLoomAiRequest({task:$('aiTask').value,documents,rules:lines('aiRules'),protectedTerms:lines('aiPrivate')},environment.crypto.randomUUID());const shared={task:prepared.request.task,documents:prepared.request.documents,rules:prepared.request.rules};shared.governance=await createLoomAiGovernance(shared,{withheldDocumentCount:prepared.localReceipt.withheld_document_ids.length},environment);if(disposed||version!==portableVersion)return;if(stopRequested){status('Portable preparation stopped.');return;}acceptedTask=shared;await establishPortableSession(shared,{replacementState});routeFacts.binding_verified=true;project('checking',{binding_verified:true,note:'Local task binding verified; no model request was made.'});setJourney('ready');$('aiResultEyebrow').textContent='LOOM SESSION PREPARED LOCALLY';$('aiResult').setAttribute('aria-label','Portable continuation');$('aiResultTitle').textContent='Your Loom transfer is prepared locally.';$('aiAnswer').textContent='Your selected documents and portable rules are bound together locally. Preparing made no model request. The Loom transfer envelope carries the task, selected documents, rules and Loom governance; it does not embed civil-identity verification.';$('aiResult').hidden=false;refreshTransferActions();status(issuanceReady()?(workspaceMode==='demo'?'Practice transfer prepared. Destination controls are awake for this fictional route.':'Loom transfer prepared locally. SHI format accepted for this issuance gesture; choose a destination.'):'Loom transfer prepared locally. Issuance remains held; create or present a valid-format minted SHI, or use the practice route.');$('aiRuntime').scrollIntoView?.({behavior:reduced.matches?'auto':'smooth',block:'center'});}catch(error){if(!disposed)status(error.message,true);}finally{if(!disposed)lock(false);refreshIssuance();}});
   $('aiStop').addEventListener('click',()=>{stopRequested=true;taskGovernor?.rest();controller?.abort();status('Stopped waiting. Material already submitted cannot be recalled.');});
   $('aiMarrowline').addEventListener('click',async()=>{if(!acceptedTask||issuanceHold())return;const destination=environment.open?.('','_blank');if(!destination){status('HOLD · the browser blocked the Marrowline tab. Allow this new tab or use Export/Copy; this Loom custody lane was not left.',true);return;}try{destination.document.title='Opening Marrowline…';const transferVersion=version;const task=acceptedTask;const url=await createLoomAiHandoff(task,environment);if(disposed||version!==transferVersion||acceptedTask!==task){destination.close?.();status('Workspace changed. Prepare the current task before transferring.',true);return;}destination.location.replace(url);setJourney('marrowline');status('Marrowline opened in a new tab. Keep this original Loom tab open and return here to Check/Admit returned work.');}catch(error){destination.close?.();status(error.message,true);}});
   $('aiExportSession').addEventListener('click',()=>{if(!portableSessionExport||issuanceHold()||locallyAdmitted)return;try{downloadJson('loom-portable-session.json',portableSessionExport);status('Portable Loom Session download requested. Its root rules persist across proceeding tasks; source bodies remain explicit per work unit.');}catch(error){status(error.message,true);}});
