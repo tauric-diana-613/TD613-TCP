@@ -47,6 +47,9 @@ test('mobile keeps consequential boundaries and source-defined focus protection'
   assert.match(product, /:focus-visible\{/);
   assert.match(product, /@media\(prefers-reduced-motion:reduce\)/);
   assert.doesNotMatch(product, /(?:\.loom-instrument-state-boundary|\.ai-facts|#aiGapSummary)\s*\{[^}]*display\s*:\s*none/);
+  assert.doesNotMatch(product, /grid-template-columns:116px\s+minmax\(0,1fr\)/);
+  assert.match(product, /\.loom-stage \.loom-glyph-field\{[^}]*height:clamp\(220px,56vw,280px\)/);
+  assert.match(product, /\.ai-room-replay\{position:static;justify-content:flex-end/);
   assert.doesNotMatch(product, /Georgia|Times New Roman|var\(--serif\)/);
 });
 
