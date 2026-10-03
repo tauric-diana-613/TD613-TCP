@@ -277,7 +277,8 @@ try {
       releaseResponse();
       await page.waitForFunction(() => !document.querySelector('#aiRun')?.disabled && /held|failed|unavailable|could not|try again|No answer was admitted/i.test(document.querySelector('#aiStatus')?.textContent || ''));
       assert.equal((await page.locator('#aiAnswer').textContent()).includes(fixtureAnswer), false, 'failed request clears earlier successful answer');
-      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, 'no horizontal overflow');
+      const overflow = await page.evaluate(() => Array.from(document.querySelectorAll('body *')).map(node => { const r=node.getBoundingClientRect(); return {tag:node.tagName,id:node.id,class:node.className?.baseVal ?? node.className ?? '',left:Math.round(r.left),right:Math.round(r.right),width:Math.round(r.width)}; }).filter(r => r.right > innerWidth + 1 || r.left < -1).slice(0,20));
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, 'no horizontal overflow · '+JSON.stringify(overflow));
       assert.deepEqual(runtimeErrors, [], 'no runtime errors');
       assert.deepEqual(unexpected, [], 'no direct browser-to-provider or unrelated mutation requests');
       await page.locator('#aiRuntimeState').screenshot({path:path.join(dir,`${posture}-runtime-state-held.png`)});

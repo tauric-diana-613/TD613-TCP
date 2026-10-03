@@ -569,6 +569,7 @@ html[data-loom-journey="return"] #loomAiWorkspace .ai-crossing-boundary{display:
 
 /* Small screens keep the same ontology but compose it as a vertical score. */
 @media(max-width:760px){
+  html,body{max-width:100%;overflow-x:clip}
   body::after{inset:-20vmax;opacity:.12}
   #loomAiWorkspace::before{
     font-size:clamp(7rem,38vw,13rem);
