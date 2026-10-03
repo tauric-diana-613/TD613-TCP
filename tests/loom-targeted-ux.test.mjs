@@ -65,6 +65,10 @@ test('How Loom works is a recoverable handoff preview with a living Flow-Core re
   assert.equal(doc.querySelectorAll('[data-first-crossing-item]').length, 2);
   assert.equal(doc.querySelector('#loomFirstCrossingPrivate').tagName, 'DIV', 'private note is explanatory, not a mystery button');
   assert.equal(doc.querySelector('#loomFirstCrossingPause').textContent, '𝌋');
+  assert.equal(doc.querySelector('#loomTutorialProgress').textContent, '1 of 3 · Choose');
+  const consumerCopy=doc.querySelector('#loomFirstCrossing').cloneNode(true);
+  consumerCopy.querySelector('.loom-flowcore-help')?.remove();
+  assert.doesNotMatch(consumerCopy.textContent, /First Crossing|private scrap|short brief|public source|locally|packet|Preparation ≠ transmission|Prepared is not transmitted|Nothing crossed/i);
   assert.match(templateSource, /What is Flow-Core runtime\?/);
   for (const glyph of ['à','米','出','hõt','cōl','上','下','𝄐']) assert.ok(templateSource.includes(glyph), `Flow-Core explainer includes ${glyph}`);
   assert.match(workspaceSource, /nextFlowcoreChoreography/);
