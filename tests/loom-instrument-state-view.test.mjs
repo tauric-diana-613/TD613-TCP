@@ -128,6 +128,7 @@ test('event history preserves request, time and selection; replay cannot borrow 
   const complete = packet('completed', { at: '2026-10-02T10:00:04.000Z' });
   const full = await compile(complete, { eventHistory: [prepared, pending, received, complete] });
   assert.deepEqual(full.event_history.map(item => item.phase), ['prepared', 'pending', 'received', 'completed']);
+  assert.deepEqual(full.event_relation_history.map(item => item.glyph), ['à', '出', '下', 'hõt'], 'cinematic history may repeat only relations evidenced by the recorded route');
   assert.equal(full.event_history[0].request_id, null);
   assert.equal(full.event_history.at(-1).at, complete.at);
   assert.equal(full.route_graph.nodes.length, 4);
@@ -248,6 +249,8 @@ test('DOM renders one relation, retains drawer/focus across ticks and never crea
   ui.update(view, { progress: 0, viewport: { width: 390, height: 844, dpr: 1 } });
   assert.equal(root.querySelectorAll('[data-instrument-active-glyph]').length, 1);
   assert.equal(root.querySelector('[data-instrument-active-glyph]').textContent, '下');
+  assert.equal(dom.window.document.documentElement.dataset.loomRelation, 'released_tendency');
+  assert.ok(root.querySelectorAll('.loom-field-flight text[data-flight-relation]').length > 0, 'evidenced route relations populate the shared-clock cinematic strata');
   assert.match(root.textContent, /return checks are pending/);
   assert.match(root.textContent, /UNVALIDATED_MODEL_REPORT/);
   assert.match(root.textContent, /no custody admission/);
@@ -272,6 +275,7 @@ test('DOM renders one relation, retains drawer/focus across ticks and never crea
   const source = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/instrument-state-view.js', import.meta.url), 'utf8');
   assert.doesNotMatch(source, /\b(requestAnimationFrame|setInterval|setTimeout|Date\.now|performance\.now|fetch)\s*\(/);
   ui.destroy();
+  assert.equal(dom.window.document.documentElement.dataset.loomRelation, undefined);
   assert.equal(root.childElementCount, 0);
   assert.equal(ui.inspect().destroyed, true);
   assert.throws(() => ui.update(view));
