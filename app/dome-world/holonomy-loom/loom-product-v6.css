@@ -308,6 +308,12 @@ html[data-loom-journey="return"] #loomAiWorkspace .loom-hero-route [data-hero-st
   position:static!important;inset:auto!important;width:auto!important;max-width:none!important;
   margin:10px 0!important;display:flex!important;flex-wrap:wrap!important;text-align:left!important
 }
+#loomAiWorkspace .loom-tools [data-tool-panel="session"] .ai-room-replay{
+  position:static!important;inset:auto!important;z-index:auto!important;
+  right:auto!important;bottom:auto!important;width:auto!important;max-width:none!important;
+  margin:8px 0 12px!important;display:flex!important;justify-content:flex-start!important;
+  align-items:center!important;flex-wrap:wrap!important;gap:12px!important
+}
 
 
 /* ===== LOOM THRESHOLD =====
