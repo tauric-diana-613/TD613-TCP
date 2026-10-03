@@ -226,7 +226,8 @@ try {
       await page.locator('#loomReturnThreshold').click();
       await page.locator('.loom-stage').waitFor({ state: 'visible' });
       assert.equal(await page.locator('#aiRuntime').isVisible(),true,'opening How it works restores the canonical state view');
-      assert.equal(await page.locator('#aiStillField').isVisible(),true,'the shared runtime rest control is visible in its How it works scene');
+      assert.equal(await page.locator('#loomFirstCrossing').isVisible(),true,'How it works re-enters the First Crossing practice');
+      assert.equal(await page.locator('#aiStillField').isVisible(),false,'First Crossing owns the active ingress controls; the runtime rest control remains withheld rather than duplicated');
       await showBuilder();
       assert.equal(requests.length, 0, 'local preparation, How it works replay, and export controls make no provider request');
       await page.screenshot({ path: path.join(dir, `${posture}-loom-transfer-prepared.png`), fullPage: true });
