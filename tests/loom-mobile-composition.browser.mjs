@@ -138,17 +138,17 @@ try {
       await page.locator('[data-first-crossing-item="brief"]').click();
       await page.locator('[data-first-crossing-item="source"]').click();
       await page.locator('#loomFirstCrossingAction').click();
-      await page.waitForFunction(() => document.querySelector('#loomAiWorkspace')?.dataset?.activeRelation === 'gathering');
+      await page.waitForFunction(() => document.querySelector('#aiRuntimeState')?.dataset?.activeRelation === 'gathering');
       record('first crossing: gathering is a real canonical local relation before transmission',
-        await page.locator('#loomAiWorkspace').getAttribute('data-active-relation') === 'gathering' &&
+        await page.locator('#aiRuntimeState').getAttribute('data-active-relation') === 'gathering' &&
         /à names the gathering/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
-        { relation: await page.locator('#loomAiWorkspace').getAttribute('data-active-relation') });
+        { relation: await page.locator('#aiRuntimeState').getAttribute('data-active-relation') });
       await page.locator('#loomFirstCrossingAction').click();
-      await page.waitForFunction(() => document.querySelector('#loomAiWorkspace')?.dataset?.activeRelation === 'created_potential');
+      await page.waitForFunction(() => document.querySelector('#aiRuntimeState')?.dataset?.activeRelation === 'created_potential');
       record('first crossing: readiness is created locally without provider submission',
-        await page.locator('#loomAiWorkspace').getAttribute('data-active-relation') === 'created_potential' &&
+        await page.locator('#aiRuntimeState').getAttribute('data-active-relation') === 'created_potential' &&
         /Preparation ≠ transmission/.test(await page.locator('#loomFirstCrossingAnswer').textContent()),
-        { relation: await page.locator('#loomAiWorkspace').getAttribute('data-active-relation') });
+        { relation: await page.locator('#aiRuntimeState').getAttribute('data-active-relation') });
       await page.locator('#loomFirstCrossingStop').click();
       record('first crossing: completion unlocks Open Loom without inventing a crossing',
         await page.locator('#loomBegin').isVisible() &&
