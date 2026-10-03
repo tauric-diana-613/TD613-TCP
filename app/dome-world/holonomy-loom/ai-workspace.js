@@ -221,10 +221,11 @@ export function mountLoomAiWorkspace(root, environment = window) {
     observe: () => ({ events: [...events], replay: { index: replayIndex },
       source_revision: portableSession?.source_revision || 'browser-unpinned' })
   });
-  // Exact field language belongs in a dedicated inspection workspace. The
-  // current consequence and evidence boundary stay visible beside the field.
+  // Deep technical inspection belongs in the session workspace. The endpoint
+  // pair and canonical relation remain embodied in the cinematic field so the
+  // visual scene can communicate the actual route rather than becoming decor.
   const stateTools=root.querySelector('[data-tool-panel="session"]');
-  for(const selector of ['.loom-instrument-state-endpoints','.loom-instrument-state-relation','.loom-instrument-state-next','.loom-instrument-state-inspection']) {
+  for(const selector of ['.loom-instrument-state-next','.loom-instrument-state-inspection']) {
     const node=root.querySelector(selector);if(node)stateTools.append(node);
   }
   stateTools.append($('aiFacts'),$('aiGapSummary'));
