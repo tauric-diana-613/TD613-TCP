@@ -114,7 +114,12 @@ try{
     await page.locator('#aiChallengeResult').screenshot({path:`${dir}/${posture}-mixed-hold-exposure.png`});
     await page.locator('#loomToolsClose').click();
     await r('drawer').scrollIntoViewIfNeeded();
-    const layout=await page.evaluate(()=>({viewport:innerWidth,document:document.documentElement.scrollWidth,pre:[...document.querySelectorAll('.loom-reentry pre')].map(e=>({height:e.getBoundingClientRect().height,max:getComputedStyle(e).maxHeight}))}));
+    const layout=await page.evaluate(()=>({
+      viewport:innerWidth,
+      document:document.documentElement.scrollWidth,
+      pre:[...document.querySelectorAll('.loom-reentry pre')].map(e=>({height:e.getBoundingClientRect().height,max:getComputedStyle(e).maxHeight})),
+      overflow:[...document.querySelectorAll('body *')].map(e=>{const b=e.getBoundingClientRect();return {tag:e.tagName,id:e.id,class:typeof e.className==='string'?e.className:'',left:Math.round(b.left),right:Math.round(b.right),width:Math.round(b.width)};}).filter(b=>b.left<-1||b.right>innerWidth+1).slice(0,24)
+    }));
     assert.ok(layout.document<=layout.viewport+1,JSON.stringify(layout));assert.ok(layout.pre.every(p=>p.height<=420));
     await page.locator('#loomJourneyStep1').click();
     await page.locator('#aiTask').fill('Edited builder task must not destroy admitted history.');assert.equal(await head(),finalHead);
