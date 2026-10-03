@@ -553,7 +553,7 @@ export function mountLoomInstrumentStateView(root) {
         const roll=Math.sin(seconds*.28+i)*12+(i%2?8:-8);
         const depth=.62+(i%6)*.09;
         node.setAttribute('x',x.toFixed(2));node.setAttribute('y',y.toFixed(2));
-        node.setAttribute('transform',`rotate(${roll.toFixed(2)} ${x.toFixed(2)} ${y.toFixed(2)}) scale(${depth.toFixed(2)})`);
+        node.setAttribute('transform',`translate(${x.toFixed(2)} ${y.toFixed(2)}) rotate(${roll.toFixed(2)}) scale(${depth.toFixed(2)}) translate(${-x.toFixed(2)} ${-y.toFixed(2)})`);
       }
       title.textContent = frame.descriptor ? `${frame.descriptor.label}. ${frame.endpoints.join(' to ')}.` : 'No request relation is established yet.';
       svg.setAttribute('aria-label', title.textContent);
