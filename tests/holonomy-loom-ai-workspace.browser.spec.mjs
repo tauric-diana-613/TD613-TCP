@@ -81,7 +81,8 @@ try {
     };
     const showBuilder = async () => {
       if (!(await page.locator('.loom-builder-shell').isVisible())) {
-        await page.locator('#loomBegin').click();
+        if (await page.locator('#loomFirstCrossing').isVisible()) await page.locator('#loomFirstCrossingLeave').click();
+        else if (await page.locator('#loomBegin').isVisible()) await page.locator('#loomBegin').click();
         await page.locator('.loom-builder-shell').waitFor({ state: 'visible' });
       }
     };
@@ -122,8 +123,8 @@ try {
       const loaded = await page.goto(`${base}/dome-world/holonomy-loom.html`, { waitUntil: 'networkidle' });
       assert.equal(loaded.status(), 200);
       await page.locator('#loomAiWorkspace').waitFor({ state: 'visible' });
-      await page.locator('#loomBegin').click();
-      await page.locator('.loom-builder-shell').waitFor({ state: 'visible' });
+      await page.locator('#loomFirstCrossing').waitFor({ state: 'visible' });
+      await showBuilder();
       assert.equal(await page.locator('#aiPortableMode').getAttribute('aria-selected'),'true','Loom transfer is the default product mode');
       assert.equal(await page.locator('#aiDemoMode').getAttribute('aria-selected'),'false');
       assert.equal(await page.locator('#aiDemoWelcome').isVisible(),false,'fictional demo chooser stays out of the primary Loom transfer path');
@@ -138,7 +139,7 @@ try {
       assert.equal(await page.locator('#aiLivingRoom').evaluate(node => node.hidden && node.childElementCount === 0), true);
 
       assert.equal(await page.locator('#aiRuntime').count(),1,'the canonical state view remains mounted on the same Loom product route');
-      assert.equal(await page.locator('#aiRuntime').isVisible(),false,'opening Loom withholds the Threshold scene rather than duplicating the canonical state view beside the builder');
+      assert.equal(await page.locator('#aiRuntime').isVisible(),false,'opening Loom withholds the How it works scene rather than duplicating the canonical state view beside the builder');
       assert.equal(await page.locator('.loom-builder-shell').isVisible(),true,'the builder is the active scene after the Threshold opens');
       assert.equal(await page.locator('#aiPreparePortable').isVisible(),true,'Loom transfer preparation is a first-class composer gesture');
       assert.equal(await page.locator('#aiPreparePortable').evaluate(node=>node.classList.contains('ai-primary')),true,'local preparation is the primary Loom transfer gesture');
@@ -224,11 +225,10 @@ try {
       assert.equal(await page.locator('#aiStillField').isVisible(),false,'the Threshold rest control is not duplicated inside the active builder scene');
       await page.locator('#loomReturnThreshold').click();
       await page.locator('.loom-stage').waitFor({ state: 'visible' });
-      assert.equal(await page.locator('#aiRuntime').isVisible(),true,'returning to the Threshold restores the canonical state view');
-      assert.equal(await page.locator('#aiStillField').isVisible(),true,'the shared runtime rest control is visible in its Threshold scene');
-      await page.locator('#loomBegin').click();
-      await page.locator('.loom-builder-shell').waitFor({ state: 'visible' });
-      assert.equal(requests.length, 0, 'local preparation, Threshold return, and export controls make no provider request');
+      assert.equal(await page.locator('#aiRuntime').isVisible(),true,'opening How it works restores the canonical state view');
+      assert.equal(await page.locator('#aiStillField').isVisible(),true,'the shared runtime rest control is visible in its How it works scene');
+      await showBuilder();
+      assert.equal(requests.length, 0, 'local preparation, How it works replay, and export controls make no provider request');
       await page.screenshot({ path: path.join(dir, `${posture}-loom-transfer-prepared.png`), fullPage: true });
 
       await page.locator('#loomJourneyStep1').click();
@@ -278,7 +278,7 @@ try {
       assert.equal(await page.locator('#aiRuntimeState').getAttribute('data-active-relation'),'release');
       for(const document of fixture.documents.filter(d=>!d.share))assert.equal((await page.locator('#aiRuntimeState').textContent()).includes(document.name),false);
       await showThreshold();
-      assert.equal(await page.locator('#aiRuntimeState').isVisible(),true,'pending route visualization is visible when the Threshold scene is active');
+      assert.equal(await page.locator('#aiRuntimeState').isVisible(),true,'pending route visualization is visible when the How it works scene is active');
       await page.locator('#aiRuntimeState').screenshot({path:path.join(dir,`${posture}-runtime-state-pending.png`)});
       await showBuilder();
       releaseResponse();
@@ -344,7 +344,7 @@ try {
       assert.deepEqual(runtimeErrors, [], 'no runtime errors');
       assert.deepEqual(unexpected, [], 'no direct browser-to-provider or unrelated mutation requests');
       await showThreshold();
-      assert.equal(await page.locator('#aiRuntimeState').isVisible(),true,'held route visualization is visible in the Threshold scene');
+      assert.equal(await page.locator('#aiRuntimeState').isVisible(),true,'held route visualization is visible in the How it works scene');
       await page.locator('#aiRuntimeState').screenshot({path:path.join(dir,`${posture}-runtime-state-held.png`)});
       await page.screenshot({ path: path.join(dir, `${posture}-mock-provider-held.png`), fullPage: true });
       report.checks.push({ posture, status: 'PASS', intercepted_requests: requests.length, loom_task_default: true,
