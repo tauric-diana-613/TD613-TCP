@@ -306,3 +306,129 @@ html[data-loom-journey="return"] #loomAiWorkspace .loom-hero-route [data-hero-st
   position:static!important;inset:auto!important;width:auto!important;max-width:none!important;
   margin:10px 0!important;display:flex!important;flex-wrap:wrap!important;text-align:left!important
 }
+
+
+/* ===== LOOM THRESHOLD / FIRST CROSSING =====
+   The cinematic field is a persistent gate, not a decorative hero. First
+   Crossing uses the same Loom observation grammar and AnimationCoordinator;
+   the builder remains withheld until the operator opens the Threshold. */
+#loomAiWorkspace .loom-builder-shell[hidden]{display:none!important}
+#loomAiWorkspace .loom-threshold-layer{
+  position:absolute;z-index:17;inset:0;pointer-events:none
+}
+#loomAiWorkspace .loom-threshold-gate{
+  position:absolute;left:max(20px,calc((100% - 1240px)/2));top:92px;
+  width:min(430px,calc(100% - 40px));pointer-events:none
+}
+#loomAiWorkspace .loom-threshold-kicker{
+  display:block;color:#77848f;font:650 .52rem/1 var(--mono);
+  letter-spacing:.14em;text-transform:uppercase
+}
+#loomAiWorkspace .loom-threshold-gate p{
+  max-width:36ch;margin:9px 0 0;color:#7f8b96;font-size:.72rem;line-height:1.45
+}
+#loomAiWorkspace .loom-replay-first-crossing{
+  position:absolute;right:max(20px,calc((100% - 1240px)/2));top:82px;
+  min-height:30px;padding:0;border:0;border-bottom:1px solid rgba(142,232,230,.18);
+  border-radius:0;background:transparent;color:#70808d;font:560 .58rem/1 var(--sans);
+  pointer-events:auto
+}
+#loomAiWorkspace .loom-replay-first-crossing:hover,
+#loomAiWorkspace .loom-replay-first-crossing:focus-visible{color:#dce6e8;border-bottom-color:rgba(142,232,230,.46)}
+#loomAiWorkspace .loom-first-crossing{
+  position:absolute;left:max(20px,calc((100% - 1240px)/2));top:50%;
+  transform:translateY(-47%);width:min(520px,calc(100% - 40px));
+  padding:16px 17px 15px;border:1px solid rgba(180,205,220,.14);
+  background:rgba(5,8,12,.67);backdrop-filter:blur(15px);
+  box-shadow:0 18px 70px rgba(0,0,0,.26);pointer-events:auto
+}
+#loomAiWorkspace .loom-first-crossing[hidden]{display:none!important}
+#loomAiWorkspace .loom-first-crossing h2{
+  margin:8px 0 0;color:#edf4f2;font:580 clamp(1.35rem,2.8vw,2rem)/1.05 var(--sans);
+  letter-spacing:-.04em
+}
+#loomAiWorkspace .loom-first-crossing>p{
+  margin:8px 0 0;color:#8995a0;font-size:.75rem;line-height:1.45
+}
+#loomAiWorkspace .loom-first-crossing-objects{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px
+}
+#loomAiWorkspace .loom-first-crossing-objects button{
+  min-height:94px;padding:10px;border:1px solid rgba(160,184,202,.13);
+  border-radius:0;background:rgba(7,12,18,.7);color:#afbbc3;text-align:left
+}
+#loomAiWorkspace .loom-first-crossing-objects button span{
+  display:block;color:#60717e;font:650 .45rem/1 var(--mono);letter-spacing:.12em
+}
+#loomAiWorkspace .loom-first-crossing-objects button strong{
+  display:block;margin-top:9px;color:#e3eaeb;font-size:.72rem;font-weight:590
+}
+#loomAiWorkspace .loom-first-crossing-objects button small{
+  display:block;margin-top:5px;color:#70808b;font-size:.61rem;line-height:1.3
+}
+#loomAiWorkspace .loom-first-crossing-objects button[aria-pressed="true"]{
+  border-color:rgba(142,232,230,.5);
+  box-shadow:inset 0 0 0 1px rgba(142,232,230,.08),0 0 22px rgba(142,232,230,.06)
+}
+#loomAiWorkspace .loom-first-crossing-objects button[data-first-crossing-item="private"][data-held="true"]{
+  border-color:rgba(199,169,225,.32);background:rgba(20,12,25,.58)
+}
+#loomAiWorkspace .loom-first-crossing-actions{
+  display:flex;gap:12px;align-items:center;margin-top:13px
+}
+#loomAiWorkspace .loom-first-crossing-actions button{
+  min-height:34px;padding:0;border:0;border-bottom:1px solid rgba(142,232,230,.3);
+  border-radius:0;background:transparent;color:#d5e2e2;font:600 .64rem/1 var(--sans)
+}
+#loomAiWorkspace .loom-first-crossing-answer{
+  min-height:1.2em!important;color:#98aab1!important;font:560 .62rem/1.35 var(--mono)!important
+}
+#loomAiWorkspace .loom-intro-actions{display:flex;gap:12px;align-items:center}
+
+/* Finite membrane rupture. JS advances three transition beats; there is no
+   second animation clock and no semantic packet is fabricated by the effect. */
+#loomAiWorkspace .loom-stage{
+  transition:
+    opacity 180ms ease,
+    filter 180ms linear,
+    transform 180ms cubic-bezier(.2,.8,.2,1),
+    clip-path 180ms cubic-bezier(.6,0,.4,1)
+}
+#loomAiWorkspace[data-threshold-state="opening"][data-threshold-beat="1"] .loom-stage{
+  transform:scale(1.012) skewX(-.18deg);
+  filter:contrast(1.28) saturate(1.18) brightness(1.04)
+}
+#loomAiWorkspace[data-threshold-state="opening"][data-threshold-beat="2"] .loom-stage{
+  transform:scale(1.025) skewX(.55deg) translateX(-5px);
+  filter:contrast(1.75) saturate(.82) brightness(1.16);
+  clip-path:polygon(0 0,100% 1%,100% 17%,1% 16%,1% 20%,100% 21%,100% 48%,0 46%,0 52%,100% 54%,100% 78%,0 76%,0 82%,100% 84%,100% 100%,0 100%)
+}
+#loomAiWorkspace[data-threshold-state="opening"][data-threshold-beat="3"] .loom-stage{
+  transform:scale(1.055) translateX(8px);
+  filter:contrast(2.2) saturate(.35) brightness(1.42);
+  clip-path:polygon(0 46%,100% 48%,100% 53%,0 51%);
+  opacity:.08
+}
+#loomAiWorkspace[data-threshold-state="open"] .loom-stage{display:none}
+#loomAiWorkspace[data-threshold-state="open"] .loom-builder-shell{display:block!important}
+
+@media(max-width:760px){
+  #loomAiWorkspace .loom-threshold-gate{left:14px;right:14px;top:68px;width:auto}
+  #loomAiWorkspace .loom-threshold-gate p{font-size:.66rem}
+  #loomAiWorkspace .loom-replay-first-crossing{right:14px;top:58px;font-size:.54rem}
+  #loomAiWorkspace .loom-first-crossing{
+    left:14px;right:14px;top:46%;width:auto;padding:13px 12px 12px;
+    transform:translateY(-42%)
+  }
+  #loomAiWorkspace .loom-first-crossing h2{font-size:1.35rem}
+  #loomAiWorkspace .loom-first-crossing-objects{gap:5px}
+  #loomAiWorkspace .loom-first-crossing-objects button{min-height:104px;padding:9px 8px}
+  #loomAiWorkspace .loom-first-crossing-objects button strong{font-size:.67rem}
+  #loomAiWorkspace .loom-first-crossing-objects button small{font-size:.55rem}
+  #loomAiWorkspace .loom-first-crossing-actions{gap:8px;flex-wrap:wrap}
+}
+
+@media(prefers-reduced-motion:reduce){
+  #loomAiWorkspace .loom-stage{transition:none!important}
+  #loomAiWorkspace[data-threshold-state="opening"] .loom-stage{opacity:0!important;transform:none!important;filter:none!important;clip-path:none!important}
+}
