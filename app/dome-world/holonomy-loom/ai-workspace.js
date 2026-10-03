@@ -49,7 +49,6 @@ export function mountLoomAiWorkspace(root, environment = window) {
   if (!root) return;
   root.innerHTML = loomWorkspaceTemplate;
   const $ = id => root.querySelector(`#${id}`);
-  $('loomBegin')?.addEventListener('click', () => $('loomBuilder')?.scrollIntoView({ behavior: environment.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ? 'auto' : 'smooth', block: 'start' }));
   const lines = id => $(id).value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
   let activeWorkspace = 'build', marrowlineChild = null;
   function openWorkspace(name, {focus=false}={}) {
@@ -128,6 +127,19 @@ export function mountLoomAiWorkspace(root, environment = window) {
   const coordinator = new AnimationCoordinator({ durationMs: 4000, maxFps: 60, onState: state => { root.dataset.pendingFrames = String(state.pendingFrames); } });
   coordinator.setContinuous(false);
   const invitation = $('aiDemoInvitation');
+  const FIRST_CROSSING_KEY = 'td613.loom.first-crossing.v1';
+  let thresholdObservation = null;
+  let firstCrossingActive = false;
+  let firstCrossingStep = 0;
+  let firstCrossingEvents = [];
+  let firstCrossingSelected = new Set();
+  let firstCrossingWasAlreadyComplete = false;
+  let thresholdTimers = [];
+  const thresholdStage = root.querySelector('.loom-stage');
+  const builderShell = root.querySelector('.loom-builder-shell');
+  const firstCrossingItems = [...root.querySelectorAll('[data-first-crossing-item]')];
+  const storageRead = key => { try { return environment.localStorage?.getItem(key) ?? null; } catch { return null; } };
+  const storageWrite = (key,value) => { try { environment.localStorage?.setItem(key,value); } catch {} };
   function refreshTransferActions() {
     const activeRecord=reentry.getRecord(),active=activeRecord?.session;
     $('aiNewRootNotice').hidden=!active;
@@ -218,7 +230,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   environment.document.addEventListener('visibilitychange', visibility);
   const runtime = mountLoomRuntimeStateView($('aiRuntimeState'), {
     environment, coordinator, compatibilityHost: $('aiLivingRoom'), inspectionContent: $('aiRuntimeInspection'),
-    observe: () => ({ events: [...events], replay: { index: replayIndex },
+    observe: () => thresholdObservation ?? ({ events: [...events], replay: { index: replayIndex },
       source_revision: portableSession?.source_revision || 'browser-unpinned' })
   });
   // Deep technical inspection belongs in the session workspace. The endpoint
