@@ -143,7 +143,11 @@ export async function bindLoomDemoRequest(request, environment = globalThis) {
       origin_input_digest: activation.governance.input_digest,
       prior_result_commitment: activation.prior_result_commitment
     };
-    task = ['Receive this Loom setup handoff. Acknowledge its task and portable rules, identify the selected files still pending, and wait for the separate file turn. Do not analyze missing source contents or claim that they have been read. A prior-result commitment is a reference only; its source-bearing answer has not arrived yet. The host, not your acknowledgment, governs permitted inputs and result admission.', `Activation:\n${JSON.stringify(receiverView)}`, `Operator request:\n${request.operator_request}`].join('\n\n');
+    // v0.2 derives its signed current-input digest from this historical canonical
+    // task text. Public product copy may retire AIA; this wire derivation must
+    // remain byte-compatible with deployed hosts and Neon until a coordinated
+    // protocol-version migration. A UI rename cannot change admission hashes.
+    task = ['Receive this Portable AIA activation. Acknowledge its task and portable rules, identify the selected files still pending, and wait for the separate file turn. Do not analyze missing source contents or claim that they have been read. A prior-result commitment is a reference only; its source-bearing answer has not arrived yet. The host, not your acknowledgment, governs permitted inputs and result admission.', `Activation:\n${JSON.stringify(receiverView)}`, `Operator request:\n${request.operator_request}`].join('\n\n');
   } else {
     predecessor = validateLoomDemoStageReceipt(request.predecessor, activation);
     documents = normalizeLoomAiTask({ task: activation.task, documents: request.documents, rules: activation.rules }).documents;

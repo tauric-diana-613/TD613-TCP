@@ -675,3 +675,24 @@ test('production remains held without Vercel OIDC even after source admits a cus
   assert.equal(output.answer,'');
   assert.equal(output.error,'loom-demo-release-not-admitted');
 });
+
+test('v0.2 client input binding stays compatible with the deployed historical activation derivation while public copy can change',async()=>{
+  const {activation}=await fixture();
+  const req=request(activation);
+  req.operator_request='Receive the attached Loom handoff; selected files follow in the next turn.';
+  const current=await bindLoomDemoRequest(req,environment);
+  try{
+    // Frozen deployed-host derivation, intentionally independent of the current
+    // binder: this text is part of the existing v0.2 wire contract, not UI copy.
+    const legacyView={task:activation.task,manifest:activation.manifest,origin_input_digest:activation.governance.input_digest,prior_result_commitment:activation.prior_result_commitment};
+    const historicalTask=['Receive this Portable AIA activation. Acknowledge its task and portable rules, identify the selected files still pending, and wait for the separate file turn. Do not analyze missing source contents or claim that they have been read. A prior-result commitment is a reference only; its source-bearing answer has not arrived yet. The host, not your acknowledgment, governs permitted inputs and result admission.',`Activation:\n${JSON.stringify(legacyView)}`,`Operator request:\n${req.operator_request}`].join('\n\n');
+    const historical=await createLoomAiGovernance({task:historicalTask,documents:[],rules:activation.rules},{withheldDocumentCount:activation.governance.withheld_document_count},environment);
+    assert.equal(current.receipt.current_input_digest,historical.input_digest,'identical raw v0.2 requests bind identically on a historical host and current client');
+    assert.equal(current.selected.task,historicalTask);
+    const renamed=await createLoomAiGovernance({task:historicalTask.replace('Receive this Portable AIA activation.','Receive this Loom setup handoff.'),documents:[],rules:activation.rules},{withheldDocumentCount:activation.governance.withheld_document_count},environment);
+    assert.notEqual(renamed.input_digest,historical.input_digest,'negative control: changing derived protocol prose changes its bound input digest');
+    assert.equal(req.operator_request.includes('Portable AIA'),false,'the operator-visible setup prompt uses Loom naming');
+    assert.deepEqual(current.selected.documents,[],'compatibility never sends selected-file bodies during setup');
+    assert.equal(current.receipt.authority_transferred,false);
+  }finally{current.governor.close();}
+});
