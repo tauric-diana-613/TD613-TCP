@@ -171,8 +171,14 @@ async function bindPage(context, posture, base = served.base, { firstCrossingCom
     }
   }, firstCrossingComplete);
   await page.goto(`${base}/dome-world/holonomy-loom.html`);
-  await page.locator(firstCrossingComplete ? '#loomBegin' : '#loomFirstCrossing').waitFor({ state: 'visible' });
+  await page.locator('#loomFirstCrossing').waitFor({ state: 'visible' });
   await page.waitForFunction(() => document.documentElement.dataset.loomBoot !== 'loading');
+  // Broader product-composition passes intentionally skip the greeting after
+  // proving it exists. Dedicated First Crossing witnesses pass false and stay.
+  if(firstCrossingComplete){
+    await page.locator('#loomFirstCrossingLeave').click();
+    await page.locator('.loom-builder-shell').waitFor({state:'visible'});
+  }
   return page;
 }
 
@@ -214,58 +220,55 @@ try {
         firstCrossingVisual.objects.length===3&&firstCrossingVisual.objects.every(object=>object.visible&&object.width>=44&&object.height>=44),
         firstCrossingVisual);
       await screenshot(page, 'first-crossing-mobile-notice');
-      await page.locator('#loomFirstCrossingPrivate').click();
-      record('first crossing: local practice material can be inspected without selecting or sending it',
-        await page.locator('#loomFirstCrossingPrivateText').isVisible()&&
-        await page.locator('#loomFirstCrossingPrivate').getAttribute('aria-expanded')==='true'&&
-        await page.locator('[data-first-crossing-item][aria-pressed="true"]').count()===0,
-        {private_text:await page.locator('#loomFirstCrossingPrivateText').textContent()});
-      await page.locator('#loomFirstCrossingPrivate').click();
+      record('first crossing: private note is explanatory rather than an ambiguous control',
+        await page.locator('#loomFirstCrossingPrivate').evaluate(node=>node.tagName==='DIV'&&!node.hasAttribute('aria-expanded')),
+        { text: await page.locator('#loomFirstCrossingPrivate').textContent() });
       await page.locator('[data-first-crossing-item="brief"]').click();
       await page.locator('[data-first-crossing-item="source"]').click();
       record('first crossing: consequence begins before terminology is named',
-        /Watch the field gather them\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
+        /See what the AI gets\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
         !/That relation is à/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
         { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
       await observeFiniteConsequence(page,'gathering','first-crossing-mobile-gathering');
+      const remixBefore=await page.locator('#loomFlowcoreMessage').textContent();
+      const ambientBefore=await fieldObservation(page);
       await page.locator('#loomFirstCrossingPause').click();
-      const pausedA=await fieldObservation(page);
       await page.waitForTimeout(240);
-      const pausedB=await fieldObservation(page);
-      record('first crossing: Pause freezes existing frame and retains current relation',
-        pausedB.pending_frames==='0'&&pausedB.relation==='gathering'&&
-        pausedB.carriers.every((node,index)=>node.x===pausedA.carriers[index].x&&node.y===pausedA.carriers[index].y),
-        {before:pausedA,after:pausedB});
-      await screenshot(page,'first-crossing-mobile-paused');
-      await page.locator('#loomFirstCrossingPause').click();
+      const remixAfter=await page.locator('#loomFlowcoreMessage').textContent();
+      const ambientAfter=await fieldObservation(page);
+      record('first crossing: 𝌋 remixes coherent Flow-Core choreography without pausing the field',
+        remixAfter!==remixBefore&&ambientAfter.carriers.length===39&&
+        ambientAfter.carriers.some((node,index)=>node.x!==ambientBefore.carriers[index]?.x||node.y!==ambientBefore.carriers[index]?.y),
+        {before_message:remixBefore,after_message:remixAfter,before:ambientBefore,after:ambientAfter});
+      await screenshot(page,'first-crossing-mobile-remix');
       await page.locator('#loomFirstCrossingAction').waitFor({state:'visible'});
       await page.locator('#loomFirstCrossingAction').click();
       await page.waitForFunction(()=>document.querySelector('#aiRuntimeState')?.dataset?.projectionState==='CURRENT'&&
         document.querySelector('#aiRuntimeState')?.dataset?.activeRelation==='created_potential');
       record('first crossing: readiness consequence begins before 上 is named',
-        /Watch readiness form\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
+        /Ready when you are\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
         !/created-potential relation is 上/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
         { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
       await observeFiniteConsequence(page,'created_potential','first-crossing-mobile-readiness');
       await page.locator('#loomFirstCrossingStop').waitFor({state:'visible'});
       await page.locator('#loomFirstCrossingStop').click();
       await page.waitForFunction(()=>document.querySelector('#aiRuntimeState')?.dataset?.projectionState==='CURRENT');
-      const restedA=await fieldObservation(page);await page.waitForTimeout(240);const restedB=await fieldObservation(page);
-      record('first crossing: completion holds a stable prepared state without inventing transmission',
-        restedB.pending_frames==='0'&&restedB.relation==='created_potential'&&restedB.carriers.every((node,index)=>node.x===restedA.carriers[index].x&&node.y===restedA.carriers[index].y),
-        {before:restedA,after:restedB});
-      record('first crossing: completion unlocks Open Loom without inventing a crossing',
+      const liveA=await fieldObservation(page);await page.waitForTimeout(240);const liveB=await fieldObservation(page);
+      record('first crossing: completion keeps the field alive without inventing transmission',
+        liveB.carriers.length===39&&liveB.carriers.some((node,index)=>node.x!==liveA.carriers[index]?.x||node.y!==liveA.carriers[index]?.y),
+        {before:liveA,after:liveB});
+      record('first crossing: completion unlocks the live Loom CTA',
         await page.locator('#loomBegin').isVisible() &&
         await page.evaluate(() => localStorage.getItem('td613.loom.first-crossing.v1')) === 'complete' &&
-        /Nothing crossed/.test(await page.locator('#loomFirstCrossingAnswer').textContent()),
-        { open_visible: await page.locator('#loomBegin').isVisible() });
+        /live Loom/.test(await page.locator('#loomFirstCrossingAnswer').textContent()),
+        { open_visible: await page.locator('#loomBegin').isVisible(), label:await page.locator('#loomBegin').textContent() });
       record('first crossing: tutorial made zero provider or non-GET requests',
         !report.requests.some(request => request.posture === 'first-crossing-mobile' && request.method !== 'GET'),
         { requests: report.requests.filter(request => request.posture === 'first-crossing-mobile') });
       await screenshot(page, 'first-crossing-mobile-complete');
       await page.locator('#loomBegin').click();
       await page.locator('.loom-builder-shell').waitFor({ state: 'visible' });
-      record('first crossing: cinematic Threshold opens the real Loom builder after completion',
+      record('first crossing: completion enters the real Loom builder without a second Threshold membrane',
         await page.locator('.loom-builder-shell').isVisible() && await page.locator('.loom-stage').isHidden(),
         { threshold_state: await page.locator('#loomAiWorkspace').getAttribute('data-threshold-state') });
       await screenshot(page, 'first-crossing-mobile-open');
