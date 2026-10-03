@@ -69,7 +69,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
       <button type="button" id="aiPortableMode" role="tab" aria-selected="true" aria-controls="aiPortableModePanel">My work</button>
       <button type="button" id="aiDemoMode" role="tab" aria-selected="false" aria-controls="aiDemoModePanel">Practice</button>
     </div>
-    <section id="aiPortableModePanel" class="ai-mode-panel" role="tabpanel" aria-labelledby="aiPortableMode"><p id="aiFirstUseGuide">Prepare locally first. Nothing crosses until you choose it. Route: Loom → Marrowline → Return.</p></section>
+    <section id="aiPortableModePanel" class="ai-mode-panel" role="tabpanel" aria-labelledby="aiPortableMode"><p id="aiFirstUseGuide">Prepare locally first. Route: Loom → Marrowline → Return. Nothing leaves this page until you choose an explicit crossing.</p></section>
     <section id="aiDemoModePanel" class="ai-mode-panel" role="tabpanel" aria-labelledby="aiDemoMode" hidden><p>Same route mechanics. Fictional material.</p></section>
     <section id="aiPortableProjection" class="ai-portable-projection" aria-label="Transfer boundary">
       <div><span>TRAVELS</span><strong id="aiProjectionTravel">Task · 0 selected documents · 0 traveling rules</strong></div>
