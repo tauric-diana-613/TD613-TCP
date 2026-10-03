@@ -54,11 +54,13 @@ test('the actual intake rejects the fictional private term if its body or label 
     documents: fixture.documents.map(document => ({ ...document }))
   };
   assert.doesNotThrow(() => buildLoomAiRequest(input, 'practice-control'));
+  input.documents[2].text = `Fictional private body containing ${fixture.protectedTerms[0]}.`;
   input.documents[2].share = true;
   assert.throws(() => buildLoomAiRequest(input, 'practice-private-body'), error =>
     error.code === 'PROTECTED_EGRESS' && error.locations.includes('documents[2].text')
       && !error.message.includes(fixture.protectedTerms[0]));
   input.documents[2].share = false;
+  input.documents[2].text = fixture.documents[2].text;
   input.documents[0].name = fixture.protectedTerms[0];
   assert.throws(() => buildLoomAiRequest(input, 'practice-private-name'), error =>
     error.code === 'PROTECTED_EGRESS' && error.locations.includes('documents[0].name'));
