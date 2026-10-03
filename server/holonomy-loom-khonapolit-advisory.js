@@ -184,6 +184,8 @@ export default async function holonomyLoomKhonapolitAdvisoryHandler(req, res) {
       advisorySchema: HOLONOMY_LOOM_PROVIDER_ADVISORY_SCHEMA,
       action: HOLONOMY_LOOM_ADVISORY_ACTION,
       policyPosture: 'canonical-token-only',
+      invocationPosture: 'explicit-unissued-research-waiver',
+      shiForwarded: false,
       historyForwarded: false,
       rawDraftAccepted: false,
       provider: 'Gemini via Kʰonapolit',
