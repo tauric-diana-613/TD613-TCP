@@ -52,7 +52,9 @@ test('Gate local-check and export feedback remains visible in Gate with no compo
   await h.controller.stageFiles();assert.equal(h.status().hidden,true,'old local check is cleared when stage changes');await h.admit();
   h.export().click();assert.equal(h.status().dataset.outcome,'DOWNLOAD_REQUESTED');assert.equal(h.status().hidden,false);
   assert.match(h.status().textContent,/Your browser handles saving/);assert.doesNotMatch(h.status().textContent,/successfully saved|exported/i);
-  assert.equal(h.downloads.length,1);assert.equal(h.downloads[0].name,'loom-current-portable-aia.json');
+  // OLD ASSERTION: legacy product filename. REAL CONTRACT: exact current admitted review packet downloads after an explicit gesture.
+  // NEW WITNESS: Loom session filename plus payload/gesture/zero-provider checks.
+  assert.equal(h.downloads.length,1);assert.equal(h.downloads[0].name,'loom-current-session.json');
   const payload=JSON.parse(await h.blobs[0].text());assert.equal(payload.continuation.prior_result.answer,'Selected workstream reviewed.');
   assert.equal(h.calls(),0);assert.equal(h.doc.querySelector('.loom-demo-composer-note'),null);
   h.expiry();assert.equal(h.status().hidden,true,'expiry clears stale successful action feedback');

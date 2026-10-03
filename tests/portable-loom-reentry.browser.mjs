@@ -39,12 +39,14 @@ try{
     await page.locator('#aiPreparePortable').click();await r('stage').waitFor({state:'attached'});
     await page.waitForFunction(()=>!document.querySelector('[data-loom-reentry="stage"]').disabled);
     assert.equal(await head(),'No admitted descendant.');
-    assert.equal(await r('drawer').getAttribute('open'),null);
-    await r('drawer').locator('summary').first().click();
+    // Old witness required a top-level drawer. Return now exposes the same
+    // governed actions directly; only exact/source compatibility is secondary.
+    assert.equal(await r('drawer').evaluate(node=>node.tagName),'SECTION');
+    assert.equal(await r('task').isVisible(),true);
     const tasks=['First explicitly registered task under inherited root rules.','Second task with newly selected material. '+ 'Long bounded task context. '.repeat(150)];
     const returned=[];
     for(const [index,task] of tasks.entries()){
-      await r('task').fill(task);if(index===1){await r('sources-drawer').locator('summary').click();await r('sources').fill(JSON.stringify(sources));}
+      await r('task').fill(task);if(index===1){await r('inspect-sources').click();await r('sources').fill(JSON.stringify(sources));}
       await r('stage').click();await page.waitForFunction(n=>document.querySelector('[data-loom-reentry="turns"]').children.length===n,index+1);
       assert.equal(await head(),'No admitted descendant.');assert.equal(await r('sources').inputValue(),'[]');
       const prompt=await r('prompt').textContent(),parts=prompt.split('\n\n');const contract=JSON.parse(parts.find(p=>p.startsWith('{')));

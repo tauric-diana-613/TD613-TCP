@@ -6,7 +6,7 @@ import {JSDOM} from 'jsdom';
 import {createLoomAiGovernance} from '../app/dome-world/holonomy-loom/ai-handoff.js';
 import {bindLoomDemoRequest,loomDemoDigest,loomDemoReceiptDigest,loomDemoResult,inspectLoomDemoExport,LOOM_DEMO_STAGE_RECEIPT_SCHEMA} from '../app/dome-world/holonomy-loom/demo-contract.js';
 import {installKhonapolitTerminal} from '../app/dome-world/marrowline-terminal.js';
-import {installMarrowlineLoomDemo} from '../app/dome-world/marrowline-loom-demo.js';
+import {installMarrowlineLoomDemo,bootMarrowlineLoomDemo} from '../app/dome-world/marrowline-loom-demo.js';
 import {installMarrowlineDesktopRepair} from '../app/dome-world/marrowline-desktop-repair.js';
 import {getMarrowlineAttachments,clearMarrowlineAttachments,removeMarrowlineAttachment,stageMarrowlineAttachments} from '../app/dome-world/marrowline-attachments.js';
 const html=fs.readFileSync('app/dome-world/marrowline.html','utf8');
@@ -74,14 +74,16 @@ test('Loom demo branches from + and both numbered gestures stage attachment + pr
  loomParent.click();
  assert.equal(h.doc.querySelector('#loomDemoMenu').hidden,false);
  const preview=h.doc.querySelector('#loomDemoMenu .loom-demo-attachment-preview');
- assert.ok(preview,'exact Portable AIA JSON preview is available before sending');
- assert.match(preview.querySelector('summary').textContent,/Preview exact Portable AIA JSON/);
+ assert.ok(preview,'exact Loom handoff JSON preview is available before sending');
+ // OLD ASSERTION: public AIA vocabulary. REAL CONTRACT: exact local handoff bytes are inspectable before explicit Send.
+ // NEW WITNESS: Loom handoff copy plus exact staged-byte and no-egress assertions.
+ assert.match(preview.querySelector('summary').textContent,/Inspect the exact Loom handoff/);
  assert.match(preview.querySelector('pre').textContent,/td613\.loom/);
  const returnToLoom=[...h.doc.querySelectorAll('#loomGateContinuity button')].find(button=>button.textContent==='Return to original Loom tab');
  assert.ok(returnToLoom,'Gate exposes the supported return to the live Loom custody tab');
  const buttons=[...h.doc.querySelectorAll('#loomDemoMenu>button')];
- assert.equal(buttons[0].textContent,'1 · Attach Loom handoff');
- assert.equal(buttons[1].textContent,'2 · Attach selected files');
+ assert.equal(buttons[0].textContent,'Setup · Attach Loom handoff');
+ assert.equal(buttons[1].textContent,'Continue · Attach selected files');
  assert.equal(buttons[1].disabled,true,'#2 is visible from the beginning but waits for receiver-bound #1');
 
  buttons[0].click();
@@ -92,7 +94,7 @@ test('Loom demo branches from + and both numbered gestures stage attachment + pr
  assert.equal(plus.dataset.loomAttention,'false','staging #1 stops the context cue; Send is next');
  assert.equal(attachmentAccess.hidden,false,'#1 wakes the ordinary Attachments surface');
  assert.equal(getMarrowlineAttachments().length,1);
- assert.match(prompt.value,/Receive the attached Loom Portable AIA/);
+ assert.match(prompt.value,/Receive the attached Loom handoff/);
  assert.match(prompt.value,/wait for my next turn/);
  assert.equal(send.dataset.loomAttention,'true','explicit Send becomes the consequential next gesture');
  assert.equal(h.doc.querySelector('#khonapolitMessages').hidden,false);
@@ -228,6 +230,18 @@ test('native exports after both continuations preserve original answer, latest a
  assert.deepEqual(metadata.original_result,original);
  assert.equal(second.continuation.prior_result.answer,'State C has five workstreams.');
  assert.equal(metadata.stages.length,3);
+ assert.equal(metadata.schema,'td613.loom.demo-export-provenance/v0.2');
+ assert.equal(metadata.stages[0].result.answer,'Rules received; selected files are pending.');
+ assert.equal(metadata.stages[1].result.answer,'State B has four workstreams.');
+ assert.equal(metadata.stages[2].result.answer,'State C has five workstreams.');
+ assert.equal(h.controller.snapshot().substantive_continuation_count,2);
+ const delivered=[];let focused=0;
+ Object.defineProperty(h.root,'opener',{configurable:true,value:{closed:false,location:{origin:h.root.location.origin},postMessage(data,target){delivered.push({data,target});},focus(){focused++;}}});
+ h.controller.returnToLoom();
+ assert.equal(delivered.length,1);assert.equal(delivered[0].target,h.root.location.origin);
+ assert.equal(delivered[0].data.schema,'td613.loom.return-review-message/v0.1');
+ assert.deepEqual(delivered[0].data.packet,second);assert.equal(focused,1);
+ assert.match(h.doc.querySelector('#khonapolitTerminalStatus').textContent,/review requested/);
  assert.equal(metadata.stages[2].content_predecessor_request_id,h.requests[1].request_id);
  assert.equal(metadata.stages[2].predecessor_request_id,h.requests[1].request_id);
  assert.equal(metadata.stages[2].receipt.predecessor_receipt_digest,await loomDemoReceiptDigest(metadata.stages[1].receipt,h.root));
@@ -268,4 +282,64 @@ test('direct ordinary chat and page entry do not install a demo or send protecte
  assert.doesNotMatch(html,/src="\.\/marrowline-loom-import\.js"/);
  assert.match(fs.readFileSync('app/dome-world/marrowline-egress-boot.js','utf8'),/bootMarrowlineLoomDemo/);
  assert.match(fs.readFileSync('app/dome-world/marrowline-terminal.js','utf8'),/loomTransport\.prepareRequest/);
+});
+
+
+test('saved B advances to C only after admission; failure, expiry and Leave retain a read-only review checkpoint',async()=>{
+ const h=await harness({originalResult:true});try{
+ await h.controller.stageAia();await h.controller.submit();
+ assert.equal(h.controller.getSavedReviewPacket(),null,'setup acknowledgement cannot fabricate substantive work');
+ await h.controller.stageFiles();await h.controller.submit();
+ const b=h.controller.getSavedReviewPacket();assert.equal(b.continuation.prior_result.answer,'State B has four workstreams.');
+ h.doc.querySelector('#khonapolitPrompt').value='Continue from B.';await h.controller.submit();
+ const c=h.controller.getSavedReviewPacket();assert.equal(c.continuation.prior_result.answer,'State C has five workstreams.');
+ const storageKey='td613.loom.return-review.v1';
+ assert.deepEqual(JSON.parse(h.root.sessionStorage.getItem(storageKey)),c);
+ h.setHeld(true);h.doc.querySelector('#khonapolitPrompt').value='A failed follow-up.';await h.controller.submit();
+ assert.deepEqual(h.controller.getSavedReviewPacket(),c);assert.deepEqual(JSON.parse(h.root.sessionStorage.getItem(storageKey)),c);
+ const clock=Date.now;try{
+ Date.now=()=>c.loom_demo_provenance.activation.expires_at+1;
+ assert.throws(()=>h.controller.exportPacket(),/no current export/);
+ assert.deepEqual(h.controller.getSavedReviewPacket(),c);
+ }finally{Date.now=clock;}
+ h.controller.leaveDemo();assert.throws(()=>h.controller.exportPacket(),/no current export/);
+ assert.deepEqual(h.controller.getSavedReviewPacket(),c);
+ const delivered=[];Object.defineProperty(h.root,'opener',{value:{closed:false,location:{origin:h.root.location.origin},postMessage(data,target){delivered.push({data,target});},focus(){}}});
+ h.root.__TD613_LOOM_REVIEW_RECOVERY__.returnReview();assert.deepEqual(delivered[0].data.packet,c);
+ assert.equal(delivered[0].target,h.root.location.origin);assert.equal(h.controller.snapshot().phase,'LEFT');
+ assert.match(h.doc.querySelector('#loomSavedReviewMenu').textContent,/signature verification, Send and local custody admission remain unavailable/);
+ }finally{h.close();}
+});
+
+test('Marrowline reload exposes saved review through + without a live controller, staging or automatic execution',async()=>{
+ const h=await harness();let reloaded;
+ try{
+ await h.controller.stageAia();await h.controller.submit();await h.controller.stageFiles();await h.controller.submit();
+ h.doc.querySelector('#khonapolitPrompt').value='Second substantive continuation.';await h.controller.submit();
+ const saved=h.controller.getSavedReviewPacket(),storageKey='td613.loom.return-review.v1';
+ reloaded=new JSDOM(html,{url:'https://td613.com/dome-world/marrowline.html#loom-demo'});
+ const root=reloaded.window,doc=root.document;Object.defineProperty(root,'crypto',{value:webcrypto});
+ let requests=0,opened=0;root.fetch=()=>{requests++;throw new Error('Recovery cannot execute.');};root.open=()=>{opened++;return {};};
+ root.sessionStorage.setItem(storageKey,JSON.stringify(saved));installMarrowlineDesktopRepair(doc,root);
+ assert.equal(await bootMarrowlineLoomDemo(root),null);assert.equal(root.__TD613_LOOM_DEMO_CONTROLLER__,undefined);
+ assert.equal(root.__TD613_LOOM_DEMO_STATE__,undefined);assert.equal(requests,0);assert.equal(opened,0);
+ assert.equal(doc.querySelector('#loomDemoMenu'),null);assert.equal(doc.querySelector('#loomSavedReviewMenu').hidden,true);
+ doc.querySelector('#marrowlineComposerPlus').click();doc.querySelector('#loomSavedReviewMenuItem').click();
+ assert.equal(doc.querySelector('#loomSavedReviewMenu').hidden,false);
+ assert.deepEqual(root.__TD613_LOOM_REVIEW_RECOVERY__.getPacket(),saved);
+ assert.match(doc.querySelector('#khonapolitTerminalStatus').textContent,/live Loom route ended on reload/);
+ assert.equal(doc.querySelector('#khonapolitPrompt').value,'');assert.equal(requests,0);assert.equal(opened,0);
+ assert.equal(root.__TD613_LOOM_REVIEW_RECOVERY__.prepareRequest,undefined);
+ }finally{h.close();reloaded?.window.close();}
+});
+
+
+test('review data retention survives a missing context-menu surface without changing send authority',async()=>{
+ const h=await harness();try{
+ await h.controller.stageAia();await h.controller.submit();h.doc.querySelector('#marrowlineContextMenu').remove();
+ await h.controller.stageFiles();await h.controller.submit();
+ assert.equal(h.controller.getSavedReviewPacket().continuation.prior_result.answer,'State B has four workstreams.');
+ assert.equal(JSON.parse(h.root.sessionStorage.getItem('td613.loom.return-review.v1')).continuation.prior_result.answer,'State B has four workstreams.');
+ assert.equal(h.controller.snapshot().phase,'DONE');assert.equal(h.requests.length,2);
+ }finally{h.close();}
 });

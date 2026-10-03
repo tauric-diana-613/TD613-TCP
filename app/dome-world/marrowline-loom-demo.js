@@ -1,15 +1,102 @@
 import { consumeLoomAiHandoff } from './holonomy-loom/ai-handoff.js';
-import { createLoomDemoActivation, bindLoomDemoRequest, exportLoomDemoCurrent, loomDemoDigest, loomDemoReceiptDigest, loomDemoResult, validateLoomDemoStageReceipt, LOOM_DEMO_REQUEST_SCHEMA } from './holonomy-loom/demo-contract.js';
+import { createLoomDemoActivation, bindLoomDemoRequest, exportLoomDemoCurrent, loomDemoDigest, loomDemoReceiptDigest, loomDemoResult, validateLoomDemoStageReceipt, inspectLoomDemoExport, LOOM_DEMO_REQUEST_SCHEMA } from './holonomy-loom/demo-contract.js';
 import { readLoomAiFailure, describeLoomAiFailure } from './holonomy-loom/ai-failure.js';
 import { getMarrowlineAttachments, stageMarrowlineAttachments, removeMarrowlineAttachment } from './marrowline-attachments.js';
 import { installMarrowlineLoomGateContinuity } from './marrowline-loom-gate-continuity.js';
+import { LOOM_RETURN_REVIEW_STORAGE_KEY } from './holonomy-loom/returned-session-review.js';
 
 const EVENT = 'td613:marrowline:loom-demo-state';
+export const LOOM_RETURN_MESSAGE_SCHEMA = 'td613.loom.return-review-message/v0.1';
 const byId = (doc, id) => doc.getElementById(id);
 const copy = value => JSON.parse(JSON.stringify(value));
 function element(doc, tag, text, className='') { const node=doc.createElement(tag);node.textContent=text;node.className=className;return node; }
 function button(doc, label, action) { const node=element(doc,'button',label);node.type='button';node.addEventListener('click',action);return node; }
 function chatTarget(doc) {return doc.querySelector(doc.documentElement.classList.contains('marrowline-mobile-shell') ? '.mobile-dock [data-mobile-target="speakingPanel"]' : null);}
+
+// This recovery menu holds review material only. It never installs the live
+// transport controller, stages attachments, calls a provider, or restores custody.
+function installSavedLoomReview(doc, environment, initial = null) {
+  if (environment.__TD613_LOOM_REVIEW_RECOVERY__) {
+    if (initial) environment.__TD613_LOOM_REVIEW_RECOVERY__.update(initial);
+    return environment.__TD613_LOOM_REVIEW_RECOVERY__;
+  }
+  const parent = byId(doc, 'marrowlineContextMenu');
+  if (!parent) return null;
+  let saved = null, storageSaved = false;
+  const access = button(doc, 'Saved Loom review', () => open());
+  access.id = 'loomSavedReviewMenuItem'; access.setAttribute('role', 'menuitem'); access.setAttribute('aria-haspopup', 'menu'); access.setAttribute('aria-expanded', 'false'); access.hidden = true;
+  parent.append(access);
+  const menu = element(doc, 'section', '', 'loom-demo-menu marrowline-context-submenu'); menu.id = 'loomSavedReviewMenu'; menu.hidden = true;
+  menu.setAttribute('role', 'menu'); menu.setAttribute('aria-label', 'Saved Loom review');
+  const heading = element(doc, 'h3', 'Saved Loom review'), detail = element(doc, 'p', ''), feedback = element(doc, 'p', '');
+  feedback.setAttribute('role', 'status'); feedback.setAttribute('aria-live', 'polite');
+  const save = button(doc, 'Save review record', () => download());
+  const returnButton = button(doc, 'Return saved review to Loom', () => returnReview());
+  const reopen = button(doc, 'Open Loom for review ↗', () => {
+    if (!saved) return;
+    try {
+      environment.sessionStorage.setItem(LOOM_RETURN_REVIEW_STORAGE_KEY, JSON.stringify(saved));
+      const destination = environment.open?.('/dome-world/holonomy-loom.html#return-review', '_blank');
+      feedback.textContent = destination ? 'Loom review opening. The copied record carries no live custody authority.' : 'The browser blocked the review tab. Save the record, then open it in Loom.';
+    } catch { feedback.textContent = 'Local review storage is unavailable. Save the record and open it in Loom.'; }
+  });
+  const close = button(doc, 'Close', () => { menu.hidden = true; access.setAttribute('aria-expanded', 'false'); access.focus?.({ preventScroll: true }); });
+  menu.append(heading, detail, save, returnButton, reopen, feedback, close); doc.body.append(menu);
+  function open() {
+    if (!saved) return;
+    menu.hidden = false; access.setAttribute('aria-expanded', 'true');
+    const anchor = access.getBoundingClientRect(), width = Math.min(330, Math.max(260, (environment.innerWidth || 390) - 20));
+    menu.style.width = `${width}px`; menu.style.left = `${Math.max(10, Math.min(anchor.right + 8, (environment.innerWidth || 390) - width - 10))}px`;
+    menu.style.top = `${Math.max(10, Math.min(anchor.top, (environment.innerHeight || 844) - Math.min(menu.offsetHeight || 280, (environment.innerHeight || 844) - 20) - 10))}px`;
+    save.focus?.({ preventScroll: true });
+  }
+  function update(packet, { persist = true } = {}) {
+    saved = copy(packet); access.hidden = false;
+    if (persist) {
+      try { const raw = JSON.stringify(saved); if (raw.length > 2000000) throw new Error('Saved review exceeds local recovery limit.'); environment.sessionStorage.setItem(LOOM_RETURN_REVIEW_STORAGE_KEY, raw); storageSaved = true; }
+      catch { storageSaved = false; }
+    }
+    const count = saved.loom_demo_provenance.stages.filter(stage => stage.receipt.phase === 'CONTINUE').length;
+    detail.textContent = `${count} substantive continuation${count === 1 ? '' : 's'} · latest ${saved.continuation.prior_result.request_id}. ${storageSaved ? 'Selected transfer bytes and returned work are saved in this tab for reload.' : 'Save the review record before closing this tab.'} Review only: signature verification, Send and local custody admission remain unavailable from this record.`;
+  }
+  function download() {
+    if (!saved) return;
+    try {
+    const url = environment.URL.createObjectURL(new environment.Blob([JSON.stringify(saved, null, 2)], { type: 'application/json' }));
+    const link = element(doc, 'a', ''); link.href = url; link.download = 'loom-saved-review.json'; doc.body.append(link); link.click(); link.remove();
+    environment.setTimeout(() => environment.URL.revokeObjectURL(url), 1500);
+    feedback.textContent = 'Saved review download requested. The browser handles saving; no custody authority is restored.';
+    } catch (error) { feedback.textContent = `Saving review held · ${error.message}. The saved snapshot remains available.`; }
+  }
+  function returnReview() {
+    if (!saved) return;
+    try {
+      const opener = environment.opener;
+      if (!opener || opener.closed || opener.location?.origin !== environment.location.origin) throw new Error('Original Loom tab unavailable. Open Loom for review or save and import this record.');
+      opener.postMessage({ schema: LOOM_RETURN_MESSAGE_SCHEMA, packet: copy(saved) }, environment.location.origin); opener.focus();
+      feedback.textContent = 'Saved review delivery requested. Its original setup and result lineage remain review material; no Send or admission authority travels.';
+    } catch (error) { feedback.textContent = error.message; }
+  }
+  const hide = () => { menu.hidden = true; access.setAttribute('aria-expanded', 'false'); };
+  const escape = event => { if (event.key === 'Escape' && !menu.hidden) { hide(); access.focus?.({ preventScroll: true }); } };
+  const outside = event => { if (!menu.hidden && !menu.contains(event.target) && !access.contains(event.target)) hide(); };
+  environment.addEventListener('td613:marrowline:loom-demo-close', hide); doc.addEventListener('keydown', escape); doc.addEventListener('click', outside);
+  const controller = Object.freeze({ update, open, download, returnReview, getPacket: () => saved ? copy(saved) : null,
+    destroy() { environment.removeEventListener('td613:marrowline:loom-demo-close', hide); doc.removeEventListener('keydown', escape); doc.removeEventListener('click', outside); access.remove(); menu.remove(); delete environment.__TD613_LOOM_REVIEW_RECOVERY__; } });
+  environment.__TD613_LOOM_REVIEW_RECOVERY__ = controller;
+  if (initial) { storageSaved = true; update(initial, { persist: false }); }
+  return controller;
+}
+
+export async function bootMarrowlineSavedReview(environment = window) {
+  try {
+    const raw = environment.sessionStorage?.getItem(LOOM_RETURN_REVIEW_STORAGE_KEY);
+    if (!raw || raw.length > 2000000) return null;
+    const packet = JSON.parse(raw), inspection = await inspectLoomDemoExport(packet, environment);
+    if (inspection.status !== 'REVIEW_ONLY_CONSISTENCY' || !packet.loom_demo_provenance?.activation) return null;
+    return installSavedLoomReview(environment.document, environment, packet);
+  } catch { return null; }
+}
 
 export async function installMarrowlineLoomDemo(packet, doc=document, environment=window) {
   if (environment.__TD613_LOOM_DEMO_CONTROLLER__) return environment.__TD613_LOOM_DEMO_CONTROLLER__;
@@ -17,27 +104,28 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   packet=copy(packet);
   const activation=await createLoomDemoActivation(packet,environment);
   const form=byId(doc,'khonapolitForm'), prompt=byId(doc,'khonapolitPrompt'), send=byId(doc,'khonapolitSend'), ordinary=byId(doc,'khonapolitMessages');
-  if (!form || !prompt || !send || !ordinary) throw new Error('Loom demo composer unavailable.');
+  if (!form || !prompt || !send || !ordinary) throw new Error('Loom route composer unavailable.');
   let phase='ARRIVED', active=false, pending=null, staged=[], busy=false, staging=false, stageGeneration=0;
   let latest=packet.continuation?.prior_result ? loomDemoResult(packet.continuation.prior_result, packet.documents) : null, latestBinding=null, lastAccepted=null, predecessor=null, lastAdmittedBindingReceipt=null;
   let destroyed=false, lastAttempt='NOT_SENT', stagedDraft='';
   const admittedStages=[];
+  let savedReviewPacket=null;
   const status=byId(doc,'khonapolitTerminalStatus');
   const setStatus=text=>{if(status)status.textContent=text;};
 
   // Loom supplies a bounded transport; Marrowline owns the conversation UI.
   const menu=element(doc,'section','','loom-demo-menu marrowline-context-submenu');menu.id='loomDemoMenu';menu.hidden=true;
   menu.setAttribute('role','menu');menu.setAttribute('aria-labelledby','loomDemoMenuTitle');
-  const title=element(doc,'h3','Loom demo');title.id='loomDemoMenuTitle';
-  const hint=element(doc,'p','Two sends. Rules first, matching files second. Nothing is sent when you select an option. This local transfer expires after ten minutes; reload requires a fresh handoff. The original Loom tab remains the live Check/Admit custody surface.');
+  const title=element(doc,'h3','Loom route');title.id='loomDemoMenuTitle';
+  const hint=element(doc,'p','Setup first, then two continuations. Nothing is sent when you select an option. The transfer expires after ten minutes. Keep the original Loom tab for returned-session review; an exported session can be reopened for review after a reload.');
   const activationPreview=doc.createElement('details');activationPreview.className='loom-demo-attachment-preview';
-  const activationSummary=element(doc,'summary','Preview exact Portable AIA JSON before sending');
+  const activationSummary=element(doc,'summary','Inspect the exact Loom handoff before sending');
   const activationBytes=element(doc,'pre',JSON.stringify(activation,null,2));
   activationPreview.append(activationSummary,activationBytes);
-  const step1=button(doc,'1 · Attach Loom handoff',()=>void stageAia());
+  const step1=button(doc,'Setup · Attach Loom handoff',()=>void stageAia());
   const note1=element(doc,'small','Task, rules, file commitments and prior-result commitment. No selected-file contents.');
-  const step2=button(doc,'2 · Attach selected files',()=>void stageFiles());
-  const note2=element(doc,'small','Locked until #1 has returned a bound receiver acknowledgement.');
+  const step2=button(doc,'Continue · Attach selected files',()=>void stageFiles());
+  const note2=element(doc,'small','Available after setup returns a bound acknowledgement.');
   const menuStatus=element(doc,'p','','loom-demo-menu-status');menuStatus.setAttribute('role','status');menuStatus.setAttribute('aria-live','polite');
   const restore=button(doc,'Restore selected attachments',()=>void restoreStage());restore.hidden=true;
   const leave=button(doc,'End Loom continuation',()=>leaveDemo());
@@ -47,9 +135,12 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   const returnToLoom=()=>{
     try{
       const opener=environment.opener;
-      if(!opener||opener.closed||opener.location?.origin!==environment.location?.origin)throw new Error('Original Loom tab unavailable. Do not recreate its custody state from this Marrowline tab.');
+      if(!opener||opener.closed||opener.location?.origin!==environment.location?.origin)throw new Error('Original Loom tab unavailable. Export the current session and open it in Loom for review.');
+      const returned = active && phase === 'DONE' && Date.now() < activation.expires_at ? exportPacket() : savedReviewPacket;
+      if (!returned) throw new Error('No completed result is saved for review yet.');
+      opener.postMessage({schema:LOOM_RETURN_MESSAGE_SCHEMA,packet:returned},environment.location.origin);
       opener.focus();
-      setStatus('Original Loom tab focused · its live Check/Admit custody lane remains authoritative. This Marrowline tab stays open.');
+      setStatus('Returned-session review requested in the original Loom tab. Signature verification and local custody admission remain separate.');
     }catch(error){setStatus(`Return to Loom held · ${error.message}`);}
   };
   const gateContinuity=installMarrowlineLoomGateContinuity({
@@ -60,7 +151,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
     onReturnToChat:()=>{const target=chatTarget(doc);if(target){target.click();target.focus?.({preventScroll:true});}else prompt.focus?.({preventScroll:true});}
   });
 
-  const snapshot=()=>({phase,active,busy:busy||staging,pending_steps:['ARRIVED','AIA_SENT'].includes(phase),aia_sent:['AIA_SENT','FILES_STAGED','CONTINUING','DONE'].includes(phase),files_staged:['FILES_STAGED','CONTINUING','DONE'].includes(phase),current_result_request_id:lastAccepted?.request_id??null,predecessor_request_id:predecessor?.request_id??null});
+  const snapshot=()=>({phase,active,busy:busy||staging,pending_steps:['ARRIVED','AIA_SENT'].includes(phase),aia_sent:['AIA_SENT','FILES_STAGED','CONTINUING','DONE'].includes(phase),files_staged:['FILES_STAGED','CONTINUING','DONE'].includes(phase),current_result_request_id:lastAccepted?.request_id??null,predecessor_request_id:predecessor?.request_id??null,substantive_continuation_count:admittedStages.filter(stage=>stage.receipt.phase==='CONTINUE').length,content_predecessor_request_id:admittedStages.at(-1)?.content_predecessor_request_id??null});
   function emit() {
     const state=snapshot();environment.__TD613_LOOM_DEMO_STATE__=state;
     doc.documentElement.dataset.loomTaskImport=state.pending_steps?'staged':phase.toLowerCase();
@@ -70,8 +161,8 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
     step1.disabled=busy||staging||phase!=='ARRIVED';
     step2.disabled=busy||staging||phase!=='AIA_SENT';
     step1.dataset.completed=String(state.aia_sent);step2.dataset.completed=String(state.files_staged);
-    note2.textContent=state.aia_sent?'Selected Loom files only. Local-only documents never enter this route.':'Locked until #1 has returned a bound receiver acknowledgement.';
-    gateContinuity?.update({phase,lastAttempt,busy,activation,binding:lastAdmittedBindingReceipt,predecessor,result:lastAccepted,packet});
+    note2.textContent=state.aia_sent?'Selected Loom files only. Local-only documents never enter this route.':'Available after setup returns a bound acknowledgement.';
+    gateContinuity?.update({phase,lastAttempt,busy,activation,binding:lastAdmittedBindingReceipt,predecessor,result:lastAccepted,packet,substantiveContinuationCount:state.substantive_continuation_count,contentPredecessorRequestId:state.content_predecessor_request_id});
     environment.dispatchEvent(new environment.CustomEvent(EVENT,{detail:state}));
   }
   function closeMenu({focusParent=true}={}){
@@ -103,7 +194,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   function assertCanStage(){
     if(busy||staging||send.dataset.transmissionState==='generating')throw new Error('Wait for or stop the current request first.');
     if(getMarrowlineAttachments().length)throw new Error('Send or remove the currently staged attachments first.');
-    if(!active&&prompt.value.trim())throw new Error('Save or clear your ordinary chat draft before starting the Loom demo.');
+    if(!active&&prompt.value.trim())throw new Error('Save or clear your ordinary chat draft before starting the Loom route.');
     if(Date.now()>=activation.expires_at)throw new Error('This Loom transfer has expired. Prepare it again in Loom.');
   }
   async function stage(files){
@@ -133,14 +224,14 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
     try{
       if(phase!=='ARRIVED')return;
       assertCanStage();
-      const file=new environment.File([JSON.stringify(activation,null,2)],'loom-portable-aia-activation.json',{type:'application/json'});
+      const file=new environment.File([JSON.stringify(activation,null,2)],'loom-transfer-activation.json',{type:'application/json'});
       await stage([file]);enter();pending='ACTIVATE';phase='AIA_STAGED';
-      prompt.value='Receive the attached Loom Portable AIA. Acknowledge the task and rules, identify the pending selected files, and wait for my next turn.';
+      prompt.value='Receive the attached Loom handoff. Acknowledge the task and rules, identify the pending selected files, and wait for my next turn.';
       stagedDraft=prompt.value;
-      setStatus('Loom handoff attached · Send first; your selected files have not been sent.');
+      setStatus('Setup attached · Send to acknowledge the rules. Selected file contents remain here.');
       prompt.dispatchEvent(new environment.Event('input',{bubbles:true}));
       closeMenu({focusParent:false});prompt.focus?.({preventScroll:true});emit();
-    }catch(error){menuStatus.textContent=error.message;setStatus(`Loom demo held · ${error.message}`);}
+    }catch(error){menuStatus.textContent=error.message;setStatus(`Loom route held · ${error.message}`);}
   }
   async function stageFiles(){
     try{
@@ -153,12 +244,12 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
       setStatus(`${files.length} selected files attached · Send to continue the task.`);
       prompt.dispatchEvent(new environment.Event('input',{bubbles:true}));
       closeMenu({focusParent:false});prompt.focus?.({preventScroll:true});emit();
-    }catch(error){menuStatus.textContent=error.message;setStatus(`Loom demo held · ${error.message}`);}
+    }catch(error){menuStatus.textContent=error.message;setStatus(`Loom route held · ${error.message}`);}
   }
   async function restoreStage(){
     if(!pending||busy)return;
     const existing=getMarrowlineAttachments();
-    if(existing.some(item=>!staged.some(expected=>JSON.stringify(expected)===JSON.stringify(item)))){setStatus('Unrelated attachments are present. Leave Loom demo before changing them.');return;}
+    if(existing.some(item=>!staged.some(expected=>JSON.stringify(expected)===JSON.stringify(item)))){setStatus('Unrelated attachments are present. Leave the Loom route before changing them.');return;}
     existing.forEach(item=>removeMarrowlineAttachment(item.id,environment));staged=[];
     const draft=prompt.value;
     phase=pending==='ACTIVATE'?'ARRIVED':'AIA_SENT';
@@ -174,7 +265,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
     if(!active||phase==='EXPIRED'||phase==='LEFT')throw new Error('Prepare a fresh Loom handoff before sending.');
     if(admittedStages.length>=128)throw new Error('This Loom route reached its history bound. Export the current work and prepare a fresh handoff.');
     const operation=pending||(phase==='DONE'?'CONTINUE':null);
-    if(!operation)throw new Error('Use + → Loom demo to attach the selected files.');
+    if(!operation)throw new Error('Use + → Loom route to attach the selected files.');
     // Acquire before the first crypto await. Native terminal also owns one
     // synchronous in-flight lock for taps, Enter and explicit retry.
     busy=true;lastAttempt='PENDING';emit();
@@ -204,13 +295,18 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
     if(signal?.aborted||destroyed||!active||Date.now()>=activation.expires_at)throw new Error('Stopped waiting. No new receiver result was bound.');
     if(!binding.admit(normalizedResult).allowed)throw new Error('The returned result was held by the Loom governor.');
     admittedStages.push({receipt:copy(returnedPredecessor),binding:copy(binding.receipt),receiver:'MARROWLINE',
-      observed_at:new Date().toISOString(),predecessor_request_id:predecessor?.request_id??null,
+      result:copy(normalizedResult),observed_at:new Date().toISOString(),predecessor_request_id:predecessor?.request_id??null,
       content_predecessor_request_id:operation==='CONTINUE'?latest?.request_id??null:null});
     predecessor=returnedPredecessor;lastAdmittedBindingReceipt=copy(binding.receipt);lastAttempt='ADMITTED';
     pending=null;staged=[];
     if(operation==='ACTIVATE')phase='AIA_SENT';
     else {
       phase='DONE';latest=normalizedResult;latestBinding?.governor.close();latestBinding=binding;lastAccepted=copy(latest);
+      savedReviewPacket=exportLoomDemoCurrent(latestBinding, undefined, { origin: packet, activation, stages: admittedStages });
+      // Retention does not depend on whether the native context menu rendered.
+      try { const raw=JSON.stringify(savedReviewPacket); if(raw.length>2000000)throw new Error('Review checkpoint exceeds reload limit.'); environment.sessionStorage.setItem(LOOM_RETURN_REVIEW_STORAGE_KEY,raw); }
+      catch { setStatus('Returned work is bound. Local reload saving is unavailable; save the review record before closing this tab.'); }
+      installSavedLoomReview(doc, environment)?.update(savedReviewPacket);
     }
     emit();
     return output;
@@ -233,7 +329,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
     try{
       if(destroyed||!active||['EXPIRED','LEFT'].includes(phase)||Date.now()>=activation.expires_at)throw new Error('This Loom transfer is closed. Prepare a fresh handoff.');
       if(busy)throw new Error('Wait for or stop the current request before checking.');
-      if(!predecessor)throw new Error('Complete #1 receiver acknowledgement before checking the file-bearing continuation.');
+      if(!predecessor)throw new Error('Complete setup acknowledgement before checking the file-bearing continuation.');
       const checkGeneration=stageGeneration, checkPhase=phase, checkPredecessor=predecessor;
       gateContinuity?.reportAction('PENDING','Checking selected-file binding locally · no provider call.');
       const req={schema:LOOM_DEMO_REQUEST_SCHEMA,request_id:environment.crypto.randomUUID(),phase:'CONTINUE',activation,documents:packet.documents,operator_request:'Check the selected file binding locally.',prior_result:latest,predecessor};
@@ -252,9 +348,9 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
     try{
       const payload=exportPacket();
       const url=environment.URL.createObjectURL(new environment.Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));
-      const link=element(doc,'a','');link.href=url;link.download='loom-current-portable-aia.json';doc.body.append(link);link.click();link.remove();
+      const link=element(doc,'a','');link.href=url;link.download='loom-current-session.json';doc.body.append(link);link.click();link.remove();
       environment.setTimeout(()=>environment.URL.revokeObjectURL(url),1500);
-      const message='Download requested · current Loom Portable AIA prepared. Your browser handles saving the file; no onward execution occurred.';
+      const message='Download requested · current Loom session prepared for review. Your browser handles saving the file; no onward execution occurred.';
       gateContinuity?.reportAction('DOWNLOAD_REQUESTED',message);setStatus(message);
     }catch(error){const message=`Loom export held · ${error.message}`;gateContinuity?.reportAction('HELD',message);setStatus(message);}
   }
@@ -265,12 +361,12 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   const expiry=environment.setTimeout(()=>{stageGeneration++;phase='EXPIRED';environment.TD613_KHONAPOLIT_TERMINAL?.stop();menuStatus.textContent='This transfer expired. Prepare a fresh handoff in Loom.';emit();},Math.max(0,activation.expires_at-Date.now()));
   environment.addEventListener('pagehide',()=>{if(active)environment.TD613_KHONAPOLIT_TERMINAL?.stop();});
   environment.addEventListener('td613:marrowline:attachments-changed',()=>emit());
-  const controller={openMenu,stageAia,stageFiles,restoreStage,leaveDemo,submit,prepareRequest,admitResponse,rejectAttempt,finishAttempt,snapshot,exportPacket,
+  const controller={returnToLoom,openMenu,stageAia,stageFiles,restoreStage,leaveDemo,submit,prepareRequest,admitResponse,rejectAttempt,finishAttempt,snapshot,exportPacket,
     getObservedProvenance:()=>copy({activation,stages:admittedStages,snapshot:snapshot()}),
-    getGateContinuity:()=>gateContinuity?.getCurrent?.()??null,destroy(){destroyed=true;environment.clearTimeout(expiry);leaveDemo();menu.remove();gateContinuity?.destroy?.();}};
+    getGateContinuity:()=>gateContinuity?.getCurrent?.()??null,getSavedReviewPacket:()=>savedReviewPacket?copy(savedReviewPacket):null,destroy(){destroyed=true;environment.clearTimeout(expiry);leaveDemo();menu.remove();gateContinuity?.destroy?.();}};
   environment.__TD613_LOOM_DEMO_CONTROLLER__=controller;
   environment.history?.replaceState(null,'',environment.location.pathname+environment.location.search+'#loom-demo');
-  emit();setStatus(`${packet.documents.length} selected Loom files arrived · + → Loom demo · start with the Portable AIA`);
+  emit();setStatus(`${packet.documents.length} selected Loom files arrived · + → Loom route · begin with setup`);
   return controller;
 }
 
@@ -278,12 +374,13 @@ export async function bootMarrowlineLoomDemo(environment=window){
   const hash=environment.location.hash;
   const match=/^#loom=([a-f0-9]{48})$/.exec(hash);
   if(!match){
+    await bootMarrowlineSavedReview(environment);
     if(hash.startsWith('#loom=')){
       await environment.TD613_KHONAPOLIT_TERMINAL?.ready;
       byId(environment.document,'khonapolitTerminalStatus').textContent='Loom handoff held · malformed local transfer. Return to Loom to prepare it again.';
       return null;
     }
-    if(hash==='#loom-demo')byId(environment.document,'khonapolitTerminalStatus').textContent='This local Loom session was interrupted or reloaded. Prepare a fresh handoff in Loom; no packet was silently restored.';
+    if(hash==='#loom-demo')byId(environment.document,'khonapolitTerminalStatus').textContent=environment.__TD613_LOOM_REVIEW_RECOVERY__ ? 'The live Loom route ended on reload. Use + → Saved Loom review to inspect or save the returned work. A new governed send requires a fresh handoff.' : 'This local Loom session was interrupted or reloaded. Prepare a fresh handoff in Loom; no packet was silently restored.';
     return null;
   }
   environment.history.replaceState(null,'',environment.location.pathname+environment.location.search+'#loom-demo');

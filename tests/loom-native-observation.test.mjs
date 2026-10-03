@@ -109,7 +109,9 @@ test('real Loom staging and native Send expose user turn, ordinary generating mo
   assert.equal(h.requests[0].request.phase, 'ACTIVATE');
   assert.deepEqual(h.requests[0].request.documents, []);
   assert.equal(h.$('khonapolitMessages').querySelectorAll('.message[data-role="user"]').length, 1);
-  assert.match(h.$('khonapolitMessages').textContent, /Receive the attached Loom Portable AIA/);
+  // OLD ASSERTION: public Portable AIA wording. REAL CONTRACT: the native message holds the staged handoff task.
+  // NEW WITNESS: Loom wording plus the following binding/reading assertions.
+  assert.match(h.$('khonapolitMessages').textContent, /Receive the attached Loom handoff/);
   assert.equal(h.$('khonapolitTerminalStatus').dataset.phase, 'pending');
   assert.equal(h.$('khonapolitSend').dataset.transmissionState, 'generating');
   assert.equal(h.$('khonapolitSend').getAttribute('aria-label'), 'Stop transmission');

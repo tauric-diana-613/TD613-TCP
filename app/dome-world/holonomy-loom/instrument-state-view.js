@@ -11,6 +11,9 @@ import { FLOWCORE_GLYPH_REGISTRY } from '../data/flowcore-glyph-semantics-v01.js
  */
 export const LOOM_INSTRUMENT_STATE_VIEW_SCHEMA = 'td613.loom.instrument-state-view/v0.1';
 const PHASES = new Set(['prepared', 'checking', 'pending', 'received', 'completed', 'held']);
+// These are supplied observations of client route actions. They neither imply
+// a model request nor give this display a custody capability.
+const ROUTE_EVENTS = new Set(['HANDOFF_DISPATCHED', 'RETURN_CHECKED', 'RETURN_ADMITTED', 'RETURN_HELD']);
 const RFC3339 = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/;
 const PROJECTION_EPOCH = '1970-01-01T00:00:00Z';
 const AUTHORITY = Object.freeze({
@@ -120,8 +123,11 @@ function observedEvent(input) {
   const declaredRevision = source && field(source, 'revision');
   const geometryValue = field(packet, 'geometry');
   const geometry = geometryValue === undefined ? null : plain(geometryValue, 'geometry');
+  const routeEvent = field(packet, 'route_event') ?? null;
+  if (routeEvent !== null && !ROUTE_EVENTS.has(routeEvent)) throw new TypeError('Unknown client route event.');
   return freeze({
     phase, at, request_id: requestId, shared, local, rules_count: rules,
+    task_present: bool(field(packet, 'task_present'), 'task_present'), route_event: routeEvent,
     selected_document_ids: selected, used_document_ids: used, missing_information: missing,
     outbound_submitted: bool(field(packet, 'outbound_submitted'), 'outbound_submitted'),
     response_received: bool(field(packet, 'response_received'), 'response_received'),
@@ -136,20 +142,38 @@ function observedEvent(input) {
 function facts(event) {
   const submissionPhase = ['pending', 'received', 'completed'].includes(event.phase);
   const bodyPhase = ['received', 'completed'].includes(event.phase);
-  const submitted = event.outbound_submitted ?? submissionPhase;
-  const bodyReceived = event.response_received ?? bodyPhase;
+  // A transfer/check event cannot borrow model submission from its legacy
+  // phase. Explicit conflicting flags remain visible as contradictions below.
+  const submitted = event.route_event ? false : event.outbound_submitted ?? submissionPhase;
+  const bodyReceived = event.route_event ? false : event.response_received ?? bodyPhase;
   const transportFailure = event.provider_failure && ['provider-plan', 'provider-transport'].includes(event.failure_stage);
   const answerObserved = bodyReceived && !event.provider_failure;
   return {
     submitted, response_body_received: bodyReceived, answer_observed: answerObserved,
     transport_failure: transportFailure, local_task_binding_verified: event.binding_verified === true,
     local_return_review_completed: event.phase === 'completed' && !event.provider_failure && submitted && answerObserved,
-    request_stopped: ['completed', 'held'].includes(event.phase),
+    request_stopped: ['completed', 'held'].includes(event.phase) || ['RETURN_CHECKED', 'RETURN_ADMITTED', 'RETURN_HELD'].includes(event.route_event),
+    handoff_dispatched: event.route_event === 'HANDOFF_DISPATCHED',
+    returned_work_checked: event.route_event === 'RETURN_CHECKED',
+    local_admission_observed: event.route_event === 'RETURN_ADMITTED',
+    returned_work_held: event.route_event === 'RETURN_HELD',
     custody_admitted: false, provider_internal_activity: 'UNOBSERVED'
   };
 }
 function copyFor(event, state) {
   const retained = `${event.local} local ${event.local === 1 ? 'file is' : 'files are'} excluded from this outgoing packet.`;
+  if (event.route_event) {
+    const routeCopy = {
+      HANDOFF_DISPATCHED: ['Marrowline navigation was opened.', 'This client dispatched the prepared transfer. Receiver arrival, model execution and downstream behavior remain unobserved.'],
+      RETURN_CHECKED: ['Returned work was checked locally.', 'Check leaves the local admitted head unchanged. Inspect the candidate before choosing Admit.'],
+      RETURN_ADMITTED: ['Your explicit local admission completed.', 'The client recorded its reviewed Admit callback. This display supplies no independent custody verification or external execution evidence.'],
+      RETURN_HELD: ['Returned work remains held.', 'Local review stopped this return. The admitted head remains unchanged; the held material stays inspectable.']
+    }[event.route_event];
+    return { now: routeCopy[0], why: `${routeCopy[1]} ${retained}`, next: 'Inspect the route record or return to your work. This display sends nothing.' };
+  }
+  if (event.phase === 'prepared' && event.task_present === false && event.shared === 0) {
+    return { now: 'Start with your task.', why: `No task or selected document has been recorded. ${retained}`, next: 'Write the task, then choose which material travels.' };
+  }
   const copy = {
     prepared: ['The selected work is still here.', `${event.shared} selected documents and ${event.rules_count} portable rules are being prepared. ${retained}`],
     checking: ['Loom is checking the outgoing packet.', `Task binding is a local readiness check before submission. ${retained}`],
@@ -168,14 +192,17 @@ function relationRecords(event, state, history) {
   const sameSelection = history.filter(item => item.request_id === event.request_id
     && item.selected_document_ids?.length && JSON.stringify(item.selected_document_ids) === JSON.stringify(event.selected_document_ids));
   const evidence = {
-    gathering: event.shared > 0 || event.rules_count > 0 ? ['CLIENT_SELECTION_COUNTS'] : [],
+    gathering: event.shared > 0 || event.task_present === true || (event.rules_count > 0 && event.task_present !== false) ? ['CLIENT_SELECTION_COUNTS'] : [],
     recurrence: sameSelection.length > 1 ? ['SAME_SELECTION_IN_MULTIPLE_RECORDED_EVENTS'] : [],
-    release: state.submitted ? ['CLIENT_SUBMISSION_EVENT'] : [],
+    release: state.handoff_dispatched ? ['CLIENT_HANDOFF_NAVIGATION_DISPATCHED_NOT_RECEIVER_ARRIVAL'] : state.submitted ? ['CLIENT_SUBMISSION_EVENT'] : [],
     created_potential: state.local_task_binding_verified ? ['LOCAL_TASK_BINDING_BEFORE_RETURN'] : [],
     released_tendency: state.answer_observed ? ['RESPONSE_BODY_OBSERVED_NOT_RETURN_VALIDATION'] : [],
     protected_continuity: event.local > 0 ? ['LOCAL_FILES_EXCLUDED_FROM_OUTGOING_PACKET'] : [],
-    bounded_emergence: state.local_return_review_completed ? ['CLIENT_LOCAL_RETURN_REVIEW_EVENT'] : [],
-    structural_rest: state.request_stopped || event.display_rest === true ? ['TERMINAL_REQUEST_OR_EXPLICIT_DISPLAY_REST'] : []
+    bounded_emergence: state.returned_work_checked ? ['CLIENT_RETURN_CHECK_COMPLETED_NOT_ADMISSION']
+      : state.local_admission_observed ? ['CLIENT_EXPLICIT_LOCAL_ADMIT_CALLBACK_NOT_INDEPENDENT_CUSTODY_VERIFICATION']
+        : state.local_return_review_completed ? ['CLIENT_LOCAL_RETURN_REVIEW_EVENT'] : [],
+    structural_rest: state.returned_work_held ? ['CLIENT_RETURN_HELD_ADMITTED_HEAD_UNCHANGED']
+      : state.request_stopped || event.display_rest === true ? ['TERMINAL_REQUEST_OR_EXPLICIT_DISPLAY_REST'] : []
   };
   return Object.fromEntries(Object.entries(FLOWCORE_GLYPH_REGISTRY.entries).map(([key, semantic]) => [key, {
     key, ...semantic, label: LABELS[key], evidenced: evidence[key].length > 0,
@@ -183,6 +210,11 @@ function relationRecords(event, state, history) {
   }]));
 }
 function currentRelation(event, records, replay) {
+  if (event.route_event) {
+    if (event.outbound_submitted === true || event.response_received === true) return null;
+    return { HANDOFF_DISPATCHED: 'release', RETURN_CHECKED: 'bounded_emergence', RETURN_ADMITTED: 'bounded_emergence', RETURN_HELD: 'structural_rest' }[event.route_event];
+  }
+  if (event.phase === 'prepared' && event.task_present === false && event.shared === 0) return null;
   if (replay && records.recurrence.evidenced) return 'recurrence';
   const preferred = {
     prepared: 'gathering', checking: event.binding_verified ? 'created_potential' : 'gathering',
@@ -194,7 +226,7 @@ function eventIdentity(event) {
   // Scene decoration and cue rest are renderer state, not additional client
   // observations. Raw events and their decorated packets share this identity.
   return JSON.stringify([
-    event.phase, event.at, event.request_id, event.shared, event.local,
+    event.phase, event.at, event.request_id, event.shared, event.local, event.task_present, event.route_event,
     event.selected_document_ids, event.used_document_ids, event.missing_information,
     event.outbound_submitted, event.response_received, event.binding_verified,
     event.provider_failure, event.failure_stage, event.fadt_task_authorization,
@@ -237,8 +269,9 @@ export async function compileLoomInstrumentStateView(packet, {
   if (current.declared_source_revision && current.declared_source_revision !== sourceRevisionValue) missingness.push('The packet source revision differs from the supplied display source revision.');
   if (current.selected_document_ids === null && current.shared) missingness.push('Selected document identities were not supplied.');
   const contradictions = [];
-  if (['pending', 'received', 'completed'].includes(current.phase) && current.outbound_submitted === false) contradictions.push('The client phase implies submission while its explicit submission flag denies it.');
-  if (['received', 'completed'].includes(current.phase) && current.response_received === false) contradictions.push('The client phase implies a response while its explicit response flag denies it.');
+  if (current.route_event && (current.outbound_submitted === true || current.response_received === true)) contradictions.push('A client transfer/review event also claims a model submission or response; these evidence classes must remain separate.');
+  if (!current.route_event && ['pending', 'received', 'completed'].includes(current.phase) && current.outbound_submitted === false) contradictions.push('The client phase implies submission while its explicit submission flag denies it.');
+  if (!current.route_event && ['received', 'completed'].includes(current.phase) && current.response_received === false) contradictions.push('The client phase implies a response while its explicit response flag denies it.');
   if (current.phase === 'completed' && current.provider_failure) contradictions.push('The completed client phase also carries a provider failure.');
   if (contradictions.length) {
     copy.now = 'The request records disagree; inspect this state before using it.';
@@ -365,7 +398,19 @@ export function projectLoomInstrumentStateFrame(view, snapshot = {}) {
   // Rest/reduced motion changes demand, never the underlying request relation.
   const relationKey = view.active_relation;
   const descriptor = relationKey ? view.relations[relationKey] : null;
-  const endpoints = relationKey ? ROUTES[relationKey] : ['Current draft', 'Awaiting selection'];
+  const routeEndpoints = {
+    HANDOFF_DISPATCHED: ['Prepared Loom transfer', 'Marrowline navigation'],
+    RETURN_CHECKED: ['Returned work', 'Local Check result'],
+    RETURN_ADMITTED: ['Explicit local Admit', 'Current local custody head'],
+    RETURN_HELD: ['Returned work', 'Held for inspection']
+  }[view.event.route_event];
+  const endpoints = relationKey ? routeEndpoints ?? ROUTES[relationKey] : ['Current draft', 'Awaiting selection'];
+  const routeLabel = {
+    HANDOFF_DISPATCHED: 'Prepared transfer navigation dispatched',
+    RETURN_CHECKED: 'Return checked; admission remains separate',
+    RETURN_ADMITTED: 'Explicit local admission observed',
+    RETURN_HELD: 'Returned work held; local head unchanged'
+  }[view.event.route_event];
   const viewport = snapshot.viewport ?? { width: 640, height: 300, dpr: 1 };
   const canonicalFrame = renderPedagogueScene('loom-instrument-state', view.scene, view.transition,
     { width: viewport.width ?? 640, height: viewport.height ?? 300, devicePixelRatio: viewport.dpr ?? 1 },
@@ -378,7 +423,8 @@ export function projectLoomInstrumentStateFrame(view, snapshot = {}) {
     scale: relationKey === 'bounded_emergence' ? .94 + .06 * progress : relationKey === 'recurrence' ? 1 + Math.sin(Math.PI * progress) * .025 : 1
   };
   return freeze({
-    canonical_frame: canonicalFrame, relation_key: relationKey, descriptor,
+    canonical_frame: canonicalFrame, relation_key: relationKey,
+    descriptor: descriptor && routeLabel ? { ...descriptor, label: routeLabel } : descriptor,
     endpoints, progress, reduced_motion: reduced, glyph_transform: shift,
     display_rest_only: snapshot.rest === true && !view.state.request_stopped,
     phase: view.phase, custody_admitted: false, owns_animation_loop: false
@@ -397,6 +443,9 @@ export function mountLoomInstrumentStateView(root) {
     if (textValue !== undefined) node.textContent = textValue;
     return node;
   };
+  // Clock ticks update trajectories. Static labels change only with their
+  // content, avoiding repeated text-node replacement and layout invalidation.
+  const setText = (node, value) => { if (node.textContent !== value) node.textContent = value; };
   const svgEl = (tag, attributes = {}) => {
     const node = doc.createElementNS('http://www.w3.org/2000/svg', tag);
     for (const [name, value] of Object.entries(attributes)) node.setAttribute(name, String(value));
@@ -509,12 +558,13 @@ export function mountLoomInstrumentStateView(root) {
       root.dataset.activeRelation = frame.relation_key ?? 'unobserved';
       root.dataset.reducedMotion = String(frame.reduced_motion);
       doc.documentElement.dataset.loomRelation = frame.relation_key ?? 'unobserved';
-      mode.textContent = view.replay ? 'Replay · recorded route observation; nothing is being sent' : 'Current route observation';
-      if (now.textContent !== view.copy.now) now.textContent = view.copy.now;
-      why.textContent = view.copy.why;
-      glyph.textContent = frame.descriptor?.glyph ?? '·';
-      ghost.textContent = glyph.textContent;
-      for(const layer of depth)layer.textContent=glyph.textContent;
+      setText(mode, view.replay ? 'Replay · recorded route observation; nothing is being sent' : 'Current route observation');
+      setText(now, view.copy.now);
+      setText(why, view.copy.why);
+      setText(glyph, frame.descriptor?.glyph ?? '');
+      glyphGroup.setAttribute('visibility', frame.descriptor ? 'visible' : 'hidden');
+      setText(ghost, glyph.textContent);
+      for(const layer of depth)setText(layer,glyph.textContent);
       glyph.setAttribute('opacity',glyph.textContent==='𝄐'?'0':'1');
       ghost.setAttribute('opacity',glyph.textContent==='𝄐'?'0':'.32');
       depthLayer.setAttribute('visibility',glyph.textContent==='𝄐'?'hidden':'visible');
@@ -600,16 +650,16 @@ export function mountLoomInstrumentStateView(root) {
         particles[i].setAttribute('cy',(260+Math.sin(angle)*radius*.48).toFixed(2));
         particles[i].setAttribute('opacity',(frame.reduced_motion?.3:.23+Math.sin(i+seconds*.4)**2*.52).toFixed(3));
       }
-      const evidencedTrail=(view.event_relation_history??[]).filter(item=>item?.glyph&&item?.relation_key);
+      const evidencedTrail=frame.descriptor ? (view.event_relation_history??[]).filter(item=>item?.glyph&&item?.relation_key) : [];
       for(let i=0;i<flightCount;i++){
         const node=flightGlyphs[i],visible=evidencedTrail.length>0;
-        if(!visible){node.textContent='';node.setAttribute('visibility','hidden');continue;}
+        if(!visible){setText(node,'');node.setAttribute('visibility','hidden');continue;}
         const observed=evidencedTrail[i%evidencedTrail.length];
         const relationKey=observed.relation_key;
         const depthClass=node.getAttribute('class');
         const nearPlane=depthClass==='flight-near';
         const midPlane=depthClass==='flight-mid';
-        node.textContent=observed.glyph;
+        setText(node,observed.glyph);
         node.setAttribute('data-flight-relation',relationKey);
         node.setAttribute('visibility','visible');
 
@@ -704,12 +754,12 @@ export function mountLoomInstrumentStateView(root) {
         node.setAttribute('x',x.toFixed(2));node.setAttribute('y',y.toFixed(2));
         node.setAttribute('transform',`translate(${x.toFixed(2)} ${y.toFixed(2)}) rotate(${roll.toFixed(2)}) scale(${scale.toFixed(2)}) translate(${-x.toFixed(2)} ${-y.toFixed(2)})`);
       }
-      title.textContent = frame.descriptor ? `${frame.descriptor.label}. ${frame.endpoints.join(' to ')}.` : 'No request relation is established yet.';
+      setText(title, frame.descriptor ? `${frame.descriptor.label}. ${frame.endpoints.join(' to ')}.` : 'No request relation is established yet.');
       svg.setAttribute('aria-label', title.textContent);
-      origin.textContent = frame.endpoints[0]; destination.textContent = frame.endpoints[1];
-      endpoints.textContent = frame.endpoints.join(' → ');
-      relation.textContent = frame.descriptor ? `${frame.descriptor.glyph} · ${frame.descriptor.label}${frame.display_rest_only ? ' · display paused; the request state is unchanged' : ''}` : 'Choose material to establish the next relation.';
-      next.textContent = view.copy.next;
+      setText(origin, frame.endpoints[0]); setText(destination, frame.endpoints[1]);
+      setText(endpoints, frame.endpoints.join(' → '));
+      setText(relation, frame.descriptor ? `${frame.descriptor.glyph} · ${frame.descriptor.label}${frame.display_rest_only ? ' · display paused; the request state is unchanged' : ''}` : 'Choose material to establish the next relation.');
+      setText(next, view.copy.next);
       if (current !== view) {
         exact.textContent = `${view.selected_route ?? 'No inspection route selected'} · source ${view.source_revision} (declared, unauthenticated) · ${view.model_reports.status}.`;
         const selected = view.selected_aia_view;
@@ -728,7 +778,7 @@ export function mountLoomInstrumentStateView(root) {
         receipt.textContent = JSON.stringify({
           schema: view.schema, observation_class: view.observation_class, source_revision: view.source_revision,
           source_revision_authenticated: false, source_revision_status: view.source_revision_status, request_id: view.event.request_id,
-          state: view.state, local_checks: view.scene.causal_structure.local_checks,
+          state: view.state, route_event: view.event.route_event, local_checks: view.scene.causal_structure.local_checks,
           selected_document_ids: view.event.selected_document_ids, model_reports: view.model_reports,
           selected_route: view.selected_route, aia_invariant_report: view.aia_invariant_report,
           active_relation: view.active_relation, relation_evidence: Object.fromEntries(Object.entries(view.relations).map(([key, item]) => [key, item.evidence_basis])),
@@ -744,7 +794,10 @@ export function mountLoomInstrumentStateView(root) {
     inspect: () => Object.freeze({ view: current, frame: lastFrame, owns_animation_loop: false, destroyed }),
     destroy() {
       if (destroyed) return;
-      destroyed = true; current = null; lastFrame = null; section.remove();
+      destroyed = true; current = null; lastFrame = null;
+      // Composition may relocate these nodes into the Session workspace.
+      // Ownership follows the references, rather than their original parents.
+      relation.remove(); endpoints.remove(); next.remove(); details.remove(); section.remove();
       delete root.dataset.clientPhase; delete root.dataset.activeRelation; delete root.dataset.reducedMotion;
       delete doc.documentElement.dataset.loomRelation;
     }

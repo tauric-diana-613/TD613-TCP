@@ -66,8 +66,8 @@ test('real Loom arrival, inspection, close and staging are local preparation, no
     const menu = h.doc.querySelector('#loomDemoMenu');
     const choices = [...menu.querySelectorAll('button')];
     assert.equal(menu.hidden, false);
-    assert.equal(choices[0].textContent, '1 · Attach Loom handoff');
-    assert.equal(choices[1].textContent, '2 · Attach selected files');
+    assert.equal(choices[0].textContent, 'Setup · Attach Loom handoff');
+    assert.equal(choices[1].textContent, 'Continue · Attach selected files');
     assert.equal(choices[1].disabled, true);
     h.doc.dispatchEvent(new h.root.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     assert.equal(menu.hidden, true);
@@ -82,8 +82,10 @@ test('real Loom arrival, inspection, close and staging are local preparation, no
     assert.equal(h.doc.querySelector('.loom-demo-composer-note'), null);
     assert.equal(h.doc.querySelector('#loomDemoMessages'), null);
     assert.equal(h.doc.querySelector('#khonapolitMessages').hidden, false);
-    assert.match(h.doc.querySelector('#khonapolitPrompt').value, /Receive the attached Loom Portable AIA/);
-    assert.match(h.doc.querySelector('#khonapolitTerminalStatus').textContent, /selected files have not been sent/);
+    // OLD ASSERTION: public Portable AIA wording. REAL CONTRACT: setup handoff + prompt are staged before explicit Send.
+    // NEW WITNESS: Loom wording and all existing staged/no-network assertions below.
+    assert.match(h.doc.querySelector('#khonapolitPrompt').value, /Receive the attached Loom handoff/);
+    assert.match(h.doc.querySelector('#khonapolitTerminalStatus').textContent, /Selected file contents remain here/);
     assert.equal(h.doc.activeElement, h.doc.querySelector('#khonapolitPrompt'));
     assert.equal(menu.querySelectorAll('button')[2].hidden, true);
     const after = { ...zeroEffects(), retrieval_requests: h.calls() };

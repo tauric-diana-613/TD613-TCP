@@ -25,30 +25,54 @@ export function mountLoomRuntimeStateView(root, {
   const statusNode = doc.createElement('p');
   statusNode.className = 'ai-runtime-state-status';
   statusNode.setAttribute('role', 'status');
+  // Compilation status overlays the reserved field footprint. Inserting a
+  // flow paragraph or display:none on the former field can move a button
+  // between pointerdown and pointerup and lose the operator's gesture.
+  Object.assign(statusNode.style, { position: 'absolute', inset: '0', margin: '0', alignContent: 'center', textAlign: 'center', pointerEvents: 'none' });
   statusNode.hidden = true;
   root.append(statusNode);
   let latestSnapshot = null, lastPacket = null, compiled = null, heldReason = null, generation = 0, disposed = false, status = 'WAITING', hasPublishedView = false;
-  function setStatus(value) { status = value;root.dataset.projectionState = value; }
+  function setStatus(value) { status = value;if (root.dataset.projectionState !== value) root.dataset.projectionState = value; }
   function inspectionState(value) {
     if (!inspectionSummary) return;
-    inspectionSummary.textContent = value === 'CURRENT' ? currentInspectionLabel
+    const label = value === 'CURRENT' ? currentInspectionLabel
       : hasPublishedView ? `Prior observation · current projection ${value === 'HELD' ? 'held' : 'updating'}`
         : `Current projection ${value === 'HELD' ? 'held' : 'updating'} · no observation ready`;
+    if (inspectionSummary.textContent !== label) inspectionSummary.textContent = label;
+  }
+  function reserveVisualFootprint() {
+    if (!section) return;
+    // Retain layout without exposing a prior observation as current, through
+    // pixels, accessibility, focus, or state metadata. The separately labelled
+    // prior receipt stays inspectable in its persistent Session workspace.
+    section.hidden = false;
+    section.style.visibility = 'hidden';
+    section.setAttribute('aria-hidden', 'true');
+    section.setAttribute('inert', '');
+    delete root.dataset.clientPhase; delete root.dataset.activeRelation;
+    delete doc.documentElement.dataset.loomRelation;
+  }
+  function exposeCurrentVisual() {
+    if (!section) return;
+    section.style.removeProperty('visibility');
+    section.removeAttribute('aria-hidden');
+    section.removeAttribute('inert');
   }
   function publish(snapshot) {
     if (disposed || doc.hidden) return;
     if (heldReason !== null) {
       root.removeAttribute('aria-busy');setStatus('HELD');
       delete root.dataset.clientPhase;delete root.dataset.activeRelation;
-      if (section) section.hidden = true;
+      reserveVisualFootprint();
       inspectionState('HELD');
       statusNode.textContent = `Current route projection held · ${heldReason}. Inspect the request status before continuing.`;
       statusNode.hidden = false;
     } else if (compiled) {
       renderer.update(compiled, snapshot);
       hasPublishedView = true;inspectionState('CURRENT');
-      if (section) section.hidden = false;
-      statusNode.hidden = true;root.removeAttribute('aria-busy');setStatus('CURRENT');
+      exposeCurrentVisual();
+      if (!statusNode.hidden) statusNode.hidden = true;
+      root.removeAttribute('aria-busy');setStatus('CURRENT');
     }
   }
   function renderSnapshot(snapshot) {
@@ -68,10 +92,11 @@ export function mountLoomRuntimeStateView(root, {
     const token = ++generation;
     setStatus('COMPILING');root.setAttribute('aria-busy', 'true');
     inspectionState('COMPILING');
-    statusNode.hidden = true;
+    statusNode.textContent = 'Updating the current route observation…';
+    statusNode.hidden = false;
     if (mode) mode.textContent = 'Updating the current route observation…';
     // A prior projection is never presented as the new packet's current state.
-    if (section) section.hidden = true;
+    reserveVisualFootprint();
     (async () => {
       const observation = observe();
       return compileLoomInstrumentStateView(snapshot.packet, {

@@ -7,7 +7,7 @@ import { createLoomAiGovernance, createPortableLoomAiPacket } from '../app/dome-
 import { createPortableLoomSession, createPortableLoomWorkUnit, portableLoomDigest } from '../app/engine/portable-loom-session.js';
 import { LOOM_REENTRY_RETURN_SCHEMA } from '../app/engine/portable-loom-reentry.js';
 
-async function harness() {
+async function harness({ onCheck = () => {} } = {}) {
   const dom = new JSDOM('<section id="loomAiWorkspace"><section id="root"></section></section>');
   const root = dom.window.document.getElementById('root');
   let clock = 1000, clipboard = '', admission = null, challenge = null;
@@ -25,6 +25,7 @@ async function harness() {
   const prepared = await createPortableLoomWorkUnit(seed, { work_unit_id: 'seed_1', request_id: 'request_seed_1', task: source.task, documents: source.documents, add_rules: [], withheld_document_count: 1 }, environment);
   const ui = mountPortableLoomReentryWorkspace(root, {
     environment, now: () => clock,
+    onCheck,
     onAdmission: (session, unit) => { admission = { session, unit }; },
     onChallenge: (session, unit) => { challenge = { session, unit }; }
   });
@@ -62,6 +63,52 @@ async function check(h, overrides = {}) {
   h.change('returns', JSON.stringify(await returnData(h, overrides))); h.checked('policy-review', true); h.$('check').click(); await settled(h);
 }
 
+// Presentation migration: the old witness opened a top-level Return drawer and
+// nested operational drawers. The behavioral contract is reachable registration,
+// Check and exact-candidate Admit, with inspectable commitments and private scope.
+// The new composition keeps those controls outside the one secondary disclosure.
+test('Return is a primary workspace with one secondary inspection and no nested disclosures', async () => {
+  const h = await harness();
+  try {
+    assert.equal(h.$('drawer').tagName, 'SECTION');
+    assert.equal(h.root.querySelectorAll('details').length, 1);
+    assert.equal(h.root.querySelectorAll('details details').length, 0);
+    for (const key of ['task', 'stage', 'copy', 'returns', 'policy-review', 'check', 'accept', 'admit', 'save', 'rest']) {
+      assert.equal(h.$(key).closest('details'), null, `${key} belongs to the primary route`);
+    }
+    assert.equal(h.$('rules').closest('details'), null, 'the exact rules are visible before policy review');
+    assert.equal(h.$('inspection').open, false);
+    h.$('inspect-sources').click();
+    assert.equal(h.$('inspection').open, true);
+    assert.equal(h.dom.window.document.activeElement, h.$('sources'));
+    await stage(h, 'Return with deliberately selected source.', [{ id: 'selected', name: 'Selected.md', text: 'Fictional explicit source.' }]);
+    await check(h); h.checked('accept', true); h.$('admit').click(); await settled(h);
+    assert.equal(h.root.querySelectorAll('details').length, 1, 'admitted source inspection adds no nested disclosure');
+    assert.equal(h.$('continuation').closest('details'), h.$('inspection'), 'carrier-only compatibility stays secondary');
+    assert.match(h.$('continuation').textContent, /registers no foreign turn and advances no ancestry/);
+  } finally { h.close(); }
+});
+
+test('source selection and live-versus-imported custody remain visible without opening inspection', async () => {
+  const h = await harness();
+  try {
+    assert.equal(h.root.dataset.custodyState, 'LIVE_PROCESS');
+    assert.match(h.$('lane-state').textContent, /Live local custody in this tab/);
+    assert.equal(h.$('lane-state').closest('details'), null);
+    h.change('sources', JSON.stringify([{ id: 'selected', name: 'Selected.md', text: 'Fictional explicit source.' }]));
+    h.change('withheld', '1');
+    assert.match(h.$('source-selection').textContent, /1 source body selected.*1 deliberately withheld/);
+    assert.equal(h.$('inspection').open, false);
+    await h.ui.setSession(structuredClone(h.session), h.packet);
+    assert.equal(h.root.dataset.custodyState, 'UNAVAILABLE');
+    assert.match(h.$('lane-state').textContent, /Imported or reloaded records remain review-only/);
+    assert.equal(h.$('stage').disabled, true);
+    assert.equal(h.$('admit').disabled, true);
+    assert.equal(h.$('result').dataset.state, 'HELD');
+    assert.equal(h.$('result').closest('details'), null);
+  } finally { h.close(); }
+});
+
 test('real custodian staging and Check keep the admission-only head unchanged; copy is its own gesture', async () => {
   const h = await harness();
   try {
@@ -79,6 +126,53 @@ test('real custodian staging and Check keep the admission-only head unchanged; c
     assert.equal(h.$('admission').hidden, false);
     assert.match(h.$('notice').textContent, /admitted head changes/);
     assert.match(h.$('detail').textContent, /Nothing has been admitted yet/);
+  } finally { h.close(); }
+});
+
+test('Check observation follows the actual rendered candidate and never advances the head', async () => {
+  const observed = [];
+  let h;
+  h = await harness({ onCheck: checked => observed.push({ checked,
+    candidate: h.ui.inspect().candidate, head: h.ui.inspect().custody.current_work_unit_ref,
+    visibleState: h.$('result').dataset.state, admissionVisible: !h.$('admission').hidden }) });
+  try {
+    await stage(h);
+    h.change('returns', '{'); h.$('check').click(); await settled(h);
+    assert.equal(observed.length, 0, 'malformed input rejected before custodian.check produces no check observation');
+    assert.equal(h.$('result').dataset.state, 'HELD');
+    await check(h);
+    assert.equal(observed.length, 1);
+    assert.equal(observed[0].checked, h.ui.inspect().candidate);
+    assert.equal(observed[0].candidate, observed[0].checked);
+    assert.equal(observed[0].checked.status, 'ADMISSION_CANDIDATE');
+    assert.equal(observed[0].visibleState, 'ADMISSION_CANDIDATE');
+    assert.equal(observed[0].admissionVisible, true, 'callback follows rendered admission candidate');
+    assert.equal(observed[0].head, null);
+    assert.equal(h.ui.inspect().custody.work_unit_count, 0);
+    await check(h, { receiver_declaration: { policy_change_requested: true, notes: 'Fictional attempted weakening.' } });
+    assert.equal(observed.length, 2);
+    assert.equal(observed[1].checked.status, 'HELD');
+    assert.equal(observed[1].visibleState, 'HELD');
+    assert.equal(observed[1].admissionVisible, false);
+    assert.equal(observed[1].head, null);
+  } finally { h.close(); }
+});
+
+test('failed Check observation preserves the real candidate and its subsequent exact admission', async () => {
+  const h = await harness({ onCheck: () => { throw new Error('Fictional companion unavailable.'); } });
+  try {
+    await stage(h); await check(h);
+    const candidate = h.ui.inspect().candidate;
+    assert.equal(candidate.status, 'ADMISSION_CANDIDATE');
+    assert.equal(h.$('result').dataset.state, 'ADMISSION_CANDIDATE');
+    assert.equal(h.$('verdict').textContent, 'Ready for local admission.');
+    assert.equal(h.$('check-observation-status').hidden, false);
+    assert.match(h.$('check-observation-status').textContent, /observation refresh held/);
+    assert.equal(h.ui.inspect().custody.current_work_unit_ref, null);
+    h.checked('accept', true); h.$('admit').click(); await settled(h);
+    assert.equal(h.ui.inspect().custody.work_unit_count, 1);
+    assert.equal(h.$('result').dataset.state, 'ADMITTED');
+    assert.equal(h.$('check-observation-status').hidden, true);
   } finally { h.close(); }
 });
 

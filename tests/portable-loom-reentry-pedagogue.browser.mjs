@@ -67,14 +67,17 @@ try {
     await page.locator('[data-project="participant-research"]').click();
     await page.locator('#aiPreparePortable').click();
     await page.waitForFunction(()=>!document.querySelector('[data-loom-reentry="stage"]').disabled);
-    await r('drawer').locator('summary').first().click();
+    // Return action order stays governed; the old outer/nested drawer-opening
+    // ceremony is retired in favor of primary steps and one exact workspace.
+    assert.equal(await r('drawer').evaluate(node=>node.tagName),'SECTION');
+    assert.equal(await r('task').isVisible(),true);
     assert.equal(await head(),'');
     const selected={id:'pedagogue_explicit',name:'Deliberate-source.md',text:'FICTIONAL_SOURCE_BODY_ONLY_EXPLICIT_SELECTION '.repeat(240)};
-    await r('sources-drawer').locator('summary').click();await r('sources').fill(JSON.stringify([selected]));
+    await r('inspect-sources').click();await r('sources').fill(JSON.stringify([selected]));
     await r('task').fill('Return a concise assessment of the explicitly selected fictional source.');await r('stage').click();
     await page.waitForFunction(()=>document.querySelector('[data-loom-reentry="turns"]').children.length===1);
     assert.equal(await head(),'');assert.equal(await r('sources').inputValue(),'[]');
-    await r('prompt-drawer').locator('summary').click();
+    assert.equal(await r('prompt').isVisible(),true);
     const prompt=await r('prompt').textContent();
     const contract=JSON.parse(prompt.split('\n\n').find(part=>part.startsWith('{')));
     const answer='A fictional answer captured locally for the encounter assay.';
@@ -132,10 +135,10 @@ try {
     const saveWarning=page.getByText('Private Save includes selected source bodies',{exact:false});
     const adjacentSaveWarning=await saveWarning.count()?await exposed(saveWarning):null;
     assert.match(saveControl.text,/private/i);assert.match(privateRecordNotice.text,/do not paste it into a receiver/i);
-    await r('continuation').locator('summary').first().click();
+    if(await r('inspection').getAttribute('open')===null)await r('inspection').locator('summary').click();
     assert.equal(await r('continuation-sources').locator('input:checked').count(),0);
     await r('continuation-task').fill('Carry the admitted result into a new fictional discussion without source bodies.');
-    await r('prepare-carrier').click();await r('carrier-preview').locator('summary').click();
+    await r('prepare-carrier').click();assert.equal(await r('carrier-preview').isVisible(),true);
     const publicCarrierText=await r('carrier').textContent(),publicCarrier=JSON.parse(publicCarrierText);
     assert.ok(publicCarrierText.includes(answer));assert.ok(!publicCarrierText.includes(selected.text));
     assert.ok(!publicCarrierText.includes(localKey));assert.ok(!publicCarrierText.includes('captured_return'));
