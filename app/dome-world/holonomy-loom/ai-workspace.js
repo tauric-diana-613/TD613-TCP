@@ -141,7 +141,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
         <button type="button" id="aiCopySession" disabled>Copy Loom Session</button>
       </div>
       <p id="aiMarrowlineCustodyNote" class="ai-muted" hidden>Marrowline opens in a new tab. Keep this original Loom tab open: its live Check/Admit custody lane is not recreated by browser Back or reload. Save the private custody record before closing or reloading this tab.</p>
-      <details class="ai-result-disclosure ai-onehop-drawer"><summary>One-hop packet tools</summary><div class="ai-output-actions"><button type="button" id="aiExport" disabled>Export AIA packet</button><button type="button" id="aiCopy" disabled>Copy one-hop AIA</button></div></details>
+      <details class="ai-result-disclosure ai-onehop-drawer"><summary>One-hop packet tools</summary><div class="ai-output-actions"><button type="button" id="aiExport" disabled>Export legacy packet</button><button type="button" id="aiCopy" disabled>Copy legacy one-hop</button></div></details>
       <details id="aiChallengeDrawer" class="ai-result-disclosure ai-challenge-drawer">
         <summary><span>Challenge receiver<small>Ask for evidence without exporting the local answer key</small></span></summary>
         <div class="ai-challenge-body">
@@ -455,7 +455,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
       taskGovernor=await createLoomAiTaskGovernor(shared,environment);
       const admission=await taskGovernor.authorize(shared);
       if(disposed||version!==currentVersion)return;if(stopRequested)throw new DOMException('Stopped','AbortError');
-      if(!admission.allowed)throw new Error('The AIA task binding changed. Prepare the task again.');
+      if(!admission.allowed)throw new Error('The Loom task binding changed. Prepare the task again.');
       routeFacts.binding_verified=true;
       controller=new AbortController();const deadline=environment.setTimeout(()=>{clientDeadlineExceeded=true;controller?.abort();},LOOM_AI_CLIENT_TIMEOUT_MS);const started=environment.performance.now();
       let response,result;
@@ -469,6 +469,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
       if(currentVersion!==version)throw new Error('Workspace changed while the request was running. Prepare the current task again.');
       acceptedTask=shared;
       await establishPortableSession(shared,{requestId,response:result,replacementState});
+      setJourney('ready');
       $('aiResultEyebrow').textContent='RETURNED THROUGH YOUR LOOM ROUTE';$('aiResult').setAttribute('aria-label','AI result');$('aiResultTitle').textContent='Here’s the work.';$('aiSubmittedTaskText').textContent=shared.task;$('aiSubmittedTask').hidden=false;resultView=renderLoomAiResult($('aiAnswer'),result,{selectedDocuments:shared.documents,documentNames:Object.fromEntries(shared.documents.map(d=>[d.id,d.name]))});resultView.setView($('aiAuditor').getAttribute('aria-pressed')==='true');
       const unchangedProject=LOOM_AI_PROJECTS.find(p=>p.task===shared.task&&JSON.stringify(p.rules)===JSON.stringify(shared.rules)&&JSON.stringify(p.documents.filter(d=>d.share).map(({id,name,text})=>({id,name,text})))===JSON.stringify(shared.documents));
       const quality=assessLoomProjectAnswer(unchangedProject?.id,result);
