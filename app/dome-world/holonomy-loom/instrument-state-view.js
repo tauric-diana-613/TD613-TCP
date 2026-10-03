@@ -588,7 +588,7 @@ export function mountLoomInstrumentStateView(root) {
       const seconds = frame.reduced_motion ? 0 : Number(snapshot.motionTimeMs ?? snapshot.timeMs ?? 0)/1000;
       const choreography=snapshot.packet?.presentation?.flowcore_choreography;
       const choreographyRelations=Array.isArray(choreography?.relations)?choreography.relations.filter(key=>view.relations?.[key]):[];
-      const ambientChoreography=frame.relation_key===null&&choreographyRelations.length>0;
+      const ambientChoreography=frame.relation_key==null&&choreographyRelations.length>0;
       root.dataset.flowcoreChoreography=ambientChoreography?String(choreography.id??'ambient'):'evidenced';
       root.dataset.flowcoreMotionFamily=ambientChoreography?String(choreography.family??'heterostratigraphic'):'canonical-relation';
       const breath = frame.reduced_motion ? 0 : Math.sin(seconds*.72);
