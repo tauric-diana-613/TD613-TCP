@@ -141,7 +141,7 @@ try {
       await page.locator('#aiPreparePortable').click();
       await page.waitForFunction(() => document.querySelector('#aiResult') && !document.querySelector('#aiResult').hidden);
       assert.equal(requests.length,0,'local Loom transfer preparation makes no provider request');
-      assert.equal(await page.locator('#aiResultTitle').innerText(),'Your Loom transfer is prepared locally.');
+      assert.equal(await page.locator('#aiResultTitle').innerText(),'AI request ready.');
       assert.equal(await page.locator('#loomAiWorkspace').getAttribute('data-loom-journey'),'ready');
       assert.equal(await page.locator('#aiMarrowline').isEnabled(),true,'prepared work can continue to Marrowline without a speculative authority gate');
       assert.equal(await page.locator('#aiExport').isEnabled(),true,'prepared one-hop export is available');
@@ -157,7 +157,7 @@ try {
       await page.locator('#aiSessionInspect > summary').click();
       assert.equal(await page.locator('#aiSessionReceipt').isVisible(),false,'exact session contract returns to progressive disclosure after inspection');
       await closeTools();
-      assert.match(await page.locator('#aiAnswer').innerText(),/made no model request/i);
+      assert.match(await page.locator('#aiAnswer').innerText(),/Preparation does not send them to AI/i);
       assert.match(await page.locator('#aiAnswer').innerText(),/hidden receiver state and downstream behavior remain outside this local binding/i);
 
       assert.equal(await page.locator('#aiExport').isEnabled(),true,'prepared one-hop export stays available without an unrelated authority gate');
@@ -228,12 +228,12 @@ try {
       await page.locator('#loomJourneyStep1').click();
       assert.equal(await page.locator('#aiResult').isVisible(),false,'returning to the builder keeps crossing content contextual');
       await page.locator('#aiDemoMode').click();
-      assert.equal(await page.locator('#aiDemoWelcome').isVisible(),true,'Practice route reveals the fictional project chooser');
-      assert.equal(await page.locator('#aiRuntime').count(),1,'Practice reuses the same canonical state view rather than mounting another one');
-      assert.equal(await page.locator('#aiRuntime').isVisible(),false,'Practice remains in the builder scene until the operator opens How it works');
-      assert.equal(await page.locator('#aiPreparePortable').evaluate(node=>node.classList.contains('ai-primary')),true,'Practice preserves local preparation as the primary route gesture');
-      assert.equal(await page.locator('a[href="/dome-world/loom-instrument-lab.html"]').first().isVisible(),true,'Instrument Lab remains independently available during practice');
-      assert.match(await page.locator('#aiDemoModePanel').innerText(),/Fictional material\. Same route, same boundaries\./i);
+      assert.equal(await page.locator('#aiDemoWelcome').isVisible(),true,'Demo route reveals the fictional project chooser');
+      assert.equal(await page.locator('#aiRuntime').count(),1,'Demo reuses the same canonical state view rather than mounting another one');
+      assert.equal(await page.locator('#aiRuntime').isVisible(),false,'Demo remains in the builder scene until the operator opens How it works');
+      assert.equal(await page.locator('#aiPreparePortable').evaluate(node=>node.classList.contains('ai-primary')),true,'Demo preserves local preparation as the primary route gesture');
+      assert.equal(await page.locator('a[href="/dome-world/loom-instrument-lab.html"]').first().isVisible(),true,'Instrument Lab remains independently available during Demo');
+      assert.match(await page.locator('#aiDemoModePanel').innerText(),/Choose a fictional example, then try the same controls with your own work\./i);
       await page.locator('#aiDemoInvitation').click();
       assert.equal(await page.locator('#aiDemoInvitation').getAttribute('aria-expanded'), 'true');
       await page.locator('#aiProjectChoices button').first().click();
@@ -281,7 +281,7 @@ try {
       await page.locator('#aiPortableMode').click();
       assert.equal(await page.locator('#aiExport').isDisabled(),true,'switching modes invalidates the previously prepared transfer until the current task is prepared again');
       await page.locator('#aiDemoMode').click();
-      assert.equal(await page.locator('#aiExport').isDisabled(),true,'switching back to practice does not resurrect a crossing invalidated by the intervening mode change');
+      assert.equal(await page.locator('#aiExport').isDisabled(),true,'switching back to Demo does not resurrect a crossing invalidated by the intervening mode change');
       if(await page.locator('#aiNewRootNotice').isVisible()) await page.locator('#aiNewRootConfirm').check();
       await page.locator('#aiPreparePortable').click();
       await page.waitForFunction(() => document.querySelector('#aiExport')?.disabled === false);

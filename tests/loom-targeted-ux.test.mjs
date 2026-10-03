@@ -77,7 +77,7 @@ test('How Loom works is a recoverable handoff preview with a living Flow-Core re
   assert.match(workspaceSource, /coordinator\.setContinuous\(true\)/);
   assert.match(workspaceSource, /title:'Choose what AI can use\.'/);
   assert.match(workspaceSource, /title:'You’re ready to try Loom\.'/);
-  assert.match(workspaceSource, /Try the live Loom →/);
+  assert.match(workspaceSource, /Try Loom →/);
   assert.doesNotMatch(workspaceSource, /title:'Prepared is not transmitted\.'/);
   assert.doesNotMatch(workspaceSource, /title:'They gathered\. Nothing crossed\.'/);
   assert.doesNotMatch(workspaceSource, /title:'Watch readiness form\.'/);
@@ -278,7 +278,7 @@ test('first use explains private material, remixes presentation, and skips witho
   assert.equal(privateNote.tagName,'DIV');
   assert.equal(privateNote.getAttribute('role'),'note');
   assert.match(privateNote.textContent,/Private note/);
-  assert.match(privateNote.textContent,/Excluded from the AI request/);
+  assert.match(privateNote.textContent,/Stays in this browser/);
   assert.equal(privateNote.hasAttribute('aria-pressed'), false);
   const before=h.$('#loomFlowcoreMessage').textContent;
   h.$('#loomFirstCrossingPause').click();

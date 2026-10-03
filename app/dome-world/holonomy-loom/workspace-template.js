@@ -13,25 +13,25 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
     <div class="loom-first-crossing-copy">
       <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">HOW LOOM WORKS</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 3 · Choose</span></div>
       <h2 id="loomFirstCrossingTitle">Choose what AI can use.</h2>
-      <p id="loomFirstCrossingPrompt">Select your request and the reference you want AI to use. The private note stays out of the AI request.</p>
+      <p id="loomFirstCrossingPrompt">See how Loom controls what AI receives, using a fictional request and reference.</p>
       <p id="loomFlowcoreMessage" class="loom-flowcore-message" aria-live="polite"></p>
     </div>
     <details class="loom-flowcore-help">
       <summary>What is Flow-Core runtime?</summary>
-      <p>Flow-Core is Loom’s visual map of an AI handoff. These eight symbols show when Loom gathers, revisits, sends, reviews, keeps private, marks ready, returns, or rests.</p>
+      <p>Flow-Core is Loom’s visual map of an AI request. These eight symbols show when Loom gathers, revisits, sends, reviews, keeps private, marks ready, returns, or rests.</p>
       <div class="loom-flowcore-legend">
         <span><b>à</b> Gather</span><span><b>米</b> Revisit</span><span><b>出</b> Send</span><span><b>hõt</b> Review</span>
         <span><b>cōl</b> Keep private</span><span><b>上</b> Ready</span><span><b>下</b> Return</span><span><b>𝄐</b> Rest</span>
       </div>
     </details>
-    <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="How Loom controls an AI handoff">
+    <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="How Loom controls an AI request">
       <button type="button" data-first-crossing-item="brief" aria-pressed="false"><span>TASK</span><strong>Your request</strong><small>What you want AI to do.</small></button>
       <button type="button" data-first-crossing-item="source" aria-pressed="false"><span>REFERENCE</span><strong>Reference</strong><small>Context you want AI to use.</small></button>
-      <div id="loomFirstCrossingPrivate" class="loom-first-crossing-private" role="note"><span>NOT SHARED</span><strong>Private note</strong><small>Excluded from the AI request.</small></div>
+      <div id="loomFirstCrossingPrivate" class="loom-first-crossing-private" role="note"><span>NOT SHARED</span><strong>Private note</strong><small>Stays in this browser.</small></div>
     </div>
     <div class="loom-first-crossing-actions">
-      <button type="button" id="loomFirstCrossingAction" hidden>Preview AI handoff →</button>
-      <button type="button" id="loomFirstCrossingStop" hidden>Finish tutorial →</button>
+      <button type="button" id="loomFirstCrossingAction" hidden>Check AI request →</button>
+      <button type="button" id="loomFirstCrossingStop" hidden>Finish demo →</button>
     </div>
     <div class="loom-practice-controls">
       <button type="button" id="loomFirstCrossingBack" hidden>← Start over</button>
@@ -43,11 +43,11 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
   </section>
 </div>
 <div class="loom-hero-route" aria-hidden="true"><span data-hero-step="loom"><b>1</b> Loom</span><i>→</i><span data-hero-step="marrowline"><b>2</b> Marrowline</span><i>→</i><span data-hero-step="return"><b>3</b> Return</span></div>
-<button type="button" id="loomBegin" class="loom-begin">Try the live Loom →</button>
+<button type="button" id="loomBegin" class="loom-begin">Try Loom →</button>
 </section>
 <section class="loom-builder-shell" aria-label="Loom builder" hidden>
 <div id="loomWorkspaceField" class="loom-workspace-field" aria-label="Current AI request state"></div>
-<header class="loom-intro"><div><h1 id="loomStageHeading">Loom</h1><p>Prepare an AI task, send it through Marrowline, and keep the sources and handoff history attached.</p></div><div class="loom-intro-actions"><button type="button" id="loomReturnThreshold" class="loom-text-action">How it works</button><button type="button" id="loomToolsOpen" class="loom-text-action">Tools</button></div></header>
+<header class="loom-intro"><div><h1 id="loomStageHeading">Loom</h1><p>Choose what AI receives. Keep your sources and conversation history together.</p></div><div class="loom-intro-actions"><button type="button" id="loomReturnThreshold" class="loom-text-action">How it works</button><button type="button" id="loomToolsOpen" class="loom-text-action">Tools</button></div></header>
 <nav class="loom-journey" aria-label="Loom route">
 <button type="button" class="loom-journey-step" id="loomJourneyStep1" data-workspace="build" aria-current="step"><b>1</b><strong>Loom</strong></button><span aria-hidden="true">→</span>
 <button type="button" class="loom-journey-step" id="loomJourneyStep2" data-workspace="crossing" disabled><b>2</b><strong>Marrowline</strong></button><span aria-hidden="true">→</span>
@@ -56,10 +56,10 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
 <div class="loom-working-surface">
 <div class="loom-workspaces">
 <section id="loomBuilder" class="loom-builder" aria-labelledby="loomBuilderTitle">
-<header class="loom-builder-head"><h2 id="loomBuilderTitle">Your task</h2><div class="ai-mode-tabs" role="tablist" aria-label="Loom mode"><button type="button" id="aiPortableMode" role="tab" aria-selected="true" aria-controls="aiPortableModePanel">My work</button><button type="button" id="aiDemoMode" role="tab" aria-selected="false" aria-controls="aiDemoModePanel">Practice</button></div></header>
-<section id="aiPortableModePanel" role="tabpanel" aria-labelledby="aiPortableMode"><p id="aiFirstUseGuide">Build the task here. Marrowline carries the AI conversation when you continue.</p></section><section id="aiDemoModePanel" role="tabpanel" aria-labelledby="aiDemoMode" hidden><p>Fictional material. Same route, same boundaries.</p></section>
-<div id="aiDemoWelcome" hidden><button type="button" id="aiDemoInvitation" aria-expanded="false" aria-controls="aiProjectChoices">Choose a practice case +</button></div>
-<div id="aiProjectChoices" class="ai-projects" aria-label="Practice projects" hidden></div>
+<header class="loom-builder-head"><h2 id="loomBuilderTitle">Your task</h2><div class="ai-mode-tabs" role="tablist" aria-label="Loom mode"><button type="button" id="aiPortableMode" role="tab" aria-selected="true" aria-controls="aiPortableModePanel">My work</button><button type="button" id="aiDemoMode" role="tab" aria-selected="false" aria-controls="aiDemoModePanel">Demo</button></div></header>
+<section id="aiPortableModePanel" role="tabpanel" aria-labelledby="aiPortableMode"><p id="aiFirstUseGuide">Build the task here. Marrowline carries the AI conversation when you continue.</p></section><section id="aiDemoModePanel" role="tabpanel" aria-labelledby="aiDemoMode" hidden><p>Choose a fictional example, then try the same controls with your own work.</p></section>
+<div id="aiDemoWelcome" hidden><button type="button" id="aiDemoInvitation" aria-expanded="false" aria-controls="aiProjectChoices">Choose a demo +</button></div>
+<div id="aiProjectChoices" class="ai-projects" aria-label="Demo projects" hidden></div>
 <section id="aiProjectBrief" class="ai-project-brief" aria-label="Project brief" hidden><h3 id="aiBriefTitle"></h3><p id="aiBriefText"></p><p id="aiBriefRoute"></p></section>
 <section class="ai-composer" aria-label="Your Loom task">
 <label id="aiTaskLabel" for="aiTask">Task</label><textarea id="aiTask" maxlength="12000" placeholder="Ask for a decision, an analysis, a plan…" aria-describedby="aiTaskCue"></textarea><p id="aiTaskCue" class="ai-muted">Your task travels with the material you select.</p>
@@ -67,19 +67,19 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
 <p class="ai-file-cue">Files stay here until selected.</p><ul id="aiDocuments" class="ai-documents" aria-label="Document sharing"></ul>
 <section id="aiPortableProjection" class="ai-portable-projection" aria-label="Transfer boundary"><div><span>Travels</span><strong id="aiProjectionTravel">Task · 0 documents · 2 rules</strong></div><div><span>Stays here</span><strong id="aiProjectionStay">0 local documents · private checks</strong></div></section>
 <div id="aiNewRootNotice" class="ai-new-root-notice" hidden tabindex="-1"><p>Starting a new root replaces this tab's active Loom custody lane.</p><p id="aiNewRootCoordinate"></p><button type="button" id="aiSaveActiveCustody">Save current private custody record</button><label><input id="aiNewRootConfirm" type="checkbox"> Replace the active root.</label></div>
-<div class="ai-send-row"><button type="button" id="aiPreparePortable" class="ai-primary">Prepare transfer →</button><button type="button" id="aiStop" hidden>Stop waiting</button><span id="aiSendSummary" class="ai-muted"></span></div>
-<div id="aiPending" class="ai-pending" hidden><span class="ai-wait-orbit" aria-hidden="true"></span><div><strong id="aiPendingLabel">Preparing your request</strong><span id="aiPendingTime" aria-live="off"></span></div></div><p id="aiStatus" role="status" aria-live="polite">Write a task or choose Practice.</p>
+<div class="ai-send-row"><button type="button" id="aiPreparePortable" class="ai-primary">Prepare AI request →</button><button type="button" id="aiStop" hidden>Stop waiting</button><span id="aiSendSummary" class="ai-muted"></span></div>
+<div id="aiPending" class="ai-pending" hidden><span class="ai-wait-orbit" aria-hidden="true"></span><div><strong id="aiPendingLabel">Preparing your request</strong><span id="aiPendingTime" aria-live="off"></span></div></div><p id="aiStatus" role="status" aria-live="polite">Write a task or choose Demo.</p>
 </section></section>
 <aside id="aiPortableDrawer" class="ai-route-note" hidden><p id="aiPortableLead"></p></aside>
 <section id="aiResult" class="ai-result" tabindex="-1" aria-label="Loom continuation" hidden>
-<p id="aiResultEyebrow" class="mark">Prepared here</p><h2 id="aiResultTitle">Ready to cross.</h2>
-<section class="ai-crossing-boundary" aria-labelledby="aiCrossingTitle"><h3 id="aiCrossingTitle">Continue in Marrowline</h3><p>Only your selected task, files and traveling rules cross. Local preparation makes no model request.</p></section>
+<p id="aiResultEyebrow" class="mark">Prepared here</p><h2 id="aiResultTitle">AI request ready.</h2>
+<section class="ai-crossing-boundary" aria-labelledby="aiCrossingTitle"><h3 id="aiCrossingTitle">Continue in Marrowline</h3><p>Your request includes your selected files and rules. Preparation does not send it to AI. Shared content follows the AI service’s own policies.</p></section>
 <div class="ai-output-actions"><button type="button" id="aiMarrowline" class="ai-primary" disabled>Continue in Marrowline ↗</button><button type="button" id="aiExportSession" disabled>Export session</button><button type="button" id="aiCopySession" disabled>Copy session</button></div>
 <div id="aiAnswer" class="ai-answer"></div><div id="aiMissing"></div><p id="aiNext"></p>
-<p id="aiMarrowlineCustodyNote" hidden>Keep this Loom tab open for its live custody lane. Save a private record before closing it; reopening that record permits review only.</p>
+<p id="aiMarrowlineCustodyNote" hidden>Keep this Loom tab open. Save your session before closing it; a saved file permits review without restoring this tab’s live session.</p>
 <button type="button" id="loomDepartureSave">Save private custody record</button><button type="button" id="loomPreparedInspect">Inspect prepared work</button>
 </section>
-<section id="loomReturnWorkspace" aria-label="Return to Loom" tabindex="-1" hidden><header><h2>Bring the work back.</h2><p>Review the returned session and its immediate predecessor. A held check keeps the local head unchanged.</p></header><div id="loomReturnedSessionReview"></div><button type="button" id="loomLocalCustodyOpen">Local custody · Check & Admit</button><section id="aiReentryWorkspace" aria-label="Local returned work admission" hidden></section></section>
+<section id="loomReturnWorkspace" aria-label="Return to Loom" tabindex="-1" hidden><header><h2>Bring the work back.</h2><p>Review the AI result alongside its sources and conversation history.</p></header><div id="loomReturnedSessionReview"></div><button type="button" id="loomLocalCustodyOpen">Local custody · Check & Admit</button><section id="aiReentryWorkspace" aria-label="Local returned work admission" hidden></section></section>
 </div>
 </div>
 </section>

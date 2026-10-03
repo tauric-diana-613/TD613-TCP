@@ -80,7 +80,7 @@ test('Loom human-facing task surface stays provider-neutral and names the active
   assert.ok(doc.querySelector('#aiProjectBrief'));
   assert.equal(doc.querySelector('#aiTask').getAttribute('aria-describedby'), 'aiTaskCue');
   assert.match(source, /Task and selected material travel together/i);
-  assert.match(source, /Edit the fictional task\. Prepare locally before choosing a crossing/i);
+  assert.match(source, /Edit this fictional example, then prepare the AI request/i);
   assert.match(source, /optional model test sends the fictional task and selected documents/i);
   assert.equal(dom.window.getComputedStyle(doc.querySelector('#aiTask')).fontSize, '16px');
   assert.match(css, /@media\(max-width:760px\)/);
