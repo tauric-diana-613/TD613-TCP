@@ -436,6 +436,9 @@ html[data-loom-journey="marrowline"] #loomAiWorkspace .ai-runtime,
 html[data-loom-journey="return"] #loomAiWorkspace .ai-runtime{
   margin-top:0!important;
 }
+html[data-loom-journey="ready"] #loomAiWorkspace .ai-result{
+  z-index:30!important;
+}
 html[data-loom-journey="ready"] #loomAiWorkspace .ai-result,
 html[data-loom-journey="marrowline"] #loomAiWorkspace .ai-result,
 html[data-loom-journey="return"] #loomAiWorkspace .ai-result{
