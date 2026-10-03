@@ -441,7 +441,7 @@ export function mountLoomInstrumentStateView(root) {
   const flightGlyphs = Array.from({length:39},(_,i)=>{
     const near=i%13===0||i%11===0, mid=!near&&(i%4===0||i%7===0);
     const node=svgEl('text',{
-      x:0,y:0,'font-size':near?(i%13===0?118:86):mid?48:27,
+      x:0,y:0,'font-size':near?(i%13===0?184:132):mid?56:26,
       fill:i%9===0?'#f3bd86':i%5===0?'#9ce7e4':'#b69be9',
       class:near?'flight-near':mid?'flight-mid':'flight-far'
     });
@@ -586,6 +586,9 @@ export function mountLoomInstrumentStateView(root) {
         if(!visible){node.textContent='';node.setAttribute('visibility','hidden');continue;}
         const observed=evidencedTrail[i%evidencedTrail.length];
         const relationKey=observed.relation_key;
+        const depthClass=node.getAttribute('class');
+        const nearPlane=depthClass==='flight-near';
+        const midPlane=depthClass==='flight-mid';
         node.textContent=observed.glyph;
         node.setAttribute('data-flight-relation',relationKey);
         node.setAttribute('visibility','visible');
@@ -663,6 +666,20 @@ export function mountLoomInstrumentStateView(root) {
           y=260+lane*46;
         }
 
+        // Depth is presentation only: it changes apparent distance, never the
+        // relation identity or event order. Near carriers may partially leave
+        // the frame so the field reads as space rather than a glyph inventory.
+        if(nearPlane){
+          scale*=1.55;
+          x+=(i%2?1:-1)*34;
+          y+=(i%3-1)*26;
+          opacity=Math.min(1,opacity*.9);
+        }else if(midPlane){
+          scale*=1.08;
+          opacity=Math.min(.52,opacity*.72);
+        }else{
+          opacity=Math.min(.12,opacity*.22);
+        }
         node.setAttribute('opacity',opacity.toFixed(3));
         node.setAttribute('x',x.toFixed(2));node.setAttribute('y',y.toFixed(2));
         node.setAttribute('transform',`translate(${x.toFixed(2)} ${y.toFixed(2)}) rotate(${roll.toFixed(2)}) scale(${scale.toFixed(2)}) translate(${-x.toFixed(2)} ${-y.toFixed(2)})`);
