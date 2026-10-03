@@ -316,9 +316,9 @@ html[data-loom-journey="return"] #loomAiWorkspace .loom-hero-route [data-hero-st
 }
 
 
-/* ===== LOOM THRESHOLD =====
-   The cinematic field is a persistent gate. First Crossing itself is styled
-   later as a field-native projection; it is not a panel or card. */
+/* ===== LOOM TUTORIAL LAYER =====
+   The cinematic field stays behind the tutorial; the tutorial itself remains
+   field-native rather than becoming another nested panel or card. */
 #loomAiWorkspace .loom-builder-shell[hidden]{display:none!important}
 #loomAiWorkspace .loom-threshold-layer{
   position:absolute;z-index:17;inset:0;pointer-events:none
@@ -331,6 +331,8 @@ html[data-loom-journey="return"] #loomAiWorkspace .loom-hero-route [data-hero-st
   display:block;color:#77848f;font:650 .52rem/1 var(--mono);
   letter-spacing:.14em;text-transform:uppercase
 }
+#loomAiWorkspace .loom-tutorial-meta{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+#loomAiWorkspace .loom-tutorial-progress{color:#8aa2ad;font:560 .58rem/1 var(--sans);letter-spacing:.02em}
 #loomAiWorkspace .loom-threshold-gate p{
   max-width:36ch;margin:9px 0 0;color:#7f8b96;font-size:.72rem;line-height:1.45
 }
@@ -383,7 +385,7 @@ html[data-loom-journey="return"] #loomAiWorkspace .loom-hero-route [data-hero-st
 }
 
 
-/* First Crossing uses the canonical field for spatial consequence. Controls
+/* The tutorial uses the canonical field for spatial consequence. Controls
    remain readable at its edge; no CSS path, moving card, or second clock. */
 #loomAiWorkspace[data-first-crossing="active"] .loom-stage-copy p,
 #loomAiWorkspace[data-first-crossing="active"] .loom-instrument-state-mode,
