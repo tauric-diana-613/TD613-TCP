@@ -6,6 +6,45 @@
 // for Loom's existing 39-carrier field.
 export const FLOWCORE_CHOREOGRAPHY_SCHEMA = 'td613.loom.flowcore-choreography/v0.1';
 
+export const FLOWCORE_MOTION_FAMILIES = Object.freeze({
+  'phi-gossamer': Object.freeze({rate:.041,x:34,y:22,roll:7,scale:.075,moire:.42,quasi:1,torsion:.18,shear:.12,rise:.08,phase:.13}),
+  'orbital-braid': Object.freeze({rate:.034,x:42,y:29,roll:11,scale:.09,moire:.28,quasi:.62,torsion:.48,shear:.08,rise:.04,phase:.31}),
+  'torsion-bloom': Object.freeze({rate:.046,x:38,y:36,roll:18,scale:.12,moire:.22,quasi:.48,torsion:1,shear:.18,rise:.12,phase:.47}),
+  'moire-shear': Object.freeze({rate:.038,x:58,y:24,roll:13,scale:.08,moire:1,quasi:.35,torsion:.22,shear:1,rise:.02,phase:.59}),
+  'threnodic-gossamer': Object.freeze({rate:.026,x:31,y:28,roll:9,scale:.065,moire:.36,quasi:.86,torsion:.12,shear:.16,rise:-.14,phase:.71}),
+  'phasonic-rise': Object.freeze({rate:.044,x:33,y:48,roll:10,scale:.105,moire:.31,quasi:.92,torsion:.26,shear:.14,rise:1,phase:.83}),
+  'gradient-stampede': Object.freeze({rate:.055,x:64,y:34,roll:16,scale:.13,moire:.54,quasi:.38,torsion:.42,shear:.72,rise:.38,phase:.97}),
+  'quiet-recurrence': Object.freeze({rate:.017,x:20,y:15,roll:4,scale:.045,moire:.24,quasi:.7,torsion:.08,shear:.06,rise:.01,phase:.07})
+});
+
+const TAU=Math.PI*2,PHI=(1+Math.sqrt(5))/2;
+export function projectFlowcoreMotionFamily(familyId,{index,count=39,seconds=0,phase=0,depth='flight-far'}={}){
+  const family=FLOWCORE_MOTION_FAMILIES[familyId];
+  if(!family)throw new TypeError(`Unknown Flow-Core motion family: ${familyId}`);
+  if(!Number.isInteger(index)||index<0||!Number.isInteger(count)||count<1||index>=count)throw new TypeError('Flow-Core carrier coordinate is outside the bounded family projection.');
+  for(const [name,value] of Object.entries({seconds,phase}))if(typeof value!=='number'||!Number.isFinite(value))throw new TypeError(`${name} must be finite.`);
+  const u=(index+.5)/count, t=seconds*family.rate, p=family.phase;
+  // Six coupled phases borrow Dome-Art's triangular Moiré + φ/quasiperiodic
+  // visual vocabulary. This is modeled presentation only: no exact substrate,
+  // empirical geometry, provider route, or exteriority claim is made here.
+  const a0=TAU*(u+t+p), a1=TAU*(u*PHI+t/PHI+p*.7), a2=TAU*(u*Math.sqrt(3)-t*.73+p*.3);
+  const a3=TAU*(u*Math.SQRT2+t*.51-p*.4), a4=TAU*(u*PHI*PHI-t*.37+p*.9), a5=TAU*(u*(2+Math.sqrt(5))+t*.29-p*.2);
+  const moire=(Math.sin(a0)+Math.sin(a2)-Math.cos(a3))/3;
+  const quasi=(Math.sin(a1)+Math.cos(a4)+Math.sin(a5))/3;
+  const torsion=Math.sin(a0-a4)*Math.cos(a2+a5);
+  const shear=Math.sin(a2-a3);
+  const rise=Math.sin(a1+a4)*.5+.5;
+  const depthGain=depth==='flight-near'?1.35:depth==='flight-mid'?.82:.46;
+  const dx=depthGain*family.x*(family.moire*moire+family.quasi*quasi+family.shear*shear*.55);
+  const dy=depthGain*family.y*(family.moire*moire-family.quasi*quasi+family.torsion*torsion*.7)+family.rise*(rise-.5)*52;
+  return Object.freeze({
+    dx,dy,
+    roll:depthGain*family.roll*(torsion+family.shear*shear*.45),
+    scale:1+depthGain*family.scale*(quasi+family.torsion*torsion*.5),
+    opacity:Math.max(.72,Math.min(1.08,1+depthGain*.08*(moire+quasi)))
+  });
+}
+
 export const FLOWCORE_CHOREOGRAPHIES = Object.freeze([
   Object.freeze({
     id:'pattern-to-rest',
