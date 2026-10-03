@@ -267,7 +267,7 @@ try {
       assert.equal(requests.length,1,'replay and auditor view make no provider request');
       await page.locator('#aiRoomLive').click();
       await page.locator('#aiChild').click();
-      await page.waitForFunction(() => document.querySelector('#aiRuntimeState')?.dataset.clientPhase === 'completed');
+      await page.waitForFunction(() => document.querySelector('#aiRuntimeState')?.dataset.clientPhase === 'checking');
       mode = 'failure';
       receivedRequest = new Promise(resolve => { observedRequest = resolve; });
       responseGate = new Promise(resolve => { releaseResponse = resolve; });

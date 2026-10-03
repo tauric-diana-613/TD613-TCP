@@ -1140,6 +1140,7 @@ html[data-loom-relation="structural_rest"] #loomAiWorkspace .loom-field-glyph{fi
     #loomAiWorkspace .ai-documents>li:has(input:not(:checked))::after,
     #loomAiWorkspace .ai-documents>li:has(input:checked)::after{
       position:absolute;
+      pointer-events:none;
       top:18px;
       right:0;
       font:600 .52rem/1 var(--mono);
