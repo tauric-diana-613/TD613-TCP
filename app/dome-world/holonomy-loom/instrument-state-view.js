@@ -493,6 +493,7 @@ export function mountLoomInstrumentStateView(root) {
       root.dataset.clientPhase = view.phase;
       root.dataset.activeRelation = frame.relation_key ?? 'unobserved';
       root.dataset.reducedMotion = String(frame.reduced_motion);
+      doc.documentElement.dataset.loomRelation = frame.relation_key ?? 'unobserved';
       mode.textContent = view.replay ? 'Replay · recorded route observation; nothing is being sent' : 'Current route observation';
       if (now.textContent !== view.copy.now) now.textContent = view.copy.now;
       why.textContent = view.copy.why;
@@ -533,32 +534,92 @@ export function mountLoomInstrumentStateView(root) {
         particles[i].setAttribute('cy',(260+Math.sin(angle)*radius*.48).toFixed(2));
         particles[i].setAttribute('opacity',(frame.reduced_motion?.3:.23+Math.sin(i+seconds*.4)**2*.52).toFixed(3));
       }
-      const evidencedGlyphs=(view.event_relation_history??[]).map(item=>item.glyph).filter(Boolean);
-      const flightDirection=frame.relation_key==='released_tendency'||frame.relation_key==='protected_continuity'?-1:1;
+      const evidencedTrail=(view.event_relation_history??[]).filter(item=>item?.glyph&&item?.relation_key);
       for(let i=0;i<flightGlyphs.length;i++){
-        const node=flightGlyphs[i],visible=evidencedGlyphs.length>0;
-        node.textContent=visible?evidencedGlyphs[i%evidencedGlyphs.length]:'';
-        if(!visible){node.setAttribute('visibility','hidden');continue;}
+        const node=flightGlyphs[i],visible=evidencedTrail.length>0;
+        if(!visible){node.textContent='';node.setAttribute('visibility','hidden');continue;}
+        const observed=evidencedTrail[i%evidencedTrail.length];
+        const relationKey=observed.relation_key;
+        node.textContent=observed.glyph;
+        node.setAttribute('data-flight-relation',relationKey);
         node.setAttribute('visibility','visible');
+
+        // Each path follows the canonical relation's graphic/motion grammar.
+        // This is presentation of an already-recorded relation, never a claim
+        // that the provider or external world followed the drawn trajectory.
+        const seed=(i+.5)/flightGlyphs.length;
         if(frame.reduced_motion){
           const col=i%7,row=Math.floor(i/7),x=110+col*130,y=92+row*112;
           node.setAttribute('x',String(x));node.setAttribute('y',String(y));
           node.setAttribute('transform',`rotate(${(col-3)*3} ${x} ${y})`);
           continue;
         }
-        const speed=.018+(i%7)*.0038;
-        const phase=((i/flightGlyphs.length)+(seconds*speed*flightDirection))%1;
-        const t=((phase%1)+1)%1;
-        const x=-190+t*1380;
+
+        const speed=.014+(i%7)*.0033;
+        const phase=((seed+seconds*speed)%1+1)%1;
         const lane=(i%9)-4;
-        const relationWave=frame.relation_key==='bounded_emergence'?Math.sin(t*Math.PI*2+i*.7)*72:
-          frame.relation_key==='created_potential'?Math.sin(t*Math.PI+i*.41)*46:
-          frame.relation_key==='structural_rest'?0:Math.sin(seconds*.42+i*1.73)*34;
-        const y=260+lane*49+relationWave+Math.sin(seconds*.17+i*.31)*18;
-        const roll=(frame.relation_key==='structural_rest'?0:Math.sin(seconds*.28+i)*16)+(i%2?9:-9);
-        const depth=.48+(i%9)*.085;
+        let x=500,y=260,roll=0,scale=.48+(i%9)*.085,opacity=1;
+
+        if(relationKey==='gathering'){
+          const radius=(1-phase)*650+36;
+          const angle=(i*2.3999632297)+seconds*.07;
+          x=500+Math.cos(angle)*radius;
+          y=260+Math.sin(angle)*radius*.42;
+          roll=(1-phase)*22*(i%2?1:-1);
+          scale=.42+phase*.58;
+        }else if(relationKey==='recurrence'){
+          const orbit=155+(i%7)*38;
+          const angle=phase*Math.PI*2+i*.61;
+          x=500+Math.cos(angle)*orbit*1.45;
+          y=260+Math.sin(angle)*orbit*.58;
+          roll=Math.sin(angle)*14;
+          scale=.48+(Math.sin(angle*2)*.5+.5)*.42;
+        }else if(relationKey==='release'){
+          x=500+(phase-.08)*760*(i%2?1:-1);
+          y=260+lane*42+Math.sin(phase*Math.PI+i)*34;
+          roll=(i%2?1:-1)*(12+phase*24);
+          scale=.54+phase*.42;
+        }else if(relationKey==='created_potential'){
+          x=500+lane*55+Math.sin(i*.73+seconds*.18)*26;
+          y=560-phase*650;
+          roll=Math.sin(i+phase*Math.PI)*9;
+          scale=.44+phase*.56;
+        }else if(relationKey==='released_tendency'){
+          x=500+lane*58+Math.sin(i*.53+seconds*.16)*30;
+          y=-60+phase*700;
+          roll=Math.sin(i+phase*Math.PI)*11;
+          scale=1-phase*.36;
+        }else if(relationKey==='protected_continuity'){
+          const angle=phase*Math.PI*2+i*.47;
+          const radius=185+(i%5)*26;
+          x=500+Math.cos(angle)*radius;
+          y=260+Math.sin(angle)*radius*.46;
+          roll=Math.sin(angle)*5;
+          scale=.52+(i%4)*.07;
+          opacity=.64;
+        }else if(relationKey==='bounded_emergence'){
+          const angle=i*2.3999632297+seconds*.045;
+          const radius=28+phase*(360+(i%6)*42);
+          x=500+Math.cos(angle)*radius*1.45;
+          y=260+Math.sin(angle)*radius*.58;
+          roll=phase*18*(i%2?1:-1);
+          scale=.46+phase*.8;
+        }else if(relationKey==='structural_rest'){
+          const angle=i*2.3999632297;
+          const radius=110+(i%7)*23;
+          x=500+Math.cos(angle)*radius*1.2;
+          y=260+Math.sin(angle)*radius*.46;
+          roll=0;
+          scale=.44+(i%5)*.06;
+          opacity=.34;
+        }else{
+          x=-180+phase*1360;
+          y=260+lane*46;
+        }
+
+        node.setAttribute('opacity',opacity.toFixed(3));
         node.setAttribute('x',x.toFixed(2));node.setAttribute('y',y.toFixed(2));
-        node.setAttribute('transform',`translate(${x.toFixed(2)} ${y.toFixed(2)}) rotate(${roll.toFixed(2)}) scale(${depth.toFixed(2)}) translate(${-x.toFixed(2)} ${-y.toFixed(2)})`);
+        node.setAttribute('transform',`translate(${x.toFixed(2)} ${y.toFixed(2)}) rotate(${roll.toFixed(2)}) scale(${scale.toFixed(2)}) translate(${-x.toFixed(2)} ${-y.toFixed(2)})`);
       }
       title.textContent = frame.descriptor ? `${frame.descriptor.label}. ${frame.endpoints.join(' to ')}.` : 'No request relation is established yet.';
       svg.setAttribute('aria-label', title.textContent);
@@ -602,6 +663,7 @@ export function mountLoomInstrumentStateView(root) {
       if (destroyed) return;
       destroyed = true; current = null; lastFrame = null; section.remove();
       delete root.dataset.clientPhase; delete root.dataset.activeRelation; delete root.dataset.reducedMotion;
+      delete doc.documentElement.dataset.loomRelation;
     }
   });
 }
