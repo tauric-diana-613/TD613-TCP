@@ -1,0 +1,678 @@
+/*
+ * TD613 Holonomy Loom — Dromological Regime
+ *
+ * This is not a dashboard skin. The route itself changes the composition.
+ * Continuous motion belongs only to the existing AnimationCoordinator-driven
+ * Flow-Core field. These rules switch spatial regimes from explicit DOM state;
+ * they do not manufacture events, authority, provider activity, or evidence.
+ */
+
+:root{
+  --dr-void:#040308;
+  --dr-ivory:#f7f0e8;
+  --dr-cyan:#91ece8;
+  --dr-gold:#efbc7f;
+  --dr-violet:#c7a2ef;
+  --dr-rose:#e8a0c2;
+  --dr-smoke:#8d8295;
+  --dr-hair:rgba(216,197,230,.16);
+  --dr-hair-hot:rgba(239,188,127,.52);
+}
+
+/* Static moiré atmosphere. Phase changes move the registration; nothing loops. */
+body::after{
+  content:"";
+  position:fixed;
+  inset:-12vmax;
+  z-index:0;
+  pointer-events:none;
+  opacity:.18;
+  background:
+    repeating-linear-gradient(17deg,rgba(145,236,232,.06) 0 1px,transparent 1px 17px),
+    repeating-linear-gradient(-13deg,rgba(199,162,239,.045) 0 1px,transparent 1px 19px),
+    radial-gradient(ellipse at 50% 44%,rgba(239,188,127,.055),transparent 52%);
+  mix-blend-mode:screen;
+  transform:translate3d(-3vw,-2vh,0) rotate(-1deg);
+  transform-origin:50% 50%;
+}
+html[data-loom-flow-phase="checking"] body::after{
+  transform:translate3d(4vw,-3vh,0) rotate(2deg) scale(1.03);
+  opacity:.25;
+}
+html[data-loom-flow-phase="pending"] body::after{
+  transform:translate3d(8vw,1vh,0) rotate(4deg) scale(1.06);
+  opacity:.29;
+}
+html[data-loom-flow-phase="received"] body::after{
+  transform:translate3d(-7vw,2vh,0) rotate(-3deg) scale(1.04);
+  opacity:.27;
+}
+html[data-loom-flow-phase="completed"] body::after,
+html[data-loom-flow-phase="held"] body::after{
+  transform:translate3d(0,0,0) rotate(0) scale(1);
+  opacity:.13;
+}
+
+/* Whole-page route inscription. */
+#loomAiWorkspace{
+  position:relative;
+  isolation:isolate;
+  --dr-seam:12%;
+  --dr-word:"LOOM";
+}
+#loomAiWorkspace>*{position:relative;z-index:2}
+#loomAiWorkspace::before{
+  content:var(--dr-word);
+  position:fixed;
+  right:-.045em;
+  bottom:-.12em;
+  z-index:0;
+  pointer-events:none;
+  user-select:none;
+  white-space:nowrap;
+  color:rgba(224,204,239,.026);
+  font:700 clamp(10rem,29vw,34rem)/.7 Georgia,"Times New Roman",serif;
+  letter-spacing:-.105em;
+  text-transform:uppercase;
+}
+#loomAiWorkspace::after{
+  content:"";
+  position:fixed;
+  top:0;bottom:0;
+  left:var(--dr-seam);
+  z-index:0;
+  width:1px;
+  pointer-events:none;
+  background:linear-gradient(to bottom,transparent 0%,rgba(145,236,232,.12) 14%,rgba(239,188,127,.62) 49%,rgba(199,162,239,.24) 78%,transparent 100%);
+  box-shadow:0 0 34px rgba(145,236,232,.11),0 0 100px rgba(199,162,239,.07);
+}
+#loomAiWorkspace[data-loom-journey="loom"]{--dr-word:"LOOM";--dr-seam:12%}
+#loomAiWorkspace[data-loom-journey="ready"]{--dr-word:"CROSSING";--dr-seam:48%}
+#loomAiWorkspace[data-loom-journey="marrowline"]{--dr-word:"MARROWLINE";--dr-seam:82%}
+#loomAiWorkspace[data-loom-journey="return"]{--dr-word:"RETURN";--dr-seam:50%}
+#loomAiWorkspace[data-loom-journey="ready"]::before{color:rgba(239,188,127,.035)}
+#loomAiWorkspace[data-loom-journey="marrowline"]::before{color:rgba(145,236,232,.032)}
+#loomAiWorkspace[data-loom-journey="return"]::before{color:rgba(199,162,239,.038)}
+
+/* Opening state: giant, sparse, unapologetically not-SaaS. */
+html[data-loom-journey="loom"] .hero{
+  min-height:min(72vh,760px);
+  display:grid!important;
+  grid-template-columns:1fr minmax(240px,32rem)!important;
+  align-content:center!important;
+  column-gap:5vw!important;
+  padding:7vh 0 5vh!important;
+}
+html[data-loom-journey="loom"] .hero .mark{align-self:end}
+html[data-loom-journey="loom"] .hero h1{
+  grid-column:1/-1;
+  font-size:clamp(5.2rem,14.8vw,11.8rem)!important;
+  line-height:.69!important;
+  letter-spacing:-.085em!important;
+  max-width:none!important;
+  margin:.07em 0 .12em -.045em!important;
+}
+html[data-loom-journey="loom"] .hero p:last-child{
+  grid-column:2;
+  justify-self:end;
+  border-left:1px solid var(--dr-hair-hot);
+  padding-left:18px;
+}
+html:not([data-loom-journey="loom"]) .hero{
+  min-height:0!important;
+  padding:26px 0 18px!important;
+  grid-template-columns:1fr!important;
+  border-bottom:1px solid var(--dr-hair);
+}
+html:not([data-loom-journey="loom"]) .hero .mark{display:none}
+html:not([data-loom-journey="loom"]) .hero h1{
+  font-size:clamp(2rem,5vw,4.4rem)!important;
+  line-height:.82!important;
+  margin:0!important;
+  color:rgba(247,240,232,.72)!important;
+}
+html:not([data-loom-journey="loom"]) .hero p:last-child{display:none}
+
+/* Route score changes from horizontal legend to a vertical coordinate after departure. */
+#loomAiWorkspace .loom-journey{
+  z-index:50!important;
+  background:rgba(4,3,8,.84)!important;
+  border:0!important;
+  border-top:1px solid var(--dr-hair)!important;
+  border-bottom:1px solid var(--dr-hair)!important;
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+}
+html[data-loom-journey="loom"] #loomAiWorkspace .loom-journey{
+  position:sticky!important;
+  top:0;
+  grid-template-columns:repeat(3,1fr)!important;
+  margin:0 0 64px!important;
+}
+#loomAiWorkspace .loom-journey-step{
+  background:transparent!important;
+  border:0!important;
+  min-height:66px!important;
+  color:#716879!important;
+}
+#loomAiWorkspace .loom-journey-step+.loom-journey-step{border-left:1px solid var(--dr-hair)!important}
+#loomAiWorkspace .loom-journey-step b{
+  font:400 .74rem/1 var(--mono)!important;
+  letter-spacing:.12em;
+  color:#625b69!important;
+}
+#loomAiWorkspace .loom-journey-step strong{
+  font-size:.65rem!important;
+  letter-spacing:.16em!important;
+}
+#loomAiWorkspace .loom-journey-step small{
+  color:#625a69!important;
+  font-size:.63rem!important;
+}
+html:not([data-loom-journey="loom"]) #loomAiWorkspace .loom-journey{
+  position:fixed!important;
+  right:18px;
+  top:50%;
+  width:122px;
+  margin:0!important;
+  transform:translateY(-50%);
+  grid-template-columns:1fr!important;
+  border:1px solid var(--dr-hair)!important;
+  border-right:0!important;
+  background:rgba(4,3,8,.76)!important;
+}
+html:not([data-loom-journey="loom"]) #loomAiWorkspace .loom-journey-step{
+  min-height:78px!important;
+  grid-template-columns:20px 1fr!important;
+  padding:12px 8px!important;
+}
+html:not([data-loom-journey="loom"]) #loomAiWorkspace .loom-journey-step+.loom-journey-step{
+  border-left:0!important;
+  border-top:1px solid var(--dr-hair)!important;
+}
+html:not([data-loom-journey="loom"]) #loomAiWorkspace .loom-journey-step small{display:none!important}
+html:not([data-loom-journey="loom"]) #loomAiWorkspace .loom-journey-step strong{font-size:.58rem!important}
+html[data-loom-journey="ready"] #loomJourneyStep2,
+html[data-loom-journey="marrowline"] #loomJourneyStep2,
+html[data-loom-journey="return"] #loomJourneyStep3{
+  color:var(--dr-ivory)!important;
+  background:linear-gradient(90deg,rgba(239,188,127,.08),transparent)!important;
+}
+html[data-loom-journey="marrowline"] #loomJourneyStep2{
+  background:linear-gradient(90deg,rgba(145,236,232,.09),transparent)!important;
+}
+html[data-loom-journey="return"] #loomJourneyStep3{
+  background:linear-gradient(90deg,rgba(199,162,239,.10),transparent)!important;
+}
+
+/* Entry is a scored workspace, not a stack of containers. */
+#loomAiWorkspace .ai-mode-shell{
+  width:min(940px,100%);
+  margin:0 auto 7vh!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+}
+#loomAiWorkspace .ai-mode-head{
+  display:grid!important;
+  grid-template-columns:1fr auto!important;
+  gap:30px!important;
+  align-items:end!important;
+}
+#loomAiWorkspace .ai-mode-head h2{
+  max-width:12ch!important;
+  font-size:clamp(2.8rem,6vw,5.5rem)!important;
+  line-height:.87!important;
+  letter-spacing:-.055em!important;
+}
+#loomAiWorkspace .ai-mode-head .ai-muted{max-width:46ch}
+#loomAiWorkspace .ai-mode-tabs{
+  align-self:end!important;
+  padding-bottom:5px!important;
+}
+#loomAiWorkspace .ai-mode-panel{
+  width:min(58ch,100%);
+  margin-top:28px!important;
+}
+#loomAiWorkspace .ai-mode-panel h3{font-size:1rem!important;font-family:var(--mono)!important;text-transform:uppercase;letter-spacing:.1em}
+#loomAiWorkspace .ai-portable-projection{
+  width:min(940px,100%);
+  margin:0 auto 9vh!important;
+}
+#loomAiWorkspace .ai-portable-projection>div{
+  min-height:92px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+}
+#loomAiWorkspace .ai-portable-projection strong{
+  font:400 clamp(1rem,2vw,1.35rem)/1.35 Georgia,serif!important;
+}
+
+/* The task form is one open sheet cut by a spectral rule. */
+#loomAiWorkspace .ai-composer{
+  width:min(880px,100%)!important;
+  margin:0 auto 7vh!important;
+}
+#loomAiWorkspace .ai-composer::before{
+  content:"";
+  display:block;
+  width:72px;height:1px;
+  margin:0 0 26px;
+  background:linear-gradient(90deg,var(--dr-gold),var(--dr-violet),var(--dr-cyan));
+  box-shadow:0 0 25px rgba(145,236,232,.2);
+}
+#loomAiWorkspace .ai-composer label[for="aiTask"]{
+  max-width:10ch;
+  font-size:clamp(3.5rem,8vw,7.4rem)!important;
+  line-height:.78!important;
+  letter-spacing:-.07em!important;
+  margin-left:-.03em!important;
+}
+#loomAiWorkspace textarea#aiTask{
+  min-height:250px!important;
+  font-size:1.08rem!important;
+  line-height:1.75!important;
+  padding:24px 2px!important;
+}
+#loomAiWorkspace .ai-toolbar{justify-content:space-between!important}
+#loomAiWorkspace .ai-send-row{
+  justify-content:flex-end!important;
+  border-top:1px solid var(--dr-hair)!important;
+  padding-top:18px!important;
+}
+#loomAiWorkspace #aiPreparePortable.ai-primary{
+  font-size:1.12rem!important;
+  min-width:240px;
+  text-align:left;
+}
+
+/* Current route becomes a true full-viewport instrument. */
+#loomAiWorkspace .ai-runtime{
+  min-height:100svh!important;
+  display:grid!important;
+  grid-template-rows:auto 1fr auto auto!important;
+  align-items:center;
+  margin-top:8vh!important;
+  margin-bottom:8vh!important;
+  border-top:1px solid rgba(145,236,232,.10)!important;
+  border-bottom:1px solid rgba(199,162,239,.12)!important;
+}
+#loomAiWorkspace .ai-runtime>.mark{
+  position:absolute!important;
+  top:24px;left:max(24px,calc((100vw - 1120px)/2));
+  width:auto!important;
+  margin:0!important;
+  writing-mode:vertical-rl;
+  text-orientation:mixed;
+  color:#5f5865!important;
+  z-index:5;
+}
+#loomAiWorkspace .ai-runtime-state{
+  min-height:100svh!important;
+  grid-row:1/-1;
+}
+#loomAiWorkspace .loom-instrument-state{
+  min-height:100svh!important;
+}
+#loomAiWorkspace .loom-glyph-field{
+  height:100svh!important;
+  min-height:680px;
+}
+#loomAiWorkspace .loom-instrument-state-mode{
+  writing-mode:vertical-rl;
+  top:52%!important;
+  right:max(14px,calc((100vw - 1160px)/2))!important;
+  transform:translateY(-50%);
+  letter-spacing:.18em!important;
+  color:#625a68!important;
+}
+#loomAiWorkspace .loom-field-caption{
+  bottom:8vh!important;
+  width:min(900px,calc(100% - 80px))!important;
+  text-align:left!important;
+}
+#loomAiWorkspace .loom-instrument-state-now{
+  max-width:18ch;
+  font-size:clamp(2.7rem,6.7vw,7rem)!important;
+  line-height:.82!important;
+  letter-spacing:-.055em!important;
+  color:rgba(247,240,232,.94)!important;
+  text-shadow:0 0 40px rgba(4,3,8,.8)!important;
+}
+#loomAiWorkspace .loom-instrument-state-endpoints{
+  margin-top:20px!important;
+  font:400 .68rem/1.5 var(--mono)!important;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+#loomAiWorkspace .loom-instrument-state-next{
+  max-width:54ch;
+  margin-top:5px!important;
+  color:#8e8397!important;
+}
+#loomAiWorkspace .loom-instrument-state-relation{
+  position:absolute;
+  left:max(24px,calc((100vw - 1120px)/2));
+  bottom:28px;
+  width:auto!important;
+  z-index:5;
+  font:400 .64rem/1 var(--mono)!important;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+#loomAiWorkspace .loom-instrument-state-boundary{
+  position:absolute;
+  right:max(24px,calc((100vw - 1120px)/2));
+  bottom:28px;
+  width:auto!important;
+  max-width:42ch;
+  text-align:right;
+  z-index:5;
+}
+#loomAiWorkspace .loom-instrument-state-inspection{
+  position:absolute!important;
+  top:28px;
+  left:50%;
+  width:min(600px,calc(100% - 170px))!important;
+  transform:translateX(-50%);
+  z-index:6;
+  border-top:0!important;
+}
+#loomAiWorkspace .loom-instrument-state-inspection>summary{
+  width:max-content;
+  margin-left:auto;
+  border-bottom:1px solid var(--dr-hair)!important;
+}
+#loomAiWorkspace .loom-instrument-state-inspection[open]{
+  padding:18px!important;
+  background:rgba(4,3,8,.92)!important;
+  border:1px solid var(--dr-hair)!important;
+}
+#loomAiWorkspace .ai-facts{
+  position:absolute;
+  top:28px;left:max(24px,calc((100vw - 1120px)/2));
+  width:auto!important;
+  display:flex!important;
+  gap:28px!important;
+  z-index:5;
+}
+#loomAiWorkspace .ai-facts div{
+  min-width:72px;
+  border:0!important;
+  padding:0!important;
+}
+#loomAiWorkspace .ai-facts dt{font-size:.55rem!important;letter-spacing:.12em!important;color:#655d6b!important}
+#loomAiWorkspace .ai-facts dd{font:400 1.3rem/1 Georgia,serif!important;color:#bfb5c5!important}
+#loomAiWorkspace .ai-room-replay{
+  position:absolute;
+  right:max(24px,calc((100vw - 1120px)/2));
+  top:70px;
+  width:auto!important;
+  z-index:5;
+  border:0!important;
+  background:transparent!important;
+}
+
+/* Flow-Core history should feel like traffic through depth, not stickers on a panel. */
+#loomAiWorkspace .loom-field-flight{mix-blend-mode:screen!important}
+#loomAiWorkspace .loom-field-flight .flight-far{opacity:.055!important}
+#loomAiWorkspace .loom-field-flight .flight-mid{opacity:.18!important}
+#loomAiWorkspace .loom-field-flight .flight-near{
+  opacity:.62!important;
+  filter:drop-shadow(0 0 14px rgba(145,236,232,.22));
+}
+html[data-loom-flow-phase="checking"] #loomAiWorkspace .loom-glyph-field{filter:saturate(1.24) contrast(1.06)}
+html[data-loom-flow-phase="pending"] #loomAiWorkspace .loom-glyph-field{filter:saturate(1.38) contrast(1.08)}
+html[data-loom-flow-phase="received"] #loomAiWorkspace .loom-glyph-field{filter:saturate(1.16) contrast(1.05)}
+html[data-loom-flow-phase="held"] #loomAiWorkspace .loom-glyph-field{filter:saturate(.62) contrast(1.12)}
+html[data-loom-flow-phase="completed"] #loomAiWorkspace .loom-glyph-field{filter:saturate(.82) contrast(1.02)}
+
+/* Preparation is a cut. Earlier controls remain available above, but the
+   current viewport becomes crossing rather than another card. */
+html[data-loom-journey="ready"] #loomAiWorkspace .ai-runtime,
+html[data-loom-journey="marrowline"] #loomAiWorkspace .ai-runtime,
+html[data-loom-journey="return"] #loomAiWorkspace .ai-runtime{
+  margin-top:0!important;
+}
+html[data-loom-journey="ready"] #loomAiWorkspace .ai-result,
+html[data-loom-journey="marrowline"] #loomAiWorkspace .ai-result,
+html[data-loom-journey="return"] #loomAiWorkspace .ai-result{
+  width:min(960px,calc(100% - 130px))!important;
+  margin-left:0!important;
+  padding:7vh 0 9vh!important;
+  border-top:0!important;
+}
+#loomAiWorkspace .ai-result h2{
+  max-width:12ch;
+  font-size:clamp(3rem,7vw,7rem)!important;
+  line-height:.78!important;
+  letter-spacing:-.07em!important;
+}
+#loomAiWorkspace .ai-result>.mark{
+  writing-mode:vertical-rl;
+  position:absolute;
+  left:-42px;
+  top:7vh;
+}
+#loomAiWorkspace .ai-answer{
+  max-width:74ch;
+  font-size:1.02rem;
+  line-height:1.72;
+}
+
+/* Crossing is drawn as a spatial seam rather than a credential panel. */
+#loomAiWorkspace .ai-crossing-boundary{
+  position:relative;
+  margin:9vh 0 4vh!important;
+  padding:5vh 0 3vh 9vw!important;
+  border:0!important;
+  border-top:1px solid var(--dr-hair-hot)!important;
+  background:linear-gradient(105deg,rgba(239,188,127,.055),transparent 44%)!important;
+}
+#loomAiWorkspace .ai-crossing-boundary::before{
+  content:"";
+  position:absolute;
+  top:-1px;bottom:-1px;
+  left:5vw;
+  width:1px;
+  background:linear-gradient(var(--dr-gold),var(--dr-violet),var(--dr-cyan));
+  box-shadow:0 0 30px rgba(239,188,127,.19);
+}
+#loomAiWorkspace .ai-crossing-boundary .mark{color:var(--dr-gold)!important}
+#loomAiWorkspace .ai-crossing-boundary h3{
+  margin:.1em 0 .2em!important;
+  font:400 clamp(2.7rem,6vw,6rem)/.82 Georgia,serif!important;
+  letter-spacing:-.06em;
+  max-width:8ch;
+}
+#loomAiWorkspace .ai-crossing-boundary p:last-child{max-width:54ch}
+#loomAiWorkspace .ai-output-actions{
+  justify-content:flex-start!important;
+  gap:24px!important;
+}
+#loomAiWorkspace #aiMarrowline.ai-primary{
+  min-width:min(520px,100%);
+  font:500 clamp(1.2rem,2.6vw,2.2rem)/1.2 Georgia,serif!important;
+  letter-spacing:-.025em;
+  padding:18px 70px 18px 0!important;
+}
+#loomAiWorkspace #aiMarrowline.ai-primary::after{
+  content:"↗";
+  font-size:2rem;
+}
+
+/* Technical drawers recede; the exact material remains reachable. */
+#loomAiWorkspace .ai-session-summary{
+  margin-top:7vh!important;
+  padding:3vh 0!important;
+}
+#loomAiWorkspace .ai-session-facts{
+  display:grid!important;
+  grid-template-columns:repeat(3,1fr)!important;
+  gap:0!important;
+  border-top:1px solid var(--dr-hair)!important;
+  border-bottom:1px solid var(--dr-hair)!important;
+}
+#loomAiWorkspace .ai-session-facts>span{
+  padding:14px 12px!important;
+  border:0!important;
+}
+#loomAiWorkspace .ai-session-facts>span+span{border-left:1px solid var(--dr-hair)!important}
+#loomAiWorkspace .ai-onehop-drawer,
+#loomAiWorkspace .ai-challenge-drawer,
+#loomAiWorkspace .ai-turn-verify{opacity:.72}
+#loomAiWorkspace .ai-onehop-drawer:hover,
+#loomAiWorkspace .ai-challenge-drawer:hover,
+#loomAiWorkspace .ai-turn-verify:hover,
+#loomAiWorkspace .ai-onehop-drawer:focus-within,
+#loomAiWorkspace .ai-challenge-drawer:focus-within,
+#loomAiWorkspace .ai-turn-verify:focus-within{opacity:1}
+
+/* Lab is an afterimage, not another product living under the product. */
+.loom-legacy{
+  width:min(960px,calc(100% - 130px))!important;
+  margin:16vh 0 7vh!important;
+  border-top:1px solid var(--dr-hair)!important;
+}
+.loom-legacy>.loom-laboratory-invitation{
+  min-height:100px!important;
+  display:grid!important;
+  grid-template-columns:50px 1fr auto!important;
+  gap:18px!important;
+  align-items:center!important;
+}
+.loom-legacy>.loom-laboratory-invitation strong{
+  font:400 clamp(1.5rem,3vw,2.8rem)/1 Georgia,serif!important;
+  letter-spacing:-.035em;
+}
+.loom-legacy>.loom-laboratory-invitation small{
+  max-width:54ch;
+  color:#776d80!important;
+}
+.loom-legacy .ai-invitation-orbit{font-size:2.2rem!important}
+
+/* Return is a different visual jurisdiction: centered, cooler, quieter. */
+html[data-loom-journey="return"] body{
+  background:
+    radial-gradient(900px 700px at 50% 30%,rgba(199,162,239,.12),transparent 60%),
+    radial-gradient(700px 500px at 80% 75%,rgba(145,236,232,.055),transparent 66%),
+    var(--dr-void)!important;
+}
+html[data-loom-journey="return"] #loomAiWorkspace .ai-result{
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+html[data-loom-journey="return"] #loomAiWorkspace .ai-result>.mark{color:var(--dr-violet)!important}
+html[data-loom-journey="return"] #loomAiWorkspace .ai-crossing-boundary{display:none!important}
+
+/* Small screens keep the same ontology but compose it as a vertical score. */
+@media(max-width:760px){
+  body::after{inset:-20vmax;opacity:.12}
+  #loomAiWorkspace::before{
+    font-size:clamp(7rem,38vw,13rem);
+    bottom:-.035em;
+    right:-.035em;
+    color:rgba(224,204,239,.018);
+  }
+  #loomAiWorkspace::after{display:none}
+  html[data-loom-journey="loom"] .hero{
+    min-height:68svh!important;
+    display:block!important;
+    padding:9vh 0 5vh!important;
+  }
+  html[data-loom-journey="loom"] .hero h1{
+    font-size:clamp(5rem,24vw,8rem)!important;
+    line-height:.67!important;
+    margin:.15em 0 .22em -.04em!important;
+  }
+  html[data-loom-journey="loom"] .hero p:last-child{
+    border-left:0;
+    border-top:1px solid var(--dr-hair-hot);
+    padding:16px 0 0;
+    max-width:88%;
+  }
+  html:not([data-loom-journey="loom"]) #loomAiWorkspace .loom-journey{
+    right:0;
+    top:auto;
+    bottom:0;
+    width:100%;
+    transform:none;
+    grid-template-columns:repeat(3,1fr)!important;
+    border:0!important;
+    border-top:1px solid var(--dr-hair)!important;
+    background:rgba(4,3,8,.93)!important;
+  }
+  html:not([data-loom-journey="loom"]) #loomAiWorkspace .loom-journey-step{
+    min-height:54px!important;
+    grid-template-columns:auto 1fr!important;
+    padding:8px 7px!important;
+  }
+  html:not([data-loom-journey="loom"]) #loomAiWorkspace .loom-journey-step+.loom-journey-step{
+    border-top:0!important;
+    border-left:1px solid var(--dr-hair)!important;
+  }
+  #loomAiWorkspace .ai-mode-head{grid-template-columns:1fr!important}
+  #loomAiWorkspace .ai-mode-head h2{font-size:clamp(2.7rem,14vw,4.6rem)!important}
+  #loomAiWorkspace .ai-portable-projection{margin-bottom:7vh!important}
+  #loomAiWorkspace .ai-composer label[for="aiTask"]{
+    font-size:clamp(3.6rem,18vw,6rem)!important;
+    line-height:.73!important;
+  }
+  #loomAiWorkspace textarea#aiTask{min-height:210px!important}
+  #loomAiWorkspace .ai-runtime{
+    min-height:100svh!important;
+    margin-left:calc(50% - 50vw)!important;
+  }
+  #loomAiWorkspace .ai-runtime-state,
+  #loomAiWorkspace .loom-instrument-state,
+  #loomAiWorkspace .loom-glyph-field{
+    min-height:100svh!important;
+    height:100svh!important;
+  }
+  #loomAiWorkspace .loom-field-caption{
+    width:calc(100% - 34px)!important;
+    bottom:12vh!important;
+  }
+  #loomAiWorkspace .loom-instrument-state-now{
+    font-size:clamp(2.8rem,14vw,5.6rem)!important;
+    max-width:9ch;
+  }
+  #loomAiWorkspace .loom-instrument-state-mode{display:none!important}
+  #loomAiWorkspace .loom-instrument-state-relation{
+    left:13px;
+    bottom:66px;
+  }
+  #loomAiWorkspace .loom-instrument-state-boundary{
+    right:13px;
+    bottom:66px;
+    max-width:24ch;
+  }
+  #loomAiWorkspace .loom-instrument-state-inspection{
+    top:16px;
+    width:calc(100% - 30px)!important;
+  }
+  #loomAiWorkspace .ai-facts{left:13px;top:18px;gap:15px!important}
+  #loomAiWorkspace .ai-facts dt{display:none}
+  #loomAiWorkspace .ai-room-replay{right:13px;top:54px}
+  html[data-loom-journey="ready"] #loomAiWorkspace .ai-result,
+  html[data-loom-journey="marrowline"] #loomAiWorkspace .ai-result,
+  html[data-loom-journey="return"] #loomAiWorkspace .ai-result,
+  .loom-legacy{
+    width:100%!important;
+    padding-right:0!important;
+  }
+  #loomAiWorkspace .ai-result>.mark{
+    position:static;
+    writing-mode:horizontal-tb;
+    margin-bottom:14px!important;
+  }
+  #loomAiWorkspace .ai-crossing-boundary{padding-left:28px!important}
+  #loomAiWorkspace .ai-crossing-boundary::before{left:0}
+  #loomAiWorkspace #aiMarrowline.ai-primary{min-width:100%}
+  .loom-legacy{margin-bottom:90px!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  body::after{transform:none!important}
+}
