@@ -156,22 +156,45 @@ try {
         firstCrossingVisual.background === 'rgba(0, 0, 0, 0)' &&
         firstCrossingVisual.border_top === '0px' &&
         firstCrossingVisual.visible_chrome.length === 0 &&
-        firstCrossingVisual.objects.every(object => object.border_radius === '50%' && object.width < 120 && object.height < 120),
+        firstCrossingVisual.objects.every(object => object.border_radius === '0px' && object.width < 130 && object.height >= 44),
         firstCrossingVisual);
       await screenshot(page, 'first-crossing-mobile-notice');
       await page.locator('[data-first-crossing-item="brief"]').click();
       await page.locator('[data-first-crossing-item="source"]').click();
-      await page.waitForFunction(() => document.querySelector('#aiRuntimeState')?.dataset?.activeRelation === 'gathering');
-      record('first crossing: gathering is a real canonical local relation before transmission',
+      record('first crossing: consequence begins before terminology is named',
+        /Watch the field gather them\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
+        !/That relation is à/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
+        { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
+      await page.waitForFunction(() =>
+        document.querySelector('#aiRuntimeState')?.dataset?.projectionState === 'CURRENT' &&
+        document.querySelector('#aiRuntimeState')?.dataset?.activeRelation === 'gathering');
+      await page.waitForFunction(() => /That relation is à/.test(document.querySelector('#loomFirstCrossingPrompt')?.textContent || ''));
+      const gatheringMotionA = await page.locator('.loom-field-glyph').getAttribute('transform');
+      await page.waitForTimeout(180);
+      const gatheringMotionB = await page.locator('.loom-field-glyph').getAttribute('transform');
+      record('first crossing: gathering is a real animated canonical local relation before transmission',
         await page.locator('#aiRuntimeState').getAttribute('data-active-relation') === 'gathering' &&
-        /à names the gathering/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
-        { relation: await page.locator('#aiRuntimeState').getAttribute('data-active-relation') });
+        gatheringMotionA !== gatheringMotionB,
+        { relation: await page.locator('#aiRuntimeState').getAttribute('data-active-relation'), before: gatheringMotionA, after: gatheringMotionB,
+          projection_replay: await page.locator('#aiRuntimeState').getAttribute('data-projection-replay') });
       await page.locator('#loomFirstCrossingAction').click();
-      await page.waitForFunction(() => document.querySelector('#aiRuntimeState')?.dataset?.activeRelation === 'created_potential');
-      record('first crossing: readiness is created locally without provider submission',
+      record('first crossing: readiness consequence begins before 上 is named',
+        /Watch readiness form\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
+        !/created-potential relation is 上/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
+        { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
+      await page.waitForFunction(() =>
+        document.querySelector('#aiRuntimeState')?.dataset?.projectionState === 'CURRENT' &&
+        document.querySelector('#aiRuntimeState')?.dataset?.activeRelation === 'created_potential');
+      await page.waitForFunction(() => /created-potential relation is 上/.test(document.querySelector('#loomFirstCrossingPrompt')?.textContent || ''));
+      const readinessMotionA = await page.locator('.loom-field-glyph').getAttribute('transform');
+      await page.waitForTimeout(180);
+      const readinessMotionB = await page.locator('.loom-field-glyph').getAttribute('transform');
+      record('first crossing: readiness is created locally with visible motion and no provider submission',
         await page.locator('#aiRuntimeState').getAttribute('data-active-relation') === 'created_potential' &&
-        /Preparation ≠ transmission/.test(await page.locator('#loomFirstCrossingAnswer').textContent()),
-        { relation: await page.locator('#aiRuntimeState').getAttribute('data-active-relation') });
+        /Preparation ≠ transmission/.test(await page.locator('#loomFirstCrossingAnswer').textContent()) &&
+        readinessMotionA !== readinessMotionB,
+        { relation: await page.locator('#aiRuntimeState').getAttribute('data-active-relation'), before: readinessMotionA, after: readinessMotionB,
+          projection_replay: await page.locator('#aiRuntimeState').getAttribute('data-projection-replay') });
       await page.locator('#loomFirstCrossingStop').click();
       record('first crossing: completion unlocks Open Loom without inventing a crossing',
         await page.locator('#loomBegin').isVisible() &&
