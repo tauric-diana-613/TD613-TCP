@@ -28,7 +28,8 @@ test('primary Loom is one product route, not a nested laboratory archive', () =>
   assert.equal(doc.querySelectorAll('.hero,.wrap').length, 0);
   assert.equal(doc.querySelector('a[href="/dome-world/loom-instrument-lab.html"]')?.textContent, 'Lab');
   assert.equal(doc.querySelector('#ashKeepReturn')?.getAttribute('href'), '/dome-world/');
-  assert.equal(doc.querySelector('#ashKeepReturn')?.textContent, 'Dome-World');
+  assert.equal(doc.querySelector('#ashKeepReturn')?.textContent, 'Home');
+  assert.equal(doc.querySelector('#ashKeepReturn')?.getAttribute('aria-label'), 'Dome-World home');
   assert.match(product, /body:has\(#loomAiWorkspace\[data-first-crossing="active"\]\) \.loom-topbar a\[href\*="loom-instrument-lab"\]\{display:none\}/);
   assert.equal(doc.querySelectorAll('link[href*="ai-workspace.css"],link[href*="reentry-workspace.css"],link[href*="loom-product-v3.css"],link[href*="ux-repair.css"],link[href*="cinematic-rescue.css"],link[href*="dromological-regime.css"]').length,0);
 });
