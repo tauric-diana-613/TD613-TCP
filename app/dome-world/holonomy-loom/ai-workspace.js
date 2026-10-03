@@ -251,6 +251,8 @@ export function mountLoomAiWorkspace(root, environment = window) {
   const refreshTransferActionsAfterMutation = () => refreshTransferActions();
   function setMode(mode, {announce=true} = {}) {
     if (busy || !['portable','demo'].includes(mode)) return;
+    const changingMode = workspaceMode !== mode;
+    if (changingMode) invalidate();
     workspaceMode = mode;
     root.dataset.loomMode = mode;
     const portable = mode === 'portable';
