@@ -2,30 +2,28 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
-const html = fs.readFileSync(new URL('../app/dome-world/holonomy-loom.html', import.meta.url), 'utf8');
-const stage = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/cinematic-stage-v2.css', import.meta.url), 'utf8');
-const workspace = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/ai-workspace.js', import.meta.url), 'utf8');
-const instrument = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/instrument-state-view.js', import.meta.url), 'utf8');
+const html=fs.readFileSync(new URL('../app/dome-world/holonomy-loom.html',import.meta.url),'utf8');
+const product=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/loom-product-v3.css',import.meta.url),'utf8');
+const workspace=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/ai-workspace.js',import.meta.url),'utf8');
+const instrument=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/instrument-state-view.js',import.meta.url),'utf8');
 
-test('cinematic stage v2 is the final Loom presentation layer', () => {
-  assert.match(html, /dromological-regime\.css"[\s\S]*cinematic-stage-v2\.css"/);
-  assert.match(stage, /#loomAiWorkspace>\.ai-runtime\{order:-30\}/);
-  assert.match(stage, /#loomAiWorkspace>\.loom-journey\{order:-20\}/);
-  assert.match(stage, /font:620 clamp\(2\.35rem,4\.8vw,4\.3rem\)\/\.92 var\(--sans\)/);
+test('animation-native shell replaces the override cascade',()=>{
+  assert.match(html,/loom-product-v3\.css/);
+  assert.doesNotMatch(html,/ux-repair\.css|cinematic-rescue\.css|dromological-regime\.css|cinematic-stage-v2\.css/);
+  assert.match(product,/#loomAiWorkspace \.loom-stage/);
+  assert.match(product,/#loomAiWorkspace \.loom-builder/);
 });
 
-test('mobile stage is bounded and avoids a squeezed desktop viewport', () => {
-  assert.match(stage, /@media\(max-width:760px\)/);
-  assert.match(stage, /width:calc\(100% - 28px\)!important/);
-  assert.match(stage, /overflow-x:clip!important/);
-  assert.doesNotMatch(stage, /@keyframes|animation\s*:/, 'presentation layer owns no second clock');
+test('one coordinator remains the animation owner',()=>{
+  assert.match(workspace,/new AnimationCoordinator\(\{ durationMs: 4000, maxFps: 60/);
+  assert.match(instrument,/owns_animation_loop: false/);
+  assert.doesNotMatch(product,/@keyframes|animation\s*:/);
 });
 
-test('the one host coordinator targets smooth cadence while mobile reduces decorative mutation density', () => {
-  assert.match(workspace, /maxFps: 60/);
-  assert.match(instrument, /const compact = Number\(snapshot\.viewport\?\.width \?\? 1000\) <= 760/);
-  assert.match(instrument, /const filamentCount = compact \? 16 : filaments\.length/);
-  assert.match(instrument, /const particleCount = compact \? 18 : particles\.length/);
-  assert.match(instrument, /const flightCount = compact \? 20 : flightGlyphs\.length/);
-  assert.match(instrument, /owns_animation_loop: false/);
+test('mobile reduces decorative mutation density without changing relation grammar',()=>{
+  assert.match(instrument,/const filamentCount = compact \? 10 : filaments\.length/);
+  assert.match(instrument,/const particleCount = compact \? 12 : particles\.length/);
+  assert.match(instrument,/const flightCount = compact \? 12 : flightGlyphs\.length/);
+  assert.match(instrument,/const depthCount = compact \? 4 : depth\.length/);
+  for(const glyph of ['à','米','出','上','下','cōl','hõt','𝄐']) assert.ok(instrument.includes(glyph));
 });

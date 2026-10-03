@@ -116,7 +116,7 @@ const report = {
   status: 'OPEN',
   browser: browserName,
   route,
-  interaction_scope: 'PRIMARY_AI_ENTRY_AND_EXPLICIT_LOCAL_LABORATORY',
+  interaction_scope: 'PRIMARY_LOOM_ROUTE_WITH_SEPARATE_INSTRUMENT_LAB',
   review_status: review.status,
   review_evidence_class: review.evidence.review_evidence_class,
   reviewed_repository_head: review.reviewed_repository_head,
@@ -144,7 +144,6 @@ const report = {
   requests: []
 };
 const check = (name, pass, detail = null) => report.checks.push({ name, status: pass ? 'PASS' : 'FAIL', detail });
-const detailsOpen = locator => locator.evaluate(node => Boolean(node.open)).catch(() => false);
 
 check('review packet binds to resolved exact repository head', review.reviewed_repository_head === custody.reviewHead, {
   reviewed_repository_head: review.reviewed_repository_head,
@@ -214,7 +213,7 @@ try {
   await page.locator('#aiTask').waitFor({ state: 'visible', timeout: 10_000 });
   check('primary AI task workspace visibly renders at arrival', await page.locator('#loomAiWorkspace').isVisible() && await page.locator('#aiTask').isVisible());
   check('primary AI Run control renders without automatic invocation', await page.locator('#aiRun').isVisible());
-  check('Instrument Lab remains optional and closed at arrival', !(await detailsOpen(page.locator('#loomLegacy'))));
+  check('Instrument Lab is separated from the primary journey', await page.locator('#loomLegacy').count() === 0 && await page.locator('a[href="/dome-world/loom-instrument-lab.html"]').count() === 1);
   check('historical checker and observer are absent from the operator page', await page.locator('#loomTheater, #loomObserverChamber, #loomPracticeFixtures, .lr-world, .lr-courier').count() === 0);
   await page.goto(url, { waitUntil: 'networkidle', timeout: 60_000 });
   check('fixture-only checker route loaded explicitly', new URL(page.url()).pathname === route, page.url());

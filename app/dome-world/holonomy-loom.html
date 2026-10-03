@@ -5,53 +5,37 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="color-scheme" content="dark">
-  <meta name="theme-color" content="#05040a">
+  <meta name="theme-color" content="#05060a">
   <meta name="td613-holonomy-loom" content="hosted-integration-v0.1">
-  <title>Holonomy Loom · TD613 Hosted</title>
+  <title>Loom · TD613</title>
   <style>
-    :root{--ink:#08070e;--deep:#100c18;--panel:#17111f;--line:rgba(197,162,230,.24);--line2:rgba(238,182,119,.38);--mint:#cbb0f0;--gold:#edbe85;--paper:#f4ece4;--muted:#b6aabd;--sans:Inter,system-ui,sans-serif;--mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;--serif:Georgia,"Times New Roman",serif}
-    *{box-sizing:border-box}html,body{min-height:100%;margin:0;background:var(--ink);color:var(--paper)}body{font-family:var(--sans)}
-    button,input,select,textarea{font:inherit;color:inherit}button,a{touch-action:manipulation}button{min-height:44px;padding:9px 14px;border:1px solid var(--line);background:var(--panel);cursor:pointer}button:disabled{opacity:.42;cursor:not-allowed}
-    textarea{width:100%;padding:13px;border:1px solid var(--line);background:var(--deep);resize:vertical;line-height:1.5}
-    button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
-    .wrap{width:min(1160px,calc(100% - 40px));margin:0 auto;padding:20px 0 54px}.mast{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:11px 0 18px;border-bottom:1px solid var(--line)}
-    .mark{color:var(--mint);font:700 .65rem var(--mono);text-transform:uppercase;letter-spacing:.08em}.return{color:var(--paper);font:700 .68rem var(--mono);text-decoration:none;border:1px solid var(--line);padding:9px 11px}
-    .hero{padding:28px 0 20px}.hero h1{margin:8px 0;font:500 clamp(2.7rem,6vw,4.8rem)/.94 var(--serif);letter-spacing:-.045em}.hero p{max-width:650px;color:#e3d6e5;font-size:1rem;line-height:1.6}.ceiling{color:var(--muted);font:.69rem/1.55 var(--mono)}
-    details{margin-top:14px;border-top:1px solid var(--line);padding-top:11px}summary{cursor:pointer}pre{white-space:pre-wrap;overflow:auto;overflow-wrap:anywhere;background:var(--deep);padding:12px;font:.75rem/1.6 var(--mono)}
-    html[data-loom-boot="loading"] .wrap{visibility:hidden}#loomBootVeil{position:fixed;inset:0;z-index:1000;display:grid;place-content:center;background:#0b0916;color:var(--gold);font:400 14px/1.6 system-ui;letter-spacing:.14em}#loomBootVeil span{font-size:24px;text-align:center;margin-bottom:12px}html:not([data-loom-boot="loading"]) #loomBootVeil{display:none}
-    @media(max-width:620px){.wrap{width:calc(100% - 20px)}.mast{align-items:flex-start;flex-direction:column}.hero{padding-top:24px}}
+    :root{--ink:#05060a;--panel:#0a0d13;--paper:#f4f2ef;--muted:#9da5b2;--cyan:#8ee8e6;--gold:#efbd83;--line:rgba(165,187,210,.16);--sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;--mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace}
+    *{box-sizing:border-box}html,body{min-height:100%;margin:0;background:var(--ink);color:var(--paper)}body{font-family:var(--sans);overflow-x:hidden}
+    button,input,select,textarea{font:inherit;color:inherit}button,a{touch-action:manipulation}button{cursor:pointer}button:disabled{cursor:not-allowed}
+    button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+    [hidden]{display:none!important}
+    html[data-loom-boot="loading"] main{visibility:hidden}
+    #loomBootVeil{position:fixed;inset:0;z-index:1000;display:grid;place-content:center;background:#05060a;color:var(--cyan);font:600 12px/1.5 var(--mono);letter-spacing:.14em;text-transform:uppercase}
+    html:not([data-loom-boot="loading"]) #loomBootVeil{display:none}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
-    @media(forced-colors:active){button,textarea,select,.return{border:1px solid CanvasText}.return{color:LinkText}}
   </style>
-  <script>document.documentElement.dataset.loomBoot="loading";setTimeout(()=>{if(document.documentElement.dataset.loomBoot==="loading"){document.documentElement.dataset.loomBoot="fallback";const status=document.querySelector("#loomAiWorkspace>p");if(status)status.textContent="The AI workspace could not finish opening. Reload this page to try again.";}},8000);</script>
+  <script>document.documentElement.dataset.loomBoot="loading";setTimeout(()=>{if(document.documentElement.dataset.loomBoot==="loading")document.documentElement.dataset.loomBoot="fallback";},8000);</script>
   <link rel="stylesheet" href="./holonomy-loom/ai-workspace.css">
   <link rel="stylesheet" href="./holonomy-loom/reentry-workspace.css">
-  <link rel="stylesheet" href="./holonomy-loom/ux-repair.css">
-  <link rel="stylesheet" href="./holonomy-loom/instrument-lab.css">
-  <link rel="stylesheet" href="./holonomy-loom/cinematic-rescue.css">
-  <link rel="stylesheet" href="./holonomy-loom/dromological-regime.css">
-  <link rel="stylesheet" href="./holonomy-loom/cinematic-stage-v2.css">
+  <link rel="stylesheet" href="./holonomy-loom/loom-product-v3.css">
 </head>
 <body>
-<div id="loomBootVeil" role="status"><span aria-hidden="true">𝌋</span>Opening Loom…</div>
-<div class="wrap">
-  <header class="mast">
-    <div class="mark">U+10D613 · HOLONOMY LOOM</div>
-    <a class="return" id="ashKeepReturn" href="/dome-world/ash-keep.html">Return to Ash Keep</a>
-  </header>
-  <main data-flowcore-pedagogue="holonomy-loom" data-held="false" aria-busy="false" data-aia-route-inference="false" data-authority-cross="false">
-    <section class="hero" data-flowcore-phase="NOTICE">
-      <p class="mark">FLOW-CORE · ROUTE INSTRUMENT</p>
-      <h1>Holonomy Loom</h1>
-      <p>Shape what travels. Watch the route form in real time. Continue in Marrowline, then bring the work home for revalidation.</p>
-    </section>
-    <section id="loomAiWorkspace" aria-label="Loom AI workspace"><p>Opening your AI workspace…</p></section>
-    <details id="loomLegacy" class="loom-legacy">
-      <summary class="loom-laboratory-invitation"><span class="ai-invitation-orbit" aria-hidden="true">⟁</span><span><strong>Loom Instrument Lab</strong><small>Observe a route. Compare a receiver. Prepare a measurement.</small></span><span class="ai-invitation-arrow" aria-hidden="true">＋</span></summary>
-      <section id="loomInstrumentLab" aria-label="Loom Instrument Lab"><p>Opening the local instruments…</p></section>
-    </details>
-  </main>
-</div>
+<div id="loomBootVeil" role="status">Opening Loom…</div>
+<header class="loom-topbar">
+  <a class="loom-wordmark" href="/dome-world/">Loom</a>
+  <nav aria-label="Loom utilities">
+    <a href="/dome-world/loom-instrument-lab.html">Instrument Lab</a>
+    <a id="ashKeepReturn" href="/dome-world/ash-keep.html">Exit</a>
+  </nav>
+</header>
+<main data-flowcore-pedagogue="holonomy-loom" data-held="false" aria-busy="false" data-aia-route-inference="false" data-authority-cross="false">
+  <section id="loomAiWorkspace" aria-label="Loom workspace"><p>Opening Loom…</p></section>
+</main>
 <script type="module" src="./holonomy-loom/ai-workspace.js"></script>
 </body>
 </html>

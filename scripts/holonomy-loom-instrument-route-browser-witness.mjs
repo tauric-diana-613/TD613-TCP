@@ -158,7 +158,10 @@ try {
       await marrowline.screenshot({ path: path.join(artifactDir, `${name}-native-current.png`), fullPage: true });
       await loom.reload({ waitUntil: 'networkidle' });
       check('reload does not restore admitted work or make issuance current', await loom.locator('#aiExport').isDisabled());
-      await loom.locator('#loomLegacy > summary').click(); await loom.locator('#ilBench').selectOption('export-history');
+      await loom.goto(`${base}/dome-world/loom-instrument-lab.html`, { waitUntil: 'networkidle' });
+      await loom.locator('#loomInstrumentLab').waitFor({ state: 'visible' });
+      check('returned-work inspection moves to the separate Instrument Lab route', await loom.locator('#loomLegacy').count() === 0 && await loom.locator('#aiRuntimeState').count() === 0);
+      await loom.locator('#ilBench').selectOption('export-history');
       await loom.locator('#ilUpload').setInputFiles({ name: 'returned-current.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(second)) });
       await loom.waitForFunction(() => document.querySelector('#ilInput')?.value.includes('loom_demo_provenance'));
       await useKeyboard(loom.locator('#ilRun'));
