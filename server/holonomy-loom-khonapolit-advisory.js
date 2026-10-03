@@ -127,8 +127,10 @@ export function validateLoomAdvisoryPacket(advisory = {}) {
   return canonical;
 }
 
-export function buildKhonapolitLoomAdvisoryBody({ advisory } = {}) {
-  const clean = validateLoomAdvisoryPacket(advisory);
+export function buildKhonapolitLoomAdvisoryBody(options = {}) {
+  options = snapshotJson(options);
+  rejectUnknownKeys(options, ['advisory'], 'advisory delegation');
+  const clean = validateLoomAdvisoryPacket(options.advisory);
 
   const message = [
     'HOLONOMY LOOM · MINIMIZED ADVISORY REQUEST',
