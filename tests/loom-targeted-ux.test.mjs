@@ -80,6 +80,15 @@ test('local preparation selects foreground crossing focus rather than a field de
   assert.match(workspaceSource, /\$\('aiRun'\)\.classList\.remove\('ai-primary'\)/);
 });
 
+test('cinematic route labels remain on the field while deep inspection stays inside Tools flow', () => {
+  const doc = new JSDOM(loomWorkspaceTemplate).window.document;
+  assert.ok(doc.querySelector('.loom-stage').contains(doc.querySelector('#aiRuntimeState')));
+  assert.match(workspaceSource, /for\(const selector of \['\.loom-instrument-state-next','\.loom-instrument-state-inspection'\]\)/);
+  assert.doesNotMatch(workspaceSource, /stateTools[\s\S]{0,180}loom-instrument-state-endpoints/);
+  assert.doesNotMatch(workspaceSource, /stateTools[\s\S]{0,180}loom-instrument-state-relation/);
+  assert.match(product, /\.loom-tools \[data-tool-panel="session"\] \.loom-instrument-state-inspection\{[\s\S]*?position:static!important/);
+});
+
 test('product shell owns no second animation clock or network authority', () => {
   for (const forbidden of [/requestAnimationFrame/,/setInterval\s*\(/,/fetch\s*\(/,/XMLHttpRequest/,/WebSocket/,/@keyframes|animation\s*:/]) assert.doesNotMatch(product,forbidden);
   for (const forbidden of [/requestAnimationFrame/,/setInterval\s*\(/,/fetch\s*\(/,/XMLHttpRequest/,/WebSocket/]) assert.doesNotMatch(templateSource,forbidden);
