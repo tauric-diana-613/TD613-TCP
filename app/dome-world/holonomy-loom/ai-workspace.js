@@ -373,6 +373,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     firstCrossingActive=true;
     firstCrossingStep=0;
     firstCrossingEvents=[];
+    firstCrossingPacket=null;
     firstCrossingSelected=new Set();
     root.dataset.firstCrossing='active';
     root.dataset.thresholdState='closed';
@@ -765,15 +766,37 @@ export function mountLoomAiWorkspace(root, environment = window) {
   $('aiRoomLive').addEventListener('click',()=>{replayIndex=null;replayControls();if(lastPacket)showPacket(lastPacket);});
   $('aiPortableMode').addEventListener('click',()=>setMode('portable'));
   $('aiDemoMode').addEventListener('click',()=>setMode('demo'));
+  firstCrossingItems.forEach(button=>button.addEventListener('click',()=>{
+    if(!firstCrossingActive||firstCrossingStep!==0)return;
+    const id=button.dataset.firstCrossingItem;
+    if(firstCrossingSelected.has(id))firstCrossingSelected.delete(id);else firstCrossingSelected.add(id);
+    renderFirstCrossingSelection();
+    $('loomFirstCrossingAnswer').textContent='ACT · your selection changed locally. Nothing has crossed.';
+  }));
+  $('loomFirstCrossingAction').addEventListener('click',actFirstCrossing);
+  $('loomFirstCrossingStop').addEventListener('click',()=>{if(firstCrossingActive&&firstCrossingStep===2)completeFirstCrossing();});
+  $('loomReplayFirstCrossing').addEventListener('click',()=>{
+    if(firstCrossingActive&&firstCrossingWasAlreadyComplete){restoreThresholdField();return;}
+    startFirstCrossing({replay:true});
+  });
+  $('loomBegin').addEventListener('click',openLoomThreshold);
+  $('loomReturnThreshold').addEventListener('click',returnToThreshold);
+
   load(null);
   setMode('portable',{announce:false});
   status('Loom session mode. Prepare locally, then choose where the prepared work crosses.');
   // A local entrance gesture has no request or evidence authority. It settles
   // after four seconds; subsequent packets retain their actual rest posture.
   coordinator.setPacket({ ...lastPacket, scene: { ...lastPacket.scene, id: 'ai-welcome' }, geometry: { rest: !$('aiTask').value.trim() }, presentation: { welcome: true } });
+  root.dataset.thresholdState='closed';
+  root.dataset.thresholdBeat='0';
+  thresholdStage.hidden=false;
+  builderShell.hidden=true;
+  if(storageRead(FIRST_CROSSING_KEY)==='complete')restoreThresholdField();
+  else startFirstCrossing();
   visibility();
   environment.document.documentElement.dataset.loomBoot='ready';
-  const dispose=()=>{disposed=true;stageObserver?.disconnect();returnedReview.dispose();marrowlineChild=null;reentry.dispose();if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();runtime.dispose();coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);delete environment.document.documentElement.dataset.loomJourney;delete environment.document.documentElement.dataset.loomFlowPhase;};
+  const dispose=()=>{disposed=true;clearThresholdTimers();stageObserver?.disconnect();returnedReview.dispose();marrowlineChild=null;reentry.dispose();if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();runtime.dispose();coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);delete environment.document.documentElement.dataset.loomJourney;delete environment.document.documentElement.dataset.loomFlowPhase;};
   environment.addEventListener('pagehide',dispose,{once:true});return {dispose,inspect:()=>({mode:workspaceMode,session:portableSession?inspectPortableLoomSession(portableSession):null,turn_receipt:turnReceiptVerification?{status:turnReceiptVerification.status,ref:turnReceiptVerification.ref}:null,challenge:challengeVerification?{status:challengeVerification.status,ref:challengeVerification.ref}:null,events:[...events],clock:coordinator.inspect(),replay:{index:replayIndex,count:sceneHistory.length},runtime:runtime.inspect(),geometry:null})};
 }
 if(typeof document!=='undefined')mountLoomAiWorkspace(document.querySelector('#loomAiWorkspace'));
