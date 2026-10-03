@@ -135,6 +135,8 @@ export function mountLoomAiWorkspace(root, environment = window) {
   let firstCrossingPaused = false;
   let firstCrossingBindingState = 'IDLE';
   let firstCrossingGeneration = 0;
+  let firstCrossingGatheringPublished = false;
+  let firstCrossingReadinessPublished = false;
   let firstCrossingEvents = [];
   let firstCrossingPacket = null;
   let firstCrossingSelected = new Set();
@@ -256,6 +258,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     const consequenceVisible=projectionCurrent && (snapshot.reducedMotion || snapshot.progress>=.82);
     if(firstCrossingStep===1){
       if(consequenceVisible){
+        firstCrossingGatheringPublished=true;
         setFirstCrossingCue('gathering-named',{
           title:'They gathered. Nothing crossed.',
           prompt:'à gathers the selected work. The private scrap remains outside the crossing — cōl.',
@@ -273,6 +276,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     }
     if(firstCrossingStep===2){
       if(consequenceVisible){
+        firstCrossingReadinessPublished=true;
         setFirstCrossingCue('potential-named',{
           title:'Ready. Still here.',
           prompt:'上 marks readiness after the real local binding check. Sending requires another gesture.',
@@ -404,6 +408,8 @@ export function mountLoomAiWorkspace(root, environment = window) {
     firstCrossingGeneration++;
     firstCrossingBindingState='IDLE';
     firstCrossingPaused=false;
+    firstCrossingGatheringPublished=false;
+    firstCrossingReadinessPublished=false;
     firstCrossingActive=false;
     firstCrossingReplayMode=false;
     firstCrossingStep=0;
@@ -425,6 +431,9 @@ export function mountLoomAiWorkspace(root, environment = window) {
     if(lastPacket)showPacket(lastPacket);
   }
   function completeFirstCrossing(){
+    // Hidden controls may receive re-entrant events. Local binding alone does
+    // not claim practice completion before its current consequence publishes.
+    if(!firstCrossingActive||firstCrossingStep!==2||firstCrossingBindingState!=='VERIFIED'||!firstCrossingReadinessPublished)return;
     firstCrossingStep=3;
     root.dataset.firstCrossingStep='3';
     firstCrossingWasAlreadyComplete=true;
@@ -451,6 +460,8 @@ export function mountLoomAiWorkspace(root, environment = window) {
     firstCrossingGeneration++;
     firstCrossingBindingState='IDLE';
     firstCrossingPaused=false;
+    firstCrossingGatheringPublished=false;
+    firstCrossingReadinessPublished=false;
     firstCrossingStep=0;
     firstCrossingEvents=[];
     firstCrossingPacket=null;
@@ -508,6 +519,9 @@ export function mountLoomAiWorkspace(root, environment = window) {
       return;
     }
     if(firstCrossingStep===1){
+      // Enforce consequence-before-gesture independently of DOM visibility.
+      // A binding HOLD retains the already-published gathering for its retry.
+      if(!firstCrossingGatheringPublished)return;
       const token=++firstCrossingGeneration;
       firstCrossingBindingState='PENDING';
       setFirstCrossingCue('binding',{
@@ -899,7 +913,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   });
   $('loomFirstCrossingLeave').addEventListener('click',()=>openLoomThreshold({skipPractice:true}));
   $('loomFirstCrossingAction').addEventListener('click',actFirstCrossing);
-  $('loomFirstCrossingStop').addEventListener('click',()=>{if(firstCrossingActive&&firstCrossingStep===2)completeFirstCrossing();});
+  $('loomFirstCrossingStop').addEventListener('click',completeFirstCrossing);
   $('loomReplayFirstCrossing').addEventListener('click',()=>{
     if(firstCrossingActive&&firstCrossingReplayMode){restoreThresholdField();return;}
     startFirstCrossing({replay:true});

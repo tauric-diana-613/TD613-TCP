@@ -288,6 +288,12 @@ test('selection and readiness require their own published local consequences', a
   assert.match(h.$('#loomFirstCrossingPrompt').textContent, /上/);
   assert.equal(h.ui.inspect().session, null);
   assert.equal(h.requests.length, 0);
+  assert.equal(h.ui.inspect().clock.pendingFrames, 0, 'reduced motion publishes the equivalent consequence without animation frames');
+  h.$('#loomFirstCrossingStop').click();
+  assert.equal(h.root.dataset.firstCrossingCue, 'complete', 'reduced motion retains deliberate legitimate completion');
+  assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), 'complete');
+  assert.equal(h.ui.inspect().session, null);
+  assert.equal(h.requests.length, 0);
 });
 
 test('leaving during an async practice binding prevents late completion or scene takeover', async t => {

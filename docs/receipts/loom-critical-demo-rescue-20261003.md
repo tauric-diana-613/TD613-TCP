@@ -73,3 +73,25 @@ relock, confirm application-byte parity and survive the stale-queue/source guard
 This pre-release receipt is not deployment success. Provider-native quality,
 physical-device performance and measured operator acceptance remain observations
 with separate evidence, never authority inferred from source contracts.
+
+## Resumed four-role review and sequencing closure
+
+Recovered checkpoint `432e406ef6b31ba1bdf15b0154a66b575c27138a` was published
+through the connector as `86ee6ca697cab7206ad814cd288808f491c6edcf`, with identical
+Git tree `7b03561463f26cd3cf993b05dc440e5e5dc70295`, in PR #1424. Its exact-head
+Consolidated Validation completed SUCCESS in run `37128324152` before the final
+sequencing repair below; that GREEN cannot be attributed to a later head.
+
+Four resumed independent agents accepted bounded source repair. Aperture checked
+all 60 recorded served hashes against the recovered commit with zero mismatch.
+FADT additionally reproduced hidden/re-entrant readiness and Finish gestures
+advancing before current canonical consequences published. Internal publication
+flags now require gathering before binding and verified readiness before practice
+completion. Replay/exit reset the flags; binding HOLD permits deliberate retry;
+reduced motion retains explicit legitimate completion. Mounted regressions pass.
+
+The existing bounded layout CI now runs the cinematic desktop/mobile consequence,
+depth, pause and reduced-motion witness and retains its rendered artifacts. This
+adds no workflow, provider traffic or release authority. A fresh rendered receipt
+must bind the final changed source before release acceptance. Live native-provider
+continuity, physical iPhone and measured comprehension remain separate evidence.

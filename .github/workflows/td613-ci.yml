@@ -1017,6 +1017,11 @@ jobs:
         env:
           TD613_ARTIFACT_DIR: artifacts/loom-instrument-route-browser
         run: node scripts/holonomy-loom-instrument-route-browser-witness.mjs
+      - name: Loom cinematic consequence, depth, pause and reduced-motion witness
+        if: steps.layout_scope.outputs.changed == 'true'
+        env:
+          TD613_LOOM_MOBILE_ARTIFACT_DIR: artifacts/loom-mobile-composition
+        run: node tests/loom-mobile-composition.browser.mjs
       - uses: actions/upload-artifact@v4
         if: always() && steps.layout_scope.outputs.changed == 'true'
         with:
@@ -1028,6 +1033,7 @@ jobs:
             artifacts/loom-reentry
             artifacts/loom-instrument-lab-browser
             artifacts/loom-instrument-route-browser
+            artifacts/loom-mobile-composition
 
 
   gemini_observation:

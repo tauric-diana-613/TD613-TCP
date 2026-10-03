@@ -82,6 +82,55 @@ async function expectRealReadiness(h) {
   assert.equal(h.requests.length, 0);
 }
 
+test('hidden readiness events cannot bind before the current gathering consequence publishes', async t => {
+  const h = setup(t);
+  let bindings = 0;
+  h.useCrypto({
+    randomUUID() { bindings++; return webcrypto.randomUUID(); },
+    getRandomValues: value => webcrypto.getRandomValues(value),
+    subtle: webcrypto.subtle
+  });
+  h.$('[data-first-crossing-item="brief"]').click();
+  h.$('[data-first-crossing-item="source"]').click();
+  assert.equal(h.ui.inspect().runtime.status, 'COMPILING');
+  assert.equal(h.$('#loomFirstCrossingAction').hidden, true);
+  h.$('#loomFirstCrossingAction').click();
+  assert.equal(bindings, 0, 'no local binding before current projection publication');
+  assert.equal(h.root.dataset.firstCrossingCue, 'gathering-motion');
+  await until(() => h.ui.inspect().runtime.status === 'CURRENT', 'gathering projection');
+  assert.equal(h.$('#loomFirstCrossingAction').hidden, true, 'projection alone precedes its finite visible consequence');
+  h.$('#loomFirstCrossingAction').click();
+  assert.equal(bindings, 0, 'no local binding before visible gathering consequence');
+  h.advance(3400);
+  assert.equal(h.root.dataset.firstCrossingCue, 'gathering-named');
+  h.$('#loomFirstCrossingAction').click();
+  await expectRealReadiness(h);
+  assert.equal(bindings, 1, 'the subsequent legitimate gesture binds exactly once');
+});
+
+test('hidden Finish events cannot claim completion before verified readiness publishes its consequence', async t => {
+  const h = setup(t);
+  await gather(h);
+  h.$('#loomFirstCrossingAction').click();
+  await until(() => h.root.dataset.firstCrossingStep === '2', 'verified local binding');
+  assert.equal(h.root.dataset.firstCrossingCue, 'potential-motion');
+  assert.equal(h.$('#loomFirstCrossingStop').hidden, true);
+  h.$('#loomFirstCrossingStop').click();
+  assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), null);
+  assert.equal(h.root.dataset.firstCrossingCue, 'potential-motion');
+  await until(() => h.ui.inspect().runtime.status === 'CURRENT'
+    && h.ui.inspect().runtime.view?.event.binding_verified === true, 'verified readiness projection');
+  h.$('#loomFirstCrossingStop').click();
+  assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), null,
+    'current verified projection alone cannot erase the unpublished consequence');
+  await expectRealReadiness(h);
+  h.$('#loomFirstCrossingStop').click();
+  assert.equal(h.root.dataset.firstCrossingCue, 'complete');
+  assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), 'complete');
+  assert.equal(h.ui.inspect().session, null);
+  assert.equal(h.requests.length, 0);
+});
+
 test('an old gathering frame cannot reopen pending local binding or duplicate its gesture', async t => {
   const h = setup(t);
   await gather(h);
