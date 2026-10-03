@@ -1,0 +1,280 @@
+@font-face{font-family:"Loom Flow-Core";src:url("./fonts/flowcore-cjk.woff") format("woff");font-weight:400;font-style:normal;font-display:swap;unicode-range:U+4E0A,U+4E0B,U+51FA,U+7C73}
+/* Loom v5: mobile-first service composition. No inherited override layer. */
+:root{--ink:#06090d;--panel:#0b1118;--paper:#eef4f5;--muted:#9baab6;--cyan:#94ede8;--line:#25333e;--sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;--mono:ui-monospace,"SFMono-Regular",Consolas,monospace}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--ink);color:var(--paper)}body{font:16px/1.5 var(--sans)}button,input,select,textarea,summary{font:inherit;color:inherit}button,a{touch-action:manipulation}button{cursor:pointer}button:disabled{opacity:.4;cursor:not-allowed}a{color:var(--cyan)}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--cyan);outline-offset:4px}::selection{background:#224951}
+.loom-topbar{height:52px;display:flex;justify-content:space-between;align-items:center;padding:0 20px;border-bottom:1px solid var(--line)}.loom-wordmark{font-weight:650;color:var(--paper);text-decoration:none}.loom-topbar nav{display:flex;gap:12px}.loom-topbar nav a{display:flex;align-items:center;min-height:44px;min-width:44px;font-size:13px;text-decoration:none;color:var(--muted)}
+#loomAiWorkspace{max-width:1240px;margin:auto;padding:22px 20px 40px}#loomAiWorkspace *{min-width:0}h1,h2,h3,h4,p{margin:0}h1{font-size:25px;letter-spacing:-.045em;font-weight:620;line-height:1.15}h2{font-size:21px;letter-spacing:-.03em;line-height:1.25}h3{font-size:17px;line-height:1.35}p{color:var(--muted)}.loom-intro{display:flex;justify-content:space-between;align-items:start;gap:12px}.loom-intro p{font-size:14px;max-width:48ch;margin-top:6px}.loom-text-action{border:0;background:none;color:var(--cyan);padding:8px 0;min-height:44px;font-size:13px}.loom-intro .loom-text-action{white-space:nowrap}
+.loom-journey{display:flex;align-items:center;gap:6px;margin:16px 0 10px;max-width:460px}.loom-journey>span{color:#516471}.loom-journey-step{display:flex;gap:7px;align-items:center;justify-content:center;flex:1;min-height:44px;border:0;border-bottom:2px solid transparent;padding:5px 4px;background:none;color:var(--muted);font-size:13px}.loom-journey-step b{font:12px var(--mono);color:#7894a3}.loom-journey-step strong{font-weight:520}.loom-journey-step[aria-current="step"]{color:var(--cyan);border-bottom-color:var(--cyan)}
+.loom-working-surface{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}.loom-stage{position:relative;isolation:isolate;min-height:140px;border-bottom:1px solid var(--line);padding-bottom:10px}.ai-runtime{position:relative}.ai-runtime>p.mark{display:none}.loom-instrument-state-mode{font-size:11px;color:var(--muted);margin:4px 0}.loom-glyph-field{display:block;width:100%;height:132px;overflow:hidden;pointer-events:none}.loom-field-flight .flight-far{opacity:.04}.loom-field-flight .flight-mid{opacity:.14}.loom-field-flight .flight-near{opacity:.34}.loom-field-caption{margin-top:6px}.loom-instrument-state-now{font-size:15px;letter-spacing:-.01em;font-weight:540;line-height:1.3}.loom-instrument-state-endpoints{font-size:12px;color:var(--muted);margin-top:3px}.loom-instrument-state-next{font-size:12px;line-height:1.4;margin-top:3px}.loom-instrument-state-relation{font:12px/1.5 var(--mono);color:var(--cyan);margin-top:7px;text-transform:none}.loom-instrument-state-boundary{font-size:11px;line-height:1.45;margin:5px 0 0;color:var(--muted)}.loom-instrument-state-inspection{margin-top:4px;font-size:12px}.loom-instrument-state-inspection summary{min-height:44px;display:flex;align-items:center;cursor:pointer;color:var(--muted)}.loom-instrument-state-inspection[open]{padding-bottom:12px}.loom-instrument-state-inspection p,.loom-instrument-state-inspection h4{margin:8px 0}.loom-instrument-state-history{padding-left:20px}.ai-facts{display:flex;gap:16px;font-size:12px;margin:10px 0}.ai-facts div{display:flex;gap:4px}.ai-facts dt{color:var(--muted)}.ai-facts dd{margin:0}.ai-room-replay{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:4px 0}.ai-room-replay button{background:none;border:0;color:var(--muted);min-height:44px;padding:5px 0;font-size:12px}.ai-room-replay label,.ai-room-replay p{font-size:12px}.ai-room-replay input{width:110px;vertical-align:middle}.ai-room-replay p{flex-basis:100%}#aiGapSummary{font-size:12px}.ai-runtime-state-status{padding:10px;color:var(--cyan)}
+.loom-workspaces{min-width:0}.loom-builder{padding-top:2px}.loom-builder-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:3px}.loom-builder-head h2{font-size:19px}.ai-mode-tabs{display:flex;gap:10px}.ai-mode-tabs button{border:0;background:none;color:var(--muted);font-size:12px;min-height:44px;padding:0 3px;white-space:nowrap}.ai-mode-tabs button[aria-selected="true"]{color:var(--cyan);border-bottom:1px solid var(--cyan)}#aiPortableModePanel p,#aiDemoModePanel p{font-size:12px;margin:0 0 10px}.ai-composer>label{display:block;font-size:13px;color:var(--muted);margin-top:12px}.ai-composer>textarea{display:block;width:100%;height:124px;resize:vertical;min-height:110px;max-height:450px;border:0;border-bottom:1px solid var(--line);background:#0a1017;padding:13px;font-size:16px;line-height:1.6;border-radius:0}.ai-composer>textarea::placeholder{color:#788b9a}.ai-muted{color:var(--muted);font-size:12px}#aiTaskCue{font-size:12px;margin:7px 0}.ai-toolbar{display:flex;gap:12px;align-items:center}.ai-toolbar button,.ai-upload{position:relative;border:0;background:none;font-size:13px;padding:6px 0;min-height:44px;color:var(--cyan)}.ai-upload input{position:absolute;inset:0;opacity:0;width:100%;cursor:pointer}.ai-toolbar #aiNew{margin-left:auto;color:var(--muted)}.ai-file-cue{font-size:12px}.ai-documents{list-style:none;padding:0;margin:6px 0}.ai-documents>li{position:relative;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}.ai-document-row{display:flex;align-items:center;gap:8px}.ai-document-row>label{display:flex;align-items:center;gap:8px;min-height:44px;flex:1;overflow-wrap:anywhere}.ai-document-row input{width:18px;height:18px;accent-color:var(--cyan)}.ai-file-note{position:relative}.ai-file-note summary{min-width:44px;min-height:44px;display:grid;place-items:center;cursor:pointer;color:var(--muted)}.ai-file-note p{max-width:36ch;margin:8px}.ai-document-preview summary{min-height:44px;display:flex;align-items:center;font-size:12px;cursor:pointer;color:var(--muted)}.ai-documents>li>button{position:absolute;right:0;bottom:10px;border:0;background:none;min-height:44px;font-size:12px;color:var(--muted)}
+.ai-portable-projection{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0;border-top:1px solid var(--line);padding-top:10px}.ai-portable-projection span{display:block;font-size:12px;color:var(--muted)}.ai-portable-projection strong{display:block;font-size:12px;font-weight:450;line-height:1.5;margin-top:3px;overflow-wrap:anywhere}.ai-portable-projection>button{grid-column:1/-1;justify-self:start;padding:0;min-height:36px}.ai-send-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}#loomAiWorkspace .ai-primary{border:1px solid #77cfcf;background:#92e9e1;color:#08202a;min-height:48px;padding:10px 18px;font-size:14px;font-weight:620;border-radius:3px}#aiPreparePortable{flex:1}#aiSendSummary{flex-basis:100%;font-size:12px}#aiStatus{font-size:13px;line-height:1.5;margin:10px 0;overflow-wrap:anywhere}.ai-error{color:#f2b78d}.ai-pending{margin:12px 0;display:flex;gap:10px;font-size:13px}.ai-pending span{display:block}.ai-wait-orbit{width:14px;height:20px;border:1px solid var(--cyan);border-radius:50%;transform:rotate(var(--wait-turn,0deg))}.ai-projects{display:grid;gap:0;margin:10px 0}.ai-projects button{display:grid;gap:5px;border:0;border-bottom:1px solid var(--line);text-align:left;background:none;padding:12px 0;min-height:64px}.ai-projects button strong{font-size:14px;font-weight:520;color:var(--paper)}.ai-projects button span{font-size:12px;color:var(--muted)}.ai-demo-number{color:var(--cyan)}#aiDemoInvitation{min-height:44px;padding:0;border:0;background:none;color:var(--cyan);font-size:13px}.ai-project-brief{border-left:2px solid var(--cyan);padding-left:12px;margin:12px 0}.ai-project-brief h3{font-size:14px}.ai-project-brief p{font-size:12px;margin-top:5px}.ai-new-root-notice{border-left:2px solid #eeb17b;padding:10px 14px;margin:12px 0;font-size:13px}.ai-new-root-notice button,.ai-new-root-notice label{display:block;margin-top:8px;min-height:44px}.ai-new-root-notice input{accent-color:var(--cyan)}
+.ai-result>h2{margin:8px 0 14px}.mark{font-size:12px;color:var(--cyan)}.ai-answer{font-size:15px;line-height:1.7;overflow-wrap:anywhere}.ai-answer p,.ai-answer h3{margin:10px 0}.ai-result #aiMissing,.ai-result #aiNext{font-size:14px;margin:12px 0}.ai-crossing-boundary{margin-top:24px;border-top:1px solid var(--line);padding-top:18px}.ai-crossing-boundary p{font-size:13px;margin-top:8px}.ai-output-actions{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}.ai-output-actions button{min-height:44px;border:0;border-bottom:1px solid var(--line);padding:8px 0;background:none;color:var(--cyan);font-size:13px}#aiMarrowline{flex-basis:100%}#aiMarrowlineCustodyNote{font-size:13px;line-height:1.6}#loomDepartureSave,#loomPreparedInspect,#loomLocalCustodyOpen{display:block;min-height:44px;padding:8px 0;background:none;border:0;color:var(--cyan);font-size:13px}#loomReturnWorkspace>header p{font-size:14px;margin:8px 0 16px}.ai-route-note{font-size:13px;margin:12px 0}.ai-result-table{display:block;overflow-x:auto;border-collapse:collapse}.ai-result-table td,.ai-result-table th{padding:8px;border-bottom:1px solid var(--line)}
+.loom-tools{margin:auto;width:calc(100% - 24px);max-width:720px;max-height:90dvh;border:1px solid var(--line);border-radius:6px;background:#0c131c;color:var(--paper);padding:20px;overflow-y:auto;overscroll-behavior:contain}.loom-tools::backdrop{background:#02070bba}.loom-tools>header{display:flex;align-items:center;justify-content:space-between}.loom-tools>header button{border:0;background:none;color:var(--cyan);font-size:24px;min-width:44px;min-height:44px}.loom-tools>nav{display:flex;flex-wrap:wrap;gap:6px 18px;border-bottom:1px solid var(--line);margin:10px 0 18px}.loom-tools>nav button{border:0;background:none;color:var(--muted);padding:8px 0;min-height:44px;font-size:13px}.loom-tools>nav button[aria-pressed="true"]{color:var(--cyan);border-bottom:1px solid var(--cyan)}.loom-tools p{font-size:13px;margin:8px 0}.loom-tools h3{margin:12px 0}.loom-tools label{display:block;font-size:13px;margin:12px 0 4px}.loom-tools textarea,.loom-tools select{width:100%;padding:10px;border:1px solid var(--line);background:#080e15;border-radius:3px;font-size:16px;line-height:1.6}.loom-tools section button,.loom-tools details button{min-height:44px;padding:8px 12px;border:1px solid var(--line);background:none;color:var(--cyan);font-size:13px}.loom-tools summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-size:13px;color:var(--cyan)}.ai-session-facts{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0;font-size:12px}.ai-session-facts span{display:grid}.ai-session-facts b{font-weight:500}.ai-session-summary .mark{display:none}.ai-challenge-actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.loom-lab-link{border-top:1px solid var(--line);padding-top:16px}pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:360px;overflow:auto;background:#070d14;font:12px/1.6 var(--mono);padding:12px;margin:10px 0}code{font-family:var(--mono)}
+.loom-reentry{margin:20px 0;border-top:1px solid var(--line);padding-top:18px;font-size:14px}.loom-reentry p{margin:8px 0;font-size:13px}.loom-reentry h3,.loom-reentry h4{margin:12px 0 8px}.loom-reentry-state{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0}.loom-reentry-state div{flex:1;min-width:80px}.loom-reentry-state dt{font-size:12px;color:var(--muted)}.loom-reentry-state dd{font-size:12px;margin:4px 0;overflow-wrap:anywhere}.loom-reentry label{display:block;font-size:13px;margin:10px 0 4px}.loom-reentry textarea,.loom-reentry input:not([type=checkbox]){width:100%;font-size:16px;border:1px solid var(--line);background:#080e15;padding:10px;line-height:1.5}.loom-reentry input[type=checkbox]{width:18px;height:18px;accent-color:var(--cyan)}.loom-reentry-actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.loom-reentry button{font-size:13px;min-height:44px;padding:8px 12px;border:1px solid var(--line);background:none;color:var(--cyan)}.loom-reentry-review{display:flex!important;gap:8px;align-items:start}.loom-reentry-review input{flex-shrink:0}.loom-reentry-notice{border-left:2px solid var(--cyan);padding:8px 12px}.loom-reentry summary{min-height:44px;display:flex;align-items:center;cursor:pointer;color:var(--cyan)}.loom-reentry ul,.loom-reentry ol{padding-left:20px;font-size:13px}.loom-reentry-result{border-block:1px solid var(--line);padding:12px 0;margin:12px 0}.loom-reentry-step{margin:20px 0}.loom-return-review label{display:block;margin:12px 0;font-size:13px}.loom-return-review button{min-height:44px;border:1px solid var(--line);padding:8px 12px;background:none;color:var(--cyan);font-size:13px}.loom-return-review h3{margin:14px 0}.loom-return-review p{font-size:13px;margin:8px 0}.loom-return-review textarea{width:100%;font-size:16px;background:#080e15;color:var(--paper);border:1px solid var(--line);padding:10px}
+@media(min-width:761px){#loomAiWorkspace{padding-top:36px}.loom-intro h1{font-size:34px}.loom-intro p{max-width:none}.loom-journey{margin:24px 0 20px}.loom-working-surface{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);column-gap:48px;align-items:start}.loom-stage{grid-column:2;grid-row:1;position:sticky;top:20px;min-height:450px;border:0}.loom-workspaces{grid-column:1;grid-row:1}.loom-glyph-field{height:360px}.loom-field-caption{margin-top:14px}.loom-instrument-state-now{font-size:21px}.loom-instrument-state-mode{font-size:12px}.ai-composer>textarea{height:168px}.loom-builder-head h2{font-size:22px}.ai-portable-projection{margin:18px 0}.loom-stage .loom-instrument-state-boundary{font-size:12px}.ai-output-actions #aiMarrowline{flex-basis:auto;flex-grow:1}}
+@media(max-width:760px){.loom-stage{order:-1;min-height:0;padding-bottom:12px}.loom-instrument-state-mode{display:none}.loom-glyph-field{height:clamp(220px,56vw,280px)}.loom-field-caption{margin-top:8px}.loom-instrument-state-endpoints{font-size:11px}.loom-instrument-state-relation{font-size:11px;display:inline}.loom-instrument-state-boundary{font-size:11px}.ai-room-replay{position:static;justify-content:flex-end;margin:4px 0 0;gap:10px}.ai-room-replay button{font-size:11px}.ai-room-replay label,.ai-room-replay p{position:relative;background:var(--ink)}.loom-instrument-state-inspection{margin-top:0}.loom-instrument-state-inspection summary{min-height:36px;font-size:11px}.loom-builder-head h2{font-size:18px}.ai-facts{font-size:11px;margin:5px 0}.loom-tools{max-height:calc(100dvh - 24px)}.loom-tools>nav{gap:0 16px}.loom-reentry-actions{display:grid;grid-template-columns:1fr 1fr}.loom-reentry-actions button{width:100%}}
+/* Visibility is semantic. No layout selector may resurrect a withheld panel. */
+#loomAiWorkspace [hidden],#loomAiWorkspace .loom-tools [hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto} .loom-glyph-field{transform:none}}
+
+/* Compact field and writing canvas are one mobile work surface. Duplicated
+   task caption remains available to assistive technology. */
+@media(max-width:760px){.loom-stage .loom-instrument-state{display:block}.loom-stage .loom-glyph-field{width:100%;height:clamp(220px,56vw,280px)}.loom-stage .loom-field-caption{padding-top:0;margin-top:8px}.loom-stage .loom-instrument-state-boundary{display:block}.ai-composer>#aiTaskLabel,.ai-composer>#aiTaskCue{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}.ai-composer>textarea{margin-top:14px;background:none;padding:10px 0;border-bottom:1px solid var(--line)}.ai-toolbar{margin-top:4px}.ai-answer{margin:18px 0;font-size:14px}.ai-crossing-boundary{margin-top:16px;padding-top:14px}}
+
+.loom-glyph-field text{font-family:"Loom Flow-Core",var(--sans)}
+
+@media(max-width:760px){#aiRuntimeState{min-height:0}.loom-stage .loom-field-caption{min-height:0}}
+
+.loom-intro .loom-text-action,.ai-room-replay button{min-width:44px}.loom-return-review input[type=file]{display:block;width:100%;max-width:100%;font-size:16px;min-height:44px;margin:8px 0}.loom-return-review p{overflow-wrap:anywhere}.loom-return-review summary{min-height:44px;display:flex;align-items:center;color:var(--cyan);cursor:pointer}.loom-return-review article{margin:18px 0}
+
+/* Interactive widths must outrank the grid min-width reset. */
+#loomAiWorkspace button,#loomAiWorkspace summary{min-width:44px;min-height:44px}
+
+
+/* ===== v6 SCENE CHOREOGRAPHY =====
+   Restore the route-native cinematic scene sequence from the accepted v4 visual
+   language while preserving the v5 service, custody, Marrowline, return, and
+   tool mechanics. The Flow-Core field is a full scene; the builder is the next
+   scene. Neither is a compact card inside the other. */
+#loomAiWorkspace{max-width:none;margin:0;padding:0}
+
+#loomAiWorkspace .loom-stage{
+  position:relative;
+  min-height:calc(100svh - 52px);
+  height:calc(100svh - 52px);
+  overflow:hidden;
+  isolation:isolate;
+  border-bottom:1px solid var(--line);
+  padding:0;
+  background:
+    radial-gradient(ellipse at 50% 48%,rgba(85,108,155,.10),transparent 42%),
+    radial-gradient(ellipse at 18% 68%,rgba(142,232,230,.045),transparent 32%),
+    #05070a;
+  contain:layout paint style;
+}
+#loomAiWorkspace .loom-stage-copy{
+  position:absolute;z-index:12;top:22px;left:max(20px,calc((100% - 1240px)/2));
+  pointer-events:none
+}
+#loomAiWorkspace .loom-stage-copy .loom-kicker{
+  display:block;margin:0 0 8px;font:650 .54rem/1 var(--mono);
+  letter-spacing:.14em;color:#7c8792
+}
+#loomAiWorkspace .loom-stage-copy h1{
+  margin:0;color:var(--paper);font:620 clamp(1.2rem,2vw,1.6rem)/1 var(--sans);
+  letter-spacing:-.035em
+}
+#loomAiWorkspace .loom-stage-copy p{
+  margin:8px 0 0;max-width:36ch;color:#828d98;font-size:.76rem;line-height:1.45
+}
+#loomAiWorkspace .ai-runtime{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+  margin:0!important;padding:0!important;border:0!important;background:transparent!important;
+  overflow:hidden!important
+}
+#loomAiWorkspace .ai-runtime>p.mark{display:none!important}
+#loomAiWorkspace .ai-runtime-state,
+#loomAiWorkspace .loom-instrument-state,
+#loomAiWorkspace .loom-glyph-field{
+  width:100%!important;height:100%!important;min-height:100%!important;margin:0!important
+}
+#loomAiWorkspace .loom-glyph-field{
+  display:block!important;overflow:hidden!important;transform:translateZ(0);
+  backface-visibility:hidden;pointer-events:none
+}
+#loomAiWorkspace .loom-field-flight{pointer-events:none;mix-blend-mode:screen}
+#loomAiWorkspace .loom-field-flight .flight-far{opacity:.035}
+#loomAiWorkspace .loom-field-flight .flight-mid{opacity:.13}
+#loomAiWorkspace .loom-field-flight .flight-near{opacity:.34}
+#loomAiWorkspace .loom-instrument-state-mode{
+  position:absolute!important;z-index:12!important;top:24px!important;
+  right:max(20px,calc((100% - 1240px)/2))!important;margin:0!important;
+  color:#66727e!important;font:600 .52rem/1 var(--mono)!important;
+  letter-spacing:.10em!important;text-transform:uppercase
+}
+#loomAiWorkspace .loom-field-caption{
+  position:absolute!important;z-index:12!important;
+  left:max(20px,calc((100% - 1240px)/2))!important;bottom:86px!important;
+  width:min(620px,calc(100% - 40px))!important;margin:0!important;
+  transform:none!important;text-align:left!important;pointer-events:none
+}
+#loomAiWorkspace .loom-instrument-state-now{
+  margin:0 0 7px!important;max-width:18ch!important;color:rgba(244,247,248,.94)!important;
+  font:540 clamp(1.25rem,2.8vw,2.2rem)/1.02 var(--sans)!important;
+  letter-spacing:-.045em!important;text-shadow:0 2px 24px rgba(0,0,0,.55)!important
+}
+#loomAiWorkspace .loom-instrument-state-endpoints{
+  margin:0!important;color:#808c97!important;
+  font:580 .58rem/1.35 var(--mono)!important;letter-spacing:.045em!important;text-transform:uppercase
+}
+#loomAiWorkspace .loom-instrument-state-next{display:none!important}
+#loomAiWorkspace .loom-instrument-state-relation{
+  position:absolute!important;z-index:12!important;
+  left:max(20px,calc((100% - 1240px)/2))!important;bottom:20px!important;
+  width:auto!important;max-width:46%!important;margin:0!important;color:#5f6a75!important;
+  font:560 .52rem/1.2 var(--mono)!important;letter-spacing:.06em!important;text-transform:uppercase
+}
+#loomAiWorkspace .loom-instrument-state-boundary{
+  position:absolute!important;z-index:12!important;
+  right:max(20px,calc((100% - 1240px)/2))!important;bottom:20px!important;
+  width:auto!important;max-width:42%!important;margin:0!important;text-align:right!important;
+  color:#56616c!important;font:500 .5rem/1.2 var(--mono)!important
+}
+#loomAiWorkspace .loom-instrument-state-inspection{
+  position:absolute!important;z-index:20!important;top:48px!important;
+  right:max(20px,calc((100% - 1240px)/2))!important;left:auto!important;
+  width:min(360px,calc(100% - 40px))!important;max-height:calc(100% - 150px)!important;
+  overflow:auto!important;overscroll-behavior:contain!important;margin:0!important
+}
+#loomAiWorkspace .loom-instrument-state-inspection>summary{
+  min-height:32px!important;padding:7px 0!important;text-align:right!important;
+  color:#697580!important;font-size:.62rem!important
+}
+#loomAiWorkspace .ai-facts{
+  position:absolute!important;z-index:12!important;
+  right:max(20px,calc((100% - 1240px)/2))!important;bottom:58px!important;
+  display:flex!important;gap:16px!important;margin:0!important
+}
+#loomAiWorkspace .ai-facts[hidden]{display:none!important}
+#loomAiWorkspace #aiGapSummary{
+  position:absolute!important;left:20px!important;bottom:54px!important;
+  margin:0!important;font-size:.64rem!important
+}
+#loomAiWorkspace .ai-room-replay{
+  position:absolute!important;z-index:16!important;
+  right:max(20px,calc((100% - 1240px)/2))!important;bottom:14px!important;
+  display:flex!important;gap:10px!important;align-items:center!important;margin:0!important
+}
+#loomAiWorkspace .ai-room-replay button{
+  min-height:30px!important;padding:5px 0!important;border:0!important;
+  border-bottom:1px solid rgba(142,232,230,.18)!important;border-radius:0!important;
+  background:transparent!important;color:#6f7b86!important;font-size:.6rem!important
+}
+#loomAiWorkspace .ai-room-replay p,
+#loomAiWorkspace .ai-room-replay label{display:none!important}
+
+#loomAiWorkspace .loom-hero-route{
+  position:absolute;z-index:15;left:50%;bottom:15px;transform:translateX(-50%);
+  width:min(420px,44vw);display:grid;grid-template-columns:1fr auto 1fr auto 1fr;
+  align-items:center;margin:0;border:1px solid rgba(180,200,218,.11);
+  border-radius:999px;background:rgba(6,9,13,.66);backdrop-filter:blur(14px);
+  color:#596470;font-size:.6rem;pointer-events:none
+}
+#loomAiWorkspace .loom-hero-route span{
+  min-height:34px;display:flex;align-items:center;justify-content:center;gap:5px;padding:0 10px
+}
+#loomAiWorkspace .loom-hero-route b{font:550 .5rem/1 var(--mono)}
+#loomAiWorkspace .loom-hero-route i{font-style:normal;color:#45535f}
+html[data-loom-journey="loom"] #loomAiWorkspace .loom-hero-route [data-hero-step="loom"],
+html[data-loom-journey="ready"] #loomAiWorkspace .loom-hero-route [data-hero-step="loom"],
+html[data-loom-journey="marrowline"] #loomAiWorkspace .loom-hero-route [data-hero-step="marrowline"],
+html[data-loom-journey="return"] #loomAiWorkspace .loom-hero-route [data-hero-step="return"]{
+  color:var(--paper);background:rgba(142,232,230,.055);border-radius:999px
+}
+#loomAiWorkspace .loom-begin{
+  position:absolute;z-index:18;left:max(20px,calc((100% - 1240px)/2));bottom:15px;
+  min-height:34px;padding:0;border:0;border-bottom:1px solid var(--line);
+  background:transparent;color:#c9d2d8;font:600 .66rem/1 var(--sans)
+}
+
+/* Builder is a distinct second scene. */
+#loomAiWorkspace .loom-builder-shell{
+  width:min(960px,calc(100% - 40px));margin:0 auto;
+  padding:clamp(54px,8vw,92px) 0 96px
+}
+#loomAiWorkspace .loom-builder-shell>.loom-intro{
+  display:flex;justify-content:space-between;align-items:start;gap:12px
+}
+#loomAiWorkspace .loom-builder-shell>.loom-intro h1{
+  font-size:34px;letter-spacing:-.045em;font-weight:620;line-height:1.15
+}
+#loomAiWorkspace .loom-builder-shell>.loom-intro p{
+  max-width:none;margin-top:6px;font-size:14px
+}
+#loomAiWorkspace .loom-builder-shell>.loom-journey{
+  position:static;display:flex;align-items:center;gap:6px;max-width:460px;
+  margin:24px 0 20px;transform:none;width:auto;border:0;border-radius:0;background:none;
+  backdrop-filter:none;pointer-events:auto
+}
+#loomAiWorkspace .loom-builder-shell>.loom-journey .loom-journey-step{
+  min-height:44px;padding:5px 4px;border:0;border-bottom:2px solid transparent;
+  border-radius:0;background:none;color:var(--muted);font-size:13px
+}
+#loomAiWorkspace .loom-builder-shell>.loom-journey .loom-journey-step[aria-current="step"]{
+  color:var(--cyan);border-bottom-color:var(--cyan)
+}
+#loomAiWorkspace .loom-working-surface{display:block!important}
+#loomAiWorkspace .loom-workspaces{display:block;min-width:0}
+#loomAiWorkspace .loom-builder{padding-top:22px}
+#loomAiWorkspace .loom-builder-head h2{font-size:22px}
+#loomAiWorkspace .ai-composer>textarea{height:220px}
+
+@media(max-width:760px){
+  .loom-topbar{height:48px;padding:0 14px}
+  #loomAiWorkspace .loom-stage{
+    min-height:calc(100svh - 48px);height:calc(100svh - 48px);padding:0
+  }
+  #loomAiWorkspace .loom-stage-copy{top:14px;left:14px;right:14px}
+  #loomAiWorkspace .loom-stage-copy .loom-kicker{font-size:.46rem}
+  #loomAiWorkspace .loom-stage-copy h1{font-size:1.05rem}
+  #loomAiWorkspace .loom-stage-copy p{max-width:28ch;font-size:.69rem}
+  #loomAiWorkspace .loom-instrument-state-mode{
+    display:block!important;top:15px!important;right:14px!important;
+    font-size:.44rem!important;max-width:42%!important
+  }
+  #loomAiWorkspace .loom-field-caption{
+    left:14px!important;bottom:76px!important;width:calc(100% - 28px)!important;
+    margin:0!important;padding:0!important;min-height:0!important
+  }
+  #loomAiWorkspace .loom-instrument-state-now{
+    font-size:clamp(1.15rem,6.8vw,1.8rem)!important;max-width:12ch!important
+  }
+  #loomAiWorkspace .loom-instrument-state-endpoints{font-size:.48rem!important}
+  #loomAiWorkspace .loom-instrument-state-relation{
+    left:14px!important;bottom:15px!important;max-width:62%!important;font-size:.44rem!important
+  }
+  #loomAiWorkspace .loom-instrument-state-boundary{display:none!important}
+  #loomAiWorkspace .loom-instrument-state-inspection{
+    top:42px!important;right:14px!important;width:min(290px,calc(100% - 28px))!important;
+    max-height:calc(100% - 130px)!important
+  }
+  #loomAiWorkspace .loom-field-flight{mix-blend-mode:normal}
+  #loomAiWorkspace .loom-field-flight .flight-far{display:none}
+  #loomAiWorkspace .ai-facts,#loomAiWorkspace #aiGapSummary{display:none!important}
+  #loomAiWorkspace .ai-room-replay{
+    position:absolute!important;right:14px!important;bottom:10px!important;
+    justify-content:flex-end!important;margin:0!important
+  }
+  #loomAiWorkspace .ai-room-replay button{font-size:.54rem!important}
+  #loomAiWorkspace .loom-hero-route{
+    left:auto;right:14px;bottom:12px;transform:none;width:205px;
+    grid-template-columns:1fr auto 1fr auto 1fr
+  }
+  #loomAiWorkspace .loom-hero-route span{min-height:32px;padding:0 5px;gap:3px}
+  #loomAiWorkspace .loom-hero-route b{font-size:.44rem}
+  #loomAiWorkspace .loom-begin{left:14px;bottom:13px;font-size:.62rem}
+
+  #loomAiWorkspace .loom-builder-shell{
+    width:calc(100% - 28px);padding:44px 0 70px
+  }
+  #loomAiWorkspace .loom-builder-shell>.loom-intro h1{font-size:2rem}
+  #loomAiWorkspace .loom-builder-shell>.loom-intro p{font-size:.86rem}
+  #loomAiWorkspace .loom-builder-shell>.loom-journey{
+    width:100%;max-width:none;margin:24px 0 24px
+  }
+  #loomAiWorkspace .loom-builder{padding-top:16px}
+  #loomAiWorkspace .loom-builder-head h2{font-size:1.75rem}
+  #loomAiWorkspace .ai-composer>#aiTaskLabel,
+  #loomAiWorkspace .ai-composer>#aiTaskCue{
+    position:static;width:auto;height:auto;overflow:visible;clip-path:none;white-space:normal
+  }
+  #loomAiWorkspace .ai-composer>textarea{
+    height:190px;min-height:150px;margin-top:8px;background:#0a1017;padding:13px;
+    border-bottom:1px solid var(--line)
+  }
+}
+
+@media(max-width:430px){
+  #loomAiWorkspace .loom-stage-copy p{display:none}
+  #loomAiWorkspace .loom-hero-route{width:198px}
+}
