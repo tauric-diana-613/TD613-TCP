@@ -46,7 +46,7 @@ const benches = [
   {id:'fire-preparation',label:'Fire Gate · prepare',scope:'Prepare a consequential measurement. Execution remains held.'},
   {id:'fire-witness',label:'Fire Gate · witness intake',scope:'Check declared witness consistency. Independent authentication stays separate.'},
   {id:'custody',label:'Loom Gate · current custody',scope:'Read the live local lane. Admission & state reconciliation belong to the registered returned-work controls.'},
-  {id:'advisory',label:'Explain a warning · model assistance',scope:'An optional explicit model request, separate from local assays. Only canonical warning labels and the disclosed SHI travel.'}
+  {id:'advisory',label:'Explain a warning · model assistance',scope:'An optional explicit model request, separate from local assays. Only canonical warning labels travel; raw source, Lab input, history and SHI remain out of the request.'}
 ];
 const runners = {
   disclosure:input=>analyzeFiniteChannel(input.model,input.channels),
