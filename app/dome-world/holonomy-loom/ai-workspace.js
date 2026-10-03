@@ -135,6 +135,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   let firstCrossingPacket = null;
   let firstCrossingSelected = new Set();
   let firstCrossingWasAlreadyComplete = false;
+  let firstCrossingReplayMode = false;
   let thresholdTimers = [];
   const thresholdStage = root.querySelector('.loom-stage');
   const builderShell = root.querySelector('.loom-builder-shell');
@@ -333,6 +334,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   }
   function restoreThresholdField(){
     firstCrossingActive=false;
+    firstCrossingReplayMode=false;
     firstCrossingStep=0;
     firstCrossingEvents=[];
     firstCrossingPacket=null;
@@ -360,7 +362,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     $('loomFirstCrossingStop').hidden=true;
     $('loomBegin').hidden=false;
     $('loomReplayFirstCrossing').hidden=false;
-    $('loomReplayFirstCrossing').textContent='↻ First Crossing';
+    $('loomReplayFirstCrossing').textContent='↻ Replay First Crossing';
     if(firstCrossingPacket){
       firstCrossingPacket={...firstCrossingPacket,scene:{...firstCrossingPacket.scene,id:'first-crossing-rest'},geometry:{...firstCrossingPacket.geometry,rest:true}};
       coordinator.setPacket(firstCrossingPacket,{animate:false});
@@ -369,7 +371,8 @@ export function mountLoomAiWorkspace(root, environment = window) {
   }
   function startFirstCrossing({replay=false}={}){
     clearThresholdTimers();
-    firstCrossingWasAlreadyComplete=storageRead(FIRST_CROSSING_KEY)==='complete';
+    firstCrossingWasAlreadyComplete=firstCrossingWasAlreadyComplete||storageRead(FIRST_CROSSING_KEY)==='complete';
+    firstCrossingReplayMode=Boolean(replay);
     firstCrossingActive=true;
     firstCrossingStep=0;
     firstCrossingEvents=[];
@@ -430,7 +433,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
     }
   }
   function openLoomThreshold(){
-    if(storageRead(FIRST_CROSSING_KEY)!=='complete'){
+    if(!firstCrossingWasAlreadyComplete&&storageRead(FIRST_CROSSING_KEY)!=='complete'){
       if(!firstCrossingActive)startFirstCrossing();
       return;
     }
@@ -776,7 +779,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   $('loomFirstCrossingAction').addEventListener('click',actFirstCrossing);
   $('loomFirstCrossingStop').addEventListener('click',()=>{if(firstCrossingActive&&firstCrossingStep===2)completeFirstCrossing();});
   $('loomReplayFirstCrossing').addEventListener('click',()=>{
-    if(firstCrossingActive&&firstCrossingWasAlreadyComplete){restoreThresholdField();return;}
+    if(firstCrossingActive&&firstCrossingReplayMode){restoreThresholdField();return;}
     startFirstCrossing({replay:true});
   });
   $('loomBegin').addEventListener('click',openLoomThreshold);
@@ -792,7 +795,8 @@ export function mountLoomAiWorkspace(root, environment = window) {
   root.dataset.thresholdBeat='0';
   thresholdStage.hidden=false;
   builderShell.hidden=true;
-  if(storageRead(FIRST_CROSSING_KEY)==='complete')restoreThresholdField();
+  firstCrossingWasAlreadyComplete=storageRead(FIRST_CROSSING_KEY)==='complete';
+  if(firstCrossingWasAlreadyComplete)restoreThresholdField();
   else startFirstCrossing();
   visibility();
   environment.document.documentElement.dataset.loomBoot='ready';
