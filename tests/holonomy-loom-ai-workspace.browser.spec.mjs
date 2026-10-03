@@ -207,15 +207,23 @@ try {
       assert.equal(await page.locator('#aiExport').isEnabled(),true,'bounded challenge work does not silently close the prepared export route');
       assert.equal(await page.locator('#aiExportSession').isEnabled(),true,'bounded challenge work does not silently close the prepared session route');
 
-      assert.equal(await page.locator('#aiStillField').isVisible(),true,'the shared runtime owns a visible rest control');
-      assert.equal(requests.length, 0, 'local preparation and export controls make no provider request');
+      assert.equal(await page.locator('#aiStillField').count(),1,'the shared runtime retains one rest control while the Threshold is withheld');
+      assert.equal(await page.locator('#aiStillField').isVisible(),false,'the Threshold rest control is not duplicated inside the active builder scene');
+      await page.locator('#loomReturnThreshold').click();
+      await page.locator('.loom-stage').waitFor({ state: 'visible' });
+      assert.equal(await page.locator('#aiRuntime').isVisible(),true,'returning to the Threshold restores the canonical state view');
+      assert.equal(await page.locator('#aiStillField').isVisible(),true,'the shared runtime rest control is visible in its Threshold scene');
+      await page.locator('#loomBegin').click();
+      await page.locator('.loom-builder-shell').waitFor({ state: 'visible' });
+      assert.equal(requests.length, 0, 'local preparation, Threshold return, and export controls make no provider request');
       await page.screenshot({ path: path.join(dir, `${posture}-loom-transfer-prepared.png`), fullPage: true });
 
       await page.locator('#loomJourneyStep1').click();
       assert.equal(await page.locator('#aiResult').isVisible(),false,'returning to the builder keeps crossing content contextual');
       await page.locator('#aiDemoMode').click();
       assert.equal(await page.locator('#aiDemoWelcome').isVisible(),true,'Practice route reveals the fictional project chooser');
-      assert.equal(await page.locator('#aiRuntime').isVisible(),true,'the same primary view remains in Demo');
+      assert.equal(await page.locator('#aiRuntime').count(),1,'Practice reuses the same canonical state view rather than mounting another one');
+      assert.equal(await page.locator('#aiRuntime').isVisible(),false,'Practice remains in the builder scene until the operator returns to the Threshold');
       assert.equal(await page.locator('#aiPreparePortable').evaluate(node=>node.classList.contains('ai-primary')),true,'Practice preserves local preparation as the primary route gesture');
       assert.equal(await page.locator('a[href="/dome-world/loom-instrument-lab.html"]').first().isVisible(),true,'Instrument Lab remains independently available during practice');
       assert.match(await page.locator('#aiDemoModePanel').innerText(),/Fictional material\. Same route, same boundaries\./i);
