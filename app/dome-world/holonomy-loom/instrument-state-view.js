@@ -507,10 +507,23 @@ export function mountLoomInstrumentStateView(root) {
   const restGlyph = svgEl('g',{fill:'none',stroke:`url(#${uid}-spectrum)`,'stroke-width':4,visibility:'hidden'});
   restGlyph.append(svgEl('path',{d:'M437 279 A63 63 0 0 1 563 279'}),svgEl('circle',{cx:500,cy:280,r:6,fill:'#e3eee7',stroke:'none'}));
   glyphGroup.append(depthLayer,ghost,glyph,restGlyph);svg.append(glyphGroup);
-  const origin = svgEl('text',{x:150,y:472,'text-anchor':'middle','font-size':12,fill:'#a7b6c6'});
-  const destination = svgEl('text',{x:850,y:472,'text-anchor':'middle','font-size':12,fill:'#a7b6c6'});
-  const axis = svgEl('path',{d:'M80 437H440M560 437H920',stroke:'#9ae8e4','stroke-width':.6,opacity:.2});
+  const origin = svgEl('text',{class:'loom-field-route-label',x:150,y:472,'text-anchor':'middle','font-size':12,fill:'#a7b6c6'});
+  const destination = svgEl('text',{class:'loom-field-route-label',x:850,y:472,'text-anchor':'middle','font-size':12,fill:'#a7b6c6'});
+  const axis = svgEl('path',{class:'loom-field-route-label',d:'M80 437H440M560 437H920',stroke:'#9ae8e4','stroke-width':.6,opacity:.2});
   svg.append(axis,origin,destination);
+  // Practice labels are a projection of this same canonical frame, never a
+  // competing CSS route. Actual source controls stay at the scene edge.
+  const sourceLayer=svgEl('g',{class:'loom-field-sources','aria-hidden':'true'});
+  const sourceMarkers=Array.from({length:8},()=>{
+    const group=svgEl('g');
+    const point=svgEl('circle',{r:5,fill:'#c9f5ef'});
+    const label=svgEl('text',{'text-anchor':'middle',y:30,'font-size':22,fill:'#c8dbdf'});
+    const guard=svgEl('ellipse',{rx:54,ry:26,fill:'none',stroke:'#b69be9','stroke-width':1,opacity:.5});
+    const continuity=svgEl('text',{x:0,y:-40,'text-anchor':'middle','font-size':25,fill:'#b69be9'});
+    group.append(guard,point,label,continuity);sourceLayer.append(group);
+    return {group,point,label,guard,continuity};
+  });
+  svg.append(sourceLayer);
   const relation = el('p', 'loom-instrument-state-relation');
   const endpoints = el('p', 'loom-instrument-state-endpoints');
   // The scaled SVG labels are supplementary. This DOM equivalent remains
@@ -547,12 +560,13 @@ export function mountLoomInstrumentStateView(root) {
         compactMotion = compact;
         filaments.forEach((node,index)=>{node.style.display=compact&&index>=10?'none':'';});
         particles.forEach((node,index)=>{node.style.display=compact&&index>=12?'none':'';});
-        flightGlyphs.forEach((node,index)=>{node.style.display=compact&&index>=12?'none':'';});
+        // All 39 carriers retain the depth strata; mobile reduces auxiliary lines.
+        svg.setAttribute('viewBox',compact?'200 -220 600 1120':'0 0 1000 520');
         depth.forEach((node,index)=>{node.style.display=compact&&index>=4?'none':'';});
       }
       const filamentCount = compact ? 10 : filaments.length;
       const particleCount = compact ? 12 : particles.length;
-      const flightCount = compact ? 12 : flightGlyphs.length;
+      const flightCount = flightGlyphs.length;
       const depthCount = compact ? 4 : depth.length;
       root.dataset.clientPhase = view.phase;
       root.dataset.activeRelation = frame.relation_key ?? 'unobserved';
@@ -652,9 +666,11 @@ export function mountLoomInstrumentStateView(root) {
       }
       const evidencedTrail=frame.descriptor ? (view.event_relation_history??[]).filter(item=>item?.glyph&&item?.relation_key) : [];
       for(let i=0;i<flightCount;i++){
-        const node=flightGlyphs[i],visible=evidencedTrail.length>0;
+        const node=flightGlyphs[i],visible=evidencedTrail.some(item=>item.relation_key===frame.relation_key);
         if(!visible){setText(node,'');node.setAttribute('visibility','hidden');continue;}
-        const observed=evidencedTrail[i%evidencedTrail.length];
+        // Current consequence owns the field. Older relations remain in the
+        // exact history and replay; they cannot masquerade as current motion.
+        const observed=evidencedTrail.findLast(item=>item.relation_key===frame.relation_key);
         const relationKey=observed.relation_key;
         const depthClass=node.getAttribute('class');
         const nearPlane=depthClass==='flight-near';
@@ -675,7 +691,8 @@ export function mountLoomInstrumentStateView(root) {
         }
 
         const speed=.014+(i%7)*.0033;
-        const phase=((seed+seconds*speed)%1+1)%1;
+        const finiteTraversal=['gathering','release','created_potential','released_tendency','bounded_emergence'].includes(relationKey);
+        const phase=finiteTraversal ? Math.min(1,seed*.18+frame.progress*.82) : ((seed+seconds*speed)%1+1)%1;
         const lane=(i%9)-4;
         let x=500,y=260,roll=0,scale=.48+(i%9)*.085,opacity=1;
 
@@ -750,10 +767,47 @@ export function mountLoomInstrumentStateView(root) {
         }else{
           opacity=Math.min(.12,opacity*.22);
         }
+        if(finiteTraversal && frame.progress>.65)opacity*=1-(frame.progress-.65)/.35*.65;
         node.setAttribute('opacity',opacity.toFixed(3));
         node.setAttribute('x',x.toFixed(2));node.setAttribute('y',y.toFixed(2));
         node.setAttribute('transform',`translate(${x.toFixed(2)} ${y.toFixed(2)}) rotate(${roll.toFixed(2)}) scale(${scale.toFixed(2)}) translate(${-x.toFixed(2)} ${-y.toFixed(2)})`);
       }
+      const practice=snapshot.packet?.scene?.id?.startsWith('first-crossing-')===true;
+      const sources=practice ? snapshot.packet.scene.documents??[] : [];
+      sourceLayer.setAttribute('visibility',practice?'visible':'hidden');
+      sourceMarkers.forEach((marker,index)=>{
+        const source=sources[index];
+        if(!source){marker.group.setAttribute('visibility','hidden');return;}
+        marker.group.setAttribute('visibility','visible');
+        const selected=view.event.selected_document_ids?.includes(source.id)===true;
+        const selectedIndex=view.event.selected_document_ids?.indexOf(source.id)??0;
+        const gathering=frame.relation_key==='gathering';
+        const ready=frame.relation_key==='created_potential';
+        const p=frame.progress;
+        let x=source.id==='private'?680:source.id==='brief'?320:680,y=260;
+        if(source.id==='private'){x=compact?680:820;y=compact?480:340;}
+        else if(selected){
+          const target=selectedIndex===0?435:565;
+          x=gathering?x+(target-x)*p:target;
+          y=ready?300-p*170:260;
+        }
+        marker.group.setAttribute('transform',`translate(${x.toFixed(2)} ${y.toFixed(2)})`);
+        marker.group.setAttribute('data-source-id',source.id);
+        marker.group.setAttribute('data-source-local',String(!selected));
+        marker.point.setAttribute('opacity',selected?'1':'.35');
+        const combined=selected && (ready || p>.7);
+        setText(marker.label,combined?(selectedIndex===0?`${view.event.shared} selected sources`:''):source.name);
+        marker.label.setAttribute('font-size',compact?'20':'14');
+        marker.label.setAttribute('x',combined&&selectedIndex===0?'65':'0');
+        // Keep the settled count below the primary glyph, while the actual
+        // selected points retain their canonical gathering/readiness positions.
+        marker.label.setAttribute('y',combined?(390-y).toFixed(2):'30');
+        marker.label.setAttribute('opacity',combined?'.75':'.85');
+        const protectedLocal=source.id==='private' && view.relations.protected_continuity.evidenced;
+        marker.guard.setAttribute('visibility',protectedLocal?'visible':'hidden');
+        marker.guard.setAttribute('transform',`rotate(${frame.reduced_motion?0:seconds*9})`);
+        setText(marker.continuity,protectedLocal?view.relations.protected_continuity.glyph:'');
+      });
       setText(title, frame.descriptor ? `${frame.descriptor.label}. ${frame.endpoints.join(' to ')}.` : 'No request relation is established yet.');
       svg.setAttribute('aria-label', title.textContent);
       setText(origin, frame.endpoints[0]); setText(destination, frame.endpoints[1]);

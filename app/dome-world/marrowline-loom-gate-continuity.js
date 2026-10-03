@@ -87,13 +87,24 @@ export function deriveMarrowlineLoomGateContinuity({
 
   const originDigest=activation?.governance?.input_digest ?? binding?.origin_input_digest ?? null;
   const currentDigest=binding?.current_input_digest ?? null;
-  const predecessorRequest=predecessor?.request_id ?? null;
+  // The controller replaces this receipt after each admitted result. It is the
+  // current receipt head, used as the predecessor of the next send; the current
+  // answer's immediate content parent remains a separate retained coordinate.
+  const receiptHeadRequest=predecessor?.request_id ?? null;
   const resultRequest=result?.request_id ?? null;
+  const contentPredecessorLabel=substantiveContinuationCount>0
+    ? contentPredecessorRequestId
+      ? `Immediate content predecessor request: ${contentPredecessorRequestId}`
+      : substantiveContinuationCount===1
+        ? 'Immediate content predecessor: none · the first continuation began from the prepared task.'
+        : 'Immediate content predecessor remains unobserved; retained lineage is required.'
+    : 'No substantive content predecessor yet.';
   const atlasSurvived=[
     originDigest ? `Origin input digest retained: ${digestShort(originDigest)}` : 'Origin input digest not yet available.',
     `Selected manifest retains ${selectedIds.length} declared file id${selectedIds.length===1?'':'s'}.`,
-    predecessorRequest ? `Immediate receiver predecessor request: ${predecessorRequest}` : 'No receiver predecessor request yet.',
-    resultRequest ? `Current receiver result request: ${resultRequest}` : 'No current receiver result yet.'
+    receiptHeadRequest ? `Current receipt head request (next-send predecessor): ${receiptHeadRequest}` : 'No current receiver receipt head yet.',
+    resultRequest ? `Current receiver result request: ${resultRequest}` : 'No current receiver result yet.',
+    contentPredecessorLabel
   ];
 
   return Object.freeze({
@@ -123,7 +134,7 @@ export function deriveMarrowlineLoomGateContinuity({
       activation_digest:activation?.activation_digest??null,
       origin_input_digest:originDigest,
       current_input_digest:currentDigest,
-      predecessor_request_id:predecessorRequest,
+      predecessor_request_id:receiptHeadRequest,
       current_result_request_id:resultRequest,
       substantive_continuation_count:substantiveContinuationCount,
       content_predecessor_request_id:contentPredecessorRequestId,

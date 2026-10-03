@@ -1,0 +1,743 @@
+{
+  "schema": "td613.loom.mobile-composition-browser-witness/v0.1",
+  "status": "PASS",
+  "harness_sha256": "de998bb3a9b3c72d80cdcd9ac012433cb9e1b7614e1630c666a16199953533ea",
+  "source_head": "c6ede88496db614643bdc2197659c6d6b403dd3a",
+  "source_class": "HASH_BOUND_LOCAL_WORKING_TREE_CANDIDATE",
+  "observed_at": "2026-10-03T09:51:07.091Z",
+  "browser": "Chromium",
+  "observation_class": "ACTUAL_LOCAL_RENDERED_PRODUCT_NO_PROVIDER_REQUEST",
+  "live_provider_calls": 0,
+  "fixture_provider_calls": 0,
+  "human_comprehension_measured": false,
+  "physical_device_observed": false,
+  "safari_chrome_observed": false,
+  "empirical_credit": 0,
+  "served_source_bytes": {
+    "app/dome-world/holonomy-loom.html": "ffaeb33a2f7c78d66cbb950aa2a98ab2f5cedc1d707921e59d5c123ee5e514ad",
+    "app/site-epoch-preflight.js": "e72dc1f8847a2d04e669b1eeaa5ab95da46bed3b57c1bc40c2cb5447faa1c8c2",
+    "app/dome-world/holonomy-loom/loom-product-v6.css": "574dfee918633e967a020610822ab520dcdd8763bf28132c4dd800d6df0d4008",
+    "app/dome-world/holonomy-loom/ai-workspace.js": "34e584a6ed942263a04dd1b9459da63646b7375318519ada591ab553a8274045",
+    "app/dome-world/holonomy-loom/first-crossing-practice.js": "b769979d22de105413cb487a09b9e09ac7e3200875b3549ad717ecbdbcb95369",
+    "app/dome-world/holonomy-loom/returned-session-review.js": "37f18e47decae6bbd7d477ddb65e55d34455b4c22fa15bfd72c87b7faaf7ce01",
+    "app/dome-world/holonomy-loom/workspace-template.js": "cd2ec509bbb971ac0af26cd94ad3bf8ce0ef3c13872d52c602d67865e4002bcd",
+    "app/dome-world/holonomy-loom/ai-projects.js": "6f0cb055cac9db61cef79ea29e3dc327fbf2aaf502be46b2288447e4a6479a96",
+    "app/dome-world/holonomy-loom/ai-intake.js": "beaeb697e30d82bde292bb1aa68059992200177381017610223209cd8b398420",
+    "app/dome-world/holonomy-loom/ai-handoff.js": "ba4a9c9fb9de1cf6d60c0495b7813afa47c7a84be508aa012c1deea471b1ce3a",
+    "app/dome-world/holonomy-loom/ai-project-checks.js": "a252028eff0b5fa6d9855b8b3287b9b00d7a610337b204525be51b54d1954e6c",
+    "app/dome-world/holonomy-loom/runtime-state-view.js": "9c9ac51aa3c72a495df146d46ab7b5f68388edaf4001823cc4d7e3e4f8f41b1e",
+    "app/dome-world/holonomy-loom/ai-result-view.js": "2876df93f431b46f96eed1eea38f4888ef3f84fdc3ac7f915c1e98200f2e9318",
+    "app/dome-world/holonomy-loom/animation-coordinator.js": "e4362afc25048364b0eb1b96a9fe2063b0a780d17f8d3d6f1a41c7f49ca64fe9",
+    "app/dome-world/holonomy-loom/ai-failure.js": "d05841ede86222189a03fb2d96c8b5399a2f4a0e964cfa4af6609900ce4dbd7c",
+    "app/gemini-consumption-ledger.js": "fbfa811e088a2e19ff5169c7955d9dd9f28f390b7c6ca921f93cbc0351d8d6b2",
+    "app/dome-world/holonomy-loom/reentry-workspace.js": "b191485e556fd505d9cb69ea4b09c73e11098354c5a00be109b981cf5ea98313",
+    "app/dome-world/holonomy-loom/demo-contract.js": "3aa769529efea77f4947342e592f989e1c9fef7d07fa2a342b5d62d4849b074f",
+    "app/engine/portable-loom-session.js": "d718813f0e3679a2e0394f2f11c48c5ccbe319fc7a5f769875f11abf3dcf4b27",
+    "app/engine/portable-loom-challenge.js": "df0a95cb7e7913a5f7d7dbd797b487770196ec405828899d9bca2ec842f83f0e",
+    "app/dome-world/holonomy-loom/ai-evidence-review.js": "41bace56cc807c2c210b534173ad25249701548823d2a9061f0c2c0911ac4615",
+    "app/dome-world/holonomy-loom/ai-handoff-base.js": "76b11a2a2a91db536de50d6ae9e80394a41244d30cbf41db27cd452ca7159374",
+    "app/dome-world/khonapolit-covenant.js": "90a9e93cad516b21c3528cff59ca2e5d11874a6a488ed5dd0876e5b3d3616a2a",
+    "app/dome-world/holonomy-loom/instrument-state-view.js": "ac889dd49ac3450501c936d64a6e6315024ec2e7b4ca98761e3f998fe560bf64",
+    "app/engine/portable-loom-reentry.js": "32e06541343c30b61005f299a20d134bd07cd3c7f7852c0454f239323abf34e5",
+    "app/dome-world/holonomy-loom/observer-channel.js": "c67e7e0b5e2a0f3373800abfd00aacf9f72c02905cddd4b6661ba70955a50036",
+    "app/engine/dollhouse-witness-plan.js": "4596ebaff79be34c00340fb460642243e22b12c2cf1ab80a53954a6e6cf893f1",
+    "app/engine/dollhouse-continuity-audit.js": "6df6acb691288a0ab2190ef0d75ba45de8906dc789fcc7861a356a7633d7479f",
+    "app/engine/dollhouse-case-dossier.js": "fd6140e1a7eb09c6378355d009d8108111a20af359c15c49d0d1af7efee0c800",
+    "app/engine/flowcore-aia-surface-binding.js": "51da898a5b06270cfe3a2c090523905216f286fab6af8316901d0df853d5543e",
+    "app/dome-world/holonomy-loom/flowcore-aia-motion.js": "40061f09ad27acea3955e28d7b5efe58b28324f6be845f5453c4da55f4f2e4c2",
+    "app/engine/dollhouse-atlas-fadt.js": "3e4a4546c2e2aecfdbc24121019c82a59653320aa86baac9e3bf2b872f2af9ac",
+    "app/engine/flowcore-pedagogue-aia.js": "d9a740bdab07558580e42f66d0d5fd9092de06d4e25ab542544ea2f84e79d89b",
+    "app/engine/flowcore-route-burden.js": "21a20396a5eec60dc91a62e8ec9db0c26fb64d8dc338a1386a40562ce6ae4662",
+    "app/engine/flowcore-pedagogue-core.js": "dcd04f6661e75fc9bd3c0ac5dde17624985a8d44709995884014459513cd038f",
+    "app/engine/dollhouse-agent-registry.js": "90959d3eed8884e6f0905a09b53e07bd285c6ac305800cbd0bf7544ff92f5ab5",
+    "app/dome-world/data/flowcore-glyph-semantics-v01.js": "88f3e8119ce5b3a27822615f08df0b8f2c23cf7b385c1db534099d908658657f",
+    "app/dome-world/flowcore-pedagogue-visual.js": "8d465446ed987ea86a42ca9ae9b97d1845270c1685716ad01718fb2caa07dbcd",
+    "app/dome-world/data/flowcore-aia-route-registry-v01.js": "df773e97397dc470d7c02ae2c6781bfb1bbb0adb8847ee83a28d3a4f22b7adc7",
+    "app/dome-world/ash/canonical-json.js": "4d2e1112ed3030e8996480e2fcdae41ed1defc1260786605c5f814b149efe425",
+    "app/engine/flowcore-pedagogue-law.js": "3993fe76254aa18ba7c2f9b2bee499b84a4b169daf5e7c096b26e610f9a10de9",
+    "app/engine/flowcore-pedagogue-cycle.js": "af9a0a00771fe1ab6c137b89727e20e7121f1b819988f6f57dfda98877f3e51d",
+    "app/engine/flowcore-pedagogue-receipt.js": "226fc844483257723f6e05588e8bb479369f3f3dd32e1481cda9a96f2b9c93ca",
+    "app/engine/flowcore-pedagogue-route-memory.js": "d03edb1b2e58f98335337ea040a6544d480f1251b39b7f940bc05bb0db379956",
+    "app/engine/pedagogue-research-transfer.js": "e852377ce82f00f1aed5321ccc0ac6bbade15e82235ca898dad504dee967cf45",
+    "app/engine/pedagogue-research-assay-witness.js": "581a0d6b281b65f3b40d8c7825c5ab65925e45d13b28d073577bf628e17a5689",
+    "app/engine/pedagogue-research-mechanism-refinement.js": "c3d1aad9d6676430b45b787eb3720cb83baf4e753b516ef5a1749487b659bb71",
+    "app/engine/pedagogue-research-criterion-family.js": "c563fd927f42d47e9a281a218399be72d46ff881af19673507c5b4d069ef1ad5",
+    "app/engine/pedagogue-lineage-spine-v02.js": "0501c2e45d7becd7251c6c6411bb90c69a213bc3d1accbc10d22af71a02267a6",
+    "app/engine/pedagogue-lineage-spine.js": "1872e021228519396e1c9a7cfebd95a918eaf8ad53a4cf92284e539e00748872",
+    "app/engine/pedagogue-lineage-second-pass.js": "1e9c24f07baf0b846f5519bcb94bdb70650b39a2410eb48ef40320123c33bb4d",
+    "app/engine/pedagogue-institutional-time.js": "c6f95165bbcb91f15aca387b33ddbfc816232eabd4f40eac71792e91f6aa572c",
+    "app/engine/pedagogue-recurrence-audit.js": "99bece8f3cb57f8487fabca002e8c01f6fbb32020dd8a8f6dcfc1e3b7e0d8fd5",
+    "app/engine/pedagogue-mathematical-counterpoints.js": "33fb001c7cd1a2d697dae3be461b68a67ba1c06ea76c38c10ca487a028e8b610",
+    "app/engine/flowcore-pedagogue-validators.js": "b071f5a9c46780d767133810203ed6a736da40564af6c6d2430687131cf7ae6a",
+    "app/dome-world/holonomy-loom/semantic-field.js": "71ab199acf652eab2b4c5eb46a487fbd4089afa7100d26d40fde9cae188443c4",
+    "app/engine/flowcore-pedagogue-utils.js": "ccca358e72867a55cfff31402067dcd8eb16eb433fb6d5d462d911842e8bb571",
+    "app/engine/pedagogue-interface-diagnosis.js": "3f866de1018ce47a524be6b2bf6dd7bfc98222462e000a37df3c554a950e9b77",
+    "app/dome-world/holonomy-loom/engine.js": "4849d840707e678e97aa715be684cf29384dca4c794339eb2cf54265ec90774d",
+    "app/dome-world/holonomy-loom/fonts/flowcore-cjk.woff": "a02da84a74a2fcc9ec819513d330a05f35850363ec1b70ad093d4ee824a3506e"
+  },
+  "changed_served_files": [],
+  "page_errors": [],
+  "checks": [
+    {
+      "name": "first crossing: builder is withheld before practice completion",
+      "status": "PASS",
+      "evidence_sha256": "aa7504a524aecae175d7455a850283de9e3a9c3298725d810e48af95f67cb671",
+      "evidence_summary": {
+        "first_crossing_visible": true
+      }
+    },
+    {
+      "name": "first crossing: no tutorial card or ordinary Loom chrome overlays the field",
+      "status": "PASS",
+      "evidence_sha256": "46276d18a84b8a73248115e01549036caaa18a371df1deb2880ef0c5e9ca59db",
+      "evidence_summary": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border_top": "0px",
+        "box_shadow": "none",
+        "width": 390,
+        "height": 795
+      }
+    },
+    {
+      "name": "first crossing: local practice material can be inspected without selecting or sending it",
+      "status": "PASS",
+      "evidence_sha256": "0bfcd931c3f68905d1cd55b04a4fd0077d931004a7abebfc2c7c635a62c6c0e5",
+      "evidence_summary": {
+        "private_text": "Fictional private scrap: PRIVATE_GARDEN_NOTE_613."
+      }
+    },
+    {
+      "name": "first crossing: consequence begins before terminology is named",
+      "status": "PASS",
+      "evidence_sha256": "50c5020eac828bbd10c357983330ae7743a77f546850738d4eed22eec8a162bd",
+      "evidence_summary": {
+        "title": "Watch the field gather them.",
+        "prompt": "The two selected pieces are changing relation. Nothing has left this page."
+      }
+    },
+    {
+      "name": "first-crossing-mobile-gathering: all 39 current-evidence carriers retain every depth plane",
+      "status": "PASS",
+      "evidence_sha256": "912e44c3eb3cfe8f290c07d76c86b43b6a195759641acc5046ce4ca4ee47df2e",
+      "evidence_summary": {
+        "evidence_ceiling": "SCOPED_RENDERED_VISIBILITY_AND_CLIPPED_SCREEN_OVERLAP"
+      }
+    },
+    {
+      "name": "first-crossing-mobile-gathering: finite canonical consequence produces screen-observable displacement in every plane",
+      "status": "PASS",
+      "evidence_sha256": "90128ef5bc992e43b8955725a8f52e19143bddd44ecaf97a0e4c4ec611c113d4",
+      "evidence_summary": {
+        "sample_elapsed_ms": 2001.1999999999534,
+        "observable_displacement_count": 25,
+        "evidence_ceiling": "SCOPED_MOTION_ONLY_UX_AND_COMPREHENSION_REMAIN_SEPARATE"
+      }
+    },
+    {
+      "name": "first-crossing-mobile-gathering: private source remains protected outside selected transport",
+      "status": "PASS",
+      "evidence_sha256": "a474dae2e4e89704c145be7afdff12a4ad34f2a6b79d4c8e1c8fa140d8064b26",
+      "evidence_summary": {}
+    },
+    {
+      "name": "first crossing: Pause freezes existing frame and retains current relation",
+      "status": "PASS",
+      "evidence_sha256": "8a720606dbe78326457627ddce2c0ab1d3d027988c9f3892e37f974e2debda62",
+      "evidence_summary": {}
+    },
+    {
+      "name": "first crossing: readiness consequence begins before 上 is named",
+      "status": "PASS",
+      "evidence_sha256": "cdd8ec9c8e5b18582b0bf6d00366969d20d5e656e6c43c07f44dd53216691288",
+      "evidence_summary": {
+        "title": "Watch readiness form.",
+        "prompt": "The local binding passed. The field now expresses that new state."
+      }
+    },
+    {
+      "name": "first-crossing-mobile-readiness: all 39 current-evidence carriers retain every depth plane",
+      "status": "PASS",
+      "evidence_sha256": "8d227c8800ce8eba6c57bcacce9b0449ee8513bc1349bb494fc5ce53be0d27b0",
+      "evidence_summary": {
+        "evidence_ceiling": "SCOPED_RENDERED_VISIBILITY_AND_CLIPPED_SCREEN_OVERLAP"
+      }
+    },
+    {
+      "name": "first-crossing-mobile-readiness: finite canonical consequence produces screen-observable displacement in every plane",
+      "status": "PASS",
+      "evidence_sha256": "417f8edec194a3c9fd8f4a321e7ee36c52eea08dc7a94b2a1cb65327395834a4",
+      "evidence_summary": {
+        "sample_elapsed_ms": 2001.8999999999069,
+        "observable_displacement_count": 39,
+        "evidence_ceiling": "SCOPED_MOTION_ONLY_UX_AND_COMPREHENSION_REMAIN_SEPARATE"
+      }
+    },
+    {
+      "name": "first-crossing-mobile-readiness: private source remains protected outside selected transport",
+      "status": "PASS",
+      "evidence_sha256": "a474dae2e4e89704c145be7afdff12a4ad34f2a6b79d4c8e1c8fa140d8064b26",
+      "evidence_summary": {}
+    },
+    {
+      "name": "first crossing: completion holds a stable prepared state without inventing transmission",
+      "status": "PASS",
+      "evidence_sha256": "3a1263be550cc16870b0f34d8863f6b0463cc87be70a5df9eb5c045906a142fa",
+      "evidence_summary": {}
+    },
+    {
+      "name": "first crossing: completion unlocks Open Loom without inventing a crossing",
+      "status": "PASS",
+      "evidence_sha256": "9faed266f32b490e5ad6665b0b47524745bf7313b33c64cefe86135288020fa4",
+      "evidence_summary": {
+        "open_visible": true
+      }
+    },
+    {
+      "name": "first crossing: tutorial made zero provider or non-GET requests",
+      "status": "PASS",
+      "evidence_sha256": "0d76e09ceb5ca524f7df6f4988dfe3302b7ed9c0fb9a6230a54198ccc6398d4c",
+      "evidence_summary": {}
+    },
+    {
+      "name": "first crossing: cinematic Threshold opens the real Loom builder after completion",
+      "status": "PASS",
+      "evidence_sha256": "b4c04f3bed2220a4b817635e37d934b709568674662706f7c638abeea5b5010e",
+      "evidence_summary": {
+        "threshold_state": "open"
+      }
+    },
+    {
+      "name": "first-crossing-exit: optional practice exits directly into the real builder without completion credit",
+      "status": "PASS",
+      "evidence_sha256": "b3283bddb38d44e510d3815320a1dae0fa3287a4ee2deccdae4b3f99c1e9c30c",
+      "evidence_summary": {
+        "practice_visible": false,
+        "completion": null
+      }
+    },
+    {
+      "name": "first crossing reduced: complete static equivalents preserve canonical distinctions",
+      "status": "PASS",
+      "evidence_sha256": "6c283ef9f7cdae7b43bf9c06f533cc76f94b1d59419e28a99326195c698dbc21",
+      "evidence_summary": {
+        "evidence_ceiling": "STATIC_BROWSER_EQUIVALENT_NO_MEASURED_COMPREHENSION"
+      }
+    },
+    {
+      "name": "first-crossing-reduced: optional practice exits directly into the real builder without completion credit",
+      "status": "PASS",
+      "evidence_sha256": "b3283bddb38d44e510d3815320a1dae0fa3287a4ee2deccdae4b3f99c1e9c30c",
+      "evidence_summary": {
+        "practice_visible": false,
+        "completion": null
+      }
+    },
+    {
+      "name": "mobile: Flow-Core owns the cinematic arrival scene",
+      "status": "PASS",
+      "evidence_sha256": "70a5493c1b63868f3d4ee471b898697317a623c1776f357dcf0e4fb78643cc12",
+      "evidence_summary": {}
+    },
+    {
+      "name": "mobile: no root or visible horizontal spill",
+      "status": "PASS",
+      "evidence_sha256": "0cff592e749e086f3c21613764d2732fe25c55904cc0a4d406684b489d8a0399",
+      "evidence_summary": {
+        "viewport_width": 390,
+        "document_width": 390
+      }
+    },
+    {
+      "name": "mobile: visible action targets at least 44px",
+      "status": "PASS",
+      "evidence_sha256": "146a5740b2d864036b2b59df01d70c598cdb0e0e1851979cfcb6df4bca943c26",
+      "evidence_summary": {}
+    },
+    {
+      "name": "mobile: task input font prevents focus zoom",
+      "status": "PASS",
+      "evidence_sha256": "7061572ef98cfc50bbf6c4aa3a40735facd95ce3807238324893d5c56976910f",
+      "evidence_summary": {
+        "font_size": 16
+      }
+    },
+    {
+      "name": "mobile: My work withholds Practice chooser",
+      "status": "PASS",
+      "evidence_sha256": "f815b6a9a53ebdd1933297cc2fa5c40756cc5f1155df0a686cc3de2242f69dd1",
+      "evidence_summary": {
+        "hidden": true,
+        "display": "none",
+        "rect_count": 0
+      }
+    },
+    {
+      "name": "mobile: builder follows the cinematic scene without collapsing into it",
+      "status": "PASS",
+      "evidence_sha256": "e9424c8860ef56a1616d1a3e5c5557704e7a165228b390a0df7b02232ffdbee7",
+      "evidence_summary": {
+        "scroll_y": 48,
+        "document_width": 390
+      }
+    },
+    {
+      "name": "mobile: Tools has no horizontal spill",
+      "status": "PASS",
+      "evidence_sha256": "0cff592e749e086f3c21613764d2732fe25c55904cc0a4d406684b489d8a0399",
+      "evidence_summary": {
+        "viewport_width": 390,
+        "document_width": 390
+      }
+    },
+    {
+      "name": "mobile: Tools targets at least 44px",
+      "status": "PASS",
+      "evidence_sha256": "d941ee755fadd718ca7b66a071646975b724a0cc45131f2e1c207ab1e5190043",
+      "evidence_summary": {}
+    },
+    {
+      "name": "mobile: keyboard Escape restores Tools opener",
+      "status": "PASS",
+      "evidence_sha256": "71636b3a694bb4e9da44bb7c4d9075590ad64d0985cb0b61d89cccdb827b53ce",
+      "evidence_summary": {
+        "active_element": "loomToolsOpen"
+      }
+    },
+    {
+      "name": "mobile: boundary accessible before crossing",
+      "status": "PASS",
+      "evidence_sha256": "34ca0c408ff51830042e6162a1d0e70ea80f4ee3aceb3183b2b29d20c1e81b7d",
+      "evidence_summary": {
+        "text": "What this boundary establishesSelected task, file bytes and traveling rules are bound locally. Preparation makes no model request.Foreign-host enforcement, downstream retention and hidden model state remain unobserved. A public transfer carries selected source bodies; a private custody record can also contain local sources and challenge keys."
+      }
+    },
+    {
+      "name": "mobile: rules accessible with protected input font",
+      "status": "PASS",
+      "evidence_sha256": "7061572ef98cfc50bbf6c4aa3a40735facd95ce3807238324893d5c56976910f",
+      "evidence_summary": {
+        "font_size": 16
+      }
+    },
+    {
+      "name": "mobile: one direct Prepare click succeeds from focused task",
+      "status": "PASS",
+      "evidence_sha256": "65fb55cc3041a250d2f9457dfe19de00e36ca0896caab86ba929e194b06be22c",
+      "evidence_summary": {
+        "status": "Loom transfer prepared locally. Choose the next route.",
+        "active_element": "aiResult"
+      }
+    },
+    {
+      "name": "mobile: crossing CTA visible and result focused",
+      "status": "PASS",
+      "evidence_sha256": "a1845f709127d6c083942ef3c6a2a5fbadd0f5a7b196c260902a3f7df6fddc0b",
+      "evidence_summary": {
+        "scroll_y": 48,
+        "document_width": 390
+      }
+    },
+    {
+      "name": "mobile: preparation has no field scroll detour",
+      "status": "PASS",
+      "evidence_sha256": "652b9634ff4041aee950c3bfc735dec51036f01d210c6720b582f3881398c98f"
+    },
+    {
+      "name": "mobile: one coordinator frame remains bounded",
+      "status": "PASS",
+      "evidence_sha256": "eac4a59e9a7e0d2d7682558b6fec64d96a39c6cc416ef57e2a2c774e1bfe4980",
+      "evidence_summary": {
+        "pending_frames": "0"
+      }
+    },
+    {
+      "name": "mobile: repeated wheel scroll respects manual stop",
+      "status": "PASS",
+      "evidence_sha256": "8b8005778b25235eefe7330a7326c5af7e4d0e056d5d9fd19bd07b7d11fd92e8",
+      "evidence_summary": {
+        "scripted_start": 2
+      }
+    },
+    {
+      "name": "mobile: scrolled route has no horizontal spill",
+      "status": "PASS",
+      "evidence_sha256": "0cff592e749e086f3c21613764d2732fe25c55904cc0a4d406684b489d8a0399",
+      "evidence_summary": {
+        "viewport_width": 390,
+        "document_width": 390
+      }
+    },
+    {
+      "name": "mobile: responsive height 700 preserves composition",
+      "status": "PASS",
+      "evidence_sha256": "af57746b9a432a9642ecf35d169ea5994975418f44d09e94fdbf68c1eaab4266",
+      "evidence_summary": {
+        "viewport_width": 390,
+        "document_width": 390,
+        "physical_safari_chrome": false
+      }
+    },
+    {
+      "name": "mobile: responsive height 844 preserves composition",
+      "status": "PASS",
+      "evidence_sha256": "af57746b9a432a9642ecf35d169ea5994975418f44d09e94fdbf68c1eaab4266",
+      "evidence_summary": {
+        "viewport_width": 390,
+        "document_width": 390,
+        "physical_safari_chrome": false
+      }
+    },
+    {
+      "name": "mobile: Practice keeps Prepare primary",
+      "status": "PASS",
+      "evidence_sha256": "c4498c03794510247bbe35b97ad477a57b8495187a91aab21958c0f880b5b848",
+      "evidence_summary": {
+        "fictional_case": "participant-research"
+      }
+    },
+    {
+      "name": "mobile: Practice preparation makes no POST",
+      "status": "PASS",
+      "evidence_sha256": "a82f42ec3d71325991fb49c1f2a4ea6d8349005368c281a9d4bb0878c8f967ef",
+      "evidence_summary": {}
+    },
+    {
+      "name": "desktop: Flow-Core owns the cinematic arrival scene",
+      "status": "PASS",
+      "evidence_sha256": "72f3aa1698d5f196d7833ea30b606d98a5e0989fd015d3ec18f44b909aad370f",
+      "evidence_summary": {}
+    },
+    {
+      "name": "desktop: no root or visible horizontal spill",
+      "status": "PASS",
+      "evidence_sha256": "de63ae1d37558d0cc1a498a820b91812f6af6b65d462c6a365114903ab5ac3ed",
+      "evidence_summary": {
+        "viewport_width": 1280,
+        "document_width": 1280
+      }
+    },
+    {
+      "name": "desktop: visible action targets at least 44px",
+      "status": "PASS",
+      "evidence_sha256": "f58ba3b3e2309104cfd7d90c9b03eea7284177d9a2546932eb1960ef511b2421",
+      "evidence_summary": {}
+    },
+    {
+      "name": "desktop: task input font prevents focus zoom",
+      "status": "PASS",
+      "evidence_sha256": "7061572ef98cfc50bbf6c4aa3a40735facd95ce3807238324893d5c56976910f",
+      "evidence_summary": {
+        "font_size": 16
+      }
+    },
+    {
+      "name": "desktop: My work withholds Practice chooser",
+      "status": "PASS",
+      "evidence_sha256": "f815b6a9a53ebdd1933297cc2fa5c40756cc5f1155df0a686cc3de2242f69dd1",
+      "evidence_summary": {
+        "hidden": true,
+        "display": "none",
+        "rect_count": 0
+      }
+    },
+    {
+      "name": "desktop: builder follows the cinematic scene without collapsing into it",
+      "status": "PASS",
+      "evidence_sha256": "9c4ae18d536555748c7b7305262ff6e38c43c40b860a7b435b55864a6d6f9fc5",
+      "evidence_summary": {
+        "scroll_y": 52,
+        "document_width": 1280
+      }
+    },
+    {
+      "name": "desktop: Tools has no horizontal spill",
+      "status": "PASS",
+      "evidence_sha256": "de63ae1d37558d0cc1a498a820b91812f6af6b65d462c6a365114903ab5ac3ed",
+      "evidence_summary": {
+        "viewport_width": 1280,
+        "document_width": 1280
+      }
+    },
+    {
+      "name": "desktop: Tools targets at least 44px",
+      "status": "PASS",
+      "evidence_sha256": "d941ee755fadd718ca7b66a071646975b724a0cc45131f2e1c207ab1e5190043",
+      "evidence_summary": {}
+    },
+    {
+      "name": "desktop: keyboard Escape restores Tools opener",
+      "status": "PASS",
+      "evidence_sha256": "71636b3a694bb4e9da44bb7c4d9075590ad64d0985cb0b61d89cccdb827b53ce",
+      "evidence_summary": {
+        "active_element": "loomToolsOpen"
+      }
+    },
+    {
+      "name": "desktop: boundary accessible before crossing",
+      "status": "PASS",
+      "evidence_sha256": "34ca0c408ff51830042e6162a1d0e70ea80f4ee3aceb3183b2b29d20c1e81b7d",
+      "evidence_summary": {
+        "text": "What this boundary establishesSelected task, file bytes and traveling rules are bound locally. Preparation makes no model request.Foreign-host enforcement, downstream retention and hidden model state remain unobserved. A public transfer carries selected source bodies; a private custody record can also contain local sources and challenge keys."
+      }
+    },
+    {
+      "name": "desktop: rules accessible with protected input font",
+      "status": "PASS",
+      "evidence_sha256": "7061572ef98cfc50bbf6c4aa3a40735facd95ce3807238324893d5c56976910f",
+      "evidence_summary": {
+        "font_size": 16
+      }
+    },
+    {
+      "name": "desktop: one direct Prepare click succeeds from focused task",
+      "status": "PASS",
+      "evidence_sha256": "307c8107852680099d31cdbd2a1303c737ece52055a03d3e09f5e6dc233c0504",
+      "evidence_summary": {
+        "status": "Loom transfer prepared locally. Choose the next route.",
+        "active_element": "aiResult"
+      }
+    },
+    {
+      "name": "desktop: crossing CTA visible and result focused",
+      "status": "PASS",
+      "evidence_sha256": "967ca5a757da1ce5e2bbc5240862cb25f661a4376980cfd5a26ff6df8b777557",
+      "evidence_summary": {
+        "scroll_y": 0,
+        "document_width": 1280
+      }
+    },
+    {
+      "name": "desktop: preparation has no field scroll detour",
+      "status": "PASS",
+      "evidence_sha256": "8c230d8128cb4ea800f29d2c519cd5fca81453640ff6348bdfbd333ff8a86c4d"
+    },
+    {
+      "name": "desktop: one coordinator frame remains bounded",
+      "status": "PASS",
+      "evidence_sha256": "eac4a59e9a7e0d2d7682558b6fec64d96a39c6cc416ef57e2a2c774e1bfe4980",
+      "evidence_summary": {
+        "pending_frames": "0"
+      }
+    },
+    {
+      "name": "desktop: repeated wheel scroll respects manual stop",
+      "status": "PASS",
+      "evidence_sha256": "a07fc779c4deb2c7deaad79e6c76550011a8fd01360d319698f2abfc2b5f4468",
+      "evidence_summary": {
+        "scripted_start": 2
+      }
+    },
+    {
+      "name": "desktop: scrolled route has no horizontal spill",
+      "status": "PASS",
+      "evidence_sha256": "de63ae1d37558d0cc1a498a820b91812f6af6b65d462c6a365114903ab5ac3ed",
+      "evidence_summary": {
+        "viewport_width": 1280,
+        "document_width": 1280
+      }
+    },
+    {
+      "name": "desktop: Practice keeps Prepare primary",
+      "status": "PASS",
+      "evidence_sha256": "c4498c03794510247bbe35b97ad477a57b8495187a91aab21958c0f880b5b848",
+      "evidence_summary": {
+        "fictional_case": "participant-research"
+      }
+    },
+    {
+      "name": "desktop: Practice preparation makes no POST",
+      "status": "PASS",
+      "evidence_sha256": "a82f42ec3d71325991fb49c1f2a4ea6d8349005368c281a9d4bb0878c8f967ef",
+      "evidence_summary": {}
+    },
+    {
+      "name": "mobile-reduced-motion: Flow-Core owns the cinematic arrival scene",
+      "status": "PASS",
+      "evidence_sha256": "70a5493c1b63868f3d4ee471b898697317a623c1776f357dcf0e4fb78643cc12",
+      "evidence_summary": {}
+    },
+    {
+      "name": "mobile-reduced-motion: no root or visible horizontal spill",
+      "status": "PASS",
+      "evidence_sha256": "0cff592e749e086f3c21613764d2732fe25c55904cc0a4d406684b489d8a0399",
+      "evidence_summary": {
+        "viewport_width": 390,
+        "document_width": 390
+      }
+    },
+    {
+      "name": "mobile-reduced-motion: visible action targets at least 44px",
+      "status": "PASS",
+      "evidence_sha256": "146a5740b2d864036b2b59df01d70c598cdb0e0e1851979cfcb6df4bca943c26",
+      "evidence_summary": {}
+    },
+    {
+      "name": "mobile-reduced-motion: task input font prevents focus zoom",
+      "status": "PASS",
+      "evidence_sha256": "7061572ef98cfc50bbf6c4aa3a40735facd95ce3807238324893d5c56976910f",
+      "evidence_summary": {
+        "font_size": 16
+      }
+    },
+    {
+      "name": "mobile-reduced-motion: My work withholds Practice chooser",
+      "status": "PASS",
+      "evidence_sha256": "f815b6a9a53ebdd1933297cc2fa5c40756cc5f1155df0a686cc3de2242f69dd1",
+      "evidence_summary": {
+        "hidden": true,
+        "display": "none",
+        "rect_count": 0
+      }
+    },
+    {
+      "name": "mobile-reduced-motion: builder follows the cinematic scene without collapsing into it",
+      "status": "PASS",
+      "evidence_sha256": "e74c05794ca2ced7cf178ca7f1e4ea97a52e8a47cb145495ff83c4b3c5a94115",
+      "evidence_summary": {
+        "scroll_y": 0,
+        "document_width": 390
+      }
+    },
+    {
+      "name": "mobile-reduced-motion: Tools has no horizontal spill",
+      "status": "PASS",
+      "evidence_sha256": "0cff592e749e086f3c21613764d2732fe25c55904cc0a4d406684b489d8a0399",
+      "evidence_summary": {
+        "viewport_width": 390,
+        "document_width": 390
+      }
+    },
+    {
+      "name": "mobile-reduced-motion: Tools targets at least 44px",
+      "status": "PASS",
+      "evidence_sha256": "d941ee755fadd718ca7b66a071646975b724a0cc45131f2e1c207ab1e5190043",
+      "evidence_summary": {}
+    },
+    {
+      "name": "mobile-reduced-motion: keyboard Escape restores Tools opener",
+      "status": "PASS",
+      "evidence_sha256": "71636b3a694bb4e9da44bb7c4d9075590ad64d0985cb0b61d89cccdb827b53ce",
+      "evidence_summary": {
+        "active_element": "loomToolsOpen"
+      }
+    },
+    {
+      "name": "mobile-reduced-motion: boundary accessible before crossing",
+      "status": "PASS",
+      "evidence_sha256": "34ca0c408ff51830042e6162a1d0e70ea80f4ee3aceb3183b2b29d20c1e81b7d",
+      "evidence_summary": {
+        "text": "What this boundary establishesSelected task, file bytes and traveling rules are bound locally. Preparation makes no model request.Foreign-host enforcement, downstream retention and hidden model state remain unobserved. A public transfer carries selected source bodies; a private custody record can also contain local sources and challenge keys."
+      }
+    },
+    {
+      "name": "mobile-reduced-motion: rules accessible with protected input font",
+      "status": "PASS",
+      "evidence_sha256": "7061572ef98cfc50bbf6c4aa3a40735facd95ce3807238324893d5c56976910f",
+      "evidence_summary": {
+        "font_size": 16
+      }
+    },
+    {
+      "name": "mobile-reduced-motion: one direct Prepare click succeeds from focused task",
+      "status": "PASS",
+      "evidence_sha256": "25121ec8834a8383c868758f4d1c5d8e6a20fb3fccd58e67fa90d4105910a56a",
+      "evidence_summary": {
+        "status": "Loom transfer prepared locally. Choose the next route.",
+        "active_element": "aiResult"
+      }
+    },
+    {
+      "name": "mobile-reduced-motion: crossing CTA visible and result focused",
+      "status": "PASS",
+      "evidence_sha256": "4c48fc01d6308c42abd3fc0db7a4f7532f4fd40997704c26221c746457ecd8a5",
+      "evidence_summary": {
+        "scroll_y": 27,
+        "document_width": 390
+      }
+    },
+    {
+      "name": "mobile-reduced-motion: preparation has no field scroll detour",
+      "status": "PASS",
+      "evidence_sha256": "8a60480f9a694336d25af389319e516df147f36c6affc1a3ced7c29663b76a11"
+    },
+    {
+      "name": "mobile-reduced-motion: one coordinator frame remains bounded",
+      "status": "PASS",
+      "evidence_sha256": "eac4a59e9a7e0d2d7682558b6fec64d96a39c6cc416ef57e2a2c774e1bfe4980",
+      "evidence_summary": {
+        "pending_frames": "0"
+      }
+    },
+    {
+      "name": "mobile-reduced-motion: repeated wheel scroll respects manual stop",
+      "status": "PASS",
+      "evidence_sha256": "655f66f1894803104b1769b8c73c5d63a90cfa1983204dfab76ceab8ad520a70",
+      "evidence_summary": {
+        "scripted_start": 1
+      }
+    },
+    {
+      "name": "mobile-reduced-motion: scrolled route has no horizontal spill",
+      "status": "PASS",
+      "evidence_sha256": "0cff592e749e086f3c21613764d2732fe25c55904cc0a4d406684b489d8a0399",
+      "evidence_summary": {
+        "viewport_width": 390,
+        "document_width": 390
+      }
+    },
+    {
+      "name": "mobile-reduced-motion: responsive height 700 preserves composition",
+      "status": "PASS",
+      "evidence_sha256": "af57746b9a432a9642ecf35d169ea5994975418f44d09e94fdbf68c1eaab4266",
+      "evidence_summary": {
+        "viewport_width": 390,
+        "document_width": 390,
+        "physical_safari_chrome": false
+      }
+    },
+    {
+      "name": "mobile-reduced-motion: responsive height 844 preserves composition",
+      "status": "PASS",
+      "evidence_sha256": "af57746b9a432a9642ecf35d169ea5994975418f44d09e94fdbf68c1eaab4266",
+      "evidence_summary": {
+        "viewport_width": 390,
+        "document_width": 390,
+        "physical_safari_chrome": false
+      }
+    },
+    {
+      "name": "mobile-reduced-motion: Practice keeps Prepare primary",
+      "status": "PASS",
+      "evidence_sha256": "c4498c03794510247bbe35b97ad477a57b8495187a91aab21958c0f880b5b848",
+      "evidence_summary": {
+        "fictional_case": "participant-research"
+      }
+    },
+    {
+      "name": "mobile-reduced-motion: Practice preparation makes no POST",
+      "status": "PASS",
+      "evidence_sha256": "a82f42ec3d71325991fb49c1f2a4ea6d8349005368c281a9d4bb0878c8f967ef",
+      "evidence_summary": {}
+    },
+    {
+      "name": "rendered source bytes remained stable during witness",
+      "status": "PASS",
+      "evidence_sha256": "bb29cd1edb2190faf2b50361c07cebb40e19fb0a9d382e4441ba0024fb18e57f",
+      "evidence_summary": {}
+    },
+    {
+      "name": "candidate route made zero provider or unauthorized requests",
+      "status": "PASS",
+      "evidence_sha256": "e6f0267831c26df17eb4ed1c16d18526c4982bb0e488d87fbf79aa39d06ecfd3",
+      "evidence_summary": {}
+    },
+    {
+      "name": "candidate route has zero page errors",
+      "status": "PASS",
+      "evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  ],
+  "failures": [],
+  "note": "Hash-bound local working tree before commit. Separate from exact-production source, live provider admission, or physical-device acceptance. Structured carrier coordinate arrays are retained in the full hashed local report; this receipt records scalar evidence summaries and per-check evidence digests.",
+  "full_local_report_sha256": "747e36a8a9628c84a1bd7bf39d860610c7ee1202aee6a718f387d75bff30a0ea"
+}

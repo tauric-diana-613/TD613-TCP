@@ -1,3 +1,4 @@
+import { FIRST_CROSSING_PRACTICE, bindFirstCrossingPractice } from './first-crossing-practice.js';
 import { mountReturnedSessionReview } from './returned-session-review.js';
 import { loomWorkspaceTemplate } from './workspace-template.js';
 import { LOOM_AI_PROJECTS } from './ai-projects.js';
@@ -131,6 +132,9 @@ export function mountLoomAiWorkspace(root, environment = window) {
   let thresholdObservation = null;
   let firstCrossingActive = false;
   let firstCrossingStep = 0;
+  let firstCrossingPaused = false;
+  let firstCrossingBindingState = 'IDLE';
+  let firstCrossingGeneration = 0;
   let firstCrossingEvents = [];
   let firstCrossingPacket = null;
   let firstCrossingSelected = new Set();
@@ -246,21 +250,23 @@ export function mountLoomAiWorkspace(root, environment = window) {
   });
   coordinator.registerPass('first-crossing-consequence-order', snapshot => {
     if(!firstCrossingActive || !snapshot.packet.scene?.id?.startsWith('first-crossing-'))return;
-    const projectionCurrent=$('aiRuntimeState').dataset.projectionState==='CURRENT';
-    const consequenceVisible=projectionCurrent && (snapshot.reducedMotion || snapshot.progress>=.48);
+    if(firstCrossingBindingState==='PENDING'||firstCrossingBindingState==='HELD')return;
+    const expectedRelation=firstCrossingStep===2?'created_potential':'gathering';
+    const projectionCurrent=$('aiRuntimeState').dataset.projectionState==='CURRENT' && $('aiRuntimeState').dataset.activeRelation===expectedRelation;
+    const consequenceVisible=projectionCurrent && (snapshot.reducedMotion || snapshot.progress>=.82);
     if(firstCrossingStep===1){
       if(consequenceVisible){
         setFirstCrossingCue('gathering-named',{
           title:'They gathered. Nothing crossed.',
-          prompt:'That relation is à. The private scrap stayed here — cōl.',
-          answer:'WORLD ANSWERS → NAME · the local relation changed; transmission did not occur.',
+          prompt:'à gathers the selected work. The private scrap remains outside the crossing — cōl.',
+          answer:'Selected ≠ sent. These two pieces are still on this page.',
           action:true
         });
       }else{
         setFirstCrossingCue('gathering-motion',{
           title:'Watch the field gather them.',
           prompt:'The two selected pieces are changing relation. Nothing has left this page.',
-          answer:'WORLD ANSWERS · local relation changing…'
+          answer:'The selected work gathers here.'
         });
       }
       return;
@@ -268,8 +274,8 @@ export function mountLoomAiWorkspace(root, environment = window) {
     if(firstCrossingStep===2){
       if(consequenceVisible){
         setFirstCrossingCue('potential-named',{
-          title:'Ready is not sent.',
-          prompt:'That created-potential relation is 上. The private scrap still stays here.',
+          title:'Ready. Still here.',
+          prompt:'上 marks readiness after the real local binding check. Sending requires another gesture.',
           answer:'Preparation ≠ transmission. No provider call occurred.',
           stop:true
         });
@@ -277,7 +283,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
         setFirstCrossingCue('potential-motion',{
           title:'Watch readiness form.',
           prompt:'The gathered packet is changing locally. Nothing is being transmitted.',
-          answer:'WORLD ANSWERS · local readiness changing…'
+          answer:'Local readiness is forming.'
         });
       }
     }
@@ -330,7 +336,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
   }
 
   function openReturnedReviewScene(review){
-    const bypassThreshold=review?.source==='OPENER_RETURN'||environment.location.hash==='#return-review';
+    const bypassThreshold=['OPENER_RETURN','RELOADED_REVIEW'].includes(review?.source)||environment.location.hash==='#return-review';
     if(bypassThreshold){
       clearThresholdTimers();
       firstCrossingActive=false;
@@ -358,8 +364,8 @@ export function mountLoomAiWorkspace(root, environment = window) {
       task_present: selected.length>0,
       selected_document_ids:selected,
       shared:selected.length,
-      local:1,
-      rules_count:1,
+      local:FIRST_CROSSING_PRACTICE.documents.length-selected.length,
+      rules_count:FIRST_CROSSING_PRACTICE.rules.length,
       outbound_submitted:false,
       response_received:false,
       binding_verified:false,
@@ -376,18 +382,15 @@ export function mountLoomAiWorkspace(root, environment = window) {
       ...packet.scene,
       id:`first-crossing-${event.phase}-${firstCrossingEvents.length}`,
       project_title:'First Crossing',
-      rules_count:1,
-      documents:[
-        {id:'brief',name:'Short brief',share:firstCrossingSelected.has('brief')},
-        {id:'source',name:'Public source',share:firstCrossingSelected.has('source')},
-        {id:'private',name:'Private scrap',share:false}
-      ]
+      rules_count:FIRST_CROSSING_PRACTICE.rules.length,
+      documents:FIRST_CROSSING_PRACTICE.documents.map(item=>({id:item.id,name:item.name,share:firstCrossingSelected.has(item.id)}))
     };
     packet.geometry={...packet.geometry,rest};
     thresholdObservation={events:[...firstCrossingEvents],replay:{index:null},source_revision:'browser-unpinned'};
     firstCrossingPacket=packet;
+    coordinator.setContinuous(false);
     coordinator.setPacket(packet);
-    coordinator.setContinuous(!rest);
+    if(firstCrossingPaused)coordinator.pause();
     return packet;
   }
   function renderFirstCrossingSelection(){
@@ -398,6 +401,9 @@ export function mountLoomAiWorkspace(root, environment = window) {
     }
   }
   function restoreThresholdField(){
+    firstCrossingGeneration++;
+    firstCrossingBindingState='IDLE';
+    firstCrossingPaused=false;
     firstCrossingActive=false;
     firstCrossingReplayMode=false;
     firstCrossingStep=0;
@@ -442,6 +448,9 @@ export function mountLoomAiWorkspace(root, environment = window) {
     firstCrossingWasAlreadyComplete=firstCrossingWasAlreadyComplete||storageRead(FIRST_CROSSING_KEY)==='complete';
     firstCrossingReplayMode=Boolean(replay);
     firstCrossingActive=true;
+    firstCrossingGeneration++;
+    firstCrossingBindingState='IDLE';
+    firstCrossingPaused=false;
     firstCrossingStep=0;
     firstCrossingEvents=[];
     firstCrossingPacket=null;
@@ -458,10 +467,15 @@ export function mountLoomAiWorkspace(root, environment = window) {
     $('loomReplayFirstCrossing').textContent=replay?'Exit replay':'↻ First Crossing';
     setFirstCrossingCue('choose',{
       title:'Choose what travels.',
-      prompt:'Two pieces belong in the crossing. One should stay with you.',
-      answer:'NOTICE · nothing has moved yet.'
+      prompt:'A fictional brief needs its public source. Choose both; keep the private scrap here.',
+      answer:'Practice only · no request or transmission.'
     });
     $('loomFirstCrossingAction').textContent='Create readiness locally →';
+    $('loomFirstCrossingPause').textContent='Pause field';
+    $('loomFirstCrossingPause').setAttribute('aria-pressed','false');
+    $('loomFirstCrossingPrivateText').hidden=true;
+    $('loomFirstCrossingPrivateText').textContent=FIRST_CROSSING_PRACTICE.documents.find(item=>item.id==='private').text;
+    $('loomFirstCrossingPrivate').setAttribute('aria-expanded','false');
     firstCrossingItems.forEach(button=>{button.disabled=false;button.setAttribute('aria-pressed','false');delete button.dataset.held;});
     const neutral=firstCrossingEvent('prepared');
     const packet=projectLoomRequestEvent(neutral);
@@ -471,8 +485,8 @@ export function mountLoomAiWorkspace(root, environment = window) {
     coordinator.setPacket(packet,{animate:false});
     $('loomFirstCrossing').focus?.({preventScroll:true});
   }
-  function actFirstCrossing(){
-    if(!firstCrossingActive)return;
+  async function actFirstCrossing(){
+    if(!firstCrossingActive||firstCrossingBindingState==='PENDING')return;
     if(firstCrossingStep===0){
       const correct=firstCrossingSelected.has('brief')&&firstCrossingSelected.has('source')&&!firstCrossingSelected.has('private')&&firstCrossingSelected.size===2;
       if(!correct){
@@ -487,26 +501,43 @@ export function mountLoomAiWorkspace(root, environment = window) {
       setFirstCrossingCue('gathering-motion',{
         title:'Watch the field gather them.',
         prompt:'The two selected pieces are changing relation. Nothing has left this page.',
-        answer:'WORLD ANSWERS · local relation changing…'
+        answer:'The selected work gathers here.'
       });
       projectFirstCrossing(firstCrossingEvent('prepared'));
       $('loomFirstCrossingAction').textContent='Create readiness locally →';
       return;
     }
     if(firstCrossingStep===1){
-      firstCrossingStep=2;
-      root.dataset.firstCrossingStep='2';
-      setFirstCrossingCue('potential-motion',{
-        title:'Watch readiness form.',
-        prompt:'The gathered packet is changing locally. Nothing is being transmitted.',
-        answer:'WORLD ANSWERS · local readiness changing…'
+      const token=++firstCrossingGeneration;
+      firstCrossingBindingState='PENDING';
+      setFirstCrossingCue('binding',{
+        title:'Checking the local packet.',
+        prompt:'Loom binds the fictional task, selected sources and traveling rule. Everything stays here.',
+        answer:'Local preparation in progress · sending remains closed.'
       });
-      projectFirstCrossing(firstCrossingEvent('checking',{binding_verified:true}));
-      $('loomFirstCrossingStop').textContent='Stop before sending →';
+      try{
+        const binding=await bindFirstCrossingPractice([...firstCrossingSelected],environment);
+        if(disposed||!firstCrossingActive||token!==firstCrossingGeneration)return;
+        firstCrossingBindingState='VERIFIED';
+        firstCrossingStep=2;
+        root.dataset.firstCrossingStep='2';
+        setFirstCrossingCue('potential-motion',{
+          title:'Watch readiness form.',
+          prompt:'The local binding passed. The field now expresses that new state.',
+          answer:'The local check passed. Nothing was sent.'
+        });
+        projectFirstCrossing(firstCrossingEvent('checking',binding.facts??binding));
+        $('loomFirstCrossingStop').textContent='Finish without sending →';
+      }catch(error){
+        if(disposed||!firstCrossingActive||token!==firstCrossingGeneration)return;
+        firstCrossingBindingState='HELD';
+        setFirstCrossingCue('binding-held',{title:'Preparation stays held.',prompt:error.message,answer:'No readiness or transmission is claimed.',action:true});
+      }
     }
   }
-  function openLoomThreshold(){
-    if(!firstCrossingWasAlreadyComplete&&storageRead(FIRST_CROSSING_KEY)!=='complete'){
+
+  function openLoomThreshold({skipPractice=false}={}){
+    if(!skipPractice&&!firstCrossingWasAlreadyComplete&&storageRead(FIRST_CROSSING_KEY)!=='complete'){
       if(!firstCrossingActive)startFirstCrossing();
       return;
     }
@@ -849,21 +880,31 @@ export function mountLoomAiWorkspace(root, environment = window) {
     renderFirstCrossingSelection();
     const correct=firstCrossingSelected.has('brief')&&firstCrossingSelected.has('source')&&!firstCrossingSelected.has('private')&&firstCrossingSelected.size===2;
     if(correct){
-      $('loomFirstCrossingAnswer').textContent='ACT · watch what the field does with the two you chose.';
+      $('loomFirstCrossingAnswer').textContent='Watch the selected work gather.';
       actFirstCrossing();
       return;
     }
-    $('loomFirstCrossingAnswer').textContent=firstCrossingSelected.has('private')
-      ? 'That one can stay with you. Choose only what the next reader needs.'
-      : 'ACT · your selection changed locally. Nothing has crossed.';
+    projectFirstCrossing(firstCrossingEvent('prepared'),{rest:firstCrossingSelected.size===0});
+    $('loomFirstCrossingAnswer').textContent='Your selection changed locally. Choose the other piece to complete the packet.';
   }));
+  $('loomFirstCrossingPrivate').addEventListener('click',()=>{
+    const body=$('loomFirstCrossingPrivateText');body.hidden=!body.hidden;
+    $('loomFirstCrossingPrivate').setAttribute('aria-expanded',String(!body.hidden));
+  });
+  $('loomFirstCrossingPause').addEventListener('click',()=>{
+    firstCrossingPaused=!firstCrossingPaused;
+    $('loomFirstCrossingPause').setAttribute('aria-pressed',String(firstCrossingPaused));
+    $('loomFirstCrossingPause').textContent=firstCrossingPaused?'Resume field':'Pause field';
+    if(firstCrossingPaused)coordinator.pause();else coordinator.play();
+  });
+  $('loomFirstCrossingLeave').addEventListener('click',()=>openLoomThreshold({skipPractice:true}));
   $('loomFirstCrossingAction').addEventListener('click',actFirstCrossing);
   $('loomFirstCrossingStop').addEventListener('click',()=>{if(firstCrossingActive&&firstCrossingStep===2)completeFirstCrossing();});
   $('loomReplayFirstCrossing').addEventListener('click',()=>{
     if(firstCrossingActive&&firstCrossingReplayMode){restoreThresholdField();return;}
     startFirstCrossing({replay:true});
   });
-  $('loomBegin').addEventListener('click',openLoomThreshold);
+  $('loomBegin').addEventListener('click',()=>openLoomThreshold());
   $('loomReturnThreshold').addEventListener('click',returnToThreshold);
 
   load(null);
