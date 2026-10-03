@@ -11,7 +11,8 @@ import {
 } from './holonomy-loom-release-candidate-product-review.mjs';
 
 const execFileAsync = promisify(execFile);
-const PRODUCT_HTML_PATH = 'app/dome-world/holonomy-loom.html';
+const PRODUCT_HTML_PATH = 'app/dome-world/holonomy-loom/fixtures/legacy-practice.html';
+const WORKSPACE_HTML_PATH = 'app/dome-world/holonomy-loom.html';
 const ENGINE_PATH = 'app/dome-world/holonomy-loom/engine.js';
 const PEDAGOGUE_FIXTURE_PATH = 'tests/fixtures/pedagogue/holonomy-loom-hosted-observer-geometry-design.json';
 
@@ -76,13 +77,14 @@ async function loadExactHeadReviewInputs(custody) {
     return { inputs: await loadReleaseCandidateInputs(), exactHeadFetchPerformed: false };
   }
   const exactHeadFetchPerformed = await ensureExactHeadAvailable(custody.reviewHead);
-  const [html, engine, fixtureText] = await Promise.all([
+  const [html, workspaceHtml, engine, fixtureText] = await Promise.all([
     gitShowText(custody.reviewHead, PRODUCT_HTML_PATH),
+    gitShowText(custody.reviewHead, WORKSPACE_HTML_PATH),
     gitShowText(custody.reviewHead, ENGINE_PATH),
     gitShowText(custody.reviewHead, PEDAGOGUE_FIXTURE_PATH)
   ]);
   return {
-    inputs: { html, engine, fixture: JSON.parse(fixtureText) },
+    inputs: { html, workspaceHtml, engine, fixture: JSON.parse(fixtureText) },
     exactHeadFetchPerformed
   };
 }
@@ -93,7 +95,8 @@ const browserTypes = { chromium, firefox, webkit };
 const browserType = browserTypes[browserName];
 if (!browserType) throw new TypeError(`Unsupported TD613_BROWSER: ${browserName}`);
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/holonomy-loom-release-candidate-review';
-const route = '/dome-world/holonomy-loom.html';
+const workspaceRoute = '/dome-world/holonomy-loom.html';
+const route = '/dome-world/holonomy-loom/fixtures/legacy-practice.html';
 const engineRoute = '/dome-world/holonomy-loom/engine.js';
 const url = `${base}${route}`;
 const engineUrl = `${base}${engineRoute}`;
@@ -177,13 +180,16 @@ try {
     });
   });
 
-  await page.goto(url, { waitUntil: 'networkidle', timeout: 60_000 });
+  await page.goto(`${base}${workspaceRoute}`, { waitUntil: 'networkidle', timeout: 60_000 });
 
-  const [servedHtmlResponse, servedEngineResponse] = await Promise.all([
+  const [servedHtmlResponse, servedWorkspaceResponse, servedEngineResponse] = await Promise.all([
     fetch(url),
+    fetch(`${base}${workspaceRoute}`),
     fetch(engineUrl)
   ]);
   const servedHtmlBytes = Buffer.from(await servedHtmlResponse.arrayBuffer());
+  const servedWorkspaceSha256 = sha256(Buffer.from(await servedWorkspaceResponse.arrayBuffer()));
+  check('browser-served primary workspace bytes equal exact-head source', servedWorkspaceResponse.ok && servedWorkspaceSha256 === review.reviewed_candidate.workspace_html_sha256);
   const servedEngineBytes = Buffer.from(await servedEngineResponse.arrayBuffer());
   const servedHtmlSha256 = sha256(servedHtmlBytes);
   const servedEngineSha256 = sha256(servedEngineBytes);
@@ -204,18 +210,15 @@ try {
     status: servedEngineResponse.status
   });
 
-  check('hosted review route loaded', new URL(page.url()).pathname === route, page.url());
-  check('Holonomy Loom title visibly renders', await page.getByRole('heading', { name: 'Holonomy Loom', exact: true }).isVisible());
-  // This review exercises the local checker after entering its optional laboratory.
-  // The primary AI workspace has its own provider-transport witness; merely arriving calls nothing.
+  check('primary workspace route loaded', new URL(page.url()).pathname === workspaceRoute, page.url());
   await page.locator('#aiTask').waitFor({ state: 'visible', timeout: 10_000 });
   check('primary AI task workspace visibly renders at arrival', await page.locator('#loomAiWorkspace').isVisible() && await page.locator('#aiTask').isVisible());
-  check('primary AI Run control visibly renders without automatic invocation', await page.locator('#aiRun').isVisible());
-  const laboratory = page.locator('#loomLegacy');
-  check('local laboratory remains optional and closed at arrival', !(await detailsOpen(laboratory)));
-  await laboratory.locator(':scope > summary').click();
-      await page.locator('#loomPracticeFixtures > summary').click();
-  check('local laboratory opens by explicit operator action', await detailsOpen(laboratory));
+  check('primary AI Run control renders without automatic invocation', await page.locator('#aiRun').isVisible());
+  check('Instrument Lab remains optional and closed at arrival', !(await detailsOpen(page.locator('#loomLegacy'))));
+  check('historical checker and observer are absent from the operator page', await page.locator('#loomTheater, #loomObserverChamber, #loomPracticeFixtures, .lr-world, .lr-courier').count() === 0);
+  await page.goto(url, { waitUntil: 'networkidle', timeout: 60_000 });
+  check('fixture-only checker route loaded explicitly', new URL(page.url()).pathname === route, page.url());
+  check('fixture has no primary model workspace', await page.locator('#loomAiWorkspace').count() === 0);
   check('ordinary-language task instruction visibly renders', await page.getByText('Before you send it, check what this message carries.', { exact: true }).isVisible());
   check('child-legible operational route visibly renders', await page.getByText('SEE → CHECK → UNDERSTAND → REST', { exact: true }).isVisible());
   check('CHECK THIS MESSAGE is a visible operator control', await page.getByRole('button', { name: 'CHECK THIS MESSAGE', exact: true }).isVisible());

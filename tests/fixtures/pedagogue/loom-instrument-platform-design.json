@@ -1,98 +1,405 @@
 {
   "schema": "td613.pedagogue-design-fixture/v0.1",
   "design_id": "loom-instrument-platform-consequence-rest-return",
-  "surface_reference": "Holonomy Loom / Instrument Lab / current request observation",
+  "surface_reference": "Holonomy Loom / primary current route / flat Instrument Lab",
   "governance_context": "TD613",
-  "determinism": { "frozenClock": "2026-10-02T00:00:00Z", "idSeed": "loom-instrument-platform-consequence-rest-return", "idScope": "Loom/InstrumentLab" },
+  "determinism": {
+    "frozenClock": "2026-10-03T00:00:00Z",
+    "idSeed": "loom-instrument-platform-consequence-rest-return",
+    "idScope": "Loom/PrimaryRuntime"
+  },
   "scene_input": {
     "scene_kind": "GENERIC",
     "station_owner": "Dome-World",
     "source_status": "E0",
     "observation_status": "UNRESOLVED",
-    "world_state_reference": "9824dfa0f427c8b944ff5c7fdfd43719b2b41418 plus reviewed working-tree candidate",
+    "world_state_reference": "ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a plus reviewed consolidation working-tree candidate",
     "provenance": {
-      "source_references": ["app/dome-world/holonomy-loom.html", "app/dome-world/holonomy-loom/ai-workspace.js", "app/dome-world/holonomy-loom/instrument-lab.js", "app/dome-world/holonomy-loom/instrument-state-view.js", "app/dome-world/marrowline-loom-demo.js", "app/dome-world/holonomy-loom/demo-contract.js"],
-      "evidence_basis": ["SYNTHETIC_DECLARED_DESIGN_TARGET: a bounded source review, not a recorded operator trajectory or comprehension measurement.", "Support coordinates are identical declared calibration values in both routes; only required fields, dependencies and crossings differ.", "Baseline is the source-bound legacy inspection design: mode-dependent entrance and separate check/disclosure inspection. It is not an observed human traversal."],
-      "transformations": ["Expose one independent closed-default Lab entrance, show the current consequence before optional inspection, and preserve input and receipt through explicit Rest and Resume."],
-      "station_owners": ["Dome-World"]
+      "source_references": [
+        "app/dome-world/holonomy-loom.html",
+        "app/dome-world/holonomy-loom/ai-workspace.js",
+        "app/dome-world/holonomy-loom/runtime-state-view.js",
+        "app/dome-world/holonomy-loom/instrument-state-view.js",
+        "app/dome-world/holonomy-loom/instrument-lab.js",
+        "app/dome-world/holonomy-loom/instrument-lab.css"
+      ],
+      "evidence_basis": [
+        "SYNTHETIC_DECLARED_DESIGN_TARGET: a bounded source review, not a recorded operator trajectory or comprehension measurement.",
+        "Support coordinates are identical declared calibration values in both routes; only required fields, dependencies and crossings differ.",
+        "Baseline is the source-bound ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a route that required opening the independent Lab to inspect this compiler-backed request projection. It is not an observed human traversal."
+      ],
+      "transformations": [
+        "Move the single current request projection into the main task route; preserve Still/Resume on the shared clock; replace nested Lab drawers with one instrument selector; keep legacy practice/checker renderers in a separate research fixture."
+      ],
+      "station_owners": [
+        "Dome-World"
+      ]
     },
     "visible_condition": {
-      "plain_language": "The Lab follows the request state already observed in this tab. Open it to inspect that state or run a local assay. Rest preserves your input and receipt; Resume refreshes the current view without sending or recalculating.",
-      "surface_reference": "Holonomy Loom / Instrument Lab / current request observation"
+      "plain_language": "The current route follows the request already observed in this tab. Still the field stops motion; let it move again when ready. Your task, history and local assay receipt remain here. Open the optional Lab only to inspect a measurement.",
+      "surface_reference": "Holonomy Loom / primary current route / flat Instrument Lab"
     },
     "available_affordances": [
-      { "action_id": "rest_current_view", "purpose": "Stop display demand while preserving the current input, receipt, request history and explicit return.", "authorized_by_station": "Human", "reversible": true },
-      { "action_id": "resume_current_view", "purpose": "Resume the latest current view without running another assay or provider request.", "authorized_by_station": "Human", "reversible": true }
+      {
+        "action_id": "rest_current_view",
+        "purpose": "Still the primary field while preserving the current task, request history and unchanged Lab receipt. The real request can progress.",
+        "authorized_by_station": "Human",
+        "reversible": true
+      },
+      {
+        "action_id": "resume_current_view",
+        "purpose": "Let the primary field move without running another local assay or sending another provider request.",
+        "authorized_by_station": "Human",
+        "reversible": true
+      }
     ],
     "route_topology": {
-      "entry": "Explicit independent Instrument Lab disclosure; closed by default in both workspace modes",
-      "exit": "Close the Lab or return to the still-live workspace",
+      "entry": "Primary current-route field is available without opening the optional independent Instrument Lab",
+      "exit": "Return to the still-live task; close the optional Lab or use Return to Ash Keep to leave the page",
       "same_endpoint_not_same_history": true,
-      "missing_inputs": ["No captured human comprehension or physical-device trajectory"],
+      "missing_inputs": [
+        "No captured human comprehension or physical-device trajectory"
+      ],
       "steps": [
-        { "step_id": "notice", "label": "See the optional local Lab entrance", "phase": "NOTICE", "required_fields": ["local observation", "explicit entrance"], "dependencies": [], "legibility_millipoints": 700, "affordance_millipoints": 700, "gluing_obstruction_millipoints": 0, "projection_crossings": 0, "route_memory_edges": 0, "operator_action_required": false },
-        { "step_id": "open", "label": "Open the Lab explicitly", "phase": "ACT", "required_fields": ["Lab disclosure"], "dependencies": ["notice"], "legibility_millipoints": 700, "affordance_millipoints": 700, "gluing_obstruction_millipoints": 0, "projection_crossings": 0, "route_memory_edges": 1, "operator_action_required": true },
-        { "step_id": "consequence", "label": "Read the current request consequence", "phase": "WORLD_ANSWERS", "required_fields": ["current state", "what remains held"], "dependencies": ["open"], "legibility_millipoints": 700, "affordance_millipoints": 700, "gluing_obstruction_millipoints": 0, "projection_crossings": 0, "route_memory_edges": 1, "operator_action_required": false },
-        { "step_id": "inspect", "label": "Optionally inspect the exact observation", "phase": "NAME", "required_fields": ["optional exact receipt", "source and missingness"], "dependencies": ["consequence"], "legibility_millipoints": 700, "affordance_millipoints": 700, "gluing_obstruction_millipoints": 0, "projection_crossings": 1, "route_memory_edges": 1, "operator_action_required": true },
-        { "step_id": "rest", "label": "Rest while input and receipt remain", "phase": "REST", "required_fields": ["Rest", "Resume current view"], "dependencies": ["consequence"], "legibility_millipoints": 700, "affordance_millipoints": 700, "gluing_obstruction_millipoints": 0, "projection_crossings": 0, "route_memory_edges": 1, "operator_action_required": true },
-        { "step_id": "return", "label": "Return to the same task", "phase": "TRANSFER", "required_fields": ["Return to work", "current task"], "dependencies": ["rest"], "legibility_millipoints": 700, "affordance_millipoints": 700, "gluing_obstruction_millipoints": 0, "projection_crossings": 1, "route_memory_edges": 1, "operator_action_required": true }
+        {
+          "step_id": "notice",
+          "label": "See the primary current route beside the task",
+          "phase": "NOTICE",
+          "required_fields": [
+            "current route",
+            "evidence limit"
+          ],
+          "dependencies": [],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 0,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "consequence",
+          "label": "Read the current request consequence",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "current state",
+            "what remains held"
+          ],
+          "dependencies": [
+            "notice"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "inspect",
+          "label": "Optionally inspect relation and recorded history",
+          "phase": "NAME",
+          "required_fields": [
+            "optional exact receipt",
+            "source and missingness"
+          ],
+          "dependencies": [
+            "consequence"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "rest",
+          "label": "Still the field while work and history remain",
+          "phase": "REST",
+          "required_fields": [
+            "Still the field",
+            "Let the field move"
+          ],
+          "dependencies": [
+            "consequence"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "return",
+          "label": "Return to the same task or leave explicitly",
+          "phase": "TRANSFER",
+          "required_fields": [
+            "current task",
+            "Return to Ash Keep"
+          ],
+          "dependencies": [
+            "rest"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        }
       ]
     },
     "causal_structure": {
       "input": "Actual bounded client request event metadata, or explicitly loaded fictional/local assay input",
       "operator": "Existing canonical Pedagogue, AIA and route graph compilers; existing shared AnimationCoordinator",
-      "observable": "One current consequence and evidenced relation, optional exact receipt, preserved input and receipt through Rest/Resume, original workspace still available",
+      "observable": "One primary consequence and evidenced relation, optional exact history, unchanged task and Lab receipt under Still/Resume; one flat instrument selector inside the closed-default Lab",
       "authority": "Client observation and local calculation only; Loom admission and Fire execution keep separate gates",
       "equations": []
     },
     "research_frame": {
-      "question": "Can an optional instrument make a current task legible without forcing a mode change, audit detour or restart after Rest?",
-      "hypothesis": "The independent entrance and consequence-first view reduce declared inspection dependencies while preserving history, rest, return and authority limits.",
-      "observable_behavior": ["Opening the Lab sends nothing", "Closing the Lab draws no hidden frames and reopening catches up", "Rest retains input, receipt and save access while actual request states can progress", "Resume sends nothing and recalculates nothing", "Quick and Deep change receipt disclosure only", "Export review retains original task and latest admitted continuation without restoring live custody"],
-      "alternative_explanations": ["Prior familiarity may dominate interpretation", "Provider latency may dominate apparent state continuity", "Declared burden coordinates may miss important real handling costs"],
-      "expected_failure_modes": ["Rest destroys the result", "A late compile callback reanimates a resting view", "A successful browser-unpinned session holds the latest projection", "A raw packet or model report is promoted to admission", "Quick/Deep receipt controls imply observed provider reasoning effort", "Reload falsely restores live custody"],
-      "falsifier": ["Opening, loading practice or Resume dispatches a provider request", "Rest discards unchanged input or receipt", "Reopening shows an older request than the latest supplied snapshot", "A held continuation replaces the latest admitted export", "A returned body alone activates completed local review"],
-      "abstention_conditions": ["No actual browser/provider route witness", "No authenticated source or admission witness", "No physical-device or human comprehension measurement"]
+      "question": "Can the operator inspect the actual current request without opening another environment, while motion rest, evidence and optional local analysis remain distinct?",
+      "hypothesis": "Making the canonical current route primary removes an inspection dependency, while a flat optional Lab preserves local assays, history, rest and authority limits.",
+      "observable_behavior": [
+        "Exactly one primary request projection is visible without opening the Lab",
+        "Opening the flat Lab sends nothing and reveals no old practice/checker scene",
+        "Still the field preserves the task, request history and unchanged assay receipt while actual request states can progress",
+        "Let the field move dispatches no provider request and runs no assay",
+        "Quick and Deep change assay receipt disclosure only",
+        "Export review retains original task and latest admitted continuation without restoring live custody"
+      ],
+      "alternative_explanations": [
+        "Prior familiarity may dominate interpretation",
+        "Provider latency may dominate apparent state continuity",
+        "Declared burden coordinates may miss important real handling costs"
+      ],
+      "expected_failure_modes": [
+        "Still the field erases the task, history or unchanged receipt",
+        "A late compile callback presents an old request as current",
+        "A new request phase hides a focused inspection control without usable focus recovery",
+        "The primary route is concealed by a workspace mode or depends on opening the Lab",
+        "A successful browser-unpinned session holds the latest projection",
+        "A raw packet or model report is promoted to admission",
+        "Quick/Deep receipt controls imply observed provider reasoning effort",
+        "Reload falsely restores live custody"
+      ],
+      "falsifier": [
+        "Opening the Lab, loading practice or resuming motion dispatches a provider request",
+        "Motion rest discards unchanged task, history or receipt",
+        "A new phase remains presented as the previous current state",
+        "A held continuation replaces the latest admitted export",
+        "A returned body alone activates completed local review"
+      ],
+      "abstention_conditions": [
+        "No actual browser/provider route witness",
+        "No authenticated source or admission witness",
+        "No physical-device or human comprehension measurement"
+      ]
     },
-    "missingness": ["The fixture declares a design target; runtime acceptance is checked independently", "Source pin in this fixture is a review reference, not authentication of a browser session", "browser-unpinned remains explicitly unpinned", "No physical-device acceptance witness", "No human comprehension measurement", "No external acquisition or experiment execution authority"],
+    "missingness": [
+      "The fixture declares a design target; runtime acceptance is checked independently",
+      "Source pin in this fixture is a review reference, not authentication of a browser session",
+      "browser-unpinned remains explicitly unpinned",
+      "No physical-device acceptance witness",
+      "No human comprehension measurement",
+      "No external acquisition or experiment execution authority"
+    ],
     "contradictions": [],
     "claim_ceiling": {
-      "allowed_claims": ["The declared target preserves consequence, rest, return and non-equivalent AIA inspection", "Structural demand is non-worsening under the existing comparative models with equal support calibration"],
-      "forbidden_claims": ["Gate PASS proves live production behavior or comprehension", "Burden values score a person", "A local report authenticates a source or provider", "Quick/Deep receipt disclosure proves low/high model reasoning effort", "An imported export restores live custody", "The gate authorizes merge, deployment or external acquisition"]
+      "allowed_claims": [
+        "The declared target preserves consequence, rest, return and non-equivalent AIA inspection",
+        "Structural demand is non-worsening under the existing comparative models with equal support calibration"
+      ],
+      "forbidden_claims": [
+        "Gate PASS proves live production behavior or comprehension",
+        "Burden values score a person",
+        "A local report authenticates a source or provider",
+        "Quick/Deep receipt disclosure proves low/high model reasoning effort",
+        "An imported export restores live custody",
+        "The gate authorizes merge, deployment or external acquisition"
+      ]
     },
-    "technical_terms_withheld": ["phase sequence", "route graph", "custody admission", "FADT", "projection family", "gluing obstruction"]
+    "technical_terms_withheld": [
+      "phase sequence",
+      "route graph",
+      "custody admission",
+      "FADT",
+      "projection family",
+      "gluing obstruction"
+    ]
   },
   "baseline_route_steps": [
-    { "step_id": "notice", "label": "Read workspace modes and locate legacy inspection", "phase": "NOTICE", "required_fields": ["workspace mode", "legacy entrance", "local checker", "provider disclosure"], "dependencies": [], "legibility_millipoints": 700, "affordance_millipoints": 700, "gluing_obstruction_millipoints": 0, "projection_crossings": 0, "route_memory_edges": 0, "operator_action_required": false },
-    { "step_id": "switch", "label": "Switch to the mode exposing legacy inspection", "phase": "ACT", "required_fields": ["workspace mode", "inspection availability"], "dependencies": ["notice"], "legibility_millipoints": 700, "affordance_millipoints": 700, "gluing_obstruction_millipoints": 0, "projection_crossings": 1, "route_memory_edges": 1, "operator_action_required": true },
-    { "step_id": "open", "label": "Open legacy inspection", "phase": "ACT", "required_fields": ["legacy disclosure"], "dependencies": ["switch"], "legibility_millipoints": 700, "affordance_millipoints": 700, "gluing_obstruction_millipoints": 0, "projection_crossings": 0, "route_memory_edges": 1, "operator_action_required": true },
-    { "step_id": "consequence", "label": "Relate the separate check to the current task", "phase": "WORLD_ANSWERS", "required_fields": ["current task", "local check", "separate route display", "scope difference"], "dependencies": ["open"], "legibility_millipoints": 700, "affordance_millipoints": 700, "gluing_obstruction_millipoints": 0, "projection_crossings": 1, "route_memory_edges": 1, "operator_action_required": false },
-    { "step_id": "inspect", "label": "Inspect a separate exact disclosure", "phase": "NAME", "required_fields": ["exact receipt", "current task state", "source and missingness"], "dependencies": ["consequence"], "legibility_millipoints": 700, "affordance_millipoints": 700, "gluing_obstruction_millipoints": 0, "projection_crossings": 1, "route_memory_edges": 1, "operator_action_required": true },
-    { "step_id": "rest", "label": "Rest in the legacy local check", "phase": "REST", "required_fields": ["Rest", "return path"], "dependencies": ["consequence"], "legibility_millipoints": 700, "affordance_millipoints": 700, "gluing_obstruction_millipoints": 0, "projection_crossings": 0, "route_memory_edges": 1, "operator_action_required": true },
-    { "step_id": "return", "label": "Return across workspace modes", "phase": "TRANSFER", "required_fields": ["return path", "workspace mode", "original task"], "dependencies": ["rest", "switch"], "legibility_millipoints": 700, "affordance_millipoints": 700, "gluing_obstruction_millipoints": 0, "projection_crossings": 2, "route_memory_edges": 1, "operator_action_required": true }
+    {
+      "step_id": "notice",
+      "label": "See the optional Lab entrance below the workspace",
+      "phase": "NOTICE",
+      "required_fields": [
+        "local observation",
+        "explicit entrance"
+      ],
+      "dependencies": [],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 0,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "open",
+      "label": "Open the Lab to reach its compiler-backed request projection",
+      "phase": "ACT",
+      "required_fields": [
+        "Lab disclosure"
+      ],
+      "dependencies": [
+        "notice"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "consequence",
+      "label": "Read the repeated request consequence inside the Lab",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": [
+        "current state",
+        "what remains held"
+      ],
+      "dependencies": [
+        "open"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "inspect",
+      "label": "Optionally inspect the exact observation",
+      "phase": "NAME",
+      "required_fields": [
+        "optional exact receipt",
+        "source and missingness"
+      ],
+      "dependencies": [
+        "consequence"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 1,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "rest",
+      "label": "Rest the Lab display while input and receipt remain",
+      "phase": "REST",
+      "required_fields": [
+        "Rest",
+        "Resume current view"
+      ],
+      "dependencies": [
+        "consequence"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "return",
+      "label": "Return from the Lab to the same task",
+      "phase": "TRANSFER",
+      "required_fields": [
+        "Return to work",
+        "current task"
+      ],
+      "dependencies": [
+        "rest"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 1,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    }
   ],
-  "action": { "action_id": "rest_current_view" },
+  "action": {
+    "action_id": "rest_current_view"
+  },
   "world_delta": {
     "observation_status": "UNRESOLVED",
-    "causal_trace": ["Operator explicitly opens the optional Lab", "Local current-state consequence precedes exact inspection", "Rest preserves unchanged input and receipt while later actual events remain current", "Resume refreshes the current view without recalculation or sending", "Return retains the original live workspace"],
+    "causal_trace": [
+      "Operator sees the actual current route in the workspace",
+      "Plain request consequence precedes optional exact inspection",
+      "Still the field preserves task, request history and unchanged Lab receipt while later actual events remain current",
+      "Resuming motion runs no assay and sends nothing",
+      "Optional Lab contains one flat selected instrument, with external execution held",
+      "Return retains the original task; exiting remains explicit"
+    ],
     "losses": [],
-    "missingness": ["Declared target, not an observed human traversal", "No physical-device or human comprehension measurement", "Browser/provider and authenticated admission witnessing remain separate"],
+    "missingness": [
+      "Declared target, not an observed human traversal",
+      "No physical-device or human comprehension measurement",
+      "Browser/provider and authenticated admission witnessing remain separate"
+    ],
     "contradictions": [],
-    "unresolved_relations": ["Source review and synthetic DOM checks do not establish operator understanding"],
+    "unresolved_relations": [
+      "Source review and synthetic DOM checks do not establish operator understanding"
+    ],
     "glyph_candidates": [],
-    "static_equivalent": { "summary": "Demand stops without erasing the input, receipt or current task.", "steps": ["open explicitly", "read current consequence", "optionally inspect", "Rest", "Resume or return"] }
+    "static_equivalent": {
+      "summary": "Motion stops without erasing the current task, history or local receipt.",
+      "steps": [
+        "read primary current consequence",
+        "optionally inspect exact history",
+        "Still the field",
+        "Let the field move or return",
+        "optionally choose one Lab instrument"
+      ]
+    }
   },
   "name": {
-    "plain_language": "Rest changes display demand and preserves the work already here.",
+    "plain_language": "Still the field changes display demand and preserves the work already here.",
     "glyph_relation": null,
     "technical_term": "preserved consequence under cue rest",
-    "non_equivalence": ["Opening is not running", "Running a local assay is not calling a model", "Binding readiness is not return validation", "Receipt disclosure is not model reasoning effort", "Response received is not custody admission", "Cue rest is not request cancellation", "Export review is not live custody restoration"]
+    "non_equivalence": [
+      "Opening is not running",
+      "Running a local assay is not calling a model",
+      "Binding readiness is not return validation",
+      "Receipt disclosure is not model reasoning effort",
+      "Response received is not custody admission",
+      "Cue rest is not request cancellation",
+      "Export review is not live custody restoration"
+    ]
   },
   "transfer_context": {
-    "context": { "surface": "Original Loom task, repeated native Marrowline continuation and export/recovery review" },
+    "context": {
+      "surface": "Original Loom task, repeated native Marrowline continuation and export/recovery review"
+    },
     "shared_relation_candidate": "Preserve the task and latest admitted consequence when stopping demand or changing the inspection surface",
-    "observable_correspondence": ["Latest admitted continuation alone advances export; failed attempts retain its predecessor", "Original task and selected lawful scope survive export review", "Reload or imported review does not recreate live custody"],
-    "alternative_explanations": ["Matching endpoint text may hide a different route history"],
-    "abstention_conditions": ["Stale, held or unauthenticated output cannot establish current admitted state"]
+    "observable_correspondence": [
+      "Latest admitted continuation alone advances export; failed attempts retain its predecessor",
+      "Original task and selected lawful scope survive export review",
+      "Reload or imported review does not recreate live custody"
+    ],
+    "alternative_explanations": [
+      "Matching endpoint text may hide a different route history"
+    ],
+    "abstention_conditions": [
+      "Stale, held or unauthenticated output cannot establish current admitted state"
+    ]
   }
 }

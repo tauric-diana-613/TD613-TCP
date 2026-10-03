@@ -7,7 +7,7 @@ const browserName = String(process.env.TD613_BROWSER || 'chromium').toLowerCase(
 const browserType = { chromium, firefox, webkit }[browserName];
 if (!browserType) throw new TypeError(`Unsupported TD613_BROWSER: ${browserName}`);
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/holonomy-loom-flowcore-aia-glyph-control';
-const route = '/dome-world/holonomy-loom.html';
+const route = '/dome-world/holonomy-loom/fixtures/legacy-practice.html';
 const url = `${base}${route}`;
 const baseOrigin = new URL(base).origin;
 const canary = `TD613_GLYPH_CANARY_${browserName.toUpperCase()}_613`;
@@ -18,7 +18,7 @@ const report = {
   status: 'OPEN',
   browser: browserName,
   route,
-  interaction_scope: 'EXPLICIT_LOCAL_RULE_LABORATORY',
+  interaction_scope: 'EXPLICIT_FIXTURE_ONLY_LOCAL_RULE_LABORATORY',
   source_status: 'OBSERVED',
   authority_class: 'A1_OBSERVATIONAL',
   witness_instrumentation: {
@@ -96,11 +96,7 @@ try {
   });
 
   await page.goto(url, { waitUntil: 'networkidle', timeout: 60_000 });
-  const laboratory = page.locator('#loomLegacy');
-  check('local laboratory starts optional and closed', !(await laboratory.evaluate(node => Boolean(node.open))));
-  await laboratory.locator(':scope > summary').click();
-      await page.locator('#loomPracticeFixtures > summary').click();
-  check('local laboratory opened explicitly before glyph-control traversal', await laboratory.evaluate(node => Boolean(node.open)));
+  check('glyph practice is isolated from the primary operator workspace', await page.locator('#loomAiWorkspace, #loomInstrumentLab').count() === 0);
   const glyphPath = page.locator('#glyphPath');
   const showPath = page.locator('#showPath');
   const releaseNode = page.locator('[data-motion-key="release"]');
@@ -203,14 +199,7 @@ try {
 
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.reload({ waitUntil: 'networkidle' });
-  // Fragment navigation can reopen ancestor details in some engines; WebKit may keep it closed.
-  // Restore the declared laboratory route with a normal disclosure gesture before filling its field.
-  const reducedLaboratory = page.locator('#loomLegacy');
-  const reopenedByFragment = await reducedLaboratory.evaluate(node => Boolean(node.open));
-  if (!reopenedByFragment) await reducedLaboratory.locator(':scope > summary').click();
-  if (!(await page.locator('#loomPracticeFixtures').evaluate(node=>node.open))) await page.locator('#loomPracticeFixtures > summary').click();
-  check('reduced-motion laboratory is open before replay after reload',
-    await reducedLaboratory.evaluate(node => Boolean(node.open)), { reopened_by_fragment: reopenedByFragment });
+  check('fixture input remains visible after reduced-motion reload', await page.locator('#message').isVisible());
   await page.locator('#message').fill('ordinary reduced motion message');
   await page.locator('#check').click();
   await page.locator('#showPath').click();

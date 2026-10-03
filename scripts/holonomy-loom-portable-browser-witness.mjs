@@ -16,11 +16,11 @@ const report = { schema: 'td613.loom.portable-browser-witness/v0.1', engine,
   source_sha: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
   working_tree_dirty: execFileSync('git', ['status', '--porcelain', '--untracked-files=no'], { encoding: 'utf8' }).trim().length > 0,
   observed_at: new Date().toISOString(), status: 'HELD', checks: [], failures: [],
-  context: 'LOCAL_SYNTHETIC_BROWSER_WITNESS', interaction_scope: 'LOCAL_RULE_LABORATORY', provider_calls: 0, external_host_observed: false,
+  context: 'LOCAL_SYNTHETIC_BROWSER_WITNESS', interaction_scope: 'FIXTURE_ONLY_LOCAL_RULE_LABORATORY', provider_calls: 0, external_host_observed: false,
   human_comprehension_measured: false, release_authority: false };
 let instance;
 try {
-  instance = await type.launch({ headless: true, ...(engine === 'chromium' ? { executablePath: type.executablePath() } : {}) });
+  instance = await type.launch({ headless: true, ...(engine === 'chromium' && process.env.TD613_BROWSER_EXECUTABLE_PATH ? { executablePath: process.env.TD613_BROWSER_EXECUTABLE_PATH } : {}) });
   for (const [posture, width, height, reduced] of [['desktop', 1280, 900, false], ['mobile-reduced', 390, 844, true]]) {
     const page = await instance.newPage({ viewport: { width, height }, reducedMotion: reduced ? 'reduce' : 'no-preference' });
     page.setDefaultTimeout(10000);
@@ -31,12 +31,8 @@ try {
       if (u.origin !== new URL(base).origin || !['GET', 'HEAD'].includes(request.method()) || u.pathname.startsWith('/api/')) unexpected.push(request.url());
     });
     try {
-      await page.goto(`${base}/dome-world/holonomy-loom.html`, { waitUntil: 'networkidle' });
-      const laboratory = page.locator('#loomLegacy');
-      assert.equal(await laboratory.evaluate(node => node.open), false, 'legacy laboratory starts optional and closed');
-      await laboratory.locator(':scope > summary').click();
-      await page.locator('#loomPracticeFixtures > summary').click();
-      assert.equal(await laboratory.evaluate(node => node.open), true, 'explicitly open local laboratory before its witness');
+      await page.goto(`${base}/dome-world/holonomy-loom/fixtures/legacy-practice.html`, { waitUntil: 'networkidle' });
+      assert.equal(await page.locator('#loomAiWorkspace, #loomInstrumentLab').count(), 0, 'legacy practice does not mount the operator workspace');
       const clientFixture = page.locator('#ltLoadClient');
       await clientFixture.waitFor({ state: 'visible' });
       assert.equal(await clientFixture.isVisible(), true, 'client fixture outside closed receipts');

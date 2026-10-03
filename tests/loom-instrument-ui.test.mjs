@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { webcrypto } from 'node:crypto';
 import { JSDOM } from 'jsdom';
 import { mountLoomInstrumentLab } from '../app/dome-world/holonomy-loom/instrument-lab.js';
+import { mountLoomRuntimeStateView } from '../app/dome-world/holonomy-loom/runtime-state-view.js';
 import { compileLoomInstrumentStateView } from '../app/dome-world/holonomy-loom/instrument-state-view.js';
 import { createLoomAiGovernance, createPortableLoomAiPacket } from '../app/dome-world/holonomy-loom/ai-handoff.js';
 
@@ -37,8 +38,10 @@ function setup(t, patch = {}) {
 test('Lab practice loading is inert; running preserves explicit result scope and no gate authority', async t => {
   const h = setup(t);
   assert.equal(h.ui.inspect().receipt, null);
+  assert.equal(h.root.querySelectorAll('details').length, 0, 'the bench must not nest disclosure drawers');
+  assert.equal(h.root.querySelector('#ilState'), null, 'the Lab must not duplicate the primary runtime');
   assert.equal(h.root.querySelector('#ilResult').hidden, true);
-  h.event('ilPractice');
+  h.choose('route'); h.event('ilPractice');
   assert.equal(h.ui.inspect().receipt, null);
   assert.equal(h.ui.inspect().input_class, 'FICTIONAL_PRACTICE');
   assert.match(h.root.querySelector('#ilInputClass').textContent, /no measurement or authority/);
@@ -59,9 +62,9 @@ test('Quick/Deep exact inspection carries unchanged canonical report, lawful-act
   assert.deepEqual(canonical.result.finite_audit.fibres[0].irreducible_gap, ['EXPORT_CURRENT']);
   const quickText = h.root.querySelector('#ilReceipt').textContent;
   assert.deepEqual(JSON.parse(quickText), canonical);
-  assert.equal(h.root.querySelector('#ilExact').open, false);
+  assert.equal(h.root.querySelector('#ilExact').hidden, true);
   h.event('ilDeep');
-  assert.equal(h.root.querySelector('#ilExact').open, true);
+  assert.equal(h.root.querySelector('#ilExact').hidden, false);
   assert.deepEqual(JSON.parse(h.root.querySelector('#ilReceipt').textContent), canonical);
   assert.equal(h.root.querySelector('#ilDeep').getAttribute('aria-pressed'), 'true');
   h.event('ilQuick');
@@ -70,7 +73,7 @@ test('Quick/Deep exact inspection carries unchanged canonical report, lawful-act
   assert.equal(h.fetches(), 0);
 });
 
-test('edited input, route switching, and malformed reruns invalidate results; Rest/Resume preserves an unchanged receipt without recalculation', async t => {
+test('edited input, route switching, and malformed reruns invalidate results; receipt depth changes preserve unchanged evidence', async t => {
   const h = setup(t); h.event('ilPractice'); await h.run();
   h.input('{"baseline":0}');
   assert.equal(h.ui.inspect().receipt, null);
@@ -81,12 +84,10 @@ test('edited input, route switching, and malformed reruns invalidate results; Re
   assert.equal(h.ui.inspect().receipt, null);
   assert.equal(h.root.querySelector('#ilInput').value, '');
   h.event('ilPractice'); await h.run();
-  const preserved = h.ui.inspect().receipt; h.event('ilRest');
-  assert.equal(h.ui.inspect().paused, true);
+  const preserved = h.ui.inspect().receipt; h.event('ilDeep');
+  assert.equal(h.ui.inspect().receipt, preserved); h.event('ilQuick');
   assert.equal(h.ui.inspect().receipt, preserved);
-  h.event('ilResume');
-  assert.equal(h.ui.inspect().paused, false);
-  assert.equal(h.ui.inspect().receipt, preserved);
+  assert.equal(h.root.querySelector('#ilRest, #ilResume, #ilState'), null, 'the primary runtime owns display state and rest');
   assert.equal(h.fetches(), 0);
   h.event('ilPractice'); await h.run();
   h.input('{malformed'); await h.run();
@@ -160,7 +161,7 @@ test('Fire Gate remains execution-held in the rendered result; local benchmark s
   assert.equal(h.fetches(), 0);
 });
 
-test('a current state compiled while the tab is hidden renders on the next visible shared-clock pass without another calculation', async t => {
+test('primary runtime suppresses a compilation hidden midflight and recovers only the latest state when visible', async t => {
   const packet = {
     phase: 'pending', at: '2026-10-02T10:00:00.000Z', request_id: 'hidden-compile',
     shared: 1, local: 0, selected_document_ids: ['selected'],
@@ -178,8 +179,7 @@ test('a current state compiled while the tab is hidden renders on the next visib
   let hidden = false, renderPass, entered = false, completedDigests = 0, release;
   Object.defineProperty(doc, 'hidden', { configurable: true, get: () => hidden });
   const barrier = new Promise(resolve => { release = resolve; });
-  const originalCrypto = Object.getOwnPropertyDescriptor(globalThis, 'crypto');
-  Object.defineProperty(globalThis, 'crypto', { configurable: true, value: { subtle: {
+  const controlledCrypto = { subtle: {
     async digest(...args) {
       entered = true;
       await barrier;
@@ -187,16 +187,16 @@ test('a current state compiled while the tab is hidden renders on the next visib
       completedDigests++;
       return result;
     }
-  } } });
-  const ui = mountLoomInstrumentLab(root, {
-    environment: { AbortController, setTimeout, clearTimeout },
-    coordinator: { registerPass(_name, callback) { renderPass = callback; return () => {}; } },
+  } };
+  const ui = mountLoomRuntimeStateView(root, {
+    environment: { crypto: controlledCrypto },
+    coordinator: { setViewport() {}, registerPass(_name, callback) { renderPass = callback; return () => {}; } },
     observe: () => ({ source_revision: 'working-tree', events: [] })
   });
   t.after(() => { ui.dispose(); dom.window.close(); });
   const snapshot = { packet, progress: 0, timeMs: 0, reducedMotion: true,
     viewport: { width: 390, height: 844, dpr: 1 } };
-  const stateRoot = root.querySelector('#ilState');
+  const stateRoot = root;
   let hiddenMutations = 0;
   const observer = new dom.window.MutationObserver(records => { hiddenMutations += records.length; });
   observer.observe(stateRoot, { subtree: true, attributes: true, childList: true, characterData: true });
@@ -204,21 +204,39 @@ test('a current state compiled while the tab is hidden renders on the next visib
     renderPass(snapshot);
     await until(() => entered);
     hidden = true;
+    doc.dispatchEvent(new dom.window.Event('visibilitychange'));
+    await pause();
+    hiddenMutations = 0;
     release();
     await until(() => completedDigests === requiredDigests);
     await pause();
     assert.equal(hiddenMutations, 0, 'an asynchronous compilation must not draw into a hidden tab');
     assert.equal(stateRoot.dataset.clientPhase, undefined);
     hidden = false;
-    renderPass(snapshot);
+    doc.dispatchEvent(new dom.window.Event('visibilitychange'));
+    await until(() => ui.inspect().status === 'CURRENT');
     assert.equal(stateRoot.dataset.clientPhase, 'pending');
     assert.equal(stateRoot.querySelector('[data-instrument-active-glyph]').textContent, '出');
-    assert.equal(completedDigests, requiredDigests, 'the visible pass must use the current compiled state');
-    assert.equal(ui.inspect().receipt, null, 'display recovery must not manufacture an assay receipt');
+    assert.equal(ui.inspect().owns_animation_loop, false);
+    assert.equal(ui.inspect().view.state.custody_admitted, false, 'visibility recovery cannot manufacture admission');
   } finally {
     observer.disconnect();
     release();
-    if (originalCrypto) Object.defineProperty(globalThis, 'crypto', originalCrypto);
-    else delete globalThis.crypto;
+
   }
+});
+
+test('one bench selector exposes custody and advisory tools without granting gate authority', t => {
+  const h = setup(t);
+  h.choose('custody');
+  assert.equal(h.root.querySelector('#ilBenchBody').hidden, true);
+  assert.equal(h.root.querySelector('#ilCustodyPanel').hidden, false);
+  h.event('ilCustody');
+  assert.equal(JSON.parse(h.root.querySelector('#ilCustodyReceipt').textContent).lab_admission_authority, false);
+  h.choose('advisory');
+  assert.equal(h.root.querySelector('#ilCustodyPanel').hidden, true);
+  assert.equal(h.root.querySelector('#ilAdvisory').hidden, false);
+  assert.equal(h.root.querySelectorAll('details').length, 0);
+  assert.equal(h.fetches(), 0);
+  assert.equal(h.ui.inspect().receipt, null);
 });

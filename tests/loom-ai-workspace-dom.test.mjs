@@ -41,7 +41,7 @@ function provider503(request) {
 }
 function response(body, status=200) { return {ok:status>=200&&status<300,status,text:async()=>JSON.stringify(body)}; }
 function harness(t, responder=(request)=>response(admitted(request)), reduced=false) {
-  const dom=new JSDOM('<section id="fixture"></section>',{url:'https://td613.com/dome-world/holonomy-loom.html'});
+  const dom=new JSDOM('<section id="fixture"></section>',{url:'https://td613.com/dome-world/holonomy-loom.html',pretendToBeVisual:true});
   const window=dom.window,root=window.document.querySelector('#fixture');
   const calls=[],frames=new Map();let sequence=0;
   const beforeRaf=globalThis.requestAnimationFrame,beforeCancel=globalThis.cancelAnimationFrame;
@@ -66,6 +66,10 @@ function harness(t, responder=(request)=>response(admitted(request)), reduced=fa
 test('Portable AIA is the default mode and keeps comprehension plus local preparation open without SHI',async t=>{
   const h=harness(t);
   assert.equal(h.ui.inspect().mode,'portable');
+  assert.equal(h.root.querySelectorAll('#aiRuntimeState').length,1);
+  assert.equal(h.root.querySelectorAll('#ilState, .lr-world, .lr-courier, #loomTheater, #loomObserverChamber, #loomPracticeFixtures').length,0);
+  assert.equal(h.$('#aiLivingRoom').hidden,true);
+  assert.equal(h.$('#aiLivingRoom').childElementCount,0);
   assert.equal(h.$('#aiPortableMode').getAttribute('aria-selected'),'true');
   assert.equal(h.$('#aiDemoMode').getAttribute('aria-selected'),'false');
   assert.equal(h.$('#aiDemoWelcome').hidden,true);
@@ -268,7 +272,7 @@ test('loading each real practice project sends nothing; a click submits one sele
   assert.equal(h.$('#aiResult').hidden,false);assert.match(h.$('#aiAnswer').textContent,/SYNTHETIC HTTP FIXTURE/);
   assert.equal(h.$('#aiResultEyebrow').textContent,'RETURNED THROUGH YOUR LOOM ROUTE');assert.equal(h.$('#aiResult').getAttribute('aria-label'),'AI result');
   assert.equal(h.$('#aiMarrowline').disabled,false);assert.equal(h.$('#aiExport').disabled,false);
-  assert.equal(h.ui.inspect().clock.pendingFrames,0);
+  assert.ok(h.ui.inspect().clock.pendingFrames<=1,'one workspace coordinator owns the finite settling frame');
   const completion=h.ui.inspect().events.find(event=>event.phase==='completed');
   assert.match(completion.aia.input_digest,/^[a-f0-9]{64}$/);
   assert.equal(completion.aia.fadt_admission,true);
@@ -356,10 +360,14 @@ test('editing the accepted task invalidates every receiver transfer action',asyn
 });
 test('reduced motion keeps the same request consequences with zero pending frames',async t=>{
   const pending=deferred(),h=harness(t,()=>pending.promise,true);h.load();h.$('#aiRun').click();await h.submitted();
-  assert.equal(h.ui.inspect().clock.pendingFrames,0);assert.equal(h.$('#aiLivingRoom').dataset.phase,'pending');
+  assert.equal(h.ui.inspect().clock.pendingFrames,0);
+  await until(()=>h.$('#aiRuntimeState').dataset.clientPhase==='pending','canonical pending state');
   assert.equal(h.ui.inspect().events.find(e=>e.phase==='pending').provider_call_observed,false);
   pending.resolve(response(admitted(h.calls[0].request)));await h.settled();
-  assert.equal(h.$('#aiResult').hidden,false);assert.equal(h.$('#aiLivingRoom').dataset.phase,'completed');assert.equal(h.ui.inspect().clock.pendingFrames,0);
+  assert.equal(h.$('#aiResult').hidden,false);
+  await until(()=>h.$('#aiRuntimeState').dataset.clientPhase==='completed','canonical completed state');
+  assert.equal(h.ui.inspect().runtime.view.state.custody_admitted,false);
+  assert.equal(h.ui.inspect().clock.pendingFrames,0);
 });
 test('stop waiting aborts the client request and leaves all output routes closed',async t=>{
   const h=harness(t,(_request,options)=>new Promise((_resolve,reject)=>options.signal.addEventListener('abort',()=>reject(new DOMException('aborted','AbortError')),{once:true})));

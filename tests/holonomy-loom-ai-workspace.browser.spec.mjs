@@ -5,6 +5,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import http from 'node:http';
 import { execFileSync } from 'node:child_process';
 import { chromium, firefox, webkit } from 'playwright';
 import { LOOM_AI_PROJECTS } from '../app/dome-world/holonomy-loom/ai-projects.js';
@@ -12,7 +13,21 @@ import { LOOM_AI_PROJECTS } from '../app/dome-world/holonomy-loom/ai-projects.js
 const engine = process.env.TD613_BROWSER || 'chromium';
 const browserType = { chromium, firefox, webkit }[engine];
 if (!browserType) throw new TypeError('Unknown witness browser engine');
-const base = process.env.TD613_BASE_URL || 'http://127.0.0.1:6130';
+let server, base = process.env.TD613_BASE_URL;
+if (!base) {
+  const appRoot = path.resolve('app');
+  server = http.createServer(async (req, res) => {
+    try {
+      const file = path.resolve(appRoot, '.' + new URL(req.url, 'http://localhost').pathname);
+      if (!file.startsWith(appRoot + path.sep)) throw new Error('invalid static path');
+      const body = await fs.readFile(file);
+      res.setHeader('Content-Type', ({ '.js': 'text/javascript', '.html': 'text/html', '.css': 'text/css', '.svg': 'image/svg+xml' })[path.extname(file)] || 'application/octet-stream');
+      res.end(body);
+    } catch { res.statusCode = 404; res.end(); }
+  });
+  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  base = `http://127.0.0.1:${server.address().port}`;
+}
 if (!['127.0.0.1', 'localhost'].includes(new URL(base).hostname)) throw new TypeError('Fixture transport witness requires a local server.');
 const dir = process.env.TD613_ARTIFACT_DIR || `artifacts/loom-ai-workspace/${engine}`;
 await fs.mkdir(dir, { recursive: true });
@@ -36,7 +51,7 @@ const uploadCanary = 'LOCAL-UPLOAD-CANARY-DO-NOT-SEND-613';
 const fixtureAnswer = '[MOCK PROVIDER RESPONSE — UI WITNESS] Supplier analysis: stated account fees and migration overages require separate arithmetic. Retention terms conflict; obtain a signed resolution before pilot approval.';
 let browser;
 try {
-  browser = await browserType.launch({ headless: true, ...(engine === 'chromium' ? { executablePath: process.env.TD613_BROWSER_EXECUTABLE_PATH || browserType.executablePath() } : {}) });
+  browser = await browserType.launch({ headless: true, ...(engine === 'chromium' && process.env.TD613_BROWSER_EXECUTABLE_PATH ? { executablePath: process.env.TD613_BROWSER_EXECUTABLE_PATH } : {}) });
   for (const [posture, viewport, reducedMotion] of [
     ['desktop', { width: 1280, height: 900 }, 'no-preference'],
     ['mobile-reduced', { width: 390, height: 844 }, 'reduce']
@@ -90,9 +105,11 @@ try {
       assert.equal(await page.locator('.ai-projection-depth').getAttribute('open'),null,'technical governance detail stays optional on entry');
       assert.equal(await page.locator('#aiProjectionTravel').isVisible(),true);
       assert.equal(await page.locator('#aiProjectionStay').isVisible(),true);
-      assert.equal(await page.locator('#loomLivingGeometry canvas').count(), 1, 'one Dome-Art canvas is mounted under the workspace clock; raster readiness remains a renderer concern');
+      assert.equal(await page.locator('#aiRuntimeState').count(), 1, 'one canonical primary route view is mounted');
+      assert.equal(await page.locator('.lr-world, .lr-courier, #loomLivingGeometry canvas, #ilState, #loomObserverChamber, #loomTheater, #loomPracticeFixtures').count(), 0, 'retired illustrations and nested practice surfaces are absent');
+      assert.equal(await page.locator('#aiLivingRoom').evaluate(node => node.hidden && node.childElementCount === 0), true);
 
-      assert.equal(await page.locator('.ai-observer').isVisible(),false,'the live request theater does not dominate Portable AIA mode');
+      assert.equal(await page.locator('#aiRuntime').isVisible(),true,'the canonical state view follows the same Portable AIA route');
       assert.equal(await page.locator('#aiPreparePortable').isVisible(),true,'Portable AIA preparation is a first-class composer gesture');
       assert.equal(await page.locator('#aiPreparePortable').evaluate(node=>node.classList.contains('ai-primary')),true,'local preparation is the primary Portable AIA gesture');
       assert.equal(await page.locator('#aiRun').evaluate(node=>node.classList.contains('ai-primary')),false,'Flow-Core is optional testing in Portable AIA mode');
@@ -172,13 +189,13 @@ try {
       assert.equal(await page.locator('#aiExport').isDisabled(),true,'removing SHI restores the one-hop issuance hold');
       assert.equal(await page.locator('#aiExportSession').isDisabled(),true,'removing SHI restores the session issuance hold');
 
-      assert.equal(await page.locator('#aiStillField').isVisible(),false,'observer-only motion controls stay out of Portable AIA mode');
+      assert.equal(await page.locator('#aiStillField').isVisible(),true,'the shared runtime owns a visible rest control');
       assert.equal(requests.length, 0, 'local preparation and SHI format checks make no provider request');
       await page.screenshot({ path: path.join(dir, `${posture}-portable-aia-held.png`), fullPage: true });
 
       await page.locator('#aiDemoMode').click();
       assert.equal(await page.locator('#aiDemoWelcome').isVisible(),true,'Loom Demo reveals the fictional practice chooser');
-      assert.equal(await page.locator('.ai-observer').isVisible(),true,'live request theater returns inside Loom Demo');
+      assert.equal(await page.locator('#aiRuntime').isVisible(),true,'the same primary view remains in Demo');
       assert.equal(await page.locator('#aiRun').evaluate(node=>node.classList.contains('ai-primary')),true,'Run becomes the primary demo gesture');
       assert.equal(await page.locator('#loomLegacy > summary').isVisible(),true,'Instrument Lab remains independently available during practice');
       assert.match(await page.locator('#aiDemoModePanel').innerText(),/fictional practice traversal/i);
@@ -214,10 +231,10 @@ try {
       assert.equal(Object.hasOwn(wire, 'protectedTerms'), false);
       assert.equal(serialized.includes(uploadCanary), false, 'uploaded local-only document excluded from wire');
       assert.equal(await page.locator('#aiPending').isVisible(), true);
-      assert.equal(await page.locator('#aiLivingRoom').getAttribute('data-phase'),'pending');
-      assert.match(await page.locator('#aiLivingRoom').textContent(),/YOUR POCKET/);
-      for(const document of fixture.documents.filter(d=>!d.share))assert.equal((await page.locator('#aiLivingRoom').textContent()).includes(document.name),false);
-      await page.locator('#aiLivingRoom').screenshot({path:path.join(dir,`${posture}-living-room-pending.png`)});
+      await page.waitForFunction(() => document.querySelector('#aiRuntimeState')?.dataset.clientPhase === 'pending');
+      assert.equal(await page.locator('#aiRuntimeState').getAttribute('data-active-relation'),'release');
+      for(const document of fixture.documents.filter(d=>!d.share))assert.equal((await page.locator('#aiRuntimeState').textContent()).includes(document.name),false);
+      await page.locator('#aiRuntimeState').screenshot({path:path.join(dir,`${posture}-runtime-state-pending.png`)});
       releaseResponse();
       await page.waitForFunction(expected => document.querySelector('#aiAnswer')?.textContent.includes(expected), fixtureAnswer);
       assert.equal(await page.locator('#aiAnswer').isVisible(), true);
@@ -241,14 +258,15 @@ try {
       for (const term of fixture.protectedTerms) assert.equal(exported.includes(term), false, 'export omits private canaries');
       assert.equal(exported.includes(uploadCanary), false, 'uploaded local-only document excluded from export');
       assert.equal(requests.length, 1, 'export cannot silently call provider again');
-      await page.locator('#aiLivingRoom').screenshot({path:path.join(dir,`${posture}-living-room-returned.png`)});
+      await page.locator('#aiRuntimeState').screenshot({path:path.join(dir,`${posture}-runtime-state-returned.png`)});
       await page.locator('#aiRoomReplay').click();
       assert.match(await page.locator('#aiRoomReplayStatus').innerText(),/Recorded state/);
+      await page.locator('#aiInspector > summary').click();
       await page.locator('#aiAuditor').click();
       assert.equal(requests.length,1,'replay and auditor view make no provider request');
       await page.locator('#aiRoomLive').click();
       await page.locator('#aiChild').click();
-      assert.equal(await page.locator('#aiLivingRoom').getAttribute('data-phase'),'completed');
+      await page.waitForFunction(() => document.querySelector('#aiRuntimeState')?.dataset.clientPhase === 'completed');
       mode = 'failure';
       receivedRequest = new Promise(resolve => { observedRequest = resolve; });
       responseGate = new Promise(resolve => { releaseResponse = resolve; });
@@ -261,7 +279,7 @@ try {
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, 'no horizontal overflow');
       assert.deepEqual(runtimeErrors, [], 'no runtime errors');
       assert.deepEqual(unexpected, [], 'no direct browser-to-provider or unrelated mutation requests');
-      await page.locator('#aiLivingRoom').screenshot({path:path.join(dir,`${posture}-living-room-held.png`)});
+      await page.locator('#aiRuntimeState').screenshot({path:path.join(dir,`${posture}-runtime-state-held.png`)});
       await page.screenshot({ path: path.join(dir, `${posture}-mock-provider-held.png`), fullPage: true });
       report.checks.push({ posture, status: 'PASS', intercepted_requests: requests.length, portable_aia_default: true,
         unissued_local_preparation_open: true, portable_issuance_held_without_shi: true, shi_format_wakes_prepared_issuance: true,
@@ -280,6 +298,7 @@ try {
   report.failures.push({ posture: 'browser-infrastructure', error: error.stack });
 } finally {
   await browser?.close();
+  if (server) await new Promise(resolve => server.close(resolve));
   await fs.writeFile(path.join(dir, 'receipt.json'), JSON.stringify(report, null, 2) + '\n');
 }
 console.log(JSON.stringify(report));

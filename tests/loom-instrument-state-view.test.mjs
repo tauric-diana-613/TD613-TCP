@@ -250,7 +250,7 @@ test('DOM renders one relation, retains drawer/focus across ticks and never crea
   assert.equal(root.querySelector('[data-instrument-active-glyph]').textContent, '下');
   assert.match(root.textContent, /return checks are pending/);
   assert.match(root.textContent, /UNVALIDATED_MODEL_REPORT/);
-  assert.match(root.textContent, /creates no custody admission/);
+  assert.match(root.textContent, /no custody admission/);
   assert.equal(root.querySelector('.loom-instrument-state-endpoints').textContent, 'Response body → Local return checks');
   assert.equal(root.querySelector('.loom-instrument-state-endpoints').style.fontSize, '13px');
   const details = root.querySelector('details');

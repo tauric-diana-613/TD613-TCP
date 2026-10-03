@@ -3,10 +3,10 @@ import fs from 'node:fs';
 import { JSDOM } from 'jsdom';
 import { mountLoomTheater } from '../app/dome-world/holonomy-loom/theater.js';
 
-const html = fs.readFileSync(new URL('../app/dome-world/holonomy-loom.html', import.meta.url), 'utf8');
+const html = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/fixtures/legacy-practice.html', import.meta.url), 'utf8');
 
 function makeHarness() {
-  const dom = new JSDOM(html, { url: 'https://td613.com/dome-world/holonomy-loom.html' });
+  const dom = new JSDOM(html, { url: 'https://td613.com/dome-world/holonomy-loom/fixtures/legacy-practice.html' });
   const { window } = dom;
   Object.defineProperty(window.document, 'hidden', { value: false, configurable: true });
   let wall = 0;

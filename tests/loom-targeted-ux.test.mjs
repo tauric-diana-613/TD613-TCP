@@ -6,25 +6,23 @@ import { JSDOM } from 'jsdom';
 const html = fs.readFileSync(new URL('../app/dome-world/holonomy-loom.html', import.meta.url), 'utf8');
 const ux = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/ux-repair.css', import.meta.url), 'utf8');
 
-test('Loom loads the task-first hierarchy repair after the chamber and room styles', () => {
+test('the primary Loom page isolates historical checker and observer practice from its closed Instrument Lab', () => {
   const doc = new JSDOM(html).window.document;
-  const hrefs = [...doc.querySelectorAll('link[rel="stylesheet"]')].map(node => node.getAttribute('href'));
-  const observer = hrefs.indexOf('./holonomy-loom/observer-chamber.css');
-  const repair = hrefs.indexOf('./holonomy-loom/ux-repair.css');
-  assert.ok(observer >= 0, 'observer chamber stylesheet remains present');
-  assert.ok(repair > observer, 'task-first repair loads after the optional research chamber');
-  assert.equal(doc.querySelectorAll('#loomObserverChamber').length, 1);
-  assert.ok(doc.querySelector('#loomLegacy #loomObserverChamber'), 'synthetic observer chamber remains opt-in under the laboratory');
+  assert.equal(doc.querySelectorAll('#loomLegacy').length, 1);
+  assert.equal(doc.querySelector('#loomLegacy').open, false);
+  assert.equal(doc.querySelectorAll('#loomTheater, #loomObserverChamber, #loomPracticeFixtures, #message, #glyphPath').length, 0);
+  assert.equal(doc.querySelectorAll('script[src$="/theater.js"], script[src$="/observer-chamber.js"]').length, 0);
+  assert.equal(doc.querySelectorAll('link[href$="/living-room.css"], link[href$="/observer-chamber.css"], link[href$="/theater.css"]').length, 0);
 });
 
-test('Loom task editor dominates one vertical route without hiding the living-room witness', () => {
+test('Loom task editor keeps its one vertical hierarchy', () => {
   assert.match(ux, /Loom targeted hierarchy repair v1/);
   assert.match(ux, /#loomAiWorkspace \.ai-columns\{[\s\S]*grid-template-columns:minmax\(0,1fr\)!important/);
-  assert.match(ux, /#loomAiWorkspace \.ai-observer\{[\s\S]*position:static!important/);
-  assert.doesNotMatch(ux, /#aiLivingRoom[^\{]*\{[^\}]*display\s*:\s*none/i);
-  assert.doesNotMatch(ux, /\.loom-living-room[^\{]*\{[^\}]*display\s*:\s*none/i);
+
+
+
   assert.match(ux, /#loomAiWorkspace textarea#aiTask\{[\s\S]*min-height:175px!important/);
-  assert.match(ux, /#loomAiWorkspace \.loom-living-room\{[\s\S]*padding:10px!important/);
+
 });
 
 test('Loom first viewport and 390px-class layout stay compact and non-horizontal', () => {

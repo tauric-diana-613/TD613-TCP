@@ -2,10 +2,10 @@ import { HOLONOMY_LOOM_ADVISORY_RULES, canonicalLoomAdvisoryFinding } from '../h
 import { validateShi } from '../khonapolit-covenant.js';
 
 /** Canonical choices only. No composer, assay JSON, source text or chat history. */
-export function mountLoomInstrumentAdvisory(root,{environment=root?.ownerDocument?.defaultView}={}) {
+export function mountLoomInstrumentAdvisory(root,{environment=root?.ownerDocument?.defaultView,flat=false}={}) {
   if(!root)return null;
   const doc=root.ownerDocument;
-  root.innerHTML=`<details><summary>Ask Kʰonapolit to explain a warning</summary><p>This model request sends a canonical warning type and its fixed policy labels. Source text, matched values, Lab input and conversation history stay outside this packet. The returned explanation carries advisory authority only.</p><label for="ilRule">Warning type</label><select id="ilRule"></select><p id="ilAdvisoryTokens" class="il-note"></p><p id="ilAdvisoryIssuance" class="il-note"></p><button type="button" id="ilExplain">Ask Kʰonapolit why ↗</button><button type="button" id="ilExplainStop" hidden>Stop waiting</button><p id="ilAdvisoryStatus" role="status" aria-live="polite">Nothing sent. A valid-format minted SHI in the workspace is required for this optional model route.</p><div id="ilAdvisoryAnswer"></div></details>`;
+  root.innerHTML=`${flat?'<section><h3>Explain a warning</h3>':'<details><summary>Ask Kʰonapolit to explain a warning</summary>'}<p>This model request sends a canonical warning type and its fixed policy labels. Source text, matched values, Lab input and conversation history stay outside this packet. The returned explanation carries advisory authority only.</p><label for="ilRule">Warning type</label><select id="ilRule"></select><p id="ilAdvisoryTokens" class="il-note"></p><p id="ilAdvisoryIssuance" class="il-note"></p><button type="button" id="ilExplain">Ask Kʰonapolit why ↗</button><button type="button" id="ilExplainStop" hidden>Stop waiting</button><p id="ilAdvisoryStatus" role="status" aria-live="polite">Nothing sent. A valid-format minted SHI in the workspace is required for this optional model route.</p><div id="ilAdvisoryAnswer"></div>${flat?'</section>':'</details>'}`;
   const $=id=>root.querySelector(`#${id}`);
   for(const [id,rule] of Object.entries(HOLONOMY_LOOM_ADVISORY_RULES)){const option=doc.createElement('option');option.value=id;option.textContent=rule.label;$('ilRule').append(option);}
   let controller=null,version=0,disposed=false,timer=null;
