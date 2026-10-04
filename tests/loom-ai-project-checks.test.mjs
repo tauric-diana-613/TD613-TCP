@@ -145,13 +145,22 @@ test('privacy overpromises are flagged in answer and next action without inventi
 test('regression: RETENTION_MAXIMUM_PROMOTED_TO_OBSERVED_DURATION fails on certainty and passes on modal precision', () => {
   assert.ok(vendorDiligenceEvidence(vendorDocuments));
 
-  // FAIL CASE: Exact R2 failure payload where permitted ceiling was promoted to guaranteed persistence and intermediate duration
+  // FAIL CASE 1: Exact R2 failure payload where permitted ceiling was promoted to guaranteed persistence and intermediate duration
   const failingAnswer = "Deleted records disappear within 24 hours, but that data will persist in Vendor-A's backup systems for up to 31 days before final erasure.";
   const failReview = reviewLoomEvidence({ answer: failingAnswer }, vendorDocuments);
   assert.equal(failReview.blocks_reuse, true, 'Must block reuse when retention permission is asserted as future persistence');
   assert.ok(
     failReview.conflicts.some(c => c.code === 'RETENTION_MAXIMUM_PROMOTED_TO_OBSERVED_DURATION'),
     'Must identify RETENTION_MAXIMUM_PROMOTED_TO_OBSERVED_DURATION'
+  );
+
+  // FAIL CASE 2: Exact R3 failure payload where backup retention permitted for up to 45 days was promoted to affirmative persistence
+  const r3FailingAnswer = "While Vendor-A purges active records within 24 hours, synthetic or migrated client test records will persist inside immutable or secondary system backups for up to 45 days. This leaves a 31-day compliance gap beyond the buyer's 14-day limit.";
+  const r3FailReview = reviewLoomEvidence({ answer: r3FailingAnswer }, vendorDocuments);
+  assert.equal(r3FailReview.blocks_reuse, true, 'Must block reuse when retention ceiling is stated as will persist in backups');
+  assert.ok(
+    r3FailReview.conflicts.some(c => c.code === 'RETENTION_MAXIMUM_PROMOTED_TO_OBSERVED_DURATION'),
+    'Must identify RETENTION_MAXIMUM_PROMOTED_TO_OBSERVED_DURATION on R3 answer'
   );
 
   // PASS CASE: General evidence invariant preserved - source modality and exact bounded quantities maintained
