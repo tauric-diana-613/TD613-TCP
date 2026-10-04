@@ -43,7 +43,7 @@ Under empirical analysis of `docs/receipts/1428-closure-assay/closure-assay-repo
      - *Root Cause Uncovered:* Gemini generated a 2,087-token response, but asserted: *"that data will persist in Vendor-A's backup systems for up to 31 days..."*. This tripped the evidence validator in `app/dome-world/holonomy-loom/ai-evidence-review.js` (`will persist` + `backup`), triggering `RETENTION_MAXIMUM_PROMOTED_TO_OBSERVED_DURATION` (`ANSWER_EVIDENCE_CONFLICT`).
      - *System Response:* Server correctly returned HTTP 422; Marrowline preserved the task and held the state (`FILES_STAGED`).
   3. **Stage 7 Return to Loom:** Return button was clicked (`returnDisabled: false`), but `returnToLoom()` threw `No completed result is saved for review yet.` because `phase !== 'DONE'`.
-     - *Key Finding:* Return failure is **100% downstream consequence** of C2 being held!
+     - *Causal Ceiling:* `R2_RETURN_HOLD = CAUSALLY_DOWNSTREAM_OF_C2_HELD_IN_THIS_EPISODE`. Independent Return-path correctness remains unestablished until a successful C2 reaches DONE and native Return completes.
 4. Therefore, the live three-phase route is **HELD**. Merge and seal authority remain suspended.
 
 ---

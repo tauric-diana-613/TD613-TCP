@@ -191,7 +191,7 @@ const ablationReport = {
     'Ablating Atlas produces CUSTODY_FORK_RISK_ACCEPTED by ignoring unverified predecessor receipt digest chaining.',
     'Ablating FADT produces ILLEGAL_ACTION_ESCALATION_ACCEPTED by allowing unconditioned export capability exposure.',
     'Ablating Pedagogue produces HUMAN_COST_IGNORED by validating technical state while masking user cognitive navigation traps.',
-    'Mathematical proof: No single role is redundant. The Dollhouse decision procedure is strictly non-degenerate.'
+    'Bounded experimental non-redundancy: Under this 5-condition ablation assay, no single role is redundant. Each jurisdiction detects an exclusive structural failure mode.'
   ]
 };
 
