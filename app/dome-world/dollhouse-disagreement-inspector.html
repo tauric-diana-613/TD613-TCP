@@ -2,31 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Dollhouse Disagreement Inspector · TD613 Lab</title>
+  <title>Dollhouse Disagreement & Observatory Inspector · TD613 Lab</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     :root {
       --bg: #05060a;
       --card-bg: #0c0e17;
       --border: #1e2238;
+      --border-bright: #303657;
       --cyan: #8ee8e6;
       --gold: #efbd83;
       --rose: #f48fb1;
+      --green: #81c784;
       --text: #e0e4f0;
       --muted: #8890aa;
     }
+    * { box-sizing: border-box; }
     body {
       background: var(--bg);
       color: var(--text);
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       margin: 0;
-      padding: 1.5rem;
+      padding: 1.25rem;
       line-height: 1.5;
     }
     header {
       border-bottom: 1px solid var(--border);
       padding-bottom: 1rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
     }
     h1 {
       font-size: 1.25rem;
@@ -42,8 +45,91 @@
       background: #14172a;
       color: var(--gold);
       border: 1px solid var(--border);
+      margin-right: 0.35rem;
+      margin-bottom: 0.35rem;
     }
-    .disagreement-card {
+    .badge-held { color: var(--rose); border-color: #632d42; background: #26111b; }
+    .badge-pass { color: var(--green); border-color: #274d32; background: #0e2417; }
+    .badge-info { color: var(--cyan); border-color: #1b4d54; background: #0d2327; }
+
+    /* Nav Tabs */
+    .tab-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.75rem;
+    }
+    .tab-button {
+      background: #0f1220;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.45rem 0.9rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.85rem;
+      transition: all 0.15s ease;
+    }
+    .tab-button:hover {
+      color: var(--text);
+      border-color: var(--cyan);
+    }
+    .tab-button.active {
+      background: #192238;
+      color: var(--cyan);
+      border-color: var(--cyan);
+      font-weight: bold;
+    }
+
+    /* Filters Bar */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      margin-bottom: 1rem;
+      background: #090b14;
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+    .filter-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .filter-btn {
+      background: #101426;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.2rem 0.55rem;
+      border-radius: 3px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .filter-btn.active {
+      color: var(--gold);
+      border-color: var(--gold);
+      background: #211c14;
+    }
+    .filter-search {
+      background: #060810;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.25rem 0.55rem;
+      border-radius: 3px;
+      font-size: 0.8rem;
+      font-family: inherit;
+      margin-left: auto;
+      min-width: 180px;
+    }
+
+    /* Cards */
+    .disagreement-card, .observatory-card, .ablation-card, .rule-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 6px;
@@ -55,8 +141,11 @@
       color: var(--gold);
       display: flex;
       justify-content: space-between;
+      align-items: flex-start;
       margin-bottom: 0.5rem;
       font-size: 0.95rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
     .roles-grid {
       display: grid;
@@ -79,11 +168,13 @@
     }
     .role-pedagogue { color: var(--gold); }
     .role-aperture { color: var(--cyan); }
-    .role-atlas { color: #81c784; }
+    .role-atlas { color: var(--green); }
     .role-fadt { color: var(--rose); }
+    .role-orchestrator { color: #b39ddb; }
+
     .decision-box {
-      margin-top: 0.5rem;
-      padding: 0.5rem;
+      margin-top: 0.6rem;
+      padding: 0.6rem;
       background: #101322;
       border-left: 3px solid var(--cyan);
       font-size: 0.85rem;
@@ -92,78 +183,468 @@
       color: var(--cyan);
       font-weight: bold;
     }
+
+    /* Ablation View */
+    .ablation-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+    .ablation-cond {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.9rem;
+      background: #090b14;
+    }
+    .ablation-cond-title {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    .danger-box {
+      background: #251016;
+      border-left: 3px solid var(--rose);
+      padding: 0.5rem;
+      font-size: 0.82rem;
+      margin-top: 0.5rem;
+      color: #ffcdd2;
+    }
+
+    /* Tab content visibility */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
   </style>
 </head>
 <body>
   <header>
-    <h1>TD613 · DOLLHOUSE DISAGREEMENT INSPECTOR</h1>
+    <h1>TD613 · DOLLHOUSE DISAGREEMENT & OBSERVATORY INSPECTOR</h1>
     <div>
       <span class="badge">Episode: ep_loom_closure_1791090079183</span>
+      <span class="badge badge-held">State: HELD</span>
       <span class="badge">Axiom: AUDITOR FINDING != REQUIRED MUTATION</span>
+      <span class="badge badge-info">S != O != E</span>
     </div>
   </header>
 
-  <main id="disagreementsList">
-    <!-- Populated from disagreement ledger -->
-    <article class="disagreement-card">
-      <div class="card-title">
-        <span>DISAGREE-001 · carrier_visual_identifiability</span>
-        <span class="badge">MAINTAIN_CURRENT_OPACITY</span>
-      </div>
-      <div class="roles-grid">
-        <div class="role-box">
-          <div class="role-header role-aperture">APERTURE · DEFICIT</div>
-          <div>Far carriers with opacity 0.20 are ambient depth, not high-contrast text witnesses. Contrast &lt; 1.5:1.</div>
-        </div>
-        <div class="role-box">
-          <div class="role-header role-pedagogue">PEDAGOGUE · ACCEPTABLE</div>
-          <div>Far carriers provide ambient cinematic depth. Equal text contrast would clutter the mobile hierarchy.</div>
-        </div>
-      </div>
-      <div class="decision-box">
-        <span class="decision-label">Orchestrator Decision:</span> Far carriers are ambient geometry, not interactive targets. Visual hierarchy is preserved without forced contrast boost.
-      </div>
-    </article>
+  <nav class="tab-bar">
+    <button class="tab-button active" onclick="switchTab('disagreements')">Disagreements Ledger (5)</button>
+    <button class="tab-button" onclick="switchTab('observatory')">Episode Observatory (4 Roles)</button>
+    <button class="tab-button" onclick="switchTab('ablation')">Ablation Assay (5 Runs)</button>
+    <button class="tab-button" onclick="switchTab('auditor')">Closure Auditor (9 Rules)</button>
+  </nav>
 
-    <article class="disagreement-card">
-      <div class="card-title">
-        <span>DISAGREE-002 · mobile_tutorial_membrane_ingress</span>
-        <span class="badge">DEFER_MUTATION_TO_NEXT_PR</span>
-      </div>
-      <div class="roles-grid">
-        <div class="role-box">
-          <div class="role-header role-pedagogue">PEDAGOGUE · CRITICAL_DEFECT</div>
-          <div>Tutorial exposes Flow-Core legend and 𝌋 remix before user acts, violating consequence-before-ontology.</div>
-        </div>
-        <div class="role-box">
-          <div class="role-header role-fadt">FADT · PASS</div>
-          <div>First Crossing practice is completely hermetic, zero network calls, zero custody authority. Admissibility descent is preserved.</div>
-        </div>
-      </div>
-      <div class="decision-box">
-        <span class="decision-label">Orchestrator Decision:</span> Extraction rite takes precedence. Redesign belongs in dedicated UX iteration after human review.
-      </div>
-    </article>
+  <!-- TAB 1: DISAGREEMENTS -->
+  <section id="tab-disagreements" class="tab-content active">
+    <div class="filter-bar">
+      <span class="filter-label">Filter Role:</span>
+      <button class="filter-btn active" onclick="filterDisagreements('all', this)">ALL</button>
+      <button class="filter-btn" onclick="filterDisagreements('pedagogue', this)">PEDAGOGUE</button>
+      <button class="filter-btn" onclick="filterDisagreements('aperture', this)">APERTURE</button>
+      <button class="filter-btn" onclick="filterDisagreements('atlas', this)">ATLAS</button>
+      <button class="filter-btn" onclick="filterDisagreements('fadt', this)">FADT</button>
+      <input type="text" id="disagreementSearch" class="filter-search" placeholder="Search coordinates..." oninput="searchDisagreements(this.value)">
+    </div>
+    <main id="disagreementsList">
+      <!-- Dynamically populated or inline rendered -->
+    </main>
+  </section>
 
-    <article class="disagreement-card">
-      <div class="card-title">
-        <span>DISAGREE-005 · return_scene_hash_vs_workspace_admittance</span>
-        <span class="badge">HELD_NO_SYNTHETIC_COMPLETION</span>
-      </div>
-      <div class="roles-grid">
-        <div class="role-box">
-          <div class="role-header role-atlas">ATLAS · RECEIVER_DIVERGENCE</div>
-          <div>Loom URL reached #return-review while journeyState remained 'marrowline' and returnWorkspaceVisible was false.</div>
+  <!-- TAB 2: OBSERVATORY -->
+  <section id="tab-observatory" class="tab-content">
+    <div class="filter-bar">
+      <span class="filter-label">Phase:</span>
+      <button class="filter-btn active" onclick="filterObservatory('all', this)">ALL PHASES</button>
+      <button class="filter-btn" onclick="filterObservatory('phase1_loom', this)">PHASE 1: LOOM</button>
+      <button class="filter-btn" onclick="filterObservatory('phase2_marrowline', this)">PHASE 2: MARROWLINE</button>
+      <button class="filter-btn" onclick="filterObservatory('phase3_return', this)">PHASE 3: RETURN</button>
+    </div>
+    <main id="observatoryList"></main>
+  </section>
+
+  <!-- TAB 3: ABLATION -->
+  <section id="tab-ablation" class="tab-content">
+    <div style="margin-bottom: 1rem; color: var(--muted); font-size: 0.85rem;">
+      <strong style="color: var(--cyan);">Mathematical proof of Non-Degeneracy:</strong> Each of the four Dollhouse jurisdictions (Pedagogue, Aperture, Atlas, FADT) was ablated sequentially. Every ablation causes an empirical failure mode that admits invalid state.
+    </div>
+    <div id="ablationGrid" class="ablation-grid"></div>
+  </section>
+
+  <!-- TAB 4: CLOSURE AUDITOR -->
+  <section id="tab-auditor" class="tab-content">
+    <div style="margin-bottom: 1rem; color: var(--muted); font-size: 0.85rem;">
+      <strong style="color: var(--cyan);">Automated Admissibility Rules (app/engine/dollhouse-closure-auditor.js):</strong>
+      Fails closed if any assay overclaims, mutates observer state, or violates timing boundaries.
+    </div>
+    <div id="auditorRulesList"></div>
+  </section>
+
+  <!-- EMBEDDED CANONICAL FIXTURES AS FALLBACK & IMMEDIATE SOURCE -->
+  <script id="data-disagreements" type="application/json">
+  {
+    "episode_id": "ep_loom_closure_1791090079183",
+    "disagreements": [
+      {
+        "id": "DISAGREE-001",
+        "coordinate": "carrier_visual_identifiability",
+        "roles": {
+          "aperture": {
+            "status": "PASS_AMBIENT_DEPTH",
+            "finding": "Deployed far carriers with opacity 0.20 (repaired in #1428 from historical 0.035; mid 0.24, near 0.38) are observable as ambient depth, though not high-contrast text witnesses."
+          },
+          "pedagogue": {
+            "status": "ACCEPTABLE_BACKGROUND",
+            "finding": "Far carriers provide ambient cinematic depth. Demanding WCAG text contrast on background carriers would clutter the mobile field and increase cognitive route burden."
+          }
+        },
+        "orchestrator_decision": "MAINTAIN_CURRENT_OPACITY",
+        "rationale": "Orchestrator rejects forced contrast boost beyond 0.20. Far carriers are ambient geometry, not interactive targets. Visual hierarchy is preserved."
+      },
+      {
+        "id": "DISAGREE-002",
+        "coordinate": "mobile_tutorial_membrane_ingress",
+        "roles": {
+          "pedagogue": {
+            "status": "CRITICAL_DEFECT",
+            "finding": "Tutorial exposes Flow-Core legend and 𝌋 remix before user acts, violating consequence-before-ontology."
+          },
+          "fadt": {
+            "status": "PASS",
+            "finding": "The First Crossing practice is completely hermetic, zero network calls, zero custody authority. Admissibility descent is strictly preserved."
+          }
+        },
+        "orchestrator_decision": "DEFER_MUTATION_TO_NEXT_PR",
+        "rationale": "PR #1430 is an extraction and closure rite. Material redesign of the tutorial ingress belongs in a dedicated UX iteration after human review."
+      },
+      {
+        "id": "DISAGREE-003",
+        "coordinate": "governor_lifecycle_leak_in_error_branch",
+        "roles": {
+          "fadt": {
+            "status": "HISTORICAL_DEFECT",
+            "finding": "FADT historically identified that server/loom-demo-task.js caught custody reservation errors without closing the bound governor."
+          },
+          "atlas": {
+            "status": "CONFIRMED_REPAIRED",
+            "finding": "PR #1428 repaired this defect in deployed source with binding?.governor?.close();."
+          }
+        },
+        "orchestrator_decision": "HISTORICAL_DEFECT_RESOLVED",
+        "rationale": "Recorded for historical lineage to demonstrate FADT unique analytical contribution; not an active defect in current deployed source."
+      },
+      {
+        "id": "DISAGREE-004",
+        "coordinate": "private_note_interactive_falsifier",
+        "roles": {
+          "pedagogue": {
+            "status": "PROPOSED_ADDITION",
+            "finding": "Pedagogue proposed adding an interactive toggle or popover on the First Crossing private note to actively test user comprehension of exclusion."
+          },
+          "orchestrator": {
+            "status": "REJECTED",
+            "finding": "Integrator rejected the proposal because adding extra buttons or dialogs inside an onboarding tutorial increases cognitive friction for first-time mobile consumers."
+          }
+        },
+        "orchestrator_decision": "REJECT_INTERACTIVE_EXPANSION",
+        "rationale": "Preserve child-legible simplicity on mobile. The First Crossing membrane should remain a 2-step practice, not an interactive configuration form."
+      },
+      {
+        "id": "DISAGREE-005",
+        "coordinate": "return_scene_hash_vs_workspace_admittance",
+        "roles": {
+          "atlas": {
+            "status": "RECEIVER_DIVERGENCE",
+            "finding": "Loom URL reached #return-review while journeyState remained 'marrowline' and returnWorkspaceVisible was false."
+          },
+          "aperture": {
+            "status": "UNOBSERVED_WORKSPACE",
+            "finding": "S != O != E: Presence of URL hash does not constitute observation of Return workspace admittance."
+          }
+        },
+        "orchestrator_decision": "HELD_NO_SYNTHETIC_COMPLETION",
+        "rationale": "Orchestrator classifies Return state as HELD. Strict prohibition of synthetic completion from URL hash."
+      }
+    ]
+  }
+  </script>
+
+  <script id="data-observatory" type="application/json">
+  {
+    "observers": {
+      "PEDAGOGUE": {
+        "jurisdiction": "consequence_order_route_burden_practice",
+        "observations": {
+          "phase1_loom": { "status": "PASS", "evidence": "Tutorial completed in 2 steps, Notice -> Act preserved, exit cleanly available via 'Leave tutorial'." },
+          "phase2_marrowline": { "status": "PASS_PARTIAL", "evidence": "Staged C1 request clearly announces consumer AI-request language; Send action requires explicit gesture. C2 staged with selected files but did not complete." },
+          "phase3_return": { "status": "HELD", "evidence": "URL reached #return-review, but Return workspace was not visibly inhabited (returnWorkspaceVisible=false) due to uncompleted C2. User experience stopped at Threshold." }
+        }
+      },
+      "APERTURE": {
+        "jurisdiction": "observability_identifiability_uncertainty",
+        "observations": {
+          "phase1_loom": { "status": "PASS", "evidence": "Carrier count = 39 verified. Current deployed far-plane carrier opacity is 0.20 (mid is 0.24, near is 0.38), providing observable ambient depth." },
+          "phase2_marrowline": { "status": "PASS", "evidence": "Gate panel and composer layout contained; zero horizontal overflow on 390x700." },
+          "phase3_return": { "status": "HELD", "evidence": "Observed return scene reached hash #return-review and builder shell, but returnWorkspaceVisible was false. S != O != E forbids asserting Return completion from hash alone." }
+        }
+      },
+      "ATLAS": {
+        "jurisdiction": "receiver_relative_relations_predecessor_chain",
+        "observations": {
+          "phase1_loom": { "status": "PASS", "evidence": "Deterministic seed (613) used for carrier projections; initial session root created." },
+          "phase2_marrowline": { "status": "HELD", "evidence": "C1 bound to Loom handoff (request fa97d46b..., head d842a0a3...). C2 returned HTTP 422 ANSWER_EVIDENCE_CONFLICT; predecessor chaining unverified in this episode." },
+          "phase3_return": { "status": "HELD", "evidence": "Receiver-relative state divergence: Loom reached #return-review while journeyState remained 'marrowline' and returnWorkspaceVisible was false." }
+        }
+      },
+      "FADT": {
+        "jurisdiction": "finite_quotient_survival_lawful_support",
+        "observations": {
+          "phase1_loom": { "status": "PASS", "evidence": "Exclusion boundary verified: 1 local canary file kept private; support remains hermetic." },
+          "phase2_marrowline": { "status": "PASS", "evidence": "Outbound prompt in C1 contains 3 shared files only; zero leakage of private canary file across wire." },
+          "phase3_return": { "status": "HELD", "evidence": "Private exclusion survived return (aiLocalCount=1), but full Return action support was not admitted because journeyState remained 'marrowline'. Support descent holds." }
+        }
+      }
+    },
+    "temporal_custodian": {
+      "verdict": "HELD",
+      "rationale": "Temporal custodian vetoes completion: local success of C1 cannot mask uncompleted C2 and Return divergence. Whole-journey continuity remains unproven."
+    }
+  }
+  </script>
+
+  <script id="data-ablation" type="application/json">
+  {
+    "baseline_full": {
+      "roles": ["PEDAGOGUE", "APERTURE", "ATLAS", "FADT"],
+      "decision": "HELD"
+    },
+    "ablation_runs": {
+      "MINUS_PEDAGOGUE": {
+        "lost_finding": "Route confusion and broken promise: operator is told they have returned to review, but interface fails to visibly inhabit return consequence.",
+        "decision": "HUMAN_COST_IGNORED",
+        "failure_mode": "Orchestrator declares technical validity while ignoring broken user experience and navigation trap."
+      },
+      "MINUS_APERTURE": {
+        "lost_finding": "State-observation conflation (S != O != E). Testing tools treat URL hash presence as proxy evidence for visual rendering.",
+        "decision": "FALSE_COMPLETION_ADMITTED",
+        "failure_mode": "Orchestrator accepts URL hash #return-review as proof of Return, overlooking unadmitted DOM workspace."
+      },
+      "MINUS_ATLAS": {
+        "lost_finding": "Broken predecessor digest chain and receiver-relative divergence: Loom receiver cannot verify continuity across popup boundary.",
+        "decision": "CUSTODY_FORK_RISK_ACCEPTED",
+        "failure_mode": "Orchestrator treats C2 as valid without verifying predecessor receipt digest continuity."
+      },
+      "MINUS_FADT": {
+        "lost_finding": "Lawful support violation and stage collapse: displaying Return workspace while conditioning is unadmitted illegally exposes EXPORT_CURRENT.",
+        "decision": "ILLEGAL_ACTION_ESCALATION_ACCEPTED",
+        "failure_mode": "Orchestrator allows Export action grant without verifying conditioning state survival."
+      }
+    }
+  }
+  </script>
+
+  <script id="data-auditor" type="application/json">
+  [
+    { "code": "ERR_PAYLOAD_NULL_BODY_CLAIMED_COMPLETE", "desc": "Assay must not claim COMPLETED if C2 wire response body is null." },
+    { "code": "ERR_PREDECESSOR_BINDING_FALSE_CLAIMED_COMPLETE", "desc": "Assay must not claim COMPLETED if predecessor_binding_verified is false." },
+    { "code": "ERR_RETURN_WORKSPACE_HIDDEN_CLAIMED_COMPLETE", "desc": "Assay must not claim COMPLETED if returnWorkspaceVisible is false." },
+    { "code": "ERR_INVENTED_CLOSURE_PREDICATE", "desc": "Assay must not synthesize completion predicates not grounded in durable DOM evidence." },
+    { "code": "ERR_CONCURRENT_VERDICT_DISAGREEMENT", "desc": "Assay summary verdict must strictly match empirical outcome payload." },
+    { "code": "ERR_MISSING_STAGE_OR_EVENT_RECORD", "desc": "Assay must capture sequential stage traces for all three journey phases." },
+    { "code": "ERR_WITNESS_TIMEOUT_BELOW_PRODUCT_TIMEOUT", "desc": "Assay timeout ceiling must be >= 225,000ms (product timeout ceiling) to avoid synthetic timeout truncation." },
+    { "code": "ERR_OBSERVER_MUTATED_RETURN_STATE", "desc": "Assay must not mutate window.location.hash to fabricate return scenes; must witness actual production state." },
+    { "code": "ERR_PREDECESSOR_DIGEST_AIMED_AT_REQUEST_DIGEST", "desc": "Assay must verify predecessor receipt digest against canonical stage receipt, not raw request digest." }
+  ]
+  </script>
+
+  <script>
+    // Global datasets initialized from embedded scripts
+    let disagreementsData = JSON.parse(document.getElementById('data-disagreements').textContent);
+    let observatoryData = JSON.parse(document.getElementById('data-observatory').textContent);
+    let ablationData = JSON.parse(document.getElementById('data-ablation').textContent);
+    let auditorData = JSON.parse(document.getElementById('data-auditor').textContent);
+
+    let activeRoleFilter = 'all';
+    let searchQuery = '';
+    let activePhaseFilter = 'all';
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      
+      const targetBtn = Array.from(document.querySelectorAll('.tab-button')).find(b => b.getAttribute('onclick')?.includes(tabId));
+      if (targetBtn) targetBtn.classList.add('active');
+      const targetContent = document.getElementById('tab-' + tabId);
+      if (targetContent) targetContent.classList.add('active');
+    }
+
+    function renderDisagreements() {
+      const container = document.getElementById('disagreementsList');
+      container.innerHTML = '';
+
+      const items = disagreementsData.disagreements.filter(d => {
+        if (activeRoleFilter !== 'all') {
+          if (!d.roles[activeRoleFilter]) return false;
+        }
+        if (searchQuery) {
+          const q = searchQuery.toLowerCase();
+          const matchCoord = d.coordinate.toLowerCase().includes(q);
+          const matchId = d.id.toLowerCase().includes(q);
+          const matchRat = d.rationale.toLowerCase().includes(q);
+          if (!matchCoord && !matchId && !matchRat) return false;
+        }
+        return true;
+      });
+
+      if (items.length === 0) {
+        container.innerHTML = '<div style="color: var(--muted); padding: 1rem;">No disagreements matching current filter.</div>';
+        return;
+      }
+
+      items.forEach(d => {
+        const card = document.createElement('article');
+        card.className = 'disagreement-card';
+
+        const roleBoxes = Object.entries(d.roles).map(([role, info]) => {
+          const roleClass = 'role-' + role.toLowerCase();
+          return `
+            <div class="role-box">
+              <div class="role-header ${roleClass}">${role.toUpperCase()} · ${info.status}</div>
+              <div>${info.finding}</div>
+            </div>
+          `;
+        }).join('');
+
+        card.innerHTML = `
+          <div class="card-title">
+            <span>${d.id} · ${d.coordinate}</span>
+            <span class="badge ${d.orchestrator_decision.includes('HELD') ? 'badge-held' : ''}">${d.orchestrator_decision}</span>
+          </div>
+          <div class="roles-grid">
+            ${roleBoxes}
+          </div>
+          <div class="decision-box">
+            <span class="decision-label">Orchestrator Decision:</span> ${d.rationale}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function filterDisagreements(role, btn) {
+      activeRoleFilter = role;
+      document.querySelectorAll('#tab-disagreements .filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderDisagreements();
+    }
+
+    function searchDisagreements(val) {
+      searchQuery = val.trim();
+      renderDisagreements();
+    }
+
+    function renderObservatory() {
+      const container = document.getElementById('observatoryList');
+      container.innerHTML = '';
+
+      Object.entries(observatoryData.observers).forEach(([role, data]) => {
+        const card = document.createElement('article');
+        card.className = 'observatory-card';
+
+        const phaseCards = Object.entries(data.observations)
+          .filter(([phase]) => activePhaseFilter === 'all' || activePhaseFilter === phase)
+          .map(([phase, obs]) => {
+            const statusBadge = obs.status === 'PASS' ? 'badge-pass' : (obs.status === 'HELD' ? 'badge-held' : '');
+            return `
+              <div style="background: #080912; border: 1px solid var(--border); padding: 0.6rem; border-radius: 4px; margin-top: 0.5rem;">
+                <div style="display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 0.25rem;">
+                  <span style="color: var(--cyan);">${phase.toUpperCase()}</span>
+                  <span class="badge ${statusBadge}">${obs.status}</span>
+                </div>
+                <div style="font-size: 0.82rem;">${obs.evidence}</div>
+              </div>
+            `;
+          }).join('');
+
+        if (!phaseCards) return;
+
+        card.innerHTML = `
+          <div class="card-title">
+            <span class="role-${role.toLowerCase()}">${role} AUDIT</span>
+            <span class="badge">${data.jurisdiction}</span>
+          </div>
+          <div>${phaseCards}</div>
+        `;
+        container.appendChild(card);
+      });
+
+      // Append temporal custodian
+      const tc = observatoryData.temporal_custodian;
+      const tcCard = document.createElement('article');
+      tcCard.className = 'observatory-card';
+      tcCard.style.borderLeft = '3px solid var(--rose)';
+      tcCard.innerHTML = `
+        <div class="card-title">
+          <span style="color: var(--rose);">TEMPORAL CUSTODIAN (WHOLE-JOURNEY OVERWATCH)</span>
+          <span class="badge badge-held">${tc.verdict}</span>
         </div>
-        <div class="role-box">
-          <div class="role-header role-aperture">APERTURE · UNOBSERVED_WORKSPACE</div>
-          <div>S != O != E: Presence of URL hash does not constitute observation of Return workspace admittance.</div>
-        </div>
-      </div>
-      <div class="decision-box">
-        <span class="decision-label">Orchestrator Decision:</span> Return state classified as HELD. Strict prohibition of synthetic completion from URL hash.
-      </div>
-    </article>
-  </main>
+        <div style="font-size: 0.85rem; margin-top: 0.5rem;">${tc.rationale}</div>
+      `;
+      container.appendChild(tcCard);
+    }
+
+    function filterObservatory(phase, btn) {
+      activePhaseFilter = phase;
+      document.querySelectorAll('#tab-observatory .filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderObservatory();
+    }
+
+    function renderAblation() {
+      const container = document.getElementById('ablationGrid');
+      container.innerHTML = '';
+
+      Object.entries(ablationData.ablation_runs).forEach(([cond, run]) => {
+        const box = document.createElement('div');
+        box.className = 'ablation-cond';
+        box.innerHTML = `
+          <div class="ablation-cond-title">
+            <span style="color: var(--gold);">${cond}</span>
+            <span class="badge badge-held">${run.decision}</span>
+          </div>
+          <div style="font-size: 0.82rem; color: var(--muted); margin-bottom: 0.5rem;">
+            <strong>Lost Finding:</strong> ${run.lost_finding}
+          </div>
+          <div class="danger-box">
+            <strong>Failure Mode:</strong> ${run.failure_mode}
+          </div>
+        `;
+        container.appendChild(box);
+      });
+    }
+
+    function renderAuditorRules() {
+      const container = document.getElementById('auditorRulesList');
+      container.innerHTML = '';
+
+      auditorData.forEach((rule, idx) => {
+        const card = document.createElement('article');
+        card.className = 'rule-card';
+        card.innerHTML = `
+          <div class="card-title">
+            <span>RULE ${idx + 1}: ${rule.code}</span>
+            <span class="badge badge-held">FAIL-CLOSED</span>
+          </div>
+          <div style="font-size: 0.85rem; color: var(--muted);">${rule.desc}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Initialize all tabs
+    renderDisagreements();
+    renderObservatory();
+    renderAblation();
+    renderAuditorRules();
+  </script>
 </body>
 </html>

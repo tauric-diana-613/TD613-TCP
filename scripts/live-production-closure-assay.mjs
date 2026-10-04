@@ -1,19 +1,25 @@
 import { chromium } from 'playwright';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
+import { loomDemoReceiptDigest } from '../app/dome-world/holonomy-loom/demo-contract.js';
 
 const outDir = resolve('docs/receipts/1428-closure-assay');
 await mkdir(outDir, { recursive: true });
 
 const targetUrl = 'https://td613.com/dome-world/holonomy-loom.html';
 
+const KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS = 225000;
+const WITNESS_REQUEST_TIMEOUT_MS = 230000;
+
 console.log('=================================================================');
 console.log('TD613 LOOM PRODUCTION MANDATORY CLOSURE ASSAY (FULL 3-PHASE JOURNEY)');
 console.log(`Target: ${targetUrl}`);
 console.log(`Artifact Directory: ${outDir}`);
+console.log(`Product Client Timeout: ${KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS}ms`);
+console.log(`Witness Request Timeout: ${WITNESS_REQUEST_TIMEOUT_MS}ms`);
 console.log('=================================================================');
 
-const episodeId = `ep_loom_closure_${Date.now()}`;
+const episodeId = process.env.EPISODE_ID || 'TD613-DOLLHOUSE-1428-X-R2';
 const report = {
   schema: 'td613.loom.production-closure-assay/v1.0',
   episode_id: episodeId,
@@ -25,7 +31,9 @@ const report = {
     dpr: 3,
     is_mobile: true,
     has_touch: true,
-    pointer: 'coarse'
+    pointer: 'coarse',
+    witness_timeout_ms: WITNESS_REQUEST_TIMEOUT_MS,
+    product_client_timeout_ms: KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS
   },
   stages: [],
   predecessor_proof: null,
@@ -255,30 +263,46 @@ try {
 
   console.log(`Continuation #1 staged prompt: "${c1Prompt.slice(0, 60)}..."`);
 
-  // Dispatch continuation #1 with response listener
+  // Dispatch continuation #1 with wire listener and full witness ceiling
+  let c1WireRequest = null;
+  const onC1Request = req => {
+    if (req.url().includes('loom-demo-task') || req.url().includes('khonapolit')) {
+      c1WireRequest = {
+        url: req.url(),
+        method: req.method(),
+        postDataBytes: req.postData() ? new TextEncoder().encode(req.postData()).byteLength : 0,
+        observedAt: new Date().toISOString()
+      };
+    }
+  };
+  marrowlinePage.on('request', onC1Request);
+
+  const c1StartTime = Date.now();
   let c1Response = null;
   const c1ResponsePromise = marrowlinePage.waitForResponse(
     res => res.url().includes('loom-demo-task') || res.url().includes('khonapolit'),
-    { timeout: 45000 }
+    { timeout: WITNESS_REQUEST_TIMEOUT_MS }
   ).then(r => { c1Response = r; return r; }).catch(err => {
     console.log('c1ResponsePromise caught or timed out:', err.message);
     return null;
   });
 
   await sendBtn.click();
-  console.log('Clicked send button, awaiting response or transmission settling...');
+  console.log(`Clicked send button for C1, awaiting response up to ${WITNESS_REQUEST_TIMEOUT_MS}ms...`);
   await c1ResponsePromise;
+  const c1ElapsedMs = Date.now() - c1StartTime;
+  marrowlinePage.off('request', onC1Request);
 
   // Await transmission state reset if still generating
   await marrowlinePage.waitForFunction(() => {
     const btn = document.getElementById('khonapolitSend');
     return !btn || btn.dataset.transmissionState !== 'generating';
-  }, { timeout: 30000 }).catch(() => null);
+  }, { timeout: 60000 }).catch(() => null);
 
   await marrowlinePage.waitForTimeout(1000);
   await marrowlinePage.screenshot({ path: join(outDir, '13_continuation1_response.png') });
 
-  const c1Status = c1Response ? c1Response.status() : 'NO_NETWORK_RESPONSE';
+  const c1Status = c1Response ? c1Response.status() : (c1ElapsedMs >= WITNESS_REQUEST_TIMEOUT_MS ? 'TIMEOUT_AFTER_230S' : 'NO_NETWORK_RESPONSE');
   let c1Body = null;
   try { c1Body = c1Response ? await c1Response.json() : null; } catch { c1Body = 'NON_JSON'; }
 
@@ -286,11 +310,19 @@ try {
     demoPhase: window.__TD613_LOOM_DEMO_STATE__?.phase,
     gatePhase: document.getElementById('loomGateContinuity')?.dataset?.gatePhase,
     statusText: document.getElementById('khonapolitTerminalStatus')?.textContent || document.getElementById('khonapolitStatus')?.textContent,
-    transmissionState: document.getElementById('khonapolitSend')?.dataset.transmissionState
+    transmissionState: document.getElementById('khonapolitSend')?.dataset.transmissionState,
+    lastFailure: window.__TD613_KHONAPOLIT_LAST_FAILURE__ || null
   }));
 
   recordStage('05_continuation1_dispatch', {
-    summary: { status: c1Status, body: c1Body, state: c1State },
+    summary: {
+      status: c1Status,
+      elapsed_ms: c1ElapsedMs,
+      wire_request_observed: Boolean(c1WireRequest),
+      wire_request: c1WireRequest,
+      body: c1Body,
+      state: c1State
+    },
     screenshot: '13_continuation1_response.png'
   });
 
@@ -305,43 +337,130 @@ try {
 
     const step2Btn = marrowlinePage.locator('button:has-text("Continue · Attach selected files")');
     await step2Btn.click();
-    await marrowlinePage.waitForTimeout(300);
+
+    // Ensure staging lifecycle completes before dispatch
+    await marrowlinePage.waitForFunction(() => {
+      const btn = document.getElementById('khonapolitSend');
+      const demo = window.__TD613_LOOM_DEMO_STATE__;
+      return demo?.phase === 'FILES_STAGED' && btn && btn.dataset.loomAttention === 'true';
+    }, { timeout: 15000 }).catch(() => null);
+
     await marrowlinePage.screenshot({ path: join(outDir, '14_continuation2_staged.png') });
 
+    // Staging coordinate snapshot
+    const c2StagedSnapshot = await marrowlinePage.evaluate(() => {
+      const demo = window.__TD613_LOOM_DEMO_STATE__ || {};
+      const sendEl = document.getElementById('khonapolitSend');
+      const promptEl = document.getElementById('khonapolitPrompt');
+      const attachments = window.getMarrowlineAttachments ? window.getMarrowlineAttachments() : [];
+      return {
+        loom_demo_state: demo,
+        phase: demo.phase,
+        pending: demo.pending_steps,
+        busy: demo.busy,
+        attachment_count: attachments.length,
+        attachment_ids: attachments.map(a => a.id),
+        prompt_value: promptEl?.value?.slice(0, 100),
+        send_disabled: sendEl?.disabled,
+        send_transmission_state: sendEl?.dataset?.transmissionState,
+        send_loom_attention: sendEl?.dataset?.loomAttention,
+        last_admitted_request_id: demo.current_result_request_id,
+        predecessor_request_id: demo.predecessor_request_id
+      };
+    });
+    console.log('C2 Pre-dispatch Staged State:', JSON.stringify(c2StagedSnapshot, null, 2));
+
+    // Listen to wire request for C2
+    let c2WireRequest = null;
+    const onC2Request = req => {
+      if (req.url().includes('loom-demo-task') || req.url().includes('khonapolit')) {
+        c2WireRequest = {
+          url: req.url(),
+          method: req.method(),
+          postDataBytes: req.postData() ? new TextEncoder().encode(req.postData()).byteLength : 0,
+          observedAt: new Date().toISOString()
+        };
+      }
+    };
+    marrowlinePage.on('request', onC2Request);
+
+    const c2StartTime = Date.now();
     let c2Response = null;
     const c2ResponsePromise = marrowlinePage.waitForResponse(
       res => res.url().includes('loom-demo-task') || res.url().includes('khonapolit'),
-      { timeout: 45000 }
-    ).then(r => { c2Response = r; return r; }).catch(() => null);
+      { timeout: WITNESS_REQUEST_TIMEOUT_MS }
+    ).then(r => { c2Response = r; return r; }).catch(err => {
+      console.log('c2ResponsePromise caught or timed out:', err.message);
+      return null;
+    });
 
+    console.log(`Dispatching C2 via send button, awaiting response up to ${WITNESS_REQUEST_TIMEOUT_MS}ms...`);
     await sendBtn.click();
     await c2ResponsePromise;
+    const c2ElapsedMs = Date.now() - c2StartTime;
+    marrowlinePage.off('request', onC2Request);
 
     await marrowlinePage.waitForFunction(() => {
       const btn = document.getElementById('khonapolitSend');
       return !btn || btn.dataset.transmissionState !== 'generating';
-    }, { timeout: 30000 }).catch(() => null);
+    }, { timeout: 60000 }).catch(() => null);
 
     await marrowlinePage.waitForTimeout(1000);
     await marrowlinePage.screenshot({ path: join(outDir, '15_continuation2_response.png') });
 
-    const c2Status = c2Response ? c2Response.status() : 'NO_NETWORK_RESPONSE';
+    const c2Status = c2Response ? c2Response.status() : (c2ElapsedMs >= WITNESS_REQUEST_TIMEOUT_MS ? 'TIMEOUT_AFTER_230S' : 'NO_NETWORK_RESPONSE');
     let c2Body = null;
     try { c2Body = c2Response ? await c2Response.json() : null; } catch { c2Body = 'NON_JSON'; }
 
-    const predecessorDigest = c2Body?.loom_demo_stage_receipt?.predecessor_receipt_digest;
-    const c1ReceiptDigest = c1Body?.loom_demo_stage_receipt ? c1Body.loom_demo_stage_receipt.request_digest : null;
+    const c2TerminalState = await marrowlinePage.evaluate(() => ({
+      demoPhase: window.__TD613_LOOM_DEMO_STATE__?.phase,
+      gatePhase: document.getElementById('loomGateContinuity')?.dataset?.gatePhase,
+      statusText: document.getElementById('khonapolitTerminalStatus')?.textContent || document.getElementById('khonapolitStatus')?.textContent,
+      transmissionState: document.getElementById('khonapolitSend')?.dataset.transmissionState,
+      lastFailure: window.__TD613_KHONAPOLIT_LAST_FAILURE__ || null
+    }));
+
+    // Predecessor verification using canonical loomDemoReceiptDigest
+    const expectedPredecessorDigest = c1Body?.loom_demo_stage_receipt
+      ? await loomDemoReceiptDigest(c1Body.loom_demo_stage_receipt)
+      : null;
+    const actualPredecessorDigest = c2Body?.loom_demo_stage_receipt?.predecessor_receipt_digest || null;
+    const predecessorBindingVerified = Boolean(
+      expectedPredecessorDigest &&
+      actualPredecessorDigest &&
+      expectedPredecessorDigest === actualPredecessorDigest
+    );
+
+    const expectedContentPredecessorDigest = c1Body?.loom_demo_stage_receipt?.result_digest || null;
+    const actualContentPredecessorDigest = c2Body?.loom_demo_stage_receipt?.prior_result_digest || null;
+    const contentPredecessorVerified = Boolean(
+      expectedContentPredecessorDigest &&
+      actualContentPredecessorDigest &&
+      expectedContentPredecessorDigest === actualContentPredecessorDigest
+    );
 
     report.predecessor_proof = {
       c1_request_id: c1Body?.request_id,
       c2_request_id: c2Body?.request_id,
-      c2_predecessor_digest: predecessorDigest,
-      c1_receipt_digest: c1ReceiptDigest,
-      predecessor_binding_verified: Boolean(predecessorDigest && c1ReceiptDigest)
+      expected_predecessor_receipt_digest: expectedPredecessorDigest,
+      actual_predecessor_receipt_digest: actualPredecessorDigest,
+      predecessor_binding_verified: predecessorBindingVerified,
+      expected_content_predecessor_digest: expectedContentPredecessorDigest,
+      actual_content_predecessor_digest: actualContentPredecessorDigest,
+      content_predecessor_verified: contentPredecessorVerified,
+      algorithm: 'loomDemoReceiptDigest(canonicalJson(C1_stage_receipt))'
     };
 
     recordStage('06_continuation2_dispatch', {
-      summary: { status: c2Status, body: c2Body, predecessor_proof: report.predecessor_proof },
+      summary: {
+        status: c2Status,
+        elapsed_ms: c2ElapsedMs,
+        wire_request_observed: Boolean(c2WireRequest),
+        wire_request: c2WireRequest,
+        terminal_state: c2TerminalState,
+        body: c2Body,
+        predecessor_proof: report.predecessor_proof
+      },
       screenshot: '15_continuation2_response.png'
     });
   } else {
@@ -350,7 +469,7 @@ try {
       status: 'HELD',
       http_status: c1Status,
       error_code: c1Body?.error || (c1Status === 'NO_NETWORK_RESPONSE' ? 'client-timeout-or-held' : 'unauthorized'),
-      reason: `Production /api/khonapolit?operation=loom-demo-task returned ${c1Status} (${c1Body?.error || 'unauthorized'}). As documented in AGENTS.md, production Vercel functions carry no static database or signing secrets and require Neon Loom custody workload tokens. In unauthenticated or test-token contexts, custody reservations fail-closed.`
+      reason: `Production /api/khonapolit?operation=loom-demo-task returned ${c1Status} (${c1Body?.error || 'unauthorized'}).`
     };
   }
 
@@ -376,22 +495,22 @@ try {
   });
   console.log('Marrowline Gate State:', gateInfo);
 
-  // Attempt return click if button active
+  let returnClicked = false;
   const returnToLoomBtn = marrowlinePage.locator('#loomGateReturnToLoom');
   if (await returnToLoomBtn.isVisible() && !gateInfo.returnDisabled) {
+    console.log('Clicking active Return to Loom button...');
     await returnToLoomBtn.click();
-    await marrowlinePage.waitForTimeout(300);
+    returnClicked = true;
+    await marrowlinePage.waitForTimeout(500);
+  } else {
+    console.log(`Return to Loom button is disabled or not visible (returnDisabled: ${gateInfo.returnDisabled})`);
   }
 
-  // Bring Loom tab to front and inspect Return scene
+  // Bring Loom tab to front and inspect Return scene as actually produced
   await loomPage.bringToFront();
-  await loomPage.waitForTimeout(300);
+  await loomPage.waitForTimeout(500);
 
-  // If return-review wasn't triggered via postMessage due to HELD, activate #return-review directly to witness return inspection UI
-  await loomPage.evaluate(() => {
-    if (!window.location.hash) window.location.hash = '#return-review';
-  });
-  await loomPage.waitForTimeout(300);
+  // NOTE: NO OBSERVER MUTATION. If Return failed over postMessage, observe and record actual state.
   await loomPage.screenshot({ path: join(outDir, '17_loom_return_scene.png') });
 
   const returnState = await loomPage.evaluate(() => ({
@@ -404,13 +523,15 @@ try {
     returnWorkspaceVisible: !document.getElementById('loomReturnWorkspace')?.hidden,
     returnBoundaryText: document.querySelector('[data-return-review="boundary"]')?.textContent || '',
     firstCrossingHidden: document.getElementById('loomFirstCrossing')?.hidden ?? true,
-    builderVisible: !document.querySelector('.loom-builder-shell')?.hidden
+    builderVisible: !document.querySelector('.loom-builder-shell')?.hidden,
+    observer_mutated_hash: false
   }));
 
   recordStage('07_loom_return', {
-    summary: returnState,
+    summary: { ...returnState, return_button_clicked: returnClicked, gate_info: gateInfo },
     screenshot: '17_loom_return_scene.png'
   });
+
 
   // STAGE 8: Hostile Route Conditions on Mobile
   console.log('\n--- 8. Hostile Conditions on Mobile ---');
@@ -530,10 +651,32 @@ try {
     };
   }
 
-  report.verdict = 'COMPLETED';
+  const c1Success = Boolean(c1Admitted);
+  const c2Success = Boolean(report.predecessor_proof?.predecessor_binding_verified && report.stages.find(s => s.name === '06_continuation2_dispatch')?.summary?.status === 200);
+  const returnSuccess = Boolean(report.stages.find(s => s.name === '07_loom_return')?.summary?.returnWorkspaceVisible);
+
+  if (c1Success && c2Success && returnSuccess) {
+    report.verdict = 'COMPLETED';
+  } else {
+    report.verdict = 'HELD';
+    if (!c2Success) {
+      report.discrepancies.push({
+        coordinate: 'continuation_2_dispatch',
+        status: 'FAILED_OR_HELD',
+        finding: 'Continuation #2 did not complete verified predecessor roundtrip on wire.'
+      });
+    }
+    if (!returnSuccess) {
+      report.discrepancies.push({
+        coordinate: 'return_workspace_admittance',
+        status: 'FAILED_OR_HELD',
+        finding: 'Return workspace was not admitted in Loom tab; returnWorkspaceVisible is false.'
+      });
+    }
+  }
 } catch (err) {
   console.error('Assay error:', err);
-  report.discrepancies.push(String(err));
+  report.discrepancies.push({ coordinate: 'assay_exception', error: String(err) });
   report.verdict = 'ERROR';
 } finally {
   report.completed_at = new Date().toISOString();
@@ -541,8 +684,8 @@ try {
   report.page_errors = pageErrors;
   report.network_requests = networkRequests;
 
-  const reportPath = join(outDir, 'closure-assay-report.json');
-  await writeFile(reportPath, JSON.stringify(report, null, 2), 'utf8');
-  console.log(`\nClosure Assay Report written to: ${reportPath}`);
+  const r2ReportPath = join(outDir, 'closure-assay-report-r2.json');
+  await writeFile(r2ReportPath, JSON.stringify(report, null, 2), 'utf8');
+  console.log(`\nClosure Assay Report R2 written to: ${r2ReportPath}`);
   await browser.close();
 }

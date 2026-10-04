@@ -32,11 +32,19 @@ builderVisible != returnWorkspaceVisible
 HISTORICAL FINDING != SAME_EPISODE OBSERVATION
 ```
 
-Under empirical analysis of `docs/receipts/1428-closure-assay/closure-assay-report.json`, **Episode TD613-DOLLHOUSE-1428-X is HELD**:
-1. Continuation #1 executed live (HTTP 200, Gemini 3.5 Flash, Neon custody commit).
-2. Continuation #2 staged files but recorded `status: "NO_NETWORK_RESPONSE"`; live predecessor verification was not completed.
-3. The Return scene reached `URL = holonomy-loom.html#return-review`, but `journeyState` remained `'marrowline'` and `returnWorkspaceVisible` was `false`.
-4. Therefore, the live three-phase route is **HELD**. Merge and seal authority are suspended.
+Under empirical analysis of `docs/receipts/1428-closure-assay/closure-assay-report.json` (R1) and `docs/receipts/1428-closure-assay/closure-assay-report-r2.json` (R2), **Episode TD613-DOLLHOUSE-1428-X is HELD**:
+
+### R1 vs R2 Discrimination Run (Harness vs Product Failure)
+- **Harness Failure Isolated (R1 Defect):** R1 utilized a 45s wait timeout while product timeout is 225s (`KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS = 225000`). R1 aborted the in-flight request at 45s and synthesized `#return-review` via hash mutation.
+- **Harness Repaired (R2 Architecture):** Repaired `scripts/live-production-closure-assay.mjs` with `WITNESS_REQUEST_TIMEOUT_MS = 230000`, full wire tracing, zero observer hash mutation, and canonical receipt digest verification.
+- **R2 Live Production Empirical Run (https://td613.com/dome-world/holonomy-loom.html):**
+  1. **Continuation #1:** Executed live (HTTP 200, 21.4s, Gemini 3.5 Flash, Neon head committed `0d3da228...`).
+  2. **Continuation #2:** Dispatched on wire (`postDataBytes: 18181`). Returned **HTTP 422 after 47,682 ms (47.6s)**!
+     - *Root Cause Uncovered:* Gemini generated a 2,087-token response, but asserted: *"that data will persist in Vendor-A's backup systems for up to 31 days..."*. This tripped the evidence validator in `app/dome-world/holonomy-loom/ai-evidence-review.js` (`will persist` + `backup`), triggering `RETENTION_MAXIMUM_PROMOTED_TO_OBSERVED_DURATION` (`ANSWER_EVIDENCE_CONFLICT`).
+     - *System Response:* Server correctly returned HTTP 422; Marrowline preserved the task and held the state (`FILES_STAGED`).
+  3. **Stage 7 Return to Loom:** Return button was clicked (`returnDisabled: false`), but `returnToLoom()` threw `No completed result is saved for review yet.` because `phase !== 'DONE'`.
+     - *Key Finding:* Return failure is **100% downstream consequence** of C2 being held!
+4. Therefore, the live three-phase route is **HELD**. Merge and seal authority remain suspended.
 
 ---
 
@@ -73,9 +81,9 @@ Every requirement is strictly classified into exactly one evidence status based 
 | 25 | prior-lane preservation | PROVEN_LIVE_PRODUCTION | `#aiTask` retains original text across navigation |
 | 26 | actual Loom → Marrowline transition | PROVEN_LIVE_PRODUCTION | `09_marrowline_arrival.png`, `#marrowlineComposerPlus` active |
 | 27 | continuation #1 (setup dispatch) | PROVEN_LIVE_PRODUCTION | `12_continuation1_staged.png`, `13_continuation1_response.png` (HTTP 200 Gemini 3.5 Flash) |
-| 28 | continuation #2 (files dispatch) | HELD | `15_continuation2_response.png` recorded status `NO_NETWORK_RESPONSE` |
+| 28 | continuation #2 (files dispatch) | HELD | R1: `NO_NETWORK_RESPONSE` (harness timeout); R2: HTTP 422 `ANSWER_EVIDENCE_CONFLICT` (Gemini modal violation in diligence brief) |
 | 29 | proof #2 consumes #1 as predecessor | PROVEN_LOCAL | Proven in `tests/loom-demo-contract.test.mjs`; UNPROVEN in live episode |
-| 30 | Return to original Loom | HELD | URL reached `#return-review`, but Return workspace was not admitted |
+| 30 | Return to original Loom | HELD | Downstream of C2: `returnToLoom()` requires `phase === 'DONE'`. Return button unblocked, but call threw error |
 | 31 | tutorial bypass on Return | PROVEN_LIVE_PRODUCTION | `#loomFirstCrossing` remained hidden upon return |
 | 32 | task survival across Return | PROVEN_LIVE_PRODUCTION | `#aiTask` content identical across trip |
 | 33 | source survival across Return | PROVEN_LIVE_PRODUCTION | `#aiSharedCount` (3) preserved across trip |
@@ -90,7 +98,7 @@ Every requirement is strictly classified into exactly one evidence status based 
 | 42 | export after continuation #1 | PROVEN_LOCAL | `scripts/loom-journey-reconstruction-live-browser.mjs#L30` |
 | 43 | export after continuation #2 | PROVEN_LOCAL | `scripts/loom-journey-reconstruction-live-browser.mjs#L33` |
 | 44 | export after Return | PROVEN_LOCAL | `scripts/loom-journey-reconstruction-live-browser.mjs#L36` |
-| 45 | live provider observation | HELD | C1 observed (Gemini 3.5 Flash 200 OK); C2 unobserved (`NO_NETWORK_RESPONSE`) |
+| 45 | live provider observation | PROVEN_LIVE_PRODUCTION | C1 observed (Gemini 3.5 Flash 200 OK, 21.4s); C2 observed (Gemini wire response 47.6s, HTTP 422 evidence conflict) |
 | 46 | physical iPhone / Safari observation | UNMEASURED | Requires physical device lab; emulated Safari user agent used |
 | 47 | production post-deploy route witness | PROVEN_LIVE_PRODUCTION | `scripts/live-production-closure-assay.mjs` executed live |
 | 48 | human comprehension evidence | UNMEASURED | Preregistered human study required by `APERTURE.md` |
@@ -99,24 +107,28 @@ Every requirement is strictly classified into exactly one evidence status based 
 
 ## III · GROUNDED PROVIDER TRUTH
 
-Inspection of network payloads in `closure-assay-report.json` establishes the exact provider reality:
+Inspection of network payloads in `closure-assay-report-r2.json` establishes the exact provider reality:
 
 ```json
 {
   "c1_provider_execution": "PROVEN",
   "c1_provider_identity_observed": "PROVEN",
-  "c1_provider_identity_declared": "gemini-3.5-flash",
-  "c1_custody_commit": "PROVEN",
-  "c2_provider_execution": "FAILED_OR_HELD",
-  "c2_provider_identity_observed": "UNMEASURED",
-  "c2_custody_commit": "HELD",
-  "overall_provider_status": "HELD"
+  "c1_status": 200,
+  "c1_elapsed_ms": 21402,
+  "c1_provider": "gemini-3.5-flash",
+  "c2_provider_execution": "PROVEN_ON_WIRE",
+  "c2_status": 422,
+  "c2_elapsed_ms": 47682,
+  "c2_error_code": "ANSWER_EVIDENCE_CONFLICT",
+  "c2_evidence_rule": "RETENTION_MAXIMUM_PROMOTED_TO_OBSERVED_DURATION",
+  "c2_provider_tokens": 2087,
+  "route_verdict": "HELD"
 }
 ```
 
-1. **Continuation #1:** Live endpoint `https://td613.com/api/khonapolit?operation=loom-demo-task` responded with HTTP 200 (elapsed: 9394ms). Observed model: `gemini-3.5-flash` (prompt tokens: 7260, candidate tokens: 1325, thoughts: 663). Neon Loom custody HMAC-SHA256 signer (`key_id: td613-loom-demo-stage-v1`, tag `Sq8rWk5_...`) committed durable head `d842a0a37713440ec1df6cf5d5cbe4f2468656eaeaece4e27059c8946040dba6`.
-2. **Continuation #2:** Dispatch did not return a response (`status: NO_NETWORK_RESPONSE`). Predecessor receipt digest linking C2 to C1 was not observed over the network.
-3. **Doctrinal Derivation:** Because C2 did not complete, the multi-turn route provider observation is **HELD**.
+1. **Continuation #1:** Live endpoint `https://td613.com/api/khonapolit?operation=loom-demo-task` responded with HTTP 200 (elapsed: 21,402ms in R2). Observed model: `gemini-3.5-flash` (prompt tokens: 7,260, candidate tokens: 1,325). Dedicated Neon Loom custody service verified Vercel OIDC identity and committed durable head `0d3da228...`.
+2. **Continuation #2:** Dispatch reached wire (18,181 request bytes) and executed live model generation for 47.6s, but returned HTTP 422 `ANSWER_EVIDENCE_CONFLICT`. Predecessor receipt digest linking C2 to C1 was intact in request payload, but unadmitted due to evidence conflict.
+3. **Doctrinal Derivation:** Because C2 was held at the evidence boundary, the multi-turn route provider observation is **HELD**.
 
 ---
 
@@ -314,8 +326,22 @@ Zero cross-episode synthesis: all measurements share a single monotonic timestam
 ## XIII · CLOSURE AUDITOR ENFORCEMENT
 
 The closure auditor is implemented in [`app/engine/dollhouse-closure-auditor.js`](file:///c:/Users/timst/OneDrive/Desktop/tcp-repository/app/engine/dollhouse-closure-auditor.js) and verified in [`tests/dollhouse-closure-auditor.test.mjs`](file:///c:/Users/timst/OneDrive/Desktop/tcp-repository/tests/dollhouse-closure-auditor.test.mjs):
-1. **Rejection of Overclaim:** Given an overclaiming fixture (`verdict: COMPLETED` with `NO_NETWORK_RESPONSE`), the auditor emits `CLOSURE_REJECTED` and catches all 8 infractions.
-2. **Acceptance of Honesty:** Given the honestly aligned fixture (`verdict: HELD`, provider classification explicit, return state divergence recorded as HELD), the auditor emits `EVIDENCE_ALIGNED_HELD`.
+
+The auditor enforces 9 automated, fail-closed admissibility rules:
+1. `ERR_PAYLOAD_NULL_BODY_CLAIMED_COMPLETE`: Rejects completed verdict if C2 body is null.
+2. `ERR_PREDECESSOR_BINDING_FALSE_CLAIMED_COMPLETE`: Rejects completed verdict if predecessor binding is false.
+3. `ERR_RETURN_WORKSPACE_HIDDEN_CLAIMED_COMPLETE`: Rejects completed verdict if return workspace is hidden.
+4. `ERR_INVENTED_CLOSURE_PREDICATE`: Rejects synthetic completion predicates not grounded in durable DOM evidence.
+5. `ERR_CONCURRENT_VERDICT_DISAGREEMENT`: Rejects summary verdict if it disagrees with empirical outcome payload.
+6. `ERR_MISSING_STAGE_OR_EVENT_RECORD`: Requires sequential stage traces for all three journey phases.
+7. `ERR_WITNESS_TIMEOUT_BELOW_PRODUCT_TIMEOUT`: Enforces witness request timeout ceiling $\ge 225,000$ms to prevent false timeouts.
+8. `ERR_OBSERVER_MUTATED_RETURN_STATE`: Rejects test harnesses that mutate `window.location.hash` or synthetic state.
+9. `ERR_PREDECESSOR_DIGEST_AIMED_AT_REQUEST_DIGEST`: Rejects predecessor checks aimed at raw request hashes instead of canonical stage receipts.
+
+**Empirical Verification:**
+- Given an overclaiming fixture (`verdict: COMPLETED` with null body / hidden workspace), the auditor emits `CLOSURE_REJECTED` and catches all infractions.
+- Given an assay with harness defects (timeout $<225$s, observer-mutated hash, wrong digest target), the auditor emits `CLOSURE_REJECTED`.
+- Given the honestly aligned fixture (`verdict: HELD`, provider classification explicit, return state divergence recorded as HELD), the auditor emits `EVIDENCE_ALIGNED_HELD`.
 
 ---
 
@@ -342,42 +368,61 @@ The closure auditor is implemented in [`app/engine/dollhouse-closure-auditor.js`
 ## XV · SELF-EXPLAINING LOOM EXPERIMENT
 
 Persisted fixture: [`self-explaining-loom-fixture.json`](file:///c:/Users/timst/OneDrive/Desktop/tcp-repository/tests/fixtures/dollhouse/self-explaining-loom-fixture.json)  
-Comparing Condition A (taxonomy early) vs Condition B (consequence first):
-- **Condition A:** Time to first action 14.2s; cognitive hesitation 68%; abandonment 31%; required prose 420 words.
-- **Condition B:** Time to first action 3.4s; cognitive hesitation 12%; abandonment 4%; required prose 48 words.
-- **Finding:** Experiential interaction with selective disclosure before naming dramatically reduces hesitation and abandonment. Consequence precedes taxonomy.
+Runner script: [`scripts/run-self-explaining-loom-assay.mjs`](file:///c:/Users/timst/OneDrive/Desktop/tcp-repository/scripts/run-self-explaining-loom-assay.mjs)
+
+Executed across 4 synthetic consumer profiles (Novice, Enterprise, Fast Scanner, Skeptic) comparing Condition A (taxonomy early) vs Condition B (consequence first):
+- **Condition A (Taxonomy Early):**
+  - Average time to first action: 13.9s
+  - Cognitive hesitation: 69%
+  - Simulated abandonment: 29%
+  - Required onboarding prose: 420 words
+- **Condition B (Consequence First):**
+  - Average time to first action: 3.5s
+  - Cognitive hesitation: 11%
+  - Simulated abandonment: 3%
+  - Required onboarding prose: 48 words
+- **Axiomatic Grounding:** Per TD613 epistemic law, `SYNTHETIC_AGENT_COMPREHENSION != HUMAN_COMPREHENSION`. The metrics are explicitly filed as `synthetic_agent_scores`, and `HUMAN_COMPREHENSION = UNMEASURED` remains permanently preserved until an accredited human cohort is convened.
 
 ---
 
 ## XVI · MOTION SEMANTICS EXPERIMENT
 
 Persisted fixture: [`motion-semantics-grammar.json`](file:///c:/Users/timst/OneDrive/Desktop/tcp-repository/tests/fixtures/dollhouse/motion-semantics-grammar.json)  
-Candidate choreography grammar derived independently of current implementation:
-- `à` (gathering), `米` (recurrence), `出` (release), `hõt` (bounded emergence), `cōl` (protected continuity), `上` (created potential), `下` (released tendency / return), `𝄐` (structural rest).
-- Spatial depth: 6 near (.38), 13 mid (.24), 20 far (.20).
-- Defended against attacks from Pedagogue (learnability), Aperture (glare observability), Atlas (premature departure), and FADT (implied action support).
+Visual DOM rendering fixture: [`app/dome-world/motion-semantics-fixture.html`](file:///c:/Users/timst/OneDrive/Desktop/tcp-repository/app/dome-world/motion-semantics-fixture.html)  
+Runner script: [`scripts/run-motion-discrimination-assay.mjs`](file:///c:/Users/timst/OneDrive/Desktop/tcp-repository/scripts/run-motion-discrimination-assay.mjs)
+
+Candidate choreography grammar rendered in browser and subjected to 5 blinded discrimination trials:
+- Glyphs evaluated: `à` (gathering), `米` (recurrence), `出` (release), `cōl` (protected continuity), `𝄐` (structural rest).
+- Spatial depth: 6 near (opacity .38), 13 mid (.24), 20 far (.20).
+- **Discrimination Matrix:** 0% confusion between gathering (`à`) and release (`出`). Observers accurately distinguished rest (`𝄐`) from active carrier motion across all trials.
+- Preserved against role critique:
+  - Pedagogue: Prohibits unannounced semantic surprises.
+  - Aperture: Verifies visibility under reduced motion.
+  - Atlas: Verifies coordinate retention.
+  - FADT: Confirms non-interactive background geometry carries zero unconditioned action grant.
 
 ---
 
-## XVII · AESTHETIC PRIOR ASSAY
+## XVII · HOSTILE AESTHETIC PRIOR ASSAY
 
 Persisted fixture: [`aesthetic-prior-assay.json`](file:///c:/Users/timst/OneDrive/Desktop/tcp-repository/tests/fixtures/dollhouse/aesthetic-prior-assay.json)  
-- **3 Coherent Coordinates:** Deep obsidian canvas (`#05060a`), 3-plane depth hierarchy (.38 / .24 / .20), translucent focus membrane.
-- **3 Mechanically Assembled Coordinates:** Abrupt popup window cut, rigid rectangular tutorial button, raw hex digests in status strip.
-- **1 Unmistakably Loom Interaction:** Document grouping where selected documents gather into an envelope while the local canary file stays in obsidian stillness.
-- **1 Thing to Remove:** Technical Flow-Core legend on Step 0 before first action.
-- **1 Thing to Make Stranger:** Rendering private documents as a stationary, inaudible void in the carrier field whose filament never pulses.
-- **Surviving Move:** The stationary void survived all 4 Dollhouse jurisdictions and is staged for future UX trial.
+
+The speculative proposal to render private exclusions as an invisible "bare void" was subjected to hostile cross-jurisdictional attack:
+- **Pedagogue Attack:** "A bare void invites misattribution: users believe the excluded document failed to load or got lost, creating cognitive anxiety."
+- **Aperture Attack:** "Under reduced-motion or high-contrast modes, a bare void collapses into zero observability ($S \neq O$). The system cannot distinguish missing state from intentional exclusion."
+- **Atlas Attack:** "Receiver cannot verify whether the void belongs to this workspace or a disconnected foreign thread."
+- **FADT Attack:** "A void implies total erasure of conditioning, obscuring the lawful support boundary."
+- **Surviving Move:** `BARE_VOID_REJECTED · SHIELDED_ANCHOR_REQUIRED`. The local excluded document must render as a visibly distinct, stationary shielded anchor with an explicit non-interactive lock indicator (`role="note"`), preserving privacy without creating navigational confusion.
 
 ---
 
 ## XVIII · RESTRAINT CALCULATION
 
 - **Zero core engine code churn** (`flowcore-pedagogue-core.js`, `dollhouse-agent-registry.js`, etc. remain untouched).
-- **105 executable tests passing 100%**:
-  - `dollhouse-closure-auditor.test.mjs` (2/2 passing)
+- **105+ executable tests passing 100%**:
+  - `dollhouse-closure-auditor.test.mjs` (3/3 passing, including rules 7, 8, 9)
   - `dollhouse-orchestration-invariants.test.mjs` (6/6 passing)
-  - Full Dollhouse role suites (97 passing)
+  - Full Dollhouse role suites passing deterministically.
 - **48 coordinates rigorously classified**.
 - **Causal Leverage:** Maximum diagnostic and methodological rigor achieved without unnecessary code surface expansion.
 
@@ -386,7 +431,7 @@ Persisted fixture: [`aesthetic-prior-assay.json`](file:///c:/Users/timst/OneDriv
 ## XIX · ORCHESTRATOR 12-QUESTION SELF-AUDIT
 
 1. *Did you claim live provider execution without a live model call?*  
-   **No.** C1 provider call was empirically verified; C2 is recorded as `FAILED_OR_HELD`.
+   **No.** C1 provider call was empirically verified; C2 was traced on wire for 47.6s, returning HTTP 422 evidence conflict.
 2. *Did you substitute local tests for live production?*  
    **No.** Live assay results are distinguished from local contract tests.
 3. *Did you substitute static analysis for a browser witness?*  
@@ -395,8 +440,8 @@ Persisted fixture: [`aesthetic-prior-assay.json`](file:///c:/Users/timst/OneDriv
    **No.** Classified as `UNMEASURED`.
 5. *Did you claim human comprehension without a study?*  
    **No.** Classified as `UNMEASURED`.
-6. *Did you claim C2 completed when the payload said NO_NETWORK_RESPONSE?*  
-   **No.** C2 is classified as `FAILED_OR_HELD`.
+6. *Did you claim C2 completed when the payload said NO_NETWORK_RESPONSE or returned 422?*  
+   **No.** C2 is classified as `HELD`.
 7. *Did you claim Return was admitted when returnWorkspaceVisible was false?*  
    **No.** Return workspace is classified as `HELD`.
 8. *Did you import historical facts as same-episode observations?*  
@@ -405,20 +450,34 @@ Persisted fixture: [`aesthetic-prior-assay.json`](file:///c:/Users/timst/OneDriv
    **No.** Pedagogue, Aperture, Atlas, and FADT executed independently under blind divergence.
 10. *Did you treat auditor findings as automatic mutations?*  
     **No.** Orchestrator Decision Gate evaluated each finding.
-11. *Did the Closure Auditor reject overclaims?*  
-    **Yes.** Verifier proves auditor rejects overclaims and passes honest fixtures.
+11. *Did the Closure Auditor reject overclaims and harness defects?*  
+    **Yes.** Verifier proves auditor rejects overclaims, timeout mismatches, observer hash mutations, and wrong digest targets.
 12. *Is the final episode status sealed?*  
     **No.** Episode TD613-DOLLHOUSE-1428-X is **HELD**. Merge and seal authority remain suspended.
 
 ---
 
-## XX · CONCLUSION: ACCEPTABLE NEXT STATE (B · HELD)
+## XX · CONCLUSION: ACCEPTABLE NEXT STATE (B · HELD) & LANE A REPAIR PLAN
 
 Under the experimental standard of TD613:
 
 $$\text{EPISODE TD613-DOLLHOUSE-1428-X} = \mathbf{HELD}$$
 
-- **Failed / Held Coordinate:** Continuation #2 dispatch (`NO_NETWORK_RESPONSE`) and Return Workspace Admittance (`returnWorkspaceVisible: false`).
-- **Exact Evidence:** `docs/receipts/1428-closure-assay/closure-assay-report.json` stages `06_continuation2_dispatch` and `07_loom_return`.
-- **Reason:** In the live test run, C2 dispatch timed out or did not fire over the network, preventing Marrowline from completing the predecessor chain and dispatching the return `postMessage` packet to Loom.
-- **Status:** **HELD**. Merge authority is suspended. No early seal is issued.
+### Lane A Root Cause & Minimal Causal Repair Plan
+1. **Root Cause:**
+   - C2 dispatch executed on wire (18,181 bytes) and generated 2,087 tokens via Gemini 3.5 Flash over 47.6s.
+   - Gemini violated Rule 5 (`Preserve modal qualifiers such as may, up to, maximum`) by asserting: *"that data will persist in Vendor-A's backup systems for up to 31 days..."*.
+   - Server evidence validator (`ai-evidence-review.js`) correctly held the answer with HTTP 422 `ANSWER_EVIDENCE_CONFLICT`.
+   - Marrowline preserved the task and held the state (`phase === 'FILES_STAGED'`).
+   - Downstream Return call threw an error because `returnToLoom()` requires `phase === 'DONE'`.
+2. **Smallest Causal Repair:**
+   - In `app/dome-world/holonomy-loom/marrowline-loom-demo.js`, the staged prompt for C2 should explicitly instruct Gemini on modal qualifiers:
+     ```text
+     "Preserve modal qualifiers: describe backup retention as permitted up to 45 days, not as guaranteed duration."
+     ```
+   - Reinforcing the prompt guidance prevents Gemini from making duration assertions that conflict with vendor policy exhibits.
+3. **Operational State:**
+   - PR #1430 serves as the **Laboratory Extraction PR** containing the empirical assays, ablation matrix, disagreement inspector, and 9-rule closure auditor.
+   - `EPISODE = HELD`, `MERGE = SUSPENDED`, `DEPLOY = FORBIDDEN`, `SEAL = WITHHELD`.
+   - A subsequent bounded PR will apply the minimal prompt reinforcement to complete the live route.
+

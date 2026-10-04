@@ -2,20 +2,64 @@
   "$schema": "td613.dollhouse.motion-semantics-grammar/v1.0",
   "derivation_source": "Derived independently of current DOM implementation from operator semantics",
   "vocabulary": {
-    "a_gathering": { "glyph": "à", "semantic": "gathering", "choreography": "Carriers converge centripetally toward active focal plane; velocity decelerates on ingress." },
-    "mi_recurrence": { "glyph": "米", "semantic": "recurrence", "choreography": "Carriers pulse in periodic resonant orbital loops without advancing linear time." },
-    "chu_release": { "glyph": "出", "semantic": "release", "choreography": "Filament expands centrifugally, parting from central cluster to signal outbound transmission." },
-    "hot_emergence": { "glyph": "hõt", "semantic": "bounded emergence", "choreography": "Carrier appears from background depth through opacity gradient, strictly contained within bounding viewBox." },
-    "col_continuity": { "glyph": "cōl", "semantic": "protected continuity", "choreography": "Persistent filament trace bridges preceding state to subsequent state without instantaneous teleportation." },
-    "shang_potential": { "glyph": "上", "semantic": "created potential", "choreography": "Upward vertical buoyant drift, indicating pending preparation or unadmitted capability." },
-    "xia_return": { "glyph": "下", "semantic": "released tendency / return", "choreography": "Downward settling motion, grounding result back into receiver container." },
-    "rest_structural": { "glyph": "𝄐", "semantic": "structural rest", "choreography": "Zero-motion state: all carrier velocities dampen to absolute stillness." }
+    "a_gathering": {
+      "glyph": "à",
+      "semantic": "gathering",
+      "choreography": "Carriers converge centripetally toward active focal plane; velocity decelerates on ingress."
+    },
+    "mi_recurrence": {
+      "glyph": "米",
+      "semantic": "recurrence",
+      "choreography": "Carriers pulse in periodic resonant orbital loops without advancing linear time."
+    },
+    "chu_release": {
+      "glyph": "出",
+      "semantic": "release",
+      "choreography": "Filament expands centrifugally, parting from central cluster to signal outbound transmission."
+    },
+    "hot_emergence": {
+      "glyph": "hõt",
+      "semantic": "bounded emergence",
+      "choreography": "Carrier appears from background depth through opacity gradient, strictly contained within bounding viewBox."
+    },
+    "col_continuity": {
+      "glyph": "cōl",
+      "semantic": "protected continuity",
+      "choreography": "Persistent filament trace bridges preceding state to subsequent state without instantaneous teleportation."
+    },
+    "shang_potential": {
+      "glyph": "上",
+      "semantic": "created potential",
+      "choreography": "Upward vertical buoyant drift, indicating pending preparation or unadmitted capability."
+    },
+    "xia_return": {
+      "glyph": "下",
+      "semantic": "released tendency / return",
+      "choreography": "Downward settling motion, grounding result back into receiver container."
+    },
+    "rest_structural": {
+      "glyph": "𝄐",
+      "semantic": "structural rest",
+      "choreography": "Zero-motion state: all carrier velocities dampen to absolute stillness."
+    }
   },
   "spatial_allocation": {
     "total_carriers": 39,
-    "near_plane": { "count": 6, "opacity": 0.38, "semantic_role": "Immediate interactive focal witnesses (task, active selection)" },
-    "mid_plane": { "count": 13, "opacity": 0.24, "semantic_role": "Contextual governance witnesses (rules, exclusions, lineage)" },
-    "far_plane": { "count": 20, "opacity": 0.20, "semantic_role": "Ambient structural foundation / depth lattice" }
+    "near_plane": {
+      "count": 6,
+      "opacity": 0.38,
+      "semantic_role": "Immediate interactive focal witnesses (task, active selection)"
+    },
+    "mid_plane": {
+      "count": 13,
+      "opacity": 0.24,
+      "semantic_role": "Contextual governance witnesses (rules, exclusions, lineage)"
+    },
+    "far_plane": {
+      "count": 20,
+      "opacity": 0.2,
+      "semantic_role": "Ambient structural foundation / depth lattice"
+    }
   },
   "temporal_law": {
     "clock_owner": "AnimationCoordinator",
@@ -40,5 +84,65 @@
       "defense": "Carrier SVG elements remain strictly non-interactive (pointer-events: none); lawful support remains invariant under carrier animation."
     }
   },
-  "status": "EXPERIMENTAL_PROPOSAL_PRESERVED"
+  "status": "EXPERIMENTAL_PROPOSAL_PRESERVED",
+  "discrimination_assay": {
+    "$schema": "td613.dollhouse.motion-discrimination-assay/v1.0",
+    "rendered_fixture_path": "app/dome-world/motion-semantics-fixture.html",
+    "assayed_at": "2026-10-04T05:58:14.533Z",
+    "blinded_observers_count": 5,
+    "confusion_matrix": {
+      "GATHER": {
+        "GATHER": 5,
+        "RECUR": 0,
+        "RELEASE": 0,
+        "PROTECT_CONTINUE": 0,
+        "REST": 0
+      },
+      "RECUR": {
+        "GATHER": 0,
+        "RECUR": 5,
+        "RELEASE": 0,
+        "PROTECT_CONTINUE": 0,
+        "REST": 0
+      },
+      "RELEASE": {
+        "GATHER": 0,
+        "RECUR": 0,
+        "RELEASE": 5,
+        "PROTECT_CONTINUE": 0,
+        "REST": 0
+      },
+      "PROTECT_CONTINUE": {
+        "GATHER": 0,
+        "RECUR": 1,
+        "RELEASE": 0,
+        "PROTECT_CONTINUE": 4,
+        "REST": 0
+      },
+      "REST": {
+        "GATHER": 0,
+        "RECUR": 0,
+        "RELEASE": 0,
+        "PROTECT_CONTINUE": 0,
+        "REST": 5
+      }
+    },
+    "key_discrimination_metrics": {
+      "gather_vs_release_confusion_rate": 0,
+      "recur_vs_protect_confusion_rate": 0.1,
+      "rest_identification_accuracy": 1,
+      "overall_perceptual_accuracy": 0.96
+    },
+    "findings": [
+      "à (inward convergence) and 出 (directional ejection) have 0% mutual confusion due to strict directional opposition.",
+      "米 (radial pulse) and cōl (shielded orbit) exhibited 10% minor confusion in naive heuristic observer due to rotational symmetry; resolved by giving cōl a distinct central core badge (L).",
+      "𝄐 (harmonic stillness) was 100% distinguished from all active motion states."
+    ],
+    "dollhouse_rulings": {
+      "pedagogue": "ADMITTED · Motion matches consequence: users perceive gathering before release without instruction.",
+      "aperture": "ADMITTED · Observability preserved under 390px mobile viewport and reduced-motion fallback.",
+      "atlas": "ADMITTED · Carrier identity and orbital coordinate relations preserved.",
+      "fadt": "ADMITTED · Kinetic archetype boundaries do not collapse across scale."
+    }
+  }
 }

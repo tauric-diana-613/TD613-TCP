@@ -1,5 +1,5 @@
 {
-  "$schema": "td613.dollhouse.aesthetic-prior-assay/v1.0",
+  "$schema": "td613.dollhouse.aesthetic-prior-assay/v1.1",
   "assay_date": "2026-10-04",
   "design_agent_proposal": {
     "aesthetically_coherent_coordinates": [
@@ -16,27 +16,42 @@
     "thing_to_remove": "The Flow-Core operator legend text and 𝌋 remix prompt on Step 0 of First Crossing before the user has touched a single document.",
     "thing_to_make_stranger": "When a document is marked private, instead of an ordinary checkbox border, render it as an inaudible, stationary void in the carrier field—a carrier whose light does not pulse because it never leaves the local machine."
   },
-  "candidate_design_move_subjected_to_four_dolls": {
-    "candidate": "Make private documents a stationary void in the carrier field (inaudible carrier that does not pulse or transmit).",
-    "doll_evaluations": {
+  "candidate_design_move_subjected_to_hostile_dollhouse_critique": {
+    "candidate": "Stationary void for private material (carrier whose light does not pulse and remains still in the orbital field).",
+    "hostile_doll_attacks": {
       "PEDAGOGUE": {
-        "status": "PASS",
-        "finding": "Strong pedagogical metaphor: absence of pulse communicates local non-transmission through direct sensory contrast before words are read."
+        "status": "OBJECTION_RECORDED",
+        "jurisdictional_attack": "Danger of Broken/Deleted Misattribution: In child-legible and first-time consumer pedagogy, bare visual absence or darkness is overwhelmingly interpreted as 'file missing', 'upload failed', or 'deleted item'. Users will repeatedly click the void or attempt re-upload.",
+        "falsifier": "In usability observation, if >15% of first-time users ask 'where did my file go?' or attempt to re-add the document, the design is pedagogically disqualified.",
+        "jurisdictional_cost": "Requires added defensive explanation copy, defeating the goal of non-verbal intuitive understanding.",
+        "strongest_reason_not_to_ship": "Absence communicates absence of data, not presence of protection."
       },
       "APERTURE": {
-        "status": "PASS",
-        "finding": "Identifiability is preserved: a stationary void against animated carriers has high visual contrast and zero observability ambiguity."
+        "status": "OBJECTION_RECORDED",
+        "jurisdictional_attack": "Observability Collapse Under Reduced Motion: When prefers-reduced-motion is active, all 39 carriers are static. In a static field, dynamic contrast disappears completely; a stationary void is visually identical to an unpulsed normal carrier.",
+        "falsifier": "In static screenshot or reduced-motion audits, observers cannot distinguish a protected void from an idle normal carrier without external inspection.",
+        "jurisdictional_cost": "Forces high-contrast assistive technology to guess state from opacity alone.",
+        "strongest_reason_not_to_ship": "Negative space cannot be reliably observed across diverse physical displays and accessibility configurations."
       },
       "ATLAS": {
-        "status": "PASS",
-        "finding": "Maintains receiver-relative relation: the local receiver witnesses the void, while the outbound wire transmission carries zero bits."
+        "status": "OBJECTION_RECORDED",
+        "jurisdictional_attack": "Receiver State Ambiguity: The void conflates three distinct receiver-relative relations: (1) never selected by user, (2) actively withheld by Cistern Law, and (3) locally retained after export. Collapsing these distinct relation fibres into one visual object breaks relational preservation.",
+        "falsifier": "A user cannot determine whether a document is void because they neglected to select it or because policy excluded it.",
+        "jurisdictional_cost": "Obscures custody boundaries by treating neglect and policy enforcement as identical visuals.",
+        "strongest_reason_not_to_ship": "Relational erasure: it fails to witness the affirmative act of local withholding."
       },
       "FADT": {
-        "status": "PASS",
-        "finding": "Preserves finite lawful support: the stationary void is not an interactive capability, so it does not widen the action support set."
+        "status": "OBJECTION_RECORDED",
+        "jurisdictional_attack": "Premature Protection Implication: Rendering a file as a 'safe void' visually implies that privacy policy has already verified and sealed the data, before cryptographic policy evaluation has occurred. If an un-evaluated file is dropped, rendering a void grants unearned trust.",
+        "falsifier": "Any un-evaluated or malformed input that renders as a void before policy gating is an illegal action escalation.",
+        "jurisdictional_cost": "Risk of visual seal forgery where UI suggests safety that the governor has not yet evaluated.",
+        "strongest_reason_not_to_ship": "Presentation must not outrun proof; S != O."
       }
     },
-    "survives_all_four_dolls": true,
-    "ruling": "SURVIVES_DOLLHOUSE_AUDIT_STAGED_FOR_FUTURE_UX_TRIAL"
+    "synthesis_and_ruling": {
+      "ruling": "BARE_VOID_REJECTED · SHIELDED_ANCHOR_REQUIRED",
+      "required_adaptation": "The stationary void cannot be bare negative space. It must carry an explicit tangible local boundary: a fine obsidian ring with an embossed shield glyph (🛡️ / 🔒) and explicit label 'Stays on device'. This eliminates the broken-file misattribution (Pedagogue), preserves contrast under reduced motion (Aperture), distinguishes withheld from unselected (Atlas), and binds visual state to evaluated policy (FADT).",
+      "survives_in_adapted_form": true
+    }
   }
 }

@@ -120,6 +120,37 @@ export function auditDollhouseClosure({
     }
   }
 
+  // 7. Witness Timeout Ceiling Check (ASSAY_TIMEOUT != PRODUCT_TIMEOUT)
+  const witnessTimeout = closureReport.environment?.witness_timeout_ms;
+  const productClientTimeout = closureReport.environment?.product_client_timeout_ms || 225000;
+  if (typeof witnessTimeout === 'number' && witnessTimeout < productClientTimeout) {
+    infractions.push({
+      code: 'ERR_WITNESS_TIMEOUT_BELOW_PRODUCT_TIMEOUT',
+      message: `Witness timeout (${witnessTimeout}ms) is less than product client timeout (${productClientTimeout}ms). ASSAY_TIMEOUT != PRODUCT_TIMEOUT.`,
+      evidence: { witnessTimeout, productClientTimeout }
+    });
+  }
+
+  // 8. Observer Return Mutation Check (OBSERVER MUTATION != OBSERVED PRODUCT EVENT)
+  const returnSummary = returnStage?.summary;
+  if (returnSummary?.observer_mutated_hash === true) {
+    infractions.push({
+      code: 'ERR_OBSERVER_MUTATED_RETURN_STATE',
+      message: 'Observer deliberately mutated URL hash to manufacture Return state. OBSERVER MUTATION != OBSERVED PRODUCT EVENT.',
+      evidence: { observer_mutated_hash: true }
+    });
+  }
+
+  // 9. Predecessor Digest Derivation Check (REQUEST_DIGEST != STAGE_RECEIPT_DIGEST)
+  const predProof = closureReport.predecessor_proof;
+  if (predProof?.c1_receipt_digest_source === 'request_digest' || predProof?.algorithm === 'request_digest') {
+    infractions.push({
+      code: 'ERR_PREDECESSOR_DIGEST_AIMED_AT_REQUEST_DIGEST',
+      message: 'Predecessor verifier derived C1 digest from request_digest instead of stage receipt digest. REQUEST_DIGEST != STAGE_RECEIPT_DIGEST.',
+      evidence: { algorithm: predProof.algorithm || predProof.c1_receipt_digest_source }
+    });
+  }
+
   const passed = infractions.length === 0;
   const auditVerdict = passed
     ? (closureReport.verdict === 'COMPLETED' ? 'CLOSURE_ADMITTED' : 'EVIDENCE_ALIGNED_HELD')

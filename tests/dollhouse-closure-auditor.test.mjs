@@ -89,3 +89,48 @@ test('Dollhouse Closure Auditor: verifies committed episode fixtures evaluate to
   assert.equal(result.passed, true);
   assert.equal(result.infraction_count, 0, `Expected 0 infractions, got: ${JSON.stringify(result.infractions)}`);
 });
+
+test('Dollhouse Closure Auditor: rejects harness defects (timeout mismatch, observer mutation, wrong digest)', () => {
+  // Test harness defect 1: timeout ceiling < 225000ms
+  const shortTimeoutReport = {
+    verdict: 'HELD',
+    environment: { witness_timeout_ms: 45000, product_client_timeout_ms: 225000 },
+    stages: [],
+    predecessor_proof: null
+  };
+  const res1 = auditDollhouseClosure({ closureReport: shortTimeoutReport });
+  assert.equal(res1.passed, false);
+  assert.ok(res1.infractions.some(i => i.code === 'ERR_WITNESS_TIMEOUT_BELOW_PRODUCT_TIMEOUT'),
+    'Rejects assay with timeout ceiling lower than product timeout');
+
+  // Test harness defect 2: observer mutated hash to manufacture Return
+  const mutatedHashReport = {
+    verdict: 'HELD',
+    stages: [
+      {
+        name: '07_loom_return',
+        summary: { returnWorkspaceVisible: false, observer_mutated_hash: true }
+      }
+    ],
+    predecessor_proof: null
+  };
+  const res2 = auditDollhouseClosure({ closureReport: mutatedHashReport });
+  assert.equal(res2.passed, false);
+  assert.ok(res2.infractions.some(i => i.code === 'ERR_OBSERVER_MUTATED_RETURN_STATE'),
+    'Rejects witness where observer mutated URL/hash to manufacture Return');
+
+  // Test harness defect 3: predecessor verifier derived from request_digest instead of stage receipt digest
+  const wrongDigestReport = {
+    verdict: 'HELD',
+    stages: [],
+    predecessor_proof: {
+      algorithm: 'request_digest',
+      c1_receipt_digest_source: 'request_digest'
+    }
+  };
+  const res3 = auditDollhouseClosure({ closureReport: wrongDigestReport });
+  assert.equal(res3.passed, false);
+  assert.ok(res3.infractions.some(i => i.code === 'ERR_PREDECESSOR_DIGEST_AIMED_AT_REQUEST_DIGEST'),
+    'Rejects predecessor verifier derived from request_digest instead of stage receipt digest');
+});
+
