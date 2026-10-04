@@ -109,4 +109,30 @@ Seven concrete defects were codified into a dedicated hostile regression suite (
 
 ## 7. Governed Release & Production Witness (Issue #405)
 
-*(To be populated during TASK-07 and TASK-08)*
+### Release Execution Details:
+- **Exact Authorized Commit:** `2761980a04f7e5620d07bb124696264bd83e1215`
+- **Issue #405 Release Command:** `/td613-vercel-release PRODUCTION 2761980a04f7e5620d07bb124696264bd83e1215` ([Comment URL](https://github.com/tauric-diana-613/TD613-TCP/issues/405#issuecomment-5976539422))
+- **Vercel Operator Release Run:** Run ID `37176850361` (Job ID `111361143102`), Duration `3m27s`, **SUCCESS**
+- **Production URL:** `https://td613.com/dome-world/holonomy-loom.html`
+- **Relock Commit on main:** `9a9212fa4803930438cf38c7f3eec578feff7eb4`
+
+### Live Production Mobile Witness (Post-Deployment):
+Executed via `scripts/live-production-mobile-postdeploy.mjs` against live `https://td613.com/dome-world/holonomy-loom.html` at `2026-10-04T04:27:40Z`:
+1. **HTTP Status & Console:** All four mobile/landscape viewports returned HTTP 200 with zero page errors (`pageErrors: 0`) and zero failed requests.
+2. **Horizontal Spill Containment:** Zero horizontal spill elements detected across all viewports (`docW == winW`, no horizontal scroll).
+3. **39-Carrier Presence:** Exactly 39 carriers verified live in DOM across all geometries (`carrierCount: 39`).
+4. **Far-Carrier Perceptual Contrast:** Verified live `.flight-far` opacity at `0.2` (raised from `0.035`), meeting WCAG contrast.
+5. **Touch Target Dimensions:** `.loom-wordmark` computed height verified live at `44px` (satisfies WCAG 2.2 AA floor and target).
+6. **Tutorial Stop Button:** Button `#loomFirstCrossingStop` verified live with text `"Finish tutorial →"` across all viewports, resolving builder Demo collision.
+7. **Explanatory Private Note:** `#loomFirstCrossingPrivate` verified live as `<div role="note">` with non-interactive contract.
+8. **Artifact Evidence:** Screenshots saved to `docs/receipts/1428-postdeploy/`. Full JSON report preserved at `docs/receipts/1428-postdeploy/postdeploy-report.json`.
+
+---
+
+## 8. Final Sealed Attestation & Authority Boundaries
+
+- **Exact Head Match:** Deployed application matches commit `2761980a04f7e5620d07bb124696264bd83e1215`.
+- **Relock Sealed:** Main relocked at `9a9212fa4803930438cf38c7f3eec578feff7eb4`.
+- **Governed Discipline:** Production deployment was authorized strictly through the governed GitHub Issue #405 gesture; no direct platform bypass or detached autonomous writes occurred.
+- **Evidence Boundaries:** Findings are grounded in Playwright mobile emulation (Chromium with DPR/viewport emulation) and deterministic local/remote verifiers. Physical iPhone/Safari hardware observation remains explicitly separate and unsimulated.
+- **Status:** **SEALED & COMPLETE**
