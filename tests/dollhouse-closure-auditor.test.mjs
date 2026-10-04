@@ -132,9 +132,24 @@ test('Dollhouse Closure Auditor: rejects harness defects (timeout mismatch, obse
   assert.equal(res3.passed, false);
   assert.ok(res3.infractions.some(i => i.code === 'ERR_PREDECESSOR_DIGEST_AIMED_AT_REQUEST_DIGEST'),
     'Rejects predecessor verifier derived from request_digest instead of stage receipt digest');
+
+  // Test harness defect 4: content predecessor contradiction check (RECEIPT_ANCESTRY != CONTENT_ANCESTRY)
+  const falseContentReport = {
+    verdict: 'HELD',
+    stages: [],
+    predecessor_proof: {
+      expected_content_predecessor_digest: 'abc123',
+      actual_content_predecessor_digest: null,
+      content_predecessor_verified: true
+    }
+  };
+  const res4 = auditDollhouseClosure({ closureReport: falseContentReport });
+  assert.equal(res4.passed, false);
+  assert.ok(res4.infractions.some(i => i.code === 'ERR_CONTENT_PREDECESSOR_CONTRADICTION'),
+    'Rejects report that claims content_predecessor_verified=true when actual digest is null');
 });
 
-test('Dollhouse Closure Auditor: verifies R4 live production report evaluates to CLOSURE_ADMITTED', () => {
+test('Dollhouse Closure Auditor: verifies R4 live production report evaluates to CLOSURE_ADMITTED with layered scope', () => {
   const r4ReportPath = path.join(__dirname, '..', 'docs', 'receipts', '1428-closure-assay', 'closure-assay-report-r4.json');
   if (fs.existsSync(r4ReportPath)) {
     const r4Report = JSON.parse(fs.readFileSync(r4ReportPath, 'utf8'));
@@ -145,6 +160,17 @@ test('Dollhouse Closure Auditor: verifies R4 live production report evaluates to
     assert.equal(result.verdict, 'CLOSURE_ADMITTED', 'R4 live report must evaluate to CLOSURE_ADMITTED');
     assert.equal(result.passed, true);
     assert.equal(result.infraction_count, 0);
+
+    // Verify layered closure scope
+    assert.ok(result.layered_closure_scope, 'Must include layered_closure_scope');
+    assert.equal(result.layered_closure_scope.transport_route_closure, 'PROVEN_LIVE_PRODUCTION');
+    assert.equal(result.layered_closure_scope.receipt_ancestry_closure, 'PROVEN_LIVE_PRODUCTION');
+    assert.equal(result.layered_closure_scope.content_ancestry_closure, 'NOT_APPLICABLE_UNDER_MODEL_A');
+    assert.equal(result.layered_closure_scope.return_review_closure, 'PROVEN_LIVE_PRODUCTION');
+    assert.equal(result.layered_closure_scope.local_custody_admission, 'HELD');
+    assert.equal(result.layered_closure_scope.receipt_signature_verification, 'UNVERIFIED');
+    assert.equal(result.layered_closure_scope.physical_device_evidence, 'UNMEASURED');
+    assert.equal(result.layered_closure_scope.human_comprehension, 'UNMEASURED');
   }
 });
 

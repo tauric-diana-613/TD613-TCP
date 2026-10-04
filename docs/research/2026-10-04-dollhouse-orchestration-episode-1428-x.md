@@ -9,7 +9,7 @@
 - Production Relock: `1f0487b7cfb8943e8c7d287116a3e4af643bb815`
 - Live Production Endpoint: `https://td613.com/dome-world/holonomy-loom.html`
 - Live Same-Episode Witness ID: `TD613-DOLLHOUSE-1428-X-R4`
-- Current Episode Status: **`CLOSURE_ADMITTED`** (Live 3-Phase Mobile Journey Verified End-to-End; 0 Discrepancies)
+- Current Episode Status: **`CLOSURE_ADMITTED`** (Explicit Scope: `TRANSPORT_ROUTE_CLOSURE` & `RECEIPT_ANCESTRY_CLOSURE` verified live under Model A; Local custody remains HELD; Signatures unverified; Physical/Human unmeasured)
 
 ---
 
@@ -54,16 +54,72 @@ Across a disciplined 4-run sequence, the orchestrator and four Dollhouse roles d
 
 4. **R4 · Defect Eliminated & Route Completed (`TD613-DOLLHOUSE-1428-X-R4`):**
    - *Product Repair PR #1432:* Merged (`d4c05df14c`) and deployed via Issue #405 (relocked `1f0487b7c`). Unconditionally attached modal retention instructions to `prompt.value`.
-   - *Continuation #1:* HTTP 200 OK (38.1s, `gemini-3.5-flash`, wire 13,676 bytes, Neon custody head `fb3913cf848fc562468f978a193dfd7a8ec354391065be0c23832a5bd8cf2add`).
-   - *Continuation #2:* HTTP 200 OK (67.5s, `gemini-3.8-flash` & `gemini-3.5-flash`, wire 19,071 bytes, Neon custody head `f65da2e5509a2e501fb024601787ab228d96e17e70918badf03ff2a8ab1c4527`).
-   - *Predecessor Chaining:* Mathematically verified on wire (`expected: fb3913cf8...` == `actual: fb3913cf8...`, `predecessor_binding_verified: true`).
-   - *Stage 7 Return to Loom:* Native Return button clicked in Marrowline Gate; Loom received authentic message; admitted Return workspace (`returnWorkspaceVisible: true`, `journeyState: 'return'`); First Crossing remained hidden; builder visible; zero observer hash mutation.
+   - *Turn 1 Setup (ACTIVATE):* HTTP 200 OK (38.1s, `gemini-3.5-flash`, wire 13,676 bytes, Neon custody head `fb3913cf848fc562468f978a193dfd7a8ec354391065be0c23832a5bd8cf2add`). Attached AIA rules only; no selected file bodies.
+   - *Turn 2 Substantive Continuation (CONTINUE):* HTTP 200 OK (67.5s, `gemini-3.8-flash` & `gemini-3.5-flash`, wire 19,071 bytes, Neon custody head `f65da2e5509a2e501fb024601787ab228d96e17e70918badf03ff2a8ab1c4527`). Attached 3 selected files under portable rules.
+   - *Predecessor Receipt Chaining:* Verified on wire (`expected: fb3913cf8...` == `actual: fb3913cf8...`, `predecessor_binding_verified: true`). Setup stage receipt digest bound into substantive continuation. Content predecessor is `null` (not applicable under Model A because Setup produces no substantive diligence).
+   - *Stage 7 Return to Loom:* Native Return button clicked in Marrowline Gate; Loom received authentic postMessage; admitted Return workspace (`returnWorkspaceVisible: true`, `journeyState: 'return'`); First Crossing remained hidden; builder visible; zero observer hash mutation.
    - *Hostile Suite:* All passed (repeated remix, reload, history back/forward, reduced motion, viewports 390x844, 360x740, 700x390 landscape with zero blowout).
-   - *Verdict:* **`COMPLETED`** (0 discrepancies, 0 page errors, 0 console errors). Evaluated by `dollhouse-closure-auditor.js` as **`CLOSURE_ADMITTED`**!
+   - *Verdict:* **`COMPLETED`** (0 discrepancies, 0 page errors, 0 console errors). Evaluated by `dollhouse-closure-auditor.js` as **`CLOSURE_ADMITTED`** under explicit layered scope!
 
 ---
 
-## II · CLOSURE GAP MATRIX (48 MANDATORY REQUIREMENTS)
+## II · ARCHITECTURAL RECONCILIATION & LAYERED CLOSURE
+
+### II-A · RESOLUTION OF PRODUCT SEMANTICS: MODEL A VS MODEL B
+
+The orchestrator and mentor review evaluated whether the product embodies:
+- **MODEL A:** Setup acknowledgment + One Substantive Continuation (`Loom -> Setup -> Substantive Continuation -> Return`).
+- **MODEL B:** Setup + Two Substantive Continuations (`Loom -> Setup -> Continuation #1 = B -> Continuation #2 consumes B = C -> Return`).
+
+**Determination: MODEL A IS CANONICAL REPOSITORY-NATIVE ARCHITECTURE.**  
+Grounded in repository source, contracts, and test fixtures:
+1. `app/dome-world/marrowline-loom-demo.js`:
+   - Two action buttons: `loomDemoActionActivate` (`"Setup · Attach Loom handoff"`) and `loomDemoActionContinue` (`"Continue · Attach selected files"`).
+   - Turn 1 (`ACTIVATE`): Staged attachments = `[loom-transfer-activation.json]`, `documents: []` (AIA rules only, no selected files). Prompt: *"Receive the attached Loom handoff. Acknowledge the task and rules, identify the pending selected files, and wait for my next turn."* No task diligence is performed.
+   - Turn 2 (`CONTINUE`): Staged attachments = `packet.documents` (the 3 selected files). Prompt: *"Work on the original Loom task using these selected files under the portable rules..."* Substantive analysis executed here.
+   - Gate phase transitions: `ARRIVED` $\rightarrow$ `AIA_STAGED` $\rightarrow$ `AIA_SENT` $\rightarrow$ `FILES_STAGED` $\rightarrow$ `DONE`.
+   - Native Return unlocks when `phase === 'DONE'`. There is no third button or cyclic prompt loop in the product menu.
+   - The code explicitly counts substantive continuations as:
+     `admittedStages.filter(stage => stage.receipt.phase === 'CONTINUE').length === 1`.
+2. `app/dome-world/holonomy-loom/demo-contract.js`:
+   - `stage_policy` for `ACTIVATE` is `'AIA_ONLY'`.
+   - `stage_policy` for `CONTINUE` is `'SELECTED_FILES_BOUND'`.
+3. Disentangling Predecessor Receipt vs Content Ancestry:
+   - On the wire in R4, `predecessor_binding_verified = true`: The Setup stage receipt digest (`fb3913cf8...`) was sent in the `predecessor` field of the selected-files request and mathematically matched.
+   - However, `actual_content_predecessor_digest = null`: Because Setup produces no substantive diligence, `prior_result = null` was sent.
+   - Therefore: **RECEIPT_PREDECESSOR_VERIFIED != CONTENT_PREDECESSOR_VERIFIED**.
+   - Under Model A, `actual_content_predecessor_digest = null` is not a defect or omission; it is **lawful product behavior** because Turn 1 produced no substantive diligence to consume. Turn 2 is the *first substantive continuation*, consuming Turn 1's governance receipt ancestry to prove that rules were bound before files crossed.
+   - Previous reporting used the imprecise labels "Continuation #1" and "Continuation #2", which fostered the false impression that Turn 2 was consuming Turn 1's analytical content. The terminology is hereby reconciled: Turn 1 is **Setup (Governance Activation)**; Turn 2 is **First Substantive Continuation**.
+
+### II-B · LAYERED CLOSURE SCOPE MATRIX (8 EXPLICIT JURISDICTIONS)
+
+The word `CLOSURE_ADMITTED` is never used as an unconditioned global claim. It is explicitly partitioned into 8 distinct jurisdictions:
+
+| Jurisdiction / Scope | Evidence Status | Grounding Witness / Invariant Reference |
+|---|---|---|
+| `TRANSPORT_ROUTE_CLOSURE` | PROVEN_LIVE_PRODUCTION | Full route Loom $\rightarrow$ Marrowline $\rightarrow$ Setup $\rightarrow$ Selected Files $\rightarrow$ Return traversed end-to-end live on mobile viewports on `https://td613.com`. |
+| `RECEIPT_ANCESTRY_CLOSURE` | PROVEN_LIVE_PRODUCTION | Setup stage receipt digest (`fb3913cf8...`) bound on wire into selected-files continuation and verified. |
+| `CONTENT_ANCESTRY_CLOSURE` | NOT_APPLICABLE_UNDER_MODEL_A | Setup produces no substantive diligence; selected-files continuation is the first substantive turn, so `prior_result = null` is lawful. |
+| `RETURN_REVIEW_CLOSURE` | PROVEN_LIVE_PRODUCTION | Native `postMessage` delivered from Marrowline Gate to Loom; `#loomReturnWorkspace` visible with `returnWorkspaceVisible: true` and `journeyState: 'return'`. |
+| `LOCAL_CUSTODY_ADMISSION` | HELD | Return workspace explicitly renders: *"local custody admission remains HELD"*; `WeakSet` local process boundary preserved. |
+| `RECEIPT_SIGNATURE_VERIFICATION` | UNVERIFIED | Return workspace explicitly renders: *"Receipt signatures remain unverified"*; review material only. |
+| `PHYSICAL_DEVICE_EVIDENCE` | UNMEASURED | Emulated Safari/Chromium mobile viewports only; physical device lab required. |
+| `HUMAN_COMPREHENSION` | UNMEASURED | Preserved under `APERTURE.md`; preregistered human cohort study required. |
+
+### II-C · EXPORT OMISSION MATRIX (6 CHECKPOINTS)
+
+Export behavior across the entire journey was evaluated against product contracts and executable tests:
+
+| Journey Checkpoint | Verification Status | Grounding Contract / Assay Finding |
+|---|---|---|
+| Export after Loom preparation | PROVEN_LOCAL | Unit contract: `tests/loom-demo-contract.test.mjs#L264` (`exportLoomDemoOrigin`). |
+| Export after Setup (ACTIVATE) | NOT_APPLICABLE | Product contract: Export is deliberately disabled at Marrowline Gate before selected files cross (`loomGateExportCurrent.disabled === true`). |
+| Export after selected-file continuation | PROVEN_LOCAL | Unit contract: `tests/marrowline-loom-demo.test.mjs#L225` (`exportLoomDemoCurrent`). |
+| Export after true second continuation | NOT_APPLICABLE_UNDER_MODEL_A | Model A has exactly one substantive continuation. |
+| Export after Return | PROVEN_LOCAL | Unit contract: `tests/marrowline-loom-demo.test.mjs#L235` (Review-only recovery export). |
+| Export in live production assay | UNMEASURED | Live assay R4 exercised the primary visual & network route; file-download affordances were not triggered in browser. |
+
+### II-D · CLOSURE GAP MATRIX (48 MANDATORY REQUIREMENTS)
 
 Every requirement is strictly classified into exactly one evidence status based on observable evidence:
 
@@ -95,9 +151,9 @@ Every requirement is strictly classified into exactly one evidence status based 
 | 24 | replacement attempt | PROVEN_LOCAL | `tests/loom-demo-contract.test.mjs` (replacement holding) |
 | 25 | prior-lane preservation | PROVEN_LIVE_PRODUCTION | `#aiTask` retains original text across navigation |
 | 26 | actual Loom → Marrowline transition | PROVEN_LIVE_PRODUCTION | `09_marrowline_arrival.png`, `#marrowlineComposerPlus` active |
-| 27 | continuation #1 (setup dispatch) | PROVEN_LIVE_PRODUCTION | `12_continuation1_staged.png`, `13_continuation1_response.png` (HTTP 200 Gemini 3.5 Flash) |
-| 28 | continuation #2 (files dispatch) | PROVEN_LIVE_PRODUCTION | `15_continuation2_response.png`, HTTP 200 (67.5s, Gemini 3.8 Flash & Gemini 3.5 Flash, wire postDataBytes: 19,071, Neon custody head `f65da2e5...`) |
-| 29 | proof #2 consumes #1 as predecessor | PROVEN_LIVE_PRODUCTION | `fb3913cf8...` predecessor receipt digest verified on wire (`predecessor_binding_verified: true`) |
+| 27 | Setup turn (ACTIVATE dispatch) | PROVEN_LIVE_PRODUCTION | `12_continuation1_staged.png`, `13_continuation1_response.png` (HTTP 200 Gemini 3.5 Flash; AIA rules bound) |
+| 28 | Substantive continuation (files dispatch) | PROVEN_LIVE_PRODUCTION | `15_continuation2_response.png`, HTTP 200 (67.5s, Gemini 3.8 Flash & Gemini 3.5 Flash, wire postDataBytes: 19,071, Neon custody head `f65da2e5...`) |
+| 29 | Proof substantive continuation consumes Setup as predecessor receipt | PROVEN_LIVE_PRODUCTION | `fb3913cf8...` predecessor receipt digest verified on wire (`predecessor_binding_verified: true`; content predecessor not applicable under Model A) |
 | 30 | Return to original Loom | PROVEN_LIVE_PRODUCTION | `17_loom_return_scene.png`, `returnWorkspaceVisible: true`, `journeyState: 'return'`, First Crossing hidden |
 | 31 | tutorial bypass on Return | PROVEN_LIVE_PRODUCTION | `#loomFirstCrossing` remained hidden upon return |
 | 32 | task survival across Return | PROVEN_LIVE_PRODUCTION | `#aiTask` content identical across trip |
@@ -110,10 +166,10 @@ Every requirement is strictly classified into exactly one evidence status based 
 | 39 | custody status bifurcation | PROVEN_STATIC | `portable-loom-session.js#L18` (`WeakSet` process-local mark) |
 | 40 | HELD integrity | PROVEN_LIVE_PRODUCTION | Live API returns HTTP 400 `LOOM_DEMO_FIELDS_CHANGED` on test body |
 | 41 | export after Loom | PROVEN_LOCAL | `scripts/loom-journey-reconstruction-live-browser.mjs#L24` |
-| 42 | export after continuation #1 | PROVEN_LOCAL | `scripts/loom-journey-reconstruction-live-browser.mjs#L30` |
-| 43 | export after continuation #2 | PROVEN_LOCAL | `scripts/loom-journey-reconstruction-live-browser.mjs#L33` |
+| 42 | export after Setup (ACTIVATE) | NOT_APPLICABLE | Product contract: disabled at Gate before files cross (`loomGateExportCurrent.disabled === true`) |
+| 43 | export after substantive continuation | PROVEN_LOCAL | `scripts/loom-journey-reconstruction-live-browser.mjs#L33` |
 | 44 | export after Return | PROVEN_LOCAL | `scripts/loom-journey-reconstruction-live-browser.mjs#L36` |
-| 45 | live provider observation | PROVEN_LIVE_PRODUCTION | C1 observed (Gemini 3.5 Flash 200 OK, 38.1s); C2 observed (Gemini 3.8 Flash & Gemini 3.5 Flash 200 OK, 67.5s) |
+| 45 | live provider observation | PROVEN_LIVE_PRODUCTION | Setup observed (Gemini 3.5 Flash 200 OK, 38.1s); Substantive continuation observed (Gemini 3.8 Flash & Gemini 3.5 Flash 200 OK, 67.5s) |
 | 46 | physical iPhone / Safari observation | UNMEASURED | Requires physical device lab; emulated Safari user agent used |
 | 47 | production post-deploy route witness | PROVEN_LIVE_PRODUCTION | `scripts/live-production-closure-assay.mjs` executed live |
 | 48 | human comprehension evidence | UNMEASURED | Preregistered human study required by `APERTURE.md` |
@@ -146,9 +202,9 @@ Inspection of network payloads in `closure-assay-report-r4.json` establishes the
 }
 ```
 
-1. **Continuation #1:** Live endpoint `https://td613.com/api/khonapolit?operation=loom-demo-task` responded with HTTP 200 (elapsed: 38,112ms in R4). Observed model: `gemini-3.5-flash`. Dedicated Neon Loom custody service verified Vercel OIDC identity and committed durable head `fb3913cf...`.
-2. **Continuation #2:** Dispatch reached wire (19,071 request bytes) and executed live model generation for 67.5s, returning HTTP 200. Predecessor receipt digest linking C2 to C1 (`fb3913cf...`) was mathematically verified on wire. Dedicated Neon Loom custody service verified Vercel OIDC identity and committed durable head `f65da2e5...`.
-3. **Doctrinal Derivation:** Because both C1 and C2 succeeded, predecessor chaining was verified, and Return workspace was admitted, the multi-turn route provider observation is **PROVEN_LIVE_PRODUCTION**.
+1. **Turn 1 Setup (ACTIVATE):** Live endpoint `https://td613.com/api/khonapolit?operation=loom-demo-task` responded with HTTP 200 (elapsed: 38,112ms in R4). Observed model: `gemini-3.5-flash`. Dedicated Neon Loom custody service verified Vercel OIDC identity and committed durable head `fb3913cf...`.
+2. **Turn 2 Substantive Continuation (CONTINUE):** Dispatch reached wire (19,071 request bytes) and executed live model generation for 67.5s, returning HTTP 200. Predecessor receipt digest linking Turn 2 to Turn 1 (`fb3913cf...`) was verified on wire. Dedicated Neon Loom custody service verified Vercel OIDC identity and committed durable head `f65da2e5...`.
+3. **Doctrinal Derivation:** Because both Setup and the Substantive Continuation succeeded, predecessor receipt chaining was verified, and Return workspace was admitted, the two-turn mobile route provider observation is **PROVEN_LIVE_PRODUCTION**.
 
 ---
 
@@ -319,18 +375,19 @@ Evaluated across 5 conditions on coordinate `return_state_divergence_and_held_c2
 - **Aperture:** Sole role preventing false promotion from URL hash proxying ($S \neq O \neq E$).
 - **Atlas:** Sole role preventing unverified receiver transitions and custody forks.
 - **FADT:** Sole role preventing illegal action support escalation under unadmitted conditioning.
+- **Axiomatic Claim Ceiling:** The bounded five-condition ablation assay exhibited non-redundant contributions under the frozen evidence packet and decision procedure. It demonstrates structural non-redundancy within this specific coordinate, but does not constitute an unconditioned mathematical proof across all possible multi-agent interactions.
 
 ---
 
 ## XI · TEMPORAL CUSTODIAN ROLE
 
 The Temporal Custodian is defined as an **orchestration role protecting the whole service journey from local subsystem optimization**:
-- **Jurisdiction:** Route chronology across all four phases (`Loom -> Marrowline C1 -> Marrowline C2 -> Return`).
+- **Jurisdiction:** Route chronology across all journey phases (`Loom -> Marrowline Setup -> Marrowline Substantive Continuation -> Return`).
 - **Core Principle:** Local subsystem optimization must not damage whole-route continuity.
 - **Veto Authority:** `LOCAL_PASS_PLUS_GLOBAL_ROUTE_REGRESSION`.
 - **Finding on Episode 1428-X:**  
-  *Evaluation:* Phase 1 (Loom) passed; Phase 2 (C1) passed; Phase 2 (C2) recorded `NO_NETWORK_RESPONSE`; Phase 3 (Return) reached URL hash but failed workspace admittance.  
-  *Verdict:* **HELD (VETO APPLIED)**. Local success of C1 cannot be used to declare whole-journey completion.
+  *Evaluation:* Phase 1 (Loom) passed; Phase 2 (Turn 1 Setup) passed; Phase 2 (Turn 2 Substantive Continuation) recorded `NO_NETWORK_RESPONSE` in R1 and HTTP 422 in R2/R3; Phase 3 (Return) reached URL hash but failed workspace admittance.  
+  *Verdict:* **HELD (VETO APPLIED)**. Local success of Setup cannot be used to declare whole-journey completion.
 
 ---
 
@@ -375,7 +432,7 @@ The auditor enforces 9 automated, fail-closed admissibility rules:
 2. **LATIFA-B · DOLLHOUSE DISAGREEMENT AS PRODUCT INSTRUMENT**  
    - *Hypothesis:* Unresolved role disagreements can become an operator-facing diagnostic surface rather than hidden review text.  
    - *Falsifier:* Disagreement surface adds cognitive burden without improving operator decisions.  
-   - *Smallest Prototype:* Implemented in [`app/dome-world/dollhouse-disagreement-inspector.html`](file:///c:/Users/timst/OneDrive/Desktop/tcp-repository/app/dome-world/dollhouse-disagreement-inspector.html).  
+   - *Smallest Prototype:* Implemented in [`app/dome-world/dollhouse-disagreement-inspector.html`](file:///c:/Users/timst/OneDrive/Desktop/tcp-repository/app/dome-world/dollhouse-disagreement-inspector.html). Equipped with canonical inert `td613-sitewide-reset-preflight` shim; verified as a repository/product-addressable Lab fixture outside ordinary consumer Loom navigation.
    - *Ruling:* **PROMOTE**.
 3. **LATIFA-C · RECEIVER-INDEPENDENT AGENT OBSERVATORY**  
    - *Hypothesis:* An episode ledger plus role contracts can reproduce materially identical audit differentiation across Gemini, Claude, and ChatGPT.  
@@ -408,13 +465,13 @@ Executed across 4 synthetic consumer profiles (Novice, Enterprise, Fast Scanner,
 ## XVI · MOTION SEMANTICS EXPERIMENT
 
 Persisted fixture: [`motion-semantics-grammar.json`](file:///c:/Users/timst/OneDrive/Desktop/tcp-repository/tests/fixtures/dollhouse/motion-semantics-grammar.json)  
-Visual DOM rendering fixture: [`app/dome-world/motion-semantics-fixture.html`](file:///c:/Users/timst/OneDrive/Desktop/tcp-repository/app/dome-world/motion-semantics-fixture.html)  
+Visual DOM rendering fixture: [`app/dome-world/motion-semantics-fixture.html`](file:///c:/Users/timst/OneDrive/Desktop/tcp-repository/app/dome-world/motion-semantics-fixture.html) (Equipped with canonical inert `td613-sitewide-reset-preflight` shim; verified as a repository/product-addressable Lab fixture outside ordinary consumer Loom navigation).  
 Runner script: [`scripts/run-motion-discrimination-assay.mjs`](file:///c:/Users/timst/OneDrive/Desktop/tcp-repository/scripts/run-motion-discrimination-assay.mjs)
 
 Candidate choreography grammar rendered in browser and subjected to 5 blinded discrimination trials:
 - Glyphs evaluated: `à` (gathering), `米` (recurrence), `出` (release), `cōl` (protected continuity), `𝄐` (structural rest).
 - Spatial depth: 6 near (opacity .38), 13 mid (.24), 20 far (.20).
-- **Discrimination Matrix:** 0% confusion between gathering (`à`) and release (`出`). Observers accurately distinguished rest (`𝄐`) from active carrier motion across all trials.
+- **Discrimination Matrix:** 0% confusion between gathering (`à`) and release (`出`) in five synthetic trials demonstrates candidate grammar discrimination within the test fixture, but does not establish general human perceptual separability (`SYNTHETIC_AGENT_RESULT != HUMAN_RESULT`). Observers accurately distinguished rest (`𝄐`) from active carrier motion across all trials.
 - Preserved against role critique:
   - Pedagogue: Prohibits unannounced semantic surprises.
   - Aperture: Verifies visibility under reduced motion.
@@ -451,7 +508,7 @@ The speculative proposal to render private exclusions as an invisible "bare void
 ## XIX · ORCHESTRATOR 12-QUESTION SELF-AUDIT
 
 1. *Did you claim live provider execution without a live model call?*  
-   **No.** In R4, both C1 (Gemini 3.5 Flash, 38.1s, HTTP 200) and C2 (Gemini 3.8 Flash & Gemini 3.5 Flash, 67.5s, HTTP 200) were empirically observed on wire and verified against live Neon custody heads.
+   **No.** In R4, both Turn 1 Setup (Gemini 3.5 Flash, 38.1s, HTTP 200) and Turn 2 Substantive Continuation (Gemini 3.8 Flash & Gemini 3.5 Flash, 67.5s, HTTP 200) were empirically observed on wire and verified against live Neon custody heads.
 2. *Did you substitute local tests for live production?*  
    **No.** All live route claims are grounded in `docs/receipts/1428-closure-assay/r4/closure-assay-report-r4.json` and 24 live production screenshots. Local tests remain classified as `PROVEN_LOCAL`.
 3. *Did you substitute static analysis for a browser witness?*  
@@ -460,8 +517,8 @@ The speculative proposal to render private exclusions as an invisible "bare void
    **No.** Classified as `UNMEASURED`. Emulated Safari user-agent and mobile viewport geometry (390×700, 390×844) were used and labeled honestly.
 5. *Did you claim human comprehension without a study?*  
    **No.** Classified as `UNMEASURED`. Preregistered human cohort study remains required under `APERTURE.md`.
-6. *Did you claim C2 completed when the payload said NO_NETWORK_RESPONSE or returned 422?*  
-   **No.** C2 was strictly classified as `HELD` in R1 (timeout abort), R2 (HTTP 422 certainty assertion), and R3 (HTTP 422 fallback gap). Only in R4, where C2 returned HTTP 200 with predecessor binding verified, was it classified as `PROVEN_LIVE_PRODUCTION`.
+6. *Did you claim substantive continuation completed when the payload said NO_NETWORK_RESPONSE or returned 422?*  
+   **No.** The substantive continuation was strictly classified as `HELD` in R1 (timeout abort), R2 (HTTP 422 certainty assertion), and R3 (HTTP 422 fallback gap). Only in R4, where it returned HTTP 200 with predecessor receipt binding verified, was it classified as `PROVEN_LIVE_PRODUCTION`.
 7. *Did you claim Return was admitted when returnWorkspaceVisible was false?*  
    **No.** In R1-R3, Return was classified as `HELD`. Only in R4, where Marrowline's native Return button clicked, Loom received authentic message, and `document.getElementById('loomReturnWorkspace').hidden === false` with `journeyState: 'return'`, was Return classified as `PROVEN_LIVE_PRODUCTION`.
 8. *Did you import historical facts as same-episode observations?*  
@@ -471,9 +528,17 @@ The speculative proposal to render private exclusions as an invisible "bare void
 10. *Did you treat auditor findings as automatic mutations?*  
     **No.** Orchestrator Decision Gate evaluated each finding.
 11. *Did the Closure Auditor reject overclaims and harness defects?*  
-    **Yes.** Verifier proves auditor rejects overclaims, timeout mismatches, observer hash mutations, and wrong digest targets.
+    **Yes.** Verifier proves auditor rejects overclaims, timeout mismatches, observer hash mutations, wrong digest targets, and content predecessor contradictions.
 12. *Is the final episode status sealed?*  
-    **Yes, for Episode TD613-DOLLHOUSE-1428-X-R4.** Evaluated by `dollhouse-closure-auditor.js` as **`CLOSURE_ADMITTED`** with 0 infractions. The live production three-phase route is closed, verified, and complete.
+    **Yes, for Episode TD613-DOLLHOUSE-1428-X-R4.** Evaluated by `dollhouse-closure-auditor.js` as **`CLOSURE_ADMITTED`** with 0 infractions under explicit layered scope:
+    - `TRANSPORT_ROUTE_CLOSURE = PROVEN_LIVE_PRODUCTION`
+    - `RECEIPT_ANCESTRY_CLOSURE = PROVEN_LIVE_PRODUCTION`
+    - `CONTENT_ANCESTRY_CLOSURE = NOT_APPLICABLE_UNDER_MODEL_A`
+    - `RETURN_REVIEW_CLOSURE = PROVEN_LIVE_PRODUCTION`
+    - `LOCAL_CUSTODY_ADMISSION = HELD`
+    - `RECEIPT_SIGNATURE_VERIFICATION = UNVERIFIED`
+    - `PHYSICAL_DEVICE_EVIDENCE = UNMEASURED`
+    - `HUMAN_COMPREHENSION = UNMEASURED`
 
 ---
 
@@ -488,17 +553,18 @@ $$\text{EPISODE TD613-DOLLHOUSE-1428-X-R4} = \mathbf{CLOSURE\_ADMITTED}$$
    - The sequential assay runs (R1 $\rightarrow$ R2 $\rightarrow$ R3 $\rightarrow$ R4) proved the necessity of distinguishing harness measurement failures from real product and provider defects.
    - R1 isolated witness harness timeout defects (45s vs 225s product ceiling).
    - R2 and R3 isolated provider evidence boundary violations and prompt fallback gaps where Gemini promoted contractual retention ceilings ("up to 45 days") into guaranteed duration ("will persist").
-   - Product repair PR #1432 (`d4c05df14c`), released via Issue #405 (relocked `1f0487b7c`), unconditionally bound modal retention rules into staged C2 requests.
+   - Product repair PR #1432 (`d4c05df14c`), released via Issue #405 (relocked `1f0487b7c`), unconditionally bound modal retention rules into staged requests.
 2. **Definitive Live Route Witness:**
-   - In R4, both Continuation #1 (AIA setup) and Continuation #2 (selected files) returned HTTP 200 on wire.
-   - Predecessor receipt digest linking C2 to C1 was mathematically confirmed across the live wire.
+   - In R4, both Turn 1 Setup (`ACTIVATE`) and Turn 2 Substantive Continuation (`CONTINUE`) returned HTTP 200 on wire.
+   - Predecessor receipt digest linking Turn 2 to Turn 1 (`fb3913cf8...`) was verified across the live wire (`predecessor_binding_verified: true`). Content predecessor is null, aligning with canonical Model A architecture (Setup performs no task diligence).
    - Return to Loom completed natively without observer mutation, admitting `#loomReturnWorkspace` with `returnWorkspaceVisible: true` and `journeyState: 'return'`.
    - Hostile mobile layout, rapid tap, reload, and navigation tests all passed with zero horizontal blowout and 39 carriers stable.
 3. **Role of PR #1430:**
    - PR #1430 (`amari/loom-mobile-dollhouse-closure-1430`) serves as the complete **Laboratory Extraction PR**, housing:
      - The 4-run empirical progression receipts and screenshots (`docs/receipts/1428-closure-assay/`);
      - The 4-role blind divergence experiment and ablation matrix (`tests/fixtures/dollhouse/blind-divergence/`);
-     - The interactive Disagreement and Falsification Inspectors (`app/dome-world/dollhouse-disagreement-inspector.html` and `dollhouse-falsification-registry.html`);
-     - The 9-rule fail-closed Dollhouse Closure Auditor (`app/engine/dollhouse-closure-auditor.js` and `tests/dollhouse-closure-auditor.test.mjs`).
-   - All components are 100% verified, and the closure of Episode 1428-X is complete.
+     - The interactive Disagreement and Falsification Inspectors (`app/dome-world/dollhouse-disagreement-inspector.html` and `dollhouse-falsification-registry.html`), verified as repository/product-addressable Lab surfaces equipped with the inert `td613-sitewide-reset-preflight` shim and remaining outside ordinary consumer Loom navigation;
+     - The 10-rule fail-closed Dollhouse Closure Auditor (`app/engine/dollhouse-closure-auditor.js` and `tests/dollhouse-closure-auditor.test.mjs`).
+   - PR #1430 is a **MERGE-CANDIDATE LABORATORY EXTRACTION**.
+   - Production deployment remains a **SEPARATE OPERATOR DECISION** governed by Issue #405.
 

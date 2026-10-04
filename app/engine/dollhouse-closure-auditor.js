@@ -151,10 +151,43 @@ export function auditDollhouseClosure({
     });
   }
 
+  // 10. Content Predecessor Contradiction Check (RECEIPT_ANCESTRY != CONTENT_ANCESTRY)
+  if (predProof?.content_predecessor_verified === true) {
+    const expectedContent = predProof?.expected_content_predecessor_digest;
+    const actualContent = predProof?.actual_content_predecessor_digest;
+    if (!actualContent || actualContent !== expectedContent) {
+      infractions.push({
+        code: 'ERR_CONTENT_PREDECESSOR_CONTRADICTION',
+        message: 'Report claims content_predecessor_verified=true, but actual_content_predecessor_digest is null or does not match expected_content_predecessor_digest. RECEIPT_ANCESTRY != CONTENT_ANCESTRY.',
+        evidence: { expectedContent, actualContent }
+      });
+    }
+  }
+
   const passed = infractions.length === 0;
   const auditVerdict = passed
     ? (closureReport.verdict === 'COMPLETED' ? 'CLOSURE_ADMITTED' : 'EVIDENCE_ALIGNED_HELD')
     : 'CLOSURE_REJECTED';
+
+  const isCompleted = closureReport.verdict === 'COMPLETED';
+  const layeredClosureScope = {
+    transport_route_closure: isCompleted && returnWorkspaceVisible && journeyState === 'return'
+      ? 'PROVEN_LIVE_PRODUCTION'
+      : (returnStage?.summary ? 'HELD' : 'UNMEASURED'),
+    receipt_ancestry_closure: predecessorVerified
+      ? 'PROVEN_LIVE_PRODUCTION'
+      : 'HELD',
+    content_ancestry_closure: predProof?.content_predecessor_verified === true
+      ? 'PROVEN_LIVE_PRODUCTION'
+      : 'NOT_APPLICABLE_UNDER_MODEL_A',
+    return_review_closure: isCompleted && returnWorkspaceVisible && journeyState === 'return'
+      ? 'PROVEN_LIVE_PRODUCTION'
+      : 'HELD',
+    local_custody_admission: 'HELD',
+    receipt_signature_verification: 'UNVERIFIED',
+    physical_device_evidence: 'UNMEASURED',
+    human_comprehension: 'UNMEASURED'
+  };
 
   return {
     schema: CLOSURE_AUDIT_SCHEMA,
@@ -162,6 +195,7 @@ export function auditDollhouseClosure({
     verdict: auditVerdict,
     passed,
     infraction_count: infractions.length,
-    infractions
+    infractions,
+    layered_closure_scope: layeredClosureScope
   };
 }
