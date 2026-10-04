@@ -1,0 +1,87 @@
+{
+  "$schema": "td613.dollhouse.episode-observatory/v1.0",
+  "episode_id": "ep_loom_closure_1791090079183",
+  "timestamp": "2026-10-04T05:01:19.183Z",
+  "target_url": "https://td613.com/dome-world/holonomy-loom.html",
+  "observers": {
+    "PEDAGOGUE": {
+      "jurisdiction": "consequence_order_route_burden_practice",
+      "instruments": ["DOM_SEQUENCE", "GESTURE_CONSEQUENCE_RECORDER"],
+      "observations": {
+        "phase1_loom": {
+          "status": "PASS",
+          "evidence": "Tutorial completed in 2 steps, Notice -> Act preserved, exit cleanly available via 'Leave tutorial'."
+        },
+        "phase2_marrowline": {
+          "status": "PASS",
+          "evidence": "Staged request clearly announces consumer AI-request language; Send action requires explicit gesture."
+        },
+        "phase3_return": {
+          "status": "PASS",
+          "evidence": "Tutorial is bypassed on return; prior task and selections remain intact without reset."
+        }
+      }
+    },
+    "APERTURE": {
+      "jurisdiction": "observability_identifiability_uncertainty",
+      "instruments": ["DOM_GEOMETRY_PROBE", "FRAME_CONTINUITY_LOGGER"],
+      "observations": {
+        "phase1_loom": {
+          "status": "DEFICIT_NOTED",
+          "evidence": "Carrier count = 39 verified; 6 near, 13 mid, 20 far. 20 far-plane carriers have opacity 0.035 (ambient depth, low legibility)."
+        },
+        "phase2_marrowline": {
+          "status": "PASS",
+          "evidence": "Gate panel and composer layout contained; zero horizontal overflow on 390x700."
+        },
+        "phase3_return": {
+          "status": "PASS",
+          "evidence": "Return scene renders correctly; task survival confirmed without synthetic completion."
+        }
+      }
+    },
+    "ATLAS": {
+      "jurisdiction": "receiver_relative_relations_predecessor_chain",
+      "instruments": ["DIGEST_CHAIN_VERIFIER", "CROSS_TAB_RELATION_CHECKER"],
+      "observations": {
+        "phase1_loom": {
+          "status": "PASS",
+          "evidence": "Deterministic seed (613) used for carrier projections; initial session root created."
+        },
+        "phase2_marrowline": {
+          "status": "PASS",
+          "evidence": "Continuation #1 successfully bound to Loom handoff; Continuation #2 consumes Continuation #1."
+        },
+        "phase3_return": {
+          "status": "PASS",
+          "evidence": "Receiver identity preserved across popup return; WeakSet local custody mark bifurcates live from review."
+        }
+      }
+    },
+    "FADT": {
+      "jurisdiction": "finite_quotient_survival_lawful_support",
+      "instruments": ["SUPPORT_PRESERVATION_PROBE", "GOVERNOR_LIFECYCLE_CHECKER"],
+      "observations": {
+        "phase1_loom": {
+          "status": "PASS",
+          "evidence": "Exclusion boundary verified: 1 local canary file kept private; support remains hermetic."
+        },
+        "phase2_marrowline": {
+          "status": "PASS",
+          "evidence": "Outbound prompt contains 3 shared files only; zero leakage of private canary file across wire."
+        },
+        "phase3_return": {
+          "status": "PASS",
+          "evidence": "Returned workspace retains exclusion status: aiLocalCount = 1 survives return without erasure."
+        }
+      }
+    }
+  },
+  "temporal_custodian": {
+    "clock_owner": "AnimationCoordinator",
+    "monotonic_ticks": true,
+    "ttl_ms": 600000,
+    "expiry_held": true,
+    "replay_pure": true
+  }
+}
