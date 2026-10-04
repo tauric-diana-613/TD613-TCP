@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
-const safety = fs.readFileSync('.github/workflows/vercel-relock-safety.yml', 'utf8');
+const safety = fs.readFileSync('.github/workflows/vercel-relock-safety.yml', 'utf8').replace(/\r\n/g, '\n');
 const config = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 
 assert.equal(config.git?.deploymentEnabled, false, 'Vercel Git auto-deploy lock must be closed at rest');

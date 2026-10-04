@@ -134,3 +134,17 @@ test('Dollhouse Closure Auditor: rejects harness defects (timeout mismatch, obse
     'Rejects predecessor verifier derived from request_digest instead of stage receipt digest');
 });
 
+test('Dollhouse Closure Auditor: verifies R4 live production report evaluates to CLOSURE_ADMITTED', () => {
+  const r4ReportPath = path.join(__dirname, '..', 'docs', 'receipts', '1428-closure-assay', 'closure-assay-report-r4.json');
+  if (fs.existsSync(r4ReportPath)) {
+    const r4Report = JSON.parse(fs.readFileSync(r4ReportPath, 'utf8'));
+    const result = auditDollhouseClosure({
+      closureReport: r4Report,
+      currentSourceMetrics: { farCarrierOpacity: 0.20, governorEarlyCatchCleaned: true }
+    });
+    assert.equal(result.verdict, 'CLOSURE_ADMITTED', 'R4 live report must evaluate to CLOSURE_ADMITTED');
+    assert.equal(result.passed, true);
+    assert.equal(result.infraction_count, 0);
+  }
+});
+

@@ -4,8 +4,10 @@ import { resolve, join } from 'node:path';
 import { loomDemoReceiptDigest } from '../app/dome-world/holonomy-loom/demo-contract.js';
 
 const baseOutDir = resolve(process.env.TD613_ASSAY_BASE_OUT_DIR || 'docs/receipts/1428-closure-assay');
-const episodeId = process.env.EPISODE_ID || 'TD613-DOLLHOUSE-1428-X-R3';
-const outSubdir = process.env.TD613_ASSAY_SUBDIR || (episodeId.toLowerCase().includes('r3') ? 'r3' : '');
+const episodeId = process.env.EPISODE_ID || 'TD613-DOLLHOUSE-1428-X-R4';
+const runMatch = episodeId.match(/r\d+/i);
+const runSuffix = runMatch ? runMatch[0].toLowerCase() : 'r4';
+const outSubdir = process.env.TD613_ASSAY_SUBDIR || (runSuffix === 'r1' ? '' : runSuffix);
 const outDir = outSubdir ? join(baseOutDir, outSubdir) : baseOutDir;
 await mkdir(outDir, { recursive: true });
 
@@ -660,6 +662,23 @@ try {
 
   if (c1Success && c2Success && returnSuccess) {
     report.verdict = 'COMPLETED';
+    const s5 = report.stages.find(s => s.name === '05_continuation1_dispatch');
+    const s6 = report.stages.find(s => s.name === '06_continuation2_dispatch');
+    const s7 = report.stages.find(s => s.name === '07_loom_return');
+    report.provider_classification = {
+      status: 'ADMITTED',
+      provider: 'google-gemini-live-production',
+      c1_status: s5?.summary?.status,
+      c1_elapsed_ms: s5?.summary?.elapsed_ms,
+      c1_neon_head: s5?.summary?.body?.loom_demo_head,
+      c2_status: s6?.summary?.status,
+      c2_elapsed_ms: s6?.summary?.elapsed_ms,
+      c2_models: s6?.summary?.body?.native_reply?.gemini_consumption?.models,
+      c2_neon_head: s6?.summary?.body?.loom_demo_head,
+      predecessor_binding_verified: report.predecessor_proof?.predecessor_binding_verified,
+      return_workspace_admitted: Boolean(s7?.summary?.returnWorkspaceVisible),
+      verdict: 'COMPLETED'
+    };
   } else {
     report.verdict = 'HELD';
     if (!c2Success) {
@@ -687,11 +706,10 @@ try {
   report.page_errors = pageErrors;
   report.network_requests = networkRequests;
 
-  const suffix = episodeId.toLowerCase().includes('r3') ? 'r3' : (episodeId.toLowerCase().includes('r2') ? 'r2' : 'r1');
-  const rReportPath = join(outDir, `closure-assay-report-${suffix}.json`);
+  const rReportPath = join(outDir, `closure-assay-report-${runSuffix}.json`);
   await writeFile(rReportPath, JSON.stringify(report, null, 2), 'utf8');
   if (outSubdir) {
-    const topReportPath = join(baseOutDir, `closure-assay-report-${suffix}.json`);
+    const topReportPath = join(baseOutDir, `closure-assay-report-${runSuffix}.json`);
     await writeFile(topReportPath, JSON.stringify(report, null, 2), 'utf8');
   }
   console.log(`\nClosure Assay Report written to: ${rReportPath}`);
