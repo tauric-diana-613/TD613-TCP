@@ -1,0 +1,87 @@
+{
+  "$schema": "https://td613.com/schemas/witness-manifest-v1.json",
+  "manifest_version": "1.0.0",
+  "title": "Candidate X External Evaluation Egress Packet",
+  "description": "Integrity-bound witness packet for independent external receiver evaluation (R3).",
+  "packet_identifier": "r3-candidate-x",
+  "base_commit": "5b4b34278c6100d3c21ced35984c046da157e097",
+  "candidate_commit": "41112992ffd82dd1f06552b3c5881dc43de3cb20",
+  "repository": "tauric-diana-613/TD613-TCP",
+  "witness_branch": "witness/candidate-x-r3-egress-41112992-20261004",
+  "packet_directory": "artifacts/r3-candidate-x/",
+  "created_at": "2026-10-04T21:00:00Z",
+  "authority": {
+    "authority_class": "witness_egress_only",
+    "pr_allowed": false,
+    "merge_allowed": false,
+    "deployment_allowed": false,
+    "issue_405_status": "OPEN_MEMBRANE_CLOSED"
+  },
+  "files": [
+    {
+      "file": "01-R3_RECEIVER_README.md",
+      "size_bytes": 4386,
+      "sha256": "581639a622a39172ef49cab2445dccb5c090f02d29ea2158a4222f88fb7df28c"
+    },
+    {
+      "file": "02-candidate-x.patch",
+      "size_bytes": 34547,
+      "sha256": "61d24971990b700d654f1266c53cb3d2336a14a7ae7542a4606373107219c423"
+    },
+    {
+      "file": "03-BEHAVIOR_CONTRACT.md",
+      "size_bytes": 2968,
+      "sha256": "7caa740a204cff62f06b05ddab9e476a6330e481a3f76bd43344da4978b8e8dc"
+    },
+    {
+      "file": "04-KNOWN_HOLDS.md",
+      "size_bytes": 2369,
+      "sha256": "e42e9c54862d0f6bb4a2debf9f807bcbe84fd624e9efeb775eb63c42b14f5f15"
+    },
+    {
+      "file": "05-LOCAL_BROWSER_WITNESS.md",
+      "size_bytes": 4983,
+      "sha256": "2baad9b6501b4b63b8f9fc66d866a5320f2f17f110c7766b434ae2ad63aaa804"
+    },
+    {
+      "file": "06-PRODUCT_HOLDS.md",
+      "size_bytes": 2757,
+      "sha256": "6ce73429b6bb9591c95405671334e463a5ba0cb7997e67fe210efc70e01e098a"
+    },
+    {
+      "file": "07-ATLAS_RELATION_CONTRACT.json",
+      "size_bytes": 2317,
+      "sha256": "b1d011db42920fa5a5bbe8b2a56f2b3fbf88c0574b31a0a19fae2a53628a04c1"
+    },
+    {
+      "file": "08-FADT_ERASURE_CONTRACT.json",
+      "size_bytes": 2608,
+      "sha256": "6660d7ae57d25f5127924c75b6addc0e87fbd5914b8f04c4d1b60fc899179fa7"
+    },
+    {
+      "file": "09-NEUTRAL_PROTOCOL.md",
+      "size_bytes": 6011,
+      "sha256": "1719800edaf5b76f1aee57fbc82a9c773d9d9882b6e1af84e3edf1f7067c21e1"
+    },
+    {
+      "file": "10-NEUTRAL_ASSAY_PREREG.md",
+      "size_bytes": 4074,
+      "sha256": "5b745b7a1678f5365830b1666adf8c801892d37fbadd3e67e0f21ccf25060f30"
+    },
+    {
+      "file": "11-NEUTRAL_INVARIANT_KEY.sha256",
+      "size_bytes": 94,
+      "sha256": "2e1893754e27abe940510c448e198ab5c84f39c4d231dbe8102474bfccaff299"
+    },
+    {
+      "file": "13-R2_5_EGRESS_RECEIPT.md",
+      "size_bytes": 1466,
+      "sha256": "83999b34d5c28e43035a03f07fa63d6b5c2139dcf4de6037fa9ec499ef08652d"
+    },
+    {
+      "file": "candidate-x.bundle",
+      "size_bytes": 6045,
+      "sha256": "41a08c007202c108fc712d74ce5cd529c836271ccf6660c037b6360d21018464"
+    }
+  ]
+}

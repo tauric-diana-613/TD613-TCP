@@ -1,0 +1,39 @@
+{
+  "$schema": "https://td613.com/schemas/atlas-relation-contract-v1.json",
+  "contract_version": "td613.atlas.relation-contract/v1",
+  "target_candidate": "CANDIDATE_X",
+  "base_revision": "5b4b34278c6100d3c21ced35984c046da157e097",
+  "candidate_payload_identity": "41112992ffd82dd1f06552b3c5881dc43de3cb20",
+  "required_invariant_relations": {
+    "selected_file_carriage_rule": "Zero file carriage during ordinary chat; transient single-turn carriage authorized strictly upon explicit contemporaneous human confirmation",
+    "ordinary_chat_separation": "Messages submitted in composer while at REST route directly to standard chat endpoint without selected files or Loom headers",
+    "rest_semantics": "Loom controller automatically disarms (active = false) immediately upon stage admittance, returning to REST without requiring navigation exit",
+    "explicit_reentry_gesture": "Governed continuation cannot be triggered by inline message entry alone; requires explicit invocation of re-entry surface",
+    "typed_boundary_disclosure": "Triad disclosure before carriage: CROSS (what crosses to AI), STAY (what stays in browser), UNKNOWN (remote model state)",
+    "single_turn_governed_authority": "Confirming re-entry arms carriage authority for exactly one turn; subsequent admittance returns immediately to REST",
+    "predecessor_relation": "Continuation C_k strictly binds stage receipt digest and result digest of immediate predecessor C_{k-1}",
+    "known_missingness": [
+      "PHYSICAL_TOUCH_HARDWARE",
+      "NEON_LIVE_SIGNER",
+      "R3_EXOGENOUS_RECEIVER"
+    ],
+    "claim_ceiling": "LOCAL_STRUCTURAL_COHERENCE",
+    "return_export_semantics": "Export packet preserves chronological sequential array of all admitted stage receipts without mutation or gap"
+  },
+  "permitted_variations": {
+    "filesystem_path": true,
+    "operating_system": true,
+    "receiver_implementation_details": true,
+    "test_runner_presentation": true,
+    "prose_formatting": true,
+    "ui_inspection_narration": true,
+    "local_directory_structure": true
+  },
+  "declared_anti_equivalences": [
+    "SAME_CONTROL_RELATION != SAME_PRESENTATION",
+    "SAME_FILES != SUCCESSFUL_RECONSTRUCTION",
+    "REMOTE_ADDRESSABILITY != TRUST_TRANSFER",
+    "REMOTE_PUBLICATION != R3",
+    "RETURNED_RESULT != ADMITTED_RESULT"
+  ]
+}
