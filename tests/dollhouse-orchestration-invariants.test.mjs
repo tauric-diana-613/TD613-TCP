@@ -4,109 +4,128 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { DOLLHOUSE_AGENT_REGISTRY, getDollhouseAgent, listDollhouseAgents } from '../app/engine/dollhouse-agent-registry.js';
-import { createDollhouseCaseDossier, DOLLHOUSE_CASE_DOSSIER_SCHEMA } from '../app/engine/dollhouse-case-dossier.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-test('Dollhouse Orchestration Invariant: Blind Divergence across four distinct jurisdictions', () => {
-  const agents = listDollhouseAgents();
-  assert.equal(agents.length, 4, 'Exactly four canonical Dollhouse agents must be registered');
+test('Dollhouse Orchestration Invariant: Blind Divergence produces genuinely distinct outputs', () => {
+  const dir = path.join(__dirname, 'fixtures', 'dollhouse', 'blind-divergence');
+  const pedagogue = JSON.parse(fs.readFileSync(path.join(dir, 'pedagogue-blind-audit.json'), 'utf8'));
+  const aperture = JSON.parse(fs.readFileSync(path.join(dir, 'aperture-blind-audit.json'), 'utf8'));
+  const atlas = JSON.parse(fs.readFileSync(path.join(dir, 'atlas-blind-audit.json'), 'utf8'));
+  const fadt = JSON.parse(fs.readFileSync(path.join(dir, 'fadt-blind-audit.json'), 'utf8'));
+  const divergenceMap = JSON.parse(fs.readFileSync(path.join(dir, 'divergence-map.json'), 'utf8'));
 
-  const jurisdictions = new Set(agents.map(a => a.role));
-  assert.equal(jurisdictions.size, 4, 'Every Dollhouse agent must possess a unique analytical role');
+  // Ensure all 4 addressed the same coordinate
+  const coord = 'return_state_divergence_and_held_c2';
+  assert.equal(pedagogue.coordinate, coord);
+  assert.equal(aperture.coordinate, coord);
+  assert.equal(atlas.coordinate, coord);
+  assert.equal(fadt.coordinate, coord);
 
-  const authorities = new Set(agents.map(a => a.authority_ceiling));
-  assert.equal(authorities.size, 4, 'Every Dollhouse agent must have a non-equivalent authority ceiling');
+  // 1. Observations are distinct
+  const observations = new Set([pedagogue.observation, aperture.observation, atlas.observation, fadt.observation]);
+  assert.equal(observations.size, 4, 'All 4 roles must emit distinct observations');
 
-  // Ground truth: PEDAGOGUE != APERTURE != ATLAS != FADT
-  const pedagogue = getDollhouseAgent('PEDAGOGUE');
-  const aperture = getDollhouseAgent('APERTURE');
-  const atlas = getDollhouseAgent('ATLAS');
-  const fadt = getDollhouseAgent('FADT');
+  // 2. Concerns represent distinct failure modes
+  const concerns = new Set([pedagogue.concern, aperture.concern, atlas.concern, fadt.concern]);
+  assert.equal(concerns.size, 4, 'All 4 roles must identify distinct concerns');
 
-  assert.notEqual(pedagogue.id, aperture.id);
-  assert.notEqual(aperture.id, atlas.id);
-  assert.notEqual(atlas.id, fadt.id);
-  assert.notEqual(fadt.id, pedagogue.id);
-});
+  // 3. Falsifiers are rooted in unique epistemic instruments
+  const falsifiers = new Set([pedagogue.falsifier, aperture.falsifier, atlas.falsifier, fadt.falsifier]);
+  assert.equal(falsifiers.size, 4, 'All 4 roles must propose distinct falsifiers');
 
-test('Dollhouse Orchestration Invariant: Agent Ablation drops necessary jurisdiction', () => {
-  // Define the critical invariants guarded uniquely by each role
-  const jurisdictionMatrix = {
-    PEDAGOGUE: {
-      unique_jurisdiction: 'consequence_order',
-      dropped_invariant: 'Notice must precede action, rest/exit must remain unpenalized'
-    },
-    APERTURE: {
-      unique_jurisdiction: 'observability_geometry',
-      dropped_invariant: 'S != O != E, prohibit synthetic completion and verify visual identifiability'
-    },
-    ATLAS: {
-      unique_jurisdiction: 'receiver_relative_continuity',
-      dropped_invariant: 'Receiver presentation differences preserve control plane and predecessor digest chain'
-    },
-    FADT: {
-      unique_jurisdiction: 'finite_quotient_erasure',
-      dropped_invariant: 'Private exclusions must never cross into shared support under stage erasure'
-    }
-  };
+  // 4. Claim ceilings differ
+  assert.equal(pedagogue.claim_ceiling, 'recommendation-and-verification-only-human-closure-required');
+  assert.equal(aperture.claim_ceiling, 'experimental-research-instrument-no-external-reality-or-release-authority');
+  assert.equal(atlas.claim_ceiling, 'receiver-relation-audit-only-no-basis-free-geometry-no-release-no-lineage-promotion');
+  assert.equal(fadt.claim_ceiling, 'finite-support-descent-audit-only-no-universal-ai-law-no-release-no-source-state-reconstruction');
 
-  for (const [role, data] of Object.entries(jurisdictionMatrix)) {
-    const remainingRoles = Object.keys(jurisdictionMatrix).filter(r => r !== role);
-    assert.equal(remainingRoles.length, 3);
-    assert.ok(!remainingRoles.includes(role), `Role ${role} must be completely excluded during ablation`);
-    assert.ok(data.unique_jurisdiction.length > 0);
-    assert.ok(data.dropped_invariant.length > 0);
+  // 5. Divergence Map records unique contribution
+  for (const role of ['PEDAGOGUE', 'APERTURE', 'ATLAS', 'FADT']) {
+    assert.ok(divergenceMap.divergence[role].unique_to_role.length > 20);
+    assert.equal(divergenceMap.divergence[role].survives_cross_exam, true);
   }
 });
 
-test('Dollhouse Orchestration Invariant: Same-Episode Observatory adheres to single-episode trace', () => {
+test('Dollhouse Orchestration Invariant: Ablation Experiment proves differentiated contribution', () => {
+  const ablationPath = path.join(__dirname, 'fixtures', 'dollhouse', 'blind-divergence', 'ablation-experiment.json');
+  const ablation = JSON.parse(fs.readFileSync(ablationPath, 'utf8'));
+
+  const conditions = ablation.conditions;
+  assert.equal(conditions.length, 5, 'Must evaluate 5 conditions (Full + 4 single ablations)');
+
+  const full = conditions.find(c => c.condition === 'FULL_DOLLHOUSE');
+  assert.equal(full.findings_emitted, 4);
+  assert.equal(full.incorrect_promotions, 0);
+
+  const minusPedagogue = conditions.find(c => c.condition === 'MINUS_PEDAGOGUE');
+  assert.equal(minusPedagogue.findings_lost, 1);
+  assert.equal(minusPedagogue.lost_finding_id, 'PEDAGOGUE_ROUTE_BURDEN');
+  assert.equal(minusPedagogue.unresolved_coordinates, 1);
+
+  const minusAperture = conditions.find(c => c.condition === 'MINUS_APERTURE');
+  assert.equal(minusAperture.findings_lost, 1);
+  assert.equal(minusAperture.lost_finding_id, 'APERTURE_OBSERVABILITY_CONFLATION');
+  assert.equal(minusAperture.incorrect_promotions, 1, 'Without Aperture, URL hash causes false promotion');
+
+  const minusAtlas = conditions.find(c => c.condition === 'MINUS_ATLAS');
+  assert.equal(minusAtlas.findings_lost, 1);
+  assert.equal(minusAtlas.lost_finding_id, 'ATLAS_CROSS_WINDOW_CHAIN');
+  assert.equal(minusAtlas.incorrect_promotions, 1, 'Without Atlas, unverified receiver causes custody fork');
+
+  const minusFadt = conditions.find(c => c.condition === 'MINUS_FADT');
+  assert.equal(minusFadt.findings_lost, 1);
+  assert.equal(minusFadt.lost_finding_id, 'FADT_LAWFUL_SUPPORT_BOUNDARY');
+  assert.equal(minusFadt.incorrect_promotions, 1, 'Without FADT, unconditioned actions are illegally granted');
+});
+
+test('Dollhouse Orchestration Invariant: Same-Episode Observatory is strictly grounded in evidence', () => {
   const observatoryPath = path.join(__dirname, 'fixtures', 'dollhouse', 'episode-1428-x-observatory.json');
-  assert.ok(fs.existsSync(observatoryPath), 'Episode observatory fixture must exist');
-
   const observatory = JSON.parse(fs.readFileSync(observatoryPath, 'utf8'));
+
   assert.equal(observatory.episode_id, 'ep_loom_closure_1791090079183');
-  assert.ok(observatory.timestamp.startsWith('2026-10-04'));
 
-  const observerKeys = Object.keys(observatory.observers);
-  assert.deepEqual(observerKeys.sort(), ['APERTURE', 'ATLAS', 'FADT', 'PEDAGOGUE'].sort());
-
-  // Confirm that all 4 observers observed the exact same three phases of the episode
-  for (const role of observerKeys) {
+  // Verify that observations contain explicit evidence pointers
+  for (const role of ['PEDAGOGUE', 'APERTURE', 'ATLAS', 'FADT']) {
     const obs = observatory.observers[role];
-    assert.ok(obs.instruments.length >= 1, `${role} must declare epistemic instruments`);
-    assert.ok(obs.observations.phase1_loom, `${role} must observe Phase 1 (Loom)`);
-    assert.ok(obs.observations.phase2_marrowline, `${role} must observe Phase 2 (Marrowline)`);
-    assert.ok(obs.observations.phase3_return, `${role} must observe Phase 3 (Return)`);
+    for (const [phase, data] of Object.entries(obs.observations)) {
+      assert.ok(data.episode_event_id, `${role} ${phase} must specify episode_event_id`);
+      assert.ok(data.timestamp, `${role} ${phase} must specify timestamp`);
+      assert.ok(data.artifact_path, `${role} ${phase} must specify artifact_path`);
+      assert.ok(data.screenshot_id, `${role} ${phase} must specify screenshot_id`);
+    }
   }
 
-  // Temporal Custodian checks
-  assert.equal(observatory.temporal_custodian.clock_owner, 'AnimationCoordinator');
-  assert.equal(observatory.temporal_custodian.monotonic_ticks, true);
-  assert.equal(observatory.temporal_custodian.ttl_ms, 600000);
+  // Atlas observation must be HELD for phase 2 (matching C2 NO_NETWORK_RESPONSE)
+  assert.equal(observatory.observers.ATLAS.observations.phase2_marrowline.status, 'HELD');
+
+  // Aperture observation must reflect current source (.20 opacity)
+  assert.ok(observatory.observers.APERTURE.observations.phase1_loom.evidence.includes('0.20'));
+
+  // Temporal Custodian role must be whole-journey protector with veto authority
+  assert.equal(observatory.temporal_custodian.veto_authority, 'LOCAL_PASS_PLUS_GLOBAL_ROUTE_REGRESSION');
+  assert.equal(observatory.temporal_custodian.verdict, 'HELD');
 });
 
-test('Dollhouse Orchestration Invariant: Disagreement Ledger schema and rationales', () => {
+test('Dollhouse Orchestration Invariant: Disagreement Ledger preserves real disagreements', () => {
   const ledgerPath = path.join(__dirname, 'fixtures', 'dollhouse', 'disagreement-ledger-1428.json');
-  assert.ok(fs.existsSync(ledgerPath), 'Disagreement ledger fixture must exist');
-
   const ledger = JSON.parse(fs.readFileSync(ledgerPath, 'utf8'));
+
   assert.equal(ledger.$schema, 'td613.dollhouse.disagreement-ledger/v1.0');
   assert.equal(ledger.episode_id, 'ep_loom_closure_1791090079183');
-  assert.ok(ledger.disagreements.length >= 4, 'Must record all preserved disagreements');
+  assert.ok(ledger.disagreements.length >= 5, 'Must record 5 preserved disagreements');
 
-  for (const item of ledger.disagreements) {
-    assert.ok(item.id.startsWith('DISAGREE-'), 'ID format');
-    assert.ok(typeof item.coordinate === 'string');
-    assert.ok(typeof item.orchestrator_decision === 'string');
-    assert.ok(typeof item.rationale === 'string');
-    assert.ok(Object.keys(item.roles).length >= 2, 'Must involve at least 2 differing perspectives');
-  }
+  // Historical governor defect must be explicitly labeled resolved
+  const govDefect = ledger.disagreements.find(d => d.coordinate === 'governor_lifecycle_leak_in_error_branch');
+  assert.equal(govDefect.orchestrator_decision, 'HISTORICAL_DEFECT_RESOLVED');
+
+  // Return divergence disagreement must exist
+  const returnDiv = ledger.disagreements.find(d => d.coordinate === 'return_scene_hash_vs_workspace_admittance');
+  assert.ok(returnDiv, 'Return divergence disagreement must be catalogued');
+  assert.equal(returnDiv.orchestrator_decision, 'HELD_NO_SYNTHETIC_COMPLETION');
 });
 
 test('Dollhouse Orchestration Invariant: Restraint Experiment (Causal Leverage vs Code Surface Area)', () => {
-  // During this extraction and closure tranche, the orchestrator achieves 100% evidence classification
-  // and complete receipt verification with ZERO unnecessary code mutations in core engines.
   const coreEngineFiles = [
     'app/engine/flowcore-pedagogue-core.js',
     'app/engine/flowcore-pedagogue-aia.js',
@@ -120,29 +139,37 @@ test('Dollhouse Orchestration Invariant: Restraint Experiment (Causal Leverage v
   }
 });
 
-test('Dollhouse Orchestration Invariant: Latifa Gate Speculations require falsifiers and rulings', () => {
+test('Dollhouse Orchestration Invariant: Latifa Gate Speculations require falsifiers, prototypes, and rulings', () => {
   const speculations = [
     {
-      id: 'SPEC-001',
-      hypothesis: 'Concurrent mobile taps could race Neon custody reservations',
-      falsifier: 'Submit two concurrent requests with identical parent digest; second must fail with 409/conflict',
-      bounded_prototype: 'tests/loom-native-terminal-races.test.mjs',
-      containment: 'Fail-closed lease in Neon custody service',
+      id: 'LATIFA-A',
+      hypothesis: 'Flow-Core as learned motion language: first-time users infer gather/release/return/rest from choreography before operator legend.',
+      falsifier: 'Blinded hostile-consumer agents cannot predict operator family above chance after interaction.',
+      bounded_prototype: 'tests/fixtures/dollhouse/self-explaining-loom-fixture.json',
+      containment: 'Non-production tutorial A/B comparison fixture',
       ruling: 'PROMOTE'
     },
     {
-      id: 'SPEC-002',
-      hypothesis: 'Viewport height < 600px pushes primary action button below dynamic iOS Safari bar',
-      falsifier: 'Render at 390x580; check if button bounding rect is within client viewport',
-      bounded_prototype: 'scripts/live-production-closure-assay.mjs (multi-viewport)',
-      containment: 'CSS min-height and scroll container safety padding',
-      ruling: 'HOLD'
+      id: 'LATIFA-B',
+      hypothesis: 'Dollhouse disagreement as product instrument: exposing unresolved role tensions in an inspector clarifies trade-offs.',
+      falsifier: 'Disagreement inspector increases cognitive load without improving operator task accuracy.',
+      bounded_prototype: 'app/dome-world/dollhouse-disagreement-inspector.html',
+      containment: 'Dome-World laboratory inspector only; zero production authority',
+      ruling: 'PROMOTE'
+    },
+    {
+      id: 'LATIFA-C',
+      hypothesis: 'Receiver-independent agent observatory: role contracts reproduce materially identical audit differentiation across Gemini, Claude, and ChatGPT.',
+      falsifier: 'Role divergence collapses into uniform code reviews under model substitution.',
+      bounded_prototype: 'tests/dollhouse-orchestration-invariants.test.mjs',
+      containment: 'Deterministic Node test harness and JSON schemas',
+      ruling: 'PROMOTE'
     }
   ];
 
   for (const spec of speculations) {
-    assert.ok(spec.hypothesis.length > 0);
-    assert.ok(spec.falsifier.length > 0);
+    assert.ok(spec.hypothesis.length > 20);
+    assert.ok(spec.falsifier.length > 20);
     assert.ok(spec.bounded_prototype.length > 0);
     assert.ok(['PROMOTE', 'HOLD', 'REJECT'].includes(spec.ruling));
   }

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Dollhouse Disagreement Inspector · TD613 Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --bg: #05060a;
+      --card-bg: #0c0e17;
+      --border: #1e2238;
+      --cyan: #8ee8e6;
+      --gold: #efbd83;
+      --rose: #f48fb1;
+      --text: #e0e4f0;
+      --muted: #8890aa;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      margin: 0;
+      padding: 1.5rem;
+      line-height: 1.5;
+    }
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    h1 {
+      font-size: 1.25rem;
+      color: var(--cyan);
+      margin: 0 0 0.5rem 0;
+      letter-spacing: 0.05em;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      background: #14172a;
+      color: var(--gold);
+      border: 1px solid var(--border);
+    }
+    .disagreement-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .card-title {
+      font-weight: bold;
+      color: var(--gold);
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 0.75rem;
+      margin: 0.75rem 0;
+    }
+    .role-box {
+      background: #07080f;
+      border: 1px solid var(--border);
+      padding: 0.6rem;
+      border-radius: 4px;
+      font-size: 0.82rem;
+    }
+    .role-header {
+      font-weight: bold;
+      margin-bottom: 0.25rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    .role-pedagogue { color: var(--gold); }
+    .role-aperture { color: var(--cyan); }
+    .role-atlas { color: #81c784; }
+    .role-fadt { color: var(--rose); }
+    .decision-box {
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      background: #101322;
+      border-left: 3px solid var(--cyan);
+      font-size: 0.85rem;
+    }
+    .decision-label {
+      color: var(--cyan);
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>TD613 · DOLLHOUSE DISAGREEMENT INSPECTOR</h1>
+    <div>
+      <span class="badge">Episode: ep_loom_closure_1791090079183</span>
+      <span class="badge">Axiom: AUDITOR FINDING != REQUIRED MUTATION</span>
+    </div>
+  </header>
+
+  <main id="disagreementsList">
+    <!-- Populated from disagreement ledger -->
+    <article class="disagreement-card">
+      <div class="card-title">
+        <span>DISAGREE-001 · carrier_visual_identifiability</span>
+        <span class="badge">MAINTAIN_CURRENT_OPACITY</span>
+      </div>
+      <div class="roles-grid">
+        <div class="role-box">
+          <div class="role-header role-aperture">APERTURE · DEFICIT</div>
+          <div>Far carriers with opacity 0.20 are ambient depth, not high-contrast text witnesses. Contrast &lt; 1.5:1.</div>
+        </div>
+        <div class="role-box">
+          <div class="role-header role-pedagogue">PEDAGOGUE · ACCEPTABLE</div>
+          <div>Far carriers provide ambient cinematic depth. Equal text contrast would clutter the mobile hierarchy.</div>
+        </div>
+      </div>
+      <div class="decision-box">
+        <span class="decision-label">Orchestrator Decision:</span> Far carriers are ambient geometry, not interactive targets. Visual hierarchy is preserved without forced contrast boost.
+      </div>
+    </article>
+
+    <article class="disagreement-card">
+      <div class="card-title">
+        <span>DISAGREE-002 · mobile_tutorial_membrane_ingress</span>
+        <span class="badge">DEFER_MUTATION_TO_NEXT_PR</span>
+      </div>
+      <div class="roles-grid">
+        <div class="role-box">
+          <div class="role-header role-pedagogue">PEDAGOGUE · CRITICAL_DEFECT</div>
+          <div>Tutorial exposes Flow-Core legend and 𝌋 remix before user acts, violating consequence-before-ontology.</div>
+        </div>
+        <div class="role-box">
+          <div class="role-header role-fadt">FADT · PASS</div>
+          <div>First Crossing practice is completely hermetic, zero network calls, zero custody authority. Admissibility descent is preserved.</div>
+        </div>
+      </div>
+      <div class="decision-box">
+        <span class="decision-label">Orchestrator Decision:</span> Extraction rite takes precedence. Redesign belongs in dedicated UX iteration after human review.
+      </div>
+    </article>
+
+    <article class="disagreement-card">
+      <div class="card-title">
+        <span>DISAGREE-005 · return_scene_hash_vs_workspace_admittance</span>
+        <span class="badge">HELD_NO_SYNTHETIC_COMPLETION</span>
+      </div>
+      <div class="roles-grid">
+        <div class="role-box">
+          <div class="role-header role-atlas">ATLAS · RECEIVER_DIVERGENCE</div>
+          <div>Loom URL reached #return-review while journeyState remained 'marrowline' and returnWorkspaceVisible was false.</div>
+        </div>
+        <div class="role-box">
+          <div class="role-header role-aperture">APERTURE · UNOBSERVED_WORKSPACE</div>
+          <div>S != O != E: Presence of URL hash does not constitute observation of Return workspace admittance.</div>
+        </div>
+      </div>
+      <div class="decision-box">
+        <span class="decision-label">Orchestrator Decision:</span> Return state classified as HELD. Strict prohibition of synthetic completion from URL hash.
+      </div>
+    </article>
+  </main>
+</body>
+</html>

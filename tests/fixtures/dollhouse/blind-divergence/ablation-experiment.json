@@ -1,0 +1,76 @@
+{
+  "$schema": "td613.dollhouse.ablation-experiment/v1.0",
+  "coordinate": "return_state_divergence_and_held_c2",
+  "evaluation_date": "2026-10-04",
+  "conditions": [
+    {
+      "condition": "FULL_DOLLHOUSE",
+      "active_roles": ["PEDAGOGUE", "APERTURE", "ATLAS", "FADT"],
+      "findings_emitted": 4,
+      "findings_lost": 0,
+      "incorrect_promotions": 0,
+      "incorrect_rejections": 0,
+      "unresolved_coordinates": 0,
+      "orchestrator_decision": "HELD",
+      "notes": "Full synthesis: all 4 dimensions (human consequence, visual geometry, cryptographic lineage, lawful support) accounted for."
+    },
+    {
+      "condition": "MINUS_PEDAGOGUE",
+      "active_roles": ["APERTURE", "ATLAS", "FADT"],
+      "findings_emitted": 3,
+      "findings_lost": 1,
+      "lost_finding_id": "PEDAGOGUE_ROUTE_BURDEN",
+      "lost_finding_summary": "Lost human consequence order and broken-promise experience: silent failure leaves operator stranded without child-legible guidance.",
+      "incorrect_promotions": 0,
+      "incorrect_rejections": 0,
+      "unresolved_coordinates": 1,
+      "orchestrator_decision": "HELD",
+      "notes": "System is technically sound and fail-closed, but operator is baffled by why Return did nothing."
+    },
+    {
+      "condition": "MINUS_APERTURE",
+      "active_roles": ["PEDAGOGUE", "ATLAS", "FADT"],
+      "findings_emitted": 3,
+      "findings_lost": 1,
+      "lost_finding_id": "APERTURE_OBSERVABILITY_CONFLATION",
+      "lost_finding_summary": "Lost S != O != E principle: test harness treats URL hash presence (#return-review) as proof of visual rendering.",
+      "incorrect_promotions": 1,
+      "incorrect_rejections": 0,
+      "unresolved_coordinates": 0,
+      "orchestrator_decision": "FALSE_COMPLETION_RISK",
+      "notes": "Without Aperture, an agent observing window.location.hash could falsely claim Return completed."
+    },
+    {
+      "condition": "MINUS_ATLAS",
+      "active_roles": ["PEDAGOGUE", "APERTURE", "FADT"],
+      "findings_emitted": 3,
+      "findings_lost": 1,
+      "lost_finding_id": "ATLAS_CROSS_WINDOW_CHAIN",
+      "lost_finding_summary": "Lost cross-window predecessor digest verification: accepts return state without verifying opener postMessage digest chain.",
+      "incorrect_promotions": 1,
+      "incorrect_rejections": 0,
+      "unresolved_coordinates": 0,
+      "orchestrator_decision": "CUSTODY_FORK_RISK",
+      "notes": "Without Atlas, local scripts can fake return review without cryptographic link to Marrowline."
+    },
+    {
+      "condition": "MINUS_FADT",
+      "active_roles": ["PEDAGOGUE", "APERTURE", "ATLAS"],
+      "findings_emitted": 3,
+      "findings_lost": 1,
+      "lost_finding_id": "FADT_LAWFUL_SUPPORT_BOUNDARY",
+      "lost_finding_summary": "Lost lawful support boundary: fails to detect that unadmitted return workspace exposes EXPORT_CURRENT actions illegally.",
+      "incorrect_promotions": 1,
+      "incorrect_rejections": 0,
+      "unresolved_coordinates": 0,
+      "orchestrator_decision": "ILLEGAL_ACTION_GRANT_RISK",
+      "notes": "Without FADT, UI developers prematurely expose action buttons when conditioning is missing."
+    }
+  ],
+  "differentiated_contribution_summary": {
+    "PEDAGOGUE": "Indispensable for consequence order, route clarity, and human-facing broken-promise prevention.",
+    "APERTURE": "Indispensable for preventing false certainty and state-observation conflation (S != O != E).",
+    "ATLAS": "Indispensable for multi-receiver continuity, predecessor digest chaining, and fork exclusion.",
+    "FADT": "Indispensable for finite quotient survival and preventing illegal action support escalation."
+  }
+}

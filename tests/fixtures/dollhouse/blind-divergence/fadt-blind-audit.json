@@ -1,0 +1,10 @@
+{
+  "role": "FADT",
+  "coordinate": "return_state_divergence_and_held_c2",
+  "jurisdiction": "finite_quotient_survival_lawful_support",
+  "observation": "In loom-native-stage-support.json, lawful action support for returned session review requires conditioning stage='DONE' and head='CURRENT'. Current episode state retains stage='marrowline' and head='ACTIVATION'.",
+  "concern": "Lawful support violation and stage collapse: displaying the Return workspace while underlying conditioning is unadmitted would illegally expose EXPORT_CURRENT and ADMIT_LOCAL actions without lawful support.",
+  "falsifier": "Check if any action buttons in #loomReturnWorkspace can be triggered or become interactive when conditioning satisfies stage!='DONE'.",
+  "recommended_action": "Keep #loomReturnWorkspace strictly hidden and fail closed whenever conditioning state is not 'DONE'. Preserving the union/intersection gap takes precedence over visual completion.",
+  "claim_ceiling": "finite-support-descent-audit-only-no-universal-ai-law-no-release-no-source-state-reconstruction"
+}

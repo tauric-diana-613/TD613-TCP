@@ -1,0 +1,44 @@
+{
+  "$schema": "td613.dollhouse.motion-semantics-grammar/v1.0",
+  "derivation_source": "Derived independently of current DOM implementation from operator semantics",
+  "vocabulary": {
+    "a_gathering": { "glyph": "à", "semantic": "gathering", "choreography": "Carriers converge centripetally toward active focal plane; velocity decelerates on ingress." },
+    "mi_recurrence": { "glyph": "米", "semantic": "recurrence", "choreography": "Carriers pulse in periodic resonant orbital loops without advancing linear time." },
+    "chu_release": { "glyph": "出", "semantic": "release", "choreography": "Filament expands centrifugally, parting from central cluster to signal outbound transmission." },
+    "hot_emergence": { "glyph": "hõt", "semantic": "bounded emergence", "choreography": "Carrier appears from background depth through opacity gradient, strictly contained within bounding viewBox." },
+    "col_continuity": { "glyph": "cōl", "semantic": "protected continuity", "choreography": "Persistent filament trace bridges preceding state to subsequent state without instantaneous teleportation." },
+    "shang_potential": { "glyph": "上", "semantic": "created potential", "choreography": "Upward vertical buoyant drift, indicating pending preparation or unadmitted capability." },
+    "xia_return": { "glyph": "下", "semantic": "released tendency / return", "choreography": "Downward settling motion, grounding result back into receiver container." },
+    "rest_structural": { "glyph": "𝄐", "semantic": "structural rest", "choreography": "Zero-motion state: all carrier velocities dampen to absolute stillness." }
+  },
+  "spatial_allocation": {
+    "total_carriers": 39,
+    "near_plane": { "count": 6, "opacity": 0.38, "semantic_role": "Immediate interactive focal witnesses (task, active selection)" },
+    "mid_plane": { "count": 13, "opacity": 0.24, "semantic_role": "Contextual governance witnesses (rules, exclusions, lineage)" },
+    "far_plane": { "count": 20, "opacity": 0.20, "semantic_role": "Ambient structural foundation / depth lattice" }
+  },
+  "temporal_law": {
+    "clock_owner": "AnimationCoordinator",
+    "motion_budget_ms": 620,
+    "reduced_motion_override": "Instantaneous transform swap; all velocity vectors set to 0."
+  },
+  "four_doll_attacks": {
+    "pedagogue_attack": {
+      "concern": "If all 8 operator glyph choreographies fire simultaneously, user cannot learn which motion represents which consequence.",
+      "defense": "Choreographies must be sequenced: only one semantic family active per turn (gathering on select, release on send, return on review)."
+    },
+    "aperture_attack": {
+      "concern": "Far plane opacity 0.20 could be lost under bright ambient glare on mobile, degrading the 39-carrier witness count.",
+      "defense": "Acknowledge far plane as ambient depth; do not claim individual far carriers as legal state witnesses in safety receipts."
+    },
+    "atlas_attack": {
+      "concern": "Centrifugal release must not visually imply that data departed the device until cryptographic receipt is verified.",
+      "defense": "出 (release) choreography triggers only upon HTTP 200 receipt verification, never speculatively on tap."
+    },
+    "fadt_attack": {
+      "concern": "Ambient motion could be mistaken for an interactive action grant, widening the apparent action support.",
+      "defense": "Carrier SVG elements remain strictly non-interactive (pointer-events: none); lawful support remains invariant under carrier animation."
+    }
+  },
+  "status": "EXPERIMENTAL_PROPOSAL_PRESERVED"
+}

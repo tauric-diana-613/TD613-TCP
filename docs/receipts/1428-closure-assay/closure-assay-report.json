@@ -1419,7 +1419,17 @@
     "c1_receipt_digest": "fa97d46ba8d38c71d7668813f95eeb4565d4897e0b8ae888250deb2df3d7c392",
     "predecessor_binding_verified": false
   },
-  "provider_classification": null,
+  "provider_classification": {
+    "c1_provider_execution": "PROVEN",
+    "c1_provider_identity_observed": "PROVEN",
+    "c1_provider_identity_declared": "gemini-3.5-flash",
+    "c1_custody_commit": "PROVEN",
+    "c2_provider_execution": "FAILED_OR_HELD",
+    "c2_provider_identity_observed": "UNMEASURED",
+    "c2_custody_commit": "HELD",
+    "overall_status": "HELD",
+    "rationale": "C1 executed against production Gemini 3.5 Flash and committed durable head d842a0a37713440ec1df6cf5d5cbe4f2468656eaeaece4e27059c8946040dba6 to Neon custody. C2 failed to obtain a network response in this test run, leaving C2 predecessor verification and postMessage Return unadmitted."
+  },
   "hostile_conditions": {
     "repeated_remix": {
       "executed": true,
@@ -1470,9 +1480,20 @@
       }
     }
   },
-  "discrepancies": [],
+  "discrepancies": [
+    {
+      "coordinate": "continuation_2_dispatch",
+      "status": "FAILED_OR_HELD",
+      "finding": "Continuation #2 dispatch recorded status NO_NETWORK_RESPONSE; body was null; predecessor chaining was unverified."
+    },
+    {
+      "coordinate": "return_workspace_admittance",
+      "status": "FAILED_OR_HELD",
+      "finding": "Return scene URL hash was #return-review, but returnWorkspaceVisible was false and journeyState remained 'marrowline' because postMessage return was not triggered from Marrowline due to uncompleted C2."
+    }
+  ],
   "completed_at": "2026-10-04T05:03:56.122Z",
-  "verdict": "COMPLETED",
+  "verdict": "HELD",
   "console_logs_count": 1,
   "page_errors": [],
   "network_requests": [

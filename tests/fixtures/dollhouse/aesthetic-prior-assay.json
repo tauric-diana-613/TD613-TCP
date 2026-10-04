@@ -1,0 +1,42 @@
+{
+  "$schema": "td613.dollhouse.aesthetic-prior-assay/v1.0",
+  "assay_date": "2026-10-04",
+  "design_agent_proposal": {
+    "aesthetically_coherent_coordinates": [
+      "1. Deep obsidian canvas (#05060a) with layered cyan/gold filaments reflecting the Tauric Diana lineage.",
+      "2. Three-plane carrier depth hierarchy (.38 near, .24 mid, .20 far) establishing cinematic depth without visual clutter.",
+      "3. First Crossing translucent membrane providing a soft, non-punitive focus boundary during practice."
+    ],
+    "mechanically_assembled_coordinates": [
+      "1. The abrupt cut between Loom and Marrowline popup window feels like an operating system window jump rather than a continuous tapestry traversal.",
+      "2. The 'Finish tutorial →' button inside First Crossing is a rigid rectangular button pasted onto an organic orbital field.",
+      "3. Technical digest hex strings (e.g. fa97d46b...) displayed directly in the user-facing status strip without contextual translation."
+    ],
+    "unmistakably_loom_interaction": "The grouping gesture where selected documents visibly gather into a sealed envelope while the local canary file visibly stays behind in obsidian stillness.",
+    "thing_to_remove": "The Flow-Core operator legend text and 𝌋 remix prompt on Step 0 of First Crossing before the user has touched a single document.",
+    "thing_to_make_stranger": "When a document is marked private, instead of an ordinary checkbox border, render it as an inaudible, stationary void in the carrier field—a carrier whose light does not pulse because it never leaves the local machine."
+  },
+  "candidate_design_move_subjected_to_four_dolls": {
+    "candidate": "Make private documents a stationary void in the carrier field (inaudible carrier that does not pulse or transmit).",
+    "doll_evaluations": {
+      "PEDAGOGUE": {
+        "status": "PASS",
+        "finding": "Strong pedagogical metaphor: absence of pulse communicates local non-transmission through direct sensory contrast before words are read."
+      },
+      "APERTURE": {
+        "status": "PASS",
+        "finding": "Identifiability is preserved: a stationary void against animated carriers has high visual contrast and zero observability ambiguity."
+      },
+      "ATLAS": {
+        "status": "PASS",
+        "finding": "Maintains receiver-relative relation: the local receiver witnesses the void, while the outbound wire transmission carries zero bits."
+      },
+      "FADT": {
+        "status": "PASS",
+        "finding": "Preserves finite lawful support: the stationary void is not an interactive capability, so it does not widen the action support set."
+      }
+    },
+    "survives_all_four_dolls": true,
+    "ruling": "SURVIVES_DOLLHOUSE_AUDIT_STAGED_FOR_FUTURE_UX_TRIAL"
+  }
+}

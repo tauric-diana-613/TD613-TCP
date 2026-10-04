@@ -1,0 +1,10 @@
+{
+  "role": "ATLAS",
+  "coordinate": "return_state_divergence_and_held_c2",
+  "jurisdiction": "receiver_relative_relations_predecessor_chain",
+  "observation": "Marrowline continuation C2 produced NO_NETWORK_RESPONSE; return button remained disabled (returnDisabled=true). Loom URL reached #return-review directly without receiving a signed postMessage return packet from Marrowline.",
+  "concern": "Broken predecessor digest chain and receiver-relative divergence: Loom receiver cannot verify continuity across the popup boundary without the Marrowline receipt digest.",
+  "falsifier": "Validate that window.opener postMessage delivers a payload matching the exact SHA-256 digest of the last admitted Marrowline head before #return-review renders.",
+  "recommended_action": "Refuse state transition to 'return' unless accompanied by an authenticated td613.loom.return-message/v0.1 event from the opener; maintain WeakSet local custody bifurcation.",
+  "claim_ceiling": "receiver-relation-audit-only-no-basis-free-geometry-no-release-no-lineage-promotion"
+}

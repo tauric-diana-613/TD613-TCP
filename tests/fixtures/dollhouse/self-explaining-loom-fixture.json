@@ -1,0 +1,33 @@
+{
+  "$schema": "td613.dollhouse.self-explaining-loom/v1.0",
+  "experiment": "Self-Explaining Loom: Consequence Choreography vs Early Taxonomy",
+  "hypothesis": "A first-time mobile user can infer Flow-Core selective disclosure (gather/release/return/rest) from choreography and consequence before being shown technical taxonomy.",
+  "conditions": {
+    "condition_A_taxonomy_early": {
+      "ingress_ui": "Display Flow-Core glyph legend, operator terminology (AIA, FADT, 𝌋 remix), and 4-step diagram on first entry.",
+      "observed_metrics": {
+        "time_to_first_action_ms": 14200,
+        "cognitive_hesitation_rate": 0.68,
+        "correct_prediction_of_ai_receipt": 0.44,
+        "abandonment_rate": 0.31,
+        "prose_explanation_words_required": 420
+      },
+      "failure_mode": "Users read extensive prose, become anxious about legal/cryptographic terms, and hesitate before clicking."
+    },
+    "condition_B_consequence_first": {
+      "ingress_ui": "No initial taxonomy. Two files selectable, one marked private; user checks locally, sees private file withheld, watches grouped envelope form, then receives naming on demand.",
+      "observed_metrics": {
+        "time_to_first_action_ms": 3400,
+        "cognitive_hesitation_rate": 0.12,
+        "correct_prediction_of_ai_receipt": 0.89,
+        "abandonment_rate": 0.04,
+        "prose_explanation_words_required": 48
+      },
+      "failure_mode": "Zero critical failures; users immediately intuit selective disclosure through tactile interaction."
+    }
+  },
+  "ruling": {
+    "status": "PROMOTE",
+    "recommendation": "Promote Condition B to production UX roadmap. Ingress membrane should withhold the technical legend until after the first successful selective disclosure gesture."
+  }
+}

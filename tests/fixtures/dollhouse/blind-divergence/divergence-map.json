@@ -1,0 +1,39 @@
+{
+  "$schema": "td613.dollhouse.divergence-map/v1.0",
+  "coordinate": "return_state_divergence_and_held_c2",
+  "roles_participating": ["PEDAGOGUE", "APERTURE", "ATLAS", "FADT"],
+  "divergence": {
+    "PEDAGOGUE": {
+      "unique_to_role": "Human consequence order, broken promise experience, route burden, child-legible guidance.",
+      "shared_with_role": "Agrees with all roles that Return was not completed; route must be HELD.",
+      "contradicted_by_role": "Pedagogue proposal to display an interactive notice was challenged by FADT to ensure no unconditioned action support is exposed.",
+      "outside_jurisdiction": "Cryptographic digest verification, DOM bounding box measurement, finite quotient calculation.",
+      "survives_cross_exam": true
+    },
+    "APERTURE": {
+      "unique_to_role": "S != O != E principle, state-observation conflation, test harness abstention rule, rendered bounding box witness.",
+      "shared_with_role": "Agrees with all roles that URL hash is not proof of Return workspace admittance.",
+      "contradicted_by_role": "None. Aperture measurement of returnWorkspaceVisible=false is accepted as empirical ground truth by all roles.",
+      "outside_jurisdiction": "Pedagogical UX design, receiver cryptographic protocol, finite action support boundaries.",
+      "survives_cross_exam": true
+    },
+    "ATLAS": {
+      "unique_to_role": "Receiver-relative continuity, predecessor digest chaining across window boundaries, postMessage authentication gating.",
+      "shared_with_role": "Agrees with FADT that Loom cannot advance its head without Marrowline's completed receipt.",
+      "contradicted_by_role": "None. Atlas verification that no postMessage packet was sent explains why Loom remained unadmitted.",
+      "outside_jurisdiction": "Human cognitive load, CSS rendering opacity, set-theoretic quotient fibres.",
+      "survives_cross_exam": true
+    },
+    "FADT": {
+      "unique_to_role": "Lawful action support boundaries, stage erasure quotient fibres, prevention of illegal action exposure (EXPORT_CURRENT) under unadmitted conditioning.",
+      "shared_with_role": "Agrees with Atlas that system must fail closed when conditioning is unadmitted.",
+      "contradicted_by_role": "Challenged Pedagogue's initial interactive proposal to ensure support remains empty until admission.",
+      "outside_jurisdiction": "Visual aesthetics, network transport protocol, human comprehension latency.",
+      "survives_cross_exam": true
+    }
+  },
+  "orchestrator_synthesis": {
+    "verdict": "HELD",
+    "rationale": "Four distinct epistemic instruments independently arrived at the same operational ruling (HELD) through four completely disjoint analytical paths, proving that PEDAGOGUE != APERTURE != ATLAS != FADT."
+  }
+}

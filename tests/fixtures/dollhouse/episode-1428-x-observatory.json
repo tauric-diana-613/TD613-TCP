@@ -10,15 +10,27 @@
       "observations": {
         "phase1_loom": {
           "status": "PASS",
-          "evidence": "Tutorial completed in 2 steps, Notice -> Act preserved, exit cleanly available via 'Leave tutorial'."
+          "evidence": "Tutorial completed in 2 steps, Notice -> Act preserved, exit cleanly available via 'Leave tutorial'.",
+          "episode_event_id": "EVT_01_VISIT",
+          "timestamp": "2026-10-04T05:01:21.943Z",
+          "artifact_path": "docs/receipts/1428-closure-assay/01_fresh_mobile_visit.png",
+          "screenshot_id": "01_fresh_mobile_visit.png"
         },
         "phase2_marrowline": {
-          "status": "PASS",
-          "evidence": "Staged request clearly announces consumer AI-request language; Send action requires explicit gesture."
+          "status": "PASS_PARTIAL",
+          "evidence": "Staged C1 request clearly announces consumer AI-request language; Send action requires explicit gesture. C2 staged with selected files but did not complete.",
+          "episode_event_id": "EVT_05_C1_DISPATCH",
+          "timestamp": "2026-10-04T05:01:45.100Z",
+          "artifact_path": "docs/receipts/1428-closure-assay/13_continuation1_response.png",
+          "screenshot_id": "13_continuation1_response.png"
         },
         "phase3_return": {
-          "status": "PASS",
-          "evidence": "Tutorial is bypassed on return; prior task and selections remain intact without reset."
+          "status": "HELD",
+          "evidence": "URL reached #return-review, but Return workspace was not visibly inhabited (returnWorkspaceVisible=false) due to uncompleted C2. User experience stopped at Threshold.",
+          "episode_event_id": "EVT_07_RETURN",
+          "timestamp": "2026-10-04T05:03:14.909Z",
+          "artifact_path": "docs/receipts/1428-closure-assay/17_loom_return_scene.png",
+          "screenshot_id": "17_loom_return_scene.png"
         }
       }
     },
@@ -27,16 +39,28 @@
       "instruments": ["DOM_GEOMETRY_PROBE", "FRAME_CONTINUITY_LOGGER"],
       "observations": {
         "phase1_loom": {
-          "status": "DEFICIT_NOTED",
-          "evidence": "Carrier count = 39 verified; 6 near, 13 mid, 20 far. 20 far-plane carriers have opacity 0.035 (ambient depth, low legibility)."
+          "status": "PASS",
+          "evidence": "Carrier count = 39 verified. Current deployed far-plane carrier opacity is 0.20 (mid is 0.24, near is 0.38), providing observable ambient depth.",
+          "episode_event_id": "EVT_01_VISIT",
+          "timestamp": "2026-10-04T05:01:21.943Z",
+          "artifact_path": "docs/receipts/1428-closure-assay/01_fresh_mobile_visit.png",
+          "screenshot_id": "01_fresh_mobile_visit.png"
         },
         "phase2_marrowline": {
           "status": "PASS",
-          "evidence": "Gate panel and composer layout contained; zero horizontal overflow on 390x700."
+          "evidence": "Gate panel and composer layout contained; zero horizontal overflow on 390x700.",
+          "episode_event_id": "EVT_04_MARROWLINE_ARRIVE",
+          "timestamp": "2026-10-04T05:01:39.000Z",
+          "artifact_path": "docs/receipts/1428-closure-assay/09_marrowline_arrival.png",
+          "screenshot_id": "09_marrowline_arrival.png"
         },
         "phase3_return": {
-          "status": "PASS",
-          "evidence": "Return scene renders correctly; task survival confirmed without synthetic completion."
+          "status": "HELD",
+          "evidence": "Observed return scene reached hash #return-review and builder shell, but returnWorkspaceVisible was false. S != O != E forbids asserting Return completion from hash alone.",
+          "episode_event_id": "EVT_07_RETURN",
+          "timestamp": "2026-10-04T05:03:14.909Z",
+          "artifact_path": "docs/receipts/1428-closure-assay/17_loom_return_scene.png",
+          "screenshot_id": "17_loom_return_scene.png"
         }
       }
     },
@@ -46,15 +70,29 @@
       "observations": {
         "phase1_loom": {
           "status": "PASS",
-          "evidence": "Deterministic seed (613) used for carrier projections; initial session root created."
+          "evidence": "Deterministic seed (613) used for carrier projections; initial session root created.",
+          "episode_event_id": "EVT_03_REQUEST_PREPARED",
+          "timestamp": "2026-10-04T05:01:37.228Z",
+          "artifact_path": "docs/receipts/1428-closure-assay/08_request_prepared_ready.png",
+          "screenshot_id": "08_request_prepared_ready.png"
         },
         "phase2_marrowline": {
-          "status": "PASS",
-          "evidence": "Continuation #1 successfully bound to Loom handoff; Continuation #2 consumes Continuation #1."
+          "status": "HELD",
+          "evidence": "Continuation #1 successfully bound to Loom handoff (request fa97d46b..., head d842a0a3...). Continuation #2 recorded NO_NETWORK_RESPONSE; predecessor chaining unverified in this episode.",
+          "episode_event_id": "EVT_06_C2_DISPATCH",
+          "timestamp": "2026-10-04T05:03:10.500Z",
+          "artifact_path": "docs/receipts/1428-closure-assay/15_continuation2_response.png",
+          "network_request_id": "2d2c6291-2b01-4bc8-b9d5-e95d2b54517b",
+          "receipt_digest": "fa97d46ba8d38c71d7668813f95eeb4565d4897e0b8ae888250deb2df3d7c392",
+          "screenshot_id": "15_continuation2_response.png"
         },
         "phase3_return": {
-          "status": "PASS",
-          "evidence": "Receiver identity preserved across popup return; WeakSet local custody mark bifurcates live from review."
+          "status": "HELD",
+          "evidence": "Receiver-relative state divergence: Loom URL reached #return-review while journeyState remained 'marrowline' and returnWorkspaceVisible was false. WeakSet custody mark bifurcates live from review, but Return review packet was not delivered.",
+          "episode_event_id": "EVT_07_RETURN",
+          "timestamp": "2026-10-04T05:03:14.909Z",
+          "artifact_path": "docs/receipts/1428-closure-assay/17_loom_return_scene.png",
+          "screenshot_id": "17_loom_return_scene.png"
         }
       }
     },
@@ -64,24 +102,41 @@
       "observations": {
         "phase1_loom": {
           "status": "PASS",
-          "evidence": "Exclusion boundary verified: 1 local canary file kept private; support remains hermetic."
+          "evidence": "Exclusion boundary verified: 1 local canary file kept private; support remains hermetic.",
+          "episode_event_id": "EVT_03_REQUEST_PREPARED",
+          "timestamp": "2026-10-04T05:01:37.228Z",
+          "artifact_path": "docs/receipts/1428-closure-assay/08_request_prepared_ready.png",
+          "screenshot_id": "08_request_prepared_ready.png"
         },
         "phase2_marrowline": {
           "status": "PASS",
-          "evidence": "Outbound prompt contains 3 shared files only; zero leakage of private canary file across wire."
+          "evidence": "Outbound prompt in C1 contains 3 shared files only; zero leakage of private canary file across wire.",
+          "episode_event_id": "EVT_05_C1_DISPATCH",
+          "timestamp": "2026-10-04T05:01:45.100Z",
+          "artifact_path": "docs/receipts/1428-closure-assay/13_continuation1_response.png",
+          "screenshot_id": "13_continuation1_response.png"
         },
         "phase3_return": {
-          "status": "PASS",
-          "evidence": "Returned workspace retains exclusion status: aiLocalCount = 1 survives return without erasure."
+          "status": "HELD",
+          "evidence": "Private exclusion survived return (aiLocalCount=1), but full Return action support was not admitted because journeyState remained 'marrowline'. Support descent holds.",
+          "episode_event_id": "EVT_07_RETURN",
+          "timestamp": "2026-10-04T05:03:14.909Z",
+          "artifact_path": "docs/receipts/1428-closure-assay/17_loom_return_scene.png",
+          "screenshot_id": "17_loom_return_scene.png"
         }
       }
     }
   },
   "temporal_custodian": {
-    "clock_owner": "AnimationCoordinator",
-    "monotonic_ticks": true,
-    "ttl_ms": 600000,
-    "expiry_held": true,
-    "replay_pure": true
+    "role": "Service-journey temporal custodian protecting the whole route (Loom -> C1 -> C2 -> Return) from local subsystem optimization",
+    "veto_authority": "LOCAL_PASS_PLUS_GLOBAL_ROUTE_REGRESSION",
+    "evaluation": {
+      "phase1_loom": "PASS",
+      "phase2_c1": "PASS (Provider 200, Neon custody commit)",
+      "phase2_c2": "FAILED_OR_HELD (NO_NETWORK_RESPONSE in assay run)",
+      "phase3_return": "HELD (Return workspace unadmitted)"
+    },
+    "verdict": "HELD",
+    "rationale": "Temporal custodian vetoes completion: local success of C1 cannot mask uncompleted C2 and Return divergence. Whole-journey continuity remains unproven."
   }
 }

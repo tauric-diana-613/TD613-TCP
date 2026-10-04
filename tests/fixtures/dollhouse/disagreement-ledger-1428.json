@@ -7,16 +7,16 @@
       "coordinate": "carrier_visual_identifiability",
       "roles": {
         "aperture": {
-          "status": "DEFICIT",
-          "finding": "20 far-plane carriers with opacity 0.035 are visually unidentifiable on mobile OLED screens in ambient daylight."
+          "status": "PASS_AMBIENT_DEPTH",
+          "finding": "Deployed far carriers with opacity 0.20 (repaired in #1428 from historical 0.035; mid 0.24, near 0.38) are observable as ambient depth, though not high-contrast text witnesses."
         },
         "pedagogue": {
           "status": "ACCEPTABLE_BACKGROUND",
-          "finding": "Far carriers provide ambient cinematic depth. Demanding equal legibility would clutter the mobile field and increase cognitive route burden."
+          "finding": "Far carriers provide ambient cinematic depth. Demanding WCAG text contrast on background carriers would clutter the mobile field and increase cognitive route burden."
         }
       },
       "orchestrator_decision": "MAINTAIN_CURRENT_OPACITY",
-      "rationale": "Orchestrator rejects forced contrast boost. Far carriers are ambient geometry, not interactive targets. Boosting opacity to WCAG text standards would destroy the visual depth hierarchy."
+      "rationale": "Orchestrator rejects forced contrast boost beyond 0.20. Far carriers are ambient geometry, not interactive targets. Visual hierarchy is preserved."
     },
     {
       "id": "DISAGREE-002",
@@ -39,16 +39,16 @@
       "coordinate": "governor_lifecycle_leak_in_error_branch",
       "roles": {
         "fadt": {
-          "status": "CRITICAL_DEFECT",
-          "finding": "server/loom-demo-task.js catches custody reservation errors without closing the bound governor, leaking active governor state."
+          "status": "HISTORICAL_DEFECT",
+          "finding": "FADT historically identified that server/loom-demo-task.js caught custody reservation errors without closing the bound governor."
         },
         "atlas": {
-          "status": "ADMITTED_SAFETY",
-          "finding": "The reservation failure ensures no custody commit occurs, preserving current head integrity."
+          "status": "CONFIRMED_REPAIRED",
+          "finding": "PR #1428 repaired this defect in deployed source with binding?.governor?.close();."
         }
       },
-      "orchestrator_decision": "ACKNOWLEDGE_AND_RECORD",
-      "rationale": "FADT finding is mathematically correct. A governor cleanup in the catch block is necessary in the server codebase in the next maintenance patch."
+      "orchestrator_decision": "HISTORICAL_DEFECT_RESOLVED",
+      "rationale": "Recorded for historical lineage to demonstrate FADT unique analytical contribution; not an active defect in current deployed source."
     },
     {
       "id": "DISAGREE-004",
@@ -65,6 +65,22 @@
       },
       "orchestrator_decision": "REJECT_INTERACTIVE_EXPANSION",
       "rationale": "Preserve child-legible simplicity on mobile. The First Crossing membrane should remain a 2-step practice, not an interactive configuration form."
+    },
+    {
+      "id": "DISAGREE-005",
+      "coordinate": "return_scene_hash_vs_workspace_admittance",
+      "roles": {
+        "atlas": {
+          "status": "RECEIVER_DIVERGENCE",
+          "finding": "Loom URL reached #return-review while journeyState remained 'marrowline' and returnWorkspaceVisible was false."
+        },
+        "aperture": {
+          "status": "UNOBSERVED_WORKSPACE",
+          "finding": "S != O != E: Presence of URL hash does not constitute observation of Return workspace admittance."
+        }
+      },
+      "orchestrator_decision": "HELD_NO_SYNTHETIC_COMPLETION",
+      "rationale": "Orchestrator classifies Return state as HELD. Do not synthesize completion from URL hash."
     }
   ]
 }
