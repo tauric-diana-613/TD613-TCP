@@ -141,3 +141,23 @@ test('privacy overpromises are flagged in answer and next action without inventi
   assert.equal(reviewLoomEvidence({answer:'Answer.',suggested_next_step:'This guarantees your anonymity.'}).blocks_reuse,true);
   assert.equal(reviewLoomEvidence({answer:'This does not guarantee complete privacy.'}).blocks_reuse,false);
 });
+
+test('regression: RETENTION_MAXIMUM_PROMOTED_TO_OBSERVED_DURATION fails on certainty and passes on modal precision', () => {
+  assert.ok(vendorDiligenceEvidence(vendorDocuments));
+
+  // FAIL CASE: Exact R2 failure payload where permitted ceiling was promoted to guaranteed persistence and intermediate duration
+  const failingAnswer = "Deleted records disappear within 24 hours, but that data will persist in Vendor-A's backup systems for up to 31 days before final erasure.";
+  const failReview = reviewLoomEvidence({ answer: failingAnswer }, vendorDocuments);
+  assert.equal(failReview.blocks_reuse, true, 'Must block reuse when retention permission is asserted as future persistence');
+  assert.ok(
+    failReview.conflicts.some(c => c.code === 'RETENTION_MAXIMUM_PROMOTED_TO_OBSERVED_DURATION'),
+    'Must identify RETENTION_MAXIMUM_PROMOTED_TO_OBSERVED_DURATION'
+  );
+
+  // PASS CASE: General evidence invariant preserved - source modality and exact bounded quantities maintained
+  const passingAnswer = "Deleted records disappear from the active application within 24 hours; Vendor-A's backup footnote permits retention for up to 45 days, but this clause reflects a contractual permission ceiling rather than an observed, configured, or guaranteed duration, and the documents establish no intermediate duration such as 31 days.";
+  const passReview = reviewLoomEvidence({ answer: passingAnswer }, vendorDocuments);
+  assert.equal(passReview.blocks_reuse, false, 'Must permit reuse when modal qualifiers and source boundaries are preserved');
+  assert.equal(passReview.conflicts.length, 0);
+});
+
