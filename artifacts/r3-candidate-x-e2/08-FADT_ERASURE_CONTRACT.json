@@ -1,0 +1,94 @@
+{
+  "$schema": "https://td613.com/schemas/fadt-erasure-contract-v1.json",
+  "contract_version": "td613.fadt.erasure-contract/v1",
+  "target_candidate": "CANDIDATE_X",
+  "finite_action_supports": {
+    "REST_PRESERVED_SUPPORT": [
+      "ordinary_chat_send",
+      "reentry_request",
+      "return_review",
+      "export_review"
+    ],
+    "REST_REVOKED_SUPPORT": [
+      "governed_continuation_dispatch",
+      "selected_file_carriage",
+      "predecessor_binding",
+      "custody_admission_request"
+    ],
+    "ARMED_ONE_TURN_SUPPORT": [
+      "governed_continuation_dispatch",
+      "selected_file_carriage",
+      "predecessor_binding",
+      "custody_admission_request",
+      "return_review",
+      "export_review"
+    ],
+    "POST_ADMISSION_SUPPORT": [
+      "ordinary_chat_send",
+      "reentry_request",
+      "return_review",
+      "export_review"
+    ]
+  },
+  "authority_vector_quotient_gap": {
+    "U_union": [
+      "ordinary_chat_send",
+      "reentry_request",
+      "return_review",
+      "export_review",
+      "governed_continuation_dispatch",
+      "selected_file_carriage",
+      "predecessor_binding",
+      "custody_admission_request"
+    ],
+    "I_intersection": [
+      "return_review",
+      "export_review"
+    ],
+    "Gamma_gap": [
+      "ordinary_chat_send",
+      "reentry_request",
+      "governed_continuation_dispatch",
+      "selected_file_carriage",
+      "predecessor_binding",
+      "custody_admission_request"
+    ],
+    "gamma_is_empty": false,
+    "generic_scalar_send_representation": "REJECTED_UNDER_DECLARED_STATES",
+    "eight_action_support_representation": "SUFFICIENT_UNDER_DECLARED_STATES",
+    "minimal_action_basis": "UNPROVEN",
+    "quotient_collapse_verdict": "Erasing the conditioning state (active: boolean) collapses disjoint lawful supports across non-empty Gamma. A scalar send authority coordinate is therefore mathematically invalid. The 8-action support representation is sufficient under declared states, but minimality of the action basis remains unproven."
+  },
+  "vocabulary_erasure_quotient": {
+    "erased_coordinates": [
+      "TD613",
+      "Tauric Diana",
+      "Khonalit-po",
+      "Safe Harbor",
+      "Eclipse-Omega",
+      "PRCS-A",
+      "Aperture",
+      "Pedagogue",
+      "Atlas",
+      "FADT",
+      "Dome-World",
+      "Flow-Core",
+      "Golden Egg",
+      "Western Horizon",
+      "Marrowline",
+      "Holonomy Loom"
+    ],
+    "retained_coordinates": [
+      "internal_state != observed_local_state != externally_registered_event",
+      "context_isolated_subagent != exogenous_witness",
+      "absence_preservation",
+      "unmeasured_state_marking",
+      "authority_vector_gating",
+      "transient_single_turn_carriage",
+      "predecessor_receipt_digest_chaining"
+    ],
+    "neutralization_mapping": "CONSTRUCTED",
+    "exact_fadt_descent": "UNWITNESSED",
+    "fresh_receiver_relation_survival": "UNMEASURED"
+  }
+}
