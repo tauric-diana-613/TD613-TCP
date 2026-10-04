@@ -4,7 +4,7 @@
 import assert from 'node:assert/strict';
 import {createServer} from 'node:http';
 import {readFile,mkdir,writeFile} from 'node:fs/promises';
-import {resolve,extname} from 'node:path';
+import {resolve,extname,sep} from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {chromium} from 'playwright';
@@ -18,7 +18,7 @@ report.source_class=report.application_matches_commit?'EXACT_COMMITTED_APPLICATI
 report.witness_harness_sha256=createHash('sha256').update(await readFile('tests/portable-loom-reentry.browser.mjs')).digest('hex');
 const app=resolve('app');
 const server=createServer(async(req,res)=>{
-  try{const file=resolve(app,'.'+new URL(req.url,'http://localhost').pathname);if(!file.startsWith(app+'/'))throw new Error('outside static root');res.setHeader('Content-Type',({'.js':'text/javascript','.css':'text/css','.html':'text/html','.json':'application/json','.svg':'image/svg+xml'})[extname(file)]||'application/octet-stream');res.end(await readFile(file));}catch{res.statusCode=404;res.end();}
+  try{const file=resolve(app,'.'+new URL(req.url,'http://localhost').pathname);if(!file.startsWith(app+'/')&&!file.startsWith(app+sep))throw new Error('outside static root');res.setHeader('Content-Type',({'.js':'text/javascript','.css':'text/css','.html':'text/html','.json':'application/json','.svg':'image/svg+xml'})[extname(file)]||'application/octet-stream');res.end(await readFile(file));}catch{res.statusCode=404;res.end();}
 });
 await new Promise(r=>server.listen(0,'127.0.0.1',r));const base=`http://127.0.0.1:${server.address().port}`;
 const sha=value=>createHash('sha256').update(JSON.stringify(value)).digest('hex');

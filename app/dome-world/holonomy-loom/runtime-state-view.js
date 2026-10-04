@@ -28,7 +28,7 @@ export function mountLoomRuntimeStateView(root, {
   // Compilation status overlays the reserved field footprint. Inserting a
   // flow paragraph or display:none on the former field can move a button
   // between pointerdown and pointerup and lose the operator's gesture.
-  Object.assign(statusNode.style, { position: 'absolute', inset: '0', margin: '0', alignContent: 'center', textAlign: 'center', pointerEvents: 'none' });
+  Object.assign(statusNode.style, { position: 'absolute', inset: '0', margin: '0', display: 'grid', placeContent: 'center', alignContent: 'center', textAlign: 'center', pointerEvents: 'none' });
   statusNode.hidden = true;
   root.append(statusNode);
   let latestSnapshot = null, lastPacket = null, compiled = null, heldReason = null, generation = 0, disposed = false, status = 'WAITING', hasPublishedView = false, presentationHold = null;

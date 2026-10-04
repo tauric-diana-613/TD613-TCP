@@ -711,7 +711,9 @@ export function mountLoomInstrumentStateView(root) {
         // that the provider or external world followed the drawn trajectory.
         const seed=(i+.5)/flightGlyphs.length;
         if(frame.reduced_motion){
-          const col=i%7,row=Math.floor(i/7),x=110+col*130,y=92+row*112;
+          const col=i%7,row=Math.floor(i/7);
+          const x=compact ? 240+col*80 : 110+col*130;
+          const y=compact ? 40+row*100 : 92+row*112;
           node.setAttribute('x',String(x));node.setAttribute('y',String(y));
           node.setAttribute('transform',`rotate(${(col-3)*3} ${x} ${y})`);
           continue;

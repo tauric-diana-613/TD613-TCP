@@ -6,7 +6,7 @@
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
 import { readFile, mkdir, writeFile, access } from 'node:fs/promises';
-import { resolve, extname, join } from 'node:path';
+import { resolve, extname, join, sep } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { chromium } from 'playwright';
@@ -32,7 +32,7 @@ async function staticServer(root, manifest) {
     try {
       const pathname = new URL(request.url, 'http://localhost').pathname;
       const file = resolve(appRoot, '.' + pathname);
-      if (!file.startsWith(appRoot + '/')) throw new Error('Static path escape');
+      if (!file.startsWith(appRoot + sep) && !file.startsWith(appRoot + '/')) throw new Error('Static path escape');
       if (request.method !== 'GET') throw new Error('Static witness allows GET only');
       if (!files.has(file)) files.set(file, await readFile(file));
       manifest[`app${pathname}`] = sha256(files.get(file));

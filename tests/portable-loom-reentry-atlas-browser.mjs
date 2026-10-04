@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
-import { resolve, extname } from 'node:path';
+import { resolve, extname, sep } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { chromium } from 'playwright';
@@ -21,7 +21,7 @@ const app = resolve('app');
 const server = createServer(async (req, res) => {
   try {
     const file = resolve(app, '.' + new URL(req.url, 'http://localhost').pathname);
-    if (!file.startsWith(app + '/')) throw new Error('Outside static root.');
+    if (!file.startsWith(app + '/') && !file.startsWith(app + sep)) throw new Error('Outside static root.');
     res.setHeader('Content-Type', ({ '.js': 'text/javascript', '.css': 'text/css', '.html': 'text/html', '.json': 'application/json', '.svg': 'image/svg+xml' })[extname(file)] || 'application/octet-stream');
     res.end(await readFile(file));
   } catch { res.statusCode = 404; res.end(); }

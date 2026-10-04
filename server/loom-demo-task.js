@@ -120,6 +120,7 @@ export function createLoomDemoTaskHandler({
         request_digest: requestDigest
       };
     } catch (error) {
+      binding?.governor?.close();
       return fail(error?.code || error?.message || 'loom-demo-binding-held', error?.status || 400);
     }
 

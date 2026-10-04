@@ -403,6 +403,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
       $('loomThresholdGate').hidden=false;
       $('loomReplayFirstCrossing').hidden=false;
     }
+    setJourney('return');
     openWorkspace('return',{focus:bypassThreshold});
   }
   function clearThresholdTimers(){
@@ -598,7 +599,7 @@ export function mountLoomAiWorkspace(root, environment = window) {
           answer:'Continue when you’re ready.'
         });
         projectFirstCrossing(firstCrossingEvent('checking',binding.facts??binding));
-        $('loomFirstCrossingStop').textContent='Finish demo →';
+        $('loomFirstCrossingStop').textContent='Finish tutorial →';
       }catch(error){
         if(disposed||!firstCrossingActive||token!==firstCrossingGeneration)return;
         firstCrossingBindingState='HELD';

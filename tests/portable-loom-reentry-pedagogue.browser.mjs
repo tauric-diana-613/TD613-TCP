@@ -4,7 +4,7 @@
 import assert from 'node:assert/strict';
 import {createServer} from 'node:http';
 import {readFile, mkdir, writeFile} from 'node:fs/promises';
-import {resolve, extname} from 'node:path';
+import {resolve, extname, sep} from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {chromium} from 'playwright';
@@ -25,7 +25,7 @@ const app=resolve('app'), served=new Map();
 const server=createServer(async(req,res)=>{
   try {
     const pathname=new URL(req.url,'http://localhost').pathname,file=resolve(app,'.'+pathname);
-    if(!file.startsWith(app+'/'))throw new Error('Outside static root');
+    if(!file.startsWith(app+'/')&&!file.startsWith(app+sep))throw new Error('Outside static root');
     if(!served.has(file))served.set(file,await readFile(file));
     report.served_source_bytes[`app${pathname}`]=digest(served.get(file));
     res.setHeader('Content-Type',({'.js':'text/javascript','.css':'text/css','.html':'text/html','.json':'application/json','.svg':'image/svg+xml'})[extname(file)]||'application/octet-stream');
@@ -90,7 +90,7 @@ try {
       missing_information:['Foreign execution is unwitnessed.'],receiver_declaration:{policy_change_requested:false,notes:'Synthetic declaration, no actual provider interaction.'}};
     await r('copy').click();await page.waitForFunction(()=>document.querySelector('[data-loom-reentry="verdict"]').textContent==='Task and return contract copied.');
     const taskClipboard=await page.evaluate(()=>navigator.clipboard.readText());
-    assert.equal(taskClipboard,prompt);assert.equal(await head(),'');
+    assert.equal(taskClipboard.replace(/\r\n/g, '\n'), prompt.replace(/\r\n/g, '\n'));assert.equal(await head(),'');
 
     // A clean captured anchor/excursion episode is retained without turning it into
     // enforcement proof. The private key must never appear in either public carrier.
@@ -152,7 +152,7 @@ try {
     assert.deepEqual(publicCarrier.documents,[]);assert.equal(await head(),admittedHead);
     await r('copy-carrier').click();
     await page.waitForFunction(()=>document.querySelector('[data-loom-reentry="verdict"]').textContent==='Admitted continuation copied.');
-    assert.equal(await page.evaluate(()=>navigator.clipboard.readText()),publicCarrierText);
+    assert.equal((await page.evaluate(()=>navigator.clipboard.readText())).replace(/\r\n/g, '\n'),publicCarrierText.replace(/\r\n/g, '\n'));
     assert.equal(await head(),admittedHead);
     assert.equal(await page.locator('#aiCopySession').isDisabled(),true);
 

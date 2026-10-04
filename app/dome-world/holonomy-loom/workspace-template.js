@@ -31,7 +31,7 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
     </div>
     <div class="loom-first-crossing-actions">
       <button type="button" id="loomFirstCrossingAction" hidden>Check AI request →</button>
-      <button type="button" id="loomFirstCrossingStop" hidden>Finish demo →</button>
+      <button type="button" id="loomFirstCrossingStop" hidden>Finish tutorial →</button>
     </div>
     <div class="loom-practice-controls">
       <button type="button" id="loomFirstCrossingBack" hidden>← Start over</button>

@@ -34,7 +34,7 @@ for (const name of retired) {
   assert.ok(!workflows.includes(name), `Superseded workflow returned: ${name}`);
 }
 
-const consolidated = readFileSync(join(workflowDir, 'td613-ci.yml'), 'utf8');
+const consolidated = readFileSync(join(workflowDir, 'td613-ci.yml'), 'utf8').replace(/\r\n/g, '\n');
 assert.match(consolidated, /name:\s*TD613 Consolidated Validation/);
 assert.match(consolidated, /cancel-in-progress:\s*true/);
 assert.match(consolidated, /types:\s*\[opened, synchronize, reopened\]/);
@@ -130,13 +130,13 @@ for (const stepName of ['Validate Dome-World static surfaces', 'Validate Phase I
   assert.match(consolidated, new RegExp(`${stepName.replaceAll('-', '\\-')}\\n\\s+if: github\\.event_name == 'workflow_dispatch' && inputs\\.mode == 'full-browser'`));
 }
 
-const pages = readFileSync(join(workflowDir, 'pages.yml'), 'utf8');
+const pages = readFileSync(join(workflowDir, 'pages.yml'), 'utf8').replace(/\r\n/g, '\n');
 assert.match(pages, /workflow_dispatch:/);
 assert.doesNotMatch(pages, /pull_request:/, 'GitHub Pages must not duplicate PR validation.');
 assert.doesNotMatch(pages, /push:\s*[\s\S]*branches:\s*\[\s*main\s*\]/, 'GitHub Pages must remain explicitly dispatched.');
 
-const release = readFileSync(join(workflowDir, 'vercel-operator-release.yml'), 'utf8');
-const relock = readFileSync(join(workflowDir, 'vercel-relock-safety.yml'), 'utf8');
+const release = readFileSync(join(workflowDir, 'vercel-operator-release.yml'), 'utf8').replace(/\r\n/g, '\n');
+const relock = readFileSync(join(workflowDir, 'vercel-relock-safety.yml'), 'utf8').replace(/\r\n/g, '\n');
 assert.match(release, /deployment_ceiling = 1/);
 assert.match(relock, /deployment_count = 0/);
 assert.match(relock, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-relock '\)/);
