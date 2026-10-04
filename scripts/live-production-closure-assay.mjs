@@ -3,7 +3,10 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
 import { loomDemoReceiptDigest } from '../app/dome-world/holonomy-loom/demo-contract.js';
 
-const outDir = resolve('docs/receipts/1428-closure-assay');
+const baseOutDir = resolve(process.env.TD613_ASSAY_BASE_OUT_DIR || 'docs/receipts/1428-closure-assay');
+const episodeId = process.env.EPISODE_ID || 'TD613-DOLLHOUSE-1428-X-R3';
+const outSubdir = process.env.TD613_ASSAY_SUBDIR || (episodeId.toLowerCase().includes('r3') ? 'r3' : '');
+const outDir = outSubdir ? join(baseOutDir, outSubdir) : baseOutDir;
 await mkdir(outDir, { recursive: true });
 
 const targetUrl = 'https://td613.com/dome-world/holonomy-loom.html';
@@ -14,12 +17,12 @@ const WITNESS_REQUEST_TIMEOUT_MS = 230000;
 console.log('=================================================================');
 console.log('TD613 LOOM PRODUCTION MANDATORY CLOSURE ASSAY (FULL 3-PHASE JOURNEY)');
 console.log(`Target: ${targetUrl}`);
+console.log(`Episode ID: ${episodeId}`);
 console.log(`Artifact Directory: ${outDir}`);
 console.log(`Product Client Timeout: ${KHONAPOLIT_CLIENT_REQUEST_TIMEOUT_MS}ms`);
 console.log(`Witness Request Timeout: ${WITNESS_REQUEST_TIMEOUT_MS}ms`);
 console.log('=================================================================');
 
-const episodeId = process.env.EPISODE_ID || 'TD613-DOLLHOUSE-1428-X-R2';
 const report = {
   schema: 'td613.loom.production-closure-assay/v1.0',
   episode_id: episodeId,
@@ -684,8 +687,13 @@ try {
   report.page_errors = pageErrors;
   report.network_requests = networkRequests;
 
-  const r2ReportPath = join(outDir, 'closure-assay-report-r2.json');
-  await writeFile(r2ReportPath, JSON.stringify(report, null, 2), 'utf8');
-  console.log(`\nClosure Assay Report R2 written to: ${r2ReportPath}`);
+  const suffix = episodeId.toLowerCase().includes('r3') ? 'r3' : (episodeId.toLowerCase().includes('r2') ? 'r2' : 'r1');
+  const rReportPath = join(outDir, `closure-assay-report-${suffix}.json`);
+  await writeFile(rReportPath, JSON.stringify(report, null, 2), 'utf8');
+  if (outSubdir) {
+    const topReportPath = join(baseOutDir, `closure-assay-report-${suffix}.json`);
+    await writeFile(topReportPath, JSON.stringify(report, null, 2), 'utf8');
+  }
+  console.log(`\nClosure Assay Report written to: ${rReportPath}`);
   await browser.close();
 }
