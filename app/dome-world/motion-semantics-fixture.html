@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script id="td613-sitewide-reset-preflight" src="/site-epoch-preflight.js?v=20260927-v1"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TD613 Motion Semantics Choreography Laboratory</title>
+  <style>
+    :root {
+      --bg: #0d0a14;
+      --card-bg: #161222;
+      --border: #2e2640;
+      --accent-gather: #38bdf8;
+      --accent-recur: #a855f7;
+      --accent-release: #f43f5e;
+      --accent-protect: #10b981;
+      --accent-rest: #94a3b8;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding: 24px; max-width: 900px; margin: 0 auto; }
+    header { margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+    h1 { font-size: 1.4rem; font-weight: 600; margin-bottom: 6px; }
+    p.lead { font-size: 0.9rem; color: var(--text-muted); line-height: 1.4; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; background: #261d3b; color: #d8b4fe; margin-bottom: 12px; }
+    
+    .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .motion-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    .motion-card h3 { font-size: 0.95rem; margin-bottom: 12px; align-self: flex-start; color: var(--text-muted); }
+    .motion-card .blind-id { position: absolute; top: 12px; right: 12px; font-family: monospace; font-size: 0.8rem; background: #201a30; padding: 2px 6px; border-radius: 4px; }
+    
+    .canvas-container {
+      width: 180px;
+      height: 180px;
+      background: #09070e;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* 1. à - Gathering (Inward convergence) */
+    .gather-core { width: 14px; height: 14px; border-radius: 50%; background: var(--accent-gather); position: relative; }
+    .gather-particle {
+      position: absolute; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-gather);
+      animation: anim-gather 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+    .gather-p1 { top: 20px; left: 20px; --dx: 60px; --dy: 60px; }
+    .gather-p2 { top: 20px; right: 20px; --dx: -60px; --dy: 60px; animation-delay: 0.2s; }
+    .gather-p3 { bottom: 20px; left: 20px; --dx: 60px; --dy: -60px; animation-delay: 0.4s; }
+    .gather-p4 { bottom: 20px; right: 20px; --dx: -60px; --dy: -60px; animation-delay: 0.6s; }
+    @keyframes anim-gather {
+      0% { transform: translate(0, 0); opacity: 0; }
+      20% { opacity: 1; }
+      80% { transform: translate(var(--dx), var(--dy)); opacity: 1; }
+      100% { transform: translate(var(--dx), var(--dy)); opacity: 0; }
+    }
+
+    /* 2. 米 - Recurrence (Periodic radial pulse / lattice recurrence) */
+    .recur-center { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--accent-recur); position: relative; }
+    .recur-ring {
+      position: absolute; top: -20px; left: -20px; width: 60px; height: 60px; border-radius: 50%; border: 1.5px dashed var(--accent-recur);
+      animation: anim-recur 2.5s ease-in-out infinite;
+    }
+    .recur-ring-outer {
+      position: absolute; top: -50px; left: -50px; width: 120px; height: 120px; border-radius: 50%; border: 1px dotted var(--accent-recur);
+      animation: anim-recur 2.5s ease-in-out infinite 0.4s;
+    }
+    @keyframes anim-recur {
+      0%, 100% { transform: scale(0.6); opacity: 0.2; }
+      50% { transform: scale(1.2); opacity: 0.9; }
+    }
+
+    /* 3. 出 - Release (Directional outward ejection past barrier) */
+    .release-boundary { position: absolute; left: 50px; top: 20px; bottom: 20px; width: 2px; background: #475569; }
+    .release-projectile {
+      width: 16px; height: 16px; border-radius: 4px; background: var(--accent-release); position: absolute; left: 30px;
+      animation: anim-release 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+    @keyframes anim-release {
+      0% { transform: translateX(0) scale(0.8); opacity: 0; }
+      20% { opacity: 1; }
+      60% { transform: translateX(110px) scale(1.1); opacity: 1; }
+      100% { transform: translateX(140px) scale(0.6); opacity: 0; }
+    }
+
+    /* 4. cōl - Continuity / Protection (Steady closed orbit around protected core) */
+    .protect-core { width: 30px; height: 30px; border-radius: 6px; background: #064e3b; border: 1.5px solid var(--accent-protect); display: grid; place-items: center; font-size: 10px; }
+    .protect-orbit {
+      position: absolute; width: 110px; height: 110px; border-radius: 50%; border: 1px solid rgba(16, 185, 129, 0.25);
+      animation: anim-orbit 4s linear infinite;
+    }
+    .protect-satellite { position: absolute; top: -5px; left: 50px; width: 10px; height: 10px; border-radius: 50%; background: var(--accent-protect); }
+    @keyframes anim-orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    /* 5. 𝄐 - Rest (Damped gentle stillness, harmonic breathe without translation) */
+    .rest-orb {
+      width: 50px; height: 50px; border-radius: 50%; background: radial-gradient(circle, #64748b 0%, rgba(100, 116, 139, 0.1) 70%);
+      animation: anim-rest 6s ease-in-out infinite;
+    }
+    @keyframes anim-rest {
+      0%, 100% { transform: scale(1); opacity: 0.4; }
+      50% { transform: scale(1.08); opacity: 0.7; }
+    }
+
+    .controls { display: flex; gap: 12px; margin-top: 12px; }
+    button { background: #27203b; border: 1px solid var(--border); color: var(--text); padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
+    button:hover { background: #352b52; }
+    .blind-toggle { margin-bottom: 20px; display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="badge">LABORATORY PROTOTYPE · TD613 DOLLHOUSE</div>
+    <h1>Motion Semantics Choreography Laboratory</h1>
+    <p class="lead">Bounded non-production visual testbed rendering distinct kinetic archetypes (à, 米, 出, cōl, 𝄐) for perceptual discrimination testing.</p>
+  </header>
+
+  <div class="blind-toggle">
+    <input type="checkbox" id="blindMode">
+    <label for="blindMode">Blinded Observer Mode (hide semantic labels and glyphs)</label>
+  </div>
+
+  <div class="gallery" id="gallery">
+    <!-- Clip A: à (Gather) -->
+    <div class="motion-card" data-archetype="GATHER">
+      <div class="blind-id">Clip 01</div>
+      <h3 class="label">à · Gathering (Convergence)</h3>
+      <div class="canvas-container">
+        <div class="gather-core"></div>
+        <div class="gather-particle gather-p1"></div>
+        <div class="gather-particle gather-p2"></div>
+        <div class="gather-particle gather-p3"></div>
+        <div class="gather-particle gather-p4"></div>
+      </div>
+    </div>
+
+    <!-- Clip B: 米 (Recur) -->
+    <div class="motion-card" data-archetype="RECUR">
+      <div class="blind-id">Clip 02</div>
+      <h3 class="label">米 · Recurrence (Lattice Pulse)</h3>
+      <div class="canvas-container">
+        <div class="recur-center">
+          <div class="recur-ring"></div>
+          <div class="recur-ring-outer"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clip C: 出 (Release) -->
+    <div class="motion-card" data-archetype="RELEASE">
+      <div class="blind-id">Clip 03</div>
+      <h3 class="label">出 · Release (Directional Ejection)</h3>
+      <div class="canvas-container">
+        <div class="release-boundary"></div>
+        <div class="release-projectile"></div>
+      </div>
+    </div>
+
+    <!-- Clip D: cōl (Protect/Continuity) -->
+    <div class="motion-card" data-archetype="CONTINUITY">
+      <div class="blind-id">Clip 04</div>
+      <h3 class="label">cōl · Continuity (Shielded Orbit)</h3>
+      <div class="canvas-container">
+        <div class="protect-core">L</div>
+        <div class="protect-orbit">
+          <div class="protect-satellite"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clip E: 𝄐 (Rest) -->
+    <div class="motion-card" data-archetype="REST">
+      <div class="blind-id">Clip 05</div>
+      <h3 class="label">𝄐 · Rest (Harmonic Breath)</h3>
+      <div class="canvas-container">
+        <div class="rest-orb"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const checkbox = document.getElementById('blindMode');
+    checkbox.addEventListener('change', () => {
+      const labels = document.querySelectorAll('.label');
+      labels.forEach(l => l.style.visibility = checkbox.checked ? 'hidden' : 'visible');
+    });
+  </script>
+</body>
+</html>

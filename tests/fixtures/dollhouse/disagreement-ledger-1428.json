@@ -1,0 +1,86 @@
+{
+  "$schema": "td613.dollhouse.disagreement-ledger/v1.0",
+  "episode_id": "ep_loom_closure_1791090079183",
+  "disagreements": [
+    {
+      "id": "DISAGREE-001",
+      "coordinate": "carrier_visual_identifiability",
+      "roles": {
+        "aperture": {
+          "status": "PASS_AMBIENT_DEPTH",
+          "finding": "Deployed far carriers with opacity 0.20 (repaired in #1428 from historical 0.035; mid 0.24, near 0.38) are observable as ambient depth, though not high-contrast text witnesses."
+        },
+        "pedagogue": {
+          "status": "ACCEPTABLE_BACKGROUND",
+          "finding": "Far carriers provide ambient cinematic depth. Demanding WCAG text contrast on background carriers would clutter the mobile field and increase cognitive route burden."
+        }
+      },
+      "orchestrator_decision": "MAINTAIN_CURRENT_OPACITY",
+      "rationale": "Orchestrator rejects forced contrast boost beyond 0.20. Far carriers are ambient geometry, not interactive targets. Visual hierarchy is preserved."
+    },
+    {
+      "id": "DISAGREE-002",
+      "coordinate": "mobile_tutorial_membrane_ingress",
+      "roles": {
+        "pedagogue": {
+          "status": "CRITICAL_DEFECT",
+          "finding": "Tutorial exposes Flow-Core legend and 𝌋 remix before user acts, violating consequence-before-ontology."
+        },
+        "fadt": {
+          "status": "PASS",
+          "finding": "The First Crossing practice is completely hermetic, zero network calls, zero custody authority. Admissibility descent is strictly preserved."
+        }
+      },
+      "orchestrator_decision": "DEFER_MUTATION_TO_NEXT_PR",
+      "rationale": "PR #1430 is an extraction and closure rite. Material redesign of the tutorial ingress belongs in a dedicated UX iteration after human review."
+    },
+    {
+      "id": "DISAGREE-003",
+      "coordinate": "governor_lifecycle_leak_in_error_branch",
+      "roles": {
+        "fadt": {
+          "status": "HISTORICAL_DEFECT",
+          "finding": "FADT historically identified that server/loom-demo-task.js caught custody reservation errors without closing the bound governor."
+        },
+        "atlas": {
+          "status": "CONFIRMED_REPAIRED",
+          "finding": "PR #1428 repaired this defect in deployed source with binding?.governor?.close();."
+        }
+      },
+      "orchestrator_decision": "HISTORICAL_DEFECT_RESOLVED",
+      "rationale": "Recorded for historical lineage to demonstrate FADT unique analytical contribution; not an active defect in current deployed source."
+    },
+    {
+      "id": "DISAGREE-004",
+      "coordinate": "private_note_interactive_falsifier",
+      "roles": {
+        "pedagogue": {
+          "status": "PROPOSED_ADDITION",
+          "finding": "Pedagogue proposed adding an interactive toggle or popover on the First Crossing private note to actively test user comprehension of exclusion."
+        },
+        "orchestrator": {
+          "status": "REJECTED",
+          "finding": "Integrator rejected the proposal because adding extra buttons or dialogs inside an onboarding tutorial increases cognitive friction for first-time mobile consumers."
+        }
+      },
+      "orchestrator_decision": "REJECT_INTERACTIVE_EXPANSION",
+      "rationale": "Preserve child-legible simplicity on mobile. The First Crossing membrane should remain a 2-step practice, not an interactive configuration form."
+    },
+    {
+      "id": "DISAGREE-005",
+      "coordinate": "return_scene_hash_vs_workspace_admittance",
+      "roles": {
+        "atlas": {
+          "status": "RECEIVER_DIVERGENCE",
+          "finding": "Loom URL reached #return-review while journeyState remained 'marrowline' and returnWorkspaceVisible was false."
+        },
+        "aperture": {
+          "status": "UNOBSERVED_WORKSPACE",
+          "finding": "S != O != E: Presence of URL hash does not constitute observation of Return workspace admittance."
+        }
+      },
+      "orchestrator_decision": "HELD_NO_SYNTHETIC_COMPLETION",
+      "rationale": "Orchestrator classifies Return state as HELD. Do not synthesize completion from URL hash."
+    }
+  ]
+}

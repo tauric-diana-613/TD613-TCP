@@ -1,0 +1,10 @@
+{
+  "role": "APERTURE",
+  "coordinate": "return_state_divergence_and_held_c2",
+  "jurisdiction": "observability_identifiability_uncertainty",
+  "observation": "In DOM snapshot 17_loom_return_scene.png, window.location.hash is #return-review, but document.getElementById('loomReturnWorkspace').hidden is true and data-return-review='result' is unrendered.",
+  "concern": "State-observation conflation (S != O != E). Testing tools treat URL hash presence as proxy evidence for visual rendering, producing false-positive route completion witnesses.",
+  "falsifier": "Automated DOM query verifies document.querySelector('#loomReturnWorkspace:not([hidden])') is non-null.",
+  "recommended_action": "Enforce strict abstention in test harnesses: URL hash cannot be treated as proxy evidence for DOM visibility or state transition. Require explicit rendered bounding box witness.",
+  "claim_ceiling": "experimental-research-instrument-no-external-reality-or-release-authority"
+}

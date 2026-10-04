@@ -40,7 +40,7 @@ for (const fileName of workflowNames) {
 function readAuthorized(name, expectedPushes) {
   const filePath = path.join(workflowDir, name);
   assert.equal(fs.existsSync(filePath), true, `bounded write conduit missing: ${name}`);
-  const source = fs.readFileSync(filePath, 'utf8');
+  const source = fs.readFileSync(filePath, 'utf8').replace(/\r\n/g, '\n');
   assert.match(source, /^\s{2}issue_comment:\s*$/m);
   assert.doesNotMatch(source, /^\s{2}(push|pull_request|workflow_dispatch):\s*$/m);
   assert.match(source, /github\.event\.issue\.number == 405/);

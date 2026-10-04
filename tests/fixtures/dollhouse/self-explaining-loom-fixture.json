@@ -1,0 +1,126 @@
+{
+  "$schema": "td613.dollhouse.self-explaining-loom/v1.1",
+  "experiment": "Self-Explaining Loom: Consequence Choreography vs Early Taxonomy",
+  "hypothesis": "A consumer user can infer selective disclosure (what AI receives vs what stays local) from choreography and consequence before being shown technical taxonomy.",
+  "human_evidence_status": "HUMAN_COMPREHENSION = UNMEASURED",
+  "evidence_law": "SYNTHETIC_AGENT_COMPREHENSION != HUMAN_COMPREHENSION",
+  "hypothetical_expectations": {
+    "condition_A_taxonomy_early": {
+      "expected_time_to_first_action_ms": 14200,
+      "expected_cognitive_hesitation_rate": 0.68,
+      "expected_correct_prediction_of_ai_receipt": 0.44
+    },
+    "condition_B_consequence_first": {
+      "expected_time_to_first_action_ms": 3400,
+      "expected_cognitive_hesitation_rate": 0.12,
+      "expected_correct_prediction_of_ai_receipt": 0.89
+    }
+  },
+  "synthetic_agent_assay": {
+    "evaluated_at": "2026-10-04T05:57:28.515Z",
+    "profiles_tested": 4,
+    "condition_A_taxonomy_early": {
+      "ingress_ui": "Display Flow-Core glyph legend, operator terminology (AIA, FADT, 𝌋 remix), and 4-step diagram on first entry.",
+      "comprehension_scores": {
+        "ai_receipt_understanding": 0.75,
+        "local_retention_understanding": 0.5,
+        "next_consequence_prediction": 0.25,
+        "cycle_distinction": 0.25
+      },
+      "agent_runs": [
+        {
+          "profile_id": "consumer_novice",
+          "ai_receipt_understood": false,
+          "local_retention_understood": false,
+          "next_consequence_predicted": false,
+          "cycle_distinguished": false,
+          "confusion_points": [
+            "User did not understand what 'AIA' or 'FADT quotient' meant.",
+            "User feared clicking 'Try Loom' would submit real private data to an unknown AI."
+          ]
+        },
+        {
+          "profile_id": "enterprise_auditor",
+          "ai_receipt_understood": true,
+          "local_retention_understood": true,
+          "next_consequence_predicted": true,
+          "cycle_distinguished": false,
+          "confusion_points": [
+            "Auditor demanded legal specification for 'holonomy' and 'custody quotients'."
+          ]
+        },
+        {
+          "profile_id": "mobile_fast_scanner",
+          "ai_receipt_understood": true,
+          "local_retention_understood": false,
+          "next_consequence_predicted": false,
+          "cycle_distinguished": false,
+          "confusion_points": [
+            "User scrolled past the 400-word taxonomy diagram without reading.",
+            "User confused 'remix 𝌋' with submitting the prompt."
+          ]
+        },
+        {
+          "profile_id": "adversarial_skeptic",
+          "ai_receipt_understood": true,
+          "local_retention_understood": true,
+          "next_consequence_predicted": false,
+          "cycle_distinguished": true,
+          "confusion_points": [
+            "Skeptic assumed complex vocabulary was obfuscation hiding third-party tracking."
+          ]
+        }
+      ]
+    },
+    "condition_B_consequence_first": {
+      "ingress_ui": "No initial taxonomy. Two files selectable, one marked private; user checks locally, sees private file withheld, watches grouped envelope form, then receives naming on demand.",
+      "comprehension_scores": {
+        "ai_receipt_understanding": 1,
+        "local_retention_understanding": 1,
+        "next_consequence_prediction": 1,
+        "cycle_distinction": 1
+      },
+      "agent_runs": [
+        {
+          "profile_id": "consumer_novice",
+          "ai_receipt_understood": true,
+          "local_retention_understood": true,
+          "next_consequence_predicted": true,
+          "cycle_distinguished": true,
+          "confusion_points": []
+        },
+        {
+          "profile_id": "enterprise_auditor",
+          "ai_receipt_understood": true,
+          "local_retention_understood": true,
+          "next_consequence_predicted": true,
+          "cycle_distinguished": true,
+          "confusion_points": []
+        },
+        {
+          "profile_id": "mobile_fast_scanner",
+          "ai_receipt_understood": true,
+          "local_retention_understood": true,
+          "next_consequence_predicted": true,
+          "cycle_distinguished": true,
+          "confusion_points": []
+        },
+        {
+          "profile_id": "adversarial_skeptic",
+          "ai_receipt_understood": true,
+          "local_retention_understood": true,
+          "next_consequence_predicted": true,
+          "cycle_distinguished": true,
+          "confusion_points": [
+            "Skeptic inspected DOM to verify private file text was truly withheld from request body."
+          ]
+        }
+      ]
+    }
+  },
+  "ruling": {
+    "status": "PROMOTE_TO_LAB_PROTOTYPE",
+    "jurisdictional_decision": "Pedagogue and Aperture confirm Condition B significantly reduces cognitive hesitation and eliminates private data leakage anxiety across synthetic observers. Ingress membrane should withhold technical naming until after the first successful selective disclosure gesture.",
+    "human_validation_requirement": "A physical human iPhone study must be conducted before promoting this claim to human evidence."
+  }
+}
