@@ -239,7 +239,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
       assertCanStage();
       const files=packet.documents.map(document=>new environment.File([document.text],document.name,{type:'text/plain'}));
       await stage(files);pending='CONTINUE';phase='FILES_STAGED';
-      prompt.value=latest?'Continue the original Loom task from its prior answer. Recheck the answer against these selected files and preserve the portable rules and missing evidence.':'Work on the original Loom task using these selected files under the portable rules.';
+      prompt.value=latest?'Continue the original Loom task from its prior answer. Recheck the answer against these selected files under the portable rules: preserve source modality and exact bounded quantities, do not promote permitted ceilings into future-certain behavior or unobserved durations, and retain missing evidence.':'Work on the original Loom task using these selected files under the portable rules.';
       stagedDraft=prompt.value;
       setStatus(`${files.length} selected files attached · Send to continue the task.`);
       prompt.dispatchEvent(new environment.Event('input',{bubbles:true}));
