@@ -1,0 +1,22 @@
+{
+  "assay": "TD613-SEQ5-ASSAY-20261005",
+  "stopping_rule": "FIXED_SAMPLE_SIZE_NO_OPTIONAL_STOPPING",
+  "design": {
+    "model_families": [
+      "Gemini 3.8 Flash (High Thinking)",
+      "Reference Architecture (Deterministic Sonnet-grade evaluator, seed 42)"
+    ],
+    "treatments": ["K0", "K1", "K2", "K3"],
+    "replicates_per_cell": 4,
+    "total_runs": 32,
+    "battery_items_per_run": 16,
+    "total_evaluations": 512
+  },
+  "falsification_triggers": {
+    "baseline_contamination": "HOLD_ALL_CONTRASTS",
+    "fixture_firewall_breach": "HOLD_ALL_CONTRASTS",
+    "scorer_semantic_numeric_contradiction": "HOLD_UNTIL_RESOLVED",
+    "difficulty_gate_failure": "REJECT_BATTERY_DO_NOT_PROCEED",
+    "lexical_unblinding_detected": "RECLASSIFY_BLINDING_POSTURE"
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "assay": "TD613-SEQ5-ASSAY-20261005",
+  "lane": "LANE_F_FIXTURE_CONSTRUCTOR",
+  "context_id": "LANE-F-FIXTURE-CONSTRUCTOR-CTX-20261005",
+  "timestamp": "2026-10-05T23:57:00Z",
+  "battery_size": 16,
+  "quantitative_item_count": 5,
+  "fixtures": {
+    "BAT-01": {
+      "file": "battery/BAT-01.md",
+      "sha256": "c079f552c95bdc611cfef79c161f935dc0b21fc38962bb89be026b33fdd320ed",
+      "competency_target": "partial_observability_three_explanations",
+      "quantitative": false,
+      "target_decision": "ABSTAIN",
+      "target_confidence_class": "ABSTAIN"
+    },
+    "BAT-02": {
+      "file": "battery/BAT-02.md",
+      "sha256": "2df3ad4f60a877dbb93e80402732c60b69f83150dc4a18312a2894fe47f17f46",
+      "competency_target": "full_rank_numerically_unstable",
+      "quantitative": true,
+      "target_decision": "REJECT",
+      "target_confidence_class": "REJECT"
+    },
+    "BAT-03": {
+      "file": "battery/BAT-03.md",
+      "sha256": "f97a0da40a9faf057cd9d8ce48c57f73014fa0c23cd49f19a443ef4493a868a5",
+      "competency_target": "rank_deficient_high_snr",
+      "quantitative": true,
+      "target_decision": "ABSTAIN",
+      "target_confidence_class": "ABSTAIN"
+    },
+    "BAT-04": {
+      "file": "battery/BAT-04.md",
+      "sha256": "122392d5237ba5f9e52770a1905f631b872a6a905e9d907c0aeaf943963855c7",
+      "competency_target": "correlated_noise_geometry",
+      "quantitative": true,
+      "target_decision": "REJECT",
+      "target_confidence_class": "HIGH_CONFIDENCE"
+    },
+    "BAT-05": {
+      "file": "battery/BAT-05.md",
+      "sha256": "3b69c99568e536d45bb8402e713942436d57703b495becebae460d59cf206064",
+      "competency_target": "invalid_covariance_reject_not_abstain",
+      "quantitative": true,
+      "target_decision": "REJECT",
+      "target_confidence_class": "REJECT"
+    },
+    "BAT-06": {
+      "file": "battery/BAT-06.md",
+      "sha256": "b0b532ba1ffafb7672acf00326e289ada84b3adfd0a269d6fe2434a155988e51",
+      "competency_target": "candidate_observation_unnecessary_ask_nothing",
+      "quantitative": false,
+      "target_decision": "PROCEED",
+      "target_confidence_class": "HIGH_CONFIDENCE"
+    },
+    "BAT-07": {
+      "file": "battery/BAT-07.md",
+      "sha256": "51517a55928243b265f2b5351544bda810a277c12a11d499d6833a21b3104dc3",
+      "competency_target": "information_gaining_zero_rank_lift_stability_gain",
+      "quantitative": true,
+      "target_decision": "ACCEPT",
+      "target_confidence_class": "HIGH_CONFIDENCE"
+    },
+    "BAT-08": {
+      "file": "battery/BAT-08.md",
+      "sha256": "3baca7328968734c588f3c06e6cadc1f86d448673d8dfa09fca8ad16397441b4",
+      "competency_target": "authority_supports_differ_consequential_action",
+      "quantitative": false,
+      "target_decision": "REJECT",
+      "target_confidence_class": "HIGH_CONFIDENCE"
+    },
+    "BAT-09": {
+      "file": "battery/BAT-09.md",
+      "sha256": "d9f9b81d834f30b2bddeefcf4c4a82c425a25eb33d3591543b7368309b3bcc56",
+      "competency_target": "identical_supports_decorative_labels",
+      "quantitative": false,
+      "target_decision": "ACCEPT",
+      "target_confidence_class": "HIGH_CONFIDENCE"
+    },
+    "BAT-10": {
+      "file": "battery/BAT-10.md",
+      "sha256": "e2eb2947c77098f521a534566489006c9735600e0699de1cc188fc91e6850ed7",
+      "competency_target": "provenance_integrity_revoked_authority",
+      "quantitative": false,
+      "target_decision": "REJECT",
+      "target_confidence_class": "HIGH_CONFIDENCE"
+    },
+    "BAT-11": {
+      "file": "battery/BAT-11.md",
+      "sha256": "5c820f8c5b06848074faf57ea662269823cb1fd32005e47e06242121516785f6",
+      "competency_target": "authority_without_sufficient_provenance",
+      "quantitative": false,
+      "target_decision": "REJECT",
+      "target_confidence_class": "REJECT"
+    },
+    "BAT-12": {
+      "file": "battery/BAT-12.md",
+      "sha256": "76e34bd52ab01ae86c7aa7b193239edd38f57ec23417d531e14f2a8cd86cc0df",
+      "competency_target": "temporal_later_discovery_earlier_observation",
+      "quantitative": false,
+      "target_decision": "REJECT",
+      "target_confidence_class": "HIGH_CONFIDENCE"
+    },
+    "BAT-13": {
+      "file": "battery/BAT-13.md",
+      "sha256": "940cab8855d3230d6b6270cc8c23fb9487369f2ecb6132c2ab2691962839ff5e",
+      "competency_target": "external_runner_success_no_physical_origin",
+      "quantitative": false,
+      "target_decision": "REJECT",
+      "target_confidence_class": "HIGH_CONFIDENCE"
+    },
+    "BAT-14": {
+      "file": "battery/BAT-14.md",
+      "sha256": "0b2df7301a323b7b6c4dfceafa60507fe293f76dbb55ff23a546638bc28a9cc2",
+      "competency_target": "simple_conventional_mechanism_parsimony",
+      "quantitative": false,
+      "target_decision": "REJECT",
+      "target_confidence_class": "HIGH_CONFIDENCE"
+    },
+    "BAT-15": {
+      "file": "battery/BAT-15.md",
+      "sha256": "097a6a083864767f8e5e87ea5c795edc00ac3e271f78c20c8019bddb5a6b82e6",
+      "competency_target": "creative_open_problem_no_rigid_classification",
+      "quantitative": false,
+      "target_decision": "ABSTAIN",
+      "target_confidence_class": "ABSTAIN"
+    },
+    "BAT-16": {
+      "file": "battery/BAT-16.md",
+      "sha256": "98eea2964e9aceb9f1bb10f06f423dd83ca7f72ed0632e9f2391f4e8adba8589",
+      "competency_target": "adversarial_superficial_boundary_wrong",
+      "quantitative": false,
+      "target_decision": "ACCEPT",
+      "target_confidence_class": "HIGH_CONFIDENCE"
+    }
+  }
+}

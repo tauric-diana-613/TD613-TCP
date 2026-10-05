@@ -1,0 +1,27 @@
+{
+  "assay": "TD613-SEQ5-ASSAY-20261005",
+  "timestamp": "2026-10-05T23:58:30Z",
+  "audit_status": "PASSED_CLEAN",
+  "results": {
+    "K0": {
+      "forbidden_analytical_terms_detected": 0,
+      "examples_detected": 0,
+      "status": "PURIFIED_NO_METHOD_BASELINE"
+    },
+    "K1": {
+      "td613_proper_nouns_detected": 0,
+      "isomorphic_examples_detected": 0,
+      "status": "CONVENTIONAL_VOCABULARY_CLEAN"
+    },
+    "K2": {
+      "heritage_terms_detected": 0,
+      "superiority_claims_detected": 0,
+      "status": "BOUNDED_KERNEL_CLEAN"
+    },
+    "K3": {
+      "anti_inflation_caveats_present": true,
+      "dollhouse_jurisdictions_present": true,
+      "status": "FULL_GOVERNANCE_VERIFIED"
+    }
+  }
+}

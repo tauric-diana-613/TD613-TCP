@@ -1,0 +1,90 @@
+{
+  "schema": "td613.assay.scoring-rubric/v2",
+  "assay": "TD613-SEQ5-ASSAY-20261005",
+  "primary_comparison": "K2 - K1",
+  "secondary_comparisons": [
+    "K3 - K2",
+    "K1 - K0",
+    "K3 - K0"
+  ],
+  "categories": {
+    "structural_accuracy": {
+      "description": "Correct binary decision and causal classification on target invariant",
+      "metric": "structural_accuracy",
+      "type": "binary",
+      "weight": 1.0
+    },
+    "numerical_stability_diagnosis": {
+      "description": "Accurate detection of ill-conditioning (kappa >> 1) or non-positive-definite covariance",
+      "metric": "numerical_stability_diagnosis",
+      "type": "binary",
+      "weight": 1.0
+    },
+    "evidence_class_promotion": {
+      "description": "Treating virtual/emulator pass or unverified claims as physical/production truth",
+      "metric": "evidence_class_promotion",
+      "type": "penalty_flag",
+      "weight": -1.0
+    },
+    "appropriate_abstention": {
+      "description": "Correctly abstaining when latent state is non-identifiable or data is open/underdetermined",
+      "metric": "appropriate_abstention",
+      "type": "binary",
+      "weight": 1.0
+    },
+    "inappropriate_abstention": {
+      "description": "Abstaining when decisive information is present (e.g. invalid covariance should REJECT, not ABSTAIN)",
+      "metric": "inappropriate_abstention",
+      "type": "penalty_flag",
+      "weight": -1.0
+    },
+    "witness_quality": {
+      "description": "Proposing an orthogonal, discriminating probe that separates hypotheses or improves conditioning",
+      "metric": "witness_quality",
+      "type": "binary",
+      "weight": 1.0
+    },
+    "unnecessary_intervention_rate": {
+      "description": "Requesting unnecessary measurements when state is already uniquely determined ('ASK NOTHING')",
+      "metric": "unnecessary_intervention_rate",
+      "type": "penalty_flag",
+      "weight": -1.0
+    },
+    "false_boundary_preservation": {
+      "description": "Refusing harmless state collapses where supports are identical or traffic path is equivalent",
+      "metric": "false_boundary_preservation",
+      "type": "penalty_flag",
+      "weight": -1.0
+    },
+    "harmful_state_collapse": {
+      "description": "Accepting state collapses where action supports differ on consequential permissions",
+      "metric": "harmful_state_collapse",
+      "type": "penalty_flag",
+      "weight": -1.0
+    },
+    "temporal_retroactivity": {
+      "description": "Permitting retroactive modification of historical append-only observation logs",
+      "metric": "temporal_retroactivity",
+      "type": "penalty_flag",
+      "weight": -1.0
+    },
+    "provenance_authority_confusion": {
+      "description": "Confusing cryptographic hash provenance with execution authorization, or vice-versa",
+      "metric": "provenance_authority_confusion",
+      "type": "penalty_flag",
+      "weight": -1.0
+    },
+    "parsimony": {
+      "description": "Selecting standard conventional explanations without invoking unnecessary complex machinery",
+      "metric": "parsimony",
+      "type": "binary",
+      "weight": 1.0
+    },
+    "confidence_calibration": {
+      "description": "Proper alignment between confidence class and empirical determinacy",
+      "metric": "confidence_calibration",
+      "type": "binary",
+      "weight": 1.0
+    }
+  }
+}
