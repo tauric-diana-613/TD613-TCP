@@ -163,7 +163,7 @@ test('Loom demo branches from + and both numbered gestures stage attachment + pr
  assert.equal(gateExport.disabled,false);
  assert.equal(h.doc.querySelectorAll('#khonapolitMessages article[data-role]').length,4);
  assert.equal(h.doc.querySelectorAll('textarea:not([hidden])').length>=1,true);
- prompt.value='Which state is current?';await h.controller.submit();
+ await h.controller.reenterLoom();prompt.value='Which state is current?';await h.controller.submit();
  const followGovernedCard=[...h.doc.querySelectorAll('#khonapolitMessages article.relay-message')].at(-1);
  assert.equal(followGovernedCard?.dataset.loomReadingRequestId,h.requests[2].request_id,'later governed continuation gets a new work-unit marker rather than inheriting the old one');
  assert.equal(h.requests[2].prior_result.answer,'State B has four workstreams.');
@@ -212,7 +212,7 @@ test('ordinary extra attachments cannot silently enter governed request; restori
 test('failed continuation keeps the previous admitted export and reports hold separately',async()=>{
  const h=await harness();try{
  await h.controller.stageAia();await h.controller.submit();await h.controller.stageFiles();await h.controller.submit();
- const prior=h.controller.exportPacket();h.setHeld(true);h.doc.querySelector('#khonapolitPrompt').value='New attempt';await h.controller.submit();
+ const prior=h.controller.exportPacket();await h.controller.reenterLoom();h.setHeld(true);h.doc.querySelector('#khonapolitPrompt').value='New attempt';await h.controller.submit();
  assert.deepEqual(h.controller.exportPacket(),prior);
  assert.match(h.doc.querySelector('#loomGateContinuity [role=status]').textContent,/HELD/);
  const gate=h.controller.getGateContinuity();
@@ -235,7 +235,7 @@ test('native exports after both continuations preserve original answer, latest a
  assert.ok(h.controller.getGateContinuity().atlas.survived.includes('Immediate content predecessor request: loom-origin'),'optional original A remains the first continuation content predecessor');
  assert.equal(first.continuation.prior_result.answer,'State B has four workstreams.');
  assert.equal((await inspectLoomDemoExport(JSON.parse(JSON.stringify(first)),h.root)).status,'REVIEW_ONLY_CONSISTENCY');
- h.doc.querySelector('#khonapolitPrompt').value='Continue from the latest reply.';await h.controller.submit();
+ await h.controller.reenterLoom();h.doc.querySelector('#khonapolitPrompt').value='Continue from the latest reply.';await h.controller.submit();
  const second=h.controller.exportPacket(), metadata=second.loom_demo_provenance;
  assert.deepEqual(metadata.original_result,original);
  assert.equal(second.continuation.prior_result.answer,'State C has five workstreams.');
@@ -274,7 +274,7 @@ test('native exports after both continuations preserve original answer, latest a
 test('parsed export changes to original work, carried stage order, latest binding and ceilings are held',async()=>{
  const h=await harness({originalResult:true,sourceRevision:'9824dfa0f427c8b944ff5c7fdfd43719b2b41418'});try{
  await h.controller.stageAia();await h.controller.submit();await h.controller.stageFiles();await h.controller.submit();
- h.doc.querySelector('#khonapolitPrompt').value='Follow up.';await h.controller.submit();
+ await h.controller.reenterLoom();h.doc.querySelector('#khonapolitPrompt').value='Follow up.';await h.controller.submit();
  const packet=h.controller.exportPacket();
  assert.equal(packet.loom_demo_provenance.source_revision.state,'CARRIED_ORIGIN_DECLARATION');
  for(const change of [
@@ -302,7 +302,7 @@ test('saved B advances to C only after admission; failure, expiry and Leave reta
  assert.equal(h.controller.getSavedReviewPacket(),null,'setup acknowledgement cannot fabricate substantive work');
  await h.controller.stageFiles();await h.controller.submit();
  const b=h.controller.getSavedReviewPacket();assert.equal(b.continuation.prior_result.answer,'State B has four workstreams.');
- h.doc.querySelector('#khonapolitPrompt').value='Continue from B.';await h.controller.submit();
+ await h.controller.reenterLoom();h.doc.querySelector('#khonapolitPrompt').value='Continue from B.';await h.controller.submit();
  const c=h.controller.getSavedReviewPacket();assert.equal(c.continuation.prior_result.answer,'State C has five workstreams.');
  const storageKey='td613.loom.return-review.v1';
  assert.deepEqual(JSON.parse(h.root.sessionStorage.getItem(storageKey)),c);
@@ -326,7 +326,7 @@ test('Marrowline reload exposes saved review through + without a live controller
  const h=await harness();let reloaded;
  try{
  await h.controller.stageAia();await h.controller.submit();await h.controller.stageFiles();await h.controller.submit();
- h.doc.querySelector('#khonapolitPrompt').value='Second substantive continuation.';await h.controller.submit();
+ await h.controller.reenterLoom();h.doc.querySelector('#khonapolitPrompt').value='Second substantive continuation.';await h.controller.submit();
  const saved=h.controller.getSavedReviewPacket(),storageKey='td613.loom.return-review.v1';
  reloaded=new JSDOM(html,{url:'https://td613.com/dome-world/marrowline.html#loom-demo'});
  const root=reloaded.window,doc=root.document;Object.defineProperty(root,'crypto',{value:webcrypto});
