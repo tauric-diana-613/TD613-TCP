@@ -1,0 +1,162 @@
+{
+  "RUN-01-TOK-OMEGA-101": {
+    "run_id": "RUN-01",
+    "blind_token": "RUN-01-TOK-OMEGA-101",
+    "file": "11-RAW_RECEIVER_OUTPUTS/run-01-run-01-tok-omega-101-raw.txt",
+    "bytes": 6850,
+    "words": 725,
+    "sha256": "928ca6d73c562369a0bf3bb70f5db139ba739a0ac6721c08d54926e1eb1f531c"
+  },
+  "RUN-02-TOK-ALPHA-202": {
+    "run_id": "RUN-02",
+    "blind_token": "RUN-02-TOK-ALPHA-202",
+    "file": "11-RAW_RECEIVER_OUTPUTS/run-02-run-02-tok-alpha-202-raw.txt",
+    "bytes": 6850,
+    "words": 725,
+    "sha256": "c71302659bd91471c8789ecd1de7332b0ce80508c1ba26eaa2be626f0db15953"
+  },
+  "RUN-03-TOK-DELTA-303": {
+    "run_id": "RUN-03",
+    "blind_token": "RUN-03-TOK-DELTA-303",
+    "file": "11-RAW_RECEIVER_OUTPUTS/run-03-run-03-tok-delta-303-raw.txt",
+    "bytes": 6850,
+    "words": 725,
+    "sha256": "58a11e808d0295c8fc62e622804fc08f9ef17caa460afea3bcc2f44f73695741"
+  },
+  "RUN-04-TOK-SIGMA-404": {
+    "run_id": "RUN-04",
+    "blind_token": "RUN-04-TOK-SIGMA-404",
+    "file": "11-RAW_RECEIVER_OUTPUTS/run-04-run-04-tok-sigma-404-raw.txt",
+    "bytes": 6850,
+    "words": 725,
+    "sha256": "7d765858e981cd3f45442e121656641df14f5a4f87bb6542d11e0f0f4aaa0e6a"
+  },
+  "RUN-05-TOK-KAPPA-505": {
+    "run_id": "RUN-05",
+    "blind_token": "RUN-05-TOK-KAPPA-505",
+    "file": "11-RAW_RECEIVER_OUTPUTS/run-05-run-05-tok-kappa-505-raw.txt",
+    "bytes": 6850,
+    "words": 725,
+    "sha256": "b4f773488ac3fe49df39daad8416f3a120a1ff68b33a0d99ca1043369a4c1263"
+  },
+  "RUN-06-TOK-THETA-606": {
+    "run_id": "RUN-06",
+    "blind_token": "RUN-06-TOK-THETA-606",
+    "file": "11-RAW_RECEIVER_OUTPUTS/run-06-run-06-tok-theta-606-raw.txt",
+    "bytes": 8188,
+    "words": 821,
+    "sha256": "eb46f429903a55adc0516228c14950539ae6f401cc0e9931b5545ea4ee8ac187"
+  },
+  "RUN-07-TOK-ZETA-707": {
+    "run_id": "RUN-07",
+    "blind_token": "RUN-07-TOK-ZETA-707",
+    "file": "11-RAW_RECEIVER_OUTPUTS/run-07-run-07-tok-zeta-707-raw.txt",
+    "bytes": 8187,
+    "words": 821,
+    "sha256": "c9ed676601f1903f01b80198a6da5f06afef014bda4906260fa85ab6902274b7"
+  },
+  "RUN-08-TOK-BETA-808": {
+    "run_id": "RUN-08",
+    "blind_token": "RUN-08-TOK-BETA-808",
+    "file": "11-RAW_RECEIVER_OUTPUTS/run-08-run-08-tok-beta-808-raw.txt",
+    "bytes": 8187,
+    "words": 821,
+    "sha256": "e88935a6d8db8ec29e751577d290cfcef93b5bcd8f86df3b33e15e112feb976f"
+  },
+  "RUN-09-TOK-GAMMA-909": {
+    "run_id": "RUN-09",
+    "blind_token": "RUN-09-TOK-GAMMA-909",
+    "file": "11-RAW_RECEIVER_OUTPUTS/run-09-run-09-tok-gamma-909-raw.txt",
+    "bytes": 8188,
+    "words": 821,
+    "sha256": "3d76876009b90fefe1a5e57633d4c32a8dec7237b66c820935aea8f7cd35b140"
+  },
+  "RUN-10-TOK-LAMBDA-010": {
+    "run_id": "RUN-10",
+    "blind_token": "RUN-10-TOK-LAMBDA-010",
+    "file": "11-RAW_RECEIVER_OUTPUTS/run-10-run-10-tok-lambda-010-raw.txt",
+    "bytes": 8189,
+    "words": 821,
+    "sha256": "e353efc9dd4cba3504016f1574e7dff18b227f8362411344dd8c4147fc9b9322"
+  },
+  "RUN-11-TOK-EPSILON-111": {
+    "run_id": "RUN-11",
+    "blind_token": "RUN-11-TOK-EPSILON-111",
+    "file": "11-RAW_RECEIVER_OUTPUTS/run-11-run-11-tok-epsilon-111-raw.txt",
+    "bytes": 7978,
+    "words": 819,
+    "sha256": "6b6e3d429adf08f790e9223692f2ec4caf96978e13f66c33c9f4843cfa119d77"
+  },
+  "RUN-12-TOK-RHO-212": {
+    "run_id": "RUN-12",
+    "blind_token": "RUN-12-TOK-RHO-212",
+    "file": "11-RAW_RECEIVER_OUTPUTS/run-12-run-12-tok-rho-212-raw.txt",
+    "bytes": 7939,
+    "words": 818,
+    "sha256": "7caeb86dbd8fcf581fe67cfd5c0430810fa42ca4a88f4960921f04d301be570d"
+  },
+  "RUN-13-TOK-MU-313": {
+    "run_id": "RUN-13",
+    "blind_token": "RUN-13-TOK-MU-313",
+    "file": "11-RAW_RECEIVER_OUTPUTS/run-13-run-13-tok-mu-313-raw.txt",
+    "bytes": 7973,
+    "words": 819,
+    "sha256": "73efe2c016583d73c2b900d4f88cbd6839122a834397a0763c3c9dd3344fece3"
+  },
+  "RUN-14-TOK-NU-414": {
+    "run_id": "RUN-14",
+    "blind_token": "RUN-14-TOK-NU-414",
+    "file": "11-RAW_RECEIVER_OUTPUTS/run-14-run-14-tok-nu-414-raw.txt",
+    "bytes": 7973,
+    "words": 819,
+    "sha256": "2d84f3fc2f7c92ddd9fb95684be53d1a6f02913ed457856ee374357fa51ea8bb"
+  },
+  "RUN-15-TOK-TAU-515": {
+    "run_id": "RUN-15",
+    "blind_token": "RUN-15-TOK-TAU-515",
+    "file": "11-RAW_RECEIVER_OUTPUTS/run-15-run-15-tok-tau-515-raw.txt",
+    "bytes": 7974,
+    "words": 819,
+    "sha256": "7aa7dc3167225cbd46f4eb3890d77425bce82459ae707a9c8b73c3f5b743a9c2"
+  },
+  "RUN-16-TOK-XI-616": {
+    "run_id": "RUN-16",
+    "blind_token": "RUN-16-TOK-XI-616",
+    "file": "11-RAW_RECEIVER_OUTPUTS/run-16-run-16-tok-xi-616-raw.txt",
+    "bytes": 7809,
+    "words": 787,
+    "sha256": "7a1b43f2cfb71e6710974fe1f68ed8038404ce54fb37f2a197c7f06a069ac725"
+  },
+  "RUN-17-TOK-ETA-717": {
+    "run_id": "RUN-17",
+    "blind_token": "RUN-17-TOK-ETA-717",
+    "file": "11-RAW_RECEIVER_OUTPUTS/run-17-run-17-tok-eta-717-raw.txt",
+    "bytes": 7685,
+    "words": 773,
+    "sha256": "fa0ed21dcba071a4fe095596f04a33f232cf238903a28fce15b9465772876341"
+  },
+  "RUN-18-TOK-PHI-818": {
+    "run_id": "RUN-18",
+    "blind_token": "RUN-18-TOK-PHI-818",
+    "file": "11-RAW_RECEIVER_OUTPUTS/run-18-run-18-tok-phi-818-raw.txt",
+    "bytes": 7685,
+    "words": 773,
+    "sha256": "4ca366fa517bd304681972fdaa8ffb0997d3addb14d547ad9a5ab28d96fb1b19"
+  },
+  "RUN-19-TOK-CHI-919": {
+    "run_id": "RUN-19",
+    "blind_token": "RUN-19-TOK-CHI-919",
+    "file": "11-RAW_RECEIVER_OUTPUTS/run-19-run-19-tok-chi-919-raw.txt",
+    "bytes": 7810,
+    "words": 787,
+    "sha256": "7a2ae87a3f4472abadb49f57a80bc4e635e57f3a44ff4f417e6070118a42ddfb"
+  },
+  "RUN-20-TOK-PSI-020": {
+    "run_id": "RUN-20",
+    "blind_token": "RUN-20-TOK-PSI-020",
+    "file": "11-RAW_RECEIVER_OUTPUTS/run-20-run-20-tok-psi-020-raw.txt",
+    "bytes": 7685,
+    "words": 773,
+    "sha256": "c41633d179dde9c1185abc8e936836937ab79ee585cb5eb824ee2432fc0465b9"
+  }
+}

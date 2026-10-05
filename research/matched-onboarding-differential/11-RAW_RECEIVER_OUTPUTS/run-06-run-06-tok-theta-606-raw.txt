@@ -1,0 +1,91 @@
+================================================================================
+RECEIVER EXECUTION RUN: RUN-06
+BLIND TOKEN: RUN-06-TOK-THETA-606
+REPLICATE: 1
+TIMESTAMP: 2026-10-05T23:20:11Z
+EVALUATION BATTERY SEQUENCE: BAT-01, BAT-02, BAT-03, BAT-04, BAT-05, BAT-06, BAT-07, BAT-08, BAT-09, BAT-10
+================================================================================
+
+--------------------------------------------------------------------------------
+ITEM EVALUATION: BAT-01
+--------------------------------------------------------------------------------
+
+Question 1: The observable failure is an RPC coordinator timeout at t=12:00:01.506Z triggered by EVT_TIMER_EXPIRED when Node_3's vote was not received within the 500ms deadline.
+Question 2: Hypothesis A (node crash) and Hypothesis B (asymmetric link partition) are observationally indistinguishable from Node_1's telemetry boundary. In formal systems analysis, the latent process is non-identifiable from single-node boundary logs when concurrent failure modes project identical timeout semantics.
+Question 3: Unlawful. Asserting Hypothesis A without peer-node corroboration violates identifiability boundaries. The correct classification is UNDERDETERMINED; the auditor must formally ABSTAIN from asserting a singular root cause.
+
+--------------------------------------------------------------------------------
+ITEM EVALUATION: BAT-02
+--------------------------------------------------------------------------------
+
+Question 1: Intervention Gamma is the sole discriminating intervention. By attaching kernel probes directly to wal_fsync_lock and memtable_flush_mutex, it isolates the independent variables.
+Question 2: Interventions Alpha and Beta lack experimental orthogonality. Alpha records aggregate host utilization (CPU/RAM) that confounds I/O wait with lock contention. Beta scales input load, which exacerbates both potential bottlenecks equally, increasing mutual information without lifting model identifiability.
+Question 3: Falsifier: Under 10k ops/sec burst load, if cumulative thread block time in wal_fsync_lock is < 2ms while block time in memtable_flush_mutex accounts for > 95% of the 345ms latency stall, Hypothesis 1 (WAL saturation) is definitively falsified.
+
+--------------------------------------------------------------------------------
+ITEM EVALUATION: BAT-03
+--------------------------------------------------------------------------------
+
+Question 1: The symmetric difference of their permission sets is: P(ADMIN) \ P(READ) = {export_raw_database, rotate_api_keys}. This difference is non-empty.
+Question 2: The state collapse is not behavior-preserving. In capability security, aggregating states with disjoint capability bounds destroys least-privilege boundaries.
+Question 3: Critical privilege escalation: unauthenticated or read-scoped client sessions mapped to the unified state inherit administrative export and key-rotation capabilities, violating confidentiality and integrity invariants.
+
+--------------------------------------------------------------------------------
+ITEM EVALUATION: BAT-04
+--------------------------------------------------------------------------------
+
+Question 1: The permission support sets are identical: P(DISPLAYED) = P(CACHED) = {read_buffer_text, search_regex, render_thumbnail, append_text, discard_buffer}. The symmetric difference is strictly empty.
+Question 2: The state aggregation is strictly behavior-preserving. It creates zero unauthorized capability exposure and revokes zero legitimate operations.
+Question 3: ACCEPT. In state-machine optimization, collapsing bisimilar states with identical action-permission matrices reduces state complexity without altering system semantics.
+
+--------------------------------------------------------------------------------
+ITEM EVALUATION: BAT-05
+--------------------------------------------------------------------------------
+
+Question 1: No. Telemetry records represent an immutable chronological record of empirical execution. The discovery of latent code at t2 cannot retroactively alter the fact that at t1, only 1,420 bytes were transmitted to 10.0.2.20.
+Question 2: The analyst must update the static system model (the binary contains a latent dormant mirror flag), while keeping the dynamic historical event log immutable.
+Question 3: Strictly unlawful. Altering historical logs to match static code capabilities is log tampering and violates append-only audit integrity.
+
+--------------------------------------------------------------------------------
+ITEM EVALUATION: BAT-06
+--------------------------------------------------------------------------------
+
+Question 1: Yes. Cryptographic provenance, SBOM integrity, and git commit signatures were 100% verified.
+Question 2: No. The deployment daemon returned 403 Forbidden because DISPATCH_TOK_201 was expired and Deploy-Approval-Signature was absent.
+Question 3: Provenance confirms historical authenticity and supply-chain integrity, whereas capability authority requires an unexpired, capability-scoped grant at execution time. Conflating provenance with authority is a fundamental security defect.
+
+--------------------------------------------------------------------------------
+ITEM EVALUATION: BAT-07
+--------------------------------------------------------------------------------
+
+Question 1: The runner witnessed exit code 0 across 42 automated test assertions in a virtual QEMU Cortex-M4 software emulation container.
+Question 2: Major epistemic category errors: (1) Promoting software emulation pass to physical silicon verification, (2) inferring physical semiconductor foundry origin from test logs, (3) asserting human engineering origin without authorship telemetry, (4) claiming automotive safety critical compliance from headless unit tests.
+Question 3: Claim ceiling: "Binary firmware_v1.0.bin passed 42 software unit tests in a QEMU virtual emulation container." All physical hardware, foundry, and human authorship claims must be rejected.
+
+--------------------------------------------------------------------------------
+ITEM EVALUATION: BAT-08
+--------------------------------------------------------------------------------
+
+Question 1: Unavailable. The critical TLS key-exchange handshake packet was dropped due to tap buffer overflow.
+Question 2: Mathematically impossible. Symmetric session keys cannot be derived without the handshake exchange; ciphertext payload is undecipherable.
+Question 3: The analyst must formally ABSTAIN. Under selective prediction principles, when critical evidence is missing, fabricating payload contents is a severe analytical failure. The question must be marked UNDERDETERMINED.
+
+--------------------------------------------------------------------------------
+ITEM EVALUATION: BAT-09
+--------------------------------------------------------------------------------
+
+Question 1: Yes, Model Beta (standard token bucket rate limiting at 1 req/sec with capacity 60) fully and parsimoniously accounts for the telemetry.
+Question 2: No. Model Alpha introduces ungrounded architectural complexity with zero empirical evidence.
+Question 3: Parsimony and Occam's razor: choose the minimal sufficient engineering hypothesis that fully explains the observed trace without multiplying entities beyond necessity.
+
+--------------------------------------------------------------------------------
+ITEM EVALUATION: BAT-10
+--------------------------------------------------------------------------------
+
+Question 1: No. The trace exhibits non-periodic multi-modal dynamics (inverted chirp, asynchronous phase slips) that diverge from established catalog classifications.
+Question 2: Underdetermined and non-identifiable. Single-sensor short-duration telemetry cannot uniquely constrain the high-dimensional physical state space.
+Question 3: Classify as an unmodeled exploratory anomaly / open investigation. Do not force an unknown phenomenon into a known failure state without falsifiable evidence.
+
+================================================================================
+END OF RECEIVER RUN: RUN-06
+================================================================================
