@@ -1,0 +1,447 @@
+/**
+ * Marrowline Loom Presentation Tournament Styles
+ * Supports Candidates A through F:
+ * A: Dialog, B: Inline, C: Bottom Sheet, D: Rail, E: Adaptive Hybrid, F: Cathedral
+ */
+
+:root {
+  --loom-surface-bg: #120f22;
+  --loom-surface-border: rgba(154, 232, 228, 0.22);
+  --loom-surface-glow: rgba(182, 155, 233, 0.14);
+  --loom-text-primary: #edfbf8;
+  --loom-text-muted: #a2b0c2;
+  --loom-cross-bg: rgba(154, 232, 228, 0.07);
+  --loom-cross-border: rgba(154, 232, 228, 0.32);
+  --loom-cross-title: #7ce5dc;
+  --loom-stay-bg: rgba(246, 237, 207, 0.07);
+  --loom-stay-border: rgba(246, 237, 207, 0.32);
+  --loom-stay-title: #f2e4bf;
+  --loom-unknown-bg: rgba(182, 155, 233, 0.07);
+  --loom-unknown-border: rgba(182, 155, 233, 0.28);
+  --loom-unknown-title: #caafee;
+}
+
+/* Base Modal Dialog / Surface */
+#loomReentryModal {
+  padding: 0;
+  border: 1px solid var(--loom-surface-border);
+  background: var(--loom-surface-bg);
+  color: var(--loom-text-primary);
+  box-shadow: 0 12px 42px rgba(4, 3, 10, 0.72), 0 0 24px var(--loom-surface-glow);
+  box-sizing: border-box;
+  font-family: var(--marrowline-chat-sans, "Reddit Sans", system-ui, sans-serif);
+}
+
+#loomReentryModal::backdrop {
+  background: rgba(5, 4, 12, 0.65);
+  backdrop-filter: blur(4px);
+}
+
+.loom-reentry-form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 24px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.loom-reentry-sheet-handle {
+  display: none;
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.24);
+  margin: 0 auto 14px auto;
+}
+
+.loom-reentry-title {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 6px 0;
+  color: #fff;
+}
+
+.loom-reentry-lead {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--loom-text-muted);
+  margin: 0 0 16px 0;
+}
+
+/* Disclosure Cards */
+.loom-reentry-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.loom-reentry-card {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.loom-reentry-card .card-header {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.loom-reentry-card ul {
+  margin: 0;
+  padding-left: 18px;
+  color: #e2e8f0;
+}
+
+.loom-reentry-card li {
+  margin-bottom: 4px;
+}
+
+.loom-reentry-card li:last-child {
+  margin-bottom: 0;
+}
+
+.loom-reentry-card-cross {
+  background: var(--loom-cross-bg);
+  border-color: var(--loom-cross-border);
+}
+.loom-reentry-card-cross .card-header {
+  color: var(--loom-cross-title);
+}
+
+.loom-reentry-card-stay {
+  background: var(--loom-stay-bg);
+  border-color: var(--loom-stay-border);
+}
+.loom-reentry-card-stay .card-header {
+  color: var(--loom-stay-title);
+}
+
+.loom-reentry-card-unknown {
+  background: var(--loom-unknown-bg);
+  border-color: var(--loom-unknown-border);
+}
+.loom-reentry-card-unknown .card-header {
+  color: var(--loom-unknown-title);
+}
+
+/* Action Buttons */
+.loom-reentry-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+}
+
+.loom-reentry-actions button {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 550;
+  cursor: pointer;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+
+.loom-reentry-cancel {
+  background: rgba(28, 23, 44, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #cbd5e1;
+}
+
+.loom-reentry-cancel:hover {
+  background: rgba(40, 33, 62, 0.95);
+  border-color: rgba(255, 255, 255, 0.24);
+  color: #fff;
+}
+
+.loom-reentry-confirm {
+  background: linear-gradient(135deg, #243b53, #152538);
+  border: 1px solid #7ed5cc;
+  color: #e6f9f7;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.loom-reentry-confirm:hover {
+  background: linear-gradient(135deg, #2d4968, #1b3048);
+  border-color: #9fe9e1;
+  color: #fff;
+  box-shadow: 0 2px 14px rgba(126, 213, 204, 0.25);
+}
+
+.loom-reentry-actions button:focus-visible {
+  outline: 2px solid #7ed5cc;
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------- */
+/* CANDIDATE SPECIFIC PRESENTATION OVERRIDES                     */
+/* ------------------------------------------------------------- */
+
+/* Candidate A: Centered Modal Dialog (Baseline) */
+#loomReentryModal[data-presentation-candidate="A"] {
+  border-radius: 16px;
+  width: min(580px, calc(100vw - 32px));
+  margin: auto;
+}
+
+/* Candidate B: Inline Composer Mode */
+#loomReentryModal[data-presentation-candidate="B"] {
+  position: relative;
+  inset: auto;
+  margin: 0 auto 12px auto;
+  width: 100%;
+  max-width: var(--vessel-max-width, 760px);
+  border-radius: 12px;
+}
+#loomReentryModal[data-presentation-candidate="B"]::backdrop {
+  display: none;
+}
+
+/* Candidate C: Mobile Bottom Sheet */
+#loomReentryModal[data-presentation-candidate="C"] {
+  position: fixed;
+  inset: auto 0 0 0;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  border-radius: 20px 20px 0 0;
+  border-bottom: none;
+  padding-bottom: max(16px, env(safe-area-inset-bottom, 16px));
+}
+#loomReentryModal[data-presentation-candidate="C"] .loom-reentry-sheet-handle {
+  display: block;
+}
+#loomReentryModal[data-presentation-candidate="C"] .loom-reentry-actions {
+  flex-direction: column-reverse;
+}
+#loomReentryModal[data-presentation-candidate="C"] .loom-reentry-actions button {
+  width: 100%;
+}
+
+/* Candidate D: Staged Rail */
+#loomReentryModal[data-presentation-candidate="D"] {
+  position: relative;
+  inset: auto;
+  border-radius: 12px;
+  margin: 8px 0;
+  border-left: 3px solid #7ed5cc;
+}
+#loomReentryModal[data-presentation-candidate="D"]::backdrop {
+  display: none;
+}
+
+/* Candidate E & F: ADAPTIVE HYBRID & THE CROSSING CATHEDRAL */
+#loomReentryModal[data-presentation-candidate="E"],
+#loomReentryModal[data-presentation-candidate="F"] {
+  /* Default Mobile: Smooth Bottom Sheet */
+  position: fixed;
+  inset: auto 0 0 0;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  border-radius: 20px 20px 0 0;
+  border-bottom: none;
+  padding-bottom: max(16px, env(safe-area-inset-bottom, 16px));
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+#loomReentryModal[data-presentation-candidate="E"] .loom-reentry-sheet-handle,
+#loomReentryModal[data-presentation-candidate="F"] .loom-reentry-sheet-handle {
+  display: block;
+}
+#loomReentryModal[data-presentation-candidate="E"] .loom-reentry-actions,
+#loomReentryModal[data-presentation-candidate="F"] .loom-reentry-actions {
+  flex-direction: column-reverse;
+  gap: 10px;
+}
+#loomReentryModal[data-presentation-candidate="E"] .loom-reentry-actions button,
+#loomReentryModal[data-presentation-candidate="F"] .loom-reentry-actions button {
+  width: 100%;
+}
+
+/* Desktop Adaptation: min-width: 641px and min-height: 501px */
+@media (min-width: 641px) and (min-height: 501px) {
+  #loomReentryModal[data-presentation-candidate="E"],
+  #loomReentryModal[data-presentation-candidate="F"] {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    max-width: var(--vessel-max-width, 760px);
+    margin: 0 auto 12px auto;
+    border-radius: 14px;
+    border: 1px solid var(--loom-surface-border);
+    padding-bottom: 0;
+  }
+  #loomReentryModal[data-presentation-candidate="E"]::backdrop,
+  #loomReentryModal[data-presentation-candidate="F"]::backdrop {
+    display: none;
+  }
+  #loomReentryModal[data-presentation-candidate="E"] .loom-reentry-sheet-handle,
+  #loomReentryModal[data-presentation-candidate="F"] .loom-reentry-sheet-handle {
+    display: none;
+  }
+  #loomReentryModal[data-presentation-candidate="E"] .loom-reentry-cards,
+  #loomReentryModal[data-presentation-candidate="F"] .loom-reentry-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  #loomReentryModal[data-presentation-candidate="E"] .loom-reentry-actions,
+  #loomReentryModal[data-presentation-candidate="F"] .loom-reentry-actions {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+  #loomReentryModal[data-presentation-candidate="E"] .loom-reentry-actions button,
+  #loomReentryModal[data-presentation-candidate="F"] .loom-reentry-actions button {
+    width: auto;
+  }
+}
+
+/* Landscape Adaptation (Resolves HOLD-LANDSCAPE-STACKING on 844x390): max-height: 500px */
+@media (max-height: 500px) {
+  #loomReentryModal[data-presentation-candidate="E"],
+  #loomReentryModal[data-presentation-candidate="F"],
+  #loomReentryModal[data-presentation-candidate="A"] {
+    position: fixed;
+    inset: auto 12px 10px 12px;
+    width: calc(100% - 24px);
+    max-width: 820px;
+    margin: 0 auto;
+    border-radius: 12px;
+    border: 1px solid var(--loom-surface-border);
+    max-height: calc(100vh - 20px);
+    padding-bottom: 0;
+    overflow-y: auto;
+  }
+  .loom-reentry-form {
+    padding: 12px 16px;
+  }
+  .loom-reentry-sheet-handle {
+    display: none !important;
+  }
+  .loom-reentry-title {
+    font-size: 14px;
+    margin-bottom: 2px;
+  }
+  .loom-reentry-lead {
+    font-size: 11.5px;
+    margin-bottom: 8px;
+  }
+  .loom-reentry-cards {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px !important;
+    margin-bottom: 10px !important;
+  }
+  .loom-reentry-card {
+    padding: 8px 10px;
+    font-size: 11px;
+    line-height: 1.35;
+  }
+  .loom-reentry-card .card-header {
+    font-size: 9.5px;
+    margin-bottom: 4px;
+  }
+  .loom-reentry-card ul {
+    padding-left: 14px;
+  }
+  .loom-reentry-actions {
+    flex-direction: row !important;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+  .loom-reentry-actions button {
+    width: auto !important;
+    min-height: 44px;
+    padding: 6px 14px;
+    font-size: 12px;
+  }
+}
+
+/* Dynamic Route Tether Bar (Candidate F) */
+.loom-route-tether {
+  margin: 0 0 10px 0;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(154, 232, 228, 0.2);
+  background: rgba(18, 15, 34, 0.7);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.loom-route-tether[hidden] {
+  display: none !important;
+}
+
+.loom-route-tether-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.loom-route-tether-sigil {
+  font-size: 14px;
+  color: #9ce7e4;
+}
+
+.loom-route-tether-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 180px;
+}
+
+.loom-route-tether-state {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #eaf6ef;
+}
+
+.loom-route-tether-sub {
+  font-size: 11px;
+  color: var(--loom-text-muted);
+}
+
+.loom-route-tether-action {
+  min-height: 44px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: rgba(36, 59, 83, 0.7);
+  border: 1px solid rgba(126, 213, 204, 0.45);
+  color: #e6f9f7;
+  font-size: 12px;
+  font-weight: 550;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.loom-route-tether-action:hover {
+  background: rgba(45, 73, 104, 0.85);
+  border-color: #9fe9e1;
+}
+
+/* Reduced Motion Mode */
+@media (prefers-reduced-motion: reduce) {
+  #loomReentryModal,
+  .loom-reentry-actions button,
+  .loom-route-tether-action {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+}

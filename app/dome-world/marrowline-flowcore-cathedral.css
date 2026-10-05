@@ -1,0 +1,59 @@
+/**
+ * Flow-Core 39-Carrier Cinematic Field Styles
+ * Designed for high-end aesthetic precision, restrained luminous colors, and depth stratification.
+ */
+
+.marrowline-flowcore-field {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.marrowline-flowcore-field[data-loom-active="true"] {
+  opacity: 1;
+}
+
+.marrowline-carrier-flight {
+  user-select: none;
+  font-family: var(--marrowline-chat-sans, "Reddit Sans", system-ui, sans-serif);
+}
+
+.flowcore-carrier {
+  fill: url(#flowcoreLuminousGrad);
+  filter: drop-shadow(0 0 8px rgba(156, 231, 228, 0.25));
+  transition: opacity 0.4s ease;
+}
+
+.flowcore-carrier.flight-near {
+  font-weight: 600;
+  fill: #e8fbf8;
+  filter: drop-shadow(0 0 14px rgba(156, 231, 228, 0.45));
+}
+
+.flowcore-carrier.flight-mid {
+  font-weight: 500;
+  fill: #c5b4e8;
+  filter: drop-shadow(0 0 6px rgba(182, 155, 233, 0.3));
+}
+
+.flowcore-carrier.flight-far {
+  font-weight: 400;
+  fill: #86799c;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .marrowline-flowcore-field {
+    transition: none !important;
+  }
+  .flowcore-carrier {
+    transition: none !important;
+    filter: none !important;
+  }
+}
