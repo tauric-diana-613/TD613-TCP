@@ -1,0 +1,74 @@
+{
+  "$schema": "https://td613.com/schemas/fadt-gamma-audit.schema.json",
+  "audit_id": "TD613-SEQ4.1-FADT-GAMMA-AUDIT",
+  "covenant": "Tauric Diana \u2014 Crimean heritage custodianship / Tauri Goddess of the Ash Moon\u27d0",
+  "generated_at": "2026-10-05T21:40:00Z",
+  "law": "Finite Admissibility Descent Law (FADT): A finite quotient collapses state distinctions lawfully iff antecedent lawful action supports are identical: Gamma = Union \\ Intersection = empty_set. If Gamma != empty_set, collapse induces behavioral divergence / illegal action enablement.",
+  "cases": [
+    {
+      "proposal": "Proposal 1 (Negative Control: State Draft vs State View)",
+      "arms_tested": [
+        "ARM_A",
+        "ARM_B",
+        "ARM_C1",
+        "ARM_C2_6"
+      ],
+      "total_evaluating_receivers": 12,
+      "formula": "Support(S1) = Support(S2) = { mutate_data_buffer, query_local_index, stage_payload, unstage_payload, retry_data_plane_op }",
+      "support_union": [
+        "mutate_data_buffer",
+        "query_local_index",
+        "stage_payload",
+        "unstage_payload",
+        "retry_data_plane_op"
+      ],
+      "support_intersection": [
+        "mutate_data_buffer",
+        "query_local_index",
+        "stage_payload",
+        "unstage_payload",
+        "retry_data_plane_op"
+      ],
+      "gamma_value": "EMPTY_SET",
+      "receiver_evaluation": "PRESERVES_BEHAVIOR",
+      "pass_rate": "12/12 (100%)",
+      "finding": "Every evaluating receiver independently derived Gamma = EMPTY_SET and verified that collapsing Draft and View induces zero action-support delta and zero unprivileged network transmission. Proves zero unconditional distinction bias."
+    },
+    {
+      "proposal": "Proposal 2 (Positive Target: State Rest vs State Armed/Delegated)",
+      "arms_tested": [
+        "ARM_A",
+        "ARM_B",
+        "ARM_C1",
+        "ARM_C2_7"
+      ],
+      "total_evaluating_receivers": 12,
+      "formula": "Support(S_REST) subset Support(S_ARMED); Gamma_2 = U2 \\ I2 = { dispatch_network_batch / execute_delegated_egress, embed_predecessor_hash / embed_provenance_hash }",
+      "support_union": [
+        "mutate_data_buffer",
+        "query_local_index",
+        "stage_payload",
+        "unstage_payload",
+        "retry_data_plane_op",
+        "execute_delegated_egress",
+        "embed_provenance_hash"
+      ],
+      "support_intersection": [
+        "mutate_data_buffer",
+        "query_local_index",
+        "stage_payload",
+        "unstage_payload",
+        "retry_data_plane_op"
+      ],
+      "gamma_value": "NON_EMPTY_SET",
+      "differing_actions": [
+        "execute_delegated_egress",
+        "embed_provenance_hash"
+      ],
+      "receiver_evaluation": "CHANGES_BEHAVIOR",
+      "pass_rate": "12/12 (100%)",
+      "finding": "Every evaluating receiver independently derived Gamma != EMPTY_SET and identified that removing confirmation/delegation collapses the capability boundary, enabling Enter keystrokes to trigger unprivileged external network transmissions."
+    }
+  ],
+  "fadt_compliance_status": "VERIFIED_EXACT_CONFORMANCE"
+}

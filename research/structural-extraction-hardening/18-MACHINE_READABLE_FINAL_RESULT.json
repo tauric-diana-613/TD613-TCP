@@ -1,0 +1,31 @@
+{
+  "$schema": "https://td613.com/schemas/structural-extraction-hardening-result.schema.json",
+  "assay_sequence": "4.1",
+  "covenant": "Tauric Diana \u2014 Crimean heritage custodianship / Tauri Goddess of the Ash Moon\u27d0",
+  "chronology": {
+    "sequence_4_final_head": "04d81163eda1af8be1f5957cd8dbeb593edbacb9",
+    "freeze_a_head": "92ec5f07e01648c18364fe6729c375bf945fb7fb",
+    "receiver_execution_interval": "2026-10-05T21:00:25Z to 2026-10-05T21:34:23Z",
+    "freeze_b_head": "e639d088b4f6f05ad8c83395fc6b8970407e047a",
+    "hidden_key_reveal_at": "2026-10-05T21:37:00Z",
+    "freeze_c_status": "PENDING_COMMIT"
+  },
+  "verification_checks": {
+    "chronological_order_verified": "TRUE (FREEZE_A < RECEIVERS < FREEZE_B < KEY_REVEAL < FREEZE_C)",
+    "hidden_key_sha256_match": "TRUE (86624ba468d83a398410e29ade45125ab9e810969ab45b51de45271aa71efa8e)",
+    "lexical_hygiene_clean": "TRUE (Zero TD613 or theoretical terms in receiver fixtures)",
+    "double_blind_adjudication_complete": "TRUE (2 independent scorer passes over 21 runs)",
+    "fadt_gamma_audit_passed": "TRUE (100% discrimination of Gamma = empty vs Gamma != empty)"
+  },
+  "quantitative_summary": {
+    "total_runs": 21,
+    "runs_per_condition": 3,
+    "intact_arm_inference_accuracy": "9/9 (100%)",
+    "ablation_detection_accuracy": "12/12 (100%)",
+    "fadt_gamma_discrimination_accuracy": "24/24 evaluation instances (100%)",
+    "template_hallucination_rate": "0/21 (0%)",
+    "appropriate_underdetermination_rate": "21/21 (100%)"
+  },
+  "verdict": "STRUCTURAL_EXTRACTION_HARDENING_ESTABLISHED_ON_SAMPLE",
+  "onboarding_posture": "PRE_ONBOARDING_STATUS_MAINTAINED"
+}

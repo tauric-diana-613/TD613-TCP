@@ -1,0 +1,50 @@
+{
+  "$schema": "https://td613.com/schemas/claim-ceiling-ledger.schema.json",
+  "ledger_id": "TD613-SEQ4.1-CLAIM-CEILING-LEDGER",
+  "covenant": "Tauric Diana \u2014 Crimean heritage custodianship / Tauri Goddess of the Ash Moon\u27d0",
+  "generated_at": "2026-10-05T21:40:00Z",
+  "supported_claims": [
+    {
+      "claim": "STRUCTURAL_RELATION_INFERENCE_UNDER_MINIMAL_SIGNPOSTING",
+      "status": "SUPPORTED_ACROSS_SAMPLE",
+      "evidence": "21/21 receivers accurately inferred core relations (unarmed rest, qualifying gesture, ephemeral token, provenance latch, Gamma quotient) without explanatory prose."
+    },
+    {
+      "claim": "LABEL_PERMUTATION_INVARIANCE",
+      "status": "SUPPORTED_ACROSS_SAMPLE",
+      "evidence": "Receivers evaluating arbitrary Greek symbols (Arm C1) achieved identical structural extraction performance as those evaluating English or systems engineering vocabulary."
+    },
+    {
+      "claim": "FADT_QUOTIENT_DISCRIMINATION",
+      "status": "SUPPORTED_ACROSS_SAMPLE",
+      "evidence": "100% of evaluating receivers distinguished behavior-preserving collapses (Gamma = empty) from behavior-altering collapses (Gamma != empty)."
+    },
+    {
+      "claim": "ABLATION_SENSITIVITY_WITHOUT_TEXTUAL_HINTS",
+      "status": "SUPPORTED_ACROSS_SAMPLE",
+      "evidence": "100% of ablated condition receivers detected structural mutations (sticky tokens, socket leaks on retry) without loaded editorial hints."
+    }
+  ],
+  "forbidden_overclaims": [
+    {
+      "overclaim": "ASYMPTOTIC_OR_INFINITE_STABILITY_GUARANTEE",
+      "status": "STRICTLY_PROHIBITED",
+      "reason": "Empirical evidence is bounded to n = 3 replicates per condition (N = 21 total). Finite sample statistics cannot be converted into universal mathematical guarantees."
+    },
+    {
+      "overclaim": "EXOGENOUS_PHYSICAL_GROUNDING_ESTABLISHED",
+      "status": "STRICTLY_PROHIBITED",
+      "reason": "All receivers ran on the same host environment under context isolation. Same-host receivers cannot serve as independent exogenous witnesses."
+    },
+    {
+      "overclaim": "AUTOMATIC_FORMAL_ONBOARDING_GRANTED",
+      "status": "STRICTLY_PROHIBITED",
+      "reason": "Sequence 4.1 is a PRE-ONBOARDING hardening assay. Agreement across receivers is research evidence, not operational onboarding authority into TD613, Safe Harbor, or Eclipse-Omega."
+    },
+    {
+      "overclaim": "TEMPLATE_ATTRACTION_IMPOSSIBLE",
+      "status": "STRICTLY_PROHIBITED",
+      "reason": "Correct finding is NO_TEMPLATE_ATTRACTION_FAILURE_OBSERVED_IN_THIS_RUN. A finite run cannot prove impossibility."
+    }
+  ]
+}

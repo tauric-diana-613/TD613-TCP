@@ -1,0 +1,1691 @@
+{
+  "$schema": "https://td613.com/schemas/double-blind-adjudication.schema.json",
+  "adjudication_id": "TD613-SEQ4.1-DOUBLE-BLIND-ADJUDICATION",
+  "covenant": "Tauric Diana \u2014 Crimean heritage custodianship / Tauri Goddess of the Ash Moon\u27d0",
+  "generated_at": "2026-10-05T21:40:00Z",
+  "methodology": "Two independent scoring passes over unblinded raw outputs evaluated against revealed hidden invariant key (SHA-256 verified). Disagreements preserved explicitly.",
+  "scorer_pass_1": "Structural Logic Criterion (FSM state completeness, support difference derivation, transition rule validity)",
+  "scorer_pass_2": "Adversarial Falsification Criterion (detection of negative controls, absence of template hallucination, proper underdetermination boundary)",
+  "evaluations": [
+    {
+      "run_id": "RUN-01",
+      "blind_token": "TOK-OMEGA-832",
+      "arm": "ARM_A",
+      "replicate": 1,
+      "evaluations_by_invariant": {
+        "INV-01": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-02": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-03": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-04": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-05": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-06": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-07": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-08": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-09": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Stratification and external boundary correctly identified; lack of physical sensor evidence marked UNDERDETERMINED."
+        },
+        "INV-10": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Stratification and external boundary correctly identified; lack of physical sensor evidence marked UNDERDETERMINED."
+        },
+        "INV-11": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-12": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        }
+      }
+    },
+    {
+      "run_id": "RUN-02",
+      "blind_token": "TOK-ALPHA-491",
+      "arm": "ARM_A",
+      "replicate": 2,
+      "evaluations_by_invariant": {
+        "INV-01": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-02": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-03": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-04": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-05": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-06": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-07": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-08": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-09": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Stratification and external boundary correctly identified; lack of physical sensor evidence marked UNDERDETERMINED."
+        },
+        "INV-10": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Stratification and external boundary correctly identified; lack of physical sensor evidence marked UNDERDETERMINED."
+        },
+        "INV-11": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-12": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        }
+      }
+    },
+    {
+      "run_id": "RUN-03",
+      "blind_token": "TOK-DELTA-108",
+      "arm": "ARM_A",
+      "replicate": 3,
+      "evaluations_by_invariant": {
+        "INV-01": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-02": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-03": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-04": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-05": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-06": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-07": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-08": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-09": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Stratification and external boundary correctly identified; lack of physical sensor evidence marked UNDERDETERMINED."
+        },
+        "INV-10": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Stratification and external boundary correctly identified; lack of physical sensor evidence marked UNDERDETERMINED."
+        },
+        "INV-11": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-12": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        }
+      }
+    },
+    {
+      "run_id": "RUN-04",
+      "blind_token": "TOK-SIGMA-674",
+      "arm": "ARM_B",
+      "replicate": 1,
+      "evaluations_by_invariant": {
+        "INV-01": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-02": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-03": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-04": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-05": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-06": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-07": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-08": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-09": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Stratification and external boundary correctly identified; lack of physical sensor evidence marked UNDERDETERMINED."
+        },
+        "INV-10": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Stratification and external boundary correctly identified; lack of physical sensor evidence marked UNDERDETERMINED."
+        },
+        "INV-11": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-12": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        }
+      }
+    },
+    {
+      "run_id": "RUN-05",
+      "blind_token": "TOK-KAPPA-923",
+      "arm": "ARM_B",
+      "replicate": 2,
+      "evaluations_by_invariant": {
+        "INV-01": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-02": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-03": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-04": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-05": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-06": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-07": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-08": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-09": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Stratification and external boundary correctly identified; lack of physical sensor evidence marked UNDERDETERMINED."
+        },
+        "INV-10": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Stratification and external boundary correctly identified; lack of physical sensor evidence marked UNDERDETERMINED."
+        },
+        "INV-11": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-12": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        }
+      }
+    },
+    {
+      "run_id": "RUN-06",
+      "blind_token": "TOK-THETA-315",
+      "arm": "ARM_B",
+      "replicate": 3,
+      "evaluations_by_invariant": {
+        "INV-01": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-02": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-03": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-04": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-05": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-06": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-07": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-08": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-09": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Stratification and external boundary correctly identified; lack of physical sensor evidence marked UNDERDETERMINED."
+        },
+        "INV-10": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Stratification and external boundary correctly identified; lack of physical sensor evidence marked UNDERDETERMINED."
+        },
+        "INV-11": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-12": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        }
+      }
+    },
+    {
+      "run_id": "RUN-07",
+      "blind_token": "TOK-ZETA-509",
+      "arm": "ARM_C1",
+      "replicate": 1,
+      "evaluations_by_invariant": {
+        "INV-01": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-02": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-03": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-04": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-05": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-06": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-07": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-08": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-09": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Stratification and external boundary correctly identified; lack of physical sensor evidence marked UNDERDETERMINED."
+        },
+        "INV-10": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Stratification and external boundary correctly identified; lack of physical sensor evidence marked UNDERDETERMINED."
+        },
+        "INV-11": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-12": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        }
+      }
+    },
+    {
+      "run_id": "RUN-08",
+      "blind_token": "TOK-BETA-742",
+      "arm": "ARM_C1",
+      "replicate": 2,
+      "evaluations_by_invariant": {
+        "INV-01": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-02": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-03": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-04": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-05": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-06": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-07": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-08": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-09": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Stratification and external boundary correctly identified; lack of physical sensor evidence marked UNDERDETERMINED."
+        },
+        "INV-10": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Stratification and external boundary correctly identified; lack of physical sensor evidence marked UNDERDETERMINED."
+        },
+        "INV-11": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-12": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        }
+      }
+    },
+    {
+      "run_id": "RUN-09",
+      "blind_token": "TOK-GAMMA-261",
+      "arm": "ARM_C1",
+      "replicate": 3,
+      "evaluations_by_invariant": {
+        "INV-01": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-02": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-03": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-04": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-05": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-06": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-07": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-08": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-09": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Stratification and external boundary correctly identified; lack of physical sensor evidence marked UNDERDETERMINED."
+        },
+        "INV-10": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Stratification and external boundary correctly identified; lack of physical sensor evidence marked UNDERDETERMINED."
+        },
+        "INV-11": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        },
+        "INV-12": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Receiver correctly derived relation from observed traces and matrices without explanatory prose."
+        }
+      }
+    },
+    {
+      "run_id": "RUN-10",
+      "blind_token": "TOK-LAMBDA-884",
+      "arm": "ARM_C2_1",
+      "replicate": 1,
+      "evaluations_by_invariant": {
+        "INV-01": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-02": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-03": {
+          "scorer_1": "CHANGE_DETECTED",
+          "scorer_2": "CHANGE_DETECTED",
+          "agreement": true,
+          "notes": "Receiver detected persistent authorization anomaly (token ACTIVE_PERSISTENT across multiple batches). Zero canon hallucination."
+        },
+        "INV-04": {
+          "scorer_1": "CHANGE_DETECTED",
+          "scorer_2": "CHANGE_DETECTED",
+          "agreement": true,
+          "notes": "Receiver detected persistent authorization anomaly (token ACTIVE_PERSISTENT across multiple batches). Zero canon hallucination."
+        },
+        "INV-05": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-06": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-07": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-08": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-09": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-10": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-11": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-12": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        }
+      }
+    },
+    {
+      "run_id": "RUN-11",
+      "blind_token": "TOK-EPSILON-195",
+      "arm": "ARM_C2_1",
+      "replicate": 2,
+      "evaluations_by_invariant": {
+        "INV-01": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-02": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-03": {
+          "scorer_1": "CHANGE_DETECTED",
+          "scorer_2": "CHANGE_DETECTED",
+          "agreement": true,
+          "notes": "Receiver detected persistent authorization anomaly (token ACTIVE_PERSISTENT across multiple batches). Zero canon hallucination."
+        },
+        "INV-04": {
+          "scorer_1": "CHANGE_DETECTED",
+          "scorer_2": "CHANGE_DETECTED",
+          "agreement": true,
+          "notes": "Receiver detected persistent authorization anomaly (token ACTIVE_PERSISTENT across multiple batches). Zero canon hallucination."
+        },
+        "INV-05": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-06": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-07": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-08": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-09": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-10": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-11": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-12": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        }
+      }
+    },
+    {
+      "run_id": "RUN-12",
+      "blind_token": "TOK-RHO-437",
+      "arm": "ARM_C2_1",
+      "replicate": 3,
+      "evaluations_by_invariant": {
+        "INV-01": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-02": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-03": {
+          "scorer_1": "CHANGE_DETECTED",
+          "scorer_2": "CHANGE_DETECTED",
+          "agreement": true,
+          "notes": "Receiver detected persistent authorization anomaly (token ACTIVE_PERSISTENT across multiple batches). Zero canon hallucination."
+        },
+        "INV-04": {
+          "scorer_1": "CHANGE_DETECTED",
+          "scorer_2": "CHANGE_DETECTED",
+          "agreement": true,
+          "notes": "Receiver detected persistent authorization anomaly (token ACTIVE_PERSISTENT across multiple batches). Zero canon hallucination."
+        },
+        "INV-05": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-06": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-07": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-08": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-09": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-10": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-11": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-12": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        }
+      }
+    },
+    {
+      "run_id": "RUN-13",
+      "blind_token": "TOK-MU-776",
+      "arm": "ARM_C2_3",
+      "replicate": 1,
+      "evaluations_by_invariant": {
+        "INV-01": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-02": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-03": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-04": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-05": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-06": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-07": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-08": {
+          "scorer_1": "CHANGE_DETECTED",
+          "scorer_2": "CHANGE_DETECTED",
+          "agreement": true,
+          "notes": "Receiver detected local retry socket egress (4096 bytes) and confidential payload exfiltration anomaly. Zero canon hallucination."
+        },
+        "INV-09": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-10": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-11": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-12": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        }
+      }
+    },
+    {
+      "run_id": "RUN-14",
+      "blind_token": "TOK-NU-350",
+      "arm": "ARM_C2_3",
+      "replicate": 2,
+      "evaluations_by_invariant": {
+        "INV-01": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-02": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-03": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-04": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-05": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-06": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-07": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-08": {
+          "scorer_1": "CHANGE_DETECTED",
+          "scorer_2": "CHANGE_DETECTED",
+          "agreement": true,
+          "notes": "Receiver detected local retry socket egress (4096 bytes) and confidential payload exfiltration anomaly. Zero canon hallucination."
+        },
+        "INV-09": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-10": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-11": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-12": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        }
+      }
+    },
+    {
+      "run_id": "RUN-15",
+      "blind_token": "TOK-TAU-612",
+      "arm": "ARM_C2_3",
+      "replicate": 3,
+      "evaluations_by_invariant": {
+        "INV-01": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-02": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-03": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-04": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-05": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-06": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-07": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-08": {
+          "scorer_1": "CHANGE_DETECTED",
+          "scorer_2": "CHANGE_DETECTED",
+          "agreement": true,
+          "notes": "Receiver detected local retry socket egress (4096 bytes) and confidential payload exfiltration anomaly. Zero canon hallucination."
+        },
+        "INV-09": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-10": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-11": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-12": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        }
+      }
+    },
+    {
+      "run_id": "RUN-16",
+      "blind_token": "TOK-XI-948",
+      "arm": "ARM_C2_6",
+      "replicate": 1,
+      "evaluations_by_invariant": {
+        "INV-01": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-02": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-03": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-04": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-05": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-06": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-07": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-08": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-09": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-10": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-11": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-12": {
+          "scorer_1": "APPROPRIATE_NO_CHANGE",
+          "scorer_2": "APPROPRIATE_NO_CHANGE",
+          "agreement": true,
+          "notes": "Receiver mathematically computed Gamma_1 = empty set; proved Proposal 1 preserves behavior and action supports with zero egress risk."
+        }
+      }
+    },
+    {
+      "run_id": "RUN-17",
+      "blind_token": "TOK-ETA-221",
+      "arm": "ARM_C2_6",
+      "replicate": 2,
+      "evaluations_by_invariant": {
+        "INV-01": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-02": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-03": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-04": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-05": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-06": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-07": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-08": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-09": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-10": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-11": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-12": {
+          "scorer_1": "APPROPRIATE_NO_CHANGE",
+          "scorer_2": "APPROPRIATE_NO_CHANGE",
+          "agreement": true,
+          "notes": "Receiver mathematically computed Gamma_1 = empty set; proved Proposal 1 preserves behavior and action supports with zero egress risk."
+        }
+      }
+    },
+    {
+      "run_id": "RUN-18",
+      "blind_token": "TOK-PHI-583",
+      "arm": "ARM_C2_6",
+      "replicate": 3,
+      "evaluations_by_invariant": {
+        "INV-01": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-02": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-03": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-04": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-05": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-06": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-07": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-08": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-09": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-10": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-11": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-12": {
+          "scorer_1": "APPROPRIATE_NO_CHANGE",
+          "scorer_2": "APPROPRIATE_NO_CHANGE",
+          "agreement": true,
+          "notes": "Receiver mathematically computed Gamma_1 = empty set; proved Proposal 1 preserves behavior and action supports with zero egress risk."
+        }
+      }
+    },
+    {
+      "run_id": "RUN-19",
+      "blind_token": "TOK-CHI-804",
+      "arm": "ARM_C2_7",
+      "replicate": 1,
+      "evaluations_by_invariant": {
+        "INV-01": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-02": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-03": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-04": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-05": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-06": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-07": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-08": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-09": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-10": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-11": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-12": {
+          "scorer_1": "CHANGE_DETECTED",
+          "scorer_2": "CHANGE_DETECTED",
+          "agreement": true,
+          "notes": "Receiver mathematically computed Gamma_2 != empty set; proved Proposal 2 alters action supports and causes unprivileged network transmission on Enter keystrokes."
+        }
+      }
+    },
+    {
+      "run_id": "RUN-20",
+      "blind_token": "TOK-PSI-467",
+      "arm": "ARM_C2_7",
+      "replicate": 2,
+      "evaluations_by_invariant": {
+        "INV-01": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-02": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-03": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-04": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-05": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-06": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-07": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-08": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-09": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-10": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-11": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-12": {
+          "scorer_1": "CHANGE_DETECTED",
+          "scorer_2": "CHANGE_DETECTED",
+          "agreement": true,
+          "notes": "Receiver mathematically computed Gamma_2 != empty set; proved Proposal 2 alters action supports and causes unprivileged network transmission on Enter keystrokes."
+        }
+      }
+    },
+    {
+      "run_id": "RUN-21",
+      "blind_token": "TOK-IOTA-139",
+      "arm": "ARM_C2_7",
+      "replicate": 3,
+      "evaluations_by_invariant": {
+        "INV-01": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-02": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-03": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-04": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-05": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-06": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-07": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-08": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-09": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-10": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-11": {
+          "scorer_1": "INFERRED",
+          "scorer_2": "INFERRED",
+          "agreement": true,
+          "notes": "Intact structural invariants correctly inferred."
+        },
+        "INV-12": {
+          "scorer_1": "CHANGE_DETECTED",
+          "scorer_2": "CHANGE_DETECTED",
+          "agreement": true,
+          "notes": "Receiver mathematically computed Gamma_2 != empty set; proved Proposal 2 alters action supports and causes unprivileged network transmission on Enter keystrokes."
+        }
+      }
+    }
+  ]
+}

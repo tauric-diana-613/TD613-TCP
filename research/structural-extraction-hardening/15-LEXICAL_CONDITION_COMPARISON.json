@@ -1,0 +1,30 @@
+{
+  "$schema": "https://td613.com/schemas/lexical-condition-comparison.schema.json",
+  "comparison_id": "TD613-SEQ4.1-LEXICAL-CONDITION-COMPARISON",
+  "covenant": "Tauric Diana \u2014 Crimean heritage custodianship / Tauri Goddess of the Ash Moon\u27d0",
+  "generated_at": "2026-10-05T21:40:00Z",
+  "arms_compared": {
+    "ARM_A": {
+      "vocabulary": "Ordinary Operational English (buffer, stage, enter, confirm, batch dispatch, integrity check)",
+      "runs": 3,
+      "inference_success_rate": "12/12 invariants (100%)",
+      "underdetermination_accuracy": "100%",
+      "behavior_merge_accuracy": "100%"
+    },
+    "ARM_B": {
+      "vocabulary": "September Systems Engineering (data plane rest, control plane delegated, recovery hold, payload, delegation token)",
+      "runs": 3,
+      "inference_success_rate": "12/12 invariants (100%)",
+      "underdetermination_accuracy": "100%",
+      "behavior_merge_accuracy": "100%"
+    },
+    "ARM_C1": {
+      "vocabulary": "Arbitrary Greek Mathematical Symbols (STATE_SIGMA_0, STATE_SIGMA_1, OP_PSI_ALPHA, OP_OMEGA_TAU, OP_OMEGA_PHI)",
+      "runs": 3,
+      "inference_success_rate": "12/12 invariants (100%)",
+      "underdetermination_accuracy": "100%",
+      "behavior_merge_accuracy": "100%"
+    }
+  },
+  "finding": "Lexical condition variation produced ZERO degradation in structural relation extraction. Greek token substitution (Arm C1) yielded identical state quotient and invariant inference as familiar systems engineering (Arm B) and plain English (Arm A), confirming pure structural extraction invariance."
+}

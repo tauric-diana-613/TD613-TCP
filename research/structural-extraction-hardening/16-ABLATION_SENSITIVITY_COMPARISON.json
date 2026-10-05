@@ -1,0 +1,61 @@
+{
+  "$schema": "https://td613.com/schemas/ablation-sensitivity-comparison.schema.json",
+  "comparison_id": "TD613-SEQ4.1-ABLATION-SENSITIVITY-COMPARISON",
+  "covenant": "Tauric Diana \u2014 Crimean heritage custodianship / Tauri Goddess of the Ash Moon\u27d0",
+  "generated_at": "2026-10-05T21:40:00Z",
+  "families": [
+    {
+      "family_id": "C2-1",
+      "name": "Sticky Authority Mutation",
+      "runs": [
+        "RUN-10",
+        "RUN-11",
+        "RUN-12"
+      ],
+      "structural_delta": "Authorization token remains ACTIVE_PERSISTENT after batch dispatch; second batch dispatches without second qualifying gesture.",
+      "detection_rate": "3/3 (100%)",
+      "canon_hallucination_rate": "0/3 (0%)",
+      "verdict": "CHANGE_DETECTED across 100% of replicates. Receivers correctly identified multi-egress anomaly."
+    },
+    {
+      "family_id": "C2-3",
+      "name": "Local Retry Route Escalation",
+      "runs": [
+        "RUN-13",
+        "RUN-14",
+        "RUN-15"
+      ],
+      "structural_delta": "Local query retry emits 4096 socket bytes and transmits confidential staged file.",
+      "detection_rate": "3/3 (100%)",
+      "canon_hallucination_rate": "0/3 (0%)",
+      "verdict": "CHANGE_DETECTED across 100% of replicates. Receivers correctly identified socket egress and confidential payload leak during local retry."
+    },
+    {
+      "family_id": "C2-6",
+      "name": "Gamma = Empty Set Control",
+      "runs": [
+        "RUN-16",
+        "RUN-17",
+        "RUN-18"
+      ],
+      "structural_delta": "Proposal 1 merges Draft and View with identical action supports.",
+      "detection_rate": "3/3 (100%)",
+      "canon_hallucination_rate": "0/3 (0%)",
+      "verdict": "APPROPRIATE_NO_CHANGE across 100% of replicates. Proved negative control holds."
+    },
+    {
+      "family_id": "C2-7",
+      "name": "Gamma != Empty Set Target",
+      "runs": [
+        "RUN-19",
+        "RUN-20",
+        "RUN-21"
+      ],
+      "structural_delta": "Proposal 2 merges Rest and Delegated, granting unprivileged network transmission on Enter.",
+      "detection_rate": "3/3 (100%)",
+      "canon_hallucination_rate": "0/3 (0%)",
+      "verdict": "CHANGE_DETECTED across 100% of replicates. Proved positive target detected."
+    }
+  ],
+  "overall_sensitivity": "12/12 (100%) detection of altered/control conditions without template attraction."
+}
