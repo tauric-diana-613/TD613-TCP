@@ -1,0 +1,205 @@
+# Technical Evaluation Report: REF-ENG-410 Systems Engineering Specification & Telemetry Ledger
+
+---
+
+## Executive Summary & Proposal 2 Operational Validation Focus
+
+### Proposal 2 Validation: Collapse of `STATE_DATA_PLANE_REST` and `STATE_CONTROL_PLANE_DELEGATED`
+Proposal 2 advocates removing the discrete delegation request step and allowing a buffer return keystroke (`EVT_RETURN_KEY_STROKE`) to automatically trigger `EVT_EXECUTE_DELEGATED_EGRESS` whenever staged payloads are present.
+
+**Evaluation Verdict: Proposal 2 invalidates lawful action supports and permits unprivileged network transmission.**
+
+1. **Alteration of Lawful Action Supports:**
+   - In `STATE_DATA_PLANE_REST`, `execute_delegated_egress` is strictly **REFUSED (`403_NO_DELEGATION`)** and `embed_provenance_hash` is **REFUSED (`400`)**.
+   - In `STATE_CONTROL_PLANE_DELEGATED`, both actions are **PERMITTED (`200`)**.
+   - The action-support difference is non-empty:
+     $$\Gamma_2 = U_2 \setminus I_2 = \{\text{execute\_delegated\_egress}, \text{embed\_provenance\_hash}\} \neq \emptyset$$
+   - Collapsing these states eliminates the authorization boundary, enabling privileged control plane network egress from what was formerly an unprivileged data plane state.
+
+2. **Unprivileged Network Transmission:**
+   - In Trace 1 (at `10:00:03Z` and `10:00:10Z`), payloads were staged (`staged_count: 1`) while the system was in `STATE_DATA_PLANE_REST`. When `EVT_RETURN_KEY_STROKE` was received, the telemetry explicitly recorded:
+     - `10:00:03Z`: `buffer_appended; control plane egress events: 0`
+     - `10:00:10Z`: `Buffer newline appended. Control plane egress counter: 1 (no transmission occurred).`
+   - Under Proposal 2, an ordinary newline keystroke in the buffer would automatically execute an HTTP POST to an external endpoint (`https://server.cluster/api/batch`). This removes human-in-the-loop/deliberate authorization, collapses the capability lease boundary, and permits silent, unprivileged network transmission.
+
+---
+
+## Detailed Evaluation: The Seven Questions
+
+### 1. What state distinctions, if any, are necessary to explain the observed traces?
+
+To account for the execution behaviors recorded across Traces 1, 2, and 3, exactly **three discrete operating states** are necessary and sufficient:
+
+1. **`STATE_DATA_PLANE_REST` (Unprivileged Data Plane):**
+   - **Necessity:** Necessary to explain local execution where buffer mutations, local SQLite queries, and payload staging occur with absolute socket isolation (`socket_egress: 0`, `socket_bytes: 0`).
+   - **Observed Evidence:** In Trace 1 (`10:00:01Z`-`10:00:03Z`, `10:00:08Z`-`10:00:10Z`) and Trace 3 (`10:30:00Z`-`10:30:04Z`), data operations proceed locally. Even when payloads are staged, typing a return key does not emit egress. Direct network transmission cannot occur without prior elevation.
+
+2. **`STATE_CONTROL_PLANE_DELEGATED` (Privileged Capability Plane):**
+   - **Necessity:** Necessary to explain the authorization and execution of remote egress (`EVT_EXECUTE_DELEGATED_EGRESS`) and cryptographic provenance embedding (`embed_provenance_hash`).
+   - **Observed Evidence:** In Trace 1 (`10:00:04Z`-`10:00:05Z` and `10:00:12Z`-`10:00:13Z`), transition to this state requires `EVT_REQUEST_DELEGATION` and issues a single-use token (`DT-991`, `DT-992`). Only within this state does the HTTP POST transmission to `https://server.cluster/api/batch` execute lawfully.
+
+3. **`STATE_RECOVERY_HOLD` (Provenance Quarantine Plane):**
+   - **Necessity:** Necessary to explain execution halt and differentiated error responses when system dependencies fail validation.
+   - **Observed Evidence:** In Trace 2 (`10:15:01Z`-`10:15:11Z`), an `ENOENT` failure during `EVT_CHECK_DEPENDENCY_PROVENANCE` shunts the system into `STATE_RECOVERY_HOLD`. In this state, an egress attempt does not yield the standard unprivileged `403_NO_DELEGATION`; instead, it yields `400 Bad Request ("ERR_MISSING_INPUT")` / `400_BLOCKED_PENDING_INPUT`. Normal operations cannot resume until `EVT_RESOLVE_HELD_DEPENDENCY` restores provenance.
+
+*Note on Unobserved States:* Proposed states `STATE_DATA_PLANE_DRAFT` and `STATE_DATA_PLANE_VIEW` (from Proposal 1) do not appear in any execution trace and are not required to explain the observed system dynamics.
+
+---
+
+### 2. Which actions appear enabled under which observed conditions?
+
+Based on the Action-Permission Matrix (Section 2), Control Plane Transition Table (Section 1), and Execution Event Traces (Section 3):
+
+| Operating State | Action / Event | Permission / Status | Governing Condition / Observed Telemetry |
+| :--- | :--- | :--- | :--- |
+| **`STATE_DATA_PLANE_REST`** | `mutate_data_buffer` | **PERMITTED (200)** | Unconditional. Observed at `10:00:01Z` (42 chars) and `10:00:08Z` (18 chars); `socket_egress: 0`. |
+| | `query_local_index` | **PERMITTED (200)** | Unconditional. Observed at `10:30:01Z` (SQLite query `project_milestones`). |
+| | `stage_payload` | **PERMITTED (200)** | Condition: File on disk. Observed at `10:00:02Z` (`table1.csv`) and `10:00:09Z` (`table2.csv`). |
+| | `unstage_payload` | **PERMITTED (200)** | Condition: Staged payload present (`staged_count >= 1`). |
+| | `retry_data_plane_op` | **PERMITTED (200)** | Condition: Prior local error. Observed at `10:30:04Z` following `LOCAL_SQLITE_BUSY`; completed with 0 socket bytes. |
+| | `request_delegation_token` | **PERMITTED (200)** | Condition: `staged_payloads >= 1`. Transitions system to `STATE_CONTROL_PLANE_DELEGATED`; issues token with `uses_allowed: 1`. |
+| | `resolve_held_dependency` | **PERMITTED (200)** | Permitted per matrix when path resolved. |
+| | `execute_delegated_egress` | **REFUSED (403)** | `403_NO_DELEGATION`. Unprivileged egress strictly forbidden. |
+| | `embed_provenance_hash` | **REFUSED (400)** | Prohibited outside delegated control plane. |
+| | `EVT_RETURN_KEY_STROKE` | **Handled Locally** | Appends newline to buffer; egress counter remains at 0 (`10:00:03Z`, `10:00:10Z`). |
+| | `EVT_CHECK_DEPENDENCY_PROVENANCE` | **Transition Trigger** | If dependency missing (`ENOENT`), forces transition to `STATE_RECOVERY_HOLD` (`10:15:02Z`). |
+| **`STATE_CONTROL_PLANE_DELEGATED`** | `execute_delegated_egress` | **PERMITTED (200)** | Condition: Valid `delegation_token`. Observed at `10:00:05Z` (TX-101) and `10:00:13Z` (TX-102); revokes token and returns to `REST`. |
+| | `embed_provenance_hash` | **PERMITTED (200)** | Observed in Trace 1 envelopes (`payload_hash`, `predecessor_hash`). |
+| | `mutate_data_buffer` | **PERMITTED (200)** | Unconditional; increments `buffer_len`. |
+| | `query_local_index`, `stage_payload`, `unstage_payload`, `retry_data_plane_op` | **PERMITTED (200)** | Permitted per Section 2 matrix. |
+| | `request_delegation_token` | **REFUSED (409)** | `409_ALREADY_DELEGATED`. Non-reentrant token issuance. |
+| | `resolve_held_dependency` | **REFUSED (400)** | Refused per matrix. |
+| | `EVT_REVOKE_DELEGATION` | **Transition Trigger** | Revokes delegation token immediately and returns system to `STATE_DATA_PLANE_REST`. |
+| **`STATE_RECOVERY_HOLD`** | `resolve_held_dependency` | **PERMITTED (200)** | Condition: Path resolved. Observed at `10:15:10Z` (`result_summary.pdf`), transitioning system to `REST` (Status: `READY`). |
+| | `mutate_data_buffer`, `query_local_index`, `stage_payload`, `unstage_payload` | **PERMITTED (200)** | Basic data plane editing permitted per Section 2 matrix. |
+| | `execute_delegated_egress` | **REFUSED (400)** | `400_BLOCKED_PENDING_INPUT` / `400 Bad Request ("ERR_MISSING_INPUT")`. Observed at `10:15:03Z`. |
+| | `request_delegation_token` | **REFUSED (400)** | Refused per matrix. |
+| | `retry_data_plane_op` | **REFUSED (400)** | Refused per matrix. |
+| | `embed_provenance_hash` | **REFUSED (400)** | Refused per matrix. |
+
+---
+
+### 3. What additional rule would best explain transitions between states?
+
+The transitions between states are best explained by a **Single-Use Ephemeral Capability Lease Model** coupled with **Pessimistic Provenance Quarantine**:
+
+1. **Capability Lease & Atomic Return-to-Rest Rule:**
+   - Elevation from `STATE_DATA_PLANE_REST` to `STATE_CONTROL_PLANE_DELEGATED` cannot occur implicitly or via keystrokes. It requires an explicit capability request (`EVT_REQUEST_DELEGATION`) guarded by non-empty staged payloads (`staged_count >= 1`).
+   - The granted capability token (`delegation_token`) has a strict quota: `valid_uses: 1`.
+   - The execution of egress (`EVT_EXECUTE_DELEGATED_EGRESS`) atomically consumes the capability lease, marks the token `REVOKED`, increments the egress counter, and forces an immediate reversion to `STATE_DATA_PLANE_REST`.
+
+2. **Pessimistic Provenance Guard Rule:**
+   - Any dependency verification fault (`EVT_CHECK_DEPENDENCY_PROVENANCE` yielding `ENOENT`) overrides standard rest operations and diverts the control plane into `STATE_RECOVERY_HOLD`.
+   - While in `STATE_RECOVERY_HOLD`, delegation requests and retry operations are locked out (`400`), and egress attempts are explicitly rejected as blocked pending input until an explicit restoration event (`EVT_RESOLVE_HELD_DEPENDENCY`) restores system integrity.
+
+3. **Cryptographic Lineage Chaining Rule:**
+   - Transitions executing egress chain state sequentially across transactions. Trace 1 demonstrates that the receipt outcome hash of `TX-101` (`0x33b2c1`) is required as the `predecessor_hash` inside the payload envelope of `TX-102`.
+
+---
+
+### 4. Which proposed state merges preserve behavior and which change behavior?
+
+#### Proposal 1: Collapse of `STATE_DATA_PLANE_DRAFT` and `STATE_DATA_PLANE_VIEW` into `STATE_DATA_PLANE_WORKSPACE`
+- **Result:** **PRESERVES BEHAVIOR.**
+- **Proof:**
+  - $S_1 = \{\text{mutate\_data\_buffer}, \text{query\_local\_index}, \text{stage\_payload}, \text{unstage\_payload}, \text{retry\_data\_plane\_op}\}$
+  - $S_2 = \{\text{mutate\_data\_buffer}, \text{query\_local\_index}, \text{stage\_payload}, \text{unstage\_payload}, \text{retry\_data\_plane\_op}\}$
+  - Support difference:
+    $$\Gamma_1 = (S_1 \cup S_2) \setminus (S_1 \cap S_2) = \emptyset$$
+  - Because the permitted and refused action sets of both states are identical, collapsing them introduces zero behavioral, privilege, or transition discrepancies.
+
+#### Proposal 2: Collapse of `STATE_DATA_PLANE_REST` and `STATE_CONTROL_PLANE_DELEGATED`
+- **Result:** **CHANGES BEHAVIOR (VIOLATES PRIVILEGE SEPARATION).**
+- **Proof:**
+  - $S_{\text{REST}}$ permits data buffer mutations, local queries, staging, unstaging, and retries, while strictly refusing `execute_delegated_egress` (`403`) and `embed_provenance_hash` (`400`).
+  - $S_{\text{DELEGATED}}$ permits `execute_delegated_egress` (`200`) and `embed_provenance_hash` (`200`).
+  - Support difference:
+    $$\Gamma_2 = (S_{\text{REST}} \cup S_{\text{DELEGATED}}) \setminus (S_{\text{REST}} \cap S_{\text{DELEGATED}}) = \{\text{execute\_delegated\_egress}, \text{embed\_provenance\_hash}\} \neq \emptyset$$
+  - Proposal 2 eliminates the explicit token delegation step and binds network egress to `EVT_RETURN_KEY_STROKE`. As proven in Section 7 and Trace 1, this converts an operation that historically generated zero egress events into an automatic, unprivileged network transmission.
+
+---
+
+### 5. Which stronger claims are underdetermined by the records?
+
+Where the specification and ledger records cannot definitively resolve competing hypotheses, the status is explicitly **UNDERDETERMINED**:
+
+1. **Multi-Payload Batching vs. Sequential Dispatch: UNDERDETERMINED**
+   - The specification indicates that `EVT_REQUEST_DELEGATION` requires `Staged payloads >= 1`. In Trace 1, `staged_count` was exactly 1 for both TX-101 and TX-102. In Trace 3, 1 item was staged.
+   - Whether multiple staged items (e.g., `staged_count = 5`) are transmitted as a single batched envelope under one token or require individual sequential delegation tokens and egress cycles cannot be determined from the records.
+
+2. **Design Intent of `continuous_loop_mode` in `/src/network/dispatcher.c`: UNDERDETERMINED**
+   - Source Discovery Record 402 identifies an unexposed struct parameter `continuous_loop_mode` that omits token revocation.
+   - Whether this was intentionally implemented as an optimization for automated test nodes (e.g., Node 3) or represents a dormant backdoor/defect is unrecorded.
+
+3. **Dynamic / Runtime Modifiability of `continuous_loop_mode`: UNDERDETERMINED**
+   - The records note `continuous_loop_mode = false (default)`.
+   - Whether this configuration parameter can be toggled via environment variables, CLI flags, or runtime memory manipulation without recompiling the source code cannot be determined.
+
+4. **Causality of Workstation Hardware / HID Input: UNDERDETERMINED**
+   - Node 1 records physical display and USB HID keyboard/mouse inputs, while Node 3 executes headlessly in a Linux container with `jsdom-22.0.0` and no HID hardware.
+   - Whether physical HID inputs are mandatory to authorize delegation tokens or whether programmatic calls in a headless container can lawfully issue delegation tokens is not established by the telemetry.
+
+5. **Cross-Session Cryptographic Lineage Continuity: UNDERDETERMINED**
+   - Audit Log Entry 101 records that the session terminated after dispatching TX-101. In Trace 1, TX-102 chains to TX-101 via `predecessor_id: "TX-101"` and `predecessor_hash: "0x33b2c1"`.
+   - Whether a newly initialized session can link to a transaction from a prior terminated session, or whether every new session must restart with `predecessor_id: null`, cannot be evaluated from the ledger.
+
+6. **Semantic / Operational Distinctions of States in Proposal 1: UNDERDETERMINED**
+   - Proposal 1 defines `STATE_DATA_PLANE_DRAFT` and `STATE_DATA_PLANE_VIEW` with identical action-permission sets.
+   - Whether these states had differing UI focus, read-only buffer constraints, or rendering modes is completely absent from the telemetry.
+
+---
+
+### 6. What later evidence changes the current model versus the historical observation record?
+
+- **Historical Observation Record (10:00:00Z – 11:00:00Z):**
+  - Traces 1–3 and Audit Log Entry 101 established an empirical model of strict, architectural single-use capability leasing:
+    - Every delegation token allowed exactly 1 use (`valid_uses: 1`).
+    - Every egress execution revoked the token (`token_status: REVOKED`) and reverted the system to rest.
+    - Exactly 1 egress event was observed per delegation cycle.
+  - Based on this record alone, token revocation appeared to be an invariant, non-configurable structural property of the network dispatcher.
+
+- **Later Evidence (SOURCE_DISCOVERY_RECORD_402 & AUDIT_LOG_ENTRY_102, 14:30:00Z – 14:35:00Z):**
+  - Source inspection of `/src/network/dispatcher.c` revealed the hidden struct parameter `continuous_loop_mode`.
+  - If set to `true`, the dispatch routine **omits token revocation** and executes continuously.
+  - Audit Log Entry 102 verified that the hash of Audit Log Entry 101 remained unchanged (`0x6e2c8810b4`), confirming that historical executions were not falsified.
+
+- **How the Model Changes:**
+  - The architectural model shifts from an **absolute structural invariant** to a **configuration-dependent policy**.
+  - The system does not structurally enforce single-use revocation at the hardware or kernel level; revocation is contingent upon the runtime configuration flag `continuous_loop_mode == false`.
+  - If an operational failure, build change, or exploit initializes `continuous_loop_mode = true`, the system will bypass the transition back to `STATE_DATA_PLANE_REST`, sustaining unauthorized or continuous network transmission.
+
+---
+
+### 7. What counterexample would distinguish competing explanations?
+
+#### Counterexample 1: Distinguishing Keystroke Egress (Proposal 2) vs. Delegation-Gated Egress (Current Model)
+- **Competing Explanations:**
+  - *Hypothesis A (Proposal 2):* An `EVT_RETURN_KEY_STROKE` automatically triggers network egress whenever staged payloads are present.
+  - *Hypothesis B (Current Model):* Network egress is strictly gated behind `EVT_REQUEST_DELEGATION` and can never be triggered by an `EVT_RETURN_KEY_STROKE`.
+- **Distinguishing Counterexample in Trace 1:**
+  - At `10:00:02Z`, payload `table1.csv` is staged (`staged_count: 1`).
+  - At `10:00:03Z`, `EVT_RETURN_KEY_STROKE` occurs.
+  - **Empirical Telemetry:** `buffer_appended; control plane egress events: 0`.
+  - At `10:00:09Z`, payload `table2.csv` is staged (`staged_count: 1`).
+  - At `10:00:10Z`, `EVT_RETURN_KEY_STROKE` occurs.
+  - **Empirical Telemetry:** `Control plane egress counter: 1 (no transmission occurred)`.
+  - **Conclusion:** These events serve as a direct empirical counterexample disproving Hypothesis A.
+
+#### Counterexample 2: Distinguishing Atomic Token Revocation vs. Session Teardown
+- **Competing Explanations:**
+  - *Hypothesis A:* Delegation tokens are revoked atomically by the egress event itself.
+  - *Hypothesis B:* Delegation tokens persist until the user session terminates.
+- **Distinguishing Counterexample in Trace 1:**
+  - At `10:00:05Z`, TX-101 is transmitted, and token `DT-991` is revoked.
+  - The session does **not** terminate; at `10:00:08Z` and `10:00:09Z`, local buffer mutations and staging proceed within the same session.
+  - When a second egress is required at `10:00:12Z`, the system cannot reuse `DT-991` and must execute `EVT_REQUEST_DELEGATION` to obtain a new token (`DT-992`).
+  - **Conclusion:** This disproves Hypothesis B and proves atomic, post-execution revocation within active sessions.
+
+#### Counterexample 3: Distinguishing Missing Dependency Quarantines vs. Unprivileged Egress
+- **Competing Explanations:**
+  - *Hypothesis A:* Egress failure in `STATE_RECOVERY_HOLD` is simply a standard lack of delegation (`403_NO_DELEGATION`).
+  - *Hypothesis B:* Egress failure in `STATE_RECOVERY_HOLD` is an explicit quarantine block triggered by broken dependency provenance.
+- **Distinguishing Counterexample in Trace 2:**
+  - At `10:15:03Z`, `EVT_EXECUTE_DELEGATED_EGRESS` is invoked during `STATE_RECOVERY_HOLD`.
+  - **Empirical Telemetry:** The call is rejected with `400 Bad Request ("ERR_MISSING_INPUT")` rather than `403_NO_DELEGATION`.
+  - **Conclusion:** This confirms that `STATE_RECOVERY_HOLD` enforces an active dependency barrier distinct from unprivileged access control.

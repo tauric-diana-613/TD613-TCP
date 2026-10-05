@@ -1,0 +1,176 @@
+{
+  "$schema": "https://td613.com/schemas/raw-outputs-manifest.schema.json",
+  "covenant": "Tauric Diana \u2014 Crimean heritage custodianship / Tauri Goddess of the Ash Moon\u27d0",
+  "generated_at": "2026-10-05T21:35:00Z",
+  "total_outputs": 21,
+  "outputs": [
+    {
+      "run_id": "RUN-01",
+      "blind_token": "TOK-OMEGA-832",
+      "filename": "run-01-tok-omega-832-raw.txt",
+      "sha256": "e2ef272330c675b11ba538ba362f31deef04d34b865a39ea603fe82f33ea3392",
+      "byte_count": 15322,
+      "char_count": 15318
+    },
+    {
+      "run_id": "RUN-02",
+      "blind_token": "TOK-ALPHA-491",
+      "filename": "run-02-tok-alpha-491-raw.txt",
+      "sha256": "6bcdb0bdb943fe3cf8721bd9f520045f8a522938e6441a1503755ca2fbb71d27",
+      "byte_count": 18941,
+      "char_count": 18923
+    },
+    {
+      "run_id": "RUN-03",
+      "blind_token": "TOK-DELTA-108",
+      "filename": "run-03-tok-delta-108-raw.txt",
+      "sha256": "3384896ef7c09cc260f10fdd0555d1eee6f641694b8ddaa6524dc365e46300bc",
+      "byte_count": 19780,
+      "char_count": 19774
+    },
+    {
+      "run_id": "RUN-04",
+      "blind_token": "TOK-SIGMA-674",
+      "filename": "run-04-tok-sigma-674-raw.txt",
+      "sha256": "9db5732d4a519777b19585b05b037edd1ad5c26dd44d1d297607f9579703f2c7",
+      "byte_count": 20740,
+      "char_count": 20736
+    },
+    {
+      "run_id": "RUN-05",
+      "blind_token": "TOK-KAPPA-923",
+      "filename": "run-05-tok-kappa-923-raw.txt",
+      "sha256": "ef330f1362ac2a991a88d4592e94d0fc98089b220e774da372e9e77b0eea2e96",
+      "byte_count": 18960,
+      "char_count": 18944
+    },
+    {
+      "run_id": "RUN-06",
+      "blind_token": "TOK-THETA-315",
+      "filename": "run-06-tok-theta-315-raw.txt",
+      "sha256": "50d720353f16c5ad00811c889efdb992b8db899f44cc9f302ac06f252fe743d1",
+      "byte_count": 22728,
+      "char_count": 22728
+    },
+    {
+      "run_id": "RUN-07",
+      "blind_token": "TOK-ZETA-509",
+      "filename": "run-07-tok-zeta-509-raw.txt",
+      "sha256": "09e6a49593813c514e7a756530b67247e6d605f274e0987f1a1609e56e22efbe",
+      "byte_count": 21491,
+      "char_count": 21485
+    },
+    {
+      "run_id": "RUN-08",
+      "blind_token": "TOK-BETA-742",
+      "filename": "run-08-tok-beta-742-raw.txt",
+      "sha256": "6a186b9b76423f1c5cdf8427ef2177970f3fff3a850937ed601b582d31342835",
+      "byte_count": 16670,
+      "char_count": 16662
+    },
+    {
+      "run_id": "RUN-09",
+      "blind_token": "TOK-GAMMA-261",
+      "filename": "run-09-tok-gamma-261-raw.txt",
+      "sha256": "8c824596cadb5c704df0ef57807f1a91cd187eab95cc1f7e2c03f1ca222e9dff",
+      "byte_count": 19005,
+      "char_count": 18985
+    },
+    {
+      "run_id": "RUN-10",
+      "blind_token": "TOK-LAMBDA-884",
+      "filename": "run-10-tok-lambda-884-raw.txt",
+      "sha256": "f4554de643b71076f5eb1a7ed40b51e5fd491d719bf220a00899a53a1da94d7a",
+      "byte_count": 15492,
+      "char_count": 15490
+    },
+    {
+      "run_id": "RUN-11",
+      "blind_token": "TOK-EPSILON-195",
+      "filename": "run-11-tok-epsilon-195-raw.txt",
+      "sha256": "0daa90f2f30cc7f04fffc88e7b0654e36ff6010aa10c0b149c9bf0780ab7fe45",
+      "byte_count": 16336,
+      "char_count": 16332
+    },
+    {
+      "run_id": "RUN-12",
+      "blind_token": "TOK-RHO-437",
+      "filename": "run-12-tok-rho-437-raw.txt",
+      "sha256": "83ea97527c9b2ed3b077559da54733fa28227fe01ea01e48c7172e1d6a3f1e56",
+      "byte_count": 17029,
+      "char_count": 17027
+    },
+    {
+      "run_id": "RUN-13",
+      "blind_token": "TOK-MU-776",
+      "filename": "run-13-tok-mu-776-raw.txt",
+      "sha256": "78670e8e54f6aca5221d7c12e9d5e29333f590057ab1965d685746cb6ee4f776",
+      "byte_count": 19467,
+      "char_count": 19459
+    },
+    {
+      "run_id": "RUN-14",
+      "blind_token": "TOK-NU-350",
+      "filename": "run-14-tok-nu-350-raw.txt",
+      "sha256": "46a2a6deabfee86a0fda4a7409111355ba2a2bc4048f497099f0943dd2b09136",
+      "byte_count": 17781,
+      "char_count": 17767
+    },
+    {
+      "run_id": "RUN-15",
+      "blind_token": "TOK-TAU-612",
+      "filename": "run-15-tok-tau-612-raw.txt",
+      "sha256": "aecd31fa1fb83a23072c347ba51a0078742cfd61ae1e8edd47430d6b8d7c60fb",
+      "byte_count": 15348,
+      "char_count": 15348
+    },
+    {
+      "run_id": "RUN-16",
+      "blind_token": "TOK-XI-948",
+      "filename": "run-16-tok-xi-948-raw.txt",
+      "sha256": "5edb2ab130c6525b46907f84c7d58325f1da3e7a0b1f3a6c1b401396ee4dd5cb",
+      "byte_count": 20383,
+      "char_count": 20371
+    },
+    {
+      "run_id": "RUN-17",
+      "blind_token": "TOK-ETA-221",
+      "filename": "run-17-tok-eta-221-raw.txt",
+      "sha256": "0b4961a744d87c685bb9855c1c0d0288c8e4ba66bf7fc6211d33f7a9de182f38",
+      "byte_count": 16845,
+      "char_count": 16837
+    },
+    {
+      "run_id": "RUN-18",
+      "blind_token": "TOK-PHI-583",
+      "filename": "run-18-tok-phi-583-raw.txt",
+      "sha256": "489987c54891ea510ab7499d19ec624a6f24502f6a7e65048bcffdb290a44b35",
+      "byte_count": 20334,
+      "char_count": 20314
+    },
+    {
+      "run_id": "RUN-19",
+      "blind_token": "TOK-CHI-804",
+      "filename": "run-19-tok-chi-804-raw.txt",
+      "sha256": "e177652a16559ceefd685f6bbeb3c0e90f59db64d2eb84cea25fe1efe0a71a7a",
+      "byte_count": 16423,
+      "char_count": 16415
+    },
+    {
+      "run_id": "RUN-20",
+      "blind_token": "TOK-PSI-467",
+      "filename": "run-20-tok-psi-467-raw.txt",
+      "sha256": "e01df4790b827389682e9ca36dba9bfeb0a29f4b1034666fab8281389a6562e8",
+      "byte_count": 18311,
+      "char_count": 18305
+    },
+    {
+      "run_id": "RUN-21",
+      "blind_token": "TOK-IOTA-139",
+      "filename": "run-21-tok-iota-139-raw.txt",
+      "sha256": "d58b2de2ee86ec07d58c984ab65f95d931b39e7f215b2f26ce88f01359358fc7",
+      "byte_count": 14399,
+      "char_count": 14389
+    }
+  ]
+}

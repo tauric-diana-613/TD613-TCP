@@ -1,0 +1,155 @@
+# Technical Evaluation Report: Formal System Topology & Transition Manifest (REF-SYM-410)
+
+This report provides a formal evaluation of the system specification, execution logs, multi-host records, and structural state-merge proposals under manifest code **REF-SYM-410**. The evaluation is strictly restricted to the provided evidentiary records.
+
+---
+
+## 1. What state distinctions, if any, are necessary to explain the observed traces?
+
+To account for the behaviors recorded across Traces 1, 2, and 3, exactly **three discrete operating states** are necessary and sufficient:
+
+1. **`STATE_SIGMA_0` (Quiescent / Local Workspace & Staging State)**:
+   - **Necessity**: In Trace 1 and Trace 3, the system executes local operations (`OP_PSI_ALPHA`, `OP_PSI_GAMMA`, `OP_KEY_STROKE`, `OP_PSI_BETA`, `OP_PSI_EPSILON`) without generating network traffic (`Channel Zeta egress: 0 bytes`).
+   - In this state, external transmission via `action_omega_phi` is strictly prohibited (`403_NO_TOKEN`), and keystrokes do not cause transmission. A dedicated state is required to isolate local data preparation and staging from external network egress.
+
+2. **`STATE_SIGMA_1` (Authorized / Ephemeral Dispatch State)**:
+   - **Necessity**: Network egress over Channel Zeta to `https://server.cluster/api/batch` occurs exclusively after an explicit transition via `OP_OMEGA_TAU`, which issues a single-use capability token (`token_zeta`, e.g., `TZ-991`, `TZ-992`, with `valid_uses: 1`).
+   - While in `STATE_SIGMA_1`, `action_omega_phi` is enabled (`PERMITTED (200)`), whereas `action_omega_tau` is refused (`409_ALREADY_ACTIVE`). Upon dispatch, the token is revoked (`REVOKED_CHI`) and the system is demoted back to `STATE_SIGMA_0`. This operational boundary cannot be collapsed into `STATE_SIGMA_0` without destroying the single-use token authorization gate.
+
+3. **`STATE_SIGMA_2` (Halted / Dependency Deficit State)**:
+   - **Necessity**: In Trace 2, upon encountering a missing dependency (`ENOENT` on `/local/data/result_summary.pdf` via `OP_CHECK_VECTOR_NU`), the system halts (`HALTED_ON_DEPENDENCY_DEFICIT`).
+   - In this state, `OP_OMEGA_PHI` is explicitly rejected (`400 Bad Request ("ERR_MISSING_INPUT")` / `400_BLOCKED`), and error retry `action_psi_epsilon` is disabled (`REFUSED (400)`). The system remains blocked until restored via `OP_LAMBDA_RHO`. This state is necessary to represent a hard dependency fault distinct from baseline readiness (`STATE_SIGMA_0`) and active dispatch (`STATE_SIGMA_1`).
+
+**Unnecessary / Unobserved State Distinctions**:
+- The proposed distinction between `STATE_SIGMA_DRAFT` and `STATE_SIGMA_VIEW` (Proposal 1) is **not necessary** to explain the traces. Neither state appears in Traces 1–3, and their action-permission sets are identical ($\Gamma_1 = \emptyset$).
+
+---
+
+## 2. Which actions appear enabled under which observed conditions?
+
+Based on the Action-Permission Matrix, Transition Table, and Execution Logs:
+
+| Action / Operator | Enabled States & Observed Preconditions | Refused / Blocked Conditions | Observed Log Evidence |
+| :--- | :--- | :--- | :--- |
+| **`action_psi_alpha` / `OP_PSI_ALPHA`** | Enabled in `STATE_SIGMA_0`, `STATE_SIGMA_1`, `STATE_SIGMA_2`. Precondition: None. | None (Permitted across all states). | Trace 1: Executed in `STATE_SIGMA_0` (units: 42, units: 18). Increments `length_counter`; egress: 0 bytes. |
+| **`action_psi_beta` / `OP_PSI_BETA`** | Enabled in `STATE_SIGMA_0`, `STATE_SIGMA_1`, `STATE_SIGMA_2`. Precondition: None. | None (Permitted across all states). | Trace 3: Executed in `STATE_SIGMA_0` (query: "project_milestones"). Can encounter local DB errors (`LOCAL_SQLITE_BUSY`). |
+| **`action_psi_gamma` / `OP_PSI_GAMMA`** | Enabled in `STATE_SIGMA_0`, `STATE_SIGMA_1`, `STATE_SIGMA_2`. Precondition: Item in domain. | None specified in matrix. | Trace 1: Executed in `STATE_SIGMA_0` staging `/local/data/table1.csv` and `/local/data/table2.csv`. Increments `staged_count`. |
+| **`action_psi_delta` / `OP_PSI_DELTA`** | Enabled in `STATE_SIGMA_0`, `STATE_SIGMA_1`, `STATE_SIGMA_2`. Precondition: Staged item present. | None in matrix. | Decrements `staged_count`. (Present in table/matrix; not executed in Traces 1–3). |
+| **`action_psi_epsilon` / `OP_PSI_EPSILON`** | Enabled in `STATE_SIGMA_0`, `STATE_SIGMA_1`. Precondition: Prior internal error. | Refused in `STATE_SIGMA_2` (`REFUSED (400)`). | Trace 3: Successfully retried local query in `STATE_SIGMA_0` after `LOCAL_SQLITE_BUSY`. Channel Zeta bytes: 0. |
+| **`OP_KEY_STROKE`** | Enabled in `STATE_SIGMA_0`. Precondition: None. | N/A | Trace 1: Appends newline/element in `STATE_SIGMA_0`. Egress events remain 0 or unchanged. |
+| **`action_omega_tau` / `OP_OMEGA_TAU`** | Enabled in `STATE_SIGMA_0` ONLY. Precondition: `Staged items >= 1`. | Refused in `STATE_SIGMA_1` (`409_ALREADY_ACTIVE`), refused in `STATE_SIGMA_2` (`REFUSED (400)`). | Trace 1: Issues single-use token (`TZ-991`, `TZ-992`) and transitions `STATE_SIGMA_0 -> STATE_SIGMA_1`. |
+| **`action_omega_phi` / `OP_OMEGA_PHI`** | Enabled in `STATE_SIGMA_1` ONLY. Precondition: Valid `token_zeta`. | Refused in `STATE_SIGMA_0` (`403_NO_TOKEN`), refused in `STATE_SIGMA_2` (`400_BLOCKED` / `400 Bad Request`). | Trace 1: Transmits batch to `https://server.cluster/api/batch` (TX-101, TX-102), revokes token, returns to `STATE_SIGMA_0`. Trace 2: Rejected with 400 in `STATE_SIGMA_2`. |
+| **`action_omega_chi`** | Enabled in `STATE_SIGMA_1` ONLY. | Refused in `STATE_SIGMA_0` (`REFUSED (400)`), refused in `STATE_SIGMA_2` (`REFUSED (400)`). | Linked to token revocation status (`REVOKED_CHI`). |
+| **`action_lambda_rho` / `OP_LAMBDA_RHO`** | Enabled in `STATE_SIGMA_0` and `STATE_SIGMA_2`. Precondition in $\Sigma_2$: Vector resolved. | Refused in `STATE_SIGMA_1` (`REFUSED (400)`). | Trace 2: Restores verified path `/local/restored/result_summary.pdf`, transitioning `STATE_SIGMA_2 -> STATE_SIGMA_0`. |
+| **`OP_CHECK_VECTOR_NU`** | Enabled in `STATE_SIGMA_0`. Precondition for transition: Dependency missing (`ENOENT`). | N/A | Trace 2: Detects missing file, transitions `STATE_SIGMA_0 -> STATE_SIGMA_2`. |
+| **`OP_NULLIFY`** | Enabled in `STATE_SIGMA_1`. Precondition: None. | N/A | Transitions `STATE_SIGMA_1 -> STATE_SIGMA_0`, outputting `token_zeta: NULLIFIED`. |
+
+---
+
+## 3. What additional rule would best explain transitions between states?
+
+The observed transitions are governed by an underlying **Linear Capability-Lease & Invariant Guard Rule**:
+
+1. **Linear Token Lifecycle (Capability Lease)**:
+   - A transition from baseline $\Sigma_0$ to egress state $\Sigma_1$ requires allocating a linear resource token with a multiplicity constraint: $\text{count}(\text{token\_zeta}) = 1$ and $\text{uses\_allowed} = 1$.
+   - Any event that consumes the token (`OP_OMEGA_PHI` completing with HTTP 200 $\to$ `REVOKED_CHI`) or aborts it (`OP_NULLIFY` $\to$ `NULLIFIED`) decrements available uses to $0$. 
+   - **Governing Rule**: *State occupancy in $\Sigma_1$ requires a valid unconsumed capability token. As soon as valid uses reaches zero, the system is demoted immediately to $\Sigma_0$.*
+
+2. **Configuration-Conditional Transition Override**:
+   - As documented in `SOURCE_DISCOVERY_RECORD_402`, the demotion transition $\Sigma_1 \to \Sigma_0$ is conditionally bypassed if `continuous_loop_mode == true` (dispatch omits nullification). Under the default runtime setting (`continuous_loop_mode = false`), the transition back to $\Sigma_0$ is mandatory after exactly one dispatch.
+
+3. **Dependency Invariant Halt Guard**:
+   - The transition $\Sigma_0 \to \Sigma_2$ is governed by an unmet input invariant: $\text{VectorPathCheck} == \text{ENOENT}$.
+   - The return transition $\Sigma_2 \to \Sigma_0$ is governed by $\text{VectorPathCheck} == \text{OK}$ triggered by `OP_LAMBDA_RHO`.
+   - **Governing Rule**: *No capability token may be issued, and no dispatch action may proceed, while an unresolved dependency deficit exists.*
+
+4. **Cryptographic Causal Chaining**:
+   - As demonstrated in Trace 1, successive transactions in $\Sigma_1$ require linking the predecessor outcome hash:
+     $$\text{Envelope}_{\text{TX-}n} = \{ \text{tx\_id}: n, \text{payload\_hash}: H_n, \text{predecessor\_id}: \text{TX-}(n-1), \text{predecessor\_hash}: \text{outcome\_hash}_{n-1} \}$$
+
+---
+
+## 4. Which proposed state merges preserve behavior and which change behavior?
+
+### Proposal 1: Merging `STATE_SIGMA_DRAFT` and `STATE_SIGMA_VIEW` into `STATE_SIGMA_WORKSPACE`
+- **Result: PRESERVES BEHAVIOR**.
+- **Proof / Formal Support Analysis**:
+  - $S_1 = \{\text{action\_psi\_alpha}, \text{action\_psi\_beta}, \text{action\_psi\_gamma}, \text{action\_psi\_delta}, \text{action\_psi\_epsilon}\}$
+  - $S_2 = \{\text{action\_psi\_alpha}, \text{action\_psi\_beta}, \text{action\_psi\_gamma}, \text{action\_psi\_delta}, \text{action\_psi\_epsilon}\}$
+  - Support difference:
+    $$\Gamma_1 = (S_1 \cup S_2) \setminus (S_1 \cap S_2) = \emptyset$$
+  - Because the action-permission sets and status codes are identical between both states, and neither state has distinct transition rules or channel egress attributes in the specification, collapsing them into a single state induces zero behavioral or observational divergence.
+
+### Proposal 2: Merging `STATE_SIGMA_0` and `STATE_SIGMA_1` (Collapsing token step, making `OP_KEY_STROKE` trigger dispatch)
+- **Result: CHANGES BEHAVIOR**.
+- **Proof / Formal Support Analysis**:
+  - Support difference:
+    $$\Gamma_2 = (S_0 \cup S_1) \setminus (S_0 \cap S_1) = \{\text{action\_omega\_phi}, \text{action\_omega\_chi}\} \neq \emptyset$$
+    (Additionally, from Section 2, `action_omega_tau` is permitted in $\Sigma_0$ but refused with 409 in $\Sigma_1$, and `action_lambda_rho` is permitted in $\Sigma_0$ but refused with 400 in $\Sigma_1$).
+  - **Behavioral Divergence in Execution**:
+    1. In Trace 1 at `10:00:03Z` and `10:00:10Z`, `OP_KEY_STROKE` was executed while items were staged (`staged_count = 1`). In the actual system, `OP_KEY_STROKE` merely appended a newline, producing **0 external egress events**. Under Proposal 2, `OP_KEY_STROKE` would immediately and autonomously execute `action_omega_phi`, transmitting data over Channel Zeta and incrementing the egress counter.
+    2. In Trace 3 at `10:30:00Z`, `/local/data/confidential_notes.txt` was in the staging tray. Under Proposal 2, any incidental keystroke would immediately exfiltrate/dispatch confidential files without an explicit `OP_OMEGA_TAU` token grant.
+    3. The collapse eliminates the single-use token lifecycle (`token_zeta: issued -> REVOKED_CHI`), completely destroying the capability-based security model.
+
+---
+
+## 5. Which stronger claims are underdetermined by the records?
+
+Based strictly on the provided evidence, the following claims cannot be established and are evaluated as **UNDERDETERMINED**:
+
+1. **Claim: "Network transmission requires a physical human operator at an interactive terminal"**:
+   - **UNDERDETERMINED**. Host X-10 records human HID keyboard/mouse events. However, Host X-30 is a completely headless container with no display, no HID devices, and no attached sensors, yet executed an automated test suite where all 13 assertions passed. Whether production network egress requires human telemetry or can be triggered autonomously by software drivers is UNDERDETERMINED.
+
+2. **Claim: "Token validity is bounded by an ephemeral wall-clock time-to-live (TTL)"**:
+   - **UNDERDETERMINED**. The specification defines `valid_uses: 1` and `uses_allowed: 1`, and shows revocation via `REVOKED_CHI` or `OP_NULLIFY`. No wall-clock timeout or TTL expiration is recorded in any log.
+
+3. **Claim: "Predecessor transaction hashing chains across disjoint user sessions"**:
+   - **UNDERDETERMINED**. In Trace 1, TX-102 references TX-101 within the same multi-turn session. Audit Log 101 records that TX-101 was dispatched and the session terminated. The record does not show whether a subsequent session started afresh with `predecessor_id: null` or chained to the previous session's final transaction.
+
+4. **Claim: "The root cause of `LOCAL_SQLITE_BUSY` in Trace 3 was external concurrency versus internal thread contention"**:
+   - **UNDERDETERMINED**. Trace 3 indicates a timeout of 1000ms on SQLite, but provides no process or thread inspection logs to determine what held the database lock.
+
+5. **Claim: "`continuous_loop_mode` is an abandoned legacy parameter versus an active latent capability"**:
+   - **UNDERDETERMINED**. Source discovery 402 identifies the parameter in struct definitions in `/src/network/dispatcher.c`, but the records provide no historical commit messages, build flags, or documentation to explain its intended release roadmap.
+
+6. **Claim: "`STATE_SIGMA_DRAFT` and `STATE_SIGMA_VIEW` exist in the underlying codebase"**:
+   - **UNDERDETERMINED**. These states appear only in Merge Proposal 1 and are absent from Table 1, the permission matrix, and Traces 1–3.
+
+---
+
+## 6. What later evidence changes the current model versus the historical observation record?
+
+The pivotal later evidence is **`SOURCE_DISCOVERY_RECORD_402`** (discovered at `2026-10-05T14:30:00Z` by `SourceAuditor_11` in `/src/network/dispatcher.c` and committed to the audit inventory under `AUDIT_LOG_ENTRY_102` at `14:35:00Z`):
+
+1. **Shift from Topological Invariant to Configurable Parameter**:
+   - *Historical Observation Record (`AUDIT_LOG_ENTRY_101`, Traces 1–3)*: The historical record indicated that single-use token consumption and mandatory demotion from $\Sigma_1$ to $\Sigma_0$ upon dispatch was a hard, immutable architectural topology.
+   - *Later Source Evidence*: Inspection of `/src/network/dispatcher.c` revealed that token revocation is guarded by a configuration parameter: `continuous_loop_mode`. If `continuous_loop_mode == true`, dispatch omits token nullification and executes continuously in $\Sigma_1$.
+
+2. **Impact on the Operational Model**:
+   - The later evidence proves that the system's single-dispatch behavior is not an unchangeable state-machine topology, but a runtime artifact of `continuous_loop_mode = false (default)`.
+   - Importantly, this discovery **does not invalidate the historical observation record**: Audit Log Entry 101's integrity hash (`0x6e2c8810b4`) was verified unchanged at `14:35:00Z`. The historical session genuinely executed under `continuous_loop_mode = false`, emitting exactly 1 egress event per token.
+
+---
+
+## 7. What counterexample would distinguish competing explanations?
+
+To adjudicate between competing theoretical models of REF-SYM-410, the following counterexamples provide empirical refutations:
+
+### Counterexample A: Distinguishing the Formal Model vs. Proposal 2 (Auto-Dispatch on Keystroke)
+- **Setup**: In `STATE_SIGMA_0`, stage an item into the staging tray (`staged_count = 1`), and input an `OP_KEY_STROKE` without calling `OP_OMEGA_TAU`.
+- **Divergence**:
+  - *Under Proposal 2*: The system transmits the payload to `https://server.cluster/api/batch`, increments the egress counter to 1, and consumes/dispatches the staged item.
+  - *Under Current Formal Model*: The system appends the element locally; Channel Zeta egress bytes remain 0, and the egress counter remains unchanged.
+- **Empirical Log Status**: Trace 1 at `10:00:03Z` and `10:00:10Z` serves as this exact counterexample, decisively disproving Proposal 2.
+
+### Counterexample B: Distinguishing Fixed FSM Invariant vs. Configurable Parameter (`continuous_loop_mode`)
+- **Setup**: Set `continuous_loop_mode = true` in the deployment runtime configuration struct, transition to `STATE_SIGMA_1` via `OP_OMEGA_TAU`, and invoke `OP_OMEGA_PHI`. Immediately follow with a second `OP_OMEGA_PHI` without invoking an intermediate `OP_OMEGA_TAU`.
+- **Divergence**:
+  - *Under the Fixed FSM Invariant Hypothesis*: The second `OP_OMEGA_PHI` must be rejected with `403_NO_TOKEN` because the system must have transitioned back to `STATE_SIGMA_0`.
+  - *Under the Configurable Parameter Hypothesis*: The second `OP_OMEGA_PHI` succeeds (HTTP 200) because token nullification was skipped and the system remained in `STATE_SIGMA_1`.
+
+### Counterexample C: Distinguishing True System State `STATE_SIGMA_2` vs. Ephemeral Remote Endpoint Error
+- **Setup**: When a dependency deficit occurs (`ENOENT` on vector file), invoke `action_psi_epsilon` (retry local query).
+- **Divergence**:
+  - *Under Ephemeral Remote Error Hypothesis (System remains in $\Sigma_0$)*: `action_psi_epsilon` would be `PERMITTED (200)` and execute successfully as it did in Trace 3.
+  - *Under Formal Topology Model (System transitions to $\Sigma_2$)*: `action_psi_epsilon` is strictly refused with status code `400` as specified in the Action-Permission Matrix.

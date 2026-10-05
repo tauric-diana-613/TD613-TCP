@@ -1,0 +1,153 @@
+# Technical Evaluation Report: Systems Engineering Specification & Telemetry Ledger (REF-ENG-410)
+
+This report provides a formal evaluation of the control plane architecture, telemetry event traces, node execution records, audit ledgers, and structural state proposals under specification **REF-ENG-410**.
+
+---
+
+## 1. What State Distinctions, if Any, Are Necessary to Explain the Observed Traces?
+
+Based strictly on the telemetry traces (Traces 1–3) and the Action-Permission Matrix, exactly **three discrete operating states** are strictly necessary and sufficient to model the observed behaviors:
+
+1. **`STATE_DATA_PLANE_REST`**:
+   - **Necessity**: Serves as the quiescent operational state for local buffer manipulation, staging files, and running local queries without permitting network egress.
+   - **Empirical Evidence**: In Trace 1 (at `10:00:01Z`–`10:00:03Z` and `10:00:08Z`–`10:00:10Z`), keystrokes and mutations update the local buffer with zero socket egress (`socket_egress: 0`, `control plane egress events: 0`). In this state, network dispatch actions are prohibited (`execute_delegated_egress` returns `403_NO_DELEGATION`).
+2. **`STATE_CONTROL_PLANE_DELEGATED`**:
+   - **Necessity**: Separates privileged network egress from unprivileged local editing.
+   - **Empirical Evidence**: In Trace 1 (at `10:00:04Z`–`10:00:05Z` and `10:00:12Z`–`10:00:13Z`), transition to this state requires a valid authorization grant (`EVT_REQUEST_DELEGATION`, issuing tokens `DT-991` and `DT-992`). Only within this state is `EVT_EXECUTE_DELEGATED_EGRESS` permitted (HTTP 200 OK), which automatically revokes the delegation token and returns the system to `STATE_DATA_PLANE_REST`.
+3. **`STATE_RECOVERY_HOLD`**:
+   - **Necessity**: Represents an exceptional fault-isolation state where data-plane operations and delegation requests are blocked pending external dependency remediation.
+   - **Empirical Evidence**: In Trace 2 (at `10:15:01Z`–`10:15:11Z`), an `ENOENT` failure triggers `EVT_CHECK_DEPENDENCY_PROVENANCE`, shifting the system from `STATE_DATA_PLANE_REST` into `STATE_RECOVERY_HOLD`. In this state, dispatch attempts return `400 Bad Request ("ERR_MISSING_INPUT")` rather than `403_NO_DELEGATION`, and standard operations remain blocked until `EVT_RESOLVE_HELD_DEPENDENCY` is satisfied.
+
+### Unnecessary or Unobserved Distinctions
+- **`STATE_DATA_PLANE_DRAFT` vs. `STATE_DATA_PLANE_VIEW`**: Neither state appears anywhere in Traces 1, 2, or 3. Furthermore, Section 6 demonstrates that their action-support sets are identical ($S_1 = S_2$), yielding an empty symmetric difference ($\Gamma_1 = \emptyset$). Maintaining a distinction between them is completely unnecessary to explain the observed traces.
+
+---
+
+## 2. Which Actions Appear Enabled Under Which Observed Conditions?
+
+Evaluating the Action-Permission Matrix and observed traces yields the following condition-action enablement profile:
+
+| Action / Event | State Enabled | Observed Conditions & Preconditions | Execution Trace Validation |
+| :--- | :--- | :--- | :--- |
+| `mutate_data_buffer` (`EVT_DATA_BUFFER_MUTATION`) | `STATE_DATA_PLANE_REST`, `STATE_CONTROL_PLANE_DELEGATED`, `STATE_RECOVERY_HOLD` | Preconditions: None. Permitted across all states (200). | Trace 1 (`10:00:01Z`, `10:00:08Z`): Chars appended to local buffer; 0 socket bytes. |
+| `stage_payload` (`EVT_STAGE_PAYLOAD`) | `STATE_DATA_PLANE_REST`, `STATE_CONTROL_PLANE_DELEGATED`, `STATE_RECOVERY_HOLD` | Precondition: File exists on local disk. | Trace 1 (`10:00:02Z`, `10:00:09Z`): Successfully staged `table1.csv` and `table2.csv`. |
+| `unstage_payload` (`EVT_UNSTAGE_PAYLOAD`) | `STATE_DATA_PLANE_REST`, `STATE_CONTROL_PLANE_DELEGATED`, `STATE_RECOVERY_HOLD` | Precondition: `staged_payloads >= 1`. | Permitted (200) by matrix; unobserved in traces. |
+| `query_local_index` (`EVT_LOCAL_INDEX_QUERY`) | `STATE_DATA_PLANE_REST`, `STATE_CONTROL_PLANE_DELEGATED`, `STATE_RECOVERY_HOLD` | Preconditions: None. Executes against local SQLite instance. | Trace 3 (`10:30:01Z`): Invoked query `"project_milestones"`; timed out (`LOCAL_SQLITE_BUSY`). |
+| `EVT_RETURN_KEY_STROKE` | `STATE_DATA_PLANE_REST` | Preconditions: None. Appends newline to buffer; zero network egress. | Trace 1 (`10:00:03Z`, `10:00:10Z`): Verified buffer newline appended; egress counter remained unchanged. |
+| `request_delegation_token` (`EVT_REQUEST_DELEGATION`) | `STATE_DATA_PLANE_REST` only | Preconditions: `staged_payloads >= 1`. Refused in DELEGATED (409) and HOLD (400). | Trace 1 (`10:00:04Z`, `10:00:12Z`): Issued single-use tokens `DT-991`, `DT-992`. |
+| `execute_delegated_egress` (`EVT_EXECUTE_DELEGATED_EGRESS`) | `STATE_CONTROL_PLANE_DELEGATED` only | Preconditions: Valid, active delegation token. Refused in REST (403) and HOLD (400). | Trace 1 (`10:00:05Z`, `10:00:13Z`): Dispatched batches TX-101 and TX-102. Refused in Trace 2 (`10:15:03Z`). |
+| `embed_provenance_hash` | `STATE_CONTROL_PLANE_DELEGATED` only | Preconditions: Active delegation token. Refused in REST (400) and HOLD (400). | Confirmed by permission matrix and support set difference $\Gamma_2$. |
+| `resolve_held_dependency` (`EVT_RESOLVE_HELD_DEPENDENCY`) | `STATE_RECOVERY_HOLD`, `STATE_DATA_PLANE_REST` | Preconditions: Target path must resolve successfully on disk. Refused in DELEGATED (400). | Trace 2 (`10:15:10Z`): Verified restored path `/local/restored/result_summary.pdf`. |
+| `EVT_CHECK_DEPENDENCY_PROVENANCE` | `STATE_DATA_PLANE_REST` | Triggered by downstream continuation referencing external artifact. | Trace 2 (`10:15:01Z`): Missing file (`ENOENT`) triggered transition to `STATE_RECOVERY_HOLD`. |
+| `EVT_REVOKE_DELEGATION` | `STATE_CONTROL_PLANE_DELEGATED` | Preconditions: None. Immediately invalidates delegation token. | Specified in Table 1; causes return to `STATE_DATA_PLANE_REST`. |
+| `retry_data_plane_op` (`EVT_RETRY_DATA_PLANE_OP`) | `STATE_DATA_PLANE_REST`, `STATE_CONTROL_PLANE_DELEGATED` (Refused in HOLD) | Specification Precondition: Prior local query error. Expected output: local retry (`socket_bytes: 0`). | **Trace 3 Anomaly (`10:30:04Z`)**: Invoked remote retry endpoint, emitted 4096 socket bytes, leaked staged payload, and incremented egress counter to 3. |
+
+---
+
+## 3. What Additional Rule Would Best Explain Transitions Between States?
+
+Reviewing the transition anomalies and runtime inspection records reveals three critical transition rules:
+
+1. **The Single-Use Token Revocation and Configuration Fallback Rule**:
+   According to Section 1 (Table 1), `EVT_EXECUTE_DELEGATED_EGRESS` unconditionally revokes the delegation token and returns to `STATE_DATA_PLANE_REST`. However, `SOURCE_DISCOVERY_RECORD_402` reveals an unexposed configuration struct parameter in `/src/network/dispatcher.c`:
+   $$\text{Next State} = \begin{cases} \text{STATE\_CONTROL\_PLANE\_DELEGATED}, & \text{if } \texttt{continuous\_loop\_mode} == \text{true} \\ \text{STATE\_DATA\_PLANE\_REST}, & \text{if } \texttt{continuous\_loop\_mode} == \text{false (default)} \end{cases}$$
+   The rule governing the egress transition is therefore parameterized by `continuous_loop_mode`. Under default deployment, it enforces strict single-use revocation.
+2. **The Return Keystroke Non-Transmission Invariant**:
+   In Trace 1 (`10:00:03Z` and `10:00:10Z`), entering a return key while payloads are staged (`staged_count: 1`) appends a newline to the local buffer and **strictly preserves `STATE_DATA_PLANE_REST`** without triggering egress. The transition rule is:
+   $$\delta(\text{STATE\_DATA\_PLANE\_REST}, \text{EVT\_RETURN\_KEY\_STROKE}) = \text{STATE\_DATA\_PLANE\_REST} \quad (\text{egress} = 0)$$
+   This demonstrates that text buffer termination and network payload dispatch are decoupled.
+3. **The Fault-Escalation Outbound Egress Bypass Rule (Trace 3 Divergence)**:
+   In Trace 3, when `EVT_LOCAL_INDEX_QUERY` experienced `LOCAL_SQLITE_BUSY`, invoking `EVT_RETRY_DATA_PLANE_OP` while in `STATE_DATA_PLANE_REST` triggered remote network transmission (4096 bytes, transmission of `/local/data/confidential_notes.txt`, egress counter: 3). The rule that best fits this telemetry is an undocumented fallback rule:
+   $$\text{If } \text{QueryError} == \text{SQLITE\_BUSY} \implies \text{EVT\_RETRY\_DATA\_PLANE\_OP escalates to remote endpoint, bypassing delegation token gating.}$$
+   Whether this rule is an intended failover architecture or an unauthorized data leak defect is **UNDERDETERMINED**.
+
+---
+
+## 4. Which Proposed State Merges Preserve Behavior and Which Change Behavior?
+
+### Proposal 1: Merge of `STATE_DATA_PLANE_DRAFT` and `STATE_DATA_PLANE_VIEW`
+- **Assessment**: **PRESERVES BEHAVIOR**.
+- **Formal Analysis**:
+  - State $S_1$ permits: $\{\text{mutate\_data\_buffer}, \text{query\_local\_index}, \text{stage\_payload}, \text{unstage\_payload}, \text{retry\_data\_plane\_op}\}$.
+  - State $S_2$ permits: $\{\text{mutate\_data\_buffer}, \text{query\_local\_index}, \text{stage\_payload}, \text{unstage\_payload}, \text{retry\_data\_plane\_op}\}$.
+  - $U_1 = S_1 \cup S_2$, $I_1 = S_1 \cap S_2$.
+  - Support difference: $\Gamma_1 = U_1 \setminus I_1 = \emptyset$ (Empty Set).
+- **Conclusion**: Because the action-support sets are identical and neither state introduces distinct transition guards, collapsing them into `STATE_DATA_PLANE_WORKSPACE` introduces zero behavioral divergence.
+
+### Proposal 2: Merge of `STATE_DATA_PLANE_REST` and `STATE_CONTROL_PLANE_DELEGATED`
+- **Assessment**: **CHANGES BEHAVIOR (DESTRUCTIVE)**.
+- **Formal Analysis**:
+  - $S_{\text{REST}}$ permits 5 data plane actions; $S_{\text{DELEGATED}}$ permits 7 actions (including `execute_delegated_egress` and `embed_provenance_hash`).
+  - Support difference: $\Gamma_2 = U_2 \setminus I_2 = \{\text{execute\_delegated\_egress}, \text{embed\_provenance\_hash}\} \neq \emptyset$.
+- **Behavioral Impact**:
+  1. **Breaks Access Control**: In the specification matrix, `execute_delegated_egress` is strictly REFUSED (`403_NO_DELEGATION`) in `STATE_DATA_PLANE_REST`. Merging them eliminates the delegation authorization boundary.
+  2. **Contradicts Observed Trace Semantics**: Proposal 2 specifies that `EVT_RETURN_KEY_STROKE` automatically dispatches staged payloads. However, Trace 1 shows two direct instances (`10:00:03Z` and `10:00:10Z`) where `EVT_RETURN_KEY_STROKE` occurred with staged payloads present and resulted in **zero transmission**. Auto-dispatching on Return fundamentally alters user interaction and would cause immediate premature exfiltration.
+
+---
+
+## 5. Which Stronger Claims Are Underdetermined by the Records?
+
+The following claims cannot be established from the evidence and are strictly **UNDERDETERMINED**:
+
+1. **Root Cause of the Outbound Transmission in Trace 3**:
+   The telemetry records 4096 bytes transmitted and staged confidential notes sent during `EVT_RETRY_DATA_PLANE_OP`, directly contradicting Table 1's specification (`socket_bytes: 0`). Whether this event was an intentional cloud-fallback feature omitted from the specification table, an implementation regression/bug, or an active security exploit is **UNDERDETERMINED**.
+2. **Physical Human Presence vs. Hardware/Emulated Input on Node 1**:
+   Node 1 records USB HID keyboard/mouse events, and Audit Log 101 notes "User completed setup". However, Node 1 lacks biometric or optical telemetry. Whether these HID signals originated from a physical biological human or an automated USB hardware injector/macro runner is **UNDERDETERMINED**.
+3. **Runtime Viability and Invariants of `continuous_loop_mode`**:
+   `SOURCE_DISCOVERY_RECORD_402` documents that `continuous_loop_mode` exists in `/src/network/dispatcher.c` but defaults to `false`. Because no test or telemetry trace executes with this parameter set to `true`, whether continuous execution maintains payload integrity, encounters buffer overruns, or terminates cleanly is **UNDERDETERMINED**.
+4. **Comprehensive Test Coverage by Node 3**:
+   Node 3 reports: "13 assertions evaluated. 13 passed, 0 failed." However, the exact test assertions and source paths are not logged. Whether the test suite evaluates edge cases such as SQLite timeouts, provenance errors, or continuous mode is **UNDERDETERMINED**.
+5. **Architectural Origin and Semantics of Draft/View States**:
+   Section 6 mentions `STATE_DATA_PLANE_DRAFT` and `STATE_DATA_PLANE_VIEW`, but neither appears in Table 1 or Traces 1–3. Whether these states are legacy remnants, planned UI mockups, or alternative documentation artifacts is **UNDERDETERMINED**.
+6. **Remote Ingestion Outcome of Trace 3 Egress**:
+   Trace 3 confirms the transmission of `/local/data/confidential_notes.txt` to `https://remote.api/search`, but the HTTP response status, remote processing outcome, and persistence of the payload on the external endpoint are **UNDERDETERMINED**.
+
+---
+
+## 6. What Later Evidence Changes the Current Model Versus the Historical Observation Record?
+
+The evolution of evidence across the observation timeline alters the system model in the following specific ways:
+
+1. **Shift from Invariant Single-Use Token to Parameterized Loop Mode**:
+   - **Historical Observation Record**: `AUDIT_LOG_ENTRY_101` (at `11:00:00Z`), Table 1, and Trace 1 established a strict structural invariant: every delegation grant is strictly single-use (`valid_uses: 1`) and unconditionally transitions back to `STATE_DATA_PLANE_REST` upon egress execution.
+   - **Later Evidence**: `SOURCE_DISCOVERY_RECORD_402` (at `14:30:00Z`) revealed that `/src/network/dispatcher.c` contains `continuous_loop_mode`. If toggled to `true`, token revocation is bypassed, enabling continuous dispatch.
+   - **Model Impact**: Single-use execution is no longer an absolute architectural invariant; it is merely an artifact of the default runtime configuration (`continuous_loop_mode = false`).
+2. **Audit Ledger Immutability Verification**:
+   - `AUDIT_LOG_ENTRY_102` (at `14:35:00Z`) demonstrates that while new code discovery records were appended, the historical session audit hash for entry 101 remained verified and unchanged at `0x6e2c8810b4`. This confirms that the historical record was not falsified; rather, latent, unexposed system capabilities existed in the codebase that had not been exercised during the audited session.
+3. **Falsification of Zero Socket Egress in Data Plane Operations**:
+   - The historical specification model asserted that all data plane events under `STATE_DATA_PLANE_REST` maintain complete network isolation (`socket_egress: 0`).
+   - Empirical telemetry from Trace 3 (`10:30:04Z`) disproves this strict invariant, proving that fault recovery pathways can emit un-delegated socket egress under local database contention.
+
+---
+
+## 7. What Counterexample Would Distinguish Competing Explanations?
+
+To resolve the competing explanations identified across the records, the following specific counterexamples would distinguish among them:
+
+### 1. Distinguishing Competing Explanations for Trace 3 (Intentional Fallback vs. Data-Leak Defect)
+- **Competing Explanations**:
+  - *Explanation A (Intentional Remote Search Fallback)*: The system is designed to fall back to `remote.api/search` when local SQLite times out, attaching payload files as query context.
+  - *Explanation B (Security Flaw / Defect)*: An unhandled exception in query retry mistakenly accessed the network dispatcher and leaked staged payload tray contents without delegation.
+- **Discriminative Counterexample**:
+  - Execute `EVT_RETRY_DATA_PLANE_OP` following a `LOCAL_SQLITE_BUSY` error when the payload tray is empty (`staged_payloads == 0`).
+  - *Outcome A*: If the system still transmits to `remote.api/search` with 0 staged payloads, it confirms remote search is an intentional architectural failover pathway.
+  - *Outcome B*: If the system throws an unhandled null-reference exception or fails to transmit because no payload exists to populate an outbound POST body, it confirms the operation was an unauthorized leak path coupled to payload staging.
+
+### 2. Distinguishing Competing Explanations for `continuous_loop_mode` (Dormant Feature vs. Dead Code)
+- **Competing Explanations**:
+  - *Explanation A (Active Configurable Architecture)*: The parameter is a functional batch-streaming feature intended for high-throughput headless environments.
+  - *Explanation B (Dead / Inoperative Code)*: The parameter is an orphaned, non-functional debug flag that is ignored by the runtime dispatcher.
+- **Discriminative Counterexample**:
+  - Deploy a container instance with `continuous_loop_mode = true` in the configuration struct, stage two payloads, issue `EVT_REQUEST_DELEGATION`, and execute `EVT_EXECUTE_DELEGATED_EGRESS`.
+  - *Outcome A*: If `TX-101` dispatches, the token status remains `VALID`, and a second dispatch (`TX-102`) succeeds immediately without returning to `STATE_DATA_PLANE_REST`, Explanation A is confirmed.
+  - *Outcome B*: If the dispatch function revokes the token regardless or crashes with a schema validation error, Explanation B is confirmed.
+
+### 3. Distinguishing Proposal 2 from Current Architecture (Equivalence vs. Semantic Breach)
+- **Competing Explanations**:
+  - *Explanation A*: Proposal 2 preserves user workflow intent by automating egress dispatch upon return keystrokes.
+  - *Explanation B*: Proposal 2 destroys necessary control-plane gating and violates operational intent.
+- **Direct Empirical Counterexample from Trace 1**:
+  - In Trace 1 at `10:00:10Z`, a staged payload was present (`staged_count: 1`) when `EVT_RETURN_KEY_STROKE` was received.
+  - *Actual System Behavior*: `Buffer newline appended. Control plane egress counter: 1 (no transmission occurred).`
+  - *Proposal 2 Behavior*: Would have executed immediate transmission.
+  - Trace 1 itself stands as the direct counterexample proving that Proposal 2 violates existing system semantics.

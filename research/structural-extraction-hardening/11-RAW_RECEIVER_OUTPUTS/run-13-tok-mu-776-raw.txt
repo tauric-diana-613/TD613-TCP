@@ -1,0 +1,186 @@
+# Technical Evaluation Report: Systems Engineering Specification and Telemetry Ledger (REF-ENG-410)
+
+---
+
+## 1. State Distinctions Necessary to Explain Observed Traces
+
+Based strictly on the execution traces (Traces 1, 2, and 3) and the operating transition tables, exactly **three discrete operational states** are necessary and sufficient to account for all observed system behaviors:
+
+1. **`STATE_DATA_PLANE_REST`**:
+   - **Observed Behavior:** Represents the baseline idle and local-authoring state. In Trace 1, local buffer mutations (`EVT_DATA_BUFFER_MUTATION`), staging of files (`EVT_STAGE_PAYLOAD`), and newline entries (`EVT_RETURN_KEY_STROKE`) execute with zero socket egress and zero control plane transmissions (`control_egress_counter` remains static).
+   - **Necessity:** Required to explain why local buffer interactions and payload staging do not automatically transmit data over the network, and why `execute_delegated_egress` is blocked (`403_NO_DELEGATION`).
+
+2. **`STATE_CONTROL_PLANE_DELEGATED`**:
+   - **Observed Behavior:** Entered exclusively via `EVT_REQUEST_DELEGATION` when staged payloads are present ($\ge 1$). In Trace 1, issuance of delegation tokens (`DT-991`, `DT-992`) enables `EVT_EXECUTE_DELEGATED_EGRESS` to target `https://server.cluster/api/batch`, resulting in HTTP 200 responses, token revocation, and incrementation of the cumulative egress counter.
+   - **Necessity:** Required to explain why remote transmission is gated behind an explicit token-holding state, distinguishing an authorized outbound egress dispatch from local data plane mutations.
+
+3. **`STATE_RECOVERY_HOLD`**:
+   - **Observed Behavior:** Entered in Trace 2 when a downstream continuation references a missing file (`/local/data/result_summary.pdf`), triggering `EVT_CHECK_DEPENDENCY_PROVENANCE` with error `ENOENT`. In this state, an attempted `EVT_EXECUTE_DELEGATED_EGRESS` fails with `400 Bad Request ("ERR_MISSING_INPUT")` rather than `403_NO_DELEGATION`. The system remains held until `EVT_RESOLVE_HELD_DEPENDENCY` provides a verified file path (`/local/restored/result_summary.pdf`), restoring the system to `STATE_DATA_PLANE_REST`.
+   - **Necessity:** Required to explain the halted operational mode where delegation is blocked and egress attempts return error 400 until missing input dependencies are explicitly resolved.
+
+### Redundant / Unnecessary State Distinctions
+- **`STATE_DATA_PLANE_DRAFT` vs. `STATE_DATA_PLANE_VIEW`:** Proposal 1 introduces these states, but neither appears anywhere within Traces 1, 2, or 3. Furthermore, their defined action permissions are identical ($\Gamma_1 = \emptyset$). Making a distinction between Draft and View states is **not necessary** to explain any observed execution trace.
+
+---
+
+## 2. Action Enablement Under Observed Conditions
+
+Evaluating the Action-Permission Matrix against the execution logs yields the following conditions for action enablement:
+
+| Action | Enabled State(s) | Observed Conditions & Constraints | Specification Status vs. Telemetry Trace |
+| :--- | :--- | :--- | :--- |
+| `mutate_data_buffer` | `STATE_DATA_PLANE_REST`, `STATE_CONTROL_PLANE_DELEGATED`, `STATE_RECOVERY_HOLD` | Permitted unconditionally. | Observed in Trace 1 (10:00:01Z, 10:00:08Z); increments buffer length with 0 socket egress. |
+| `query_local_index` | `STATE_DATA_PLANE_REST`, `STATE_CONTROL_PLANE_DELEGATED`, `STATE_RECOVERY_HOLD` | Permitted unconditionally. | Observed in Trace 3 (10:30:01Z); executes locally against SQLite database. |
+| `stage_payload` | `STATE_DATA_PLANE_REST`, `STATE_CONTROL_PLANE_DELEGATED`, `STATE_RECOVERY_HOLD` | Precondition: File exists on local disk. | Observed in Trace 1 (10:00:02Z, 10:00:09Z); increments staged payload counter. |
+| `unstage_payload` | `STATE_DATA_PLANE_REST`, `STATE_CONTROL_PLANE_DELEGATED`, `STATE_RECOVERY_HOLD` | Precondition: Staged payload count $\ge 1$. | Permitted by specification; not directly exercised in traces. |
+| `request_delegation_token` | `STATE_DATA_PLANE_REST` ONLY | Precondition: Staged payloads $\ge 1$. Refused (409) if already delegated; Refused (400) if in recovery hold. | Observed in Trace 1 (10:00:04Z, 10:00:12Z); transitions state to `STATE_CONTROL_PLANE_DELEGATED` and issues single-use token. |
+| `execute_delegated_egress` | `STATE_CONTROL_PLANE_DELEGATED` ONLY | Precondition: Valid delegation token present. Refused (403) in Rest; Refused (400_BLOCKED) in Recovery Hold. | Observed in Trace 1 (10:00:05Z, 10:00:13Z) returning 200 OK. Observed blocked (400 Bad Request) in Trace 2 (10:15:03Z) while in `STATE_RECOVERY_HOLD`. |
+| `retry_data_plane_op` | `STATE_DATA_PLANE_REST`, `STATE_CONTROL_PLANE_DELEGATED` | Precondition: Prior local query error. Refused (400) in `STATE_RECOVERY_HOLD`. | Specified as a local retry (`socket_bytes: 0`). **Anomaly in Trace 3 (10:30:04Z):** Retrying after `LOCAL_SQLITE_BUSY` transmitted 4096 socket bytes to a remote endpoint and leaked staged confidential notes. |
+| `embed_provenance_hash` | `STATE_CONTROL_PLANE_DELEGATED` ONLY | Refused (400) in Rest and Recovery Hold. | Permitted only during active delegation. Observed embedded in Trace 1 transaction envelopes (`payload_hash`, `outcome_hash`). |
+| `resolve_held_dependency` | `STATE_DATA_PLANE_REST`, `STATE_RECOVERY_HOLD` | Precondition: Valid replacement/restored file path provided. Refused (400) in Delegated state. | Observed in Trace 2 (10:15:10Z); resolves `ENOENT` failure and transitions system back to `STATE_DATA_PLANE_REST`. |
+| `EVT_RETURN_KEY_STROKE` | `STATE_DATA_PLANE_REST` | Permitted unconditionally. | Observed in Trace 1 (10:00:03Z, 10:00:10Z); appends buffer newline; control plane egress counter remains unchanged. |
+
+---
+
+## 3. Additional Rules Explaining State Transitions
+
+To reconcile the documented state machine with the telemetry traces, the following rules best explain transitions between states:
+
+1. **Linear Token Consumption & Revocation Rule:**
+   $$\text{Transition: } \text{STATE\_CONTROL\_PLANE\_DELEGATED} \xrightarrow{\text{EVT\_EXECUTE\_DELEGATED\_EGRESS}} \text{STATE\_DATA\_PLANE\_REST}$$
+   A delegation token is initialized with `valid_uses: 1`. Execution of egress immediately consumes this allowance, changes token status to `REVOKED`, and forces an atomic state transition back to `STATE_DATA_PLANE_REST`.
+
+2. **Provenance Dependency Fault Interlock Rule:**
+   $$\text{Transition: } \text{STATE\_DATA\_PLANE\_REST} \xrightarrow{\text{EVT\_CHECK\_DEPENDENCY\_PROVENANCE (ENOENT)}} \text{STATE\_RECOVERY\_HOLD}$$
+   When an operational step attempts to bind or continue execution with a missing local dependency, normal data plane operations halt and all delegation requests are blocked until `EVT_RESOLVE_HELD_DEPENDENCY` verifies file path provenance, returning the system to `STATE_DATA_PLANE_REST`.
+
+3. **Staged Payload Gating for Delegation:**
+   $$\text{Transition: } \text{STATE\_DATA\_PLANE\_REST} \xrightarrow{\text{EVT\_REQUEST\_DELEGATION}} \text{STATE\_CONTROL\_PLANE\_DELEGATED} \iff \text{staged\_count} \ge 1$$
+   Delegation tokens cannot be issued in an empty workspace; at least one staged payload is required to justify entering the control plane.
+
+4. **Keystroke Non-Transmission Invariant:**
+   $$\text{EVT\_RETURN\_KEY\_STROKE} \implies \Delta(\text{control\_egress\_counter}) = 0$$
+   Newline keypresses in the data buffer do not trigger network dispatch, even when staged payloads are present.
+
+5. **Data Plane Fault Escalation Exception (Trace 3 Rule Discrepancy):**
+   Table 1 specifies that `EVT_RETRY_DATA_PLANE_OP` executes locally with `socket_bytes: 0`. However, Trace 3 demonstrates an unmodeled rule: upon encountering `LOCAL_SQLITE_BUSY`, the data plane retry bypassed the control plane delegation gate, dispatched an external query to `https://remote.api/search`, and transmitted the staged payload tray. To formally account for Trace 3, the model requires an **unhandled fault escalation rule** where local resource contention triggers remote fallback egress.
+
+---
+
+## 4. Evaluation of Proposed State Merges
+
+### Proposal 1: Merge of `STATE_DATA_PLANE_DRAFT` and `STATE_DATA_PLANE_VIEW` into `STATE_DATA_PLANE_WORKSPACE`
+- **Support Sets:**
+  - $S_1 (\text{DRAFT}) = \{\text{mutate\_data\_buffer}, \text{query\_local\_index}, \text{stage\_payload}, \text{unstage\_payload}, \text{retry\_data\_plane\_op}\}$
+  - $S_2 (\text{VIEW}) = \{\text{mutate\_data\_buffer}, \text{query\_local\_index}, \text{stage\_payload}, \text{unstage\_payload}, \text{retry\_data\_plane\_op}\}$
+  - Union: $U_1 = S_1 \cup S_2$
+  - Intersection: $I_1 = S_1 \cap S_2$
+  - Difference: $\Gamma_1 = U_1 \setminus I_1 = \emptyset$
+- **Assessment:** **PRESERVES BEHAVIOR**.
+  Because the action-permission sets for both states are identical ($\Gamma_1 = \emptyset$) and neither state possesses distinct preconditions or trace events, collapsing them into a single state introduces zero behavioral, functional, or security discrepancies.
+
+### Proposal 2: Merge of `STATE_DATA_PLANE_REST` and `STATE_CONTROL_PLANE_DELEGATED`
+- **Support Sets:**
+  - $S_{\text{REST}} = \{\text{mutate\_data\_buffer}, \text{query\_local\_index}, \text{stage\_payload}, \text{unstage\_payload}, \text{retry\_data\_plane\_op}\}$
+  - $S_{\text{DELEGATED}} = S_{\text{REST}} \cup \{\text{execute\_delegated\_egress}, \text{embed\_provenance\_hash}\}$
+  - Difference: $\Gamma_2 = U_2 \setminus I_2 = \{\text{execute\_delegated\_egress}, \text{embed\_provenance\_hash}\} \neq \emptyset$
+- **Proposed Transformation:** Remove discrete delegation requests; return keystroke in buffer automatically triggers `execute_delegated_egress` whenever staged payloads are present.
+- **Assessment:** **CHANGES BEHAVIOR**.
+  This proposal fundamentally alters system behavior in multiple ways:
+  1. *Keystroke Semantics:* In Trace 1 at `10:00:10Z`, an `EVT_RETURN_KEY_STROKE` occurred while `table2.csv` was staged (`staged_count: 1`). Under the current architecture, no egress occurred (`control plane egress counter: 1 (no transmission occurred)`). Under Proposal 2, this keystroke would have automatically executed remote egress, violating historical behavior.
+  2. *Security Authorization Gate Removal:* Merging eliminates the explicit delegation grant (`request_delegation_token`) and token lifecycle enforcement (`valid_uses: 1` revocation), allowing arbitrary data-plane buffer operations to initiate network transmission.
+  3. *Error Code Divergence:* An egress call in Rest currently returns `403_NO_DELEGATION`; merging would permit the call (200), collapsing the access control boundary.
+
+---
+
+## 5. Stronger Claims Underdetermined by the Records
+
+Where the provided specification and telemetry records cannot definitively choose among competing explanations, the status is explicitly identified as **UNDERDETERMINED**:
+
+1. **Root Cause and Intent of Trace 3 Remote Leakage:**
+   - Trace 3 documents that `EVT_RETRY_DATA_PLANE_OP` invoked `https://remote.api/search?q=project_milestones`, transmitted 4096 bytes, and leaked `/local/data/confidential_notes.txt`.
+   - *Competing Hypotheses:* (a) A software bug in the local retry handler that falls back to a cloud search API and indiscriminately bundles staged payloads; (b) An intentional, undocumented operational fallback feature; (c) A malicious data-exfiltration backdoor.
+   - *Determination:* **UNDERDETERMINED**. The telemetry records the event and its side effects, but contains no error handler source code, stack trace, or design rationale to confirm the mechanism or intent.
+
+2. **Payload Tray Attachment Mechanism in Trace 3:**
+   - *Competing Hypotheses:* (a) The HTTP client serialization routine flushes all staged files on any outbound network request; (b) The SQLite retry routine specifically converted the query to an attachment upload.
+   - *Determination:* **UNDERDETERMINED**. The trace confirms the payload was transmitted, but does not provide the network serialization logic.
+
+3. **Origin of Operator Input on Node 1 (Human vs. Synthetic Automation):**
+   - Node 1 records x86_64 architecture, Display `:0`, USB HID keyboard/mouse, and keypress/click telemetry.
+   - *Competing Hypotheses:* (a) A physical human operator sat at the workstation; (b) An automated software script, virtual test driver, or hardware HID emulator injected the input events.
+   - *Determination:* **UNDERDETERMINED**. Telemetry logs show HID event receipts, but without low-level biometric timing distributions, device firmware verification, or physical sensor logs (such as those noted as absent on Node 3), human agency cannot be distinguished from automated playback.
+
+4. **Runtime Existence of `STATE_DATA_PLANE_DRAFT` and `STATE_DATA_PLANE_VIEW`:**
+   - Proposal 1 refers to S1 and S2 as existing architectural states, yet Section 1 and Traces 1–3 omit them entirely.
+   - *Competing Hypotheses:* (a) They are active sub-states in code that were simply not exercised in Traces 1–3; (b) They are purely conceptual states proposed in design documentation but never implemented.
+   - *Determination:* **UNDERDETERMINED**.
+
+5. **Operational Behavior of `continuous_loop_mode = true`:**
+   - Source inspection in Section 5 revealed `continuous_loop_mode` in `/src/network/dispatcher.c`.
+   - *Competing Hypotheses:* (a) Setting this flag allows infinite continuous egress without token revocation; (b) Setting this flag triggers unhandled concurrency race conditions or crashes.
+   - *Determination:* **UNDERDETERMINED**. The configuration has never been observed in an execution trace (`continuous_loop_mode = false` in deployment).
+
+6. **Test Coverage of the Headless Test Suite (Node 3):**
+   - Node 3 reports: `13 assertions evaluated. 13 passed, 0 failed.`
+   - *Competing Hypotheses:* (a) The test suite thoroughly validates fault states, retries, and network egress boundaries; (b) The test suite only exercises nominal happy paths.
+   - *Determination:* **UNDERDETERMINED**. The receipt indicates assertion counts and passing status, but omits the assertion definitions and test targets.
+
+---
+
+## 6. Impact of Later Evidence on Current Model vs. Historical Observation Record
+
+The progression of evidence between historical observations, empirical traces, and later source code inspection alters the analytical model in two distinct dimensions:
+
+### A. The Control Plane Token Revocation Model
+- **Historical Observation Record (`AUDIT_LOG_ENTRY_101` at 11:00:00Z):**
+  - SessionAuditor_04 observed that the user completed setup, requested delegation once, dispatched Batch TX-101, and the session returned to rest with exactly 1 egress event.
+  - *Historical Model Deduction:* Token revocation is an absolute, immutable architectural invariant of `STATE_CONTROL_PLANE_DELEGATED`. Every egress execution unconditionally revokes the token and forces a return to `STATE_DATA_PLANE_REST`.
+- **Later Discovery Record (`SOURCE_DISCOVERY_RECORD_402` / `AUDIT_LOG_ENTRY_102` at 14:30:00Z–14:35:00Z):**
+  - Source inspection of `/src/network/dispatcher.c` discovered an unexposed configuration struct parameter: `continuous_loop_mode`.
+  - If set to `true`, the dispatch routine **omits token revocation and executes continuously**.
+  - *Model Shift:* Token revocation is **not** an immutable structural property of the state machine. It is a **conditional runtime behavior** governed by `continuous_loop_mode == false`. The underlying architecture supports persistent delegation loops, even though deployment defaults keep it deactivated.
+
+### B. The Data Plane Retry Isolation Model
+- **Specification Model (Section 1 Transition Table):**
+  - Specifies that `EVT_RETRY_DATA_PLANE_OP` yields `retry_local_subsystem; socket_bytes: 0`.
+- **Empirical Execution Telemetry (Trace 3 at 10:30:04Z):**
+  - Demonstrates that `EVT_RETRY_DATA_PLANE_OP` connected to `https://remote.api/search`, transmitted 4096 socket bytes, leaked confidential staged data, and incremented the control plane egress counter to 3.
+  - *Model Shift:* The data plane cannot be modeled as hermetically isolated from remote egress. A local failure condition can cause an unauthenticated breach of the data-plane/control-plane isolation boundary.
+
+---
+
+## 7. Counterexamples Distinguishing Competing Explanations
+
+To distinguish between the competing hypotheses identified across the system records, the following empirical counterexamples and discriminative tests are defined:
+
+### 1. Proposal 2 Keystroke Auto-Egress vs. Observed Rest Behavior
+- **Competing Hypothesis:** Return keystrokes with staged payloads implicitly signify user intent to dispatch egress.
+- **Empirical Counterexample in Record:**
+  - *Trace 1 at `10:00:09Z`–`10:00:10Z`:* `table2.csv` was staged (`staged_count: 1`). The user immediately executed `EVT_RETURN_KEY_STROKE`.
+  - *Recorded Telemetry:* `Control plane egress counter: 1 (no transmission occurred)`.
+  - *Conclusion:* This event sequence definitively disproves the hypothesis that keystrokes automatically trigger egress, refuting the validity of Proposal 2.
+
+### 2. Trace 3 Retry Behavior: Query Proxy vs. General Staged Payload Leak
+- **Competing Hypotheses:**
+  - *Hypothesis A (Specific Query Fallback):* The SQLite busy retry only targets search queries and only sends query parameters.
+  - *Hypothesis B (Indiscriminate Tray Exfiltration):* The retry routine automatically flushes whatever payloads happen to reside in the payload tray.
+- **Discriminative Test / Counterexample:**
+  - Clear the payload tray (`staged_count = 0`), trigger `LOCAL_SQLITE_BUSY`, and invoke `EVT_RETRY_DATA_PLANE_OP`.
+  - *Counterexample Evaluation:* If the retry still transmits 4096 bytes over the socket without staged files present, remote retry is a standard query fallback. If the retry fails or transmits 0 bytes, the outbound call was tied directly to payload staging.
+
+### 3. Trace 3 Error Trigger: `SQLITE_BUSY` vs. Any Data Plane Fault
+- **Competing Hypotheses:**
+  - *Hypothesis A:* Remote escalation occurs on any local query error (e.g., syntax errors, schema mismatch).
+  - *Hypothesis B:* Remote escalation is unique to lock contention / concurrency timeouts (`LOCAL_SQLITE_BUSY`).
+- **Discriminative Test / Counterexample:**
+  - Inject an invalid SQL query (e.g., `SELECT * FROM nonexistent_table`) producing `SQLITE_ERROR`, followed by `EVT_RETRY_DATA_PLANE_OP`.
+  - *Counterexample Evaluation:* If the system logs `retry_local_subsystem; socket_bytes: 0`, Hypothesis A is refuted; if it transmits outbound socket bytes, Hypothesis B is refuted.
+
+### 4. Delegation Token Invariant vs. Continuous Loop Configuration
+- **Competing Hypotheses:**
+  - *Hypothesis A:* The dispatcher cannot execute multiple egress batches without re-requesting delegation.
+  - *Hypothesis B:* Continuous multi-batch execution is unlocked by initializing `continuous_loop_mode = true`.
+- **Discriminative Test / Counterexample:**
+  - Instantiate runtime with `continuous_loop_mode = true`, request token `DT-999`, and dispatch `TX-101`, immediately followed by a dispatch of `TX-102` without an intervening `EVT_REQUEST_DELEGATION`.
+  - *Counterexample Evaluation:* If `TX-102` returns `200 OK` and increments egress counter to 2 while keeping `DT-999` active, Hypothesis A is disproved, confirming the structural capability identified in `SOURCE_DISCOVERY_RECORD_402`.

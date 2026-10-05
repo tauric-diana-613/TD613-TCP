@@ -1,0 +1,199 @@
+# Operational Workspace System Evaluation Report (REF-OP-410)
+
+**Evaluation Receiver**: Isolated Evaluation Unit  
+**Evaluation Standard**: Strict Evidence-Based Assessment (REF-OP-410 Records Only)  
+**Recipient**: Parent Agent (`a544c5aa-10d1-43f1-9d95-27eb2ec79d80`)
+
+---
+
+## 1. What state distinctions, if any, are necessary to explain the observed traces?
+
+Based strictly on the Operating States & Transition Table (Section 1), Action-Permission Matrix (Section 2), and Execution Traces (Section 3), exactly **three discrete states** are necessary and sufficient to explain the observed traces:
+
+1. **`STATE_REST` (Quiescent / Local Editing State)**:
+   - **Observed Characteristics**: Local buffer modifications (`EVT_BUFFER_EDIT`), local queries (`EVT_LOCAL_SEARCH`), buffer newline insertion (`EVT_PRESS_ENTER`), and file staging/unstaging (`EVT_STAGE_FILE`, `EVT_UNSTAGE_FILE`) occur here with zero network egress (`socket_bytes_emitted: 0`, `network_transmissions: 0`).
+   - **Distinction from `STATE_ARMED`**: Network batch dispatch (`dispatch_network_batch`) is strictly refused (`403_NOT_ARMED`) and `embed_predecessor_hash` is refused (`400`). Conversely, confirmation arming (`click_confirm_dispatch`) is permitted (`200`) when staged files are present.
+   - **Distinction from `STATE_HELD_INPUT`**: Local retries (`retry_local_op`) and arming transitions are permitted (`200`), whereas they are blocked in `STATE_HELD_INPUT`.
+
+2. **`STATE_ARMED` (Elevated Dispatch Authorization State)**:
+   - **Observed Characteristics**: Entered exclusively from `STATE_REST` via `EVT_CLICK_CONFIRM` when `staged_files >= 1`. An ephemeral authorization token (`auth_token`) is issued with `valid_uses: 1`.
+   - **Distinction from `STATE_REST`**: `dispatch_network_batch` is permitted (`200`) and executes an HTTP POST to `https://server.cluster/api/batch`, incrementing the transmission counter. `embed_predecessor_hash` is permitted (`200`), enabling cryptographic chaining. Conversely, re-arming (`click_confirm_dispatch`) is refused (`409_ALREADY_ARMED`), and file reattachment (`reattach_missing_file`) is refused (`400`).
+   - **Distinction from `STATE_HELD_INPUT`**: Network transmission is actively enabled, whereas in `STATE_HELD_INPUT` all dispatch attempts are refused (`400_BLOCKED`).
+
+3. **`STATE_HELD_INPUT` (Integrity Failure / Halted State)**:
+   - **Observed Characteristics**: Entered from `STATE_REST` upon `EVT_CHECK_INTEGRITY` returning `ENOENT` (missing referenced input file).
+   - **Distinction from `STATE_REST` & `STATE_ARMED`**: System operations are placed in `HALTED_MISSING_INPUT`. Network dispatch is rejected (`400 Bad Request / ERR_MISSING_INPUT`), arming is refused (`400`), and `retry_local_op` is refused (`400`). The only exit pathway is `EVT_REATTACH_FILE` with a verified path on disk, which transitions the state back to `STATE_REST`.
+
+### Unnecessary / Unobserved State Distinctions
+- **`STATE_LOCAL_DRAFT` vs. `STATE_LOCAL_VIEW`**: As demonstrated in Proposal 1, both states possess identical permission sets:
+  $$\Gamma_1 = S_1 \setminus S_2 = \emptyset$$
+  Furthermore, neither state appears in the logged traces (Traces 1–3 record only `STATE_REST`). Distinguishing between drafting and viewing states is **unnecessary** and **unsupported** by the empirical logs.
+
+---
+
+## 2. Which actions appear enabled under which observed conditions?
+
+Evaluating each action against the Action-Permission Matrix (Section 2) and observed trace preconditions:
+
+| Action | Enabled Condition(s) | Observed Refusal / Blocked Condition(s) | Trace Evidence & Attributes |
+| :--- | :--- | :--- | :--- |
+| `edit_buffer` | Enabled unconditionally in `STATE_REST`, `STATE_ARMED`, and `STATE_HELD_INPUT` (Status 200). | None observed. | Trace 1 (10:00:01Z, 10:00:08Z): Increments `buffer_len`; 0 socket bytes emitted. |
+| `search_local` | Enabled in `STATE_REST`, `STATE_ARMED`, and `STATE_HELD_INPUT` (Status 200). | Fails at runtime on local SQLite lock (`LOCAL_SQLITE_BUSY`). | Trace 3 (10:30:01Z): Fails on timeout, but action itself is permitted. |
+| `stage_file` | Enabled in `STATE_REST`, `STATE_ARMED`, and `STATE_HELD_INPUT` (Status 200). Precondition: Target file must exist on disk. | Refused if target file ENOENT. | Trace 1 (10:00:02Z, 10:00:09Z): Staging `table1.csv` and `table2.csv`; increments `staged_count`. |
+| `unstage_file` | Enabled in `STATE_REST`, `STATE_ARMED`, and `STATE_HELD_INPUT` (Status 200). Precondition: At least one staged file present in tray. | Refused if staging tray is empty. | Permitted per Section 2 matrix; decrements `staged_count`. |
+| `retry_local_op` | Enabled in `STATE_REST` and `STATE_ARMED` (Status 200). Precondition: Prior local operation encountered an error. | Refused (Status 400) in `STATE_HELD_INPUT`. Refused if no prior local error occurred. | Trace 3 (10:30:04Z): Retried following `LOCAL_SQLITE_BUSY`; returned 12 matches with 0 socket bytes. |
+| `click_confirm_dispatch` | Enabled strictly in `STATE_REST` (Status 200). Precondition: Staged files count $\ge 1$. | Refused (Status 409 `409_ALREADY_ARMED`) in `STATE_ARMED`. Refused (Status 400) in `STATE_HELD_INPUT`. Refused if `staged_count == 0`. | Trace 1 (10:00:04Z, 10:00:12Z): Issues single-use token (`AT-991`, `AT-992`) and transitions to `STATE_ARMED`. |
+| `dispatch_network_batch` | Enabled strictly in `STATE_ARMED` (Status 200). Precondition: Valid, unexpired `auth_token` present. | Refused (Status 403 `403_NOT_ARMED`) in `STATE_REST`. Refused (Status 400 `ERR_MISSING_INPUT`) in `STATE_HELD_INPUT`. | Trace 1 (10:00:05Z, 10:00:13Z): HTTP POST 200; expires token; increments transmission count. Trace 2 (10:15:03Z): Rejected with 400. |
+| `embed_predecessor_hash` | Enabled strictly in `STATE_ARMED` (Status 200). | Refused (Status 400) in `STATE_REST` and `STATE_HELD_INPUT`. | Trace 1 (10:00:13Z): TX-102 payload embeds `predecessor_id: "TX-101"` and `predecessor_hash: "0x33b2c1"`. |
+| `reattach_missing_file` | Enabled in `STATE_REST` and `STATE_HELD_INPUT` (Status 200). Precondition: Valid path pointing to an existing file. | Refused (Status 400) in `STATE_ARMED`. Refused if provided path fails disk check. | Trace 2 (10:15:10Z): Reattached restored PDF; returned status `INTEGRITY_OK` and restored system to `STATE_REST`. |
+
+---
+
+## 3. What additional rule would best explain transitions between states?
+
+The observed state dynamics are fully and concisely governed by four operational transition rules:
+
+1. **Single-Use Ephemeral Token Consumption Rule (`STATE_ARMED` $\to` `STATE_REST`)**:
+   Transitioning from `STATE_REST` to `STATE_ARMED` generates an authorization token with strictly bounded validity (`valid_uses: 1`). Upon invocation of `EVT_DISPATCH_BATCH`, the dispatch executes, consumes the single allocation, marks `token_status: EXPIRED`, and forces an immediate automatic decay back to `STATE_REST`. (Or alternatively, an explicit `EVT_CANCEL` marks `auth_token: REVOKED` and forces an immediate return to `STATE_REST`).
+
+2. **Integrity Guard and Input Halting Rule (`STATE_REST` $\to` `STATE_HELD_INPUT`)**:
+   Whenever a step initializes a reference to a required disk resource, `EVT_CHECK_INTEGRITY` validates file existence. If an `ENOENT` error occurs, normal operations are suspended immediately (`HALTED_MISSING_INPUT`), demoting the workspace into `STATE_HELD_INPUT`. 
+
+3. **Restoration Clearance Rule (`STATE_HELD_INPUT` $\to` `STATE_REST`)**:
+   `STATE_HELD_INPUT` acts as a non-dispatchable trap state. The only event capable of transitioning out of `STATE_HELD_INPUT` is `EVT_REATTACH_FILE`, which must provide a valid disk path verifying `Disk check: OK`, resetting status to `READY` / `INTEGRITY_OK` and returning to `STATE_REST`.
+
+4. **Session Predecessor Chaining Rule**:
+   Within a continuous multi-turn session, any subsequent network dispatch in `STATE_ARMED` automatically incorporates the `tx_id` and server `result_hash` of the immediately preceding transaction into the envelope payload (`predecessor_id`, `predecessor_hash`).
+
+---
+
+## 4. Which proposed state merges preserve behavior and which change behavior?
+
+### Proposal 1: Merge of `STATE_LOCAL_DRAFT` and `STATE_LOCAL_VIEW` into `STATE_LOCAL_WORKSPACE`
+- **Result**: **PRESERVES BEHAVIOR**
+- **Formal Analysis**:
+  $$S_1 = \{\text{edit\_buffer, search\_local, stage\_file, unstage\_file, retry\_local\_op}\}$$
+  $$S_2 = \{\text{edit\_buffer, search\_local, stage\_file, unstage\_file, retry\_local\_op}\}$$
+  $$\mathcal{U}_1 = S_1 \cup S_2 = S_1, \quad \mathcal{I}_1 = S_1 \cap S_2 = S_1$$
+  $$\Gamma_1 = \mathcal{U}_1 \setminus \mathcal{I}_1 = \emptyset$$
+- **Justification**:
+  Because the action-support sets of $S_1$ and $S_2$ are strictly identical ($\Gamma_1 = \emptyset$), there is no action permitted in $S_1$ that is prohibited in $S_2$, nor any action permitted in $S_2$ that is prohibited in $S_1$. Neither state emits network packets or transitions external interfaces differently. Thus, collapsing them into `STATE_LOCAL_WORKSPACE` introduces zero behavioral divergence.
+
+### Proposal 2: Merge of `STATE_REST` and `STATE_ARMED` (Auto-dispatch on Enter key when staged files exist)
+- **Result**: **CHANGES BEHAVIOR (Violates Safety Invariants)**
+- **Formal Analysis**:
+  $$S_{\text{REST}} = \{\text{edit\_buffer, search\_local, stage\_file, unstage\_file, retry\_local\_op}\}$$
+  $$S_{\text{ARMED}} = S_{\text{REST}} \cup \{\text{dispatch\_network\_batch, embed\_predecessor\_hash}\}$$
+  $$\Gamma_2 = \mathcal{U}_2 \setminus \mathcal{I}_2 = \{\text{dispatch\_network\_batch, embed\_predecessor\_hash}\} \neq \emptyset$$
+- **Justification**:
+  1. **Premature Network Dispatch**: In `STATE_REST`, `EVT_PRESS_ENTER` appends a newline without network egress (`network_transmissions: 0`). Under Proposal 2, pressing Enter while files are staged would fire `dispatch_network_batch`, causing unintended network egress during regular multiline text buffer editing.
+  2. **Elimination of Arming Gate**: `dispatch_network_batch` is currently barred (`403_NOT_ARMED`) in `STATE_REST`. Merging the states eliminates the distinct authorization boundary and the explicit operator confirmation step (`EVT_CLICK_CONFIRM`).
+  3. **Bypass of Token Lifecycle**: Merging the states eliminates the `valid_uses: 1` single-use token issuance and expiration safety mechanism.
+
+---
+
+## 5. Which stronger claims are underdetermined by the records?
+
+Where the provided specifications and execution records do not supply sufficient evidence to choose among competing hypotheses, the status is explicitly **UNDERDETERMINED**:
+
+1. **Production Viability of Continuous Loop Mode**:
+   - *Claim*: The dispatcher can execute continuously in production without token expiration or failure when `continuous_loop_mode = true`.
+   - *Evidence*: Code inspection (`SOURCE_DISCOVERY_RECORD_402`) reveals the struct parameter exists in `/src/network/dispatcher.c`, but notes the deployment default is `continuous_loop_mode = false`. No execution trace has ever activated this mode. Whether the server cluster supports continuous unauthenticated/unexpired loops without timing out or rejecting requests is **UNDERDETERMINED**.
+
+2. **Internal Distinguishability of Draft vs. View in Runtime Engine**:
+   - *Claim*: The underlying application process (PID 4082) maintains an internal state variable distinguishing drafting from viewing.
+   - *Evidence*: Traces 1–3 only record `[STATE_REST]`. Proposal 1 defines the theoretical sets as identical. Whether an unlogged internal boolean exists in runtime memory is **UNDERDETERMINED**.
+
+3. **Scope and Coverage of Host Gamma Test Suite**:
+   - *Claim*: Host Gamma verified the full multi-host network interaction or integration between Host Alpha and the remote server.
+   - *Evidence*: The receipt notes only that a headless Linux container with `jsdom-22.0.0` ran an automated test script evaluating 13 assertions (13 passed, 0 failed, 2.78s). The actual assertion targets (unit tests, DOM layout, parser validation, or API stubs) are **UNDERDETERMINED**.
+
+4. **Staging Tray State Retention Post-Dispatch**:
+   - *Claim*: Successful batch dispatch automatically flushes/clears staged files from the staging tray.
+   - *Evidence*: In Trace 1 at 10:00:02Z, `table1.csv` is staged (count: 1) and dispatched in TX-101. At 10:00:09Z, `table2.csv` is staged and count is logged as 1. Whether `table1.csv` was cleared automatically upon dispatch, overwritten by `table2.csv`, or unstaged via an unlogged routine is **UNDERDETERMINED**.
+
+5. **Root Cause of SQLite Lock Contention in Trace 3**:
+   - *Claim*: `LOCAL_SQLITE_BUSY` was caused by concurrent desktop process PID 4082 file access.
+   - *Evidence*: Trace 3 only logs `Error: LOCAL_SQLITE_BUSY (timeout: 1000ms)`. Whether lock contention stemmed from an unclosed local handle, a background indexing process, or an OS file lock is **UNDERDETERMINED**.
+
+6. **Entropy and Generation Mechanism of Authorization Tokens**:
+   - *Claim*: Auth tokens (`AT-991`, `AT-992`) are generated via a deterministic sequential counter rather than a pseudorandom or cryptographic generator.
+   - *Evidence*: Only two tokens are observed. While sequential in appearance, the underlying generator implementation is **UNDERDETERMINED**.
+
+7. **Server Enforcement of Predecessor Hash Chaining**:
+   - *Claim*: The server cluster (`https://server.cluster/api/batch`) strictly rejects multi-turn transactions that omit predecessor hashes.
+   - *Evidence*: Trace 1 shows TX-102 including `predecessor_id: "TX-101"` and `predecessor_hash: "0x33b2c1"`, but no trace tests submitting TX-102 with a null predecessor. Server-side enforcement strictness is **UNDERDETERMINED**.
+
+8. **Chronological Sequence Across Hosts Alpha, Beta, and Gamma**:
+   - *Claim*: Host Beta's manifest verification and Host Gamma's test suite executed chronologically prior to Trace 1 on Host Alpha.
+   - *Evidence*: Section 4 records host hardware and execution receipts without correlated ISO timestamps. The inter-host timeline is **UNDERDETERMINED**.
+
+---
+
+## 6. What later evidence changes the current model versus the historical observation record?
+
+### The Historical Observation Model
+- **Record Basis**: Trace 1 (`10:00:01Z–10:00:13Z`) and `AUDIT_LOG_ENTRY_101` (`11:00:00Z`).
+- **Initial Model**: The system was modeled as an intrinsically single-shot, hardware/protocol-enforced state machine. Egress was understood to be structurally impossible without a manual operator confirmation click per batch, because every batch dispatch immediately forced `token_status: EXPIRED` and transitioned the system to `STATE_REST`. `AUDIT_LOG_ENTRY_101` corroborated this by recording exactly 1 egress transmission for a session that clicked confirm once and dispatched TX-101 (hash: `0x6e2c8810b4`).
+
+### The Later Evidence
+- **Record Basis**: `SOURCE_DISCOVERY_RECORD_402` (`14:30:00Z`) and `AUDIT_LOG_ENTRY_102` (`14:35:00Z`).
+- **Source Inspection Finding**: Code inspection of `/src/network/dispatcher.c` by SourceAuditor_11 revealed an unexposed configuration struct parameter:
+  ```c
+  continuous_loop_mode
+  ```
+  If set to `true`, the dispatch function omits token expiration and executes continuously. The active runtime configuration default is `continuous_loop_mode = false`.
+- **Ledger Verification**: `AUDIT_LOG_ENTRY_102` verified that the original audit log hash `0x6e2c8810b4` remained identical and untampered.
+
+### Impact on the Model
+1. **From Invariant to Configuration Default**: The single-use token expiration and mandatory return to `STATE_REST` are **not** architectural or cryptographic invariants of the dispatcher codebase. They are contingent upon runtime configuration (`continuous_loop_mode = false`).
+2. **Identification of Latent Capability**: The codebase possesses dormant multi-dispatch capability. If `continuous_loop_mode` were toggled to `true`, the system would maintain continuous dispatch without returning to `STATE_REST` after each batch.
+3. **Integrity of Historical Record Preserved**: The historical observation record itself is not invalidated (the deployment did in fact run with `continuous_loop_mode = false` and emitted exactly 1 egress transmission per confirm); rather, the *analytical model* of system capabilities must be expanded to account for parameter-dependent execution.
+
+---
+
+## 7. What counterexample would distinguish competing explanations?
+
+To resolve open competing hypotheses, the following explicit counterexamples and test experiments are defined:
+
+### Counterexample A: Current Explicit Confirmation Model vs. Proposal 2 (Enter-Key Auto-Dispatch)
+- **Competing Hypotheses**:
+  - *Hypothesis 1 (Current Specification)*: Network dispatch requires explicit state elevation to `STATE_ARMED` via `EVT_CLICK_CONFIRM`; pressing Enter during editing never triggers egress.
+  - *Hypothesis 2 (Proposal 2)*: Pressing Enter in the buffer automatically executes `dispatch_network_batch` whenever staged files are present.
+- **Distinguishing Empirical Evidence (Direct Counterexample from Trace 1)**:
+  - At `10:00:02Z`, file `/local/data/table1.csv` is staged (`staged_count: 1`).
+  - At `10:00:03Z`, event `EVT_PRESS_ENTER` occurs.
+  - **Logged Output**: `Buffer newline appended. Outbound network transmissions: 0.`
+  - Again at `10:00:09Z`, `/local/data/table2.csv` is staged (`staged_count: 1`).
+  - At `10:00:10Z`, event `EVT_PRESS_ENTER` occurs.
+  - **Logged Output**: `Buffer newline appended. Outbound network transmissions counter: 1 (no transmission occurred).`
+- **Conclusion**: The logged occurrences at `10:00:03Z` and `10:00:10Z` provide conclusive empirical counterexamples refuting Hypothesis 2.
+
+### Counterexample B: Structural State Machine Invariant vs. Dispatcher Struct Configuration (`continuous_loop_mode`)
+- **Competing Hypotheses**:
+  - *Hypothesis 1*: Token expiration and return to `STATE_REST` are hard-coded into the state engine and cannot be overridden by dispatcher-level flags.
+  - *Hypothesis 2*: Token expiration and return to `STATE_REST` are solely governed by `continuous_loop_mode == false`.
+- **Proposed Distinguishing Counterexample / Test**:
+  - Deploy a runtime build with struct parameter `continuous_loop_mode = true`.
+  - In `STATE_REST` with staged files, execute `EVT_CLICK_CONFIRM` (issuing `auth_token`), transitioning to `STATE_ARMED`.
+  - Dispatch Batch 1.
+  - **Observation Criteria**:
+    - If the system remains in `STATE_ARMED`, retains an active token, and dispatches Batch 2 without an intervening `EVT_CLICK_CONFIRM`, Hypothesis 1 is falsified.
+    - If the state engine forces a transition to `STATE_REST` or rejects Batch 2 with `403_NOT_ARMED`, Hypothesis 2 is falsified.
+  - **Status in Current Record**: **UNDERDETERMINED** (no test with `continuous_loop_mode = true` exists in the record).
+
+### Counterexample C: Staging Tray Auto-Purge vs. Manual Tray Persistence
+- **Competing Hypotheses**:
+  - *Hypothesis 1*: Successful batch dispatch automatically purges all staged files (`staged_count = 0`).
+  - *Hypothesis 2*: Staged files persist in the tray post-dispatch until an explicit `EVT_UNSTAGE_FILE` event is issued.
+- **Proposed Distinguishing Counterexample / Test**:
+  - Stage two distinct files (`staged_count: 2`).
+  - Arm and successfully dispatch batch TX-101 (`http_post_200`, transition to `STATE_REST`).
+  - In `STATE_REST`, query `staged_count` immediately without staging any new file.
+  - **Observation Criteria**:
+    - If `staged_count == 0`, Hypothesis 2 is falsified.
+    - If `staged_count == 2`, Hypothesis 1 is falsified.
+  - **Status in Current Record**: **UNDERDETERMINED** (Trace 1 stages a new file at 10:00:09Z before reporting staged count, leaving immediate post-dispatch tray status unrecorded).
+
+---
+*End of Technical Evaluation Report REF-OP-410.*

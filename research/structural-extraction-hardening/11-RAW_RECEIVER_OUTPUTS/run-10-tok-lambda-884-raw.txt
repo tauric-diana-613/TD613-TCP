@@ -1,0 +1,180 @@
+# TECHNICAL EVALUATION REPORT: REF-ENG-410
+**System Specification, Telemetry Ledger, and State Architecture Evaluation**
+
+---
+
+## 1. State Distinctions Necessary to Explain Observed Traces
+
+Based strictly on the transition tables, action-permission matrix, and execution traces (Traces 1, 2, and 3), exactly **three distinct states** are necessary and sufficient to model the observed behaviors:
+
+1. **`STATE_DATA_PLANE_REST`**:
+   - **Distinguishing Behaviors**:
+     - Local mutations and staging operations are permitted (`mutate_data_buffer`, `stage_payload`, `unstage_payload`, `query_local_index`).
+     - Egress is strictly blocked: network socket egress is 0 bytes, and attempts to execute control plane egress are refused (`execute_delegated_egress` yields `403_NO_DELEGATION`).
+     - Keypress events (`EVT_RETURN_KEY_STROKE`) only append buffer newlines and produce 0 control egress events.
+     - Delegation tokens can be requested when staged payloads $\ge 1$ (`request_delegation_token` returns 200).
+     - Local query retries (`retry_data_plane_op`) are enabled and functional without socket egress.
+
+2. **`STATE_CONTROL_PLANE_DELEGATED`**:
+   - **Distinguishing Behaviors**:
+     - Control plane egress actions (`execute_delegated_egress` and `embed_provenance_hash`) are enabled (returning 200).
+     - External network transmissions occur (e.g., HTTP POST 200 to `https://server.cluster/api/batch`, incrementing the egress counter).
+     - Requesting a new delegation token is explicitly refused (`409_ALREADY_DELEGATED`).
+     - Keystrokes (`EVT_RETURN_KEY_STROKE`) trigger immediate network egress under active tokens rather than merely appending locally.
+
+3. **`STATE_RECOVERY_HOLD`**:
+   - **Distinguishing Behaviors**:
+     - Entered when dependency validation fails (`EVT_CHECK_DEPENDENCY_PROVENANCE` encountering `ENOENT`).
+     - Normal continuation is halted (`HALTED_ON_MISSING_DEPENDENCY`).
+     - Network egress is explicitly blocked and rejected (`400 Bad Request / ERR_MISSING_INPUT` or `400_BLOCKED`).
+     - Data plane retries (`retry_data_plane_op`) and delegation requests are refused (`400`).
+     - Can only transition back to `STATE_DATA_PLANE_REST` via `EVT_RESOLVE_HELD_DEPENDENCY` once path provenance is verified.
+
+*Note on Unobserved Proposed States*: The specification proposals mention `STATE_DATA_PLANE_DRAFT` and `STATE_DATA_PLANE_VIEW`. Neither state appears in the operating transition table (Section 1), the permission matrix (Section 2), or any trace (Section 3). Therefore, distinguishing between `DRAFT` and `VIEW` is **not necessary** to explain any observed execution trace.
+
+---
+
+## 2. Action Enablement Across Observed Conditions
+
+From Section 1 (Transition Table), Section 2 (Action-Permission Matrix), and Section 3 (Traces), the action enablement conditions are partitioned as follows:
+
+| Action / Event | Enabled In States | Required Preconditions & Observed Triggers | Refusal Codes / Invalidation |
+| :--- | :--- | :--- | :--- |
+| `mutate_data_buffer` | `REST`, `DELEGATED`, `HOLD` | None. Appends characters, increments buffer length; 0 socket bytes. | None (PERMITTED 200 across all states). |
+| `query_local_index` | `REST`, `DELEGATED`, `HOLD` | None. Executes local search; subject to local transient locks (e.g., `LOCAL_SQLITE_BUSY`). | None (PERMITTED 200 across all states). |
+| `stage_payload` | `REST`, `DELEGATED`, `HOLD` | Target file must exist on disk. Increments `staged_count`. | None (PERMITTED 200 across all states). |
+| `unstage_payload` | `REST`, `DELEGATED`, `HOLD` | At least one staged payload present (`staged_count >= 1`). Decrements `staged_count`. | None (PERMITTED 200 across all states). |
+| `retry_data_plane_op` | `REST`, `DELEGATED` | Preceded by a local query/subsystem error. Re-runs query locally with 0 socket bytes. | Refused in `STATE_RECOVERY_HOLD` (`400`). |
+| `request_delegation_token`| `REST` only | Staged payloads present (`staged_count >= 1`). Issues delegation token. | Refused in `DELEGATED` (`409_ALREADY_DELEGATED`); refused in `HOLD` (`400`). |
+| `execute_delegated_egress`| `DELEGATED` only | Valid, active `delegation_token`. Performs external HTTP POST. | Refused in `REST` (`403_NO_DELEGATION`); refused in `HOLD` (`400_BLOCKED` / `ERR_MISSING_INPUT`). |
+| `embed_provenance_hash` | `DELEGATED` only | Active delegation context. | Refused in `REST` (`400`); refused in `HOLD` (`400`). |
+| `resolve_held_dependency`| `REST`, `HOLD` | File path resolved and accessible on disk (e.g., `/local/restored/...`). | Refused in `DELEGATED` (`400`). |
+| `EVT_RETURN_KEY_STROKE` | `REST` (Buffer append) / `DELEGATED` (Egress trigger) | In `REST`: none (appends `\n`). In `DELEGATED`: persistent token + staged payload triggers batch egress. | N/A |
+| `EVT_CHECK_DEPENDENCY_PROVENANCE` | `REST` | Missing dependency triggers transition to `STATE_RECOVERY_HOLD`. | N/A |
+
+---
+
+## 3. Additional Transition Rules Explaining State Dynamics
+
+The documented Section 1 transition table exhibits two clear gaps when compared against Trace 1:
+
+1. **Context-Sensitive Return Keystroke Rule (`EVT_RETURN_KEY_STROKE`)**:
+   - *Specification*: Table 1 only documents `EVT_RETURN_KEY_STROKE` under `STATE_DATA_PLANE_REST`, where it appends a newline without egress.
+   - *Observed Trace 1*: At `10:00:10Z`, while in `STATE_CONTROL_PLANE_DELEGATED`, `EVT_RETURN_KEY_STROKE` immediately triggers network egress (`TX-102`).
+   - *Explaining Rule*: In `STATE_CONTROL_PLANE_DELEGATED`, `EVT_RETURN_KEY_STROKE` acts as an alias or trigger for `EVT_EXECUTE_DELEGATED_EGRESS` when a valid token and staged payloads exist.
+
+2. **Egress-Driven Auto-Revocation vs. Chained Completion Rule**:
+   - *Specification*: In Table 1, exiting `STATE_CONTROL_PLANE_DELEGATED` to `STATE_DATA_PLANE_REST` requires an explicit `EVT_REVOKE_DELEGATION` event. Furthermore, token issuance specifies `valid_uses: 1`.
+   - *Observed Trace 1 & Audit Log 101*:
+     - In Audit Log 101, single dispatch (`TX-101`) immediately returned the session to rest.
+     - In Trace 1, `TX-101` maintained `token_status: ACTIVE_PERSISTENT`, while the second transmission (`TX-102`, referencing `predecessor_id: "TX-101"`) concluded with `Token DT-992 status: REVOKED` and transitioned the system to `STATE_DATA_PLANE_REST` without an explicit `EVT_REVOKE_DELEGATION` event.
+   - *Explaining Rule*: A terminal batch completion rule automatically transitions the system from `STATE_CONTROL_PLANE_DELEGATED` to `STATE_DATA_PLANE_REST` upon completion of an egress sequence unless persistent execution is explicitly maintained.
+
+---
+
+## 4. Behavioral Impact of State-Merge Proposals
+
+### Proposal 1: Merge `STATE_DATA_PLANE_DRAFT` and `STATE_DATA_PLANE_VIEW` into `STATE_DATA_PLANE_WORKSPACE`
+- **Impact**: **PRESERVES BEHAVIOR**.
+- **Formal Support Analysis**:
+  - $S_1 = \{\text{mutate\_data\_buffer}, \text{query\_local\_index}, \text{stage\_payload}, \text{unstage\_payload}, \text{retry\_data\_plane\_op}\}$
+  - $S_2 = \{\text{mutate\_data\_buffer}, \text{query\_local\_index}, \text{stage\_payload}, \text{unstage\_payload}, \text{retry\_data\_plane\_op}\}$
+  - $U_1 = S_1 \cup S_2 = S_1$
+  - $I_1 = S_1 \cap S_2 = S_1$
+  - $\Gamma_1 = U_1 \setminus I_1 = \emptyset$
+- **Rationale**: Both states possess identical action-permission support sets. Neither state introduces unique transition edges or permission differentials in the specification or traces. Collapsing them into `STATE_DATA_PLANE_WORKSPACE` induces zero behavioral change.
+
+### Proposal 2: Merge `STATE_DATA_PLANE_REST` and `STATE_CONTROL_PLANE_DELEGATED`
+- **Impact**: **CHANGES BEHAVIOR**.
+- **Formal Support Analysis**:
+  - $S_{\text{REST}} = \{\text{mutate\_data\_buffer}, \text{query\_local\_index}, \text{stage\_payload}, \text{unstage\_payload}, \text{retry\_data\_plane\_op}\}$
+  - $S_{\text{DELEGATED}} = S_{\text{REST}} \cup \{\text{execute\_delegated\_egress}, \text{embed\_provenance\_hash}\}$
+  - $\Gamma_2 = U_2 \setminus I_2 = \{\text{execute\_delegated\_egress}, \text{embed\_provenance\_hash}\} \neq \emptyset$
+- **Rationale**:
+  1. *Permission Escalation*: In `REST`, `execute_delegated_egress` is refused (`403_NO_DELEGATION`) and `embed_provenance_hash` is refused (`400`). Merging them eliminates this security boundary.
+  2. *Keystroke Semantics Alteration*: In `REST`, `EVT_RETURN_KEY_STROKE` appends a newline without network egress. Under Proposal 2, hitting return with staged payloads triggers automatic network egress (`execute_delegated_egress`), directly modifying observable system behavior.
+
+---
+
+## 5. Stronger Claims Underdetermined by the Records
+
+Where the provided specification, code inspections, and execution logs cannot definitively rule out competing hypotheses, the determination is strictly **UNDERDETERMINED**:
+
+1. **Origin, Identity, and Issuance of Token `DT-992`**:
+   - In Trace 1, token `DT-991` is issued at `10:00:04Z` and remains `ACTIVE_PERSISTENT` through `10:00:05Z`. At `10:00:10Z`, after `TX-102` is dispatched, the log states `Token DT-992 status: REVOKED`.
+   - *Competing Hypotheses*:
+     - Hypothesis A: `DT-992` is an automatically re-issued successor token created internally for chained predecessor transactions (`TX-102`).
+     - Hypothesis B: `DT-992` is a typographical/logging anomaly in the telemetry logger representing the revocation of `DT-991`.
+   - *Determination*: **UNDERDETERMINED**.
+
+2. **Runtime Configuration Flag Active During Trace 1**:
+   - Section 5 (`SOURCE_DISCOVERY_RECORD_402`) reveals an unexposed configuration struct parameter `continuous_loop_mode` in `/src/network/dispatcher.c`, with default `false`. When `false`, token revocation occurs immediately after dispatch (matching Audit Log 101). When `true`, revocation is omitted. In Trace 1, two consecutive dispatches occurred under delegation.
+   - *Competing Hypotheses*:
+     - Hypothesis A: Trace 1 executed with `continuous_loop_mode = true`, permitting `TX-101` and `TX-102` within one delegation window.
+     - Hypothesis B: Trace 1 executed under `continuous_loop_mode = false`, but predecessor batch chaining (`predecessor_id: "TX-101"`) treats multi-batch envelopes as a single atomic transaction window.
+   - *Determination*: **UNDERDETERMINED**.
+
+3. **Execution Node for Telemetry Traces 1–3**:
+   - Section 4 provides profiles for Node 1 (Client Workstation with USB HID input), Node 2 (Artifact Rebuilder), and Node 3 (Headless container running automated tests via jsdom).
+   - Trace 1 records user HID-like keystrokes (`EVT_RETURN_KEY_STROKE`), which aligns with Node 1, but Node 3 runs simulated test suites capable of synthesizing identical events.
+   - *Determination*: **UNDERDETERMINED**.
+
+4. **Historical or Structural Reality of `STATE_DATA_PLANE_DRAFT` and `STATE_DATA_PLANE_VIEW`**:
+   - These states appear only in Proposal 1. Whether they represent legacy unmerged states, planned future states, or purely theoretical formalisms is absent from the records.
+   - *Determination*: **UNDERDETERMINED**.
+
+---
+
+## 6. Later Evidence vs. Historical Observation Record
+
+### Historical Observation Record:
+- **`AUDIT_LOG_ENTRY_101` (11:00:00Z)**:
+  - SessionAuditor_04 observed an interactive session where the user requested delegation once, dispatched Batch `TX-101`, and the session returned immediately to rest with **exactly 1 control plane egress event**.
+  - This record established the model that delegation is strictly single-use (`valid_uses: 1`), automatically collapsing back to `STATE_DATA_PLANE_REST` upon egress execution.
+
+### Later Evidence:
+- **`SOURCE_DISCOVERY_RECORD_402` (14:30:00Z)** & **`AUDIT_LOG_ENTRY_102` (14:35:00Z)**:
+  - Source inspection of `/src/network/dispatcher.c` discovered an unexposed parameter: `continuous_loop_mode`.
+  - When `continuous_loop_mode = true`, the dispatch routine omits token revocation, enabling continuous execution.
+  - The default configuration remains `false`.
+  - AUDIT_LOG_ENTRY_102 verified that the hash of AUDIT_LOG_ENTRY_101 (`0x6e2c8810b4`) remained intact, confirming data integrity.
+
+### Impact on the Operational Model:
+1. **Reconciliation of Trace 1 Persistence**: The historical observation of single-egress revocation was not an immutable architectural invariant; it reflected execution under default configuration (`continuous_loop_mode = false`). The discovery of `continuous_loop_mode` explains how a system can exhibit the multi-egress persistent behavior observed in Trace 1 without violating core dispatcher mechanics.
+2. **Expansion of Latent Capability**: The system model shifts from a strictly single-shot egress architecture to a parameterized control plane whose persistence and revocation dynamics depend on unexposed internal configuration flags.
+
+---
+
+## 7. Discriminating Counterexamples for Competing Explanations
+
+To distinguish between the competing explanations regarding token persistence, loop execution, and revocation dynamics, the following empirical counterexamples and test cases are formulated:
+
+### Experiment 1: Distinguishing `continuous_loop_mode` from Predecessor-Chained Persistence
+- **Objective**: Determine whether multi-egress persistence in Trace 1 was caused by `continuous_loop_mode = true` or by transaction chaining (`predecessor_id`).
+- **Test Procedure**:
+  1. Explicitly initialize the runtime with `continuous_loop_mode = false`.
+  2. Request a delegation token with staged payloads.
+  3. Execute egress `TX-101`.
+  4. Immediately stage a second payload and attempt a chained egress `TX-102` referencing `predecessor_id: "TX-101"`.
+- **Discriminating Observations**:
+  - *If `continuous_loop_mode` governs persistence*: Token revocation occurs immediately upon completion of `TX-101`. The attempt to dispatch `TX-102` is rejected with `403_NO_DELEGATION` (or `400`). This counterexample refutes predecessor chaining as the cause of persistence.
+  - *If predecessor chaining governs persistence*: `TX-102` succeeds despite `continuous_loop_mode = false`, refuting the claim that `continuous_loop_mode` is required for multi-batch delegation.
+
+### Experiment 2: Distinguishing `DT-992` as Successor Token vs. Logging Artifact
+- **Objective**: Determine whether `DT-992` is a distinct generated token or a logger typographical error.
+- **Test Procedure**:
+  1. Instrument the internal token lifecycle registry in memory before executing `TX-102`.
+  2. Query active and revoked token identifiers immediately before, during, and after `TX-102` egress.
+- **Discriminating Observations**:
+  - *If Successor Token*: A new record for token `DT-992` will be instantiated in the active registry upon initiating `TX-102` and transitioned to `REVOKED`.
+  - *If Logger Bug*: Only `DT-991` exists in the token table, and its status is updated to `REVOKED` while no allocation of `DT-992` ever took place.
+
+### Experiment 3: Distinguishing Return Keystroke Egress from Staged-Payload Auto-Egress
+- **Objective**: Determine whether `EVT_RETURN_KEY_STROKE` in `STATE_CONTROL_PLANE_DELEGATED` unconditionally triggers egress or requires staged payloads.
+- **Test Procedure**:
+  1. Transition system to `STATE_CONTROL_PLANE_DELEGATED`.
+  2. Unstage all payloads (`staged_count = 0`).
+  3. Emit `EVT_RETURN_KEY_STROKE`.
+- **Discriminating Observations**:
+  - *If Keystroke-Driven*: System attempts HTTP POST and fails with empty payload error.
+  - *If Conditional (Proposal 2 logic)*: System appends newline to buffer without triggering egress, confirming staged payloads are an indispensable precondition.
