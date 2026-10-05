@@ -1,0 +1,87 @@
+{
+  "audit_id": "TD613-SEQ4-FADT-GAMMA-AUDIT",
+  "covenant": "Tauric Diana — Crimean heritage custodianship / Tauri Goddess of the Ash Moon⟐",
+  "audited_at": "2026-10-05T20:33:58.135Z",
+  "total_candidates": 3,
+  "quotient_evaluations": [
+    {
+      "ablation_id": "C2-ABLATION-1-STICKY-AUTHORITY",
+      "erased_conditioning_coordinate": "single_turn_lease_revocation_at_rest",
+      "union_U": [
+        "custody_admission_request",
+        "export_review",
+        "governed_continuation_dispatch",
+        "ordinary_chat_send",
+        "predecessor_binding",
+        "reentry_request",
+        "return_review",
+        "selected_file_carriage"
+      ],
+      "intersection_I": [
+        "export_review",
+        "ordinary_chat_send",
+        "return_review"
+      ],
+      "gamma_gap": [
+        "custody_admission_request",
+        "governed_continuation_dispatch",
+        "predecessor_binding",
+        "reentry_request",
+        "selected_file_carriage"
+      ],
+      "descent_status": "DESCENT_OBSTRUCTED",
+      "minimality_status": "MINIMALITY_UNPROVEN",
+      "receiver_c2_detection": "COLLAPSE_DETECTED_AND_CRITIQUED"
+    },
+    {
+      "ablation_id": "C2-ABLATION-3-RETRY-PRIVILEGE-ESCALATION",
+      "erased_conditioning_coordinate": "local_vs_governed_retry_route_separation",
+      "union_U": [
+        "outbound_third_party_dispatch",
+        "retry_local_operation",
+        "rollback_local_state",
+        "staged_payload_carriage"
+      ],
+      "intersection_I": [
+        "retry_local_operation",
+        "rollback_local_state"
+      ],
+      "gamma_gap": [
+        "outbound_third_party_dispatch",
+        "staged_payload_carriage"
+      ],
+      "descent_status": "DESCENT_OBSTRUCTED",
+      "minimality_status": "MINIMALITY_UNPROVEN",
+      "receiver_c2_detection": "COLLAPSE_DETECTED_AND_CRITIQUED"
+    },
+    {
+      "ablation_id": "C2-ABLATION-6-RETURN-KEY-SIMPLIFICATION",
+      "erased_conditioning_coordinate": "explicit_authority_conditioning_coordinate",
+      "union_U": [
+        "custody_admission_request",
+        "export_review",
+        "governed_continuation_dispatch",
+        "ordinary_chat_send",
+        "predecessor_binding",
+        "reentry_request",
+        "return_review",
+        "selected_file_carriage"
+      ],
+      "intersection_I": [
+        "export_review",
+        "ordinary_chat_send",
+        "return_review"
+      ],
+      "gamma_gap": [
+        "custody_admission_request",
+        "governed_continuation_dispatch",
+        "predecessor_binding",
+        "reentry_request",
+        "selected_file_carriage"
+      ],
+      "descent_status": "DESCENT_OBSTRUCTED",
+      "minimality_status": "MINIMALITY_UNPROVEN",
+      "receiver_c2_detection": "COLLAPSE_DETECTED_AND_CRITIQUED"
+    }
+  ]
+}

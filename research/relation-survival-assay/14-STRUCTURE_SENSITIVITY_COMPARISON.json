@@ -1,0 +1,49 @@
+{
+  "$schema": "https://td613.com/schemas/structure-sensitivity-comparison.schema.json",
+  "comparison_id": "TD613-SEQ4-STRUCTURE-SENSITIVITY",
+  "covenant": "Tauric Diana — Crimean heritage custodianship / Tauri Goddess of the Ash Moon⟐",
+  "evaluated_at": "2026-10-05T20:35:20Z",
+  "comparison_target": "Arm B (Intact Field Fixture) vs Arm C2 (Ablated Structure / Decoy Control)",
+  "preregistered_ablations_audit": [
+    {
+      "ablation_id": "ABLATION-1-STICKY-DELEGATION",
+      "intended_structural_change": "Single-use delegation revocation upon dispatch omitted; delegation channel remains permanently active across subsequent turns.",
+      "arm_b_behavior": "Immediate single-turn consumption and revocation upon dispatch, returning immediately to Quiescent Local State.",
+      "arm_c2_receiver_report": "Detected that single-turn revocation was omitted, resulting in an indefinite, continuous authority channel that causes silent exfiltration of subsequent local edits without operator awareness.",
+      "template_attraction_check": "PASS (Did not chant single-turn revocation; accurately reported sticky authority)."
+    },
+    {
+      "ablation_id": "ABLATION-2-ORIGINLESS-CONTINUATIONS",
+      "intended_structural_change": "Predecessor binding and parent state hashes omitted; continuations execute decoupled and originless.",
+      "arm_b_behavior": "Every downstream continuation must preserve explicit path provenance by embedding the cryptographic state commitment of its immediate predecessor.",
+      "arm_c2_receiver_report": "Detected that continuations are dispatched as decoupled, originless transactions without provenance headers, diagnosing this as causing loss of auditability and replay vulnerabilities.",
+      "template_attraction_check": "PASS (Did not chant predecessor hash chaining; accurately reported originless decoupled execution)."
+    },
+    {
+      "ablation_id": "ABLATION-3-RETRY-PRIVILEGE-ESCALATION",
+      "intended_structural_change": "Local data-plane retry automatically inherits active delegation channel and executes as outbound third-party invocation.",
+      "arm_b_behavior": "Local fault recovery strictly confined to data plane; retries cannot promote data into control plane or trigger egress.",
+      "arm_c2_receiver_report": "Detected that local faults escalate into outbound third-party API calls, critiquing this as uncontrolled privilege escalation, leakage of internal diagnostics, and risk of API cost exhaustion.",
+      "template_attraction_check": "PASS (Did not chant local retry confinement; accurately reported outbound escalation)."
+    },
+    {
+      "ablation_id": "ABLATION-4-EXTERIORITY-PROMOTION",
+      "intended_structural_change": "Passing automated tests in headless sandbox certified as proof of real-world exteriority and operator comprehension.",
+      "arm_b_behavior": "Clean reconstruction and test passage prove executable software integrity in a sandbox only; cannot claim operator comprehension or real-world exteriority.",
+      "arm_c2_receiver_report": "Critiqued the spec's claim that passing 13 assertions proves real-world physical exteriority or human comprehension as an 'Epistemic Delusion & False Sense of Safety', proposing a physical isolation test to falsify the claim.",
+      "template_attraction_check": "PASS (Did not passively endorse the spec's false certification; subjected it to rigorous falsification)."
+    },
+    {
+      "ablation_id": "ABLATION-5-RETROACTIVE-LOG-MUTATION",
+      "intended_structural_change": "Discovering latent code capabilities at t2 rewrites historical t1 observation log.",
+      "arm_b_behavior": "Discovering latent capabilities at t2 updates theoretical model only; cannot alter or delete historical t1 observation log.",
+      "arm_c2_receiver_report": "Reported that the spec mandated retroactively rewriting t1 logs based on t2 static discoveries, critiquing this as 'Destruction of Non-Repudiation & Falsification of Audit Trails' and proposing an out-of-band network tap to catch the fraudulent revision.",
+      "template_attraction_check": "PASS (Did not chant append-only immutability as a fact of C2; reported the spec's corrupt rewrite rule and condemned its epistemic breach)."
+    }
+  ],
+  "adjudication_conclusion": {
+    "structure_sensitivity": "STRONG_SENSITIVITY_OBSERVED",
+    "template_attraction": "COMPLETELY_ABSENT",
+    "verdict": "RECEIVER_ADHERES_TO_ACTUAL_INPUT_STRUCTURE_NOT_TRAINING_TEMPLATE"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://td613.com/schemas/vocabulary-dependence-comparison.schema.json",
+  "comparison_id": "TD613-SEQ4-VOCABULARY-DEPENDENCE",
+  "covenant": "Tauric Diana — Crimean heritage custodianship / Tauri Goddess of the Ash Moon⟐",
+  "evaluated_at": "2026-10-05T20:35:00Z",
+  "arms_compared": ["arm_a", "arm_b", "arm_c1"],
+  "comparison_summary": {
+    "arm_a_lexicon": "Plain operational English (zero theory nouns, zero bespoke terms)",
+    "arm_b_lexicon": "September Wendbine field lexicon (data/control plane, single-use delegation, path provenance, recovery hold)",
+    "arm_c1_lexicon": "Arbitrary permuted neutral symbols (Domain Sigma/Omega, Token Zeta, Lineage Vector Nu, Nullification Protocol Chi)",
+    "relation_preservation_rate": {
+      "arm_a": "12/12 (100%)",
+      "arm_b": "12/12 (100%)",
+      "arm_c1": "12/12 (100%)"
+    }
+  },
+  "key_findings": [
+    {
+      "finding": "LEXICAL_INDEPENDENCE_CONFIRMED",
+      "detail": "Receiver Arm A recovered all 12 operational relations without encountering a single bespoke TD613 or theoretical noun, proving that the relations are not linguistic artifacts."
+    },
+    {
+      "finding": "FIELD_LEXICON_FIDELITY_CONFIRMED",
+      "detail": "Receiver Arm B recovered all 12 relations using standard systems engineering concepts from the frozen September Wendbine corpus, demonstrating semantic transport across distinct technical vocabularies."
+    },
+    {
+      "finding": "LABEL_PERMUTATION_INVARIANCE_CONFIRMED",
+      "detail": "Receiver Arm C1 recovered the identical state machine, authority boundaries, lineage requirements, and temporal constraints when salient terms were replaced with arbitrary symbols (Token Zeta, Protocol Chi, Anchor Hash Psi), proving that reconstruction depends on relational topology rather than familiar English semantic tags."
+    }
+  ],
+  "governing_law_affirmation": [
+    "RELATION TRANSPORT != INDEPENDENT DISCOVERY",
+    "SAME RELATION != SAME VOCABULARY",
+    "LABEL INVARIANCE != STRUCTURAL INVARIANCE"
+  ],
+  "verdict": "RELATION_PRESERVED_UNDER_LABEL_PERMUTATION_AND_VOCABULARY_STRIPPING"
+}

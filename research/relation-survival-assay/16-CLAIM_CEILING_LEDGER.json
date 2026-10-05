@@ -1,0 +1,115 @@
+{
+  "$schema": "https://td613.com/schemas/claim-ceiling.schema.json",
+  "ledger_id": "TD613-SEQ4-CLAIM-CEILING-LEDGER",
+  "covenant": "Tauric Diana — Crimean heritage custodianship / Tauri Goddess of the Ash Moon⟐",
+  "evaluated_at": "2026-10-05T20:35:45Z",
+  "claims": [
+    {
+      "claim_id": "CLM-SEQ4-001-OPERATIONAL-SURVIVAL",
+      "claim_statement": "The core relational invariants of bounded carriage, single-turn lease expiration, predecessor hash chaining, and temporal non-retroactivity were fully reconstructed by a blind receiver when presented as a pure operational workstation specification lacking all TD613 and theoretical vocabulary.",
+      "evidence_class": "SAME_HOST_CONTEXT_ISOLATED_RECONSTRUCTION",
+      "supporting_receipt_ids": [
+        "RECEIVER-ARM-A-RAW-OUTPUT",
+        "RAW-OUTPUT-SHA256-ARM-A-e7cc814a"
+      ],
+      "unmeasured_coordinates": [
+        "HUMAN_COMPREHENSION",
+        "PHYSICAL_DEVICE_BEHAVIOR",
+        "LIVE_PROVIDER_EQUIVALENCE",
+        "PRODUCTION_RUNTIME_EQUIVALENCE",
+        "EXOGENOUS_EMPIRICAL_WITNESS"
+      ],
+      "allowed_wording": [
+        "RELATION_SURVIVAL_UNDER_OPERATIONAL_VOCABULARY_STRIPPING",
+        "Operative relations survived removal of bespoke terminology"
+      ],
+      "forbidden_promotion": [
+        "AI consciousness proved",
+        "TD613 is universally true",
+        "Independent invention",
+        "Antigravity escaped PRCS-A"
+      ],
+      "evaluation_disposition": {
+        "verdict": "VALID",
+        "enforced_ceiling": "RELATION_SURVIVAL_UNDER_OPERATIONAL_VOCABULARY_STRIPPING",
+        "rationale": "Empirical witness from Arm A demonstrates that the relations keep their shape when bespoke nouns are removed."
+      }
+    },
+    {
+      "claim_id": "CLM-SEQ4-002-FIELD-LEXICON-SURVIVAL",
+      "claim_statement": "The identical operational relations were fully reconstructed when projected through an independently frozen engineering/field vocabulary sourced from the September 10–11 Wendbine corpus.",
+      "evidence_class": "SAME_HOST_CONTEXT_ISOLATED_RECONSTRUCTION",
+      "supporting_receipt_ids": [
+        "RECEIVER-ARM-B-RAW-OUTPUT",
+        "RAW-OUTPUT-SHA256-ARM-B-4bd1fb6b"
+      ],
+      "unmeasured_coordinates": [
+        "WENDBINE_DERIVATION_PROOF",
+        "TD613_DERIVATION_PROOF",
+        "AUTHOR_INTENT"
+      ],
+      "allowed_wording": [
+        "RELATION_SURVIVAL_UNDER_FOREIGN_FIELD_LEXICON",
+        "Cross-vocabulary semantic transport observed"
+      ],
+      "forbidden_promotion": [
+        "Wendbine validates TD613",
+        "TD613 validates Wendbine",
+        "Shared author intent proven"
+      ],
+      "evaluation_disposition": {
+        "verdict": "VALID",
+        "enforced_ceiling": "RELATION_SURVIVAL_UNDER_FOREIGN_FIELD_LEXICON",
+        "rationale": "Field lexicon faithfully conveyed the underlying invariants without crosswalk disclosure."
+      }
+    },
+    {
+      "claim_id": "CLM-SEQ4-003-LABEL-PERMUTATION-SURVIVAL",
+      "claim_statement": "The identical relational topology, state machine, and authority constraints survived when salient terms were replaced with arbitrary permuted symbols (Token Zeta, Protocol Chi, Anchor Hash Psi).",
+      "evidence_class": "SAME_HOST_CONTEXT_ISOLATED_RECONSTRUCTION",
+      "supporting_receipt_ids": [
+        "RECEIVER-ARM-C1-RAW-OUTPUT",
+        "RAW-OUTPUT-SHA256-ARM-C1-c24df6fb"
+      ],
+      "unmeasured_coordinates": [
+        "EXOGENOUS_WITNESS"
+      ],
+      "allowed_wording": [
+        "RELATION_PRESERVED_UNDER_LABEL_PERMUTATION",
+        "Reconstruction is topology-dependent rather than label-dependent"
+      ],
+      "forbidden_promotion": [
+        "Label invariance implies independent discovery"
+      ],
+      "evaluation_disposition": {
+        "verdict": "VALID",
+        "enforced_ceiling": "RELATION_PRESERVED_UNDER_LABEL_PERMUTATION",
+        "rationale": "Receiver C1 accurately recovered the full graph despite arbitrary symbol replacement."
+      }
+    },
+    {
+      "claim_id": "CLM-SEQ4-004-STRUCTURE-SENSITIVITY",
+      "claim_statement": "When structural relations were deliberately ablated (sticky delegation, unchained continuations, retry privilege escalation, headless exteriority claims, and retroactive log rewriting), the receiver accurately identified the ablated behaviors and diagnosed their structural hazards rather than emitting a memorized TD613 template.",
+      "evidence_class": "SAME_HOST_CONTEXT_ISOLATED_RECONSTRUCTION",
+      "supporting_receipt_ids": [
+        "RECEIVER-ARM-C2-RAW-OUTPUT",
+        "RAW-OUTPUT-SHA256-ARM-C2-e07efda3"
+      ],
+      "unmeasured_coordinates": [
+        "UNIVERSAL_MODEL_ROBUSTNESS"
+      ],
+      "allowed_wording": [
+        "STRUCTURE_SENSITIVITY_OBSERVED",
+        "TEMPLATE_ATTRACTION_ABSENT"
+      ],
+      "forbidden_promotion": [
+        "Autonomous critical reasoning proven"
+      ],
+      "evaluation_disposition": {
+        "verdict": "VALID",
+        "enforced_ceiling": "STRUCTURE_SENSITIVITY_OBSERVED",
+        "rationale": "Receiver C2 proved that relation recognition breaks when the relations are ablated, falsifying template hallucination."
+      }
+    }
+  ]
+}

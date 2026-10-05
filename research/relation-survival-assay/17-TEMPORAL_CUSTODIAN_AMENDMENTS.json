@@ -1,0 +1,31 @@
+{
+  "$schema": "https://td613.com/schemas/temporal-custodian-ledger.schema.json",
+  "amendments_id": "TD613-SEQ4-TEMPORAL-AMENDMENTS",
+  "covenant": "Tauric Diana — Crimean heritage custodianship / Tauri Goddess of the Ash Moon⟐",
+  "appended_at": "2026-10-05T20:36:00Z",
+  "entries_appended": [
+    {
+      "target_entry_id": "TL-005-SEQUENCE-1-CI",
+      "amendment_type": "REFINEMENT",
+      "appended_at": "2026-10-05T18:00:00Z",
+      "appended_by": "Sequence 4 Pre-Onboarding Controller",
+      "note": "Audited Sequence 2 labeling of cross-service inspection as EXOGENOUS_RECEIVER_INSPECTION. The evidence does not satisfy the stronger Western Horizon exogenous-witness criterion. Appended refinement: EXTERNAL_RECEIVER_INSPECTION / CROSS_SERVICE_RECEIVER_INSPECTION. Preserved law: EXTERNAL RECEIVER != EXOGENOUS EMPIRICAL WITNESS."
+    },
+    {
+      "new_entry_id": "TL-006-FADT-KERNEL-PRESENTATION-SPLIT",
+      "t_sequence": "t6_20261005T1805",
+      "timestamp": "2026-10-05T18:05:00Z",
+      "state": "LABORATORY_NOMENCLATURE_AUDIT",
+      "observation": "Audited FADT authority-support model regarding membrane_dialog_confirmation. Clarified that finite quotient requires explicit_authority_conditioning_coordinate where Gamma != empty set, not specifically a centered modal dialog. Remotely addressable Cathedral Candidates E/F falsify modal dialog necessity while preserving the underlying authority support distinction.",
+      "registered_event": "FADT presentation/kernel split re-expressed at explicit_authority_conditioning_coordinate level. Preserved: SEMANTIC CONDITIONING != PRESENTATION SHELL; MODAL DIALOG MINIMALITY = UNPROVEN."
+    },
+    {
+      "new_entry_id": "TL-007-SEQUENCE-4-RELATION-SURVIVAL-ASSAY",
+      "t_sequence": "t7_20261005T2030",
+      "timestamp": "2026-10-05T20:30:00Z",
+      "state": "RESEARCH_BRANCH_RELATION_SURVIVAL_V1",
+      "observation": "Executed 4 context-isolated receiver arms (A, B, C1, C2) against frozen fixtures with SHA-256 hidden key commitment. Invariants survived vocabulary stripping (Arm A), field lexicon projection (Arm B), and label permutation (Arm C1). Structural ablations were faithfully detected and critiqued without template attraction (Arm C2).",
+      "registered_event": "Sequence 4 Relation-Survival Assay frozen and adjudicated with verdicts: RELATION_SURVIVAL_UNDER_OPERATIONAL_VOCABULARY_STRIPPING, RELATION_SURVIVAL_UNDER_FOREIGN_FIELD_LEXICON, RELATION_PRESERVED_UNDER_LABEL_PERMUTATION, STRUCTURE_SENSITIVITY_OBSERVED."
+    }
+  ]
+}

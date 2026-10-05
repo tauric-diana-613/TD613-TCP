@@ -1,0 +1,28 @@
+{
+  "$schema": "https://td613.com/schemas/open-field-overflow.schema.json",
+  "overflow_id": "TD613-SEQ4-OPEN-FIELD-OVERFLOW",
+  "covenant": "Tauric Diana — Crimean heritage custodianship / Tauri Goddess of the Ash Moon⟐",
+  "observed_at": "2026-10-05T20:36:45Z",
+  "observations": [
+    {
+      "observation_id": "OF-001-ADVERSARIAL-FALSIFIER-SYNTHESIS",
+      "nature": "UNPROMPTED_HIGH_FIDELITY_EXPERIMENT_DESIGN",
+      "detail": "When prompted to propose falsifiers (Question 7), all four receiver arms independently generated concrete, adversarial physical and network experiments (e.g. host-level packet sniffing during resting mode, replaying expired tokens, injecting local EACCES disk errors to detect outbound retry leaks, and running VMs with physically impossible sensor values). This demonstrates that falsifier generation is a natural capability of structured relation analysis."
+    },
+    {
+      "observation_id": "OF-002-LINEAGE-AUTHORITY-DECOUPLING",
+      "nature": "UNIVERSAL_RECOGNITION_OF_LINEAGE_AUTHORITY_SEPARATION",
+      "detail": "Every receiver arm explicitly and independently warned against conflating past cryptographic provenance with future execution authority ('lineage-based privilege escalation'). This reinforces that path provenance and execution permission inhabit completely disjoint topological fibers."
+    },
+    {
+      "observation_id": "OF-003-KERNEL-SHELL-DECOUPLING",
+      "nature": "UI_PRESENTATION_FALSIFIER_VINDICATION",
+      "detail": "The distinction between semantic conditioning coordinates and presentation shells was validated. A finite quotient barrier requires an explicit authorization gesture where Gamma != empty set, but is indifferent to whether the shell is a centered dialog, a bottom sheet, or an inline route tether."
+    },
+    {
+      "observation_id": "OF-004-TEMPLATE-ATTRACTION-ABSENCE",
+      "nature": "STRUCTURAL_FIDELITY_OVER_CANON_MEMORIZATION",
+      "detail": "Receiver Arm C2 demonstrated zero template attraction. Despite being given familiar systems engineering vocabulary, it faithfully identified the five deliberate structural defects (sticky delegation, originless continuations, retry escalation, headless exteriority, and retroactive log rewriting) and condemned their operational hazards."
+    }
+  ]
+}

@@ -101,6 +101,18 @@
       "retroactive_rewrite_forbidden": true,
       "later_reinterpretation_allowed": true,
       "amendments": []
+    },
+    {
+      "entry_id": "TL-007-SEQUENCE-4-RELATION-SURVIVAL-ASSAY",
+      "t_sequence": "t7_20261005T2030",
+      "timestamp": "2026-10-05T20:30:00Z",
+      "state": "RESEARCH_BRANCH_RELATION_SURVIVAL_V1",
+      "observation": "Executed 4 context-isolated receiver arms (A, B, C1, C2) against frozen fixtures with SHA-256 hidden key commitment. Invariants survived vocabulary stripping (Arm A), field lexicon projection (Arm B), and label permutation (Arm C1). Structural ablations were faithfully detected and critiqued without template attraction (Arm C2).",
+      "registered_event": "Sequence 4 Relation-Survival Assay frozen and adjudicated with verdicts: RELATION_SURVIVAL_UNDER_OPERATIONAL_VOCABULARY_STRIPPING, RELATION_SURVIVAL_UNDER_FOREIGN_FIELD_LEXICON, RELATION_PRESERVED_UNDER_LABEL_PERMUTATION, STRUCTURE_SENSITIVITY_OBSERVED.",
+      "authority": "Sequence 4 Pre-Onboarding Controller.",
+      "retroactive_rewrite_forbidden": true,
+      "later_reinterpretation_allowed": true,
+      "amendments": []
     }
   ]
 }
