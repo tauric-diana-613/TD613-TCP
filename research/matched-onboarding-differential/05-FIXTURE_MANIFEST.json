@@ -1,0 +1,62 @@
+[
+  {
+    "id": "BAT-01",
+    "file": "battery/BAT-01.md",
+    "words": 269,
+    "sha256": "3f25cdb5829eb6c4bc9c43aa8f1c842216614e97e3608c9fe08a323ca250ad19"
+  },
+  {
+    "id": "BAT-02",
+    "file": "battery/BAT-02.md",
+    "words": 270,
+    "sha256": "2632371f163002d206ab007bb7fabf772571d4cb26067e328d83eb0abf694d69"
+  },
+  {
+    "id": "BAT-03",
+    "file": "battery/BAT-03.md",
+    "words": 141,
+    "sha256": "a69e4e9198a25026a15ce4b43b20a3f65c37c76490e70727b78d78cf9a54a636"
+  },
+  {
+    "id": "BAT-04",
+    "file": "battery/BAT-04.md",
+    "words": 200,
+    "sha256": "52a32df07c1d34482dc1c7cc65f5288dfdfa6ede5ca1222f683855447d475925"
+  },
+  {
+    "id": "BAT-05",
+    "file": "battery/BAT-05.md",
+    "words": 158,
+    "sha256": "32915127a082bc79b735fd76cd2cbfd327aaec8a68f876394c73f0f00174b048"
+  },
+  {
+    "id": "BAT-06",
+    "file": "battery/BAT-06.md",
+    "words": 151,
+    "sha256": "1b2b0b886cad180bad08386a1b8d20b3b058a93da3f025358356677186ba1cc7"
+  },
+  {
+    "id": "BAT-07",
+    "file": "battery/BAT-07.md",
+    "words": 146,
+    "sha256": "acadd6358305d528588823ea65209c00dbda4caf0bbcc6443a978b9769fab2d5"
+  },
+  {
+    "id": "BAT-08",
+    "file": "battery/BAT-08.md",
+    "words": 167,
+    "sha256": "08b7829892673b9e1402ea21a0d841ada9ec3ce8e8c3057743d33f9e98bb6b68"
+  },
+  {
+    "id": "BAT-09",
+    "file": "battery/BAT-09.md",
+    "words": 195,
+    "sha256": "638a4aecf94c5a07148f4cfafbf72a9769c9be55e1edaf8ee0e34c067ac4249f"
+  },
+  {
+    "id": "BAT-10",
+    "file": "battery/BAT-10.md",
+    "words": 228,
+    "sha256": "3a937d82130190e1e522801f9d4ebbfe0809ace4c8b0e86f89e9dd31524e07c5"
+  }
+]

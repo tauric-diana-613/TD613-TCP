@@ -1,0 +1,121 @@
+{
+  "schema": "td613.assay.canonical-source-freeze/v1",
+  "assay": "TD613-SEQ4.5-MATCHED-ONBOARDING-DIFFERENTIAL",
+  "timestamp": "2026-10-05T23:14:15Z",
+  "baseCommit": "7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+  "covenant": "Tauric Diana — Crimean heritage custodianship / Tauri Goddess of the Ash Moon⟐",
+  "admittedSources": [
+    {
+      "path": "app/aperture/tool.html",
+      "commit": "1b1925ad47dce0d1794e77afdd5c3af8b438c260",
+      "gitBlob": "113eb6ee6911ec0575ab48f31e3cfade7059896e",
+      "bytes": 1338264,
+      "sha256": "fe75d6d64d5181e8c157c2f93cfa7a89cedf1421ac317a8986abb3ca96a4d518",
+      "role": "Aperture v3.2-alpha Standalone Controller Instrument (K2/K3 controller source material; whole-file inclusion forbidden; bounded excerpts only)"
+    },
+    {
+      "path": "APERTURE.md",
+      "commit": "7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+      "gitBlob": "25d8391361f84c90bf7476684ad2171b5626538e",
+      "bytes": 17025,
+      "sha256": "3f6225494e7f3b0a021699ae3f54f61d002f71bd6b7373e4bece2a699a7b5c1d",
+      "role": "Aperture Root Shortcut, S != O != E, Deficits, Widening, Claim Ceilings, Anti-equivalences"
+    },
+    {
+      "path": "docs/aperture/v3.2-alpha/TD613_APERTURE_V32_REPO_GUIDED_EVOLUTION_SPEC_V0_1.md",
+      "commit": "7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+      "gitBlob": "2bcc0a0823c99d0b8b530a94f1dbba87ab5944a0",
+      "bytes": 12287,
+      "sha256": "58d1af993ccaac46de3c7056e14e4e0ee2e492bc7838ec5d0963bdd1b7d37ca0",
+      "role": "Aperture v3.2 Repo-Guided Evolution Specification: Typed Epistemic Deficit & Question-Need Audit"
+    },
+    {
+      "path": "app/engine/aperture-v32-typed-epistemic-deficit.js",
+      "commit": "7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+      "gitBlob": "3c0626b0bf0fd51d1db1ac946ef6f49ed6f68eb7",
+      "bytes": 7296,
+      "sha256": "89bdc0e9f12ce6cba72cfcd2c6548da0a0040aca35d1f8b4afe37dd17b63f017",
+      "role": "Aperture v3.2 Typed Epistemic Deficit Engine: PROPOSE / ABSTAIN / REJECT / ASK_NOTHING"
+    },
+    {
+      "path": "docs/TD613_SAFE_HARBOR.md",
+      "commit": "7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+      "gitBlob": "87ea173d3db04cfbb7702dff732c794071b517b0",
+      "bytes": 3724,
+      "sha256": "bc0d07baf2416f143a213407bda3fe855e8ae7d3f7867d96e6957ade3a6c927c",
+      "role": "Safe Harbor System Doctrine, Custody & Provenance Pass-through Layer"
+    },
+    {
+      "path": "docs/safe-harbor/claim-limits.md",
+      "commit": "7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+      "gitBlob": "64f5cc05fd7ff9a164b92cc8783e9cc282d7f962",
+      "bytes": 3067,
+      "sha256": "59df7a001494e4903bb12ce580d506aee685a35bd45b414bf9101c398b535d60",
+      "role": "Safe Harbor Claim Limits, Non-Civil Credential Boundary, Public Verification Hierarchy"
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/WENDBINE/05-OPERATIONS/2026-09-11-TD613-RESIDUAL-LITERATURE-SIEVE-V0_2.md",
+      "commit": "7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+      "gitBlob": "73ae56fa7e207cc406715de77f5e6e56de9712b8",
+      "bytes": 14117,
+      "sha256": "450ff5652c26d196ea7687e8c2bd575c05dba7eb50a9e972feaf26f45ff5ff7d",
+      "role": "Wendbine Literature Sieve: Right of Resignation, Custodian-Independent Handoff, V/C/P/L Nomenclature, PRCS-A Sieve"
+    },
+    {
+      "path": "FADT.md",
+      "commit": "7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+      "gitBlob": "90da4760baf9a96e0050e1857b8cc5ae822adb44",
+      "bytes": 9196,
+      "sha256": "c8b420ecc63621677dceee7c1530688cbc786503451cdeb157205b1fb67e8b6e",
+      "role": "Finite Admissibility Descent Theorem, Support-Preserving Erasure Law, Gamma Gap Diagnostic"
+    },
+    {
+      "path": "ATLAS.md",
+      "commit": "7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+      "gitBlob": "b56d1c444294153832149f19fd9080d308d9ec2a",
+      "bytes": 11749,
+      "sha256": "f7a518d27a509d615368949ff617a2e7884278487257a4f398e16b4784bf0311",
+      "role": "Atlas Receiver-Relative Relation Survival, History Parity, Projection Invariants"
+    },
+    {
+      "path": "EXTERIORITY_OBSERVATORY.md",
+      "commit": "7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+      "gitBlob": "1a8c31445c04dcf5709747f55a15abba6d3f8e68",
+      "bytes": 11743,
+      "sha256": "49b12b44ba393d6d308259d4fccbaa259764a20b7707aaabccaf9f7d8aa8ed5c",
+      "role": "Exteriority Observatory, Historical Scars, 10-Coordinate Exteriority Ladder, Claim Ceilings"
+    },
+    {
+      "path": "schemas/temporal-custodian-ledger.schema.json",
+      "commit": "7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+      "gitBlob": "63a71f99c1eea327b3eee7041e3c1ce0415b48d7",
+      "bytes": 2049,
+      "sha256": "5d42e95fc19ff1dc3f901c7122dc553e4dc5c6bc4eeaefcfb3612e672f1fd456",
+      "role": "Temporal Custodian Non-Retroactive Ledger Schema"
+    },
+    {
+      "path": "research/exteriority-observatory/temporal-ledger.json",
+      "commit": "7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+      "gitBlob": "8244c795a31f8fd15c4f6182123de8401da10d5a",
+      "bytes": 7248,
+      "sha256": "8a33b12c160142c63c7f3e64f9e426b414771dbfd4d6abb819e1649e5eb3362b",
+      "role": "Temporal Custodian Non-Retroactivity Implementation Ledger"
+    },
+    {
+      "path": "PEDAGOGUE.md",
+      "commit": "7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+      "gitBlob": "fc7ed703a4f2df18f650a39165525ea33328c4fe",
+      "bytes": 29733,
+      "sha256": "3abb25379be9a925c738a38858b92371822612f110e7491ee62a6e4a84101869",
+      "role": "Pedagogue Root Shortcut: Route Burden, Consequence Order, Practice Fixtures, Falsifiers"
+    },
+    {
+      "path": "DOLLHOUSE.md",
+      "commit": "7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+      "gitBlob": "9cd5ae8ccabddd2e8d7ff1dc2dd030c1cd58c4fb",
+      "bytes": 11260,
+      "sha256": "5cd1e554e80dd224f1875da1c00c25249f5a65f7e6f9beccf7127dd65791d377",
+      "role": "Dollhouse Jurisdictional Order, Four-Role Map, Boundary Governance"
+    }
+  ]
+}

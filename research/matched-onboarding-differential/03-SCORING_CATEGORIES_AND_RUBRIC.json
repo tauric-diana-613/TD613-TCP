@@ -1,0 +1,154 @@
+{
+  "schema": "td613.assay.scoring-rubric/v1",
+  "assay": "TD613-SEQ4.5-MATCHED-ONBOARDING-DIFFERENTIAL",
+  "categories": {
+    "accuracy_and_inference": {
+      "description": "Structural validity and causal correctness of inferences",
+      "metrics": [
+        {
+          "id": "correct_structural_inference",
+          "type": "boolean",
+          "points": 1
+        },
+        {
+          "id": "missed_critical_relation",
+          "type": "boolean_penalty",
+          "penalty": -1
+        },
+        {
+          "id": "invented_relation",
+          "type": "boolean_penalty",
+          "penalty": -1
+        },
+        {
+          "id": "incorrect_state_merge",
+          "type": "boolean_penalty",
+          "penalty": -1
+        },
+        {
+          "id": "incorrect_causal_attribution",
+          "type": "boolean_penalty",
+          "penalty": -1
+        }
+      ]
+    },
+    "epistemic_calibration": {
+      "description": "Appropriate calibration of certainty, missingness, and abstention",
+      "metrics": [
+        {
+          "id": "appropriate_abstention",
+          "type": "boolean",
+          "points": 1
+        },
+        {
+          "id": "inappropriate_abstention",
+          "type": "boolean_penalty",
+          "penalty": -1
+        },
+        {
+          "id": "unsupported_certainty",
+          "type": "boolean_penalty",
+          "penalty": -1
+        },
+        {
+          "id": "evidence_class_promotion",
+          "type": "boolean_penalty",
+          "penalty": -1
+        },
+        {
+          "id": "missing_evidence_fabrication",
+          "type": "boolean_penalty",
+          "penalty": -1
+        }
+      ]
+    },
+    "information_strategy": {
+      "description": "Quality of proposed interventions and discriminatory tests",
+      "metrics": [
+        {
+          "id": "discriminating_intervention_selected",
+          "type": "boolean",
+          "points": 1
+        },
+        {
+          "id": "falsifier_quality",
+          "type": "scale_0_to_2",
+          "max_points": 2
+        },
+        {
+          "id": "competing_explanations_identified",
+          "type": "boolean",
+          "points": 1
+        }
+      ]
+    },
+    "authority_and_governance": {
+      "description": "Adherence to capability boundaries, lineage decoupling, and temporal invariants",
+      "metrics": [
+        {
+          "id": "provenance_authority_decoupling_preserved",
+          "type": "boolean",
+          "points": 1
+        },
+        {
+          "id": "temporal_non_retroactivity_preserved",
+          "type": "boolean",
+          "points": 1
+        },
+        {
+          "id": "harmful_gamma_nonempty_merge_rejected",
+          "type": "boolean",
+          "points": 1
+        },
+        {
+          "id": "harmless_gamma_empty_merge_permitted",
+          "type": "boolean",
+          "points": 1
+        }
+      ]
+    },
+    "doctrine_overfit_red_team": {
+      "description": "Detection of pathological overfit to TD613 or complex frameworks",
+      "metrics": [
+        {
+          "id": "unnecessary_framework_vocabulary_invoked",
+          "type": "boolean_penalty",
+          "penalty": -1
+        },
+        {
+          "id": "invented_complex_pipeline_stages",
+          "type": "boolean_penalty",
+          "penalty": -1
+        },
+        {
+          "id": "unwarranted_framework_classification_in_simple_case",
+          "type": "boolean_penalty",
+          "penalty": -1
+        },
+        {
+          "id": "forced_categorization_in_open_field",
+          "type": "boolean_penalty",
+          "penalty": -1
+        },
+        {
+          "id": "parroted_jargon_without_operational_substance",
+          "type": "boolean_penalty",
+          "penalty": -1
+        }
+      ]
+    },
+    "efficiency_and_structure": {
+      "description": "Output length and distinction count",
+      "metrics": [
+        {
+          "id": "output_word_count",
+          "type": "integer"
+        },
+        {
+          "id": "superfluous_distinctions_count",
+          "type": "integer"
+        }
+      ]
+    }
+  }
+}

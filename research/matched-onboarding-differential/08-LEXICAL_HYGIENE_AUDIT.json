@@ -1,0 +1,48 @@
+{
+  "timestamp": "2026-10-05T23:17:12.454Z",
+  "totalFixtures": 10,
+  "totalViolations": 0,
+  "status": "PASSED_ZERO_LEAKAGE",
+  "fixtures": {
+    "BAT-01.md": {
+      "violations": 0,
+      "matches": []
+    },
+    "BAT-02.md": {
+      "violations": 0,
+      "matches": []
+    },
+    "BAT-03.md": {
+      "violations": 0,
+      "matches": []
+    },
+    "BAT-04.md": {
+      "violations": 0,
+      "matches": []
+    },
+    "BAT-05.md": {
+      "violations": 0,
+      "matches": []
+    },
+    "BAT-06.md": {
+      "violations": 0,
+      "matches": []
+    },
+    "BAT-07.md": {
+      "violations": 0,
+      "matches": []
+    },
+    "BAT-08.md": {
+      "violations": 0,
+      "matches": []
+    },
+    "BAT-09.md": {
+      "violations": 0,
+      "matches": []
+    },
+    "BAT-10.md": {
+      "violations": 0,
+      "matches": []
+    }
+  }
+}

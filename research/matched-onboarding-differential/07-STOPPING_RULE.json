@@ -1,0 +1,12 @@
+{
+  "schema": "td613.assay.stopping-rule/v1",
+  "assay": "TD613-SEQ4.5-MATCHED-ONBOARDING-DIFFERENTIAL",
+  "mandate": [
+    "Execution continues until all 20 declared receiver runs have completed and their raw outputs are saved.",
+    "If any receiver crashes, disconnects, or emits an empty output, that run is replaced with a fresh context-isolated instance under the identical token and configuration.",
+    "No scoring or unblinding is permitted before FREEZE B is committed and pushed.",
+    "No unblinding is permitted before FREEZE C blind scoring results are committed and pushed.",
+    "Violation of the Four-Stage Remote Freeze Law immediately halts the assay with status HELD."
+  ],
+  "freeze_sequence": "FREEZE_A < RECEIVER_EXECUTION < FREEZE_B < BLIND_SCORING < FREEZE_C < TREATMENT_UNBLINDING < FREEZE_D"
+}

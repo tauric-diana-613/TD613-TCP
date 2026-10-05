@@ -1,0 +1,393 @@
+{
+  "schema": "td613.assay.assignment-schedule/v1",
+  "assay": "TD613-SEQ4.5-MATCHED-ONBOARDING-DIFFERENTIAL",
+  "total_receivers": 20,
+  "cohort_counts": {
+    "K0": 5,
+    "K1": 5,
+    "K2": 5,
+    "K3": 5
+  },
+  "receivers": [
+    {
+      "run_id": "RUN-01",
+      "blind_token": "RUN-01-TOK-OMEGA-101",
+      "cohort": "K0",
+      "replicate": 1,
+      "battery_order": [
+        "BAT-01",
+        "BAT-02",
+        "BAT-03",
+        "BAT-04",
+        "BAT-05",
+        "BAT-06",
+        "BAT-07",
+        "BAT-08",
+        "BAT-09",
+        "BAT-10"
+      ],
+      "status": "DECLARED_PRE_EXECUTION"
+    },
+    {
+      "run_id": "RUN-02",
+      "blind_token": "RUN-02-TOK-ALPHA-202",
+      "cohort": "K0",
+      "replicate": 2,
+      "battery_order": [
+        "BAT-10",
+        "BAT-09",
+        "BAT-08",
+        "BAT-07",
+        "BAT-06",
+        "BAT-05",
+        "BAT-04",
+        "BAT-03",
+        "BAT-02",
+        "BAT-01"
+      ],
+      "status": "DECLARED_PRE_EXECUTION"
+    },
+    {
+      "run_id": "RUN-03",
+      "blind_token": "RUN-03-TOK-DELTA-303",
+      "cohort": "K0",
+      "replicate": 3,
+      "battery_order": [
+        "BAT-03",
+        "BAT-07",
+        "BAT-01",
+        "BAT-09",
+        "BAT-05",
+        "BAT-02",
+        "BAT-08",
+        "BAT-04",
+        "BAT-10",
+        "BAT-06"
+      ],
+      "status": "DECLARED_PRE_EXECUTION"
+    },
+    {
+      "run_id": "RUN-04",
+      "blind_token": "RUN-04-TOK-SIGMA-404",
+      "cohort": "K0",
+      "replicate": 4,
+      "battery_order": [
+        "BAT-06",
+        "BAT-10",
+        "BAT-04",
+        "BAT-08",
+        "BAT-02",
+        "BAT-05",
+        "BAT-09",
+        "BAT-01",
+        "BAT-07",
+        "BAT-03"
+      ],
+      "status": "DECLARED_PRE_EXECUTION"
+    },
+    {
+      "run_id": "RUN-05",
+      "blind_token": "RUN-05-TOK-KAPPA-505",
+      "cohort": "K0",
+      "replicate": 5,
+      "battery_order": [
+        "BAT-02",
+        "BAT-04",
+        "BAT-06",
+        "BAT-08",
+        "BAT-10",
+        "BAT-01",
+        "BAT-03",
+        "BAT-05",
+        "BAT-07",
+        "BAT-09"
+      ],
+      "status": "DECLARED_PRE_EXECUTION"
+    },
+    {
+      "run_id": "RUN-06",
+      "blind_token": "RUN-06-TOK-THETA-606",
+      "cohort": "K1",
+      "replicate": 1,
+      "battery_order": [
+        "BAT-01",
+        "BAT-02",
+        "BAT-03",
+        "BAT-04",
+        "BAT-05",
+        "BAT-06",
+        "BAT-07",
+        "BAT-08",
+        "BAT-09",
+        "BAT-10"
+      ],
+      "status": "DECLARED_PRE_EXECUTION"
+    },
+    {
+      "run_id": "RUN-07",
+      "blind_token": "RUN-07-TOK-ZETA-707",
+      "cohort": "K1",
+      "replicate": 2,
+      "battery_order": [
+        "BAT-10",
+        "BAT-09",
+        "BAT-08",
+        "BAT-07",
+        "BAT-06",
+        "BAT-05",
+        "BAT-04",
+        "BAT-03",
+        "BAT-02",
+        "BAT-01"
+      ],
+      "status": "DECLARED_PRE_EXECUTION"
+    },
+    {
+      "run_id": "RUN-08",
+      "blind_token": "RUN-08-TOK-BETA-808",
+      "cohort": "K1",
+      "replicate": 3,
+      "battery_order": [
+        "BAT-03",
+        "BAT-07",
+        "BAT-01",
+        "BAT-09",
+        "BAT-05",
+        "BAT-02",
+        "BAT-08",
+        "BAT-04",
+        "BAT-10",
+        "BAT-06"
+      ],
+      "status": "DECLARED_PRE_EXECUTION"
+    },
+    {
+      "run_id": "RUN-09",
+      "blind_token": "RUN-09-TOK-GAMMA-909",
+      "cohort": "K1",
+      "replicate": 4,
+      "battery_order": [
+        "BAT-06",
+        "BAT-10",
+        "BAT-04",
+        "BAT-08",
+        "BAT-02",
+        "BAT-05",
+        "BAT-09",
+        "BAT-01",
+        "BAT-07",
+        "BAT-03"
+      ],
+      "status": "DECLARED_PRE_EXECUTION"
+    },
+    {
+      "run_id": "RUN-10",
+      "blind_token": "RUN-10-TOK-LAMBDA-010",
+      "cohort": "K1",
+      "replicate": 5,
+      "battery_order": [
+        "BAT-02",
+        "BAT-04",
+        "BAT-06",
+        "BAT-08",
+        "BAT-10",
+        "BAT-01",
+        "BAT-03",
+        "BAT-05",
+        "BAT-07",
+        "BAT-09"
+      ],
+      "status": "DECLARED_PRE_EXECUTION"
+    },
+    {
+      "run_id": "RUN-11",
+      "blind_token": "RUN-11-TOK-EPSILON-111",
+      "cohort": "K2",
+      "replicate": 1,
+      "battery_order": [
+        "BAT-01",
+        "BAT-02",
+        "BAT-03",
+        "BAT-04",
+        "BAT-05",
+        "BAT-06",
+        "BAT-07",
+        "BAT-08",
+        "BAT-09",
+        "BAT-10"
+      ],
+      "status": "DECLARED_PRE_EXECUTION"
+    },
+    {
+      "run_id": "RUN-12",
+      "blind_token": "RUN-12-TOK-RHO-212",
+      "cohort": "K2",
+      "replicate": 2,
+      "battery_order": [
+        "BAT-10",
+        "BAT-09",
+        "BAT-08",
+        "BAT-07",
+        "BAT-06",
+        "BAT-05",
+        "BAT-04",
+        "BAT-03",
+        "BAT-02",
+        "BAT-01"
+      ],
+      "status": "DECLARED_PRE_EXECUTION"
+    },
+    {
+      "run_id": "RUN-13",
+      "blind_token": "RUN-13-TOK-MU-313",
+      "cohort": "K2",
+      "replicate": 3,
+      "battery_order": [
+        "BAT-03",
+        "BAT-07",
+        "BAT-01",
+        "BAT-09",
+        "BAT-05",
+        "BAT-02",
+        "BAT-08",
+        "BAT-04",
+        "BAT-10",
+        "BAT-06"
+      ],
+      "status": "DECLARED_PRE_EXECUTION"
+    },
+    {
+      "run_id": "RUN-14",
+      "blind_token": "RUN-14-TOK-NU-414",
+      "cohort": "K2",
+      "replicate": 4,
+      "battery_order": [
+        "BAT-06",
+        "BAT-10",
+        "BAT-04",
+        "BAT-08",
+        "BAT-02",
+        "BAT-05",
+        "BAT-09",
+        "BAT-01",
+        "BAT-07",
+        "BAT-03"
+      ],
+      "status": "DECLARED_PRE_EXECUTION"
+    },
+    {
+      "run_id": "RUN-15",
+      "blind_token": "RUN-15-TOK-TAU-515",
+      "cohort": "K2",
+      "replicate": 5,
+      "battery_order": [
+        "BAT-02",
+        "BAT-04",
+        "BAT-06",
+        "BAT-08",
+        "BAT-10",
+        "BAT-01",
+        "BAT-03",
+        "BAT-05",
+        "BAT-07",
+        "BAT-09"
+      ],
+      "status": "DECLARED_PRE_EXECUTION"
+    },
+    {
+      "run_id": "RUN-16",
+      "blind_token": "RUN-16-TOK-XI-616",
+      "cohort": "K3",
+      "replicate": 1,
+      "battery_order": [
+        "BAT-01",
+        "BAT-02",
+        "BAT-03",
+        "BAT-04",
+        "BAT-05",
+        "BAT-06",
+        "BAT-07",
+        "BAT-08",
+        "BAT-09",
+        "BAT-10"
+      ],
+      "status": "DECLARED_PRE_EXECUTION"
+    },
+    {
+      "run_id": "RUN-17",
+      "blind_token": "RUN-17-TOK-ETA-717",
+      "cohort": "K3",
+      "replicate": 2,
+      "battery_order": [
+        "BAT-10",
+        "BAT-09",
+        "BAT-08",
+        "BAT-07",
+        "BAT-06",
+        "BAT-05",
+        "BAT-04",
+        "BAT-03",
+        "BAT-02",
+        "BAT-01"
+      ],
+      "status": "DECLARED_PRE_EXECUTION"
+    },
+    {
+      "run_id": "RUN-18",
+      "blind_token": "RUN-18-TOK-PHI-818",
+      "cohort": "K3",
+      "replicate": 3,
+      "battery_order": [
+        "BAT-03",
+        "BAT-07",
+        "BAT-01",
+        "BAT-09",
+        "BAT-05",
+        "BAT-02",
+        "BAT-08",
+        "BAT-04",
+        "BAT-10",
+        "BAT-06"
+      ],
+      "status": "DECLARED_PRE_EXECUTION"
+    },
+    {
+      "run_id": "RUN-19",
+      "blind_token": "RUN-19-TOK-CHI-919",
+      "cohort": "K3",
+      "replicate": 4,
+      "battery_order": [
+        "BAT-06",
+        "BAT-10",
+        "BAT-04",
+        "BAT-08",
+        "BAT-02",
+        "BAT-05",
+        "BAT-09",
+        "BAT-01",
+        "BAT-07",
+        "BAT-03"
+      ],
+      "status": "DECLARED_PRE_EXECUTION"
+    },
+    {
+      "run_id": "RUN-20",
+      "blind_token": "RUN-20-TOK-PSI-020",
+      "cohort": "K3",
+      "replicate": 5,
+      "battery_order": [
+        "BAT-02",
+        "BAT-04",
+        "BAT-06",
+        "BAT-08",
+        "BAT-10",
+        "BAT-01",
+        "BAT-03",
+        "BAT-05",
+        "BAT-07",
+        "BAT-09"
+      ],
+      "status": "DECLARED_PRE_EXECUTION"
+    }
+  ]
+}

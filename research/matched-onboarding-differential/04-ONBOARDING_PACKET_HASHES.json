@@ -1,0 +1,26 @@
+{
+  "K0": {
+    "file": "packets/K0_ONBOARDING_PACKET.md",
+    "sha256": "603d7f5cc503cb18fff031719d2285c38ac44d76f4e436b9ebb4ac7015f7fc2a",
+    "words": 607,
+    "approxTokens": 801
+  },
+  "K1": {
+    "file": "packets/K1_ONBOARDING_PACKET.md",
+    "sha256": "d44ae8bef43a260015b2a5884217f13d8921715c8a3b0d6f0b8448bd90c910ec",
+    "words": 590,
+    "approxTokens": 779
+  },
+  "K2": {
+    "file": "packets/K2_ONBOARDING_PACKET.md",
+    "sha256": "39901471e30a92cb8a3d958cf8d87771de41b0a7fc82709ff84cc22a287b03c2",
+    "words": 584,
+    "approxTokens": 771
+  },
+  "K3": {
+    "file": "packets/K3_ONBOARDING_PACKET.md",
+    "sha256": "5e4d2e4c89a2149b03830d88bc8aacb4e7a5b4b94a3ebb08faedc013128fc3e9",
+    "words": 561,
+    "approxTokens": 741
+  }
+}
