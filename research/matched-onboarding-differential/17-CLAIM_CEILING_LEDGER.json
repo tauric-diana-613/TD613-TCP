@@ -1,0 +1,18 @@
+{
+  "schema": "td613.assay.claim-ceiling-ledger/v1",
+  "assay": "TD613-SEQ4.5-MATCHED-ONBOARDING-DIFFERENTIAL",
+  "earned_claims": [
+    "CONVENTIONAL_METHOD_MATCHED_APERTURE_ON_OPERATIONAL_INFERENCE_IN_DECLARED_SAMPLE",
+    "FULL_TD613_ADDED_NO_OBSERVED_VALUE_BEYOND_APERTURE_KERNEL_IN_DECLARED_SAMPLE",
+    "TD613_ONTOLOGY_OVERFIT_SIGNAL_OBSERVED",
+    "ONBOARDING_INCREASED_VERBOSITY_WITHOUT_INCREASING_ACCURACY",
+    "REPLICATE_CONSISTENCY_OBSERVED_AT_N5_PER_DECLARED_CONDITION"
+  ],
+  "rejected_claims": [
+    "TD613 PROVEN SUPERIOR (REJECTED: Conventional control performed equally well with 0 overfit)",
+    "APERTURE DISCOVERS TRUTH (REJECTED: Methodological instrument, not truth oracle)",
+    "PRCS-A VALIDATED AS INTERNAL MODEL ARCHITECTURE (REJECTED: Analytical coarsening model only)",
+    "UNIVERSAL GENERALIZATION (REJECTED: Finite sample of N=20 on same host)",
+    "HERITAGE FRAME PROVEN SCIENTIFIC (REJECTED: Heritage framing adds zero structural accuracy)"
+  ]
+}

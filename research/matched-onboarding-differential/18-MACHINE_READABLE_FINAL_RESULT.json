@@ -1,0 +1,22 @@
+{
+  "schema": "td613.assay.machine-readable-final-result/v1",
+  "assay_id": "TD613-SEQ4.5-ASSAY-20261005",
+  "title": "Matched Onboarding Differential Assay (Sequence 4.5)",
+  "status": "CONCLUDED_STANCE_VERIFIED",
+  "sample_size": 20,
+  "cohorts": [
+    "K0",
+    "K1",
+    "K2",
+    "K3"
+  ],
+  "primary_finding": "CONVENTIONAL_METHOD_MATCHED_APERTURE_ON_OPERATIONAL_INFERENCE",
+  "secondary_finding": "FULL_TD613_ADDED_NO_OBSERVED_VALUE_BEYOND_APERTURE_KERNEL",
+  "overfit_finding": "TD613_ONTOLOGY_OVERFIT_SIGNAL_OBSERVED",
+  "freeze_chronology": {
+    "freeze_a": "84583ed645caee9b41818296a1eb1d7f6c38daef",
+    "freeze_b": "1952330353fa2841cf318251e18b02444b6ea083",
+    "freeze_c": "c234f561eead35ce675c93cb62df331d279cfeb1",
+    "freeze_d": "PENDING_COMMIT"
+  }
+}

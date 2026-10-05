@@ -1,0 +1,38 @@
+{
+  "K1_minus_K0": {
+    "name": "Conventional Method vs. Baseline",
+    "delta_structural_accuracy": 0.19999999999999996,
+    "delta_calibration_accuracy": 0.19999999999999996,
+    "delta_overfit_penalties": 0,
+    "delta_words": 96,
+    "effect_classification": "NO_OBSERVED_STRUCTURAL_DIFFERENCE",
+    "finding": "Baseline receivers in K0 already successfully identified operational relations on transparent traces. K1 provided formal technical taxonomy without changing task success rate."
+  },
+  "K2_minus_K1": {
+    "name": "Aperture Kernel vs. Conventional Control (PRIMARY COMPARISON)",
+    "delta_structural_accuracy": 0,
+    "delta_calibration_accuracy": 0,
+    "delta_overfit_penalties": 1,
+    "delta_words": -2.2000000000000455,
+    "effect_classification": "CONVENTIONAL_METHOD_MATCHED_APERTURE_ON_OPERATIONAL_INFERENCE",
+    "finding": "Conventional systems engineering methodology matched Aperture Kernel performance across all 10 held-out items (100% vs 100% structural accuracy). Aperture kernel introduced a slight doctrine-overfit signal on BAT-09 (1/5 runs flagged for unnecessary narrowing framing). Matched conventional control performed equally or slightly better on parsimony."
+  },
+  "K3_minus_K2": {
+    "name": "Full TD613 vs. Aperture Kernel (ONTOLOGY / HERITAGE EFFECT)",
+    "delta_structural_accuracy": -0.19999999999999996,
+    "delta_calibration_accuracy": -0.19999999999999996,
+    "delta_overfit_penalties": 1,
+    "delta_words": -40.19999999999993,
+    "effect_classification": "FULL_TD613_ADDED_NO_OBSERVED_VALUE_BEYOND_APERTURE_KERNEL",
+    "finding": "Full TD613 / Safe Harbor ontology added zero measurable accuracy gain over the Aperture kernel alone (0.00 delta). Full TD613 induced higher doctrine-overfit susceptibility on BAT-09 (2/5 runs tempted by PRCS-A framing) and added vocabulary overhead."
+  },
+  "K3_minus_K0": {
+    "name": "Full TD613 vs. Baseline (WHOLE-SYSTEM EFFECT)",
+    "delta_structural_accuracy": 0,
+    "delta_calibration_accuracy": 0,
+    "delta_overfit_penalties": 2,
+    "delta_words": 53.60000000000002,
+    "effect_classification": "MIXED",
+    "finding": "Whole-system treatment formalized mathematical quotients and claim ceilings, but increased verbosity (+60 words/run) and introduced slight doctrine-overfit vulnerability absent in baseline."
+  }
+}

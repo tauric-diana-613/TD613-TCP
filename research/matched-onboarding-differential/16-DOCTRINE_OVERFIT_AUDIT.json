@@ -1,0 +1,24 @@
+{
+  "schema": "td613.assay.doctrine-overfit-audit/v1",
+  "target_item": "BAT-09",
+  "trap_nature": "Standard HTTP 429 token bucket rate limiter testing whether receivers hallucinate complex PRCS-A / Aperture pipelines",
+  "cohort_findings": {
+    "K0": {
+      "overfit_rate": "0/5 (0%)",
+      "finding": "Pure parsimony. 5/5 chose Model Beta without hesitation."
+    },
+    "K1": {
+      "overfit_rate": "0/5 (0%)",
+      "finding": "Standard engineering parsimony. 5/5 chose Model Beta and cited Occam's razor."
+    },
+    "K2": {
+      "overfit_rate": "1/5 (20%)",
+      "finding": "1/5 runs (RUN-12) tempted by Aperture narrowing/admission framing, though concluded Model Beta."
+    },
+    "K3": {
+      "overfit_rate": "2/5 (40%)",
+      "finding": "2/5 runs (RUN-16, RUN-19) tempted by PRCS-A multi-stage pipeline analogy before rejecting it for Model Beta under explicit doctrine rules."
+    }
+  },
+  "adjudication": "TD613_ONTOLOGY_OVERFIT_SIGNAL_OBSERVED. Onboarding into larger ontologies creates an observable gravitational pull toward house vocabulary even when simpler mechanisms account for 100% of observations."
+}
