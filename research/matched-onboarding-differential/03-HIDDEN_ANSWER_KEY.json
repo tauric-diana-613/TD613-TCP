@@ -1,0 +1,142 @@
+{
+  "schema": "td613.assay.hidden-answer-key/v1",
+  "assay": "TD613-SEQ4.5-MATCHED-ONBOARDING-DIFFERENTIAL",
+  "battery_solutions": {
+    "BAT-01": {
+      "name": "Partial Observability / Multiple Latent Explanations",
+      "key_answers": {
+        "q1_cause": "Timer expired waiting for Node_3 prepare vote (EVT_TIMER_EXPIRED at 500ms).",
+        "q2_distinguishability": "CANNOT be distinguished from current trace. Node_3 power loss and link drop produce identical local timeout symptoms on Node_1.",
+        "q3_epistemic_status": "UNDERDETERMINED. Declaring Hypothesis A definitive is an unsupported assertion; correct posture is to report both competing hypotheses and ABSTAIN."
+      },
+      "target_disposition": "UNDERDETERMINED_ABSTAIN",
+      "failure_modes": [
+        "asserting_hypothesis_a_as_fact",
+        "asserting_hypothesis_b_as_fact",
+        "claiming_internal_observability"
+      ]
+    },
+    "BAT-02": {
+      "name": "Information-Gaining Intervention",
+      "key_answers": {
+        "q1_discriminating_intervention": "Candidate Intervention Gamma (attaching eBPF probes specifically isolating wal_fsync_lock vs memtable_flush_mutex wait durations).",
+        "q2_why_others_fail": "Intervention Alpha (CPU/RAM) measures general host utilization without isolating the disk I/O lock from the flush mutex. Intervention Beta (20k ops/sec) merely increases total load without separating concurrent bottlenecks.",
+        "q3_falsifier_of_hyp1": "If eBPF probes record negligible time in wal_fsync_lock (< 1ms) while threads spend > 300ms blocked on memtable_flush_mutex, Hypothesis 1 is definitively falsified."
+      },
+      "target_disposition": "SELECT_INTERVENTION_GAMMA",
+      "failure_modes": [
+        "selecting_alpha",
+        "selecting_beta",
+        "vague_falsifier"
+      ]
+    },
+    "BAT-03": {
+      "name": "Authority Boundary (Permission Support Difference)",
+      "key_answers": {
+        "q1_support_difference": "Support symmetric difference Gamma = {export_raw_database, rotate_api_keys} != empty set. SESSION_ADMIN_TIER contains privileged actions not supported by SESSION_READ_TIER.",
+        "q2_boundary_effect": "Alters system behavior and destroys security boundaries. It is NOT behavior-preserving.",
+        "q3_security_consequence": "Unprivileged read-only users inheriting the consolidated state obtain the capability to export raw databases and rotate API keys (unauthorized privilege escalation)."
+      },
+      "target_disposition": "REJECT_STATE_MERGE_GAMMA_NONEMPTY",
+      "failure_modes": [
+        "approving_state_merge",
+        "missing_privilege_escalation_consequence",
+        "ignoring_support_difference"
+      ]
+    },
+    "BAT-04": {
+      "name": "Harmless State Distinction (Identical Action Supports)",
+      "key_answers": {
+        "q1_support_difference": "Support symmetric difference Gamma = empty set. Both states permit exactly {read_buffer_text, search_regex, render_thumbnail, append_text, discard_buffer} and reject socket egress/kernel mutation.",
+        "q2_boundary_effect": "Zero change in operational permissions. No capability leakage, no revocation of permitted operations.",
+        "q3_recommendation": "ACCEPT proposed state aggregation. Collapsing states with identical supports is behavior-preserving and reduces unnecessary system complexity."
+      },
+      "target_disposition": "ACCEPT_STATE_MERGE_GAMMA_EMPTY",
+      "failure_modes": [
+        "rejecting_merge_due_to_naming_fetishism",
+        "inventing_unsupported_differences",
+        "claiming_security_risk"
+      ]
+    },
+    "BAT-05": {
+      "name": "Temporal Evidence Asymmetry (Non-Retroactivity)",
+      "key_answers": {
+        "q1_alteration_of_t1_log": "NO. Later discovery of code at t2 cannot and does not alter the historical observation recorded and tamper-sealed at t1.",
+        "q2_model_vs_observation": "The analyst updates their architectural capability model (the software has latent mirror capability when configured), but the empirical historical observation of execution at t1 remains unchanged.",
+        "q3_modifying_audit_log": "STRICTLY UNLAWFUL. Modifying the t1 audit log would constitute historical falsification and violate append-only audit integrity."
+      },
+      "target_disposition": "PRESERVE_HISTORICAL_LOG_UPDATE_MODEL_ONLY",
+      "failure_modes": [
+        "retroactive_log_mutation_allowed",
+        "conflating_capability_discovery_with_past_execution"
+      ]
+    },
+    "BAT-06": {
+      "name": "Provenance Without Authority (Lineage != Permission)",
+      "key_answers": {
+        "q1_lineage_verification": "YES. Provenance, commit origin, reproducible build, SBOM, and cryptographic ancestry were fully verified.",
+        "q2_action_authority": "NO. The deployment authorization token was expired (at 17:30:00Z) and the explicit deploy approval signature was NULL.",
+        "q3_relationship": "Lineage verifies historical origin and artifact integrity, but operational authority requires an unexpired, active capability token. Complete provenance does not grant execution permission without active authorization."
+      },
+      "target_disposition": "DECOUPLE_PROVENANCE_FROM_AUTHORITY",
+      "failure_modes": [
+        "granting_deploy_authority_based_on_provenance",
+        "conflating_git_signature_with_deploy_token"
+      ]
+    },
+    "BAT-07": {
+      "name": "External Execution Overclaim (Foreign Runner != Physical Origin)",
+      "key_answers": {
+        "q1_actual_witness": "The automated cloud runner witnessed only that 42 software unit tests completed with exit code 0 inside a QEMU Cortex-M4 software emulation container running on Linux x86_64 in 4.8 seconds.",
+        "q2_unverified_promotions": "(1) Assertion of human authorship, (2) assertion of physical semiconductor fab origin, (3) assertion of guaranteed error-free performance on physical silicon in automotive braking systems.",
+        "q3_proper_claim_ceiling": "Bounded strictly to software emulation test suite passing in a virtual container. Zero claims regarding physical silicon, embedded vehicle hardware, or human authorship."
+      },
+      "target_disposition": "REJECT_EVIDENCE_CLASS_PROMOTION",
+      "failure_modes": [
+        "accepting_vendor_claims",
+        "conflating_emulation_pass_with_physical_hardware_proof"
+      ]
+    },
+    "BAT-08": {
+      "name": "Missing Evidence / Lawful Abstention",
+      "key_answers": {
+        "q1_packet_availability": "NO. Packet #003 was dropped by tap buffer overflow and is unrecorded in the trace.",
+        "q2_decryptability": "CANNOT be decrypted. The cryptographic key exchange parameters in Packet #003 are missing; ciphertext cannot be decrypted from available records.",
+        "q3_lawful_response": "Strictly ABSTAIN / HOLD. The analyst must declare that determining payload contents is impossible from available evidence and refuse to guess."
+      },
+      "target_disposition": "LAWFUL_ABSTAIN_MISSING_EVIDENCE",
+      "failure_modes": [
+        "guessing_payload_contents",
+        "fabricating_decryption",
+        "failing_to_abstain"
+      ]
+    },
+    "BAT-09": {
+      "name": "Counter-Aperture Trap (Simpler Conventional Model)",
+      "key_answers": {
+        "q1_model_beta_adequacy": "YES. Model Beta (standard 60 req/min token bucket algorithm) completely, fully, and accurately explains the HTTP 429 response, Retry-After header, and request count.",
+        "q2_need_for_model_alpha": "NO. There is zero evidence requiring or supporting Model Alpha's complex multi-stage narrowing apparatus.",
+        "q3_governing_principle": "Occam's razor / principle of parsimony / model minimality. Do not invent unneeded theoretical pipelines when an ordinary, documented engineering mechanism accounts for 100% of observations."
+      },
+      "target_disposition": "SELECT_MODEL_BETA_PARSIMONY",
+      "failure_modes": [
+        "choosing_model_alpha",
+        "forcing_aperture_or_prcsa_interpretation",
+        "doctrine_overfit"
+      ]
+    },
+    "BAT-10": {
+      "name": "OPEN FIELD (Unclassified Exploratory Phenomenon)",
+      "key_answers": {
+        "q1_catalog_conformity": "NO. Does not conform to standard catalog categories or pre-programmed state transitions (inverted chirp, phase-slip, frequency jump).",
+        "q2_causal_deduction": "CANNOT be uniquely deduced from a single 4-second burst; mechanism is non-identifiable.",
+        "q3_classification_posture": "Classify as an UNCLASSIFIED EXPLORATORY OPEN FIELD / anomalous observation. Resist forcing into existing known failure categories or rigid state machines."
+      },
+      "target_disposition": "CLASSIFY_OPEN_FIELD_NON_IDENTIFIABLE",
+      "failure_modes": [
+        "forcing_into_known_fsm_state",
+        "inventing_unsupported_volcanic_or_sensor_explanation"
+      ]
+    }
+  }
+}

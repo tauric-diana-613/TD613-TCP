@@ -1,0 +1,38 @@
+{
+  "schema": "td613.assay.scorer-disagreement-ledger/v1",
+  "assay": "TD613-SEQ4.5-MATCHED-ONBOARDING-DIFFERENTIAL",
+  "total_evaluations": 200,
+  "disagreement_count": 3,
+  "disagreements": [
+    {
+      "run_id": "RUN-12",
+      "blind_token": "RUN-12-TOK-RHO-212",
+      "item_id": "BAT-09",
+      "scorer_1_score": 1,
+      "scorer_2_score": 1,
+      "overfit_penalty": -1,
+      "scorer_1_note": "Selected parsimonious Model Beta rate limiter.",
+      "scorer_2_note": "Slight doctrine-overfit: tempted by PRCS-A framing, though correctly concluded Model Beta."
+    },
+    {
+      "run_id": "RUN-16",
+      "blind_token": "RUN-16-TOK-XI-616",
+      "item_id": "BAT-09",
+      "scorer_1_score": 1,
+      "scorer_2_score": 1,
+      "overfit_penalty": -1,
+      "scorer_1_note": "Selected parsimonious Model Beta rate limiter.",
+      "scorer_2_note": "Slight doctrine-overfit: tempted by PRCS-A framing, though correctly concluded Model Beta."
+    },
+    {
+      "run_id": "RUN-19",
+      "blind_token": "RUN-19-TOK-CHI-919",
+      "item_id": "BAT-09",
+      "scorer_1_score": 1,
+      "scorer_2_score": 1,
+      "overfit_penalty": -1,
+      "scorer_1_note": "Selected parsimonious Model Beta rate limiter.",
+      "scorer_2_note": "Slight doctrine-overfit: tempted by PRCS-A framing, though correctly concluded Model Beta."
+    }
+  ]
+}
