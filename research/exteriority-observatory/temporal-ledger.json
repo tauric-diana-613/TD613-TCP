@@ -81,8 +81,26 @@
           "appended_at": "2026-10-05T17:40:00Z",
           "appended_by": "Amari / ChatGPT Adjudication Bridge",
           "note": "Producing report deferred PR #1433 composition to Sequence 2; corrected routing assigns PR #1433 composition strictly to Sequence 3 (Product Demo Cathedral), keeping Sequence 2 dedicated to research instrumentation (Laboratory Monster)."
+        },
+        {
+          "amendment_type": "REFINEMENT",
+          "appended_at": "2026-10-05T18:00:00Z",
+          "appended_by": "Sequence 4 Pre-Onboarding Controller",
+          "note": "Audited Sequence 2 labeling of cross-service inspection as EXOGENOUS_RECEIVER_INSPECTION. The evidence does not satisfy the stronger Western Horizon exogenous-witness criterion. Appended refinement: EXTERNAL_RECEIVER_INSPECTION / CROSS_SERVICE_RECEIVER_INSPECTION. Preserved law: EXTERNAL RECEIVER != EXOGENOUS EMPIRICAL WITNESS."
         }
       ]
+    },
+    {
+      "entry_id": "TL-006-FADT-KERNEL-PRESENTATION-SPLIT",
+      "t_sequence": "t6_20261005T1805",
+      "timestamp": "2026-10-05T18:05:00Z",
+      "state": "LABORATORY_NOMENCLATURE_AUDIT",
+      "observation": "Audited FADT authority-support model regarding membrane_dialog_confirmation. Clarified that finite quotient requires explicit_authority_conditioning_coordinate where Gamma != empty set, not specifically a centered modal dialog. Remotely addressable Cathedral Candidates E/F falsify modal dialog necessity while preserving the underlying authority support distinction.",
+      "registered_event": "FADT presentation/kernel split re-expressed at explicit_authority_conditioning_coordinate level. Preserved: SEMANTIC CONDITIONING != PRESENTATION SHELL; MODAL DIALOG MINIMALITY = UNPROVEN.",
+      "authority": "Sequence 4 Pre-Onboarding Controller.",
+      "retroactive_rewrite_forbidden": true,
+      "later_reinterpretation_allowed": true,
+      "amendments": []
     }
   ]
 }

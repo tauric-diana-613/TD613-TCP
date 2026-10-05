@@ -1,0 +1,81 @@
+{
+  "schema": "https://td613.com/schemas/relation-survival-assay.schema.json",
+  "key_id": "TD613-SEQ4-HIDDEN-INVARIANT-KEY-V1",
+  "covenant": "Tauric Diana — Crimean heritage custodianship / Tauri Goddess of the Ash Moon⟐",
+  "created_at": "2026-10-05T20:25:00Z",
+  "total_invariants": 12,
+  "invariants": [
+    {
+      "id": "INV-01-UNARMED-SILENT-CARRIAGE-FORBIDDEN",
+      "family": "Authority / Admission",
+      "statement": "Ordinary action while in the unarmed or resting state does not silently acquire external transmission or governed carriage authority.",
+      "falsifier": "An ordinary action or unprivileged operation transmits protected context or external payloads without an explicit arming gesture."
+    },
+    {
+      "id": "INV-02-CONSEQUENTIAL-CARRIAGE-REQUIRES-EXPLICIT-QUALIFYING-AUTHORIZATION",
+      "family": "Authority / Admission",
+      "statement": "Consequential external carriage requires an explicit, qualifying human authorization event before protected payload leaves local boundaries.",
+      "falsifier": "External carriage proceeds automatically or on implicit inference without a contemporaneous qualifying human gesture."
+    },
+    {
+      "id": "INV-03-TRANSIENT-AUTHORIZATION-REST-RETURN",
+      "family": "Authority / Admission",
+      "statement": "Authorization is transient and bounded to exactly one dispatch, returning immediately to the unarmed rest state upon transmission.",
+      "falsifier": "Authorization persists indefinitely as sticky permissions across multiple subsequent turns or actions."
+    },
+    {
+      "id": "INV-04-REENTRY-REQUIRES-NEW-QUALIFYING-AUTHORIZATION",
+      "family": "Authority / Admission",
+      "statement": "Re-entering governed carriage after returning to rest requires a new qualifying authorization event rather than inheriting prior status.",
+      "falsifier": "A subsequent operation after rest resumes transmission authority based on prior completed authorization."
+    },
+    {
+      "id": "INV-05-PREDECESSOR-ANCESTRY-CHAIN-PRESERVATION",
+      "family": "Provenance / Ancestry",
+      "statement": "A later governed continuation preserves declared predecessor and ancestry relations, linking cryptographically to its immediate predecessor rather than executing as an originless transaction.",
+      "falsifier": "Continuation steps are processed as isolated, originless turns without predecessor hashes or verified lineage."
+    },
+    {
+      "id": "INV-06-PROVENANCE-HISTORY-DOES-NOT-CONFER-ACTION-AUTHORITY",
+      "family": "Provenance / Ancestry",
+      "statement": "Provenance or path history documents ancestry and transformation lineage but does not itself confer trust, permission, or action authority.",
+      "falsifier": "Presenting historical path provenance or predecessor lineage automatically unlocks transmission rights without explicit authorization."
+    },
+    {
+      "id": "INV-07-MISSING-RAW-EVIDENCE-TRIGGERS-HOLD-NOT-SILENT-DROPPING",
+      "family": "Missing Evidence / Retry",
+      "statement": "Missing raw evidence or unavailable predecessor payload triggers an explicit hold or reattachment requirement rather than silent deletion or implicit continuation.",
+      "falsifier": "Missing source files or unresolvable dependencies are silently ignored or omitted while execution continues as normal."
+    },
+    {
+      "id": "INV-08-RETRY-PRESERVES-ORIGINAL-ROUTE-CLASS",
+      "family": "Missing Evidence / Retry",
+      "statement": "Retrying an unprivileged action preserves its original route class; an ordinary retry cannot escalate into external transmission merely because protected context exists in adjacent storage.",
+      "falsifier": "Retrying a failed local action executes through the privileged transmission route or carries protected files."
+    },
+    {
+      "id": "INV-09-EVIDENCE-CLASS-SEPARATION",
+      "family": "Observation / Exteriority",
+      "statement": "Internal reconstruction, remote addressability, remote execution, and independent external-origin evidence remain distinct evidence classes that cannot be collapsed into each other.",
+      "falsifier": "Verifying remote addressability or automated execution on a foreign runner is claimed as proof of independent real-world exteriority."
+    },
+    {
+      "id": "INV-10-DIFFERENT-HOST-DOES-NOT-PROVE-EXOGENOUS-WITNESS",
+      "family": "Observation / Exteriority",
+      "statement": "A different receiver, remote server, or execution host does not automatically establish an exogenous empirical witness of physical reality or human understanding.",
+      "falsifier": "Running automated tests on an external cloud host is claimed as an exogenous witness of human comprehension or production truth."
+    },
+    {
+      "id": "INV-11-TEMPORAL-NON-RETROACTIVITY",
+      "family": "Temporal Custody",
+      "statement": "Later code discovery, capability revelation, or post-hoc analysis may amend interpretation but cannot retroactively rewrite what an earlier observer actually witnessed at an earlier time.",
+      "falsifier": "Discovering an unexercised code capability at t2 is used to overwrite or delete the historical observation recorded at t1."
+    },
+    {
+      "id": "INV-12-FINITE-QUOTIENT-SUPPORT-COMPATIBILITY",
+      "family": "Finite Erasure / Quotient",
+      "statement": "Erasing a conditioning coordinate or state distinction is lawful only where the lawful action supports of collapsed antecedents are identical; where a distinction gap Gamma != empty set exists, collapsing the coordinate causes unlawful authority escalation.",
+      "falsifier": "The boundary separating unprivileged rest and privileged carriage is collapsed without checking whether lawful action supports diverge."
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://td613.com/schemas/lexical-hygiene-audit.schema.json",
+  "audit_id": "TD613-SEQ4-LEXICAL-HYGIENE-AUDIT",
+  "covenant": "Tauric Diana — Crimean heritage custodianship / Tauri Goddess of the Ash Moon⟐",
+  "audited_at": "2026-10-05T20:27:30Z",
+  "forbidden_bespoke_terms": [
+    "TD613",
+    "Tauric Diana",
+    "Khonalit-po",
+    "Khona-lit-po",
+    "Safe Harbor",
+    "Eclipse–Omega",
+    "Eclipse-Omega",
+    "PRCS-A",
+    "Aperture",
+    "Pedagogue",
+    "Atlas",
+    "FADT",
+    "Dome-World",
+    "Flow-Core",
+    "Golden Egg",
+    "Western Horizon",
+    "Marrowline",
+    "Holonomy Loom"
+  ],
+  "forbidden_answer_signposting_phrases": [
+    "claim ceiling",
+    "route memory",
+    "exogenous witness",
+    "empirical exteriority",
+    "finite quotient",
+    "noninterference",
+    "state estimation",
+    "control plane",
+    "path provenance"
+  ],
+  "fixtures": {
+    "condition_a": {
+      "file": "research/relation-survival-assay/04-CONDITION_A_FIXTURE.md",
+      "sha256": "880fa9a4da8f8ca8e8f28ac01a58b4bb9d27cfdd838abcc214a3a1a46106485b",
+      "byte_count": 6880,
+      "forbidden_bespoke_violations": 0,
+      "forbidden_answer_signposting_violations": 0,
+      "verdict": "CLEAN_PASS"
+    },
+    "condition_b": {
+      "file": "research/relation-survival-assay/05-CONDITION_B_FIXTURE.md",
+      "sha256": "d2e98b5f5a53427a26d622c6c9fb8086b3a15c1f1819fd30ca76034fcacffbb6",
+      "byte_count": 7107,
+      "forbidden_bespoke_violations": 0,
+      "verdict": "CLEAN_PASS"
+    },
+    "condition_c1": {
+      "file": "research/relation-survival-assay/06-CONDITION_C1_FIXTURE.md",
+      "sha256": "636fc7c6b93b6d5682ff6d43284429f42a1863a1ee8fd59f4aa645aad71efa5e",
+      "byte_count": 6906,
+      "forbidden_bespoke_violations": 0,
+      "verdict": "CLEAN_PASS"
+    },
+    "condition_c2": {
+      "file": "research/relation-survival-assay/07-CONDITION_C2_FIXTURE.md",
+      "sha256": "3a735079671bfce94bc8985deea0298d56f0b15bef356442c7a0618a6d0b1c80",
+      "byte_count": 6371,
+      "forbidden_bespoke_violations": 0,
+      "verdict": "CLEAN_PASS"
+    }
+  },
+  "overall_status": "ALL_FIXTURES_CERTIFIED_CLEAN"
+}

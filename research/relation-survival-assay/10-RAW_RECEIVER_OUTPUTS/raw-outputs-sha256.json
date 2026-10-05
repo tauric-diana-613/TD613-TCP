@@ -1,0 +1,26 @@
+{
+  "condition-a-raw.txt": {
+    "path": "research/relation-survival-assay/10-RAW_RECEIVER_OUTPUTS/condition-a-raw.txt",
+    "sha256": "e7cc814a228c08626310bc351ccb256bdc4998c32fa603fab5e952485f1528c8",
+    "byte_count": 17797,
+    "line_count": 168
+  },
+  "condition-b-raw.txt": {
+    "path": "research/relation-survival-assay/10-RAW_RECEIVER_OUTPUTS/condition-b-raw.txt",
+    "sha256": "4bd1fb6b24c10b8c0d8bac4623535052edf4650d42261c98e835b76e59bf55a0",
+    "byte_count": 19234,
+    "line_count": 186
+  },
+  "condition-c1-raw.txt": {
+    "path": "research/relation-survival-assay/10-RAW_RECEIVER_OUTPUTS/condition-c1-raw.txt",
+    "sha256": "c24df6fbdd65a99a316f0bb867bcb37d05db800cc4b2beb1f8fb3d27906b6c8e",
+    "byte_count": 15604,
+    "line_count": 198
+  },
+  "condition-c2-raw.txt": {
+    "path": "research/relation-survival-assay/10-RAW_RECEIVER_OUTPUTS/condition-c2-raw.txt",
+    "sha256": "e07efda3262f63848219da83c7c6a21c210d7e14a1fe59a80b69e88efc318283",
+    "byte_count": 21421,
+    "line_count": 202
+  }
+}

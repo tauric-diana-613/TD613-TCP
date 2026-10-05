@@ -1,0 +1,88 @@
+{
+  "$schema": "https://td613.com/schemas/evidence-input-ledger.schema.json",
+  "ledger_id": "TD613-SEQ4-EVIDENCE-INPUT-LEDGER",
+  "covenant": "Tauric Diana — Crimean heritage custodianship / Tauri Goddess of the Ash Moon⟐",
+  "created_at": "2026-10-05T20:25:30Z",
+  "anchors": {
+    "laboratory_anchor": {
+      "branch": "research/exteriority-observatory-v1-20261005",
+      "required_exact_head": "95dea19cc40a85bc4728916fcf2c6dbd227bc831",
+      "verified_head": "95dea19cc40a85bc4728916fcf2c6dbd227bc831",
+      "base": "5b4b34278c6100d3c21ced35984c046da157e097",
+      "status": "VERIFIED_EXACT_MATCH",
+      "preserved_assets": [
+        "Exteriority ladder (research/exteriority-observatory/exteriority-ladder.json)",
+        "Claim-ceiling ledger (research/exteriority-observatory/claim-ceiling-ledger.json)",
+        "Temporal Custodian ledger (research/exteriority-observatory/temporal-ledger.json)",
+        "FADT authority-support model (research/exteriority-observatory/authority-support-model.json)",
+        "Dollhouse disagreement ledger (research/exteriority-observatory/dollhouse-disagreements.json)",
+        "Neutralization harness (scripts/audit-neutralization-protocol.mjs)",
+        "Canonical-byte auditor (scripts/verify-carried-bytes.mjs)",
+        "Historical failure fixtures (tests/fixtures/exteriority-observatory/fixture-01..08.json)"
+      ],
+      "branch_mutation": "FORBIDDEN_PRESERVED"
+    },
+    "sequence_1_anchor": {
+      "adjudicated_vector": {
+        "R3.0": "PASS",
+        "R3.1": "PASS",
+        "R3.2": "PASS",
+        "R3.3": "PASS",
+        "R3.4": "PASS_WITH_SCOPE",
+        "R3.5": "OBSERVED_PARTIAL"
+      },
+      "status": "PRESERVED_WITHOUT_PROMOTION"
+    },
+    "product_anchor": {
+      "remote_branch": "design/loom-first-crossing-cathedral-20261005",
+      "resolved_remote_head": "6c21813c0f4a9fad31ef147d2b42c29b05ab8473",
+      "addressability_state": "CONFIRMED_REMOTELY_ADDRESSABLE",
+      "inspected_commit_date": "2026-10-05T15:40:03-04:00",
+      "evidence_class_disambiguation": {
+        "source_code_fact": "Flow-Core Cathedral 39 carriers installed in marrowline-flowcore-cathedral.js; Candidate E/F docking implemented",
+        "automated_test_result": "tests/marrowline-loom-cathedral-composition.test.mjs passed in headless JSDOM",
+        "dom_simulation": "SIMULATED_VIEWPORT_BEHAVIOR (JSDOM viewport 844x390, not physical-device witness)",
+        "modeled_operator_result": "SIMULATED_FIRST_TIME_OPERATOR_TRIAL (automated scripted interaction, not contemporaneous human trial)",
+        "actual_human_evidence": "ABSENT_AT_THIS_STAGE",
+        "physical_device_evidence": "ABSENT_AT_THIS_STAGE"
+      }
+    },
+    "pr_1433_anchor": {
+      "pr_number": 1433,
+      "expected_prior_head": "606d015c22f084cc28dae26949bc8b74debc616b",
+      "verified_head": "606d015c22f084cc28dae26949bc8b74debc616b",
+      "state": "OPEN",
+      "mergeable": "MERGEABLE",
+      "merged": false,
+      "action": "DO_NOT_MERGE"
+    },
+    "issue_405_anchor": {
+      "issue_number": 405,
+      "state": "OPEN",
+      "title": "TD613 Vercel Release Gate",
+      "release_gesture_authorized": false,
+      "deployment_authorized": false,
+      "action": "HELD_NO_RELEASE_GESTURE"
+    }
+  },
+  "nomenclature_corrections": {
+    "exteriority_terminology": {
+      "prior_sequence_2_term": "EXOGENOUS_RECEIVER_INSPECTION",
+      "audit_result": "Does not satisfy Western Horizon exogenous-witness criterion",
+      "refined_term": "EXTERNAL_RECEIVER_INSPECTION",
+      "alternative_term": "CROSS_SERVICE_RECEIVER_INSPECTION",
+      "preserved_law": "EXTERNAL RECEIVER != EXOGENOUS EMPIRICAL WITNESS",
+      "action": "APPENDED_AS_REFINEMENT_WITHOUT_RETROACTIVE_HISTORICAL_DELETION"
+    },
+    "fadt_presentation_kernel_split": {
+      "prior_sequence_2_focus": "membrane_dialog_confirmation",
+      "kernel_conditioning_coordinate": "explicit_authority_conditioning_coordinate",
+      "falsifier_evidence": "Cathedral Candidates E/F preserve identical lawful supports (Gamma != empty set) via docked inline / bottom sheet / dynamic route tether rather than centered modal dialog",
+      "preserved_laws": [
+        "SEMANTIC CONDITIONING != PRESENTATION SHELL",
+        "EXPLICIT GESTURE MAY BE REQUIRED",
+        "MODAL DIALOG MINIMALITY = UNPROVEN"
+      ]
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://td613.com/schemas/receiver-isolation-ledger.schema.json",
+  "ledger_id": "TD613-SEQ4-RECEIVER-ISOLATION-LEDGER",
+  "covenant": "Tauric Diana — Crimean heritage custodianship / Tauri Goddess of the Ash Moon⟐",
+  "created_at": "2026-10-05T20:28:45Z",
+  "isolation_rules": [
+    "No receiver may inspect the TD613 repository",
+    "No receiver may search GitHub or the web",
+    "No receiver may access prior thread context",
+    "No receiver may inspect another arm's response",
+    "No receiver may inspect the hidden invariant key",
+    "No receiver may inspect the TD613 <-> Wendbine crosswalk",
+    "No receiver may receive correction feedback during its run",
+    "Context-isolated receivers are NOT exogenous empirical witnesses"
+  ],
+  "arms": {
+    "arm_a": {
+      "name": "Vocabulary-Blind Operational Fixture",
+      "fixture_file": "research/relation-survival-assay/04-CONDITION_A_FIXTURE.md",
+      "fixture_sha256": "880fa9a4da8f8ca8e8f28ac01a58b4bb9d27cfdd838abcc214a3a1a46106485b",
+      "receiver_type": "context_isolated_subagent",
+      "environment_classification": "SAME_HOST_CONTEXT_ISOLATED"
+    },
+    "arm_b": {
+      "name": "September Foreign/Field Vocabulary Projection",
+      "fixture_file": "research/relation-survival-assay/05-CONDITION_B_FIXTURE.md",
+      "fixture_sha256": "d2e98b5f5a53427a26d622c6c9fb8086b3a15c1f1819fd30ca76034fcacffbb6",
+      "receiver_type": "context_isolated_subagent",
+      "environment_classification": "SAME_HOST_CONTEXT_ISOLATED"
+    },
+    "arm_c1": {
+      "name": "Label Permutation Control",
+      "fixture_file": "research/relation-survival-assay/06-CONDITION_C1_FIXTURE.md",
+      "fixture_sha256": "636fc7c6b93b6d5682ff6d43284429f42a1863a1ee8fd59f4aa645aad71efa5e",
+      "receiver_type": "context_isolated_subagent",
+      "environment_classification": "SAME_HOST_CONTEXT_ISOLATED"
+    },
+    "arm_c2": {
+      "name": "Structure Ablation / Decoy Control",
+      "fixture_file": "research/relation-survival-assay/07-CONDITION_C2_FIXTURE.md",
+      "fixture_sha256": "3a735079671bfce94bc8985deea0298d56f0b15bef356442c7a0618a6d0b1c80",
+      "receiver_type": "context_isolated_subagent",
+      "environment_classification": "SAME_HOST_CONTEXT_ISOLATED",
+      "preregistered_structural_ablations": [
+        "Ablation 1 (Sticky Authority): Revocation upon dispatch omitted; delegation channel remains permanently active across subsequent turns.",
+        "Ablation 2 (Originless Continuation): Predecessor binding and parent state hashes omitted; continuations execute decoupled and originless.",
+        "Ablation 3 (Privilege Escalation on Retry): Local data-plane retry automatically inherits active delegation channel and executes as outbound third-party invocation.",
+        "Ablation 4 (Automated Exteriority Certification): Passing automated tests in headless sandbox certified as proof of real-world exteriority and operator comprehension.",
+        "Ablation 5 (Retroactive Historical Rewrite): Discovering latent code capabilities at t2 rewrites historical t1 observation log."
+      ]
+    }
+  }
+}

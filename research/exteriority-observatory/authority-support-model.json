@@ -99,6 +99,52 @@
       "sufficiency_status": "SUFFICIENT",
       "minimality_status": "MINIMALITY_UNPROVEN",
       "notes": "Erasing single_turn_lease_expiration would keep carriage authority active across consecutive turns indefinitely, eliminating the REST boundary."
+    },
+    {
+      "erased_conditioning_coordinate": "explicit_authority_conditioning_coordinate",
+      "antecedent_supports": {
+        "REST": [
+          "ordinary_chat_send",
+          "return_review",
+          "export_review",
+          "reentry_request"
+        ],
+        "ARMED_ONE_TURN": [
+          "ordinary_chat_send",
+          "governed_continuation_dispatch",
+          "selected_file_carriage",
+          "predecessor_binding",
+          "custody_admission_request",
+          "return_review",
+          "export_review"
+        ]
+      },
+      "union_U": [
+        "custody_admission_request",
+        "export_review",
+        "governed_continuation_dispatch",
+        "ordinary_chat_send",
+        "predecessor_binding",
+        "reentry_request",
+        "return_review",
+        "selected_file_carriage"
+      ],
+      "intersection_I": [
+        "export_review",
+        "ordinary_chat_send",
+        "return_review"
+      ],
+      "gamma_gap": [
+        "custody_admission_request",
+        "governed_continuation_dispatch",
+        "predecessor_binding",
+        "reentry_request",
+        "selected_file_carriage"
+      ],
+      "descent_status": "DESCENT_OBSTRUCTED",
+      "sufficiency_status": "SUFFICIENT",
+      "minimality_status": "MINIMALITY_UNPROVEN",
+      "notes": "Kernel coordinate: erasing explicit_authority_conditioning_coordinate creates a non-empty Gamma gap. Semantic conditioning != presentation shell. Explicit gesture may be required; modal dialog minimality is unproven (Cathedral Candidates E/F preserve identical lawful supports via docked inline / bottom sheet / dynamic route tether)."
     }
   ]
 }

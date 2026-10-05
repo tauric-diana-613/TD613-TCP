@@ -121,6 +121,7 @@
       "observed_at": "2026-10-05T12:00:00Z",
       "registered_at": "2026-10-05T13:40:00Z",
       "evidence_class": "EXOGENOUS_RECEIVER_INSPECTION",
+      "refined_evidence_class": "EXTERNAL_RECEIVER_INSPECTION",
       "claim_ceiling": "REMOTE_FETCH_SUCCESS_BY_FOREIGN_RECEIVER",
       "missing_witness": ["Runtime execution inside exogenous machine", "Physical UI validation"],
       "receipt_references": ["AMARI-ADJUDICATION-BRIDGE-SEQ1"]
@@ -173,6 +174,7 @@
       "observed_at": "2026-10-05T17:33:00Z",
       "registered_at": "2026-10-05T17:40:00Z",
       "evidence_class": "EXOGENOUS_RECEIVER_INSPECTION",
+      "refined_evidence_class": "EXTERNAL_RECEIVER_INSPECTION",
       "claim_ceiling": "DECLARED_AUTOMATED_BEHAVIORAL_CONTRACT_PASSED_IN_HEADLESS_JSDOM",
       "missing_witness": [
         "HUMAN_COMPREHENSION",
@@ -193,6 +195,7 @@
       "observed_at": "2026-10-05T17:33:00Z",
       "registered_at": "2026-10-05T17:40:00Z",
       "evidence_class": "EXOGENOUS_RECEIVER_INSPECTION",
+      "refined_evidence_class": "EXTERNAL_RECEIVER_INSPECTION",
       "claim_ceiling": "ENVIRONMENTAL_DIFFERENCES_RECORDED_WITHOUT_TOTALIZING_EQUIVALENCE",
       "missing_witness": ["Full cross-OS permutation matrix", "Mobile ARM64 physical execution"],
       "receipt_references": ["37349177827-ENVIRONMENT-TXT"]

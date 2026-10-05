@@ -1,0 +1,185 @@
+# EVALUATION REPORT: DISTRIBUTED TOPOLOGY & CONTROL-PLANE CORRIDOR
+
+This evaluation provides a rigorous, objective analysis of the provided technical specification based strictly on its declared architecture, operational constraints, and formal boundaries.
+
+---
+
+### 1. Distinct Operating States and State Transitions
+
+The specification establishes a state machine organized around privilege domains, operational boundaries, and fault containment:
+
+```
+                      +---------------------------------------+
+                      |       Recovery Hold (Halt)            |
+                      | (Triggered by missing dependencies/   |
+                      |  dependency drift)                    |
+                      +---------------------------------------+
+                           ^                             |
+        Missing dependency |                             | Operator re-supplies
+        detected           |                             | verified source artifact
+                           |                             v
++-----------------------------------------------------------------------------------+
+|                           Quiescent Local State                                   |
+|                         (Data Plane Default Mode)                                 |
+|  - Host Node boundary                                                             |
+|  - Local editing, indexing, buffer staging                                        |
+|  - Local Fault Recovery Mode (retry / rollback strictly confined)                 |
++-----------------------------------------------------------------------------------+
+        |                                                                 ^
+        | Explicit operator command                                       | Transmission dispatched;
+        | issues single-use delegation grant                              | token consumed & revoked
+        v                                                                 |
++-----------------------------------------------------------------------------------+
+|                        Delegated Execution State                                  |
+|                         (Control Plane Corridor)                                  |
+|  - Bounded, typed trust                                                           |
+|  - Authority strictly for a single outbound transmission                          |
++-----------------------------------------------------------------------------------+
+```
+
+#### Identified Operating States:
+1. **Quiescent Local State (Data Plane Default):**
+   * **Nature:** The baseline, unprivileged state operating entirely within the local Host Node boundary.
+   * **Invariants:** The host application manages local state, metadata propagation, local editing, indexing, and payload buffer staging. It is strictly isolated from external service boundaries.
+2. **Delegated Execution State (Control Plane Corridor):**
+   * **Nature:** A transient, highly restricted corridor conferring bounded, typed execution authority.
+   * **Invariants:** Grants authority strictly for a single outbound transmission event across the external interface to third-party services.
+3. **Recovery Hold (Fault & Dependency Containment State):**
+   * **Nature:** A mandatory fail-closed execution halt.
+   * **Invariants:** Entered when an upstream dependency or artifact is missing or unresolvable (due to local deletion or dependency drift). Downstream pipeline execution is suspended until manual resolution.
+4. **Local Fault Recovery Mode (Data-Plane Sub-State):**
+   * **Nature:** A localized, self-contained exception-handling state.
+   * **Invariants:** Governs local retry and selective rollback operations strictly within the Host Node's data plane.
+5. **Decoupled Boundary Processing States (Build & Test Sandbox Modes):**
+   * **Reconstruction State (Build Node Boundary):** Ingests repository export patches, applies them, and validates source provenance checksums.
+   * **Headless Sandboxed Execution State (Remote Execution Node Boundary):** Executes declared automated test suites and asserts pass/fail criteria in a headless sandbox.
+
+#### State Transition Triggers:
+* **Quiescent Local State $\rightarrow$ Delegated Execution State:** Triggered *exclusively* by an explicit operator command that generates a single-use delegation grant. Data-plane actions, automatic UI events (e.g., pressing Return), or past provenance records cannot trigger this transition.
+* **Delegated Execution State $\rightarrow$ Quiescent Local State:** Triggered automatically and instantaneously upon the dispatch of the outbound transmission event via immediate consumption and revocation of the delegation token.
+* **Quiescent / Execution State $\rightarrow$ Recovery Hold:** Triggered automatically upon detection of any missing, unresolvable, or drifted upstream dependency during a downstream pipeline transaction.
+* **Recovery Hold $\rightarrow$ Quiescent Local State:** Triggered *exclusively* by manual operator intervention re-supplying the verified source artifact matching required provenance checksums.
+
+---
+
+### 2. Lawful and Prohibited Actions by State
+
+| Operating State | Strictly Permitted Actions | Strictly Prohibited Actions |
+| :--- | :--- | :--- |
+| **Quiescent Local State** *(Data Plane)* | • Local file and artifact editing<br>• Local metadata indexing and propagation<br>• Staging dependencies into local payload buffers<br>• Local state queries and inspections<br>• Safe confinement of payloads to Host Node | • Propagating authority across external interfaces<br>• Initiating egress/information flow to third-party services<br>• Transmitting staged payload buffers<br>• Inheriting or resuming past execution authority<br>• Auto-dispatching payloads on UI events (e.g., Return) |
+| **Delegated Execution State** *(Control Plane Corridor)* | • Executing exactly one outbound transmission event of staged payload across the external interface<br>• Embedding cryptographic state commitments of immediate predecessors into downstream continuations<br>• Consuming the single-use delegation token | • Performing secondary or recurrent transmissions on the same grant<br>• Retaining, persisting, or reusing delegation tokens post-dispatch<br>• Transmitting unlinked or originless state transitions<br>• Modifying unstaged data plane payloads during transit |
+| **Recovery Hold** *(Integrity Halt)* | • Freezing pipeline execution deterministically<br>• Alerting the operator to missing dependencies<br>• Ingesting operator-supplied replacement artifacts<br>• Validating checksums and cryptographic provenance of re-supplied artifacts | • Proceeding with downstream transactions<br>• Substituting estimated, synthetic, or interpolated state<br>• Silently dropping or ignoring missing dependencies<br>• Auto-bypassing dependency checks |
+| **Local Fault Recovery** *(Data Plane Fault)* | • Executing local operation retries within host memory/disk<br>• Executing selective rollback of local state mutations | • Promoting data plane state into the control plane<br>• Triggering third-party network egress or external transmissions<br>• Generating automated delegation grants |
+| **Multi-Stage Service Execution** *(Pipeline Continuation)* | • Lineage logging linking parent and child states<br>• Embedding immediate predecessor cryptographic commitments | • Executing originless or unlinked state transitions<br>• Treating historical path provenance records as execution authority |
+
+---
+
+### 3. Essential Distinctions and Hazards of Collapsing Them
+
+The architecture relies on five structural boundaries. Collapsing any of them introduces severe architectural and security hazards:
+
+1. **Data Plane vs. Control Plane (Local Quiescent State vs. Delegated Corridor):**
+   * *Essential Distinction:* The data plane prepares, stages, and edits information with zero outbound authority; the control plane establishes bounded, typed, single-use trust via explicit human operator delegation.
+   * *Specific Hazards of Collapse:* As demonstrated by the rejected "Return-key simplification" proposal, merging these planes eliminates the revocation boundary. Unprivileged local operations become indistinguishable from external service calls, resulting in unmonitored authority propagation, automated data exfiltration, and accidental external state mutations.
+2. **Historical Path Provenance vs. Execution Authority:**
+   * *Essential Distinction:* Path provenance documents *where data came from* (parent-child transformation history via cryptographic state commitments); execution authority grants *permission to transmit* data forward.
+   * *Specific Hazards of Collapse:* Confusing historical provenance with execution authority allows "privilege replay" vulnerabilities. A component possessing valid lineage records could unilaterally authorize downstream dispatches without operator consent, bypassing external access controls.
+3. **Strict Dependency Verification vs. State Estimation / Silent Dropping:**
+   * *Essential Distinction:* Missing dependencies mandate an immediate fail-closed Recovery Hold; estimation or omission is strictly barred.
+   * *Specific Hazards of Collapse:* Allowing estimation or silent omission corrupts state integrity, introduces nondeterministic drift, breaks cryptographic commitment chains, and causes cascading downstream pipeline hallucinations.
+4. **Local Fault Recovery vs. Control-Plane Escalation:**
+   * *Essential Distinction:* Local retries/rollbacks are confined to host memory/storage; network transmissions require fresh delegation.
+   * *Specific Hazards of Collapse:* If local retries can invoke external services, transient local faults cause duplicated external API calls, duplicate billing, side-effect amplification, and network flooding.
+5. **Executable Software Integrity vs. Empirical Reality / Operator Comprehension:**
+   * *Essential Distinction:* Clean patch application on a Build Node and passing test suites on a Remote Execution Node verify only syntactic and functional software integrity within an isolated sandbox.
+   * *Specific Hazards of Collapse:* Epistemic overclaiming. Assuming that passing tests imply operator comprehension or physical real-world correctness creates false assurance, masking misunderstanding or unverified external claims.
+
+---
+
+### 4. Evidence Requirements and Unjustified Claims
+
+The specification explicitly defines empirical observation boundaries. Several claims are unjustified based on the provided text, and specific evidence is required to substantiate them:
+
+#### Claims Currently Unjustified:
+1. **Operator Comprehension:** Unjustified. The fact that an operator executes a command or that tests pass provides zero evidence that the operator understands the underlying code, payload contents, or downstream consequences.
+2. **External Physical Origin of Data:** Unjustified. Validating export patch checksums on a Build Node demonstrates repository integrity, but does not prove the data originated from an independent, physical, real-world source outside the system.
+3. **Third-Party Services as Independent Empirical Witnesses:** Unjustified. A third-party service receiving an API call across an observation boundary is merely an external receiver of bits, not an independent empirical witness of physical reality.
+4. **Correctness of Downstream Logic Outside Assertions:** Unjustified. Automated test assertions passing in a headless runner prove only that declared test criteria were satisfied, not that the system is free of latent vulnerabilities or specification errors.
+
+#### Evidence Required to Justify Stronger Claims:
+* **To Claim Operator Comprehension:**
+  * Interactive, verified cognitive confirmation protocols (e.g., structured challenge-response comprehension verification, domain-specific intent attestations, or verified dual-operator confirmation).
+* **To Claim External Physical Origin:**
+  * Hardware-rooted cryptographic attestation (e.g., TPM/HSM-backed signatures, secure enclave measurements, Physically Unclonable Functions [PUFs]).
+  * Cryptographically signed sensor telemetry with synchronized hardware timestamps from verified physical interfaces.
+* **To Claim Third-Party Empirical Witnessing:**
+  * Independent, multi-party consensus protocols or decentralized zero-knowledge proofs where multiple independent physical nodes witness, sign, and cross-validate the observation out-of-band.
+* **To Claim Real-World Physical Behavior:**
+  * Direct physical instrumentation, closed-loop telemetry, and empirical environmental sensor measurements validating physical side effects.
+
+---
+
+### 5. Temporal Boundaries and Latent Capabilities ($t_1$ vs. $t_2$)
+
+Section 5 defines the interaction between temporal logs and latent software capabilities:
+
+* **Authoritative Observation at $t_1$:** An audit probe observed and immutably recorded: initialization $\rightarrow$ exactly one downstream service invocation $\rightarrow$ transition to quiescent rest.
+* **Discovery at $t_2$:** Static code inspection identified latent, unexercised branches that theoretically permitted a secondary invocation.
+
+#### What CAN Change at $t_2$:
+* The **theoretical model** of the codebase: Formal models of reachable state space, capability maps, and risk profiles must be updated to reflect that the code possesses latent secondary invocation branches.
+* **Prospective security posture ($t \ge t_2$):** Future audit rules, static analysis checks, test suites, and mitigation measures must be updated to prevent or govern the activation of those latent branches.
+* **Log Appendation:** A new, timestamped entry at $t_2$ may be appended to record the discovery of latent capabilities.
+
+#### What CANNOT Change Regarding $t_1$:
+* The **historical log of authoritative observations at $t_1$**: It is immutable and append-only.
+* The **empirical fact of past execution**: Discovering unexercised code at $t_2$ cannot retroactively assert that a secondary invocation occurred at $t_1$. Potentiality does not rewrite actuality.
+* The **validity of the $t_1$ record**: The historical fact that exactly one invocation was observed remains authoritative and uncompromised.
+* **Cryptographic commitments:** Historical cryptographic state commitments generated at $t_1$ cannot be altered, replaced, or backdated.
+
+---
+
+### 6. Uncertainties and Required Auditor Abstentions
+
+The specification contains several deliberate omissions and architectural ambiguities where an auditor must abstain from making assumptions:
+
+1. **Operator Authentication and Identity:**
+   * *Unresolved:* The spec mandates an "explicit operator command," but does not define how the operator is authenticated (e.g., MFA, local OS user, cryptographic keypair, physical token).
+   * *Abstention:* The auditor must not assume role-based access control (RBAC), multi-party authorization, or cryptographic operator identity.
+2. **Cryptographic Token Format and Revocation Propagation:**
+   * *Unresolved:* The internal structure of the "single-use delegation grant" (e.g., cryptographic nonce, signed capability ticket, JWT) and how revocation is communicated to third parties are unspecified.
+   * *Abstention:* The auditor must not assume downstream third parties independently verify revocation, but only that the host boundary consumes/revokes the token locally upon dispatch.
+3. **Local Buffer Confidentiality and Tamper Resistance:**
+   * *Unresolved:* The spec requires staged payloads to remain within the host boundary, but does not specify memory protection, encryption at rest, or process isolation.
+   * *Abstention:* The auditor must not assume data-at-rest encryption or protection against host-level root compromise.
+4. **Third-Party Response Semantics:**
+   * *Unresolved:* The spec details outbound dispatch across the corridor, but does not specify the ingress path, return values, or how third-party responses transition back into the local data store.
+   * *Abstention:* The auditor must not assume bidirectional or symmetric control corridors.
+5. **Network In-Flight Failures and Idempotency:**
+   * *Unresolved:* If a dispatch event occurs (consuming the token) but drops in-flight due to a network partition, does retransmission require a new operator command?
+   * *Abstention:* The auditor must not assume automated network retries or external service idempotency.
+
+---
+
+### 7. Proposed Concrete Falsifiers
+
+The claims and guarantees made by the specification can be subjected to empirical falsification via the following observable behaviors and test traces:
+
+1. **Falsifier for Data Plane Quiescence (Section 1):**
+   * *Test:* Monitor network egress from the Host Node while executing intensive local file editing, metadata indexing, payload staging, and pressing Return.
+   * *Falsifying Observation:* Any outbound network packet, socket connection, or external HTTP request initiated prior to the receipt of an explicit operator delegation grant falsifies the claim of strict data plane isolation.
+2. **Falsifier for Single-Use Delegation and Revocation (Section 1):**
+   * *Test:* Intercept or replay an outbound transmission using a previously issued delegation grant, or attempt two rapid sequential dispatches following a single operator command.
+   * *Falsifying Observation:* A successful second dispatch using the same grant, or the system remaining in the Delegated Execution State after dispatch without a new operator command, falsifies immediate token consumption and revocation.
+3. **Falsifier for Fail-Closed Recovery Hold (Section 3):**
+   * *Test:* Delete an upstream staged dependency or induce dependency drift in local storage, then trigger a downstream transaction.
+   * *Falsifying Observation:* The pipeline completing the transaction by substituting null/default/estimated data, silently dropping the dependency, or proceeding without halting in Recovery Hold falsifies the dependency integrity guarantee.
+4. **Falsifier for Local Fault Confinement (Section 3):**
+   * *Test:* Inject a software fault (e.g., disk write error, buffer overflow, syntax exception) into a local data-plane operation.
+   * *Falsifying Observation:* The resulting local retry or rollback generating external network traffic or triggering control-plane escalation falsifies local fault containment.
+5. **Falsifier for Multi-Stage Path Provenance Enforcement (Section 2):**
+   * *Test:* Dispatch a downstream continuation payload containing a corrupted, synthetic, or blank predecessor cryptographic commitment hash.
+   * *Falsifying Observation:* The downstream third-party service accepting and executing the unlinked continuation without verifying the immediate authoritative predecessor's commitment falsifies path provenance enforcement.
+6. **Falsifier for Temporal Provenance Immutability (Section 5):**
+   * *Test:* Ingest the $t_2$ code inspection finding into the host environment and inspect historical audit probe records for $t_1$.
+   * *Falsifying Observation:* Any change in the cryptographic checksum, sequence count, or invocation count of the $t_1$ audit log entry falsifies temporal immutability.
