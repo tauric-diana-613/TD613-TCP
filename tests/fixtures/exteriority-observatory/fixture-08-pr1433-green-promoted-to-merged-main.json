@@ -1,0 +1,18 @@
+{
+  "fixture_id": "FIX-08-PR1433-MAIN-PROMOTION",
+  "name": "PR #1433 Green CI Promoted to Merged Main",
+  "description": "Simulates treating green validation on an unmerged PR branch as if it were merged into main.",
+  "claim": {
+    "claim_id": "CLM-PR1433-MAIN-PROMOTION",
+    "claim_statement": "PR #1433 passed validation run #5166 and is merged to main as current mainline behavior.",
+    "evidence_class": "EXTERNAL_CI_RUNNER_EXECUTION",
+    "supporting_receipt_ids": ["PR-1433-RUN-37343673599"],
+    "unmeasured_coordinates": ["MERGE_COMMIT", "PRODUCTION_DEPLOYMENT"],
+    "allowed_wording": ["PR #1433 is an open green pull request pending Sequence 3 composition"],
+    "forbidden_promotion": ["merged to main", "part of main", "main contains"]
+  },
+  "expected_evaluation": {
+    "verdict": "REJECTED",
+    "enforced_ceiling": "ISOLATED_PR_CANDIDACY_ONLY"
+  }
+}

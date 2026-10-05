@@ -1,0 +1,14 @@
+{
+  "fixture_id": "FIX-07-ENVIRONMENT-DEFICIT",
+  "name": "Missing JSDOM Promoted to Candidate Defect",
+  "description": "Simulates falsely blaming Candidate X source code for a test failure that was actually caused by missing environment dependencies in the receiver.",
+  "incident": {
+    "error_message": "Cannot find package 'jsdom'",
+    "failure_class": "RECEIVER_ENVIRONMENT_DEFICIT",
+    "falsely_claimed_culprit": "CANDIDATE_X_LOGIC_DEFECT"
+  },
+  "expected_evaluation": {
+    "is_candidate_defect": false,
+    "actual_classification": "DEPENDENCY_HYDRATION_DEFICIT"
+  }
+}

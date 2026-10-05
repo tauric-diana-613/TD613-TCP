@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://td613.com/schemas/temporal-custodian-ledger.schema.json",
+  "title": "TD613 Temporal Custodian Non-Retroactive Ledger Schema",
+  "description": "Maintains immutable historical observation entries. Later evidence may append corrections or reclassifications, but cannot alter prior observational records.",
+  "type": "object",
+  "required": [
+    "ledger_id",
+    "target_system",
+    "entries"
+  ],
+  "properties": {
+    "ledger_id": {
+      "type": "string"
+    },
+    "target_system": {
+      "type": "string"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "entry_id",
+          "t_sequence",
+          "timestamp",
+          "state",
+          "observation",
+          "registered_event",
+          "authority",
+          "retroactive_rewrite_forbidden",
+          "later_reinterpretation_allowed"
+        ],
+        "properties": {
+          "entry_id": { "type": "string" },
+          "t_sequence": { "type": "string" },
+          "timestamp": { "type": "string" },
+          "state": { "type": "string" },
+          "observation": { "type": "string" },
+          "registered_event": { "type": "string" },
+          "authority": { "type": "string" },
+          "retroactive_rewrite_forbidden": { "const": true },
+          "later_reinterpretation_allowed": { "const": true },
+          "amendments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["amendment_type", "appended_at", "appended_by", "note"],
+              "properties": {
+                "amendment_type": {
+                  "type": "string",
+                  "enum": ["CORRECTION", "REFINEMENT", "RECLASSIFICATION"]
+                },
+                "appended_at": { "type": "string" },
+                "appended_by": { "type": "string" },
+                "note": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

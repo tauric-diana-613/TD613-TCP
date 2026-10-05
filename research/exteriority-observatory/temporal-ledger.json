@@ -1,0 +1,88 @@
+{
+  "$schema": "https://td613.com/schemas/temporal-custodian-ledger.schema.json",
+  "ledger_id": "TD613-TEMPORAL-OBSERVATORY-LEDGER-V1",
+  "target_system": "TD613 Holonomy Loom / Marrowline Continuation & Exteriority",
+  "entries": [
+    {
+      "entry_id": "TL-001-R4-CLOSURE",
+      "t_sequence": "t1_20261004T1331",
+      "timestamp": "2026-10-04T13:31:00Z",
+      "state": "DEPLOYED_MAIN_D4C05DF_RELOCK_1F0487B",
+      "observation": "R4 live production witness executed Setup -> Continuation 1 -> Native Return. Substantive continuation count was 1.",
+      "registered_event": "R4 live production route closure admitted for declared one-continuation journey.",
+      "authority": "Production live browser witness & mentor review.",
+      "retroactive_rewrite_forbidden": true,
+      "later_reinterpretation_allowed": true,
+      "amendments": [
+        {
+          "amendment_type": "REFINEMENT",
+          "appended_at": "2026-10-04T18:00:00Z",
+          "appended_by": "Adversarial Code Audit",
+          "note": "Source inspection revealed that the executable runtime permitted a second continuation via prompt submission after phase DONE. R4 proves the observer traversed 1 continuation; it did not prove the runtime physically forbade a second."
+        }
+      ]
+    },
+    {
+      "entry_id": "TL-002-MODEL-A-AUDIT",
+      "t_sequence": "t2_20261004T1800",
+      "timestamp": "2026-10-04T18:00:00Z",
+      "state": "MAIN_5B4B342_UNRELEASED",
+      "observation": "marrowline-loom-demo.js lines 120 and 270 revealed hint 'Setup first, then two continuations' and fallback operation allowing CONTINUE after phase DONE.",
+      "registered_event": "Adversarial discovery of divergence between declared Model A canon and executable continuation runtime.",
+      "authority": "Dollhouse adversarial code audit.",
+      "retroactive_rewrite_forbidden": true,
+      "later_reinterpretation_allowed": true,
+      "amendments": []
+    },
+    {
+      "entry_id": "TL-003-EGRESS-EPISODE-A",
+      "t_sequence": "t3_20261004T2200",
+      "timestamp": "2026-10-04T22:00:00Z",
+      "state": "REMOTE_BRANCH_EGRESS_E1",
+      "observation": "Exogenous receiver fetched branch witness/candidate-x-r3-egress-41112992-20261004; SHA-256 validation failed due to CRLF/LF line ending mutation.",
+      "registered_event": "R2.5 Egress Episode A marked FAILED (Remote Byte Canonicalization Defect).",
+      "authority": "Independent receiver acquisition & reproduction.",
+      "retroactive_rewrite_forbidden": true,
+      "later_reinterpretation_allowed": true,
+      "amendments": [
+        {
+          "amendment_type": "RECLASSIFICATION",
+          "appended_at": "2026-10-04T23:30:00Z",
+          "appended_by": "Canonical Re-Egress Rite",
+          "note": "Failure classified as canonical Git blob newline normalization discrepancy, permanently preserved as historical scar."
+        }
+      ]
+    },
+    {
+      "entry_id": "TL-004-EGRESS-EPISODE-B",
+      "t_sequence": "t4_20261004T2345",
+      "timestamp": "2026-10-04T23:45:00Z",
+      "state": "REMOTE_BRANCH_EGRESS_E2",
+      "observation": "Pushed dedicated commit 582a1f04f... to witness/candidate-x-r3-egress2-41112992-20261004; all 15 files matched declared checksums upon remote fetch.",
+      "registered_event": "R2.5 Egress Episode B marked PASS (Remote Byte Identity Verified).",
+      "authority": "Remote byte verification probe.",
+      "retroactive_rewrite_forbidden": true,
+      "later_reinterpretation_allowed": true,
+      "amendments": []
+    },
+    {
+      "entry_id": "TL-005-SEQUENCE-1-CI",
+      "t_sequence": "t5_20261005T1733",
+      "timestamp": "2026-10-05T17:33:00Z",
+      "state": "REMOTE_CI_EXECUTION_RUNNER",
+      "observation": "GitHub Actions Run 37349177827 checked out 582a1f04f...; packet integrity OK, patch applied cleanly, npm ci hydrated jsdom, node:test executed 13 tests with 13 passes in 3.08s, exit code 0.",
+      "registered_event": "Sequence 1 external execution witness completed with raw conclusion SUCCESS; artifact candidate-x-r3-execution-witness ID 11361527428 uploaded.",
+      "authority": "Exogenous GitHub Actions Linux runner.",
+      "retroactive_rewrite_forbidden": true,
+      "later_reinterpretation_allowed": true,
+      "amendments": [
+        {
+          "amendment_type": "CORRECTION",
+          "appended_at": "2026-10-05T17:40:00Z",
+          "appended_by": "Amari / ChatGPT Adjudication Bridge",
+          "note": "Producing report deferred PR #1433 composition to Sequence 2; corrected routing assigns PR #1433 composition strictly to Sequence 3 (Product Demo Cathedral), keeping Sequence 2 dedicated to research instrumentation (Laboratory Monster)."
+        }
+      ]
+    }
+  ]
+}

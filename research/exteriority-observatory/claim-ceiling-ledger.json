@@ -1,0 +1,62 @@
+{
+  "$schema": "https://td613.com/schemas/claim-ceiling.schema.json",
+  "claims": [
+    {
+      "claim_id": "CLM-001-CI-EXECUTION",
+      "claim_statement": "The exact declared automated Candidate-X behavioral contract executed successfully in headless JSDOM on a GitHub-hosted Linux runner.",
+      "evidence_class": "EXTERNAL_CI_RUNNER_EXECUTION",
+      "supporting_receipt_ids": [
+        "37349177827-EXECUTION-WITNESS",
+        "ARTIFACT-11361527428"
+      ],
+      "unmeasured_coordinates": [
+        "HUMAN_COMPREHENSION",
+        "PHYSICAL_DEVICE_BEHAVIOR",
+        "LIVE_PROVIDER_EQUIVALENCE",
+        "PRODUCTION_RUNTIME_EQUIVALENCE",
+        "NEON_CUSTODY_STATE",
+        "GENERAL_PRODUCT_USABILITY"
+      ],
+      "allowed_wording": [
+        "automated behavioral contract executed successfully on external runner",
+        "R3.4 PASS_WITH_SCOPE"
+      ],
+      "forbidden_promotion": [
+        "production ready",
+        "human comprehension verified",
+        "final product truth",
+        "PRCS-A escaped"
+      ],
+      "evaluation_disposition": {
+        "verdict": "VALID",
+        "enforced_ceiling": "The exact declared automated Candidate-X behavioral contract executed successfully in headless JSDOM on a GitHub-hosted Linux runner.",
+        "rationale": "Claim stays within bounded evidence class."
+      }
+    },
+    {
+      "claim_id": "CLM-002-BYTE-IDENTITY",
+      "claim_statement": "Candidate X extraction packet became remotely addressable with verified remote byte identity on branch witness/candidate-x-r3-egress2-41112992-20261004.",
+      "evidence_class": "REMOTE_CARRIER_ATTESTATION",
+      "supporting_receipt_ids": [
+        "13-R2_5_EGRESS_RECEIPT.md",
+        "EPISODE_B_HEAD_582a1f04"
+      ],
+      "unmeasured_coordinates": [
+        "LIVE_HUMAN_EVALUATION",
+        "PRODUCTION_DEPLOYMENT"
+      ],
+      "allowed_wording": [
+        "remote addressability and byte identity verified"
+      ],
+      "forbidden_promotion": [
+        "exterior reproduction proven",
+        "PRCS-A escaped"
+      ],
+      "evaluation_disposition": {
+        "verdict": "VALID",
+        "enforced_ceiling": "REMOTE_ADDRESSABILITY_AND_BYTE_IDENTITY_ONLY",
+        "rationale": "Claim stays within remote carrier attestation evidence class."
+      }
+    }
+  ]
+}

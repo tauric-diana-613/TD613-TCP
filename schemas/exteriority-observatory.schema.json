@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://td613.com/schemas/exteriority-observatory.schema.json",
+  "title": "TD613 Exteriority Observatory Ladder Schema",
+  "description": "Formal schema for tracking and validating coordinates along the exteriority and receiver-relative ladder (R0 through R3.5) without scalar compression or premature promotion.",
+  "type": "object",
+  "required": [
+    "observatory_version",
+    "evaluated_target",
+    "base_commit",
+    "episodes",
+    "ladder_coordinates"
+  ],
+  "properties": {
+    "observatory_version": {
+      "type": "string",
+      "enum": ["1.0.0"]
+    },
+    "evaluated_target": {
+      "type": "string"
+    },
+    "base_commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "episodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["episode_id", "title", "historical_status", "scars"],
+        "properties": {
+          "episode_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "historical_status": {
+            "type": "string"
+          },
+          "scars": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "ladder_coordinates": {
+      "type": "object",
+      "required": [
+        "R0",
+        "R1",
+        "R2",
+        "R2.5",
+        "R3.0",
+        "R3.1",
+        "R3.2",
+        "R3.3",
+        "R3.4",
+        "R3.5"
+      ],
+      "properties": {
+        "R0": { "$ref": "#/$defs/ladder_coordinate" },
+        "R1": { "$ref": "#/$defs/ladder_coordinate" },
+        "R2": { "$ref": "#/$defs/ladder_coordinate" },
+        "R2.5": { "$ref": "#/$defs/ladder_coordinate" },
+        "R3.0": { "$ref": "#/$defs/ladder_coordinate" },
+        "R3.1": { "$ref": "#/$defs/ladder_coordinate" },
+        "R3.2": { "$ref": "#/$defs/ladder_coordinate" },
+        "R3.3": { "$ref": "#/$defs/ladder_coordinate" },
+        "R3.4": { "$ref": "#/$defs/ladder_coordinate" },
+        "R3.5": { "$ref": "#/$defs/ladder_coordinate" }
+      }
+    },
+    "unmeasured_coordinates": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "ladder_coordinate": {
+      "type": "object",
+      "required": [
+        "coordinate",
+        "name",
+        "status",
+        "source",
+        "receiver",
+        "evidence_class",
+        "claim_ceiling",
+        "missing_witness"
+      ],
+      "properties": {
+        "coordinate": {
+          "type": "string",
+          "enum": ["R0", "R1", "R2", "R2.5", "R3.0", "R3.1", "R3.2", "R3.3", "R3.4", "R3.5"]
+        },
+        "name": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "UNMEASURED",
+            "PASS",
+            "PASS_WITH_SCOPE",
+            "FAIL",
+            "HELD",
+            "INADMISSIBLE",
+            "PARTIAL",
+            "OBSERVED_PARTIAL"
+          ]
+        },
+        "source": {
+          "type": "string"
+        },
+        "receiver": {
+          "type": "string"
+        },
+        "observed_at": {
+          "type": ["string", "null"]
+        },
+        "registered_at": {
+          "type": ["string", "null"]
+        },
+        "evidence_class": {
+          "type": "string"
+        },
+        "claim_ceiling": {
+          "type": "string"
+        },
+        "missing_witness": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "receipt_references": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

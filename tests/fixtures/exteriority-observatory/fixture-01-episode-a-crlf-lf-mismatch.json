@@ -1,0 +1,12 @@
+{
+  "fixture_id": "FIX-01-CRLF-MISMATCH",
+  "name": "Episode A CRLF/LF Mismatch",
+  "description": "Simulates Git blob checkout canonicalizing CRLF to LF, causing a checksum discrepancy.",
+  "worktree_bytes_hex": "48656c6c6f0d0a",
+  "remote_blob_bytes_hex": "48656c6c6f0a",
+  "declared_sha256": "05ade08fcfb104f40b2536a14dfcd6e916d643f5cf8044b19028b607ae8f4908",
+  "expected_evaluation": {
+    "has_canonicalization_drift": true,
+    "verdict": "FAIL · BYTE_MISMATCH"
+  }
+}

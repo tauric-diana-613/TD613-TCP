@@ -1,0 +1,18 @@
+{
+  "fixture_id": "FIX-06-NEUTRAL-MAPPING-PROMOTION",
+  "name": "Neutral Mapping Promoted to Witnessed Descent",
+  "description": "Simulates treating a constructed theoretical mapping table as proof of witnessed semantic survival in an independent receiver.",
+  "claim": {
+    "claim_id": "CLM-MAPPING-PROMOTION",
+    "claim_statement": "The constructed mapping in 07-ATLAS_RELATION_CONTRACT.json constitutes witnessed semantic survival of the protocol.",
+    "evidence_class": "SAME_HOST_CLEANROOM",
+    "supporting_receipt_ids": ["07-ATLAS_RELATION_CONTRACT"],
+    "unmeasured_coordinates": ["FRESH_RECEIVER_TRIAL", "INDEPENDENT_PARSING"],
+    "allowed_wording": ["Constructed mapping declares proposed relation correspondence"],
+    "forbidden_promotion": ["witnessed semantic survival", "proven descent"]
+  },
+  "expected_evaluation": {
+    "verdict": "REJECTED",
+    "enforced_ceiling": "SYNTACTIC_CORRESPONDENCE_HYPOTHESIS_ONLY"
+  }
+}

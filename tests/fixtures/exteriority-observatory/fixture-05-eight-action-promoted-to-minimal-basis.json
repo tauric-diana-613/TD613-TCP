@@ -1,0 +1,18 @@
+{
+  "fixture_id": "FIX-05-MINIMALITY-PROMOTION",
+  "name": "Eight-Action Sufficient Basis Promoted to Minimal Basis",
+  "description": "Simulates promoting an 8-action sufficient basis into a claim of being a proven minimal basis without a minimality witness.",
+  "claim": {
+    "claim_id": "CLM-MINIMALITY-PROMOTION",
+    "claim_statement": "The 8-action authority support model is the unique minimal basis for governed continuation.",
+    "evidence_class": "SAME_HOST_CLEANROOM",
+    "supporting_receipt_ids": ["FADT-AUDIT-CANDIDATE-X"],
+    "unmeasured_coordinates": ["MINIMALITY_PROOF", "BASIS_INDEPENDENCE_PROOF"],
+    "allowed_wording": ["8 actions are sufficient to separate lawful supports"],
+    "forbidden_promotion": ["unique minimal basis", "mathematically minimal"]
+  },
+  "expected_evaluation": {
+    "verdict": "REJECTED",
+    "enforced_ceiling": "SUFFICIENT_REPRESENTATION_ONLY"
+  }
+}

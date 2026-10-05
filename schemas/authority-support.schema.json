@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://td613.com/schemas/authority-support.schema.json",
+  "title": "TD613 Authority Support and Finite Quotient Auditor Schema",
+  "description": "Evaluates candidate quotient erasures across antecedent lawful supports, computing union (U), intersection (I), and the gap Gamma = U \\ I. Explicitly tracks minimality status.",
+  "type": "object",
+  "required": [
+    "evaluation_id",
+    "target_model",
+    "actions",
+    "states",
+    "quotient_candidates"
+  ],
+  "properties": {
+    "evaluation_id": {
+      "type": "string"
+    },
+    "target_model": {
+      "type": "string"
+    },
+    "actions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "states": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "quotient_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "erased_conditioning_coordinate",
+          "antecedent_supports",
+          "union_U",
+          "intersection_I",
+          "gamma_gap",
+          "descent_status",
+          "sufficiency_status",
+          "minimality_status"
+        ],
+        "properties": {
+          "erased_conditioning_coordinate": {
+            "type": "string"
+          },
+          "antecedent_supports": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          },
+          "union_U": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "intersection_I": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "gamma_gap": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "descent_status": {
+            "type": "string",
+            "enum": ["DESCENT_ADMISSIBLE", "DESCENT_OBSTRUCTED"]
+          },
+          "sufficiency_status": {
+            "type": "string",
+            "enum": ["SUFFICIENT", "INSUFFICIENT"]
+          },
+          "minimality_status": {
+            "type": "string",
+            "enum": ["MINIMALITY_UNPROVEN", "MINIMALITY_WITNESSED"]
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

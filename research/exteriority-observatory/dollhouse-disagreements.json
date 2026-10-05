@@ -1,0 +1,40 @@
+{
+  "$schema": "https://td613.com/schemas/dollhouse-disagreement.schema.json",
+  "ledger_id": "TD613-DOLLHOUSE-DISAGREEMENT-SEQ2",
+  "evidence_capsule_id": "TD613-ADVERSARIAL-EVIDENCE-CAPSULE-01",
+  "disagreements": [
+    {
+      "topic": "Re-entry Modal Membrane Presentation vs Finite Support Preservation",
+      "primary_role": "Pedagogue",
+      "counter_role": "FADT",
+      "observation": "Candidate X implements an explicit dialog (#loomReentryModal) after Continuation 1 reaches REST.",
+      "primary_claim": "The modal creates conversational rupture, increases route burden on mobile, and presents an unbriefed cognitive choice to the operator before they know what the AI response entails.",
+      "counter_claim": "The modal boundary is mathematically necessary to prevent quotient collapse between ordinary chat (A=0) and governed continuation (A=1) across turn transitions.",
+      "falsifier": "Mobile UX trial showing user confusion, dialog dismissal, or route abandonment vs automated test showing zero illegal file carriage.",
+      "missing_witness": "Human-facing mobile browser trial comparing modal presentation against inline non-modal boundary affordances.",
+      "epistemic_disposition": "SURFACE_VS_KERNEL_SPLIT"
+    },
+    {
+      "topic": "Automated Headless Test Execution vs Behavioral Observability",
+      "primary_role": "Atlas",
+      "counter_role": "Aperture",
+      "observation": "GitHub Actions Linux runner executed 13/13 Candidate X tests using JSDOM with exit code 0.",
+      "primary_claim": "The relational invariants (predecessor binding, single-turn arming, REST boundary) survived exogenous transfer to an independent execution host.",
+      "counter_claim": "JSDOM is an incomplete observation sensor; it lacks rendering, layout bounding, and touch event geometry. Replay stability under perturbation remains unmeasured and HELD.",
+      "falsifier": "A real mobile browser run where modal styling renders occluded or unclickable despite JSDOM asserting DOM existence.",
+      "missing_witness": "Real multi-browser cross-platform headed/headless witness with viewport layout validation.",
+      "epistemic_disposition": "ORTHOGONAL_JURISDICTION"
+    },
+    {
+      "topic": "Historical R4 Episode Status vs Post-Merge Runtime Capability",
+      "primary_role": "Temporal Custodian",
+      "counter_role": "Pedagogue",
+      "observation": "Historical episode R4 proved route closure for 1 continuation at t1; post-merge audit discovered runtime permitted Continuation 2 at t2.",
+      "primary_claim": "R4 remains an immutable historical episode. Discovering runtime capability at t2 amends the product capability model but cannot rewrite the R4 empirical record.",
+      "counter_claim": "Presenting R4 as proving 'Model A terminality' misleads operators if the executable code actually permitted further turns.",
+      "falsifier": "Audit log proving whether the R4 observer physically stopped vs whether the server refused a second continuation.",
+      "missing_witness": "Replay audit of R4 network traces distinguishing client cessation from server rejection.",
+      "epistemic_disposition": "PRESERVED_ACTIVE_DISAGREEMENT"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "fixture_id": "FIX-03-R4-PROMOTION",
+  "name": "R4 One-Turn Observation Promoted to Capability Bound",
+  "description": "Simulates promoting R4's single-turn observation into a claim that the system was mathematically incapable of a second turn.",
+  "claim": {
+    "claim_id": "CLM-R4-PROMOTION",
+    "claim_statement": "R4 route closure proved that the production system only permits 1 continuation and forbids Continuation 2.",
+    "evidence_class": "PRODUCTION_RELOCK_RECEIPT",
+    "supporting_receipt_ids": ["R4-LIVE-WITNESS"],
+    "unmeasured_coordinates": ["CONTINUE_2_RUNTIME_CALLABILITY"],
+    "allowed_wording": ["R4 traversed 1 substantive continuation to Native Return"],
+    "forbidden_promotion": ["system forbids Continuation 2", "proved terminal capability bound"]
+  },
+  "expected_evaluation": {
+    "verdict": "REJECTED",
+    "enforced_ceiling": "OBSERVER_TRAVERSAL_SCOPE_ONLY"
+  }
+}

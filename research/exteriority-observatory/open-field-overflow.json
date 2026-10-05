@@ -1,0 +1,35 @@
+{
+  "overflow_id": "TD613-OPEN-FIELD-OVERFLOW-V1",
+  "experiment_context": "Sequence 2 Laboratory Monster · Candidate X Extraction & Exteriority",
+  "core_law": "FREEZE_OF_MUTATION != FREEZE_OF_OBSERVATION",
+  "recorded_observations": [
+    {
+      "observation_id": "OF-001",
+      "category": "UNEXPECTED_ARCHITECTURE",
+      "summary": "Candidate D (Inline Non-Modal Membrane) remains a viable ergonomic alternative to Candidate X's modal presentation.",
+      "detail": "While Candidate X solves the quotient collapse via a modal dialog (#loomReentryModal), an inline expansion control (e.g. secondary action chip inside composer or toggle above chat input) could enforce the same finite quotient (A=1 for 1 turn, then A=0) with substantially reduced cognitive disruption.",
+      "falsifier": "Mobile A/B tournament comparing completion speed and drop-off between modal dialog and inline chip."
+    },
+    {
+      "observation_id": "OF-002",
+      "category": "UNMODELED_STATE",
+      "summary": "Browser Network Disconnect during Re-entry Membrane Confirmation",
+      "detail": "If network connectivity drops after the operator confirms the membrane dialog but before the request reaches the server, the arming lease active=true may persist in memory while the user sees a network error, potentially leaking carriage on subsequent offline recovery turns.",
+      "falsifier": "Offline network simulation during membrane arming transition in Puppeteer/Playwright."
+    },
+    {
+      "observation_id": "OF-003",
+      "category": "MISSING_RELATION",
+      "summary": "Marrowline Attachment Retry vs Governed Carriage Composition",
+      "detail": "PR #1433 introduces exact attachment replay for ordinary chat via Red Deer non-enumerable memory. When Candidate X and PR #1433 compose in Sequence 3, we must verify that retrying a failed ordinary message does not accidentally re-arm or re-attach Loom governed files.",
+      "falsifier": "Integration test exercising #1433 retry button immediately following a REST governed turn."
+    },
+    {
+      "observation_id": "OF-004",
+      "category": "NEW_CONDITIONING_COORDINATE",
+      "summary": "Biometric / Authentication Lease Timeout",
+      "detail": "Governed continuation lease is currently turn-bounded (1 turn). In enterprise or multi-user environments, time-bounded expiration (e.g. 5 minutes of idle time after DONE) may be required alongside turn bounds.",
+      "falsifier": "Automated timeout test where modal confirms arming but idle delay of 300s revokes active status."
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "$schema": "https://td613.com/schemas/authority-support.schema.json",
+  "evaluation_id": "TD613-FADT-AUTHORITY-SUPPORT-CANDIDATE-X",
+  "target_model": "Candidate X Re-entry Membrane & Governed Continuation",
+  "actions": [
+    "ordinary_chat_send",
+    "governed_continuation_dispatch",
+    "selected_file_carriage",
+    "predecessor_binding",
+    "custody_admission_request",
+    "return_review",
+    "export_review",
+    "reentry_request"
+  ],
+  "states": [
+    "REST",
+    "ARMED_ONE_TURN",
+    "DISPATCH_PENDING",
+    "ADMISSION_RECEIVED",
+    "RETURN_PREVIEW",
+    "EXPORT_STAGE"
+  ],
+  "quotient_candidates": [
+    {
+      "erased_conditioning_coordinate": "membrane_dialog_confirmation",
+      "antecedent_supports": {
+        "REST": [
+          "ordinary_chat_send",
+          "return_review",
+          "export_review",
+          "reentry_request"
+        ],
+        "ARMED_ONE_TURN": [
+          "ordinary_chat_send",
+          "governed_continuation_dispatch",
+          "selected_file_carriage",
+          "predecessor_binding",
+          "custody_admission_request",
+          "return_review",
+          "export_review"
+        ]
+      },
+      "union_U": [
+        "custody_admission_request",
+        "export_review",
+        "governed_continuation_dispatch",
+        "ordinary_chat_send",
+        "predecessor_binding",
+        "reentry_request",
+        "return_review",
+        "selected_file_carriage"
+      ],
+      "intersection_I": [
+        "export_review",
+        "ordinary_chat_send",
+        "return_review"
+      ],
+      "gamma_gap": [
+        "custody_admission_request",
+        "governed_continuation_dispatch",
+        "predecessor_binding",
+        "reentry_request",
+        "selected_file_carriage"
+      ],
+      "descent_status": "DESCENT_OBSTRUCTED",
+      "sufficiency_status": "SUFFICIENT",
+      "minimality_status": "MINIMALITY_UNPROVEN",
+      "notes": "Erasing membrane_dialog_confirmation creates a non-empty Gamma gap. Erasing it would collapse ARMED carriage into REST chat without operator gesture, violating Cistern law."
+    },
+    {
+      "erased_conditioning_coordinate": "single_turn_lease_expiration",
+      "antecedent_supports": {
+        "ARMED_ONE_TURN": [
+          "governed_continuation_dispatch",
+          "selected_file_carriage",
+          "predecessor_binding"
+        ],
+        "POST_DISPATCH_REST": [
+          "ordinary_chat_send",
+          "return_review"
+        ]
+      },
+      "union_U": [
+        "governed_continuation_dispatch",
+        "ordinary_chat_send",
+        "predecessor_binding",
+        "return_review",
+        "selected_file_carriage"
+      ],
+      "intersection_I": [],
+      "gamma_gap": [
+        "governed_continuation_dispatch",
+        "ordinary_chat_send",
+        "predecessor_binding",
+        "return_review",
+        "selected_file_carriage"
+      ],
+      "descent_status": "DESCENT_OBSTRUCTED",
+      "sufficiency_status": "SUFFICIENT",
+      "minimality_status": "MINIMALITY_UNPROVEN",
+      "notes": "Erasing single_turn_lease_expiration would keep carriage authority active across consecutive turns indefinitely, eliminating the REST boundary."
+    }
+  ]
+}

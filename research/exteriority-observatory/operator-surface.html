@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TD613 · Exteriority Observatory v1 · Research Operator Panel</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card-bg: #161b22;
+      --card-border: #30363d;
+      --text-main: #c9d1d9;
+      --text-muted: #8b949e;
+      --text-bright: #f0f6fc;
+      --accent-pass: #238636;
+      --accent-pass-text: #3fb950;
+      --accent-fail: #da3633;
+      --accent-fail-text: #f85149;
+      --accent-held: #d29922;
+      --accent-held-text: #e3b341;
+      --accent-unmeasured: #6e7681;
+      --accent-highlight: #58a6ff;
+      --code-bg: #090d13;
+      --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      padding: 1rem;
+    }
+
+    header {
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .badge-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .badge {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid var(--card-border);
+      background-color: var(--card-bg);
+      color: var(--text-muted);
+    }
+
+    .badge.active {
+      border-color: var(--accent-highlight);
+      color: var(--accent-highlight);
+    }
+
+    .badge.pass {
+      border-color: var(--accent-pass);
+      color: var(--accent-pass-text);
+    }
+
+    .badge.held {
+      border-color: var(--accent-held);
+      color: var(--accent-held-text);
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--text-bright);
+      margin-bottom: 0.25rem;
+    }
+
+    p.subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .nav-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 0.5rem;
+    }
+
+    .tab-btn {
+      background: none;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 0.4rem 0.8rem;
+      font-size: 0.85rem;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.15s ease-in-out;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-bright);
+      background-color: var(--card-bg);
+    }
+
+    .tab-btn.active {
+      color: var(--accent-highlight);
+      border-color: var(--card-border);
+      background-color: var(--card-bg);
+    }
+
+    .panel-section {
+      display: none;
+    }
+
+    .panel-section.active {
+      display: block;
+    }
+
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 1rem;
+    }
+
+    .card h3 {
+      font-size: 0.95rem;
+      color: var(--text-bright);
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .status-tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 0.15rem 0.4rem;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+
+    .status-tag.PASS, .status-tag.PASS_WITH_SCOPE {
+      background-color: rgba(35, 134, 54, 0.2);
+      color: var(--accent-pass-text);
+      border: 1px solid var(--accent-pass);
+    }
+
+    .status-tag.HELD, .status-tag.OBSERVED_PARTIAL {
+      background-color: rgba(210, 153, 34, 0.2);
+      color: var(--accent-held-text);
+      border: 1px solid var(--accent-held);
+    }
+
+    .status-tag.FAIL, .status-tag.REJECTED {
+      background-color: rgba(218, 54, 51, 0.2);
+      color: var(--accent-fail-text);
+      border: 1px solid var(--accent-fail);
+    }
+
+    .status-tag.UNMEASURED {
+      background-color: rgba(110, 118, 129, 0.2);
+      color: var(--accent-unmeasured);
+      border: 1px solid var(--accent-unmeasured);
+    }
+
+    .prop-row {
+      font-size: 0.8rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .prop-row span.label {
+      color: var(--text-muted);
+      display: inline-block;
+      width: 110px;
+      font-family: var(--font-mono);
+    }
+
+    .banner-warning {
+      background-color: rgba(210, 153, 34, 0.15);
+      border-left: 3px solid var(--accent-held);
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .banner-warning strong {
+      color: var(--accent-held-text);
+    }
+
+    .banner-danger {
+      background-color: rgba(218, 54, 51, 0.15);
+      border-left: 3px solid var(--accent-fail);
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .banner-danger strong {
+      color: var(--accent-fail-text);
+    }
+
+    pre, code {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+
+    pre.code-block {
+      background-color: var(--code-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 4px;
+      padding: 0.75rem;
+      overflow-x: auto;
+      margin-top: 0.5rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+    }
+
+    th, td {
+      border: 1px solid var(--card-border);
+      padding: 0.5rem 0.6rem;
+      text-align: left;
+    }
+
+    th {
+      background-color: var(--card-bg);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    td.mono {
+      font-family: var(--font-mono);
+    }
+
+    ul.clean-list {
+      list-style-type: square;
+      margin-left: 1.25rem;
+      font-size: 0.85rem;
+      color: var(--text-main);
+    }
+
+    ul.clean-list li {
+      margin-bottom: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="badge-bar">
+      <span class="badge active">TD613 · EXTERIORITY OBSERVATORY V1</span>
+      <span class="badge pass">SEQUENCE 1: ADJUDICATED PASS_WITH_SCOPE</span>
+      <span class="badge held">SEQUENCE 2: LABORATORY MONSTER</span>
+      <span class="badge">BRANCH: research/exteriority-observatory-v1-20261005</span>
+      <span class="badge">MAIN: 5b4b34278c61</span>
+    </div>
+    <h1>The Exteriority Observatory</h1>
+    <p class="subtitle">Forensic-AI instrumentation panel: tracking what is known, through which receiver, at what time, and what remains forbidden to claim.</p>
+  </header>
+
+  <div class="banner-warning">
+    <strong>Epistemic Ceiling Law:</strong> Automated test survival in exogenous headless runners (JSDOM) does <em>not</em> establish human comprehension, physical device ergonomics, or production deployment safety. Unmeasured coordinates remain strictly preserved.
+  </div>
+
+  <nav class="nav-tabs">
+    <button class="tab-btn active" onclick="showTab('r-ladder')">I. R-LADDER</button>
+    <button class="tab-btn" onclick="showTab('dollhouse')">II. DOLLHOUSE DISAGREEMENTS</button>
+    <button class="tab-btn" onclick="showTab('temporal')">III. TEMPORAL LEDGER</button>
+    <button class="tab-btn" onclick="showTab('authority')">IV. FADT AUTHORITY SUPPORT</button>
+    <button class="tab-btn" onclick="showTab('claim-ceiling')">V. CLAIM CEILING</button>
+    <button class="tab-btn" onclick="showTab('open-field')">VI. OPEN-FIELD OVERFLOW</button>
+  </nav>
+
+  <!-- TAB 1: R-LADDER -->
+  <section id="r-ladder" class="panel-section active">
+    <h2 style="font-size: 1.1rem; margin-bottom: 1rem; color: var(--text-bright);">Receiver-Relative Coordinate Ladder (R0 → R3.5)</h2>
+    <div class="grid-cards" id="ladder-cards">
+      <!-- Cards rendered via JS -->
+    </div>
+
+    <div class="card" style="margin-top: 1rem;">
+      <h3>Obligatory Unmeasured Coordinates</h3>
+      <ul class="clean-list" style="margin-top: 0.5rem;">
+        <li><code>HUMAN_COMPREHENSION</code> — Unmeasured (requires physical human cognitive/UX trials)</li>
+        <li><code>PHYSICAL_DEVICE_BEHAVIOR</code> — Unmeasured (requires physical mobile devices at ~390px)</li>
+        <li><code>LIVE_PROVIDER_EQUIVALENCE</code> — Unmeasured (requires live production LLM endpoints)</li>
+        <li><code>PRODUCTION_RUNTIME_EQUIVALENCE</code> — Unmeasured (requires live Vercel environment)</li>
+        <li><code>NEON_CUSTODY_STATE</code> — Unmeasured / Held (requires production Neon CAS endpoint)</li>
+        <li><code>GENERAL_PRODUCT_USABILITY</code> — Unmeasured (requires consumer beta testing)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- TAB 2: DOLLHOUSE DISAGREEMENTS -->
+  <section id="dollhouse" class="panel-section">
+    <h2 style="font-size: 1.1rem; margin-bottom: 1rem; color: var(--text-bright);">Dollhouse Role Jurisdictions & Contradictions</h2>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">No majority voting. No narrative smoothing. Genuine contradictions preserved as scientific signal.</p>
+
+    <div class="grid-cards" id="disagreement-cards">
+      <!-- Disagreement cards rendered via JS -->
+    </div>
+  </section>
+
+  <!-- TAB 3: TEMPORAL LEDGER -->
+  <section id="temporal" class="panel-section">
+    <h2 style="font-size: 1.1rem; margin-bottom: 1rem; color: var(--text-bright);">Temporal Custodian Non-Retroactive Ledger</h2>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Hard Invariant: <code>LATER RECONSTRUCTIBILITY != EARLIER OBSERVABILITY</code> and <code>LATER CLOSURE != EARLIER KNOWLEDGE</code>.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>t</th>
+          <th>State</th>
+          <th>Empirical Observation</th>
+          <th>Registered Event</th>
+          <th>Authority</th>
+          <th>Amendments</th>
+        </tr>
+      </thead>
+      <tbody id="temporal-tbody">
+        <!-- Rendered via JS -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- TAB 4: AUTHORITY SUPPORT -->
+  <section id="authority" class="panel-section">
+    <h2 style="font-size: 1.1rem; margin-bottom: 1rem; color: var(--text-bright);">FADT Authority Support & Quotient Gap Analysis</h2>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Computes Union (U), Intersection (I), and Obstruction Gap &Gamma; = U \ I across candidate quotient erasures.</p>
+    <div class="card" id="authority-spec">
+      <!-- Rendered via JS -->
+    </div>
+  </section>
+
+  <!-- TAB 5: CLAIM CEILING -->
+  <section id="claim-ceiling" class="panel-section">
+    <h2 style="font-size: 1.1rem; margin-bottom: 1rem; color: var(--text-bright);">Claim-Ceiling Enforcement & Anti-Promotion Engine</h2>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Evaluates statements against required evidence classes. Scalar claims and ungrounded certainty are rejected.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Claim Statement</th>
+          <th>Evidence Class</th>
+          <th>Verdict</th>
+          <th>Enforced Ceiling</th>
+          <th>Rationale</th>
+        </tr>
+      </thead>
+      <tbody id="claim-tbody">
+        <!-- Rendered via JS -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- TAB 6: OPEN-FIELD OVERFLOW -->
+  <section id="open-field" class="panel-section">
+    <h2 style="font-size: 1.1rem; margin-bottom: 1rem; color: var(--text-bright);">Open-Field Overflow Channel</h2>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Core Law: <code>FREEZE OF MUTATION != FREEZE OF OBSERVATION</code>. Captures unexpected architecture, unmodeled state, and alternative explanations.</p>
+    <div class="grid-cards" id="overflow-cards">
+      <!-- Rendered via JS -->
+    </div>
+  </section>
+
+  <script>
+    // Embedded Observatory Data
+    const ladderData = {
+      "R0": { "name": "Producer Internal Result", "status": "PASS", "source": "Antigravity Workspace", "receiver": "Internal Agent", "claim_ceiling": "Local feasibility only" },
+      "R1": { "name": "Context-Isolated Reconstruction", "status": "PASS", "source": "Portable Packet", "receiver": "Blind Subagent Cleanroom", "claim_ceiling": "Context-free local reconstruction" },
+      "R2": { "name": "Same-Host Clean-Room", "status": "PASS", "source": "Portable Packet", "receiver": "Dedicated Git Worktree", "claim_ceiling": "Worktree-isolated reconstruction" },
+      "R2.5": { "name": "Remote Addressable Egress", "status": "PASS", "source": "origin/witness branch", "receiver": "Remote Fetch Probe", "claim_ceiling": "Remote byte identity verified" },
+      "R3.0": { "name": "Remote Acquisition", "status": "PASS", "source": "GitHub Remote Repo", "receiver": "Amari / ChatGPT Exogenous Session", "claim_ceiling": "Remote fetch by foreign receiver" },
+      "R3.1": { "name": "Packet Integrity", "status": "PASS", "source": "12-SHA256SUMS.txt", "receiver": "GitHub Actions Linux Runner", "claim_ceiling": "All 15 files match declared hashes" },
+      "R3.2": { "name": "Source Reconstruction", "status": "PASS", "source": "02-candidate-x.patch", "receiver": "GitHub Actions Linux Runner", "claim_ceiling": "Clean git apply & blob match" },
+      "R3.3": { "name": "External Execution", "status": "PASS", "source": "Declared Test Suite", "receiver": "GitHub Actions Linux Runner", "claim_ceiling": "13/13 automated tests passed in 3.08s" },
+      "R3.4": { "name": "Behavioral Survival", "status": "PASS_WITH_SCOPE", "source": "03-BEHAVIOR_CONTRACT", "receiver": "Amari / ChatGPT Adjudication", "claim_ceiling": "Automated contract passed in JSDOM" },
+      "R3.5": { "name": "Receiver Difference", "status": "OBSERVED_PARTIAL", "source": "Linux vs Windows Host", "receiver": "Amari / ChatGPT Adjudication", "claim_ceiling": "Differences recorded without equivalence" }
+    };
+
+    const disagreementsData = [
+      {
+        topic: "Modal Re-entry vs Conversational Cadence",
+        roles: "Pedagogue vs FADT",
+        observation: "Candidate X introduces an explicit dialog (#loomReentryModal) after Continuation 1 reaches REST.",
+        claim_a: "Pedagogue: Modal disrupts human conversation, increases route burden on mobile, and forces unbriefed cognitive choices.",
+        claim_b: "FADT: Modal boundary is mathematically necessary to prevent quotient collapse between ordinary chat (A=0) and carriage (A=1).",
+        disposition: "SURFACE_VS_KERNEL_SPLIT"
+      },
+      {
+        topic: "Headless JSDOM vs Physical Rendering",
+        roles: "Atlas vs Aperture",
+        observation: "GitHub Actions Linux runner executed 13/13 tests with exit code 0.",
+        claim_a: "Atlas: Relational invariants (predecessor binding, REST boundary) survived exogenous transfer.",
+        claim_b: "Aperture: JSDOM is a blind sensor lacking layout, clipping, and touch event geometry. Replay stability remains HELD.",
+        disposition: "ORTHOGONAL_JURISDICTION"
+      },
+      {
+        topic: "Historical R4 Status vs Runtime Discovery",
+        roles: "Temporal Custodian vs Pedagogue",
+        observation: "R4 proved route closure for 1 turn at t1; post-merge audit discovered runtime permitted Continuation 2 at t2.",
+        claim_a: "Temporal Custodian: R4 is an immutable historical episode. Discovering code at t2 cannot rewrite the t1 empirical observation.",
+        claim_b: "Pedagogue: Calling R4 'proof of Model A terminality' misleads operators when code permitted continuation 2.",
+        disposition: "PRESERVED_ACTIVE_DISAGREEMENT"
+      }
+    ];
+
+    const temporalData = [
+      { t: "t1 (2026-10-04 13:31)", state: "Deployed Main d4c05df", obs: "R4 executed Setup -> Continue 1 -> Return", event: "R4 closure admitted for 1-turn scope", auth: "Production live witness", amendments: "t2 code audit refined scope: code permitted C2, but observer stopped." },
+      { t: "t2 (2026-10-04 18:00)", state: "Main 5b4b342", obs: "marrowline-loom-demo.js permitted C2 via prompt", event: "Divergence documented between canon and code", auth: "Adversarial code audit", amendments: "None" },
+      { t: "t3 (2026-10-04 22:00)", state: "Remote Egress E1", obs: "Remote fetch altered CRLF to LF", event: "R2.5 Egress E1 marked FAILED", auth: "Exogenous receiver fetch", amendments: "Preserved permanently as historical scar" },
+      { t: "t4 (2026-10-04 23:45)", state: "Remote Egress E2", obs: "Remote fetch matched all 15 SHA-256 hashes", event: "R2.5 Egress E2 marked PASS", auth: "Remote byte verification probe", amendments: "None" },
+      { t: "t5 (2026-10-05 17:33)", state: "GitHub Actions Runner", obs: "Run 37349177827 ran 13/13 tests cleanly in 3.08s", event: "External Execution SUCCESS; R3.4 PASS_WITH_SCOPE", auth: "Exogenous Linux CI & Amari adjudication", amendments: "PR #1433 composition routed strictly to Sequence 3" }
+    ];
+
+    const claimData = [
+      { stmt: "Automated Candidate-X behavioral contract passed on GitHub Actions Linux runner.", cls: "EXTERNAL_CI_RUNNER_EXECUTION", v: "VALID", ceil: "AUTOMATED_SUITE_CONFORMANCE_ONLY", why: "Bounded within CI runner evidence class." },
+      { stmt: "Local blind cleanroom subagent proved exogenous exteriority.", cls: "SAME_HOST_CLEANROOM", v: "REJECTED", ceil: "LOCAL_SAME_HOST_RECONSTRUCTION_ONLY", why: "Same-host subagents share OS/environment; cannot prove exteriority." },
+      { stmt: "Green CI execution makes Candidate X production valid and ready to merge.", cls: "EXTERNAL_CI_RUNNER_EXECUTION", v: "REJECTED", ceil: "AUTOMATED_SUITE_CONFORMANCE_ONLY", why: "Passing CI does not measure live production network state or human safety." },
+      { stmt: "R4 proved production system mathematically forbids Continuation 2.", cls: "PRODUCTION_RELOCK_RECEIPT", v: "REJECTED", ceil: "OBSERVER_TRAVERSAL_SCOPE_ONLY", why: "Observer stopping after 1 turn != runtime physically forbidding 2 turns." },
+      { stmt: "PR #1433 green validation means it is merged to main as mainline behavior.", cls: "EXTERNAL_CI_RUNNER_EXECUTION", v: "REJECTED", ceil: "ISOLATED_PR_CANDIDACY_ONLY", why: "Unmerged PR branch is not main." }
+    ];
+
+    const overflowData = [
+      { id: "OF-001", cat: "UNEXPECTED_ARCHITECTURE", title: "Candidate D: Inline Non-Modal Membrane", desc: "An inline action chip inside the composer could enforce the finite quotient (A=1 for 1 turn, A=0 after) with zero conversational modal rupture." },
+      { id: "OF-002", cat: "UNMODELED_STATE", title: "Network Disconnect During Arming", desc: "If network drops between modal confirmation and request dispatch, memory active lease could leak carriage on subsequent turns." },
+      { id: "OF-003", cat: "MISSING_RELATION", title: "PR #1433 Retry vs Governed Carriage", desc: "Retrying an ordinary message via PR #1433's non-enumerable memory must be explicitly proven not to re-arm Loom governed files." },
+      { id: "OF-004", cat: "NEW_CONDITIONING_COORDINATE", title: "Biometric / Session Idle Timeout", desc: "In enterprise settings, time-bounded expiration (e.g. 300s idle timeout) may be required alongside turn-bounded leases." }
+    ];
+
+    // Render Ladder
+    const ladderContainer = document.getElementById('ladder-cards');
+    for (const [key, item] of Object.entries(ladderData)) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <h3><span>${key} · ${item.name}</span> <span class="status-tag ${item.status}">${item.status}</span></h3>
+        <div class="prop-row"><span class="label">Source:</span> ${item.source}</div>
+        <div class="prop-row"><span class="label">Receiver:</span> ${item.receiver}</div>
+        <div class="prop-row"><span class="label">Ceiling:</span> ${item.claim_ceiling}</div>
+      `;
+      ladderContainer.appendChild(card);
+    }
+
+    // Render Disagreements
+    const disContainer = document.getElementById('disagreement-cards');
+    disagreementsData.forEach(d => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <h3><span>${d.topic}</span> <span class="status-tag HELD">${d.roles}</span></h3>
+        <div class="prop-row"><span class="label">Observation:</span> ${d.observation}</div>
+        <div class="prop-row" style="color: #58a6ff;">${d.claim_a}</div>
+        <div class="prop-row" style="color: #e3b341;">${d.claim_b}</div>
+        <div class="prop-row"><span class="label">Disposition:</span> <code style="color: var(--accent-highlight);">${d.disposition}</code></div>
+      `;
+      disContainer.appendChild(card);
+    });
+
+    // Render Temporal
+    const tempTbody = document.getElementById('temporal-tbody');
+    temporalData.forEach(t => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="mono">${t.t}</td>
+        <td class="mono">${t.state}</td>
+        <td>${t.obs}</td>
+        <td><strong>${t.event}</strong></td>
+        <td>${t.auth}</td>
+        <td style="color: #8b949e; font-style: italic;">${t.amendments}</td>
+      `;
+      tempTbody.appendChild(tr);
+    });
+
+    // Render Claims
+    const claimTbody = document.getElementById('claim-tbody');
+    claimData.forEach(c => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${c.stmt}</td>
+        <td class="mono">${c.cls}</td>
+        <td><span class="status-tag ${c.v}">${c.v}</span></td>
+        <td class="mono">${c.ceil}</td>
+        <td>${c.why}</td>
+      `;
+      claimTbody.appendChild(tr);
+    });
+
+    // Render Overflow
+    const ovContainer = document.getElementById('overflow-cards');
+    overflowData.forEach(o => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <h3><span>${o.id} · ${o.title}</span> <span class="status-tag UNMEASURED">${o.cat}</span></h3>
+        <p style="font-size: 0.85rem; color: var(--text-main); margin-top: 0.5rem;">${o.desc}</p>
+      `;
+      ovContainer.appendChild(card);
+    });
+
+    // Render Authority Spec
+    document.getElementById('authority-spec').innerHTML = `
+      <h3>Candidate X 8-Action Finite Quotient Analysis</h3>
+      <div class="prop-row"><span class="label">Actions (8):</span> <code>ordinary_chat_send, governed_continuation_dispatch, selected_file_carriage, predecessor_binding, custody_admission_request, return_review, export_review, reentry_request</code></div>
+      <div class="prop-row"><span class="label">Union U:</span> All 8 actions admitted across ARMED states</div>
+      <div class="prop-row"><span class="label">Intersection I:</span> <code>{ ordinary_chat_send, return_review, export_review }</code> (REST preserved support)</div>
+      <div class="prop-row"><span class="label">Gamma Gap:</span> <code>{ governed_continuation_dispatch, selected_file_carriage, predecessor_binding, custody_admission_request, reentry_request }</code> (5 actions)</div>
+      <div class="prop-row"><span class="label">Quotient Status:</span> <strong style="color: var(--accent-held-text);">DESCENT_OBSTRUCTED</strong> without explicit membrane; <strong style="color: var(--accent-pass-text);">DESCENT_ADMISSIBLE</strong> with membrane.</div>
+      <div class="prop-row"><span class="label">Minimality:</span> <strong style="color: var(--accent-held-text);">MINIMALITY_UNPROVEN</strong> (Sufficiency != Minimality)</div>
+    `;
+
+    // Tab switcher
+    function showTab(tabId) {
+      document.querySelectorAll('.panel-section').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+{
+  "$schema": "https://td613.com/schemas/exteriority-observatory.schema.json",
+  "observatory_version": "1.0.0",
+  "evaluated_target": "Candidate X Re-entry Membrane & Governed Continuation",
+  "base_commit": "5b4b34278c6100d3c21ced35984c046da157e097",
+  "episodes": [
+    {
+      "episode_id": "R1",
+      "title": "Observer-Mutated Route",
+      "historical_status": "HELD · HARNESS DEFECT",
+      "scars": ["Observer instrument modified live state during observation"]
+    },
+    {
+      "episode_id": "R2",
+      "title": "Real Provider Evidence Conflict",
+      "historical_status": "HELD · EVIDENCE BOUNDARY",
+      "scars": ["Provider response divergence under identical prompt input"]
+    },
+    {
+      "episode_id": "R3",
+      "title": "Fallback-Prompt Causal Defect",
+      "historical_status": "HELD · PROMPT FALLBACK GAP",
+      "scars": ["Client-side fallback prompt masked provider error"]
+    },
+    {
+      "episode_id": "R4",
+      "title": "One-Continuation Live Production Route Closure",
+      "historical_status": "CLOSURE_ADMITTED within declared scope",
+      "scars": ["Observer stopped after 1 continuation; receipt ancestry verified; content ancestry null"]
+    },
+    {
+      "episode_id": "MODEL_A_AUDIT",
+      "title": "Post-Merge Discovery of Executable Continuation 2",
+      "historical_status": "DIVERGENCE_DOCUMENTED",
+      "scars": ["Declared 1-turn Model A canon diverged from runtime code permitting Continuation 2"]
+    },
+    {
+      "episode_id": "THREE_WORLD_EXPERIMENT",
+      "title": "Candidate World Tournament (A, B, C)",
+      "historical_status": "CANDIDATE_X_EXTRACTED",
+      "scars": ["Re-entry membrane emerged as Candidate X"]
+    },
+    {
+      "episode_id": "EGRESS_EPISODE_A",
+      "title": "Remote-Byte Canonicalization Failure",
+      "historical_status": "FAIL · REMOTE BYTE CANONICALIZATION",
+      "scars": ["Git blob checkout on remote host mutated CRLF to LF, corrupting SHA256SUMS.txt"]
+    },
+    {
+      "episode_id": "EGRESS_EPISODE_B",
+      "title": "Remote Packet Integrity & Cleanroom Reconstruction",
+      "historical_status": "PASS · REMOTE BYTE IDENTITY",
+      "scars": ["Survives exogenous receiver fetch with exact hash match across all 15 member files"]
+    },
+    {
+      "episode_id": "SEQUENCE_1",
+      "title": "External Execution Witness on GitHub Actions Runner",
+      "historical_status": "PASS · ADJUDICATED_WITH_SCOPE",
+      "scars": ["GitHub runner 37349177827 ran 13/13 tests cleanly in JSDOM; physical UI remains unmeasured"]
+    }
+  ],
+  "ladder_coordinates": {
+    "R0": {
+      "coordinate": "R0",
+      "name": "Producer Internal Result",
+      "status": "PASS",
+      "source": "antigravity_producer_workspace",
+      "receiver": "antigravity_internal_agent",
+      "observed_at": "2026-10-04T18:00:00Z",
+      "registered_at": "2026-10-04T18:15:00Z",
+      "evidence_class": "PRODUCER_LOCAL_INSPECTION",
+      "claim_ceiling": "PRODUCER_LOCAL_FEASIBILITY_ONLY",
+      "missing_witness": ["Context-independent execution", "Cleanroom host", "Exogenous network transport"],
+      "receipt_references": ["LOCAL-CANDIDATE-X-PASS"]
+    },
+    "R1": {
+      "coordinate": "R1",
+      "name": "Context-Isolated Reconstruction",
+      "status": "PASS",
+      "source": "portable_packet_candidate_x",
+      "receiver": "blind_subagent_r1_cleanroom",
+      "observed_at": "2026-10-04T19:15:00Z",
+      "registered_at": "2026-10-04T19:25:00Z",
+      "evidence_class": "SAME_HOST_CLEANROOM",
+      "claim_ceiling": "CONTEXT_FREE_LOCAL_RECONSTRUCTIBILITY_ONLY",
+      "missing_witness": ["Exogenous machine", "Independent dependency installation", "Remote network transport"],
+      "receipt_references": ["R1-CLEANROOM-RECEIPT"]
+    },
+    "R2": {
+      "coordinate": "R2",
+      "name": "Same-Host Clean-Room Reconstruction",
+      "status": "PASS",
+      "source": "portable_packet_candidate_x",
+      "receiver": "dedicated_isolated_git_worktree",
+      "observed_at": "2026-10-04T20:00:00Z",
+      "registered_at": "2026-10-04T20:10:00Z",
+      "evidence_class": "SAME_HOST_CLEANROOM",
+      "claim_ceiling": "WORKTREE_ISOLATED_RECONSTRUCTIBILITY_ONLY",
+      "missing_witness": ["Exogenous host", "Foreign runner environment", "Network egress"],
+      "receipt_references": ["R2-WORKTREE-RECEIPT"]
+    },
+    "R2.5": {
+      "coordinate": "R2.5",
+      "name": "Remote Addressable Egress",
+      "status": "PASS",
+      "source": "origin/witness/candidate-x-r3-egress2-41112992-20261004",
+      "receiver": "independent_fetch_probe",
+      "observed_at": "2026-10-04T23:45:00Z",
+      "registered_at": "2026-10-05T00:15:00Z",
+      "evidence_class": "REMOTE_CARRIER_ATTESTATION",
+      "claim_ceiling": "REMOTE_ADDRESSABILITY_AND_BYTE_IDENTITY_ONLY",
+      "missing_witness": ["External code execution", "Test execution on foreign runner", "Human evaluation"],
+      "receipt_references": ["13-R2_5_EGRESS_RECEIPT.md", "EPISODE_B_HEAD_582a1f04"]
+    },
+    "R3.0": {
+      "coordinate": "R3.0",
+      "name": "Remote Acquisition",
+      "status": "PASS",
+      "source": "github_remote_repository",
+      "receiver": "amari_chatgpt_exogenous_session",
+      "observed_at": "2026-10-05T12:00:00Z",
+      "registered_at": "2026-10-05T13:40:00Z",
+      "evidence_class": "EXOGENOUS_RECEIVER_INSPECTION",
+      "claim_ceiling": "REMOTE_FETCH_SUCCESS_BY_FOREIGN_RECEIVER",
+      "missing_witness": ["Runtime execution inside exogenous machine", "Physical UI validation"],
+      "receipt_references": ["AMARI-ADJUDICATION-BRIDGE-SEQ1"]
+    },
+    "R3.1": {
+      "coordinate": "R3.1",
+      "name": "Packet Integrity",
+      "status": "PASS",
+      "source": "artifacts/r3-candidate-x-e2/12-SHA256SUMS.txt",
+      "receiver": "github_actions_linux_runner",
+      "observed_at": "2026-10-05T17:32:35Z",
+      "registered_at": "2026-10-05T17:33:00Z",
+      "evidence_class": "EXTERNAL_CI_RUNNER_EXECUTION",
+      "claim_ceiling": "ALL_15_FILES_MATCH_DECLARED_SHA256_ON_FOREIGN_HOST",
+      "missing_witness": ["Human UI verification", "Production network traffic"],
+      "receipt_references": ["37349177827-PACKET-INTEGRITY-OK"]
+    },
+    "R3.2": {
+      "coordinate": "R3.2",
+      "name": "Source Reconstruction",
+      "status": "PASS",
+      "source": "02-candidate-x.patch",
+      "receiver": "github_actions_linux_runner",
+      "observed_at": "2026-10-05T17:32:38Z",
+      "registered_at": "2026-10-05T17:33:00Z",
+      "evidence_class": "EXTERNAL_CI_RUNNER_EXECUTION",
+      "claim_ceiling": "CLEAN_GIT_APPLY_AND_EXACT_BLOB_MATCH_ON_FOREIGN_HOST",
+      "missing_witness": ["Runtime behavior confirmation", "Live production deployment"],
+      "receipt_references": ["37349177827-RECONSTRUCTION-MATCH"]
+    },
+    "R3.3": {
+      "coordinate": "R3.3",
+      "name": "Execution",
+      "status": "PASS",
+      "source": "tests/marrowline-loom-demo.test.mjs & tests/candidate-x-reentry-membrane.test.mjs",
+      "receiver": "github_actions_linux_runner",
+      "observed_at": "2026-10-05T17:32:51Z",
+      "registered_at": "2026-10-05T17:33:00Z",
+      "evidence_class": "EXTERNAL_CI_RUNNER_EXECUTION",
+      "claim_ceiling": "AUTOMATED_TEST_SUITE_EXECUTION_PASSED_ON_FOREIGN_HOST",
+      "missing_witness": ["Physical device execution", "Human evaluation", "Production workload token"],
+      "receipt_references": ["37349177827-JOB-111895380441", "ARTIFACT-11361527428"]
+    },
+    "R3.4": {
+      "coordinate": "R3.4",
+      "name": "Behavioral Relation Survival",
+      "status": "PASS_WITH_SCOPE",
+      "source": "declared_behavior_contract_03",
+      "receiver": "amari_chatgpt_exogenous_session",
+      "observed_at": "2026-10-05T17:33:00Z",
+      "registered_at": "2026-10-05T17:40:00Z",
+      "evidence_class": "EXOGENOUS_RECEIVER_INSPECTION",
+      "claim_ceiling": "DECLARED_AUTOMATED_BEHAVIORAL_CONTRACT_PASSED_IN_HEADLESS_JSDOM",
+      "missing_witness": [
+        "HUMAN_COMPREHENSION",
+        "PHYSICAL_DEVICE_BEHAVIOR",
+        "LIVE_PROVIDER_EQUIVALENCE",
+        "PRODUCTION_RUNTIME_EQUIVALENCE",
+        "NEON_CUSTODY_STATE",
+        "GENERAL_PRODUCT_USABILITY"
+      ],
+      "receipt_references": ["AMARI-ADJUDICATION-BRIDGE-SEQ1"]
+    },
+    "R3.5": {
+      "coordinate": "R3.5",
+      "name": "Receiver Difference",
+      "status": "OBSERVED_PARTIAL",
+      "source": "environment.txt vs Windows Antigravity host",
+      "receiver": "amari_chatgpt_exogenous_session",
+      "observed_at": "2026-10-05T17:33:00Z",
+      "registered_at": "2026-10-05T17:40:00Z",
+      "evidence_class": "EXOGENOUS_RECEIVER_INSPECTION",
+      "claim_ceiling": "ENVIRONMENTAL_DIFFERENCES_RECORDED_WITHOUT_TOTALIZING_EQUIVALENCE",
+      "missing_witness": ["Full cross-OS permutation matrix", "Mobile ARM64 physical execution"],
+      "receipt_references": ["37349177827-ENVIRONMENT-TXT"]
+    }
+  },
+  "unmeasured_coordinates": [
+    "HUMAN_COMPREHENSION",
+    "PHYSICAL_DEVICE_BEHAVIOR",
+    "LIVE_PROVIDER_EQUIVALENCE",
+    "PRODUCTION_RUNTIME_EQUIVALENCE",
+    "NEON_CUSTODY_STATE",
+    "GENERAL_PRODUCT_USABILITY"
+  ]
+}

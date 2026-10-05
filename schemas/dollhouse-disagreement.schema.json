@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://td613.com/schemas/dollhouse-disagreement.schema.json",
+  "title": "TD613 Dollhouse Disagreement Ledger Schema",
+  "description": "Preserves genuine contradictions and orthogonal jurisdictional views among the five analytical roles without forced consensus, voting, or narrative flattening.",
+  "type": "object",
+  "required": [
+    "ledger_id",
+    "evidence_capsule_id",
+    "disagreements"
+  ],
+  "properties": {
+    "ledger_id": {
+      "type": "string"
+    },
+    "evidence_capsule_id": {
+      "type": "string"
+    },
+    "disagreements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "topic",
+          "primary_role",
+          "counter_role",
+          "observation",
+          "primary_claim",
+          "counter_claim",
+          "falsifier",
+          "missing_witness",
+          "epistemic_disposition"
+        ],
+        "properties": {
+          "topic": {
+            "type": "string"
+          },
+          "primary_role": {
+            "type": "string",
+            "enum": ["Pedagogue", "Aperture", "Atlas", "FADT", "Temporal Custodian"]
+          },
+          "counter_role": {
+            "type": "string",
+            "enum": ["Pedagogue", "Aperture", "Atlas", "FADT", "Temporal Custodian"]
+          },
+          "observation": {
+            "type": "string"
+          },
+          "primary_claim": {
+            "type": "string"
+          },
+          "counter_claim": {
+            "type": "string"
+          },
+          "falsifier": {
+            "type": "string"
+          },
+          "missing_witness": {
+            "type": "string"
+          },
+          "epistemic_disposition": {
+            "type": "string",
+            "enum": [
+              "ORTHOGONAL_JURISDICTION",
+              "SURFACE_VS_KERNEL_SPLIT",
+              "UNRESOLVABLE_FROM_PRESENT_EVIDENCE",
+              "PRESERVED_ACTIVE_DISAGREEMENT"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

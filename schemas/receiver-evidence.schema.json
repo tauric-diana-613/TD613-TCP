@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://td613.com/schemas/receiver-evidence.schema.json",
+  "title": "TD613 Receiver Evidence & Receipt Lifecycle Schema",
+  "description": "Enforces temporal ordering and epistemic bounds between pre-egress intent, remote carrier transmission, and independent receiver observations. Pre-egress receipts cannot attest post-egress facts.",
+  "type": "object",
+  "required": [
+    "receipt_id",
+    "receipt_type",
+    "stage",
+    "created_at",
+    "issuer",
+    "payload"
+  ],
+  "properties": {
+    "receipt_id": {
+      "type": "string"
+    },
+    "receipt_type": {
+      "type": "string",
+      "enum": [
+        "EGRESS_INTENT",
+        "REMOTE_REF_ACKNOWLEDGEMENT",
+        "REMOTE_PACKET_OBSERVATION",
+        "RECEIVER_RECONSTRUCTION",
+        "RECEIVER_EXECUTION",
+        "RECEIVER_BEHAVIORAL_FINDING",
+        "ADJUDICATION"
+      ]
+    },
+    "stage": {
+      "type": "string",
+      "enum": [
+        "PRE_EGRESS",
+        "CARRIER_TRANSPORT",
+        "REMOTE_ACQUISITION",
+        "LOCAL_CLEANROOM",
+        "REMOTE_CI_RUNNER",
+        "EXOGENOUS_RECEIVER",
+        "ARBITRATION"
+      ]
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "issuer": {
+      "type": "object",
+      "required": ["identity", "jurisdiction", "is_exogenous"],
+      "properties": {
+        "identity": { "type": "string" },
+        "jurisdiction": { "type": "string" },
+        "is_exogenous": { "type": "boolean" }
+      }
+    },
+    "predecessor_receipt_id": {
+      "type": ["string", "null"]
+    },
+    "predecessor_receipt_sha256": {
+      "type": ["string", "null"]
+    },
+    "authority_ceiling": {
+      "type": "object",
+      "required": [
+        "authority_class",
+        "pr_permitted",
+        "merge_permitted",
+        "deployment_permitted"
+      ],
+      "properties": {
+        "authority_class": { "type": "string" },
+        "pr_permitted": { "type": "boolean" },
+        "merge_permitted": { "type": "boolean" },
+        "deployment_permitted": { "type": "boolean" }
+      }
+    },
+    "payload": {
+      "type": "object"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "receipt_type": { "const": "EGRESS_INTENT" } }
+      },
+      "then": {
+        "properties": {
+          "stage": { "const": "PRE_EGRESS" },
+          "payload": {
+            "required": ["intended_branch", "expected_head", "manifest_sha256"],
+            "not": {
+              "anyOf": [
+                { "required": ["observed_exit_code"] },
+                { "required": ["test_pass_count"] },
+                { "required": ["remote_run_id"] },
+                { "required": ["receiver_verdict"] }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "receipt_type": { "const": "RECEIVER_EXECUTION" } }
+      },
+      "then": {
+        "properties": {
+          "predecessor_receipt_id": { "type": "string" },
+          "payload": {
+            "required": ["execution_host", "exit_code", "test_count", "pass_count"]
+          }
+        }
+      }
+    }
+  ]
+}

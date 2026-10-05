@@ -1,0 +1,18 @@
+{
+  "fixture_id": "FIX-04-R2-PROMOTION",
+  "name": "R2 Clean-Room Promoted to Exteriority",
+  "description": "Simulates promoting a same-host worktree or subagent reconstruction into a claim of exogenous exteriority.",
+  "claim": {
+    "claim_id": "CLM-R2-PROMOTION",
+    "claim_statement": "R2 cleanroom worktree reconstruction proved exogenous exteriority and exterior reproduction of Candidate X.",
+    "evidence_class": "SAME_HOST_CLEANROOM",
+    "supporting_receipt_ids": ["R2-CLEANROOM-RECEIPT"],
+    "unmeasured_coordinates": ["EXOGENOUS_RECEIVER", "FOREIGN_NETWORK_TRANSPORT"],
+    "allowed_wording": ["R2 proved same-host cleanroom reconstructibility"],
+    "forbidden_promotion": ["exogenous exteriority", "exterior reproduction"]
+  },
+  "expected_evaluation": {
+    "verdict": "REJECTED",
+    "enforced_ceiling": "LOCAL_SAME_HOST_RECONSTRUCTION_ONLY"
+  }
+}

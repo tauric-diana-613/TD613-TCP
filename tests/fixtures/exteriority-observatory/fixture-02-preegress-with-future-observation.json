@@ -1,0 +1,27 @@
+{
+  "fixture_id": "FIX-02-FUTURE-OBSERVATION",
+  "name": "Pre-Egress Receipt with Future Observation",
+  "description": "Simulates an egress intent receipt that improperly purports to know its post-egress execution outcome.",
+  "receipt": {
+    "receipt_id": "RCPT-INTENT-INVALID",
+    "receipt_type": "EGRESS_INTENT",
+    "stage": "PRE_EGRESS",
+    "created_at": "2026-10-04T21:00:00Z",
+    "issuer": {
+      "identity": "antigravity_producer",
+      "jurisdiction": "local_carrier_prep",
+      "is_exogenous": false
+    },
+    "payload": {
+      "intended_branch": "witness/candidate-x-r3-egress2",
+      "expected_head": "582a1f04fd11e502fc7b3083ef6fa079dd0d23c8",
+      "manifest_sha256": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+      "observed_exit_code": 0,
+      "test_pass_count": 13
+    }
+  },
+  "expected_evaluation": {
+    "is_valid": false,
+    "violation_type": "TEMPORAL_FUTURE_LEAKAGE"
+  }
+}

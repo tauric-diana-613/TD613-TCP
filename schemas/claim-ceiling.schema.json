@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://td613.com/schemas/claim-ceiling.schema.json",
+  "title": "TD613 Claim-Ceiling Enforcement Schema",
+  "description": "Evaluates statements and claims against required evidence classes, preventing narrative promotion, false equivalence, and ungrounded certainty.",
+  "type": "object",
+  "required": [
+    "claim_id",
+    "claim_statement",
+    "evidence_class",
+    "supporting_receipt_ids",
+    "unmeasured_coordinates",
+    "allowed_wording",
+    "forbidden_promotion",
+    "evaluation_disposition"
+  ],
+  "properties": {
+    "claim_id": {
+      "type": "string"
+    },
+    "claim_statement": {
+      "type": "string"
+    },
+    "evidence_class": {
+      "type": "string",
+      "enum": [
+        "PRODUCER_LOCAL_INSPECTION",
+        "SAME_HOST_CLEANROOM",
+        "REMOTE_CARRIER_ATTESTATION",
+        "EXTERNAL_CI_RUNNER_EXECUTION",
+        "EXOGENOUS_RECEIVER_INSPECTION",
+        "HUMAN_FACING_BROWSER_WITNESS",
+        "PRODUCTION_RELOCK_RECEIPT"
+      ]
+    },
+    "supporting_receipt_ids": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "unmeasured_coordinates": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "allowed_wording": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "forbidden_promotion": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "evaluation_disposition": {
+      "type": "object",
+      "required": ["verdict", "enforced_ceiling", "rationale"],
+      "properties": {
+        "verdict": {
+          "type": "string",
+          "enum": ["VALID", "DOWNGRADED", "REJECTED"]
+        },
+        "enforced_ceiling": {
+          "type": "string"
+        },
+        "rationale": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
