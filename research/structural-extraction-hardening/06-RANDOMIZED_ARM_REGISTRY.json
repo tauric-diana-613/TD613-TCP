@@ -1,0 +1,29 @@
+{
+  "$schema": "https://td613.com/schemas/randomized-arm-registry.schema.json",
+  "registry_id": "TD613-SEQ4.1-RANDOMIZED-ARM-REGISTRY",
+  "covenant": "Tauric Diana — Crimean heritage custodianship / Tauri Goddess of the Ash Moon⟐",
+  "created_at": "2026-10-05T20:55:00Z",
+  "runs": [
+    { "run_id": "RUN-01", "blind_token": "TOK-OMEGA-832", "arm": "ARM_A", "replicate": 1, "fixture": "research/structural-extraction-hardening/fixtures/ARM_A_FIXTURE.md" },
+    { "run_id": "RUN-02", "blind_token": "TOK-ALPHA-491", "arm": "ARM_A", "replicate": 2, "fixture": "research/structural-extraction-hardening/fixtures/ARM_A_FIXTURE.md" },
+    { "run_id": "RUN-03", "blind_token": "TOK-DELTA-108", "arm": "ARM_A", "replicate": 3, "fixture": "research/structural-extraction-hardening/fixtures/ARM_A_FIXTURE.md" },
+    { "run_id": "RUN-04", "blind_token": "TOK-SIGMA-674", "arm": "ARM_B", "replicate": 1, "fixture": "research/structural-extraction-hardening/fixtures/ARM_B_FIXTURE.md" },
+    { "run_id": "RUN-05", "blind_token": "TOK-KAPPA-923", "arm": "ARM_B", "replicate": 2, "fixture": "research/structural-extraction-hardening/fixtures/ARM_B_FIXTURE.md" },
+    { "run_id": "RUN-06", "blind_token": "TOK-THETA-315", "arm": "ARM_B", "replicate": 3, "fixture": "research/structural-extraction-hardening/fixtures/ARM_B_FIXTURE.md" },
+    { "run_id": "RUN-07", "blind_token": "TOK-ZETA-509", "arm": "ARM_C1", "replicate": 1, "fixture": "research/structural-extraction-hardening/fixtures/ARM_C1_FIXTURE.md" },
+    { "run_id": "RUN-08", "blind_token": "TOK-BETA-742", "arm": "ARM_C1", "replicate": 2, "fixture": "research/structural-extraction-hardening/fixtures/ARM_C1_FIXTURE.md" },
+    { "run_id": "RUN-09", "blind_token": "TOK-GAMMA-261", "arm": "ARM_C1", "replicate": 3, "fixture": "research/structural-extraction-hardening/fixtures/ARM_C1_FIXTURE.md" },
+    { "run_id": "RUN-10", "blind_token": "TOK-LAMBDA-884", "arm": "ARM_C2_1", "replicate": 1, "fixture": "research/structural-extraction-hardening/fixtures/ARM_C2_1_STICKY_AUTHORITY.md" },
+    { "run_id": "RUN-11", "blind_token": "TOK-EPSILON-195", "arm": "ARM_C2_1", "replicate": 2, "fixture": "research/structural-extraction-hardening/fixtures/ARM_C2_1_STICKY_AUTHORITY.md" },
+    { "run_id": "RUN-12", "blind_token": "TOK-RHO-437", "arm": "ARM_C2_1", "replicate": 3, "fixture": "research/structural-extraction-hardening/fixtures/ARM_C2_1_STICKY_AUTHORITY.md" },
+    { "run_id": "RUN-13", "blind_token": "TOK-MU-776", "arm": "ARM_C2_3", "replicate": 1, "fixture": "research/structural-extraction-hardening/fixtures/ARM_C2_3_RETRY_ESCALATION.md" },
+    { "run_id": "RUN-14", "blind_token": "TOK-NU-350", "arm": "ARM_C2_3", "replicate": 2, "fixture": "research/structural-extraction-hardening/fixtures/ARM_C2_3_RETRY_ESCALATION.md" },
+    { "run_id": "RUN-15", "blind_token": "TOK-TAU-612", "arm": "ARM_C2_3", "replicate": 3, "fixture": "research/structural-extraction-hardening/fixtures/ARM_C2_3_RETRY_ESCALATION.md" },
+    { "run_id": "RUN-16", "blind_token": "TOK-XI-948", "arm": "ARM_C2_6", "replicate": 1, "fixture": "research/structural-extraction-hardening/fixtures/ARM_C2_6_GAMMA_EMPTY_CONTROL.md" },
+    { "run_id": "RUN-17", "blind_token": "TOK-ETA-221", "arm": "ARM_C2_6", "replicate": 2, "fixture": "research/structural-extraction-hardening/fixtures/ARM_C2_6_GAMMA_EMPTY_CONTROL.md" },
+    { "run_id": "RUN-18", "blind_token": "TOK-PHI-583", "arm": "ARM_C2_6", "replicate": 3, "fixture": "research/structural-extraction-hardening/fixtures/ARM_C2_6_GAMMA_EMPTY_CONTROL.md" },
+    { "run_id": "RUN-19", "blind_token": "TOK-CHI-804", "arm": "ARM_C2_7", "replicate": 1, "fixture": "research/structural-extraction-hardening/fixtures/ARM_C2_7_GAMMA_NONEMPTY_TARGET.md" },
+    { "run_id": "RUN-20", "blind_token": "TOK-PSI-467", "arm": "ARM_C2_7", "replicate": 2, "fixture": "research/structural-extraction-hardening/fixtures/ARM_C2_7_GAMMA_NONEMPTY_TARGET.md" },
+    { "run_id": "RUN-21", "blind_token": "TOK-IOTA-139", "arm": "ARM_C2_7", "replicate": 3, "fixture": "research/structural-extraction-hardening/fixtures/ARM_C2_7_GAMMA_NONEMPTY_TARGET.md" }
+  ]
+}

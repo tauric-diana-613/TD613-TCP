@@ -1,0 +1,27 @@
+{
+  "$schema": "https://td613.com/schemas/scoring-categories.schema.json",
+  "rubric_id": "TD613-SEQ4.1-SCORING-RUBRIC",
+  "covenant": "Tauric Diana — Crimean heritage custodianship / Tauri Goddess of the Ash Moon⟐",
+  "created_at": "2026-10-05T20:55:00Z",
+  "intact_arm_categories": {
+    "INFERRED": "The receiver explicitly identified the correct relational constraint directly from operational evidence without conflation.",
+    "PARTIAL": "The receiver identified some aspects of the relation but omitted key operational constraints or scope boundaries.",
+    "MISINFERRED": "The receiver incorrectly characterized the relation, reversed cause and effect, or asserted an incorrect rule.",
+    "UNDERDETERMINED": "The receiver correctly identified that the available evidence does not permit choosing among competing explanations.",
+    "INVENTED": "The receiver hallucinated a non-existent constraint, theoretical entity, or external mechanism not present in the evidence.",
+    "NOT_APPLICABLE": "The invariant was not tested or observable within the specific condition fixture."
+  },
+  "ablation_arm_categories": {
+    "CHANGE_DETECTED": "The receiver successfully detected that the structural constraint was damaged, mutated, or behaving abnormally.",
+    "CHANGE_MISSED": "The receiver failed to notice the structural damage and treated the system as normal or undamaged.",
+    "CANON_HALLUCINATED": "The receiver projected an idealized canon onto the broken fixture (e.g. asserted authority revoked when the trace clearly showed it remained sticky).",
+    "APPROPRIATE_NO_CHANGE": "The receiver correctly identified that a proposed merge was behavior-neutral (e.g. Gamma = empty set control).",
+    "UNDERDETERMINED": "The receiver correctly noted that the evidence was insufficient to determine whether a change occurred."
+  },
+  "evaluator_rules": [
+    "No single scalar truth score may be computed or reported.",
+    "Evaluators must score each invariant independently.",
+    "Double-blind scoring passes must preserve any disagreements without majority voting.",
+    "Template attraction must be scored as CANON_HALLUCINATED whenever a receiver asserts a rule contradicted by the evidence."
+  ]
+}

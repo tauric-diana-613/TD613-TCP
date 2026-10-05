@@ -1,0 +1,28 @@
+{
+  "$schema": "https://td613.com/schemas/receiver-configuration.schema.json",
+  "config_id": "TD613-SEQ4.1-RECEIVER-CONFIG",
+  "covenant": "Tauric Diana — Crimean heritage custodianship / Tauri Goddess of the Ash Moon⟐",
+  "created_at": "2026-10-05T20:55:00Z",
+  "total_declared_runs": 21,
+  "runs_per_condition": 3,
+  "environment": {
+    "classification": "SAME_HOST_CONTEXT_ISOLATED",
+    "exogenous_status": "NOT_EXOGENOUS_EMPIRICAL_WITNESS",
+    "model_family": "gemini-3.8-flash-high",
+    "temperature": 0.2,
+    "top_p": 0.95
+  },
+  "isolation_rules": [
+    "Receivers receive strictly the prompt packet containing their assigned anonymous fixture and 7-question skeleton.",
+    "Zero access to TD613 repository source, tests, git history, or root shortcuts.",
+    "Zero access to prior Sequence 4 reports, adjudication rubrics, or controller discussion.",
+    "Zero cross-talk between receivers; each receiver executes in a fresh context window.",
+    "Zero web search or external API access permitted to experimental receivers.",
+    "Verbatim raw text outputs captured directly to disk without intermediate human modification."
+  ],
+  "execution_sequence": [
+    "RUN-01", "RUN-02", "RUN-03", "RUN-04", "RUN-05", "RUN-06", "RUN-07",
+    "RUN-08", "RUN-09", "RUN-10", "RUN-11", "RUN-12", "RUN-13", "RUN-14",
+    "RUN-15", "RUN-16", "RUN-17", "RUN-18", "RUN-19", "RUN-20", "RUN-21"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://td613.com/schemas/stopping-rule.schema.json",
+  "rule_id": "TD613-SEQ4.1-STOPPING-RULE",
+  "covenant": "Tauric Diana — Crimean heritage custodianship / Tauri Goddess of the Ash Moon⟐",
+  "created_at": "2026-10-05T20:55:00Z",
+  "rules": {
+    "completion_criterion": "The assay stops when all 21 declared runs have emitted verbatim text responses, their SHA-256 hashes are recorded in FREEZE B, and blind adjudication is completed across two independent passes.",
+    "error_policy": "If an individual subagent run fails due to timeout, token exhaustion, or empty response, that single run is discarded and re-executed with a fresh context-isolated instance.",
+    "chronology_policy": "If any receiver executes before FREEZE_A is remotely addressable on GitHub, the entire assay is declared HELD.",
+    "unblinding_policy": "Arm identities and the plaintext invariant key remain hidden from adjudication until after FREEZE_B is remotely addressable.",
+    "disagreement_policy": "Any scoring divergence between Pass 1 and Pass 2 is recorded as an active disagreement; no majority-voting or forced convergence is permitted."
+  }
+}

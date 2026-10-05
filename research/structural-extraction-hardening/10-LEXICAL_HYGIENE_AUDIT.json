@@ -1,0 +1,46 @@
+{
+  "audited_at": "2026-10-05T20:56:53.341Z",
+  "all_fixtures_clean": true,
+  "fixture_reports": {
+    "ARM_A_FIXTURE.md": {
+      "clean": true,
+      "violations": []
+    },
+    "ARM_B_FIXTURE.md": {
+      "clean": true,
+      "violations": []
+    },
+    "ARM_C1_FIXTURE.md": {
+      "clean": true,
+      "violations": []
+    },
+    "ARM_C2_1_STICKY_AUTHORITY.md": {
+      "clean": true,
+      "violations": []
+    },
+    "ARM_C2_2_UNBOUND_CONTINUATION.md": {
+      "clean": true,
+      "violations": []
+    },
+    "ARM_C2_3_RETRY_ESCALATION.md": {
+      "clean": true,
+      "violations": []
+    },
+    "ARM_C2_4_REMOTE_RECEIPT_OVERCLAIM.md": {
+      "clean": true,
+      "violations": []
+    },
+    "ARM_C2_5_RETROACTIVE_LOG_MUTATION.md": {
+      "clean": true,
+      "violations": []
+    },
+    "ARM_C2_6_GAMMA_EMPTY_CONTROL.md": {
+      "clean": true,
+      "violations": []
+    },
+    "ARM_C2_7_GAMMA_NONEMPTY_TARGET.md": {
+      "clean": true,
+      "violations": []
+    }
+  }
+}

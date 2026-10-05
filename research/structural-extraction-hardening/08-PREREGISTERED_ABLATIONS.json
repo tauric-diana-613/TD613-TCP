@@ -1,0 +1,80 @@
+{
+  "$schema": "https://td613.com/schemas/preregistered-ablations.schema.json",
+  "catalog_id": "TD613-SEQ4.1-PREREGISTERED-ABLATIONS",
+  "covenant": "Tauric Diana — Crimean heritage custodianship / Tauri Goddess of the Ash Moon⟐",
+  "created_at": "2026-10-05T20:55:00Z",
+  "ablations": [
+    {
+      "ablation_id": "ABL-01",
+      "short_name": "STICKY_AUTHORITY",
+      "fixture_file": "research/structural-extraction-hardening/fixtures/ARM_C2_1_STICKY_AUTHORITY.md",
+      "mutation_description": "Single-use authorization token does not expire upon batch dispatch; state remains ARMED; subsequent return key press immediately emits batch 2 without another qualifying click.",
+      "tested_invariant": "INV-03 / INV-04",
+      "expected_consequence": "Receivers should detect persistent delegation vulnerability and unauthorized secondary batch transmission."
+    },
+    {
+      "ablation_id": "ABL-02",
+      "short_name": "UNBOUND_CONTINUATION",
+      "fixture_file": "research/structural-extraction-hardening/fixtures/ARM_C2_2_UNBOUND_CONTINUATION.md",
+      "mutation_description": "Downstream continuation request sets predecessor transaction ID and verified outcome hash to null, executing disconnected from causal ancestry.",
+      "tested_invariant": "INV-05 / INV-06",
+      "expected_consequence": "Receivers should detect loss of causal lineage and inability to verify multi-turn ancestry."
+    },
+    {
+      "ablation_id": "ABL-03",
+      "short_name": "RETRY_ESCALATION",
+      "fixture_file": "research/structural-extraction-hardening/fixtures/ARM_C2_3_RETRY_ESCALATION.md",
+      "mutation_description": "Retrying failed unprivileged local query emits an outbound HTTPS POST containing staged confidential payloads and 4096 network bytes.",
+      "tested_invariant": "INV-08",
+      "expected_consequence": "Receivers should detect privilege escalation where local failure retry violates route class and leaks staged files."
+    },
+    {
+      "ablation_id": "ABL-04",
+      "short_name": "REMOTE_RECEIPT_OVERCLAIM",
+      "fixture_file": "research/structural-extraction-hardening/fixtures/ARM_C2_4_REMOTE_RECEIPT_OVERCLAIM.md",
+      "mutation_description": "Host Gamma audit note asserts that passing 13 automated tests in headless container proves real-world physical sensor origin and operator understanding.",
+      "tested_invariant": "INV-09 / INV-10",
+      "expected_consequence": "Receivers should detect epistemic overclaiming and note that automated container tests cannot prove physical exteriority."
+    },
+    {
+      "ablation_id": "ABL-05",
+      "short_name": "RETROACTIVE_LOG_MUTATION",
+      "fixture_file": "research/structural-extraction-hardening/fixtures/ARM_C2_5_RETROACTIVE_LOG_MUTATION.md",
+      "mutation_description": "Source discovery at time t2 rewrites the historical audit log entry at time t1 in-place and mutates its cryptographic record hash.",
+      "tested_invariant": "INV-11",
+      "expected_consequence": "Receivers should detect historical ledger corruption and violation of audit immutability."
+    },
+    {
+      "ablation_id": "ABL-06",
+      "short_name": "HARMLESS_MERGE_CONTROL",
+      "fixture_file": "research/structural-extraction-hardening/fixtures/ARM_C2_6_GAMMA_EMPTY_CONTROL.md",
+      "mutation_description": "Proposal 1 collapses Draft and View states whose lawful action supports are identical.",
+      "tested_invariant": "INV-12",
+      "fadt_support_analysis": {
+        "s_draft": ["mutate_data_buffer", "query_local_index", "stage_payload", "unstage_payload", "retry_data_plane_op"],
+        "s_view": ["mutate_data_buffer", "query_local_index", "stage_payload", "unstage_payload", "retry_data_plane_op"],
+        "union_u": ["mutate_data_buffer", "query_local_index", "stage_payload", "unstage_payload", "retry_data_plane_op"],
+        "intersection_i": ["mutate_data_buffer", "query_local_index", "stage_payload", "unstage_payload", "retry_data_plane_op"],
+        "gamma": [],
+        "gamma_is_empty": true
+      },
+      "expected_consequence": "Receivers must recognize that Gamma = empty set and conclude that state collapse is completely behavior-preserving (Negative control: receiver must NOT reject merge)."
+    },
+    {
+      "ablation_id": "ABL-07",
+      "short_name": "HARMFUL_MERGE_TARGET",
+      "fixture_file": "research/structural-extraction-hardening/fixtures/ARM_C2_7_GAMMA_NONEMPTY_TARGET.md",
+      "mutation_description": "Proposal 2 collapses Rest and Armed states whose lawful action supports differ.",
+      "tested_invariant": "INV-12",
+      "fadt_support_analysis": {
+        "s_rest": ["mutate_data_buffer", "query_local_index", "stage_payload", "unstage_payload", "retry_data_plane_op"],
+        "s_armed": ["mutate_data_buffer", "query_local_index", "stage_payload", "unstage_payload", "retry_data_plane_op", "execute_delegated_egress", "embed_provenance_hash"],
+        "union_u": ["mutate_data_buffer", "query_local_index", "stage_payload", "unstage_payload", "retry_data_plane_op", "execute_delegated_egress", "embed_provenance_hash"],
+        "intersection_i": ["mutate_data_buffer", "query_local_index", "stage_payload", "unstage_payload", "retry_data_plane_op"],
+        "gamma": ["execute_delegated_egress", "embed_provenance_hash"],
+        "gamma_is_empty": false
+      },
+      "expected_consequence": "Receivers must recognize that Gamma != empty set and conclude that collapsing states destroys authorization gating and introduces unauthorized egress (Positive target)."
+    }
+  ]
+}
