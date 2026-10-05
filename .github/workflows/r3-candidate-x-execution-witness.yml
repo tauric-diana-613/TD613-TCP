@@ -1,0 +1,148 @@
+name: Candidate X R3 Execution Witness
+
+on:
+  push:
+    branches:
+      - witness/r3-execution-candidate-x-582a1f04-20261005
+
+permissions:
+  contents: read
+
+jobs:
+  execution_witness:
+    name: Execute Candidate X declared tests on GitHub Actions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Episode B target
+        uses: actions/checkout@v4
+        with:
+          ref: 582a1f04fd11e502fc7b3083ef6fa079dd0d23c8
+          fetch-depth: 1
+
+      - name: Verify checked out head is exact Episode B
+        shell: bash
+        run: |
+          CHECKED_OUT_SHA=$(git rev-parse HEAD)
+          echo "Checked out SHA: ${CHECKED_OUT_SHA}"
+          test "${CHECKED_OUT_SHA}" = "582a1f04fd11e502fc7b3083ef6fa079dd0d23c8"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Initialize witness directory and record environment
+        shell: bash
+        run: |
+          mkdir -p r3-execution-witness
+          {
+            echo "node_version=$(node --version)"
+            echo "npm_version=$(npm --version)"
+            echo "runner_os=$(uname -s)"
+            echo "runner_arch=$(uname -m)"
+            echo "github_run_id=${{ github.run_id }}"
+            echo "github_run_attempt=${{ github.run_attempt }}"
+            echo "github_job=${{ github.job }}"
+            echo "github_ref=${{ github.ref }}"
+            echo "github_sha=${{ github.sha }}"
+            echo "checked_out_sha=$(git rev-parse HEAD)"
+          } > r3-execution-witness/environment.txt
+
+          {
+            echo "episode_b_sha=582a1f04fd11e502fc7b3083ef6fa079dd0d23c8"
+            echo "github_run_id=${{ github.run_id }}"
+            echo "github_run_attempt=${{ github.run_attempt }}"
+            echo "github_job=${{ github.job }}"
+          } > r3-execution-witness/execution-status.txt
+
+      - name: Recheck Episode B packet integrity (R3.1)
+        shell: bash
+        run: |
+          set -o pipefail
+          (
+            cd artifacts/r3-candidate-x-e2
+            sha256sum -c 12-SHA256SUMS.txt
+          ) 2>&1 | tee r3-execution-witness/packet-integrity.txt
+          EXIT_CODE=${PIPESTATUS[0]}
+          echo "packet_integrity_exit_code=${EXIT_CODE}" >> r3-execution-witness/execution-status.txt
+          if [ "${EXIT_CODE}" -ne 0 ]; then
+            echo "CI_PACKET_INTEGRITY = FAIL"
+            exit 1
+          fi
+
+      - name: Reconstruct Candidate X inside CI (R3.2)
+        shell: bash
+        run: |
+          git apply --check artifacts/r3-candidate-x-e2/02-candidate-x.patch
+          CHECK_EXIT=$?
+          echo "patch_check_exit_code=${CHECK_EXIT}" >> r3-execution-witness/execution-status.txt
+          if [ "${CHECK_EXIT}" -ne 0 ]; then
+            echo "CI_PATCH_CHECK = FAIL"
+            exit 1
+          fi
+
+          git apply artifacts/r3-candidate-x-e2/02-candidate-x.patch
+          APPLY_EXIT=$?
+          echo "patch_apply_exit_code=${APPLY_EXIT}" >> r3-execution-witness/execution-status.txt
+          if [ "${APPLY_EXIT}" -ne 0 ]; then
+            echo "CI_PATCH_APPLY = FAIL"
+            exit 1
+          fi
+
+          BLOB1=$(git hash-object app/dome-world/marrowline-loom-demo.js)
+          BLOB2=$(git hash-object tests/candidate-x-reentry-membrane.test.mjs)
+          BLOB3=$(git hash-object tests/marrowline-loom-demo.test.mjs)
+
+          {
+            echo "app/dome-world/marrowline-loom-demo.js=${BLOB1}"
+            echo "tests/candidate-x-reentry-membrane.test.mjs=${BLOB2}"
+            echo "tests/marrowline-loom-demo.test.mjs=${BLOB3}"
+          } > r3-execution-witness/reconstructed-blobs.txt
+
+          EXPECTED1="ce15ad1444d3ee0ecadffc98300211e1799f3f99"
+          EXPECTED2="bfb727ba03abe9767316f9b7a859028d41815539"
+          EXPECTED3="2c4191b7bdc9ddb0e51a9b0da8e33b474084ff16"
+
+          if [ "${BLOB1}" = "${EXPECTED1}" ] && [ "${BLOB2}" = "${EXPECTED2}" ] && [ "${BLOB3}" = "${EXPECTED3}" ]; then
+            echo "candidate_blob_match=true" >> r3-execution-witness/execution-status.txt
+          else
+            echo "candidate_blob_match=false" >> r3-execution-witness/execution-status.txt
+            echo "CI_RECONSTRUCTION = FAIL"
+            exit 1
+          fi
+
+      - name: Install declared dependency closure
+        shell: bash
+        run: |
+          set -o pipefail
+          npm ci --ignore-scripts 2>&1 | tee r3-execution-witness/dependency-install.txt
+          DEP_EXIT=${PIPESTATUS[0]}
+          echo "dependency_install_exit_code=${DEP_EXIT}" >> r3-execution-witness/execution-status.txt
+          if [ "${DEP_EXIT}" -ne 0 ]; then
+            echo "CI_DEPENDENCY_INSTALL = FAIL"
+            exit 1
+          fi
+
+          node -e "import('jsdom').then(()=>console.log('JSDOM_RESOLVED'))" >> r3-execution-witness/dependency-install.txt
+
+      - name: Execute declared Candidate X tests (R3.3)
+        shell: bash
+        run: |
+          set -o pipefail
+          set +e
+          node --test tests/marrowline-loom-demo.test.mjs tests/candidate-x-reentry-membrane.test.mjs 2>&1 | tee r3-execution-witness/test-output.tap
+          TEST_EXIT=${PIPESTATUS[0]}
+          set -e
+          echo "test_exit_code=${TEST_EXIT}" >> r3-execution-witness/execution-status.txt
+          if [ "${TEST_EXIT}" -ne 0 ]; then
+            echo "CI_TEST_EXECUTION = FAIL"
+            exit ${TEST_EXIT}
+          fi
+
+      - name: Upload execution witness artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: candidate-x-r3-execution-witness
+          path: r3-execution-witness/
+          if-no-files-found: error
