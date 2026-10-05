@@ -1,0 +1,17 @@
+{
+  "assay": "TD613-SEQ5-ASSAY-20261005",
+  "verification_timestamp": "2026-10-05T23:46:00Z",
+  "source_file": "app/aperture/tool.html",
+  "canonical_commit": "1b1925ad47dce0d1794e77afdd5c3af8b438c260",
+  "expected_sha256": "fe75d6d64d5181e8c157c2f93cfa7a89cedf1421ac317a8986abb3ca96a4d518",
+  "actual_sha256": "fe75d6d64d5181e8c157c2f93cfa7a89cedf1421ac317a8986abb3ca96a4d518",
+  "byte_size": 1338264,
+  "match_status": "EXACT_CANONICAL_MATCH",
+  "firewall_posture": {
+    "k0_firewall": "STRICT_PURIFIED_NO_METHOD_BASELINE",
+    "k1_firewall": "CONVENTIONAL_ENGINEERING_VOCABULARY_ONLY_NO_TD613_PROPER_NOUNS",
+    "k2_routing": "BOUNDED_OPERATIONAL_APERTURE_KERNEL_FROM_FROZEN_SOURCE",
+    "k3_routing": "APERTURE_KERNEL_PLUS_TD613_MULTI_JURISDICTION_GOVERNANCE",
+    "claim_ceiling": "BINDING_APERTURE_EXPERIMENTAL_LIMITS_ENFORCED"
+  }
+}

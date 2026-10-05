@@ -1,0 +1,44 @@
+{
+  "assay": "TD613-SEQ5-ASSAY-20261005",
+  "lane": "LANE_T_TREATMENT_CONSTRUCTOR",
+  "context_id": "LANE-T-TREATMENT-CONSTRUCTOR-CTX-20261005",
+  "timestamp": "2026-10-05T23:56:00Z",
+  "packets": {
+    "K0": {
+      "file": "packets/K0_ONBOARDING_PACKET.md",
+      "sha256": "406bc8e600674e1a6ad65302259e43ae5ea5df4eab596e3ff87ba26cd793a6fe",
+      "bytes": 2537,
+      "words": 343,
+      "character_count": 2537,
+      "analytical_machinery_present": false,
+      "examples_present": false,
+      "designation": "TRUE_TASK_ONLY_BASELINE"
+    },
+    "K1": {
+      "file": "packets/K1_ONBOARDING_PACKET.md",
+      "sha256": "f759ab0c404b024b367b7d11c32e203c849b888e6f1083067788bddae12732d8",
+      "bytes": 10411,
+      "words": 1407,
+      "character_count": 10411,
+      "td613_proper_nouns_present": false,
+      "designation": "CONVENTIONAL_ENGINEERING_METHOD"
+    },
+    "K2": {
+      "file": "packets/K2_ONBOARDING_PACKET.md",
+      "sha256": "7e8ce3738ec7579a0cfbffc2e23bce6df7e6abc3a255a5848550547c92e5c494",
+      "bytes": 11840,
+      "words": 1572,
+      "character_count": 11840,
+      "heritage_mythology_present": false,
+      "designation": "APERTURE_OPERATIONAL_KERNEL"
+    },
+    "K3": {
+      "file": "packets/K3_ONBOARDING_PACKET.md",
+      "sha256": "83c3d99c9cbd0127359d0fb1b8f4846bb9d7d64f0ad1016dd8cde4de22d7e705",
+      "bytes": 12998,
+      "words": 1664,
+      "character_count": 12998,
+      "designation": "FULL_TD613_MULTI_JURISDICTION_GOVERNANCE"
+    }
+  }
+}
