@@ -5826,7 +5826,7 @@
         "llm-route-guidance": "begin with canonical governance stack; preserve foundational panels; selected receipts may testify but may not define Aperture",
         "recency-governance": "true",
         "aperture-doctrine-kernel": "td613.aperture.doctrine-kernel/v2.9.4",
-        "aperture-model-reader-contract": "foundation doctrine before feature lanes; hidden spine means machine-facing not absent; avoid version-first capture",
+        "aperture-model-reader-contract": "read apertureV32UnifiedRouteIndex after foundation doctrine; task intent first; exact route before semantic fallback; avoid single-panel capture; route-index revision is non-semantic, carries no recency priority, and should not be narrated unless explicitly requested",
         "mobile-parity-contract": "all human panels reachable on mobile; hidden governance spine is machine-facing only",
         "panel-inventory-contract": "left|center|right|bottom required",
         "aperture-spine-transition": "visible-spine-reclassified-hidden-machine-governance-human-panels-preserved",
@@ -5835,7 +5835,7 @@
         "llm-browserless-use": "browser access is not required; LLMs may run a textual/simulated Aperture pass from supplied inputs, declared assumptions, and requested panel scope",
         "dome-flowcore-compat": "v3.0-alpha reciprocal receipt bridge: Aperture diagnostic receipt to Flow-Core context translation to Aperture audit; no reciprocal authority or automated custody action",
         "phason-seam-status": "v2.9.4-phason-seam-projection-custody-instrument",
-        "operator-tool-map": "hidden-machine-readable; composite route map available in apertureExtensionRegistry; reciprocal receipt, authority, sensor, open-field promotion, relation-envelope, and human-gate contracts are registered as non-crown v3 extensions; base indexes remain preserved",
+        "operator-tool-map": "hidden-machine-readable; canonical task and scan routes available in apertureV32UnifiedRouteIndex; task intent precedes semantic fallback",
         "dromological-runtime": "true",
         "event-rationality-runtime": "true",
         "widening-operator": "W_omega",
@@ -5850,7 +5850,7 @@
         "legal-synthesis-route": "question-presented|jurisdiction|authority|facts|interpretations|application|remedy|uncertainty",
         "typed-epistemic-deficit-runtime": "true",
         "typed-epistemic-deficit-version": "v3.2-alpha",
-        "epistemic-deficit-classes": "STRUCTURAL_RANK_DEFICIT|NUMERICAL_STABILITY_DEFICIT|NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT|NOISE_GEOMETRY_INCOMPLETE|INVALID_NOISE_GEOMETRY",
+        "epistemic-deficit-classes": "UNDECLARED_OPERATOR_GEOMETRY|STRUCTURAL_RANK_DEFICIT|NUMERICAL_STABILITY_DEFICIT|NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT|NOISE_GEOMETRY_INCOMPLETE|INVALID_NOISE_GEOMETRY",
         "question-design-dispositions": "PROPOSE|ABSTAIN|REJECT|ASK_NOTHING",
         "pedagogue-companion-routing": "true",
         "no-scalar-crown": "true",
@@ -5871,12 +5871,12 @@
         "tool-role": "counter-tool"
       },
       "fingerprint": {
-        "bytes": 1292263,
-        "lineCount": 26241,
-        "inlineScriptCount": 88,
+        "bytes": 1338264,
+        "lineCount": 27354,
+        "inlineScriptCount": 91,
         "panelCount": 7,
         "buttonCount": 65,
-        "contentHashSha256": "8a1458518060d9303c7f9a644d2fc90d3edaa1beb4c959988099aac429dea992"
+        "contentHashSha256": "fe75d6d64d5181e8c157c2f93cfa7a89cedf1421ac317a8986abb3ca96a4d518"
       },
       "checks": [
         {
@@ -5899,9 +5899,9 @@
           "id": "inline-script",
           "label": "inline runtime present",
           "ok": true,
-          "detail": "88 inline script block(s)",
+          "detail": "91 inline script block(s)",
           "expected": ">= 1",
-          "actual": 88
+          "actual": 91
         },
         {
           "id": "meta:tool-name",
