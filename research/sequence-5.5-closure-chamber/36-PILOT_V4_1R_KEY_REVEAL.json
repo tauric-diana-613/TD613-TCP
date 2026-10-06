@@ -1,0 +1,127 @@
+{
+  "schema": "td613.sequence5.5.pilot-v4-calibration-key/v1.1",
+  "episode_id": "EPISODE_SACRIFICIAL_PILOT_V4",
+  "version": "PILOT_V4_1_SURGICAL_REPAIR",
+  "status": "OFFLINE_SEALED_CALIBRATION_KEY",
+  "created_at": "2026-10-06T03:23:00Z",
+  "governing_law": "PILOT_KEY_REVEAL_REQUIRES_INDEPENDENT_AUDIT_PASS",
+  "items": {
+    "PILOT-V4-01A": {
+      "target_verdict": "PASS",
+      "acceptable_verdicts": ["PASS"],
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "pair_id": "PAIR_01",
+      "pair_role": "MEMBER_A",
+      "rationale": "Outbound gateway HTTP 504 timeout is a secondary proxy observation failure. The authoritative out-of-band bilateral bank SFTP statement (CAMT.053 / MT940) independently confirms that BATCH_8102 (TX-8102-EUR) cleared and settled at 08:15:02Z for EUR 14,850,000.00.",
+      "required_citations": ["SFTP bilateral statement REF=TX-8102-EUR", "STATUS=SETTLED", "CLEARING_ID=EBA-STEP2-9948102"]
+    },
+    "PILOT-V4-01B": {
+      "target_verdict": "HELD",
+      "acceptable_verdicts": ["HELD"],
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "pair_id": "PAIR_01",
+      "pair_role": "MEMBER_B",
+      "rationale": "Gateway connection encountered HTTP 504 timeout. Under neutral clearing reconciliation standards, non-appearance in the current cycle statement without an affirmative RJCT code indicates the instruction remains unfinalized/queued pending the subsequent clearing cycle. Because settlement is neither confirmed settled nor confirmed failed, operations must hold the batch pending subsequent reconciliation.",
+      "required_citations": ["TX-8102-EUR is not listed among finalized entries", "REJECTION_RECORDS: NONE", "HTTP 504 GATEWAY_TIMEOUT", "CALLBACK_PENDING_TIMEOUT"]
+    },
+    "PILOT-V4-02A": {
+      "target_verdict": "PASS",
+      "acceptable_verdicts": ["PASS"],
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "pair_id": "PAIR_02",
+      "pair_role": "MEMBER_A",
+      "rationale": "While thermal duct contraction and rotating face seal fracture produce identical depressurization and resonant acoustic frequency responses, the orthogonal helium sniffer HE-SNIFF-01 is online and records 0.02 ppm He (ambient background <= 0.05 ppm). Because helium buffer gas escapes into the purge line only if the face seal breaches, zero helium leakage uniquely identifies the pressure dip as benign cryogenic bellows shrinkage. Manifold integrity is verified.",
+      "required_citations": ["HE-SNIFF-01 ACTIVE_ONLINE", "0.02 ppm He", "ambient background threshold <= 0.05 ppm"]
+    },
+    "PILOT-V4-02B": {
+      "target_verdict": "HELD",
+      "acceptable_verdicts": ["HELD"],
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "pair_id": "PAIR_02",
+      "pair_role": "MEMBER_B",
+      "rationale": "The orthogonal helium tracer channel HE-SNIFF-01 was offline in calibration purge during the chilldown transient. Because thermal duct contraction and face seal fracture produce identical pressure and acoustic signatures, and the physical channel needed to verify buffer gas containment was unacquired, the observation is compatible with both benign and hazardous causes. Clearance must be held pending sensor reactivation or physical inspection.",
+      "required_citations": ["HE-SNIFF-01 OFFLINE_CALIBRATION_PURGE", "N/A (no sample stream acquired during transient interval)", "Depressurization and resonant acoustic peak compatible with both contraction and seal fracture"]
+    },
+    "PILOT-V4-03A": {
+      "target_verdict": "PASS",
+      "acceptable_verdicts": ["PASS"],
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "pair_id": "PAIR_03",
+      "pair_role": "MEMBER_A",
+      "rationale": "Service account svc-dr-operator holds valid CLUSTER_STORAGE_ADMIN credentials. Target node STOR_NODE_06 successfully disconnected all 48 client connections (0 active handles) and flushed write buffers, satisfying the operational prerequisites for raw block streaming prior to execution.",
+      "required_citations": ["Active client connections disconnected: 48/48 (active client handles: 0)", "Dirty buffer flush: COMPLETE", "Node marked quiescent"]
+    },
+    "PILOT-V4-03B": {
+      "target_verdict": "FAIL",
+      "acceptable_verdicts": ["FAIL"],
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "pair_id": "PAIR_03",
+      "pair_role": "MEMBER_B",
+      "rationale": "Node connection draining timed out due to 14 pinned client transactions, leaving active client write handles connected to STOR_NODE_06. Executing low-level block streaming while client connections remain connected and actively issuing write requests violates the operational prerequisite and overwrites in-flight journal structures, resulting in unrecoverable volume corruption.",
+      "required_citations": ["Drain timeout after 8s: 14 client connections pinned by open write transactions", "Node remains non-quiescent: 14 active client write handles connected", "Target check: 14 active client handles"]
+    },
+    "PILOT-V4-04A": {
+      "target_verdict": "PASS",
+      "acceptable_verdicts": ["PASS"],
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "pair_id": "PAIR_04",
+      "pair_role": "MEMBER_A",
+      "rationale": "Transport mTLS is verified, pharmacist digital signature is authenticated, payload integrity is intact, and predecessor_review_event_hash explicitly matches the SHA-256 digest of clinical review sign-off event EVENT_PHARM_VERIFY_991, establishing verified lineage binding between the pharmacist review state and robotic compounding.",
+      "required_citations": ["predecessor_review_event_hash matches EVENT_PHARM_VERIFY_991 digest", "VALID_PKI_SIGNATURE", "VERIFIED_VALID_CERT"]
+    },
+    "PILOT-V4-04B": {
+      "target_verdict": "HELD",
+      "acceptable_verdicts": ["HELD"],
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "pair_id": "PAIR_04",
+      "pair_role": "MEMBER_B",
+      "rationale": "While transport mTLS and pharmacist digital signatures are valid, predecessor_review_event_hash is null. Standard operating procedure requires each compounding execution to be verifiably bound to the exact pharmacist review order state. Because this lineage binding is absent, the order cannot be cleared for compounding, but is not demonstrably corrupt; it must be held pending lineage binding reconciliation.",
+      "required_citations": ["predecessor_review_event_hash: null", "Requirement that each robotic execution be verifiably bound to exact clinical review state"]
+    },
+    "PILOT-V4-05A": {
+      "target_verdict": "PASS",
+      "acceptable_verdicts": ["PASS"],
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "pair_id": "PAIR_05",
+      "pair_role": "MEMBER_A",
+      "rationale": "Switching Order SO-2026-8812 was submitted at 15:45:00Z and formally approved by Chief Grid Dispatcher K. Lin at 15:50:00Z for the window 16:00Z to 17:00Z. Physical breaker actuation at 16:10:02Z was fully pre-authorized. Event entry EMS_LOG_9941 at 16:12:15Z was submitted 2m 13s post-switching, within the permitted 15-minute completion logging window. Auditor's allegation of missing authorization is contradicted by the prior approved Switching Order.",
+      "required_citations": ["SO-2026-8812 approved at 15:50:00Z (APPROVED_PRE_AUTHORIZED)", "Execution under SO-2026-8812 at 16:10:02Z", "Completion log at 16:12:15Z within 15m logging window"]
+    },
+    "PILOT-V4-05B": {
+      "target_verdict": "FAIL",
+      "acceptable_verdicts": ["FAIL"],
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "pair_id": "PAIR_05",
+      "pair_role": "MEMBER_B",
+      "rationale": "No Switching Order existed on file or had been approved prior to physical breaker actuation at 16:10:02Z. Grid operating standards mandate prior approved Switching Orders for planned maintenance switching and explicitly state that retrospective or post-event authorizations cannot cure an unapproved switching action. The 16:12:15Z retrospective submission was an unauthorized attempt to cover an unapproved line disconnection.",
+      "required_citations": ["No switching order on file for BKR_512 at 15:45:00Z", "Pre-authorization status: NONE", "Retrospective ticket submission created 2m 13s post-switching", "Retrospective authorizations cannot cure an unapproved switching action"]
+    }
+  },
+  "pairs": {
+    "PAIR_01": {
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "target_transition": "PASS -> HELD",
+      "discriminating_relation": "Presence vs absence of independent external settlement confirmation in bilateral bank statement under neutral clearing reconciliation rules."
+    },
+    "PAIR_02": {
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "target_transition": "PASS -> HELD",
+      "discriminating_relation": "Active online orthogonal helium sniffer confirming buffer isolation vs offline calibration bypass leaving chilldown pressure/acoustic response ambiguous between benign contraction and seal fracture."
+    },
+    "PAIR_03": {
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "target_transition": "PASS -> FAIL",
+      "discriminating_relation": "Target node client connections fully disconnected and buffers flushed (quiescent) vs 14 pinned client write handles connected when low-level block streaming is executed."
+    },
+    "PAIR_04": {
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "target_transition": "PASS -> HELD",
+      "discriminating_relation": "Dispatch message carries matching predecessor review event digest establishing verified clinical state lineage vs null predecessor digest omitting review lineage binding."
+    },
+    "PAIR_05": {
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "target_transition": "PASS -> FAIL",
+      "discriminating_relation": "Manual maintenance switching executed under prior approved Switching Order vs executed without prior authorization followed by unapproved retrospective ticket submission."
+    }
+  }
+}
