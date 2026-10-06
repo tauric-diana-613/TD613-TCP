@@ -1,0 +1,199 @@
+{
+  "schema": "td613.sequence5.5.amari-independent-forensic-certification/v1.0",
+  "sequence": "SEQUENCE_5.5",
+  "certification_status": "CERTIFIED_WITH_QUALIFICATIONS",
+  "reviewer": "Amari / GPT-5.6 Sol",
+  "review_date": "2026-10-06",
+  "repository": "tauric-diana-613/TD613-TCP",
+  "branch": "research/sequence-5.5-amari-closure-20261006",
+  "certified_closure_commit": "7e4d5e73107e79d297673b05170568d70e2e89b1",
+  "certified_closure_parent": "1c9f47bf90ed832e4e5314044230c7d2c01c6f30",
+  "v4_1r_design_freeze": "761bea6aa8e6412ad38340dfe8c4f9eebf129c64",
+  "v4_1r_final_execution_machinery": "5e71bc657a654c85be3264a1eab258dd5345dbad",
+  "v4_1r_raw_freeze": "1b5600cba2cbab29f244f86ceb73f620318a74f5",
+  "v4_1r_key_reveal": "1c9f47bf90ed832e4e5314044230c7d2c01c6f30",
+  "forensic_findings": {
+    "key_commitment": {
+      "expected_sha256": "cd971de705bdca06911b3a2ed683d08057db01809c49783ade6db162a7ee1ed1",
+      "independently_recomputed_sha256": "cd971de705bdca06911b3a2ed683d08057db01809c49783ade6db162a7ee1ed1",
+      "match": true
+    },
+    "execution_receipts": {
+      "inspected": 50,
+      "model": "gemini-3.8-flash",
+      "thinking_level": "medium",
+      "transport": "vercel-preview/server-fetch",
+      "http_200_count": 50,
+      "retry_ordinal_zero_count": 50,
+      "parsing_valid_count": 50,
+      "note": "All 50 receipt files were independently inspected in three batches; no receipt-level status, retry, model, thinking-level, transport, or parsing-validity discrepancy was found."
+    },
+    "scoring_recomputed_from_frozen_outputs": {
+      "target_transitions": {
+        "PAIR_01": "PASS -> HELD",
+        "PAIR_02": "PASS -> HELD",
+        "PAIR_03": "PASS -> FAIL",
+        "PAIR_04": "PASS -> HELD",
+        "PAIR_05": "PASS -> FAIL"
+      },
+      "observed_transitions": {
+        "K0": [
+          "PASS -> HELD",
+          "PASS -> HELD",
+          "PASS -> FAIL",
+          "PASS -> FAIL",
+          "PASS -> FAIL"
+        ],
+        "K0D": [
+          "PASS -> HELD",
+          "PASS -> HELD",
+          "PASS -> FAIL",
+          "PASS -> FAIL",
+          "PASS -> FAIL"
+        ],
+        "K1": [
+          "PASS -> HELD",
+          "PASS -> HELD",
+          "PASS -> FAIL",
+          "HELD -> FAIL",
+          "PASS -> FAIL"
+        ],
+        "K2": [
+          "PASS -> HELD",
+          "PASS -> HELD",
+          "PASS -> FAIL",
+          "HELD -> HELD",
+          "PASS -> FAIL"
+        ],
+        "K3": [
+          "PASS -> HELD",
+          "PASS -> HELD",
+          "PASS -> FAIL",
+          "PASS -> HELD",
+          "PASS -> FAIL"
+        ]
+      },
+      "pair_success_profiles": {
+        "K0": [
+          true,
+          true,
+          true,
+          false,
+          true
+        ],
+        "K0D": [
+          true,
+          true,
+          true,
+          false,
+          true
+        ],
+        "K1": [
+          true,
+          true,
+          true,
+          false,
+          true
+        ],
+        "K2": [
+          true,
+          true,
+          true,
+          false,
+          true
+        ],
+        "K3": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      "counts": {
+        "K0": "4/5",
+        "K0D": "4/5",
+        "K1": "4/5",
+        "K2": "4/5",
+        "K3": "5/5"
+      },
+      "total_successes": "21/25",
+      "success_rate": 0.84
+    },
+    "gate_recomputation": {
+      "anti_floor": "PASS",
+      "comparator_set_saturation": "PASS",
+      "methodological_identification": "FAIL",
+      "pairwise_spread": "FAIL",
+      "dynamic_range": "FAIL",
+      "disposition": "HOLD",
+      "explanation": [
+        "K0D, K1, and K2 have identical pair-success profiles [1,1,1,0,1].",
+        "Only PAIR_04 exhibits across-arm variance in pair-success.",
+        "21/25 = 84%, exceeding the preregistered 80% dynamic-range maximum."
+      ]
+    },
+    "pair_04": {
+      "target": "PASS -> HELD",
+      "K0": "PASS -> FAIL",
+      "K0D": "PASS -> FAIL",
+      "K1": "HELD -> FAIL",
+      "K2": "HELD -> HELD",
+      "K3": "PASS -> HELD",
+      "adjudication": "OBSERVED_SINGLE_PAIR_DIAGNOSTIC_ONLY",
+      "causal_claim": "NOT_ESTABLISHED"
+    },
+    "main_battery_custody": {
+      "repository_tree_observation": "BAT-01..BAT-16 fixture files and the hidden-answer-key commitment are present; no BAT output namespace and no plaintext hidden answer key are present at the audited branch head.",
+      "bat_execution_artifacts_found": false,
+      "plaintext_main_key_found": false,
+      "boundary": "Repository absence supports SEALED_UNEXECUTED custody status but cannot prove that no off-repository invocation occurred."
+    },
+    "machinery_patch_audit": {
+      "observation": "The API route and harness were repaired twice after the Stage-2 execution-binding manifest was committed.",
+      "disposition": "NOT_FATAL_TO_V4_1R",
+      "reason": [
+        "The preregistered design objects, treatment hashes, fixture hashes, output schema, fixed wrapper, key commitment, deterministic unit definitions, and bound prompt SHA-256 values remained unchanged.",
+        "The final harness reverified frozen prompt hashes before execution.",
+        "The final route independently reconstructed treatment/fixture/schema bytes and rejected prompt-hash drift.",
+        "The final machinery added explicit thinking-level wiring, remote-preview transport, deployment-commit attestation, schema validation, and retry preservation before the first V4.1R model call.",
+        "The raw manifest attests execution against deployed commit 5e71bc657a654c85be3264a1eab258dd5345dbad."
+      ],
+      "qualification": "STAGE_2_EXECUTION_BINDING_FREEZE should be read as a design/prompt binding freeze, not as an immutable full-runtime-code freeze."
+    }
+  },
+  "required_corrections_to_supplied_closure_prose": [
+    {
+      "original_claim": "Six iterations have been executed under genuine cryptographic provenance.",
+      "correction": "Six calibration stages were preserved under repository provenance. Four stages involved genuine model execution (V2, V3B, V4.1, V4.1R); V3 and V4 were design-only/not executed. V4.1 was preserved but gate-ineligible because of protocol deviation."
+    },
+    {
+      "original_claim": "The structural relation set independently validated in Sequence 4 enters Sequence 6 directly.",
+      "correction": "Sequence 4 supports relation survival within its stated same-host/context-isolated scope. It does not constitute independent external or exogenous validation. Sequence 6 may admit those relations only with that scope preserved."
+    },
+    {
+      "original_claim": "TRIVIAL_OUTLIER_DRIVEN_VARIANCE",
+      "correction": "Retain only as the preregistered gate label. It means variance was driven by a single pair; it does not establish that PAIR_04 itself is scientifically trivial."
+    }
+  ],
+  "stop_rule_audit": {
+    "v5_preregistered_stop_rule": false,
+    "finding": "The decision to stop after V4.1R is a post-result scientific-governance judgment, not a preregistered stopping rule.",
+    "adjudication": "ACCEPTABLE_WITH_DISCLOSURE",
+    "rationale": "After repeated non-identifying calibration attempts, designing a further pilot primarily to force K1/K2 separation would introduce substantial researcher degrees of freedom and result-seeking risk.",
+    "future_work_boundary": "Do not create Pilot V5 as another Sequence 5.5 calibration rescue. A future study is permissible only as a separately named, freshly preregistered program motivated by an independently stated hypothesis, new receiver/generalization question, or externally specified task family rather than by a desired K1/K2 separation."
+  },
+  "closure_adjudication": {
+    "sequence_5_5": "CLOSE",
+    "reopen_current_program": false,
+    "pilot_v5_within_sequence_5_5": false,
+    "main_battery": "SEALED_UNEXECUTED",
+    "causal_superiority_claim": "NOT_EARNED",
+    "aperture_incremental_effect_at_tested_coordinate": "NOT_IDENTIFIED",
+    "k3_pair04_signal": "HYPOTHESIS_GENERATING_ONLY",
+    "sequence_6_handoff": "AUTHORIZED_ONLY_UNDER_EXISTING_CLAIM_CEILINGS"
+  },
+  "canonical_countersigned_statement": "At Gemini 3.8 Flash / medium / Vercel-preview under the receiver-clean V4.1R relational-contrast tasks, the preregistered pair-success assay did not identify an incremental Aperture effect over matched scaffolding or conventional engineering. K3 uniquely matched the preregistered Pair-04 transition in this episode, but the episode failed the preregistered methodological-identification, pairwise-spread, and dynamic-range criteria. That single-pair signal is therefore hypothesis-generating only. Sequence 5.5 closes with the main battery sealed and unexecuted. No Pilot V5 is authorized within this calibration program; any future test must begin as a separately preregistered study rather than a rescue iteration aimed at obtaining treatment separation.",
+  "signature_boundary": "This artifact is an append-only content-level scientific countersignature committed through the GitHub connector. It is not a GPG/SSH cryptographic commit signature.",
+  "seal": "⟐"
+}
