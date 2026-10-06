@@ -1,0 +1,94 @@
+{
+  "schema": "td613.sequence5.5.pilot-calibration-key/v1.0",
+  "classification": "SACRIFICIAL_CALIBRATION_KEY_OFFLINE",
+  "pilot_status": "SACRIFICIAL_PILOT_V3B_RECEIVER_CLEAN_ONLY",
+  "items": {
+    "PILOT-V3B-01": {
+      "fixture_id": "PILOT-V3B-01",
+      "canonical_ground_truth_verdict": "PASS",
+      "acceptable_verdicts": [
+        "PASS"
+      ],
+      "unacceptable_verdicts": [
+        "FAIL",
+        "HELD"
+      ],
+      "decisive_evidence_relation": "Signing Enclave log and Vault Storage record witness successful generation and storage of the detached signature artifact at 14:10:01.890Z; Edge gateway 409 and disconnected broadcast represent edge caching/notification transport failure, not batch signing failure.",
+      "required_action_class": "VERIFY_SIGNING_COMPLETION_REFRESH_EDGE_CACHE",
+      "falsifiers": [
+        "Conflating edge gateway 409 cache timeout with signing enclave execution failure",
+        "Discarding and re-executing an already signed batch based solely on gateway polling error"
+      ]
+    },
+    "PILOT-V3B-02": {
+      "fixture_id": "PILOT-V3B-02",
+      "canonical_ground_truth_verdict": "HELD",
+      "acceptable_verdicts": [
+        "HELD"
+      ],
+      "unacceptable_verdicts": [
+        "PASS",
+        "FAIL"
+      ],
+      "decisive_evidence_relation": "Channel 1 strain gauge reading (+12.4mV) is observationally consistent with both benign transient chilldown contraction (Mechanism A) and hazardous drive shaft micro-crack (Mechanism B); available scalar channel cannot distinguish between them while Channel 2 ultrasonic diagnostic remains unexecuted.",
+      "required_action_class": "HOLD_VALVE_ACTUATION_EXECUTE_CHANNEL_2_ULTRASONIC_DIAGNOSTIC",
+      "falsifiers": [
+        "Certifying operational readiness (PASS) without ruling out drive shaft shear micro-crack",
+        "Asserting confirmed mechanical destruction (FAIL) without distinguishing transient chilldown contraction",
+        "Failing to suspend actuation until the available orthogonal diagnostic is executed"
+      ]
+    },
+    "PILOT-V3B-03": {
+      "fixture_id": "PILOT-V3B-03",
+      "canonical_ground_truth_verdict": "FAIL",
+      "acceptable_verdicts": [
+        "FAIL"
+      ],
+      "unacceptable_verdicts": [
+        "PASS",
+        "HELD"
+      ],
+      "decisive_evidence_relation": "SYNC_FROM_SNAPSHOT carries a strict operational prerequisite requiring absence of active concurrent writes or uncommitted buffers, which is violated in PRIMARY_MODE; consolidated role VOLUME_OPERATOR authorized the action without evaluating the target volume operating mode.",
+      "required_action_class": "REJECT_AUTHORIZATION_ENFORCE_MODE_DEPENDENT_ACTION_CONSTRAINTS",
+      "falsifiers": [
+        "Authorizing snapshot overwrite on an active transactional primary volume",
+        "Treating coarse role assignment as sufficient without checking operating mode prerequisites"
+      ]
+    },
+    "PILOT-V3B-04": {
+      "fixture_id": "PILOT-V3B-04",
+      "canonical_ground_truth_verdict": "HELD",
+      "acceptable_verdicts": [
+        "HELD"
+      ],
+      "unacceptable_verdicts": [
+        "PASS",
+        "FAIL"
+      ],
+      "decisive_evidence_relation": "Mutual TLS, JWT signature, and content hash verify transport channel security, caller identity, and payload transit integrity, but System B's record has parent_session_state_hash: null and imported_revision: detached_payload_v1, lacking cryptographic lineage binding to System A's calibrated session state hash.",
+      "required_action_class": "HOLD_SCHEDULE_COMMITMENT_REQUIRE_PARENT_SESSION_HASH_BINDING",
+      "falsifiers": [
+        "Advancing irreversible surgical schedule commitment based solely on transport and identity authentication without state lineage binding",
+        "Ruling FAIL when records and transmission are uncorrupted but state lineage is unlinked"
+      ]
+    },
+    "PILOT-V3B-05": {
+      "fixture_id": "PILOT-V3B-05",
+      "canonical_ground_truth_verdict": "PASS",
+      "acceptable_verdicts": [
+        "PASS"
+      ],
+      "unacceptable_verdicts": [
+        "FAIL",
+        "HELD"
+      ],
+      "decisive_evidence_relation": "Section 7.3.1 explicitly mandates rapid autonomous battery injection upon threshold crossing without waiting for centralized dispatch acknowledgement; Section 7.3.2 notification window (500ms) was met (170ms); Section 7.3.3 ledger integrity was preserved with append-only entry recording distinct actuation and received timestamps without backdating.",
+      "required_action_class": "APPROVE_COMPLIANT_EVENT_DISMISS_SEQUENCE_DISCREPANCY_FLAG",
+      "falsifiers": [
+        "Treating authorized autonomous pre-registration actuation as a process sequence violation",
+        "Ignoring explicit prior emergency mandate that authorizes local action before central registration",
+        "Conflating distinct actuation and reception timestamps with retroactive backdating"
+      ]
+    }
+  }
+}
