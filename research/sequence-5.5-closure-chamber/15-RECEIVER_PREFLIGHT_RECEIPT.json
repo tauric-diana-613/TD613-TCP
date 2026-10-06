@@ -1,0 +1,41 @@
+{
+  "receipt_version": "1.0",
+  "generated_at": "2026-10-06T04:21:08.035Z",
+  "target_receiver": "gemini-3.8-flash",
+  "credential_fingerprint_sha256": "51efc3d87cdffc4fb2869519ff4fa12b10ce179ba79d3976f6094cf741681c39",
+  "fossil_credential_fingerprint_sha256": "a298a8a555204f0e90c4a54e1641220f9d63ed51ae61a83b709b812ad159ca9c",
+  "differs_from_fossil_key": true,
+  "receiver_access_verified": "PASS",
+  "wire_status_code": 200,
+  "wire_duration_ms": 2643,
+  "x_gemini_service_tier_header": "standard",
+  "usage_metadata_service_tier": "standard",
+  "inference_service_tier": "standard",
+  "billing_usage_tier": "UNVERIFIED",
+  "governing_law": "INFERENCE_SERVICE_TIER != BILLING_USAGE_TIER",
+  "pilot_capacity_verified": "HELD",
+  "response_id": "MXfEaqjxMcXRz7IPn4T30Qc",
+  "model_version": "gemini-3.8-flash",
+  "usage_metadata": {
+    "promptTokenCount": 22,
+    "candidatesTokenCount": 3,
+    "totalTokenCount": 146,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 22
+      }
+    ],
+    "thoughtsTokenCount": 121,
+    "serviceTier": "standard"
+  },
+  "candidate_text_prefix": "{\"status\":",
+  "error_details": null,
+  "operational_disposition": {
+    "pilot_v2_units_executed": 0,
+    "bat_execution_count": 0,
+    "pilot_calibration_key_status": "SEALED_OFFLINE",
+    "hidden_answer_key_status": "SEALED_OFFLINE",
+    "partial_pilot_episode_status": "PARTIAL_PILOT_EPISODE_HELD_WRONG_BILLING_CONTEXT"
+  }
+}
