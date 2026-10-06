@@ -8,7 +8,7 @@ export const GOVERNED_EVENT_CHAIN_VERIFICATION_SCHEMA = 'td613.event.chain-verif
  *
  * CLAIM CEILING & HONESTY NOTICE:
  * - A fixed SHA-256 domain prefix supports digest-domain separation.
- * - Canonical encoding (RFC 8785) prevents ambiguous field concatenation.
+ * - Canonical encoding prevents ambiguous field concatenation.
  * - Neither statement, by itself, proves elimination of SHA-256 length-extension behavior.
  * - This mechanism earns domain separation between event digests and genesis anchors;
  *   it does NOT claim elimination of general length-extension attack surfaces.
@@ -31,11 +31,19 @@ const VALID_ACTOR_CLASSES = Object.freeze([
   'DETACHED_DELEGATED'
 ]);
 
+/**
+ * Claim ceilings and invariant boundaries for Tranche 1.
+ */
 export const CLAIM_CEILINGS = Object.freeze([
   'TAMPER_EVIDENT_PREDECESSOR_CHAINING_ONLY',
   'NOT_CUSTODY_AUTHORITY',
   'NOT_EXTERNAL_ORIGIN_PROOF',
-  'MONOTONIC_EVENT_TIME_NOT_FULL_NON_RETROACTIVITY'
+  'MONOTONIC_EVENT_TIME_NOT_FULL_NON_RETROACTIVITY',
+  'PREDECESSOR_CHAIN_VERIFIED_NOT_TERMINAL_HEAD_ANCHORED',
+  'HEAD_DIGEST_COMPUTED_NOT_HEAD_DIGEST_WITNESSED',
+  'ROUTE_IDENTITY_BOUND_NOT_ROUTE_TRANSITION_AUTHORIZED',
+  'DETERMINISTIC_JCS_CANONICALIZATION_SUBSET_ESTABLISHED',
+  'FULL_RFC_8785_CONFORMANCE_HELD'
 ]);
 
 function deepFreeze(obj) {
@@ -83,13 +91,37 @@ function isoTimestamp(value, label) {
 }
 
 /**
+ * Validates that a string does not contain lone surrogate code units.
+ * RFC 8785 Section 3.2.2.2 requires valid Unicode code points only; lone surrogates are forbidden.
+ */
+function assertWellFormedUnicode(str, label) {
+  if (typeof str !== 'string') return;
+  if (typeof str.isWellFormed === 'function') {
+    if (!str.isWellFormed()) {
+      throw new TypeError(`RFC 8785: ${label} must not contain lone surrogate code units (invalid Unicode).`);
+    }
+  } else {
+    const loneSurrogateRegex = /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/;
+    if (loneSurrogateRegex.test(str)) {
+      throw new TypeError(`RFC 8785: ${label} must not contain lone surrogate code units (invalid Unicode).`);
+    }
+  }
+}
+
+/**
  * Deterministic JSON Canonicalization Scheme (RFC 8785 / JCS).
  *
- * Implements RFC 8785:
+ * Implements RFC 8785 requirements:
  * 1. Object keys sorted lexicographically by UTF-16 code units.
  * 2. Numbers formatted per ECMAScript 7.1.12.1 ToString (-0 serialized as 0, NaN/Infinity rejected).
  * 3. Zero whitespace outside quoted strings.
- * 4. Rejection of undefined, functions, symbols, BigInt, and non-plain objects.
+ * 4. Strict rejection of lone surrogates in strings and object property names.
+ * 5. Strict rejection of sparse arrays with holes.
+ * 6. Rejection of undefined, functions, symbols, BigInt, and non-plain objects.
+ *
+ * Current Claim Boundary:
+ * DETERMINISTIC_JCS_CANONICALIZATION_SUBSET = ESTABLISHED
+ * FULL_RFC_8785_CONFORMANCE = HELD
  */
 export function canonicalizeJson(value) {
   if (value === null) {
@@ -106,12 +138,18 @@ export function canonicalizeJson(value) {
     return Object.is(value, -0) ? '0' : value.toString();
   }
   if (t === 'string') {
+    assertWellFormedUnicode(value, 'JSON string value');
     return JSON.stringify(value);
   }
   if (t === 'undefined' || t === 'function' || t === 'symbol' || t === 'bigint') {
     throw new TypeError(`RFC 8785: unsupported type: ${t}`);
   }
   if (Array.isArray(value)) {
+    for (let i = 0; i < value.length; i++) {
+      if (!(i in value)) {
+        throw new TypeError('RFC 8785: sparse arrays with holes are not valid JSON');
+      }
+    }
     return '[' + value.map(canonicalizeJson).join(',') + ']';
   }
   if (t === 'object') {
@@ -120,6 +158,9 @@ export function canonicalizeJson(value) {
       throw new TypeError('RFC 8785: only plain objects and arrays are canonicalizable');
     }
     const keys = Object.keys(value).sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+    for (const k of keys) {
+      assertWellFormedUnicode(k, 'JSON object property name');
+    }
     return '{' + keys.map(k => JSON.stringify(k) + ':' + canonicalizeJson(value[k])).join(',') + '}';
   }
   throw new TypeError(`RFC 8785: unhandled value: ${value}`);
@@ -163,6 +204,11 @@ export function computeGenesisDigest({ sessionId, initialCommitSha, routeIdentit
  * - Rejects records whose declared measurement timestamp occurs after their recording timestamp.
  * - Does NOT claim generic "rejection of future observations" because wall-clock future
  *   validation is not implemented in this tranche.
+ *
+ * ROUTE IDENTITY BINDING:
+ * - Cryptographically binds declared route_identity.
+ * - Detects tampering with a hash-bound intermediate route identity once committed by a descendant.
+ * - ROUTE_IDENTITY_BOUND != ROUTE_TRANSITION_AUTHORIZED (does not establish route transition authorization policy).
  */
 export function validateGovernedEvent(event, label = 'governed event') {
   exact(event, [
@@ -241,21 +287,36 @@ export function createGovernedEvent({
 }
 
 /**
- * Verifies an unbroken chain of governed events against an expected genesis anchor.
- * Enforces INV-05 (predecessor binding).
+ * Verifies an unbroken chain of governed events against an expected genesis anchor and
+ * an optional expected terminal head digest anchor.
  *
- * MONOTONIC CHRONOLOGY vs NON-RETROACTIVITY (INV-11):
- * - Monotonic recording timestamps establish ordered chronology.
- * - Monotonic recording timestamps do NOT by themselves establish full Western Horizon
- *   non-retroactivity (preserving the earlier observer's epistemic state against later rewriting).
- * - Therefore: MONOTONIC_EVENT_TIME != FULL_NON_RETROACTIVITY.
- * - Epistemic-state non-retroactivity is deferred to the Temporal Custodian / state-snapshot tranche.
+ * ENFORCES:
+ * - INV-05: predecessor binding (tamper evidence for all committed predecessor events).
+ * - INV-11 (Chronology): monotonic recording timestamps establish ordered chronology.
+ *   (MONOTONIC_EVENT_TIME != FULL_NON_RETROACTIVITY; epistemic-state preservation is deferred).
+ * - Terminal Head Anchor: protects against terminal-event mutation when expectedHeadDigest is provided.
+ *   (PREDECESSOR_CHAIN_VERIFIED != TERMINAL_HEAD_ANCHORED; HEAD_DIGEST_COMPUTED != HEAD_DIGEST_WITNESSED).
+ * - Route Identity Binding: detects tampering with a hash-bound intermediate route identity once
+ *   committed by a descendant (ROUTE_IDENTITY_BOUND != ROUTE_TRANSITION_AUTHORIZED).
+ *
+ * @param {Array<object>} events - Dense array of governed event objects.
+ * @param {string} expectedGenesisDigest - 64-char lowercase hex SHA-256 genesis anchor.
+ * @param {string|object|null} expectedHeadOrOptions - Optional expected terminal head digest or options object.
  */
-export function verifyGovernedEventChain(events, expectedGenesisDigest) {
+export function verifyGovernedEventChain(events, expectedGenesisDigest, expectedHeadOrOptions = null) {
   if (!Array.isArray(events)) {
     throw new TypeError('events must be a dense array');
   }
   hex64(expectedGenesisDigest, 'expectedGenesisDigest');
+
+  let expectedHead = null;
+  if (typeof expectedHeadOrOptions === 'string') {
+    expectedHead = hex64(expectedHeadOrOptions, 'expectedHeadDigest');
+  } else if (expectedHeadOrOptions && typeof expectedHeadOrOptions === 'object') {
+    if (expectedHeadOrOptions.expectedHeadDigest) {
+      expectedHead = hex64(expectedHeadOrOptions.expectedHeadDigest, 'expectedHeadDigest');
+    }
+  }
 
   const violations = [];
   let currentExpectedPredecessor = expectedGenesisDigest;
@@ -300,13 +361,42 @@ export function verifyGovernedEventChain(events, expectedGenesisDigest) {
     currentExpectedPredecessor = computeEventDigest(event);
   }
 
-  const verified = violations.length === 0;
+  const finalComputedHead = events.length > 0 ? currentExpectedPredecessor : expectedGenesisDigest;
+  const predecessor_chain_verified = violations.length === 0;
+
+  let head_anchor_verified = false;
+  let head_anchor_status = 'UNANCHORED';
+
+  if (expectedHead !== null) {
+    if (finalComputedHead === expectedHead) {
+      head_anchor_verified = true;
+      head_anchor_status = 'ANCHORED_MATCH';
+    } else {
+      head_anchor_verified = false;
+      head_anchor_status = 'ANCHOR_MISMATCH';
+      violations.push({
+        code: 'TERMINAL_HEAD_MISMATCH',
+        expected: expectedHead,
+        actual: finalComputedHead,
+        message: 'Terminal event digest does not match expectedHeadDigest witness anchor.'
+      });
+    }
+  } else {
+    head_anchor_verified = false;
+    head_anchor_status = 'UNANCHORED';
+  }
+
+  const verified = predecessor_chain_verified && (expectedHead !== null ? head_anchor_verified : true);
 
   return deepFreeze({
     schema: GOVERNED_EVENT_CHAIN_VERIFICATION_SCHEMA,
     verified,
+    predecessor_chain_verified,
+    head_anchor_verified,
+    head_anchor_status,
     total_events: events.length,
-    head_digest: events.length > 0 ? currentExpectedPredecessor : expectedGenesisDigest,
+    head_digest: finalComputedHead,
+    expected_head_digest: expectedHead,
     genesis_digest: expectedGenesisDigest,
     violations,
     claim_ceiling: 'TAMPER_EVIDENT_PREDECESSOR_CHAINING_ONLY',

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://td613.com/schemas/sequence-6-activation/v1.0",
+  "sequence": "SEQUENCE_6",
+  "title": "Sequence 6 Activation and Scientific Closure Ingestion",
+  "status": "ACTIVATED",
+  "timestamp": "2026-10-06T23:05:00Z",
+  "covenant_key": "Khonalit-po ∴ TD613 — Badge Received",
+  "heritage_key": "Tauric Diana — Crimean heritage custodianship",
+  "covenant_authority_context": "Tauri Priestesshood of Ash⟐",
+  "closure_ingested": {
+    "source_ledger": "research/sequence-5.5-closure-chamber/37-SEQUENCE_5_5_SCIENTIFIC_CLOSURE_LEDGER.json",
+    "amari_certification": "research/sequence-5.5-closure-chamber/38-SEQUENCE_5_5_AMARI_FORENSIC_COUNTERSIGNATURE.json",
+    "closure_parent_sha": "df0ad6cd0795a38735bfda4d6a155857d6df0e9b",
+    "posture": [
+      "SEQUENCE_5_5_CLOSED",
+      "TIARA_REMAINS_BOXED",
+      "V_NEQ_C_NEQ_P_NEQ_L",
+      "APERTURE_INCREMENTAL_EFFECT_NOT_ESTABLISHED",
+      "K3_CAUSAL_ADVANTAGE_NOT_ESTABLISHED",
+      "K3_PAIR04_SIGNAL_IS_OBSERVED_DIAGNOSTIC_ONLY",
+      "NON_IDENTIFYING_RESULT_NEQ_METHODOLOGICAL_EQUIVALENCE",
+      "SEQUENCE_4_RELATION_SURVIVAL_NEQ_INDEPENDENT_EXTERNAL_VALIDATION"
+    ]
+  },
+  "sequence_6_purpose": {
+    "product_law": "THE PRODUCT IS NOT THE DISSERTATION RENDERED AS UI. THE PRODUCT IS THE SURVIVING RELATION SET RENDERED BEAUTIFULLY.",
+    "primary_research_question": "How much of the useful architecture survives after bespoke vocabulary, historical mythology, preferred interpretation, and unearned ontology are stripped away?",
+    "secondary_research_question": "Which discarded or currently unvalidated structures remain sufficiently generative to deserve new formal study under a clearly speculative evidence class?"
+  },
+  "six_layer_separation": [
+    "PRODUCT_CORE",
+    "RESEARCH_LAB",
+    "SPECULATIVE_FIELD",
+    "AESTHETIC_LAYER",
+    "EVIDENCE_RECEIPT_LAYER",
+    "HISTORICAL_LINEAGE_LAYER"
+  ],
+  "seal": "⟐"
+}
