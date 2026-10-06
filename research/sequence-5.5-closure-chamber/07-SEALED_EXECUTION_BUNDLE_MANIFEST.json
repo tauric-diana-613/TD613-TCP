@@ -1,0 +1,67 @@
+{
+  "$schema": "https://td613.com/schemas/execution-bundle-manifest/v1.0",
+  "bundle_id": "TD613-SEQ5.5-SEALED-EXECUTION-BUNDLE",
+  "assay": "TD613-SEQ5.5-CLOSURE-CHAMBER",
+  "generated_at": "2026-10-06T01:40:00Z",
+  "firewall_specification": {
+    "principle": "KEY_PATH_ABSENT != KEY_INACCESSIBLE",
+    "filesystem_isolation": [
+      "The receiver execution process executes from an isolated working directory containing strictly the bundled treatment packets and battery fixtures.",
+      "No access to repository root, .git history, research/sequence-5-differential-replication, or any answer key path is granted.",
+      "Pre-flight assertion runs before any model call: aborts immediately if any file matching *ANSWER_KEY*.json is present on disk or readable in filesystem."
+    ],
+    "context_isolation": [
+      "Receiver model prompt contains strictly: [TREATMENT_PACKET_CONTENT] + [BATTERY_FIXTURE_CONTENT] + [OUTPUT_JSON_SCHEMA].",
+      "Zero file search tools, bash evaluation tools, or repository traversal capabilities are granted to receiver contexts.",
+      "Scoring rubrics, target verdicts, and expected outcomes remain strictly offline in Lane F until Freeze B raw outputs are committed."
+    ]
+  },
+  "bundle_contents": {
+    "treatment_packets": [
+      {
+        "cohort": "K0",
+        "file": "02-TREATMENT_PACKETS/packet-K0.md",
+        "sha256": "a6bea5f26d57051aee881084de473ebe0775063aebbb8d20b0b0994b83c71316"
+      },
+      {
+        "cohort": "K0D",
+        "file": "02-TREATMENT_PACKETS/packet-K0D.md",
+        "sha256": "6580e4cb0c241fc441170b6af9febfab43e8e40211fb05c0df116b65caf60e3b"
+      },
+      {
+        "cohort": "K1",
+        "file": "02-TREATMENT_PACKETS/packet-K1.md",
+        "sha256": "c7f543ad4a1a4836edb93f2ef89ab5b4f209f1a1f4705693cdea395c2f3b4126"
+      },
+      {
+        "cohort": "K2",
+        "file": "02-TREATMENT_PACKETS/packet-K2.md",
+        "sha256": "344f72e901e200af641935f2a4a7e06ff40c12056bc5db8f43a8f6fc63bed8f3"
+      },
+      {
+        "cohort": "K3",
+        "file": "02-TREATMENT_PACKETS/packet-K3.md",
+        "sha256": "d0b3d79d67087b558c91df4c5669219517e2b92712de128cb6fa8764081023af"
+      }
+    ],
+    "battery_fixtures": [
+      "04-BATTERY_FIXTURES/BAT-01.md", "04-BATTERY_FIXTURES/BAT-02.md", "04-BATTERY_FIXTURES/BAT-03.md", "04-BATTERY_FIXTURES/BAT-04.md",
+      "04-BATTERY_FIXTURES/BAT-05.md", "04-BATTERY_FIXTURES/BAT-06.md", "04-BATTERY_FIXTURES/BAT-07.md", "04-BATTERY_FIXTURES/BAT-08.md",
+      "04-BATTERY_FIXTURES/BAT-09.md", "04-BATTERY_FIXTURES/BAT-10.md", "04-BATTERY_FIXTURES/BAT-11.md", "04-BATTERY_FIXTURES/BAT-12.md",
+      "04-BATTERY_FIXTURES/BAT-13.md", "04-BATTERY_FIXTURES/BAT-14.md", "04-BATTERY_FIXTURES/BAT-15.md", "04-BATTERY_FIXTURES/BAT-16.md"
+    ],
+    "output_schema": {
+      "type": "object",
+      "required": ["finding_id", "verdict", "identified_issues", "evidence", "recommended_action", "confidence"],
+      "properties": {
+        "finding_id": { "type": "string" },
+        "verdict": { "enum": ["PASS", "FAIL", "HELD"] },
+        "identified_issues": { "type": "array", "items": { "type": "string" } },
+        "evidence": { "type": "string" },
+        "recommended_action": { "type": "string" },
+        "confidence": { "enum": ["HIGH", "MEDIUM", "LOW"] }
+      }
+    }
+  },
+  "seal": "⟐"
+}

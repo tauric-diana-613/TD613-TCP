@@ -1,0 +1,147 @@
+{
+  "$schema": "https://td613.com/schemas/fixture-manifest/v1.0",
+  "assay": "TD613-SEQ5.5-CLOSURE-CHAMBER",
+  "generated_at": "2026-10-06T01:39:54.920Z",
+  "total_items": 16,
+  "clusters": {
+    "CLUSTER_A_OBSERVABILITY_CONFLATION": {
+      "name": "Observability vs State Conflation",
+      "items": [
+        "BAT-01",
+        "BAT-02",
+        "BAT-03"
+      ]
+    },
+    "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION": {
+      "name": "Unidentifiability & Necessary Abstention",
+      "items": [
+        "BAT-04",
+        "BAT-05",
+        "BAT-06"
+      ]
+    },
+    "CLUSTER_C_FINITE_ADMISSIBILITY_LAWFUL_SUPPORT": {
+      "name": "Finite Admissibility & Lawful Support",
+      "items": [
+        "BAT-07",
+        "BAT-08",
+        "BAT-09"
+      ]
+    },
+    "CLUSTER_D_RECEIVER_RELATION_CONTINUITY": {
+      "name": "Receiver-Relative Relation Continuity",
+      "items": [
+        "BAT-10",
+        "BAT-11",
+        "BAT-12"
+      ]
+    },
+    "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY": {
+      "name": "Chronology, Preemption & Non-Retroactivity",
+      "items": [
+        "BAT-13",
+        "BAT-14",
+        "BAT-15",
+        "BAT-16"
+      ]
+    }
+  },
+  "items": [
+    {
+      "item_id": "BAT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "title": "Client SPA Router URL Hash vs Unrendered DOM Component",
+      "fixture_file": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-01.md"
+    },
+    {
+      "item_id": "BAT-02",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "title": "Gateway HTTP 200 Handshake vs Downstream Storage CAS Write",
+      "fixture_file": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-02.md"
+    },
+    {
+      "item_id": "BAT-03",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "title": "CI Build Pipeline Exit Code 0 with Swallowed Subprocess Failure",
+      "fixture_file": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-03.md"
+    },
+    {
+      "item_id": "BAT-04",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "title": "Synthetic Monitored Ping Latency vs Distributed Cross-Region Wire Jitter",
+      "fixture_file": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-04.md"
+    },
+    {
+      "item_id": "BAT-05",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "title": "Underdetermined Multi-Factor Failure Requiring Mandatory Abstention",
+      "fixture_file": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-05.md"
+    },
+    {
+      "item_id": "BAT-06",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "title": "Incomplete Metric Window under Monitoring Sensor Outage",
+      "fixture_file": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-06.md"
+    },
+    {
+      "item_id": "BAT-07",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY_LAWFUL_SUPPORT",
+      "title": "Stage Erasure Exposing Unconditioned Action Capability",
+      "fixture_file": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-07.md"
+    },
+    {
+      "item_id": "BAT-08",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY_LAWFUL_SUPPORT",
+      "title": "Role Quotient Collapse Granting Unauthorized Administrative Rights",
+      "fixture_file": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-08.md"
+    },
+    {
+      "item_id": "BAT-09",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY_LAWFUL_SUPPORT",
+      "title": "Sticky Authorization Grant Surviving Session Boundary",
+      "fixture_file": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-09.md"
+    },
+    {
+      "item_id": "BAT-10",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "title": "Window Popup Boundary Cross without Authenticated Predecessor Digest",
+      "fixture_file": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-10.md"
+    },
+    {
+      "item_id": "BAT-11",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "title": "Distributed Asynchronous Task Missing Causal Ancestry Binding",
+      "fixture_file": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-11.md"
+    },
+    {
+      "item_id": "BAT-12",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "title": "Receiver Viewport Adaptation Preserving Flow-Core Trace",
+      "fixture_file": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-12.md"
+    },
+    {
+      "item_id": "BAT-13",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "title": "Retroactive Historical Ledger Mutation (Chronology Laundering)",
+      "fixture_file": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-13.md"
+    },
+    {
+      "item_id": "BAT-14",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "title": "Preemption Gap with Consequential Action Preceding Formal Registration",
+      "fixture_file": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-14.md"
+    },
+    {
+      "item_id": "BAT-15",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "title": "Local Subsystem PASS Masking Global Route Regression",
+      "fixture_file": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-15.md"
+    },
+    {
+      "item_id": "BAT-16",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "title": "Staggered Threshold Inversion with Distorted Closure Fidelity",
+      "fixture_file": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-16.md"
+    }
+  ]
+}

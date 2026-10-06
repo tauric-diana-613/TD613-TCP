@@ -1,0 +1,49 @@
+{
+  "$schema": "https://td613.com/schemas/treatment-packet-hashes/v1.0",
+  "assay": "TD613-SEQ5.5-CLOSURE-CHAMBER",
+  "generated_at": "2026-10-06T01:38:00Z",
+  "packets": {
+    "K0": {
+      "file": "research/sequence-5.5-closure-chamber/02-TREATMENT_PACKETS/packet-K0.md",
+      "name": "Task-Only Baseline",
+      "bytes": 739,
+      "words": 97,
+      "sha256": "a6bea5f26d57051aee881084de473ebe0775063aebbb8d20b0b0994b83c71316"
+    },
+    "K0D": {
+      "file": "research/sequence-5.5-closure-chamber/02-TREATMENT_PACKETS/packet-K0D.md",
+      "name": "Dose-Matched Neutral Instruction Control",
+      "bytes": 6509,
+      "words": 892,
+      "sha256": "6580e4cb0c241fc441170b6af9febfab43e8e40211fb05c0df116b65caf60e3b"
+    },
+    "K1": {
+      "file": "research/sequence-5.5-closure-chamber/02-TREATMENT_PACKETS/packet-K1.md",
+      "name": "Conventional Engineering Methodology",
+      "bytes": 7171,
+      "words": 932,
+      "sha256": "c7f543ad4a1a4836edb93f2ef89ab5b4f209f1a1f4705693cdea395c2f3b4126"
+    },
+    "K2": {
+      "file": "research/sequence-5.5-closure-chamber/02-TREATMENT_PACKETS/packet-K2.md",
+      "name": "TD613 Aperture Kernel Methodology",
+      "bytes": 8261,
+      "words": 1085,
+      "sha256": "344f72e901e200af641935f2a4a7e06ff40c12056bc5db8f43a8f6fc63bed8f3"
+    },
+    "K3": {
+      "file": "research/sequence-5.5-closure-chamber/02-TREATMENT_PACKETS/packet-K3.md",
+      "name": "TD613 Multi-Jurisdiction Governance Methodology",
+      "bytes": 9323,
+      "words": 1175,
+      "sha256": "d0b3d79d67087b558c91df4c5669219517e2b92712de128cb6fa8764081023af"
+    }
+  },
+  "dose_parity_notes": {
+    "sections_per_packet_k0d_k1_k2_k3": 5,
+    "examples_per_packet_k0d_k1_k2_k3": 2,
+    "word_count_spread": "892 to 1175 words across treated arms",
+    "residual_dose_confound": "Residual word count variance is within bounds; K0D-K0 estimates generic-scaffolding-plus-dose effect."
+  },
+  "seal": "⟐"
+}

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://td613.com/schemas/sequence-4-inheritance/v1.0",
+  "inheritance_id": "TD613-SEQ4-PORTABILITY-INHERITANCE-20261005",
+  "covenant": "Tauric Diana — Crimean heritage custodianship / Tauri Goddess of the Ash Moon⟐",
+  "timestamp": "2026-10-06T01:36:00Z",
+  "canonical_prior_corpus": "research/relation-survival-assay/",
+  "canonical_final_result": "research/relation-survival-assay/19-MACHINE_READABLE_FINAL_RESULT.json",
+  "prior_empirical_results": {
+    "arm_a_vocabulary_blind": {
+      "name": "Vocabulary-Blind Operational Fixture",
+      "fixture_sha256": "880fa9a4da8f8ca8e8f28ac01a58b4bb9d27cfdd838abcc214a3a1a46106485b",
+      "verdict": "RELATION_SURVIVAL_UNDER_OPERATIONAL_VOCABULARY_STRIPPING",
+      "invariants_preserved": "12/12"
+    },
+    "arm_b_field_projection": {
+      "name": "Foreign/Field Vocabulary Projection",
+      "fixture_sha256": "d2e98b5f5a53427a26d622c6c9fb8086b3a15c1f1819fd30ca76034fcacffbb6",
+      "verdict": "RELATION_SURVIVAL_UNDER_FOREIGN_FIELD_LEXICON",
+      "invariants_preserved": "12/12"
+    },
+    "arm_c1_label_permutation": {
+      "name": "Label Permutation Control",
+      "fixture_sha256": "636fc7c6b93b6d5682ff6d43284429f42a1863a1ee8fd59f4aa645aad71efa5e",
+      "verdict": "RELATION_PRESERVED_UNDER_LABEL_PERMUTATION",
+      "invariants_preserved": "12/12"
+    },
+    "arm_c2_structure_ablation": {
+      "name": "Structure Ablation / Decoy Control",
+      "fixture_sha256": "3a735079671bfce94bc8985deea0298d56f0b15bef356442c7a0618a6d0b1c80",
+      "verdict": "STRUCTURE_SENSITIVITY_OBSERVED",
+      "ablations_detected": "5/5"
+    }
+  },
+  "inherited_claim_ceilings": [
+    {
+      "ceiling": "RELATION_TRANSPORT != INDEPENDENT_DISCOVERY",
+      "rationale": "Transfer across vocabulary proves relational representation independence, not that the receiving model discovered the theorem independently."
+    },
+    {
+      "ceiling": "VOCABULARY_REMOVAL != PROMPT_INFLUENCE_REMOVAL",
+      "rationale": "Removing TD613 house words removes lexeme reliance; the prompt structure itself remains an intentional causal input."
+    },
+    {
+      "ceiling": "SAME-HOST_CONTEXT_ISOLATION != EXOGENOUS_WITNESS",
+      "rationale": "Testing multiple fresh contexts on one model host provides intra-model reproducibility, not multi-provider exogenous independence."
+    }
+  ],
+  "sequence_5_5_classification": "PRIOR_BOUNDED_EVIDENCE_REQUIRING_TARGETED_REVALIDATION_ONLY_WHERE_NEEDED",
+  "portability_mandate": "Sequence 5.5 inherits P0-P4 as established intra-model relation-survival coordinates; the principal new portability closure requirement is P5 (genuine authenticated receiver substitution across independent model families) crossed with targeted P1/P2/P4 checks to test generalizability.",
+  "seal": "⟐"
+}

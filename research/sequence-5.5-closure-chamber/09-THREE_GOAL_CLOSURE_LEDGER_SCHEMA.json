@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://td613.com/schemas/sequence-5-5-three-goal-closure-ledger.schema.json",
+  "title": "TD613 Sequence 5.5 Three-Goal Closure Ledger Schema",
+  "type": "object",
+  "required": [
+    "schema",
+    "closure_id",
+    "timestamp",
+    "witness_commit_sha",
+    "goal_1_laboratory",
+    "goal_2_product",
+    "goal_3_portability",
+    "adjudication",
+    "covenant",
+    "seal"
+  ],
+  "properties": {
+    "schema": { "const": "td613.closure.sequence-5-5-ledger/v1.0" },
+    "closure_id": { "type": "string" },
+    "timestamp": { "type": "string" },
+    "witness_commit_sha": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "goal_1_laboratory": {
+      "type": "object",
+      "required": ["status", "contrasts", "localized_findings"],
+      "properties": {
+        "status": { "enum": ["EARNED", "PARTIAL", "HELD", "FAILED"] },
+        "contrasts": {
+          "type": "object",
+          "required": [
+            "k0d_minus_k0_dose_effect",
+            "k1_minus_k0d_methodology_effect",
+            "k2_minus_k1_aperture_differential",
+            "k3_minus_k2_governance_increment"
+          ],
+          "properties": {
+            "k0d_minus_k0_dose_effect": { "type": "string" },
+            "k1_minus_k0d_methodology_effect": { "type": "string" },
+            "k2_minus_k1_aperture_differential": { "type": "string" },
+            "k3_minus_k2_governance_increment": { "type": "string" }
+          }
+        },
+        "localized_findings": {
+          "type": "object",
+          "required": ["surviving_operators", "unnecessary_abstractions", "neutral_nulls", "identified_harms"],
+          "properties": {
+            "surviving_operators": { "type": "array", "items": { "type": "string" } },
+            "unnecessary_abstractions": { "type": "array", "items": { "type": "string" } },
+            "neutral_nulls": { "type": "array", "items": { "type": "string" } },
+            "identified_harms": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
+    "goal_2_product": {
+      "type": "object",
+      "required": ["status", "sequence_6_product_handoff"],
+      "properties": {
+        "status": { "const": "HELD_PENDING_SEQUENCE_6" },
+        "sequence_6_product_handoff": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["coordinate", "action", "rationale"],
+            "properties": {
+              "coordinate": { "type": "string" },
+              "action": { "enum": ["CARRY_FORWARD", "REMOVE", "RENAME", "SIMPLIFY", "HOLD", "PRODUCT_TEST_REQUIRED"] },
+              "rationale": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "goal_3_portability": {
+      "type": "object",
+      "required": ["status", "matrix_results", "minimum_portable_relation_set"],
+      "properties": {
+        "status": { "enum": ["EARNED", "PARTIAL", "HELD", "FAILED"] },
+        "matrix_results": {
+          "type": "object",
+          "required": [
+            "p0_native_vocabulary",
+            "p1_mathematical_relations",
+            "p2_conventional_nomenclature",
+            "p3_label_permutation",
+            "p4_structural_ablation_detection",
+            "p5_receiver_substitution"
+          ],
+          "properties": {
+            "p0_native_vocabulary": { "type": "string" },
+            "p1_mathematical_relations": { "type": "string" },
+            "p2_conventional_nomenclature": { "type": "string" },
+            "p3_label_permutation": { "type": "string" },
+            "p4_structural_ablation_detection": { "type": "string" },
+            "p5_receiver_substitution": { "type": "string" }
+          }
+        },
+        "minimum_portable_relation_set": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "adjudication": {
+      "type": "object",
+      "required": ["what_survives_td613"],
+      "properties": {
+        "what_survives_td613": { "type": "string" }
+      }
+    },
+    "covenant": { "type": "string" },
+    "seal": { "const": "⟐" }
+  }
+}

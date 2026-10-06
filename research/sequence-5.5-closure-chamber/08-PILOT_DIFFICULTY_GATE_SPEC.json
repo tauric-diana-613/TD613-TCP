@@ -1,0 +1,17 @@
+{
+  "$schema": "https://td613.com/schemas/pilot-difficulty-gate/v1.0",
+  "assay": "TD613-SEQ5.5-CLOSURE-CHAMBER",
+  "gate_title": "Pilot Difficulty & Discrimination Gate Specification",
+  "preregistered_criteria": {
+    "anti_floor_rule": "Baseline K0 must achieve > 0% accuracy across the 16 items to ensure items are solvable and clear.",
+    "anti_ceiling_rule": "No single treatment arm (K0, K0D, K1, K2, K3) may achieve 100% accuracy on all 16 items in pilot evaluation, preventing saturation/ceiling effects.",
+    "discriminative_range": "Target overall accuracy across arms should span between 25% and 85%, ensuring sufficient dynamic range to evaluate differential methodology effects.",
+    "cluster_variance_requirement": "At least 3 of the 5 clusters must exhibit non-zero variance across arms."
+  },
+  "consequence_of_gate_failure": {
+    "floor_failure": "If K0 = 0% and K1/K2/K3 = 0%, items are defectively ambiguous or unparseable. Items must be clarified before Freeze B.",
+    "ceiling_failure": "If K1 = 100% and K2 = 100%, battery is classified as NON_IDENTIFYING_CEILING. Harder adversarial items must be introduced before Freeze B."
+  },
+  "verification_status": "PENDING_PILOT_EXECUTION",
+  "seal": "⟐"
+}
