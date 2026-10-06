@@ -5,7 +5,7 @@
   "pilot_version": "PILOT_V4_1_SURGICAL_REPAIR",
   "total_pairs": 5,
   "total_fixtures": 10,
-  "pilot_calibration_key_commitment_sha256": "cd971de705bdca06911b3a2ed683d08057db01809c49783ade6db162a7ee1ed1",
+  "pilot_calibration_key_commitment_sha256": "8e1f2ab532f9d405a92e47f1982e76401875ed81db9329fbee997920cf26e9c6",
   "scoring_principles": {
     "core_invariant": "SURFACE_A ≈ SURFACE_B but RELATION_A != RELATION_B therefore CORRECT_VERDICT_A != CORRECT_VERDICT_B",
     "primary_outcome": "PAIRWISE_RELATIONAL_SUCCESS",
@@ -63,13 +63,13 @@
       "member_A": {
         "id": "PILOT-V4-03A",
         "file": "05-PILOT_V4_FIXTURES/PILOT-V4-03A.md",
-        "sha256": "45f2c5585e99f30dad4f06fd75d8956370ee08a442a905b2f294df0a83612b1b",
+        "sha256": "a50f9b89c538d3466f55a1abe356da9a70cd6e16d61b2867328a48ee606e0586",
         "target_verdict": "PASS"
       },
       "member_B": {
         "id": "PILOT-V4-03B",
         "file": "05-PILOT_V4_FIXTURES/PILOT-V4-03B.md",
-        "sha256": "dc9e78de18dbef54dbf2f170001886193e7c33053a91da33b777526ae3552196",
+        "sha256": "bfb8ece60f0fa1c1c1f3c72a587f9dd2c414d7a1bb9dbd49f7637e72f400f563",
         "target_verdict": "FAIL"
       }
     },
