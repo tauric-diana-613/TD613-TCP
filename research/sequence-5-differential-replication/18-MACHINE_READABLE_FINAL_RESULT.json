@@ -1,0 +1,19 @@
+{
+  "assay": "TD613-SEQ5-ASSAY-20261005",
+  "timestamp": "2026-10-06T00:07:19.074Z",
+  "branch": "research/aperture-onboarding-differential-v1-20261005",
+  "parent_freeze_d": "daa7773323b408d1080f70cd27e676161deafc96",
+  "status": "CONCLUDED_RESEARCH_STANCE_MAINTAINED",
+  "k0_accuracy": 0.625,
+  "k1_accuracy": 1,
+  "k2_accuracy": 1,
+  "k3_accuracy": 1,
+  "k1_minus_k0": 0.375,
+  "k2_minus_k1": 0,
+  "k3_minus_k2": 0,
+  "k3_minus_k0": 0.375,
+  "vocabulary_carryover_detected": true,
+  "decision_level_doctrine_overfit": false,
+  "scorer_contradictions": 0,
+  "seal": "⟐"
+}

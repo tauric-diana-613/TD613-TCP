@@ -1,0 +1,244 @@
+{
+  "assay": "TD613-SEQ5-ASSAY-20261005",
+  "stage": "TREATMENT_CONTRAST_ANALYSIS",
+  "timestamp": "2026-10-06T00:07:19.069Z",
+  "sample_size": {
+    "total_runs": 32,
+    "runs_per_cohort": 8,
+    "replicates_per_cell": 4,
+    "items_per_run": 16,
+    "total_evaluations": 512
+  },
+  "cohort_summaries": {
+    "K0": {
+      "structural_accuracy": 0.625,
+      "calibration_accuracy": 0.625,
+      "by_model": {
+        "MODEL-FAMILY-GEMINI": {
+          "structural": 0.625,
+          "calibration": 0.625
+        },
+        "MODEL-FAMILY-REFERENCE": {
+          "structural": 0.625,
+          "calibration": 0.625
+        }
+      },
+      "item_pass_rates": {
+        "BAT-08": 1,
+        "BAT-09": 1,
+        "BAT-10": 1,
+        "BAT-11": 1,
+        "BAT-12": 1,
+        "BAT-13": 1,
+        "BAT-14": 1,
+        "BAT-15": 1,
+        "BAT-16": 0,
+        "BAT-01": 1,
+        "BAT-02": 0,
+        "BAT-03": 0,
+        "BAT-04": 1,
+        "BAT-05": 0,
+        "BAT-06": 0,
+        "BAT-07": 0
+      }
+    },
+    "K1": {
+      "structural_accuracy": 1,
+      "calibration_accuracy": 1,
+      "by_model": {
+        "MODEL-FAMILY-GEMINI": {
+          "structural": 1,
+          "calibration": 1
+        },
+        "MODEL-FAMILY-REFERENCE": {
+          "structural": 1,
+          "calibration": 1
+        }
+      },
+      "item_pass_rates": {
+        "BAT-04": 1,
+        "BAT-05": 1,
+        "BAT-06": 1,
+        "BAT-07": 1,
+        "BAT-08": 1,
+        "BAT-09": 1,
+        "BAT-10": 1,
+        "BAT-11": 1,
+        "BAT-12": 1,
+        "BAT-13": 1,
+        "BAT-14": 1,
+        "BAT-15": 1,
+        "BAT-16": 1,
+        "BAT-01": 1,
+        "BAT-02": 1,
+        "BAT-03": 1
+      }
+    },
+    "K2": {
+      "structural_accuracy": 1,
+      "calibration_accuracy": 1,
+      "by_model": {
+        "MODEL-FAMILY-GEMINI": {
+          "structural": 1,
+          "calibration": 1
+        },
+        "MODEL-FAMILY-REFERENCE": {
+          "structural": 1,
+          "calibration": 1
+        }
+      },
+      "item_pass_rates": {
+        "BAT-16": 1,
+        "BAT-01": 1,
+        "BAT-02": 1,
+        "BAT-03": 1,
+        "BAT-04": 1,
+        "BAT-05": 1,
+        "BAT-06": 1,
+        "BAT-07": 1,
+        "BAT-08": 1,
+        "BAT-09": 1,
+        "BAT-10": 1,
+        "BAT-11": 1,
+        "BAT-12": 1,
+        "BAT-13": 1,
+        "BAT-14": 1,
+        "BAT-15": 1
+      }
+    },
+    "K3": {
+      "structural_accuracy": 1,
+      "calibration_accuracy": 1,
+      "by_model": {
+        "MODEL-FAMILY-GEMINI": {
+          "structural": 1,
+          "calibration": 1
+        },
+        "MODEL-FAMILY-REFERENCE": {
+          "structural": 1,
+          "calibration": 1
+        }
+      },
+      "item_pass_rates": {
+        "BAT-12": 1,
+        "BAT-13": 1,
+        "BAT-14": 1,
+        "BAT-15": 1,
+        "BAT-16": 1,
+        "BAT-01": 1,
+        "BAT-02": 1,
+        "BAT-03": 1,
+        "BAT-04": 1,
+        "BAT-05": 1,
+        "BAT-06": 1,
+        "BAT-07": 1,
+        "BAT-08": 1,
+        "BAT-09": 1,
+        "BAT-10": 1,
+        "BAT-11": 1
+      }
+    }
+  },
+  "primary_contrasts": {
+    "K1 - K0 (Pure Methodology Effect)": {
+      "structural_difference": 0.375,
+      "calibration_difference": 0.375,
+      "interpretation": "Substantial lift (+37.50%) from formal systems engineering/linear algebra over unguided task-only baseline."
+    },
+    "K2 - K1 (Aperture vs. Conventional Control)": {
+      "structural_difference": 0,
+      "calibration_difference": 0,
+      "interpretation": "Null differential effect (0.00%). Conventional engineering methods matched the Aperture kernel across all 16 items."
+    },
+    "K3 - K2 (Full TD613 Ontology Increment)": {
+      "structural_difference": 0,
+      "calibration_difference": 0,
+      "interpretation": "Null incremental effect (0.00%). Dollhouse/Atlas/Pedagogue/Safe Harbor added zero accuracy over the mathematical kernel."
+    },
+    "K3 - K0 (Full TD613 vs. Baseline)": {
+      "structural_difference": 0.375,
+      "calibration_difference": 0.375,
+      "interpretation": "Total treatment lift (+37.50%), fully accounted for by core engineering mathematics, with 0% incremental lift from house ontology."
+    }
+  },
+  "dimensional_scores": {
+    "structural_accuracy": {
+      "K0": 0.625,
+      "K1": 1,
+      "K2": 1,
+      "K3": 1
+    },
+    "numerical_stability_diagnosis": {
+      "K0": 0,
+      "K1": 1,
+      "K2": 1,
+      "K3": 1
+    },
+    "evidence_class_promotion_penalty": {
+      "K0": 0,
+      "K1": 0,
+      "K2": 0,
+      "K3": 0
+    },
+    "appropriate_abstention": {
+      "K0": 0.5,
+      "K1": 1,
+      "K2": 1,
+      "K3": 1
+    },
+    "inappropriate_abstention_penalty": {
+      "K0": 1,
+      "K1": 0,
+      "K2": 0,
+      "K3": 0
+    },
+    "witness_quality": {
+      "K0": 0,
+      "K1": 1,
+      "K2": 1,
+      "K3": 1
+    },
+    "unnecessary_intervention_rate": {
+      "K0": 1,
+      "K1": 0,
+      "K2": 0,
+      "K3": 0
+    },
+    "false_boundary_preservation": {
+      "K0": 1,
+      "K1": 0,
+      "K2": 0,
+      "K3": 0
+    },
+    "harmful_state_collapse": {
+      "K0": 0,
+      "K1": 0,
+      "K2": 0,
+      "K3": 0
+    },
+    "temporal_retroactivity": {
+      "K0": 0,
+      "K1": 0,
+      "K2": 0,
+      "K3": 0
+    },
+    "provenance_authority_confusion": {
+      "K0": 0,
+      "K1": 0,
+      "K2": 0,
+      "K3": 0
+    },
+    "parsimony": {
+      "K0": 1,
+      "K1": 1,
+      "K2": 1,
+      "K3": 1
+    },
+    "confidence_calibration": {
+      "K0": 0.625,
+      "K1": 1,
+      "K2": 1,
+      "K3": 1
+    }
+  }
+}

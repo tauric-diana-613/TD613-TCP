@@ -1,0 +1,39 @@
+{
+  "assay": "TD613-SEQ5-ASSAY-20261005",
+  "stage": "CLAIM_CEILING_VERIFICATION",
+  "timestamp": "2026-10-06T00:07:19.073Z",
+  "criteria": {
+    "baseline_purity": {
+      "passed": true,
+      "evidence": "K0 strictly purified; zero analytical terms or examples."
+    },
+    "fixture_firewall": {
+      "passed": true,
+      "evidence": "Lane T and Lane F context-isolated; zero structural leakage."
+    },
+    "scorer_contradiction_audit": {
+      "passed": true,
+      "evidence": "Zero semantic-numeric contradictions across 1024 checks."
+    },
+    "treatment_blinding": {
+      "passed": true,
+      "evidence": "Neutralized 5-field schema with zero house vocabulary."
+    },
+    "model_metadata_complete": {
+      "passed": true,
+      "evidence": "Blocked across Gemini 3.8 Flash and Reference Evaluator."
+    },
+    "battery_difficulty_avoided_saturation": {
+      "passed": true,
+      "evidence": "K0 pilot accuracy 0.475 within [0.35, 0.80]."
+    }
+  },
+  "overall_integrity_status": "ALL_PRE_CONDITIONS_SATISFIED",
+  "scientific_verdict": {
+    "differential_effect_k2_minus_k1": 0,
+    "differential_effect_k3_minus_k2": 0,
+    "methodology_effect_k1_minus_k0": 0.375,
+    "claim_ruling": "DIFFERENTIAL_APERTURE_EFFECT_OVER_CONVENTIONAL_CONTROL_IS_NULL",
+    "admissible_null_finding": "When conventional engineering methodology is explicitly taught (linear algebra, matrix conditioning, bisimulation, capability security), Aperture v3.2-alpha kernel yields zero incremental structural discernment (K2 - K1 = 0.00). Full TD613 ontology yields zero incremental discernment over the kernel (K3 - K2 = 0.00). The observed performance gain is 100% attributable to core engineering mathematics (K1 - K0 = +37.50%)."
+  }
+}
