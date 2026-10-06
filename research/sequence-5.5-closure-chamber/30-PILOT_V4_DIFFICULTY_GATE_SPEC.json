@@ -1,0 +1,60 @@
+{
+  "$schema": "https://td613.com/schemas/pilot-difficulty-gate/v4.0",
+  "assay": "TD613-SEQ5.5-CLOSURE-CHAMBER",
+  "gate_title": "Sacrificial Calibration Pilot V4 Relational Contrast Difficulty & Discrimination Gate Specification",
+  "status": "PROPOSED_PREREGISTERED_PILOT_V4_GATE",
+  "sacrificial_pilot_battery": {
+    "version": "PILOT_V4_RELATIONAL_CONTRAST_PAIRS",
+    "total_pairs": 5,
+    "total_fixtures": 10,
+    "pair_ids": ["PAIR_01", "PAIR_02", "PAIR_03", "PAIR_04", "PAIR_05"],
+    "fixture_ids": [
+      "PILOT-V4-01A", "PILOT-V4-01B",
+      "PILOT-V4-02A", "PILOT-V4-02B",
+      "PILOT-V4-03A", "PILOT-V4-03B",
+      "PILOT-V4-04A", "PILOT-V4-04B",
+      "PILOT-V4-05A", "PILOT-V4-05B"
+    ],
+    "construct_families": {
+      "PAIR_01": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "PAIR_02": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "PAIR_03": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "PAIR_04": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "PAIR_05": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY"
+    }
+  },
+  "governing_laws": {
+    "unit_of_evaluation": "RELATIONAL_CONTRAST_SUCCESS (Primary outcome variable is pairwise discrimination, not isolated-item guessing).",
+    "pairwise_success_law": "TWO_CORRECT_ITEMS != RELATIONAL_CONTRAST_SUCCESS (An arm successfully discriminates a pair iff it classifies Case A correctly, Case B correctly, and preserves the preregistered transition direction).",
+    "isolation_law": "PILOT_ITEM != INFERENTIAL_ITEM (Pilot items are sacrificial; responses never enter main inferential data).",
+    "treatment_freeze_law": "PILOT_CALIBRATION != TREATMENT_OPTIMIZATION (Treatments K0, K0D, K1, K2, K3 remain frozen and unoptimized)."
+  },
+  "preregistered_criteria": {
+    "anti_floor_rule": {
+      "requirement": "Baseline arm (K0 or K0D) must achieve >= 1/5 (20%) pair discrimination success, ensuring prompt instructions and task formatting are parseable and solvable.",
+      "failure_disposition": "HOLD (battery unparseable or defective)."
+    },
+    "anti_ceiling_rule": {
+      "requirement": "No single arm may achieve 5/5 (100%) pair discrimination success. Specifically, if K0D = 5/5 and K1 = 5/5 and K2 = 5/5, the battery fails anti-ceiling.",
+      "failure_disposition": "HOLD (classification: NON_IDENTIFYING_CEILING)."
+    },
+    "methodological_identification_rule": {
+      "requirement": "Pair-transition success profiles across the 5 pairs cannot be identical across K0D, K1, and K2. There must be non-zero pairwise variance between at least two arms among {K0D, K1, K2} (profile(K0D) != profile(K1) or profile(K1) != profile(K2)).",
+      "failure_disposition": "HOLD (classification: METHODOLOGICALLY_NON_IDENTIFYING; assay cannot separate conventional engineering from Aperture from matched baseline)."
+    },
+    "pairwise_spread_rule": {
+      "requirement": "Success variance must not be driven by a single isolated pair. At least 2 of the 5 construct pairs must exhibit non-zero across-arm variance in pair discrimination success.",
+      "failure_disposition": "HOLD (classification: TRIVIAL_OUTLIER_DRIVEN_VARIANCE)."
+    },
+    "dynamic_range_rule": {
+      "requirement": "Total successful pair evaluations across all 5 arms must span between 5 and 20 out of 25 possible evaluations (20% to 80% dynamic range).",
+      "failure_disposition": "HOLD (dynamic range saturated)."
+    }
+  },
+  "consequence_of_gate_failure": {
+    "main_battery_authorization": "BLOCKED (BAT-01..BAT-16 execution strictly unauthorized).",
+    "custody_rule": "Amari remains sole SCIENTIFIC_CONTROLLER / SCORER / ADJUDICATOR. Gate review and adjudication must be confirmed before any main execution authorization."
+  },
+  "verification_status": "PROPOSED_PENDING_AMARI_REVIEW",
+  "seal": "⟐"
+}

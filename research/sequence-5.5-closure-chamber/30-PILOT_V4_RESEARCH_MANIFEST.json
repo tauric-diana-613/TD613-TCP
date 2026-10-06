@@ -1,0 +1,115 @@
+{
+  "schema": "td613.sequence5.5.pilot-v4-research-manifest/v1.0",
+  "status": "SACRIFICIAL_CALIBRATION_RESEARCH_METADATA_ONLY",
+  "governing_law": "RESEARCH_METADATA_ISOLATED_FROM_RECEIVER_STIMULUS",
+  "pilot_version": "PILOT_V4_RELATIONAL_CONTRAST_PAIRS",
+  "total_pairs": 5,
+  "total_fixtures": 10,
+  "pilot_calibration_key_commitment_sha256": "61fe4869c04e1698b4edc36efd405fd6c7dfb620d3f590a709fbe33f297b8c14",
+  "scoring_principles": {
+    "core_invariant": "SURFACE_A ≈ SURFACE_B but RELATION_A != RELATION_B therefore CORRECT_VERDICT_A != CORRECT_VERDICT_B",
+    "pairwise_success_law": "TWO_CORRECT_ITEMS != RELATIONAL_CONTRAST_SUCCESS (A pair is relationally discriminated only if both items are correct, the required verdict transition is preserved, and no unmanipulated fact is hallucinated as altered)."
+  },
+  "pairs": [
+    {
+      "pair_id": "PAIR_01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "construct": "Observation vs Underlying System State",
+      "target_transition": "PASS -> HELD",
+      "single_changed_relation_field_native": "Presence vs absence of independent external settlement confirmation in bilateral bank statement to resolve timed-out payment gateway proxy.",
+      "difficulty_theory": "In Case A, the gateway connection timed out (proxy failure), but the authoritative out-of-band bilateral SFTP statement independently confirms settlement. In Case B, the gateway connection also timed out, and the bilateral statement does not contain the transaction, leaving external settlement unobserved and requiring hold pending cycle reconciliation.",
+      "member_A": {
+        "id": "PILOT-V4-01A",
+        "file": "05-PILOT_V4_FIXTURES/PILOT-V4-01A.md",
+        "sha256": "8acd719c8da25606f782731df54730c4c74f4aad76e69189bd37aee79219b7ce",
+        "target_verdict": "PASS"
+      },
+      "member_B": {
+        "id": "PILOT-V4-01B",
+        "file": "05-PILOT_V4_FIXTURES/PILOT-V4-01B.md",
+        "sha256": "91338a602b218d1661a940f35186398b6a2d1a15d734d26f01bdd94732ef4dc0",
+        "target_verdict": "HELD"
+      }
+    },
+    {
+      "pair_id": "PAIR_02",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "construct": "Underidentifiability / Necessary Epistemic Abstention",
+      "target_transition": "PASS -> HELD",
+      "single_changed_relation_field_native": "Availability vs offline calibration status of orthogonal mass-spectrometry helium tracer channel needed to disambiguate degenerate pressure/acoustic chilldown signature.",
+      "difficulty_theory": "In Case A, the orthogonal helium sniffer is online and confirms zero leakage, uniquely identifying the pressure transient as benign cryogenic bellows shrinkage. In Case B, the sniffer was offline in calibration purge, leaving the observed pressure transient degenerate between benign contraction and hazardous seal ring fracture, mandating hold pending sensor reactivation.",
+      "member_A": {
+        "id": "PILOT-V4-02A",
+        "file": "05-PILOT_V4_FIXTURES/PILOT-V4-02A.md",
+        "sha256": "dbe07a4529caaacb5b40193051907f7a02f35a14d0de0a6f8ef8e44299903b53",
+        "target_verdict": "PASS"
+      },
+      "member_B": {
+        "id": "PILOT-V4-02B",
+        "file": "05-PILOT_V4_FIXTURES/PILOT-V4-02B.md",
+        "sha256": "35bde4130eb03598342cbc42b1e1680c08dac355bd940463eb9fd4e4c7c2d11e",
+        "target_verdict": "HELD"
+      }
+    },
+    {
+      "pair_id": "PAIR_03",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "construct": "State-Dependent Lawful Support / Operational Prerequisite",
+      "target_transition": "PASS -> FAIL",
+      "single_changed_relation_field_native": "Target storage node state successfully transitioned to STANDBY_DRAINED vs failed drain remaining in ACTIVE_IO_PRIMARY when direct block stream overwrite is executed.",
+      "difficulty_theory": "In Case A, the service account holds valid permissions and the target node successfully completed connection draining into STANDBY_DRAINED, satisfying the operational prerequisite. In Case B, the service account holds the same valid permissions, but connection draining timed out and the node remained ACTIVE_IO_PRIMARY, causing the raw block stream to overwrite active in-flight journals and violating the prerequisite invariant.",
+      "member_A": {
+        "id": "PILOT-V4-03A",
+        "file": "05-PILOT_V4_FIXTURES/PILOT-V4-03A.md",
+        "sha256": "8a99f4ca67f212e7aa64eff4c863f1c6a6fcb7e3747659d659df5350fe4a6396",
+        "target_verdict": "PASS"
+      },
+      "member_B": {
+        "id": "PILOT-V4-03B",
+        "file": "05-PILOT_V4_FIXTURES/PILOT-V4-03B.md",
+        "sha256": "ca31229a7a15dbe5ddc19456512e410890fecb1b5b21c3b10457fd9d27763c91",
+        "target_verdict": "FAIL"
+      }
+    },
+    {
+      "pair_id": "PAIR_04",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "construct": "Receiver-Relative Continuity / Predecessor Head Chaining",
+      "target_transition": "PASS -> HELD",
+      "single_changed_relation_field_native": "Dispatch message explicitly binds predecessor pharmacist review event digest vs omitting predecessor review digest as null.",
+      "difficulty_theory": "In Case A, transport mTLS, pharmacist signature, and payload integrity are verified, and the dispatch payload binds the exact SHA-256 hash of the clinical review sign-off event. In Case B, transport and signatures are equally valid, but the predecessor review event hash is null, decoupling the robotic compounding request from clinical review lineage and requiring hold.",
+      "member_A": {
+        "id": "PILOT-V4-04A",
+        "file": "05-PILOT_V4_FIXTURES/PILOT-V4-04A.md",
+        "sha256": "c6f6a2ef81b452540aa5f6a71115632c3a3dd9b7cfd773694b3850e3d396e9cf",
+        "target_verdict": "PASS"
+      },
+      "member_B": {
+        "id": "PILOT-V4-04B",
+        "file": "05-PILOT_V4_FIXTURES/PILOT-V4-04B.md",
+        "sha256": "8efda02334de3770daf69d64d5ed0707b782937f300a03b5465c08203af6c11d",
+        "target_verdict": "HELD"
+      }
+    },
+    {
+      "pair_id": "PAIR_05",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "construct": "Chronology / Prior Authority / Non-Retroactivity",
+      "target_transition": "PASS -> FAIL",
+      "single_changed_relation_field_native": "Physical breaker trip occurred under standing autonomous emergency mandate during under-frequency excursion vs manual maintenance switching under nominal grid conditions without prior approved switching order.",
+      "difficulty_theory": "In Case A, breaker opened 2m 13s before dispatch ticket registration, but did so autonomously under standing Directive 77 in response to a verified 59.38 Hz grid excursion, making the subsequent ticket informational. In Case B, the breaker also opened 2m 13s before dispatch registration, but under nominal 60.02 Hz conditions via manual maintenance switching that required a prior approved switching order, making the post-facto ticket an unapproved retroactive attempt to cover unauthorized manual switching.",
+      "member_A": {
+        "id": "PILOT-V4-05A",
+        "file": "05-PILOT_V4_FIXTURES/PILOT-V4-05A.md",
+        "sha256": "4b043558e043b2e456686ee9f27d216839c2a459cccf7196b3978b304eeb3f13",
+        "target_verdict": "PASS"
+      },
+      "member_B": {
+        "id": "PILOT-V4-05B",
+        "file": "05-PILOT_V4_FIXTURES/PILOT-V4-05B.md",
+        "sha256": "ec16bc69c0074579f84a6e672c90e4ea569806f3e8a579c5fa9eb011376a266e",
+        "target_verdict": "FAIL"
+      }
+    }
+  ]
+}
