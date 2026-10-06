@@ -1,0 +1,16 @@
+{
+  "finding_id": "FINDING-VOL-481",
+  "verdict": "FAIL",
+  "identified_issues": [
+    "State-blind authorization policy allows destructive snapshot synchronization against active primary volumes processing live writes",
+    "Rule Set v4.2 decouples authorization logic from underlying resource state, ignoring target volume operating mode (PRIMARY_MODE vs STANDBY_MODE)",
+    "Violation of core operational constraint requiring absence of active transactional writes and dirty memory buffers prior to executing SYNC_FROM_SNAPSHOT"
+  ],
+  "evidence": [
+    "Volume VOL_481 is operating in PRIMARY_MODE with live customer database writes and uncommitted volatile memory buffers",
+    "The operational specification explicitly states SYNC_FROM_SNAPSHOT requires that no active transactional writes or uncommitted memory buffers exist",
+    "Rule Set v4.2 authorization middleware authorized POST /api/v1/volumes/VOL_481/actions with SYNC_FROM_SNAPSHOT purely based on VOLUME_OPERATOR role membership without evaluating target operating mode"
+  ],
+  "recommended_action": "Immediately revoke the scheduled SYNC_FROM_SNAPSHOT execution on VOL_481 and update authorization middleware to enforce state-aware access control policies that condition SYNC_FROM_SNAPSHOT permissions on target volumes being in STANDBY_MODE.",
+  "confidence": "HIGH"
+}

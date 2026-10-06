@@ -1,0 +1,16 @@
+{
+  "finding_id": "FINDING-BATCH-7749",
+  "verdict": "PASS",
+  "identified_issues": [
+    "Edge gateway returned HTTP 409 (LOCK_TIMEOUT_ON_EDGE_REPLICA) and stale cached status SIGNING_PENDING due to replica lock contention",
+    "Application dispatch worker experienced a notification channel disconnection at 2026-10-06T14:10:02.110Z preventing edge cache synchronization",
+    "Operations dispute falsely conflated presentation/edge layer status delivery failure with core cryptographic signing failure"
+  ],
+  "evidence": [
+    "Signing Enclave log confirms detached signature generation at 2026-10-06T14:10:01.884Z (KEY_HANDLE=0x88F0_ED25519, status=SIGNATURE_GENERATED)",
+    "Vault storage confirms detached signature vault://signatures/BATCH_7749.sig committed at 2026-10-06T14:10:01.890Z with 64 bytes",
+    "Dispatch worker initiated enclave dispatch at 2026-10-06T14:10:01.750Z prior to edge gateway notification channel drop at 2026-10-06T14:10:02.110Z"
+  ],
+  "recommended_action": "Do not discard or re-execute BATCH_7749; invalidate stale edge gateway cache, resynchronize gateway state against vault storage, and verify detached signature against the document payload.",
+  "confidence": "HIGH"
+}

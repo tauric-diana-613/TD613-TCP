@@ -1,0 +1,18 @@
+{
+  "finding_id": "FINDING-BATCH-7749",
+  "verdict": "PASS",
+  "identified_issues": [
+    "Edge API Gateway notification channel disconnected during status broadcast, resulting in stale cached disposition (SIGNING_PENDING).",
+    "Edge replica encountered a lock timeout (LOCK_TIMEOUT_ON_EDGE_REPLICA) returning HTTP 409 to polling clients.",
+    "Operational alerting conflated edge gateway reporting latency/cache desynchronization with cryptographic execution failure."
+  ],
+  "evidence": [
+    "Signing Enclave log confirms detached signature generation at 2026-10-06T14:10:01.884Z (KEY_HANDLE=0x88F0_ED25519, status=SIGNATURE_GENERATED).",
+    "Signing Enclave log confirms successful write to vault storage at 2026-10-06T14:10:01.890Z (bytes_written=64, status=SUCCESS).",
+    "Vault storage verifies the object vault://signatures/BATCH_7749.sig exists, is 64 bytes, and was committed at 2026-10-06T14:10:01.890Z prior to edge gateway poll.",
+    "Application Dispatch Worker log at 2026-10-06T14:10:02.110Z documents a network disconnect on the gateway notification channel during broadcast.",
+    "Edge gateway poll at 2026-10-06T14:10:02.050Z reflects a local edge replica lock timeout rather than a signing enclave execution failure."
+  ],
+  "recommended_action": "Do not discard or re-execute BATCH_7749. Invalidate and reconcile the Edge API Gateway cached disposition against authoritative Vault Storage state, and implement resilient retry/acknowledgment mechanics on the worker-to-gateway status broadcast channel.",
+  "confidence": "HIGH"
+}

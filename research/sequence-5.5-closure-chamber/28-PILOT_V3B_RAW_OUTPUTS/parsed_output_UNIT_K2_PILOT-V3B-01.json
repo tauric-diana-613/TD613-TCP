@@ -1,0 +1,17 @@
+{
+  "finding_id": "FINDING-BATCH-7749",
+  "verdict": "PASS",
+  "identified_issues": [
+    "Proxy-observation conflation: Operations incident alert equated edge gateway cache polling status (O_edge) with the underlying cryptographic signing state (S), violating the Separation Axiom (S != O != E).",
+    "Stale cache synchronization failure: A transient disconnect on the gateway notification channel at 2026-10-06T14:10:02.110Z prevented completion telemetry from propagating to the edge replica, resulting in a false-positive lock timeout (HTTP 409).",
+    "Erroneous re-execution hazard: Flagging the batch as FAIL and re-signing from scratch risks duplicate signing side effects and unnecessary cryptographic operations when ground truth execution already succeeded."
+  ],
+  "evidence": [
+    "Signing Enclave log confirms detached signature generation at 2026-10-06T14:10:01.884Z (KEY_HANDLE=0x88F0_ED25519, payload_sha256=4b22c81a80d2...d9e1, status=SIGNATURE_GENERATED).",
+    "Signing Enclave storage record confirms signature persistence at 2026-10-06T14:10:01.890Z (vault://signatures/BATCH_7749.sig, bytes_written=64, status=SUCCESS).",
+    "Vault storage audit confirms existence of vault://signatures/BATCH_7749.sig committed at 2026-10-06T14:10:01.890Z with exactly 64 bytes.",
+    "Application Dispatch Worker logged dispatch at 2026-10-06T14:10:01.750Z and reported 'Gateway notification channel disconnected during status broadcast' at 2026-10-06T14:10:02.110Z, explaining the edge cache staleness."
+  ],
+  "recommended_action": "Reject the operational proposal to rule BATCH_7749 as FAIL and abort the re-execution workflow. Invalidate the stale edge replica cache for BATCH_7749 by reconciling directly against the primary vault storage record, and repair the gateway notification channel reconnect handler to ensure asynchronous broadcast failures do not block status propagation.",
+  "confidence": "HIGH"
+}

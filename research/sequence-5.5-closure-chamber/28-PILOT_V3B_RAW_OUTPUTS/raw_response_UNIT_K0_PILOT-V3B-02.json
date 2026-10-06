@@ -1,0 +1,32 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\"finding_id\":\"FINDING-FV-204-01\",\"verdict\":\"HELD\",\"identified_issues\":[\"Ambiguous sensor telemetry indistinguishable between benign transient thermal contraction and catastrophic drive shaft shear micro-crack\",\"Channel 2 ultrasonic pulse diagnostic necessary to disambiguate structural integrity is offline and unexecuted\",\"Premature operational decision-making risking catastrophic failure upon valve opening under pressure or unnecessary teardown\"],\"evidence\":[\"Channel 1 measured value is +12.4 mV, exceeding the nominal band (0.0 mV ± 2.0 mV) and falling squarely within the +10 mV to +15 mV range common to both Mechanism A and Mechanism B.\",\"Housing temperature sensors have not reached steady-state thermal equilibrium.\",\"Channel 2 integrated ultrasonic pulse diagnostic is currently marked OFFLINE / NOT_EXECUTED.\"],\"recommended_action\":\"Hold automated valve actuation. Maintain the valve in the closed position, await thermal equilibrium (approximately 90 seconds into fill) to monitor whether the bridge voltage normalizes, and activate Channel 2 to execute the ultrasonic pulse diagnostic verifying shaft structural integrity prior to any movement.\",\"confidence\":\"HIGH\"}",
+            "thoughtSignature": "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"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 1405,
+    "candidatesTokenCount": 237,
+    "totalTokenCount": 2460,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 1405
+      }
+    ],
+    "thoughtsTokenCount": 818,
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.8-flash",
+  "responseId": "e5HEaoyJN6qez7IPsY698QQ"
+}

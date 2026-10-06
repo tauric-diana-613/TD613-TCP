@@ -1,0 +1,32 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\"finding_id\":\"FINDING-DK-502\",\"verdict\":\"HELD\",\"identified_issues\":[\"Broken predecessor lineage binding across multi-system transfer window\",\"Receiver-relative continuity failure under Atlas and FADT jurisdictions\",\"Detached payload import lacking cryptographic chaining to upstream session state hash\"],\"evidence\":[\"System A finalized assessment with session_state_hash 'e9b207a16f2c385b4d79e1208940c31278f69ab4c2195018d4512e9b0487a211' and session_revision 'rev-20261006.14'.\",\"System B state lineage record shows parent_session_state_hash is null and imported_revision is 'detached_payload_v1'.\",\"REST export schema omitted upstream session hash binding, breaking the lawful handoff chain despite valid transport mTLS and OIDC authentication.\"],\"recommended_action\":\"Hold COMMIT_TO_SURGICAL_SCHEDULE execution. Update export/import schema to bind and verify System A's session_state_hash as an authenticated predecessor digest before advancing System B's decision state to active surgical deployment.\",\"confidence\":\"HIGH\"}",
+            "thoughtSignature": "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"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 3148,
+    "candidatesTokenCount": 269,
+    "totalTokenCount": 4067,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 3148
+      }
+    ],
+    "thoughtsTokenCount": 650,
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.8-flash",
+  "responseId": "qpDEavrZE-u9z7IPsIPUQA"
+}

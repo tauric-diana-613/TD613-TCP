@@ -1,0 +1,16 @@
+{
+  "finding_id": "FINDING-DK502-01",
+  "verdict": "FAIL",
+  "identified_issues": [
+    "Missing cryptographic binding to upstream session state hash (parent_session_state_hash is null).",
+    "Broken provenance and state lineage between System A assessment and System B dispatch ledger.",
+    "Detached payload schema permits unverified clinical decision advancement."
+  ],
+  "evidence": [
+    "System A finalized session for DK-502 with session_state_hash 'e9b207a16f2c385b4d79e1208940c31278f69ab4c2195018d4512e9b0487a211' and session_revision 'rev-20261006.14'.",
+    "System B received lineage record shows 'parent_session_state_hash: null' and 'imported_revision: detached_payload_v1'.",
+    "The REST export API failed to capture or bind the upstream evaluation session state hash into the transfer payload."
+  ],
+  "recommended_action": "Do not execute COMMIT_TO_SURGICAL_SCHEDULE. Halt dispatch progression until the export API schema is updated to include and validate parent_session_state_hash against System A's finalized evaluation record.",
+  "confidence": "HIGH"
+}

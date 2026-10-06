@@ -1,0 +1,32 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\n  \"finding_id\": \"FINDING-FV-204\",\n  \"verdict\": \"HELD\",\n  \"identified_issues\": [\n    \"State unidentifiability: The scalar bridge voltage on Transducer Channel 1 (+12.4 mV) falls into the observation nullspace between Mechanism A (benign transient thermal contraction) and Mechanism B (catastrophic drive shaft shear micro-crack), both of which manifest in the +10 mV to +15 mV range.\",\n    \"Premature epistemic commitment: Engineer 1 commits proxy-state conflation by treating out-of-band voltage as definitive proof of structural failure (FAIL), while Engineer 2 imputes missing thermal data and commits unverified state admittance (PASS) despite uncalibrated temperature telemetry.\",\n    \"Lack of measurement rank: Channel 1 has rank 1 across multi-dimensional state coordinates and cannot independently resolve mechanical fatigue strain from transient thermal strain without auxiliary sensor corroboration.\"\n  ],\n  \"evidence\": [\n    \"Transducer Bridge Channel 1 reports +12.4 mV, exceeding nominal band (0.0 mV ± 2.0 mV) but falling precisely within the overlap interval (+10 mV to +15 mV) shared by both Mechanism A and Mechanism B.\",\n    \"Housing temperature sensors are transitioning and have not reached steady-state equilibrium (approx. 90 seconds post propellant fill).\",\n    \"Channel 2 integrated ultrasonic pulse diagnostic, which provides direct structural acoustic discontinuity detection capable of isolating Mechanism B, is marked OFFLINE / NOT_EXECUTED.\",\n    \"Valve FV-204 remains stationary at 0% position with nominal line pressure and 0.0 kg/s mass flow, offering no external hydrodynamic or leakage indicators to distinguish housing states.\"\n  ],\n  \"recommended_action\": \"Enforce mandatory epistemic abstention and halt the automated valve opening sequence under a HELD verdict. Prevent proxy-state conflation by prohibiting premature PASS or FAIL classifications until identifiability rank is restored. To lift the abstention gate: (1) Bring Channel 2 ultrasonic pulse diagnostic online and execute the acoustic discontinuity scan to evaluate drive shaft integrity, and (2) hold until propellant tank chilldown reaches thermal equilibrium (\u003e= 90 s) to verify whether the strain gauge voltage decays back to the nominal ±2.0 mV band.\",\n  \"confidence\": \"HIGH\"\n}",
+            "thoughtSignature": "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"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 2800,
+    "candidatesTokenCount": 513,
+    "totalTokenCount": 3907,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2800
+      }
+    ],
+    "thoughtsTokenCount": 594,
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.8-flash",
+  "responseId": "15DEavPMOZDRz7IPqdSguQM"
+}

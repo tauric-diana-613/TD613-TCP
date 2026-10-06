@@ -1,0 +1,16 @@
+{
+  "finding_id": "FINDING-DK-502",
+  "verdict": "HELD",
+  "identified_issues": [
+    "Broken state lineage binding across integration boundary",
+    "Omission of upstream session state hash in REST export schema ('parent_session_state_hash' is null)",
+    "Detached payload revision preventing end-to-end deterministic verification before state advancement"
+  ],
+  "evidence": [
+    "System A finalized session DK-502 with 'session_state_hash': 'e9b207a16f2c385b4d79e1208940c31278f69ab4c2195018d4512e9b0487a211' and 'session_revision': 'rev-20261006.14'.",
+    "System B state lineage record shows 'parent_session_state_hash': null and 'imported_revision': 'detached_payload_v1'.",
+    "The REST export API emitted clinical summary attributes without capturing or binding the upstream session state hash into the received payload."
+  ],
+  "recommended_action": "Suspend execution of COMMIT_TO_SURGICAL_SCHEDULE. Update the export interface schema between System A and System B to mandate inclusion and validation of 'parent_session_state_hash' and upstream revision metadata, and verify cryptographic state continuity prior to queue advancement.",
+  "confidence": "HIGH"
+}

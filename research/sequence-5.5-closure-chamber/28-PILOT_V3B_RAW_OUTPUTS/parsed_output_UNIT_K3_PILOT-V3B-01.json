@@ -1,0 +1,17 @@
+{
+  "finding_id": "FINDING-BATCH-7749",
+  "verdict": "HELD",
+  "identified_issues": [
+    "Downstream route regression and uncompleted continuation due to Edge Gateway HTTP 409 lock timeout and notification channel disconnection",
+    "Premature operational failure classification conflating edge status cache observability with execution failure",
+    "Positive preemption gap observed where enclave signing and vault persistence preceded edge registration"
+  ],
+  "evidence": [
+    "Signing enclave generated signature with KEY_HANDLE=0x88F0_ED25519 and successfully committed 64 bytes to vault://signatures/BATCH_7749.sig at 2026-10-06T14:10:01.890Z",
+    "Edge API Gateway returned HTTP 409 LOCK_TIMEOUT_ON_EDGE_REPLICA and reported SIGNING_PENDING at 2026-10-06T14:10:02.050Z",
+    "Application Dispatch Worker logged disconnected gateway notification channel during status broadcast at 2026-10-06T14:10:02.110Z",
+    "Signature artifact, payload SHA256 digest, and public key exist intact in vault storage"
+  ],
+  "recommended_action": "Enforce route veto LOCAL_PASS_PLUS_GLOBAL_ROUTE_REGRESSION and place batch state on HELD. Reject proposed FAIL verdict and prohibit redundant re-execution from scratch to protect non-retroactive vault integrity. Reconcile edge gateway cache against verified vault storage artifact vault://signatures/BATCH_7749.sig and complete status broadcast under human closure.",
+  "confidence": "HIGH"
+}

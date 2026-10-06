@@ -1,0 +1,16 @@
+{
+  "finding_id": "FINDING-DK-502",
+  "verdict": "HELD",
+  "identified_issues": [
+    "Export schema omitted cryptographic lineage binding to upstream session state hash",
+    "State lineage record on System B displays parent_session_state_hash as null with detached_payload_v1 revision",
+    "Lack of verifiable end-to-end state continuity between System A session rev-20261006.14 and System B decision ledger"
+  ],
+  "evidence": [
+    "System A recorded session_state_hash 'e9b207a16f2c385b4d79e1208940c31278f69ab4c2195018d4512e9b0487a211' for revision rev-20261006.14",
+    "System B received payload parses with parent_session_state_hash: null and imported_revision: 'detached_payload_v1'",
+    "System A REST export API omitted upstream session state hash from transfer schema"
+  ],
+  "recommended_action": "Hold execution of COMMIT_TO_SURGICAL_SCHEDULE on System B. Update the REST export API schema on System A to explicitly include and bind session_revision and session_state_hash, and re-transmit the record to establish verifiable cryptographic lineage before proceeding with active surgical deployment.",
+  "confidence": "HIGH"
+}

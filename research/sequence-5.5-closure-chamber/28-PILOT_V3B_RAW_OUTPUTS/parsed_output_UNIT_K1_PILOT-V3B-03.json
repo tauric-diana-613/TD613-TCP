@@ -1,0 +1,16 @@
+{
+  "finding_id": "FINDING-VOL-481",
+  "verdict": "FAIL",
+  "identified_issues": [
+    "Authorization middleware omits validation of target volume operational mode (PRIMARY_MODE vs STANDBY_MODE) when evaluating execution permissions.",
+    "Rule Set v4.2 grants unconditional SYNC_FROM_SNAPSHOT execution under VOLUME_OPERATOR role without enforcing operational preconditions.",
+    "Violation of state-machine progression and defensive fail-closed design allows destructive storage overwrite during active concurrent transactions."
+  ],
+  "evidence": [
+    "Volume VOL_481 is in PRIMARY_MODE actively serving customer database writes and maintaining dirty memory pages.",
+    "The operational constraint explicitly states SYNC_FROM_SNAPSHOT requires that no active transactional writes or uncommitted buffers exist, which is violated in PRIMARY_MODE.",
+    "Rule Set v4.2 middleware authorized and scheduled SYNC_FROM_SNAPSHOT on VOL_481 solely based on the action being listed in permitted_actions for VOLUME_OPERATOR."
+  ],
+  "recommended_action": "Update the authorization middleware to evaluate volume operating mode prior to dispatching actions. Enforce state-aware guards or bifurcate roles (e.g., PRIMARY_OPERATOR vs STANDBY_OPERATOR) to reject SYNC_FROM_SNAPSHOT invocations on volumes in PRIMARY_MODE.",
+  "confidence": "HIGH"
+}

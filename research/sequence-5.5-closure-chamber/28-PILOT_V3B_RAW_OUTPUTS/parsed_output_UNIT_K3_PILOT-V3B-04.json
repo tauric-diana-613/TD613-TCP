@@ -1,0 +1,16 @@
+{
+  "finding_id": "FINDING-DK-502",
+  "verdict": "HELD",
+  "identified_issues": [
+    "Broken predecessor lineage binding across multi-system transfer window",
+    "Receiver-relative continuity failure under Atlas and FADT jurisdictions",
+    "Detached payload import lacking cryptographic chaining to upstream session state hash"
+  ],
+  "evidence": [
+    "System A finalized assessment with session_state_hash 'e9b207a16f2c385b4d79e1208940c31278f69ab4c2195018d4512e9b0487a211' and session_revision 'rev-20261006.14'.",
+    "System B state lineage record shows parent_session_state_hash is null and imported_revision is 'detached_payload_v1'.",
+    "REST export schema omitted upstream session hash binding, breaking the lawful handoff chain despite valid transport mTLS and OIDC authentication."
+  ],
+  "recommended_action": "Hold COMMIT_TO_SURGICAL_SCHEDULE execution. Update export/import schema to bind and verify System A's session_state_hash as an authenticated predecessor digest before advancing System B's decision state to active surgical deployment.",
+  "confidence": "HIGH"
+}

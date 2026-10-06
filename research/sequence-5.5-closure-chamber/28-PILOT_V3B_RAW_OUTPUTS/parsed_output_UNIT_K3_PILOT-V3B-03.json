@@ -1,0 +1,17 @@
+{
+  "finding_id": "FINDING-VOL-481",
+  "verdict": "FAIL",
+  "identified_issues": [
+    "Authorization policy Rule Set v4.2 fails to validate target resource operational state, violating lawful support boundaries and finite quotient admissibility.",
+    "Unconditioned authorization of destructive SYNC_FROM_SNAPSHOT operation against an active primary volume (PRIMARY_MODE) with active concurrent transactions and uncommitted dirty buffers.",
+    "Decoupling of role permissions from operational prerequisites allows catastrophic state overwrite and potential data corruption."
+  ],
+  "evidence": [
+    "Volume operating mode specifications define SYNC_FROM_SNAPSHOT as supported only in STANDBY_MODE, with an explicit constraint barring execution when active transactional writes or uncommitted buffers exist.",
+    "VOL_481 is actively operating in PRIMARY_MODE, processing live customer database writes and maintaining uncommitted memory buffers.",
+    "Authorization middleware approved request POST /api/v1/volumes/VOL_481/actions with action SYNC_FROM_SNAPSHOT solely based on VOLUME_OPERATOR role membership without checking operational mode.",
+    "Destructive snapshot overwrite was scheduled for execution on active primary volume VOL_481."
+  ],
+  "recommended_action": "Immediately abort and revoke the scheduled SYNC_FROM_SNAPSHOT execution on VOL_481. Revert Rule Set v4.2 authorization middleware to enforce target operational state preconditions, restricting SYNC_FROM_SNAPSHOT admissibility strictly to validated STANDBY_MODE volumes.",
+  "confidence": "HIGH"
+}
