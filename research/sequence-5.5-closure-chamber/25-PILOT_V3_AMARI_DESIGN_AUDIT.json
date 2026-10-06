@@ -1,0 +1,66 @@
+{
+  "schema": "td613.sequence5.5.pilot-v3-amari-design-audit/v1.0",
+  "reviewed_commit": "06eb4187cd9408b4fd576af56c9a37125ea17bda",
+  "reviewed_parent": "70d23daaa905d3b8afa0b6b5a0148b2e2548f7dc",
+  "status": "HOLD_BEFORE_EXECUTION",
+  "adjudicator": "Amari",
+  "core_finding": "Pilot V3 increases narrative complexity but receiver-visible fixture text directly names or strongly telegraphs the discriminating relation and, in several items, the intended disposition. This risks lexical cueing / answer leakage and does not cleanly test whether the treatment supplies the relation.",
+  "defects": [
+    {
+      "id": "D1_RECEIVER_VISIBLE_META_LEAK",
+      "examples": [
+        "PILOT-V3-01 header names Observability vs State Conflation and Independent Restored Identifiability",
+        "PILOT-V3-02 header names Unidentifiability & Necessary Abstention and the scenario states the sensor has zero mathematical rank",
+        "PILOT-V3-03 header names Finite Admissibility, Quotient Stage Erasure, Collapsing Distinct Support Fibres",
+        "PILOT-V3-04 header names Receiver-Relative Continuity and Mandatory Predecessor Head Chaining",
+        "PILOT-V3-05 header names Chronology, Preemption & Non-Retroactivity and Authorized Positive Preemption Gap"
+      ],
+      "consequence": "The receiver can infer the target relation from the stimulus itself."
+    },
+    {
+      "id": "D2_OUTCOME_TELEGRAPHY",
+      "examples": [
+        "PILOT-V3-01 explicitly reports independent mathematical signature verification === true and valid HSM inclusion proof",
+        "PILOT-V3-02 explicitly states two causes yield identical observation and orthogonal discriminating diagnostic has not run",
+        "PILOT-V3-03 explicitly states RESYNC_SNAPSHOT is only physically supported on standby and was executed on primary causing transaction abort / dirty-page eviction",
+        "PILOT-V3-04 explicitly states the bridge did not bind Station 1 head_digest and shows predecessor_head_digest all-zero",
+        "PILOT-V3-05 explicitly states prior mandate authorizes action, 170ms is within 500ms, timestamps are faithfully preserved, and no chronology laundering occurred"
+      ],
+      "consequence": "Several items are likely answerable without the tested methodology, recreating ceiling risk."
+    },
+    {
+      "id": "D3_LEXICAL_OVERLAP_CONFOUND",
+      "examples": [
+        "nullspace / rank",
+        "quotient / support fibre",
+        "predecessor head chaining",
+        "preemption gap / non-retroactivity"
+      ],
+      "consequence": "K2/K3 may gain from treatment-to-stimulus vocabulary overlap rather than transfer of the underlying relation."
+    },
+    {
+      "id": "D4_ARM_EXPECTATION_OVERCLAIM",
+      "finding": "The completion report states or implies that only particular methodologies should succeed on several fixtures. That is a design hypothesis, not an earned prediction.",
+      "consequence": "Do not encode expected arm winners into the key, harness, manifest, or scoring rule."
+    }
+  ],
+  "repair_constraints": [
+    "Treatments K0/K0D/K1/K2/K3 remain byte-identical.",
+    "Do not execute any Pilot V3 receiver calls from commit 06eb4187....",
+    "Create receiver-clean field-primary fixtures with no cluster/construct/answer-bearing headers in the dispatched bytes.",
+    "Keep cluster/construct metadata outside receiver context in the manifest only.",
+    "Use field-native wording rather than TD613/Aperture keywords wherever the tested relation can be expressed without them.",
+    "Make the decisive relation inferable from evidence structure, not stated as a theorem in the scenario.",
+    "Do not encode expected arm ordering or winners.",
+    "Recommit a fresh offline pilot key because receiver-visible fixture bytes change.",
+    "BAT-01..BAT-16 remain untouched and unexecuted."
+  ],
+  "claim_ceiling": [
+    "NARRATIVE_COMPLEXITY != DISCRIMINATIVE_DIFFICULTY",
+    "LEXICAL_MATCH != RELATION_TRANSPORT",
+    "SCENARIO_STATES_RELATION != TREATMENT_SUPPLIES_RELATION",
+    "PILOT_DESIGN_HYPOTHESIS != EXPECTED_TREATMENT_EFFECT"
+  ],
+  "next_state": "PILOT_V3B_RECEIVER_CLEAN_REDESIGN_REQUIRED",
+  "seal": "⟐"
+}
