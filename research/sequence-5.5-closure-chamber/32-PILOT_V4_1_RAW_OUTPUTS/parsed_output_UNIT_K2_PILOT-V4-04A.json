@@ -1,0 +1,17 @@
+{
+  "finding_id": "FINDING-CASE-6218-A",
+  "verdict": "HELD",
+  "identified_issues": [
+    "State-observation conflation (S != O != E): technician conflated self-attesting JSON payload string attributes with independent cryptographic verification proofs.",
+    "Absence of verifiable raw signature coordinates: the robotic dispatch payload provides string assertions ('VALID_PKI_SIGNATURE', 'VERIFIED_VALID_CERT') rather than an authenticable digital signature block, certificate chain, or telemetry receipt from the cryptographic validation engine.",
+    "Unidentifiable payload integrity binding: the dispatch payload hash (7f8b9101ae45c82910bb34991823abce8812f00918273645e89127394851a142) is uncorroborated in the pharmacist sign-off log, which records only the review event hash (d4a8e235cc084e9121f087da29b71e16f5c889a0b1273891d4e08219ab6019b0).",
+    "Violation of mandatory epistemic abstention: technician attempted to lift the automated queue validator hold based on proxy indicators falling into the instrument nullspace."
+  ],
+  "evidence": [
+    "Pharmacist sign-off log records record digest SHA-256 d4a8e235cc084e9121f087da29b71e16f5c889a0b1273891d4e08219ab6019b0 for EVENT_PHARM_VERIFY_991, which matches predecessor_review_event_hash but does not verify MSG_DISPATCH_8842 payload_sha256 (7f8b9101ae45c82910bb34991823abce8812f00918273645e89127394851a142).",
+    "MSG_DISPATCH_8842 contains self-declared strings 'transport_mtls': 'VERIFIED_VALID_CERT' and 'signature_verification': 'VALID_PKI_SIGNATURE' rather than verifiable PKI digital signatures or mutual TLS transport session handshake proofs.",
+    "Automated queue validator raised an audit notice for high-risk antineoplastic protocol confirmation (Doxorubicin 50 mg/m^2), indicating unresolved validation gates prior to mechanical compounding."
+  ],
+  "recommended_action": "Maintain queue hold under mandatory epistemic abstention; prohibit manual override based on self-reported payload strings; require ROBO_COMPOUND_A controller to ingest and independently verify the raw cryptographic signature and PKI certificate chain from PHARM_STATION_03 before compounding dispatch.",
+  "confidence": "HIGH"
+}

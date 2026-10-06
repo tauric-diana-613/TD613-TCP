@@ -1,0 +1,32 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\"finding_id\":\"FINDING-CASE-5521-A\",\"verdict\":\"PASS\",\"identified_issues\":[\"Premature test abort proposal by flight safety controller based on single-sensor pressure transient without cross-correlating orthogonal instrumentation\",\"Misclassification of benign thermal duct contraction transient as mechanical dynamic face seal fracture\"],\"evidence\":[\"PT-401 pressure transient of -1.15 bar over 140 ms falls precisely within the nominal -1.0 to -1.3 bar thermal duct contraction range and rapidly stabilized at nominal base pressure (38.2 bar)\",\"ACC-102 dominant acoustic peak at 44.2 Hz corresponds to benign flexible duct bellows ringing within the expected 40-48 Hz structural resonance band\",\"HE-SNIFF-01 secondary purge line detected helium concentration of 0.02 ppm, well below the seal breach threshold (\u003e= 2.50 ppm) and within ambient background limits (\u003c= 0.05 ppm), definitively ruling out carbon face seal compromise\"],\"recommended_action\":\"Reject the proposed test abort and certify turbopump manifold integrity as PASS; update the flight safety console automated alarm logic to require multi-sensor correlation—specifically helium tracer sniffer threshold exceedance (\u003e= 2.50 ppm)—before classifying cryogenic chilldown pressure transients as seal breaches.\",\"confidence\":\"HIGH\"}",
+            "thoughtSignature": "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"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 3055,
+    "candidatesTokenCount": 282,
+    "totalTokenCount": 4099,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 3055
+      }
+    ],
+    "thoughtsTokenCount": 762,
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.8-flash",
+  "responseId": "JajEaq_GHsnrz7IP4s2TwAE"
+}

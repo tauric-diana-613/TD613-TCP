@@ -1,0 +1,32 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\n  \"finding_id\": \"FINDING-CASE-5521-B\",\n  \"verdict\": \"HELD\",\n  \"identified_issues\": [\n    \"Identifiability rank deficiency: Active observation surfaces (PT-401 and ACC-102) fail to separate benign thermal duct contraction from hazardous dynamic face seal fracture.\",\n    \"State-observation conflation: Flight safety controller imputed mechanical seal failure directly from pressure drop telemetry without resolving the instrument nullspace.\",\n    \"Critical discriminator outage: The orthogonal witness channel (HE-SNIFF-01) was offline during the transient event, leaving the underlying physical state unidentifiable.\",\n    \"Epistemic inflation: Declaring definitive turbopump failure without distinguishing evidence violates mandatory epistemic abstention rules.\"\n  ],\n  \"evidence\": [\n    \"Pressure transducer PT-401 recorded delta P = -1.15 bar over 140 ms, which falls simultaneously within the signature envelope for thermal duct contraction (-1.0 to -1.3 bar) and dynamic face seal fracture (-1.0 to -1.3 bar).\",\n    \"Accelerometer ACC-102 recorded a transient peak at 44.2 Hz, falling within both the duct contraction resonance band (40-48 Hz) and the shaft resonance band (40-48 Hz).\",\n    \"Helium tracer sniffer HE-SNIFF-01 log at 2026-10-06T14:22:00.000Z confirms 'Sensor status: OFFLINE_CALIBRATION_PURGE. Port isolated for scheduled zero-point drift recalibration.'\",\n    \"HE-SNIFF-01 log at 2026-10-06T14:22:10.600Z confirms 'Secondary purge helium concentration: N/A (no sample stream acquired during transient interval). Integrity: UNKNOWN.'\"\n  ],\n  \"recommended_action\": \"Enforce mandatory epistemic abstention and hold the countdown evaluation as HELD. Invalidate any definitive PASS or FAIL determination pending re-acquisition of orthogonal discriminant data. Bring HE-SNIFF-01 online, verify zero-point calibration, restore sample stream intake, and execute a post-transient helium sniff test on the secondary inter-seal drain line before lifting the hold.\",\n  \"confidence\": \"HIGH\"\n}",
+            "thoughtSignature": "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"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 3103,
+    "candidatesTokenCount": 523,
+    "totalTokenCount": 4145,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 3103
+      }
+    ],
+    "thoughtsTokenCount": 519,
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.8-flash",
+  "responseId": "SafEaoyjJ5Otz7IPr6WfmQ8"
+}

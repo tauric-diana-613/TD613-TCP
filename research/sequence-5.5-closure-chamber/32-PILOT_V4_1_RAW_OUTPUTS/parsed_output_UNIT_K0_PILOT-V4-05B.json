@@ -1,0 +1,15 @@
+{
+  "finding_id": "FINDING-4190-B",
+  "verdict": "FAIL",
+  "identified_issues": [
+    "Breaker BKR_512 was actuated without an approved, pre-authorized Switching Order registered in DISPATCH_EMS prior to physical actuation, violating Section 4.2.1.",
+    "Attempted post-event authorization via retrospective ticket SO-2026-8812 cannot cure the unauthorized switching action pursuant to Section 4.2.3."
+  ],
+  "evidence": [
+    "DISPATCH_EMS registry recorded no switching order on file and pre-authorization status as NONE at 15:45:00.000Z and 15:50:00.000Z.",
+    "RELAY_SEL_451 logged manual breaker trip execution at 16:10:02.100Z, transitioning BKR_512 to OPEN at 16:10:02.145Z prior to any authorization.",
+    "DISPATCH_EMS log EMS_LOG_9941 registered ticket SO-2026-8812 retrospectively at 16:12:15.000Z with status RETROSPECTIVE_UNAUTHORIZED."
+  ],
+  "recommended_action": "Uphold the compliance infraction notice and mark the operation as FAIL. Initiate an operational governance review and retrain substation personnel on pre-switching authorization requirements under Regional Grid Operating Standard Section 4.2.",
+  "confidence": "HIGH"
+}

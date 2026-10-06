@@ -1,0 +1,17 @@
+{
+  "finding_id": "FINDING-8102-B",
+  "verdict": "HELD",
+  "identified_issues": [
+    "Premature operational attempt to rule settlement as FAIL and trigger ledger rollback based solely on transport timeout",
+    "Uncompleted interbank clearing continuation across settlement windows",
+    "State divergence between locally committed ledger escrow and unconfirmed network settlement status"
+  ],
+  "evidence": [
+    "SWIFT_GATEWAY_WORKER logged HTTP 504 GATEWAY_TIMEOUT at 2026-10-06T08:15:03.205Z and recorded status CALLBACK_PENDING_TIMEOUT",
+    "LEDGER_CORE_01 recorded local transaction TX-8102-EUR as COMMITTED with lock status RELEASED at 2026-10-06T08:15:00.120Z",
+    "SFTP CAMT.053/MT940 statement for window 20261006_CYCLE_01 omits TX-8102-EUR from finalized entries but returns REJECTION_RECORDS: NONE",
+    "Standard clearing network rules state instructions neither finalized nor explicitly rejected remain queued for the subsequent reconciliation cycle"
+  ],
+  "recommended_action": "Enforce HELD status and deny premature ledger rollback. Maintain escrow hold and suspend transaction state progression until the subsequent reconciliation window CAMT.053 statement or explicit clearing network query confirms final settlement or RJCT/PACR rejection.",
+  "confidence": "HIGH"
+}

@@ -1,0 +1,16 @@
+{
+  "finding_id": "FINDING-6218-B",
+  "verdict": "HELD",
+  "identified_issues": [
+    "Missing predecessor review state binding in compounding dispatch payload",
+    "Violation of Pharmacy Robotic Dispensing SOP 12.1 Requirement 3 governing receiver continuity",
+    "Unlawful queue advancement attempt masking incomplete handoff chaining between review and mechanical execution"
+  ],
+  "evidence": [
+    "Pharmacist verification console at PHARM_STATION_03 recorded review sign-off record EVENT_PHARM_VERIFY_991 with digest d4a8e235cc084e9121f087da29b71e16f5c889a0b1273891d4e08219ab6019b0",
+    "Robotic compounding dispatch payload MSG_DISPATCH_8842 explicitly reports 'predecessor_review_event_hash': null",
+    "SOP 12.1 mandates that each compounding execution be verifiably bound to the clinical order verification state using the recorded review event hash"
+  ],
+  "recommended_action": "Hold execution of order CHEMO_8842. Enforce lawful receiver continuity by requiring authenticated predecessor receipt binding—re-issuing MSG_DISPATCH_8842 bound to digest d4a8e235cc084e9121f087da29b71e16f5c889a0b1273891d4e08219ab6019b0—prior to advancing compounding robot state.",
+  "confidence": "HIGH"
+}

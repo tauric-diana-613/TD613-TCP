@@ -1,0 +1,17 @@
+{
+  "finding_id": "FINDING-CASE-5521-B",
+  "verdict": "HELD",
+  "identified_issues": [
+    "Physical telemetry data cannot distinguish between benign thermal duct contraction and hazardous dynamic face seal fracture due to overlapping pressure drop (-1.15 bar within -1.0 to -1.3 bar range) and resonant frequency (44.2 Hz within 40-48 Hz range).",
+    "The primary discriminating sensor (HE-SNIFF-01) was offline for scheduled recalibration during the transient event, leaving secondary purge helium concentration unmeasured.",
+    "The flight safety controller's proposal to mark the turbopump as FAIL violates the Rule of Direct Grounding and Rule of Non-Assumption by assuming seal breach in the absence of conclusive diagnostic evidence."
+  ],
+  "evidence": [
+    "PT-401 registered an abrupt drop of Delta P = -1.15 bar over 140 ms at 14:22:10.450Z before stabilizing at nominal base pressure 38.2 bar, matching both benign thermal contraction and seal fracture criteria.",
+    "ACC-102 registered a dominant resonant peak at 44.2 Hz, which falls squarely within both thermal duct resonance (40-48 Hz) and shaft resonance (40-48 Hz).",
+    "HE-SNIFF-01 logged 'Sensor status: OFFLINE_CALIBRATION_PURGE. Port isolated for scheduled zero-point drift recalibration' at 14:22:00.000Z.",
+    "HE-SNIFF-01 logged 'Secondary purge helium concentration: N/A (no sample stream acquired during transient interval). Integrity: UNKNOWN' at 14:22:10.600Z."
+  ],
+  "recommended_action": "Hold the countdown and maintain system in a safe holding state. Complete recalibration of HE-SNIFF-01, restore sampling to the secondary inter-seal purge exhaust, and perform an active static helium leak check of the 12 bar buffer cavity to verify primary face seal integrity before making a definitive GO/ABORT determination.",
+  "confidence": "HIGH"
+}

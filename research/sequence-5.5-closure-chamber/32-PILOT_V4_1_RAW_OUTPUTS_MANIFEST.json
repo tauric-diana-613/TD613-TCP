@@ -1,0 +1,363 @@
+{
+  "schema": "td613.sequence5.5.pilot-v4-1-raw-outputs-manifest/v1.0",
+  "episode_id": "EPISODE_SACRIFICIAL_PILOT_V4_1",
+  "canonical_branch": "research/sequence-5.5-amari-closure-20261006",
+  "execution_started_at": "2026-10-06T07:41:56.661Z",
+  "execution_completed_at": "2026-10-06T07:54:19.082Z",
+  "total_units_authorized": 50,
+  "units_completed": 50,
+  "total_wire_invocations": 50,
+  "failed_or_retry_count": 0,
+  "unit_results": [
+    {
+      "unit_id": "UNIT_K0_PILOT-V4-01A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "859ef849c87299751cfd4bccee9682b3d3ca72be923deeef3611c349f9527a9d"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-V4-02A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "be9c955aea380b5c1781ae6b766d800c4792690d1bb08167b2db4b7ca487f9e5"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-V4-03A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "c959ca31d3e9ebb06c124be76aaf478c7ca7770f152eb8a249ee31d905c364b6"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-V4-04A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "HELD",
+      "receipt_sha256": "1cb8ef654e867507440ea254f06fb9dd6e150d8033c2572946b35f632e14d10f"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-V4-05A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "4fc3699751f269027e2a766abf2e8b9527b2d7631566ae0ace5ccffec1177195"
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-V4-01B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "HELD",
+      "receipt_sha256": "5f38eedb05d9060db0ecec6dc1404fbdea0c9606c9725fb2fcaa9f2b72dca7e6"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-V4-02B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "HELD",
+      "receipt_sha256": "d29d8972c9bb25472c3616a0112aa7e839d824f531c1c5b6a7beb98642719223"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-V4-03B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "FAIL",
+      "receipt_sha256": "19955a550ce6031ef92b25c4c791d2acdb5c782868959ed74f06e8616f0d9b60"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-V4-04B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "HELD",
+      "receipt_sha256": "a236f2bd79a0290711d6e6b73faeb185d013fa4f43b1ac5b3b940df1ba6943c8"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-V4-05B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "FAIL",
+      "receipt_sha256": "cd07efb2b1d978b82dbb196264c38a897f9e8b0ce5ecb61faba58ef39cc3a440"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-V4-01A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "f369e023f79a72f1a661b1dcfce8521552757ff5cde6c3f92e2ac70782eaf9a9"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-V4-02A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "ead4c829cf50fc30abc4b86638e0f190c1b7e0a5fefb65caaea99a0df8c27040"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-V4-03A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "f6daeb2cb303a763e98012b4485012039c88ce71bd8f613d7c898f394da753a1"
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-V4-04A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "15ac7c68dd220329d4ae429da6d4b8d0d2049d783bc7d92da2e70f6257c8ca41"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-V4-05A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "4e7b966d9b96370c2950c40af3e19b46d39f3bccaccc196c59e1e913ee9f7f2b"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-V4-01B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "HELD",
+      "receipt_sha256": "51833f80af30eb2844ab9341193c84fb03ea8f464da152dd781d3e87e323a8db"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-V4-02B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "HELD",
+      "receipt_sha256": "9364e1f01c6709d086730667db2ad4d29e4c539db028c8ef754befea4905602f"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-V4-03B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "FAIL",
+      "receipt_sha256": "75c8559fd30505aa471cfd5d280be87bef2853a2f58760a4808a5a85d9449a80"
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-V4-04B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "FAIL",
+      "receipt_sha256": "bc0fbf32d11e3753d1077af40584fda45196e5b141042024414b65744e66e16f"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-V4-05B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "FAIL",
+      "receipt_sha256": "ce6568bf29ca3fc426567d2d110c92b4c773f8b74c45bb129abb5afdc98040f4"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-V4-01A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "9dd73da3ec5e7dfc0ea0ff50aa6d6496ff30fbbb4d41a30e327d0a69fada94d3"
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-V4-02A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "a3749248ed8e7031729bb89d71c88fd22be8f582c7048456b14a2bad4be2256a"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-V4-03A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "ff36d5fe161e0aea754b1d9b7bda3faa2224fcf9339cfc6cd28ef337fb6871c3"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-V4-04A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "510699fb0dba03fca5b69c0b9cdacf0b7c7e8d969828d57b8283922567786850"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-V4-05A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "4d4805248fc8c5c0233f07455f530486b1ef9a8cedd47b8d9729dc72f3351b4c"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-V4-01B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "HELD",
+      "receipt_sha256": "f54dfee5852266a7c970b47b810f8e6084d87a51f28883ac41fec38be9fd2694"
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-V4-02B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "HELD",
+      "receipt_sha256": "87892908ea874c24d40cddc867b8441830fcbc36c1494b10ae3891ca8cb85660"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-V4-03B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "FAIL",
+      "receipt_sha256": "b5781fc044c737766ff2eb8c88b24cf46fae95b194b854783913e78a5a97bbf5"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-V4-04B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "FAIL",
+      "receipt_sha256": "1f44bc039acf425840a166b07b4e9b462faf49a2b398710e20007d430b54a0d6"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-V4-05B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "FAIL",
+      "receipt_sha256": "c36e57a391d60f2f72087e7f884a913fd53e2567fd473d8ccb40880bd8a51919"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-V4-01A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "902c4efdfce5596afa5509cf862232ba268353d30e65bdc32baa2e3aa11b5dcf"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-V4-02A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "7e712b60b76a375467829e5749f3e4abc78c730f82828a33e67a520c2ee4d238"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-V4-03A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "1b547614e9fa9b5ee06d0e34845f769e0653ffd5f6ee3f85466e3ca2bda1039e"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-V4-04A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "64bf5c1aea17c7a7ac2a6c4e64132eb2182277e6be726d8f6afc3e4eee576df1"
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-V4-05A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "3454ebf5d088f92224682e8ab0046fcadb785753f976499c126f2f9559895410"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-V4-01B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "HELD",
+      "receipt_sha256": "79a4a5a948dc18507ab2aefe7b3b547009cae93a34b2a597bfd4dbcb08b4d234"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-V4-02B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "HELD",
+      "receipt_sha256": "d39f92c0f5cd6f1bd7f5b7aa9635584b3389b09f1ed3190966111d1db1920094"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-V4-03B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "FAIL",
+      "receipt_sha256": "3042eaaf035bf6069f5de8e7c2d6a358db32d292c62138a0057b7bc24fe28ddc"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-V4-04B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "HELD",
+      "receipt_sha256": "9ced0ae3257e587c387f02a2c3c1527953c8bbee221c9501464b144e163e10c4"
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-V4-05B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "FAIL",
+      "receipt_sha256": "c6f820e3d32217b8470ad2e37acf1b201f3bf11e7292948a00a6a440a9b22065"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-V4-01A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "8d48f9d94d3acbbc171e0e46da3ed9db765922dd97aa5b90e3f7766e1fd5a1b2"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-V4-02A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "1303d9b7c072e439150d8cfbfb99d44584b1ac9b62450ad98bab20abd91c2d5e"
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-V4-03A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "67d9b53b295783cb452579883339573a1832daf98106d7dfc925b93b49cb3caa"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-V4-04A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "bbcd3921421b097d684cc90b9b75aa799f9f670c6b24591bb192dc3db5560e48"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-V4-05A",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "PASS",
+      "receipt_sha256": "7fd67420efdd33a9ffe669bff1e02d125de58ef047cac7caf11d963c9511d0b8"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-V4-01B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "HELD",
+      "receipt_sha256": "4572cebcbc95e72ce3f943ff77248377c4f8b635ab4b5b1d3f1c0be0bd65377e"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-V4-02B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "HELD",
+      "receipt_sha256": "9e4d51e71a5090ff906458124dd26b5b6f3ec158c79d582b17edf85493073e1c"
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-V4-03B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "FAIL",
+      "receipt_sha256": "829fd9e47d4788d105ebf26281013a34a08f6d1c3a7e16b416d6d52c7b892dfe"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-V4-04B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "FAIL",
+      "receipt_sha256": "6702a32824f5d96c179b733601a9d013ebea444008f87f93ce6a8bd79d21913d"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-V4-05B",
+      "status": "COMPLETED",
+      "attempts": 1,
+      "verdict": "FAIL",
+      "receipt_sha256": "466fbf1f9b4dae075a9c62cf04dced2db6f29e5b36790c4c4681d8d0b59f267d"
+    }
+  ]
+}

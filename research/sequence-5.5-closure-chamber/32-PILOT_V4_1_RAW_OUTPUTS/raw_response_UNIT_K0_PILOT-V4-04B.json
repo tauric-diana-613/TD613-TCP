@@ -1,0 +1,32 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\n  \"finding_id\": \"FINDING-6218-B\",\n  \"verdict\": \"FAIL\",\n  \"identified_issues\": [\n    \"Failure of SOP 12.1 Requirement 3: Missing predecessor review state binding in dispatch payload.\",\n    \"Unbound execution state introduces high-risk decoupling between clinical review and robotic execution.\"\n  ],\n  \"evidence\": [\n    \"Dispatch message MSG_DISPATCH_8842 specifies 'predecessor_review_event_hash': null.\",\n    \"Pharmacist verification log generated review sign-off record EVENT_PHARM_VERIFY_991 with digest d4a8e235cc084e9121f087da29b71e16f5c889a0b1273891d4e08219ab6019b0, but this digest was not bound to the dispatch payload.\"\n  ],\n  \"recommended_action\": \"Halt order CHEMO_8842 execution, uphold the audit hold, and regenerate the dispatch payload containing the valid predecessor review event hash prior to compounding.\",\n  \"confidence\": \"HIGH\"\n}",
+            "thoughtSignature": "EsEdCr4dAWkUfRPxfz98L+alH6AVdWZI7d6UKb4om8Mz/Mem3zLLaw+Ob1LXaOEvX0B8xOeGcC7+YyGjJiKQld38HXPSG3p/1J7vwPaVRHwT15GGOaByLawMBjc7vswukKx8wjouBJhyzzLdgxuH08Q4s/Pz0+80VHJ3VmenWgP4cpZcMf+QTMzEDaARKZkd9mqsGpBiefmecEY4+D3O/RDnOJRw+hyIoRmKFegOGXDElgswm7CKr8ujC2KADRyr+SkcjhZ6cXAV74y+bJrjuF2IajDWDVO3vsuw3psDGTUhRxvRB2NXTQbcpyoOwGCVsdrY4ywiLmdE8yYQTo1uP0U4CQhD5/B2GLBwPhIL0M+FR1TeumW3+KxltMxBvP4QNs01nvI7v41t+xPI+Xl9yoKvdhkv7H5s3n5YJOhdBXdCVU3uDNwsHqfefxCbUepxWvOJZkYQRItdn4J8rHyNohSaXDdp1lmvE8s3R95tWEiD2JND+BS7CG8aXZyPJzmQAcFBf/4RB1Bf/HIkxVCAf50k65eZRs6AUeuB+K946XcZ//ZAKBCJUAV/VcVtKH3um1XhipMoEemxYIf8OhF9Z2QWzsF9sbxyV4b+J7Xo+GpekKjn7r5O+51BHmLHN7H+OqAsWtDnO+7ltUVLVvNqKXgCJozz1sOiQfI8Hf2vqzCyzTqBF4QciROGXKFltqkz3acwraqDuw5O68WpPYHHOLeQvbO1nlB35lXmEQ0gcSzEXQJreoohRNNthvPe5c1zByWT1EzjQFwZlM0mtm01VcCt5uyUKugBY2cLE3NQd4YYdThP3h76ICnRXmCybyhijfEF/tRDcNbeq2fKpUBInAHidlXXwjV0m348XID1J/h6xbenYfS/vPBJLwim647Ns00ou017Ze5Uk5oLjFyJiETtVAh3ex34juxS1b1xcdD5Qw7aDwD76I9TBz/f7E7YgdsMWljeyDwbGZxKmaNkqcP3xOJUcYtHK8I6zhc0GQqsWMTIvIvdp1rbXLaFstpJ+p0Yrrriqahxb8hLK65X7Q4X9wL3dX0DSJnIQoE/+vhUdsGjwflPhUMkvdyN1Ls86FX21c/8tNS3LQA3V4NiPt/cSeWlLIKMcepqz3oFbRxF2ExKvY89ko2cCsNaxUvNoyu0EkQFfJaEvoOIaF2T6sDP4W2dMc2bzXLKnOa9TPoRT2BXtP6NS4zYoRJySExApl7kFdWjo6G4r2nAKtY6PbjU9cXUplJQFvnWHVBb56jI//Nm6lBM/ermYXVYfIIKBmV3Ko8/aBJ4R4RBgM0v1nNzDctAKLAoDUeGgijdBs3R7W09y5Xiu7lLYISsdnd/YfXZkbGWJmBvvkmBUOsDKGkBuEbXgx6fB4n5KU/5LHM0b9qVw3jPG4yKyTx/Fo+Y7whJzfXQTt4Y97w6ojf8daXEVz/53D1GDtYPfshPXgu2Ls9YWu/T8gci9SCCmZyEA0K+vd8qBGHbvPpUgltX4HhrvDrqJUElmTMEzpNSR/ll2eNxDGZVr1uCPT2ZtmL73jEnMIc4qBz+OGN0Cxnu24Vxz0hUeMf71U6zjEQccvQE9QQiRgIx1s7vxEsABSVecloIBjCtoDZvXH3mtLu7Mm8IlV4FUzUMFhkpuvr20S+HmBuM2q/uNrQuJ4FHxWDyV6AfscEZ0N7GJ3YhMPrFa6/7fdFb6plE9VddThVYRbPBUE7Xqtj8x8eiTQSvWhMAMRjUYvVMgFDyhE7gU3Wofq4t0zwN4g6wTRnzmuqWuA+WvQGnxXa007VauaAvJ2zIJoIk66+h36Lpq9xI96qhF4jrXAv0UgmEuqbQbD+tPD54ZsQr7xWGi6mY2VNEpG/FMA4UbuBozlazpW+udr20MQijVaKOkp705AxLOFnXpGTBIu47JiRvXJ5BbreFBbZF/Op3t6O8Td+iKaKwoq1WS8wnbiflu+vXbagAmpV+Guvuu6NCq/M+GNjXy14AT+kmQZj53hyMAbvXzjXL5Z38lHt2I2jcF9koeT/kAAYiMlf8jZ4MpmxAPKyEElA6LxteHEel7LOXqEmdZWQ9PqISEDQTLxfakcuqbV85SUEVAFzux8pA5r/VlJderu96/USvdrG/36BBA1MSKPJlZT7SXF5cpA62pQDMNl/KTFQ5SSsKDU5HipFrSacDmvQy1xrmMkRJP8RGcTA3tt59F+WF4jkseNGkCRCnPJVTkXK5LZ77H/qJjc4sVfEgXmok91DoPbYg2PbyX2q7xR7FvKmbWrSqxTJ2Q7+tBMiHUHOycoQdMqg0hBkZy8CMD+48v39WQJ78avFdmWOEm+fyWWLuG4vq20B06kUieam1te035/4trMYfvuar1rjvBUx7v6/nIGnE8u6UgoAmzSgqCpFNrhrvuABcVzG735uGs8qf6jqoVyyGApjDtDps+WlY7aqJrACSLVkHOpiLVMdPBKvFBA6Nec4hkjQb7SJBQFk9vZUIUFE1/7AVxYXBWgBk1VBQt/WhC629QWMEnp2IE+vMQfmlaURvrzqO5DTnfSNW5ubbLhxxkLOtcHw6pzAiZK4bAP3VHWRSw+7b/u17vYb0QL+6wFaItQ15SFPXi+Fa1bTc2n9oM2Zw85l/nFr+6zsWXgfmhy472r4ohbEoISzl28zohSj7hR3oOu6mvGpKbAR6Y51zPFhiUWFSPy0yYAeHDQ0MsD1rVsKceteQJkixR7aJgxFr3qMfaSTlNbhxYHYThCHVE+vvKEvCxFKNWRhLDKykZDM80gDJCjB7TUC+GqKFpg2f7kYDLM4bU7hO0lELN7OKZ/J1+w3X/rkSMxa9ENIo3BqKsfqmtf6EOePWc0ATDk6lXuLAaEDTOCfWDNipv9B9aAjuIGNjszzci9b/mvpj8O6m/h/0XRSgZXo/xAwbgOi+S1AvSdb98tq1PGxRjGElLYwhtkgcehaybZJStwS6jElJfCbBD/bvl3yz2ZjdXUqOL+nH2fqOx0p5yF8bIJj0Fs/SNuBuraIl5bZEMWTpX+4KO0BZleyalMuAmyeYh0Zvgn4MlLEKn6rnXdpVIKMgIBcS91Nc1hZ+xZmgdbnrHRl9D3O+g2dO1m4N9AIwYMW0ZIlh+buV3xk7gb20lc/aq/lYNnRd2ZqY5kNOcCwQAgZlJoS0HVI0AWw7Ql46dy5p8QQvra1wWEmPzySikDgE4Bsown8VwmfEXQxX4XtJOe3bK+p7brXy/rWkBSbssxeQRr2hIM8+VclooquhLCDO9Dt47oquZjAQGDsKNnLW3cw60QXXJGnC1Irno94YaU4k8rukiSvuZ3UKALVsKUAI0QaDsy1kN1FwQKGD28jVO6ktxVt7/HtwDpjMv1X7xGkSGoyMllcglc/xPK24PXSk/o0P6/YWzZOcEX5YAZWcSEaORsbp8VRgshvcG+P3F0dKzloRDT29PNwcjBH0vYFU0DUp2iioOtD4DbBFFUcsB7Cm+v2/HCpFslwSA2F6c9E+hibHWzL8vRHOU1N4IQYNqMT1FwfaK5sVs+IYtsAlOSAF426ntlN95NPrUemE9Skmi5ZHqyJomFBP0Cp3pxs6L+WkvrCFgDEke4mc8G7VrXLHa+TV5lemN+1++6feNbILfxfoUEltfM84HSOL8jy5/HpWp3sUkiCgI+ZUITB6fjiAryn+pWRZGZODJYH9og7rGE/R1hfNkaHF8z7n1fU3y4J8FxSVnervd0aVYL0Bl8lwQGPx7PGOQ+uo8HW0KRaymWieHy4gj7fgZUsWAoXgHCBKhxwh+heLQux77EnOaIShKPCsWfP1sRcmmM8HolhwB273DIgwbQMoPIyDJ1sQMd7rVDh+qzNpoK0MYuMT7kXXOE7oezUEEpzkJzxcvEE9LzT3kPytHio+yTk2cGobAG1LCcwjEhncLzMTlYe3T/FnEEz3aTgMcWrsVHHc//TGjrYg9ekljmfLmLDG855irU8XRuPSYGgEVVJ/hRkVz88/C90J417VV1DNWkBU6vo7jovs0nw5zPYP4a3rxCufq9lKANq8ygeo/v/4AwBdegz8i6ob+NLYO3BkcDyADDKqyY2AfSbx5THZ6e1K3pvZje/e2g2YJCmVvIFyx4rD1s8rwYYhOr3kzMbZ0LEWOnY3/NhmSXQ+/PdgBdLYoKLgzHHciVYHEl8oKYCek9oXCSScXQkG9R4Bn+Q/Af9a3XSW09vW6G3Q0e11r1p6vBhEisB/7RiCcMaDS1FJ/N5TtQaM1CG5CbuSnu17u7Cl7+3VTxpcRG9jdCBDjdxlgXZe3K9rHvLfC7YLaCLWRVvAnF8zBbGCTbzeLuknvCfYa/HcuTQ2tsRSsNg7WR4EdzW+a8Fq8xCoPLD+c2hzO3sULEo9lt8r/xIBgG3URHQZ2iIkQhQShrS6PnoqwIQCJC6KArY6NMbNJkWWcxBDUyh+0rgZPBpCmTQLOm6tG/H+jq0mDrxfY66vRAdFmPvbXffkYy4jBdoK9iBhIkw/EpxYwNSE4sWHXPmTSxBgNoZLsnsbiJpLgTaEPEST4Fpx57L8fXh5BU3NIo2ljA+4HWuhw7rauENJTA21aoJwFceBoeoyuW2kLy01vzNEEtAwHaKsSna49q2fS3+/0j2TrvZXdkgz4wFvgeBO8BBNFtzMJcDoXICETrBY1E1ub6p7ZTvJRaRFIJkPL6vrqviTASZ4vXuOjGWZ1qnqjWRVTqYwNIMj5cui2bxw+XnxeVr0h46liGW7qIlNh85b7wl5aw3XRGL1ilPUr5lvM9Qz3HzEMkZ9kG2BVERbO20rLouZc411MJe/iKii755mvEqao29qeKpIUdkinLMm7n/vZgjvQhL5wf4FNMxrVWrYoTRdMkd5XQwTT3p05f91i4a5f4adqcgLxwHYkGcN/pOOFZsHC3TWNwORe5tlK0Et+YSIId1BAS/AUNkHdh4K1RMhHRkuUEDa7u8BquQw6VwN0obexjlFTRzdFQJZht7NCxNZD3xA5bb4B5bwp+BfESesqk8Sx6muTBPQvtwLPW+wHrN5kOEX0jwR2cQHm2S5dTSq1YZl"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 1738,
+    "candidatesTokenCount": 269,
+    "totalTokenCount": 3143,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 1738
+      }
+    ],
+    "thoughtsTokenCount": 1136,
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.8-flash",
+  "responseId": "X6fEaqjKCofRz7IP4PHe6Qc"
+}

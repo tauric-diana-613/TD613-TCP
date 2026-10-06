@@ -1,0 +1,16 @@
+{
+  "finding_id": "FINDING-4190-B",
+  "verdict": "FAIL",
+  "identified_issues": [
+    "Breaker BKR_512 was physically actuated without an approved, pre-authorized Switching Order registered in DISPATCH_EMS prior to execution, violating Regional Grid Operating Standard Section 4.2.1.",
+    "The retrospective switching order SO-2026-8812 submitted at 16:12:15Z was created post-switching and cannot cure the unapproved actuation under Section 4.2.3, confirming an unauthorized line disconnection.",
+    "Auditor diagnostic conflation: The auditor incorrectly framed the defect as the 2 minute 13 second delay between physical opening and completion logging (which would satisfy the 15-minute completion window of Section 4.2.2), conflating completion reporting timing with the prerequisite pre-authorization mandate."
+  ],
+  "evidence": [
+    "DISPATCH_EMS registry at 2026-10-06T15:45:00.000Z and 15:50:00.000Z confirmed 'No switching order on file for BKR_512' and 'Pre-authorization status: NONE'.",
+    "RELAY_SEL_451 recorded manual front panel trip pushbutton depression by technician J. Mercer at 2026-10-06T16:10:02.100Z, with breaker contact opening (CLOSED -> OPEN) at 16:10:02.145Z.",
+    "DISPATCH_EMS logged retrospective entry EMS_LOG_9941 at 2026-10-06T16:12:15.000Z with 'Reference Order: NONE (unapproved retrospective request SO-2026-8812 created 2m 13s post-switching)' and status 'RETROSPECTIVE_UNAUTHORIZED'."
+  ],
+  "recommended_action": "Uphold the FAIL compliance finding against the operation of BKR_512 based on the lack of prior pre-authorization under Section 4.2.1 and 4.2.3, rather than the auditor's erroneous completion logging delay rationale; enforce interlocks on relay front panels requiring digital switching order verification in DISPATCH_EMS before manual maintenance tripping can proceed.",
+  "confidence": "HIGH"
+}

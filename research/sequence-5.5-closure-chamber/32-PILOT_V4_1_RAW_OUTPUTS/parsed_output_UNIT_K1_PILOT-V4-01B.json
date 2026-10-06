@@ -1,0 +1,17 @@
+{
+  "finding_id": "FINDING-8102-B",
+  "verdict": "HELD",
+  "identified_issues": [
+    "Unresolved HTTP 504 gateway timeout ambiguity on outbound settlement instruction POST /api/v2/clearing/settlements/8102",
+    "Premature ledger commit state (COMMITTED) without confirmed clearing confirmation or end-of-window statement reconciliation",
+    "Risk of dual-settlement or ledger divergence if prematurely rolled back while instruction remains queued in clearing network"
+  ],
+  "evidence": [
+    "Outbound gateway logged HTTP 504 GATEWAY_TIMEOUT at 2026-10-06T08:15:03.205Z with status CALLBACK_PENDING_TIMEOUT",
+    "Core Ledger Engine recorded local_tx_id TX-8102-EUR as COMMITTED with lock_status RELEASED at 2026-10-06T08:15:00.120Z",
+    "Clearing Bank SFTP CAMT.053 statement for window 20261006_CYCLE_01 lists TX-8100-EUR and TX-8101-EUR but contains neither TX-8102-EUR in finalized entries nor an explicit RJCT/PACR rejection record",
+    "Clearing bank standard specifies that unlisted transactions with no rejection record remain queued on the clearing network pending reconciliation in the subsequent cycle"
+  ],
+  "recommended_action": "Suspend automated rollback and maintain escrow hold in HELD status pending reconciliation against the subsequent clearing cycle (20261006_CYCLE_02) CAMT.053 statement. Query the clearing network API endpoint for instruction status of SETTLE_BATCH_8102 before altering ledger state.",
+  "confidence": "HIGH"
+}

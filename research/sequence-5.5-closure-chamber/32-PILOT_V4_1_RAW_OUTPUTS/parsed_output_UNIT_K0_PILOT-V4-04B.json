@@ -1,0 +1,14 @@
+{
+  "finding_id": "FINDING-6218-B",
+  "verdict": "FAIL",
+  "identified_issues": [
+    "Failure of SOP 12.1 Requirement 3: Missing predecessor review state binding in dispatch payload.",
+    "Unbound execution state introduces high-risk decoupling between clinical review and robotic execution."
+  ],
+  "evidence": [
+    "Dispatch message MSG_DISPATCH_8842 specifies 'predecessor_review_event_hash': null.",
+    "Pharmacist verification log generated review sign-off record EVENT_PHARM_VERIFY_991 with digest d4a8e235cc084e9121f087da29b71e16f5c889a0b1273891d4e08219ab6019b0, but this digest was not bound to the dispatch payload."
+  ],
+  "recommended_action": "Halt order CHEMO_8842 execution, uphold the audit hold, and regenerate the dispatch payload containing the valid predecessor review event hash prior to compounding.",
+  "confidence": "HIGH"
+}

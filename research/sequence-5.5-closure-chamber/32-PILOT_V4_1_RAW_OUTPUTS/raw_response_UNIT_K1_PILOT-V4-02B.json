@@ -1,0 +1,32 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\"finding_id\":\"FINDING-5521-B\",\"verdict\":\"HELD\",\"identified_issues\":[\"Critical orthogonal diagnostic sensor HE-SNIFF-01 was offline during the transient event, preventing differentiation between benign thermal contraction and catastrophic dynamic face seal fracture.\",\"Telemetry ambiguity exists due to identical pressure (-1.15 bar) and acoustic frequency (44.2 Hz) signatures for both benign thermal duct contraction and hazardous face seal fracture.\"],\"evidence\":[\"PT-401 recorded an uncommanded pressure drop of Delta P = -1.15 bar over 140 ms at 14:22:10.450Z, within the overlapping -1.0 to -1.3 bar range for both phenomena.\",\"ACC-102 registered resonant acoustic vibration at 44.2 Hz, falling within the 40-48 Hz shared band for both duct contraction and shaft resonance.\",\"HE-SNIFF-01 log at 14:22:00.000Z confirms sensor status was OFFLINE_CALIBRATION_PURGE with isolated port.\",\"HE-SNIFF-01 telemetry log at 14:22:10.600Z confirms 'Secondary purge helium concentration: N/A (no sample stream acquired during transient interval). Integrity: UNKNOWN.'\"],\"recommended_action\":\"Suspend countdown advancement under HELD status. Restore HE-SNIFF-01 to active online sampling mode and perform a static helium mass-spectrometry leak check on the secondary inter-seal cavity purge line. Recertify seal integrity prior to resuming cryogenic chilldown.\",\"confidence\":\"HIGH\"}",
+            "thoughtSignature": "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"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 3056,
+    "candidatesTokenCount": 352,
+    "totalTokenCount": 4089,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 3056
+      }
+    ],
+    "thoughtsTokenCount": 681,
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.8-flash",
+  "responseId": "bKjEapK8OaKdz7IP_dy1wQM"
+}
