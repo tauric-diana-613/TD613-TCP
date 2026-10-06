@@ -1,27 +1,33 @@
 {
-  "schema": "td613.sequence5.5.sealed-execution-bundle-manifest/v2.0",
-  "preregistration_status": "FREEZE_A_V2",
-  "parent_freeze_a_v1_commit": "475a28443ee41b338233aef257d6c39cde8ed260",
+  "schema": "td613.sequence5.5.sealed-execution-bundle-manifest/v3.0",
+  "preregistration_status": "FREEZE_A_V3",
+  "parent_freeze_a_v2_commit": "a2fd6482328cd573afb7bfa330ae0896e6a7c89e",
+  "historical_freeze_a_v1_commit": "475a28443ee41b338233aef257d6c39cde8ed260",
   "binding_law": {
-    "canonical_encoding": "H(treatment_bytes || fixture_bytes || output_schema_bytes || fixed_wrapper_bytes || declared_metadata_utf8)",
+    "canonical_encoding": "H(len8(treatment_bytes) || treatment_bytes || len8(fixture_bytes) || fixture_bytes || len8(receiver_schema_bytes) || receiver_schema_bytes || len8(fixed_wrapper_bytes) || fixed_wrapper_bytes || len8(declared_metadata_utf8) || declared_metadata_utf8)",
     "hasher": "SHA-256",
     "total_execution_units": 105,
     "pilot_execution_units_count": 25,
     "main_execution_units_count": 80
   },
   "fixed_components": {
-    "output_schema": {
+    "receiver_output_schema": {
+      "path": "research/sequence-5.5-closure-chamber/10-RECEIVER_OUTPUT_SCHEMA.json",
+      "bytes": 1609,
+      "sha256": "935bf87b1ef86ac1df7490c7f5abe6d93892e89869f348671bd64c50b42e5537"
+    },
+    "final_closure_ledger_schema": {
       "path": "research/sequence-5.5-closure-chamber/09-THREE_GOAL_CLOSURE_LEDGER_SCHEMA.json",
       "bytes": 4089,
       "sha256": "56fc248b47519f8e00665c12195a36d3b3fd7a8ffdaaed5a8f56894a5beff964"
     },
     "execution_metadata_schema": {
-      "bytes": 344,
-      "sha256": "93e0a66d8a5230c19b8f5fb0c62bd326593c864e6854b253b607c49a655d0d5f"
+      "bytes": 352,
+      "sha256": "479cca144823286f976037f86e7b2b998b1a31c8ae7fcb22c6fca8066c080707"
     },
     "fixed_wrapper_template": {
-      "bytes": 229,
-      "sha256": "dcba8b4a2bb3f9540b71197507914cc161afaf80d68d9d1e265ea39873882e83"
+      "bytes": 545,
+      "sha256": "2132cb1c832b326ffa9942dff5d246e595207f19addc8e9bf8227dfb52744f0d"
     }
   },
   "treatment_packets": {
@@ -32,23 +38,23 @@
     },
     "K0D": {
       "path": "research/sequence-5.5-closure-chamber/02-TREATMENT_PACKETS/packet-K0D.md",
-      "bytes": 7379,
-      "sha256": "4ec9d5af037e4d3fe525f750a4170dcac249e5433c04b04c2bd6c32b37f3eed1"
+      "bytes": 7786,
+      "sha256": "aabe26fdb8cc496e5d87200f204802d73c2e34c25c22ed4886701303d2edf59a"
     },
     "K1": {
       "path": "research/sequence-5.5-closure-chamber/02-TREATMENT_PACKETS/packet-K1.md",
-      "bytes": 7807,
-      "sha256": "c6739e66bf710bcc53b38af184b68a3f487ff29908274fc49b2b8b0b48d09e9e"
+      "bytes": 8155,
+      "sha256": "c84bdece59ecb9f665011fcec0ce8beca2d7f7a23b4dc3847395cf7ba878e8ff"
     },
     "K2": {
       "path": "research/sequence-5.5-closure-chamber/02-TREATMENT_PACKETS/packet-K2.md",
-      "bytes": 7663,
-      "sha256": "ae657daa35ba75efa80ddc18b5a67661741920c58685a0083109efb32ef10d94"
+      "bytes": 7880,
+      "sha256": "caa6e184d3cdba09351e05b3547211dee3b686f503762839d7eb612f2e69875b"
     },
     "K3": {
       "path": "research/sequence-5.5-closure-chamber/02-TREATMENT_PACKETS/packet-K3.md",
-      "bytes": 8078,
-      "sha256": "39ba48f8ef27242094f712b0966afc1725fcf851f80c3917332a360be9f0cfaa"
+      "bytes": 8138,
+      "sha256": "f26fe439ec60b520c9320fb0081d4fc7d319645c62d048cadca3e1474f70a6a2"
     }
   },
   "pilot_fixtures": {
@@ -188,7 +194,7 @@
       "fixture_id": "PILOT-01",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": true,
-      "execution_unit_sha256": "2b38419b1e9a112606dc84aa4b3e15a973138962c712792d209e441aafefdffc"
+      "execution_unit_sha256": "977c9695f02e362e0db84f5ec7105e06d1ac7a927588fce8cb71d39b50a96564"
     },
     {
       "unit_id": "UNIT_K0_PILOT-02",
@@ -196,7 +202,7 @@
       "fixture_id": "PILOT-02",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": true,
-      "execution_unit_sha256": "73ce93e7df9723bdffb51c56c24054fb9d1fc4b4c2d01727d0fc52a282a88f37"
+      "execution_unit_sha256": "421379b7b910d16685d3990c89033ad82b2cd03f53b90354a40906157c661c20"
     },
     {
       "unit_id": "UNIT_K0_PILOT-03",
@@ -204,7 +210,7 @@
       "fixture_id": "PILOT-03",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": true,
-      "execution_unit_sha256": "7b66da10ca7d79f5cdf238ab7a963c1ce324ad739a701dd93cb26d60f5e3b37d"
+      "execution_unit_sha256": "d10d55edb69c40a47083b020f4598661e2369350d41f842d3d9c0d88a1e9d695"
     },
     {
       "unit_id": "UNIT_K0_PILOT-04",
@@ -212,7 +218,7 @@
       "fixture_id": "PILOT-04",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": true,
-      "execution_unit_sha256": "1ad89a72c047b6c63e6560dec612c39f960eb29b21ff003bbb7f87846a3a234c"
+      "execution_unit_sha256": "235561d5c29da9943f60eb8ad8cdf75bd4fa05bc5614bd4a87e8e32153f613c6"
     },
     {
       "unit_id": "UNIT_K0_PILOT-05",
@@ -220,7 +226,7 @@
       "fixture_id": "PILOT-05",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": true,
-      "execution_unit_sha256": "54d956690dd8be373a5b920f1b4607489131f97b47fc0973660857229e483428"
+      "execution_unit_sha256": "03e50968181e45e9b12df7ac72ca8f00c1ddd31b03d1c1fa2eeb27903de95997"
     },
     {
       "unit_id": "UNIT_K0D_PILOT-01",
@@ -228,7 +234,7 @@
       "fixture_id": "PILOT-01",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": true,
-      "execution_unit_sha256": "ee5b19d3194f18e2ef81eea7d98265c8d49375a3a6b81e647cb8662c2e0295c1"
+      "execution_unit_sha256": "23f2335c9252e25fda55dceebc3c6b907c450d132a6cc120db8f7e94d675cb87"
     },
     {
       "unit_id": "UNIT_K0D_PILOT-02",
@@ -236,7 +242,7 @@
       "fixture_id": "PILOT-02",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": true,
-      "execution_unit_sha256": "8f367e8a42fea4a11f70ba2b72c43622051c794a162ada9a777c97056d905072"
+      "execution_unit_sha256": "c05f9703186e70477d53b0f0f1f97ff9e96b3fe558d84036167f3de24a005930"
     },
     {
       "unit_id": "UNIT_K0D_PILOT-03",
@@ -244,7 +250,7 @@
       "fixture_id": "PILOT-03",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": true,
-      "execution_unit_sha256": "5c3e5a64142056e0dbf07cc3522dd91eb43bf36f8c0d39042d61bfaf9ea00749"
+      "execution_unit_sha256": "7bcf053ae3efb5b677f59f7b22628c6bc7bd28d461337dfaac264142d8526e9d"
     },
     {
       "unit_id": "UNIT_K0D_PILOT-04",
@@ -252,7 +258,7 @@
       "fixture_id": "PILOT-04",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": true,
-      "execution_unit_sha256": "596360ebdf74469b32999f65bd6964eede9f16863a620e7dcd9c0630afa63470"
+      "execution_unit_sha256": "5c34f68433456952f7df2d65b22d019f6ebe6fb9e93b6c34de64d0aa6298a94d"
     },
     {
       "unit_id": "UNIT_K0D_PILOT-05",
@@ -260,7 +266,7 @@
       "fixture_id": "PILOT-05",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": true,
-      "execution_unit_sha256": "17790349a2f650785e83eb9dda3138669f88881d8dc50c95024aab30f7c9152a"
+      "execution_unit_sha256": "f0507a8f576a7ad28af1ef41c3ab2e9230ac74be3dc8d25adc6846fb233aebea"
     },
     {
       "unit_id": "UNIT_K1_PILOT-01",
@@ -268,7 +274,7 @@
       "fixture_id": "PILOT-01",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": true,
-      "execution_unit_sha256": "a5117d6d4c3a4bbb632af2a6c39d3b2e5a22ae477e7880fbb92e2be11c29f39a"
+      "execution_unit_sha256": "78ed352e8eacf16769e61efd9a0ad706b28074944decf17e0f3a0eae5547df85"
     },
     {
       "unit_id": "UNIT_K1_PILOT-02",
@@ -276,7 +282,7 @@
       "fixture_id": "PILOT-02",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": true,
-      "execution_unit_sha256": "6d5aeed30103f56a1cd9a8e5f2ff73fb79d70daeb7779ef2364e98a94fa12e90"
+      "execution_unit_sha256": "44d2e8da0b2ac08c62331a26cdac9e926d4c6ec1cc1bd16dab221039b534dc3e"
     },
     {
       "unit_id": "UNIT_K1_PILOT-03",
@@ -284,7 +290,7 @@
       "fixture_id": "PILOT-03",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": true,
-      "execution_unit_sha256": "a054f39bbcf02aeb5451572501d2000234c00704aceba8d2550e352790bf6033"
+      "execution_unit_sha256": "8091f5b639032c67d2dc8d1a35521573dc02a02386113f9d345752cabcfc93a6"
     },
     {
       "unit_id": "UNIT_K1_PILOT-04",
@@ -292,7 +298,7 @@
       "fixture_id": "PILOT-04",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": true,
-      "execution_unit_sha256": "ab90eae92beb7f1f37270eadadbdc40fccc0419c8dd0c2a36de59cd0a617b8e4"
+      "execution_unit_sha256": "2c4c631d58194a1617dc78d64e1e51794b1a0a6d92f044d9e35e232025d47bf4"
     },
     {
       "unit_id": "UNIT_K1_PILOT-05",
@@ -300,7 +306,7 @@
       "fixture_id": "PILOT-05",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": true,
-      "execution_unit_sha256": "9d0a0f70d3df70dec99c640d1c0d04f1848e698604793df50a44787ca21291db"
+      "execution_unit_sha256": "5ef27c679ebc874cd96b0d0b9f2afdff06e791a60166f7d6752d8821e4f88c73"
     },
     {
       "unit_id": "UNIT_K2_PILOT-01",
@@ -308,7 +314,7 @@
       "fixture_id": "PILOT-01",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": true,
-      "execution_unit_sha256": "889d1bb53e3b108e7bd0cda1287b52a5ca76858eebbeeb5dec457d6a09502e43"
+      "execution_unit_sha256": "1be114ac7ac28941a6c32b63951573127abc197a310fd1e8e45a262f852e03a1"
     },
     {
       "unit_id": "UNIT_K2_PILOT-02",
@@ -316,7 +322,7 @@
       "fixture_id": "PILOT-02",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": true,
-      "execution_unit_sha256": "4731b55f7aa99e833830645e53c56ac7e69f1841eba295b54b95b1e576598b28"
+      "execution_unit_sha256": "06e353958d4343095750008c54c30762aebb0ef3d17f3dd036bbc3fcde079c5a"
     },
     {
       "unit_id": "UNIT_K2_PILOT-03",
@@ -324,7 +330,7 @@
       "fixture_id": "PILOT-03",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": true,
-      "execution_unit_sha256": "87af659554327f2fd7505069c76a4b00456d6ed6b921f7af18700c3b4df6d1db"
+      "execution_unit_sha256": "0a01f1b44c3dc3c324e740e3b0296f5b278aab13613cebdb2d730f9887f04b97"
     },
     {
       "unit_id": "UNIT_K2_PILOT-04",
@@ -332,7 +338,7 @@
       "fixture_id": "PILOT-04",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": true,
-      "execution_unit_sha256": "989a0759ed6e83ed8062a73cdbd22be6b1b8c211515c4ed9a7770aff610e095c"
+      "execution_unit_sha256": "90ecf51ce235c3e1c0d61eaf36c719852faea4e6193b3f4f9b9d3f559267cb3f"
     },
     {
       "unit_id": "UNIT_K2_PILOT-05",
@@ -340,7 +346,7 @@
       "fixture_id": "PILOT-05",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": true,
-      "execution_unit_sha256": "2b11f5d83fea365e41c5b964c2fd1ac7259f75d9a071191e312d1026fa0e63a9"
+      "execution_unit_sha256": "35f306445141e5c1d343a3221b709c6b0d7f4283f370ba048bcfe1994a560d97"
     },
     {
       "unit_id": "UNIT_K3_PILOT-01",
@@ -348,7 +354,7 @@
       "fixture_id": "PILOT-01",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": true,
-      "execution_unit_sha256": "0da32054034a68c7d186e9854baad85f9d13488cb1028220e810bf54d23e3cd9"
+      "execution_unit_sha256": "a272f72c940232e6ca06786ccba4bbb05bd872b7abdfad2e236640597ce0d401"
     },
     {
       "unit_id": "UNIT_K3_PILOT-02",
@@ -356,7 +362,7 @@
       "fixture_id": "PILOT-02",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": true,
-      "execution_unit_sha256": "ca5788f92912a3c3923014107e635a8534e036c4d53001122905f6dc9457672b"
+      "execution_unit_sha256": "694937c234d6965e5e8a8aa1c2b4103a11b51215ecce0610c396aa2e5080cee1"
     },
     {
       "unit_id": "UNIT_K3_PILOT-03",
@@ -364,7 +370,7 @@
       "fixture_id": "PILOT-03",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": true,
-      "execution_unit_sha256": "254e35db5fd7e13dc826197754401ef61dba3f78991c362704e8346b06edb54e"
+      "execution_unit_sha256": "7255240a3873dc9314f37d5f9827a6dbfd454680ac7ded9ffb69a1a831aaf6b5"
     },
     {
       "unit_id": "UNIT_K3_PILOT-04",
@@ -372,7 +378,7 @@
       "fixture_id": "PILOT-04",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": true,
-      "execution_unit_sha256": "1a2390f9061078316ddfb2c2c026a728d2febad4ce65f3704025628e59e28039"
+      "execution_unit_sha256": "e0d22a666d96f63708b274051045ae482bceb99277988365c44085bfba73fab3"
     },
     {
       "unit_id": "UNIT_K3_PILOT-05",
@@ -380,7 +386,7 @@
       "fixture_id": "PILOT-05",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": true,
-      "execution_unit_sha256": "1c6b2e9b81fce9c6ec1d26b907fd6ccae8b2db47b848c7ebeaad37d46abfd702"
+      "execution_unit_sha256": "a38af613319a4ab904a9827248a0bb61b4778bc3e7be4e0f03473bd11d7bdf4c"
     }
   ],
   "main_execution_units": [
@@ -390,7 +396,7 @@
       "fixture_id": "BAT-01",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": false,
-      "execution_unit_sha256": "81f6113126eb39ddea7df7d2ae67da2f6b28e762747b003e014fd61a97f30ce6"
+      "execution_unit_sha256": "481b92c496db63c514ab4b3a49c9490413ade30ee63268812b770ee7bff4fb1a"
     },
     {
       "unit_id": "UNIT_K0_BAT-02",
@@ -398,7 +404,7 @@
       "fixture_id": "BAT-02",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": false,
-      "execution_unit_sha256": "99ba70087501153401ecec4f5fd014c617fc6f3b5adbc265dfcc08c0c98397c3"
+      "execution_unit_sha256": "1e98bee61d50066dec3f591312cbf5b6f57a594cdbfcd1162382413dabddea6d"
     },
     {
       "unit_id": "UNIT_K0_BAT-03",
@@ -406,7 +412,7 @@
       "fixture_id": "BAT-03",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": false,
-      "execution_unit_sha256": "a016a372e815081e613b0a7a083f7c43520212a0b4db8e2105e65ef8a41784a3"
+      "execution_unit_sha256": "ec81167a4177c31e2564300ad9eb4513d556d17460af4b6b1dfe16a1dc32381c"
     },
     {
       "unit_id": "UNIT_K0_BAT-04",
@@ -414,7 +420,7 @@
       "fixture_id": "BAT-04",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": false,
-      "execution_unit_sha256": "7adf781dd0c62279508d516caeb3f20902b5bd3fbd980528995894c4e095cabb"
+      "execution_unit_sha256": "15a9563bf7c49ac49439276903165eb32e3087a21ac6e09910bb747edd080a67"
     },
     {
       "unit_id": "UNIT_K0_BAT-05",
@@ -422,7 +428,7 @@
       "fixture_id": "BAT-05",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": false,
-      "execution_unit_sha256": "112158d643364ae66d50b548309e7a0263e7beb700fe3b8d4c8620726592a2f3"
+      "execution_unit_sha256": "fae85da70ba09c758fb6bfb32463cb34560cd8800de8fcf8b644699a9fc3f9cb"
     },
     {
       "unit_id": "UNIT_K0_BAT-06",
@@ -430,7 +436,7 @@
       "fixture_id": "BAT-06",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": false,
-      "execution_unit_sha256": "3fd7abb239acc2612c5a46bafab6db6f042072d2ae140fed3c758a1af0a8c871"
+      "execution_unit_sha256": "15b059408cdc3ac2f95968f1ab38dd78b8d1bfde4cd70cd9cf620d1931561ea0"
     },
     {
       "unit_id": "UNIT_K0_BAT-07",
@@ -438,7 +444,7 @@
       "fixture_id": "BAT-07",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": false,
-      "execution_unit_sha256": "59b12ac67b9dda093e39304c6a9444ed5e7604fdedcc9f084e9d5a4162ec77db"
+      "execution_unit_sha256": "25b73f9a37b1c4384174c7352e05bc82d7f9755ea035a10a498c4cae3afdace2"
     },
     {
       "unit_id": "UNIT_K0_BAT-08",
@@ -446,7 +452,7 @@
       "fixture_id": "BAT-08",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": false,
-      "execution_unit_sha256": "dca8c097a96ee9940ea81fde98859eb7adc6a4f2fddab1a3b8c408abf2eaa24b"
+      "execution_unit_sha256": "0c34f0e736233f0d383130f7de9e8143a81a89f2fd2fe49f1f16ff69f3d7c793"
     },
     {
       "unit_id": "UNIT_K0_BAT-09",
@@ -454,7 +460,7 @@
       "fixture_id": "BAT-09",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": false,
-      "execution_unit_sha256": "c83de47565fcc2a120e9fa9f7b84ded8344038fc0c3adafe9b7269ea2c71d9f6"
+      "execution_unit_sha256": "51f79d1f1ead6a7cf80b4c3ab6a2fd2ea55bbc0f12cfc4414bd19ab1e3a2cbac"
     },
     {
       "unit_id": "UNIT_K0_BAT-10",
@@ -462,7 +468,7 @@
       "fixture_id": "BAT-10",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": false,
-      "execution_unit_sha256": "946e3961636420a36423c3aa7c4edc33927586d8be33e6476b84234a9923963b"
+      "execution_unit_sha256": "773ec0913eb934391a23d615ddefbf8cfa24ccc5aad47b58e3eb8635e2385d1c"
     },
     {
       "unit_id": "UNIT_K0_BAT-11",
@@ -470,7 +476,7 @@
       "fixture_id": "BAT-11",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": false,
-      "execution_unit_sha256": "ef3f2a41d50b343fea0e64a5ee52c8a338368619bb095d7615bf945862ef432b"
+      "execution_unit_sha256": "f5c5a4602ff6cd3540b8082395ba4941b1f0b256b2c123ee50ad0e505a0ef991"
     },
     {
       "unit_id": "UNIT_K0_BAT-12",
@@ -478,7 +484,7 @@
       "fixture_id": "BAT-12",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": false,
-      "execution_unit_sha256": "6fea00355672d387ad3f4372848d4dbdbfdf752ca3be126505f5bbbd7e2f1f4e"
+      "execution_unit_sha256": "a1cb68b27b34045037c38aee01ce9ab6f899f7001cd83bc88238a66e0592c89f"
     },
     {
       "unit_id": "UNIT_K0_BAT-13",
@@ -486,7 +492,7 @@
       "fixture_id": "BAT-13",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "f5abf2fb542f599f7bd16b599ef86232e06967d731af11dc401559b334806e38"
+      "execution_unit_sha256": "6d7d35393321c7108de189649531eea622e1515a162f36d266e25f432e509b75"
     },
     {
       "unit_id": "UNIT_K0_BAT-14",
@@ -494,7 +500,7 @@
       "fixture_id": "BAT-14",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "b524c0e0b27df2acd43518859eb7050ff826b4ae33d8627d4248927c8ca7bb7c"
+      "execution_unit_sha256": "23b8702bb3058490cb16956b5213f0abe29525640a7f42679c99160e557df51d"
     },
     {
       "unit_id": "UNIT_K0_BAT-15",
@@ -502,7 +508,7 @@
       "fixture_id": "BAT-15",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "eb4ff63587e1bdc721b22d6fb690fe30b3f57e3c8f902e49e850a75a90aa90cb"
+      "execution_unit_sha256": "b8f8b38ede8919553c97df2ff1d8380d86d64909e5bfc76abc9ba6fb5276f5ea"
     },
     {
       "unit_id": "UNIT_K0_BAT-16",
@@ -510,7 +516,7 @@
       "fixture_id": "BAT-16",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "c4884a0d4fad6a673f4a56fb5da0bbfa5429cb3176b0b689b11bd0304aac6833"
+      "execution_unit_sha256": "ca17d892f721027ff623fabad3594fc8fb2ffcaf549b37c0a4848e8602240ce2"
     },
     {
       "unit_id": "UNIT_K0D_BAT-01",
@@ -518,7 +524,7 @@
       "fixture_id": "BAT-01",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": false,
-      "execution_unit_sha256": "1ee5f64fcb00aa991ace7b26113d24612221643fef621e49ec02d2b8c4ef6565"
+      "execution_unit_sha256": "84620889cdcc605feb8971e1ed54ed494a491abab9470663ac5797b547db8f80"
     },
     {
       "unit_id": "UNIT_K0D_BAT-02",
@@ -526,7 +532,7 @@
       "fixture_id": "BAT-02",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": false,
-      "execution_unit_sha256": "ea69a017a470b3676635556debe5c1a198dcc4ef5f744759be9988f3696f63f4"
+      "execution_unit_sha256": "a8f34ad4c99b51b39cf02755bbf3479dd71a2f046c10af5ada39339f6de3965b"
     },
     {
       "unit_id": "UNIT_K0D_BAT-03",
@@ -534,7 +540,7 @@
       "fixture_id": "BAT-03",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": false,
-      "execution_unit_sha256": "01c777362ce98a461891881a64047acf570e71a8d459f3386eb42f29ef5c0099"
+      "execution_unit_sha256": "b70574d9dbf4dace7875a73e49998298af2b2719aa03f737440f53a704a27d5c"
     },
     {
       "unit_id": "UNIT_K0D_BAT-04",
@@ -542,7 +548,7 @@
       "fixture_id": "BAT-04",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": false,
-      "execution_unit_sha256": "33936e2bed25e67f60adb0a65be7203bc51c8e1736168dc7cee1c831c3c2cc48"
+      "execution_unit_sha256": "a9528f2ebf972f84a1efc7293945334d06333bc61365b7d84817d1f0b9c269fa"
     },
     {
       "unit_id": "UNIT_K0D_BAT-05",
@@ -550,7 +556,7 @@
       "fixture_id": "BAT-05",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": false,
-      "execution_unit_sha256": "35121347843ded70d82150dbf30ab68574ea4a930f74c67b6e904d4064a7a129"
+      "execution_unit_sha256": "5b4af4fb1efaf66f0b9e20f18a2bc3559e3f4efe240234159300f4df10c8d526"
     },
     {
       "unit_id": "UNIT_K0D_BAT-06",
@@ -558,7 +564,7 @@
       "fixture_id": "BAT-06",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": false,
-      "execution_unit_sha256": "6b41fbf2cb64f7ad7313d9d9121eebbed750baca993f48a482fbe954ae36b261"
+      "execution_unit_sha256": "b04f44413351f55e82deee4d11556e2912eeb7dffbd4612befdb321d3c1783eb"
     },
     {
       "unit_id": "UNIT_K0D_BAT-07",
@@ -566,7 +572,7 @@
       "fixture_id": "BAT-07",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": false,
-      "execution_unit_sha256": "7ff74cfaa4468e31f67e9fc6d1bb1545bd1e4858fbcdc4e0a10c244f1cbe63d8"
+      "execution_unit_sha256": "3d0ca2dbb13d7b9f09bb885781c31b532963679743c488e068dd9b914a6171f2"
     },
     {
       "unit_id": "UNIT_K0D_BAT-08",
@@ -574,7 +580,7 @@
       "fixture_id": "BAT-08",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": false,
-      "execution_unit_sha256": "da282565d907e490f3b7fa6cda2bcec2b2862895b731beb4932263872dfef0c2"
+      "execution_unit_sha256": "a54d23567da92616d42e291b5edf11a4482769a5fabb9424039f14226c133c7b"
     },
     {
       "unit_id": "UNIT_K0D_BAT-09",
@@ -582,7 +588,7 @@
       "fixture_id": "BAT-09",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": false,
-      "execution_unit_sha256": "c368e80810158ce09b669139db10b9937e2512ce6f188f9f1ee92ff65a445bee"
+      "execution_unit_sha256": "2f09840785c8dbeeae27e7279243dff32dc3fd7b92d839952fa806c7bcdeba73"
     },
     {
       "unit_id": "UNIT_K0D_BAT-10",
@@ -590,7 +596,7 @@
       "fixture_id": "BAT-10",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": false,
-      "execution_unit_sha256": "14ff15dfe2977fc421272820cb9f51c29f52b8f270c7085a9163fd10d859ef63"
+      "execution_unit_sha256": "42396955196656b080c48493d08f534cced7a7df156eabf1456736957f45f018"
     },
     {
       "unit_id": "UNIT_K0D_BAT-11",
@@ -598,7 +604,7 @@
       "fixture_id": "BAT-11",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": false,
-      "execution_unit_sha256": "40f8493159872045c36fcb6262c89430d9c57692f2a49ea71b3f166c4e739a2b"
+      "execution_unit_sha256": "7f6c615ff7ef0c7b0c7f432bcc4ba665c4a1d86f122a31602c4e7a3adb97a767"
     },
     {
       "unit_id": "UNIT_K0D_BAT-12",
@@ -606,7 +612,7 @@
       "fixture_id": "BAT-12",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": false,
-      "execution_unit_sha256": "610e10072c1052e6356e8456d0ea185cfcf978de25462e4e15eab2fe355c82d0"
+      "execution_unit_sha256": "31d7daa4d6956c21c100ccca684ba6bfb80674b6525a1534cb5bea7743b78b4c"
     },
     {
       "unit_id": "UNIT_K0D_BAT-13",
@@ -614,7 +620,7 @@
       "fixture_id": "BAT-13",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "23d8c806a920037db7a198d3ac61e3449e7f935671c084679f5e2747c8a43c0b"
+      "execution_unit_sha256": "44a653a36852a2279f69f5ff034984887d08f4f0c77eb5aae94848e9349609f8"
     },
     {
       "unit_id": "UNIT_K0D_BAT-14",
@@ -622,7 +628,7 @@
       "fixture_id": "BAT-14",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "38942a538dc07543fead8e67d395262c25ab504b9e0959502fdc835638f2ae0c"
+      "execution_unit_sha256": "fcba3094c089991e982f5c9eb9f2985eeaddc872388a97a007667d17023ee730"
     },
     {
       "unit_id": "UNIT_K0D_BAT-15",
@@ -630,7 +636,7 @@
       "fixture_id": "BAT-15",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "02d2d53b765e719c1e1e2b4eb88d5a94d3332f5a5500a8bff908d5f4ac8e98a7"
+      "execution_unit_sha256": "135d80d0623329935eb677ddef119e8329e74b6961bee54e9f5c345abcb1e8e4"
     },
     {
       "unit_id": "UNIT_K0D_BAT-16",
@@ -638,7 +644,7 @@
       "fixture_id": "BAT-16",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "2dc3ae3b9533f57a60a6d30fd36809d136a400630a2bcf22972fd9a9e93c726e"
+      "execution_unit_sha256": "435d016dfdb383c596d354ca23aa2fa5d1f97a4eebf020e399a801cb235a8ccf"
     },
     {
       "unit_id": "UNIT_K1_BAT-01",
@@ -646,7 +652,7 @@
       "fixture_id": "BAT-01",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": false,
-      "execution_unit_sha256": "fa0a1ba48fe4ca0e526a6896b0835a0e8792b00260985998506941e91df80da4"
+      "execution_unit_sha256": "ba49e315403b0020265de32b8eb5f8972a4537642182952e638a2844365e59f9"
     },
     {
       "unit_id": "UNIT_K1_BAT-02",
@@ -654,7 +660,7 @@
       "fixture_id": "BAT-02",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": false,
-      "execution_unit_sha256": "acd8e93ee01a0c20297ff817f44ef6fe6c9019b9ea995f79df2b5962f7cd4bd9"
+      "execution_unit_sha256": "65f71bb89722b24ad1e8fcbb0b2a0f5dc468915fee395ec04079de2b03a533f9"
     },
     {
       "unit_id": "UNIT_K1_BAT-03",
@@ -662,7 +668,7 @@
       "fixture_id": "BAT-03",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": false,
-      "execution_unit_sha256": "283a3854c684b0918f247f6543707d8d1d1e669eefd18c25700d6d580ea1994e"
+      "execution_unit_sha256": "f117b28f6659ea078a466c88ea8b670d4ebc1de6f6d7fd0e886bf6082b7224d3"
     },
     {
       "unit_id": "UNIT_K1_BAT-04",
@@ -670,7 +676,7 @@
       "fixture_id": "BAT-04",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": false,
-      "execution_unit_sha256": "e24d8616f26182a663ef5e4c7b1a224a87507bae97c83f5e7aba03e298a78cab"
+      "execution_unit_sha256": "14347e0f670fd028a6338f0e5620dd0e2660c84b7cf6421fbc806654e6f30bfd"
     },
     {
       "unit_id": "UNIT_K1_BAT-05",
@@ -678,7 +684,7 @@
       "fixture_id": "BAT-05",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": false,
-      "execution_unit_sha256": "318b39c0d2cf93c783902e89d1163a095195a7802faac473140467c3f7cbd21c"
+      "execution_unit_sha256": "1c427c121778c743175fbef133e06b1e193ec6f3d1fab7192e18b951b6df4504"
     },
     {
       "unit_id": "UNIT_K1_BAT-06",
@@ -686,7 +692,7 @@
       "fixture_id": "BAT-06",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": false,
-      "execution_unit_sha256": "ee54164651f5692e9cfaa592ab9c8210b98f979f29aaf0fb1dba09f8caa3bae8"
+      "execution_unit_sha256": "357d5a0f4096b559febc8c4cdc5f69390f7403b5df94a4ba3e4f53d15eab5a22"
     },
     {
       "unit_id": "UNIT_K1_BAT-07",
@@ -694,7 +700,7 @@
       "fixture_id": "BAT-07",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": false,
-      "execution_unit_sha256": "55a1581c55c66ee78cabfee5851457bdcb8ce3fa5ae43c73abaa61bff1706df6"
+      "execution_unit_sha256": "07628e4feee0744eb07f369180d1662860e8cc9936fb7211bdd51e744b66b4bf"
     },
     {
       "unit_id": "UNIT_K1_BAT-08",
@@ -702,7 +708,7 @@
       "fixture_id": "BAT-08",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": false,
-      "execution_unit_sha256": "2403ae5a65aa4d55f21aff51536b2b53d985eecfaf4dee0df808adf6e10db174"
+      "execution_unit_sha256": "50394a63a487a341bcfdb86d5e5e3171551aada7cf041c1c212fdc028b3a201f"
     },
     {
       "unit_id": "UNIT_K1_BAT-09",
@@ -710,7 +716,7 @@
       "fixture_id": "BAT-09",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": false,
-      "execution_unit_sha256": "23b4ca2ac1a215893bae55c53eb4b91d1be87029897fa4503d83afc6ba420db8"
+      "execution_unit_sha256": "f6ad6f95c8e470a7a2041a2dfeb4652250104f5e6e3e186a5b952de4b6cd52d0"
     },
     {
       "unit_id": "UNIT_K1_BAT-10",
@@ -718,7 +724,7 @@
       "fixture_id": "BAT-10",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": false,
-      "execution_unit_sha256": "3aea11e95aebbfacf725baf8e2a28fd328337e10d319bb5bf04fa074f216e337"
+      "execution_unit_sha256": "0ebfdf5e8caa55ed51ea80fe9e2a68b55a8cb84204f44fe9d157bd3b5288cd70"
     },
     {
       "unit_id": "UNIT_K1_BAT-11",
@@ -726,7 +732,7 @@
       "fixture_id": "BAT-11",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": false,
-      "execution_unit_sha256": "7eed701e0a239c66bef9da4d51a1d9d102e8939b04f3adb83af92be37235b5ce"
+      "execution_unit_sha256": "e79407054684efc36cdd2147277c66d645192c8f11ffec533ea2650e91be924b"
     },
     {
       "unit_id": "UNIT_K1_BAT-12",
@@ -734,7 +740,7 @@
       "fixture_id": "BAT-12",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": false,
-      "execution_unit_sha256": "6daab846e1867d111a30ef9b52d8126abe13f3ffe6266575574a675efb7eee53"
+      "execution_unit_sha256": "dd54f7d7a4a5264fb673e8bf1d615e76ce2a0ca6c76dd570e7dbc74c04340482"
     },
     {
       "unit_id": "UNIT_K1_BAT-13",
@@ -742,7 +748,7 @@
       "fixture_id": "BAT-13",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "8706f1da5bd91b85f92723ccd513a36c09859f5a56500fd50690f4baed859fee"
+      "execution_unit_sha256": "a96b14ca6d35760e494fe579c33fc746f420db9d1424c2db00139206b330c1b6"
     },
     {
       "unit_id": "UNIT_K1_BAT-14",
@@ -750,7 +756,7 @@
       "fixture_id": "BAT-14",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "743ba8f2926fb0a324847517356ddb2f6c9074f356e11eea9f2530292a8bc39b"
+      "execution_unit_sha256": "5f26252b2238c4562df54671fe514f91eebe70880a8a610af7c274fd38690889"
     },
     {
       "unit_id": "UNIT_K1_BAT-15",
@@ -758,7 +764,7 @@
       "fixture_id": "BAT-15",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "a0bdcda81266f2ea858ff4da40f7f965e92fd6eb81396faa8d319e952d4b31f5"
+      "execution_unit_sha256": "e4ce2426f6b6dc096f385d9ca4949965e2dd992786feace0c7b6e7da0a50fc88"
     },
     {
       "unit_id": "UNIT_K1_BAT-16",
@@ -766,7 +772,7 @@
       "fixture_id": "BAT-16",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "ab4b4830cede89de265b4fc938310a1e6a9162c7ccbd0e02eadff675d90acbfb"
+      "execution_unit_sha256": "7db9d317c6e580b8a65b51321657bac736f5625e3aa7f57f28833ac86f288eec"
     },
     {
       "unit_id": "UNIT_K2_BAT-01",
@@ -774,7 +780,7 @@
       "fixture_id": "BAT-01",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": false,
-      "execution_unit_sha256": "aae03c221a14bc26fcd655c6c5a3e81a8b4d2552aacaa27fced98d13860a9cca"
+      "execution_unit_sha256": "bb5184ee7e3838d6c8b2e0a0ce9ff5977fc114dd932f9a7c24a855984ebd97f2"
     },
     {
       "unit_id": "UNIT_K2_BAT-02",
@@ -782,7 +788,7 @@
       "fixture_id": "BAT-02",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": false,
-      "execution_unit_sha256": "cbb619b531518a159255a75949d192c772c93c8090af2b5b39b4a6a5143d8e00"
+      "execution_unit_sha256": "5e02a6d68119e9e8ce5439e93985b82171ba48a6395b9c206665137ef195ec88"
     },
     {
       "unit_id": "UNIT_K2_BAT-03",
@@ -790,7 +796,7 @@
       "fixture_id": "BAT-03",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": false,
-      "execution_unit_sha256": "20b451ab7b498c61a9a1167383e4f5b1eb7c1505ef385fc946dcc1e6bcbc11b6"
+      "execution_unit_sha256": "0bf3c75ddfad3a3a2d86a0e402cc213152819dca0403b018f5a798a18826c97d"
     },
     {
       "unit_id": "UNIT_K2_BAT-04",
@@ -798,7 +804,7 @@
       "fixture_id": "BAT-04",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": false,
-      "execution_unit_sha256": "77cb65ea27726804027b83fa4a97774f809e1b2736d53c693571bd48c2a309f1"
+      "execution_unit_sha256": "f4a2cc82b4af0fa198e41a8c27b43f8828c346db6a5973c761bf163ef3c499bb"
     },
     {
       "unit_id": "UNIT_K2_BAT-05",
@@ -806,7 +812,7 @@
       "fixture_id": "BAT-05",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": false,
-      "execution_unit_sha256": "d7fc0a69f6d6b8e140fd1fbecfe32417400cb066fca913ddfc0980991d148bc9"
+      "execution_unit_sha256": "219b1ee520c116292d58fb07b9e63d39d635af51104a739ca5b060cfe7e38d7d"
     },
     {
       "unit_id": "UNIT_K2_BAT-06",
@@ -814,7 +820,7 @@
       "fixture_id": "BAT-06",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": false,
-      "execution_unit_sha256": "b47140578c60bc11124465e59919606a29533923a2c2668092b4e386b17fa6aa"
+      "execution_unit_sha256": "a8bbeb0785886e6b50943d1ac3592abc35b2dd41e0404b5f53092bd015e4453e"
     },
     {
       "unit_id": "UNIT_K2_BAT-07",
@@ -822,7 +828,7 @@
       "fixture_id": "BAT-07",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": false,
-      "execution_unit_sha256": "f8f73394552d046f94f215b37f37d45252e7ac69f5ad485c3996abf21fe56560"
+      "execution_unit_sha256": "a21abe2ab84239d6d3a2ca89305e2880152e2444c4ddb26ace24e915dbc0c55c"
     },
     {
       "unit_id": "UNIT_K2_BAT-08",
@@ -830,7 +836,7 @@
       "fixture_id": "BAT-08",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": false,
-      "execution_unit_sha256": "06736805753c37dbd9b22c79191ce12437424b7303c9e174fabfa8ed11b8acef"
+      "execution_unit_sha256": "9a8174b2c0e82a490b87927857a724a68cb8247358d79e7ddfee8af9387cfb23"
     },
     {
       "unit_id": "UNIT_K2_BAT-09",
@@ -838,7 +844,7 @@
       "fixture_id": "BAT-09",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": false,
-      "execution_unit_sha256": "d232ea3266c820c089a50487fa9f6a984a4afe152e28722dc209895c5546325e"
+      "execution_unit_sha256": "56c90ce5bbc828273f1d01e9d582697f945d5e41d04325742fc76bf9c9f33c3e"
     },
     {
       "unit_id": "UNIT_K2_BAT-10",
@@ -846,7 +852,7 @@
       "fixture_id": "BAT-10",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": false,
-      "execution_unit_sha256": "64566d88cf40d38d1c3444ade5d8572ad332ca5d69032e2b826289ec7090b149"
+      "execution_unit_sha256": "37c67e1b9d57cda4a0d4fe729ba7e10875975150ef4eb1c382312ecd84224e47"
     },
     {
       "unit_id": "UNIT_K2_BAT-11",
@@ -854,7 +860,7 @@
       "fixture_id": "BAT-11",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": false,
-      "execution_unit_sha256": "4346a26f8767fac52b3b548e5583a2d452d52300e6fc421735a85ed0a6f9cb12"
+      "execution_unit_sha256": "d5845cbe980bd57e2a0934db3e89c2811160006955d1e5e7bdf05769c652304e"
     },
     {
       "unit_id": "UNIT_K2_BAT-12",
@@ -862,7 +868,7 @@
       "fixture_id": "BAT-12",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": false,
-      "execution_unit_sha256": "daf6af80615ced6c5d1d70ecadf655dc19a14820314ee74ab79c06a784daab15"
+      "execution_unit_sha256": "db7d95bdb6472ca5999333a9416b75dfc70cfcfd9d46b614c69e3a21e5590da2"
     },
     {
       "unit_id": "UNIT_K2_BAT-13",
@@ -870,7 +876,7 @@
       "fixture_id": "BAT-13",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "5a5dbcc4a8ac3d753a5ea952b9f75b21b1c776146fd8a60f08f0f171bbba3dca"
+      "execution_unit_sha256": "d5748b50456739d70c3a33cc75eec579d1c6bd0ce8f80e54b8ec8669e2cfec6e"
     },
     {
       "unit_id": "UNIT_K2_BAT-14",
@@ -878,7 +884,7 @@
       "fixture_id": "BAT-14",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "429527941dbc55dcda868c269ba2514b5de6a76994d0b8a10b3aa3e500c87722"
+      "execution_unit_sha256": "d66961ad5697c53f9f063b7029a65007d1bbe77944075051549b58d8ef052ca1"
     },
     {
       "unit_id": "UNIT_K2_BAT-15",
@@ -886,7 +892,7 @@
       "fixture_id": "BAT-15",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "954caab01b5d3e54d1232e58fdb64956381017363ee19a3615c2decbad607328"
+      "execution_unit_sha256": "e364e89fe355f1051cec7b423b8650f2307af49a488796d1ad4b5728776c6a5c"
     },
     {
       "unit_id": "UNIT_K2_BAT-16",
@@ -894,7 +900,7 @@
       "fixture_id": "BAT-16",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "e52b1669e95f097c5eb1d486f139ef3da39a56d705409cbba21c9fea3fb2c11c"
+      "execution_unit_sha256": "8cda99c833322e5fedd6b34096d3ecb9bf9c3b025c606da687f9ff26eea72336"
     },
     {
       "unit_id": "UNIT_K3_BAT-01",
@@ -902,7 +908,7 @@
       "fixture_id": "BAT-01",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": false,
-      "execution_unit_sha256": "ad4c73959fee746917bb619cb8d20d7430a11196a67e080d006c368ba80314db"
+      "execution_unit_sha256": "eff8f5f75b2ea5e1e69660222bf71776d2e8edd77fa2684761e4f08567807a50"
     },
     {
       "unit_id": "UNIT_K3_BAT-02",
@@ -910,7 +916,7 @@
       "fixture_id": "BAT-02",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": false,
-      "execution_unit_sha256": "d7936251ddbd779e5ebe6ac322e557976ffb59f654b49b42f45a26dffa65030b"
+      "execution_unit_sha256": "ad440c2b61efd7daa1851a0bae86acb4623ac01cca0b4cf1a366a0939abbd21e"
     },
     {
       "unit_id": "UNIT_K3_BAT-03",
@@ -918,7 +924,7 @@
       "fixture_id": "BAT-03",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": false,
-      "execution_unit_sha256": "1a4bbf800a5f83cc2e24888044f13cf053551052fe16139a15404b77f8040a73"
+      "execution_unit_sha256": "734b38503293b95be7efca0de9c9c43e211315bb24e7b465c705fc691b18dc4c"
     },
     {
       "unit_id": "UNIT_K3_BAT-04",
@@ -926,7 +932,7 @@
       "fixture_id": "BAT-04",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": false,
-      "execution_unit_sha256": "68fab25e9777125d8ff1f7ca46958c9197fe9009a5e798a8e3d9bf4eff9557de"
+      "execution_unit_sha256": "9539237f92964493b495a7d51907448fa0b55d4854116113099d451d62165c1b"
     },
     {
       "unit_id": "UNIT_K3_BAT-05",
@@ -934,7 +940,7 @@
       "fixture_id": "BAT-05",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": false,
-      "execution_unit_sha256": "eff4cf54fa5b438e6a3e2ce55bbd328b8dd26d25320de37f464972380fb533e7"
+      "execution_unit_sha256": "f32900e69fe5dab9c0c853f6674f121a315e3049d5bdfdb23387c8fcf1cc09ba"
     },
     {
       "unit_id": "UNIT_K3_BAT-06",
@@ -942,7 +948,7 @@
       "fixture_id": "BAT-06",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": false,
-      "execution_unit_sha256": "c47b52abf3b45fffd678d52999f04ba3bc3e3b386fd4dbe4e82105377b7660a0"
+      "execution_unit_sha256": "8717b66c3b9ea1e73dbafb6343f91ca3edda3b7dca559a1dfcf46e721252c654"
     },
     {
       "unit_id": "UNIT_K3_BAT-07",
@@ -950,7 +956,7 @@
       "fixture_id": "BAT-07",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": false,
-      "execution_unit_sha256": "167e83e0e46875b63a78312cb45caa1dc725652c28f7c495f76fb55ba3f3afe4"
+      "execution_unit_sha256": "c1b93306f84a977b59e80bf3365763b22e1da7f04b9cdd60e1cbddbb1412846b"
     },
     {
       "unit_id": "UNIT_K3_BAT-08",
@@ -958,7 +964,7 @@
       "fixture_id": "BAT-08",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": false,
-      "execution_unit_sha256": "c29be4ba729c1a6fe79e89d93830e78d00dbd4d78d25600f1125599baaae0404"
+      "execution_unit_sha256": "24f35cbf5b7e15cf92946fe6aee6562538d502023868eb71e3d6c7d295eaaa80"
     },
     {
       "unit_id": "UNIT_K3_BAT-09",
@@ -966,7 +972,7 @@
       "fixture_id": "BAT-09",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": false,
-      "execution_unit_sha256": "91a7e30031a16ad6c16dfc6824bc040b625d3854b2538c9bdcda536f9736ca4b"
+      "execution_unit_sha256": "459e71bd3da48d2f450a742d9db8cea9c20caa3b0880064d5b2b6fb74e373514"
     },
     {
       "unit_id": "UNIT_K3_BAT-10",
@@ -974,7 +980,7 @@
       "fixture_id": "BAT-10",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": false,
-      "execution_unit_sha256": "37776acda2353ffd68440c3e08df44013157421d741ce51d0c26c2965032c4c2"
+      "execution_unit_sha256": "64ce844658470f59963976a93bc8188408bf6c0231fb6971256989fcb642662b"
     },
     {
       "unit_id": "UNIT_K3_BAT-11",
@@ -982,7 +988,7 @@
       "fixture_id": "BAT-11",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": false,
-      "execution_unit_sha256": "7864354d8f74e63276af0566adf12eb028c8cc0ca2d1d95371180a2843b28ca1"
+      "execution_unit_sha256": "798eea6c179142c7cda107158f96553a8fe0cf7f9336fc436d7c4a03b4a8ad41"
     },
     {
       "unit_id": "UNIT_K3_BAT-12",
@@ -990,7 +996,7 @@
       "fixture_id": "BAT-12",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": false,
-      "execution_unit_sha256": "98b56c92d187b42c11d922fdeba6f7448d55a3a5dec741dde9f43ee46fe84e84"
+      "execution_unit_sha256": "9260b302ccc7025ea35689d86793249c6f7e7c045c650f1f1931897d46154a93"
     },
     {
       "unit_id": "UNIT_K3_BAT-13",
@@ -998,7 +1004,7 @@
       "fixture_id": "BAT-13",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "35506c166fd2d4040b871b7502746bdc486e9b838ea619f75b23998ed36a2052"
+      "execution_unit_sha256": "23da86f901da2779f1d6233aad27aad807562cbcdfb381f794052bd13f60a81e"
     },
     {
       "unit_id": "UNIT_K3_BAT-14",
@@ -1006,7 +1012,7 @@
       "fixture_id": "BAT-14",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "f27af56c5ab2bff308ff748654eb680fe251a133a81055124adb03c6e7082338"
+      "execution_unit_sha256": "da19574fe5cff58b9fbccd732465c2c252ddbdfddb00a35080cc926f97d1a64e"
     },
     {
       "unit_id": "UNIT_K3_BAT-15",
@@ -1014,7 +1020,7 @@
       "fixture_id": "BAT-15",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "ee897c1afbfd352b4088edc1fec52ba5a795a5cbd6aad693202341aa37d027c0"
+      "execution_unit_sha256": "b36b0b9c2b38bbfb4f6f3ac35ea4fa2442ca659581ed9d4c93c5b93d2011b8a5"
     },
     {
       "unit_id": "UNIT_K3_BAT-16",
@@ -1022,12 +1028,12 @@
       "fixture_id": "BAT-16",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "9a765c259c2b949ebab39284c710402f1f52f6532cd279637a5b0da96a343b0e"
+      "execution_unit_sha256": "6c5d161f386fa8dae8c6db51ca3b40219c54e346332505b8e47aec0b95d026de"
     }
   ],
   "commitments": {
     "main_hidden_answer_key_commitment_sha256": "cc26fca812fcd6bbdb6634cf310c13cd2410bc150416874c6ee158d7a0551700",
     "pilot_calibration_key_commitment_sha256": "d796fdabb35b8716acfd0b6d7da0e19cc8384f6c47c58068994e91ee3aa89c68"
   },
-  "sealed_execution_bundle_manifest_sha256": "cb7306049dd4987be4486ec2d600302bbfe1dcac8e65f4bd81a392ab77dca24b"
+  "sealed_execution_bundle_manifest_sha256": "2aa1035506880eef42c1f9b1c45d8810fe266ac9ccfe624a1da1aa36e946b7cc"
 }

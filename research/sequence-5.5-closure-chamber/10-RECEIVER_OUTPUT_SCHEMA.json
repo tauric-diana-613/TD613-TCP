@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://td613.com/schemas/sequence-5-5-receiver-output.schema.json",
+  "title": "TD613 Sequence 5.5 Receiver Output Schema",
+  "description": "Per-receiver model response schema for Sequence 5.5 evaluating a single test fixture under assigned treatment.",
+  "type": "object",
+  "required": [
+    "finding_id",
+    "verdict",
+    "identified_issues",
+    "evidence",
+    "recommended_action",
+    "confidence"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "finding_id": {
+      "type": "string",
+      "description": "Identifier of the evaluation finding, e.g. FINDING-PILOT-01 or FINDING-BAT-01.",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "verdict": {
+      "type": "string",
+      "description": "The architectural evaluation verdict.",
+      "enum": ["PASS", "FAIL", "HELD", "INCONCLUSIVE"]
+    },
+    "identified_issues": {
+      "type": "array",
+      "description": "List of specific architectural, epistemic, or governance defects identified.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "description": "Specific evidence points citing the observed telemetry, logs, or system behavior.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "recommended_action": {
+      "type": "string",
+      "description": "Recommended remedial, investigative, or governance action."
+    },
+    "confidence": {
+      "type": "string",
+      "description": "Receiver confidence rating in the verdict.",
+      "enum": ["HIGH", "MEDIUM", "LOW"]
+    }
+  }
+}

@@ -1,10 +1,16 @@
 {
-  "schema": "td613.sequence5.5.treatment-packet-hashes/v2.0",
-  "preregistration_status": "FREEZE_A_V2",
+  "schema": "td613.sequence5.5.treatment-packet-hashes/v3.0",
+  "preregistration_status": "FREEZE_A_V3",
   "dose_matching_rule": {
-    "target_words": 1005,
-    "max_allowed_deviation_percent": 5,
-    "actual_max_deviation_percent": 0,
+    "target_words": 1030,
+    "max_allowed_word_deviation_percent": 5,
+    "actual_max_word_deviation_percent": 3.64,
+    "target_tokens": 1410,
+    "max_allowed_token_deviation_percent": 5,
+    "actual_max_token_deviation_percent": 4.26,
+    "target_imperatives": 30,
+    "max_allowed_imperative_deviation_percent": 10,
+    "actual_max_imperative_deviation_percent": 0,
     "token_counting_method": "regex_word_punctuation_subword_cl100k_heuristic"
   },
   "packets": {
@@ -20,43 +26,43 @@
     },
     "K0D": {
       "file": "packet-K0D.md",
-      "words": 1005,
-      "bytes": 7379,
+      "words": 1053,
+      "bytes": 7786,
       "sections": 10,
       "examples": 2,
-      "imperatives": 27,
-      "tokens": 1359,
-      "sha256": "4ec9d5af037e4d3fe525f750a4170dcac249e5433c04b04c2bd6c32b37f3eed1"
+      "imperatives": 30,
+      "tokens": 1413,
+      "sha256": "aabe26fdb8cc496e5d87200f204802d73c2e34c25c22ed4886701303d2edf59a"
     },
     "K1": {
       "file": "packet-K1.md",
-      "words": 1005,
-      "bytes": 7807,
+      "words": 1047,
+      "bytes": 8155,
       "sections": 10,
       "examples": 2,
-      "imperatives": 27,
-      "tokens": 1411,
-      "sha256": "c6739e66bf710bcc53b38af184b68a3f487ff29908274fc49b2b8b0b48d09e9e"
+      "imperatives": 30,
+      "tokens": 1430,
+      "sha256": "c84bdece59ecb9f665011fcec0ce8beca2d7f7a23b4dc3847395cf7ba878e8ff"
     },
     "K2": {
       "file": "packet-K2.md",
-      "words": 1005,
-      "bytes": 7663,
+      "words": 1036,
+      "bytes": 7880,
       "sections": 10,
       "examples": 2,
-      "imperatives": 34,
-      "tokens": 1422,
-      "sha256": "ae657daa35ba75efa80ddc18b5a67661741920c58685a0083109efb32ef10d94"
+      "imperatives": 30,
+      "tokens": 1407,
+      "sha256": "caa6e184d3cdba09351e05b3547211dee3b686f503762839d7eb612f2e69875b"
     },
     "K3": {
       "file": "packet-K3.md",
-      "words": 1005,
-      "bytes": 8078,
+      "words": 1016,
+      "bytes": 8138,
       "sections": 10,
       "examples": 2,
-      "imperatives": 36,
-      "tokens": 1630,
-      "sha256": "39ba48f8ef27242094f712b0966afc1725fcf851f80c3917332a360be9f0cfaa"
+      "imperatives": 30,
+      "tokens": 1467,
+      "sha256": "f26fe439ec60b520c9320fb0081d4fc7d319645c62d048cadca3e1474f70a6a2"
     }
   }
 }
