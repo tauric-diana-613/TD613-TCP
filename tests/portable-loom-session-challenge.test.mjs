@@ -422,7 +422,7 @@ test('Dollhouse challenge dossier keeps four roles independent and FADT proves p
   assert.equal(audit.atlas.audit.verdict, 'DECLARED_CONSISTENCY');
   assert.equal(audit.fadt.preserving.verdict, 'CONSISTENT_DECLARATIONS');
   assert.equal(audit.fadt.erasing_phase.verdict, 'HOLD');
-  assert.equal(audit.dossier.agent_coverage.filter(item=>['PEDAGOGUE','APERTURE','ATLAS','FADT'].includes(item.agent)).every(item=>item.present), true);
+  assert.equal(audit.dossier.agent_coverage.every(item=>item.present), true);
   assert.equal(audit.dossier.evidence_posture.majority_vote, false);
   assert.equal(audit.evidence_class_promotion, false);
   assert.equal(audit.hidden_host_internals_claimed_observed, false);

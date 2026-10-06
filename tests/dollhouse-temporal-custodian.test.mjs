@@ -210,8 +210,11 @@ test('Temporal Custodian: Registry and Claim Ceiling parity verified', () => {
   assert.equal(agent.status, 'BOUNDED_RESEARCH_CANDIDATE');
   assert.equal(agent.authority_ceiling, TEMPORAL_CUSTODIAN_CLAIM_CEILING);
 
-  const allAgents = listDollhouseAgents();
-  assert.equal(allAgents.length, 5, 'Must contain 5 registered Dollhouse agents');
+  const baseAgents = listDollhouseAgents();
+  assert.equal(baseAgents.length, 4, 'Must contain 4 base registered Dollhouse agents');
+
+  const allAgents = listDollhouseAgents({ includeCandidates: true });
+  assert.equal(allAgents.length, 5, 'Must contain 5 registered Dollhouse agents when including candidates');
 
   const observatory = auditClaimCeilingRegistry();
   const firstEntry = observatory.entries[0];

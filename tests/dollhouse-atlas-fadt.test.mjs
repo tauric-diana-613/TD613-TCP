@@ -16,7 +16,7 @@ import {
 } from '../app/dome-world/holonomy-loom/semantic-field.js';
 
 assert.equal(DOLLHOUSE_AGENT_REGISTRY.schema, 'td613.dollhouse.agent-registry/v0.1');
-assert.deepEqual(listDollhouseAgents().map(agent => agent.id), ['PEDAGOGUE', 'APERTURE', 'ATLAS', 'FADT', 'TEMPORAL_CUSTODIAN']);
+assert.deepEqual(listDollhouseAgents().map(agent => agent.id), ['PEDAGOGUE', 'APERTURE', 'ATLAS', 'FADT']);
 assert.equal(getDollhouseAgent('atlas').kind, 'OPERATIONAL_AGENT_ADAPTER');
 assert.equal(getDollhouseAgent('fadt').kind, 'OPERATIONAL_AGENT_ADAPTER');
 assert.equal(DOLLHOUSE_AGENT_REGISTRY.shared_authority.human_closure_required, true);

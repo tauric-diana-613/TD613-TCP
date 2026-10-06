@@ -89,6 +89,11 @@ export function getDollhouseAgent(id) {
   return DOLLHOUSE_AGENT_REGISTRY.agents[String(id || '').toUpperCase()] || null;
 }
 
-export function listDollhouseAgents() {
-  return Object.values(DOLLHOUSE_AGENT_REGISTRY.agents);
+export function listDollhouseAgents(options = {}) {
+  const all = Object.values(DOLLHOUSE_AGENT_REGISTRY.agents);
+  if (options.includeCandidates || options.all) {
+    return all;
+  }
+  return all.filter(agent => agent.id !== 'TEMPORAL_CUSTODIAN');
 }
+
