@@ -1,0 +1,12 @@
+{
+  "assay": "TD613-SEQ5-ASSAY-20261005",
+  "stage": "SCORER_CONTRADICTION_AUDIT",
+  "timestamp": "2026-10-06T00:05:15.998Z",
+  "runs_audited": 32,
+  "total_evaluations": 1024,
+  "hash_mismatches": [],
+  "contradictions_s1": [],
+  "contradictions_s2": [],
+  "contradiction_count": 0,
+  "audit_status": "AUDIT_PASSED_ZERO_CONTRADICTIONS"
+}

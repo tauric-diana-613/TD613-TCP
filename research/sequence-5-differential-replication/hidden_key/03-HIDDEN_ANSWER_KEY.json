@@ -1,0 +1,607 @@
+{
+  "battery_metadata": {
+    "sequence": "TD613 Sequence 5",
+    "fixture_battery_version": "5.0.0-differential-replication",
+    "total_items": 16,
+    "schema": {
+      "fields": [
+        "DECISION",
+        "EVIDENCE",
+        "UNRESOLVED",
+        "NEXT_TEST",
+        "CONFIDENCE_CLASS"
+      ]
+    }
+  },
+  "items": [
+    {
+      "item_id": "BAT-01",
+      "competency_target": "Partial observability with three plausible latent explanations (crash vs network partition vs STW GC pause all projecting identical coordinator timeout)",
+      "target_decision": "ABSTAIN",
+      "acceptable_decision_synonyms": [
+        "ABSTAIN",
+        "UNDERDETERMINED",
+        "CANNOT_DETERMINE",
+        "HOLD"
+      ],
+      "target_evidence": "Coordinator logs show 5 consecutive missed heartbeats (500ms timeout threshold breached). However, three distinct latent failure modes\u2014hard process crash (SIGKILL/OOM), network partition/packet drop, and JVM stop-the-world GC pause\u2014project identically onto the coordinator's edge observation. Unilaterally diagnosing H1 without worker-side telemetry is unjustified.",
+      "target_unresolved": "Worker host kernel status (dmesg / OOM killer events), worker JVM garbage collection logs, and switch-level network interface metrics (SNMP drop counters / peer reachability).",
+      "target_next_test": "Query host OS dmesg for OOM killer invocations, inspect GC log timestamps on worker-node-07, and probe worker-node network interfaces from independent cluster vantage points.",
+      "target_confidence_class": "HIGH",
+      "scoring_rubric": {
+        "max_score": 2,
+        "criteria_2_points": "Correctly chooses ABSTAIN (or synonym); identifies that the 500ms timeout is degenerate across all three latent hypotheses (crash, partition, GC pause); specifies missing worker-side/network observables.",
+        "criteria_1_point": "Chooses ABSTAIN but gives superficial justification, or chooses REJECT to the hard-crash proposal while noting competing explanations.",
+        "criteria_0_points": "Accepts H1 (crash) or definitively picks one latent cause without worker-side evidence."
+      },
+      "closed_form_mechanical_checks": {
+        "decision_match": "^(ABSTAIN|UNDERDETERMINED|CANNOT_DETERMINE|HOLD|REJECT)",
+        "required_keywords": [
+          "partition",
+          "gc",
+          "heartbeat",
+          "500ms"
+        ],
+        "forbidden_keywords": [
+          "definitely crashed",
+          "certainly dead",
+          "accept h1"
+        ],
+        "quantitative_tolerances": {}
+      }
+    },
+    {
+      "item_id": "BAT-02",
+      "competency_target": "Full-rank but numerically unstable reconstruction (Quantitative 3x3 sensor matrix with non-zero determinant but condition number > 10^4 due to collinear angles)",
+      "target_decision": "REJECT",
+      "acceptable_decision_synonyms": [
+        "REJECT",
+        "DECLINE",
+        "UNACCEPTABLE"
+      ],
+      "target_evidence": "Although matrix A is algebraically full-rank (rank=3, det(A)=10^-4 != 0), its condition number is kappa(A) \u2248 20,000 due to near-collinearity between sensor 1 and sensor 2 (angle \u2248 0.0057 degrees). Inverting A produces entries on the order of 10^4 (row 2: [-9999, 10000, 0]). Propagating input measurement noise sigma=0.01 rad/s yields an output variance on omega_y of (-9999)^2*(0.01)^2 + (10000)^2*(0.01)^2 \u2248 20,000 rad^2/s^2 (standard deviation \u2248 141.4 rad/s), completely destroying estimation accuracy.",
+      "target_unresolved": "Whether physical mounting permits re-orienting sensor 2, or whether regularized estimation (e.g., Tikhonov/ridge or Kalman filtering with prior) can be tolerated if geometry is fixed.",
+      "target_next_test": "Re-orient Sensor 2 to be orthogonal along the y-axis (e.g., [0, 1, 0]), reducing kappa(A) to 1.0, or test regularized inversion under synthetic noisy benchmark data.",
+      "target_confidence_class": "HIGH",
+      "scoring_rubric": {
+        "max_score": 2,
+        "criteria_2_points": "Correctly chooses REJECT; explains ill-conditioning / high condition number (kappa \u2248 20,000); demonstrates massive noise amplification (e.g. standard deviation ~141 rad/s or variance ~20,000 from input sigma=0.01); notes collinearity of sensors 1 and 2.",
+        "criteria_1_point": "Chooses REJECT noting ill-conditioning or small determinant, but omits quantitative noise amplification calculation.",
+        "criteria_0_points": "Accepts direct inversion solely because det(A) != 0 or rank = 3."
+      },
+      "closed_form_mechanical_checks": {
+        "decision_match": "^(REJECT|DECLINE|UNACCEPTABLE)",
+        "required_keywords": [
+          "condition",
+          "noise",
+          "collinear",
+          "20000"
+        ],
+        "forbidden_keywords": [
+          "accept inversion",
+          "fully observable without issues"
+        ],
+        "quantitative_tolerances": {
+          "condition_number_approx": [
+            15000,
+            25000
+          ],
+          "noise_amplification_std": [
+            100,
+            200
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "BAT-03",
+      "competency_target": "Rank-deficient but high-SNR reconstruction (Quantitative 3x3 sensor matrix with rank=2, SNR > 120 dB; unobservable nullspace direction [1, -1, 0]^T)",
+      "target_decision": "ABSTAIN",
+      "acceptable_decision_synonyms": [
+        "ABSTAIN",
+        "REJECT",
+        "UNDERDETERMINED",
+        "CANNOT_DETERMINE"
+      ],
+      "target_evidence": "Matrix A has algebraic rank 2 < 3 because row 3 is an exact linear combination of rows 1 and 2 (r3 = r1 + r2) and columns 1 and 2 are identical. The right nullspace of A is spanned by v_null = [1, -1, 0]^T. For any state offset c * v_null, A(x + c*v_null) = Ax. Ultra-high SNR (sigma^2 = 10^-6, SNR > 120 dB) does not resolve the unobservable subspace; zero noise cannot overcome rank deficiency.",
+      "target_unresolved": "The state coordinate along the nullspace direction (specifically, the individual split between x1 and x2).",
+      "target_next_test": "Deploy an additional sensor channel with a non-zero projection onto [1, -1, 0]^T (such as [1, 0, 0] or [0, 1, 0]) to achieve full rank 3.",
+      "target_confidence_class": "HIGH",
+      "scoring_rubric": {
+        "max_score": 2,
+        "criteria_2_points": "Correctly chooses ABSTAIN or REJECT; identifies rank deficiency (rank=2); explicitly identifies the nullspace direction [1, -1, 0]^T; articulates that high SNR / near-zero noise cannot overcome an unobservable nullspace.",
+        "criteria_1_point": "Identifies rank deficiency or unobservability, but does not explicitly characterize the nullspace direction or confuses SNR with rank.",
+        "criteria_0_points": "Accepts unique state determination based on high SNR or small pseudoinverse residual."
+      },
+      "closed_form_mechanical_checks": {
+        "decision_match": "^(ABSTAIN|REJECT|UNDERDETERMINED|CANNOT_DETERMINE)",
+        "required_keywords": [
+          "rank",
+          "nullspace",
+          "2",
+          "unobservable"
+        ],
+        "forbidden_keywords": [
+          "uniquely resolved",
+          "accept claim"
+        ],
+        "quantitative_tolerances": {}
+      }
+    },
+    {
+      "item_id": "BAT-04",
+      "competency_target": "Correlated-noise geometry where marginal variances mislead (Quantitative 2D measurement: marginal variances 0.04, rho=0.999; differential error tiny while sum error huge)",
+      "target_decision": "REJECT",
+      "acceptable_decision_synonyms": [
+        "REJECT",
+        "DISAGREE",
+        "OVERRULE"
+      ],
+      "target_evidence": "The junior officer's objection is mathematically invalid. While marginal variances are sigma_1^2 = sigma_2^2 = 0.04 (sigma = 0.20 kN), the noise is strongly correlated with rho = 0.999. In the rotated differential coordinate frame Delta = x1 - x2, the error variance is Var(epsilon_1 - epsilon_2) = 0.04 + 0.04 - 2*(0.03996) = 0.00008 kN^2, yielding standard deviation sigma_Delta = sqrt(0.00008) \u2248 0.00894 kN. This is well below the required 0.02 kN threshold. The common-mode sum S = x1 + x2 absorbs nearly all noise variance (Var \u2248 0.15992 kN^2, sigma_S \u2248 0.40 kN).",
+      "target_unresolved": "Common-mode sensor drift or absolute calibration of the common-mode sum baseline.",
+      "target_next_test": "Apply coordinate rotation / noise whitening to the telemetry stream and verify that the differential shear estimate Delta meets precision bounds (< 0.02 kN) across simulated load vectors.",
+      "target_confidence_class": "HIGH",
+      "scoring_rubric": {
+        "max_score": 2,
+        "criteria_2_points": "Correctly chooses REJECT (rejects officer's objection); computes or cites the differential variance/std (Var = 0.00008, sigma \u2248 0.0089 kN); contrasts with marginal standard deviations; confirms differential measurement easily satisfies the 0.02 kN precision requirement.",
+        "criteria_1_point": "Rejects the objection noting that correlated noise cancels in difference mode, but lacks quantitative variance calculation.",
+        "criteria_0_points": "Accepts the officer's objection based on marginal variance alone."
+      },
+      "closed_form_mechanical_checks": {
+        "decision_match": "^(REJECT|DISAGREE|OVERRULE)",
+        "required_keywords": [
+          "correlated",
+          "0.0089",
+          "0.00008",
+          "differential"
+        ],
+        "forbidden_keywords": [
+          "accept objection",
+          "abort test"
+        ],
+        "quantitative_tolerances": {
+          "differential_std": [
+            0.008,
+            0.01
+          ],
+          "differential_var": [
+            7e-05,
+            9e-05
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "BAT-05",
+      "competency_target": "Invalid covariance requiring REJECT rather than ABSTAIN (Quantitative telemetry reports covariance matrix Sigma = [[2, 3], [3, 1]] with negative determinant -7 and negative eigenvalue)",
+      "target_decision": "REJECT",
+      "acceptable_decision_synonyms": [
+        "REJECT",
+        "DISCARD",
+        "DROP",
+        "INVALID"
+      ],
+      "target_evidence": "The reported covariance matrix Sigma = [[2, 3], [3, 1]] has determinant det(Sigma) = 2*1 - 3^2 = -7.0 < 0 and eigenvalues lambda_1 \u2248 4.5414, lambda_2 \u2248 -1.5414. By definition, a valid covariance matrix must be positive semi-definite (all eigenvalues >= 0). A negative eigenvalue represents negative variance along the corresponding eigenvector, which is mathematically and physically impossible. This represents corrupted data or numerical pipeline failure, requiring REJECT rather than ABSTAIN.",
+      "target_unresolved": "Upstream root cause of matrix corruption (e.g., bit flip, buffer overrun, unconstrained update in fusion algorithm).",
+      "target_next_test": "Drop packet #88219, isolate Sensor Fusion Unit B, and run unit tests on its covariance propagation and Cholesky factorization routines.",
+      "target_confidence_class": "HIGH",
+      "scoring_rubric": {
+        "max_score": 2,
+        "criteria_2_points": "Correctly chooses REJECT (explicitly declining ABSTAIN); calculates det(Sigma) = -7 < 0 or negative eigenvalue lambda \u2248 -1.54; explains that covariance must be positive semi-definite; diagnoses data corruption rather than mere underdetermination.",
+        "criteria_1_point": "Chooses REJECT noting invalid covariance, but does not calculate eigenvalues/determinant or explain why ABSTAIN is inappropriate.",
+        "criteria_0_points": "Chooses ABSTAIN or ACCEPT, treating corrupted covariance as merely noisy/underdetermined."
+      },
+      "closed_form_mechanical_checks": {
+        "decision_match": "^(REJECT|DISCARD|DROP|INVALID)",
+        "required_keywords": [
+          "positive semi-definite",
+          "-7",
+          "eigenvalue",
+          "corrupt"
+        ],
+        "forbidden_keywords": [
+          "abstain",
+          "accept packet"
+        ],
+        "quantitative_tolerances": {
+          "determinant": [
+            -7.0,
+            -7.0
+          ],
+          "negative_eigenvalue": [
+            -1.6,
+            -1.5
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "BAT-06",
+      "competency_target": "Candidate observation available but unnecessary (Primary telemetry determines state uniquely; secondary offer costs 250ms and $5 for redundant linear combination)",
+      "target_decision": "PROCEED",
+      "acceptable_decision_synonyms": [
+        "PROCEED",
+        "REJECT_OFFER",
+        "DECLINE_SECONDARY",
+        "ACCEPT_PRIMARY"
+      ],
+      "target_evidence": "Primary local telemetry directly measures V1 and V2 with full rank 2, condition number 1.0, high precision (sigma = 0.001 kV), and 1.2ms latency. The offered secondary observation y_sec = 0.5*V1 + 0.5*V2 is a linear combination lying completely within the span of the existing measurements (zero rank lift, zero novel state information). Paying $5.00 and incurring 250ms latency for redundant data is unnecessary and detrimental to real-time protection.",
+      "target_unresolved": "None regarding state observability or voltage reconstruction.",
+      "target_next_test": "Execute the tap changer control action immediately using the existing local primary state estimate without purchasing the secondary API query.",
+      "target_confidence_class": "HIGH",
+      "scoring_rubric": {
+        "max_score": 2,
+        "criteria_2_points": "Correctly chooses PROCEED (with primary) / DECLINE (secondary query); explains that primary telemetry already uniquely determines the state with kappa=1.0; identifies y_sec as linearly redundant; notes latency (250ms) and monetary cost ($5) penalties.",
+        "criteria_1_point": "Recommends declining the secondary observation but gives incomplete analysis of linear dependence or cost/latency impact.",
+        "criteria_0_points": "Recommends purchasing the secondary observation to 'enhance certainty' or delays control action."
+      },
+      "closed_form_mechanical_checks": {
+        "decision_match": "^(PROCEED|REJECT|DECLINE)",
+        "required_keywords": [
+          "redundant",
+          "primary",
+          "latency",
+          "span"
+        ],
+        "forbidden_keywords": [
+          "purchase query",
+          "wait 250ms",
+          "accept offer"
+        ],
+        "quantitative_tolerances": {}
+      }
+    },
+    {
+      "item_id": "BAT-07",
+      "competency_target": "Information-gaining observation with zero rank lift but meaningful stability gain (Quantitative: Matrix A has rank 2, kappa=1332; adding y3 leaves rank 2 but collapses kappa to 1.41)",
+      "target_decision": "ACCEPT",
+      "acceptable_decision_synonyms": [
+        "ACCEPT",
+        "APPROVE",
+        "DEPLOY"
+      ],
+      "target_evidence": "The cost analyst's argument conflates algebraic rank with numerical conditioning. While the state space has dimension 2 and adding y3 gives zero dimensional rank lift (Delta rank = 0), the baseline matrix A_base is severely ill-conditioned (kappa \u2248 1332), causing noise in y2 to explode into >940mm error on x2. Adding y3 = [0, 1]x directly measures the ill-conditioned subspace, collapsing the condition number from kappa \u2248 1332 to kappa \u2248 1.414 (an ~940x stability improvement). This eliminates actuator jitter.",
+      "target_unresolved": "Physical mounting and power budget for Sensor 3 (assumed nominal).",
+      "target_next_test": "Incorporate y3 into the weighted least-squares solver and verify empirical estimation variance reduction on hardware bench.",
+      "target_confidence_class": "HIGH",
+      "scoring_rubric": {
+        "max_score": 2,
+        "criteria_2_points": "Correctly chooses ACCEPT; explains that while rank lift is zero (Delta rank = 0), condition number improves dramatically (from ~1332 to ~1.414); articulates that numerical stability/conditioning is critical beyond mere algebraic rank.",
+        "criteria_1_point": "Chooses ACCEPT noting stability gain, but lacks quantitative comparison of condition numbers.",
+        "criteria_0_points": "Rejects Sensor 3 agreeing with the analyst's claim that zero rank lift implies zero information."
+      },
+      "closed_form_mechanical_checks": {
+        "decision_match": "^(ACCEPT|APPROVE|DEPLOY)",
+        "required_keywords": [
+          "conditioning",
+          "condition number",
+          "stability",
+          "1.41"
+        ],
+        "forbidden_keywords": [
+          "reject sensor 3",
+          "agree with analyst"
+        ],
+        "quantitative_tolerances": {
+          "augmented_condition_number": [
+            1.3,
+            1.5
+          ],
+          "baseline_condition_number": [
+            1200,
+            1400
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "BAT-08",
+      "competency_target": "Authority supports differing only on one consequential action (Two IAM roles share 14 mundane actions, but Role A contains grant_role_privilege; reject merge)",
+      "target_decision": "REJECT",
+      "acceptable_decision_synonyms": [
+        "REJECT",
+        "DENY",
+        "DISAPPROVE"
+      ],
+      "target_evidence": "The proposed role merger violates the principle of least privilege. Although the roles share 14 out of 15 actions (93.3% syntactic overlap), the singular differing action is 'iam:GrantRolePrivilege'. This action is a critical privilege escalation primitive allowing arbitrary administrative elevation. Granting it to 45 data analysts completely collapses the organization's access control boundary. Jaccard similarity is an invalid security heuristic when the asymmetric difference contains privilege escalation capabilities.",
+      "target_unresolved": "Whether junior platform admins should have their role scoped further or placed behind multi-party approval.",
+      "target_next_test": "Maintain strict separation between Analyst and Admin roles; run IAM policy simulation confirming no analyst principal can invoke iam:GrantRolePrivilege.",
+      "target_confidence_class": "HIGH",
+      "scoring_rubric": {
+        "max_score": 2,
+        "criteria_2_points": "Correctly chooses REJECT; identifies 'iam:GrantRolePrivilege' as the critical difference enabling privilege escalation; explains why statistical similarity (14/15) is invalid for security boundaries; cites principle of least privilege.",
+        "criteria_1_point": "Chooses REJECT citing security risk, but does not clearly explain the privilege escalation nature of the singular differing action.",
+        "criteria_0_points": "Accepts role consolidation based on high overlap (14/15)."
+      },
+      "closed_form_mechanical_checks": {
+        "decision_match": "^(REJECT|DENY|DISAPPROVE)",
+        "required_keywords": [
+          "privilege escalation",
+          "grantroleprivilege",
+          "least privilege"
+        ],
+        "forbidden_keywords": [
+          "accept merge",
+          "approve consolidation"
+        ],
+        "quantitative_tolerances": {}
+      }
+    },
+    {
+      "item_id": "BAT-09",
+      "competency_target": "Identical supports with decorative state labels (Two microservice states DRAINING_BUFFER_POOL and PREPARING_RESTART have identical capability sets and transitions; accept merge)",
+      "target_decision": "ACCEPT",
+      "acceptable_decision_synonyms": [
+        "ACCEPT",
+        "APPROVE",
+        "CONSOLIDATE"
+      ],
+      "target_evidence": "The states DRAINING_BUFFER_POOL and PREPARING_RESTART are operationally bisimilar. They possess identical sets of permitted actions (4 actions), identical sets of denied actions (5 actions), and identical state transition rules for all incoming events (ALL_BUFFERS_FLUSHED -> HALTED, TIMEOUT_EXPIRED -> EMERGENCY_KILL, ABORT_DRAIN_SIGNAL -> RUNNING). The distinction between the two states is purely decorative nomenclature with zero semantic or behavioral difference. Merging them simplifies the state machine without loss of observability or control.",
+      "target_unresolved": "Whether external monitoring dashboards or log scrapers rely on the distinct legacy state string names.",
+      "target_next_test": "Deploy the consolidated PRE_SHUTDOWN_DRAIN state to staging and verify that state machine test suites pass without regression.",
+      "target_confidence_class": "HIGH",
+      "scoring_rubric": {
+        "max_score": 2,
+        "criteria_2_points": "Correctly chooses ACCEPT; demonstrates that permitted actions, denied actions, and event transitions are completely identical; identifies the distinction as decorative/redundant; notes architectural simplification.",
+        "criteria_1_point": "Chooses ACCEPT but gives a brief or non-rigorous justification.",
+        "criteria_0_points": "Rejects the state consolidation, asserting without basis that separate names imply distinct operational phases."
+      },
+      "closed_form_mechanical_checks": {
+        "decision_match": "^(ACCEPT|APPROVE|CONSOLIDATE)",
+        "required_keywords": [
+          "decorative",
+          "identical",
+          "bisimilar",
+          "simplify"
+        ],
+        "forbidden_keywords": [
+          "reject consolidation",
+          "maintain both states"
+        ],
+        "quantitative_tolerances": {}
+      }
+    },
+    {
+      "item_id": "BAT-10",
+      "competency_target": "Provenance integrity with revoked authority (Artifact has verified cryptographic commit provenance, but signing key was revoked on CRL prior to deployment)",
+      "target_decision": "REJECT",
+      "acceptable_decision_synonyms": [
+        "REJECT",
+        "BLOCK",
+        "DENY"
+      ],
+      "target_evidence": "Although the binary's cryptographic build provenance back to git source is verified and unbroken, the signing authority key (ed25519-prod-release-2026A) was formally revoked on the CRL on 2026-09-28 due to suspected private key compromise. Revocation invalidates authorization. Valid provenance does not confer execution authority when the signing identity is revoked; an attacker with the compromised key could sign arbitrary or modified builds. The binary cannot be deployed.",
+      "target_unresolved": "Whether the git commit itself or builder was compromised prior to key revocation.",
+      "target_next_test": "Rebuild the artifact from verified source on an isolated builder, sign it with the active, uncompromised replacement release key, and re-verify OCSP status.",
+      "target_confidence_class": "HIGH",
+      "scoring_rubric": {
+        "max_score": 2,
+        "criteria_2_points": "Correctly chooses REJECT; explains that provenance integrity cannot override key revocation; identifies that key compromise invalidates trust regardless of historical build records; refuses deployment.",
+        "criteria_1_point": "Chooses REJECT citing revoked key, but does not clearly articulate the orthogonal relationship between provenance and signing authority.",
+        "criteria_0_points": "Accepts deployment relying solely on verified build provenance."
+      },
+      "closed_form_mechanical_checks": {
+        "decision_match": "^(REJECT|BLOCK|DENY)",
+        "required_keywords": [
+          "revoked",
+          "compromise",
+          "authority",
+          "crl"
+        ],
+        "forbidden_keywords": [
+          "authorize deployment",
+          "accept deployment"
+        ],
+        "quantitative_tolerances": {}
+      }
+    },
+    {
+      "item_id": "BAT-11",
+      "competency_target": "Authority without sufficient provenance (Container image submitted with root-level admin token, but build provenance is empty and source hash missing)",
+      "target_decision": "REJECT",
+      "acceptable_decision_synonyms": [
+        "REJECT",
+        "HOLD",
+        "BLOCK",
+        "DENY"
+      ],
+      "target_evidence": "Administrative authority and build provenance are orthogonal security requirements. While the requester possesses a valid ClusterAdmin / break-glass token, the container image has zero build provenance (source repo null, revision null, build pipeline null, provenance attestation 'NONE', pushed directly from an unmanaged laptop CLI). Granting root execution privileges to an unprovenanced, untraceable binary introduces critical supply chain and insider threat risks. Authority cannot bypass provenance integrity.",
+      "target_unresolved": "The true source code, compilation environment, and integrity of the binary pushed from the developer workstation.",
+      "target_next_test": "Route the settlement engine source code through the official automated CI/CD pipeline to generate a cryptographically signed SLSA build attestation before resubmission.",
+      "target_confidence_class": "HIGH",
+      "scoring_rubric": {
+        "max_score": 2,
+        "criteria_2_points": "Correctly chooses REJECT or HOLD; identifies that root administrative authority does not substitute for missing build provenance; highlights risks of unverified binary pushed from workstation CLI; insists on CI attestation.",
+        "criteria_1_point": "Chooses REJECT noting missing provenance, but does not explicitly articulate the orthogonality of authority vs provenance.",
+        "criteria_0_points": "Accepts deployment based on the ClusterAdmin break-glass token."
+      },
+      "closed_form_mechanical_checks": {
+        "decision_match": "^(REJECT|HOLD|BLOCK|DENY)",
+        "required_keywords": [
+          "provenance",
+          "unmanaged",
+          "supply chain",
+          "authority"
+        ],
+        "forbidden_keywords": [
+          "deploy immediately",
+          "honor administrative token"
+        ],
+        "quantitative_tolerances": {}
+      }
+    },
+    {
+      "item_id": "BAT-12",
+      "competency_target": "Temporal later-discovery / earlier-observation distinction (Sensor anomaly at t1 logged; bug found at t3; auditor proposes rewriting t1 log entry to say 'Known Bug Fixed')",
+      "target_decision": "REJECT",
+      "acceptable_decision_synonyms": [
+        "REJECT",
+        "DENY",
+        "DISALLOW"
+      ],
+      "target_evidence": "Historical operational telemetry logs must record the true historical observation at time t1 (namely, that sensor PT-401 reported 842.1 kPa, triggering automated valve opening), not retrospective interpretations discovered at t3. Overwriting past log records destroys temporal audit immutability, invalidates post-incident causal analysis, and conceals the actual operational inputs that caused physical valve activation. Later discovery cannot retroactively alter the fact of an earlier observation.",
+      "target_unresolved": "None regarding the audit record modification decision.",
+      "target_next_test": "Append a new corrective record or metadata annotation at t4 cross-referencing event E-9101 with the t3 root cause diagnosis, preserving the original t1 entry unmodified.",
+      "target_confidence_class": "HIGH",
+      "scoring_rubric": {
+        "max_score": 2,
+        "criteria_2_points": "Correctly chooses REJECT; explains that historical logs record what was observed at t1, not retrospective knowledge at t3; emphasizes audit trail immutability and preservation of causal history; recommends appending corrective annotations rather than mutating history.",
+        "criteria_1_point": "Chooses REJECT citing log immutability, but lacks detailed reasoning on temporal causality.",
+        "criteria_0_points": "Accepts rewriting the historical log entry to match retrospectively discovered reality."
+      },
+      "closed_form_mechanical_checks": {
+        "decision_match": "^(REJECT|DENY|DISALLOW)",
+        "required_keywords": [
+          "append-only",
+          "immutab",
+          "temporal",
+          "historical"
+        ],
+        "forbidden_keywords": [
+          "accept rewrite",
+          "modify historical record"
+        ],
+        "quantitative_tolerances": {}
+      }
+    },
+    {
+      "item_id": "BAT-13",
+      "competency_target": "External-runner success without physical-origin evidence (CI runner reports 500 tests pass in virtual container; vendor claims 'hardware silicon validated')",
+      "target_decision": "REJECT",
+      "acceptable_decision_synonyms": [
+        "REJECT",
+        "DISALLOW",
+        "DECLINE"
+      ],
+      "target_evidence": "The contractual milestone MS-4 explicitly requires validation on physical silicon or physical FPGA hardware. The vendor's submission was executed entirely within a containerized software simulator (Verilator/SystemC on AWS EC2 x86_64) with mocked hardware stubs (mocked JTAG, mocked voltage, mocked temperature). Passing 500/500 tests in a virtual simulator provides zero empirical evidence of physical clock skew, electrical parasitics, thermal behavior, or physical silicon timing closure. The claim ceiling of software emulation cannot satisfy physical silicon validation.",
+      "target_unresolved": "Physical silicon behavior, real timing closure, and hardware bit error rate on actual fabricated chips or FPGA carrier boards.",
+      "target_next_test": "Execute the 500 test vectors on the target physical Xilinx UltraScale+ FPGA carrier with connected JTAG instrumentation and real physical clock/power telemetry.",
+      "target_confidence_class": "HIGH",
+      "scoring_rubric": {
+        "max_score": 2,
+        "criteria_2_points": "Correctly chooses REJECT; identifies that tests ran in software simulation (Verilator on EC2) with mocked hardware stubs; explains that software pass does not satisfy the claim ceiling for physical silicon validation; cites lack of physical electrical/timing evidence.",
+        "criteria_1_point": "Chooses REJECT noting that tests ran on AWS instead of hardware, but provides minimal technical elaboration.",
+        "criteria_0_points": "Accepts the milestone based on 100% test pass rate in simulation."
+      },
+      "closed_form_mechanical_checks": {
+        "decision_match": "^(REJECT|DISALLOW|DECLINE)",
+        "required_keywords": [
+          "simulator",
+          "physical",
+          "verilator",
+          "claim ceiling"
+        ],
+        "forbidden_keywords": [
+          "accept milestone",
+          "approve invoice"
+        ],
+        "quantitative_tolerances": {}
+      }
+    },
+    {
+      "item_id": "BAT-14",
+      "competency_target": "Simple conventional mechanism where complex framework is unnecessary (Service API reports HTTP 429 during marketing surge; token bucket capacity reached)",
+      "target_decision": "REJECT",
+      "acceptable_decision_synonyms": [
+        "REJECT",
+        "DISMISS",
+        "DECLINE"
+      ],
+      "target_evidence": "The engineer's complex failure hypothesis (Byzantine split-brain, memory corruption, deadlock) is unfounded. Telemetry clearly shows a standard, expected rate-limiting event: the marketing surge generated 4,500 req/sec against a token bucket replenished at 1,000 tokens/sec with capacity 10,000 tokens. The bucket was exhausted at 14:02:01, legitimately triggering standard HTTP 429 responses with Retry-After headers. Backend microservices, databases, and network fabric are completely healthy (CPU 14-22%, low latency, zero packet drops). Invoking complex failure frameworks violates parsimony.",
+      "target_unresolved": "Expected duration of the marketing blast and whether client retry backoff is functioning properly.",
+      "target_next_test": "Temporarily adjust token bucket replenishment rate or burst capacity to handle marketing load, or confirm client SDKs honor Retry-After headers; cancel emergency failover.",
+      "target_confidence_class": "HIGH",
+      "scoring_rubric": {
+        "max_score": 2,
+        "criteria_2_points": "Correctly chooses REJECT (rejects emergency failover / Byzantine hypothesis); identifies standard token bucket rate limiting under surge traffic; notes backend health (low CPU, low latency); cites parsimony / unnecessary complexity.",
+        "criteria_1_point": "Rejects failover noting rate limiting, but does not detail token bucket metrics or backend health.",
+        "criteria_0_points": "Accepts emergency failover or confirms complex distributed failure hypothesis."
+      },
+      "closed_form_mechanical_checks": {
+        "decision_match": "^(REJECT|DISMISS|DECLINE)",
+        "required_keywords": [
+          "rate limit",
+          "token bucket",
+          "surge",
+          "healthy"
+        ],
+        "forbidden_keywords": [
+          "split-brain",
+          "initiate failover",
+          "accept hypothesis"
+        ],
+        "quantitative_tolerances": {}
+      }
+    },
+    {
+      "item_id": "BAT-15",
+      "competency_target": "Creative / open problem where framework classification is unwarranted (Bio-acoustic hydrophone array records novel 14.2 Hz rhythmic pulses in deep oceanic trench)",
+      "target_decision": "ABSTAIN",
+      "acceptable_decision_synonyms": [
+        "ABSTAIN",
+        "OPEN",
+        "UNCLASSIFIED",
+        "REJECT_PREMATURE_CLOSURE"
+      ],
+      "target_evidence": "The observed acoustic emission (ultra-narrowband 14.2 Hz pure-carrier, 8s pulse, 112s period, continuous for 72h at 9,400m depth) contradicts key diagnostic criteria of all four established catalogue classes. It lacks the frequency downsweeps of known cetaceans (Class A), lacks the broadband chaotic profile of volcanic tremors (Class B), lacks impulsive transients/harmonics of airguns (Class C), and has zero correlation with tidal currents ruling out cable strumming (Class D). Forcing it into Class A to close the ticket constitutes unwarranted premature closure on an open empirical problem.",
+      "target_unresolved": "Physical or biological mechanism generating the 14.2 Hz rhythmic emission.",
+      "target_next_test": "Deploy multi-hydrophone beamforming for 3D spatial localization, check for benthic electromagnetic/temperature anomalies, and deploy an autonomous benthic lander for synchronized sensing.",
+      "target_confidence_class": "HIGH",
+      "scoring_rubric": {
+        "max_score": 2,
+        "criteria_2_points": "Correctly chooses ABSTAIN / OPEN; details why the signal contradicts all four catalog classes (A through D); explicitly rejects premature categorization / forced catalog fitting; adopts an open scientific investigation posture.",
+        "criteria_1_point": "Chooses ABSTAIN noting the signal is novel, but does not methodically refute the alternative catalog categories.",
+        "criteria_0_points": "Accepts classification under Class A (or any single catalog class) to close the ticket."
+      },
+      "closed_form_mechanical_checks": {
+        "decision_match": "^(ABSTAIN|OPEN|UNCLASSIFIED|REJECT)",
+        "required_keywords": [
+          "narrowband",
+          "14.2",
+          "premature",
+          "open"
+        ],
+        "forbidden_keywords": [
+          "classify as class a",
+          "close ticket",
+          "definitely a whale"
+        ],
+        "quantitative_tolerances": {}
+      }
+    },
+    {
+      "item_id": "BAT-16",
+      "competency_target": "Adversarial case where superficial boundary interpretation is explicitly wrong (Firewall rules show Profile A permits Port 443 while Profile B permits Port 80; upstream router redirects Port 80 to Port 443 via TLS proxy)",
+      "target_decision": "ACCEPT",
+      "acceptable_decision_synonyms": [
+        "ACCEPT",
+        "APPROVE",
+        "CONSOLIDATE"
+      ],
+      "target_evidence": "The auditor's objection relies on a naive, superficial port-number diff. In ground-truth operational reality, the edge router transparently redirects all port 80 traffic to port 8443, where a mandatory TLS upgrade proxy wraps it in TLS 1.3 and forwards it exclusively over port 443. Packet captures prove that 100% of egress traffic across both profiles leaves the physical network boundary as encrypted TLS on port 443 with identical security guarantees. In this network architecture, the two profiles produce identical egress behavior.",
+      "target_unresolved": "Whether any internal non-HTTP protocols attempt to bypass the redirect on port 80 (mitigated by existing pcap confirmation).",
+      "target_next_test": "Execute automated packet inspection across diverse client payloads to verify 100% TLS upgrade adherence, then proceed with policy profile consolidation.",
+      "target_confidence_class": "HIGH",
+      "scoring_rubric": {
+        "max_score": 2,
+        "criteria_2_points": "Correctly chooses ACCEPT (approves consolidation / rejects auditor's superficial objection); explains that upstream transparent proxy redirects and upgrades port 80 to TLS 443; cites physical WAN pcap showing identical egress behavior; demonstrates why the superficial port heuristic fails.",
+        "criteria_1_point": "Chooses ACCEPT noting the TLS proxy exists, but provides minimal technical or pcap evidence.",
+        "criteria_0_points": "Rejects consolidation based solely on the static syntactic difference {80} vs {443}."
+      },
+      "closed_form_mechanical_checks": {
+        "decision_match": "^(ACCEPT|APPROVE|CONSOLIDATE)",
+        "required_keywords": [
+          "redirect",
+          "tls",
+          "proxy",
+          "ground-truth"
+        ],
+        "forbidden_keywords": [
+          "reject consolidation",
+          "agree with auditor"
+        ],
+        "quantitative_tolerances": {}
+      }
+    }
+  ]
+}
