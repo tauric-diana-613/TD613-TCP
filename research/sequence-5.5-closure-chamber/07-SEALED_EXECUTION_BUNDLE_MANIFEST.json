@@ -1,7 +1,8 @@
 {
-  "schema": "td613.sequence5.5.sealed-execution-bundle-manifest/v3.0",
-  "preregistration_status": "FREEZE_A_V3",
-  "parent_freeze_a_v2_commit": "a2fd6482328cd573afb7bfa330ae0896e6a7c89e",
+  "schema": "td613.sequence5.5.sealed-execution-bundle-manifest/v4.0",
+  "preregistration_status": "FREEZE_A_V4",
+  "parent_freeze_a_v3_commit": "081cd96c82afcdb1d4b5771d5cf2f992e44e070b",
+  "historical_freeze_a_v2_commit": "a2fd6482328cd573afb7bfa330ae0896e6a7c89e",
   "historical_freeze_a_v1_commit": "475a28443ee41b338233aef257d6c39cde8ed260",
   "binding_law": {
     "canonical_encoding": "H(len8(treatment_bytes) || treatment_bytes || len8(fixture_bytes) || fixture_bytes || len8(receiver_schema_bytes) || receiver_schema_bytes || len8(fixed_wrapper_bytes) || fixed_wrapper_bytes || len8(declared_metadata_utf8) || declared_metadata_utf8)",
@@ -15,6 +16,11 @@
       "path": "research/sequence-5.5-closure-chamber/10-RECEIVER_OUTPUT_SCHEMA.json",
       "bytes": 1609,
       "sha256": "935bf87b1ef86ac1df7490c7f5abe6d93892e89869f348671bd64c50b42e5537"
+    },
+    "execution_provenance_receipt_schema": {
+      "path": "research/sequence-5.5-closure-chamber/11-EXECUTION_RECEIPT_SCHEMA.json",
+      "bytes": 8329,
+      "sha256": "34f0b2bf2742074e503f102e79a7618cac3567ecea55607fced9b2d364b971f8"
     },
     "final_closure_ledger_schema": {
       "path": "research/sequence-5.5-closure-chamber/09-THREE_GOAL_CLOSURE_LEDGER_SCHEMA.json",
@@ -53,8 +59,8 @@
     },
     "K3": {
       "path": "research/sequence-5.5-closure-chamber/02-TREATMENT_PACKETS/packet-K3.md",
-      "bytes": 8138,
-      "sha256": "f26fe439ec60b520c9320fb0081d4fc7d319645c62d048cadca3e1474f70a6a2"
+      "bytes": 8216,
+      "sha256": "94f18282709611ac1afb1ca7825145bdf0085fce7b50ddcbbf022bbbe271e105"
     }
   },
   "pilot_fixtures": {
@@ -354,7 +360,7 @@
       "fixture_id": "PILOT-01",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": true,
-      "execution_unit_sha256": "a272f72c940232e6ca06786ccba4bbb05bd872b7abdfad2e236640597ce0d401"
+      "execution_unit_sha256": "b4c783e0ab21e85ecb12a5f317c736c3307b6990c101fe86e3ea459e54471d65"
     },
     {
       "unit_id": "UNIT_K3_PILOT-02",
@@ -362,7 +368,7 @@
       "fixture_id": "PILOT-02",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": true,
-      "execution_unit_sha256": "694937c234d6965e5e8a8aa1c2b4103a11b51215ecce0610c396aa2e5080cee1"
+      "execution_unit_sha256": "d747fc0535cb330ad95b0133ae1673ff635660a198f8663b3ff959eadaf3a5ce"
     },
     {
       "unit_id": "UNIT_K3_PILOT-03",
@@ -370,7 +376,7 @@
       "fixture_id": "PILOT-03",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": true,
-      "execution_unit_sha256": "7255240a3873dc9314f37d5f9827a6dbfd454680ac7ded9ffb69a1a831aaf6b5"
+      "execution_unit_sha256": "1ab2414e7df1a526431f8fa2dc7f2c7bb05d7c5049fcf55bb60a7e68f576276e"
     },
     {
       "unit_id": "UNIT_K3_PILOT-04",
@@ -378,7 +384,7 @@
       "fixture_id": "PILOT-04",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": true,
-      "execution_unit_sha256": "e0d22a666d96f63708b274051045ae482bceb99277988365c44085bfba73fab3"
+      "execution_unit_sha256": "a13dbeec8b6639ea9989c817fc37c735ddbfd6c9b80d34ad8683060820e18bf4"
     },
     {
       "unit_id": "UNIT_K3_PILOT-05",
@@ -386,7 +392,7 @@
       "fixture_id": "PILOT-05",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": true,
-      "execution_unit_sha256": "a38af613319a4ab904a9827248a0bb61b4778bc3e7be4e0f03473bd11d7bdf4c"
+      "execution_unit_sha256": "0496b51600b5bd0f5e3cca07e25954fc9dd41139201116cb983820ffdb01f0c0"
     }
   ],
   "main_execution_units": [
@@ -908,7 +914,7 @@
       "fixture_id": "BAT-01",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": false,
-      "execution_unit_sha256": "eff8f5f75b2ea5e1e69660222bf71776d2e8edd77fa2684761e4f08567807a50"
+      "execution_unit_sha256": "c156f63912468169eaa29bc1ece5eba553533d4a94a57670ba83646693b35a49"
     },
     {
       "unit_id": "UNIT_K3_BAT-02",
@@ -916,7 +922,7 @@
       "fixture_id": "BAT-02",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": false,
-      "execution_unit_sha256": "ad440c2b61efd7daa1851a0bae86acb4623ac01cca0b4cf1a366a0939abbd21e"
+      "execution_unit_sha256": "bacead2b5c3074e1011a4fe60ab1735db73696b8dbcfd1769106365235faa2a3"
     },
     {
       "unit_id": "UNIT_K3_BAT-03",
@@ -924,7 +930,7 @@
       "fixture_id": "BAT-03",
       "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
       "is_pilot": false,
-      "execution_unit_sha256": "734b38503293b95be7efca0de9c9c43e211315bb24e7b465c705fc691b18dc4c"
+      "execution_unit_sha256": "9e65c9a10f808b13067f348ce2bcfea4ba39c6774571256fec001d1d90c453d4"
     },
     {
       "unit_id": "UNIT_K3_BAT-04",
@@ -932,7 +938,7 @@
       "fixture_id": "BAT-04",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": false,
-      "execution_unit_sha256": "9539237f92964493b495a7d51907448fa0b55d4854116113099d451d62165c1b"
+      "execution_unit_sha256": "c1f4e732abff3e7bad9f730faeea5b1335f8262443aa6f5401a3cf3ae878098e"
     },
     {
       "unit_id": "UNIT_K3_BAT-05",
@@ -940,7 +946,7 @@
       "fixture_id": "BAT-05",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": false,
-      "execution_unit_sha256": "f32900e69fe5dab9c0c853f6674f121a315e3049d5bdfdb23387c8fcf1cc09ba"
+      "execution_unit_sha256": "6c6c3b23712fbf36f5c058d75ccca1785875fcb4c1a30bf9a62d41c9e08b346f"
     },
     {
       "unit_id": "UNIT_K3_BAT-06",
@@ -948,7 +954,7 @@
       "fixture_id": "BAT-06",
       "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
       "is_pilot": false,
-      "execution_unit_sha256": "8717b66c3b9ea1e73dbafb6343f91ca3edda3b7dca559a1dfcf46e721252c654"
+      "execution_unit_sha256": "b17eabfcef2d2eceb4be587be57bed288e16d71b24cca96579a6882509d8550c"
     },
     {
       "unit_id": "UNIT_K3_BAT-07",
@@ -956,7 +962,7 @@
       "fixture_id": "BAT-07",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": false,
-      "execution_unit_sha256": "c1b93306f84a977b59e80bf3365763b22e1da7f04b9cdd60e1cbddbb1412846b"
+      "execution_unit_sha256": "4410fe32a367c4cf212d58758cd4ce965935db6b55bacf1b06ae649cb7d059c7"
     },
     {
       "unit_id": "UNIT_K3_BAT-08",
@@ -964,7 +970,7 @@
       "fixture_id": "BAT-08",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": false,
-      "execution_unit_sha256": "24f35cbf5b7e15cf92946fe6aee6562538d502023868eb71e3d6c7d295eaaa80"
+      "execution_unit_sha256": "70c57544a5c0f34cf9081ea6984bdf8a422aec25bf3ac8caa64c0c5b655e2387"
     },
     {
       "unit_id": "UNIT_K3_BAT-09",
@@ -972,7 +978,7 @@
       "fixture_id": "BAT-09",
       "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
       "is_pilot": false,
-      "execution_unit_sha256": "459e71bd3da48d2f450a742d9db8cea9c20caa3b0880064d5b2b6fb74e373514"
+      "execution_unit_sha256": "d7cd5d619cb4344b79f36048377b95a23ee7ffabe4b5cde4aab9fbb8d2243dfc"
     },
     {
       "unit_id": "UNIT_K3_BAT-10",
@@ -980,7 +986,7 @@
       "fixture_id": "BAT-10",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": false,
-      "execution_unit_sha256": "64ce844658470f59963976a93bc8188408bf6c0231fb6971256989fcb642662b"
+      "execution_unit_sha256": "c0a1c527eaaae5bc9ba3899f2784a8158b5f9572ca045c324e80091f462db614"
     },
     {
       "unit_id": "UNIT_K3_BAT-11",
@@ -988,7 +994,7 @@
       "fixture_id": "BAT-11",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": false,
-      "execution_unit_sha256": "798eea6c179142c7cda107158f96553a8fe0cf7f9336fc436d7c4a03b4a8ad41"
+      "execution_unit_sha256": "b45ab688ad61ca51eaf326ce77e84a5f4d15454e65af9b8c9600a64bbf9fc26a"
     },
     {
       "unit_id": "UNIT_K3_BAT-12",
@@ -996,7 +1002,7 @@
       "fixture_id": "BAT-12",
       "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
       "is_pilot": false,
-      "execution_unit_sha256": "9260b302ccc7025ea35689d86793249c6f7e7c045c650f1f1931897d46154a93"
+      "execution_unit_sha256": "8be661faee918ce8df5901e9c4a2ba77dd2756322609e04476958d65a3eb914d"
     },
     {
       "unit_id": "UNIT_K3_BAT-13",
@@ -1004,7 +1010,7 @@
       "fixture_id": "BAT-13",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "23da86f901da2779f1d6233aad27aad807562cbcdfb381f794052bd13f60a81e"
+      "execution_unit_sha256": "71bb9d8cfe4f5745efccc097be7042cba48b5587123b309264b680b195b60438"
     },
     {
       "unit_id": "UNIT_K3_BAT-14",
@@ -1012,7 +1018,7 @@
       "fixture_id": "BAT-14",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "da19574fe5cff58b9fbccd732465c2c252ddbdfddb00a35080cc926f97d1a64e"
+      "execution_unit_sha256": "9275d66dfa6ac5d981b7289c6dd427b1e5a3b7268f3e9595fa0630f1621fb8fb"
     },
     {
       "unit_id": "UNIT_K3_BAT-15",
@@ -1020,7 +1026,7 @@
       "fixture_id": "BAT-15",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "b36b0b9c2b38bbfb4f6f3ac35ea4fa2442ca659581ed9d4c93c5b93d2011b8a5"
+      "execution_unit_sha256": "425b5118b83589636481f5f03fd5cdf24b0dae40fb1fb808b8c44a32711f4e95"
     },
     {
       "unit_id": "UNIT_K3_BAT-16",
@@ -1028,12 +1034,12 @@
       "fixture_id": "BAT-16",
       "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
       "is_pilot": false,
-      "execution_unit_sha256": "6c5d161f386fa8dae8c6db51ca3b40219c54e346332505b8e47aec0b95d026de"
+      "execution_unit_sha256": "462f0c0626b41988c9a08bbc9c9ce912132797dba690ca4ccffccbedb1373f07"
     }
   ],
   "commitments": {
     "main_hidden_answer_key_commitment_sha256": "cc26fca812fcd6bbdb6634cf310c13cd2410bc150416874c6ee158d7a0551700",
     "pilot_calibration_key_commitment_sha256": "d796fdabb35b8716acfd0b6d7da0e19cc8384f6c47c58068994e91ee3aa89c68"
   },
-  "sealed_execution_bundle_manifest_sha256": "2aa1035506880eef42c1f9b1c45d8810fe266ac9ccfe624a1da1aa36e946b7cc"
+  "sealed_execution_bundle_manifest_sha256": "96ca17d96acf5099c898459c525621cf42b7517e985c60f26b7b896ac5df2e6f"
 }

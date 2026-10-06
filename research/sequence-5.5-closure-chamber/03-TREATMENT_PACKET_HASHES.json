@@ -1,13 +1,13 @@
 {
-  "schema": "td613.sequence5.5.treatment-packet-hashes/v3.0",
-  "preregistration_status": "FREEZE_A_V3",
+  "schema": "td613.sequence5.5.treatment-packet-hashes/v4.0",
+  "preregistration_status": "FREEZE_A_V4",
   "dose_matching_rule": {
     "target_words": 1030,
     "max_allowed_word_deviation_percent": 5,
-    "actual_max_word_deviation_percent": 3.64,
+    "actual_max_word_deviation_percent": 1.94,
     "target_tokens": 1410,
     "max_allowed_token_deviation_percent": 5,
-    "actual_max_token_deviation_percent": 4.26,
+    "actual_max_token_deviation_percent": 4.48,
     "target_imperatives": 30,
     "max_allowed_imperative_deviation_percent": 10,
     "actual_max_imperative_deviation_percent": 0,
@@ -56,13 +56,13 @@
     },
     "K3": {
       "file": "packet-K3.md",
-      "words": 1016,
-      "bytes": 8138,
+      "words": 1033,
+      "bytes": 8216,
       "sections": 10,
       "examples": 2,
       "imperatives": 30,
-      "tokens": 1467,
-      "sha256": "f26fe439ec60b520c9320fb0081d4fc7d319645c62d048cadca3e1474f70a6a2"
+      "tokens": 1470,
+      "sha256": "94f18282709611ac1afb1ca7825145bdf0085fce7b50ddcbbf022bbbe271e105"
     }
   }
 }

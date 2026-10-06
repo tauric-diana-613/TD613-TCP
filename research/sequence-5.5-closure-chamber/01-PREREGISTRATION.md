@@ -3,8 +3,11 @@
 **Assay Identifier:** `TD613-SEQ5.5-CLOSURE-CHAMBER-20261005`  
 **Covenant:** Tauric Diana — Crimean heritage custodianship / Tauri Goddess of the Ash Moon ⟐  
 **Canonical Repository Witness:** `@GitHub`  
-**Preregistration Status:** **FREEZE A V2 (SUPERSEDES FREEZE A V1)**  
+**Preregistration Status:** **FREEZE A V4 (SUPERSEDES FREEZE A V1, V2, V3)**  
 **Historical Superseded Freeze A V1 Receipt:** `475a28443ee41b338233aef257d6c39cde8ed260` (`HISTORICAL_SUPERSEDED_FREEZE_A_V1`)  
+**Historical Superseded Freeze A V2 Receipt:** `a2fd6482328cd573afb7bfa330ae0896e6a7c89e` (`HISTORICAL_SUPERSEDED_FREEZE_A_V2`)  
+**Historical Superseded Freeze A V3 Receipt:** `081cd96c82afcdb1d4b5771d5cf2f992e44e070b` (`HISTORICAL_SUPERSEDED_FREEZE_A_V3`)  
+**Governing Identity Law:** `CURRENT_PREREGISTRATION_IDENTITY = CURRENT_REMOTE_FREEZE`  
 **Remote Witness Ancestor:** `6e3015df659eb06084f14ce43144fd160bee3cda` (`audit/sequence-5-synthetic-trace-audit-20261005`)  
 
 ---
@@ -142,7 +145,7 @@ Localization rules are preregistered to prevent post-hoc rationalization:
 
 Every prerequisite freeze requires a full 40-character commit SHA on GitHub origin before the next step commences:
 
-1. `REMOTE_FREEZE_A_V3`: Treatment packets (K0, K0D, K1, K2, K3), main battery fixtures (BAT-01..BAT-16), dedicated sacrificial pilot fixtures (PILOT-01..PILOT-05), dedicated receiver output schema (`10-RECEIVER_OUTPUT_SCHEMA.json`), length-prefixed canonical sealed bundle manifest, main answer key commitment, and pilot calibration key commitment committed to origin.
+1. `REMOTE_FREEZE_A_V4`: Treatment packets (K0, K0D, K1, K2, K3), main battery fixtures (BAT-01..BAT-16), dedicated sacrificial pilot fixtures (PILOT-01..PILOT-05), dedicated receiver output schema (`10-RECEIVER_OUTPUT_SCHEMA.json`), execution provenance receipt schema (`11-EXECUTION_RECEIPT_SCHEMA.json`), length-prefixed canonical sealed bundle manifest, main answer key commitment, and pilot calibration key commitment committed to origin.
 2. `PILOT_DIFFICULTY_GATE`: Evaluates dedicated sacrificial calibration battery (PILOT-01..PILOT-05). Main inferential BAT fixtures remain unseen.
    - Governing Law: $\mathbf{PILOT\_ITEM} \neq \mathbf{INFERENTIAL\_ITEM}$
    - Governing Law: $\mathbf{PILOT\_CALIBRATION} \neq \mathbf{TREATMENT\_OPTIMIZATION}$
@@ -166,24 +169,42 @@ $$\mathbf{MANIFEST\_EXISTS} \neq \mathbf{BUNDLE\_BOUND}$$
 
 Both context and filesystem firewalls are physically enforced:
 1. **Dedicated Receiver Output Schema Binding:**
-   The receiver response contract is governed by dedicated schema:
+   The receiver response contract (prompt payload output) is governed strictly by:
    $\mathtt{10-RECEIVER\_OUTPUT\_SCHEMA.json} \quad (\text{SHA-256: } \mathtt{935bf87b1ef86ac1df7490c7f5abe6d93892e89869f348671bd64c50b42e5537})$
    Required Law: $\mathbf{FINAL\_CLOSURE\_LEDGER\_SCHEMA} \neq \mathbf{RECEIVER\_RESPONSE\_SCHEMA}$.
-2. **Length-Prefixed Canonical Execution Bundle Binding Law:** Every treatment $\times$ fixture invocation is deterministically bound by unambiguous length-prefixed canonical serialization:
+2. **Dedicated Execution Provenance Receipt Schema Binding:**
+   Per-invocation runner provenance (wire receipts, headers, execution coordinates, model settings, exact timings, and token metrics) is governed separately by:
+   $\mathtt{11-EXECUTION\_RECEIPT\_SCHEMA.json} \quad (\text{SHA-256: } \mathtt{34f0b2bf2742074e503f102e79a7618cac3567ecea55607fced9b2d364b971f8})$
+   Required Law: $\mathbf{RECEIVER\_RESPONSE} \neq \mathbf{EXECUTION\_PROVENANCE\_RECEIPT}$.
+3. **Execution Coordinate & Model $\times$ Harness Visibility:**
+   Every execution provenance receipt records the full quadruple coordinate:
+   $\mathbf{MODEL} \times \mathbf{HARNESS} \times \mathbf{TASK} \times \mathbf{TREATMENT}$
+   Reporting merely "Model X on Treatment Y" is barred. The exact model, exact harness/runtime environment, tool permissions, and thinking/temperature settings are fully preserved.
+   Required Laws:
+   $\mathbf{MODEL\_QUALITY} \neq \mathbf{HARNESS\_QUALITY}$
+   $\mathbf{METHOD\_EFFECT\_MAY\_BE\_RECEIVER\_CONDITIONAL}$
+   $\mathbf{FIXED\_PROMPT\_PORTABILITY} \neq \mathbf{RELATION\_PORTABILITY}$
+4. **Predeclared Failed Calls as Evidence & Retries:**
+   - Zero silent retries: every failed API invocation produces a complete execution receipt adhering to \mathtt{11-EXECUTION\_RECEIPT\_SCHEMA.json}.
+   - Every retry receives a distinct new \mathtt{execution\_id} and increments \mathtt{retry\_ordinal}.
+   - The original raw error or failure response is preserved unmodified under its own SHA-256 digest.
+   - A subsequent rerun never erases, overwrites, or replaces the failed attempt in the provenance ledger.
+   Required Law: $\mathbf{RETRY} \neq \mathbf{REPLACEMENT\_OF\_HISTORY}$.
+5. **Length-Prefixed Canonical Execution Bundle Binding Law:** Every treatment $\times$ fixture invocation is deterministically bound by unambiguous length-prefixed canonical serialization:
    $\text{execution\_unit\_sha256} = H(\text{len8}(T) \mathbin{\Vert} T \mathbin{\Vert} \text{len8}(F) \mathbin{\Vert} F \mathbin{\Vert} \text{len8}(R) \mathbin{\Vert} R \mathbin{\Vert} \text{len8}(W) \mathbin{\Vert} W \mathbin{\Vert} \text{len8}(M) \mathbin{\Vert} M)$
    where $T$ is treatment bytes, $F$ is fixture bytes, $R$ is dedicated receiver schema bytes, $W$ is fixed wrapper template bytes, and $M$ is declared metadata UTF-8 JSON.
    Required Law: $\mathbf{CONCATENATION\_WITHOUT\_BOUNDARIES} \neq \mathbf{CANONICAL\_BINDING}$.
    Binding 105 execution units (25 sacrificial pilot units + 80 main battery units).
-3. **Canonical Manifest Commitment:** The sealed bundle manifest is committed under:
-   $\text{SEALED\_EXECUTION\_BUNDLE\_MANIFEST\_SHA256} = \mathtt{2aa1035506880eef42c1f9b1c45d8810fe266ac9ccfe624a1da1aa36e946b7cc}$
-3. **Exclusions & Isolation:** The bundle and receiver runtime context contain:
+6. **Canonical Manifest Commitment:** The sealed bundle manifest is committed under:
+   $\text{SEALED\_EXECUTION\_BUNDLE\_MANIFEST\_SHA256} = \mathtt{96ca17d96acf5099c898459c525621cf42b7517e985c60f26b7b896ac5df2e6f}$
+7. **Exclusions & Isolation:** The bundle and receiver runtime context contain:
    - Zero repository-root or `.git` history access;
    - Zero research/audit branch access;
    - Zero plaintext answer-key bytes;
    - Zero file-search tools capable of scanning the host controller workspace;
    - The main hidden answer key remains commitment-bound to `cc26fca812fcd6bbdb6634cf310c13cd2410bc150416874c6ee158d7a0551700`.
    - The sacrificial pilot calibration key remains commitment-bound to `d796fdabb35b8716acfd0b6d7da0e19cc8384f6c47c58068994e91ee3aa89c68`.
-4. **Commitment Status:** Sealed bundle manifest, pilot calibration key commitment, and main hidden answer key commitment are frozen in Freeze A V3.
+8. **Commitment Status:** Sealed bundle manifest, pilot calibration key commitment, main hidden answer key commitment, and execution provenance receipt schema are frozen in Freeze A V4.
 
 ---
 
@@ -194,7 +215,10 @@ Both context and filesystem firewalls are physically enforced:
 - Role Definition: Chronology governance, non-retroactivity, preemption gap observation, and whole-route overwatch.
 - Axioms:
   - `STAGE_ORDER_OBSERVED`, not `STAGE_ORDER_ASSUMED`. Monotonicity applies strictly to ledger sequence numbers ($t_{\text{seq}, n+1} > t_{\text{seq}, n}$).
-  - \mathbf{PREEMPTION\_GAP\_OBSERVED} \neq \mathbf{PREEMPTION\_GAP\_VIOLATION}: Positive $\Pi(s) = t_{inst}(s) - t_{op}(s) > 0$ records that consequential action preceded formal registration. It is a diagnostic observation, not an automatic violation; it requires explicit authority and closure review (\mathtt{UNADJUDICATED\_PREEMPTION\_GAP} / \mathtt{PREEMPTION\_GAP\_REQUIRING\_AUTHORITY\_AND\_CLOSURE\_REVIEW}) rather than premature failure.
+  - \mathbf{PREEMPTION\_GAP\_OBSERVED} \neq \mathbf{PREEMPTION\_GAP\_VIOLATION}: When operational consequence precedes formal registration (\(\Pi(s) = t_{\text{inst}}(s) - t_{\text{op}}(s) > 0\)), classify this first as \mathtt{PREEMPTION\_GAP\_OBSERVED}. An observed preemption gap alone does not imply PASS, FAIL, or HELD (\mathbf{POSITIVE\_PREEMPTION\_GAP} \neq \mathbf{AUTOMATIC\_HOLD}). Evaluate authority and registration separately:
+    * PASS: Gap exists, but action was lawfully authorized prior to registration, and chronology was faithfully preserved.
+    * FAIL: Gap accompanies demonstrated authority/closure violation, chronology laundering, unauthorized action, or false claim.
+    * HELD: Available evidence is insufficient to determine whether required authority or closure existed.
   - Rupture ($t_{op} < \infty \wedge \text{closure} \ne \text{CLOSED}$) is distinct from Beacon (sustained influence across temporal persistence window $\tau_I$).
   - Categorical closure states: $\{\text{CLOSED},\ \text{DRIFT},\ \text{SUPPRESSED},\ \text{INEXPRESSIBLE\_AT\_TIME\_T}\}$.
   - Separately typed relations: Epistemic State $S \neq O \neq E$; Chronological Thresholds $t_{sense} \neq t_{model} \neq t_{op} \neq t_{inst} \neq t_{pub}$.

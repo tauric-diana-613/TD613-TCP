@@ -1,0 +1,324 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://td613.com/schemas/sequence-5-5-execution-receipt.schema.json",
+  "title": "TD613 Sequence 5.5 Execution Provenance Receipt Schema",
+  "description": "Per-invocation execution provenance receipt schema emitted by runner for Sequence 5.5 recording cryptographic, temporal, environment, and response provenance.",
+  "type": "object",
+  "required": [
+    "schema",
+    "execution_id",
+    "execution_unit_sha256",
+    "coordinate",
+    "arm",
+    "fixture_id",
+    "cluster",
+    "is_pilot",
+    "receiver_identity",
+    "temporal_provenance",
+    "input_provenance",
+    "output_provenance",
+    "provider_receipt",
+    "usage_realized_dose"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "td613.sequence5.5.execution-receipt/v1.0"
+    },
+    "execution_id": {
+      "type": "string",
+      "description": "Unique UUID or structured identifier for this invocation instance.",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "execution_unit_sha256": {
+      "type": "string",
+      "description": "SHA-256 digest of the canonical execution unit from sealed bundle manifest.",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "coordinate": {
+      "type": "string",
+      "description": "The full MODEL × HARNESS × TASK × TREATMENT execution coordinate."
+    },
+    "arm": {
+      "type": "string",
+      "description": "Assigned experimental treatment arm.",
+      "enum": [
+        "K0",
+        "K0D",
+        "K1",
+        "K2",
+        "K3"
+      ]
+    },
+    "fixture_id": {
+      "type": "string",
+      "description": "Identifier of the evaluation fixture (PILOT-01..05 or BAT-01..16)."
+    },
+    "cluster": {
+      "type": "string",
+      "description": "Fixture construct cluster family."
+    },
+    "is_pilot": {
+      "type": "boolean",
+      "description": "Whether this invocation belongs to sacrificial pilot calibration battery."
+    },
+    "receiver_identity": {
+      "type": "object",
+      "description": "Receiver model and harness identity specifications.",
+      "required": [
+        "provider",
+        "exact_model_id",
+        "runtime_or_harness",
+        "runtime_version",
+        "endpoint_or_execution_class",
+        "model_settings"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "provider": {
+          "type": "string"
+        },
+        "exact_model_id": {
+          "type": "string"
+        },
+        "runtime_or_harness": {
+          "type": "string"
+        },
+        "runtime_version": {
+          "type": "string"
+        },
+        "endpoint_or_execution_class": {
+          "type": "string"
+        },
+        "model_settings": {
+          "type": "object",
+          "required": [
+            "temperature",
+            "seed",
+            "reasoning_or_thinking_setting",
+            "max_output_tokens",
+            "tool_permissions"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "temperature": {
+              "type": "number"
+            },
+            "seed": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "reasoning_or_thinking_setting": {
+              "type": [
+                "string",
+                "boolean",
+                "integer",
+                "null"
+              ]
+            },
+            "max_output_tokens": {
+              "type": "integer"
+            },
+            "tool_permissions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "temporal_provenance": {
+      "type": "object",
+      "description": "Execution timing measurements.",
+      "required": [
+        "request_started_at",
+        "response_completed_at",
+        "duration_ms"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "request_started_at": {
+          "type": "string"
+        },
+        "response_completed_at": {
+          "type": "string"
+        },
+        "duration_ms": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "input_provenance": {
+      "type": "object",
+      "description": "Cryptographic digests of all inputs constituting the execution unit.",
+      "required": [
+        "treatment_sha256",
+        "fixture_sha256",
+        "receiver_output_schema_sha256",
+        "fixed_wrapper_sha256",
+        "exact_input_sha256"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "treatment_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "fixture_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "receiver_output_schema_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "fixed_wrapper_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "exact_input_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "output_provenance": {
+      "type": "object",
+      "description": "Preservation and integrity records of model output.",
+      "required": [
+        "raw_response_sha256",
+        "raw_response_path",
+        "raw_response_preserved_unmodified",
+        "parsed_response_sha256",
+        "parsing_validation_status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "raw_response_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "raw_response_path": {
+          "type": "string"
+        },
+        "raw_response_preserved_unmodified": {
+          "type": "boolean",
+          "const": true
+        },
+        "parsed_response_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "parsing_validation_status": {
+          "type": "string",
+          "enum": [
+            "VALID",
+            "INVALID_SCHEMA",
+            "INVALID_JSON",
+            "PARSING_SKIPPED_ON_FAILURE"
+          ]
+        }
+      }
+    },
+    "provider_receipt": {
+      "type": "object",
+      "description": "Provider wire and task headers, status, and retry records.",
+      "required": [
+        "provider_request_id",
+        "controller_task_id",
+        "status_code",
+        "retry_ordinal",
+        "retry_reason"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "provider_request_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "controller_task_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status_code": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "retry_ordinal": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "retry_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "usage_realized_dose": {
+      "type": "object",
+      "description": "Provider-reported token usage and realized computational dose.",
+      "required": [
+        "reported_input_tokens",
+        "reported_output_tokens",
+        "reported_total_tokens"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "reported_input_tokens": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "string",
+              "const": "TOKEN_USAGE_UNAVAILABLE"
+            }
+          ]
+        },
+        "reported_output_tokens": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "string",
+              "const": "TOKEN_USAGE_UNAVAILABLE"
+            }
+          ]
+        },
+        "reported_total_tokens": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "string",
+              "const": "TOKEN_USAGE_UNAVAILABLE"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
