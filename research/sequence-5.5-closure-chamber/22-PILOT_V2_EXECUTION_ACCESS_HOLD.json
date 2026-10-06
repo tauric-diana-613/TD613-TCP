@@ -1,0 +1,47 @@
+{
+  "schema": "td613.sequence5.5.pilot-v2-execution-access-hold/v1.0",
+  "status": "HELD_EXECUTION_ACCESS_ONLY",
+  "episode_id": "EPISODE_SACRIFICIAL_PILOT_V2",
+  "scientific_status": "NOT_EXECUTED",
+  "sequence": "5.5",
+  "sequence_6_staging": "UNTOUCHED",
+  "github": {
+    "branch": "research/sequence-5.5-amari-closure-20261006",
+    "head_at_preview_build": "4271d20378d66825fe7cdd5d243e358970288219",
+    "parent_handoff": "2fe3b2835f080620ce40e820f1ddef7c8775d4f4"
+  },
+  "vercel": {
+    "project_id": "prj_Zb6g9tqAr5iJSAFWGU4u4lof6oF7",
+    "canonical_preview_deployment_id": "dpl_69tPF3oZpsfcSmceqkS1GYZZmQMN",
+    "canonical_preview_state": "READY",
+    "canonical_preview_target": "preview",
+    "canonical_preview_commit_sha": "4271d20378d66825fe7cdd5d243e358970288219",
+    "duplicate_manual_deployment_id": "dpl_AafmwoCDP5dxvz8XkSL1GNBMYJWc",
+    "duplicate_manual_deployment_state": "CANCELED",
+    "protection_access_result": "HELD",
+    "protection_access_detail": "Current Vercel connector can inspect project/deployment metadata but cannot obtain a bypass/access session for the protected preview URL.",
+    "sensitive_env_result": "HELD",
+    "sensitive_env_detail": "GEMINI_API_KEY presence is observable for preview/production, but current connector scope does not decrypt its sensitive value for sandbox transfer."
+  },
+  "receiver_binding": {
+    "required_provider": "google",
+    "required_model": "gemini-3.8-flash",
+    "required_credential_fingerprint_sha256": "51efc3d87cdffc4fb2869519ff4fa12b10ce179ba79d3976f6094cf741681c39",
+    "substitute_receivers_forbidden": true,
+    "neon_ai_gateway_substitution": "NOT_USED",
+    "reason": "Changing provider/harness would invalidate the preregistered receiver episode."
+  },
+  "execution_counts": {
+    "pilot_v2_units_executed": 0,
+    "pilot_v2_units_authorized": 25,
+    "bat_units_executed": 0
+  },
+  "laws": [
+    "EXECUTION_ACCESS_HOLD != SCIENTIFIC_FAILURE",
+    "READY_PREVIEW != ACCESSIBLE_PREVIEW",
+    "SECRET_PRESENCE != SECRET_TRANSFER_AUTHORITY",
+    "SUBSTITUTE_RECEIVER != AUTHORIZED_RECEIVER",
+    "SEQUENCE_5.5_CLOSURE != SEQUENCE_6_STAGING"
+  ],
+  "next_admissible_action": "Use an execution context that can lawfully access the ready protected preview OR lawfully supply the already-bound GEMINI_API_KEY credential to the fresh 25-unit Pilot V2 harness. Do not reveal pilot key, score, or execute BAT before remote raw freeze."
+}
