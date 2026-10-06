@@ -18,13 +18,17 @@
     "input_provenance",
     "output_provenance",
     "provider_receipt",
-    "usage_realized_dose"
+    "usage_realized_dose",
+    "credential_and_billing_provenance"
   ],
   "additionalProperties": false,
   "properties": {
     "schema": {
       "type": "string",
-      "const": "td613.sequence5.5.execution-receipt/v1.0"
+      "enum": [
+        "td613.sequence5.5.execution-receipt/v1.0",
+        "td613.sequence5.5.execution-receipt/v1.1"
+      ]
     },
     "execution_id": {
       "type": "string",
@@ -317,6 +321,60 @@
               "const": "TOKEN_USAGE_UNAVAILABLE"
             }
           ]
+        }
+      }
+    },
+    "credential_and_billing_provenance": {
+      "type": "object",
+      "description": "Safe, non-secret provenance records verifying credential source, project binding, and billing tier.",
+      "required": [
+        "credential_source_type",
+        "credential_source_name",
+        "credential_fingerprint_sha256",
+        "provider_project_id",
+        "billing_tier_at_execution",
+        "billing_context_verified",
+        "billing_context_verification_method"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "credential_source_type": {
+          "type": "string",
+          "enum": [
+            "ENVIRONMENT_VARIABLE",
+            "DOTENV_FILE",
+            "CONFIG_FILE",
+            "WORKLOAD_IDENTITY",
+            "OTHER"
+          ]
+        },
+        "credential_source_name": {
+          "type": "string",
+          "description": "Safe name of credential source or environment variable (e.g. GEMINI_API_KEY)."
+        },
+        "credential_fingerprint_sha256": {
+          "type": "string",
+          "description": "One-way SHA-256 hex digest of the raw credential bytes.",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "provider_project_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Provider-associated project identifier or GCP project ID where determinable."
+        },
+        "billing_tier_at_execution": {
+          "type": "string",
+          "description": "Classified provider billing tier at execution (e.g. FREE_TIER, TIER_1, TIER_2, TIER_3, UNVERIFIED)."
+        },
+        "billing_context_verified": {
+          "type": "boolean",
+          "description": "Whether the intended paid/production billing context was verified prior to execution."
+        },
+        "billing_context_verification_method": {
+          "type": "string",
+          "description": "Method by which billing context was evaluated (e.g. PREFLIGHT_API_CALL, QUOTA_ERROR_INSPECTION, MANUAL_DECLARATION)."
         }
       }
     }
