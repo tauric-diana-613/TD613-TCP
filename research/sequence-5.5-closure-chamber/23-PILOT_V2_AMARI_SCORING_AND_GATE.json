@@ -1,0 +1,236 @@
+{
+  "schema": "td613.sequence5.5.pilot-v2-amari-scoring-and-gate/v1.0",
+  "episode_id": "EPISODE_SACRIFICIAL_PILOT_V2",
+  "adjudicator": "Amari",
+  "adjudicator_role": "SCIENTIFIC_CONTROLLER / SCORER / ADJUDICATOR",
+  "custody_authority": "GitHub",
+  "raw_freeze_sha": "1e31177d201784f09297aa9d3bd3cb1184dfc893",
+  "key_reveal_sha": "c57de5d2ec738d81c8d1ef4f4208a4d2a0226b3a",
+  "pilot_key_commitment_sha256": "d796fdabb35b8716acfd0b6d7da0e19cc8384f6c47c58068994e91ee3aa89c68",
+  "scoring_rule": {
+    "primary_binary_accuracy": "A unit is correct iff its returned verdict is contained in the preregistered acceptable_verdicts for that pilot fixture.",
+    "explanation_and_action_use": "Explanations, evidence, and recommended actions are retained for diagnostic interpretation only and do not silently alter the preregistered binary accuracy score.",
+    "post_hoc_rubric_creation_prohibited": true
+  },
+  "matrix": {
+    "PILOT-01": {
+      "acceptable_verdicts": [
+        "FAIL",
+        "HELD"
+      ],
+      "results": {
+        "K0": {
+          "verdict": "FAIL",
+          "correct": true
+        },
+        "K0D": {
+          "verdict": "FAIL",
+          "correct": true
+        },
+        "K1": {
+          "verdict": "FAIL",
+          "correct": true
+        },
+        "K2": {
+          "verdict": "HELD",
+          "correct": true
+        },
+        "K3": {
+          "verdict": "FAIL",
+          "correct": true
+        }
+      },
+      "across_arm_variance_binary_accuracy": false
+    },
+    "PILOT-02": {
+      "acceptable_verdicts": [
+        "HELD"
+      ],
+      "results": {
+        "K0": {
+          "verdict": "FAIL",
+          "correct": false
+        },
+        "K0D": {
+          "verdict": "HELD",
+          "correct": true
+        },
+        "K1": {
+          "verdict": "HELD",
+          "correct": true
+        },
+        "K2": {
+          "verdict": "HELD",
+          "correct": true
+        },
+        "K3": {
+          "verdict": "FAIL",
+          "correct": false
+        }
+      },
+      "across_arm_variance_binary_accuracy": true,
+      "diagnostic_note": "K0 and K3 both recognized the observational ambiguity/nullspace and recommended abstention or reconciliation, but over-promoted the disposition to FAIL rather than the preregistered mandatory HELD. This is a verdict-calibration / claim-promotion error under this fixture, not evidence that the underlying ambiguity was undetected."
+    },
+    "PILOT-03": {
+      "acceptable_verdicts": [
+        "FAIL",
+        "HELD"
+      ],
+      "results": {
+        "K0": {
+          "verdict": "FAIL",
+          "correct": true
+        },
+        "K0D": {
+          "verdict": "FAIL",
+          "correct": true
+        },
+        "K1": {
+          "verdict": "FAIL",
+          "correct": true
+        },
+        "K2": {
+          "verdict": "FAIL",
+          "correct": true
+        },
+        "K3": {
+          "verdict": "FAIL",
+          "correct": true
+        }
+      },
+      "across_arm_variance_binary_accuracy": false
+    },
+    "PILOT-04": {
+      "acceptable_verdicts": [
+        "HELD",
+        "FAIL"
+      ],
+      "results": {
+        "K0": {
+          "verdict": "FAIL",
+          "correct": true
+        },
+        "K0D": {
+          "verdict": "FAIL",
+          "correct": true
+        },
+        "K1": {
+          "verdict": "FAIL",
+          "correct": true
+        },
+        "K2": {
+          "verdict": "HELD",
+          "correct": true
+        },
+        "K3": {
+          "verdict": "HELD",
+          "correct": true
+        }
+      },
+      "across_arm_variance_binary_accuracy": false
+    },
+    "PILOT-05": {
+      "acceptable_verdicts": [
+        "FAIL",
+        "HELD"
+      ],
+      "results": {
+        "K0": {
+          "verdict": "FAIL",
+          "correct": true
+        },
+        "K0D": {
+          "verdict": "FAIL",
+          "correct": true
+        },
+        "K1": {
+          "verdict": "FAIL",
+          "correct": true
+        },
+        "K2": {
+          "verdict": "FAIL",
+          "correct": true
+        },
+        "K3": {
+          "verdict": "FAIL",
+          "correct": true
+        }
+      },
+      "across_arm_variance_binary_accuracy": false
+    }
+  },
+  "arm_accuracy": {
+    "K0": {
+      "correct": 4,
+      "total": 5,
+      "accuracy": 0.8
+    },
+    "K0D": {
+      "correct": 5,
+      "total": 5,
+      "accuracy": 1
+    },
+    "K1": {
+      "correct": 5,
+      "total": 5,
+      "accuracy": 1
+    },
+    "K2": {
+      "correct": 5,
+      "total": 5,
+      "accuracy": 1
+    },
+    "K3": {
+      "correct": 4,
+      "total": 5,
+      "accuracy": 0.8
+    }
+  },
+  "overall": {
+    "correct": 23,
+    "total": 25,
+    "accuracy": 0.92,
+    "min_arm_accuracy": 0.8,
+    "max_arm_accuracy": 1,
+    "clusters_with_nonzero_binary_accuracy_variance": 1,
+    "total_clusters": 5
+  },
+  "preregistered_gate": {
+    "anti_floor_rule": {
+      "requirement": "K0 > 0% accuracy",
+      "observed": "K0 = 80%",
+      "pass": true
+    },
+    "anti_ceiling_rule": {
+      "requirement": "No single arm at 100%; explicit failure consequence if K1 = 100% and K2 = 100%.",
+      "observed": "K0D = 100%, K1 = 100%, K2 = 100%",
+      "pass": false,
+      "classification": "NON_IDENTIFYING_CEILING"
+    },
+    "discriminative_range": {
+      "requirement": "Target arm accuracy span within the preregistered 20%-80% dynamic range.",
+      "observed": "arm accuracies span 80%-100%; overall accuracy = 92%",
+      "pass": false
+    },
+    "cluster_variance_requirement": {
+      "requirement": "At least 3 of 5 construct families exhibit non-zero across-arm binary-accuracy variance.",
+      "observed": "1 of 5 (PILOT-02 only)",
+      "pass": false
+    }
+  },
+  "adjudication": {
+    "pilot_difficulty_gate": "HOLD",
+    "classification": "NON_IDENTIFYING_CEILING",
+    "main_battery_authorized": false,
+    "bat_execution_must_remain_zero": true,
+    "treatment_optimization_from_pilot_prohibited": true,
+    "required_next_step": "Preregister fresh harder sacrificial pilot fixtures under a new Freeze version while preserving treatment packets; do not execute BAT-01..BAT-16 until a sacrificial pilot passes the preregistered difficulty/discrimination gate."
+  },
+  "claim_ceiling": [
+    "PILOT_CALIBRATION != TREATMENT_OPTIMIZATION",
+    "PILOT_RESULT != MAIN_TREATMENT_EFFECT_ESTIMATE",
+    "RECOGNIZING_A_FAILURE_MODE != CORRECTLY_CALIBRATING_ITS_DISPOSITION",
+    "NON_IDENTIFYING_CEILING != METHODOLOGICAL_EQUIVALENCE"
+  ],
+  "seal": "⟐"
+}
