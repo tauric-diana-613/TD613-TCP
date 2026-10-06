@@ -1,11 +1,27 @@
 {
-  "schema": "td613.sequence5.5.pilot-v4-research-manifest/v1.1",
+  "schema": "td613.sequence5.5.pilot-v4-1r-research-manifest/v1.0",
+  "episode_id": "EPISODE_SACRIFICIAL_PILOT_V4_1R",
   "status": "SACRIFICIAL_CALIBRATION_RESEARCH_METADATA_ONLY",
   "governing_law": "RESEARCH_METADATA_ISOLATED_FROM_RECEIVER_STIMULUS",
-  "pilot_version": "PILOT_V4_1_SURGICAL_REPAIR",
+  "pilot_version": "PILOT_V4_1R_RECOVERY",
   "total_pairs": 5,
   "total_fixtures": 10,
+  "public_target_matrix": {
+    "PAIR_01": "PASS -> HELD",
+    "PAIR_02": "PASS -> HELD",
+    "PAIR_03": "PASS -> FAIL",
+    "PAIR_04": "PASS -> HELD",
+    "PAIR_05": "PASS -> FAIL"
+  },
   "pilot_calibration_key_commitment_sha256": "cd971de705bdca06911b3a2ed683d08057db01809c49783ade6db162a7ee1ed1",
+  "offline_key_reference": "04-PILOT_V4_CALIBRATION_KEY.json",
+  "treatment_hashes": {
+    "K0": "a6bea5f26d57051aee881084de473ebe0775063aebbb8d20b0b0994b83c71316",
+    "K0D": "aabe26fdb8cc496e5d87200f204802d73c2e34c25c22ed4886701303d2edf59a",
+    "K1": "c84bdece59ecb9f665011fcec0ce8beca2d7f7a23b4dc3847395cf7ba878e8ff",
+    "K2": "caa6e184d3cdba09351e05b3547211dee3b686f503762839d7eb612f2e69875b",
+    "K3": "94f18282709611ac1afb1ca7825145bdf0085fce7b50ddcbbf022bbbe271e105"
+  },
   "scoring_principles": {
     "core_invariant": "SURFACE_A ≈ SURFACE_B but RELATION_A != RELATION_B therefore CORRECT_VERDICT_A != CORRECT_VERDICT_B",
     "primary_outcome": "PAIRWISE_RELATIONAL_SUCCESS",
