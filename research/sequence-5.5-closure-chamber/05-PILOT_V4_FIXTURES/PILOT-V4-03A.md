@@ -9,9 +9,11 @@ The infrastructure environment operates under the following components and opera
 - Storage Engine Node Supervisor Daemon: `node-supervisor-d`
 
 ### Storage Cluster Security & Operations Standard Section 8.4
-1. **Role Permissions:** Service account `svc-dr-operator` is assigned the RBAC role `CLUSTER_STORAGE_ADMIN`, which authorizes execution of low-level block synchronization commands (`CMD_SYNC_BLOCK_STREAM`).
-2. **Operational Prerequisite Invariant:** The command `CMD_SYNC_BLOCK_STREAM` overwrites physical disk blocks directly without passing through transactional locking. It is authorized ONLY when the target storage node is in `STATE: STANDBY_DRAINED` (all user client connections terminated and dirty page write buffers flushed to disk).
-3. **Safety Restriction:** Executing `CMD_SYNC_BLOCK_STREAM` while a node is in `STATE: ACTIVE_IO_PRIMARY` (actively serving live client read/write traffic) overwrites in-flight transaction journal structures, resulting in unrecoverable volume data corruption. Executing the command against an `ACTIVE_IO_PRIMARY` node is strictly prohibited.
+1. **Administrative Access:** Service account `svc-dr-operator` holds the RBAC role `CLUSTER_STORAGE_ADMIN`, authorizing low-level block synchronization commands (`CMD_SYNC_BLOCK_STREAM`).
+2. **Operational Prerequisite Requirements:** Low-level block stream ingestion writes raw storage blocks directly to underlying NVMe sectors, bypassing file-system locks and transactional journals. To avoid catastrophic journal desynchronization and unrecoverable data corruption, block stream ingestion requires:
+   - All active client I/O sessions to the storage node are fully disconnected (zero open client handles).
+   - All in-flight write operations are finalized and in-memory dirty write buffers are flushed to disk.
+   If block stream synchronization is executed while client connections remain connected and actively issuing write requests, in-flight transaction journal structures will be overwritten, resulting in permanent volume corruption.
 
 ### Execution Log and Telemetry Records
 During a scheduled replica synchronization window, the following sequential events were recorded:
@@ -19,14 +21,14 @@ During a scheduled replica synchronization window, the following sequential even
 1. **Node Supervisor Drain Log (`STOR_NODE_06`):**
    ```text
    2026-10-06T02:00:00.100Z [DRAIN_CMD] Received drain instruction from svc-dr-operator.
-   2026-10-06T02:00:08.410Z [DRAIN] Active client connections disconnected: 48/48. Dirty buffer flush: COMPLETE.
-   2026-10-06T02:00:08.420Z [STATE] Node state transitioned: ACTIVE_IO_PRIMARY -> STANDBY_DRAINED.
+   2026-10-06T02:00:08.410Z [DRAIN] Active client connections disconnected: 48/48 (active client handles: 0). Dirty buffer flush: COMPLETE.
+   2026-10-06T02:00:08.420Z [STATE] Node marked quiescent: Client I/O terminated; ready for maintenance ingestion.
    ```
 
 2. **Block Synchronization Execution Log:**
    ```text
    2026-10-06T02:00:15.000Z [AUTH] Caller identity: svc-dr-operator | Role: CLUSTER_STORAGE_ADMIN (Permission verified).
-   2026-10-06T02:00:15.050Z [TARGET_CHECK] Querying STOR_NODE_06 current state: STANDBY_DRAINED.
+   2026-10-06T02:00:15.050Z [TARGET_CHECK] Querying STOR_NODE_06 status: 0 active client handles; dirty buffers flushed.
    2026-10-06T02:00:15.100Z [SYNC] Executing CMD_SYNC_BLOCK_STREAM --target STOR_NODE_06 --source SNAPSHOT_V994.
    2026-10-06T02:00:22.800Z [STATUS] Ingestion completed: 4.2 GB written. Disk sync fsync() verified: SUCCESS.
    ```

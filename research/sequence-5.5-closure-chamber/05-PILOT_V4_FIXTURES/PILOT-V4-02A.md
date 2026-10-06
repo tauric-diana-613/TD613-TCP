@@ -8,6 +8,13 @@ The diagnostic instrumentation includes:
 - An acoustic vibration accelerometer (`ACC-102`) mounted on the turbopump bearing housing.
 - An orthogonal mass-spectrometry helium tracer sniffer (`HE-SNIFF-01`) monitoring the secondary inter-seal cavity purge exhaust. (The inter-seal cavity is pressurized with helium buffer gas at 12 bar; dynamic seal ring degradation allows helium to escape into the purge line).
 
+### Physical Mechanisms & Instrumentation Response
+During cryogenic propellant chilldown, two known physical mechanisms influence manifold telemetry:
+- **Thermal Duct Contraction:** Rapid chilling of the flexible duct bellows as LOX reaches -183°C causes transient contraction, producing a momentary negative pressure transient (-1.0 to -1.3 bar) and structural acoustic ringing centered near the duct resonant frequency (40-48 Hz). This is a benign thermal settlement.
+- **Dynamic Face Seal Fracture:** Micro-fracture of the rotating carbon face seal under thermal shock causes LOX venting into the seal cavity, generating a sudden depressurization (-1.0 to -1.3 bar) and acoustic vibrations at the shaft resonance frequency (40-48 Hz). This is a hazardous failure.
+- **Inter-Seal Buffer Isolation:** The turbopump shaft seal assembly is isolated from external purge lines by an enclosed buffer cavity pressurized with gaseous helium at 12 bar. In an intact seal assembly, helium buffer gas remains contained in the buffer cavity. If the primary carbon face seal breaches or fractures, helium escapes past the damaged seal face into the secondary drain line.
+
+### Operational Sequence and Telemetry Logs
 During cryogenic LOX chilldown at T-00:04:30, the following telemetry events were recorded:
 
 1. **Pressure Transducer (`PT-401`) Telemetry:**
@@ -16,16 +23,7 @@ During cryogenic LOX chilldown at T-00:04:30, the following telemetry events wer
 2. **Acoustic Accelerometer (`ACC-102`) Telemetry:**
    - Broadband transient vibration pulse coinciding with the pressure drop, displaying a dominant resonant peak at $44.2\text{ Hz}$.
 
-3. **Engineering Standard Operating Manual Section 9.3:**
-   ```text
-   LOX Turbopump Manifold Diagnostic Criteria:
-   A transient pressure reduction of -1.0 to -1.3 bar coupled with a 40-48 Hz acoustic peak during chilldown can result from two distinct physical phenomena:
-   (A) Normal Cryogenic Bellows Contraction: Rapid thermal shrinkage of the flexible duct bellows as LOX reaches -183°C. This is a benign, self-limiting mechanical settlement. Chilldown sequence proceeds nominally.
-   (B) Dynamic Inter-Seal Ring Failure: Micro-fracture or displacement of the primary rotating carbon face seal under thermal shock. This is hazardous and requires an immediate abort.
-   The primary pressure (PT-401) and acoustic (ACC-102) telemetry channels exhibit degenerate signatures for phenomena A and B and cannot differentiate between them. Differentiating between benign contraction and seal failure requires the orthogonal helium mass-spectrometry channel (HE-SNIFF-01).
-   ```
-
-4. **Secondary Inter-Seal Purge Helium Sniffer (`HE-SNIFF-01`) Telemetry:**
+3. **Secondary Inter-Seal Drain Line Sniffer (`HE-SNIFF-01`) Telemetry:**
    ```text
    2026-10-06T14:22:10.500Z [SNIFFER] Sensor status: ACTIVE_ONLINE.
    2026-10-06T14:22:10.600Z [TELEMETRY] Secondary purge helium concentration: 0.02 ppm (ambient background threshold <= 0.05 ppm; seal breach threshold >= 2.50 ppm). Integrity: NOMINAL.

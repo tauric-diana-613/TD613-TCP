@@ -8,6 +8,12 @@ The clearing pipeline comprises:
 - A Core Financial Ledger Engine (`LEDGER_CORE_01`) that manages account balances, local transaction journals, and two-phase commit escrow.
 - An Out-of-Band Clearing Reconciliation Daemon (`CLEARING_RECON_DAEMON`) that ingests end-of-window bilateral bank statement files (CAMT.053 / MT940) delivered via secure SFTP.
 
+### Clearing Bank Reconciliation Standards
+1. Bilateral end-of-window statements (CAMT.053 / MT940) report all payment instructions finalized during that window.
+2. If an instruction is rejected or cancelled by the clearing network, an explicit negative return record (`RJCT` / `PACR`) is included with the failure reason code.
+3. If a submitted instruction is neither listed among finalized transactions nor reported with a negative return record, it has not finalized in the current window and remains queued on the clearing network pending reconciliation in the subsequent cycle.
+
+### Operational Sequence and Records
 During the processing of `SETTLE_BATCH_8102`, the following system events and records were captured:
 
 1. **Outbound Payment Gateway Log:**
@@ -35,8 +41,11 @@ During the processing of `SETTLE_BATCH_8102`, the following system events and re
 3. **Clearing Bank SFTP Bilateral Statement (CAMT.053 / MT940 End-of-Window Feed at 08:30:00Z):**
    ```text
    STATEMENT_HEADER: PARTNER_BETA_CLEARING | WINDOW_ID=20261006_CYCLE_01 | STATEMENT_DATE=2026-10-06T08:30:00Z
-   ENTRY_COUNT=14
+   FINALIZED_ENTRIES:
+   RECORD: REF=TX-8100-EUR | CLEARING_ID=EBA-STEP2-9948100 | AMT=4200000.00  | CUR=EUR | STATUS=SETTLED | VAL_DATETIME=2026-10-06T08:10:00Z
+   RECORD: REF=TX-8101-EUR | CLEARING_ID=EBA-STEP2-9948101 | AMT=9100000.00  | CUR=EUR | STATUS=SETTLED | VAL_DATETIME=2026-10-06T08:12:30Z
    RECORD: REF=TX-8102-EUR | CLEARING_ID=EBA-STEP2-9948102 | AMT=14850000.00 | CUR=EUR | STATUS=SETTLED | VAL_DATETIME=2026-10-06T08:15:02Z
+   REJECTION_RECORDS: NONE
    ```
 
 ## Operational Dispute
