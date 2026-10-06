@@ -1,0 +1,288 @@
+{
+  "schema": "td613.sequence5.5.pilot-v2-authorization/v1.0",
+  "episode_id": "EPISODE_SACRIFICIAL_PILOT_V2",
+  "authorization_status": "GREEN_FRESH_25_UNIT_PILOT_ONLY",
+  "authorization_source": "operator instruction in current ChatGPT thread; Amari remote controller",
+  "canonical_freeze_a_v4_commit": "70299c23b3e0b3d781ea9673cae1d1112ba281f3",
+  "handoff_parent_commit": "2fe3b2835f080620ce40e820f1ddef7c8775d4f4",
+  "receiver": {
+    "provider": "google",
+    "exact_model_id": "gemini-3.8-flash",
+    "endpoint": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
+    "transport": "vercel-preview/server-fetch",
+    "model_settings": {
+      "temperature": null,
+      "sampling_parameters_set_by_protocol": false,
+      "thinking_level": "medium",
+      "max_output_tokens": 8192,
+      "response_mime_type": "application/json",
+      "tool_permissions": []
+    }
+  },
+  "credential_binding": {
+    "credential_fingerprint_sha256": "51efc3d87cdffc4fb2869519ff4fa12b10ce179ba79d3976f6094cf741681c39",
+    "inference_service_tier_observed_preflight": "standard",
+    "billing_usage_tier": "UNVERIFIED",
+    "receiver_access_verified": "PASS",
+    "policy": "billing usage tier is recorded but is not a blocking gate; quota/provider failures are preserved as execution evidence"
+  },
+  "execution_isolation": {
+    "previous_partial_episode": "PARTIAL_PILOT_EPISODE_HELD_WRONG_BILLING_CONTEXT",
+    "previous_partial_raw_freeze": "36f2aaf48a568d0a0171d34f6c1a22a25ff42a3b",
+    "reuse_previous_outputs": false,
+    "fresh_output_namespace": "19-PILOT_V2_RAW_OUTPUTS",
+    "fresh_receipt_namespace": "19-PILOT_V2_RECEIPTS",
+    "main_battery_execution_authorized": false,
+    "pilot_key_reveal_authorized_before_raw_freeze": false
+  },
+  "inherited_scientific_objects": {
+    "sealed_execution_bundle_manifest": "research/sequence-5.5-closure-chamber/07-SEALED_EXECUTION_BUNDLE_MANIFEST.json",
+    "receiver_output_schema": "research/sequence-5.5-closure-chamber/10-RECEIVER_OUTPUT_SCHEMA.json",
+    "pilot_key_commitment": "d796fdabb35b8716acfd0b6d7da0e19cc8384f6c47c58068994e91ee3aa89c68",
+    "main_key_commitment": "cc26fca812fcd6bbdb6634cf310c13cd2410bc150416874c6ee158d7a0551700"
+  },
+  "authorized_pilot_execution_units": [
+    {
+      "unit_id": "UNIT_K0_PILOT-01",
+      "arm": "K0",
+      "fixture_id": "PILOT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": true,
+      "execution_unit_sha256": "977c9695f02e362e0db84f5ec7105e06d1ac7a927588fce8cb71d39b50a96564"
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-02",
+      "arm": "K0",
+      "fixture_id": "PILOT-02",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": true,
+      "execution_unit_sha256": "421379b7b910d16685d3990c89033ad82b2cd03f53b90354a40906157c661c20"
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-03",
+      "arm": "K0",
+      "fixture_id": "PILOT-03",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "d10d55edb69c40a47083b020f4598661e2369350d41f842d3d9c0d88a1e9d695"
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-04",
+      "arm": "K0",
+      "fixture_id": "PILOT-04",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "235561d5c29da9943f60eb8ad8cdf75bd4fa05bc5614bd4a87e8e32153f613c6"
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-05",
+      "arm": "K0",
+      "fixture_id": "PILOT-05",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "03e50968181e45e9b12df7ac72ca8f00c1ddd31b03d1c1fa2eeb27903de95997"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-01",
+      "arm": "K0D",
+      "fixture_id": "PILOT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": true,
+      "execution_unit_sha256": "23f2335c9252e25fda55dceebc3c6b907c450d132a6cc120db8f7e94d675cb87"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-02",
+      "arm": "K0D",
+      "fixture_id": "PILOT-02",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": true,
+      "execution_unit_sha256": "c05f9703186e70477d53b0f0f1f97ff9e96b3fe558d84036167f3de24a005930"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-03",
+      "arm": "K0D",
+      "fixture_id": "PILOT-03",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "7bcf053ae3efb5b677f59f7b22628c6bc7bd28d461337dfaac264142d8526e9d"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-04",
+      "arm": "K0D",
+      "fixture_id": "PILOT-04",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "5c34f68433456952f7df2d65b22d019f6ebe6fb9e93b6c34de64d0aa6298a94d"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-05",
+      "arm": "K0D",
+      "fixture_id": "PILOT-05",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "f0507a8f576a7ad28af1ef41c3ab2e9230ac74be3dc8d25adc6846fb233aebea"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-01",
+      "arm": "K1",
+      "fixture_id": "PILOT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": true,
+      "execution_unit_sha256": "78ed352e8eacf16769e61efd9a0ad706b28074944decf17e0f3a0eae5547df85"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-02",
+      "arm": "K1",
+      "fixture_id": "PILOT-02",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": true,
+      "execution_unit_sha256": "44d2e8da0b2ac08c62331a26cdac9e926d4c6ec1cc1bd16dab221039b534dc3e"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-03",
+      "arm": "K1",
+      "fixture_id": "PILOT-03",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "8091f5b639032c67d2dc8d1a35521573dc02a02386113f9d345752cabcfc93a6"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-04",
+      "arm": "K1",
+      "fixture_id": "PILOT-04",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "2c4c631d58194a1617dc78d64e1e51794b1a0a6d92f044d9e35e232025d47bf4"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-05",
+      "arm": "K1",
+      "fixture_id": "PILOT-05",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "5ef27c679ebc874cd96b0d0b9f2afdff06e791a60166f7d6752d8821e4f88c73"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-01",
+      "arm": "K2",
+      "fixture_id": "PILOT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": true,
+      "execution_unit_sha256": "1be114ac7ac28941a6c32b63951573127abc197a310fd1e8e45a262f852e03a1"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-02",
+      "arm": "K2",
+      "fixture_id": "PILOT-02",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": true,
+      "execution_unit_sha256": "06e353958d4343095750008c54c30762aebb0ef3d17f3dd036bbc3fcde079c5a"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-03",
+      "arm": "K2",
+      "fixture_id": "PILOT-03",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "0a01f1b44c3dc3c324e740e3b0296f5b278aab13613cebdb2d730f9887f04b97"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-04",
+      "arm": "K2",
+      "fixture_id": "PILOT-04",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "90ecf51ce235c3e1c0d61eaf36c719852faea4e6193b3f4f9b9d3f559267cb3f"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-05",
+      "arm": "K2",
+      "fixture_id": "PILOT-05",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "35f306445141e5c1d343a3221b709c6b0d7f4283f370ba048bcfe1994a560d97"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-01",
+      "arm": "K3",
+      "fixture_id": "PILOT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": true,
+      "execution_unit_sha256": "b4c783e0ab21e85ecb12a5f317c736c3307b6990c101fe86e3ea459e54471d65"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-02",
+      "arm": "K3",
+      "fixture_id": "PILOT-02",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": true,
+      "execution_unit_sha256": "d747fc0535cb330ad95b0133ae1673ff635660a198f8663b3ff959eadaf3a5ce"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-03",
+      "arm": "K3",
+      "fixture_id": "PILOT-03",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "1ab2414e7df1a526431f8fa2dc7f2c7bb05d7c5049fcf55bb60a7e68f576276e"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-04",
+      "arm": "K3",
+      "fixture_id": "PILOT-04",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "a13dbeec8b6639ea9989c817fc37c735ddbfd6c9b80d34ad8683060820e18bf4"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-05",
+      "arm": "K3",
+      "fixture_id": "PILOT-05",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "0496b51600b5bd0f5e3cca07e25954fc9dd41139201116cb983820ffdb01f0c0"
+    }
+  ],
+  "deterministic_run_order": [
+    "UNIT_K0_PILOT-01",
+    "UNIT_K0D_PILOT-02",
+    "UNIT_K1_PILOT-03",
+    "UNIT_K2_PILOT-04",
+    "UNIT_K3_PILOT-05",
+    "UNIT_K0D_PILOT-01",
+    "UNIT_K1_PILOT-02",
+    "UNIT_K2_PILOT-03",
+    "UNIT_K3_PILOT-04",
+    "UNIT_K0_PILOT-05",
+    "UNIT_K1_PILOT-01",
+    "UNIT_K2_PILOT-02",
+    "UNIT_K3_PILOT-03",
+    "UNIT_K0_PILOT-04",
+    "UNIT_K0D_PILOT-05",
+    "UNIT_K2_PILOT-01",
+    "UNIT_K3_PILOT-02",
+    "UNIT_K0_PILOT-03",
+    "UNIT_K0D_PILOT-04",
+    "UNIT_K1_PILOT-05",
+    "UNIT_K3_PILOT-01",
+    "UNIT_K0_PILOT-02",
+    "UNIT_K0D_PILOT-03",
+    "UNIT_K1_PILOT-04",
+    "UNIT_K2_PILOT-05"
+  ],
+  "chronology": [
+    "PILOT_V2_EXECUTION",
+    "PILOT_V2_RAW_FREEZE",
+    "PILOT_KEY_REVEAL",
+    "PILOT_V2_SCORING",
+    "PILOT_DIFFICULTY_GATE_ADJUDICATION"
+  ],
+  "laws": [
+    "FRESH_EPISODE != RESUMED_PARTIAL_EPISODE",
+    "MODEL_3_8_CONFIG != LEGACY_3_5_CONFIG",
+    "PILOT_RAW_FREEZE_PRECEDES_KEY_REVEAL",
+    "BILLING_USAGE_TIER_UNVERIFIED != RECEIVER_ACCESS_UNVERIFIED",
+    "QUOTA_FAILURE != SILENT_RETRY_HISTORY_ERASURE",
+    "BAT_EXECUTION_COUNT = 0 UNTIL PILOT_GATE_PASS"
+  ]
+}
