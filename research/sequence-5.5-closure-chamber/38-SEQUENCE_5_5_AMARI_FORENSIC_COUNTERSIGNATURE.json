@@ -1,0 +1,138 @@
+{
+  "schema": "td613.sequence5.5.amari-forensic-countersignature/v1.0",
+  "sequence": "SEQUENCE_5.5",
+  "branch": "research/sequence-5.5-amari-closure-20261006",
+  "certification_status": "CERTIFIED_WITH_CORRECTIONS",
+  "scientific_controller": "Amari",
+  "audited_repository_head_before_countersign": "7e4d5e73107e79d297673b05170568d70e2e89b1",
+  "audited_lineage": {
+    "v4_1r_design_freeze": "761bea6aa8e6412ad38340dfe8c4f9eebf129c64",
+    "v4_1r_execution_binding_freeze": "5e0c0e2fed324d91c78307aa97975dadda75e003",
+    "v4_1r_stage_2r_machinery_repair": "0a51c6bc49b2dd967f31aaaea886cd9ab35d0131",
+    "v4_1r_final_machinery_patch": "5e71bc657a654c85be3264a1eab258dd5345dbad",
+    "v4_1r_raw_freeze": "1b5600cba2cbab29f244f86ceb73f620318a74f5",
+    "v4_1r_key_reveal": "1c9f47bf90ed832e4e5314044230c7d2c01c6f30",
+    "sequence_5_5_closure_ledger": "7e4d5e73107e79d297673b05170568d70e2e89b1"
+  },
+  "v4_1r_execution_integrity": {
+    "total_units": 50,
+    "total_wire_invocations": 50,
+    "retries_or_failures": 0,
+    "receiver": "google/gemini-3.8-flash",
+    "thinking_level": "medium",
+    "transport": "vercel-preview/server-fetch",
+    "deployed_git_commit_sha": "5e71bc657a654c85be3264a1eab258dd5345dbad",
+    "key_commitment_sha256": "cd971de705bdca06911b3a2ed683d08057db01809c49783ade6db162a7ee1ed1",
+    "key_reveal_sha256_recomputed": "cd971de705bdca06911b3a2ed683d08057db01809c49783ade6db162a7ee1ed1",
+    "key_commitment_match": true,
+    "bat_execution_count": 0
+  },
+  "independently_recomputed_v4_1r_result": {
+    "target_transitions": {
+      "PAIR_01": "PASS -> HELD",
+      "PAIR_02": "PASS -> HELD",
+      "PAIR_03": "PASS -> FAIL",
+      "PAIR_04": "PASS -> HELD",
+      "PAIR_05": "PASS -> FAIL"
+    },
+    "observed_transitions": {
+      "K0": [
+        "PASS -> HELD",
+        "PASS -> HELD",
+        "PASS -> FAIL",
+        "PASS -> FAIL",
+        "PASS -> FAIL"
+      ],
+      "K0D": [
+        "PASS -> HELD",
+        "PASS -> HELD",
+        "PASS -> FAIL",
+        "PASS -> FAIL",
+        "PASS -> FAIL"
+      ],
+      "K1": [
+        "PASS -> HELD",
+        "PASS -> HELD",
+        "PASS -> FAIL",
+        "HELD -> FAIL",
+        "PASS -> FAIL"
+      ],
+      "K2": [
+        "PASS -> HELD",
+        "PASS -> HELD",
+        "PASS -> FAIL",
+        "HELD -> HELD",
+        "PASS -> FAIL"
+      ],
+      "K3": [
+        "PASS -> HELD",
+        "PASS -> HELD",
+        "PASS -> FAIL",
+        "PASS -> HELD",
+        "PASS -> FAIL"
+      ]
+    },
+    "pair_success_counts": {
+      "K0": "4/5",
+      "K0D": "4/5",
+      "K1": "4/5",
+      "K2": "4/5",
+      "K3": "5/5"
+    },
+    "total_successes": "21/25",
+    "total_success_rate": 0.84,
+    "across_arm_variance_pair_count": 1,
+    "sole_variance_pair": "PAIR_04"
+  },
+  "preregistered_gate_recomputation": {
+    "anti_floor": "PASS",
+    "comparator_set_saturation": "PASS",
+    "methodological_identification": "FAIL",
+    "pairwise_spread": "FAIL",
+    "dynamic_range": "FAIL",
+    "final_disposition": "HOLD",
+    "classifications": [
+      "METHODOLOGICALLY_NON_IDENTIFYING",
+      "TRIVIAL_OUTLIER_DRIVEN_VARIANCE",
+      "DYNAMIC_RANGE_SATURATED"
+    ],
+    "main_battery_authorized": false
+  },
+  "pair_04_bounded_finding": {
+    "observed_fact": "K3 was the only arm in this episode to match the preregistered PASS -> HELD transition on PAIR_04.",
+    "prohibited_promotion": "This does not establish a K3 causal effect, governance superiority, or treatment-level inferential advantage.",
+    "status": "HYPOTHESIS_GENERATING_ONLY"
+  },
+  "closure_decision": {
+    "reopen_sequence_5_5": false,
+    "pilot_v5_required": false,
+    "rationale": "The current calibration program has a clean preregistered V4.1R endpoint that remains non-identifying. Extending the same program primarily to force K1/K2 separation would create result-seeking risk. A future V5-like study is permissible only as a new preregistered research question or measurement design, not as a repair whose success criterion is obtaining desired arm separation."
+  },
+  "corrections_to_proposed_prose_adjudication": [
+    {
+      "original_issue": "Six iterations have been executed under genuine cryptographic provenance.",
+      "correction": "Six calibration stages were recorded. V3 and V4 were design-only/non-executed; V4.1 executed but was gate-ineligible after protocol deviation. V2, V3B, and V4.1R are the gate-eligible genuine receiver executions."
+    },
+    {
+      "original_issue": "A single Pair-04 diagnostic distinguished the full K3 governance treatment.",
+      "correction": "K3 alone matched the preregistered Pair-04 transition in this episode. Treat this as an observed diagnostic, not treatment-level distinction or causal evidence."
+    },
+    {
+      "original_issue": "Surviving invariants independently validated in Sequence 4.",
+      "correction": "Relations survived the specified Sequence 4 transformations within their stated same-host scope; this is not independent external validation."
+    },
+    {
+      "original_issue": "Any Pilot V5 would cross into result-seeking.",
+      "correction": "A V5 designed solely to force comparator separation would risk result-seeking. A genuinely new preregistered study with a distinct question or measurement model remains scientifically permissible."
+    }
+  ],
+  "canonical_certified_closure_statement": "At Gemini 3.8 Flash / medium / Vercel-preview under the receiver-clean V4.1R relational-contrast assay, matched scaffolding, conventional engineering, and Aperture produced identical pair-success profiles (4/5 each). K3 alone matched the preregistered PAIR_04 PASS-to-HELD transition and scored 5/5, but the episode failed preregistered methodological-identification, pairwise-spread, and dynamic-range criteria (21/25 = 84%). Therefore Sequence 5.5 does not establish an incremental Aperture effect or a causal K3 advantage. The main battery remains sealed and unexecuted. The calibration program is scientifically closed at this endpoint; further work requires a new preregistered study rather than iterative redesign to obtain separation.",
+  "product_handoff_claim_ceiling": [
+    "Do not claim Aperture or TD613 governance demonstrated causal or statistical superiority.",
+    "Do not promote PAIR_04 into treatment-effect evidence.",
+    "Do not describe Sequence 4 same-host relation survival as independent external validation.",
+    "Claim ceilings, non-retroactivity, predecessor continuity, and role separation may enter Sequence 6 as engineering/governance design constraints with their evidence class preserved."
+  ],
+  "countersigned": true,
+  "seal": "⟐"
+}
