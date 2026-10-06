@@ -1,16 +1,34 @@
 {
-  "$schema": "https://td613.com/schemas/pilot-difficulty-gate/v1.0",
+  "$schema": "https://td613.com/schemas/pilot-difficulty-gate/v2.0",
   "assay": "TD613-SEQ5.5-CLOSURE-CHAMBER",
-  "gate_title": "Pilot Difficulty & Discrimination Gate Specification",
+  "gate_title": "Sacrificial Calibration Pilot Difficulty & Discrimination Gate Specification",
+  "status": "FREEZE_A_V2",
+  "sacrificial_pilot_battery": {
+    "fixture_ids": ["PILOT-01", "PILOT-02", "PILOT-03", "PILOT-04", "PILOT-05"],
+    "total_items": 5,
+    "pilot_calibration_key_commitment_sha256": "d796fdabb35b8716acfd0b6d7da0e19cc8384f6c47c58068994e91ee3aa89c68",
+    "construct_families": {
+      "PILOT-01": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "PILOT-02": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "PILOT-03": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "PILOT-04": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "PILOT-05": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY"
+    }
+  },
+  "governing_laws": {
+    "isolation_law": "PILOT_ITEM != INFERENTIAL_ITEM (Pilot items are structurally analogous but byte/content distinct from BAT-01..BAT-16; pilot responses are NEVER reused as main inferential data).",
+    "optimization_prohibition": "PILOT_CALIBRATION != TREATMENT_OPTIMIZATION (Pilot outcomes may determine GO/HOLD for assay, but pilot results may NEVER be used to retune K1, K2, or K3 selectively)."
+  },
   "preregistered_criteria": {
-    "anti_floor_rule": "Baseline K0 must achieve > 0% accuracy across the 16 items to ensure items are solvable and clear.",
-    "anti_ceiling_rule": "No single treatment arm (K0, K0D, K1, K2, K3) may achieve 100% accuracy on all 16 items in pilot evaluation, preventing saturation/ceiling effects.",
-    "discriminative_range": "Target overall accuracy across arms should span between 25% and 85%, ensuring sufficient dynamic range to evaluate differential methodology effects.",
-    "cluster_variance_requirement": "At least 3 of the 5 clusters must exhibit non-zero variance across arms."
+    "anti_floor_rule": "Baseline K0 must achieve > 0% accuracy across the 5 pilot items to ensure instructions and tasks are parseable.",
+    "anti_ceiling_rule": "No single treatment arm (K0, K0D, K1, K2, K3) may achieve 100% accuracy on all 5 pilot items, preventing saturation/ceiling effects.",
+    "discriminative_range": "Target overall accuracy across arms should span between 20% and 80%, ensuring sufficient dynamic range to evaluate differential methodology effects.",
+    "cluster_variance_requirement": "At least 3 of the 5 pilot construct families must exhibit non-zero variance across arms."
   },
   "consequence_of_gate_failure": {
-    "floor_failure": "If K0 = 0% and K1/K2/K3 = 0%, items are defectively ambiguous or unparseable. Items must be clarified before Freeze B.",
-    "ceiling_failure": "If K1 = 100% and K2 = 100%, battery is classified as NON_IDENTIFYING_CEILING. Harder adversarial items must be introduced before Freeze B."
+    "floor_failure": "If K0 = 0% and K1/K2/K3 = 0%, items are defectively ambiguous or unparseable. PILOT_RESULT = HOLD. Fresh sacrificial pilot fixtures must be preregistered in a new Freeze version.",
+    "ceiling_failure": "If K1 = 100% and K2 = 100%, battery is classified as NON_IDENTIFYING_CEILING. Harder adversarial items must be introduced under a new Freeze version.",
+    "treatment_ambiguity": "If treatment-language ambiguity is discovered during pilot, PILOT_RESULT = HOLD. Any rewrite requires explicit justification, versioned packets for all arms, and fresh sacrificial pilot contexts."
   },
   "verification_status": "PENDING_PILOT_EXECUTION",
   "seal": "⟐"

@@ -1,49 +1,62 @@
 {
-  "$schema": "https://td613.com/schemas/treatment-packet-hashes/v1.0",
-  "assay": "TD613-SEQ5.5-CLOSURE-CHAMBER",
-  "generated_at": "2026-10-06T01:38:00Z",
+  "schema": "td613.sequence5.5.treatment-packet-hashes/v2.0",
+  "preregistration_status": "FREEZE_A_V2",
+  "dose_matching_rule": {
+    "target_words": 1005,
+    "max_allowed_deviation_percent": 5,
+    "actual_max_deviation_percent": 0,
+    "token_counting_method": "regex_word_punctuation_subword_cl100k_heuristic"
+  },
   "packets": {
     "K0": {
-      "file": "research/sequence-5.5-closure-chamber/02-TREATMENT_PACKETS/packet-K0.md",
-      "name": "Task-Only Baseline",
+      "file": "packet-K0.md",
+      "words": 96,
       "bytes": 739,
-      "words": 97,
+      "sections": 3,
+      "examples": 0,
+      "imperatives": 4,
+      "tokens": 153,
       "sha256": "a6bea5f26d57051aee881084de473ebe0775063aebbb8d20b0b0994b83c71316"
     },
     "K0D": {
-      "file": "research/sequence-5.5-closure-chamber/02-TREATMENT_PACKETS/packet-K0D.md",
-      "name": "Dose-Matched Neutral Instruction Control",
-      "bytes": 6509,
-      "words": 892,
-      "sha256": "6580e4cb0c241fc441170b6af9febfab43e8e40211fb05c0df116b65caf60e3b"
+      "file": "packet-K0D.md",
+      "words": 1005,
+      "bytes": 7379,
+      "sections": 10,
+      "examples": 2,
+      "imperatives": 27,
+      "tokens": 1359,
+      "sha256": "4ec9d5af037e4d3fe525f750a4170dcac249e5433c04b04c2bd6c32b37f3eed1"
     },
     "K1": {
-      "file": "research/sequence-5.5-closure-chamber/02-TREATMENT_PACKETS/packet-K1.md",
-      "name": "Conventional Engineering Methodology",
-      "bytes": 7171,
-      "words": 932,
-      "sha256": "c7f543ad4a1a4836edb93f2ef89ab5b4f209f1a1f4705693cdea395c2f3b4126"
+      "file": "packet-K1.md",
+      "words": 1005,
+      "bytes": 7807,
+      "sections": 10,
+      "examples": 2,
+      "imperatives": 27,
+      "tokens": 1411,
+      "sha256": "c6739e66bf710bcc53b38af184b68a3f487ff29908274fc49b2b8b0b48d09e9e"
     },
     "K2": {
-      "file": "research/sequence-5.5-closure-chamber/02-TREATMENT_PACKETS/packet-K2.md",
-      "name": "TD613 Aperture Kernel Methodology",
-      "bytes": 8261,
-      "words": 1085,
-      "sha256": "344f72e901e200af641935f2a4a7e06ff40c12056bc5db8f43a8f6fc63bed8f3"
+      "file": "packet-K2.md",
+      "words": 1005,
+      "bytes": 7663,
+      "sections": 10,
+      "examples": 2,
+      "imperatives": 34,
+      "tokens": 1422,
+      "sha256": "ae657daa35ba75efa80ddc18b5a67661741920c58685a0083109efb32ef10d94"
     },
     "K3": {
-      "file": "research/sequence-5.5-closure-chamber/02-TREATMENT_PACKETS/packet-K3.md",
-      "name": "TD613 Multi-Jurisdiction Governance Methodology",
-      "bytes": 9323,
-      "words": 1175,
-      "sha256": "d0b3d79d67087b558c91df4c5669219517e2b92712de128cb6fa8764081023af"
+      "file": "packet-K3.md",
+      "words": 1005,
+      "bytes": 8078,
+      "sections": 10,
+      "examples": 2,
+      "imperatives": 36,
+      "tokens": 1630,
+      "sha256": "39ba48f8ef27242094f712b0966afc1725fcf851f80c3917332a360be9f0cfaa"
     }
-  },
-  "dose_parity_notes": {
-    "sections_per_packet_k0d_k1_k2_k3": 5,
-    "examples_per_packet_k0d_k1_k2_k3": 2,
-    "word_count_spread": "892 to 1175 words across treated arms",
-    "residual_dose_confound": "Residual word count variance is within bounds; K0D-K0 estimates generic-scaffolding-plus-dose effect."
-  },
-  "seal": "⟐"
+  }
 }

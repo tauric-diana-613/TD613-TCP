@@ -3,7 +3,8 @@
 **Assay Identifier:** `TD613-SEQ5.5-CLOSURE-CHAMBER-20261005`  
 **Covenant:** Tauric Diana — Crimean heritage custodianship / Tauri Goddess of the Ash Moon ⟐  
 **Canonical Repository Witness:** `@GitHub`  
-**Preregistration Status:** **LOCKED & FROZEN PRE-EXECUTION**  
+**Preregistration Status:** **FREEZE A V2 (SUPERSEDES FREEZE A V1)**  
+**Historical Superseded Freeze A V1 Receipt:** `475a28443ee41b338233aef257d6c39cde8ed260` (`HISTORICAL_SUPERSEDED_FREEZE_A_V1`)  
 **Remote Witness Ancestor:** `6e3015df659eb06084f14ce43144fd160bee3cda` (`audit/sequence-5-synthetic-trace-audit-20261005`)  
 
 ---
@@ -67,15 +68,15 @@ $$\mathbf{VOCABULARY\_SURVIVAL} \neq \mathbf{RELATION\_SURVIVAL}$$
 
 ## III · Experimental Arms & Dose-Matched Causal Controls
 
-To prevent confounding instruction volume with methodology, Sequence 5.5 introduces a dose-matched neutral instruction control ($K0D$):
+To prevent confounding instruction volume with methodology, Sequence 5.5 introduces a dose-matched neutral instruction control ($K0D$), with all four structured arms calibrated to within $\le 5\%$ word count (calibrated to exact parity of 1,005 words, $0.0\%$ deviation):
 
-| Arm | Name | Treatment Definition | Dose & Structure Target |
+| Arm | Name | Treatment Definition | Dose & Structure Metrics |
 |---|---|---|---|
-| **$K0$** | **Task-Only Baseline** | Bare task prompt and battery item; zero methodological guidance. | Minimal prompt ($\sim 150$ tokens) |
-| **$K0D$** | **Dose-Matched Neutral Control** | General auditing checklist (clarity, completeness, structure, step-by-step verification) without engineering methodology, Aperture geometry, or TD613 governance. | Matched to $K1/K2/K3$ ($\pm 5\%$ tokens, 5 sections, 2 neutral examples) |
-| **$K1$** | **Conventional Engineering** | Standard engineering methodology (error budgets, interface contracts, regression testing, typed schemas, deterministic verification). | $\sim 1,200$ tokens, 5 sections, 2 examples |
-| **$K2$** | **Aperture Kernel** | Observability geometry ($S \neq O \neq E$), identifiability, conditioning, uncertainty geometry, typed deficit, replay audit. | $\sim 1,200$ tokens, 5 sections, 2 examples |
-| **$K3$** | **TD613 Multi-Jurisdiction** | Dollhouse role separation (Pedagogue, Aperture, Atlas, FADT, Temporal Custodian), non-retroactivity, claim ceilings, route overwatch. | $\sim 1,200$ tokens, 5 sections, 2 examples |
+| **$K0$** | **Task-Only Baseline** | Bare task prompt and battery item; zero methodological guidance. | 96 words, 739 bytes, 3 sections, 0 examples, 153 tokens |
+| **$K0D$** | **Dose-Matched Neutral Control** | General auditing checklist (clarity, completeness, structure, step-by-step verification) without engineering methodology, Aperture geometry, or TD613 governance. | 1,005 words, 7,379 bytes, 10 sections, 2 examples, 1,359 tokens |
+| **$K1$** | **Conventional Engineering** | Standard engineering methodology (error budgets, interface contracts, regression testing, typed schemas, deterministic verification). | 1,005 words, 7,807 bytes, 10 sections, 2 examples, 1,411 tokens |
+| **$K2$** | **Aperture Kernel** | Observability geometry ($S \neq O \neq E$), identifiability, conditioning, uncertainty geometry, typed deficit, replay audit. | 1,005 words, 7,663 bytes, 10 sections, 2 examples, 1,422 tokens |
+| **$K3$** | **TD613 Multi-Jurisdiction** | Dollhouse role separation (Pedagogue, Aperture, Atlas, FADT, Temporal Custodian), non-retroactivity, claim ceilings, route overwatch. | 1,005 words, 8,078 bytes, 10 sections, 2 examples, 1,630 tokens |
 
 ### Primary Causal Contrasts
 
@@ -84,7 +85,7 @@ $$\Delta_{\text{method}} = K1 - K0D \quad \text{(Conventional methodology effect
 $$\Delta_{\text{aperture}} = K2 - K1 \quad \text{(Aperture kernel differential beyond conventional engineering)}$$
 $$\Delta_{\text{governance}} = K3 - K2 \quad \text{(TD613 multi-jurisdiction increment beyond Aperture)}$$
 
-Residual dose or structure differences will be logged before execution; unearned claims of "pure" methodology are barred.
+*Dose Deviation Law:* Across the four structured arms ($K0D, K1, K2, K3$), maximum word count deviation is $\mathbf{0.0\%}$, strictly satisfying the declared $\le 5\%$ dose constraint. $K0$ remains deliberately minimal and is unprompted. Residual word-count variance across structured treatments is zero; unearned claims of "pure" methodology are barred.
 
 ---
 
@@ -141,37 +142,42 @@ Localization rules are preregistered to prevent post-hoc rationalization:
 
 Every prerequisite freeze requires a full 40-character commit SHA on GitHub origin before the next step commences:
 
-1. `REMOTE_FREEZE_A_TREATMENTS`: Treatment packets K0, K0D, K1, K2, K3 committed to origin.
-2. `REMOTE_FREEZE_A_FIXTURE_COMMITMENT`: Battery fixtures and SHA-256 hidden answer-key commitment committed to origin.
-3. `PILOT_DIFFICULTY_GATE`: Verification that battery items discriminate without trivial ceiling.
-4. `REMOTE_FINAL_FIXTURE_FREEZE`: Final locked battery committed to origin.
-5. `AUTHENTIC_RECEIVER_EXECUTION`: Invocations executed from sealed execution bundles; wire receipts captured.
-6. `REMOTE_FREEZE_B_RAW_OUTPUTS`: Neutralized raw receiver outputs committed to origin BEFORE key reveal.
-7. `ANSWER_KEY_REVEAL`: Plaintext answer key committed to origin ONLY after Freeze B is locked on origin.
-8. `BLIND_SCORING`: Deterministic and blind semantic scoring on token-blinded outputs.
-9. `SCORER_CONTRADICTION_AUDIT`: Audit of inter-scorer disagreements.
-10. `REMOTE_FREEZE_C_VALIDATED_SCORES`: Validated scores and adjudication committed to origin.
-11. `TREATMENT_UNBLINDING`: Unblinding schedule committed to origin.
-12. `REMOTE_FREEZE_D_FINAL`: Contrast analysis, claim ceilings, and three-goal ledger committed to origin.
+1. `REMOTE_FREEZE_A_V2`: Treatment packets (K0, K0D, K1, K2, K3), main battery fixtures (BAT-01..BAT-16), dedicated sacrificial pilot fixtures (PILOT-01..PILOT-05), sealed bundle manifest, main answer key commitment, and pilot calibration key commitment committed to origin.
+2. `PILOT_DIFFICULTY_GATE`: Evaluates dedicated sacrificial calibration battery (PILOT-01..PILOT-05). Main inferential BAT fixtures remain unseen.
+   - Governing Law: $\mathbf{PILOT\_ITEM} \neq \mathbf{INFERENTIAL\_ITEM}$
+   - Governing Law: $\mathbf{PILOT\_CALIBRATION} \neq \mathbf{TREATMENT\_OPTIMIZATION}$
+   - Pilot answer material governed by `08-PILOT_CALIBRATION_KEY_COMMITMENT.sha256`.
+3. `AUTHENTIC_RECEIVER_EXECUTION`: Main invocations executed strictly from cryptographically bound execution units; wire receipts captured.
+4. `REMOTE_FREEZE_B_RAW_OUTPUTS`: Neutralized raw receiver outputs committed to origin BEFORE main key reveal.
+5. `ANSWER_KEY_REVEAL`: Main plaintext answer key committed to origin ONLY after Freeze B is locked on origin.
+6. `BLIND_SCORING`: Deterministic and blind semantic scoring on token-blinded outputs.
+7. `SCORER_CONTRADICTION_AUDIT`: Audit of inter-scorer disagreements.
+8. `REMOTE_FREEZE_C_VALIDATED_SCORES`: Validated scores and adjudication committed to origin.
+9. `TREATMENT_UNBLINDING`: Unblinding schedule committed to origin.
+10. `REMOTE_FREEZE_D_FINAL`: Contrast analysis, claim ceilings, and three-goal ledger committed to origin.
 
 ---
 
-## VIII · Receiver Firewall & Sealed Execution Bundle
+## VIII · Receiver Firewall & Cryptographic Execution-Bundle Binding
 
 $$\mathbf{KEY\_PATH\_ABSENT} \neq \mathbf{KEY\_INACCESSIBLE}$$
+$$\mathbf{FILENAME\_REFERENCE} \neq \mathbf{BYTE\_COMMITMENT}$$
+$$\mathbf{MANIFEST\_EXISTS} \neq \mathbf{BUNDLE\_BOUND}$$
 
 Both context and filesystem firewalls are physically enforced:
-1. **Sealed Execution Bundle:** Receivers execute from a bundle containing strictly:
-   - Frozen treatment packet markdown;
-   - Frozen battery fixture markdown;
-   - Neutral output JSON schema;
-   - Bounded execution metadata.
-2. **Exclusions:** The bundle and receiver runtime context contain:
+1. **Sealed Execution Bundle Binding Law:** Every treatment $\times$ fixture invocation is deterministically bound by:
+   $$\text{execution\_unit\_sha256} = H(\text{treatment\_bytes} \mathbin{\Vert} \text{fixture\_bytes} \mathbin{\Vert} \text{output\_schema\_bytes} \mathbin{\Vert} \text{fixed\_wrapper\_bytes} \mathbin{\Vert} \text{declared\_metadata})$$
+   Binding 105 execution units (25 sacrificial pilot units + 80 main battery units).
+2. **Canonical Manifest Commitment:** The sealed bundle manifest is committed under:
+   $$\text{SEALED\_EXECUTION\_BUNDLE\_MANIFEST\_SHA256} = \mathtt{cb7306049dd4987be4486ec2d600302bbfe1dcac8e65f4bd81a392ab77dca24b}$$
+3. **Exclusions & Isolation:** The bundle and receiver runtime context contain:
    - Zero repository-root or `.git` history access;
    - Zero research/audit branch access;
    - Zero plaintext answer-key bytes;
-   - Zero file-search tools capable of scanning the host controller workspace.
-3. **Commitment:** The sealed bundle manifest and SHA-256 are frozen in Freeze A.
+   - Zero file-search tools capable of scanning the host controller workspace;
+   - The main hidden answer key remains commitment-bound to `cc26fca812fcd6bbdb6634cf310c13cd2410bc150416874c6ee158d7a0551700`.
+   - The sacrificial pilot calibration key remains commitment-bound to `d796fdabb35b8716acfd0b6d7da0e19cc8384f6c47c58068994e91ee3aa89c68`.
+4. **Commitment Status:** Both sealed bundle manifest and key commitments are frozen in Freeze A V2.
 
 ---
 

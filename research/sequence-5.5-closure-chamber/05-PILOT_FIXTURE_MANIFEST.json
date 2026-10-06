@@ -1,0 +1,49 @@
+{
+  "schema": "td613.sequence5.5.pilot-fixture-manifest/v2.0",
+  "status": "SACRIFICIAL_CALIBRATION_ONLY",
+  "governing_law": "PILOT_ITEM != INFERENTIAL_ITEM",
+  "total_fixtures": 5,
+  "fixtures": [
+    {
+      "id": "PILOT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "name": "Async Storage Task Status vs Unwritten Physical Archive",
+      "file": "04-PILOT_FIXTURES/PILOT-01.md",
+      "construct": "Proxy Observation Conflated with Underlying System State",
+      "sha256": "8dc71f833501a2c9be061555eb3fbb4a7f0e69ffab456e71ef99c92fc576f3ba"
+    },
+    {
+      "id": "PILOT-02",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "name": "Payment Gateway Timeout Nullspace Requiring Abstention",
+      "file": "04-PILOT_FIXTURES/PILOT-02.md",
+      "construct": "Observation Nullspace / Undistinguishable Latent Causes",
+      "sha256": "4b752945d8b2d715a2dd70f3f50dd7f401f807ea307e5f1875c754d92bfb8296"
+    },
+    {
+      "id": "PILOT-03",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "name": "Authorization Middleware Quotient Compression and Support Collapsing",
+      "file": "04-PILOT_FIXTURES/PILOT-03.md",
+      "construct": "Quotient Stage Erasure / Collapsing Distinct Support Fibres",
+      "sha256": "a34e062828b1e4f165979808381ddf5be248c8bf490f84542ee596bf9fc8a72b"
+    },
+    {
+      "id": "PILOT-04",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "name": "Cross-Station Medical Review Without Cryptographic Predecessor Binding",
+      "file": "04-PILOT_FIXTURES/PILOT-04.md",
+      "construct": "Asymmetric Projections & Missing Predecessor Chaining",
+      "sha256": "748805f63d02e07172fe4d732c4df3df9487b32c69d806aeb733b811cebe3749"
+    },
+    {
+      "id": "PILOT-05",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "name": "Preemption Gap in Trade Execution and SQL Ledger Backdating",
+      "file": "04-PILOT_FIXTURES/PILOT-05.md",
+      "construct": "Chronology Laundering / Preemption Gap / Retroactive State Upgrade",
+      "sha256": "65b93d7c5ee15132dd0d7833076ffcc7fb58c17df20b0b8c66e4a26f030bc2b6"
+    }
+  ],
+  "pilot_calibration_key_commitment_sha256": "d796fdabb35b8716acfd0b6d7da0e19cc8384f6c47c58068994e91ee3aa89c68"
+}

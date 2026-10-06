@@ -1,67 +1,1033 @@
 {
-  "$schema": "https://td613.com/schemas/execution-bundle-manifest/v1.0",
-  "bundle_id": "TD613-SEQ5.5-SEALED-EXECUTION-BUNDLE",
-  "assay": "TD613-SEQ5.5-CLOSURE-CHAMBER",
-  "generated_at": "2026-10-06T01:40:00Z",
-  "firewall_specification": {
-    "principle": "KEY_PATH_ABSENT != KEY_INACCESSIBLE",
-    "filesystem_isolation": [
-      "The receiver execution process executes from an isolated working directory containing strictly the bundled treatment packets and battery fixtures.",
-      "No access to repository root, .git history, research/sequence-5-differential-replication, or any answer key path is granted.",
-      "Pre-flight assertion runs before any model call: aborts immediately if any file matching *ANSWER_KEY*.json is present on disk or readable in filesystem."
-    ],
-    "context_isolation": [
-      "Receiver model prompt contains strictly: [TREATMENT_PACKET_CONTENT] + [BATTERY_FIXTURE_CONTENT] + [OUTPUT_JSON_SCHEMA].",
-      "Zero file search tools, bash evaluation tools, or repository traversal capabilities are granted to receiver contexts.",
-      "Scoring rubrics, target verdicts, and expected outcomes remain strictly offline in Lane F until Freeze B raw outputs are committed."
-    ]
+  "schema": "td613.sequence5.5.sealed-execution-bundle-manifest/v2.0",
+  "preregistration_status": "FREEZE_A_V2",
+  "parent_freeze_a_v1_commit": "475a28443ee41b338233aef257d6c39cde8ed260",
+  "binding_law": {
+    "canonical_encoding": "H(treatment_bytes || fixture_bytes || output_schema_bytes || fixed_wrapper_bytes || declared_metadata_utf8)",
+    "hasher": "SHA-256",
+    "total_execution_units": 105,
+    "pilot_execution_units_count": 25,
+    "main_execution_units_count": 80
   },
-  "bundle_contents": {
-    "treatment_packets": [
-      {
-        "cohort": "K0",
-        "file": "02-TREATMENT_PACKETS/packet-K0.md",
-        "sha256": "a6bea5f26d57051aee881084de473ebe0775063aebbb8d20b0b0994b83c71316"
-      },
-      {
-        "cohort": "K0D",
-        "file": "02-TREATMENT_PACKETS/packet-K0D.md",
-        "sha256": "6580e4cb0c241fc441170b6af9febfab43e8e40211fb05c0df116b65caf60e3b"
-      },
-      {
-        "cohort": "K1",
-        "file": "02-TREATMENT_PACKETS/packet-K1.md",
-        "sha256": "c7f543ad4a1a4836edb93f2ef89ab5b4f209f1a1f4705693cdea395c2f3b4126"
-      },
-      {
-        "cohort": "K2",
-        "file": "02-TREATMENT_PACKETS/packet-K2.md",
-        "sha256": "344f72e901e200af641935f2a4a7e06ff40c12056bc5db8f43a8f6fc63bed8f3"
-      },
-      {
-        "cohort": "K3",
-        "file": "02-TREATMENT_PACKETS/packet-K3.md",
-        "sha256": "d0b3d79d67087b558c91df4c5669219517e2b92712de128cb6fa8764081023af"
-      }
-    ],
-    "battery_fixtures": [
-      "04-BATTERY_FIXTURES/BAT-01.md", "04-BATTERY_FIXTURES/BAT-02.md", "04-BATTERY_FIXTURES/BAT-03.md", "04-BATTERY_FIXTURES/BAT-04.md",
-      "04-BATTERY_FIXTURES/BAT-05.md", "04-BATTERY_FIXTURES/BAT-06.md", "04-BATTERY_FIXTURES/BAT-07.md", "04-BATTERY_FIXTURES/BAT-08.md",
-      "04-BATTERY_FIXTURES/BAT-09.md", "04-BATTERY_FIXTURES/BAT-10.md", "04-BATTERY_FIXTURES/BAT-11.md", "04-BATTERY_FIXTURES/BAT-12.md",
-      "04-BATTERY_FIXTURES/BAT-13.md", "04-BATTERY_FIXTURES/BAT-14.md", "04-BATTERY_FIXTURES/BAT-15.md", "04-BATTERY_FIXTURES/BAT-16.md"
-    ],
+  "fixed_components": {
     "output_schema": {
-      "type": "object",
-      "required": ["finding_id", "verdict", "identified_issues", "evidence", "recommended_action", "confidence"],
-      "properties": {
-        "finding_id": { "type": "string" },
-        "verdict": { "enum": ["PASS", "FAIL", "HELD"] },
-        "identified_issues": { "type": "array", "items": { "type": "string" } },
-        "evidence": { "type": "string" },
-        "recommended_action": { "type": "string" },
-        "confidence": { "enum": ["HIGH", "MEDIUM", "LOW"] }
-      }
+      "path": "research/sequence-5.5-closure-chamber/09-THREE_GOAL_CLOSURE_LEDGER_SCHEMA.json",
+      "bytes": 4089,
+      "sha256": "56fc248b47519f8e00665c12195a36d3b3fd7a8ffdaaed5a8f56894a5beff964"
+    },
+    "execution_metadata_schema": {
+      "bytes": 344,
+      "sha256": "93e0a66d8a5230c19b8f5fb0c62bd326593c864e6854b253b607c49a655d0d5f"
+    },
+    "fixed_wrapper_template": {
+      "bytes": 229,
+      "sha256": "dcba8b4a2bb3f9540b71197507914cc161afaf80d68d9d1e265ea39873882e83"
     }
   },
-  "seal": "⟐"
+  "treatment_packets": {
+    "K0": {
+      "path": "research/sequence-5.5-closure-chamber/02-TREATMENT_PACKETS/packet-K0.md",
+      "bytes": 739,
+      "sha256": "a6bea5f26d57051aee881084de473ebe0775063aebbb8d20b0b0994b83c71316"
+    },
+    "K0D": {
+      "path": "research/sequence-5.5-closure-chamber/02-TREATMENT_PACKETS/packet-K0D.md",
+      "bytes": 7379,
+      "sha256": "4ec9d5af037e4d3fe525f750a4170dcac249e5433c04b04c2bd6c32b37f3eed1"
+    },
+    "K1": {
+      "path": "research/sequence-5.5-closure-chamber/02-TREATMENT_PACKETS/packet-K1.md",
+      "bytes": 7807,
+      "sha256": "c6739e66bf710bcc53b38af184b68a3f487ff29908274fc49b2b8b0b48d09e9e"
+    },
+    "K2": {
+      "path": "research/sequence-5.5-closure-chamber/02-TREATMENT_PACKETS/packet-K2.md",
+      "bytes": 7663,
+      "sha256": "ae657daa35ba75efa80ddc18b5a67661741920c58685a0083109efb32ef10d94"
+    },
+    "K3": {
+      "path": "research/sequence-5.5-closure-chamber/02-TREATMENT_PACKETS/packet-K3.md",
+      "bytes": 8078,
+      "sha256": "39ba48f8ef27242094f712b0966afc1725fcf851f80c3917332a360be9f0cfaa"
+    }
+  },
+  "pilot_fixtures": {
+    "PILOT-01": {
+      "path": "research/sequence-5.5-closure-chamber/04-PILOT_FIXTURES/PILOT-01.md",
+      "bytes": 1597,
+      "sha256": "c300f23751877fa2630892529708b76b6894c1e6c36cd8d590a65ffe1b80a6de",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION"
+    },
+    "PILOT-02": {
+      "path": "research/sequence-5.5-closure-chamber/04-PILOT_FIXTURES/PILOT-02.md",
+      "bytes": 1684,
+      "sha256": "778d39036931100d737206657f2e21695a634055058e7f7b6e6ffbac486c1a8c",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION"
+    },
+    "PILOT-03": {
+      "path": "research/sequence-5.5-closure-chamber/04-PILOT_FIXTURES/PILOT-03.md",
+      "bytes": 1659,
+      "sha256": "ffa4a9923a61532d5ce3d385837461b4d50855e2ecc9293487d2c57e70fb7586",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY"
+    },
+    "PILOT-04": {
+      "path": "research/sequence-5.5-closure-chamber/04-PILOT_FIXTURES/PILOT-04.md",
+      "bytes": 1625,
+      "sha256": "e4e025b13c9fa7022e61ab57e8f2d3f00d63f4b217fc4913eeccb1ad1732920a",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY"
+    },
+    "PILOT-05": {
+      "path": "research/sequence-5.5-closure-chamber/04-PILOT_FIXTURES/PILOT-05.md",
+      "bytes": 1631,
+      "sha256": "dd775f1c46c1f28b51ac4c3d8bf3834f1986fb33fd7da964d9e431c025c32686",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY"
+    }
+  },
+  "main_battery_fixtures": {
+    "BAT-01": {
+      "path": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-01.md",
+      "bytes": 1327,
+      "sha256": "7a32c71e4586779e6950d53ee07d1e3253b0756606874a5d81e25c2a94bcf066",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION"
+    },
+    "BAT-02": {
+      "path": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-02.md",
+      "bytes": 1185,
+      "sha256": "5be2be8916e7cc21736a74784b77b31268aac1443728fec6bbd17b3e63e9dbb9",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION"
+    },
+    "BAT-03": {
+      "path": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-03.md",
+      "bytes": 1063,
+      "sha256": "e96c2eb880829d3f642dd5a3834d2d72fd5f534132fc3d39c50f2faa3459b801",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION"
+    },
+    "BAT-04": {
+      "path": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-04.md",
+      "bytes": 1057,
+      "sha256": "4b2a9dcf943ab69274603a622a84062be8fddc5a2817208f6a9f6d3e8548a38d",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION"
+    },
+    "BAT-05": {
+      "path": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-05.md",
+      "bytes": 1124,
+      "sha256": "58738959c08ed35db50ced4911abf87ae1669ea24e17b6ebb4c84dde86dceb32",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION"
+    },
+    "BAT-06": {
+      "path": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-06.md",
+      "bytes": 1053,
+      "sha256": "d2fe457adf30b35fa1ae92c970df1c4553eea968db2e507d89c837270450b6c0",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION"
+    },
+    "BAT-07": {
+      "path": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-07.md",
+      "bytes": 1134,
+      "sha256": "f43db487f69c74e37cab6cec73603ad82b63542fdd23b7b83df8630076e282fd",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY"
+    },
+    "BAT-08": {
+      "path": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-08.md",
+      "bytes": 1120,
+      "sha256": "76e9b4cbef03c4b1c4b21bf8778c2f21d69484fdf3ce72d4f7dba04d6202b0ca",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY"
+    },
+    "BAT-09": {
+      "path": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-09.md",
+      "bytes": 1001,
+      "sha256": "91334212764a3f024d150686f7164eb7bdfc5894bf19ed51892cd683a7eec7f0",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY"
+    },
+    "BAT-10": {
+      "path": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-10.md",
+      "bytes": 1141,
+      "sha256": "e138ede605459364bc08f6e539334c30988c103a3aa6257131bb606bfc606004",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY"
+    },
+    "BAT-11": {
+      "path": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-11.md",
+      "bytes": 1065,
+      "sha256": "8147494317626f96b98a00d735d841052329a6e0136582de0e7529f93d88e663",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY"
+    },
+    "BAT-12": {
+      "path": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-12.md",
+      "bytes": 1184,
+      "sha256": "2620f507ac0082d82c2801eafe474a7a02574e18f57f72fd377fb646f8962859",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY"
+    },
+    "BAT-13": {
+      "path": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-13.md",
+      "bytes": 1170,
+      "sha256": "51f5e0eb9dffa45c63c29f0bb21a849d64176379bf3981059f939a0640989209",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY"
+    },
+    "BAT-14": {
+      "path": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-14.md",
+      "bytes": 1143,
+      "sha256": "a86cba27a3ae54f4ab0f40f0da01c75cbf58da66c06d570f8f77b883910e0bbe",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY"
+    },
+    "BAT-15": {
+      "path": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-15.md",
+      "bytes": 1205,
+      "sha256": "c9483d3cec3705730a8cd27be7b9da184bea44d1dba9bcab9be22a7d95d4eb65",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY"
+    },
+    "BAT-16": {
+      "path": "research/sequence-5.5-closure-chamber/04-BATTERY_FIXTURES/BAT-16.md",
+      "bytes": 1153,
+      "sha256": "962500b7aee907b6ae88f5ad51e6542996b60b3e50e601e4bac8fd67ee2912d7",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY"
+    }
+  },
+  "pilot_execution_units": [
+    {
+      "unit_id": "UNIT_K0_PILOT-01",
+      "arm": "K0",
+      "fixture_id": "PILOT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": true,
+      "execution_unit_sha256": "2b38419b1e9a112606dc84aa4b3e15a973138962c712792d209e441aafefdffc"
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-02",
+      "arm": "K0",
+      "fixture_id": "PILOT-02",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": true,
+      "execution_unit_sha256": "73ce93e7df9723bdffb51c56c24054fb9d1fc4b4c2d01727d0fc52a282a88f37"
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-03",
+      "arm": "K0",
+      "fixture_id": "PILOT-03",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "7b66da10ca7d79f5cdf238ab7a963c1ce324ad739a701dd93cb26d60f5e3b37d"
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-04",
+      "arm": "K0",
+      "fixture_id": "PILOT-04",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "1ad89a72c047b6c63e6560dec612c39f960eb29b21ff003bbb7f87846a3a234c"
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-05",
+      "arm": "K0",
+      "fixture_id": "PILOT-05",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "54d956690dd8be373a5b920f1b4607489131f97b47fc0973660857229e483428"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-01",
+      "arm": "K0D",
+      "fixture_id": "PILOT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": true,
+      "execution_unit_sha256": "ee5b19d3194f18e2ef81eea7d98265c8d49375a3a6b81e647cb8662c2e0295c1"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-02",
+      "arm": "K0D",
+      "fixture_id": "PILOT-02",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": true,
+      "execution_unit_sha256": "8f367e8a42fea4a11f70ba2b72c43622051c794a162ada9a777c97056d905072"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-03",
+      "arm": "K0D",
+      "fixture_id": "PILOT-03",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "5c3e5a64142056e0dbf07cc3522dd91eb43bf36f8c0d39042d61bfaf9ea00749"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-04",
+      "arm": "K0D",
+      "fixture_id": "PILOT-04",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "596360ebdf74469b32999f65bd6964eede9f16863a620e7dcd9c0630afa63470"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-05",
+      "arm": "K0D",
+      "fixture_id": "PILOT-05",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "17790349a2f650785e83eb9dda3138669f88881d8dc50c95024aab30f7c9152a"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-01",
+      "arm": "K1",
+      "fixture_id": "PILOT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": true,
+      "execution_unit_sha256": "a5117d6d4c3a4bbb632af2a6c39d3b2e5a22ae477e7880fbb92e2be11c29f39a"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-02",
+      "arm": "K1",
+      "fixture_id": "PILOT-02",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": true,
+      "execution_unit_sha256": "6d5aeed30103f56a1cd9a8e5f2ff73fb79d70daeb7779ef2364e98a94fa12e90"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-03",
+      "arm": "K1",
+      "fixture_id": "PILOT-03",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "a054f39bbcf02aeb5451572501d2000234c00704aceba8d2550e352790bf6033"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-04",
+      "arm": "K1",
+      "fixture_id": "PILOT-04",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "ab90eae92beb7f1f37270eadadbdc40fccc0419c8dd0c2a36de59cd0a617b8e4"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-05",
+      "arm": "K1",
+      "fixture_id": "PILOT-05",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "9d0a0f70d3df70dec99c640d1c0d04f1848e698604793df50a44787ca21291db"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-01",
+      "arm": "K2",
+      "fixture_id": "PILOT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": true,
+      "execution_unit_sha256": "889d1bb53e3b108e7bd0cda1287b52a5ca76858eebbeeb5dec457d6a09502e43"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-02",
+      "arm": "K2",
+      "fixture_id": "PILOT-02",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": true,
+      "execution_unit_sha256": "4731b55f7aa99e833830645e53c56ac7e69f1841eba295b54b95b1e576598b28"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-03",
+      "arm": "K2",
+      "fixture_id": "PILOT-03",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "87af659554327f2fd7505069c76a4b00456d6ed6b921f7af18700c3b4df6d1db"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-04",
+      "arm": "K2",
+      "fixture_id": "PILOT-04",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "989a0759ed6e83ed8062a73cdbd22be6b1b8c211515c4ed9a7770aff610e095c"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-05",
+      "arm": "K2",
+      "fixture_id": "PILOT-05",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "2b11f5d83fea365e41c5b964c2fd1ac7259f75d9a071191e312d1026fa0e63a9"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-01",
+      "arm": "K3",
+      "fixture_id": "PILOT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": true,
+      "execution_unit_sha256": "0da32054034a68c7d186e9854baad85f9d13488cb1028220e810bf54d23e3cd9"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-02",
+      "arm": "K3",
+      "fixture_id": "PILOT-02",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": true,
+      "execution_unit_sha256": "ca5788f92912a3c3923014107e635a8534e036c4d53001122905f6dc9457672b"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-03",
+      "arm": "K3",
+      "fixture_id": "PILOT-03",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "254e35db5fd7e13dc826197754401ef61dba3f78991c362704e8346b06edb54e"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-04",
+      "arm": "K3",
+      "fixture_id": "PILOT-04",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "1a2390f9061078316ddfb2c2c026a728d2febad4ce65f3704025628e59e28039"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-05",
+      "arm": "K3",
+      "fixture_id": "PILOT-05",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "1c6b2e9b81fce9c6ec1d26b907fd6ccae8b2db47b848c7ebeaad37d46abfd702"
+    }
+  ],
+  "main_execution_units": [
+    {
+      "unit_id": "UNIT_K0_BAT-01",
+      "arm": "K0",
+      "fixture_id": "BAT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": false,
+      "execution_unit_sha256": "81f6113126eb39ddea7df7d2ae67da2f6b28e762747b003e014fd61a97f30ce6"
+    },
+    {
+      "unit_id": "UNIT_K0_BAT-02",
+      "arm": "K0",
+      "fixture_id": "BAT-02",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": false,
+      "execution_unit_sha256": "99ba70087501153401ecec4f5fd014c617fc6f3b5adbc265dfcc08c0c98397c3"
+    },
+    {
+      "unit_id": "UNIT_K0_BAT-03",
+      "arm": "K0",
+      "fixture_id": "BAT-03",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": false,
+      "execution_unit_sha256": "a016a372e815081e613b0a7a083f7c43520212a0b4db8e2105e65ef8a41784a3"
+    },
+    {
+      "unit_id": "UNIT_K0_BAT-04",
+      "arm": "K0",
+      "fixture_id": "BAT-04",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": false,
+      "execution_unit_sha256": "7adf781dd0c62279508d516caeb3f20902b5bd3fbd980528995894c4e095cabb"
+    },
+    {
+      "unit_id": "UNIT_K0_BAT-05",
+      "arm": "K0",
+      "fixture_id": "BAT-05",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": false,
+      "execution_unit_sha256": "112158d643364ae66d50b548309e7a0263e7beb700fe3b8d4c8620726592a2f3"
+    },
+    {
+      "unit_id": "UNIT_K0_BAT-06",
+      "arm": "K0",
+      "fixture_id": "BAT-06",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": false,
+      "execution_unit_sha256": "3fd7abb239acc2612c5a46bafab6db6f042072d2ae140fed3c758a1af0a8c871"
+    },
+    {
+      "unit_id": "UNIT_K0_BAT-07",
+      "arm": "K0",
+      "fixture_id": "BAT-07",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "59b12ac67b9dda093e39304c6a9444ed5e7604fdedcc9f084e9d5a4162ec77db"
+    },
+    {
+      "unit_id": "UNIT_K0_BAT-08",
+      "arm": "K0",
+      "fixture_id": "BAT-08",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "dca8c097a96ee9940ea81fde98859eb7adc6a4f2fddab1a3b8c408abf2eaa24b"
+    },
+    {
+      "unit_id": "UNIT_K0_BAT-09",
+      "arm": "K0",
+      "fixture_id": "BAT-09",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "c83de47565fcc2a120e9fa9f7b84ded8344038fc0c3adafe9b7269ea2c71d9f6"
+    },
+    {
+      "unit_id": "UNIT_K0_BAT-10",
+      "arm": "K0",
+      "fixture_id": "BAT-10",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "946e3961636420a36423c3aa7c4edc33927586d8be33e6476b84234a9923963b"
+    },
+    {
+      "unit_id": "UNIT_K0_BAT-11",
+      "arm": "K0",
+      "fixture_id": "BAT-11",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "ef3f2a41d50b343fea0e64a5ee52c8a338368619bb095d7615bf945862ef432b"
+    },
+    {
+      "unit_id": "UNIT_K0_BAT-12",
+      "arm": "K0",
+      "fixture_id": "BAT-12",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "6fea00355672d387ad3f4372848d4dbdbfdf752ca3be126505f5bbbd7e2f1f4e"
+    },
+    {
+      "unit_id": "UNIT_K0_BAT-13",
+      "arm": "K0",
+      "fixture_id": "BAT-13",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "f5abf2fb542f599f7bd16b599ef86232e06967d731af11dc401559b334806e38"
+    },
+    {
+      "unit_id": "UNIT_K0_BAT-14",
+      "arm": "K0",
+      "fixture_id": "BAT-14",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "b524c0e0b27df2acd43518859eb7050ff826b4ae33d8627d4248927c8ca7bb7c"
+    },
+    {
+      "unit_id": "UNIT_K0_BAT-15",
+      "arm": "K0",
+      "fixture_id": "BAT-15",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "eb4ff63587e1bdc721b22d6fb690fe30b3f57e3c8f902e49e850a75a90aa90cb"
+    },
+    {
+      "unit_id": "UNIT_K0_BAT-16",
+      "arm": "K0",
+      "fixture_id": "BAT-16",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "c4884a0d4fad6a673f4a56fb5da0bbfa5429cb3176b0b689b11bd0304aac6833"
+    },
+    {
+      "unit_id": "UNIT_K0D_BAT-01",
+      "arm": "K0D",
+      "fixture_id": "BAT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": false,
+      "execution_unit_sha256": "1ee5f64fcb00aa991ace7b26113d24612221643fef621e49ec02d2b8c4ef6565"
+    },
+    {
+      "unit_id": "UNIT_K0D_BAT-02",
+      "arm": "K0D",
+      "fixture_id": "BAT-02",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": false,
+      "execution_unit_sha256": "ea69a017a470b3676635556debe5c1a198dcc4ef5f744759be9988f3696f63f4"
+    },
+    {
+      "unit_id": "UNIT_K0D_BAT-03",
+      "arm": "K0D",
+      "fixture_id": "BAT-03",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": false,
+      "execution_unit_sha256": "01c777362ce98a461891881a64047acf570e71a8d459f3386eb42f29ef5c0099"
+    },
+    {
+      "unit_id": "UNIT_K0D_BAT-04",
+      "arm": "K0D",
+      "fixture_id": "BAT-04",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": false,
+      "execution_unit_sha256": "33936e2bed25e67f60adb0a65be7203bc51c8e1736168dc7cee1c831c3c2cc48"
+    },
+    {
+      "unit_id": "UNIT_K0D_BAT-05",
+      "arm": "K0D",
+      "fixture_id": "BAT-05",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": false,
+      "execution_unit_sha256": "35121347843ded70d82150dbf30ab68574ea4a930f74c67b6e904d4064a7a129"
+    },
+    {
+      "unit_id": "UNIT_K0D_BAT-06",
+      "arm": "K0D",
+      "fixture_id": "BAT-06",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": false,
+      "execution_unit_sha256": "6b41fbf2cb64f7ad7313d9d9121eebbed750baca993f48a482fbe954ae36b261"
+    },
+    {
+      "unit_id": "UNIT_K0D_BAT-07",
+      "arm": "K0D",
+      "fixture_id": "BAT-07",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "7ff74cfaa4468e31f67e9fc6d1bb1545bd1e4858fbcdc4e0a10c244f1cbe63d8"
+    },
+    {
+      "unit_id": "UNIT_K0D_BAT-08",
+      "arm": "K0D",
+      "fixture_id": "BAT-08",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "da282565d907e490f3b7fa6cda2bcec2b2862895b731beb4932263872dfef0c2"
+    },
+    {
+      "unit_id": "UNIT_K0D_BAT-09",
+      "arm": "K0D",
+      "fixture_id": "BAT-09",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "c368e80810158ce09b669139db10b9937e2512ce6f188f9f1ee92ff65a445bee"
+    },
+    {
+      "unit_id": "UNIT_K0D_BAT-10",
+      "arm": "K0D",
+      "fixture_id": "BAT-10",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "14ff15dfe2977fc421272820cb9f51c29f52b8f270c7085a9163fd10d859ef63"
+    },
+    {
+      "unit_id": "UNIT_K0D_BAT-11",
+      "arm": "K0D",
+      "fixture_id": "BAT-11",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "40f8493159872045c36fcb6262c89430d9c57692f2a49ea71b3f166c4e739a2b"
+    },
+    {
+      "unit_id": "UNIT_K0D_BAT-12",
+      "arm": "K0D",
+      "fixture_id": "BAT-12",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "610e10072c1052e6356e8456d0ea185cfcf978de25462e4e15eab2fe355c82d0"
+    },
+    {
+      "unit_id": "UNIT_K0D_BAT-13",
+      "arm": "K0D",
+      "fixture_id": "BAT-13",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "23d8c806a920037db7a198d3ac61e3449e7f935671c084679f5e2747c8a43c0b"
+    },
+    {
+      "unit_id": "UNIT_K0D_BAT-14",
+      "arm": "K0D",
+      "fixture_id": "BAT-14",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "38942a538dc07543fead8e67d395262c25ab504b9e0959502fdc835638f2ae0c"
+    },
+    {
+      "unit_id": "UNIT_K0D_BAT-15",
+      "arm": "K0D",
+      "fixture_id": "BAT-15",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "02d2d53b765e719c1e1e2b4eb88d5a94d3332f5a5500a8bff908d5f4ac8e98a7"
+    },
+    {
+      "unit_id": "UNIT_K0D_BAT-16",
+      "arm": "K0D",
+      "fixture_id": "BAT-16",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "2dc3ae3b9533f57a60a6d30fd36809d136a400630a2bcf22972fd9a9e93c726e"
+    },
+    {
+      "unit_id": "UNIT_K1_BAT-01",
+      "arm": "K1",
+      "fixture_id": "BAT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": false,
+      "execution_unit_sha256": "fa0a1ba48fe4ca0e526a6896b0835a0e8792b00260985998506941e91df80da4"
+    },
+    {
+      "unit_id": "UNIT_K1_BAT-02",
+      "arm": "K1",
+      "fixture_id": "BAT-02",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": false,
+      "execution_unit_sha256": "acd8e93ee01a0c20297ff817f44ef6fe6c9019b9ea995f79df2b5962f7cd4bd9"
+    },
+    {
+      "unit_id": "UNIT_K1_BAT-03",
+      "arm": "K1",
+      "fixture_id": "BAT-03",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": false,
+      "execution_unit_sha256": "283a3854c684b0918f247f6543707d8d1d1e669eefd18c25700d6d580ea1994e"
+    },
+    {
+      "unit_id": "UNIT_K1_BAT-04",
+      "arm": "K1",
+      "fixture_id": "BAT-04",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": false,
+      "execution_unit_sha256": "e24d8616f26182a663ef5e4c7b1a224a87507bae97c83f5e7aba03e298a78cab"
+    },
+    {
+      "unit_id": "UNIT_K1_BAT-05",
+      "arm": "K1",
+      "fixture_id": "BAT-05",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": false,
+      "execution_unit_sha256": "318b39c0d2cf93c783902e89d1163a095195a7802faac473140467c3f7cbd21c"
+    },
+    {
+      "unit_id": "UNIT_K1_BAT-06",
+      "arm": "K1",
+      "fixture_id": "BAT-06",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": false,
+      "execution_unit_sha256": "ee54164651f5692e9cfaa592ab9c8210b98f979f29aaf0fb1dba09f8caa3bae8"
+    },
+    {
+      "unit_id": "UNIT_K1_BAT-07",
+      "arm": "K1",
+      "fixture_id": "BAT-07",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "55a1581c55c66ee78cabfee5851457bdcb8ce3fa5ae43c73abaa61bff1706df6"
+    },
+    {
+      "unit_id": "UNIT_K1_BAT-08",
+      "arm": "K1",
+      "fixture_id": "BAT-08",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "2403ae5a65aa4d55f21aff51536b2b53d985eecfaf4dee0df808adf6e10db174"
+    },
+    {
+      "unit_id": "UNIT_K1_BAT-09",
+      "arm": "K1",
+      "fixture_id": "BAT-09",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "23b4ca2ac1a215893bae55c53eb4b91d1be87029897fa4503d83afc6ba420db8"
+    },
+    {
+      "unit_id": "UNIT_K1_BAT-10",
+      "arm": "K1",
+      "fixture_id": "BAT-10",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "3aea11e95aebbfacf725baf8e2a28fd328337e10d319bb5bf04fa074f216e337"
+    },
+    {
+      "unit_id": "UNIT_K1_BAT-11",
+      "arm": "K1",
+      "fixture_id": "BAT-11",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "7eed701e0a239c66bef9da4d51a1d9d102e8939b04f3adb83af92be37235b5ce"
+    },
+    {
+      "unit_id": "UNIT_K1_BAT-12",
+      "arm": "K1",
+      "fixture_id": "BAT-12",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "6daab846e1867d111a30ef9b52d8126abe13f3ffe6266575574a675efb7eee53"
+    },
+    {
+      "unit_id": "UNIT_K1_BAT-13",
+      "arm": "K1",
+      "fixture_id": "BAT-13",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "8706f1da5bd91b85f92723ccd513a36c09859f5a56500fd50690f4baed859fee"
+    },
+    {
+      "unit_id": "UNIT_K1_BAT-14",
+      "arm": "K1",
+      "fixture_id": "BAT-14",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "743ba8f2926fb0a324847517356ddb2f6c9074f356e11eea9f2530292a8bc39b"
+    },
+    {
+      "unit_id": "UNIT_K1_BAT-15",
+      "arm": "K1",
+      "fixture_id": "BAT-15",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "a0bdcda81266f2ea858ff4da40f7f965e92fd6eb81396faa8d319e952d4b31f5"
+    },
+    {
+      "unit_id": "UNIT_K1_BAT-16",
+      "arm": "K1",
+      "fixture_id": "BAT-16",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "ab4b4830cede89de265b4fc938310a1e6a9162c7ccbd0e02eadff675d90acbfb"
+    },
+    {
+      "unit_id": "UNIT_K2_BAT-01",
+      "arm": "K2",
+      "fixture_id": "BAT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": false,
+      "execution_unit_sha256": "aae03c221a14bc26fcd655c6c5a3e81a8b4d2552aacaa27fced98d13860a9cca"
+    },
+    {
+      "unit_id": "UNIT_K2_BAT-02",
+      "arm": "K2",
+      "fixture_id": "BAT-02",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": false,
+      "execution_unit_sha256": "cbb619b531518a159255a75949d192c772c93c8090af2b5b39b4a6a5143d8e00"
+    },
+    {
+      "unit_id": "UNIT_K2_BAT-03",
+      "arm": "K2",
+      "fixture_id": "BAT-03",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": false,
+      "execution_unit_sha256": "20b451ab7b498c61a9a1167383e4f5b1eb7c1505ef385fc946dcc1e6bcbc11b6"
+    },
+    {
+      "unit_id": "UNIT_K2_BAT-04",
+      "arm": "K2",
+      "fixture_id": "BAT-04",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": false,
+      "execution_unit_sha256": "77cb65ea27726804027b83fa4a97774f809e1b2736d53c693571bd48c2a309f1"
+    },
+    {
+      "unit_id": "UNIT_K2_BAT-05",
+      "arm": "K2",
+      "fixture_id": "BAT-05",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": false,
+      "execution_unit_sha256": "d7fc0a69f6d6b8e140fd1fbecfe32417400cb066fca913ddfc0980991d148bc9"
+    },
+    {
+      "unit_id": "UNIT_K2_BAT-06",
+      "arm": "K2",
+      "fixture_id": "BAT-06",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": false,
+      "execution_unit_sha256": "b47140578c60bc11124465e59919606a29533923a2c2668092b4e386b17fa6aa"
+    },
+    {
+      "unit_id": "UNIT_K2_BAT-07",
+      "arm": "K2",
+      "fixture_id": "BAT-07",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "f8f73394552d046f94f215b37f37d45252e7ac69f5ad485c3996abf21fe56560"
+    },
+    {
+      "unit_id": "UNIT_K2_BAT-08",
+      "arm": "K2",
+      "fixture_id": "BAT-08",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "06736805753c37dbd9b22c79191ce12437424b7303c9e174fabfa8ed11b8acef"
+    },
+    {
+      "unit_id": "UNIT_K2_BAT-09",
+      "arm": "K2",
+      "fixture_id": "BAT-09",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "d232ea3266c820c089a50487fa9f6a984a4afe152e28722dc209895c5546325e"
+    },
+    {
+      "unit_id": "UNIT_K2_BAT-10",
+      "arm": "K2",
+      "fixture_id": "BAT-10",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "64566d88cf40d38d1c3444ade5d8572ad332ca5d69032e2b826289ec7090b149"
+    },
+    {
+      "unit_id": "UNIT_K2_BAT-11",
+      "arm": "K2",
+      "fixture_id": "BAT-11",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "4346a26f8767fac52b3b548e5583a2d452d52300e6fc421735a85ed0a6f9cb12"
+    },
+    {
+      "unit_id": "UNIT_K2_BAT-12",
+      "arm": "K2",
+      "fixture_id": "BAT-12",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "daf6af80615ced6c5d1d70ecadf655dc19a14820314ee74ab79c06a784daab15"
+    },
+    {
+      "unit_id": "UNIT_K2_BAT-13",
+      "arm": "K2",
+      "fixture_id": "BAT-13",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "5a5dbcc4a8ac3d753a5ea952b9f75b21b1c776146fd8a60f08f0f171bbba3dca"
+    },
+    {
+      "unit_id": "UNIT_K2_BAT-14",
+      "arm": "K2",
+      "fixture_id": "BAT-14",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "429527941dbc55dcda868c269ba2514b5de6a76994d0b8a10b3aa3e500c87722"
+    },
+    {
+      "unit_id": "UNIT_K2_BAT-15",
+      "arm": "K2",
+      "fixture_id": "BAT-15",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "954caab01b5d3e54d1232e58fdb64956381017363ee19a3615c2decbad607328"
+    },
+    {
+      "unit_id": "UNIT_K2_BAT-16",
+      "arm": "K2",
+      "fixture_id": "BAT-16",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "e52b1669e95f097c5eb1d486f139ef3da39a56d705409cbba21c9fea3fb2c11c"
+    },
+    {
+      "unit_id": "UNIT_K3_BAT-01",
+      "arm": "K3",
+      "fixture_id": "BAT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": false,
+      "execution_unit_sha256": "ad4c73959fee746917bb619cb8d20d7430a11196a67e080d006c368ba80314db"
+    },
+    {
+      "unit_id": "UNIT_K3_BAT-02",
+      "arm": "K3",
+      "fixture_id": "BAT-02",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": false,
+      "execution_unit_sha256": "d7936251ddbd779e5ebe6ac322e557976ffb59f654b49b42f45a26dffa65030b"
+    },
+    {
+      "unit_id": "UNIT_K3_BAT-03",
+      "arm": "K3",
+      "fixture_id": "BAT-03",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": false,
+      "execution_unit_sha256": "1a4bbf800a5f83cc2e24888044f13cf053551052fe16139a15404b77f8040a73"
+    },
+    {
+      "unit_id": "UNIT_K3_BAT-04",
+      "arm": "K3",
+      "fixture_id": "BAT-04",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": false,
+      "execution_unit_sha256": "68fab25e9777125d8ff1f7ca46958c9197fe9009a5e798a8e3d9bf4eff9557de"
+    },
+    {
+      "unit_id": "UNIT_K3_BAT-05",
+      "arm": "K3",
+      "fixture_id": "BAT-05",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": false,
+      "execution_unit_sha256": "eff4cf54fa5b438e6a3e2ce55bbd328b8dd26d25320de37f464972380fb533e7"
+    },
+    {
+      "unit_id": "UNIT_K3_BAT-06",
+      "arm": "K3",
+      "fixture_id": "BAT-06",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": false,
+      "execution_unit_sha256": "c47b52abf3b45fffd678d52999f04ba3bc3e3b386fd4dbe4e82105377b7660a0"
+    },
+    {
+      "unit_id": "UNIT_K3_BAT-07",
+      "arm": "K3",
+      "fixture_id": "BAT-07",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "167e83e0e46875b63a78312cb45caa1dc725652c28f7c495f76fb55ba3f3afe4"
+    },
+    {
+      "unit_id": "UNIT_K3_BAT-08",
+      "arm": "K3",
+      "fixture_id": "BAT-08",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "c29be4ba729c1a6fe79e89d93830e78d00dbd4d78d25600f1125599baaae0404"
+    },
+    {
+      "unit_id": "UNIT_K3_BAT-09",
+      "arm": "K3",
+      "fixture_id": "BAT-09",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "91a7e30031a16ad6c16dfc6824bc040b625d3854b2538c9bdcda536f9736ca4b"
+    },
+    {
+      "unit_id": "UNIT_K3_BAT-10",
+      "arm": "K3",
+      "fixture_id": "BAT-10",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "37776acda2353ffd68440c3e08df44013157421d741ce51d0c26c2965032c4c2"
+    },
+    {
+      "unit_id": "UNIT_K3_BAT-11",
+      "arm": "K3",
+      "fixture_id": "BAT-11",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "7864354d8f74e63276af0566adf12eb028c8cc0ca2d1d95371180a2843b28ca1"
+    },
+    {
+      "unit_id": "UNIT_K3_BAT-12",
+      "arm": "K3",
+      "fixture_id": "BAT-12",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "98b56c92d187b42c11d922fdeba6f7448d55a3a5dec741dde9f43ee46fe84e84"
+    },
+    {
+      "unit_id": "UNIT_K3_BAT-13",
+      "arm": "K3",
+      "fixture_id": "BAT-13",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "35506c166fd2d4040b871b7502746bdc486e9b838ea619f75b23998ed36a2052"
+    },
+    {
+      "unit_id": "UNIT_K3_BAT-14",
+      "arm": "K3",
+      "fixture_id": "BAT-14",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "f27af56c5ab2bff308ff748654eb680fe251a133a81055124adb03c6e7082338"
+    },
+    {
+      "unit_id": "UNIT_K3_BAT-15",
+      "arm": "K3",
+      "fixture_id": "BAT-15",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "ee897c1afbfd352b4088edc1fec52ba5a795a5cbd6aad693202341aa37d027c0"
+    },
+    {
+      "unit_id": "UNIT_K3_BAT-16",
+      "arm": "K3",
+      "fixture_id": "BAT-16",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": false,
+      "execution_unit_sha256": "9a765c259c2b949ebab39284c710402f1f52f6532cd279637a5b0da96a343b0e"
+    }
+  ],
+  "commitments": {
+    "main_hidden_answer_key_commitment_sha256": "cc26fca812fcd6bbdb6634cf310c13cd2410bc150416874c6ee158d7a0551700",
+    "pilot_calibration_key_commitment_sha256": "d796fdabb35b8716acfd0b6d7da0e19cc8384f6c47c58068994e91ee3aa89c68"
+  },
+  "sealed_execution_bundle_manifest_sha256": "cb7306049dd4987be4486ec2d600302bbfe1dcac8e65f4bd81a392ab77dca24b"
 }
