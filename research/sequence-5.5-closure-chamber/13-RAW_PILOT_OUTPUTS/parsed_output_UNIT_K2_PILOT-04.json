@@ -1,0 +1,16 @@
+{
+  "finding_id": "FINDING-PILOT-04",
+  "verdict": "HELD",
+  "identified_issues": [
+    "State-observation conflation where Station 2 treats an unauthenticated local storage event as proof of a calibrated measurement state.",
+    "Missing predecessor chaining due to 'predecessor_head_digest' being null, preventing verification of the measurement's origin.",
+    "Use of unpinned client memory ('unpinned_client_memory') as the source revision, which falls into the instrument nullspace and cannot uniquely identify the system state."
+  ],
+  "evidence": [
+    "Station 2 session state contains 'predecessor_head_digest: null'.",
+    "Station 2 session state contains 'source_revision: \"unpinned_client_memory\"'.",
+    "Station 2 displayed 'Lesion diameter measured at 18.4mm. Approved by Radiologist.' based solely on an unauthenticated browser local storage event."
+  ],
+  "recommended_action": "Enforce strict harness and system abstention rules. Prohibit Station 2 from displaying approval or measurement data when the predecessor head digest is null or unverified. Require cryptographic binding of the 'head_digest' from Station 1 to Station 2's session state to achieve full identifiability.",
+  "confidence": "HIGH"
+}

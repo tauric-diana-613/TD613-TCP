@@ -1,0 +1,55 @@
+{
+  "schema": "td613.sequence5.5.execution-receipt/v1.0",
+  "execution_id": "EXEC-UNIT_K0_PILOT-01",
+  "execution_unit_sha256": "977c9695f02e362e0db84f5ec7105e06d1ac7a927588fce8cb71d39b50a96564",
+  "coordinate": "gemini-3.5-flash × node-fetch/server-gemini-transport × PILOT-01 × K0",
+  "arm": "K0",
+  "fixture_id": "PILOT-01",
+  "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+  "is_pilot": true,
+  "receiver_identity": {
+    "provider": "google",
+    "exact_model_id": "gemini-3.5-flash",
+    "runtime_or_harness": "node-fetch/server-gemini-transport",
+    "runtime_version": "node-v24.14.0/gemini-v1beta",
+    "endpoint_or_execution_class": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent",
+    "model_settings": {
+      "temperature": 0,
+      "seed": null,
+      "reasoning_or_thinking_setting": "thinking_default",
+      "max_output_tokens": 8192,
+      "tool_permissions": []
+    }
+  },
+  "temporal_provenance": {
+    "request_started_at": "2026-10-06T03:29:33.990Z",
+    "response_completed_at": "2026-10-06T03:29:58.872Z",
+    "duration_ms": 24874
+  },
+  "input_provenance": {
+    "treatment_sha256": "a6bea5f26d57051aee881084de473ebe0775063aebbb8d20b0b0994b83c71316",
+    "fixture_sha256": "c300f23751877fa2630892529708b76b6894c1e6c36cd8d590a65ffe1b80a6de",
+    "receiver_output_schema_sha256": "935bf87b1ef86ac1df7490c7f5abe6d93892e89869f348671bd64c50b42e5537",
+    "fixed_wrapper_sha256": "2132cb1c832b326ffa9942dff5d246e595207f19addc8e9bf8227dfb52744f0d",
+    "exact_input_sha256": "977c9695f02e362e0db84f5ec7105e06d1ac7a927588fce8cb71d39b50a96564"
+  },
+  "output_provenance": {
+    "raw_response_sha256": "09a7ea251785158d0e88b81bc12423980eba6b4ce379e9af086657234dfd1e18",
+    "raw_response_path": "research/sequence-5.5-closure-chamber/13-RAW_PILOT_OUTPUTS/raw_response_UNIT_K0_PILOT-01.json",
+    "raw_response_preserved_unmodified": true,
+    "parsed_response_sha256": "c6211ba434d8e083581a55ab21dd4b5099062d25d3b2a1714b5c816974ab5afa",
+    "parsing_validation_status": "VALID"
+  },
+  "provider_receipt": {
+    "provider_request_id": "HmvEasPLIY7yz7IPmcO3wQM",
+    "controller_task_id": "CONTROLLER-PILOT-01",
+    "status_code": 200,
+    "retry_ordinal": 0,
+    "retry_reason": null
+  },
+  "usage_realized_dose": {
+    "reported_input_tokens": 1171,
+    "reported_output_tokens": 241,
+    "reported_total_tokens": 2276
+  }
+}

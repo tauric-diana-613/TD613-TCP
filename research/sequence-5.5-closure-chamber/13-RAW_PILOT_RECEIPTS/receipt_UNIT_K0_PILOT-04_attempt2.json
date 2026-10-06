@@ -1,0 +1,55 @@
+{
+  "schema": "td613.sequence5.5.execution-receipt/v1.0",
+  "execution_id": "EXEC-UNIT_K0_PILOT-04-attempt-2",
+  "execution_unit_sha256": "235561d5c29da9943f60eb8ad8cdf75bd4fa05bc5614bd4a87e8e32153f613c6",
+  "coordinate": "gemini-3.5-flash × node-fetch/server-gemini-transport × PILOT-04 × K0",
+  "arm": "K0",
+  "fixture_id": "PILOT-04",
+  "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+  "is_pilot": true,
+  "receiver_identity": {
+    "provider": "google",
+    "exact_model_id": "gemini-3.5-flash",
+    "runtime_or_harness": "node-fetch/server-gemini-transport",
+    "runtime_version": "node-v24.14.0/gemini-v1beta",
+    "endpoint_or_execution_class": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent",
+    "model_settings": {
+      "temperature": 0,
+      "seed": null,
+      "reasoning_or_thinking_setting": "thinking_default",
+      "max_output_tokens": 8192,
+      "tool_permissions": []
+    }
+  },
+  "temporal_provenance": {
+    "request_started_at": "2026-10-06T03:39:12.738Z",
+    "response_completed_at": "2026-10-06T03:39:12.894Z",
+    "duration_ms": 155
+  },
+  "input_provenance": {
+    "treatment_sha256": "a6bea5f26d57051aee881084de473ebe0775063aebbb8d20b0b0994b83c71316",
+    "fixture_sha256": "e4e025b13c9fa7022e61ab57e8f2d3f00d63f4b217fc4913eeccb1ad1732920a",
+    "receiver_output_schema_sha256": "935bf87b1ef86ac1df7490c7f5abe6d93892e89869f348671bd64c50b42e5537",
+    "fixed_wrapper_sha256": "2132cb1c832b326ffa9942dff5d246e595207f19addc8e9bf8227dfb52744f0d",
+    "exact_input_sha256": "235561d5c29da9943f60eb8ad8cdf75bd4fa05bc5614bd4a87e8e32153f613c6"
+  },
+  "output_provenance": {
+    "raw_response_sha256": "b4785882d6a108b18bb53194787989f80f0d073678c1e809adde33fcebf8dba0",
+    "raw_response_path": "research/sequence-5.5-closure-chamber/13-RAW_PILOT_OUTPUTS/raw_response_UNIT_K0_PILOT-04_attempt2.json",
+    "raw_response_preserved_unmodified": true,
+    "parsed_response_sha256": null,
+    "parsing_validation_status": "PARSING_SKIPPED_ON_FAILURE"
+  },
+  "provider_receipt": {
+    "provider_request_id": null,
+    "controller_task_id": "CONTROLLER-PILOT-14_attempt2",
+    "status_code": 429,
+    "retry_ordinal": 2,
+    "retry_reason": "PREVIOUS_ATTEMPT_NON_200"
+  },
+  "usage_realized_dose": {
+    "reported_input_tokens": "TOKEN_USAGE_UNAVAILABLE",
+    "reported_output_tokens": "TOKEN_USAGE_UNAVAILABLE",
+    "reported_total_tokens": "TOKEN_USAGE_UNAVAILABLE"
+  }
+}

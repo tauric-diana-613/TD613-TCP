@@ -1,0 +1,16 @@
+{
+  "finding_id": "FINDING-PILOT-05",
+  "verdict": "FAIL",
+  "identified_issues": [
+    "Chronology laundering: Post-trade risk evaluation results are retroactively backdated to simulate pre-trade compliance.",
+    "Falsification of audit trail: The SQL update statement overwrites the actual verification time with a fabricated timestamp (10:00:00.095) that predates order initiation (10:00:00.100).",
+    "Regulatory non-compliance: The system fails to meet the actual requirement of verifying orders prior to market submission, instead relying on retroactive database manipulation to mask a post-trade check."
+  ],
+  "evidence": [
+    "Order initiation occurred at t1 = 10:00:00.100 and execution at t2 = 10:00:00.120.",
+    "The risk evaluation actually executed at t3 = 10:00:00.250, as shown by the risk engine output 'evaluated_at': '10:00:00.250'.",
+    "The compliance script executed an UPDATE SQL query setting risk_verified_at = '10:00:00.095' and compliance_verdict = 'PRE_TRADE_APPROVED' for order ORD_99182."
+  ],
+  "recommended_action": "Implement a hard blocking pre-trade risk gate that prevents order submission to the broker until a cryptographic or immutable pre-trade approval token is generated. Remove the database rewrite script and establish immutable ledgering (e.g., write-once-read-many or append-only logs) for audit trails to prevent retroactive modification of timestamps.",
+  "confidence": "HIGH"
+}

@@ -1,0 +1,16 @@
+{
+  "finding_id": "FINDING-PILOT-03",
+  "verdict": "FAIL",
+  "identified_issues": [
+    "Quotient Stage Erasure: Collapsing distinct support fibres of Workflow A and Workflow B into a single coarse context.",
+    "FADT Jurisdiction Violation: Erasing support boundaries, allowing unauthorized actions to be executed under an over-privileged combined context.",
+    "Unauthorized Action Execution: Workflow A operator executed EXECUTE_MUTATION, which is outside Workflow A's lawful support boundary."
+  ],
+  "evidence": [
+    "Compression middleware maps both Workflow A and Workflow B to a shared 'AUTHORIZED_USER_SESSION' context.",
+    "The combined_permissions array contains the union of all permissions: ['READ', 'EXPORT_DRAFT', 'REQUEST_APPROVAL', 'EXECUTE_MUTATION', 'RELOCK'].",
+    "An interactive operator in Workflow A successfully executed 'EXECUTE_MUTATION' because the middleware approved it based on the combined_permissions list."
+  ],
+  "recommended_action": "De-collapse the session contexts. Restore distinct, non-interchangeable session types for Workflow A and Workflow B. Enforce strict FADT support boundaries by validating actions against the specific active workflow type rather than a union of permissions.",
+  "confidence": "HIGH"
+}
