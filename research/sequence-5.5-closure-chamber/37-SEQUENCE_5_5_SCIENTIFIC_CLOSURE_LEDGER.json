@@ -1,0 +1,205 @@
+{
+  "schema": "td613.sequence5.5.scientific-closure-ledger/v1.0",
+  "sequence": "SEQUENCE_5.5",
+  "title": "Scientific Closure Ledger",
+  "status": "CLOSED",
+  "scientific_controller": "Amari",
+  "branch": "research/sequence-5.5-amari-closure-20261006",
+  "closure_parent_sha": "1c9f47bf90ed832e4e5314044230c7d2c01c6f30",
+  "governing_posture": [
+    "PILOT_CALIBRATION != TREATMENT_OPTIMIZATION",
+    "PILOT_RESULT != MAIN_TREATMENT_EFFECT_ESTIMATE",
+    "NON_IDENTIFYING_CEILING != METHODOLOGICAL_EQUIVALENCE",
+    "OBSERVED_DIAGNOSTIC != EMPIRICAL_CAUSAL_PROOF",
+    "EXECUTION_INTEGRITY != EXPERIMENT_IDENTITY",
+    "RAW_FREEZE_AUDITABILITY != OUTCOME_DISCLOSURE",
+    "RETRY != REPLACEMENT_OF_HISTORY",
+    "ASSAY_REFINEMENT_MAY_BECOME_RESULT_SEEKING"
+  ],
+  "calibration_history": [
+    {
+      "stage": "PILOT_V2",
+      "disposition": "HOLD_NON_IDENTIFYING_CEILING",
+      "execution_status": "GENUINE_RECEIVER_EXECUTION",
+      "summary": "23/25 item accuracy; K0D, K1, and K2 saturated at 5/5. Binary item accuracy could not resolve treatment differences."
+    },
+    {
+      "stage": "PILOT_V3",
+      "disposition": "HOLD_RECEIVER_LEAKAGE",
+      "execution_status": "NOT_EXECUTED",
+      "summary": "Receiver-visible answer leakage / lexical cueing detected before calls. Redesign required."
+    },
+    {
+      "stage": "PILOT_V3B",
+      "disposition": "HOLD_NON_IDENTIFYING_CEILING",
+      "execution_status": "GENUINE_RECEIVER_EXECUTION",
+      "summary": "Receiver-clean five-item pilot again scored 23/25 with K0D, K1, and K2 at 5/5; 2/5 clusters showed across-arm variance."
+    },
+    {
+      "stage": "PILOT_V4",
+      "disposition": "DESIGN_ONLY",
+      "execution_status": "NOT_EXECUTED",
+      "summary": "Shifted calibration from narrative incident difficulty to matched relational contrast pairs."
+    },
+    {
+      "stage": "PILOT_V4_1",
+      "disposition": "HOLD_PROTOCOL_DEVIATION",
+      "execution_status": "GENUINE_RECEIVER_EXECUTION_BUT_GATE_INELIGIBLE",
+      "summary": "Execution was genuine, but frozen fixture bytes / key commitment changed after scientific approval; preserved as exploratory protocol-deviation episode and excluded from official gate adjudication."
+    },
+    {
+      "stage": "PILOT_V4_1R",
+      "disposition": "HOLD_METHOD_NON_IDENTIFYING_AND_DYNAMIC_RANGE_SATURATED",
+      "execution_status": "GENUINE_CLEAN_RECOVERY_EXECUTION",
+      "raw_freeze_sha": "1b5600cba2cbab29f244f86ceb73f620318a74f5",
+      "key_reveal_sha": "1c9f47bf90ed832e4e5314044230c7d2c01c6f30",
+      "key_sha256": "cd971de705bdca06911b3a2ed683d08057db01809c49783ade6db162a7ee1ed1",
+      "summary": "Clean 50-unit relational-contrast recovery episode with exact deployment-source attestation, blind raw freeze, append-only key reveal, and preregistered pairwise scoring."
+    }
+  ],
+  "pilot_v4_1r_scoring": {
+    "target_transitions": {
+      "PAIR_01": "PASS -> HELD",
+      "PAIR_02": "PASS -> HELD",
+      "PAIR_03": "PASS -> FAIL",
+      "PAIR_04": "PASS -> HELD",
+      "PAIR_05": "PASS -> FAIL"
+    },
+    "observed_transitions": {
+      "K0": [
+        "PASS -> HELD",
+        "PASS -> HELD",
+        "PASS -> FAIL",
+        "PASS -> FAIL",
+        "PASS -> FAIL"
+      ],
+      "K0D": [
+        "PASS -> HELD",
+        "PASS -> HELD",
+        "PASS -> FAIL",
+        "PASS -> FAIL",
+        "PASS -> FAIL"
+      ],
+      "K1": [
+        "PASS -> HELD",
+        "PASS -> HELD",
+        "PASS -> FAIL",
+        "HELD -> FAIL",
+        "PASS -> FAIL"
+      ],
+      "K2": [
+        "PASS -> HELD",
+        "PASS -> HELD",
+        "PASS -> FAIL",
+        "HELD -> HELD",
+        "PASS -> FAIL"
+      ],
+      "K3": [
+        "PASS -> HELD",
+        "PASS -> HELD",
+        "PASS -> FAIL",
+        "PASS -> HELD",
+        "PASS -> FAIL"
+      ]
+    },
+    "pair_success_profiles": {
+      "K0": [
+        true,
+        true,
+        true,
+        false,
+        true
+      ],
+      "K0D": [
+        true,
+        true,
+        true,
+        false,
+        true
+      ],
+      "K1": [
+        true,
+        true,
+        true,
+        false,
+        true
+      ],
+      "K2": [
+        true,
+        true,
+        true,
+        false,
+        true
+      ],
+      "K3": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "pair_success_counts": {
+      "K0": "4/5",
+      "K0D": "4/5",
+      "K1": "4/5",
+      "K2": "4/5",
+      "K3": "5/5"
+    },
+    "total_successes": "21/25",
+    "total_success_rate": 0.84
+  },
+  "pilot_v4_1r_gate": {
+    "anti_floor": "PASS",
+    "comparator_set_saturation": "PASS",
+    "methodological_identification": "FAIL",
+    "pairwise_spread": "FAIL",
+    "dynamic_range": "FAIL",
+    "disposition": "HOLD",
+    "classifications": [
+      "METHODOLOGICALLY_NON_IDENTIFYING",
+      "TRIVIAL_OUTLIER_DRIVEN_VARIANCE",
+      "DYNAMIC_RANGE_SATURATED"
+    ],
+    "main_battery_authorized": false,
+    "bat_execution_count": 0
+  },
+  "pair_04_diagnostic": {
+    "target": "PASS -> HELD",
+    "observed": {
+      "K0": "PASS -> FAIL",
+      "K0D": "PASS -> FAIL",
+      "K1": "HELD -> FAIL",
+      "K2": "HELD -> HELD",
+      "K3": "PASS -> HELD"
+    },
+    "bounded_interpretation": "K3 uniquely preserved the preregistered PASS-to-HELD predecessor-continuity distinction in this pilot episode. The signal is hypothesis-generating only because it occurred on one pair inside an episode that failed preregistered spread and dynamic-range criteria.",
+    "claim_ceiling": [
+      "K3_PAIR04_SIGNAL = OBSERVED",
+      "K3_CAUSAL_EFFECT = HELD",
+      "MORE_EPISTEMIC_CAUTION != BETTER_TASK_CALIBRATION"
+    ]
+  },
+  "canonical_closure_statement": "At Gemini 3.8 Flash / medium / Vercel-preview under these receiver-clean relational contrast tasks, the preregistered binary pair-success assay did not identify an incremental Aperture effect over matched scaffolding or conventional engineering. A single Pair-04 diagnostic distinguished the full K3 governance treatment, but the episode failed preregistered spread and dynamic-range requirements, so that signal remains hypothesis-generating rather than inferential.",
+  "research_closure": {
+    "pilot_redesign_status": "STOP",
+    "rationale": "Further calibration redesign aimed primarily at forcing K1/K2 separation would risk result-seeking after repeated non-identifying pilots and a clean preregistered V4.1R hold.",
+    "main_battery_status": "SEALED_UNEXECUTED",
+    "causal_crown": "BOXED_IN_VAULT"
+  },
+  "sequence_6_handoff": {
+    "product_rule": "The product is not the dissertation rendered as UI. The product is the surviving relation set rendered beautifully.",
+    "admitted_basis": [
+      "Relations that survived Sequence 4 vocabulary stripping, label permutation, foreign/field projection, and structural ablation within their stated same-host scope.",
+      "Non-retroactivity and predecessor-continuity constraints as engineering invariants.",
+      "Claim ceilings and role separation as defensive product/governance affordances."
+    ],
+    "prohibited_product_claims": [
+      "Do not claim Aperture or TD613 governance demonstrated causal superiority over matched scaffolding or conventional engineering in Sequence 5.5.",
+      "Do not present the Pair-04 K3 signal as statistical or causal proof.",
+      "Do not convert same-host relation survival into independent discovery or exogenous empirical validation."
+    ],
+    "goal_2_product_status": "HELD_PENDING_SEQUENCE_6"
+  },
+  "seal": "⟐"
+}
