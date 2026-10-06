@@ -1,0 +1,17 @@
+{
+  "assay": "TD613-SEQ5-ASSAY-20261005",
+  "stage": "FINAL_FIXTURE_FREEZE",
+  "timestamp": "2026-10-06T00:02:00Z",
+  "difficulty_gate_result": {
+    "k0_pilot_accuracy": 0.475,
+    "target_window": [0.35, 0.80],
+    "gate_status": "PASSED_WITHIN_TARGET_WINDOW",
+    "ceiling_saturation": false,
+    "floor_opacity": false
+  },
+  "battery_manifest_freeze": "05-FIXTURE_MANIFEST.json",
+  "battery_size": 16,
+  "hidden_key_commitment_sha256": "38a943d3feb1bc0610b3696fdfeda86808cab96b7fe97c4d89f08e32df80e3bd",
+  "freeze_status": "LOCKED_FOR_RECEIVER_EXECUTION",
+  "calibration_data_disposition": "DISPOSED_ZERO_ROLE_IN_TREATMENT_INFERENCE"
+}

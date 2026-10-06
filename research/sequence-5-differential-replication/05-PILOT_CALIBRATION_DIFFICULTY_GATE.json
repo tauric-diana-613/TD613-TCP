@@ -1,0 +1,37 @@
+{
+  "assay": "TD613-SEQ5-ASSAY-20261005",
+  "stage": "PILOT_DIFFICULTY_GATE",
+  "timestamp": "2026-10-06T00:01:27.530Z",
+  "calibration_population": "DISPOSABLE_K0_CALIBRATION_COHORT",
+  "replicates": 5,
+  "battery_size": 16,
+  "total_evaluations": 80,
+  "total_correct": 38,
+  "k0_pilot_accuracy": 0.475,
+  "target_bounds": {
+    "min_admissible": 0.35,
+    "max_admissible": 0.8
+  },
+  "gate_status": "PASSED_WITHIN_TARGET_WINDOW",
+  "ceiling_saturation_detected": false,
+  "floor_opacity_detected": false,
+  "item_pass_rates": {
+    "BAT-01": 0.6,
+    "BAT-02": 0,
+    "BAT-03": 0,
+    "BAT-04": 0,
+    "BAT-05": 0.4,
+    "BAT-06": 0.6,
+    "BAT-07": 0,
+    "BAT-08": 0.4,
+    "BAT-09": 1,
+    "BAT-10": 1,
+    "BAT-11": 0.2,
+    "BAT-12": 0.4,
+    "BAT-13": 1,
+    "BAT-14": 1,
+    "BAT-15": 1,
+    "BAT-16": 0
+  },
+  "calibration_role": "DISPOSABLE_DATA_ZERO_ROLE_IN_FINAL_TREATMENT_INFERENCE"
+}
