@@ -1,0 +1,268 @@
+{
+  "assay": "TD613-SEQ5-ASSAY-20261005",
+  "stage": "RECEIVER_EXECUTION",
+  "execution_timestamp_start": "2026-10-06T00:03:00Z",
+  "execution_timestamp_end": "2026-10-06T00:03:30Z",
+  "total_runs": 32,
+  "total_evaluations": 512,
+  "schema_neutralization_verified": true,
+  "forbidden_vocabulary_audit_clean": true,
+  "runs": [
+    {
+      "run_id": "RUN-01",
+      "blind_token": "TOKEN-RUN-01-FB7D29F1",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "filename": "TOKEN-RUN-01-FB7D29F1.txt",
+      "sha256": "6fae7f41e6cc362d9d4cae3011a4bd225a1686fb094a994d10b6d08640c40651",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-02",
+      "blind_token": "TOKEN-RUN-02-A9FB9144",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "filename": "TOKEN-RUN-02-A9FB9144.txt",
+      "sha256": "0816eccfde33e13fa5045940af892773285643dd92a999afebe8c069ff560dac",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-03",
+      "blind_token": "TOKEN-RUN-03-D3CAE96C",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "filename": "TOKEN-RUN-03-D3CAE96C.txt",
+      "sha256": "b013e1ed0a003df935805581503ec6f4a1b4b96e551290a5e3cb72540298aaa3",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-04",
+      "blind_token": "TOKEN-RUN-04-3C16B7C4",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "filename": "TOKEN-RUN-04-3C16B7C4.txt",
+      "sha256": "08cee9181736de34d3d2efe68167a2f1326bad8a5f55e69b8ec60daf27592b52",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-05",
+      "blind_token": "TOKEN-RUN-05-A6B8C20A",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "filename": "TOKEN-RUN-05-A6B8C20A.txt",
+      "sha256": "06d01e81fad33fc42abe74cd73f66e35117c869c8dea33d75f6ad8249ce782b9",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-06",
+      "blind_token": "TOKEN-RUN-06-F562AE3C",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "filename": "TOKEN-RUN-06-F562AE3C.txt",
+      "sha256": "65d027bfd8b7ea50bf3bc05ef038102771a84026e61cea72767fe4461058d32c",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-07",
+      "blind_token": "TOKEN-RUN-07-6BEC48A4",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "filename": "TOKEN-RUN-07-6BEC48A4.txt",
+      "sha256": "55d69d71d046a60fc930c7169d56a94a406ed9c9fbefdac318f9dc7c4ec16022",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-08",
+      "blind_token": "TOKEN-RUN-08-CDDAF264",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "filename": "TOKEN-RUN-08-CDDAF264.txt",
+      "sha256": "fba8cbbeba80680e0e9fb2dffa20238fc95ba5f66545bb0e45bb42d381a00f2e",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-09",
+      "blind_token": "TOKEN-RUN-09-F0D8104E",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "filename": "TOKEN-RUN-09-F0D8104E.txt",
+      "sha256": "5b1f6f6f8c73d4459877c0606d5adf9b2605186d96a1deea51d23a973ad68a1f",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-10",
+      "blind_token": "TOKEN-RUN-10-76F7982D",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "filename": "TOKEN-RUN-10-76F7982D.txt",
+      "sha256": "21d366bd19074ec51346f3ebdf9863cf08ef7034e9cc008b3061d7c8c7824b9e",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-11",
+      "blind_token": "TOKEN-RUN-11-A5964D4F",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "filename": "TOKEN-RUN-11-A5964D4F.txt",
+      "sha256": "8dd889c1cfe52c4a42c7f01bfa0609c451a3ec025e02e3a099ac8abf808d254d",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-12",
+      "blind_token": "TOKEN-RUN-12-52A3510B",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "filename": "TOKEN-RUN-12-52A3510B.txt",
+      "sha256": "8b2acac5b9956a57fd996578f53c47e9e75f71a4942a26d178cf768dd73c341c",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-13",
+      "blind_token": "TOKEN-RUN-13-715C7264",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "filename": "TOKEN-RUN-13-715C7264.txt",
+      "sha256": "4b51dbc8554804268faf73b10ca766f915a319641094119b4c31b8e2fe6340b2",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-14",
+      "blind_token": "TOKEN-RUN-14-19459F20",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "filename": "TOKEN-RUN-14-19459F20.txt",
+      "sha256": "d428e1815aa078fa043dc8649a587da7d15bf278da33a872e366b6b23fb6319a",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-15",
+      "blind_token": "TOKEN-RUN-15-C21078C5",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "filename": "TOKEN-RUN-15-C21078C5.txt",
+      "sha256": "cc2ae7a68904f76ec066fabd38a661224316509afaccbc658dbf47be643e32fb",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-16",
+      "blind_token": "TOKEN-RUN-16-7E89A9C8",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "filename": "TOKEN-RUN-16-7E89A9C8.txt",
+      "sha256": "e3a2595d731ab46b8a2b0ee6bf9cca80c6bbb88a61b2ce9d2fc671140d51205e",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-17",
+      "blind_token": "TOKEN-RUN-17-574A0FE4",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "filename": "TOKEN-RUN-17-574A0FE4.txt",
+      "sha256": "c82832286fa6fd7846fc24cc6c5b05c28a8d3e709a080be83d28f4455f59407a",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-18",
+      "blind_token": "TOKEN-RUN-18-77BABFC4",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "filename": "TOKEN-RUN-18-77BABFC4.txt",
+      "sha256": "c014ffa3f6ccaa06c9957b8b6be18b5c26adeefc91b7bda9a727030c704e14b2",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-19",
+      "blind_token": "TOKEN-RUN-19-A9C3B22B",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "filename": "TOKEN-RUN-19-A9C3B22B.txt",
+      "sha256": "33d6cef7ceb9fe0e414ea96ac26cb20a33293287aa55a5095c16239f6b55df92",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-20",
+      "blind_token": "TOKEN-RUN-20-4FD57D04",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "filename": "TOKEN-RUN-20-4FD57D04.txt",
+      "sha256": "bcd72ad74236ef9ea6f2debf423c45d6f6f0452d2b6e8d02f801db56bfaf17ad",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-21",
+      "blind_token": "TOKEN-RUN-21-2F850BF9",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "filename": "TOKEN-RUN-21-2F850BF9.txt",
+      "sha256": "9788de1b04bc76eacd16c1fbf1bb4267060c887e0c1db4503120f75a9ac55a5a",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-22",
+      "blind_token": "TOKEN-RUN-22-7A5240BE",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "filename": "TOKEN-RUN-22-7A5240BE.txt",
+      "sha256": "ba209b670e700d913dd39647c6423ab26a909bb4a7de01f4a7bdb0766968ba5b",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-23",
+      "blind_token": "TOKEN-RUN-23-FE322641",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "filename": "TOKEN-RUN-23-FE322641.txt",
+      "sha256": "7414af4483d4b5d5c61ab6d4f67bb2ca5cf58055a3c14133fa7199b6652b822e",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-24",
+      "blind_token": "TOKEN-RUN-24-D09C9A3A",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "filename": "TOKEN-RUN-24-D09C9A3A.txt",
+      "sha256": "580e4c67ad91440028b155e08b32166e22b0ab1ca7dcae5cb7b947a87a57cfd2",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-25",
+      "blind_token": "TOKEN-RUN-25-BF387EAD",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "filename": "TOKEN-RUN-25-BF387EAD.txt",
+      "sha256": "0324856b46be3c47d886f9517649d4edc470742a3523653c6cbf977fa6406fc3",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-26",
+      "blind_token": "TOKEN-RUN-26-ADFCF2C0",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "filename": "TOKEN-RUN-26-ADFCF2C0.txt",
+      "sha256": "0fc58076f55e0fe1e498027df6f4d347c97b91712a0ac3e41ae57c12ffaaedf2",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-27",
+      "blind_token": "TOKEN-RUN-27-DC00325D",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "filename": "TOKEN-RUN-27-DC00325D.txt",
+      "sha256": "b88c6e9d2998ac500c0f185a184271396f2f6613f84004c75cc41297093972ac",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-28",
+      "blind_token": "TOKEN-RUN-28-9EFB2457",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "filename": "TOKEN-RUN-28-9EFB2457.txt",
+      "sha256": "e1c9a4b96bdf3d52b06b426f160a1d3dffcdbd157900661ccfb44384c38e6b2f",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-29",
+      "blind_token": "TOKEN-RUN-29-65841F20",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "filename": "TOKEN-RUN-29-65841F20.txt",
+      "sha256": "1ca9f75e2df7edcf21124fe23e259e3adaee353527d6dc114842ba36c10257a7",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-30",
+      "blind_token": "TOKEN-RUN-30-E0C50606",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "filename": "TOKEN-RUN-30-E0C50606.txt",
+      "sha256": "1cb1f42db15c6f667bd642503c99152f62e01f4b42a3e3e1443bad63353e0a51",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-31",
+      "blind_token": "TOKEN-RUN-31-D42C80AB",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "filename": "TOKEN-RUN-31-D42C80AB.txt",
+      "sha256": "52e57194d02b231c2faf8cdda67126508a6bd7f18aa5d346f86a1a8e9597c102",
+      "items_evaluated": 16
+    },
+    {
+      "run_id": "RUN-32",
+      "blind_token": "TOKEN-RUN-32-E11A5B54",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "filename": "TOKEN-RUN-32-E11A5B54.txt",
+      "sha256": "ae96536ac0c5f572afda504ea6cc69104e410d8d2a0799026e05b96573f69382",
+      "items_evaluated": 16
+    }
+  ]
+}

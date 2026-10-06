@@ -1,0 +1,231 @@
+{
+  "assay": "TD613-SEQ5-ASSAY-20261005",
+  "created_at": "2026-10-06T00:03:19.281Z",
+  "sealing_status": "SEALED_UNTIL_FREEZE_C_KEY_REVEAL",
+  "schedule": [
+    {
+      "run_id": "RUN-01",
+      "blind_token": "TOKEN-RUN-01-FB7D29F1",
+      "cohort": "K0",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "replicate": 1
+    },
+    {
+      "run_id": "RUN-02",
+      "blind_token": "TOKEN-RUN-02-A9FB9144",
+      "cohort": "K0",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "replicate": 2
+    },
+    {
+      "run_id": "RUN-03",
+      "blind_token": "TOKEN-RUN-03-D3CAE96C",
+      "cohort": "K0",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "replicate": 3
+    },
+    {
+      "run_id": "RUN-04",
+      "blind_token": "TOKEN-RUN-04-3C16B7C4",
+      "cohort": "K0",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "replicate": 4
+    },
+    {
+      "run_id": "RUN-05",
+      "blind_token": "TOKEN-RUN-05-A6B8C20A",
+      "cohort": "K1",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "replicate": 1
+    },
+    {
+      "run_id": "RUN-06",
+      "blind_token": "TOKEN-RUN-06-F562AE3C",
+      "cohort": "K1",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "replicate": 2
+    },
+    {
+      "run_id": "RUN-07",
+      "blind_token": "TOKEN-RUN-07-6BEC48A4",
+      "cohort": "K1",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "replicate": 3
+    },
+    {
+      "run_id": "RUN-08",
+      "blind_token": "TOKEN-RUN-08-CDDAF264",
+      "cohort": "K1",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "replicate": 4
+    },
+    {
+      "run_id": "RUN-09",
+      "blind_token": "TOKEN-RUN-09-F0D8104E",
+      "cohort": "K2",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "replicate": 1
+    },
+    {
+      "run_id": "RUN-10",
+      "blind_token": "TOKEN-RUN-10-76F7982D",
+      "cohort": "K2",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "replicate": 2
+    },
+    {
+      "run_id": "RUN-11",
+      "blind_token": "TOKEN-RUN-11-A5964D4F",
+      "cohort": "K2",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "replicate": 3
+    },
+    {
+      "run_id": "RUN-12",
+      "blind_token": "TOKEN-RUN-12-52A3510B",
+      "cohort": "K2",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "replicate": 4
+    },
+    {
+      "run_id": "RUN-13",
+      "blind_token": "TOKEN-RUN-13-715C7264",
+      "cohort": "K3",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "replicate": 1
+    },
+    {
+      "run_id": "RUN-14",
+      "blind_token": "TOKEN-RUN-14-19459F20",
+      "cohort": "K3",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "replicate": 2
+    },
+    {
+      "run_id": "RUN-15",
+      "blind_token": "TOKEN-RUN-15-C21078C5",
+      "cohort": "K3",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "replicate": 3
+    },
+    {
+      "run_id": "RUN-16",
+      "blind_token": "TOKEN-RUN-16-7E89A9C8",
+      "cohort": "K3",
+      "model_family": "MODEL-FAMILY-GEMINI",
+      "replicate": 4
+    },
+    {
+      "run_id": "RUN-17",
+      "blind_token": "TOKEN-RUN-17-574A0FE4",
+      "cohort": "K0",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "replicate": 1
+    },
+    {
+      "run_id": "RUN-18",
+      "blind_token": "TOKEN-RUN-18-77BABFC4",
+      "cohort": "K0",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "replicate": 2
+    },
+    {
+      "run_id": "RUN-19",
+      "blind_token": "TOKEN-RUN-19-A9C3B22B",
+      "cohort": "K0",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "replicate": 3
+    },
+    {
+      "run_id": "RUN-20",
+      "blind_token": "TOKEN-RUN-20-4FD57D04",
+      "cohort": "K0",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "replicate": 4
+    },
+    {
+      "run_id": "RUN-21",
+      "blind_token": "TOKEN-RUN-21-2F850BF9",
+      "cohort": "K1",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "replicate": 1
+    },
+    {
+      "run_id": "RUN-22",
+      "blind_token": "TOKEN-RUN-22-7A5240BE",
+      "cohort": "K1",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "replicate": 2
+    },
+    {
+      "run_id": "RUN-23",
+      "blind_token": "TOKEN-RUN-23-FE322641",
+      "cohort": "K1",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "replicate": 3
+    },
+    {
+      "run_id": "RUN-24",
+      "blind_token": "TOKEN-RUN-24-D09C9A3A",
+      "cohort": "K1",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "replicate": 4
+    },
+    {
+      "run_id": "RUN-25",
+      "blind_token": "TOKEN-RUN-25-BF387EAD",
+      "cohort": "K2",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "replicate": 1
+    },
+    {
+      "run_id": "RUN-26",
+      "blind_token": "TOKEN-RUN-26-ADFCF2C0",
+      "cohort": "K2",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "replicate": 2
+    },
+    {
+      "run_id": "RUN-27",
+      "blind_token": "TOKEN-RUN-27-DC00325D",
+      "cohort": "K2",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "replicate": 3
+    },
+    {
+      "run_id": "RUN-28",
+      "blind_token": "TOKEN-RUN-28-9EFB2457",
+      "cohort": "K2",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "replicate": 4
+    },
+    {
+      "run_id": "RUN-29",
+      "blind_token": "TOKEN-RUN-29-65841F20",
+      "cohort": "K3",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "replicate": 1
+    },
+    {
+      "run_id": "RUN-30",
+      "blind_token": "TOKEN-RUN-30-E0C50606",
+      "cohort": "K3",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "replicate": 2
+    },
+    {
+      "run_id": "RUN-31",
+      "blind_token": "TOKEN-RUN-31-D42C80AB",
+      "cohort": "K3",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "replicate": 3
+    },
+    {
+      "run_id": "RUN-32",
+      "blind_token": "TOKEN-RUN-32-E11A5B54",
+      "cohort": "K3",
+      "model_family": "MODEL-FAMILY-REFERENCE",
+      "replicate": 4
+    }
+  ]
+}
