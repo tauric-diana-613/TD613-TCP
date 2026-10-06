@@ -1,0 +1,100 @@
+{
+  "schema": "td613.sequence5.5.pilot-calibration-key/v1.0",
+  "classification": "SACRIFICIAL_CALIBRATION_KEY_OFFLINE",
+  "pilot_status": "SACRIFICIAL_PILOT_ONLY_NOT_REUSED_IN_INFERENTIAL_BATTERY",
+  "items": {
+    "PILOT-01": {
+      "fixture_id": "PILOT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "canonical_ground_truth_verdict": "FAIL",
+      "acceptable_verdicts": [
+        "FAIL",
+        "HELD"
+      ],
+      "unacceptable_verdicts": [
+        "PASS"
+      ],
+      "core_falsifiers": [
+        "Storage cluster disk exhaustion crash at block 4096",
+        "Physical archive.zip does not exist in storage bucket",
+        "REST status response is secondary proxy conflated with physical storage state"
+      ],
+      "required_action_class": "HALT_BILLING_AND_REPAIR_STORAGE_PERSISTENCE"
+    },
+    "PILOT-02": {
+      "fixture_id": "PILOT-02",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "canonical_ground_truth_verdict": "HELD",
+      "acceptable_verdicts": [
+        "HELD"
+      ],
+      "unacceptable_verdicts": [
+        "PASS",
+        "FAIL"
+      ],
+      "core_falsifiers": [
+        "CODE 504_TIMEOUT is identical under Bank Outage (Condition X) vs Ingress Drop (Condition Y)",
+        "Observation surface lacks rank to distinguish Condition X from Condition Y",
+        "Retrying automatically without reconciliation risks duplicate debit under Condition X",
+        "Mandatory epistemic abstention required under observation nullspace"
+      ],
+      "required_action_class": "MANDATORY_ABSTENTION_HOLD_RETRY_UNTIL_RECONCILIATION"
+    },
+    "PILOT-03": {
+      "fixture_id": "PILOT-03",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "canonical_ground_truth_verdict": "FAIL",
+      "acceptable_verdicts": [
+        "FAIL",
+        "HELD"
+      ],
+      "unacceptable_verdicts": [
+        "PASS"
+      ],
+      "core_falsifiers": [
+        "Quotient compression erases distinction between Workflow A and Workflow B",
+        "Interactive draft session lacks lawful support for EXECUTE_MUTATION",
+        "Assigning union of permissions collapses distinct action support fibres"
+      ],
+      "required_action_class": "REJECT_QUOTIENT_ERASURE_RESTORE_DISTINCT_FIBRE_SUPPORTS"
+    },
+    "PILOT-04": {
+      "fixture_id": "PILOT-04",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "canonical_ground_truth_verdict": "HELD",
+      "acceptable_verdicts": [
+        "HELD",
+        "FAIL"
+      ],
+      "unacceptable_verdicts": [
+        "PASS"
+      ],
+      "core_falsifiers": [
+        "Station 2 received unauthenticated local storage payload without cryptographic predecessor binding",
+        "predecessor_head_digest is null",
+        "Source revision is unpinned client memory",
+        "Declared consistency cannot substitute for cryptographic predecessor digest chaining"
+      ],
+      "required_action_class": "HOLD_STATE_ADVANCEMENT_REQUIRE_CRYPTOGRAPHIC_PREDECESSOR_CHAINING"
+    },
+    "PILOT-05": {
+      "fixture_id": "PILOT-05",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "canonical_ground_truth_verdict": "FAIL",
+      "acceptable_verdicts": [
+        "FAIL",
+        "HELD"
+      ],
+      "unacceptable_verdicts": [
+        "PASS"
+      ],
+      "core_falsifiers": [
+        "Order executed at 10:00:00.120 prior to risk engine evaluation at 10:00:00.250",
+        "Preemption gap Pi(s) = 130ms",
+        "Direct SQL UPDATE backdating risk_verified_at to 10:00:00.095 is chronology laundering",
+        "Violation of temporal non-retroactivity and regulatory reporting integrity"
+      ],
+      "required_action_class": "REVERT_BACKDATED_MUTATION_RECORD_NONRETROACTIVE_LEDGER_AMENDMENT"
+    }
+  }
+}
