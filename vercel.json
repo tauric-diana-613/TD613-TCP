@@ -36,6 +36,10 @@
     "api/ash-local-commitment-guard.py": {
       "maxDuration": 60,
       "includeFiles": "{api/ash-local-commitment.py,packages/dome_world_exact/ash_*.py}"
+    },
+    "api/sequence-55-pilot-v2.js": {
+      "maxDuration": 60,
+      "includeFiles": "research/sequence-5.5-closure-chamber/**"
     }
   },
   "redirects": [
