@@ -1,0 +1,32 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\n  \"finding_id\": \"FINDING-PILOT-01\",\n  \"verdict\": \"FAIL\",\n  \"identified_issues\": [\n    \"Conflation of optimistic database state with actual physical storage persistence\",\n    \"Premature status transition to READY prior to receipt of storage commit acknowledgment\",\n    \"Lack of artifact verification prior to triggering irreversible downstream operations including billing\"\n  ],\n  \"evidence\": [\n    \"Artifact storage bucket contains no file named archive.zip for task_991\",\n    \"Storage backend worker crashed due to disk exhaustion at block 4,096 during write operations\",\n    \"The status API returned a static template with task_status READY despite missing backing artifacts\"\n  ],\n  \"recommended_action\": \"Modify the task completion lifecycle to require verified write confirmation from the storage backend before transitioning database records to READY, and implement active artifact validation checks prior to emitting completion signals to billing services.\",\n  \"confidence\": \"HIGH\"\n}",
+            "thoughtSignature": "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"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 1171,
+    "candidatesTokenCount": 212,
+    "totalTokenCount": 1995,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 1171
+      }
+    ],
+    "thoughtsTokenCount": 612,
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.8-flash",
+  "responseId": "m4HEaq-gA8C_mtkP3qO5OQ"
+}

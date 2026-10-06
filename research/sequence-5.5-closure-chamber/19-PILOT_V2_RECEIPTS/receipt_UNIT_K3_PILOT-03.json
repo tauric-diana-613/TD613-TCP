@@ -1,0 +1,65 @@
+{
+  "schema": "td613.sequence5.5.execution-receipt/v2.0",
+  "episode_id": "EPISODE_SACRIFICIAL_PILOT_V2",
+  "execution_id": "EXEC-V2-UNIT_K3_PILOT-03-attempt-0",
+  "execution_unit_sha256": "1ab2414e7df1a526431f8fa2dc7f2c7bb05d7c5049fcf55bb60a7e68f576276e",
+  "coordinate": "gemini-3.8-flash × vercel-preview/server-fetch × PILOT-03 × K3",
+  "arm": "K3",
+  "fixture_id": "PILOT-03",
+  "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+  "is_pilot": true,
+  "receiver_identity": {
+    "provider": "google",
+    "exact_model_id": "gemini-3.8-flash",
+    "runtime_or_harness": "vercel-preview/server-fetch",
+    "endpoint_or_execution_class": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
+    "model_settings": {
+      "temperature": null,
+      "sampling_parameters_set_by_protocol": false,
+      "thinking_level": "medium",
+      "max_output_tokens": 8192,
+      "response_mime_type": "application/json",
+      "tool_permissions": []
+    }
+  },
+  "credential_and_billing_provenance": {
+    "credential_source_type": "VERCEL_ENVIRONMENT_VARIABLE",
+    "credential_source_name": "GEMINI_API_KEY",
+    "credential_fingerprint_sha256": "51efc3d87cdffc4fb2869519ff4fa12b10ce179ba79d3976f6094cf741681c39",
+    "provider_project_id": null,
+    "billing_usage_tier": "UNVERIFIED",
+    "inference_service_tier": "standard",
+    "billing_context_verified": false
+  },
+  "temporal_provenance": {
+    "request_started_at": "2026-10-06T05:09:12.545Z",
+    "response_completed_at": "2026-10-06T05:09:18.070Z",
+    "duration_ms": 5525
+  },
+  "input_provenance": {
+    "treatment_sha256": "94f18282709611ac1afb1ca7825145bdf0085fce7b50ddcbbf022bbbe271e105",
+    "fixture_sha256": "ffa4a9923a61532d5ce3d385837461b4d50855e2ecc9293487d2c57e70fb7586",
+    "receiver_output_schema_sha256": "935bf87b1ef86ac1df7490c7f5abe6d93892e89869f348671bd64c50b42e5537",
+    "fixed_wrapper_sha256": "2132cb1c832b326ffa9942dff5d246e595207f19addc8e9bf8227dfb52744f0d",
+    "execution_unit_sha256": "1ab2414e7df1a526431f8fa2dc7f2c7bb05d7c5049fcf55bb60a7e68f576276e"
+  },
+  "output_provenance": {
+    "raw_response_sha256": "263a374bf0bec14b65d09c5eeb6af4280842e73c7e77b76e0b524cfc2e73c5f3",
+    "raw_response_preserved_unmodified": true,
+    "parsed_response_sha256": "30639f76b01201a18cd0e0d5742367d6cfb06a72656587e17a33ab8ba3444545",
+    "parsing_validation_status": "VALID"
+  },
+  "provider_receipt": {
+    "provider_request_id": "eILEarmaMP6eqtsPhbuliQQ",
+    "status_code": 200,
+    "retry_ordinal": 0,
+    "retry_reason": null,
+    "x_gemini_service_tier": "standard"
+  },
+  "usage_realized_dose": {
+    "reported_input_tokens": 2688,
+    "reported_output_tokens": 245,
+    "reported_total_tokens": 3335,
+    "reported_thoughts_tokens": 402
+  }
+}

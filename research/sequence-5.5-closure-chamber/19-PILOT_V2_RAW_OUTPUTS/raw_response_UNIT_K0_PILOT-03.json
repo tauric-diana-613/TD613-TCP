@@ -1,0 +1,32 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\n  \"finding_id\": \"FINDING-PILOT-03\",\n  \"verdict\": \"FAIL\",\n  \"identified_issues\": [\n    \"Privilege escalation caused by unioning disjoint permissions across operational contexts\",\n    \"Quotient stage erasure collapsing distinct session semantics into a shared coarse authorization context\",\n    \"Violation of the principle of least privilege allowing interactive operators to execute unapproved mutations\"\n  ],\n  \"evidence\": [\n    \"Compression middleware maps Workflow A and Workflow B to a shared 'AUTHORIZED_USER_SESSION' with 'combined_permissions'\",\n    \"An interactive operator in Workflow A successfully executed 'EXECUTE_MUTATION' despite the action being absent from Workflow A's permitted actions\"\n  ],\n  \"recommended_action\": \"Eliminate the coarse quotient mapping; restore distinct session representations and evaluate authorization requests strictly against workflow-specific permission boundaries.\",\n  \"confidence\": \"HIGH\"\n}",
+            "thoughtSignature": "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"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 1159,
+    "candidatesTokenCount": 199,
+    "totalTokenCount": 2185,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 1159
+      }
+    ],
+    "thoughtsTokenCount": 827,
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.8-flash",
+  "responseId": "1oLEaoOMF5zkqtsPtIa3kAQ"
+}

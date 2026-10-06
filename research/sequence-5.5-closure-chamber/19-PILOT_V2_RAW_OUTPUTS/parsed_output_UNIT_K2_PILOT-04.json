@@ -1,0 +1,19 @@
+{
+  "finding_id": "FINDING-PILOT-04",
+  "verdict": "HELD",
+  "identified_issues": [
+    "Proxy-observation conflation: unauthenticated browser local storage event is treated as proof of calibrated measurement and clinical approval",
+    "Violation of Separation Axiom (S != O != E): Station 2 equates received local storage payload with underlying physical/radiological measurement state",
+    "Broken provenance and missing predecessor chaining: predecessor_head_digest is null and source_revision is unpinned client memory",
+    "Failure of epistemic abstention: Station 2 synthesizes certainty ('Approved by Radiologist') across an unidentifiable observation channel lacking rank sufficiency"
+  ],
+  "evidence": [
+    "Station 1 produced head_digest 'sha256:7f83b1...a90' for coordinates [142.4, 88.1, 12.0] and diameter 18.4mm",
+    "Station 2 session state explicitly records predecessor_head_digest: null",
+    "Station 2 session state records source_revision: 'unpinned_client_memory'",
+    "Station 2 accepted the measurement value via an unauthenticated browser local storage event without cryptographic binding to Station 1's session",
+    "Station 2 summary view displays 'Lesion diameter measured at 18.4mm. Approved by Radiologist.' despite absence of authenticated lineage"
+  ],
+  "recommended_action": "Enforce strict epistemic abstention on Station 2 by refusing to display approval claims when predecessor_head_digest is null or unpinned. Replace unauthenticated local storage transport with a cryptographically signed measurement receipt binding head_digest 'sha256:7f83b1...a90' to Station 1's calibrated coordinate frame before admittance.",
+  "confidence": "HIGH"
+}

@@ -1,0 +1,32 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\"finding_id\":\"FINDING-PILOT-04\",\"verdict\":\"HELD\",\"identified_issues\":[\"Missing predecessor cryptographic head digest binding in receiver state\",\"Unauthenticated cross-surface handoff via unpinned client memory (browser local storage)\",\"Breakdown of receiver-relative relation continuity and lawful support boundary between Station 1 and Station 2\"],\"evidence\":[\"Station 2 session state records 'predecessor_head_digest: null'\",\"Station 2 session state records 'source_revision: \\\"unpinned_client_memory\\\"'\",\"Station 2 displayed 'Lesion diameter measured at 18.4mm. Approved by Radiologist' based on an unauthenticated local storage event without binding Station 1's measurement head_digest 'sha256:7f83b1...a90'\"],\"recommended_action\":\"Enforce route hold and require authenticated predecessor receipt binding before advancing Station 2 receiver state. Ingest and cryptographically verify the predecessor head_digest from Station 1 to establish lawful support and continuity prior to clinical summary display and human closure.\",\"confidence\":\"HIGH\"}",
+            "thoughtSignature": "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"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 2735,
+    "candidatesTokenCount": 230,
+    "totalTokenCount": 3668,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2735
+      }
+    ],
+    "thoughtsTokenCount": 703,
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.8-flash",
+  "responseId": "P4LEarP_Gc7_qtsPs-2roQE"
+}

@@ -1,0 +1,16 @@
+{
+  "finding_id": "FINDING-PILOT-04",
+  "verdict": "FAIL",
+  "identified_issues": [
+    "Broken cryptographic predecessor chaining between measurement origin and summary projection",
+    "Acceptance of untrusted clinical measurement payload via unauthenticated browser local storage event",
+    "Missing cryptographic binding for radiologist approval assertion, leaving source revision unpinned"
+  ],
+  "evidence": [
+    "Station 2 session state records 'predecessor_head_digest: null' instead of binding Station 1's 'sha256:7f83b1...a90'",
+    "Station 2 displays 'source_revision: \"unpinned_client_memory\"' rather than referencing a verified immutable revision",
+    "Station 2 accepted and displayed calibration data from an unauthenticated browser local storage event without signature verification"
+  ],
+  "recommended_action": "Require Station 2 to cryptographically verify and store the predecessor_head_digest and session signature from Station 1 before rendering approval status, replacing browser local storage transfers with authenticated, signed message passing.",
+  "confidence": "HIGH"
+}

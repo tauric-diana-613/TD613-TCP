@@ -1,0 +1,32 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\n  \"finding_id\": \"FINDING-PILOT-03\",\n  \"verdict\": \"FAIL\",\n  \"identified_issues\": [\n    \"Quotient stage erasure collapsing distinct support fibres into a coarse equivalence class\",\n    \"Lawful support boundary violation under FADT jurisdiction permitting unauthorized mutation\",\n    \"Privilege escalation via improper permission unioning across disjoint operational contexts\"\n  ],\n  \"evidence\": [\n    \"Compression middleware maps distinct Workflow A and Workflow B sessions into shared quotient type AUTHORIZED_USER_SESSION with combined_permissions union\",\n    \"Workflow A support set strictly excludes EXECUTE_MUTATION, admitting only { READ, EXPORT_DRAFT, REQUEST_APPROVAL }\",\n    \"An interactive operator in Workflow A submitted EXECUTE_MUTATION and was granted approval based on coarse combined_permissions caching\"\n  ],\n  \"recommended_action\": \"Decommission the coarse caching middleware to prevent quotient collapse. Enforce distinct session contexts that preserve granular support fibres for Workflow A and Workflow B independently, ensuring that EXECUTE_MUTATION is strictly rejected for interactive operator sessions.\",\n  \"confidence\": \"HIGH\"\n}",
+            "thoughtSignature": "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"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 2688,
+    "candidatesTokenCount": 245,
+    "totalTokenCount": 3335,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2688
+      }
+    ],
+    "thoughtsTokenCount": 402,
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.8-flash",
+  "responseId": "eILEarmaMP6eqtsPhbuliQQ"
+}

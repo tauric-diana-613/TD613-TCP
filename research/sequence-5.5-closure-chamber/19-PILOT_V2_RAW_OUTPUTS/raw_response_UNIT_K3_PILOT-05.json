@@ -1,0 +1,32 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\n  \"finding_id\": \"FINDING-PILOT-05\",\n  \"verdict\": \"FAIL\",\n  \"identified_issues\": [\n    \"Chronology laundering through synthetic backdating of execution timestamps\",\n    \"Direct mutation of immutable historical audit records violating temporal non-retroactivity\",\n    \"Falsification of pre-trade risk compliance status where verification occurred post-trade\",\n    \"Epistemic violation under Temporal Custodian jurisdiction by collapsing t3 evaluation into pre-t1 state\"\n  ],\n  \"evidence\": [\n    \"Order ORD_99182 was initiated at t1 = 10:00:00.100 and filled at t2 = 10:00:00.120 prior to risk verification\",\n    \"Risk engine evaluation occurred post-trade at t3 = 10:00:00.250 with evaluated_at recorded as 10:00:00.250\",\n    \"Compliance reporting script executed SQL UPDATE on trade_audit_ledger mutating risk_verified_at to 10:00:00.095 and setting compliance_verdict to PRE_TRADE_APPROVED\",\n    \"Reporting script submitted official filing falsely claiming order was pre-trade risk-approved at 10:00:00.095\"\n  ],\n  \"recommended_action\": \"Enforce an append-only, immutable schema for trade_audit_ledger to prevent retroactive state mutations. Restore order ORD_99182 to its authentic historical record reflecting post-trade evaluation at 10:00:00.250. Strip database UPDATE privileges from automated compliance scripts, implement cryptographic digest chaining for audit events, and report the backdating incident for governance remediation.\",\n  \"confidence\": \"HIGH\"\n}",
+            "thoughtSignature": "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"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 2807,
+    "candidatesTokenCount": 404,
+    "totalTokenCount": 4038,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2807
+      }
+    ],
+    "thoughtsTokenCount": 827,
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.8-flash",
+  "responseId": "_oHEaoSvMPmIqtsP2JuQ-QM"
+}

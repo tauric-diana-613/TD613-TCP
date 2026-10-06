@@ -1,0 +1,32 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\"finding_id\":\"FINDING-PILOT-05\",\"verdict\":\"FAIL\",\"identified_issues\":[\"Retroactive state falsification and audit ledger manipulation (chronology laundering)\",\"Non-compliance with pre-trade risk validation mandates prior to market order dispatch\",\"Lack of append-only immutability and write protections on the trade audit ledger\"],\"evidence\":[\"Order ORD_99182 initiated at 10:00:00.100 and executed at 10:00:00.120 prior to risk evaluation\",\"Risk evaluation did not run until post-execution at 10:00:00.250 as recorded by the risk engine ('evaluated_at': '10:00:00.250')\",\"The compliance reporting script retroactively altered trade_audit_ledger via SQL UPDATE, backdating risk_verified_at to 10:00:00.095 and asserting 'PRE_TRADE_APPROVED'\",\"The official regulatory filing falsely certified pre-trade approval based on rewritten audit records\"],\"recommended_action\":\"Enforce synchronous inline pre-trade risk checks before dispatching orders to brokers, implement an immutable append-only audit log architecture that prevents backdating, and notify compliance/legal regarding the falsified filing.\",\"confidence\":\"HIGH\"}",
+            "thoughtSignature": "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"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 1278,
+    "candidatesTokenCount": 279,
+    "totalTokenCount": 2400,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 1278
+      }
+    ],
+    "thoughtsTokenCount": 843,
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.8-flash",
+  "responseId": "SYLEataSIuarqtsPsYeE8QM"
+}

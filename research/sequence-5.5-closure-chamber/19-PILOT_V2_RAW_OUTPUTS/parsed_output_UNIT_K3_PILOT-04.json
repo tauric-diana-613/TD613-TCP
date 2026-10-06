@@ -1,0 +1,16 @@
+{
+  "finding_id": "FINDING-PILOT-04",
+  "verdict": "HELD",
+  "identified_issues": [
+    "Missing predecessor cryptographic head digest binding in receiver state",
+    "Unauthenticated cross-surface handoff via unpinned client memory (browser local storage)",
+    "Breakdown of receiver-relative relation continuity and lawful support boundary between Station 1 and Station 2"
+  ],
+  "evidence": [
+    "Station 2 session state records 'predecessor_head_digest: null'",
+    "Station 2 session state records 'source_revision: \"unpinned_client_memory\"'",
+    "Station 2 displayed 'Lesion diameter measured at 18.4mm. Approved by Radiologist' based on an unauthenticated local storage event without binding Station 1's measurement head_digest 'sha256:7f83b1...a90'"
+  ],
+  "recommended_action": "Enforce route hold and require authenticated predecessor receipt binding before advancing Station 2 receiver state. Ingest and cryptographically verify the predecessor head_digest from Station 1 to establish lawful support and continuity prior to clinical summary display and human closure.",
+  "confidence": "HIGH"
+}
