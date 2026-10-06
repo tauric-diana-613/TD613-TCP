@@ -1,0 +1,319 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TD613 Sequence 5.5 Pilot V2 Execution Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "episode_id",
+    "execution_id",
+    "execution_unit_sha256",
+    "coordinate",
+    "arm",
+    "fixture_id",
+    "cluster",
+    "is_pilot",
+    "receiver_identity",
+    "credential_and_billing_provenance",
+    "temporal_provenance",
+    "input_provenance",
+    "output_provenance",
+    "provider_receipt",
+    "usage_realized_dose"
+  ],
+  "properties": {
+    "schema": {
+      "const": "td613.sequence5.5.execution-receipt/v2.0"
+    },
+    "episode_id": {
+      "const": "EPISODE_SACRIFICIAL_PILOT_V2"
+    },
+    "execution_id": {
+      "type": "string"
+    },
+    "execution_unit_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "coordinate": {
+      "type": "string"
+    },
+    "arm": {
+      "enum": [
+        "K0",
+        "K0D",
+        "K1",
+        "K2",
+        "K3"
+      ]
+    },
+    "fixture_id": {
+      "type": "string"
+    },
+    "cluster": {
+      "type": "string"
+    },
+    "is_pilot": {
+      "const": true
+    },
+    "receiver_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider",
+        "exact_model_id",
+        "runtime_or_harness",
+        "endpoint_or_execution_class",
+        "model_settings"
+      ],
+      "properties": {
+        "provider": {
+          "const": "google"
+        },
+        "exact_model_id": {
+          "const": "gemini-3.8-flash"
+        },
+        "runtime_or_harness": {
+          "const": "vercel-preview/server-fetch"
+        },
+        "endpoint_or_execution_class": {
+          "type": "string"
+        },
+        "model_settings": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "temperature",
+            "sampling_parameters_set_by_protocol",
+            "thinking_level",
+            "max_output_tokens",
+            "response_mime_type",
+            "tool_permissions"
+          ],
+          "properties": {
+            "temperature": {
+              "type": "null"
+            },
+            "sampling_parameters_set_by_protocol": {
+              "const": false
+            },
+            "thinking_level": {
+              "const": "medium"
+            },
+            "max_output_tokens": {
+              "type": "integer"
+            },
+            "response_mime_type": {
+              "const": "application/json"
+            },
+            "tool_permissions": {
+              "type": "array",
+              "maxItems": 0
+            }
+          }
+        }
+      }
+    },
+    "credential_and_billing_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "credential_source_type",
+        "credential_source_name",
+        "credential_fingerprint_sha256",
+        "provider_project_id",
+        "billing_usage_tier",
+        "inference_service_tier",
+        "billing_context_verified"
+      ],
+      "properties": {
+        "credential_source_type": {
+          "const": "VERCEL_ENVIRONMENT_VARIABLE"
+        },
+        "credential_source_name": {
+          "const": "GEMINI_API_KEY"
+        },
+        "credential_fingerprint_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "provider_project_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "billing_usage_tier": {
+          "type": "string"
+        },
+        "inference_service_tier": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "billing_context_verified": {
+          "type": "boolean"
+        }
+      }
+    },
+    "temporal_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "request_started_at",
+        "response_completed_at",
+        "duration_ms"
+      ],
+      "properties": {
+        "request_started_at": {
+          "type": "string"
+        },
+        "response_completed_at": {
+          "type": "string"
+        },
+        "duration_ms": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "input_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "treatment_sha256",
+        "fixture_sha256",
+        "receiver_output_schema_sha256",
+        "fixed_wrapper_sha256",
+        "execution_unit_sha256"
+      ],
+      "properties": {
+        "treatment_sha256": {
+          "type": "string"
+        },
+        "fixture_sha256": {
+          "type": "string"
+        },
+        "receiver_output_schema_sha256": {
+          "type": "string"
+        },
+        "fixed_wrapper_sha256": {
+          "type": "string"
+        },
+        "execution_unit_sha256": {
+          "type": "string"
+        }
+      }
+    },
+    "output_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "raw_response_sha256",
+        "raw_response_preserved_unmodified",
+        "parsed_response_sha256",
+        "parsing_validation_status"
+      ],
+      "properties": {
+        "raw_response_sha256": {
+          "type": "string"
+        },
+        "raw_response_preserved_unmodified": {
+          "const": true
+        },
+        "parsed_response_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "parsing_validation_status": {
+          "enum": [
+            "VALID",
+            "INVALID_SCHEMA",
+            "INVALID_JSON",
+            "PARSING_SKIPPED_ON_FAILURE"
+          ]
+        }
+      }
+    },
+    "provider_receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider_request_id",
+        "status_code",
+        "retry_ordinal",
+        "retry_reason",
+        "x_gemini_service_tier"
+      ],
+      "properties": {
+        "provider_request_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status_code": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "retry_ordinal": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "retry_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "x_gemini_service_tier": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "usage_realized_dose": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reported_input_tokens",
+        "reported_output_tokens",
+        "reported_total_tokens",
+        "reported_thoughts_tokens"
+      ],
+      "properties": {
+        "reported_input_tokens": {
+          "type": [
+            "integer",
+            "string"
+          ]
+        },
+        "reported_output_tokens": {
+          "type": [
+            "integer",
+            "string"
+          ]
+        },
+        "reported_total_tokens": {
+          "type": [
+            "integer",
+            "string"
+          ]
+        },
+        "reported_thoughts_tokens": {
+          "type": [
+            "integer",
+            "string"
+          ]
+        }
+      }
+    }
+  }
+}
