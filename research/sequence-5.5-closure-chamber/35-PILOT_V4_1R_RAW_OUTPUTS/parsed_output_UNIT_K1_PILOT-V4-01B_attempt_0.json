@@ -1,0 +1,17 @@
+{
+  "finding_id": "FINDING-CASE-8102-B",
+  "verdict": "HELD",
+  "identified_issues": [
+    "Unresolved timeout ambiguity following HTTP 504 GATEWAY_TIMEOUT on SWIFT_GATEWAY_WORKER.",
+    "Premature ledger state advancement where LEDGER_CORE_01 marked TX-8102-EUR as COMMITTED before receiving settlement confirmation.",
+    "Premature operational rollback directive that violates clearing bank reconciliation rules by assuming network failure in the absence of an explicit RJCT record."
+  ],
+  "evidence": [
+    "SWIFT_GATEWAY_WORKER logged HTTP 504 GATEWAY_TIMEOUT at 2026-10-06T08:15:03.205Z and cached status as CALLBACK_PENDING_TIMEOUT.",
+    "LEDGER_CORE_01 transitioned local_tx_id TX-8102-EUR to state COMMITTED with lock_status RELEASED at 2026-10-06T08:15:00.120Z.",
+    "Clearing bank bilateral CAMT.053 / MT940 feed at 08:30:00Z did not include TX-8102-EUR under FINALIZED_ENTRIES and reported REJECTION_RECORDS: NONE.",
+    "Clearing reconciliation rule 3 explicitly dictates that instructions neither finalized nor rejected remain queued on the clearing network pending the subsequent cycle."
+  ],
+  "recommended_action": "Hold settlement batch SETTLE_BATCH_8102 in pending status and suspend automated ledger rollback; execute an out-of-band status query (pacs.028) or await the subsequent clearing cycle statement to confirm whether the queued instruction finalizes or returns an explicit RJCT record.",
+  "confidence": "HIGH"
+}

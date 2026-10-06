@@ -1,0 +1,16 @@
+{
+  "finding_id": "FINDING-CASE-4190-B",
+  "verdict": "FAIL",
+  "identified_issues": [
+    "Execution of planned maintenance switching without a pre-authorized Switching Order registered in DISPATCH_EMS prior to physical actuation",
+    "Attempted retrospective submission (SO-2026-8812) to cure unauthorized manual switching, violating Regional Grid Operating Standard Section 4.2",
+    "State-machine prerequisite violation: manual trip actuation occurred while pre-authorization status was NONE"
+  ],
+  "evidence": [
+    "Central Dispatch Switching Order Registry log at 2026-10-06T15:50:00.000Z confirms 'Pre-authorization status: NONE' and no switching order on file for BKR_512",
+    "Substation Digital Fault Recorder log shows physical breaker trip initiated at 2026-10-06T16:10:02.100Z via front panel manual trip pushbutton, opening contacts at 16:10:02.145Z",
+    "DISPATCH_EMS entry EMS_LOG_9941 at 2026-10-06T16:12:15.000Z records retrospective submission SO-2026-8812 created 2m 13s post-switching with status 'RETROSPECTIVE_UNAUTHORIZED'"
+  ],
+  "recommended_action": "Uphold the compliance auditor infraction notice; enforce strict pre-authorization interlocks in substation relay logic (e.g., relay manual trip supervisory block requiring dispatch permit token) to prevent physical manual trip execution without verified prior EMS switching orders, and initiate human-performance retraining on standard switching procedures.",
+  "confidence": "HIGH"
+}

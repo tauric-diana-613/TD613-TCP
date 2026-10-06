@@ -1,0 +1,18 @@
+{
+  "finding_id": "FINDING-8102-B",
+  "verdict": "HELD",
+  "identified_issues": [
+    "Premature classification of transport-layer timeout as settlement failure",
+    "Uncompleted whole-route continuation pending out-of-band bilateral reconciliation in the subsequent cycle",
+    "Preemption gap between local ledger commitment (COMMITTED) and unconfirmed central clearing settlement state",
+    "Risk of duplicate execution or unaligned state if ledger rollback is executed prior to definitive clearing network disposition"
+  ],
+  "evidence": [
+    "Outbound payment gateway logged HTTP 504 GATEWAY_TIMEOUT and cached state CALLBACK_PENDING_TIMEOUT at 2026-10-06T08:15:03.205Z",
+    "Core financial ledger committed transaction TX-8102-EUR locally at 2026-10-06T08:15:00.120Z",
+    "Clearing bank CAMT.053/MT940 statement at 08:30:00Z listed no finalization record and no negative return record (RJCT/PACR) for TX-8102-EUR",
+    "Clearing reconciliation standard explicitly establishes that an unlisted instruction without an RJCT record remains queued on the network pending the next settlement window"
+  ],
+  "recommended_action": "Enforce whole-route HELD verdict. Block premature ledger rollback and reject the operations monitor FAIL classification. Maintain transaction TX-8102-EUR in unfinalized pending status across the local ledger and gateway, await the subsequent cycle CAMT.053 reconciliation feed, and require human closure with bilateral confirmation before mutating ledger escrow state.",
+  "confidence": "HIGH"
+}

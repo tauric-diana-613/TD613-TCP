@@ -1,0 +1,32 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\"finding_id\":\"FINDING-CASE-5521-B\",\"verdict\":\"HELD\",\"identified_issues\":[\"Ambiguous physical telemetry signature consistent with both benign thermal duct contraction and hazardous dynamic face seal fracture\",\"Absence of discriminating helium tracer data due to scheduled sniffer recalibration during cryogenic chilldown transient\",\"Unsubstantiated definitive failure determination by flight safety controller lacking direct grounding from available diagnostic instrumentation\"],\"evidence\":[\"PT-401 registered a pressure drop of Delta P = -1.15 bar over 140 ms at 14:22:10.450Z, which falls within the -1.0 to -1.3 bar window for both thermal duct contraction and dynamic face seal fracture\",\"ACC-102 registered broadband vibration with a resonant peak at 44.2 Hz, which falls within the 40-48 Hz resonance range common to both structural bellows ringing and shaft resonant failure\",\"HE-SNIFF-01 logged OFFLINE_CALIBRATION_PURGE at 14:22:00.000Z and recorded Secondary purge helium concentration: N/A at 14:22:10.600Z, preventing verification of seal cavity leakage\"],\"recommended_action\":\"Hold countdown milestone approval and maintain system in safe dwell. Restore HE-SNIFF-01 online to continuous sample mode, perform static pressure-decay and helium sniff verification across the secondary inter-seal purge line, and inspect shaft cavity before re-evaluating manifold integrity.\",\"confidence\":\"HIGH\"}",
+            "thoughtSignature": "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"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 3017,
+    "candidatesTokenCount": 328,
+    "totalTokenCount": 4153,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 3017
+      }
+    ],
+    "thoughtsTokenCount": 808,
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.8-flash",
+  "responseId": "2WPFar_gI7Hx-sAP6qytqQ4"
+}

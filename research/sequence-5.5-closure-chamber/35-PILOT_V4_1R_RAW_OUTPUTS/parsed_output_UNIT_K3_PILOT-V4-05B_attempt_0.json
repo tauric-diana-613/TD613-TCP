@@ -1,0 +1,17 @@
+{
+  "finding_id": "FINDING-CASE-4190-B",
+  "verdict": "FAIL",
+  "identified_issues": [
+    "PREEMPTION_GAP_WITH_UNAUTHORIZED_ACTION: Physical breaker actuation occurred without prior approved switching authorization required by Regional Grid Operating Standard Section 4.2.",
+    "UNLAWFUL_RETROSPECTIVE_CURE: Submission of retrospective order SO-2026-8812 after physical switching violates the explicit non-retroactivity and authorization standard.",
+    "FADT_SUPPORT_BOUNDARY_VIOLATION: Maintenance trip initiated at the local relay interface lacked an admitted upstream conditioning dispatch ticket."
+  ],
+  "evidence": [
+    "DISPATCH_EMS registry log at 2026-10-06T15:50:00.000Z confirms pre-authorization status: NONE and no switching order on file for BKR_512.",
+    "RELAY_SEL_451 fault recorder records manual front panel trip at 2026-10-06T16:10:02.100Z opening BKR_512 with line current dropping to 0.0 A prior to any approved switching order.",
+    "DISPATCH_EMS log entry EMS_LOG_9941 at 2026-10-06T16:12:15.000Z confirms retrospective ticket SO-2026-8812 was generated post-switching with status RETROSPECTIVE_UNAUTHORIZED.",
+    "Regional Grid Operating Standard Section 4.2 explicitly stipulates that physical maintenance switching without an approved prior Switching Order constitutes an unauthorized line disconnection that cannot be cured retrospectively."
+  ],
+  "recommended_action": "Sustain the compliance auditor's finding of FAIL. Initiate formal unauthorized switching remediation, enforce interlock controls preventing relay manual trip during maintenance without validated dispatch ticket pre-authorization, and prohibit retrospective authorization laundering in dispatch records.",
+  "confidence": "HIGH"
+}

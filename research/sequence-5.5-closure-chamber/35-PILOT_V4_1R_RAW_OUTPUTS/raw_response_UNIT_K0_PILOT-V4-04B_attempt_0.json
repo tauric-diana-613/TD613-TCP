@@ -1,0 +1,32 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\n  \"finding_id\": \"FINDING-CASE-6218-B\",\n  \"verdict\": \"FAIL\",\n  \"identified_issues\": [\n    \"Violation of SOP 12.1 Requirement 3 (Predecessor Review State Binding): predecessor_review_event_hash is null in the dispatch payload.\",\n    \"Decoupling of the compounding execution payload from the pharmacist's clinical review sign-off record EVENT_PHARM_VERIFY_991.\"\n  ],\n  \"evidence\": [\n    \"Pharmacist Verification Console Log commits EVENT_PHARM_VERIFY_991 with Record SHA-256 Digest d4a8e235cc084e9121f087da29b71e16f5c889a0b1273891d4e08219ab6019b0.\",\n    \"Robotic Compounding Dispatch Payload MSG_DISPATCH_8842 specifies 'predecessor_review_event_hash': null instead of the required review digest.\"\n  ],\n  \"recommended_action\": \"Halt order CHEMO_8842 from execution, reject the technician's proposal to override status to PASS, and require the dispatch gateway to regenerate MSG_DISPATCH_8842 with the valid predecessor review event hash bound.\",\n  \"confidence\": \"HIGH\"\n}",
+            "thoughtSignature": "EtwZCtkZAWkUfRN8ERx1B+U/N2k0TcvO4BSt9yE1bqWYaNXE+qckAcdpkKiNzcSB7xdm4KSpeDokLhuy2GR7MS9kcFT4Bivh9+Yd6zVdR3CE7G5u+3QLaDLgN5NjC5vmRl2/gTm80U6a1NL4NBgUYXILFV4ICV8EVU6x9KJDI+Pp+qhWkiRFp3GbKpE10C5tmb8gZkNMKjJ03w3Q1txrEguBzFq1kt0VnhKefHTyRhhWm2ilBCTQRl+z66RO2KdjAI3fmWGULajlTnjRTPeBNkctLMRZNuLTogmHyBoPKRQShvudxt/kj8IPdRWZRKNgYiCpqu4r65hTXNhvfn/OsouER8ad9TIQvJfd1IPJ0hXIiv4lgbxitPFu3GJRkeMd+LvFzb48flE4Rl1JswiSgbH7ToLmRIT44LtQHcGT9T0ibpPTM8FCZZqmX9WKuONPOtyAFbuvSF+JBL7QwndLuu/ox6hnL3wCroLSfCu9ElN9QakbBLGrb1i74HIlJ9m6i564B6WSEYUyLJD4DIB1Qt5dhQ30zHnwPoYLVw82f9+JN1u1EMqEDreVLAx5vnp3eLJ+lkUAgA4zOaVpfCNGhLQyAVoFUaPLAPBoFi3aGyNQrGHVJ4hB+RPG++pDdQvP/ERSF+OpGSqlcBy6sUo5UOnjdozuEkfoODL1xhSSvqByhBPTfzSfnwXQ6jZqtMpPS4SG8DRxwxSW4ZCSHdblZyDlHEAKgjYuAwXYIjxQ8IkqxhX2m/K9BqQ0QO45L2/bwqSCpUnZoQ5dK8SClawKlWU8JeBfk+UfR8nCemlhCLPYvJLfQypmSHqem75gQO+vAmK+LssarLYmPxLbqFSzzRXSn5vYgdvofwaHN/cBBXSZC9k9cx9d0IIUfVUwfw53KTEvihPTHgoGrZvKszIEvRU2Zl7Yf1ut3IsRY0OmYlxVF2C1WzmpTpi7XUwDjcr+W2xbVMbvLJAbofMrQZEzndRXi+OrNnlwpqV9DXDLy6DxPRYvzNk0CMAq8c8s6OT7WKCfgnLX+9Nou5MXDUICeI1RI/HuVWCQSehQyu1eha5KNiVl5e4sF3qkFbzrfmrt87d5ghJagQAgwwbYgKSsEQ5Z/j1nI4ssT4EHuB/bg/lvAIdAVdkXuwnoGcbQg1pw5JXXxpXam5nTZd60FcK/GMzfYpyGRAV0Yu+E0i9LN/70veELDOoWGT/IAbGYmd2BaOLuoxsmbI8MZiiwbqqV0mS+Jcog8ZAijApvvjNOdDfokHHqDJmY+l9XFTxtBC0ObhIOvyoCIpwyiWFqOAQxgUxwTCs0HsLvdudmCM8fc3OrbgW+pZoqulMtQCFUqOZBW7s4ySrCw3vYPEtn43eNaS2Cgp9qdOoWZoqZWPO2zmycQZSbmP4Gz//gsTQlmcFrg5LKqk/fmOS4ZCfcID/La/2yE3jCsL7jJxSCgZNXn7yCFudaO43bXDJN+e4JBANjUB3l3rxWFlsHa7XdP6vU09UKTJjwFWeWKQ//eRjL2xNutBaXIfzr6jm203KohfDrTrRW2TjF2mATF4kahkqJbXGKxF6cqrifFDPlybtd28pzcboGLqpQYThUueuyNVB2DCWzPh1SkjxlkY8tIUgEqng+8DBbZ6WqJ/6fqTOGeLX/cMNu1XU1KrE8d3YYKko0KHgo8FO8jma5AxOK7ODZfwI99mbE7Uw19QAhA8/DF3GQzkELKdLEiIXPLIcTral78efcSvpJuiDyxLIGIk5jIiX2uY8luLZsykQJKQQxnB1fT00/KWXcd/j+uqz5Hy/x3gHZxW0hrLUkRvasruUAouBB237zjas6pNipR3BHONrUIbFGHv3po0JSNxc3AH+pzZ/PETqzcic/jJdbv24htVWzK0ychY74aCnH0B6C48hfqssLqIA1ALq5yMltUlT11Y8kF+4U1Epg+B2mn35xmuzlQ+FYjfOnvU4VQ/QZknIVADKLcLuotmoV/lYhL3RvUC3Or+t3JVKpjGeye7ntJrYCnGP6K/IgGxcwXkKHKPuLStteGNwS8fjmplAbtAmeZwcDp6yAtGFBifSc9gA5M6R0XcHiZP54+XAuhQ6kS9yJbklHpn9OvZ3B4Qw04Eq0rQSubWMkS3z2qNND7lyaU+eWYMtQkTxwZ0wOf7QeK9H93fNSpMZh1oWufZCPFAe5FFyj3ikEwJgUgWGt84SNDFGfRd5hpUThL2VVJrWsEy9neOJaIhLoylevCVTVm0JaveQkCX7lRG8hkz+O/b0Hf05hNJ/KlvMHbMxkQKPNu0ojQs/nwm77Ds8j0EQwbZzn0vd1Yuu87CyPzFN2SXAB39+gTVR+W3dBqn+YVGkkMt6P6CZKOrlIArERqw3jRktslJ8J59sGsR32MlvDOGLRAOxIy0qmgtUHKwGcnibFrRZURijD++44b9hELN88NmNPcaWFTf29GVOlnOd3r+X/Usz2dqduGJc/FwQR0KL8HTCSic4mX3oAm26CqhtKYtWY+XC/pv9hrA2Q1vbSoPKcbgEPHo6McmJhNYuEvAbmE26oZlS4VpQ+HOjE35XlHKJinmXGcUjLVqnB50EQrTuYwAiHx+4y7/JOA0K1st0uxaxDaECRm41Ydnj+TGExGqn8Gqrfqjy/VZD7K1pCyok3jHxjcTlOdQVjIoi51xXIWZ5S9w7LH8fMJpvg7Ac/owUJr8xxe9xn86majijxicpjRabVWyJyH8EvVs0ksqzCUZ7+DaLJXpPVXoQjZyqQkfssPcDprdHaRW4K6Uaf/sKAu+dvRoqyVBJ7n6lrSSTfo6JEIb126ojxqP+TVc70UDFGJ3UO6uk5TpJ8CnydjzePl666f6UFJhXeLwG8jrcCpo5vmLNx8owhMtcsQwh07ciACI5hfaG4qVSYtZos0yoMUjMKZHehUo56GDpPabXKK3r4IsNwbRd1asGk32Kligm5yGQGN6eVzComY+cIH6Yd8zqpabvqI8QEsCSJO7U9McIXoFrYl9jA8+Mx9V7XIOqoSX5A5192g79uLu8YaNUyuM+OsMXoVgD/YmXUxi9XY/mbo02N0VfNlrMcMwmyQ6NNVSR2JDc3j5vjFyGrgPMC+hrm8VM9uYsfg7aP6pRcAKpXQT5J7z9u5sJDv+mLffXWYRWehynycCN0ZH8egsJTIk1NFMslY7a82WRJbzwFrNhxVskfV4ssA/bGCcJ51xxeUhYLgMhdk598l4ATvtxiaqgMkDxGejmogVJd/HxZbsup1LWBOu3a5M/kBruvNMneY7oQa3s64NYSYwIJKhpKgkWAe1cCofxxFiqRi/PZ10VuEJ6TE/QMNx6Bj6gCSzXfDfQGanmXkZqhi++C6cNf6JsENVeU89Ra8pgAbDqWwpPr4iO3yChH2DjvRjy+FMAgcoe6zOI/18IAnIGIarYb0GQLNshewKNIJTnfKV0SXS+xmY1UMemZguLAG7GvWr1kFZhp+Xet+MQvYekSI9uxN0OcS4MZs8+21Ay03SHv6vK3LOjdwRYA/ZujSb4P4pP+5zGN1bat169kQ+7LCSbyqODNXO/G2G+m/EwZ66ShOpgQCv0np7OriKLxGLb/4zVk7foevWEKIC5m7w5PfxoqS0es3CwqSOcLqHXPUxrVPSuHMNB9Bybbvvy6Q4nBZsuXoom4z8fkBESyHPqNIg/Zv3DHQq/BuDCEIxYOLPcsScwbKyfVzOVxQCvlNleso3wSnHthJz0m6Jfa7yqoK8UAzhb+zIoK3/OXN8pqZkML4h/I8WAm2rPbronmwJC1ALEc4CTKBoj6XEd5VUFI7ukgFDFWOrtco1zZ3KtQorcLldIHSPtiWY3INjLkaK2Zj0v2Hp8wj8hdOtRWXyX31h/0SKFSkb0YWlxLbFvUyP/yoY+naV+i8urNacgIkbriPsvKoUvjeuDH4cRhq/XXIiCovNcfHnv6sW3Xh14/o2UEqaqWU20+J8AcgKqG/iBlffBzacbh6GHUsA7LNn07Li3wZ0hquw8y9x+nKKtGVuXXGNsngxIks8Jbhpojh91YSg25LiKJ8udUcll5nrtY4ygIN7Z/Ljq1apyyNQzD6bOBQZCqPt/ykPlDLbi+Qf/QOrWY2PcPfFgZYSV92uXaAjan8Wp4bl23VsiMVdcDOEKbovUCayRsJG23YYwGt/UGHnwUs9k1b4Cw1YfkOqq/i0LxDd3qF10OVhyNKkndj9zjniArL/ofxB/GZfoZ8IBqn1OoFSE880ZzToLt18aAQSWH6OXYqa4If0KEKVhHduED7JNVM84OCXQZqrZFG9mF94GUv3k6qikWmIOO6gRRxyKjoVmrqpeG2+EHKkVLrbQZeKhfYvqMx8dXpJhZfcvP3zFJFYzrQ1ohDcMy00pj8Mqn5XerZWTEiPRvKzSqioJ/pg=="
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 1737,
+    "candidatesTokenCount": 316,
+    "totalTokenCount": 2995,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 1737
+      }
+    ],
+    "thoughtsTokenCount": 942,
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.8-flash",
+  "responseId": "pWTFauitN6zf-sAPiNzMuQI"
+}

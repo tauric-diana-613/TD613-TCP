@@ -1,0 +1,14 @@
+{
+  "finding_id": "FINDING-CASE-6218-B",
+  "verdict": "FAIL",
+  "identified_issues": [
+    "Violation of SOP 12.1 Requirement 3 (Predecessor Review State Binding): predecessor_review_event_hash is null in the dispatch payload.",
+    "Decoupling of the compounding execution payload from the pharmacist's clinical review sign-off record EVENT_PHARM_VERIFY_991."
+  ],
+  "evidence": [
+    "Pharmacist Verification Console Log commits EVENT_PHARM_VERIFY_991 with Record SHA-256 Digest d4a8e235cc084e9121f087da29b71e16f5c889a0b1273891d4e08219ab6019b0.",
+    "Robotic Compounding Dispatch Payload MSG_DISPATCH_8842 specifies 'predecessor_review_event_hash': null instead of the required review digest."
+  ],
+  "recommended_action": "Halt order CHEMO_8842 from execution, reject the technician's proposal to override status to PASS, and require the dispatch gateway to regenerate MSG_DISPATCH_8842 with the valid predecessor review event hash bound.",
+  "confidence": "HIGH"
+}

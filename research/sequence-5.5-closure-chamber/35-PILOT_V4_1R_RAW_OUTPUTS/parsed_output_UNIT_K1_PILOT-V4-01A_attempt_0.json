@@ -1,0 +1,16 @@
+{
+  "finding_id": "FINDING-8102-A",
+  "verdict": "PASS",
+  "identified_issues": [
+    "Synchronous gateway timeout (HTTP 504) was conflated by the operations monitor with a clearing settlement failure.",
+    "Premature automated rollback alert issued without reconciling against authoritative end-of-window bilateral bank statements.",
+    "Gateway worker retained un-reconciled CALLBACK_PENDING_TIMEOUT status despite completed downstream clearing."
+  ],
+  "evidence": [
+    "Clearing Bank SFTP Bilateral Statement (CAMT.053/MT940) at 08:30:00Z explicitly confirms entry REF=TX-8102-EUR settled with CLEARING_ID=EBA-STEP2-9948102, AMT=14850000.00 EUR, STATUS=SETTLED, and VAL_DATETIME=2026-10-06T08:15:02Z.",
+    "Bilateral statement explicitly records REJECTION_RECORDS: NONE, confirming no rejection (RJCT) or payment cancellation (PACR) occurred.",
+    "Core Ledger Engine committed TX-8102-EUR at 2026-10-06T08:15:00.120Z for EUR 14,850,000.00, fully aligning with the cleared transaction amount and reference."
+  ],
+  "recommended_action": "Do not execute a ledger rollback. Formally reconcile and update SWIFT_GATEWAY_WORKER state from CALLBACK_PENDING_TIMEOUT to SETTLED based on the authoritative CAMT.053 statement. Update operations monitoring rules to inhibit automated rollback triggers on synchronous HTTP timeouts until bilateral reconciliation completes.",
+  "confidence": "HIGH"
+}

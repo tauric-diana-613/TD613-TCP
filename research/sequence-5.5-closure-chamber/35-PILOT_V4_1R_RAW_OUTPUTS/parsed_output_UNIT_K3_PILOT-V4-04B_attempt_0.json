@@ -1,0 +1,16 @@
+{
+  "finding_id": "FINDING-CASE-6218-B",
+  "verdict": "HELD",
+  "identified_issues": [
+    "Missing predecessor review state binding: predecessor_review_event_hash is null in dispatch payload MSG_DISPATCH_8842.",
+    "Violation of Pharmacy Robotic Dispensing SOP 12.1 Requirement 3 regarding lawful receiver continuity and support boundaries.",
+    "Premature promotion of local authentication passes (mTLS, pharmacist signature) to global dispatch authorization despite broken predecessor chaining."
+  ],
+  "evidence": [
+    "Pharmacist verification log at 2026-10-06T10:14:22.180Z generated review event EVENT_PHARM_VERIFY_991 with SHA-256 digest d4a8e235cc084e9121f087da29b71e16f5c889a0b1273891d4e08219ab6019b0.",
+    "Robotic Compounding Dispatch Payload MSG_DISPATCH_8842 specifies 'predecessor_review_event_hash': null.",
+    "SOP 12.1 Requirement 3 mandates that each robotic compounding execution must be verifiably bound to the exact clinical order verification state established during pharmacist review using the registry review event hash."
+  ],
+  "recommended_action": "Maintain hold on compounding order CHEMO_8842. Deny technician request to pass the queue until the dispatch payload is populated with the authenticated predecessor review digest (d4a8e235cc084e9121f087da29b71e16f5c889a0b1273891d4e08219ab6019b0) and receiver continuity is verified before human closure.",
+  "confidence": "HIGH"
+}

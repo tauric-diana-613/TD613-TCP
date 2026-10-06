@@ -1,0 +1,15 @@
+{
+  "finding_id": "FINDING-CASE-4190B",
+  "verdict": "FAIL",
+  "identified_issues": [
+    "Breaker BKR_512 was manually opened without an approved pre-authorized Switching Order registered in DISPATCH_EMS, violating Regional Grid Operating Standard Section 4.2.1.",
+    "An unapproved retrospective switching ticket (SO-2026-8812) was submitted 2 minutes and 13 seconds after breaker actuation, which violates Section 4.2.3 prohibiting retrospective curing of unapproved maintenance switching."
+  ],
+  "evidence": [
+    "DISPATCH_EMS registry log confirmed no switching order on file and pre-authorization status NONE at 2026-10-06T15:45:00.000Z and 15:50:00.000Z.",
+    "RELAY_SEL_451 recorded manual trip initiation at 2026-10-06T16:10:02.100Z and BKR_512 opening at 2026-10-06T16:10:02.145Z prior to any authorization.",
+    "EMS_LOG_9941 at 2026-10-06T16:12:15.000Z documented submission of retrospective order SO-2026-8812 post-event with status RETROSPECTIVE_UNAUTHORIZED."
+  ],
+  "recommended_action": "Uphold the compliance infraction notice marking the switching operation as FAIL, initiate an operational safety inquiry regarding field protocol adherence, and mandate retraining on pre-authorization requirements prior to physical breaker operations.",
+  "confidence": "HIGH"
+}

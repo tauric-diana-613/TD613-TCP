@@ -1,0 +1,16 @@
+{
+  "finding_id": "FINDING-6218-A",
+  "verdict": "HELD",
+  "identified_issues": [
+    "Unresolved automated queue validator audit notice for high-risk protocol confirmation prior to compounding dispatch",
+    "Proposed manual lifecycle advancement to PASS without verified resolution of the safety gate",
+    "Technician conflation of payload_sha256 with predecessor_review_event_hash without recorded payload digest verification in the registry log"
+  ],
+  "evidence": [
+    "The automated queue validator flagged Order CHEMO_8842 with an active audit notice requiring high-risk protocol confirmation.",
+    "Pharmacist console log at 10:14:22.180Z recorded event EVENT_PHARM_VERIFY_991 SHA-256 digest d4a8e235cc084e9121f087da29b71e16f5c889a0b1273891d4e08219ab6019b0 matching predecessor_review_event_hash, but contains no independent verification record for payload_sha256 7f8b9101ae45c82910bb34991823abce8812f00918273645e89127394851a142.",
+    "No downstream audit log exists confirming the high-risk protocol validation was completed or formally cleared before the technician's proposed state transition."
+  ],
+  "recommended_action": "Maintain queue status as HELD under fail-closed defensive design rules. Suspend mechanical compounding until the high-risk protocol confirmation audit notice is formally validated and resolved through documented secondary clinical confirmation.",
+  "confidence": "HIGH"
+}

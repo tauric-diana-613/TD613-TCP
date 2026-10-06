@@ -1,0 +1,63 @@
+{
+  "schema": "td613.sequence5.5.execution-receipt/v4.1r",
+  "episode_id": "EPISODE_SACRIFICIAL_PILOT_V4_1R",
+  "execution_id": "EXEC-V4-1R-UNIT_K2_PILOT-V4-03A-attempt-0",
+  "unit_id": "UNIT_K2_PILOT-V4-03A",
+  "arm": "K2",
+  "fixture_id": "PILOT-V4-03A",
+  "is_pilot": true,
+  "receiver_identity": {
+    "provider": "google",
+    "exact_model_id": "gemini-3.8-flash",
+    "runtime_or_harness": "vercel-preview/server-fetch",
+    "endpoint_or_execution_class": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
+    "model_settings": {
+      "temperature": null,
+      "sampling_parameters_set_by_protocol": false,
+      "thinking_level": "medium",
+      "max_output_tokens": 8192,
+      "response_mime_type": "application/json",
+      "tool_permissions": []
+    }
+  },
+  "credential_and_billing_provenance": {
+    "credential_source_type": "VERCEL_ENVIRONMENT_VARIABLE",
+    "credential_source_name": "GEMINI_API_KEY",
+    "credential_fingerprint_sha256": "51efc3d87cdffc4fb2869519ff4fa12b10ce179ba79d3976f6094cf741681c39",
+    "provider_project_id": null,
+    "billing_usage_tier": "UNVERIFIED",
+    "inference_service_tier": "standard",
+    "billing_context_verified": false
+  },
+  "temporal_provenance": {
+    "request_started_at": "2026-10-06T21:18:03.660Z",
+    "response_completed_at": "2026-10-06T21:18:16.053Z",
+    "duration_ms": 12393
+  },
+  "input_provenance": {
+    "treatment_sha256": "caa6e184d3cdba09351e05b3547211dee3b686f503762839d7eb612f2e69875b",
+    "fixture_sha256": "45f2c5585e99f30dad4f06fd75d8956370ee08a442a905b2f294df0a83612b1b",
+    "bound_prompt_sha256": "6be009bbc27e9a3256228fac6fc2c39ed1c57dbb9eacb78b676b5defc1a0e94c",
+    "receiver_output_schema_sha256": "935bf87b1ef86ac1df7490c7f5abe6d93892e89869f348671bd64c50b42e5537",
+    "fixed_wrapper_sha256": "2132cb1c832b326ffa9942dff5d246e595207f19addc8e9bf8227dfb52744f0d"
+  },
+  "output_provenance": {
+    "raw_response_sha256": "d4350076f17b73e5e2a510461d4865acef570e9376af34f8fefa4da6ed0459ca",
+    "raw_response_preserved_unmodified": true,
+    "parsed_response_sha256": "a9feaff4dbf0a7d059b3db6c764160e9953e6a4574d7347005f99f2eac62f1f8",
+    "parsing_validation_status": "VALID"
+  },
+  "provider_receipt": {
+    "provider_request_id": "i2XFatClLq_g-sAP47iwwQI",
+    "status_code": 200,
+    "retry_ordinal": 0,
+    "retry_reason": null,
+    "x_gemini_service_tier": "standard"
+  },
+  "usage_realized_dose": {
+    "reported_input_tokens": 3064,
+    "reported_output_tokens": 351,
+    "reported_total_tokens": 4705,
+    "reported_thoughts_tokens": 1290
+  }
+}
