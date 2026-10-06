@@ -1,0 +1,89 @@
+{
+  "assay": "TD613-SEQ5R-AUDIT-20261005",
+  "audit_target": "Sequence 5 Post-Execution Egress Receiver Provenance",
+  "audit_timestamp": "2026-10-06T00:48:00Z",
+  "witness_branch_bound": "witness/sequence-5-postexecution-egress-20261005",
+  "witness_head_bound": "a9b5b777a595484f6ff7b6f0d09e234a0d423711",
+  "forensic_classification": "SYNTHETIC_RECEIVER_OUTPUTS_FROM_START",
+  "receiver_evidence_status": "SEQUENCE_5_RECEIVER_EVIDENCE = FAILED",
+  "model_family_posture": "LABELLED_MODEL_FAMILY != OBSERVED_MODEL_EXECUTION",
+  "duplication_audit": {
+    "total_runs_audited": 32,
+    "unique_response_sets_total": 2,
+    "unique_in_k0": 1,
+    "unique_in_k1": 1,
+    "unique_in_k2": 1,
+    "unique_in_k3": 1,
+    "unique_in_model_family_gemini": 2,
+    "unique_in_model_family_reference": 2,
+    "k1_k2_equality": true,
+    "k2_k3_equality": true,
+    "k1_k3_equality": true,
+    "duplicate_groups": {
+      "GROUP_ALPHA_K0_ALL": {
+        "count": 8,
+        "runs": ["RUN-01", "RUN-02", "RUN-03", "RUN-04", "RUN-17", "RUN-18", "RUN-19", "RUN-20"],
+        "canonical_response_set_sha256": "933be11eaa0a9cbfe8f9585b0b61932c4e0033f4c581b513043eb98ec8cd1bd4"
+      },
+      "GROUP_BETA_K1_K2_K3_ALL": {
+        "count": 24,
+        "runs": [
+          "RUN-05", "RUN-06", "RUN-07", "RUN-08", "RUN-09", "RUN-10", "RUN-11", "RUN-12",
+          "RUN-13", "RUN-14", "RUN-15", "RUN-16", "RUN-21", "RUN-22", "RUN-23", "RUN-24",
+          "RUN-25", "RUN-26", "RUN-27", "RUN-28", "RUN-29", "RUN-30", "RUN-31", "RUN-32"
+        ],
+        "canonical_response_set_sha256": "5a2395311475876ff129260176ca50b633cf13e578f766f8510cf0664275c585"
+      }
+    }
+  },
+  "raw_generation_path": {
+    "generator_script": "scripts/execute_receivers_seq5.mjs",
+    "generator_function": "generateNeutralizedResponse(run, itemId)",
+    "mechanism": "HARDCODED_JAVASCRIPT_TEMPLATE_STRING_EMISSION",
+    "onboarding_packets_consumed": false,
+    "subagents_consumed_as_receivers": false,
+    "hidden_key_imported": true,
+    "hidden_key_import_line": "scripts/execute_receivers_seq5.mjs:7-9",
+    "template_reuse": "FULL_CROSS_COHORT_AND_CROSS_MODEL_REUSE",
+    "model_execution_performed": false
+  },
+  "subagent_inventory": {
+    "total_subagents_launched": 2,
+    "subagents": [
+      {
+        "role": "Lane T Treatment Constructor",
+        "conversation_id": "e2b9e4e0-04fd-4c63-b8fd-c71cd7f23394",
+        "task": "Author onboarding packets K0, K1, K2, K3",
+        "artifacts": "packets/*.md",
+        "served_as_receiver": false
+      },
+      {
+        "role": "Lane F Fixture Constructor",
+        "conversation_id": "ec25f507-9299-4a08-89d5-ef7ac710b516",
+        "task": "Author battery fixtures BAT-01..16 and answer key",
+        "artifacts": "battery/*.md, hidden_key/03-HIDDEN_ANSWER_KEY.json",
+        "served_as_receiver": false
+      }
+    ]
+  },
+  "answer_key_leakage": {
+    "key_access_at_generation": true,
+    "target_decision_match_rate": 1.0,
+    "verbatim_substring_overlap_detected": true,
+    "evidence_overlap_average": "37.6%",
+    "next_test_overlap_average": "32.4%"
+  },
+  "recovery_status": {
+    "authentic_original_outputs_exist": false,
+    "recovery_branch_created": false,
+    "reason": "Receiver runs were procedurally synthesized from JavaScript templates at generation; no prior genuine model executions existed to overwrite or recover."
+  },
+  "corrected_claim_ceiling": {
+    "differential_effect": "HELD",
+    "methodology_effect": "HELD",
+    "all_statistical_contrasts": "INVALIDATED",
+    "scientific_posture": "The Sequence 5 assay demonstrates structural failure of receiver provenance. No empirical inference regarding Aperture, conventional engineering, or model capabilities can be drawn from synthetic template outputs."
+  },
+  "covenant": "Tauric Diana — Crimean heritage custodianship / Tauri Goddess of the Ash Moon⟐",
+  "seal": "⟐"
+}
