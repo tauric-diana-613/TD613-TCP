@@ -1,0 +1,287 @@
+{
+  "schema": "td613.sequence5.5.pilot-authorization-receipt/v1.0",
+  "receipt_title": "Pre-Execution Sacrificial Pilot Authorization Receipt",
+  "authorization_status": "GREEN_SACRIFICIAL_PILOT_EXECUTION_ONLY",
+  "authorized_at": "2026-10-06T03:27:33.451Z",
+  "canonical_freeze_a_v4_commit": "70299c23b3e0b3d781ea9673cae1d1112ba281f3",
+  "receiver_declaration": {
+    "provider": "google",
+    "exact_model_id": "gemini-3.5-flash",
+    "runtime_or_harness": "node-fetch/server-gemini-transport",
+    "runtime_version": "node-v24.14.0/gemini-v1beta",
+    "endpoint_or_execution_class": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent",
+    "model_settings": {
+      "temperature": 0,
+      "seed": null,
+      "reasoning_or_thinking_setting": "thinking_default",
+      "max_output_tokens": 8192,
+      "tool_permissions": []
+    }
+  },
+  "cryptographic_bindings": {
+    "pilot_calibration_key_commitment_sha256": "d796fdabb35b8716acfd0b6d7da0e19cc8384f6c47c58068994e91ee3aa89c68",
+    "sealed_execution_bundle_manifest_sha256": "96ca17d96acf5099c898459c525621cf42b7517e985c60f26b7b896ac5df2e6f",
+    "receiver_output_schema_sha256": "935bf87b1ef86ac1df7490c7f5abe6d93892e89869f348671bd64c50b42e5537",
+    "execution_receipt_schema_sha256": "34f0b2bf2742074e503f102e79a7618cac3567ecea55607fced9b2d364b971f8"
+  },
+  "authorized_pilot_execution_units": [
+    {
+      "unit_id": "UNIT_K0_PILOT-01",
+      "arm": "K0",
+      "fixture_id": "PILOT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": true,
+      "execution_unit_sha256": "977c9695f02e362e0db84f5ec7105e06d1ac7a927588fce8cb71d39b50a96564"
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-02",
+      "arm": "K0",
+      "fixture_id": "PILOT-02",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": true,
+      "execution_unit_sha256": "421379b7b910d16685d3990c89033ad82b2cd03f53b90354a40906157c661c20"
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-03",
+      "arm": "K0",
+      "fixture_id": "PILOT-03",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "d10d55edb69c40a47083b020f4598661e2369350d41f842d3d9c0d88a1e9d695"
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-04",
+      "arm": "K0",
+      "fixture_id": "PILOT-04",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "235561d5c29da9943f60eb8ad8cdf75bd4fa05bc5614bd4a87e8e32153f613c6"
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-05",
+      "arm": "K0",
+      "fixture_id": "PILOT-05",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "03e50968181e45e9b12df7ac72ca8f00c1ddd31b03d1c1fa2eeb27903de95997"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-01",
+      "arm": "K0D",
+      "fixture_id": "PILOT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": true,
+      "execution_unit_sha256": "23f2335c9252e25fda55dceebc3c6b907c450d132a6cc120db8f7e94d675cb87"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-02",
+      "arm": "K0D",
+      "fixture_id": "PILOT-02",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": true,
+      "execution_unit_sha256": "c05f9703186e70477d53b0f0f1f97ff9e96b3fe558d84036167f3de24a005930"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-03",
+      "arm": "K0D",
+      "fixture_id": "PILOT-03",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "7bcf053ae3efb5b677f59f7b22628c6bc7bd28d461337dfaac264142d8526e9d"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-04",
+      "arm": "K0D",
+      "fixture_id": "PILOT-04",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "5c34f68433456952f7df2d65b22d019f6ebe6fb9e93b6c34de64d0aa6298a94d"
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-05",
+      "arm": "K0D",
+      "fixture_id": "PILOT-05",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "f0507a8f576a7ad28af1ef41c3ab2e9230ac74be3dc8d25adc6846fb233aebea"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-01",
+      "arm": "K1",
+      "fixture_id": "PILOT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": true,
+      "execution_unit_sha256": "78ed352e8eacf16769e61efd9a0ad706b28074944decf17e0f3a0eae5547df85"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-02",
+      "arm": "K1",
+      "fixture_id": "PILOT-02",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": true,
+      "execution_unit_sha256": "44d2e8da0b2ac08c62331a26cdac9e926d4c6ec1cc1bd16dab221039b534dc3e"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-03",
+      "arm": "K1",
+      "fixture_id": "PILOT-03",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "8091f5b639032c67d2dc8d1a35521573dc02a02386113f9d345752cabcfc93a6"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-04",
+      "arm": "K1",
+      "fixture_id": "PILOT-04",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "2c4c631d58194a1617dc78d64e1e51794b1a0a6d92f044d9e35e232025d47bf4"
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-05",
+      "arm": "K1",
+      "fixture_id": "PILOT-05",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "5ef27c679ebc874cd96b0d0b9f2afdff06e791a60166f7d6752d8821e4f88c73"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-01",
+      "arm": "K2",
+      "fixture_id": "PILOT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": true,
+      "execution_unit_sha256": "1be114ac7ac28941a6c32b63951573127abc197a310fd1e8e45a262f852e03a1"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-02",
+      "arm": "K2",
+      "fixture_id": "PILOT-02",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": true,
+      "execution_unit_sha256": "06e353958d4343095750008c54c30762aebb0ef3d17f3dd036bbc3fcde079c5a"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-03",
+      "arm": "K2",
+      "fixture_id": "PILOT-03",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "0a01f1b44c3dc3c324e740e3b0296f5b278aab13613cebdb2d730f9887f04b97"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-04",
+      "arm": "K2",
+      "fixture_id": "PILOT-04",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "90ecf51ce235c3e1c0d61eaf36c719852faea4e6193b3f4f9b9d3f559267cb3f"
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-05",
+      "arm": "K2",
+      "fixture_id": "PILOT-05",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "35f306445141e5c1d343a3221b709c6b0d7f4283f370ba048bcfe1994a560d97"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-01",
+      "arm": "K3",
+      "fixture_id": "PILOT-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "is_pilot": true,
+      "execution_unit_sha256": "b4c783e0ab21e85ecb12a5f317c736c3307b6990c101fe86e3ea459e54471d65"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-02",
+      "arm": "K3",
+      "fixture_id": "PILOT-02",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "is_pilot": true,
+      "execution_unit_sha256": "d747fc0535cb330ad95b0133ae1673ff635660a198f8663b3ff959eadaf3a5ce"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-03",
+      "arm": "K3",
+      "fixture_id": "PILOT-03",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "1ab2414e7df1a526431f8fa2dc7f2c7bb05d7c5049fcf55bb60a7e68f576276e"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-04",
+      "arm": "K3",
+      "fixture_id": "PILOT-04",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "a13dbeec8b6639ea9989c817fc37c735ddbfd6c9b80d34ad8683060820e18bf4"
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-05",
+      "arm": "K3",
+      "fixture_id": "PILOT-05",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "is_pilot": true,
+      "execution_unit_sha256": "0496b51600b5bd0f5e3cca07e25954fc9dd41139201116cb983820ffdb01f0c0"
+    }
+  ],
+  "deterministic_run_order": [
+    "UNIT_K0_PILOT-01",
+    "UNIT_K0D_PILOT-02",
+    "UNIT_K1_PILOT-03",
+    "UNIT_K2_PILOT-04",
+    "UNIT_K3_PILOT-05",
+    "UNIT_K0D_PILOT-01",
+    "UNIT_K1_PILOT-02",
+    "UNIT_K2_PILOT-03",
+    "UNIT_K3_PILOT-04",
+    "UNIT_K0_PILOT-05",
+    "UNIT_K1_PILOT-01",
+    "UNIT_K2_PILOT-02",
+    "UNIT_K3_PILOT-03",
+    "UNIT_K0_PILOT-04",
+    "UNIT_K0D_PILOT-05",
+    "UNIT_K2_PILOT-01",
+    "UNIT_K3_PILOT-02",
+    "UNIT_K0_PILOT-03",
+    "UNIT_K0D_PILOT-04",
+    "UNIT_K1_PILOT-05",
+    "UNIT_K3_PILOT-01",
+    "UNIT_K0_PILOT-02",
+    "UNIT_K0D_PILOT-03",
+    "UNIT_K1_PILOT-04",
+    "UNIT_K2_PILOT-05"
+  ],
+  "clerical_discrepancy_record": {
+    "discrepancy": "01-PREREGISTRATION.md human-readable table contains a stale K3 metric/hash row from V3.",
+    "authoritative_v4_k3_execution_identity": {
+      "packet_path": "research/sequence-5.5-closure-chamber/02-TREATMENT_PACKETS/packet-K3.md",
+      "sha256": "94f18282709611ac1afb1ca7825145bdf0085fce7b50ddcbbf022bbbe271e105",
+      "words": 1033,
+      "tokens": 1470,
+      "imperatives": 30,
+      "bytes": 8216,
+      "source_of_truth_ledger": "research/sequence-5.5-closure-chamber/03-TREATMENT_PACKET_HASHES.json",
+      "source_of_truth_manifest": "research/sequence-5.5-closure-chamber/07-SEALED_EXECUTION_BUNDLE_MANIFEST.json"
+    },
+    "policy": "Do not rewrite the historical preregistration merely to conceal this discrepancy.",
+    "epistemic_law": "CLERICAL_TABLE_STALENESS != EXECUTION_OBJECT_AMBIGUITY because actual V4 packet bytes, hash ledger, and execution manifest agree."
+  },
+  "governing_scope_invariants": {
+    "main_battery": "BAT-01..BAT-16 strictly unexecuted",
+    "unmutated_estates": [
+      "treatment_packets",
+      "pilot_fixtures",
+      "main_fixtures",
+      "answer_keys",
+      "temporal_candidate",
+      "main",
+      "PR #1433",
+      "Cathedral",
+      "Issue #405",
+      "Vercel"
+    ],
+    "seal": "⟐"
+  }
+}
