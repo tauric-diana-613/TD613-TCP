@@ -1,0 +1,50 @@
+{
+  "schema": "td613.sequence5.5.pilot-fixture-manifest/v3.0",
+  "status": "SACRIFICIAL_CALIBRATION_ONLY",
+  "governing_law": "PILOT_ITEM != INFERENTIAL_ITEM",
+  "pilot_version": "PILOT_V3_SACRIFICIAL_DIFFICULTY_REDESIGN",
+  "total_fixtures": 5,
+  "fixtures": [
+    {
+      "id": "PILOT-V3-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "name": "Edge Ingress Proxy Cache 409 vs Primary Cryptographic HSM Notary State",
+      "file": "04-PILOT_V3_FIXTURES/PILOT-V3-01.md",
+      "construct": "Proxy Observation Conflated with Underlying System State vs Independent Restored Identifiability",
+      "sha256": "6625d2be73d2a64039d2f50bdd2839bc97175768c46e4f41956d6cd8d8f4cfbf"
+    },
+    {
+      "id": "PILOT-V3-02",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "name": "Cryogenic Valve Bridge Voltage Delta Nullspace Requiring Mandatory Epistemic Abstention",
+      "file": "04-PILOT_V3_FIXTURES/PILOT-V3-02.md",
+      "construct": "Observation Nullspace / Undistinguishable Latent Causes Requiring Epistemic Abstention",
+      "sha256": "6eef3273db359eaa42d84ec438f10edf28d2ccdac893c584336d8d0aea07ca7d"
+    },
+    {
+      "id": "PILOT-V3-03",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "name": "Database Volume Quotient Mapping with Collapsed Support Fibre and Buffer Eviction",
+      "file": "04-PILOT_V3_FIXTURES/PILOT-V3-03.md",
+      "construct": "Quotient Stage Erasure / Collapsing Distinct Support Fibres under Finite Admissibility Descent Law",
+      "sha256": "735b330e112bd9065219325800932ccd8e934e4253f1191c673b791387f37bcc"
+    },
+    {
+      "id": "PILOT-V3-04",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "name": "Transplant Allocation Terminal Transfer with mTLS/JWT but Unchained Predecessor Head Digest",
+      "file": "04-PILOT_V3_FIXTURES/PILOT-V3-04.md",
+      "construct": "Receiver-Relative Continuity & Mandatory Predecessor Head Chaining vs Superficial Transport/Identity Authentication",
+      "sha256": "049a161d970af76067fd248ec6398864f387b241965a2daf3cf39e9753151dd0"
+    },
+    {
+      "id": "PILOT-V3-05",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "name": "Electrical Interconnect Grid Defense Battery Injection with Authorized Positive Preemption Gap",
+      "file": "04-PILOT_V3_FIXTURES/PILOT-V3-05.md",
+      "construct": "Preemption Gap vs Lawful Prior Mandate & Monotonic Chronological Preservation",
+      "sha256": "00379f018dd7ad8479a8c6ab2cb50a81c48113b6a3bb385ae68e7bc6f450f6ca"
+    }
+  ],
+  "pilot_calibration_key_commitment_sha256": "026321b781b2ec435c12908a482e13094b7e6ec14f6a87f85679e55b16716783"
+}
