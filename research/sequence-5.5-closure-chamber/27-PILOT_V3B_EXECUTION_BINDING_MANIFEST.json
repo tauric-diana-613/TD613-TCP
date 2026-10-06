@@ -1,0 +1,264 @@
+{
+  "schema": "td613.sequence5.5.pilot-v3b-execution-binding-manifest/v1.0",
+  "episode_id": "EPISODE_SACRIFICIAL_PILOT_V3B",
+  "status": "PRE_EXECUTION_BINDING_AUTHORIZATION",
+  "canonical_branch": "research/sequence-5.5-amari-closure-20261006",
+  "receiver": {
+    "provider": "google",
+    "exact_model_id": "gemini-3.8-flash",
+    "endpoint": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
+    "transport": "vercel-preview/server-fetch",
+    "model_settings": {
+      "temperature": null,
+      "sampling_parameters_set_by_protocol": false,
+      "thinking_level": "medium",
+      "max_output_tokens": 8192,
+      "response_mime_type": "application/json",
+      "tool_permissions": []
+    }
+  },
+  "fixed_components": {
+    "receiver_output_schema": {
+      "path": "research/sequence-5.5-closure-chamber/10-RECEIVER_OUTPUT_SCHEMA.json",
+      "sha256": "935bf87b1ef86ac1df7490c7f5abe6d93892e89869f348671bd64c50b42e5537"
+    },
+    "fixed_wrapper_template": {
+      "bytes": 545,
+      "sha256": "2132cb1c832b326ffa9942dff5d246e595207f19addc8e9bf8227dfb52744f0d"
+    }
+  },
+  "pilot_calibration_key_commitment_sha256": "bf77611ea91f9687ebcee776f4a188e11e9c1c83492f98ee9205e9ead1b0a9d3",
+  "prompt_assembly_law": {
+    "rule": "prompt = fixed_wrapper.replace({{TREATMENT_BYTES}}, treatment).replace({{FIXTURE_BYTES}}, fixture).replace({{RECEIVER_OUTPUT_SCHEMA_BYTES}}, schema)",
+    "prohibition": "Zero cluster, construct, difficulty theory, expected relation, or expected winner metadata enters receiver context."
+  },
+  "deterministic_run_order": [
+    "UNIT_K0_PILOT-V3B-01",
+    "UNIT_K0D_PILOT-V3B-02",
+    "UNIT_K1_PILOT-V3B-03",
+    "UNIT_K2_PILOT-V3B-04",
+    "UNIT_K3_PILOT-V3B-05",
+    "UNIT_K0D_PILOT-V3B-01",
+    "UNIT_K1_PILOT-V3B-02",
+    "UNIT_K2_PILOT-V3B-03",
+    "UNIT_K3_PILOT-V3B-04",
+    "UNIT_K0_PILOT-V3B-05",
+    "UNIT_K1_PILOT-V3B-01",
+    "UNIT_K2_PILOT-V3B-02",
+    "UNIT_K3_PILOT-V3B-03",
+    "UNIT_K0_PILOT-V3B-04",
+    "UNIT_K0D_PILOT-V3B-05",
+    "UNIT_K2_PILOT-V3B-01",
+    "UNIT_K3_PILOT-V3B-02",
+    "UNIT_K0_PILOT-V3B-03",
+    "UNIT_K0D_PILOT-V3B-04",
+    "UNIT_K1_PILOT-V3B-05",
+    "UNIT_K3_PILOT-V3B-01",
+    "UNIT_K0_PILOT-V3B-02",
+    "UNIT_K0D_PILOT-V3B-03",
+    "UNIT_K1_PILOT-V3B-04",
+    "UNIT_K2_PILOT-V3B-05"
+  ],
+  "execution_units": [
+    {
+      "unit_id": "UNIT_K0_PILOT-V3B-01",
+      "arm": "K0",
+      "fixture_id": "PILOT-V3B-01",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-01.md",
+      "prompt_sha256": "361bdb077899019641843849de791676dac91f0b959796286b67b83a8d074448",
+      "prompt_bytes": 5369
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-V3B-02",
+      "arm": "K0",
+      "fixture_id": "PILOT-V3B-02",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-02.md",
+      "prompt_sha256": "b42a9154b44ece2d4042c1e291741974fc349e835007058fabe6c37bea0d6832",
+      "prompt_bytes": 5645
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-V3B-03",
+      "arm": "K0",
+      "fixture_id": "PILOT-V3B-03",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-03.md",
+      "prompt_sha256": "e2eeb486dc7b04247aef79f40514363d7f8e04708403afda25cc7981cdf80ae9",
+      "prompt_bytes": 5988
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-V3B-04",
+      "arm": "K0",
+      "fixture_id": "PILOT-V3B-04",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-04.md",
+      "prompt_sha256": "e5aebd4f4627eb0df56c7ae138c51e5f5fa8d82cace6f14c5d6b39d8154a0dd3",
+      "prompt_bytes": 5831
+    },
+    {
+      "unit_id": "UNIT_K0_PILOT-V3B-05",
+      "arm": "K0",
+      "fixture_id": "PILOT-V3B-05",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-05.md",
+      "prompt_sha256": "01f2d5d1cdb01562b2c2083a44fe33376bcdab4b3ec000aea5057b45538261d5",
+      "prompt_bytes": 6033
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-V3B-01",
+      "arm": "K0D",
+      "fixture_id": "PILOT-V3B-01",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-01.md",
+      "prompt_sha256": "7aaca994baaab533fb1903e1bf0218c41849184ab4a34c21534ea5cfa9447ff4",
+      "prompt_bytes": 12416
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-V3B-02",
+      "arm": "K0D",
+      "fixture_id": "PILOT-V3B-02",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-02.md",
+      "prompt_sha256": "e836b85c1e0e5595d0cbf60148756bd3240152a410bc9f3643fd4b14f0d0b195",
+      "prompt_bytes": 12692
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-V3B-03",
+      "arm": "K0D",
+      "fixture_id": "PILOT-V3B-03",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-03.md",
+      "prompt_sha256": "26179355d89b93a5be296861a0902568917505058f90926ecb444c34f6f4c706",
+      "prompt_bytes": 13035
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-V3B-04",
+      "arm": "K0D",
+      "fixture_id": "PILOT-V3B-04",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-04.md",
+      "prompt_sha256": "69b6e2019d54aa47d540c26fbc1c7dc971bdff5a556676fd5805279a46cef615",
+      "prompt_bytes": 12878
+    },
+    {
+      "unit_id": "UNIT_K0D_PILOT-V3B-05",
+      "arm": "K0D",
+      "fixture_id": "PILOT-V3B-05",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-05.md",
+      "prompt_sha256": "0919b715e48099fe5f032fc3a58e2b978d5dea199348f75af701f07889108b54",
+      "prompt_bytes": 13080
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-V3B-01",
+      "arm": "K1",
+      "fixture_id": "PILOT-V3B-01",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-01.md",
+      "prompt_sha256": "199953e72935bad4b45cb0aa95581ddb66698549c8cc634ee544bfa122181efe",
+      "prompt_bytes": 12785
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-V3B-02",
+      "arm": "K1",
+      "fixture_id": "PILOT-V3B-02",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-02.md",
+      "prompt_sha256": "deb07b35b64fc8043b8fc6aea62ba942d40dd17793f52d81e5aa014872675c7a",
+      "prompt_bytes": 13061
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-V3B-03",
+      "arm": "K1",
+      "fixture_id": "PILOT-V3B-03",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-03.md",
+      "prompt_sha256": "98f13e9622ee62cc7625e8dc6ffeb828fb8084ff2f0064607367c6d4031216e7",
+      "prompt_bytes": 13404
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-V3B-04",
+      "arm": "K1",
+      "fixture_id": "PILOT-V3B-04",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-04.md",
+      "prompt_sha256": "1efebd7f366eb9ba38b8564605a867a813c912bb2685bcd8c5c43abea4bc893a",
+      "prompt_bytes": 13247
+    },
+    {
+      "unit_id": "UNIT_K1_PILOT-V3B-05",
+      "arm": "K1",
+      "fixture_id": "PILOT-V3B-05",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-05.md",
+      "prompt_sha256": "e1a11a66c5571a8ac6b5a28d2ae9a2de5d2ad63eb362320f913590a7b01c425b",
+      "prompt_bytes": 13449
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-V3B-01",
+      "arm": "K2",
+      "fixture_id": "PILOT-V3B-01",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-01.md",
+      "prompt_sha256": "f688da3821e1a58a0b038433a8079ed2166b488247aa98c640fa2ade9ed8df13",
+      "prompt_bytes": 12510
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-V3B-02",
+      "arm": "K2",
+      "fixture_id": "PILOT-V3B-02",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-02.md",
+      "prompt_sha256": "d2051834702a37cf5ec6b0408f5b05b66f50515c768ae800332d28385ff113bb",
+      "prompt_bytes": 12786
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-V3B-03",
+      "arm": "K2",
+      "fixture_id": "PILOT-V3B-03",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-03.md",
+      "prompt_sha256": "1496d1ee6000d9e5b69cc128f3a6d6f38203086944137c4526f39c90f2e8833c",
+      "prompt_bytes": 13129
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-V3B-04",
+      "arm": "K2",
+      "fixture_id": "PILOT-V3B-04",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-04.md",
+      "prompt_sha256": "1a8f551b08f7c248a5cbaad93799232ed99a7b14493acd77edae0979661f7df6",
+      "prompt_bytes": 12972
+    },
+    {
+      "unit_id": "UNIT_K2_PILOT-V3B-05",
+      "arm": "K2",
+      "fixture_id": "PILOT-V3B-05",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-05.md",
+      "prompt_sha256": "4abf85fd58d315cd3b25560b07d768dadaf278f2f0ca10fb061a598edbb0916d",
+      "prompt_bytes": 13174
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-V3B-01",
+      "arm": "K3",
+      "fixture_id": "PILOT-V3B-01",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-01.md",
+      "prompt_sha256": "30b680ffa12f3c56b02fa923b75209eb6ba2cee3a8af0b0572d79372faa89a24",
+      "prompt_bytes": 12846
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-V3B-02",
+      "arm": "K3",
+      "fixture_id": "PILOT-V3B-02",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-02.md",
+      "prompt_sha256": "394d3a6d24043f86b96281198c5909c805851716b0776b8f669eaa5f9f2944c1",
+      "prompt_bytes": 13122
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-V3B-03",
+      "arm": "K3",
+      "fixture_id": "PILOT-V3B-03",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-03.md",
+      "prompt_sha256": "a4702ff8e616bdfbce6aa4c3389225e773569f64dd0ac11c02f49a9881a7db20",
+      "prompt_bytes": 13465
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-V3B-04",
+      "arm": "K3",
+      "fixture_id": "PILOT-V3B-04",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-04.md",
+      "prompt_sha256": "fababd60353192f11d2e1d7b7839160e0935590976aa22a7bb7cb771a48dd307",
+      "prompt_bytes": 13308
+    },
+    {
+      "unit_id": "UNIT_K3_PILOT-V3B-05",
+      "arm": "K3",
+      "fixture_id": "PILOT-V3B-05",
+      "fixture_path": "04-PILOT_V3B_FIXTURES/PILOT-V3B-05.md",
+      "prompt_sha256": "3ead8c3fcba8711a62e5e7b509efd12000eadb0205f195c8051efe54e3029e07",
+      "prompt_bytes": 13510
+    }
+  ]
+}

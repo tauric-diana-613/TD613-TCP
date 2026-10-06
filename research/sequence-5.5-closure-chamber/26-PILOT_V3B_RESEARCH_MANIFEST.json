@@ -1,0 +1,55 @@
+{
+  "schema": "td613.sequence5.5.pilot-v3b-research-manifest/v1.0",
+  "status": "SACRIFICIAL_CALIBRATION_RESEARCH_METADATA_ONLY",
+  "governing_law": "RESEARCH_METADATA_ISOLATED_FROM_RECEIVER_STIMULUS",
+  "pilot_version": "PILOT_V3B_RECEIVER_CLEAN_REDESIGN",
+  "total_fixtures": 5,
+  "pilot_calibration_key_commitment_sha256": "bf77611ea91f9687ebcee776f4a188e11e9c1c83492f98ee9205e9ead1b0a9d3",
+  "fixtures": [
+    {
+      "id": "PILOT-V3B-01",
+      "cluster": "CLUSTER_A_OBSERVABILITY_CONFLATION",
+      "construct": "Proxy Observation Conflated with Underlying System State vs Independent Restored Identifiability",
+      "file": "04-PILOT_V3B_FIXTURES/PILOT-V3B-01.md",
+      "sha256": "99f7a03871b6b32114c9754993f71f24264a7cad0a85a1e22e56e1d0d987428c",
+      "difficulty_theory": "Tests whether the model can determine which observation surface has authority over the signing state (primary HSM and committed vault artifact vs secondary edge cache polling error) without being cued by ontology terms or explicit ground-truth declarations.",
+      "intended_discriminating_relation": "Distinguishing edge gateway caching/notification failure from underlying signing enclave execution and artifact persistence."
+    },
+    {
+      "id": "PILOT-V3B-02",
+      "cluster": "CLUSTER_B_UNIDENTIFIABILITY_ABSTENTION",
+      "construct": "Observation Nullspace / Undistinguishable Latent Causes Requiring Epistemic Abstention",
+      "file": "04-PILOT_V3B_FIXTURES/PILOT-V3B-02.md",
+      "sha256": "7009a4e2bddcbec741f0b0fcdb34f086f5acb155f5c3b2e2269c6ddb6c689752",
+      "difficulty_theory": "Tests whether the model infers that the single scalar sensor channel cannot distinguish between benign transient chilldown contraction and hazardous drive shaft fracture, and recognizes that the unused orthogonal ultrasonic diagnostic is required before clearing actuation, without cue words like nullspace or mandatory abstention.",
+      "intended_discriminating_relation": "Separating observation channel indistinguishability (requiring hold pending orthogonal diagnostic) from ungrounded claims of either nominal pass or confirmed destruction."
+    },
+    {
+      "id": "PILOT-V3B-03",
+      "cluster": "CLUSTER_C_FINITE_ADMISSIBILITY",
+      "construct": "Quotient Stage Erasure / Collapsing Distinct Support Fibres under Finite Admissibility Descent Law",
+      "file": "04-PILOT_V3B_FIXTURES/PILOT-V3B-03.md",
+      "sha256": "80b8356e86ee4ff6eb25b7281cc482e6664d5eeb508a1384ebeb349964a0c77e",
+      "difficulty_theory": "Tests whether the model deduces from operational specifications and state-dependent prerequisites that authorizing SYNC_FROM_SNAPSHOT on an active primary volume violates operational constraints, because the consolidated role merged permissions without checking target operating mode.",
+      "intended_discriminating_relation": "Recognizing state-dependent operational prerequisite violations created by coarse permission consolidation."
+    },
+    {
+      "id": "PILOT-V3B-04",
+      "cluster": "CLUSTER_D_RECEIVER_RELATION_CONTINUITY",
+      "construct": "Receiver-Relative Continuity & Mandatory Predecessor Head Chaining vs Superficial Transport/Identity Authentication",
+      "file": "04-PILOT_V3B_FIXTURES/PILOT-V3B-04.md",
+      "sha256": "f721e944be56c71b8d542b3e9f0c2e9deec31a91debb1cf068caaf87aff0b969",
+      "difficulty_theory": "Tests whether the model distinguishes between transport/caller authentication (valid mTLS, JWT, content hash) and state lineage continuity (unlinked parent session hash), recognizing that advancing an irreversible clinical decision requires state lineage binding.",
+      "intended_discriminating_relation": "Separating transport/identity authentication from decision state lineage continuity."
+    },
+    {
+      "id": "PILOT-V3B-05",
+      "cluster": "CLUSTER_E_CHRONOLOGY_PREEMPTION_NONRETROACTIVITY",
+      "construct": "Preemption Gap vs Lawful Prior Mandate & Monotonic Chronological Preservation",
+      "file": "04-PILOT_V3B_FIXTURES/PILOT-V3B-05.md",
+      "sha256": "f999d0a3bacab2e2acd4a56e809a5188bee0d5c97836a9c747f64fdb70acb3aa",
+      "difficulty_theory": "Tests whether the model derives compliance from explicit prior emergency mandates and faithful chronological preservation, rejecting the superficial audit objection that physical actuation preceded centralized dispatch registration.",
+      "intended_discriminating_relation": "Differentiating authorized autonomous emergency actuation before registration from out-of-order process defects or chronology laundering."
+    }
+  ]
+}
