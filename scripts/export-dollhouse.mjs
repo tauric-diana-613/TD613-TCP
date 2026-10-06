@@ -10,7 +10,7 @@ export const DOLLHOUSE_KIT_SCHEMA = 'td613.dollhouse.export-kit/v0.1';
 export const DOLLHOUSE_SOURCE_RECORDS_SCHEMA = 'td613.dollhouse.source-records/v0.1';
 export const DOLLHOUSE_KIT_BOUNDS = Object.freeze({ max_files: 2048, max_total_bytes: 32_000_000, max_file_bytes: 2_000_000 });
 export const DOLLHOUSE_KIT_ENTRYPOINTS = Object.freeze([
-  'AGENTS.md', 'DOLLHOUSE.md', 'PEDAGOGUE.md', 'APERTURE.md', 'ATLAS.md', 'FADT.md',
+  'AGENTS.md', 'DOLLHOUSE.md', 'PEDAGOGUE.md', 'APERTURE.md', 'ATLAS.md', 'FADT.md', 'TEMPORAL_CUSTODIAN.md',
   'dollhouse/README.md',
   'dollhouse/lineage/README.md',
   'dollhouse/lineage/aperture-mathematical-cradle.md',
@@ -27,7 +27,8 @@ export const DOLLHOUSE_KIT_ENTRYPOINTS = Object.freeze([
   'app/engine/pedagogue-gesture-consequence.js',
   'app/engine/dollhouse-continuity-audit.js',
   'app/engine/dollhouse-witness-plan.js',
-  'app/engine/dollhouse-case-dossier.js'
+  'app/engine/dollhouse-case-dossier.js',
+  'app/engine/dollhouse-temporal-custodian.js'
 ]);
 
 const manifestName = 'dollhouse-kit.manifest.json';

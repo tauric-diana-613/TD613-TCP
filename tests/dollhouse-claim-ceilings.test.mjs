@@ -55,8 +55,8 @@ assert.equal(audit.role_agreement_is_evidence_multiplication, false);
 assert.equal(audit.release_authority, false);
 assert.equal(audit.entries.length, CLAIM_CEILING_REGISTRY.length);
 for (const entry of audit.entries) {
-  assert.deepEqual(entry.findings.map(finding => finding.role), ['PEDAGOGUE', 'APERTURE', 'ATLAS', 'FADT']);
-  assert.equal(new Set(entry.findings.map(finding => finding.role)).size, 4);
+  assert.deepEqual(entry.findings.map(finding => finding.role), ['PEDAGOGUE', 'APERTURE', 'ATLAS', 'FADT', 'TEMPORAL_CUSTODIAN']);
+  assert.equal(new Set(entry.findings.map(finding => finding.role)).size, 5);
 }
 
 const page = fs.readFileSync('app/dome-world/claim-ceilings.html', 'utf8');

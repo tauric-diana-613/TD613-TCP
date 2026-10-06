@@ -54,6 +54,24 @@ export const DOLLHOUSE_AGENT_REGISTRY = freeze({
       theorem_lineage_note: 'PR #752 remains theorem ancestry; this adapter operationalizes the finite law without granting merge, deployment, or universal-theorem authority.',
       audit_extensions: freeze(['app/engine/dollhouse-continuity-audit.js::runFadtStageAudit']),
       authority_ceiling: 'finite-support-descent-audit-only-no-universal-ai-law-no-release-no-source-state-reconstruction'
+    }),
+    TEMPORAL_CUSTODIAN: freeze({
+      id: 'TEMPORAL_CUSTODIAN',
+      canonical_name: 'Temporal Custodian & Whole-Route Governor',
+      kind: 'OPERATIONAL_AGENT_ADAPTER',
+      status: 'BOUNDED_RESEARCH_CANDIDATE',
+      role: 'chronology-governance-non-retroactivity-preemption-gap-and-whole-route-veto',
+      invocation: 'TEMPORAL_CUSTODIAN.md / app/engine/dollhouse-temporal-custodian.js::runTemporalCustodianAudit',
+      canonical_sources: freeze([
+        'TEMPORAL_CUSTODIAN.md',
+        'schemas/temporal-custodian-ledger.schema.json',
+        'scripts/audit-temporal-nonretroactivity.mjs'
+      ]),
+      audit_extensions: freeze([
+        'app/engine/dollhouse-temporal-custodian.js::auditTemporalLedgerNonRetroactivity',
+        'app/engine/dollhouse-temporal-custodian.js::auditServiceJourneyChronology'
+      ]),
+      authority_ceiling: 'temporal-governance-and-whole-route-veto-only-no-retroactive-mutation-no-execution-authority-human-closure-required'
     })
   }),
   shared_authority: freeze({

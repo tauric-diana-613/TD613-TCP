@@ -142,17 +142,28 @@ function roleFinding(role, item) {
           : 'NO_RELATIONAL_PROMOTION'
     });
   }
+  if (role === 'FADT') {
+    return freeze({
+      role: 'FADT',
+      question: 'Would erasing evidence class, episode, provider or stage create a false admissibility collapse?',
+      finding: item.state === CLAIM_CEILING_STATES.HELD
+        ? 'ERASURE_WOULD_OVERCLAIM'
+        : 'LIFT_ONLY_THE_OCCUPIED_BOUNDED_FIBRE'
+    });
+  }
   return freeze({
-    role: 'FADT',
-    question: 'Would erasing evidence class, episode, provider or stage create a false admissibility collapse?',
+    role: 'TEMPORAL_CUSTODIAN',
+    question: 'Does later evidence or retrospective reconstruction rewrite prior historical observation, or does local component success mask route regression?',
     finding: item.state === CLAIM_CEILING_STATES.HELD
-      ? 'ERASURE_WOULD_OVERCLAIM'
-      : 'LIFT_ONLY_THE_OCCUPIED_BOUNDED_FIBRE'
+      ? 'HOLD_HISTORICAL_STATE_AND_FORBID_RETROACTIVE_UPGRADE'
+      : item.state === CLAIM_CEILING_STATES.SPLIT
+        ? 'PRESERVE_STAGGERED_CHRONOLOGY_WITHOUT_COLLAPSE'
+        : 'CONFIRM_HISTORICAL_MONOTONICITY_AND_WHOLE_ROUTE_CONTINUITY'
   });
 }
 
 export function auditClaimCeilingRegistry(registry = CLAIM_CEILING_REGISTRY) {
-  const roles = ['PEDAGOGUE', 'APERTURE', 'ATLAS', 'FADT'];
+  const roles = ['PEDAGOGUE', 'APERTURE', 'ATLAS', 'FADT', 'TEMPORAL_CUSTODIAN'];
   return freeze({
     schema: CLAIM_CEILING_OBSERVATORY_SCHEMA,
     role_agreement_is_evidence_multiplication: false,
