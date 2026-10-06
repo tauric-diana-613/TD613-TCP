@@ -32,14 +32,48 @@ function send(res, status, payload) {
   res.end(JSON.stringify(payload));
 }
 
-function validParsed(obj) {
-  return obj && typeof obj === 'object' && !Array.isArray(obj)
-    && typeof obj.finding_id === 'string'
-    && ['PASS','FAIL','HELD','INCONCLUSIVE'].includes(obj.verdict)
-    && Array.isArray(obj.identified_issues)
-    && Array.isArray(obj.evidence)
-    && typeof obj.recommended_action === 'string'
-    && ['HIGH','MEDIUM','LOW'].includes(obj.confidence);
+const REQUIRED_RECEIVER_OUTPUT_FIELDS = [
+  'finding_id',
+  'verdict',
+  'identified_issues',
+  'evidence',
+  'recommended_action',
+  'confidence'
+];
+const ALLOWED_RECEIVER_OUTPUT_FIELDS = new Set(REQUIRED_RECEIVER_OUTPUT_FIELDS);
+const FINDING_ID_REGEX = /^[A-Za-z0-9_-]+$/;
+const VERDICT_ENUM = new Set(['PASS', 'FAIL', 'HELD', 'INCONCLUSIVE']);
+const CONFIDENCE_ENUM = new Set(['HIGH', 'MEDIUM', 'LOW']);
+
+export function validateReceiverOutput(obj) {
+  if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return false;
+  const keys = Object.keys(obj);
+  if (keys.length !== REQUIRED_RECEIVER_OUTPUT_FIELDS.length) return false;
+  for (const field of REQUIRED_RECEIVER_OUTPUT_FIELDS) {
+    if (!(field in obj)) return false;
+  }
+  for (const key of keys) {
+    if (!ALLOWED_RECEIVER_OUTPUT_FIELDS.has(key)) return false;
+  }
+  if (typeof obj.finding_id !== 'string' || !FINDING_ID_REGEX.test(obj.finding_id)) {
+    return false;
+  }
+  if (typeof obj.verdict !== 'string' || !VERDICT_ENUM.has(obj.verdict)) {
+    return false;
+  }
+  if (!Array.isArray(obj.identified_issues)) return false;
+  for (const item of obj.identified_issues) {
+    if (typeof item !== 'string') return false;
+  }
+  if (!Array.isArray(obj.evidence)) return false;
+  for (const item of obj.evidence) {
+    if (typeof item !== 'string') return false;
+  }
+  if (typeof obj.recommended_action !== 'string') return false;
+  if (typeof obj.confidence !== 'string' || !CONFIDENCE_ENUM.has(obj.confidence)) {
+    return false;
+  }
+  return true;
 }
 
 export default async function handler(req, res) {
@@ -47,6 +81,52 @@ export default async function handler(req, res) {
   if (process.env.VERCEL_ENV !== 'preview') return send(res, 403, { ok:false, error:'preview-only-route' });
   if (process.env.VERCEL_GIT_COMMIT_REF && process.env.VERCEL_GIT_COMMIT_REF !== EXPECTED_BRANCH) {
     return send(res, 403, { ok:false, error:'wrong-preview-branch', observed:process.env.VERCEL_GIT_COMMIT_REF });
+  }
+
+  const deployedCommit = process.env.VERCEL_GIT_COMMIT_SHA || '';
+  const expectedCommit = String(req.query?.expected_commit || process.env.EXPECTED_COMMIT_SHA || '').trim();
+
+  // Non-experimental preflight check handler (zero Gemini execution)
+  if (req.query?.preflight === '1' || req.query?.preflight === 'true') {
+    if (!deployedCommit) {
+      return send(res, 403, { ok:false, preflight:true, error:'deployed-commit-sha-missing' });
+    }
+    if (expectedCommit && deployedCommit !== expectedCommit) {
+      return send(res, 403, {
+        ok:false,
+        preflight:true,
+        error:'deployed-commit-sha-mismatch',
+        deployed_commit:deployedCommit,
+        expected_commit:expectedCommit
+      });
+    }
+    return send(res, 200, {
+      ok:true,
+      preflight:true,
+      episode_id:EPISODE,
+      route:'sequence-55-pilot-v4-1r',
+      vercel_env:process.env.VERCEL_ENV,
+      vercel_git_commit_ref:process.env.VERCEL_GIT_COMMIT_REF,
+      vercel_git_commit_sha:deployedCommit,
+      expected_commit_sha:expectedCommit || null,
+      commit_attestation_match:expectedCommit ? deployedCommit === expectedCommit : true
+    });
+  }
+
+  // Exact commit attestation requirement for experimental execution
+  if (!deployedCommit) {
+    return send(res, 403, { ok:false, error:'deployed-commit-sha-missing' });
+  }
+  if (!expectedCommit) {
+    return send(res, 400, { ok:false, error:'expected-commit-required' });
+  }
+  if (deployedCommit !== expectedCommit) {
+    return send(res, 403, {
+      ok:false,
+      error:'deployed-commit-sha-mismatch',
+      deployed_commit:deployedCommit,
+      expected_commit:expectedCommit
+    });
   }
 
   const key = process.env.GEMINI_API_KEY || '';
@@ -123,6 +203,7 @@ export default async function handler(req, res) {
       episode_id:EPISODE,
       unit_id:unitId,
       attempt,
+      vercel_git_commit_sha:deployedCommit,
       raw_provider_response_text:rawNetwork,
       receipt:{
         schema:'td613.sequence5.5.execution-receipt/v4.1r',
@@ -152,10 +233,10 @@ export default async function handler(req, res) {
     try {
       parsedText = providerJson?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
       parsed = JSON.parse(parsedText);
-      parsing = validParsed(parsed) ? 'VALID' : 'INVALID_SCHEMA';
+      parsing = validateReceiverOutput(parsed) ? 'VALID' : 'INVALID_SCHEMA';
     } catch { parsing = 'INVALID_JSON'; }
   }
-  const parsedCanonical = parsed ? JSON.stringify(parsed, null, 2) + '\n' : null;
+  const parsedCanonical = (parsing === 'VALID' && parsed) ? JSON.stringify(parsed, null, 2) + '\n' : null;
   const usage = providerJson?.usageMetadata || {};
 
   return send(res, 200, {
@@ -163,8 +244,9 @@ export default async function handler(req, res) {
     episode_id: EPISODE,
     unit_id: unitId,
     attempt,
+    vercel_git_commit_sha: deployedCommit,
     raw_provider_response_text: rawText,
-    parsed_output: parsed,
+    parsed_output: (parsing === 'VALID' || parsed) ? parsed : null,
     receipt: {
       schema:'td613.sequence5.5.execution-receipt/v4.1r',
       episode_id:EPISODE,

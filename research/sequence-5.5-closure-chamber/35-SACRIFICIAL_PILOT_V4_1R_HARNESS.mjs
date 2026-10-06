@@ -1,20 +1,25 @@
-// TD613 Sequence 5.5 Pilot V4.1R Recovery Runner (Stage 2R Machinery).
+// TD613 Sequence 5.5 Pilot V4.1R Recovery Runner (Final Pre-Execution Machinery).
 // Bound to receiver-clean stimulus files in 05-PILOT_V4_FIXTURES/
 // Prohibits research manifest metadata from entering receiver prompt.
 // Enforces:
 // 1. Explicit thinkingLevel = MEDIUM wire configuration matching receipt.
-// 2. Remote preview transport (vercel-preview/server-fetch) over HTTPS without in-process handler invocation.
-// 3. Complete JSON Schema validation against 34-PILOT_V4_1R_RECEIPT_SCHEMA.json.
-// 4. Full retry preservation: distinct attempt filenames for every wire invocation.
-// 5. Outcome privacy in raw manifest: omits verdicts, accuracy, winners, and pair transitions.
+// 2. Exact Vercel preview deployment commit attestation (VERCEL_GIT_COMMIT_SHA).
+// 3. Complete receiver-output validation against 10-RECEIVER_OUTPUT_SCHEMA.json.
+// 4. Remote preview transport (vercel-preview/server-fetch) over HTTPS without in-process handler invocation.
+// 5. Complete JSON Schema validation against 34-PILOT_V4_1R_RECEIPT_SCHEMA.json.
+// 6. Preservation of invalid receipts and validation errors before STOP/retry disposition.
+// 7. Full retry preservation: distinct attempt filenames for every wire invocation.
+// 8. Outcome privacy in raw manifest: omits verdicts, accuracy, winners, and pair transitions.
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
+import { execSync } from 'child_process';
 
 const ROOT = process.env.TD613_ROOT || process.cwd();
 const BASE = path.join(ROOT, 'research/sequence-5.5-closure-chamber');
 const BINDING_MANIFEST = JSON.parse(fs.readFileSync(path.join(BASE, '34-PILOT_V4_1R_EXECUTION_BINDING_MANIFEST.json'), 'utf8'));
 const RECEIPT_SCHEMA = JSON.parse(fs.readFileSync(path.join(BASE, '34-PILOT_V4_1R_RECEIPT_SCHEMA.json'), 'utf8'));
+const RECEIVER_OUTPUT_SCHEMA = JSON.parse(fs.readFileSync(path.join(BASE, '10-RECEIVER_OUTPUT_SCHEMA.json'), 'utf8'));
 const OUT = path.join(BASE, '35-PILOT_V4_1R_RAW_OUTPUTS');
 const RECEIPTS = path.join(BASE, '35-PILOT_V4_1R_RECEIPTS');
 const MANIFEST_PATH = path.join(BASE, '35-PILOT_V4_1R_RAW_OUTPUTS_MANIFEST.json');
@@ -75,6 +80,13 @@ export function validateJsonSchema(data, schema, pathStr = '') {
   // MaxItems check
   if (schema.maxItems !== undefined && Array.isArray(data)) {
     if (data.length > schema.maxItems) errors.push(`${pathStr || 'root'}: array length ${data.length} exceeds maxItems ${schema.maxItems}`);
+  }
+
+  // Items check for arrays
+  if (schema.items && Array.isArray(data)) {
+    for (let idx = 0; idx < data.length; idx++) {
+      errors.push(...validateJsonSchema(data[idx], schema.items, `${pathStr || 'root'}[${idx}]`));
+    }
   }
 
   // Object checks
@@ -220,7 +232,73 @@ Evaluate the fixture above according to the system instruction protocol. Return 
   return verifiedCount;
 }
 
-// Structural transport verification
+// Determines the expected machinery commit SHA from env or active repository HEAD
+export function getExpectedCommitSha() {
+  if (process.env.EXPECTED_COMMIT_SHA) {
+    return process.env.EXPECTED_COMMIT_SHA.trim();
+  }
+  try {
+    const head = execSync('git rev-parse HEAD', { cwd: ROOT, encoding: 'utf8' }).trim();
+    if (head && /^[0-9a-f]{40}$/i.test(head)) {
+      return head;
+    }
+  } catch {}
+  return null;
+}
+
+// Non-experimental preflight request verifying remote route deployment identity
+export async function performDeploymentPreflight(expectedCommitSha) {
+  if (!PREVIEW_BASE_URL) {
+    throw new Error('STOP · PREVIEW_DEPLOYMENT_COMMIT_UNVERIFIED: VERCEL_PREVIEW_URL is not configured.');
+  }
+  const baseUrl = PREVIEW_BASE_URL.startsWith('http') ? PREVIEW_BASE_URL : `https://${PREVIEW_BASE_URL}`;
+  const preflightUrl = new URL('/api/sequence-55-pilot-v4-1r', baseUrl);
+  preflightUrl.searchParams.set('preflight', '1');
+  if (expectedCommitSha) {
+    preflightUrl.searchParams.set('expected_commit', expectedCommitSha);
+  }
+
+  if (preflightUrl.protocol !== 'https:') {
+    throw new Error(`STOP · PREVIEW_DEPLOYMENT_COMMIT_UNVERIFIED: Remote preview route must use HTTPS, got ${preflightUrl.protocol}`);
+  }
+
+  console.log(`[PREFLIGHT] Contacting non-experimental preflight at ${preflightUrl.origin}...`);
+  let res, text, json;
+  try {
+    res = await fetch(preflightUrl.toString(), {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'TD613-Pilot-V4-1R-Harness-Preflight/1.0'
+      }
+    });
+    text = await res.text();
+    json = JSON.parse(text);
+  } catch (err) {
+    throw new Error(`STOP · PREVIEW_DEPLOYMENT_COMMIT_UNVERIFIED: Preflight transport failure: ${err.message}`);
+  }
+
+  if (res.status !== 200 || !json.ok || !json.preflight) {
+    throw new Error(`STOP · PREVIEW_DEPLOYMENT_COMMIT_UNVERIFIED: Preflight rejected by remote route (HTTP ${res.status}): ${JSON.stringify(json)}`);
+  }
+
+  if (!json.vercel_git_commit_sha) {
+    throw new Error('STOP · PREVIEW_DEPLOYMENT_COMMIT_UNVERIFIED: Route did not report vercel_git_commit_sha.');
+  }
+
+  if (expectedCommitSha && json.vercel_git_commit_sha !== expectedCommitSha) {
+    throw new Error(`STOP · PREVIEW_DEPLOYMENT_COMMIT_UNVERIFIED: Remote deployment commit (${json.vercel_git_commit_sha}) does not match expected (${expectedCommitSha}). Law: CORRECT_BRANCH != EXACT_DEPLOYED_SOURCE`);
+  }
+
+  if (expectedCommitSha && !json.commit_attestation_match) {
+    throw new Error('STOP · PREVIEW_DEPLOYMENT_COMMIT_UNVERIFIED: Route refused commit attestation match.');
+  }
+
+  console.log(`[PREFLIGHT] PASS: Remote deployment commit verified as exact source: ${json.vercel_git_commit_sha}`);
+  return json;
+}
+
+// Structural transport, schema validator, and preflight verification
 export function verifyTransportStructure() {
   const routePath = path.join(ROOT, 'api/sequence-55-pilot-v4-1r.js');
   if (!fs.existsSync(routePath)) {
@@ -238,6 +316,66 @@ export function verifyTransportStructure() {
     throw new Error("Transport structure error: API route does not enforce independent frozen prompt reconstruction and validation");
   }
 
+  // Verify exact deployment commit checks and preflight handling in route
+  if (!routeContent.includes('VERCEL_GIT_COMMIT_SHA') || !routeContent.includes('preflight')) {
+    throw new Error("Transport structure error: API route does not bind VERCEL_GIT_COMMIT_SHA or handle preflight verification");
+  }
+
+  // Verify route validates receiver output against full schema
+  if (!routeContent.includes('validateReceiverOutput') || !routeContent.includes('REQUIRED_RECEIVER_OUTPUT_FIELDS')) {
+    throw new Error("Transport structure error: API route does not enforce validateReceiverOutput with required schema fields");
+  }
+
+  // Self-test JSON Schema validator on receiver output schema
+  const validOutput = {
+    finding_id: 'FINDING-PILOT-01',
+    verdict: 'PASS',
+    identified_issues: ['No architectural defects found.'],
+    evidence: ['Observation telemetry verified.'],
+    recommended_action: 'Proceed with evaluation.',
+    confidence: 'HIGH'
+  };
+  const validErrors = validateJsonSchema(validOutput, RECEIVER_OUTPUT_SCHEMA);
+  if (validErrors.length > 0) {
+    throw new Error(`Schema validator self-test failed on valid receiver output: ${validErrors.join('; ')}`);
+  }
+
+  // Negative test 1: extra property (additionalProperties: false)
+  const invalidExtra = { ...validOutput, unexpected_extra_field: 'unauthorized' };
+  const extraErrors = validateJsonSchema(invalidExtra, RECEIVER_OUTPUT_SCHEMA);
+  if (extraErrors.length === 0) {
+    throw new Error('Schema validator self-test failed: additionalProperties: false was not enforced.');
+  }
+
+  // Negative test 2: missing required property
+  const invalidMissing = { ...validOutput };
+  delete invalidMissing.finding_id;
+  const missingErrors = validateJsonSchema(invalidMissing, RECEIVER_OUTPUT_SCHEMA);
+  if (missingErrors.length === 0) {
+    throw new Error('Schema validator self-test failed: required field finding_id was not enforced.');
+  }
+
+  // Negative test 3: pattern violation on finding_id
+  const invalidPattern = { ...validOutput, finding_id: 'INVALID FINDING ID WITH SPACES' };
+  const patternErrors = validateJsonSchema(invalidPattern, RECEIVER_OUTPUT_SCHEMA);
+  if (patternErrors.length === 0) {
+    throw new Error('Schema validator self-test failed: finding_id pattern was not enforced.');
+  }
+
+  // Negative test 4: enum violation on verdict
+  const invalidVerdict = { ...validOutput, verdict: 'ACCEPT' };
+  const verdictErrors = validateJsonSchema(invalidVerdict, RECEIVER_OUTPUT_SCHEMA);
+  if (verdictErrors.length === 0) {
+    throw new Error('Schema validator self-test failed: verdict enum was not enforced.');
+  }
+
+  // Negative test 5: non-string member in array
+  const invalidArrayItems = { ...validOutput, identified_issues: [12345] };
+  const arrayErrors = validateJsonSchema(invalidArrayItems, RECEIVER_OUTPUT_SCHEMA);
+  if (arrayErrors.length === 0) {
+    throw new Error('Schema validator self-test failed: array items string type was not enforced.');
+  }
+
   return true;
 }
 
@@ -246,8 +384,8 @@ function delay(ms) {
 }
 
 // Invokes deployed Vercel preview API route over HTTPS
-// Zero fixture/treatment bytes sent over wire: only query parameters ?unit=...&attempt=...
-async function callRemotePreviewRoute(unitId, attempt) {
+// Zero fixture/treatment bytes sent over wire: only query parameters ?unit=...&attempt=...&expected_commit=...
+async function callRemotePreviewRoute(unitId, attempt, expectedCommitSha) {
   if (!PREVIEW_BASE_URL) {
     throw new Error('VERCEL_PREVIEW_URL must be supplied by the execution environment to establish vercel-preview/server-fetch transport over HTTPS.');
   }
@@ -255,6 +393,9 @@ async function callRemotePreviewRoute(unitId, attempt) {
   const url = new URL('/api/sequence-55-pilot-v4-1r', baseUrl);
   url.searchParams.set('unit', unitId);
   url.searchParams.set('attempt', String(attempt));
+  if (expectedCommitSha) {
+    url.searchParams.set('expected_commit', expectedCommitSha);
+  }
 
   if (url.protocol !== 'https:') {
     throw new Error(`Transport violation: Remote preview route must use HTTPS, got ${url.protocol}`);
@@ -275,6 +416,11 @@ async function callRemotePreviewRoute(unitId, attempt) {
   } catch (e) {
     throw new Error(`Remote preview route returned non-JSON (${res.status}): ${text.slice(0, 200)}`);
   }
+
+  if (expectedCommitSha && json.vercel_git_commit_sha && json.vercel_git_commit_sha !== expectedCommitSha) {
+    throw new Error(`STOP · PREVIEW_DEPLOYMENT_COMMIT_UNVERIFIED: Route returned commit ${json.vercel_git_commit_sha}, expected ${expectedCommitSha}`);
+  }
+
   return json;
 }
 
@@ -288,13 +434,16 @@ async function main() {
     throw new Error(`PRE-EXECUTION GATE FAILED: Expected 50 verified units, got ${verifiedCount}`);
   }
 
-  // Step 3: Structural verification of transport and wire settings
+  // Step 3: Structural verification of transport, wire settings, and schema validators
   verifyTransportStructure();
 
   if (isVerifyOnly) {
     console.log(`[VERIFY-ONLY] Immutability guard PASSED.`);
     console.log(`[VERIFY-ONLY] Successfully verified ${verifiedCount} / 50 receiver-clean execution units.`);
     console.log(`[VERIFY-ONLY] Explicit wire thinking configuration: thinkingLevel: 'MEDIUM' verified.`);
+    console.log(`[VERIFY-ONLY] Exact deployment-commit preflight mechanism active.`);
+    console.log(`[VERIFY-ONLY] Complete receiver-output schema validator active.`);
+    console.log(`[VERIFY-ONLY] Invalid receipt preservation active.`);
     console.log(`[VERIFY-ONLY] Remote-preview HTTPS transport path verified structurally.`);
     console.log(`[VERIFY-ONLY] Full JSON Schema receipt validator active.`);
     console.log(`[VERIFY-ONLY] Attempt-distinct retry preservation naming rules active.`);
@@ -305,6 +454,14 @@ async function main() {
   if (!PREVIEW_BASE_URL) {
     throw new Error('VERCEL_PREVIEW_URL must be supplied by the execution environment to execute units over HTTPS.');
   }
+
+  // Step 4: Verify deployment identity via preflight
+  const expectedCommitSha = getExpectedCommitSha();
+  if (!expectedCommitSha) {
+    throw new Error('STOP · PREVIEW_DEPLOYMENT_COMMIT_UNVERIFIED: Could not determine expected commit SHA.');
+  }
+  console.log(`[PREFLIGHT] Expected machinery commit: ${expectedCommitSha}`);
+  await performDeploymentPreflight(expectedCommitSha);
 
   fs.mkdirSync(OUT, { recursive: true });
   fs.mkdirSync(RECEIPTS, { recursive: true });
@@ -317,6 +474,7 @@ async function main() {
     governing_privacy_law: 'RAW_FREEZE_AUDITABILITY_EXCLUDES_OUTCOME_DISCLOSURE',
     transport_protocol: 'vercel-preview/server-fetch (HTTPS remote invocation)',
     preview_endpoint: `${PREVIEW_BASE_URL}/api/sequence-55-pilot-v4-1r`,
+    deployed_git_commit_sha: expectedCommitSha,
     execution_started_at: new Date().toISOString(),
     execution_completed_at: null,
     total_units_authorized: 50,
@@ -345,18 +503,30 @@ async function main() {
       if (attempts > 0) totalRetries++;
       console.log(`  Attempt ${attempts}...`);
 
-      const routeResult = await callRemotePreviewRoute(unitId, attempts);
+      let routeResult;
+      try {
+        routeResult = await callRemotePreviewRoute(unitId, attempts, expectedCommitSha);
+      } catch (transportErr) {
+        routeResult = {
+          ok: false,
+          raw_provider_response_text: JSON.stringify({ transport_error: transportErr.message }),
+          parsed_output: null,
+          receipt: null,
+          transport_error: transportErr.message
+        };
+      }
       lastResult = routeResult;
 
       const rawResponseText = routeResult.raw_provider_response_text;
       const receipt = routeResult.receipt;
 
+      // 1. Preserve raw response
       // Law: RETRY != REPLACEMENT_OF_HISTORY
-      // Store every attempt in a distinct, attempt-indexed artifact set
       const rawFilename = `raw_response_${unitId}_attempt_${attempts}.json`;
       const rawPath = path.join(OUT, rawFilename);
       fs.writeFileSync(rawPath, typeof rawResponseText === 'string' ? rawResponseText : JSON.stringify(rawResponseText, null, 2), 'utf8');
 
+      // 2. Preserve parsed output if any
       let parsedFilename = null;
       if (routeResult.parsed_output) {
         parsedFilename = `parsed_output_${unitId}_attempt_${attempts}.json`;
@@ -364,33 +534,72 @@ async function main() {
         fs.writeFileSync(parsedPath, JSON.stringify(routeResult.parsed_output, null, 2) + '\n', 'utf8');
       }
 
-      // Complete validation against committed JSON Schema
-      const receiptErrors = validateJsonSchema(receipt, RECEIPT_SCHEMA);
-      if (receiptErrors.length > 0) {
-        console.error(`  RECEIPT SCHEMA ERROR on ${unitId} attempt ${attempts}:`, receiptErrors);
-        throw new Error(`Receipt validation failed on ${unitId} attempt ${attempts}: ${receiptErrors.join('; ')}`);
-      }
-
+      // 3. Preserve the generated receipt bytes
       const receiptFilename = `receipt_${unitId}_attempt_${attempts}.json`;
       const receiptPath = path.join(RECEIPTS, receiptFilename);
-      fs.writeFileSync(receiptPath, JSON.stringify(receipt, null, 2) + '\n', 'utf8');
+      const receiptBody = receipt ? (JSON.stringify(receipt, null, 2) + '\n') : JSON.stringify({
+        malformed_or_missing_receipt: true,
+        unit_id: unitId,
+        attempt: attempts,
+        transport_error: routeResult.transport_error || null
+      }, null, 2) + '\n';
+      fs.writeFileSync(receiptPath, receiptBody, 'utf8');
 
-      attemptArtifacts.push({
+      // 4. Validate the preserved receipt against the frozen receipt schema
+      let receiptErrors = [];
+      if (!receipt) {
+        receiptErrors = ['MISSING_RECEIPT_OBJECT_FROM_ROUTE'];
+      } else {
+        receiptErrors = validateJsonSchema(receipt, RECEIPT_SCHEMA);
+      }
+
+      const receiptValidationPassed = (receiptErrors.length === 0);
+
+      let receiptErrorsFilename = null;
+      if (!receiptValidationPassed) {
+        // Law: INVALID_RECEIPT != UNREGISTERED_ATTEMPT
+        receiptErrorsFilename = `receipt_errors_${unitId}_attempt_${attempts}.json`;
+        const receiptErrorsPath = path.join(RECEIPTS, receiptErrorsFilename);
+        fs.writeFileSync(receiptErrorsPath, JSON.stringify({
+          unit_id: unitId,
+          attempt: attempts,
+          receipt_file: receiptFilename,
+          validation_errors: receiptErrors,
+          recorded_at: new Date().toISOString()
+        }, null, 2) + '\n', 'utf8');
+      }
+
+      const attemptRecord = {
         attempt_ordinal: attempts,
         raw_file: rawFilename,
         receipt_file: receiptFilename,
         parsed_file: parsedFilename,
+        receipt_errors_file: receiptErrorsFilename,
+        receipt_validation_passed: receiptValidationPassed,
         raw_sha256: sha256(fs.readFileSync(rawPath)),
         receipt_sha256: sha256(fs.readFileSync(receiptPath)),
-        http_status: receipt.provider_receipt?.status_code ?? null,
-        parsing_validation_status: receipt.output_provenance?.parsing_validation_status ?? 'UNKNOWN'
-      });
+        http_status: receipt?.provider_receipt?.status_code ?? null,
+        parsing_validation_status: receipt?.output_provenance?.parsing_validation_status ?? (receiptValidationPassed ? 'UNKNOWN' : 'MALFORMED_RECEIPT')
+      };
+      attemptArtifacts.push(attemptRecord);
+
+      // Persist attempt state to manifest immediately before any STOP/retry disposition
+      manifest.total_wire_invocations = totalWireCalls;
+      manifest.total_preserved_attempts = totalWireCalls;
+      manifest.failed_or_retry_count = totalRetries;
+      fs.writeFileSync(MANIFEST_PATH, JSON.stringify(manifest, null, 2) + '\n', 'utf8');
+
+      // If receipt validation failed, STOP execution with preserved evidence
+      if (!receiptValidationPassed) {
+        console.error(`  RECEIPT SCHEMA ERROR on ${unitId} attempt ${attempts}:`, receiptErrors);
+        throw new Error(`STOP · INVALID_RECEIPT: Receipt validation failed on ${unitId} attempt ${attempts}: ${receiptErrors.join('; ')}`);
+      }
 
       if (routeResult.ok) {
         console.log(`  SUCCESS on attempt ${attempts}.`);
         completed = true;
       } else {
-        console.warn(`  ATTEMPT FAILED (${attempts}): status=${receipt.provider_receipt?.status_code}, parsing=${receipt.output_provenance?.parsing_validation_status}`);
+        console.warn(`  ATTEMPT FAILED (${attempts}): status=${receipt?.provider_receipt?.status_code}, parsing=${receipt?.output_provenance?.parsing_validation_status}`);
         attempts++;
         if (attempts < 3) await delay(2000);
       }
