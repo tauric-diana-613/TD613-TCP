@@ -6,6 +6,7 @@ import { webcrypto } from 'node:crypto';
 import { JSDOM } from 'jsdom';
 import { installKhonapolitTerminal } from '../app/dome-world/marrowline-terminal.js';
 import { installMarrowlineLoomDemo } from '../app/dome-world/marrowline-loom-demo.js';
+import { installMarrowlineMobileShell } from '../app/dome-world/marrowline-mobile-shell.js';
 import { clearMarrowlineAttachments, getMarrowlineAttachments, stageMarrowlineAttachments } from '../app/dome-world/marrowline-attachments.js';
 import { createLoomAiGovernance, LOOM_HANDOFF_TTL_MS } from '../app/dome-world/holonomy-loom/ai-handoff.js';
 import { bindLoomDemoRequest, loomDemoDigest, loomDemoReceiptDigest, loomDemoResult, LOOM_DEMO_STAGE_RECEIPT_SCHEMA } from '../app/dome-world/holonomy-loom/demo-contract.js';
@@ -17,7 +18,7 @@ async function until(predicate) {
   while (!predicate()) { if (Date.now() > deadline) throw new Error('Native synthetic lifecycle did not reach the expected state.'); await flush(); }
 }
 
-async function harness(t, { stageInitially = true, cryptoBarrier = true, complete = false } = {}) {
+async function harness(t, { stageInitially = true, cryptoBarrier = true, complete = false, heldSecond = false } = {}) {
   const dom = new JSDOM(html, { url: 'https://td613.com/dome-world/marrowline.html#loom-demo' });
   const root = dom.window, doc = root.document, calls = [];
   Object.defineProperty(root, 'crypto', { configurable: true, value: webcrypto });
@@ -27,6 +28,12 @@ async function harness(t, { stageInitially = true, cryptoBarrier = true, complet
   const fetchImpl = async (url, options = {}) => {
     if (!options.method) return { ok: true, text: async () => 'SYNTHETIC CORPUS', json: async () => ({ hasGeminiKey: true }) };
     calls.push({ url, body: JSON.parse(options.body) });
+    if (heldSecond && calls.length===2) return {ok:false,status:422,json:async()=>({
+      schema:'td613.loom.ai-task-result/v0.1',request_id:calls.at(-1).body.request_id,phase:'CONTINUE',status:'held',answer:'',error:'ANSWER_EVIDENCE_CONFLICT',provider_completed:true,
+      diagnostic:{schema:'td613.loom.ai-task-diagnostic/v0.1',stage:'output-admission',code:'ANSWER_EVIDENCE_CONFLICT'},
+      evidence_review:{schema:'td613.loom.evidence-review/v0.1',status:'REVIEW_REQUIRED',blocks_reuse:true,conflicts:[{code:'RETENTION_MAXIMUM_PROMOTED_TO_OBSERVED_DURATION',excerpt:'Records remain in backups for 45 days.'}]},
+      native_reply:{ok:true,text:'### Preserved held answer\nRecords remain in backups for 45 days.\nTauric Diana bots\n⟐',relay:{transcript:'### Preserved held answer\nRecords remain in backups for 45 days.\nTauric Diana bots\n⟐'},receipt:{provider:{completion:{complete:true,finishReason:'STOP'}}}}
+    })};
     if (complete) {
       const request = calls.at(-1).body;
       const bound = await bindLoomDemoRequest(request, root);
@@ -120,6 +127,33 @@ test('native retry after admitted activation retains its visible reply and waits
   assert.equal(h.controller.snapshot().phase, 'AIA_SENT');
   assert.equal(h.doc.getElementById('khonapolitMessages').textContent, before, 'successful activation is not removed before the next lawful file gesture');
   assert.throws(() => h.controller.exportPacket());
+});
+
+test('evidence HOLD Retry inspects without sending; explicit revised Send retains held bytes and advances from setup',async t=>{
+  const h=await harness(t,{cryptoBarrier:false,complete:true,heldSecond:true});
+  installMarrowlineMobileShell(h.doc,h.root);
+  await h.controller.submit();await h.settled();
+  const setup=h.controller.snapshot().predecessor_request_id;
+  await h.controller.stageFiles();await h.controller.submit();await h.settled();
+  assert.equal(h.controller.snapshot().phase,'FILES_STAGED');
+  assert.equal(h.controller.snapshot().predecessor_request_id,setup);
+  assert.throws(()=>h.controller.exportPacket());
+  const held=h.doc.querySelector('#khonapolitMessages .relay-message:last-child .relay-stage-text').textContent;
+  assert.match(held,/Preserved held answer/);
+  const before=h.doc.getElementById('khonapolitMessages').textContent;
+  h.doc.dispatchEvent(new h.root.CustomEvent('td613:marrowline:retry-independent'));
+  h.doc.getElementById('retryKhonapolitTask').click();
+  await flush();await h.settled();
+  assert.equal(h.calls.length,2,'both retry controls are inspection gestures for an evidence HOLD');
+  assert.equal(h.doc.getElementById('khonapolitMessages').textContent,before);
+  assert.equal(h.doc.activeElement.id,'loomGateEvidenceReview');
+  assert.equal(h.doc.body.dataset.mobileView,'gate','synthetic mobile control routes to visible Gate');
+  h.doc.getElementById('khonapolitPrompt').value='Use only supported claims; distinguish permission from actual duration.';
+  await h.controller.submit();await h.settled();
+  assert.equal(h.calls.length,3);assert.notEqual(h.calls[2].body.request_id,h.calls[1].body.request_id);
+  assert.equal(h.calls[2].body.predecessor.request_id,setup);
+  assert.equal(h.controller.snapshot().phase,'DONE');
+  assert.ok([...h.doc.querySelectorAll('.relay-stage-text')].some(n=>n.textContent===held),'new success retains the earlier held reply unchanged');
 });
 
 test('late ended Loom staging cannot remove a separately staged ordinary attachment', async t => {

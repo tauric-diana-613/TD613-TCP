@@ -1,5 +1,6 @@
-import { MARROWLINE_LOOM_READING_WORK_UNIT_SCHEMA } from './marrowline-reading-surface.js';
+import { MARROWLINE_LOOM_READING_WORK_UNIT_SCHEMA, MARROWLINE_LOOM_HELD_READING_SCHEMA } from './marrowline-reading-surface.js';
 import { reviewLoomEvidence } from './holonomy-loom/ai-evidence-review.js';
+import { isLoomEvidenceHold, projectLoomEvidenceReview } from './holonomy-loom/ai-evidence-diagnostic.js';
 import { createMarrowlineThreadLibrary } from './marrowline-threads.js';
 import { DEFAULT_MARROWLINE_TITLE, deriveMarrowlineConversationTitle } from './marrowline-title.js';
 import { formatMarrowlineReplyForCopy } from './marrowline-speaker-frames.js';
@@ -322,7 +323,14 @@ function renderModelMessage(doc, entry) {
     article.dataset.loomReadingPhase=String(loomReading.phase);
     if(Number.isFinite(Number(loomReading.expires_at))&&Number(loomReading.expires_at)>0)article.dataset.loomReadingExpiresAt=String(Number(loomReading.expires_at));
   }
-  if (entry.loomAdmission === 'HELD') article.append(textNode(doc,'p','relay-completion-alert','Reply preserved · Loom admission held. Open Loom Gate for the receipt.'));
+  if (entry.loomAdmission === 'HELD') {
+    article.append(textNode(doc,'p','relay-completion-alert','Reply preserved · Loom admission held. Open Loom Gate for the receipt.'));
+    if(entry.loomFailure?.request_id && ['ACTIVATE','CONTINUE'].includes(entry.loomFailure.phase)) {
+      article.dataset.loomHeldReadingSchema=MARROWLINE_LOOM_HELD_READING_SCHEMA;
+      article.dataset.loomHeldReadingRequestId=entry.loomFailure.request_id;
+      article.dataset.loomHeldReadingPhase=entry.loomFailure.phase;
+    }
+  }
   if (entry.receipt?.provider?.completion?.complete === false) {
     article.dataset.completion = 'incomplete';
     const structuralOnly = entry.receipt.provider.completion.reason === 'required-voice-structure-incomplete';
@@ -1209,10 +1217,14 @@ export function installKhonapolitTerminal(doc = document, root = window) {
           if (!response.ok) throw new Error(transportPayload.error || `HTTP ${response.status}`);
           await loomTransport.admitResponse(transportPayload, loomPrepared);
         } catch (error) {
-          failurePayload = { ...transportPayload, ...(payload || {}), error:transportPayload.error || 'loom-admission-held', httpStatus:response.status, observedAt:Date.now(), diagnostic:{stage:requestStage,code:error.message} };
+          failurePayload = { ...transportPayload, ...(payload || {}), error:transportPayload.error || 'loom-admission-held', httpStatus:response.status, observedAt:Date.now(),
+            diagnostic:transportPayload.diagnostic || {stage:requestStage,code:error.message},
+            client_diagnostic:{stage:requestStage,code:error.message} };
           // Provider-authored native bytes can remain visible without becoming
           // an admitted Loom result or replacing its current export.
-          if (payload?.relay && typeof payload.text === 'string' && payload.text) state.messages.push({role:'model',text:payload.text,relay:payload.relay,receipt:payload.receipt,mode,loomAdmission:'HELD',sealed:false});
+          if (payload?.relay && typeof payload.text === 'string' && payload.text) state.messages.push({role:'model',text:payload.text,relay:payload.relay,receipt:payload.receipt,mode,loomAdmission:'HELD',sealed:false,
+            loomFailure:{request_id:transportPayload.request_id,phase:loomPrepared?.request?.phase,error:failurePayload.error,httpStatus:response.status,
+              evidence_review:projectLoomEvidenceReview(transportPayload.evidence_review)} });
           throw error;
         }
         if (activeRequestCancelRequested || requestController.signal.aborted) throw new Error('operator-cancelled');
@@ -1290,7 +1302,6 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       }
       root.dispatchEvent?.(new root.CustomEvent('td613:khonapolit:return-observed', { detail: receipt }));
     } catch (error) {
-      loomTransport?.rejectAttempt();
       state.pendingTask = message;
       state.lastFailure = activeRequestCancelRequested
         ? { error: 'operator-cancelled', httpStatus: responseStatus, observedAt: Date.now(),
@@ -1301,6 +1312,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
               ? { backgroundInterrupted: true } : {}),
             ...(receivedReceipt ? { receipt: receivedReceipt } : {})
           };
+      loomTransport?.rejectAttempt(state.lastFailure);
       root.__TD613_KHONAPOLIT_LAST_FAILURE__ = state.lastFailure;
       updateReceipt(doc, root, state); displayClassification(doc, null);
       const failedRouteReceipt = routeReceiptFromFailure(state.lastFailure);
@@ -1433,6 +1445,14 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     await submitTask();
   });
   const retryLastPrompt = ({ independentRetry = false } = {}) => {
+    if(isLoomEvidenceHold(state.lastFailure)) {
+      const mobile=root.matchMedia?.('(max-width:860px)')?.matches;
+      const control=mobile ? doc.querySelector('.mobile-dock [data-mobile-target="gatePanel"]') : byId(doc,'marrowlineInstrumentTab-gatePanel');
+      if(control)control.click();
+      else {const panel=byId(doc,'gatePanel');if(panel)panel.open=true;}
+      byId(doc,'loomGateEvidenceReview')?.focus?.({preventScroll:false});
+      return;
+    }
     const loomState=root.__TD613_LOOM_DEMO_CONTROLLER__?.snapshot();
     if (loomState?.active && loomState.phase==='AIA_SENT') {
       setPedagogueStatus(byId(doc,'khonapolitTerminalStatus'),'notice','Handoff received · use + to attach the selected files.');
@@ -1446,7 +1466,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       return;
     }
     if (userIndex >= 0) {
-      state.messages = state.messages.slice(0, userIndex + 1);
+      // A new retry is a new attempt. Retain the prior response and its receipt.
       state.pendingTask = message;
       void scheduleSave();
       renderMessages(doc, state);

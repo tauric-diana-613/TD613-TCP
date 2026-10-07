@@ -5,6 +5,7 @@ import { getMarrowlineAttachments, stageMarrowlineAttachments, removeMarrowlineA
 import { installMarrowlineLoomGateContinuity } from './marrowline-loom-gate-continuity.js';
 import { LOOM_RETURN_REVIEW_STORAGE_KEY } from './holonomy-loom/returned-session-review.js';
 import { portableLoomDigest } from '../engine/portable-loom-session.js';
+import { MARROWLINE_PROVIDER_BUDGET } from './marrowline-provider-budget.js';
 
 const EVENT = 'td613:marrowline:loom-demo-state';
 export const LOOM_RETURN_MESSAGE_SCHEMA = 'td613.loom.return-review-message/v0.1';
@@ -126,7 +127,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   if (!form || !prompt || !send || !ordinary) throw new Error('Loom route composer unavailable.');
   let phase='ARRIVED', active=false, pending=null, staged=[], busy=false, staging=false, stageGeneration=0;
   let latest=packet.continuation?.prior_result ? loomDemoResult(packet.continuation.prior_result, packet.documents) : null, latestBinding=null, lastAccepted=null, predecessor=null, lastAdmittedBindingReceipt=null;
-  let destroyed=false, lastAttempt='NOT_SENT', stagedDraft='';
+  let destroyed=false, lastAttempt='NOT_SENT', stagedDraft='', lastFailure=null;
   const admittedStages=[];
   let savedReviewPacket=null;
   const status=byId(doc,'khonapolitTerminalStatus');
@@ -136,7 +137,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   const menu=element(doc,'section','','loom-demo-menu marrowline-context-submenu');menu.id='loomDemoMenu';menu.hidden=true;
   menu.setAttribute('role','menu');menu.setAttribute('aria-labelledby','loomDemoMenuTitle');
   const title=element(doc,'h3','Loom route');title.id='loomDemoMenuTitle';
-  const hint=element(doc,'p','Setup first, then two continuations. Nothing is sent when you select an option. The transfer expires after ten minutes. Keep the original Loom tab for returned-session review; an exported session can be reopened for review after a reload.');
+  const hint=element(doc,'p',`Setup, then one selected-file continuation, then return to Loom for Check and Admit. Another substantive continuation needs a fresh Loom departure. Selecting an option stages locally. Each Send may use up to ${MARROWLINE_PROVIDER_BUDGET.totalRequests} native provider requests, including at most one structural repair. The transfer expires after ten minutes. Keep the original Loom tab for returned-session review; an exported session can be reopened for review after a reload.`);
   const activationPreview=doc.createElement('details');activationPreview.className='loom-demo-attachment-preview';
   const activationSummary=element(doc,'summary','Inspect the exact Loom handoff before sending');
   const activationBytes=element(doc,'pre',JSON.stringify(activation,null,2));
@@ -190,7 +191,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
     step2.disabled=busy||staging||phase!=='AIA_SENT';
     step1.dataset.completed=String(state.aia_sent);step2.dataset.completed=String(state.files_staged);
     note2.textContent=state.aia_sent?'Selected Loom files only. Local-only documents never enter this route.':'Available after setup returns a bound acknowledgement.';
-    gateContinuity?.update({phase,lastAttempt,busy,activation,binding:lastAdmittedBindingReceipt,predecessor,result:lastAccepted,packet,substantiveContinuationCount:state.substantive_continuation_count,contentPredecessorRequestId:state.content_predecessor_request_id});
+    gateContinuity?.update({phase,lastAttempt,busy,failure:lastFailure,activation,binding:lastAdmittedBindingReceipt,predecessor,result:lastAccepted,packet,substantiveContinuationCount:state.substantive_continuation_count,contentPredecessorRequestId:state.content_predecessor_request_id});
     environment.dispatchEvent(new environment.CustomEvent(EVENT,{detail:state}));
   }
   function closeMenu({focusParent=true}={}){
@@ -299,7 +300,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
     if(!operation)throw new Error('Use + → Loom route to attach the selected files.');
     // Acquire before the first crypto await. Native terminal also owns one
     // synchronous in-flight lock for taps, Enter and explicit retry.
-    busy=true;lastAttempt='PENDING';emit();
+    busy=true;lastAttempt='PENDING';lastFailure=null;emit();
     let binding;
     try {
       assertStaged();
@@ -328,7 +329,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
     admittedStages.push({receipt:copy(returnedPredecessor),binding:copy(binding.receipt),receiver:'MARROWLINE',
       result:copy(normalizedResult),observed_at:new Date().toISOString(),predecessor_request_id:predecessor?.request_id??null,
       content_predecessor_request_id:operation==='CONTINUE'?latest?.request_id??null:null});
-    predecessor=returnedPredecessor;lastAdmittedBindingReceipt=copy(binding.receipt);lastAttempt='ADMITTED';
+    predecessor=returnedPredecessor;lastAdmittedBindingReceipt=copy(binding.receipt);lastAttempt='ADMITTED';lastFailure=null;
     pending=null;staged=[];
     if(operation==='ACTIVATE')phase='AIA_SENT';
     else {
@@ -342,7 +343,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
     emit();
     return output;
   }
-  function rejectAttempt(){lastAttempt='HELD';emit();}
+  function rejectAttempt(failure=null){lastAttempt='HELD';lastFailure=failure;emit();}
   function finishAttempt(prepared){
     if(prepared?.binding!==latestBinding)prepared?.binding?.governor.close();
     busy=false;emit();

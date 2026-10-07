@@ -948,6 +948,9 @@ jobs:
             tests/loom-task.test.mjs \
             tests/loom-ai-workspace-dom.test.mjs \
             tests/loom-ai-handoff.test.mjs \
+            tests/loom-evidence-recovery.test.mjs \
+            tests/loom-ai-failure.test.mjs \
+            tests/loom-ai-project-checks.test.mjs \
             tests/marrowline-instrument-panel.test.mjs \
             tests/marrowline-desktop-repair-contract.test.mjs \
             tests/marrowline-reading-surface.test.mjs \

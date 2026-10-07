@@ -13,6 +13,7 @@ import {
   reserveLoomDemoCustodyStage
 } from './loom-demo-custody-client.js';
 import { createLoomMarrowlineTaskHandler } from './loom-marrowline-task.js';
+import { projectLoomEvidenceReview } from '../app/dome-world/holonomy-loom/ai-evidence-diagnostic.js';
 
 const digest = value => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 
@@ -41,7 +42,8 @@ export function createLoomDemoTaskHandler({
     let reservationReleased = false;
     let nativeReply = null;
 
-    const fail = (code, status = 400) => {
+    const fail = (code, status = 400, failure = null) => {
+      const evidenceReview=projectLoomEvidenceReview(failure?.evidenceReview);
       res.statusCode = status;
       res.setHeader('Content-Type', 'application/json; charset=utf-8');
       res.setHeader('Cache-Control', 'no-store, max-age=0');
@@ -51,6 +53,10 @@ export function createLoomDemoTaskHandler({
         status: 'held',
         answer: '',
         error: code,
+        ...(['ACTIVATE','CONTINUE'].includes(parsed?.phase)?{phase:parsed.phase}:{}),
+        ...(evidenceReview ? {evidence_review:evidenceReview,
+          diagnostic:{schema:'td613.loom.ai-task-diagnostic/v0.1',stage:'output-admission',code:'ANSWER_EVIDENCE_CONFLICT'}} : {}),
+        ...(nativeReply ? {provider_completed:nativeReply.receipt?.provider?.completion?.complete===true} : {}),
         ...(nativeReply ? { native_reply: nativeReply } : {})
       }));
     };
@@ -121,7 +127,7 @@ export function createLoomDemoTaskHandler({
       };
     } catch (error) {
       binding?.governor?.close();
-      return fail(error?.code || error?.message || 'loom-demo-binding-held', error?.status || 400);
+      return fail(error?.code || error?.message || 'loom-demo-binding-held', error?.status || 400,error);
     }
 
     const proxy = Object.create(req);
@@ -202,7 +208,7 @@ export function createLoomDemoTaskHandler({
         } catch (error) {
           binding?.governor?.close();
           await releaseReservation();
-          return fail(error?.code || error?.message || 'loom-demo-response-held', error?.status || 422);
+          return fail(error?.code || error?.message || 'loom-demo-response-held', error?.status || 422,error);
         }
       })();
       return responseCompletion;

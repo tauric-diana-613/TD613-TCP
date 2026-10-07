@@ -1,13 +1,20 @@
-/** Bounded client projection of a request-bound server failure. Never retain rejected model text. */
-const ERRORS = new Set(['method-not-allowed', 'same-origin-required', 'json-required', 'task-too-large', 'invalid-task-envelope', 'provider-not-configured', 'task-rate-limit', 'no-eligible-provider-model', 'provider-request-failed', 'task-aborted-or-timed-out', 'provider-response-not-admitted']);
+/** Bounded typed failure projection. The original held reply stays separate. */
+import { projectLoomEvidenceReview } from './ai-evidence-diagnostic.js';
+const ERRORS = new Set(['ANSWER_EVIDENCE_CONFLICT','method-not-allowed', 'same-origin-required', 'json-required', 'task-too-large', 'invalid-task-envelope', 'provider-not-configured', 'task-rate-limit', 'no-eligible-provider-model', 'provider-request-failed', 'task-aborted-or-timed-out', 'provider-response-not-admitted']);
 const STAGES = new Set(['provider-plan', 'provider-transport', 'provider-json', 'output-admission']);
 const CODES = new Set(['PROVIDER_PLAN_FAILED', 'NO_ELIGIBLE_MODEL', 'PROVIDER_TRANSPORT_FAILED', 'PROVIDER_HTTP_ERROR', 'PROVIDER_JSON_INVALID', 'OUTPUT_JSON_INVALID', 'OUTPUT_FIELDS_INVALID', 'ANSWER_INVALID', 'NEXT_STEP_INVALID', 'MISSING_INFORMATION_INVALID', 'SOURCE_IDS_INVALID', 'SOURCE_ID_DUPLICATE', 'SOURCE_ID_NOT_SELECTED', 'PROMPT_BLOCKED', 'FINISH_REASON_NOT_STOP', 'OUTPUT_TOKEN_LIMIT', 'RESPONSE_PARTS_INVALID', 'RESPONSE_TEXT_TOO_LARGE', 'CREDENTIAL_OUTPUT_REJECTED', 'REQUEST_CANCELLED', 'DEADLINE_EXCEEDED']);
 const object = value => value && typeof value === 'object' && !Array.isArray(value);
+CODES.add('ANSWER_EVIDENCE_CONFLICT');
 const count = value => Number.isSafeInteger(value) && value >= 0;
 
 export function readLoomAiFailure(payload, requestId) {
   if (!object(payload) || payload.schema !== 'td613.loom.ai-task-result/v0.1' || payload.status !== 'held' || typeof requestId !== 'string' || !/^[A-Za-z0-9_-]{1,100}$/.test(requestId) || payload.request_id !== requestId || !ERRORS.has(payload.error)) return null;
   const failure = { error: payload.error, observations: {} };
+  if(payload.error==='ANSWER_EVIDENCE_CONFLICT') {
+    const review=projectLoomEvidenceReview(payload.evidence_review);
+    if(review)failure.evidence_review=review;
+    failure.provider_completed=payload.provider_completed===true;
+  }
   const diagnostic = payload.diagnostic;
   if (object(diagnostic) && diagnostic.schema === 'td613.loom.ai-task-diagnostic/v0.1' && STAGES.has(diagnostic.stage) && CODES.has(diagnostic.code)) failure.diagnostic = { schema: diagnostic.schema, stage: diagnostic.stage, code: diagnostic.code };
   const observations = payload.observations;
@@ -42,6 +49,7 @@ export function readLoomAiFailure(payload, requestId) {
 }
 
 export function describeLoomAiFailure(failure, httpStatus) {
+  if(failure?.error==='ANSWER_EVIDENCE_CONFLICT')return `${failure.provider_completed?'Reply received; Loom admission held.':'Loom answer held for evidence review.'} ${failure.evidence_review?.conflicts[0]?.explanation || 'Inspect the flagged claim before sending again.'}`;
   if (failure?.diagnostic?.code === 'DEADLINE_EXCEEDED') {
     const milliseconds = failure.observations?.deadline_ms;
     const limit = count(milliseconds) && milliseconds > 0 && milliseconds <= 60000 ? `${milliseconds / 1000}-second ` : '';

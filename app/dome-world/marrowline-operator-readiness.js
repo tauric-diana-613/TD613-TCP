@@ -1,5 +1,7 @@
 import { MARROWLINE_GATE_ASSAY_CLAIM_CEILING } from './marrowline-gate-assay.js';
 import { classifyMarrowlineRetryWindow, marrowlineRetryMessage } from './marrowline-retry-window.js';
+import { loomEvidenceHoldSummary } from './holonomy-loom/ai-evidence-diagnostic.js';
+import { marrowlineProviderUsage } from './marrowline-provider-budget.js';
 
 export const MARROWLINE_OPERATOR_READINESS_VERSION = 'td613.dome-world.marrowline-operator-readiness/v4-pedagogue-status-phase';
 export const MARROWLINE_OPERATOR_RECEIPT_SCHEMA = 'td613.dome-world.marrowline-operator-receipt/v1';
@@ -126,6 +128,8 @@ function installHumanSurfaceVocabulary(doc = document, root = window) {
 }
 
 export function boundedFailureMessage(failure = {}) {
+  const evidence=loomEvidenceHoldSummary(failure);
+  if(evidence)return `${evidence.title}. ${evidence.explanation} Inspect the flagged passage in Loom Gate before sending again.`;
   const typed = marrowlineRetryMessage(failure);
   if (typed) return typed;
   const code = [failure?.error, failure?.diagnostic?.code, failure?.httpStatus].map(value => safe(value).toLowerCase()).join(' ');
@@ -168,12 +172,15 @@ function installTerminalHoldNotice(doc = document, root = window) {
     // Provider Retry-After gates only preserved-task Retry, not a new Send.
     if (countdown) countdown.textContent = cooling
       ? `Provider suggests retry in ${window.remainingSeconds}s${window.dailyMetricReported ? ' · daily reset unverified' : ''}`
-      : window.dailyMetricReported ? 'Provider retry hint elapsed · daily reset unverified' : 'Ready to retry';
+       : window.requiresReview ? 'Evidence review required · waiting has no repair effect'
+       : window.dailyMetricReported ? 'Provider retry hint elapsed · daily reset unverified' : 'Ready to retry';
     if (refresh) {
       refresh.disabled = cooling;
       refresh.textContent = cooling ? '↻ Retry (paused)'
+        : window.requiresReview ? 'Inspect held reply'
         : window.kind === 'project-spend-cap' ? '↻ Retry after cap update' : '↻ Retry message';
-      refresh.title = window.kind === 'project-spend-cap'
+      refresh.title = window.requiresReview ? 'Open Loom Gate to inspect the evidence conflict. This sends nothing.'
+        : window.kind === 'project-spend-cap'
         ? 'Once you change the monthly cap for the API key’s Google project, retry the saved task.'
         : cooling ? 'Provider-reported retry hint; this timer does not prove a daily quota reset.'
         : 'Retry the saved message once. A provider retry hint is not a guarantee of capacity.';
@@ -202,7 +209,8 @@ function installTerminalHoldNotice(doc = document, root = window) {
       stopClock();
       card.replaceChildren();
       const title = doc.createElement('strong');
-      title.textContent = window.kind === 'project-spend-cap' ? 'Project spending cap reached'
+      title.textContent = window.kind === 'evidence-held' ? 'Loom admission held'
+        : window.kind === 'project-spend-cap' ? 'Project spending cap reached'
         : window.kind === 'return-held' ? 'Reply held'
         : window.kind === 'daily-report' ? 'Provider daily metric · HTTP 429'
         : window.kind === 'rate-window' ? 'Provider short-window limit · 429'
@@ -212,11 +220,13 @@ function installTerminalHoldNotice(doc = document, root = window) {
       const badge = doc.createElement('span');
       badge.className = 'terminal-hold-badge';
       badge.textContent = window.kind === 'project-spend-cap' ? 'CAP REACHED'
-        : window.kind === 'return-held' ? 'HELD' : 'PAUSED';
+        : ['return-held','evidence-held'].includes(window.kind) ? 'HELD' : 'PAUSED';
       title.append(' ', badge);
       const body = doc.createElement('p');
       body.textContent = explanation;
       card.append(title, body);
+      const usage=marrowlineProviderUsage(failure.native_reply || {receipt:failure.receipt});
+      if(usage){const cost=doc.createElement('p');cost.textContent=`This attempt: ${usage.attempts} of at most ${usage.limit} provider requests${usage.elapsedSeconds!==undefined?` · ${usage.elapsedSeconds}s`:''}${usage.reportedTotalTokens!==undefined?` · ${usage.reportedTotalTokens} reported tokens`:''}. Usage is route-reported; billing remains unverified.`;card.append(cost);}
       countdown = null;
       refresh = doc.createElement('button');
       refresh.type = 'button';

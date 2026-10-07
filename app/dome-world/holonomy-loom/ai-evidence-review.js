@@ -1,4 +1,5 @@
 import { LOOM_AI_PROJECTS } from './ai-projects.js';
+import { loomEvidenceClauseViews, reviewVendorRetentionClause } from './retention-claim-review.js';
 
 // This is a bounded text-pattern witness, never a general semantic verifier.
 // Exact selected bytes activate the fictional incident's evidence baseline.
@@ -40,30 +41,29 @@ export function reviewLoomEvidence(response, documents = []) {
   const conflicts = [];
   // Split clauses so an unrelated "uncertain" elsewhere cannot excuse a claim.
   const prose = [response?.answer, response?.suggested_next_step].filter(value => typeof value === 'string').join('\n');
-  const clauses = prose.replace(/[*_\x60]/g, '').split(/(?<=[.!?;])\s+|\n+/);
-  for (const clause of clauses) {
+  const clauses = loomEvidenceClauseViews(prose);
+  for (const view of clauses) {
+    const clause = view.text;
+    const excerpt={excerpt:view.raw.slice(0,600),inspection_excerpt:clause.slice(0,600),inspection_profile:view.inspection_profile};
     const conditional = /\b(?:if|whether|may|might|could|hypothes(?:is|es)|possible|potential|unknown|uncertain|unresolved|not yet|cannot|can't|does not|do not|did not|no evidence)\b/i.test(clause);
     if (!conditional && incident &&
       (/\b(?:caused|triggered|produced|resulted in|confirmed|proved|established)\b.{0,100}\b(?:duplicate|duplicated|double)\s+(?:downstream\s+)?(?:writes?|work|execution|effects?)\b/i.test(clause) ||
        /\b(?:duplicate|duplicated|double)\s+(?:downstream\s+)?(?:writes?|work|execution|effects?)\b.{0,60}\b(?:occurred|happened|confirmed|proven|established)\b/i.test(clause))) {
-      conflicts.push({ code: 'INCIDENT_EFFECT_ASSERTED_WITHOUT_WITNESS', excerpt: clause.slice(0,600),
+      conflicts.push({ code: 'INCIDENT_EFFECT_ASSERTED_WITHOUT_WITNESS', ...excerpt,
         explanation: 'This answer asserts duplicated downstream work, but the selected incident evidence leaves that question unresolved.' });
     }
     if (vendor) {
       const negatedImpossibility = /\b(?:not|is not|isn't|cannot establish|does not establish|fails to establish)\b.{0,45}\bimpossible\b/i.test(clause);
       if (!negatedImpossibility && /\b(?:mathematically|physically|operationally)?\s*impossible\b/i.test(clause) &&
           /\b(?:migration|throughput|capacity|pilot|day|hours?)\b/i.test(clause)) {
-        conflicts.push({ code: 'FINITE_PILOT_PROMOTED_TO_HARD_BOUND', excerpt: clause.slice(0,600),
+        conflicts.push({ code: 'FINITE_PILOT_PROMOTED_TO_HARD_BOUND', ...excerpt,
           explanation: 'The exact fictional pilot sources provide finite observations but no demonstrated hard throughput ceiling; state the conclusion conditionally at the observed rate.' });
       }
-      if (/\bwill\b.{0,100}\b(?:persist|remain|retain(?:ed)?|be\s+retained)\b/i.test(clause) &&
-          /\b(?:backup|retention|45\s+days?)\b/i.test(clause)) {
-        conflicts.push({ code: 'RETENTION_MAXIMUM_PROMOTED_TO_OBSERVED_DURATION', excerpt: clause.slice(0,600),
-          explanation: 'The source says backup retention is permitted for up to 45 days; it does not establish that content will remain for 45 days.' });
-      }
+      const retention = reviewVendorRetentionClause(view);
+      if (retention) conflicts.push(retention);
     }
     if (!conditional && /\b(?:complete|absolute|guaranteed|total)\s+(?:privacy|anonymity|protection)\b|\b(?:guarantees?|ensures?)\s+(?:your\s+)?(?:privacy|anonymity)\b/i.test(clause)) {
-      conflicts.push({ code: 'UNSUPPORTED_PRIVACY_GUARANTEE', excerpt: clause.slice(0,600),
+      conflicts.push({ code: 'UNSUPPORTED_PRIVACY_GUARANTEE', ...excerpt,
         explanation: 'This answer promises privacy beyond the observed selected-input boundary.' });
     }
   }

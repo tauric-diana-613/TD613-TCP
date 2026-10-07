@@ -217,3 +217,7 @@
   .loom-gate-continuity-actions{grid-template-columns:1fr}
   .loom-gate-continuity-actions .loom-gate-primary{grid-column:1}
 }
+.loom-gate-evidence-review{min-width:0;margin:1rem 0;padding:.8rem;border:1px solid rgba(232,125,202,.45);border-radius:.8rem;overflow-wrap:anywhere}
+.loom-gate-evidence-review strong,.loom-gate-evidence-review small{display:block}
+.loom-gate-evidence-review pre{max-height:12rem;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font-size:.8rem}
+.loom-gate-evidence-review:focus{outline:2px solid #8de8dc;outline-offset:3px}

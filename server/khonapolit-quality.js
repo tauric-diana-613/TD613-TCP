@@ -54,8 +54,9 @@ import { observeMarrowlineCompletion, assembleMarrowlineProviderTail } from './m
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
 export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v48-provider-completion-boundary';
-export const KHONAPOLIT_MAX_PROVIDER_CALLS = 5;
-export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1;
+import { MARROWLINE_PROVIDER_BUDGET } from '../app/dome-world/marrowline-provider-budget.js';
+export const KHONAPOLIT_MAX_PROVIDER_CALLS = MARROWLINE_PROVIDER_BUDGET.providerCalls;
+export const KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = MARROWLINE_PROVIDER_BUDGET.structuralRepairs;
 export const KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS = KHONAPOLIT_MAX_PROVIDER_CALLS + KHONAPOLIT_MAX_STRUCTURAL_REPAIRS;
 const PRIMARY_REQUEST_TIMEOUT_MS = 50000;
 const STRUCTURAL_REPAIR_TIMEOUT_MS = 30000;
