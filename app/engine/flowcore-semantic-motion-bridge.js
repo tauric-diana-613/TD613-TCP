@@ -1098,6 +1098,15 @@ export function renderDomeArt(viewId, worldSnapshot = {}, viewport = {}, time = 
   ).toLowerCase();
   const jurisdiction = PRODUCT_JURISDICTIONS.includes(rawJurisdiction) ? rawJurisdiction : 'living_field';
 
+  const isDetachedDelegation = Boolean(
+    worldSnapshot.detachedDelegation ||
+    worldSnapshot.isDetachedDelegation ||
+    worldSnapshot.authorityClass === 'detached_delegation' ||
+    viewport.detachedDelegation ||
+    viewport.authorityClass === 'detached_delegation'
+  );
+  const authorityClass = isDetachedDelegation ? 'detached_delegation' : 'outbound_carriage';
+
   // Evaluate all 39 carriers
   const evaluatedCarriers = evaluateAllCarriers(descriptor, {
     timeSeconds,
@@ -1111,6 +1120,7 @@ export function renderDomeArt(viewId, worldSnapshot = {}, viewport = {}, time = 
     { channel: 'flight-layer', count: CARRIER_COUNT, planes: ['flight-near', 'flight-mid', 'flight-far'] },
     { channel: 'glyph', glyph: descriptor.canonical_glyph, relation: descriptor.relation_id },
     { channel: 'jurisdiction', jurisdiction },
+    { channel: 'authority_class', authority_class: authorityClass },
     { channel: 'inspection', inspectable: true }
   ];
 
@@ -1121,6 +1131,8 @@ export function renderDomeArt(viewId, worldSnapshot = {}, viewport = {}, time = 
     draw: true,
     director_direction: directorDirection,
     jurisdiction,
+    authority_class: authorityClass,
+    is_detached_delegation: isDetachedDelegation,
     descriptor,
     carriers: evaluatedCarriers,
     draw_commands: Object.freeze(drawCommands),
@@ -1145,7 +1157,9 @@ export function renderDomeArt(viewId, worldSnapshot = {}, viewport = {}, time = 
       commands_station: false,
       automatic_ash_action: false,
       release_authorized: false,
-      human_closure_required: true
+      human_closure_required: true,
+      authority_class: authorityClass,
+      detached_delegation_gate: isDetachedDelegation ? 'CLOSED_ISSUE_691' : 'NOT_APPLICABLE'
     })
   });
 }
@@ -1424,7 +1438,7 @@ ${carriersXml}
  * - Receipt / Evidence Inspection (calm high-contrast monospace grid + [OBSERVED]/[DERIVED]/[HELD])
  * - Structural Rest 𝄐 (complete kinetic composure + resting downward drapery folds + plumb alignment)
  */
-export function renderDirectorsCutSvg(frame) {
+export function renderDirectorsCutSvg(frame, options = {}) {
   const vp = frame.viewport || { width: 1000, height: 520, viewBox: '0 0 1000 520' };
   const viewBox = vp.viewBox || '0 0 1000 520';
   const glyph = frame.descriptor?.canonical_glyph || '';
@@ -1600,6 +1614,22 @@ export function renderDirectorsCutSvg(frame) {
     <text x="500" y="${py + 206}" font-size="7.5" font-family="'JetBrains Mono', monospace" fill="#64748b" letter-spacing="2" text-anchor="middle">TD613 // LAW: CLAIM_CEILING != VIBE_CEILING</text>
   </g>`;
   } else if (jurisdiction === 'authorization_boundary') {
+    const isDetached = Boolean(
+      options.detachedDelegation ||
+      options.authorityClass === 'detached_delegation' ||
+      frame.authority_class === 'detached_delegation' ||
+      frame.is_detached_delegation ||
+      frame.detachedDelegation
+    );
+    const rightHeaderTitle = isDetached
+      ? 'DETACHED DELEGATION // OPENAI GATE'
+      : 'EXTERNAL CARRIAGE // CONFIGURED RECEIVER';
+    const rightHeaderSub = isDetached
+      ? 'GATE: CLOSED ⟐ ISSUE #691 AUTHORIZATION LEDGER'
+      : 'INV-01..04 EXPLICIT QUALIFYING AUTHORIZATION';
+    const rightHeaderStroke = isDetached ? '#f43f5e' : '#f59e0b';
+    const rightHeaderFill = isDetached ? '#180e14' : '#141210';
+
     centerContentXml = `  <g class="boundary-threshold" opacity="0.9">
     <line x1="500" y1="20" x2="500" y2="${compact ? 900 : 500}" stroke="#38bdf8" stroke-width="2.2" stroke-dasharray="6 3"/>
     <line x1="505" y1="20" x2="505" y2="${compact ? 900 : 500}" stroke="#e2e8f0" stroke-width="0.8" opacity="0.6"/>
@@ -1610,9 +1640,9 @@ export function renderDirectorsCutSvg(frame) {
     <rect x="${compact ? 220 : 80}" y="30" width="${compact ? 240 : 380}" height="44" fill="#0d141e" stroke="#22d3ee" stroke-width="1" rx="3" opacity="0.92"/>
     <text x="${compact ? 230 : 96}" y="50" font-size="9.5" font-family="'JetBrains Mono', monospace" font-weight="700" fill="#22d3ee">LOCAL ENCLAVE // OPERATOR-DIRECT</text>
     <text x="${compact ? 230 : 96}" y="64" font-size="7" font-family="'JetBrains Mono', monospace" fill="#94a3b8">ACTIVE CONTEMPORANEOUS HUMAN PROMPT</text>
-    <rect x="${compact ? 480 : 540}" y="30" width="${compact ? 240 : 380}" height="44" fill="#180e14" stroke="#f43f5e" stroke-width="1" rx="3" opacity="0.92"/>
-    <text x="${compact ? 490 : 556}" y="50" font-size="9.5" font-family="'JetBrains Mono', monospace" font-weight="700" fill="#f43f5e">EXTERNAL CARRIAGE // DETACHED</text>
-    <text x="${compact ? 490 : 556}" y="64" font-size="7" font-family="'JetBrains Mono', monospace" fill="#94a3b8">GATE: CLOSED ⟐ ISSUE #691 LEDGER</text>
+    <rect x="${compact ? 480 : 540}" y="30" width="${compact ? 240 : 380}" height="44" fill="${rightHeaderFill}" stroke="${rightHeaderStroke}" stroke-width="1" rx="3" opacity="0.92"/>
+    <text x="${compact ? 490 : 556}" y="50" font-size="9.5" font-family="'JetBrains Mono', monospace" font-weight="700" fill="${rightHeaderStroke}">${rightHeaderTitle}</text>
+    <text x="${compact ? 490 : 556}" y="64" font-size="7" font-family="'JetBrains Mono', monospace" fill="#94a3b8">${rightHeaderSub}</text>
   </g>`;
   } else if (jurisdiction === 'receipt_inspection') {
     centerContentXml = `  <g class="receipt-header" text-anchor="middle">
@@ -1692,7 +1722,7 @@ export function generateSvgSnapshot(frame, options = {}) {
 
   const direction = options.directorDirection || frame.director_direction || 'diagnostic';
   if (direction === 'directors_cut' || direction === 'couture_tectonic') {
-    return renderDirectorsCutSvg(frame);
+    return renderDirectorsCutSvg(frame, options);
   }
   if (direction === 'lithic_tectonic') {
     return renderLithicTectonicSvg(frame);

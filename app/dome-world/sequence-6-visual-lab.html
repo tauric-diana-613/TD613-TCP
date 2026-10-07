@@ -573,6 +573,14 @@
   let reducedMotion = false;
   let lastTimestamp = performance.now();
 
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('direction')) currentDirection = urlParams.get('direction');
+  if (urlParams.has('jurisdiction')) currentJurisdiction = urlParams.get('jurisdiction');
+  if (urlParams.has('relation')) currentRelation = urlParams.get('relation');
+  if (urlParams.has('reducedMotion')) reducedMotion = urlParams.get('reducedMotion') === 'true';
+  if (urlParams.has('vp')) currentViewportMode = urlParams.get('vp');
+  if (urlParams.has('play')) isPlaying = urlParams.get('play') === 'true';
+
   const CRITIQUES = {
     directors_cut: {
       name: 'Director’s Cut: Couture Tectonic',
@@ -793,6 +801,30 @@
   });
 
   // Initial Boot
+  if (currentDirection) {
+    document.querySelectorAll('.direction-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.direction === currentDirection);
+    });
+  }
+  if (currentJurisdiction) {
+    document.querySelectorAll('.jurisdiction-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.jurisdiction === currentJurisdiction);
+    });
+  }
+  if (currentRelation) {
+    document.querySelectorAll('.relation-pill').forEach(b => {
+      b.classList.toggle('active', b.dataset.relation === currentRelation);
+    });
+  }
+  if (currentViewportMode) {
+    document.querySelectorAll('.vp-tab-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.vp === currentViewportMode);
+    });
+    stageWrapper.className = `stage-wrapper ${currentViewportMode}`;
+  }
+  if (reducedMotion) {
+    reducedMotionToggle.checked = true;
+  }
   updateCritique();
   renderFrame();
   requestAnimationFrame(animLoop);

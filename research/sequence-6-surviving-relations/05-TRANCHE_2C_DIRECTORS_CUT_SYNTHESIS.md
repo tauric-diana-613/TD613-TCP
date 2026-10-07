@@ -19,19 +19,19 @@ motto: Mugler couture meets Scarpa brutalism under Aperture precision. Sealed �
 **Winning Language:** **Couture Tectonic Federalism (Option C: Jurisdiction-Specific Visual Federalism under One House Grammar)**.
 
 #### The Architectural Rationale for Federalism
-In Tranche 2B, three distinct artistic systems were pitted against each other:
+In Tranche 2B, three distinct artistic systems were evaluated:
 1. *Lithic Tectonic* (Basalt monoliths, chiseled slabs, tectonic fault lines)
 2. *Organza Choreography* (Diaphanous silk ribbons, moiré pleat interference, velvet rim aura)
 3. *Aperture Monochrome* (Cold-cathode precision, reticles, telemetric monospace ledger)
 
-A naive product design instinct would pick a single direction and force every product surface to wear it as a uniform skin. However, in TD613, operational surfaces have radically different legal, epistemological, and kinetic responsibilities:
+A naive product design approach would select a single direction and force every product surface to wear it as a uniform skin. However, in TD613, operational surfaces have fundamentally different legal, epistemological, and kinetic responsibilities:
 - A **Living Relational Field** represents fluid continuous transitions between semantic postures (`à`, `出`, `cōl`, `米`, etc.).
-- A **HOLD State** represents an evidentiary deficit, a blocked release path, and a demand for human operator adjudication.
+- A **HOLD State** represents an evidentiary deficit, a blocked forward pass, and an architectural demand for human operator review.
 - An **Authorization Boundary** represents the strict gate between local interactive labor and external carriage or detached delegation.
 - An **Evidence & Receipt Ledger** represents inert, tamper-evident cryptographic and historical records.
 - **Structural Rest 𝄐** represents the lawful resolution of all kinetic obligations into stasis.
 
-Forcing living silk drapery onto a cryptographic receipt ledger trivializes evidence into decorative eye candy. Forcing cold telemetric monospace onto the living carrier field makes organic flow feel like an intimidating terminal crash. Forcing generic yellow alert dialogs onto a HOLD state erases the architectural dignity of human custody.
+Forcing living silk drapery onto a cryptographic receipt ledger trivializes evidence into decorative theater. Forcing cold telemetric monospace onto the living carrier field makes organic flow feel like an intimidating terminal dump. Forcing generic yellow alert dialogs onto a HOLD state erases the architectural dignity of human custody.
 
 Therefore, **Visual Federalism** is selected:
 > Five distinct, purpose-designed material registers operating under **one unified house grammar** (Couture Tectonic) and governed by **one single monotonic animation clock**.
@@ -83,11 +83,14 @@ To ensure that Option C did not degrade into an unprincipled committee compromis
 
 The mathematical and spatial laws of the 39-carrier Flow-Core field are inviolable across all five jurisdictions:
 
-1. **Exact 39 Carriers**:
-   - **Near Plane**: Exactly **6** carriers (indices `0..5`).
-   - **Mid Plane**: Exactly **13** carriers (indices `6..18`).
-   - **Far Plane**: Exactly **20** carriers (indices `19..38`).
-   - Total: Exactly **39** logical carriers in every frame, every view, and every jurisdiction.
+1. **Exact 39 Carriers via Modular Classifier**:
+   The carrier depth allocation is governed by `classifyCarrier(index, count)` in `app/engine/flowcore-semantic-motion-bridge.js`. The depth planes are **not** contiguous integer blocks; they are modular index orbits:
+   - **Near Plane (6)**: Exactly **6** carriers with indices `[0, 11, 13, 22, 26, 33]`, defined by `index % 13 === 0 || index % 11 === 0`.
+   - **Mid Plane (13)**: Exactly **13** carriers with indices `[4, 7, 8, 12, 14, 16, 20, 21, 24, 28, 32, 35, 36]`, defined by `!near && (index % 4 === 0 || index % 7 === 0)`.
+   - **Far Plane (20)**: Exactly **20** carriers consisting of the remaining indices (`!near && !mid`).
+   - Total Population: Exactly **39** logical carriers in every frame, view, and jurisdiction.
+   - Law: `DOCUMENTATION_MUST_FOLLOW_CODE` (`CODE_MUST_NOT_FOLLOW_DOCUMENTATION_ERROR`).
+
 2. **Four-Way Metric Decoupling Verified**:
    ```text
    CARRIER_COUNT (39: 6/13/20)
@@ -103,7 +106,7 @@ The mathematical and spatial laws of the 39-carrier Flow-Core field are inviolab
 
 ### IV · Motion Vector Field Rules (The Eight Flow-Core Relations)
 
-Within the **Living Relational Field** jurisdiction, each of the eight canonical relations produces a distinct, non-overlapping kinematic vector field:
+Within the **Living Relational Field** jurisdiction, each of the eight canonical relations produces a distinct kinematic vector field:
 
 1. **`à` (Gathering / Obligation Accumulation)**:
    - *Near*: Sweeping silk ribbons cinch tightly inward like a tailored corset, drawing peripheral coordinates toward the central waist.
@@ -126,9 +129,10 @@ Within the **Living Relational Field** jurisdiction, each of the eight canonical
    - *Mid*: Precision grid ticks rhythmically oscillate in counter-phase.
    - *Far*: Structural lattice nodes pulse with synchronous phase coherence.
 6. **`hõt` (Bounded Emergence)**:
-   - *Near*: Upward thermodynamic thermal plumes bursting from subterranean clefts, strictly arrested at the perimeter boundary.
+   - *Near*: Plume-like ascending visual motion and rotational bloom bursting from subterranean clefts, strictly arrested at the perimeter boundary.
    - *Mid*: Tectonic plates tilt along acute incline vectors.
    - *Far*: High-frequency scintillation bounded within an inner containment circle.
+   - *Law*: `THERMAL_AESTHETIC != THERMODYNAMIC_MEASUREMENT` (the art evokes heat; the receipt does not claim measured temperature).
 7. **`上` (Created Potential)**:
    - *Near*: Vertical tensile lift; ribbons pull upward against heavy basalt dead-weight anchors.
    - *Mid*: Stepped pylons ascend in ascending staircase formation.
@@ -174,20 +178,33 @@ The HOLD state is the most critical operational posture in TD613. In traditional
 
 ### VI · Authorization / External-Carriage Boundary Language
 
-The boundary separating **Interactive Operator-Direct Labor** from **Detached External Carriage** is rendered as a physical threshold in the UI:
+The boundary separating **Interactive Operator-Direct Labor** from **External Carriage** enforces strict authority classification:
 
-1. **Double-Ruled Titanium Gate**: A vertical double rule (a 2.2px cyan dashed line and a 0.8px titanium solid line) cuts through the center of the field, establishing an unmistakable boundary plane.
-2. **Left Enclave (Operator-Direct Labor)**:
-   - Tinted in calm cyan and slate (`#22d3ee`, `#0d141e`).
-   - Badge: `LOCAL ENCLAVE // OPERATOR-DIRECT`.
-   - Subtitle: `ACTIVE CONTEMPORANEOUS HUMAN PROMPT`.
-   - Visual Cues: Fluid silk ligaments move freely within this zone; carrier markers remain interactive.
-3. **Right Enclave (External Carriage / Detached Delegation)**:
-   - Tinted in crimson and obsidian (`#f43f5e`, `#180e14`).
-   - Badge: `EXTERNAL CARRIAGE // DETACHED`.
-   - Subtitle: `GATE: CLOSED ⟐ ISSUE #691 LEDGER REQUIRED`.
-   - Visual Cues: Dense crosshatching, locked gates, and zero carrier ingress unless an authorized transfer token is verified.
-4. **The Central Sentinel Node (`⟐`)**: A circular titanium seal anchored at the threshold coordinate `(500, 260)`. It glows with steady sulfur gold when the gate is locked, visually asserting custody boundaries before any bytes cross the wire.
+#### Authority Separation Law
+```text
+EXTERNAL_PROVIDER_CARRIAGE != DETACHED_OPENAI_DELEGATION
+INTERACTIVE_OPERATOR_DIRECT != DETACHED_DELEGATION
+AMARI_CONNECTOR_AUTHORITY != DETACHED_DELEGATION
+```
+
+1. **General Outbound Carriage (Default)**:
+   - Governed by Sequence 6 explicit qualifying authorization laws: **INV-01**, **INV-02**, **INV-03**, **INV-04** and the ordinary Send / qualifying-authorization membrane.
+   - Right Header Default:
+     `EXTERNAL CARRIAGE // CONFIGURED RECEIVER`
+     `INV-01..04 EXPLICIT QUALIFYING AUTHORIZATION`
+   - Accent Stroke: Amber gold (`#f59e0b`).
+   - Does **not** claim Issue #691 gate.
+
+2. **Detached OpenAI Delegation (Conditional)**:
+   - A specialized delegated-action subclass governed strictly by **Issue #691** and `.td613/openai-delegation-gate.json`.
+   - Right Header (Active only when `authorityClass === 'detached_delegation'`):
+     `DETACHED DELEGATION // OPENAI GATE`
+     `GATE: CLOSED ⟐ ISSUE #691 AUTHORIZATION LEDGER`
+   - Accent Stroke: Rose crimson (`#f43f5e`).
+
+3. **Double-Ruled Titanium Threshold**:
+   - Left Enclave: `LOCAL ENCLAVE // OPERATOR-DIRECT` (`ACTIVE CONTEMPORANEOUS HUMAN PROMPT`) in cyan (`#22d3ee`).
+   - Central Sentinel Node (`⟐`): Located at `(500, 260)`. Asserts physical custody boundary before any payload leaves the enclave.
 
 ---
 
@@ -221,7 +238,7 @@ Structural Rest (`𝄐`) is the foundational covenant of TD613:
 
 ### IX · Mobile 390px Viewport Compromises
 
-On compact mobile devices (tested against the standard 390 × 844 px portrait viewport), the visual system adapts with dignity:
+On compact mobile devices (tested against the standard 390 × 844 px portrait viewport container):
 
 1. **Preserved Without Exception**:
    - All **39 carriers** remain rendered and active.
@@ -271,55 +288,58 @@ CLAIM_CEILING != VIBE_CEILING
 
 ### XII · Relation Identifiability Audit
 
-To verify that the eight surviving relations remain distinct and identifiable under Couture Tectonic Federalism, the following geometric matrix was audited:
+To verify that the eight surviving relations and non-relational jurisdictions produce distinct programmatic signatures, the following geometric matrix was audited:
 
-| Relation | Canonical Glyph | Primary Vector Geometry | Visual Accent Palette | Kinetic Signature |
+| State / Relation | Canonical Glyph | Primary Vector Geometry | Visual Accent Palette | Kinetic Signature |
 | :--- | :---: | :--- | :--- | :--- |
 | **gathering** | `à` | Centripetal spiral & fault compression | Gold (`#e2b714`) / Aubergine | Corset waist cinch |
 | **release** | `出` | Centrifugal horizontal expansion | Champagne (`#fdf6e2`) / Crimson | Aerodynamic train flare |
 | **protected_continuity** | `cōl` | Nested concentric orbital arcs | Ice Cyan (`#38bdf8`) / Obsidian | Slow cocoon rotation |
 | **structural_rest** | `𝄐` | Downward gravity draping & plumb line | Amber Gold (`#f59e0b`) / Slate | Dead-load stasis |
 | **recurrence** | `米` | Hexagonal resonant nodal pulses | Imperial Violet (`#c4b5fd`) | Standing wave lattice |
-| **bounded_emergence** | `hõt` | Upward thermal plumes with hard boundary | Thermal Ember (`#f43f5e`) | Arrested fountain |
+| **bounded_emergence** | `hõt` | Plume-like ascending visual motion bounded at perimeter | Thermal Ember (`#f43f5e`) | Arrested fountain |
 | **created_potential** | `上` | Vertical tensile vectors against dead-load | Titanium White (`#f8fafc`) | Ascending tension |
 | **released_tendency** | `下` | Downward gravity channels toward plinth | Weathered Basalt (`#64748b`) | Cascading return |
+| **hold** *(jurisdiction)* | `[HOLD]` | Sheared chasm with docked berths | Obsidian / Titanium / Amber | Static docking lock |
+| **authorization_boundary** | `⟐` | Double-ruled vertical gate | Cyan (`#22d3ee`) / Amber (`#f59e0b`) | Threshold barrier |
+| **receipt_inspection** | `[RECEIPT]`| Calm monospace tabular grid | Monochrome Titanium (`#e2e8f0`) | Zero kinetic motion |
 
-**Audit Result**: 8/8 relations exhibit zero geometric confusion; no two relations can be mistaken for each other.
+#### Evidence Class Downgrade
+```text
+8/8_PROGRAMMATIC_RENDER_SIGNATURES_DISTINCT = VERIFIED
+HUMAN_PERCEPTUAL_DISCRIMINATION = UNMEASURED
+SIMULATED_DISCRIMINATION != HUMAN_COMPREHENSION
+```
+The test suite establishes programmatic distinctness across geometry and descriptor bindings. It does **not** claim an empirical human-perceptual discrimination study.
 
 ---
 
-### XIII · Witness Inventory
+### XIII · Witness Inventory & Provenance
 
-The automated generator `scripts/generate-sequence-6-visual-witnesses.mjs` was executed, emitting **120 SVG visual witnesses** into `research/sequence-6-surviving-relations/witnesses/`:
+#### Cumulative Inventory vs Commit Diff
+```text
+CUMULATIVE_INVENTORY != COMMIT_DIFF
+Cumulative Portfolio: 122 SVG Artifacts + 7 Browser Captures
+Tranche 2C Added: 42 Director's Cut SVGs + 7 Browser PNGs + Manifests
+```
 
-- **Dedicated Director’s Cut Jurisdiction Witnesses (20 files)**:
-  - `witness-directors_cut-jurisdiction-living_field-desktop.svg`
-  - `witness-directors_cut-jurisdiction-living_field-mobile_390px.svg`
-  - `witness-directors_cut-jurisdiction-living_field-reduced-motion-desktop.svg`
-  - `witness-directors_cut-jurisdiction-living_field-reduced-motion-mobile_390px.svg`
-  - `witness-directors_cut-jurisdiction-hold-desktop.svg`
-  - `witness-directors_cut-jurisdiction-hold-mobile_390px.svg`
-  - `witness-directors_cut-jurisdiction-hold-reduced-motion-desktop.svg`
-  - `witness-directors_cut-jurisdiction-hold-reduced-motion-mobile_390px.svg`
-  - `witness-directors_cut-jurisdiction-authorization_boundary-desktop.svg`
-  - `witness-directors_cut-jurisdiction-authorization_boundary-mobile_390px.svg`
-  - `witness-directors_cut-jurisdiction-authorization_boundary-reduced-motion-desktop.svg`
-  - `witness-directors_cut-jurisdiction-authorization_boundary-reduced-motion-mobile_390px.svg`
-  - `witness-directors_cut-jurisdiction-receipt_inspection-desktop.svg`
-  - `witness-directors_cut-jurisdiction-receipt_inspection-mobile_390px.svg`
-  - `witness-directors_cut-jurisdiction-receipt_inspection-reduced-motion-desktop.svg`
-  - `witness-directors_cut-jurisdiction-receipt_inspection-reduced-motion-mobile_390px.svg`
-  - `witness-directors_cut-jurisdiction-structural_rest-desktop.svg`
-  - `witness-directors_cut-jurisdiction-structural_rest-mobile_390px.svg`
-  - `witness-directors_cut-jurisdiction-structural_rest-reduced-motion-desktop.svg`
-  - `witness-directors_cut-jurisdiction-structural_rest-reduced-motion-mobile_390px.svg`
-- **Director’s Cut Relation Matrix (20 files)**:
-  - Dynamic desktop + mobile_390px across all 8 relations (16 files).
-  - Reduced motion desktop + mobile_390px for `gathering` and `structural_rest` (4 files).
-- **Tournament Baseline Witnesses (80 files)**:
-  - 20 files each for `diagnostic`, `lithic_tectonic`, `organza_choreography`, and `aperture_monochrome`.
-- **Manifest**:
-  - `witness-manifest.json` indexing all 120 artifacts with carrier counts and depth plane allocations.
+#### Provenance Classification
+- **`GENERATED_SVG_RENDER_WITNESS`**: Deterministic SVG artifacts emitted by `scripts/generate-sequence-6-visual-witnesses.mjs` for desktop viewport (`1000x520`).
+- **`SIMULATED_390PX_RENDER`**: Deterministic SVG artifacts emitted for mobile viewport container (`390x844`).
+- **`BROWSER_VIEWPORT_WITNESS`**: Actual browser-run observation captures rendered via headless Chrome into PNG files in `witnesses/browser/` (desktop `1280x800`).
+- **`SIMULATED_390PX_BROWSER_CAPTURE`**: Actual browser-run capture with simulated mobile viewport (`1280x980` container).
+- **`PHYSICAL_DEVICE_WITNESS`**: **UNPERFORMED** (zero physical mobile devices claimed).
+
+#### Durable Browser Witnesses Captured
+Preserved under `research/sequence-6-surviving-relations/witnesses/browser/`:
+1. `browser-directors_cut-living_field-desktop.png` (`BROWSER_VIEWPORT_WITNESS`, 1280x800)
+2. `browser-directors_cut-hold-desktop.png` (`BROWSER_VIEWPORT_WITNESS`, 1280x800)
+3. `browser-directors_cut-authorization_boundary-desktop.png` (`BROWSER_VIEWPORT_WITNESS`, 1280x800)
+4. `browser-directors_cut-receipt_inspection-desktop.png` (`BROWSER_VIEWPORT_WITNESS`, 1280x800)
+5. `browser-directors_cut-structural_rest-desktop.png` (`BROWSER_VIEWPORT_WITNESS`, 1280x800)
+6. `browser-directors_cut-living_field-simulated_390px.png` (`SIMULATED_390PX_BROWSER_CAPTURE`, 1280x980)
+7. `browser-directors_cut-living_field-reduced_motion.png` (`BROWSER_VIEWPORT_WITNESS`, 1280x800)
+Cataloged in `browser-witness-manifest.json`.
 
 ---
 
@@ -327,9 +347,10 @@ The automated generator `scripts/generate-sequence-6-visual-witnesses.mjs` was e
 
 The interactive workbench `app/dome-world/sequence-6-visual-lab.html` has been upgraded:
 1. **Director's Cut Default**: Boots directly into `★ Director’s Cut: Couture Tectonic`.
-2. **Jurisdiction Selector**: Interactive sidebar controls allow instant toggling between all five federal jurisdictions (`living_field`, `hold`, `authorization_boundary`, `receipt_inspection`, `structural_rest`).
-3. **Live Single Clock HUD**: Displays carrier census (39: 6/13/20), CSS opacity vs depth gain calibration, active relation glyph, and settling equilibrium state.
-4. **Tournament Comparison Modes**: Preserves direct switches to `Lithic Tectonic`, `Organza Choreography`, `Aperture Monochrome`, and `Diagnostic Baseline`.
+2. **URL Search Parameter Hydration**: Parses `?direction=`, `?jurisdiction=`, `?relation=`, `?reducedMotion=`, and `?vp=` to allow direct linking and automated test witnessing.
+3. **Jurisdiction Selector**: Interactive sidebar controls allow instant toggling between all five federal jurisdictions (`living_field`, `hold`, `authorization_boundary`, `receipt_inspection`, `structural_rest`).
+4. **Live Single Clock HUD**: Displays carrier census (39: 6/13/20), CSS opacity vs depth gain calibration, active relation glyph, and settling equilibrium state.
+5. **Tournament Comparison Modes**: Preserves direct switches to `Lithic Tectonic`, `Organza Choreography`, `Aperture Monochrome`, and `Diagnostic Baseline`.
 
 ---
 
@@ -337,40 +358,38 @@ The interactive workbench `app/dome-world/sequence-6-visual-lab.html` has been u
 
 1. **Branch Integrity**: All modifications are bounded strictly to `staging/sequence-6-integration-20261006`.
 2. **Production Immunity**: Zero commits to `main`; zero touches to Vercel release pipelines; zero interactions with Issue #405.
-3. **Test Suite 100% Green**:
-   - `tests/flowcore-semantic-motion-bridge.test.mjs`: 13/13 PASS.
-   - `tests/governed-event-chain.test.mjs`: 13/13 PASS.
-   - Total Node test runner: **26 PASS / 0 FAIL**.
+3. **Test Suite Status**:
+   - `TEST_SOURCE_PRESENT = VERIFIED`
+   - `26_TEST_LOCAL_EXECUTION = OPERATOR_REPORTED`
+   - Tests: `flowcore-semantic-motion-bridge.test.mjs` (13/13 PASS) and `governed-event-chain.test.mjs` (13/13 PASS). Total: **26 PASS / 0 FAIL**.
+4. **Tranche 3**: Remains completely untouched pending operator adjudication.
 
 ---
 
 ### XVI · Exact Artifact Commits
 
+*(To be populated with the remote commit SHA upon push of this closure correction)*
+
 - **Branch**: `staging/sequence-6-integration-20261006`
-- **Parent Commit**: `16c8c0a70f8e7b0abfeb115c1d19157adb9e49d3`
+- **Parent Commit**: `270e47ec155fe0d9bc4533c5200c51f7dfecb9f5`
 - **Changed-File Set**:
-  - `app/engine/flowcore-semantic-motion-bridge.js` (Director’s Cut engine implementation, jurisdiction federalism, and SVG renderer)
-  - `tests/flowcore-semantic-motion-bridge.test.mjs` (Tranche 2C Test 13: 5 jurisdictions, 39-carrier invariant, docked HOLD, calm receipts, structural rest, 390px mobile, reduced motion)
-  - `app/dome-world/sequence-6-visual-lab.html` (Interactive Visual Lab upgrade with Director’s Cut default, jurisdiction federalism switcher, and live single-clock HUD)
-  - `scripts/generate-sequence-6-visual-witnesses.mjs` (Witness generator expanded with all 5 dedicated jurisdiction states)
-  - `research/sequence-6-surviving-relations/witnesses/*` (120 generated visual witness SVGs + `witness-manifest.json`)
-  - `research/sequence-6-surviving-relations/05-TRANCHE_2C_DIRECTORS_CUT_SYNTHESIS.md` (Visual Director Synthesis & Product Language Selection Report)
+  - `app/engine/flowcore-semantic-motion-bridge.js` (Separate general outbound carriage from conditional #691 detached delegation)
+  - `tests/flowcore-semantic-motion-bridge.test.mjs` (Updated Test 13 with generic carriage vs conditional #691 assertions)
+  - `app/dome-world/sequence-6-visual-lab.html` (Added URL parameter hydration and initial boot UI sync)
+  - `scripts/generate-sequence-6-visual-witnesses.mjs` (Added witness_type and detached delegation boundary variants)
+  - `scripts/capture-sequence-6-browser-witnesses.mjs` (Durable headless Chrome browser witness capture script)
+  - `research/sequence-6-surviving-relations/witnesses/browser/*` (7 durable browser PNG screenshots + manifest)
+  - `research/sequence-6-surviving-relations/witnesses/witness-manifest.json` (Updated with accurate witness_type)
+  - `research/sequence-6-surviving-relations/05-TRANCHE_2C_DIRECTORS_CUT_SYNTHESIS.md` (Complete Tranche 2C Closure Correction Report)
 
 ---
 
 ### XVII · Tranche 3 Readiness Assessment
 
-With the completion and sealing of Tranche 2C:
+With the completion and sealing of Tranche 2C Closure Correction:
 1. **Mechanical Substrate Ready**: The single animation clock and 39-carrier spatial bridge are rock-solid and verified under RFC 8785 and strict deterministic mathematics.
-2. **Visual Language Established**: Couture Tectonic Federalism provides unambiguous, high-dignity material expressions for every product phase without aesthetic compromise.
-3. **Journey Integration (Tranche 3) Prerequisites**:
-   - The three-phase journey (`Holonomy Loom Origin` $\to$ `Marrowline Continuation` $\to$ `Portable AIA Return`) can now bind directly to the five product jurisdictions.
-   - Specifically:
-     - Origin & staging bind to `living_field` and `authorization_boundary`.
-     - Continuation and foreign re-entry binds to `hold` (when deficits occur) and `receipt_inspection` (when candidates arrive).
-     - Closure binds to `structural_rest 𝄐`.
-4. **Risks to Manage in Tranche 3**:
-   - Ensure that the Marrowline continuation carrier does not attempt to create a second animation loop in client code.
-   - Ensure that Portable AIA import validation strictly respects the RFC 8785 JCS canonicalization and chain verification implemented in Tranche 1.
+2. **Visual Constitution Admitted**: Couture Tectonic Federalism provides unambiguous, high-dignity material expressions for every product phase without aesthetic compromise.
+3. **Authority Membrane Corrected**: Outbound carriage and detached delegation are strictly separated, preserving INV-01..04 and Issue #691 boundary laws.
+4. **Durable Browser Witnesses Preserved**: 7 durable browser-run observation captures confirm real-world rendering across desktop, simulated mobile, and reduced motion.
 
-**Tranche 2C is COMPLETE and SEALED. Ready for Operator Adjudication.** ⟐
+**Tranche 2C Closure Correction is COMPLETE. Ready for Operator Adjudication.** ⟐

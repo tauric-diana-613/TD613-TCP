@@ -1,0 +1,65 @@
+[
+  {
+    "name": "browser-directors_cut-living_field-desktop.png",
+    "file": "browser/browser-directors_cut-living_field-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6139/app/dome-world/sequence-6-visual-lab.html?direction=directors_cut&jurisdiction=living_field&relation=gathering&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 206184,
+    "observed_at": "2026-10-07T05:23:11.099Z"
+  },
+  {
+    "name": "browser-directors_cut-hold-desktop.png",
+    "file": "browser/browser-directors_cut-hold-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6139/app/dome-world/sequence-6-visual-lab.html?direction=directors_cut&jurisdiction=hold&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 206687,
+    "observed_at": "2026-10-07T05:23:14.186Z"
+  },
+  {
+    "name": "browser-directors_cut-authorization_boundary-desktop.png",
+    "file": "browser/browser-directors_cut-authorization_boundary-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6139/app/dome-world/sequence-6-visual-lab.html?direction=directors_cut&jurisdiction=authorization_boundary&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 208001,
+    "observed_at": "2026-10-07T05:23:18.827Z"
+  },
+  {
+    "name": "browser-directors_cut-receipt_inspection-desktop.png",
+    "file": "browser/browser-directors_cut-receipt_inspection-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6139/app/dome-world/sequence-6-visual-lab.html?direction=directors_cut&jurisdiction=receipt_inspection&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 210348,
+    "observed_at": "2026-10-07T05:23:23.663Z"
+  },
+  {
+    "name": "browser-directors_cut-structural_rest-desktop.png",
+    "file": "browser/browser-directors_cut-structural_rest-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6139/app/dome-world/sequence-6-visual-lab.html?direction=directors_cut&jurisdiction=structural_rest&relation=structural_rest&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 205744,
+    "observed_at": "2026-10-07T05:23:29.490Z"
+  },
+  {
+    "name": "browser-directors_cut-living_field-simulated_390px.png",
+    "file": "browser/browser-directors_cut-living_field-simulated_390px.png",
+    "provenance": "SIMULATED_390PX_BROWSER_CAPTURE",
+    "url": "http://localhost:6139/app/dome-world/sequence-6-visual-lab.html?direction=directors_cut&jurisdiction=living_field&relation=gathering&vp=mobile",
+    "dimensions": "1280x980",
+    "size_bytes": 256258,
+    "observed_at": "2026-10-07T05:23:33.235Z"
+  },
+  {
+    "name": "browser-directors_cut-living_field-reduced_motion.png",
+    "file": "browser/browser-directors_cut-living_field-reduced_motion.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6139/app/dome-world/sequence-6-visual-lab.html?direction=directors_cut&jurisdiction=living_field&relation=gathering&reducedMotion=true&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 205701,
+    "observed_at": "2026-10-07T05:23:38.225Z"
+  }
+]

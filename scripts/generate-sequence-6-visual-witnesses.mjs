@@ -58,6 +58,7 @@ for (const dir of DIRECTOR_DIRECTIONS) {
         relation: relationKey,
         glyph: frame.descriptor.canonical_glyph,
         viewport: vp.name,
+        witness_type: vp.name === 'desktop' ? 'GENERATED_SVG_RENDER_WITNESS' : 'SIMULATED_390PX_RENDER',
         dimensions: `${vp.width}x${vp.height}`,
         reduced_motion: false,
         file: filename,
@@ -92,6 +93,7 @@ for (const dir of DIRECTOR_DIRECTIONS) {
         relation: relationKey,
         glyph: frame.descriptor.canonical_glyph,
         viewport: vp.name,
+        witness_type: vp.name === 'desktop' ? 'GENERATED_SVG_RENDER_WITNESS' : 'SIMULATED_390PX_RENDER',
         dimensions: `${vp.width}x${vp.height}`,
         reduced_motion: true,
         file: filename,
@@ -127,9 +129,11 @@ for (const jurisdiction of PRODUCT_JURISDICTIONS) {
     manifest.push({
       direction: 'directors_cut',
       jurisdiction: jurisdiction,
+      authority_class: 'outbound_carriage',
       relation: snapshot.relationState.relation_key,
       glyph: frame.descriptor.canonical_glyph,
       viewport: vp.name,
+      witness_type: vp.name === 'desktop' ? 'GENERATED_SVG_RENDER_WITNESS' : 'SIMULATED_390PX_RENDER',
       dimensions: `${vp.width}x${vp.height}`,
       reduced_motion: false,
       file: filename,
@@ -160,9 +164,11 @@ for (const jurisdiction of PRODUCT_JURISDICTIONS) {
     manifest.push({
       direction: 'directors_cut',
       jurisdiction: jurisdiction,
+      authority_class: 'outbound_carriage',
       relation: snapshot.relationState.relation_key,
       glyph: frame.descriptor.canonical_glyph,
       viewport: vp.name,
+      witness_type: vp.name === 'desktop' ? 'GENERATED_SVG_RENDER_WITNESS' : 'SIMULATED_390PX_RENDER',
       dimensions: `${vp.width}x${vp.height}`,
       reduced_motion: true,
       file: filename,
@@ -175,6 +181,43 @@ for (const jurisdiction of PRODUCT_JURISDICTIONS) {
     });
     console.log(`  [OK] ${filename}`);
   }
+}
+
+// Dedicated Issue #691 Detached Delegation Boundary Witnesses
+console.log(`\nGenerating dedicated Issue #691 Detached Delegation Boundary Witnesses...`);
+for (const vp of VIEWPORTS) {
+  const snapshotDetached = {
+    activeViewId: 'cockpit',
+    relationState: { relation_key: 'gathering', progress: 0.6 },
+    directorDirection: 'directors_cut',
+    jurisdiction: 'authorization_boundary',
+    authorityClass: 'detached_delegation',
+    reducedMotion: false
+  };
+  const frameDetached = renderDomeArt('cockpit', snapshotDetached, vp, 1800);
+  const svgDetached = generateSvgSnapshot(frameDetached);
+  const filenameDetached = `witness-directors_cut-jurisdiction-authorization_boundary-detached_delegation-${vp.name}.svg`;
+  fs.writeFileSync(path.join(outputDir, filenameDetached), svgDetached, 'utf8');
+
+  manifest.push({
+    direction: 'directors_cut',
+    jurisdiction: 'authorization_boundary',
+    authority_class: 'detached_delegation',
+    relation: 'gathering',
+    glyph: frameDetached.descriptor.canonical_glyph,
+    viewport: vp.name,
+    witness_type: vp.name === 'desktop' ? 'GENERATED_SVG_RENDER_WITNESS' : 'SIMULATED_390PX_RENDER',
+    dimensions: `${vp.width}x${vp.height}`,
+    reduced_motion: false,
+    file: filenameDetached,
+    carrier_count: frameDetached.carriers.length,
+    planes: {
+      near: frameDetached.carriers.filter(c => c.carrier.near).length,
+      mid: frameDetached.carriers.filter(c => c.carrier.mid).length,
+      far: frameDetached.carriers.filter(c => c.carrier.far).length
+    }
+  });
+  console.log(`  [OK] ${filenameDetached}`);
 }
 
 // Write manifest JSON

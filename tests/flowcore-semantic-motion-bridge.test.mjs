@@ -436,15 +436,29 @@ test('13. Tranche 2C Director’s Cut & Visual Federalism: 39-carrier preservati
   assert.ok(svgHold.includes('OPERATOR AGENCY: REST / RESUME / AUDIT'));
   assert.ok(!svgHold.includes('radar-grid'), 'HOLD must not contain radar sweeps');
 
-  // 2. Authorization Boundary: Titanium gate, operator-direct vs detached delegation
+  // 2. Authorization Boundary: Titanium gate, generic outbound carriage vs conditional #691 detached delegation
   const fBound = renderDomeArt('cockpit', { directorDirection: 'directors_cut', jurisdiction: 'authorization_boundary' }, { width: 1000, height: 520 }, 1000);
+  assert.equal(fBound.authority_class, 'outbound_carriage');
+  assert.equal(fBound.is_detached_delegation, false);
+  assert.equal(fBound.authority.detached_delegation_gate, 'NOT_APPLICABLE');
   assert.ok(fBound.carriers.filter(c => c.carrier.near).every(c => c.manifestation.type === 'CUSTODY_GATE_PIN'));
   assert.ok(fBound.carriers.filter(c => c.carrier.mid).every(c => c.manifestation.type === 'TRANSIT_VECTOR_MARKER'));
   assert.ok(fBound.carriers.filter(c => c.carrier.far).every(c => c.manifestation.type === 'BOUNDARY_VERNIER_TICK'));
   const svgBound = generateSvgSnapshot(fBound);
   assert.ok(svgBound.includes('LOCAL ENCLAVE // OPERATOR-DIRECT'));
-  assert.ok(svgBound.includes('EXTERNAL CARRIAGE // DETACHED'));
-  assert.ok(svgBound.includes('GATE: CLOSED ⟐ ISSUE #691'));
+  assert.ok(svgBound.includes('EXTERNAL CARRIAGE // CONFIGURED RECEIVER'));
+  assert.ok(svgBound.includes('INV-01..04 EXPLICIT QUALIFYING AUTHORIZATION'));
+  assert.ok(!svgBound.includes('ISSUE #691'), 'Default outbound carriage must not claim Issue #691 gate');
+
+  // 2b. Authorization Boundary under explicit detached delegation
+  const fBoundDetached = renderDomeArt('cockpit', { directorDirection: 'directors_cut', jurisdiction: 'authorization_boundary', authorityClass: 'detached_delegation' }, { width: 1000, height: 520 }, 1000);
+  assert.equal(fBoundDetached.authority_class, 'detached_delegation');
+  assert.equal(fBoundDetached.is_detached_delegation, true);
+  assert.equal(fBoundDetached.authority.detached_delegation_gate, 'CLOSED_ISSUE_691');
+  const svgBoundDetached = generateSvgSnapshot(fBoundDetached);
+  assert.ok(svgBoundDetached.includes('LOCAL ENCLAVE // OPERATOR-DIRECT'));
+  assert.ok(svgBoundDetached.includes('DETACHED DELEGATION // OPENAI GATE'));
+  assert.ok(svgBoundDetached.includes('GATE: CLOSED ⟐ ISSUE #691 AUTHORIZATION LEDGER'));
 
   // 3. Receipt / Evidence Inspection: Calm monospace, [OBSERVED]/[DERIVED]/[HELD], zero radar
   const fReceipt = renderDomeArt('cockpit', { directorDirection: 'directors_cut', jurisdiction: 'receipt_inspection' }, { width: 1000, height: 520 }, 1000);

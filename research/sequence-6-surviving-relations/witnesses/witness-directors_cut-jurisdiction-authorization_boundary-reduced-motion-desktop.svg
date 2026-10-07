@@ -225,8 +225,8 @@
     <rect x="80" y="30" width="380" height="44" fill="#0d141e" stroke="#22d3ee" stroke-width="1" rx="3" opacity="0.92"/>
     <text x="96" y="50" font-size="9.5" font-family="'JetBrains Mono', monospace" font-weight="700" fill="#22d3ee">LOCAL ENCLAVE // OPERATOR-DIRECT</text>
     <text x="96" y="64" font-size="7" font-family="'JetBrains Mono', monospace" fill="#94a3b8">ACTIVE CONTEMPORANEOUS HUMAN PROMPT</text>
-    <rect x="540" y="30" width="380" height="44" fill="#180e14" stroke="#f43f5e" stroke-width="1" rx="3" opacity="0.92"/>
-    <text x="556" y="50" font-size="9.5" font-family="'JetBrains Mono', monospace" font-weight="700" fill="#f43f5e">EXTERNAL CARRIAGE // DETACHED</text>
-    <text x="556" y="64" font-size="7" font-family="'JetBrains Mono', monospace" fill="#94a3b8">GATE: CLOSED ⟐ ISSUE #691 LEDGER</text>
+    <rect x="540" y="30" width="380" height="44" fill="#141210" stroke="#f59e0b" stroke-width="1" rx="3" opacity="0.92"/>
+    <text x="556" y="50" font-size="9.5" font-family="'JetBrains Mono', monospace" font-weight="700" fill="#f59e0b">EXTERNAL CARRIAGE // CONFIGURED RECEIVER</text>
+    <text x="556" y="64" font-size="7" font-family="'JetBrains Mono', monospace" fill="#94a3b8">INV-01..04 EXPLICIT QUALIFYING AUTHORIZATION</text>
   </g>
 </svg>
