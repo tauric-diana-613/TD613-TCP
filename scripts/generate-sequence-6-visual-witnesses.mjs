@@ -4,7 +4,8 @@ import { fileURLToPath } from 'url';
 import {
   renderDomeArt,
   generateSvgSnapshot,
-  DIRECTOR_DIRECTIONS
+  DIRECTOR_DIRECTIONS,
+  PRODUCT_JURISDICTIONS
 } from '../app/engine/flowcore-semantic-motion-bridge.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -104,6 +105,75 @@ for (const dir of DIRECTOR_DIRECTIONS) {
 
       console.log(`  [OK] ${filename}`);
     }
+  }
+}
+
+// Dedicated Director's Cut Jurisdiction Witnesses
+console.log(`\nGenerating dedicated Director's Cut Jurisdiction Witnesses...`);
+for (const jurisdiction of PRODUCT_JURISDICTIONS) {
+  for (const vp of VIEWPORTS) {
+    const snapshot = {
+      activeViewId: 'cockpit',
+      relationState: { relation_key: jurisdiction === 'structural_rest' ? 'structural_rest' : 'gathering', progress: 0.6 },
+      directorDirection: 'directors_cut',
+      jurisdiction: jurisdiction,
+      reducedMotion: false
+    };
+    const frame = renderDomeArt('cockpit', snapshot, vp, 1800);
+    const svg = generateSvgSnapshot(frame);
+    const filename = `witness-directors_cut-jurisdiction-${jurisdiction}-${vp.name}.svg`;
+    fs.writeFileSync(path.join(outputDir, filename), svg, 'utf8');
+
+    manifest.push({
+      direction: 'directors_cut',
+      jurisdiction: jurisdiction,
+      relation: snapshot.relationState.relation_key,
+      glyph: frame.descriptor.canonical_glyph,
+      viewport: vp.name,
+      dimensions: `${vp.width}x${vp.height}`,
+      reduced_motion: false,
+      file: filename,
+      carrier_count: frame.carriers.length,
+      planes: {
+        near: frame.carriers.filter(c => c.carrier.near).length,
+        mid: frame.carriers.filter(c => c.carrier.mid).length,
+        far: frame.carriers.filter(c => c.carrier.far).length
+      }
+    });
+    console.log(`  [OK] ${filename}`);
+  }
+
+  // Reduced motion for jurisdiction
+  for (const vp of VIEWPORTS) {
+    const snapshot = {
+      activeViewId: 'cockpit',
+      relationState: { relation_key: jurisdiction === 'structural_rest' ? 'structural_rest' : 'gathering', progress: 1.0 },
+      directorDirection: 'directors_cut',
+      jurisdiction: jurisdiction,
+      reducedMotion: true
+    };
+    const frame = renderDomeArt('cockpit', snapshot, vp, 0);
+    const svg = generateSvgSnapshot(frame);
+    const filename = `witness-directors_cut-jurisdiction-${jurisdiction}-reduced-motion-${vp.name}.svg`;
+    fs.writeFileSync(path.join(outputDir, filename), svg, 'utf8');
+
+    manifest.push({
+      direction: 'directors_cut',
+      jurisdiction: jurisdiction,
+      relation: snapshot.relationState.relation_key,
+      glyph: frame.descriptor.canonical_glyph,
+      viewport: vp.name,
+      dimensions: `${vp.width}x${vp.height}`,
+      reduced_motion: true,
+      file: filename,
+      carrier_count: frame.carriers.length,
+      planes: {
+        near: frame.carriers.filter(c => c.carrier.near).length,
+        mid: frame.carriers.filter(c => c.carrier.mid).length,
+        far: frame.carriers.filter(c => c.carrier.far).length
+      }
+    });
+    console.log(`  [OK] ${filename}`);
   }
 }
 

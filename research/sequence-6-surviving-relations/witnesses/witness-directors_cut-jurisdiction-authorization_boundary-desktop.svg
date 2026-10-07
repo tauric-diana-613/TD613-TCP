@@ -1,0 +1,232 @@
+<!--
+  TD613 Flow-Core Semantic Motion Bridge Visual Witness [Direction: Director's Cut / Couture Tectonic]
+  Jurisdiction: AUTHORIZATION_BOUNDARY
+  Relation: gathering (à)
+  Active View ID: cockpit
+  Carrier Count: 39 (Distribution: 6 near / 13 mid / 20 far)
+  Reduced Motion: DISABLED
+  Viewport: 1000x520 (viewBox: 0 0 1000 520)
+  Visual Theory: Haute Couture Tectonic Federalism (Mugler Couture x Scarpa Architecture x Aperture Precision)
+  Claim Ceiling: VISUAL_RELATION != EXTERNAL_REALITY | AMBIENT_MOTION != EVENT_HISTORY | AESTHETIC_BINDING != EMPIRICAL_VALIDATION
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 520" width="1000" height="520" style="background:#06070a;">
+  <defs>
+    <pattern id="coutureTectonicGrid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#141824" stroke-width="0.6" stroke-dasharray="2 4"/>
+    </pattern>
+    <linearGradient id="coutureSilk" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c4b5fd"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#f43f5e"/>
+    </linearGradient>
+    <radialGradient id="coutureAura" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#1f142b" stop-opacity="0.6"/>
+      <stop offset="60%" stop-color="#0a0c12" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#06070a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="amberRestAura" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#2d1a08" stop-opacity="0.7"/>
+      <stop offset="70%" stop-color="#0d0e12" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#06070a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#coutureTectonicGrid)" opacity="0.7"/>
+  <rect width="100%" height="100%" fill="url(#coutureAura)"/>
+  <g class="couture-field-flight" aria-hidden="true" data-active-relation="gathering" data-jurisdiction="authorization_boundary" data-visual-direction="directors_cut">
+    <g class="boundary-gate" transform="translate(420 160) rotate(0) scale(1.2) translate(-420 -160)">
+      <circle cx="420" cy="160" r="24" fill="#09111c" stroke="#38bdf8" stroke-width="1.6" opacity="0.95"/>
+      <circle cx="420" cy="160" r="17" fill="none" stroke="#e2e8f0" stroke-width="0.6" stroke-dasharray="2 3" opacity="0.6649999999999999"/>
+      <text x="420" y="166" font-size="19" font-family="'Cinzel', serif" font-weight="900" fill="#ffffff" opacity="0.95" text-anchor="middle" dominant-baseline="middle">à</text>
+      <text x="438" y="145" font-size="6.5" font-family="'JetBrains Mono', monospace" fill="#38bdf8">GATE-0</text>
+    </g>
+    <g class="boundary-vernier" transform="translate(133 80) rotate(0) scale(0.65) translate(-133 -80)">
+      <line x1="133" y1="76" x2="133" y2="84" stroke="#64748b" stroke-width="0.8" opacity="0.4"/>
+      <text x="136" y="83" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.4">à</text>
+    </g>
+    <g class="boundary-vernier" transform="translate(176 80) rotate(0) scale(0.65) translate(-176 -80)">
+      <line x1="176" y1="76" x2="176" y2="84" stroke="#64748b" stroke-width="0.8" opacity="0.4"/>
+      <text x="179" y="83" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.4">à</text>
+    </g>
+    <g class="boundary-vernier" transform="translate(219 80) rotate(0) scale(0.65) translate(-219 -80)">
+      <line x1="219" y1="76" x2="219" y2="84" stroke="#64748b" stroke-width="0.8" opacity="0.4"/>
+      <text x="222" y="83" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.4">à</text>
+    </g>
+    <g class="boundary-vector" transform="translate(220 328) rotate(0) scale(0.95) translate(-220 -328)">
+      <line x1="204" y1="328" x2="236" y2="328" stroke="#818cf8" stroke-width="1" opacity="0.75"/>
+      <polygon points="236,328 230,324 230,332" fill="#818cf8" opacity="0.75"/>
+      <text x="212" y="322" font-size="12" font-family="'PingFang SC', monospace" fill="#c7d2fe" opacity="0.75">à</text>
+    </g>
+    <g class="boundary-vernier" transform="translate(305 80) rotate(0) scale(0.65) translate(-305 -80)">
+      <line x1="305" y1="76" x2="305" y2="84" stroke="#64748b" stroke-width="0.8" opacity="0.4"/>
+      <text x="308" y="83" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.4">à</text>
+    </g>
+    <g class="boundary-vernier" transform="translate(348 80) rotate(0) scale(0.65) translate(-348 -80)">
+      <line x1="348" y1="76" x2="348" y2="84" stroke="#64748b" stroke-width="0.8" opacity="0.4"/>
+      <text x="351" y="83" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.4">à</text>
+    </g>
+    <g class="boundary-vector" transform="translate(780 172) rotate(0) scale(0.95) translate(-780 -172)">
+      <line x1="764" y1="172" x2="796" y2="172" stroke="#818cf8" stroke-width="1" opacity="0.75"/>
+      <polygon points="796,172 790,168 790,176" fill="#818cf8" opacity="0.75"/>
+      <text x="772" y="166" font-size="12" font-family="'PingFang SC', monospace" fill="#c7d2fe" opacity="0.75">à</text>
+    </g>
+    <g class="boundary-vector" transform="translate(220 224) rotate(0) scale(0.95) translate(-220 -224)">
+      <line x1="204" y1="224" x2="236" y2="224" stroke="#818cf8" stroke-width="1" opacity="0.75"/>
+      <polygon points="236,224 230,220 230,228" fill="#818cf8" opacity="0.75"/>
+      <text x="212" y="218" font-size="12" font-family="'PingFang SC', monospace" fill="#c7d2fe" opacity="0.75">à</text>
+    </g>
+    <g class="boundary-vernier" transform="translate(477 80) rotate(0) scale(0.65) translate(-477 -80)">
+      <line x1="477" y1="76" x2="477" y2="84" stroke="#64748b" stroke-width="0.8" opacity="0.4"/>
+      <text x="480" y="83" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.4">à</text>
+    </g>
+    <g class="boundary-vernier" transform="translate(520 450) rotate(0) scale(0.65) translate(-520 -450)">
+      <line x1="520" y1="446" x2="520" y2="454" stroke="#64748b" stroke-width="0.8" opacity="0.4"/>
+      <text x="523" y="453" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.4">à</text>
+    </g>
+    <g class="boundary-gate" transform="translate(420 260) rotate(0) scale(1.2) translate(-420 -260)">
+      <circle cx="420" cy="260" r="24" fill="#09111c" stroke="#38bdf8" stroke-width="1.6" opacity="0.95"/>
+      <circle cx="420" cy="260" r="17" fill="none" stroke="#e2e8f0" stroke-width="0.6" stroke-dasharray="2 3" opacity="0.6649999999999999"/>
+      <text x="420" y="266" font-size="19" font-family="'Cinzel', serif" font-weight="900" fill="#ffffff" opacity="0.95" text-anchor="middle" dominant-baseline="middle">à</text>
+      <text x="438" y="245" font-size="6.5" font-family="'JetBrains Mono', monospace" fill="#38bdf8">GATE-11</text>
+    </g>
+    <g class="boundary-vector" transform="translate(220 120) rotate(0) scale(0.95) translate(-220 -120)">
+      <line x1="204" y1="120" x2="236" y2="120" stroke="#818cf8" stroke-width="1" opacity="0.75"/>
+      <polygon points="236,120 230,116 230,124" fill="#818cf8" opacity="0.75"/>
+      <text x="212" y="114" font-size="12" font-family="'PingFang SC', monospace" fill="#c7d2fe" opacity="0.75">à</text>
+    </g>
+    <g class="boundary-gate" transform="translate(420 360) rotate(0) scale(1.2) translate(-420 -360)">
+      <circle cx="420" cy="360" r="24" fill="#09111c" stroke="#38bdf8" stroke-width="1.6" opacity="0.95"/>
+      <circle cx="420" cy="360" r="17" fill="none" stroke="#e2e8f0" stroke-width="0.6" stroke-dasharray="2 3" opacity="0.6649999999999999"/>
+      <text x="420" y="366" font-size="19" font-family="'Cinzel', serif" font-weight="900" fill="#ffffff" opacity="0.95" text-anchor="middle" dominant-baseline="middle">à</text>
+      <text x="438" y="345" font-size="6.5" font-family="'JetBrains Mono', monospace" fill="#38bdf8">GATE-13</text>
+    </g>
+    <g class="boundary-vector" transform="translate(220 224) rotate(0) scale(0.95) translate(-220 -224)">
+      <line x1="204" y1="224" x2="236" y2="224" stroke="#818cf8" stroke-width="1" opacity="0.75"/>
+      <polygon points="236,224 230,220 230,228" fill="#818cf8" opacity="0.75"/>
+      <text x="212" y="218" font-size="12" font-family="'PingFang SC', monospace" fill="#c7d2fe" opacity="0.75">à</text>
+    </g>
+    <g class="boundary-vernier" transform="translate(735 450) rotate(0) scale(0.65) translate(-735 -450)">
+      <line x1="735" y1="446" x2="735" y2="454" stroke="#64748b" stroke-width="0.8" opacity="0.4"/>
+      <text x="738" y="453" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.4">à</text>
+    </g>
+    <g class="boundary-vector" transform="translate(220 328) rotate(0) scale(0.95) translate(-220 -328)">
+      <line x1="204" y1="328" x2="236" y2="328" stroke="#818cf8" stroke-width="1" opacity="0.75"/>
+      <polygon points="236,328 230,324 230,332" fill="#818cf8" opacity="0.75"/>
+      <text x="212" y="322" font-size="12" font-family="'PingFang SC', monospace" fill="#c7d2fe" opacity="0.75">à</text>
+    </g>
+    <g class="boundary-vernier" transform="translate(821 450) rotate(0) scale(0.65) translate(-821 -450)">
+      <line x1="821" y1="446" x2="821" y2="454" stroke="#64748b" stroke-width="0.8" opacity="0.4"/>
+      <text x="824" y="453" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.4">à</text>
+    </g>
+    <g class="boundary-vernier" transform="translate(864 450) rotate(0) scale(0.65) translate(-864 -450)">
+      <line x1="864" y1="446" x2="864" y2="454" stroke="#64748b" stroke-width="0.8" opacity="0.4"/>
+      <text x="867" y="453" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.4">à</text>
+    </g>
+    <g class="boundary-vernier" transform="translate(907 450) rotate(0) scale(0.65) translate(-907 -450)">
+      <line x1="907" y1="446" x2="907" y2="454" stroke="#64748b" stroke-width="0.8" opacity="0.4"/>
+      <text x="910" y="453" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.4">à</text>
+    </g>
+    <g class="boundary-vector" transform="translate(220 224) rotate(0) scale(0.95) translate(-220 -224)">
+      <line x1="204" y1="224" x2="236" y2="224" stroke="#818cf8" stroke-width="1" opacity="0.75"/>
+      <polygon points="236,224 230,220 230,228" fill="#818cf8" opacity="0.75"/>
+      <text x="212" y="218" font-size="12" font-family="'PingFang SC', monospace" fill="#c7d2fe" opacity="0.75">à</text>
+    </g>
+    <g class="boundary-vector" transform="translate(780 276) rotate(0) scale(0.95) translate(-780 -276)">
+      <line x1="764" y1="276" x2="796" y2="276" stroke="#818cf8" stroke-width="1" opacity="0.75"/>
+      <polygon points="796,276 790,272 790,280" fill="#818cf8" opacity="0.75"/>
+      <text x="772" y="270" font-size="12" font-family="'PingFang SC', monospace" fill="#c7d2fe" opacity="0.75">à</text>
+    </g>
+    <g class="boundary-gate" transform="translate(580 160) rotate(0) scale(1.2) translate(-580 -160)">
+      <circle cx="580" cy="160" r="24" fill="#09111c" stroke="#38bdf8" stroke-width="1.6" opacity="0.95"/>
+      <circle cx="580" cy="160" r="17" fill="none" stroke="#e2e8f0" stroke-width="0.6" stroke-dasharray="2 3" opacity="0.6649999999999999"/>
+      <text x="580" y="166" font-size="19" font-family="'Cinzel', serif" font-weight="900" fill="#ffffff" opacity="0.95" text-anchor="middle" dominant-baseline="middle">à</text>
+      <text x="598" y="145" font-size="6.5" font-family="'JetBrains Mono', monospace" fill="#38bdf8">GATE-22</text>
+    </g>
+    <g class="boundary-vernier" transform="translate(219 80) rotate(0) scale(0.65) translate(-219 -80)">
+      <line x1="219" y1="76" x2="219" y2="84" stroke="#64748b" stroke-width="0.8" opacity="0.4"/>
+      <text x="222" y="83" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.4">à</text>
+    </g>
+    <g class="boundary-vector" transform="translate(220 120) rotate(0) scale(0.95) translate(-220 -120)">
+      <line x1="204" y1="120" x2="236" y2="120" stroke="#818cf8" stroke-width="1" opacity="0.75"/>
+      <polygon points="236,120 230,116 230,124" fill="#818cf8" opacity="0.75"/>
+      <text x="212" y="114" font-size="12" font-family="'PingFang SC', monospace" fill="#c7d2fe" opacity="0.75">à</text>
+    </g>
+    <g class="boundary-vernier" transform="translate(305 80) rotate(0) scale(0.65) translate(-305 -80)">
+      <line x1="305" y1="76" x2="305" y2="84" stroke="#64748b" stroke-width="0.8" opacity="0.4"/>
+      <text x="308" y="83" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.4">à</text>
+    </g>
+    <g class="boundary-gate" transform="translate(580 260) rotate(0) scale(1.2) translate(-580 -260)">
+      <circle cx="580" cy="260" r="24" fill="#09111c" stroke="#38bdf8" stroke-width="1.6" opacity="0.95"/>
+      <circle cx="580" cy="260" r="17" fill="none" stroke="#e2e8f0" stroke-width="0.6" stroke-dasharray="2 3" opacity="0.6649999999999999"/>
+      <text x="580" y="266" font-size="19" font-family="'Cinzel', serif" font-weight="900" fill="#ffffff" opacity="0.95" text-anchor="middle" dominant-baseline="middle">à</text>
+      <text x="598" y="245" font-size="6.5" font-family="'JetBrains Mono', monospace" fill="#38bdf8">GATE-26</text>
+    </g>
+    <g class="boundary-vernier" transform="translate(391 80) rotate(0) scale(0.65) translate(-391 -80)">
+      <line x1="391" y1="76" x2="391" y2="84" stroke="#64748b" stroke-width="0.8" opacity="0.4"/>
+      <text x="394" y="83" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.4">à</text>
+    </g>
+    <g class="boundary-vector" transform="translate(220 328) rotate(0) scale(0.95) translate(-220 -328)">
+      <line x1="204" y1="328" x2="236" y2="328" stroke="#818cf8" stroke-width="1" opacity="0.75"/>
+      <polygon points="236,328 230,324 230,332" fill="#818cf8" opacity="0.75"/>
+      <text x="212" y="322" font-size="12" font-family="'PingFang SC', monospace" fill="#c7d2fe" opacity="0.75">à</text>
+    </g>
+    <g class="boundary-vernier" transform="translate(477 80) rotate(0) scale(0.65) translate(-477 -80)">
+      <line x1="477" y1="76" x2="477" y2="84" stroke="#64748b" stroke-width="0.8" opacity="0.4"/>
+      <text x="480" y="83" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.4">à</text>
+    </g>
+    <g class="boundary-vernier" transform="translate(520 450) rotate(0) scale(0.65) translate(-520 -450)">
+      <line x1="520" y1="446" x2="520" y2="454" stroke="#64748b" stroke-width="0.8" opacity="0.4"/>
+      <text x="523" y="453" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.4">à</text>
+    </g>
+    <g class="boundary-vernier" transform="translate(563 450) rotate(0) scale(0.65) translate(-563 -450)">
+      <line x1="563" y1="446" x2="563" y2="454" stroke="#64748b" stroke-width="0.8" opacity="0.4"/>
+      <text x="566" y="453" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.4">à</text>
+    </g>
+    <g class="boundary-vector" transform="translate(220 224) rotate(0) scale(0.95) translate(-220 -224)">
+      <line x1="204" y1="224" x2="236" y2="224" stroke="#818cf8" stroke-width="1" opacity="0.75"/>
+      <polygon points="236,224 230,220 230,228" fill="#818cf8" opacity="0.75"/>
+      <text x="212" y="218" font-size="12" font-family="'PingFang SC', monospace" fill="#c7d2fe" opacity="0.75">à</text>
+    </g>
+    <g class="boundary-gate" transform="translate(580 360) rotate(0) scale(1.2) translate(-580 -360)">
+      <circle cx="580" cy="360" r="24" fill="#09111c" stroke="#38bdf8" stroke-width="1.6" opacity="0.95"/>
+      <circle cx="580" cy="360" r="17" fill="none" stroke="#e2e8f0" stroke-width="0.6" stroke-dasharray="2 3" opacity="0.6649999999999999"/>
+      <text x="580" y="366" font-size="19" font-family="'Cinzel', serif" font-weight="900" fill="#ffffff" opacity="0.95" text-anchor="middle" dominant-baseline="middle">à</text>
+      <text x="598" y="345" font-size="6.5" font-family="'JetBrains Mono', monospace" fill="#38bdf8">GATE-33</text>
+    </g>
+    <g class="boundary-vernier" transform="translate(692 450) rotate(0) scale(0.65) translate(-692 -450)">
+      <line x1="692" y1="446" x2="692" y2="454" stroke="#64748b" stroke-width="0.8" opacity="0.4"/>
+      <text x="695" y="453" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.4">à</text>
+    </g>
+    <g class="boundary-vector" transform="translate(780 380) rotate(0) scale(0.95) translate(-780 -380)">
+      <line x1="764" y1="380" x2="796" y2="380" stroke="#818cf8" stroke-width="1" opacity="0.75"/>
+      <polygon points="796,380 790,376 790,384" fill="#818cf8" opacity="0.75"/>
+      <text x="772" y="374" font-size="12" font-family="'PingFang SC', monospace" fill="#c7d2fe" opacity="0.75">à</text>
+    </g>
+    <g class="boundary-vector" transform="translate(220 120) rotate(0) scale(0.95) translate(-220 -120)">
+      <line x1="204" y1="120" x2="236" y2="120" stroke="#818cf8" stroke-width="1" opacity="0.75"/>
+      <polygon points="236,120 230,116 230,124" fill="#818cf8" opacity="0.75"/>
+      <text x="212" y="114" font-size="12" font-family="'PingFang SC', monospace" fill="#c7d2fe" opacity="0.75">à</text>
+    </g>
+    <g class="boundary-vernier" transform="translate(821 450) rotate(0) scale(0.65) translate(-821 -450)">
+      <line x1="821" y1="446" x2="821" y2="454" stroke="#64748b" stroke-width="0.8" opacity="0.4"/>
+      <text x="824" y="453" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.4">à</text>
+    </g>
+    <g class="boundary-vernier" transform="translate(864 450) rotate(0) scale(0.65) translate(-864 -450)">
+      <line x1="864" y1="446" x2="864" y2="454" stroke="#64748b" stroke-width="0.8" opacity="0.4"/>
+      <text x="867" y="453" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.4">à</text>
+    </g>
+  </g>
+  <g class="boundary-threshold" opacity="0.9">
+    <line x1="500" y1="20" x2="500" y2="500" stroke="#38bdf8" stroke-width="2.2" stroke-dasharray="6 3"/>
+    <line x1="505" y1="20" x2="505" y2="500" stroke="#e2e8f0" stroke-width="0.8" opacity="0.6"/>
+    <circle cx="500" cy="260" r="28" fill="#070c14" stroke="#38bdf8" stroke-width="1.8"/>
+    <text x="500" y="268" font-size="22" font-family="'Cinzel', serif" fill="#e2e8f0" text-anchor="middle">⟐</text>
+  </g>
+  <g class="boundary-headers">
+    <rect x="80" y="30" width="380" height="44" fill="#0d141e" stroke="#22d3ee" stroke-width="1" rx="3" opacity="0.92"/>
+    <text x="96" y="50" font-size="9.5" font-family="'JetBrains Mono', monospace" font-weight="700" fill="#22d3ee">LOCAL ENCLAVE // OPERATOR-DIRECT</text>
+    <text x="96" y="64" font-size="7" font-family="'JetBrains Mono', monospace" fill="#94a3b8">ACTIVE CONTEMPORANEOUS HUMAN PROMPT</text>
+    <rect x="540" y="30" width="380" height="44" fill="#180e14" stroke="#f43f5e" stroke-width="1" rx="3" opacity="0.92"/>
+    <text x="556" y="50" font-size="9.5" font-family="'JetBrains Mono', monospace" font-weight="700" fill="#f43f5e">EXTERNAL CARRIAGE // DETACHED</text>
+    <text x="556" y="64" font-size="7" font-family="'JetBrains Mono', monospace" fill="#94a3b8">GATE: CLOSED ⟐ ISSUE #691 LEDGER</text>
+  </g>
+</svg>

@@ -131,6 +131,32 @@
     .direction-btn strong { font-size: 0.85rem; font-weight: 600; }
     .direction-btn span { font-size: 0.72rem; color: var(--text-dim); }
 
+    /* Jurisdiction Switcher */
+    .jurisdiction-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--panel-border);
+      border-radius: 6px;
+      padding: 8px 10px;
+      text-align: left;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .jurisdiction-btn:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+    }
+    .jurisdiction-btn.active {
+      background: rgba(245, 158, 11, 0.12);
+      border-color: var(--gold);
+      color: #fff;
+    }
+    .jurisdiction-btn strong { font-size: 0.8rem; font-weight: 600; }
+    .jurisdiction-btn span { font-size: 0.68rem; color: var(--text-dim); }
+
     /* Relation Pill Grid */
     .relation-grid {
       display: grid;
@@ -350,8 +376,8 @@
 
 <header class="lab-header">
   <div class="brand-group">
-    <span class="covenant-badge">𝌋 TD613 · TRANCHE 2B</span>
-    <span class="lab-title">Sequence 6 Visual Laboratory & Tournament</span>
+    <span class="covenant-badge">𝌋 TD613 · TRANCHE 2C</span>
+    <span class="lab-title">Sequence 6 Visual Laboratory · Director’s Cut &amp; Tournament</span>
   </div>
   <div class="claim-badge">
     CLAIM CEILING: VISUAL_RELATION != EXTERNAL_REALITY | AMBIENT_MOTION != EVENT_HISTORY
@@ -362,23 +388,53 @@
   <!-- Left Controls -->
   <aside class="lab-sidebar">
     <div>
-      <div class="section-title">Visual Direction Tournament</div>
+      <div class="section-title">Visual Direction &amp; Synthesis</div>
       <div class="direction-list">
-        <button class="direction-btn active" data-direction="lithic_tectonic">
+        <button class="direction-btn active" data-direction="directors_cut">
+          <strong style="color:var(--gold);">★ Director’s Cut: Couture Tectonic</strong>
+          <span>Haute Couture Tectonic Federalism (Living Field · HOLD · Boundary · Receipts · Rest)</span>
+        </button>
+        <button class="direction-btn" data-direction="lithic_tectonic">
           <strong>1 · Lithic Tectonic</strong>
-          <span>Basalt Monolith, Ruled Shear Planes & Shard Observatory</span>
+          <span>Basalt Monolith, Ruled Shear Planes &amp; Shard Observatory</span>
         </button>
         <button class="direction-btn" data-direction="organza_choreography">
           <strong>2 · Organza Choreography</strong>
-          <span>Haute Couture Diaphanous Membrane, Moiré Pleat & Silk</span>
+          <span>Haute Couture Diaphanous Membrane, Moiré Pleat &amp; Silk</span>
         </button>
         <button class="direction-btn" data-direction="aperture_monochrome">
           <strong>3 · Aperture Monochrome</strong>
-          <span>Cold-Cathode Radar Crypt, Telemetric Reticles & Verniers</span>
+          <span>Cold-Cathode Radar Crypt, Telemetric Reticles &amp; Verniers</span>
         </button>
         <button class="direction-btn" data-direction="diagnostic">
           <strong>0 · Diagnostic Baseline</strong>
           <span>Canonical 39-Carrier Flow-Core Diagnostic Seam</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="jurisdictionSection">
+      <div class="section-title">Product Jurisdiction (Federalism)</div>
+      <div class="jurisdiction-list" style="display:flex; flex-direction:column; gap:5px;">
+        <button class="jurisdiction-btn active" data-jurisdiction="living_field">
+          <strong>Living Relational Field</strong>
+          <span>Extravagant fluid silk drapery &amp; basalt mass</span>
+        </button>
+        <button class="jurisdiction-btn" data-jurisdiction="hold">
+          <strong>HOLD State</strong>
+          <span>Architectural monolith cleft &amp; docked berths</span>
+        </button>
+        <button class="jurisdiction-btn" data-jurisdiction="authorization_boundary">
+          <strong>Authorization Boundary</strong>
+          <span>Double-ruled titanium gate &amp; enclave threshold</span>
+        </button>
+        <button class="jurisdiction-btn" data-jurisdiction="receipt_inspection">
+          <strong>Receipt &amp; Evidence Ledger</strong>
+          <span>Calm high-contrast monospace &amp; [OBSERVED]/[DERIVED]/[HELD]</span>
+        </button>
+        <button class="jurisdiction-btn" data-jurisdiction="structural_rest">
+          <strong>Structural Rest 𝄐</strong>
+          <span>Composed downward folds &amp; plumb equilibrium</span>
         </button>
       </div>
     </div>
@@ -507,7 +563,8 @@
   } from '../engine/flowcore-semantic-motion-bridge.js';
 
   // State
-  let currentDirection = 'lithic_tectonic';
+  let currentDirection = 'directors_cut';
+  let currentJurisdiction = 'living_field';
   let currentRelation = 'gathering';
   let currentViewportMode = 'desktop';
   let clockMs = 1800;
@@ -517,6 +574,17 @@
   let lastTimestamp = performance.now();
 
   const CRITIQUES = {
+    directors_cut: {
+      name: 'Director’s Cut: Couture Tectonic',
+      distinctness: 'Haute couture tectonic federalism: fluid silk bezier ribbons meets monumental basalt mass and precision titanium rules across five product jurisdictions.',
+      emphasizes: 'Jurisdiction-specific material registers: fluid drapery for living relations, monolithic clefts with docked berths for HOLD, titanium gates for authorization, calm high-contrast monospace for receipts, and draped plumb equilibrium for structural rest.',
+      risks: 'Federalist jurisdictions must share cohesive house geometry and color gamut so state transitions feel architectural rather than jarring.',
+      mobile_compromise: '390px portrait view reflows horizontal docking shelves into vertical architectural strata while retaining all 39 carriers.',
+      reduced_motion: 'Settles into an architecturally composed static frame with zero drift, preserving full jurisdictional structure.',
+      strongest: 'Eliminates aesthetic compromise by giving each operational reality its truthful material expression under one single clock.',
+      weakest: 'Requires strict jurisdictional classification so developers never render fluid motion over evidentiary receipts.',
+      steal: 'Synthesizes the best of Lithic monumental mass, Organza couture drapery, and Aperture telemetric precision.'
+    },
     lithic_tectonic: {
       name: 'Lithic Tectonic',
       distinctness: 'Monolithic obsidian tablets, orthogonal stone incision rules, and high-relief architectural slabs with chisel bevels.',
@@ -601,6 +669,7 @@
       activeViewId: 'cockpit',
       relationState: { relation_key: currentRelation, progress: progress },
       directorDirection: currentDirection,
+      jurisdiction: currentJurisdiction,
       reducedMotion: reducedMotion
     };
 
@@ -609,6 +678,7 @@
       height: vpHeight,
       dpr: window.devicePixelRatio || 1,
       directorDirection: currentDirection,
+      jurisdiction: currentJurisdiction,
       reducedMotion: reducedMotion
     };
 
@@ -619,10 +689,12 @@
 
     // Update HUD
     hudDirection.textContent = currentDirection.toUpperCase();
-    hudState.textContent = `${frame.descriptor.canonical_glyph} (${currentRelation})`;
+    hudState.textContent = currentDirection === 'directors_cut' && currentJurisdiction !== 'living_field'
+      ? `JURISDICTION: ${currentJurisdiction.toUpperCase()}`
+      : `${frame.descriptor.canonical_glyph} (${currentRelation})`;
     hudSettling.textContent = frame.descriptor.settling_behavior.mode === 'COAST_AND_SETTLE'
       ? (clockMs >= 800 ? 'SETTLED IMMUTABLE EQUILIBRIUM' : 'COASTING & SETTLING...')
-      : 'ACTIVE GOVERNED TRANSIT';
+      : (currentJurisdiction === 'structural_rest' ? 'REST & STASIS EQUILIBRIUM' : 'ACTIVE GOVERNED TRANSIT');
   }
 
   // Animation Loop (One Clock)
@@ -649,11 +721,30 @@
     });
   });
 
+  document.querySelectorAll('.jurisdiction-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.jurisdiction-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentJurisdiction = btn.dataset.jurisdiction;
+      renderFrame();
+    });
+  });
+
   document.querySelectorAll('.relation-pill').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.relation-pill').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       currentRelation = btn.dataset.relation;
+      renderFrame();
+    });
+  });
+
+  document.querySelectorAll('.vp-tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.vp-tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentViewportMode = btn.dataset.vp;
+      stageWrapper.className = `stage-wrapper ${currentViewportMode}`;
       renderFrame();
     });
   });

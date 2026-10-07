@@ -26,7 +26,9 @@ import {
   evaluateCarrier,
   evaluateAllCarriers,
   renderDomeArt,
-  generateSvgSnapshot
+  generateSvgSnapshot,
+  DIRECTOR_DIRECTIONS,
+  PRODUCT_JURISDICTIONS
 } from '../app/engine/flowcore-semantic-motion-bridge.js';
 
 import {
@@ -370,4 +372,114 @@ test('12. Tranche 2B visual director tournament: all three directions maintain e
   assert.notEqual(svgLithic, svgRadar, 'Lithic and Radar must be visually distinct');
   assert.notEqual(svgOrganza, svgRadar, 'Organza and Radar must be visually distinct');
 });
+
+test('13. Tranche 2C Director’s Cut & Visual Federalism: 39-carrier preservation across 5 jurisdictions, inspectable HOLD, calm receipts, structural rest, and 390px mobile support', () => {
+  // Constant registry verification
+  assert.ok(DIRECTOR_DIRECTIONS.includes('directors_cut'), 'directors_cut must be in DIRECTOR_DIRECTIONS');
+  assert.equal(PRODUCT_JURISDICTIONS.length, 5);
+  const expectedJurisdictions = ['living_field', 'hold', 'authorization_boundary', 'receipt_inspection', 'structural_rest'];
+  assert.deepEqual([...PRODUCT_JURISDICTIONS], expectedJurisdictions);
+
+  // Alias verification: couture_tectonic maps to directors_cut
+  const fAlias = renderDomeArt('cockpit', { directorDirection: 'couture_tectonic' }, { width: 1000, height: 520 }, 1000);
+  assert.equal(fAlias.director_direction, 'directors_cut');
+
+  // Verify all 5 jurisdictions preserve exactly 39 carriers and 6/13/20 distribution
+  for (const j of PRODUCT_JURISDICTIONS) {
+    const snap = {
+      activeViewId: 'cockpit',
+      directorDirection: 'directors_cut',
+      jurisdiction: j,
+      relationState: { relation_key: j === 'structural_rest' ? 'structural_rest' : 'gathering', progress: 0.6 }
+    };
+
+    // Desktop
+    const fDesk = renderDomeArt('cockpit', snap, { width: 1000, height: 520 }, 1500);
+    assert.equal(fDesk.carriers.length, 39, `${j} desktop must have exactly 39 carriers`);
+    assert.equal(fDesk.carriers.filter(c => c.carrier.near).length, 6, `${j} desktop near plane must be 6`);
+    assert.equal(fDesk.carriers.filter(c => c.carrier.mid).length, 13, `${j} desktop mid plane must be 13`);
+    assert.equal(fDesk.carriers.filter(c => c.carrier.far).length, 20, `${j} desktop far plane must be 20`);
+    assert.equal(fDesk.jurisdiction, j);
+    assert.equal(fDesk.director_direction, 'directors_cut');
+
+    // Mobile 390px
+    const fMobile = renderDomeArt('cockpit', snap, { width: 390, height: 844 }, 1500);
+    assert.equal(fMobile.carriers.length, 39, `${j} mobile must have exactly 39 carriers`);
+    assert.equal(fMobile.carriers.filter(c => c.carrier.near).length, 6, `${j} mobile near plane must be 6`);
+    assert.equal(fMobile.carriers.filter(c => c.carrier.mid).length, 13, `${j} mobile mid plane must be 13`);
+    assert.equal(fMobile.carriers.filter(c => c.carrier.far).length, 20, `${j} mobile far plane must be 20`);
+
+    // Reduced motion static verification
+    const snapRed = { ...snap, reducedMotion: true };
+    const fRed0 = renderDomeArt('cockpit', snapRed, { width: 1000, height: 520 }, 0);
+    const fRed5k = renderDomeArt('cockpit', snapRed, { width: 1000, height: 520 }, 5000);
+    assert.equal(fRed0.carriers.length, 39);
+    assert.deepEqual(fRed0.carriers, fRed5k.carriers, `${j} reduced motion must produce static deterministic frame`);
+
+    // SVG snapshot generation
+    const svg = generateSvgSnapshot(fDesk);
+    assert.ok(svg.includes('Director\'s Cut / Couture Tectonic'));
+    assert.ok(svg.includes(`Jurisdiction: ${j.toUpperCase()}`));
+    assert.ok(svg.includes('39 (Distribution: 6 near / 13 mid / 20 far)'));
+  }
+
+  // Jurisdiction-specific semantics and manifestation verification
+  // 1. HOLD State: Docked inspection berths, inspectable deficit, operator agency
+  const fHold = renderDomeArt('cockpit', { directorDirection: 'directors_cut', jurisdiction: 'hold' }, { width: 1000, height: 520 }, 1000);
+  assert.ok(fHold.carriers.filter(c => c.carrier.near).every(c => c.manifestation.type === 'HOLD_INSPECTION_BERTH'));
+  assert.ok(fHold.carriers.filter(c => c.carrier.mid).every(c => c.manifestation.type === 'HOLD_RETENTION_BRACKET'));
+  assert.ok(fHold.carriers.filter(c => c.carrier.far).every(c => c.manifestation.type === 'HOLD_FOUNDATION_PIN'));
+  const svgHold = generateSvgSnapshot(fHold);
+  assert.ok(svgHold.includes('HOLD ⟐'));
+  assert.ok(svgHold.includes('JURISDICTION: EVIDENCE_DEFICIT'));
+  assert.ok(svgHold.includes('DEFICIT: UNRESOLVED COMPARATOR VARIANCE'));
+  assert.ok(svgHold.includes('OPERATOR AGENCY: REST / RESUME / AUDIT'));
+  assert.ok(!svgHold.includes('radar-grid'), 'HOLD must not contain radar sweeps');
+
+  // 2. Authorization Boundary: Titanium gate, operator-direct vs detached delegation
+  const fBound = renderDomeArt('cockpit', { directorDirection: 'directors_cut', jurisdiction: 'authorization_boundary' }, { width: 1000, height: 520 }, 1000);
+  assert.ok(fBound.carriers.filter(c => c.carrier.near).every(c => c.manifestation.type === 'CUSTODY_GATE_PIN'));
+  assert.ok(fBound.carriers.filter(c => c.carrier.mid).every(c => c.manifestation.type === 'TRANSIT_VECTOR_MARKER'));
+  assert.ok(fBound.carriers.filter(c => c.carrier.far).every(c => c.manifestation.type === 'BOUNDARY_VERNIER_TICK'));
+  const svgBound = generateSvgSnapshot(fBound);
+  assert.ok(svgBound.includes('LOCAL ENCLAVE // OPERATOR-DIRECT'));
+  assert.ok(svgBound.includes('EXTERNAL CARRIAGE // DETACHED'));
+  assert.ok(svgBound.includes('GATE: CLOSED ⟐ ISSUE #691'));
+
+  // 3. Receipt / Evidence Inspection: Calm monospace, [OBSERVED]/[DERIVED]/[HELD], zero radar
+  const fReceipt = renderDomeArt('cockpit', { directorDirection: 'directors_cut', jurisdiction: 'receipt_inspection' }, { width: 1000, height: 520 }, 1000);
+  assert.ok(fReceipt.carriers.filter(c => c.carrier.near).every(c => c.manifestation.type === 'EPISTEMIC_RECEIPT_BLOCK'));
+  assert.ok(fReceipt.carriers.filter(c => c.carrier.mid).every(c => c.manifestation.type === 'VERNIER_METRIC_TICK'));
+  assert.ok(fReceipt.carriers.filter(c => c.carrier.far).every(c => c.manifestation.type === 'ALIGNMENT_DATUM_PIN'));
+  const svgReceipt = generateSvgSnapshot(fReceipt);
+  assert.ok(svgReceipt.includes('TD613 EVIDENCE &amp; RECEIPT LEDGER // APERTURE REGISTER'));
+  assert.ok(svgReceipt.includes('[OBSERVED]'));
+  assert.ok(svgReceipt.includes('[DERIVED]'));
+  assert.ok(svgReceipt.includes('[HELD]'));
+  assert.ok(!svgReceipt.includes('radar-grid'), 'Receipts must not contain faux-military radar sweeps');
+  assert.ok(!svgReceipt.includes('AZ-352°'), 'Receipts must not contain fake azimuth telemetry');
+
+  // 4. Structural Rest: Kinetic obligation resolved, history inspectable
+  const fRest = renderDomeArt('cockpit', { directorDirection: 'directors_cut', jurisdiction: 'structural_rest', relationState: { relation_key: 'structural_rest' } }, { width: 1000, height: 520 }, 1000);
+  assert.ok(fRest.carriers.filter(c => c.carrier.near).every(c => c.manifestation.type === 'RESTING_DRAPERY_STELE'));
+  assert.ok(fRest.carriers.filter(c => c.carrier.mid).every(c => c.manifestation.type === 'EQUILIBRIUM_PLUMB_SHARD'));
+  assert.ok(fRest.carriers.filter(c => c.carrier.far).every(c => c.manifestation.type === 'STATIONARY_LATTICE_STAR'));
+  const svgRest = generateSvgSnapshot(fRest);
+  assert.ok(svgRest.includes('STRUCTURAL REST'));
+  assert.ok(svgRest.includes('KINETIC OBLIGATION RESOLVED'));
+  assert.ok(svgRest.includes('HISTORY INSPECTABLE · EXIT &amp; RETURN OPEN'));
+
+  // 5. Living Field: Tested across canonical relations
+  const livingRelations = ['gathering', 'release', 'protected_continuity', 'recurrence', 'bounded_emergence', 'created_potential', 'released_tendency'];
+  for (const rel of livingRelations) {
+    const fLiving = renderDomeArt('cockpit', { directorDirection: 'directors_cut', jurisdiction: 'living_field', relationState: { relation_key: rel, progress: 0.5 } }, { width: 1000, height: 520 }, 2000);
+    assert.equal(fLiving.carriers.length, 39);
+    assert.ok(fLiving.carriers.filter(c => c.carrier.near).every(c => c.manifestation.type === 'COUTURE_TECTONIC_LIGAMENT'));
+    assert.ok(fLiving.carriers.filter(c => c.carrier.mid).every(c => c.manifestation.type === 'TECTONIC_MOIRE_FIN'));
+    assert.ok(fLiving.carriers.filter(c => c.carrier.far).every(c => c.manifestation.type === 'GOSSAMER_BASALT_SHARD'));
+    const svgLiving = generateSvgSnapshot(fLiving);
+    assert.ok(svgLiving.includes(`COUTURE-TECTONIC // ${rel.toUpperCase()}`));
+  }
+});
+
 

@@ -1,0 +1,226 @@
+<!--
+  TD613 Flow-Core Semantic Motion Bridge Visual Witness [Direction: Director's Cut / Couture Tectonic]
+  Jurisdiction: STRUCTURAL_REST
+  Relation: structural_rest (𝄐)
+  Active View ID: cockpit
+  Carrier Count: 39 (Distribution: 6 near / 13 mid / 20 far)
+  Reduced Motion: ENABLED
+  Viewport: 390x844 (viewBox: 200 -220 600 1120)
+  Visual Theory: Haute Couture Tectonic Federalism (Mugler Couture x Scarpa Architecture x Aperture Precision)
+  Claim Ceiling: VISUAL_RELATION != EXTERNAL_REALITY | AMBIENT_MOTION != EVENT_HISTORY | AESTHETIC_BINDING != EMPIRICAL_VALIDATION
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="200 -220 600 1120" width="390" height="844" style="background:#06070a;">
+  <defs>
+    <pattern id="coutureTectonicGrid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#141824" stroke-width="0.6" stroke-dasharray="2 4"/>
+    </pattern>
+    <linearGradient id="coutureSilk" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c4b5fd"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#f43f5e"/>
+    </linearGradient>
+    <radialGradient id="coutureAura" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#1f142b" stop-opacity="0.6"/>
+      <stop offset="60%" stop-color="#0a0c12" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#06070a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="amberRestAura" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#2d1a08" stop-opacity="0.7"/>
+      <stop offset="70%" stop-color="#0d0e12" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#06070a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#coutureTectonicGrid)" opacity="0.7"/>
+  <rect width="100%" height="100%" fill="url(#coutureAura)"/>
+  <g class="couture-field-flight" aria-hidden="true" data-active-relation="structural_rest" data-jurisdiction="structural_rest" data-visual-direction="directors_cut">
+    <g class="rest-stele" transform="translate(220 120) rotate(-5) scale(1.25) translate(-220 -120)">
+      <rect x="182" y="100" width="76" height="40" fill="#121722" stroke="#b45309" stroke-width="1.2" rx="2" opacity="0.38"/>
+      <path d="M192,130 C210,144 230,144 248,130" fill="none" stroke="#d97706" stroke-width="1.4" opacity="0.6"/>
+      <text x="220" y="126" font-size="22" font-family="'Cinzel', 'Noto Serif SC', serif" font-weight="900" fill="#fdf6e2" opacity="0.38" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+      <text x="244" y="110" font-size="6" font-family="'JetBrains Mono', monospace" fill="#d97706">REST-0</text>
+    </g>
+    <g class="rest-node" transform="translate(308 120) rotate(-2.5) scale(0.72) translate(-308 -120)">
+      <circle cx="308" cy="120" r="1.6" fill="#52525b" opacity="0.16000000000000003"/>
+      <text x="312" y="123" font-size="8.5" font-family="'PingFang SC', monospace" fill="#52525b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="rest-node" transform="translate(396 120) rotate(0) scale(0.72) translate(-396 -120)">
+      <circle cx="396" cy="120" r="1.6" fill="#52525b" opacity="0.16000000000000003"/>
+      <text x="400" y="123" font-size="8.5" font-family="'PingFang SC', monospace" fill="#52525b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="rest-node" transform="translate(484 120) rotate(2.5) scale(0.72) translate(-484 -120)">
+      <circle cx="484" cy="120" r="1.6" fill="#52525b" opacity="0.16000000000000003"/>
+      <text x="488" y="123" font-size="8.5" font-family="'PingFang SC', monospace" fill="#52525b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="rest-plumb" transform="translate(572 120) rotate(5) scale(0.95) translate(-572 -120)">
+      <line x1="546" y1="120" x2="598" y2="120" stroke="#78350f" stroke-width="1.2" opacity="0.24"/>
+      <circle cx="572" cy="120" r="2" fill="#d97706" opacity="0.192"/>
+      <text x="578" y="116" font-size="12" font-family="'PingFang SC', monospace" fill="#94a3b8" opacity="0.24">𝄐</text>
+    </g>
+    <g class="rest-node" transform="translate(220 206) rotate(-5) scale(0.72) translate(-220 -206)">
+      <circle cx="220" cy="206" r="1.6" fill="#52525b" opacity="0.16000000000000003"/>
+      <text x="224" y="209" font-size="8.5" font-family="'PingFang SC', monospace" fill="#52525b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="rest-node" transform="translate(308 206) rotate(-2.5) scale(0.72) translate(-308 -206)">
+      <circle cx="308" cy="206" r="1.6" fill="#52525b" opacity="0.16000000000000003"/>
+      <text x="312" y="209" font-size="8.5" font-family="'PingFang SC', monospace" fill="#52525b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="rest-plumb" transform="translate(396 206) rotate(0) scale(0.95) translate(-396 -206)">
+      <line x1="370" y1="206" x2="422" y2="206" stroke="#78350f" stroke-width="1.2" opacity="0.24"/>
+      <circle cx="396" cy="206" r="2" fill="#d97706" opacity="0.192"/>
+      <text x="402" y="202" font-size="12" font-family="'PingFang SC', monospace" fill="#94a3b8" opacity="0.24">𝄐</text>
+    </g>
+    <g class="rest-plumb" transform="translate(484 206) rotate(2.5) scale(0.95) translate(-484 -206)">
+      <line x1="458" y1="206" x2="510" y2="206" stroke="#78350f" stroke-width="1.2" opacity="0.24"/>
+      <circle cx="484" cy="206" r="2" fill="#d97706" opacity="0.192"/>
+      <text x="490" y="202" font-size="12" font-family="'PingFang SC', monospace" fill="#94a3b8" opacity="0.24">𝄐</text>
+    </g>
+    <g class="rest-node" transform="translate(572 206) rotate(5) scale(0.72) translate(-572 -206)">
+      <circle cx="572" cy="206" r="1.6" fill="#52525b" opacity="0.16000000000000003"/>
+      <text x="576" y="209" font-size="8.5" font-family="'PingFang SC', monospace" fill="#52525b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="rest-node" transform="translate(220 292) rotate(-5) scale(0.72) translate(-220 -292)">
+      <circle cx="220" cy="292" r="1.6" fill="#52525b" opacity="0.16000000000000003"/>
+      <text x="224" y="295" font-size="8.5" font-family="'PingFang SC', monospace" fill="#52525b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="rest-stele" transform="translate(308 292) rotate(-2.5) scale(1.25) translate(-308 -292)">
+      <rect x="270" y="272" width="76" height="40" fill="#121722" stroke="#b45309" stroke-width="1.2" rx="2" opacity="0.38"/>
+      <path d="M280,302 C298,316 318,316 336,302" fill="none" stroke="#d97706" stroke-width="1.4" opacity="0.6"/>
+      <text x="308" y="298" font-size="22" font-family="'Cinzel', 'Noto Serif SC', serif" font-weight="900" fill="#fdf6e2" opacity="0.38" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+      <text x="332" y="282" font-size="6" font-family="'JetBrains Mono', monospace" fill="#d97706">REST-11</text>
+    </g>
+    <g class="rest-plumb" transform="translate(396 292) rotate(0) scale(0.95) translate(-396 -292)">
+      <line x1="370" y1="292" x2="422" y2="292" stroke="#78350f" stroke-width="1.2" opacity="0.24"/>
+      <circle cx="396" cy="292" r="2" fill="#d97706" opacity="0.192"/>
+      <text x="402" y="288" font-size="12" font-family="'PingFang SC', monospace" fill="#94a3b8" opacity="0.24">𝄐</text>
+    </g>
+    <g class="rest-stele" transform="translate(484 292) rotate(2.5) scale(1.25) translate(-484 -292)">
+      <rect x="446" y="272" width="76" height="40" fill="#121722" stroke="#b45309" stroke-width="1.2" rx="2" opacity="0.38"/>
+      <path d="M456,302 C474,316 494,316 512,302" fill="none" stroke="#d97706" stroke-width="1.4" opacity="0.6"/>
+      <text x="484" y="298" font-size="22" font-family="'Cinzel', 'Noto Serif SC', serif" font-weight="900" fill="#fdf6e2" opacity="0.38" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+      <text x="508" y="282" font-size="6" font-family="'JetBrains Mono', monospace" fill="#d97706">REST-13</text>
+    </g>
+    <g class="rest-plumb" transform="translate(572 292) rotate(5) scale(0.95) translate(-572 -292)">
+      <line x1="546" y1="292" x2="598" y2="292" stroke="#78350f" stroke-width="1.2" opacity="0.24"/>
+      <circle cx="572" cy="292" r="2" fill="#d97706" opacity="0.192"/>
+      <text x="578" y="288" font-size="12" font-family="'PingFang SC', monospace" fill="#94a3b8" opacity="0.24">𝄐</text>
+    </g>
+    <g class="rest-node" transform="translate(220 378) rotate(-5) scale(0.72) translate(-220 -378)">
+      <circle cx="220" cy="378" r="1.6" fill="#52525b" opacity="0.16000000000000003"/>
+      <text x="224" y="381" font-size="8.5" font-family="'PingFang SC', monospace" fill="#52525b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="rest-plumb" transform="translate(308 378) rotate(-2.5) scale(0.95) translate(-308 -378)">
+      <line x1="282" y1="378" x2="334" y2="378" stroke="#78350f" stroke-width="1.2" opacity="0.24"/>
+      <circle cx="308" cy="378" r="2" fill="#d97706" opacity="0.192"/>
+      <text x="314" y="374" font-size="12" font-family="'PingFang SC', monospace" fill="#94a3b8" opacity="0.24">𝄐</text>
+    </g>
+    <g class="rest-node" transform="translate(396 378) rotate(0) scale(0.72) translate(-396 -378)">
+      <circle cx="396" cy="378" r="1.6" fill="#52525b" opacity="0.16000000000000003"/>
+      <text x="400" y="381" font-size="8.5" font-family="'PingFang SC', monospace" fill="#52525b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="rest-node" transform="translate(484 378) rotate(2.5) scale(0.72) translate(-484 -378)">
+      <circle cx="484" cy="378" r="1.6" fill="#52525b" opacity="0.16000000000000003"/>
+      <text x="488" y="381" font-size="8.5" font-family="'PingFang SC', monospace" fill="#52525b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="rest-node" transform="translate(572 378) rotate(5) scale(0.72) translate(-572 -378)">
+      <circle cx="572" cy="378" r="1.6" fill="#52525b" opacity="0.16000000000000003"/>
+      <text x="576" y="381" font-size="8.5" font-family="'PingFang SC', monospace" fill="#52525b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="rest-plumb" transform="translate(220 464) rotate(-5) scale(0.95) translate(-220 -464)">
+      <line x1="194" y1="464" x2="246" y2="464" stroke="#78350f" stroke-width="1.2" opacity="0.24"/>
+      <circle cx="220" cy="464" r="2" fill="#d97706" opacity="0.192"/>
+      <text x="226" y="460" font-size="12" font-family="'PingFang SC', monospace" fill="#94a3b8" opacity="0.24">𝄐</text>
+    </g>
+    <g class="rest-plumb" transform="translate(308 464) rotate(-2.5) scale(0.95) translate(-308 -464)">
+      <line x1="282" y1="464" x2="334" y2="464" stroke="#78350f" stroke-width="1.2" opacity="0.24"/>
+      <circle cx="308" cy="464" r="2" fill="#d97706" opacity="0.192"/>
+      <text x="314" y="460" font-size="12" font-family="'PingFang SC', monospace" fill="#94a3b8" opacity="0.24">𝄐</text>
+    </g>
+    <g class="rest-stele" transform="translate(396 464) rotate(0) scale(1.25) translate(-396 -464)">
+      <rect x="358" y="444" width="76" height="40" fill="#121722" stroke="#b45309" stroke-width="1.2" rx="2" opacity="0.38"/>
+      <path d="M368,474 C386,488 406,488 424,474" fill="none" stroke="#d97706" stroke-width="1.4" opacity="0.6"/>
+      <text x="396" y="470" font-size="22" font-family="'Cinzel', 'Noto Serif SC', serif" font-weight="900" fill="#fdf6e2" opacity="0.38" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+      <text x="420" y="454" font-size="6" font-family="'JetBrains Mono', monospace" fill="#d97706">REST-22</text>
+    </g>
+    <g class="rest-node" transform="translate(484 464) rotate(2.5) scale(0.72) translate(-484 -464)">
+      <circle cx="484" cy="464" r="1.6" fill="#52525b" opacity="0.16000000000000003"/>
+      <text x="488" y="467" font-size="8.5" font-family="'PingFang SC', monospace" fill="#52525b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="rest-plumb" transform="translate(572 464) rotate(5) scale(0.95) translate(-572 -464)">
+      <line x1="546" y1="464" x2="598" y2="464" stroke="#78350f" stroke-width="1.2" opacity="0.24"/>
+      <circle cx="572" cy="464" r="2" fill="#d97706" opacity="0.192"/>
+      <text x="578" y="460" font-size="12" font-family="'PingFang SC', monospace" fill="#94a3b8" opacity="0.24">𝄐</text>
+    </g>
+    <g class="rest-node" transform="translate(220 550) rotate(-5) scale(0.72) translate(-220 -550)">
+      <circle cx="220" cy="550" r="1.6" fill="#52525b" opacity="0.16000000000000003"/>
+      <text x="224" y="553" font-size="8.5" font-family="'PingFang SC', monospace" fill="#52525b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="rest-stele" transform="translate(308 550) rotate(-2.5) scale(1.25) translate(-308 -550)">
+      <rect x="270" y="530" width="76" height="40" fill="#121722" stroke="#b45309" stroke-width="1.2" rx="2" opacity="0.38"/>
+      <path d="M280,560 C298,574 318,574 336,560" fill="none" stroke="#d97706" stroke-width="1.4" opacity="0.6"/>
+      <text x="308" y="556" font-size="22" font-family="'Cinzel', 'Noto Serif SC', serif" font-weight="900" fill="#fdf6e2" opacity="0.38" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+      <text x="332" y="540" font-size="6" font-family="'JetBrains Mono', monospace" fill="#d97706">REST-26</text>
+    </g>
+    <g class="rest-node" transform="translate(396 550) rotate(0) scale(0.72) translate(-396 -550)">
+      <circle cx="396" cy="550" r="1.6" fill="#52525b" opacity="0.16000000000000003"/>
+      <text x="400" y="553" font-size="8.5" font-family="'PingFang SC', monospace" fill="#52525b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="rest-plumb" transform="translate(484 550) rotate(2.5) scale(0.95) translate(-484 -550)">
+      <line x1="458" y1="550" x2="510" y2="550" stroke="#78350f" stroke-width="1.2" opacity="0.24"/>
+      <circle cx="484" cy="550" r="2" fill="#d97706" opacity="0.192"/>
+      <text x="490" y="546" font-size="12" font-family="'PingFang SC', monospace" fill="#94a3b8" opacity="0.24">𝄐</text>
+    </g>
+    <g class="rest-node" transform="translate(572 550) rotate(5) scale(0.72) translate(-572 -550)">
+      <circle cx="572" cy="550" r="1.6" fill="#52525b" opacity="0.16000000000000003"/>
+      <text x="576" y="553" font-size="8.5" font-family="'PingFang SC', monospace" fill="#52525b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="rest-node" transform="translate(220 636) rotate(-5) scale(0.72) translate(-220 -636)">
+      <circle cx="220" cy="636" r="1.6" fill="#52525b" opacity="0.16000000000000003"/>
+      <text x="224" y="639" font-size="8.5" font-family="'PingFang SC', monospace" fill="#52525b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="rest-node" transform="translate(308 636) rotate(-2.5) scale(0.72) translate(-308 -636)">
+      <circle cx="308" cy="636" r="1.6" fill="#52525b" opacity="0.16000000000000003"/>
+      <text x="312" y="639" font-size="8.5" font-family="'PingFang SC', monospace" fill="#52525b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="rest-plumb" transform="translate(396 636) rotate(0) scale(0.95) translate(-396 -636)">
+      <line x1="370" y1="636" x2="422" y2="636" stroke="#78350f" stroke-width="1.2" opacity="0.24"/>
+      <circle cx="396" cy="636" r="2" fill="#d97706" opacity="0.192"/>
+      <text x="402" y="632" font-size="12" font-family="'PingFang SC', monospace" fill="#94a3b8" opacity="0.24">𝄐</text>
+    </g>
+    <g class="rest-stele" transform="translate(484 636) rotate(2.5) scale(1.25) translate(-484 -636)">
+      <rect x="446" y="616" width="76" height="40" fill="#121722" stroke="#b45309" stroke-width="1.2" rx="2" opacity="0.38"/>
+      <path d="M456,646 C474,660 494,660 512,646" fill="none" stroke="#d97706" stroke-width="1.4" opacity="0.6"/>
+      <text x="484" y="642" font-size="22" font-family="'Cinzel', 'Noto Serif SC', serif" font-weight="900" fill="#fdf6e2" opacity="0.38" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+      <text x="508" y="626" font-size="6" font-family="'JetBrains Mono', monospace" fill="#d97706">REST-33</text>
+    </g>
+    <g class="rest-node" transform="translate(572 636) rotate(5) scale(0.72) translate(-572 -636)">
+      <circle cx="572" cy="636" r="1.6" fill="#52525b" opacity="0.16000000000000003"/>
+      <text x="576" y="639" font-size="8.5" font-family="'PingFang SC', monospace" fill="#52525b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="rest-plumb" transform="translate(220 722) rotate(-5) scale(0.95) translate(-220 -722)">
+      <line x1="194" y1="722" x2="246" y2="722" stroke="#78350f" stroke-width="1.2" opacity="0.24"/>
+      <circle cx="220" cy="722" r="2" fill="#d97706" opacity="0.192"/>
+      <text x="226" y="718" font-size="12" font-family="'PingFang SC', monospace" fill="#94a3b8" opacity="0.24">𝄐</text>
+    </g>
+    <g class="rest-plumb" transform="translate(308 722) rotate(-2.5) scale(0.95) translate(-308 -722)">
+      <line x1="282" y1="722" x2="334" y2="722" stroke="#78350f" stroke-width="1.2" opacity="0.24"/>
+      <circle cx="308" cy="722" r="2" fill="#d97706" opacity="0.192"/>
+      <text x="314" y="718" font-size="12" font-family="'PingFang SC', monospace" fill="#94a3b8" opacity="0.24">𝄐</text>
+    </g>
+    <g class="rest-node" transform="translate(396 722) rotate(0) scale(0.72) translate(-396 -722)">
+      <circle cx="396" cy="722" r="1.6" fill="#52525b" opacity="0.16000000000000003"/>
+      <text x="400" y="725" font-size="8.5" font-family="'PingFang SC', monospace" fill="#52525b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="rest-node" transform="translate(484 722) rotate(2.5) scale(0.72) translate(-484 -722)">
+      <circle cx="484" cy="722" r="1.6" fill="#52525b" opacity="0.16000000000000003"/>
+      <text x="488" y="725" font-size="8.5" font-family="'PingFang SC', monospace" fill="#52525b" opacity="0.2">𝄐</text>
+    </g>
+  </g>
+  <g class="rest-center-monolith" text-anchor="middle">
+    <rect x="400" y="240" width="200" height="200" fill="#0d1017" stroke="#b45309" stroke-width="1.6" rx="4" opacity="0.94"/>
+    <rect x="406" y="246" width="188" height="188" fill="none" stroke="#f59e0b" stroke-width="0.6" stroke-dasharray="3 3" opacity="0.4"/>
+    <text x="500" y="335" font-size="108" font-family="'Cinzel', 'Noto Serif SC', serif" font-weight="900" fill="#fdf6e2">𝄐</text>
+    <text x="500" y="385" font-size="10.5" font-family="'JetBrains Mono', monospace" font-weight="700" fill="#f59e0b" letter-spacing="2">STRUCTURAL REST</text>
+    <text x="500" y="408" font-size="7.5" font-family="'JetBrains Mono', monospace" fill="#94a3b8" letter-spacing="1">KINETIC OBLIGATION RESOLVED</text>
+    <text x="500" y="426" font-size="7" font-family="'JetBrains Mono', monospace" fill="#64748b" letter-spacing="1">HISTORY INSPECTABLE · EXIT &amp; RETURN OPEN</text>
+  </g>
+</svg>

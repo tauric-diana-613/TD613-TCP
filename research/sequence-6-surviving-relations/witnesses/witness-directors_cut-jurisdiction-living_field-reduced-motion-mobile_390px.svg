@@ -1,0 +1,224 @@
+<!--
+  TD613 Flow-Core Semantic Motion Bridge Visual Witness [Direction: Director's Cut / Couture Tectonic]
+  Jurisdiction: LIVING_FIELD
+  Relation: gathering (à)
+  Active View ID: cockpit
+  Carrier Count: 39 (Distribution: 6 near / 13 mid / 20 far)
+  Reduced Motion: ENABLED
+  Viewport: 390x844 (viewBox: 200 -220 600 1120)
+  Visual Theory: Haute Couture Tectonic Federalism (Mugler Couture x Scarpa Architecture x Aperture Precision)
+  Claim Ceiling: VISUAL_RELATION != EXTERNAL_REALITY | AMBIENT_MOTION != EVENT_HISTORY | AESTHETIC_BINDING != EMPIRICAL_VALIDATION
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="200 -220 600 1120" width="390" height="844" style="background:#06070a;">
+  <defs>
+    <pattern id="coutureTectonicGrid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#141824" stroke-width="0.6" stroke-dasharray="2 4"/>
+    </pattern>
+    <linearGradient id="coutureSilk" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c4b5fd"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#f43f5e"/>
+    </linearGradient>
+    <radialGradient id="coutureAura" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#1f142b" stop-opacity="0.6"/>
+      <stop offset="60%" stop-color="#0a0c12" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#06070a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="amberRestAura" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#2d1a08" stop-opacity="0.7"/>
+      <stop offset="70%" stop-color="#0d0e12" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#06070a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#coutureTectonicGrid)" opacity="0.7"/>
+  <rect width="100%" height="100%" fill="url(#coutureAura)"/>
+  <g class="couture-field-flight" aria-hidden="true" data-active-relation="gathering" data-jurisdiction="living_field" data-visual-direction="directors_cut">
+    <g class="couture-near" transform="translate(220 120) rotate(-5) scale(1.25) translate(-220 -120)">
+      <path d="M172,134 Q220,92 268,132" fill="none" stroke="url(#coutureSilk)" stroke-width="2.6" opacity="0.361"/>
+      <rect x="190" y="104" width="60" height="32" fill="#141822" stroke="#e2b714" stroke-width="1.2" rx="2" opacity="0.38"/>
+      <text x="220" y="125" font-size="22" font-family="'Cinzel', 'Bodoni Moda', 'Noto Serif SC', serif" font-weight="900" fill="#fdf6e2" opacity="0.361" text-anchor="middle" dominant-baseline="middle">à</text>
+      <text x="242" y="111" font-size="6" font-family="'JetBrains Mono', monospace" fill="#e2b714">P0</text>
+    </g>
+    <g class="couture-far" transform="translate(308 120) rotate(-2.5) scale(0.72) translate(-308 -120)">
+      <polygon points="308,116 312,120 308,124 304,120" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="313" y="123" font-size="9" font-family="'PingFang SC', monospace" fill="#a855f7" opacity="0.13999999999999999">à</text>
+    </g>
+    <g class="couture-far" transform="translate(396 120) rotate(0) scale(0.72) translate(-396 -120)">
+      <polygon points="396,116 400,120 396,124 392,120" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="401" y="123" font-size="9" font-family="'PingFang SC', monospace" fill="#a855f7" opacity="0.13999999999999999">à</text>
+    </g>
+    <g class="couture-far" transform="translate(484 120) rotate(2.5) scale(0.72) translate(-484 -120)">
+      <polygon points="484,116 488,120 484,124 480,120" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="489" y="123" font-size="9" font-family="'PingFang SC', monospace" fill="#a855f7" opacity="0.13999999999999999">à</text>
+    </g>
+    <g class="couture-mid" transform="translate(572 120) rotate(5) scale(0.95) translate(-572 -120)">
+      <ellipse cx="572" cy="120" rx="24" ry="10" fill="#c4b5fd" fill-opacity="0.0288" stroke="#8b95a5" stroke-width="0.8" opacity="0.24"/>
+      <line x1="554" y1="120" x2="590" y2="120" stroke="#f59e0b" stroke-width="0.6" opacity="0.144"/>
+      <text x="572" y="124" font-size="14" font-family="'PingFang SC', monospace" fill="#ede9e3" opacity="0.204" text-anchor="middle" dominant-baseline="middle">à</text>
+    </g>
+    <g class="couture-far" transform="translate(220 206) rotate(-5) scale(0.72) translate(-220 -206)">
+      <polygon points="220,202 224,206 220,210 216,206" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="225" y="209" font-size="9" font-family="'PingFang SC', monospace" fill="#a855f7" opacity="0.13999999999999999">à</text>
+    </g>
+    <g class="couture-far" transform="translate(308 206) rotate(-2.5) scale(0.72) translate(-308 -206)">
+      <polygon points="308,202 312,206 308,210 304,206" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="313" y="209" font-size="9" font-family="'PingFang SC', monospace" fill="#a855f7" opacity="0.13999999999999999">à</text>
+    </g>
+    <g class="couture-mid" transform="translate(396 206) rotate(0) scale(0.95) translate(-396 -206)">
+      <ellipse cx="396" cy="206" rx="24" ry="10" fill="#c4b5fd" fill-opacity="0.0288" stroke="#8b95a5" stroke-width="0.8" opacity="0.24"/>
+      <line x1="378" y1="206" x2="414" y2="206" stroke="#f59e0b" stroke-width="0.6" opacity="0.144"/>
+      <text x="396" y="210" font-size="14" font-family="'PingFang SC', monospace" fill="#ede9e3" opacity="0.204" text-anchor="middle" dominant-baseline="middle">à</text>
+    </g>
+    <g class="couture-mid" transform="translate(484 206) rotate(2.5) scale(0.95) translate(-484 -206)">
+      <ellipse cx="484" cy="206" rx="24" ry="10" fill="#c4b5fd" fill-opacity="0.0288" stroke="#8b95a5" stroke-width="0.8" opacity="0.24"/>
+      <line x1="466" y1="206" x2="502" y2="206" stroke="#f59e0b" stroke-width="0.6" opacity="0.144"/>
+      <text x="484" y="210" font-size="14" font-family="'PingFang SC', monospace" fill="#ede9e3" opacity="0.204" text-anchor="middle" dominant-baseline="middle">à</text>
+    </g>
+    <g class="couture-far" transform="translate(572 206) rotate(5) scale(0.72) translate(-572 -206)">
+      <polygon points="572,202 576,206 572,210 568,206" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="577" y="209" font-size="9" font-family="'PingFang SC', monospace" fill="#a855f7" opacity="0.13999999999999999">à</text>
+    </g>
+    <g class="couture-far" transform="translate(220 292) rotate(-5) scale(0.72) translate(-220 -292)">
+      <polygon points="220,288 224,292 220,296 216,292" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="225" y="295" font-size="9" font-family="'PingFang SC', monospace" fill="#a855f7" opacity="0.13999999999999999">à</text>
+    </g>
+    <g class="couture-near" transform="translate(308 292) rotate(-2.5) scale(1.25) translate(-308 -292)">
+      <path d="M260,306 Q308,264 356,304" fill="none" stroke="url(#coutureSilk)" stroke-width="2.6" opacity="0.361"/>
+      <rect x="278" y="276" width="60" height="32" fill="#141822" stroke="#e2b714" stroke-width="1.2" rx="2" opacity="0.38"/>
+      <text x="308" y="297" font-size="22" font-family="'Cinzel', 'Bodoni Moda', 'Noto Serif SC', serif" font-weight="900" fill="#fdf6e2" opacity="0.361" text-anchor="middle" dominant-baseline="middle">à</text>
+      <text x="330" y="283" font-size="6" font-family="'JetBrains Mono', monospace" fill="#e2b714">P11</text>
+    </g>
+    <g class="couture-mid" transform="translate(396 292) rotate(0) scale(0.95) translate(-396 -292)">
+      <ellipse cx="396" cy="292" rx="24" ry="10" fill="#c4b5fd" fill-opacity="0.0288" stroke="#8b95a5" stroke-width="0.8" opacity="0.24"/>
+      <line x1="378" y1="292" x2="414" y2="292" stroke="#f59e0b" stroke-width="0.6" opacity="0.144"/>
+      <text x="396" y="296" font-size="14" font-family="'PingFang SC', monospace" fill="#ede9e3" opacity="0.204" text-anchor="middle" dominant-baseline="middle">à</text>
+    </g>
+    <g class="couture-near" transform="translate(484 292) rotate(2.5) scale(1.25) translate(-484 -292)">
+      <path d="M436,306 Q484,264 532,304" fill="none" stroke="url(#coutureSilk)" stroke-width="2.6" opacity="0.361"/>
+      <rect x="454" y="276" width="60" height="32" fill="#141822" stroke="#e2b714" stroke-width="1.2" rx="2" opacity="0.38"/>
+      <text x="484" y="297" font-size="22" font-family="'Cinzel', 'Bodoni Moda', 'Noto Serif SC', serif" font-weight="900" fill="#fdf6e2" opacity="0.361" text-anchor="middle" dominant-baseline="middle">à</text>
+      <text x="506" y="283" font-size="6" font-family="'JetBrains Mono', monospace" fill="#e2b714">P13</text>
+    </g>
+    <g class="couture-mid" transform="translate(572 292) rotate(5) scale(0.95) translate(-572 -292)">
+      <ellipse cx="572" cy="292" rx="24" ry="10" fill="#c4b5fd" fill-opacity="0.0288" stroke="#8b95a5" stroke-width="0.8" opacity="0.24"/>
+      <line x1="554" y1="292" x2="590" y2="292" stroke="#f59e0b" stroke-width="0.6" opacity="0.144"/>
+      <text x="572" y="296" font-size="14" font-family="'PingFang SC', monospace" fill="#ede9e3" opacity="0.204" text-anchor="middle" dominant-baseline="middle">à</text>
+    </g>
+    <g class="couture-far" transform="translate(220 378) rotate(-5) scale(0.72) translate(-220 -378)">
+      <polygon points="220,374 224,378 220,382 216,378" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="225" y="381" font-size="9" font-family="'PingFang SC', monospace" fill="#a855f7" opacity="0.13999999999999999">à</text>
+    </g>
+    <g class="couture-mid" transform="translate(308 378) rotate(-2.5) scale(0.95) translate(-308 -378)">
+      <ellipse cx="308" cy="378" rx="24" ry="10" fill="#c4b5fd" fill-opacity="0.0288" stroke="#8b95a5" stroke-width="0.8" opacity="0.24"/>
+      <line x1="290" y1="378" x2="326" y2="378" stroke="#f59e0b" stroke-width="0.6" opacity="0.144"/>
+      <text x="308" y="382" font-size="14" font-family="'PingFang SC', monospace" fill="#ede9e3" opacity="0.204" text-anchor="middle" dominant-baseline="middle">à</text>
+    </g>
+    <g class="couture-far" transform="translate(396 378) rotate(0) scale(0.72) translate(-396 -378)">
+      <polygon points="396,374 400,378 396,382 392,378" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="401" y="381" font-size="9" font-family="'PingFang SC', monospace" fill="#a855f7" opacity="0.13999999999999999">à</text>
+    </g>
+    <g class="couture-far" transform="translate(484 378) rotate(2.5) scale(0.72) translate(-484 -378)">
+      <polygon points="484,374 488,378 484,382 480,378" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="489" y="381" font-size="9" font-family="'PingFang SC', monospace" fill="#a855f7" opacity="0.13999999999999999">à</text>
+    </g>
+    <g class="couture-far" transform="translate(572 378) rotate(5) scale(0.72) translate(-572 -378)">
+      <polygon points="572,374 576,378 572,382 568,378" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="577" y="381" font-size="9" font-family="'PingFang SC', monospace" fill="#a855f7" opacity="0.13999999999999999">à</text>
+    </g>
+    <g class="couture-mid" transform="translate(220 464) rotate(-5) scale(0.95) translate(-220 -464)">
+      <ellipse cx="220" cy="464" rx="24" ry="10" fill="#c4b5fd" fill-opacity="0.0288" stroke="#8b95a5" stroke-width="0.8" opacity="0.24"/>
+      <line x1="202" y1="464" x2="238" y2="464" stroke="#f59e0b" stroke-width="0.6" opacity="0.144"/>
+      <text x="220" y="468" font-size="14" font-family="'PingFang SC', monospace" fill="#ede9e3" opacity="0.204" text-anchor="middle" dominant-baseline="middle">à</text>
+    </g>
+    <g class="couture-mid" transform="translate(308 464) rotate(-2.5) scale(0.95) translate(-308 -464)">
+      <ellipse cx="308" cy="464" rx="24" ry="10" fill="#c4b5fd" fill-opacity="0.0288" stroke="#8b95a5" stroke-width="0.8" opacity="0.24"/>
+      <line x1="290" y1="464" x2="326" y2="464" stroke="#f59e0b" stroke-width="0.6" opacity="0.144"/>
+      <text x="308" y="468" font-size="14" font-family="'PingFang SC', monospace" fill="#ede9e3" opacity="0.204" text-anchor="middle" dominant-baseline="middle">à</text>
+    </g>
+    <g class="couture-near" transform="translate(396 464) rotate(0) scale(1.25) translate(-396 -464)">
+      <path d="M348,478 Q396,436 444,476" fill="none" stroke="url(#coutureSilk)" stroke-width="2.6" opacity="0.361"/>
+      <rect x="366" y="448" width="60" height="32" fill="#141822" stroke="#e2b714" stroke-width="1.2" rx="2" opacity="0.38"/>
+      <text x="396" y="469" font-size="22" font-family="'Cinzel', 'Bodoni Moda', 'Noto Serif SC', serif" font-weight="900" fill="#fdf6e2" opacity="0.361" text-anchor="middle" dominant-baseline="middle">à</text>
+      <text x="418" y="455" font-size="6" font-family="'JetBrains Mono', monospace" fill="#e2b714">P22</text>
+    </g>
+    <g class="couture-far" transform="translate(484 464) rotate(2.5) scale(0.72) translate(-484 -464)">
+      <polygon points="484,460 488,464 484,468 480,464" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="489" y="467" font-size="9" font-family="'PingFang SC', monospace" fill="#a855f7" opacity="0.13999999999999999">à</text>
+    </g>
+    <g class="couture-mid" transform="translate(572 464) rotate(5) scale(0.95) translate(-572 -464)">
+      <ellipse cx="572" cy="464" rx="24" ry="10" fill="#c4b5fd" fill-opacity="0.0288" stroke="#8b95a5" stroke-width="0.8" opacity="0.24"/>
+      <line x1="554" y1="464" x2="590" y2="464" stroke="#f59e0b" stroke-width="0.6" opacity="0.144"/>
+      <text x="572" y="468" font-size="14" font-family="'PingFang SC', monospace" fill="#ede9e3" opacity="0.204" text-anchor="middle" dominant-baseline="middle">à</text>
+    </g>
+    <g class="couture-far" transform="translate(220 550) rotate(-5) scale(0.72) translate(-220 -550)">
+      <polygon points="220,546 224,550 220,554 216,550" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="225" y="553" font-size="9" font-family="'PingFang SC', monospace" fill="#a855f7" opacity="0.13999999999999999">à</text>
+    </g>
+    <g class="couture-near" transform="translate(308 550) rotate(-2.5) scale(1.25) translate(-308 -550)">
+      <path d="M260,564 Q308,522 356,562" fill="none" stroke="url(#coutureSilk)" stroke-width="2.6" opacity="0.361"/>
+      <rect x="278" y="534" width="60" height="32" fill="#141822" stroke="#e2b714" stroke-width="1.2" rx="2" opacity="0.38"/>
+      <text x="308" y="555" font-size="22" font-family="'Cinzel', 'Bodoni Moda', 'Noto Serif SC', serif" font-weight="900" fill="#fdf6e2" opacity="0.361" text-anchor="middle" dominant-baseline="middle">à</text>
+      <text x="330" y="541" font-size="6" font-family="'JetBrains Mono', monospace" fill="#e2b714">P26</text>
+    </g>
+    <g class="couture-far" transform="translate(396 550) rotate(0) scale(0.72) translate(-396 -550)">
+      <polygon points="396,546 400,550 396,554 392,550" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="401" y="553" font-size="9" font-family="'PingFang SC', monospace" fill="#a855f7" opacity="0.13999999999999999">à</text>
+    </g>
+    <g class="couture-mid" transform="translate(484 550) rotate(2.5) scale(0.95) translate(-484 -550)">
+      <ellipse cx="484" cy="550" rx="24" ry="10" fill="#c4b5fd" fill-opacity="0.0288" stroke="#8b95a5" stroke-width="0.8" opacity="0.24"/>
+      <line x1="466" y1="550" x2="502" y2="550" stroke="#f59e0b" stroke-width="0.6" opacity="0.144"/>
+      <text x="484" y="554" font-size="14" font-family="'PingFang SC', monospace" fill="#ede9e3" opacity="0.204" text-anchor="middle" dominant-baseline="middle">à</text>
+    </g>
+    <g class="couture-far" transform="translate(572 550) rotate(5) scale(0.72) translate(-572 -550)">
+      <polygon points="572,546 576,550 572,554 568,550" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="577" y="553" font-size="9" font-family="'PingFang SC', monospace" fill="#a855f7" opacity="0.13999999999999999">à</text>
+    </g>
+    <g class="couture-far" transform="translate(220 636) rotate(-5) scale(0.72) translate(-220 -636)">
+      <polygon points="220,632 224,636 220,640 216,636" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="225" y="639" font-size="9" font-family="'PingFang SC', monospace" fill="#a855f7" opacity="0.13999999999999999">à</text>
+    </g>
+    <g class="couture-far" transform="translate(308 636) rotate(-2.5) scale(0.72) translate(-308 -636)">
+      <polygon points="308,632 312,636 308,640 304,636" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="313" y="639" font-size="9" font-family="'PingFang SC', monospace" fill="#a855f7" opacity="0.13999999999999999">à</text>
+    </g>
+    <g class="couture-mid" transform="translate(396 636) rotate(0) scale(0.95) translate(-396 -636)">
+      <ellipse cx="396" cy="636" rx="24" ry="10" fill="#c4b5fd" fill-opacity="0.0288" stroke="#8b95a5" stroke-width="0.8" opacity="0.24"/>
+      <line x1="378" y1="636" x2="414" y2="636" stroke="#f59e0b" stroke-width="0.6" opacity="0.144"/>
+      <text x="396" y="640" font-size="14" font-family="'PingFang SC', monospace" fill="#ede9e3" opacity="0.204" text-anchor="middle" dominant-baseline="middle">à</text>
+    </g>
+    <g class="couture-near" transform="translate(484 636) rotate(2.5) scale(1.25) translate(-484 -636)">
+      <path d="M436,650 Q484,608 532,648" fill="none" stroke="url(#coutureSilk)" stroke-width="2.6" opacity="0.361"/>
+      <rect x="454" y="620" width="60" height="32" fill="#141822" stroke="#e2b714" stroke-width="1.2" rx="2" opacity="0.38"/>
+      <text x="484" y="641" font-size="22" font-family="'Cinzel', 'Bodoni Moda', 'Noto Serif SC', serif" font-weight="900" fill="#fdf6e2" opacity="0.361" text-anchor="middle" dominant-baseline="middle">à</text>
+      <text x="506" y="627" font-size="6" font-family="'JetBrains Mono', monospace" fill="#e2b714">P33</text>
+    </g>
+    <g class="couture-far" transform="translate(572 636) rotate(5) scale(0.72) translate(-572 -636)">
+      <polygon points="572,632 576,636 572,640 568,636" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="577" y="639" font-size="9" font-family="'PingFang SC', monospace" fill="#a855f7" opacity="0.13999999999999999">à</text>
+    </g>
+    <g class="couture-mid" transform="translate(220 722) rotate(-5) scale(0.95) translate(-220 -722)">
+      <ellipse cx="220" cy="722" rx="24" ry="10" fill="#c4b5fd" fill-opacity="0.0288" stroke="#8b95a5" stroke-width="0.8" opacity="0.24"/>
+      <line x1="202" y1="722" x2="238" y2="722" stroke="#f59e0b" stroke-width="0.6" opacity="0.144"/>
+      <text x="220" y="726" font-size="14" font-family="'PingFang SC', monospace" fill="#ede9e3" opacity="0.204" text-anchor="middle" dominant-baseline="middle">à</text>
+    </g>
+    <g class="couture-mid" transform="translate(308 722) rotate(-2.5) scale(0.95) translate(-308 -722)">
+      <ellipse cx="308" cy="722" rx="24" ry="10" fill="#c4b5fd" fill-opacity="0.0288" stroke="#8b95a5" stroke-width="0.8" opacity="0.24"/>
+      <line x1="290" y1="722" x2="326" y2="722" stroke="#f59e0b" stroke-width="0.6" opacity="0.144"/>
+      <text x="308" y="726" font-size="14" font-family="'PingFang SC', monospace" fill="#ede9e3" opacity="0.204" text-anchor="middle" dominant-baseline="middle">à</text>
+    </g>
+    <g class="couture-far" transform="translate(396 722) rotate(0) scale(0.72) translate(-396 -722)">
+      <polygon points="396,718 400,722 396,726 392,722" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="401" y="725" font-size="9" font-family="'PingFang SC', monospace" fill="#a855f7" opacity="0.13999999999999999">à</text>
+    </g>
+    <g class="couture-far" transform="translate(484 722) rotate(2.5) scale(0.72) translate(-484 -722)">
+      <polygon points="484,718 488,722 484,726 480,722" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="489" y="725" font-size="9" font-family="'PingFang SC', monospace" fill="#a855f7" opacity="0.13999999999999999">à</text>
+    </g>
+  </g>
+  <g class="couture-center-monolith" text-anchor="middle">
+    <rect x="415" y="250" width="170" height="170" fill="#0d1017" stroke="#e2b714" stroke-width="1.5" rx="3" opacity="0.94"/>
+    <rect x="420" y="255" width="160" height="160" fill="none" stroke="#e2b714" stroke-width="0.5" stroke-dasharray="3 3" opacity="0.4"/>
+    <text x="500" y="335" font-size="104" font-family="'Cinzel', 'Bodoni Moda', 'Noto Serif SC', serif" font-weight="900" fill="#fdf6e2" opacity="0.96">à</text>
+    <text x="500" y="395" font-size="8.5" font-family="'JetBrains Mono', monospace" fill="#e2b714" letter-spacing="3" opacity="0.95">COUTURE-TECTONIC // GATHERING</text>
+  </g>
+</svg>
