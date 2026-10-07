@@ -35,7 +35,10 @@ test('standalone Sequence 6 deep links are explicitly state fixtures, not native
   const source = fs.readFileSync('app/dome-world/sequence-6-journey.html','utf8');
   assert.match(source, /BROWSER_STATE_FIXTURE/);
   assert.match(source, /STATE_FIXTURE_SYNTHETIC_GESTURE/);
-  const fixtureBody = source.slice(source.indexOf('async function advanceStateFixtureToStage'), source.indexOf('// Viewport controls'));
+  const fixtureStart = source.indexOf('async function advanceStateFixtureToStage');
+  const fixtureEnd = source.indexOf('const STAGE_DESCRIPTIONS', fixtureStart);
+  assert.ok(fixtureStart >= 0 && fixtureEnd > fixtureStart, 'fixture helper must remain a separately bounded function');
+  const fixtureBody = source.slice(fixtureStart, fixtureEnd);
   assert.doesNotMatch(fixtureBody, /createLoomAiHandoff\(/);
   assert.doesNotMatch(fixtureBody, /consumeLoomAiHandoff\(/);
   const product = fs.readFileSync('app/dome-world/holonomy-loom/ai-workspace.js','utf8');
