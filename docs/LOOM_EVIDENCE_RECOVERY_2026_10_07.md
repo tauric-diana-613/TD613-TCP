@@ -73,6 +73,10 @@ contract lane passes; the historical file remains a disclosed baseline limitatio
 
 The generated browser-diagnostics fingerprint was refreshed to satisfy the
 repository's generated-artifact guard; it changes no product behavior.
+The production-canary isolation guard asserts exported limits of five frontier
+calls, one structural repair and six total requests after their definition moved
+to the shared budget. Its earlier inline-assignment regex was replaced without
+relaxing the numeric policy or the canary isolation checks.
 
 No new paid provider call, production custody attempt, merge or deployment was
 performed for this repair. Local DOM/control tests do not establish browser layout,
