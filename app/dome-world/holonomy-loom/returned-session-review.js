@@ -67,6 +67,21 @@ function localProtectedTerms(value) {
     || terms.some(term => typeof term !== 'string' || !term.trim() || term.length > 1000 || term.includes('\0'))) throw new Error('LOOM_RETURN_INVALID_LOCAL_PRIVATE_POLICY');
   return [...new Set(terms)].sort();
 }
+function latestRetainedResult(packet) {
+  const stages = packet?.loom_demo_provenance?.stages;
+  if (!Array.isArray(stages)) return null;
+  const substantive = stages.filter(stage => stage?.receipt?.phase === 'CONTINUE' && stage.result);
+  return substantive.at(-1)?.result ?? packet?.continuation?.prior_result ?? null;
+}
+function assertBoundReturnMatchesReview(packet, boundReturn) {
+  const latest = latestRetainedResult(packet);
+  if (!latest) throw new Error('LOOM_RETURN_BOUND_TURN_WITHOUT_REVIEWED_RESULT');
+  const same = boundReturn.answer === latest.answer
+    && JSON.stringify(boundReturn.missing_information) === JSON.stringify(latest.missing_information)
+    && JSON.stringify(boundReturn.used_document_ids) === JSON.stringify(latest.used_document_ids);
+  if (!same) throw new Error('LOOM_RETURN_BOUND_TURN_RESULT_MISMATCH');
+}
+
 function checkLocalProtectedResults(packet, terms) {
   const provenance = packet.loom_demo_provenance;
   const records = [provenance.original_result, ...provenance.stages.map(stage => stage.result), packet.continuation?.prior_result].filter(Boolean);
@@ -138,7 +153,7 @@ export function mountReturnedSessionReview(root, {
     });
     history.append(prior);
   }
-  async function receive(input, { source = 'IMPORTED', sourceWindow = null, persist = true } = {}) {
+  async function receive(input, { source = 'IMPORTED', sourceWindow = null, persist = true, boundReturn = null } = {}) {
     const ticket = ++generation;
     let localProtectedCheck = null;
     try {
@@ -163,6 +178,12 @@ export function mountReturnedSessionReview(root, {
         localProtectedCheck = { state: 'HELD_LOCAL_PRIVATE_POLICY_CHANGED', screening: 'CHECK_WITHDRAWN', scope: 'CURRENT_LOCAL_REVIEW_ONLY', universal_secrecy_established: false };
         throw new Error('LOOM_RETURN_PRIVATE_POLICY_CHANGED_DURING_REVIEW');
       }
+      let carriedBoundReturn = null;
+      if (boundReturn !== null) {
+        carriedBoundReturn = snapshot(boundReturn);
+        if (!carriedBoundReturn || carriedBoundReturn.schema !== 'td613.loom.bound-receiver-turn/v0.2') throw new Error('LOOM_RETURN_BOUND_TURN_INVALID');
+        assertBoundReturnMatchesReview(packet, carriedBoundReturn);
+      }
       current = { packet, inspection, origin_match, source, local_protected_check: localProtectedCheck };
       let saved = false;
       if (persist) {
@@ -170,9 +191,9 @@ export function mountReturnedSessionReview(root, {
         catch { /* Review remains available; storage success is never inferred. */ }
       }
       render();
-      status(`Returned session checked for review. ${saved ? 'This review record is saved in this tab for reload.' : 'Save the reviewed session before closing this tab.'} Signature verification and custody admission remain HELD.`);
+      status(`Returned session checked for review. ${saved ? 'This review record is saved in this tab for reload.' : 'Save the reviewed session before closing this tab.'} ${carriedBoundReturn ? 'A bound turn is ready for native Check; nothing is admitted.' : 'Signature verification and custody admission remain HELD.'}`);
       const outcome = copy({ ...inspection, origin_match, source, local_protected_check: localProtectedCheck, persisted_for_reload: saved });
-      onReview(outcome);
+      onReview(outcome, carriedBoundReturn ? copy(carriedBoundReturn) : null);
       return outcome;
     } catch (error) {
       if (!disposed && ticket === generation) status(`Return review HELD · ${error.message}. ${current ? 'The previous reviewed snapshot is still available.' : 'No returned session became current.'}`, true);
@@ -183,8 +204,9 @@ export function mountReturnedSessionReview(root, {
     if (event.origin !== environment.location.origin || event.source !== getChild() || !event.source) return;
     try {
       const data = snapshot(event.data);
-      if (!data || Object.keys(data).sort().join('|') !== 'packet|schema' || data.schema !== LOOM_RETURN_MESSAGE_SCHEMA) return;
-      void receive(data.packet, { source: 'OPENER_RETURN', sourceWindow: event.source });
+      const keys = data && Object.keys(data).sort().join('|');
+      if (!data || !['packet|schema','bound_return|packet|schema'].includes(keys) || data.schema !== LOOM_RETURN_MESSAGE_SCHEMA) return;
+      void receive(data.packet, { source: 'OPENER_RETURN', sourceWindow: event.source, boundReturn: data.bound_return ?? null });
     } catch { status('Return review HELD · malformed carried record. The previous review is unchanged.', true); }
   };
   environment.addEventListener('message', message);

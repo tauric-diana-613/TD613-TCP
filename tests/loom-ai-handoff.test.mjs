@@ -420,3 +420,14 @@ test('known incident overclaim is held before cache, explicit export and local h
   assert.equal(source.store.size,0);
   governor.close();
 });
+
+
+test('native one-turn re-entry contract is content-bound inside the one-shot handoff', async () => {
+  const source = env();
+  const contract = { schema: 'td613.loom.reentry-excursion/v0.2', ref: 'a'.repeat(64), turns: [{ ref: 'b'.repeat(64) }] };
+  const url = await createLoomAiHandoff(fixture(), source, { reentryContract: contract });
+  const receiver = env('/dome-world/marrowline.html', source.store);
+  const received = await consumeLoomAiHandoff(token(url), receiver);
+  assert.deepEqual(received.reentry_contract, contract);
+  assert.equal(source.store.size, 0);
+});

@@ -110,26 +110,23 @@ function deepFreeze(obj) {
  * Generates cryptographically secure identifier tokens.
  * Enforces Section V: token functions as a capability requiring cryptographic randomness.
  */
+function secureRandomBytes(length, errorCode) {
+  const source = globalThis.crypto;
+  if (!source?.getRandomValues) throw new Error(errorCode);
+  const bytes = new Uint8Array(length);
+  source.getRandomValues(bytes);
+  return bytes;
+}
+
 function secureToken(prefix = 'tok') {
-  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
-    return `${prefix}_${crypto.randomUUID().replace(/-/g, '')}`;
-  }
-  const bytes = new Uint8Array(16);
-  if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
-    crypto.getRandomValues(bytes);
-  } else {
-    for (let i = 0; i < 16; i++) bytes[i] = Math.floor(Math.random() * 256);
-  }
+  const source = globalThis.crypto;
+  if (source?.randomUUID) return `${prefix}_${source.randomUUID().replace(/-/g, '')}`;
+  const bytes = secureRandomBytes(16, 'CAPABILITY_RANDOMNESS_UNAVAILABLE');
   return `${prefix}_` + Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
 }
 
 function hexRandom(bytes = 16) {
-  const buf = new Uint8Array(bytes);
-  if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
-    crypto.getRandomValues(buf);
-  } else {
-    for (let i = 0; i < bytes; i++) buf[i] = Math.floor(Math.random() * 256);
-  }
+  const buf = secureRandomBytes(bytes, 'SESSION_RANDOMNESS_UNAVAILABLE');
   return Array.from(buf, b => b.toString(16).padStart(2, '0')).join('');
 }
 

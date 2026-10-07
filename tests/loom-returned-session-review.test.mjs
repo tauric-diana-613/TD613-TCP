@@ -99,6 +99,26 @@ test('return inspection binds current origin and exact child while preserving HE
   } finally { h.close(); }
 });
 
+test('live bound return must match the exact latest reviewed Marrowline result bytes', async () => {
+  const f = await fixture(), child = {}, seen = [], h = harness({ origin: f.origin, child, onReview: (review, bound) => seen.push({ review, bound }) });
+  try {
+    const latest = f.afterB.loom_demo_provenance.stages.filter(stage => stage.receipt.phase === 'CONTINUE').at(-1).result;
+    const bound = {
+      schema: 'td613.loom.bound-receiver-turn/v0.2',
+      answer: latest.answer,
+      missing_information: latest.missing_information,
+      used_document_ids: latest.used_document_ids
+    };
+    const accepted = await h.controller.receive(f.afterB, { source: 'OPENER_RETURN', sourceWindow: child, boundReturn: bound });
+    assert.equal(accepted.status, 'REVIEW_ONLY_CONSISTENCY');
+    assert.equal(seen.length, 1); assert.deepEqual(seen[0].bound, bound);
+    const changed = copy(bound); changed.answer = 'Different staged answer.';
+    const held = await h.controller.receive(f.afterB, { source: 'OPENER_RETURN', sourceWindow: child, boundReturn: changed });
+    assert.equal(held.reason, 'LOOM_RETURN_BOUND_TURN_RESULT_MISMATCH');
+    assert.equal(seen.length, 1);
+  } finally { h.close(); }
+});
+
 test('reload recovers only review data; independent file reentry remains inspectable without the live origin', async () => {
   const f = await fixture(), h = harness({ saved: f.packet });
   try {

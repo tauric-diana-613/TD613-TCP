@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>TD613 · Sequence 6 · Tranche 3A Actual Product Cutover &amp; Custody</title>
+  <title>TD613 · Sequence 6 · Tranche 3B Native Cutover Diagnostic</title>
   <style>
     :root {
       --bg: #06070a;
@@ -252,8 +252,8 @@
 <header class="journey-header">
   <div class="brand-group">
     <span class="sigil">𝌋</span>
-    <span class="journey-title">Sequence 6 · Actual Product Cutover &amp; Custody</span>
-    <span class="claim-badge">COUTURE TECTONIC FEDERALISM // TRANCHE 3A</span>
+    <span class="journey-title">Sequence 6 · Native Cutover Diagnostic</span>
+    <span class="claim-badge">BROWSER_STATE_FIXTURE // TRANCHE 3B</span>
   </div>
   <div class="claim-badge">ACTUAL ROUTE MACHINERY WIRED // RFC 8785 VERIFIED</div>
 </header>
@@ -348,6 +348,8 @@
 </div>
 
 <script type="module">
+  const STATE_FIXTURE_SYNTHETIC_GESTURE = 'STATE_FIXTURE_SYNTHETIC_GESTURE'; // Diagnostic deep-link reconstruction only; never product authorization evidence.
+
   import {
     createSequence6JourneySession,
     issueOutboundAuthorization,
@@ -410,7 +412,7 @@
   }
 
   // Section IX: Advance session sequentially through genuine events to reach requested stage
-  async function advanceSessionToStage(targetStage) {
+  async function advanceStateFixtureToStage(targetStage) {
     initOriginSession();
 
     if (targetStage === 'LOOM_ORIGIN') {
@@ -419,40 +421,25 @@
 
     // Step 1: Issue Outbound Authorization with qualifying operator gesture
     const opGesture = {
-      gesture_id: 'gest_browser_operator_' + Date.now(),
-      type: 'CLICK',
-      target: 'authorize_and_send_button',
+      gesture_id: 'fixture_gesture_' + Date.now(),
+      type: STATE_FIXTURE_SYNTHETIC_GESTURE,
+      target: 'STATE_FIXTURE_ONLY_NON_PRODUCT',
+      fixture_only: true,
       timestamp: new Date().toISOString()
     };
     issueOutboundAuthorization(journeySession, { operatorGesture: opGesture });
     outboundEnvelope = prepareOutboundHandoff(journeySession);
 
-    // Wire real Loom AI handoff machinery
-    try {
-      const loomInput = toLoomAiTaskInput(outboundEnvelope.payload);
-      const handoffUri = await createLoomAiHandoff(loomInput, window);
-      if (handoffUri && handoffUri.includes('=')) {
-        handoffToken = handoffUri.split('=')[1];
-      }
-    } catch (e) {
-      console.warn('Loom handoff wire note:', e.message);
-    }
+    // STATE_FIXTURE_SYNTHETIC_GESTURE is diagnostic only. Deep-link reconstruction
+    // never mints or consumes the native Loom → Marrowline handoff capability.
+    handoffToken = null;
 
     if (targetStage === 'EXPLICIT_OUTBOUND_AUTHORIZATION') {
       return;
     }
 
-    // Step 2: Marrowline Continuation
-    if (handoffToken) {
-      try {
-        const consumed = await consumeLoomAiHandoff(handoffToken, window);
-        const mount = document.getElementById('marrowlineLoomMount');
-        if (mount && consumed) mountMarrowlineLoomTask(mount, consumed, window);
-      } catch (e) {
-        console.warn('Marrowline consumption note:', e.message);
-      }
-    }
-
+    // Step 2: fixture-only continuation. Native product continuation is exercised
+    // exclusively by holonomy-loom.html → marrowline.html and the live witness.
     returnPacket = executeMarrowlineContinuation(journeySession, outboundEnvelope, {
       responseText: 'Reconciled 12-month stated fees: Vendor A requires 137,591.52 credits. Contractual retention is 45 days.',
       usedDocumentIds: ['doc-1'],
@@ -680,7 +667,7 @@
   document.querySelectorAll('.stage-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
       const targetStage = btn.dataset.stage;
-      await advanceSessionToStage(targetStage);
+      await advanceStateFixtureToStage(targetStage);
       updateUi();
     });
   });
@@ -709,7 +696,7 @@
   });
 
   // Initial bootstrap: advance sequentially to match targetStageParam
-  await advanceSessionToStage(targetStageParam);
+  await advanceStateFixtureToStage(targetStageParam);
   updateUi();
 </script>
 

@@ -241,12 +241,18 @@ export function mountPortableLoomReentryWorkspace(root, {
       }
     }, Math.max(0, excursion.expires_at - now()));
   }
-  async function run(action) {
-    if (disposed || busy || !custodian) return;
+  async function run(action, { propagate = false } = {}) {
+    if (disposed || busy || !custodian) {
+      if (propagate) throw new Error('HOLD · native re-entry custody lane is unavailable or busy.');
+      return;
+    }
     const operation = {}; pendingOperation = operation; busy = true; renderState();
     const ticket = generation;
-    try { await action(ticket); }
-    catch (error) { if (!disposed && ticket === generation) { candidate = null; reviewedRef = null; $('accept').checked = false; showResult('HOLD · local operation stopped.', `${error.message} No admission occurred; the admitted head is unchanged.`, 'HELD', [], true); } }
+    try { return await action(ticket); }
+    catch (error) {
+      if (!disposed && ticket === generation) { candidate = null; reviewedRef = null; $('accept').checked = false; showResult('HOLD · local operation stopped.', `${error.message} No admission occurred; the admitted head is unchanged.`, 'HELD', [], true); }
+      if (propagate) throw error;
+    }
     finally { if (pendingOperation === operation) { pendingOperation = null; busy = false; if (!disposed) renderState(); } }
   }
 
@@ -419,7 +425,41 @@ export function mountPortableLoomReentryWorkspace(root, {
     if(!disposed&&custodian===lane)invalidate('Challenge episode retained with its scope. Check returned work before admission.');
     return record;
   }
+  async function registerDeparture(input) {
+    if (excursion) throw new Error('HOLD_PENDING_EXCURSION: discard or complete the existing registered departure before another native handoff.');
+    return run(async ticket => {
+      if (!input || typeof input !== 'object' || Array.isArray(input)) throw new TypeError('Native departure input must be an object.');
+      const documents = JSON.parse(JSON.stringify(input.documents ?? []));
+      if (!Array.isArray(documents) || documents.length > 8) throw new Error('Select a JSON array of up to eight source bodies.');
+      const withheld = Number(input.withheld_document_count ?? 0);
+      if (!Number.isInteger(withheld) || withheld < 0 || withheld > 8) throw new Error('Withheld count must be an integer from zero through eight.');
+      const next = await custodian.stage({ task: input.task, documents, withheld_document_count: withheld });
+      if (disposed || ticket !== generation) throw new Error('HOLD_STALE_NATIVE_DEPARTURE: route state changed while registration was binding.');
+      excursion = next; candidate = null; reviewedRef = null; $('accept').checked = false;
+      $('prompt').textContent = createPortableLoomReentryPrompt(excursion); $('prompt-drawer').hidden = false;
+      $('turns').replaceChildren();
+      for (const turn of excursion.turns) {
+        const item = root.ownerDocument.createElement('li');
+        item.textContent = `Task ${turn.turn_index}: ${turn.task.slice(0, 120)}${turn.task.length > 120 ? '…' : ''} · ${turn.documents.length} selected source${turn.documents.length === 1 ? '' : 's'}`;
+        $('turns').append(item);
+      }
+      $('turns').hidden = false; $('returns').value = ''; $('policy-review').checked = false;
+      watchExpiry();
+      showResult('Native departure registered locally.', 'The Loom custody lane bound this one-turn departure before Marrowline opened. The admitted head is unchanged.', 'REGISTERED');
+      return JSON.parse(JSON.stringify(excursion));
+    }, { propagate: true });
+  }
+  function loadReturnedTurn(value) {
+    if (disposed || !custodian || !excursion) throw new Error('HOLD_NO_LIVE_REGISTERED_DEPARTURE: returned bytes have no live native admission lane.');
+    const turns = Array.isArray(value) ? value : [value];
+    if (turns.length !== excursion.turns.length) throw new Error('HOLD_RETURN_RANGE_MISMATCH: returned turn count does not match the registered departure.');
+    $('returns').value = JSON.stringify(turns, null, 2);
+    $('policy-review').checked = false;
+    invalidate('Returned Marrowline work arrived through the bound route. Review inherited rules and run Check before admission.');
+    renderState();
+    return turns.length;
+  }
   function dispose() { disposed = true; generation += 1; clearExpiry(); custodian?.close(); busy = false; pendingOperation = null; cleanups.splice(0).forEach(cleanup => cleanup()); renderState(); }
   renderState();
-  return Object.freeze({ setSession, clearSession, setChallenge, recordChallenge, dispose, getRecord: () => custodian?.export() || null, inspect: () => ({ custody: custodian?.inspect() || null, candidate, excursion, carrier, resting, busy, reviewed_candidate_ref: reviewedRef }) });
+  return Object.freeze({ setSession, clearSession, registerDeparture, loadReturnedTurn, setChallenge, recordChallenge, dispose, getRecord: () => custodian?.export() || null, inspect: () => ({ custody: custodian?.inspect() || null, candidate, excursion, carrier, resting, busy, reviewed_candidate_ref: reviewedRef }) });
 }
