@@ -123,6 +123,7 @@ export const GOVERNED_EVENT_CHAIN_VERIFICATION_SCHEMA = 'td613.event.chain-verif
  */
 export const DOMAIN_SEPARATION_PREFIX = 'TD613-EVENT-v1\x00';
 export const GENESIS_DOMAIN_SEPARATION_PREFIX = 'TD613-GENESIS\x00';
+export const PAYLOAD_DOMAIN_SEPARATION_PREFIX = 'TD613-PAYLOAD-v1\x00';
 
 const HEX64_REGEX = /^[a-f0-9]{64}$/;
 const UUID_OR_TOKEN_REGEX = /^[a-zA-Z0-9_-]{1,128}$/;
@@ -307,6 +308,22 @@ export function computeGenesisDigest({ sessionId, initialCommitSha, routeIdentit
 }
 
 /**
+ * Computes the domain-separated SHA-256 digest of arbitrary payload content.
+ * Canonicalizes payload using RFC 8785 canonicalizeJson, prepends PAYLOAD_DOMAIN_SEPARATION_PREFIX,
+ * and computes SHA-256.
+ *
+ * Enforces: CHAIN_INTEGRITY != PAYLOAD_INTEGRITY
+ * (Payload bytes are cryptographically committed to the event envelope).
+ */
+export function computePayloadDigest(payload) {
+  const encoder = new TextEncoder();
+  const canonicalBytes = encoder.encode(canonicalizeJson(payload));
+  const domainPrefix = encoder.encode(PAYLOAD_DOMAIN_SEPARATION_PREFIX);
+  const buffer = concatBytes(domainPrefix, canonicalBytes);
+  return digestBytes(buffer);
+}
+
+/**
  * Validates and freezes an individual governed event record.
  *
  * TIMESTAMP SEMANTICS:
@@ -420,11 +437,15 @@ export function verifyGovernedEventChain(events, expectedGenesisDigest, expected
   hex64(expectedGenesisDigest, 'expectedGenesisDigest');
 
   let expectedHead = null;
+  let declaredTerminalHead = null;
   if (typeof expectedHeadOrOptions === 'string') {
     expectedHead = hex64(expectedHeadOrOptions, 'expectedHeadDigest');
   } else if (expectedHeadOrOptions && typeof expectedHeadOrOptions === 'object') {
     if (expectedHeadOrOptions.expectedHeadDigest) {
       expectedHead = hex64(expectedHeadOrOptions.expectedHeadDigest, 'expectedHeadDigest');
+    }
+    if (expectedHeadOrOptions.declaredTerminalHeadDigest) {
+      declaredTerminalHead = hex64(expectedHeadOrOptions.declaredTerminalHeadDigest, 'declaredTerminalHeadDigest');
     }
   }
 
@@ -474,6 +495,24 @@ export function verifyGovernedEventChain(events, expectedGenesisDigest, expected
   const finalComputedHead = events.length > 0 ? currentExpectedPredecessor : expectedGenesisDigest;
   const predecessor_chain_verified = violations.length === 0;
 
+  let declared_head_status = 'NOT_PROVIDED';
+  let declared_head_match = null;
+  if (declaredTerminalHead !== null) {
+    if (finalComputedHead === declaredTerminalHead) {
+      declared_head_match = true;
+      declared_head_status = 'DECLARED_HEAD_MATCH';
+    } else {
+      declared_head_match = false;
+      declared_head_status = 'DECLARED_HEAD_MISMATCH';
+      violations.push({
+        code: 'DECLARED_HEAD_MISMATCH',
+        expected: declaredTerminalHead,
+        actual: finalComputedHead,
+        message: 'Computed terminal head does not match declared terminal head in return packet.'
+      });
+    }
+  }
+
   let head_anchor_verified = false;
   let head_anchor_status = 'UNANCHORED';
 
@@ -496,16 +535,21 @@ export function verifyGovernedEventChain(events, expectedGenesisDigest, expected
     head_anchor_status = 'UNANCHORED';
   }
 
-  const verified = predecessor_chain_verified && (expectedHead !== null ? head_anchor_verified : true);
+  const verified = predecessor_chain_verified &&
+    (declaredTerminalHead !== null ? declared_head_match : true) &&
+    (expectedHead !== null ? head_anchor_verified : true);
 
   return deepFreeze({
     schema: GOVERNED_EVENT_CHAIN_VERIFICATION_SCHEMA,
     verified,
     predecessor_chain_verified,
+    declared_head_match,
+    declared_head_status,
     head_anchor_verified,
     head_anchor_status,
     total_events: events.length,
     head_digest: finalComputedHead,
+    declared_terminal_head_digest: declaredTerminalHead,
     expected_head_digest: expectedHead,
     genesis_digest: expectedGenesisDigest,
     violations,

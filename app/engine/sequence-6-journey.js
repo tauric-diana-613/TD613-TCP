@@ -36,6 +36,8 @@ import {
   canonicalizeJson,
   computeEventDigest,
   computeGenesisDigest,
+  computePayloadDigest,
+  PAYLOAD_DOMAIN_SEPARATION_PREFIX,
   createGovernedEvent,
   verifyGovernedEventChain,
   validateGovernedEvent,
@@ -91,7 +93,9 @@ export const JOURNEY_CLAIM_CEILINGS = Object.freeze([
   'INTERACTIVE_OPERATOR_DIRECT_NOT_DETACHED_DELEGATION',
   'AMARI_CONNECTOR_AUTHORITY_NOT_DETACHED_DELEGATION',
   'SINGLE_ANIMATION_SOVEREIGNTY_PRESERVED',
-  'TAMPER_EVIDENT_PREDECESSOR_CHAINING_ONLY'
+  'TAMPER_EVIDENT_PREDECESSOR_CHAINING_ONLY',
+  'CHAIN_INTEGRITY_NOT_PAYLOAD_INTEGRITY_UNTIL_COMMITTED',
+  'SELF_DECLARED_HEAD_MATCH_NOT_INDEPENDENT_HEAD_ANCHOR'
 ]);
 
 function deepFreeze(obj) {
@@ -102,13 +106,31 @@ function deepFreeze(obj) {
   return obj;
 }
 
-function hexRandom(bytes = 16) {
-  const chars = '0123456789abcdef';
-  let out = '';
-  for (let i = 0; i < bytes * 2; i++) {
-    out += chars[Math.floor(Math.random() * 16)];
+/**
+ * Generates cryptographically secure identifier tokens.
+ * Enforces Section V: token functions as a capability requiring cryptographic randomness.
+ */
+function secureToken(prefix = 'tok') {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return `${prefix}_${crypto.randomUUID().replace(/-/g, '')}`;
   }
-  return out;
+  const bytes = new Uint8Array(16);
+  if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+    crypto.getRandomValues(bytes);
+  } else {
+    for (let i = 0; i < 16; i++) bytes[i] = Math.floor(Math.random() * 256);
+  }
+  return `${prefix}_` + Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function hexRandom(bytes = 16) {
+  const buf = new Uint8Array(bytes);
+  if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+    crypto.getRandomValues(buf);
+  } else {
+    for (let i = 0; i < bytes; i++) buf[i] = Math.floor(Math.random() * 256);
+  }
+  return Array.from(buf, b => b.toString(16).padStart(2, '0')).join('');
 }
 
 /**
@@ -239,7 +261,10 @@ export function createSequence6JourneySession({
  * Issues an ephemeral, single-shot qualifying authorization for outbound dispatch (INV-01..03).
  *
  * Rules:
- * - Default-deny unless explicit operator prompt / gesture is present (INV-01, INV-02).
+ * - Section V: Explicit qualifying operator gesture required.
+ *   RENDER_AUTHORIZATION_STATE != AUTHORIZE
+ *   VIEW_GATE != OPEN_GATE
+ *   RANDOM_GESTURE_ID != HUMAN_GESTURE
  * - Ephemeral token expires quickly (INV-03).
  * - Distinguishes carriage class:
  *   EXTERNAL_PROVIDER_CARRIAGE != DETACHED_OPENAI_DELEGATION
@@ -248,7 +273,7 @@ export function createSequence6JourneySession({
  */
 export function issueOutboundAuthorization(session, {
   actorClass = session.earlier_observed_state.actor_class,
-  operatorGestureId = `gest_${hexRandom(8)}`,
+  operatorGesture = null,
   targetReceiver = '/dome-world/marrowline.html',
   detachedGateStatus = null, // required if DETACHED_DELEGATED
   ttlSeconds = 120,
@@ -256,6 +281,12 @@ export function issueOutboundAuthorization(session, {
 } = {}) {
   if (!ACTOR_CLASSES.includes(actorClass)) {
     throw new TypeError(`Invalid actorClass: ${actorClass}`);
+  }
+
+  // Enforce Section V: explicit qualifying operator gesture required
+  const gestureId = operatorGesture?.gesture_id || operatorGesture?.id;
+  if (!operatorGesture || typeof operatorGesture !== 'object' || !gestureId || typeof gestureId !== 'string' || !gestureId.trim()) {
+    throw new Error('AUTHORIZATION_DENIED: Explicit qualifying operator gesture required. Authority cannot be manufactured by defaults, URL navigation, or stage rendering (INV-02).');
   }
 
   // Check Issue #691 conditional trigger
@@ -270,13 +301,14 @@ export function issueOutboundAuthorization(session, {
     issue691State = 'EXTERNAL_CARRIAGE_QUALIFYING_AUTHORIZATION';
   }
 
-  const tokenId = `auth_${hexRandom(16)}`;
+  const tokenId = secureToken('auth');
   const expiresAt = new Date(new Date(nowIso).getTime() + ttlSeconds * 1000).toISOString();
 
   const auth = deepFreeze({
     authorization_token_id: tokenId,
     actor_class: actorClass,
-    operator_gesture_id: operatorGestureId,
+    operator_gesture_id: gestureId.trim(),
+    operator_gesture: operatorGesture,
     target_receiver: targetReceiver,
     issue_691_posture: issue691State,
     issued_at_iso: nowIso,
@@ -291,6 +323,7 @@ export function issueOutboundAuthorization(session, {
 /**
  * Transitions from LOOM_ORIGIN to EXPLICIT_OUTBOUND_AUTHORIZATION.
  * Constructs the canonical outbound envelope and adds the first governed event.
+ * Cryptographically binds outbound payload bytes (Section II).
  */
 export function prepareOutboundHandoff(session, {
   nowIso = new Date().toISOString()
@@ -313,7 +346,7 @@ export function prepareOutboundHandoff(session, {
     single_shot_spent: true
   });
 
-  const earlier = session.earlier_observed_state;
+  const earlier = session.current_origin_state || session.earlier_observed_state;
 
   // Build payload envelope and canonicalize via RFC 8785 (Canonicalization Parity)
   const payloadEnvelope = {
@@ -321,29 +354,20 @@ export function prepareOutboundHandoff(session, {
     documents: earlier.documents.filter(d => d.share),
     rules: earlier.rules,
     session_id: session.session_id,
-    origin_route: earlier.route_identity
+    origin_route: session.earlier_observed_state.route_identity
   };
 
   const canonicalPayload = canonicalizeJson(payloadEnvelope);
-  const payloadEnvelopeDigest = computeEventDigest({
-    $schema: GOVERNED_EVENT_SCHEMA,
-    event_type: 'GOVERNED_TRANSITION',
-    predecessor_digest: earlier.genesis_digest,
-    route_identity: earlier.route_identity,
-    authority_context: {
-      actor_class: auth.actor_class,
-      authorization_token_id: auth.authorization_token_id
-    },
-    payload_envelope_digest: '0000000000000000000000000000000000000000000000000000000000000000',
-    measurement_time_iso: nowIso,
-    recording_time_iso: nowIso
-  });
+  // Cryptographically bind actual payload bytes (Section II)
+  const payloadEnvelopeDigest = computePayloadDigest(payloadEnvelope);
+  session.outbound_payload = payloadEnvelope;
+  session.outbound_payload_digest = payloadEnvelopeDigest;
 
   // Create the outbound transition event (INV-05)
   const outboundEvent = createGovernedEvent({
     eventType: 'GOVERNED_TRANSITION',
     predecessorDigest: session.head_digest,
-    routeIdentity: earlier.route_identity,
+    routeIdentity: session.earlier_observed_state.route_identity,
     actorClass: auth.actor_class,
     authorizationTokenId: auth.authorization_token_id,
     payloadEnvelopeDigest: payloadEnvelopeDigest,
@@ -362,9 +386,10 @@ export function prepareOutboundHandoff(session, {
   const outboundEnvelope = deepFreeze({
     schema: SEQUENCE_6_OUTBOUND_ENVELOPE_SCHEMA,
     session_id: session.session_id,
-    genesis_digest: earlier.genesis_digest,
+    genesis_digest: session.earlier_observed_state.genesis_digest,
     events: [...session.events],
     payload: JSON.parse(canonicalPayload),
+    outbound_payload_digest: payloadEnvelopeDigest,
     authority_context: {
       actor_class: auth.actor_class,
       authorization_token_id: auth.authorization_token_id,
@@ -415,19 +440,27 @@ export function executeMarrowlineContinuation(session, outboundEnvelope, {
   session.route_memory.transitions_count++;
 
   const marrowlineRoute = '/dome-world/marrowline.html';
-  const continuationPayloadDigest = computeEventDigest({
-    $schema: GOVERNED_EVENT_SCHEMA,
-    event_type: 'GOVERNED_TRANSITION',
-    predecessor_digest: session.head_digest,
-    route_identity: marrowlineRoute,
-    authority_context: {
-      actor_class: outboundEnvelope.authority_context.actor_class,
-      authorization_token_id: outboundEnvelope.authority_context.authorization_token_id
-    },
-    payload_envelope_digest: '1111111111111111111111111111111111111111111111111111111111111111',
-    measurement_time_iso: nowIso,
-    recording_time_iso: nowIso
-  });
+
+  const returnResult = {
+    answer: responseText,
+    used_document_ids: usedDocumentIds,
+    missing_information: missingInformation,
+    suggested_next_step: 'Return to Loom for receipt inspection and local ledger admission.'
+  };
+
+  const receiverMetadata = {
+    receiver_type: 'MARROWLINE_LOCAL_CHAMBER',
+    custody_note: 'RECEIVER_LOCAL_STATE != LOOM_ADMISSION'
+  };
+
+  const returnPayloadEnvelope = {
+    result: returnResult,
+    receiver_metadata: receiverMetadata,
+    session_id: session.session_id
+  };
+
+  // Section II: Cryptographically bind actual returned result & receiver envelope bytes
+  const continuationPayloadDigest = computePayloadDigest(returnPayloadEnvelope);
 
   // Create continuation event chained to the outbound event
   const continuationEvent = createGovernedEvent({
@@ -448,18 +481,12 @@ export function executeMarrowlineContinuation(session, outboundEnvelope, {
     schema: SEQUENCE_6_RETURN_PACKET_SCHEMA,
     session_id: session.session_id,
     genesis_digest: session.earlier_observed_state.genesis_digest,
+    origin_route: session.earlier_observed_state.route_identity,
     events: [...session.events],
     terminal_head_digest: session.head_digest,
-    result: {
-      answer: responseText,
-      used_document_ids: usedDocumentIds,
-      missing_information: missingInformation,
-      suggested_next_step: 'Return to Loom for receipt inspection and local ledger admission.'
-    },
-    receiver_metadata: {
-      receiver_type: 'MARROWLINE_LOCAL_CHAMBER',
-      custody_note: 'RECEIVER_LOCAL_STATE != LOOM_ADMISSION'
-    },
+    result: returnResult,
+    receiver_metadata: receiverMetadata,
+    outbound_payload: session.outbound_payload || outboundEnvelope.payload,
     returned_at_iso: nowIso
   });
 
@@ -467,24 +494,23 @@ export function executeMarrowlineContinuation(session, outboundEnvelope, {
 }
 
 /**
- * Receives the returned packet at Loom re-entry for Receipt Inspection.
+ * Receives the returned packet at Loom re-entry for Return Verification & Candidate Admission.
  *
  * Laws:
  * - RECEIVER_LOCAL_STATE != LOOM_ADMISSION
  * - RETURNED_CANDIDATE != ADMITTED_DESCENDANT
  * - SUCCESSFUL_IMPORT != SCIENTIFIC_VALIDATION
  * - INV-04: Fresh reauthorization on re-entry (prior outbound authority is closed)
- * - Verifies predecessor chain integrity via verifyGovernedEventChain.
- * - Detects terminal head anchor matches vs mismatches vs UNANCHORED.
- * - Employs Temporal Non-Retroactivity: preserves earlier_observed_state immutable,
- *   captures later_return_state, and synthesizes current_reconstructed_state.
+ * - Section II: Validates payload content digest matches committed event envelope.
+ * - Section III: Separates computed_head, declared_terminal_head, and independent_expected_head.
+ * - Section VI: Validates return identity (schema, session_id, genesis_digest, origin_route).
+ * - Section X: Distinct stages for RETURN_REENTRY (candidate) vs RECEIPT_INSPECTION (admitted).
  */
 export function processReturnPacket(session, returnPacket, {
-  expectedHeadDigest = null,
+  independentExpectedHeadDigest = null,
   nowIso = new Date().toISOString()
 } = {}) {
   // Fresh reauthorization on re-entry (INV-04)
-  // Ensure outbound authorization is closed / cleared
   session.outbound_authorization = null;
 
   // Validate packet structure
@@ -496,6 +522,58 @@ export function processReturnPacket(session, returnPacket, {
       defect_code: 'MALFORMED_RETURN_PACKET',
       defect_message: 'Return packet is not a valid structured return object with events array.',
       missing_evidence: 'Valid return packet structure'
+    };
+    return { status: 'HELD', session };
+  }
+
+  // Section VI: Return schema validation
+  if (returnPacket.schema && returnPacket.schema !== SEQUENCE_6_RETURN_PACKET_SCHEMA) {
+    session.current_stage = 'HOLD';
+    session.jurisdiction = 'hold';
+    session.flowcore_relation = 'protected_continuity';
+    session.hold_state = {
+      defect_code: 'INVALID_RETURN_SCHEMA',
+      defect_message: `Return packet schema (${returnPacket.schema}) is unsupported.`,
+      missing_evidence: `Supported schema ${SEQUENCE_6_RETURN_PACKET_SCHEMA}`
+    };
+    return { status: 'HELD', session };
+  }
+
+  // Section VI: Validate return session ID (VALID_CHAIN != VALID_SESSION_RETURN)
+  if (returnPacket.session_id !== session.session_id) {
+    session.current_stage = 'HOLD';
+    session.jurisdiction = 'hold';
+    session.flowcore_relation = 'protected_continuity';
+    session.hold_state = {
+      defect_code: 'SESSION_ID_MISMATCH',
+      defect_message: `Return packet session ID (${returnPacket.session_id}) does not match active journey session ID (${session.session_id}). (VALID_CHAIN != VALID_SESSION_RETURN).`,
+      missing_evidence: `Return packet bound to session ID ${session.session_id}`
+    };
+    return { status: 'HELD', session };
+  }
+
+  // Section VI: Validate genesis digest
+  if (returnPacket.genesis_digest !== session.earlier_observed_state.genesis_digest) {
+    session.current_stage = 'HOLD';
+    session.jurisdiction = 'hold';
+    session.flowcore_relation = 'protected_continuity';
+    session.hold_state = {
+      defect_code: 'GENESIS_DIGEST_MISMATCH',
+      defect_message: 'Return packet genesis digest does not match earlier observed genesis digest.',
+      missing_evidence: `Matching genesis digest ${session.earlier_observed_state.genesis_digest}`
+    };
+    return { status: 'HELD', session };
+  }
+
+  // Section VI: Validate origin route (VALID_SCHEMA != VALID_ROUTE)
+  if (returnPacket.origin_route && returnPacket.origin_route !== session.earlier_observed_state.route_identity) {
+    session.current_stage = 'HOLD';
+    session.jurisdiction = 'hold';
+    session.flowcore_relation = 'protected_continuity';
+    session.hold_state = {
+      defect_code: 'ROUTE_IDENTITY_MISMATCH',
+      defect_message: `Return packet origin route (${returnPacket.origin_route}) does not match session route (${session.earlier_observed_state.route_identity}). (VALID_SCHEMA != VALID_ROUTE).`,
+      missing_evidence: `Matching origin route ${session.earlier_observed_state.route_identity}`
     };
     return { status: 'HELD', session };
   }
@@ -515,6 +593,71 @@ export function processReturnPacket(session, returnPacket, {
     return { status: 'HELD', session };
   }
 
+  // Section II: Cryptographic Payload Content Binding Verification
+  // 1. Verify outbound payload if present against outbound event
+  const outboundEvent = returnPacket.events.find(e => e.route_identity === session.earlier_observed_state.route_identity);
+  if (outboundEvent && (returnPacket.outbound_payload || session.outbound_payload)) {
+    const payloadToCheck = returnPacket.outbound_payload || session.outbound_payload;
+    try {
+      const computedOutboundDigest = computePayloadDigest(payloadToCheck);
+      if (outboundEvent.payload_envelope_digest !== computedOutboundDigest) {
+        session.current_stage = 'HOLD';
+        session.jurisdiction = 'hold';
+        session.flowcore_relation = 'protected_continuity';
+        session.hold_state = {
+          defect_code: 'PAYLOAD_CONTENT_DIGEST_MISMATCH',
+          defect_message: 'Outbound payload content was tampered or differs from hash-committed outbound event digest. (CHAIN_INTEGRITY != PAYLOAD_INTEGRITY).',
+          missing_evidence: 'Exact byte-matching outbound payload'
+        };
+        return { status: 'HELD', session };
+      }
+    } catch (err) {
+      session.current_stage = 'HOLD';
+      session.jurisdiction = 'hold';
+      session.flowcore_relation = 'protected_continuity';
+      session.hold_state = {
+        defect_code: 'PAYLOAD_CANONICALIZATION_FAILED',
+        defect_message: err.message,
+        missing_evidence: 'Canonical outbound payload'
+      };
+      return { status: 'HELD', session };
+    }
+  }
+
+  // 2. Verify returned result / receiver envelope against continuation event
+  const returnPayloadEnvelope = {
+    result: returnPacket.result,
+    receiver_metadata: returnPacket.receiver_metadata,
+    session_id: returnPacket.session_id
+  };
+  let computedReturnPayloadDigest;
+  try {
+    computedReturnPayloadDigest = computePayloadDigest(returnPayloadEnvelope);
+  } catch (err) {
+    session.current_stage = 'HOLD';
+    session.jurisdiction = 'hold';
+    session.flowcore_relation = 'protected_continuity';
+    session.hold_state = {
+      defect_code: 'RETURN_PAYLOAD_CANONICALIZATION_FAILED',
+      defect_message: err.message,
+      missing_evidence: 'Canonical return payload envelope'
+    };
+    return { status: 'HELD', session };
+  }
+
+  const continuationEvent = returnPacket.events[returnPacket.events.length - 1];
+  if (!continuationEvent || continuationEvent.payload_envelope_digest !== computedReturnPayloadDigest) {
+    session.current_stage = 'HOLD';
+    session.jurisdiction = 'hold';
+    session.flowcore_relation = 'protected_continuity';
+    session.hold_state = {
+      defect_code: 'PAYLOAD_CONTENT_DIGEST_MISMATCH',
+      defect_message: 'Returned result, missing information, or receiver metadata does not match hash-committed event payload digest. (CHAIN_INTEGRITY != PAYLOAD_INTEGRITY).',
+      missing_evidence: 'Unmutated returned payload matching committed digest'
+    };
+    return { status: 'HELD', session };
+  }
+
   // Immutable Layer 2: Later Return State
   const later_return_state = deepFreeze({
     session_id: returnPacket.session_id,
@@ -522,18 +665,22 @@ export function processReturnPacket(session, returnPacket, {
     terminal_head_digest: returnPacket.terminal_head_digest,
     result: returnPacket.result,
     receiver_metadata: returnPacket.receiver_metadata,
-    total_events: returnPacket.events.length
+    total_events: returnPacket.events.length,
+    payload_content_digest: computedReturnPayloadDigest
   });
   session.later_return_state = later_return_state;
 
-  // Verify Predecessor Chain (INV-05, INV-11)
+  // Section III: Verify Predecessor Chain & Head Coordinates
   const chainVerification = verifyGovernedEventChain(
     returnPacket.events,
     session.earlier_observed_state.genesis_digest,
-    expectedHeadDigest
+    {
+      declaredTerminalHeadDigest: returnPacket.terminal_head_digest,
+      expectedHeadDigest: independentExpectedHeadDigest
+    }
   );
 
-  if (!chainVerification.verified) {
+  if (!chainVerification.predecessor_chain_verified) {
     session.current_stage = 'HOLD';
     session.jurisdiction = 'hold';
     session.flowcore_relation = 'protected_continuity';
@@ -549,23 +696,52 @@ export function processReturnPacket(session, returnPacket, {
     return { status: 'HELD', session, chainVerification };
   }
 
-  // Predecessor chain passes. Now enter RECEIPT_INSPECTION.
-  session.current_stage = 'RECEIPT_INSPECTION';
+  // Section III: Verify Declared Head Internal Packet Consistency (computed == declared)
+  if (chainVerification.declared_head_match === false) {
+    session.current_stage = 'HOLD';
+    session.jurisdiction = 'hold';
+    session.flowcore_relation = 'protected_continuity';
+    session.hold_state = {
+      defect_code: 'DECLARED_HEAD_MISMATCH',
+      defect_message: `Return packet's declared terminal head (${returnPacket.terminal_head_digest}) does not match computed chain head (${chainVerification.head_digest}). (SELF_DECLARED_HEAD_MATCH != INDEPENDENT_HEAD_ANCHOR).`,
+      missing_evidence: 'Self-consistent terminal head digest',
+      chain_verification: chainVerification
+    };
+    return { status: 'HELD', session, chainVerification };
+  }
+
+  // Section III: Verify Independent Head Anchor (computed == independentExpectedHead)
+  if (independentExpectedHeadDigest !== null && chainVerification.head_anchor_verified === false) {
+    session.current_stage = 'HOLD';
+    session.jurisdiction = 'hold';
+    session.flowcore_relation = 'protected_continuity';
+    session.hold_state = {
+      defect_code: 'INDEPENDENT_HEAD_ANCHOR_MISMATCH',
+      defect_message: 'Terminal event digest does not match independent expected head anchor witness.',
+      missing_evidence: `Independent head anchor matching ${independentExpectedHeadDigest}`,
+      chain_verification: chainVerification
+    };
+    return { status: 'HELD', session, chainVerification };
+  }
+
+  // Predecessor chain passes. Now enter Section X: RETURN_REENTRY (candidate at threshold)
+  session.current_stage = 'RETURN_REENTRY';
   session.jurisdiction = 'receipt_inspection';
   session.flowcore_relation = 'released_tendency';
   session.events = [...returnPacket.events];
   session.head_digest = chainVerification.head_digest;
-  session.expected_head_digest = expectedHeadDigest;
-  session.route_memory.visited_stages.push('RECEIPT_INSPECTION');
+  session.declared_head_status = chainVerification.declared_head_status;
+  session.head_anchor_status = chainVerification.head_anchor_status;
+  session.route_memory.visited_stages.push('RETURN_REENTRY');
   session.route_memory.transitions_count++;
 
   // Immutable Layer 3: Current Reconstructed State (INV-11)
-  // Synthesizes earlier observed state and later return state without mutating earlier history!
   const current_reconstructed_state = deepFreeze({
     schema: SEQUENCE_6_RECONSTRUCTED_STATE_SCHEMA,
     session_id: session.session_id,
     genesis_digest: session.earlier_observed_state.genesis_digest,
     head_digest: session.head_digest,
+    declared_head_status: chainVerification.declared_head_status,
     head_anchor_status: chainVerification.head_anchor_status,
     predecessor_chain_verified: chainVerification.predecessor_chain_verified,
     reconstructed_at_iso: nowIso,
@@ -580,7 +756,8 @@ export function processReturnPacket(session, returnPacket, {
         answer: later_return_state.result.answer,
         missing_count: later_return_state.result.missing_information.length,
         used_document_ids: later_return_state.result.used_document_ids,
-        terminal_head_digest: later_return_state.terminal_head_digest
+        terminal_head_digest: later_return_state.terminal_head_digest,
+        payload_content_digest: later_return_state.payload_content_digest
       }
     },
     custody_verdict: 'RETURNED_CANDIDATE_READY_FOR_OPERATOR_REVIEW',
@@ -591,9 +768,10 @@ export function processReturnPacket(session, returnPacket, {
   session.current_reconstructed_state = current_reconstructed_state;
 
   return {
-    status: 'RECEIPT_INSPECTION',
+    status: 'RETURNED_CANDIDATE',
     session,
     chainVerification,
+    declaredHeadStatus: chainVerification.declared_head_status,
     headAnchorStatus: chainVerification.head_anchor_status
   };
 }
@@ -610,12 +788,20 @@ export function admitCandidateToLoomLedger(session, {
   operatorId = 'operator',
   nowIso = new Date().toISOString()
 } = {}) {
-  if (session.current_stage !== 'RECEIPT_INSPECTION') {
-    throw new Error(`Cannot admit candidate from stage ${session.current_stage}; candidate must be in RECEIPT_INSPECTION.`);
+  if (session.current_stage !== 'RETURN_REENTRY' && session.current_stage !== 'RECEIPT_INSPECTION') {
+    throw new Error(`Cannot admit candidate from stage ${session.current_stage}; candidate must be in RETURN_REENTRY.`);
   }
   if (!explicitAcknowledgment) {
     throw new Error('ADMISSION_HELD: Explicit operator acknowledgment required before candidate can advance the admitted head.');
   }
+
+  const admissionEnvelope = {
+    action: 'ADMIT_RETURNED_CANDIDATE',
+    session_id: session.session_id,
+    admitted_by: operatorId,
+    admitted_at_iso: nowIso
+  };
+  const admissionPayloadDigest = computePayloadDigest(admissionEnvelope);
 
   // Create an explicit admission rest return event
   const admissionEvent = createGovernedEvent({
@@ -623,29 +809,21 @@ export function admitCandidateToLoomLedger(session, {
     predecessorDigest: session.head_digest,
     routeIdentity: session.earlier_observed_state.route_identity,
     actorClass: 'INTERACTIVE_OPERATOR_DIRECT',
-    authorizationTokenId: `adm_${hexRandom(12)}`,
-    payloadEnvelopeDigest: computeEventDigest({
-      $schema: GOVERNED_EVENT_SCHEMA,
-      event_type: 'REST_RETURN',
-      predecessor_digest: session.head_digest,
-      route_identity: session.earlier_observed_state.route_identity,
-      authority_context: {
-        actor_class: 'INTERACTIVE_OPERATOR_DIRECT',
-        authorization_token_id: 'adm_payload'
-      },
-      payload_envelope_digest: '2222222222222222222222222222222222222222222222222222222222222222',
-      measurement_time_iso: nowIso,
-      recording_time_iso: nowIso
-    }),
+    authorizationTokenId: secureToken('adm'),
+    payloadEnvelopeDigest: admissionPayloadDigest,
     measurementTimeIso: nowIso,
     recordingTimeIso: nowIso
   });
 
   session.events.push(admissionEvent);
   session.head_digest = computeEventDigest(admissionEvent);
+  session.current_stage = 'RECEIPT_INSPECTION';
+  session.route_memory.visited_stages.push('RECEIPT_INSPECTION');
+  session.route_memory.transitions_count++;
 
   session.current_reconstructed_state = deepFreeze({
     ...session.current_reconstructed_state,
+    head_digest: session.head_digest,
     loom_admission_status: 'ADMITTED_INTO_LOCAL_LEDGER',
     admitted_at_iso: nowIso,
     admitted_by: operatorId
@@ -666,6 +844,30 @@ export function enterStructuralRest(session, {
   reason = 'Current product obligation genuinely resolved with verified receipt and local ledger admission.',
   nowIso = new Date().toISOString()
 } = {}) {
+  if (session.current_stage !== 'RECEIPT_INSPECTION') {
+    throw new Error(`Cannot enter structural rest from ${session.current_stage}; journey must complete receipt inspection.`);
+  }
+
+  const restEnvelope = {
+    action: 'STRUCTURAL_REST',
+    session_id: session.session_id,
+    settled_at_iso: nowIso
+  };
+  const restPayloadDigest = computePayloadDigest(restEnvelope);
+
+  const restEvent = createGovernedEvent({
+    eventType: 'REST_RETURN',
+    predecessorDigest: session.head_digest,
+    routeIdentity: session.earlier_observed_state.route_identity,
+    actorClass: 'INTERACTIVE_OPERATOR_DIRECT',
+    authorizationTokenId: secureToken('rst'),
+    payloadEnvelopeDigest: restPayloadDigest,
+    measurementTimeIso: nowIso,
+    recordingTimeIso: nowIso
+  });
+
+  session.events.push(restEvent);
+  session.head_digest = computeEventDigest(restEvent);
   session.current_stage = 'STRUCTURAL_REST';
   session.jurisdiction = 'structural_rest';
   session.flowcore_relation = 'structural_rest';
@@ -676,8 +878,16 @@ export function enterStructuralRest(session, {
   return session;
 }
 
+export const concludeJourneyWithRest = enterStructuralRest;
+
 /**
  * Handles actionable recovery from HOLD state.
+ *
+ * Enforces Section IV: Temporal Non-Retroactivity on Retry.
+ * RETRY != HISTORICAL_REWRITE
+ * NEW_ATTEMPT != MUTATED_OLD_ATTEMPT
+ * Preserves earlier_observed_state (Layer 1) byte-semantically unchanged.
+ * Archives earlier attempts and establishes an explicit new attempt origin.
  */
 export function recoverFromHold(session, action, {
   newPrompt = null,
@@ -696,22 +906,42 @@ export function recoverFromHold(session, action, {
   }
 
   if (action === 'RETRY') {
+    // Preserve earlier attempt immutably in attempts ledger (Section IV)
+    session.attempts = session.attempts || [];
+    const archivedAttempt = deepFreeze({
+      attempt_index: session.route_memory.retries_count + 1,
+      earlier_observed_state: session.earlier_observed_state, // Byte-semantically frozen and unchanged!
+      origin_state: session.current_origin_state || session.earlier_observed_state,
+      hold_state: session.hold_state,
+      head_digest: session.head_digest,
+      ended_at_iso: nowIso
+    });
+    session.attempts.push(archivedAttempt);
+
     session.route_memory.retries_count++;
     session.hold_state = null;
     session.current_stage = 'LOOM_ORIGIN';
     session.jurisdiction = 'living_field';
     session.flowcore_relation = 'gathering';
     session.outbound_authorization = null; // Fresh authorization required (INV-04)
-    if (newPrompt) {
-      session.earlier_observed_state = deepFreeze({
-        ...session.earlier_observed_state,
-        task: newPrompt
-      });
-    }
+
+    // New attempt receives a distinct attempt origin without overwriting Layer 1
+    const newAttemptOrigin = deepFreeze({
+      attempt_index: session.route_memory.retries_count + 1,
+      task: newPrompt ? String(newPrompt).trim() : (session.current_origin_state?.task || session.earlier_observed_state.task),
+      documents: session.earlier_observed_state.documents,
+      rules: session.earlier_observed_state.rules,
+      actor_class: session.earlier_observed_state.actor_class,
+      predecessor_attempt_genesis: session.earlier_observed_state.genesis_digest,
+      observed_at_iso: nowIso
+    });
+    session.current_origin_state = newAttemptOrigin;
+
     return {
       action: 'RETRY',
       session,
-      message: 'Route reset to Loom Origin for retry under fresh authorization.'
+      attempt_index: session.route_memory.retries_count + 1,
+      message: 'Route reset to Loom Origin for retry under fresh attempt and fresh authorization.'
     };
   }
 
@@ -743,9 +973,13 @@ export function exportRouteMemory(session) {
     session_id: session.session_id,
     current_stage: session.current_stage,
     earlier_observed_state: session.earlier_observed_state,
-    later_return_state: session.later_return_state,
-    current_reconstructed_state: session.current_reconstructed_state,
-    events: session.events,
+    current_origin_state: session.current_origin_state || null,
+    attempts: session.attempts || [],
+    outbound_payload: session.outbound_payload || null,
+    outbound_payload_digest: session.outbound_payload_digest || null,
+    later_return_state: session.later_return_state || null,
+    current_reconstructed_state: session.current_reconstructed_state || null,
+    events: session.events || [],
     head_digest: session.head_digest,
     expected_head_digest: session.expected_head_digest,
     hold_state: session.hold_state,
@@ -758,8 +992,11 @@ export function exportRouteMemory(session) {
 /**
  * Restores a journey session from Route Memory.
  *
- * Enforces: ROUTE_MEMORY != AUTHORITY_MEMORY.
- * outbound_authorization is strictly initialized to null (closed).
+ * Enforces Section VII:
+ * LOCAL_STORAGE_PRESENCE != HISTORY_INTEGRITY
+ * ROUTE_MEMORY != RECEIPT_AUTHORITY
+ * ROUTE_MEMORY != AUTHORITY_MEMORY
+ * Re-validates predecessor chain and payload content digests before trusting restored history.
  */
 export function restoreRouteMemory(serializedJson) {
   const parsed = JSON.parse(serializedJson);
@@ -767,26 +1004,76 @@ export function restoreRouteMemory(serializedJson) {
     throw new TypeError('Invalid route memory schema');
   }
 
-  return {
+  let verifiedHistory = true;
+  let verificationError = null;
+
+  // Revalidate predecessor chain if events are present
+  if (Array.isArray(parsed.events) && parsed.events.length > 0) {
+    try {
+      const chainVerification = verifyGovernedEventChain(
+        parsed.events,
+        parsed.earlier_observed_state?.genesis_digest,
+        {
+          expectedHeadDigest: parsed.head_digest,
+          declaredTerminalHeadDigest: parsed.head_digest
+        }
+      );
+      if (!chainVerification.predecessor_chain_verified) {
+        verifiedHistory = false;
+        verificationError = chainVerification.violations[0]?.message || 'Predecessor chain verification failed';
+      }
+    } catch (err) {
+      verifiedHistory = false;
+      verificationError = err.message;
+    }
+  }
+
+  // Revalidate outbound payload digest if present
+  if (verifiedHistory && parsed.outbound_payload && Array.isArray(parsed.events) && parsed.events[0]) {
+    try {
+      const computedOutboundDigest = computePayloadDigest(parsed.outbound_payload);
+      if (parsed.events[0].payload_envelope_digest !== computedOutboundDigest) {
+        verifiedHistory = false;
+        verificationError = 'Restored outbound payload does not match committed event digest';
+      }
+    } catch (err) {
+      verifiedHistory = false;
+      verificationError = err.message;
+    }
+  }
+
+  const restoredSession = {
     schema: SEQUENCE_6_JOURNEY_SCHEMA,
     session_id: parsed.session_id,
-    current_stage: parsed.current_stage,
-    jurisdiction: mapStageToJurisdiction(parsed.current_stage),
-    flowcore_relation: mapStageToFlowcoreRelation(parsed.current_stage),
+    current_stage: verifiedHistory ? parsed.current_stage : 'HOLD',
+    jurisdiction: verifiedHistory ? mapStageToJurisdiction(parsed.current_stage) : 'hold',
+    flowcore_relation: verifiedHistory ? mapStageToFlowcoreRelation(parsed.current_stage) : 'protected_continuity',
     earlier_observed_state: deepFreeze(parsed.earlier_observed_state),
+    current_origin_state: parsed.current_origin_state ? deepFreeze(parsed.current_origin_state) : null,
+    attempts: parsed.attempts || [],
+    outbound_payload: parsed.outbound_payload || null,
+    outbound_payload_digest: parsed.outbound_payload_digest || null,
     later_return_state: parsed.later_return_state ? deepFreeze(parsed.later_return_state) : null,
     current_reconstructed_state: parsed.current_reconstructed_state ? deepFreeze(parsed.current_reconstructed_state) : null,
     events: parsed.events || [],
     outbound_authorization: null, // Strictly closed! ROUTE_MEMORY != AUTHORITY_MEMORY
-    hold_state: parsed.hold_state || null,
     head_digest: parsed.head_digest,
     expected_head_digest: parsed.expected_head_digest,
+    hold_state: verifiedHistory ? (parsed.hold_state || null) : {
+      defect_code: 'RESTORED_CHAIN_CORRUPT',
+      defect_message: `Restored route memory failed cryptographic revalidation: ${verificationError}`,
+      missing_evidence: 'Cryptographically valid event chain and payload content digests'
+    },
     route_memory: {
       ...parsed.route_memory,
       restored_at_iso: new Date().toISOString()
     },
-    claim_ceilings: JOURNEY_CLAIM_CEILINGS
+    claim_ceilings: JOURNEY_CLAIM_CEILINGS,
+    restored_history_verified: verifiedHistory,
+    custody_status: verifiedHistory ? 'RESTORED_VERIFIED' : 'RESTORED_UNVERIFIED_HELD'
   };
+
+  return restoredSession;
 }
 
 /**
@@ -804,6 +1091,8 @@ export function generateJourneyPresentation(session, {
   const snapshot = {
     directorDirection: 'directors_cut',
     jurisdiction,
+    stage: session.current_stage,
+    isCandidate: session.current_stage === 'RETURN_REENTRY',
     relationState: {
       relation_key: relation,
       progress: 0.5
@@ -818,6 +1107,8 @@ export function generateJourneyPresentation(session, {
   const svg = generateSvgSnapshot(frame, {
     directorDirection: 'directors_cut',
     jurisdiction,
+    stage: session.current_stage,
+    isCandidate: session.current_stage === 'RETURN_REENTRY',
     authorityClass: snapshot.authorityClass,
     detachedDelegation: snapshot.isDetachedDelegation
   });
@@ -832,5 +1123,21 @@ export function generateJourneyPresentation(session, {
     jurisdiction,
     stage: session.current_stage,
     flowcore_relation: relation
+  };
+}
+
+/**
+ * Adapts a Sequence 6 outbound payload into the schema expected by existing Loom AI handoff.
+ * Normalizes documents to id, name, and text without extra transport keys.
+ */
+export function toLoomAiTaskInput(payload) {
+  return {
+    task: payload.task,
+    documents: (payload.documents || []).map(doc => ({
+      id: doc.id,
+      name: doc.name,
+      text: doc.text
+    })),
+    rules: [...(payload.rules || [])]
   };
 }

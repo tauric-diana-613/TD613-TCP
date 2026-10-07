@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>TD613 · Sequence 6 · Tranche 3 Journey Integration</title>
+  <title>TD613 · Sequence 6 · Tranche 3A Actual Product Cutover &amp; Custody</title>
   <style>
     :root {
       --bg: #06070a;
@@ -17,6 +17,7 @@
       --emerald: #10b981;
       --rose: #f43f5e;
       --purple: #c084fc;
+      --sky: #38bdf8;
       --mono: 'JetBrains Mono', ui-monospace, monospace;
       --serif: 'Cinzel', 'Noto Serif SC', 'Bodoni Moda', Georgia, serif;
       --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -35,7 +36,7 @@
 
     /* Header */
     header.journey-header {
-      background: rgba(13, 16, 23, 0.88);
+      background: rgba(13, 16, 23, 0.92);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--panel-border);
       padding: 12px 24px;
@@ -74,7 +75,7 @@
       padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 16px;
       overflow-y: auto;
     }
 
@@ -93,7 +94,7 @@
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--panel-border);
       border-radius: 6px;
-      padding: 10px 12px;
+      padding: 9px 12px;
       text-align: left;
       cursor: pointer;
       color: var(--text-muted);
@@ -108,8 +109,13 @@
       border-color: var(--gold);
       color: #fff;
     }
+    .stage-btn.candidate.active {
+      background: rgba(56, 189, 248, 0.1);
+      border-color: var(--sky);
+      color: #fff;
+    }
     .stage-btn strong { font-size: 0.82rem; font-weight: 600; display: flex; align-items: center; justify-content: space-between; }
-    .stage-btn span { font-size: 0.7rem; color: var(--text-dim); font-family: var(--mono); }
+    .stage-btn span { font-size: 0.68rem; color: var(--text-dim); font-family: var(--mono); }
 
     /* Viewport & Motion Controls */
     .control-row { display: flex; gap: 8px; }
@@ -134,7 +140,7 @@
 
     /* Stage Panel & Stage Info */
     .info-card {
-      background: rgba(0, 0, 0, 0.25);
+      background: rgba(0, 0, 0, 0.35);
       border: 1px solid var(--panel-border);
       border-radius: 6px;
       padding: 12px;
@@ -145,7 +151,8 @@
     .info-card p { color: var(--text-muted); margin-bottom: 6px; }
     .info-card p:last-child { margin-bottom: 0; }
 
-    /* Stage Action Buttons */
+    /* Action Buttons */
+    .action-group { display: flex; flex-direction: column; gap: 8px; }
     .action-btn {
       width: 100%;
       background: var(--gold);
@@ -157,13 +164,24 @@
       font-size: 0.82rem;
       cursor: pointer;
       transition: opacity 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
     }
     .action-btn:hover { opacity: 0.9; }
+    .action-btn.candidate {
+      background: var(--sky);
+      color: #04101d;
+    }
+    .action-btn.rest {
+      background: #b45309;
+      color: #fdf6e2;
+    }
     .action-btn.secondary {
       background: rgba(255, 255, 255, 0.08);
       color: var(--text);
       border: 1px solid var(--panel-border);
-      margin-top: 6px;
     }
 
     /* Right Display Canvas */
@@ -223,6 +241,10 @@
       color: var(--text-dim);
     }
     .telemetry-bar strong { color: var(--cyan); }
+    .telemetry-bar .badge-candidate { color: var(--sky); }
+
+    /* Hidden Host Containers for wired product modules */
+    .hidden-wire-mount { display: none; }
   </style>
 </head>
 <body>
@@ -230,17 +252,17 @@
 <header class="journey-header">
   <div class="brand-group">
     <span class="sigil">𝌋</span>
-    <span class="journey-title">Sequence 6 · End-to-End Journey</span>
-    <span class="claim-badge">COUTURE TECTONIC FEDERALISM // TRANCHE 3</span>
+    <span class="journey-title">Sequence 6 · Actual Product Cutover &amp; Custody</span>
+    <span class="claim-badge">COUTURE TECTONIC FEDERALISM // TRANCHE 3A</span>
   </div>
-  <div class="claim-badge">MINIMUM SURVIVING VERTICAL SLICE PROVEN</div>
+  <div class="claim-badge">ACTUAL ROUTE MACHINERY WIRED // RFC 8785 VERIFIED</div>
 </header>
 
 <main class="journey-main">
   <!-- Left Control Sidebar -->
   <aside class="journey-sidebar">
     <div>
-      <div class="section-title">Journey Stage (Vertical Slice)</div>
+      <div class="section-title">Journey Stage (Continuous Route)</div>
       <div class="stage-list" id="stageList">
         <button class="stage-btn active" data-stage="LOOM_ORIGIN">
           <strong>1. Loom Origin <span>GATHERING</span></strong>
@@ -251,20 +273,24 @@
           <span>Authorization Boundary // INV-01..04</span>
         </button>
         <button class="stage-btn" data-stage="MARROWLINE_CONTINUATION">
-          <strong>3. Marrowline <span>RELEASE</span></strong>
+          <strong>3. Marrowline Continuation <span>RELEASE</span></strong>
           <span>Continuation chamber // Model response</span>
+        </button>
+        <button class="stage-btn candidate" data-stage="RETURN_REENTRY">
+          <strong>4. Returned Candidate <span>TENDENCY</span></strong>
+          <span>Loom Threshold // Unadmitted candidate</span>
+        </button>
+        <button class="stage-btn" data-stage="RECEIPT_INSPECTION">
+          <strong>5. Receipt Inspection <span>EVIDENCE</span></strong>
+          <span>Calm Monospace // Admitted local ledger</span>
+        </button>
+        <button class="stage-btn" data-stage="STRUCTURAL_REST">
+          <strong>6. Structural Rest <span>REST 𝄐</span></strong>
+          <span>Kinetic resolution // Settled carriers</span>
         </button>
         <button class="stage-btn" data-stage="HOLD">
           <strong>• Hold State <span>DEFICIT</span></strong>
           <span>Inspectable Deficit // Actionable recovery</span>
-        </button>
-        <button class="stage-btn" data-stage="RECEIPT_INSPECTION">
-          <strong>4. Receipt Inspection <span>TENDENCY</span></strong>
-          <span>Calm Monospace // Predecessor verification</span>
-        </button>
-        <button class="stage-btn" data-stage="STRUCTURAL_REST">
-          <strong>5. Structural Rest <span>REST 𝄐</span></strong>
-          <span>Kinetic resolution // Settled carriers</span>
         </button>
       </div>
     </div>
@@ -291,8 +317,8 @@
       <p id="infoJurisdiction" style="font-family: var(--mono); color: var(--emerald);">Jurisdiction: LIVING_FIELD</p>
     </div>
 
-    <div>
-      <button class="action-btn" id="btnNextStep">Advance Journey →</button>
+    <div class="action-group" id="actionGroup">
+      <button class="action-btn" id="btnPrimaryAction">Authorize Outbound Carriage →</button>
       <button class="action-btn secondary" id="btnResetJourney">Reset to Origin</button>
     </div>
   </aside>
@@ -309,10 +335,17 @@
       <span>STAGE: <strong id="telStage">LOOM_ORIGIN</strong></span>
       <span>JURISDICTION: <strong id="telJurisdiction">LIVING_FIELD</strong></span>
       <span>CARRIERS: <strong>39 (6N / 13M / 20F)</strong></span>
-      <span>CLOCK: <strong id="telClock">SOVEREIGN_COORDINATOR</strong></span>
+      <span>HEAD STATUS: <strong id="telHeadStatus">GENESIS</strong></span>
     </div>
   </section>
 </main>
+
+<!-- Hidden DOM mounts for actual route module integration -->
+<div class="hidden-wire-mount">
+  <div id="marrowlineLoomMount"></div>
+  <div id="reentryWorkspaceMount"></div>
+  <div id="returnedSessionReviewMount"></div>
+</div>
 
 <script type="module">
   import {
@@ -323,80 +356,224 @@
     processReturnPacket,
     admitCandidateToLoomLedger,
     enterStructuralRest,
+    concludeJourneyWithRest,
+    recoverFromHold,
+    exportRouteMemory,
+    restoreRouteMemory,
     generateJourneyPresentation,
+    toLoomAiTaskInput,
     mapStageToJurisdiction
   } from '../engine/sequence-6-journey.js';
 
+  import {
+    createLoomAiHandoff,
+    consumeLoomAiHandoff
+  } from './holonomy-loom/ai-handoff.js';
+
+  import {
+    mountMarrowlineLoomTask
+  } from './marrowline-loom-import.js';
+
+  import {
+    mountPortableLoomReentryWorkspace
+  } from './holonomy-loom/reentry-workspace.js';
+
+  import {
+    mountReturnedSessionReview
+  } from './holonomy-loom/returned-session-review.js';
+
   // Read URL search params for headless chrome screenshot automation
   const urlParams = new URLSearchParams(window.location.search);
-  const initialStage = (urlParams.get('stage') || 'LOOM_ORIGIN').toUpperCase();
+  const targetStageParam = (urlParams.get('stage') || 'LOOM_ORIGIN').toUpperCase();
   const initialVp = urlParams.get('vp') || 'desktop';
   const initialReduced = urlParams.get('reducedMotion') === 'true';
 
-  let currentStage = initialStage;
   let isMobileVp = initialVp === 'mobile';
   let isReducedMotion = initialReduced;
   let journeySession = null;
   let outboundEnvelope = null;
+  let handoffToken = null;
   let returnPacket = null;
 
-  function initSession() {
+  function initOriginSession() {
     journeySession = createSequence6JourneySession({
       task: 'Evaluate fictional vendor diligence brief with selected documents.',
       documents: [
         { id: 'doc-1', name: 'Vendor A Offer', text: 'Backup retention permitted up to 45 days.', share: true },
         { id: 'doc-2', name: 'Private Staging Notes', text: 'Confidential client data.', share: false }
-      ]
+      ],
+      rules: ['Preserve source modality: backup retention up to 45 days is a contractual limit.']
     });
+    outboundEnvelope = null;
+    handoffToken = null;
+    returnPacket = null;
   }
 
-  initSession();
+  // Section IX: Advance session sequentially through genuine events to reach requested stage
+  async function advanceSessionToStage(targetStage) {
+    initOriginSession();
 
-  const STAGE_ORDER = [
-    'LOOM_ORIGIN',
-    'EXPLICIT_OUTBOUND_AUTHORIZATION',
-    'MARROWLINE_CONTINUATION',
-    'RECEIPT_INSPECTION',
-    'STRUCTURAL_REST'
-  ];
+    if (targetStage === 'LOOM_ORIGIN') {
+      return;
+    }
+
+    // Step 1: Issue Outbound Authorization with qualifying operator gesture
+    const opGesture = {
+      gesture_id: 'gest_browser_operator_' + Date.now(),
+      type: 'CLICK',
+      target: 'authorize_and_send_button',
+      timestamp: new Date().toISOString()
+    };
+    issueOutboundAuthorization(journeySession, { operatorGesture: opGesture });
+    outboundEnvelope = prepareOutboundHandoff(journeySession);
+
+    // Wire real Loom AI handoff machinery
+    try {
+      const loomInput = toLoomAiTaskInput(outboundEnvelope.payload);
+      const handoffUri = await createLoomAiHandoff(loomInput, window);
+      if (handoffUri && handoffUri.includes('=')) {
+        handoffToken = handoffUri.split('=')[1];
+      }
+    } catch (e) {
+      console.warn('Loom handoff wire note:', e.message);
+    }
+
+    if (targetStage === 'EXPLICIT_OUTBOUND_AUTHORIZATION') {
+      return;
+    }
+
+    // Step 2: Marrowline Continuation
+    if (handoffToken) {
+      try {
+        const consumed = await consumeLoomAiHandoff(handoffToken, window);
+        const mount = document.getElementById('marrowlineLoomMount');
+        if (mount && consumed) mountMarrowlineLoomTask(mount, consumed, window);
+      } catch (e) {
+        console.warn('Marrowline consumption note:', e.message);
+      }
+    }
+
+    returnPacket = executeMarrowlineContinuation(journeySession, outboundEnvelope, {
+      responseText: 'Reconciled 12-month stated fees: Vendor A requires 137,591.52 credits. Contractual retention is 45 days.',
+      usedDocumentIds: ['doc-1'],
+      missingInformation: ['Discovery into physical media shredding certificates pending.']
+    });
+
+    if (targetStage === 'MARROWLINE_CONTINUATION') {
+      return;
+    }
+
+    // Step 3: Return packet received at Loom Threshold (RETURN_REENTRY)
+    processReturnPacket(journeySession, returnPacket);
+
+    if (targetStage === 'RETURN_REENTRY' || targetStage === 'RETURNED_CANDIDATE') {
+      journeySession.current_stage = 'RETURN_REENTRY';
+      return;
+    }
+
+    if (targetStage === 'HOLD') {
+      journeySession.current_stage = 'HOLD';
+      journeySession.jurisdiction = 'hold';
+      journeySession.hold_state = {
+        defect_code: 'INDEPENDENT_HEAD_ANCHOR_MISMATCH',
+        defect_message: 'Terminal event digest does not match independent expected head anchor witness.',
+        missing_evidence: 'Independent head anchor matching declared candidate head'
+      };
+      return;
+    }
+
+    // Step 4: Operator local ledger admission
+    admitCandidateToLoomLedger(journeySession, {
+      explicitAcknowledgment: true,
+      operatorId: 'operator_primary'
+    });
+
+    // Wire re-entry review inspection component
+    try {
+      const reviewMount = document.getElementById('returnedSessionReviewMount');
+      if (reviewMount) {
+        mountReturnedSessionReview(reviewMount, {
+          environment: window,
+          getOrigin: () => journeySession.earlier_observed_state,
+          getChild: () => null,
+          getProtectedTerms: () => [],
+          onReview: () => {}
+        });
+      }
+    } catch (e) {
+      console.warn('Review component note:', e.message);
+    }
+
+    if (targetStage === 'RECEIPT_INSPECTION') {
+      return;
+    }
+
+    // Step 5: Lawful Structural Rest (𝄐)
+    if (targetStage === 'STRUCTURAL_REST') {
+      enterStructuralRest(journeySession, { reason: 'Receipts verified; local ledger committed; structural rest achieved.' });
+    }
+  }
 
   const STAGE_DESCRIPTIONS = {
     LOOM_ORIGIN: {
       title: '1. Loom Origin',
       desc: 'Selected task and documents gathered at local origin. No external request has been made. Default-deny in force under INV-01.',
-      jur: 'LIVING_FIELD'
+      jur: 'LIVING_FIELD',
+      btnText: 'Authorize Outbound Carriage →',
+      btnClass: 'action-btn'
     },
     EXPLICIT_OUTBOUND_AUTHORIZATION: {
       title: '2. Outbound Boundary',
       desc: 'Explicit qualifying authorization granted under INV-01..04. Single-shot ephemeral token armed. External carriage clearly separated from detached delegation.',
-      jur: 'AUTHORIZATION_BOUNDARY'
+      jur: 'AUTHORIZATION_BOUNDARY',
+      btnText: 'Execute Marrowline Continuation →',
+      btnClass: 'action-btn'
     },
     MARROWLINE_CONTINUATION: {
       title: '3. Marrowline Continuation',
       desc: 'Task context received in Marrowline chamber. Follow-up continued with model. Predecessor chain unbroken.',
-      jur: 'LIVING_FIELD'
+      jur: 'LIVING_FIELD',
+      btnText: 'Process Return to Loom Threshold →',
+      btnClass: 'action-btn'
+    },
+    RETURN_REENTRY: {
+      title: '4. Returned Candidate (Loom Threshold)',
+      desc: 'Returned packet checked for session ID, genesis digest, route identity, and payload integrity. Candidate waiting at Loom threshold before local admission.',
+      jur: 'RECEIPT_INSPECTION',
+      btnText: 'Admit Candidate into Loom Ledger ✓',
+      btnClass: 'action-btn candidate'
+    },
+    RECEIPT_INSPECTION: {
+      title: '5. Receipt Inspection (Admitted Head)',
+      desc: 'Candidate admitted into local ledger upon explicit operator review. Calm monospace evidence with [OBSERVED], [DERIVED], [HELD]. Predecessor chain complete.',
+      jur: 'RECEIPT_INSPECTION',
+      btnText: 'Conclude with Structural Rest (𝄐) →',
+      btnClass: 'action-btn rest'
+    },
+    STRUCTURAL_REST: {
+      title: '6. Structural Rest (𝄐)',
+      desc: 'Current obligation genuinely resolved upon explicit local admission. 𝄐 settles motion; historical records preserved.',
+      jur: 'STRUCTURAL_REST',
+      btnText: 'Journey Complete · Settle at Rest 𝄐',
+      btnClass: 'action-btn secondary'
     },
     HOLD: {
       title: '• Hold State',
       desc: 'Forward progress restrained by inspectable evidence deficit. Actionable options available: inspect, retry, abort.',
-      jur: 'HOLD'
-    },
-    RECEIPT_INSPECTION: {
-      title: '4. Receipt Inspection',
-      desc: 'Returned candidate checked against predecessor chain and RFC 8785 canonicalization. Calm monospace evidence with [OBSERVED], [DERIVED], [HELD].',
-      jur: 'RECEIPT_INSPECTION'
-    },
-    STRUCTURAL_REST: {
-      title: '5. Structural Rest',
-      desc: 'Current obligation genuinely resolved upon explicit local admission. 𝄐 settles motion; historical records preserved.',
-      jur: 'STRUCTURAL_REST'
+      jur: 'HOLD',
+      btnText: 'Retry with Fresh Authorization ↺',
+      btnClass: 'action-btn secondary'
     }
   };
 
   function updateUi() {
-    // Sync buttons
+    const currentStage = journeySession.current_stage;
+
+    // Sync sidebar stage buttons
     document.querySelectorAll('.stage-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.stage === currentStage);
+      const bStage = btn.dataset.stage;
+      const isActive = bStage === currentStage || (currentStage === 'RETURN_REENTRY' && bStage === 'RETURN_REENTRY');
+      btn.classList.toggle('active', isActive);
     });
 
     const info = STAGE_DESCRIPTIONS[currentStage] || STAGE_DESCRIPTIONS.LOOM_ORIGIN;
@@ -404,8 +581,26 @@
     document.getElementById('infoDesc').textContent = info.desc;
     document.getElementById('infoJurisdiction').textContent = `Jurisdiction: ${info.jur}`;
 
+    const btnPrimary = document.getElementById('btnPrimaryAction');
+    btnPrimary.textContent = info.btnText;
+    btnPrimary.className = info.btnClass;
+
     document.getElementById('telStage').textContent = currentStage;
     document.getElementById('telJurisdiction').textContent = info.jur;
+    const headStatusEl = document.getElementById('telHeadStatus');
+    if (currentStage === 'RETURN_REENTRY') {
+      headStatusEl.textContent = 'UNADMITTED_CANDIDATE';
+      headStatusEl.className = 'badge-candidate';
+    } else if (currentStage === 'RECEIPT_INSPECTION') {
+      headStatusEl.textContent = 'ADMITTED_INTO_LEDGER';
+      headStatusEl.className = '';
+    } else if (currentStage === 'STRUCTURAL_REST') {
+      headStatusEl.textContent = 'SETTLED_AT_REST';
+      headStatusEl.className = '';
+    } else {
+      headStatusEl.textContent = journeySession.head_digest ? 'CHAIN_ACTIVE' : 'GENESIS';
+      headStatusEl.className = '';
+    }
 
     // Viewport mode
     const container = document.getElementById('canvasContainer');
@@ -415,9 +610,6 @@
 
     document.getElementById('btnMotionActive').classList.toggle('active', !isReducedMotion);
     document.getElementById('btnMotionReduced').classList.toggle('active', isReducedMotion);
-
-    // Setup session according to current stage
-    setupSessionForStage(currentStage);
 
     // Generate presentation
     const vp = isMobileVp
@@ -433,45 +625,69 @@
     document.getElementById('svgWrapper').innerHTML = presentation.svg;
   }
 
-  function setupSessionForStage(stage) {
-    initSession();
+  // Interactive Continuous Stepper (Section IX)
+  document.getElementById('btnPrimaryAction').addEventListener('click', async () => {
+    const stage = journeySession.current_stage;
     if (stage === 'LOOM_ORIGIN') {
-      journeySession.current_stage = 'LOOM_ORIGIN';
-    } else if (stage === 'EXPLICIT_OUTBOUND_AUTHORIZATION') {
-      issueOutboundAuthorization(journeySession);
-      outboundEnvelope = prepareOutboundHandoff(journeySession);
-    } else if (stage === 'MARROWLINE_CONTINUATION') {
-      issueOutboundAuthorization(journeySession);
-      outboundEnvelope = prepareOutboundHandoff(journeySession);
-      returnPacket = executeMarrowlineContinuation(journeySession, outboundEnvelope);
-    } else if (stage === 'HOLD') {
-      journeySession.current_stage = 'HOLD';
-      journeySession.hold_state = {
-        defect_code: 'UNRESOLVED_COMPARATOR_VARIANCE',
-        defect_message: 'Vendor offer components could not be reconciled with stated totals.',
-        missing_evidence: 'Direct cost breakdown matching contract line items'
+      const opGesture = {
+        gesture_id: 'gest_browser_click_' + Date.now(),
+        type: 'CLICK',
+        target: 'authorize_and_send_button',
+        timestamp: new Date().toISOString()
       };
+      issueOutboundAuthorization(journeySession, { operatorGesture: opGesture });
+      outboundEnvelope = prepareOutboundHandoff(journeySession);
+      try {
+        const loomInput = toLoomAiTaskInput(outboundEnvelope.payload);
+        const handoffUri = await createLoomAiHandoff(loomInput, window);
+        if (handoffUri && handoffUri.includes('=')) {
+          handoffToken = handoffUri.split('=')[1];
+        }
+      } catch (e) {
+        console.warn('Loom handoff wire note:', e.message);
+      }
+    } else if (stage === 'EXPLICIT_OUTBOUND_AUTHORIZATION') {
+      if (handoffToken) {
+        try {
+          const consumed = await consumeLoomAiHandoff(handoffToken, window);
+          const mount = document.getElementById('marrowlineLoomMount');
+          if (mount && consumed) mountMarrowlineLoomTask(mount, consumed, window);
+        } catch (e) {
+          console.warn('Marrowline consumption note:', e.message);
+        }
+      }
+      returnPacket = executeMarrowlineContinuation(journeySession, outboundEnvelope, {
+        responseText: 'Reconciled 12-month stated fees: Vendor A requires 137,591.52 credits. Contractual retention is 45 days.',
+        usedDocumentIds: ['doc-1'],
+        missingInformation: ['Discovery into physical media shredding certificates pending.']
+      });
+    } else if (stage === 'MARROWLINE_CONTINUATION') {
+      processReturnPacket(journeySession, returnPacket);
+    } else if (stage === 'RETURN_REENTRY') {
+      admitCandidateToLoomLedger(journeySession, {
+        explicitAcknowledgment: true,
+        operatorId: 'operator_browser'
+      });
     } else if (stage === 'RECEIPT_INSPECTION') {
-      issueOutboundAuthorization(journeySession);
-      outboundEnvelope = prepareOutboundHandoff(journeySession);
-      returnPacket = executeMarrowlineContinuation(journeySession, outboundEnvelope);
-      processReturnPacket(journeySession, returnPacket, { expectedHeadDigest: returnPacket.terminal_head_digest });
-    } else if (stage === 'STRUCTURAL_REST') {
-      issueOutboundAuthorization(journeySession);
-      outboundEnvelope = prepareOutboundHandoff(journeySession);
-      returnPacket = executeMarrowlineContinuation(journeySession, outboundEnvelope);
-      processReturnPacket(journeySession, returnPacket, { expectedHeadDigest: returnPacket.terminal_head_digest });
-      admitCandidateToLoomLedger(journeySession, { explicitAcknowledgment: true });
-      enterStructuralRest(journeySession);
+      enterStructuralRest(journeySession, { reason: 'Operator verified evidence ledger and closed obligation.' });
+    } else if (stage === 'HOLD') {
+      recoverFromHold(journeySession, 'RETRY');
     }
-  }
+    updateUi();
+  });
 
-  // Event handlers
+  // Direct Stage Navigation (advances sequentially)
   document.querySelectorAll('.stage-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      currentStage = btn.dataset.stage;
+    btn.addEventListener('click', async () => {
+      const targetStage = btn.dataset.stage;
+      await advanceSessionToStage(targetStage);
       updateUi();
     });
+  });
+
+  document.getElementById('btnResetJourney').addEventListener('click', () => {
+    initOriginSession();
+    updateUi();
   });
 
   document.getElementById('btnVpDesktop').addEventListener('click', () => {
@@ -492,21 +708,8 @@
     updateUi();
   });
 
-  document.getElementById('btnNextStep').addEventListener('click', () => {
-    const idx = STAGE_ORDER.indexOf(currentStage);
-    if (idx !== -1 && idx < STAGE_ORDER.length - 1) {
-      currentStage = STAGE_ORDER[idx + 1];
-    } else {
-      currentStage = STAGE_ORDER[0];
-    }
-    updateUi();
-  });
-
-  document.getElementById('btnResetJourney').addEventListener('click', () => {
-    currentStage = 'LOOM_ORIGIN';
-    updateUi();
-  });
-
+  // Initial bootstrap: advance sequentially to match targetStageParam
+  await advanceSessionToStage(targetStageParam);
   updateUi();
 </script>
 

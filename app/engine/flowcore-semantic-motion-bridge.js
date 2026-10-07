@@ -1131,6 +1131,8 @@ export function renderDomeArt(viewId, worldSnapshot = {}, viewport = {}, time = 
     draw: true,
     director_direction: directorDirection,
     jurisdiction,
+    stage: worldSnapshot.stage || null,
+    is_candidate: Boolean(worldSnapshot.isCandidate || worldSnapshot.is_candidate || worldSnapshot.stage === 'RETURN_REENTRY'),
     authority_class: authorityClass,
     is_detached_delegation: isDetachedDelegation,
     descriptor,
@@ -1508,7 +1510,16 @@ export function renderDirectorsCutSvg(frame, options = {}) {
     </g>`;
     }).join('\n');
   } else if (jurisdiction === 'receipt_inspection') {
-    const cardLabels = [
+    const isCandidate = Boolean(options.isCandidate || options.stage === 'RETURN_REENTRY' || frame.is_candidate || frame.stage === 'RETURN_REENTRY');
+    const candidateLabels = [
+      { tag: '[CANDIDATE]', text: 'RETURN PACKET RECEIVED // SESSION BOUND', col: '#38bdf8' },
+      { tag: '[OBSERVED]',  text: 'PREDECESSOR CHAIN VERIFIED // UNANCHORED', col: '#10b981' },
+      { tag: '[OBSERVED]',  text: 'TERMINAL HEAD COMPUTED // RFC 8785 OK', col: '#10b981' },
+      { tag: '[PENDING]',   text: 'LOCAL LOOM ADMISSION REQUIRED', col: '#f59e0b' },
+      { tag: '[CEILING]',   text: 'RECEIVER_LOCAL != LOOM_ADMISSION', col: '#f43f5e' },
+      { tag: '[HELD]',      text: 'EXTERNAL CARRIAGE ADVANCEMENT HELD', col: '#f59e0b' }
+    ];
+    const admittedLabels = [
       { tag: '[OBSERVED]', text: '50 SACRIFICIAL UNITS // 0 RETRIES', col: '#10b981' },
       { tag: '[OBSERVED]', text: 'PREDECESSOR CHAIN // MONOTONIC TIME', col: '#10b981' },
       { tag: '[OBSERVED]', text: 'AUDIT WITNESSES // 678 COMMITTED BLOBS', col: '#10b981' },
@@ -1516,14 +1527,16 @@ export function renderDirectorsCutSvg(frame, options = {}) {
       { tag: '[HELD]',     text: 'K3 PAIR-04 TRANSITION (DIAGNOSTIC)', col: '#f59e0b' },
       { tag: '[HELD]',     text: 'APERTURE TREATMENT EFFECT (NULL)', col: '#f59e0b' }
     ];
+    const cardLabels = isCandidate ? candidateLabels : admittedLabels;
     let cardIdx = 0;
     carriersXml = frame.carriers.map(c => {
       const tr = `translate(${c.x} ${c.y}) rotate(${c.roll}) scale(${c.scale}) translate(${-c.x} ${-c.y})`;
       if (c.carrier.near) {
         const item = cardLabels[cardIdx % cardLabels.length];
         cardIdx++;
-        return `    <g class="receipt-card" transform="${tr}">
-      <rect x="${c.x - 170}" y="${c.y - 28}" width="340" height="56" fill="#0d1117" stroke="#334155" stroke-width="1.2" rx="3" opacity="${c.opacity}"/>
+        const strokeCol = isCandidate ? '#0284c7' : '#334155';
+        return `    <g class="${isCandidate ? 'candidate-card' : 'receipt-card'}" transform="${tr}">
+      <rect x="${c.x - 170}" y="${c.y - 28}" width="340" height="56" fill="#0d1117" stroke="${strokeCol}" stroke-width="1.2" rx="3" opacity="${c.opacity}"/>
       <rect x="${c.x - 164}" y="${c.y - 22}" width="72" height="18" fill="#1e293b" rx="2"/>
       <text x="${c.x - 128}" y="${c.y - 10}" font-size="8" font-family="'JetBrains Mono', monospace" font-weight="700" fill="${item.col}" text-anchor="middle">${item.tag}</text>
       <text x="${c.x - 84}" y="${c.y - 10}" font-size="8.5" font-family="'JetBrains Mono', monospace" fill="#e2e8f0">${item.text}</text>
@@ -1645,10 +1658,17 @@ export function renderDirectorsCutSvg(frame, options = {}) {
     <text x="${compact ? 490 : 556}" y="64" font-size="7" font-family="'JetBrains Mono', monospace" fill="#94a3b8">${rightHeaderSub}</text>
   </g>`;
   } else if (jurisdiction === 'receipt_inspection') {
+    const isCandidate = Boolean(options.isCandidate || options.stage === 'RETURN_REENTRY' || frame.is_candidate || frame.stage === 'RETURN_REENTRY');
+    const headerTitle = isCandidate
+      ? 'TD613 RETURN / RE-ENTRY // CANDIDATE AT THRESHOLD'
+      : 'TD613 EVIDENCE &amp; RECEIPT LEDGER // APERTURE REGISTER';
+    const headerSub = isCandidate
+      ? 'RECEIVER LOCAL STATE != LOOM ADMISSION · AWAITING EXPLICIT OPERATOR ADMISSION'
+      : 'CALM HIERARCHY · ZERO RADAR THEATER · RFC 8785 VERIFIED';
     centerContentXml = `  <g class="receipt-header" text-anchor="middle">
-    <text x="500" y="44" font-size="11" font-family="'JetBrains Mono', monospace" font-weight="700" fill="#e2e8f0" letter-spacing="3">TD613 EVIDENCE &amp; RECEIPT LEDGER // APERTURE REGISTER</text>
-    <text x="500" y="58" font-size="7.5" font-family="'JetBrains Mono', monospace" fill="#94a3b8">CALM HIERARCHY · ZERO RADAR THEATER · RFC 8785 VERIFIED</text>
-    <line x1="${compact ? 220 : 80}" y1="68" x2="${compact ? 780 : 920}" y2="68" stroke="#334155" stroke-width="0.8"/>
+    <text x="500" y="44" font-size="11" font-family="'JetBrains Mono', monospace" font-weight="700" fill="${isCandidate ? '#38bdf8' : '#e2e8f0'}" letter-spacing="3">${headerTitle}</text>
+    <text x="500" y="58" font-size="7.5" font-family="'JetBrains Mono', monospace" fill="#94a3b8">${headerSub}</text>
+    <line x1="${compact ? 220 : 80}" y1="68" x2="${compact ? 780 : 920}" y2="68" stroke="${isCandidate ? '#0284c7' : '#334155'}" stroke-width="0.8"/>
   </g>`;
   } else if (jurisdiction === 'structural_rest') {
     centerContentXml = `  <g class="rest-center-monolith" text-anchor="middle">

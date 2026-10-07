@@ -87,7 +87,7 @@ server.listen(PORT, async () => {
     },
     {
       name: 'browser-journey-returned_candidate-desktop.png',
-      url: `http://localhost:${PORT}/app/dome-world/sequence-6-journey.html?stage=RECEIPT_INSPECTION&vp=desktop`,
+      url: `http://localhost:${PORT}/app/dome-world/sequence-6-journey.html?stage=RETURN_REENTRY&vp=desktop`,
       width: 1280,
       height: 800,
       label: 'BROWSER_VIEWPORT_WITNESS',
