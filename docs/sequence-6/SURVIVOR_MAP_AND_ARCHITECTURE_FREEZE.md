@@ -11,7 +11,7 @@ CANONICAL_STAGING_BRANCH:            staging/sequence-6-integration-20261006
 CANONICAL_BASE_COMMIT:               f309a35822afbb72ece865a379be40800ba8effa
 TRANCHE_1_INITIAL_COMMIT:            44946b22cc8e8313ab58f7e257270988984e7309
 TRANCHE_1_CORRECTIVE_COMMIT:         cd30af5450b9b4c8c6e13930e4c436c424f1fb69
-CURRENT_STAGE:                       REST_1_ARCHITECTURE_FREEZE_RECONCILIATION
+CURRENT_STAGE:                       REST_1_FINAL_RECONCILIATION
 
 CHRONOLOGY HONESTY NOTICE:
 LATE_REMOTE_ARCHIVAL != EARLIER_GIT_FREEZE
@@ -21,8 +21,11 @@ LATE_REMOTE_ARCHIVAL != EARLIER_GIT_FREEZE
 2. Initial Tranche 1 code was verified remotely at 44946b22c. Corrective hardening
    (RFC 8785 lone surrogate rejection, hole rejection, terminal head anchor) was
    admitted into canonical remote custody at cd30af545.
-3. This reconciled freeze document corrects all lineage and invariant contradictions
-   identified in the architecture freeze adjudication.
+3. This reconciled freeze document resolves all final adjudication requirements:
+   separating carrier count from opacity and depthGain, reconciling diagram INV
+   references, restoring Issue #405 transport law, classifying Dollhouse trial
+   comparisons as hypotheses, designating motion bindings as proposed aesthetic
+   bindings, and providing provider-qualified privacy terms.
 4. It does not rewrite Git chronology, backdate commits, or pretend to be an earlier
    commit than it is.
 ================================================================================
@@ -64,8 +67,13 @@ SEQUENCE_4_RELATION_SURVIVAL      ≠ INDEPENDENT_EXTERNAL_VALIDATION
   $$\text{ENGINEERING\_ADOPTION} \neq \text{SCIENTIFIC\_VALIDATION}$$  
   $$\text{RELATED\_RELATION\_SURVIVED} \neq \text{PRODUCT\_MECHANISM\_SURVIVED}$$
 * **Jurisdiction Invariants:**  
-  $$\text{MOTION\_INTERPRETATION} \neq \text{SEMANTIC\_REDEFINITION}$$  
-  $$\text{ORCHESTRATION\_TRIAL} \neq \text{FIXED\_MODEL\_ROSTER}$$  
+  $$\text{CARRIER\_COUNT} \neq \text{CSS\_OPACITY} \neq \text{MOTION\_DEPTH\_GAIN} \neq \text{RENDERED\_SCALE}$$  
+  $$\text{MOTION\_FAMILY\_ASSIGNMENT} \neq \text{CANONICAL\_RELATION\_SEMANTICS}$$  
+  $$\text{ARCHITECTURAL\_PLAUSIBILITY} \neq \text{MEASURED\_COMPARATIVE\_RESULT}$$  
+  $$\text{ORCHESTRATION\_GOES\_ON\_TRIAL} \neq \text{ORCHESTRATION\_TRIAL\_ALREADY\_DECIDED}$$  
+  $$\text{PRODUCT\_PRIVACY\_BOUNDARY} \neq \text{EXTERNAL\_PROVIDER\_POLICY}$$  
+  $$\text{OPERATOR\_AUTHORIZATION} \neq \text{TRANSPORT\_IDENTITY}$$  
+  $$\text{CONNECTOR\_TRANSPORT} \neq \text{AUTONOMOUS\_RELEASE\_AUTHORITY}$$  
   $$\text{VISUAL\_GRAMMAR} \neq \text{IMMUTABLE\_PALETTE}$$
 * **Epistemic Non-Equivalence Inequality:**  
   $$V \neq C \neq P \neq L$$
@@ -83,18 +91,21 @@ Sequence 6 partitions all inherited and newly designed repository mechanisms acr
 ```mermaid
 graph TD
     subgraph L1 [1. PRODUCT CORE]
-        PC1[Loom / Marrowline Journey]
-        PC2[Governed Event Chain INV-05]
-        PC3[Receiver-Relative State INV-06]
-        PC4[Cistern Boundary INV-08]
-        PC5[Rest & Exit INV-09 / INV-10]
-        PC6[Issue #405 Active Release Membrane]
+        PC1[Loom / Marrowline Product Journey]
+        PC2[Default-Deny & Ephemeral Auth (INV-01 / INV-02 / INV-03 / INV-04)]
+        PC3[Governed Predecessor Event Chain (INV-05)]
+        PC4[Provenance Authority Separation (INV-06)]
+        PC5[Missing Evidence Quarantined HOLD (INV-07)]
+        PC6[Retry Route Preservation (INV-08)]
+        PC7[Temporal Non-Retroactivity (INV-11)]
+        PC8[Issue #405 Governed Release Membrane]
     end
     subgraph L2 [2. RESEARCH LAB]
-        RL1[Aperture Epistemic Audit]
-        RL2[A15-R0 Mathematical Witness]
-        RL3[Dollhouse 5-Model Lab Trial]
-        RL4[Temporal Custodian Invariant Assay]
+        RL1[Finite Quotient Support Compatibility (INV-12)]
+        RL2[Aperture Epistemic Audit]
+        RL3[A15-R0 Mathematical Witness]
+        RL4[Dollhouse Architectural Trial (Models A-E)]
+        RL5[Temporal Custodian Invariant Assay]
     end
     subgraph L3 [3. SPECULATIVE FIELD]
         SF1[Loom Holonomy / Moiré]
@@ -103,16 +114,16 @@ graph TD
         SF4[Phason Seam Analogies]
     end
     subgraph L4 [4. AESTHETIC LAYER]
-        AL1[39-Carrier Flow-Core Field 6/13/20]
+        AL1[39-Carrier Depth Field 6/13/20]
         AL2[8 Canonical Semantic Relations]
-        AL3[renderDomeArt Single Clock]
+        AL3[renderDomeArt Single Clock Coordinator]
         AL4[Mugler Visual Grammar 🚬👄🩰]
     end
     subgraph L5 [5. EVIDENCE & RECEIPT LAYER]
-        ER1[Deterministic Receipts]
-        ER2[RFC 8785 Canonicalization Subset]
-        ER3[Terminal Head Anchors]
-        ER4[Claim Ceiling Enforcement]
+        ER1[Epistemic Layer Separation (INV-09)]
+        ER2[Exogenous Witness Boundary (INV-10)]
+        ER3[RFC 8785 Canonicalization Subset]
+        ER4[Terminal Head Anchors & Receipts]
     end
     subgraph L6 [6. HISTORICAL & LINEAGE LAYER]
         HL1[Lineage Catalogue 678 Blobs]
@@ -132,13 +143,13 @@ graph TD
 
 1. **PRODUCT CORE**  
    *Jurisdiction:* Runtime capabilities directly required for the operator to conduct governed work.  
-   *Rule:* Enforces zero unearned authority; strictly separates interactive operator direct actions, Amari connector requests, and detached delegated operations. Includes the active Issue #405 production release membrane.  
-   *Inhabitants:* Loom intake, Marrowline continuation, Native Return, Cistern Law, Rest/Exit, predecessor chaining, receiver-relative state, Issue #405 release membrane.
+   *Rule:* Enforces zero unearned authority; strictly separates interactive operator direct actions, Amari connector requests, and detached delegated operations. Hosts the active Issue #405 production release membrane.  
+   *Inhabitants:* Loom intake, Marrowline continuation, Native Return, Cistern Law, Rest/Exit, predecessor chaining (`INV-05`), default-deny (`INV-01`), explicit authorization (`INV-02`), ephemeral auth (`INV-03`), re-entry mandate (`INV-04`), provenance separation (`INV-06`), missing evidence HOLD (`INV-07`), retry route preservation (`INV-08`), temporal non-retroactivity (`INV-11`), Issue #405 release membrane.
 
 2. **RESEARCH LAB**  
    *Jurisdiction:* Controlled assays, falsification instruments, identifiability audits, and mathematical witnesses.  
    *Rule:* Cannot grant execution, merge, release, or production mutation authority. Produces bounded recommendations and diagnostic receipts only.  
-   *Inhabitants:* Aperture diagnostic engine, A15-R0 algebraic witnesses, Dollhouse multi-agent research trials, Temporal Custodian testing harness.
+   *Inhabitants:* Finite quotient support compatibility (`INV-12`), Aperture diagnostic engine, A15-R0 algebraic witnesses, Dollhouse multi-agent research trials (Models A–E), Temporal Custodian testing harness.
 
 3. **SPECULATIVE FIELD**  
    *Jurisdiction:* Mathematical and conceptual analogies whose formal proof or causal separation is unearned or non-identifying.  
@@ -153,7 +164,7 @@ graph TD
 5. **EVIDENCE / RECEIPT LAYER**  
    *Jurisdiction:* Cryptographic digests, verifiable receipts, tamper-evident chains, and claim ceiling bounds.  
    *Rule:* Must declare exact claim ceilings; receipts record what was observed/verified, never manufacturing external custody authority or proof of origin.  
-   *Inhabitants:* RFC 8785 deterministic canonicalization subset, domain-separated SHA-256 event chaining, terminal head anchors, claim ceilings.
+   *Inhabitants:* Epistemic layer separation (`INV-09`), exogenous witness boundary (`INV-10`), RFC 8785 deterministic canonicalization subset, domain-separated SHA-256 event chaining, terminal head anchors, claim ceilings.
 
 6. **HISTORICAL / LINEAGE LAYER**  
    *Jurisdiction:* Immutable source lineage, archival research ledgers, closed sequence receipts, and heritage narratives.  
@@ -176,7 +187,7 @@ All 32 inherited mechanisms are classified in exact byte-semantic alignment with
 | **INV-06** | Provenance Does Not Equal Action Authority | `INV-06-PROVENANCE-HISTORY-DOES-NOT-CONFER-ACTION-AUTHORITY` | `DERIVED` | SURVIVED (Same-host) | SATURATED | `SURVIVED`, `GOVERNANCE_ONLY` | PRODUCT_CORE |
 | **INV-07** | Missing Evidence Fallback to HOLD | `INV-07-MISSING-RAW-EVIDENCE-TRIGGERS-HOLD-NOT-SILENT-DROPPING` | `ENGINEERED` | SURVIVED (Same-host) | SATURATED | `SURVIVED`, `FIELD-USEFUL`, `AESTHETIC` | PRODUCT_CORE |
 | **INV-08** | Retry Route Preservation | `INV-08-RETRY-PRESERVES-ORIGINAL-ROUTE-CLASS` | `ENGINEERED` | SURVIVED (Same-host) | SATURATED | `SURVIVED`, `GOVERNANCE_ONLY` | PRODUCT_CORE |
-| **INV-09** | Epistemic Layer Separation ($V \neq C \neq P \neq L$) | `INV-09-EVIDENCE-CLASS-SEPARATION` | `DERIVED` | SURVIVED (Same-host) | SATURATED | `SURVIVED`, `GOVERNANCE_ONLY`, `AESTHETIC` | PRODUCT_CORE |
+| **INV-09** | Epistemic Layer Separation ($V \neq C \neq P \neq L$) | `INV-09-EVIDENCE-CLASS-SEPARATION` | `DERIVED` | SURVIVED (Same-host) | SATURATED | `SURVIVED`, `GOVERNANCE_ONLY`, `AESTHETIC` | EVIDENCE_RECEIPT_LAYER |
 | **INV-10** | Execution Host Does Not Prove Exogenous Witness | `INV-10-DIFFERENT-HOST-DOES-NOT-PROVE-EXOGENOUS-WITNESS` | `DERIVED` | SURVIVED (Same-host) | SATURATED | `SURVIVED`, `GOVERNANCE_ONLY` | EVIDENCE_RECEIPT_LAYER |
 | **INV-11** | Temporal Non-Retroactivity | `INV-11-TEMPORAL-NON-RETROACTIVITY` | `ENGINEERED` | SURVIVED (Same-host) | SATURATED | `SURVIVED`, `FIELD-USEFUL` | PRODUCT_CORE |
 | **INV-12** | Finite Quotient Support Compatibility | `INV-12-FINITE-QUOTIENT-SUPPORT-COMPATIBILITY` | `DERIVED` | SURVIVED (Same-host) | NOT_EVALUATED | `SURVIVED`, `FORMALLY_INTERESTING`, `GOVERNANCE_ONLY` | RESEARCH_LAB |
@@ -241,7 +252,7 @@ The twelve core invariants are reconciled byte-semantically with `research/seque
 
 9. **`INV-09` · Epistemic Layer Separation ($V \neq C \neq P \neq L$)** (`INV-09-EVIDENCE-CLASS-SEPARATION`):  
    Trace observability ($V$) $\neq$ custody recoverability ($C$) $\neq$ process identifiability ($P$) $\neq$ latent reconstructibility ($L$).  
-   *Layer:* `PRODUCT_CORE`. *Status:* `SURVIVED` (same-host scope).
+   *Layer:* `EVIDENCE_RECEIPT_LAYER`. *Status:* `SURVIVED` (same-host scope).
 
 10. **`INV-10` · Execution Host Does Not Prove Exogenous Witness** (`INV-10-DIFFERENT-HOST-DOES-NOT-PROVE-EXOGENOUS-WITNESS`):  
     A different receiver, remote server, or foreign runner does not establish an exogenous witness of real-world truth.  
@@ -259,36 +270,48 @@ The twelve core invariants are reconciled byte-semantically with `research/seque
 
 ## V. Visual Grammar & Motion Architecture
 
-### 1. The 39-Carrier Flow-Core Depth Field (Restored 6 / 13 / 20 Allocation)
-In accordance with `app/dome-world/holonomy-loom/instrument-state-view.js` and `tests/loom-cinematic-stage-v2.test.mjs`, exactly 39 carriers are distributed across three perceptual planes:
-$$\text{near} = (i \equiv 0 \pmod{13}) \lor (i \equiv 0 \pmod{11}) \implies 6 \text{ carriers}$$
-$$\text{mid} = \neg\text{near} \land \big((i \equiv 0 \pmod 4) \lor (i \equiv 0 \pmod 7)\big) \implies 13 \text{ carriers}$$
-$$\text{far} = \text{remainder} \implies 20 \text{ carriers}$$
+### 1. The 39-Carrier Flow-Core Depth Field
+$$\text{CARRIER\_COUNT} \neq \text{CSS\_OPACITY} \neq \text{MOTION\_DEPTH\_GAIN} \neq \text{RENDERED\_SCALE}$$
 
-* **Near Field (`flight-near`, 6 carriers):** Foreground focal layer. Opacity $1.0$, scale factor $1.35$. High contrast, primary interactive focus, sharp edges, immediate consequence.
-* **Mid Field (`flight-mid`, 13 carriers):** Meso operational layer. Opacity $0.82$, scale factor $0.82$. Ambient structural relation, contextual continuity, subtle luminosity.
-* **Far Field (`flight-far`, 20 carriers):** Background structural lattice. Opacity $0.46$, scale factor $0.46$. Deep architectural grounding, slow cadence, rest baseline coordinates.
+The visual field separates into four distinct architectural dimensions:
 
-### 2. Canonical Flow-Core Semantics & Motion Interpretation
-Canonical semantics are governed by `app/dome-world/data/flowcore-glyph-semantics-v01.js`. Motion families visually interpret relations but do not redefine them:
-$$\text{MOTION\_INTERPRETATION} \neq \text{SEMANTIC\_REDEFINITION}$$
+1. **Carrier Distribution:** Exactly 39 visible carriers distributed across three perceptual planes ($i \in [0, 38]$):
+   - **Near Field (`flight-near`):** **6 carriers** ($i \equiv 0 \pmod{13} \lor i \equiv 0 \pmod{11}$).
+   - **Mid Field (`flight-mid`):** **13 carriers** ($\neg\text{near} \land (i \equiv 0 \pmod 4 \lor i \equiv 0 \pmod 7)$).
+   - **Far Field (`flight-far`):** **20 carriers** (remainder).
+2. **Canonical Deployed Loom CSS Opacity (v6 product CSS):**
+   - `.loom-field-flight .flight-near`: `opacity: .38`
+   - `.loom-field-flight .flight-mid`: `opacity: .24`
+   - `.loom-field-flight .flight-far`: `opacity: .20`
+3. **Motion-Family `depthGain` (in `projectFlowcoreMotionFamily`):**
+   - `flight-near`: `depthGain = 1.35`
+   - `flight-mid`: `depthGain = 0.82`
+   - `flight-far`: `depthGain = 0.46`
+4. **Rendered Font Sizes / SVG Dimensions:**
+   - Near: `184px` (for $i \equiv 0 \pmod{13}$) or `132px` (for $i \equiv 0 \pmod{11}$)
+   - Mid: `56px`
+   - Far: `26px`
+
+### 2. Canonical Flow-Core Semantics & Proposed Aesthetic Bindings
+Canonical semantics are governed by `app/dome-world/data/flowcore-glyph-semantics-v01.js`. Choreography machinery applies motion families to complete relation sequences / presentation scores. Specific 1:1 pairings are **proposed aesthetic bindings**, not frozen engine laws:
+$$\text{MOTION\_FAMILY\_ASSIGNMENT} \neq \text{CANONICAL\_RELATION\_SEMANTICS}$$
 
 1. `米` = **recurrence / recurrence-and-authored-structure**  
-   *Visual Motion:* `phi-gossamer` (gentle harmonic convergence across planes).
+   *Proposed Aesthetic Binding:* `phi-gossamer` (gentle harmonic convergence across planes).
 2. `à` = **gathering / gathering-and-accumulated-obligation**  
-   *Visual Motion:* `orbital-braid` (coordinated forward directional translation).
+   *Proposed Aesthetic Binding:* `orbital-braid` (coordinated forward directional translation).
 3. `出` = **release / release-and-transformation**  
-   *Visual Motion:* `moire-shear` (outward diagonal expansion beyond boundaries).
+   *Proposed Aesthetic Binding:* `moire-shear` (outward diagonal expansion beyond boundaries).
 4. `hõt` = **bounded emergence**  
-   *Visual Motion:* `torsion-bloom` (rotational shearing around carrier axes).
+   *Proposed Aesthetic Binding:* `torsion-bloom` (rotational shearing around carrier axes).
 5. `cōl` = **protected low-energy continuity**  
-   *Visual Motion:* `quiet-recurrence` (arrested motion; amber stabilization; locking).
+   *Proposed Aesthetic Binding:* `quiet-recurrence` (arrested motion; amber stabilization; locking).
 6. `上` = **created potential**  
-   *Visual Motion:* `phasonic-rise` (upward vertical drift; energy staging).
+   *Proposed Aesthetic Binding:* `phasonic-rise` (upward vertical drift; energy staging).
 7. `下` = **released tendency / return**  
-   *Visual Motion:* `gradient-stampede` (downward grounding acceleration to baseline).
+   *Proposed Aesthetic Binding:* `gradient-stampede` (downward grounding acceleration to baseline).
 8. `𝄐` = **structural rest**  
-   *Visual Motion:* `absolute-quiescence` (complete cessation of ambient motion; clean equilibrium).
+   *Canonical Grammar:* New pulses stop; existing movement coasts and settles; the final state remains inspectable. (Note: `absolute-quiescence` is not presently a canonical motion-family identifier).
 
 ### 3. Dome-Art Choreography Law
 * **Single Clock Coordinator:** Exactly one animation coordinator:
@@ -299,7 +322,7 @@ $$\text{MOTION\_INTERPRETATION} \neq \text{SEMANTIC\_REDEFINITION}$$
 
 ### 4. Mugler Visual Grammar
 $$\text{VISUAL\_GRAMMAR} \neq \text{IMMUTABLE\_PALETTE}$$
-The aesthetic mandate governs quality, restraint, legibility, and architectural materiality rather than an immutable swatch book. High-contrast typography, 0.5px polished steel dividers, translucent glass panels representing epistemic depth ($V \neq C \neq P \neq L$), minimum 44px mobile touch targets, and total elimination of generic AI slop (no pulsing rainbow gradients, no floating hologram brains).
+The aesthetic mandate governs quality, restraint, legibility, and architectural materiality rather than an immutable swatch book. High-contrast typography, 0.5px polished steel dividers, translucent glass panels representing epistemic depth ($V \neq C \neq P \neq L$), minimum 44px mobile touch targets, and total elimination of generic AI slop.
 
 ---
 
@@ -318,11 +341,16 @@ Native Return & Portable Export (Review, Private Save, Clean Rest 𝄐)
 1. **Loom Intake:** Clean setup, clear authority classification, zero clutter, responsive touch targets, sandboxed attachment preview.
 2. **Marrowline Living Work:** Clear conversation tree without phantom traces (fixed "Speaking grove"), unblocked mobile Send at $390\text{px}$, qualification preservation.
 3. **Native Return:** Preserved predecessor chain, unambiguous head anchor, typed receipts (`unit_cost`, `subtotal`, `total_fee` parsed without string concatenation), unpenalized exit.
+4. **Provider-Qualified Privacy Language:**
+   $$\text{PRODUCT\_PRIVACY\_BOUNDARY} \neq \text{EXTERNAL\_PROVIDER\_POLICY}$$
+   *"TD613 sends only the material you explicitly select. Files remain on this machine until you engage the Send latch. Provider retention, training, and processing terms must be shown according to the configured provider and verified service policy."*
 
 ---
 
 ## VII. Dollhouse Orchestration Trial on Models A–E
 
+$$\text{ARCHITECTURAL\_PLAUSIBILITY} \neq \text{MEASURED\_COMPARATIVE\_RESULT}$$
+$$\text{ORCHESTRATION\_GOES\_ON\_TRIAL} \neq \text{ORCHESTRATION\_TRIAL\_ALREADY\_DECIDED}$$
 $$\text{ORCHESTRATION\_TRIAL} \neq \text{FIXED\_MODEL\_ROSTER}$$
 
 The Dollhouse multi-role orchestration paradigm is evaluated as a research hypothesis across five architectural models (Models A–E). Candidate vendor rosters (e.g. Claude, GPT-4o, Gemini, DeepSeek, Llama) are classified as `PROPOSED_RESEARCH_DESIGN`, not fixed canonical architecture:
@@ -333,9 +361,10 @@ The Dollhouse multi-role orchestration paradigm is evaluated as a research hypot
 4. **Model D (Governed Clerk):** Model C plus `dollhouse-case-dossier.js` deterministic dissent recorder.
 5. **Model E (Conventional Code):** Pure deterministic code (AST parsers, schema validators, hash verifiers). Zero LLM calls for governance.
 
-### Architectural Finding
-* **Product Core:** Adopts Model E (deterministic code) for all custody, invariant, and receipt enforcement.
-* **Research Lab:** Preserves Model D (multi-agent LLM adjudication) for complex research disputes.
+### Comparative Status
+The comparative performance, latency trade-offs, error-localization benefits, and token economics across Models A–E remain **hypotheses on trial in the Research Lab**.
+
+Product Core currently implements deterministic code (Model E equivalent) for baseline custody, event chaining (`INV-05`), and invariant verification purely as an unassayed engineering baseline. This reflects engineering practicality rather than an empirical claim of causal superiority. The multi-agent LLM Dollhouse is evaluated in the **Research Lab** without prejudice.
 
 ---
 
@@ -343,13 +372,18 @@ The Dollhouse multi-role orchestration paradigm is evaluated as a research hypot
 
 Production release authority remains governed strictly by GitHub Issue #405:
 $$\text{COMMIT} \neq \text{DEPLOY} \qquad \text{GREEN} \neq \text{DEPLOY} \qquad \text{MERGE} \neq \text{DEPLOY}$$
+$$\text{OPERATOR\_AUTHORIZATION} \neq \text{TRANSPORT\_IDENTITY}$$
+$$\text{CONNECTOR\_TRANSPORT} \neq \text{AUTONOMOUS\_RELEASE\_AUTHORITY}$$
 
-1. **Explicit Operator Gesture:** Production deployment requires a direct, contemporaneous human comment on Issue #405:
+1. **Authorized Release Gesture:** Production deployment requires a direct, contemporaneous comment on Issue #405:
    ```text
-   /td613-vercel-release PRODUCTION <commit-sha>
+   /td613-vercel-release PRODUCTION <exact-current-main-sha>
    ```
-2. **Provenance Verification:** Comment must originate from repository owner with `performed_via_github_app == null`.
-3. **Exact Commit Verification:** Release workflow verifies exact commit SHA, exact source bytes, clean git status, and GREEN exact-head validation.
+2. **Connector-as-Transport Release Law:** The canonical Issue #405 workflow permits an authorized gesture transported by:
+   - repository owner; or
+   - `chatgpt-codex-connector[bot]`.
+   *(The `performed_via_github_app == null` criterion belongs to other direct-human experimental trials and does not narrow the reviewed Issue #405 connector-as-transport release law).*
+3. **Exact Commit Verification:** Release workflow verifies exact commit SHA, exact source bytes, clean git status, and GREEN exact-head validation. One valid gesture authorizes exactly one bounded deployment.
 4. **Relock & Structural Rest:** Following receipt emission, the deployment locks and the session returns to rest (`𝄐`).
 
 ---
