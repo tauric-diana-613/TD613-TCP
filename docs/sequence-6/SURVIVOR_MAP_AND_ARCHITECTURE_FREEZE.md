@@ -4,25 +4,25 @@
 ================================================================================
 PROVENANCE & CUSTODY DECLARATION
 ================================================================================
-DOCUMENT_ROLE:                      Sequence 6 Architecture Freeze & Survivor Map
-STATUS:                             CANONICAL_PROVENANCE_RECORD
-CONCEPTUAL_ADJUDICATION_TIMESTAMP:  2026-10-06T19:08:27-04:00
-INITIAL_LOCAL_INGESTION_COMMIT:     4a41bb6468689857bfef61c7b5fae797a394d35b
-CANONICAL_REMOTE_ARCHIVAL_TIMESTAMP: 2026-10-06T19:40:00-04:00
-CANONICAL_STAGING_BRANCH:           staging/sequence-6-integration-20261006
-CANONICAL_BASE_COMMIT:              f309a35822afbb72ece865a379be40800ba8effa
-TRANCHE_1_IMPLEMENTATION_COMMIT:    44946b22cc8e8313ab58f7e257270988984e7309
+DOCUMENT_ROLE:                       Sequence 6 Architecture Freeze & Survivor Map
+STATUS:                              CANONICAL_PROVENANCE_RECORD
+CONCEPTUAL_ADJUDICATION_TIMESTAMP:   2026-10-06T19:08:27-04:00
+CANONICAL_STAGING_BRANCH:            staging/sequence-6-integration-20261006
+CANONICAL_BASE_COMMIT:               f309a35822afbb72ece865a379be40800ba8effa
+TRANCHE_1_INITIAL_COMMIT:            44946b22cc8e8313ab58f7e257270988984e7309
+TRANCHE_1_CORRECTIVE_COMMIT:         cd30af5450b9b4c8c6e13930e4c436c424f1fb69
+CURRENT_STAGE:                       REST_1_ARCHITECTURE_FREEZE_RECONCILIATION
 
 CHRONOLOGY HONESTY NOTICE:
 LATE_REMOTE_ARCHIVAL != EARLIER_GIT_FREEZE
 
 1. Conceptual adjudication of the Sequence 6 Survivor Map and Six-Layer Architecture
-   preceded the implementation of Tranche 1 (completed at 2026-10-06T19:08:27-04:00).
-2. The initial local commit landed on a local research branch (4a41bb646) while the
-   canonical staging branch (staging/sequence-6-integration-20261006) was established
-   cleanly from product base main@1b1925ad4.
-3. This provenance document enters remote canonical custody deliberately following
-   Tranche 1 remote verification.
+   preceded the implementation of Tranche 1.
+2. Initial Tranche 1 code was verified remotely at 44946b22c. Corrective hardening
+   (RFC 8785 lone surrogate rejection, hole rejection, terminal head anchor) was
+   admitted into canonical remote custody at cd30af545.
+3. This reconciled freeze document corrects all lineage and invariant contradictions
+   identified in the architecture freeze adjudication.
 4. It does not rewrite Git chronology, backdate commits, or pretend to be an earlier
    commit than it is.
 ================================================================================
@@ -61,10 +61,18 @@ SEQUENCE_4_RELATION_SURVIVAL      ≠ INDEPENDENT_EXTERNAL_VALIDATION
   $$\text{RESEARCH\_AUDIT\_ANCESTRY} \neq \text{PRODUCT\_MERGE\_ANCESTRY}$$
 * **Utility vs Causation Law:**  
   $$\text{PRODUCT\_UTILITY} \neq \text{CAUSAL\_METHOD\_SUPERIORITY}$$  
-  $$\text{ENGINEERING\_ADOPTION} \neq \text{SCIENTIFIC\_VALIDATION}$$
+  $$\text{ENGINEERING\_ADOPTION} \neq \text{SCIENTIFIC\_VALIDATION}$$  
+  $$\text{RELATED\_RELATION\_SURVIVED} \neq \text{PRODUCT\_MECHANISM\_SURVIVED}$$
+* **Jurisdiction Invariants:**  
+  $$\text{MOTION\_INTERPRETATION} \neq \text{SEMANTIC\_REDEFINITION}$$  
+  $$\text{ORCHESTRATION\_TRIAL} \neq \text{FIXED\_MODEL\_ROSTER}$$  
+  $$\text{VISUAL\_GRAMMAR} \neq \text{IMMUTABLE\_PALETTE}$$
 * **Epistemic Non-Equivalence Inequality:**  
   $$V \neq C \neq P \neq L$$
-  Trace Observability ($V$) $\neq$ Custody Recoverability ($C$) $\neq$ Process State ($P$) $\neq$ Latent Reality ($L$).
+  * $V$ (**Trace Observability**): Emitted bytes, tokens, telemetry, and network logs.
+  * $C$ (**Custody Recoverability**): Cryptographic linkage, HMAC signatures, content-addressed git hashes, and append-only commit history.
+  * $P$ (**Process Identifiability**): Mathematical distinguishability of the underlying generating policy or routing mechanism from empirical outputs.
+  * $L$ (**Latent-State Reconstructibility**): Verifiable reconstruction of true internal model representations, hidden prompt state, or user cognition.
 
 ---
 
@@ -80,11 +88,12 @@ graph TD
         PC3[Receiver-Relative State INV-06]
         PC4[Cistern Boundary INV-08]
         PC5[Rest & Exit INV-09 / INV-10]
+        PC6[Issue #405 Active Release Membrane]
     end
     subgraph L2 [2. RESEARCH LAB]
         RL1[Aperture Epistemic Audit]
         RL2[A15-R0 Mathematical Witness]
-        RL3[Dollhouse 5-Model Lab]
+        RL3[Dollhouse 5-Model Lab Trial]
         RL4[Temporal Custodian Invariant Assay]
     end
     subgraph L3 [3. SPECULATIVE FIELD]
@@ -94,7 +103,7 @@ graph TD
         SF4[Phason Seam Analogies]
     end
     subgraph L4 [4. AESTHETIC LAYER]
-        AL1[39-Carrier Flow-Core Field]
+        AL1[39-Carrier Flow-Core Field 6/13/20]
         AL2[8 Canonical Semantic Relations]
         AL3[renderDomeArt Single Clock]
         AL4[Mugler Visual Grammar 🚬👄🩰]
@@ -109,7 +118,7 @@ graph TD
         HL1[Lineage Catalogue 678 Blobs]
         HL2[Phase 1-5 Research Ledgers]
         HL3[Western Horizon Archives]
-        HL4[Issue #405 Release Law]
+        HL4[Boxed Tiara Archive]
     end
 
     L1 --> L5
@@ -119,153 +128,178 @@ graph TD
     HL1 -.-> L1
 ```
 
-### 1. Layer Definitions & Jurisdictions
+### Layer Definitions & Jurisdictions
 
 1. **PRODUCT CORE**  
    *Jurisdiction:* Runtime capabilities directly required for the operator to conduct governed work.  
-   *Rule:* Enforces zero unearned authority; strictly separates interactive operator direct actions, Amari connector requests, and detached delegated operations.  
-   *Inhabitants:* Loom intake, Marrowline continuation, Native Return, Cistern Law, Rest/Exit, predecessor chaining, receiver-relative state.
+   *Rule:* Enforces zero unearned authority; strictly separates interactive operator direct actions, Amari connector requests, and detached delegated operations. Includes the active Issue #405 production release membrane.  
+   *Inhabitants:* Loom intake, Marrowline continuation, Native Return, Cistern Law, Rest/Exit, predecessor chaining, receiver-relative state, Issue #405 release membrane.
 
 2. **RESEARCH LAB**  
    *Jurisdiction:* Controlled assays, falsification instruments, identifiability audits, and mathematical witnesses.  
    *Rule:* Cannot grant execution, merge, release, or production mutation authority. Produces bounded recommendations and diagnostic receipts only.  
-   *Inhabitants:* Aperture v3.2-alpha diagnostic engine, A15-R0 algebraic witnesses, Dollhouse multi-agent lab, Temporal Custodian testing harness.
+   *Inhabitants:* Aperture diagnostic engine, A15-R0 algebraic witnesses, Dollhouse multi-agent research trials, Temporal Custodian testing harness.
 
 3. **SPECULATIVE FIELD**  
    *Jurisdiction:* Mathematical and conceptual analogies whose formal proof or causal separation is unearned or non-identifying.  
    *Rule:* Fully licensed for imaginative exploration and aesthetic inspiration; strictly walled off from production claims or cryptographic security assertions.  
-   *Inhabitants:* Holonomy moiré, 6D projection lattices, phason strain mechanics, non-abelian two-loop history descent.
+   *Inhabitants:* Holonomy moiré, 6D projection lattices, phason seam mechanics.
 
 4. **AESTHETIC LAYER**  
    *Jurisdiction:* Visual rendering, typography, motion choreographies, spatial density, and emotional temperature.  
-   *Rule:* Governed by the Mugler Mandate ("sex without AI-slop or ontology clutter"). Ambient motion is explicitly non-authoritative; only evidenced state is binding.  
-   *Inhabitants:* 39-carrier Flow-Core depth field, 8 canonical relations, single-clock `renderDomeArt`, obsidian/marble/amber palette.
+   *Rule:* Governed by the Mugler Mandate ("sex without AI-slop or ontology clutter"). Ambient motion is explicitly non-authoritative; only evidenced state is binding. Governs quality and jurisdiction rather than an immutable swatch palette.  
+   *Inhabitants:* 39-carrier Flow-Core depth field (6 near / 13 mid / 20 far), 8 canonical relations, single-clock `renderDomeArt`, Mugler visual grammar.
 
 5. **EVIDENCE / RECEIPT LAYER**  
    *Jurisdiction:* Cryptographic digests, verifiable receipts, tamper-evident chains, and claim ceiling bounds.  
    *Rule:* Must declare exact claim ceilings; receipts record what was observed/verified, never manufacturing external custody authority or proof of origin.  
-   *Inhabitants:* RFC 8785 deterministic canonicalization, domain-separated SHA-256 event chaining, terminal head anchors, claim ceilings.
+   *Inhabitants:* RFC 8785 deterministic canonicalization subset, domain-separated SHA-256 event chaining, terminal head anchors, claim ceilings.
 
 6. **HISTORICAL / LINEAGE LAYER**  
-   *Jurisdiction:* Immutable source lineage, archival research ledgers, closed sequence receipts, and release governance.  
+   *Jurisdiction:* Immutable source lineage, archival research ledgers, closed sequence receipts, and heritage narratives.  
    *Rule:* Immutable read-only reference estate. Carried bytes establish integrity, not empirical proof of external superiority.  
-   *Inhabitants:* Lineage catalogue (678 blobs), closed Sequence 1–5.5 ledgers, Issue #405 release law.
+   *Inhabitants:* Lineage catalogue (678 blobs), closed Sequence 1–5.5 ledgers, Tauric Diana Crimean heritage archive, boxed tiara.
 
 ---
 
 ## III. The 32 Inherited Mechanisms: Complete Survivor Map
 
-| ID | Mechanism | Layer | Earned Status / Claim Ceiling | Disposition | Rationale |
-|:---|:---|:---|:---|:---|:---|
-| M-01 | Predecessor Hash Chaining | Product Core | `TAMPER_EVIDENT_PREDECESSOR_CHAINING_ONLY` | `CARRY_FORWARD` | Implemented in Tranche 1. INV-05 predecessor binding. |
-| M-02 | RFC 8785 JSON Canonicalization | Evidence / Receipt | `DETERMINISTIC_JCS_CANONICALIZATION_SUBSET_ESTABLISHED` | `CARRY_FORWARD` | Strict UTF-16 sort, lone surrogate rejection, hole rejection. |
-| M-03 | Terminal Head Anchoring | Evidence / Receipt | `PREDECESSOR_CHAIN_VERIFIED_NOT_TERMINAL_HEAD_ANCHORED` | `CARRY_FORWARD` | Distinguishes internal link traversal from witnessed head anchor. |
-| M-04 | Monotonic Timestamp Chronology | Product Core | `MONOTONIC_EVENT_TIME_NOT_FULL_NON_RETROACTIVITY` | `CARRY_FORWARD` | Rejects retroactive event insertion; full non-retroactivity deferred. |
-| M-05 | Timestamp Causality Check | Product Core | `DECLARED_MEASUREMENT_LEQ_RECORDING_TIME` | `CARRY_FORWARD` | Declared measurement must not occur after recording timestamp. |
-| M-06 | Route Identity Binding | Product Core | `ROUTE_IDENTITY_BOUND_NOT_ROUTE_TRANSITION_AUTHORIZED` | `CARRY_FORWARD` | Cryptographically binds route; detects intermediate tampering once committed. |
-| M-07 | Domain Separator (SHA-256) | Evidence / Receipt | `DIGEST_DOMAIN_SEPARATION_ONLY` | `CARRY_FORWARD` | Separates event digests from genesis anchors; no length-extension claim. |
-| M-08 | 39-Carrier Depth Field | Aesthetic Layer | `NON_AUTHORITATIVE_VISUAL_CARRIER_GRAMMAR` | `CARRY_FORWARD` | Near/mid/far perceptual planes; expressions of system state. |
-| M-09 | 8 Canonical Flow-Core Relations | Aesthetic Layer | `SEMANTIC_RELATION_MOTION_GRAMMAR` | `CARRY_FORWARD` | Expresses gathering, transport, rest, excitation, settling. |
-| M-10 | Single Animation Coordinator | Aesthetic Layer | `DETERMINISTIC_VIEW_SNAPSHOT_COORDINATION` | `CARRY_FORWARD` | `renderDomeArt(viewId, worldSnapshot, viewport, time)` with 1 clock. |
-| M-11 | Reduced-Motion Equivalents | Aesthetic Layer | `WCAG_ACCESSIBLE_STATIC_EQUIVALENCE` | `CARRY_FORWARD` | First-class static visual grammar for accessibility. |
-| M-12 | Mugler Visual Styling | Aesthetic Layer | `PRODUCT_ART_DIRECTION_STANDARD` | `CARRY_FORWARD` | Obsidian, marble, velvet, architectural silhouette, zero AI-slop. |
-| M-13 | Loom Intake Stage | Product Core | `BOUNDED_OPERATOR_INPUT_ADMISSION` | `CARRY_FORWARD` | Legible setup, selected file staging, clear authority classification. |
-| M-14 | Marrowline Continuation Stage | Product Core | `BOUNDED_SUBSTANTIVE_REASONING_ROUTE` | `CARRY_FORWARD` | Living chat, qualifier preservation, mobile Send clearance. |
-| M-15 | Native Return & Safe Export | Product Core | `CUSTODIAL_RETURN_AND_PORTABLE_EXPORT` | `CARRY_FORWARD` | Return to origin with intact history, private save, clean review. |
-| M-16 | Cistern Law Boundary | Product Core | `CONSEQUENTIAL_MUTATION_RESTRICTION` | `CARRY_FORWARD` | Strict boundary for consequential information and mutation routes. |
-| M-17 | Rest and Exit Affordances | Product Core | `UNPENALIZED_SESSION_REST_AND_EXIT` | `CARRY_FORWARD` | Operator may exit or pause at any point without loss or penalty. |
-| M-18 | Human Closure Requirement | Product Core | `MANDATORY_HUMAN_IN_THE_LOOP_CLOSURE` | `CARRY_FORWARD` | No automated release, merge, or deployment without human gesture. |
-| M-19 | Three Authority Classes | Product Core | `STRICT_AUTHORITY_PARTITIONING` | `CARRY_FORWARD` | Interactive direct vs Amari connector vs Detached delegated. |
-| M-20 | Aperture Epistemic Audit | Research Lab | `DIAGNOSTIC_DEFICIT_IDENTIFICATION_ONLY` | `CARRY_FORWARD` | Audits rank, stability, conditioning; cannot grant execution authority. |
-| M-21 | Dollhouse 4-Role Map | Research Lab | `JURISDICTIONAL_ROLE_PARTITIONING` | `CARRY_FORWARD` | Pedagogue, Aperture, Atlas, FADT distinct jurisdictions. |
-| M-22 | Temporal Custodian | Research Lab | `BOUNDED_RESEARCH_CANDIDATE` | `HOLD` | Epistemic state snapshotting; held pending Tranche integration. |
-| M-23 | Orchestrator Coordination | Research Lab | `COORDINATION_ONLY_NOT_EPISTEMIC_SUPERIORITY` | `SIMPLIFY` | Pure coordination layer; preserves disagreement and ceilings. |
-| M-24 | 5-Model Multi-Agent Trial | Research Lab | `CROSS_MODEL_CALIBRATION_TESTING` | `PRODUCT_TEST_REQUIRED` | Exercises consistency across Claude, GPT-4o, Gemini, DeepSeek, Llama. |
-| M-25 | Holonomy Moiré | Speculative Field | `MATHEMATICAL_ANALOGY_ONLY` | `CARRY_FORWARD` | Visual and conceptual generator; no causal claims. |
-| M-26 | Heterostratigraphic Lattice | Speculative Field | `GEOMETRIC_EXPLORATION_FRAMEWORK` | `CARRY_FORWARD` | Structural visual inspiration for multi-plane interfaces. |
-| M-27 | 6D Projection Constructions | Speculative Field | `THEORETICAL_CONSTRUCT_UNVALIDATED` | `HOLD` | Preserved in speculative literature; excluded from product claims. |
-| M-28 | Phason Seam Mechanics | Speculative Field | `ANALOGICAL_TOPOLOGICAL_INSPIRATION` | `HOLD` | Excluded from physical/causal claims. |
-| M-29 | Lineage Source Estate (678 Blobs)| Historical / Lineage | `CARRIED_BYTE_INTEGRITY_WITHOUT_PROMOTION` | `CARRY_FORWARD` | Immutable lineage catalogue across 8 pinned snapshots. |
-| M-30 | Issue #405 Release Law | Historical / Lineage | `GOVERNED_SINGLE_DEPLOYMENT_GATE` | `CARRY_FORWARD` | Production release strictly requires issue #405 operator gesture. |
-| M-31 | Bespoke Vernacular Ontology | Historical / Lineage | `HISTORICAL_LINEAGE_ARCHIVE` | `REMOVE` | Stripped from product UI; plain engineering terminology used. |
-| M-32 | Unearned Causation Claims | Historical / Lineage | `UNVALIDATED_THEORETICAL_EXTRAPOLATION` | `REMOVE` | Nullified by Sequence 5.5 closure; tiara remains boxed. |
+All 32 inherited mechanisms are classified in exact byte-semantic alignment with `research/sequence-6-surviving-relations/01-SURVIVOR_MAP_AND_RELATIONAL_BASIS.json`:
+
+| ID | Mechanism Name | TD613 Historical Name | Evidence Class | Seq 4 Status | Seq 5.5 Status | Disposition | Target Layer |
+|:---|:---|:---|:---|:---|:---|:---|:---|
+| **INV-01** | Default-Deny Outbound Carriage | `INV-01-UNARMED-SILENT-CARRIAGE-FORBIDDEN` | `ENGINEERED` | SURVIVED (Same-host) | SATURATED | `SURVIVED`, `FIELD-USEFUL` | PRODUCT_CORE |
+| **INV-02** | Explicit Qualifying Authorization Gate | `INV-02-CONSEQUENTIAL-CARRIAGE-REQUIRES-EXPLICIT-QUALIFYING-AUTHORIZATION` | `ENGINEERED` | SURVIVED (Same-host) | SATURATED | `SURVIVED`, `GOVERNANCE_ONLY`, `AESTHETIC` | PRODUCT_CORE |
+| **INV-03** | Single-Shot Ephemeral Authorization | `INV-03-TRANSIENT-AUTHORIZATION-REST-RETURN` | `ENGINEERED` | SURVIVED (Same-host) | SATURATED | `SURVIVED`, `FIELD-USEFUL` | PRODUCT_CORE |
+| **INV-04** | Re-entry Re-authorization Mandate | `INV-04-REENTRY-REQUIRES-NEW-QUALIFYING-AUTHORIZATION` | `ENGINEERED` | SURVIVED (Same-host) | SATURATED | `SURVIVED`, `GOVERNANCE_ONLY` | PRODUCT_CORE |
+| **INV-05** | Tamper-Evident Predecessor Hash Chaining | `INV-05-PREDECESSOR-ANCESTRY-CHAIN-PRESERVATION` | `ENGINEERED` | SURVIVED (Same-host) | SATURATED | `SURVIVED`, `FIELD-USEFUL` | PRODUCT_CORE |
+| **INV-06** | Provenance Does Not Equal Action Authority | `INV-06-PROVENANCE-HISTORY-DOES-NOT-CONFER-ACTION-AUTHORITY` | `DERIVED` | SURVIVED (Same-host) | SATURATED | `SURVIVED`, `GOVERNANCE_ONLY` | PRODUCT_CORE |
+| **INV-07** | Missing Evidence Fallback to HOLD | `INV-07-MISSING-RAW-EVIDENCE-TRIGGERS-HOLD-NOT-SILENT-DROPPING` | `ENGINEERED` | SURVIVED (Same-host) | SATURATED | `SURVIVED`, `FIELD-USEFUL`, `AESTHETIC` | PRODUCT_CORE |
+| **INV-08** | Retry Route Preservation | `INV-08-RETRY-PRESERVES-ORIGINAL-ROUTE-CLASS` | `ENGINEERED` | SURVIVED (Same-host) | SATURATED | `SURVIVED`, `GOVERNANCE_ONLY` | PRODUCT_CORE |
+| **INV-09** | Epistemic Layer Separation ($V \neq C \neq P \neq L$) | `INV-09-EVIDENCE-CLASS-SEPARATION` | `DERIVED` | SURVIVED (Same-host) | SATURATED | `SURVIVED`, `GOVERNANCE_ONLY`, `AESTHETIC` | PRODUCT_CORE |
+| **INV-10** | Execution Host Does Not Prove Exogenous Witness | `INV-10-DIFFERENT-HOST-DOES-NOT-PROVE-EXOGENOUS-WITNESS` | `DERIVED` | SURVIVED (Same-host) | SATURATED | `SURVIVED`, `GOVERNANCE_ONLY` | EVIDENCE_RECEIPT_LAYER |
+| **INV-11** | Temporal Non-Retroactivity | `INV-11-TEMPORAL-NON-RETROACTIVITY` | `ENGINEERED` | SURVIVED (Same-host) | SATURATED | `SURVIVED`, `FIELD-USEFUL` | PRODUCT_CORE |
+| **INV-12** | Finite Quotient Support Compatibility | `INV-12-FINITE-QUOTIENT-SUPPORT-COMPATIBILITY` | `DERIVED` | SURVIVED (Same-host) | NOT_EVALUATED | `SURVIVED`, `FORMALLY_INTERESTING`, `GOVERNANCE_ONLY` | RESEARCH_LAB |
+| **M13** | 39-Carrier Flow-Core Visual Field | `39-Carrier Field (near/mid/far)` | `ENGINEERED` | `OPERATIONAL_LINEAGE` | OPERATIONAL | `OPERATIONAL_LINEAGE`, `FIELD-USEFUL`, `AESTHETIC` | AESTHETIC_LAYER |
+| **M14** | Eight Canonical Flow-Core Relations | `Flow-Core Relational Alphabet (米 à 出 hõt cōl 上 下 𝄐)` | `DERIVED` | `OPERATIONAL_LINEAGE` | OPERATIONAL | `OPERATIONAL_LINEAGE`, `FIELD-USEFUL`, `AESTHETIC` | AESTHETIC_LAYER |
+| **M15** | Single Animation Coordinator | `renderDomeArt(viewId, snapshot, viewport, time)` | `ENGINEERED` | `OPERATIONAL_LINEAGE` | OPERATIONAL | `OPERATIONAL_LINEAGE`, `FIELD-USEFUL` | AESTHETIC_LAYER |
+| **M16** | Semantic Motion vs Ambient Choreography | `Motion Jurisdiction Law` | `ENGINEERED` | `OPERATIONAL_LINEAGE` | OPERATIONAL | `OPERATIONAL_LINEAGE`, `GOVERNANCE_ONLY` | AESTHETIC_LAYER |
+| **M17** | Deterministic Visual Replay & Reduced Motion | `Static / Reduced-Motion Equivalence` | `ENGINEERED` | `OPERATIONAL_LINEAGE` | OPERATIONAL | `OPERATIONAL_LINEAGE`, `FIELD-USEFUL` | AESTHETIC_LAYER |
+| **M18** | Governed Product Journey | `Loom -> Marrowline -> Native Return` | `ENGINEERED` | `PRODUCT_TEST_REQUIRED` | PARTIAL | `PRODUCT_TEST_REQUIRED`, `FIELD-USEFUL` | PRODUCT_CORE |
+| **M19** | Attachment Preview & Safe Download | `Attachments Affordance` | `ENGINEERED` | `PRODUCT_TEST_REQUIRED` | DEFECTIVE | `PRODUCT_TEST_REQUIRED`, `FIELD-USEFUL` | PRODUCT_CORE |
+| **M20** | Receipts Autosnap & Fee Parsing | `Receipts Engine` | `ENGINEERED` | `PRODUCT_TEST_REQUIRED` | DEFECTIVE | `PRODUCT_TEST_REQUIRED`, `FIELD-USEFUL` | PRODUCT_CORE |
+| **M21** | Conversation Hygiene (Speaking Grove Fix) | `Conversation Lifecycle Manager` | `ENGINEERED` | `PRODUCT_TEST_REQUIRED` | DEFECTIVE | `PRODUCT_TEST_REQUIRED`, `FIELD-USEFUL` | PRODUCT_CORE |
+| **M22** | Mobile Viewport Send & Navigation (↻ ⧉ ✕ 𖠿) | `Mobile Action Membrane` | `ENGINEERED` | `PRODUCT_TEST_REQUIRED` | DEFECTIVE | `PRODUCT_TEST_REQUIRED`, `FIELD-USEFUL` | PRODUCT_CORE |
+| **M23** | Complete Mugler Mandate Visual Grammar | `TD613 Design Grammar` | `AESTHETIC` | `OPERATIONAL_LINEAGE` | FORMALIZED | `OPERATIONAL_LINEAGE`, `AESTHETIC` | AESTHETIC_LAYER |
+| **M24** | Dollhouse Orchestration Trial on Models A–E | `Dollhouse Jurisdictional Trial` | `PROPOSED_RESEARCH_DESIGN` | `OUT_OF_SCOPE` | NON_IDENTIFYING | `PROPOSED_RESEARCH_DESIGN`, `EMPIRICALLY_UNRESOLVED` | RESEARCH_LAB |
+| **M25** | Temporal Custodian Chronology UX | `Temporal Custodian` | `ENGINEERED` | `OUT_OF_SCOPE` | CANDIDATE | `BOUNDED_RESEARCH_CANDIDATE`, `HOLD` | RESEARCH_LAB |
+| **M26** | Pre-Refusal Conditioning Surface (PRCS-A) | `PRCS-A Latent Steering` | `HYPOTHESIS` | `OUT_OF_SCOPE` | NON_IDENTIFYING | `EMPIRICALLY_UNRESOLVED`, `FORMALLY_INTERESTING` | RESEARCH_LAB |
+| **M27** | Holonomy & Path-Dependent Curvature | `Fiber Bundle Loop-Power Holonomy` | `FORMAL CONSTRUCTION` | `OUT_OF_SCOPE` | NOT_APPLICABLE | `FORMALLY_INTERESTING`, `SPECULATION` | SPECULATIVE_FIELD |
+| **M28** | Moiré Interference as Model-Discovery Surface | `Pairwise Moire Stratigraphy` | `ANALOGY` | `OUT_OF_SCOPE` | NOT_APPLICABLE | `AESTHETIC`, `MNEMONIC` | AESTHETIC_LAYER |
+| **M29** | 6D Quasi-Lattice & Phason Seam Dynamics | `6D Lattice Tomography / Phason Boundaries` | `SPECULATION` | `OUT_OF_SCOPE` | NOT_APPLICABLE | `DISCARDED`, `FORMALLY_INTERESTING` | SPECULATIVE_FIELD |
+| **M30** | Recurrent Coordinate sqrt(3)/2 | `sqrt(3)/2 Invariant Coordinate` | `DERIVED` | `OUT_OF_SCOPE` | NOT_APPLICABLE | `REDUNDANT` | AESTHETIC_LAYER |
+| **M31** | Workload Identity Gating & CAS Current Head | `Neon Custody / Vercel OIDC Token` | `ENGINEERED` | `OPERATIONAL_LINEAGE` | OPERATIONAL | `OPERATIONAL_LINEAGE`, `FIELD-USEFUL` | PRODUCT_CORE |
+| **M32** | Governed Release Law (Issue #405 Active Membrane) | `Issue #405 Release Membrane` | `RELEASE_GOVERNANCE` | `OPERATIONAL_LINEAGE` | OPERATIONAL | `OPERATIONAL_LINEAGE`, `ACTIVE_RELEASE_GATE` | PRODUCT_CORE |
 
 ---
 
-## IV. The 12 Invariants: Dispositions & Jurisdictions
+## IV. The Canonical Invariant Registry (`INV-01` through `INV-12`)
 
-1. **INV-01 (Non-Degenerate Inhabitant Preservation):**  
-   *Layer:* Product Core.  
-   *Disposition:* `CARRY_FORWARD`. Real routes, real data, and real user workflows cannot be replaced by hollow mock placeholders during evaluation.
+The twelve core invariants are reconciled byte-semantically with `research/sequence-6-surviving-relations/01-SURVIVOR_MAP_AND_RELATIONAL_BASIS.json`:
 
-2. **INV-02 (Projection Invariance):**  
-   *Layer:* Speculative Field / Aesthetic.  
-   *Disposition:* `SIMPLIFY`. Visual projections (desktop vs mobile, expanded vs compact) must preserve underlying semantic relation topology.
+1. **`INV-01` · Default-Deny Outbound Carriage** (`INV-01-UNARMED-SILENT-CARRIAGE-FORBIDDEN`):  
+   Ordinary action while in unarmed/rest state does not silently transmit protected context.  
+   *Layer:* `PRODUCT_CORE`. *Status:* `SURVIVED` (same-host scope).
 
-3. **INV-03 (Consequence-First Routing):**  
-   *Layer:* Product Core.  
-   *Disposition:* `CARRY_FORWARD`. Human consequence, cost, irreversibility, and danger must be encountered before ontology, configuration, or technical prose.
+2. **`INV-02` · Explicit Qualifying Authorization Gate** (`INV-02-CONSEQUENTIAL-CARRIAGE-REQUIRES-EXPLICIT-QUALIFYING-AUTHORIZATION`):  
+   Consequential external carriage requires explicit contemporaneous human authorization before payload leaves boundary.  
+   *Layer:* `PRODUCT_CORE`. *Status:* `SURVIVED` (same-host scope).
 
-4. **INV-04 (Uncertainty Typing):**  
-   *Layer:* Evidence / Receipt Layer.  
-   *Disposition:* `CARRY_FORWARD`. Missing data, epistemic deficits, and model ambiguity must be typed explicitly (e.g. `STRUCTURAL_RANK_DEFICIT`, `UNANCHORED`).
+3. **`INV-03` · Single-Shot Ephemeral Authorization** (`INV-03-TRANSIENT-AUTHORIZATION-REST-RETURN`):  
+   Authorization is transient and bounded to exactly one dispatch, returning immediately to unarmed rest.  
+   *Layer:* `PRODUCT_CORE`. *Status:* `SURVIVED` (same-host scope).
 
-5. **INV-05 (Predecessor Hash Chaining):**  
-   *Layer:* Product Core.  
-   *Disposition:* `CARRY_FORWARD` (Implemented in Tranche 1). Canonical RFC 8785 encoding with domain-separated SHA-256 predecessor links.
+4. **`INV-04` · Re-entry Re-authorization Mandate** (`INV-04-REENTRY-REQUIRES-NEW-QUALIFYING-AUTHORIZATION`):  
+   Re-entering governed carriage after rest requires a fresh qualifying authorization event.  
+   *Layer:* `PRODUCT_CORE`. *Status:* `SURVIVED` (same-host scope).
 
-6. **INV-06 (Receiver-Relative State):**  
-   *Layer:* Product Core.  
-   *Disposition:* `CARRY_FORWARD`. Observer-local state and client-side draft buffers are never conflated with admitted, durable custody heads.
+5. **`INV-05` · Tamper-Evident Predecessor Hash Chaining** (`INV-05-PREDECESSOR-ANCESTRY-CHAIN-PRESERVATION`):  
+   Later governed continuation preserves declared predecessor relations, linking canonically to immediate predecessor via domain-separated SHA-256 digests.  
+   *Layer:* `PRODUCT_CORE`. *Status:* `SURVIVED` (same-host scope).
 
-7. **INV-07 (Missing Evidence HOLD):**  
-   *Layer:* Evidence / Receipt Layer.  
-   *Disposition:* `CARRY_FORWARD`. When requisite evidence is absent, the system asserts an explicit `HOLD` rather than fabricating synthetic continuity.
+6. **`INV-06` · Provenance Does Not Equal Action Authority** (`INV-06-PROVENANCE-HISTORY-DOES-NOT-CONFER-ACTION-AUTHORITY`):  
+   Provenance documents ancestry but confers zero permission, trust, or action authority.  
+   *Layer:* `PRODUCT_CORE`. *Status:* `SURVIVED` (same-host scope).
 
-8. **INV-08 (Cistern Law):**  
-   *Layer:* Product Core.  
-   *Disposition:* `CARRY_FORWARD`. High-consequence mutation operations require defensive parameter validation, explicit operator custody, and relock.
+7. **`INV-07` · Missing Evidence Fallback to HOLD** (`INV-07-MISSING-RAW-EVIDENCE-TRIGGERS-HOLD-NOT-SILENT-DROPPING`):  
+   Missing raw evidence or unavailable predecessor payload triggers explicit HOLD, never silent dropping or hallucination.  
+   *Layer:* `PRODUCT_CORE`. *Status:* `SURVIVED` (same-host scope).
 
-9. **INV-09 (Rest and Exit):**  
-   *Layer:* Product Core.  
-   *Disposition:* `CARRY_FORWARD`. The operator may pause, save privately, or exit any route at any time without data loss or administrative penalty.
+8. **`INV-08` · Retry Route Preservation** (`INV-08-RETRY-PRESERVES-ORIGINAL-ROUTE-CLASS`):  
+   Retrying an unprivileged action preserves original route class; cannot escalate into privileged external carriage.  
+   *Layer:* `PRODUCT_CORE`. *Status:* `SURVIVED` (same-host scope).
 
-10. **INV-10 (Human Closure):**  
-    *Layer:* Product Core.  
-    *Disposition:* `CARRY_FORWARD`. Autonomous processes cannot merge, deploy, or assert external truth without direct contemporaneous human closure.
+9. **`INV-09` · Epistemic Layer Separation ($V \neq C \neq P \neq L$)** (`INV-09-EVIDENCE-CLASS-SEPARATION`):  
+   Trace observability ($V$) $\neq$ custody recoverability ($C$) $\neq$ process identifiability ($P$) $\neq$ latent reconstructibility ($L$).  
+   *Layer:* `PRODUCT_CORE`. *Status:* `SURVIVED` (same-host scope).
 
-11. **INV-11 (Non-Retroactivity):**  
-    *Layer:* Product Core.  
-    *Disposition:* `CARRY_FORWARD` (Ordered chronology in Tranche 1; full epistemic-state non-retroactivity in Temporal Custodian).
+10. **`INV-10` · Execution Host Does Not Prove Exogenous Witness** (`INV-10-DIFFERENT-HOST-DOES-NOT-PROVE-EXOGENOUS-WITNESS`):  
+    A different receiver, remote server, or foreign runner does not establish an exogenous witness of real-world truth.  
+    *Layer:* `EVIDENCE_RECEIPT_LAYER`. *Status:* `SURVIVED` (same-host scope).
 
-12. **INV-12 (Claim Ceiling Verification):**  
-    *Layer:* Evidence / Receipt Layer.  
-    *Disposition:* `CARRY_FORWARD`. Every verification receipt explicitly outputs its claim ceilings, preventing inflation of diagnostic evidence into causal superiority.
+11. **`INV-11` · Temporal Non-Retroactivity** (`INV-11-TEMPORAL-NON-RETROACTIVITY`):  
+    Later discovery or capability revelation cannot retroactively rewrite what an earlier observer actually witnessed.  
+    *Layer:* `PRODUCT_CORE`. *Status:* `SURVIVED` (same-host scope).
+
+12. **`INV-12` · Finite Quotient Support Compatibility** (`INV-12-FINITE-QUOTIENT-SUPPORT-COMPATIBILITY`):  
+    Erasing a conditioning coordinate is lawful iff supports are constant on every occupied fiber ($\Gamma_y = U_y \setminus I_y = \emptyset$).  
+    *Layer:* `RESEARCH_LAB`. *Status:* `SURVIVED` (same-host scope).
 
 ---
 
 ## V. Visual Grammar & Motion Architecture
 
-### 1. The 39-Carrier Flow-Core Depth Field
-* **Actors:** Exactly 39 visible carriers distributed across three depth planes:
-  * **Near Plane (13 carriers):** High contrast, primary interactive focus, sharp edges, direct consequence.
-  * **Mid Plane (13 carriers):** Ambient structural relation, contextual continuity, subtle luminosity.
-  * **Far Plane (13 carriers):** Deep architectural grounding, slow cadence, subtle grid lattice.
-* **The 8 Canonical Relations:**
-  1. `米` (Convergence / Gathering): Carriers congregate toward an active focal root.
-  2. `à` (Directional Transport): Directed motion along a defined route vector.
-  3. `出` (Egress / Emission): Emission of completed artifacts or export payloads.
-  4. `hõt` (Thermal Excitation): High-frequency shimmer indicating uncommitted computation or high route burden.
-  5. `cōl` (Structural Settling): Damping velocity as state converges to rest.
-  6. `上` (Ascent / Elevation): Promotion of an artifact to higher custody or review.
-  7. `下` (Descent / Grounding): Resolution of an abstraction into concrete local storage.
-  8. `𝄐` (Fermata / Structural Rest): Complete cessation of ambient motion; clean equilibrium.
+### 1. The 39-Carrier Flow-Core Depth Field (Restored 6 / 13 / 20 Allocation)
+In accordance with `app/dome-world/holonomy-loom/instrument-state-view.js` and `tests/loom-cinematic-stage-v2.test.mjs`, exactly 39 carriers are distributed across three perceptual planes:
+$$\text{near} = (i \equiv 0 \pmod{13}) \lor (i \equiv 0 \pmod{11}) \implies 6 \text{ carriers}$$
+$$\text{mid} = \neg\text{near} \land \big((i \equiv 0 \pmod 4) \lor (i \equiv 0 \pmod 7)\big) \implies 13 \text{ carriers}$$
+$$\text{far} = \text{remainder} \implies 20 \text{ carriers}$$
 
-### 2. Dome-Art Choreography
+* **Near Field (`flight-near`, 6 carriers):** Foreground focal layer. Opacity $1.0$, scale factor $1.35$. High contrast, primary interactive focus, sharp edges, immediate consequence.
+* **Mid Field (`flight-mid`, 13 carriers):** Meso operational layer. Opacity $0.82$, scale factor $0.82$. Ambient structural relation, contextual continuity, subtle luminosity.
+* **Far Field (`flight-far`, 20 carriers):** Background structural lattice. Opacity $0.46$, scale factor $0.46$. Deep architectural grounding, slow cadence, rest baseline coordinates.
+
+### 2. Canonical Flow-Core Semantics & Motion Interpretation
+Canonical semantics are governed by `app/dome-world/data/flowcore-glyph-semantics-v01.js`. Motion families visually interpret relations but do not redefine them:
+$$\text{MOTION\_INTERPRETATION} \neq \text{SEMANTIC\_REDEFINITION}$$
+
+1. `米` = **recurrence / recurrence-and-authored-structure**  
+   *Visual Motion:* `phi-gossamer` (gentle harmonic convergence across planes).
+2. `à` = **gathering / gathering-and-accumulated-obligation**  
+   *Visual Motion:* `orbital-braid` (coordinated forward directional translation).
+3. `出` = **release / release-and-transformation**  
+   *Visual Motion:* `moire-shear` (outward diagonal expansion beyond boundaries).
+4. `hõt` = **bounded emergence**  
+   *Visual Motion:* `torsion-bloom` (rotational shearing around carrier axes).
+5. `cōl` = **protected low-energy continuity**  
+   *Visual Motion:* `quiet-recurrence` (arrested motion; amber stabilization; locking).
+6. `上` = **created potential**  
+   *Visual Motion:* `phasonic-rise` (upward vertical drift; energy staging).
+7. `下` = **released tendency / return**  
+   *Visual Motion:* `gradient-stampede` (downward grounding acceleration to baseline).
+8. `𝄐` = **structural rest**  
+   *Visual Motion:* `absolute-quiescence` (complete cessation of ambient motion; clean equilibrium).
+
+### 3. Dome-Art Choreography Law
 * **Single Clock Coordinator:** Exactly one animation coordinator:
   `renderDomeArt(viewId, worldSnapshot, viewport, time)`
 * **Law of Visual Truth:** Ambient animation is presentation-only; it never masquerades as event history or cryptographic execution evidence.
 * **Static Accessibility:** Reduced-motion preferences map the 39 carriers and 8 relations to crisp, static architectural typography and state badges.
+* **Visual Silence:** When a task completes, the interface achieves structural rest (`𝄐`). Zero constant idle breathing.
+
+### 4. Mugler Visual Grammar
+$$\text{VISUAL\_GRAMMAR} \neq \text{IMMUTABLE\_PALETTE}$$
+The aesthetic mandate governs quality, restraint, legibility, and architectural materiality rather than an immutable swatch book. High-contrast typography, 0.5px polished steel dividers, translucent glass panels representing epistemic depth ($V \neq C \neq P \neq L$), minimum 44px mobile touch targets, and total elimination of generic AI slop (no pulsing rainbow gradients, no floating hologram brains).
 
 ---
 
@@ -278,39 +312,59 @@ Holonomy Loom (Intake / Setup)
 Marrowline (Substantive Governed Reasoning)
   │
   ▼
-Native Return & Portable Export (Review, Private Save, Clean Rest)
+Native Return & Portable Export (Review, Private Save, Clean Rest 𝄐)
 ```
 
-1. **Loom Intake:** Clean setup, clear authority classification, zero clutter, responsive touch targets.
-2. **Marrowline Living Work:** Clear conversation tree without phantom traces, unblocked mobile Send, qualification preservation.
-3. **Native Return:** Preserved predecessor chain, unambiguous head anchor, truthful receipts, unpenalized exit.
+1. **Loom Intake:** Clean setup, clear authority classification, zero clutter, responsive touch targets, sandboxed attachment preview.
+2. **Marrowline Living Work:** Clear conversation tree without phantom traces (fixed "Speaking grove"), unblocked mobile Send at $390\text{px}$, qualification preservation.
+3. **Native Return:** Preserved predecessor chain, unambiguous head anchor, typed receipts (`unit_cost`, `subtotal`, `total_fee` parsed without string concatenation), unpenalized exit.
 
 ---
 
-## VII. Five-Model Multi-Agent Calibration Trial
+## VII. Dollhouse Orchestration Trial on Models A–E
 
-The Sequence 6 Dollhouse trial exercises the surviving architecture against five frontier foundation models:
-1. Anthropic Claude 3.5 Sonnet / 3.7
-2. OpenAI GPT-4o
-3. Google Gemini 3.8 Flash / Pro
-4. DeepSeek V3 / R1
-5. Meta Llama 3.3 70B
+$$\text{ORCHESTRATION\_TRIAL} \neq \text{FIXED\_MODEL\_ROSTER}$$
 
-Each model evaluates the same canonical practice fixtures under identical prompt boundaries, measuring:
-* Invariant preservation consistency (`INV-01` through `INV-12`).
-* Claim ceiling honesty (refusal to claim unearned causal advantage).
-* Resilience against prompt injection and authority escalation.
+The Dollhouse multi-role orchestration paradigm is evaluated as a research hypothesis across five architectural models (Models A–E). Candidate vendor rosters (e.g. Claude, GPT-4o, Gemini, DeepSeek, Llama) are classified as `PROPOSED_RESEARCH_DESIGN`, not fixed canonical architecture:
+
+1. **Model A (Monolith):** Single unified frontier model call.
+2. **Model B (Dumb Concat):** 4 roles run in parallel, outputs naively concatenated.
+3. **Model C (Typed Roles):** 4 roles with strictly disjoint schemas.
+4. **Model D (Governed Clerk):** Model C plus `dollhouse-case-dossier.js` deterministic dissent recorder.
+5. **Model E (Conventional Code):** Pure deterministic code (AST parsers, schema validators, hash verifiers). Zero LLM calls for governance.
+
+### Architectural Finding
+* **Product Core:** Adopts Model E (deterministic code) for all custody, invariant, and receipt enforcement.
+* **Research Lab:** Preserves Model D (multi-agent LLM adjudication) for complex research disputes.
 
 ---
 
-## VIII. Conclusion & Staging Rest
+## VIII. Active Release Governance: Issue #405 Membrane
 
-With the ingestion of this document into canonical custody:
+Production release authority remains governed strictly by GitHub Issue #405:
+$$\text{COMMIT} \neq \text{DEPLOY} \qquad \text{GREEN} \neq \text{DEPLOY} \qquad \text{MERGE} \neq \text{DEPLOY}$$
+
+1. **Explicit Operator Gesture:** Production deployment requires a direct, contemporaneous human comment on Issue #405:
+   ```text
+   /td613-vercel-release PRODUCTION <commit-sha>
+   ```
+2. **Provenance Verification:** Comment must originate from repository owner with `performed_via_github_app == null`.
+3. **Exact Commit Verification:** Release workflow verifies exact commit SHA, exact source bytes, clean git status, and GREEN exact-head validation.
+4. **Relock & Structural Rest:** Following receipt emission, the deployment locks and the session returns to rest (`𝄐`).
+
+---
+
+## IX. Test Witness Verification & Freeze Adjudication
+
+Test reporting strictly separates verified repository artifacts from reported execution states:
+$$\text{TEST\_SOURCE\_PRESENT} = \text{VERIFIED} \qquad \text{13\_TEST\_LOCAL\_EXECUTION} = \text{OPERATOR\_REPORTED}$$
+
+1. `tests/governed-event-chain.test.mjs` is verified present in repository source with 13 comprehensive unit tests covering predecessor binding, RFC 8785 lone surrogate rejection, sparse array rejection, and terminal head anchors.
+2. Local execution of the 13-test suite was reported passing (13/13) prior to remote commit `cd30af545`.
+
+With the ingestion and remote verification of this reconciled document:
 $$\text{SEQUENCE\_6\_REST\_1} = \text{SURVIVOR\_ARCHITECTURE\_FREEZE}$$
 is earned.
-
-Tranche 1 is complete, hardened, and anchored.
-Tranche 2 (39-Carrier Flow-Core motion bridge and Loom route realization) remains paused awaiting explicit operator direction.
 
 𝄐
 
