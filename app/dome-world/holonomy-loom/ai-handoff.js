@@ -155,6 +155,17 @@ function heldPortableReceiver(reason) {
     external_host_enforced: false
   };
 }
+
+function normalizeReentryContract(value) {
+  if (value === undefined || value === null) return null;
+  object(value, 're-entry contract');
+  if (value.schema !== 'td613.loom.reentry-excursion/v0.2') throw new TypeError('Unsupported re-entry contract.');
+  if (typeof value.ref !== 'string' || !/^[a-f0-9]{64}$/.test(value.ref)) throw new TypeError('Re-entry contract reference is invalid.');
+  if (!Array.isArray(value.turns) || value.turns.length !== 1) throw new TypeError('Native handoff requires exactly one registered departure turn.');
+  const encoded = JSON.stringify(value);
+  if (encoded.length > 400000) throw new TypeError('Re-entry contract exceeds the native handoff bound.');
+  return JSON.parse(encoded);
+}
 export async function inspectPortableLoomReceiverAssurance(packet, environment = globalThis) {
   try {
     object(packet, 'portable packet');
@@ -196,15 +207,16 @@ export async function inspectPortableLoomReceiverAssurance(packet, environment =
   }
 }
 
-export async function createLoomAiHandoff(input, environment = window, { priorResult } = {}) {
+export async function createLoomAiHandoff(input, environment = window, { priorResult, reentryContract } = {}) {
   const origin = context(environment, SOURCE);
   const payload = normalizeLoomAiTask(input);
   if (!payload.governance) payload.governance = await createLoomAiGovernance(payload, {}, environment);
   await verifyLoomAiGovernance(payload, environment);
   const continuation = continuationPacket(input, payload, priorResult);
+  const reentry_contract = normalizeReentryContract(reentryContract);
   const token = Array.from(environment.crypto.getRandomValues(new Uint8Array(24)), byte => byte.toString(16).padStart(2, '0')).join('');
   const issued_at = Date.now();
-  const envelope = { schema: 'td613.loom.local-handoff/v0.1', origin, source: SOURCE, destination: DESTINATION, token, issued_at, expires_at: issued_at + LOOM_HANDOFF_TTL_MS, payload, ...(continuation ? { continuation } : {}) };
+  const envelope = { schema: 'td613.loom.local-handoff/v0.1', origin, source: SOURCE, destination: DESTINATION, token, issued_at, expires_at: issued_at + LOOM_HANDOFF_TTL_MS, payload, ...(continuation ? { continuation } : {}), ...(reentry_contract ? { reentry_contract } : {}) };
   const record = { envelope, digest: await digest(envelope, environment) };
   environment.sessionStorage.setItem(PREFIX + token, JSON.stringify(record));
   return `${DESTINATION}#loom=${token}`;
@@ -239,7 +251,7 @@ export async function consumeLoomAiHandoff(token, environment = window) {
   if (Object.keys(record).some(key => !['envelope', 'digest'].includes(key))) throw new TypeError('handoff record includes an unselected field');
   const envelope = record.envelope;
   object(envelope, 'handoff');
-  if (Object.keys(envelope).some(key => !['schema', 'origin', 'source', 'destination', 'token', 'issued_at', 'expires_at', 'payload', 'continuation'].includes(key))) throw new TypeError('handoff includes an unselected field');
+  if (Object.keys(envelope).some(key => !['schema', 'origin', 'source', 'destination', 'token', 'issued_at', 'expires_at', 'payload', 'continuation', 'reentry_contract'].includes(key))) throw new TypeError('handoff includes an unselected field');
   if (envelope.schema !== 'td613.loom.local-handoff/v0.1' || envelope.origin !== origin || envelope.source !== SOURCE || envelope.destination !== DESTINATION || envelope.token !== token) throw new Error('Handoff route changed');
   const now = Date.now();
   if (!Number.isSafeInteger(envelope.issued_at) || !Number.isSafeInteger(envelope.expires_at) || envelope.issued_at > now || envelope.expires_at <= now || envelope.expires_at - envelope.issued_at !== LOOM_HANDOFF_TTL_MS) throw new Error('Handoff expired or time changed');
@@ -252,7 +264,8 @@ export async function consumeLoomAiHandoff(token, environment = window) {
     if (Object.keys(envelope.continuation).some(key => key !== 'prior_result')) throw new TypeError('continuation includes an unselected field');
     continuation = { prior_result: normalizePriorResult(envelope.continuation.prior_result, payload.documents.map(document => document.id)) };
   }
-  const received = { ...payload, ...(continuation ? { continuation } : {}), handoff_receipt: { digest: record.digest, issued_at: envelope.issued_at, consumed_at: now, source: SOURCE, destination: DESTINATION } };
+  const reentry_contract = normalizeReentryContract(envelope.reentry_contract);
+  const received = { ...payload, ...(continuation ? { continuation } : {}), ...(reentry_contract ? { reentry_contract } : {}), handoff_receipt: { digest: record.digest, issued_at: envelope.issued_at, consumed_at: now, source: SOURCE, destination: DESTINATION } };
   lastConsumedPacket = JSON.parse(JSON.stringify(received));
   return received;
 }

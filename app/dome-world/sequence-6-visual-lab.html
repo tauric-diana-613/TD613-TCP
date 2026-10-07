@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script id="td613-sitewide-reset-preflight" src="/site-epoch-preflight.js?v=20260927-v1"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>TD613 · Sequence 6 · Tranche 2B Visual Laboratory</title>
+  <style>
+    :root {
+      --bg: #07080b;
+      --panel: #0d1017;
+      --panel-border: rgba(255, 255, 255, 0.08);
+      --text: #f3f4f6;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --gold: #f59e0b;
+      --cyan: #22d3ee;
+      --emerald: #10b981;
+      --rose: #f43f5e;
+      --purple: #c084fc;
+      --mono: 'JetBrains Mono', ui-monospace, monospace;
+      --serif: 'Cinzel', 'Noto Serif SC', 'Bodoni Moda', Georgia, serif;
+      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Topbar */
+    header.lab-header {
+      background: rgba(13, 16, 23, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--panel-border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand-group { display: flex; align-items: center; gap: 14px; }
+    .covenant-badge {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: var(--gold);
+    }
+    .lab-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    .claim-badge {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1px solid var(--panel-border);
+    }
+
+    /* Main Container */
+    main.lab-main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      min-height: calc(100vh - 58px);
+    }
+
+    /* Left Control Panel */
+    aside.lab-sidebar {
+      background: var(--panel);
+      border-right: 1px solid var(--panel-border);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      overflow-y: auto;
+    }
+
+    .section-title {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+
+    /* Direction Switcher */
+    .direction-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .direction-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--panel-border);
+      border-radius: 6px;
+      padding: 10px 12px;
+      text-align: left;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .direction-btn:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+    }
+    .direction-btn.active {
+      background: rgba(34, 211, 238, 0.1);
+      border-color: var(--cyan);
+      color: #fff;
+    }
+    .direction-btn strong { font-size: 0.85rem; font-weight: 600; }
+    .direction-btn span { font-size: 0.72rem; color: var(--text-dim); }
+
+    /* Jurisdiction Switcher */
+    .jurisdiction-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--panel-border);
+      border-radius: 6px;
+      padding: 8px 10px;
+      text-align: left;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .jurisdiction-btn:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+    }
+    .jurisdiction-btn.active {
+      background: rgba(245, 158, 11, 0.12);
+      border-color: var(--gold);
+      color: #fff;
+    }
+    .jurisdiction-btn strong { font-size: 0.8rem; font-weight: 600; }
+    .jurisdiction-btn span { font-size: 0.68rem; color: var(--text-dim); }
+
+    /* Relation Pill Grid */
+    .relation-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+    .relation-pill {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--panel-border);
+      border-radius: 6px;
+      padding: 8px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+    }
+    .relation-pill:hover {
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--text);
+    }
+    .relation-pill.active {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: var(--gold);
+      color: #fff;
+    }
+    .relation-pill .glyph {
+      font-size: 1.3rem;
+      font-family: var(--serif);
+      line-height: 1;
+    }
+    .relation-pill .key-name {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      text-transform: uppercase;
+    }
+
+    /* Stage Controls */
+    .ctrl-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .ctrl-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .ctrl-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .ctrl-slider {
+      flex: 1;
+      accent-color: var(--cyan);
+    }
+    .ctrl-value {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--cyan);
+      min-width: 48px;
+      text-align: right;
+    }
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .toggle-row input { accent-color: var(--cyan); }
+
+    /* Viewport Tabs */
+    .viewport-tabs {
+      display: flex;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 4px;
+      border-radius: 6px;
+    }
+    .vp-tab-btn {
+      flex: 1;
+      padding: 6px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .vp-tab-btn.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-weight: 500;
+    }
+
+    /* Stage Viewport Area */
+    section.lab-stage-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: radial-gradient(circle at 50% 50%, #0f131c 0%, #06070a 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Stage Container */
+    .stage-wrapper {
+      position: relative;
+      transition: all 0.3s ease;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .stage-wrapper.desktop {
+      width: 100%;
+      max-width: 1000px;
+      height: 520px;
+      border: 1px solid var(--panel-border);
+    }
+    .stage-wrapper.mobile {
+      width: 390px;
+      height: 844px;
+      border: 10px solid #20242c;
+      border-radius: 48px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+      background: #000;
+      position: relative;
+    }
+
+    /* Mobile Notch Simulation */
+    .stage-wrapper.mobile::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 24px;
+      background: #20242c;
+      border-bottom-left-radius: 14px;
+      border-bottom-right-radius: 14px;
+      z-index: 50;
+    }
+
+    #stageContainer {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #stageContainer svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Carrier HUD Overlay */
+    .hud-overlay {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      right: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      pointer-events: none;
+    }
+    .hud-card {
+      background: rgba(13, 16, 23, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--panel-border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      pointer-events: auto;
+    }
+    .hud-row { display: flex; gap: 12px; }
+    .hud-badge { color: var(--gold); }
+
+    /* Critique Drawer */
+    .critique-drawer {
+      margin-top: 14px;
+      border: 1px solid var(--panel-border);
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.2);
+      font-size: 0.78rem;
+    }
+    .critique-summary {
+      padding: 10px 12px;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--cyan);
+    }
+    .critique-body {
+      padding: 12px;
+      border-top: 1px solid var(--panel-border);
+      color: var(--text-muted);
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<header class="lab-header">
+  <div class="brand-group">
+    <span class="covenant-badge">𝌋 TD613 · TRANCHE 2C</span>
+    <span class="lab-title">Sequence 6 Visual Laboratory · Director’s Cut &amp; Tournament</span>
+  </div>
+  <div class="claim-badge">
+    CLAIM CEILING: VISUAL_RELATION != EXTERNAL_REALITY | AMBIENT_MOTION != EVENT_HISTORY
+  </div>
+</header>
+
+<main class="lab-main">
+  <!-- Left Controls -->
+  <aside class="lab-sidebar">
+    <div>
+      <div class="section-title">Visual Direction &amp; Synthesis</div>
+      <div class="direction-list">
+        <button class="direction-btn active" data-direction="directors_cut">
+          <strong style="color:var(--gold);">★ Director’s Cut: Couture Tectonic</strong>
+          <span>Haute Couture Tectonic Federalism (Living Field · HOLD · Boundary · Receipts · Rest)</span>
+        </button>
+        <button class="direction-btn" data-direction="lithic_tectonic">
+          <strong>1 · Lithic Tectonic</strong>
+          <span>Basalt Monolith, Ruled Shear Planes &amp; Shard Observatory</span>
+        </button>
+        <button class="direction-btn" data-direction="organza_choreography">
+          <strong>2 · Organza Choreography</strong>
+          <span>Haute Couture Diaphanous Membrane, Moiré Pleat &amp; Silk</span>
+        </button>
+        <button class="direction-btn" data-direction="aperture_monochrome">
+          <strong>3 · Aperture Monochrome</strong>
+          <span>Cold-Cathode Radar Crypt, Telemetric Reticles &amp; Verniers</span>
+        </button>
+        <button class="direction-btn" data-direction="diagnostic">
+          <strong>0 · Diagnostic Baseline</strong>
+          <span>Canonical 39-Carrier Flow-Core Diagnostic Seam</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="jurisdictionSection">
+      <div class="section-title">Product Jurisdiction (Federalism)</div>
+      <div class="jurisdiction-list" style="display:flex; flex-direction:column; gap:5px;">
+        <button class="jurisdiction-btn active" data-jurisdiction="living_field">
+          <strong>Living Relational Field</strong>
+          <span>Extravagant fluid silk drapery &amp; basalt mass</span>
+        </button>
+        <button class="jurisdiction-btn" data-jurisdiction="hold">
+          <strong>HOLD State</strong>
+          <span>Architectural monolith cleft &amp; docked berths</span>
+        </button>
+        <button class="jurisdiction-btn" data-jurisdiction="authorization_boundary">
+          <strong>Authorization Boundary</strong>
+          <span>Double-ruled titanium gate &amp; enclave threshold</span>
+        </button>
+        <button class="jurisdiction-btn" data-jurisdiction="receipt_inspection">
+          <strong>Receipt &amp; Evidence Ledger</strong>
+          <span>Calm high-contrast monospace &amp; [OBSERVED]/[DERIVED]/[HELD]</span>
+        </button>
+        <button class="jurisdiction-btn" data-jurisdiction="structural_rest">
+          <strong>Structural Rest 𝄐</strong>
+          <span>Composed downward folds &amp; plumb equilibrium</span>
+        </button>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-title">Canonical Flow-Core State</div>
+      <div class="relation-grid">
+        <button class="relation-pill active" data-relation="gathering">
+          <span class="glyph">à</span>
+          <span class="key-name">Gather</span>
+        </button>
+        <button class="relation-pill" data-relation="release">
+          <span class="glyph">出</span>
+          <span class="key-name">Release</span>
+        </button>
+        <button class="relation-pill" data-relation="protected_continuity">
+          <span class="glyph">cōl</span>
+          <span class="key-name">Protect</span>
+        </button>
+        <button class="relation-pill" data-relation="structural_rest">
+          <span class="glyph">𝄐</span>
+          <span class="key-name">Rest</span>
+        </button>
+        <button class="relation-pill" data-relation="recurrence">
+          <span class="glyph">米</span>
+          <span class="key-name">Recur</span>
+        </button>
+        <button class="relation-pill" data-relation="bounded_emergence">
+          <span class="glyph">hõt</span>
+          <span class="key-name">Emerge</span>
+        </button>
+        <button class="relation-pill" data-relation="created_potential">
+          <span class="glyph">上</span>
+          <span class="key-name">Ascend</span>
+        </button>
+        <button class="relation-pill" data-relation="released_tendency">
+          <span class="glyph">下</span>
+          <span class="key-name">Ground</span>
+        </button>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-title">Viewport Mode</div>
+      <div class="viewport-tabs">
+        <button class="vp-tab-btn active" data-vp="desktop">Desktop (1000×520)</button>
+        <button class="vp-tab-btn" data-vp="mobile">Mobile 390px (iPhone)</button>
+      </div>
+    </div>
+
+    <div class="ctrl-group">
+      <div class="section-title">Animation Jurisdiction (One Clock)</div>
+      <div class="ctrl-row">
+        <span class="ctrl-label">Clock (ms)</span>
+        <input type="range" class="ctrl-slider" id="clockSlider" min="0" max="10000" step="50" value="1800">
+        <span class="ctrl-value" id="clockVal">1800ms</span>
+      </div>
+      <div class="ctrl-row">
+        <span class="ctrl-label">Progress</span>
+        <input type="range" class="ctrl-slider" id="progressSlider" min="0" max="1" step="0.05" value="0.6">
+        <span class="ctrl-value" id="progressVal">0.60</span>
+      </div>
+      <div class="ctrl-row" style="margin-top: 6px;">
+        <button id="playPauseBtn" style="flex:1; padding:6px; background:rgba(255,255,255,0.06); border:1px solid var(--panel-border); color:#fff; border-radius:4px; cursor:pointer;">Pause</button>
+        <button id="resetClockBtn" style="padding:6px 12px; background:transparent; border:1px solid var(--panel-border); color:var(--text-muted); border-radius:4px; cursor:pointer;">Reset</button>
+      </div>
+    </div>
+
+    <div class="ctrl-group">
+      <div class="section-title">Accessibility & Inspection</div>
+      <label class="toggle-row">
+        <input type="checkbox" id="reducedMotionToggle">
+        <span class="ctrl-label">Reduced Motion (Static Frame)</span>
+      </label>
+      <label class="toggle-row">
+        <input type="checkbox" id="showCensusToggle" checked>
+        <span class="ctrl-label">Show 39-Carrier Depth HUD</span>
+      </label>
+    </div>
+
+    <!-- Direction Self-Critique Drawer -->
+    <details class="critique-drawer" id="critiqueDetails" open>
+      <summary class="critique-summary">Director Critique & Architecture</summary>
+      <div class="critique-body" id="critiqueContent">
+        <!-- Injected via script -->
+      </div>
+    </details>
+  </aside>
+
+  <!-- Right Visual Stage -->
+  <section class="lab-stage-area">
+    <div class="stage-wrapper desktop" id="stageWrapper">
+      <div id="stageContainer"></div>
+    </div>
+
+    <div class="hud-overlay" id="hudOverlay">
+      <div class="hud-card">
+        <div class="hud-row">
+          <span>CARRIERS: <strong class="hud-badge">39</strong></span>
+          <span>NEAR: <strong class="hud-badge">6</strong></span>
+          <span>MID: <strong class="hud-badge">13</strong></span>
+          <span>FAR: <strong class="hud-badge">20</strong></span>
+        </div>
+        <div class="hud-row" style="color: var(--text-dim); font-size: 0.65rem;">
+          <span>CSS OPACITY: .38 / .24 / .20</span>
+          <span>DEPTH GAIN: 1.35 / .82 / .46</span>
+        </div>
+      </div>
+      <div class="hud-card">
+        <div class="hud-row">
+          <span>DIRECTION: <strong id="hudDirection">LITHIC_TECTONIC</strong></span>
+          <span>STATE: <strong id="hudState">à (gathering)</strong></span>
+        </div>
+        <div class="hud-row" style="color: var(--text-dim); font-size: 0.65rem;">
+          <span id="hudSettling">ACTIVE GOVERNED TRANSIT</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script type="module">
+  import {
+    renderDomeArt,
+    generateSvgSnapshot
+  } from '../engine/flowcore-semantic-motion-bridge.js';
+
+  // State
+  let currentDirection = 'directors_cut';
+  let currentJurisdiction = 'living_field';
+  let currentRelation = 'gathering';
+  let currentViewportMode = 'desktop';
+  let clockMs = 1800;
+  let progress = 0.6;
+  let isPlaying = true;
+  let reducedMotion = false;
+  let lastTimestamp = performance.now();
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('direction')) currentDirection = urlParams.get('direction');
+  if (urlParams.has('jurisdiction')) currentJurisdiction = urlParams.get('jurisdiction');
+  if (urlParams.has('relation')) currentRelation = urlParams.get('relation');
+  if (urlParams.has('reducedMotion')) reducedMotion = urlParams.get('reducedMotion') === 'true';
+  if (urlParams.has('vp')) currentViewportMode = urlParams.get('vp');
+  if (urlParams.has('play')) isPlaying = urlParams.get('play') === 'true';
+
+  const CRITIQUES = {
+    directors_cut: {
+      name: 'Director’s Cut: Couture Tectonic',
+      distinctness: 'Haute couture tectonic federalism: fluid silk bezier ribbons meets monumental basalt mass and precision titanium rules across five product jurisdictions.',
+      emphasizes: 'Jurisdiction-specific material registers: fluid drapery for living relations, monolithic clefts with docked berths for HOLD, titanium gates for authorization, calm high-contrast monospace for receipts, and draped plumb equilibrium for structural rest.',
+      risks: 'Federalist jurisdictions must share cohesive house geometry and color gamut so state transitions feel architectural rather than jarring.',
+      mobile_compromise: '390px portrait view reflows horizontal docking shelves into vertical architectural strata while retaining all 39 carriers.',
+      reduced_motion: 'Settles into an architecturally composed static frame with zero drift, preserving full jurisdictional structure.',
+      strongest: 'Eliminates aesthetic compromise by giving each operational reality its truthful material expression under one single clock.',
+      weakest: 'Requires strict jurisdictional classification so developers never render fluid motion over evidentiary receipts.',
+      steal: 'Synthesizes the best of Lithic monumental mass, Organza couture drapery, and Aperture telemetric precision.'
+    },
+    lithic_tectonic: {
+      name: 'Lithic Tectonic',
+      distinctness: 'Monolithic obsidian tablets, orthogonal stone incision rules, and high-relief architectural slabs with chisel bevels.',
+      emphasizes: 'Structural gravity, monumental dead-load balance, and tectonic shear along fault lines.',
+      risks: 'Dense architectural crosshairs can compete with carrier typography if glyph contrast falls below threshold.',
+      mobile_compromise: 'Compact viewport requires clipping the far lateral fault lines to keep the center stele monumental.',
+      reduced_motion: 'Settles into an immovable stone-carved typographic tablet with zero drift.',
+      strongest: 'Uncompromising architectural weight and museum-grade tactile dignity.',
+      weakest: 'Rigid orthogonal axes leave less room for organic or orbital fluidity.',
+      steal: 'Could borrow the sheer silk luminosity and radial caustics from Organza to soften the subterranean shadows.'
+    },
+    organza_choreography: {
+      name: 'Organza Choreography',
+      distinctness: 'Haute couture diaphanous draping, flowing bezier silk ribbons, iridescent moiré pleat interference, and theatrical velvet rim lighting.',
+      emphasizes: 'Aerodynamic shear, fluid centripetal folding, and sensuous orbital drapery around a luminous typographic waistline.',
+      risks: 'Translucent screen blend modes can wash out on low-contrast displays if not anchored by sharp ligature edges.',
+      mobile_compromise: 'Couture ribbon sweeps must curl tighter in portrait orientation to prevent boundary collisions.',
+      reduced_motion: 'Folds smoothly down into a pleated static silk veil with all 39 carriers suspended in perfect rest.',
+      strongest: 'Breathtaking seductive beauty, high-fashion runway drama, and fluid motion hierarchy.',
+      weakest: 'Less overtly technical; requires viewer to trust poetic and kinetic intuition over metric stencils.',
+      steal: 'Could borrow the precision vernier ticks from Aperture Monochrome to sharpen the pleat hems.'
+    },
+    aperture_monochrome: {
+      name: 'Aperture Monochrome',
+      distinctness: 'Cold-cathode phosphor neon, rotating radar sweep reticles, precision vernier scale ticks, and surveillance echo blips.',
+      emphasizes: 'Absolute telemetric lock, quantized orbital bearings, and sub-pixel coordinate tracking.',
+      risks: 'High-contrast phosphor stencils can evoke military surveillance or cybersecurity dashboards if not restrained.',
+      mobile_compromise: 'Polar range rings condense in 390px, requiring azimuthal readouts to truncate secondary telemetry tags.',
+      reduced_motion: 'Phosphor decay freezes into a steady, zero-jitter coordinate grid with coordinate locks.',
+      strongest: 'Razor-sharp informational legibility and severe scientific authority.',
+      weakest: 'Austerity can feel emotionally cold compared to the tactile warmth of stone or the sensuality of silk.',
+      steal: 'Could borrow the monumental typographic scale of Lithic Tectonic for the central aperture reticle.'
+    },
+    diagnostic: {
+      name: 'Diagnostic Baseline',
+      distinctness: 'Minimalist 39-carrier typographic field directly exposing the mathematical carrier seam and depth opacities.',
+      emphasizes: 'Pure coordinate truth, carrier index distributions, and raw glyph kinematics without decorative dressing.',
+      risks: 'Repeating 39 identical glyphs feels mechanical and diagnostic rather than a finished product experience.',
+      mobile_compromise: 'Mobile density compacts the 39 glyphs into a tighter typographic cloud.',
+      reduced_motion: 'Deterministic 7x5 / 5x8 architectural static matrix.',
+      strongest: 'Total mathematical transparency and diagnostic purity.',
+      weakest: 'Lacks high-craft material presence and aesthetic transcendence.',
+      steal: 'All director modes inherit its immutable carrier distribution and single animation owner discipline.'
+    }
+  };
+
+  const stageWrapper = document.getElementById('stageWrapper');
+  const stageContainer = document.getElementById('stageContainer');
+  const clockSlider = document.getElementById('clockSlider');
+  const clockVal = document.getElementById('clockVal');
+  const progressSlider = document.getElementById('progressSlider');
+  const progressVal = document.getElementById('progressVal');
+  const playPauseBtn = document.getElementById('playPauseBtn');
+  const resetClockBtn = document.getElementById('resetClockBtn');
+  const reducedMotionToggle = document.getElementById('reducedMotionToggle');
+  const showCensusToggle = document.getElementById('showCensusToggle');
+  const hudOverlay = document.getElementById('hudOverlay');
+  const hudDirection = document.getElementById('hudDirection');
+  const hudState = document.getElementById('hudState');
+  const hudSettling = document.getElementById('hudSettling');
+  const critiqueContent = document.getElementById('critiqueContent');
+
+  function updateCritique() {
+    const c = CRITIQUES[currentDirection];
+    critiqueContent.innerHTML = `
+      <div><strong>Visual Distinctness:</strong> ${c.distinctness}</div>
+      <div><strong>Emphasized Structure:</strong> ${c.emphasizes}</div>
+      <div><strong>Semantic Risk:</strong> ${c.risks}</div>
+      <div><strong>Mobile Compromise:</strong> ${c.mobile_compromise}</div>
+      <div><strong>Reduced Motion:</strong> ${c.reduced_motion}</div>
+      <div><strong>Strongest Feature:</strong> <span style="color:var(--emerald);">${c.strongest}</span></div>
+      <div><strong>Weakest Feature:</strong> <span style="color:var(--rose);">${c.weakest}</span></div>
+      <div><strong>Element to Borrow:</strong> <span style="color:var(--purple);">${c.steal}</span></div>
+    `;
+  }
+
+  function renderFrame() {
+    const vpWidth = currentViewportMode === 'mobile' ? 390 : 1000;
+    const vpHeight = currentViewportMode === 'mobile' ? 844 : 520;
+
+    const snapshot = {
+      activeViewId: 'cockpit',
+      relationState: { relation_key: currentRelation, progress: progress },
+      directorDirection: currentDirection,
+      jurisdiction: currentJurisdiction,
+      reducedMotion: reducedMotion
+    };
+
+    const viewport = {
+      width: vpWidth,
+      height: vpHeight,
+      dpr: window.devicePixelRatio || 1,
+      directorDirection: currentDirection,
+      jurisdiction: currentJurisdiction,
+      reducedMotion: reducedMotion
+    };
+
+    const frame = renderDomeArt('cockpit', snapshot, viewport, clockMs);
+    const svgString = generateSvgSnapshot(frame, { directorDirection: currentDirection });
+
+    stageContainer.innerHTML = svgString;
+
+    // Update HUD
+    hudDirection.textContent = currentDirection.toUpperCase();
+    hudState.textContent = currentDirection === 'directors_cut' && currentJurisdiction !== 'living_field'
+      ? `JURISDICTION: ${currentJurisdiction.toUpperCase()}`
+      : `${frame.descriptor.canonical_glyph} (${currentRelation})`;
+    hudSettling.textContent = frame.descriptor.settling_behavior.mode === 'COAST_AND_SETTLE'
+      ? (clockMs >= 800 ? 'SETTLED IMMUTABLE EQUILIBRIUM' : 'COASTING & SETTLING...')
+      : (currentJurisdiction === 'structural_rest' ? 'REST & STASIS EQUILIBRIUM' : 'ACTIVE GOVERNED TRANSIT');
+  }
+
+  // Animation Loop (One Clock)
+  function animLoop(now) {
+    if (isPlaying && !reducedMotion) {
+      const delta = now - lastTimestamp;
+      clockMs = (clockMs + delta) % 10000;
+      clockSlider.value = clockMs;
+      clockVal.textContent = Math.round(clockMs) + 'ms';
+      renderFrame();
+    }
+    lastTimestamp = now;
+    requestAnimationFrame(animLoop);
+  }
+
+  // Event Listeners
+  document.querySelectorAll('.direction-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.direction-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentDirection = btn.dataset.direction;
+      updateCritique();
+      renderFrame();
+    });
+  });
+
+  document.querySelectorAll('.jurisdiction-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.jurisdiction-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentJurisdiction = btn.dataset.jurisdiction;
+      renderFrame();
+    });
+  });
+
+  document.querySelectorAll('.relation-pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.relation-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentRelation = btn.dataset.relation;
+      renderFrame();
+    });
+  });
+
+  document.querySelectorAll('.vp-tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.vp-tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentViewportMode = btn.dataset.vp;
+      stageWrapper.className = `stage-wrapper ${currentViewportMode}`;
+      renderFrame();
+    });
+  });
+
+  document.querySelectorAll('.vp-tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.vp-tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentViewportMode = btn.dataset.vp;
+      stageWrapper.className = `stage-wrapper ${currentViewportMode}`;
+      renderFrame();
+    });
+  });
+
+  clockSlider.addEventListener('input', (e) => {
+    clockMs = Number(e.target.value);
+    clockVal.textContent = clockMs + 'ms';
+    renderFrame();
+  });
+
+  progressSlider.addEventListener('input', (e) => {
+    progress = Number(e.target.value);
+    progressVal.textContent = progress.toFixed(2);
+    renderFrame();
+  });
+
+  playPauseBtn.addEventListener('click', () => {
+    isPlaying = !isPlaying;
+    playPauseBtn.textContent = isPlaying ? 'Pause' : 'Play';
+  });
+
+  resetClockBtn.addEventListener('click', () => {
+    clockMs = 0;
+    clockSlider.value = 0;
+    clockVal.textContent = '0ms';
+    renderFrame();
+  });
+
+  reducedMotionToggle.addEventListener('change', (e) => {
+    reducedMotion = e.target.checked;
+    renderFrame();
+  });
+
+  showCensusToggle.addEventListener('change', (e) => {
+    hudOverlay.style.display = e.target.checked ? 'flex' : 'none';
+  });
+
+  // Initial Boot
+  if (currentDirection) {
+    document.querySelectorAll('.direction-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.direction === currentDirection);
+    });
+  }
+  if (currentJurisdiction) {
+    document.querySelectorAll('.jurisdiction-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.jurisdiction === currentJurisdiction);
+    });
+  }
+  if (currentRelation) {
+    document.querySelectorAll('.relation-pill').forEach(b => {
+      b.classList.toggle('active', b.dataset.relation === currentRelation);
+    });
+  }
+  if (currentViewportMode) {
+    document.querySelectorAll('.vp-tab-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.vp === currentViewportMode);
+    });
+    stageWrapper.className = `stage-wrapper ${currentViewportMode}`;
+  }
+  if (reducedMotion) {
+    reducedMotionToggle.checked = true;
+  }
+  updateCritique();
+  renderFrame();
+  requestAnimationFrame(animLoop);
+</script>
+
+</body>
+</html>

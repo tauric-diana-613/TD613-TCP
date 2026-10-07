@@ -1,0 +1,230 @@
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import {
+  renderDomeArt,
+  generateSvgSnapshot,
+  DIRECTOR_DIRECTIONS,
+  PRODUCT_JURISDICTIONS
+} from '../app/engine/flowcore-semantic-motion-bridge.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const repoRoot = path.resolve(__dirname, '..');
+const outputDir = path.join(repoRoot, 'research', 'sequence-6-surviving-relations', 'witnesses');
+
+if (!fs.existsSync(outputDir)) {
+  fs.mkdirSync(outputDir, { recursive: true });
+}
+
+const VIEWPORTS = [
+  { name: 'desktop', width: 1000, height: 520, dpr: 1 },
+  { name: 'mobile_390px', width: 390, height: 844, dpr: 3 }
+];
+
+const COMPARISON_RELATIONS = [
+  'gathering',            // à
+  'release',              // 出
+  'protected_continuity', // cōl
+  'structural_rest',      // 𝄐
+  'recurrence',           // 米
+  'bounded_emergence',    // hõt
+  'created_potential',    // 上
+  'released_tendency'     // 下
+];
+
+const manifest = [];
+
+console.log('Generating Sequence 6 Tranche 2 & 2B Visual Witnesses...');
+
+for (const dir of DIRECTOR_DIRECTIONS) {
+  console.log(`\nGenerating direction: [${dir.toUpperCase()}]`);
+
+  for (const relationKey of COMPARISON_RELATIONS) {
+    for (const vp of VIEWPORTS) {
+      // Dynamic motion snapshot
+      const snapshot = {
+        activeViewId: 'cockpit',
+        relationState: { relation_key: relationKey, progress: 0.6 },
+        directorDirection: dir
+      };
+      const frame = renderDomeArt('cockpit', snapshot, vp, 1800);
+      const svg = generateSvgSnapshot(frame);
+      const filename = `witness-${dir}-${relationKey}-${vp.name}.svg`;
+      fs.writeFileSync(path.join(outputDir, filename), svg, 'utf8');
+
+      manifest.push({
+        direction: dir,
+        relation: relationKey,
+        glyph: frame.descriptor.canonical_glyph,
+        viewport: vp.name,
+        witness_type: vp.name === 'desktop' ? 'GENERATED_SVG_RENDER_WITNESS' : 'SIMULATED_390PX_RENDER',
+        dimensions: `${vp.width}x${vp.height}`,
+        reduced_motion: false,
+        file: filename,
+        carrier_count: frame.carriers.length,
+        planes: {
+          near: frame.carriers.filter(c => c.carrier.near).length,
+          mid: frame.carriers.filter(c => c.carrier.mid).length,
+          far: frame.carriers.filter(c => c.carrier.far).length
+        }
+      });
+
+      console.log(`  [OK] ${filename}`);
+    }
+  }
+
+  // Also generate reduced motion static equivalents for key states
+  for (const relationKey of ['gathering', 'structural_rest']) {
+    for (const vp of VIEWPORTS) {
+      const snapshot = {
+        activeViewId: 'cockpit',
+        relationState: { relation_key: relationKey, progress: 1.0 },
+        directorDirection: dir,
+        reducedMotion: true
+      };
+      const frame = renderDomeArt('cockpit', snapshot, vp, 0);
+      const svg = generateSvgSnapshot(frame);
+      const filename = `witness-${dir}-${relationKey}-reduced-motion-${vp.name}.svg`;
+      fs.writeFileSync(path.join(outputDir, filename), svg, 'utf8');
+
+      manifest.push({
+        direction: dir,
+        relation: relationKey,
+        glyph: frame.descriptor.canonical_glyph,
+        viewport: vp.name,
+        witness_type: vp.name === 'desktop' ? 'GENERATED_SVG_RENDER_WITNESS' : 'SIMULATED_390PX_RENDER',
+        dimensions: `${vp.width}x${vp.height}`,
+        reduced_motion: true,
+        file: filename,
+        carrier_count: frame.carriers.length,
+        planes: {
+          near: frame.carriers.filter(c => c.carrier.near).length,
+          mid: frame.carriers.filter(c => c.carrier.mid).length,
+          far: frame.carriers.filter(c => c.carrier.far).length
+        }
+      });
+
+      console.log(`  [OK] ${filename}`);
+    }
+  }
+}
+
+// Dedicated Director's Cut Jurisdiction Witnesses
+console.log(`\nGenerating dedicated Director's Cut Jurisdiction Witnesses...`);
+for (const jurisdiction of PRODUCT_JURISDICTIONS) {
+  for (const vp of VIEWPORTS) {
+    const snapshot = {
+      activeViewId: 'cockpit',
+      relationState: { relation_key: jurisdiction === 'structural_rest' ? 'structural_rest' : 'gathering', progress: 0.6 },
+      directorDirection: 'directors_cut',
+      jurisdiction: jurisdiction,
+      reducedMotion: false
+    };
+    const frame = renderDomeArt('cockpit', snapshot, vp, 1800);
+    const svg = generateSvgSnapshot(frame);
+    const filename = `witness-directors_cut-jurisdiction-${jurisdiction}-${vp.name}.svg`;
+    fs.writeFileSync(path.join(outputDir, filename), svg, 'utf8');
+
+    manifest.push({
+      direction: 'directors_cut',
+      jurisdiction: jurisdiction,
+      authority_class: 'outbound_carriage',
+      relation: snapshot.relationState.relation_key,
+      glyph: frame.descriptor.canonical_glyph,
+      viewport: vp.name,
+      witness_type: vp.name === 'desktop' ? 'GENERATED_SVG_RENDER_WITNESS' : 'SIMULATED_390PX_RENDER',
+      dimensions: `${vp.width}x${vp.height}`,
+      reduced_motion: false,
+      file: filename,
+      carrier_count: frame.carriers.length,
+      planes: {
+        near: frame.carriers.filter(c => c.carrier.near).length,
+        mid: frame.carriers.filter(c => c.carrier.mid).length,
+        far: frame.carriers.filter(c => c.carrier.far).length
+      }
+    });
+    console.log(`  [OK] ${filename}`);
+  }
+
+  // Reduced motion for jurisdiction
+  for (const vp of VIEWPORTS) {
+    const snapshot = {
+      activeViewId: 'cockpit',
+      relationState: { relation_key: jurisdiction === 'structural_rest' ? 'structural_rest' : 'gathering', progress: 1.0 },
+      directorDirection: 'directors_cut',
+      jurisdiction: jurisdiction,
+      reducedMotion: true
+    };
+    const frame = renderDomeArt('cockpit', snapshot, vp, 0);
+    const svg = generateSvgSnapshot(frame);
+    const filename = `witness-directors_cut-jurisdiction-${jurisdiction}-reduced-motion-${vp.name}.svg`;
+    fs.writeFileSync(path.join(outputDir, filename), svg, 'utf8');
+
+    manifest.push({
+      direction: 'directors_cut',
+      jurisdiction: jurisdiction,
+      authority_class: 'outbound_carriage',
+      relation: snapshot.relationState.relation_key,
+      glyph: frame.descriptor.canonical_glyph,
+      viewport: vp.name,
+      witness_type: vp.name === 'desktop' ? 'GENERATED_SVG_RENDER_WITNESS' : 'SIMULATED_390PX_RENDER',
+      dimensions: `${vp.width}x${vp.height}`,
+      reduced_motion: true,
+      file: filename,
+      carrier_count: frame.carriers.length,
+      planes: {
+        near: frame.carriers.filter(c => c.carrier.near).length,
+        mid: frame.carriers.filter(c => c.carrier.mid).length,
+        far: frame.carriers.filter(c => c.carrier.far).length
+      }
+    });
+    console.log(`  [OK] ${filename}`);
+  }
+}
+
+// Dedicated Issue #691 Detached Delegation Boundary Witnesses
+console.log(`\nGenerating dedicated Issue #691 Detached Delegation Boundary Witnesses...`);
+for (const vp of VIEWPORTS) {
+  const snapshotDetached = {
+    activeViewId: 'cockpit',
+    relationState: { relation_key: 'gathering', progress: 0.6 },
+    directorDirection: 'directors_cut',
+    jurisdiction: 'authorization_boundary',
+    authorityClass: 'detached_delegation',
+    reducedMotion: false
+  };
+  const frameDetached = renderDomeArt('cockpit', snapshotDetached, vp, 1800);
+  const svgDetached = generateSvgSnapshot(frameDetached);
+  const filenameDetached = `witness-directors_cut-jurisdiction-authorization_boundary-detached_delegation-${vp.name}.svg`;
+  fs.writeFileSync(path.join(outputDir, filenameDetached), svgDetached, 'utf8');
+
+  manifest.push({
+    direction: 'directors_cut',
+    jurisdiction: 'authorization_boundary',
+    authority_class: 'detached_delegation',
+    relation: 'gathering',
+    glyph: frameDetached.descriptor.canonical_glyph,
+    viewport: vp.name,
+    witness_type: vp.name === 'desktop' ? 'GENERATED_SVG_RENDER_WITNESS' : 'SIMULATED_390PX_RENDER',
+    dimensions: `${vp.width}x${vp.height}`,
+    reduced_motion: false,
+    file: filenameDetached,
+    carrier_count: frameDetached.carriers.length,
+    planes: {
+      near: frameDetached.carriers.filter(c => c.carrier.near).length,
+      mid: frameDetached.carriers.filter(c => c.carrier.mid).length,
+      far: frameDetached.carriers.filter(c => c.carrier.far).length
+    }
+  });
+  console.log(`  [OK] ${filenameDetached}`);
+}
+
+// Write manifest JSON
+fs.writeFileSync(
+  path.join(outputDir, 'witness-manifest.json'),
+  JSON.stringify(manifest, null, 2),
+  'utf8'
+);
+
+console.log(`\nSuccessfully generated ${manifest.length} visual witness files in ${outputDir}`);

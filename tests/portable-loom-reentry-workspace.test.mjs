@@ -390,3 +390,37 @@ test('returned batch extraction retains whitespace and nested-string bytes witho
   assert.deepEqual(parseLoomReentryReturnBatch(' [] '), []);
   for (const raw of ['{}', '[1]', '[null]', '[[{}]]', '[{]']) assert.throws(() => parseLoomReentryReturnBatch(raw));
 });
+
+
+test('native route bridge registers one departure and stages returned bytes without bypassing Check or Admit', async () => {
+  const h = await harness();
+  try {
+    const excursion = await h.ui.registerDeparture({
+      task: 'Native Marrowline continuation.',
+      documents: [{ id: 'native', name: 'Native.md', text: 'Fictional native-route source.' }],
+      withheld_document_count: 0
+    });
+    assert.equal(excursion.turns.length, 1);
+    assert.equal(h.ui.inspect().custody.work_unit_count, 0);
+    const turn = excursion.turns[0], answer = 'Fictional result returned through native Marrowline.';
+    const returned = {
+      schema: LOOM_REENTRY_RETURN_SCHEMA, excursion_ref: excursion.ref, intent_ref: turn.ref,
+      session_root_ref: excursion.session_root_ref, policy_commitment: excursion.policy_commitment,
+      anchor_work_unit_ref: excursion.anchor_work_unit_ref, turn_index: turn.turn_index,
+      task_digest: turn.task_digest, source_commitment_digest: turn.source_commitment_digest,
+      answer, answer_digest: await portableLoomDigest(answer, h.environment),
+      used_document_ids: ['native'], missing_information: ['Foreign execution remains unresolved.'],
+      receiver_declaration: { policy_change_requested: false, notes: 'Native route declaration only.' }
+    };
+    h.ui.loadReturnedTurn(returned);
+    assert.equal(h.ui.inspect().candidate, null);
+    assert.equal(h.ui.inspect().custody.work_unit_count, 0);
+    assert.equal(h.$('admit').disabled, true);
+    h.checked('policy-review', true); h.$('check').click(); await settled(h);
+    assert.equal(h.ui.inspect().candidate.status, 'ADMISSION_CANDIDATE');
+    assert.equal(h.ui.inspect().custody.work_unit_count, 0);
+    h.checked('accept', true); h.$('admit').click(); await settled(h);
+    assert.equal(h.ui.inspect().custody.work_unit_count, 1);
+    assert.equal(h.$('result').dataset.state, 'ADMITTED');
+  } finally { h.close(); }
+});

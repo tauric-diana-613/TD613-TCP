@@ -4,6 +4,7 @@ import { readLoomAiFailure, describeLoomAiFailure } from './holonomy-loom/ai-fai
 import { getMarrowlineAttachments, stageMarrowlineAttachments, removeMarrowlineAttachment } from './marrowline-attachments.js';
 import { installMarrowlineLoomGateContinuity } from './marrowline-loom-gate-continuity.js';
 import { LOOM_RETURN_REVIEW_STORAGE_KEY } from './holonomy-loom/returned-session-review.js';
+import { portableLoomDigest } from '../engine/portable-loom-session.js';
 
 const EVENT = 'td613:marrowline:loom-demo-state';
 export const LOOM_RETURN_MESSAGE_SCHEMA = 'td613.loom.return-review-message/v0.1';
@@ -98,6 +99,24 @@ export async function bootMarrowlineSavedReview(environment = window) {
   } catch { return null; }
 }
 
+export async function bindMarrowlineResultToLoomReturn(packet, result, environment = globalThis, { substantiveContinuationCount = 1 } = {}) {
+  const excursion = packet?.reentry_contract;
+  if (!excursion) return null;
+  if (excursion.schema !== 'td613.loom.reentry-excursion/v0.2' || !Array.isArray(excursion.turns) || excursion.turns.length !== 1) throw new Error('Native Loom re-entry contract is malformed or not one-turn bounded.');
+  if (substantiveContinuationCount !== 1) throw new Error('HOLD_UNREGISTERED_MARROWLINE_CONTINUATION: native admission requires exactly one substantive continuation for this one-turn Loom departure.');
+  if (!result || result.status !== 'completed' || typeof result.answer !== 'string') throw new Error('A completed admitted Marrowline result is required for native return binding.');
+  const turn = excursion.turns[0];
+  return {
+    schema: 'td613.loom.bound-receiver-turn/v0.2', excursion_ref: excursion.ref, intent_ref: turn.ref,
+    session_root_ref: excursion.session_root_ref, policy_commitment: excursion.policy_commitment,
+    anchor_work_unit_ref: excursion.anchor_work_unit_ref, turn_index: turn.turn_index,
+    task_digest: turn.task_digest, source_commitment_digest: turn.source_commitment_digest,
+    answer: result.answer, answer_digest: await portableLoomDigest(result.answer, environment),
+    used_document_ids: [...result.used_document_ids], missing_information: [...result.missing_information],
+    receiver_declaration: { policy_change_requested: false, notes: 'Native Marrowline route adapter bound this completed provider result to the Loom departure contract. Foreign execution remains unauthenticated.' }
+  };
+}
+
 export async function installMarrowlineLoomDemo(packet, doc=document, environment=window) {
   if (environment.__TD613_LOOM_DEMO_CONTROLLER__) return environment.__TD613_LOOM_DEMO_CONTROLLER__;
   await environment.TD613_KHONAPOLIT_TERMINAL?.ready;
@@ -132,22 +151,31 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   const close=button(doc,'Close',()=>closeMenu());
   menu.append(title,hint,activationPreview,step1,note1,step2,note2,menuStatus,restore,leave,close);doc.body.append(menu);
 
-  const returnToLoom=()=>{
+  const returnToLoom=async()=>{
     try{
       const opener=environment.opener;
       if(!opener||opener.closed||opener.location?.origin!==environment.location?.origin)throw new Error('Original Loom tab unavailable. Export the current session and open it in Loom for review.');
       const returned = active && phase === 'DONE' && Date.now() < activation.expires_at ? exportPacket() : savedReviewPacket;
       if (!returned) throw new Error('No completed result is saved for review yet.');
-      opener.postMessage({schema:LOOM_RETURN_MESSAGE_SCHEMA,packet:returned},environment.location.origin);
+      const substantiveContinuationCount = admittedStages.filter(stage=>stage.receipt.phase==='CONTINUE').length;
+      const nativeScopeEligible = Boolean(packet.reentry_contract) && substantiveContinuationCount === 1;
+      const boundReturn = active && phase === 'DONE' && lastAccepted && nativeScopeEligible
+        ? await bindMarrowlineResultToLoomReturn(packet, lastAccepted, environment, { substantiveContinuationCount })
+        : null;
+      opener.postMessage({schema:LOOM_RETURN_MESSAGE_SCHEMA,packet:returned,...(boundReturn?{bound_return:boundReturn}:{})},environment.location.origin);
       opener.focus();
-      setStatus('Returned-session review requested in the original Loom tab. Signature verification and local custody admission remain separate.');
+      setStatus(boundReturn
+        ? 'Returned work delivered to native Loom re-entry. Check and Admit remain separate operator gestures.'
+        : packet.reentry_contract && substantiveContinuationCount !== 1
+          ? 'Returned-session review only · an additional Marrowline continuation was not preregistered in Loom, so it cannot enter native admission.'
+          : 'Returned-session review requested in the original Loom tab. Saved review carries no custody admission authority.');
     }catch(error){setStatus(`Return to Loom held · ${error.message}`);}
   };
   const gateContinuity=installMarrowlineLoomGateContinuity({
     doc,root:environment,activation,packet,
     onExport:()=>exportCurrent(),
     onLocalCheck:()=>void checkBinding(),
-    onReturnToLoom:()=>returnToLoom(),
+    onReturnToLoom:()=>void returnToLoom(),
     onReturnToChat:()=>{const target=chatTarget(doc);if(target){target.click();target.focus?.({preventScroll:true});}else prompt.focus?.({preventScroll:true});}
   });
 

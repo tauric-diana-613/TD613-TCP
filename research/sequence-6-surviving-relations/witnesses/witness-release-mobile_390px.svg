@@ -1,0 +1,61 @@
+<!--
+  TD613 Flow-Core Semantic Motion Bridge Visual Witness
+  Relation: release (出)
+  Active View ID: cockpit
+  Carrier Count: 39 (Distribution: 6 near / 13 mid / 20 far)
+  Reduced Motion: DISABLED
+  Viewport: 390x844 (viewBox: 200 -220 600 1120)
+  Claim Ceiling: VISUAL_RELATION != EXTERNAL_REALITY | AMBIENT_MOTION != EVENT_HISTORY | AESTHETIC_BINDING != EMPIRICAL_VALIDATION
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="200 -220 600 1120" width="390" height="844" style="background:#0a0a0c;">
+  <style>
+    .flight-near { font-family: 'JetBrains Mono', 'PingFang SC', monospace; font-weight: bold; }
+    .flight-mid  { font-family: 'JetBrains Mono', 'PingFang SC', monospace; }
+    .flight-far  { font-family: 'JetBrains Mono', 'PingFang SC', monospace; opacity: 0.20; }
+  </style>
+  <g class="loom-field-flight" aria-hidden="true" data-active-relation="release">
+    <text x="394.87" y="116.8" font-size="184" fill="#f3bd86" class="flight-near" opacity="0.808" transform="translate(394.87 116.8) rotate(-15.79) scale(0.922) translate(-394.87 -116.8)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="625.12" y="172.09" font-size="26" fill="#b69be9" class="flight-far" opacity="0.306" transform="translate(625.12 172.09) rotate(16.79) scale(0.54) translate(-625.12 -172.09)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="359.6" y="189.03" font-size="26" fill="#b69be9" class="flight-far" opacity="0.306" transform="translate(359.6 189.03) rotate(-17.29) scale(0.553) translate(-359.6 -189.03)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="666.98" y="198.49" font-size="26" fill="#b69be9" class="flight-far" opacity="0.306" transform="translate(666.98 198.49) rotate(17.97) scale(0.561) translate(-666.98 -198.49)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="315.82" y="229.07" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.449" transform="translate(315.82 229.07) rotate(-18.43) scale(0.704) translate(-315.82 -229.07)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="702.53" y="293.5" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.306" transform="translate(702.53 293.5) rotate(19.51) scale(0.584) translate(-702.53 -293.5)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="279.93" y="368.02" font-size="26" fill="#b69be9" class="flight-far" opacity="0.306" transform="translate(279.93 368.02) rotate(-19.88) scale(0.587) translate(-279.93 -368.02)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="738.94" y="407.6" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.449" transform="translate(738.94 407.6) rotate(20.61) scale(0.739) translate(-738.94 -407.6)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="234.47" y="418.45" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.449" transform="translate(234.47 418.45) rotate(-21.44) scale(0.756) translate(-234.47 -418.45)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="783.75" y="71.19" font-size="26" fill="#f3bd86" class="flight-far" opacity="0.306" transform="translate(783.75 71.19) rotate(21.84) scale(0.622) translate(-783.75 -71.19)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="195.97" y="111.82" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.306" transform="translate(195.97 111.82) rotate(-22.47) scale(0.63) translate(-195.97 -111.82)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="816.96" y="179.43" font-size="132" fill="#b69be9" class="flight-near" opacity="0.808" transform="translate(816.96 179.43) rotate(23.51) scale(1.08) translate(-816.96 -179.43)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="165.16" y="256.42" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.449" transform="translate(165.16 256.42) rotate(-24.09) scale(0.795) translate(-165.16 -256.42)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="877.53" y="290.46" font-size="184" fill="#b69be9" class="flight-near" opacity="0.808" transform="translate(877.53 290.46) rotate(25.09) scale(1.154) translate(-877.53 -290.46)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="118.92" y="298.88" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.449" transform="translate(118.92 298.88) rotate(-25.42) scale(0.814) translate(-118.92 -298.88)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="902.5" y="308.87" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.306" transform="translate(902.5 308.87) rotate(25.98) scale(0.681) translate(-902.5 -308.87)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="72.32" y="353.97" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.449" transform="translate(72.32 353.97) rotate(-26.7) scale(0.846) translate(-72.32 -353.97)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="941.65" y="426.18" font-size="26" fill="#b69be9" class="flight-far" opacity="0.306" transform="translate(941.65 426.18) rotate(27.36) scale(0.7) translate(-941.65 -426.18)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="38.22" y="129.81" font-size="26" fill="#f3bd86" class="flight-far" opacity="0.306" transform="translate(38.22 129.81) rotate(-27.97) scale(0.715) translate(-38.22 -129.81)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="986.24" y="162.99" font-size="26" fill="#b69be9" class="flight-far" opacity="0.306" transform="translate(986.24 162.99) rotate(28.96) scale(0.718) translate(-986.24 -162.99)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="3.52" y="172.8" font-size="56" fill="#9ce7e4" class="flight-mid" opacity="0.449" transform="translate(3.52 172.8) rotate(-29.13) scale(0.903) translate(-3.52 -172.8)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="1032.24" y="193.03" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.449" transform="translate(1032.24 193.03) rotate(30.21) scale(0.916) translate(-1032.24 -193.03)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="-48.68" y="239.69" font-size="132" fill="#b69be9" class="flight-near" opacity="0.808" transform="translate(-48.68 239.69) rotate(-30.67) scale(1.259) translate(48.68 -239.69)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="1061.71" y="313.64" font-size="26" fill="#b69be9" class="flight-far" opacity="0.321" transform="translate(1061.71 313.64) rotate(31.59) scale(0.756) translate(-1061.71 -313.64)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="-79.64" y="371.83" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.404" transform="translate(-79.64 371.83) rotate(-31.97) scale(0.95) translate(79.64 -371.83)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="1100.78" y="394.38" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.229" transform="translate(1100.78 394.38) rotate(32.62) scale(0.779) translate(-1100.78 -394.38)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="-125.44" y="394.6" font-size="184" fill="#b69be9" class="flight-near" opacity="0.483" transform="translate(-125.44 394.6) rotate(-33.53) scale(1.381) translate(125.44 -394.6)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="1145.67" y="67.2" font-size="26" fill="#f3bd86" class="flight-far" opacity="0.137" transform="translate(1145.67 67.2) rotate(34.17) scale(0.801) translate(-1145.67 -67.2)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="-164.71" y="122.24" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.133" transform="translate(-164.71 122.24) rotate(-34.59) scale(1.01) translate(164.71 -122.24)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="1182.13" y="198.74" font-size="26" fill="#b69be9" class="flight-far" opacity="0.08" transform="translate(1182.13 198.74) rotate(35.3) scale(0.815) translate(-1182.13 -198.74)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="574.81" y="187.32" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.306" transform="translate(574.81 187.32) rotate(-10.07) scale(0.441) translate(-574.81 -187.32)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="444.89" y="250.82" font-size="26" fill="#b69be9" class="flight-far" opacity="0.306" transform="translate(444.89 250.82) rotate(10.81) scale(0.451) translate(-444.89 -250.82)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="533.83" y="322.35" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.449" transform="translate(533.83 322.35) rotate(-11.57) scale(0.566) translate(-533.83 -322.35)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="476.92" y="368.06" font-size="132" fill="#b69be9" class="flight-near" opacity="0.808" transform="translate(476.92 368.06) rotate(11.92) scale(0.801) translate(-476.92 -368.06)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="496.11" y="386.87" font-size="26" fill="#b69be9" class="flight-far" opacity="0.306" transform="translate(496.11 386.87) rotate(-12.93) scale(0.481) translate(-496.11 -386.87)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="520.63" y="394.74" font-size="56" fill="#9ce7e4" class="flight-mid" opacity="0.449" transform="translate(520.63 394.74) rotate(12.83) scale(0.608) translate(-520.63 -394.74)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="463.88" y="70.66" font-size="56" fill="#f3bd86" class="flight-mid" opacity="0.449" transform="translate(463.88 70.66) rotate(-14.2) scale(0.625) translate(-463.88 -70.66)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="560.15" y="134.66" font-size="26" fill="#b69be9" class="flight-far" opacity="0.306" transform="translate(560.15 134.66) rotate(14.69) scale(0.51) translate(-560.15 -134.66)" text-anchor="middle" dominant-baseline="middle">出</text>
+    <text x="414.63" y="205.82" font-size="26" fill="#b69be9" class="flight-far" opacity="0.306" transform="translate(414.63 205.82) rotate(-15.36) scale(0.518) translate(-414.63 -205.82)" text-anchor="middle" dominant-baseline="middle">出</text>
+  </g>
+  <g class="loom-field-center-glyph" text-anchor="middle" dominant-baseline="middle">
+    <text x="500" y="260" font-size="140" fill="#f4f4f0" opacity="0.88">出</text>
+    <text x="500" y="360" font-size="18" fill="#d97706" letter-spacing="2" opacity="0.95">RELEASE</text>
+  </g>
+</svg>

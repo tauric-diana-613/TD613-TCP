@@ -1,0 +1,228 @@
+<!--
+  TD613 Flow-Core Semantic Motion Bridge Visual Witness [Direction: Organza Choreography]
+  Relation: structural_rest (𝄐)
+  Active View ID: cockpit
+  Carrier Count: 39 (Distribution: 6 near / 13 mid / 20 far)
+  Reduced Motion: DISABLED
+  Viewport: 1000x520 (viewBox: 0 0 1000 520)
+  Visual Theory: Haute Couture Diaphanous Membrane, Moiré Pleats & Calligraphic Silk
+  Claim Ceiling: VISUAL_RELATION != EXTERNAL_REALITY | AMBIENT_MOTION != EVENT_HISTORY | AESTHETIC_BINDING != EMPIRICAL_VALIDATION
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 520" width="1000" height="520" style="background:#05040a;">
+  <defs>
+    <radialGradient id="organzaAura" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#2a1240" stop-opacity="0.45"/>
+      <stop offset="60%" stop-color="#0e071c" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#05040a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="silkRibbon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c4b5fd"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#f43f5e"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#organzaAura)"/>
+  <g class="organza-field-flight" aria-hidden="true" data-active-relation="structural_rest" data-visual-direction="organza_choreography">
+    <g class="organza-near" transform="translate(629.65 252.23) rotate(0.13) scale(0.65) translate(-629.65 -252.23)" style="mix-blend-mode: screen;">
+      <path d="M581.65,268.23 Q629.65,222.23 677.65,264.23" fill="none" stroke="url(#silkRibbon)" stroke-width="2.6" opacity="0.4693"/>
+      <path d="M585.65,272.23 Q633.65,226.23 681.65,267.23" fill="none" stroke="#f43f5e" stroke-width="0.8" opacity="0.2964"/>
+      <text x="629.65" y="257.23" font-size="32" font-family="'Bodoni Moda', 'Playfair Display', 'PingFang SC', serif" font-style="italic" fill="#fdf6e2" opacity="0.4446" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    </g>
+    <g class="organza-far" transform="translate(379.82 300.77) rotate(-0.1) scale(0.416) translate(-379.82 -300.77)">
+      <circle cx="379.82" cy="300.77" r="2" fill="#e9d5ff" opacity="0.1683"/>
+      <circle cx="379.82" cy="300.77" r="6" fill="#c4b5fd" opacity="0.04675"/>
+      <text x="385.82" y="303.77" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.1309">𝄐</text>
+    </g>
+    <g class="organza-far" transform="translate(514.32 189.55) rotate(0.04) scale(0.455) translate(-514.32 -189.55)">
+      <circle cx="514.32" cy="189.55" r="2" fill="#e9d5ff" opacity="0.1683"/>
+      <circle cx="514.32" cy="189.55" r="6" fill="#c4b5fd" opacity="0.04675"/>
+      <text x="520.32" y="192.55" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.1309">𝄐</text>
+    </g>
+    <g class="organza-far" transform="translate(632.91 323.45) rotate(-0.27) scale(0.507) translate(-632.91 -323.45)">
+      <circle cx="632.91" cy="323.45" r="2" fill="#e9d5ff" opacity="0.1683"/>
+      <circle cx="632.91" cy="323.45" r="6" fill="#c4b5fd" opacity="0.04675"/>
+      <text x="638.91" y="326.45" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.1309">𝄐</text>
+    </g>
+    <g class="organza-mid" transform="translate(257.75 242.04) rotate(0.03) scale(0.667) translate(-257.75 -242.04)">
+      <ellipse cx="257.75" cy="242.04" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.04125" stroke="#c4b5fd" stroke-width="0.8" opacity="0.275"/>
+      <line x1="239.75" y1="242.04" x2="275.75" y2="242.04" stroke="#f59e0b" stroke-width="0.6" opacity="0.1925"/>
+      <text x="257.75" y="246.04" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.23375" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    </g>
+    <g class="organza-far" transform="translate(723.69 206.28) rotate(-0.29) scale(0.372) translate(-723.69 -206.28)">
+      <circle cx="723.69" cy="206.28" r="2" fill="#e9d5ff" opacity="0.1683"/>
+      <circle cx="723.69" cy="206.28" r="6" fill="#c4b5fd" opacity="0.04675"/>
+      <text x="729.69" y="209.28" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.1309">𝄐</text>
+    </g>
+    <g class="organza-far" transform="translate(422.44 365.34) rotate(0.01) scale(0.42) translate(-422.44 -365.34)">
+      <circle cx="422.44" cy="365.34" r="2" fill="#e9d5ff" opacity="0.1683"/>
+      <circle cx="422.44" cy="365.34" r="6" fill="#c4b5fd" opacity="0.04675"/>
+      <text x="428.44" y="368.34" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.1309">𝄐</text>
+    </g>
+    <g class="organza-mid" transform="translate(438.48 212.41) rotate(-0.02) scale(0.57) translate(-438.48 -212.41)">
+      <ellipse cx="438.48" cy="212.41" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.04125" stroke="#c4b5fd" stroke-width="0.8" opacity="0.275"/>
+      <line x1="420.48" y1="212.41" x2="456.48" y2="212.41" stroke="#f59e0b" stroke-width="0.6" opacity="0.1925"/>
+      <text x="438.48" y="216.41" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.23375" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    </g>
+    <g class="organza-mid" transform="translate(649.55 278.43) rotate(0.08) scale(0.623) translate(-649.55 -278.43)">
+      <ellipse cx="649.55" cy="278.43" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.04125" stroke="#c4b5fd" stroke-width="0.8" opacity="0.275"/>
+      <line x1="631.55" y1="278.43" x2="667.55" y2="278.43" stroke="#f59e0b" stroke-width="0.6" opacity="0.1925"/>
+      <text x="649.55" y="282.43" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.23375" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    </g>
+    <g class="organza-far" transform="translate(326.19 287.72) rotate(-0.11) scale(0.542) translate(-326.19 -287.72)">
+      <circle cx="326.19" cy="287.72" r="2" fill="#e9d5ff" opacity="0.1683"/>
+      <circle cx="326.19" cy="287.72" r="6" fill="#c4b5fd" opacity="0.04675"/>
+      <text x="332.19" y="290.72" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.1309">𝄐</text>
+    </g>
+    <g class="organza-far" transform="translate(590.19 183.37) rotate(0.01) scale(0.377) translate(-590.19 -183.37)">
+      <circle cx="590.19" cy="183.37" r="2" fill="#e9d5ff" opacity="0.1683"/>
+      <circle cx="590.19" cy="183.37" r="6" fill="#c4b5fd" opacity="0.04675"/>
+      <text x="596.19" y="186.37" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.1309">𝄐</text>
+    </g>
+    <g class="organza-near" transform="translate(566.33 342.29) rotate(0.09) scale(0.714) translate(-566.33 -342.29)" style="mix-blend-mode: screen;">
+      <path d="M518.33,358.29 Q566.33,312.29 614.33,354.29" fill="none" stroke="url(#silkRibbon)" stroke-width="2.6" opacity="0.4693"/>
+      <path d="M522.33,362.29 Q570.33,316.29 618.33,357.29" fill="none" stroke="#f43f5e" stroke-width="0.8" opacity="0.2964"/>
+      <text x="566.33" y="347.29" font-size="32" font-family="'Bodoni Moda', 'Playfair Display', 'PingFang SC', serif" font-style="italic" fill="#fdf6e2" opacity="0.4446" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    </g>
+    <g class="organza-mid" transform="translate(268.79 206.69) rotate(0.12) scale(0.57) translate(-268.79 -206.69)">
+      <ellipse cx="268.79" cy="206.69" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.04125" stroke="#c4b5fd" stroke-width="0.8" opacity="0.275"/>
+      <line x1="250.79000000000002" y1="206.69" x2="286.79" y2="206.69" stroke="#f59e0b" stroke-width="0.6" opacity="0.1925"/>
+      <text x="268.79" y="210.69" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.23375" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    </g>
+    <g class="organza-near" transform="translate(786.29 236.03) rotate(0) scale(0.851) translate(-786.29 -236.03)" style="mix-blend-mode: screen;">
+      <path d="M738.29,252.03 Q786.29,206.03 834.29,248.03" fill="none" stroke="url(#silkRibbon)" stroke-width="2.6" opacity="0.4693"/>
+      <path d="M742.29,256.03 Q790.29,210.03 838.29,251.03" fill="none" stroke="#f43f5e" stroke-width="0.8" opacity="0.2964"/>
+      <text x="786.29" y="241.03" font-size="32" font-family="'Bodoni Moda', 'Playfair Display', 'PingFang SC', serif" font-style="italic" fill="#fdf6e2" opacity="0.4446" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    </g>
+    <g class="organza-mid" transform="translate(418.54 303.44) rotate(0.11) scale(0.66) translate(-418.54 -303.44)">
+      <ellipse cx="418.54" cy="303.44" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.04125" stroke="#c4b5fd" stroke-width="0.8" opacity="0.275"/>
+      <line x1="400.54" y1="303.44" x2="436.54" y2="303.44" stroke="#f59e0b" stroke-width="0.6" opacity="0.1925"/>
+      <text x="418.54" y="307.44" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.23375" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    </g>
+    <g class="organza-far" transform="translate(479.4 199.83) rotate(0.01) scale(0.372) translate(-479.4 -199.83)">
+      <circle cx="479.4" cy="199.83" r="2" fill="#e9d5ff" opacity="0.1683"/>
+      <circle cx="479.4" cy="199.83" r="6" fill="#c4b5fd" opacity="0.04675"/>
+      <text x="485.4" y="202.83" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.1309">𝄐</text>
+    </g>
+    <g class="organza-mid" transform="translate(643.8 306.3) rotate(-0.28) scale(0.514) translate(-643.8 -306.3)">
+      <ellipse cx="643.8" cy="306.3" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.04125" stroke="#c4b5fd" stroke-width="0.8" opacity="0.275"/>
+      <line x1="625.8" y1="306.3" x2="661.8" y2="306.3" stroke="#f59e0b" stroke-width="0.6" opacity="0.1925"/>
+      <text x="643.8" y="310.3" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.23375" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    </g>
+    <g class="organza-far" transform="translate(285.25 261.05) rotate(0.03) scale(0.461) translate(-285.25 -261.05)">
+      <circle cx="285.25" cy="261.05" r="2" fill="#e9d5ff" opacity="0.1683"/>
+      <circle cx="285.25" cy="261.05" r="6" fill="#c4b5fd" opacity="0.04675"/>
+      <text x="291.25" y="264.05" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.1309">𝄐</text>
+    </g>
+    <g class="organza-far" transform="translate(674.6 197.04) rotate(0.04) scale(0.503) translate(-674.6 -197.04)">
+      <circle cx="674.6" cy="197.04" r="2" fill="#e9d5ff" opacity="0.1683"/>
+      <circle cx="674.6" cy="197.04" r="6" fill="#c4b5fd" opacity="0.04675"/>
+      <text x="680.6" y="200.04" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.1309">𝄐</text>
+    </g>
+    <g class="organza-far" transform="translate(485.53 361.12) rotate(0.01) scale(0.543) translate(-485.53 -361.12)">
+      <circle cx="485.53" cy="361.12" r="2" fill="#e9d5ff" opacity="0.1683"/>
+      <circle cx="485.53" cy="361.12" r="6" fill="#c4b5fd" opacity="0.04675"/>
+      <text x="491.53" y="364.12" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.1309">𝄐</text>
+    </g>
+    <g class="organza-mid" transform="translate(323.47 176.28) rotate(0.15) scale(0.47) translate(-323.47 -176.28)">
+      <ellipse cx="323.47" cy="176.28" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.04125" stroke="#c4b5fd" stroke-width="0.8" opacity="0.275"/>
+      <line x1="305.47" y1="176.28" x2="341.47" y2="176.28" stroke="#f59e0b" stroke-width="0.6" opacity="0.1925"/>
+      <text x="323.47" y="180.28" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.23375" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    </g>
+    <g class="organza-mid" transform="translate(628.15 264.51) rotate(-0.03) scale(0.512) translate(-628.15 -264.51)">
+      <ellipse cx="628.15" cy="264.51" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.04125" stroke="#c4b5fd" stroke-width="0.8" opacity="0.275"/>
+      <line x1="610.15" y1="264.51" x2="646.15" y2="264.51" stroke="#f59e0b" stroke-width="0.6" opacity="0.1925"/>
+      <text x="628.15" y="268.51" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.23375" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    </g>
+    <g class="organza-near" transform="translate(366.42 291.2) rotate(0.63) scale(0.796) translate(-366.42 -291.2)" style="mix-blend-mode: screen;">
+      <path d="M318.42,307.2 Q366.42,261.2 414.42,303.2" fill="none" stroke="url(#silkRibbon)" stroke-width="2.6" opacity="0.4693"/>
+      <path d="M322.42,311.2 Q370.42,265.2 418.42,306.2" fill="none" stroke="#f43f5e" stroke-width="0.8" opacity="0.2964"/>
+      <text x="366.42" y="296.2" font-size="32" font-family="'Bodoni Moda', 'Playfair Display', 'PingFang SC', serif" font-style="italic" fill="#fdf6e2" opacity="0.4446" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    </g>
+    <g class="organza-far" transform="translate(538.88 189.01) rotate(-0.05) scale(0.502) translate(-538.88 -189.01)">
+      <circle cx="538.88" cy="189.01" r="2" fill="#e9d5ff" opacity="0.1683"/>
+      <circle cx="538.88" cy="189.01" r="6" fill="#c4b5fd" opacity="0.04675"/>
+      <text x="544.88" y="192.01" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.1309">𝄐</text>
+    </g>
+    <g class="organza-mid" transform="translate(607.32 329.28) rotate(0.15) scale(0.677) translate(-607.32 -329.28)">
+      <ellipse cx="607.32" cy="329.28" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.04125" stroke="#c4b5fd" stroke-width="0.8" opacity="0.275"/>
+      <line x1="589.32" y1="329.28" x2="625.32" y2="329.28" stroke="#f59e0b" stroke-width="0.6" opacity="0.1925"/>
+      <text x="607.32" y="333.28" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.23375" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    </g>
+    <g class="organza-far" transform="translate(269.34 230.22) rotate(0.06) scale(0.375) translate(-269.34 -230.22)">
+      <circle cx="269.34" cy="230.22" r="2" fill="#e9d5ff" opacity="0.1683"/>
+      <circle cx="269.34" cy="230.22" r="6" fill="#c4b5fd" opacity="0.04675"/>
+      <text x="275.34" y="233.22" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.1309">𝄐</text>
+    </g>
+    <g class="organza-near" transform="translate(733.27 218.71) rotate(0.04) scale(0.693) translate(-733.27 -218.71)" style="mix-blend-mode: screen;">
+      <path d="M685.27,234.71 Q733.27,188.71 781.27,230.71" fill="none" stroke="url(#silkRibbon)" stroke-width="2.6" opacity="0.4693"/>
+      <path d="M689.27,238.71 Q737.27,192.71 785.27,233.71" fill="none" stroke="#f43f5e" stroke-width="0.8" opacity="0.2964"/>
+      <text x="733.27" y="223.71" font-size="32" font-family="'Bodoni Moda', 'Playfair Display', 'PingFang SC', serif" font-style="italic" fill="#fdf6e2" opacity="0.4446" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    </g>
+    <g class="organza-far" transform="translate(385.91 363.9) rotate(0.2) scale(0.459) translate(-385.91 -363.9)">
+      <circle cx="385.91" cy="363.9" r="2" fill="#e9d5ff" opacity="0.1683"/>
+      <circle cx="385.91" cy="363.9" r="6" fill="#c4b5fd" opacity="0.04675"/>
+      <text x="391.91" y="366.9" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.1309">𝄐</text>
+    </g>
+    <g class="organza-mid" transform="translate(456.29 211.28) rotate(0.04) scale(0.621) translate(-456.29 -211.28)">
+      <ellipse cx="456.29" cy="211.28" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.04125" stroke="#c4b5fd" stroke-width="0.8" opacity="0.275"/>
+      <line x1="438.29" y1="211.28" x2="474.29" y2="211.28" stroke="#f59e0b" stroke-width="0.6" opacity="0.1925"/>
+      <text x="456.29" y="215.28" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.23375" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    </g>
+    <g class="organza-far" transform="translate(641.44 287.61) rotate(0.06) scale(0.545) translate(-641.44 -287.61)">
+      <circle cx="641.44" cy="287.61" r="2" fill="#e9d5ff" opacity="0.1683"/>
+      <circle cx="641.44" cy="287.61" r="6" fill="#c4b5fd" opacity="0.04675"/>
+      <text x="647.44" y="290.61" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.1309">𝄐</text>
+    </g>
+    <g class="organza-far" transform="translate(318.44 276.81) rotate(-0.17) scale(0.376) translate(-318.44 -276.81)">
+      <circle cx="318.44" cy="276.81" r="2" fill="#e9d5ff" opacity="0.1683"/>
+      <circle cx="318.44" cy="276.81" r="6" fill="#c4b5fd" opacity="0.04675"/>
+      <text x="324.44" y="279.81" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.1309">𝄐</text>
+    </g>
+    <g class="organza-far" transform="translate(616.12 191.23) rotate(-0.1) scale(0.416) translate(-616.12 -191.23)">
+      <circle cx="616.12" cy="191.23" r="2" fill="#e9d5ff" opacity="0.1683"/>
+      <circle cx="616.12" cy="191.23" r="6" fill="#c4b5fd" opacity="0.04675"/>
+      <text x="622.12" y="194.23" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.1309">𝄐</text>
+    </g>
+    <g class="organza-mid" transform="translate(536.17 346.93) rotate(-0.07) scale(0.57) translate(-536.17 -346.93)">
+      <ellipse cx="536.17" cy="346.93" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.04125" stroke="#c4b5fd" stroke-width="0.8" opacity="0.275"/>
+      <line x1="518.17" y1="346.93" x2="554.17" y2="346.93" stroke="#f59e0b" stroke-width="0.6" opacity="0.1925"/>
+      <text x="536.17" y="350.93" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.23375" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    </g>
+    <g class="organza-near" transform="translate(291.11 203.7) rotate(1.13) scale(0.839) translate(-291.11 -203.7)" style="mix-blend-mode: screen;">
+      <path d="M243.11,219.7 Q291.11,173.7 339.11,215.7" fill="none" stroke="url(#silkRibbon)" stroke-width="2.6" opacity="0.4693"/>
+      <path d="M247.11,223.7 Q295.11,177.7 343.11,218.7" fill="none" stroke="#f43f5e" stroke-width="0.8" opacity="0.2964"/>
+      <text x="291.11" y="208.7" font-size="32" font-family="'Bodoni Moda', 'Playfair Display', 'PingFang SC', serif" font-style="italic" fill="#fdf6e2" opacity="0.4446" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    </g>
+    <g class="organza-far" transform="translate(793.91 251.13) rotate(-0.06) scale(0.544) translate(-793.91 -251.13)">
+      <circle cx="793.91" cy="251.13" r="2" fill="#e9d5ff" opacity="0.1683"/>
+      <circle cx="793.91" cy="251.13" r="6" fill="#c4b5fd" opacity="0.04675"/>
+      <text x="799.91" y="254.13" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.1309">𝄐</text>
+    </g>
+    <g class="organza-mid" transform="translate(406.34 295.19) rotate(0) scale(0.463) translate(-406.34 -295.19)">
+      <ellipse cx="406.34" cy="295.19" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.04125" stroke="#c4b5fd" stroke-width="0.8" opacity="0.275"/>
+      <line x1="388.34" y1="295.19" x2="424.34" y2="295.19" stroke="#f59e0b" stroke-width="0.6" opacity="0.1925"/>
+      <text x="406.34" y="299.19" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.23375" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    </g>
+    <g class="organza-mid" transform="translate(501.25 199.88) rotate(0.07) scale(0.512) translate(-501.25 -199.88)">
+      <ellipse cx="501.25" cy="199.88" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.04125" stroke="#c4b5fd" stroke-width="0.8" opacity="0.275"/>
+      <line x1="483.25" y1="199.88" x2="519.25" y2="199.88" stroke="#f59e0b" stroke-width="0.6" opacity="0.1925"/>
+      <text x="501.25" y="203.88" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.23375" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    </g>
+    <g class="organza-far" transform="translate(626.11 312.63) rotate(-0.09) scale(0.46) translate(-626.11 -312.63)">
+      <circle cx="626.11" cy="312.63" r="2" fill="#e9d5ff" opacity="0.1683"/>
+      <circle cx="626.11" cy="312.63" r="6" fill="#c4b5fd" opacity="0.04675"/>
+      <text x="632.11" y="315.63" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.1309">𝄐</text>
+    </g>
+    <g class="organza-far" transform="translate(285.79 250.16) rotate(-0.03) scale(0.503) translate(-285.79 -250.16)">
+      <circle cx="285.79" cy="250.16" r="2" fill="#e9d5ff" opacity="0.1683"/>
+      <circle cx="285.79" cy="250.16" r="6" fill="#c4b5fd" opacity="0.04675"/>
+      <text x="291.79" y="253.16" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.1309">𝄐</text>
+    </g>
+  </g>
+  <g class="organza-center-glyph" text-anchor="middle" dominant-baseline="middle">
+    <circle cx="500" cy="260" r="82" fill="none" stroke="#f59e0b" stroke-width="0.8" stroke-dasharray="4 6" opacity="0.6"/>
+    <circle cx="500" cy="260" r="92" fill="none" stroke="#c4b5fd" stroke-width="0.5" stroke-dasharray="2 4" opacity="0.4"/>
+    <text x="500" y="268" font-size="118" font-family="'Bodoni Moda', 'Didot', 'PingFang SC', serif" font-style="italic" font-weight="300" fill="#fdf6e2" opacity="0.95">𝄐</text>
+    <text x="500" y="328" font-size="10" font-family="'Bodoni Moda', serif" font-style="italic" fill="#c4b5fd" letter-spacing="4" opacity="0.9">SEQUENCE 6 // HAUTE COUTURE // STRUCTURAL_REST</text>
+  </g>
+</svg>

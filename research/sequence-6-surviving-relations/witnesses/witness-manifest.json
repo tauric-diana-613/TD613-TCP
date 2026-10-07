@@ -1,0 +1,1998 @@
+[
+  {
+    "direction": "diagnostic",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-diagnostic-gathering-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "diagnostic",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-diagnostic-gathering-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "diagnostic",
+    "relation": "release",
+    "glyph": "出",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-diagnostic-release-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "diagnostic",
+    "relation": "release",
+    "glyph": "出",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-diagnostic-release-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "diagnostic",
+    "relation": "protected_continuity",
+    "glyph": "cōl",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-diagnostic-protected_continuity-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "diagnostic",
+    "relation": "protected_continuity",
+    "glyph": "cōl",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-diagnostic-protected_continuity-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "diagnostic",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-diagnostic-structural_rest-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "diagnostic",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-diagnostic-structural_rest-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "diagnostic",
+    "relation": "recurrence",
+    "glyph": "米",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-diagnostic-recurrence-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "diagnostic",
+    "relation": "recurrence",
+    "glyph": "米",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-diagnostic-recurrence-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "diagnostic",
+    "relation": "bounded_emergence",
+    "glyph": "hõt",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-diagnostic-bounded_emergence-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "diagnostic",
+    "relation": "bounded_emergence",
+    "glyph": "hõt",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-diagnostic-bounded_emergence-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "diagnostic",
+    "relation": "created_potential",
+    "glyph": "上",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-diagnostic-created_potential-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "diagnostic",
+    "relation": "created_potential",
+    "glyph": "上",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-diagnostic-created_potential-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "diagnostic",
+    "relation": "released_tendency",
+    "glyph": "下",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-diagnostic-released_tendency-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "diagnostic",
+    "relation": "released_tendency",
+    "glyph": "下",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-diagnostic-released_tendency-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "diagnostic",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": true,
+    "file": "witness-diagnostic-gathering-reduced-motion-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "diagnostic",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": true,
+    "file": "witness-diagnostic-gathering-reduced-motion-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "diagnostic",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": true,
+    "file": "witness-diagnostic-structural_rest-reduced-motion-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "diagnostic",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": true,
+    "file": "witness-diagnostic-structural_rest-reduced-motion-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "lithic_tectonic",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-lithic_tectonic-gathering-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "lithic_tectonic",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-lithic_tectonic-gathering-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "lithic_tectonic",
+    "relation": "release",
+    "glyph": "出",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-lithic_tectonic-release-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "lithic_tectonic",
+    "relation": "release",
+    "glyph": "出",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-lithic_tectonic-release-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "lithic_tectonic",
+    "relation": "protected_continuity",
+    "glyph": "cōl",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-lithic_tectonic-protected_continuity-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "lithic_tectonic",
+    "relation": "protected_continuity",
+    "glyph": "cōl",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-lithic_tectonic-protected_continuity-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "lithic_tectonic",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-lithic_tectonic-structural_rest-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "lithic_tectonic",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-lithic_tectonic-structural_rest-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "lithic_tectonic",
+    "relation": "recurrence",
+    "glyph": "米",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-lithic_tectonic-recurrence-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "lithic_tectonic",
+    "relation": "recurrence",
+    "glyph": "米",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-lithic_tectonic-recurrence-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "lithic_tectonic",
+    "relation": "bounded_emergence",
+    "glyph": "hõt",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-lithic_tectonic-bounded_emergence-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "lithic_tectonic",
+    "relation": "bounded_emergence",
+    "glyph": "hõt",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-lithic_tectonic-bounded_emergence-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "lithic_tectonic",
+    "relation": "created_potential",
+    "glyph": "上",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-lithic_tectonic-created_potential-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "lithic_tectonic",
+    "relation": "created_potential",
+    "glyph": "上",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-lithic_tectonic-created_potential-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "lithic_tectonic",
+    "relation": "released_tendency",
+    "glyph": "下",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-lithic_tectonic-released_tendency-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "lithic_tectonic",
+    "relation": "released_tendency",
+    "glyph": "下",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-lithic_tectonic-released_tendency-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "lithic_tectonic",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": true,
+    "file": "witness-lithic_tectonic-gathering-reduced-motion-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "lithic_tectonic",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": true,
+    "file": "witness-lithic_tectonic-gathering-reduced-motion-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "lithic_tectonic",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": true,
+    "file": "witness-lithic_tectonic-structural_rest-reduced-motion-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "lithic_tectonic",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": true,
+    "file": "witness-lithic_tectonic-structural_rest-reduced-motion-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "organza_choreography",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-organza_choreography-gathering-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "organza_choreography",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-organza_choreography-gathering-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "organza_choreography",
+    "relation": "release",
+    "glyph": "出",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-organza_choreography-release-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "organza_choreography",
+    "relation": "release",
+    "glyph": "出",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-organza_choreography-release-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "organza_choreography",
+    "relation": "protected_continuity",
+    "glyph": "cōl",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-organza_choreography-protected_continuity-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "organza_choreography",
+    "relation": "protected_continuity",
+    "glyph": "cōl",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-organza_choreography-protected_continuity-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "organza_choreography",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-organza_choreography-structural_rest-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "organza_choreography",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-organza_choreography-structural_rest-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "organza_choreography",
+    "relation": "recurrence",
+    "glyph": "米",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-organza_choreography-recurrence-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "organza_choreography",
+    "relation": "recurrence",
+    "glyph": "米",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-organza_choreography-recurrence-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "organza_choreography",
+    "relation": "bounded_emergence",
+    "glyph": "hõt",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-organza_choreography-bounded_emergence-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "organza_choreography",
+    "relation": "bounded_emergence",
+    "glyph": "hõt",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-organza_choreography-bounded_emergence-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "organza_choreography",
+    "relation": "created_potential",
+    "glyph": "上",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-organza_choreography-created_potential-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "organza_choreography",
+    "relation": "created_potential",
+    "glyph": "上",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-organza_choreography-created_potential-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "organza_choreography",
+    "relation": "released_tendency",
+    "glyph": "下",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-organza_choreography-released_tendency-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "organza_choreography",
+    "relation": "released_tendency",
+    "glyph": "下",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-organza_choreography-released_tendency-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "organza_choreography",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": true,
+    "file": "witness-organza_choreography-gathering-reduced-motion-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "organza_choreography",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": true,
+    "file": "witness-organza_choreography-gathering-reduced-motion-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "organza_choreography",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": true,
+    "file": "witness-organza_choreography-structural_rest-reduced-motion-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "organza_choreography",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": true,
+    "file": "witness-organza_choreography-structural_rest-reduced-motion-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "aperture_monochrome",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-aperture_monochrome-gathering-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "aperture_monochrome",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-aperture_monochrome-gathering-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "aperture_monochrome",
+    "relation": "release",
+    "glyph": "出",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-aperture_monochrome-release-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "aperture_monochrome",
+    "relation": "release",
+    "glyph": "出",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-aperture_monochrome-release-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "aperture_monochrome",
+    "relation": "protected_continuity",
+    "glyph": "cōl",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-aperture_monochrome-protected_continuity-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "aperture_monochrome",
+    "relation": "protected_continuity",
+    "glyph": "cōl",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-aperture_monochrome-protected_continuity-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "aperture_monochrome",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-aperture_monochrome-structural_rest-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "aperture_monochrome",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-aperture_monochrome-structural_rest-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "aperture_monochrome",
+    "relation": "recurrence",
+    "glyph": "米",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-aperture_monochrome-recurrence-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "aperture_monochrome",
+    "relation": "recurrence",
+    "glyph": "米",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-aperture_monochrome-recurrence-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "aperture_monochrome",
+    "relation": "bounded_emergence",
+    "glyph": "hõt",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-aperture_monochrome-bounded_emergence-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "aperture_monochrome",
+    "relation": "bounded_emergence",
+    "glyph": "hõt",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-aperture_monochrome-bounded_emergence-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "aperture_monochrome",
+    "relation": "created_potential",
+    "glyph": "上",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-aperture_monochrome-created_potential-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "aperture_monochrome",
+    "relation": "created_potential",
+    "glyph": "上",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-aperture_monochrome-created_potential-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "aperture_monochrome",
+    "relation": "released_tendency",
+    "glyph": "下",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-aperture_monochrome-released_tendency-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "aperture_monochrome",
+    "relation": "released_tendency",
+    "glyph": "下",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-aperture_monochrome-released_tendency-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "aperture_monochrome",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": true,
+    "file": "witness-aperture_monochrome-gathering-reduced-motion-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "aperture_monochrome",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": true,
+    "file": "witness-aperture_monochrome-gathering-reduced-motion-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "aperture_monochrome",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": true,
+    "file": "witness-aperture_monochrome-structural_rest-reduced-motion-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "aperture_monochrome",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": true,
+    "file": "witness-aperture_monochrome-structural_rest-reduced-motion-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-gathering-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-gathering-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "relation": "release",
+    "glyph": "出",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-release-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "relation": "release",
+    "glyph": "出",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-release-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "relation": "protected_continuity",
+    "glyph": "cōl",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-protected_continuity-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "relation": "protected_continuity",
+    "glyph": "cōl",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-protected_continuity-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-structural_rest-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-structural_rest-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "relation": "recurrence",
+    "glyph": "米",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-recurrence-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "relation": "recurrence",
+    "glyph": "米",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-recurrence-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "relation": "bounded_emergence",
+    "glyph": "hõt",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-bounded_emergence-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "relation": "bounded_emergence",
+    "glyph": "hõt",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-bounded_emergence-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "relation": "created_potential",
+    "glyph": "上",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-created_potential-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "relation": "created_potential",
+    "glyph": "上",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-created_potential-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "relation": "released_tendency",
+    "glyph": "下",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-released_tendency-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "relation": "released_tendency",
+    "glyph": "下",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-released_tendency-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": true,
+    "file": "witness-directors_cut-gathering-reduced-motion-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": true,
+    "file": "witness-directors_cut-gathering-reduced-motion-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": true,
+    "file": "witness-directors_cut-structural_rest-reduced-motion-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": true,
+    "file": "witness-directors_cut-structural_rest-reduced-motion-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "jurisdiction": "living_field",
+    "authority_class": "outbound_carriage",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-jurisdiction-living_field-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "jurisdiction": "living_field",
+    "authority_class": "outbound_carriage",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-jurisdiction-living_field-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "jurisdiction": "living_field",
+    "authority_class": "outbound_carriage",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": true,
+    "file": "witness-directors_cut-jurisdiction-living_field-reduced-motion-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "jurisdiction": "living_field",
+    "authority_class": "outbound_carriage",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": true,
+    "file": "witness-directors_cut-jurisdiction-living_field-reduced-motion-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "jurisdiction": "hold",
+    "authority_class": "outbound_carriage",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-jurisdiction-hold-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "jurisdiction": "hold",
+    "authority_class": "outbound_carriage",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-jurisdiction-hold-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "jurisdiction": "hold",
+    "authority_class": "outbound_carriage",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": true,
+    "file": "witness-directors_cut-jurisdiction-hold-reduced-motion-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "jurisdiction": "hold",
+    "authority_class": "outbound_carriage",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": true,
+    "file": "witness-directors_cut-jurisdiction-hold-reduced-motion-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "jurisdiction": "authorization_boundary",
+    "authority_class": "outbound_carriage",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-jurisdiction-authorization_boundary-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "jurisdiction": "authorization_boundary",
+    "authority_class": "outbound_carriage",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-jurisdiction-authorization_boundary-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "jurisdiction": "authorization_boundary",
+    "authority_class": "outbound_carriage",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": true,
+    "file": "witness-directors_cut-jurisdiction-authorization_boundary-reduced-motion-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "jurisdiction": "authorization_boundary",
+    "authority_class": "outbound_carriage",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": true,
+    "file": "witness-directors_cut-jurisdiction-authorization_boundary-reduced-motion-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "jurisdiction": "receipt_inspection",
+    "authority_class": "outbound_carriage",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-jurisdiction-receipt_inspection-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "jurisdiction": "receipt_inspection",
+    "authority_class": "outbound_carriage",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-jurisdiction-receipt_inspection-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "jurisdiction": "receipt_inspection",
+    "authority_class": "outbound_carriage",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": true,
+    "file": "witness-directors_cut-jurisdiction-receipt_inspection-reduced-motion-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "jurisdiction": "receipt_inspection",
+    "authority_class": "outbound_carriage",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": true,
+    "file": "witness-directors_cut-jurisdiction-receipt_inspection-reduced-motion-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "jurisdiction": "structural_rest",
+    "authority_class": "outbound_carriage",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-jurisdiction-structural_rest-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "jurisdiction": "structural_rest",
+    "authority_class": "outbound_carriage",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-jurisdiction-structural_rest-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "jurisdiction": "structural_rest",
+    "authority_class": "outbound_carriage",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": true,
+    "file": "witness-directors_cut-jurisdiction-structural_rest-reduced-motion-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "jurisdiction": "structural_rest",
+    "authority_class": "outbound_carriage",
+    "relation": "structural_rest",
+    "glyph": "𝄐",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": true,
+    "file": "witness-directors_cut-jurisdiction-structural_rest-reduced-motion-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "jurisdiction": "authorization_boundary",
+    "authority_class": "detached_delegation",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "desktop",
+    "witness_type": "GENERATED_SVG_RENDER_WITNESS",
+    "dimensions": "1000x520",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-jurisdiction-authorization_boundary-detached_delegation-desktop.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  },
+  {
+    "direction": "directors_cut",
+    "jurisdiction": "authorization_boundary",
+    "authority_class": "detached_delegation",
+    "relation": "gathering",
+    "glyph": "à",
+    "viewport": "mobile_390px",
+    "witness_type": "SIMULATED_390PX_RENDER",
+    "dimensions": "390x844",
+    "reduced_motion": false,
+    "file": "witness-directors_cut-jurisdiction-authorization_boundary-detached_delegation-mobile_390px.svg",
+    "carrier_count": 39,
+    "planes": {
+      "near": 6,
+      "mid": 13,
+      "far": 20
+    }
+  }
+]

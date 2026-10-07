@@ -1,0 +1,248 @@
+<!--
+  TD613 Flow-Core Semantic Motion Bridge Visual Witness [Direction: Director's Cut / Couture Tectonic]
+  Jurisdiction: HOLD
+  Relation: gathering (à)
+  Active View ID: cockpit
+  Carrier Count: 39 (Distribution: 6 near / 13 mid / 20 far)
+  Reduced Motion: DISABLED
+  Viewport: 390x844 (viewBox: 200 -220 600 1120)
+  Visual Theory: Haute Couture Tectonic Federalism (Mugler Couture x Scarpa Architecture x Aperture Precision)
+  Claim Ceiling: VISUAL_RELATION != EXTERNAL_REALITY | AMBIENT_MOTION != EVENT_HISTORY | AESTHETIC_BINDING != EMPIRICAL_VALIDATION
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="200 -220 600 1120" width="390" height="844" style="background:#06070a;">
+  <defs>
+    <pattern id="coutureTectonicGrid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#141824" stroke-width="0.6" stroke-dasharray="2 4"/>
+    </pattern>
+    <linearGradient id="coutureSilk" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c4b5fd"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#f43f5e"/>
+    </linearGradient>
+    <radialGradient id="coutureAura" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#1f142b" stop-opacity="0.6"/>
+      <stop offset="60%" stop-color="#0a0c12" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#06070a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="amberRestAura" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#2d1a08" stop-opacity="0.7"/>
+      <stop offset="70%" stop-color="#0d0e12" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#06070a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#coutureTectonicGrid)" opacity="0.7"/>
+  <rect width="100%" height="100%" fill="url(#coutureAura)"/>
+  <g class="couture-field-flight" aria-hidden="true" data-active-relation="gathering" data-jurisdiction="hold" data-visual-direction="directors_cut">
+    <g class="hold-berth" transform="translate(270 170) rotate(0) scale(1.25) translate(-270 -170)">
+      <rect x="228" y="146" width="84" height="48" fill="#121722" stroke="#f59e0b" stroke-width="1.4" rx="3" opacity="0.95"/>
+      <line x1="232" y1="156" x2="252" y2="156" stroke="#f59e0b" stroke-width="0.8" opacity="0.8"/>
+      <text x="270" y="177" font-size="24" font-family="'Cinzel', 'Noto Serif SC', 'PingFang SC', serif" font-weight="900" fill="#fdf6e2" opacity="0.95" text-anchor="middle" dominant-baseline="middle">à</text>
+      <text x="298" y="158" font-size="6.5" font-family="'JetBrains Mono', monospace" fill="#f59e0b" opacity="0.95">BERTH-0</text>
+    </g>
+    <g class="hold-pin" transform="translate(266 820) rotate(0) scale(0.65) translate(-266 -820)">
+      <circle cx="266" cy="820" r="2" fill="#475569" opacity="0.342"/>
+      <text x="270" y="823" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.38">à</text>
+    </g>
+    <g class="hold-pin" transform="translate(292 820) rotate(0) scale(0.65) translate(-292 -820)">
+      <circle cx="292" cy="820" r="2" fill="#475569" opacity="0.342"/>
+      <text x="296" y="823" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.38">à</text>
+    </g>
+    <g class="hold-pin" transform="translate(318 820) rotate(0) scale(0.65) translate(-318 -820)">
+      <circle cx="318" cy="820" r="2" fill="#475569" opacity="0.342"/>
+      <text x="322" y="823" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.38">à</text>
+    </g>
+    <g class="hold-bracket" transform="translate(230 286) rotate(0) scale(0.95) translate(-230 -286)">
+      <line x1="208" y1="286" x2="252" y2="286" stroke="#94a3b8" stroke-width="1" opacity="0.72"/>
+      <circle cx="230" cy="286" r="3" fill="#94a3b8" opacity="0.72"/>
+      <text x="238" y="281" font-size="13" font-family="'PingFang SC', monospace" fill="#cbd5e1" opacity="0.72">à</text>
+      <text x="210" y="282" font-size="6" font-family="'JetBrains Mono', monospace" fill="#64748b">CLAMP-4</text>
+    </g>
+    <g class="hold-pin" transform="translate(370 820) rotate(0) scale(0.65) translate(-370 -820)">
+      <circle cx="370" cy="820" r="2" fill="#475569" opacity="0.342"/>
+      <text x="374" y="823" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.38">à</text>
+    </g>
+    <g class="hold-pin" transform="translate(396 820) rotate(0) scale(0.65) translate(-396 -820)">
+      <circle cx="396" cy="820" r="2" fill="#475569" opacity="0.342"/>
+      <text x="400" y="823" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.38">à</text>
+    </g>
+    <g class="hold-bracket" transform="translate(230 110) rotate(0) scale(0.95) translate(-230 -110)">
+      <line x1="208" y1="110" x2="252" y2="110" stroke="#94a3b8" stroke-width="1" opacity="0.72"/>
+      <circle cx="230" cy="110" r="3" fill="#94a3b8" opacity="0.72"/>
+      <text x="238" y="105" font-size="13" font-family="'PingFang SC', monospace" fill="#cbd5e1" opacity="0.72">à</text>
+      <text x="210" y="106" font-size="6" font-family="'JetBrains Mono', monospace" fill="#64748b">CLAMP-7</text>
+    </g>
+    <g class="hold-bracket" transform="translate(230 154) rotate(0) scale(0.95) translate(-230 -154)">
+      <line x1="208" y1="154" x2="252" y2="154" stroke="#94a3b8" stroke-width="1" opacity="0.72"/>
+      <circle cx="230" cy="154" r="3" fill="#94a3b8" opacity="0.72"/>
+      <text x="238" y="149" font-size="13" font-family="'PingFang SC', monospace" fill="#cbd5e1" opacity="0.72">à</text>
+      <text x="210" y="150" font-size="6" font-family="'JetBrains Mono', monospace" fill="#64748b">CLAMP-8</text>
+    </g>
+    <g class="hold-pin" transform="translate(474 820) rotate(0) scale(0.65) translate(-474 -820)">
+      <circle cx="474" cy="820" r="2" fill="#475569" opacity="0.342"/>
+      <text x="478" y="823" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.38">à</text>
+    </g>
+    <g class="hold-pin" transform="translate(500 820) rotate(0) scale(0.65) translate(-500 -820)">
+      <circle cx="500" cy="820" r="2" fill="#475569" opacity="0.342"/>
+      <text x="504" y="823" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.38">à</text>
+    </g>
+    <g class="hold-berth" transform="translate(270 260) rotate(0) scale(1.25) translate(-270 -260)">
+      <rect x="228" y="236" width="84" height="48" fill="#121722" stroke="#f59e0b" stroke-width="1.4" rx="3" opacity="0.95"/>
+      <line x1="232" y1="246" x2="252" y2="246" stroke="#f59e0b" stroke-width="0.8" opacity="0.8"/>
+      <text x="270" y="267" font-size="24" font-family="'Cinzel', 'Noto Serif SC', 'PingFang SC', serif" font-weight="900" fill="#fdf6e2" opacity="0.95" text-anchor="middle" dominant-baseline="middle">à</text>
+      <text x="298" y="248" font-size="6.5" font-family="'JetBrains Mono', monospace" fill="#f59e0b" opacity="0.95">BERTH-11</text>
+    </g>
+    <g class="hold-bracket" transform="translate(230 330) rotate(0) scale(0.95) translate(-230 -330)">
+      <line x1="208" y1="330" x2="252" y2="330" stroke="#94a3b8" stroke-width="1" opacity="0.72"/>
+      <circle cx="230" cy="330" r="3" fill="#94a3b8" opacity="0.72"/>
+      <text x="238" y="325" font-size="13" font-family="'PingFang SC', monospace" fill="#cbd5e1" opacity="0.72">à</text>
+      <text x="210" y="326" font-size="6" font-family="'JetBrains Mono', monospace" fill="#64748b">CLAMP-12</text>
+    </g>
+    <g class="hold-berth" transform="translate(270 350) rotate(0) scale(1.25) translate(-270 -350)">
+      <rect x="228" y="326" width="84" height="48" fill="#121722" stroke="#f59e0b" stroke-width="1.4" rx="3" opacity="0.95"/>
+      <line x1="232" y1="336" x2="252" y2="336" stroke="#f59e0b" stroke-width="0.8" opacity="0.8"/>
+      <text x="270" y="357" font-size="24" font-family="'Cinzel', 'Noto Serif SC', 'PingFang SC', serif" font-weight="900" fill="#fdf6e2" opacity="0.95" text-anchor="middle" dominant-baseline="middle">à</text>
+      <text x="298" y="338" font-size="6.5" font-family="'JetBrains Mono', monospace" fill="#f59e0b" opacity="0.95">BERTH-13</text>
+    </g>
+    <g class="hold-bracket" transform="translate(230 110) rotate(0) scale(0.95) translate(-230 -110)">
+      <line x1="208" y1="110" x2="252" y2="110" stroke="#94a3b8" stroke-width="1" opacity="0.72"/>
+      <circle cx="230" cy="110" r="3" fill="#94a3b8" opacity="0.72"/>
+      <text x="238" y="105" font-size="13" font-family="'PingFang SC', monospace" fill="#cbd5e1" opacity="0.72">à</text>
+      <text x="210" y="106" font-size="6" font-family="'JetBrains Mono', monospace" fill="#64748b">CLAMP-14</text>
+    </g>
+    <g class="hold-pin" transform="translate(630 820) rotate(0) scale(0.65) translate(-630 -820)">
+      <circle cx="630" cy="820" r="2" fill="#475569" opacity="0.342"/>
+      <text x="634" y="823" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.38">à</text>
+    </g>
+    <g class="hold-bracket" transform="translate(770 198) rotate(0) scale(0.95) translate(-770 -198)">
+      <line x1="748" y1="198" x2="792" y2="198" stroke="#94a3b8" stroke-width="1" opacity="0.72"/>
+      <circle cx="770" cy="198" r="3" fill="#94a3b8" opacity="0.72"/>
+      <text x="778" y="193" font-size="13" font-family="'PingFang SC', monospace" fill="#cbd5e1" opacity="0.72">à</text>
+      <text x="750" y="194" font-size="6" font-family="'JetBrains Mono', monospace" fill="#64748b">CLAMP-16</text>
+    </g>
+    <g class="hold-pin" transform="translate(682 820) rotate(0) scale(0.65) translate(-682 -820)">
+      <circle cx="682" cy="820" r="2" fill="#475569" opacity="0.342"/>
+      <text x="686" y="823" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.38">à</text>
+    </g>
+    <g class="hold-pin" transform="translate(708 820) rotate(0) scale(0.65) translate(-708 -820)">
+      <circle cx="708" cy="820" r="2" fill="#475569" opacity="0.342"/>
+      <text x="712" y="823" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.38">à</text>
+    </g>
+    <g class="hold-pin" transform="translate(734 820) rotate(0) scale(0.65) translate(-734 -820)">
+      <circle cx="734" cy="820" r="2" fill="#475569" opacity="0.342"/>
+      <text x="738" y="823" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.38">à</text>
+    </g>
+    <g class="hold-bracket" transform="translate(770 374) rotate(0) scale(0.95) translate(-770 -374)">
+      <line x1="748" y1="374" x2="792" y2="374" stroke="#94a3b8" stroke-width="1" opacity="0.72"/>
+      <circle cx="770" cy="374" r="3" fill="#94a3b8" opacity="0.72"/>
+      <text x="778" y="369" font-size="13" font-family="'PingFang SC', monospace" fill="#cbd5e1" opacity="0.72">à</text>
+      <text x="750" y="370" font-size="6" font-family="'JetBrains Mono', monospace" fill="#64748b">CLAMP-20</text>
+    </g>
+    <g class="hold-bracket" transform="translate(770 110) rotate(0) scale(0.95) translate(-770 -110)">
+      <line x1="748" y1="110" x2="792" y2="110" stroke="#94a3b8" stroke-width="1" opacity="0.72"/>
+      <circle cx="770" cy="110" r="3" fill="#94a3b8" opacity="0.72"/>
+      <text x="778" y="105" font-size="13" font-family="'PingFang SC', monospace" fill="#cbd5e1" opacity="0.72">à</text>
+      <text x="750" y="106" font-size="6" font-family="'JetBrains Mono', monospace" fill="#64748b">CLAMP-21</text>
+    </g>
+    <g class="hold-berth" transform="translate(730 170) rotate(0) scale(1.25) translate(-730 -170)">
+      <rect x="688" y="146" width="84" height="48" fill="#121722" stroke="#f59e0b" stroke-width="1.4" rx="3" opacity="0.95"/>
+      <line x1="692" y1="156" x2="712" y2="156" stroke="#f59e0b" stroke-width="0.8" opacity="0.8"/>
+      <text x="730" y="177" font-size="24" font-family="'Cinzel', 'Noto Serif SC', 'PingFang SC', serif" font-weight="900" fill="#fdf6e2" opacity="0.95" text-anchor="middle" dominant-baseline="middle">à</text>
+      <text x="758" y="158" font-size="6.5" font-family="'JetBrains Mono', monospace" fill="#f59e0b" opacity="0.95">BERTH-22</text>
+    </g>
+    <g class="hold-pin" transform="translate(318 820) rotate(0) scale(0.65) translate(-318 -820)">
+      <circle cx="318" cy="820" r="2" fill="#475569" opacity="0.342"/>
+      <text x="322" y="823" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.38">à</text>
+    </g>
+    <g class="hold-bracket" transform="translate(770 242) rotate(0) scale(0.95) translate(-770 -242)">
+      <line x1="748" y1="242" x2="792" y2="242" stroke="#94a3b8" stroke-width="1" opacity="0.72"/>
+      <circle cx="770" cy="242" r="3" fill="#94a3b8" opacity="0.72"/>
+      <text x="778" y="237" font-size="13" font-family="'PingFang SC', monospace" fill="#cbd5e1" opacity="0.72">à</text>
+      <text x="750" y="238" font-size="6" font-family="'JetBrains Mono', monospace" fill="#64748b">CLAMP-24</text>
+    </g>
+    <g class="hold-pin" transform="translate(370 820) rotate(0) scale(0.65) translate(-370 -820)">
+      <circle cx="370" cy="820" r="2" fill="#475569" opacity="0.342"/>
+      <text x="374" y="823" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.38">à</text>
+    </g>
+    <g class="hold-berth" transform="translate(730 260) rotate(0) scale(1.25) translate(-730 -260)">
+      <rect x="688" y="236" width="84" height="48" fill="#121722" stroke="#f59e0b" stroke-width="1.4" rx="3" opacity="0.95"/>
+      <line x1="692" y1="246" x2="712" y2="246" stroke="#f59e0b" stroke-width="0.8" opacity="0.8"/>
+      <text x="730" y="267" font-size="24" font-family="'Cinzel', 'Noto Serif SC', 'PingFang SC', serif" font-weight="900" fill="#fdf6e2" opacity="0.95" text-anchor="middle" dominant-baseline="middle">à</text>
+      <text x="758" y="248" font-size="6.5" font-family="'JetBrains Mono', monospace" fill="#f59e0b" opacity="0.95">BERTH-26</text>
+    </g>
+    <g class="hold-pin" transform="translate(422 820) rotate(0) scale(0.65) translate(-422 -820)">
+      <circle cx="422" cy="820" r="2" fill="#475569" opacity="0.342"/>
+      <text x="426" y="823" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.38">à</text>
+    </g>
+    <g class="hold-bracket" transform="translate(770 110) rotate(0) scale(0.95) translate(-770 -110)">
+      <line x1="748" y1="110" x2="792" y2="110" stroke="#94a3b8" stroke-width="1" opacity="0.72"/>
+      <circle cx="770" cy="110" r="3" fill="#94a3b8" opacity="0.72"/>
+      <text x="778" y="105" font-size="13" font-family="'PingFang SC', monospace" fill="#cbd5e1" opacity="0.72">à</text>
+      <text x="750" y="106" font-size="6" font-family="'JetBrains Mono', monospace" fill="#64748b">CLAMP-28</text>
+    </g>
+    <g class="hold-pin" transform="translate(474 820) rotate(0) scale(0.65) translate(-474 -820)">
+      <circle cx="474" cy="820" r="2" fill="#475569" opacity="0.342"/>
+      <text x="478" y="823" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.38">à</text>
+    </g>
+    <g class="hold-pin" transform="translate(500 820) rotate(0) scale(0.65) translate(-500 -820)">
+      <circle cx="500" cy="820" r="2" fill="#475569" opacity="0.342"/>
+      <text x="504" y="823" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.38">à</text>
+    </g>
+    <g class="hold-pin" transform="translate(526 820) rotate(0) scale(0.65) translate(-526 -820)">
+      <circle cx="526" cy="820" r="2" fill="#475569" opacity="0.342"/>
+      <text x="530" y="823" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.38">à</text>
+    </g>
+    <g class="hold-bracket" transform="translate(770 286) rotate(0) scale(0.95) translate(-770 -286)">
+      <line x1="748" y1="286" x2="792" y2="286" stroke="#94a3b8" stroke-width="1" opacity="0.72"/>
+      <circle cx="770" cy="286" r="3" fill="#94a3b8" opacity="0.72"/>
+      <text x="778" y="281" font-size="13" font-family="'PingFang SC', monospace" fill="#cbd5e1" opacity="0.72">à</text>
+      <text x="750" y="282" font-size="6" font-family="'JetBrains Mono', monospace" fill="#64748b">CLAMP-32</text>
+    </g>
+    <g class="hold-berth" transform="translate(730 350) rotate(0) scale(1.25) translate(-730 -350)">
+      <rect x="688" y="326" width="84" height="48" fill="#121722" stroke="#f59e0b" stroke-width="1.4" rx="3" opacity="0.95"/>
+      <line x1="692" y1="336" x2="712" y2="336" stroke="#f59e0b" stroke-width="0.8" opacity="0.8"/>
+      <text x="730" y="357" font-size="24" font-family="'Cinzel', 'Noto Serif SC', 'PingFang SC', serif" font-weight="900" fill="#fdf6e2" opacity="0.95" text-anchor="middle" dominant-baseline="middle">à</text>
+      <text x="758" y="338" font-size="6.5" font-family="'JetBrains Mono', monospace" fill="#f59e0b" opacity="0.95">BERTH-33</text>
+    </g>
+    <g class="hold-pin" transform="translate(604 820) rotate(0) scale(0.65) translate(-604 -820)">
+      <circle cx="604" cy="820" r="2" fill="#475569" opacity="0.342"/>
+      <text x="608" y="823" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.38">à</text>
+    </g>
+    <g class="hold-bracket" transform="translate(770 110) rotate(0) scale(0.95) translate(-770 -110)">
+      <line x1="748" y1="110" x2="792" y2="110" stroke="#94a3b8" stroke-width="1" opacity="0.72"/>
+      <circle cx="770" cy="110" r="3" fill="#94a3b8" opacity="0.72"/>
+      <text x="778" y="105" font-size="13" font-family="'PingFang SC', monospace" fill="#cbd5e1" opacity="0.72">à</text>
+      <text x="750" y="106" font-size="6" font-family="'JetBrains Mono', monospace" fill="#64748b">CLAMP-35</text>
+    </g>
+    <g class="hold-bracket" transform="translate(770 154) rotate(0) scale(0.95) translate(-770 -154)">
+      <line x1="748" y1="154" x2="792" y2="154" stroke="#94a3b8" stroke-width="1" opacity="0.72"/>
+      <circle cx="770" cy="154" r="3" fill="#94a3b8" opacity="0.72"/>
+      <text x="778" y="149" font-size="13" font-family="'PingFang SC', monospace" fill="#cbd5e1" opacity="0.72">à</text>
+      <text x="750" y="150" font-size="6" font-family="'JetBrains Mono', monospace" fill="#64748b">CLAMP-36</text>
+    </g>
+    <g class="hold-pin" transform="translate(682 820) rotate(0) scale(0.65) translate(-682 -820)">
+      <circle cx="682" cy="820" r="2" fill="#475569" opacity="0.342"/>
+      <text x="686" y="823" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.38">à</text>
+    </g>
+    <g class="hold-pin" transform="translate(708 820) rotate(0) scale(0.65) translate(-708 -820)">
+      <circle cx="708" cy="820" r="2" fill="#475569" opacity="0.342"/>
+      <text x="712" y="823" font-size="9" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.38">à</text>
+    </g>
+  </g>
+  <g class="hold-cleft" opacity="0.75">
+    <line x1="500" y1="20" x2="500" y2="900" stroke="#78350f" stroke-width="1.6" stroke-dasharray="4 6"/>
+    <line x1="497" y1="20" x2="497" y2="900" stroke="#f59e0b" stroke-width="0.6" opacity="0.4"/>
+    <line x1="503" y1="20" x2="503" y2="900" stroke="#f59e0b" stroke-width="0.6" opacity="0.4"/>
+  </g>
+  <g class="hold-center-tablet">
+    <rect x="280" y="180" width="440" height="260" fill="#0d111a" stroke="#252c3d" stroke-width="1.8" rx="4" opacity="0.95"/>
+    <rect x="286" y="186" width="428" height="248" fill="none" stroke="#f59e0b" stroke-width="0.8" stroke-dasharray="4 4" opacity="0.55"/>
+    <text x="500" y="224" font-size="34" font-family="'Cinzel', 'Noto Serif SC', serif" font-weight="900" fill="#f59e0b" text-anchor="middle">𝌋 HOLD ⟐</text>
+    <rect x="320" y="238" width="360" height="20" fill="#2d1e08" stroke="#f59e0b" stroke-width="0.8" rx="2"/>
+    <text x="500" y="252" font-size="8.5" font-family="'JetBrains Mono', monospace" fill="#fbbf24" font-weight="700" letter-spacing="1" text-anchor="middle">JURISDICTION: EVIDENCE_DEFICIT</text>
+    <text x="300" y="284" font-size="8.5" font-family="'JetBrains Mono', monospace" fill="#e2e8f0">• DEFICIT: UNRESOLVED COMPARATOR VARIANCE</text>
+    <text x="300" y="304" font-size="8.5" font-family="'JetBrains Mono', monospace" fill="#94a3b8">• STATE: NON_RETROACTIVE RESTRAINT [RFC 8785]</text>
+    <text x="300" y="324" font-size="8.5" font-family="'JetBrains Mono', monospace" fill="#94a3b8">• PROVENANCE: NO SILENT CONTINUATION</text>
+    <text x="300" y="350" font-size="8.5" font-family="'JetBrains Mono', monospace" fill="#f59e0b" font-weight="600">• OPERATOR AGENCY: REST / RESUME / AUDIT</text>
+    <text x="500" y="386" font-size="7.5" font-family="'JetBrains Mono', monospace" fill="#64748b" letter-spacing="2" text-anchor="middle">TD613 // LAW: CLAIM_CEILING != VIBE_CEILING</text>
+  </g>
+</svg>
