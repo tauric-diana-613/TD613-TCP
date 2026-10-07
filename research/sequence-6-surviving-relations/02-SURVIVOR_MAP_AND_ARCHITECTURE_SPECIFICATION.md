@@ -376,7 +376,7 @@ The Dollhouse multi-role orchestration paradigm is evaluated as a research hypot
 
 #### The 5 Architectural Competitors (Proposed Research Design)
 1. **Model A (Monolithic LLM):** A single unified prompt directing one frontier LLM to perform drafting, error checking, consequence evaluation, and evidence labeling.
-2. **Model B (Specialized Roles + Dumb Concat):** Four independent role prompts ([Pedagogue](file:///c:/Users/timst/OneDrive/Desktop/tcp-repository/PEDAGOGUE.md), [Aperture](file:///c:/Users/timst/OneDrive/Desktop/tcp-repository/APERTURE.md), [Atlas](file:///c:/Users/timst/OneDrive/Desktop/tcp-repository/ATLAS.md), [FADT](file:///c:/Users/timst/OneDrive/Desktop/tcp-repository/FADT.md)) run in parallel, and their raw text outputs are naively concatenated.
+2. **Model B (Specialized Roles + Dumb Concat):** Four independent role prompts ([Pedagogue](../../PEDAGOGUE.md), [Aperture](../../APERTURE.md), [Atlas](../../ATLAS.md), [FADT](../../FADT.md)) run in parallel, and their raw text outputs are naively concatenated.
 3. **Model C (Specialized Roles + Explicit Jurisdiction Boundaries):** Four independent subagents with strictly disjoint schemas. Pedagogue emits consequence notices; Aperture emits evidence deficit flags; Atlas emits receiver invariance scores; FADT emits quotient descent vectors.
 4. **Model D (Dollhouse Case Dossier / Governed Adjudicator):** Model C plus `app/engine/dollhouse-case-dossier.js`—a deterministic clerk recording dissenting findings, holds, and vetoes without forcing premature consensus.
 5. **Model E (Minimal Conventional Engineering Equivalent):** Pure deterministic code—TypeScript state machine, AST parser, JSON Schema validator, and cryptographic hash verifier. Zero LLM calls for governance checks.

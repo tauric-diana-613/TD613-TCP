@@ -1,0 +1,61 @@
+<!--
+  TD613 Flow-Core Semantic Motion Bridge Visual Witness
+  Relation: released_tendency (下)
+  Active View ID: cockpit
+  Carrier Count: 39 (Distribution: 6 near / 13 mid / 20 far)
+  Reduced Motion: DISABLED
+  Viewport: 390x844 (viewBox: 200 -220 600 1120)
+  Claim Ceiling: VISUAL_RELATION != EXTERNAL_REALITY | AMBIENT_MOTION != EVENT_HISTORY | AESTHETIC_BINDING != EMPIRICAL_VALIDATION
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="200 -220 600 1120" width="390" height="844" style="background:#0a0a0c;">
+  <style>
+    .flight-near { font-family: 'JetBrains Mono', 'PingFang SC', monospace; font-weight: bold; }
+    .flight-mid  { font-family: 'JetBrains Mono', 'PingFang SC', monospace; }
+    .flight-far  { font-family: 'JetBrains Mono', 'PingFang SC', monospace; opacity: 0.20; }
+  </style>
+  <g class="loom-field-flight" aria-hidden="true" data-active-relation="released_tendency">
+    <text x="294.27" y="139.59" font-size="184" fill="#f3bd86" class="flight-near" opacity="0.95" transform="translate(294.27 139.59) rotate(8.82) scale(1.322) translate(-294.27 -139.59)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="355.18" y="156.85" font-size="26" fill="#b69be9" class="flight-far" opacity="0.36" transform="translate(355.18 156.85) rotate(9.15) scale(0.76) translate(-355.18 -156.85)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="411.48" y="170.58" font-size="26" fill="#b69be9" class="flight-far" opacity="0.36" transform="translate(411.48 170.58) rotate(0.91) scale(0.751) translate(-411.48 -170.58)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="467.75" y="189.84" font-size="26" fill="#b69be9" class="flight-far" opacity="0.36" transform="translate(467.75 189.84) rotate(-8.47) scale(0.736) translate(-467.75 -189.84)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="516.65" y="211.43" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.528" transform="translate(516.65 211.43) rotate(-8.6) scale(0.889) translate(-516.65 -211.43)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="559.62" y="224.75" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.36" transform="translate(559.62 224.75) rotate(0.2) scale(0.722) translate(-559.62 -224.75)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="601.86" y="239.72" font-size="26" fill="#b69be9" class="flight-far" opacity="0.36" transform="translate(601.86 239.72) rotate(8.98) scale(0.72) translate(-601.86 -239.72)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="646.62" y="255.36" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.528" transform="translate(646.62 255.36) rotate(8.12) scale(0.885) translate(-646.62 -255.36)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="694.6" y="275.05" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.528" transform="translate(694.6 275.05) rotate(-1.15) scale(0.866) translate(-694.6 -275.05)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="249.36" y="293.52" font-size="26" fill="#f3bd86" class="flight-far" opacity="0.36" transform="translate(249.36 293.52) rotate(-9.32) scale(0.693) translate(-249.36 -293.52)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="317.41" y="313.44" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.36" transform="translate(317.41 313.44) rotate(-7.53) scale(0.686) translate(-317.41 -313.44)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="380.39" y="329.57" font-size="132" fill="#b69be9" class="flight-near" opacity="0.95" transform="translate(380.39 329.57) rotate(2.02) scale(1.155) translate(-380.39 -329.57)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="448.46" y="344.54" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.528" transform="translate(448.46 344.54) rotate(9.82) scale(0.826) translate(-448.46 -344.54)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="513.05" y="359.52" font-size="184" fill="#b69be9" class="flight-near" opacity="0.95" transform="translate(513.05 359.52) rotate(6.61) scale(1.134) translate(-513.05 -359.52)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="579.14" y="379.1" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.528" transform="translate(579.14 379.1) rotate(-3.18) scale(0.811) translate(-579.14 -379.1)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="639.15" y="400.3" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.36" transform="translate(639.15 400.3) rotate(-9.69) scale(0.649) translate(-639.15 -400.3)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="687.26" y="417.13" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.528" transform="translate(687.26 417.13) rotate(-6.16) scale(0.797) translate(-687.26 -417.13)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="725.85" y="432.33" font-size="26" fill="#b69be9" class="flight-far" opacity="0.36" transform="translate(725.85 432.33) rotate(4.15) scale(0.634) translate(-725.85 -432.33)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="263.49" y="449.09" font-size="26" fill="#f3bd86" class="flight-far" opacity="0.36" transform="translate(263.49 449.09) rotate(10) scale(0.627) translate(-263.49 -449.09)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="310.99" y="465.91" font-size="26" fill="#b69be9" class="flight-far" opacity="0.36" transform="translate(310.99 465.91) rotate(5.21) scale(0.624) translate(-310.99 -465.91)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="360.56" y="482.34" font-size="56" fill="#9ce7e4" class="flight-mid" opacity="0.528" transform="translate(360.56 482.34) rotate(-4.78) scale(0.764) translate(-360.56 -482.34)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="418.2" y="502.08" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.528" transform="translate(418.2 502.08) rotate(-10.18) scale(0.743) translate(-418.2 -502.08)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="486.05" y="523.18" font-size="132" fill="#b69be9" class="flight-near" opacity="0.95" transform="translate(486.05 523.18) rotate(-3.84) scale(1.013) translate(-486.05 -523.18)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="551.21" y="536.29" font-size="26" fill="#b69be9" class="flight-far" opacity="0.36" transform="translate(551.21 536.29) rotate(5.96) scale(0.59) translate(-551.21 -536.29)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="630.39" y="557.58" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.528" transform="translate(630.39 557.58) rotate(10.45) scale(0.724) translate(-630.39 -557.58)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="693.36" y="575.58" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.36" transform="translate(693.36 575.58) rotate(3.22) scale(0.574) translate(-693.36 -575.58)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="741.31" y="590.44" font-size="184" fill="#b69be9" class="flight-near" opacity="0.95" transform="translate(741.31 590.44) rotate(-6.51) scale(0.947) translate(-741.31 -590.44)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="301.64" y="608.27" font-size="26" fill="#f3bd86" class="flight-far" opacity="0.36" transform="translate(301.64 608.27) rotate(-9.53) scale(0.56) translate(-301.64 -608.27)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="356.45" y="-50.7" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.528" transform="translate(356.45 -50.7) rotate(2.55) scale(1.06) translate(-356.45 50.7)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="390.21" y="-36.89" font-size="26" fill="#b69be9" class="flight-far" opacity="0.36" transform="translate(390.21 -36.89) rotate(-7.29) scale(0.843) translate(-390.21 36.89)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="430.19" y="-21.36" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.36" transform="translate(430.19 -21.36) rotate(-9.44) scale(0.833) translate(-430.19 21.36)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="478.91" y="-2.64" font-size="26" fill="#b69be9" class="flight-far" opacity="0.36" transform="translate(478.91 -2.64) rotate(-1.44) scale(0.827) translate(-478.91 2.64)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="533.74" y="15.31" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.528" transform="translate(533.74 15.31) rotate(7.8) scale(1.02) translate(-533.74 -15.31)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="585.33" y="27.26" font-size="132" fill="#b69be9" class="flight-near" opacity="0.95" transform="translate(585.33 27.26) rotate(8.85) scale(1.398) translate(-585.33 -27.26)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="652.24" y="49.53" font-size="26" fill="#b69be9" class="flight-far" opacity="0.36" transform="translate(652.24 49.53) rotate(0.43) scale(0.798) translate(-652.24 -49.53)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="717.19" y="66" font-size="56" fill="#9ce7e4" class="flight-mid" opacity="0.528" transform="translate(717.19 66) rotate(-8.69) scale(0.971) translate(-717.19 -66)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="287.17" y="82.49" font-size="56" fill="#f3bd86" class="flight-mid" opacity="0.528" transform="translate(287.17 82.49) rotate(-8.75) scale(0.976) translate(-287.17 -82.49)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="355" y="102.57" font-size="26" fill="#b69be9" class="flight-far" opacity="0.36" transform="translate(355 102.57) rotate(0.55) scale(0.781) translate(-355 -102.57)" text-anchor="middle" dominant-baseline="middle">下</text>
+    <text x="412.43" y="117.99" font-size="26" fill="#b69be9" class="flight-far" opacity="0.36" transform="translate(412.43 117.99) rotate(9.12) scale(0.775) translate(-412.43 -117.99)" text-anchor="middle" dominant-baseline="middle">下</text>
+  </g>
+  <g class="loom-field-center-glyph" text-anchor="middle" dominant-baseline="middle">
+    <text x="500" y="260" font-size="140" fill="#f4f4f0" opacity="0.88">下</text>
+    <text x="500" y="360" font-size="18" fill="#d97706" letter-spacing="2" opacity="0.95">RELEASED_TENDENCY</text>
+  </g>
+</svg>
