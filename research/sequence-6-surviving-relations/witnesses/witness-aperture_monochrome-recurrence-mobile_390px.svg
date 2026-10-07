@@ -1,0 +1,261 @@
+<!--
+  TD613 Flow-Core Semantic Motion Bridge Visual Witness [Direction: Aperture Monochrome]
+  Relation: recurrence (米)
+  Active View ID: cockpit
+  Carrier Count: 39 (Distribution: 6 near / 13 mid / 20 far)
+  Reduced Motion: DISABLED
+  Viewport: 390x844 (viewBox: 200 -220 600 1120)
+  Visual Theory: Cold-Cathode Radar Crypt, Telemetric Stencils & Phosphor Reticles
+  Claim Ceiling: VISUAL_RELATION != EXTERNAL_REALITY | AMBIENT_MOTION != EVENT_HISTORY | AESTHETIC_BINDING != EMPIRICAL_VALIDATION
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="200 -220 600 1120" width="390" height="844" style="background:#020403;">
+  <g class="radar-grid" opacity="0.25">
+    <circle cx="500" cy="260" r="100" fill="none" stroke="#00f0a8" stroke-width="0.6" stroke-dasharray="3 3"/>
+    <circle cx="500" cy="260" r="200" fill="none" stroke="#00f0a8" stroke-width="0.6" stroke-dasharray="3 3"/>
+    <circle cx="500" cy="260" r="300" fill="none" stroke="#00f0a8" stroke-width="0.6" stroke-dasharray="3 3"/>
+    <circle cx="500" cy="260" r="400" fill="none" stroke="#00f0a8" stroke-width="0.6" stroke-dasharray="3 3"/>
+    <line x1="80" y1="260" x2="920" y2="260" stroke="#00f0a8" stroke-width="0.5"/>
+    <line x1="500" y1="20" x2="500" y2="500" stroke="#00f0a8" stroke-width="0.5"/>
+  </g>
+  <g class="radar-field-flight" aria-hidden="true" data-active-relation="recurrence" data-visual-direction="aperture_monochrome">
+    <g class="radar-near" transform="translate(646.11 329.12) rotate(10.13) scale(1.291) translate(-646.11 -329.12)">
+      <circle cx="646.11" cy="329.12" r="24" fill="#021c13" fill-opacity="0.8" stroke="#00f0a8" stroke-width="1.4" opacity="0.95"/>
+      <circle cx="646.11" cy="329.12" r="16" fill="none" stroke="#22d3ee" stroke-width="0.7" stroke-dasharray="2 3" opacity="0.95"/>
+      <line x1="618.11" y1="329.12" x2="674.11" y2="329.12" stroke="#00f0a8" stroke-width="0.8" opacity="0.76"/>
+      <text x="646.11" y="335.12" font-size="20" font-family="'JetBrains Mono', 'PingFang SC', monospace" font-weight="700" fill="#ffffff" opacity="0.95" text-anchor="middle" dominant-baseline="middle">米</text>
+      <text x="662.11" y="313.12" font-size="6" font-family="'JetBrains Mono', monospace" fill="#00f0a8">N00</text>
+    </g>
+    <g class="radar-far" transform="translate(467.48 365.01) rotate(14.06) scale(0.542) translate(-467.48 -365.01)">
+      <rect x="465.48" y="363.01" width="4" height="4" fill="#00f0a8" opacity="0.324"/>
+      <circle cx="467.48" cy="365.01" r="6" fill="none" stroke="#00f0a8" stroke-width="0.4" stroke-dasharray="1 2" opacity="0.18"/>
+      <text x="472.48" y="368.01" font-size="9" font-family="'PingFang SC', monospace" fill="#10b981" opacity="0.252">米</text>
+    </g>
+    <g class="radar-far" transform="translate(247.87 340.4) rotate(8.84) scale(0.411) translate(-247.87 -340.4)">
+      <rect x="245.87" y="338.4" width="4" height="4" fill="#00f0a8" opacity="0.324"/>
+      <circle cx="247.87" cy="340.4" r="6" fill="none" stroke="#00f0a8" stroke-width="0.4" stroke-dasharray="1 2" opacity="0.18"/>
+      <text x="252.87" y="343.4" font-size="9" font-family="'PingFang SC', monospace" fill="#10b981" opacity="0.252">米</text>
+    </g>
+    <g class="radar-far" transform="translate(132.14 249.27) rotate(-1.33) scale(0.61) translate(-132.14 -249.27)">
+      <rect x="130.14" y="247.27" width="4" height="4" fill="#00f0a8" opacity="0.324"/>
+      <circle cx="132.14" cy="249.27" r="6" fill="none" stroke="#00f0a8" stroke-width="0.4" stroke-dasharray="1 2" opacity="0.18"/>
+      <text x="137.14" y="252.27" font-size="9" font-family="'PingFang SC', monospace" fill="#10b981" opacity="0.252">米</text>
+    </g>
+    <g class="radar-mid" transform="translate(217.83 130.83) rotate(-10.7) scale(0.92) translate(-217.83 -130.83)">
+      <line x1="205.83" y1="130.83" x2="229.83" y2="130.83" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <line x1="217.83" y1="118.83000000000001" x2="217.83" y2="142.83" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <circle cx="217.83" cy="130.83" r="5" fill="none" stroke="#fbbf24" stroke-width="0.6" opacity="0.528"/>
+      <text x="225.83" y="140.83" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', monospace" fill="#22d3ee" opacity="0.528">米</text>
+      <text x="203.83" y="124.83000000000001" font-size="5" font-family="'JetBrains Mono', monospace" fill="#94a3b8">TRK-4</text>
+    </g>
+    <g class="radar-far" transform="translate(531.72 75.76) rotate(-14.12) scale(0.559) translate(-531.72 -75.76)">
+      <rect x="529.72" y="73.76" width="4" height="4" fill="#00f0a8" opacity="0.324"/>
+      <circle cx="531.72" cy="75.76" r="6" fill="none" stroke="#00f0a8" stroke-width="0.4" stroke-dasharray="1 2" opacity="0.18"/>
+      <text x="536.72" y="78.76" font-size="9" font-family="'PingFang SC', monospace" fill="#10b981" opacity="0.252">米</text>
+    </g>
+    <g class="radar-far" transform="translate(888.11 120.77) rotate(-9.61) scale(0.408) translate(-888.11 -120.77)">
+      <rect x="886.11" y="118.77" width="4" height="4" fill="#00f0a8" opacity="0.324"/>
+      <circle cx="888.11" cy="120.77" r="6" fill="none" stroke="#00f0a8" stroke-width="0.4" stroke-dasharray="1 2" opacity="0.18"/>
+      <text x="893.11" y="123.77" font-size="9" font-family="'PingFang SC', monospace" fill="#10b981" opacity="0.252">米</text>
+    </g>
+    <g class="radar-mid" transform="translate(718.87 259.78) rotate(0.39) scale(0.725) translate(-718.87 -259.78)">
+      <line x1="706.87" y1="259.78" x2="730.87" y2="259.78" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <line x1="718.87" y1="247.77999999999997" x2="718.87" y2="271.78" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <circle cx="718.87" cy="259.78" r="5" fill="none" stroke="#fbbf24" stroke-width="0.6" opacity="0.528"/>
+      <text x="726.87" y="269.78" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', monospace" fill="#22d3ee" opacity="0.528">米</text>
+      <text x="704.87" y="253.77999999999997" font-size="5" font-family="'JetBrains Mono', monospace" fill="#94a3b8">TRK-7</text>
+    </g>
+    <g class="radar-mid" transform="translate(695.23 343.7) rotate(10.38) scale(0.914) translate(-695.23 -343.7)">
+      <line x1="683.23" y1="343.7" x2="707.23" y2="343.7" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <line x1="695.23" y1="331.7" x2="695.23" y2="355.7" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <circle cx="695.23" cy="343.7" r="5" fill="none" stroke="#fbbf24" stroke-width="0.6" opacity="0.528"/>
+      <text x="703.23" y="353.7" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', monospace" fill="#22d3ee" opacity="0.528">米</text>
+      <text x="681.23" y="337.7" font-size="5" font-family="'JetBrains Mono', monospace" fill="#94a3b8">TRK-8</text>
+    </g>
+    <g class="radar-far" transform="translate(499.69 386.22) rotate(14.02) scale(0.581) translate(-499.69 -386.22)">
+      <rect x="497.69" y="384.22" width="4" height="4" fill="#00f0a8" opacity="0.324"/>
+      <circle cx="499.69" cy="386.22" r="6" fill="none" stroke="#00f0a8" stroke-width="0.4" stroke-dasharray="1 2" opacity="0.18"/>
+      <text x="504.69" y="389.22" font-size="9" font-family="'PingFang SC', monospace" fill="#10b981" opacity="0.252">米</text>
+    </g>
+    <g class="radar-far" transform="translate(237.69 364.29) rotate(10.04) scale(0.409) translate(-237.69 -364.29)">
+      <rect x="235.69" y="362.29" width="4" height="4" fill="#00f0a8" opacity="0.324"/>
+      <circle cx="237.69" cy="364.29" r="6" fill="none" stroke="#00f0a8" stroke-width="0.4" stroke-dasharray="1 2" opacity="0.18"/>
+      <text x="242.69" y="367.29" font-size="9" font-family="'PingFang SC', monospace" fill="#10b981" opacity="0.252">米</text>
+    </g>
+    <g class="radar-near" transform="translate(76.42 260.45) rotate(0.83) scale(0.984) translate(-76.42 -260.45)">
+      <circle cx="76.42" cy="260.45" r="24" fill="#021c13" fill-opacity="0.8" stroke="#00f0a8" stroke-width="1.4" opacity="0.95"/>
+      <circle cx="76.42" cy="260.45" r="16" fill="none" stroke="#22d3ee" stroke-width="0.7" stroke-dasharray="2 3" opacity="0.95"/>
+      <line x1="48.42" y1="260.45" x2="104.42" y2="260.45" stroke="#00f0a8" stroke-width="0.8" opacity="0.76"/>
+      <text x="76.42" y="266.45" font-size="20" font-family="'JetBrains Mono', 'PingFang SC', monospace" font-weight="700" fill="#ffffff" opacity="0.95" text-anchor="middle" dominant-baseline="middle">米</text>
+      <text x="92.42" y="244.45" font-size="6" font-family="'JetBrains Mono', monospace" fill="#00f0a8">N011</text>
+    </g>
+    <g class="radar-mid" transform="translate(145.27 134.28) rotate(-9.24) scale(0.911) translate(-145.27 -134.28)">
+      <line x1="133.27" y1="134.28" x2="157.27" y2="134.28" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <line x1="145.27" y1="122.28" x2="145.27" y2="146.28" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <circle cx="145.27" cy="134.28" r="5" fill="none" stroke="#fbbf24" stroke-width="0.6" opacity="0.528"/>
+      <text x="153.27" y="144.28" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', monospace" fill="#22d3ee" opacity="0.528">米</text>
+      <text x="131.27" y="128.28" font-size="5" font-family="'JetBrains Mono', monospace" fill="#94a3b8">TRK-12</text>
+    </g>
+    <g class="radar-near" transform="translate(485.62 59.61) rotate(-13.11) scale(1.028) translate(-485.62 -59.61)">
+      <circle cx="485.62" cy="59.61" r="24" fill="#021c13" fill-opacity="0.8" stroke="#00f0a8" stroke-width="1.4" opacity="0.95"/>
+      <circle cx="485.62" cy="59.61" r="16" fill="none" stroke="#22d3ee" stroke-width="0.7" stroke-dasharray="2 3" opacity="0.95"/>
+      <line x1="457.62" y1="59.61" x2="513.62" y2="59.61" stroke="#00f0a8" stroke-width="0.8" opacity="0.76"/>
+      <text x="485.62" y="65.61" font-size="20" font-family="'JetBrains Mono', 'PingFang SC', monospace" font-weight="700" fill="#ffffff" opacity="0.95" text-anchor="middle" dominant-baseline="middle">米</text>
+      <text x="501.62" y="43.61" font-size="6" font-family="'JetBrains Mono', monospace" fill="#00f0a8">N013</text>
+    </g>
+    <g class="radar-mid" transform="translate(655.11 194.47) rotate(-10.22) scale(0.514) translate(-655.11 -194.47)">
+      <line x1="643.11" y1="194.47" x2="667.11" y2="194.47" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <line x1="655.11" y1="182.47" x2="655.11" y2="206.47" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <circle cx="655.11" cy="194.47" r="5" fill="none" stroke="#fbbf24" stroke-width="0.6" opacity="0.528"/>
+      <text x="663.11" y="204.47" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', monospace" fill="#22d3ee" opacity="0.528">米</text>
+      <text x="641.11" y="188.47" font-size="5" font-family="'JetBrains Mono', monospace" fill="#94a3b8">TRK-14</text>
+    </g>
+    <g class="radar-far" transform="translate(773.33 250.27) rotate(-1.16) scale(0.549) translate(-773.33 -250.27)">
+      <rect x="771.33" y="248.27" width="4" height="4" fill="#00f0a8" opacity="0.324"/>
+      <circle cx="773.33" cy="250.27" r="6" fill="none" stroke="#00f0a8" stroke-width="0.4" stroke-dasharray="1 2" opacity="0.18"/>
+      <text x="778.33" y="253.27" font-size="9" font-family="'PingFang SC', monospace" fill="#10b981" opacity="0.252">米</text>
+    </g>
+    <g class="radar-mid" transform="translate(747.86 339.05) rotate(8.95) scale(0.922) translate(-747.86 -339.05)">
+      <line x1="735.86" y1="339.05" x2="759.86" y2="339.05" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <line x1="747.86" y1="327.05" x2="747.86" y2="351.05" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <circle cx="747.86" cy="339.05" r="5" fill="none" stroke="#fbbf24" stroke-width="0.6" opacity="0.528"/>
+      <text x="755.86" y="349.05" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', monospace" fill="#22d3ee" opacity="0.528">米</text>
+      <text x="733.86" y="333.05" font-size="5" font-family="'JetBrains Mono', monospace" fill="#94a3b8">TRK-16</text>
+    </g>
+    <g class="radar-far" transform="translate(541.4 405.66) rotate(13.82) scale(0.617) translate(-541.4 -405.66)">
+      <rect x="539.4" y="403.66" width="4" height="4" fill="#00f0a8" opacity="0.324"/>
+      <circle cx="541.4" cy="405.66" r="6" fill="none" stroke="#00f0a8" stroke-width="0.4" stroke-dasharray="1 2" opacity="0.18"/>
+      <text x="546.4" y="408.66" font-size="9" font-family="'PingFang SC', monospace" fill="#10b981" opacity="0.252">米</text>
+    </g>
+    <g class="radar-far" transform="translate(238.24 391.16) rotate(11.05) scale(0.413) translate(-238.24 -391.16)">
+      <rect x="236.24" y="389.16" width="4" height="4" fill="#00f0a8" opacity="0.324"/>
+      <circle cx="238.24" cy="391.16" r="6" fill="none" stroke="#00f0a8" stroke-width="0.4" stroke-dasharray="1 2" opacity="0.18"/>
+      <text x="243.24" y="394.16" font-size="9" font-family="'PingFang SC', monospace" fill="#10b981" opacity="0.252">米</text>
+    </g>
+    <g class="radar-far" transform="translate(27.18 285.07) rotate(1.89) scale(0.532) translate(-27.18 -285.07)">
+      <rect x="25.18" y="283.07" width="4" height="4" fill="#00f0a8" opacity="0.324"/>
+      <circle cx="27.18" cy="285.07" r="6" fill="none" stroke="#00f0a8" stroke-width="0.4" stroke-dasharray="1 2" opacity="0.18"/>
+      <text x="32.18" y="288.07" font-size="9" font-family="'PingFang SC', monospace" fill="#10b981" opacity="0.252">米</text>
+    </g>
+    <g class="radar-mid" transform="translate(70.46 135.56) rotate(-8.27) scale(0.914) translate(-70.46 -135.56)">
+      <line x1="58.459999999999994" y1="135.56" x2="82.46" y2="135.56" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <line x1="70.46" y1="123.56" x2="70.46" y2="147.56" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <circle cx="70.46" cy="135.56" r="5" fill="none" stroke="#fbbf24" stroke-width="0.6" opacity="0.528"/>
+      <text x="78.46" y="145.56" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', monospace" fill="#22d3ee" opacity="0.528">米</text>
+      <text x="56.459999999999994" y="129.56" font-size="5" font-family="'JetBrains Mono', monospace" fill="#94a3b8">TRK-20</text>
+    </g>
+    <g class="radar-mid" transform="translate(457.2 172.36) rotate(-13.82) scale(0.776) translate(-457.2 -172.36)">
+      <line x1="445.2" y1="172.36" x2="469.2" y2="172.36" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <line x1="457.2" y1="160.36" x2="457.2" y2="184.36" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <circle cx="457.2" cy="172.36" r="5" fill="none" stroke="#fbbf24" stroke-width="0.6" opacity="0.528"/>
+      <text x="465.2" y="182.36" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', monospace" fill="#22d3ee" opacity="0.528">米</text>
+      <text x="443.2" y="166.36" font-size="5" font-family="'JetBrains Mono', monospace" fill="#94a3b8">TRK-21</text>
+    </g>
+    <g class="radar-near" transform="translate(675.14 175.04) rotate(-11.94) scale(0.735) translate(-675.14 -175.04)">
+      <circle cx="675.14" cy="175.04" r="24" fill="#021c13" fill-opacity="0.8" stroke="#00f0a8" stroke-width="1.4" opacity="0.95"/>
+      <circle cx="675.14" cy="175.04" r="16" fill="none" stroke="#22d3ee" stroke-width="0.7" stroke-dasharray="2 3" opacity="0.95"/>
+      <line x1="647.14" y1="175.04" x2="703.14" y2="175.04" stroke="#00f0a8" stroke-width="0.8" opacity="0.76"/>
+      <text x="675.14" y="181.04" font-size="20" font-family="'JetBrains Mono', 'PingFang SC', monospace" font-weight="700" fill="#ffffff" opacity="0.95" text-anchor="middle" dominant-baseline="middle">米</text>
+      <text x="691.14" y="159.04" font-size="6" font-family="'JetBrains Mono', monospace" fill="#00f0a8">N022</text>
+    </g>
+    <g class="radar-far" transform="translate(820.73 236.98) rotate(-2.75) scale(0.51) translate(-820.73 -236.98)">
+      <rect x="818.73" y="234.98" width="4" height="4" fill="#00f0a8" opacity="0.324"/>
+      <circle cx="820.73" cy="236.98" r="6" fill="none" stroke="#00f0a8" stroke-width="0.4" stroke-dasharray="1 2" opacity="0.18"/>
+      <text x="825.73" y="239.98" font-size="9" font-family="'PingFang SC', monospace" fill="#10b981" opacity="0.252">米</text>
+    </g>
+    <g class="radar-mid" transform="translate(814.79 337.76) rotate(8.06) scale(0.912) translate(-814.79 -337.76)">
+      <line x1="802.79" y1="337.76" x2="826.79" y2="337.76" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <line x1="814.79" y1="325.76" x2="814.79" y2="349.76" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <circle cx="814.79" cy="337.76" r="5" fill="none" stroke="#fbbf24" stroke-width="0.6" opacity="0.528"/>
+      <text x="822.79" y="347.76" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', monospace" fill="#22d3ee" opacity="0.528">米</text>
+      <text x="800.79" y="331.76" font-size="5" font-family="'JetBrains Mono', monospace" fill="#94a3b8">TRK-24</text>
+    </g>
+    <g class="radar-far" transform="translate(595.11 420.86) rotate(13.58) scale(0.656) translate(-595.11 -420.86)">
+      <rect x="593.11" y="418.86" width="4" height="4" fill="#00f0a8" opacity="0.324"/>
+      <circle cx="595.11" cy="420.86" r="6" fill="none" stroke="#00f0a8" stroke-width="0.4" stroke-dasharray="1 2" opacity="0.18"/>
+      <text x="600.11" y="423.86" font-size="9" font-family="'PingFang SC', monospace" fill="#10b981" opacity="0.252">米</text>
+    </g>
+    <g class="radar-near" transform="translate(248.34 416.83) rotate(11.96) scale(0.726) translate(-248.34 -416.83)">
+      <circle cx="248.34" cy="416.83" r="24" fill="#021c13" fill-opacity="0.8" stroke="#00f0a8" stroke-width="1.4" opacity="0.95"/>
+      <circle cx="248.34" cy="416.83" r="16" fill="none" stroke="#22d3ee" stroke-width="0.7" stroke-dasharray="2 3" opacity="0.95"/>
+      <line x1="220.34" y1="416.83" x2="276.34000000000003" y2="416.83" stroke="#00f0a8" stroke-width="0.8" opacity="0.76"/>
+      <text x="248.34" y="422.83" font-size="20" font-family="'JetBrains Mono', 'PingFang SC', monospace" font-weight="700" fill="#ffffff" opacity="0.95" text-anchor="middle" dominant-baseline="middle">米</text>
+      <text x="264.34000000000003" y="400.83" font-size="6" font-family="'JetBrains Mono', monospace" fill="#00f0a8">N026</text>
+    </g>
+    <g class="radar-far" transform="translate(-7.47 315.14) rotate(3.44) scale(0.492) translate(7.47 -315.14)">
+      <rect x="-9.469999999999999" y="313.14" width="4" height="4" fill="#00f0a8" opacity="0.324"/>
+      <circle cx="-7.47" cy="315.14" r="6" fill="none" stroke="#00f0a8" stroke-width="0.4" stroke-dasharray="1 2" opacity="0.18"/>
+      <text x="-2.4699999999999998" y="318.14" font-size="9" font-family="'PingFang SC', monospace" fill="#10b981" opacity="0.252">米</text>
+    </g>
+    <g class="radar-mid" transform="translate(304.45 218.52) rotate(-6.49) scale(0.887) translate(-304.45 -218.52)">
+      <line x1="292.45" y1="218.52" x2="316.45" y2="218.52" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <line x1="304.45" y1="206.52" x2="304.45" y2="230.52" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <circle cx="304.45" cy="218.52" r="5" fill="none" stroke="#fbbf24" stroke-width="0.6" opacity="0.528"/>
+      <text x="312.45" y="228.52" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', monospace" fill="#22d3ee" opacity="0.528">米</text>
+      <text x="290.45" y="212.52" font-size="5" font-family="'JetBrains Mono', monospace" fill="#94a3b8">TRK-28</text>
+    </g>
+    <g class="radar-far" transform="translate(420.26 154.76) rotate(-13.42) scale(0.671) translate(-420.26 -154.76)">
+      <rect x="418.26" y="152.76" width="4" height="4" fill="#00f0a8" opacity="0.324"/>
+      <circle cx="420.26" cy="154.76" r="6" fill="none" stroke="#00f0a8" stroke-width="0.4" stroke-dasharray="1 2" opacity="0.18"/>
+      <text x="425.26" y="157.76" font-size="9" font-family="'PingFang SC', monospace" fill="#10b981" opacity="0.252">米</text>
+    </g>
+    <g class="radar-far" transform="translate(656.46 150.32) rotate(-12.25) scale(0.437) translate(-656.46 -150.32)">
+      <rect x="654.46" y="148.32" width="4" height="4" fill="#00f0a8" opacity="0.324"/>
+      <circle cx="656.46" cy="150.32" r="6" fill="none" stroke="#00f0a8" stroke-width="0.4" stroke-dasharray="1 2" opacity="0.18"/>
+      <text x="661.46" y="153.32" font-size="9" font-family="'PingFang SC', monospace" fill="#10b981" opacity="0.252">米</text>
+    </g>
+    <g class="radar-far" transform="translate(858.27 215.1) rotate(-4.32) scale(0.479) translate(-858.27 -215.1)">
+      <rect x="856.27" y="213.1" width="4" height="4" fill="#00f0a8" opacity="0.324"/>
+      <circle cx="858.27" cy="215.1" r="6" fill="none" stroke="#00f0a8" stroke-width="0.4" stroke-dasharray="1 2" opacity="0.18"/>
+      <text x="863.27" y="218.1" font-size="9" font-family="'PingFang SC', monospace" fill="#10b981" opacity="0.252">米</text>
+    </g>
+    <g class="radar-mid" transform="translate(877.35 336.64) rotate(6.2) scale(0.863) translate(-877.35 -336.64)">
+      <line x1="865.35" y1="336.64" x2="889.35" y2="336.64" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <line x1="877.35" y1="324.64" x2="877.35" y2="348.64" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <circle cx="877.35" cy="336.64" r="5" fill="none" stroke="#fbbf24" stroke-width="0.6" opacity="0.528"/>
+      <text x="885.35" y="346.64" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', monospace" fill="#22d3ee" opacity="0.528">米</text>
+      <text x="863.35" y="330.64" font-size="5" font-family="'JetBrains Mono', monospace" fill="#94a3b8">TRK-32</text>
+    </g>
+    <g class="radar-near" transform="translate(660.37 433.65) rotate(12.33) scale(1.175) translate(-660.37 -433.65)">
+      <circle cx="660.37" cy="433.65" r="24" fill="#021c13" fill-opacity="0.8" stroke="#00f0a8" stroke-width="1.4" opacity="0.95"/>
+      <circle cx="660.37" cy="433.65" r="16" fill="none" stroke="#22d3ee" stroke-width="0.7" stroke-dasharray="2 3" opacity="0.95"/>
+      <line x1="632.37" y1="433.65" x2="688.37" y2="433.65" stroke="#00f0a8" stroke-width="0.8" opacity="0.76"/>
+      <text x="660.37" y="439.65" font-size="20" font-family="'JetBrains Mono', 'PingFang SC', monospace" font-weight="700" fill="#ffffff" opacity="0.95" text-anchor="middle" dominant-baseline="middle">米</text>
+      <text x="676.37" y="417.65" font-size="6" font-family="'JetBrains Mono', monospace" fill="#00f0a8">N033</text>
+    </g>
+    <g class="radar-far" transform="translate(278.93 445.95) rotate(12.77) scale(0.451) translate(-278.93 -445.95)">
+      <rect x="276.93" y="443.95" width="4" height="4" fill="#00f0a8" opacity="0.324"/>
+      <circle cx="278.93" cy="445.95" r="6" fill="none" stroke="#00f0a8" stroke-width="0.4" stroke-dasharray="1 2" opacity="0.18"/>
+      <text x="283.93" y="448.95" font-size="9" font-family="'PingFang SC', monospace" fill="#10b981" opacity="0.252">米</text>
+    </g>
+    <g class="radar-mid" transform="translate(292.56 289.08) rotate(4.92) scale(0.579) translate(-292.56 -289.08)">
+      <line x1="280.56" y1="289.08" x2="304.56" y2="289.08" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <line x1="292.56" y1="277.08" x2="292.56" y2="301.08" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <circle cx="292.56" cy="289.08" r="5" fill="none" stroke="#fbbf24" stroke-width="0.6" opacity="0.528"/>
+      <text x="300.56" y="299.08" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', monospace" fill="#22d3ee" opacity="0.528">米</text>
+      <text x="278.56" y="283.08" font-size="5" font-family="'JetBrains Mono', monospace" fill="#94a3b8">TRK-35</text>
+    </g>
+    <g class="radar-mid" transform="translate(244.44 214.42) rotate(-5.45) scale(0.871) translate(-244.44 -214.42)">
+      <line x1="232.44" y1="214.42" x2="256.44" y2="214.42" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <line x1="244.44" y1="202.42" x2="244.44" y2="226.42" stroke="#22d3ee" stroke-width="0.8" opacity="0.528"/>
+      <circle cx="244.44" cy="214.42" r="5" fill="none" stroke="#fbbf24" stroke-width="0.6" opacity="0.528"/>
+      <text x="252.44" y="224.42" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', monospace" fill="#22d3ee" opacity="0.528">米</text>
+      <text x="230.44" y="208.42" font-size="5" font-family="'JetBrains Mono', monospace" fill="#94a3b8">TRK-36</text>
+    </g>
+    <g class="radar-far" transform="translate(374.78 144.3) rotate(-12.69) scale(0.699) translate(-374.78 -144.3)">
+      <rect x="372.78" y="142.3" width="4" height="4" fill="#00f0a8" opacity="0.324"/>
+      <circle cx="374.78" cy="144.3" r="6" fill="none" stroke="#00f0a8" stroke-width="0.4" stroke-dasharray="1 2" opacity="0.18"/>
+      <text x="379.78" y="147.3" font-size="9" font-family="'PingFang SC', monospace" fill="#10b981" opacity="0.252">米</text>
+    </g>
+    <g class="radar-far" transform="translate(638.04 123.17) rotate(-13.27) scale(0.463) translate(-638.04 -123.17)">
+      <rect x="636.04" y="121.17" width="4" height="4" fill="#00f0a8" opacity="0.324"/>
+      <circle cx="638.04" cy="123.17" r="6" fill="none" stroke="#00f0a8" stroke-width="0.4" stroke-dasharray="1 2" opacity="0.18"/>
+      <text x="643.04" y="126.17" font-size="9" font-family="'PingFang SC', monospace" fill="#10b981" opacity="0.252">米</text>
+    </g>
+  </g>
+  <g class="radar-center-aperture" text-anchor="middle" dominant-baseline="middle">
+    <circle cx="500" cy="260" r="68" fill="#021c13" stroke="#00f0a8" stroke-width="1.8" opacity="0.9"/>
+    <circle cx="500" cy="260" r="58" fill="none" stroke="#22d3ee" stroke-width="0.6" stroke-dasharray="3 3" opacity="0.6"/>
+    <text x="500" y="268" font-size="102" font-family="'JetBrains Mono', 'PingFang SC', monospace" font-weight="700" fill="#00f0a8" opacity="0.98">米</text>
+    <text x="500" y="318" font-size="9" font-family="'JetBrains Mono', monospace" fill="#fbbf24" letter-spacing="3" opacity="0.9">AZ-352° // STAT:LOCK // RECURRENCE</text>
+  </g>
+</svg>

@@ -310,3 +310,64 @@ test('11. ambient choreography cannot mutate event history, authority, or canoni
   assert.equal(PROPOSED_AESTHETIC_BINDINGS.recurrence.binding_status, 'PROPOSED_AESTHETIC_BINDING');
   assert.equal(PROPOSED_AESTHETIC_BINDINGS.gathering.binding_status, 'PROPOSED_AESTHETIC_BINDING');
 });
+
+test('12. Tranche 2B visual director tournament: all three directions maintain exact 39 carriers, distinct aesthetics, and first-class mobile/reduced-motion support', () => {
+  const directions = ['lithic_tectonic', 'organza_choreography', 'aperture_monochrome'];
+  const relations = ['gathering', 'release', 'protected_continuity', 'structural_rest'];
+
+  for (const dir of directions) {
+    for (const rel of relations) {
+      const snapDesktop = {
+        activeViewId: 'field',
+        relationState: { relation_key: rel, progress: 0.5 },
+        directorDirection: dir
+      };
+      const fDesktop = renderDomeArt('field', snapDesktop, { width: 1000, height: 520 }, 2000);
+
+      // Must have exactly 39 carriers with 6/13/20 distribution
+      assert.equal(fDesktop.carriers.length, 39, `${dir} ${rel} must have 39 carriers`);
+      assert.equal(fDesktop.carriers.filter(c => c.carrier.near).length, 6);
+      assert.equal(fDesktop.carriers.filter(c => c.carrier.mid).length, 13);
+      assert.equal(fDesktop.carriers.filter(c => c.carrier.far).length, 20);
+
+      // Manifestation matches director style
+      assert.equal(fDesktop.director_direction, dir);
+      assert.ok(fDesktop.carriers.every(c => c.manifestation?.style === dir));
+
+      // Mobile 390px preservation
+      const snapMobile = { ...snapDesktop };
+      const fMobile = renderDomeArt('field', snapMobile, { width: 390, height: 844 }, 2000);
+      assert.equal(fMobile.carriers.length, 39, `${dir} ${rel} mobile must have 39 carriers`);
+      assert.equal(fMobile.carriers.filter(c => c.carrier.near).length, 6);
+      assert.equal(fMobile.carriers.filter(c => c.carrier.mid).length, 13);
+      assert.equal(fMobile.carriers.filter(c => c.carrier.far).length, 20);
+
+      // Reduced motion static verification
+      const snapReduced = { ...snapDesktop, reducedMotion: true };
+      const fRed0 = renderDomeArt('field', snapReduced, { width: 1000, height: 520 }, 0);
+      const fRed10k = renderDomeArt('field', snapReduced, { width: 1000, height: 520 }, 10000);
+      assert.equal(fRed0.carriers.length, 39);
+      assert.deepEqual(fRed0.carriers, fRed10k.carriers, `${dir} ${rel} reduced motion must be static across time`);
+
+      // SVG snapshots generate without error and contain direction watermark
+      const svg = generateSvgSnapshot(fDesktop);
+      assert.ok(svg.includes(dir), `${dir} svg must contain direction label`);
+      assert.ok(svg.includes('39 (Distribution: 6 near / 13 mid / 20 far)'));
+    }
+  }
+
+  // The 3 directions produce distinct visual representations for the same state
+  const snap = (d) => ({ activeViewId: 'field', relationState: { relation_key: 'gathering', progress: 0.5 }, directorDirection: d });
+  const fLithic = renderDomeArt('field', snap('lithic_tectonic'), { width: 1000, height: 520 }, 1500);
+  const fOrganza = renderDomeArt('field', snap('organza_choreography'), { width: 1000, height: 520 }, 1500);
+  const fRadar = renderDomeArt('field', snap('aperture_monochrome'), { width: 1000, height: 520 }, 1500);
+
+  const svgLithic = generateSvgSnapshot(fLithic);
+  const svgOrganza = generateSvgSnapshot(fOrganza);
+  const svgRadar = generateSvgSnapshot(fRadar);
+
+  assert.notEqual(svgLithic, svgOrganza, 'Lithic and Organza must be visually distinct');
+  assert.notEqual(svgLithic, svgRadar, 'Lithic and Radar must be visually distinct');
+  assert.notEqual(svgOrganza, svgRadar, 'Organza and Radar must be visually distinct');
+});
+

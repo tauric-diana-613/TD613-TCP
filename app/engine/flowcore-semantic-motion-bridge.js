@@ -58,6 +58,14 @@ export const CLAIM_CEILING_MOTION_BRIDGE = Object.freeze({
   animation_jurisdiction: 'SINGLE_COORDINATOR_DETERMINISTIC_FRAME'
 });
 
+// Tranche 2B Visual Director directions
+export const DIRECTOR_DIRECTIONS = Object.freeze([
+  'diagnostic',
+  'lithic_tectonic',
+  'organza_choreography',
+  'aperture_monochrome'
+]);
+
 /**
  * Proposed aesthetic bindings mapping canonical relations to Dome-Art motion families.
  * Status: PROPOSED_AESTHETIC_BINDING (awaiting empirical evaluation).
@@ -296,6 +304,141 @@ export function buildMotionPresentationDescriptor(relationState = {}, options = 
 }
 
 /**
+ * Computes the director manifestation metadata for a logical carrier.
+ * Under Tranche 2B, logical carriers may manifest as monolith incisions,
+ * shear planes, moire pleat fins, silk ribbons, or radar telemetry crosshairs.
+ */
+export function computeDirectorManifestation(carrier, descriptor, style = 'diagnostic') {
+  const i = carrier.index;
+  const glyph = descriptor.canonical_glyph;
+  const rel = descriptor.relation_id;
+
+  if (style === 'lithic_tectonic') {
+    if (carrier.near) {
+      return Object.freeze({
+        style: 'lithic_tectonic',
+        type: 'MONOLITH_INCISION',
+        label: `SEC6//MONO-0${i}`,
+        glyph_fragment: glyph,
+        material: 'RAW_BONE_BASALT',
+        accent_color: '#e2b714',
+        border_width: 1.5,
+        elevation: 'HIGH_RELIEF'
+      });
+    } else if (carrier.mid) {
+      return Object.freeze({
+        style: 'lithic_tectonic',
+        type: 'TECTONIC_SHEAR_PLANE',
+        label: `ΔX-${i}`,
+        glyph_fragment: glyph,
+        material: 'OXIDIZED_SILVER_PLANE',
+        accent_color: '#8b95a5',
+        border_width: 1.0,
+        elevation: 'SHEAR_DATUM'
+      });
+    } else {
+      return Object.freeze({
+        style: 'lithic_tectonic',
+        type: 'LATTICE_BASALT_SHARD',
+        label: `PT-${i}`,
+        glyph_fragment: glyph,
+        material: 'BASALT_FRACTURE_SHARD',
+        accent_color: '#566171',
+        border_width: 0.5,
+        elevation: 'SUBTERRANEAN_BED'
+      });
+    }
+  }
+
+  if (style === 'organza_choreography') {
+    if (carrier.near) {
+      return Object.freeze({
+        style: 'organza_choreography',
+        type: 'COUTURE_LIGAMENT',
+        label: `SILK-SWEEP-0${i}`,
+        glyph_fragment: glyph,
+        material: 'TRANSLUCENT_SILK_ORGANZA',
+        accent_color: '#c4b5fd',
+        secondary_color: '#f43f5e',
+        weight: 'BILLOWING_RIBBON',
+        elevation: 'RUNWAY_FOREGROUND'
+      });
+    } else if (carrier.mid) {
+      return Object.freeze({
+        style: 'organza_choreography',
+        type: 'MOIRE_PLEAT_FIN',
+        label: `PLEAT-${i}`,
+        glyph_fragment: glyph,
+        material: 'IRIDESCENT_MOIRE_MEMBRANE',
+        accent_color: '#f59e0b',
+        secondary_color: '#c4b5fd',
+        weight: 'PLEATED_INTERFERENCE',
+        elevation: 'MID_DRAPERY'
+      });
+    } else {
+      return Object.freeze({
+        style: 'organza_choreography',
+        type: 'SILK_DUST_WHISPER',
+        label: `DUST-${i}`,
+        glyph_fragment: glyph,
+        material: 'GOSSAMER_MICRO_FILAMENT',
+        accent_color: '#e9d5ff',
+        secondary_color: '#a855f7',
+        weight: 'SUSPENDED_PARTICLE',
+        elevation: 'THEATRICAL_DEPTH'
+      });
+    }
+  }
+
+  if (style === 'aperture_monochrome') {
+    if (carrier.near) {
+      return Object.freeze({
+        style: 'aperture_monochrome',
+        type: 'PHOSPHOR_APERTURE_GATE',
+        label: `GATE-N0${i}`,
+        glyph_fragment: glyph,
+        material: 'HIGH_VOLTAGE_PHOSPHOR_STENCIL',
+        accent_color: '#00f0a8',
+        telemetry: `FREQ:613 // STAT:LOCK`,
+        elevation: 'OPTICAL_RETICLE_PRIMARY'
+      });
+    } else if (carrier.mid) {
+      return Object.freeze({
+        style: 'aperture_monochrome',
+        type: 'VECTOR_TELEMETRY_CROSSHAIR',
+        label: `TRK-M${i}`,
+        glyph_fragment: glyph,
+        material: 'CATHODE_VERNIER_SCALE',
+        accent_color: '#22d3ee',
+        telemetry: `AZ:${(i * 9.2).toFixed(1)}°`,
+        elevation: 'RADAR_BEARING_INTERMEDIATE'
+      });
+    } else {
+      return Object.freeze({
+        style: 'aperture_monochrome',
+        type: 'CATHODE_ECHO_BLIP',
+        label: `ECHO-${i}`,
+        glyph_fragment: glyph,
+        material: 'PHASED_SURVEILLANCE_ECHO',
+        accent_color: '#10b981',
+        telemetry: `D:${(i * 14.5).toFixed(0)}km`,
+        elevation: 'BACKGROUND_SWEEP_FIELD'
+      });
+    }
+  }
+
+  return Object.freeze({
+    style: 'diagnostic',
+    type: 'GLYPH_CARRIER',
+    label: `CARRIER-${i}`,
+    glyph_fragment: glyph,
+    material: 'DIAGNOSTIC_TYPOGRAPHIC_FIELD',
+    accent_color: carrier.color,
+    elevation: carrier.plane
+  });
+}
+
+/**
  * Evaluates individual carrier geometry (position, roll, scale, opacity)
  * for a specific carrier under the motion presentation descriptor.
  *
@@ -310,6 +453,7 @@ export function evaluateCarrier(carrierInput, descriptor, options = {}) {
   const viewport = options.viewport || { width: 1000, height: 520 };
   const compact = Number(viewport.width || 1000) <= 760;
   const reducedMotion = descriptor.reduced_motion === true || options.reducedMotion === true;
+  const directorDirection = options.directorDirection || options.style || 'diagnostic';
 
   const i = carrier.index;
   const count = carrier.count || CARRIER_COUNT;
@@ -348,6 +492,7 @@ export function evaluateCarrier(carrierInput, descriptor, options = {}) {
       glyph: descriptor.canonical_glyph,
       color: carrier.color,
       font_size: carrier.font_size,
+      manifestation: computeDirectorManifestation(carrier, descriptor, directorDirection),
       reduced_motion: true
     });
   }
@@ -488,6 +633,7 @@ export function evaluateCarrier(carrierInput, descriptor, options = {}) {
     glyph: descriptor.canonical_glyph,
     color: carrier.color,
     font_size: carrier.font_size,
+    manifestation: computeDirectorManifestation(carrier, descriptor, directorDirection),
     reduced_motion: false
   });
 }
@@ -563,12 +709,19 @@ export function renderDomeArt(viewId, worldSnapshot = {}, viewport = {}, time = 
 
   const descriptor = buildMotionPresentationDescriptor(relationState, { reducedMotion });
   const timeSeconds = reducedMotion ? 0 : Number(time) / 1000;
+  const directorDirection = String(
+    worldSnapshot.directorDirection ||
+    worldSnapshot.direction ||
+    viewport.directorDirection ||
+    'diagnostic'
+  ).toLowerCase();
 
   // Evaluate all 39 carriers
   const evaluatedCarriers = evaluateAllCarriers(descriptor, {
     timeSeconds,
     viewport: { width: vpWidth, height: vpHeight, dpr },
-    reducedMotion
+    reducedMotion,
+    directorDirection
   });
 
   const drawCommands = [
@@ -582,6 +735,7 @@ export function renderDomeArt(viewId, worldSnapshot = {}, viewport = {}, time = 
     view_id: targetViewId,
     active: true,
     draw: true,
+    director_direction: directorDirection,
     descriptor,
     carriers: evaluatedCarriers,
     draw_commands: Object.freeze(drawCommands),
@@ -612,14 +766,9 @@ export function renderDomeArt(viewId, worldSnapshot = {}, viewport = {}, time = 
 }
 
 /**
- * Generates an inspectable SVG string from a rendered frame.
- * Compatible with node/browser environments for visual witnessing and test assertions.
+ * Generates the baseline diagnostic SVG witness.
  */
-export function generateSvgSnapshot(frame) {
-  if (!frame || !frame.draw || !Array.isArray(frame.carriers)) {
-    return '<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0"></svg>';
-  }
-
+export function renderDiagnosticSvg(frame) {
   const vp = frame.viewport || { width: 1000, height: 520, viewBox: '0 0 1000 520' };
   const viewBox = vp.viewBox || '0 0 1000 520';
 
@@ -660,4 +809,245 @@ ${carriersXml}
     <text x="500" y="360" font-size="18" fill="#d97706" letter-spacing="2" opacity="0.95">${relation.toUpperCase()}</text>
   </g>
 </svg>`;
+}
+
+/**
+ * Direction 1: Lithic Tectonic (Basalt & Shard Observatory)
+ * Architectural brutalism, monolithic slabs, high-relief cuts, and ruled shear lines.
+ */
+export function renderLithicTectonicSvg(frame) {
+  const vp = frame.viewport || { width: 1000, height: 520, viewBox: '0 0 1000 520' };
+  const viewBox = vp.viewBox || '0 0 1000 520';
+  const glyph = frame.descriptor?.canonical_glyph || '';
+  const relation = frame.descriptor?.relation_id || 'rest';
+  const viewId = frame.view_id || 'unknown';
+  const nearCount = frame.carriers.filter(c => c.carrier?.near).length;
+  const midCount = frame.carriers.filter(c => c.carrier?.mid).length;
+  const farCount = frame.carriers.filter(c => c.carrier?.far).length;
+  const totalCount = frame.carriers.length;
+  const reduced = Boolean(frame.reduced_motion);
+
+  const carriersXml = frame.carriers.map(c => {
+    const tr = `translate(${c.x} ${c.y}) rotate(${c.roll}) scale(${c.scale}) translate(${-c.x} ${-c.y})`;
+    if (c.carrier.near) {
+      return `    <g class="lithic-near" transform="${tr}">
+      <rect x="${c.x - 42}" y="${c.y - 24}" width="84" height="48" fill="#141822" stroke="#e2b714" stroke-width="1.2" opacity="${c.opacity}" rx="2"/>
+      <line x1="${c.x - 42}" y1="${c.y}" x2="${c.x + 42}" y2="${c.y}" stroke="#e2b714" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.5"/>
+      <text x="${c.x}" y="${c.y + 8}" font-size="28" font-family="'Cinzel', 'Noto Serif SC', 'PingFang SC', serif" font-weight="900" fill="#ede9e3" opacity="${c.opacity}" text-anchor="middle" dominant-baseline="middle">${c.glyph}</text>
+      <text x="${c.x + 32}" y="${c.y - 14}" font-size="7" font-family="'JetBrains Mono', monospace" fill="#e2b714" opacity="0.9">P${c.carrier.index}</text>
+    </g>`;
+    }
+    if (c.carrier.mid) {
+      return `    <g class="lithic-mid" transform="${tr}">
+      <line x1="${c.x - 28}" y1="${c.y}" x2="${c.x + 28}" y2="${c.y}" stroke="#8b95a5" stroke-width="1" opacity="${c.opacity}"/>
+      <circle cx="${c.x}" cy="${c.y}" r="2.5" fill="#8b95a5" opacity="${c.opacity}"/>
+      <text x="${c.x + 8}" y="${c.y - 6}" font-size="14" font-family="'PingFang SC', monospace" fill="#8b95a5" opacity="${c.opacity}">${c.glyph}</text>
+      <text x="${c.x - 26}" y="${c.y - 4}" font-size="6" font-family="'JetBrains Mono', monospace" fill="#566171">Δ${c.carrier.index}</text>
+    </g>`;
+    }
+    return `    <g class="lithic-far" transform="${tr}">
+      <polygon points="${c.x},${c.y - 5} ${c.x + 4},${c.y + 3} ${c.x - 4},${c.y + 3}" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="${c.opacity * 0.8}"/>
+      <text x="${c.x}" y="${c.y + 4}" font-size="10" font-family="'PingFang SC', monospace" fill="#64748b" opacity="${c.opacity}">${c.glyph}</text>
+    </g>`;
+  }).join('\n');
+
+  return `<!--
+  TD613 Flow-Core Semantic Motion Bridge Visual Witness [Direction: Lithic Tectonic]
+  Relation: ${relation} (${glyph})
+  Active View ID: ${viewId}
+  Carrier Count: ${totalCount} (Distribution: ${nearCount} near / ${midCount} mid / ${farCount} far)
+  Reduced Motion: ${reduced ? 'ENABLED' : 'DISABLED'}
+  Viewport: ${vp.width}x${vp.height} (viewBox: ${viewBox})
+  Visual Theory: Architectural Basalt Monolith & High-Relief Tectonic Shard Observatory
+  Claim Ceiling: VISUAL_RELATION != EXTERNAL_REALITY | AMBIENT_MOTION != EVENT_HISTORY | AESTHETIC_BINDING != EMPIRICAL_VALIDATION
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" width="${vp.width}" height="${vp.height}" style="background:#08090d;">
+  <defs>
+    <pattern id="lithicGrid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#161a24" stroke-width="0.6" stroke-dasharray="2 4"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#lithicGrid)" opacity="0.8"/>
+  <g class="lithic-field-flight" aria-hidden="true" data-active-relation="${relation}" data-visual-direction="lithic_tectonic">
+${carriersXml}
+  </g>
+  <g class="lithic-center-monolith" text-anchor="middle" dominant-baseline="middle">
+    <rect x="415" y="175" width="170" height="170" fill="#10131c" stroke="#2c3444" stroke-width="1.5" rx="3" opacity="0.92"/>
+    <rect x="420" y="180" width="160" height="160" fill="none" stroke="#e2b714" stroke-width="0.5" stroke-dasharray="3 3" opacity="0.4"/>
+    <text x="500" y="255" font-size="104" font-family="'Cinzel', 'Noto Serif SC', 'PingFang SC', serif" font-weight="900" fill="#ede9e3" opacity="0.95">${glyph}</text>
+    <text x="500" y="322" font-size="9" font-family="'JetBrains Mono', monospace" fill="#e2b714" letter-spacing="3" opacity="0.9">SEC6 // LITHIC-TECTONIC // ${relation.toUpperCase()}</text>
+  </g>
+</svg>`;
+}
+
+/**
+ * Direction 2: Organza Choreography (Haute Couture Diaphanous Membrane & Moiré Veil)
+ * Flowing calligraphic ribbons, fluted moiré pleats, and gossamer silk particles.
+ */
+export function renderOrganzaChoreographySvg(frame) {
+  const vp = frame.viewport || { width: 1000, height: 520, viewBox: '0 0 1000 520' };
+  const viewBox = vp.viewBox || '0 0 1000 520';
+  const glyph = frame.descriptor?.canonical_glyph || '';
+  const relation = frame.descriptor?.relation_id || 'rest';
+  const viewId = frame.view_id || 'unknown';
+  const nearCount = frame.carriers.filter(c => c.carrier?.near).length;
+  const midCount = frame.carriers.filter(c => c.carrier?.mid).length;
+  const farCount = frame.carriers.filter(c => c.carrier?.far).length;
+  const totalCount = frame.carriers.length;
+  const reduced = Boolean(frame.reduced_motion);
+
+  const carriersXml = frame.carriers.map(c => {
+    const tr = `translate(${c.x} ${c.y}) rotate(${c.roll}) scale(${c.scale}) translate(${-c.x} ${-c.y})`;
+    if (c.carrier.near) {
+      return `    <g class="organza-near" transform="${tr}" style="mix-blend-mode: screen;">
+      <path d="M${c.x - 48},${c.y + 16} Q${c.x},${c.y - 30} ${c.x + 48},${c.y + 12}" fill="none" stroke="url(#silkRibbon)" stroke-width="2.6" opacity="${c.opacity * 0.95}"/>
+      <path d="M${c.x - 44},${c.y + 20} Q${c.x + 4},${c.y - 26} ${c.x + 52},${c.y + 15}" fill="none" stroke="#f43f5e" stroke-width="0.8" opacity="${c.opacity * 0.6}"/>
+      <text x="${c.x}" y="${c.y + 5}" font-size="32" font-family="'Bodoni Moda', 'Playfair Display', 'PingFang SC', serif" font-style="italic" fill="#fdf6e2" opacity="${c.opacity * 0.9}" text-anchor="middle" dominant-baseline="middle">${c.glyph}</text>
+    </g>`;
+    }
+    if (c.carrier.mid) {
+      return `    <g class="organza-mid" transform="${tr}">
+      <ellipse cx="${c.x}" cy="${c.y}" rx="26" ry="11" fill="#c4b5fd" fill-opacity="${c.opacity * 0.15}" stroke="#c4b5fd" stroke-width="0.8" opacity="${c.opacity}"/>
+      <line x1="${c.x - 18}" y1="${c.y}" x2="${c.x + 18}" y2="${c.y}" stroke="#f59e0b" stroke-width="0.6" opacity="${c.opacity * 0.7}"/>
+      <text x="${c.x}" y="${c.y + 4}" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="${c.opacity * 0.85}" text-anchor="middle" dominant-baseline="middle">${c.glyph}</text>
+    </g>`;
+    }
+    return `    <g class="organza-far" transform="${tr}">
+      <circle cx="${c.x}" cy="${c.y}" r="2" fill="#e9d5ff" opacity="${c.opacity * 0.9}"/>
+      <circle cx="${c.x}" cy="${c.y}" r="6" fill="#c4b5fd" opacity="${c.opacity * 0.25}"/>
+      <text x="${c.x + 6}" y="${c.y + 3}" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="${c.opacity * 0.7}">${c.glyph}</text>
+    </g>`;
+  }).join('\n');
+
+  return `<!--
+  TD613 Flow-Core Semantic Motion Bridge Visual Witness [Direction: Organza Choreography]
+  Relation: ${relation} (${glyph})
+  Active View ID: ${viewId}
+  Carrier Count: ${totalCount} (Distribution: ${nearCount} near / ${midCount} mid / ${farCount} far)
+  Reduced Motion: ${reduced ? 'ENABLED' : 'DISABLED'}
+  Viewport: ${vp.width}x${vp.height} (viewBox: ${viewBox})
+  Visual Theory: Haute Couture Diaphanous Membrane, Moiré Pleats & Calligraphic Silk
+  Claim Ceiling: VISUAL_RELATION != EXTERNAL_REALITY | AMBIENT_MOTION != EVENT_HISTORY | AESTHETIC_BINDING != EMPIRICAL_VALIDATION
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" width="${vp.width}" height="${vp.height}" style="background:#05040a;">
+  <defs>
+    <radialGradient id="organzaAura" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#2a1240" stop-opacity="0.45"/>
+      <stop offset="60%" stop-color="#0e071c" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#05040a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="silkRibbon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c4b5fd"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#f43f5e"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#organzaAura)"/>
+  <g class="organza-field-flight" aria-hidden="true" data-active-relation="${relation}" data-visual-direction="organza_choreography">
+${carriersXml}
+  </g>
+  <g class="organza-center-glyph" text-anchor="middle" dominant-baseline="middle">
+    <circle cx="500" cy="260" r="82" fill="none" stroke="#f59e0b" stroke-width="0.8" stroke-dasharray="4 6" opacity="0.6"/>
+    <circle cx="500" cy="260" r="92" fill="none" stroke="#c4b5fd" stroke-width="0.5" stroke-dasharray="2 4" opacity="0.4"/>
+    <text x="500" y="268" font-size="118" font-family="'Bodoni Moda', 'Didot', 'PingFang SC', serif" font-style="italic" font-weight="300" fill="#fdf6e2" opacity="0.95">${glyph}</text>
+    <text x="500" y="328" font-size="10" font-family="'Bodoni Moda', serif" font-style="italic" fill="#c4b5fd" letter-spacing="4" opacity="0.9">SEQUENCE 6 // HAUTE COUTURE // ${relation.toUpperCase()}</text>
+  </g>
+</svg>`;
+}
+
+/**
+ * Direction 3: Aperture Monochrome / Radar Crypt
+ * Cold-cathode phosphor, rotating sweep reticles, telemetric verniers, and surveillance echo blips.
+ */
+export function renderApertureMonochromeSvg(frame) {
+  const vp = frame.viewport || { width: 1000, height: 520, viewBox: '0 0 1000 520' };
+  const viewBox = vp.viewBox || '0 0 1000 520';
+  const glyph = frame.descriptor?.canonical_glyph || '';
+  const relation = frame.descriptor?.relation_id || 'rest';
+  const viewId = frame.view_id || 'unknown';
+  const nearCount = frame.carriers.filter(c => c.carrier?.near).length;
+  const midCount = frame.carriers.filter(c => c.carrier?.mid).length;
+  const farCount = frame.carriers.filter(c => c.carrier?.far).length;
+  const totalCount = frame.carriers.length;
+  const reduced = Boolean(frame.reduced_motion);
+
+  const carriersXml = frame.carriers.map(c => {
+    const tr = `translate(${c.x} ${c.y}) rotate(${c.roll}) scale(${c.scale}) translate(${-c.x} ${-c.y})`;
+    if (c.carrier.near) {
+      return `    <g class="radar-near" transform="${tr}">
+      <circle cx="${c.x}" cy="${c.y}" r="24" fill="#021c13" fill-opacity="0.8" stroke="#00f0a8" stroke-width="1.4" opacity="${c.opacity}"/>
+      <circle cx="${c.x}" cy="${c.y}" r="16" fill="none" stroke="#22d3ee" stroke-width="0.7" stroke-dasharray="2 3" opacity="${c.opacity}"/>
+      <line x1="${c.x - 28}" y1="${c.y}" x2="${c.x + 28}" y2="${c.y}" stroke="#00f0a8" stroke-width="0.8" opacity="${c.opacity * 0.8}"/>
+      <text x="${c.x}" y="${c.y + 6}" font-size="20" font-family="'JetBrains Mono', 'PingFang SC', monospace" font-weight="700" fill="#ffffff" opacity="${c.opacity}" text-anchor="middle" dominant-baseline="middle">${c.glyph}</text>
+      <text x="${c.x + 16}" y="${c.y - 16}" font-size="6" font-family="'JetBrains Mono', monospace" fill="#00f0a8">N0${c.carrier.index}</text>
+    </g>`;
+    }
+    if (c.carrier.mid) {
+      return `    <g class="radar-mid" transform="${tr}">
+      <line x1="${c.x - 12}" y1="${c.y}" x2="${c.x + 12}" y2="${c.y}" stroke="#22d3ee" stroke-width="0.8" opacity="${c.opacity}"/>
+      <line x1="${c.x}" y1="${c.y - 12}" x2="${c.x}" y2="${c.y + 12}" stroke="#22d3ee" stroke-width="0.8" opacity="${c.opacity}"/>
+      <circle cx="${c.x}" cy="${c.y}" r="5" fill="none" stroke="#fbbf24" stroke-width="0.6" opacity="${c.opacity}"/>
+      <text x="${c.x + 8}" y="${c.y + 10}" font-size="11" font-family="'JetBrains Mono', 'PingFang SC', monospace" fill="#22d3ee" opacity="${c.opacity}">${c.glyph}</text>
+      <text x="${c.x - 14}" y="${c.y - 6}" font-size="5" font-family="'JetBrains Mono', monospace" fill="#94a3b8">TRK-${c.carrier.index}</text>
+    </g>`;
+    }
+    return `    <g class="radar-far" transform="${tr}">
+      <rect x="${c.x - 2}" y="${c.y - 2}" width="4" height="4" fill="#00f0a8" opacity="${c.opacity * 0.9}"/>
+      <circle cx="${c.x}" cy="${c.y}" r="6" fill="none" stroke="#00f0a8" stroke-width="0.4" stroke-dasharray="1 2" opacity="${c.opacity * 0.5}"/>
+      <text x="${c.x + 5}" y="${c.y + 3}" font-size="9" font-family="'PingFang SC', monospace" fill="#10b981" opacity="${c.opacity * 0.7}">${c.glyph}</text>
+    </g>`;
+  }).join('\n');
+
+  return `<!--
+  TD613 Flow-Core Semantic Motion Bridge Visual Witness [Direction: Aperture Monochrome]
+  Relation: ${relation} (${glyph})
+  Active View ID: ${viewId}
+  Carrier Count: ${totalCount} (Distribution: ${nearCount} near / ${midCount} mid / ${farCount} far)
+  Reduced Motion: ${reduced ? 'ENABLED' : 'DISABLED'}
+  Viewport: ${vp.width}x${vp.height} (viewBox: ${viewBox})
+  Visual Theory: Cold-Cathode Radar Crypt, Telemetric Stencils & Phosphor Reticles
+  Claim Ceiling: VISUAL_RELATION != EXTERNAL_REALITY | AMBIENT_MOTION != EVENT_HISTORY | AESTHETIC_BINDING != EMPIRICAL_VALIDATION
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" width="${vp.width}" height="${vp.height}" style="background:#020403;">
+  <g class="radar-grid" opacity="0.25">
+    <circle cx="500" cy="260" r="100" fill="none" stroke="#00f0a8" stroke-width="0.6" stroke-dasharray="3 3"/>
+    <circle cx="500" cy="260" r="200" fill="none" stroke="#00f0a8" stroke-width="0.6" stroke-dasharray="3 3"/>
+    <circle cx="500" cy="260" r="300" fill="none" stroke="#00f0a8" stroke-width="0.6" stroke-dasharray="3 3"/>
+    <circle cx="500" cy="260" r="400" fill="none" stroke="#00f0a8" stroke-width="0.6" stroke-dasharray="3 3"/>
+    <line x1="80" y1="260" x2="920" y2="260" stroke="#00f0a8" stroke-width="0.5"/>
+    <line x1="500" y1="20" x2="500" y2="500" stroke="#00f0a8" stroke-width="0.5"/>
+  </g>
+  <g class="radar-field-flight" aria-hidden="true" data-active-relation="${relation}" data-visual-direction="aperture_monochrome">
+${carriersXml}
+  </g>
+  <g class="radar-center-aperture" text-anchor="middle" dominant-baseline="middle">
+    <circle cx="500" cy="260" r="68" fill="#021c13" stroke="#00f0a8" stroke-width="1.8" opacity="0.9"/>
+    <circle cx="500" cy="260" r="58" fill="none" stroke="#22d3ee" stroke-width="0.6" stroke-dasharray="3 3" opacity="0.6"/>
+    <text x="500" y="268" font-size="102" font-family="'JetBrains Mono', 'PingFang SC', monospace" font-weight="700" fill="#00f0a8" opacity="0.98">${glyph}</text>
+    <text x="500" y="318" font-size="9" font-family="'JetBrains Mono', monospace" fill="#fbbf24" letter-spacing="3" opacity="0.9">AZ-352° // STAT:LOCK // ${relation.toUpperCase()}</text>
+  </g>
+</svg>`;
+}
+
+/**
+ * Generates an inspectable SVG string from a rendered frame.
+ * Dispatches to director visual renderers when specified.
+ * Compatible with node/browser environments for visual witnessing and test assertions.
+ */
+export function generateSvgSnapshot(frame, options = {}) {
+  if (!frame || !frame.draw || !Array.isArray(frame.carriers)) {
+    return '<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0"></svg>';
+  }
+
+  const direction = options.directorDirection || frame.director_direction || 'diagnostic';
+  if (direction === 'lithic_tectonic') {
+    return renderLithicTectonicSvg(frame);
+  }
+  if (direction === 'organza_choreography') {
+    return renderOrganzaChoreographySvg(frame);
+  }
+  if (direction === 'aperture_monochrome') {
+    return renderApertureMonochromeSvg(frame);
+  }
+  return renderDiagnosticSvg(frame);
 }

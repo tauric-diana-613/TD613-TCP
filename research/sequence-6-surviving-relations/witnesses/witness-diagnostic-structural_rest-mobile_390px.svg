@@ -1,0 +1,61 @@
+<!--
+  TD613 Flow-Core Semantic Motion Bridge Visual Witness
+  Relation: structural_rest (𝄐)
+  Active View ID: cockpit
+  Carrier Count: 39 (Distribution: 6 near / 13 mid / 20 far)
+  Reduced Motion: DISABLED
+  Viewport: 390x844 (viewBox: 200 -220 600 1120)
+  Claim Ceiling: VISUAL_RELATION != EXTERNAL_REALITY | AMBIENT_MOTION != EVENT_HISTORY | AESTHETIC_BINDING != EMPIRICAL_VALIDATION
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="200 -220 600 1120" width="390" height="844" style="background:#0a0a0c;">
+  <style>
+    .flight-near { font-family: 'JetBrains Mono', 'PingFang SC', monospace; font-weight: bold; }
+    .flight-mid  { font-family: 'JetBrains Mono', 'PingFang SC', monospace; }
+    .flight-far  { font-family: 'JetBrains Mono', 'PingFang SC', monospace; opacity: 0.20; }
+  </style>
+  <g class="loom-field-flight" aria-hidden="true" data-active-relation="structural_rest">
+    <text x="629.65" y="252.23" font-size="184" fill="#f3bd86" class="flight-near" opacity="0.494" transform="translate(629.65 252.23) rotate(0.13) scale(0.65) translate(-629.65 -252.23)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="379.82" y="300.77" font-size="26" fill="#b69be9" class="flight-far" opacity="0.187" transform="translate(379.82 300.77) rotate(-0.1) scale(0.416) translate(-379.82 -300.77)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="514.32" y="189.55" font-size="26" fill="#b69be9" class="flight-far" opacity="0.187" transform="translate(514.32 189.55) rotate(0.04) scale(0.455) translate(-514.32 -189.55)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="632.91" y="323.45" font-size="26" fill="#b69be9" class="flight-far" opacity="0.187" transform="translate(632.91 323.45) rotate(-0.27) scale(0.507) translate(-632.91 -323.45)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="257.75" y="242.04" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.275" transform="translate(257.75 242.04) rotate(0.03) scale(0.667) translate(-257.75 -242.04)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="723.69" y="206.28" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.187" transform="translate(723.69 206.28) rotate(-0.29) scale(0.372) translate(-723.69 -206.28)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="422.44" y="365.34" font-size="26" fill="#b69be9" class="flight-far" opacity="0.187" transform="translate(422.44 365.34) rotate(0.01) scale(0.42) translate(-422.44 -365.34)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="438.48" y="212.41" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.275" transform="translate(438.48 212.41) rotate(-0.02) scale(0.57) translate(-438.48 -212.41)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="649.55" y="278.43" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.275" transform="translate(649.55 278.43) rotate(0.08) scale(0.623) translate(-649.55 -278.43)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="326.19" y="287.72" font-size="26" fill="#f3bd86" class="flight-far" opacity="0.187" transform="translate(326.19 287.72) rotate(-0.11) scale(0.542) translate(-326.19 -287.72)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="590.19" y="183.37" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.187" transform="translate(590.19 183.37) rotate(0.01) scale(0.377) translate(-590.19 -183.37)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="566.33" y="342.29" font-size="132" fill="#b69be9" class="flight-near" opacity="0.494" transform="translate(566.33 342.29) rotate(0.09) scale(0.714) translate(-566.33 -342.29)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="268.79" y="206.69" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.275" transform="translate(268.79 206.69) rotate(0.12) scale(0.57) translate(-268.79 -206.69)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="786.29" y="236.03" font-size="184" fill="#b69be9" class="flight-near" opacity="0.494" transform="translate(786.29 236.03) rotate(0) scale(0.851) translate(-786.29 -236.03)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="418.54" y="303.44" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.275" transform="translate(418.54 303.44) rotate(0.11) scale(0.66) translate(-418.54 -303.44)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="479.4" y="199.83" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.187" transform="translate(479.4 199.83) rotate(0.01) scale(0.372) translate(-479.4 -199.83)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="643.8" y="306.3" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.275" transform="translate(643.8 306.3) rotate(-0.28) scale(0.514) translate(-643.8 -306.3)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="285.25" y="261.05" font-size="26" fill="#b69be9" class="flight-far" opacity="0.187" transform="translate(285.25 261.05) rotate(0.03) scale(0.461) translate(-285.25 -261.05)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="674.6" y="197.04" font-size="26" fill="#f3bd86" class="flight-far" opacity="0.187" transform="translate(674.6 197.04) rotate(0.04) scale(0.503) translate(-674.6 -197.04)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="485.53" y="361.12" font-size="26" fill="#b69be9" class="flight-far" opacity="0.187" transform="translate(485.53 361.12) rotate(0.01) scale(0.543) translate(-485.53 -361.12)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="323.47" y="176.28" font-size="56" fill="#9ce7e4" class="flight-mid" opacity="0.275" transform="translate(323.47 176.28) rotate(0.15) scale(0.47) translate(-323.47 -176.28)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="628.15" y="264.51" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.275" transform="translate(628.15 264.51) rotate(-0.03) scale(0.512) translate(-628.15 -264.51)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="366.42" y="291.2" font-size="132" fill="#b69be9" class="flight-near" opacity="0.494" transform="translate(366.42 291.2) rotate(0.63) scale(0.796) translate(-366.42 -291.2)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="538.88" y="189.01" font-size="26" fill="#b69be9" class="flight-far" opacity="0.187" transform="translate(538.88 189.01) rotate(-0.05) scale(0.502) translate(-538.88 -189.01)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="607.32" y="329.28" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.275" transform="translate(607.32 329.28) rotate(0.15) scale(0.677) translate(-607.32 -329.28)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="269.34" y="230.22" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.187" transform="translate(269.34 230.22) rotate(0.06) scale(0.375) translate(-269.34 -230.22)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="733.27" y="218.71" font-size="184" fill="#b69be9" class="flight-near" opacity="0.494" transform="translate(733.27 218.71) rotate(0.04) scale(0.693) translate(-733.27 -218.71)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="385.91" y="363.9" font-size="26" fill="#f3bd86" class="flight-far" opacity="0.187" transform="translate(385.91 363.9) rotate(0.2) scale(0.459) translate(-385.91 -363.9)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="456.29" y="211.28" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.275" transform="translate(456.29 211.28) rotate(0.04) scale(0.621) translate(-456.29 -211.28)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="641.44" y="287.61" font-size="26" fill="#b69be9" class="flight-far" opacity="0.187" transform="translate(641.44 287.61) rotate(0.06) scale(0.545) translate(-641.44 -287.61)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="318.44" y="276.81" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.187" transform="translate(318.44 276.81) rotate(-0.17) scale(0.376) translate(-318.44 -276.81)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="616.12" y="191.23" font-size="26" fill="#b69be9" class="flight-far" opacity="0.187" transform="translate(616.12 191.23) rotate(-0.1) scale(0.416) translate(-616.12 -191.23)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="536.17" y="346.93" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.275" transform="translate(536.17 346.93) rotate(-0.07) scale(0.57) translate(-536.17 -346.93)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="291.11" y="203.7" font-size="132" fill="#b69be9" class="flight-near" opacity="0.494" transform="translate(291.11 203.7) rotate(1.13) scale(0.839) translate(-291.11 -203.7)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="793.91" y="251.13" font-size="26" fill="#b69be9" class="flight-far" opacity="0.187" transform="translate(793.91 251.13) rotate(-0.06) scale(0.544) translate(-793.91 -251.13)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="406.34" y="295.19" font-size="56" fill="#9ce7e4" class="flight-mid" opacity="0.275" transform="translate(406.34 295.19) rotate(0) scale(0.463) translate(-406.34 -295.19)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="501.25" y="199.88" font-size="56" fill="#f3bd86" class="flight-mid" opacity="0.275" transform="translate(501.25 199.88) rotate(0.07) scale(0.512) translate(-501.25 -199.88)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="626.11" y="312.63" font-size="26" fill="#b69be9" class="flight-far" opacity="0.187" transform="translate(626.11 312.63) rotate(-0.09) scale(0.46) translate(-626.11 -312.63)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+    <text x="285.79" y="250.16" font-size="26" fill="#b69be9" class="flight-far" opacity="0.187" transform="translate(285.79 250.16) rotate(-0.03) scale(0.503) translate(-285.79 -250.16)" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+  </g>
+  <g class="loom-field-center-glyph" text-anchor="middle" dominant-baseline="middle">
+    <text x="500" y="260" font-size="140" fill="#f4f4f0" opacity="0.88">𝄐</text>
+    <text x="500" y="360" font-size="18" fill="#d97706" letter-spacing="2" opacity="0.95">STRUCTURAL_REST</text>
+  </g>
+</svg>

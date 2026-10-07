@@ -1,0 +1,220 @@
+<!--
+  TD613 Flow-Core Semantic Motion Bridge Visual Witness [Direction: Lithic Tectonic]
+  Relation: structural_rest (𝄐)
+  Active View ID: cockpit
+  Carrier Count: 39 (Distribution: 6 near / 13 mid / 20 far)
+  Reduced Motion: ENABLED
+  Viewport: 390x844 (viewBox: 200 -220 600 1120)
+  Visual Theory: Architectural Basalt Monolith & High-Relief Tectonic Shard Observatory
+  Claim Ceiling: VISUAL_RELATION != EXTERNAL_REALITY | AMBIENT_MOTION != EVENT_HISTORY | AESTHETIC_BINDING != EMPIRICAL_VALIDATION
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="200 -220 600 1120" width="390" height="844" style="background:#08090d;">
+  <defs>
+    <pattern id="lithicGrid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#161a24" stroke-width="0.6" stroke-dasharray="2 4"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#lithicGrid)" opacity="0.8"/>
+  <g class="lithic-field-flight" aria-hidden="true" data-active-relation="structural_rest" data-visual-direction="lithic_tectonic">
+    <g class="lithic-near" transform="translate(220 120) rotate(-5) scale(1.25) translate(-220 -120)">
+      <rect x="178" y="96" width="84" height="48" fill="#141822" stroke="#e2b714" stroke-width="1.2" opacity="0.38" rx="2"/>
+      <line x1="178" y1="120" x2="262" y2="120" stroke="#e2b714" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.5"/>
+      <text x="220" y="128" font-size="28" font-family="'Cinzel', 'Noto Serif SC', 'PingFang SC', serif" font-weight="900" fill="#ede9e3" opacity="0.38" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+      <text x="252" y="106" font-size="7" font-family="'JetBrains Mono', monospace" fill="#e2b714" opacity="0.9">P0</text>
+    </g>
+    <g class="lithic-far" transform="translate(308 120) rotate(-2.5) scale(0.72) translate(-308 -120)">
+      <polygon points="308,115 312,123 304,123" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="308" y="124" font-size="10" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="lithic-far" transform="translate(396 120) rotate(0) scale(0.72) translate(-396 -120)">
+      <polygon points="396,115 400,123 392,123" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="396" y="124" font-size="10" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="lithic-far" transform="translate(484 120) rotate(2.5) scale(0.72) translate(-484 -120)">
+      <polygon points="484,115 488,123 480,123" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="484" y="124" font-size="10" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="lithic-mid" transform="translate(572 120) rotate(5) scale(0.95) translate(-572 -120)">
+      <line x1="544" y1="120" x2="600" y2="120" stroke="#8b95a5" stroke-width="1" opacity="0.24"/>
+      <circle cx="572" cy="120" r="2.5" fill="#8b95a5" opacity="0.24"/>
+      <text x="580" y="114" font-size="14" font-family="'PingFang SC', monospace" fill="#8b95a5" opacity="0.24">𝄐</text>
+      <text x="546" y="116" font-size="6" font-family="'JetBrains Mono', monospace" fill="#566171">Δ4</text>
+    </g>
+    <g class="lithic-far" transform="translate(220 206) rotate(-5) scale(0.72) translate(-220 -206)">
+      <polygon points="220,201 224,209 216,209" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="220" y="210" font-size="10" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="lithic-far" transform="translate(308 206) rotate(-2.5) scale(0.72) translate(-308 -206)">
+      <polygon points="308,201 312,209 304,209" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="308" y="210" font-size="10" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="lithic-mid" transform="translate(396 206) rotate(0) scale(0.95) translate(-396 -206)">
+      <line x1="368" y1="206" x2="424" y2="206" stroke="#8b95a5" stroke-width="1" opacity="0.24"/>
+      <circle cx="396" cy="206" r="2.5" fill="#8b95a5" opacity="0.24"/>
+      <text x="404" y="200" font-size="14" font-family="'PingFang SC', monospace" fill="#8b95a5" opacity="0.24">𝄐</text>
+      <text x="370" y="202" font-size="6" font-family="'JetBrains Mono', monospace" fill="#566171">Δ7</text>
+    </g>
+    <g class="lithic-mid" transform="translate(484 206) rotate(2.5) scale(0.95) translate(-484 -206)">
+      <line x1="456" y1="206" x2="512" y2="206" stroke="#8b95a5" stroke-width="1" opacity="0.24"/>
+      <circle cx="484" cy="206" r="2.5" fill="#8b95a5" opacity="0.24"/>
+      <text x="492" y="200" font-size="14" font-family="'PingFang SC', monospace" fill="#8b95a5" opacity="0.24">𝄐</text>
+      <text x="458" y="202" font-size="6" font-family="'JetBrains Mono', monospace" fill="#566171">Δ8</text>
+    </g>
+    <g class="lithic-far" transform="translate(572 206) rotate(5) scale(0.72) translate(-572 -206)">
+      <polygon points="572,201 576,209 568,209" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="572" y="210" font-size="10" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="lithic-far" transform="translate(220 292) rotate(-5) scale(0.72) translate(-220 -292)">
+      <polygon points="220,287 224,295 216,295" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="220" y="296" font-size="10" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="lithic-near" transform="translate(308 292) rotate(-2.5) scale(1.25) translate(-308 -292)">
+      <rect x="266" y="268" width="84" height="48" fill="#141822" stroke="#e2b714" stroke-width="1.2" opacity="0.38" rx="2"/>
+      <line x1="266" y1="292" x2="350" y2="292" stroke="#e2b714" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.5"/>
+      <text x="308" y="300" font-size="28" font-family="'Cinzel', 'Noto Serif SC', 'PingFang SC', serif" font-weight="900" fill="#ede9e3" opacity="0.38" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+      <text x="340" y="278" font-size="7" font-family="'JetBrains Mono', monospace" fill="#e2b714" opacity="0.9">P11</text>
+    </g>
+    <g class="lithic-mid" transform="translate(396 292) rotate(0) scale(0.95) translate(-396 -292)">
+      <line x1="368" y1="292" x2="424" y2="292" stroke="#8b95a5" stroke-width="1" opacity="0.24"/>
+      <circle cx="396" cy="292" r="2.5" fill="#8b95a5" opacity="0.24"/>
+      <text x="404" y="286" font-size="14" font-family="'PingFang SC', monospace" fill="#8b95a5" opacity="0.24">𝄐</text>
+      <text x="370" y="288" font-size="6" font-family="'JetBrains Mono', monospace" fill="#566171">Δ12</text>
+    </g>
+    <g class="lithic-near" transform="translate(484 292) rotate(2.5) scale(1.25) translate(-484 -292)">
+      <rect x="442" y="268" width="84" height="48" fill="#141822" stroke="#e2b714" stroke-width="1.2" opacity="0.38" rx="2"/>
+      <line x1="442" y1="292" x2="526" y2="292" stroke="#e2b714" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.5"/>
+      <text x="484" y="300" font-size="28" font-family="'Cinzel', 'Noto Serif SC', 'PingFang SC', serif" font-weight="900" fill="#ede9e3" opacity="0.38" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+      <text x="516" y="278" font-size="7" font-family="'JetBrains Mono', monospace" fill="#e2b714" opacity="0.9">P13</text>
+    </g>
+    <g class="lithic-mid" transform="translate(572 292) rotate(5) scale(0.95) translate(-572 -292)">
+      <line x1="544" y1="292" x2="600" y2="292" stroke="#8b95a5" stroke-width="1" opacity="0.24"/>
+      <circle cx="572" cy="292" r="2.5" fill="#8b95a5" opacity="0.24"/>
+      <text x="580" y="286" font-size="14" font-family="'PingFang SC', monospace" fill="#8b95a5" opacity="0.24">𝄐</text>
+      <text x="546" y="288" font-size="6" font-family="'JetBrains Mono', monospace" fill="#566171">Δ14</text>
+    </g>
+    <g class="lithic-far" transform="translate(220 378) rotate(-5) scale(0.72) translate(-220 -378)">
+      <polygon points="220,373 224,381 216,381" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="220" y="382" font-size="10" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="lithic-mid" transform="translate(308 378) rotate(-2.5) scale(0.95) translate(-308 -378)">
+      <line x1="280" y1="378" x2="336" y2="378" stroke="#8b95a5" stroke-width="1" opacity="0.24"/>
+      <circle cx="308" cy="378" r="2.5" fill="#8b95a5" opacity="0.24"/>
+      <text x="316" y="372" font-size="14" font-family="'PingFang SC', monospace" fill="#8b95a5" opacity="0.24">𝄐</text>
+      <text x="282" y="374" font-size="6" font-family="'JetBrains Mono', monospace" fill="#566171">Δ16</text>
+    </g>
+    <g class="lithic-far" transform="translate(396 378) rotate(0) scale(0.72) translate(-396 -378)">
+      <polygon points="396,373 400,381 392,381" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="396" y="382" font-size="10" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="lithic-far" transform="translate(484 378) rotate(2.5) scale(0.72) translate(-484 -378)">
+      <polygon points="484,373 488,381 480,381" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="484" y="382" font-size="10" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="lithic-far" transform="translate(572 378) rotate(5) scale(0.72) translate(-572 -378)">
+      <polygon points="572,373 576,381 568,381" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="572" y="382" font-size="10" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="lithic-mid" transform="translate(220 464) rotate(-5) scale(0.95) translate(-220 -464)">
+      <line x1="192" y1="464" x2="248" y2="464" stroke="#8b95a5" stroke-width="1" opacity="0.24"/>
+      <circle cx="220" cy="464" r="2.5" fill="#8b95a5" opacity="0.24"/>
+      <text x="228" y="458" font-size="14" font-family="'PingFang SC', monospace" fill="#8b95a5" opacity="0.24">𝄐</text>
+      <text x="194" y="460" font-size="6" font-family="'JetBrains Mono', monospace" fill="#566171">Δ20</text>
+    </g>
+    <g class="lithic-mid" transform="translate(308 464) rotate(-2.5) scale(0.95) translate(-308 -464)">
+      <line x1="280" y1="464" x2="336" y2="464" stroke="#8b95a5" stroke-width="1" opacity="0.24"/>
+      <circle cx="308" cy="464" r="2.5" fill="#8b95a5" opacity="0.24"/>
+      <text x="316" y="458" font-size="14" font-family="'PingFang SC', monospace" fill="#8b95a5" opacity="0.24">𝄐</text>
+      <text x="282" y="460" font-size="6" font-family="'JetBrains Mono', monospace" fill="#566171">Δ21</text>
+    </g>
+    <g class="lithic-near" transform="translate(396 464) rotate(0) scale(1.25) translate(-396 -464)">
+      <rect x="354" y="440" width="84" height="48" fill="#141822" stroke="#e2b714" stroke-width="1.2" opacity="0.38" rx="2"/>
+      <line x1="354" y1="464" x2="438" y2="464" stroke="#e2b714" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.5"/>
+      <text x="396" y="472" font-size="28" font-family="'Cinzel', 'Noto Serif SC', 'PingFang SC', serif" font-weight="900" fill="#ede9e3" opacity="0.38" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+      <text x="428" y="450" font-size="7" font-family="'JetBrains Mono', monospace" fill="#e2b714" opacity="0.9">P22</text>
+    </g>
+    <g class="lithic-far" transform="translate(484 464) rotate(2.5) scale(0.72) translate(-484 -464)">
+      <polygon points="484,459 488,467 480,467" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="484" y="468" font-size="10" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="lithic-mid" transform="translate(572 464) rotate(5) scale(0.95) translate(-572 -464)">
+      <line x1="544" y1="464" x2="600" y2="464" stroke="#8b95a5" stroke-width="1" opacity="0.24"/>
+      <circle cx="572" cy="464" r="2.5" fill="#8b95a5" opacity="0.24"/>
+      <text x="580" y="458" font-size="14" font-family="'PingFang SC', monospace" fill="#8b95a5" opacity="0.24">𝄐</text>
+      <text x="546" y="460" font-size="6" font-family="'JetBrains Mono', monospace" fill="#566171">Δ24</text>
+    </g>
+    <g class="lithic-far" transform="translate(220 550) rotate(-5) scale(0.72) translate(-220 -550)">
+      <polygon points="220,545 224,553 216,553" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="220" y="554" font-size="10" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="lithic-near" transform="translate(308 550) rotate(-2.5) scale(1.25) translate(-308 -550)">
+      <rect x="266" y="526" width="84" height="48" fill="#141822" stroke="#e2b714" stroke-width="1.2" opacity="0.38" rx="2"/>
+      <line x1="266" y1="550" x2="350" y2="550" stroke="#e2b714" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.5"/>
+      <text x="308" y="558" font-size="28" font-family="'Cinzel', 'Noto Serif SC', 'PingFang SC', serif" font-weight="900" fill="#ede9e3" opacity="0.38" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+      <text x="340" y="536" font-size="7" font-family="'JetBrains Mono', monospace" fill="#e2b714" opacity="0.9">P26</text>
+    </g>
+    <g class="lithic-far" transform="translate(396 550) rotate(0) scale(0.72) translate(-396 -550)">
+      <polygon points="396,545 400,553 392,553" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="396" y="554" font-size="10" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="lithic-mid" transform="translate(484 550) rotate(2.5) scale(0.95) translate(-484 -550)">
+      <line x1="456" y1="550" x2="512" y2="550" stroke="#8b95a5" stroke-width="1" opacity="0.24"/>
+      <circle cx="484" cy="550" r="2.5" fill="#8b95a5" opacity="0.24"/>
+      <text x="492" y="544" font-size="14" font-family="'PingFang SC', monospace" fill="#8b95a5" opacity="0.24">𝄐</text>
+      <text x="458" y="546" font-size="6" font-family="'JetBrains Mono', monospace" fill="#566171">Δ28</text>
+    </g>
+    <g class="lithic-far" transform="translate(572 550) rotate(5) scale(0.72) translate(-572 -550)">
+      <polygon points="572,545 576,553 568,553" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="572" y="554" font-size="10" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="lithic-far" transform="translate(220 636) rotate(-5) scale(0.72) translate(-220 -636)">
+      <polygon points="220,631 224,639 216,639" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="220" y="640" font-size="10" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="lithic-far" transform="translate(308 636) rotate(-2.5) scale(0.72) translate(-308 -636)">
+      <polygon points="308,631 312,639 304,639" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="308" y="640" font-size="10" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="lithic-mid" transform="translate(396 636) rotate(0) scale(0.95) translate(-396 -636)">
+      <line x1="368" y1="636" x2="424" y2="636" stroke="#8b95a5" stroke-width="1" opacity="0.24"/>
+      <circle cx="396" cy="636" r="2.5" fill="#8b95a5" opacity="0.24"/>
+      <text x="404" y="630" font-size="14" font-family="'PingFang SC', monospace" fill="#8b95a5" opacity="0.24">𝄐</text>
+      <text x="370" y="632" font-size="6" font-family="'JetBrains Mono', monospace" fill="#566171">Δ32</text>
+    </g>
+    <g class="lithic-near" transform="translate(484 636) rotate(2.5) scale(1.25) translate(-484 -636)">
+      <rect x="442" y="612" width="84" height="48" fill="#141822" stroke="#e2b714" stroke-width="1.2" opacity="0.38" rx="2"/>
+      <line x1="442" y1="636" x2="526" y2="636" stroke="#e2b714" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.5"/>
+      <text x="484" y="644" font-size="28" font-family="'Cinzel', 'Noto Serif SC', 'PingFang SC', serif" font-weight="900" fill="#ede9e3" opacity="0.38" text-anchor="middle" dominant-baseline="middle">𝄐</text>
+      <text x="516" y="622" font-size="7" font-family="'JetBrains Mono', monospace" fill="#e2b714" opacity="0.9">P33</text>
+    </g>
+    <g class="lithic-far" transform="translate(572 636) rotate(5) scale(0.72) translate(-572 -636)">
+      <polygon points="572,631 576,639 568,639" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="572" y="640" font-size="10" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="lithic-mid" transform="translate(220 722) rotate(-5) scale(0.95) translate(-220 -722)">
+      <line x1="192" y1="722" x2="248" y2="722" stroke="#8b95a5" stroke-width="1" opacity="0.24"/>
+      <circle cx="220" cy="722" r="2.5" fill="#8b95a5" opacity="0.24"/>
+      <text x="228" y="716" font-size="14" font-family="'PingFang SC', monospace" fill="#8b95a5" opacity="0.24">𝄐</text>
+      <text x="194" y="718" font-size="6" font-family="'JetBrains Mono', monospace" fill="#566171">Δ35</text>
+    </g>
+    <g class="lithic-mid" transform="translate(308 722) rotate(-2.5) scale(0.95) translate(-308 -722)">
+      <line x1="280" y1="722" x2="336" y2="722" stroke="#8b95a5" stroke-width="1" opacity="0.24"/>
+      <circle cx="308" cy="722" r="2.5" fill="#8b95a5" opacity="0.24"/>
+      <text x="316" y="716" font-size="14" font-family="'PingFang SC', monospace" fill="#8b95a5" opacity="0.24">𝄐</text>
+      <text x="282" y="718" font-size="6" font-family="'JetBrains Mono', monospace" fill="#566171">Δ36</text>
+    </g>
+    <g class="lithic-far" transform="translate(396 722) rotate(0) scale(0.72) translate(-396 -722)">
+      <polygon points="396,717 400,725 392,725" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="396" y="726" font-size="10" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.2">𝄐</text>
+    </g>
+    <g class="lithic-far" transform="translate(484 722) rotate(2.5) scale(0.72) translate(-484 -722)">
+      <polygon points="484,717 488,725 480,725" fill="#2a303c" stroke="#3d4656" stroke-width="0.5" opacity="0.16000000000000003"/>
+      <text x="484" y="726" font-size="10" font-family="'PingFang SC', monospace" fill="#64748b" opacity="0.2">𝄐</text>
+    </g>
+  </g>
+  <g class="lithic-center-monolith" text-anchor="middle" dominant-baseline="middle">
+    <rect x="415" y="175" width="170" height="170" fill="#10131c" stroke="#2c3444" stroke-width="1.5" rx="3" opacity="0.92"/>
+    <rect x="420" y="180" width="160" height="160" fill="none" stroke="#e2b714" stroke-width="0.5" stroke-dasharray="3 3" opacity="0.4"/>
+    <text x="500" y="255" font-size="104" font-family="'Cinzel', 'Noto Serif SC', 'PingFang SC', serif" font-weight="900" fill="#ede9e3" opacity="0.95">𝄐</text>
+    <text x="500" y="322" font-size="9" font-family="'JetBrains Mono', monospace" fill="#e2b714" letter-spacing="3" opacity="0.9">SEC6 // LITHIC-TECTONIC // STRUCTURAL_REST</text>
+  </g>
+</svg>

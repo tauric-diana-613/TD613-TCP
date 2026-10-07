@@ -3,7 +3,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import {
   renderDomeArt,
-  generateSvgSnapshot
+  generateSvgSnapshot,
+  DIRECTOR_DIRECTIONS
 } from '../app/engine/flowcore-semantic-motion-bridge.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -20,7 +21,7 @@ const VIEWPORTS = [
   { name: 'mobile_390px', width: 390, height: 844, dpr: 3 }
 ];
 
-const RELATIONS = [
+const COMPARISON_RELATIONS = [
   'gathering',            // à
   'release',              // 出
   'protected_continuity', // cōl
@@ -33,68 +34,76 @@ const RELATIONS = [
 
 const manifest = [];
 
-console.log('Generating Sequence 6 Tranche 2 Visual Witnesses...');
+console.log('Generating Sequence 6 Tranche 2 & 2B Visual Witnesses...');
 
-for (const relationKey of RELATIONS) {
-  for (const vp of VIEWPORTS) {
-    // Standard active dynamic frame
-    const snapshot = {
-      activeViewId: 'cockpit',
-      relationState: { relation_key: relationKey, progress: 0.6 }
-    };
-    const frame = renderDomeArt('cockpit', snapshot, vp, 1800);
-    const svg = generateSvgSnapshot(frame);
-    const filename = `witness-${relationKey}-${vp.name}.svg`;
-    fs.writeFileSync(path.join(outputDir, filename), svg, 'utf8');
+for (const dir of DIRECTOR_DIRECTIONS) {
+  console.log(`\nGenerating direction: [${dir.toUpperCase()}]`);
 
-    manifest.push({
-      relation: relationKey,
-      glyph: frame.descriptor.canonical_glyph,
-      viewport: vp.name,
-      dimensions: `${vp.width}x${vp.height}`,
-      reduced_motion: false,
-      file: filename,
-      carrier_count: frame.carriers.length,
-      planes: {
-        near: frame.carriers.filter(c => c.carrier.near).length,
-        mid: frame.carriers.filter(c => c.carrier.mid).length,
-        far: frame.carriers.filter(c => c.carrier.far).length
-      }
-    });
+  for (const relationKey of COMPARISON_RELATIONS) {
+    for (const vp of VIEWPORTS) {
+      // Dynamic motion snapshot
+      const snapshot = {
+        activeViewId: 'cockpit',
+        relationState: { relation_key: relationKey, progress: 0.6 },
+        directorDirection: dir
+      };
+      const frame = renderDomeArt('cockpit', snapshot, vp, 1800);
+      const svg = generateSvgSnapshot(frame);
+      const filename = `witness-${dir}-${relationKey}-${vp.name}.svg`;
+      fs.writeFileSync(path.join(outputDir, filename), svg, 'utf8');
 
-    console.log(`  [OK] ${filename}`);
+      manifest.push({
+        direction: dir,
+        relation: relationKey,
+        glyph: frame.descriptor.canonical_glyph,
+        viewport: vp.name,
+        dimensions: `${vp.width}x${vp.height}`,
+        reduced_motion: false,
+        file: filename,
+        carrier_count: frame.carriers.length,
+        planes: {
+          near: frame.carriers.filter(c => c.carrier.near).length,
+          mid: frame.carriers.filter(c => c.carrier.mid).length,
+          far: frame.carriers.filter(c => c.carrier.far).length
+        }
+      });
+
+      console.log(`  [OK] ${filename}`);
+    }
   }
-}
 
-// Also generate reduced motion static equivalents for representative relations
-for (const relationKey of ['gathering', 'structural_rest']) {
-  for (const vp of VIEWPORTS) {
-    const snapshot = {
-      activeViewId: 'cockpit',
-      relationState: { relation_key: relationKey, progress: 1.0 },
-      reducedMotion: true
-    };
-    const frame = renderDomeArt('cockpit', snapshot, vp, 0);
-    const svg = generateSvgSnapshot(frame);
-    const filename = `witness-${relationKey}-reduced-motion-${vp.name}.svg`;
-    fs.writeFileSync(path.join(outputDir, filename), svg, 'utf8');
+  // Also generate reduced motion static equivalents for key states
+  for (const relationKey of ['gathering', 'structural_rest']) {
+    for (const vp of VIEWPORTS) {
+      const snapshot = {
+        activeViewId: 'cockpit',
+        relationState: { relation_key: relationKey, progress: 1.0 },
+        directorDirection: dir,
+        reducedMotion: true
+      };
+      const frame = renderDomeArt('cockpit', snapshot, vp, 0);
+      const svg = generateSvgSnapshot(frame);
+      const filename = `witness-${dir}-${relationKey}-reduced-motion-${vp.name}.svg`;
+      fs.writeFileSync(path.join(outputDir, filename), svg, 'utf8');
 
-    manifest.push({
-      relation: relationKey,
-      glyph: frame.descriptor.canonical_glyph,
-      viewport: vp.name,
-      dimensions: `${vp.width}x${vp.height}`,
-      reduced_motion: true,
-      file: filename,
-      carrier_count: frame.carriers.length,
-      planes: {
-        near: frame.carriers.filter(c => c.carrier.near).length,
-        mid: frame.carriers.filter(c => c.carrier.mid).length,
-        far: frame.carriers.filter(c => c.carrier.far).length
-      }
-    });
+      manifest.push({
+        direction: dir,
+        relation: relationKey,
+        glyph: frame.descriptor.canonical_glyph,
+        viewport: vp.name,
+        dimensions: `${vp.width}x${vp.height}`,
+        reduced_motion: true,
+        file: filename,
+        carrier_count: frame.carriers.length,
+        planes: {
+          near: frame.carriers.filter(c => c.carrier.near).length,
+          mid: frame.carriers.filter(c => c.carrier.mid).length,
+          far: frame.carriers.filter(c => c.carrier.far).length
+        }
+      });
 
-    console.log(`  [OK] ${filename}`);
+      console.log(`  [OK] ${filename}`);
+    }
   }
 }
 
@@ -105,4 +114,4 @@ fs.writeFileSync(
   'utf8'
 );
 
-console.log(`Successfully generated ${manifest.length} visual witness files in ${outputDir}`);
+console.log(`\nSuccessfully generated ${manifest.length} visual witness files in ${outputDir}`);
