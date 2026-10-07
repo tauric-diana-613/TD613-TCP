@@ -157,8 +157,10 @@ The HOLD state is the most critical operational posture in TD613. In traditional
 │   │ CARRIER   │         ║   CHASM OF  ║         │ CARRIER   │          │
 │   │ DOCKED    │         ║   DEFICIT   ║         │ DOCKED    │          │
 │   │ BERTHS    │  ───►   ║             ║   ◄───  │ BERTHS    │          │
-│   │ (00..18)  │         ║  EVIDENCE   ║         │ (19..38)  │          │
+│   │ WEST FLANK│         ║  EVIDENCE   ║         │ EAST FLANK│          │
 │   └───────────┘         ║   ABSENT    ║         └───────────┘          │
+│   (NEAR/MID)            ║             ║          (FAR/DATUM)           │
+│   [0,11,13..]           ║             ║          [1,2,3,5..]           │
 │                         ║             ║                                │
 │   ──────────────────────────────────────────────────────────────────   │
 │     [INSPECT DEFICIT]        [SUBMIT PROOF]        [ABORT JOURNEY]     │

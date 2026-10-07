@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>TD613 · Sequence 6 · Tranche 3 Journey Integration</title>
+  <style>
+    :root {
+      --bg: #06070a;
+      --panel: #0d1017;
+      --panel-border: rgba(255, 255, 255, 0.08);
+      --text: #f3f4f6;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --gold: #f59e0b;
+      --cyan: #22d3ee;
+      --emerald: #10b981;
+      --rose: #f43f5e;
+      --purple: #c084fc;
+      --mono: 'JetBrains Mono', ui-monospace, monospace;
+      --serif: 'Cinzel', 'Noto Serif SC', 'Bodoni Moda', Georgia, serif;
+      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Header */
+    header.journey-header {
+      background: rgba(13, 16, 23, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--panel-border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand-group { display: flex; align-items: center; gap: 14px; }
+    .sigil { font-size: 1.2rem; color: var(--gold); }
+    .journey-title { font-size: 0.95rem; font-weight: 600; letter-spacing: -0.01em; }
+    .claim-badge {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1px solid var(--panel-border);
+    }
+
+    /* Main Grid */
+    main.journey-main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      min-height: calc(100vh - 58px);
+    }
+
+    /* Sidebar Navigation */
+    aside.journey-sidebar {
+      background: var(--panel);
+      border-right: 1px solid var(--panel-border);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      overflow-y: auto;
+    }
+
+    .section-title {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+    }
+
+    /* Stage Sequence Buttons */
+    .stage-list { display: flex; flex-direction: column; gap: 6px; }
+    .stage-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--panel-border);
+      border-radius: 6px;
+      padding: 10px 12px;
+      text-align: left;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .stage-btn:hover { background: rgba(255, 255, 255, 0.06); color: var(--text); }
+    .stage-btn.active {
+      background: rgba(245, 158, 11, 0.1);
+      border-color: var(--gold);
+      color: #fff;
+    }
+    .stage-btn strong { font-size: 0.82rem; font-weight: 600; display: flex; align-items: center; justify-content: space-between; }
+    .stage-btn span { font-size: 0.7rem; color: var(--text-dim); font-family: var(--mono); }
+
+    /* Viewport & Motion Controls */
+    .control-row { display: flex; gap: 8px; }
+    .ctrl-btn {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--panel-border);
+      border-radius: 4px;
+      padding: 7px 10px;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-family: var(--mono);
+      transition: all 0.2s;
+    }
+    .ctrl-btn:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+    .ctrl-btn.active {
+      background: rgba(34, 211, 238, 0.12);
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    /* Stage Panel & Stage Info */
+    .info-card {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--panel-border);
+      border-radius: 6px;
+      padding: 12px;
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+    .info-card h4 { font-size: 0.8rem; margin-bottom: 6px; color: var(--gold); font-family: var(--mono); }
+    .info-card p { color: var(--text-muted); margin-bottom: 6px; }
+    .info-card p:last-child { margin-bottom: 0; }
+
+    /* Stage Action Buttons */
+    .action-btn {
+      width: 100%;
+      background: var(--gold);
+      color: #06070a;
+      border: 0;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .action-btn:hover { opacity: 0.9; }
+    .action-btn.secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      border: 1px solid var(--panel-border);
+      margin-top: 6px;
+    }
+
+    /* Right Display Canvas */
+    section.journey-stage-display {
+      background: #020305;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      overflow: auto;
+    }
+
+    .canvas-container {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    .canvas-container.mobile-mode {
+      max-width: 390px;
+      border: 1px solid var(--panel-border);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+    }
+
+    .svg-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      background: #06070a;
+    }
+    .svg-wrapper svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Telemetry Monospace Readout */
+    .telemetry-bar {
+      margin-top: 14px;
+      width: 100%;
+      background: rgba(13, 16, 23, 0.9);
+      border: 1px solid var(--panel-border);
+      border-radius: 6px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+    .telemetry-bar strong { color: var(--cyan); }
+  </style>
+</head>
+<body>
+
+<header class="journey-header">
+  <div class="brand-group">
+    <span class="sigil">𝌋</span>
+    <span class="journey-title">Sequence 6 · End-to-End Journey</span>
+    <span class="claim-badge">COUTURE TECTONIC FEDERALISM // TRANCHE 3</span>
+  </div>
+  <div class="claim-badge">MINIMUM SURVIVING VERTICAL SLICE PROVEN</div>
+</header>
+
+<main class="journey-main">
+  <!-- Left Control Sidebar -->
+  <aside class="journey-sidebar">
+    <div>
+      <div class="section-title">Journey Stage (Vertical Slice)</div>
+      <div class="stage-list" id="stageList">
+        <button class="stage-btn active" data-stage="LOOM_ORIGIN">
+          <strong>1. Loom Origin <span>GATHERING</span></strong>
+          <span>Living Field // Selected files &amp; rules</span>
+        </button>
+        <button class="stage-btn" data-stage="EXPLICIT_OUTBOUND_AUTHORIZATION">
+          <strong>2. Outbound Boundary <span>POTENTIAL</span></strong>
+          <span>Authorization Boundary // INV-01..04</span>
+        </button>
+        <button class="stage-btn" data-stage="MARROWLINE_CONTINUATION">
+          <strong>3. Marrowline <span>RELEASE</span></strong>
+          <span>Continuation chamber // Model response</span>
+        </button>
+        <button class="stage-btn" data-stage="HOLD">
+          <strong>• Hold State <span>DEFICIT</span></strong>
+          <span>Inspectable Deficit // Actionable recovery</span>
+        </button>
+        <button class="stage-btn" data-stage="RECEIPT_INSPECTION">
+          <strong>4. Receipt Inspection <span>TENDENCY</span></strong>
+          <span>Calm Monospace // Predecessor verification</span>
+        </button>
+        <button class="stage-btn" data-stage="STRUCTURAL_REST">
+          <strong>5. Structural Rest <span>REST 𝄐</span></strong>
+          <span>Kinetic resolution // Settled carriers</span>
+        </button>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-title">Viewport Mode</div>
+      <div class="control-row">
+        <button class="ctrl-btn active" id="btnVpDesktop">Desktop (1000px)</button>
+        <button class="ctrl-btn" id="btnVpMobile">Mobile (390px)</button>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-title">Kinetic Preferences</div>
+      <div class="control-row">
+        <button class="ctrl-btn active" id="btnMotionActive">Active Motion</button>
+        <button class="ctrl-btn" id="btnMotionReduced">Reduced Motion</button>
+      </div>
+    </div>
+
+    <div class="info-card" id="stageInfoCard">
+      <h4 id="infoTitle">Loom Origin</h4>
+      <p id="infoDesc">Selected task and documents gathered at local origin. No external request has been made. Default-deny in force under INV-01.</p>
+      <p id="infoJurisdiction" style="font-family: var(--mono); color: var(--emerald);">Jurisdiction: LIVING_FIELD</p>
+    </div>
+
+    <div>
+      <button class="action-btn" id="btnNextStep">Advance Journey →</button>
+      <button class="action-btn secondary" id="btnResetJourney">Reset to Origin</button>
+    </div>
+  </aside>
+
+  <!-- Right Interactive Display -->
+  <section class="journey-stage-display">
+    <div class="canvas-container" id="canvasContainer">
+      <div class="svg-wrapper" id="svgWrapper">
+        <!-- SVG will be injected here -->
+      </div>
+    </div>
+
+    <div class="telemetry-bar" id="telemetryBar">
+      <span>STAGE: <strong id="telStage">LOOM_ORIGIN</strong></span>
+      <span>JURISDICTION: <strong id="telJurisdiction">LIVING_FIELD</strong></span>
+      <span>CARRIERS: <strong>39 (6N / 13M / 20F)</strong></span>
+      <span>CLOCK: <strong id="telClock">SOVEREIGN_COORDINATOR</strong></span>
+    </div>
+  </section>
+</main>
+
+<script type="module">
+  import {
+    createSequence6JourneySession,
+    issueOutboundAuthorization,
+    prepareOutboundHandoff,
+    executeMarrowlineContinuation,
+    processReturnPacket,
+    admitCandidateToLoomLedger,
+    enterStructuralRest,
+    generateJourneyPresentation,
+    mapStageToJurisdiction
+  } from '../engine/sequence-6-journey.js';
+
+  // Read URL search params for headless chrome screenshot automation
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialStage = (urlParams.get('stage') || 'LOOM_ORIGIN').toUpperCase();
+  const initialVp = urlParams.get('vp') || 'desktop';
+  const initialReduced = urlParams.get('reducedMotion') === 'true';
+
+  let currentStage = initialStage;
+  let isMobileVp = initialVp === 'mobile';
+  let isReducedMotion = initialReduced;
+  let journeySession = null;
+  let outboundEnvelope = null;
+  let returnPacket = null;
+
+  function initSession() {
+    journeySession = createSequence6JourneySession({
+      task: 'Evaluate fictional vendor diligence brief with selected documents.',
+      documents: [
+        { id: 'doc-1', name: 'Vendor A Offer', text: 'Backup retention permitted up to 45 days.', share: true },
+        { id: 'doc-2', name: 'Private Staging Notes', text: 'Confidential client data.', share: false }
+      ]
+    });
+  }
+
+  initSession();
+
+  const STAGE_ORDER = [
+    'LOOM_ORIGIN',
+    'EXPLICIT_OUTBOUND_AUTHORIZATION',
+    'MARROWLINE_CONTINUATION',
+    'RECEIPT_INSPECTION',
+    'STRUCTURAL_REST'
+  ];
+
+  const STAGE_DESCRIPTIONS = {
+    LOOM_ORIGIN: {
+      title: '1. Loom Origin',
+      desc: 'Selected task and documents gathered at local origin. No external request has been made. Default-deny in force under INV-01.',
+      jur: 'LIVING_FIELD'
+    },
+    EXPLICIT_OUTBOUND_AUTHORIZATION: {
+      title: '2. Outbound Boundary',
+      desc: 'Explicit qualifying authorization granted under INV-01..04. Single-shot ephemeral token armed. External carriage clearly separated from detached delegation.',
+      jur: 'AUTHORIZATION_BOUNDARY'
+    },
+    MARROWLINE_CONTINUATION: {
+      title: '3. Marrowline Continuation',
+      desc: 'Task context received in Marrowline chamber. Follow-up continued with model. Predecessor chain unbroken.',
+      jur: 'LIVING_FIELD'
+    },
+    HOLD: {
+      title: '• Hold State',
+      desc: 'Forward progress restrained by inspectable evidence deficit. Actionable options available: inspect, retry, abort.',
+      jur: 'HOLD'
+    },
+    RECEIPT_INSPECTION: {
+      title: '4. Receipt Inspection',
+      desc: 'Returned candidate checked against predecessor chain and RFC 8785 canonicalization. Calm monospace evidence with [OBSERVED], [DERIVED], [HELD].',
+      jur: 'RECEIPT_INSPECTION'
+    },
+    STRUCTURAL_REST: {
+      title: '5. Structural Rest',
+      desc: 'Current obligation genuinely resolved upon explicit local admission. 𝄐 settles motion; historical records preserved.',
+      jur: 'STRUCTURAL_REST'
+    }
+  };
+
+  function updateUi() {
+    // Sync buttons
+    document.querySelectorAll('.stage-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.stage === currentStage);
+    });
+
+    const info = STAGE_DESCRIPTIONS[currentStage] || STAGE_DESCRIPTIONS.LOOM_ORIGIN;
+    document.getElementById('infoTitle').textContent = info.title;
+    document.getElementById('infoDesc').textContent = info.desc;
+    document.getElementById('infoJurisdiction').textContent = `Jurisdiction: ${info.jur}`;
+
+    document.getElementById('telStage').textContent = currentStage;
+    document.getElementById('telJurisdiction').textContent = info.jur;
+
+    // Viewport mode
+    const container = document.getElementById('canvasContainer');
+    container.classList.toggle('mobile-mode', isMobileVp);
+    document.getElementById('btnVpDesktop').classList.toggle('active', !isMobileVp);
+    document.getElementById('btnVpMobile').classList.toggle('active', isMobileVp);
+
+    document.getElementById('btnMotionActive').classList.toggle('active', !isReducedMotion);
+    document.getElementById('btnMotionReduced').classList.toggle('active', isReducedMotion);
+
+    // Setup session according to current stage
+    setupSessionForStage(currentStage);
+
+    // Generate presentation
+    const vp = isMobileVp
+      ? { width: 390, height: 844, compact: true, is_portrait_mobile: true }
+      : { width: 1000, height: 520, compact: false };
+
+    const presentation = generateJourneyPresentation(journeySession, {
+      viewport: vp,
+      reducedMotion: isReducedMotion,
+      timestampMs: 1500
+    });
+
+    document.getElementById('svgWrapper').innerHTML = presentation.svg;
+  }
+
+  function setupSessionForStage(stage) {
+    initSession();
+    if (stage === 'LOOM_ORIGIN') {
+      journeySession.current_stage = 'LOOM_ORIGIN';
+    } else if (stage === 'EXPLICIT_OUTBOUND_AUTHORIZATION') {
+      issueOutboundAuthorization(journeySession);
+      outboundEnvelope = prepareOutboundHandoff(journeySession);
+    } else if (stage === 'MARROWLINE_CONTINUATION') {
+      issueOutboundAuthorization(journeySession);
+      outboundEnvelope = prepareOutboundHandoff(journeySession);
+      returnPacket = executeMarrowlineContinuation(journeySession, outboundEnvelope);
+    } else if (stage === 'HOLD') {
+      journeySession.current_stage = 'HOLD';
+      journeySession.hold_state = {
+        defect_code: 'UNRESOLVED_COMPARATOR_VARIANCE',
+        defect_message: 'Vendor offer components could not be reconciled with stated totals.',
+        missing_evidence: 'Direct cost breakdown matching contract line items'
+      };
+    } else if (stage === 'RECEIPT_INSPECTION') {
+      issueOutboundAuthorization(journeySession);
+      outboundEnvelope = prepareOutboundHandoff(journeySession);
+      returnPacket = executeMarrowlineContinuation(journeySession, outboundEnvelope);
+      processReturnPacket(journeySession, returnPacket, { expectedHeadDigest: returnPacket.terminal_head_digest });
+    } else if (stage === 'STRUCTURAL_REST') {
+      issueOutboundAuthorization(journeySession);
+      outboundEnvelope = prepareOutboundHandoff(journeySession);
+      returnPacket = executeMarrowlineContinuation(journeySession, outboundEnvelope);
+      processReturnPacket(journeySession, returnPacket, { expectedHeadDigest: returnPacket.terminal_head_digest });
+      admitCandidateToLoomLedger(journeySession, { explicitAcknowledgment: true });
+      enterStructuralRest(journeySession);
+    }
+  }
+
+  // Event handlers
+  document.querySelectorAll('.stage-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentStage = btn.dataset.stage;
+      updateUi();
+    });
+  });
+
+  document.getElementById('btnVpDesktop').addEventListener('click', () => {
+    isMobileVp = false;
+    updateUi();
+  });
+  document.getElementById('btnVpMobile').addEventListener('click', () => {
+    isMobileVp = true;
+    updateUi();
+  });
+
+  document.getElementById('btnMotionActive').addEventListener('click', () => {
+    isReducedMotion = false;
+    updateUi();
+  });
+  document.getElementById('btnMotionReduced').addEventListener('click', () => {
+    isReducedMotion = true;
+    updateUi();
+  });
+
+  document.getElementById('btnNextStep').addEventListener('click', () => {
+    const idx = STAGE_ORDER.indexOf(currentStage);
+    if (idx !== -1 && idx < STAGE_ORDER.length - 1) {
+      currentStage = STAGE_ORDER[idx + 1];
+    } else {
+      currentStage = STAGE_ORDER[0];
+    }
+    updateUi();
+  });
+
+  document.getElementById('btnResetJourney').addEventListener('click', () => {
+    currentStage = 'LOOM_ORIGIN';
+    updateUi();
+  });
+
+  updateUi();
+</script>
+
+</body>
+</html>

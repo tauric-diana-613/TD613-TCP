@@ -61,5 +61,95 @@
     "dimensions": "1280x800",
     "size_bytes": 205701,
     "observed_at": "2026-10-07T05:23:38.225Z"
+  },
+  {
+    "name": "browser-journey-loom_origin-desktop.png",
+    "file": "browser/browser-journey-loom_origin-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6140/app/dome-world/sequence-6-journey.html?stage=LOOM_ORIGIN&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 221607,
+    "observed_at": "2026-10-07T05:59:29.777Z",
+    "notes": "Loom Origin active state, 39 carriers gathering field, prompt, selected files"
+  },
+  {
+    "name": "browser-journey-authorization_boundary-desktop.png",
+    "file": "browser/browser-journey-authorization_boundary-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6140/app/dome-world/sequence-6-journey.html?stage=EXPLICIT_OUTBOUND_AUTHORIZATION&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 230308,
+    "observed_at": "2026-10-07T05:59:31.353Z",
+    "notes": "Outbound Authorization Boundary under INV-01..04 with configured receiver"
+  },
+  {
+    "name": "browser-journey-marrowline_continuation-desktop.png",
+    "file": "browser/browser-journey-marrowline_continuation-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6140/app/dome-world/sequence-6-journey.html?stage=MARROWLINE_CONTINUATION&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 224969,
+    "observed_at": "2026-10-07T05:59:32.901Z",
+    "notes": "Marrowline Continuation chamber with model release and predecessor binding"
+  },
+  {
+    "name": "browser-journey-hold-desktop.png",
+    "file": "browser/browser-journey-hold-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6140/app/dome-world/sequence-6-journey.html?stage=HOLD&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 198110,
+    "observed_at": "2026-10-07T05:59:34.309Z",
+    "notes": "HOLD jurisdiction: inspectable evidence deficit and actionable recovery options"
+  },
+  {
+    "name": "browser-journey-returned_candidate-desktop.png",
+    "file": "browser/browser-journey-returned_candidate-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6140/app/dome-world/sequence-6-journey.html?stage=RECEIPT_INSPECTION&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 183709,
+    "observed_at": "2026-10-07T05:59:35.806Z",
+    "notes": "Returned candidate waiting at Loom threshold; receiver local != Loom admission"
+  },
+  {
+    "name": "browser-journey-receipt_inspection-desktop.png",
+    "file": "browser/browser-journey-receipt_inspection-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6140/app/dome-world/sequence-6-journey.html?stage=RECEIPT_INSPECTION&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 183709,
+    "observed_at": "2026-10-07T05:59:37.360Z",
+    "notes": "Receipt Inspection jurisdiction with [OBSERVED], [DERIVED], [HELD] calm monospace"
+  },
+  {
+    "name": "browser-journey-structural_rest-desktop.png",
+    "file": "browser/browser-journey-structural_rest-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6140/app/dome-world/sequence-6-journey.html?stage=STRUCTURAL_REST&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 209080,
+    "observed_at": "2026-10-07T05:59:39.142Z",
+    "notes": "Structural Rest 𝄐 with kinetic obligation resolved and historical records preserved"
+  },
+  {
+    "name": "browser-journey-390px-portrait.png",
+    "file": "browser/browser-journey-390px-portrait.png",
+    "provenance": "SIMULATED_390PX_BROWSER_CAPTURE",
+    "url": "http://localhost:6140/app/dome-world/sequence-6-journey.html?stage=LOOM_ORIGIN&vp=mobile",
+    "dimensions": "390x844",
+    "size_bytes": 46563,
+    "observed_at": "2026-10-07T05:59:40.638Z",
+    "notes": "Simulated 390px mobile viewport: all controls reachable, 39 carriers preserved"
+  },
+  {
+    "name": "browser-journey-reduced_motion-desktop.png",
+    "file": "browser/browser-journey-reduced_motion-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6140/app/dome-world/sequence-6-journey.html?stage=LOOM_ORIGIN&reducedMotion=true&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 228783,
+    "observed_at": "2026-10-07T05:59:42.916Z",
+    "notes": "Reduced motion static calm view: all 39 carriers preserved without animation"
   }
 ]
