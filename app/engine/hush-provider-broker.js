@@ -1,4 +1,4 @@
-export const HUSH_PROVIDER_BROKER_VERSION = 'pr144-provider-broker-quota-circuit/v2-auto-quality';
+export const HUSH_PROVIDER_BROKER_VERSION = 'pr144-provider-broker-quota-circuit/v3-scope-preserving';
 
 const MEMORY = new Map();
 const STORAGE_KEY = 'td613:hush:provider-broker';
@@ -132,7 +132,40 @@ export function writeProviderCooldown(input = {}, receipt = {}, at = nowMs()) {
 export function writeProviderStateFromReceipt(input = {}, receipt = {}, at = nowMs()) {
   const reason = safe(receipt.reason || receipt.error || '').toLowerCase();
   const status = Number(receipt.httpStatus || receipt.status || 0);
-  if (reason === 'provider_quota_exhausted' || status === 429) return writeProviderCooldown(input, { ...receipt, reason: 'provider_quota_exhausted', httpStatus: 429 }, at);
+  const providerQuota = receipt.providerQuota && typeof receipt.providerQuota === 'object' ? receipt.providerQuota : {};
+  const scope = safe(
+    receipt.quotaScope
+    || receipt.providerQuotaScope
+    || providerQuota.quotaScope
+    || receipt.requestReceipt?.quotaScope
+  ).toLowerCase();
+  const quotaModel = safe(providerQuota.model || receipt.model || '');
+  const modelScoped = reason === 'model_quota_exhausted'
+    || scope === 'model'
+    || scope === 'model-diagnostic';
+  const providerScoped = reason === 'provider_quota_exhausted'
+    || scope === 'provider'
+    || scope === 'shared';
+
+  if (status === 429 || modelScoped || providerScoped) {
+    if (modelScoped && quotaModel && quotaModel !== 'auto-quality') {
+      return writeProviderCooldown(
+        { ...input, model: quotaModel },
+        { ...receipt, reason: 'model_quota_exhausted', httpStatus: 429 },
+        at
+      );
+    }
+    if (providerScoped) {
+      return writeProviderCooldown(
+        input,
+        { ...receipt, reason: 'provider_quota_exhausted', httpStatus: 429 },
+        at
+      );
+    }
+    // A bare/ambiguous 429 cannot establish provider scope. Keep the route
+    // callable and let the server-side quality router produce the next receipt.
+    return readProviderState(input, at);
+  }
   if (reason === 'provider_timeout') return writeProviderCooldown(input, { ...receipt, reason: 'provider_timeout', httpStatus: receipt.httpStatus || 504, retryAfterSeconds: receipt.retryAfterSeconds || 15 }, at);
   return readProviderState(input, at);
 }
