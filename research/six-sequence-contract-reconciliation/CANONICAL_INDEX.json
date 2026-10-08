@@ -1,0 +1,3149 @@
+{
+  "schema": "td613.six-sequence-and-orchestrator-canonical-index/v1.0",
+  "reconciled_on": "2026-10-08",
+  "repository": "tauric-diana-613/TD613-TCP",
+  "scope": "Archival contract-address recovery. No research rerun, receiver execution, product patch, merge or deployment.",
+  "reconciliation": {
+    "branch": "research/six-sequence-contract-reconciliation-20261008",
+    "base_sha": "8d57bdfcd69cff9c5760cd001549197f3180c00a",
+    "self_commit_sha": "Resolve the Git commit containing this file; no self-referential invented SHA."
+  },
+  "canonicality_laws": [
+    "GIT_OBJECTS > PROSE_RECOLLECTION",
+    "REMOTE_COMMIT > SHORT_SHA_FROM_CHAT",
+    "ACTUAL_FILE_BYTES > SUMMARY_DESCRIPTION",
+    "EXECUTION_RECEIPT != LATER_RECONSTRUCTION",
+    "RESEARCH_BRANCH != MAIN",
+    "SIMILAR_NAME != SAME_SEQUENCE",
+    "LATEST_COMMIT != AUTOMATIC_CANONICAL_CONTRACT",
+    "ONE_SEQUENCE != NECESSARILY_ONE_FILE",
+    "UNLOCATED != NEVER_EXISTED"
+  ],
+  "orchestrator": {
+    "canonical_contract_artifact": "orchestrator-contract",
+    "canonical_commit_sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+    "branch_ref": "amari/loom-mobile-dollhouse-closure-1430",
+    "canonical_contract_kind": "COMPOSITE_BOUNDED_ORCHESTRATION_AND_ADJUDICATION_CONTRACT",
+    "role_question": {
+      "kind": "EDITORIAL_SYNTHESIS_OF_SECTIONS_VII_XI_XIII_XIX",
+      "text": "Which role findings are admissible at their declared evidence coordinates, which disagreements must survive, and what bounded recommendation can be made without whole-route regression or exceeding human authority?"
+    },
+    "inputs": [
+      "Frozen source/evidence packet",
+      "Separate typed role findings",
+      "Disagreement ledger",
+      "Service-journey state",
+      "Evidence-class and claim-ceiling registry",
+      "Human scope and closure requirements"
+    ],
+    "participating_roles": [
+      "Pedagogue",
+      "Aperture",
+      "Atlas",
+      "FADT",
+      "Temporal Custodian"
+    ],
+    "installed_registry_at_canonical_commit": [
+      "Pedagogue",
+      "Aperture",
+      "Atlas",
+      "FADT"
+    ],
+    "temporal_custodian_coordinate": {
+      "contract_artifact": "temporal-role",
+      "sha": "88f128c75cd8efd58db9a77249f293e69d08762e",
+      "branch_ref": "candidate/temporal-custodian-first-class-20261005",
+      "status": "FIFTH_ESTABLISHED_JURISDICTION; FIRST_CLASS_ADAPTER_IS_BOUNDED_RESEARCH_CANDIDATE_ON_SEPARATE_REF"
+    },
+    "disagreement_law": [
+      "Retain original role findings with evidence and coordinate",
+      "Separate recommendation from observation",
+      "Do not erase an unresolved disagreement by majority vote or synthesis",
+      "Maintain hash-vs-workspace HOLD instead of synthesizing completion"
+    ],
+    "adjudication": "Decision gate balances role imperatives against evidence, operational stability, bounded scope and human closure. Auditor finding does not automatically require mutation.",
+    "temporal_custodian_veto": "LOCAL_PASS_PLUS_GLOBAL_ROUTE_REGRESSION -> HELD. Later evidence cannot rewrite an earlier observable epistemic state.",
+    "human_operator_relationship": "Human authorizes consequential scope and final closure; synthesis is recommendation, not execution authority.",
+    "may_execute_actions": "NO_STANDING_ACTION_AUTHORITY. The contract does not grant autonomous product edits, external calls, merge, deployment or release.",
+    "may_overwrite_role_disagreement": false,
+    "stopping_hold_semantics": [
+      "Missing or contradictory evidence -> HOLD",
+      "URL hash does not establish workspace admission",
+      "Local subsystem PASS plus whole-route regression -> HOLD",
+      "Closure predicates must pass in their own evidence class",
+      "Provider/internal, custody/signature, physical and comprehension unknowns remain separate"
+    ],
+    "executable_mechanisms": [
+      "case-dossier",
+      "closure-auditor",
+      "claim-ceilings",
+      "ablation-procedure"
+    ],
+    "routing_limit": "The inspected ablation procedure reads four fixed role-audit fixtures and applies a deterministic decision function. It is executable bounded adjudication; no general LLM scheduler or provider-routing implementation is established by this artifact.",
+    "tests_fixtures": [
+      "orchestration-tests",
+      "disagreement-ledger",
+      "role-audit-packet",
+      "ablation-result",
+      "closure-assay-report"
+    ],
+    "episode_claim_ceiling": "Frozen four-role packet and five-condition role-removal comparison. Structural non-redundancy in that coordinate is not orchestration superiority.",
+    "comparison_contract_artifact": "s6-rest1-freeze",
+    "comparison_baselines": [
+      {
+        "label": "A",
+        "meaning": "Monolith: one frontier-model call",
+        "status": "PROPOSED_RESEARCH_DESIGN"
+      },
+      {
+        "label": "B",
+        "meaning": "Dumb Concat: four parallel roles, naive concatenation",
+        "status": "PROPOSED_RESEARCH_DESIGN"
+      },
+      {
+        "label": "C",
+        "meaning": "Typed Roles: disjoint role schemas",
+        "status": "PROPOSED_RESEARCH_DESIGN"
+      },
+      {
+        "label": "D",
+        "meaning": "Governed Clerk: typed roles plus deterministic dissent recorder",
+        "status": "PROPOSED_RESEARCH_DESIGN"
+      },
+      {
+        "label": "E",
+        "meaning": "Conventional Code: deterministic validators and hash verifiers",
+        "status": "ENGINEERING_BASELINE_IMPLEMENTED; COMPARATIVE_SUPERIORITY_UNASSAYED"
+      }
+    ],
+    "model_a_name_collision": "Episode 1428-X Model A means setup acknowledgment plus first substantive continuation. REST 1 comparison Model A means monolithic model call. These are different namespaces.",
+    "authority_laws": [
+      "ORCHESTRATOR != OPERATOR",
+      "ORCHESTRATION != EPISTEMIC_SUPERIORITY",
+      "SYNTHESIS != EXECUTION_AUTHORITY"
+    ],
+    "predecessor_successor": {
+      "original_dossier": "58aa9e87eed14359b1ea32c5b5e33bd12be3b508",
+      "held_correction": "c57e348dfddd6e9191d20233432662763b531611",
+      "harness_correction": "1a2424b66e59625552888675b7615daf2c15e9dd",
+      "bounded_ceiling_correction": "7e9fb139ce8a3c0e7ea4c2ffa161838223251bc6",
+      "r4_witness": "b93d65bd7e7497c23ca71bf566878911178030c1",
+      "layered_contract_closure": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+      "merged_coordinate": "5b4b34278c6100d3c21ced35984c046da157e097",
+      "candidate_x_successor": "41112992ffd82dd1f06552b3c5881dc43de3cb20",
+      "comparative_trial_contract": "4871e0c53749985facbf62749e1161d13a420e0e"
+    }
+  },
+  "six_top_level_sequences": [
+    {
+      "sequence": "1",
+      "canonical_name": "R3 / Candidate X execution lineage",
+      "purpose": "Verify byte-exact transfer and reconstruction of the explicit re-entry membrane, then run the retained R1/R2 regression family.",
+      "primary_contract": [
+        "s1-behavior-contract",
+        "s1-known-holds",
+        "s1-workflow"
+      ],
+      "execution_evidence": [
+        "s1-transfer-packet",
+        "s1-checksums",
+        "ci-sequence-1"
+      ],
+      "audit_correction": [
+        "s1-known-holds"
+      ],
+      "final_result": "ADMISSIBLE_FOR_TRANSFER within local/structural scope. Retained remote CI: 15 checksum checks and 13/13 regression tests passed.",
+      "claim_ceiling": "Byte carriage, reconstruction and tested machine behavior. No independent empirical origin, model cognition, provider privacy or Golden Egg proof.",
+      "closure_status": "BOUNDED_TRANSFER_EXECUTION_ADJUDICATED",
+      "successor": "2",
+      "numbering_evidence": "EXTERIORITY_OBSERVATORY.md Section 2 explicitly identifies Sequence 1 R3 execution and run 37349177827. The workflow is not itself titled Sequence 1.",
+      "special_coordinates": {
+        "candidate_git_object": "41112992ffd82dd1f06552b3c5881dc43de3cb20",
+        "episode_a": "4bd363d5c4714bc086fe4bcd5580bb3b4d0fe6e0",
+        "episode_b": "582a1f04fd11e502fc7b3083ef6fa079dd0d23c8",
+        "execution_checkout": "582a1f04fd11e502fc7b3083ef6fa079dd0d23c8"
+      },
+      "branch_ref": "witness/r3-execution-candidate-x-582a1f04-20261005",
+      "canonical_head_sha": "9b4a9e5561add51870d4f6cb5d106b3f7a6790e2",
+      "git_parent_shas": [
+        "582a1f04fd11e502fc7b3083ef6fa079dd0d23c8"
+      ],
+      "predecessor": "Episode 1428-X → Candidate X"
+    },
+    {
+      "sequence": "2",
+      "canonical_name": "Exteriority Observatory · Laboratory Monster",
+      "purpose": "Build an observability instrument for evidence ladders, temporal non-retroactivity, authority support, classification replay and missing-witness boundaries.",
+      "primary_contract": [
+        "s2-contract"
+      ],
+      "execution_evidence": [
+        "s2-record",
+        "s2-dollhouse-role-passes"
+      ],
+      "audit_correction": [
+        "s2-claim-ceiling-ledger",
+        "s2-dollhouse-disagreements",
+        "s2-temporal-ledger"
+      ],
+      "final_result": "Bounded Observatory implementation and recorded self-audits; retrospective R3 reference; higher exogenous, physical and human claims remain unmeasured.",
+      "claim_ceiling": "Observability and declared evidence classification, not external origin or latent reconstruction. Historical 18-test PASS is reported in the retained contract; not rerun here.",
+      "closure_status": "BOUNDED_IMPLEMENTATION_RECORDED_WITH_OPEN_HIGHER_CEILINGS",
+      "successor": "3",
+      "numbering_evidence": "EXTERIORITY_OBSERVATORY.md identifies Sequence 2 / Laboratory Monster and defers product composition to Sequence 3.",
+      "branch_ref": "research/exteriority-observatory-v1-20261005",
+      "canonical_head_sha": "95dea19cc40a85bc4728916fcf2c6dbd227bc831",
+      "git_parent_shas": [
+        "5b4b34278c6100d3c21ced35984c046da157e097"
+      ],
+      "predecessor": "1"
+    },
+    {
+      "sequence": "3",
+      "canonical_name": "Product Demo Cathedral · 39-carrier presentation tournament",
+      "purpose": "Compose the Candidate X re-entry route with product presentation, browser-local search and state-driven Flow-Core choreography.",
+      "primary_contract": [
+        "s3-design-contract",
+        "s3-carrier-engine",
+        "s3-composition-tests"
+      ],
+      "execution_evidence": [
+        "s3-design-contract",
+        "s3-composition-tests"
+      ],
+      "audit_correction": [],
+      "final_result": "Committed product/design tranche: 39 carriers, 6 near / 13 mid / 20 far, one clock, route-state semantics, reduced-motion and responsive contract.",
+      "claim_ceiling": "Source implementation and test contract. Feedback about comprehension is not a preserved scored human-comprehension assay.",
+      "closure_status": "IMPLEMENTATION_AND_FEEDBACK_RETAINED; SEPARATE_FORMAL_TOURNAMENT_CLOSURE_UNLOCATED",
+      "successor": "4",
+      "numbering_evidence": "Full remote Git commit message explicitly says Sequence 3: Product Demo Cathedral - Flow-Core 39-carrier presentation tournament.",
+      "branch_ref": "design/loom-first-crossing-cathedral-20261005",
+      "canonical_head_sha": "6c21813c0f4a9fad31ef147d2b42c29b05ab8473",
+      "git_parent_shas": [
+        "539c93021b6376f36ab2b3a7b65c8ae978dc766e"
+      ],
+      "predecessor": "2"
+    },
+    {
+      "sequence": "4",
+      "canonical_name": "Relation Survival Assay v1",
+      "purpose": "Test survival of twelve declared governance relations under vocabulary removal, foreign-field projection, label permutation and decoy ablation.",
+      "primary_contract": [
+        "s4-prereg"
+      ],
+      "execution_evidence": [
+        "s4-record",
+        "s4-final",
+        "s4-isolation-ledger"
+      ],
+      "audit_correction": [
+        "s4-ceiling"
+      ],
+      "final_result": "Retained result reports 12/12 Vocabulary-Blind, 12/12 Foreign Field, 12/12 Label Permutation and 5/5 Decoy Ablation.",
+      "claim_ceiling": "RELATION_TRANSPORT != INDEPENDENT_DISCOVERY; VOCABULARY_REMOVAL != PROMPT_INFLUENCE_REMOVAL; SAME_HOST_CONTEXT_ISOLATION != EXOGENOUS_WITNESS.",
+      "closure_status": "BOUNDED_REPORTED_ASSAY_COMPLETE; INHERITED_WITH_SCOPE_QUALIFICATION",
+      "successor": "4.1 → 4.5 → 5",
+      "branch_ref": "research/relation-survival-assay-v1-20261005",
+      "canonical_head_sha": "04d81163eda1af8be1f5957cd8dbeb593edbacb9",
+      "git_parent_shas": [
+        "2a9c915f38f05e7e30401f23cbfebc94b2e62b64"
+      ],
+      "predecessor": "3 (program order; Git descends from Sequence 2)"
+    },
+    {
+      "sequence": "5",
+      "canonical_name": "Differential Replication · failed receiver execution",
+      "purpose": "Attempt controlled replication of matched-onboarding treatment differences after correcting Sequence 4.5 methodology.",
+      "primary_contract": [
+        "s5-prereg"
+      ],
+      "execution_evidence": [
+        "s5-record",
+        "s5-final"
+      ],
+      "audit_correction": [
+        "s45-correction",
+        "s5-forensic-audit",
+        "s5-synthetic-generator"
+      ],
+      "final_result": "SYNTHETIC_RECEIVER_OUTPUTS_FROM_START; SEQUENCE_5_RECEIVER_EVIDENCE = FAILED. All statistical treatment contrasts invalidated; differential and methodology effects HELD.",
+      "claim_ceiling": "Failed execution witness and corrective audit must be kept together. ORIGINAL_SEQUENCE_5_REMOTE_CHRONOLOGY = NOT_ESTABLISHED.",
+      "closure_status": "FAILED_EXECUTION_PRESERVED_AND_CORRECTIVELY_ADJUDICATED",
+      "successor": "5R → 5.5",
+      "canonical_history_requires_multiple_refs": true,
+      "corrective_head_sha": "6e3015df659eb06084f14ce43144fd160bee3cda",
+      "branch_ref": "witness/sequence-5-postexecution-egress-20261005",
+      "canonical_head_sha": "a9b5b777a595484f6ff7b6f0d09e234a0d423711",
+      "git_parent_shas": [
+        "1bdbbf7966a563e29836d0d971aba6c39ea0d4ff"
+      ],
+      "predecessor": "4.5"
+    },
+    {
+      "sequence": "6",
+      "canonical_name": "Surviving Relations / Product Realization",
+      "purpose": "Render the surviving relation set beautifully after Sequence 5.5 closure, while separating product mechanisms, research, speculation, aesthetics, receipts and lineage.",
+      "primary_contract": [
+        "s6-activation",
+        "s6-survivor-map",
+        "s6-architecture",
+        "s6-rest1-freeze"
+      ],
+      "execution_evidence": [
+        "s6-record",
+        "s6-chain-tests",
+        "s6-native-tests",
+        "s6-native-witness-procedure",
+        "ci-sequence-6"
+      ],
+      "audit_correction": [
+        "s6-custody-repair",
+        "s6-browser-manifest"
+      ],
+      "final_result": "REST 1 architecture frozen. Custody repairs and Tranche 3B native route located. Retained exact-head CI reports PASS_NATIVE_CUTOVER_DETERMINISTIC_RECEIVER.",
+      "claim_ceiling": "Native browser UI with deterministic simulated receiver is BROWSER_WITNESS plus SIMULATED_RECEIVER_TEST, not ACTUAL_RECEIVER_TEST, physical-device, measured comprehension or independent external witness.",
+      "closure_status": "BOUNDED_NATIVE_CUTOVER_WITNESSED; REST_2_RECOMMENDATION_RETAINED; SEPARATE_GLOBAL_FINAL_COUNTERSIGNATURE_UNLOCATED",
+      "successor": "Later product/release reconciliation is separate from the scientific execution contract.",
+      "scientific_predecessor": "5.5",
+      "git_parent_is_not_scientific_predecessor": true,
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "canonical_head_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "git_parent_shas": [
+        "2775ad20515c83c83f8df6689207e6f63342770b"
+      ],
+      "predecessor": "5.5"
+    }
+  ],
+  "intermediate_stages": [
+    {
+      "sequence": "4.1",
+      "canonical_name": "Structural Extraction Hardening",
+      "parent_program_sequence": "4",
+      "primary_contract": [
+        "s4.1-prereg"
+      ],
+      "execution_evidence": [
+        "s4.1-record",
+        "s41-execution-ledger",
+        "s4.1-final"
+      ],
+      "final_result": "Historical bounded report: 21 runs; intact inference 9/9, ablation detection 12/12, FADT discrimination 24/24, appropriate underdetermination 21/21.",
+      "claim_ceiling": "Same-host context-isolated pre-onboarding sample; no exogenous grounding, automatic onboarding or universal guarantee.",
+      "closure_status": "BOUNDED_REPORTED_HARDENING_COMPLETE",
+      "successor": "4.5",
+      "freeze_coordinates": {
+        "preregistration": "92ec5f07e01648c18364fe6729c375bf945fb7fb",
+        "raw_freeze": "e639d088b4f6f05ad8c83395fc6b8970407e047a",
+        "final": "7ad94230d6988ac5dafe0b57a750479a2eb4577f"
+      },
+      "branch_ref": "research/structural-extraction-hardening-v1-20261005",
+      "canonical_head_sha": "7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+      "git_parent_shas": [
+        "e639d088b4f6f05ad8c83395fc6b8970407e047a"
+      ]
+    },
+    {
+      "sequence": "4.5",
+      "canonical_name": "Matched Onboarding Differential",
+      "parent_program_sequence": "4",
+      "primary_contract": [
+        "s4.5-prereg"
+      ],
+      "execution_evidence": [
+        "s4.5-record",
+        "s45-execution-ledger",
+        "s4.5-final"
+      ],
+      "audit_correction": [
+        "s45-correction"
+      ],
+      "final_result": "HISTORICAL_METHOD_STAGE. Baseline contamination, tutorial leakage, scorer contradictions, treatment signatures, vocabulary-overfit misclassification, pseudoreplication and SHA prose discrepancies invalidate stronger treatment conclusions.",
+      "claim_ceiling": "Retained historical method stage; later corrected claims are not authoritative causal evidence.",
+      "closure_status": "SUPERSEDED_METHOD_CONCLUSIONS_RETAINED",
+      "successor": "5",
+      "freeze_coordinates": {
+        "A": "84583ed64fc9f2c358935cd82bbe73396a6acd9f",
+        "B": "195233035daff0d990f9191ebc64982cad3f05fd",
+        "C": "c234f561ed6791c5cd9256f7c5f5a5d4c4122353",
+        "D": "daa7773323b408d1080f70cd27e676161deafc96"
+      },
+      "branch_ref": "research/aperture-onboarding-differential-v1-20261005",
+      "canonical_head_sha": "daa7773323b408d1080f70cd27e676161deafc96",
+      "git_parent_shas": [
+        "c234f561ed6791c5cd9256f7c5f5a5d4c4122353"
+      ]
+    },
+    {
+      "sequence": "5R",
+      "canonical_name": "Sequence 5 forensic synthetic-trace audit",
+      "parent_program_sequence": "5",
+      "primary_contract": [
+        "s5-forensic-audit"
+      ],
+      "execution_evidence": [
+        "s5-synthetic-generator"
+      ],
+      "final_result": "FAILED receiver provenance; all Sequence 5 statistical contrasts invalidated.",
+      "claim_ceiling": "Forensic correction, not another receiver assay.",
+      "closure_status": "CORRECTIVE_AUDIT_COMPLETE",
+      "successor": "5.5",
+      "branch_ref": "audit/sequence-5-synthetic-trace-audit-20261005",
+      "canonical_head_sha": "6e3015df659eb06084f14ce43144fd160bee3cda",
+      "git_parent_shas": [
+        "a9b5b777a595484f6ff7b6f0d09e234a0d423711"
+      ]
+    },
+    {
+      "sequence": "5.5",
+      "canonical_name": "Receiver-clean Correction / Closure Chamber",
+      "parent_program_sequence": "5",
+      "primary_contract": [
+        "s55-prereg",
+        "s55-v41r-design",
+        "s55-execution-binding",
+        "s55-receipt-schema"
+      ],
+      "execution_evidence": [
+        "s55-raw-manifest",
+        "s55-v41r-raw",
+        "s55-v41r-receipts"
+      ],
+      "audit_correction": [
+        "s55-forensic-certification",
+        "s55-countersignature"
+      ],
+      "final_closure": [
+        "s55-scientific-closure",
+        "s55-countersignature"
+      ],
+      "final_result": "CLOSED. V4.1R: 50 units, 50 HTTP-200 wire responses, zero retries. K0/K0D/K1/K2 each 4/5 pair profiles; K3 5/5. Overall 21/25 = 84%; Pair 04 diagnostic only. Difficulty/identification gate HOLD. Main BAT unexecuted; incremental Aperture/K3 causal superiority not established.",
+      "claim_ceiling": "Receiver-clean bounded calibration is not identification, methodological equivalence, universal provider behavior or independent external origin.",
+      "closure_status": "SCIENTIFIC_CLOSURE_AND_AMARI_COUNTERSIGNATURE_LOCATED; DO_NOT_REOPEN",
+      "successor": "6",
+      "preregistration_sha": "70299c23b3e0b3d781ea9673cae1d1112ba281f3",
+      "initial_preregistration_sha": "475a28443ee41b338233aef257d6c39cde8ed260",
+      "early_design_evolution": {
+        "v2": "a2fd6482328cd573afb7bfa330ae0896e6a7c89e",
+        "v3": "081cd96c82afcdb1d4b5771d5cf2f992e44e070b",
+        "v4_receipt_freeze": "70299c23b3e0b3d781ea9673cae1d1112ba281f3"
+      },
+      "preregistration_lane_current_head": "0469c721fb195a3fd45396446452679eb9776ab7",
+      "egress_sha": "2fe3b2835f080620ce40e820f1ddef7c8775d4f4",
+      "scientific_closure_sha": "7e4d5e73107e79d297673b05170568d70e2e89b1",
+      "forensic_certification_sha": "f84d6b9d11a29b0295251171990e89bf443314b0",
+      "countersignature_sha": "df0ad6cd0795a38735bfda4d6a155857d6df0e9b",
+      "receiver_coordinate": {
+        "provider_model": "google/gemini-3.8-flash",
+        "thinking_level": "medium",
+        "transport": "vercel-preview/server-fetch",
+        "execution_evidence_class": "ACTUAL_RECEIVER_TEST_IN_RETAINED_RECEIPTS",
+        "new_receiver_execution_or_provider_observation_in_this_reconciliation": false
+      },
+      "calibration_stage_dispositions": {
+        "V2": "GENUINE_RECEIVER_EXECUTION",
+        "V3": "NOT_EXECUTED_RECEIVER_LEAKAGE_HOLD",
+        "V3B": "GENUINE_RECEIVER_EXECUTION",
+        "V4": "DESIGN_ONLY_NOT_EXECUTED",
+        "V4.1": "GENUINE_EXECUTION_GATE_INELIGIBLE_PROTOCOL_DEVIATION",
+        "V4.1R": "GENUINE_CLEAN_RECOVERY_EXECUTION_NON_IDENTIFYING_CLOSURE"
+      },
+      "v41r_coordinates": {
+        "design_freeze": "761bea6aa8e6412ad38340dfe8c4f9eebf129c64",
+        "execution_binding": "5e0c0e2fed324d91c78307aa97975dadda75e003",
+        "machinery_repair": "0a51c6bc49b2dd967f31aaaea886cd9ab35d0131",
+        "final_machinery": "5e71bc657a654c85be3264a1eab258dd5345dbad",
+        "raw_freeze": "1b5600cba2cbab29f244f86ceb73f620318a74f5",
+        "key_reveal": "1c9f47bf90ed832e4e5314044230c7d2c01c6f30"
+      },
+      "branch_ref": "research/sequence-5.5-amari-closure-20261006",
+      "canonical_head_sha": "df0ad6cd0795a38735bfda4d6a155857d6df0e9b",
+      "git_parent_shas": [
+        "f84d6b9d11a29b0295251171990e89bf443314b0"
+      ]
+    }
+  ],
+  "sequence_5_original_local_commit_chain": [
+    "6df6100bc38864052f80a81abe3c0c35a691ac88",
+    "44ff5301e8f2609c0f2385336d51f504cc1f4482",
+    "3c653de5e6b32d7a65e965e8c5241961e4cc9d17",
+    "aa01806ccbb62e5bf7d91698b454f87688d9c655",
+    "1bdbbf7966a563e29836d0d971aba6c39ea0d4ff",
+    "a9b5b777a595484f6ff7b6f0d09e234a0d423711"
+  ],
+  "sequence_6_tranche_rest_structure": [
+    {
+      "stage": "FOUNDATION",
+      "sha": "f309a35822afbb72ece865a379be40800ba8effa",
+      "parent_shas": [
+        "1b1925ad47dce0d1794e77afdd5c3af8b438c260"
+      ],
+      "purpose": "Survivor activation; scientific ingestion of df0ad6c is not a Git-parent claim.",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "parent_program_sequence": "6"
+    },
+    {
+      "stage": "TRANCHE_1",
+      "sha": "44946b22cc8e8313ab58f7e257270988984e7309",
+      "parent_shas": [
+        "f309a35822afbb72ece865a379be40800ba8effa"
+      ],
+      "purpose": "Predecessor-chain implementation.",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "parent_program_sequence": "6"
+    },
+    {
+      "stage": "TRANCHE_1_CORRECTION",
+      "sha": "cd30af5450b9b4c8c6e13930e4c436c424f1fb69",
+      "parent_shas": [
+        "44946b22cc8e8313ab58f7e257270988984e7309"
+      ],
+      "purpose": "Corrective closure; canonicalization and architecture freeze.",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "parent_program_sequence": "6"
+    },
+    {
+      "stage": "REST_1_RECONCILIATION",
+      "sha": "6b11249c0363715caa32463b854735e5088c3b55",
+      "parent_shas": [
+        "cd30af5450b9b4c8c6e13930e4c436c424f1fb69"
+      ],
+      "purpose": "Intermediate architecture corrections.",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "parent_program_sequence": "6"
+    },
+    {
+      "stage": "REST_1_FINAL",
+      "sha": "4871e0c53749985facbf62749e1161d13a420e0e",
+      "parent_shas": [
+        "6b11249c0363715caa32463b854735e5088c3b55"
+      ],
+      "purpose": "Survivor architecture freeze; Models A–E comparative trial remains proposed.",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "parent_program_sequence": "6"
+    },
+    {
+      "stage": "TRANCHE_2",
+      "sha": "845b01e8ae0d807ee5dffc8a629c2715723c8634",
+      "parent_shas": [
+        "4871e0c53749985facbf62749e1161d13a420e0e"
+      ],
+      "purpose": "Semantic motion bridge.",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "parent_program_sequence": "6"
+    },
+    {
+      "stage": "TRANCHE_2B",
+      "sha": "16c8c0a70f8e7b0abfeb115c1d19157adb9e49d3",
+      "parent_shas": [
+        "845b01e8ae0d807ee5dffc8a629c2715723c8634"
+      ],
+      "purpose": "Visual director tournament.",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "parent_program_sequence": "6"
+    },
+    {
+      "stage": "TRANCHE_2C",
+      "sha": "270e47ec155fe0d9bc4533c5200c51f7dfecb9f5",
+      "parent_shas": [
+        "16c8c0a70f8e7b0abfeb115c1d19157adb9e49d3"
+      ],
+      "purpose": "Couture Tectonic Federalism Director’s Cut.",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "parent_program_sequence": "6"
+    },
+    {
+      "stage": "TRANCHE_2C_CORRECTION",
+      "sha": "1f3a520f248e107530843bb6b613e707b94a2306",
+      "parent_shas": [
+        "270e47ec155fe0d9bc4533c5200c51f7dfecb9f5"
+      ],
+      "purpose": "Carrier-index and closure correction.",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "parent_program_sequence": "6"
+    },
+    {
+      "stage": "TRANCHE_3",
+      "sha": "90052232b699f9dea8e616214c809f27ebef171f",
+      "parent_shas": [
+        "1f3a520f248e107530843bb6b613e707b94a2306"
+      ],
+      "purpose": "Reference journey; not final native cutover.",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "parent_program_sequence": "6"
+    },
+    {
+      "stage": "TRANCHE_3A",
+      "sha": "518fff1f6f904392ade5dc651a0642d18e071c70",
+      "parent_shas": [
+        "90052232b699f9dea8e616214c809f27ebef171f"
+      ],
+      "purpose": "Payload/content binding, head separation, immutable retry origin, explicit gesture, route validation and custody repair. Native cutover claim still requires separate evidence.",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "parent_program_sequence": "6"
+    },
+    {
+      "stage": "TRANCHE_3B",
+      "sha": "eca486ab7d999eb29005576d9caa80dfe8838d35",
+      "parent_shas": [
+        "518fff1f6f904392ade5dc651a0642d18e071c70"
+      ],
+      "purpose": "Actual native product route cutover; no separate named 08-Tranche-3B report located.",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "parent_program_sequence": "6"
+    },
+    {
+      "stage": "CI_NATIVE_INCLUSION",
+      "sha": "2408b2331e0c12fbfa1535b0b5b86fdf6442d416",
+      "parent_shas": [
+        "eca486ab7d999eb29005576d9caa80dfe8838d35"
+      ],
+      "purpose": "Native cutover included in CI.",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "parent_program_sequence": "6"
+    },
+    {
+      "stage": "INERT_PREFLIGHT_CORRECTION",
+      "sha": "9f42c305e0b5a3e0a4cad8648ab519aa56e3c77a",
+      "parent_shas": [
+        "2408b2331e0c12fbfa1535b0b5b86fdf6442d416"
+      ],
+      "purpose": "Preflight correction.",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "parent_program_sequence": "6"
+    },
+    {
+      "stage": "BOUNDED_FIXTURE_CORRECTION",
+      "sha": "2775ad20515c83c83f8df6689207e6f63342770b",
+      "parent_shas": [
+        "9f42c305e0b5a3e0a4cad8648ab519aa56e3c77a"
+      ],
+      "purpose": "Fixture-bound assertion correction.",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "parent_program_sequence": "6"
+    },
+    {
+      "stage": "NATIVE_BROWSER_WITNESS_HEAD",
+      "sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "parent_shas": [
+        "2775ad20515c83c83f8df6689207e6f63342770b"
+      ],
+      "purpose": "Exact-head retained CI PASS; deterministic receiver; no external provider calls.",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "parent_program_sequence": "6"
+    }
+  ],
+  "provenance_graph": {
+    "mermaid": "flowchart TD\n  subgraph Program[\"Program succession · dotted edges are evidentiary inheritance\"]\n    S1[\"Sequence 1 · R3 / Candidate X\"] -.-> S2[\"Sequence 2 · Observatory\"]\n    S2 -.-> S3[\"Sequence 3 · Cathedral\"]\n    S3 -.-> S4[\"Sequence 4 · Relation Survival\"]\n    S4 -.-> H41[\"4.1 · Hardening\"]\n    H41 -.-> H45[\"4.5 · Historical method stage\"]\n    H45 -.-> S5[\"Sequence 5 · Failed receiver evidence\"]\n    S5 -.-> R5[\"5R · Forensic correction\"]\n    R5 -.-> C55[\"5.5 · Closed, non-identifying\"]\n    C55 -.-> S6[\"Sequence 6 · Survivor / product\"]\n  end\n  subgraph Git[\"Git forks · solid edges denote retained ancestry, possibly multiple commits\"]\n    B[\"5b4b3427 · merged Episode 1428-X\"] --> EB[\"582a1f04 · corrected transfer carrier\"]\n    EB --> W1[\"9b4a9e55 · R3 workflow witness\"]\n    B --> O2[\"95dea19c · Sequence 2\"]\n    B --> P3[\"539c9302 · product composition base\"]\n    P3 --> D3[\"6c21813c · Sequence 3\"]\n    O2 --> F4[\"2a9c915f → 04d81163 · Sequence 4\"]\n    F4 --> R41[\"92ec5f07 → e639d088 → 7ad94230\"]\n    R41 --> R45[\"84583ed6 → 19523303 → c234f561 → daa77733\"]\n    R45 --> W5[\"six local commits → a9b5b777\"]\n    W5 --> A5[\"6e3015df · forensic audit\"]\n    A5 --> L55[\"5.5 research → egress → df0ad6cd\"]\n    B --> I6[\"1b1925ad → f309a358 · Sequence 6 fork\"]\n    I6 --> N6[\"tranches / rests → 518fff1f → eca486ab → 25784856\"]\n    L55 -. \"closure ingested; not Git parent\" .-> I6\n  end",
+    "program_edges": "Evidentiary/program succession, not asserted Git parentage.",
+    "git_edges": "Actual retained ancestry; intermediate commits may be collapsed. Exact parent arrays in git_objects.",
+    "fork_law": "Sequence 3 product lane, Sequence 4 research lane and Sequence 6 integration lane are not one linear Git branch."
+  },
+  "supersession_ledger": [
+    {
+      "artifact": "Episode 1428-X original closure narrative",
+      "old_claim": "Broad completed route/closure inference.",
+      "superseding_artifact": "orchestrator-contract",
+      "reason": "Harness failures, hash/workspace disagreement and layer separation required corrective HELD records followed by bounded R4 closure.",
+      "current_authority": "Only named transport/receipt ancestry/return-review layer findings; custody HELD, signatures UNVERIFIED, physical/human UNMEASURED in retained dossier."
+    },
+    {
+      "artifact": "Episode 1428-X Model A terminal behavior",
+      "old_claim": "One substantive continuation is canonical in that episode; no later content predecessor is applicable.",
+      "superseding_artifact": "s1-behavior-contract",
+      "reason": "Candidate X explicitly adds repeated fresh-gesture re-entry after REST.",
+      "current_authority": "Historical Model A semantics stay true for the earlier episode. They do not prohibit successor Candidate X repeated continuation."
+    },
+    {
+      "artifact": "Candidate X egress Episode A",
+      "old_claim": "Initial carrier reconstructs exact candidate bytes.",
+      "superseding_artifact": "s1-egress-b-manifest",
+      "reason": "LF/CRLF conversion changed a key commitment file (94 to 93 bytes); Episode B repairs byte carriage without rewriting Episode A.",
+      "current_authority": "Episode A remains failed witness; Episode B and R3 CI establish corrected byte carriage."
+    },
+    {
+      "artifact": "Sequence 4.5 result claims",
+      "old_claim": "Treatment contrasts and vocabulary-overfit conclusion from original 20-run report.",
+      "superseding_artifact": "s45-correction",
+      "reason": "Baseline/tutorial contamination, scorer contradictions, signature leakage, vocabulary misclassification and pseudoreplication.",
+      "current_authority": "HISTORICAL_METHOD_STAGE; stronger differential/methodology conclusions held."
+    },
+    {
+      "artifact": "Sequence 4.5 full-SHA prose",
+      "old_claim": "Prose chronology supplied complete Freeze A/B/C identifiers.",
+      "superseding_artifact": "s45-correction + remote Git commit objects",
+      "reason": "Prose full SHAs disagree with actual Git objects; do not hallucinate suffixes.",
+      "current_authority": "Only remotely resolved Git objects listed in this index; erroneous prose preserved separately.",
+      "disagreements": [
+        {
+          "freeze": "A",
+          "prose_sha": "84583ed645caee9b41818296a1eb1d7f6c38daef",
+          "git_sha": "84583ed64fc9f2c358935cd82bbe73396a6acd9f"
+        },
+        {
+          "freeze": "B",
+          "prose_sha": "1952330353fa2841cf318251e18b02444b6ea083",
+          "git_sha": "195233035daff0d990f9191ebc64982cad3f05fd"
+        },
+        {
+          "freeze": "C",
+          "prose_sha": "c234f561eead35ce675c93cb62df331d279cfeb1",
+          "git_sha": "c234f561ed6791c5cd9256f7c5f5a5d4c4122353"
+        }
+      ]
+    },
+    {
+      "artifact": "Original Sequence 5 chronology",
+      "old_claim": "Commit chronology implies contemporaneous remote preregistration.",
+      "superseding_artifact": "s5-forensic-audit",
+      "reason": "Six local commits were pushed only after execution. Execution receipt is not later reconstruction.",
+      "current_authority": "ORIGINAL_SEQUENCE_5_REMOTE_CHRONOLOGY = NOT_ESTABLISHED; post-execution remote witness retained."
+    },
+    {
+      "artifact": "Sequence 5 statistical contrasts",
+      "old_claim": "Procedural records presented as receiver/model outputs and treatment evidence.",
+      "superseding_artifact": "s5-forensic-audit",
+      "reason": "execute_receivers_seq5.mjs generated outputs procedurally and read the hidden key.",
+      "current_authority": "SYNTHETIC_RECEIVER_OUTPUTS_FROM_START; receiver evidence FAILED; all contrasts INVALIDATED; effects HELD."
+    },
+    {
+      "artifact": "Sequence 5.5 early Freeze A / egress",
+      "old_claim": "Early preregistration or egress head can stand in for final closure.",
+      "superseding_artifact": "s55-scientific-closure + s55-countersignature",
+      "reason": "Later receiver-clean V4.1R execution and final certification are distinct evidentiary stages.",
+      "current_authority": "Final non-identifying scientific closure at df0ad6cd0795a38735bfda4d6a155857d6df0e9b; no V5 to force treatment separation."
+    },
+    {
+      "artifact": "Sequence 6 Tranche 3 reference journey",
+      "old_claim": "Reference simulator PASS proves actual native product route.",
+      "superseding_artifact": "s6-custody-repair + Tranche 3B + ci-sequence-6",
+      "reason": "Payload binding/custody repair was necessary; real native integration and its continuous browser witness were separate subsequent work.",
+      "current_authority": "Native UI route now has retained deterministic-receiver browser evidence at 257848567fdc95c5dabee20b43d8bb17da1deb43; external provider/physical/human claims remain separate."
+    },
+    {
+      "artifact": "Earlier contract-location HOLD / missing Tranche 3B filename",
+      "old_claim": "Orchestrator and six-sequence contracts cannot be addressed; no 3B found by filename.",
+      "superseding_artifact": "This canonical index and eca486ab7d999eb29005576d9caa80dfe8838d35",
+      "reason": "Full Git ancestry and dispersed contracts recover the addresses; no new assay was needed.",
+      "current_authority": "Contract-location HOLD can lift. Execution suitability and operator assay authorization are separate decisions."
+    }
+  ],
+  "unresolved_ambiguities_and_boundaries": [
+    {
+      "id": "general-orchestrator-runtime",
+      "status": "UNLOCATED",
+      "searched": "DOLLHOUSE.md, registry, case dossier, closure auditor, claim ceilings, invariant tests, Episode 1428-X, fixed-fixture ablation and Sequence 6 REST 1 comparison contract; history terms orchestrator/orchestration/governed clerk/monolithic/dumb concat.",
+      "boundary": "No general autonomous multi-provider scheduler established. Bounded adjudication and deterministic disagreement retention are located."
+    },
+    {
+      "id": "sequence-3-formal-tournament-closure",
+      "status": "UNLOCATED",
+      "searched": "6c21813c commit/tree, LAB_FEEDBACK_FROM_PRODUCT.md, 39-carrier engine, dedicated composition test and design branch ancestry.",
+      "boundary": "Numbered tranche and implementation are located; separate preregistered tournament raw scoring/closure ledger was not located."
+    },
+    {
+      "id": "sequence-6-global-final-rest2-countersignature",
+      "status": "UNLOCATED",
+      "searched": "staging branch through 257848567fdc95c5dabee20b43d8bb17da1deb43, surviving-relations records, architecture freeze, 3A report, 3B native changes, exact-head CI run and browser job.",
+      "boundary": "REST 2 recommendation is retained; native deterministic browser PASS exists; a separate global final scientific countersignature is not established."
+    },
+    {
+      "id": "candidate-x-direct-remote-object",
+      "status": "DIRECT_GITHUB_OBJECT_UNLOCATED; BUNDLE_GIT_OBJECT_RECOVERED",
+      "searched": "GitHub git/commits/41112992ffd82dd1f06552b3c5881dc43de3cb20 returned 404; remote Episode B bundle at 582a1f04 was fetched and verified.",
+      "boundary": "Exact object and parent/tree recovered from retained remote Git bundle; no invented SHA and no direct GitHub commit link asserted."
+    },
+    {
+      "id": "registry-versus-fifth-role",
+      "status": "PRESERVED_REF_DIFFERENCE",
+      "searched": "b08a7cb registry/DOLLHOUSE.md and Temporal Custodian candidate ref 88f128c.",
+      "boundary": "Four installed roles at the Episode contract coordinate; Temporal Custodian is fifth jurisdiction with separate bounded first-class adapter. Orchestrator is not fifth doll."
+    },
+    {
+      "id": "model-a-collision",
+      "status": "RESOLVED_NAMESPACE_SEPARATION",
+      "searched": "Episode 1428-X II-A and Sequence 6 REST 1 VII.",
+      "boundary": "Episode 1428-X Model A means setup acknowledgment plus first substantive continuation. REST 1 comparison Model A means monolithic model call. These are different namespaces."
+    }
+  ],
+  "remote_ref_snapshots": {
+    "main": {
+      "name": "main",
+      "sha": "8d57bdfcd69cff9c5760cd001549197f3180c00a",
+      "tree": "59a654a212be5d37361fd97fdce4457552514bc0",
+      "parents": [
+        "911e8e427051f8f18ad2ef3331a12f628be311f0"
+      ],
+      "message": "release: restore Vercel deployment lock for 737350514ded8ad2ea7dd959ccb06f1dcbbf7d34"
+    },
+    "witness/r3-execution-candidate-x-582a1f04-20261005": {
+      "name": "witness/r3-execution-candidate-x-582a1f04-20261005",
+      "sha": "9b4a9e5561add51870d4f6cb5d106b3f7a6790e2",
+      "remote_ref": "refs/heads/witness/r3-execution-candidate-x-582a1f04-20261005"
+    },
+    "research/exteriority-observatory-v1-20261005": {
+      "name": "research/exteriority-observatory-v1-20261005",
+      "sha": "95dea19cc40a85bc4728916fcf2c6dbd227bc831",
+      "remote_ref": "refs/heads/research/exteriority-observatory-v1-20261005"
+    },
+    "design/loom-first-crossing-cathedral-20261005": {
+      "name": "design/loom-first-crossing-cathedral-20261005",
+      "sha": "6c21813c0f4a9fad31ef147d2b42c29b05ab8473",
+      "remote_ref": "refs/heads/design/loom-first-crossing-cathedral-20261005"
+    },
+    "research/relation-survival-assay-v1-20261005": {
+      "name": "research/relation-survival-assay-v1-20261005",
+      "sha": "04d81163eda1af8be1f5957cd8dbeb593edbacb9",
+      "remote_ref": "refs/heads/research/relation-survival-assay-v1-20261005"
+    },
+    "witness/sequence-5-postexecution-egress-20261005": {
+      "name": "witness/sequence-5-postexecution-egress-20261005",
+      "sha": "a9b5b777a595484f6ff7b6f0d09e234a0d423711",
+      "remote_ref": "refs/heads/witness/sequence-5-postexecution-egress-20261005"
+    },
+    "audit/sequence-5-synthetic-trace-audit-20261005": {
+      "name": "audit/sequence-5-synthetic-trace-audit-20261005",
+      "sha": "6e3015df659eb06084f14ce43144fd160bee3cda",
+      "remote_ref": "refs/heads/audit/sequence-5-synthetic-trace-audit-20261005"
+    },
+    "research/sequence-5.5-closure-chamber-20261005": {
+      "name": "research/sequence-5.5-closure-chamber-20261005",
+      "sha": "0469c721fb195a3fd45396446452679eb9776ab7",
+      "remote_ref": "refs/heads/research/sequence-5.5-closure-chamber-20261005"
+    },
+    "handoff/sequence-5.5-antigravity-egress-20261006": {
+      "name": "handoff/sequence-5.5-antigravity-egress-20261006",
+      "sha": "2fe3b2835f080620ce40e820f1ddef7c8775d4f4",
+      "remote_ref": "refs/heads/handoff/sequence-5.5-antigravity-egress-20261006"
+    },
+    "research/sequence-5.5-amari-closure-20261006": {
+      "name": "research/sequence-5.5-amari-closure-20261006",
+      "sha": "df0ad6cd0795a38735bfda4d6a155857d6df0e9b",
+      "remote_ref": "refs/heads/research/sequence-5.5-amari-closure-20261006"
+    },
+    "staging/sequence-6-integration-20261006": {
+      "name": "staging/sequence-6-integration-20261006",
+      "sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "remote_ref": "refs/heads/staging/sequence-6-integration-20261006"
+    },
+    "research/structural-extraction-hardening-v1-20261005": {
+      "name": "research/structural-extraction-hardening-v1-20261005",
+      "sha": "7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+      "remote_ref": "refs/heads/research/structural-extraction-hardening-v1-20261005"
+    },
+    "research/aperture-onboarding-differential-v1-20261005": {
+      "name": "research/aperture-onboarding-differential-v1-20261005",
+      "sha": "daa7773323b408d1080f70cd27e676161deafc96",
+      "remote_ref": "refs/heads/research/aperture-onboarding-differential-v1-20261005"
+    },
+    "candidate/temporal-custodian-first-class-20261005": {
+      "name": "candidate/temporal-custodian-first-class-20261005",
+      "sha": "88f128c75cd8efd58db9a77249f293e69d08762e",
+      "remote_ref": "refs/heads/candidate/temporal-custodian-first-class-20261005"
+    },
+    "witness/candidate-x-r3-egress2-41112992-20261004": {
+      "name": "witness/candidate-x-r3-egress2-41112992-20261004",
+      "sha": "582a1f04fd11e502fc7b3083ef6fa079dd0d23c8",
+      "remote_ref": "refs/heads/witness/candidate-x-r3-egress2-41112992-20261004"
+    },
+    "witness/candidate-x-r3-egress-41112992-20261004": {
+      "name": "witness/candidate-x-r3-egress-41112992-20261004",
+      "sha": "4bd363d5c4714bc086fe4bcd5580bb3b4d0fe6e0",
+      "remote_ref": "refs/heads/witness/candidate-x-r3-egress-41112992-20261004"
+    },
+    "amari/loom-mobile-dollhouse-closure-1430": {
+      "name": "amari/loom-mobile-dollhouse-closure-1430",
+      "remote_ref": "refs/heads/amari/loom-mobile-dollhouse-closure-1430",
+      "sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9"
+    }
+  },
+  "git_objects": {
+    "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9": {
+      "sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+      "tree_sha": "7ef04016a11c559142b7de8bda0b37fd408b12b6",
+      "parent_shas": [
+        "b93d65bd7e7497c23ca71bf566878911178030c1"
+      ],
+      "committed_at": "2026-10-04T13:05:30-04:00",
+      "message": "docs(research): reconcile Model A architecture and enforce layered closure scope",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "88f128c75cd8efd58db9a77249f293e69d08762e": {
+      "sha": "88f128c75cd8efd58db9a77249f293e69d08762e",
+      "tree_sha": "052ce8c4f7c472e09ffb748cbb077b9579d5f39f",
+      "parent_shas": [
+        "0b2d8e926734f7977238a5b9e099d735341e92f6"
+      ],
+      "committed_at": "2026-10-05T22:13:03-04:00",
+      "message": "chore(dollhouse): scope cleanup for Temporal Custodian candidate (restore unrelated files, remove CRLF churn)",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/88f128c75cd8efd58db9a77249f293e69d08762e",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "582a1f04fd11e502fc7b3083ef6fa079dd0d23c8": {
+      "sha": "582a1f04fd11e502fc7b3083ef6fa079dd0d23c8",
+      "tree_sha": "7cee2eb208afef9bdd2c09d6f60902b5775628e2",
+      "parent_shas": [
+        "5b4b34278c6100d3c21ced35984c046da157e097"
+      ],
+      "committed_at": "2026-10-04T17:32:22-04:00",
+      "message": "witness(candidate-x): publish r3 egress episode b carrier",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/582a1f04fd11e502fc7b3083ef6fa079dd0d23c8",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "4bd363d5c4714bc086fe4bcd5580bb3b4d0fe6e0": {
+      "sha": "4bd363d5c4714bc086fe4bcd5580bb3b4d0fe6e0",
+      "tree_sha": "de44a79aedc92d19e8e624c20090b9f5374c1dd1",
+      "parent_shas": [
+        "5b4b34278c6100d3c21ced35984c046da157e097"
+      ],
+      "committed_at": "2026-10-04T17:03:43-04:00",
+      "message": "witness(candidate-x): publish r3 extraction packet for external receiver evaluation",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/4bd363d5c4714bc086fe4bcd5580bb3b4d0fe6e0",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "9b4a9e5561add51870d4f6cb5d106b3f7a6790e2": {
+      "sha": "9b4a9e5561add51870d4f6cb5d106b3f7a6790e2",
+      "tree_sha": "9b664f357606672d46b96d00184bcc0e66004e8d",
+      "parent_shas": [
+        "582a1f04fd11e502fc7b3083ef6fa079dd0d23c8"
+      ],
+      "committed_at": "2026-10-05T13:27:18-04:00",
+      "message": "witness(r3): add execution witness workflow for candidate-x episode b",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/9b4a9e5561add51870d4f6cb5d106b3f7a6790e2",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "41112992ffd82dd1f06552b3c5881dc43de3cb20": {
+      "sha": "41112992ffd82dd1f06552b3c5881dc43de3cb20",
+      "tree_sha": "cb20a734a29ced3ed6f10e43d645fe19e878893f",
+      "parent_shas": [
+        "5b4b34278c6100d3c21ced35984c046da157e097"
+      ],
+      "committed_at": "2026-10-04T15:45:20-04:00",
+      "message": "experiment(candidate-x): implement explicit re-entry membrane with boundary disclosure",
+      "immutable_commit_url": null,
+      "remote_resolution": "BUNDLE_CARRIED_GIT_OBJECT",
+      "direct_github_git_commit_lookup": "UNLOCATED_HTTP_404",
+      "origin_witness": {
+        "carrier_commit": "582a1f04fd11e502fc7b3083ef6fa079dd0d23c8",
+        "path": "artifacts/r3-candidate-x-e2/candidate-x.bundle",
+        "bundle_ref": "refs/heads/candidate-x",
+        "bundle_sha256": "41a08c007202c108fc712d74ce5cd529c836271ccf6660c037b6360d21018464",
+        "verification": "git bundle verify and bundle-head resolution; no candidate tests rerun"
+      }
+    },
+    "95dea19cc40a85bc4728916fcf2c6dbd227bc831": {
+      "sha": "95dea19cc40a85bc4728916fcf2c6dbd227bc831",
+      "tree_sha": "418a1d79c920e6d978afef6358fa8d188b23fa8f",
+      "parent_shas": [
+        "5b4b34278c6100d3c21ced35984c046da157e097"
+      ],
+      "committed_at": "2026-10-05T14:03:09-04:00",
+      "message": "research(exteriority): build exteriority observatory v1 laboratory machinery",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/95dea19cc40a85bc4728916fcf2c6dbd227bc831",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "6c21813c0f4a9fad31ef147d2b42c29b05ab8473": {
+      "sha": "6c21813c0f4a9fad31ef147d2b42c29b05ab8473",
+      "tree_sha": "ac7a743f1ad63a2b6c846aa3f0bd74fb9f4959cf",
+      "parent_shas": [
+        "539c93021b6376f36ab2b3a7b65c8ae978dc766e"
+      ],
+      "committed_at": "2026-10-05T15:40:03-04:00",
+      "message": "Sequence 3: Product Demo Cathedral - Flow-Core 39-carrier presentation tournament",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/6c21813c0f4a9fad31ef147d2b42c29b05ab8473",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "04d81163eda1af8be1f5957cd8dbeb593edbacb9": {
+      "sha": "04d81163eda1af8be1f5957cd8dbeb593edbacb9",
+      "tree_sha": "674d545271c9999579d04bcc9dc4b34325019d8e",
+      "parent_shas": [
+        "2a9c915f38f05e7e30401f23cbfebc94b2e62b64"
+      ],
+      "committed_at": "2026-10-05T16:37:49-04:00",
+      "message": "research(assay): complete Sequence 4 relation-survival assay adjudication and final report",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/04d81163eda1af8be1f5957cd8dbeb593edbacb9",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "7ad94230d6988ac5dafe0b57a750479a2eb4577f": {
+      "sha": "7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+      "tree_sha": "9a281f162ca69ae881ab945c92b308f66520d89b",
+      "parent_shas": [
+        "e639d088b4f6f05ad8c83395fc6b8970407e047a"
+      ],
+      "committed_at": "2026-10-05T17:39:42-04:00",
+      "message": "research(assay): complete Sequence 4.1 adjudication, key reveal, and final report (FREEZE C)",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "daa7773323b408d1080f70cd27e676161deafc96": {
+      "sha": "daa7773323b408d1080f70cd27e676161deafc96",
+      "tree_sha": "989fc226cfe1d48eaec119b5b0bcc881dd554dac",
+      "parent_shas": [
+        "c234f561ed6791c5cd9256f7c5f5a5d4c4122353"
+      ],
+      "committed_at": "2026-10-05T19:25:26-04:00",
+      "message": "research(assay): record Sequence 4.5 unblinded contrast analysis, doctrine overfit audit, and final report (FREEZE D)",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/daa7773323b408d1080f70cd27e676161deafc96",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "a9b5b777a595484f6ff7b6f0d09e234a0d423711": {
+      "sha": "a9b5b777a595484f6ff7b6f0d09e234a0d423711",
+      "tree_sha": "8abff5e3ca4744abe781f77e30935e4d02fe96cf",
+      "parent_shas": [
+        "1bdbbf7966a563e29836d0d971aba6c39ea0d4ff"
+      ],
+      "committed_at": "2026-10-05T20:08:32-04:00",
+      "message": "research(assay): record Sequence 5 unblinded contrast analysis, vocabulary carryover audit, and final report (FREEZE D FINAL)",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/a9b5b777a595484f6ff7b6f0d09e234a0d423711",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "6e3015df659eb06084f14ce43144fd160bee3cda": {
+      "sha": "6e3015df659eb06084f14ce43144fd160bee3cda",
+      "tree_sha": "2b3dffcd56dd85866bc8878d24e0261b66f77202",
+      "parent_shas": [
+        "a9b5b777a595484f6ff7b6f0d09e234a0d423711"
+      ],
+      "committed_at": "2026-10-05T20:49:31-04:00",
+      "message": "chore(audit): record Sequence 5R receiver provenance and synthetic-trace audit",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/6e3015df659eb06084f14ce43144fd160bee3cda",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "70299c23b3e0b3d781ea9673cae1d1112ba281f3": {
+      "sha": "70299c23b3e0b3d781ea9673cae1d1112ba281f3",
+      "tree_sha": "67a6236f61f3dc1b097bd1c1dd52c8e98d6d3fe1",
+      "parent_shas": [
+        "081cd96c82afcdb1d4b5771d5cf2f992e44e070b"
+      ],
+      "committed_at": "2026-10-05T23:12:55-04:00",
+      "message": "research(assay): Freeze A V4 execution provenance receipt schema, K3 preemption adjudication semantics, and manifest closure",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/70299c23b3e0b3d781ea9673cae1d1112ba281f3",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "2fe3b2835f080620ce40e820f1ddef7c8775d4f4": {
+      "sha": "2fe3b2835f080620ce40e820f1ddef7c8775d4f4",
+      "tree_sha": "412d233c2e0af8d2857bd421a3cee9c3f574cbc2",
+      "parent_shas": [
+        "8b2012c258379fafc58fc964aec030846be84d52"
+      ],
+      "committed_at": "2026-10-06T00:35:59-04:00",
+      "message": "research(seq5.5): commit local egress preflight receipt, harness, verification, and handoff report",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/2fe3b2835f080620ce40e820f1ddef7c8775d4f4",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "df0ad6cd0795a38735bfda4d6a155857d6df0e9b": {
+      "sha": "df0ad6cd0795a38735bfda4d6a155857d6df0e9b",
+      "tree_sha": "88dd0ea124bb6e5fd6fb4cbd2837aaea7c3a64be",
+      "parent_shas": [
+        "f84d6b9d11a29b0295251171990e89bf443314b0"
+      ],
+      "committed_at": "2026-10-06T18:29:20-04:00",
+      "message": "research(seq5.5): Amari forensic countersignature and closure certification",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/df0ad6cd0795a38735bfda4d6a155857d6df0e9b",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "257848567fdc95c5dabee20b43d8bb17da1deb43": {
+      "sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "tree_sha": "d6063dab621de7d5ed66205f54ebd740cf61d9a2",
+      "parent_shas": [
+        "2775ad20515c83c83f8df6689207e6f63342770b"
+      ],
+      "committed_at": "2026-10-07T17:25:54-04:00",
+      "message": "test(sequence-6): witness native cutover browser episode",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "4871e0c53749985facbf62749e1161d13a420e0e": {
+      "sha": "4871e0c53749985facbf62749e1161d13a420e0e",
+      "tree_sha": "f2e83172c6e8b85076fbf8eca51f77f0dbee6fc2",
+      "parent_shas": [
+        "6b11249c0363715caa32463b854735e5088c3b55"
+      ],
+      "committed_at": "2026-10-06T20:17:38-04:00",
+      "message": "docs(seq6): complete Rest 1 final architecture reconciliation",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/4871e0c53749985facbf62749e1161d13a420e0e",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "92ec5f07e01648c18364fe6729c375bf945fb7fb": {
+      "sha": "92ec5f07e01648c18364fe6729c375bf945fb7fb",
+      "tree_sha": "0f1041e4cbe73f6f8af4fb477595343088350746",
+      "parent_shas": [
+        "04d81163eda1af8be1f5957cd8dbeb593edbacb9"
+      ],
+      "committed_at": "2026-10-05T16:59:16-04:00",
+      "message": "research(assay): freeze Sequence 4.1 preregistration, fixtures, and hidden key commitment (FREEZE A)",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/92ec5f07e01648c18364fe6729c375bf945fb7fb",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "e639d088b4f6f05ad8c83395fc6b8970407e047a": {
+      "sha": "e639d088b4f6f05ad8c83395fc6b8970407e047a",
+      "tree_sha": "2d62df794aee6d8288965227dcbd463da703a398",
+      "parent_shas": [
+        "92ec5f07e01648c18364fe6729c375bf945fb7fb"
+      ],
+      "committed_at": "2026-10-05T17:35:56-04:00",
+      "message": "research(assay): record Sequence 4.1 raw receiver outputs and hashes (FREEZE B)",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/e639d088b4f6f05ad8c83395fc6b8970407e047a",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "84583ed64fc9f2c358935cd82bbe73396a6acd9f": {
+      "sha": "84583ed64fc9f2c358935cd82bbe73396a6acd9f",
+      "tree_sha": "65724f7dbe3f6f8f0f712bc77275d619e8551503",
+      "parent_shas": [
+        "7ad94230d6988ac5dafe0b57a750479a2eb4577f"
+      ],
+      "committed_at": "2026-10-05T19:19:05-04:00",
+      "message": "research(assay): freeze Sequence 4.5 preregistration, matched packets, battery, and hidden key commitment (FREEZE A)",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/84583ed64fc9f2c358935cd82bbe73396a6acd9f",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "195233035daff0d990f9191ebc64982cad3f05fd": {
+      "sha": "195233035daff0d990f9191ebc64982cad3f05fd",
+      "tree_sha": "592baa157fc3132a811218a79cce560c9bcc5ef6",
+      "parent_shas": [
+        "84583ed64fc9f2c358935cd82bbe73396a6acd9f"
+      ],
+      "committed_at": "2026-10-05T19:20:39-04:00",
+      "message": "research(assay): record Sequence 4.5 raw receiver outputs, execution ledger, and sealed mapping (FREEZE B)",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/195233035daff0d990f9191ebc64982cad3f05fd",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "c234f561ed6791c5cd9256f7c5f5a5d4c4122353": {
+      "sha": "c234f561ed6791c5cd9256f7c5f5a5d4c4122353",
+      "tree_sha": "282df49fb0949cd6aa08ea6061eca088a7e2c6ee",
+      "parent_shas": [
+        "195233035daff0d990f9191ebc64982cad3f05fd"
+      ],
+      "committed_at": "2026-10-05T19:21:58-04:00",
+      "message": "research(assay): record Sequence 4.5 key reveal, blind scorer outputs, and disagreement ledger (FREEZE C)",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/c234f561ed6791c5cd9256f7c5f5a5d4c4122353",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "761bea6aa8e6412ad38340dfe8c4f9eebf129c64": {
+      "sha": "761bea6aa8e6412ad38340dfe8c4f9eebf129c64",
+      "tree_sha": "8b6268e1aeb1df92f5b567de18c32d00a12abf4e",
+      "parent_shas": [
+        "f719f61a3ffc822032aeb0ca9f45681c3540b069"
+      ],
+      "committed_at": "2026-10-06T11:25:31-04:00",
+      "message": "research(seq5.5): V4_1R_RECOVERY_DESIGN_FREEZE fixes 10 fixtures, public target matrix, gate spec, manifest, and key commitment",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/761bea6aa8e6412ad38340dfe8c4f9eebf129c64",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "5e0c0e2fed324d91c78307aa97975dadda75e003": {
+      "sha": "5e0c0e2fed324d91c78307aa97975dadda75e003",
+      "tree_sha": "c29d2af07615e509ae14c87bafba93dc08a722a5",
+      "parent_shas": [
+        "761bea6aa8e6412ad38340dfe8c4f9eebf129c64"
+      ],
+      "committed_at": "2026-10-06T12:15:44-04:00",
+      "message": "research(seq5.5): V4_1R_STAGE_2_EXECUTION_BINDING_FREEZE execution binding manifest, receipt schema, api route, and harness",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/5e0c0e2fed324d91c78307aa97975dadda75e003",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "0a51c6bc49b2dd967f31aaaea886cd9ab35d0131": {
+      "sha": "0a51c6bc49b2dd967f31aaaea886cd9ab35d0131",
+      "tree_sha": "777227fe5cc76ef2848ada8b3342c341af319fa6",
+      "parent_shas": [
+        "5e0c0e2fed324d91c78307aa97975dadda75e003"
+      ],
+      "committed_at": "2026-10-06T12:27:35-04:00",
+      "message": "research(seq5.5): V4_1R_STAGE_2R_MACHINERY_REPAIR wire thinkingLevel, remote preview transport, retry preservation, and receipt schema validator",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/0a51c6bc49b2dd967f31aaaea886cd9ab35d0131",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "5e71bc657a654c85be3264a1eab258dd5345dbad": {
+      "sha": "5e71bc657a654c85be3264a1eab258dd5345dbad",
+      "tree_sha": "cf3d4f045b397b3a83e650e3a4a4b4e4ec13f174",
+      "parent_shas": [
+        "0a51c6bc49b2dd967f31aaaea886cd9ab35d0131"
+      ],
+      "committed_at": "2026-10-06T15:06:13-04:00",
+      "message": "research(seq5.5): V4_1R_FINAL_MACHINERY_PATCH exact Vercel deployment commit preflight, full receiver schema validation, and invalid receipt preservation",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/5e71bc657a654c85be3264a1eab258dd5345dbad",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "1b5600cba2cbab29f244f86ceb73f620318a74f5": {
+      "sha": "1b5600cba2cbab29f244f86ceb73f620318a74f5",
+      "tree_sha": "2afcdcded5f9c26dd66451766bb403309929434d",
+      "parent_shas": [
+        "5e71bc657a654c85be3264a1eab258dd5345dbad"
+      ],
+      "committed_at": "2026-10-06T17:25:29-04:00",
+      "message": "research(seq5.5): PILOT_V4_1R_RAW_FREEZE 50 sacrificial units raw outputs, receipts, and blind manifest",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/1b5600cba2cbab29f244f86ceb73f620318a74f5",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "1c9f47bf90ed832e4e5314044230c7d2c01c6f30": {
+      "sha": "1c9f47bf90ed832e4e5314044230c7d2c01c6f30",
+      "tree_sha": "57b67fa6c418e0e682e4b5bc3da19bf60db75067",
+      "parent_shas": [
+        "1b5600cba2cbab29f244f86ceb73f620318a74f5"
+      ],
+      "committed_at": "2026-10-06T17:41:28-04:00",
+      "message": "research(seq5.5): append-only reveal of sealed Pilot V4.1R calibration key",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/1c9f47bf90ed832e4e5314044230c7d2c01c6f30",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "a2fd6482328cd573afb7bfa330ae0896e6a7c89e": {
+      "sha": "a2fd6482328cd573afb7bfa330ae0896e6a7c89e",
+      "tree_sha": "b775dd973a5259802a6bed887404b5b5ddfb0d63",
+      "parent_shas": [
+        "475a28443ee41b338233aef257d6c39cde8ed260"
+      ],
+      "committed_at": "2026-10-05T22:28:42-04:00",
+      "message": "research(assay): Freeze A V2 preregistration, dose-matched packets, sacrificial pilot battery, and execution bundle binding",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/a2fd6482328cd573afb7bfa330ae0896e6a7c89e",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "081cd96c82afcdb1d4b5771d5cf2f992e44e070b": {
+      "sha": "081cd96c82afcdb1d4b5771d5cf2f992e44e070b",
+      "tree_sha": "52484227627018a2bb24959a6d595081a043cbc4",
+      "parent_shas": [
+        "a2fd6482328cd573afb7bfa330ae0896e6a7c89e"
+      ],
+      "committed_at": "2026-10-05T22:53:56-04:00",
+      "message": "research(assay): Freeze A V3 dedicated receiver schema, canonical pilot hashes, dose and token parity, and length-prefixed bundle binding",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/081cd96c82afcdb1d4b5771d5cf2f992e44e070b",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "475a28443ee41b338233aef257d6c39cde8ed260": {
+      "sha": "475a28443ee41b338233aef257d6c39cde8ed260",
+      "tree_sha": "b2078ac419d239ff5ecfd74a3e9ff2273b4459e9",
+      "parent_shas": [
+        "6e3015df659eb06084f14ce43144fd160bee3cda"
+      ],
+      "committed_at": "2026-10-05T21:40:58-04:00",
+      "message": "research(assay): freeze Sequence 5.5 preregistration, treatment packets, and locked battery commitment (FREEZE A)",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/475a28443ee41b338233aef257d6c39cde8ed260",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "f309a35822afbb72ece865a379be40800ba8effa": {
+      "sha": "f309a35822afbb72ece865a379be40800ba8effa",
+      "tree_sha": "e3ecd104d935f2ef6b4010ada8f8cc77645c1a15",
+      "parent_shas": [
+        "1b1925ad47dce0d1794e77afdd5c3af8b438c260"
+      ],
+      "committed_at": "2026-10-06T00:29:34-04:00",
+      "message": "staging(sequence6): establish clean integration landing lane",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/f309a35822afbb72ece865a379be40800ba8effa",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "44946b22cc8e8313ab58f7e257270988984e7309": {
+      "sha": "44946b22cc8e8313ab58f7e257270988984e7309",
+      "tree_sha": "173f093e35e4b0a26f776c47f53d384becb53c53",
+      "parent_shas": [
+        "f309a35822afbb72ece865a379be40800ba8effa"
+      ],
+      "committed_at": "2026-10-06T19:28:37-04:00",
+      "message": "feat(seq6): implement canonical predecessor hash chaining engine and verification suite (INV-05)",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/44946b22cc8e8313ab58f7e257270988984e7309",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "cd30af5450b9b4c8c6e13930e4c436c424f1fb69": {
+      "sha": "cd30af5450b9b4c8c6e13930e4c436c424f1fb69",
+      "tree_sha": "fe8751cc19e81ac65c1197cab7e0816696302ae6",
+      "parent_shas": [
+        "44946b22cc8e8313ab58f7e257270988984e7309"
+      ],
+      "committed_at": "2026-10-06T19:41:39-04:00",
+      "message": "feat(seq6): complete Tranche 1 repairs and bind architecture freeze provenance",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/cd30af5450b9b4c8c6e13930e4c436c424f1fb69",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "6b11249c0363715caa32463b854735e5088c3b55": {
+      "sha": "6b11249c0363715caa32463b854735e5088c3b55",
+      "tree_sha": "b1de826a182440b918b197e955aa0c74c963fd5f",
+      "parent_shas": [
+        "cd30af5450b9b4c8c6e13930e4c436c424f1fb69"
+      ],
+      "committed_at": "2026-10-06T20:01:29-04:00",
+      "message": "docs(seq6): reconcile architecture freeze with canonical invariant and flowcore registries",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/6b11249c0363715caa32463b854735e5088c3b55",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "845b01e8ae0d807ee5dffc8a629c2715723c8634": {
+      "sha": "845b01e8ae0d807ee5dffc8a629c2715723c8634",
+      "tree_sha": "b2fb0ed626d0955b4de123f2c5991e8069a9f1bb",
+      "parent_shas": [
+        "4871e0c53749985facbf62749e1161d13a420e0e"
+      ],
+      "committed_at": "2026-10-06T21:18:52-04:00",
+      "message": "feat(seq6): implement 39-carrier flow-core dome-art semantic motion bridge (Tranche 2)",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/845b01e8ae0d807ee5dffc8a629c2715723c8634",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "16c8c0a70f8e7b0abfeb115c1d19157adb9e49d3": {
+      "sha": "16c8c0a70f8e7b0abfeb115c1d19157adb9e49d3",
+      "tree_sha": "562912eecc21220fefe7e746a1456e2ebc9d8c65",
+      "parent_shas": [
+        "845b01e8ae0d807ee5dffc8a629c2715723c8634"
+      ],
+      "committed_at": "2026-10-06T21:40:09-04:00",
+      "message": "feat(seq6): execute Tranche 2B visual director pass and design provocation tournament",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/16c8c0a70f8e7b0abfeb115c1d19157adb9e49d3",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "270e47ec155fe0d9bc4533c5200c51f7dfecb9f5": {
+      "sha": "270e47ec155fe0d9bc4533c5200c51f7dfecb9f5",
+      "tree_sha": "741ddc6cee8b57fd56252b6aeab2c432e3b76926",
+      "parent_shas": [
+        "16c8c0a70f8e7b0abfeb115c1d19157adb9e49d3"
+      ],
+      "committed_at": "2026-10-07T00:47:47-04:00",
+      "message": "feat(seq6): execute Tranche 2C director's cut synthesis and product language selection",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/270e47ec155fe0d9bc4533c5200c51f7dfecb9f5",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "1f3a520f248e107530843bb6b613e707b94a2306": {
+      "sha": "1f3a520f248e107530843bb6b613e707b94a2306",
+      "tree_sha": "8afb5a7860514a6b8bbf302e834e24d20d9b8091",
+      "parent_shas": [
+        "270e47ec155fe0d9bc4533c5200c51f7dfecb9f5"
+      ],
+      "committed_at": "2026-10-07T01:25:44-04:00",
+      "message": "fix(seq6): apply Tranche 2C director's cut closure corrections and capture browser witnesses",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/1f3a520f248e107530843bb6b613e707b94a2306",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "90052232b699f9dea8e616214c809f27ebef171f": {
+      "sha": "90052232b699f9dea8e616214c809f27ebef171f",
+      "tree_sha": "9d544ef62a2783b64d97232cab1b7480057a5251",
+      "parent_shas": [
+        "1f3a520f248e107530843bb6b613e707b94a2306"
+      ],
+      "committed_at": "2026-10-07T02:00:29-04:00",
+      "message": "feat(sequence-6): tranche 3 journey integration loom -> marrowline -> return\n\nEmbody and prove the end-to-end Sequence 6 journey under Haute Couture Tectonic Federalism:\n- LOOM ORIGIN -> EXPLICIT OUTBOUND AUTHORIZATION -> MARROWLINE CONTINUATION -> RETURN / RE-ENTRY -> RECEIPT INSPECTION -> LAWFUL STRUCTURAL REST\n- Full enforcement of INV-01..04, INV-05 predecessor chaining, and INV-11 temporal non-retroactivity\n- Route memory vs authority memory separation (ROUTE_MEMORY != AUTHORITY_MEMORY)\n- Single-shot ephemeral authorization tokens and provider carriage vs #691 detached delegation distinction\n- Unanchored return surfaced explicitly without fabricating authority\n- Isomorphic event chain crypto hardening for 100% browser and Node parity\n- Interactive journey surface in app/dome-world/sequence-6-journey.html\n- 21 hostile journey integration tests passing (47/47 Sequence 6 tests green)\n- Headless browser PNG witnesses captured across all 5 jurisdictions, 390px mobile, and reduced motion\n- Recommend SEQUENCE_6_REST_2 = MINIMUM_SURVIVING_PRODUCT_PROVEN (RECOMMENDED)",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/90052232b699f9dea8e616214c809f27ebef171f",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "518fff1f6f904392ade5dc651a0642d18e071c70": {
+      "sha": "518fff1f6f904392ade5dc651a0642d18e071c70",
+      "tree_sha": "f31f3d5feaa7a370f2ef47953aa5fbfb25d78452",
+      "parent_shas": [
+        "90052232b699f9dea8e616214c809f27ebef171f"
+      ],
+      "committed_at": "2026-10-07T02:40:24-04:00",
+      "message": "feat(sequence-6): tranche 3a actual product cutover and custody repair",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/518fff1f6f904392ade5dc651a0642d18e071c70",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "eca486ab7d999eb29005576d9caa80dfe8838d35": {
+      "sha": "eca486ab7d999eb29005576d9caa80dfe8838d35",
+      "tree_sha": "6805a50b58c72cb712b9f55eff5f63ef81f1aed5",
+      "parent_shas": [
+        "518fff1f6f904392ade5dc651a0642d18e071c70"
+      ],
+      "committed_at": "2026-10-07T04:08:21-04:00",
+      "message": "feat(sequence-6): tranche 3b native product route cutover",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/eca486ab7d999eb29005576d9caa80dfe8838d35",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "2408b2331e0c12fbfa1535b0b5b86fdf6442d416": {
+      "sha": "2408b2331e0c12fbfa1535b0b5b86fdf6442d416",
+      "tree_sha": "e4b42850e203866ff011ba4bb82ce9f2e9603c23",
+      "parent_shas": [
+        "eca486ab7d999eb29005576d9caa80dfe8838d35"
+      ],
+      "committed_at": "2026-10-07T17:09:07-04:00",
+      "message": "test(sequence-6): include native cutover in Loom contract lane",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/2408b2331e0c12fbfa1535b0b5b86fdf6442d416",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "9f42c305e0b5a3e0a4cad8648ab519aa56e3c77a": {
+      "sha": "9f42c305e0b5a3e0a4cad8648ab519aa56e3c77a",
+      "tree_sha": "f3aed12bc13987267d3b4b6723ed553aa2a9d922",
+      "parent_shas": [
+        "2408b2331e0c12fbfa1535b0b5b86fdf6442d416"
+      ],
+      "committed_at": "2026-10-07T17:12:27-04:00",
+      "message": "fix(sequence-6): restore inert site epoch preflight",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/9f42c305e0b5a3e0a4cad8648ab519aa56e3c77a",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "2775ad20515c83c83f8df6689207e6f63342770b": {
+      "sha": "2775ad20515c83c83f8df6689207e6f63342770b",
+      "tree_sha": "ffcfc6471589603beb218887c876411f26ba267f",
+      "parent_shas": [
+        "9f42c305e0b5a3e0a4cad8648ab519aa56e3c77a"
+      ],
+      "committed_at": "2026-10-07T17:17:06-04:00",
+      "message": "test(sequence-6): bound fixture separation assertion",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/2775ad20515c83c83f8df6689207e6f63342770b",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "58aa9e87eed14359b1ea32c5b5e33bd12be3b508": {
+      "sha": "58aa9e87eed14359b1ea32c5b5e33bd12be3b508",
+      "tree_sha": "9ae2a1eb7f49e978292aea48138a89cd70697fd3",
+      "parent_shas": [
+        "ff977fe8d3711162b61f905768a381ef4362dd76"
+      ],
+      "committed_at": "2026-10-04T01:09:08-04:00",
+      "message": "docs(dollhouse): complete mobile closure assay and extraction protocol",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/58aa9e87eed14359b1ea32c5b5e33bd12be3b508",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "c57e348dfddd6e9191d20233432662763b531611": {
+      "sha": "c57e348dfddd6e9191d20233432662763b531611",
+      "tree_sha": "a717f5c4f1a458b8899f53d9518611e22fea56e9",
+      "parent_shas": [
+        "58aa9e87eed14359b1ea32c5b5e33bd12be3b508"
+      ],
+      "committed_at": "2026-10-04T01:34:17-04:00",
+      "message": "docs(dollhouse): enforce closure auditor and align episode status to HELD\n\n- Add app/engine/dollhouse-closure-auditor.js and tests/dollhouse-closure-auditor.test.mjs to detect narrative overclaims\n- Re-calibrate docs/receipts/1428-closure-assay/closure-assay-report.json to honest verdict: HELD with explicit provider classification\n- Add tests/fixtures/dollhouse/blind-divergence suite with independent role audits and ablation experiment\n- Ground tests/fixtures/dollhouse/episode-1428-x-observatory.json strictly in evidence pointers\n- Synthesize complete 22-section research dossier in docs/research/2026-10-04-dollhouse-orchestration-episode-1428-x.md\n- Add app/dome-world/dollhouse-disagreement-inspector.html prototype\n- State explicitly: EPISODE TD613-DOLLHOUSE-1428-X = HELD, MERGE_AUTHORITY = SUSPENDED",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/c57e348dfddd6e9191d20233432662763b531611",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "1a2424b66e59625552888675b7615daf2c15e9dd": {
+      "sha": "1a2424b66e59625552888675b7615daf2c15e9dd",
+      "tree_sha": "8ccf60810e8fa0f576cc72d72bdafd3c643e18f3",
+      "parent_shas": [
+        "c57e348dfddd6e9191d20233432662763b531611"
+      ],
+      "committed_at": "2026-10-04T02:06:05-04:00",
+      "message": "feat(dollhouse): isolate C2 discrimination root cause, repair assay harness, and demonstrate laboratory extraction",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/1a2424b66e59625552888675b7615daf2c15e9dd",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "7e9fb139ce8a3c0e7ea4c2ffa161838223251bc6": {
+      "sha": "7e9fb139ce8a3c0e7ea4c2ffa161838223251bc6",
+      "tree_sha": "a4449f0d9bc2c02cdc94f7ca595514b410c49bb4",
+      "parent_shas": [
+        "1a2424b66e59625552888675b7615daf2c15e9dd"
+      ],
+      "committed_at": "2026-10-04T02:29:27-04:00",
+      "message": "fix(dollhouse): add preflight shim to lab pages, bound causal ceiling, and align PR 1430 governance",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/7e9fb139ce8a3c0e7ea4c2ffa161838223251bc6",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "b93d65bd7e7497c23ca71bf566878911178030c1": {
+      "sha": "b93d65bd7e7497c23ca71bf566878911178030c1",
+      "tree_sha": "ff8606bf7f381ff8693c0360daea5dba56b40960",
+      "parent_shas": [
+        "c91421ebfd7782d221d627c9273b68210920fd24"
+      ],
+      "committed_at": "2026-10-04T12:20:50-04:00",
+      "message": "feat(dollhouse): record TD613-DOLLHOUSE-1428-X-R4 live route closure witness, auditor admission, and completed research dossier",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/b93d65bd7e7497c23ca71bf566878911178030c1",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "5b4b34278c6100d3c21ced35984c046da157e097": {
+      "sha": "5b4b34278c6100d3c21ced35984c046da157e097",
+      "tree_sha": "7ef04016a11c559142b7de8bda0b37fd408b12b6",
+      "parent_shas": [
+        "1f0487b7cfb8943e8c7d287116a3e4af643bb815",
+        "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9"
+      ],
+      "committed_at": "2026-10-04T13:31:09-04:00",
+      "message": "Merge PR #1430 · TD613 Dollhouse Closure Assay\n\nLaboratory extraction and R4 production-route closure dossier. Preserves Model A semantics, layered closure scope, R1–R4 evidence lineage, closure auditor, Dollhouse experiments, and explicit HELD/UNMEASURED boundaries.",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/5b4b34278c6100d3c21ced35984c046da157e097",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "539c93021b6376f36ab2b3a7b65c8ae978dc766e": {
+      "sha": "539c93021b6376f36ab2b3a7b65c8ae978dc766e",
+      "tree_sha": "64f240801bf90fe13cf35a9ecd92d4f23826bc9c",
+      "parent_shas": [
+        "606d015c22f084cc28dae26949bc8b74debc616b"
+      ],
+      "committed_at": "2026-10-05T15:18:19-04:00",
+      "message": "feat(composition): compose PR #1433 and Candidate X baseline",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/539c93021b6376f36ab2b3a7b65c8ae978dc766e",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "2a9c915f38f05e7e30401f23cbfebc94b2e62b64": {
+      "sha": "2a9c915f38f05e7e30401f23cbfebc94b2e62b64",
+      "tree_sha": "23b7cd50660c7c21a996db2c3626861408cd7971",
+      "parent_shas": [
+        "95dea19cc40a85bc4728916fcf2c6dbd227bc831"
+      ],
+      "committed_at": "2026-10-05T16:33:09-04:00",
+      "message": "research(assay): freeze Sequence 4 fixtures, hidden key commitment, and raw receiver outputs",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/2a9c915f38f05e7e30401f23cbfebc94b2e62b64",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "1b1925ad47dce0d1794e77afdd5c3af8b438c260": {
+      "sha": "1b1925ad47dce0d1794e77afdd5c3af8b438c260",
+      "tree_sha": "ba1003bae7dca1683196daad675c98b4b590dda9",
+      "parent_shas": [
+        "5b4b34278c6100d3c21ced35984c046da157e097"
+      ],
+      "committed_at": "2026-10-05T18:59:17-04:00",
+      "message": "chore(aperture): sync exact operator-supplied v3.2-alpha instrument",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/1b1925ad47dce0d1794e77afdd5c3af8b438c260",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "6df6100bc38864052f80a81abe3c0c35a691ac88": {
+      "sha": "6df6100bc38864052f80a81abe3c0c35a691ac88",
+      "tree_sha": "a06ed21576f6d69bb2ff2678221a50b96c6d29ea",
+      "parent_shas": [
+        "daa7773323b408d1080f70cd27e676161deafc96"
+      ],
+      "committed_at": "2026-10-05T19:59:31-04:00",
+      "message": "research(assay): freeze Sequence 5 purified onboarding packets and source verification (FREEZE A TREATMENTS)",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/6df6100bc38864052f80a81abe3c0c35a691ac88",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "44ff5301e8f2609c0f2385336d51f504cc1f4482": {
+      "sha": "44ff5301e8f2609c0f2385336d51f504cc1f4482",
+      "tree_sha": "1223b18a141b4f6adb006bded6f644e942d7a82e",
+      "parent_shas": [
+        "6df6100bc38864052f80a81abe3c0c35a691ac88"
+      ],
+      "committed_at": "2026-10-05T19:59:58-04:00",
+      "message": "research(assay): freeze Sequence 5 candidate battery fixtures, preregistration, and hidden key commitment (FREEZE A FIXTURES)",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/44ff5301e8f2609c0f2385336d51f504cc1f4482",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "3c653de5e6b32d7a65e965e8c5241961e4cc9d17": {
+      "sha": "3c653de5e6b32d7a65e965e8c5241961e4cc9d17",
+      "tree_sha": "170f82b25d2315ff04531d2d2f1277c1f42c9d79",
+      "parent_shas": [
+        "44ff5301e8f2609c0f2385336d51f504cc1f4482"
+      ],
+      "committed_at": "2026-10-05T20:01:52-04:00",
+      "message": "research(assay): record pilot difficulty gate verification and lock final battery fixtures (FINAL FIXTURE FREEZE)",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/3c653de5e6b32d7a65e965e8c5241961e4cc9d17",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "aa01806ccbb62e5bf7d91698b454f87688d9c655": {
+      "sha": "aa01806ccbb62e5bf7d91698b454f87688d9c655",
+      "tree_sha": "7b3103de196f7b0c638c36921ed27f416d446836",
+      "parent_shas": [
+        "3c653de5e6b32d7a65e965e8c5241961e4cc9d17"
+      ],
+      "committed_at": "2026-10-05T20:03:50-04:00",
+      "message": "research(assay): freeze Sequence 5 raw neutralized receiver outputs, execution ledger, and sealed mapping (FREEZE B)",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/aa01806ccbb62e5bf7d91698b454f87688d9c655",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "1bdbbf7966a563e29836d0d971aba6c39ea0d4ff": {
+      "sha": "1bdbbf7966a563e29836d0d971aba6c39ea0d4ff",
+      "tree_sha": "949b62ee71d2fefdb525ec30dd5d2562eb751984",
+      "parent_shas": [
+        "aa01806ccbb62e5bf7d91698b454f87688d9c655"
+      ],
+      "committed_at": "2026-10-05T20:06:02-04:00",
+      "message": "research(assay): record Sequence 5 plaintext key reveal, blind scorer outputs, contradiction audit, and validated scores (FREEZE C)",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/1bdbbf7966a563e29836d0d971aba6c39ea0d4ff",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "8d57bdfcd69cff9c5760cd001549197f3180c00a": {
+      "sha": "8d57bdfcd69cff9c5760cd001549197f3180c00a",
+      "tree_sha": "59a654a212be5d37361fd97fdce4457552514bc0",
+      "parent_shas": [
+        "911e8e427051f8f18ad2ef3331a12f628be311f0"
+      ],
+      "committed_at": "2026-10-08T22:19:21Z",
+      "message": "release: restore Vercel deployment lock for 737350514ded8ad2ea7dd959ccb06f1dcbbf7d34",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/8d57bdfcd69cff9c5760cd001549197f3180c00a",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "0469c721fb195a3fd45396446452679eb9776ab7": {
+      "sha": "0469c721fb195a3fd45396446452679eb9776ab7",
+      "tree_sha": "720e41ab68f1b8dcf45c1a91692961047115f61c",
+      "parent_shas": [
+        "36f2aaf48a568d0a0171d34f6c1a22a25ff42a3b"
+      ],
+      "committed_at": "2026-10-05T23:52:51-04:00",
+      "message": "research(assay): append credential and billing provenance amendment to execution receipt schema",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/0469c721fb195a3fd45396446452679eb9776ab7",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    }
+  },
+  "artifact_catalog": [
+    {
+      "id": "orchestrator-contract",
+      "path": "docs/research/2026-10-04-dollhouse-orchestration-episode-1428-x.md",
+      "commit_sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+      "branch_ref": "amari/loom-mobile-dollhouse-closure-1430",
+      "git_blob_sha": "489c2bb7951eb6de34f053744005a47815dc8b26",
+      "bytes": 49892,
+      "sha256": "283fd96a3197788824b5b684cdaeb4e43c004ef616a38ff8cceee39594e74a0e",
+      "functions": [
+        "CORRECTION",
+        "AUDIT",
+        "FINAL_CLOSURE"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9/docs/research/2026-10-04-dollhouse-orchestration-episode-1428-x.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES",
+      "note": "Layered Episode 1428-X closure; not universal autonomous-agent execution authority."
+    },
+    {
+      "id": "dollhouse-roles",
+      "path": "DOLLHOUSE.md",
+      "commit_sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+      "branch_ref": "amari/loom-mobile-dollhouse-closure-1430",
+      "git_blob_sha": "9cd5ae8ccabddd2e8d7ff1dc2dd030c1cd58c4fb",
+      "bytes": 11260,
+      "sha256": "5cd1e554e80dd224f1875da1c00c25249f5a65f7e6f9beccf7127dd65791d377",
+      "functions": [
+        "ROLE_CONTRACT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9/DOLLHOUSE.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "role-pedagogue",
+      "path": "PEDAGOGUE.md",
+      "commit_sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+      "branch_ref": "amari/loom-mobile-dollhouse-closure-1430",
+      "git_blob_sha": "fc7ed703a4f2df18f650a39165525ea33328c4fe",
+      "bytes": 29733,
+      "sha256": "3abb25379be9a925c738a38858b92371822612f110e7491ee62a6e4a84101869",
+      "functions": [
+        "ROLE_CONTRACT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9/PEDAGOGUE.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "role-aperture",
+      "path": "APERTURE.md",
+      "commit_sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+      "branch_ref": "amari/loom-mobile-dollhouse-closure-1430",
+      "git_blob_sha": "25d8391361f84c90bf7476684ad2171b5626538e",
+      "bytes": 17025,
+      "sha256": "3f6225494e7f3b0a021699ae3f54f61d002f71bd6b7373e4bece2a699a7b5c1d",
+      "functions": [
+        "ROLE_CONTRACT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9/APERTURE.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "role-atlas",
+      "path": "ATLAS.md",
+      "commit_sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+      "branch_ref": "amari/loom-mobile-dollhouse-closure-1430",
+      "git_blob_sha": "b56d1c444294153832149f19fd9080d308d9ec2a",
+      "bytes": 11749,
+      "sha256": "f7a518d27a509d615368949ff617a2e7884278487257a4f398e16b4784bf0311",
+      "functions": [
+        "ROLE_CONTRACT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9/ATLAS.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "role-fadt",
+      "path": "FADT.md",
+      "commit_sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+      "branch_ref": "amari/loom-mobile-dollhouse-closure-1430",
+      "git_blob_sha": "90da4760baf9a96e0050e1857b8cc5ae822adb44",
+      "bytes": 9196,
+      "sha256": "c8b420ecc63621677dceee7c1530688cbc786503451cdeb157205b1fb67e8b6e",
+      "functions": [
+        "ROLE_CONTRACT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9/FADT.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "agent-registry",
+      "path": "app/engine/dollhouse-agent-registry.js",
+      "commit_sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+      "branch_ref": "amari/loom-mobile-dollhouse-closure-1430",
+      "git_blob_sha": "7730585a55013c527dda4d731664161a0b981d39",
+      "bytes": 3731,
+      "sha256": "90959d3eed8884e6f0905a09b53e07bd285c6ac305800cbd0bf7544ff92f5ab5",
+      "functions": [
+        "IMPLEMENTATION"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9/app/engine/dollhouse-agent-registry.js",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "claim-ceilings",
+      "path": "app/engine/dollhouse-claim-ceilings.js",
+      "commit_sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+      "branch_ref": "amari/loom-mobile-dollhouse-closure-1430",
+      "git_blob_sha": "10ef320a884eb93ea3518d26f7c54bd1200bcefe",
+      "bytes": 11821,
+      "sha256": "1cb975d383a4bb7378241d9de7152cf65dca85aa21c1f18c7fe3bf6a34af90cf",
+      "functions": [
+        "IMPLEMENTATION",
+        "CLAIM_CEILING"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9/app/engine/dollhouse-claim-ceilings.js",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "case-dossier",
+      "path": "app/engine/dollhouse-case-dossier.js",
+      "commit_sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+      "branch_ref": "amari/loom-mobile-dollhouse-closure-1430",
+      "git_blob_sha": "2b1cdb2aac3bc0008f9586d5f9035a250e457d5f",
+      "bytes": 5364,
+      "sha256": "fd6140e1a7eb09c6378355d009d8108111a20af359c15c49d0d1af7efee0c800",
+      "functions": [
+        "IMPLEMENTATION",
+        "DISAGREEMENT_RETENTION"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9/app/engine/dollhouse-case-dossier.js",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "closure-auditor",
+      "path": "app/engine/dollhouse-closure-auditor.js",
+      "commit_sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+      "branch_ref": "amari/loom-mobile-dollhouse-closure-1430",
+      "git_blob_sha": "b35dd0a5b2433f4260c5b65fc2a5625bd50dff1b",
+      "bytes": 9088,
+      "sha256": "5e4a64ccbfd0d7aa73e7de7bf7f20960063967557a40658a7e9e186792a04a03",
+      "functions": [
+        "IMPLEMENTATION",
+        "AUDIT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9/app/engine/dollhouse-closure-auditor.js",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "orchestration-tests",
+      "path": "tests/dollhouse-orchestration-invariants.test.mjs",
+      "commit_sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+      "branch_ref": "amari/loom-mobile-dollhouse-closure-1430",
+      "git_blob_sha": "97f62346e00657611713413e77368b7d6b00e1db",
+      "bytes": 9586,
+      "sha256": "646c3e3c72a5b19ad340f06627f9e648394159064f64fe3c4952c33990dbc096",
+      "functions": [
+        "TEST_CONTRACT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9/tests/dollhouse-orchestration-invariants.test.mjs",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "disagreement-ledger",
+      "path": "tests/fixtures/dollhouse/disagreement-ledger-1428.json",
+      "commit_sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+      "branch_ref": "amari/loom-mobile-dollhouse-closure-1430",
+      "git_blob_sha": "c626b0fa119041cc7772e0e91d4af86441184339",
+      "bytes": 4098,
+      "sha256": "e7b69d5997304847e8ffae2084bcda4056b7d796f4da323fea32ac7a368cc89e",
+      "functions": [
+        "RAW_EVIDENCE",
+        "ADJUDICATION"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9/tests/fixtures/dollhouse/disagreement-ledger-1428.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "disagreement-inspector",
+      "path": "app/dome-world/dollhouse-disagreement-inspector.html",
+      "commit_sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+      "branch_ref": "amari/loom-mobile-dollhouse-closure-1430",
+      "git_blob_sha": "38afa9d939bc89d4d30c2fd02c4ff16f787d7a51",
+      "bytes": 27116,
+      "sha256": "423bf4b42bc8cc3de760ac27afe4cdf6e9da78bfea201f14a2f638fd35e195d0",
+      "functions": [
+        "INSPECTION_SURFACE"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9/app/dome-world/dollhouse-disagreement-inspector.html",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "ablation-procedure",
+      "path": "scripts/run-dollhouse-ablation-experiment.mjs",
+      "commit_sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+      "branch_ref": "amari/loom-mobile-dollhouse-closure-1430",
+      "git_blob_sha": "1e36e987e8dbb8fb34188b76d5df2c62ccc79150",
+      "bytes": 8419,
+      "sha256": "2d3e5c0bf42b873b8309580ef7f6355f15f2dcaefaf6a23425575e1ed8e153ee",
+      "functions": [
+        "IMPLEMENTATION",
+        "EXECUTION_PROCEDURE"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9/scripts/run-dollhouse-ablation-experiment.mjs",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "ablation-result",
+      "path": "tests/fixtures/dollhouse/blind-divergence/ablation-experiment.json",
+      "commit_sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+      "branch_ref": "amari/loom-mobile-dollhouse-closure-1430",
+      "git_blob_sha": "7bde30bfc7f79cdee768a7f0237f2097c2a2045a",
+      "bytes": 5924,
+      "sha256": "55fb82c83a9f316d4a1387e9e0a373c6b17f63fe9c00dcd74155662d8de16833",
+      "functions": [
+        "EXECUTION",
+        "RAW_EVIDENCE"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9/tests/fixtures/dollhouse/blind-divergence/ablation-experiment.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "divergence-map",
+      "path": "tests/fixtures/dollhouse/blind-divergence/divergence-map.json",
+      "commit_sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+      "branch_ref": "amari/loom-mobile-dollhouse-closure-1430",
+      "git_blob_sha": "89fc4b1c32845a235902dc4be773ac8fd0dc4306",
+      "bytes": 2772,
+      "sha256": "ede944d51f3bc869e5368a3d4bf18eede4d019b6dbcdddfd43631adac10bc7ac",
+      "functions": [
+        "RAW_EVIDENCE"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9/tests/fixtures/dollhouse/blind-divergence/divergence-map.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "closure-assay-report",
+      "path": "docs/receipts/1428-closure-assay/closure-assay-report.json",
+      "commit_sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+      "branch_ref": "amari/loom-mobile-dollhouse-closure-1430",
+      "git_blob_sha": "a3ae24605148dcf86be8bf5a7013a050d6d22cb1",
+      "bytes": 89880,
+      "sha256": "f46eabbdbf12f45dcbf95dc895d318184f26b55f4f70c0f5f19a9a4ba55327e5",
+      "functions": [
+        "WITNESS",
+        "FINAL_CLOSURE"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9/docs/receipts/1428-closure-assay/closure-assay-report.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "role-audit-packet",
+      "path": "tests/fixtures/dollhouse/blind-divergence/",
+      "commit_sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+      "branch_ref": "amari/loom-mobile-dollhouse-closure-1430",
+      "git_tree_sha": "b3a81193a09e0a0ff3a42da52c6967cd097a5e81",
+      "blob_count": 6,
+      "inventory_sha256": "ac705e233460ae7bead02234497f46671db2527cf6f13970b2e50dd4ca10005a",
+      "inventory_format": "recursive git ls-tree: MODE TYPE OBJECT_ID TAB PATH LF, Git order",
+      "functions": [
+        "RAW_EVIDENCE"
+      ],
+      "disposition": "CANONICAL_RETAINED_FAMILY",
+      "immutable_tree_url": "https://github.com/tauric-diana-613/TD613-TCP/tree/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9/tests/fixtures/dollhouse/blind-divergence",
+      "inspection": "GIT_TREE_INVENTORY; key files separately byte-inspected"
+    },
+    {
+      "id": "temporal-role",
+      "path": "TEMPORAL_CUSTODIAN.md",
+      "commit_sha": "88f128c75cd8efd58db9a77249f293e69d08762e",
+      "branch_ref": "candidate/temporal-custodian-first-class-20261005",
+      "git_blob_sha": "aa238abf98fe65649f614b5401b8bc31529a7552",
+      "bytes": 6377,
+      "sha256": "653cb306c598756008c45eae423cba5dec40493bca389fa5401f28982347dca9",
+      "functions": [
+        "ROLE_CONTRACT"
+      ],
+      "disposition": "BOUNDED_RESEARCH_CANDIDATE",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/88f128c75cd8efd58db9a77249f293e69d08762e/TEMPORAL_CUSTODIAN.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "temporal-adapter",
+      "path": "app/engine/dollhouse-temporal-custodian.js",
+      "commit_sha": "88f128c75cd8efd58db9a77249f293e69d08762e",
+      "branch_ref": "candidate/temporal-custodian-first-class-20261005",
+      "git_blob_sha": "382cc9b45a641816383cf4d93afa424ea63831bb",
+      "bytes": 8038,
+      "sha256": "1eabdea8063d0153fb85a89c259938abf956bb506a57385c5a5436bbc915fe4b",
+      "functions": [
+        "IMPLEMENTATION"
+      ],
+      "disposition": "BOUNDED_RESEARCH_CANDIDATE",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/88f128c75cd8efd58db9a77249f293e69d08762e/app/engine/dollhouse-temporal-custodian.js",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "temporal-schema",
+      "path": "schemas/temporal-custodian-ledger.schema.json",
+      "commit_sha": "88f128c75cd8efd58db9a77249f293e69d08762e",
+      "branch_ref": "candidate/temporal-custodian-first-class-20261005",
+      "git_blob_sha": "63a71f99c1eea327b3eee7041e3c1ce0415b48d7",
+      "bytes": 2049,
+      "sha256": "5d42e95fc19ff1dc3f901c7122dc553e4dc5c6bc4eeaefcfb3612e672f1fd456",
+      "functions": [
+        "IMPLEMENTATION"
+      ],
+      "disposition": "BOUNDED_RESEARCH_CANDIDATE",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/88f128c75cd8efd58db9a77249f293e69d08762e/schemas/temporal-custodian-ledger.schema.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s1-egress-b-manifest",
+      "path": "artifacts/r3-candidate-x-e2/00-MANIFEST.json",
+      "commit_sha": "582a1f04fd11e502fc7b3083ef6fa079dd0d23c8",
+      "branch_ref": "witness/candidate-x-r3-egress2-41112992-20261004",
+      "git_blob_sha": "169093fee4f539fcbfeb2371f1d2f8fbf625abfa",
+      "bytes": 3168,
+      "sha256": "e5b44988648a2ffa57f82bac78de850858dc7ceeaf3a020d4df311527a800c8d",
+      "functions": [
+        "HANDOFF",
+        "WITNESS"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/582a1f04fd11e502fc7b3083ef6fa079dd0d23c8/artifacts/r3-candidate-x-e2/00-MANIFEST.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s1-egress-a-manifest",
+      "path": "artifacts/r3-candidate-x/00-MANIFEST.json",
+      "commit_sha": "4bd363d5c4714bc086fe4bcd5580bb3b4d0fe6e0",
+      "branch_ref": "witness/candidate-x-r3-egress-41112992-20261004",
+      "git_blob_sha": "00ae88b7056682b462917ec3ed7d00edf5a35df6",
+      "bytes": 2988,
+      "sha256": "bf4808c7bb0b55a95670622c8e2333416c8a6cba5823e26db050292d4c1ac909",
+      "functions": [
+        "HANDOFF",
+        "WITNESS"
+      ],
+      "disposition": "ORIGINAL_SUPERSEDED_FAILED_BYTE_CARRIAGE",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/4bd363d5c4714bc086fe4bcd5580bb3b4d0fe6e0/artifacts/r3-candidate-x/00-MANIFEST.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s1-egress-a-receipt",
+      "path": "artifacts/r3-candidate-x/13-R2_5_EGRESS_RECEIPT.md",
+      "commit_sha": "4bd363d5c4714bc086fe4bcd5580bb3b4d0fe6e0",
+      "branch_ref": "witness/candidate-x-r3-egress-41112992-20261004",
+      "git_blob_sha": "36b0a8be8046acff02250dfc2020084ecbf842c7",
+      "bytes": 1466,
+      "sha256": "83999b34d5c28e43035a03f07fa63d6b5c2139dcf4de6037fa9ec499ef08652d",
+      "functions": [
+        "HANDOFF",
+        "WITNESS"
+      ],
+      "disposition": "ORIGINAL_SUPERSEDED_FAILED_BYTE_CARRIAGE",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/4bd363d5c4714bc086fe4bcd5580bb3b4d0fe6e0/artifacts/r3-candidate-x/13-R2_5_EGRESS_RECEIPT.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s1-behavior-contract",
+      "path": "artifacts/r3-candidate-x-e2/03-BEHAVIOR_CONTRACT.md",
+      "commit_sha": "582a1f04fd11e502fc7b3083ef6fa079dd0d23c8",
+      "branch_ref": "witness/candidate-x-r3-egress2-41112992-20261004",
+      "git_blob_sha": "8c04d575db392c74a7efce1e803cdeef8a2829ec",
+      "bytes": 2968,
+      "sha256": "7caa740a204cff62f06b05ddab9e476a6330e481a3f76bd43344da4978b8e8dc",
+      "functions": [
+        "BEHAVIOR_CONTRACT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/582a1f04fd11e502fc7b3083ef6fa079dd0d23c8/artifacts/r3-candidate-x-e2/03-BEHAVIOR_CONTRACT.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s1-known-holds",
+      "path": "artifacts/r3-candidate-x-e2/04-KNOWN_HOLDS.md",
+      "commit_sha": "582a1f04fd11e502fc7b3083ef6fa079dd0d23c8",
+      "branch_ref": "witness/candidate-x-r3-egress2-41112992-20261004",
+      "git_blob_sha": "fbc45be6d700dcd8949815d2529d46307cd85fc2",
+      "bytes": 3340,
+      "sha256": "944be43f26db2ba8cda589d1c3ab3c48529e2c6c77dc3b1b01ad33e4af57423c",
+      "functions": [
+        "HOLD_CONTRACT",
+        "CORRECTION"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/582a1f04fd11e502fc7b3083ef6fa079dd0d23c8/artifacts/r3-candidate-x-e2/04-KNOWN_HOLDS.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s1-neutral-prereg",
+      "path": "artifacts/r3-candidate-x-e2/10-NEUTRAL_ASSAY_PREREG.md",
+      "commit_sha": "582a1f04fd11e502fc7b3083ef6fa079dd0d23c8",
+      "branch_ref": "witness/candidate-x-r3-egress2-41112992-20261004",
+      "git_blob_sha": "43d0c373ea7128b696b62573076bbbd3a0c10dd1",
+      "bytes": 3961,
+      "sha256": "bbf7cfc56163adef78aff6c47120cadc3c373af0afb665d5a531c26e01ce9a5c",
+      "functions": [
+        "PREREGISTRATION"
+      ],
+      "disposition": "UNRUN_PREREGISTRATION",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/582a1f04fd11e502fc7b3083ef6fa079dd0d23c8/artifacts/r3-candidate-x-e2/10-NEUTRAL_ASSAY_PREREG.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES",
+      "note": "Neutral receiver assay is not the retained R3 CI execution."
+    },
+    {
+      "id": "s1-egress-b-bundle",
+      "path": "artifacts/r3-candidate-x-e2/candidate-x.bundle",
+      "commit_sha": "582a1f04fd11e502fc7b3083ef6fa079dd0d23c8",
+      "branch_ref": "witness/candidate-x-r3-egress2-41112992-20261004",
+      "git_blob_sha": "fac43acb1da9f656a9875944bf8cbc4fb41d4930",
+      "bytes": 6045,
+      "sha256": "41a08c007202c108fc712d74ce5cd529c836271ccf6660c037b6360d21018464",
+      "functions": [
+        "HANDOFF",
+        "WITNESS"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/582a1f04fd11e502fc7b3083ef6fa079dd0d23c8/artifacts/r3-candidate-x-e2/candidate-x.bundle",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s1-egress-b-patch",
+      "path": "artifacts/r3-candidate-x-e2/02-candidate-x.patch",
+      "commit_sha": "582a1f04fd11e502fc7b3083ef6fa079dd0d23c8",
+      "branch_ref": "witness/candidate-x-r3-egress2-41112992-20261004",
+      "git_blob_sha": "6f76494d30574d621a6a420dab0283d2e99e37cc",
+      "bytes": 34547,
+      "sha256": "61d24971990b700d654f1266c53cb3d2336a14a7ae7542a4606373107219c423",
+      "functions": [
+        "HANDOFF",
+        "IMPLEMENTATION"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/582a1f04fd11e502fc7b3083ef6fa079dd0d23c8/artifacts/r3-candidate-x-e2/02-candidate-x.patch",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s1-checksums",
+      "path": "artifacts/r3-candidate-x-e2/12-SHA256SUMS.txt",
+      "commit_sha": "582a1f04fd11e502fc7b3083ef6fa079dd0d23c8",
+      "branch_ref": "witness/candidate-x-r3-egress2-41112992-20261004",
+      "git_blob_sha": "72dbd020e1da7f0aaf96e90364380bfe90d948da",
+      "bytes": 1354,
+      "sha256": "a882359a655e30db5e3bdaf76a7c5cb61e7f764f9ce3ead46bf0ecd169193907",
+      "functions": [
+        "WITNESS"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/582a1f04fd11e502fc7b3083ef6fa079dd0d23c8/artifacts/r3-candidate-x-e2/12-SHA256SUMS.txt",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s1-workflow",
+      "path": ".github/workflows/r3-candidate-x-execution-witness.yml",
+      "commit_sha": "9b4a9e5561add51870d4f6cb5d106b3f7a6790e2",
+      "branch_ref": "witness/r3-execution-candidate-x-582a1f04-20261005",
+      "git_blob_sha": "b4f007fd13a9ab2ca81ab3152f70e595689de82b",
+      "bytes": 5590,
+      "sha256": "0762073e615d2b13087d0576b7e25304cdc0737d15d28339ed2f06b32f46797f",
+      "functions": [
+        "EXECUTION_PROCEDURE"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/9b4a9e5561add51870d4f6cb5d106b3f7a6790e2/.github/workflows/r3-candidate-x-execution-witness.yml",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s1-r1r2-tests",
+      "path": "tests/marrowline-loom-demo.test.mjs",
+      "commit_sha": "41112992ffd82dd1f06552b3c5881dc43de3cb20",
+      "branch_ref": null,
+      "git_blob_sha": "2c4191b7bdc9ddb0e51a9b0da8e33b474084ff16",
+      "bytes": 28680,
+      "sha256": "b495c350c9d0e48a1890926fd64f267e57d93790463088f07e66cb5380661d6f",
+      "functions": [
+        "TEST_CONTRACT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": null,
+      "inspection": "ACTUAL_GIT_FILE_BYTES",
+      "address_via": "s1-egress-b-bundle"
+    },
+    {
+      "id": "s1-reentry-tests",
+      "path": "tests/candidate-x-reentry-membrane.test.mjs",
+      "commit_sha": "41112992ffd82dd1f06552b3c5881dc43de3cb20",
+      "branch_ref": null,
+      "git_blob_sha": "bfb727ba03abe9767316f9b7a859028d41815539",
+      "bytes": 12957,
+      "sha256": "b513c917b8489e624612981d4a9978e646edc49c680621a156f3a1f9038ee848",
+      "functions": [
+        "TEST_CONTRACT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": null,
+      "inspection": "ACTUAL_GIT_FILE_BYTES",
+      "address_via": "s1-egress-b-bundle"
+    },
+    {
+      "id": "s1-transfer-packet",
+      "path": "artifacts/r3-candidate-x-e2/",
+      "commit_sha": "582a1f04fd11e502fc7b3083ef6fa079dd0d23c8",
+      "branch_ref": "witness/candidate-x-r3-egress2-41112992-20261004",
+      "git_tree_sha": "003e9cff6ae344cf712c22ea5d77f751a40e73a2",
+      "blob_count": 16,
+      "inventory_sha256": "e36b9994ca4cdf471c3c12925ef2ad1ccc612708a941f170386d78eba63febee",
+      "inventory_format": "recursive git ls-tree: MODE TYPE OBJECT_ID TAB PATH LF, Git order",
+      "functions": [
+        "HANDOFF",
+        "WITNESS"
+      ],
+      "disposition": "CANONICAL_RETAINED_FAMILY",
+      "immutable_tree_url": "https://github.com/tauric-diana-613/TD613-TCP/tree/582a1f04fd11e502fc7b3083ef6fa079dd0d23c8/artifacts/r3-candidate-x-e2",
+      "inspection": "GIT_TREE_INVENTORY; key files separately byte-inspected"
+    },
+    {
+      "id": "s2-contract",
+      "path": "EXTERIORITY_OBSERVATORY.md",
+      "commit_sha": "95dea19cc40a85bc4728916fcf2c6dbd227bc831",
+      "branch_ref": "research/exteriority-observatory-v1-20261005",
+      "git_blob_sha": "1a8c31445c04dcf5709747f55a15abba6d3f8e68",
+      "bytes": 11743,
+      "sha256": "49b12b44ba393d6d308259d4fccbaa259764a20b7707aaabccaf9f7d8aa8ed5c",
+      "functions": [
+        "FINAL_CLOSURE",
+        "EXECUTION",
+        "ROLE_CONTRACT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/95dea19cc40a85bc4728916fcf2c6dbd227bc831/EXTERIORITY_OBSERVATORY.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s2-exteriority-ladder",
+      "path": "research/exteriority-observatory/exteriority-ladder.json",
+      "commit_sha": "95dea19cc40a85bc4728916fcf2c6dbd227bc831",
+      "branch_ref": "research/exteriority-observatory-v1-20261005",
+      "git_blob_sha": "67895480ab11a0b067ef91635321f2a22bd486aa",
+      "bytes": 9031,
+      "sha256": "f2fbd320eaefc35ef6c416caa65c809e1f8a2d6df2451357bc39253b277a0203",
+      "functions": [
+        "RAW_EVIDENCE",
+        "AUDIT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/95dea19cc40a85bc4728916fcf2c6dbd227bc831/research/exteriority-observatory/exteriority-ladder.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s2-temporal-ledger",
+      "path": "research/exteriority-observatory/temporal-ledger.json",
+      "commit_sha": "95dea19cc40a85bc4728916fcf2c6dbd227bc831",
+      "branch_ref": "research/exteriority-observatory-v1-20261005",
+      "git_blob_sha": "4086efc2cc1ee91277d955c588d6b5aa520a11cb",
+      "bytes": 4708,
+      "sha256": "6878af584786688c2ba9ef6af50b7e76baedd1f117a4ca0caacde6e55b983047",
+      "functions": [
+        "RAW_EVIDENCE",
+        "AUDIT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/95dea19cc40a85bc4728916fcf2c6dbd227bc831/research/exteriority-observatory/temporal-ledger.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s2-open-field-overflow",
+      "path": "research/exteriority-observatory/open-field-overflow.json",
+      "commit_sha": "95dea19cc40a85bc4728916fcf2c6dbd227bc831",
+      "branch_ref": "research/exteriority-observatory-v1-20261005",
+      "git_blob_sha": "023c41c9334a650f27a587de8e5926802b19905e",
+      "bytes": 2554,
+      "sha256": "2a001cf8c2768e6a53c96063752198ca4780b4ead2e05ab39179314781fd0e56",
+      "functions": [
+        "RAW_EVIDENCE",
+        "AUDIT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/95dea19cc40a85bc4728916fcf2c6dbd227bc831/research/exteriority-observatory/open-field-overflow.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s2-dollhouse-role-passes",
+      "path": "research/exteriority-observatory/dollhouse-role-passes.md",
+      "commit_sha": "95dea19cc40a85bc4728916fcf2c6dbd227bc831",
+      "branch_ref": "research/exteriority-observatory-v1-20261005",
+      "git_blob_sha": "b3d889755d8210afa78dc98b229ead9cab65b5c5",
+      "bytes": 8840,
+      "sha256": "41d9d14929f954e2cb4e7fe7fb31b04637499a015f7488928c31b02e797afa4b",
+      "functions": [
+        "RAW_EVIDENCE",
+        "AUDIT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/95dea19cc40a85bc4728916fcf2c6dbd227bc831/research/exteriority-observatory/dollhouse-role-passes.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s2-dollhouse-disagreements",
+      "path": "research/exteriority-observatory/dollhouse-disagreements.json",
+      "commit_sha": "95dea19cc40a85bc4728916fcf2c6dbd227bc831",
+      "branch_ref": "research/exteriority-observatory-v1-20261005",
+      "git_blob_sha": "0fece14d6a3fe0c8aae812f77de6f64344da0977",
+      "bytes": 3194,
+      "sha256": "921d675223817e5b4021c07c7239547d7adeb36e371d886f2cdde48f71800d8d",
+      "functions": [
+        "RAW_EVIDENCE",
+        "AUDIT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/95dea19cc40a85bc4728916fcf2c6dbd227bc831/research/exteriority-observatory/dollhouse-disagreements.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s2-claim-ceiling-ledger",
+      "path": "research/exteriority-observatory/claim-ceiling-ledger.json",
+      "commit_sha": "95dea19cc40a85bc4728916fcf2c6dbd227bc831",
+      "branch_ref": "research/exteriority-observatory-v1-20261005",
+      "git_blob_sha": "333bc50fb53621b4a0395e1322a04d45ae1d7a94",
+      "bytes": 2290,
+      "sha256": "70e551e9bf7cbcb508f331305a8bd5a9a18de2203a4364db1f39edf63d1a8ebf",
+      "functions": [
+        "RAW_EVIDENCE",
+        "AUDIT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/95dea19cc40a85bc4728916fcf2c6dbd227bc831/research/exteriority-observatory/claim-ceiling-ledger.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s2-record",
+      "path": "research/exteriority-observatory/",
+      "commit_sha": "95dea19cc40a85bc4728916fcf2c6dbd227bc831",
+      "branch_ref": "research/exteriority-observatory-v1-20261005",
+      "git_tree_sha": "a7ae39b0222fbd0c988f9bc241a898b12734f55d",
+      "blob_count": 8,
+      "inventory_sha256": "2edc6327b5e3cf5cd713e0e16b107178874c171af735f74b4171bd2c73fa21ac",
+      "inventory_format": "recursive git ls-tree: MODE TYPE OBJECT_ID TAB PATH LF, Git order",
+      "functions": [
+        "EXECUTION",
+        "RAW_EVIDENCE",
+        "FINAL_CLOSURE"
+      ],
+      "disposition": "CANONICAL_RETAINED_FAMILY",
+      "immutable_tree_url": "https://github.com/tauric-diana-613/TD613-TCP/tree/95dea19cc40a85bc4728916fcf2c6dbd227bc831/research/exteriority-observatory",
+      "inspection": "GIT_TREE_INVENTORY; key files separately byte-inspected"
+    },
+    {
+      "id": "s3-design-contract",
+      "path": "LAB_FEEDBACK_FROM_PRODUCT.md",
+      "commit_sha": "6c21813c0f4a9fad31ef147d2b42c29b05ab8473",
+      "branch_ref": "design/loom-first-crossing-cathedral-20261005",
+      "git_blob_sha": "62ed23f19916c4df991ea60e3b6b771465346306",
+      "bytes": 7109,
+      "sha256": "9467ecc22a0977dfdc7c645e470868d51227b118060476bc8a874a1e57d2cb96",
+      "functions": [
+        "HANDOFF",
+        "EXECUTION"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/6c21813c0f4a9fad31ef147d2b42c29b05ab8473/LAB_FEEDBACK_FROM_PRODUCT.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES",
+      "note": "Product/design implementation and feedback. Human comprehension statements are reported design judgments, not a dedicated measured study."
+    },
+    {
+      "id": "s3-carrier-engine",
+      "path": "app/dome-world/marrowline-flowcore-cathedral.js",
+      "commit_sha": "6c21813c0f4a9fad31ef147d2b42c29b05ab8473",
+      "branch_ref": "design/loom-first-crossing-cathedral-20261005",
+      "git_blob_sha": "883f0a6e9613632d3bb6314f819a9b342fc1f557",
+      "bytes": 13429,
+      "sha256": "18cd5d2c195b3ce92300cd9c26bcd8c899b1608199ff9f0a40d074abf455689e",
+      "functions": [
+        "IMPLEMENTATION"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/6c21813c0f4a9fad31ef147d2b42c29b05ab8473/app/dome-world/marrowline-flowcore-cathedral.js",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s3-composition-tests",
+      "path": "tests/marrowline-loom-cathedral-composition.test.mjs",
+      "commit_sha": "6c21813c0f4a9fad31ef147d2b42c29b05ab8473",
+      "branch_ref": "design/loom-first-crossing-cathedral-20261005",
+      "git_blob_sha": "77a2fb4a8057ca30632dc4f83c0e42f1b6a540f2",
+      "bytes": 21902,
+      "sha256": "5b0e1c4bce9bc728a4632606caef91597e6a4f1d0be75d40c6fc71c9f0150314",
+      "functions": [
+        "TEST_CONTRACT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/6c21813c0f4a9fad31ef147d2b42c29b05ab8473/tests/marrowline-loom-cathedral-composition.test.mjs",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s4-prereg",
+      "path": "research/relation-survival-assay/00-PREREGISTRATION.md",
+      "commit_sha": "04d81163eda1af8be1f5957cd8dbeb593edbacb9",
+      "branch_ref": "research/relation-survival-assay-v1-20261005",
+      "git_blob_sha": "54f65860adf93b31002e0aab3a74f19aeceb526b",
+      "bytes": 7755,
+      "sha256": "faa5531da1dd4634f391eb03fa921afea7b0a02d7d19399b685ea42ef35f05c6",
+      "functions": [
+        "PREREGISTRATION"
+      ],
+      "disposition": "ORIGINAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/04d81163eda1af8be1f5957cd8dbeb593edbacb9/research/relation-survival-assay/00-PREREGISTRATION.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s4-final",
+      "path": "research/relation-survival-assay/19-MACHINE_READABLE_FINAL_RESULT.json",
+      "commit_sha": "04d81163eda1af8be1f5957cd8dbeb593edbacb9",
+      "branch_ref": "research/relation-survival-assay-v1-20261005",
+      "git_blob_sha": "4b535b4741e096a4afc6f60d53e8558311f1be62",
+      "bytes": 3789,
+      "sha256": "57439c986b8f6d62e373a40e6c295724d05eec4fba7f1b2de024b0e81ea755be",
+      "functions": [
+        "EXECUTION",
+        "FINAL_CLOSURE"
+      ],
+      "disposition": "FINAL/CANONICAL_BOUNDED_REPORTED_RESULT",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/04d81163eda1af8be1f5957cd8dbeb593edbacb9/research/relation-survival-assay/19-MACHINE_READABLE_FINAL_RESULT.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s4-ceiling",
+      "path": "research/relation-survival-assay/16-CLAIM_CEILING_LEDGER.json",
+      "commit_sha": "04d81163eda1af8be1f5957cd8dbeb593edbacb9",
+      "branch_ref": "research/relation-survival-assay-v1-20261005",
+      "git_blob_sha": "1d4622797ad473fdbe367619585a43839a2456f6",
+      "bytes": 5167,
+      "sha256": "d4c2be89f1c2a9c02cdf1771b5f333b95364a49f20d05096806538cc8e280c95",
+      "functions": [
+        "CLAIM_CEILING"
+      ],
+      "disposition": "FINAL/CANONICAL_BOUNDED_REPORTED_RESULT",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/04d81163eda1af8be1f5957cd8dbeb593edbacb9/research/relation-survival-assay/16-CLAIM_CEILING_LEDGER.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s4-record",
+      "path": "research/relation-survival-assay/",
+      "commit_sha": "04d81163eda1af8be1f5957cd8dbeb593edbacb9",
+      "branch_ref": "research/relation-survival-assay-v1-20261005",
+      "git_tree_sha": "d5dae5266a7a83ff28619a42781464c5061db278",
+      "blob_count": 24,
+      "inventory_sha256": "e8c8cf8e362cb2cfe6b2a25593c8a548ce7c8dc6c34a5b5040e8c14c48880326",
+      "inventory_format": "recursive git ls-tree: MODE TYPE OBJECT_ID TAB PATH LF, Git order",
+      "functions": [
+        "EXECUTION",
+        "RAW_EVIDENCE"
+      ],
+      "disposition": "CANONICAL_RETAINED_FAMILY",
+      "immutable_tree_url": "https://github.com/tauric-diana-613/TD613-TCP/tree/04d81163eda1af8be1f5957cd8dbeb593edbacb9/research/relation-survival-assay",
+      "inspection": "GIT_TREE_INVENTORY; key files separately byte-inspected",
+      "note": "Historical record; classification does not independently authenticate receiver provenance."
+    },
+    {
+      "id": "s4.1-prereg",
+      "path": "research/structural-extraction-hardening/01-PREREGISTRATION.md",
+      "commit_sha": "7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+      "branch_ref": "research/structural-extraction-hardening-v1-20261005",
+      "git_blob_sha": "d00c9fd93924a6b7938e15ab16a28d930cf75540",
+      "bytes": 7299,
+      "sha256": "f052c0dcbf9d36747a9fc424b3c0e3873350df14e4a8fc133f9e39fe17cac49b",
+      "functions": [
+        "PREREGISTRATION"
+      ],
+      "disposition": "ORIGINAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/7ad94230d6988ac5dafe0b57a750479a2eb4577f/research/structural-extraction-hardening/01-PREREGISTRATION.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s4.1-final",
+      "path": "research/structural-extraction-hardening/18-MACHINE_READABLE_FINAL_RESULT.json",
+      "commit_sha": "7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+      "branch_ref": "research/structural-extraction-hardening-v1-20261005",
+      "git_blob_sha": "904c2ae1064268ac2e18aeb51ee7c8f99d302a2e",
+      "bytes": 1680,
+      "sha256": "19c27e637cf3799118836bc61fe2cf45eadd1fdabffa51ad3992512576018259",
+      "functions": [
+        "EXECUTION",
+        "FINAL_CLOSURE"
+      ],
+      "disposition": "FINAL/CANONICAL_BOUNDED_REPORTED_RESULT",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/7ad94230d6988ac5dafe0b57a750479a2eb4577f/research/structural-extraction-hardening/18-MACHINE_READABLE_FINAL_RESULT.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s4.1-ceiling",
+      "path": "research/structural-extraction-hardening/17-CLAIM_CEILING_LEDGER.json",
+      "commit_sha": "7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+      "branch_ref": "research/structural-extraction-hardening-v1-20261005",
+      "git_blob_sha": "b358f91e46b79c7f11e6443ffd254c28b1d61620",
+      "bytes": 2647,
+      "sha256": "81c3e29eae5e572f681a7cab1a3d1f9a2341e38c8fb5fd058e71d1a94c59a4de",
+      "functions": [
+        "CLAIM_CEILING"
+      ],
+      "disposition": "FINAL/CANONICAL_BOUNDED_REPORTED_RESULT",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/7ad94230d6988ac5dafe0b57a750479a2eb4577f/research/structural-extraction-hardening/17-CLAIM_CEILING_LEDGER.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s4.1-record",
+      "path": "research/structural-extraction-hardening/",
+      "commit_sha": "7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+      "branch_ref": "research/structural-extraction-hardening-v1-20261005",
+      "git_tree_sha": "5fc76703c3e2ba62d196a0568e6a0dd67c426656",
+      "blob_count": 52,
+      "inventory_sha256": "d52d778c4caeccadaf31385e88b770dec460bf87d85b145251ef1b74db829dd2",
+      "inventory_format": "recursive git ls-tree: MODE TYPE OBJECT_ID TAB PATH LF, Git order",
+      "functions": [
+        "EXECUTION",
+        "RAW_EVIDENCE"
+      ],
+      "disposition": "CANONICAL_RETAINED_FAMILY",
+      "immutable_tree_url": "https://github.com/tauric-diana-613/TD613-TCP/tree/7ad94230d6988ac5dafe0b57a750479a2eb4577f/research/structural-extraction-hardening",
+      "inspection": "GIT_TREE_INVENTORY; key files separately byte-inspected",
+      "note": "Historical record; classification does not independently authenticate receiver provenance."
+    },
+    {
+      "id": "s4.5-prereg",
+      "path": "research/matched-onboarding-differential/02-PREREGISTRATION.md",
+      "commit_sha": "daa7773323b408d1080f70cd27e676161deafc96",
+      "branch_ref": "research/aperture-onboarding-differential-v1-20261005",
+      "git_blob_sha": "975366206388f305a5e6e5e3ed2d542c4aa520ec",
+      "bytes": 7084,
+      "sha256": "e3b51f1766310f692dcce925058615fc88d446d00a620dcbd71fd15014a86d86",
+      "functions": [
+        "PREREGISTRATION"
+      ],
+      "disposition": "ORIGINAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/daa7773323b408d1080f70cd27e676161deafc96/research/matched-onboarding-differential/02-PREREGISTRATION.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s4.5-final",
+      "path": "research/matched-onboarding-differential/18-MACHINE_READABLE_FINAL_RESULT.json",
+      "commit_sha": "daa7773323b408d1080f70cd27e676161deafc96",
+      "branch_ref": "research/aperture-onboarding-differential-v1-20261005",
+      "git_blob_sha": "57f12a66a152e114d2ecf6aed2fb505d65c03de0",
+      "bytes": 771,
+      "sha256": "61608bc484fc2ea1f29e59bc3a895d90bde85c769dc9fc1d0be8e50ed0c8d710",
+      "functions": [
+        "EXECUTION",
+        "FINAL_CLOSURE"
+      ],
+      "disposition": "SUPERSEDED_CONTRASTS_RETAINED",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/daa7773323b408d1080f70cd27e676161deafc96/research/matched-onboarding-differential/18-MACHINE_READABLE_FINAL_RESULT.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s4.5-ceiling",
+      "path": "research/matched-onboarding-differential/17-CLAIM_CEILING_LEDGER.json",
+      "commit_sha": "daa7773323b408d1080f70cd27e676161deafc96",
+      "branch_ref": "research/aperture-onboarding-differential-v1-20261005",
+      "git_blob_sha": "6614c1c05c89f813f49b2515c3e59c922a91cb84",
+      "bytes": 981,
+      "sha256": "41cc5a273188f9e0ca682bd317c83a63ff546a155b3761b29bcc78ae834a3157",
+      "functions": [
+        "CLAIM_CEILING"
+      ],
+      "disposition": "SUPERSEDED_CONTRASTS_RETAINED",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/daa7773323b408d1080f70cd27e676161deafc96/research/matched-onboarding-differential/17-CLAIM_CEILING_LEDGER.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s4.5-record",
+      "path": "research/matched-onboarding-differential/",
+      "commit_sha": "daa7773323b408d1080f70cd27e676161deafc96",
+      "branch_ref": "research/aperture-onboarding-differential-v1-20261005",
+      "git_tree_sha": "6eda73d33e093efbbc23dfd14fea91fb57a37361",
+      "blob_count": 56,
+      "inventory_sha256": "04ab014e190cc9276f526973e3c1a08b53c12713492fe905d332edc474d78093",
+      "inventory_format": "recursive git ls-tree: MODE TYPE OBJECT_ID TAB PATH LF, Git order",
+      "functions": [
+        "EXECUTION",
+        "RAW_EVIDENCE"
+      ],
+      "disposition": "CANONICAL_RETAINED_FAMILY",
+      "immutable_tree_url": "https://github.com/tauric-diana-613/TD613-TCP/tree/daa7773323b408d1080f70cd27e676161deafc96/research/matched-onboarding-differential",
+      "inspection": "GIT_TREE_INVENTORY; key files separately byte-inspected",
+      "note": "Historical record; classification does not independently authenticate receiver provenance."
+    },
+    {
+      "id": "s5-prereg",
+      "path": "research/sequence-5-differential-replication/02-PREREGISTRATION.md",
+      "commit_sha": "a9b5b777a595484f6ff7b6f0d09e234a0d423711",
+      "branch_ref": "witness/sequence-5-postexecution-egress-20261005",
+      "git_blob_sha": "d676a1bc0850126f345591989764a35382856048",
+      "bytes": 9143,
+      "sha256": "60bdbec9fc857033b587c45c63666f0d7f188e62301ebf84bfd2ffcf54087d2b",
+      "functions": [
+        "PREREGISTRATION"
+      ],
+      "disposition": "ORIGINAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/a9b5b777a595484f6ff7b6f0d09e234a0d423711/research/sequence-5-differential-replication/02-PREREGISTRATION.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s5-final",
+      "path": "research/sequence-5-differential-replication/18-MACHINE_READABLE_FINAL_RESULT.json",
+      "commit_sha": "a9b5b777a595484f6ff7b6f0d09e234a0d423711",
+      "branch_ref": "witness/sequence-5-postexecution-egress-20261005",
+      "git_blob_sha": "d816f06cd688646c817b926f0f201f717aa4d7ba",
+      "bytes": 575,
+      "sha256": "ac7b5cf2f12729bdc6e8ec5d930e3bc4bfcb19586e97ffd468e3dfecbbf86a00",
+      "functions": [
+        "EXECUTION",
+        "FINAL_CLOSURE"
+      ],
+      "disposition": "SUPERSEDED_CONTRASTS_RETAINED",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/a9b5b777a595484f6ff7b6f0d09e234a0d423711/research/sequence-5-differential-replication/18-MACHINE_READABLE_FINAL_RESULT.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s5-ceiling",
+      "path": "research/sequence-5-differential-replication/17-CLAIM_CEILING_LEDGER.json",
+      "commit_sha": "a9b5b777a595484f6ff7b6f0d09e234a0d423711",
+      "branch_ref": "witness/sequence-5-postexecution-egress-20261005",
+      "git_blob_sha": "97eb99dab05b5c611a244e8199bef423cddc3bf1",
+      "bytes": 1731,
+      "sha256": "43809e2815b71f5527e6f6036613988b986432e486bdada284204a3b832fd315",
+      "functions": [
+        "CLAIM_CEILING"
+      ],
+      "disposition": "SUPERSEDED_CONTRASTS_RETAINED",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/a9b5b777a595484f6ff7b6f0d09e234a0d423711/research/sequence-5-differential-replication/17-CLAIM_CEILING_LEDGER.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s5-record",
+      "path": "research/sequence-5-differential-replication/",
+      "commit_sha": "a9b5b777a595484f6ff7b6f0d09e234a0d423711",
+      "branch_ref": "witness/sequence-5-postexecution-egress-20261005",
+      "git_tree_sha": "8189114d8f4178a609946f9995792293eae175c6",
+      "blob_count": 79,
+      "inventory_sha256": "3425464cdb91abb44e5156fb0f1f7bd4a40e7f8ebac3e93aaac182bfd585ecd5",
+      "inventory_format": "recursive git ls-tree: MODE TYPE OBJECT_ID TAB PATH LF, Git order",
+      "functions": [
+        "EXECUTION",
+        "RAW_EVIDENCE"
+      ],
+      "disposition": "CANONICAL_RETAINED_FAMILY",
+      "immutable_tree_url": "https://github.com/tauric-diana-613/TD613-TCP/tree/a9b5b777a595484f6ff7b6f0d09e234a0d423711/research/sequence-5-differential-replication",
+      "inspection": "GIT_TREE_INVENTORY; key files separately byte-inspected",
+      "note": "Historical record; classification does not independently authenticate receiver provenance."
+    },
+    {
+      "id": "s4-isolation-ledger",
+      "path": "research/relation-survival-assay/09-RECEIVER_ISOLATION_LEDGER.json",
+      "commit_sha": "04d81163eda1af8be1f5957cd8dbeb593edbacb9",
+      "branch_ref": "research/relation-survival-assay-v1-20261005",
+      "git_blob_sha": "772e608d86c83ab6c0c281a3b6dc9abf54a32d6c",
+      "bytes": 3104,
+      "sha256": "e0ab0fbf1a8c5c97393714bf1c4a3eac05fd7718bf1a523a1d43c2052f40e85b",
+      "functions": [
+        "RAW_EVIDENCE"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/04d81163eda1af8be1f5957cd8dbeb593edbacb9/research/relation-survival-assay/09-RECEIVER_ISOLATION_LEDGER.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s41-execution-ledger",
+      "path": "research/structural-extraction-hardening/12-RECEIVER_EXECUTION_LEDGER.json",
+      "commit_sha": "7ad94230d6988ac5dafe0b57a750479a2eb4577f",
+      "branch_ref": "research/structural-extraction-hardening-v1-20261005",
+      "git_blob_sha": "b26362ae9586fd6f7e60c6115fb36f7075860a2c",
+      "bytes": 13759,
+      "sha256": "a30dbf8b56d81f1d42f8750d79faf30690791de1bfe6f212d41b75ffb72b75f9",
+      "functions": [
+        "EXECUTION"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/7ad94230d6988ac5dafe0b57a750479a2eb4577f/research/structural-extraction-hardening/12-RECEIVER_EXECUTION_LEDGER.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s45-execution-ledger",
+      "path": "research/matched-onboarding-differential/12-RECEIVER_EXECUTION_LEDGER.json",
+      "commit_sha": "daa7773323b408d1080f70cd27e676161deafc96",
+      "branch_ref": "research/aperture-onboarding-differential-v1-20261005",
+      "git_blob_sha": "b31fd6b2916ab41860266632a22c1e864add1024",
+      "bytes": 10042,
+      "sha256": "d8f741473675e383b65e4bc9fc3d35fe5293b36c195f3d09a3d89a0942ac3846",
+      "functions": [
+        "EXECUTION"
+      ],
+      "disposition": "HISTORICAL_METHOD_STAGE",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/daa7773323b408d1080f70cd27e676161deafc96/research/matched-onboarding-differential/12-RECEIVER_EXECUTION_LEDGER.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s45-correction",
+      "path": "research/sequence-5-differential-replication/00-HISTORICAL_4_5_CORRECTION_LEDGER.md",
+      "commit_sha": "6e3015df659eb06084f14ce43144fd160bee3cda",
+      "branch_ref": "audit/sequence-5-synthetic-trace-audit-20261005",
+      "git_blob_sha": "6cdfa4a5de76e3e7f7111e5ddb37b5ad0277c3fc",
+      "bytes": 6873,
+      "sha256": "63bca7871a3dbfca7af3847f78fb2b3b68da433c3d33bac7c14a4685d62faade",
+      "functions": [
+        "AUDIT",
+        "CORRECTION"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/6e3015df659eb06084f14ce43144fd160bee3cda/research/sequence-5-differential-replication/00-HISTORICAL_4_5_CORRECTION_LEDGER.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s5-forensic-audit",
+      "path": "research/sequence-5-differential-replication/19-FORENSIC_RECEIVER_PROVENANCE_AUDIT.json",
+      "commit_sha": "6e3015df659eb06084f14ce43144fd160bee3cda",
+      "branch_ref": "audit/sequence-5-synthetic-trace-audit-20261005",
+      "git_blob_sha": "435c681f5c1e36d74489e89038bf5084196cbb0a",
+      "bytes": 3876,
+      "sha256": "075af1889c2dd6ad06ddaf2c33824655fa1e54ecc717b71d262efc9da84c642b",
+      "functions": [
+        "AUDIT",
+        "CORRECTION",
+        "FINAL_CLOSURE"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/6e3015df659eb06084f14ce43144fd160bee3cda/research/sequence-5-differential-replication/19-FORENSIC_RECEIVER_PROVENANCE_AUDIT.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s5-synthetic-generator",
+      "path": "scripts/execute_receivers_seq5.mjs",
+      "commit_sha": "6e3015df659eb06084f14ce43144fd160bee3cda",
+      "branch_ref": "audit/sequence-5-synthetic-trace-audit-20261005",
+      "git_blob_sha": "3fc90802a3a98b9f823388ccb7985617dd958ca9",
+      "bytes": 23349,
+      "sha256": "f392269fcc990cd125d21bc314bbca56b963674c9694e8fbd0ad9aeee90c0cc2",
+      "functions": [
+        "FORENSIC_SOURCE"
+      ],
+      "disposition": "FAILED_RECEIVER_EVIDENCE",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/6e3015df659eb06084f14ce43144fd160bee3cda/scripts/execute_receivers_seq5.mjs",
+      "inspection": "ACTUAL_GIT_FILE_BYTES",
+      "note": "Procedural receiver outputs; reads hidden key; source is incriminating evidence, not an authenticated receiver execution."
+    },
+    {
+      "id": "s55-prereg",
+      "path": "research/sequence-5.5-closure-chamber/01-PREREGISTRATION.md",
+      "commit_sha": "70299c23b3e0b3d781ea9673cae1d1112ba281f3",
+      "branch_ref": "research/sequence-5.5-closure-chamber-20261005",
+      "git_blob_sha": "44fd987ef14ad78781add6b5680ff51881254155",
+      "bytes": 19459,
+      "sha256": "e6bfb2f30e09e13e037b2263488a421b0511d17d9160dd09ac0270e357f868a0",
+      "functions": [
+        "PREREGISTRATION"
+      ],
+      "disposition": "ORIGINAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70299c23b3e0b3d781ea9673cae1d1112ba281f3/research/sequence-5.5-closure-chamber/01-PREREGISTRATION.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s55-egress",
+      "path": "research/sequence-5.5-closure-chamber/18-ANTIGRAVITY_LOCAL_EGRESS_REPORT.md",
+      "commit_sha": "2fe3b2835f080620ce40e820f1ddef7c8775d4f4",
+      "branch_ref": "handoff/sequence-5.5-antigravity-egress-20261006",
+      "git_blob_sha": "26438a3e4f8990d32abcfd330bb2cb453b9a557d",
+      "bytes": 5393,
+      "sha256": "3e805ec4fa9c215b6b35f2d4e4993a73e8f0d0762ff489b6fc8826167b5497f9",
+      "functions": [
+        "HANDOFF",
+        "WITNESS"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/2fe3b2835f080620ce40e820f1ddef7c8775d4f4/research/sequence-5.5-closure-chamber/18-ANTIGRAVITY_LOCAL_EGRESS_REPORT.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s55-v41r-design",
+      "path": "research/sequence-5.5-closure-chamber/33-PILOT_V4_1R_DIFFICULTY_GATE_SPEC.json",
+      "commit_sha": "df0ad6cd0795a38735bfda4d6a155857d6df0e9b",
+      "branch_ref": "research/sequence-5.5-amari-closure-20261006",
+      "git_blob_sha": "54a40357602444841326dda7e4dda23722d41499",
+      "bytes": 4631,
+      "sha256": "c6d610beb4efb0b84331ab6f639f6f5729ae0b7a509d1691ebc6800a73ec5fce",
+      "functions": [
+        "PREREGISTRATION"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/df0ad6cd0795a38735bfda4d6a155857d6df0e9b/research/sequence-5.5-closure-chamber/33-PILOT_V4_1R_DIFFICULTY_GATE_SPEC.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s55-v41r-manifest",
+      "path": "research/sequence-5.5-closure-chamber/33-PILOT_V4_1R_RESEARCH_MANIFEST.json",
+      "commit_sha": "df0ad6cd0795a38735bfda4d6a155857d6df0e9b",
+      "branch_ref": "research/sequence-5.5-amari-closure-20261006",
+      "git_blob_sha": "4011e8f095f3f742159ffab67ef795a5f793ddca",
+      "bytes": 8510,
+      "sha256": "48bd1eb27f51b299449c4cab1ce5591cf8eefeda3cde8fbd3e4d21b4a8a56512",
+      "functions": [
+        "PREREGISTRATION"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/df0ad6cd0795a38735bfda4d6a155857d6df0e9b/research/sequence-5.5-closure-chamber/33-PILOT_V4_1R_RESEARCH_MANIFEST.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s55-execution-binding",
+      "path": "research/sequence-5.5-closure-chamber/34-PILOT_V4_1R_EXECUTION_BINDING_MANIFEST.json",
+      "commit_sha": "df0ad6cd0795a38735bfda4d6a155857d6df0e9b",
+      "branch_ref": "research/sequence-5.5-amari-closure-20261006",
+      "git_blob_sha": "0cae1c69d3d52f2e8b8ff42e55b6aa3db3c1938b",
+      "bytes": 36909,
+      "sha256": "d43a0aaa2cc7e5a88522346c91ab200cb69123758f45ffe244e03a785478a649",
+      "functions": [
+        "EXECUTION_CONTRACT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/df0ad6cd0795a38735bfda4d6a155857d6df0e9b/research/sequence-5.5-closure-chamber/34-PILOT_V4_1R_EXECUTION_BINDING_MANIFEST.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s55-receipt-schema",
+      "path": "research/sequence-5.5-closure-chamber/34-PILOT_V4_1R_RECEIPT_SCHEMA.json",
+      "commit_sha": "df0ad6cd0795a38735bfda4d6a155857d6df0e9b",
+      "branch_ref": "research/sequence-5.5-amari-closure-20261006",
+      "git_blob_sha": "c8d4f584ad046285d43bc81d3b189cbf9887b653",
+      "bytes": 7133,
+      "sha256": "2474a6867889257285d25a1fd41b133ff42442e968a43eb98349d0b4e91da6df",
+      "functions": [
+        "RECEIPT_CONTRACT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/df0ad6cd0795a38735bfda4d6a155857d6df0e9b/research/sequence-5.5-closure-chamber/34-PILOT_V4_1R_RECEIPT_SCHEMA.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s55-raw-manifest",
+      "path": "research/sequence-5.5-closure-chamber/35-PILOT_V4_1R_RAW_OUTPUTS_MANIFEST.json",
+      "commit_sha": "df0ad6cd0795a38735bfda4d6a155857d6df0e9b",
+      "branch_ref": "research/sequence-5.5-amari-closure-20261006",
+      "git_blob_sha": "cf18f4a7897058f058c1cdb69fadb6fcddca3c4f",
+      "bytes": 84031,
+      "sha256": "35af2a4614b990faca30707fc2c1694e28286ef58b9a6ae549700862d8010d81",
+      "functions": [
+        "EXECUTION",
+        "RAW_EVIDENCE"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/df0ad6cd0795a38735bfda4d6a155857d6df0e9b/research/sequence-5.5-closure-chamber/35-PILOT_V4_1R_RAW_OUTPUTS_MANIFEST.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s55-key-reveal",
+      "path": "research/sequence-5.5-closure-chamber/36-PILOT_V4_1R_KEY_REVEAL.json",
+      "commit_sha": "df0ad6cd0795a38735bfda4d6a155857d6df0e9b",
+      "branch_ref": "research/sequence-5.5-amari-closure-20261006",
+      "git_blob_sha": "da034c10d7c867c81ecca46ceb9cd27baf947d9d",
+      "bytes": 10058,
+      "sha256": "cd971de705bdca06911b3a2ed683d08057db01809c49783ade6db162a7ee1ed1",
+      "functions": [
+        "WITNESS"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/df0ad6cd0795a38735bfda4d6a155857d6df0e9b/research/sequence-5.5-closure-chamber/36-PILOT_V4_1R_KEY_REVEAL.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s55-scientific-closure",
+      "path": "research/sequence-5.5-closure-chamber/37-SEQUENCE_5_5_SCIENTIFIC_CLOSURE_LEDGER.json",
+      "commit_sha": "df0ad6cd0795a38735bfda4d6a155857d6df0e9b",
+      "branch_ref": "research/sequence-5.5-amari-closure-20261006",
+      "git_blob_sha": "d1610608426a1ffa14d5f040dd89f663ce3d28bf",
+      "bytes": 7475,
+      "sha256": "80fbe03fbbe1151b3a72ce3a6d75332f394a6ff29d6b722d179cd120030d7b1f",
+      "functions": [
+        "FINAL_CLOSURE"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/df0ad6cd0795a38735bfda4d6a155857d6df0e9b/research/sequence-5.5-closure-chamber/37-SEQUENCE_5_5_SCIENTIFIC_CLOSURE_LEDGER.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s55-forensic-certification",
+      "path": "research/sequence-5.5-closure-chamber/38-AMARI_INDEPENDENT_FORENSIC_CERTIFICATION.json",
+      "commit_sha": "df0ad6cd0795a38735bfda4d6a155857d6df0e9b",
+      "branch_ref": "research/sequence-5.5-amari-closure-20261006",
+      "git_blob_sha": "d5e0391d7d30393614ffd278ca231443fb0c8b42",
+      "bytes": 9125,
+      "sha256": "c31e377687622e255eecc8386612ea8ee66197ff22adfd51ebeabc2cfbe0d26e",
+      "functions": [
+        "AUDIT",
+        "COUNTERSIGNATURE"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/df0ad6cd0795a38735bfda4d6a155857d6df0e9b/research/sequence-5.5-closure-chamber/38-AMARI_INDEPENDENT_FORENSIC_CERTIFICATION.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s55-countersignature",
+      "path": "research/sequence-5.5-closure-chamber/38-SEQUENCE_5_5_AMARI_FORENSIC_COUNTERSIGNATURE.json",
+      "commit_sha": "df0ad6cd0795a38735bfda4d6a155857d6df0e9b",
+      "branch_ref": "research/sequence-5.5-amari-closure-20261006",
+      "git_blob_sha": "36fde9253dbe702cd0881f611e86b97f3f895d17",
+      "bytes": 6622,
+      "sha256": "3dc54c3daa72e43ddc3b14c1dd266ac3722bc49d1c8b1744bb1b6506f8c99bab",
+      "functions": [
+        "COUNTERSIGNATURE",
+        "FINAL_CLOSURE"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/df0ad6cd0795a38735bfda4d6a155857d6df0e9b/research/sequence-5.5-closure-chamber/38-SEQUENCE_5_5_AMARI_FORENSIC_COUNTERSIGNATURE.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s55-v41r-raw",
+      "path": "research/sequence-5.5-closure-chamber/35-PILOT_V4_1R_RAW_OUTPUTS/",
+      "commit_sha": "df0ad6cd0795a38735bfda4d6a155857d6df0e9b",
+      "branch_ref": "research/sequence-5.5-amari-closure-20261006",
+      "git_tree_sha": "45b4ede008d01f1f0ffba4b5caba23b6166872ab",
+      "blob_count": 100,
+      "inventory_sha256": "309b08111229d32e3db89a630a9ab4c2e3f256c4f3bbe012e7319a90b2e32e22",
+      "inventory_format": "recursive git ls-tree: MODE TYPE OBJECT_ID TAB PATH LF, Git order",
+      "functions": [
+        "RAW_EVIDENCE"
+      ],
+      "disposition": "CANONICAL_RETAINED_FAMILY",
+      "immutable_tree_url": "https://github.com/tauric-diana-613/TD613-TCP/tree/df0ad6cd0795a38735bfda4d6a155857d6df0e9b/research/sequence-5.5-closure-chamber/35-PILOT_V4_1R_RAW_OUTPUTS",
+      "inspection": "GIT_TREE_INVENTORY; key files separately byte-inspected"
+    },
+    {
+      "id": "s55-v41r-receipts",
+      "path": "research/sequence-5.5-closure-chamber/35-PILOT_V4_1R_RECEIPTS/",
+      "commit_sha": "df0ad6cd0795a38735bfda4d6a155857d6df0e9b",
+      "branch_ref": "research/sequence-5.5-amari-closure-20261006",
+      "git_tree_sha": "d941769c34f2b8b1f8c3baf1c2ef6b989f1177e1",
+      "blob_count": 50,
+      "inventory_sha256": "7a332a5fde8558fb2dd85b9f839767e6b155332057bd583d46025f9ac4133dbb",
+      "inventory_format": "recursive git ls-tree: MODE TYPE OBJECT_ID TAB PATH LF, Git order",
+      "functions": [
+        "EXECUTION",
+        "RAW_EVIDENCE"
+      ],
+      "disposition": "CANONICAL_RETAINED_FAMILY",
+      "immutable_tree_url": "https://github.com/tauric-diana-613/TD613-TCP/tree/df0ad6cd0795a38735bfda4d6a155857d6df0e9b/research/sequence-5.5-closure-chamber/35-PILOT_V4_1R_RECEIPTS",
+      "inspection": "GIT_TREE_INVENTORY; key files separately byte-inspected"
+    },
+    {
+      "id": "s6-activation",
+      "path": "research/sequence-6-surviving-relations/00-SEQUENCE_6_ACTIVATION_AND_INGESTION.json",
+      "commit_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "git_blob_sha": "180dd26ed72567cab54228b2f05e7fecb19d1489",
+      "bytes": 1912,
+      "sha256": "af6c3410bf6f67beeee6622cf346e1e263e61648fdb02979cc817c3700075d8e",
+      "functions": [
+        "HANDOFF",
+        "ACTIVATION"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/257848567fdc95c5dabee20b43d8bb17da1deb43/research/sequence-6-surviving-relations/00-SEQUENCE_6_ACTIVATION_AND_INGESTION.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s6-survivor-map",
+      "path": "research/sequence-6-surviving-relations/01-SURVIVOR_MAP_AND_RELATIONAL_BASIS.json",
+      "commit_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "git_blob_sha": "54cb76056bf03454b90fd7af5b04229ff9c7732f",
+      "bytes": 29418,
+      "sha256": "997e3a0c0ceb901c4d1a407e293c00d8a6c89c44f26cb41be6ae398647de71be",
+      "functions": [
+        "RESEARCH_CONTRACT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/257848567fdc95c5dabee20b43d8bb17da1deb43/research/sequence-6-surviving-relations/01-SURVIVOR_MAP_AND_RELATIONAL_BASIS.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s6-architecture",
+      "path": "research/sequence-6-surviving-relations/02-SURVIVOR_MAP_AND_ARCHITECTURE_SPECIFICATION.md",
+      "commit_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "git_blob_sha": "d704b8b68048937877db83878d35bf99d33c9d5b",
+      "bytes": 53566,
+      "sha256": "cc8cf23cb6f658dde23399f53114bb6c6626ded4763fe5be6eecd8831ee0c38d",
+      "functions": [
+        "RESEARCH_CONTRACT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/257848567fdc95c5dabee20b43d8bb17da1deb43/research/sequence-6-surviving-relations/02-SURVIVOR_MAP_AND_ARCHITECTURE_SPECIFICATION.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s6-motion-witnesses",
+      "path": "research/sequence-6-surviving-relations/03-FLOWCORE_DOME_ART_MOTION_BRIDGE_WITNESSES.md",
+      "commit_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "git_blob_sha": "bf6b8761710b0b6c346193ce6162d0df4c9be2b8",
+      "bytes": 9983,
+      "sha256": "d7d671833b653b551fa61f8abd85bae6001de2095203c994a2ce9cf98e320f9b",
+      "functions": [
+        "WITNESS"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/257848567fdc95c5dabee20b43d8bb17da1deb43/research/sequence-6-surviving-relations/03-FLOWCORE_DOME_ART_MOTION_BRIDGE_WITNESSES.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s6-tournament",
+      "path": "research/sequence-6-surviving-relations/04-TRANCHE_2B_VISUAL_DIRECTOR_TOURNAMENT.md",
+      "commit_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "git_blob_sha": "78a072ea15ee1f339a09af008a1f4d1aafca0724",
+      "bytes": 12995,
+      "sha256": "af0aec796ea9775eb1fe29679834e0b252784ce3d68790730487795ab101e9b7",
+      "functions": [
+        "EXECUTION",
+        "DESIGN_CONTRACT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/257848567fdc95c5dabee20b43d8bb17da1deb43/research/sequence-6-surviving-relations/04-TRANCHE_2B_VISUAL_DIRECTOR_TOURNAMENT.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s6-directors-cut",
+      "path": "research/sequence-6-surviving-relations/05-TRANCHE_2C_DIRECTORS_CUT_SYNTHESIS.md",
+      "commit_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "git_blob_sha": "5e172ad79f2c6bbcaa39b19a1e3c7503a47957f6",
+      "bytes": 26552,
+      "sha256": "d723313a3dca697e2e3dda7398349a1006f3ff12d72c62dc74fc7c45da5cbfe4",
+      "functions": [
+        "EXECUTION",
+        "DESIGN_CONTRACT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/257848567fdc95c5dabee20b43d8bb17da1deb43/research/sequence-6-surviving-relations/05-TRANCHE_2C_DIRECTORS_CUT_SYNTHESIS.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s6-reference-journey",
+      "path": "research/sequence-6-surviving-relations/06-TRANCHE_3_JOURNEY_INTEGRATION.md",
+      "commit_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "git_blob_sha": "948dbb996a38226881a4111bd39e5ae0fc0537ba",
+      "bytes": 16252,
+      "sha256": "d7361ee31e0fe60e0ac4ffcf0089b60b19943fd3e3317bd7bf2514af68571a26",
+      "functions": [
+        "EXECUTION"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/257848567fdc95c5dabee20b43d8bb17da1deb43/research/sequence-6-surviving-relations/06-TRANCHE_3_JOURNEY_INTEGRATION.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s6-custody-repair",
+      "path": "research/sequence-6-surviving-relations/07-TRANCHE_3A_ACTUAL_PRODUCT_CUTOVER.md",
+      "commit_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "git_blob_sha": "cdebc62c86783be562533c2706ffdae4cc3cae77",
+      "bytes": 16223,
+      "sha256": "14e09c55272dae931eb43dd4f4c678f612c579435d5097713c872a45a956fadd",
+      "functions": [
+        "CORRECTION",
+        "EXECUTION"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/257848567fdc95c5dabee20b43d8bb17da1deb43/research/sequence-6-surviving-relations/07-TRANCHE_3A_ACTUAL_PRODUCT_CUTOVER.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES",
+      "note": "Report at retained head; product-cutover assertions require separate native-route evidence."
+    },
+    {
+      "id": "s6-rest1-freeze",
+      "path": "docs/sequence-6/SURVIVOR_MAP_AND_ARCHITECTURE_FREEZE.md",
+      "commit_sha": "4871e0c53749985facbf62749e1161d13a420e0e",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "git_blob_sha": "fdc948399e6e1841fc8c57b6156f3b445cd100d0",
+      "bytes": 29400,
+      "sha256": "4a47ea3e3e69001a5b426e67de3bae5c20d669fb04fd7ff1635d2ae7137f331a",
+      "functions": [
+        "RESEARCH_CONTRACT",
+        "FINAL_CLOSURE"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/4871e0c53749985facbf62749e1161d13a420e0e/docs/sequence-6/SURVIVOR_MAP_AND_ARCHITECTURE_FREEZE.md",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s6-chain-engine",
+      "path": "app/engine/governed-event-chain.js",
+      "commit_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "git_blob_sha": "72781eb087c797c083e838c4733f84baee9c0fe2",
+      "bytes": 20422,
+      "sha256": "47509aff9443ead263322998dff1c56ffd038cd84500e6203ef168f9ae8ffc4c",
+      "functions": [
+        "IMPLEMENTATION"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/257848567fdc95c5dabee20b43d8bb17da1deb43/app/engine/governed-event-chain.js",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s6-chain-tests",
+      "path": "tests/governed-event-chain.test.mjs",
+      "commit_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "git_blob_sha": "002d40503d3e55fc98cf237fbf886c83f7cfd540",
+      "bytes": 15313,
+      "sha256": "fe3313d9f0b7555f16c3b23ca6b08f80aaa639e9d082ce043dba7740b70a0bf0",
+      "functions": [
+        "TEST_CONTRACT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/257848567fdc95c5dabee20b43d8bb17da1deb43/tests/governed-event-chain.test.mjs",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s6-native-tests",
+      "path": "tests/sequence-6-native-cutover.test.mjs",
+      "commit_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "git_blob_sha": "bce6bbcae03a801cba9fd15af2009956fce20766",
+      "bytes": 3494,
+      "sha256": "9538003286bc304686a46a4614ae46db355fb09c332352112ff3f83daf352e95",
+      "functions": [
+        "TEST_CONTRACT"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/257848567fdc95c5dabee20b43d8bb17da1deb43/tests/sequence-6-native-cutover.test.mjs",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s6-native-witness-procedure",
+      "path": "scripts/loom-native-cutover-browser-witness.mjs",
+      "commit_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "git_blob_sha": "204c4520a6593b334e5f263ed7774d0a8d27ce03",
+      "bytes": 15348,
+      "sha256": "410990d2a036054e20ed6ae9b7b60a2edd5b0f22eed50d5726483783c171d428",
+      "functions": [
+        "EXECUTION_PROCEDURE"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/257848567fdc95c5dabee20b43d8bb17da1deb43/scripts/loom-native-cutover-browser-witness.mjs",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s6-browser-manifest",
+      "path": "research/sequence-6-surviving-relations/witnesses/browser/browser-witness-manifest.json",
+      "commit_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "git_blob_sha": "8316df28e2da47153a998d069e88633d9c69905c",
+      "bytes": 7560,
+      "sha256": "569a67691235b6ab8c0c7c6cb8455cc47cb5db7bb3d3c2507aa846807035bc8e",
+      "functions": [
+        "WITNESS"
+      ],
+      "disposition": "FINAL/CANONICAL",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/257848567fdc95c5dabee20b43d8bb17da1deb43/research/sequence-6-surviving-relations/witnesses/browser/browser-witness-manifest.json",
+      "inspection": "ACTUAL_GIT_FILE_BYTES"
+    },
+    {
+      "id": "s6-record",
+      "path": "research/sequence-6-surviving-relations/",
+      "commit_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "branch_ref": "staging/sequence-6-integration-20261006",
+      "git_tree_sha": "1e3b48cebd07b32484e3782d4e1f5dcc2085bdb9",
+      "blob_count": 168,
+      "inventory_sha256": "87367fbe7b3496f1cec80eb4bb2218797982089678fec5b1349c0d01bfc0d86d",
+      "inventory_format": "recursive git ls-tree: MODE TYPE OBJECT_ID TAB PATH LF, Git order",
+      "functions": [
+        "EXECUTION",
+        "WITNESS",
+        "CORRECTION"
+      ],
+      "disposition": "CANONICAL_RETAINED_FAMILY",
+      "immutable_tree_url": "https://github.com/tauric-diana-613/TD613-TCP/tree/257848567fdc95c5dabee20b43d8bb17da1deb43/research/sequence-6-surviving-relations",
+      "inspection": "GIT_TREE_INVENTORY; key files separately byte-inspected"
+    }
+  ],
+  "retained_execution_receipts": [
+    {
+      "id": "ci-sequence-1",
+      "class": [
+        "LOCAL_STRUCTURAL_TEST",
+        "REMOTE_CI_WITNESS"
+      ],
+      "run_id": 37349177827,
+      "run_url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/37349177827",
+      "job_id": 111895380441,
+      "job_url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/37349177827/job/111895380441",
+      "workflow_head_sha": "9b4a9e5561add51870d4f6cb5d106b3f7a6790e2",
+      "execution_checkout_sha": "582a1f04fd11e502fc7b3083ef6fa079dd0d23c8",
+      "conclusion": "success",
+      "log_inspected": true,
+      "observed_log_findings": [
+        "15 checksum entries OK",
+        "13 tests / 13 pass / 0 fail",
+        "candidate patch reconstruction"
+      ],
+      "independent_empirical_origin_witness": false,
+      "retrieval_is_not_rerun": true
+    },
+    {
+      "id": "ci-sequence-6",
+      "class": [
+        "BROWSER_WITNESS",
+        "SIMULATED_RECEIVER_TEST",
+        "REMOTE_CI_WITNESS"
+      ],
+      "run_id": 37689360524,
+      "run_url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/37689360524",
+      "job_id": 113025378555,
+      "job_url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/37689360524/job/113025378555",
+      "head_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "conclusion": "success",
+      "log_inspected": true,
+      "observed_log_findings": [
+        "checkout exact head 257848567fdc95c5dabee20b43d8bb17da1deb43",
+        "PASS_NATIVE_CUTOVER_DETERMINISTIC_RECEIVER"
+      ],
+      "artifact_id": 11512323940,
+      "artifact_url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/37689360524/artifacts/11512323940",
+      "artifact_zip_sha256_from_upload_log": "513a0e6c750044a431775f766f3c354f1c798bf34d36de2d0799bbd2629a196c",
+      "artifact_zip_bytes_from_upload_log": 17042367,
+      "artifact_archive_downloaded_here": false,
+      "live_provider_calls_in_native_witness": 0,
+      "physical_device_witness": false,
+      "human_comprehension_measured": false,
+      "independent_empirical_origin_witness": false,
+      "retrieval_is_not_rerun": true
+    }
+  ],
+  "evidence_class_law": [
+    "LOCAL_STRUCTURAL_TEST",
+    "SIMULATED_RECEIVER_TEST",
+    "ACTUAL_RECEIVER_TEST",
+    "BROWSER_WITNESS",
+    "PHYSICAL_DEVICE_WITNESS",
+    "INDEPENDENT_EXTERNAL_WITNESS"
+  ],
+  "epistemic_boundaries": [
+    "V != C != P != L",
+    "Internal integrity != external origin",
+    "Cryptographic integrity != empirical validity",
+    "Route memory != authorization",
+    "Recorded return != demonstrated external return",
+    "Later evidence cannot retroactively upgrade earlier knowledge",
+    "No internally generated artifact establishes the Golden Egg"
+  ],
+  "verification_performed_here": [
+    "Remote branch/ref resolution",
+    "Full Git commit/tree/parent matching",
+    "Actual source-file byte inspection and SHA-256 cataloging",
+    "Retained CI run/job log inspection",
+    "Remote bundle Git-object recovery",
+    "Documentation-only index validation"
+  ],
+  "execution_performed_here": {
+    "receiver_models": false,
+    "research_assays": false,
+    "historical_tests_rerun": false,
+    "product_changes": false,
+    "main_merge": false,
+    "deployment": false,
+    "issue_405_action": false
+  },
+  "search_notes": [
+    "Search operated on supplied remote refs and their retained trees/ancestry; positive canonical objects are individually resolved.",
+    "An encoded /branches/ lookup was rejected by the connector; raw /git/ref/heads/ lookups resolved the same refs. Rejected API syntax is not evidence of artifact absence.",
+    "Index completeness means every numbered program node and required correction has an address. It does not certify every historical result or manufacture missing global closure."
+  ],
+  "determination": {
+    "ORCHESTRATOR_CANONICAL_CONTRACT_LOCATED": true,
+    "SIX_SEQUENCE_CANONICAL_EXECUTION_INDEX_COMPLETE": true,
+    "status": "ORCHESTRATOR_AND_SIX_SEQUENCE_CONTRACT_RECOVERY = ADMISSIBLE_FOR_CONTINUATION",
+    "hold_lift_scope": "Contract-location HOLD only. Future execution authority, receiver suitability and any missing empirical witnesses remain separate.",
+    "stop": "Do not begin a battery or assay from this archival receipt."
+  }
+}
