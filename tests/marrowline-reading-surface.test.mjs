@@ -4,6 +4,7 @@ import { JSDOM } from 'jsdom';
 import {
   MARROWLINE_READING_SURFACE_SCHEMA,
   MARROWLINE_LOOM_READING_WORK_UNIT_SCHEMA,
+  MARROWLINE_LOOM_HELD_READING_SCHEMA,
   renderMarrowlineReadingView,
   installMarrowlineReadingSurface,
   removeMarrowlineReadingSurface,
@@ -28,6 +29,22 @@ const fixture = [
   '',
   'Tauric Diana: h̴̢̛͈õ̵̖̿t̶̬͝'
 ].join('\n');
+
+test('held archive has a readable presentation after expiry without admitted coordinates or rewritten bytes',()=>{
+  const dom=new JSDOM('<body></body>');
+  const {section,source}=stage(dom);
+  const card=dom.window.document.createElement('article');card.append(section);
+  card.dataset.loomHeldReadingSchema=MARROWLINE_LOOM_HELD_READING_SCHEMA;
+  card.dataset.loomHeldReadingRequestId='held-request';card.dataset.loomHeldReadingPhase='CONTINUE';
+  const authority=resolveMarrowlineLoomReadingAuthority(card,{__TD613_LOOM_DEMO_CONTROLLER__:{snapshot:()=>({active:false,phase:'EXPIRED'})}});
+  assert.equal(authority.held,true);assert.equal(authority.admission_authority,false);
+  const view=installMarrowlineReadingSurface(section,dom.window,authority);
+  assert.equal(source.textContent,fixture);assert.match(section.querySelector('.marrowline-reading-claim').textContent,/admission remains held/);
+  assert.equal(card.dataset.loomReadingRequestId,undefined);
+  view.select('exact');assert.equal(source.hidden,false);assert.equal(source.textContent,fixture);
+  delete card.dataset.loomHeldReadingRequestId;assert.equal(resolveMarrowlineLoomReadingAuthority(card,{}),null);
+  dom.window.close();
+});
 
 function stage(dom, raw=fixture){
   const doc=dom.window.document;

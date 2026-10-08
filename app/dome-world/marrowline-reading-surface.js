@@ -8,6 +8,7 @@
  */
 export const MARROWLINE_READING_SURFACE_SCHEMA = 'td613.marrowline.reading-surface/v0.2';
 export const MARROWLINE_LOOM_READING_WORK_UNIT_SCHEMA = 'td613.marrowline.loom-reading-work-unit/v0.1';
+export const MARROWLINE_LOOM_HELD_READING_SCHEMA = 'td613.marrowline.loom-held-reading/v0.1';
 
 function text(doc, value='') { return doc.createTextNode(String(value ?? '')); }
 
@@ -103,6 +104,12 @@ export function renderMarrowlineReadingView(doc, raw='') {
 }
 
 export function resolveMarrowlineLoomReadingAuthority(card, environment=window) {
+  // A held archive earns a presentation view only. It stays inspectable after
+  // expiry and never enters the admitted-work-unit or native return coordinates.
+  const heldRequest=String(card?.dataset?.loomHeldReadingRequestId || '');
+  const heldPhase=String(card?.dataset?.loomHeldReadingPhase || '');
+  if(card?.dataset?.loomHeldReadingSchema===MARROWLINE_LOOM_HELD_READING_SCHEMA && heldRequest && ['ACTIVATE','CONTINUE'].includes(heldPhase))
+    return Object.freeze({schema:MARROWLINE_LOOM_HELD_READING_SCHEMA,request_id:heldRequest,phase:heldPhase,held:true,admission_authority:false});
   const requestId=String(card?.dataset?.loomReadingRequestId || '');
   const phase=String(card?.dataset?.loomReadingPhase || '');
   const expiresAt=Number(card?.dataset?.loomReadingExpiresAt || 0);
@@ -144,7 +151,9 @@ export function installMarrowlineReadingSurface(stage, environment=window, autho
   const readingButton=doc.createElement('button');readingButton.type='button';readingButton.textContent='Reading';readingButton.setAttribute('aria-pressed','true');
   const exactButton=doc.createElement('button');exactButton.type='button';exactButton.textContent='Exact';exactButton.setAttribute('aria-pressed','false');
   const copyExact=doc.createElement('button');copyExact.type='button';copyExact.textContent='Copy exact';copyExact.className='marrowline-copy-exact';
-  const claim=doc.createElement('small');claim.className='marrowline-reading-claim';claim.textContent='Loom return · exact remains the custody source.';
+  const claim=doc.createElement('small');claim.className='marrowline-reading-claim';claim.textContent=authority.held
+    ? 'Held Loom reply · presentation only; admission remains held.'
+    : 'Loom return · exact remains the custody source.';
   const status=doc.createElement('span');status.className='marrowline-reading-status';status.setAttribute('role','status');status.setAttribute('aria-live','polite');
 
   const reading=renderMarrowlineReadingView(doc,raw);

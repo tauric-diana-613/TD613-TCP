@@ -53,7 +53,9 @@ export function classifyMarrowlineRetryWindow(failure = {}, now = Date.now()) {
     || Math.min(...quota.map(item => safeSeconds(item.retryAfterSeconds ?? item.retry_after_seconds)).filter(Boolean), Infinity);
   const safeHint = Number.isFinite(providerHintSeconds) ? providerHintSeconds : 0;
   let kind = 'other', seconds = 0, source = 'none';
-  if (projectSpendCapReported) {
+  if (/answer_evidence_conflict/i.test(error)) {
+    kind = 'evidence-held';
+  } else if (projectSpendCapReported) {
     kind = 'project-spend-cap'; // A configured project cap is not a cooldown.
   } else if (/no-eligible-callable-models|missing-gemini-api-key/i.test(error)) kind = 'other';
   else if (/output-quality-held|attractor_structure_not_admitted|provider.incomplete|output.token.limit/i.test(error)) kind = 'return-held';
@@ -79,7 +81,8 @@ export function classifyMarrowlineRetryWindow(failure = {}, now = Date.now()) {
   return Object.freeze({
     schema: MARROWLINE_RETRY_WINDOW_SCHEMA, kind, source, seconds, retryAt,
     reportedModels: Object.freeze(reportedModels),
-    remainingSeconds, retryReady: remainingSeconds === 0,
+    remainingSeconds, retryReady: remainingSeconds === 0 && kind !== 'evidence-held',
+    ...(kind==='evidence-held'?{requiresReview:true}:{}),
     observedDaily: dailyMetricReported, dailyMetricReported, shortMetricReported, freeTierMetricReported,
     entitlementMismatchReported, projectSpendCapReported, providerDailyExhaustionVerified: false,
     providerDelayObserved: source === 'provider-retry-delay',
@@ -95,6 +98,7 @@ export function classifyMarrowlineRetryWindow(failure = {}, now = Date.now()) {
 
 export function marrowlineRetryMessage(failure = {}, now = Date.now()) {
   const window = classifyMarrowlineRetryWindow(failure, now);
+  if(window.kind==='evidence-held')return 'Reply received; Loom admission held for evidence review. Inspect the flagged claim before sending again; waiting alone does not repair it.';
   if (window.kind === 'return-held') return 'The reply was unfinished. Your message is saved.';
   if (window.kind === 'project-spend-cap') return 'Google reports this API project reached its configured monthly spending cap. This is not a timed cooldown. Check the cap in AI Studio; your message is saved.';
   const models = window.reportedModels.length

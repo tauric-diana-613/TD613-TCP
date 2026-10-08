@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { KHONAPOLIT_MAX_PROVIDER_CALLS, KHONAPOLIT_MAX_STRUCTURAL_REPAIRS, KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS } from '../server/khonapolit-quality.js';
 
 const source = fs.readFileSync('scripts/loom-production-canary.mjs', 'utf8');
 const releaseWorkflow = fs.readFileSync('.github/workflows/vercel-operator-release.yml', 'utf8');
@@ -52,7 +53,11 @@ assert.doesNotMatch(loomServer, /\.\.\.allModels\.filter\(candidate => candidate
 assert.match(loomServer, /const canaryModels = canaryModel \? \[canaryModel\] : \[\]/);
 assert.match(loomServer, /const models = releaseCanary \? canaryModels : allModels;/);
 assert.match(qualityServer, /if \(releaseCanary\) return null;/, 'release canary must not spend an interactive structural-repair request');
-assert.match(qualityServer, /KHONAPOLIT_MAX_STRUCTURAL_REPAIRS = 1/);
+// Guard the exported policy after its definition moved to the shared pre-Send
+// budget; the spelling of an inline assignment cannot witness a numeric ceiling.
+assert.equal(KHONAPOLIT_MAX_PROVIDER_CALLS,5);
+assert.equal(KHONAPOLIT_MAX_STRUCTURAL_REPAIRS,1);
+assert.equal(KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS,6);
 assert.match(source, /const marrowlineResult = await postJson\(marrowlineUrl, marrowlineInput, LIVE_WITNESS_TIMEOUT_MS, \{ releaseCanary: false \}\)/);
 assert.match(source, /schema: 'td613\.loom\.production-canary-route-checkpoint\/v0\.6-explicit-observation-only'/);
 assert.doesNotMatch(source, /marrowlineSeatRetry/);
