@@ -88,7 +88,7 @@ test('return inspection binds current origin and exact child while preserving HE
     const accepted = await h.controller.receive(f.packet, { source: 'OPENER_RETURN', sourceWindow: child });
     assert.equal(accepted.origin_match, 'ORIGIN_SELECTED_INPUTS_MATCH'); assert.equal(accepted.restore_authority, false);
     assert.equal(accepted.receipt_signatures_verified, false); assert.equal(accepted.persisted_for_reload, true);
-    assert.match(h.root.document.querySelector('[data-return-review=boundary]').textContent, /local custody admission remains HELD/);
+    assert.match(h.root.document.querySelector('[data-return-review=boundary]').textContent, /This review record grants no admission authority/);
     assert.equal(h.root.document.querySelectorAll('[data-return-review=history] article').length, 4);
     assert.match(h.root.document.querySelector('[data-return-review=lineage]').textContent, /2 substantive continuations/);
     const earlier = await h.controller.receive(f.afterB); assert.equal(earlier.reason, 'LOOM_RETURN_EARLIER_SNAPSHOT');
@@ -112,6 +112,8 @@ test('live bound return must match the exact latest reviewed Marrowline result b
     const accepted = await h.controller.receive(f.afterB, { source: 'OPENER_RETURN', sourceWindow: child, boundReturn: bound });
     assert.equal(accepted.status, 'REVIEW_ONLY_CONSISTENCY');
     assert.equal(seen.length, 1); assert.deepEqual(seen[0].bound, bound);
+    assert.match(h.root.document.querySelector('[data-return-review=status]').textContent, /that lane shows its current Check and admission state/);
+    assert.doesNotMatch(h.root.document.querySelector('[data-return-review=status]').textContent, /nothing is admitted/);
     const changed = copy(bound); changed.answer = 'Different staged answer.';
     const held = await h.controller.receive(f.afterB, { source: 'OPENER_RETURN', sourceWindow: child, boundReturn: changed });
     assert.equal(held.reason, 'LOOM_RETURN_BOUND_TURN_RESULT_MISMATCH');

@@ -121,7 +121,11 @@ test('pre-Send ceiling matches server policy and actual usage stays distinct fro
   assert.equal(marrowlineProviderUsage({}),null);
 });
 
-test('real handler preserves held native bytes, emits typed reason and releases reservation; revised request commits against setup',async()=>{
+for (const [label, rawClaim, expectedCode] of [
+  ['retention duration', 'Records remain in backups for 45 days.', 'RETENTION_MAXIMUM_PROMOTED_TO_OBSERVED_DURATION'],
+  ['pilot conditions', 'Pilot P2 yields an observed throughput under un-congested, non-concurrent single-stream conditions.', 'PILOT_CONDITIONS_ASSERTED_WITHOUT_WITNESS'],
+  ['deletion outcome', 'This violates the buyer\'s 14-day deletion limit unless a specific contractual exception is executed.', 'DELETION_VIOLATION_ASSERTED_WITHOUT_WITNESS']
+]) test(`real handler: ${label} held intact; explicitly revised request commits against setup`,async()=>{
   const environment={crypto:webcrypto};
   const packet={task:'Compare the fictional vendors.',documents,rules:['Use only selected evidence.']};
   const governance=await createLoomAiGovernance(packet,{},environment);
@@ -137,8 +141,8 @@ test('real handler preserves held native bytes, emits typed reason and releases 
     }
     return new Response(JSON.stringify({schema:LOOM_DEMO_CUSTODY_RESPONSE_SCHEMA,status:'ok',...payload}),{status:200});
   };
-  const raw='Kʰonapolit\nRecords remain in backups for 45 days.\n\nTauric Diana bots\n⟐';
-  const revised='Kʰonapolit\nWe have zero evidence that records will persist for 45 days.\n\nTauric Diana bots\nActual persistence remains unobserved.\n⟐';
+  const raw=`Kʰonapolit\n${rawClaim}\n\nTauric Diana bots\n⟐`;
+  const revised='Kʰonapolit\nP2 imported 9 GB in 26 minutes with two retries (comparison); its calculated average is 20.77 GB/hour.\n\nTauric Diana bots\nThe 45-day backup permission conflicts with the 14-day removal request (offer). Request an amendment and dated deletion evidence; actual persistence is unobserved.\n⟐';
   const handler=createLoomDemoTaskHandler({environment,custodyEnvironment:{VERCEL_OIDC_TOKEN:'offline-fixture'},custodyUrl:'https://atlas-custody.test/',custodyFetch,
     taskHandler:createLoomMarrowlineTaskHandler({nativeHandler:async(_req,res)=>res.end(JSON.stringify(reply(++nativeCalls===1?'Rules received.':nativeCalls===2?raw:revised)))})});
   const send=async body=>{const res={statusCode:200,setHeader(){},end(raw){this.body=JSON.parse(String(raw));}};
@@ -148,7 +152,8 @@ test('real handler preserves held native bytes, emits typed reason and releases 
   const held=await send(next);
   assert.equal(held.statusCode,422);assert.equal(held.body.error,'ANSWER_EVIDENCE_CONFLICT');
   assert.equal(held.body.diagnostic.stage,'output-admission');assert.equal(held.body.provider_completed,true);
-  assert.equal(held.body.native_reply.text,raw);assert.equal(held.body.evidence_review.conflicts[0].code,'RETENTION_MAXIMUM_PROMOTED_TO_OBSERVED_DURATION');
+  assert.equal(held.body.native_reply.text,raw);assert.equal(held.body.evidence_review.conflicts[0].code,expectedCode);
+  assert.equal(nativeCalls,2,'no automatic provider retry or repair is introduced');
   assert.equal(held.body.loom_demo_stage_receipt,undefined);assert.equal(head,setupHead);
   assert.deepEqual(calls.map(c=>c.operation),['reserve','commit','reserve','release']);
   const success=await send({...next,request_id:'revised',operator_request:'Keep permission and actual persistence distinct in both voices.'});

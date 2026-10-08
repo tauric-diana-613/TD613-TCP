@@ -2,6 +2,7 @@ import {
   createPortableLoomReentryCustodian,
   createPortableLoomReentryPrompt
 } from '../../engine/portable-loom-reentry.js';
+import { requireReusableLoomAnswer } from './ai-evidence-review.js';
 
 /** Extract carried objects without reserializing their pasted interior bytes. */
 export function parseLoomReentryReturnBatch(raw) {
@@ -291,6 +292,9 @@ export function mountPortableLoomReentryWorkspace(root, {
   }));
   listen($('check'), 'click', () => run(async ticket => {
     const rawTurns = parseLoomReentryReturnBatch($('returns').value);
+    // Manual paste must not bypass the same selected-source checks used by
+    // native result admission. Inspect parsed copies; keep carried bytes exact.
+    rawTurns.forEach((raw, index) => requireReusableLoomAnswer(JSON.parse(raw), excursion?.turns[index]?.documents ?? []));
     const attached = $('attach-challenge').checked ? challengeEvidence() : null;
     if ($('attach-challenge').checked && !attached) throw new Error('The selected challenge evidence is unavailable.');
     const checked = await custodian.check({ returns: rawTurns.map(raw => ({ raw, policy_review: $('policy-review').checked ? 'ROOT_RULES_RETAINED' : 'REVIEW_NOT_DECLARED' })), challenge: attached });

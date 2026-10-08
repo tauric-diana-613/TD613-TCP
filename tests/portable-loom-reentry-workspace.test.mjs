@@ -6,6 +6,7 @@ import { mountPortableLoomReentryWorkspace, parseLoomReentryReturnBatch } from '
 import { createLoomAiGovernance, createPortableLoomAiPacket } from '../app/dome-world/holonomy-loom/ai-handoff-base.js';
 import { createPortableLoomSession, createPortableLoomWorkUnit, portableLoomDigest } from '../app/engine/portable-loom-session.js';
 import { LOOM_REENTRY_RETURN_SCHEMA, createPortableLoomReentryCustodian } from '../app/engine/portable-loom-reentry.js';
+import { LOOM_AI_PROJECTS } from '../app/dome-world/holonomy-loom/ai-projects.js';
 
 async function harness({ onCheck = () => {}, createCustodian = createPortableLoomReentryCustodian } = {}) {
   const dom = new JSDOM('<section id="loomAiWorkspace"><section id="root"></section></section>');
@@ -62,6 +63,30 @@ async function returnData(h, overrides = {}) {
 async function check(h, overrides = {}) {
   h.change('returns', JSON.stringify(await returnData(h, overrides))); h.checked('policy-review', true); h.$('check').click(); await settled(h);
 }
+
+for (const answer of ['Pilot P2 ran single-stream.', 'This violates the 14-day deletion requirement.'])
+test(`manual Check blocks a vendor overclaim without advancing custody: ${answer}`, async () => {
+  const h = await harness();
+  try {
+    const documents = LOOM_AI_PROJECTS.find(p => p.id === 'vendor-diligence').documents.filter(d => d.share).map(({ id, name, text }) => ({ id, name, text }));
+    await stage(h, 'Compare the fictional vendors.', documents);
+    const before = h.ui.inspect().custody.head_ref;
+    await check(h, { answer, answer_digest: await portableLoomDigest(answer, h.environment) });
+    assert.equal(h.ui.inspect().candidate, null);
+    assert.equal(h.ui.inspect().custody.head_ref, before);
+    assert.equal(h.ui.inspect().custody.work_unit_count, 0);
+    assert.equal(h.$('admit').disabled, true);
+    assert.match(h.$('detail').textContent, /Answer needs review before reuse/);
+    assert.ok(h.$('returns').value.includes(answer), 'raw pasted answer is preserved');
+    const grounded = 'P2 imported 9 GB in 26 minutes with two retries (comparison). The 45-day backup permission conflicts with the 14-day removal request (offer); deletion was not verified.';
+    await check(h, { answer: grounded, answer_digest: await portableLoomDigest(grounded, h.environment) });
+    assert.equal(h.ui.inspect().candidate.status, 'ADMISSION_CANDIDATE');
+    assert.equal(h.ui.inspect().custody.head_ref, before, 'Check still makes no admission');
+    h.checked('accept', true); h.$('admit').click(); await settled(h);
+    assert.equal(h.ui.inspect().custody.work_unit_count, 1);
+    assert.equal(h.admission().unit.admitted_result.answer, grounded);
+  } finally { h.close(); }
+});
 
 // Presentation migration: the old witness opened a top-level Return drawer and
 // nested operational drawers. The behavioral contract is reachable registration,

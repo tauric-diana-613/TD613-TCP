@@ -260,7 +260,8 @@ test('saved review bypasses fresh practice on reload without completion or local
   assert.equal(h.root.dataset.thresholdState, 'open');
   assert.equal(h.root.dataset.firstCrossing, 'idle');
   assert.match(h.$('[data-return-review=history] > article').textContent, /State B has four workstreams/);
-  assert.match(h.$('[data-return-review=boundary]').textContent, /Receipt signatures remain unverified; local custody admission remains HELD/);
+  assert.match(h.$('[data-return-review=boundary]').textContent, /Receipt signatures remain unverified/);
+  assert.match(h.$('[data-return-review=boundary]').textContent, /This review record grants no admission authority/);
   assert.match(h.$('[data-return-review=boundary]').textContent, /original local record is unavailable/);
   assert.equal(h.$('#aiReentryWorkspace').hidden, true, 'review does not expose a live admission lane');
   assert.equal(h.ui.inspect().session, null, 'saved review restores no local session or custody');
