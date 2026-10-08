@@ -66,7 +66,7 @@ test('How Loom works is a recoverable handoff preview with a living Flow-Core re
   assert.equal(doc.querySelectorAll('[data-first-crossing-item]').length, 2);
   assert.equal(doc.querySelector('#loomFirstCrossingPrivate').tagName, 'DIV', 'private note is explanatory, not a mystery button');
   assert.equal(doc.querySelector('#loomFirstCrossingPause').textContent, '𝌋');
-  assert.equal(doc.querySelector('#loomTutorialProgress').textContent, '1 of 3 · Choose');
+  assert.equal(doc.querySelector('#loomTutorialProgress').textContent, '1 of 7 · Your request');
   const consumerCopy=doc.querySelector('#loomFirstCrossing').cloneNode(true);
   consumerCopy.querySelector('.loom-flowcore-help')?.remove();
   assert.doesNotMatch(consumerCopy.textContent, /First Crossing|private scrap|short brief|public source|locally|packet|Preparation ≠ transmission|Prepared is not transmitted|Nothing crossed/i);
@@ -321,8 +321,31 @@ test('selection and readiness publish consequences before naming the Flow-Core r
   assert.equal(h.ui.inspect().session, null);
   assert.equal(h.requests.length, 0);
   assert.equal(h.ui.inspect().clock.pendingFrames, 0, 'reduced motion publishes the equivalent consequence without animation frames');
+  // Seven-stage tutorial: a verified local binding permits a separate fictional
+  // send illustration, privacy egress check, and digest-bound return inspection.
+  // Finishing before all three consequences publish must stay forbidden.
+  for (const [step, cue, progress] of [
+    [3, 'send-named', '4 of 7 · Send request'],
+    [4, 'privacy-named', '5 of 7 · Revisit privacy'],
+    [5, 'proof-named', '6 of 7 · Return proof']
+  ]) {
+    h.$('#loomFirstCrossingStop').click();
+    await until(() => h.root.dataset.firstCrossingStep === String(step)
+      && h.root.dataset.firstCrossingCue === cue
+      && !h.$('#loomFirstCrossingStop').hidden, `published tutorial stage ${step}`);
+    assert.equal(h.$('#loomTutorialProgress').textContent, progress);
+    assert.equal(h.ui.inspect().session, null, 'fictional stages cannot create a live Loom root');
+    assert.equal(h.requests.length, 0, 'fictional stages cannot call a provider');
+  }
+  const proof = JSON.parse(h.$('#loomTutorialProofRecord').textContent);
+  assert.equal(proof.receipt.provider_called, false);
+  assert.equal(proof.receipt.custody_admitted, false);
+  assert.ok(proof.receipt.request_digest);
+  assert.ok(proof.receipt.answer_digest);
+  assert.ok(proof.receipt_digest);
   h.$('#loomFirstCrossingStop').click();
   assert.equal(h.root.dataset.firstCrossingCue, 'complete', 'reduced motion retains deliberate legitimate completion');
+  assert.equal(h.$('#loomTutorialProgress').textContent, '7 of 7 · Ready / Rest');
   assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), 'complete');
   assert.equal(h.ui.inspect().session, null);
   assert.equal(h.requests.length, 0);
@@ -392,6 +415,12 @@ test('completed handoff preview reopens from How it works in one deliberate gest
     await until(() => !h.$('#loomFirstCrossingAction').hidden, 'published gathering');
     h.$('#loomFirstCrossingAction').click();
     await until(() => !h.$('#loomFirstCrossingStop').hidden, 'published local readiness');
+    for (const [step, cue] of [[3, 'send-named'], [4, 'privacy-named'], [5, 'proof-named']]) {
+      h.$('#loomFirstCrossingStop').click();
+      await until(() => h.root.dataset.firstCrossingStep === String(step)
+        && h.root.dataset.firstCrossingCue === cue
+        && !h.$('#loomFirstCrossingStop').hidden, `published tutorial stage ${step}`);
+    }
     h.$('#loomFirstCrossingStop').click();
     assert.equal(h.root.dataset.firstCrossingCue, 'complete');
   }
