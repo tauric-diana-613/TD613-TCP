@@ -1019,10 +1019,16 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       const verification=await verifyPortableLoomReceiverChallenge(bundle,candidate,capture,environment);
       const dollhouse=await auditPortableLoomChallengeWithDollhouse(session,unit,bundle,verification,environment);
       if(!stillCurrent())return;
-      renderChallengeResult(verification,dollhouse);
-      appendGateReport(await createPortableLoomGateReport(bundle,candidate,capture,environment));
-      challengeVerification=verification;challengeDollhouse=dollhouse;refreshTransferActions();
+      const gateReport=await createPortableLoomGateReport(bundle,candidate,capture,environment);
+      // The report digest is asynchronous. A changed input during that wait
+      // must never publish a stale verdict, or show a verdict before inspect()
+      // and the retained Gate report agree on the same episode.
+      if(!stillCurrent())return;
+      appendGateReport(gateReport);
+      challengeVerification=verification;challengeDollhouse=dollhouse;
       reentry.setChallenge(evidence);
+      refreshTransferActions();
+      renderChallengeResult(verification,dollhouse);
       status(verification.status==='OBSERVED_EXPOSURE'?'Challenge found observed exposure in the declared horizon.':'Challenge verification complete. Read the bounded verdict and unresolved horizon.');
     }catch(error){if(!stillCurrent())return;clearChallengeVerdict();$('aiChallengeResult').dataset.state='HOLD';$('aiChallengeVerdict').textContent='HOLD · challenge could not be checked.';$('aiChallengeFindings').replaceChildren();$('aiChallengeUnknowns').textContent=`Malformed or unsupported return. ${episodeRecorded?'This attempted episode is retained in the private custody history.':'No episode was registered in a live custody lane.'} No ancestry change occurred.`;$('aiChallengeResult').hidden=false;$('aiChallengeResult').setAttribute('tabindex','-1');$('aiChallengeResult').focus();status(`Challenge held · ${error.message}`,true);}
   });
