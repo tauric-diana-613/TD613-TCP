@@ -497,9 +497,9 @@ try {
       // A fresh route avoids any implicit root replacement after preparation.
       const practice = await bindPage(context, `${posture.name}-practice`);
       await practice.locator('.loom-builder-shell').waitFor({ state: 'visible' });
-      await practice.locator('#aiDemoMode').click(); await practice.locator('#aiDemoInvitation').click();
-      await practice.locator('[data-project="participant-research"]').click();
-      record(`${posture.name}: Practice keeps Prepare primary`, await practice.locator('#aiPreparePortable').evaluate(node => node.classList.contains('ai-primary')) && !(await practice.locator('#aiRun').evaluate(node => node.classList.contains('ai-primary'))), { fictional_case: 'participant-research' });
+      // Portable My Work prepares without an obsolete demo fixture.
+      await practice.locator('#aiTask').fill('Review the fictional mobile source boundary and preserve local custody.');
+      record(`${posture.name}: My Work keeps Prepare primary`, await practice.locator('#aiPreparePortable').evaluate(node => node.classList.contains('ai-primary')) && !(await practice.locator('#aiRun').evaluate(node => node.classList.contains('ai-primary'))), { input_class: 'OPERATOR_AUTHORED_FICTIONAL_TASK' });
       await practice.locator('#aiPreparePortable').click();
       await practice.waitForFunction(() => document.querySelector('#loomAiWorkspace').dataset.workspace === 'crossing');
       record(`${posture.name}: Practice preparation makes no POST`, !report.requests.some(request => request.method !== 'GET'), { non_get_requests: report.requests.filter(request => request.method !== 'GET') });
