@@ -233,19 +233,21 @@ try {
       assert.equal(await page.locator('#aiRuntime').isVisible(),false,'Demo remains in the builder scene until the operator opens How it works');
       assert.equal(await page.locator('#aiPreparePortable').evaluate(node=>node.classList.contains('ai-primary')),true,'Demo preserves local preparation as the primary route gesture');
       assert.equal(await page.locator('a[href="/dome-world/loom-instrument-lab.html"]').first().isVisible(),true,'Instrument Lab remains independently available during Demo');
-      assert.match(await page.locator('#aiDemoModePanel').innerText(),/Choose a fictional example, then try the same controls with your own work\./i);
+      assert.match(await page.locator('#aiDemoModePanel').innerText(),/New demos will follow/);
       await page.locator('#aiDemoInvitation').click();
-      assert.equal(await page.locator('#aiDemoInvitation').getAttribute('aria-expanded'), 'true');
-      await page.locator('#aiProjectChoices button').first().click();
-      await page.locator('#loomRulesOpen').click();
-      assert.equal(await page.locator('#aiRules').isVisible(), true);
-      await closeTools();
-      await page.locator('.ai-file-note > summary').last().click();
-      assert.match(await page.locator('.ai-file-note[open]').textContent(), /fictional ledger|private identities/);
-      await page.locator('.ai-file-note > summary').last().click();
-      assert.equal(requests.length, 0, 'choosing a project only loads its fictional work');
-      assert.equal(await page.locator('#aiTask').inputValue(), fixture.task);
-      assert.equal(await page.locator('#aiDocuments').isVisible(), true);
+      const placeholder=page.locator('#aiProjectChoices button');
+      assert.equal(await placeholder.count(),1);assert.equal(await placeholder.isDisabled(),true);assert.match(await placeholder.innerText(),/Demo 1[\s\S]*COMING SOON/);
+      assert.equal(await page.locator('[data-project]').count(),0);
+      await page.locator('#aiPortableMode').click();
+      await page.locator('#aiTask').fill(fixture.task);
+      await openTool('rules');await page.locator('#aiRules').fill(fixture.rules.join('\n'));await page.locator('#aiPrivate').fill(fixture.protectedTerms.join('\n'));await closeTools();
+      await page.locator('#aiUpload').setInputFiles(fixture.documents.map(document=>({name:document.name,mimeType:'text/plain',buffer:Buffer.from(document.text)})));
+      for(const document of fixture.documents){
+        const choice=page.getByRole('checkbox',{name:`Share ${document.name} with the AI`,exact:true});await choice.waitFor({state:'visible'});
+        if(document.share)await choice.check();else assert.equal(await choice.isChecked(),false);
+      }
+      assert.equal(requests.length,0,'custom preparation and coming-soon navigation send nothing');
+      assert.equal(await page.locator('#aiTask').inputValue(),fixture.task);
       await page.locator('#aiUpload').setInputFiles({ name: 'local-upload.txt', mimeType: 'text/plain', buffer: Buffer.from(uploadCanary) });
       const uploadChoice = page.getByRole('checkbox', { name: 'Share local-upload.txt with the AI', exact: true });
       await uploadChoice.waitFor({ state: 'visible' });
@@ -261,7 +263,7 @@ try {
       assert.equal((await page.locator('#aiAnswer').textContent()).includes(fixtureAnswer), false, 'pending task cannot show a fabricated answer');
       const wire = requests[0];
       assert.equal(wire.schema, 'td613.loom.ai-task/v0.1');
-      assert.deepEqual(wire.documents.map(document => document.id), fixture.documents.filter(document => document.share).map(document => document.id));
+      assert.deepEqual(wire.documents.map(document => document.name), fixture.documents.filter(document => document.share).map(document => document.name));
       const serialized = JSON.stringify(wire);
       for (const term of fixture.protectedTerms) assert.equal(serialized.includes(term), false, 'private canary/name never enters intercepted wire');
       for (const document of fixture.documents.filter(document => !document.share)) assert.equal(serialized.includes(document.text), false, 'whole local source omitted');

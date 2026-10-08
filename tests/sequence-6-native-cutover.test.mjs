@@ -43,7 +43,7 @@ test('standalone Sequence 6 deep links are explicitly state fixtures, not native
   assert.doesNotMatch(fixtureBody, /consumeLoomAiHandoff\(/);
   const product = fs.readFileSync('app/dome-world/holonomy-loom/ai-workspace.js','utf8');
   assert.match(product, /reentry\.registerDeparture/);
-  assert.match(product, /createLoomAiHandoff\(task,environment,\{reentryContract\}\)/);
+  assert.match(product, /createLoomAiHandoff\(task,environment,\{reentryContract,portableGovernance:portableSessionPacket\?\.portable_governance,loomGateReports:gateReports\}\)/);
   assert.match(product, /reentry\.loadReturnedTurn/);
 });
 

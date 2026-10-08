@@ -1,4 +1,4 @@
-import { peekLastConsumedLoomAiHandoff, createPortableLoomAiPacket } from './holonomy-loom/ai-handoff.js';
+import { peekLastConsumedLoomAiHandoff, createPortableLoomAiPacket, createCanonicalPortableLoomPacket } from './holonomy-loom/ai-handoff.js';
 import {
   MARROWLINE_ATTACHMENT_CHANGE_EVENT,
   attachmentState,
@@ -73,8 +73,12 @@ function portableInput(packet) {
   };
 }
 
-function exportPortable(packet, doc, environment) {
-  const payload = createPortableLoomAiPacket(portableInput(packet), { priorResult: packet.continuation?.prior_result });
+async function exportPortable(packet, doc, environment) {
+  // Consumed canonical cores were independently replayed at intake. Retain them
+  // verbatim; historical handoffs acquire the same core before download.
+  const payload = packet.portable_governance ? {...createPortableLoomAiPacket(portableInput(packet), { priorResult: packet.continuation?.prior_result }),portable_governance:JSON.parse(JSON.stringify(packet.portable_governance))}
+    : await createCanonicalPortableLoomPacket(portableInput(packet),{priorResult:packet.continuation?.prior_result},environment);
+  if(packet.loom_gate_reports)payload.loom_gate_reports=JSON.parse(JSON.stringify(packet.loom_gate_reports));
   const BlobCtor = environment.Blob ?? doc.defaultView?.Blob;
   const URLApi = environment.URL ?? doc.defaultView?.URL;
   if (!BlobCtor || !URLApi?.createObjectURL) throw new Error('Export unavailable in this browser');
@@ -271,9 +275,9 @@ function pocketize(root, packet, doc, environment) {
   });
   continueButton.addEventListener('click', () => openWorkspace({ review: false }));
   reviewButton.addEventListener('click', () => openWorkspace({ review: true }));
-  exportButton.addEventListener('click', () => {
+  exportButton.addEventListener('click', async () => {
     try {
-      exportPortable(packet, doc, environment);
+      await exportPortable(packet, doc, environment);
       closeMenu(toggle, menu);
       setTerminalStatus(doc, 'LOOM AIA EXPORTED · no provider request was made');
       toggle.focus?.();

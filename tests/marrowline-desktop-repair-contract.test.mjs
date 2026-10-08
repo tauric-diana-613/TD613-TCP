@@ -57,6 +57,9 @@ test('legacy pocket export preserves the consumed original result after a newer 
   assert.equal(carried.task, packet.task);assert.deepEqual(carried.documents, packet.documents);assert.deepEqual(carried.rules, packet.rules);
   assert.deepEqual(carried.governance, packet.governance);
   assert.equal(carried.portability_assurance.authority_transferred, false);
+  assert.equal(carried.portable_governance.output_protocol.gate_action.command,'米');
+  assert.equal(carried.portable_governance.output_protocol.gate_output.command,'下');
+  assert.equal(carried.portable_governance.mechanisms.length,32);
   assert.equal(providerCalls, 0);
 });
 

@@ -92,6 +92,16 @@ async function harness(t, { stageInitially = true, cryptoBarrier = true, complet
     settled: () => until(() => doc.getElementById('khonapolitSend').dataset.transmissionState === 'ready') };
 }
 
+for(const command of ['米','下']) test(`a lone ${command} opens Gate during an active staged demo without any provider request`,async t=>{
+  const h=await harness(t,{stageInitially:true,cryptoBarrier:false});
+  let navigation=0;h.doc.querySelector('.mobile-dock [data-mobile-target="gatePanel"]').addEventListener('click',()=>navigation++);
+  h.doc.getElementById('khonapolitPrompt').value=` ${command} `;
+  h.doc.getElementById('khonapolitPrompt').closest('form').dispatchEvent(new h.root.Event('submit',{bubbles:true,cancelable:true}));
+  await flush();assert.equal(navigation,1);assert.equal(h.calls.length,0);assert.equal(h.controller.snapshot().phase,'AIA_STAGED');
+  assert.equal(h.doc.getElementById('khonapolitPrompt').value,'');
+  if(command==='下'){assert.equal(h.doc.getElementById('marrowlineLoomGateHow').hidden,false);assert.equal(h.doc.getElementById('loomGateHowButton').getAttribute('aria-expanded'),'true');}
+});
+
 for (const targetStage of ['AIA', 'files']) for (const closure of ['leave', 'expiry']) {
   test(`${closure} during ${targetStage} attachment bytes cannot reactivate late staging`, async t => {
     const h = await harness(t, { stageInitially: targetStage === 'files', cryptoBarrier: false, complete: targetStage === 'files' });

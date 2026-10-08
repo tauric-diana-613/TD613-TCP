@@ -1,5 +1,6 @@
 import { buildLoomAiRequest } from './ai-intake.js';
 import { createLoomAiGovernance, createLoomAiTaskGovernor } from './ai-handoff.js';
+import { portableLoomDigest } from '../../engine/portable-loom-session.js';
 
 const freeze = value => {
   if (value && typeof value === 'object') {
@@ -95,4 +96,31 @@ export async function bindFirstCrossingPractice(selectedIds, environment = globa
     live_custody_capability: false,
     authority_transferred: false
   });
+}
+
+/** Exercise the installed egress guard, using only fictional local material. */
+export function checkFirstCrossingPrivacy() {
+  const fixture = FIRST_CROSSING_PRACTICE;
+  const input = { task: fixture.task, rules: fixture.rules, protectedTerms: fixture.protectedTerms,
+    documents: fixture.documents.map(document => ({ ...document })) };
+  const selected = buildLoomAiRequest(input, 'tutorial-selected-control');
+  input.documents[2] = { ...input.documents[2], share: true, text: fixture.protectedTerms[0] };
+  let blocked = false;
+  try { buildLoomAiRequest(input, 'tutorial-private-egress-control'); }
+  catch (error) { if (error.code !== 'PROTECTED_EGRESS') throw error; blocked = true; }
+  if (!blocked) throw new Error('Tutorial privacy control did not block the protected term.');
+  return freeze({ schema: 'td613.loom.tutorial-privacy/v0.1', evidence_class: 'OFFLINE_TEST', fictional: true,
+    scope: 'Selected outgoing packet and one planted private-term egress attempt',
+    selected_documents: selected.request.documents.length, excluded_documents: selected.localReceipt.withheld_document_ids.length,
+    blocked_private_egress_attempts: 1, provider_called: false, whole_conversation_leakage_fraction: null });
+}
+
+/** A real digest binds the fictional answer to the checked local request. */
+export async function createFirstCrossingReturnProof(binding, environment = globalThis) {
+  if (binding?.binding_verified !== true || binding.fixture_id !== FIRST_CROSSING_PRACTICE.id) throw new TypeError('A checked tutorial request is required.');
+  const answer = 'Fictional answer: the garden opens at nine.';
+  const receipt = { schema: 'td613.loom.tutorial-return/v0.1', evidence_class: 'OFFLINE_TEST', fictional: true,
+    request_digest: binding.input_digest, answer_digest: await portableLoomDigest(answer, environment),
+    used_document_ids: [...binding.selected_document_ids], provider_called: false, custody_admitted: false };
+  return freeze({ answer, receipt, receipt_digest: await portableLoomDigest(receipt, environment) });
 }

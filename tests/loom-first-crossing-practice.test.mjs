@@ -1,11 +1,29 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { webcrypto } from 'node:crypto';
-import { FIRST_CROSSING_PRACTICE, bindFirstCrossingPractice } from '../app/dome-world/holonomy-loom/first-crossing-practice.js';
+import { FIRST_CROSSING_PRACTICE, bindFirstCrossingPractice, checkFirstCrossingPrivacy, createFirstCrossingReturnProof } from '../app/dome-world/holonomy-loom/first-crossing-practice.js';
+import { portableLoomDigest } from '../app/engine/portable-loom-session.js';
 import { buildLoomAiRequest } from '../app/dome-world/holonomy-loom/ai-intake.js';
 import { createLoomAiGovernance, createLoomAiTaskGovernor } from '../app/dome-world/holonomy-loom/ai-handoff.js';
 
 const environment = { crypto: webcrypto };
+
+test('tutorial privacy and return proofs exercise local guards without exposing the private key',async()=>{
+  const check=checkFirstCrossingPrivacy();
+  assert.equal(check.blocked_private_egress_attempts,1);
+  assert.equal(check.selected_documents,2);assert.equal(check.excluded_documents,1);
+  assert.equal(check.whole_conversation_leakage_fraction,null);
+  const binding=await bindFirstCrossingPractice(['brief','source'],environment);
+  const proof=await createFirstCrossingReturnProof(binding,environment);
+  assert.equal(proof.receipt.request_digest,binding.input_digest);
+  assert.equal(proof.receipt.answer_digest,await portableLoomDigest(proof.answer,environment));
+  assert.equal(proof.receipt_digest,await portableLoomDigest(proof.receipt,environment));
+  assert.notEqual(proof.receipt.answer_digest,await portableLoomDigest(proof.answer+' changed',environment));
+  assert.equal(proof.receipt.provider_called,false);
+  assert.equal(proof.receipt.custody_admitted,false);
+  assert.equal(JSON.stringify({check,proof}).includes(FIRST_CROSSING_PRACTICE.protectedTerms[0]),false);
+  await assert.rejects(createFirstCrossingReturnProof(null,environment),/checked tutorial request/);
+});
 
 test('fictional selected material earns local readiness through installed AIA/FADT while staying unsent', async () => {
   const inaccessible = new Proxy(environment, {

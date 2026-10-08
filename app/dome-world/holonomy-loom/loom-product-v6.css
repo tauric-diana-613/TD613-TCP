@@ -510,6 +510,23 @@ body:has(#loomAiWorkspace[data-first-crossing="active"]) .loom-topbar a[href*="l
   width:min(330px,calc(100% - 36px));padding:14px 16px;background:rgba(7,12,17,.96);
   border:1px solid rgba(142,232,230,.22);box-shadow:0 18px 60px rgba(0,0,0,.42)
 }
+#loomAiWorkspace .loom-flowcore-help[open] summary{padding-right:42px}
+#loomAiWorkspace .loom-flowcore-help-close{display:none}
+#loomAiWorkspace .loom-flowcore-help[open] .loom-flowcore-help-close{
+  display:grid;place-items:center;position:absolute;top:8px;right:8px;
+  width:44px;height:44px;min-height:44px;padding:0;border:1px solid rgba(142,232,230,.3);
+  border-radius:50%;background:#101c23;color:#dcfff9;font:400 26px/1 var(--sans);cursor:pointer
+}
+#loomAiWorkspace .loom-flowcore-help-close:focus-visible{outline:2px solid #8ee8e6;outline-offset:3px}
+#loomAiWorkspace[data-first-crossing="active"]:not([data-first-crossing-step="0"]) .loom-first-crossing-objects [data-first-crossing-item]{display:none}
+#loomAiWorkspace[data-first-crossing-step="6"] .loom-first-crossing-objects{display:none}
+#loomAiWorkspace[data-first-crossing="active"][data-first-crossing-step="6"] .loom-begin{
+  display:inline-flex;position:absolute;left:50%;bottom:118px;transform:translateX(-50%);z-index:22
+}
+#loomAiWorkspace .loom-tutorial-proof{position:absolute;z-index:24;left:50%;top:48%;transform:translateX(-50%);width:min(480px,calc(100% - 36px));pointer-events:auto;background:rgba(7,12,17,.96);border-radius:8px}
+#loomAiWorkspace .loom-tutorial-proof[hidden]{display:none!important}
+#loomAiWorkspace .loom-tutorial-proof summary{min-height:44px;padding:8px 12px;cursor:pointer;font-size:12px;color:#baf8f1}
+#loomAiWorkspace .loom-tutorial-proof pre{max-height:180px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;padding:12px;font-size:11px}
 #loomAiWorkspace .loom-flowcore-help p{font-size:12px;line-height:1.45;margin:0 0 10px}
 #loomAiWorkspace .loom-flowcore-legend{display:grid;grid-template-columns:1fr 1fr;gap:7px 12px}
 #loomAiWorkspace .loom-flowcore-legend span{color:#aebcc5}

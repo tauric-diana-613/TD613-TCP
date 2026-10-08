@@ -453,17 +453,25 @@ export function mountPortableLoomReentryWorkspace(root, {
       return JSON.parse(JSON.stringify(excursion));
     }, { propagate: true });
   }
-  function loadReturnedTurn(value) {
+  function loadReturnedTurn(value, { fictionalPractice = false } = {}) {
     if (disposed || !custodian || !excursion) throw new Error('HOLD_NO_LIVE_REGISTERED_DEPARTURE: returned bytes have no live native admission lane.');
     const turns = Array.isArray(value) ? value : [value];
     if (turns.length !== excursion.turns.length) throw new Error('HOLD_RETURN_RANGE_MISMATCH: returned turn count does not match the registered departure.');
     $('returns').value = JSON.stringify(turns, null, 2);
     $('policy-review').checked = false;
-    invalidate('Returned Marrowline work arrived through the bound route. Review inherited rules and run Check before admission.');
+    invalidate(fictionalPractice ? 'A locally generated fictional return is ready for review. No foreign receiver ran. Review inherited rules and run Check before admission.' : 'Returned Marrowline work arrived through the bound route. Review inherited rules and run Check before admission.');
     renderState();
     return turns.length;
   }
+  function draftTask(input) {
+    if (disposed || !custodian || busy || resting || expired()) throw new Error('The live lane must be available before drafting a practice task.');
+    $('task').value = input.task;
+    $('sources').value = JSON.stringify(input.documents, null, 2);
+    $('withheld').value = String(input.withheld_document_count);
+    renderState();
+    $('task').focus();
+  }
   function dispose() { disposed = true; generation += 1; clearExpiry(); custodian?.close(); busy = false; pendingOperation = null; cleanups.splice(0).forEach(cleanup => cleanup()); renderState(); }
   renderState();
-  return Object.freeze({ setSession, clearSession, registerDeparture, loadReturnedTurn, setChallenge, recordChallenge, dispose, getRecord: () => custodian?.export() || null, inspect: () => ({ custody: custodian?.inspect() || null, candidate, excursion, carrier, resting, busy, reviewed_candidate_ref: reviewedRef }) });
+  return Object.freeze({ setSession, clearSession, registerDeparture, loadReturnedTurn, draftTask, setChallenge, recordChallenge, dispose, getRecord: () => custodian?.export() || null, inspect: () => ({ custody: custodian?.inspect() || null, candidate, excursion, carrier, resting, busy, reviewed_candidate_ref: reviewedRef }) });
 }

@@ -10,7 +10,6 @@ import { webcrypto } from 'node:crypto';
 // Import before supplying any browser globals: auto-mount must not run in the harness.
 import { mountLoomAiWorkspace } from '../app/dome-world/holonomy-loom/ai-workspace.js';
 import { LOOM_AI_PROJECTS } from '../app/dome-world/holonomy-loom/ai-projects.js';
-
 test('Holonomy Loom browser wait extends beyond the retired 55-second ceiling', () => {
   const source = fs.readFileSync('app/dome-world/holonomy-loom/ai-workspace.js', 'utf8');
   assert.match(source, /LOOM_AI_CLIENT_TIMEOUT_MS = 225000/);
@@ -40,7 +39,7 @@ function provider503(request) {
     observations:{provider_calls:2,http_status:503,elapsed_ms:13100,model:'gemini-3.7-flash',model_policy:'loom-quality-first/v0.1',provider_attempts:[{model:'gemini-3.8-flash',status:503},{model:'gemini-3.7-flash',status:503}]}},503);
 }
 function response(body, status=200) { return {ok:status>=200&&status<300,status,text:async()=>JSON.stringify(body)}; }
-function harness(t, responder=(request)=>response(admitted(request)), reduced=false) {
+function harness(t, responder=(request)=>response(admitted(request)), reduced=false, demoProjects=LOOM_AI_PROJECTS) {
   const dom=new JSDOM('<section id="fixture"></section>',{url:'https://td613.com/dome-world/holonomy-loom.html',pretendToBeVisual:true});
   const window=dom.window,root=window.document.querySelector('#fixture');
   const calls=[],frames=new Map();let sequence=0;
@@ -50,7 +49,7 @@ function harness(t, responder=(request)=>response(admitted(request)), reduced=fa
   Object.defineProperty(window,'crypto',{configurable:true,value:webcrypto});
   window.matchMedia=()=>({matches:reduced,addEventListener(){},removeEventListener(){}});
   window.fetch=(url,options)=>{const request=JSON.parse(options.body);calls.push({url,options,request});return Promise.resolve(responder(request,options));};
-  const ui=mountLoomAiWorkspace(root,window);
+  const ui=mountLoomAiWorkspace(root,window,{demoProjects});
   let disposed=false;
   const dispose=()=>{if(!disposed){disposed=true;ui.dispose();}};
   t.after(()=>{dispose();window.close();if(beforeRaf===undefined)delete globalThis.requestAnimationFrame;else globalThis.requestAnimationFrame=beforeRaf;if(beforeCancel===undefined)delete globalThis.cancelAnimationFrame;else globalThis.cancelAnimationFrame=beforeCancel;});
@@ -62,6 +61,14 @@ function harness(t, responder=(request)=>response(admitted(request)), reduced=fa
   const submitted=()=>until(()=>calls.length>0||root.getAttribute('aria-busy')!=='true','request dispatch');
   return {window,root,ui,$,calls,frames,change,load,upload,dispose,settled,submitted};
 }
+
+test('production catalog contains only an inert coming-soon placeholder',async t=>{
+  const h=harness(t,undefined,false,[]);h.$('#aiDemoMode').click();h.$('#aiDemoInvitation').click();
+  assert.deepEqual([...h.root.querySelectorAll('.ai-demo-number')].map(node=>node.textContent),['Demo 1']);
+  const placeholder=h.$('#aiProjectChoices button');assert.equal(placeholder.disabled,true);assert.match(placeholder.textContent,/COMING SOON/);
+  placeholder.click();assert.equal(h.$('#aiTask').value,'');assert.equal(h.calls.length,0);assert.equal(h.ui.inspect().session,null);
+  assert.equal(h.root.querySelectorAll('[data-project],[data-reference-gate],#loomReferencePractice').length,0);
+});
 
 test('Loom opens on the human task and local preparation exposes the next route',async t=>{
   const h=harness(t);

@@ -1,4 +1,5 @@
 import { MARROWLINE_LOOM_READING_WORK_UNIT_SCHEMA, MARROWLINE_LOOM_HELD_READING_SCHEMA } from './marrowline-reading-surface.js';
+import { handleMarrowlineLoomGateCommand, openMarrowlineLoomGate } from './marrowline-loom-footer.js';
 import { reviewLoomEvidence } from './holonomy-loom/ai-evidence-review.js';
 import { isLoomEvidenceHold, projectLoomEvidenceReview } from './holonomy-loom/ai-evidence-diagnostic.js';
 import { createMarrowlineThreadLibrary } from './marrowline-threads.js';
@@ -1039,6 +1040,11 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     const loomTransport = root.__TD613_LOOM_DEMO_CONTROLLER__?.snapshot().active ? root.__TD613_LOOM_DEMO_CONTROLLER__ : null;
     const prompt = byId(doc, 'khonapolitPrompt');
     const message = safe(messageOverride || prompt?.value);
+    if (handleMarrowlineLoomGateCommand(message,doc,root)) {
+      if(prompt){prompt.value='';prompt.style.height='';}
+      setPedagogueStatus(byId(doc,'khonapolitTerminalStatus'),'notice',message==='下'?'Loom Gate explanation opened · checks unchanged.':'Loom Gate review opened · checks unchanged.');
+      return;
+    }
     const mode = INVOCATION_MODES.ISSUED_CONJUNCTION;
     const useIssuance = Boolean(issuanceToggle?.checked);
     const waiveIssuance = !useIssuance;
@@ -1446,11 +1452,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   });
   const retryLastPrompt = ({ independentRetry = false } = {}) => {
     if(isLoomEvidenceHold(state.lastFailure)) {
-      const mobile=root.matchMedia?.('(max-width:860px)')?.matches;
-      const control=mobile ? doc.querySelector('.mobile-dock [data-mobile-target="gatePanel"]') : byId(doc,'marrowlineInstrumentTab-gatePanel');
-      if(control)control.click();
-      else {const panel=byId(doc,'gatePanel');if(panel)panel.open=true;}
-      byId(doc,'loomGateEvidenceReview')?.focus?.({preventScroll:false});
+      openMarrowlineLoomGate(doc,root);
       return;
     }
     const loomState=root.__TD613_LOOM_DEMO_CONTROLLER__?.snapshot();

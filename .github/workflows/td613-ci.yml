@@ -927,7 +927,7 @@ jobs:
       - name: Select bounded layout scope
         id: layout_scope
         run: |
-          if git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" | grep -Eq '^(app/dome-world/marrowline-desktop-repair\.(js|css)|app/dome-world/marrowline\.html|app/dome-world/marrowline-loom-(import(-base)?|demo)\.js|app/dome-world/marrowline-(terminal|egress-boot|living-chat|reading-surface)\.(js|css)|app/dome-world/holonomy-loom\.html|app/dome-world/holonomy-loom/(ai-workspace\.(js|css)|(ai-projects|ai-evidence-review|ai-evidence-diagnostic|vendor-claim-review|retention-claim-review|returned-session-review|reentry-workspace|demo-contract)\.js|instrument-(lab|advisory|state-view)\.(js|css)|runtime-state-view\.js|fixtures/legacy-practice\.html)|app/engine/(loom-instrument-(lab|governance)|loom-service-resolution|dollhouse-claim-lift-runtime)\.js|app/dome-world/(holonomy-loom-advisory-policy|portable-aia-three-route-invariance)\.js|server/holonomy-loom-khonapolit-advisory\.js|server/loom-(task|marrowline-task|demo-task|demo-signing|demo-head-store|demo-custody-client)\.js|neon/functions/loom-custody/index\.mjs|api/khonapolit\.js|scripts/(holonomy-loom-instrument-(lab|route)|loom-native-cutover)-browser-witness\.mjs|scripts/marrowline-instrument-layout-witness\.mjs|tests/((loom-vendor-grounding|loom-evidence-recovery|loom-returned-session-review|loom-targeted-ux|portable-loom-reentry-workspace)\.test|marrowline-instrument-panel|marrowline-desktop-repair-contract|marrowline-reading-surface|marrowline-loom-demo(-pedagogue)?|loom-task|loom-ai-workspace-dom|loom-ai-handoff|loom-demo-contract|loom-instrument-(lab|governance|state-view|ui|advisory)\.test|loom-runtime-profiles\.test|loom-service-resolution\.test|dollhouse-claim-lift-runtime\.test)(\.browser)?\.mjs)$'; then
+          if git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" | grep -Eq '^(app/dome-world/marrowline-desktop-repair\.(js|css)|app/dome-world/marrowline\.html|app/dome-world/marrowline-loom-(import(-base)?|demo|pocket)\.js|app/dome-world/marrowline-(terminal|egress-boot|living-chat|reading-surface|loom-footer|loom-gate-continuity)\.(js|css)|app/dome-world/holonomy-loom\.html|app/dome-world/holonomy-loom/(ai-workspace\.(js|css)|(ai-projects|ai-handoff|tutorial-membrane|first-crossing-practice|workspace-template|ai-evidence-review|ai-evidence-diagnostic|vendor-claim-review|retention-claim-review|returned-session-review|reentry-workspace|demo-contract)\.js|instrument-(lab|advisory|state-view)\.(js|css)|runtime-state-view\.js|fixtures/legacy-practice\.html)|app/engine/(portable-loom-(core|gate(-explanation)?|mechanisms|output|policy|session|reentry|challenge)|loom-instrument-(lab|governance)|loom-service-resolution|dollhouse-claim-lift-runtime)\.js|app/dome-world/(loom-gate-disclosure|holonomy-loom-advisory-policy|portable-aia-three-route-invariance)\.(js|css)|server/holonomy-loom-khonapolit-advisory\.js|server/loom-(task|marrowline-task|demo-task|demo-signing|demo-head-store|demo-custody-client)\.js|neon/functions/loom-custody/index\.mjs|api/khonapolit\.js|scripts/(holonomy-loom-instrument-(lab|route)|loom-native-cutover)-browser-witness\.mjs|scripts/marrowline-instrument-layout-witness\.mjs|tests/((loom-vendor-grounding|loom-evidence-recovery|loom-returned-session-review|loom-targeted-ux|portable-loom-reentry-workspace)\.test|marrowline-instrument-panel|marrowline-desktop-repair-contract|marrowline-reading-surface|marrowline-loom-demo(-pedagogue)?|loom-task|loom-ai-workspace-dom|loom-ai-handoff|loom-demo-contract|loom-instrument-(lab|governance|state-view|ui|advisory)\.test|loom-runtime-profiles\.test|loom-service-resolution\.test|dollhouse-claim-lift-runtime\.test)(\.browser)?\.mjs)$'; then
             echo 'changed=true' >> "$GITHUB_OUTPUT"
           fi
       - uses: actions/setup-node@v4
@@ -981,10 +981,15 @@ jobs:
             tests/fixtures/pedagogue/marrowline-loom-two-stage-practice.json
           node scripts/run-pedagogue-design-gate.mjs \
             tests/fixtures/pedagogue/loom-native-marrowline-design.json
+          node scripts/run-pedagogue-design-gate.mjs \
+            tests/fixtures/pedagogue/loom-canonical-portable-footer-design.json
+          node scripts/run-pedagogue-design-gate.mjs \
+            tests/fixtures/pedagogue/loom-seven-operator-tutorial-design.json
       - name: Portable Loom returned-work hostile custody contracts
         if: steps.layout_scope.outputs.changed == 'true'
         run: |
-          node --test tests/portable-loom-session-challenge.test.mjs \
+          node --test tests/portable-loom-core.test.mjs \
+            tests/portable-loom-session-challenge.test.mjs \
             tests/portable-loom-reentry-*.test.mjs \
             tests/portable-loom-challenge-dollhouse-boundaries.test.mjs \
             tests/pedagogue-reentry-staging.test.mjs

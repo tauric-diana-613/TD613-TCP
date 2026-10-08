@@ -83,13 +83,26 @@ try{
         executable_images:reading.querySelectorAll('img').length,
         reading_text:reading.textContent,
         labels:buttons.map(button=>button.textContent),
-        max_button_height:Math.max(...buttons.map(button=>button.getBoundingClientRect().height)),
+        max_button_height:Math.max(...buttons.filter(button=>!button.classList.contains('marrowline-loom-gate-check')).map(button=>button.getBoundingClientRect().height)),
+        gate_button_height:tools.querySelector('.marrowline-loom-gate-check').getBoundingClientRect().height,
+        gate_attention:tools.querySelector('.marrowline-loom-gate-check').dataset.gateAttention,
+        footer_scope:tools.querySelector('.marrowline-loom-footer').textContent,
         tools_after_reading:tools.getBoundingClientRect().top>=reading.getBoundingClientRect().bottom-1
       };
       exactButton.click();
       const exactMode={source_hidden:governed.exact.hidden,reading_hidden:reading.hidden,source:governed.exact.textContent};
       readingButton.click();
       const restored={source_hidden:governed.exact.hidden,reading_hidden:reading.hidden,source:governed.exact.textContent};
+      const gateButton=tools.querySelector('.marrowline-loom-gate-check');gateButton.click();
+      const reviewed={attention:gateButton.dataset.gateAttention,source:governed.exact.textContent};
+      const {createLoomGateDisclosure}=await import('./loom-gate-disclosure.js');
+      const disclosure=createLoomGateDisclosure(doc,{id:'readingWitnessGateHow'});
+      doc.querySelector('#gatePanel .gate-controls').append(disclosure.section);
+      disclosure.help.click();
+      const explanation={visible:!disclosure.drawer.hidden,focused:doc.activeElement===disclosure.drawer,registry_rows:disclosure.drawer.querySelectorAll('tbody tr').length,methods:disclosure.drawer.textContent.includes('TEXT_DISTANCE')&&disclosure.drawer.textContent.includes('Temporal Custodian')};
+      disclosure.drawer.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+      explanation.closed=disclosure.drawer.hidden;explanation.focus_returned=doc.activeElement===disclosure.help;
+      const chat=document.querySelector('.mobile-dock [data-mobile-target="speakingPanel"]');chat?.click();
       routePhase='EXPIRED';
       const staleAuthority=mod.resolveMarrowlineLoomReadingAuthority(governed.card,window);
       routePhase='DONE';
@@ -98,7 +111,7 @@ try{
         ordinary:ordinaryState,
         authority:Boolean(authority),
         stale_authority:Boolean(staleAuthority),
-        baseline,exactMode,restored,
+        baseline,exactMode,restored,reviewed,explanation,
         overflow:Math.max(0,rect.right-window.innerWidth),
         schema:governed.stage.querySelector('.marrowline-reading-surface')?.dataset.schema||null
       };
@@ -118,8 +131,12 @@ try{
       observed.baseline.executable_images===0 &&
       observed.baseline.reading_text.includes('<img src=x onerror=') &&
       observed.baseline.reading_text.includes('h̴̢̛͈õ̵̖̿t̶̬͝') &&
-      JSON.stringify(observed.baseline.labels)===JSON.stringify(['Reading','Exact','Copy exact']) &&
+      JSON.stringify(observed.baseline.labels)===JSON.stringify(['Reading','Exact','Copy exact','米 Check Loom Gate']) &&
       observed.baseline.max_button_height<=30 &&
+      observed.baseline.gate_button_height>=44 && observed.baseline.gate_attention==='true' &&
+      observed.reviewed.attention==='false' && observed.reviewed.source===raw &&
+      observed.explanation.visible && observed.explanation.focused && observed.explanation.registry_rows===32 && observed.explanation.methods && observed.explanation.closed && observed.explanation.focus_returned &&
+      observed.baseline.footer_scope.includes('not checked for this reply') &&
       observed.baseline.tools_after_reading===true &&
       observed.overflow===0 && errors.length===0;
     await page.screenshot({path:`${artifactDir}/reading-${posture.name}.png`,fullPage:true});

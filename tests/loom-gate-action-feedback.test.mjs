@@ -11,6 +11,17 @@ import { clearMarrowlineAttachments } from '../app/dome-world/marrowline-attachm
 import { INVOCATION_MODES } from '../app/dome-world/khonapolit-covenant.js';
 
 const html=readFileSync(new URL('../app/dome-world/marrowline.html',import.meta.url),'utf8');
+test('Gate methods drawer exposes all conventional names, scoped evidence and keyboard closure without changing custody',async t=>{
+  const h=await harness(t);await h.controller.stageAia();
+  const before=h.controller.snapshot(),help=h.doc.getElementById('loomGateHowButton'),drawer=h.doc.getElementById('marrowlineLoomGateHow');
+  assert.equal(drawer.hidden,true);help.click();assert.equal(drawer.hidden,false);assert.equal(help.getAttribute('aria-expanded'),'true');
+  assert.equal(h.doc.activeElement,drawer);assert.equal(drawer.querySelectorAll('tbody tr').length,32);
+  for(const term of ['Finite Admissibility Descent Theorem','Temporal Custodian','Latent Reconstructibility','TEXT_DISTANCE','EXACT_NFC_LITERAL'])assert.ok(drawer.textContent.includes(term));
+  assert.match(drawer.querySelector('pre').textContent,/NOT_RUN/);
+  drawer.dispatchEvent(new h.root.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+  assert.equal(drawer.hidden,true);assert.equal(h.doc.activeElement,help);
+  assert.deepEqual(h.controller.snapshot(),before);assert.equal(h.calls(),0);
+});
 const flush=()=>new Promise(resolve=>setTimeout(resolve,0));
 async function until(predicate){const deadline=Date.now()+2000;while(!predicate()){if(Date.now()>deadline)throw new Error('Gate feedback fixture did not settle');await flush();}}
 async function harness(t){

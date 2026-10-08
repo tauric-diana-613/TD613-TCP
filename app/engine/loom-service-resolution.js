@@ -3,7 +3,7 @@ import {
   loomDemoReceiptDigest, loomDemoResult, validateLoomDemoStageReceipt, inspectLoomDemoExport
 } from '../dome-world/holonomy-loom/demo-contract.js';
 import {
-  createPortableLoomAiPacket, inspectPortableLoomReceiverAssurance,
+  createCanonicalPortableLoomPacket, inspectPortableLoomReceiverAssurance,
   normalizeLoomAiTask, verifyLoomAiGovernance
 } from '../dome-world/holonomy-loom/ai-handoff.js';
 
@@ -205,7 +205,7 @@ export async function deriveLoomServiceResolution(raw = {}, environment = global
     invariant(current?.phase === 'DONE' && current.active === true && current.busy === false
       && current.current_result_request_id === latestResult.request_id && current.predecessor_request_id === latestReceipt.request_id, 'CURRENT_NATIVE_STATE_UNOBSERVED_OR_STALE');
     const latestBinding = bindings.at(-1);
-    expectedExport = createPortableLoomAiPacket({ ...latestBinding.selected, governance: latestBinding.governance }, { priorResult: latestResult });
+    expectedExport = await createCanonicalPortableLoomPacket({ ...latestBinding.selected, governance: latestBinding.governance }, { priorResult: latestResult, portableGovernance: latestBinding.portable_governance }, environment);
     return { admitted_stage_observations: stages.length, continuation_observations: stages.length - 1,
       latest_request_id: latestResult.request_id, latest_result_digest: latestReceipt.result_digest,
       receipt_validation: 'NATIVE_SHAPE_AND_DIGEST_RECOMPUTATION_ONLY' };
