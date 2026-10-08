@@ -35,6 +35,8 @@ try{
     const errors=[];
     page.on('pageerror',error=>errors.push(String(error?.message||error)));
     await page.goto(base+'/dome-world/marrowline.html',{waitUntil:'domcontentloaded'});
+    // Wait until the real desktop tabs / mobile chamber router have installed.
+    await page.locator('html.marrowline-room-ready').waitFor();
     const observed=await page.evaluate(async source=>{
       const mod=await import('./marrowline-reading-surface.js');
       const doc=document;
@@ -96,10 +98,20 @@ try{
       const gateButton=tools.querySelector('.marrowline-loom-gate-check');gateButton.click();
       const reviewed={attention:gateButton.dataset.gateAttention,source:governed.exact.textContent};
       const {createLoomGateDisclosure}=await import('./loom-gate-disclosure.js');
+      // Exercise the real Gate navigation. A detached or closed <details> parent
+      // makes descendants unfocusable even when their own hidden flag is false.
+      if(window.matchMedia('(max-width:860px)').matches){
+        doc.querySelector('.mobile-dock [data-mobile-target="gatePanel"]').click();
+      }else{
+        doc.getElementById('marrowlineInstrumentTab-gatePanel').click();
+      }
+      const gatePanel=doc.getElementById('gatePanel');
+      const gateVisible=gatePanel.open && gatePanel.getClientRects().length>0;
       const disclosure=createLoomGateDisclosure(doc,{id:'readingWitnessGateHow'});
       doc.querySelector('#gatePanel .gate-controls').append(disclosure.section);
+      disclosure.help.focus();
       disclosure.help.click();
-      const explanation={visible:!disclosure.drawer.hidden,focused:doc.activeElement===disclosure.drawer,registry_rows:disclosure.drawer.querySelectorAll('tbody tr').length,methods:disclosure.drawer.textContent.includes('TEXT_DISTANCE')&&disclosure.drawer.textContent.includes('Temporal Custodian')};
+      const explanation={gate_visible:gateVisible,visible:!disclosure.drawer.hidden,focused:doc.activeElement===disclosure.drawer,registry_rows:disclosure.drawer.querySelectorAll('tbody tr').length,methods:disclosure.drawer.textContent.includes('TEXT_DISTANCE')&&disclosure.drawer.textContent.includes('Temporal Custodian')};
       disclosure.drawer.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
       explanation.closed=disclosure.drawer.hidden;explanation.focus_returned=doc.activeElement===disclosure.help;
       const chat=document.querySelector('.mobile-dock [data-mobile-target="speakingPanel"]');chat?.click();
@@ -135,7 +147,7 @@ try{
       observed.baseline.max_button_height<=30 &&
       observed.baseline.gate_button_height>=44 && observed.baseline.gate_attention==='true' &&
       observed.reviewed.attention==='false' && observed.reviewed.source===raw &&
-      observed.explanation.visible && observed.explanation.focused && observed.explanation.registry_rows===32 && observed.explanation.methods && observed.explanation.closed && observed.explanation.focus_returned &&
+      observed.explanation.gate_visible && observed.explanation.visible && observed.explanation.focused && observed.explanation.registry_rows===32 && observed.explanation.methods && observed.explanation.closed && observed.explanation.focus_returned &&
       observed.baseline.footer_scope.includes('not checked for this reply') &&
       observed.baseline.tools_after_reading===true &&
       observed.overflow===0 && errors.length===0;
