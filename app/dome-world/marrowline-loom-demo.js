@@ -268,7 +268,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
       assertCanStage();
       const files=packet.documents.map(document=>new environment.File([document.text],document.name,{type:'text/plain'}));
       await stage(files);pending='CONTINUE';phase='FILES_STAGED';
-      const modalEvidenceRules = 'preserve source modality and exact bounded quantities: treat permitted limits such as backup retention for up to 45 days as a contractual ceiling rather than affirmative or guaranteed persistence, do not assert that records will persist or remain in backups, and never invent intermediate or unobserved durations.';
+      const modalEvidenceRules = 'cite selected sources for factual claims and distinguish arithmetic from assumptions. Do not invent pilot congestion, concurrency or stream-count conditions. Treat backup retention permitted up to 45 days as a contractual ceiling, not observed persistence or a measured deletion violation; explain the contractual gap and request dated deletion evidence. Never invent unobserved durations.';
       prompt.value = latest
         ? `Continue the original Loom task from its prior answer. Recheck the answer against these selected files under the portable rules: ${modalEvidenceRules}`
         : `Work on the original Loom task using these selected files under the portable rules: ${modalEvidenceRules}`;

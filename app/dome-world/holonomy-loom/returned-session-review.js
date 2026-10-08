@@ -126,7 +126,7 @@ export function mountReturnedSessionReview(root, {
     find('result').hidden = false;
     const { packet, inspection, origin_match, local_protected_check } = current;
     const provenance = packet.loom_demo_provenance;
-    find('boundary').textContent = `${local_protected_check?.state==='EXACT_LITERAL_CHECK_CLEAR' ? 'Declared private terms did not match these returned fields. ' : 'No local private-term check was declared. '}Review consistency checked. Receipt signatures remain unverified; local custody admission remains HELD. ${origin_match === 'UNOBSERVED' ? 'The original local record is unavailable for comparison.' : 'The origin task, selected files and rules match this tab.'}`;
+    find('boundary').textContent = `${local_protected_check?.state==='EXACT_LITERAL_CHECK_CLEAR' ? 'Declared private terms did not match these returned fields. ' : 'No local private-term check was declared. '}Review consistency checked. Receipt signatures remain unverified. This review record grants no admission authority. See Return to Loom for the current local Check and admission state. ${origin_match === 'UNOBSERVED' ? 'The original local record is unavailable for comparison.' : 'The origin task, selected files and rules match this tab.'}`;
     const continuations = provenance.stages.filter(stage => stage.receipt.phase === 'CONTINUE');
     find('lineage').textContent = `${continuations.length} substantive continuation${continuations.length === 1 ? '' : 's'} · latest ${inspection.latest_request_id}. ${inspection.content_history_retained ? 'Each returned result body is retained.' : 'This earlier export retains receipt links; intermediate result bodies remain unobserved.'}`;
     const history = find('history'); history.replaceChildren();
@@ -191,7 +191,7 @@ export function mountReturnedSessionReview(root, {
         catch { /* Review remains available; storage success is never inferred. */ }
       }
       render();
-      status(`Returned session checked for review. ${saved ? 'This review record is saved in this tab for reload.' : 'Save the reviewed session before closing this tab.'} ${carriedBoundReturn ? 'A bound turn is ready for native Check; nothing is admitted.' : 'Signature verification and custody admission remain HELD.'}`);
+      status(`Returned session checked for review. ${saved ? 'This review record is saved in this tab for reload.' : 'Save the reviewed session before closing this tab.'} ${carriedBoundReturn ? 'The bound return is available in Return to Loom; that lane shows its current Check and admission state.' : 'This review record grants no admission authority; receipt signatures remain unverified.'}`);
       const outcome = copy({ ...inspection, origin_match, source, local_protected_check: localProtectedCheck, persisted_for_reload: saved });
       onReview(outcome, carriedBoundReturn ? copy(carriedBoundReturn) : null);
       return outcome;

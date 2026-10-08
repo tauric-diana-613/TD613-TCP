@@ -4,6 +4,8 @@ const explanations = Object.freeze({
   RETENTION_MAXIMUM_PROMOTED_TO_OBSERVED_DURATION: 'Backup retention permission was promoted to an observed or configured persistence claim.',
   RETENTION_CONFIGURATION_ASSERTED_WITHOUT_WITNESS: 'Missing configuration evidence was promoted to a claim that no retention duration is configured.',
   FINITE_PILOT_PROMOTED_TO_HARD_BOUND: 'A finite pilot was promoted to a hard throughput limit.',
+  PILOT_CONDITIONS_ASSERTED_WITHOUT_WITNESS: 'Pilot conditions were invented. Use the reported 9 GB, 26 minutes and two retries; label projection assumptions.',
+  DELETION_VIOLATION_ASSERTED_WITHOUT_WITNESS: 'A contractual retention gap was promoted to an actual deletion violation. Request an amendment and dated deletion evidence.',
   INCIDENT_EFFECT_ASSERTED_WITHOUT_WITNESS: 'Duplicate downstream work was asserted without an independent effect witness.',
   UNSUPPORTED_PRIVACY_GUARANTEE: 'Privacy was guaranteed beyond the observed boundary.'
 });

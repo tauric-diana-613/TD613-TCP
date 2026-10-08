@@ -40,7 +40,7 @@ export function loomEvidenceClauseViews(prose) {
 // scope. "No evidence ..., but records will remain" still asserts persistence.
 const localPrefix = prefix => prefix.split(/\b(?:but|yet|however|nevertheless|nonetheless)\b|(?:,\s+|\band\s+)(?=(?:records?|data|content|backups?|(?:the\s+)?residue)\b)/i).at(-1);
 
-function nonAssertion(text, match) {
+export function nonAssertion(text, match) {
   const prefix = localPrefix(text.slice(0, match.index)).slice(-240);
   const claim = match[0];
   if (/\b(?:not|never)\b/i.test(claim) || /\b(?:not|never|doesn't|don't|cannot|can't)\s*$/i.test(prefix)) return true;
@@ -80,7 +80,7 @@ export function reviewVendorRetentionClause(view) {
   return null;
 }
 
-function conflict(view,match,code,explanation){
+export function conflict(view,match,code,explanation){
   const rawStart=Math.max(0,(view.raw_offsets?.[match.index] ?? 0)-160);
   return {code,excerpt:view.raw.slice(rawStart,rawStart+600),
     inspection_excerpt:view.text.slice(Math.max(0,match.index-160),match.index+400),
