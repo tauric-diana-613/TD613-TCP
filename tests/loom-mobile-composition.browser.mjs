@@ -108,7 +108,7 @@ async function fieldObservation(page) {
           rect.bottom>Math.max(0,field.top)&&rect.top<Math.min(innerHeight,field.bottom),
         screen_x:rect.x+rect.width/2,screen_y:rect.y+rect.height/2};
     });
-    return {observed_ms:performance.now(),projection:root.dataset.projectionState,relation:root.dataset.activeRelation,
+    return {observed_ms:performance.now(),projection:root.dataset.projectionState,relation:root.dataset.activeRelation,illustrated:root.dataset.illustratedRelation,
       field:{x:field.x,y:field.y,width:field.width,height:field.height},pending_frames:document.querySelector('#loomAiWorkspace').dataset.pendingFrames,
       title:document.querySelector('#loomFirstCrossingTitle')?.textContent,prompt:document.querySelector('#loomFirstCrossingPrompt')?.textContent,
       carriers,planes:Object.fromEntries(planeNames.map(plane=>[plane,{rendered:carriers.filter(node=>node.plane===plane&&node.rendered).length,
@@ -167,11 +167,11 @@ async function observeFiniteConsequence(page,relation,name) {
     screen_distance:Math.hypot(node.screen_x-before.carriers[index].screen_x,node.screen_y-before.carriers[index].screen_y),
     visible_endpoint:node.screen_overlap||before.carriers[index].screen_overlap,y_change:node.y-before.carriers[index].y}));
   record(`${name}: all 39 current-evidence carriers retain every depth plane`,observations.every(observation=>observation.projection==='CURRENT'&&
-    observation.relation===relation&&observation.carriers.length===39&&observation.carriers.every(node=>node.rendered&&node.relation===relation)&&
+    observation.relation===relation&&observation.carriers.length===39&&observation.carriers.every(node=>node.rendered&&(relation==='gathering'?['bounded_emergence','protected_continuity'].includes(node.relation):node.relation===relation)&&node.evidence==='presentation-only')&&
     Object.values(observation.planes).every(plane=>plane.rendered>0&&plane.overlapping>0)),{observations,evidence_ceiling:'SCOPED_RENDERED_VISIBILITY_AND_CLIPPED_SCREEN_OVERLAP'});
   const observedMovement=displacements.filter(node=>node.coordinate_distance>40&&node.screen_distance>15&&node.visible_endpoint);
   record(`${name}: finite canonical consequence produces screen-observable displacement in every plane`,
-    displacements.every(node=>node.coordinate_distance>40)&&observedMovement.length>=12&&
+    (relation==='gathering'?displacements.some(node=>node.relation==='bounded_emergence'&&node.coordinate_distance>40)&&displacements.some(node=>node.relation==='protected_continuity'&&node.coordinate_distance>10):displacements.every(node=>node.coordinate_distance>40))&&observedMovement.length>=12&&
     ['flight-near','flight-mid','flight-far'].every(plane=>observedMovement.filter(node=>node.plane===plane).length>=2)&&
     (relation!=='created_potential'||displacements.every(node=>node.y_change<-200)),
     {sample_elapsed_ms:after.observed_ms-before.observed_ms,observable_displacement_count:observedMovement.length,displacements,
@@ -289,12 +289,27 @@ try {
         { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
       await observeFiniteConsequence(page,'created_potential','first-crossing-mobile-readiness');
       await page.locator('#loomFirstCrossingStop').waitFor({state:'visible'});
+      for(const [step,relation,glyph] of [[3,'release','出'],[4,'recurrence','米'],[5,'released_tendency','下']]){
+        await page.locator('#loomFirstCrossingStop').click();
+        await page.waitForFunction(expected=>document.querySelector('#loomAiWorkspace').dataset.firstCrossingStep===String(expected)&&document.querySelector('#aiRuntimeState').dataset.projectionState==='CURRENT',step);
+        const before=await fieldObservation(page);await page.waitForTimeout(1100);const after=await fieldObservation(page);
+        record(`tutorial ${glyph}: distinct illustration retains actual unsent binding`,after.relation==='created_potential'&&after.carriers.length===39&&after.carriers.every(node=>node.relation===relation&&node.evidence==='presentation-only')&&after.carriers.some((node,index)=>node.x!==before.carriers[index].x||node.y!==before.carriers[index].y),{before,after});
+        await tutorialComposition(page,`tutorial-${glyph}`);await screenshot(page,`tutorial-step-${step}`);
+        await page.locator('#loomFirstCrossingStop').waitFor({state:'visible'});
+      }
+      await page.locator('#loomTutorialProof summary').click();
+      record('tutorial return: fictional receipt binds answer without claiming admission',/OFFLINE_TEST/.test(await page.locator('#loomTutorialProofRecord').textContent())&&/"custody_admitted": false/.test(await page.locator('#loomTutorialProofRecord').textContent()));
+      await page.locator('#loomTutorialProof summary').click();
       await page.locator('#loomFirstCrossingStop').click();
       await page.waitForFunction(()=>document.querySelector('#aiRuntimeState')?.dataset?.projectionState==='CURRENT');
-      const liveA=await fieldObservation(page);await page.waitForTimeout(240);const liveB=await fieldObservation(page);
-      record('first crossing: completion keeps the field alive without inventing transmission',
-        liveB.carriers.length===39&&liveB.carriers.some((node,index)=>node.x!==liveA.carriers[index]?.x||node.y!==liveA.carriers[index]?.y),
-        {before:liveA,after:liveB});
+      await page.waitForTimeout(4200);const restA=await fieldObservation(page);await page.waitForTimeout(240);const restB=await fieldObservation(page);
+      record('tutorial finish: 𝄐 settles instead of restarting 上',restB.pending_frames==='0'&&restB.carriers.every((node,index)=>node.relation==='structural_rest'&&node.x===restA.carriers[index].x&&node.y===restA.carriers[index].y),{before:restA,after:restB});
+      const help=page.locator('.loom-flowcore-help');await help.locator('summary').click();
+      record('tutorial help: visible 44px close control',await page.locator('#loomFlowcoreHelpClose').isVisible()&&await page.locator('#loomFlowcoreHelpClose').evaluate(node=>node.getBoundingClientRect().width>=44&&node.getBoundingClientRect().height>=44));
+      await page.locator('#loomFlowcoreHelpClose').click();
+      record('tutorial help: × restores opener focus',await help.evaluate(node=>!node.open&&document.activeElement===node.querySelector('summary')));
+      await help.locator('summary').click();await page.keyboard.press('Escape');
+      record('tutorial help: Escape restores opener focus',await help.evaluate(node=>!node.open&&document.activeElement===node.querySelector('summary')));
       record('first crossing: completion unlocks the live Loom CTA',
         await page.locator('#loomBegin').isVisible() &&
         await page.evaluate(() => localStorage.getItem('td613.loom.first-crossing.v1')) === 'complete' &&
@@ -330,7 +345,7 @@ try {
         await page.locator('#loomFirstCrossingStop').waitFor({state:'visible'});
         const before=await fieldObservation(page);await page.waitForTimeout(240);const after=await fieldObservation(page);
         record('first crossing reduced: complete static equivalents preserve canonical distinctions',
-          gathering.relation==='gathering'&&after.relation==='created_potential'&&after.pending_frames==='0'&&after.carriers.length===39&&
+          gathering.relation==='gathering'&&gathering.illustrated==='bounded_emergence//protected_continuity'&&after.relation==='created_potential'&&after.pending_frames==='0'&&after.carriers.length===39&&
           after.carriers.every((node,index)=>node.rendered&&node.relation==='created_potential'&&node.x===before.carriers[index].x&&node.y===before.carriers[index].y)&&
           after.sources.find(source=>source.id==='private')?.local==='true',
           {gathering,before,after,evidence_ceiling:'STATIC_BROWSER_EQUIVALENT_NO_MEASURED_COMPREHENSION'});
@@ -482,9 +497,9 @@ try {
       // A fresh route avoids any implicit root replacement after preparation.
       const practice = await bindPage(context, `${posture.name}-practice`);
       await practice.locator('.loom-builder-shell').waitFor({ state: 'visible' });
-      await practice.locator('#aiDemoMode').click(); await practice.locator('#aiDemoInvitation').click();
-      await practice.locator('[data-project="participant-research"]').click();
-      record(`${posture.name}: Practice keeps Prepare primary`, await practice.locator('#aiPreparePortable').evaluate(node => node.classList.contains('ai-primary')) && !(await practice.locator('#aiRun').evaluate(node => node.classList.contains('ai-primary'))), { fictional_case: 'participant-research' });
+      // Portable My Work prepares without an obsolete demo fixture.
+      await practice.locator('#aiTask').fill('Review the fictional mobile source boundary and preserve local custody.');
+      record(`${posture.name}: My Work keeps Prepare primary`, await practice.locator('#aiPreparePortable').evaluate(node => node.classList.contains('ai-primary')) && !(await practice.locator('#aiRun').evaluate(node => node.classList.contains('ai-primary'))), { input_class: 'OPERATOR_AUTHORED_FICTIONAL_TASK' });
       await practice.locator('#aiPreparePortable').click();
       await practice.waitForFunction(() => document.querySelector('#loomAiWorkspace').dataset.workspace === 'crossing');
       record(`${posture.name}: Practice preparation makes no POST`, !report.requests.some(request => request.method !== 'GET'), { non_get_requests: report.requests.filter(request => request.method !== 'GET') });

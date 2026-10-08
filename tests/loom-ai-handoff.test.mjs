@@ -392,10 +392,14 @@ test('Marrowline continuation shows prior work, accepts a new request under a fr
   let copied = '';
   scene.environment.navigator = { clipboard: { writeText: async value => { copied = value; } } };
   scene.root.querySelector('#loomImportedCopy').click();
-  await new Promise(resolve => setTimeout(resolve, 0));
+  const copyDeadline=Date.now()+3000;
+  while(!copied&&Date.now()<copyDeadline)await new Promise(resolve=>setTimeout(resolve,5));
   assert.match(copied, /Paste this entire continuation packet into your chosen AI companion/);
   assert.match(copied, /acknowledge the task and rules before working/);
   assert.match(copied, /Turn those findings into a concise supplier email/);
+  const canonical=JSON.parse(copied.slice(copied.indexOf('{'))).portable_task;
+  assert.equal(canonical.portable_governance.mechanisms.length,32);
+  assert.equal(canonical.portable_governance.output_protocol.gate_output.command,'下');
   assert.match(copied, /ASSISTANT OVERRIDE/);
   assert.match(copied, /structured JSON/);
   assert.match(scene.root.textContent, /Leave this continuation and open a new Marrowline workspace/);

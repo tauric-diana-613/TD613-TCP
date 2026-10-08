@@ -6,6 +6,8 @@
  * This module derives a sibling DOM reading view from its textContent.
  * No provider text is normalized, rewritten, or admitted by this renderer.
  */
+import { createMarrowlineLoomFooter } from './marrowline-loom-footer.js';
+
 export const MARROWLINE_READING_SURFACE_SCHEMA = 'td613.marrowline.reading-surface/v0.2';
 export const MARROWLINE_LOOM_READING_WORK_UNIT_SCHEMA = 'td613.marrowline.loom-reading-work-unit/v0.1';
 export const MARROWLINE_LOOM_HELD_READING_SCHEMA = 'td613.marrowline.loom-held-reading/v0.1';
@@ -162,6 +164,7 @@ export function installMarrowlineReadingSurface(stage, environment=window, autho
   source.setAttribute('aria-label','Exact provider return');
   shell.append(reading,tools,claim,status);
   tools.append(readingButton,exactButton,copyExact);
+  tools.append(createMarrowlineLoomFooter(doc,environment,authority));
   source.before(shell);
 
   const select=(mode)=>{

@@ -1,4 +1,5 @@
-import { normalizeLoomAiTask, createLoomAiGovernance, verifyLoomAiGovernance, createLoomAiTaskGovernor, createPortableLoomAiPacket, inspectPortableLoomReceiverAssurance, LOOM_HANDOFF_TTL_MS } from './ai-handoff.js';
+import { normalizeLoomAiTask, createLoomAiGovernance, verifyLoomAiGovernance, createLoomAiTaskGovernor, createPortableLoomAiPacket, createCanonicalPortableLoomPacket, inspectPortableLoomReceiverAssurance, LOOM_HANDOFF_TTL_MS } from './ai-handoff.js';
+import { createPortableLoomCore } from '../../engine/portable-loom-core.js';
 import { inspectLoomAiResponse } from './ai-intake.js';
 import { requireReusableLoomAnswer } from './ai-evidence-review.js';
 import { INVOCATION_MODES } from '../khonapolit-covenant.js';
@@ -170,6 +171,7 @@ export async function bindLoomDemoRequest(request, environment = globalThis) {
   }
   const selected = normalizeLoomAiTask({ task, documents, rules: activation.rules });
   const governance = await createLoomAiGovernance(selected, { withheldDocumentCount: activation.governance.withheld_document_count }, environment);
+  const portable_governance = await createPortableLoomCore({ ...selected, governance }, {}, environment);
   const governor = await createLoomAiTaskGovernor({ ...selected, governance }, environment);
   const authorization = await governor.authorize({ ...selected, governance });
   if (!authorization.allowed) { governor.close(); throw new Error('LOOM_DEMO_REQUEST_HELD'); }
@@ -194,6 +196,7 @@ export async function bindLoomDemoRequest(request, environment = globalThis) {
     input: { schema: 'td613.loom.ai-task/v0.1', request_id: request.request_id, ...selected },
     selected,
     governance,
+    portable_governance,
     governor,
     receipt,
     admit(response) {
@@ -215,6 +218,8 @@ export function exportLoomDemoCurrent(binding, result = undefined, context = und
     if (!same(candidate, admitted)) throw new Error('LOOM_DEMO_EXPORT_RESULT_MISMATCH');
   }
   const packet = createPortableLoomAiPacket({ ...binding.selected, governance: binding.governance }, { priorResult: admitted });
+  packet.portable_governance = copy(binding.portable_governance);
+  if (context?.origin?.loom_gate_reports) packet.loom_gate_reports = copy(context.origin.loom_gate_reports);
   if (context !== undefined) {
     const original = normalizeLoomAiTask({ task: context.origin?.task, documents: context.origin?.documents,
       rules: context.origin?.rules, governance: context.origin?.governance });
@@ -258,8 +263,8 @@ export function exportLoomDemoCurrent(binding, result = undefined, context = und
   return packet;
 }
 
-export async function exportLoomDemoOrigin(input, environment = globalThis, { priorResult } = {}) {
-  const packet = createPortableLoomAiPacket(input, { priorResult });
+export async function exportLoomDemoOrigin(input, environment = globalThis, { priorResult, portableGovernance } = {}) {
+  const packet = await createCanonicalPortableLoomPacket(input, { priorResult, portableGovernance }, environment);
   await verifyLoomAiGovernance(packetInputForReview(packet), environment);
   const original = loomDemoResult(packet.continuation?.prior_result, packet.documents);
   if (!original) throw new Error('LOOM_DEMO_ORIGINAL_RESULT_UNOBSERVED');

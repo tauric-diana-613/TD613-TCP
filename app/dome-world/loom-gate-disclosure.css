@@ -1,0 +1,12 @@
+.loom-gate-disclosure{min-width:0;margin-top:14px;overflow-wrap:anywhere}
+.loom-gate-output-footer{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px;border:1px solid #78ded75a;border-radius:12px;color:#bddbd6;background:#10182ccc}
+.loom-gate-output-footer p{flex:1 1 100%;margin:0;font:500 12px/1.6 system-ui,sans-serif}
+.loom-gate-output-footer button,.loom-gate-how-drawer>button{min-height:44px!important;padding:9px 12px!important;white-space:normal!important;cursor:pointer}
+.loom-gate-how-drawer{min-width:0;margin-top:12px;padding:14px;border:1px solid #78ded75a;border-radius:12px;background:#111426;color:#dedfeb;font:400 14px/1.65 system-ui,sans-serif}
+.loom-gate-how-drawer[hidden]{display:none!important}
+.loom-gate-how-drawer:focus{outline:2px solid #8de8dc;outline-offset:3px}
+.loom-gate-how-drawer h4{font-size:18px}.loom-gate-how-drawer h5{font-size:15px;margin:20px 0 6px}
+.loom-gate-exact-report{max-height:260px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}
+.loom-gate-registry-scroll{max-width:100%;overflow:auto;overscroll-behavior:contain}
+.loom-gate-registry-scroll table{min-width:650px;border-collapse:collapse;font-size:12px}
+.loom-gate-registry-scroll th,.loom-gate-registry-scroll td{padding:8px;text-align:left;vertical-align:top;border:1px solid #88aaab44;max-width:240px;overflow-wrap:anywhere}

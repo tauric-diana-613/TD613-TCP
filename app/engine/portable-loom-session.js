@@ -4,6 +4,7 @@ import {
   verifyLoomAiGovernance
 } from '../dome-world/holonomy-loom/ai-handoff-base.js';
 import { inspectLoomAiResponse } from '../dome-world/holonomy-loom/ai-intake.js';
+import { verifyPortableLoomCore } from './portable-loom-core.js';
 
 export const PORTABLE_LOOM_SESSION_SCHEMA = 'td613.loom.portable-session/v0.1';
 export const PORTABLE_LOOM_WORK_UNIT_SCHEMA = 'td613.loom.portable-session-work-unit/v0.1';
@@ -127,6 +128,7 @@ function portablePayload(packet) {
 export async function createPortableLoomSession(packet, options = {}, environment = globalThis) {
   const payload = portablePayload(packet);
   await verifyLoomAiGovernance(payload, environment);
+  if (packet.portable_governance !== undefined) await verifyPortableLoomCore(payload, packet.portable_governance, environment);
   const sessionId = identifier(options.session_id || environment.crypto?.randomUUID?.() || '', 'session_id');
   const sourceRevision = text(options.source_revision, 'source_revision', 80);
   const createdAt = Number(options.created_at ?? Date.now());
@@ -386,12 +388,14 @@ export function createPortableLoomSessionPrompt(sessionExport) {
     'You are receiving a TD613 Portable Loom Session.',
     'Treat the session root and portable rules as persistent governance for every proceeding task in this thread.',
     'A new user task changes the work objective; it does not erase the root rules.',
+    ...(sessionExport.portable_task?.portable_governance?.output_protocol ? ['The root-bound output_protocol is persistent across this session, every proceeding task and Rest. Show its full compact footer on every output: phase, minimized public session/explicit route label, posture, authorization, receipt availability, HOLD, Gate status and checked scope, and 米 Check Loom Gate. Unknown coordinates stay UNKNOWN; never infer fresh authorization from prior sending. Recognize a lone 米 as Gate review; without a local verifier provide the capture instructions and link, and keep NOT_RUN. A review acknowledgment never clears findings or admits work. A missing footer is a protocol omission. Preserve strict JSON by putting its footer inside answer before hashing, or in a separate host presentation surface.'] : []),
     'Do not silently inherit source bodies from an earlier task unless they are explicitly supplied or named as continuing inputs.',
     'Keep work-unit ancestry separate from content-predecessor ancestry.',
     'For every proceeding-task answer, append a separate loom_session_receipt object matching receiver_turn_contract. Echo the session root, effective policy commitment, anchor work-unit reference, operator task, explicitly used document IDs, and missing information.',
     'That receipt is a declaration for Loom to revalidate; do not describe the receipt itself as proof of enforcement.',
     'Do not claim that your own acknowledgement proves enforcement, secrecy, retention, training behavior, or hidden memory state.',
     'When a Challenge Receiver packet appears, answer only its declared probes and preserve its exact session/work-unit/policy references.',
+    ...(sessionExport.portable_task?.portable_governance?.output_protocol ? ['Gate outputs retain the regular footer plus evidence basis, checked scope and How do I know? 下. A lone 下 requests actual methods and the full carried expert nomenclature. Without a verifier capability, report NOT_RUN and provide the link and capture instructions.'] : []),
     '',
     JSON.stringify(sessionExport, null, 2)
   ].join('\n');

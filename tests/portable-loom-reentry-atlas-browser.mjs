@@ -118,9 +118,8 @@ try {
     assert.equal(await page.locator('#loomFirstCrossingLeave').isVisible(), true, 'direct tutorial entry offers a visible exit');
     await page.locator('#loomFirstCrossingLeave').click();
     await page.locator('.loom-builder-shell').waitFor({ state: 'visible' });
-    await page.locator('#aiDemoMode').click();
-    await page.locator('#aiDemoInvitation').click();
-    await page.locator('[data-project="participant-research"]').click();
+    // Prepare through the real operator-authored route; retired demos carry no state.
+    await page.locator('#aiTask').fill('Prepare the fictional atlas custody exercises under one inherited root.');
     await page.locator('#aiPreparePortable').click();
     await page.waitForFunction(() => !document.querySelector('[data-loom-reentry="stage"]').disabled);
     await openCustody();

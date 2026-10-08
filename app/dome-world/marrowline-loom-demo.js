@@ -395,6 +395,7 @@ export async function installMarrowlineLoomDemo(packet, doc=document, environmen
   environment.addEventListener('td613:marrowline:attachments-changed',()=>emit());
   const controller={returnToLoom,openMenu,stageAia,stageFiles,restoreStage,leaveDemo,submit,prepareRequest,admitResponse,rejectAttempt,finishAttempt,snapshot,exportPacket,
     getObservedProvenance:()=>copy({activation,stages:admittedStages,snapshot:snapshot()}),
+    getGateReports:()=>copy(packet.loom_gate_reports || []),
     getGateContinuity:()=>gateContinuity?.getCurrent?.()??null,getSavedReviewPacket:()=>savedReviewPacket?copy(savedReviewPacket):null,destroy(){destroyed=true;environment.clearTimeout(expiry);leaveDemo();menu.remove();gateContinuity?.destroy?.();}};
   environment.__TD613_LOOM_DEMO_CONTROLLER__=controller;
   environment.history?.replaceState(null,'',environment.location.pathname+environment.location.search+'#loom-demo');

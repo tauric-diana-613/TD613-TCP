@@ -4,6 +4,7 @@ import { compileRouteGraph } from '../../engine/flowcore-route-burden.js';
 import { renderPedagogueScene } from '../flowcore-pedagogue-visual.js';
 import { FLOWCORE_GLYPH_REGISTRY } from '../data/flowcore-glyph-semantics-v01.js';
 import { FLOWCORE_MOTION_FAMILIES, projectFlowcoreMotionFamily } from './flowcore-choreography.js';
+import { LOOM_TUTORIAL_OPERATORS } from './tutorial-membrane.js';
 
 /** A projection of client request observations, not a second request engine.
  * #1017 supplies the canonical scene/phase → graph boundary; its Ash theorem
@@ -552,7 +553,16 @@ export function mountLoomInstrumentStateView(root) {
   return Object.freeze({
     update(view, snapshot = {}) {
       if (destroyed) throw new Error('Loom instrument state renderer is destroyed.');
-      const frame = projectLoomInstrumentStateFrame(view, snapshot);
+      const observedFrame = projectLoomInstrumentStateFrame(view, snapshot);
+      const tutorial = snapshot.packet?.presentation?.tutorial_operator;
+      const authored = LOOM_TUTORIAL_OPERATORS[tutorial?.step];
+      const illustration = snapshot.packet?.scene?.id?.startsWith('first-crossing-') === true
+        && tutorial?.evidence_class === 'TUTORIAL_ILLUSTRATION_ONLY'
+        && tutorial.glyph === authored?.glyph
+        && JSON.stringify(tutorial.relations) === JSON.stringify(authored?.relations) ? authored : null;
+      const frame = illustration ? { ...observedFrame, relation_key: illustration.relations[0],
+        descriptor: { ...view.relations[illustration.relations[0]], glyph: illustration.glyph },
+        illustration_only: true } : observedFrame;
       // Mobile keeps the same evidenced relation grammar and the same host
       // clock, but projects fewer decorative carriers per tick. This lowers
       // DOM/SVG mutation pressure without inventing a second animation path.
@@ -570,9 +580,11 @@ export function mountLoomInstrumentStateView(root) {
       const flightCount = flightGlyphs.length;
       const depthCount = compact ? 4 : depth.length;
       root.dataset.clientPhase = view.phase;
-      root.dataset.activeRelation = frame.relation_key ?? 'unobserved';
+      root.dataset.activeRelation = observedFrame.relation_key ?? 'unobserved';
+      if (illustration) root.dataset.illustratedRelation = illustration.relations.join('//');
+      else delete root.dataset.illustratedRelation;
       root.dataset.reducedMotion = String(frame.reduced_motion);
-      doc.documentElement.dataset.loomRelation = frame.relation_key ?? 'unobserved';
+      doc.documentElement.dataset.loomRelation = observedFrame.relation_key ?? 'unobserved';
       setText(mode, view.replay ? 'Replay · recorded route observation; nothing is being sent' : 'Current route observation');
       setText(now, view.copy.now);
       setText(why, view.copy.why);
@@ -690,13 +702,13 @@ export function mountLoomInstrumentStateView(root) {
         // The full eight-relation score belongs only to the pre-evidence ingress.
         // Once a canonical consequence exists, every carrier keeps that evidenced
         // relation identity; the selected family may deform geometry, never truth.
-        const observed=evidencedTrail.findLast(item=>item.relation_key===frame.relation_key);
-        const ambientRelation=!observed&&ambientChoreography
+        const observed=illustration ? null : evidencedTrail.findLast(item=>item.relation_key===frame.relation_key);
+        const ambientRelation=illustration ? illustration.relations[i%illustration.relations.length] : !observed&&ambientChoreography
           ? choreographyRelations[i%choreographyRelations.length] : null;
         const visible=Boolean(observed||ambientRelation);
         if(!visible){setText(node,'');node.setAttribute('visibility','hidden');continue;}
         const relationKey=observed?.relation_key??ambientRelation;
-        const ambientOnly=!observed&&Boolean(ambientRelation);
+        const ambientOnly=!illustration&&!observed&&Boolean(ambientRelation);
         const depthClass=node.getAttribute('class');
         const nearPlane=depthClass==='flight-near';
         const midPlane=depthClass==='flight-mid';
@@ -721,7 +733,7 @@ export function mountLoomInstrumentStateView(root) {
 
         const speed=.014+(i%7)*.0033;
         const finiteTraversal=['gathering','release','created_potential','released_tendency','bounded_emergence'].includes(relationKey);
-        const phase=ambientOnly ? ((seed+seconds*(speed*3.4))%1+1)%1 : finiteTraversal ? Math.min(1,seed*.18+frame.progress*.82) : ((seed+seconds*speed)%1+1)%1;
+        const phase=ambientOnly ? ((seed+seconds*(speed*3.4))%1+1)%1 : finiteTraversal || (illustration && relationKey==='structural_rest') ? Math.min(1,seed*.18+frame.progress*.82) : ((seed+seconds*speed)%1+1)%1;
         const lane=(i%9)-4;
         let x=500,y=260,roll=0,scale=.48+(i%9)*.085,opacity=1;
 
@@ -773,7 +785,7 @@ export function mountLoomInstrumentStateView(root) {
           const angle=i*2.3999632297;
           const radius=110+(i%7)*23;
           x=500+Math.cos(angle)*radius*1.2;
-          y=260+Math.sin(angle)*radius*.46;
+          y=260+Math.sin(angle)*radius*.46+(illustration?(1-phase)*180:0);
           roll=0;
           scale=.44+(i%5)*.06;
           opacity=.34;
@@ -824,8 +836,8 @@ export function mountLoomInstrumentStateView(root) {
         marker.group.setAttribute('visibility','visible');
         const selected=view.event.selected_document_ids?.includes(source.id)===true;
         const selectedIndex=view.event.selected_document_ids?.indexOf(source.id)??0;
-        const gathering=frame.relation_key==='gathering';
-        const ready=frame.relation_key==='created_potential';
+        const gathering=observedFrame.relation_key==='gathering';
+        const ready=observedFrame.relation_key==='created_potential';
         const p=frame.progress;
         let x=source.id==='private'?680:source.id==='brief'?320:680,y=260;
         if(source.id==='private'){x=compact?680:820;y=compact?480:340;}

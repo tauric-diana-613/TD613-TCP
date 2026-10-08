@@ -6,12 +6,42 @@ import { loomWorkspaceTemplate } from '../app/dome-world/holonomy-loom/workspace
 import { webcrypto } from 'node:crypto';
 import { FLOWCORE_GLYPH_REGISTRY } from '../app/dome-world/data/flowcore-glyph-semantics-v01.js';
 import { compileLoomInstrumentStateView, projectLoomInstrumentStateFrame, mountLoomInstrumentStateView } from '../app/dome-world/holonomy-loom/instrument-state-view.js';
+import { LOOM_TUTORIAL_OPERATORS, loomTutorialPresentation } from '../app/dome-world/holonomy-loom/tutorial-membrane.js';
 
 const html=fs.readFileSync(new URL('../app/dome-world/holonomy-loom.html',import.meta.url),'utf8');
 const product=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/loom-product-v6.css',import.meta.url),'utf8');
 const workspace=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/ai-workspace.js',import.meta.url),'utf8');
 const instrument=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/instrument-state-view.js',import.meta.url),'utf8');
 const template=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/workspace-template.js',import.meta.url),'utf8');
+
+test('seven tutorial operators have distinct carrier motion without changing actual evidence',async()=>{
+  const packet={phase:'checking',task_present:true,shared:2,local:1,selected_document_ids:['brief','source'],binding_verified:true,
+    outbound_submitted:false,response_received:false,at:'2026-10-08T20:30:00Z',scene:{id:'first-crossing-operator-control'}};
+  const view=await compileLoomInstrumentStateView(packet,{cryptoImpl:webcrypto});
+  const dom=new JSDOM('<div id="field"></div>'),root=dom.window.document.querySelector('#field'),renderer=mountLoomInstrumentStateView(root);
+  const geometries=[];
+  for(const width of [390,1280]){
+    for(let step=0;step<LOOM_TUTORIAL_OPERATORS.length;step++){
+      const operator=LOOM_TUTORIAL_OPERATORS[step];
+      const render=(progress,reducedMotion=false)=>renderer.update(view,{packet:{...packet,presentation:loomTutorialPresentation(step)},progress,
+        timeMs:progress*4000,motionTimeMs:progress*4000,reducedMotion,viewport:{width,height:844,dpr:1}});
+      const positions=()=>[...root.querySelectorAll('.loom-field-flight text')].map(node=>[node.getAttribute('x'),node.getAttribute('y'),node.getAttribute('transform')]);
+      render(.2);const before=positions();render(.8);const after=positions();
+      assert.notDeepEqual(after,before,`${operator.glyph} changes through its own motion`);
+      geometries.push(JSON.stringify(after));
+      assert.equal(root.querySelector('[data-instrument-active-glyph]').textContent,operator.glyph);
+      assert.equal(root.dataset.activeRelation,'created_potential','illustration cannot replace local readiness evidence');
+      const carriers=[...root.querySelectorAll('.loom-field-flight text')];
+      assert.equal(carriers.length,39);
+      assert.ok(carriers.every(node=>operator.relations.includes(node.dataset.flightRelation)&&node.dataset.flightEvidence==='presentation-only'));
+      render(.2,true);const staticBefore=positions();render(.8,true);assert.deepEqual(positions(),staticBefore);
+    }
+  }
+  assert.equal(new Set(geometries.slice(0,7)).size,7,'all seven motions differ on mobile');
+  assert.equal(new Set(geometries.slice(7)).size,7,'all seven motions differ on desktop');
+  assert.equal(view.empirical_credit,0);assert.equal(view.event.outbound_submitted,false);assert.equal(view.event.response_received,false);
+  renderer.destroy();dom.window.close();
+});
 
 test('authored Loom composition preserves a cinematic field scene before the builder',()=>{
   assert.match(html,/loom-product-v6\.css/);

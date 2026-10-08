@@ -1,0 +1,463 @@
+{
+  "schema": "td613.pedagogue-design-fixture/v0.1",
+  "design_id": "loom-seven-operator-tutorial-v01",
+  "surface_reference": "Loom tutorial membrane",
+  "governance_context": "TD613",
+  "determinism": {
+    "frozenClock": "2026-10-08T19:48:00Z",
+    "idSeed": "loom-seven-operator-tutorial-v01",
+    "idScope": "Loom tutorial membrane"
+  },
+  "scene_input": {
+    "scene_kind": "GENERIC",
+    "station_owner": "Dome-World",
+    "source_status": "E2",
+    "observation_status": "OBSERVED",
+    "world_state_reference": "fictional-local-seven-operator-tutorial",
+    "provenance": {
+      "source_references": [
+        "app/dome-world/holonomy-loom/ai-workspace.js",
+        "app/dome-world/holonomy-loom/tutorial-membrane.js",
+        "app/dome-world/holonomy-loom/first-crossing-practice.js",
+        "app/dome-world/holonomy-loom/instrument-state-view.js",
+        "app/dome-world/holonomy-loom/loom-product-v6.css"
+      ],
+      "evidence_basis": [
+        "declared design plus executed local synthetic guard/digest tests",
+        "illustration is separately labelled from actual unsent event evidence"
+      ],
+      "transformations": [
+        "privacy and custody benefit before technical naming",
+        "consequence before next gesture",
+        "optional explanation with close and Escape"
+      ],
+      "station_owners": [
+        "Dome-World"
+      ]
+    },
+    "visible_condition": {
+      "plain_language": "Choose what AI receives, revisit privacy in an explicit scope, and inspect the returned answer and its receipt before human custody admission.",
+      "surface_reference": "Loom tutorial membrane"
+    },
+    "available_affordances": [
+      {
+        "action_id": "tutorial_next",
+        "purpose": "Progress through a fictional local example; no provider request or custody admission.",
+        "authorized_by_station": "Human",
+        "reversible": true
+      }
+    ],
+    "route_topology": {
+      "entry": "Loom tutorial or explicit replay",
+      "exit": "Skip directly to workspace or settle at Rest",
+      "same_endpoint_not_same_history": true,
+      "missing_inputs": [
+        "rendered candidate browser witness",
+        "independent ChatGPT compliance capture",
+        "human comprehension and measured burden"
+      ],
+      "steps": [
+        {
+          "step_id": "request",
+          "label": "Choose the fictional request",
+          "phase": "NOTICE",
+          "required_fields": [
+            "fictional material",
+            "local-only tutorial",
+            "separate user choices"
+          ],
+          "dependencies": [],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 0,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "references",
+          "label": "See selected references and excluded private note",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "fictional material",
+            "local-only tutorial",
+            "separate user choices"
+          ],
+          "dependencies": [
+            "request"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "check",
+          "label": "Check the selected local binding",
+          "phase": "ACT",
+          "required_fields": [
+            "fictional material",
+            "local-only tutorial",
+            "separate user choices"
+          ],
+          "dependencies": [
+            "references"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "send",
+          "label": "Illustrate deliberate send; retain actual unsent facts",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "fictional material",
+            "local-only tutorial",
+            "separate user choices"
+          ],
+          "dependencies": [
+            "check"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "privacy",
+          "label": "See a blocked planted private-term egress attempt and scoped Gate explanation",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "fictional material",
+            "local-only tutorial",
+            "separate user choices"
+          ],
+          "dependencies": [
+            "send"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "proof",
+          "label": "Inspect a digest-bound fictional answer and receipt",
+          "phase": "NAME",
+          "required_fields": [
+            "fictional material",
+            "local-only tutorial",
+            "separate user choices"
+          ],
+          "dependencies": [
+            "privacy"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "rest",
+          "label": "Rest or start a real request voluntarily",
+          "phase": "REST",
+          "required_fields": [
+            "fictional material",
+            "local-only tutorial",
+            "separate user choices"
+          ],
+          "dependencies": [
+            "proof"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        }
+      ]
+    },
+    "causal_structure": {
+      "input": "Fictional request, selected reference and excluded local private note.",
+      "operator": "selection -> installed local AIA/FADT binding -> send illustration -> local private-term guard -> digest-bound fictional return -> Rest",
+      "observable": "Separate operator animations, selected/excluded counts, blocked synthetic egress, inspectable return receipt and explicit close/skip.",
+      "authority": "The tutorial makes no provider request and admits no returned work. Human approval remains separate.",
+      "equations": [
+        "illustration != provider event",
+        "digest match != truth",
+        "Check != Admit"
+      ]
+    },
+    "research_frame": {
+      "question": "Does the tutorial expose the sharing, sending, privacy-review and returned-custody consequences before technical explanation?",
+      "hypothesis": "The proposed route exposes the same declared manual steps with a persistent Gate affordance and equal modeled structural burden.",
+      "observable_behavior": [
+        "Every newly created core carries the receiver-neutral footer protocol.",
+        "Registered later tasks retain root rules and earlier evidence; Check leaves the head unchanged.",
+        "Known clean, literal, joined and incomplete fictional captures reach the installed verifier.",
+        "Footer acknowledgment preserves findings and exact provider bytes.",
+        "The Gate footer offers \u4e0b method disclosure with exact reports and the full conventional nomenclature; opening the drawer changes no evidence or custody."
+      ],
+      "alternative_explanations": [
+        "Shared local compilers can produce conserved records without independent foreign execution.",
+        "Equal declared burden is a model assumption, not a human measurement."
+      ],
+      "expected_failure_modes": [
+        "Send illustration changes actual outbound flags.",
+        "A return receipt implies an actual provider response.",
+        "A scoped guard result suggests complete provider privacy.",
+        "The finish screen repeats readiness or leaves motion running.",
+        "The help drawer covers controls with no close affordance."
+      ],
+      "falsifier": [
+        "Hidden or reentrant buttons skip an unobserved lesson.",
+        "An illustration is recorded as observed sending/return evidence.",
+        "A private marker escapes the selected-input guard.",
+        "A changed fictional answer keeps the same digest.",
+        "Reduced motion or help focus loses a usable exit."
+      ],
+      "abstention_conditions": [
+        "Independent human comprehension and rendered browser checks remain absent.",
+        "Foreign privacy and provider retention evidence are missing."
+      ],
+      "assumptions": [
+        "Burden values are declared assumptions, not measured human comprehension.",
+        "The baseline is a manual route with the same coverage; the old incomplete tutorial cannot certify equivalent coverage."
+      ]
+    },
+    "missingness": [
+      "Design model is not a rendered browser or physical-device witness.",
+      "Human comprehension and burden remain unmeasured.",
+      "Foreign receiver privacy, retention and compliance require independent captured evidence."
+    ],
+    "contradictions": [],
+    "claim_ceiling": {
+      "allowed_claims": [
+        "The installed local guard blocks the planted private-term egress attempt.",
+        "The selected-input binding and fictional answer digests can be independently recomputed.",
+        "The tutorial describes separate sharing, sending, privacy review, return and human admission choices."
+      ],
+      "forbidden_claims": [
+        "Tutorial animation proves sending or a provider return.",
+        "A digest proves truth or complete provider privacy.",
+        "Design Gate PASS measures human comprehension or browser layout.",
+        "Synthetic controls establish Golden Egg empirical closure."
+      ]
+    },
+    "technical_terms_withheld": [
+      "Flow-Core formal relation names",
+      "cryptographic digest",
+      "finite admissibility",
+      "receiver-relative projections"
+    ]
+  },
+  "baseline_route_steps": [
+    {
+      "step_id": "request",
+      "label": "Manual equivalent: Choose the fictional request",
+      "phase": "NOTICE",
+      "required_fields": [
+        "fictional material",
+        "local-only tutorial",
+        "separate user choices"
+      ],
+      "dependencies": [],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 0,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "references",
+      "label": "Manual equivalent: See selected references and excluded private note",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": [
+        "fictional material",
+        "local-only tutorial",
+        "separate user choices"
+      ],
+      "dependencies": [
+        "request"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "check",
+      "label": "Manual equivalent: Check the selected local binding",
+      "phase": "ACT",
+      "required_fields": [
+        "fictional material",
+        "local-only tutorial",
+        "separate user choices"
+      ],
+      "dependencies": [
+        "references"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "send",
+      "label": "Manual equivalent: Illustrate deliberate send; retain actual unsent facts",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": [
+        "fictional material",
+        "local-only tutorial",
+        "separate user choices"
+      ],
+      "dependencies": [
+        "check"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "privacy",
+      "label": "Manual equivalent: See a blocked planted private-term egress attempt and scoped Gate explanation",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": [
+        "fictional material",
+        "local-only tutorial",
+        "separate user choices"
+      ],
+      "dependencies": [
+        "send"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "proof",
+      "label": "Manual equivalent: Inspect a digest-bound fictional answer and receipt",
+      "phase": "NAME",
+      "required_fields": [
+        "fictional material",
+        "local-only tutorial",
+        "separate user choices"
+      ],
+      "dependencies": [
+        "privacy"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "rest",
+      "label": "Manual equivalent: Rest or start a real request voluntarily",
+      "phase": "REST",
+      "required_fields": [
+        "fictional material",
+        "local-only tutorial",
+        "separate user choices"
+      ],
+      "dependencies": [
+        "proof"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    }
+  ],
+  "action": {
+    "action_id": "tutorial_next"
+  },
+  "world_delta": {
+    "observation_status": "UNRESOLVED",
+    "causal_trace": [
+      "Declared: selected inputs and excluded material are visible before sending.",
+      "Declared: installed local guard blocks a planted private-term export.",
+      "Declared: the fictional return binds the checked request and answer bytes.",
+      "Declared: reviewed lessons settle at Rest without provider or custody credit."
+    ],
+    "losses": [],
+    "missingness": [
+      "Design model is not a rendered browser or physical-device witness.",
+      "Human comprehension and burden remain unmeasured.",
+      "Foreign receiver privacy, retention and compliance require independent captured evidence."
+    ],
+    "contradictions": [],
+    "unresolved_relations": [
+      "Human comprehension and browser layout require their own witnesses."
+    ],
+    "glyph_candidates": [],
+    "static_equivalent": {
+      "summary": "All operator glyphs and consequences remain distinct in reduced motion; help closes by \u00d7 or Escape and Skip stays available.",
+      "steps": [
+        "select request and reference",
+        "check selected input",
+        "review send illustration",
+        "see privacy control",
+        "inspect fictional return",
+        "Rest or enter workspace"
+      ]
+    }
+  },
+  "name": {
+    "plain_language": "Choose what AI receives and keep custody of the return through deliberate review.",
+    "glyph_relation": null,
+    "technical_term": "Flow-Core tutorial illustration and selected-input binding",
+    "non_equivalence": [
+      "illustrated operator is not an observed provider event",
+      "guarded egress is not global provider privacy",
+      "receipt integrity is not answer truth",
+      "Check is not Admit"
+    ]
+  },
+  "transfer_context": {
+    "context": {
+      "surface": "Loom tutorial membrane",
+      "realization": "One owner clock and real local synthetic guard/digest controls."
+    },
+    "shared_relation_candidate": "The same choices remain legible at desktop, mobile and reduced motion.",
+    "observable_correspondence": [
+      "Same seven operator meanings in every viewport.",
+      "Same actual unsent request facts throughout illustrations."
+    ],
+    "alternative_explanations": [
+      "Animation can look convincing while a provider remains unobserved."
+    ],
+    "abstention_conditions": [
+      "No actual browser or comprehension witness."
+    ]
+  },
+  "design_evidence_scope": "Declared structural design only; no measured comprehension or usability improvement."
+}

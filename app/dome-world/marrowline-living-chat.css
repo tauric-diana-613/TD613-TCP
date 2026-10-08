@@ -114,6 +114,11 @@ html:root .living-chat-shell .additional-voices .relay-stage-text{font-family:va
 .marrowline-reading-view code{font:500 .91em/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#e5dfc2}
 .marrowline-reading-view strong{font-weight:700;color:#f4eee0}.marrowline-reading-view em{font-style:italic;color:#d9e5db}
 .relay-stage-text[hidden]{display:none!important}
+.marrowline-loom-footer{display:grid;grid-template-columns:1fr;gap:5px;min-width:0;margin-left:auto;color:#a5c6c3;font:500 10px/1.4 var(--sans)}
+#khonapolitMessages .relay-message .marrowline-reading-tools .marrowline-loom-gate-check{min-height:44px!important;height:auto!important;max-width:100%!important;padding:10px 12px!important;font-size:12px!important;white-space:normal!important;border-color:#76ddd9!important}
+.marrowline-loom-gate-check[data-gate-attention="true"]{animation:loom-gate-attention 1.8s ease-in-out infinite;box-shadow:0 0 10px #59e7dc88!important}
+@keyframes loom-gate-attention{0%,100%{filter:brightness(1)}50%{filter:brightness(1.3)}}
+@media(prefers-reduced-motion:reduce){.marrowline-loom-gate-check[data-gate-attention="true"]{animation:none;box-shadow:0 0 8px #59e7dc88!important}}
 @media(max-width:860px){
   #khonapolitMessages .relay-message .marrowline-reading-tools{gap:5px}
   #khonapolitMessages .relay-message .marrowline-reading-tools button{min-height:26px!important;height:26px!important;padding-inline:7px!important;font-size:9.25px!important}

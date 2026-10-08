@@ -1,6 +1,9 @@
 export const MARROWLINE_LOOM_GATE_CONTINUITY_SCHEMA = 'td613.dome-world.marrowline-loom-gate-continuity/v0.1';
 import { loomEvidenceHoldSummary } from './holonomy-loom/ai-evidence-diagnostic.js';
 import { marrowlineProviderUsage } from './marrowline-provider-budget.js';
+import { describePortableLoomGateReport } from '../engine/portable-loom-gate.js';
+import { createLoomGateDisclosure } from './loom-gate-disclosure.js';
+import { openMarrowlineLoomGate } from './marrowline-loom-footer.js';
 
 const copy = value => value == null ? value : JSON.parse(JSON.stringify(value));
 const el = (doc, tag, text='', className='') => {
@@ -142,6 +145,8 @@ export function deriveMarrowlineLoomGateContinuity({
       finding:'This Phase 2 witness retains chronology and earlier bound stages. Native return, Check, explicit Admit and Structural Rest need their own Loom witnesses; setup or generated text supplies no whole-journey completion credit.'}),
     evidenceHold:evidenceHold?Object.freeze(evidenceHold):null,
     providerUsage:usage?Object.freeze(usage):null,
+    portableGovernanceRef:packet.portable_governance?.ref??null,
+    portableGateReports:Object.freeze(copy(packet.loom_gate_reports??[])),
     crossed:Object.freeze(crossed),
     stayed:Object.freeze(stayed),
     admitted:Object.freeze(admitted),
@@ -211,6 +216,10 @@ export function installMarrowlineLoomGateContinuity({
   const technical=doc.createElement('details');technical.className='loom-gate-continuity-technical';
   technical.append(el(doc,'summary','Inspect continuity coordinates'),el(doc,'pre',''));
   const actions=el(doc,'div','','loom-gate-continuity-actions');
+  const gateLink=doc.createElement('a');gateLink.textContent='Check Loom Gate';gateLink.href='https://td613.com/dome-world/holonomy-loom.html#loomGate';gateLink.target='_blank';gateLink.rel='noopener';actions.append(gateLink);
+  const portableAlerts=el(doc,'section','','loom-gate-evidence-review');portableAlerts.id='loomPortableGateAlerts';
+  const disclosure=createLoomGateDisclosure(doc,{id:'marrowlineLoomGateHow',onGate:()=>openMarrowlineLoomGate(doc,root)});
+  disclosure.help.id='loomGateHowButton';
   const localCheck=button(doc,'Check selected-file binding locally',onLocalCheck,'loom-gate-secondary');localCheck.id='loomGateLocalCheck';
   const returnLoom=button(doc,'Return to original Loom tab',onReturnToLoom,'loom-gate-secondary');returnLoom.id='loomGateReturnToLoom';
   const back=button(doc,'Back to Chat',onReturnToChat,'loom-gate-secondary');back.id='loomGateBackToChat';
@@ -222,7 +231,7 @@ export function installMarrowlineLoomGateContinuity({
   const separator=el(doc,'aside','','loom-gate-adversarial-separator');
   separator.append(el(doc,'small','SEPARATE EXPERIMENT · DEFERRED'),el(doc,'strong','Adversarial boundary assay preserved for the later Gate pass'),el(doc,'p','The Local / Public / Operator armamentarium tests a different boundary. Phase 2 does not fire it. Its code remains intact for the later opsec/infosec redesign, and this continuity witness supplies it no empirical credit.'));
 
-  section.append(head,state,now,evidenceSection,consequenceGrid,roleDetails,technical,actions,actionStatus);
+  section.append(head,state,now,evidenceSection,portableAlerts,consequenceGrid,roleDetails,technical,actions,actionStatus,disclosure.section);
   controls.prepend(section);
   const adversarial=doc.getElementById('marrowlineGatePedagogue');
   const form=doc.getElementById('marrowlineForm');
@@ -239,6 +248,7 @@ export function installMarrowlineLoomGateContinuity({
   const update=input=>{
     const previous=current;
     current=deriveMarrowlineLoomGateContinuity({...input,activation,packet});
+    disclosure.update(current.portableGateReports,current.phase);
     if(previous&&(previous.phase!==current.phase||previous.lastAttempt!==current.lastAttempt||previous.busy!==current.busy)){
       actionStatus.hidden=true;actionStatus.textContent='';delete actionStatus.dataset.outcome;
     }
@@ -246,6 +256,10 @@ export function installMarrowlineLoomGateContinuity({
     nowText.textContent=current.pedagogue.now;
     why.textContent=current.pedagogue.why;
     next.textContent=`NEXT · ${current.pedagogue.next}`;
+    portableAlerts.replaceChildren();
+    portableAlerts.append(el(doc,'h4','Portable Loom Gate alerts'),el(doc,'p',current.portableGovernanceRef?`Canonical governance ${digestShort(current.portableGovernanceRef)}.`:'Legacy transfer: no canonical portable governance record.'));
+    if(current.portableGateReports.length)for(const report of current.portableGateReports)portableAlerts.append(el(doc,'p',describePortableLoomGateReport(report)));
+    else portableAlerts.append(el(doc,'p','No captured disclosure or reconstruction result traveled with this handoff. Check Loom Gate to inspect captured evidence; this stage does not measure leakage from the whole conversation.'));
     evidenceSection.replaceChildren();evidenceSection.hidden=!current.evidenceHold;
     if(current.evidenceHold){
       evidenceSection.append(el(doc,'h4',current.evidenceHold.title),el(doc,'p',current.evidenceHold.explanation));

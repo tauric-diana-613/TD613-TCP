@@ -1,6 +1,36 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
+import { handleMarrowlineLoomGateCommand } from '../app/dome-world/marrowline-loom-footer.js';
+
+for (const mobile of [false,true]) test(`Loom footer opens ${mobile?'mobile':'desktop'} Gate, preserves alerts and acknowledges only its reply`,()=>{
+  const dom=new JSDOM('<button id="marrowlineInstrumentTab-gatePanel"></button><div class="mobile-dock"><button data-mobile-target="gatePanel"></button></div><details id="gatePanel"><p>OBSERVED_EXPOSURE · original finding</p></details>',{url:'https://td613.com'});
+  const env=dom.window,doc=env.document; env.matchMedia=()=>({matches:mobile});
+  env.fetch=()=>{throw new Error('Gate review must make no model request');};
+  env.__TD613_LOOM_DEMO_CONTROLLER__={snapshot:()=>({active:true,current_result_request_id:'current'}),getGateReports:()=>[{status:'OBSERVED_EXPOSURE'}]};
+  const control=mobile?doc.querySelector('.mobile-dock button'):doc.getElementById('marrowlineInstrumentTab-gatePanel');
+  let navigations=0;control.addEventListener('click',()=>{navigations++;doc.getElementById('gatePanel').open=true;});
+  const first=stage(dom,'Exact first'),second=stage(dom,'Exact second');
+  installMarrowlineReadingSurface(first.section,env,{request_id:'current',phase:'CONTINUE'});
+  installMarrowlineReadingSurface(second.section,env,{request_id:'different',phase:'ACTIVATE'});
+  const button=first.section.querySelector('.marrowline-loom-gate-check');
+  assert.equal(button.textContent,'米 Check Loom Gate');assert.equal(button.dataset.gateAttention,'true');
+  assert.match(first.section.querySelector('footer').textContent,/Carried alert/);
+  assert.match(first.section.querySelector('footer').textContent,/Auth: fresh gesture required/);
+  assert.match(first.section.querySelector('footer').textContent,/Receipt: UNKNOWN/);
+  button.click(); assert.equal(navigations,1);assert.equal(button.dataset.gateAttention,'false');
+  assert.equal(second.section.querySelector('.marrowline-loom-gate-check').dataset.gateAttention,'true');
+  assert.match(first.section.querySelector('footer').textContent,/Carried alert.*review opened/);
+  assert.match(doc.getElementById('gatePanel').textContent,/OBSERVED_EXPOSURE/);
+  assert.equal(first.source.textContent,'Exact first');assert.equal(second.source.textContent,'Exact second');
+  removeMarrowlineReadingSurface(first.section);installMarrowlineReadingSurface(first.section,env,{request_id:'current',phase:'CONTINUE'});
+  assert.equal(first.section.querySelector('.marrowline-loom-gate-check').dataset.gateAttention,'false','rerender retains scoped acknowledgment');
+  assert.equal(handleMarrowlineLoomGateCommand(' 米 ',doc,env),true);assert.equal(navigations,2);
+  assert.equal(handleMarrowlineLoomGateCommand('explain 米',doc,env),false);
+  env.__TD613_LOOM_DEMO_CONTROLLER__={snapshot:()=>({active:false})};
+  assert.equal(handleMarrowlineLoomGateCommand('米',doc,env),false,'ordinary chat keeps its normal meaning');
+  dom.window.close();
+});
 import {
   MARROWLINE_READING_SURFACE_SCHEMA,
   MARROWLINE_LOOM_READING_WORK_UNIT_SCHEMA,

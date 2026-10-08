@@ -95,6 +95,33 @@ async function expectRealReadiness(h) {
   assert.equal(h.requests.length, 0);
 }
 
+async function finishFullTutorial(h) {
+  for(const [step,cue] of [[3,'send'],[4,'privacy'],[5,'proof']]){
+    h.$('#loomFirstCrossingStop').click();
+    await until(()=>h.root.dataset.firstCrossingStep===String(step)&&h.ui.inspect().runtime.status==='CURRENT',`${cue} projection`);
+    assert.equal(h.root.dataset.firstCrossingCue,`${cue}-motion`);
+    h.$('#loomFirstCrossingStop').click();
+    assert.equal(h.root.dataset.firstCrossingStep,String(step),'hidden/reentrant controls cannot skip the visible lesson');
+    assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'),null);
+    h.advance(3400);
+    assert.equal(h.root.dataset.firstCrossingCue,`${cue}-named`);
+    assert.equal(h.$('#loomFirstCrossingStop').hidden,false);
+    assert.equal(h.ui.inspect().runtime.view.event.outbound_submitted,false);
+    assert.equal(h.ui.inspect().runtime.view.event.response_received,false);
+  }
+  const proof=JSON.parse(h.$('#loomTutorialProofRecord').textContent);
+  assert.match(proof.receipt.answer_digest,/^[a-f0-9]{64}$/);
+  assert.equal(proof.receipt.custody_admitted,false);
+  h.$('#loomFirstCrossingStop').click();
+  await until(()=>h.ui.inspect().runtime.status==='CURRENT','Rest projection');
+  h.advance(4100);
+  assert.equal(h.root.dataset.firstCrossingStep,'6');
+  assert.equal(h.$('[data-instrument-active-glyph]').textContent,'𝄐');
+  assert.equal(h.frames.size,0,'Rest settles the shared clock');
+  h.setReducedMotion(true);h.setReducedMotion(false);
+  assert.equal(h.frames.size,0,'changing preferences cannot resume completed Rest');
+}
+
 test('hidden readiness events cannot bind before the current gathering consequence publishes', async t => {
   const h = setup(t);
   let bindings = 0;
@@ -137,7 +164,7 @@ test('hidden Finish events cannot claim completion before verified readiness pub
   assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), null,
     'current verified projection alone cannot erase the unpublished consequence');
   await expectRealReadiness(h);
-  h.$('#loomFirstCrossingStop').click();
+  await finishFullTutorial(h);
   assert.equal(h.root.dataset.firstCrossingCue, 'complete');
   assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), 'complete');
   assert.equal(h.ui.inspect().session, null);
@@ -221,9 +248,33 @@ test('keyboard focus follows visible tutorial consequences and its final live ac
   assert.equal(h.environment.document.activeElement,h.$('#loomFirstCrossing'),'pending binding never retains focus on a hidden action');
   await expectRealReadiness(h);
   assert.equal(h.environment.document.activeElement,h.$('#loomFirstCrossingStop'));
-  h.$('#loomFirstCrossingStop').click();
+  await finishFullTutorial(h);
   assert.equal(h.environment.document.activeElement,h.$('#loomBegin'),'completion offers the visible live Loom action');
   assert.equal(h.$('#loomBegin').hidden,false);
+});
+
+test('Flow-Core help closes with × or Escape and returns focus to its opener',async t=>{
+  const h=setup(t),help=h.$('.loom-flowcore-help'),opener=help.querySelector('summary'),close=h.$('#loomFlowcoreHelpClose');
+  assert.equal(close.getAttribute('aria-label'),'Close Flow-Core explanation');
+  help.open=true;close.focus();close.click();
+  assert.equal(help.open,false);assert.equal(h.environment.document.activeElement,opener);
+  help.open=true;close.focus();close.dispatchEvent(new h.environment.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+  assert.equal(help.open,false);assert.equal(h.environment.document.activeElement,opener);
+  assert.equal(h.requests.length,0);
+});
+
+test('each tutorial choice illustrates its operator while actual sending stays unobserved',async t=>{
+  const h=setup(t);
+  h.$('[data-first-crossing-item="source"]').click();
+  await until(()=>h.ui.inspect().runtime.status==='CURRENT','reference choice');
+  assert.equal(h.$('[data-instrument-active-glyph]').textContent,'hõt // cōl');
+  assert.ok([...h.root.querySelectorAll('.loom-field-flight text')].every(node=>node.dataset.flightEvidence==='presentation-only'));
+  h.$('[data-first-crossing-item="source"]').click();
+  h.$('[data-first-crossing-item="brief"]').click();
+  await until(()=>h.ui.inspect().runtime.status==='CURRENT','request choice');
+  assert.equal(h.$('[data-instrument-active-glyph]').textContent,'à');
+  assert.equal(h.ui.inspect().runtime.view.event.outbound_submitted,false);
+  assert.equal(h.ui.inspect().session,null);
 });
 
 test('a finite tutorial consequence preserves focus deliberately moved to help', async t => {

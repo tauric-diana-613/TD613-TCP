@@ -11,22 +11,23 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
   <div id="loomThresholdGate" class="loom-threshold-gate" hidden></div>
   <section id="loomFirstCrossing" class="loom-first-crossing" aria-labelledby="loomFirstCrossingTitle" hidden tabindex="-1">
     <div class="loom-first-crossing-copy">
-      <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">HOW LOOM WORKS</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 3 · Choose</span></div>
-      <h2 id="loomFirstCrossingTitle">Choose what AI can use.</h2>
-      <p id="loomFirstCrossingPrompt">See how Loom controls what AI receives, using a fictional request and reference.</p>
-      <p id="loomFlowcoreMessage" class="loom-flowcore-message" aria-live="polite"></p>
+      <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">YOUR PRIVACY · YOUR CUSTODY</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 7 · Your request</span></div>
+      <h2 id="loomFirstCrossingTitle">Protect your work when you use AI.</h2>
+      <p id="loomFirstCrossingPrompt">Choose what AI receives and keep custody of what comes back. Try a fictional request and reference.</p>
     </div>
     <details class="loom-flowcore-help">
       <summary>What is Flow-Core runtime?</summary>
-      <p>Flow-Core is Loom’s visual map of an AI request. These eight symbols show when Loom gathers, revisits, sends, reviews, keeps private, marks ready, returns, or rests.</p>
+      <button type="button" id="loomFlowcoreHelpClose" class="loom-flowcore-help-close" aria-label="Close Flow-Core explanation">×</button>
+      <p>Flow-Core maps the choices in your Loom session: what you share, what stays private, when you send, and how you review returned work. Each symbol has its own motion. The tutorial illustrates the route with fictional material; the working session follows actual request events.</p>
+      <p id="loomFlowcoreMessage" class="loom-flowcore-message" aria-live="polite"></p>
       <div class="loom-flowcore-legend">
         <span><b>à</b> Gather</span><span><b>米</b> Revisit</span><span><b>出</b> Send</span><span><b>hõt</b> Review</span>
         <span><b>cōl</b> Keep private</span><span><b>上</b> Ready</span><span><b>下</b> Return</span><span><b>𝄐</b> Rest</span>
       </div>
     </details>
     <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="How Loom controls an AI request">
-      <button type="button" data-first-crossing-item="brief" aria-pressed="false"><span>TASK</span><strong>Your request</strong><small>What you want AI to do.</small></button>
-      <button type="button" data-first-crossing-item="source" aria-pressed="false"><span>REFERENCE</span><strong>Reference</strong><small>Context you want AI to use.</small></button>
+      <button type="button" data-first-crossing-item="brief" aria-pressed="false"><span>à · REQUEST</span><strong>Your request</strong><small>When does the garden open?</small></button>
+      <button type="button" data-first-crossing-item="source" aria-pressed="false"><span>hõt // cōl · REFERENCES</span><strong>References</strong><small>Garden hours: opens at nine.</small></button>
       <div id="loomFirstCrossingPrivate" class="loom-first-crossing-private" role="note"><span>NOT SHARED</span><strong>Private note</strong><small>Stays in this browser.</small></div>
     </div>
     <div class="loom-first-crossing-actions">
@@ -40,6 +41,7 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
       <button type="button" id="loomFirstCrossingLeave">Skip tutorial →</button>
     </div>
     <p id="loomFirstCrossingAnswer" class="loom-first-crossing-answer" aria-live="polite"></p>
+    <details id="loomTutorialProof" class="loom-tutorial-proof" hidden><summary>Inspect the fictional return receipt</summary><pre id="loomTutorialProofRecord"></pre></details>
   </section>
 </div>
 <div class="loom-hero-route" aria-hidden="true"><span data-hero-step="loom"><b>1</b> Loom</span><i>→</i><span data-hero-step="marrowline"><b>2</b> Marrowline</span><i>→</i><span data-hero-step="return"><b>3</b> Return</span></div>
@@ -57,8 +59,8 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
 <div class="loom-workspaces">
 <section id="loomBuilder" class="loom-builder" aria-labelledby="loomBuilderTitle">
 <header class="loom-builder-head"><h2 id="loomBuilderTitle">Your task</h2><div class="ai-mode-tabs" role="tablist" aria-label="Loom mode"><button type="button" id="aiPortableMode" role="tab" aria-selected="true" aria-controls="aiPortableModePanel">My work</button><button type="button" id="aiDemoMode" role="tab" aria-selected="false" aria-controls="aiDemoModePanel">Demo</button></div></header>
-<section id="aiPortableModePanel" role="tabpanel" aria-labelledby="aiPortableMode"><p id="aiFirstUseGuide">Build the task here. Marrowline carries the AI conversation when you continue.</p></section><section id="aiDemoModePanel" role="tabpanel" aria-labelledby="aiDemoMode" hidden><p>Choose a fictional example, then try the same controls with your own work.</p></section>
-<div id="aiDemoWelcome" hidden><button type="button" id="aiDemoInvitation" aria-expanded="false" aria-controls="aiProjectChoices">Choose a demo +</button></div>
+<section id="aiPortableModePanel" role="tabpanel" aria-labelledby="aiPortableMode"><p id="aiFirstUseGuide">Build the task here. Marrowline carries the AI conversation when you continue.</p></section><section id="aiDemoModePanel" role="tabpanel" aria-labelledby="aiDemoMode" hidden><p>New demos will follow the portable-governance assay. Use My work to prepare your own request.</p></section>
+<div id="aiDemoWelcome" hidden><button type="button" id="aiDemoInvitation" aria-expanded="false" aria-controls="aiProjectChoices">Demo 1 · COMING SOON +</button></div>
 <div id="aiProjectChoices" class="ai-projects" aria-label="Demo projects" hidden></div>
 <section id="aiProjectBrief" class="ai-project-brief" aria-label="Project brief" hidden><h3 id="aiBriefTitle"></h3><p id="aiBriefText"></p><p id="aiBriefRoute"></p></section>
 <section class="ai-composer" aria-label="Your Loom task">
@@ -74,7 +76,7 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
 <section id="aiResult" class="ai-result" tabindex="-1" aria-label="Loom continuation" hidden>
 <p id="aiResultEyebrow" class="mark">Prepared here</p><h2 id="aiResultTitle">AI request ready.</h2>
 <section class="ai-crossing-boundary" aria-labelledby="aiCrossingTitle"><h3 id="aiCrossingTitle">Continue in Marrowline</h3><p>Your request includes your selected files and rules. Preparation does not send it to AI. Shared content follows the AI service’s own policies.</p></section>
-<div class="ai-output-actions"><button type="button" id="aiMarrowline" class="ai-primary" disabled>Continue in Marrowline ↗</button><button type="button" id="aiExportSession" disabled>Export session</button><button type="button" id="aiCopySession" disabled>Copy session</button></div>
+<div class="ai-output-actions"><button type="button" id="aiMarrowline" class="ai-primary" disabled>Continue in Marrowline ↗</button><button type="button" id="aiExportSession" disabled>Export session</button><button type="button" id="aiCopySession" disabled>Copy session</button><button type="button" id="aiCheckLoomGate">Check Loom Gate</button></div>
 <div id="aiAnswer" class="ai-answer"></div><div id="aiMissing"></div><p id="aiNext"></p>
 <p id="aiMarrowlineCustodyNote" hidden>Keep this Loom tab open. Save your session before closing it; a saved file permits review without restoring this tab’s live session.</p>
 <button type="button" id="loomDepartureSave">Save private custody record</button><button type="button" id="loomPreparedInspect">Inspect prepared work</button>
@@ -109,7 +111,7 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
 </section>
 <section data-tool-panel="model" class="loom-model-controls" hidden><h3>Optional model test</h3><p>This explicit action sends the selected task, files and traveling rules to the model route.</p><label for="aiRuntimeProfile">Model test profile</label><select id="aiRuntimeProfile" aria-describedby="aiRuntimeProfileNote"><option value="deep">Deep reasoning request</option><option value="quick">Quick reasoning request</option></select><p id="aiRuntimeProfileNote">Request settings describe this attempt; hidden provider behavior remains unknown.</p><p id="aiRunNote">Preparing locally makes no model request.</p><button type="button" id="aiRun">Run model test ↗</button></section>
       <section id="aiChallengeDrawer" class="loom-tool-panel" data-tool-panel="challenge" hidden>
-        <h3>Challenge Receiver</h3><p>Bounded receiver assay · local answer key stays here.</p>
+        <h3 id="loomGate">Check Loom Gate</h3><p>First alerts from captured replies and declared reconstruction attempts. Private targets stay here. Prepare a task first to bind the checks to its session.</p><section id="loomGateAlerts" aria-live="polite"><p>No captured Loom Gate result yet.</p></section>
         <div class="ai-challenge-body">
           <p class="ai-muted">The challenge keeps its canary and expected protected answer in this browser. The receiver gets only the probe and session references. A clean result stays bounded to the captured response you bring back.</p>
           <label for="aiChallengeCanary">Exact local canary · optional<textarea id="aiChallengeCanary" rows="2" placeholder="An exact phrase that should remain unavailable to the receiver"></textarea></label>

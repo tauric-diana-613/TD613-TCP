@@ -52,7 +52,7 @@ export function mountLoomRuntimeStateView(root, {
     section.style.opacity = '0';
     section.setAttribute('aria-hidden', 'true');
     section.setAttribute('inert', '');
-    delete root.dataset.clientPhase; delete root.dataset.activeRelation;
+    delete root.dataset.clientPhase; delete root.dataset.activeRelation; delete root.dataset.illustratedRelation;
     delete doc.documentElement.dataset.loomRelation;
   }
   function exposeCurrentVisual() {

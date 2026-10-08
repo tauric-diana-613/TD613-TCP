@@ -67,8 +67,8 @@ try {
     assert.equal(await page.locator('#loomFirstCrossing').isVisible(),true);
     await page.locator('#loomFirstCrossingLeave').click();await page.locator('.loom-builder-shell').waitFor({state:'visible'});
     assert.equal(await page.locator('#aiSessionSummary').isVisible(),false,'Skip tutorial grants no prepared session');
-    await page.locator('#aiDemoMode').click();await page.locator('#aiDemoInvitation').click();
-    await page.locator('[data-project="participant-research"]').click();
+    // Operator-authored My Work input replaces the removed demo catalog.
+    await page.locator('#aiTask').fill('Prepare a fictional source-review task for Return custody pedagogy.');
     await page.locator('#aiPreparePortable').click();
     await page.waitForFunction(()=>!document.querySelector('[data-loom-reentry="stage"]').disabled);
     await page.locator('#loomJourneyStep3').click();

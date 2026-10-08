@@ -75,7 +75,7 @@ function harness(t,responder){
   Object.defineProperty(window,'crypto',{configurable:true,value:webcrypto});
   window.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){}});
   window.fetch=(url,options)=>{const request=JSON.parse(options.body);calls.push({url,options,request});return Promise.resolve(responder(request,options));};
-  const ui=mountLoomAiWorkspace(root,window),$=selector=>root.querySelector(selector);
+  const ui=mountLoomAiWorkspace(root,window,{demoProjects:LOOM_AI_PROJECTS}),$=selector=>root.querySelector(selector);
   t.after(()=>{ui.dispose();window.close();if(oldRaf===undefined)delete globalThis.requestAnimationFrame;else globalThis.requestAnimationFrame=oldRaf;if(oldCancel===undefined)delete globalThis.cancelAnimationFrame;else globalThis.cancelAnimationFrame=oldCancel;});
   $('#aiDemoInvitation').click();$(`[data-project="${LOOM_AI_PROJECTS[0].id}"]`).click();
   return {$,calls,ui,root,window,settle:async()=>{await until(()=>root.getAttribute('aria-busy')!=='true');await until(()=>ui.inspect().runtime.status==='CURRENT'&&ui.inspect().runtime.view.phase===ui.inspect().events.at(-1).phase);}};
