@@ -39,8 +39,12 @@ try{
     await page.locator('#loomFirstCrossing').waitFor({state:'visible'});
     await page.locator('#loomFirstCrossingLeave').click();
     await page.locator('.loom-builder-shell').waitFor({state:'visible'});
-    await page.locator('#aiDemoMode').click();await page.locator('#aiDemoInvitation').click();await page.locator('[data-project="participant-research"]').click();
-    await page.locator('#aiPreparePortable').click();await r('stage').waitFor({state:'attached'});
+    // Real My Work preparation replaces the retired participant-research demo.
+    // No demo selector can supply hidden fixture state or preauthorize re-entry.
+    assert.equal(await page.locator('#aiDemoWelcome').isVisible(), false);
+    await page.locator('#aiTask').fill('Prepare an operator-authored, bounded task for local Return custody regression.');
+    await page.locator('#aiPreparePortable').click();
+    await r('stage').waitFor({state:'attached'});
     await page.waitForFunction(()=>!document.querySelector('[data-loom-reentry="stage"]').disabled);
     assert.equal(await head(),'No admitted descendant.');
     // OLD: re-entry lived below the prepared result in an outer drawer.
