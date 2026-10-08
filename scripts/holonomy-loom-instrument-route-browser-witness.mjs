@@ -164,11 +164,21 @@ try {
       // OLD: numeric demo steps; REAL: handoff before selected-file submission;
       // NEW: native Setup/Continue labels with the same no-send staging contract.
       await useKeyboard(marrowline.getByRole('button', { name: 'Setup · Attach Loom handoff', exact: true }));
+      // Enter starts asynchronous file staging. Observe its actual completion
+      // before inspecting focus; never synthesize focus or staging state.
+      await marrowline.waitForFunction(() => {
+        const state = window.__TD613_LOOM_DEMO_CONTROLLER__?.snapshot();
+        return state?.phase === 'AIA_STAGED' && !state.busy;
+      });
       check('keyboard staging moves focus to native prompt without sending', requests.length === 0 && await marrowline.locator('#khonapolitPrompt').evaluate(node => node === document.activeElement));
       await useKeyboard(marrowline.locator('#khonapolitSend'));
       await marrowline.waitForFunction(() => window.__TD613_LOOM_DEMO_CONTROLLER__.snapshot().phase === 'AIA_SENT' && !window.__TD613_LOOM_DEMO_CONTROLLER__.snapshot().busy);
       await useKeyboard(marrowline.locator('#marrowlineComposerPlus')); await useKeyboard(marrowline.locator('#marrowlineContextLoom'));
       await useKeyboard(marrowline.getByRole('button', { name: 'Continue · Attach selected files', exact: true }));
+      await marrowline.waitForFunction(() => {
+        const state = window.__TD613_LOOM_DEMO_CONTROLLER__?.snapshot();
+        return state?.phase === 'FILES_STAGED' && !state.busy;
+      });
       await useKeyboard(marrowline.locator('#khonapolitSend'));
       await marrowline.waitForFunction(() => window.__TD613_LOOM_DEMO_CONTROLLER__.snapshot().phase === 'DONE' && !window.__TD613_LOOM_DEMO_CONTROLLER__.snapshot().busy);
       if (viewport.width < 861) await useKeyboard(marrowline.locator('.mobile-dock [data-mobile-target="gatePanel"]'));
