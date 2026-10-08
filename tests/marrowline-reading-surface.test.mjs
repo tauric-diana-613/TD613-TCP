@@ -16,6 +16,8 @@ for (const mobile of [false,true]) test(`Loom footer opens ${mobile?'mobile':'de
   const button=first.section.querySelector('.marrowline-loom-gate-check');
   assert.equal(button.textContent,'米 Check Loom Gate');assert.equal(button.dataset.gateAttention,'true');
   assert.match(first.section.querySelector('footer').textContent,/Carried alert/);
+  assert.match(first.section.querySelector('footer').textContent,/Auth: fresh gesture required/);
+  assert.match(first.section.querySelector('footer').textContent,/Receipt: UNKNOWN/);
   button.click(); assert.equal(navigations,1);assert.equal(button.dataset.gateAttention,'false');
   assert.equal(second.section.querySelector('.marrowline-loom-gate-check').dataset.gateAttention,'true');
   assert.match(first.section.querySelector('footer').textContent,/Carried alert.*review opened/);

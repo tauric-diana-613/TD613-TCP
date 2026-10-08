@@ -52,6 +52,10 @@ export function createMarrowlineLoomFooter(doc, environment, authority) {
   const footer = doc.createElement('footer'); footer.className = 'marrowline-loom-footer';
   footer.dataset.loomRequestId = authority.request_id;
   const phase = doc.createElement('span'); phase.textContent = `Loom demo · ${authority.phase}${authority.held ? ' · HELD' : ''}`;
+  const provenance = environment.__TD613_LOOM_DEMO_CONTROLLER__?.getObservedProvenance?.();
+  const hasReceipt = provenance?.stages?.some(stage => stage.receipt?.request_id === authority.request_id) === true;
+  const governance = doc.createElement('small'); governance.className = 'marrowline-loom-governance-state';
+  governance.textContent = `Session: UNKNOWN · Route: ${authority.phase} · Posture: demo / local review · Auth: fresh gesture required · Receipt: ${hasReceipt ? 'available for local review' : 'UNKNOWN'} · HOLD: ${authority.held ? 'HELD' : 'inspect Gate'}`;
   const state = doc.createElement('small'); state.className = 'marrowline-loom-gate-state';
   const alerts = environment.__TD613_LOOM_DEMO_CONTROLLER__?.getGateReports?.()?.filter(report=>report.status==='OBSERVED_EXPOSURE'||report.coverage?.disclosed_targets>0||report.coverage?.successful_reconstruction_attempts>0) || [];
   const finding = alerts.length ? `Carried alert (${alerts.length} registered scope${alerts.length===1?'':'s'}) · this reply unchecked` : 'Gate: not checked for this reply';
@@ -62,5 +66,5 @@ export function createMarrowlineLoomFooter(doc, environment, authority) {
   button.title = 'Demo: open Loom Gate review. Opening does not run a check or clear an alert.';
   button.dataset.gateAttention = String(!reviews(environment).has(authority.request_id));
   button.addEventListener('click', () => openMarrowlineLoomGate(doc, environment, { requestId: authority.request_id }));
-  footer.append(phase, button, state); return footer;
+  footer.append(phase, button, state, governance); return footer;
 }

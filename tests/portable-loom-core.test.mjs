@@ -1,4 +1,22 @@
 import test from 'node:test';
+import { portableLoomFooterText, PORTABLE_LOOM_OUTPUT_PROTOCOL } from '../app/engine/portable-loom-output.js';
+
+test('footer preserves missing authorization and receipt evidence and refuses private presentation labels', () => {
+  const unknown = portableLoomFooterText();
+  assert.match(unknown, /Auth: UNKNOWN/);
+  assert.match(unknown, /Receipt: UNKNOWN/);
+  assert.match(unknown, /HOLD: UNKNOWN/);
+  assert.match(unknown, /INSTRUCTION_ONLY/);
+  const held = portableLoomFooterText({ phase: 'REST', sessionLabel: '04b693df', routeLabel: 'AUDIT', authorizationState: 'FRESH_GESTURE_REQUIRED', receiptStatus: 'LOCAL_REVIEW_ONLY', holdStatus: 'MISSING_CAPTURE' });
+  assert.match(held, /04b693df\/AUDIT/);
+  assert.match(held, /Auth: FRESH_GESTURE_REQUIRED/);
+  assert.match(held, /HOLD: MISSING_CAPTURE/);
+  const privateValue = 'f'.repeat(64);
+  const rejected = portableLoomFooterText({ sessionLabel: privateValue, routeLabel: 'private@example.com', receiptStatus: privateValue });
+  assert.equal(rejected.includes(privateValue), false);
+  assert.equal(rejected.includes('private@example.com'), false);
+  assert.equal(PORTABLE_LOOM_OUTPUT_PROTOCOL.missing_footer, 'PROTOCOL_OMISSION_OBSERVED; ENFORCEMENT_UNKNOWN');
+});
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { webcrypto } from 'node:crypto';

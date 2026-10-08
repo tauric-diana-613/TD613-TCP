@@ -15,7 +15,7 @@ Registry presence identifies jurisdiction. It does not claim that every listed m
 
 ## Footer and glyph commands
 
-Every active-session output is governed by the root-bound `output_protocol`, including continuation and Rest. The minimal footer contains phase, Gate status, checked scope and **米 Check Loom Gate**, ending with ⟐. Gate outputs additionally carry evidence basis and **How do I know? 下**.
+Every active-session output is governed by the root-bound `output_protocol` v0.2, including continuation and Rest. The compact footer contains phase, minimized public session/explicit route label, governance posture, authorization state, receipt availability, HOLD status, Gate status, checked scope and **米 Check Loom Gate**, ending with ⟐. Unknown coordinates retain UNKNOWN. No hash, secret or payload belongs in a footer; earlier sending grants no fresh authorization. A missing footer records a protocol omission, with enforcement still unknown. Gate outputs additionally carry evidence basis and **How do I know? 下**.
 
 Example ordinary receiver footer:
 
