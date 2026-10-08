@@ -225,8 +225,15 @@ try{
   await page.locator('[data-loom-reentry=admit]').click();
   await page.waitForFunction(()=>document.querySelector('[data-loom-reentry="result"]')?.dataset.state==='ADMITTED');
   assert.equal((await page.locator('[data-loom-reentry=count]').innerText()).trim(),'1');
+  const reviewBoundary = await page.locator('[data-return-review=boundary]').innerText();
+  const reviewStatus = await page.locator('[data-return-review=status]').innerText();
+  assert.match(reviewBoundary, /This review record grants no admission authority/);
+  assert.doesNotMatch(reviewBoundary, /local custody admission remains HELD/);
+  assert.match(reviewStatus, /that lane shows its current Check and admission state/);
+  assert.doesNotMatch(reviewStatus, /nothing is admitted/);
   await shot(page,'mobile-native-admitted');
   report.checks.push('Explicit native Admit advanced exactly one local descendant.');
+  report.checks.push('After admission, returned review points to current custody state without claiming nothing is admitted.');
 
   await page.setViewportSize({width:1280,height:900});
   await shot(page,'desktop-native-admitted');

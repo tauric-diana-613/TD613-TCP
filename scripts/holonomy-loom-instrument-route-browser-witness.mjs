@@ -196,9 +196,10 @@ try {
       await loom.waitForFunction(() => document.querySelector('[data-return-review="status"]')?.textContent.includes('Returned session checked for review.'));
       check('return opens the original Loom tab at its visible review surface', await loom.locator('#loomReturnWorkspace').isVisible()
         && await loom.locator('[data-return-review="result"]').isVisible());
-      check('returned current work is C2 with origin input match and explicit admission hold', (await loom.locator('[data-return-review="history"]').textContent()).includes(second.continuation.prior_result.answer)
+      check('returned current work is C2 with origin input match and review-only authority', (await loom.locator('[data-return-review="history"]').textContent()).includes(second.continuation.prior_result.answer)
         && (await loom.locator('[data-return-review="boundary"]').textContent()).includes('The origin task, selected files and rules match this tab.')
-        && (await loom.locator('[data-return-review="boundary"]').textContent()).includes('local custody admission remains HELD'));
+        && (await loom.locator('[data-return-review="boundary"]').textContent()).includes('This review record grants no admission authority.')
+        && (await loom.locator('[data-return-review="boundary"]').textContent()).includes('Receipt signatures remain unverified.'));
       const reviewed = await downloadJson(loom, loom.locator('[data-return-review="save"]'), `${name}-returned-review.json`);
       check('returned review retains exact latest and predecessor history without private material', reviewed.continuation.prior_result.request_id === second.continuation.prior_result.request_id
         && JSON.stringify(reviewed.loom_demo_provenance.stages) === JSON.stringify(second.loom_demo_provenance.stages)
@@ -213,7 +214,7 @@ try {
       check('reload preserves the visible C2 review while origin custody remains unavailable', await loom.locator('[data-return-review="result"]').isVisible()
         && (await loom.locator('[data-return-review="history"]').textContent()).includes(second.continuation.prior_result.answer)
         && (await loom.locator('[data-return-review="boundary"]').textContent()).includes('The original local record is unavailable for comparison.')
-        && (await loom.locator('[data-return-review="boundary"]').textContent()).includes('local custody admission remains HELD')
+        && (await loom.locator('[data-return-review="boundary"]').textContent()).includes('This review record grants no admission authority.')
         && await loom.locator('#aiMarrowline').isDisabled());
       await loom.screenshot({ path: path.join(artifactDir, `${name}-reloaded-review.png`), fullPage: true });
       await loom.goto(`${base}/dome-world/loom-instrument-lab.html`, { waitUntil: 'networkidle' });
