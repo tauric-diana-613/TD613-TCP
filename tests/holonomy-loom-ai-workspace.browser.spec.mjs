@@ -281,9 +281,11 @@ try {
       assert.equal(await page.locator('#aiExport').isEnabled(), true);
       await page.locator('#loomJourneyStep1').click();
       await page.locator('#aiPortableMode').click();
-      assert.equal(await page.locator('#aiExport').isDisabled(),true,'switching modes invalidates the previously prepared transfer until the current task is prepared again');
+      assert.equal(await page.locator('#aiExport').isEnabled(),true,'reselecting the active My Work tab preserves the prepared transfer');
       await page.locator('#aiDemoMode').click();
-      assert.equal(await page.locator('#aiExport').isDisabled(),true,'switching back to Demo does not resurrect a crossing invalidated by the intervening mode change');
+      assert.equal(await page.locator('#aiExport').isDisabled(),true,'changing to the coming-soon Demo tab invalidates the previous My Work transfer');
+      await page.locator('#aiPortableMode').click();
+      assert.equal(await page.locator('#aiExport').isDisabled(),true,'switching back to My Work cannot resurrect a crossing invalidated by the mode change');
       if(await page.locator('#aiNewRootNotice').isVisible()) await page.locator('#aiNewRootConfirm').check();
       await page.locator('#aiPreparePortable').click();
       await page.waitForFunction(() => document.querySelector('#aiExport')?.disabled === false);
