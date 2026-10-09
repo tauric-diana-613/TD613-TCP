@@ -1,0 +1,24 @@
+{
+  "url": "https://br-round-union-b5v3ludi-loomassaybudget.compute.c-7.us-east-2.aws.neon.tech/",
+  "method": "GET",
+  "body": null,
+  "authorization": "NONE",
+  "started_at": "2026-10-09T07:50:50.590745+00:00",
+  "provider_calls": 0,
+  "retries": 0,
+  "completed_at": "2026-10-09T07:50:54.551143+00:00",
+  "http_status": 405,
+  "headers": {
+    "Date": "Fri, 09 Oct 2026 07:50:54 GMT",
+    "Content-Type": "application/json",
+    "Transfer-Encoding": "chunked",
+    "Connection": "close",
+    "cache-control": "no-store"
+  },
+  "error": null,
+  "raw_path": "research/portable-loom-assay-activation-20261009/raw/neon-http-001/get.response.bin",
+  "bytes": 40,
+  "sha256": "fbe3d8bcd0d01955295c2c001fc676f3d35903e5e0d5b90931418d6b00b7bd16",
+  "evidence_class": "HOSTED_SERVICE_HTTP_WITNESS",
+  "scope": "Anonymous negative boundary test; no valid workload, budget reservation, model generation or browser witness"
+}
