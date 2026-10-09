@@ -1,7 +1,7 @@
 {
   "schema": "td613.loom.approved-assay-activation/v0.1",
-  "run_id": "portable-loom-first-receiver-20261009-a2",
-  "access_sha256": "88c545f3655da791e8293e545393b117b43b9ab2999e5ad15e41d728f5548fef",
+  "run_id": "portable-loom-first-receiver-20261009-a3",
+  "access_sha256": "9d9ed56f2bafd0877b40cda94930bbd33d37eaf8db9b7118f747c7a6f20b3acc",
   "budget_url": "https://br-round-union-b5v3ludi-loomassaybudget.compute.c-7.us-east-2.aws.neon.tech/",
   "authorization_ref": "research/portable-loom-assay-activation-20261009/AUTHORIZATION.json"
 }

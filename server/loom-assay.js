@@ -61,7 +61,11 @@ export function createLoomAssayHandler({ environment = process.env, fetchImpl = 
       return send(res, code === 'ASSAY_UNAUTHORIZED' ? 401 : code === 'ASSAY_DISABLED' ? 503 : 409,
         { status: 'HELD', error: code, provider_requests: 0 });
     }
-    const controller = new AbortController(), timer = setTimeout(() => controller.abort(), policy.binding.limits.timeout_ms);
+    let deadlineExpired = false;
+    const controller = new AbortController(), timer = setTimeout(() => {
+      deadlineExpired = true;
+      controller.abort();
+    }, policy.binding.limits.timeout_ms);
     const chunks = []; let response, returned = null, error = null, responseBytes = 0, attempted = false, bodyComplete = false;
     const startedAt = new Date().toISOString();
     try {
@@ -78,7 +82,8 @@ export function createLoomAssayHandler({ environment = process.env, fetchImpl = 
       bodyComplete = true;
       requireThat(response.ok, 'ASSAY_PROVIDER_HTTP_FAILURE');
       returned = inspectAssayResponse(Buffer.concat(chunks), policy, wire.output_limit);
-    } catch (e) { error = /^ASSAY_[A-Z_]+$/.test(e.message) ? e.message : 'ASSAY_PROVIDER_TRANSPORT_HELD'; }
+    } catch (e) { error = /^ASSAY_[A-Z_]+$/.test(e.message) ? e.message
+      : deadlineExpired ? 'ASSAY_PROVIDER_DEADLINE_EXCEEDED' : 'ASSAY_PROVIDER_TRANSPORT_HELD'; }
     finally { clearTimeout(timer); }
     const rawResponse = Buffer.concat(chunks);
     const credentialEcho = [environment.GEMINI_API_KEY, auth.token, workloadToken].filter(Boolean)
@@ -100,6 +105,7 @@ export function createLoomAssayHandler({ environment = process.env, fetchImpl = 
       provider_request_sha256: wire.request_sha256, provider_response_sha256: sha256(rawResponse),
       provider_response_base64: credentialEcho ? null : rawResponse.toString('base64'),
       response_complete: bodyComplete,
+      provider_deadline_ms: policy.binding.limits.timeout_ms, provider_deadline_expired: deadlineExpired,
       http_status: response?.status ?? null, returned, reservation, completion: completion ?? null,
       receipt_authority: 'Byte and budget record; no custody admission or external empirical promotion' });
   };

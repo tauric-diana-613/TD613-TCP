@@ -113,6 +113,29 @@ test('response byte overflow retains a bounded prefix and identifies incomplete 
   assert.equal(r.body.error, 'ASSAY_RESPONSE_BYTE_LIMIT'); assert.equal(r.body.response_complete, false);
   assert.equal(Buffer.from(r.body.provider_response_base64, 'base64').length, 32);
 });
+test('an expired provider deadline is explicit, retains one failed reservation, and never retries', async () => {
+  const p = policy(); p.binding.limits.timeout_ms = 20;
+  const h = harness({ p, fetchOverride: async (_url, { signal }) => new Promise((_resolve, reject) => {
+    signal.addEventListener('abort', () => reject(new DOMException('synthetic abort', 'AbortError')), { once: true });
+  }) });
+  const r = await h.run();
+  assert.equal(r.body.error, 'ASSAY_PROVIDER_DEADLINE_EXCEEDED');
+  assert.equal(r.body.provider_deadline_expired, true); assert.equal(r.body.provider_deadline_ms, 20);
+  assert.equal(r.body.response_complete, false); assert.equal(r.body.http_status, null);
+  assert.equal(r.body.provider_response_base64, ''); assert.equal(h.sent.length, 1);
+  assert.equal(h.operations.at(-1).input.status, 'HELD_EVIDENCE_GAP'); assert.equal(r.body.retries, 0);
+});
+test('the bounded deadline admits a delayed response and fits inside the function duration with completion margin', async () => {
+  const p = policy(); p.binding.limits.timeout_ms = 240000;
+  const h = harness({ p, fetchOverride: async () => {
+    await new Promise(resolve => setTimeout(resolve, 35)); return new Response(JSON.stringify(payload()));
+  } });
+  const r = await h.run(); assert.equal(r.body.status, 'CAPTURED_NOT_ADMITTED');
+  assert.equal(r.body.provider_deadline_expired, false); assert.equal(r.body.provider_deadline_ms, 240000);
+  const config = JSON.parse(readFileSync('vercel.json'));
+  assert.ok(config.functions['api/khonapolit.js'].maxDuration * 1000 >= p.binding.limits.timeout_ms + 60000);
+  p.binding.limits.timeout_ms = 240001; assert.throws(() => validateAssayPolicy(p), /NUMERICAL_LIMITS/);
+});
 test('failed completion cannot be presented as a completed provider trial', async () => {
   const p = policy(); const wire = buildAssayProviderWire(prepareServerRequest(p, trial).request, p, manifest, artifact);
   const h = harness({ budgetOverride: async op => {
@@ -195,7 +218,7 @@ test('canonical API dispatch and deployment packaging preserve dedicated bounded
 test('source-bound public activation admits only its run and does not contain provider or caller secrets', async () => {
   const c = loadApprovedRunConfiguration();
   assert.match(c.access_sha256, /^[a-f0-9]{64}$/); assert.ok(!JSON.stringify(c).includes(key));
-  assert.ok(!JSON.stringify(c).includes(token)); assert.equal(c.run_id, 'portable-loom-first-receiver-20261009-a2');
+  assert.ok(!JSON.stringify(c).includes(token)); assert.equal(c.run_id, 'portable-loom-first-receiver-20261009-a3');
   const h = harness();
   const handler = createLoomAssayHandler({ environment: { GEMINI_API_KEY: key, TD613_LOOM_ASSAY_ACCESS_SHA256: sha256(token), VERCEL_GIT_COMMIT_SHA: head },
     allowedRunId: c.run_id, budget: async () => { throw new Error('unexpected ledger work'); }, fetchImpl: async () => { throw new Error('unexpected provider work'); } });
