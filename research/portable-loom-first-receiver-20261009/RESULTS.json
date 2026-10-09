@@ -1,0 +1,318 @@
+{
+  "schema": "td613.loom.first-receiver-result/v0.1",
+  "recorded_at": "2026-10-09T15:53:47.454099+00:00",
+  "freeze_commit": "a768d834e0f57089e2feacbde3d0650101db4aed",
+  "deployment_commit": "5581af7812dc0f5fcf2b65c11ad09da045f0940e",
+  "planned_calls": 54,
+  "relay_attempts": 1,
+  "reported_provider_generation_requests": 0,
+  "observed_receiver_outputs": 0,
+  "calls_reserved": 0,
+  "reserved_cost_usd": 0,
+  "settled_provider_invoice": "NOT_OBSERVED",
+  "held_trial": "FIRST_CONFIGURED_RECEIVER-R01-1",
+  "transport_error": "ASSAY_BUDGET_WORKLOAD_UNCONFIGURED",
+  "http_status": 409,
+  "unattempted_calls": 53,
+  "status": "HELD_EVIDENCE_GAP",
+  "failure_domain": "Server relay workload-identity integration; portable receiver compliance was not measured",
+  "raw_capture_scope": "Actual TD613 HTTPS response. Capture schema ACTUAL_RECEIVER_TEST identifies attempted transport; no Gemini answer or actual provider-output evidence was produced.",
+  "footer_denominator": 0,
+  "footer_result": "NOT_RUN_NO_RECEIVER_OUTPUT",
+  "gate_result": "NOT_RUN_NO_RECEIVER_OUTPUT",
+  "primary_retries": 0,
+  "custody_admitted": false,
+  "comparison_calls": 0,
+  "historical_rerun": false,
+  "held_run": "Budget row explicitly marked HELD; policy and history retained",
+  "results": [
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R01-1",
+      "case_id": "R01",
+      "repetition": 1,
+      "status": "HELD_EVIDENCE_GAP",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R01-2",
+      "case_id": "R01",
+      "repetition": 2,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R01-3",
+      "case_id": "R01",
+      "repetition": 3,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R02-1",
+      "case_id": "R02",
+      "repetition": 1,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R02-2",
+      "case_id": "R02",
+      "repetition": 2,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R02-3",
+      "case_id": "R02",
+      "repetition": 3,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R03-1",
+      "case_id": "R03",
+      "repetition": 1,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R03-2",
+      "case_id": "R03",
+      "repetition": 2,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R03-3",
+      "case_id": "R03",
+      "repetition": 3,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R04-1",
+      "case_id": "R04",
+      "repetition": 1,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R04-2",
+      "case_id": "R04",
+      "repetition": 2,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R04-3",
+      "case_id": "R04",
+      "repetition": 3,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R05-1",
+      "case_id": "R05",
+      "repetition": 1,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R05-2",
+      "case_id": "R05",
+      "repetition": 2,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R05-3",
+      "case_id": "R05",
+      "repetition": 3,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-1",
+      "case_id": "R06",
+      "repetition": 1,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-2",
+      "case_id": "R06",
+      "repetition": 2,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-3",
+      "case_id": "R06",
+      "repetition": 3,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R07-1",
+      "case_id": "R07",
+      "repetition": 1,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R07-2",
+      "case_id": "R07",
+      "repetition": 2,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R07-3",
+      "case_id": "R07",
+      "repetition": 3,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R08-1",
+      "case_id": "R08",
+      "repetition": 1,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R08-2",
+      "case_id": "R08",
+      "repetition": 2,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R08-3",
+      "case_id": "R08",
+      "repetition": 3,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R09-1",
+      "case_id": "R09",
+      "repetition": 1,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R09-2",
+      "case_id": "R09",
+      "repetition": 2,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R09-3",
+      "case_id": "R09",
+      "repetition": 3,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R10-1",
+      "case_id": "R10",
+      "repetition": 1,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R10-2",
+      "case_id": "R10",
+      "repetition": 2,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R10-3",
+      "case_id": "R10",
+      "repetition": 3,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R11-1",
+      "case_id": "R11",
+      "repetition": 1,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R11-2",
+      "case_id": "R11",
+      "repetition": 2,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R11-3",
+      "case_id": "R11",
+      "repetition": 3,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R12-1",
+      "case_id": "R12",
+      "repetition": 1,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R12-2",
+      "case_id": "R12",
+      "repetition": 2,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R12-3",
+      "case_id": "R12",
+      "repetition": 3,
+      "status": "NOT_RUN",
+      "receiver_outputs": 0,
+      "semantic_endpoint": "UNASSESSED"
+    }
+  ]
+}

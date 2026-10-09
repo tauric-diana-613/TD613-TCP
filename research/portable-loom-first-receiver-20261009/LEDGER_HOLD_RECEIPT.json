@@ -1,0 +1,25 @@
+{
+  "schema": "td613.loom.held-run-ledger-receipt/v0.1",
+  "recorded_at": "2026-10-09T15:46:42.355Z",
+  "reason": "The first retained relay attempt failed before budget inspection/generation; prevent later continuation of this stopped run",
+  "pre_hold_inspection": {
+    "content": [
+      {
+        "type": "text",
+        "text": "[\n  {\n    \"run_id\": \"portable-loom-first-receiver-20261009\",\n    \"status\": \"ACTIVE\",\n    \"policy_sha256\": \"5b380227cde076cddc1823fa491f124abd2694ebdf2f1c64668266c0358a9751\",\n    \"calls_reserved\": 0,\n    \"reserved_cost_nanos\": \"0\",\n    \"retained_calls\": \"0\"\n  }\n]"
+      }
+    ],
+    "isError": false
+  },
+  "hold_response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "[\n  {\n    \"run_id\": \"portable-loom-first-receiver-20261009\",\n    \"status\": \"HELD\",\n    \"policy_sha256\": \"5b380227cde076cddc1823fa491f124abd2694ebdf2f1c64668266c0358a9751\",\n    \"calls_reserved\": 0,\n    \"reserved_cost_nanos\": \"0\"\n  }\n]"
+      }
+    ],
+    "isError": false
+  },
+  "primary_retry_performed": false,
+  "provider_generation_requests": 0
+}

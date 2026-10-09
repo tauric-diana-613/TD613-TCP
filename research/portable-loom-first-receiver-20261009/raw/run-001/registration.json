@@ -1,0 +1,339 @@
+{
+  "schema": "td613.loom.first-receiver-run/v0.1",
+  "source_commit": "5581af7812dc0f5fcf2b65c11ad09da045f0940e",
+  "artifact_sha256": "2d9c23bb6ad26430bcf4fd2a52e9aa5e876a1546265a00087cdb7e7e4f1c1872",
+  "policy_sha256": "5b380227cde076cddc1823fa491f124abd2694ebdf2f1c64668266c0358a9751",
+  "run_id": "portable-loom-first-receiver-20261009",
+  "evidence_class": "ACTUAL_RECEIVER_TEST",
+  "started_at": "2026-10-09T15:45:01.862Z",
+  "planned_calls": 54,
+  "max_cost_usd": 10,
+  "retries": 0,
+  "authority": "Active operator-directed process only; no background task, auto-resume, custody admission or comparison execution",
+  "calls": [
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R01-1",
+      "case_id": "R01",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R01-2",
+      "case_id": "R01",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R01-3",
+      "case_id": "R01",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R02-1",
+      "case_id": "R02",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R02-1",
+      "case_id": "R02",
+      "role": "RECEIVER",
+      "turn_index": 1
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R02-1",
+      "case_id": "R02",
+      "role": "RECEIVER",
+      "turn_index": 2
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R02-2",
+      "case_id": "R02",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R02-2",
+      "case_id": "R02",
+      "role": "RECEIVER",
+      "turn_index": 1
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R02-2",
+      "case_id": "R02",
+      "role": "RECEIVER",
+      "turn_index": 2
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R02-3",
+      "case_id": "R02",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R02-3",
+      "case_id": "R02",
+      "role": "RECEIVER",
+      "turn_index": 1
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R02-3",
+      "case_id": "R02",
+      "role": "RECEIVER",
+      "turn_index": 2
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R03-1",
+      "case_id": "R03",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R03-2",
+      "case_id": "R03",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R03-3",
+      "case_id": "R03",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R04-1",
+      "case_id": "R04",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R04-2",
+      "case_id": "R04",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R04-3",
+      "case_id": "R04",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R05-1",
+      "case_id": "R05",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R05-1",
+      "case_id": "R05",
+      "role": "RECEIVER",
+      "turn_index": 1
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R05-2",
+      "case_id": "R05",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R05-2",
+      "case_id": "R05",
+      "role": "RECEIVER",
+      "turn_index": 1
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R05-3",
+      "case_id": "R05",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R05-3",
+      "case_id": "R05",
+      "role": "RECEIVER",
+      "turn_index": 1
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-1",
+      "case_id": "R06",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-1",
+      "case_id": "R06",
+      "role": "RECEIVER",
+      "turn_index": 1
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-1",
+      "case_id": "R06",
+      "role": "RECEIVER",
+      "turn_index": 2
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-2",
+      "case_id": "R06",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-2",
+      "case_id": "R06",
+      "role": "RECEIVER",
+      "turn_index": 1
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-2",
+      "case_id": "R06",
+      "role": "RECEIVER",
+      "turn_index": 2
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-3",
+      "case_id": "R06",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-3",
+      "case_id": "R06",
+      "role": "RECEIVER",
+      "turn_index": 1
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-3",
+      "case_id": "R06",
+      "role": "RECEIVER",
+      "turn_index": 2
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R07-1",
+      "case_id": "R07",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R07-2",
+      "case_id": "R07",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R07-3",
+      "case_id": "R07",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R08-1",
+      "case_id": "R08",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R08-2",
+      "case_id": "R08",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R08-3",
+      "case_id": "R08",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R09-1",
+      "case_id": "R09",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R09-1",
+      "case_id": "R09",
+      "role": "RECEIVER",
+      "turn_index": 1
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R09-2",
+      "case_id": "R09",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R09-2",
+      "case_id": "R09",
+      "role": "RECEIVER",
+      "turn_index": 1
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R09-3",
+      "case_id": "R09",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R09-3",
+      "case_id": "R09",
+      "role": "RECEIVER",
+      "turn_index": 1
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R10-1",
+      "case_id": "R10",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R10-2",
+      "case_id": "R10",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R10-3",
+      "case_id": "R10",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R11-1",
+      "case_id": "R11",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R11-2",
+      "case_id": "R11",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R11-3",
+      "case_id": "R11",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R12-1",
+      "case_id": "R12",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R12-2",
+      "case_id": "R12",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R12-3",
+      "case_id": "R12",
+      "role": "RECEIVER",
+      "turn_index": 0
+    }
+  ]
+}

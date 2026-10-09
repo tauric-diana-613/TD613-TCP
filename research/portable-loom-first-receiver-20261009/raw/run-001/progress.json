@@ -1,0 +1,15 @@
+[
+  {
+    "trial": {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R01-1",
+      "case_id": "R01",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    "directory": "/workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/research/portable-loom-first-receiver-20261009/raw/run-001/FIRST_CONFIGURED_RECEIVER-R01-1-turn-0",
+    "status": "HELD_EVIDENCE_GAP",
+    "evidence_class": "ACTUAL_RECEIVER_TEST",
+    "response_sha256": "d1bdc3f104bc7351728d361c4d5645d1250fff116061fa1876bef6e45232fbc7",
+    "usage": null
+  }
+]

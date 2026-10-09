@@ -1,0 +1,19 @@
+{
+  "schema": "td613.loom.assay-enrollment-receipt/v0.1",
+  "recorded_at": "2026-10-09T15:45:01.350Z",
+  "freeze_commit": "a768d834e0f57089e2feacbde3d0650101db4aed",
+  "project": "late-glade-40477105",
+  "branch": "br-round-union-b5v3ludi",
+  "database": "neondb",
+  "operation": "Insert new exact-bound run metadata; no prompt body, provider credential or capability bytes",
+  "tool_response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "[\n  {\n    \"run_id\": \"portable-loom-first-receiver-20261009\",\n    \"policy_sha256\": \"5b380227cde076cddc1823fa491f124abd2694ebdf2f1c64668266c0358a9751\",\n    \"status\": \"ACTIVE\",\n    \"calls_reserved\": 0,\n    \"reserved_cost_nanos\": \"0\",\n    \"created_at\": \"2026-10-09T15:45:01.232Z\"\n  }\n]"
+      }
+    ],
+    "isError": false
+  },
+  "actual_generation_calls_at_enrollment": 0
+}

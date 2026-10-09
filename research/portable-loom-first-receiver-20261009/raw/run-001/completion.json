@@ -1,0 +1,20 @@
+{
+  "schema": "td613.loom.first-receiver-run/v0.1",
+  "source_commit": "5581af7812dc0f5fcf2b65c11ad09da045f0940e",
+  "artifact_sha256": "2d9c23bb6ad26430bcf4fd2a52e9aa5e876a1546265a00087cdb7e7e4f1c1872",
+  "policy_sha256": "5b380227cde076cddc1823fa491f124abd2694ebdf2f1c64668266c0358a9751",
+  "run_id": "portable-loom-first-receiver-20261009",
+  "evidence_class": "ACTUAL_RECEIVER_TEST",
+  "started_at": "2026-10-09T15:45:01.862Z",
+  "planned_calls": 54,
+  "max_cost_usd": 10,
+  "retries": 0,
+  "authority": "Active operator-directed process only; no background task, auto-resume, custody admission or comparison execution",
+  "ended_at": "2026-10-09T15:45:08.251Z",
+  "attempted_calls": 1,
+  "status": "HELD_EVIDENCE_GAP",
+  "error": "ASSAY_PRIMARY_CAPTURE_HELD",
+  "unattempted_calls": 53,
+  "custody_admitted": false,
+  "retry_authorized": false
+}
