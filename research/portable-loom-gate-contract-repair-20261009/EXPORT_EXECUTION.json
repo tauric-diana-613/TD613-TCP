@@ -1,0 +1,12 @@
+{
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "source_commit": "c7e63c404fd4b70da3afc1cf7daa095e1f2fe8bf",
+  "started_at": "2026-10-09T04:55:43.067379+00:00",
+  "ended_at": "2026-10-09T04:55:43.248745+00:00",
+  "exit_code": 0,
+  "command": [
+    "node",
+    "scripts/export-standard-portable-loom.mjs",
+    "research/portable-loom-gate-contract-repair-20261009/artifact"
+  ]
+}

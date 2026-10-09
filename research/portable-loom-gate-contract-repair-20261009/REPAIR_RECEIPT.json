@@ -1,0 +1,71 @@
+{
+  "schema": "td613.loom.portable-gate-contract-repair-receipt/v0.1",
+  "recorded_at": "2026-10-09T04:56:43.475569+00:00",
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "source_commit": "c7e63c404fd4b70da3afc1cf7daa095e1f2fe8bf",
+  "branch": "research/portable-loom-gate-contract-repair-20261009",
+  "artifact_kind": "STANDARD_NON_DEMO_PORTABLE_LOOM",
+  "artifact_schema": "td613.loom.portable-session-export/v0.1",
+  "governance_schema": "td613.loom.portable-governance/v0.1",
+  "output_protocol_schema": "td613.loom.output-footer/v0.3",
+  "files": [
+    {
+      "name": "portable-loom-standard.json",
+      "bytes": 84885,
+      "sha256": "d8b86e53be199f140bf9c56e3ed4dcbf97220d039dd51718f56518f1971c7b1b"
+    },
+    {
+      "name": "portable-loom-standard.md",
+      "bytes": 90322,
+      "sha256": "2dbea618cc6cbfa7e2c79f180076dc7614c8754ebbdcb0293336f9c09bd7f27c"
+    }
+  ],
+  "session_root_ref": "430cc25a1a5ecf6f7374391e1f95706726f734f395d955cbd0f4fc20ff1af52a",
+  "policy_commitment": "e31a889c58b146b75d83456cc19814611f1dd12e22fae9bef148f3da025966ae",
+  "included_modules": [
+    "standard non-demo task/policy",
+    "canonical governance core",
+    "session root and predecessor continuation",
+    "nine-field receiver declaration contract",
+    "challenge protocol",
+    "in-conversation Gate evidence review",
+    "optional manual verification boundary",
+    "persistent compact footer",
+    "expert method disclosure"
+  ],
+  "engineering_results": {
+    "distinct_affected_checks_passed": 27,
+    "attempt_002": {
+      "tests": 27,
+      "pass": 24,
+      "fail": 3,
+      "exit_code": 1,
+      "failures": "new test fixture lacked source_revision; final production source hashes verified against this attempt"
+    },
+    "attempt_003": {
+      "tests": 3,
+      "pass": 3,
+      "fail": 0,
+      "exit_code": 0,
+      "scope": "corrected new test fixture only"
+    },
+    "all_original_failed_attempts_retained": true
+  },
+  "export_exit_code": 0,
+  "artifact_integrity_check": "PASSED",
+  "old_frozen_artifact_hashes_unchanged": true,
+  "known_exclusions": [
+    "No automatic access from optional website verifier to receiving conversation",
+    "No provider internals or hidden telemetry observed",
+    "No foreign receiver compliance guarantee",
+    "No authenticated off-platform counter or ancestry from receiver declaration",
+    "No actual receiver trial on this successor artifact",
+    "Prior frozen assay bindings do not automatically apply to new artifact bytes"
+  ],
+  "receiver_compliance": "NOT_RUN",
+  "provider_calls": 0,
+  "main_merged": false,
+  "deployment_triggered": false,
+  "issue_405_touched": false,
+  "gate_verifier_scope": "Existing installed receipt verifier checked locally; in-chat review remains instruction-carried behavior"
+}

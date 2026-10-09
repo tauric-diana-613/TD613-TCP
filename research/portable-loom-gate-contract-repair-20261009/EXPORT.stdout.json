@@ -1,0 +1,18 @@
+{
+  "destination": "/workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/research/portable-loom-gate-contract-repair-20261009/artifact",
+  "source_revision": "c7e63c404fd4b70da3afc1cf7daa095e1f2fe8bf",
+  "session_root_ref": "430cc25a1a5ecf6f7374391e1f95706726f734f395d955cbd0f4fc20ff1af52a",
+  "files": [
+    {
+      "name": "portable-loom-standard.json",
+      "bytes": 84885,
+      "sha256": "d8b86e53be199f140bf9c56e3ed4dcbf97220d039dd51718f56518f1971c7b1b"
+    },
+    {
+      "name": "portable-loom-standard.md",
+      "bytes": 90322,
+      "sha256": "2dbea618cc6cbfa7e2c79f180076dc7614c8754ebbdcb0293336f9c09bd7f27c"
+    }
+  ],
+  "status": "EXPORTED_AWAITING_ARTIFACT_ASSAY"
+}
