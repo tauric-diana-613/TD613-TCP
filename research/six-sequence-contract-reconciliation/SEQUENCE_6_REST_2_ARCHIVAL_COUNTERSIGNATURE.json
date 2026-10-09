@@ -1,0 +1,151 @@
+{
+  "schema": "td613.sequence6.rest2.archival-countersignature/v1.0",
+  "version": "1.0.0",
+  "record_function": "LATER_SOURCE_AND_RETAINED_CI_COUNTERSIGNATURE",
+  "signature_kind": "REVIEWER_DECLARATION_WITH_GIT_CONTENT_COMMITMENT; NOT_A_DIGITAL_OR_PROVIDER_SIGNATURE",
+  "created_at": "2026-10-09T00:06:32.219342+00:00",
+  "operator_local_date": "2026-10-08",
+  "sequence": "6",
+  "research_ref": "staging/sequence-6-integration-20261006",
+  "source_commit_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+  "reviewer": "Amari interactive operator-directed contract-gap reconciliation",
+  "predecessor_reconciliation_commit": "878d878d1daf61fc2f93b50c5cd21876ecf9cc21",
+  "source_coordinates": {
+    "reference_journey": "90052232b699f9dea8e616214c809f27ebef171f",
+    "custody_repair": "518fff1f6f904392ade5dc651a0642d18e071c70",
+    "native_cutover": "eca486ab7d999eb29005576d9caa80dfe8838d35",
+    "retained_browser_witness_head": "257848567fdc95c5dabee20b43d8bb17da1deb43"
+  },
+  "observed_sources": [
+    {
+      "commit_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "path": "research/sequence-6-surviving-relations/00-SEQUENCE_6_ACTIVATION_AND_INGESTION.json",
+      "git_blob_sha": "180dd26ed72567cab54228b2f05e7fecb19d1489",
+      "bytes": 1912,
+      "sha256": "af6c3410bf6f67beeee6622cf346e1e263e61648fdb02979cc817c3700075d8e",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/257848567fdc95c5dabee20b43d8bb17da1deb43/research/sequence-6-surviving-relations/00-SEQUENCE_6_ACTIVATION_AND_INGESTION.json"
+    },
+    {
+      "commit_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "path": "research/sequence-6-surviving-relations/07-TRANCHE_3A_ACTUAL_PRODUCT_CUTOVER.md",
+      "git_blob_sha": "cdebc62c86783be562533c2706ffdae4cc3cae77",
+      "bytes": 16223,
+      "sha256": "14e09c55272dae931eb43dd4f4c678f612c579435d5097713c872a45a956fadd",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/257848567fdc95c5dabee20b43d8bb17da1deb43/research/sequence-6-surviving-relations/07-TRANCHE_3A_ACTUAL_PRODUCT_CUTOVER.md"
+    },
+    {
+      "commit_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "path": "app/engine/governed-event-chain.js",
+      "git_blob_sha": "72781eb087c797c083e838c4733f84baee9c0fe2",
+      "bytes": 20422,
+      "sha256": "47509aff9443ead263322998dff1c56ffd038cd84500e6203ef168f9ae8ffc4c",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/257848567fdc95c5dabee20b43d8bb17da1deb43/app/engine/governed-event-chain.js"
+    },
+    {
+      "commit_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "path": "app/dome-world/holonomy-loom/ai-handoff.js",
+      "git_blob_sha": "b5e33b079c04b80cf368928e039fadbaf40e5998",
+      "bytes": 20348,
+      "sha256": "792c6b8559519f9cf84a1ce9d4cedf286d355924176f72f6a2d4d2918d494c0f",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/257848567fdc95c5dabee20b43d8bb17da1deb43/app/dome-world/holonomy-loom/ai-handoff.js"
+    },
+    {
+      "commit_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "path": "app/dome-world/holonomy-loom/reentry-workspace.js",
+      "git_blob_sha": "fae44b5e09557305b0cf1dc1e0621d9f851520aa",
+      "bytes": 39834,
+      "sha256": "cf02dce7ea85c9bd4863148da8443156c915645b6c5cb6c43e0ef7ffd15b7694",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/257848567fdc95c5dabee20b43d8bb17da1deb43/app/dome-world/holonomy-loom/reentry-workspace.js"
+    },
+    {
+      "commit_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "path": "tests/sequence-6-native-cutover.test.mjs",
+      "git_blob_sha": "bce6bbcae03a801cba9fd15af2009956fce20766",
+      "bytes": 3494,
+      "sha256": "9538003286bc304686a46a4614ae46db355fb09c332352112ff3f83daf352e95",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/257848567fdc95c5dabee20b43d8bb17da1deb43/tests/sequence-6-native-cutover.test.mjs"
+    },
+    {
+      "commit_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+      "path": "scripts/loom-native-cutover-browser-witness.mjs",
+      "git_blob_sha": "204c4520a6593b334e5f263ed7774d0a8d27ce03",
+      "bytes": 15348,
+      "sha256": "410990d2a036054e20ed6ae9b7b60a2edd5b0f22eed50d5726483783c171d428",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/257848567fdc95c5dabee20b43d8bb17da1deb43/scripts/loom-native-cutover-browser-witness.mjs"
+    }
+  ],
+  "retained_ci_evidence": {
+    "run_id": 37689360524,
+    "run_url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/37689360524",
+    "head_sha": "257848567fdc95c5dabee20b43d8bb17da1deb43",
+    "status": "completed",
+    "conclusion": "success",
+    "job_id": 113025378555,
+    "job_url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/37689360524/job/113025378555",
+    "inspected_log_line": "2026-10-07T21:28:18.4479362Z PASS_NATIVE_CUTOVER_DETERMINISTIC_RECEIVER",
+    "archive_receipt": {
+      "artifact_id": 11512323940,
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/37689360524/artifacts/11512323940",
+      "upload_log_sha256": "513a0e6c750044a431775f766f3c354f1c798bf34d36de2d0799bbd2629a196c",
+      "bytes": 17042367,
+      "zip_downloaded_and_rehashed_here": false
+    },
+    "retrieval_is_not_execution": true
+  },
+  "retained_browser_witness_scope": {
+    "classes": [
+      "BROWSER_WITNESS",
+      "SIMULATED_RECEIVER_TEST"
+    ],
+    "instrument": "Native-cutover Chromium/Playwright script with intercepted deterministic receiver responses.",
+    "route": "Actual Loom preparation → actual Marrowline composer → returned bound turn → native Check → explicit Admit → Rest.",
+    "viewport": "Desktop reduced-motion episode; broader CI contains additional separately scoped mobile tests.",
+    "live_provider_calls": 0,
+    "physical_device_witness": false,
+    "human_comprehension_measured": false,
+    "independent_external_witness": false
+  },
+  "source_and_retained_evidence_findings": [
+    {
+      "claim": "Reference journey and actual native cutover are distinct",
+      "verdict": "SUPPORTED_BY_GIT_LINEAGE_AND_SOURCE"
+    },
+    {
+      "claim": "Payload and return-content binding, independent-head separation and fail-closed identity/gesture checks exist",
+      "verdict": "SOURCE_INSPECTED_WITH_RETAINED_TEST_EVIDENCE"
+    },
+    {
+      "claim": "Native route has an exact-head deterministic-receiver browser PASS",
+      "verdict": "SUPPORTED_BY_RETAINED_CI_LOG"
+    },
+    {
+      "claim": "Current live provider, physical device and measured human comprehension",
+      "verdict": "UNMEASURED_IN_THIS_EVIDENCE"
+    },
+    {
+      "claim": "Provider origin, inaccessible internals or Golden Egg",
+      "verdict": "UNEARNED"
+    }
+  ],
+  "countersignature_disposition": "COUNTERSIGNED_WITH_BOUNDED_ENGINEERING_SCOPE",
+  "rest2_disposition": "MINIMUM_SURVIVING_PRODUCT_RECOMMENDATION_SUPPORTED_WITHIN_RETAINED_DETERMINISTIC_BROWSER_SCOPE",
+  "global_scientific_closure": "NOT_ESTABLISHED_BY_THIS_LATER_RECONCILIATION",
+  "original_global_rest2_countersignature": "UNLOCATED",
+  "temporal_law": "This dated review supplies a current countersignature address. Its later reconstruction of the record cannot alter what earlier observers knew or stand in for an original execution receipt.",
+  "human_closure": "Consequential acceptance remains operator-directed; this record conveys no provider, merge, deployment or assay permission.",
+  "execution": {
+    "research_rerun": false,
+    "historical_tests_rerun": false,
+    "receiver_calls": 0,
+    "new_browser_witness": false
+  },
+  "authority": {
+    "execute": false,
+    "automatic_redesign": false,
+    "release": false,
+    "merge": false,
+    "deployment": false,
+    "provider": false,
+    "human_closure_required": true
+  }
+}

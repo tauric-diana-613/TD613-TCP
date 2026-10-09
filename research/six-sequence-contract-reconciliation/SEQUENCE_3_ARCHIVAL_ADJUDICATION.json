@@ -1,0 +1,74 @@
+{
+  "schema": "td613.sequence3.archival-adjudication/v1.0",
+  "version": "1.0.0",
+  "record_function": "LATER_ARCHIVAL_ADJUDICATION",
+  "created_at": "2026-10-09T00:06:32.219342+00:00",
+  "operator_local_date": "2026-10-08",
+  "sequence": "3",
+  "canonical_name": "Product Demo Cathedral / Flow-Core 39-carrier presentation tournament",
+  "research_ref": "design/loom-first-crossing-cathedral-20261005",
+  "source_commit_sha": "6c21813c0f4a9fad31ef147d2b42c29b05ab8473",
+  "source_parent_sha": "539c93021b6376f36ab2b3a7b65c8ae978dc766e",
+  "reviewer": "Amari interactive operator-directed contract-gap reconciliation",
+  "observed_sources": [
+    {
+      "commit_sha": "6c21813c0f4a9fad31ef147d2b42c29b05ab8473",
+      "path": "LAB_FEEDBACK_FROM_PRODUCT.md",
+      "git_blob_sha": "62ed23f19916c4df991ea60e3b6b771465346306",
+      "bytes": 7109,
+      "sha256": "9467ecc22a0977dfdc7c645e470868d51227b118060476bc8a874a1e57d2cb96",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/6c21813c0f4a9fad31ef147d2b42c29b05ab8473/LAB_FEEDBACK_FROM_PRODUCT.md"
+    },
+    {
+      "commit_sha": "6c21813c0f4a9fad31ef147d2b42c29b05ab8473",
+      "path": "app/dome-world/marrowline-flowcore-cathedral.js",
+      "git_blob_sha": "883f0a6e9613632d3bb6314f819a9b342fc1f557",
+      "bytes": 13429,
+      "sha256": "18cd5d2c195b3ce92300cd9c26bcd8c899b1608199ff9f0a40d074abf455689e",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/6c21813c0f4a9fad31ef147d2b42c29b05ab8473/app/dome-world/marrowline-flowcore-cathedral.js"
+    },
+    {
+      "commit_sha": "6c21813c0f4a9fad31ef147d2b42c29b05ab8473",
+      "path": "tests/marrowline-loom-cathedral-composition.test.mjs",
+      "git_blob_sha": "77a2fb4a8057ca30632dc4f83c0e42f1b6a540f2",
+      "bytes": 21902,
+      "sha256": "5b0e1c4bce9bc728a4632606caef91597e6a4f1d0be75d40c6fc71c9f0150314",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/6c21813c0f4a9fad31ef147d2b42c29b05ab8473/tests/marrowline-loom-cathedral-composition.test.mjs"
+    }
+  ],
+  "retained_source_findings": [
+    "Remote commit message explicitly numbers the Product Demo Cathedral tranche as Sequence 3.",
+    "The retained design feedback and carrier implementation specify 39 carriers: 6 near, 13 mid and 20 far, with one animation clock and state-driven semantics.",
+    "The dedicated composition test encodes re-entry, retry/search composition, carrier partition and reduced-motion expectations.",
+    "Feedback prose reports first-time-user outcomes without a located preregistered scored study and preserved raw responses."
+  ],
+  "adjudication": {
+    "program_identity": "LOCATED",
+    "implementation_and_design_contract": "LOCATED",
+    "bounded_archival_addressing": "COMPLETE",
+    "separate_preregistered_tournament_protocol": "UNLOCATED",
+    "raw_tournament_scores_and_receivers": "UNLOCATED",
+    "original_formal_tournament_closure": "UNLOCATED",
+    "measured_human_comprehension": "UNESTABLISHED_BY_LOCATED_RECORD",
+    "disposition": "IMPLEMENTATION_TRANCHE_ADDRESSED_WITH_QUALIFICATIONS"
+  },
+  "claim_ceiling": "Committed source, retained design/test contract and attributed historical feedback. No measured tournament superiority or human-comprehension effect is established by this later record.",
+  "search_scope": "Specified design branch/head and parentage; LAB_FEEDBACK_FROM_PRODUCT.md; changed product files; dedicated composition test; numbered-program successor records.",
+  "supersession": "Provides a current adjudication address for the missing-record gap. It does not replace, backdate or fabricate an original tournament receipt.",
+  "next_required_evidence": "Locate the original protocol/raw scores/closure artifact if it exists. Otherwise keep the empirical closure gap; any new evaluation needs a separate prospective protocol.",
+  "execution": {
+    "historical_tests_rerun": false,
+    "research_rerun": false,
+    "receiver_calls": 0,
+    "browser_execution": false
+  },
+  "authority": {
+    "execute": false,
+    "automatic_redesign": false,
+    "release": false,
+    "merge": false,
+    "deployment": false,
+    "provider": false,
+    "human_closure_required": true
+  }
+}

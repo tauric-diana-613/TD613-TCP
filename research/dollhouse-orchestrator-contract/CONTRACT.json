@@ -1,0 +1,391 @@
+{
+  "schema": "td613.dollhouse.orchestrator-contract/v1.0",
+  "version": "1.0.0",
+  "record_function": "CURRENT_CONTRACT_FORMALIZATION",
+  "created_at": "2026-10-09T00:06:32.219342+00:00",
+  "operator_local_date": "2026-10-08",
+  "operator_timezone": "America/New_York",
+  "temporal_law": "This later formalization applies to review after publication. It does not imply that the same complete contract was registered during an earlier episode.",
+  "scope": "Source-compatible bounded clerk, declaration consistency audit, evidence-preserving human adjudication and Temporal Custodian sidecar law.",
+  "contract_status": "FORMALIZED_CURRENT_BOUNDED_CONTRACT",
+  "implementation_revision": "8d57bdfcd69cff9c5760cd001549197f3180c00a",
+  "historical_contract_revision": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+  "human_operator_relationship": "The orchestrator recommends and preserves evidence. The human operator supplies consequential authorization and final closure.",
+  "canonical_role_question": "What bounded recommendation survives the independently scoped findings, preserved disagreements, temporal veto and evidence ceiling under the operator-defined case?",
+  "roles": [
+    {
+      "id": "PEDAGOGUE",
+      "registry_status": "INSTALLED",
+      "question": "Did notice precede the declared gesture and consequence, and are pause, expiry, exit and held attempts distinguished?",
+      "canonical_path": "PEDAGOGUE.md"
+    },
+    {
+      "id": "APERTURE",
+      "registry_status": "INSTALLED",
+      "question": "Which observation, witness and unresolved alternative qualify the proposed claim?",
+      "canonical_path": "APERTURE.md"
+    },
+    {
+      "id": "ATLAS",
+      "registry_status": "BOUNDED_RESEARCH_CANDIDATE",
+      "question": "Which control and result coordinates survived, changed, stayed withheld or remain unknown across declared receiver states?",
+      "canonical_path": "ATLAS.md"
+    },
+    {
+      "id": "FADT",
+      "registry_status": "BOUNDED_RESEARCH_CANDIDATE",
+      "question": "Does erasing declared conditioning or stage coordinates collapse different lawful action supports?",
+      "canonical_path": "FADT.md"
+    },
+    {
+      "id": "TEMPORAL_CUSTODIAN",
+      "registry_status": "SEPARATE_REF_BOUNDED_RESEARCH_CANDIDATE",
+      "question": "When was each state observable, modeled, actionable, admitted and public, and does later evidence rewrite that state or local success mask whole-route regression?",
+      "canonical_path": "TEMPORAL_CUSTODIAN.md",
+      "source_sha": "88f128c75cd8efd58db9a77249f293e69d08762e"
+    }
+  ],
+  "orchestrator_is_a_doll": false,
+  "implemented_entry_points": [
+    {
+      "module": "app/engine/dollhouse-case-dossier.js",
+      "export": "createDollhouseCaseDossier",
+      "kind": "BOUNDED_DETERMINISTIC_DISSENT_RECORDER",
+      "source": {
+        "commit_sha": "8d57bdfcd69cff9c5760cd001549197f3180c00a",
+        "path": "app/engine/dollhouse-case-dossier.js",
+        "git_blob_sha": "2b1cdb2aac3bc0008f9586d5f9035a250e457d5f",
+        "bytes": 5364,
+        "sha256": "fd6140e1a7eb09c6378355d009d8108111a20af359c15c49d0d1af7efee0c800",
+        "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/8d57bdfcd69cff9c5760cd001549197f3180c00a/app/engine/dollhouse-case-dossier.js"
+      }
+    },
+    {
+      "module": "app/engine/dollhouse-closure-auditor.js",
+      "export": "auditDollhouseClosure",
+      "kind": "EPISODE_REPORT_DECLARATION_CONSISTENCY_AUDITOR",
+      "source": {
+        "commit_sha": "8d57bdfcd69cff9c5760cd001549197f3180c00a",
+        "path": "app/engine/dollhouse-closure-auditor.js",
+        "git_blob_sha": "b35dd0a5b2433f4260c5b65fc2a5625bd50dff1b",
+        "bytes": 9088,
+        "sha256": "5e4a64ccbfd0d7aa73e7de7bf7f20960063967557a40658a7e9e186792a04a03",
+        "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/8d57bdfcd69cff9c5760cd001549197f3180c00a/app/engine/dollhouse-closure-auditor.js"
+      },
+      "wall_clock_metadata": "audited_at is generated at invocation; a timestamp does not authenticate event chronology."
+    },
+    {
+      "module": "app/engine/dollhouse-temporal-custodian.js",
+      "export": "runTemporalCustodianAudit",
+      "kind": "SEPARATE_BRANCH_CANDIDATE_ADAPTER",
+      "source": {
+        "commit_sha": "88f128c75cd8efd58db9a77249f293e69d08762e",
+        "path": "app/engine/dollhouse-temporal-custodian.js",
+        "git_blob_sha": "382cc9b45a641816383cf4d93afa424ea63831bb",
+        "bytes": 8038,
+        "sha256": "1eabdea8063d0153fb85a89c259938abf956bb506a57385c5a5436bbc915fe4b",
+        "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/88f128c75cd8efd58db9a77249f293e69d08762e/app/engine/dollhouse-temporal-custodian.js"
+      },
+      "main_integration": "UNINSTALLED_IN_FOUR_ROLE_REGISTRY"
+    }
+  ],
+  "case_dossier_input": {
+    "schema": "td613.dollhouse.case-dossier/v0.1",
+    "exact_fields": [
+      "schema",
+      "case_id",
+      "source_revision",
+      "findings"
+    ],
+    "object_rules": "Plain objects; exact own enumerable data fields; accessors, hidden fields and extra fields rejected.",
+    "case_id": {
+      "type": "nonempty_text",
+      "max_chars": 100
+    },
+    "source_revision": {
+      "format": "lowercase_hex_40",
+      "authentication": "DECLARED_REFERENCE_ONLY"
+    },
+    "findings": {
+      "type": "dense_array",
+      "min_items": 1,
+      "max_items": 64,
+      "unique_id": true,
+      "exact_fields": [
+        "id",
+        "agent",
+        "claim_key",
+        "verdict",
+        "evidence_class",
+        "observation_scope",
+        "reference",
+        "limitations"
+      ],
+      "agent_enum": [
+        "PEDAGOGUE",
+        "APERTURE",
+        "ATLAS",
+        "FADT"
+      ],
+      "agent_case": "UPPERCASE",
+      "id_max_chars": 100,
+      "claim_key_max_chars": 160,
+      "verdict_enum": [
+        "SUPPORTED",
+        "HELD",
+        "CONTRADICTED",
+        "UNKNOWN"
+      ],
+      "evidence_class_enum": [
+        "DECLARATION",
+        "OFFLINE_TEST",
+        "BROWSER_WITNESS",
+        "PROVIDER_RESPONSE",
+        "EMPIRICAL_ACQUISITION"
+      ],
+      "observation_scope": {
+        "exact_fields": [
+          "source",
+          "instrument",
+          "condition",
+          "temporal_window"
+        ],
+        "each_value": "nonempty text, max 500 characters"
+      },
+      "reference": {
+        "exact_fields": [
+          "artifact",
+          "sha256"
+        ],
+        "artifact_max_chars": 500,
+        "sha256": "lowercase_hex_64",
+        "byte_verification": "NOT_PERFORMED_BY_CLERK"
+      },
+      "limitations": {
+        "type": "dense_array",
+        "min_items": 1,
+        "max_items": 16,
+        "each_value": "nonempty text, max 1000 characters"
+      }
+    }
+  },
+  "case_dossier_output": {
+    "preserves": "All validated findings, including scope, reference and limitations; deep frozen output.",
+    "disagreement_detection": "Group by claim_key; distinct verdicts produce a retained disagreement with finding IDs and role/evidence-class labels.",
+    "disagreement_resolution": "HUMAN_REVIEW_REQUIRED",
+    "unresolved": "All finding IDs whose verdict differs from SUPPORTED.",
+    "authority": {
+      "execute": false,
+      "automatic_redesign": false,
+      "release": false,
+      "merge": false,
+      "deployment": false,
+      "provider": false,
+      "human_closure_required": true
+    },
+    "evidence_posture": {
+      "evidence_class_is_caller_declared": true,
+      "artifact_bytes_checked": false,
+      "reference_authentication": "UNVERIFIED",
+      "findings_independently_scoped": true,
+      "evidence_classes_aggregated": false,
+      "majority_vote": false,
+      "global_score": null
+    }
+  },
+  "temporal_sidecar": {
+    "role": "TEMPORAL_CUSTODIAN",
+    "separate_from_orchestrator": true,
+    "dossier_input_compatibility": "Current clerk rejects TEMPORAL_CUSTODIAN as an unregistered agent. Preserve its findings in a separately identified sidecar; do not rename them as another role.",
+    "veto": "LOCAL_PASS_PLUS_GLOBAL_ROUTE_REGRESSION -> HELD",
+    "veto_effect": "Hold the bounded recommendation; preserve local PASS and downstream failure as distinct findings.",
+    "baseline_law": "Compare against the retained earlier ledger; append corrections without altering earlier observation or authority fields.",
+    "integration_enforcement": "NORMATIVE_REVIEW_CONTRACT_ONLY; NO_AUTOMATIC_SIDECAR_CONSUMER_ESTABLISHED",
+    "candidate_source_limitations": [
+      {
+        "id": "TC_MISSING_INPUT_PASS",
+        "class": "SOURCE_INFERRED_FAILURE_MODE",
+        "detail": "runTemporalCustodianAudit initializes PASS when both ledger_entries and phases are absent. No fresh execution performed here."
+      },
+      {
+        "id": "TC_PHASE_COMPLETENESS_GAP",
+        "class": "SOURCE_INFERRED_FAILURE_MODE",
+        "detail": "Empty phases and an early FAIL without prior PASS can escape the candidate whole-route regression predicate; source inspection alone establishes this decision-path concern."
+      },
+      {
+        "id": "TC_TIMESTAMP_VALIDATION_GAP",
+        "class": "SOURCE_INFERRED_FAILURE_MODE",
+        "detail": "Unparseable timestamps or sequence strings are skipped by candidate monotonicity comparisons. Strict input validity must precede reliance on its output."
+      }
+    ],
+    "suitability": "Standalone fail-closed promotion authority remains HELD. Candidate PASS cannot discharge missing-evidence obligations."
+  },
+  "closure_auditor_boundary": {
+    "input": "closureReport plus optional episodeObservatory/disagreementLedger and source metrics.",
+    "checks": "Ten episode-specific contradiction/overclaim predicates, including network response, predecessor declaration, return workspace, provider classification, timeout, observer mutation and content ancestry.",
+    "authentication": "No artifact byte acquisition, signature verification, author verification or provider-origin authentication is performed by this function.",
+    "label_handling": "PROVEN_LIVE_PRODUCTION in raw layered output is a derived label from supplied report fields. Admissibility requires the bound retained episode evidence; caller booleans alone cannot establish a live witness.",
+    "scope": "Episode-specific Model A report audit. It cannot serve as a universal Sequence 6 closure engine."
+  },
+  "disagreement_preservation_law": [
+    "Preserve supplied findings and contradictory observations with their own evidence class and temporal window.",
+    "Keep recommendation separate from observation and from an operator action.",
+    "Never replace an unresolved disagreement with a majority score or uniform synthesized verdict.",
+    "Never promote hash navigation into workspace admission or a recorded return into external return."
+  ],
+  "workflow_state_machine": {
+    "kind": "NORMATIVE_REVIEW_WORKFLOW; NOT_A_NEW_EXECUTABLE_SCHEDULER",
+    "states": [
+      "RECEIVED",
+      "INPUT_REJECTED",
+      "FINDINGS_RETAINED",
+      "EVIDENCE_REVIEW_REQUIRED",
+      "HELD",
+      "HUMAN_REVIEW_REQUIRED",
+      "OPERATOR_DISPOSITION_RECORDED"
+    ],
+    "transitions": [
+      {
+        "from": "RECEIVED",
+        "to": "INPUT_REJECTED",
+        "condition": "Input violates the bounded clerk schema."
+      },
+      {
+        "from": "RECEIVED",
+        "to": "FINDINGS_RETAINED",
+        "condition": "Clerk input validates."
+      },
+      {
+        "from": "FINDINGS_RETAINED",
+        "to": "EVIDENCE_REVIEW_REQUIRED",
+        "condition": "Declared references await independent byte/provenance review."
+      },
+      {
+        "from": "EVIDENCE_REVIEW_REQUIRED",
+        "to": "HELD",
+        "condition": "Required evidence is missing, contradictory, out of scope or subject to temporal veto."
+      },
+      {
+        "from": "EVIDENCE_REVIEW_REQUIRED",
+        "to": "HUMAN_REVIEW_REQUIRED",
+        "condition": "Bounded evidence findings and all remaining qualifications are preserved."
+      },
+      {
+        "from": "HUMAN_REVIEW_REQUIRED",
+        "to": "OPERATOR_DISPOSITION_RECORDED",
+        "condition": "Contemporaneous human disposition is recorded; this creates no execution capability."
+      }
+    ]
+  },
+  "stopping_conditions": [
+    "Invalid input",
+    "Missing required evidence",
+    "Unresolved chronology/whole-route veto",
+    "Unsupported claim promotion",
+    "Action beyond current operator scope",
+    "Uninstalled role or incompatible input class"
+  ],
+  "claim_ceiling": {
+    "source_compatible_clerk": "Typed, immutable retention and explicit human review.",
+    "evidence_verification": "Only independently inspected and bound bytes/receipts supply verification credit.",
+    "comparative_superiority": "UNESTABLISHED",
+    "provider_internals": "UNOBSERVED",
+    "golden_egg": "UNEARNED"
+  },
+  "comparison_design": {
+    "source": {
+      "commit_sha": "4871e0c53749985facbf62749e1161d13a420e0e",
+      "path": "docs/sequence-6/SURVIVOR_MAP_AND_ARCHITECTURE_FREEZE.md",
+      "git_blob_sha": "fdc948399e6e1841fc8c57b6156f3b445cd100d0",
+      "bytes": 29400,
+      "sha256": "4a47ea3e3e69001a5b426e67de3bae5c20d669fb04fd7ff1635d2ae7137f331a",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/4871e0c53749985facbf62749e1161d13a420e0e/docs/sequence-6/SURVIVOR_MAP_AND_ARCHITECTURE_FREEZE.md"
+    },
+    "status": "PROPOSED_COMPARATIVE_RESEARCH; NOT_EXECUTED_HERE",
+    "models": {
+      "A": "Monolith",
+      "B": "Dumb Concat",
+      "C": "Typed Roles",
+      "D": "Governed Clerk",
+      "E": "Conventional Code"
+    },
+    "historical_ablation": "Fixed role-fixture removal and deterministic decision procedure; not monolith-vs-orchestrator measured superiority.",
+    "namespace_law": "Episode 1428-X Model A (setup plus first substantive continuation) differs from comparison Model A (monolith)."
+  },
+  "general_model_scheduler": {
+    "implementation": "UNLOCATED",
+    "model_roster": "NONE_FIXED",
+    "provider_credentials": "NONE_CONFERRED",
+    "action_authority": "NONE",
+    "repair_disposition": "CONTRACT_GAP_FORMALIZED; MISSING_RUNTIME_CAPABILITY_PRESERVED"
+  },
+  "source_bindings": [
+    {
+      "commit_sha": "8d57bdfcd69cff9c5760cd001549197f3180c00a",
+      "path": "DOLLHOUSE.md",
+      "git_blob_sha": "9cd5ae8ccabddd2e8d7ff1dc2dd030c1cd58c4fb",
+      "bytes": 11260,
+      "sha256": "5cd1e554e80dd224f1875da1c00c25249f5a65f7e6f9beccf7127dd65791d377",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/8d57bdfcd69cff9c5760cd001549197f3180c00a/DOLLHOUSE.md"
+    },
+    {
+      "commit_sha": "8d57bdfcd69cff9c5760cd001549197f3180c00a",
+      "path": "app/engine/dollhouse-agent-registry.js",
+      "git_blob_sha": "7730585a55013c527dda4d731664161a0b981d39",
+      "bytes": 3731,
+      "sha256": "90959d3eed8884e6f0905a09b53e07bd285c6ac305800cbd0bf7544ff92f5ab5",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/8d57bdfcd69cff9c5760cd001549197f3180c00a/app/engine/dollhouse-agent-registry.js"
+    },
+    {
+      "commit_sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+      "path": "docs/research/2026-10-04-dollhouse-orchestration-episode-1428-x.md",
+      "git_blob_sha": "489c2bb7951eb6de34f053744005a47815dc8b26",
+      "bytes": 49892,
+      "sha256": "283fd96a3197788824b5b684cdaeb4e43c004ef616a38ff8cceee39594e74a0e",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9/docs/research/2026-10-04-dollhouse-orchestration-episode-1428-x.md"
+    },
+    {
+      "commit_sha": "8d57bdfcd69cff9c5760cd001549197f3180c00a",
+      "path": "tests/dollhouse-orchestration-invariants.test.mjs",
+      "git_blob_sha": "97f62346e00657611713413e77368b7d6b00e1db",
+      "bytes": 9586,
+      "sha256": "646c3e3c72a5b19ad340f06627f9e648394159064f64fe3c4952c33990dbc096",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/8d57bdfcd69cff9c5760cd001549197f3180c00a/tests/dollhouse-orchestration-invariants.test.mjs"
+    },
+    {
+      "commit_sha": "8d57bdfcd69cff9c5760cd001549197f3180c00a",
+      "path": "tests/fixtures/dollhouse/disagreement-ledger-1428.json",
+      "git_blob_sha": "c626b0fa119041cc7772e0e91d4af86441184339",
+      "bytes": 4098,
+      "sha256": "e7b69d5997304847e8ffae2084bcda4056b7d796f4da323fea32ac7a368cc89e",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/8d57bdfcd69cff9c5760cd001549197f3180c00a/tests/fixtures/dollhouse/disagreement-ledger-1428.json"
+    },
+    {
+      "commit_sha": "8d57bdfcd69cff9c5760cd001549197f3180c00a",
+      "path": "scripts/run-dollhouse-ablation-experiment.mjs",
+      "git_blob_sha": "1e36e987e8dbb8fb34188b76d5df2c62ccc79150",
+      "bytes": 8419,
+      "sha256": "2d3e5c0bf42b873b8309580ef7f6355f15f2dcaefaf6a23425575e1ed8e153ee",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/8d57bdfcd69cff9c5760cd001549197f3180c00a/scripts/run-dollhouse-ablation-experiment.mjs"
+    },
+    {
+      "commit_sha": "88f128c75cd8efd58db9a77249f293e69d08762e",
+      "path": "TEMPORAL_CUSTODIAN.md",
+      "git_blob_sha": "aa238abf98fe65649f614b5401b8bc31529a7552",
+      "bytes": 6377,
+      "sha256": "653cb306c598756008c45eae423cba5dec40493bca389fa5401f28982347dca9",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/88f128c75cd8efd58db9a77249f293e69d08762e/TEMPORAL_CUSTODIAN.md"
+    }
+  ],
+  "authority": {
+    "execute": false,
+    "automatic_redesign": false,
+    "release": false,
+    "merge": false,
+    "deployment": false,
+    "provider": false,
+    "human_closure_required": true
+  },
+  "validation_scope": "Contract and byte-address integrity only. No receiver calls, assays, historical test reruns or detached agents.",
+  "historical_records_unchanged": true
+}
