@@ -1,0 +1,11 @@
+{
+  "url": "https://td613.com/api/khonapolit",
+  "method": "GET",
+  "started_at": "2026-10-09T06:04:32.027648+00:00",
+  "inference_calls": 0,
+  "observation_class": "DEPLOYED_API_METADATA_RESPONSE_NOT_MODEL_TRIAL",
+  "http_status": 200,
+  "bytes": 6494,
+  "sha256": "9e262e490db7ff385db7f4aba3b7c706b3358f14bc7ccfb55f81d19ff80df9a5",
+  "ended_at": "2026-10-09T06:04:37.956291+00:00"
+}

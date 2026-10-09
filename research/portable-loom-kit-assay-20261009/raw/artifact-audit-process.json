@@ -1,0 +1,15 @@
+{
+  "command": [
+    "node",
+    "research/portable-loom-dollhouse-execution-20261009/audit-exact-artifact.mjs",
+    "research/portable-loom-kit-assay-20261009/EXECUTION_BINDING.local.json",
+    "research/portable-loom-kit-assay-20261009/raw/artifact-audit-001"
+  ],
+  "started_at": "2026-10-09T06:02:57.826703+00:00",
+  "ended_at": "2026-10-09T06:02:57.987519+00:00",
+  "exit_code": 1,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "a4c2da50d215a69bfd8aba5bb70f08527d6e42d458ba14e308fc1318cddb2b83",
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "provider_calls": 0
+}

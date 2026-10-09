@@ -1,0 +1,12 @@
+{
+  "record_function": "ENGINEERING_CORRECTION",
+  "original_attempt": "raw/artifact-audit-process.json",
+  "failure": "Node execFileSync default buffer too small for the 1084419-byte committed HTML file",
+  "original_adapter_executions": 0,
+  "patch": "Explicit per-member 2 MiB bound and 4 MiB Git-read buffer",
+  "artifact_changed": false,
+  "semantic_role_adapters_changed": false,
+  "next_attempt": "raw/artifact-audit-002",
+  "primary_receiver_retries": 0,
+  "source_predecessor_commit": "a7f72e747cf37246d242b614c77e1845def132ab"
+}

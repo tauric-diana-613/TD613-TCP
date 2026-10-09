@@ -1,0 +1,679 @@
+{
+  "schema": "td613.loom.exact-kit-receiver-plan/v0.1",
+  "created_at": "2026-10-09T06:05:32.970590+00:00",
+  "artifact_export_commit": "8a5db46f142f642d3d4c90f1a4e456a6732b8b8b",
+  "artifact_md_sha256": "0695cfec63bc90b86b045daac5edf0e50a5749a36c8b50d329178f7f32dc0e28",
+  "protocol": "research/portable-loom-preflight/PROTOCOL.json",
+  "amendments": [
+    "001",
+    "002"
+  ],
+  "case_count": 12,
+  "repetitions_per_case_per_receiver": 3,
+  "receiver_slots": 2,
+  "primary_trial_count": 72,
+  "planned_calls_first_receiver": 54,
+  "planned_calls_two_receivers": 108,
+  "comparison_model_calls": 180,
+  "first_receiver_plus_comparison_calls": 234,
+  "two_receivers_plus_comparison_calls": 288,
+  "actual_receiver_calls": 0,
+  "primary_retries": 0,
+  "input_record_sha256": "6f7c9655fc3c0ba50c3fc708f85b963906eeca7082aea6ca1a4160426501f46b",
+  "input_records": 12,
+  "private_scoring_key_read": false,
+  "tools": "DISABLED_REQUIRED",
+  "retrieval": "DISABLED_REQUIRED",
+  "transport_model_budget": "UNBOUND; no HTTP inference request constructed or sent",
+  "trials": [
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R01-1",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R01",
+      "repetition": 1,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "87b2f79b81fd17179285516d7aca3ff7ec6e4051efcce6a10d6ff47ce08761c6"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R01-2",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R01",
+      "repetition": 2,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "87b2f79b81fd17179285516d7aca3ff7ec6e4051efcce6a10d6ff47ce08761c6"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R01-3",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R01",
+      "repetition": 3,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "87b2f79b81fd17179285516d7aca3ff7ec6e4051efcce6a10d6ff47ce08761c6"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R01-1",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R01",
+      "repetition": 1,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "87b2f79b81fd17179285516d7aca3ff7ec6e4051efcce6a10d6ff47ce08761c6"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R01-2",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R01",
+      "repetition": 2,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "87b2f79b81fd17179285516d7aca3ff7ec6e4051efcce6a10d6ff47ce08761c6"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R01-3",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R01",
+      "repetition": 3,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "87b2f79b81fd17179285516d7aca3ff7ec6e4051efcce6a10d6ff47ce08761c6"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R02-1",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R02",
+      "repetition": 1,
+      "planned_calls": 3,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "b4975504de94a40b7fcc64ac2e70543fbe726eb04ab0f292367cfb26a693ae4b"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R02-2",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R02",
+      "repetition": 2,
+      "planned_calls": 3,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "b4975504de94a40b7fcc64ac2e70543fbe726eb04ab0f292367cfb26a693ae4b"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R02-3",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R02",
+      "repetition": 3,
+      "planned_calls": 3,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "b4975504de94a40b7fcc64ac2e70543fbe726eb04ab0f292367cfb26a693ae4b"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R02-1",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R02",
+      "repetition": 1,
+      "planned_calls": 3,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "b4975504de94a40b7fcc64ac2e70543fbe726eb04ab0f292367cfb26a693ae4b"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R02-2",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R02",
+      "repetition": 2,
+      "planned_calls": 3,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "b4975504de94a40b7fcc64ac2e70543fbe726eb04ab0f292367cfb26a693ae4b"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R02-3",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R02",
+      "repetition": 3,
+      "planned_calls": 3,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "b4975504de94a40b7fcc64ac2e70543fbe726eb04ab0f292367cfb26a693ae4b"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R03-1",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R03",
+      "repetition": 1,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "aa97799dbc2f69c7e5318de04141c74aed52cb75962f3e43e35af08012b44847"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R03-2",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R03",
+      "repetition": 2,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "aa97799dbc2f69c7e5318de04141c74aed52cb75962f3e43e35af08012b44847"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R03-3",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R03",
+      "repetition": 3,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "aa97799dbc2f69c7e5318de04141c74aed52cb75962f3e43e35af08012b44847"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R03-1",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R03",
+      "repetition": 1,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "aa97799dbc2f69c7e5318de04141c74aed52cb75962f3e43e35af08012b44847"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R03-2",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R03",
+      "repetition": 2,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "aa97799dbc2f69c7e5318de04141c74aed52cb75962f3e43e35af08012b44847"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R03-3",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R03",
+      "repetition": 3,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "aa97799dbc2f69c7e5318de04141c74aed52cb75962f3e43e35af08012b44847"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R04-1",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R04",
+      "repetition": 1,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "cf91beac8462c59cbc37639cf18732be5db24d59708d65305b4aadf3180360e0"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R04-2",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R04",
+      "repetition": 2,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "cf91beac8462c59cbc37639cf18732be5db24d59708d65305b4aadf3180360e0"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R04-3",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R04",
+      "repetition": 3,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "cf91beac8462c59cbc37639cf18732be5db24d59708d65305b4aadf3180360e0"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R04-1",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R04",
+      "repetition": 1,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "cf91beac8462c59cbc37639cf18732be5db24d59708d65305b4aadf3180360e0"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R04-2",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R04",
+      "repetition": 2,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "cf91beac8462c59cbc37639cf18732be5db24d59708d65305b4aadf3180360e0"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R04-3",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R04",
+      "repetition": 3,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "cf91beac8462c59cbc37639cf18732be5db24d59708d65305b4aadf3180360e0"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R05-1",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R05",
+      "repetition": 1,
+      "planned_calls": 2,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "f4ae37efe1379dd9535f81fb4b1ebd3802a6474060faadf2d323753f1b743823"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R05-2",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R05",
+      "repetition": 2,
+      "planned_calls": 2,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "f4ae37efe1379dd9535f81fb4b1ebd3802a6474060faadf2d323753f1b743823"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R05-3",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R05",
+      "repetition": 3,
+      "planned_calls": 2,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "f4ae37efe1379dd9535f81fb4b1ebd3802a6474060faadf2d323753f1b743823"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R05-1",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R05",
+      "repetition": 1,
+      "planned_calls": 2,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "f4ae37efe1379dd9535f81fb4b1ebd3802a6474060faadf2d323753f1b743823"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R05-2",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R05",
+      "repetition": 2,
+      "planned_calls": 2,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "f4ae37efe1379dd9535f81fb4b1ebd3802a6474060faadf2d323753f1b743823"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R05-3",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R05",
+      "repetition": 3,
+      "planned_calls": 2,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "f4ae37efe1379dd9535f81fb4b1ebd3802a6474060faadf2d323753f1b743823"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-1",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R06",
+      "repetition": 1,
+      "planned_calls": 3,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "39293333feb622b2ec31d5e384d94d6bd3ad38be9a1eda4464769f39b42711cd"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-2",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R06",
+      "repetition": 2,
+      "planned_calls": 3,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "39293333feb622b2ec31d5e384d94d6bd3ad38be9a1eda4464769f39b42711cd"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-3",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R06",
+      "repetition": 3,
+      "planned_calls": 3,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "39293333feb622b2ec31d5e384d94d6bd3ad38be9a1eda4464769f39b42711cd"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R06-1",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R06",
+      "repetition": 1,
+      "planned_calls": 3,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "39293333feb622b2ec31d5e384d94d6bd3ad38be9a1eda4464769f39b42711cd"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R06-2",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R06",
+      "repetition": 2,
+      "planned_calls": 3,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "39293333feb622b2ec31d5e384d94d6bd3ad38be9a1eda4464769f39b42711cd"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R06-3",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R06",
+      "repetition": 3,
+      "planned_calls": 3,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "39293333feb622b2ec31d5e384d94d6bd3ad38be9a1eda4464769f39b42711cd"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R07-1",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R07",
+      "repetition": 1,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "aa50f933a009ed57fcad5e556a8c842f3f395925bfb4c47831745dfe66604eb9"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R07-2",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R07",
+      "repetition": 2,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "aa50f933a009ed57fcad5e556a8c842f3f395925bfb4c47831745dfe66604eb9"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R07-3",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R07",
+      "repetition": 3,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "aa50f933a009ed57fcad5e556a8c842f3f395925bfb4c47831745dfe66604eb9"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R07-1",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R07",
+      "repetition": 1,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "aa50f933a009ed57fcad5e556a8c842f3f395925bfb4c47831745dfe66604eb9"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R07-2",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R07",
+      "repetition": 2,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "aa50f933a009ed57fcad5e556a8c842f3f395925bfb4c47831745dfe66604eb9"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R07-3",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R07",
+      "repetition": 3,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "aa50f933a009ed57fcad5e556a8c842f3f395925bfb4c47831745dfe66604eb9"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R08-1",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R08",
+      "repetition": 1,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "2c0ab6aa04324f861064248eb9b63e527f2dc10262f95aa3fc257bb1ca11fdb3"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R08-2",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R08",
+      "repetition": 2,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "2c0ab6aa04324f861064248eb9b63e527f2dc10262f95aa3fc257bb1ca11fdb3"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R08-3",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R08",
+      "repetition": 3,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "2c0ab6aa04324f861064248eb9b63e527f2dc10262f95aa3fc257bb1ca11fdb3"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R08-1",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R08",
+      "repetition": 1,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "2c0ab6aa04324f861064248eb9b63e527f2dc10262f95aa3fc257bb1ca11fdb3"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R08-2",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R08",
+      "repetition": 2,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "2c0ab6aa04324f861064248eb9b63e527f2dc10262f95aa3fc257bb1ca11fdb3"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R08-3",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R08",
+      "repetition": 3,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "2c0ab6aa04324f861064248eb9b63e527f2dc10262f95aa3fc257bb1ca11fdb3"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R09-1",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R09",
+      "repetition": 1,
+      "planned_calls": 2,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "aa50f933a009ed57fcad5e556a8c842f3f395925bfb4c47831745dfe66604eb9"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R09-2",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R09",
+      "repetition": 2,
+      "planned_calls": 2,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "aa50f933a009ed57fcad5e556a8c842f3f395925bfb4c47831745dfe66604eb9"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R09-3",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R09",
+      "repetition": 3,
+      "planned_calls": 2,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "aa50f933a009ed57fcad5e556a8c842f3f395925bfb4c47831745dfe66604eb9"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R09-1",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R09",
+      "repetition": 1,
+      "planned_calls": 2,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "aa50f933a009ed57fcad5e556a8c842f3f395925bfb4c47831745dfe66604eb9"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R09-2",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R09",
+      "repetition": 2,
+      "planned_calls": 2,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "aa50f933a009ed57fcad5e556a8c842f3f395925bfb4c47831745dfe66604eb9"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R09-3",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R09",
+      "repetition": 3,
+      "planned_calls": 2,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "aa50f933a009ed57fcad5e556a8c842f3f395925bfb4c47831745dfe66604eb9"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R10-1",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R10",
+      "repetition": 1,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "d3eef19038eb0452a0d870527cbfb6067f61ed6e2fbfde1cae06537ecb3b017e"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R10-2",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R10",
+      "repetition": 2,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "d3eef19038eb0452a0d870527cbfb6067f61ed6e2fbfde1cae06537ecb3b017e"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R10-3",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R10",
+      "repetition": 3,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "d3eef19038eb0452a0d870527cbfb6067f61ed6e2fbfde1cae06537ecb3b017e"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R10-1",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R10",
+      "repetition": 1,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "d3eef19038eb0452a0d870527cbfb6067f61ed6e2fbfde1cae06537ecb3b017e"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R10-2",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R10",
+      "repetition": 2,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "d3eef19038eb0452a0d870527cbfb6067f61ed6e2fbfde1cae06537ecb3b017e"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R10-3",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R10",
+      "repetition": 3,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "d3eef19038eb0452a0d870527cbfb6067f61ed6e2fbfde1cae06537ecb3b017e"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R11-1",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R11",
+      "repetition": 1,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "e99a7357e463f95787373be952ede6fdf65f2c8139db31b55c8528078288b71a"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R11-2",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R11",
+      "repetition": 2,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "e99a7357e463f95787373be952ede6fdf65f2c8139db31b55c8528078288b71a"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R11-3",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R11",
+      "repetition": 3,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "e99a7357e463f95787373be952ede6fdf65f2c8139db31b55c8528078288b71a"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R11-1",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R11",
+      "repetition": 1,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "e99a7357e463f95787373be952ede6fdf65f2c8139db31b55c8528078288b71a"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R11-2",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R11",
+      "repetition": 2,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "e99a7357e463f95787373be952ede6fdf65f2c8139db31b55c8528078288b71a"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R11-3",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R11",
+      "repetition": 3,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "e99a7357e463f95787373be952ede6fdf65f2c8139db31b55c8528078288b71a"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R12-1",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R12",
+      "repetition": 1,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "eea514b9a77cc56a30b937f07076f7c303d32dff8cb2f7aeb4793b6242d60439"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R12-2",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R12",
+      "repetition": 2,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "eea514b9a77cc56a30b937f07076f7c303d32dff8cb2f7aeb4793b6242d60439"
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R12-3",
+      "receiver_slot": "FIRST_CONFIGURED_RECEIVER",
+      "case_id": "R12",
+      "repetition": 3,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "eea514b9a77cc56a30b937f07076f7c303d32dff8cb2f7aeb4793b6242d60439"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R12-1",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R12",
+      "repetition": 1,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "eea514b9a77cc56a30b937f07076f7c303d32dff8cb2f7aeb4793b6242d60439"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R12-2",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R12",
+      "repetition": 2,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "eea514b9a77cc56a30b937f07076f7c303d32dff8cb2f7aeb4793b6242d60439"
+    },
+    {
+      "trial_id": "SECOND_PROVIDER-R12-3",
+      "receiver_slot": "SECOND_PROVIDER",
+      "case_id": "R12",
+      "repetition": 3,
+      "planned_calls": 1,
+      "status": "NOT_RUN_MODEL_TRANSPORT_UNBOUND",
+      "first_user_message_sha256": "eea514b9a77cc56a30b937f07076f7c303d32dff8cb2f7aeb4793b6242d60439"
+    }
+  ],
+  "comparison_baseline": "Existing E result and A/D plans remain bound to their original fixed comparison corpus, retained without a historical rerun"
+}
