@@ -1,0 +1,24 @@
+{
+  "command": [
+    "node",
+    "research/portable-loom-kit-assay-20261009/diagnose-corrected-footer.mjs"
+  ],
+  "source_commit": "0bf0ba2e42be2e9dcfed2bb4fcdb03f2ff77d2bf",
+  "started_at": "2026-10-09T06:26:08.849430+00:00",
+  "completed_at": "2026-10-09T06:26:09.440395+00:00",
+  "exit_code": 0,
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "provider_calls": 0,
+  "members": [
+    {
+      "path": "research/portable-loom-kit-assay-20261009/raw/corrected-kit-footer-process-001/stdout.json",
+      "bytes": 3517,
+      "sha256": "3c48efc4f02856f7b0f7f9c8835fe9f0d3cfe4b807fc936831ddbe3b75e23fdc"
+    },
+    {
+      "path": "research/portable-loom-kit-assay-20261009/raw/corrected-kit-footer-process-001/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "command": [
+    "node",
+    "research/portable-loom-executable-product-20261009/check-exported-kit.mjs",
+    "/workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/research/portable-loom-kit-assay-20261009/corrected-artifact"
+  ],
+  "source_commit": "0bf0ba2e42be2e9dcfed2bb4fcdb03f2ff77d2bf",
+  "started_at": "2026-10-09T06:26:08.848733+00:00",
+  "completed_at": "2026-10-09T06:26:09.483530+00:00",
+  "exit_code": 0,
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "provider_calls": 0,
+  "members": [
+    {
+      "path": "research/portable-loom-kit-assay-20261009/raw/corrected-kit-package-001/stdout.json",
+      "bytes": 766,
+      "sha256": "ff26474eec376106ebe4906ce5e61935b96b88286eacbb2973b316941ba93ffa"
+    },
+    {
+      "path": "research/portable-loom-kit-assay-20261009/raw/corrected-kit-package-001/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

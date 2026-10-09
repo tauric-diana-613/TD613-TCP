@@ -1,0 +1,17 @@
+{
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "source_revision": "0bf0ba2e42be2e9dcfed2bb4fcdb03f2ff77d2bf",
+  "source_status": "COMMITTED_EXACT_SOURCE",
+  "source_modules": 55,
+  "status": "PASS",
+  "assertions": [
+    "Standalone bounded file-digest verifier passed.",
+    "Exported dependency closure executed selected-only, exact, single-use local carriage.",
+    "Exported closure executed original-byte capture, Check, explicit Admit, Gate, explanation, 39-carrier renderer and Rest.",
+    "Standalone JSONL controller retained one live process through six explicit operations.",
+    "Independent verifier rejected modified exported source bytes."
+  ],
+  "provider_calls": 0,
+  "browser_witness": "UNPERFORMED",
+  "physical_device_witness": "UNPERFORMED"
+}

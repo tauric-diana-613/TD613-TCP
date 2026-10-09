@@ -1,0 +1,194 @@
+{
+  "schema": "td613.loom.exact-kit-corrective-evidence-receipt/v0.1",
+  "created_at": "2026-10-09T06:28:37.928012+00:00",
+  "branch": "research/portable-loom-kit-assay-20261009",
+  "source_commit": "0bf0ba2e42be2e9dcfed2bb4fcdb03f2ff77d2bf",
+  "freeze_commit": "a7f72e747cf37246d242b614c77e1845def132ab",
+  "audit_correction_freeze_commit": "f3c9c2b1cd4436c338d498df56a57bc73e92bf17",
+  "record_function": "CORRECTIVE_EXPORT_WITH_RETAINED_EXECUTION_AND_COUNTEREXAMPLES",
+  "status": "CORRECTED_LOCAL_ENGINEERING_CANDIDATE; ACTUAL_RECEIVER_ASSAY_HELD",
+  "format": [
+    "ZIP",
+    "self-contained HTML",
+    "Markdown",
+    "JSON",
+    "Node JSONL runtime"
+  ],
+  "kit_schema": "td613.loom.standard-executable-kit/v0.1",
+  "artifact_schema": "td613.loom.portable-session-export/v0.1",
+  "source_modules": 55,
+  "original_kit": {
+    "export_commit": "8a5db46f142f642d3d4c90f1a4e456a6732b8b8b",
+    "source_commit": "2a9115cd5106e647188df97991ddaff1dff1a2b9",
+    "sha256": "ebb2b2073554eba843a38162a1a4a8e48e8bf1e3b5f3fd00b4e91b3ba02ca1bf",
+    "unchanged": true
+  },
+  "checks": {
+    "original_frozen_local_battery": {
+      "named_checks_pass": 52,
+      "primary_L_cases_supported": 12,
+      "result": "RESULTS.local.json",
+      "scope": "Original artifact; does not imply full conformance after supplementary counterexamples"
+    },
+    "original_supplementary_footer_diagnostic": {
+      "positive_controls_pass": 1,
+      "negative_controls_contradicted": 3,
+      "result": "raw/footer-diagnostic-001/results.json"
+    },
+    "corrective_source_tests": {
+      "pass": 12,
+      "fail": 0,
+      "hostile_footer_variants": 5,
+      "receipt": "raw/footer-repair-engineering-003/receipt.json"
+    },
+    "corrected_export_footer_diagnostic": {
+      "pass": 6,
+      "fail": 0,
+      "positive_controls": 1,
+      "hostile_controls": 5,
+      "result": "raw/footer-corrected-kit-001/results.json"
+    },
+    "corrected_export_package_check": {
+      "status": "PASS",
+      "assertion_groups": 5,
+      "result": "raw/corrected-kit-package-001/stdout.json"
+    },
+    "corrected_archive": {
+      "evidence_class": "LOCAL_STRUCTURAL_TEST",
+      "source_commit": "0bf0ba2e42be2e9dcfed2bb4fcdb03f2ff77d2bf",
+      "status": "PASS",
+      "archive_member_count": 64,
+      "every_member_exact": true,
+      "archive_sha256": "974f59722b609a137985c40201bbc29f0c1dd55a31f847399f2fe0ab74fce9bf",
+      "archive_bytes": 612662,
+      "completed_at": "2026-10-09T06:28:37.918907+00:00"
+    }
+  },
+  "dollhouse": {
+    "original_audit_preflight": "ENOBUFS; zero adapters executed",
+    "corrected_audit_exit_code": 0,
+    "recommendation": "HELD",
+    "result": "raw/artifact-audit-002/clerk-result.json",
+    "disagreements_preserved": true,
+    "temporal_veto_preserved": true,
+    "model_comparison": "NOT_RUN",
+    "authority": "No execution, provider, merge or deployment authority"
+  },
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "provider_generation_calls": 0,
+  "actual_receiver_trials": 0,
+  "simulated_receiver_trials": 0,
+  "browser_witness": "UNPERFORMED",
+  "physical_device_witness": "UNPERFORMED",
+  "independent_external_witness": "UNPERFORMED",
+  "human_comprehension": "UNMEASURED",
+  "golden_egg": "NOT_ESTABLISHED",
+  "provider_readiness_receipt": "PROVIDER_CURRENT_OBSERVATION.json",
+  "observed_server_key_present": true,
+  "configured_models_callable_in_later_readiness_observation": 5,
+  "receiver_blocks": [
+    "Existing deployed native conduit has a 60000-character input limit; exact portable instructions alone exceed that limit",
+    "Native conduit fixed limits (6 requests, 65536 output tokens) cannot honor registered role/comparison request and token envelopes",
+    "No numerical financial ceiling bound; no eligible model/transport/financial binding",
+    "Corrected artifact has not yet been accepted for the actual receiver phase"
+  ],
+  "prepared_receiver_plan": "CORRECTED_RECEIVER_PLAN.json",
+  "known_exclusions": [
+    "No provider internals/retention telemetry or automatic provider transmission observation",
+    "No browser execution or human-comprehension witness",
+    "No full Markdown/HTML semantic parser; bounded observed footer-pattern checks only",
+    "No cryptographic proof of empirical validity or global fork exclusion",
+    "No automatic live-custody restoration from a prompt export",
+    "No full receiver/model A-D-E comparison execution"
+  ],
+  "assets": [
+    {
+      "path": "research/portable-loom-kit-assay-20261009/portable-loom-standard-corrected.zip",
+      "bytes": 612662,
+      "sha256": "974f59722b609a137985c40201bbc29f0c1dd55a31f847399f2fe0ab74fce9bf"
+    },
+    {
+      "path": "research/portable-loom-kit-assay-20261009/corrected-artifact/portable-loom-standard.md",
+      "bytes": 91514,
+      "sha256": "2d9c23bb6ad26430bcf4fd2a52e9aa5e876a1546265a00087cdb7e7e4f1c1872"
+    },
+    {
+      "path": "research/portable-loom-kit-assay-20261009/corrected-artifact/portable-loom-standard.json",
+      "bytes": 84890,
+      "sha256": "27d88df4643ca95914ce677518c87ce593e928f8ccb08f6b3636dfa776af99cd"
+    },
+    {
+      "path": "research/portable-loom-kit-assay-20261009/corrected-artifact/portable-loom-standard.html",
+      "bytes": 1085419,
+      "sha256": "cb0958b9c0de6fb63876e3312ffd7cc94e6798de353a98e9a53ed7fcd93a52de"
+    },
+    {
+      "path": "research/portable-loom-kit-assay-20261009/corrected-artifact/portable-loom-runtime-manifest.json",
+      "bytes": 24368,
+      "sha256": "fe291938e0432647046067111fc2c75bf242a85893dec68e1bc87eb6c2be0065"
+    },
+    {
+      "path": "research/portable-loom-kit-assay-20261009/corrected-artifact/portable-loom-standard-manifest.json",
+      "bytes": 1524,
+      "sha256": "988bcf3657c0fc020db359d2dcb32963740014dff32ecd833baf02815d72d641"
+    },
+    {
+      "path": "research/portable-loom-kit-assay-20261009/corrected-artifact/START_HERE.md",
+      "bytes": 4162,
+      "sha256": "98f0d3f640015b3f5ef6a46376e16aaad63d879f2329a5aad0dd5b7b3151f864"
+    }
+  ],
+  "included_modules": [
+    {
+      "capability": "Select material and keep excluded bodies local",
+      "execution": "buildLoomAiRequest",
+      "scope": "LOCAL_EGRESS_BOUNDARY"
+    },
+    {
+      "capability": "Authorize one exact carriage",
+      "execution": "issueOutboundAuthorization + prepareOutboundHandoff",
+      "scope": "LOCAL_EGRESS_BOUNDARY"
+    },
+    {
+      "capability": "Preserve policy, task, source and predecessor commitments",
+      "execution": "createPortableLoomReentryCustodian",
+      "scope": "LIVE_LOCAL_CUSTODY"
+    },
+    {
+      "capability": "Bind actual captured answer and receipt bytes",
+      "execution": "bindPortableLoomCapturedResult + portableLoomDigest",
+      "scope": "LOCAL_CAPTURE_ADAPTER"
+    },
+    {
+      "capability": "Check returns before explicit admission",
+      "execution": "custodian.check + custodian.admit",
+      "scope": "LIVE_LOCAL_CUSTODY"
+    },
+    {
+      "capability": "Detect protected literals and evaluate reconstruction probes",
+      "execution": "createPortableLoomGateReport",
+      "scope": "DECLARED_CAPTURE_AND_TARGETS"
+    },
+    {
+      "capability": "Retain alerts, retry history and structural Rest",
+      "execution": "runtime journal + custodian.cancel",
+      "scope": "LIVE_LOCAL_PROCESS"
+    },
+    {
+      "capability": "Carry instructions and persistent footers to receiving AI",
+      "execution": "receiverPrompt",
+      "scope": "RECEIVER_INSTRUCTION_ADHERENCE"
+    },
+    {
+      "capability": "Explain verification using established methods",
+      "execution": "LOOM_GATE_EXPLANATION",
+      "scope": "ACTUAL_CHECK_METHODS"
+    }
+  ],
+  "release": {
+    "merged": false,
+    "deployed": false,
+    "issue_405_touched": false
+  },
+  "historical_research_rerun": false
+}

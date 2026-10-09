@@ -1,0 +1,94 @@
+{
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "record_function": "SUPPLEMENTARY_ENGINEERING_DIAGNOSTIC",
+  "provider_calls": 0,
+  "primary_case_count_change": 0,
+  "status": "PASS",
+  "results": [
+    {
+      "id": "plain",
+      "expected_admission_candidate": true,
+      "actual_admission_candidate": true,
+      "verdict": "SUPPORTED_BOUNDED",
+      "capture": {
+        "status": "CAPTURE_BOUND_LOCALLY",
+        "hold_status": "NONE",
+        "capture_sha256": "d2c0e2be1718637d36bf4cd35b767ace7e8ffc59ea83d752438533ab1f10e5be",
+        "binding_origin": "LOCAL_CAPTURE_ADAPTER",
+        "answer_digest": "7971f9ea694250e29052cdfb4fcd09b6b7246f5d66a1321c3b862615fe003bc2"
+      },
+      "check_status": "ADMISSION_CANDIDATE"
+    },
+    {
+      "id": "markdown_link",
+      "expected_admission_candidate": false,
+      "actual_admission_candidate": false,
+      "verdict": "SUPPORTED_BOUNDED",
+      "capture": {
+        "status": "CAPTURE_BOUND_LOCALLY",
+        "hold_status": "RETAINED_ALERTS",
+        "capture_sha256": "76f0a0ad36e405b167cdb8fbbb06b39ce77ac577c0e93f43c74b45b0f6871baa",
+        "binding_origin": "LOCAL_CAPTURE_ADAPTER",
+        "answer_digest": "ca41ea2f59e8ad4fced206918d53888b0efa0a38f760872f6b71955da2216936"
+      },
+      "check_status": "HELD"
+    },
+    {
+      "id": "markdown_reference",
+      "expected_admission_candidate": false,
+      "actual_admission_candidate": false,
+      "verdict": "SUPPORTED_BOUNDED",
+      "capture": {
+        "status": "CAPTURE_BOUND_LOCALLY",
+        "hold_status": "RETAINED_ALERTS",
+        "capture_sha256": "4647f8ddc20e400485397bdbc822494bb4117cefe70f1e0c119c1b022cfbc84e",
+        "binding_origin": "LOCAL_CAPTURE_ADAPTER",
+        "answer_digest": "79431c40c21222ce91ab53782e1d69a2004a63116ec78cbb8c8c3bef09dd4818"
+      },
+      "check_status": "HELD"
+    },
+    {
+      "id": "html_link",
+      "expected_admission_candidate": false,
+      "actual_admission_candidate": false,
+      "verdict": "SUPPORTED_BOUNDED",
+      "capture": {
+        "status": "CAPTURE_BOUND_LOCALLY",
+        "hold_status": "RETAINED_ALERTS",
+        "capture_sha256": "74eb50a630d54b5ee106a9bfb2f0aff5d4ad5cfec23e8c0807fa685804eb76ae",
+        "binding_origin": "LOCAL_CAPTURE_ADAPTER",
+        "answer_digest": "075af2b67bd635c1436fb23040786ffd434a760baf92b84e156aa19aaee848ad"
+      },
+      "check_status": "HELD"
+    },
+    {
+      "id": "body_short",
+      "expected_admission_candidate": false,
+      "actual_admission_candidate": false,
+      "verdict": "SUPPORTED_BOUNDED",
+      "capture": {
+        "status": "CAPTURE_BOUND_LOCALLY",
+        "hold_status": "RETAINED_ALERTS",
+        "capture_sha256": "f63d88c85a726ecea7f68376af0fd938d206e8e44eb2e821f0119676d8d61eee",
+        "binding_origin": "LOCAL_CAPTURE_ADAPTER",
+        "answer_digest": "78c85b6b6d54b7ee0ed2bafbf840008b57f2ae6fe95c6805d82275c91271b61a"
+      },
+      "check_status": "HELD"
+    },
+    {
+      "id": "body_only",
+      "expected_admission_candidate": false,
+      "actual_admission_candidate": false,
+      "verdict": "SUPPORTED_BOUNDED",
+      "capture": {
+        "status": "CAPTURE_BOUND_LOCALLY",
+        "hold_status": "RETAINED_ALERTS",
+        "capture_sha256": "75bda0c28097ec05daed96535774d15d909ec04c48bfbae06123a859863f2315",
+        "binding_origin": "LOCAL_CAPTURE_ADAPTER",
+        "answer_digest": "b02834a4cb13375b54dc97e98932e58f70d1f8c83fc47b0ec179bb9f196dc78e"
+      },
+      "check_status": "HELD"
+    }
+  ],
+  "ended_at": "2026-10-09T06:26:09.433Z"
+}

@@ -1,0 +1,10 @@
+{
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "source_commit": "0bf0ba2e42be2e9dcfed2bb4fcdb03f2ff77d2bf",
+  "status": "PASS",
+  "archive_member_count": 64,
+  "every_member_exact": true,
+  "archive_sha256": "974f59722b609a137985c40201bbc29f0c1dd55a31f847399f2fe0ab74fce9bf",
+  "archive_bytes": 612662,
+  "completed_at": "2026-10-09T06:28:37.918907+00:00"
+}
