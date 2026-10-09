@@ -3,6 +3,8 @@ import { createHash } from 'node:crypto';
 export const ASSAY_REQUEST_SCHEMA = 'td613.loom.server-assay-request/v0.1';
 export const ASSAY_RESPONSE_SCHEMA = 'td613.loom.server-assay-response/v0.1';
 export const ASSAY_POLICY_SCHEMA = 'td613.loom.server-assay-policy/v0.2';
+export const ASSAY_MAX_PROVIDER_TIMEOUT_MS = 240000;
+export const ASSAY_CLIENT_RETURN_MARGIN_MS = 40000;
 export const sha256 = value => createHash('sha256').update(value).digest('hex');
 export function canonicalJson(value) {
   if (Array.isArray(value)) return '[' + value.map(canonicalJson).join(',') + ']';
@@ -30,7 +32,7 @@ export function validateAssayPolicy(p, at = Date.now()) {
     && b.response_model_ids.every(x => typeof x === 'string' && /^[a-zA-Z0-9._-]{1,100}$/.test(x)), 'ASSAY_MODEL_BINDING');
   const l = b.limits, g = b.generation_parameters, pricing = b.pricing;
   requireThat(integer(l?.max_calls, 1, 288) && integer(l.max_input_tokens_per_call, 1, 1000000)
-    && integer(l.max_output_tokens_per_call, 1, 8192) && integer(l.timeout_ms, 1, 120000)
+    && integer(l.max_output_tokens_per_call, 1, 8192) && integer(l.timeout_ms, 1, ASSAY_MAX_PROVIDER_TIMEOUT_MS)
     && integer(l.max_response_bytes, 1, 2000000) && typeof l.max_cost_usd === 'number'
     && Number.isFinite(l.max_cost_usd) && l.max_cost_usd > 0 && l.max_cost_usd <= 1000000
     && integer(p.receiver_output_tokens, 1, l.max_output_tokens_per_call), 'ASSAY_NUMERICAL_LIMITS');

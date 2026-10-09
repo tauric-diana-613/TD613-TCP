@@ -2,7 +2,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
-import { ASSAY_REQUEST_SCHEMA, ASSAY_RESPONSE_SCHEMA, sha256, requireThat, validateAssayPolicy, buildAssayProviderWire, inspectAssayResponse } from '../../server/loom-assay-contract.js';
+import { ASSAY_REQUEST_SCHEMA, ASSAY_RESPONSE_SCHEMA, ASSAY_CLIENT_RETURN_MARGIN_MS, sha256, requireThat, validateAssayPolicy, buildAssayProviderWire, inspectAssayResponse } from '../../server/loom-assay-contract.js';
 
 const estate = 'research/portable-loom-server-transport-20261009';
 export function loadServerManifest(root = process.cwd()) {
@@ -61,7 +61,7 @@ export async function captureServerCall(policy, request, directory, { environmen
     evidence_class: fixture ? 'LOCAL_STRUCTURAL_TEST' : 'ACTUAL_RECEIVER_TEST', url,
     request_sha256: sha256(body), provider_request_sha256: wire.request_sha256, started_at: started, retries: 0 };
   writeFileSync(join(directory, 'request.json'), JSON.stringify(record, null, 2) + '\n', { flag: 'wx' });
-  const controller = new AbortController(), timer = setTimeout(() => controller.abort(), policy.binding.limits.timeout_ms + 20000);
+  const controller = new AbortController(), timer = setTimeout(() => controller.abort(), policy.binding.limits.timeout_ms + ASSAY_CLIENT_RETURN_MARGIN_MS);
   const chunks = []; let response, parsed = null, error = null, length = 0;
   const relayLimit = policy.binding.limits.max_response_bytes * 3 + 32768;
   try {

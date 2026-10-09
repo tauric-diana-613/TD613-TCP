@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { KHONAPOLIT_MAX_PROVIDER_CALLS, KHONAPOLIT_MAX_STRUCTURAL_REPAIRS, KHONAPOLIT_MAX_TOTAL_PROVIDER_REQUESTS } from '../server/khonapolit-quality.js';
+import { LOOM_TASK_TIMEOUT_MS } from '../server/loom-task.js';
+import { ASSAY_MAX_PROVIDER_TIMEOUT_MS } from '../server/loom-assay-contract.js';
 
 const source = fs.readFileSync('scripts/loom-production-canary.mjs', 'utf8');
 const releaseWorkflow = fs.readFileSync('.github/workflows/vercel-operator-release.yml', 'utf8');
@@ -21,9 +23,14 @@ assert.ok(marrowlineProbe < loomProbe, 'Marrowline and Loom witnesses must execu
 const witnessTimeoutMatch = source.match(/const LIVE_WITNESS_TIMEOUT_MS = (\d+);/);
 assert.ok(witnessTimeoutMatch, 'production canary must declare one explicit per-witness timeout');
 const witnessTimeoutMs = Number(witnessTimeoutMatch[1]);
-assert.equal(witnessTimeoutMs, 270000, 'remote observer must leave return-flight margin beyond the 240-second Vercel function ceiling');
-const providerFunctionCeilingMs = Number(vercel.functions?.['api/khonapolit.js']?.maxDuration || 0) * 1000;
-assert.equal(providerFunctionCeilingMs, 240000, 'production provider route must retain its bounded 240-second server ceiling');
+assert.equal(witnessTimeoutMs, 270000, 'manual observer retains its bounded ordinary-route return-flight margin');
+const functionCeilingMs = Number(vercel.functions?.['api/khonapolit.js']?.maxDuration || 0) * 1000;
+assert.equal(functionCeilingMs, 300000, 'assay host retains its bounded 300-second function ceiling');
+assert.ok(functionCeilingMs >= ASSAY_MAX_PROVIDER_TIMEOUT_MS + 60000, 'assay capture and ledger completion retain sixty seconds of host margin');
+const wallTimeoutMatch = qualityServer.match(/const WALL_TIMEOUT_MS = (\d+);/);
+assert.ok(wallTimeoutMatch, 'ordinary Marrowline route declares its execution deadline');
+const providerFunctionCeilingMs = Math.max(Number(wallTimeoutMatch[1]), LOOM_TASK_TIMEOUT_MS);
+assert.equal(providerFunctionCeilingMs, 210000, 'ordinary canary routes retain their bounded provider execution deadlines');
 assert.ok(
   witnessTimeoutMs >= providerFunctionCeilingMs + 15000,
   'remote witness timeout must exceed the server ceiling by at least fifteen seconds of return-flight margin'

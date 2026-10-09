@@ -145,3 +145,16 @@ test('a mutated policy cannot silently reuse the old run commitment', async () =
     assert.equal((await db.query('SELECT calls_reserved FROM td613_assay_runs')).rows[0].calls_reserved, 0);
   } finally { await db.close(); }
 });
+test('the bounded longer deadline preserves permanent HOLD and reservation accounting', async () => {
+  const p = policy(); p.binding.limits.timeout_ms = 240000;
+  const { db, pool } = await setup(p);
+  try {
+    const reserved = await reserveCall(pool, input());
+    await completeCall(pool, complete(reserved, 'HELD_EVIDENCE_GAP'));
+    await assert.rejects(inspectRun(pool, { run_id: 'fixture', credential_sha256: digest }), /RUN_UNAVAILABLE/);
+    await assert.rejects(reserveCall(pool, input('FIRST_CONFIGURED_RECEIVER-R02-2')), /RUN_UNAVAILABLE/);
+    const row = (await db.query('SELECT status,calls_reserved,reserved_cost_nanos FROM td613_assay_runs')).rows[0];
+    assert.equal(row.status, 'HELD'); assert.equal(row.calls_reserved, 1);
+    assert.equal(String(row.reserved_cost_nanos), reserved.reserved_cost_nanos);
+  } finally { await db.close(); }
+});

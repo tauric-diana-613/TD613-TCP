@@ -1,10 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, mkdtempSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { primaryCallPlan, runFirstReceiver } from '../research/portable-loom-assay-activation-20261009/run-first-receiver.mjs';
+import { primaryCallPlan, continuationCallPlan, runFirstReceiver } from '../research/portable-loom-assay-activation-20261009/run-first-receiver.mjs';
 import { loadServerManifest } from '../research/portable-loom-server-transport-20261009/server-client.mjs';
+import { sha256, canonicalJson, inspectAssayResponse } from '../server/loom-assay-contract.js';
 const { manifest } = loadServerManifest();
 function policy() {
   const p = JSON.parse(readFileSync('research/portable-loom-server-transport-20261009/POLICY.template.json'));
@@ -47,4 +48,46 @@ test('the runner rejects a widened budget or call count before opening a run or 
     }
     assert.equal(calls, 0);
   } finally { rmSync(root, { recursive: true, force: true }); }
+});
+function continuationFixture(root, n = 2) {
+  const old = policy(), p = policy(); old.run_id = 'synthetic-old'; p.run_id = 'synthetic-new';
+  p.protocol_commit = p.binding.protocol_commit = 'b'.repeat(40);
+  p.binding.limits.max_calls = 54 - n; p.binding.limits.max_cost_usd = 9.45784; p.binding.limits.timeout_ms = 240000;
+  const predecessor_policy_path = join(root, 'old-policy.json'); writeFileSync(predecessor_policy_path, JSON.stringify(old));
+  const completed_prefix = primaryCallPlan(manifest).slice(0, n).map((trial, i) => {
+    const directory = join(root, `synthetic-prefix-${i}`); mkdirSync(directory);
+    const provider = Buffer.from(JSON.stringify({ candidates: [{ finishReason: 'STOP', content: { parts: [{ text: 'Synthetic fixture only.' }] } }],
+      modelVersion: old.binding.response_model_ids[0], usageMetadata: { promptTokenCount: 100, totalTokenCount: 115 } }));
+    const returned = inspectAssayResponse(provider, old, 8192);
+    const response = { source_commit: old.protocol_commit, response_complete: true, provider_requests: 1, retries: 0,
+      provider_response_base64: provider.toString('base64'), provider_response_sha256: sha256(provider), returned };
+    const wrapper = Buffer.from(JSON.stringify(response)); writeFileSync(join(directory, 'response.body.bin'), wrapper);
+    const cap = { trial, status: 'CAPTURED_NOT_ADMITTED', evidence_class: 'ACTUAL_RECEIVER_TEST', fixture_transport: false,
+      source_commit: old.protocol_commit, artifact_sha256: old.artifact_sha256, response_sha256: sha256(wrapper), response, returned };
+    const bytes = Buffer.from(JSON.stringify(cap)), capture_path = join(directory, 'capture.json'); writeFileSync(capture_path, bytes);
+    return { capture_path, capture_sha256: sha256(bytes) };
+  });
+  return { p, continuation: { schema: 'td613.loom.first-receiver-continuation/v0.1', authorization_record: 'SYNTHETIC_LOCAL_TEST_ONLY',
+    prior_reserved_cost_nanos: '542160000', predecessor_policy_path, predecessor_policy_sha256: sha256(canonicalJson(old)), completed_prefix } };
+}
+test('a continuation preserves the two complete trials, starts at the failed third trial, and remains under the aggregate $10 cap', () => {
+  const root = mkdtempSync(join(tmpdir(), 'td613-continuation-'));
+  try {
+    const { p, continuation } = continuationFixture(root), plan = continuationCallPlan(p, manifest, continuation);
+    assert.equal(plan.length, 52); assert.equal(plan[0].trial_id, 'FIRST_CONFIGURED_RECEIVER-R01-3');
+    assert.equal(plan[0].turn_index, 0); assert.equal(plan.at(-1).trial_id, 'FIRST_CONFIGURED_RECEIVER-R12-3');
+    p.binding.limits.max_cost_usd = 9.457840001; assert.throws(() => continuationCallPlan(p, manifest, continuation), /AGGREGATE_BUDGET/);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+test('a continuation rejects changed capture bytes, skipped trials, changed decoding and partial multi-turn carryover', () => {
+  for (const mutation of ['bytes', 'skip', 'decoding', 'partial']) {
+    const root = mkdtempSync(join(tmpdir(), 'td613-continuation-reject-'));
+    try {
+      const { p, continuation } = continuationFixture(root, mutation === 'partial' ? 4 : 2);
+      if (mutation === 'bytes') writeFileSync(continuation.completed_prefix[0].capture_path, '{}');
+      if (mutation === 'skip') continuation.completed_prefix.reverse();
+      if (mutation === 'decoding') p.binding.generation_parameters.thinking_level = 'low';
+      assert.throws(() => continuationCallPlan(p, manifest, continuation), /CONTINUATION_(PREFIX_CAPTURE|MEASUREMENT_CHANGED|PARTIAL_TRIAL)/);
+    } finally { rmSync(root, { recursive: true, force: true }); }
+  }
 });
