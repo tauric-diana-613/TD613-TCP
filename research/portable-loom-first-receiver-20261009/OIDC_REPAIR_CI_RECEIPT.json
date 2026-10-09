@@ -1,0 +1,94 @@
+{
+  "schema": "td613.loom.request-identity-repair-ci-receipt/v0.1",
+  "recorded_at": "2026-10-09T16:02:40.620461+00:00",
+  "repair": {
+    "pr": 1439,
+    "branch": "fix/portable-loom-request-oidc-20261009",
+    "head_sha": "80eee40531d6ae5e3f77dc04a1ee78ebaf74f914",
+    "base_sha": "916ed6cfc6f21f49d30198c407f57c6f9ed0b0d0",
+    "state": "OPEN_UNMERGED",
+    "remote_source_blobs_verified": 12
+  },
+  "original_attempt": {
+    "run_id": "portable-loom-first-receiver-20261009",
+    "evidence_commit": "3713d62a707de7e93e5c33836a8f6d75c216ec26",
+    "status": "HELD",
+    "actual_relay_attempts": 1,
+    "captured_receiver_answers": 0,
+    "ledger_calls_reserved": 0,
+    "ledger_reserved_cost_nanos": "0",
+    "ledger_retained_provider_call_rows": 0
+  },
+  "local": {
+    "pass": 33,
+    "fail": 0,
+    "evidence_class": "LOCAL_STRUCTURAL_TEST",
+    "receipt_path": "research/portable-loom-oidc-repair-20261009/raw/local-003/receipt.json",
+    "receipt_commit": "80eee40531d6ae5e3f77dc04a1ee78ebaf74f914",
+    "stdout_sha256": "d6f9ff8c6e73ab450004713f79415921017dee35421cc55aa40b0b635c4a0548"
+  },
+  "ci": {
+    "run_id": 37955218539,
+    "run_number": 5194,
+    "url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/37955218539",
+    "head_sha": "80eee40531d6ae5e3f77dc04a1ee78ebaf74f914",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-10-09T15:54:42Z",
+    "updated_at": "2026-10-09T15:57:10Z",
+    "contract_job_id": 113904010241,
+    "bounded_transport_ledger_checks": {
+      "pass": 34,
+      "fail": 0,
+      "evidence_class": "LOCAL_STRUCTURAL_TEST",
+      "actual_provider_calls": 0
+    },
+    "browser_witness": "NOT_RUN; browser steps skipped by selected scope",
+    "full_repository_validation": "SKIPPED"
+  },
+  "job_log_retention": {
+    "retained": "EXACT_BOUNDED_STEP_EXCERPT",
+    "full_fetched_log_sha256": "a94e32700c6cbfd2583de45a5c0a9964c7295a910c20ccbec541532c885e55b7",
+    "full_fetched_log_bytes": 657962,
+    "excerpt_original_start_line": 6619,
+    "excerpt_original_end_line_inclusive": 6849,
+    "source_url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/37955218539/job/113904010241",
+    "full_log_status": "FETCHED_TO_SCRATCH; NOT_REPUBLISHED_IN_FULL"
+  },
+  "files": [
+    {
+      "path": "research/portable-loom-first-receiver-20261009/REPAIR_STATUS.md",
+      "bytes": 3322,
+      "sha256": "e93921a4fc6af6a72a46227cfa6cd38f35c18d12e6c64a733402d0c5f21f37f7"
+    },
+    {
+      "path": "research/portable-loom-first-receiver-20261009/raw/ci-002/workflow.json",
+      "bytes": 511,
+      "sha256": "99b1384245f7a0aa331cb4816a54bc34f9cec62d97663386dac25444b167725d"
+    },
+    {
+      "path": "research/portable-loom-first-receiver-20261009/raw/ci-002/jobs.json",
+      "bytes": 14139,
+      "sha256": "03a2a4a825c237ea9f161d018b27eb01d14eb8fa9d3c5ddd9610473a44a1e9e2"
+    },
+    {
+      "path": "research/portable-loom-first-receiver-20261009/raw/ci-002/bounded-contract-job-excerpt.log",
+      "bytes": 15697,
+      "sha256": "aaaaa43328194cececabc8e53daa0d76e0deb08bce4ab8d28d4d71ef07e5f376"
+    }
+  ],
+  "follow_on": {
+    "run_id": "portable-loom-first-receiver-20261009-a2",
+    "status": "PREPARED_INACTIVE",
+    "authorization": "PENDING_FRESH_DIRECT_OPERATOR_GRANT",
+    "enrolled": false,
+    "merge_or_release_executed": false,
+    "actual_receiver_calls": 0,
+    "max_calls": 54,
+    "max_token_charges_usd": 10,
+    "primary_retries": 0,
+    "old_attempt_preserved": true,
+    "independent_case_credit_added": 0
+  },
+  "claim_ceiling": "Repair source and selected CI contracts verified. Repaired production transport and portable receiver behavior NOT_OBSERVED."
+}

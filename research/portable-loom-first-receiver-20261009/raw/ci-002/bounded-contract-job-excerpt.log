@@ -1,0 +1,231 @@
+2026-10-09T15:56:54.2727328Z ##[group]Run npm ci --prefix neon/functions/loom-assay-budget --ignore-scripts --no-audit --no-fund
+2026-10-09T15:56:54.2728055Z [36;1mnpm ci --prefix neon/functions/loom-assay-budget --ignore-scripts --no-audit --no-fund[0m
+2026-10-09T15:56:54.2728822Z [36;1mnode --test tests/loom-assay-transport.test.mjs tests/loom-assay-budget.test.mjs tests/loom-assay-primary-run.test.mjs[0m
+2026-10-09T15:56:54.2798429Z shell: /usr/bin/bash -e {0}
+2026-10-09T15:56:54.2798689Z env:
+2026-10-09T15:56:54.2798894Z   NODE_VERSION: 22
+2026-10-09T15:56:54.2799121Z   PYTHON_VERSION: 3.12
+2026-10-09T15:56:54.2799370Z   PLAYWRIGHT_VERSION: 1.53.2
+2026-10-09T15:56:54.2799724Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-09T15:56:54.2800165Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-09T15:56:54.2800586Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-09T15:56:54.2801030Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-09T15:56:54.2801419Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-09T15:56:54.2801801Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-09T15:56:54.2802141Z ##[endgroup]
+2026-10-09T15:56:55.0668400Z 
+2026-10-09T15:56:55.0669235Z added 16 packages in 727ms
+2026-10-09T15:56:55.1269183Z TAP version 13
+2026-10-09T15:56:57.0316954Z # Subtest: real local PostgreSQL accepts the migration and retains reservation and completion metadata
+2026-10-09T15:56:57.0339271Z ok 1 - real local PostgreSQL accepts the migration and retains reservation and completion metadata
+2026-10-09T15:56:57.0340419Z   ---
+2026-10-09T15:56:57.0341190Z   duration_ms: 1820.232718
+2026-10-09T15:56:57.0341980Z   type: 'test'
+2026-10-09T15:56:57.0342496Z   ...
+2026-10-09T15:56:58.1409128Z # Subtest: the SQL reservation rejects comparative trials under first-receiver authority without spending
+2026-10-09T15:56:58.1416302Z ok 2 - the SQL reservation rejects comparative trials under first-receiver authority without spending
+2026-10-09T15:56:58.1417479Z   ---
+2026-10-09T15:56:58.1417786Z   duration_ms: 1109.138787
+2026-10-09T15:56:58.1418170Z   type: 'test'
+2026-10-09T15:56:58.1418485Z   ...
+2026-10-09T15:56:59.2646583Z # Subtest: duplicate reservations queued against the local engine commit exactly once
+2026-10-09T15:56:59.2648543Z ok 3 - duplicate reservations queued against the local engine commit exactly once
+2026-10-09T15:56:59.2649210Z   ---
+2026-10-09T15:56:59.2649845Z   duration_ms: 1123.594389
+2026-10-09T15:56:59.2650336Z   type: 'test'
+2026-10-09T15:56:59.2650663Z   ...
+2026-10-09T15:57:01.4964621Z # Subtest: financial ceiling and call ceiling rollback without refunds or partial insertion
+2026-10-09T15:57:01.4965810Z ok 4 - financial ceiling and call ceiling rollback without refunds or partial insertion
+2026-10-09T15:57:01.4966543Z   ---
+2026-10-09T15:57:01.4966884Z   duration_ms: 2228.909527
+2026-10-09T15:57:01.4967271Z   type: 'test'
+2026-10-09T15:57:01.4967600Z   ...
+2026-10-09T15:57:02.6530197Z # Subtest: missing, wrong and failed predecessors cannot authorize a continuation
+2026-10-09T15:57:02.6531882Z ok 5 - missing, wrong and failed predecessors cannot authorize a continuation
+2026-10-09T15:57:02.6532876Z   ---
+2026-10-09T15:57:02.6533578Z   duration_ms: 1156.968044
+2026-10-09T15:57:02.6534217Z   type: 'test'
+2026-10-09T15:57:02.6535040Z   ...
+2026-10-09T15:57:04.8872072Z # Subtest: completion is single-use and failed transport closes the run to further calls
+2026-10-09T15:57:04.8873585Z ok 6 - completion is single-use and failed transport closes the run to further calls
+2026-10-09T15:57:04.8874805Z   ---
+2026-10-09T15:57:04.8875153Z   duration_ms: 2233.206172
+2026-10-09T15:57:04.8875632Z   type: 'test'
+2026-10-09T15:57:04.8875961Z   ...
+2026-10-09T15:57:06.0919661Z # Subtest: wrong capability, changed artifact, second-provider slot and inflated output cap preserve zero spend
+2026-10-09T15:57:06.0921796Z ok 7 - wrong capability, changed artifact, second-provider slot and inflated output cap preserve zero spend
+2026-10-09T15:57:06.0922395Z   ---
+2026-10-09T15:57:06.0922630Z   duration_ms: 1111.940306
+2026-10-09T15:57:06.0922929Z   type: 'test'
+2026-10-09T15:57:06.0923269Z   ...
+2026-10-09T15:57:06.0924328Z # Subtest: workload authentication verifies RSA signature and exact owner/project/environment/time
+2026-10-09T15:57:06.0925542Z ok 8 - workload authentication verifies RSA signature and exact owner/project/environment/time
+2026-10-09T15:57:06.0926005Z   ---
+2026-10-09T15:57:06.0926223Z   duration_ms: 90.999483
+2026-10-09T15:57:06.0926467Z   type: 'test'
+2026-10-09T15:57:06.0926676Z   ...
+2026-10-09T15:57:07.1886385Z # Subtest: a mutated policy cannot silently reuse the old run commitment
+2026-10-09T15:57:07.1887536Z ok 9 - a mutated policy cannot silently reuse the old run commitment
+2026-10-09T15:57:07.1888571Z   ---
+2026-10-09T15:57:07.1888813Z   duration_ms: 1103.37123
+2026-10-09T15:57:07.1889075Z   type: 'test'
+2026-10-09T15:57:07.1889393Z   ...
+2026-10-09T15:57:07.2267336Z # Subtest: the primary plan contains 54 frozen calls, three independent repetitions and ordered continuations
+2026-10-09T15:57:07.2268821Z ok 10 - the primary plan contains 54 frozen calls, three independent repetitions and ordered continuations
+2026-10-09T15:57:07.2269635Z   ---
+2026-10-09T15:57:07.2269986Z   duration_ms: 5.473265
+2026-10-09T15:57:07.2270362Z   type: 'test'
+2026-10-09T15:57:07.2270694Z   ...
+2026-10-09T15:57:07.2271529Z # Subtest: a held call retains its result, stops subsequent execution and cannot overwrite the attempt
+2026-10-09T15:57:07.2272985Z ok 11 - a held call retains its result, stops subsequent execution and cannot overwrite the attempt
+2026-10-09T15:57:07.2273808Z   ---
+2026-10-09T15:57:07.2274225Z   duration_ms: 14.556454
+2026-10-09T15:57:07.2274885Z   type: 'test'
+2026-10-09T15:57:07.2275295Z   ...
+2026-10-09T15:57:07.2276213Z # Subtest: the runner rejects a widened budget or call count before opening a run or generating
+2026-10-09T15:57:07.2277429Z ok 12 - the runner rejects a widened budget or call count before opening a run or generating
+2026-10-09T15:57:07.2278129Z   ---
+2026-10-09T15:57:07.2278468Z   duration_ms: 0.92823
+2026-10-09T15:57:07.2278837Z   type: 'test'
+2026-10-09T15:57:07.2279159Z   ...
+2026-10-09T15:57:07.2280497Z # Subtest: full corrected packet reaches one explicit provider request after durable reservation
+2026-10-09T15:57:07.2281705Z ok 13 - full corrected packet reaches one explicit provider request after durable reservation
+2026-10-09T15:57:07.2282417Z   ---
+2026-10-09T15:57:07.2282757Z   duration_ms: 37.400276
+2026-10-09T15:57:07.2283129Z   type: 'test'
+2026-10-09T15:57:07.2283449Z   ...
+2026-10-09T15:57:07.2284179Z # Subtest: disabled and unauthorized requests cannot inspect the ledger or generate
+2026-10-09T15:57:07.2285466Z ok 14 - disabled and unauthorized requests cannot inspect the ledger or generate
+2026-10-09T15:57:07.2286119Z   ---
+2026-10-09T15:57:07.2286457Z   duration_ms: 9.548941
+2026-10-09T15:57:07.2286825Z   type: 'test'
+2026-10-09T15:57:07.2287155Z   ...
+2026-10-09T15:57:07.2287851Z # Subtest: missing numerical limits, expired policy and missing pricing fail closed
+2026-10-09T15:57:07.2288892Z ok 15 - missing numerical limits, expired policy and missing pricing fail closed
+2026-10-09T15:57:07.2289546Z   ---
+2026-10-09T15:57:07.2289872Z   duration_ms: 0.683191
+2026-10-09T15:57:07.2290250Z   type: 'test'
+2026-10-09T15:57:07.2290576Z   ...
+2026-10-09T15:57:07.2291381Z # Subtest: changed artifact, added tool request, wrong source and unregistered trial do not generate
+2026-10-09T15:57:07.2292608Z ok 16 - changed artifact, added tool request, wrong source and unregistered trial do not generate
+2026-10-09T15:57:07.2293328Z   ---
+2026-10-09T15:57:07.2293653Z   duration_ms: 32.346915
+2026-10-09T15:57:07.2294033Z   type: 'test'
+2026-10-09T15:57:07.2294350Z   ...
+2026-10-09T15:57:07.2295213Z # Subtest: the second provider slot cannot be silently filled by this Gemini conduit
+2026-10-09T15:57:07.2296530Z ok 17 - the second provider slot cannot be silently filled by this Gemini conduit
+2026-10-09T15:57:07.2297228Z   ---
+2026-10-09T15:57:07.2297547Z   duration_ms: 2.251626
+2026-10-09T15:57:07.2297911Z   type: 'test'
+2026-10-09T15:57:07.2298237Z   ...
+2026-10-09T15:57:07.2298984Z # Subtest: first-receiver authority cannot be spent on registered comparative prompts
+2026-10-09T15:57:07.2300161Z ok 18 - first-receiver authority cannot be spent on registered comparative prompts
+2026-10-09T15:57:07.2300829Z   ---
+2026-10-09T15:57:07.2301150Z   duration_ms: 1.673013
+2026-10-09T15:57:07.2301519Z   type: 'test'
+2026-10-09T15:57:07.2301845Z   ...
+2026-10-09T15:57:07.2302521Z # Subtest: credential material cannot enter outbound input or releasable response
+2026-10-09T15:57:07.2303542Z ok 19 - credential material cannot enter outbound input or releasable response
+2026-10-09T15:57:07.2304196Z   ---
+2026-10-09T15:57:07.2304702Z   duration_ms: 13.434882
+2026-10-09T15:57:07.2305063Z   type: 'test'
+2026-10-09T15:57:07.2305383Z   ...
+2026-10-09T15:57:07.2306012Z # Subtest: budget refusal or mismatched reservation prevents generation
+2026-10-09T15:57:07.2306906Z ok 20 - budget refusal or mismatched reservation prevents generation
+2026-10-09T15:57:07.2307475Z   ---
+2026-10-09T15:57:07.2307786Z   duration_ms: 15.442159
+2026-10-09T15:57:07.2308172Z   type: 'test'
+2026-10-09T15:57:07.2308491Z   ...
+2026-10-09T15:57:07.2309396Z # Subtest: non-success, truncated, wrong-model and over-budget returns retain one failed call without retry
+2026-10-09T15:57:07.2310745Z ok 21 - non-success, truncated, wrong-model and over-budget returns retain one failed call without retry
+2026-10-09T15:57:07.2311527Z   ---
+2026-10-09T15:57:07.2311854Z   duration_ms: 32.438784
+2026-10-09T15:57:07.2312236Z   type: 'test'
+2026-10-09T15:57:07.2312558Z   ...
+2026-10-09T15:57:07.2313329Z # Subtest: response byte overflow retains a bounded prefix and identifies incomplete capture
+2026-10-09T15:57:07.2314689Z ok 22 - response byte overflow retains a bounded prefix and identifies incomplete capture
+2026-10-09T15:57:07.2315420Z   ---
+2026-10-09T15:57:07.2315750Z   duration_ms: 9.390222
+2026-10-09T15:57:07.2316110Z   type: 'test'
+2026-10-09T15:57:07.2316435Z   ...
+2026-10-09T15:57:07.2317105Z # Subtest: failed completion cannot be presented as a completed provider trial
+2026-10-09T15:57:07.2318494Z ok 23 - failed completion cannot be presented as a completed provider trial
+2026-10-09T15:57:07.2319129Z   ---
+2026-10-09T15:57:07.2319454Z   duration_ms: 9.582783
+2026-10-09T15:57:07.2319819Z   type: 'test'
+2026-10-09T15:57:07.2320152Z   ...
+2026-10-09T15:57:07.2320835Z # Subtest: budget client rejects arbitrary endpoints and missing workload identity
+2026-10-09T15:57:07.2321832Z ok 24 - budget client rejects arbitrary endpoints and missing workload identity
+2026-10-09T15:57:07.2322465Z   ---
+2026-10-09T15:57:07.2322782Z   duration_ms: 0.598262
+2026-10-09T15:57:07.2323137Z   type: 'test'
+2026-10-09T15:57:07.2323449Z   ...
+2026-10-09T15:57:07.2324146Z # Subtest: budget function verifies workload before body parsing or database work
+2026-10-09T15:57:07.2325415Z ok 25 - budget function verifies workload before body parsing or database work
+2026-10-09T15:57:07.2326066Z   ---
+2026-10-09T15:57:07.2326411Z   duration_ms: 2.080828
+2026-10-09T15:57:07.2326774Z   type: 'test'
+2026-10-09T15:57:07.2327098Z   ...
+2026-10-09T15:57:07.2327892Z # Subtest: budget dispatch rejects inherited operation names and oversized bodies before database work
+2026-10-09T15:57:07.2329101Z ok 26 - budget dispatch rejects inherited operation names and oversized bodies before database work
+2026-10-09T15:57:07.2329855Z   ---
+2026-10-09T15:57:07.2330169Z   duration_ms: 1.58462
+2026-10-09T15:57:07.2330503Z   type: 'test'
+2026-10-09T15:57:07.2330794Z   ...
+2026-10-09T15:57:07.2331567Z # Subtest: client retains exact mock bytes, keeps fixture evidence class, and rejects existing attempts
+2026-10-09T15:57:07.2332750Z ok 27 - client retains exact mock bytes, keeps fixture evidence class, and rejects existing attempts
+2026-10-09T15:57:07.2333488Z   ---
+2026-10-09T15:57:07.2334093Z   duration_ms: 19.561362
+2026-10-09T15:57:07.2334703Z   type: 'test'
+2026-10-09T15:57:07.2335029Z   ...
+2026-10-09T15:57:07.2335972Z # Subtest: the retained capture exposes the verified answer used by continuation and keeps fixture authority closed
+2026-10-09T15:57:07.2337445Z ok 28 - the retained capture exposes the verified answer used by continuation and keeps fixture authority closed
+2026-10-09T15:57:07.2338231Z   ---
+2026-10-09T15:57:07.2338524Z   duration_ms: 30.738209
+2026-10-09T15:57:07.2338861Z   type: 'test'
+2026-10-09T15:57:07.2339155Z   ...
+2026-10-09T15:57:07.2339793Z # Subtest: client cannot continue using fixture captures or wrong predecessor identity
+2026-10-09T15:57:07.2340928Z ok 29 - client cannot continue using fixture captures or wrong predecessor identity
+2026-10-09T15:57:07.2341576Z   ---
+2026-10-09T15:57:07.2341897Z   duration_ms: 1.144636
+2026-10-09T15:57:07.2342282Z   type: 'test'
+2026-10-09T15:57:07.2342609Z   ...
+2026-10-09T15:57:07.2343440Z # Subtest: canonical API dispatch and deployment packaging preserve dedicated bounded operation
+2026-10-09T15:57:07.2344868Z ok 30 - canonical API dispatch and deployment packaging preserve dedicated bounded operation
+2026-10-09T15:57:07.2345615Z   ---
+2026-10-09T15:57:07.2345951Z   duration_ms: 0.426052
+2026-10-09T15:57:07.2346328Z   type: 'test'
+2026-10-09T15:57:07.2346657Z   ...
+2026-10-09T15:57:07.2347659Z # Subtest: source-bound public activation admits only its run and does not contain provider or caller secrets
+2026-10-09T15:57:07.2349109Z ok 31 - source-bound public activation admits only its run and does not contain provider or caller secrets
+2026-10-09T15:57:07.2349921Z   ---
+2026-10-09T15:57:07.2350257Z   duration_ms: 3.882085
+2026-10-09T15:57:07.2350654Z   type: 'test'
+2026-10-09T15:57:07.2351016Z   ...
+2026-10-09T15:57:07.2351973Z # Subtest: request workload identity reaches the budget service and rotates without changing caller authority
+2026-10-09T15:57:07.2353317Z ok 32 - request workload identity reaches the budget service and rotates without changing caller authority
+2026-10-09T15:57:07.2354083Z   ---
+2026-10-09T15:57:07.2354385Z   duration_ms: 12.228272
+2026-10-09T15:57:07.2354905Z   type: 'test'
+2026-10-09T15:57:07.2355230Z   ...
+2026-10-09T15:57:07.2355867Z # Subtest: missing or rejected workload identity fails before provider generation
+2026-10-09T15:57:07.2357046Z ok 33 - missing or rejected workload identity fails before provider generation
+2026-10-09T15:57:07.2357554Z   ---
+2026-10-09T15:57:07.2357943Z   duration_ms: 5.167013
+2026-10-09T15:57:07.2358305Z   type: 'test'
+2026-10-09T15:57:07.2358641Z   ...
+2026-10-09T15:57:07.2359319Z # Subtest: the resolved request workload token cannot enter prompt or returned public bytes
+2026-10-09T15:57:07.2360336Z ok 34 - the resolved request workload token cannot enter prompt or returned public bytes
+2026-10-09T15:57:07.2360982Z   ---
+2026-10-09T15:57:07.2361259Z   duration_ms: 9.663274
+2026-10-09T15:57:07.2361606Z   type: 'test'
+2026-10-09T15:57:07.2361921Z   ...
+2026-10-09T15:57:07.2362223Z 1..34
+2026-10-09T15:57:07.2362517Z # tests 34
+2026-10-09T15:57:07.2362806Z # suites 0
+2026-10-09T15:57:07.2363070Z # pass 34
+2026-10-09T15:57:07.2363319Z # fail 0
+2026-10-09T15:57:07.2363583Z # cancelled 0
+2026-10-09T15:57:07.2363881Z # skipped 0
+2026-10-09T15:57:07.2364184Z # todo 0
+2026-10-09T15:57:07.2364686Z # duration_ms 12118.218937

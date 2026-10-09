@@ -1,0 +1,505 @@
+{
+  "jobs": [
+    {
+      "id": 113903902257,
+      "name": "Classify exact-head browser witness scope",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 37955218539,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Reject stale PR-event heads",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Select Giving, practice, or full-product witness",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11
+        }
+      ]
+    },
+    {
+      "id": 113903903716,
+      "name": "Explicit full-repository validation",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_id": 37955218539,
+      "logs_url": null,
+      "steps": null
+    },
+    {
+      "id": 113903904187,
+      "name": "Explicit synthetic Hush custody pilot",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_id": 37955218539,
+      "logs_url": null,
+      "steps": null
+    },
+    {
+      "id": 113903904646,
+      "name": "Explicit self-hosted calibration",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_id": 37955218539,
+      "logs_url": null,
+      "steps": null
+    },
+    {
+      "id": 113903971943,
+      "name": "Explicit credential-scoped Gemini model observation",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_id": 37955218539,
+      "logs_url": null,
+      "steps": null
+    },
+    {
+      "id": 113904010087,
+      "name": "Offline Marrowline layout regression",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 37955218539,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Select bounded layout scope",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 4
+        },
+        {
+          "name": "Run npm ci --ignore-scripts",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5
+        },
+        {
+          "name": "Run npm install --no-save --package-lock=false playwright@1.53.2",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 6
+        },
+        {
+          "name": "Run npx playwright install --with-deps chromium",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 7
+        },
+        {
+          "name": "Run bounded Marrowline handoff contracts",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 8
+        },
+        {
+          "name": "Portable Loom returned-work hostile custody contracts",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9
+        },
+        {
+          "name": "Portable Loom returned-work desktop and 390px witness",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10
+        },
+        {
+          "name": "Offline Holonomy Loom portable-governance witness",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11
+        },
+        {
+          "name": "Offline browser layout witness",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 12
+        },
+        {
+          "name": "Loom Instrument Lab desktop and 390px interface witness",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 13
+        },
+        {
+          "name": "Loom Instrument native continuation and export route witness",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 14
+        },
+        {
+          "name": "Sequence 6 native cutover Check Admit Rest witness",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 15
+        },
+        {
+          "name": "Loom cinematic consequence, depth, pause and reduced-motion witness",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 16
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 17
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 34
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 35
+        }
+      ]
+    },
+    {
+      "id": 113904010241,
+      "name": "Static, constitutional, and release contracts",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 37955218539,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Install repository dependencies once",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Enforce the four-workflow estate and release membrane",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Validate bounded Dollhouse role upgrades and source-only export kit",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Validate Loom Instrument Lab, held gates, advisory minimization, and declared service resolution",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "Verify native-prosody permission, focused relay API and editorial contracts, and offline atlas",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Validate Giving and Campaign Deputy import contracts",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10
+        },
+        {
+          "name": "Bounded portable Loom transport and local SQL ledger checks",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11
+        },
+        {
+          "name": "Materialize same-run scientific observation custody when O1 surface is under test",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12
+        },
+        {
+          "name": "Validate Dome-World static surfaces",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 13
+        },
+        {
+          "name": "Validate Holonomy Loom causal theater",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 14
+        },
+        {
+          "name": "Validate Phase IV static surfaces",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 15
+        },
+        {
+          "name": "Validate Ash core and ingress surfaces",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 16
+        },
+        {
+          "name": "Validate Ash A2-A8 surfaces",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 17
+        },
+        {
+          "name": "Validate Ash A9 Work",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 18
+        },
+        {
+          "name": "Validate Ash A10 Choir",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 19
+        },
+        {
+          "name": "Validate Ash A11 Capsule",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 20
+        },
+        {
+          "name": "Validate Ash A12 command rationalization",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 21
+        },
+        {
+          "name": "Validate Ash A13 unified registry and workflow collapse",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 22
+        },
+        {
+          "name": "Validate Ash A14 Archive accession",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 23
+        },
+        {
+          "name": "Validate Ash A15 empirical profile journeys and A15-R0 research field",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 24
+        },
+        {
+          "name": "Validate Ash demo hydration surfaces",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 25
+        },
+        {
+          "name": "Validate Ash production-closure surfaces",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 26
+        },
+        {
+          "name": "Validate Flow-Core P0-P7 seam closure",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 27
+        },
+        {
+          "name": "Validate Flow-Core P0-P10 completion",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 28
+        },
+        {
+          "name": "Flow-Core claim · exact-head matrix placement",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 29
+        },
+        {
+          "name": "Flow-Core claim · bounded production confirmation",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 30
+        },
+        {
+          "name": "Flow-Core claim · empirical authority separation",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 31
+        },
+        {
+          "name": "Flow-Core claim · executable dependency closure",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 32
+        },
+        {
+          "name": "Flow-Core claim · static rewrite parity",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 33
+        },
+        {
+          "name": "Flow-Core claim · concurrent station packages",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 34
+        },
+        {
+          "name": "Validate Flow-Core runtime browser contract",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 35
+        },
+        {
+          "name": "Preserve diagnostics only when held",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 36
+        },
+        {
+          "name": "Preserve scientific observation custody when present",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 37
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 72
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 73
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 74
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 75
+        }
+      ]
+    },
+    {
+      "id": 113904012013,
+      "name": "Front-line exact-head browser shard · ${{ matrix.browser }}",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_id": 37955218539,
+      "logs_url": null,
+      "steps": null
+    },
+    {
+      "id": 113904012229,
+      "name": "Giving/practice exact-head Chromium Firefox WebKit witness",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_id": 37955218539,
+      "logs_url": null,
+      "steps": null
+    },
+    {
+      "id": 113904913404,
+      "name": "Full-product exact-head Chromium Firefox WebKit witness",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_id": 37955218539,
+      "logs_url": null,
+      "steps": null
+    }
+  ]
+}
