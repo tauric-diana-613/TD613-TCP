@@ -27,7 +27,7 @@ export async function inspectRun(pool, input) {
 }
 export async function reserveCall(pool, input) {
   exactFields(input, ['run_id', 'credential_sha256', 'protocol_commit', 'artifact_sha256', 'trial',
-    'request_sha256', 'output_limit', 'prior_assistant_sha256']);
+    'request_sha256', 'output_limit', 'prior_assistant_sha256', ...(Object.hasOwn(input, 'input_token_bound') ? ['input_token_bound'] : [])]);
   const key = validateTrial(input.trial);
   requireThat(/^[a-f0-9]{64}$/.test(input.request_sha256) && Array.isArray(input.prior_assistant_sha256)
     && input.prior_assistant_sha256.every(x => /^[a-f0-9]{64}$/.test(x)), 'ASSAY_RESERVATION_SHAPE');
@@ -41,14 +41,26 @@ export async function reserveCall(pool, input) {
     requireThat(!prior.rows.some(x => x.call_key === key), 'ASSAY_CALL_ALREADY_RESERVED');
     requireThat(prior.rows.length === input.trial.turn_index && input.prior_assistant_sha256.length === prior.rows.length
       && prior.rows.every((x, i) => x.status === 'CAPTURED_NOT_ADMITTED' && x.answer_sha256 === input.prior_assistant_sha256[i]), 'ASSAY_PREDECESSOR_MISMATCH');
-    const cost = BigInt(reservationNanos(p, input.output_limit));
+    requireThat(Boolean(p.program) === Object.hasOwn(input, 'input_token_bound'), 'ASSAY_INPUT_RESERVATION_BOUND');
+    requireThat(!p.program || Number.isSafeInteger(input.input_token_bound) && input.input_token_bound >= 8192
+      && input.input_token_bound <= p.binding.limits.max_input_tokens_per_call, 'ASSAY_INPUT_RESERVATION_BOUND');
+    const cost = BigInt(reservationNanos(p, input.output_limit, input.input_token_bound));
     const ceiling = BigInt(Math.floor(p.binding.limits.max_cost_usd * 1000000000));
     requireThat(Number(row.calls_reserved) < p.binding.limits.max_calls
       && BigInt(row.reserved_cost_nanos) + cost <= ceiling, 'ASSAY_BUDGET_EXHAUSTED');
+    if (p.program) {
+      // Serialize all child runs under one transaction-scoped program lock.
+      // Legacy failed reservations remain charged in this sum forever.
+      await client.query('SELECT pg_advisory_xact_lock(hashtextextended($1,0))', [`td613-assay:${p.program.id}`]);
+      const totals = await client.query('SELECT COALESCE(SUM(calls_reserved),0) AS calls,COALESCE(SUM(reserved_cost_nanos),0)::text AS cost FROM td613_assay_runs WHERE run_id=ANY($1::text[])', [p.program.run_ids]);
+      requireThat(Number(totals.rows[0].calls) < p.program.max_calls
+        && BigInt(totals.rows[0].cost) + cost <= BigInt(Math.floor(p.program.max_cost_usd * 1000000000)), 'ASSAY_PROGRAM_BUDGET_EXHAUSTED');
+    }
     await client.query('INSERT INTO td613_assay_calls (run_id,call_key,trial_id,role,turn_index,request_sha256,reserved_cost_nanos,status) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)',
       [p.run_id, key, input.trial.trial_id, input.trial.role, input.trial.turn_index, input.request_sha256, String(cost), 'RESERVED']);
     await client.query('UPDATE td613_assay_runs SET calls_reserved=calls_reserved+1,reserved_cost_nanos=reserved_cost_nanos+$2 WHERE run_id=$1', [p.run_id, String(cost)]);
-    return { call_key: key, request_sha256: input.request_sha256, reserved_cost_nanos: String(cost), durable_reservation: true };
+    return { call_key: key, request_sha256: input.request_sha256, reserved_cost_nanos: String(cost), durable_reservation: true,
+      ...(p.program ? { input_token_bound: input.input_token_bound } : {}) };
   });
 }
 export async function completeCall(pool, input) {

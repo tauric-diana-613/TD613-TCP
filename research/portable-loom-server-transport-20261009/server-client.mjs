@@ -80,7 +80,7 @@ export async function captureServerCall(policy, request, directory, { environmen
       && parsed.evidence_class === (fixture ? 'LOCAL_STRUCTURAL_TEST' : 'ACTUAL_RECEIVER_TEST'), 'ASSAY_SERVER_CAPTURE_HELD');
     const providerBytes = Buffer.from(parsed.provider_response_base64, 'base64');
     requireThat(sha256(providerBytes) === parsed.provider_response_sha256 && parsed.returned?.answer_sha256 === sha256(parsed.returned.text), 'ASSAY_SERVER_BYTES_MISMATCH');
-    const independentlyDecoded = inspectAssayResponse(providerBytes, policy, wire.output_limit);
+    const independentlyDecoded = inspectAssayResponse(providerBytes, policy, wire.output_limit, wire.input_token_bound);
     requireThat(JSON.stringify(independentlyDecoded) === JSON.stringify(parsed.returned), 'ASSAY_RETURN_DECLARATION_MISMATCH');
   } catch (e) { error = /^ASSAY_[A-Z_]+$/.test(e.message) ? e.message : 'ASSAY_CAPTURE_TRANSPORT_HELD'; }
   finally { clearTimeout(timer); }

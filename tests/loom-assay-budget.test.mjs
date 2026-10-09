@@ -5,7 +5,7 @@ import { createRequire } from 'node:module';
 import { generateKeyPairSync, sign } from 'node:crypto';
 import { reserveCall, completeCall, inspectRun } from '../neon/functions/loom-assay-budget/ledger.mjs';
 import { verifyVercelOidc } from '../neon/functions/loom-assay-budget/vercel-identity.mjs';
-import { sha256, canonicalJson } from '../server/loom-assay-contract.js';
+import { sha256, canonicalJson, ASSAY_RECOVERY_POLICY_SCHEMA, ASSAY_RECOVERY_PROGRAM, ASSAY_RECOVERY_RUN_IDS } from '../server/loom-assay-contract.js';
 const require = createRequire(new URL('../neon/functions/loom-assay-budget/package.json', import.meta.url));
 const { PGlite } = require('@electric-sql/pglite');
 const digest = 'a'.repeat(64), head = 'b'.repeat(40);
@@ -19,7 +19,7 @@ function policy() {
 async function setup(p = policy()) {
   const db = new PGlite();
   await db.exec(readFileSync(new URL('../neon/migrations/20261009_loom_assay_budget.sql', import.meta.url), 'utf8'));
-  await db.query('INSERT INTO td613_assay_runs(run_id,credential_sha256,policy,status,policy_sha256) VALUES ($1,$2,$3,$4,$5)', ['fixture', digest, p, 'ACTIVE', sha256(canonicalJson(p))]);
+  await db.query('INSERT INTO td613_assay_runs(run_id,credential_sha256,policy,status,policy_sha256) VALUES ($1,$2,$3,$4,$5)', [p.run_id, digest, p, 'ACTIVE', sha256(canonicalJson(p))]);
   // PGlite has one connection. Serialize its transactions explicitly; this is
   // SQL/rollback/replay evidence, not a multi-isolate PostgreSQL lock witness.
   let tail = Promise.resolve();
@@ -156,5 +156,51 @@ test('the bounded longer deadline preserves permanent HOLD and reservation accou
     const row = (await db.query('SELECT status,calls_reserved,reserved_cost_nanos FROM td613_assay_runs')).rows[0];
     assert.equal(row.status, 'HELD'); assert.equal(row.calls_reserved, 1);
     assert.equal(String(row.reserved_cost_nanos), reserved.reserved_cost_nanos);
+  } finally { await db.close(); }
+});
+function recoveryPolicy(runId = ASSAY_RECOVERY_RUN_IDS[0]) {
+  const p = policy(); p.schema = ASSAY_RECOVERY_POLICY_SCHEMA; p.run_id = runId;
+  p.program = structuredClone(ASSAY_RECOVERY_PROGRAM); p.binding.limits.timeout_ms = 240000;
+  p.binding.pricing.input_usd_per_million = 0.75; p.binding.pricing.output_usd_per_million = 3.75;
+  return p;
+}
+async function insertRun(db, p, { status = 'ACTIVE', calls = 0, cost = '0' } = {}) {
+  await db.query('INSERT INTO td613_assay_runs(run_id,credential_sha256,policy,status,policy_sha256,calls_reserved,reserved_cost_nanos) VALUES ($1,$2,$3,$4,$5,$6,$7)',
+    [p.run_id, digest, p, status, sha256(canonicalJson(p)), calls, cost]);
+}
+function recoveryInput(runId = ASSAY_RECOVERY_RUN_IDS[0]) { return { ...input(), run_id: runId, input_token_bound: 100000 }; }
+test('request-bound recovery reservations are durable and invalid bounds spend nothing', async () => {
+  const p = recoveryPolicy(), { db, pool } = await setup(p);
+  try {
+    for (const bound of [0, 8191, 200001, 1.5]) await assert.rejects(reserveCall(pool, { ...recoveryInput(), input_token_bound: bound }), /INPUT_RESERVATION_BOUND/);
+    assert.equal((await db.query('SELECT calls_reserved FROM td613_assay_runs')).rows[0].calls_reserved, 0);
+    const r = await reserveCall(pool, recoveryInput()); assert.equal(r.input_token_bound, 100000);
+    assert.equal(r.reserved_cost_nanos, '105720000');
+    assert.equal(String((await db.query('SELECT reserved_cost_nanos FROM td613_assay_runs')).rows[0].reserved_cost_nanos), '105720000');
+  } finally { await db.close(); }
+});
+test('different recovery runs share one financial cap including failed legacy reservations', async () => {
+  const p = recoveryPolicy(), { db, pool } = await setup(p);
+  try {
+    const q = recoveryPolicy(ASSAY_RECOVERY_RUN_IDS[1]); await insertRun(db, q);
+    const legacy = policy(); legacy.run_id = ASSAY_RECOVERY_PROGRAM.run_ids[1];
+    await insertRun(db, legacy, { status: 'HELD', calls: 3, cost: '9850000000' });
+    const result = await Promise.allSettled([reserveCall(pool, recoveryInput(p.run_id)), reserveCall(pool, recoveryInput(q.run_id))]);
+    assert.equal(result.filter(x => x.status === 'fulfilled').length, 1);
+    assert.match(result.find(x => x.status === 'rejected').reason.message, /PROGRAM_BUDGET_EXHAUSTED/);
+    const rows = (await db.query('SELECT COALESCE(SUM(reserved_cost_nanos),0)::text AS total,SUM(calls_reserved) AS calls FROM td613_assay_runs')).rows[0];
+    assert.equal(rows.total, '9955720000'); assert.equal(Number(rows.calls), 4);
+    assert.equal((await db.query('SELECT count(*) AS n FROM td613_assay_calls')).rows[0].n, 1);
+  } finally { await db.close(); }
+});
+test('the program call cap applies across distinct runs independently of the financial cap', async () => {
+  const p = recoveryPolicy(), { db, pool } = await setup(p);
+  try {
+    const first = policy(); first.run_id = ASSAY_RECOVERY_PROGRAM.run_ids[1]; await insertRun(db, first, { status: 'HELD', calls: 40, cost: '0' });
+    const second = policy(); second.run_id = ASSAY_RECOVERY_PROGRAM.run_ids[2]; await insertRun(db, second, { status: 'HELD', calls: 39, cost: '0' });
+    await reserveCall(pool, recoveryInput());
+    const q = recoveryPolicy(ASSAY_RECOVERY_RUN_IDS[1]); await insertRun(db, q);
+    await assert.rejects(reserveCall(pool, recoveryInput(q.run_id)), /PROGRAM_BUDGET_EXHAUSTED/);
+    assert.equal(Number((await db.query('SELECT SUM(calls_reserved) AS n FROM td613_assay_runs')).rows[0].n), 80);
   } finally { await db.close(); }
 });
