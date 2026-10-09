@@ -1,0 +1,216 @@
+TAP version 13
+# giving-validation-scope.test.mjs passed
+# giving-vercel-route.test.mjs passed: slashless Giving canonicalizes before an otherwise byte-identical Vercel routing estate.
+# giving-release-content-probe.test.mjs passed
+# giving-vercel-settlement.test.mjs passed: exact Vercel release SHA settlement remains bounded and Giving no longer piggybacks retired Ash diagnostics
+# giving-vercel-release-receipt.test.mjs passed for acquire-before-stabilize release observation
+# flowcore-observation-aperture.test.mjs passed: Giving and Ash/Loom preserve bounded observation scope, qualified absence, route history, and zero authority transfer.
+# Subtest: Giving browser surfaces do not leak internal architecture nomenclature
+ok 1 - Giving browser surfaces do not leak internal architecture nomenclature
+  ---
+  duration_ms: 45.310211
+  type: 'test'
+  ...
+# Subtest: public Aperture naming remains allowed by the Giving language gate
+ok 2 - public Aperture naming remains allowed by the Giving language gate
+  ---
+  duration_ms: 0.250937
+  type: 'test'
+  ...
+# Subtest: campaign lookup uses compact multi-jurisdiction controls and independent settled routes
+ok 3 - campaign lookup uses compact multi-jurisdiction controls and independent settled routes
+  ---
+  duration_ms: 2.344572
+  type: 'test'
+  ...
+# Subtest: queue waits for canonical terminal search signal and isolates contact holds
+ok 4 - queue waits for canonical terminal search signal and isolates contact holds
+  ---
+  duration_ms: 0.975566
+  type: 'test'
+  ...
+# Subtest: operator-facing donor state is Match while serialized CANDIDATE compatibility remains
+ok 5 - operator-facing donor state is Match while serialized CANDIDATE compatibility remains
+  ---
+  duration_ms: 1.842428
+  type: 'test'
+  ...
+# Subtest: visible-language observer writes are idempotent inside observed Giving subtrees
+ok 6 - visible-language observer writes are idempotent inside observed Giving subtrees
+  ---
+  duration_ms: 0.837518
+  type: 'test'
+  ...
+# Subtest: Cistern route memory refuses endpoint equivalence when route history differs
+ok 7 - Cistern route memory refuses endpoint equivalence when route history differs
+  ---
+  duration_ms: 0.655004
+  type: 'test'
+  ...
+# Error: A resource generated asynchronous activity after the test ended. This activity created the error "Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'jsdom' imported from /workspace/scratch/fa8b964b1a68/TD613-assay-activation/tests/loom-episode6-human-clarity.test.mjs" which triggered an uncaughtException event, caught by the test runner.
+# Subtest: tests/giving-validation-scope.test.mjs
+not ok 1 - tests/giving-validation-scope.test.mjs
+  ---
+  duration_ms: 127.789584
+  type: 'test'
+  location: '/workspace/scratch/fa8b964b1a68/TD613-assay-activation/tests/giving-validation-scope.test.mjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: full corrected packet reaches one explicit provider request after durable reservation
+ok 9 - full corrected packet reaches one explicit provider request after durable reservation
+  ---
+  duration_ms: 16.253418
+  type: 'test'
+  ...
+# Subtest: disabled and unauthorized requests cannot inspect the ledger or generate
+ok 10 - disabled and unauthorized requests cannot inspect the ledger or generate
+  ---
+  duration_ms: 7.018234
+  type: 'test'
+  ...
+# Subtest: missing numerical limits, expired policy and missing pricing fail closed
+ok 11 - missing numerical limits, expired policy and missing pricing fail closed
+  ---
+  duration_ms: 0.580081
+  type: 'test'
+  ...
+# Subtest: changed artifact, added tool request, wrong source and unregistered trial do not generate
+ok 12 - changed artifact, added tool request, wrong source and unregistered trial do not generate
+  ---
+  duration_ms: 17.210277
+  type: 'test'
+  ...
+# Subtest: the second provider slot cannot be silently filled by this Gemini conduit
+ok 13 - the second provider slot cannot be silently filled by this Gemini conduit
+  ---
+  duration_ms: 2.045383
+  type: 'test'
+  ...
+# Subtest: first-receiver authority cannot be spent on registered comparative prompts
+ok 14 - first-receiver authority cannot be spent on registered comparative prompts
+  ---
+  duration_ms: 1.040242
+  type: 'test'
+  ...
+# Subtest: credential material cannot enter outbound input or releasable response
+ok 15 - credential material cannot enter outbound input or releasable response
+  ---
+  duration_ms: 7.452767
+  type: 'test'
+  ...
+# Subtest: budget refusal or mismatched reservation prevents generation
+ok 16 - budget refusal or mismatched reservation prevents generation
+  ---
+  duration_ms: 9.26572
+  type: 'test'
+  ...
+# Subtest: non-success, truncated, wrong-model and over-budget returns retain one failed call without retry
+ok 17 - non-success, truncated, wrong-model and over-budget returns retain one failed call without retry
+  ---
+  duration_ms: 20.485917
+  type: 'test'
+  ...
+# Subtest: response byte overflow retains a bounded prefix and identifies incomplete capture
+ok 18 - response byte overflow retains a bounded prefix and identifies incomplete capture
+  ---
+  duration_ms: 5.038339
+  type: 'test'
+  ...
+# Subtest: failed completion cannot be presented as a completed provider trial
+ok 19 - failed completion cannot be presented as a completed provider trial
+  ---
+  duration_ms: 7.039496
+  type: 'test'
+  ...
+# Subtest: budget client rejects arbitrary endpoints and missing workload identity
+ok 20 - budget client rejects arbitrary endpoints and missing workload identity
+  ---
+  duration_ms: 0.533982
+  type: 'test'
+  ...
+# Subtest: budget function verifies workload before body parsing or database work
+ok 21 - budget function verifies workload before body parsing or database work
+  ---
+  duration_ms: 1.965973
+  type: 'test'
+  ...
+# Subtest: budget dispatch rejects inherited operation names and oversized bodies before database work
+ok 22 - budget dispatch rejects inherited operation names and oversized bodies before database work
+  ---
+  duration_ms: 1.097139
+  type: 'test'
+  ...
+# Subtest: client retains exact mock bytes, keeps fixture evidence class, and rejects existing attempts
+ok 23 - client retains exact mock bytes, keeps fixture evidence class, and rejects existing attempts
+  ---
+  duration_ms: 10.605843
+  type: 'test'
+  ...
+# Subtest: the retained capture exposes the verified answer used by continuation and keeps fixture authority closed
+ok 24 - the retained capture exposes the verified answer used by continuation and keeps fixture authority closed
+  ---
+  duration_ms: 17.32643
+  type: 'test'
+  ...
+# Subtest: client cannot continue using fixture captures or wrong predecessor identity
+ok 25 - client cannot continue using fixture captures or wrong predecessor identity
+  ---
+  duration_ms: 0.974964
+  type: 'test'
+  ...
+# Subtest: canonical API dispatch and deployment packaging preserve dedicated bounded operation
+ok 26 - canonical API dispatch and deployment packaging preserve dedicated bounded operation
+  ---
+  duration_ms: 0.344397
+  type: 'test'
+  ...
+# Subtest: source-bound public activation admits only its run and does not contain provider or caller secrets
+ok 27 - source-bound public activation admits only its run and does not contain provider or caller secrets
+  ---
+  duration_ms: 2.832005
+  type: 'test'
+  ...
+# vercel-deploy-hygiene.test.mjs passed with 11/11 deployed functions and 10 configured overrides
+# Subtest: legacy site epoch preflight is a non-destructive compatibility shim
+ok 28 - legacy site epoch preflight is a non-destructive compatibility shim
+  ---
+  duration_ms: 22.192767
+  type: 'test'
+  ...
+# Subtest: legacy reset URL cannot erase browser data or show the old epoch screen
+ok 29 - legacy reset URL cannot erase browser data or show the old epoch screen
+  ---
+  duration_ms: 0.280311
+  type: 'test'
+  ...
+# Subtest: legacy reset endpoint is retired and emits no destructive header
+ok 30 - legacy reset endpoint is retired and emits no destructive header
+  ---
+  duration_ms: 0.546631
+  type: 'test'
+  ...
+# Subtest: Flight rest is selectable in preface and close, and copiable in Glyph Bay
+ok 31 - Flight rest is selectable in preface and close, and copiable in Glyph Bay
+  ---
+  duration_ms: 0.827002
+  type: 'test'
+  ...
+# Subtest: Ash specialist eviction remains retired while the legacy site shim is inert
+ok 32 - Ash specialist eviction remains retired while the legacy site shim is inert
+  ---
+  duration_ms: 0.145689
+  type: 'test'
+  ...
+1..32
+# tests 32
+# suites 0
+# pass 31
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 240.978043

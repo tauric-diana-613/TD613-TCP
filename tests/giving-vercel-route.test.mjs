@@ -38,6 +38,13 @@ baselineProjection.headers = baselineProjection.headers.filter(entry=>!resetRout
 // function-duration budget. Normalize the separately tested Kʰonapolit duration
 // before hashing so every other Vercel byte remains protected by the baseline.
 if (baselineProjection.functions?.['api/khonapolit.js']) {
+  // The approved portable Loom assay carries exactly these three immutable
+  // inputs in the existing function. Reject additions or substitutions before
+  // normalizing this separately governed file-carriage allowance.
+  assert.equal(baselineProjection.functions['api/khonapolit.js'].includeFiles,
+    '{server/loom-assay-run-config.json,research/portable-loom-server-transport-20261009/TRIAL_MANIFEST.json,research/portable-loom-kit-assay-20261009/corrected-artifact/portable-loom-standard.md}',
+    'the bounded Loom transport may carry only its reviewed configuration, trial manifest and exact standard Markdown');
+  delete baselineProjection.functions['api/khonapolit.js'].includeFiles;
   baselineProjection.functions['api/khonapolit.js'].maxDuration = 60;
 }
 const baselineRaw = `${JSON.stringify(baselineProjection, null, 2)}\n`;
@@ -46,7 +53,7 @@ const gitBlob = Buffer.concat([
   Buffer.from(baselineRaw)
 ]);
 const projectedSha = crypto.createHash('sha1').update(gitBlob).digest('hex');
-assert.equal(projectedSha, BASELINE_VERCEL_BLOB_SHA, 'outside admitted Giving redirects and the separately governed Kʰonapolit duration, vercel.json must remain byte-equivalent to the reviewed baseline');
+assert.equal(projectedSha, BASELINE_VERCEL_BLOB_SHA, 'outside admitted Giving redirects, Kʰonapolit duration and exact Loom input carriage, vercel.json must remain byte-equivalent to the reviewed baseline');
 
 const slashlessRewrite = (config.rewrites || []).find((entry) => entry.source === '/giving/history');
 const slashfulRewrite = (config.rewrites || []).find((entry) => entry.source === '/giving/history/');

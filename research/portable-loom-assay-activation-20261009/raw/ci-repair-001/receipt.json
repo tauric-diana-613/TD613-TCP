@@ -1,0 +1,19 @@
+{
+  "source_parent": "93e813186c915cd1dbf78387f1fb226c82aa9e2a",
+  "working_change": "tests/giving-vercel-route.test.mjs",
+  "started_at": "2026-10-09T15:30:10.836944+00:00",
+  "ended_at": "2026-10-09T15:30:11.185996+00:00",
+  "command": [
+    "node",
+    "--test",
+    "--test-reporter=tap",
+    "tests/giving-validation-scope.test.mjs",
+    "tests/vercel-deploy-hygiene.test.mjs",
+    "tests/loom-assay-transport.test.mjs"
+  ],
+  "exit_code": 1,
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "actual_generation_calls": 0,
+  "stdout_sha256": "ff94e553a6bd537b9afca47d118e31d0ec4e5de6b048f349d78e5b2252f46997",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}
