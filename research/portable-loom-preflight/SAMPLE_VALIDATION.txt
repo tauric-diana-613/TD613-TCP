@@ -1,0 +1,10 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> td613-tcp@1.0.0 validate
+> node scripts/validate-samples.mjs
+
+OK example/canonical-sample.json
+OK example/harbor-ledger.sample.json
+OK example/persona.archivist.json
+OK example/badge-state.sample.json
+OK example/route-event.sample.json

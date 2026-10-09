@@ -1,0 +1,61 @@
+{
+  "schema": "td613.dollhouse.prospective-role-contract-manifest/v0.1",
+  "roles": [
+    {
+      "role": "PEDAGOGUE",
+      "status": "INSTALLED",
+      "commit_sha": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+      "path": "PEDAGOGUE.md",
+      "bytes": 29733,
+      "sha256": "3abb25379be9a925c738a38858b92371822612f110e7491ee62a6e4a84101869",
+      "git_blob_sha": "fc7ed703a4f2df18f650a39165525ea33328c4fe"
+    },
+    {
+      "role": "APERTURE",
+      "status": "INSTALLED",
+      "commit_sha": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+      "path": "APERTURE.md",
+      "bytes": 17025,
+      "sha256": "3f6225494e7f3b0a021699ae3f54f61d002f71bd6b7373e4bece2a699a7b5c1d",
+      "git_blob_sha": "25d8391361f84c90bf7476684ad2171b5626538e"
+    },
+    {
+      "role": "ATLAS",
+      "status": "BOUNDED_RESEARCH_CANDIDATE",
+      "commit_sha": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+      "path": "ATLAS.md",
+      "bytes": 11749,
+      "sha256": "f7a518d27a509d615368949ff617a2e7884278487257a4f398e16b4784bf0311",
+      "git_blob_sha": "b56d1c444294153832149f19fd9080d308d9ec2a"
+    },
+    {
+      "role": "FADT",
+      "status": "BOUNDED_RESEARCH_CANDIDATE",
+      "commit_sha": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+      "path": "FADT.md",
+      "bytes": 9196,
+      "sha256": "c8b420ecc63621677dceee7c1530688cbc786503451cdeb157205b1fb67e8b6e",
+      "git_blob_sha": "90da4760baf9a96e0050e1857b8cc5ae822adb44"
+    },
+    {
+      "role": "TEMPORAL_CUSTODIAN",
+      "status": "BOUNDED_SIDECAR_SUCCESSOR_CANDIDATE",
+      "commit_sha": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+      "path": "TEMPORAL_CUSTODIAN.md",
+      "bytes": 3299,
+      "sha256": "f3eb7cb372cc020ec0fdc6e8dd3bba36a268743f63fffbd0e161ab3646af1c3e",
+      "git_blob_sha": "14666c232913e58e394601640eea92afa3b0db55"
+    }
+  ],
+  "temporal_predecessor": {
+    "commit_sha": "88f128c75cd8efd58db9a77249f293e69d08762e",
+    "path": "TEMPORAL_CUSTODIAN.md"
+  },
+  "orchestrator": {
+    "commit_sha": "6c9687dba075a6edd6a478c7f86f9b2d0f018af7",
+    "path": "docs/research/DOLLHOUSE_ORCHESTRATOR_CONTRACT.md"
+  },
+  "input_class_law": "A typed role-model finding does not establish that its mathematical adapter ran. Missing compatible finite support, observation geometry, chronology or gesture input retains HELD_INPUT_CLASS.",
+  "authority": "No role-model scheduling or installed-role promotion granted.",
+  "role_prompt_bytes": "UNBOUND; comparative track remains HELD."
+}

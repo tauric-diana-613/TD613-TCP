@@ -1,0 +1,69 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> td613-tcp@1.0.0 test:pedagogue
+> node tests/pedagogue-design-gate.test.mjs
+
+✔ giving-vault-design.json preserves the generic Pedagogue design contracts without product authority (31.403161ms)
+✔ giving-research-dossier-design.json preserves the generic Pedagogue design contracts without product authority (13.999647ms)
+✔ cistern-boundary-design.json preserves the generic Pedagogue design contracts without product authority (15.613545ms)
+✔ loom-instrument-platform-design.json preserves the generic Pedagogue design contracts without product authority (11.525246ms)
+✔ Loom instrument comparison preserves path difference and evidence limits under equal declared support (10.796729ms)
+✔ Loom instrument gate detects added mandatory inspection burden instead of treating endpoint equality as improvement (14.109809ms)
+✔ AIA surface binding fails closed on inferred authority or fabricated decoys (0.556711ms)
+✔ Pedagogue route memory preserves path difference even when endpoints match (0.257659ms)
+✔ giving-bikini-bottom-practice.json compiles as a canonical practice fixture without evidence or geometric authority (1.66247ms)
+✔ ash-tomography-calibration-phantom-v01.json compiles as a canonical practice fixture without evidence or geometric authority (0.940005ms)
+✔ practice fixture load is a zero-effect label hydration, not an evidence event (1.194841ms)
+✔ practice traversal may exercise explicit read-only retrieval and practice custody while domain authority stays closed (1.161912ms)
+✔ practice traversal rejects observed authority not admitted by the fixture (0.599784ms)
+✔ calibration phantom detects same-endpoint route divergence without promoting the surrogate to holonomy (0.596088ms)
+✔ OC01 console-only success fails when no structured object survives (0.189339ms)
+✔ OC02 verdict-only artifact fails replayability (1.639446ms)
+✔ OC03 detached artifact abstains until deterministic run binding exists (0.378648ms)
+✔ OC04 replacement-observation laundering is rejected (0.205222ms)
+✔ OC05 green-badge laundering cannot replace a missing scientific artifact (0.123151ms)
+✔ OC06 mutation after capture changes custody identity and is rejected (0.218582ms)
+✔ OC07 semantic result is invariant to JSON object-key serialization order (0.38694ms)
+✔ OC08 duplicate custody copies do not amplify one observation (0.221446ms)
+✔ OC09 failure-path positive control writes replayable evidence before nonzero exit (73.035683ms)
+✔ OC10 success-path control writes the same replayable evidence class (65.454472ms)
+✔ M2 synthetic falsifier fixture independently classifies the end-time authorized socket (2.325897ms)
+✔ M2 synthetic support fixture preserves retained authorization when response.socket disappears (0.698619ms)
+✔ M2 custody rejects retroactive laundering by preserving run 1932 as unresolved (0.69219ms)
+✔ M2 live instrument fails closed before network I/O when human arm or GitHub PR context is absent (0.653422ms)
+﹣ M2 live Window Latch executes only in GitHub Actions while the one-shot arm exists (0.082351ms) # SKIP
+✔ Pedagogue lineage spine preserves Potato as synthesis layer without false first-introduction precision (0.796063ms)
+✔ Steiner remains multi-route while racial hierarchy is separately quarantined (1.404659ms)
+✔ lineage review carries provenance lenses without thinker voting or automatic redesign (1.60162ms)
+✔ second pass routes declared machine deficits through the full provenance lens family without creating authority (0.577501ms)
+✔ clean machine receipts do not manufacture lineage activations (0.247535ms)
+✔ second pass rejects undeclared signal vocabulary instead of inventing a new pedagogue route (0.179635ms)
+✔ Institutional Time audit reproduces the preemption gap and closure boundary (0.642767ms)
+✔ Institutional Time audit preserves non-registration without inventing a timestamp (0.177792ms)
+✔ Dromological audit detects premature naming, assessment, cadence compression, withheld rest, and context lag (0.555669ms)
+✔ Dromological audit preserves a clean declared cadence without forcing hidden thresholds (0.243619ms)
+✔ Temporal audits fail closed on prohibited learner-profile fields and noncanonical fractional ticks (0.235577ms)
+✔ Design Gate may carry lineage, Institutional Time, cadence, and provenance second-pass diagnostics without widening authority (10.139264ms)
+✔ Old design fixtures remain compatible and receive an inert second pass when no provenance or temporal case is supplied (6.60402ms)
+✔ recurrence audit refuses to collapse Rudolf and Jakob Steiner into one coordinate (0.846437ms)
+✔ recurrence audit can distinguish independent functional recurrence from exposure and breadth effects (0.364958ms)
+✔ unknown exposure never counts as independent convergence (0.557862ms)
+✔ Jakob Steiner projective and combinatorial counterpoints remain non-ancestral and non-authoritative (0.330727ms)
+✔ Pedagogue receives Episode 6 as a human-observed baseline rather than a synthetic success (18.071406ms)
+✔ Loom human-facing task surface stays provider-neutral and names the active mode consequence (418.114729ms)
+✔ returned Loom answer visibly binds itself to the submitted task and keeps one primary reading path (32.945853ms)
+✔ optional result inspection uses native disclosure state while preserving exact response and claim ceiling (14.769632ms)
+✔ Loom continuation lands inside current Marrowline rather than replacing the living chat (0.41411ms)
+✔ Pedagogue design gate admits the consequence-first Fire Gate route without widening authority (20.979512ms)
+✔ Fire Gate receipt classifier preserves all four observed outcomes plus unobserved (0.615177ms)
+✔ adversarial receipt keeps the comparison and falsifiers explicit (0.521258ms)
+✔ Pedagogue Gate is a single-column condition → action → outcome sequence (9.905184ms)
+✔ human-facing Gate guide selects one condition at a time and keeps technical evidence optional (41.611101ms)
+ℹ tests 56
+ℹ suites 0
+ℹ pass 55
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 1355.841538

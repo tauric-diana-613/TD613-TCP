@@ -1,0 +1,48 @@
+{
+  "schema": "td613.loom.prospective-execution-binding/v0.1",
+  "status": "HELD_TEMPLATE_NOT_AUTHORIZATION",
+  "artifact_files": [
+    {
+      "name": "portable-loom-standard.json",
+      "bytes": 81380,
+      "sha256": "dec3750552099e30e9495ce42af6e616dd3dd1f48f0d3f6766cb82d934c273b2",
+      "persistent_file_id": "libfile_52d34d3de6808191ace3c8c9d7719199",
+      "verification": "LOCAL_DELIVERED_BYTES_RECOMPUTED; saved manifest declarations agree"
+    },
+    {
+      "name": "portable-loom-standard.md",
+      "bytes": 85355,
+      "sha256": "aee654a57edbd931eb5f7ab47b50427ef464530ef5731e5309d49c02eb444eee",
+      "persistent_file_id": "libfile_3f4c63dbebd88191afda426c5894b055",
+      "verification": "LOCAL_DELIVERED_BYTES_RECOMPUTED; saved manifest declarations agree"
+    }
+  ],
+  "runner_source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+  "protocol_sha256": "7931d70b2296414562f5457d71f4069229d6081c0fe914dad3f8a91ddb214c25",
+  "case_registry_sha256": "2eba4fb0760aada7bab317904f97f1613e53cce243d999a60cf33a6cc7234adb",
+  "receivers": [
+    {
+      "slot": "CHATGPT_FIRST_SPECIFIED",
+      "provider": "OpenAI",
+      "model_id": null,
+      "transport": "OPERATOR_DRIVEN_CHATGPT",
+      "configuration": null
+    },
+    {
+      "slot": "SECOND_PROVIDER",
+      "provider": null,
+      "model_id": null,
+      "transport": null,
+      "configuration": null
+    }
+  ],
+  "comparative_api_receiver": null,
+  "financial_budget": null,
+  "raw_capture_path": null,
+  "fixed_audit_input_commitments": [],
+  "private_scoring_key_commitment": null,
+  "operator_authorization": null,
+  "missing_fields_mean": "HOLD; model name, origin, authority or budget must never be inferred.",
+  "role_prompt_commitments": [],
+  "input_class_compatibility_manifest": null
+}

@@ -1,0 +1,298 @@
+{
+  "schema": "td613.loom.claim-evidence-crosswalk/v0.1",
+  "record_function": "CURRENT_ACCESSION_AND_CLAIM_BOUNDARY",
+  "recorded_at": "2026-10-09T01:02:03.647815+00:00",
+  "historical_index_revision": "d5ccb20e21cfce681984e4ec3082353fb11c7fce",
+  "runner_source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+  "claims": [
+    {
+      "claim_id": "C01",
+      "claim": "Portable contract, 32-mechanism registry and footer are carried",
+      "status": "BYTES_AND_CONTRACT_PRESENT",
+      "implementation_class": "PROMPT_CARRIED_INSTRUCTIONS",
+      "evidence": [
+        {
+          "commit_sha": "2091c426a1cbba2ff1a7a06019c0693ddc5be398",
+          "path": "app/engine/portable-loom-core.js",
+          "git_blob_sha": "8915371a2f3e3b7053d0c9d80c36f81bba48ca1c",
+          "bytes": 14998,
+          "sha256": "6465acaa1f1b542976649ebeea50dd93bbd3c3af534baff76c3497c2eb7b99b5",
+          "function": "IMPLEMENTATION",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/2091c426a1cbba2ff1a7a06019c0693ddc5be398/app/engine/portable-loom-core.js"
+        },
+        {
+          "commit_sha": "2091c426a1cbba2ff1a7a06019c0693ddc5be398",
+          "path": "app/engine/portable-loom-output.js",
+          "git_blob_sha": "f69d4eb7cb5216bf79ae2ba668e3b82e00602ca2",
+          "bytes": 4510,
+          "sha256": "d6e9eb6a7342ea0ed5d8dbb9ddbf2ba0713893a27057eebf4a2bcd5f4d006606",
+          "function": "IMPLEMENTATION",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/2091c426a1cbba2ff1a7a06019c0693ddc5be398/app/engine/portable-loom-output.js"
+        },
+        {
+          "commit_sha": "2091c426a1cbba2ff1a7a06019c0693ddc5be398",
+          "path": "scripts/export-standard-portable-loom.mjs",
+          "git_blob_sha": "1be000921a7d8611ddecf3d39ae5ef728b32c913",
+          "bytes": 5645,
+          "sha256": "435028966c36e536878919858298a9620898219cf3fe68ecc45345aa49bd4f74",
+          "function": "IMPLEMENTATION",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/2091c426a1cbba2ff1a7a06019c0693ddc5be398/scripts/export-standard-portable-loom.mjs"
+        }
+      ],
+      "missing": "Captured persistence on the exact artifact across actual receivers."
+    },
+    {
+      "claim_id": "C02",
+      "claim": "Local authorization and custody enforce declared boundaries",
+      "status": "SOURCE_AND_RETAINED_ENGINEERING_EVIDENCE",
+      "implementation_class": "EXECUTABLE_LOCAL_ENFORCEMENT",
+      "evidence": [
+        {
+          "commit_sha": "2091c426a1cbba2ff1a7a06019c0693ddc5be398",
+          "path": "app/engine/sequence-6-journey.js",
+          "git_blob_sha": "537fc429d5c4f274910ad338d81bcf9820114ca5",
+          "bytes": 44155,
+          "sha256": "743468988c3f1249b7efd50f6f059b043ae05298a1777e6a67c05aca0c037d28",
+          "function": "IMPLEMENTATION",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/2091c426a1cbba2ff1a7a06019c0693ddc5be398/app/engine/sequence-6-journey.js"
+        },
+        {
+          "commit_sha": "2091c426a1cbba2ff1a7a06019c0693ddc5be398",
+          "path": "app/engine/portable-loom-reentry.js",
+          "git_blob_sha": "996bd38b9b9844020d155894260dec7335ae62ad",
+          "bytes": 32091,
+          "sha256": "45502649973471d6e35dac09162650adec8a74d43e1308cde788b7f41c3a3aec",
+          "function": "IMPLEMENTATION",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/2091c426a1cbba2ff1a7a06019c0693ddc5be398/app/engine/portable-loom-reentry.js"
+        },
+        {
+          "commit_sha": "2091c426a1cbba2ff1a7a06019c0693ddc5be398",
+          "path": "tests/portable-loom-reentry-hostile.test.mjs",
+          "git_blob_sha": "2fb42f28ad48d67a42b47c00c1fbc913343db027",
+          "bytes": 10054,
+          "sha256": "cde417e76d15df184be89c4798c931f8aefd79beeef30c8ac7e4ceebc19f219d",
+          "function": "TEST_CONTRACT",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/2091c426a1cbba2ff1a7a06019c0693ddc5be398/tests/portable-loom-reentry-hostile.test.mjs"
+        }
+      ],
+      "missing": "Prospective frozen-case execution; no inheritance into an ignoring receiver."
+    },
+    {
+      "claim_id": "C03",
+      "claim": "Temporal successor closes reproduced fail-open paths",
+      "status": "NEW_LOCAL_STRUCTURAL_TEST_PASS",
+      "implementation_class": "EXECUTABLE_BOUNDED_AUDIT",
+      "evidence": [
+        {
+          "commit_sha": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "path": "app/engine/dollhouse-temporal-custodian.js",
+          "git_blob_sha": "1b9de6ca45bee7f6c39e3378aca460464d1c0c82",
+          "bytes": 12501,
+          "sha256": "7eefdaf46d8bfc2374f6e52b80b26534cb3f5738c4faa6442f5883436d30c205",
+          "function": "IMPLEMENTATION",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/248242c89160825c97d27c7c0ccc2d9d6d19ec5a/app/engine/dollhouse-temporal-custodian.js"
+        },
+        {
+          "commit_sha": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "path": "tests/dollhouse-temporal-custodian.test.mjs",
+          "git_blob_sha": "a231b5d095a49502c25ad91d4b7ba0f93104e951",
+          "bytes": 8384,
+          "sha256": "4aa6167cd1f4d27b22865abd3802f491521db65f509109bf82929b41c051a800",
+          "function": "TEST_CONTRACT",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/248242c89160825c97d27c7c0ccc2d9d6d19ec5a/tests/dollhouse-temporal-custodian.test.mjs"
+        },
+        {
+          "commit_sha": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "path": "research/portable-loom-preflight/PRE_REPAIR_REPRODUCTION.json",
+          "git_blob_sha": "fcda9b29e51f9f8f8327fb43b56a6e983578f037",
+          "bytes": 1141,
+          "sha256": "74e009bb1d348ef99d102f1d549344658ee8f3d090b09e6bfb69fe9db62822b9",
+          "function": "ENGINEERING_REPRODUCTION",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/248242c89160825c97d27c7c0ccc2d9d6d19ec5a/research/portable-loom-preflight/PRE_REPAIR_REPRODUCTION.json"
+        }
+      ],
+      "missing": "Independent input/baseline authenticity; local source tests cannot supply it."
+    },
+    {
+      "claim_id": "C04",
+      "claim": "Bounded Orchestrator consumes a distinct fifth-jurisdiction veto",
+      "status": "NEW_LOCAL_STRUCTURAL_TEST_PASS",
+      "implementation_class": "EXECUTABLE_BOUNDED_ADJUDICATION",
+      "evidence": [
+        {
+          "commit_sha": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "path": "app/engine/dollhouse-bounded-orchestrator.js",
+          "git_blob_sha": "83b7d785c6ae3e6cd07e583630a22427e28ff55e",
+          "bytes": 3448,
+          "sha256": "2307d587fc5034ab59e97ad327caa13aace071b65685e5a671d7e40075345813",
+          "function": "IMPLEMENTATION",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/248242c89160825c97d27c7c0ccc2d9d6d19ec5a/app/engine/dollhouse-bounded-orchestrator.js"
+        },
+        {
+          "commit_sha": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "path": "tests/dollhouse-bounded-orchestrator.test.mjs",
+          "git_blob_sha": "3adadd397201e9160721e3d4c18acd9c922db5ef",
+          "bytes": 6091,
+          "sha256": "3b1538404f157ae5350d0e73ecd0f3dd5df966f8fac1e2dd61ed8c24ce6c1f80",
+          "function": "TEST_CONTRACT",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/248242c89160825c97d27c7c0ccc2d9d6d19ec5a/tests/dollhouse-bounded-orchestrator.test.mjs"
+        },
+        {
+          "commit_sha": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "path": "TEMPORAL_CUSTODIAN.md",
+          "git_blob_sha": "14666c232913e58e394601640eea92afa3b0db55",
+          "bytes": 3299,
+          "sha256": "f3eb7cb372cc020ec0fdc6e8dd3bba36a268743f63fffbd0e161ab3646af1c3e",
+          "function": "CURRENT_CONTRACT",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/248242c89160825c97d27c7c0ccc2d9d6d19ec5a/TEMPORAL_CUSTODIAN.md"
+        }
+      ],
+      "missing": "General scheduling and comparative model performance; installed registry/product promotion remain unearned."
+    },
+    {
+      "claim_id": "C05",
+      "claim": "Loom Gate honestly separates captures, disclosure, reconstruction and missing evidence",
+      "status": "SOURCE_CONTRACT_AND_PRIOR_LOCAL_REGRESSION",
+      "implementation_class": "LOCAL_VERIFICATION_PLUS_RECEIVER_INSTRUCTIONS",
+      "evidence": [
+        {
+          "commit_sha": "2091c426a1cbba2ff1a7a06019c0693ddc5be398",
+          "path": "app/engine/portable-loom-gate.js",
+          "git_blob_sha": "704a58dbcc682e59e9e699bab470ed38a2ea29da",
+          "bytes": 7154,
+          "sha256": "a8a0d8038aa5be3889c65ca0ec0812369520d8bbf3c7feb94cb23844cf5b1192",
+          "function": "IMPLEMENTATION",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/2091c426a1cbba2ff1a7a06019c0693ddc5be398/app/engine/portable-loom-gate.js"
+        },
+        {
+          "commit_sha": "2091c426a1cbba2ff1a7a06019c0693ddc5be398",
+          "path": "app/engine/portable-loom-challenge.js",
+          "git_blob_sha": "b55c1504c158c388a34c27a6213e91557ae1079f",
+          "bytes": 40082,
+          "sha256": "df0a95cb7e7913a5f7d7dbd797b487770196ec405828899d9bca2ec842f83f0e",
+          "function": "IMPLEMENTATION",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/2091c426a1cbba2ff1a7a06019c0693ddc5be398/app/engine/portable-loom-challenge.js"
+        },
+        {
+          "commit_sha": "2091c426a1cbba2ff1a7a06019c0693ddc5be398",
+          "path": "tests/portable-loom-core.test.mjs",
+          "git_blob_sha": "27aeedae965abf222e7ebc0c498089e2bbaf6478",
+          "bytes": 12987,
+          "sha256": "98a16aa9a23d2e873b75074f6f1752f6e005d41fa4b2daadbfdb4678f20809c5",
+          "function": "TEST_CONTRACT",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/2091c426a1cbba2ff1a7a06019c0693ddc5be398/tests/portable-loom-core.test.mjs"
+        }
+      ],
+      "missing": "Prospective captures on exact export; inaccessible telemetry remains unavailable."
+    },
+    {
+      "claim_id": "C06",
+      "claim": "Native product route has retained deterministic browser evidence",
+      "status": "RETAINED_CI_REPORT_ONLY_IN_THIS_PACKET",
+      "implementation_class": "BROWSER_WITNESS_WITH_SYNTHETIC_INPUTS",
+      "evidence": [
+        {
+          "run_url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/37852073949",
+          "job_id": 113567262353,
+          "artifact_id": 11581969395,
+          "artifact_sha256_reported": "5d9269a1c04831b51fcd960146349d8d80fac154f90d19de0085c5d26ca00ba4",
+          "raw_archive_downloaded_here": false
+        }
+      ],
+      "missing": "Raw bundle accession/inspection before relying on individual reports; dirty-runtime qualification; actual-provider, current-device and human comprehension witnesses."
+    },
+    {
+      "claim_id": "C07",
+      "claim": "Aperture/orchestration improves outcome",
+      "status": "HYPOTHESIS_UNESTABLISHED",
+      "implementation_class": "RESEARCH_HYPOTHESIS",
+      "evidence": [
+        {
+          "id": "s5-forensic-audit",
+          "path": "research/sequence-5-differential-replication/19-FORENSIC_RECEIVER_PROVENANCE_AUDIT.json",
+          "commit_sha": "6e3015df659eb06084f14ce43144fd160bee3cda",
+          "branch_ref": "audit/sequence-5-synthetic-trace-audit-20261005",
+          "git_blob_sha": "435c681f5c1e36d74489e89038bf5084196cbb0a",
+          "bytes": 3876,
+          "sha256": "075af1889c2dd6ad06ddaf2c33824655fa1e54ecc717b71d262efc9da84c642b",
+          "functions": [
+            "AUDIT",
+            "CORRECTION",
+            "FINAL_CLOSURE"
+          ],
+          "disposition": "FINAL/CANONICAL",
+          "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/6e3015df659eb06084f14ce43144fd160bee3cda/research/sequence-5-differential-replication/19-FORENSIC_RECEIVER_PROVENANCE_AUDIT.json",
+          "inspection": "ACTUAL_GIT_FILE_BYTES"
+        },
+        {
+          "id": "s55-scientific-closure",
+          "path": "research/sequence-5.5-closure-chamber/37-SEQUENCE_5_5_SCIENTIFIC_CLOSURE_LEDGER.json",
+          "commit_sha": "df0ad6cd0795a38735bfda4d6a155857d6df0e9b",
+          "branch_ref": "research/sequence-5.5-amari-closure-20261006",
+          "git_blob_sha": "d1610608426a1ffa14d5f040dd89f663ce3d28bf",
+          "bytes": 7475,
+          "sha256": "80fbe03fbbe1151b3a72ce3a6d75332f394a6ff29d6b722d179cd120030d7b1f",
+          "functions": [
+            "FINAL_CLOSURE"
+          ],
+          "disposition": "FINAL/CANONICAL",
+          "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/df0ad6cd0795a38735bfda4d6a155857d6df0e9b/research/sequence-5.5-closure-chamber/37-SEQUENCE_5_5_SCIENTIFIC_CLOSURE_LEDGER.json",
+          "inspection": "ACTUAL_GIT_FILE_BYTES"
+        },
+        {
+          "id": "s55-countersignature",
+          "path": "research/sequence-5.5-closure-chamber/38-SEQUENCE_5_5_AMARI_FORENSIC_COUNTERSIGNATURE.json",
+          "commit_sha": "df0ad6cd0795a38735bfda4d6a155857d6df0e9b",
+          "branch_ref": "research/sequence-5.5-amari-closure-20261006",
+          "git_blob_sha": "36fde9253dbe702cd0881f611e86b97f3f895d17",
+          "bytes": 6622,
+          "sha256": "3dc54c3daa72e43ddc3b14c1dd266ac3722bc49d1c8b1744bb1b6506f8c99bab",
+          "functions": [
+            "COUNTERSIGNATURE",
+            "FINAL_CLOSURE"
+          ],
+          "disposition": "FINAL/CANONICAL",
+          "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/df0ad6cd0795a38735bfda4d6a155857d6df0e9b/research/sequence-5.5-closure-chamber/38-SEQUENCE_5_5_AMARI_FORENSIC_COUNTERSIGNATURE.json",
+          "inspection": "ACTUAL_GIT_FILE_BYTES"
+        },
+        {
+          "id": "s6-rest1-freeze",
+          "path": "docs/sequence-6/SURVIVOR_MAP_AND_ARCHITECTURE_FREEZE.md",
+          "commit_sha": "4871e0c53749985facbf62749e1161d13a420e0e",
+          "branch_ref": "staging/sequence-6-integration-20261006",
+          "git_blob_sha": "fdc948399e6e1841fc8c57b6156f3b445cd100d0",
+          "bytes": 29400,
+          "sha256": "4a47ea3e3e69001a5b426e67de3bae5c20d669fb04fd7ff1635d2ae7137f331a",
+          "functions": [
+            "RESEARCH_CONTRACT",
+            "FINAL_CLOSURE"
+          ],
+          "disposition": "FINAL/CANONICAL",
+          "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/4871e0c53749985facbf62749e1161d13a420e0e/docs/sequence-6/SURVIVOR_MAP_AND_ARCHITECTURE_FREEZE.md",
+          "inspection": "ACTUAL_GIT_FILE_BYTES"
+        }
+      ],
+      "missing": "Identifying matched prospective evidence. Sequence5 invalidated; Sequence5.5 non-identifying and closed."
+    },
+    {
+      "claim_id": "C08",
+      "claim": "Production release establishes exact frozen receiver behavior",
+      "status": "CLAIM_NOT_ADMITTED",
+      "implementation_class": "USER_VISIBLE_CLAIM_BOUNDARY",
+      "evidence": [
+        {
+          "artifact": "portable-loom-evidence-receipt.json",
+          "sha256": "1220e658c739f527f7848bc46317a6e2611151de77c3fbe4ee6f96e9dce273ea"
+        }
+      ],
+      "missing": "Release receipt establishes its own bounded release predicates; receiver behavior requires its own execution and capture."
+    }
+  ],
+  "laws": [
+    "V != C != P != L",
+    "Integrity != authentication != empirical validity",
+    "Route memory != authorization",
+    "Recorded return != demonstrated external return",
+    "Later evidence cannot rewrite earlier observer knowledge"
+  ]
+}

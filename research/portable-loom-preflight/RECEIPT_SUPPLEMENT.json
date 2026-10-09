@@ -1,0 +1,31 @@
+{
+  "schema": "td613.loom.delivery-recovery-supplement/v0.1",
+  "recorded_at": "2026-10-09T01:02:03.647815+00:00",
+  "original_receipt": {
+    "name": "portable-loom-evidence-receipt.json",
+    "bytes": 15493,
+    "sha256": "1220e658c739f527f7848bc46317a6e2611151de77c3fbe4ee6f96e9dce273ea",
+    "persistent_file_id": "libfile_3ad4b27d71288191a5b2397112546997",
+    "verification": "LOCAL_DELIVERED_BYTES_RECOMPUTED; saved manifest declarations agree"
+  },
+  "original_receipt_unchanged": true,
+  "updates": [
+    {
+      "field": "new_orchestrator",
+      "current": "Historical/current contracts recovered; bounded sidecar successor published.",
+      "contract_sha": "6c9687dba075a6edd6a478c7f86f9b2d0f018af7",
+      "runtime_sha": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a"
+    },
+    {
+      "field": "historical_six_sequence_protocol",
+      "current": "Historical six-sequence canonical index recovered; prospective protocol is a new separately labelled design.",
+      "index_sha": "d5ccb20e21cfce681984e4ec3082353fb11c7fce"
+    },
+    {
+      "field": "sequence_6.tranche_3B",
+      "current": "Native route commit located; separate named report remains unlocated.",
+      "sha": "eca486ab7d999eb29005576d9caa80dfe8838d35"
+    }
+  ],
+  "scope": "Append-only recovery status correction; zero retrospective execution credit."
+}

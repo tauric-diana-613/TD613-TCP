@@ -1,0 +1,35 @@
+{
+  "schema": "td613.loom.assay-input-manifest/v0.1",
+  "record_function": "PROSPECTIVE_FREEZE",
+  "recorded_at": "2026-10-09T01:02:03.647815+00:00",
+  "artifact_kind": "STANDARD_NON_DEMO_PORTABLE_LOOM",
+  "artifact_source_revision": "2091c426a1cbba2ff1a7a06019c0693ddc5be398",
+  "bounded_runner_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+  "historical_index_revision": "d5ccb20e21cfce681984e4ec3082353fb11c7fce",
+  "files": [
+    {
+      "name": "portable-loom-standard.json",
+      "bytes": 81380,
+      "sha256": "dec3750552099e30e9495ce42af6e616dd3dd1f48f0d3f6766cb82d934c273b2",
+      "persistent_file_id": "libfile_52d34d3de6808191ace3c8c9d7719199",
+      "verification": "LOCAL_DELIVERED_BYTES_RECOMPUTED; saved manifest declarations agree"
+    },
+    {
+      "name": "portable-loom-standard.md",
+      "bytes": 85355,
+      "sha256": "aee654a57edbd931eb5f7ab47b50427ef464530ef5731e5309d49c02eb444eee",
+      "persistent_file_id": "libfile_3f4c63dbebd88191afda426c5894b055",
+      "verification": "LOCAL_DELIVERED_BYTES_RECOMPUTED; saved manifest declarations agree"
+    },
+    {
+      "name": "portable-loom-evidence-receipt.json",
+      "bytes": 15493,
+      "sha256": "1220e658c739f527f7848bc46317a6e2611151de77c3fbe4ee6f96e9dce273ea",
+      "persistent_file_id": "libfile_3ad4b27d71288191a5b2397112546997",
+      "verification": "LOCAL_DELIVERED_BYTES_RECOMPUTED; saved manifest declarations agree"
+    }
+  ],
+  "artifact_receiver_execution": "NOT_RUN",
+  "old_same_name_exports": "PRESERVED_LINEAGE; excluded from test-object selection",
+  "authority": "NO_EXECUTION_AUTHORITY_CREATED_BY_THIS_MANIFEST"
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "td613.dollhouse.bounded-runner-engineering-receipt/v0.1",
+  "recorded_at": "2026-10-09T01:02:03.647815+00:00",
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "runtime_source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+  "predecessor_revision": "d5ccb20e21cfce681984e4ec3082353fb11c7fce",
+  "remote_branch": "candidate/dollhouse-bounded-runner-preflight-20261008",
+  "pre_repair_cases": 6,
+  "checks": {
+    "focused": {
+      "passed": 23,
+      "failed": 0,
+      "included_in_integrated_total": true
+    },
+    "exact_head_dollhouse": {
+      "passed": 147,
+      "failed": 0,
+      "skipped": 0
+    },
+    "pedagogue": {
+      "passed": 55,
+      "failed": 0,
+      "skipped": 1,
+      "source": "Unchanged relevant bytes; dependency path installed before final successful run."
+    },
+    "sample_validation": {
+      "passed": 5,
+      "failed": 0
+    },
+    "whitespace_check": "PASS"
+  },
+  "development_correction": "Initial new test exposed disposition precedence: an evidenced prefix failure now retains FAIL even when route binding also becomes incomplete. Final focused and integrated checks passed.",
+  "raw_logs": [
+    {
+      "path": "research/portable-loom-preflight/DOLLHOUSE_EXACT_HEAD.txt",
+      "bytes": 14459,
+      "sha256": "86bc79075a5db4fb7f3f5cea6b06458350c45b2fbe3e8ac8064ace7de94429e2"
+    },
+    {
+      "path": "research/portable-loom-preflight/PEDAGOGUE_CHECK.txt",
+      "bytes": 6235,
+      "sha256": "17c2239ef31ec5e121872c36f8e41b7a6f50d87f9b8bad6e1b4c209661f4a15a"
+    },
+    {
+      "path": "research/portable-loom-preflight/SAMPLE_VALIDATION.txt",
+      "bytes": 338,
+      "sha256": "d70e4a4718954a613874d27b73c79e9670d7810c3475a9f5621db7fbd4f76983"
+    }
+  ],
+  "node_version": "v24.19.0",
+  "provider_calls": 0,
+  "browser_runs": 0,
+  "research_reruns": 0,
+  "frozen_artifact_receiver_tests": 0,
+  "merge": false,
+  "deploy": false,
+  "full_remote_ci": "NOT_REQUESTED_OR_ESTABLISHED",
+  "limitations": [
+    "Caller observations and baseline remain unauthenticated.",
+    "General model scheduling unimplemented.",
+    "Original candidate and historical records unchanged.",
+    "Installed registry and Loom artifact unchanged.",
+    "Source-only Dollhouse export kit entrypoint allowlist remains unchanged; this successor has its own source coordinates, not an exported-kit inclusion claim."
+  ]
+}
