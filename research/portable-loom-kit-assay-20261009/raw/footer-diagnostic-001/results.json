@@ -1,0 +1,62 @@
+{
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "record_function": "SUPPLEMENTARY_ENGINEERING_DIAGNOSTIC",
+  "provider_calls": 0,
+  "primary_case_count_change": 0,
+  "status": "CONTRADICTED",
+  "results": [
+    {
+      "id": "plain",
+      "expected_admission_candidate": true,
+      "actual_admission_candidate": true,
+      "verdict": "SUPPORTED_BOUNDED",
+      "capture": {
+        "status": "CAPTURE_BOUND_LOCALLY",
+        "capture_sha256": "a90f477926a57d0e5f8d9ca234b00a52f9cb855b795f9348c6e441eb31e4311f",
+        "binding_origin": "LOCAL_CAPTURE_ADAPTER",
+        "answer_digest": "8705e87e2c8ed896466e7a7661c19fc069d662760892f2170d3b9f6e22c9fac9"
+      },
+      "check_status": "ADMISSION_CANDIDATE"
+    },
+    {
+      "id": "markdown_link",
+      "expected_admission_candidate": false,
+      "actual_admission_candidate": true,
+      "verdict": "CONTRADICTED",
+      "capture": {
+        "status": "CAPTURE_BOUND_LOCALLY",
+        "capture_sha256": "e7b09686af4f8a9be0299dd82aa91341e7bee92379d4b2177d026d3d2a8ed747",
+        "binding_origin": "LOCAL_CAPTURE_ADAPTER",
+        "answer_digest": "5a4a7a488261ac98a708e781779c624b61408d6461fc061242b99c3114aec8cd"
+      },
+      "check_status": "ADMISSION_CANDIDATE"
+    },
+    {
+      "id": "html_link",
+      "expected_admission_candidate": false,
+      "actual_admission_candidate": true,
+      "verdict": "CONTRADICTED",
+      "capture": {
+        "status": "CAPTURE_BOUND_LOCALLY",
+        "capture_sha256": "23610dbe5d84f3c82df7cad86b2c89b4f8a96dce34091b2033ef69b1aaf754e4",
+        "binding_origin": "LOCAL_CAPTURE_ADAPTER",
+        "answer_digest": "bf29caffd89542b42c05e4353dd6e365139fd3ddd219697c1283d68ace456105"
+      },
+      "check_status": "ADMISSION_CANDIDATE"
+    },
+    {
+      "id": "body_only",
+      "expected_admission_candidate": false,
+      "actual_admission_candidate": true,
+      "verdict": "CONTRADICTED",
+      "capture": {
+        "status": "CAPTURE_BOUND_LOCALLY",
+        "capture_sha256": "df4ce534c397cebfb9555a605ad0b644ebc98dbf33ce6b7691adf30f09e3ca59",
+        "binding_origin": "LOCAL_CAPTURE_ADAPTER",
+        "answer_digest": "f6c206f025d21eb6d6127119b9505cb16ca17d42e374f92033453a35d2a5aee2"
+      },
+      "check_status": "ADMISSION_CANDIDATE"
+    }
+  ],
+  "ended_at": "2026-10-09T06:12:28.461Z"
+}

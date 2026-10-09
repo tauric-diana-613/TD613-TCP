@@ -1,0 +1,21 @@
+{
+  "scope": "SUPPLEMENTARY_LOCAL_STRUCTURAL_TEST",
+  "source_commit": "f3c9c2b1cd4436c338d498df56a57bc73e92bf17",
+  "diagnostic_source_sha256": "8320f6c3a903cc8ec94821855340e3e92613973db14ed48185e71e0347b4ae95",
+  "artifact_export_commit": "8a5db46f142f642d3d4c90f1a4e456a6732b8b8b",
+  "constructions": [
+    "plain footer positive control",
+    "Markdown-linked primary Gate command",
+    "HTML-linked primary Gate command",
+    "quoted footer in body followed by prose"
+  ],
+  "expected_local_admission_candidates": [
+    true,
+    false,
+    false,
+    false
+  ],
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "provider_calls": 0,
+  "started_at": "2026-10-09T06:12:28.129Z"
+}

@@ -1,0 +1,31 @@
+{
+  "record_function": "CORRECTIVE_CANDIDATE_AFTER_RETAINED_COUNTEREXAMPLES",
+  "original_export_commit": "8a5db46f142f642d3d4c90f1a4e456a6732b8b8b",
+  "original_kit_sha256": "ebb2b2073554eba843a38162a1a4a8e48e8bf1e3b5f3fd00b4e91b3ba02ca1bf",
+  "original_primary_checks": {
+    "pass": 52,
+    "local_cases_supported": 12
+  },
+  "supplementary_diagnostic": "raw/footer-diagnostic-001/results.json",
+  "contradicted_controls": [
+    "markdown_link",
+    "html_link",
+    "body_only"
+  ],
+  "patch": "Inspect closing two nonblank lines; Gate command must appear on terminal line; reject Markdown direct/reference links and HTML anchor wrapping",
+  "corrective_engineering_checks": {
+    "pass": 12,
+    "fail": 0,
+    "hostile_footer_variants": 5,
+    "receipt": "raw/footer-repair-engineering-003/receipt.json"
+  },
+  "unchanged": [
+    "Source selection and one-use authorization",
+    "Custody return and admission contracts",
+    "Original artifact and every captured attempt",
+    "Historical research and E baseline"
+  ],
+  "next_artifact": "corrected-artifact: committed-source re-export; no silent replacement of accepted kit",
+  "actual_receiver_calls": 0,
+  "immediate_alert": "Capture exposes HELD/retained-alert status before Check; copied UI reports the hold"
+}

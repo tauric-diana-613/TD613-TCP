@@ -1,0 +1,279 @@
+{
+  "schema": "td613.dollhouse.bounded-orchestration/v0.1",
+  "case_id": "exact-portable-artifact",
+  "episode_id": "exact-artifact-inspection-20261009",
+  "source_revision": "2a9115cd5106e647188df97991ddaff1dff1a2b9",
+  "dossier": {
+    "schema": "td613.dollhouse.case-dossier/v0.1",
+    "case_id": "exact-portable-artifact",
+    "source_revision": "2a9115cd5106e647188df97991ddaff1dff1a2b9",
+    "findings": [
+      {
+        "id": "artifact-finite-support",
+        "agent": "FADT",
+        "claim_key": "supplied-finite-support-consistency",
+        "verdict": "SUPPORTED",
+        "evidence_class": "OFFLINE_TEST",
+        "observation_scope": {
+          "source": "research/portable-loom-executable-product-20261009/artifact/portable-loom-standard.json",
+          "instrument": "Exact-artifact audit: FADT",
+          "condition": "Current local process; no provider, UI, production or live-custody observation.",
+          "temporal_window": "2026-10-09T06:07:41.787Z"
+        },
+        "reference": {
+          "artifact": "research/portable-loom-kit-assay-20261009/raw/artifact-audit-002/adapter-results.json#FADT",
+          "sha256": "d243d95bb530d61ec80347b104ce896c3caf8485404bb242e8db8fd12365968d"
+        },
+        "limitations": [
+          "One occupied fibre and one antecedent; equality is trivial here and supplies no stage-erasure or reconstruction evidence.",
+          "The FADT AUTHORIZED label is finite mathematical admissibility, not an operator gesture or permission to act."
+        ]
+      },
+      {
+        "id": "artifact-projections",
+        "agent": "ATLAS",
+        "claim_key": "carried-four-projection-control-consistency",
+        "verdict": "SUPPORTED",
+        "evidence_class": "OFFLINE_TEST",
+        "observation_scope": {
+          "source": "research/portable-loom-executable-product-20261009/artifact/portable-loom-standard.json",
+          "instrument": "Exact-artifact audit: ATLAS",
+          "condition": "Current local process; no provider, UI, production or live-custody observation.",
+          "temporal_window": "2026-10-09T06:07:41.787Z"
+        },
+        "reference": {
+          "artifact": "research/portable-loom-kit-assay-20261009/raw/artifact-audit-002/adapter-results.json#ATLAS",
+          "sha256": "13a36da9f06347a51f32e850b3fbda8a621ff21f104de40c89e3f41b306c0a2c"
+        },
+        "limitations": [
+          "Six carried projection pairs; same local packet, no independently observed foreign receiver.",
+          "Byte/control consistency does not establish origin or external custody."
+        ]
+      },
+      {
+        "id": "artifact-gesture-gap",
+        "agent": "PEDAGOGUE",
+        "claim_key": "operator-gesture-consequence-trace",
+        "verdict": "HELD",
+        "evidence_class": "OFFLINE_TEST",
+        "observation_scope": {
+          "source": "research/portable-loom-executable-product-20261009/artifact/portable-loom-standard.json",
+          "instrument": "Exact-artifact audit: PEDAGOGUE",
+          "condition": "Current local process; no provider, UI, production or live-custody observation.",
+          "temporal_window": "2026-10-09T06:07:41.787Z"
+        },
+        "reference": {
+          "artifact": "research/portable-loom-kit-assay-20261009/raw/artifact-audit-002/adapter-results.json#PEDAGOGUE",
+          "sha256": "179238f533d2802862e9555266832857230102deb317dea9f711c6255fa1ba46"
+        },
+        "limitations": [
+          "Compatible input missing; no gesture adapter or human participant study executed."
+        ]
+      },
+      {
+        "id": "artifact-reconstruction-gap",
+        "agent": "APERTURE",
+        "claim_key": "measured-observation-and-reconstruction",
+        "verdict": "HELD",
+        "evidence_class": "OFFLINE_TEST",
+        "observation_scope": {
+          "source": "research/portable-loom-executable-product-20261009/artifact/portable-loom-standard.json",
+          "instrument": "Exact-artifact audit: APERTURE_NUMERICAL",
+          "condition": "Current local process; no provider, UI, production or live-custody observation.",
+          "temporal_window": "2026-10-09T06:07:41.787Z"
+        },
+        "reference": {
+          "artifact": "research/portable-loom-kit-assay-20261009/raw/artifact-audit-002/adapter-results.json#APERTURE_NUMERICAL",
+          "sha256": "2053af4048b79070021f61245bf28c4845cf852e0a75cc138598fa28f8000650"
+        },
+        "limitations": [
+          "Compatible numerical input and captured probes missing; risk declarations cannot prove actual reconstruction."
+        ]
+      },
+      {
+        "id": "artifact-next-observation",
+        "agent": "APERTURE",
+        "claim_key": "bounded-next-observation-plan",
+        "verdict": "SUPPORTED",
+        "evidence_class": "OFFLINE_TEST",
+        "observation_scope": {
+          "source": "research/portable-loom-executable-product-20261009/artifact/portable-loom-standard.json",
+          "instrument": "Exact-artifact audit: APERTURE_PLAN",
+          "condition": "Current local process; no provider, UI, production or live-custody observation.",
+          "temporal_window": "2026-10-09T06:07:41.787Z"
+        },
+        "reference": {
+          "artifact": "research/portable-loom-kit-assay-20261009/raw/artifact-audit-002/adapter-results.json#APERTURE_PLAN",
+          "sha256": "19ae0c589c2a894708bf43a262e5659c955397c3d1bcd23c33776bdd7af1edf3"
+        },
+        "limitations": [
+          "Newly authored declaration-only plan; not an original carried plan, receiver measurement or numerical Aperture execution.",
+          "HUMAN_APPROVAL_REQUIRED describes future observation authority; current local audits are already operator authorized."
+        ]
+      }
+    ],
+    "disagreements": [],
+    "agent_coverage": [
+      {
+        "agent": "PEDAGOGUE",
+        "present": true
+      },
+      {
+        "agent": "APERTURE",
+        "present": true
+      },
+      {
+        "agent": "ATLAS",
+        "present": true
+      },
+      {
+        "agent": "FADT",
+        "present": true
+      }
+    ],
+    "unresolved_finding_ids": [
+      "artifact-gesture-gap",
+      "artifact-reconstruction-gap"
+    ],
+    "evidence_posture": {
+      "evidence_class_is_caller_declared": true,
+      "artifact_bytes_checked": false,
+      "reference_authentication": "UNVERIFIED",
+      "findings_independently_scoped": true,
+      "evidence_classes_aggregated": false,
+      "majority_vote": false,
+      "global_score": null
+    },
+    "decision": "HUMAN_REVIEW_REQUIRED",
+    "authority": {
+      "execute": false,
+      "automatic_redesign": false,
+      "release": false,
+      "merge": false,
+      "deployment": false,
+      "provider": false,
+      "human_closure_required": true
+    }
+  },
+  "temporal_sidecar": {
+    "schema": "td613.dollhouse.temporal-audit/v0.2",
+    "agent": "TEMPORAL_CUSTODIAN",
+    "status": "BOUNDED_RESEARCH_CANDIDATE",
+    "claim_ceiling": "temporal-governance-and-whole-route-veto-only-no-retroactive-mutation-no-execution-authority-human-closure-required",
+    "evidence_posture": {
+      "evidence_class": "LOCAL_STRUCTURAL_TEST",
+      "input_observations": "CALLER_DECLARED",
+      "baseline_authentication": "UNVERIFIED",
+      "provider_origin_authenticated": false,
+      "clock_authenticated": false
+    },
+    "authority": {
+      "execute": false,
+      "provider": false,
+      "merge": false,
+      "deployment": false,
+      "release": false,
+      "human_closure_required": true
+    },
+    "case_id": "exact-portable-artifact",
+    "source_revision": "2a9115cd5106e647188df97991ddaff1dff1a2b9",
+    "coordinate": "current-inspection-plus-required-receiver-evidence",
+    "episode_id": "exact-artifact-inspection-20261009",
+    "input_valid": false,
+    "verdict": "HELD",
+    "ledger_audit": {
+      "is_valid": false,
+      "input_valid": false,
+      "baseline_compared": false,
+      "entry_count": 0,
+      "validated_entries": [],
+      "violations": [
+        {
+          "type": "INVALID_LEDGER_INPUT",
+          "message": "timestamp: UTC ISO timestamp required"
+        }
+      ]
+    },
+    "journey_audit": {
+      "input_valid": true,
+      "verdict": "HELD",
+      "veto_applied": true,
+      "veto_authority": "LOCAL_PASS_PLUS_GLOBAL_ROUTE_REGRESSION",
+      "evaluations": {
+        "artifact_binding": "PASS",
+        "receiver_return": "NOT_RUN"
+      },
+      "violations": [],
+      "rationale": "Local component success cannot mask failed, held, unknown or unperformed route phases."
+    },
+    "violations": [
+      {
+        "type": "INVALID_LEDGER_INPUT",
+        "message": "timestamp: UTC ISO timestamp required"
+      },
+      {
+        "type": "BASELINE_REQUIRED",
+        "message": "Non-retroactivity requires the retained baseline."
+      }
+    ]
+  },
+  "holds": [
+    {
+      "code": "TEMPORAL_REVIEW_HELD",
+      "detail": "Missing, invalid, contradictory or incomplete temporal evidence holds the route."
+    },
+    {
+      "code": "LOCAL_PASS_PLUS_GLOBAL_ROUTE_REGRESSION",
+      "detail": "Temporal Custodian whole-route veto retained."
+    },
+    {
+      "code": "UNRESOLVED_ROLE_FINDINGS",
+      "finding_ids": [
+        "artifact-gesture-gap",
+        "artifact-reconstruction-gap"
+      ]
+    }
+  ],
+  "role_coverage": [
+    {
+      "agent": "PEDAGOGUE",
+      "present": true
+    },
+    {
+      "agent": "APERTURE",
+      "present": true
+    },
+    {
+      "agent": "ATLAS",
+      "present": true
+    },
+    {
+      "agent": "FADT",
+      "present": true
+    },
+    {
+      "agent": "TEMPORAL_CUSTODIAN",
+      "present": false
+    }
+  ],
+  "recommendation": "HELD",
+  "decision": "HUMAN_REVIEW_REQUIRED",
+  "evidence_posture": {
+    "findings_are_caller_declared": true,
+    "artifact_bytes_checked": false,
+    "provider_origin_authenticated": false,
+    "majority_vote": false,
+    "global_score": null,
+    "automatic_temporal_sidecar_consumed": true,
+    "model_scheduler": false
+  },
+  "authority": {
+    "execute": false,
+    "automatic_redesign": false,
+    "provider": false,
+    "merge": false,
+    "deployment": false,
+    "release": false,
+    "human_closure_required": true
+  }
+}

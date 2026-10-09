@@ -1,0 +1,71 @@
+{
+  "schema": "td613.loom.exact-kit-current-provider-observation/v0.1",
+  "observation_receipts": [
+    "raw/provider-metadata-001/request-receipt.json",
+    "raw/provider-readiness-001/request-receipt.json"
+  ],
+  "native_metadata_sha256": "9e262e490db7ff385db7f4aba3b7c706b3358f14bc7ccfb55f81d19ff80df9a5",
+  "readiness_body_sha256": "847954d7064d42bd1ac61313ac93a3146a3f83ab0f1677be636ce8031d3c621d",
+  "has_server_side_gemini_key_reported": true,
+  "listing_summary": {
+    "ok": true,
+    "status": 200,
+    "cached": false,
+    "complete": true,
+    "observedAt": 1791526460464,
+    "expiresAt": 1791527060464,
+    "generateContentModelCount": 45,
+    "error": null
+  },
+  "provider_generation_calls": 0,
+  "local_provider_credential_available": false,
+  "conduit_limits_match_registered_protocol": false,
+  "numerical_financial_ceiling": "UNBOUND",
+  "status": "HELD_MODEL_TRANSPORT",
+  "native_metadata_before_readiness_callable_models": [],
+  "native_metadata_before_readiness_exclusion_reasons": [
+    {
+      "model": "gemini-3.8-flash",
+      "reasons": [
+        "fresh-complete-provider-observation-required"
+      ]
+    },
+    {
+      "model": "gemini-3.7-flash",
+      "reasons": [
+        "fresh-complete-provider-observation-required"
+      ]
+    },
+    {
+      "model": "gemini-3.6-flash",
+      "reasons": [
+        "fresh-complete-provider-observation-required"
+      ]
+    },
+    {
+      "model": "gemini-3.5-flash",
+      "reasons": [
+        "fresh-complete-provider-observation-required"
+      ]
+    },
+    {
+      "model": "gemini-3-flash-preview",
+      "reasons": [
+        "fresh-complete-provider-observation-required"
+      ]
+    }
+  ],
+  "later_readiness_callable_models": [
+    "gemini-3.8-flash",
+    "gemini-3.7-flash",
+    "gemini-3.6-flash",
+    "gemini-3.5-flash",
+    "gemini-3-flash-preview"
+  ],
+  "chronology": "Initial native GET lacked fresh provider observation. Later readiness GET acquired a fresh complete listing and reported the configured models callable. The later result does not retroactively change the earlier GET.",
+  "remaining_blocks": [
+    "No local credential; server-side key stays unexported",
+    "Native fixed request/output/input limits incompatible with frozen prospective protocol",
+    "Numerical financial ceiling unbound"
+  ]
+}

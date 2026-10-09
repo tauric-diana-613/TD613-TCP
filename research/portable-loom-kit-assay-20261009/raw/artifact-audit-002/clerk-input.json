@@ -1,0 +1,169 @@
+{
+  "schema": "td613.dollhouse.bounded-orchestration/v0.1",
+  "case_id": "exact-portable-artifact",
+  "source_revision": "2a9115cd5106e647188df97991ddaff1dff1a2b9",
+  "episode_id": "exact-artifact-inspection-20261009",
+  "findings": [
+    {
+      "id": "artifact-finite-support",
+      "agent": "FADT",
+      "claim_key": "supplied-finite-support-consistency",
+      "verdict": "SUPPORTED",
+      "evidence_class": "OFFLINE_TEST",
+      "observation_scope": {
+        "source": "research/portable-loom-executable-product-20261009/artifact/portable-loom-standard.json",
+        "instrument": "Exact-artifact audit: FADT",
+        "condition": "Current local process; no provider, UI, production or live-custody observation.",
+        "temporal_window": "2026-10-09T06:07:41.787Z"
+      },
+      "reference": {
+        "artifact": "research/portable-loom-kit-assay-20261009/raw/artifact-audit-002/adapter-results.json#FADT",
+        "sha256": "d243d95bb530d61ec80347b104ce896c3caf8485404bb242e8db8fd12365968d"
+      },
+      "limitations": [
+        "One occupied fibre and one antecedent; equality is trivial here and supplies no stage-erasure or reconstruction evidence.",
+        "The FADT AUTHORIZED label is finite mathematical admissibility, not an operator gesture or permission to act."
+      ]
+    },
+    {
+      "id": "artifact-projections",
+      "agent": "ATLAS",
+      "claim_key": "carried-four-projection-control-consistency",
+      "verdict": "SUPPORTED",
+      "evidence_class": "OFFLINE_TEST",
+      "observation_scope": {
+        "source": "research/portable-loom-executable-product-20261009/artifact/portable-loom-standard.json",
+        "instrument": "Exact-artifact audit: ATLAS",
+        "condition": "Current local process; no provider, UI, production or live-custody observation.",
+        "temporal_window": "2026-10-09T06:07:41.787Z"
+      },
+      "reference": {
+        "artifact": "research/portable-loom-kit-assay-20261009/raw/artifact-audit-002/adapter-results.json#ATLAS",
+        "sha256": "13a36da9f06347a51f32e850b3fbda8a621ff21f104de40c89e3f41b306c0a2c"
+      },
+      "limitations": [
+        "Six carried projection pairs; same local packet, no independently observed foreign receiver.",
+        "Byte/control consistency does not establish origin or external custody."
+      ]
+    },
+    {
+      "id": "artifact-gesture-gap",
+      "agent": "PEDAGOGUE",
+      "claim_key": "operator-gesture-consequence-trace",
+      "verdict": "HELD",
+      "evidence_class": "OFFLINE_TEST",
+      "observation_scope": {
+        "source": "research/portable-loom-executable-product-20261009/artifact/portable-loom-standard.json",
+        "instrument": "Exact-artifact audit: PEDAGOGUE",
+        "condition": "Current local process; no provider, UI, production or live-custody observation.",
+        "temporal_window": "2026-10-09T06:07:41.787Z"
+      },
+      "reference": {
+        "artifact": "research/portable-loom-kit-assay-20261009/raw/artifact-audit-002/adapter-results.json#PEDAGOGUE",
+        "sha256": "179238f533d2802862e9555266832857230102deb317dea9f711c6255fa1ba46"
+      },
+      "limitations": [
+        "Compatible input missing; no gesture adapter or human participant study executed."
+      ]
+    },
+    {
+      "id": "artifact-reconstruction-gap",
+      "agent": "APERTURE",
+      "claim_key": "measured-observation-and-reconstruction",
+      "verdict": "HELD",
+      "evidence_class": "OFFLINE_TEST",
+      "observation_scope": {
+        "source": "research/portable-loom-executable-product-20261009/artifact/portable-loom-standard.json",
+        "instrument": "Exact-artifact audit: APERTURE_NUMERICAL",
+        "condition": "Current local process; no provider, UI, production or live-custody observation.",
+        "temporal_window": "2026-10-09T06:07:41.787Z"
+      },
+      "reference": {
+        "artifact": "research/portable-loom-kit-assay-20261009/raw/artifact-audit-002/adapter-results.json#APERTURE_NUMERICAL",
+        "sha256": "2053af4048b79070021f61245bf28c4845cf852e0a75cc138598fa28f8000650"
+      },
+      "limitations": [
+        "Compatible numerical input and captured probes missing; risk declarations cannot prove actual reconstruction."
+      ]
+    },
+    {
+      "id": "artifact-next-observation",
+      "agent": "APERTURE",
+      "claim_key": "bounded-next-observation-plan",
+      "verdict": "SUPPORTED",
+      "evidence_class": "OFFLINE_TEST",
+      "observation_scope": {
+        "source": "research/portable-loom-executable-product-20261009/artifact/portable-loom-standard.json",
+        "instrument": "Exact-artifact audit: APERTURE_PLAN",
+        "condition": "Current local process; no provider, UI, production or live-custody observation.",
+        "temporal_window": "2026-10-09T06:07:41.787Z"
+      },
+      "reference": {
+        "artifact": "research/portable-loom-kit-assay-20261009/raw/artifact-audit-002/adapter-results.json#APERTURE_PLAN",
+        "sha256": "19ae0c589c2a894708bf43a262e5659c955397c3d1bcd23c33776bdd7af1edf3"
+      },
+      "limitations": [
+        "Newly authored declaration-only plan; not an original carried plan, receiver measurement or numerical Aperture execution.",
+        "HUMAN_APPROVAL_REQUIRED describes future observation authority; current local audits are already operator authorized."
+      ]
+    }
+  ],
+  "temporal": {
+    "schema": "td613.dollhouse.temporal-audit/v0.2",
+    "case_id": "exact-portable-artifact",
+    "source_revision": "2a9115cd5106e647188df97991ddaff1dff1a2b9",
+    "coordinate": "current-inspection-plus-required-receiver-evidence",
+    "episode_id": "exact-artifact-inspection-20261009",
+    "baseline_entries": [
+      {
+        "entry_id": "binding-record",
+        "t_sequence": "SEQ_1",
+        "timestamp": "2026-10-09T06:04:32.024711+00:00",
+        "state": "INPUT_BINDING_RECORDED",
+        "observation": "Current prospective binding records the exact artifact digest. This timestamp is a local recording declaration, not an independent clock witness.",
+        "registered_event": "CURRENT_AUDIT_RECORD",
+        "authority": "LOCAL_INSPECTION_ONLY",
+        "retroactive_rewrite_forbidden": true,
+        "later_reinterpretation_allowed": true
+      }
+    ],
+    "ledger_entries": [
+      {
+        "entry_id": "binding-record",
+        "t_sequence": "SEQ_1",
+        "timestamp": "2026-10-09T06:04:32.024711+00:00",
+        "state": "INPUT_BINDING_RECORDED",
+        "observation": "Current prospective binding records the exact artifact digest. This timestamp is a local recording declaration, not an independent clock witness.",
+        "registered_event": "CURRENT_AUDIT_RECORD",
+        "authority": "LOCAL_INSPECTION_ONLY",
+        "retroactive_rewrite_forbidden": true,
+        "later_reinterpretation_allowed": true
+      },
+      {
+        "entry_id": "receiver-evidence-status",
+        "t_sequence": "SEQ_2",
+        "timestamp": "2026-10-09T06:07:41.790Z",
+        "state": "RECEIVER_EVIDENCE_NOT_RUN",
+        "observation": "Current inspection has no receiver return capture. This is a new missing-evidence record, not an invented historic receiver event.",
+        "registered_event": "CURRENT_AUDIT_RECORD",
+        "authority": "LOCAL_INSPECTION_ONLY",
+        "retroactive_rewrite_forbidden": true,
+        "later_reinterpretation_allowed": true
+      }
+    ],
+    "required_phases": [
+      "artifact_binding",
+      "receiver_return"
+    ],
+    "phases": {
+      "artifact_binding": {
+        "status": "PASS",
+        "entry_id": "binding-record"
+      },
+      "receiver_return": {
+        "status": "NOT_RUN",
+        "entry_id": "receiver-evidence-status"
+      }
+    }
+  }
+}

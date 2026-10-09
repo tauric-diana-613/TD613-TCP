@@ -215,16 +215,23 @@ export async function createStandardPortableLoomRuntime(artifact, {
           retained.binding_origin = 'LOCAL_CAPTURE_ADAPTER';
         }
         const answer = retained.bound.answer;
-        const footerPresent = typeof answer === 'string' && answer.trimEnd().endsWith('⟐')
-          && answer.includes(session.session_id.slice(0, 8)) && answer.includes(LOOM_GATE_LABEL);
+        const closingFooter = typeof answer === 'string'
+          ? answer.trimEnd().split(/\r?\n/).filter(line => line.trim()).slice(-2).join('\n') : '';
+        const linkedGate = /\[[^\]]*米\s+Check\s+Loom\s+Gate[^\]]*\]\s*(?:\(|\[)/u.test(closingFooter)
+          || /<a\b[^>]*>[\s\S]*?米\s+Check\s+Loom\s+Gate[\s\S]*?<\/a>/iu.test(closingFooter);
+        const footerPresent = closingFooter.endsWith('⟐') && !linkedGate
+          && closingFooter.split('\n').at(-1).includes(LOOM_GATE_LABEL)
+          && closingFooter.includes(session.session_id.slice(0, 8));
         if (!footerPresent) {
           const omission = freeze({ status: 'PROTOCOL_OMISSION_OBSERVED', scope: 'CAPTURED_ANSWER_ONLY',
-            reason: 'Expected minimized session, plain Gate command and terminal seal were not all present.',
+            reason: 'Closing compact footer with minimized session, plain-text Gate command and terminal seal was not present.',
             attempt_id: current.attempt_id, capture_sha256: retained.sha256, enforcement: 'UNKNOWN' });
           findings.push(omission); (current.protocol_omissions ||= []).push(omission);
           await record('RECEIVER_FOOTER_OMISSION', omission);
         }
-        phase = 'CARRIED'; return freeze({ status: 'CAPTURE_BOUND_LOCALLY', capture_sha256: retained.sha256,
+        phase = current.protocol_omissions?.length
+          || current.literal_reports?.some(report => report.status !== 'BOUNDED_CHALLENGE_PASSED') ? 'HELD' : 'CARRIED';
+        return freeze({ status: 'CAPTURE_BOUND_LOCALLY', hold_status: phase === 'HELD' ? 'RETAINED_ALERTS' : 'NONE', capture_sha256: retained.sha256,
           binding_origin: retained.binding_origin ?? 'RECEIVER_SUPPLIED_BINDING', answer_digest: retained.bound.answer_digest });
       } catch (error) { phase = 'HELD'; retained.error = error.message; await record('CAPTURE_HELD', { capture_sha256: retained.sha256, reason: error.message }); return freeze({ status: 'HELD', reason: error.message }); }
     });

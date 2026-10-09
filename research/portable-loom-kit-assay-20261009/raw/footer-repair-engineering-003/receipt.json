@@ -1,0 +1,33 @@
+{
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "record_function": "CORRECTIVE_SOURCE_CHECK_NOT_ORIGINAL_KIT_PASS",
+  "command": [
+    "node",
+    "--test",
+    "tests/portable-loom-standard-runtime.test.mjs"
+  ],
+  "started_at": "2026-10-09T06:19:50.928887+00:00",
+  "ended_at": "2026-10-09T06:19:52.265649+00:00",
+  "exit_code": 0,
+  "parent_commit": "f3c9c2b1cd4436c338d498df56a57bc73e92bf17",
+  "source_state": "UNCOMMITTED_ENGINEERING_CORRECTION",
+  "source_records": [
+    {
+      "path": "app/engine/portable-loom-standard-runtime.js",
+      "sha256": "0786eb72478fddb5a5dbd6fee11bb10c1546f5ea9fe0cd2443e80a622d7ebd08"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/standard-portable-client.js",
+      "sha256": "2653c8695e9651bb7b6dabb0e1e5c17bf811130675ab614dc7714c04e6cd4629"
+    },
+    {
+      "path": "tests/portable-loom-standard-runtime.test.mjs",
+      "sha256": "c28fddd7434d0f40f8be5a7d5c124f1cdb4be5c29e3a2c9f9d3726b59c3d30a6"
+    }
+  ],
+  "stdout_sha256": "65fe34e3a40fb8fe88ab99aebd78058a0c138c29e9b5797e388c51c1efe0ed6c",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "provider_calls": 0,
+  "prior_attempts_preserved": true,
+  "original_artifact_preserved": true
+}

@@ -97,7 +97,7 @@ export function mountStandardPortableLoom(root, artifact, environment = window) 
     try { await environment.navigator.clipboard.writeText(released.text); message('Authorized prompt copied once. Paste it into the selected receiving AI.'); }
     catch { message('Authorization consumed. The exact released prompt is available under Inspect outgoing prompt; copy it manually.'); }
   });
-  on('capture', async () => { requireRuntime(); candidate = null; capturedRaw = $('reply').value; const r = await runtime.capture(capturedRaw); $('receipt').textContent = JSON.stringify(r, null, 2); message(r.status === 'HELD' ? r.reason : 'Original reply bytes retained and answer bound locally. Review before Check.'); });
+  on('capture', async () => { requireRuntime(); candidate = null; capturedRaw = $('reply').value; const r = await runtime.capture(capturedRaw); $('receipt').textContent = JSON.stringify(r, null, 2); message(r.status === 'HELD' ? r.reason : r.hold_status === 'RETAINED_ALERTS' ? 'HOLD. Reply bytes are bound; retained disclosure or footer findings require review in Loom Gate.' : 'Original reply bytes retained and answer bound locally. Review before Check.'); });
   on('check', async () => {
     requireRuntime(); if ($('reply').value !== capturedRaw) throw new Error('Reply changed. Capture its actual bytes again.'); if (!$('review').checked) throw new Error('Review the selected sources and root rules before Check.');
     candidate = await runtime.check({ gesture: 'REVIEW_ROOT_RULES' }); $('receipt').textContent = JSON.stringify(candidate, null, 2);

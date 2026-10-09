@@ -1,0 +1,28 @@
+{
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "record_function": "CORRECTIVE_SOURCE_CHECK_NOT_ORIGINAL_KIT_PASS",
+  "command": [
+    "node",
+    "--test",
+    "tests/portable-loom-standard-runtime.test.mjs"
+  ],
+  "started_at": "2026-10-09T06:14:15.613476+00:00",
+  "ended_at": "2026-10-09T06:14:16.850127+00:00",
+  "exit_code": 0,
+  "parent_commit": "f3c9c2b1cd4436c338d498df56a57bc73e92bf17",
+  "source_state": "UNCOMMITTED_ENGINEERING_CORRECTION",
+  "source_records": [
+    {
+      "path": "app/engine/portable-loom-standard-runtime.js",
+      "sha256": "0ba1fcb468fd7930baf4675737f288c1d516a0e8515a216256c64fde469633e3"
+    },
+    {
+      "path": "tests/portable-loom-standard-runtime.test.mjs",
+      "sha256": "caf453dbf3e5816c36d280a05c6dac872087e8b8e0152201a405d028a2a8972a"
+    }
+  ],
+  "stdout_sha256": "fee10d46532016cb8671357252779f06a2e16d81a0a149bdc9be4d29bc8d1247",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "provider_calls": 0,
+  "original_artifact_preserved": true
+}

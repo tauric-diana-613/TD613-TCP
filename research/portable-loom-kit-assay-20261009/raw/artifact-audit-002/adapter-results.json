@@ -1,0 +1,216 @@
+{
+  "FADT": {
+    "schema": "td613.dollhouse.fadt-agent/v0.1",
+    "agent": "FADT",
+    "occupied_fibre_count": 1,
+    "all_fibres_exact": true,
+    "fibres": [
+      {
+        "fibre_id": "summary_1",
+        "antecedents": [
+          {
+            "id": "selected_task",
+            "support": [
+              "EXIT",
+              "INPUT:ca5f9a32d296efd56ef8ffa3363d49716c84eef3596fdee4d27f4a5ebbfecabf",
+              "REQUEST_SHARED_TASK",
+              "REST",
+              "REVIEW_RETURN"
+            ]
+          }
+        ],
+        "union": [
+          "EXIT",
+          "INPUT:ca5f9a32d296efd56ef8ffa3363d49716c84eef3596fdee4d27f4a5ebbfecabf",
+          "REQUEST_SHARED_TASK",
+          "REST",
+          "REVIEW_RETURN"
+        ],
+        "intersection": [
+          "EXIT",
+          "INPUT:ca5f9a32d296efd56ef8ffa3363d49716c84eef3596fdee4d27f4a5ebbfecabf",
+          "REQUEST_SHARED_TASK",
+          "REST",
+          "REVIEW_RETURN"
+        ],
+        "irreducible_gap": [],
+        "gap_size": 0,
+        "support_constant_on_fibre": true,
+        "exact_descended_admissibility": true,
+        "largest_universally_sound_rule": [
+          "EXIT",
+          "INPUT:ca5f9a32d296efd56ef8ffa3363d49716c84eef3596fdee4d27f4a5ebbfecabf",
+          "REQUEST_SHARED_TASK",
+          "REST",
+          "REVIEW_RETURN"
+        ],
+        "smallest_universally_complete_rule": [
+          "EXIT",
+          "INPUT:ca5f9a32d296efd56ef8ffa3363d49716c84eef3596fdee4d27f4a5ebbfecabf",
+          "REQUEST_SHARED_TASK",
+          "REST",
+          "REVIEW_RETURN"
+        ],
+        "verdict": "AUTHORIZED"
+      }
+    ],
+    "theorem_surface": "finite exact admissibility descends iff lawful support is constant on every occupied quotient fibre; union/intersection preserve the complete/sound extremals and their difference remains visible",
+    "claim_ceiling": [
+      "finite support audit only",
+      "no unoccupied quotient state receives invented support authority",
+      "gap minimization does not identify a uniquely correct surviving rule",
+      "finite FADT adapter is not a universal AI information-loss theorem",
+      "no source-state reconstruction merge deployment release provider or Vercel authority"
+    ]
+  },
+  "ATLAS": {
+    "schema": "td613.aia.surface-family-report/v0.1",
+    "surface_reference": "Dome-World/Loom AI task",
+    "host_station": "Dome-World",
+    "governed_reference": "loom-ai:ca5f9a32d296efd56ef8ffa3363d49716c84eef3596fdee4d27f4a5ebbfecabf",
+    "routes": [
+      "EXPERIENTIAL",
+      "CUSTODIAL",
+      "AUDIT",
+      "IMPLEMENTATION"
+    ],
+    "pair_count": 6,
+    "all_invariants_preserved": true,
+    "all_surfaces_non_equivalent": true,
+    "route_inference_forbidden": true,
+    "authority_transferred": false,
+    "human_closure_required": true,
+    "closure": {
+      "status": "OPEN",
+      "closed_by": null
+    }
+  },
+  "PEDAGOGUE": {
+    "status": "HELD_INPUT_CLASS",
+    "adapter_executed": false,
+    "reason": "The carried semantic events contain no ordered gesture/notice/consequence snapshots required by the gesture adapter.",
+    "operator_gesture_trace_captured": false,
+    "human_comprehension_measured": false
+  },
+  "APERTURE_NUMERICAL": {
+    "status": "HELD_INPUT_CLASS",
+    "adapter_executed": false,
+    "reason": "No declared numerical observation/reconstruction design or captured reconstruction probes.",
+    "observation_design": null,
+    "measured_reconstruction": false
+  },
+  "APERTURE_PLAN": {
+    "schema": "td613.dollhouse.witness-plan-receipt/v0.1",
+    "agent": "APERTURE",
+    "adapter_status": "BOUNDED_EXTERNAL_AUDIT",
+    "disposition": "PROPOSE",
+    "basis": [
+      "DERIVED_FROM_DECLARED_PLAN_ONLY",
+      "PER_CLAIM_FINDINGS_RETAINED_WITHOUT_EVIDENCE_CLASS_PROMOTION"
+    ],
+    "source_revision": "2a9115cd5106e647188df97991ddaff1dff1a2b9",
+    "source_status": "OPERATOR_DECLARED_UNAUTHENTICATED",
+    "source_revision_authenticated": false,
+    "installed_aperture_identity_changed": false,
+    "claim_verified": false,
+    "claims": [
+      {
+        "claim_id": "receiver-adherence-unmeasured",
+        "claim_class": "SCOPED_POLICY_ENFORCEMENT",
+        "disposition": "PROPOSE",
+        "basis": [
+          "DECLARED_DISCRIMINATING_OBSERVATION_REQUIRES_SEPARATE_HUMAN_APPROVAL"
+        ],
+        "declaration": {
+          "id": "receiver-adherence-unmeasured",
+          "claim_class": "SCOPED_POLICY_ENFORCEMENT",
+          "statement": "The exact export prescribes receiver governance; foreign adherence is currently unmeasured.",
+          "extent": "DECLARED_SCOPE_ONLY",
+          "observation_scope": {
+            "description": "Exact portable export and its retained local receipts only.",
+            "objects": [
+              "ed4c685060bdeac7a2a513df96a4c07865073eb5769b6c0979aa6b5b7ad8a6a0"
+            ],
+            "bounded": true
+          },
+          "instrument": {
+            "id": "prospective-receiver-capture",
+            "description": "Future independent request/response capture under a bound model/transport."
+          },
+          "evidence_class": "DECLARATION",
+          "positive_witness": {
+            "description": "Carried rules and local integrity receipt, not foreign enforcement.",
+            "artifact_refs": [
+              "research/portable-loom-executable-product-20261009/artifact/portable-loom-standard.json"
+            ]
+          },
+          "hostile_counterexample": {
+            "description": "No actual receiver capture exists in the inherited attempt.",
+            "artifact_refs": [
+              "research/portable-loom-local-battery-20261009/EVIDENCE_RECEIPT.local.json"
+            ]
+          },
+          "unresolved_alternatives": [
+            "RECEIVER_COMPLIES",
+            "RECEIVER_IGNORES_INSTRUCTIONS"
+          ],
+          "required_next_observation": {
+            "description": "Capture the fixed R cases through an explicitly configured provider-neutral transport.",
+            "observation_scope": {
+              "description": "Only the bound receiver/model and fixed case contexts.",
+              "objects": [
+                "R01-R12"
+              ],
+              "bounded": true
+            },
+            "instrument": {
+              "id": "bound-request-response-capture",
+              "description": "Retain exact outbound/inbound bytes and transport metadata."
+            },
+            "evidence_class": "PROVIDER_RESPONSE",
+            "distinguishes": [
+              "RECEIVER_COMPLIES",
+              "RECEIVER_IGNORES_INSTRUCTIONS"
+            ],
+            "execution": false,
+            "authority": "HUMAN_APPROVAL_REQUIRED"
+          }
+        },
+        "evidence_class": "DECLARATION",
+        "evidence_ceiling": "A stated plan or assertion supplies no independently observed behavior.",
+        "next_evidence_ceiling": "Returned provider text supplies a response sample; policy enforcement and empirical external origin remain separate claims.",
+        "declared_target_alternatives": [
+          "RECEIVER_COMPLIES",
+          "RECEIVER_IGNORES_INSTRUCTIONS"
+        ],
+        "unresolved_beyond_claim_scope": [
+          "UNTESTED_POLICY_OR_PATH_ENFORCEMENT_UNRESOLVED",
+          "PROVIDER_ACKNOWLEDGMENT_ALONE_INSUFFICIENT"
+        ],
+        "observation_performed": false,
+        "artifact_references_authenticated": false,
+        "claim_verified": false,
+        "authority": {
+          "execution": false,
+          "automatic_observation": false,
+          "automatic_experiment_execution": false,
+          "provider_authority": false,
+          "release_authority": false,
+          "production_mutation": false,
+          "promotion_authority": false,
+          "human_closure_required": true
+        }
+      }
+    ],
+    "authority": {
+      "execution": false,
+      "automatic_observation": false,
+      "automatic_experiment_execution": false,
+      "provider_authority": false,
+      "release_authority": false,
+      "production_mutation": false,
+      "promotion_authority": false,
+      "human_closure_required": true
+    }
+  }
+}

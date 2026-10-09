@@ -125,3 +125,20 @@ test('a captured answer without the required footer remains an observed protocol
   assert.equal(candidate.status, 'HELD'); assert.ok(candidate.reasons.includes('RETAINED_RECEIVER_FOOTER_OMISSION'));
   assert.equal(runtime.inspect().custody.work_unit_count, 0);
 });
+
+test('linked Gate commands and body-only footer quotations are observed omissions and cannot become admission candidates', async () => {
+  for (const variant of [
+    footer => footer.replace('米 Check Loom Gate', '[米 Check Loom Gate](https://td613.com/)'),
+    footer => footer.replace('米 Check Loom Gate', '[米 Check Loom Gate][gate]'),
+    footer => footer.replace('米 Check Loom Gate', '<a href="https://td613.com/">米 Check Loom Gate</a>'),
+    footer => footer + '\nQuoted footer above.\nOrdinary answer continues.\nOrdinary ending ⟐',
+    footer => footer + '\nOrdinary ending ⟐'
+  ]) {
+    const { runtime } = await fixture(); await released(runtime);
+    const captured = await runtime.capture(reply(runtime, { answer: 'Synthetic answer.\n' + variant(runtime.footer()) }));
+    assert.equal(captured.hold_status, 'RETAINED_ALERTS'); assert.equal(runtime.inspect().phase, 'HELD');
+    assert.equal(runtime.gate().retained_alerts.at(-1).status, 'PROTOCOL_OMISSION_OBSERVED');
+    assert.equal((await runtime.check({ gesture: 'REVIEW_ROOT_RULES' })).status, 'HELD');
+    assert.equal(runtime.inspect().custody.work_unit_count, 0);
+  }
+});

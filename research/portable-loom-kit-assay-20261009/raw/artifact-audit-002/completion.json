@@ -1,0 +1,18 @@
+{
+  "started_at": "2026-10-09T06:07:41.787Z",
+  "ended_at": "2026-10-09T06:07:41.791Z",
+  "premeasurement_commit": "f3c9c2b1cd4436c338d498df56a57bc73e92bf17",
+  "artifact_sha256": "ed4c685060bdeac7a2a513df96a4c07865073eb5769b6c0979aa6b5b7ad8a6a0",
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "model_calls": 0,
+  "recommendation": "HELD",
+  "temporal_verdict": "HELD",
+  "whole_route_veto": true,
+  "chronology_scope": "New current-inspection ledger only; original exported session chronology was not reconstructed or authenticated.",
+  "held_input_classes": [
+    "PEDAGOGUE_GESTURE_CONSEQUENCE",
+    "APERTURE_NUMERICAL_OBSERVATION"
+  ],
+  "numerical_and_human_comprehension_measurements": 0,
+  "provider_measurements": 0
+}

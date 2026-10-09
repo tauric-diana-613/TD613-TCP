@@ -1,0 +1,20 @@
+✔ standard runtime recomputes template integrity and deliberately starts a fresh local custody root (101.715652ms)
+✔ only deliberately shared sources enter exact carriage; authorization is default-deny, exact and single-shot (69.830856ms)
+✔ outbound protected literals are held before carriage, including Unicode normalization (62.931604ms)
+✔ capture adapter binds actual reply content and original bytes; Check and admission remain separate (68.361217ms)
+✔ substituted receiver receipt and undeclared sources cannot be laundered through local binding (63.211718ms)
+✔ actual supplied-capture disclosure detection persists through a later clean reply (63.17302ms)
+✔ Rest and retries preserve history but reject standing or serialized authorization (77.972224ms)
+✔ expired authorization is consumed; journal timestamps and predecessor digests remain inspectable (55.045638ms)
+✔ second admission preserves predecessor and content lineage; fresh sources are explicit (84.834647ms)
+✔ malformed supplied replies are still scanned for protected-literal disclosure (58.359363ms)
+✔ a captured answer without the required footer remains an observed protocol omission after a clean replacement (62.848429ms)
+✔ linked Gate commands and body-only footer quotations are observed omissions and cannot become admission candidates (293.334819ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1229.511665

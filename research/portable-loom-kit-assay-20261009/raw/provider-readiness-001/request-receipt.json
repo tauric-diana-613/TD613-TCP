@@ -1,0 +1,11 @@
+{
+  "method": "GET",
+  "url": "https://td613.com/api/khonapolit?operation=gemini-readiness",
+  "started_at": "2026-10-09T06:14:16.852348+00:00",
+  "generation_calls": 0,
+  "observation_class": "DEPLOYED_PROVIDER_READINESS_METADATA_NOT_RECEIVER_TRIAL",
+  "http_status": 200,
+  "sha256": "847954d7064d42bd1ac61313ac93a3146a3f83ab0f1677be636ce8031d3c621d",
+  "bytes": 16245,
+  "ended_at": "2026-10-09T06:14:20.712589+00:00"
+}
