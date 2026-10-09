@@ -1,0 +1,152 @@
+{
+  "schema": "td613.loom.executable-export-evidence/v0.1",
+  "created_at": "2026-10-09T05:46:32.829105+00:00",
+  "artifact_kind": "STANDARD_NON_DEMO_PORTABLE_LOOM_EXECUTABLE_KIT",
+  "branch": "research/portable-loom-executable-product-20261009",
+  "source_commit": "2a9115cd5106e647188df97991ddaff1dff1a2b9",
+  "source_status": "COMMITTED_EXACT_SOURCE",
+  "versions": {
+    "kit": "td613.loom.standard-executable-kit/v0.1",
+    "runtime": "td613.loom.standard-runtime/v0.1",
+    "portable_session": "td613.loom.standard-export-manifest/v0.1",
+    "receiver_output": "td613.loom.output-footer/v0.3",
+    "bound_return": "td613.loom.bound-receiver-turn/v0.2"
+  },
+  "formats": [
+    "ZIP",
+    "self-contained HTML",
+    "Markdown",
+    "JSON",
+    "ECMAScript source",
+    "JSONL CLI"
+  ],
+  "files": [
+    {
+      "filename": "portable-loom-standard.zip",
+      "path": "research/portable-loom-executable-product-20261009/portable-loom-standard.zip",
+      "bytes": 612944,
+      "sha256": "ebb2b2073554eba843a38162a1a4a8e48e8bf1e3b5f3fd00b4e91b3ba02ca1bf"
+    },
+    {
+      "filename": "portable-loom-standard.html",
+      "path": "research/portable-loom-executable-product-20261009/artifact/portable-loom-standard.html",
+      "bytes": 1084419,
+      "sha256": "18dea80b7851ea26e83550117d7b641f841689ef39f6e28ee810c1341fbbec4b"
+    },
+    {
+      "filename": "portable-loom-standard.md",
+      "path": "research/portable-loom-executable-product-20261009/artifact/portable-loom-standard.md",
+      "bytes": 91514,
+      "sha256": "0695cfec63bc90b86b045daac5edf0e50a5749a36c8b50d329178f7f32dc0e28"
+    },
+    {
+      "filename": "portable-loom-standard.json",
+      "path": "research/portable-loom-executable-product-20261009/artifact/portable-loom-standard.json",
+      "bytes": 84890,
+      "sha256": "ed4c685060bdeac7a2a513df96a4c07865073eb5769b6c0979aa6b5b7ad8a6a0"
+    },
+    {
+      "filename": "portable-loom-runtime-manifest.json",
+      "path": "research/portable-loom-executable-product-20261009/artifact/portable-loom-runtime-manifest.json",
+      "bytes": 24368,
+      "sha256": "37594a8320562b6fc8f26c8dc37f50532337f3b72d9b936f5e20149ef9bb518e"
+    },
+    {
+      "filename": "portable-loom-standard-manifest.json",
+      "path": "research/portable-loom-executable-product-20261009/artifact/portable-loom-standard-manifest.json",
+      "bytes": 1524,
+      "sha256": "dd334974927209f966900d50e534c077a7810ff9b579ab71bdc2cfa7942af6d4"
+    },
+    {
+      "filename": "START_HERE.md",
+      "path": "research/portable-loom-executable-product-20261009/artifact/START_HERE.md",
+      "bytes": 3838,
+      "sha256": "5c7181b5ca74b9f0f0436da97535fa20bfbd59ca8799490cc5243493cbe19abc"
+    }
+  ],
+  "runtime_modules": 55,
+  "included_governance_modules": [
+    {
+      "capability": "Select material and keep excluded bodies local",
+      "execution": "buildLoomAiRequest",
+      "scope": "LOCAL_EGRESS_BOUNDARY"
+    },
+    {
+      "capability": "Authorize one exact carriage",
+      "execution": "issueOutboundAuthorization + prepareOutboundHandoff",
+      "scope": "LOCAL_EGRESS_BOUNDARY"
+    },
+    {
+      "capability": "Preserve policy, task, source and predecessor commitments",
+      "execution": "createPortableLoomReentryCustodian",
+      "scope": "LIVE_LOCAL_CUSTODY"
+    },
+    {
+      "capability": "Bind actual captured answer and receipt bytes",
+      "execution": "bindPortableLoomCapturedResult + portableLoomDigest",
+      "scope": "LOCAL_CAPTURE_ADAPTER"
+    },
+    {
+      "capability": "Check returns before explicit admission",
+      "execution": "custodian.check + custodian.admit",
+      "scope": "LIVE_LOCAL_CUSTODY"
+    },
+    {
+      "capability": "Detect protected literals and evaluate reconstruction probes",
+      "execution": "createPortableLoomGateReport",
+      "scope": "DECLARED_CAPTURE_AND_TARGETS"
+    },
+    {
+      "capability": "Retain alerts, retry history and structural Rest",
+      "execution": "runtime journal + custodian.cancel",
+      "scope": "LIVE_LOCAL_PROCESS"
+    },
+    {
+      "capability": "Carry instructions and persistent footers to receiving AI",
+      "execution": "receiverPrompt",
+      "scope": "RECEIVER_INSTRUCTION_ADHERENCE"
+    },
+    {
+      "capability": "Explain verification using established methods",
+      "execution": "LOOM_GATE_EXPLANATION",
+      "scope": "ACTUAL_CHECK_METHODS"
+    }
+  ],
+  "selected_sources": 0,
+  "seeded_work_units": 0,
+  "seeded_gate_results": 0,
+  "test_results": {
+    "focused_local_checks": {
+      "passed": 46,
+      "failed": 0,
+      "receipt": "engineering-attempt-003/TEST_RECEIPT.json"
+    },
+    "exported_dependency_closure": {
+      "status": "PASS",
+      "receipt": "export-verification/PACKAGE_CHECK_RECEIPT.json"
+    },
+    "archive_round_trip": "PASS: all member bytes exactly equal exported files",
+    "declared_design_review": "PASS: modeled route, not observed comprehension"
+  },
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "provider_calls": 0,
+  "actual_receiver_test": "UNPERFORMED",
+  "browser_witness": "UNPERFORMED: cloud browser file-URL security policy rejected opening; no workaround attempted",
+  "physical_device_witness": "UNPERFORMED",
+  "independent_external_witness": "UNPERFORMED",
+  "known_exclusions": [
+    "No automatic provider sending or inaccessible provider telemetry",
+    "No external origin authentication, external signer or independent head anchor supplied by this kit",
+    "No restoration of live custody or authorization from private saved JSON",
+    "No protection guaranteed for a receiver that ignores carried instructions",
+    "No production deployment, native product cutover or historical research rerun",
+    "Advanced structured probe verification exposed in API/CLI; ordinary browser UI exposes selected-only carriage, capture, return checks and literal alerts"
+  ],
+  "observation_boundaries": [
+    "Local release and supplied capture are recorded separately from provider transmission.",
+    "A receiver without an execution environment can follow the carried instructions; the local runtime performs subsequent checks.",
+    "No provider telemetry, global fork exclusion, external signer or automatic live-custody restoration is installed."
+  ],
+  "supersession": "Earlier export bytes and failed engineering attempts preserved; candidate does not silently replace previously frozen assay bindings",
+  "assay_status": "AWAITING_OPERATOR_INSPECTION_AND_AUTHORIZATION_FOR_THIS_EXACT_ARTIFACT"
+}

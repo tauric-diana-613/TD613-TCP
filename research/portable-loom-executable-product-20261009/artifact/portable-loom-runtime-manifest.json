@@ -1,0 +1,647 @@
+{
+  "schema": "td613.loom.standard-executable-kit/v0.1",
+  "source_revision": "2a9115cd5106e647188df97991ddaff1dff1a2b9",
+  "source_status": "COMMITTED_EXACT_SOURCE",
+  "modified_runtime_paths": [],
+  "runtime_entrypoint": "runtime/app/engine/portable-loom-standard-runtime.js",
+  "cli_entrypoint": "runtime/run.mjs",
+  "browser_entrypoint": "portable-loom-standard.html",
+  "default_network": "DISABLED; MANUAL_OPERATOR_CARRIAGE",
+  "custody": "FRESH_LIVE_LOCAL_SESSION; PRIVATE_EXPORTS_REVIEW_ONLY",
+  "capabilities": [
+    {
+      "capability": "Select material and keep excluded bodies local",
+      "execution": "buildLoomAiRequest",
+      "scope": "LOCAL_EGRESS_BOUNDARY"
+    },
+    {
+      "capability": "Authorize one exact carriage",
+      "execution": "issueOutboundAuthorization + prepareOutboundHandoff",
+      "scope": "LOCAL_EGRESS_BOUNDARY"
+    },
+    {
+      "capability": "Preserve policy, task, source and predecessor commitments",
+      "execution": "createPortableLoomReentryCustodian",
+      "scope": "LIVE_LOCAL_CUSTODY"
+    },
+    {
+      "capability": "Bind actual captured answer and receipt bytes",
+      "execution": "bindPortableLoomCapturedResult + portableLoomDigest",
+      "scope": "LOCAL_CAPTURE_ADAPTER"
+    },
+    {
+      "capability": "Check returns before explicit admission",
+      "execution": "custodian.check + custodian.admit",
+      "scope": "LIVE_LOCAL_CUSTODY"
+    },
+    {
+      "capability": "Detect protected literals and evaluate reconstruction probes",
+      "execution": "createPortableLoomGateReport",
+      "scope": "DECLARED_CAPTURE_AND_TARGETS"
+    },
+    {
+      "capability": "Retain alerts, retry history and structural Rest",
+      "execution": "runtime journal + custodian.cancel",
+      "scope": "LIVE_LOCAL_PROCESS"
+    },
+    {
+      "capability": "Carry instructions and persistent footers to receiving AI",
+      "execution": "receiverPrompt",
+      "scope": "RECEIVER_INSTRUCTION_ADHERENCE"
+    },
+    {
+      "capability": "Explain verification using established methods",
+      "execution": "LOOM_GATE_EXPLANATION",
+      "scope": "ACTUAL_CHECK_METHODS"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "runtime/app/engine/portable-loom-standard-runtime.js",
+      "bytes": 28507,
+      "sha256": "8674be1d68462453624ee9e35a08aa83368ad77dd24a678daa6e8ae022ff0c3a",
+      "imports": [
+        "app/dome-world/holonomy-loom/ai-intake.js",
+        "app/engine/portable-loom-core.js",
+        "app/engine/portable-loom-session.js",
+        "app/engine/portable-loom-reentry.js",
+        "app/engine/portable-loom-return-binding.js",
+        "app/engine/portable-loom-challenge.js",
+        "app/engine/portable-loom-gate.js",
+        "app/engine/sequence-6-journey.js",
+        "app/engine/portable-loom-output.js",
+        "app/engine/portable-loom-gate-explanation.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/dome-world/holonomy-loom/standard-portable-client.js",
+      "bytes": 13809,
+      "sha256": "fc6077795acab8649be762c8e6015ba30a1433fadd8fbf49b1e9a9f4df89d0fc",
+      "imports": [
+        "app/engine/portable-loom-standard-runtime.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/dome-world/holonomy-loom/ai-intake.js",
+      "bytes": 11188,
+      "sha256": "beaeb697e30d82bde292bb1aa68059992200177381017610223209cd8b398420",
+      "imports": [],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/portable-loom-core.js",
+      "bytes": 15429,
+      "sha256": "3935c0787bddb6f3e5f1c2034d19e1fd5411ee0e954fc1c151a673a2c451d1f2",
+      "imports": [
+        "app/dome-world/holonomy-loom/ai-handoff-base.js",
+        "app/dome-world/holonomy-loom/instrument-state-view.js",
+        "app/dome-world/data/flowcore-glyph-semantics-v01.js",
+        "app/engine/dollhouse-atlas-fadt.js",
+        "app/engine/aperture-v32-typed-epistemic-deficit.js",
+        "app/engine/portable-loom-mechanisms.js",
+        "app/engine/portable-loom-output.js",
+        "app/engine/portable-loom-gate-explanation.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/portable-loom-session.js",
+      "bytes": 28618,
+      "sha256": "2270f0b3ce24ccab1453772164fdc8a1acca5fff93221abf08c8f49e45933f8f",
+      "imports": [
+        "app/dome-world/holonomy-loom/ai-handoff-base.js",
+        "app/dome-world/holonomy-loom/ai-intake.js",
+        "app/engine/portable-loom-core.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/portable-loom-reentry.js",
+      "bytes": 32091,
+      "sha256": "45502649973471d6e35dac09162650adec8a74d43e1308cde788b7f41c3a3aec",
+      "imports": [
+        "app/engine/portable-loom-session.js",
+        "app/dome-world/holonomy-loom/ai-handoff-base.js",
+        "app/engine/portable-loom-core.js",
+        "app/engine/portable-loom-gate.js",
+        "app/engine/portable-loom-challenge.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/portable-loom-return-binding.js",
+      "bytes": 1862,
+      "sha256": "949bb7d391a6a651b14f86b7990c80c6a966855a288c56cf2b65602068e878ba",
+      "imports": [
+        "app/engine/portable-loom-core.js",
+        "app/engine/portable-loom-session.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/portable-loom-challenge.js",
+      "bytes": 40082,
+      "sha256": "df0a95cb7e7913a5f7d7dbd797b487770196ec405828899d9bca2ec842f83f0e",
+      "imports": [
+        "app/dome-world/holonomy-loom/observer-channel.js",
+        "app/engine/dollhouse-witness-plan.js",
+        "app/engine/dollhouse-continuity-audit.js",
+        "app/engine/dollhouse-case-dossier.js",
+        "app/engine/portable-loom-session.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/portable-loom-gate.js",
+      "bytes": 7154,
+      "sha256": "a8a0d8038aa5be3889c65ca0ec0812369520d8bbf3c7feb94cb23844cf5b1192",
+      "imports": [
+        "app/engine/portable-loom-challenge.js",
+        "app/engine/portable-loom-core.js",
+        "app/engine/portable-loom-output.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/sequence-6-journey.js",
+      "bytes": 44155,
+      "sha256": "743468988c3f1249b7efd50f6f059b043ae05298a1777e6a67c05aca0c037d28",
+      "imports": [
+        "app/engine/governed-event-chain.js",
+        "app/engine/flowcore-semantic-motion-bridge.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/portable-loom-output.js",
+      "bytes": 6152,
+      "sha256": "0b8d50e51e17958b81dfb90ddf7136da90e73fe2ea4ba48d4809eddb83942ea5",
+      "imports": [],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/portable-loom-gate-explanation.js",
+      "bytes": 3726,
+      "sha256": "871618d0e33ad72a1dc56e9aa0245f28da4bcc73fdb23bd4c7fc4d1d222f216a",
+      "imports": [],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/dome-world/holonomy-loom/ai-handoff-base.js",
+      "bytes": 14211,
+      "sha256": "76b11a2a2a91db536de50d6ae9e80394a41244d30cbf41db27cd452ca7159374",
+      "imports": [
+        "app/engine/flowcore-aia-surface-binding.js",
+        "app/engine/dollhouse-atlas-fadt.js",
+        "app/dome-world/holonomy-loom/flowcore-aia-motion.js",
+        "app/dome-world/holonomy-loom/ai-intake.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/dome-world/holonomy-loom/instrument-state-view.js",
+      "bytes": 63900,
+      "sha256": "bbfb6787c9696608d68ffb173d947f15eb7c3ad90cf3b5dc942ffd17e24e6cd2",
+      "imports": [
+        "app/engine/flowcore-pedagogue-core.js",
+        "app/engine/flowcore-pedagogue-aia.js",
+        "app/engine/flowcore-route-burden.js",
+        "app/dome-world/flowcore-pedagogue-visual.js",
+        "app/dome-world/data/flowcore-glyph-semantics-v01.js",
+        "app/dome-world/holonomy-loom/flowcore-choreography.js",
+        "app/dome-world/holonomy-loom/tutorial-membrane.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/dome-world/data/flowcore-glyph-semantics-v01.js",
+      "bytes": 6866,
+      "sha256": "88f3e8119ce5b3a27822615f08df0b8f2c23cf7b385c1db534099d908658657f",
+      "imports": [],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/dollhouse-atlas-fadt.js",
+      "bytes": 12780,
+      "sha256": "3e4a4546c2e2aecfdbc24121019c82a59653320aa86baac9e3bf2b872f2af9ac",
+      "imports": [
+        "app/dome-world/holonomy-loom/semantic-field.js",
+        "app/dome-world/holonomy-loom/flowcore-aia-motion.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/aperture-v32-typed-epistemic-deficit.js",
+      "bytes": 7296,
+      "sha256": "89bdc0e9f12ce6cba72cfcd2c6548da0a0040aca35d1f8b4afe37dd17b63f017",
+      "imports": [],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/portable-loom-mechanisms.js",
+      "bytes": 9380,
+      "sha256": "cde977cf16080f69654025a33d10ded8a546698adc5f3745b7fa9f1192628d9e",
+      "imports": [],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/dome-world/holonomy-loom/observer-channel.js",
+      "bytes": 8134,
+      "sha256": "c67e7e0b5e2a0f3373800abfd00aacf9f72c02905cddd4b6661ba70955a50036",
+      "imports": [],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/dollhouse-witness-plan.js",
+      "bytes": 12506,
+      "sha256": "4596ebaff79be34c00340fb460642243e22b12c2cf1ab80a53954a6e6cf893f1",
+      "imports": [],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/dollhouse-continuity-audit.js",
+      "bytes": 13529,
+      "sha256": "6df6acb691288a0ab2190ef0d75ba45de8906dc789fcc7861a356a7633d7479f",
+      "imports": [
+        "app/engine/dollhouse-atlas-fadt.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/dollhouse-case-dossier.js",
+      "bytes": 5364,
+      "sha256": "fd6140e1a7eb09c6378355d009d8108111a20af359c15c49d0d1af7efee0c800",
+      "imports": [
+        "app/engine/dollhouse-agent-registry.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/governed-event-chain.js",
+      "bytes": 20422,
+      "sha256": "47509aff9443ead263322998dff1c56ffd038cd84500e6203ef168f9ae8ffc4c",
+      "imports": [],
+      "dynamic_node_crypto_fallback": true
+    },
+    {
+      "path": "runtime/app/engine/flowcore-semantic-motion-bridge.js",
+      "bytes": 81740,
+      "sha256": "5dd5b3c1877eaf337744686ef776fcdbee9c6635029c1b7a5a778cba9d748997",
+      "imports": [
+        "app/dome-world/data/flowcore-glyph-semantics-v01.js",
+        "app/dome-world/holonomy-loom/dome-art-lattice.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/flowcore-aia-surface-binding.js",
+      "bytes": 11535,
+      "sha256": "51da898a5b06270cfe3a2c090523905216f286fab6af8316901d0df853d5543e",
+      "imports": [
+        "app/dome-world/ash/canonical-json.js",
+        "app/dome-world/data/flowcore-aia-route-registry-v01.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/dome-world/holonomy-loom/flowcore-aia-motion.js",
+      "bytes": 8745,
+      "sha256": "40061f09ad27acea3955e28d7b5efe58b28324f6be845f5453c4da55f4f2e4c2",
+      "imports": [
+        "app/engine/flowcore-aia-surface-binding.js",
+        "app/dome-world/data/flowcore-glyph-semantics-v01.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/flowcore-pedagogue-core.js",
+      "bytes": 3066,
+      "sha256": "dcd04f6661e75fc9bd3c0ac5dde17624985a8d44709995884014459513cd038f",
+      "imports": [
+        "app/engine/flowcore-pedagogue-law.js",
+        "app/engine/flowcore-pedagogue-cycle.js",
+        "app/engine/flowcore-pedagogue-receipt.js",
+        "app/engine/flowcore-pedagogue-route-memory.js",
+        "app/engine/pedagogue-research-transfer.js",
+        "app/engine/pedagogue-research-assay-witness.js",
+        "app/engine/pedagogue-research-mechanism-refinement.js",
+        "app/engine/pedagogue-research-criterion-family.js",
+        "app/engine/pedagogue-lineage-spine-v02.js",
+        "app/engine/pedagogue-lineage-spine.js",
+        "app/engine/pedagogue-lineage-second-pass.js",
+        "app/engine/pedagogue-institutional-time.js",
+        "app/engine/pedagogue-recurrence-audit.js",
+        "app/engine/pedagogue-mathematical-counterpoints.js",
+        "app/engine/flowcore-pedagogue-validators.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/flowcore-pedagogue-aia.js",
+      "bytes": 12593,
+      "sha256": "d9a740bdab07558580e42f66d0d5fd9092de06d4e25ab542544ea2f84e79d89b",
+      "imports": [
+        "app/dome-world/ash/canonical-json.js",
+        "app/engine/flowcore-pedagogue-law.js",
+        "app/engine/flowcore-pedagogue-utils.js",
+        "app/engine/flowcore-pedagogue-validators.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/flowcore-route-burden.js",
+      "bytes": 16230,
+      "sha256": "21a20396a5eec60dc91a62e8ec9db0c26fb64d8dc338a1386a40562ce6ae4662",
+      "imports": [
+        "app/dome-world/ash/canonical-json.js",
+        "app/engine/flowcore-pedagogue-utils.js",
+        "app/engine/flowcore-pedagogue-validators.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/dome-world/flowcore-pedagogue-visual.js",
+      "bytes": 9934,
+      "sha256": "8d465446ed987ea86a42ca9ae9b97d1845270c1685716ad01718fb2caa07dbcd",
+      "imports": [
+        "app/dome-world/ash/canonical-json.js",
+        "app/dome-world/data/flowcore-glyph-semantics-v01.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/dome-world/holonomy-loom/flowcore-choreography.js",
+      "bytes": 8724,
+      "sha256": "70f1fe42eb1318d23426cc47ccc66450ba40ed729d1e77c73fb2cae163c36b01",
+      "imports": [
+        "app/dome-world/holonomy-loom/dome-art-lattice.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/dome-world/holonomy-loom/tutorial-membrane.js",
+      "bytes": 1528,
+      "sha256": "894674933117e2270a01c6b0911d0e64a3cdbfb5cedcdbd38a1e457112b198ce",
+      "imports": [],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/dome-world/holonomy-loom/semantic-field.js",
+      "bytes": 19533,
+      "sha256": "71ab199acf652eab2b4c5eb46a487fbd4089afa7100d26d40fde9cae188443c4",
+      "imports": [
+        "app/dome-world/holonomy-loom/engine.js",
+        "app/dome-world/holonomy-loom/flowcore-aia-motion.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/dollhouse-agent-registry.js",
+      "bytes": 3731,
+      "sha256": "90959d3eed8884e6f0905a09b53e07bd285c6ac305800cbd0bf7544ff92f5ab5",
+      "imports": [],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/dome-world/holonomy-loom/dome-art-lattice.js",
+      "bytes": 3475,
+      "sha256": "33957e2e10f3ff90526bef8609d0db1d81a8b701696869424bf2803f186cde82",
+      "imports": [],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/dome-world/ash/canonical-json.js",
+      "bytes": 5607,
+      "sha256": "4d2e1112ed3030e8996480e2fcdae41ed1defc1260786605c5f814b149efe425",
+      "imports": [],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/dome-world/data/flowcore-aia-route-registry-v01.js",
+      "bytes": 2696,
+      "sha256": "df773e97397dc470d7c02ae2c6781bfb1bbb0adb8847ee83a28d3a4f22b7adc7",
+      "imports": [],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/flowcore-pedagogue-law.js",
+      "bytes": 2137,
+      "sha256": "3993fe76254aa18ba7c2f9b2bee499b84a4b169daf5e7c096b26e610f9a10de9",
+      "imports": [
+        "app/dome-world/data/flowcore-aia-route-registry-v01.js",
+        "app/dome-world/data/flowcore-glyph-semantics-v01.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/flowcore-pedagogue-cycle.js",
+      "bytes": 10317,
+      "sha256": "af9a0a00771fe1ab6c137b89727e20e7121f1b819988f6f57dfda98877f3e51d",
+      "imports": [
+        "app/dome-world/ash/canonical-json.js",
+        "app/engine/flowcore-pedagogue-law.js",
+        "app/engine/flowcore-pedagogue-utils.js",
+        "app/engine/flowcore-pedagogue-validators.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/flowcore-pedagogue-receipt.js",
+      "bytes": 4056,
+      "sha256": "226fc844483257723f6e05588e8bb479369f3f3dd32e1481cda9a96f2b9c93ca",
+      "imports": [
+        "app/dome-world/ash/canonical-json.js",
+        "app/dome-world/data/flowcore-glyph-semantics-v01.js",
+        "app/engine/flowcore-pedagogue-law.js",
+        "app/engine/flowcore-pedagogue-utils.js",
+        "app/engine/flowcore-pedagogue-validators.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/flowcore-pedagogue-route-memory.js",
+      "bytes": 6874,
+      "sha256": "d03edb1b2e58f98335337ea040a6544d480f1251b39b7f940bc05bb0db379956",
+      "imports": [
+        "app/dome-world/ash/canonical-json.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/pedagogue-research-transfer.js",
+      "bytes": 9025,
+      "sha256": "e852377ce82f00f1aed5321ccc0ac6bbade15e82235ca898dad504dee967cf45",
+      "imports": [
+        "app/dome-world/ash/canonical-json.js",
+        "app/engine/flowcore-pedagogue-utils.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/pedagogue-research-assay-witness.js",
+      "bytes": 7718,
+      "sha256": "581a0d6b281b65f3b40d8c7825c5ab65925e45d13b28d073577bf628e17a5689",
+      "imports": [
+        "app/dome-world/ash/canonical-json.js",
+        "app/engine/flowcore-pedagogue-utils.js",
+        "app/engine/pedagogue-research-transfer.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/pedagogue-research-mechanism-refinement.js",
+      "bytes": 11989,
+      "sha256": "c3d1aad9d6676430b45b787eb3720cb83baf4e753b516ef5a1749487b659bb71",
+      "imports": [
+        "app/dome-world/ash/canonical-json.js",
+        "app/engine/flowcore-pedagogue-utils.js",
+        "app/engine/pedagogue-research-transfer.js",
+        "app/engine/pedagogue-research-assay-witness.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/pedagogue-research-criterion-family.js",
+      "bytes": 6425,
+      "sha256": "c563fd927f42d47e9a281a218399be72d46ff881af19673507c5b4d069ef1ad5",
+      "imports": [
+        "app/dome-world/ash/canonical-json.js",
+        "app/engine/flowcore-pedagogue-utils.js",
+        "app/engine/pedagogue-research-mechanism-refinement.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/pedagogue-lineage-spine-v02.js",
+      "bytes": 7625,
+      "sha256": "0501c2e45d7becd7251c6c6411bb90c69a213bc3d1accbc10d22af71a02267a6",
+      "imports": [
+        "app/dome-world/ash/canonical-json.js",
+        "app/engine/flowcore-pedagogue-utils.js",
+        "app/engine/pedagogue-lineage-spine.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/pedagogue-lineage-spine.js",
+      "bytes": 24868,
+      "sha256": "1872e021228519396e1c9a7cfebd95a918eaf8ad53a4cf92284e539e00748872",
+      "imports": [
+        "app/dome-world/ash/canonical-json.js",
+        "app/engine/flowcore-pedagogue-utils.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/pedagogue-lineage-second-pass.js",
+      "bytes": 9140,
+      "sha256": "1e9c24f07baf0b846f5519bcb94bdb70650b39a2410eb48ef40320123c33bb4d",
+      "imports": [
+        "app/dome-world/ash/canonical-json.js",
+        "app/engine/flowcore-pedagogue-utils.js",
+        "app/engine/pedagogue-lineage-spine.js",
+        "app/engine/pedagogue-interface-diagnosis.js",
+        "app/engine/pedagogue-institutional-time.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/pedagogue-institutional-time.js",
+      "bytes": 10732,
+      "sha256": "c6f95165bbcb91f15aca387b33ddbfc816232eabd4f40eac71792e91f6aa572c",
+      "imports": [
+        "app/dome-world/ash/canonical-json.js",
+        "app/engine/flowcore-pedagogue-utils.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/pedagogue-recurrence-audit.js",
+      "bytes": 8333,
+      "sha256": "99bece8f3cb57f8487fabca002e8c01f6fbb32020dd8a8f6dcfc1e3b7e0d8fd5",
+      "imports": [
+        "app/dome-world/ash/canonical-json.js",
+        "app/engine/flowcore-pedagogue-utils.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/pedagogue-mathematical-counterpoints.js",
+      "bytes": 5433,
+      "sha256": "33fb001c7cd1a2d697dae3be461b68a67ba1c06ea76c38c10ca487a028e8b610",
+      "imports": [
+        "app/dome-world/ash/canonical-json.js",
+        "app/engine/flowcore-pedagogue-utils.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/flowcore-pedagogue-validators.js",
+      "bytes": 3835,
+      "sha256": "b071f5a9c46780d767133810203ed6a736da40564af6c6d2430687131cf7ae6a",
+      "imports": [
+        "app/dome-world/ash/canonical-json.js",
+        "app/engine/flowcore-pedagogue-law.js",
+        "app/engine/flowcore-pedagogue-utils.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/flowcore-pedagogue-utils.js",
+      "bytes": 5274,
+      "sha256": "ccca358e72867a55cfff31402067dcd8eb16eb433fb6d5d462d911842e8bb571",
+      "imports": [
+        "app/dome-world/ash/canonical-json.js",
+        "app/engine/flowcore-pedagogue-law.js"
+      ],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/dome-world/holonomy-loom/engine.js",
+      "bytes": 12370,
+      "sha256": "4849d840707e678e97aa715be684cf29384dca4c794339eb2cf54265ec90774d",
+      "imports": [],
+      "dynamic_node_crypto_fallback": false
+    },
+    {
+      "path": "runtime/app/engine/pedagogue-interface-diagnosis.js",
+      "bytes": 17117,
+      "sha256": "3f866de1018ce47a524be6b2bf6dd7bfc98222462e000a37df3c554a950e9b77",
+      "imports": [],
+      "dynamic_node_crypto_fallback": false
+    }
+  ],
+  "verifier_entrypoint": "runtime/verify.mjs",
+  "verifier_file": {
+    "path": "runtime/verify.mjs",
+    "bytes": 1468,
+    "sha256": "7a5858e4b4a9d7f323c21f65c6c31ed5adc42efb8fae210ef8df04ee4c8b96b8"
+  },
+  "package_file": {
+    "path": "runtime/package.json",
+    "bytes": 18,
+    "sha256": "1239d4d885dcad42201a27ed9324f8f0f760b78700d8db9ced39a511cffe7eae"
+  },
+  "input_file": {
+    "path": "portable-loom-standard.json",
+    "bytes": 84890,
+    "sha256": "ed4c685060bdeac7a2a513df96a4c07865073eb5769b6c0979aa6b5b7ad8a6a0"
+  },
+  "browser_file": {
+    "path": "portable-loom-standard.html",
+    "bytes": 1084419,
+    "sha256": "18dea80b7851ea26e83550117d7b641f841689ef39f6e28ee810c1341fbbec4b"
+  },
+  "cli_file": {
+    "path": "runtime/run.mjs",
+    "bytes": 1529,
+    "sha256": "15eacf242c2f334272ced452fad010ae23ccfad76f3a6df09f2ff62379af6130"
+  },
+  "observation_boundaries": [
+    "Local release and supplied capture are recorded separately from provider transmission.",
+    "A receiver without an execution environment can follow the carried instructions; the local runtime performs subsequent checks.",
+    "No provider telemetry, global fork exclusion, external signer or automatic live-custody restoration is installed."
+  ]
+}
