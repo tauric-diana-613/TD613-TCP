@@ -4,7 +4,7 @@ import { readFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createLoomAssayHandler, loadApprovedRunConfiguration } from '../server/loom-assay.js';
-import { buildAssayProviderWire, validateAssayPolicy, sha256 } from '../server/loom-assay-contract.js';
+import { ASSAY_CLIENT_RETURN_MARGIN_MS, buildAssayProviderWire, validateAssayPolicy, sha256 } from '../server/loom-assay-contract.js';
 import { loadServerManifest, prepareServerRequest, captureServerCall } from '../research/portable-loom-server-transport-20261009/server-client.mjs';
 import { createAssayBudgetClient } from '../server/loom-assay-budget-client.js';
 import { createAssayBudgetFunction } from '../neon/functions/loom-assay-budget/index.mjs';
@@ -134,6 +134,8 @@ test('the bounded deadline admits a delayed response and fits inside the functio
   assert.equal(r.body.provider_deadline_expired, false); assert.equal(r.body.provider_deadline_ms, 240000);
   const config = JSON.parse(readFileSync('vercel.json'));
   assert.ok(config.functions['api/khonapolit.js'].maxDuration * 1000 >= p.binding.limits.timeout_ms + 60000);
+  assert.ok(ASSAY_CLIENT_RETURN_MARGIN_MS >= 3 * 8000 + 15000, 'client permits all three bounded ledger round trips and response flight');
+  assert.ok(ASSAY_CLIENT_RETURN_MARGIN_MS < 60000, 'client margin remains within the bounded host completion margin');
   p.binding.limits.timeout_ms = 240001; assert.throws(() => validateAssayPolicy(p), /NUMERICAL_LIMITS/);
 });
 test('failed completion cannot be presented as a completed provider trial', async () => {

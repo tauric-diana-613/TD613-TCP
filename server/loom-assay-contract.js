@@ -4,6 +4,7 @@ export const ASSAY_REQUEST_SCHEMA = 'td613.loom.server-assay-request/v0.1';
 export const ASSAY_RESPONSE_SCHEMA = 'td613.loom.server-assay-response/v0.1';
 export const ASSAY_POLICY_SCHEMA = 'td613.loom.server-assay-policy/v0.2';
 export const ASSAY_MAX_PROVIDER_TIMEOUT_MS = 240000;
+export const ASSAY_CLIENT_RETURN_MARGIN_MS = 40000;
 export const sha256 = value => createHash('sha256').update(value).digest('hex');
 export function canonicalJson(value) {
   if (Array.isArray(value)) return '[' + value.map(canonicalJson).join(',') + ']';
