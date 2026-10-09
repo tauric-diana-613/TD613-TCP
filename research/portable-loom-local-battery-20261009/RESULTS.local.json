@@ -1,0 +1,522 @@
+{
+  "schema": "td613.loom.local-battery-results/v0.1",
+  "binding_commit": "6c724d687ae27a73de055b2e261d334a2682c1b5",
+  "completed_at": "2026-10-09T01:29:49.383925+00:00",
+  "process_exit_code": 0,
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "foundation": {
+    "endpoint": "SUPPORTED_BOUNDED",
+    "tests": [
+      {
+        "file": "tests/portable-loom-artifact-bound-battery.test.mjs",
+        "test_name": "F01 exact delivered artifact bytes and blank non-demo scope",
+        "captured_matches": 1,
+        "status": "PASS"
+      },
+      {
+        "file": "tests/portable-loom-artifact-bound-battery.test.mjs",
+        "test_name": "F02 carried core, policy, task, packet and root recompute without origin credit",
+        "captured_matches": 1,
+        "status": "PASS"
+      },
+      {
+        "file": "tests/portable-loom-artifact-bound-battery.test.mjs",
+        "test_name": "F03 carried footer, Gate, return and authority declarations retain their actual limits",
+        "captured_matches": 1,
+        "status": "PASS"
+      },
+      {
+        "file": "tests/portable-loom-artifact-bound-battery.test.mjs",
+        "test_name": "F04 exact parsed artifact cannot acquire original live custody authority",
+        "captured_matches": 1,
+        "status": "PASS"
+      }
+    ]
+  },
+  "cases": {
+    "L01": {
+      "endpoint": "SUPPORTED_BOUNDED",
+      "tests": [
+        {
+          "file": "tests/portable-loom-artifact-bound-battery.test.mjs",
+          "test_name": "L01 artifact-policy fixture denies missing, spent and post-rest authorization",
+          "captured_matches": 1,
+          "status": "PASS"
+        }
+      ]
+    },
+    "L02": {
+      "endpoint": "SUPPORTED_BOUNDED",
+      "tests": [
+        {
+          "file": "tests/sequence-6-journey-integration.test.mjs",
+          "test_name": "6. Section II Hostile Test 1: Mutating outbound task text fails closed",
+          "captured_matches": 1,
+          "status": "PASS"
+        },
+        {
+          "file": "tests/sequence-6-journey-integration.test.mjs",
+          "test_name": "7. Section II Hostile Test 2: Mutating selected document text fails closed",
+          "captured_matches": 1,
+          "status": "PASS"
+        }
+      ]
+    },
+    "L03": {
+      "endpoint": "SUPPORTED_BOUNDED",
+      "tests": [
+        {
+          "file": "tests/sequence-6-journey-integration.test.mjs",
+          "test_name": "8. Section II Hostile Test 3: Mutating returned answer fails closed",
+          "captured_matches": 1,
+          "status": "PASS"
+        },
+        {
+          "file": "tests/sequence-6-journey-integration.test.mjs",
+          "test_name": "9. Section II Hostile Test 4: Mutating missing-information list fails closed",
+          "captured_matches": 1,
+          "status": "PASS"
+        },
+        {
+          "file": "tests/sequence-6-journey-integration.test.mjs",
+          "test_name": "10. Section II Hostile Test 5: Mutating receiver metadata fails closed",
+          "captured_matches": 1,
+          "status": "PASS"
+        },
+        {
+          "file": "tests/portable-loom-reentry-hostile.test.mjs",
+          "test_name": "hostile answer substitution holds without advancing the local head",
+          "captured_matches": 1,
+          "status": "PASS"
+        }
+      ]
+    },
+    "L04": {
+      "endpoint": "SUPPORTED_BOUNDED",
+      "tests": [
+        {
+          "file": "tests/sequence-6-journey-integration.test.mjs",
+          "test_name": "3. Tampered predecessor digest transitions to HOLD (INV-05)",
+          "captured_matches": 1,
+          "status": "PASS"
+        },
+        {
+          "file": "tests/sequence-6-journey-integration.test.mjs",
+          "test_name": "13. Section VI Hostile Test 1: Return session ID mismatch fails closed",
+          "captured_matches": 1,
+          "status": "PASS"
+        },
+        {
+          "file": "tests/sequence-6-journey-integration.test.mjs",
+          "test_name": "14. Section VI Hostile Test 2: Genesis digest mismatch fails closed",
+          "captured_matches": 1,
+          "status": "PASS"
+        },
+        {
+          "file": "tests/sequence-6-journey-integration.test.mjs",
+          "test_name": "15. Section VI Hostile Test 3: Route identity mismatch fails closed",
+          "captured_matches": 1,
+          "status": "PASS"
+        },
+        {
+          "file": "tests/portable-loom-reentry-hostile.test.mjs",
+          "test_name": "hostile wrong session root holds without advancing the local head",
+          "captured_matches": 1,
+          "status": "PASS"
+        },
+        {
+          "file": "tests/portable-loom-reentry-hostile.test.mjs",
+          "test_name": "hostile wrong policy holds without advancing the local head",
+          "captured_matches": 1,
+          "status": "PASS"
+        },
+        {
+          "file": "tests/portable-loom-reentry-hostile.test.mjs",
+          "test_name": "hostile stale anchor holds without advancing the local head",
+          "captured_matches": 1,
+          "status": "PASS"
+        },
+        {
+          "file": "tests/portable-loom-reentry-hostile.test.mjs",
+          "test_name": "hostile future/nonexistent anchor holds without advancing the local head",
+          "captured_matches": 1,
+          "status": "PASS"
+        },
+        {
+          "file": "tests/portable-loom-reentry-hostile.test.mjs",
+          "test_name": "hostile source commitment substitution holds without advancing the local head",
+          "captured_matches": 1,
+          "status": "PASS"
+        }
+      ]
+    },
+    "L05": {
+      "endpoint": "SUPPORTED_BOUNDED",
+      "tests": [
+        {
+          "file": "tests/portable-loom-artifact-bound-battery.test.mjs",
+          "test_name": "L05 artifact-policy fixture keeps an unanchored declared head unanchored",
+          "captured_matches": 1,
+          "status": "PASS"
+        },
+        {
+          "file": "tests/sequence-6-journey-integration.test.mjs",
+          "test_name": "5. Independent head anchor match vs mismatch (Section III)",
+          "captured_matches": 1,
+          "status": "PASS"
+        }
+      ]
+    },
+    "L06": {
+      "endpoint": "SUPPORTED_BOUNDED",
+      "tests": [
+        {
+          "file": "tests/portable-loom-artifact-bound-battery.test.mjs",
+          "test_name": "L06 artifact-policy fixture retains attempt one, selected material and fresh authorization on retry",
+          "captured_matches": 1,
+          "status": "PASS"
+        }
+      ]
+    },
+    "L07": {
+      "endpoint": "SUPPORTED_BOUNDED",
+      "tests": [
+        {
+          "file": "tests/portable-loom-artifact-bound-battery.test.mjs",
+          "test_name": "L07 artifact-derived fresh local custody requires Check then explicit Admit before continuation",
+          "captured_matches": 1,
+          "status": "PASS"
+        }
+      ]
+    },
+    "L08": {
+      "endpoint": "SUPPORTED_BOUNDED",
+      "tests": [
+        {
+          "file": "tests/portable-loom-artifact-bound-battery.test.mjs",
+          "test_name": "L08 artifact-derived missing Gate capture retains HOLD and unmeasured conversation coverage",
+          "captured_matches": 1,
+          "status": "PASS"
+        }
+      ]
+    },
+    "L09": {
+      "endpoint": "SUPPORTED_BOUNDED",
+      "tests": [
+        {
+          "file": "tests/dollhouse-temporal-custodian.test.mjs",
+          "test_name": "missing audit material, baseline and ordered phase plan never receive PASS",
+          "captured_matches": 1,
+          "status": "PASS"
+        },
+        {
+          "file": "tests/dollhouse-temporal-custodian.test.mjs",
+          "test_name": "empty, missing and additional phases cannot satisfy declared route completeness",
+          "captured_matches": 1,
+          "status": "PASS"
+        },
+        {
+          "file": "tests/dollhouse-temporal-custodian.test.mjs",
+          "test_name": "unparseable sequences and invalid calendar timestamps fail closed",
+          "captured_matches": 1,
+          "status": "PASS"
+        },
+        {
+          "file": "tests/dollhouse-temporal-custodian.test.mjs",
+          "test_name": "duplicate historical identity rejects even when sequence and timestamps increase",
+          "captured_matches": 1,
+          "status": "PASS"
+        }
+      ]
+    },
+    "L10": {
+      "endpoint": "SUPPORTED_BOUNDED",
+      "tests": [
+        {
+          "file": "tests/dollhouse-temporal-custodian.test.mjs",
+          "test_name": "an early failure holds the route even without any preceding PASS",
+          "captured_matches": 1,
+          "status": "PASS"
+        },
+        {
+          "file": "tests/dollhouse-temporal-custodian.test.mjs",
+          "test_name": "failed, held, unknown and unperformed downstream phases preserve whole-route veto",
+          "captured_matches": 1,
+          "status": "PASS"
+        },
+        {
+          "file": "tests/dollhouse-bounded-orchestrator.test.mjs",
+          "test_name": "four unanimous role findings cannot override the temporal whole-route veto",
+          "captured_matches": 1,
+          "status": "PASS"
+        }
+      ]
+    },
+    "L11": {
+      "endpoint": "SUPPORTED_BOUNDED",
+      "tests": [
+        {
+          "file": "tests/portable-loom-artifact-bound-battery.test.mjs",
+          "test_name": "L11 earlier authority mutation fails against the retained temporal baseline",
+          "captured_matches": 1,
+          "status": "PASS"
+        },
+        {
+          "file": "tests/dollhouse-temporal-custodian.test.mjs",
+          "test_name": "deleted, reordered or rewritten baseline prefixes fail without changing old observations",
+          "captured_matches": 1,
+          "status": "PASS"
+        },
+        {
+          "file": "tests/dollhouse-temporal-custodian.test.mjs",
+          "test_name": "new amendments append without rewriting core history or recorded amendments",
+          "captured_matches": 1,
+          "status": "PASS"
+        }
+      ]
+    },
+    "L12": {
+      "endpoint": "SUPPORTED_BOUNDED",
+      "tests": [
+        {
+          "file": "tests/portable-loom-artifact-bound-battery.test.mjs",
+          "test_name": "L12 artifact-derived root rules cannot be removed or weakened in the same local lane",
+          "captured_matches": 1,
+          "status": "PASS"
+        }
+      ]
+    }
+  },
+  "orchestrator_controls": {
+    "endpoint": "SUPPORTED_BOUNDED",
+    "tests": [
+      {
+        "file": "tests/dollhouse-bounded-orchestrator.test.mjs",
+        "test_name": "bounded runner consumes fifth jurisdiction separately without promoting the installed registry",
+        "captured_matches": 1,
+        "status": "PASS"
+      },
+      {
+        "file": "tests/dollhouse-bounded-orchestrator.test.mjs",
+        "test_name": "missing, malformed and contradictory temporal evidence cannot synthesize completion",
+        "captured_matches": 1,
+        "status": "PASS"
+      },
+      {
+        "file": "tests/dollhouse-bounded-orchestrator.test.mjs",
+        "test_name": "case, episode and source mismatches hold even with a locally passing temporal audit",
+        "captured_matches": 1,
+        "status": "PASS"
+      },
+      {
+        "file": "tests/dollhouse-bounded-orchestrator.test.mjs",
+        "test_name": "role disagreement and incomplete coverage stay unresolved rather than becoming votes",
+        "captured_matches": 1,
+        "status": "PASS"
+      },
+      {
+        "file": "tests/dollhouse-bounded-orchestrator.test.mjs",
+        "test_name": "caller evidence labels do not authenticate providers or grant action authority",
+        "captured_matches": 1,
+        "status": "PASS"
+      }
+    ]
+  },
+  "captured_tests": [
+    {
+      "test_name": "bounded runner consumes fifth jurisdiction separately without promoting the installed registry",
+      "status": "PASS"
+    },
+    {
+      "test_name": "four unanimous role findings cannot override the temporal whole-route veto",
+      "status": "PASS"
+    },
+    {
+      "test_name": "missing, malformed and contradictory temporal evidence cannot synthesize completion",
+      "status": "PASS"
+    },
+    {
+      "test_name": "case, episode and source mismatches hold even with a locally passing temporal audit",
+      "status": "PASS"
+    },
+    {
+      "test_name": "role disagreement and incomplete coverage stay unresolved rather than becoming votes",
+      "status": "PASS"
+    },
+    {
+      "test_name": "caller evidence labels do not authenticate providers or grant action authority",
+      "status": "PASS"
+    },
+    {
+      "test_name": "missing audit material, baseline and ordered phase plan never receive PASS",
+      "status": "PASS"
+    },
+    {
+      "test_name": "empty, missing and additional phases cannot satisfy declared route completeness",
+      "status": "PASS"
+    },
+    {
+      "test_name": "an early failure holds the route even without any preceding PASS",
+      "status": "PASS"
+    },
+    {
+      "test_name": "failed, held, unknown and unperformed downstream phases preserve whole-route veto",
+      "status": "PASS"
+    },
+    {
+      "test_name": "unparseable sequences and invalid calendar timestamps fail closed",
+      "status": "PASS"
+    },
+    {
+      "test_name": "duplicate historical identity rejects even when sequence and timestamps increase",
+      "status": "PASS"
+    },
+    {
+      "test_name": "deleted, reordered or rewritten baseline prefixes fail without changing old observations",
+      "status": "PASS"
+    },
+    {
+      "test_name": "new amendments append without rewriting core history or recorded amendments",
+      "status": "PASS"
+    },
+    {
+      "test_name": "F01 exact delivered artifact bytes and blank non-demo scope",
+      "status": "PASS"
+    },
+    {
+      "test_name": "F02 carried core, policy, task, packet and root recompute without origin credit",
+      "status": "PASS"
+    },
+    {
+      "test_name": "F03 carried footer, Gate, return and authority declarations retain their actual limits",
+      "status": "PASS"
+    },
+    {
+      "test_name": "F04 exact parsed artifact cannot acquire original live custody authority",
+      "status": "PASS"
+    },
+    {
+      "test_name": "L01 artifact-policy fixture denies missing, spent and post-rest authorization",
+      "status": "PASS"
+    },
+    {
+      "test_name": "L05 artifact-policy fixture keeps an unanchored declared head unanchored",
+      "status": "PASS"
+    },
+    {
+      "test_name": "L06 artifact-policy fixture retains attempt one, selected material and fresh authorization on retry",
+      "status": "PASS"
+    },
+    {
+      "test_name": "L07 artifact-derived fresh local custody requires Check then explicit Admit before continuation",
+      "status": "PASS"
+    },
+    {
+      "test_name": "L08 artifact-derived missing Gate capture retains HOLD and unmeasured conversation coverage",
+      "status": "PASS"
+    },
+    {
+      "test_name": "L11 earlier authority mutation fails against the retained temporal baseline",
+      "status": "PASS"
+    },
+    {
+      "test_name": "L12 artifact-derived root rules cannot be removed or weakened in the same local lane",
+      "status": "PASS"
+    },
+    {
+      "test_name": "hostile wrong session root holds without advancing the local head",
+      "status": "PASS"
+    },
+    {
+      "test_name": "hostile wrong policy holds without advancing the local head",
+      "status": "PASS"
+    },
+    {
+      "test_name": "hostile stale anchor holds without advancing the local head",
+      "status": "PASS"
+    },
+    {
+      "test_name": "hostile future/nonexistent anchor holds without advancing the local head",
+      "status": "PASS"
+    },
+    {
+      "test_name": "hostile source commitment substitution holds without advancing the local head",
+      "status": "PASS"
+    },
+    {
+      "test_name": "hostile answer substitution holds without advancing the local head",
+      "status": "PASS"
+    },
+    {
+      "test_name": "3. Tampered predecessor digest transitions to HOLD (INV-05)",
+      "status": "PASS"
+    },
+    {
+      "test_name": "5. Independent head anchor match vs mismatch (Section III)",
+      "status": "PASS"
+    },
+    {
+      "test_name": "6. Section II Hostile Test 1: Mutating outbound task text fails closed",
+      "status": "PASS"
+    },
+    {
+      "test_name": "7. Section II Hostile Test 2: Mutating selected document text fails closed",
+      "status": "PASS"
+    },
+    {
+      "test_name": "8. Section II Hostile Test 3: Mutating returned answer fails closed",
+      "status": "PASS"
+    },
+    {
+      "test_name": "9. Section II Hostile Test 4: Mutating missing-information list fails closed",
+      "status": "PASS"
+    },
+    {
+      "test_name": "10. Section II Hostile Test 5: Mutating receiver metadata fails closed",
+      "status": "PASS"
+    },
+    {
+      "test_name": "13. Section VI Hostile Test 1: Return session ID mismatch fails closed",
+      "status": "PASS"
+    },
+    {
+      "test_name": "14. Section VI Hostile Test 2: Genesis digest mismatch fails closed",
+      "status": "PASS"
+    },
+    {
+      "test_name": "15. Section VI Hostile Test 3: Route identity mismatch fails closed",
+      "status": "PASS"
+    }
+  ],
+  "raw_members": [
+    {
+      "path": "research/portable-loom-local-battery-20261009/raw/attempt-001/request.json",
+      "bytes": 4924,
+      "sha256": "a5f2813df45ebaefb0f14b5b073d97680723cd8c10fcad4596c8f289b5bcf1f5"
+    },
+    {
+      "path": "research/portable-loom-local-battery-20261009/raw/attempt-001/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "research/portable-loom-local-battery-20261009/raw/attempt-001/stdout.tap",
+      "bytes": 9202,
+      "sha256": "8c875e0c1805ca05f2bd27fa9e267e45a9b69d4b00b7d2cf131ed3120125a07a"
+    }
+  ],
+  "actual_receiver_trials": 0,
+  "simulated_receiver_trials": 0,
+  "browser_assay_trials": 0,
+  "provider_side_observation": false,
+  "human_comprehension": "UNMEASURED",
+  "external_assay": "NOT_RUN_UNBOUND_RECEIVERS",
+  "golden_egg": "NOT_ESTABLISHED",
+  "closure": "HUMAN_REVIEW_REQUIRED",
+  "case_counts": {
+    "SUPPORTED_BOUNDED": 12,
+    "CONTRADICTED": 0,
+    "HELD_EVIDENCE_GAP": 0
+  },
+  "local_track_status": "COMPLETED_BOUNDED"
+}

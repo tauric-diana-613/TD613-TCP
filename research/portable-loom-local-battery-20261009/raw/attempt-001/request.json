@@ -1,0 +1,25 @@
+{
+  "schema": "td613.loom.local-battery-execution-request/v0.1",
+  "binding_commit": "6c724d687ae27a73de055b2e261d334a2682c1b5",
+  "binding_sha256": "8d34d61dfcaf1c57a0abd50340371993c823d8570f6de1548a505095a2418135",
+  "started_at": "2026-10-09T01:29:48.462500+00:00",
+  "argv": [
+    "node",
+    "--test",
+    "--test-concurrency=1",
+    "--test-reporter=tap",
+    "--test-name-pattern=^(?:F01\\ exact\\ delivered\\ artifact\\ bytes\\ and\\ blank\\ non\\-demo\\ scope|F02\\ carried\\ core,\\ policy,\\ task,\\ packet\\ and\\ root\\ recompute\\ without\\ origin\\ credit|F03\\ carried\\ footer,\\ Gate,\\ return\\ and\\ authority\\ declarations\\ retain\\ their\\ actual\\ limits|F04\\ exact\\ parsed\\ artifact\\ cannot\\ acquire\\ original\\ live\\ custody\\ authority|L01\\ artifact\\-policy\\ fixture\\ denies\\ missing,\\ spent\\ and\\ post\\-rest\\ authorization|6\\.\\ Section\\ II\\ Hostile\\ Test\\ 1:\\ Mutating\\ outbound\\ task\\ text\\ fails\\ closed|7\\.\\ Section\\ II\\ Hostile\\ Test\\ 2:\\ Mutating\\ selected\\ document\\ text\\ fails\\ closed|8\\.\\ Section\\ II\\ Hostile\\ Test\\ 3:\\ Mutating\\ returned\\ answer\\ fails\\ closed|9\\.\\ Section\\ II\\ Hostile\\ Test\\ 4:\\ Mutating\\ missing\\-information\\ list\\ fails\\ closed|10\\.\\ Section\\ II\\ Hostile\\ Test\\ 5:\\ Mutating\\ receiver\\ metadata\\ fails\\ closed|hostile\\ answer\\ substitution\\ holds\\ without\\ advancing\\ the\\ local\\ head|3\\.\\ Tampered\\ predecessor\\ digest\\ transitions\\ to\\ HOLD\\ \\(INV\\-05\\)|13\\.\\ Section\\ VI\\ Hostile\\ Test\\ 1:\\ Return\\ session\\ ID\\ mismatch\\ fails\\ closed|14\\.\\ Section\\ VI\\ Hostile\\ Test\\ 2:\\ Genesis\\ digest\\ mismatch\\ fails\\ closed|15\\.\\ Section\\ VI\\ Hostile\\ Test\\ 3:\\ Route\\ identity\\ mismatch\\ fails\\ closed|hostile\\ wrong\\ session\\ root\\ holds\\ without\\ advancing\\ the\\ local\\ head|hostile\\ wrong\\ policy\\ holds\\ without\\ advancing\\ the\\ local\\ head|hostile\\ stale\\ anchor\\ holds\\ without\\ advancing\\ the\\ local\\ head|hostile\\ future/nonexistent\\ anchor\\ holds\\ without\\ advancing\\ the\\ local\\ head|hostile\\ source\\ commitment\\ substitution\\ holds\\ without\\ advancing\\ the\\ local\\ head|L05\\ artifact\\-policy\\ fixture\\ keeps\\ an\\ unanchored\\ declared\\ head\\ unanchored|5\\.\\ Independent\\ head\\ anchor\\ match\\ vs\\ mismatch\\ \\(Section\\ III\\)|L06\\ artifact\\-policy\\ fixture\\ retains\\ attempt\\ one,\\ selected\\ material\\ and\\ fresh\\ authorization\\ on\\ retry|L07\\ artifact\\-derived\\ fresh\\ local\\ custody\\ requires\\ Check\\ then\\ explicit\\ Admit\\ before\\ continuation|L08\\ artifact\\-derived\\ missing\\ Gate\\ capture\\ retains\\ HOLD\\ and\\ unmeasured\\ conversation\\ coverage|missing\\ audit\\ material,\\ baseline\\ and\\ ordered\\ phase\\ plan\\ never\\ receive\\ PASS|empty,\\ missing\\ and\\ additional\\ phases\\ cannot\\ satisfy\\ declared\\ route\\ completeness|unparseable\\ sequences\\ and\\ invalid\\ calendar\\ timestamps\\ fail\\ closed|duplicate\\ historical\\ identity\\ rejects\\ even\\ when\\ sequence\\ and\\ timestamps\\ increase|an\\ early\\ failure\\ holds\\ the\\ route\\ even\\ without\\ any\\ preceding\\ PASS|failed,\\ held,\\ unknown\\ and\\ unperformed\\ downstream\\ phases\\ preserve\\ whole\\-route\\ veto|four\\ unanimous\\ role\\ findings\\ cannot\\ override\\ the\\ temporal\\ whole\\-route\\ veto|L11\\ earlier\\ authority\\ mutation\\ fails\\ against\\ the\\ retained\\ temporal\\ baseline|deleted,\\ reordered\\ or\\ rewritten\\ baseline\\ prefixes\\ fail\\ without\\ changing\\ old\\ observations|new\\ amendments\\ append\\ without\\ rewriting\\ core\\ history\\ or\\ recorded\\ amendments|L12\\ artifact\\-derived\\ root\\ rules\\ cannot\\ be\\ removed\\ or\\ weakened\\ in\\ the\\ same\\ local\\ lane|bounded\\ runner\\ consumes\\ fifth\\ jurisdiction\\ separately\\ without\\ promoting\\ the\\ installed\\ registry|missing,\\ malformed\\ and\\ contradictory\\ temporal\\ evidence\\ cannot\\ synthesize\\ completion|case,\\ episode\\ and\\ source\\ mismatches\\ hold\\ even\\ with\\ a\\ locally\\ passing\\ temporal\\ audit|role\\ disagreement\\ and\\ incomplete\\ coverage\\ stay\\ unresolved\\ rather\\ than\\ becoming\\ votes|caller\\ evidence\\ labels\\ do\\ not\\ authenticate\\ providers\\ or\\ grant\\ action\\ authority)$",
+    "tests/dollhouse-bounded-orchestrator.test.mjs",
+    "tests/dollhouse-temporal-custodian.test.mjs",
+    "tests/portable-loom-artifact-bound-battery.test.mjs",
+    "tests/portable-loom-reentry-hostile.test.mjs",
+    "tests/sequence-6-journey-integration.test.mjs"
+  ],
+  "node_version": "v24.19.0",
+  "python_version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "fixture_origin": "SOURCE_DEFINED_SYNTHETIC_INPUTS; no observed provider or browser capture",
+  "financial_spend_usd": 0,
+  "attempt": 1,
+  "primary_retries": 0
+}

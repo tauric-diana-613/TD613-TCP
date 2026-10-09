@@ -1,0 +1,256 @@
+TAP version 13
+# Subtest: bounded runner consumes fifth jurisdiction separately without promoting the installed registry
+ok 1 - bounded runner consumes fifth jurisdiction separately without promoting the installed registry
+  ---
+  duration_ms: 4.374603
+  type: 'test'
+  ...
+# Subtest: four unanimous role findings cannot override the temporal whole-route veto
+ok 2 - four unanimous role findings cannot override the temporal whole-route veto
+  ---
+  duration_ms: 0.721831
+  type: 'test'
+  ...
+# Subtest: missing, malformed and contradictory temporal evidence cannot synthesize completion
+ok 3 - missing, malformed and contradictory temporal evidence cannot synthesize completion
+  ---
+  duration_ms: 2.452226
+  type: 'test'
+  ...
+# Subtest: case, episode and source mismatches hold even with a locally passing temporal audit
+ok 4 - case, episode and source mismatches hold even with a locally passing temporal audit
+  ---
+  duration_ms: 1.511603
+  type: 'test'
+  ...
+# Subtest: role disagreement and incomplete coverage stay unresolved rather than becoming votes
+ok 5 - role disagreement and incomplete coverage stay unresolved rather than becoming votes
+  ---
+  duration_ms: 1.149811
+  type: 'test'
+  ...
+# Subtest: caller evidence labels do not authenticate providers or grant action authority
+ok 6 - caller evidence labels do not authenticate providers or grant action authority
+  ---
+  duration_ms: 0.617117
+  type: 'test'
+  ...
+# Subtest: missing audit material, baseline and ordered phase plan never receive PASS
+ok 7 - missing audit material, baseline and ordered phase plan never receive PASS
+  ---
+  duration_ms: 3.59086
+  type: 'test'
+  ...
+# Subtest: empty, missing and additional phases cannot satisfy declared route completeness
+ok 8 - empty, missing and additional phases cannot satisfy declared route completeness
+  ---
+  duration_ms: 1.955124
+  type: 'test'
+  ...
+# Subtest: an early failure holds the route even without any preceding PASS
+ok 9 - an early failure holds the route even without any preceding PASS
+  ---
+  duration_ms: 0.36037
+  type: 'test'
+  ...
+# Subtest: failed, held, unknown and unperformed downstream phases preserve whole-route veto
+ok 10 - failed, held, unknown and unperformed downstream phases preserve whole-route veto
+  ---
+  duration_ms: 0.799856
+  type: 'test'
+  ...
+# Subtest: unparseable sequences and invalid calendar timestamps fail closed
+ok 11 - unparseable sequences and invalid calendar timestamps fail closed
+  ---
+  duration_ms: 1.511283
+  type: 'test'
+  ...
+# Subtest: duplicate historical identity rejects even when sequence and timestamps increase
+ok 12 - duplicate historical identity rejects even when sequence and timestamps increase
+  ---
+  duration_ms: 0.40113
+  type: 'test'
+  ...
+# Subtest: deleted, reordered or rewritten baseline prefixes fail without changing old observations
+ok 13 - deleted, reordered or rewritten baseline prefixes fail without changing old observations
+  ---
+  duration_ms: 1.134008
+  type: 'test'
+  ...
+# Subtest: new amendments append without rewriting core history or recorded amendments
+ok 14 - new amendments append without rewriting core history or recorded amendments
+  ---
+  duration_ms: 0.699288
+  type: 'test'
+  ...
+# Subtest: F01 exact delivered artifact bytes and blank non-demo scope
+ok 15 - F01 exact delivered artifact bytes and blank non-demo scope
+  ---
+  duration_ms: 2.721392
+  type: 'test'
+  ...
+# Subtest: F02 carried core, policy, task, packet and root recompute without origin credit
+ok 16 - F02 carried core, policy, task, packet and root recompute without origin credit
+  ---
+  duration_ms: 39.951226
+  type: 'test'
+  ...
+# Subtest: F03 carried footer, Gate, return and authority declarations retain their actual limits
+ok 17 - F03 carried footer, Gate, return and authority declarations retain their actual limits
+  ---
+  duration_ms: 0.32652
+  type: 'test'
+  ...
+# Subtest: F04 exact parsed artifact cannot acquire original live custody authority
+ok 18 - F04 exact parsed artifact cannot acquire original live custody authority
+  ---
+  duration_ms: 0.371396
+  type: 'test'
+  ...
+# Subtest: L01 artifact-policy fixture denies missing, spent and post-rest authorization
+ok 19 - L01 artifact-policy fixture denies missing, spent and post-rest authorization
+  ---
+  duration_ms: 3.581076
+  type: 'test'
+  ...
+# Subtest: L05 artifact-policy fixture keeps an unanchored declared head unanchored
+ok 20 - L05 artifact-policy fixture keeps an unanchored declared head unanchored
+  ---
+  duration_ms: 1.020351
+  type: 'test'
+  ...
+# Subtest: L06 artifact-policy fixture retains attempt one, selected material and fresh authorization on retry
+ok 21 - L06 artifact-policy fixture retains attempt one, selected material and fresh authorization on retry
+  ---
+  duration_ms: 0.826235
+  type: 'test'
+  ...
+# Subtest: L07 artifact-derived fresh local custody requires Check then explicit Admit before continuation
+ok 22 - L07 artifact-derived fresh local custody requires Check then explicit Admit before continuation
+  ---
+  duration_ms: 60.911266
+  type: 'test'
+  ...
+# Subtest: L08 artifact-derived missing Gate capture retains HOLD and unmeasured conversation coverage
+ok 23 - L08 artifact-derived missing Gate capture retains HOLD and unmeasured conversation coverage
+  ---
+  duration_ms: 23.70069
+  type: 'test'
+  ...
+# Subtest: L11 earlier authority mutation fails against the retained temporal baseline
+ok 24 - L11 earlier authority mutation fails against the retained temporal baseline
+  ---
+  duration_ms: 1.676135
+  type: 'test'
+  ...
+# Subtest: L12 artifact-derived root rules cannot be removed or weakened in the same local lane
+ok 25 - L12 artifact-derived root rules cannot be removed or weakened in the same local lane
+  ---
+  duration_ms: 58.174757
+  type: 'test'
+  ...
+# Subtest: hostile wrong session root holds without advancing the local head
+ok 26 - hostile wrong session root holds without advancing the local head
+  ---
+  duration_ms: 41.610696
+  type: 'test'
+  ...
+# Subtest: hostile wrong policy holds without advancing the local head
+ok 27 - hostile wrong policy holds without advancing the local head
+  ---
+  duration_ms: 22.167406
+  type: 'test'
+  ...
+# Subtest: hostile stale anchor holds without advancing the local head
+ok 28 - hostile stale anchor holds without advancing the local head
+  ---
+  duration_ms: 19.507314
+  type: 'test'
+  ...
+# Subtest: hostile future/nonexistent anchor holds without advancing the local head
+ok 29 - hostile future/nonexistent anchor holds without advancing the local head
+  ---
+  duration_ms: 21.791382
+  type: 'test'
+  ...
+# Subtest: hostile source commitment substitution holds without advancing the local head
+ok 30 - hostile source commitment substitution holds without advancing the local head
+  ---
+  duration_ms: 22.167727
+  type: 'test'
+  ...
+# Subtest: hostile answer substitution holds without advancing the local head
+ok 31 - hostile answer substitution holds without advancing the local head
+  ---
+  duration_ms: 18.659447
+  type: 'test'
+  ...
+# Subtest: 3. Tampered predecessor digest transitions to HOLD (INV-05)
+ok 32 - 3. Tampered predecessor digest transitions to HOLD (INV-05)
+  ---
+  duration_ms: 4.551543
+  type: 'test'
+  ...
+# Subtest: 5. Independent head anchor match vs mismatch (Section III)
+ok 33 - 5. Independent head anchor match vs mismatch (Section III)
+  ---
+  duration_ms: 1.141549
+  type: 'test'
+  ...
+# Subtest: 6. Section II Hostile Test 1: Mutating outbound task text fails closed
+ok 34 - 6. Section II Hostile Test 1: Mutating outbound task text fails closed
+  ---
+  duration_ms: 0.620262
+  type: 'test'
+  ...
+# Subtest: 7. Section II Hostile Test 2: Mutating selected document text fails closed
+ok 35 - 7. Section II Hostile Test 2: Mutating selected document text fails closed
+  ---
+  duration_ms: 0.506595
+  type: 'test'
+  ...
+# Subtest: 8. Section II Hostile Test 3: Mutating returned answer fails closed
+ok 36 - 8. Section II Hostile Test 3: Mutating returned answer fails closed
+  ---
+  duration_ms: 0.492705
+  type: 'test'
+  ...
+# Subtest: 9. Section II Hostile Test 4: Mutating missing-information list fails closed
+ok 37 - 9. Section II Hostile Test 4: Mutating missing-information list fails closed
+  ---
+  duration_ms: 0.615184
+  type: 'test'
+  ...
+# Subtest: 10. Section II Hostile Test 5: Mutating receiver metadata fails closed
+ok 38 - 10. Section II Hostile Test 5: Mutating receiver metadata fails closed
+  ---
+  duration_ms: 0.549458
+  type: 'test'
+  ...
+# Subtest: 13. Section VI Hostile Test 1: Return session ID mismatch fails closed
+ok 39 - 13. Section VI Hostile Test 1: Return session ID mismatch fails closed
+  ---
+  duration_ms: 0.730304
+  type: 'test'
+  ...
+# Subtest: 14. Section VI Hostile Test 2: Genesis digest mismatch fails closed
+ok 40 - 14. Section VI Hostile Test 2: Genesis digest mismatch fails closed
+  ---
+  duration_ms: 0.495068
+  type: 'test'
+  ...
+# Subtest: 15. Section VI Hostile Test 3: Route identity mismatch fails closed
+ok 41 - 15. Section VI Hostile Test 3: Route identity mismatch fails closed
+  ---
+  duration_ms: 5.18896
+  type: 'test'
+  ...
+1..41
+# tests 41
+# suites 0
+# pass 41
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 850.96965

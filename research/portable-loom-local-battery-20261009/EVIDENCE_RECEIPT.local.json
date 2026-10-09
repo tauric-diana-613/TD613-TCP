@@ -1,0 +1,122 @@
+{
+  "schema": "td613.loom.local-battery-evidence-receipt/v0.1",
+  "recorded_at": "2026-10-09T01:32:38.958557+00:00",
+  "branch": "research/portable-loom-local-battery-20261009",
+  "premeasurement_binding_commit": "6c724d687ae27a73de055b2e261d334a2682c1b5",
+  "premeasurement_binding_tree": "bd4526b4f2dda10b703f600f93e6ef9858449156",
+  "results_file": "research/portable-loom-local-battery-20261009/RESULTS.local.json",
+  "results_sha256": "aac4f53a0aa1273e0597ec01b15d97597f1fbf239cfdceb02999fd4185a7925b",
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "case_denominator": 12,
+  "case_results": {
+    "SUPPORTED_BOUNDED": 12,
+    "CONTRADICTED": 0,
+    "HELD_EVIDENCE_GAP": 0
+  },
+  "foundation_checks": 4,
+  "additional_orchestrator_controls": 5,
+  "captured_named_tests": 41,
+  "test_summary": {
+    "pass": 41,
+    "fail": 0,
+    "cancelled": 0,
+    "skip": 0
+  },
+  "original_attempt": 1,
+  "primary_retries": 0,
+  "actual_receiver_trials": 0,
+  "simulated_receiver_trials": 0,
+  "browser_assay_trials": 0,
+  "browser_path_inspection_only": true,
+  "artifact_export_unchanged": true,
+  "main_remote_observed": "8d57bdfcd69cff9c5760cd001549197f3180c00a",
+  "product_code_changed": false,
+  "paid_api_calls": 0,
+  "api_spend_usd": 0,
+  "claim_ceiling": "Bounded local behavior and carried-byte integrity on this committed case set. Prompt compliance, hidden provider behavior, foreign receipt origin, human comprehension and comparative superiority remain unmeasured.",
+  "live_custody_boundary": "Exact parsed export denied live custody; fresh derivative fixtures alone exercised local admission.",
+  "receiver_holds": [
+    "Anonymous ChatGPT surface has no exact model/configuration coordinate.",
+    "Second provider and decoding settings unbound.",
+    "No directly callable inference tool was found in the available provider tool names.",
+    "External scorer/capture binding not committed.",
+    "Automatic approval review rejected Log in because a specific account and receiver configuration were not authorized."
+  ],
+  "comparison_holds": [
+    "Fixed audit corpus, role prompts, compatible input-class map, matched API settings and spend budget unbound."
+  ],
+  "human_closure_required": true,
+  "golden_egg": "NOT_ESTABLISHED",
+  "records": [
+    {
+      "path": "research/portable-loom-local-battery-20261009/BROWSER_ACCESS_BOUNDARY.json",
+      "bytes": 910,
+      "sha256": "53d524b0792ee6c85544683972018ca3370061edbfff3d9f1f29ea0ff4cd3e82"
+    },
+    {
+      "path": "research/portable-loom-local-battery-20261009/CASE_MAP.json",
+      "bytes": 7990,
+      "sha256": "1ac6c2c2d0bd6523cd75811173f31d1083a0adb80cc0ab21a67bc60f7ee97dcf"
+    },
+    {
+      "path": "research/portable-loom-local-battery-20261009/EXECUTION_BINDING.local.json",
+      "bytes": 62098,
+      "sha256": "8d34d61dfcaf1c57a0abd50340371993c823d8570f6de1548a505095a2418135"
+    },
+    {
+      "path": "research/portable-loom-local-battery-20261009/README.md",
+      "bytes": 1800,
+      "sha256": "7bc1993e7e583975c914277f34d8038380dd56bbbe74f19cbb6659e93e0485f2"
+    },
+    {
+      "path": "research/portable-loom-local-battery-20261009/RESULTS.local.json",
+      "bytes": 18203,
+      "sha256": "aac4f53a0aa1273e0597ec01b15d97597f1fbf239cfdceb02999fd4185a7925b"
+    },
+    {
+      "path": "research/portable-loom-local-battery-20261009/SOURCE_PARITY.json",
+      "bytes": 2671,
+      "sha256": "6a313b128e7b4652f8edf52e91ea8aa4fe67553985bce31efc97bc6d711da806"
+    },
+    {
+      "path": "research/portable-loom-local-battery-20261009/raw/attempt-001/request.json",
+      "bytes": 4924,
+      "sha256": "a5f2813df45ebaefb0f14b5b073d97680723cd8c10fcad4596c8f289b5bcf1f5"
+    },
+    {
+      "path": "research/portable-loom-local-battery-20261009/raw/attempt-001/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "research/portable-loom-local-battery-20261009/raw/attempt-001/stdout.tap",
+      "bytes": 9202,
+      "sha256": "8c875e0c1805ca05f2bd27fa9e267e45a9b69d4b00b7d2cf131ed3120125a07a"
+    },
+    {
+      "path": "research/portable-loom-local-battery-20261009/receiver-preparation/README.md",
+      "bytes": 1421,
+      "sha256": "c430c75b4924346c4658c6cac94eeefecf665df9b08406659589352beace82a5"
+    },
+    {
+      "path": "research/portable-loom-local-battery-20261009/receiver-preparation/TRIAL_PLAN.json",
+      "bytes": 65667,
+      "sha256": "1bf151fe24d28e0f88c3539d93f4ab104ca68d4302e004adc7e9c7387b9b8ec6"
+    }
+  ],
+  "automatic_approval_block": {
+    "record_function": "BROWSER_ACCESS_BOUNDARY_NOT_ASSAY_EVIDENCE",
+    "recorded_at": "2026-10-09T01:34:00.709611+00:00",
+    "site": "https://chatgpt.com/",
+    "prior_visible_state": "Anonymous surface; ChatGPT model selector label; Log in and Sign up visible",
+    "attempted_action": "Click visible Log in to inspect the required secure sign-in method",
+    "tool_result": "AUTOMATIC_APPROVAL_REVIEW_REJECTED",
+    "reason": "The click may initiate sign-in or alter account state; no specific account or receiver configuration was authorized and the required model/transport binding remains unresolved.",
+    "user_rejection": false,
+    "workaround_attempted": false,
+    "credentials_entered": false,
+    "artifact_submitted": false,
+    "actual_receiver_trials": 0,
+    "continuation_requirement": "Specific receiver account/model and authorization for its secure sign-in; then exact execution binding before trial calls."
+  }
+}

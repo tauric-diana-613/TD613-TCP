@@ -1,0 +1,15 @@
+{
+  "record_function": "BROWSER_ACCESS_BOUNDARY_NOT_ASSAY_EVIDENCE",
+  "recorded_at": "2026-10-09T01:34:00.709611+00:00",
+  "site": "https://chatgpt.com/",
+  "prior_visible_state": "Anonymous surface; ChatGPT model selector label; Log in and Sign up visible",
+  "attempted_action": "Click visible Log in to inspect the required secure sign-in method",
+  "tool_result": "AUTOMATIC_APPROVAL_REVIEW_REJECTED",
+  "reason": "The click may initiate sign-in or alter account state; no specific account or receiver configuration was authorized and the required model/transport binding remains unresolved.",
+  "user_rejection": false,
+  "workaround_attempted": false,
+  "credentials_entered": false,
+  "artifact_submitted": false,
+  "actual_receiver_trials": 0,
+  "continuation_requirement": "Specific receiver account/model and authorization for its secure sign-in; then exact execution binding before trial calls."
+}

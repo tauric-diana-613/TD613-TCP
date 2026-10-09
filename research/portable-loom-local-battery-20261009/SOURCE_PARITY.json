@@ -1,0 +1,63 @@
+{
+  "schema": "td613.loom.local-source-parity/v0.1",
+  "members": [
+    {
+      "path": "app/engine/portable-loom-core.js",
+      "artifact_source_commit": "2091c426a1cbba2ff1a7a06019c0693ddc5be398",
+      "binding_commit": "6c724d687ae27a73de055b2e261d334a2682c1b5",
+      "same_bytes": true,
+      "sha256": "6465acaa1f1b542976649ebeea50dd93bbd3c3af534baff76c3497c2eb7b99b5",
+      "bytes": 14998
+    },
+    {
+      "path": "app/engine/portable-loom-session.js",
+      "artifact_source_commit": "2091c426a1cbba2ff1a7a06019c0693ddc5be398",
+      "binding_commit": "6c724d687ae27a73de055b2e261d334a2682c1b5",
+      "same_bytes": true,
+      "sha256": "74ed4304dbf2ed51e0b74112a452aafbb7aa04dc05f85284fad491bc84d2f2b1",
+      "bytes": 25153
+    },
+    {
+      "path": "app/engine/portable-loom-reentry.js",
+      "artifact_source_commit": "2091c426a1cbba2ff1a7a06019c0693ddc5be398",
+      "binding_commit": "6c724d687ae27a73de055b2e261d334a2682c1b5",
+      "same_bytes": true,
+      "sha256": "45502649973471d6e35dac09162650adec8a74d43e1308cde788b7f41c3a3aec",
+      "bytes": 32091
+    },
+    {
+      "path": "app/engine/portable-loom-gate.js",
+      "artifact_source_commit": "2091c426a1cbba2ff1a7a06019c0693ddc5be398",
+      "binding_commit": "6c724d687ae27a73de055b2e261d334a2682c1b5",
+      "same_bytes": true,
+      "sha256": "a8a0d8038aa5be3889c65ca0ec0812369520d8bbf3c7feb94cb23844cf5b1192",
+      "bytes": 7154
+    },
+    {
+      "path": "app/engine/portable-loom-challenge.js",
+      "artifact_source_commit": "2091c426a1cbba2ff1a7a06019c0693ddc5be398",
+      "binding_commit": "6c724d687ae27a73de055b2e261d334a2682c1b5",
+      "same_bytes": true,
+      "sha256": "df0a95cb7e7913a5f7d7dbd797b487770196ec405828899d9bca2ec842f83f0e",
+      "bytes": 40082
+    },
+    {
+      "path": "app/engine/portable-loom-output.js",
+      "artifact_source_commit": "2091c426a1cbba2ff1a7a06019c0693ddc5be398",
+      "binding_commit": "6c724d687ae27a73de055b2e261d334a2682c1b5",
+      "same_bytes": true,
+      "sha256": "d6e9eb6a7342ea0ed5d8dbb9ddbf2ba0713893a27057eebf4a2bcd5f4d006606",
+      "bytes": 4510
+    },
+    {
+      "path": "app/engine/sequence-6-journey.js",
+      "artifact_source_commit": "2091c426a1cbba2ff1a7a06019c0693ddc5be398",
+      "binding_commit": "6c724d687ae27a73de055b2e261d334a2682c1b5",
+      "same_bytes": true,
+      "sha256": "743468988c3f1249b7efd50f6f059b043ae05298a1777e6a67c05aca0c037d28",
+      "bytes": 44155
+    }
+  ],
+  "temporal_orchestrator_successor_source": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+  "authentication_boundary": "Comparison uses actual retained Git blob bytes; input digests alone authenticate no provider origin."
+}
