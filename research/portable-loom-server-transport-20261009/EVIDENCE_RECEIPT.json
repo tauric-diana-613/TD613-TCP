@@ -1,0 +1,272 @@
+{
+  "schema": "td613.loom.server-transport-engineering-receipt/v0.1",
+  "recorded_at": "2026-10-09T07:06:51.024936+00:00",
+  "branch": "research/portable-loom-server-transport-20261009",
+  "verified_source_commit": "600580858627609608ebf725cf0ddb9d98945809",
+  "initial_source_commit": "bbdecb48c1f95726fe52ae9d30bedb821a2b5b74",
+  "predecessor_commit": "f0c496bfac114e4314f4a16c0518d806acc638d9",
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "status": "TRANSPORT_SOURCE_VERIFIED; LIVE_RECEIVER_ASSAY_NOT_EXECUTED",
+  "executions": [
+    {
+      "attempt": "engineering-001",
+      "source_commit": "bbdecb48c1f95726fe52ae9d30bedb821a2b5b74",
+      "exit_code": 1,
+      "summary": null,
+      "receipt_path": "research/portable-loom-server-transport-20261009/raw/engineering-001/receipt.json"
+    },
+    {
+      "attempt": "engineering-002",
+      "source_commit": "600580858627609608ebf725cf0ddb9d98945809",
+      "exit_code": 1,
+      "summary": {
+        "tests": 28,
+        "suites": 0,
+        "pass": 27,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "receipt_path": "research/portable-loom-server-transport-20261009/raw/engineering-002/receipt.json"
+    },
+    {
+      "attempt": "engineering-003",
+      "source_commit": "600580858627609608ebf725cf0ddb9d98945809",
+      "exit_code": 0,
+      "summary": {
+        "tests": 5,
+        "suites": 0,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "receipt_path": "research/portable-loom-server-transport-20261009/raw/engineering-003/receipt.json"
+    }
+  ],
+  "final_source_results": {
+    "named_checks_passed_across_retained_runs": 32,
+    "transport_and_ledger_checks": 24,
+    "other_named_checks": 8,
+    "combined_run_environment_failures_retained": 1,
+    "environment_failure_resolved_by": "engineering-003",
+    "single_combined_green_run_claimed": false,
+    "full_remote_ci": "NOT_RUN"
+  },
+  "sources": [
+    {
+      "path": ".github/workflows/td613-ci.yml",
+      "bytes": 59747,
+      "sha256": "d55d84b6644c1af52a765e212019393702203dd76c009237e99dcc7e6b5c09bf"
+    },
+    {
+      "path": "api/khonapolit.js",
+      "bytes": 2352,
+      "sha256": "96039accca6c2c2f3ebfd5efb26c870f2e11c22597633dc6911cacab22da630e"
+    },
+    {
+      "path": "neon/functions/loom-assay-budget/index.mjs",
+      "bytes": 2523,
+      "sha256": "9777097f7273c8d3e1e9338be333c6c423c3793665da4cbc2b28f3303ea527a0"
+    },
+    {
+      "path": "neon/functions/loom-assay-budget/ledger.mjs",
+      "bytes": 5176,
+      "sha256": "940537b5bef708233eb0494c934ae13e5485f712cfbeecd68fe8f385a69f9bc7"
+    },
+    {
+      "path": "neon/functions/loom-assay-budget/package-lock.json",
+      "bytes": 6526,
+      "sha256": "b3e38f34bc68c2fc0cf5a49ca4eabc501004e1dee39b56f0569c9bae7597819d"
+    },
+    {
+      "path": "neon/functions/loom-assay-budget/package.json",
+      "bytes": 183,
+      "sha256": "c8d844ccf147fb211d66dc9e54e3efd29c1c78eea10680a4f7c2f51f5bb129c5"
+    },
+    {
+      "path": "neon/functions/loom-assay-budget/vercel-identity.mjs",
+      "bytes": 2376,
+      "sha256": "ef08699d60b011ca68e87b79a71f5630736561496c7b1d64f3073fd4ce9450bf"
+    },
+    {
+      "path": "neon/migrations/20261009_loom_assay_budget.sql",
+      "bytes": 1395,
+      "sha256": "fcee0837f95609877c02c9b3dcb8659066a07d080ec0fb7f9f86bd2294676dcc"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/ACTIVATION.md",
+      "bytes": 6547,
+      "sha256": "99dc7b349c5da569a0379c708ada25fb6583682e71aa17a226c2228a3256ce35"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/DEVELOPMENT_FINDINGS.json",
+      "bytes": 762,
+      "sha256": "e56a2f689ec7f4e77e064806a3227e6c505dc819d6f85a5636387be87e830804"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/POLICY.template.json",
+      "bytes": 1354,
+      "sha256": "e753b2fdcea0335178da676d511d43ca7edd234f7f02e21f3358b83b4bdbebde"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/TRIAL_MANIFEST.json",
+      "bytes": 57923,
+      "sha256": "08f63e8999a984b3f871016cf059392d890ae5661883e9149786264244b0f5ac"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/prepare-enrollment.mjs",
+      "bytes": 1750,
+      "sha256": "815b793a7e7c158217d8339baf4c18b64469d9d34a2f1d53a82f4a310ad22958"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/server-client.mjs",
+      "bytes": 7953,
+      "sha256": "a94607dc08b97634cc954589c5adac7c5798f9d9f3bcd9a73708a2766ca4e0f7"
+    },
+    {
+      "path": "server/loom-assay-budget-client.js",
+      "bytes": 1263,
+      "sha256": "bec72cd9e455b3777522c8fcd5254c391683515ad1257481bdb7b329600c6c64"
+    },
+    {
+      "path": "server/loom-assay-contract.js",
+      "bytes": 8928,
+      "sha256": "687d71a8650ec68ed44c4904e3b48f4e50b0491956fb0bc02979432e521c1501"
+    },
+    {
+      "path": "server/loom-assay.js",
+      "bytes": 7197,
+      "sha256": "fa50b40dc253e08b630834834f99066f7d570ef754154a4ce62010120aaff113"
+    },
+    {
+      "path": "tests/loom-assay-budget.test.mjs",
+      "bytes": 9419,
+      "sha256": "a8947e8c9f867aee7561e96b80b0a1186d42f15fb17e068ff57ceee5d175f8b8"
+    },
+    {
+      "path": "tests/loom-assay-transport.test.mjs",
+      "bytes": 12146,
+      "sha256": "57ecbd90fce66c8c446acd219e96955c5909fb79b292ee4c83ad68d70d566f95"
+    },
+    {
+      "path": "vercel.json",
+      "bytes": 25981,
+      "sha256": "78b230e73c65e49b24dfbba758c8ff0189dea5aced915f9e98a08a3684d90ebf"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "research/portable-loom-kit-assay-20261009/corrected-artifact/portable-loom-standard.md",
+      "bytes": 91514,
+      "sha256": "2d9c23bb6ad26430bcf4fd2a52e9aa5e876a1546265a00087cdb7e7e4f1c1872"
+    },
+    {
+      "path": "research/portable-loom-kit-assay-20261009/portable-loom-standard-corrected.zip",
+      "bytes": 612662,
+      "sha256": "974f59722b609a137985c40201bbc29f0c1dd55a31f847399f2fe0ab74fce9bf"
+    }
+  ],
+  "raw_files": [
+    {
+      "path": "research/portable-loom-server-transport-20261009/raw/engineering-001/receipt.json",
+      "bytes": 4788,
+      "sha256": "78241a842fc3550835bf72cc0375246d6dc65fd6ac93a6cb3b5419ba6e12a14c"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/raw/engineering-001/request.json",
+      "bytes": 4276,
+      "sha256": "4f5678d2f2bb27aa4a3a5ec717aabf8467f12eefc1018f740674b6c55811775f"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/raw/engineering-001/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/raw/engineering-001/stdout.tap",
+      "bytes": 7809,
+      "sha256": "18a6aa1396abf91ad9a0642bb7ccc709d5330c22bfc66eb014577f95f580241a"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/raw/engineering-002/receipt.json",
+      "bytes": 5125,
+      "sha256": "8b614c7e78b0226025893b6595c392be080cd5f9b34668f833ebd62b4e415157"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/raw/engineering-002/request.json",
+      "bytes": 4472,
+      "sha256": "932b6648c9a93ca4b4be4b2ef7f56d828b023aa8b7aadb40c82a039e22b315dc"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/raw/engineering-002/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/raw/engineering-002/stdout.tap",
+      "bytes": 7689,
+      "sha256": "db71cff18d8aa7f9bb8519cf9e8e06e4bcdf4597f7aa879bf7f268a5cafffa62"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/raw/engineering-003/receipt.json",
+      "bytes": 4924,
+      "sha256": "b2d9da3f06d6e2749de989f4bbaec70c9b1412f9e07f22cbe5f2bda45e814bba"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/raw/engineering-003/request.json",
+      "bytes": 4273,
+      "sha256": "8012d85739a798120901134d259be08909a85487c90b5edafa15c82adb8d93b4"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/raw/engineering-003/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/raw/engineering-003/stdout.tap",
+      "bytes": 1273,
+      "sha256": "c14579f98874ee27a7d7d5c0e097d4896ebe8d3924e565d50f580b253e51c275"
+    }
+  ],
+  "report": {
+    "path": "research/portable-loom-server-transport-20261009/TEST_REPORT.md",
+    "bytes": 6089,
+    "sha256": "231bbd1169c7155c2c3703618dd6a1c4461a0a3d2a14acda9a6cd7a1e7e61bf0"
+  },
+  "observation_boundaries": {
+    "live_generation_calls": 0,
+    "actual_receiver_trials": 0,
+    "embedded_sql": "EXECUTED_PGLITE_SINGLE_CONNECTION",
+    "deployed_neon": "UNPERFORMED",
+    "multi_instance_lock_witness": "UNPERFORMED",
+    "production_relay": "UNPERFORMED",
+    "browser_witness": "UNPERFORMED",
+    "physical_device_witness": "UNPERFORMED",
+    "independent_external_witness": "UNPERFORMED",
+    "settled_spend": "UNPERFORMED"
+  },
+  "actions_not_performed": [
+    "merge",
+    "deployment",
+    "issue_405_operation",
+    "credential_extraction",
+    "chatgpt_account_binding",
+    "historical_assay_rerun"
+  ],
+  "pending": [
+    "exact_artifact_model_deployed_source_binding",
+    "numerical_usd_ceiling_and_verified_pricing",
+    "runtime_run_capability_enrollment",
+    "applicable_deployment_authorization",
+    "comparative_retained_server_capture_admission_adapter",
+    "second_provider_implementation"
+  ],
+  "prepared_call_counts": {
+    "first_receiver_primary": 54,
+    "separate_comparison": 180
+  },
+  "publication_commit": "Remote commit containing this receipt; not encoded here to avoid a self-referential digest."
+}

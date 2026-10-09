@@ -1,0 +1,204 @@
+TAP version 13
+# gemini-generation-envelope.test.mjs passed
+# Subtest: tests/gemini-generation-envelope.test.mjs
+ok 1 - tests/gemini-generation-envelope.test.mjs
+  ---
+  duration_ms: 72.185062
+  type: 'test'
+  ...
+# khonapolit-api-contract: causal one-generation relay, receipt, and operator-open seal contract ok
+# Subtest: tests/khonapolit-api-contract.test.mjs
+ok 2 - tests/khonapolit-api-contract.test.mjs
+  ---
+  duration_ms: 192.350866
+  type: 'test'
+  ...
+# Subtest: real local PostgreSQL accepts the migration and retains reservation and completion metadata
+ok 3 - real local PostgreSQL accepts the migration and retains reservation and completion metadata
+  ---
+  duration_ms: 1560.108555
+  type: 'test'
+  ...
+# Subtest: duplicate reservations queued against the local engine commit exactly once
+ok 4 - duplicate reservations queued against the local engine commit exactly once
+  ---
+  duration_ms: 1259.037498
+  type: 'test'
+  ...
+# Subtest: financial ceiling and call ceiling rollback without refunds or partial insertion
+ok 5 - financial ceiling and call ceiling rollback without refunds or partial insertion
+  ---
+  duration_ms: 2257.267529
+  type: 'test'
+  ...
+# Subtest: missing, wrong and failed predecessors cannot authorize a continuation
+ok 6 - missing, wrong and failed predecessors cannot authorize a continuation
+  ---
+  duration_ms: 1090.37055
+  type: 'test'
+  ...
+# Subtest: completion is single-use and failed transport closes the run to further calls
+ok 7 - completion is single-use and failed transport closes the run to further calls
+  ---
+  duration_ms: 2200.572987
+  type: 'test'
+  ...
+# Subtest: wrong capability, changed artifact, second-provider slot and inflated output cap preserve zero spend
+ok 8 - wrong capability, changed artifact, second-provider slot and inflated output cap preserve zero spend
+  ---
+  duration_ms: 1087.826152
+  type: 'test'
+  ...
+# Subtest: workload authentication verifies RSA signature and exact owner/project/environment/time
+ok 9 - workload authentication verifies RSA signature and exact owner/project/environment/time
+  ---
+  duration_ms: 38.556937
+  type: 'test'
+  ...
+# Subtest: a mutated policy cannot silently reuse the old run commitment
+ok 10 - a mutated policy cannot silently reuse the old run commitment
+  ---
+  duration_ms: 1090.001381
+  type: 'test'
+  ...
+# Subtest: full corrected packet reaches one explicit provider request after durable reservation
+ok 11 - full corrected packet reaches one explicit provider request after durable reservation
+  ---
+  duration_ms: 17.523211
+  type: 'test'
+  ...
+# Subtest: disabled and unauthorized requests cannot inspect the ledger or generate
+ok 12 - disabled and unauthorized requests cannot inspect the ledger or generate
+  ---
+  duration_ms: 8.088988
+  type: 'test'
+  ...
+# Subtest: missing numerical limits, expired policy and missing pricing fail closed
+ok 13 - missing numerical limits, expired policy and missing pricing fail closed
+  ---
+  duration_ms: 0.665618
+  type: 'test'
+  ...
+# Subtest: changed artifact, added tool request, wrong source and unregistered trial do not generate
+ok 14 - changed artifact, added tool request, wrong source and unregistered trial do not generate
+  ---
+  duration_ms: 25.609534
+  type: 'test'
+  ...
+# Subtest: the second provider slot cannot be silently filled by this Gemini conduit
+ok 15 - the second provider slot cannot be silently filled by this Gemini conduit
+  ---
+  duration_ms: 3.635304
+  type: 'test'
+  ...
+# Subtest: credential material cannot enter outbound input or releasable response
+ok 16 - credential material cannot enter outbound input or releasable response
+  ---
+  duration_ms: 9.938177
+  type: 'test'
+  ...
+# Subtest: budget refusal or mismatched reservation prevents generation
+ok 17 - budget refusal or mismatched reservation prevents generation
+  ---
+  duration_ms: 14.34617
+  type: 'test'
+  ...
+# Subtest: non-success, truncated, wrong-model and over-budget returns retain one failed call without retry
+ok 18 - non-success, truncated, wrong-model and over-budget returns retain one failed call without retry
+  ---
+  duration_ms: 30.057655
+  type: 'test'
+  ...
+# Subtest: response byte overflow retains a bounded prefix and identifies incomplete capture
+ok 19 - response byte overflow retains a bounded prefix and identifies incomplete capture
+  ---
+  duration_ms: 6.227809
+  type: 'test'
+  ...
+# Subtest: failed completion cannot be presented as a completed provider trial
+ok 20 - failed completion cannot be presented as a completed provider trial
+  ---
+  duration_ms: 7.176425
+  type: 'test'
+  ...
+# Subtest: budget client rejects arbitrary endpoints and missing workload identity
+ok 21 - budget client rejects arbitrary endpoints and missing workload identity
+  ---
+  duration_ms: 0.534019
+  type: 'test'
+  ...
+# Subtest: budget function verifies workload before body parsing or database work
+ok 22 - budget function verifies workload before body parsing or database work
+  ---
+  duration_ms: 3.251793
+  type: 'test'
+  ...
+# Subtest: budget dispatch rejects inherited operation names and oversized bodies before database work
+ok 23 - budget dispatch rejects inherited operation names and oversized bodies before database work
+  ---
+  duration_ms: 1.031481
+  type: 'test'
+  ...
+# Subtest: client retains exact mock bytes, keeps fixture evidence class, and rejects existing attempts
+ok 24 - client retains exact mock bytes, keeps fixture evidence class, and rejects existing attempts
+  ---
+  duration_ms: 11.694898
+  type: 'test'
+  ...
+# Subtest: client cannot continue using fixture captures or wrong predecessor identity
+ok 25 - client cannot continue using fixture captures or wrong predecessor identity
+  ---
+  duration_ms: 0.749104
+  type: 'test'
+  ...
+# Subtest: canonical API dispatch and deployment packaging preserve dedicated bounded operation
+ok 26 - canonical API dispatch and deployment packaging preserve dedicated bounded operation
+  ---
+  duration_ms: 0.384512
+  type: 'test'
+  ...
+# vercel-deploy-hygiene.test.mjs passed with 11/11 deployed functions and 10 configured overrides
+# node:fs:484
+#     return binding.readFileUtf8(path, stringToFlags(options.flag));
+#                    ^
+# Error: ENOENT: no such file or directory, open 'app/safe-harbor/td613-flight.html'
+#     at Object.readFileSync (node:fs:484:20)
+#     at read (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/sitewide-browser-epoch.test.mjs:8:18)
+#     at file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/sitewide-browser-epoch.test.mjs:13:14
+#     at ModuleJob.run (node:internal/modules/esm/module_job:439:25)
+#     at async node:internal/modules/esm/loader:643:26
+#     at async file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/vercel-deploy-hygiene.test.mjs:203:1 {
+#   errno: -2,
+#   code: 'ENOENT',
+#   syscall: 'open',
+#   path: 'app/safe-harbor/td613-flight.html'
+# }
+# Node.js v24.19.0
+# Subtest: tests/vercel-deploy-hygiene.test.mjs
+not ok 5 - tests/vercel-deploy-hygiene.test.mjs
+  ---
+  duration_ms: 81.768222
+  type: 'test'
+  location: '/workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/vercel-deploy-hygiene.test.mjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Workflow estate closed at 4/4 durable workflows: validation, release, relock/research safety, and Pages remain authority-distinct.
+# Subtest: tests/workflow-estate.test.mjs
+ok 6 - tests/workflow-estate.test.mjs
+  ---
+  duration_ms: 95.683947
+  type: 'test'
+  ...
+1..28
+# tests 28
+# suites 0
+# pass 27
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 10723.042813

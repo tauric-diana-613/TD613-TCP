@@ -1,0 +1,135 @@
+{
+  "source_commit": "bbdecb48c1f95726fe52ae9d30bedb821a2b5b74",
+  "command": [
+    "node",
+    "--test",
+    "--test-reporter=tap",
+    "tests/loom-assay-transport.test.mjs",
+    "tests/loom-assay-budget.test.mjs",
+    "tests/khonapolit-api-contract.test.mjs",
+    "tests/gemini-generation-envelope.test.mjs",
+    "tests/workflow-estate.test.mjs",
+    "tests/vercel-deploy-hygiene.test.mjs"
+  ],
+  "started_at": "2026-10-09T06:56:41.419779+00:00",
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "provider_generation_calls": 0,
+  "sources": [
+    {
+      "path": ".github/workflows/td613-ci.yml",
+      "bytes": 59747,
+      "sha256": "d55d84b6644c1af52a765e212019393702203dd76c009237e99dcc7e6b5c09bf"
+    },
+    {
+      "path": "api/khonapolit.js",
+      "bytes": 2352,
+      "sha256": "96039accca6c2c2f3ebfd5efb26c870f2e11c22597633dc6911cacab22da630e"
+    },
+    {
+      "path": "neon/functions/loom-assay-budget/index.mjs",
+      "bytes": 2263,
+      "sha256": "2c6c141c0006e38532f60a9198658e9d6afc4a03cdb3036f2ea53712131c1014"
+    },
+    {
+      "path": "neon/functions/loom-assay-budget/ledger.mjs",
+      "bytes": 5176,
+      "sha256": "940537b5bef708233eb0494c934ae13e5485f712cfbeecd68fe8f385a69f9bc7"
+    },
+    {
+      "path": "neon/functions/loom-assay-budget/package-lock.json",
+      "bytes": 6526,
+      "sha256": "b3e38f34bc68c2fc0cf5a49ca4eabc501004e1dee39b56f0569c9bae7597819d"
+    },
+    {
+      "path": "neon/functions/loom-assay-budget/package.json",
+      "bytes": 183,
+      "sha256": "c8d844ccf147fb211d66dc9e54e3efd29c1c78eea10680a4f7c2f51f5bb129c5"
+    },
+    {
+      "path": "neon/functions/loom-assay-budget/vercel-identity.mjs",
+      "bytes": 2376,
+      "sha256": "ef08699d60b011ca68e87b79a71f5630736561496c7b1d64f3073fd4ce9450bf"
+    },
+    {
+      "path": "neon/migrations/20261009_loom_assay_budget.sql",
+      "bytes": 1395,
+      "sha256": "fcee0837f95609877c02c9b3dcb8659066a07d080ec0fb7f9f86bd2294676dcc"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/ACTIVATION.md",
+      "bytes": 6547,
+      "sha256": "99dc7b349c5da569a0379c708ada25fb6583682e71aa17a226c2228a3256ce35"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/DEVELOPMENT_FINDINGS.json",
+      "bytes": 762,
+      "sha256": "e56a2f689ec7f4e77e064806a3227e6c505dc819d6f85a5636387be87e830804"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/POLICY.template.json",
+      "bytes": 1354,
+      "sha256": "e753b2fdcea0335178da676d511d43ca7edd234f7f02e21f3358b83b4bdbebde"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/TRIAL_MANIFEST.json",
+      "bytes": 57923,
+      "sha256": "08f63e8999a984b3f871016cf059392d890ae5661883e9149786264244b0f5ac"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/prepare-enrollment.mjs",
+      "bytes": 1750,
+      "sha256": "815b793a7e7c158217d8339baf4c18b64469d9d34a2f1d53a82f4a310ad22958"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/server-client.mjs",
+      "bytes": 7872,
+      "sha256": "a8b1ba1139f191355403a0a0679e814d4a65bc196115bd4fc3a9ce307e008e34"
+    },
+    {
+      "path": "server/loom-assay-budget-client.js",
+      "bytes": 1263,
+      "sha256": "bec72cd9e455b3777522c8fcd5254c391683515ad1257481bdb7b329600c6c64"
+    },
+    {
+      "path": "server/loom-assay-contract.js",
+      "bytes": 8928,
+      "sha256": "687d71a8650ec68ed44c4904e3b48f4e50b0491956fb0bc02979432e521c1501"
+    },
+    {
+      "path": "server/loom-assay.js",
+      "bytes": 7197,
+      "sha256": "fa50b40dc253e08b630834834f99066f7d570ef754154a4ce62010120aaff113"
+    },
+    {
+      "path": "tests/loom-assay-budget.test.mjs",
+      "bytes": 9419,
+      "sha256": "a8947e8c9f867aee7561e96b80b0a1186d42f15fb17e068ff57ceee5d175f8b8"
+    },
+    {
+      "path": "tests/loom-assay-transport.test.mjs",
+      "bytes": 11528,
+      "sha256": "069564e36aedfa274e2fdbfe97063cf9027f4ff96fc6d4f9953834f86c7835fb"
+    },
+    {
+      "path": "vercel.json",
+      "bytes": 25981,
+      "sha256": "78b230e73c65e49b24dfbba758c8ff0189dea5aced915f9e98a08a3684d90ebf"
+    }
+  ],
+  "database": "Embedded PostgreSQL (PGlite); single-connection SQL test, no deployed Neon witness",
+  "node_version": "v24.19.0",
+  "completed_at": "2026-10-09T06:56:52.283444+00:00",
+  "exit_code": 1,
+  "raw": [
+    {
+      "path": "research/portable-loom-server-transport-20261009/raw/engineering-001/stdout.tap",
+      "bytes": 7809,
+      "sha256": "18a6aa1396abf91ad9a0642bb7ccc709d5330c22bfc66eb014577f95f580241a"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/raw/engineering-001/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}
