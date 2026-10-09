@@ -8,7 +8,8 @@
       "maxDuration": 60
     },
     "api/khonapolit.js": {
-      "maxDuration": 240
+      "maxDuration": 240,
+      "includeFiles": "{server/loom-assay-run-config.json,research/portable-loom-server-transport-20261009/TRIAL_MANIFEST.json,research/portable-loom-kit-assay-20261009/corrected-artifact/portable-loom-standard.md}"
     },
     "api/giving.js": {
       "maxDuration": 30

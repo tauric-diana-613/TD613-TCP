@@ -1,0 +1,248 @@
+TAP version 13
+# gemini-generation-envelope.test.mjs passed
+# Subtest: tests/gemini-generation-envelope.test.mjs
+ok 1 - tests/gemini-generation-envelope.test.mjs
+  ---
+  duration_ms: 108.019993
+  type: 'test'
+  ...
+# khonapolit-api-contract: causal one-generation relay, receipt, and operator-open seal contract ok
+# Subtest: tests/khonapolit-api-contract.test.mjs
+ok 2 - tests/khonapolit-api-contract.test.mjs
+  ---
+  duration_ms: 192.667175
+  type: 'test'
+  ...
+# Subtest: real local PostgreSQL accepts the migration and retains reservation and completion metadata
+ok 3 - real local PostgreSQL accepts the migration and retains reservation and completion metadata
+  ---
+  duration_ms: 1844.038099
+  type: 'test'
+  ...
+# Subtest: the SQL reservation rejects comparative trials under first-receiver authority without spending
+ok 4 - the SQL reservation rejects comparative trials under first-receiver authority without spending
+  ---
+  duration_ms: 1244.45795
+  type: 'test'
+  ...
+# Subtest: duplicate reservations queued against the local engine commit exactly once
+ok 5 - duplicate reservations queued against the local engine commit exactly once
+  ---
+  duration_ms: 1233.909308
+  type: 'test'
+  ...
+# Subtest: financial ceiling and call ceiling rollback without refunds or partial insertion
+ok 6 - financial ceiling and call ceiling rollback without refunds or partial insertion
+  ---
+  duration_ms: 2375.082797
+  type: 'test'
+  ...
+# Subtest: missing, wrong and failed predecessors cannot authorize a continuation
+ok 7 - missing, wrong and failed predecessors cannot authorize a continuation
+  ---
+  duration_ms: 1132.11903
+  type: 'test'
+  ...
+# Subtest: completion is single-use and failed transport closes the run to further calls
+ok 8 - completion is single-use and failed transport closes the run to further calls
+  ---
+  duration_ms: 2245.00666
+  type: 'test'
+  ...
+# Subtest: wrong capability, changed artifact, second-provider slot and inflated output cap preserve zero spend
+ok 9 - wrong capability, changed artifact, second-provider slot and inflated output cap preserve zero spend
+  ---
+  duration_ms: 1090.808907
+  type: 'test'
+  ...
+# Subtest: workload authentication verifies RSA signature and exact owner/project/environment/time
+ok 10 - workload authentication verifies RSA signature and exact owner/project/environment/time
+  ---
+  duration_ms: 48.579698
+  type: 'test'
+  ...
+# Subtest: a mutated policy cannot silently reuse the old run commitment
+ok 11 - a mutated policy cannot silently reuse the old run commitment
+  ---
+  duration_ms: 1056.190703
+  type: 'test'
+  ...
+# Subtest: the primary plan contains 54 frozen calls, three independent repetitions and ordered continuations
+ok 12 - the primary plan contains 54 frozen calls, three independent repetitions and ordered continuations
+  ---
+  duration_ms: 6.282212
+  type: 'test'
+  ...
+# Subtest: a held call retains its result, stops subsequent execution and cannot overwrite the attempt
+ok 13 - a held call retains its result, stops subsequent execution and cannot overwrite the attempt
+  ---
+  duration_ms: 13.567801
+  type: 'test'
+  ...
+# Subtest: the runner rejects a widened budget or call count before opening a run or generating
+ok 14 - the runner rejects a widened budget or call count before opening a run or generating
+  ---
+  duration_ms: 0.831248
+  type: 'test'
+  ...
+# Subtest: full corrected packet reaches one explicit provider request after durable reservation
+ok 15 - full corrected packet reaches one explicit provider request after durable reservation
+  ---
+  duration_ms: 18.85748
+  type: 'test'
+  ...
+# Subtest: disabled and unauthorized requests cannot inspect the ledger or generate
+ok 16 - disabled and unauthorized requests cannot inspect the ledger or generate
+  ---
+  duration_ms: 12.949921
+  type: 'test'
+  ...
+# Subtest: missing numerical limits, expired policy and missing pricing fail closed
+ok 17 - missing numerical limits, expired policy and missing pricing fail closed
+  ---
+  duration_ms: 0.569042
+  type: 'test'
+  ...
+# Subtest: changed artifact, added tool request, wrong source and unregistered trial do not generate
+ok 18 - changed artifact, added tool request, wrong source and unregistered trial do not generate
+  ---
+  duration_ms: 24.047106
+  type: 'test'
+  ...
+# Subtest: the second provider slot cannot be silently filled by this Gemini conduit
+ok 19 - the second provider slot cannot be silently filled by this Gemini conduit
+  ---
+  duration_ms: 2.225259
+  type: 'test'
+  ...
+# Subtest: first-receiver authority cannot be spent on registered comparative prompts
+ok 20 - first-receiver authority cannot be spent on registered comparative prompts
+  ---
+  duration_ms: 0.930348
+  type: 'test'
+  ...
+# Subtest: credential material cannot enter outbound input or releasable response
+ok 21 - credential material cannot enter outbound input or releasable response
+  ---
+  duration_ms: 7.316597
+  type: 'test'
+  ...
+# Subtest: budget refusal or mismatched reservation prevents generation
+ok 22 - budget refusal or mismatched reservation prevents generation
+  ---
+  duration_ms: 9.52478
+  type: 'test'
+  ...
+# Subtest: non-success, truncated, wrong-model and over-budget returns retain one failed call without retry
+ok 23 - non-success, truncated, wrong-model and over-budget returns retain one failed call without retry
+  ---
+  duration_ms: 18.997511
+  type: 'test'
+  ...
+# Subtest: response byte overflow retains a bounded prefix and identifies incomplete capture
+ok 24 - response byte overflow retains a bounded prefix and identifies incomplete capture
+  ---
+  duration_ms: 5.913232
+  type: 'test'
+  ...
+# Subtest: failed completion cannot be presented as a completed provider trial
+ok 25 - failed completion cannot be presented as a completed provider trial
+  ---
+  duration_ms: 7.068421
+  type: 'test'
+  ...
+# Subtest: budget client rejects arbitrary endpoints and missing workload identity
+ok 26 - budget client rejects arbitrary endpoints and missing workload identity
+  ---
+  duration_ms: 0.702754
+  type: 'test'
+  ...
+# Subtest: budget function verifies workload before body parsing or database work
+ok 27 - budget function verifies workload before body parsing or database work
+  ---
+  duration_ms: 1.877903
+  type: 'test'
+  ...
+# Subtest: budget dispatch rejects inherited operation names and oversized bodies before database work
+ok 28 - budget dispatch rejects inherited operation names and oversized bodies before database work
+  ---
+  duration_ms: 1.203112
+  type: 'test'
+  ...
+# Subtest: client retains exact mock bytes, keeps fixture evidence class, and rejects existing attempts
+ok 29 - client retains exact mock bytes, keeps fixture evidence class, and rejects existing attempts
+  ---
+  duration_ms: 14.931792
+  type: 'test'
+  ...
+# Subtest: the retained capture exposes the verified answer used by continuation and keeps fixture authority closed
+ok 30 - the retained capture exposes the verified answer used by continuation and keeps fixture authority closed
+  ---
+  duration_ms: 19.001037
+  type: 'test'
+  ...
+# Subtest: client cannot continue using fixture captures or wrong predecessor identity
+ok 31 - client cannot continue using fixture captures or wrong predecessor identity
+  ---
+  duration_ms: 1.121397
+  type: 'test'
+  ...
+# Subtest: canonical API dispatch and deployment packaging preserve dedicated bounded operation
+ok 32 - canonical API dispatch and deployment packaging preserve dedicated bounded operation
+  ---
+  duration_ms: 0.807473
+  type: 'test'
+  ...
+# Subtest: source-bound public activation admits only its run and does not contain provider or caller secrets
+ok 33 - source-bound public activation admits only its run and does not contain provider or caller secrets
+  ---
+  duration_ms: 3.723722
+  type: 'test'
+  ...
+# vercel-deploy-hygiene.test.mjs passed with 11/11 deployed functions and 10 configured overrides
+# Subtest: legacy site epoch preflight is a non-destructive compatibility shim
+ok 34 - legacy site epoch preflight is a non-destructive compatibility shim
+  ---
+  duration_ms: 37.468175
+  type: 'test'
+  ...
+# Subtest: legacy reset URL cannot erase browser data or show the old epoch screen
+ok 35 - legacy reset URL cannot erase browser data or show the old epoch screen
+  ---
+  duration_ms: 0.279683
+  type: 'test'
+  ...
+# Subtest: legacy reset endpoint is retired and emits no destructive header
+ok 36 - legacy reset endpoint is retired and emits no destructive header
+  ---
+  duration_ms: 0.417742
+  type: 'test'
+  ...
+# Subtest: Flight rest is selectable in preface and close, and copiable in Glyph Bay
+ok 37 - Flight rest is selectable in preface and close, and copiable in Glyph Bay
+  ---
+  duration_ms: 0.901485
+  type: 'test'
+  ...
+# Subtest: Ash specialist eviction remains retired while the legacy site shim is inert
+ok 38 - Ash specialist eviction remains retired while the legacy site shim is inert
+  ---
+  duration_ms: 0.149887
+  type: 'test'
+  ...
+# Workflow estate closed at 4/4 durable workflows: validation, release, relock/research safety, and Pages remain authority-distinct.
+# Subtest: tests/workflow-estate.test.mjs
+ok 7 - tests/workflow-estate.test.mjs
+  ---
+  duration_ms: 143.117925
+  type: 'test'
+  ...
+1..39
+# tests 39
+# suites 0
+# pass 39
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 12468.38557

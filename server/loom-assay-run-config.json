@@ -1,0 +1,7 @@
+{
+  "schema": "td613.loom.approved-assay-activation/v0.1",
+  "run_id": "portable-loom-first-receiver-20261009",
+  "access_sha256": "1af559111f9067a9cae029d6a3c0ad957d2e4cba9e02730e7ee937f4e31d5763",
+  "budget_url": "https://br-round-union-b5v3ludi-loomassaybudget.compute.c-7.us-east-2.aws.neon.tech/",
+  "authorization_ref": "research/portable-loom-assay-activation-20261009/AUTHORIZATION.json"
+}

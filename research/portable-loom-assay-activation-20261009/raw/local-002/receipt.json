@@ -1,0 +1,183 @@
+{
+  "source_commit": "603b0a5b83eed9e0d570146d0bb67f3112e40653",
+  "started_at": "2026-10-09T07:50:54.446383+00:00",
+  "command": [
+    "node",
+    "--test",
+    "--test-reporter=tap",
+    "tests/loom-assay-transport.test.mjs",
+    "tests/loom-assay-budget.test.mjs",
+    "tests/loom-assay-primary-run.test.mjs",
+    "tests/khonapolit-api-contract.test.mjs",
+    "tests/gemini-generation-envelope.test.mjs",
+    "tests/workflow-estate.test.mjs",
+    "tests/vercel-deploy-hygiene.test.mjs"
+  ],
+  "sources": [
+    {
+      "path": ".github/workflows/td613-ci.yml",
+      "bytes": 59785,
+      "sha256": "09862e48fdf48cea03f8be344e5908aa84a457e363243ee1850a630f5afca82a"
+    },
+    {
+      "path": "api/khonapolit.js",
+      "bytes": 2352,
+      "sha256": "96039accca6c2c2f3ebfd5efb26c870f2e11c22597633dc6911cacab22da630e"
+    },
+    {
+      "path": "neon/functions/loom-assay-budget/index.mjs",
+      "bytes": 2523,
+      "sha256": "9777097f7273c8d3e1e9338be333c6c423c3793665da4cbc2b28f3303ea527a0"
+    },
+    {
+      "path": "neon/functions/loom-assay-budget/ledger.mjs",
+      "bytes": 5236,
+      "sha256": "7a31a7e8fe4ac7ea2232f6c9cec86e736016f019b878fc016e8451262e72647f"
+    },
+    {
+      "path": "neon/functions/loom-assay-budget/package-lock.json",
+      "bytes": 6526,
+      "sha256": "b3e38f34bc68c2fc0cf5a49ca4eabc501004e1dee39b56f0569c9bae7597819d"
+    },
+    {
+      "path": "neon/functions/loom-assay-budget/package.json",
+      "bytes": 183,
+      "sha256": "c8d844ccf147fb211d66dc9e54e3efd29c1c78eea10680a4f7c2f51f5bb129c5"
+    },
+    {
+      "path": "neon/functions/loom-assay-budget/vercel-identity.mjs",
+      "bytes": 2376,
+      "sha256": "ef08699d60b011ca68e87b79a71f5630736561496c7b1d64f3073fd4ce9450bf"
+    },
+    {
+      "path": "neon/migrations/20261009_loom_assay_budget.sql",
+      "bytes": 1395,
+      "sha256": "fcee0837f95609877c02c9b3dcb8659066a07d080ec0fb7f9f86bd2294676dcc"
+    },
+    {
+      "path": "research/portable-loom-assay-activation-20261009/AUTHORIZATION.json",
+      "bytes": 1987,
+      "sha256": "7f379e591ace0b105b9b05e9c1eaa69347dbccf40f57a2ee49f6deb46bc4ae80"
+    },
+    {
+      "path": "research/portable-loom-assay-activation-20261009/NEON_BUNDLE.json",
+      "bytes": 776,
+      "sha256": "99c243bd8d382eac52be2b87b2dc6bcfcded111773eafcd0fdc54d49c192ea55"
+    },
+    {
+      "path": "research/portable-loom-assay-activation-20261009/README.md",
+      "bytes": 2845,
+      "sha256": "f5e32670e132ffb93ca8607db6d5273ff16770046b7261927aa187d7e31c53e6"
+    },
+    {
+      "path": "research/portable-loom-assay-activation-20261009/neon-budget-function.zip",
+      "bytes": 44766,
+      "sha256": "a5a7909e08f4913412bd187be294ec7a57a54407dde022b7af4e2bf3a81a2832"
+    },
+    {
+      "path": "research/portable-loom-assay-activation-20261009/run-first-receiver.mjs",
+      "bytes": 4790,
+      "sha256": "1f62759383c9996f7b3cce07aa92a23902ca81cf6e53c09321605918b3aceaa1"
+    },
+    {
+      "path": "research/portable-loom-kit-assay-20261009/corrected-artifact/portable-loom-standard.md",
+      "bytes": 91514,
+      "sha256": "2d9c23bb6ad26430bcf4fd2a52e9aa5e876a1546265a00087cdb7e7e4f1c1872"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/ACTIVATION.md",
+      "bytes": 7986,
+      "sha256": "6542020b8310067d480f5aa8ddb91fc96558234b2a2507f9a1b75a42a670a89e"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/DEVELOPMENT_FINDINGS.json",
+      "bytes": 762,
+      "sha256": "e56a2f689ec7f4e77e064806a3227e6c505dc819d6f85a5636387be87e830804"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/POLICY.template.json",
+      "bytes": 1630,
+      "sha256": "1c61412e85f388d564746caf1a21f568fdabd0360caa3adee2e62b2d93e2698b"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/TRIAL_MANIFEST.json",
+      "bytes": 57923,
+      "sha256": "08f63e8999a984b3f871016cf059392d890ae5661883e9149786264244b0f5ac"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/prepare-enrollment.mjs",
+      "bytes": 1750,
+      "sha256": "815b793a7e7c158217d8339baf4c18b64469d9d34a2f1d53a82f4a310ad22958"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/server-client.mjs",
+      "bytes": 7999,
+      "sha256": "1ab3850cd4c6a4896b873d5ac17e33d1fc5a0845783dbb001ce082cd01c1a359"
+    },
+    {
+      "path": "server/loom-assay-budget-client.js",
+      "bytes": 1263,
+      "sha256": "bec72cd9e455b3777522c8fcd5254c391683515ad1257481bdb7b329600c6c64"
+    },
+    {
+      "path": "server/loom-assay-contract.js",
+      "bytes": 9229,
+      "sha256": "cfab9a5197fb01f625c046a4a60c5f48a2d732fe704e39875a22e5ea8817fd2a"
+    },
+    {
+      "path": "server/loom-assay.js",
+      "bytes": 8860,
+      "sha256": "0100e41579bea5bbe8b35c3893ce56dc9e4530c8bad3634ed7cf3bce07b37ceb"
+    },
+    {
+      "path": "tests/loom-assay-budget.test.mjs",
+      "bytes": 10042,
+      "sha256": "436348ebd06df1184332cd9d009a1bb8339360142da260c45b82ddd80c3faeae"
+    },
+    {
+      "path": "tests/loom-assay-primary-run.test.mjs",
+      "bytes": 3264,
+      "sha256": "b71786ffee094fb48f450ec0e04a7a8fc1eb696d7dfbf1d5d90c85bc0492d2d4"
+    },
+    {
+      "path": "tests/loom-assay-transport.test.mjs",
+      "bytes": 15652,
+      "sha256": "83a8b7f8f8237d34ba07aedb60290b60340d892a627ae5ded20bed1acf1425c7"
+    },
+    {
+      "path": "vercel.json",
+      "bytes": 26024,
+      "sha256": "6949f41434108dcd5ad445a0f6097f51502195a8a9289114813d5e870d44fc37"
+    },
+    {
+      "path": "server/loom-assay-run-config.json",
+      "bytes": 398,
+      "sha256": "6ad4fae076b922d5fcdbb1ccee770ce64fbcafeca81554e59ba40da8fb302421"
+    }
+  ],
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "actual_generation_calls": 0,
+  "database": "PGlite single-connection SQL/rollback witness, no deployed database concurrency witness",
+  "completed_at": "2026-10-09T07:51:06.994651+00:00",
+  "exit_code": 0,
+  "summary": {
+    "tests": 39,
+    "pass": 39,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "raw": [
+    {
+      "path": "research/portable-loom-assay-activation-20261009/raw/local-002/stdout.tap",
+      "bytes": 9311,
+      "sha256": "b9cf6870a8ffee7929a94e00e1726939fb2cd475508bc5a57a24723da11645c3"
+    },
+    {
+      "path": "research/portable-loom-assay-activation-20261009/raw/local-002/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}
