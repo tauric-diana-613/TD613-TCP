@@ -1,0 +1,25 @@
+{
+  "schema": "td613.loom.kit-provider-readiness/v0.1",
+  "observed_at": "2026-10-09T05:59:19.781099+00:00",
+  "current_local_credential_presence": {
+    "GEMINI_API_KEY": false,
+    "GOOGLE_API_KEY": false,
+    "OPENAI_API_KEY": false
+  },
+  "credential_values_inspected_or_exported": false,
+  "provider_inference_calls": 0,
+  "source_of_deployed_metadata": "research/portable-loom-provider-conduit-20261009/COMPATIBILITY.json",
+  "deployed_metadata_is_historical_to_this_attempt": true,
+  "configured_model_reported": "gemini-3.8-flash",
+  "blocking_limits": {
+    "deployed_route_max_provider_requests": 6,
+    "deployed_max_output_tokens": 65536,
+    "frozen_requests_per_role": 1,
+    "frozen_role_output_tokens": 2048,
+    "deployed_total_input_character_limit": 60000,
+    "new_receiver_markdown_bytes": 91514
+  },
+  "numerical_financial_ceiling": "UNBOUND",
+  "status": "HELD_MODEL_TRANSPORT",
+  "safe_progress": "Execute exact-kit local battery and role adapters; prepare new receiver input commitments; preserve old model comparison and research receipts"
+}

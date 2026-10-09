@@ -1,0 +1,337 @@
+{
+  "source_revision": "8a5db46f142f642d3d4c90f1a4e456a6732b8b8b",
+  "artifact_source_revision": "2a9115cd5106e647188df97991ddaff1dff1a2b9",
+  "copied_modules": [
+    {
+      "original": "app/engine/portable-loom-standard-runtime.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/portable-loom-standard-runtime.js",
+      "sha256": "8674be1d68462453624ee9e35a08aa83368ad77dd24a678daa6e8ae022ff0c3a",
+      "git_blob_sha": "872855a3e45c6d3cbc341212a43aa6fe06be8786"
+    },
+    {
+      "original": "app/dome-world/holonomy-loom/standard-portable-client.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/dome-world/holonomy-loom/standard-portable-client.js",
+      "sha256": "fc6077795acab8649be762c8e6015ba30a1433fadd8fbf49b1e9a9f4df89d0fc",
+      "git_blob_sha": "bf8e9b25883a77e93bb5245686cb00ae614ba96a"
+    },
+    {
+      "original": "app/dome-world/holonomy-loom/ai-intake.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/dome-world/holonomy-loom/ai-intake.js",
+      "sha256": "beaeb697e30d82bde292bb1aa68059992200177381017610223209cd8b398420",
+      "git_blob_sha": "cd44dea9157e2be259eae5a6198d63fe2d6ff655"
+    },
+    {
+      "original": "app/engine/portable-loom-core.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/portable-loom-core.js",
+      "sha256": "3935c0787bddb6f3e5f1c2034d19e1fd5411ee0e954fc1c151a673a2c451d1f2",
+      "git_blob_sha": "ab9fc4f02e07856e34ec903d11a0ef4653dff3df"
+    },
+    {
+      "original": "app/engine/portable-loom-session.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/portable-loom-session.js",
+      "sha256": "2270f0b3ce24ccab1453772164fdc8a1acca5fff93221abf08c8f49e45933f8f",
+      "git_blob_sha": "ffb8066438858adf874dcf8f8b3ea0a62069894d"
+    },
+    {
+      "original": "app/engine/portable-loom-reentry.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/portable-loom-reentry.js",
+      "sha256": "45502649973471d6e35dac09162650adec8a74d43e1308cde788b7f41c3a3aec",
+      "git_blob_sha": "996bd38b9b9844020d155894260dec7335ae62ad"
+    },
+    {
+      "original": "app/engine/portable-loom-return-binding.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/portable-loom-return-binding.js",
+      "sha256": "949bb7d391a6a651b14f86b7990c80c6a966855a288c56cf2b65602068e878ba",
+      "git_blob_sha": "f8cd774b5a9c6f515fb5cfcee02cf34b51a091db"
+    },
+    {
+      "original": "app/engine/portable-loom-challenge.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/portable-loom-challenge.js",
+      "sha256": "df0a95cb7e7913a5f7d7dbd797b487770196ec405828899d9bca2ec842f83f0e",
+      "git_blob_sha": "b55c1504c158c388a34c27a6213e91557ae1079f"
+    },
+    {
+      "original": "app/engine/portable-loom-gate.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/portable-loom-gate.js",
+      "sha256": "a8a0d8038aa5be3889c65ca0ec0812369520d8bbf3c7feb94cb23844cf5b1192",
+      "git_blob_sha": "704a58dbcc682e59e9e699bab470ed38a2ea29da"
+    },
+    {
+      "original": "app/engine/sequence-6-journey.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/sequence-6-journey.js",
+      "sha256": "743468988c3f1249b7efd50f6f059b043ae05298a1777e6a67c05aca0c037d28",
+      "git_blob_sha": "537fc429d5c4f274910ad338d81bcf9820114ca5"
+    },
+    {
+      "original": "app/engine/portable-loom-output.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/portable-loom-output.js",
+      "sha256": "0b8d50e51e17958b81dfb90ddf7136da90e73fe2ea4ba48d4809eddb83942ea5",
+      "git_blob_sha": "eae518f2c9df2163dab60dee9800bfdc7863368c"
+    },
+    {
+      "original": "app/engine/portable-loom-gate-explanation.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/portable-loom-gate-explanation.js",
+      "sha256": "871618d0e33ad72a1dc56e9aa0245f28da4bcc73fdb23bd4c7fc4d1d222f216a",
+      "git_blob_sha": "60ae62a5ad3f292f3f76c8cb4a8568b16a0ee3ca"
+    },
+    {
+      "original": "app/dome-world/holonomy-loom/ai-handoff-base.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/dome-world/holonomy-loom/ai-handoff-base.js",
+      "sha256": "76b11a2a2a91db536de50d6ae9e80394a41244d30cbf41db27cd452ca7159374",
+      "git_blob_sha": "18e1fc353b833dc8a3d92e35fc3011fd951f62f5"
+    },
+    {
+      "original": "app/dome-world/holonomy-loom/instrument-state-view.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/dome-world/holonomy-loom/instrument-state-view.js",
+      "sha256": "bbfb6787c9696608d68ffb173d947f15eb7c3ad90cf3b5dc942ffd17e24e6cd2",
+      "git_blob_sha": "b05a9786af09ec2a51811449dd0ca2b8570ce312"
+    },
+    {
+      "original": "app/dome-world/data/flowcore-glyph-semantics-v01.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/dome-world/data/flowcore-glyph-semantics-v01.js",
+      "sha256": "88f3e8119ce5b3a27822615f08df0b8f2c23cf7b385c1db534099d908658657f",
+      "git_blob_sha": "634e9c8e16eac47f02e601552a22f9dc7bbcd1cf"
+    },
+    {
+      "original": "app/engine/dollhouse-atlas-fadt.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/dollhouse-atlas-fadt.js",
+      "sha256": "3e4a4546c2e2aecfdbc24121019c82a59653320aa86baac9e3bf2b872f2af9ac",
+      "git_blob_sha": "7439874adf07f5f3337c373d8959fc4365789e5e"
+    },
+    {
+      "original": "app/engine/aperture-v32-typed-epistemic-deficit.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/aperture-v32-typed-epistemic-deficit.js",
+      "sha256": "89bdc0e9f12ce6cba72cfcd2c6548da0a0040aca35d1f8b4afe37dd17b63f017",
+      "git_blob_sha": "3c0626b0bf0fd51d1db1ac946ef6f49ed6f68eb7"
+    },
+    {
+      "original": "app/engine/portable-loom-mechanisms.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/portable-loom-mechanisms.js",
+      "sha256": "cde977cf16080f69654025a33d10ded8a546698adc5f3745b7fa9f1192628d9e",
+      "git_blob_sha": "fc78030f516aee0b713b2c29c53ac85c69465c6a"
+    },
+    {
+      "original": "app/dome-world/holonomy-loom/observer-channel.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/dome-world/holonomy-loom/observer-channel.js",
+      "sha256": "c67e7e0b5e2a0f3373800abfd00aacf9f72c02905cddd4b6661ba70955a50036",
+      "git_blob_sha": "e1f98ada7d221bcfa85ed105031318b5ed905889"
+    },
+    {
+      "original": "app/engine/dollhouse-witness-plan.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/dollhouse-witness-plan.js",
+      "sha256": "4596ebaff79be34c00340fb460642243e22b12c2cf1ab80a53954a6e6cf893f1",
+      "git_blob_sha": "b3cb84f28e21481306932e6a37bbb90674b535db"
+    },
+    {
+      "original": "app/engine/dollhouse-continuity-audit.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/dollhouse-continuity-audit.js",
+      "sha256": "6df6acb691288a0ab2190ef0d75ba45de8906dc789fcc7861a356a7633d7479f",
+      "git_blob_sha": "58ba5eef4f00fad9cc98c6abcc50e387cf2b046a"
+    },
+    {
+      "original": "app/engine/dollhouse-case-dossier.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/dollhouse-case-dossier.js",
+      "sha256": "fd6140e1a7eb09c6378355d009d8108111a20af359c15c49d0d1af7efee0c800",
+      "git_blob_sha": "2b1cdb2aac3bc0008f9586d5f9035a250e457d5f"
+    },
+    {
+      "original": "app/engine/governed-event-chain.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/governed-event-chain.js",
+      "sha256": "47509aff9443ead263322998dff1c56ffd038cd84500e6203ef168f9ae8ffc4c",
+      "git_blob_sha": "72781eb087c797c083e838c4733f84baee9c0fe2"
+    },
+    {
+      "original": "app/engine/flowcore-semantic-motion-bridge.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/flowcore-semantic-motion-bridge.js",
+      "sha256": "5dd5b3c1877eaf337744686ef776fcdbee9c6635029c1b7a5a778cba9d748997",
+      "git_blob_sha": "63cc98fa49419c34c48c35d50a9efe1a960be838"
+    },
+    {
+      "original": "app/engine/flowcore-aia-surface-binding.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/flowcore-aia-surface-binding.js",
+      "sha256": "51da898a5b06270cfe3a2c090523905216f286fab6af8316901d0df853d5543e",
+      "git_blob_sha": "c37de9df8256841ad4fafe929499488ba62a6f2c"
+    },
+    {
+      "original": "app/dome-world/holonomy-loom/flowcore-aia-motion.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/dome-world/holonomy-loom/flowcore-aia-motion.js",
+      "sha256": "40061f09ad27acea3955e28d7b5efe58b28324f6be845f5453c4da55f4f2e4c2",
+      "git_blob_sha": "d24cd3c57aed77f76428eb3da391f8eefe8bf8f4"
+    },
+    {
+      "original": "app/engine/flowcore-pedagogue-core.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/flowcore-pedagogue-core.js",
+      "sha256": "dcd04f6661e75fc9bd3c0ac5dde17624985a8d44709995884014459513cd038f",
+      "git_blob_sha": "787ced76f53796845a57c31dffd7f6418c61fedf"
+    },
+    {
+      "original": "app/engine/flowcore-pedagogue-aia.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/flowcore-pedagogue-aia.js",
+      "sha256": "d9a740bdab07558580e42f66d0d5fd9092de06d4e25ab542544ea2f84e79d89b",
+      "git_blob_sha": "cf4da4b80814b0b415afb2f3c07a2717b1f43963"
+    },
+    {
+      "original": "app/engine/flowcore-route-burden.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/flowcore-route-burden.js",
+      "sha256": "21a20396a5eec60dc91a62e8ec9db0c26fb64d8dc338a1386a40562ce6ae4662",
+      "git_blob_sha": "67d220491433c7f178371d551240781f9b95c5ff"
+    },
+    {
+      "original": "app/dome-world/flowcore-pedagogue-visual.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/dome-world/flowcore-pedagogue-visual.js",
+      "sha256": "8d465446ed987ea86a42ca9ae9b97d1845270c1685716ad01718fb2caa07dbcd",
+      "git_blob_sha": "fd26fb5b7d586a2cd64087746fb3481df5958fa4"
+    },
+    {
+      "original": "app/dome-world/holonomy-loom/flowcore-choreography.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/dome-world/holonomy-loom/flowcore-choreography.js",
+      "sha256": "70f1fe42eb1318d23426cc47ccc66450ba40ed729d1e77c73fb2cae163c36b01",
+      "git_blob_sha": "21f25dd47ffc06edba1379bc0a3e3f9e21b6e186"
+    },
+    {
+      "original": "app/dome-world/holonomy-loom/tutorial-membrane.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/dome-world/holonomy-loom/tutorial-membrane.js",
+      "sha256": "894674933117e2270a01c6b0911d0e64a3cdbfb5cedcdbd38a1e457112b198ce",
+      "git_blob_sha": "440242a34ee589220886b8d7efd1ec779cd91a0f"
+    },
+    {
+      "original": "app/dome-world/holonomy-loom/semantic-field.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/dome-world/holonomy-loom/semantic-field.js",
+      "sha256": "71ab199acf652eab2b4c5eb46a487fbd4089afa7100d26d40fde9cae188443c4",
+      "git_blob_sha": "0bfd124c136a4d86734b2caa92de257827bb43bb"
+    },
+    {
+      "original": "app/engine/dollhouse-agent-registry.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/dollhouse-agent-registry.js",
+      "sha256": "90959d3eed8884e6f0905a09b53e07bd285c6ac305800cbd0bf7544ff92f5ab5",
+      "git_blob_sha": "7730585a55013c527dda4d731664161a0b981d39"
+    },
+    {
+      "original": "app/dome-world/holonomy-loom/dome-art-lattice.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/dome-world/holonomy-loom/dome-art-lattice.js",
+      "sha256": "33957e2e10f3ff90526bef8609d0db1d81a8b701696869424bf2803f186cde82",
+      "git_blob_sha": "1f94190cc7fe42d825fba4a0f4200beb004031e0"
+    },
+    {
+      "original": "app/dome-world/ash/canonical-json.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/dome-world/ash/canonical-json.js",
+      "sha256": "4d2e1112ed3030e8996480e2fcdae41ed1defc1260786605c5f814b149efe425",
+      "git_blob_sha": "3269a59eb544b5442a7717a80437b37713e66d6f"
+    },
+    {
+      "original": "app/dome-world/data/flowcore-aia-route-registry-v01.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/dome-world/data/flowcore-aia-route-registry-v01.js",
+      "sha256": "df773e97397dc470d7c02ae2c6781bfb1bbb0adb8847ee83a28d3a4f22b7adc7",
+      "git_blob_sha": "ea3058bd4b5ca134ebe424f75e84205512d2b3f5"
+    },
+    {
+      "original": "app/engine/flowcore-pedagogue-law.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/flowcore-pedagogue-law.js",
+      "sha256": "3993fe76254aa18ba7c2f9b2bee499b84a4b169daf5e7c096b26e610f9a10de9",
+      "git_blob_sha": "bc8cfd0f260cbe95271721f12869f4d52bf331de"
+    },
+    {
+      "original": "app/engine/flowcore-pedagogue-cycle.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/flowcore-pedagogue-cycle.js",
+      "sha256": "af9a0a00771fe1ab6c137b89727e20e7121f1b819988f6f57dfda98877f3e51d",
+      "git_blob_sha": "6b8b029178b0ecbee2a16d1fc7dcdd4bc87462cd"
+    },
+    {
+      "original": "app/engine/flowcore-pedagogue-receipt.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/flowcore-pedagogue-receipt.js",
+      "sha256": "226fc844483257723f6e05588e8bb479369f3f3dd32e1481cda9a96f2b9c93ca",
+      "git_blob_sha": "8175f5e016531a986547857a64f3e895ae3b7382"
+    },
+    {
+      "original": "app/engine/flowcore-pedagogue-route-memory.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/flowcore-pedagogue-route-memory.js",
+      "sha256": "d03edb1b2e58f98335337ea040a6544d480f1251b39b7f940bc05bb0db379956",
+      "git_blob_sha": "cc1f916d07148e330ff3094bac10d8c4445067be"
+    },
+    {
+      "original": "app/engine/pedagogue-research-transfer.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/pedagogue-research-transfer.js",
+      "sha256": "e852377ce82f00f1aed5321ccc0ac6bbade15e82235ca898dad504dee967cf45",
+      "git_blob_sha": "a438b19eabfa0940812cddb415087031ac7bbc38"
+    },
+    {
+      "original": "app/engine/pedagogue-research-assay-witness.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/pedagogue-research-assay-witness.js",
+      "sha256": "581a0d6b281b65f3b40d8c7825c5ab65925e45d13b28d073577bf628e17a5689",
+      "git_blob_sha": "0d991f2e24d1f998d56f6245f845d7ec97db7f2a"
+    },
+    {
+      "original": "app/engine/pedagogue-research-mechanism-refinement.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/pedagogue-research-mechanism-refinement.js",
+      "sha256": "c3d1aad9d6676430b45b787eb3720cb83baf4e753b516ef5a1749487b659bb71",
+      "git_blob_sha": "89ad3216351c6bc136962047f54b4324864d6da9"
+    },
+    {
+      "original": "app/engine/pedagogue-research-criterion-family.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/pedagogue-research-criterion-family.js",
+      "sha256": "c563fd927f42d47e9a281a218399be72d46ff881af19673507c5b4d069ef1ad5",
+      "git_blob_sha": "582294917b2f8b88fb6546eb3b0a4ecb340b1dcb"
+    },
+    {
+      "original": "app/engine/pedagogue-lineage-spine-v02.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/pedagogue-lineage-spine-v02.js",
+      "sha256": "0501c2e45d7becd7251c6c6411bb90c69a213bc3d1accbc10d22af71a02267a6",
+      "git_blob_sha": "c058cc48a2bdcb563115798d780187416470d319"
+    },
+    {
+      "original": "app/engine/pedagogue-lineage-spine.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/pedagogue-lineage-spine.js",
+      "sha256": "1872e021228519396e1c9a7cfebd95a918eaf8ad53a4cf92284e539e00748872",
+      "git_blob_sha": "22b9c6b6c4bab08bd85465b46e407b9fcdbf41ef"
+    },
+    {
+      "original": "app/engine/pedagogue-lineage-second-pass.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/pedagogue-lineage-second-pass.js",
+      "sha256": "1e9c24f07baf0b846f5519bcb94bdb70650b39a2410eb48ef40320123c33bb4d",
+      "git_blob_sha": "c82aa5daf0ed9e38bbe90cc65587b3b2706fbdc3"
+    },
+    {
+      "original": "app/engine/pedagogue-institutional-time.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/pedagogue-institutional-time.js",
+      "sha256": "c6f95165bbcb91f15aca387b33ddbfc816232eabd4f40eac71792e91f6aa572c",
+      "git_blob_sha": "6bb68f359e5dceb9b29f51f8e4cf342452402438"
+    },
+    {
+      "original": "app/engine/pedagogue-recurrence-audit.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/pedagogue-recurrence-audit.js",
+      "sha256": "99bece8f3cb57f8487fabca002e8c01f6fbb32020dd8a8f6dcfc1e3b7e0d8fd5",
+      "git_blob_sha": "cf4beefbcc162c8e6aa36ae7f1089c552a716430"
+    },
+    {
+      "original": "app/engine/pedagogue-mathematical-counterpoints.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/pedagogue-mathematical-counterpoints.js",
+      "sha256": "33fb001c7cd1a2d697dae3be461b68a67ba1c06ea76c38c10ca487a028e8b610",
+      "git_blob_sha": "12d65aba3f24c8bce3c3fb48bc42688913af52d2"
+    },
+    {
+      "original": "app/engine/flowcore-pedagogue-validators.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/flowcore-pedagogue-validators.js",
+      "sha256": "b071f5a9c46780d767133810203ed6a736da40564af6c6d2430687131cf7ae6a",
+      "git_blob_sha": "efc7ee7143cfe58e1b222e75c493617e6e1a9624"
+    },
+    {
+      "original": "app/engine/flowcore-pedagogue-utils.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/flowcore-pedagogue-utils.js",
+      "sha256": "ccca358e72867a55cfff31402067dcd8eb16eb433fb6d5d462d911842e8bb571",
+      "git_blob_sha": "ecb1d6b0e568fddb75b54db0cdf5134b658ff3c8"
+    },
+    {
+      "original": "app/dome-world/holonomy-loom/engine.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/dome-world/holonomy-loom/engine.js",
+      "sha256": "4849d840707e678e97aa715be684cf29384dca4c794339eb2cf54265ec90774d",
+      "git_blob_sha": "3686d8caa958c53caa485b2ef810cca13534ce10"
+    },
+    {
+      "original": "app/engine/pedagogue-interface-diagnosis.js",
+      "kit_copy": "research/portable-loom-executable-product-20261009/artifact/runtime/app/engine/pedagogue-interface-diagnosis.js",
+      "sha256": "3f866de1018ce47a524be6b2bf6dd7bfc98222462e000a37df3c554a950e9b77",
+      "git_blob_sha": "488b29ec520f8b47059d3c0e4a4fe13c3ab10fd2"
+    }
+  ],
+  "scope": "Exact carried copies execute foundation/runtime tests; unchanged source-parity companion tests retain their explicit local-only fixture class"
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "td613.loom.prospective-protocol-amendment/v0.1",
+  "amendment_id": "002",
+  "version": "1.0.2",
+  "record_function": "NEW_EXACT_EXECUTABLE_KIT_BINDING_BEFORE_MEASUREMENT",
+  "created_at": "2026-10-09T05:59:19.781013+00:00",
+  "predecessors": [
+    "research/portable-loom-preflight/PROTOCOL.json",
+    "research/portable-loom-antigravity-handoff-20261009/PROTOCOL_AMENDMENT_001.json"
+  ],
+  "operator_authorization": {
+    "source": "ACTIVE_INTERACTIVE_CHAT",
+    "verbatim": "test the kit \u27d0",
+    "scope": "Exact exported ZIP ebb2b2073554eba843a38162a1a4a8e48e8bf1e3b5f3fd00b4e91b3ba02ca1bf and its component bytes"
+  },
+  "artifact_export_commit": "8a5db46f142f642d3d4c90f1a4e456a6732b8b8b",
+  "artifact_source_commit": "2a9115cd5106e647188df97991ddaff1dff1a2b9",
+  "changes": [
+    "Rebind current standard kit JSON/Markdown and executable module bytes",
+    "Execute inherited foundation/L01-L12 endpoints through copied kit modules where available; source-parity companion engines remain separately identified",
+    "Add eleven direct controller checks without enlarging the twelve-case denominator"
+  ],
+  "unchanged": [
+    "Historical Sequence 1-6 ancestry only; Sequence 5.5 remains closed",
+    "L01-L12 endpoint definitions",
+    "R01-R12 prompts, case order and three repetitions per receiver",
+    "A/D/E comparison roles and call limits; completed original E baseline retained rather than rerun",
+    "Zero primary retries; retain original failures",
+    "Evidence classes, no hidden-provider claims, temporal veto and human closure",
+    "No consumer account binding, merge or deployment"
+  ],
+  "receiver_binding": "NOT_RUN: local credential missing, deployed route incompatible and numerical financial ceiling unbound",
+  "new_paid_call_authority_inferred": false
+}
