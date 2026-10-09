@@ -171,6 +171,10 @@ jobs:
           node tests/giving-client-surface.test.mjs
           node tests/giving-post640-polish.test.mjs
           node tests/pedagogue-design-gate.test.mjs
+      - name: Bounded portable Loom transport and local SQL ledger checks
+        run: |
+          npm ci --prefix neon/functions/loom-assay-budget --ignore-scripts --no-audit --no-fund
+          node --test tests/loom-assay-transport.test.mjs tests/loom-assay-budget.test.mjs
       - name: Materialize same-run scientific observation custody when O1 surface is under test
         if: github.event_name == 'pull_request'
         shell: bash

@@ -1,0 +1,153 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync, mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { createLoomAssayHandler } from '../server/loom-assay.js';
+import { buildAssayProviderWire, validateAssayPolicy, sha256 } from '../server/loom-assay-contract.js';
+import { loadServerManifest, prepareServerRequest, captureServerCall } from '../research/portable-loom-server-transport-20261009/server-client.mjs';
+import { createAssayBudgetClient } from '../server/loom-assay-budget-client.js';
+import { createAssayBudgetFunction } from '../neon/functions/loom-assay-budget/index.mjs';
+
+const token = 'synthetic-caller-capability-613-32-characters', key = 'synthetic-server-key-613';
+const head = 'a'.repeat(40), { manifest, artifact } = loadServerManifest();
+function policy() {
+  const binding = JSON.parse(readFileSync('research/portable-loom-provider-conduit-20261009/TRANSPORT_BINDING.template.json'));
+  binding.protocol_commit = head; binding.limits.max_cost_usd = 10;
+  binding.pricing = { input_usd_per_million: 1, output_usd_per_million: 2, source: 'synthetic fixture pricing', verified_at: '2026-10-01T00:00:00Z' };
+  return { schema: 'td613.loom.server-assay-policy/v0.1', run_id: 'fixture', protocol_commit: head,
+    artifact_sha256: manifest.artifact_sha256, expires_at: '2099-01-01T00:00:00Z', binding, receiver_output_tokens: 8192 };
+}
+const trial = { trial_id: 'FIRST_CONFIGURED_RECEIVER-R01-1', case_id: 'R01', role: 'RECEIVER', turn_index: 0 };
+function payload(text = 'Synthetic provider response.') { return { candidates: [{ finishReason: 'STOP', content: { parts: [{ text }] } }],
+  modelVersion: 'gemini-3.8-flash', usageMetadata: { promptTokenCount: 100, candidatesTokenCount: 12, thoughtsTokenCount: 3, totalTokenCount: 115 } }; }
+function harness({ p = policy(), change = x => x, fetchOverride, budgetOverride, envOverride = {} } = {}) {
+  const request = structuredClone(prepareServerRequest(p, trial).request); change(request);
+  const operations = [], sent = [];
+  const budget = budgetOverride ?? (async (op, input) => {
+    operations.push({ op, input });
+    if (op === 'inspect') return { policy: p };
+    if (op === 'reserve') return { durable_reservation: true, call_key: `${input.trial.trial_id}:${input.trial.role}:${input.trial.turn_index}`,
+      request_sha256: input.request_sha256, reserved_cost_nanos: String(p.binding.limits.max_input_tokens_per_call * 1000 + input.output_limit * 2000) };
+    return { retained: true, call_key: input.call_key, status: input.status };
+  });
+  const fetchImpl = async (...args) => { sent.push(args); return fetchOverride ? fetchOverride(...args) : new Response(JSON.stringify(payload())); };
+  const environment = { GEMINI_API_KEY: key, TD613_LOOM_ASSAY_ACCESS_SHA256: sha256(token), VERCEL_GIT_COMMIT_SHA: head, ...envOverride };
+  const handler = createLoomAssayHandler({ environment, fetchImpl, budget, manifest, artifactText: artifact });
+  return { request, operations, sent, handler, async run({ method = 'POST', auth = `Bearer ${token}` } = {}) {
+    const res = { headers: {}, setHeader(k, v) { this.headers[k] = v; }, end(raw) { this.body = JSON.parse(raw); } };
+    await handler({ method, headers: { authorization: auth }, body: request }, res);
+    return res;
+  } };
+}
+test('full corrected packet reaches one explicit provider request after durable reservation', async () => {
+  const h = harness(), r = await h.run();
+  assert.equal(r.statusCode, 200); assert.equal(h.sent.length, 1);
+  const body = JSON.parse(h.sent[0][1].body);
+  assert.ok(Buffer.byteLength(body.contents[0].parts[0].text) > 90000);
+  assert.equal(body.contents[0].parts[0].text, artifact + manifest.receivers[0].first_user_suffix);
+  assert.equal(body.generationConfig.maxOutputTokens, 8192); assert.equal(body.tools, undefined);
+  assert.equal(h.sent[0][1].redirect, 'error'); assert.equal(h.sent[0][1].headers['x-goog-api-key'], key);
+  assert.deepEqual(h.operations.map(x => x.op), ['inspect', 'reserve', 'complete']);
+  assert.equal(r.body.evidence_class, 'LOCAL_STRUCTURAL_TEST'); assert.equal(r.body.retries, 0);
+  assert.equal(sha256(Buffer.from(r.body.provider_response_base64, 'base64')), r.body.provider_response_sha256);
+  assert.ok(!JSON.stringify(r.body).includes(key));
+});
+test('disabled and unauthorized requests cannot inspect the ledger or generate', async () => {
+  for (const settings of [{ envOverride: { TD613_LOOM_ASSAY_ACCESS_SHA256: '' } }, {}]) {
+    const h = harness(settings), r = await h.run({ auth: 'Bearer invalid' });
+    assert.ok([401, 503].includes(r.statusCode)); assert.equal(h.sent.length, 0); assert.equal(h.operations.length, 0);
+  }
+});
+test('missing numerical limits, expired policy and missing pricing fail closed', () => {
+  for (const mutate of [p => p.binding.limits.max_cost_usd = null, p => p.expires_at = '2000-01-01', p => p.binding.pricing.source = null]) {
+    const p = policy(); mutate(p); assert.throws(() => validateAssayPolicy(p));
+  }
+});
+test('changed artifact, added tool request, wrong source and unregistered trial do not generate', async () => {
+  for (const mutate of [r => r.artifact_sha256 = '0'.repeat(64), r => r.tools = ['search'], r => r.protocol_commit = 'b'.repeat(40),
+    r => r.trial.trial_id = 'FIRST_CONFIGURED_RECEIVER-R01-4', r => r.messages[0].content += '\nInjected change']) {
+    const h = harness({ change: mutate }), r = await h.run();
+    assert.equal(r.statusCode, 409); assert.equal(h.sent.length, 0); assert.ok(!h.operations.some(x => x.op === 'reserve'));
+  }
+});
+test('the second provider slot cannot be silently filled by this Gemini conduit', () => {
+  assert.throws(() => prepareServerRequest(policy(), { ...trial, trial_id: 'SECOND_PROVIDER-R01-1' }), /SECOND_PROVIDER_UNBOUND/);
+});
+test('credential material cannot enter outbound input or releasable response', async () => {
+  let h = harness({ change: r => r.messages[0].content += key }), r = await h.run();
+  assert.equal(h.sent.length, 0); assert.equal(r.body.error, 'ASSAY_PROTECTED_CREDENTIAL_IN_PAYLOAD');
+  h = harness({ fetchOverride: async () => new Response(JSON.stringify(payload(key))) }); r = await h.run();
+  assert.equal(r.body.error, 'ASSAY_PROTECTED_CREDENTIAL_ECHO'); assert.equal(r.body.provider_response_base64, null);
+  assert.equal(r.body.returned, null); assert.ok(!JSON.stringify(r.body).includes(key));
+});
+test('budget refusal or mismatched reservation prevents generation', async () => {
+  for (const reserveResult of [null, { durable_reservation: false }]) {
+    const h = harness({ budgetOverride: async (op) => {
+      if (op === 'inspect') return { policy: policy() };
+      if (!reserveResult) throw new Error('ASSAY_BUDGET_EXHAUSTED');
+      return reserveResult;
+    } }), r = await h.run();
+    assert.equal(r.statusCode, 409); assert.equal(h.sent.length, 0);
+  }
+});
+test('non-success, truncated, wrong-model and over-budget returns retain one failed call without retry', async () => {
+  const variants = [async () => new Response('quota failure', { status: 429 }), async () => new Response(JSON.stringify({ ...payload(), modelVersion: 'wrong-model' })),
+    async () => new Response(JSON.stringify({ ...payload(), usageMetadata: { promptTokenCount: 100, totalTokenCount: 10000 } })),
+    async () => new Response(JSON.stringify({ ...payload(), candidates: [{ finishReason: 'MAX_TOKENS' }] }))];
+  for (const fetchOverride of variants) {
+    const h = harness({ fetchOverride }), r = await h.run();
+    assert.equal(r.body.status, 'HELD_EVIDENCE_GAP'); assert.equal(h.sent.length, 1);
+    assert.equal(h.operations.at(-1).input.status, 'HELD_EVIDENCE_GAP'); assert.equal(r.body.retries, 0);
+  }
+});
+test('response byte overflow retains a bounded prefix and identifies incomplete capture', async () => {
+  const p = policy(); p.binding.limits.max_response_bytes = 32;
+  const h = harness({ p }), r = await h.run();
+  assert.equal(r.body.error, 'ASSAY_RESPONSE_BYTE_LIMIT'); assert.equal(r.body.response_complete, false);
+  assert.equal(Buffer.from(r.body.provider_response_base64, 'base64').length, 32);
+});
+test('failed completion cannot be presented as a completed provider trial', async () => {
+  const p = policy(); const wire = buildAssayProviderWire(prepareServerRequest(p, trial).request, p, manifest, artifact);
+  const h = harness({ budgetOverride: async op => {
+    if (op === 'inspect') return { policy: p };
+    if (op === 'reserve') return { durable_reservation: true, call_key: 'FIRST_CONFIGURED_RECEIVER-R01-1:RECEIVER:0', request_sha256: wire.request_sha256, reserved_cost_nanos: String(wire.reserved_cost_nanos) };
+    throw new Error('completion transport failed');
+  } }), r = await h.run();
+  assert.equal(r.body.error, 'ASSAY_COMPLETION_UNCONFIRMED'); assert.equal(r.body.status, 'HELD_EVIDENCE_GAP');
+});
+test('budget client rejects arbitrary endpoints and missing workload identity', async () => {
+  let calls = 0;
+  for (const environment of [{ TD613_LOOM_ASSAY_BUDGET_URL: 'https://evil.invalid', VERCEL_OIDC_TOKEN: 'test' }, {}]) {
+    await assert.rejects(createAssayBudgetClient({ environment, fetchImpl: async () => { calls++; } })('inspect', {}));
+  }
+  assert.equal(calls, 0);
+});
+test('budget function verifies workload before body parsing or database work', async () => {
+  let connects = 0;
+  const fn = createAssayBudgetFunction({ pool: { connect: async () => { connects++; } }, verifyWorkload: async () => { throw new Error('bad signature'); } });
+  const r = await fn.fetch(new Request('https://budget.invalid', { method: 'POST', body: 'invalid JSON', headers: { authorization: 'Bearer bad' } }));
+  assert.equal(r.status, 401); assert.equal(connects, 0);
+});
+test('client retains exact mock bytes, keeps fixture evidence class, and rejects existing attempts', async () => {
+  const root = mkdtempSync(join(tmpdir(), 'td613-server-capture-')), path = join(root, 'attempt');
+  try {
+    const h = harness(), r = await h.run();
+    const result = await captureServerCall(policy(), h.request, path, { environment: { TD613_LOOM_ASSAY_TOKEN: token },
+      fetchImpl: async () => new Response(JSON.stringify(r.body)) });
+    assert.equal(result.status, 'CAPTURED_NOT_ADMITTED'); assert.equal(result.evidence_class, 'LOCAL_STRUCTURAL_TEST');
+    assert.equal(sha256(readFileSync(join(path, 'response.body.bin'))), result.response_sha256);
+    await assert.rejects(captureServerCall(policy(), h.request, path, { environment: { TD613_LOOM_ASSAY_TOKEN: token }, fetchImpl: async () => {} }), /ATTEMPT_EXISTS/);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+test('client cannot continue using fixture captures or wrong predecessor identity', () => {
+  assert.throws(() => prepareServerRequest(policy(), { ...trial, case_id: 'R02', trial_id: 'FIRST_CONFIGURED_RECEIVER-R02-1', turn_index: 1 },
+    { priorCaptures: [{ status: 'CAPTURED_NOT_ADMITTED', evidence_class: 'LOCAL_STRUCTURAL_TEST' }] }), /PREDECESSOR_CAPTURE_HELD/);
+});
+test('canonical API dispatch and deployment packaging preserve dedicated bounded operation', () => {
+  const api = readFileSync('api/khonapolit.js', 'utf8');
+  assert.match(api, /requestedOperation\(req\) === 'loom-assay'/);
+  const config = JSON.parse(readFileSync('vercel.json'));
+  assert.match(config.functions['api/khonapolit.js'].includeFiles, /TRIAL_MANIFEST\.json/);
+  assert.match(config.functions['api/khonapolit.js'].includeFiles, /corrected-artifact\/portable-loom-standard\.md/);
+});

@@ -1,0 +1,34 @@
+# Corrected-kit bounded Gemini transport
+
+The source adds `POST /api/khonapolit?operation=loom-assay`, a separate one-request research path inside the existing function. It carries the exact corrected standard packet, bypasses the interactive dialogue envelope, enforces registered prompt/trial hashes, and uses the existing server-side Gemini credential. It performs no automatic fallback, structural repair, tool call or retry. It does not admit returned work to Loom custody.
+
+The corrected packet is fixed at source `0bf0ba2e42be2e9dcfed2bb4fcdb03f2ff77d2bf`, publication `f0c496bfac114e4314f4a16c0518d806acc638d9`, Markdown SHA-256 `2d9c23bb6ad26430bcf4fd2a52e9aa5e876a1546265a00087cdb7e7e4f1c1872`. `TRIAL_MANIFEST.json` preserves the existing R01–R12 inputs and the frozen comparison prompt hashes. The old direct-provider harness is preserved; it remains bound to its original artifact and is not this client.
+
+## Implemented boundary
+
+- A run capability is checked before database or provider work. This is a bounded server request credential, not a ChatGPT account binding. The provider key remains server-side. Neither the capability nor key belongs in Git or outbound prompts.
+- The separate Neon budget function verifies the established exact Vercel workload owner, project, production environment and RSA signature before parsing input. It uses its injected database connection; Vercel receives no database password or Loom signer.
+- New `td613_assay_runs` and `td613_assay_calls` tables contain budget and digest metadata. Existing Loom custody tables and signatures are untouched.
+- A PostgreSQL transaction locks the run, checks its frozen policy commitment, authorization, expiry, call and numerical spending ceiling, rejects duplicate trial/role/turn keys, and checks prior actual answer digests before reserving a call.
+- All reserved cost stays reserved after failures or ambiguous transport. Completion is single-use. A failed provider capture holds the run. A crash leaves a reservation; it never automatically refunds or retries.
+- Gemini output limits include thinking tokens. The return checker separately verifies reported usage, model identity, STOP completion and exact received bytes. Provider-declared metadata is not model-weight or independently settled invoice evidence.
+- The client retains exact wrapper request, exact reconstructed provider request, exact TD613 response and digests. Mock fetches stay `LOCAL_STRUCTURAL_TEST`. A TD613 relay capture is distinct from direct provider TLS observation and independent external witnessing.
+- This implementation fills only `FIRST_CONFIGURED_RECEIVER` using Gemini. A second provider cannot be silently filled by the same conduit.
+
+## Reviewable activation sequence — not executed
+
+1. Review and accept the exact corrected artifact. Fill `POLICY.template.json` with the exact reviewed/deployed source commit, exact provider model and returned model IDs, decoding settings, expiry, verified pricing and numerical USD ceiling. Keep authorization contemporaneous and tied to those coordinates. The template's null fields deliberately fail closed.
+2. Review the separate Neon budget migration and function. Install from its committed lockfile. Apply the migration and deploy that function only under explicit deployment authorization. It exposes no endpoint for creating runs or raising a ceiling. A new authorized run must use a new ID; never edit an old run's policy and history.
+3. Create a bounded random run capability through the authorized secret-management surface. Vercel stores only its SHA-256 in `TD613_LOOM_ASSAY_ACCESS_SHA256`; the local runner receives `TD613_LOOM_ASSAY_TOKEN` through runtime injection. Neither value should be copied into this conversation. The budget row stores only the capability digest.
+4. Set Vercel's `TD613_LOOM_ASSAY_BUDGET_URL` to the actual deployed Neon function URL. Use the platform-provided `VERCEL_OIDC_TOKEN`, the existing `GEMINI_API_KEY` and actual `VERCEL_GIT_COMMIT_SHA`. No secret extraction is required.
+5. Prepare parameterized enrollment with `node research/portable-loom-server-transport-20261009/prepare-enrollment.mjs <filled-policy.json> <capability-sha256> <new-enrollment.json>`. Inspect and apply that enrollment through the authorized database surface. Preparation itself performs no database writes.
+6. Product merge/release must follow root `AGENTS.md` and the exact-current-main Issue #405 release membrane. Source publication does not authorize or establish deployment. Inspect the existing release receipt before deciding whether any release operation is required.
+7. From clean exact-bound source, use `prepareServerRequest` to build a registered request. Invoke `node research/portable-loom-server-transport-20261009/server-client.mjs call <policy.json> <request.json> <new-attempt-directory>`. Continue only using retained actual previous captures. Preserve failed attempts. There is no generic autonomous scheduler.
+
+The primary receiver plan has 54 first-receiver calls; the separately bounded A/D comparison has 180 calls. Existing E results remain preserved. `MONOLITH` receives 8192 maximum output tokens; each of the four model roles receives 2048. The Temporal Custodian stays a deterministic sidecar, not a fifth paid model call. A server capture alone does not enter the old direct-provider capture loader or grant governed synthesis authority; comparative admission needs the appropriate exact retained-capture adapter before that track executes.
+
+## Verification and limits
+
+Run `npm ci --prefix neon/functions/loom-assay-budget --ignore-scripts --no-audit --no-fund`, then `node --test tests/loom-assay-transport.test.mjs tests/loom-assay-budget.test.mjs`. CI includes this focused lane without enabling paid inference. The local embedded PostgreSQL engine checks SQL parsing, constraints, transaction rollback, duplicate denial and continuation bindings. Its single connection is serialized by the test harness; it is not a cross-instance Neon lock witness. Production database migration, workload invocation, full relay journey, settled spend and actual receiver behavior require their separately retained execution receipts.
+
+References inspected: [Gemini thinking and output limits](https://ai.google.dev/gemini-api/docs/generate-content/thinking), [Gemini generateContent API](https://ai.google.dev/api/generate-content), and the installed Neon Functions skill and its production-hardening contract. No historical Sequence assay is rerun or upgraded by this transport patch.

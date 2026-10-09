@@ -5,6 +5,7 @@ import loomDemoTaskHandler from '../server/loom-demo-task.js';
 import marrowlineAttachmentHandler from '../server/marrowline-attachment-quality.js';
 import khonapolitHandler from '../server/khonapolit-quality.js';
 import loomAdvisoryHandler from '../server/holonomy-loom-khonapolit-advisory.js';
+import loomAssayHandler from '../server/loom-assay.js';
 import {
   GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
   withGeminiGenerationProfile
@@ -34,6 +35,7 @@ function requestHasAttachments(req = {}) {
 }
 
 export default function handler(req, res) {
+  if (requestedOperation(req) === 'loom-assay') return loomAssayHandler(req, res);
   if (requestedOperation(req) === 'loom-advisory') return withGeminiGenerationProfile(
     GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
     () => loomAdvisoryHandler(req, res)
