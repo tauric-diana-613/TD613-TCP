@@ -1,0 +1,19 @@
+{
+  "schema": "td613.loom.local-attempt/v0.1",
+  "arm": "E",
+  "attempt": 1,
+  "premeasurement_commit": "40552dcd9db94951efe93a7818b9f10819b734b5",
+  "binding_sha256": "72e953f3aae8a2304886ed0f4e8a48fba5511290dff33251b4f6e768c391fe7e",
+  "corpus_sha256": "05bacf3e6ddba1fea8f7780c6a08e92b65c876d40b894f1c8debf9692eb256db",
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "fixture_origin": "SYNTHETIC_AUDIT_FIXTURE",
+  "model_calls": 0,
+  "retries": 0,
+  "started_at": "2026-10-09T02:46:24.462Z",
+  "repetition_rule": "Three deterministic repetitions per fixed case; one unique case, not three empirical witnesses.",
+  "ended_at": "2026-10-09T02:46:24.579Z",
+  "completed_outputs": 36,
+  "unique_cases": 12,
+  "responses_sha256": "273c0aaf4a190d992c750059da130392a19e732bc9e9cdecd8caaabaa756be62",
+  "api_spend_usd": 0
+}

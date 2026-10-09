@@ -1,0 +1,114 @@
+{
+  "schema": "td613.loom.dollhouse-execution-evidence-receipt/v0.1",
+  "recorded_at": "2026-10-09T02:48:40.323213+00:00",
+  "branch": "research/portable-loom-dollhouse-execution-20261009",
+  "source_parent": "5647b51f9da361b628b66c18c3a042725665dcc6",
+  "premeasurement_commit": "40552dcd9db94951efe93a7818b9f10819b734b5",
+  "premeasurement_tree": "f290aa0dfde0c25a6fe164df4c0e1adef2b76efa",
+  "artifact_source_commit": "2091c426a1cbba2ff1a7a06019c0693ddc5be398",
+  "artifact_sha256": "dec3750552099e30e9495ce42af6e616dd3dd1f48f0d3f6766cb82d934c273b2",
+  "artifact_bytes": 81380,
+  "artifact_unchanged": true,
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "historical_sequence_reruns": 0,
+  "L01_L12_reruns": 0,
+  "artifact_audit": {
+    "finite_fadt": {
+      "adapter": "runFadtAgent",
+      "occupied_fibres": 1,
+      "antecedents": 1,
+      "verdict": "EXACT_FINITE_SUPPORT",
+      "claim_limit": "Equality in one antecedent is trivial; no stage erasure, external behavior or reconstruction measured."
+    },
+    "atlas": {
+      "adapter": "verifyAiaSurfaceProjectionFamily",
+      "carried_projections": 4,
+      "compared_pairs": 6,
+      "result": "PRESERVED",
+      "claim_limit": "Carried packet controls only; no actual foreign projection witness."
+    },
+    "pedagogue_gesture": "HELD_INPUT_CLASS",
+    "aperture_numerical": "HELD_INPUT_CLASS",
+    "aperture_witness_plan": {
+      "status": "PROPOSE",
+      "origin": "New authored declaration-only proposal; not original artifact plan or empirical execution."
+    },
+    "bounded_orchestrator": {
+      "recommendation": "HELD",
+      "temporal_whole_route_veto": true,
+      "unresolved_findings": [
+        "artifact-gesture-gap",
+        "artifact-reconstruction-gap"
+      ],
+      "authority": "HUMAN_REVIEW_REQUIRED_NO_EXECUTION"
+    },
+    "temporal_scope": "New current-inspection ledger only; original exported session chronology was not reconstructed or authenticated."
+  },
+  "comparison_E": {
+    "unique_cases": 12,
+    "retained_outputs": 36,
+    "unsafe_promotion_count": 0,
+    "unresolved_disagreement_erasure_count": 0,
+    "valid_case_denominator": 5,
+    "valid_case_review_count": 5,
+    "negative_case_denominator": 7,
+    "appropriate_hold_count": 7
+  },
+  "case_origin": "NEW_SYNTHETIC_AUDIT_FIXTURES",
+  "repetitions": "Three deterministic repeats; twelve unique cases, no independent replicate inflation.",
+  "model_comparison": {
+    "A": "NOT_RUN",
+    "D": "NOT_RUN",
+    "model_calls": 0,
+    "superiority": "UNMEASURED"
+  },
+  "receiver_track": {
+    "R01_R12": "NOT_RUN",
+    "actual_receiver_trials": 0,
+    "simulated_receiver_trials": 0,
+    "browser_witnesses": 0,
+    "physical_device_witnesses": 0,
+    "independent_external_witnesses": 0,
+    "human_participant_comprehension": "UNMEASURED",
+    "reconstruction_attempts": "UNMEASURED"
+  },
+  "engineering_validation": {
+    "new_capture_scorer_tests_passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "artifact_audit_syntax_check": "PASS",
+    "raw_processes_exit_codes": [
+      0,
+      0,
+      0
+    ],
+    "primary_retries": 0
+  },
+  "blindness": {
+    "key_sha256": "c5b000013b2b7ff4aef2c0585efba0f3b9b7597fd7e7cc860ac92ed113effff1",
+    "key_sent_to_runner_or_receiver": false,
+    "key_retained_outside_runner_packet": true,
+    "isolation": "Separate scorer process only; zero receiver calls. Future A/D requests must allowlist case and prompt bytes, disable retrieval/tools, and use fresh contexts. Public E scores are not permitted model inputs.",
+    "experimenter_blinding_established": false
+  },
+  "transport_boundary": {
+    "direct_callable_model_tool_found": false,
+    "configured_provider_api_key_presence": false,
+    "model_configuration": "UNBOUND",
+    "paid_call_token_financial_budget": "UNBOUND",
+    "consumer_account_binding_required": false,
+    "source_only_export_or_local_adapters_are_model_transport": false
+  },
+  "raw_index": "research/portable-loom-dollhouse-execution-20261009/RAW_INDEX.json",
+  "api_calls": 0,
+  "api_spend_usd": 0,
+  "main_observed": "8d57bdfcd69cff9c5760cd001549197f3180c00a",
+  "main_changed": false,
+  "product_code_changed": false,
+  "merge": false,
+  "deploy": false,
+  "issue405_touched": false,
+  "claim_ceiling": "Bounded current-process deterministic checks on carried artifact data and newly authored synthetic comparison inputs. No provider conformance, human comprehension, empirical origin, custody restoration or model superiority established.",
+  "golden_egg": "NOT_ESTABLISHED",
+  "human_closure_required": true
+}

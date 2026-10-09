@@ -1,0 +1,10 @@
+{
+  "schema": "td613.loom.artifact-audit-request/v0.1",
+  "premeasurement_commit": "40552dcd9db94951efe93a7818b9f10819b734b5",
+  "binding_sha256": "72e953f3aae8a2304886ed0f4e8a48fba5511290dff33251b4f6e768c391fe7e",
+  "artifact_sha256": "dec3750552099e30e9495ce42af6e616dd3dd1f48f0d3f6766cb82d934c273b2",
+  "started_at": "2026-10-09T02:46:24.070Z",
+  "attempt": 1,
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "model_calls": 0
+}

@@ -1,0 +1,419 @@
+{
+  "FADT": {
+    "fibres": [
+      {
+        "id": "summary_1",
+        "antecedents": [
+          {
+            "id": "selected_task",
+            "support": [
+              "EXIT",
+              "INPUT:89d9a1f0560fb5c0423880196cb3c23efa42da1f60957c6c804d343c203b368a",
+              "REQUEST_SHARED_TASK",
+              "REST",
+              "REVIEW_RETURN"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "ATLAS": {
+    "binding": {
+      "schema": "td613.aia.surface-binding/v0.1",
+      "surface_reference": "Dome-World/Loom AI task",
+      "host_station": "Dome-World",
+      "governance_context": "TD613",
+      "nested_surface": true,
+      "route_selection": "EXPLICIT_OPERATOR_SELECTION_ONLY",
+      "route_inference_forbidden": true,
+      "routes": [
+        "EXPERIENTIAL",
+        "CUSTODIAL",
+        "AUDIT",
+        "IMPLEMENTATION"
+      ],
+      "required_invariants": [
+        "provenance",
+        "missingness",
+        "contradictions",
+        "causal_structure",
+        "claim_ceiling",
+        "station_ownership",
+        "authorized_actions",
+        "source_status",
+        "observation_status"
+      ],
+      "consequence_order": "CONSEQUENCE_BEFORE_ONTOLOGY",
+      "internal_legibility": "NOW_WHY_EXACT",
+      "outside_posture": "MINIMUM_DISCLOSURE_NON_AUTHORITATIVE",
+      "fabricated_decoys": false,
+      "rest": {
+        "available": true,
+        "penalty": false
+      },
+      "exit": {
+        "available": true,
+        "penalty": false
+      },
+      "authority": {
+        "station_mutation_authorized": false,
+        "automatic_release": false,
+        "automatic_redesign": false,
+        "route_inference_allowed": false,
+        "authority_may_cross": false,
+        "human_closure_required": true
+      }
+    },
+    "projections": [
+      {
+        "schema": "td613.aia.surface-projection/v0.1",
+        "surface_reference": "Dome-World/Loom AI task",
+        "host_station": "Dome-World",
+        "governance_context": "TD613",
+        "governed_reference": "loom-ai:89d9a1f0560fb5c0423880196cb3c23efa42da1f60957c6c804d343c203b368a",
+        "route": "EXPERIENTIAL",
+        "route_purpose": "Encounter condition, action, consequence, relation, rest, and transfer through direct participation.",
+        "route_selection": "EXPLICIT_OPERATOR_SELECTION_ONLY",
+        "route_inference_forbidden": true,
+        "invariants": {
+          "provenance": {
+            "source": "OPERATOR_SELECTED_LOCAL_INPUT",
+            "input_digest": "89d9a1f0560fb5c0423880196cb3c23efa42da1f60957c6c804d343c203b368a",
+            "digest_is_authentication": false
+          },
+          "missingness": [],
+          "contradictions": [],
+          "causal_structure": {
+            "order": [
+              "SELECT",
+              "EXPLICIT_REQUEST",
+              "VALIDATE_RESPONSE",
+              "REVIEW",
+              "REST"
+            ],
+            "shared_document_ids": []
+          },
+          "claim_ceiling": [
+            "Task adapter governs selected input and response admission; external hosts require their own enforcement."
+          ],
+          "station_ownership": "Dome-World",
+          "authorized_actions": [
+            "EXIT",
+            "INPUT:89d9a1f0560fb5c0423880196cb3c23efa42da1f60957c6c804d343c203b368a",
+            "REQUEST_SHARED_TASK",
+            "REST",
+            "REVIEW_RETURN"
+          ],
+          "source_status": "LOCAL_SELECTION_OBSERVED",
+          "observation_status": "MODEL_RESPONSE_PENDING"
+        },
+        "surface": {
+          "now": "Only your selected documents travel.",
+          "why": "The AI gets this task view; the withheld material stays outside it.",
+          "next": "Run the shared task or rest."
+        },
+        "rest": {
+          "available": true,
+          "penalty": false
+        },
+        "exit": {
+          "available": true,
+          "penalty": false
+        },
+        "authority": {
+          "station_mutation_authorized": false,
+          "automatic_release": false,
+          "automatic_redesign": false,
+          "route_inference_allowed": false,
+          "authority_may_cross": false,
+          "human_closure_required": true
+        },
+        "closure": {
+          "status": "OPEN",
+          "closed_by": null
+        },
+        "user_level_score": null,
+        "diagnostic_claim": null
+      },
+      {
+        "schema": "td613.aia.surface-projection/v0.1",
+        "surface_reference": "Dome-World/Loom AI task",
+        "host_station": "Dome-World",
+        "governance_context": "TD613",
+        "governed_reference": "loom-ai:89d9a1f0560fb5c0423880196cb3c23efa42da1f60957c6c804d343c203b368a",
+        "route": "CUSTODIAL",
+        "route_purpose": "Inspect source relationship, custody posture, continuity, lawful next action, and downstream consequence.",
+        "route_selection": "EXPLICIT_OPERATOR_SELECTION_ONLY",
+        "route_inference_forbidden": true,
+        "invariants": {
+          "provenance": {
+            "source": "OPERATOR_SELECTED_LOCAL_INPUT",
+            "input_digest": "89d9a1f0560fb5c0423880196cb3c23efa42da1f60957c6c804d343c203b368a",
+            "digest_is_authentication": false
+          },
+          "missingness": [],
+          "contradictions": [],
+          "causal_structure": {
+            "order": [
+              "SELECT",
+              "EXPLICIT_REQUEST",
+              "VALIDATE_RESPONSE",
+              "REVIEW",
+              "REST"
+            ],
+            "shared_document_ids": []
+          },
+          "claim_ceiling": [
+            "Task adapter governs selected input and response admission; external hosts require their own enforcement."
+          ],
+          "station_ownership": "Dome-World",
+          "authorized_actions": [
+            "EXIT",
+            "INPUT:89d9a1f0560fb5c0423880196cb3c23efa42da1f60957c6c804d343c203b368a",
+            "REQUEST_SHARED_TASK",
+            "REST",
+            "REVIEW_RETURN"
+          ],
+          "source_status": "LOCAL_SELECTION_OBSERVED",
+          "observation_status": "MODEL_RESPONSE_PENDING"
+        },
+        "surface": {
+          "selection": [],
+          "withheld_support_count": 0,
+          "onward_action": "REVIEW_REQUIRED"
+        },
+        "rest": {
+          "available": true,
+          "penalty": false
+        },
+        "exit": {
+          "available": true,
+          "penalty": false
+        },
+        "authority": {
+          "station_mutation_authorized": false,
+          "automatic_release": false,
+          "automatic_redesign": false,
+          "route_inference_allowed": false,
+          "authority_may_cross": false,
+          "human_closure_required": true
+        },
+        "closure": {
+          "status": "OPEN",
+          "closed_by": null
+        },
+        "user_level_score": null,
+        "diagnostic_claim": null
+      },
+      {
+        "schema": "td613.aia.surface-projection/v0.1",
+        "surface_reference": "Dome-World/Loom AI task",
+        "host_station": "Dome-World",
+        "governance_context": "TD613",
+        "governed_reference": "loom-ai:89d9a1f0560fb5c0423880196cb3c23efa42da1f60957c6c804d343c203b368a",
+        "route": "AUDIT",
+        "route_purpose": "Inspect evidence basis, transformations, alternatives, residuals, abstention, and replay without custody authority.",
+        "route_selection": "EXPLICIT_OPERATOR_SELECTION_ONLY",
+        "route_inference_forbidden": true,
+        "invariants": {
+          "provenance": {
+            "source": "OPERATOR_SELECTED_LOCAL_INPUT",
+            "input_digest": "89d9a1f0560fb5c0423880196cb3c23efa42da1f60957c6c804d343c203b368a",
+            "digest_is_authentication": false
+          },
+          "missingness": [],
+          "contradictions": [],
+          "causal_structure": {
+            "order": [
+              "SELECT",
+              "EXPLICIT_REQUEST",
+              "VALIDATE_RESPONSE",
+              "REVIEW",
+              "REST"
+            ],
+            "shared_document_ids": []
+          },
+          "claim_ceiling": [
+            "Task adapter governs selected input and response admission; external hosts require their own enforcement."
+          ],
+          "station_ownership": "Dome-World",
+          "authorized_actions": [
+            "EXIT",
+            "INPUT:89d9a1f0560fb5c0423880196cb3c23efa42da1f60957c6c804d343c203b368a",
+            "REQUEST_SHARED_TASK",
+            "REST",
+            "REVIEW_RETURN"
+          ],
+          "source_status": "LOCAL_SELECTION_OBSERVED",
+          "observation_status": "MODEL_RESPONSE_PENDING"
+        },
+        "surface": {
+          "input_digest": "89d9a1f0560fb5c0423880196cb3c23efa42da1f60957c6c804d343c203b368a",
+          "source_claims": "MODEL_REPORTED_UNVERIFIED",
+          "support_comparison": "FADT_FINITE_SET"
+        },
+        "rest": {
+          "available": true,
+          "penalty": false
+        },
+        "exit": {
+          "available": true,
+          "penalty": false
+        },
+        "authority": {
+          "station_mutation_authorized": false,
+          "automatic_release": false,
+          "automatic_redesign": false,
+          "route_inference_allowed": false,
+          "authority_may_cross": false,
+          "human_closure_required": true
+        },
+        "closure": {
+          "status": "OPEN",
+          "closed_by": null
+        },
+        "user_level_score": null,
+        "diagnostic_claim": null
+      },
+      {
+        "schema": "td613.aia.surface-projection/v0.1",
+        "surface_reference": "Dome-World/Loom AI task",
+        "host_station": "Dome-World",
+        "governance_context": "TD613",
+        "governed_reference": "loom-ai:89d9a1f0560fb5c0423880196cb3c23efa42da1f60957c6c804d343c203b368a",
+        "route": "IMPLEMENTATION",
+        "route_purpose": "Inspect schema state, deterministic receipts, calibration, equations, implementation references, and bounded JSON.",
+        "route_selection": "EXPLICIT_OPERATOR_SELECTION_ONLY",
+        "route_inference_forbidden": true,
+        "invariants": {
+          "provenance": {
+            "source": "OPERATOR_SELECTED_LOCAL_INPUT",
+            "input_digest": "89d9a1f0560fb5c0423880196cb3c23efa42da1f60957c6c804d343c203b368a",
+            "digest_is_authentication": false
+          },
+          "missingness": [],
+          "contradictions": [],
+          "causal_structure": {
+            "order": [
+              "SELECT",
+              "EXPLICIT_REQUEST",
+              "VALIDATE_RESPONSE",
+              "REVIEW",
+              "REST"
+            ],
+            "shared_document_ids": []
+          },
+          "claim_ceiling": [
+            "Task adapter governs selected input and response admission; external hosts require their own enforcement."
+          ],
+          "station_ownership": "Dome-World",
+          "authorized_actions": [
+            "EXIT",
+            "INPUT:89d9a1f0560fb5c0423880196cb3c23efa42da1f60957c6c804d343c203b368a",
+            "REQUEST_SHARED_TASK",
+            "REST",
+            "REVIEW_RETURN"
+          ],
+          "source_status": "LOCAL_SELECTION_OBSERVED",
+          "observation_status": "MODEL_RESPONSE_PENDING"
+        },
+        "surface": {
+          "input_schema": "td613.loom.ai-task/v0.1",
+          "endpoint": "/api/khonapolit?operation=loom-task",
+          "input_allowlist": [
+            "schema",
+            "request_id",
+            "task",
+            "documents",
+            "rules"
+          ]
+        },
+        "rest": {
+          "available": true,
+          "penalty": false
+        },
+        "exit": {
+          "available": true,
+          "penalty": false
+        },
+        "authority": {
+          "station_mutation_authorized": false,
+          "automatic_release": false,
+          "automatic_redesign": false,
+          "route_inference_allowed": false,
+          "authority_may_cross": false,
+          "human_closure_required": true
+        },
+        "closure": {
+          "status": "OPEN",
+          "closed_by": null
+        },
+        "user_level_score": null,
+        "diagnostic_claim": null
+      }
+    ]
+  },
+  "APERTURE_PLAN": {
+    "schema": "td613.dollhouse.witness-plan/v0.1",
+    "source_revision": "2091c426a1cbba2ff1a7a06019c0693ddc5be398",
+    "execution": false,
+    "claims": [
+      {
+        "id": "receiver-adherence-unmeasured",
+        "claim_class": "SCOPED_POLICY_ENFORCEMENT",
+        "statement": "The exact export prescribes receiver governance; foreign adherence is currently unmeasured.",
+        "extent": "DECLARED_SCOPE_ONLY",
+        "observation_scope": {
+          "description": "Exact portable export and its retained local receipts only.",
+          "objects": [
+            "dec3750552099e30e9495ce42af6e616dd3dd1f48f0d3f6766cb82d934c273b2"
+          ],
+          "bounded": true
+        },
+        "instrument": {
+          "id": "prospective-receiver-capture",
+          "description": "Future independent request/response capture under a bound model/transport."
+        },
+        "evidence_class": "DECLARATION",
+        "positive_witness": {
+          "description": "Carried rules and local integrity receipt, not foreign enforcement.",
+          "artifact_refs": [
+            "research/portable-loom-local-battery-20261009/artifact/portable-loom-standard.json"
+          ]
+        },
+        "hostile_counterexample": {
+          "description": "No actual receiver capture exists in the inherited attempt.",
+          "artifact_refs": [
+            "research/portable-loom-local-battery-20261009/EVIDENCE_RECEIPT.local.json"
+          ]
+        },
+        "unresolved_alternatives": [
+          "RECEIVER_COMPLIES",
+          "RECEIVER_IGNORES_INSTRUCTIONS"
+        ],
+        "required_next_observation": {
+          "description": "Capture the fixed R cases through an explicitly configured provider-neutral transport.",
+          "observation_scope": {
+            "description": "Only the bound receiver/model and fixed case contexts.",
+            "objects": [
+              "R01-R12"
+            ],
+            "bounded": true
+          },
+          "instrument": {
+            "id": "bound-request-response-capture",
+            "description": "Retain exact outbound/inbound bytes and transport metadata."
+          },
+          "evidence_class": "PROVIDER_RESPONSE",
+          "distinguishes": [
+            "RECEIVER_COMPLIES",
+            "RECEIVER_IGNORES_INSTRUCTIONS"
+          ],
+          "execution": false,
+          "authority": "HUMAN_APPROVAL_REQUIRED"
+        }
+      }
+    ]
+  }
+}

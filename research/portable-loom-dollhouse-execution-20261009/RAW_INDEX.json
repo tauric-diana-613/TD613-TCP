@@ -1,0 +1,118 @@
+{
+  "schema": "td613.loom.execution-raw-index/v0.1",
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "premeasurement_commit": "40552dcd9db94951efe93a7818b9f10819b734b5",
+  "records": [
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/raw/E-attempt-001/completion.json",
+      "bytes": 819,
+      "sha256": "b6eba2de02fd23e94153e83f3b4bde25456d19064eef883f0f6cc22fc0819a51",
+      "remote_retention": "GIT_BLOB"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/raw/E-attempt-001/request.json",
+      "bytes": 616,
+      "sha256": "bc51f36c1ef41ef2c0b22531246dfc5439d8172159784cabfc3c1d3934066e9b",
+      "remote_retention": "GIT_BLOB"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/raw/E-attempt-001/responses.jsonl",
+      "bytes": 633264,
+      "sha256": "273c0aaf4a190d992c750059da130392a19e732bc9e9cdecd8caaabaa756be62",
+      "remote_retention": "EXACT_BYTES_IN_GZIP"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/raw/E-attempt-001/responses.jsonl.gz",
+      "bytes": 12119,
+      "sha256": "6e86c98691634435c9222133d6766639ffc973964d7e37502e6ae0198c7bbfc8",
+      "remote_retention": "GIT_BLOB"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/raw/PROCESS_RECEIPTS.json",
+      "bytes": 617,
+      "sha256": "8e188f55e5ec9ffc87056b8107c3af0860525051ded6cd2d5d51a5528bcac497",
+      "remote_retention": "GIT_BLOB"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/raw/artifact-attempt-001/adapter-inputs.json",
+      "bytes": 14507,
+      "sha256": "95855c1f4057d172d8251fbd0951707f128b8a0f59cd61c8792c553fc0703e54",
+      "remote_retention": "GIT_BLOB"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/raw/artifact-attempt-001/adapter-results.json",
+      "bytes": 8079,
+      "sha256": "659f012639fa3a503487c2dec30cae009bb42068d2fbd8afa855d70a092c6832",
+      "remote_retention": "GIT_BLOB"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/raw/artifact-attempt-001/clerk-input.json",
+      "bytes": 7666,
+      "sha256": "91a2eeba57efc0290fdb0dad1032bc94a55ad57b656f2d895135d8b02c0f38f3",
+      "remote_retention": "GIT_BLOB"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/raw/artifact-attempt-001/clerk-result.json",
+      "bytes": 9824,
+      "sha256": "41a71e3aa7a7436727c2862d17af4f57ebaaef2c4a7352d9bfbaa771c25a6f0b",
+      "remote_retention": "GIT_BLOB"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/raw/artifact-attempt-001/completion.json",
+      "bytes": 728,
+      "sha256": "89e3fdca1f279ebb6e72f4349b8a793ed1cc3b6c5c527221525136d617adbe23",
+      "remote_retention": "GIT_BLOB"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/raw/artifact-attempt-001/request.json",
+      "bytes": 430,
+      "sha256": "40f55a693c49eeedbff7f666cb7045ebee53914dc8c67b90db52fbc15ddf22c8",
+      "remote_retention": "GIT_BLOB"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/raw/artifact-audit.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "remote_retention": "GIT_BLOB"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/raw/artifact-audit.stdout",
+      "bytes": 243,
+      "sha256": "953044ac46cab12988f2d61d62a3bc38ec8b1ef72cbe50bc39f71ca7936051c8",
+      "remote_retention": "GIT_BLOB"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/raw/conventional-baseline.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "remote_retention": "GIT_BLOB"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/raw/conventional-baseline.stdout",
+      "bytes": 210,
+      "sha256": "c471331cf9bb9e88d4b1a27ac09f11847ef1a4f181a76abe04db72688d2ca726",
+      "remote_retention": "GIT_BLOB"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/raw/private-scoring.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "remote_retention": "GIT_BLOB"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/raw/private-scoring.stdout",
+      "bytes": 809,
+      "sha256": "f105dca60200d92dd27b9e7d5651ccf144321542dda62cab5ff9f4a93778ceb6",
+      "remote_retention": "GIT_BLOB"
+    }
+  ],
+  "compressed_record": {
+    "path": "research/portable-loom-dollhouse-execution-20261009/raw/E-attempt-001/responses.jsonl.gz",
+    "compression": "gzip",
+    "decompressed_path": "research/portable-loom-dollhouse-execution-20261009/raw/E-attempt-001/responses.jsonl",
+    "decompressed_bytes": 633264,
+    "decompressed_sha256": "273c0aaf4a190d992c750059da130392a19e732bc9e9cdecd8caaabaa756be62",
+    "exact_round_trip_verified": true
+  },
+  "origin": "Actual current-process deterministic output; not a model/provider response and not an independent external witness."
+}
