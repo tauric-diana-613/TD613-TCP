@@ -1,0 +1,1755 @@
+{
+  "schema": "td613.loom.prospective-execution-binding/v0.1",
+  "status": "AUTHORIZED_LOCAL_STRUCTURAL_TRACK_ONLY",
+  "created_at": "2026-10-09T01:28:21.760478+00:00",
+  "protocol_commit": "fb2c16a2fa41edd9a1b2c8567dd951fca839d803",
+  "artifact_source_commit": "2091c426a1cbba2ff1a7a06019c0693ddc5be398",
+  "runner_source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+  "runtime_parent_commit": "fb2c16a2fa41edd9a1b2c8567dd951fca839d803",
+  "operator_authorization": {
+    "source": "ACTIVE_INTERACTIVE_CHAT_INSTRUCTION",
+    "verbatim": "let\u2019s do it then \u27d0",
+    "additional_steering": "you stalled in the middle of asking me a question \u27d0",
+    "scope": "Begin testing the pinned artifact; local execution continues. No detached delegation or deployment."
+  },
+  "financial_budget": {
+    "additional_api_spend_usd": 0,
+    "basis": "NO_PAID_API_CALLS_THIS_LOCAL_TRACK; no paid-call authority inferred"
+  },
+  "execution_tracks": {
+    "LOCAL_ENFORCER": "BOUND_L01_THROUGH_L12_SINGLE_ATTEMPT",
+    "ARTIFACT_INTEGRITY": "BOUND_F01_THROUGH_F04",
+    "BOUNDED_ORCHESTRATOR_MECHANISM": "BOUND_STRUCTURAL_CONTROLS",
+    "ACTUAL_RECEIVER_INSTRUCTION_ADHERENCE": "HELD_MODEL_AND_CONFIGURATION_UNBOUND",
+    "ORCHESTRATION_COMPARISON": "HELD_FIXED_AUDIT_INPUTS_MODEL_ROLE_PROMPTS_AND_BUDGET_UNBOUND"
+  },
+  "raw_capture_path": "research/portable-loom-local-battery-20261009/raw/attempt-001",
+  "frozen_members": [
+    {
+      "path": "app/dome-world/holonomy-loom/ai-evidence-diagnostic.js",
+      "bytes": 3227,
+      "sha256": "8af80c9cf06b1bc26c5fd17155f5acf079346a50dd40215c4b752aea73981ba0"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/ai-evidence-review.js",
+      "bytes": 9397,
+      "sha256": "a81da64ec8643c49221c9ae7774fd809796397162be751f2a65151602f1c2a82"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/ai-failure.js",
+      "bytes": 7818,
+      "sha256": "6aca6b4476e13c5687ccdf6829e776ee4d2f77b9907a00f110a5b10332ec0d52"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/ai-handoff-base.js",
+      "bytes": 14211,
+      "sha256": "76b11a2a2a91db536de50d6ae9e80394a41244d30cbf41db27cd452ca7159374"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/ai-handoff.js",
+      "bytes": 23007,
+      "sha256": "f095694ed4f0e20a88654a601a0a68e6cfc8c147688fc6efde3604d57c4b1426"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/ai-intake.js",
+      "bytes": 11188,
+      "sha256": "beaeb697e30d82bde292bb1aa68059992200177381017610223209cd8b398420"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/ai-project-checks.js",
+      "bytes": 8210,
+      "sha256": "d4afcebb80be52ab803ed81c254b5a653629ddcc2c5af851ca5c76e911a6628e"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/ai-projects.js",
+      "bytes": 25070,
+      "sha256": "ffac5c3e9e352845b63ac564071314710c5342eaff0dab3ee887f82c60110964"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/ai-request-field.js",
+      "bytes": 5684,
+      "sha256": "3eaf349d4568a5b3650f99dd4df7b683f613a365c4b411ac8c80c7474ff0e610"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/ai-result-view.js",
+      "bytes": 13312,
+      "sha256": "2876df93f431b46f96eed1eea38f4888ef3f84fdc3ac7f915c1e98200f2e9318"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/ai-workspace.js",
+      "bytes": 92700,
+      "sha256": "f15eff16a28ee70a6e3995b304b029d641c4ed8e0385e358ed3c7500407d5928"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/animation-coordinator.js",
+      "bytes": 12781,
+      "sha256": "e4362afc25048364b0eb1b96a9fe2063b0a780d17f8d3d6f1a41c7f49ca64fe9"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/demo-contract.js",
+      "bytes": 32423,
+      "sha256": "a6c968aa98b06a8cbeab0de8424ec46c3638ec59c60761fe1d7f23d55603a217"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/dome-art-lattice.js",
+      "bytes": 3475,
+      "sha256": "33957e2e10f3ff90526bef8609d0db1d81a8b701696869424bf2803f186cde82"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/engine.js",
+      "bytes": 12370,
+      "sha256": "4849d840707e678e97aa715be684cf29384dca4c794339eb2cf54265ec90774d"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/first-crossing-practice.js",
+      "bytes": 6246,
+      "sha256": "4beba85cd7c154d574c597c6d8cebb12a636014b3a5867a8eb2491d494b5fb05"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/flowcore-aia-motion.js",
+      "bytes": 8745,
+      "sha256": "40061f09ad27acea3955e28d7b5efe58b28324f6be845f5453c4da55f4f2e4c2"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/flowcore-choreography.js",
+      "bytes": 8724,
+      "sha256": "70f1fe42eb1318d23426cc47ccc66450ba40ed729d1e77c73fb2cae163c36b01"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/instrument-advisory.js",
+      "bytes": 4617,
+      "sha256": "0f879598308b7245c07b066b9aee83bc15a62b785d9050466afb75d0f220ac74"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/instrument-lab-page.js",
+      "bytes": 316,
+      "sha256": "20864402b9c4f6505925aa1a0db3006e91a881087c5f583ee4a15626bb668460"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/instrument-lab.js",
+      "bytes": 18414,
+      "sha256": "e3f76106d05ce7757eb05b79fd18a5ed9309e87904b9456cc3acbdff35bf1a74"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/instrument-state-view.js",
+      "bytes": 63900,
+      "sha256": "bbfb6787c9696608d68ffb173d947f15eb7c3ad90cf3b5dc942ffd17e24e6cd2"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/living-geometry.js",
+      "bytes": 14246,
+      "sha256": "58285fab43035fda6a6f2048c01eb43c54dbebc2527a62aaee6bd4fce7dd53a9"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/living-room-state.js",
+      "bytes": 11137,
+      "sha256": "990dfd4f56e20597623b3304deea08e710bf636eca0618a195eeb1258bcbcc64"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/living-room.js",
+      "bytes": 15352,
+      "sha256": "f7eeabd0c0126b035196240e1432f44c7c30b4d5afad01d9b2fab75a63a9f4c3"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/observer-cases.js",
+      "bytes": 3497,
+      "sha256": "f4f9da2d8c6c508f7cfb648f81ce775b2c79c5b8f9ab742292adbf820d1e9ef2"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/observer-chamber.js",
+      "bytes": 8893,
+      "sha256": "9d395ad5e7a42488719038b207016dfb408441c79145272992c514b4076407e8"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/observer-channel.js",
+      "bytes": 8134,
+      "sha256": "c67e7e0b5e2a0f3373800abfd00aacf9f72c02905cddd4b6661ba70955a50036"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/portable-workbench.js",
+      "bytes": 20837,
+      "sha256": "c25e69e98499c91d00669036645f47b470670987765ea659e2bf2b711f041687"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/privacy-lesson.js",
+      "bytes": 6141,
+      "sha256": "86c5212cecf0a44844e52947c4ce555f4038733031783ef5e8fa8036d813de67"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/reentry-workspace.js",
+      "bytes": 40784,
+      "sha256": "c346577e8e57902d10e717a9c2409df362508fc74a4a704b937d02d83e78c821"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/retention-claim-review.js",
+      "bytes": 5889,
+      "sha256": "4ce2ae523f9dd49f9883e7ce12055985499e3aea6ae0b6fc40e200af467ae66b"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/returned-session-review.js",
+      "bytes": 17869,
+      "sha256": "9a19547f7d9171eacc35b764cd9b1f26f2ea0cf68edff37d77d5b3059ab7e05d"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/runtime-state-view.js",
+      "bytes": 8658,
+      "sha256": "adcdd1f6339ac8ebb2d39254f0f7b47e979a9a7bd05958ada55cece160d05363"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/semantic-field.js",
+      "bytes": 19533,
+      "sha256": "71ab199acf652eab2b4c5eb46a487fbd4089afa7100d26d40fde9cae188443c4"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/theater-geometry.js",
+      "bytes": 2448,
+      "sha256": "eea0c202e40c4b38075c97fbab0ea9e7ed53f4c48ecdeb37a951e6eaa3335a87"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/theater.js",
+      "bytes": 21304,
+      "sha256": "2ab1abdbea00a4e41c0678992ffef9a9041e00c5c2287d38648f7550b06476af"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/tutorial-membrane.js",
+      "bytes": 1528,
+      "sha256": "894674933117e2270a01c6b0911d0e64a3cdbfb5cedcdbd38a1e457112b198ce"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/vendor-claim-review.js",
+      "bytes": 2775,
+      "sha256": "836016931c4c1c86bd04e0748b7ca8de16b2db51ac26c3c1bb46051d890bd017"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/workspace-template.js",
+      "bytes": 20696,
+      "sha256": "09636ae29f1b1692284eb1bae2c8b40ead504046c2a825821565ad9119c6257a"
+    },
+    {
+      "path": "app/engine/aia-cistern-law.js",
+      "bytes": 5991,
+      "sha256": "27e0b08ce96da12ea0b7d894fbdbaf7a3e59bbf8ad78f2797d0eaaa6d74d434c"
+    },
+    {
+      "path": "app/engine/aperture-approval-transparency.js",
+      "bytes": 6456,
+      "sha256": "e24f10cd91784f0836e7d81129f61d6f3119e034d38e8318fbf6758fc397aa87"
+    },
+    {
+      "path": "app/engine/aperture-composition-common.js",
+      "bytes": 4723,
+      "sha256": "9c5380c61801a44b58c00c6553cb6d99bb0ff1a122785d58dc7feba62ff63691"
+    },
+    {
+      "path": "app/engine/aperture-composition-constitution.js",
+      "bytes": 253,
+      "sha256": "86687261250013bcd2cebf5e0d171d226155ba80176e9a301e24669939569c71"
+    },
+    {
+      "path": "app/engine/aperture-composition-frame.js",
+      "bytes": 1669,
+      "sha256": "c261c50748be90c56c0e3ab3d7775513744ac6d25700497f9c93e7714b21a672"
+    },
+    {
+      "path": "app/engine/aperture-composition-inspect.js",
+      "bytes": 7989,
+      "sha256": "3399c54ecf6b536ffb28254ab56c7899e8aaa8893d3155355d1fb51099062c8f"
+    },
+    {
+      "path": "app/engine/aperture-composition-plan.js",
+      "bytes": 3163,
+      "sha256": "0fc0aa3f738b297a4dc4d5487fc6ee5e7a09a4c9273b4ae268f5d90a34e21844"
+    },
+    {
+      "path": "app/engine/aperture-composition-projection.js",
+      "bytes": 3027,
+      "sha256": "22970568f94396819bc1088e6f69b86f2c58dadb8ed51e19bef38e4ceef73a95"
+    },
+    {
+      "path": "app/engine/aperture-composition-receipt.js",
+      "bytes": 842,
+      "sha256": "bab71be851bfea613c6b15b13a589f3ab1cd9248846dd5437d28f88b7544829a"
+    },
+    {
+      "path": "app/engine/aperture-composition-record.js",
+      "bytes": 3767,
+      "sha256": "409a90bcc38d2655bd98fc4ba5a0869882e0576d035ec4b6cea580e87b6d6bb5"
+    },
+    {
+      "path": "app/engine/aperture-composition-replay.js",
+      "bytes": 2352,
+      "sha256": "a5a30790cb7b10cc704c016c8bc5acd46c34c618a4728c269bb44cbfb63649f7"
+    },
+    {
+      "path": "app/engine/aperture-composition.js",
+      "bytes": 13691,
+      "sha256": "abb5a2ee1e30244eeb09d1e6083743671392d70694fe483e6007a0ced53ea5e1"
+    },
+    {
+      "path": "app/engine/aperture-v3-reciprocal-bridge.js",
+      "bytes": 19886,
+      "sha256": "fb69905b846d5e751fe9c652a12a8c5b7aac515c73530d20d1f1deb54329d229"
+    },
+    {
+      "path": "app/engine/aperture-v3-relation-audit.js",
+      "bytes": 49,
+      "sha256": "ba121aacad019fce3eba43dd344eab3dea41bf2f6aa36f075d11e9653bd9e7ce"
+    },
+    {
+      "path": "app/engine/aperture-v3-task-intent.js",
+      "bytes": 6069,
+      "sha256": "938cc4392d83ff3f991b30ad0b68ca9ce6d4d1afce7430fc219875b8a7fe4662"
+    },
+    {
+      "path": "app/engine/aperture-v31-compatibility.js",
+      "bytes": 6632,
+      "sha256": "45e6179bda53e4d0f57065682894172d4bbb32f301602e5daf84c361adf8ce28"
+    },
+    {
+      "path": "app/engine/aperture-v31-controlled-source.js",
+      "bytes": 2079,
+      "sha256": "5806b3744ff02da93d6a4dc6c4c106e45a7cbd7e678b83cd03db3b82eb1ba816"
+    },
+    {
+      "path": "app/engine/aperture-v31-core.js",
+      "bytes": 2210,
+      "sha256": "66d2f574258edc5dc5b054e6f8ff7986ac18b3e6725dbda23a8cde0f2a085c3b"
+    },
+    {
+      "path": "app/engine/aperture-v31-experiment-contract.js",
+      "bytes": 7869,
+      "sha256": "ee19c39d4181dd7d3d110c866ad28c92675accefcc4ea53552ad6e2d0975a092"
+    },
+    {
+      "path": "app/engine/aperture-v31-instrument-ensemble.js",
+      "bytes": 2744,
+      "sha256": "b436149c8864ada4f0d81f25afaafb648ad9c7dd4528c41f02e21eab0ae1ca1a"
+    },
+    {
+      "path": "app/engine/aperture-v31-phason-susceptibility.js",
+      "bytes": 2168,
+      "sha256": "b4262da7af209ec399295d1dfd1a91731972359419feaeabce6240df9e21f975"
+    },
+    {
+      "path": "app/engine/aperture-v31-reconstruction.js",
+      "bytes": 5006,
+      "sha256": "4250b557ebc9262470b8692e398e081c8ee21258f06387496b78af294f9ce973"
+    },
+    {
+      "path": "app/engine/aperture-v31-reference-layer.js",
+      "bytes": 1679,
+      "sha256": "dcaed07f533594060f6814a7d91f598febcc5c20d9ed53d1c336dfe8323296f5"
+    },
+    {
+      "path": "app/engine/aperture-v31-registry-dynamics.js",
+      "bytes": 2322,
+      "sha256": "905ef4f8e8b4901944145a3857907968e938b3922262d4e837fe23dda21c87d0"
+    },
+    {
+      "path": "app/engine/aperture-v31-replay.js",
+      "bytes": 2757,
+      "sha256": "ab0e88e4cb8892fbf9d2f1a8453a91e89e16ab687cceeca9c987519edd8a8d94"
+    },
+    {
+      "path": "app/engine/aperture-v31-residual-ledger.js",
+      "bytes": 2139,
+      "sha256": "223615f21b26d7e62a94ce9e03d37bd4ee184b3d4086e9bc50d5b731956d699f"
+    },
+    {
+      "path": "app/engine/aperture-v31-shared-layer.js",
+      "bytes": 1996,
+      "sha256": "824e6efbb092d80583e6e8a146735952694f8ffcd129e426b9600d44293b5123"
+    },
+    {
+      "path": "app/engine/aperture-v31-snapshot-lattice.js",
+      "bytes": 5828,
+      "sha256": "9d2d1c75283c6f7353b2e0359043d32d22b0a308ee86cd3ead9c2156c955978a"
+    },
+    {
+      "path": "app/engine/aperture-v31-temporal-tomography.js",
+      "bytes": 1881,
+      "sha256": "7d65f1e105a46281aca871982667aa4951964b4e49dc64a88f98570c5f622682"
+    },
+    {
+      "path": "app/engine/aperture-v32-typed-epistemic-deficit.js",
+      "bytes": 7296,
+      "sha256": "89bdc0e9f12ce6cba72cfcd2c6548da0a0040aca35d1f8b4afe37dd17b63f017"
+    },
+    {
+      "path": "app/engine/ash-constitutional-convergence.js",
+      "bytes": 16126,
+      "sha256": "dea1e839b2d5423c1dcbce7ecacf42261b34255f92074b1fd83b880ea2990f91"
+    },
+    {
+      "path": "app/engine/ash-custodian-return-closure.js",
+      "bytes": 15033,
+      "sha256": "6311d56cc45b6fd5554076004c1142ce10c05fb2e2e6b8800dab24b71aa96f0f"
+    },
+    {
+      "path": "app/engine/ash-custodian-return.js",
+      "bytes": 7250,
+      "sha256": "5451958cad30b4583f5017202ecf4ddbb5bad818cb8056ee63f063fbbb2dce5e"
+    },
+    {
+      "path": "app/engine/ash-destination-handoff-accounting.js",
+      "bytes": 9512,
+      "sha256": "ca479f861f58e9aa522803d8f57a6197395c8684e762d791b2ee65a765268e61"
+    },
+    {
+      "path": "app/engine/ash-destination-handoff-core.js",
+      "bytes": 15474,
+      "sha256": "95a430ccee00d547eafd24136a9c26781aa55e0a250c1271f8f8e9d958f69b83"
+    },
+    {
+      "path": "app/engine/ash-destination-handoff-delivery.js",
+      "bytes": 11032,
+      "sha256": "81134102a1639b0379ee0857e03273dc1cf7fe326929abcb25107427d885babc"
+    },
+    {
+      "path": "app/engine/ash-destination-handoff.js",
+      "bytes": 163,
+      "sha256": "6c76cad4ac95932a9b4baf5208c718a2090056c3ac8ad4d30731bcc0d079843c"
+    },
+    {
+      "path": "app/engine/ash-keep-benign-controls.js",
+      "bytes": 23127,
+      "sha256": "35f9f17f2cc57cd1ddd08ab02ae317b2d9d09fb8fcd8b6f3329e7be9cb5437ab"
+    },
+    {
+      "path": "app/engine/ash-keep-choir-calibration-binding.js",
+      "bytes": 4041,
+      "sha256": "7277d8b69bc2952b60353b2a9c4d9e6ed2425ba58720e2734ec520df358c4609"
+    },
+    {
+      "path": "app/engine/ash-keep-choir-calibration-inspect.js",
+      "bytes": 8163,
+      "sha256": "af2a5ae0baf9194a0390c214d1f18399619ae8665b65166e3ea47ea3bf808e58"
+    },
+    {
+      "path": "app/engine/ash-keep-choir-calibration-replay.js",
+      "bytes": 3825,
+      "sha256": "8c189be18e48bb4696d76bad71ad05ae17cc5eef00b912aa589d19a2496338af"
+    },
+    {
+      "path": "app/engine/ash-keep-choir-calibration.js",
+      "bytes": 1102,
+      "sha256": "9d8b4bca5d5db89cba0c8441c0a45ab3b2dafc4cf939658ee557d4bce6713c84"
+    },
+    {
+      "path": "app/engine/ash-keep-continuity.js",
+      "bytes": 9497,
+      "sha256": "61d08cc94e495e284417e721a5001e6e7efb1fbf32b602525a4d437923256aa8"
+    },
+    {
+      "path": "app/engine/ash-keep-core.js",
+      "bytes": 22246,
+      "sha256": "2b91c912e12922bb2e2247987c0cda23db0958a474bdeac20c55d96dd12c2d3b"
+    },
+    {
+      "path": "app/engine/ash-keep-drafts.js",
+      "bytes": 9116,
+      "sha256": "f3a7d20293badd366358ddf659b6ca86cd15795182fdcbed1a3f97edf6c0471d"
+    },
+    {
+      "path": "app/engine/ash-keep-higher-order-interference.js",
+      "bytes": 10948,
+      "sha256": "e5b3a1857fe3867cc351d03d39a63d0850f552c58a852603aeca5d750b3fa1f2"
+    },
+    {
+      "path": "app/engine/ash-keep-independent-provenance-adapters.js",
+      "bytes": 19893,
+      "sha256": "6c08970ad51453e57b02f74829efddb7a64f7c50e6ad17bcefdb9d0126aba7e0"
+    },
+    {
+      "path": "app/engine/ash-keep-moire.js",
+      "bytes": 20831,
+      "sha256": "f3ce76fb00d63ead99f8f9a6e2f358638b21fbac83c685148e6d24c63c6b8b35"
+    },
+    {
+      "path": "app/engine/ash-keep-ordered-route-sequence.js",
+      "bytes": 15495,
+      "sha256": "68fce0a281ded512b7b3be9eefa92b0f0d11f121dd96dbcce884d1a44c833f44"
+    },
+    {
+      "path": "app/engine/ash-keep-provider.js",
+      "bytes": 5084,
+      "sha256": "4d15e016362b3e68d8094d85b5e1f9193e74ceb07b0a7a9f018ac23e695d9260"
+    },
+    {
+      "path": "app/engine/ash-keep-reader-adapters.js",
+      "bytes": 16489,
+      "sha256": "e4009ac0a13011d1fa9947ccb0c30cae3b15c1209daf261703d340e97847ea1a"
+    },
+    {
+      "path": "app/engine/ash-keep-reader-disagreement.js",
+      "bytes": 19311,
+      "sha256": "804c3f8c2c1068bf9e5f0b8e4eba5acd314d2f48d2bb0d773a163e426781f173"
+    },
+    {
+      "path": "app/engine/ash-keep-temporal-disclosure.js",
+      "bytes": 19609,
+      "sha256": "18b1bebf0d97dbdd3de4f861470e0c627b4273da22d7280e84b33e4cf01969d9"
+    },
+    {
+      "path": "app/engine/ash-lifecycle.js",
+      "bytes": 13135,
+      "sha256": "df2891db64d449d8c5ed65751b5bd81688647af87814610071ccf1f2c8792287"
+    },
+    {
+      "path": "app/engine/ash-live-aia.js",
+      "bytes": 17621,
+      "sha256": "16c85a6f41799de2d6d63a249b023750f150f86a8e00b759256b2e9e24ccf8ec"
+    },
+    {
+      "path": "app/engine/ash-pedagogue-adapter.js",
+      "bytes": 23236,
+      "sha256": "4ae10724b62c669fc0e683621580b365d0525b5cd3f2b24124dccc9380255c76"
+    },
+    {
+      "path": "app/engine/ash-safe-harbor-ingress-loader.js",
+      "bytes": 128,
+      "sha256": "362642f6a6488b748c859a752f2eb27fd2330eb651442d6bf3cba1bb61664b1a"
+    },
+    {
+      "path": "app/engine/ash-safe-harbor-ingress.js",
+      "bytes": 12687,
+      "sha256": "e896294d0e5d34a20049dd974b88b0c5b8818ce46f7a71c183aa3acf03428cbc"
+    },
+    {
+      "path": "app/engine/au-forged-ontology.js",
+      "bytes": 351999,
+      "sha256": "04485ab82a6158533d7213203c823b89d4ff4edf20f43418dabe05c4ab98a99f"
+    },
+    {
+      "path": "app/engine/badges.js",
+      "bytes": 480,
+      "sha256": "e045b11cc567ecd2024006700ae47dcc7c93386c8a8a2edc3ecf09e849d72a63"
+    },
+    {
+      "path": "app/engine/calibration.js",
+      "bytes": 11350,
+      "sha256": "ae39b0fde6a129809d75c1712a570f47f80bf76f1fa1d8a5158f7269ca26f6ad"
+    },
+    {
+      "path": "app/engine/claim-ladder.js",
+      "bytes": 13179,
+      "sha256": "dc2e3d36311b969dc82a788c05200b9f68b12b9a074ec0f9198d526d4b6253ed"
+    },
+    {
+      "path": "app/engine/context-profile.js",
+      "bytes": 13676,
+      "sha256": "b7b65d57a6f82da4195e1863d877274ae62051e744646673144ea19b1be27202"
+    },
+    {
+      "path": "app/engine/corpus-hydration.js",
+      "bytes": 1854,
+      "sha256": "3e8522b897e75aecbf18866647b8bd0631de7cbb3c5b878bb9a5cdcc992a9dc4"
+    },
+    {
+      "path": "app/engine/dollhouse-agent-registry.js",
+      "bytes": 3731,
+      "sha256": "90959d3eed8884e6f0905a09b53e07bd285c6ac305800cbd0bf7544ff92f5ab5"
+    },
+    {
+      "path": "app/engine/dollhouse-atlas-fadt.js",
+      "bytes": 12780,
+      "sha256": "3e4a4546c2e2aecfdbc24121019c82a59653320aa86baac9e3bf2b872f2af9ac"
+    },
+    {
+      "path": "app/engine/dollhouse-bounded-orchestrator.js",
+      "bytes": 3448,
+      "sha256": "2307d587fc5034ab59e97ad327caa13aace071b65685e5a671d7e40075345813"
+    },
+    {
+      "path": "app/engine/dollhouse-case-dossier.js",
+      "bytes": 5364,
+      "sha256": "fd6140e1a7eb09c6378355d009d8108111a20af359c15c49d0d1af7efee0c800"
+    },
+    {
+      "path": "app/engine/dollhouse-claim-ceilings.js",
+      "bytes": 11821,
+      "sha256": "1cb975d383a4bb7378241d9de7152cf65dca85aa21c1f18c7fe3bf6a34af90cf"
+    },
+    {
+      "path": "app/engine/dollhouse-claim-lift-runtime.js",
+      "bytes": 33320,
+      "sha256": "01741efdf4f014d6fb573fcd04cde00d63fd02118c92e96b87a39b653aeb2d97"
+    },
+    {
+      "path": "app/engine/dollhouse-closure-auditor.js",
+      "bytes": 9088,
+      "sha256": "5e4a64ccbfd0d7aa73e7de7bf7f20960063967557a40658a7e9e186792a04a03"
+    },
+    {
+      "path": "app/engine/dollhouse-continuity-audit.js",
+      "bytes": 13529,
+      "sha256": "6df6acb691288a0ab2190ef0d75ba45de8906dc789fcc7861a356a7633d7479f"
+    },
+    {
+      "path": "app/engine/dollhouse-portable-aia-roundtrip.js",
+      "bytes": 12619,
+      "sha256": "f23858793844c9d225d810c7ab3cda06cce16ab75544fbb807fa4c75db2f2218"
+    },
+    {
+      "path": "app/engine/dollhouse-temporal-custodian.js",
+      "bytes": 12501,
+      "sha256": "7eefdaf46d8bfc2374f6e52b80b26534cb3f5738c4faa6442f5883436d30c205"
+    },
+    {
+      "path": "app/engine/dollhouse-witness-plan.js",
+      "bytes": 12506,
+      "sha256": "4596ebaff79be34c00340fb460642243e22b12c2cf1ab80a53954a6e6cf893f1"
+    },
+    {
+      "path": "app/engine/escape-controller.js",
+      "bytes": 14839,
+      "sha256": "e120c9a44a43071551d22a3fe110e8429708d41284adb93decb14a25bc5a81d0"
+    },
+    {
+      "path": "app/engine/escape-vector.js",
+      "bytes": 24336,
+      "sha256": "33e9c3091dc9aeaeb3dffead1fa298810a3d45c3bfd2cc3d00dadb3e4609647b"
+    },
+    {
+      "path": "app/engine/fixture-runner.js",
+      "bytes": 11602,
+      "sha256": "9438c5721f48fa8bf16986b293b2e0291883fba147c7f290ef4510dfefcd54a7"
+    },
+    {
+      "path": "app/engine/flowcore-aia-surface-binding.js",
+      "bytes": 11535,
+      "sha256": "51da898a5b06270cfe3a2c090523905216f286fab6af8316901d0df853d5543e"
+    },
+    {
+      "path": "app/engine/flowcore-context-series.js",
+      "bytes": 5562,
+      "sha256": "92dbabb236751de4b8aab2cb40cecf764b0751a1065e6f3bbcc08c195ad8665d"
+    },
+    {
+      "path": "app/engine/flowcore-empirical-validation.js",
+      "bytes": 18164,
+      "sha256": "c324ac5ab1cd42496e0314b9f9c7faaf119d4e9fcb06d34f88d4b690c28ac725"
+    },
+    {
+      "path": "app/engine/flowcore-observation-aperture.js",
+      "bytes": 5963,
+      "sha256": "8745ba3c912b52dd5374ae7c467370f92ed8581a7afd9b0ddebe0f5794a922de"
+    },
+    {
+      "path": "app/engine/flowcore-pedagogue-aia.js",
+      "bytes": 12593,
+      "sha256": "d9a740bdab07558580e42f66d0d5fd9092de06d4e25ab542544ea2f84e79d89b"
+    },
+    {
+      "path": "app/engine/flowcore-pedagogue-core.js",
+      "bytes": 3066,
+      "sha256": "dcd04f6661e75fc9bd3c0ac5dde17624985a8d44709995884014459513cd038f"
+    },
+    {
+      "path": "app/engine/flowcore-pedagogue-cycle.js",
+      "bytes": 10317,
+      "sha256": "af9a0a00771fe1ab6c137b89727e20e7121f1b819988f6f57dfda98877f3e51d"
+    },
+    {
+      "path": "app/engine/flowcore-pedagogue-law.js",
+      "bytes": 2137,
+      "sha256": "3993fe76254aa18ba7c2f9b2bee499b84a4b169daf5e7c096b26e610f9a10de9"
+    },
+    {
+      "path": "app/engine/flowcore-pedagogue-receipt.js",
+      "bytes": 4056,
+      "sha256": "226fc844483257723f6e05588e8bb479369f3f3dd32e1481cda9a96f2b9c93ca"
+    },
+    {
+      "path": "app/engine/flowcore-pedagogue-route-memory.js",
+      "bytes": 6874,
+      "sha256": "d03edb1b2e58f98335337ea040a6544d480f1251b39b7f940bc05bb0db379956"
+    },
+    {
+      "path": "app/engine/flowcore-pedagogue-utils.js",
+      "bytes": 5274,
+      "sha256": "ccca358e72867a55cfff31402067dcd8eb16eb433fb6d5d462d911842e8bb571"
+    },
+    {
+      "path": "app/engine/flowcore-pedagogue-validators.js",
+      "bytes": 3835,
+      "sha256": "b071f5a9c46780d767133810203ed6a736da40564af6c6d2430687131cf7ae6a"
+    },
+    {
+      "path": "app/engine/flowcore-physical-scene.js",
+      "bytes": 19081,
+      "sha256": "5993443fe36f4a431a4b2d4b04faf6ffe37419db448d77fdf9833fc8ae416967"
+    },
+    {
+      "path": "app/engine/flowcore-production-promotion.js",
+      "bytes": 11593,
+      "sha256": "327c956a82b29deddf32a01c0dea84f80b17eed2bc4bf8a8f4617cb88a07ba67"
+    },
+    {
+      "path": "app/engine/flowcore-route-burden.js",
+      "bytes": 16230,
+      "sha256": "21a20396a5eec60dc91a62e8ec9db0c26fb64d8dc338a1386a40562ce6ae4662"
+    },
+    {
+      "path": "app/engine/flowcore-semantic-motion-bridge.js",
+      "bytes": 81740,
+      "sha256": "5dd5b3c1877eaf337744686ef776fcdbee9c6635029c1b7a5a778cba9d748997"
+    },
+    {
+      "path": "app/engine/flowcore-station-propagation.js",
+      "bytes": 19677,
+      "sha256": "55ef7c41205e06c68801b199fa4c7033a0a9123e8061a5abbd1b8a285df7ca9d"
+    },
+    {
+      "path": "app/engine/formulas.js",
+      "bytes": 9185,
+      "sha256": "dc6747839e9a750a5378e426c646758a39904389f157b7875223c596d99b24b5"
+    },
+    {
+      "path": "app/engine/generator-v2.js",
+      "bytes": 376964,
+      "sha256": "26020dae504c6bd46a5ba8b25ed63fc4293b397ad6f9bb3dded0236a0078e732"
+    },
+    {
+      "path": "app/engine/governed-event-chain.js",
+      "bytes": 20422,
+      "sha256": "47509aff9443ead263322998dff1c56ffd038cd84500e6203ef168f9ae8ffc4c"
+    },
+    {
+      "path": "app/engine/harbor.js",
+      "bytes": 9496,
+      "sha256": "71c4861b60d2b5cee54e6d29cf8583891c10fdb683b0fcfedc4b1a2c5d89ba00"
+    },
+    {
+      "path": "app/engine/hush-anti-flattening.js",
+      "bytes": 2970,
+      "sha256": "c905a04a2971b0155e3b65b5b6fa423687055e7f5640530da3ecbd80b5e906c5"
+    },
+    {
+      "path": "app/engine/hush-anti-slop-audit.js",
+      "bytes": 4393,
+      "sha256": "c199a80f377abf5d9f3baf5aceb63adb15f617866ab56621661b866f94216a93"
+    },
+    {
+      "path": "app/engine/hush-aperture-bridge.js",
+      "bytes": 85,
+      "sha256": "02c331ac34f575c64e029176764eaf1382d1b88624855d0295303853323222db"
+    },
+    {
+      "path": "app/engine/hush-aperture-repair-pass.js",
+      "bytes": 8503,
+      "sha256": "d07f85b00722fdabff8fe9c0605ad0256be4f0667b482b5685976fd332b975d2"
+    },
+    {
+      "path": "app/engine/hush-aperture-route.js",
+      "bytes": 2914,
+      "sha256": "db46a6cffb6f0100a510940a2a2a348c63f76206077ea0d7fc2c1a33a32599ce"
+    },
+    {
+      "path": "app/engine/hush-authorship-protection.js",
+      "bytes": 5023,
+      "sha256": "ead64a5653dd00bfc3d3ebc119ca896b030131bce8152e15e9e8b699d60ebb34"
+    },
+    {
+      "path": "app/engine/hush-candidate-cleanroom.js",
+      "bytes": 8282,
+      "sha256": "ce3dfbb1b27b760b59a7f9ef9370099bc6f24178e80e8772bb60c6e408097f1f"
+    },
+    {
+      "path": "app/engine/hush-case-stability.js",
+      "bytes": 2321,
+      "sha256": "a2084a30c6281ac4c285c3f45fc747ddb2a11361aeed06f0c6c83dc0e9972a06"
+    },
+    {
+      "path": "app/engine/hush-catchphrase-quarantine.js",
+      "bytes": 4547,
+      "sha256": "4a1b353b0a18481716060457494510e86856e2224cb8c5c21ad7a8a0cf47ff02"
+    },
+    {
+      "path": "app/engine/hush-chatspeak-custody.js",
+      "bytes": 2652,
+      "sha256": "d30ef9ea43b6b16de1c0a713399de2cba52495ee87cca845cdc4aa6d76252967"
+    },
+    {
+      "path": "app/engine/hush-claim-integrity.js",
+      "bytes": 4964,
+      "sha256": "d04ca6e96e451e5afcd550b1d7af9a9279c8851e324e174385e7168495b77033"
+    },
+    {
+      "path": "app/engine/hush-claim-roles.js",
+      "bytes": 5920,
+      "sha256": "5ce0893e9fd1d97c6bce39c537965923e86d33057ec547c87586292efe750eb6"
+    },
+    {
+      "path": "app/engine/hush-code-switch-boundary.js",
+      "bytes": 1886,
+      "sha256": "22c62623f28df7ccb4402ecd40ca4173340e0b6c334718108840507633e8fe98"
+    },
+    {
+      "path": "app/engine/hush-coherence.js",
+      "bytes": 3458,
+      "sha256": "cbb60c52b7ce69ade722fc53d3e2925d5fc3e69e43c8a38493391d58b46b239d"
+    },
+    {
+      "path": "app/engine/hush-contract-log-comparator.js",
+      "bytes": 17453,
+      "sha256": "0d9561b6fa1514684a3f0945ebd400f307081cf1f5cc84b95ea900855102a666"
+    },
+    {
+      "path": "app/engine/hush-contract-log-pair-packet.js",
+      "bytes": 14975,
+      "sha256": "e15ee72bcc5b0a6d86af97e7c5bf3b2f2f5e1b5be090ff2b313bb7541ec7b26d"
+    },
+    {
+      "path": "app/engine/hush-contract-log-pair-validator.js",
+      "bytes": 15184,
+      "sha256": "f3dc6ba48d58663bfda731f41e6a2bf9a764b0c4c6cc7f818b3c68c628f8258d"
+    },
+    {
+      "path": "app/engine/hush-contract-sanitizer.js",
+      "bytes": 4726,
+      "sha256": "b1b56ad302d492c26dcbbc602d71a90b2dc5529c854ef8339042d909ac3c4ab5"
+    },
+    {
+      "path": "app/engine/hush-custom-mask.js",
+      "bytes": 30034,
+      "sha256": "32a496b4215ec8b84edd64f951f9565bba907102109da25f76dab13cd75d1453"
+    },
+    {
+      "path": "app/engine/hush-customizer-packet-validator.js",
+      "bytes": 13391,
+      "sha256": "c657d26b074dcee7295f7a17fe89e5fa105f4ce0b0907f462cafc158576f45ac"
+    },
+    {
+      "path": "app/engine/hush-customizer-packet.js",
+      "bytes": 15157,
+      "sha256": "388f8ae82fc488a76ee3fbde3561f01b697cb32e9cb2443fbd52e17207b40475"
+    },
+    {
+      "path": "app/engine/hush-dialect-custody.js",
+      "bytes": 2850,
+      "sha256": "ba62d8c3f143a4bfc78eb1811e35c557a22bee98e8c050690566b71517423995"
+    },
+    {
+      "path": "app/engine/hush-direction.js",
+      "bytes": 2071,
+      "sha256": "0bbf65ffb4f7f52868363f3040534dc87961ffbef40b98d691d27f26be88b0a9"
+    },
+    {
+      "path": "app/engine/hush-docs-memory-check.js",
+      "bytes": 1550,
+      "sha256": "71a3d9c0ad252d9bd109b9ef9896ffc5485c4bffacf54cc027db916fd5a67979"
+    },
+    {
+      "path": "app/engine/hush-event-shape.js",
+      "bytes": 3097,
+      "sha256": "f805b2ee808ddbba4da64c8d5008ae675e555462f3927cbc97186cc51e710a42"
+    },
+    {
+      "path": "app/engine/hush-evidence-cockpit.js",
+      "bytes": 4075,
+      "sha256": "ec3de142e5c4f9638f5cf7814adbf92e6756632fc4c91f809fc8f9c2bb44fdf3"
+    },
+    {
+      "path": "app/engine/hush-export-policy.js",
+      "bytes": 5804,
+      "sha256": "95a2bd3b1c29c63ad9ea4598984a530931032bb68f76a65860e7cbb1b2a76eb5"
+    },
+    {
+      "path": "app/engine/hush-export-receipt-v2.js",
+      "bytes": 3658,
+      "sha256": "c55e0ef55004bcedce7826ad307f0fb193a441b7bd200312c45ec97c8a8b020d"
+    },
+    {
+      "path": "app/engine/hush-expressive-generator.js",
+      "bytes": 5837,
+      "sha256": "de2f94c1bf305f6a8913884ec4f5e2de0088ab9c9afdbec873418d830fe6c2ab"
+    },
+    {
+      "path": "app/engine/hush-expressive-payload.js",
+      "bytes": 6385,
+      "sha256": "6b03461703c286d093d4812de82621a94c2a32f17768b5cc17e95115b51b251d"
+    },
+    {
+      "path": "app/engine/hush-garble-gate.js",
+      "bytes": 2441,
+      "sha256": "7203af37a285d7d632418eea3f6242f828f62df9206823ae5d99110a615ea272"
+    },
+    {
+      "path": "app/engine/hush-generator-provider-phase35.js",
+      "bytes": 29208,
+      "sha256": "564da779adcf0a721d62c903c328ccf75a042b4103a958e4cc279ca837cacffa"
+    },
+    {
+      "path": "app/engine/hush-generator-provider.js",
+      "bytes": 21352,
+      "sha256": "67f7bb1ad9a031c4bbae50157b84b409fdc1084f1cfd3116a1d02d858b4c0b53"
+    },
+    {
+      "path": "app/engine/hush-hard-mask-proof.js",
+      "bytes": 2366,
+      "sha256": "58327ec546b134cf53bf6f4984908d8acf7905a6a1252136b68f8728b1611421"
+    },
+    {
+      "path": "app/engine/hush-human-sample-residue.js",
+      "bytes": 3034,
+      "sha256": "d1e8d08ccc7bce49dd2bfc7d2f572743eb1f98c20e2282905425558e8f9e9339"
+    },
+    {
+      "path": "app/engine/hush-intervention-authority.js",
+      "bytes": 1204,
+      "sha256": "4f592b3dfe2db2f14d473d5a1bfb0b5baa4de02765202c019037ffe2353ece59"
+    },
+    {
+      "path": "app/engine/hush-intervention-common.js",
+      "bytes": 3327,
+      "sha256": "9c1248cbadb6a7493c6808d1bed9e35e5d63df7c319544ec6294985fee1e79e4"
+    },
+    {
+      "path": "app/engine/hush-intervention-ensemble.js",
+      "bytes": 6861,
+      "sha256": "cc9cd64c39f17d317f205f9012bd7fb59ce4387a5edfc6c7d99dce9165ea7fde"
+    },
+    {
+      "path": "app/engine/hush-intervention-findings.js",
+      "bytes": 1408,
+      "sha256": "8cab77ea4beddf0927de5f4cf819af3e7e3b93da951dc18c2f910aa3282e646d"
+    },
+    {
+      "path": "app/engine/hush-intervention-provider.js",
+      "bytes": 2955,
+      "sha256": "5627617a4cbe0f699dd4f4c7c283624dc7ae5771e126e855b3149264e6ad6546"
+    },
+    {
+      "path": "app/engine/hush-intervention-receipt.js",
+      "bytes": 6119,
+      "sha256": "ee0b07e347e9f9533faee82560d0045c85302ec98b390ab88c589cd9d182d3bd"
+    },
+    {
+      "path": "app/engine/hush-intervention-replay.js",
+      "bytes": 1401,
+      "sha256": "c6e1946aec1fe62c419ecf844ad0c9d52e70240af12dd87deb7d2a109effdbf1"
+    },
+    {
+      "path": "app/engine/hush-intervention-state.js",
+      "bytes": 2177,
+      "sha256": "cb6134b8c3441fcb7faefdb3e53ed3a68c84215173b84de24bd222c58ed08379"
+    },
+    {
+      "path": "app/engine/hush-intervention-trials.js",
+      "bytes": 2004,
+      "sha256": "286e67fc11d7c6090200bd0c50836a626b65d94e22f26b3562a646c39b1034b6"
+    },
+    {
+      "path": "app/engine/hush-intervention-vocabulary.js",
+      "bytes": 2033,
+      "sha256": "c63e0091a29681598e361e6e7111b6c3250a421e53558defa3d73d0369bd9505"
+    },
+    {
+      "path": "app/engine/hush-intervention.js",
+      "bytes": 974,
+      "sha256": "d4e0be8abd005fae179db43104deaf9dde99966f42d54d7d2855af7fc3dcfe86"
+    },
+    {
+      "path": "app/engine/hush-literal-placement.js",
+      "bytes": 5479,
+      "sha256": "9cb3d842197e009a2339ce2a3cad58bc97246dbb603f6e3b8652304d471b590a"
+    },
+    {
+      "path": "app/engine/hush-mask-gallery-registry.js",
+      "bytes": 26304,
+      "sha256": "183811161cedbd97ca8088790741b747c191f890c62cd2e4823e6f6fb252d0cd"
+    },
+    {
+      "path": "app/engine/hush-mask-lifecycle.js",
+      "bytes": 3813,
+      "sha256": "7f8b232190708e3d67ef1a54520d7bf8697db40e0a4dcf809dfb2134c0d8b87d"
+    },
+    {
+      "path": "app/engine/hush-mask-registry-audit.js",
+      "bytes": 2100,
+      "sha256": "08b04ec8fb92ad45c7545b2ffc47fba17de93cd33503d0ac4e74f6162f6a532e"
+    },
+    {
+      "path": "app/engine/hush-mask-studio.js",
+      "bytes": 12646,
+      "sha256": "ca4e23c760d4be261a42e2730918e886cc1ac667bc03ee510759e468a097791a"
+    },
+    {
+      "path": "app/engine/hush-mask-stylometric-calibration.js",
+      "bytes": 7532,
+      "sha256": "fad104d3304d08f5af7f3adc59f0c96fe26932178712290a42b159fa7595d7b0"
+    },
+    {
+      "path": "app/engine/hush-mask-surface-flight.js",
+      "bytes": 13693,
+      "sha256": "16e27ff5df0c78aa151c7cba9416d7a232d772f5a6857ed50e7b47b8bcf7e161"
+    },
+    {
+      "path": "app/engine/hush-mask-writer.js",
+      "bytes": 16405,
+      "sha256": "43129dee9b10c985de19a661178e5726520d28f0674bd1cb49edb3b766c6825c"
+    },
+    {
+      "path": "app/engine/hush-meaning-plan.js",
+      "bytes": 6779,
+      "sha256": "bbee549a616396e10c2c75735dc63c6b5e5bebd9e07b006b103c051e48b6d86f"
+    },
+    {
+      "path": "app/engine/hush-narrowing-losses.js",
+      "bytes": 2871,
+      "sha256": "f6c17c620f0729f113c9a5d934f96e3ea78b5b33663083a13efd13c8fa8af7f8"
+    },
+    {
+      "path": "app/engine/hush-naturalness.js",
+      "bytes": 5206,
+      "sha256": "3e50d239c25c6703519f1ddca1d4af5084f83db47e4aee9bdeed8cad0acc4f58"
+    },
+    {
+      "path": "app/engine/hush-ontology-adapter.js",
+      "bytes": 1273,
+      "sha256": "5f9ab2f6a3f0a2e985528bfe15e196f1649651a60f5070db776cdb29368fa772"
+    },
+    {
+      "path": "app/engine/hush-ontology-route.js",
+      "bytes": 5138,
+      "sha256": "af523dd82b0d31177bb3544a2223197361fa245edf4b11c654e7d2131271ee2a"
+    },
+    {
+      "path": "app/engine/hush-outgoing-contract-packet.js",
+      "bytes": 19370,
+      "sha256": "025b931ff83b23d4b79660b69bfb062a3dffde6ecdb46a66f4a1182f5b1499ac"
+    },
+    {
+      "path": "app/engine/hush-outgoing-contract-validator.js",
+      "bytes": 17535,
+      "sha256": "af3b5a87a3c8ba3941f55230d0eeecaef4a5329a4aa71c1bb74535ed2a0212b7"
+    },
+    {
+      "path": "app/engine/hush-packet-router.js",
+      "bytes": 13673,
+      "sha256": "65f0b074238dd247eb65257da04d45debcb177569b235afccf386590e194b37e"
+    },
+    {
+      "path": "app/engine/hush-payload-binding.js",
+      "bytes": 5412,
+      "sha256": "ce74a3990f0890c2d5e47abb2a8996ea986ac9732253b721f59e493a4e83f19d"
+    },
+    {
+      "path": "app/engine/hush-payload-integrity.js",
+      "bytes": 7249,
+      "sha256": "2f0ceb546170ae0f2185cd61f3d6bbe87f721c664c6df0e6885b2363fab3989a"
+    },
+    {
+      "path": "app/engine/hush-payload-map.js",
+      "bytes": 8493,
+      "sha256": "04f824b5c77490d0c9227ef9cda52304facfa01c076cc7172d704ea0a166b080"
+    },
+    {
+      "path": "app/engine/hush-payload-repair.js",
+      "bytes": 5586,
+      "sha256": "964bff78f15e932b2463597e8743d5d6d57a6046b3ed0bbbd70e44c4774e577d"
+    },
+    {
+      "path": "app/engine/hush-per-mask-metric-passport.js",
+      "bytes": 19654,
+      "sha256": "3ed3993be9a051f14e092a3d5c175b2f0ef4b70b777b4474ac95945b32c1dd18"
+    },
+    {
+      "path": "app/engine/hush-per-mask-packet.js",
+      "bytes": 14632,
+      "sha256": "aeb3b08052e2ed2974914d48169e8ab9d1ba2d0275470d4cebc7ed8d0d9e1cb8"
+    },
+    {
+      "path": "app/engine/hush-phase10-release-discipline.js",
+      "bytes": 12487,
+      "sha256": "b84d29e53f6201de48d8c5f79132728dd5bb736e9b3c2cb849712d385a5c410f"
+    },
+    {
+      "path": "app/engine/hush-phase11-action-gates.js",
+      "bytes": 7785,
+      "sha256": "4283826b18eb0f5ec4316e8a7b1047e2732aaf3d10df5d30bb98000feefd5dd8"
+    },
+    {
+      "path": "app/engine/hush-phase11-dashboard-state.js",
+      "bytes": 8489,
+      "sha256": "51f448a1909c09ef9db129f788249ce78a92afce0af9ee68a49025d481971aad"
+    },
+    {
+      "path": "app/engine/hush-phase11-surface-registry.js",
+      "bytes": 6049,
+      "sha256": "7c5ca6d06d916ed6cd1cc34ce067d0e1424240c33209b9ef2a2138884b06fdda"
+    },
+    {
+      "path": "app/engine/hush-phase13-profile-fidelity-gate.js",
+      "bytes": 12697,
+      "sha256": "8783cde5a8533db35b028dc77bb8403c982a821aa26cf24dc8b32a1f88ab7d33"
+    },
+    {
+      "path": "app/engine/hush-phase14-cognitive-authorship-gate.js",
+      "bytes": 15624,
+      "sha256": "d61ac689198d119dc6a30578f8db7511f44dd0df2fcde4f014f164c4b06a5569"
+    },
+    {
+      "path": "app/engine/hush-phase23-swap.js",
+      "bytes": 3594,
+      "sha256": "27325288c33066495981970590574ef6b255e6247b105cf0ae632295cabcc5c8"
+    },
+    {
+      "path": "app/engine/hush-phase24-swap.js",
+      "bytes": 4329,
+      "sha256": "407e571a416577a5224ef5b86be1ef3170e78fd6cc908ae0bb301e992cb6ed64"
+    },
+    {
+      "path": "app/engine/hush-phase25-swap.js",
+      "bytes": 4017,
+      "sha256": "69aa724ececb5b762eec51e3d569c491110f19d41590fbac0aba8582decefc93"
+    },
+    {
+      "path": "app/engine/hush-phase27-swap.js",
+      "bytes": 3762,
+      "sha256": "5b84724724607755329a760a53a3a0a8f6c58dd1d4b96219cc8e5044fa3552d8"
+    },
+    {
+      "path": "app/engine/hush-phase28-swap.js",
+      "bytes": 5286,
+      "sha256": "aae43bf4d7dd7d96bb96050b42e5e1c3cdf5314db580af6c286031d93ccb5dc3"
+    },
+    {
+      "path": "app/engine/hush-phase5-eorfd-interface.js",
+      "bytes": 17274,
+      "sha256": "7d67d51dd66aa68d7a8e262d86b681dcc86c894b883ffae5f6a465bdba5dc4f7"
+    },
+    {
+      "path": "app/engine/hush-phase8-blackstar-sheree.js",
+      "bytes": 20995,
+      "sha256": "0f7874f138aa13cfe01ab9d111501aa9d8c8e3db00b029977fa6644cfdd2fa5b"
+    },
+    {
+      "path": "app/engine/hush-phase8-blooping-blip.js",
+      "bytes": 20796,
+      "sha256": "cd4740cc07f89851b196daa81110e2041cb8782229616dae79f48b234deb710b"
+    },
+    {
+      "path": "app/engine/hush-phase8-candidate-presence-gate.js",
+      "bytes": 3322,
+      "sha256": "aa7cddbb4cbb458daeb93e7bf8dc03ad4881078877ebedca1e29fa7b82b72acd"
+    },
+    {
+      "path": "app/engine/hush-phase8-dromological-paul.js",
+      "bytes": 24540,
+      "sha256": "9265bd79db0e70d88aecae8de10af21d7a056971220bf6c0a49b4532621f59d4"
+    },
+    {
+      "path": "app/engine/hush-phase8-harbor-zora.js",
+      "bytes": 22833,
+      "sha256": "c1fd034e2ef3c557e12689fea59b4b57a33897a087388318b03894eb0097eb6f"
+    },
+    {
+      "path": "app/engine/hush-phase8-lulu-quasar.js",
+      "bytes": 24161,
+      "sha256": "4791aaa611e44a18eef335a96e8a8cc96eed6226126d94f41f4093185bfdafa3"
+    },
+    {
+      "path": "app/engine/hush-phase8-luz-index.js",
+      "bytes": 19227,
+      "sha256": "a67ad68df07a46740b785a44fdd31189d8fc27579e9594670d68518eada96c55"
+    },
+    {
+      "path": "app/engine/hush-phase8-nolan-calibration.js",
+      "bytes": 3510,
+      "sha256": "df8cbc9859f060fb6dd96e7d8e90618f4bbfee43df4b9385520610b15c5b0ae0"
+    },
+    {
+      "path": "app/engine/hush-phase8-nolan-needler.js",
+      "bytes": 17726,
+      "sha256": "e39cf530d1a605c882ad69cf4aed6ff1a479cef866f2a560768a848f718e0d55"
+    },
+    {
+      "path": "app/engine/hush-phase8-numeric-decision.js",
+      "bytes": 23197,
+      "sha256": "baca5c6e679a9c538a20118c6797f74793870e471c58afa25fce67c473e4e8fe"
+    },
+    {
+      "path": "app/engine/hush-phase8-qs-calibration-hotfix.js",
+      "bytes": 3322,
+      "sha256": "94dc1a9d4026bb4a6c7f0253e382af848ee14562f5957ae02010d253361671c7"
+    },
+    {
+      "path": "app/engine/hush-phase8-receipts-queenie.js",
+      "bytes": 20434,
+      "sha256": "02c493807dc818f0663f7f1f7692fc44ac44c976b7fb4ad2f1c329054e567c47"
+    },
+    {
+      "path": "app/engine/hush-phase8-sheree-calibration.js",
+      "bytes": 2695,
+      "sha256": "10b03ab2d682099ae77e7f9efc9ed1564a79f77214b0dfec96f86e54551d7c04"
+    },
+    {
+      "path": "app/engine/hush-phase8-sol-stratigraphix.js",
+      "bytes": 23561,
+      "sha256": "6c6325f302947771e0c71f258129e691fb9c652302a836d454469e08afff9d83"
+    },
+    {
+      "path": "app/engine/hush-phase8-source-obligation.js",
+      "bytes": 7290,
+      "sha256": "57d8fe88c1cc000dd0ad1dcc39503fc88bd592d57922379bd7512faa5d2cba8c"
+    },
+    {
+      "path": "app/engine/hush-phase8-stylometric-passport.js",
+      "bytes": 12356,
+      "sha256": "043328de5e955986e9d7e18ee0f326e7168c0ad871a48c6f43443524727e4476"
+    },
+    {
+      "path": "app/engine/hush-polish.js",
+      "bytes": 2866,
+      "sha256": "5853b2c8541f87d227d8e469e8c31ab89688400ce219948482b2117c57605af2"
+    },
+    {
+      "path": "app/engine/hush-product-state.js",
+      "bytes": 1603,
+      "sha256": "1ee4f2f17d1452b542282a8a12485c48dd2fbdf95f508e107275cde40f4ad9dd"
+    },
+    {
+      "path": "app/engine/hush-profile-match.js",
+      "bytes": 5885,
+      "sha256": "a636d94502811cd7fde9749f9d37e4b7a871a66981d07e42c762998f81708f8f"
+    },
+    {
+      "path": "app/engine/hush-proposition-integrity.js",
+      "bytes": 9287,
+      "sha256": "ef679711eb481e090606a989029d06b1df18ad6bb5caa77a9e6762590ce56237"
+    },
+    {
+      "path": "app/engine/hush-proposition-map.js",
+      "bytes": 4877,
+      "sha256": "b997e429ac39b6734dfb0250b9f7bfc1767cb676119d747f7bc0f763a68e2b78"
+    },
+    {
+      "path": "app/engine/hush-protected-literal-lockbox.js",
+      "bytes": 5630,
+      "sha256": "284f239768d43a91d3fe72ddd2611a06aa4b3fae5d0b228a27e5d0bbabacf5f3"
+    },
+    {
+      "path": "app/engine/hush-protected-literals.js",
+      "bytes": 1308,
+      "sha256": "ec1da975b961101d49c7ee19f035494513e11350a6ef417a96df4fae5d7d65be"
+    },
+    {
+      "path": "app/engine/hush-provider-broker.js",
+      "bytes": 7847,
+      "sha256": "70f62cef9bf0c420a441837a1c669d6e36b75f80d4abd2728e3db39e5d523ec5"
+    },
+    {
+      "path": "app/engine/hush-provider-log-packet.js",
+      "bytes": 24476,
+      "sha256": "f0a546516c366ba074e586d534d04e8e6e460bef1eb5e0d2c40eb5649c7c26be"
+    },
+    {
+      "path": "app/engine/hush-provider-log-validator.js",
+      "bytes": 17455,
+      "sha256": "2fa87cca0281d677970263bcff528210a30a230974d6348cedb7d7d655fdf241"
+    },
+    {
+      "path": "app/engine/hush-readiness-dashboard.js",
+      "bytes": 3534,
+      "sha256": "8353ac83580324d8d5b566782935df5a9cebc1a32c3267d22ff561e5b20eec04"
+    },
+    {
+      "path": "app/engine/hush-readiness-ledger.js",
+      "bytes": 1856,
+      "sha256": "80eef7d6bf486d20077bba018d1897332ffe13100e2c62951ffa5332b1d9a8e3"
+    },
+    {
+      "path": "app/engine/hush-realization-plan.js",
+      "bytes": 7161,
+      "sha256": "2caa6b653e990c994ef04e59b3959e57ad214adde0c7229716ae28c00056c00b"
+    },
+    {
+      "path": "app/engine/hush-register-classifier.js",
+      "bytes": 2469,
+      "sha256": "23746343704dd3b345062ee99d603b1422381518afe74d90f4b2a0ee04df5c73"
+    },
+    {
+      "path": "app/engine/hush-register-contract.js",
+      "bytes": 2283,
+      "sha256": "0f458124a911aa906debd0bfcf9665c1251a8a90469cebf31beed59fd7e12c98"
+    },
+    {
+      "path": "app/engine/hush-register-registry.js",
+      "bytes": 1521,
+      "sha256": "506191459a1d81046deb88767c54bebc15967297270d5dd5eb55e6f53d1c1894"
+    },
+    {
+      "path": "app/engine/hush-release-policy.js",
+      "bytes": 8539,
+      "sha256": "924cf6164d097c57e42a2810d2b85d7187cca7f24eda725382db27d7e436b6ec"
+    },
+    {
+      "path": "app/engine/hush-report-ingest.js",
+      "bytes": 1611,
+      "sha256": "945cf7d6911be6f336246afae2edecca25e11f4a0df00e5a1f286b4cac5e8453"
+    },
+    {
+      "path": "app/engine/hush-residual-vector.js",
+      "bytes": 6680,
+      "sha256": "28f0384af274f78c731ee586f2f7152fd00ea810cc84eed3ac13dfa09c79f04f"
+    },
+    {
+      "path": "app/engine/hush-self-test-harness.js",
+      "bytes": 2692,
+      "sha256": "7813fa1ea4ad1f6aa71163244a2013760defb9ef52c04778d11dee81d74fe5c4"
+    },
+    {
+      "path": "app/engine/hush-signal-bus.js",
+      "bytes": 1781,
+      "sha256": "d1b826b6b41a7343ec676b04bd48cff0342872f5fdaa22b18b8d171d452a1793"
+    },
+    {
+      "path": "app/engine/hush-source-residual-guard.js",
+      "bytes": 2177,
+      "sha256": "f8424ff5675b76f6b529a49e64eae14c108246df2f6d15540c0fa02596c175d9"
+    },
+    {
+      "path": "app/engine/hush-source-residue.js",
+      "bytes": 8027,
+      "sha256": "245ccb0a4273c568718e94085d88583e620657c976334aae6d5fca4eeafe1350"
+    },
+    {
+      "path": "app/engine/hush-speech-act-custody.js",
+      "bytes": 7464,
+      "sha256": "b61613045f23b1c45f774cc1bc2e42ad06c99a0c3e3869513ffe86241c43a0a4"
+    },
+    {
+      "path": "app/engine/hush-steering-plan.js",
+      "bytes": 6914,
+      "sha256": "0fa703d30be0144958a29e556e02aee972d1009381d59f61b8fe58a880219377"
+    },
+    {
+      "path": "app/engine/hush-style-diversity.js",
+      "bytes": 21322,
+      "sha256": "3b312d1796808ada9f5d51c2f02c5aa6a3821aceee1572c11970f03524110f9a"
+    },
+    {
+      "path": "app/engine/hush-stylometric-feature-vector.js",
+      "bytes": 29768,
+      "sha256": "87f8c850a06d66fc72eea65be7a18ee0a5a8e5d82fcb4ee00bf560228e4a4905"
+    },
+    {
+      "path": "app/engine/hush-stylometry-audit-packet.js",
+      "bytes": 19471,
+      "sha256": "77ad2871dd703d6e8101f53695f5f809294d88d2cd6fc97aaff2e5e8e360d120"
+    },
+    {
+      "path": "app/engine/hush-stylometry-audit-validator.js",
+      "bytes": 15096,
+      "sha256": "4b5bef76241ed2958ebbff6e6f8cb6c5f380e313ea79a58f8aeb35c828006406"
+    },
+    {
+      "path": "app/engine/hush-swap-patch38.js",
+      "bytes": 39059,
+      "sha256": "1e9bb7e7b0b496da600acf282d0bd43e03a94b967c51210247d9218874137cad"
+    },
+    {
+      "path": "app/engine/hush-swap-phase32.js",
+      "bytes": 8829,
+      "sha256": "58030170a9a0edadaa9cd187985ee8a48eff987ea631cda6754891ee580494d1"
+    },
+    {
+      "path": "app/engine/hush-swap-phase33.js",
+      "bytes": 6820,
+      "sha256": "816bb11870f31ae0c96ea22b1158b5a16d3f056ac5b458a2d9396d9825babd3d"
+    },
+    {
+      "path": "app/engine/hush-swap-phase34.js",
+      "bytes": 8352,
+      "sha256": "b9f0fa0b6f8aae2e0db5312868d7c5498aeed40bb037d73460276b1c8aa9d9dd"
+    },
+    {
+      "path": "app/engine/hush-swap.js",
+      "bytes": 33623,
+      "sha256": "2a3eddb24ed2ebb13a3b130b3b3df116f9b11cdd90fb529bf43a035238cc6b2e"
+    },
+    {
+      "path": "app/engine/hush-syntax-plan.js",
+      "bytes": 6574,
+      "sha256": "b01ed02a6b44a382194963663d271ce7ccf1663aff7e48872e8ade2fd1c410b0"
+    },
+    {
+      "path": "app/engine/hush-syntax-recomposer.js",
+      "bytes": 14893,
+      "sha256": "00ffef408effb29cdf4c57a8d5259aed6d75c43f018003c5b8c862d6f2fbe4c4"
+    },
+    {
+      "path": "app/engine/hush-syntax-shift.js",
+      "bytes": 7306,
+      "sha256": "1d335bd8347e227f94c26e69e1f010a22fdf293a75140a6ec8352d690f269406"
+    },
+    {
+      "path": "app/engine/hush-target-register-audit.js",
+      "bytes": 4831,
+      "sha256": "2d914b9ddd56c1a5481079b86546b605d11f243ea0c1b62565e42b3614378221"
+    },
+    {
+      "path": "app/engine/hush-target-register-plan.js",
+      "bytes": 3501,
+      "sha256": "bbd886a64eea190b3a0e854ebe89539c84096bedbb7fd71c5065d95186c63625"
+    },
+    {
+      "path": "app/engine/hush-unified-audit-packet.js",
+      "bytes": 27933,
+      "sha256": "3abeafaaab67a7ae01723ddd135af362ef3df95aaabd102a1b147af77f236614"
+    },
+    {
+      "path": "app/engine/hush-visual-accessibility-audit.js",
+      "bytes": 1532,
+      "sha256": "79e3ab681df4d5440691c6d6ee7174d0d07898ec036b3454275f9098d4699151"
+    },
+    {
+      "path": "app/engine/information-dome-field.js",
+      "bytes": 13357,
+      "sha256": "3ec5c802d96f7513e7ae711c374c42ad51349034e1abfc9fb095e52240f706d8"
+    },
+    {
+      "path": "app/engine/ingestion-friction.js",
+      "bytes": 15071,
+      "sha256": "2036c4078d9bff72c08fce4effe461aad37174467d0965fad986c509e03b22ec"
+    },
+    {
+      "path": "app/engine/iteration-ledger.js",
+      "bytes": 12280,
+      "sha256": "9b7095cd11eac9335120d7019d205bd9f785428b44711be85f4b11feb316de80"
+    },
+    {
+      "path": "app/engine/learned-audit.js",
+      "bytes": 2298,
+      "sha256": "413345a1cca3e9dfb69e30da8f7f719b6b317e960f4127c413c353b8e5b8f318"
+    },
+    {
+      "path": "app/engine/loom-instrument-governance.js",
+      "bytes": 22200,
+      "sha256": "903f08b82b6ee446f95c590c41cf413ff71c16e5d8bfe32dfd67eff6b5f029b5"
+    },
+    {
+      "path": "app/engine/loom-instrument-lab.js",
+      "bytes": 21113,
+      "sha256": "8e05c38fdc82ba2b7612b38a1ed922a5338e3cc360fee90f926775de0b688a19"
+    },
+    {
+      "path": "app/engine/loom-portable-governor.js",
+      "bytes": 4265,
+      "sha256": "38f5103fce7c0b6828c062aa47514d1689758f2429df1f8c989db1e009b6ff3b"
+    },
+    {
+      "path": "app/engine/loom-service-resolution.js",
+      "bytes": 23749,
+      "sha256": "90c25b8d1f642e425f3a91d006c956b05f51934e524d5cf2b0c58a74b2aa59ff"
+    },
+    {
+      "path": "app/engine/marrowline-dollhouse-audit.js",
+      "bytes": 11790,
+      "sha256": "dfbddde60dc90718500f1d733ed9a30a2cc23cf8afec465d9cf70535ca170997"
+    },
+    {
+      "path": "app/engine/pedagogue-boundary-diagnosis.js",
+      "bytes": 8869,
+      "sha256": "f2286cee08cc34374688770e0c853ab7db694fe7980e8751098bd6c9075d0b3f"
+    },
+    {
+      "path": "app/engine/pedagogue-design-gate.js",
+      "bytes": 12251,
+      "sha256": "c5f7cf1eb9cbf7c1b36b55f33e07a2a3aa2f8915a961977ed2469c3a11984812"
+    },
+    {
+      "path": "app/engine/pedagogue-gesture-consequence.js",
+      "bytes": 12738,
+      "sha256": "42f9979488101aa10aeee570d1843d9bb21047b00cdf192538e4f9e59fff55a9"
+    },
+    {
+      "path": "app/engine/pedagogue-institutional-time.js",
+      "bytes": 10732,
+      "sha256": "c6f95165bbcb91f15aca387b33ddbfc816232eabd4f40eac71792e91f6aa572c"
+    },
+    {
+      "path": "app/engine/pedagogue-interface-diagnosis.js",
+      "bytes": 17117,
+      "sha256": "3f866de1018ce47a524be6b2bf6dd7bfc98222462e000a37df3c554a950e9b77"
+    },
+    {
+      "path": "app/engine/pedagogue-lineage-second-pass.js",
+      "bytes": 9140,
+      "sha256": "1e9c24f07baf0b846f5519bcb94bdb70650b39a2410eb48ef40320123c33bb4d"
+    },
+    {
+      "path": "app/engine/pedagogue-lineage-spine-v02.js",
+      "bytes": 7625,
+      "sha256": "0501c2e45d7becd7251c6c6411bb90c69a213bc3d1accbc10d22af71a02267a6"
+    },
+    {
+      "path": "app/engine/pedagogue-lineage-spine.js",
+      "bytes": 24868,
+      "sha256": "1872e021228519396e1c9a7cfebd95a918eaf8ad53a4cf92284e539e00748872"
+    },
+    {
+      "path": "app/engine/pedagogue-mathematical-counterpoints.js",
+      "bytes": 5433,
+      "sha256": "33fb001c7cd1a2d697dae3be461b68a67ba1c06ea76c38c10ca487a028e8b610"
+    },
+    {
+      "path": "app/engine/pedagogue-practice-fixture.js",
+      "bytes": 16003,
+      "sha256": "871cd3eef727444cc162f09ca2d2454ccdac5708640c257c4acba9689871f062"
+    },
+    {
+      "path": "app/engine/pedagogue-recurrence-audit.js",
+      "bytes": 8333,
+      "sha256": "99bece8f3cb57f8487fabca002e8c01f6fbb32020dd8a8f6dcfc1e3b7e0d8fd5"
+    },
+    {
+      "path": "app/engine/pedagogue-research-assay-witness.js",
+      "bytes": 7718,
+      "sha256": "581a0d6b281b65f3b40d8c7825c5ab65925e45d13b28d073577bf628e17a5689"
+    },
+    {
+      "path": "app/engine/pedagogue-research-criterion-family.js",
+      "bytes": 6425,
+      "sha256": "c563fd927f42d47e9a281a218399be72d46ff881af19673507c5b4d069ef1ad5"
+    },
+    {
+      "path": "app/engine/pedagogue-research-mechanism-refinement.js",
+      "bytes": 11989,
+      "sha256": "c3d1aad9d6676430b45b787eb3720cb83baf4e753b516ef5a1749487b659bb71"
+    },
+    {
+      "path": "app/engine/pedagogue-research-transfer.js",
+      "bytes": 9025,
+      "sha256": "e852377ce82f00f1aed5321ccc0ac6bbade15e82235ca898dad504dee967cf45"
+    },
+    {
+      "path": "app/engine/pedagogue-responsive-hierarchy-diagnosis.js",
+      "bytes": 6459,
+      "sha256": "5cd4a464686dd4dc1bb20f91d8d87675e0a1d8a2bdfea0cd9b8d8d4091d963bd"
+    },
+    {
+      "path": "app/engine/persona-memory.js",
+      "bytes": 21397,
+      "sha256": "9511ade1a351b85e3b657bcc36dcba4fbebedea31c44041a92a4ae07162c8974"
+    },
+    {
+      "path": "app/engine/phase5-phason-relation-ledger.js",
+      "bytes": 8566,
+      "sha256": "6c8c9c3539fd6a122c9bbe842fb8c5abb1c9420b30e36c98e1ca6f141b4f41de"
+    },
+    {
+      "path": "app/engine/phase5-relation-audit-core.js",
+      "bytes": 14466,
+      "sha256": "6fc6b5677a4781e3695b040a020bf0212b9489fe6190178ced9da44da271e98e"
+    },
+    {
+      "path": "app/engine/phase5-relation-contract.js",
+      "bytes": 12918,
+      "sha256": "e9116b26e4607afbef69da79e9f5b96e5d583308546837a1ecc6bd4399c764b1"
+    },
+    {
+      "path": "app/engine/phase5-relation-crypto.js",
+      "bytes": 8833,
+      "sha256": "f406c84223d477aed8677e5584449e50a0cb37c0b41054c05fd58c9e2c2056f6"
+    },
+    {
+      "path": "app/engine/phase5-relation-envelope.js",
+      "bytes": 95,
+      "sha256": "bf7c2008440d4d9cee3099962de85e265f4cb37cc452500a758ff5f08af80d89"
+    },
+    {
+      "path": "app/engine/phase5-relation-lifecycle.js",
+      "bytes": 8649,
+      "sha256": "5387f613ef08f7d26489a8130b84eac7dc8fd7e8234c51ad2defce912a8cfa9f"
+    },
+    {
+      "path": "app/engine/phase5-relation-replay.js",
+      "bytes": 8800,
+      "sha256": "b031302bcf0fa942a737fad20a52b7ff5c8156a0cda350f76790212282fdf8a3"
+    },
+    {
+      "path": "app/engine/portable-loom-challenge.js",
+      "bytes": 40082,
+      "sha256": "df0a95cb7e7913a5f7d7dbd797b487770196ec405828899d9bca2ec842f83f0e"
+    },
+    {
+      "path": "app/engine/portable-loom-core.js",
+      "bytes": 14998,
+      "sha256": "6465acaa1f1b542976649ebeea50dd93bbd3c3af534baff76c3497c2eb7b99b5"
+    },
+    {
+      "path": "app/engine/portable-loom-gate-explanation.js",
+      "bytes": 3721,
+      "sha256": "1ec43a8e602bf32e942500b8effd73565c6946ce86c905c38d9011baca87de3e"
+    },
+    {
+      "path": "app/engine/portable-loom-gate.js",
+      "bytes": 7154,
+      "sha256": "a8a0d8038aa5be3889c65ca0ec0812369520d8bbf3c7feb94cb23844cf5b1192"
+    },
+    {
+      "path": "app/engine/portable-loom-mechanisms.js",
+      "bytes": 9380,
+      "sha256": "cde977cf16080f69654025a33d10ded8a546698adc5f3745b7fa9f1192628d9e"
+    },
+    {
+      "path": "app/engine/portable-loom-output.js",
+      "bytes": 4510,
+      "sha256": "d6e9eb6a7342ea0ed5d8dbb9ddbf2ba0713893a27057eebf4a2bcd5f4d006606"
+    },
+    {
+      "path": "app/engine/portable-loom-policy.js",
+      "bytes": 2734,
+      "sha256": "f54377f4078b8160b2865ca887030c7d03a7efb93ae6d193114232d3628a624b"
+    },
+    {
+      "path": "app/engine/portable-loom-reentry.js",
+      "bytes": 32091,
+      "sha256": "45502649973471d6e35dac09162650adec8a74d43e1308cde788b7f41c3a3aec"
+    },
+    {
+      "path": "app/engine/portable-loom-session.js",
+      "bytes": 25153,
+      "sha256": "74ed4304dbf2ed51e0b74112a452aafbb7aa04dc05f85284fad491bc84d2f2b1"
+    },
+    {
+      "path": "app/engine/recognition-field.js",
+      "bytes": 17617,
+      "sha256": "8c2b0539aa0fc44943ce51e57c7a31e361a08b4bbf45d29fb7d890747825dd84"
+    },
+    {
+      "path": "app/engine/release-manifest.js",
+      "bytes": 8724,
+      "sha256": "41d07b2dfbc1de9aa6f74c6501c4cc41c0a9d3249ddc9e8855a8586891074a0c"
+    },
+    {
+      "path": "app/engine/report-export.js",
+      "bytes": 12364,
+      "sha256": "2c788a1349c6a2a5989907f652855da595e5eb9c8c17f72cc7557fa7c1217f34"
+    },
+    {
+      "path": "app/engine/sequence-6-journey.js",
+      "bytes": 44155,
+      "sha256": "743468988c3f1249b7efd50f6f059b043ae05298a1777e6a67c05aca0c037d28"
+    },
+    {
+      "path": "app/engine/stylometry.js",
+      "bytes": 368229,
+      "sha256": "053764f00f272bf2bd1564194f096868f16f04abeb5b798c3bb1ea29014ef857"
+    },
+    {
+      "path": "app/engine/td613-aperture-egress-contract.js",
+      "bytes": 2652,
+      "sha256": "7177619adaf7e4cfa7486a306a765f84b465f6d370677c17cbbce313f1e76d3a"
+    },
+    {
+      "path": "app/engine/td613-aperture.js",
+      "bytes": 92040,
+      "sha256": "fddb18ce2ae037353e663390976cbb7699006514dbe2b793bad47b7ebeb1255a"
+    },
+    {
+      "path": "app/engine/vernacular-ontology.js",
+      "bytes": 179126,
+      "sha256": "b034592469494bff626c3004cfb92252d4917320575be0921a3a0d7acb1f8958"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 21706,
+      "sha256": "2233ff6c640134d57b39906a3028ba621d9497a1954dbb4aaa487c462a606b73"
+    },
+    {
+      "path": "package.json",
+      "bytes": 18468,
+      "sha256": "4519d301b0c39f4859d11673498249f66b62d6b3c80726d199eedbe6e0340478"
+    },
+    {
+      "path": "research/portable-loom-local-battery-20261009/CASE_MAP.json",
+      "bytes": 7990,
+      "sha256": "1ac6c2c2d0bd6523cd75811173f31d1083a0adb80cc0ab21a67bc60f7ee97dcf"
+    },
+    {
+      "path": "research/portable-loom-local-battery-20261009/artifact/portable-loom-standard.json",
+      "bytes": 81380,
+      "sha256": "dec3750552099e30e9495ce42af6e616dd3dd1f48f0d3f6766cb82d934c273b2"
+    },
+    {
+      "path": "research/portable-loom-local-battery-20261009/artifact/portable-loom-standard.md",
+      "bytes": 85355,
+      "sha256": "aee654a57edbd931eb5f7ab47b50427ef464530ef5731e5309d49c02eb444eee"
+    },
+    {
+      "path": "research/portable-loom-preflight/CASE_REGISTRY.json",
+      "bytes": 15712,
+      "sha256": "2eba4fb0760aada7bab317904f97f1613e53cce243d999a60cf33a6cc7234adb"
+    },
+    {
+      "path": "research/portable-loom-preflight/PROTOCOL.json",
+      "bytes": 7680,
+      "sha256": "7931d70b2296414562f5457d71f4069229d6081c0fe914dad3f8a91ddb214c25"
+    },
+    {
+      "path": "scripts/run-portable-loom-local-battery.py",
+      "bytes": 4810,
+      "sha256": "7f7cfdc44664135902676cb08e91cb5f1ba7c37909b04b06f66f31dc9cb21d2f"
+    },
+    {
+      "path": "tests/dollhouse-bounded-orchestrator.test.mjs",
+      "bytes": 6091,
+      "sha256": "3b1538404f157ae5350d0e73ecd0f3dd5df966f8fac1e2dd61ed8c24ce6c1f80"
+    },
+    {
+      "path": "tests/dollhouse-temporal-custodian.test.mjs",
+      "bytes": 8384,
+      "sha256": "4aa6167cd1f4d27b22865abd3802f491521db65f509109bf82929b41c051a800"
+    },
+    {
+      "path": "tests/fixtures/dollhouse/bounded-orchestrator-case.json",
+      "bytes": 5626,
+      "sha256": "53b751d8546ab2c42ad858f47fbc473004a7ec12838ca35904547ac9cc2afea8"
+    },
+    {
+      "path": "tests/portable-loom-artifact-bound-battery.test.mjs",
+      "bytes": 15218,
+      "sha256": "0380c3d5eb070ce6b9b1f5c4c5a4b4b29f4f5fe36372294f110525418253504b"
+    },
+    {
+      "path": "tests/portable-loom-reentry-hostile.test.mjs",
+      "bytes": 10054,
+      "sha256": "cde417e76d15df184be89c4798c931f8aefd79beeef30c8ac7e4ceebc19f219d"
+    },
+    {
+      "path": "tests/sequence-6-journey-integration.test.mjs",
+      "bytes": 32230,
+      "sha256": "fb080077555809ecbe432d6306e780a5f3c98bf1994dbb6489b131cd62eb53c9"
+    }
+  ],
+  "local_scoring_key": "PUBLIC_DETERMINISTIC_ASSERTIONS_AND_CASE_MAP; no model receives it",
+  "private_receiver_scoring_key_commitment": null,
+  "fixture_boundary": "Fresh local sessions inherit exact carried root rules, using new IDs. Existing pinned synthetic source fixtures exercise hostile byte/custody controls. No legacy demo packet is the canonical artifact. Old fixture BROWSER_WITNESS declarations earn zero browser credit.",
+  "case_denominator": 12,
+  "repetitions": 1,
+  "primary_retries": 0,
+  "stopping": "Any unexpected local failure stops the track and preserves attempt-001. A fix requires a new source commit and new attempt, retaining this result.",
+  "receiver_path_inspection": {
+    "observed_url": "https://chatgpt.com/",
+    "visible_state": "Anonymous ChatGPT surface; model selector label ChatGPT; Log in and Sign up visible",
+    "model_id": null,
+    "decoding_configuration": null,
+    "artifact_submitted": false,
+    "actual_receiver_call": false,
+    "classification": "BROWSER_PATH_INSPECTION_ONLY; no receiver assay result"
+  },
+  "prohibitions": [
+    "NO_MODEL_CALLS",
+    "NO_TELEMETRY_FABRICATION",
+    "NO_MAIN_MUTATION",
+    "NO_MERGE",
+    "NO_DEPLOY",
+    "NO_ISSUE_405_ACTION",
+    "NO_DETACHED_AGENTS",
+    "NO_HISTORICAL_SEQUENCE_RERUN"
+  ]
+}

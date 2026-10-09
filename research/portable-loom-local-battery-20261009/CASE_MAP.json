@@ -1,0 +1,198 @@
+{
+  "schema": "td613.loom.local-battery-case-map/v0.1",
+  "foundations": [
+    {
+      "file": "tests/portable-loom-artifact-bound-battery.test.mjs",
+      "test_name": "F01 exact delivered artifact bytes and blank non-demo scope"
+    },
+    {
+      "file": "tests/portable-loom-artifact-bound-battery.test.mjs",
+      "test_name": "F02 carried core, policy, task, packet and root recompute without origin credit"
+    },
+    {
+      "file": "tests/portable-loom-artifact-bound-battery.test.mjs",
+      "test_name": "F03 carried footer, Gate, return and authority declarations retain their actual limits"
+    },
+    {
+      "file": "tests/portable-loom-artifact-bound-battery.test.mjs",
+      "test_name": "F04 exact parsed artifact cannot acquire original live custody authority"
+    }
+  ],
+  "local_cases": {
+    "L01": [
+      {
+        "file": "tests/portable-loom-artifact-bound-battery.test.mjs",
+        "test_name": "L01 artifact-policy fixture denies missing, spent and post-rest authorization"
+      }
+    ],
+    "L02": [
+      {
+        "file": "tests/sequence-6-journey-integration.test.mjs",
+        "test_name": "6. Section II Hostile Test 1: Mutating outbound task text fails closed"
+      },
+      {
+        "file": "tests/sequence-6-journey-integration.test.mjs",
+        "test_name": "7. Section II Hostile Test 2: Mutating selected document text fails closed"
+      }
+    ],
+    "L03": [
+      {
+        "file": "tests/sequence-6-journey-integration.test.mjs",
+        "test_name": "8. Section II Hostile Test 3: Mutating returned answer fails closed"
+      },
+      {
+        "file": "tests/sequence-6-journey-integration.test.mjs",
+        "test_name": "9. Section II Hostile Test 4: Mutating missing-information list fails closed"
+      },
+      {
+        "file": "tests/sequence-6-journey-integration.test.mjs",
+        "test_name": "10. Section II Hostile Test 5: Mutating receiver metadata fails closed"
+      },
+      {
+        "file": "tests/portable-loom-reentry-hostile.test.mjs",
+        "test_name": "hostile answer substitution holds without advancing the local head"
+      }
+    ],
+    "L04": [
+      {
+        "file": "tests/sequence-6-journey-integration.test.mjs",
+        "test_name": "3. Tampered predecessor digest transitions to HOLD (INV-05)"
+      },
+      {
+        "file": "tests/sequence-6-journey-integration.test.mjs",
+        "test_name": "13. Section VI Hostile Test 1: Return session ID mismatch fails closed"
+      },
+      {
+        "file": "tests/sequence-6-journey-integration.test.mjs",
+        "test_name": "14. Section VI Hostile Test 2: Genesis digest mismatch fails closed"
+      },
+      {
+        "file": "tests/sequence-6-journey-integration.test.mjs",
+        "test_name": "15. Section VI Hostile Test 3: Route identity mismatch fails closed"
+      },
+      {
+        "file": "tests/portable-loom-reentry-hostile.test.mjs",
+        "test_name": "hostile wrong session root holds without advancing the local head"
+      },
+      {
+        "file": "tests/portable-loom-reentry-hostile.test.mjs",
+        "test_name": "hostile wrong policy holds without advancing the local head"
+      },
+      {
+        "file": "tests/portable-loom-reentry-hostile.test.mjs",
+        "test_name": "hostile stale anchor holds without advancing the local head"
+      },
+      {
+        "file": "tests/portable-loom-reentry-hostile.test.mjs",
+        "test_name": "hostile future/nonexistent anchor holds without advancing the local head"
+      },
+      {
+        "file": "tests/portable-loom-reentry-hostile.test.mjs",
+        "test_name": "hostile source commitment substitution holds without advancing the local head"
+      }
+    ],
+    "L05": [
+      {
+        "file": "tests/portable-loom-artifact-bound-battery.test.mjs",
+        "test_name": "L05 artifact-policy fixture keeps an unanchored declared head unanchored"
+      },
+      {
+        "file": "tests/sequence-6-journey-integration.test.mjs",
+        "test_name": "5. Independent head anchor match vs mismatch (Section III)"
+      }
+    ],
+    "L06": [
+      {
+        "file": "tests/portable-loom-artifact-bound-battery.test.mjs",
+        "test_name": "L06 artifact-policy fixture retains attempt one, selected material and fresh authorization on retry"
+      }
+    ],
+    "L07": [
+      {
+        "file": "tests/portable-loom-artifact-bound-battery.test.mjs",
+        "test_name": "L07 artifact-derived fresh local custody requires Check then explicit Admit before continuation"
+      }
+    ],
+    "L08": [
+      {
+        "file": "tests/portable-loom-artifact-bound-battery.test.mjs",
+        "test_name": "L08 artifact-derived missing Gate capture retains HOLD and unmeasured conversation coverage"
+      }
+    ],
+    "L09": [
+      {
+        "file": "tests/dollhouse-temporal-custodian.test.mjs",
+        "test_name": "missing audit material, baseline and ordered phase plan never receive PASS"
+      },
+      {
+        "file": "tests/dollhouse-temporal-custodian.test.mjs",
+        "test_name": "empty, missing and additional phases cannot satisfy declared route completeness"
+      },
+      {
+        "file": "tests/dollhouse-temporal-custodian.test.mjs",
+        "test_name": "unparseable sequences and invalid calendar timestamps fail closed"
+      },
+      {
+        "file": "tests/dollhouse-temporal-custodian.test.mjs",
+        "test_name": "duplicate historical identity rejects even when sequence and timestamps increase"
+      }
+    ],
+    "L10": [
+      {
+        "file": "tests/dollhouse-temporal-custodian.test.mjs",
+        "test_name": "an early failure holds the route even without any preceding PASS"
+      },
+      {
+        "file": "tests/dollhouse-temporal-custodian.test.mjs",
+        "test_name": "failed, held, unknown and unperformed downstream phases preserve whole-route veto"
+      },
+      {
+        "file": "tests/dollhouse-bounded-orchestrator.test.mjs",
+        "test_name": "four unanimous role findings cannot override the temporal whole-route veto"
+      }
+    ],
+    "L11": [
+      {
+        "file": "tests/portable-loom-artifact-bound-battery.test.mjs",
+        "test_name": "L11 earlier authority mutation fails against the retained temporal baseline"
+      },
+      {
+        "file": "tests/dollhouse-temporal-custodian.test.mjs",
+        "test_name": "deleted, reordered or rewritten baseline prefixes fail without changing old observations"
+      },
+      {
+        "file": "tests/dollhouse-temporal-custodian.test.mjs",
+        "test_name": "new amendments append without rewriting core history or recorded amendments"
+      }
+    ],
+    "L12": [
+      {
+        "file": "tests/portable-loom-artifact-bound-battery.test.mjs",
+        "test_name": "L12 artifact-derived root rules cannot be removed or weakened in the same local lane"
+      }
+    ]
+  },
+  "orchestrator_controls": [
+    {
+      "file": "tests/dollhouse-bounded-orchestrator.test.mjs",
+      "test_name": "bounded runner consumes fifth jurisdiction separately without promoting the installed registry"
+    },
+    {
+      "file": "tests/dollhouse-bounded-orchestrator.test.mjs",
+      "test_name": "missing, malformed and contradictory temporal evidence cannot synthesize completion"
+    },
+    {
+      "file": "tests/dollhouse-bounded-orchestrator.test.mjs",
+      "test_name": "case, episode and source mismatches hold even with a locally passing temporal audit"
+    },
+    {
+      "file": "tests/dollhouse-bounded-orchestrator.test.mjs",
+      "test_name": "role disagreement and incomplete coverage stay unresolved rather than becoming votes"
+    },
+    {
+      "file": "tests/dollhouse-bounded-orchestrator.test.mjs",
+      "test_name": "caller evidence labels do not authenticate providers or grant action authority"
+    }
+  ],
+  "scoring": "Every named test must be captured once with PASS. Missing/skip -> HELD_EVIDENCE_GAP; failure -> CONTRADICTED. Case is one endpoint regardless of assertion count. Unexpected failure stops this track; original attempt remains."
+}
