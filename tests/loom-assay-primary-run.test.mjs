@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { primaryCallPlan, continuationCallPlan, runFirstReceiver } from '../research/portable-loom-assay-activation-20261009/run-first-receiver.mjs';
 import { loadServerManifest } from '../research/portable-loom-server-transport-20261009/server-client.mjs';
-import { sha256, canonicalJson, inspectAssayResponse } from '../server/loom-assay-contract.js';
+import { sha256, canonicalJson, inspectAssayResponse, ASSAY_RECOVERY_POLICY_SCHEMA, ASSAY_RECOVERY_PROGRAM, ASSAY_RECOVERY_RUN_IDS } from '../server/loom-assay-contract.js';
 const { manifest } = loadServerManifest();
 function policy() {
   const p = JSON.parse(readFileSync('research/portable-loom-server-transport-20261009/POLICY.template.json'));
@@ -90,4 +90,33 @@ test('a continuation rejects changed capture bytes, skipped trials, changed deco
       assert.throws(() => continuationCallPlan(p, manifest, continuation), /CONTINUATION_(PREFIX_CAPTURE|MEASUREMENT_CHANGED|PARTIAL_TRIAL)/);
     } finally { rmSync(root, { recursive: true, force: true }); }
   }
+});
+test('complete trials from separately retained attempts preserve their own policy and source bindings', () => {
+  const root = mkdtempSync(join(tmpdir(), 'td613-continuation-mixed-'));
+  try {
+    const { p, continuation } = continuationFixture(root, 3);
+    const mid = JSON.parse(readFileSync(continuation.predecessor_policy_path));
+    mid.run_id = 'synthetic-intermediate'; mid.protocol_commit = mid.binding.protocol_commit = 'c'.repeat(40);
+    const policy_path = join(root, 'intermediate-policy.json'); writeFileSync(policy_path, JSON.stringify(mid));
+    const entry = continuation.completed_prefix[2], cap = JSON.parse(readFileSync(entry.capture_path));
+    cap.source_commit = cap.response.source_commit = mid.protocol_commit;
+    const wrapper = Buffer.from(JSON.stringify(cap.response)); cap.response_sha256 = sha256(wrapper);
+    writeFileSync(join(root, 'synthetic-prefix-2/response.body.bin'), wrapper);
+    const bytes = Buffer.from(JSON.stringify(cap)); writeFileSync(entry.capture_path, bytes);
+    Object.assign(entry, { capture_sha256: sha256(bytes), policy_path, policy_sha256: sha256(canonicalJson(mid)) });
+    continuation.prior_reserved_cost_nanos = '722880000'; p.binding.limits.max_cost_usd = 9.27712;
+    const plan = continuationCallPlan(p, manifest, continuation); assert.equal(plan.length, 51);
+    assert.equal(plan[0].trial_id, 'FIRST_CONFIGURED_RECEIVER-R02-1'); assert.equal(plan[0].turn_index, 0);
+    entry.policy_sha256 = 'f'.repeat(64); assert.throws(() => continuationCallPlan(p, manifest, continuation), /PREDECESSOR_POLICY/);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+test('request-bound recovery remains executable under the original cap after both failed reservations', () => {
+  const root = mkdtempSync(join(tmpdir(), 'td613-continuation-request-bound-'));
+  try {
+    const { p, continuation } = continuationFixture(root);
+    p.schema = ASSAY_RECOVERY_POLICY_SCHEMA; p.run_id = ASSAY_RECOVERY_RUN_IDS[0];
+    p.program = structuredClone(ASSAY_RECOVERY_PROGRAM); continuation.prior_reserved_cost_nanos = '722880000';
+    p.binding.limits.max_cost_usd = 9.27712;
+    assert.equal(continuationCallPlan(p, manifest, continuation).length, 52);
+  } finally { rmSync(root, { recursive: true, force: true }); }
 });

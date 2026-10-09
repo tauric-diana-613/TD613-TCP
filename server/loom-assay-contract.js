@@ -3,8 +3,16 @@ import { createHash } from 'node:crypto';
 export const ASSAY_REQUEST_SCHEMA = 'td613.loom.server-assay-request/v0.1';
 export const ASSAY_RESPONSE_SCHEMA = 'td613.loom.server-assay-response/v0.1';
 export const ASSAY_POLICY_SCHEMA = 'td613.loom.server-assay-policy/v0.2';
+export const ASSAY_RECOVERY_POLICY_SCHEMA = 'td613.loom.server-assay-policy/v0.3';
 export const ASSAY_MAX_PROVIDER_TIMEOUT_MS = 240000;
 export const ASSAY_CLIENT_RETURN_MARGIN_MS = 40000;
+const recoveryBase = 'portable-loom-first-receiver-20261009';
+export const ASSAY_RECOVERY_RUN_IDS = Object.freeze(Array.from({ length: 12 }, (_, i) => `${recoveryBase}-a${i + 4}`));
+export const ASSAY_RECOVERY_PROGRAM = Object.freeze({
+  id: recoveryBase,
+  run_ids: Object.freeze([recoveryBase, `${recoveryBase}-a2`, `${recoveryBase}-a3`, ...ASSAY_RECOVERY_RUN_IDS]),
+  max_calls: 80, max_cost_usd: 10
+});
 export const sha256 = value => createHash('sha256').update(value).digest('hex');
 export function canonicalJson(value) {
   if (Array.isArray(value)) return '[' + value.map(canonicalJson).join(',') + ']';
@@ -19,10 +27,14 @@ export function exactFields(value, fields) {
     && Object.keys(value).length === fields.length && fields.every(k => Object.hasOwn(value, k)), 'ASSAY_FIELD_SHAPE');
 }
 export function validateAssayPolicy(p, at = Date.now()) {
-  exactFields(p, ['schema', 'run_id', 'protocol_commit', 'artifact_sha256', 'expires_at', 'binding', 'receiver_output_tokens']);
-  requireThat(p.schema === ASSAY_POLICY_SCHEMA && /^[a-zA-Z0-9_-]{1,80}$/.test(p.run_id)
+  const recovery = p?.schema === ASSAY_RECOVERY_POLICY_SCHEMA;
+  exactFields(p, ['schema', 'run_id', 'protocol_commit', 'artifact_sha256', 'expires_at', 'binding', 'receiver_output_tokens', ...(recovery ? ['program'] : [])]);
+  requireThat([ASSAY_POLICY_SCHEMA, ASSAY_RECOVERY_POLICY_SCHEMA].includes(p.schema) && /^[a-zA-Z0-9_-]{1,80}$/.test(p.run_id)
     && /^[a-f0-9]{40}$/.test(p.protocol_commit) && /^[a-f0-9]{64}$/.test(p.artifact_sha256)
     && Number.isFinite(Date.parse(p.expires_at)) && Date.parse(p.expires_at) > at, 'ASSAY_POLICY_UNBOUND_OR_EXPIRED');
+  requireThat(recovery ? ASSAY_RECOVERY_RUN_IDS.includes(p.run_id)
+    && canonicalJson(p.program) === canonicalJson(ASSAY_RECOVERY_PROGRAM)
+    : !ASSAY_RECOVERY_RUN_IDS.includes(p.run_id), 'ASSAY_RECOVERY_PROGRAM_UNBOUND');
   const b = p.binding;
   requireThat(b?.provider === 'GEMINI_GENERATE_CONTENT' && b.protocol_commit === p.protocol_commit
     && ['FIRST_CONFIGURED_RECEIVER', 'COMPARISON'].includes(b.trial_family)
@@ -31,6 +43,14 @@ export function validateAssayPolicy(p, at = Date.now()) {
     && Array.isArray(b.response_model_ids) && b.response_model_ids.length > 0
     && b.response_model_ids.every(x => typeof x === 'string' && /^[a-zA-Z0-9._-]{1,100}$/.test(x)), 'ASSAY_MODEL_BINDING');
   const l = b.limits, g = b.generation_parameters, pricing = b.pricing;
+  requireThat(!recovery || b.trial_family === 'FIRST_CONFIGURED_RECEIVER' && b.model === 'gemini-3.8-flash'
+    && canonicalJson(b.response_model_ids) === canonicalJson(['gemini-3.8-flash'])
+    && canonicalJson(g) === canonicalJson({ temperature: null, top_p: null, thinking_level: 'medium' })
+    && l.max_calls <= 54 && l.max_cost_usd <= 10 && l.max_input_tokens_per_call === 200000
+    && l.max_output_tokens_per_call === 8192 && p.receiver_output_tokens === 8192
+    && l.max_response_bytes === 2000000 && l.timeout_ms === ASSAY_MAX_PROVIDER_TIMEOUT_MS
+    && pricing.input_usd_per_million === 0.75 && pricing.output_usd_per_million === 3.75,
+    'ASSAY_RECOVERY_MEASUREMENT_CHANGED');
   requireThat(integer(l?.max_calls, 1, 288) && integer(l.max_input_tokens_per_call, 1, 1000000)
     && integer(l.max_output_tokens_per_call, 1, 8192) && integer(l.timeout_ms, 1, ASSAY_MAX_PROVIDER_TIMEOUT_MS)
     && integer(l.max_response_bytes, 1, 2000000) && typeof l.max_cost_usd === 'number'
@@ -59,8 +79,9 @@ export function outputLimit(p, t) { return t.role === 'RECEIVER' ? p.receiver_ou
 export function requireTrialFamily(p, t) {
   requireThat(p.binding.trial_family === (t.role === 'RECEIVER' ? 'FIRST_CONFIGURED_RECEIVER' : 'COMPARISON'), 'ASSAY_TRIAL_FAMILY_UNAUTHORIZED');
 }
-export function reservationNanos(p, limit) {
-  const cost = p.binding.limits.max_input_tokens_per_call * p.binding.pricing.input_usd_per_million * 1000
+export function reservationNanos(p, limit, inputBound = p.binding.limits.max_input_tokens_per_call) {
+  requireThat(integer(inputBound, 1, p.binding.limits.max_input_tokens_per_call), 'ASSAY_INPUT_RESERVATION_BOUND');
+  const cost = inputBound * p.binding.pricing.input_usd_per_million * 1000
     + limit * p.binding.pricing.output_usd_per_million * 1000;
   requireThat(Number.isSafeInteger(Math.ceil(cost)), 'ASSAY_COST_RANGE');
   return Math.ceil(cost);
@@ -103,17 +124,23 @@ export function buildAssayProviderWire(request, policy, manifest, artifactText) 
     generationConfig: { candidateCount: 1, maxOutputTokens,
       ...(g.temperature === null ? {} : { temperature: g.temperature }), ...(g.top_p === null ? {} : { topP: g.top_p }),
       ...(g.thinking_level === null ? {} : { thinkingConfig: { thinkingLevel: g.thinking_level } }) } });
-  requireThat(Buffer.byteLength(body) + 8192 <= policy.binding.limits.max_input_tokens_per_call, 'ASSAY_INPUT_RESERVATION_EXCEEDED');
+  const byteBound = Buffer.byteLength(body) + 8192;
+  requireThat(byteBound <= policy.binding.limits.max_input_tokens_per_call, 'ASSAY_INPUT_RESERVATION_EXCEEDED');
+  // Retain the existing conservative one-token-per-wire-byte plus framing
+  // allowance. Recovery reserves that request bound, without refunds or a
+  // smaller input ceiling; the legacy policy retains its original reservation.
+  const inputBound = policy.schema === ASSAY_RECOVERY_POLICY_SCHEMA ? byteBound : policy.binding.limits.max_input_tokens_per_call;
   return { body, request_sha256: sha256(body), output_limit: maxOutputTokens,
-    reserved_cost_nanos: reservationNanos(policy, maxOutputTokens),
+    input_token_bound: inputBound, reserved_cost_nanos: reservationNanos(policy, maxOutputTokens, inputBound),
     prior_assistant_sha256: messages.filter(m => m.role === 'assistant').map(m => sha256(m.content)),
     url: `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(policy.binding.model)}:generateContent` };
 }
-export function inspectAssayResponse(bytes, p, limit) {
+export function inspectAssayResponse(bytes, p, limit, inputBound = p.binding.limits.max_input_tokens_per_call) {
   const body = JSON.parse(bytes.toString('utf8')), u = body.usageMetadata, candidate = body.candidates?.[0];
   requireThat(Array.isArray(body.candidates) && body.candidates.length === 1 && candidate.finishReason === 'STOP', 'ASSAY_PROVIDER_COMPLETION_HELD');
   requireThat(p.binding.response_model_ids.includes(body.modelVersion), 'ASSAY_RETURNED_MODEL_MISMATCH');
-  requireThat(integer(u?.promptTokenCount, 0, p.binding.limits.max_input_tokens_per_call)
+  requireThat(integer(inputBound, 1, p.binding.limits.max_input_tokens_per_call)
+    && integer(u?.promptTokenCount, 0, inputBound)
     && integer(u.totalTokenCount, u.promptTokenCount, u.promptTokenCount + limit), 'ASSAY_USAGE_MISSING_OR_EXCEEDED');
   requireThat(Array.isArray(candidate.content?.parts) && candidate.content.parts.length > 0
     && candidate.content.parts.every(x => typeof x.text === 'string' && !x.functionCall && !x.executableCode), 'ASSAY_TOOL_OR_NON_TEXT_RESULT');

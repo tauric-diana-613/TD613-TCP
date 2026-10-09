@@ -17,7 +17,7 @@ export function primaryCallPlan(manifest) {
   return calls;
 }
 
-export function continuationCallPlan(policy, manifest, continuation) {
+export function continuationCallPlan(policy, manifest, continuation, root = process.cwd()) {
   const calls = primaryCallPlan(manifest);
   requireThat(continuation?.schema === 'td613.loom.first-receiver-continuation/v0.1'
     && typeof continuation.authorization_record === 'string' && continuation.authorization_record.length > 0
@@ -37,10 +37,16 @@ export function continuationCallPlan(policy, manifest, continuation) {
   const completed = continuation.completed_prefix;
   for (let i = 0; i < completed.length; i++) {
     const entry = completed[i], bytes = readFileSync(entry.capture_path), cap = JSON.parse(bytes);
+    const capPolicy = entry.policy_path ? JSON.parse(readFileSync(entry.policy_path)) : old;
+    requireThat(!entry.policy_path || sha256(canonicalJson(capPolicy)) === entry.policy_sha256,
+      'ASSAY_CONTINUATION_PREDECESSOR_POLICY');
+    requireThat(capPolicy.run_id !== policy.run_id && capPolicy.artifact_sha256 === policy.artifact_sha256
+      && ['provider', 'model', 'response_model_ids', 'generation_parameters', 'pricing'].every(key =>
+        canonicalJson(capPolicy.binding[key]) === canonicalJson(policy.binding[key])), 'ASSAY_CONTINUATION_MEASUREMENT_CHANGED');
     requireThat(sha256(bytes) === entry.capture_sha256 && canonicalJson(cap.trial) === canonicalJson(calls[i])
       && cap.status === 'CAPTURED_NOT_ADMITTED' && cap.evidence_class === 'ACTUAL_RECEIVER_TEST'
-      && cap.fixture_transport === false && cap.source_commit === old.protocol_commit
-      && cap.artifact_sha256 === old.artifact_sha256 && cap.response?.source_commit === old.protocol_commit
+      && cap.fixture_transport === false && cap.source_commit === capPolicy.protocol_commit
+      && cap.artifact_sha256 === capPolicy.artifact_sha256 && cap.response?.source_commit === capPolicy.protocol_commit
       && cap.response.response_complete === true && cap.response.provider_requests === 1
       && cap.response.retries === 0, 'ASSAY_CONTINUATION_PREFIX_CAPTURE');
     const wrapper = readFileSync(resolve(entry.capture_path, '..', 'response.body.bin'));
@@ -48,7 +54,8 @@ export function continuationCallPlan(policy, manifest, continuation) {
       && canonicalJson(JSON.parse(wrapper)) === canonicalJson(cap.response), 'ASSAY_CONTINUATION_PREFIX_BYTES');
     const provider = Buffer.from(cap.response.provider_response_base64, 'base64');
     requireThat(sha256(provider) === cap.response.provider_response_sha256
-      && canonicalJson(inspectAssayResponse(provider, old, old.receiver_output_tokens)) === canonicalJson(cap.returned)
+      && canonicalJson(inspectAssayResponse(provider, capPolicy, capPolicy.receiver_output_tokens,
+        cap.response.reservation?.input_token_bound ?? capPolicy.binding.limits.max_input_tokens_per_call)) === canonicalJson(cap.returned)
       && canonicalJson(cap.returned) === canonicalJson(cap.response.returned), 'ASSAY_CONTINUATION_PREFIX_ANSWER');
   }
   // A fresh run starts a fresh trial; never import an earlier run's messages
@@ -58,9 +65,14 @@ export function continuationCallPlan(policy, manifest, continuation) {
   const priorCost = BigInt(continuation.prior_reserved_cost_nanos);
   const newCeiling = BigInt(Math.floor(policy.binding.limits.max_cost_usd * 1000000000));
   const remaining = calls.slice(completed.length);
+  // First-turn bytes are already fixed. Later turns reserve against the full
+  // unchanged ceiling here, because their preceding answers are still unknown.
+  const maximum = remaining.reduce((cost, trial) => cost + BigInt(trial.turn_index === 0
+    ? prepareServerRequest(policy, trial, { root }).provider_wire.reserved_cost_nanos
+    : reservationNanos(policy, policy.receiver_output_tokens)), 0n);
   requireThat(priorCost > 0n && priorCost + newCeiling <= 10000000000n
     && remaining.length === policy.binding.limits.max_calls
-    && BigInt(reservationNanos(policy, policy.receiver_output_tokens)) * BigInt(remaining.length) <= newCeiling,
+    && maximum <= newCeiling,
     'ASSAY_CONTINUATION_AGGREGATE_BUDGET');
   return remaining;
 }
@@ -69,7 +81,7 @@ export async function runFirstReceiver(policy, output, { root = process.cwd(), c
   validateAssayPolicy(policy);
   const { manifest } = loadServerManifest(root);
   const continuation = continuationFile ? JSON.parse(readFileSync(continuationFile)) : null;
-  const calls = continuation ? continuationCallPlan(policy, manifest, continuation) : primaryCallPlan(manifest);
+  const calls = continuation ? continuationCallPlan(policy, manifest, continuation, root) : primaryCallPlan(manifest);
   if (!continuation) requireThat(policy.binding.limits.max_calls === 54 && policy.binding.limits.max_cost_usd === 10, 'ASSAY_AUTHORIZED_RUN_BOUND');
   const fixture = capture !== captureServerCall;
   if (!fixture) {

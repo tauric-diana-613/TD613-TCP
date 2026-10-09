@@ -4,7 +4,7 @@ import { readFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createLoomAssayHandler, loadApprovedRunConfiguration } from '../server/loom-assay.js';
-import { ASSAY_CLIENT_RETURN_MARGIN_MS, buildAssayProviderWire, validateAssayPolicy, sha256 } from '../server/loom-assay-contract.js';
+import { ASSAY_CLIENT_RETURN_MARGIN_MS, ASSAY_RECOVERY_POLICY_SCHEMA, ASSAY_RECOVERY_PROGRAM, ASSAY_RECOVERY_RUN_IDS, buildAssayProviderWire, validateAssayPolicy, sha256 } from '../server/loom-assay-contract.js';
 import { loadServerManifest, prepareServerRequest, captureServerCall } from '../research/portable-loom-server-transport-20261009/server-client.mjs';
 import { createAssayBudgetClient } from '../server/loom-assay-budget-client.js';
 import { createAssayBudgetFunction } from '../neon/functions/loom-assay-budget/index.mjs';
@@ -28,7 +28,8 @@ function harness({ p = policy(), change = x => x, fetchOverride, budgetOverride,
     operations.push({ op, input });
     if (op === 'inspect') return { policy: p };
     if (op === 'reserve') return { durable_reservation: true, call_key: `${input.trial.trial_id}:${input.trial.role}:${input.trial.turn_index}`,
-      request_sha256: input.request_sha256, reserved_cost_nanos: String(p.binding.limits.max_input_tokens_per_call * 1000 + input.output_limit * 2000) };
+      request_sha256: input.request_sha256, reserved_cost_nanos: String((input.input_token_bound ?? p.binding.limits.max_input_tokens_per_call) * p.binding.pricing.input_usd_per_million * 1000 + input.output_limit * p.binding.pricing.output_usd_per_million * 1000),
+      ...(p.program ? { input_token_bound: input.input_token_bound } : {}) };
     return { retained: true, call_key: input.call_key, status: input.status };
   });
   const fetchImpl = async (...args) => { sent.push(args); return fetchOverride ? fetchOverride(...args) : new Response(JSON.stringify(payload())); };
@@ -220,10 +221,10 @@ test('canonical API dispatch and deployment packaging preserve dedicated bounded
 test('source-bound public activation admits only its run and does not contain provider or caller secrets', async () => {
   const c = loadApprovedRunConfiguration();
   assert.match(c.access_sha256, /^[a-f0-9]{64}$/); assert.ok(!JSON.stringify(c).includes(key));
-  assert.ok(!JSON.stringify(c).includes(token)); assert.equal(c.run_id, 'portable-loom-first-receiver-20261009-a3');
+  assert.ok(!JSON.stringify(c).includes(token)); assert.deepEqual(c.run_ids, ASSAY_RECOVERY_RUN_IDS);
   const h = harness();
   const handler = createLoomAssayHandler({ environment: { GEMINI_API_KEY: key, TD613_LOOM_ASSAY_ACCESS_SHA256: sha256(token), VERCEL_GIT_COMMIT_SHA: head },
-    allowedRunId: c.run_id, budget: async () => { throw new Error('unexpected ledger work'); }, fetchImpl: async () => { throw new Error('unexpected provider work'); } });
+    allowedRunIds: c.run_ids, budget: async () => { throw new Error('unexpected ledger work'); }, fetchImpl: async () => { throw new Error('unexpected provider work'); } });
   const res = { setHeader() {}, end(raw) { this.body = JSON.parse(raw); } };
   await handler({ method: 'POST', headers: { authorization: `Bearer ${token}` }, body: h.request }, res);
   assert.equal(res.statusCode, 409); assert.equal(res.body.error, 'ASSAY_RUN_OUTSIDE_ACTIVATION');
@@ -286,4 +287,30 @@ test('the resolved request workload token cannot enter prompt or returned public
   await injected.handler({ method: 'POST', headers: { authorization: `Bearer ${token}`, 'x-vercel-oidc-token': workload }, body: injected.request }, res);
   assert.equal(res.body.error, 'ASSAY_PROTECTED_CREDENTIAL_IN_PAYLOAD');
   assert.equal(injected.sent.length, 0); assert.equal(injected.operations.length, 0);
+});
+function recoveryPolicy() {
+  const p = policy(); p.schema = ASSAY_RECOVERY_POLICY_SCHEMA; p.run_id = ASSAY_RECOVERY_RUN_IDS[0];
+  p.program = structuredClone(ASSAY_RECOVERY_PROGRAM); p.binding.limits.timeout_ms = 240000;
+  p.binding.pricing.input_usd_per_million = 0.75; p.binding.pricing.output_usd_per_million = 3.75;
+  return p;
+}
+test('recovery reserves the existing request byte bound without changing provider input or generation parameters', async () => {
+  const p = recoveryPolicy(), legacy = policy();
+  legacy.binding.pricing = structuredClone(p.binding.pricing);
+  const newWire = buildAssayProviderWire(prepareServerRequest(p, trial).request, p, manifest, artifact);
+  const oldWire = buildAssayProviderWire(prepareServerRequest(legacy, trial).request, legacy, manifest, artifact);
+  assert.equal(newWire.body, oldWire.body); assert.equal(newWire.request_sha256, oldWire.request_sha256);
+  assert.equal(newWire.input_token_bound, Buffer.byteLength(newWire.body) + 8192);
+  assert.ok(newWire.reserved_cost_nanos < oldWire.reserved_cost_nanos);
+  const h = harness({ p }), r = await h.run(); assert.equal(r.statusCode, 200);
+  assert.equal(h.operations[1].input.input_token_bound, newWire.input_token_bound);
+  assert.equal(r.body.reservation.input_token_bound, newWire.input_token_bound);
+});
+test('recovery rejects a widened program, legacy escape, changed model, comparison family and changed limits before generation', () => {
+  for (const mutate of [p => p.program.max_cost_usd = 11, p => p.program.run_ids.pop(),
+    p => { p.schema = 'td613.loom.server-assay-policy/v0.2'; delete p.program; },
+    p => p.binding.model = 'gemini-3.5-flash', p => p.binding.trial_family = 'COMPARISON',
+    p => p.binding.limits.max_input_tokens_per_call = 100000, p => p.binding.generation_parameters.thinking_level = 'low']) {
+    const p = recoveryPolicy(); mutate(p); assert.throws(() => validateAssayPolicy(p));
+  }
 });

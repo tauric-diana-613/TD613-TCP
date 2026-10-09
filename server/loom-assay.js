@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { timingSafeEqual } from 'node:crypto';
-import { ASSAY_RESPONSE_SCHEMA, sha256, exactFields, requireThat, buildAssayProviderWire, inspectAssayResponse } from './loom-assay-contract.js';
+import { ASSAY_RESPONSE_SCHEMA, ASSAY_RECOVERY_POLICY_SCHEMA, ASSAY_RECOVERY_RUN_IDS, sha256, canonicalJson, exactFields, requireThat, buildAssayProviderWire, inspectAssayResponse } from './loom-assay-contract.js';
 import { createAssayBudgetClient } from './loom-assay-budget-client.js';
 import { readLoomDemoVercelOidcToken } from './loom-demo-custody-client.js';
 
@@ -23,7 +23,7 @@ function authorization(req, env) {
   return { token, credential_sha256: observed };
 }
 export function createLoomAssayHandler({ environment = process.env, fetchImpl = fetch, budget = null,
-  manifest, artifactText, fixture = false, allowedRunId = null } = {}) {
+  manifest, artifactText, fixture = false, allowedRunId = null, allowedRunIds = null } = {}) {
   fixture = fixture || fetchImpl !== globalThis.fetch;
   return async (req, res) => {
     if (req.method !== 'POST') return send(res, 405, { status: 'HELD', error: 'ASSAY_POST_REQUIRED' });
@@ -44,6 +44,7 @@ export function createLoomAssayHandler({ environment = process.env, fetchImpl = 
         .some(secret => raw.includes(Buffer.from(secret))), 'ASSAY_PROTECTED_CREDENTIAL_IN_PAYLOAD');
       request = JSON.parse(raw.toString('utf8'));
       requireThat(allowedRunId === null || request.run_id === allowedRunId, 'ASSAY_RUN_OUTSIDE_ACTIVATION');
+      requireThat(allowedRunIds === null || allowedRunIds.includes(request.run_id), 'ASSAY_RUN_OUTSIDE_ACTIVATION');
       requireThat(/^[a-f0-9]{40}$/.test(environment.VERCEL_GIT_COMMIT_SHA || '')
         && request.protocol_commit === environment.VERCEL_GIT_COMMIT_SHA, 'ASSAY_DEPLOYED_SOURCE_MISMATCH');
       ({ policy } = await activeBudget('inspect', { run_id: request.run_id, credential_sha256: auth.credential_sha256 }));
@@ -52,10 +53,13 @@ export function createLoomAssayHandler({ environment = process.env, fetchImpl = 
       wire = buildAssayProviderWire(request, policy, m, artifact);
       reservation = await activeBudget('reserve', { run_id: request.run_id, credential_sha256: auth.credential_sha256,
         protocol_commit: request.protocol_commit, artifact_sha256: request.artifact_sha256, trial: request.trial,
-        request_sha256: wire.request_sha256, output_limit: wire.output_limit, prior_assistant_sha256: wire.prior_assistant_sha256 });
+        request_sha256: wire.request_sha256, output_limit: wire.output_limit, prior_assistant_sha256: wire.prior_assistant_sha256,
+        ...(policy.schema === ASSAY_RECOVERY_POLICY_SCHEMA ? { input_token_bound: wire.input_token_bound } : {}) });
       requireThat(reservation.durable_reservation === true && reservation.request_sha256 === wire.request_sha256
         && reservation.call_key === `${request.trial.trial_id}:${request.trial.role}:${request.trial.turn_index}`
         && reservation.reserved_cost_nanos === String(wire.reserved_cost_nanos), 'ASSAY_RESERVATION_RECEIPT_MISMATCH');
+      requireThat(policy.schema !== ASSAY_RECOVERY_POLICY_SCHEMA || reservation.input_token_bound === wire.input_token_bound,
+        'ASSAY_RESERVATION_RECEIPT_MISMATCH');
     } catch (error) {
       const code = /^ASSAY_[A-Z_]+$/.test(error.message) ? error.message : 'ASSAY_PREFLIGHT_HELD';
       return send(res, code === 'ASSAY_UNAUTHORIZED' ? 401 : code === 'ASSAY_DISABLED' ? 503 : 409,
@@ -81,7 +85,7 @@ export function createLoomAssayHandler({ environment = process.env, fetchImpl = 
       }
       bodyComplete = true;
       requireThat(response.ok, 'ASSAY_PROVIDER_HTTP_FAILURE');
-      returned = inspectAssayResponse(Buffer.concat(chunks), policy, wire.output_limit);
+      returned = inspectAssayResponse(Buffer.concat(chunks), policy, wire.output_limit, wire.input_token_bound);
     } catch (e) { error = /^ASSAY_[A-Z_]+$/.test(e.message) ? e.message
       : deadlineExpired ? 'ASSAY_PROVIDER_DEADLINE_EXCEEDED' : 'ASSAY_PROVIDER_TRANSPORT_HELD'; }
     finally { clearTimeout(timer); }
@@ -112,9 +116,11 @@ export function createLoomAssayHandler({ environment = process.env, fetchImpl = 
 }
 export function loadApprovedRunConfiguration(path = resolve('server/loom-assay-run-config.json')) {
   const c = JSON.parse(readFileSync(path, 'utf8'));
-  exactFields(c, ['schema', 'run_id', 'access_sha256', 'budget_url', 'authorization_ref']);
-  requireThat(c.schema === 'td613.loom.approved-assay-activation/v0.1'
-    && /^[a-zA-Z0-9_-]{1,80}$/.test(c.run_id) && /^[a-f0-9]{64}$/.test(c.access_sha256)
+  const recovery = c.schema === 'td613.loom.approved-assay-activation/v0.2';
+  exactFields(c, ['schema', recovery ? 'run_ids' : 'run_id', 'access_sha256', 'budget_url', 'authorization_ref']);
+  requireThat((recovery ? canonicalJson(c.run_ids) === canonicalJson(ASSAY_RECOVERY_RUN_IDS)
+    : c.schema === 'td613.loom.approved-assay-activation/v0.1' && /^[a-zA-Z0-9_-]{1,80}$/.test(c.run_id))
+    && /^[a-f0-9]{64}$/.test(c.access_sha256)
     && c.budget_url === 'https://br-round-union-b5v3ludi-loomassaybudget.compute.c-7.us-east-2.aws.neon.tech/'
     && c.authorization_ref === 'research/portable-loom-assay-activation-20261009/AUTHORIZATION.json', 'ASSAY_APPROVED_CONFIGURATION');
   return c;
@@ -128,6 +134,6 @@ export default function handler(req, res) {
       requireThat(!process.env.TD613_LOOM_ASSAY_BUDGET_URL || process.env.TD613_LOOM_ASSAY_BUDGET_URL === c.budget_url,
         'ASSAY_CONFIGURATION_CONFLICT');
       const environment = { ...process.env, TD613_LOOM_ASSAY_ACCESS_SHA256: c.access_sha256, TD613_LOOM_ASSAY_BUDGET_URL: c.budget_url };
-      return createLoomAssayHandler({ environment, allowedRunId: c.run_id })(req, res);
+      return createLoomAssayHandler({ environment, allowedRunIds: c.run_ids ?? [c.run_id] })(req, res);
   } catch { return send(res, 503, { status: 'HELD', error: 'ASSAY_CONFIGURATION_UNAVAILABLE' }); }
 }
