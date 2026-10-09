@@ -8,6 +8,7 @@ import { verifyPortableLoomCore } from '../app/engine/portable-loom-core.js';
 import { createPortableLoomSession, createPortableLoomSessionExport, portableLoomDigest } from '../app/engine/portable-loom-session.js';
 
 import { formatStandardPortableLoomMarkdown } from './standard-portable-loom-presentation.mjs';
+import { exportPortableRuntimeKit } from './portable-loom-runtime-kit.mjs';
 
 const destination = resolve(process.argv[2] || '');
 if (!process.argv[2]) throw new Error('Provide a new export directory.');
@@ -24,7 +25,7 @@ if (session.root.packet_digest !== await portableLoomDigest(artifact.portable_ta
 if (artifact.portable_task.documents.length || artifact.loom_gate_reports.length || artifact.session.work_units.length) throw new Error('Standard export cannot seed scenario content or results.');
 const files = [
   ['portable-loom-standard.json', JSON.stringify(artifact, null, 2) + '\n'],
-  ['portable-loom-standard.md', formatStandardPortableLoomMarkdown(artifact)],
+  ['portable-loom-standard.md', formatStandardPortableLoomMarkdown(artifact, { executableKit: true })],
 ];
 await mkdir(destination, { recursive: false });
 const manifest = { schema: 'td613.loom.standard-export-manifest/v0.1', source_revision: revision, created_at: new Date().toISOString(),
@@ -38,4 +39,8 @@ for (const [name, body] of files) {
   manifest.files.push({ name, bytes: Buffer.byteLength(body), sha256: createHash('sha256').update(body).digest('hex') });
 }
 await writeFile(join(destination, 'portable-loom-standard-manifest.json'), JSON.stringify(manifest, null, 2) + '\n', { flag: 'wx' });
+const runtime = await exportPortableRuntimeKit({ root: process.cwd(), destination, artifact, source_revision: revision });
+manifest.executable_runtime = { schema: runtime.schema, manifest: 'portable-loom-runtime-manifest.json', source_file_count: runtime.source_files.length,
+  browser_entrypoint: runtime.browser_entrypoint, cli_entrypoint: runtime.cli_entrypoint, source_status: runtime.source_status };
+await writeFile(join(destination, 'portable-loom-standard-manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
 process.stdout.write(JSON.stringify({ destination, source_revision: revision, session_root_ref: session.root.ref, files: manifest.files, status: 'EXPORTED_AWAITING_ARTIFACT_ASSAY' }, null, 2) + '\n');

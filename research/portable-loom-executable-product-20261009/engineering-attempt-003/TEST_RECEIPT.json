@@ -1,0 +1,75 @@
+{
+  "schema": "td613.engineering-test-receipt/v0.1",
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "parent_commit": "2d95ef388773e1354563b1d0dcb061da2928e0ae",
+  "source_state": "UNCOMMITTED_ENGINEERING_CANDIDATE",
+  "source_files": [
+    {
+      "path": "app/engine/portable-loom-standard-runtime.js",
+      "sha256": "8674be1d68462453624ee9e35a08aa83368ad77dd24a678daa6e8ae022ff0c3a"
+    },
+    {
+      "path": "app/engine/portable-loom-return-binding.js",
+      "sha256": "949bb7d391a6a651b14f86b7990c80c6a966855a288c56cf2b65602068e878ba"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/standard-portable-client.js",
+      "sha256": "fc6077795acab8649be762c8e6015ba30a1433fadd8fbf49b1e9a9f4df89d0fc"
+    },
+    {
+      "path": "app/engine/portable-loom-gate-explanation.js",
+      "sha256": "871618d0e33ad72a1dc56e9aa0245f28da4bcc73fdb23bd4c7fc4d1d222f216a"
+    },
+    {
+      "path": "scripts/export-standard-portable-loom.mjs",
+      "sha256": "68f692534611c41278d1b6593164a3a1880f39cc853ef7387efef2e1b0fc17f0"
+    },
+    {
+      "path": "scripts/standard-portable-loom-presentation.mjs",
+      "sha256": "a9f5fdb2d0fc4ec3162d56dd6de5902f76d0a1f1bd7e063295d437aa53651289"
+    },
+    {
+      "path": "scripts/portable-loom-runtime-kit.mjs",
+      "sha256": "aa29dd54ecb9c394a25aee5595fc4a27e2e82fbe854330a4e50bdf215e392707"
+    },
+    {
+      "path": "tests/portable-loom-standard-runtime.test.mjs",
+      "sha256": "5b604753fe670b20d08a69cb129b9c63de398336b37307ad54f9a05ad5425fd0"
+    }
+  ],
+  "executions": [
+    {
+      "command": [
+        "node",
+        "--test",
+        "tests/portable-loom-standard-runtime.test.mjs",
+        "tests/portable-loom-reentry-hostile.test.mjs",
+        "tests/portable-loom-standard-presentation.test.mjs",
+        "tests/portable-loom-core.test.mjs",
+        "tests/portable-loom-portable-gate-contract.test.mjs"
+      ],
+      "started_at": "2026-10-09T05:41:38.450805+00:00",
+      "ended_at": "2026-10-09T05:41:39.617460+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "bd93b2d7014d32ed7bf987d10fd7f932b4c67cd290e6b49305aa863b3724d440",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "node",
+        "scripts/run-pedagogue-design-gate.mjs",
+        "research/portable-loom-executable-product-20261009/DESIGN_FIXTURE.json",
+        "--json"
+      ],
+      "started_at": "2026-10-09T05:41:39.617540+00:00",
+      "ended_at": "2026-10-09T05:41:39.710198+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "4444d5942f029ab04631e18e203012e3f062e8688292d29c387c6dbef28b1c02",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "provider_calls": 0,
+  "browser_witness": "UNPERFORMED: cloud browser rejects file protocol; no workaround attempted",
+  "physical_device_witness": "UNPERFORMED",
+  "design_review_scope": "Source-inspected declared route and modeled burden only; not human comprehension measurement"
+}

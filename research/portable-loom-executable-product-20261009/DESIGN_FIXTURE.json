@@ -1,0 +1,492 @@
+{
+  "schema": "td613.pedagogue-design-fixture/v0.1",
+  "design_id": "standard-portable-executable-design-20261009",
+  "surface_reference": "Standard non-demo executable Portable Loom",
+  "governance_context": "TD613",
+  "determinism": {
+    "frozenClock": "2026-10-08T19:48:00Z",
+    "idSeed": "standard-portable-executable-design-20261009",
+    "idScope": "Standard non-demo executable Portable Loom"
+  },
+  "scene_input": {
+    "scene_kind": "GENERIC",
+    "station_owner": "Dome-World",
+    "source_status": "E2",
+    "observation_status": "OBSERVED",
+    "world_state_reference": "source_inspected_design_model_not_browser_witness",
+    "provenance": {
+      "source_references": [
+        "app/engine/portable-loom-standard-runtime.js",
+        "app/dome-world/holonomy-loom/standard-portable-client.js",
+        "scripts/portable-loom-runtime-kit.mjs"
+      ],
+      "evidence_basis": [
+        "Source-inspected declared local route",
+        "Existing design model reused with explicitly modeled burden values",
+        "No receiver, browser or comprehension observation"
+      ],
+      "transformations": [
+        "Existing manual route model mapped to the executable standard surface"
+      ],
+      "station_owners": [
+        "Dome-World"
+      ]
+    },
+    "visible_condition": {
+      "plain_language": "Choose each source, inspect the outgoing task, authorize once, capture and check the return, then choose admission. Gate and Rest preserve evidence.",
+      "surface_reference": "Standard non-demo executable Portable Loom"
+    },
+    "available_affordances": [
+      {
+        "action_id": "review_portable_gate",
+        "purpose": "Open local evidence review; no external sending or admission",
+        "authorized_by_station": "Human",
+        "reversible": true
+      }
+    ],
+    "route_topology": {
+      "entry": "Start local session",
+      "exit": "Save private record, Rest or close page",
+      "same_endpoint_not_same_history": true,
+      "missing_inputs": [
+        "rendered candidate browser witness",
+        "independent ChatGPT compliance capture",
+        "human comprehension and measured burden"
+      ],
+      "steps": [
+        {
+          "step_id": "notice",
+          "label": "See the selected task and unchecked Gate scope",
+          "phase": "NOTICE",
+          "required_fields": [
+            "selected sources",
+            "footer rule",
+            "private targets remain local"
+          ],
+          "dependencies": [],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 0,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "prepare",
+          "label": "Prepare and deliberately register the task",
+          "phase": "ACT",
+          "required_fields": [
+            "current root",
+            "explicit sources",
+            "inherited rules"
+          ],
+          "dependencies": [
+            "notice"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "return",
+          "label": "Read the captured structured return with its footer",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "capture-origin declaration",
+            "return commitments",
+            "exact reply bytes"
+          ],
+          "dependencies": [
+            "prepare"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "check",
+          "label": "Check the registered return or declared Gate capture",
+          "phase": "ACT",
+          "required_fields": [
+            "local retained registration",
+            "explicit capture",
+            "private local answer keys"
+          ],
+          "dependencies": [
+            "return"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "finding",
+          "label": "See held exposure, missingness or checked candidate",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "checked scope",
+            "counts and denominators",
+            "head unchanged by Check"
+          ],
+          "dependencies": [
+            "check"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "admit",
+          "label": "Review and explicitly admit only an eligible candidate",
+          "phase": "ACT",
+          "required_fields": [
+            "exact candidate",
+            "explicit operator gesture",
+            "unresolved claims visible"
+          ],
+          "dependencies": [
+            "finding"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "inspect",
+          "label": "Inspect local chronology and exact verification report",
+          "phase": "NAME",
+          "required_fields": [
+            "prefix-only earlier evidence",
+            "full nomenclature",
+            "separate receiver views"
+          ],
+          "dependencies": [
+            "admit"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "rest",
+          "label": "Rest, resume or exit without clearing findings",
+          "phase": "REST",
+          "required_fields": [
+            "no new demands",
+            "history retained",
+            "exit available"
+          ],
+          "dependencies": [
+            "inspect"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        }
+      ]
+    },
+    "causal_structure": {
+      "input": "Selected task, retained local registration and declared captured surfaces.",
+      "operator": "canonical core -> registered return -> Check -> explicit Admit; Gate verifier -> safe public report; footer -> local review navigation only",
+      "observable": "Checks retain their scope and missingness; opening Gate stops attention without clearing findings or admitting work.",
+      "authority": "Human closure remains required. No provider request, execution, merge or deployment follows from footer navigation.",
+      "equations": [
+        "V != C != P != L",
+        "Check != Admit",
+        "review opened != check executed",
+        "same summary != same action support"
+      ]
+    },
+    "research_frame": {
+      "question": "Does the declared executable route keep selection, authorization, Check, Admit and Rest distinct?",
+      "hypothesis": "The source declares distinct consequential actions; modeled structural burden is unchanged from the manual comparison.",
+      "observable_behavior": [
+        "The source implements separate selection, one-use authorization, capture, Check and Admit handlers",
+        "Gate reads retained local evidence without admitting work",
+        "Footer omissions and literal disclosures remain findings",
+        "Rest clears authorization and preserves evidence"
+      ],
+      "alternative_explanations": [
+        "Shared local compilers can produce conserved records without independent foreign execution.",
+        "Equal declared burden is a model assumption, not a human measurement."
+      ],
+      "expected_failure_modes": [
+        "A review click silently marks an unrun check passed.",
+        "A later clean result erases a scoped exposure.",
+        "A footer contaminates the exact structured return or custody source."
+      ],
+      "falsifier": [
+        "A lone \u7c73 dispatches a provider request during the active demo.",
+        "Changed output protocol survives receiver replay.",
+        "A pending exposure disappears on review or clean capture.",
+        "Later evidence rewrites a prefix or Check alone advances the local head."
+      ],
+      "abstention_conditions": [
+        "No retained live local registration for admission.",
+        "A whole-conversation leakage percentage is requested without defined complete capture.",
+        "A foreign compliance claim lacks an independent captured receiver episode."
+      ]
+    },
+    "missingness": [
+      "Declared source-inspection design model, not measured human burden",
+      "Browser execution blocked by cloud file-URL policy",
+      "Actual receiver compliance not exercised"
+    ],
+    "contradictions": [],
+    "claim_ceiling": {
+      "allowed_claims": [
+        "The design declares a receiver-neutral footer and an explicit scoped Gate review route.",
+        "Local finite audits and known fictional controls can be separately executed.",
+        "Rule carriage and raw reply preservation are independently testable."
+      ],
+      "forbidden_claims": [
+        "Design Gate PASS proves browser layout, human comprehension or foreign model compliance.",
+        "A copied report authenticates its source or proves whole-conversation privacy.",
+        "Opening Gate runs a check, clears an exposure or admits work.",
+        "Any LLM is compelled to obey the footer rule.",
+        "Finite synthetic observations earn empirical Golden Egg credit."
+      ]
+    },
+    "technical_terms_withheld": [
+      "canonical packet digest",
+      "finite quotient fibre",
+      "typed epistemic deficit",
+      "AIA invariant report"
+    ]
+  },
+  "baseline_route_steps": [
+    {
+      "step_id": "notice",
+      "label": "Manual equivalent: See the selected task and unchecked Gate scope",
+      "phase": "NOTICE",
+      "required_fields": [
+        "selected sources",
+        "footer rule",
+        "private targets remain local"
+      ],
+      "dependencies": [],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 0,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "prepare",
+      "label": "Manual equivalent: Prepare and deliberately register the task",
+      "phase": "ACT",
+      "required_fields": [
+        "current root",
+        "explicit sources",
+        "inherited rules"
+      ],
+      "dependencies": [
+        "notice"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 1,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "return",
+      "label": "Manual equivalent: Read the captured structured return with its footer",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": [
+        "capture-origin declaration",
+        "return commitments",
+        "exact reply bytes"
+      ],
+      "dependencies": [
+        "prepare"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "check",
+      "label": "Manual equivalent: Check the registered return or declared Gate capture",
+      "phase": "ACT",
+      "required_fields": [
+        "local retained registration",
+        "explicit capture",
+        "private local answer keys"
+      ],
+      "dependencies": [
+        "return"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "finding",
+      "label": "Manual equivalent: See held exposure, missingness or checked candidate",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": [
+        "checked scope",
+        "counts and denominators",
+        "head unchanged by Check"
+      ],
+      "dependencies": [
+        "check"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "admit",
+      "label": "Manual equivalent: Review and explicitly admit only an eligible candidate",
+      "phase": "ACT",
+      "required_fields": [
+        "exact candidate",
+        "explicit operator gesture",
+        "unresolved claims visible"
+      ],
+      "dependencies": [
+        "finding"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "inspect",
+      "label": "Manual equivalent: Inspect local chronology and exact verification report",
+      "phase": "NAME",
+      "required_fields": [
+        "prefix-only earlier evidence",
+        "full nomenclature",
+        "separate receiver views"
+      ],
+      "dependencies": [
+        "admit"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 1,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "rest",
+      "label": "Manual equivalent: Rest, resume or exit without clearing findings",
+      "phase": "REST",
+      "required_fields": [
+        "no new demands",
+        "history retained",
+        "exit available"
+      ],
+      "dependencies": [
+        "inspect"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    }
+  ],
+  "action": {
+    "action_id": "review_portable_gate"
+  },
+  "world_delta": {
+    "observation_status": "UNRESOLVED",
+    "causal_trace": [
+      "Declared: a prepared root binds one output protocol.",
+      "Declared: Gate review navigation has no model request or admission consequence.",
+      "Declared: explicit capture checks yield retained scoped reports.",
+      "Declared: registration and Check precede human Admit; later evidence preserves earlier records."
+    ],
+    "losses": [],
+    "missingness": [
+      "This fixture is a declared design audit, not a browser execution witness.",
+      "ChatGPT is the first specified receiver format; model compliance has not been observed.",
+      "Golden Egg empirical closure is not earned by this fictional assay."
+    ],
+    "contradictions": [],
+    "unresolved_relations": [
+      "Independent browser and receiver witnesses are separate."
+    ],
+    "glyph_candidates": [],
+    "static_equivalent": {
+      "summary": "Footer action stays visible with static glow when reduced motion is requested. Findings, exact source, Rest and exit remain available.",
+      "steps": [
+        "read phase and scope",
+        "open Gate",
+        "check explicit capture",
+        "review exact candidate",
+        "explicitly admit or rest"
+      ]
+    }
+  },
+  "name": {
+    "plain_language": "The footer keeps scoped Gate review available without changing the answer or granting authority.",
+    "glyph_relation": null,
+    "technical_term": "canonical portable output protocol and Gate report",
+    "non_equivalence": [
+      "carried integrity is not origin authentication",
+      "Gate review is not verification",
+      "Check is not Admit",
+      "registered chronology is not foreign internal chronology"
+    ]
+  },
+  "transfer_context": {
+    "context": {
+      "surface": "Any LLM receiving the portable core; ChatGPT first specified binding",
+      "realization": "Carried instructions and captured returns, with a local Marrowline demo review action."
+    },
+    "shared_relation_candidate": "Receiver presentations vary while root rules and checked report scope remain bound.",
+    "observable_correspondence": [
+      "Same output protocol is recomputed for registered continuation.",
+      "Public report includes counts and references without private targets."
+    ],
+    "alternative_explanations": [
+      "Receiver prose can echo a footer without executing any check."
+    ],
+    "abstention_conditions": [
+      "No captured foreign receiver episode or no local private records for recomputation."
+    ]
+  },
+  "design_evidence_scope": "Declared structural design only; no measured comprehension or usability improvement."
+}

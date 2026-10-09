@@ -1,0 +1,50 @@
+{
+  "command": [
+    "node",
+    "--test",
+    "tests/portable-loom-standard-runtime.test.mjs",
+    "tests/portable-loom-core.test.mjs",
+    "tests/portable-loom-portable-gate-contract.test.mjs"
+  ],
+  "started_at": "2026-10-09T05:30:06.217740+00:00",
+  "ended_at": "2026-10-09T05:30:07.346077+00:00",
+  "exit_code": 1,
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "source_status": "UNCOMMITTED_PATCH_AT_EXECUTION",
+  "source_records": [
+    {
+      "path": "app/engine/portable-loom-return-binding.js",
+      "sha256": "949bb7d391a6a651b14f86b7990c80c6a966855a288c56cf2b65602068e878ba"
+    },
+    {
+      "path": "app/engine/portable-loom-standard-runtime.js",
+      "sha256": "e900fd2b823770b9c159a752f3927a19d43c64818dee78cabdda008f9c7b5acc"
+    },
+    {
+      "path": "app/engine/portable-loom-gate-explanation.js",
+      "sha256": "871618d0e33ad72a1dc56e9aa0245f28da4bcc73fdb23bd4c7fc4d1d222f216a"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/standard-portable-client.js",
+      "sha256": "3f54fde1bf5efb98053396921ef76a347f9753746d53597300dc9c6861208e7c"
+    },
+    {
+      "path": "scripts/portable-loom-runtime-kit.mjs",
+      "sha256": "04414410dc2023f7727c9aba55aaae3854544d6c224012709b2f8590824c2da8"
+    },
+    {
+      "path": "scripts/export-standard-portable-loom.mjs",
+      "sha256": "68f692534611c41278d1b6593164a3a1880f39cc853ef7387efef2e1b0fc17f0"
+    },
+    {
+      "path": "scripts/standard-portable-loom-presentation.mjs",
+      "sha256": "a9f5fdb2d0fc4ec3162d56dd6de5902f76d0a1f1bd7e063295d437aa53651289"
+    },
+    {
+      "path": "tests/portable-loom-standard-runtime.test.mjs",
+      "sha256": "0411d16b48834085e94e02daeeaddf599fe2b53e834ad5220da4abf86245b6b3"
+    }
+  ],
+  "provider_calls": 0,
+  "retest_reason": "Correct intake error-code assertion; use the admitted working-tree source label in fresh fixtures; scan malformed original captures before parsing; correct carried route nomenclature."
+}

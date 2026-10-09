@@ -1,0 +1,69 @@
+✔ hostile wrong session root holds without advancing the local head (62.712115ms)
+✔ hostile wrong policy holds without advancing the local head (35.42263ms)
+✔ hostile stale anchor holds without advancing the local head (33.085291ms)
+✔ hostile future/nonexistent anchor holds without advancing the local head (32.010114ms)
+✔ hostile wrong excursion holds without advancing the local head (24.864735ms)
+✔ hostile wrong intent holds without advancing the local head (22.954083ms)
+✔ hostile undeclared source holds without advancing the local head (41.910201ms)
+✔ hostile source commitment substitution holds without advancing the local head (52.562731ms)
+✔ hostile task substitution holds without advancing the local head (36.179716ms)
+✔ hostile answer substitution holds without advancing the local head (29.041288ms)
+✔ hostile wrong local turn order holds without advancing the local head (24.052234ms)
+✔ hostile policy weakening declaration holds without advancing the local head (24.002469ms)
+✔ a second lane for the same live root stays held even after closing the first (35.597886ms)
+✔ a live legacy policy extension is held instead of certifying semantic compatibility (13.69242ms)
+✔ wrong-head gesture, copied capability, replay and duplicate admission cannot fork the local ledger (40.067232ms)
+✔ presentation changes preserve eligibility while source/task/answer semantic substitutions change it (23.815186ms)
+✔ attached literal leakage prevents admission (25.781083ms)
+✔ attached clean literal masking standalone recovery prevents admission (24.559142ms)
+✔ attached clean marginal probes masking joined recovery prevents admission (22.79451ms)
+✔ attached missing capture channel prevents admission (20.310961ms)
+✔ unregistered attached challenge cannot be replaced by a later clean attachment to obtain admission (24.890775ms)
+✔ clean retained challenge alone cannot admit; admitted evidence remains locally replayable and private (32.750284ms)
+✔ standard receiver presentation excludes controller execution plans while retaining governance (3.089177ms)
+✔ presentation repair preserves the complete activation payload and all bound rules byte for byte (8.935207ms)
+✔ standard runtime recomputes template integrity and deliberately starts a fresh local custody root (175.533527ms)
+✔ only deliberately shared sources enter exact carriage; authorization is default-deny, exact and single-shot (88.009275ms)
+✖ outbound protected literals are held before carriage, including Unicode normalization (77.668881ms)
+✔ capture adapter binds actual reply content and original bytes; Check and admission remain separate (104.510188ms)
+✔ substituted receiver receipt and undeclared sources cannot be laundered through local binding (88.878381ms)
+✔ actual supplied-capture disclosure detection persists through a later clean reply (78.967006ms)
+✔ Rest and retries preserve history but reject standing or serialized authorization (108.796487ms)
+✔ expired authorization is consumed; journal timestamps and predecessor digests remain inspectable (61.135228ms)
+✔ second admission preserves predecessor and content lineage; fresh sources are explicit (83.171791ms)
+ℹ tests 33
+ℹ suites 0
+ℹ pass 32
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1045.788779
+
+✖ failing tests:
+
+test at tests/portable-loom-standard-runtime.test.mjs:45:1
+✖ outbound protected literals are held before carriage, including Unicode normalization (77.668881ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /PROTECTED_EGRESS/. Input:
+  
+  'Error: A local private phrase appears in the selected AI input. Edit that input or keep its document local before sending.'
+  
+      at async TestContext.<anonymous> (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-standard-runtime.test.mjs:47:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: A local private phrase appears in the selected AI input. Edit that input or keep its document local before sending.
+        at fail (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-intake.js:13:17)
+        at buildLoomAiRequest (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-intake.js:100:25)
+        at stageUnlocked (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/engine/portable-loom-standard-runtime.js:120:23)
+        at file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/engine/portable-loom-standard-runtime.js:140:39
+        at locked (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/engine/portable-loom-standard-runtime.js:73:37)
+        at Object.stage (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/engine/portable-loom-standard-runtime.js:140:26)
+        at TestContext.<anonymous> (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-standard-runtime.test.mjs:47:32)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: /PROTECTED_EGRESS/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

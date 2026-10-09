@@ -1,0 +1,41 @@
+✔ footer preserves missing authorization and receipt evidence and refuses private presentation labels (1.025868ms)
+✔ canonical demo and custom packets share the recomputable core and conventional nomenclature (121.77343ms)
+✔ receiver projections preserve distinct presentations, policy and prefix-only chronology (57.468446ms)
+✔ actual finite quotient rejects the erased recommendation while preserving sound support (87.767391ms)
+✔ independent recomputation rejects changed legends, supports, chronology, projections and authority (303.862429ms)
+✔ Gate proves literal, joined and incomplete alerts without publishing private ground truth (59.419441ms)
+✔ reference demo uses registered returns: Check never advances and explicit Admit preserves changed evidence (109.027867ms)
+✔ a captured exposure holds its registered scope and a later clean result cannot erase it (59.581276ms)
+✔ portable Gate primary action stays in the receiving conversation; manual destination grants no access or transfer (71.51614ms)
+✔ the complete carried receipt shape is accepted by the installed verifier without granting custody (51.80167ms)
+✔ activation asks for task/source selection and defers catalogue and receipts; prior frozen prompt remains compatible (60.008088ms)
+✔ standard runtime recomputes template integrity and deliberately starts a fresh local custody root (122.967421ms)
+✔ only deliberately shared sources enter exact carriage; authorization is default-deny, exact and single-shot (89.282574ms)
+✔ outbound protected literals are held before carriage, including Unicode normalization (84.868585ms)
+✔ capture adapter binds actual reply content and original bytes; Check and admission remain separate (106.813606ms)
+✔ substituted receiver receipt and undeclared sources cannot be laundered through local binding (82.423801ms)
+✖ actual supplied-capture disclosure detection persists through a later clean reply (94.871306ms)
+✔ Rest and retries preserve history but reject standing or serialized authorization (92.50552ms)
+✔ expired authorization is consumed; journal timestamps and predecessor digests remain inspectable (58.320478ms)
+✔ second admission preserves predecessor and content lineage; fresh sources are explicit (74.00447ms)
+✔ malformed supplied replies are still scanned for protected-literal disclosure (52.439149ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 20
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1068.511317
+
+✖ failing tests:
+
+test at tests/portable-loom-standard-runtime.test.mjs:74:1
+✖ actual supplied-capture disclosure detection persists through a later clean reply (94.871306ms)
+  Error: Captured bound reply and explicit policy review required.
+      at file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/engine/portable-loom-standard-runtime.js:242:76
+      at locked (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/engine/portable-loom-standard-runtime.js:73:37)
+      at Object.check (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/engine/portable-loom-standard-runtime.js:241:39)
+      at TestContext.<anonymous> (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-standard-runtime.test.mjs:79:70)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)

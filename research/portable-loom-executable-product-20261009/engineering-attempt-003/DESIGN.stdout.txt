@@ -1,0 +1,2159 @@
+{
+  "schema": "td613.pedagogue-design-review/v0.5",
+  "design_id": "standard-portable-executable-design-20261009",
+  "surface_reference": "Standard non-demo executable Portable Loom",
+  "scene_host": "Dome-World",
+  "governance_context": "TD613",
+  "scene": {
+    "schema": "td613.flowcore.pedagogical-scene/v0.1",
+    "scene_id": "flowped_scene_bbc2b86688c602718d754425",
+    "scene_kind": "GENERIC",
+    "source_status": "E2",
+    "observation_status": "OBSERVED",
+    "world_state_reference": "source_inspected_design_model_not_browser_witness",
+    "provenance": {
+      "source_references": [
+        "app/dome-world/holonomy-loom/standard-portable-client.js",
+        "app/engine/portable-loom-standard-runtime.js",
+        "scripts/portable-loom-runtime-kit.mjs"
+      ],
+      "evidence_basis": [
+        "Existing design model reused with explicitly modeled burden values",
+        "No receiver, browser or comprehension observation",
+        "Source-inspected declared local route"
+      ],
+      "transformations": [
+        "Existing manual route model mapped to the executable standard surface"
+      ],
+      "station_owners": [
+        "Dome-World"
+      ]
+    },
+    "visible_condition": {
+      "plain_language": "Choose each source, inspect the outgoing task, authorize once, capture and check the return, then choose admission. Gate and Rest preserve evidence.",
+      "surface_reference": "Standard non-demo executable Portable Loom"
+    },
+    "available_affordances": [
+      {
+        "action_id": "review_portable_gate",
+        "purpose": "Open local evidence review; no external sending or admission",
+        "authorized_by_station": "Human",
+        "reversible": true,
+        "irreversible_consequence": null
+      }
+    ],
+    "route_topology": {
+      "entry": "Start local session",
+      "exit": "Save private record, Rest or close page",
+      "same_endpoint_not_same_history": true,
+      "missing_inputs": [
+        "rendered candidate browser witness",
+        "independent ChatGPT compliance capture",
+        "human comprehension and measured burden"
+      ],
+      "steps": [
+        {
+          "step_id": "notice",
+          "label": "See the selected task and unchecked Gate scope",
+          "phase": "NOTICE",
+          "required_fields": [
+            "selected sources",
+            "footer rule",
+            "private targets remain local"
+          ],
+          "dependencies": [],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 0,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "prepare",
+          "label": "Prepare and deliberately register the task",
+          "phase": "ACT",
+          "required_fields": [
+            "current root",
+            "explicit sources",
+            "inherited rules"
+          ],
+          "dependencies": [
+            "notice"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "return",
+          "label": "Read the captured structured return with its footer",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "capture-origin declaration",
+            "return commitments",
+            "exact reply bytes"
+          ],
+          "dependencies": [
+            "prepare"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "check",
+          "label": "Check the registered return or declared Gate capture",
+          "phase": "ACT",
+          "required_fields": [
+            "local retained registration",
+            "explicit capture",
+            "private local answer keys"
+          ],
+          "dependencies": [
+            "return"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "finding",
+          "label": "See held exposure, missingness or checked candidate",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "checked scope",
+            "counts and denominators",
+            "head unchanged by Check"
+          ],
+          "dependencies": [
+            "check"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "admit",
+          "label": "Review and explicitly admit only an eligible candidate",
+          "phase": "ACT",
+          "required_fields": [
+            "exact candidate",
+            "explicit operator gesture",
+            "unresolved claims visible"
+          ],
+          "dependencies": [
+            "finding"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "inspect",
+          "label": "Inspect local chronology and exact verification report",
+          "phase": "NAME",
+          "required_fields": [
+            "prefix-only earlier evidence",
+            "full nomenclature",
+            "separate receiver views"
+          ],
+          "dependencies": [
+            "admit"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "rest",
+          "label": "Rest, resume or exit without clearing findings",
+          "phase": "REST",
+          "required_fields": [
+            "no new demands",
+            "history retained",
+            "exit available"
+          ],
+          "dependencies": [
+            "inspect"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        }
+      ]
+    },
+    "causal_structure": {
+      "input": "Selected task, retained local registration and declared captured surfaces.",
+      "operator": "canonical core -> registered return -> Check -> explicit Admit; Gate verifier -> safe public report; footer -> local review navigation only",
+      "observable": "Checks retain their scope and missingness; opening Gate stops attention without clearing findings or admitting work.",
+      "authority": "Human closure remains required. No provider request, execution, merge or deployment follows from footer navigation.",
+      "equations": [
+        "V != C != P != L",
+        "Check != Admit",
+        "review opened != check executed",
+        "same summary != same action support"
+      ]
+    },
+    "research_frame": {
+      "question": "Does the declared executable route keep selection, authorization, Check, Admit and Rest distinct?",
+      "hypothesis": "The source declares distinct consequential actions; modeled structural burden is unchanged from the manual comparison.",
+      "observable_behavior": [
+        "Footer omissions and literal disclosures remain findings",
+        "Gate reads retained local evidence without admitting work",
+        "Rest clears authorization and preserves evidence",
+        "The source implements separate selection, one-use authorization, capture, Check and Admit handlers"
+      ],
+      "alternative_explanations": [
+        "Equal declared burden is a model assumption, not a human measurement.",
+        "Shared local compilers can produce conserved records without independent foreign execution."
+      ],
+      "expected_failure_modes": [
+        "A footer contaminates the exact structured return or custody source.",
+        "A later clean result erases a scoped exposure.",
+        "A review click silently marks an unrun check passed."
+      ],
+      "falsifier": [
+        "A lone 米 dispatches a provider request during the active demo.",
+        "A pending exposure disappears on review or clean capture.",
+        "Changed output protocol survives receiver replay.",
+        "Later evidence rewrites a prefix or Check alone advances the local head."
+      ],
+      "abstention_conditions": [
+        "A foreign compliance claim lacks an independent captured receiver episode.",
+        "A whole-conversation leakage percentage is requested without defined complete capture.",
+        "No retained live local registration for admission."
+      ],
+      "claim_ceiling_reference": "scene.claim_ceiling"
+    },
+    "missingness": [
+      "Actual receiver compliance not exercised",
+      "Browser execution blocked by cloud file-URL policy",
+      "Declared source-inspection design model, not measured human burden"
+    ],
+    "contradictions": [],
+    "claim_ceiling": {
+      "allowed_claims": [
+        "Local finite audits and known fictional controls can be separately executed.",
+        "Rule carriage and raw reply preservation are independently testable.",
+        "The design declares a receiver-neutral footer and an explicit scoped Gate review route."
+      ],
+      "forbidden_claims": [
+        "A copied report authenticates its source or proves whole-conversation privacy.",
+        "Any LLM is compelled to obey the footer rule.",
+        "Design Gate PASS proves browser layout, human comprehension or foreign model compliance.",
+        "Finite synthetic observations earn empirical Golden Egg credit.",
+        "Opening Gate runs a check, clears an exposure or admits work.",
+        "authorship",
+        "automatic Ash action",
+        "automatic release",
+        "cognition",
+        "consent inferred from engagement",
+        "developmental rank",
+        "identity",
+        "legal authority",
+        "mastery",
+        "psychological interior state",
+        "truth outside a formally closed proposition"
+      ]
+    },
+    "technical_terms_withheld": [
+      "AIA invariant report",
+      "canonical packet digest",
+      "finite quotient fibre",
+      "typed epistemic deficit"
+    ],
+    "station_owner": "Dome-World",
+    "anisotropic_legibility": {
+      "available_routes": [
+        "EXPERIENTIAL",
+        "CUSTODIAL",
+        "AUDIT",
+        "IMPLEMENTATION"
+      ],
+      "route_selection": "EXPLICIT_OPERATOR_SELECTION_ONLY",
+      "route_registry_schema": "td613.flowcore.aia-route-registry/v0.1",
+      "route_inference_forbidden": true
+    },
+    "authority": {
+      "flowcore_commands_station": false,
+      "automatic_ash_action": false,
+      "release_authorized": false,
+      "station_mutation_authorized": false,
+      "human_closure_required": true
+    },
+    "rest": {
+      "available": true,
+      "penalty": false,
+      "continuity_preserved": true,
+      "new_demands_withheld": true
+    },
+    "exit": {
+      "available": true,
+      "penalty": false
+    },
+    "closure": {
+      "required": true,
+      "status": "OPEN",
+      "closed_by": null
+    }
+  },
+  "phases": [
+    "NOTICE",
+    "ACT",
+    "WORLD_ANSWERS",
+    "NAME",
+    "REST"
+  ],
+  "rest": {
+    "schema": "td613.flowcore.rest-state/v0.1",
+    "rest_id": "flowped_rest_fb8e74c976488901bf8e9e71",
+    "scene_reference": "flowped_scene_bbc2b86688c602718d754425",
+    "transition_reference": "flowped_tx_f50ff0370363822e9c2c85fd",
+    "new_prompts_withheld": true,
+    "recent_consequence_visible": true,
+    "content_erased": false,
+    "continuity_preserved": true,
+    "penalty": false,
+    "return_available": true,
+    "exit_available": true,
+    "automatic_next_phase": false,
+    "closure": {
+      "required": true,
+      "status": "OPEN",
+      "closed_by": null
+    }
+  },
+  "transfer": {
+    "schema": "td613.flowcore.transfer-encounter/v0.1",
+    "transfer_id": "flowped_transfer_d4fcf6e606b76764af0fb3f8",
+    "origin_transition_reference": "flowped_tx_0a5a0442a6fc2ce3ca5720ed",
+    "new_context": {
+      "surface": "Any LLM receiving the portable core; ChatGPT first specified binding",
+      "realization": "Carried instructions and captured returns, with a local Marrowline demo review action."
+    },
+    "shared_relation_candidate": "Receiver presentations vary while root rules and checked report scope remain bound.",
+    "observable_correspondence": [
+      "Public report includes counts and references without private targets.",
+      "Same output protocol is recomputed for registered continuation."
+    ],
+    "alternative_explanations": [
+      "Receiver prose can echo a footer without executing any check."
+    ],
+    "abstention_conditions": [
+      "No captured foreign receiver episode or no local private records for recomputation."
+    ],
+    "system_claim": "pattern-relation-observed-across-contexts",
+    "forbidden_claims": [
+      "authorship",
+      "automatic Ash action",
+      "cognition",
+      "identity",
+      "mastery",
+      "transfer proves learning",
+      "transfer proves universal equivalence"
+    ],
+    "station_owner": "Dome-World",
+    "authority": {
+      "automatic_station_advance": false,
+      "automatic_ash_action": false,
+      "human_closure_required": true
+    },
+    "closure": {
+      "status": "OPEN",
+      "closed_by": null
+    }
+  },
+  "aia_report": {
+    "schema": "td613.aia.invariant-report/v0.1",
+    "scene_reference": "flowped_scene_bbc2b86688c602718d754425",
+    "routes": [
+      "EXPERIENTIAL",
+      "CUSTODIAL",
+      "AUDIT",
+      "IMPLEMENTATION"
+    ],
+    "pair_count": 6,
+    "all_invariants_preserved": true,
+    "all_surfaces_non_equivalent": true,
+    "route_inference_forbidden": true,
+    "authority_transferred": false,
+    "human_closure_required": true,
+    "closure": {
+      "status": "OPEN",
+      "closed_by": null
+    }
+  },
+  "aia_surface_binding": {
+    "schema": "td613.aia.surface-binding/v0.1",
+    "surface_reference": "Standard non-demo executable Portable Loom",
+    "host_station": "Dome-World",
+    "governance_context": "TD613",
+    "nested_surface": true,
+    "route_selection": "EXPLICIT_OPERATOR_SELECTION_ONLY",
+    "route_inference_forbidden": true,
+    "routes": [
+      "EXPERIENTIAL",
+      "CUSTODIAL",
+      "AUDIT",
+      "IMPLEMENTATION"
+    ],
+    "required_invariants": [
+      "provenance",
+      "missingness",
+      "contradictions",
+      "causal_structure",
+      "claim_ceiling",
+      "station_ownership",
+      "authorized_actions",
+      "source_status",
+      "observation_status"
+    ],
+    "consequence_order": "CONSEQUENCE_BEFORE_ONTOLOGY",
+    "internal_legibility": "NOW_WHY_EXACT",
+    "outside_posture": "MINIMUM_DISCLOSURE_NON_AUTHORITATIVE",
+    "fabricated_decoys": false,
+    "rest": {
+      "available": true,
+      "penalty": false
+    },
+    "exit": {
+      "available": true,
+      "penalty": false
+    },
+    "authority": {
+      "station_mutation_authorized": false,
+      "automatic_release": false,
+      "automatic_redesign": false,
+      "route_inference_allowed": false,
+      "authority_may_cross": false,
+      "human_closure_required": true
+    }
+  },
+  "aia_surface_projections": [
+    {
+      "schema": "td613.aia.surface-projection/v0.1",
+      "surface_reference": "Standard non-demo executable Portable Loom",
+      "host_station": "Dome-World",
+      "governance_context": "TD613",
+      "governed_reference": "flowped_scene_bbc2b86688c602718d754425:flowped_tx_0a5a0442a6fc2ce3ca5720ed",
+      "route": "EXPERIENTIAL",
+      "route_purpose": "Encounter condition, action, consequence, relation, rest, and transfer through direct participation.",
+      "route_selection": "EXPLICIT_OPERATOR_SELECTION_ONLY",
+      "route_inference_forbidden": true,
+      "invariants": {
+        "provenance": {
+          "source_references": [
+            "app/dome-world/holonomy-loom/standard-portable-client.js",
+            "app/engine/portable-loom-standard-runtime.js",
+            "scripts/portable-loom-runtime-kit.mjs"
+          ],
+          "evidence_basis": [
+            "Existing design model reused with explicitly modeled burden values",
+            "No receiver, browser or comprehension observation",
+            "Source-inspected declared local route"
+          ],
+          "transformations": [
+            "Existing manual route model mapped to the executable standard surface"
+          ],
+          "station_owners": [
+            "Dome-World"
+          ]
+        },
+        "missingness": [
+          "Actual receiver compliance not exercised",
+          "Browser execution blocked by cloud file-URL policy",
+          "Declared source-inspection design model, not measured human burden"
+        ],
+        "contradictions": [],
+        "causal_structure": {
+          "input": "Selected task, retained local registration and declared captured surfaces.",
+          "operator": "canonical core -> registered return -> Check -> explicit Admit; Gate verifier -> safe public report; footer -> local review navigation only",
+          "observable": "Checks retain their scope and missingness; opening Gate stops attention without clearing findings or admitting work.",
+          "authority": "Human closure remains required. No provider request, execution, merge or deployment follows from footer navigation.",
+          "equations": [
+            "V != C != P != L",
+            "Check != Admit",
+            "review opened != check executed",
+            "same summary != same action support"
+          ]
+        },
+        "claim_ceiling": {
+          "allowed_claims": [
+            "Local finite audits and known fictional controls can be separately executed.",
+            "Rule carriage and raw reply preservation are independently testable.",
+            "The design declares a receiver-neutral footer and an explicit scoped Gate review route."
+          ],
+          "forbidden_claims": [
+            "A copied report authenticates its source or proves whole-conversation privacy.",
+            "Any LLM is compelled to obey the footer rule.",
+            "Design Gate PASS proves browser layout, human comprehension or foreign model compliance.",
+            "Finite synthetic observations earn empirical Golden Egg credit.",
+            "Opening Gate runs a check, clears an exposure or admits work.",
+            "authorship",
+            "automatic Ash action",
+            "automatic release",
+            "cognition",
+            "consent inferred from engagement",
+            "developmental rank",
+            "identity",
+            "legal authority",
+            "mastery",
+            "psychological interior state",
+            "truth outside a formally closed proposition"
+          ]
+        },
+        "station_ownership": [
+          "Dome-World"
+        ],
+        "authorized_actions": [],
+        "source_status": "E2",
+        "observation_status": "OBSERVED"
+      },
+      "surface": {
+        "order": [
+          "visible_condition",
+          "meaningful_action",
+          "world_answer",
+          "plain_consequence",
+          "relation_after_experience",
+          "rest",
+          "exit"
+        ],
+        "visible_condition": {
+          "plain_language": "Choose each source, inspect the outgoing task, authorize once, capture and check the return, then choose admission. Gate and Rest preserve evidence.",
+          "surface_reference": "Standard non-demo executable Portable Loom"
+        },
+        "meaningful_action": null,
+        "world_answer": {
+          "causal_trace": [],
+          "unresolved_relations": []
+        },
+        "plain_consequence": "The footer keeps scoped Gate review available without changing the answer or granting authority.",
+        "relation_after_experience": {
+          "plain_language": "The footer keeps scoped Gate review available without changing the answer or granting authority.",
+          "glyph_relation": null,
+          "technical_term": "canonical portable output protocol and Gate report",
+          "non_equivalence": [
+            "Check is not Admit",
+            "Gate review is not verification",
+            "carried integrity is not origin authentication",
+            "registered chronology is not foreign internal chronology"
+          ]
+        },
+        "alternate_explanations": [
+          "Equal declared burden is a model assumption, not a human measurement.",
+          "Shared local compilers can produce conserved records without independent foreign execution."
+        ],
+        "terminology": {
+          "density": "LOW",
+          "withheld_until_world_answer": [
+            "AIA invariant report",
+            "canonical packet digest",
+            "finite quotient fibre",
+            "typed epistemic deficit"
+          ]
+        }
+      },
+      "rest": {
+        "available": true,
+        "penalty": false
+      },
+      "exit": {
+        "available": true,
+        "penalty": false
+      },
+      "authority": {
+        "station_mutation_authorized": false,
+        "automatic_release": false,
+        "automatic_redesign": false,
+        "route_inference_allowed": false,
+        "authority_may_cross": false,
+        "human_closure_required": true
+      },
+      "closure": {
+        "status": "OPEN",
+        "closed_by": null
+      },
+      "user_level_score": null,
+      "diagnostic_claim": null
+    },
+    {
+      "schema": "td613.aia.surface-projection/v0.1",
+      "surface_reference": "Standard non-demo executable Portable Loom",
+      "host_station": "Dome-World",
+      "governance_context": "TD613",
+      "governed_reference": "flowped_scene_bbc2b86688c602718d754425:flowped_tx_0a5a0442a6fc2ce3ca5720ed",
+      "route": "CUSTODIAL",
+      "route_purpose": "Inspect source relationship, custody posture, continuity, lawful next action, and downstream consequence.",
+      "route_selection": "EXPLICIT_OPERATOR_SELECTION_ONLY",
+      "route_inference_forbidden": true,
+      "invariants": {
+        "provenance": {
+          "source_references": [
+            "app/dome-world/holonomy-loom/standard-portable-client.js",
+            "app/engine/portable-loom-standard-runtime.js",
+            "scripts/portable-loom-runtime-kit.mjs"
+          ],
+          "evidence_basis": [
+            "Existing design model reused with explicitly modeled burden values",
+            "No receiver, browser or comprehension observation",
+            "Source-inspected declared local route"
+          ],
+          "transformations": [
+            "Existing manual route model mapped to the executable standard surface"
+          ],
+          "station_owners": [
+            "Dome-World"
+          ]
+        },
+        "missingness": [
+          "Actual receiver compliance not exercised",
+          "Browser execution blocked by cloud file-URL policy",
+          "Declared source-inspection design model, not measured human burden"
+        ],
+        "contradictions": [],
+        "causal_structure": {
+          "input": "Selected task, retained local registration and declared captured surfaces.",
+          "operator": "canonical core -> registered return -> Check -> explicit Admit; Gate verifier -> safe public report; footer -> local review navigation only",
+          "observable": "Checks retain their scope and missingness; opening Gate stops attention without clearing findings or admitting work.",
+          "authority": "Human closure remains required. No provider request, execution, merge or deployment follows from footer navigation.",
+          "equations": [
+            "V != C != P != L",
+            "Check != Admit",
+            "review opened != check executed",
+            "same summary != same action support"
+          ]
+        },
+        "claim_ceiling": {
+          "allowed_claims": [
+            "Local finite audits and known fictional controls can be separately executed.",
+            "Rule carriage and raw reply preservation are independently testable.",
+            "The design declares a receiver-neutral footer and an explicit scoped Gate review route."
+          ],
+          "forbidden_claims": [
+            "A copied report authenticates its source or proves whole-conversation privacy.",
+            "Any LLM is compelled to obey the footer rule.",
+            "Design Gate PASS proves browser layout, human comprehension or foreign model compliance.",
+            "Finite synthetic observations earn empirical Golden Egg credit.",
+            "Opening Gate runs a check, clears an exposure or admits work.",
+            "authorship",
+            "automatic Ash action",
+            "automatic release",
+            "cognition",
+            "consent inferred from engagement",
+            "developmental rank",
+            "identity",
+            "legal authority",
+            "mastery",
+            "psychological interior state",
+            "truth outside a formally closed proposition"
+          ]
+        },
+        "station_ownership": [
+          "Dome-World"
+        ],
+        "authorized_actions": [],
+        "source_status": "E2",
+        "observation_status": "OBSERVED"
+      },
+      "surface": {
+        "order": [
+          "source_relationship",
+          "sensitivity",
+          "custody_posture",
+          "lawful_next_action",
+          "downstream_consequence",
+          "continuity",
+          "rest",
+          "exit"
+        ],
+        "source_relationship": {
+          "source_references": [
+            "app/dome-world/holonomy-loom/standard-portable-client.js",
+            "app/engine/portable-loom-standard-runtime.js",
+            "scripts/portable-loom-runtime-kit.mjs"
+          ],
+          "evidence_basis": [
+            "Existing design model reused with explicitly modeled burden values",
+            "No receiver, browser or comprehension observation",
+            "Source-inspected declared local route"
+          ],
+          "transformations": [
+            "Existing manual route model mapped to the executable standard surface"
+          ],
+          "station_owners": [
+            "Dome-World"
+          ]
+        },
+        "sensitivity": {
+          "source_status": "E2",
+          "observation_status": "OBSERVED",
+          "missingness": [
+            "Actual receiver compliance not exercised",
+            "Browser execution blocked by cloud file-URL policy",
+            "Declared source-inspection design model, not measured human burden"
+          ]
+        },
+        "custody_posture": {
+          "host_station": "Dome-World",
+          "source_station_owners": [
+            "Dome-World"
+          ],
+          "flowcore_commands_station": false
+        },
+        "lawful_next_action": null,
+        "downstream_consequence": null,
+        "continuity": {
+          "rest_preserves_continuity": true,
+          "closure_status": "OPEN"
+        }
+      },
+      "rest": {
+        "available": true,
+        "penalty": false
+      },
+      "exit": {
+        "available": true,
+        "penalty": false
+      },
+      "authority": {
+        "station_mutation_authorized": false,
+        "automatic_release": false,
+        "automatic_redesign": false,
+        "route_inference_allowed": false,
+        "authority_may_cross": false,
+        "human_closure_required": true
+      },
+      "closure": {
+        "status": "OPEN",
+        "closed_by": null
+      },
+      "user_level_score": null,
+      "diagnostic_claim": null
+    },
+    {
+      "schema": "td613.aia.surface-projection/v0.1",
+      "surface_reference": "Standard non-demo executable Portable Loom",
+      "host_station": "Dome-World",
+      "governance_context": "TD613",
+      "governed_reference": "flowped_scene_bbc2b86688c602718d754425:flowped_tx_0a5a0442a6fc2ce3ca5720ed",
+      "route": "AUDIT",
+      "route_purpose": "Inspect evidence basis, transformations, alternatives, residuals, abstention, and replay without custody authority.",
+      "route_selection": "EXPLICIT_OPERATOR_SELECTION_ONLY",
+      "route_inference_forbidden": true,
+      "invariants": {
+        "provenance": {
+          "source_references": [
+            "app/dome-world/holonomy-loom/standard-portable-client.js",
+            "app/engine/portable-loom-standard-runtime.js",
+            "scripts/portable-loom-runtime-kit.mjs"
+          ],
+          "evidence_basis": [
+            "Existing design model reused with explicitly modeled burden values",
+            "No receiver, browser or comprehension observation",
+            "Source-inspected declared local route"
+          ],
+          "transformations": [
+            "Existing manual route model mapped to the executable standard surface"
+          ],
+          "station_owners": [
+            "Dome-World"
+          ]
+        },
+        "missingness": [
+          "Actual receiver compliance not exercised",
+          "Browser execution blocked by cloud file-URL policy",
+          "Declared source-inspection design model, not measured human burden"
+        ],
+        "contradictions": [],
+        "causal_structure": {
+          "input": "Selected task, retained local registration and declared captured surfaces.",
+          "operator": "canonical core -> registered return -> Check -> explicit Admit; Gate verifier -> safe public report; footer -> local review navigation only",
+          "observable": "Checks retain their scope and missingness; opening Gate stops attention without clearing findings or admitting work.",
+          "authority": "Human closure remains required. No provider request, execution, merge or deployment follows from footer navigation.",
+          "equations": [
+            "V != C != P != L",
+            "Check != Admit",
+            "review opened != check executed",
+            "same summary != same action support"
+          ]
+        },
+        "claim_ceiling": {
+          "allowed_claims": [
+            "Local finite audits and known fictional controls can be separately executed.",
+            "Rule carriage and raw reply preservation are independently testable.",
+            "The design declares a receiver-neutral footer and an explicit scoped Gate review route."
+          ],
+          "forbidden_claims": [
+            "A copied report authenticates its source or proves whole-conversation privacy.",
+            "Any LLM is compelled to obey the footer rule.",
+            "Design Gate PASS proves browser layout, human comprehension or foreign model compliance.",
+            "Finite synthetic observations earn empirical Golden Egg credit.",
+            "Opening Gate runs a check, clears an exposure or admits work.",
+            "authorship",
+            "automatic Ash action",
+            "automatic release",
+            "cognition",
+            "consent inferred from engagement",
+            "developmental rank",
+            "identity",
+            "legal authority",
+            "mastery",
+            "psychological interior state",
+            "truth outside a formally closed proposition"
+          ]
+        },
+        "station_ownership": [
+          "Dome-World"
+        ],
+        "authorized_actions": [],
+        "source_status": "E2",
+        "observation_status": "OBSERVED"
+      },
+      "surface": {
+        "order": [
+          "source_status",
+          "evidence_basis",
+          "transformation_history",
+          "alternatives",
+          "residuals",
+          "abstention",
+          "receipt_replay",
+          "rest",
+          "exit"
+        ],
+        "source_status": "E2",
+        "evidence_basis": [
+          "Existing design model reused with explicitly modeled burden values",
+          "No receiver, browser or comprehension observation",
+          "Source-inspected declared local route"
+        ],
+        "transformation_history": [
+          "Existing manual route model mapped to the executable standard surface"
+        ],
+        "alternatives": [
+          "Equal declared burden is a model assumption, not a human measurement.",
+          "Shared local compilers can produce conserved records without independent foreign execution."
+        ],
+        "residuals": {
+          "losses": [],
+          "missingness": [
+            "Actual receiver compliance not exercised",
+            "Browser execution blocked by cloud file-URL policy",
+            "Declared source-inspection design model, not measured human burden"
+          ],
+          "contradictions": [],
+          "unresolved_relations": []
+        },
+        "abstention": [
+          "A foreign compliance claim lacks an independent captured receiver episode.",
+          "A whole-conversation leakage percentage is requested without defined complete capture.",
+          "No retained live local registration for admission."
+        ],
+        "receipt_replay": {
+          "scene_reference": "flowped_scene_bbc2b86688c602718d754425",
+          "transition_reference": "flowped_tx_0a5a0442a6fc2ce3ca5720ed",
+          "deterministic_replay_required": true
+        }
+      },
+      "rest": {
+        "available": true,
+        "penalty": false
+      },
+      "exit": {
+        "available": true,
+        "penalty": false
+      },
+      "authority": {
+        "station_mutation_authorized": false,
+        "automatic_release": false,
+        "automatic_redesign": false,
+        "route_inference_allowed": false,
+        "authority_may_cross": false,
+        "human_closure_required": true
+      },
+      "closure": {
+        "status": "OPEN",
+        "closed_by": null
+      },
+      "user_level_score": null,
+      "diagnostic_claim": null
+    },
+    {
+      "schema": "td613.aia.surface-projection/v0.1",
+      "surface_reference": "Standard non-demo executable Portable Loom",
+      "host_station": "Dome-World",
+      "governance_context": "TD613",
+      "governed_reference": "flowped_scene_bbc2b86688c602718d754425:flowped_tx_0a5a0442a6fc2ce3ca5720ed",
+      "route": "IMPLEMENTATION",
+      "route_purpose": "Inspect schema state, deterministic receipts, calibration, equations, implementation references, and bounded JSON.",
+      "route_selection": "EXPLICIT_OPERATOR_SELECTION_ONLY",
+      "route_inference_forbidden": true,
+      "invariants": {
+        "provenance": {
+          "source_references": [
+            "app/dome-world/holonomy-loom/standard-portable-client.js",
+            "app/engine/portable-loom-standard-runtime.js",
+            "scripts/portable-loom-runtime-kit.mjs"
+          ],
+          "evidence_basis": [
+            "Existing design model reused with explicitly modeled burden values",
+            "No receiver, browser or comprehension observation",
+            "Source-inspected declared local route"
+          ],
+          "transformations": [
+            "Existing manual route model mapped to the executable standard surface"
+          ],
+          "station_owners": [
+            "Dome-World"
+          ]
+        },
+        "missingness": [
+          "Actual receiver compliance not exercised",
+          "Browser execution blocked by cloud file-URL policy",
+          "Declared source-inspection design model, not measured human burden"
+        ],
+        "contradictions": [],
+        "causal_structure": {
+          "input": "Selected task, retained local registration and declared captured surfaces.",
+          "operator": "canonical core -> registered return -> Check -> explicit Admit; Gate verifier -> safe public report; footer -> local review navigation only",
+          "observable": "Checks retain their scope and missingness; opening Gate stops attention without clearing findings or admitting work.",
+          "authority": "Human closure remains required. No provider request, execution, merge or deployment follows from footer navigation.",
+          "equations": [
+            "V != C != P != L",
+            "Check != Admit",
+            "review opened != check executed",
+            "same summary != same action support"
+          ]
+        },
+        "claim_ceiling": {
+          "allowed_claims": [
+            "Local finite audits and known fictional controls can be separately executed.",
+            "Rule carriage and raw reply preservation are independently testable.",
+            "The design declares a receiver-neutral footer and an explicit scoped Gate review route."
+          ],
+          "forbidden_claims": [
+            "A copied report authenticates its source or proves whole-conversation privacy.",
+            "Any LLM is compelled to obey the footer rule.",
+            "Design Gate PASS proves browser layout, human comprehension or foreign model compliance.",
+            "Finite synthetic observations earn empirical Golden Egg credit.",
+            "Opening Gate runs a check, clears an exposure or admits work.",
+            "authorship",
+            "automatic Ash action",
+            "automatic release",
+            "cognition",
+            "consent inferred from engagement",
+            "developmental rank",
+            "identity",
+            "legal authority",
+            "mastery",
+            "psychological interior state",
+            "truth outside a formally closed proposition"
+          ]
+        },
+        "station_ownership": [
+          "Dome-World"
+        ],
+        "authorized_actions": [],
+        "source_status": "E2",
+        "observation_status": "OBSERVED"
+      },
+      "surface": {
+        "order": [
+          "schemas",
+          "deterministic_references",
+          "calibration",
+          "equations",
+          "implementation_references",
+          "bounded_json",
+          "rest",
+          "exit"
+        ],
+        "schemas": {
+          "scene": "td613.flowcore.pedagogical-scene/v0.1",
+          "transition": "td613.flowcore.pedagogical-transition/v0.1",
+          "view": "td613.aia.view/v0.1"
+        },
+        "deterministic_references": {
+          "scene_id": "flowped_scene_bbc2b86688c602718d754425",
+          "transition_id": "flowped_tx_0a5a0442a6fc2ce3ca5720ed"
+        },
+        "calibration": {
+          "source_status": "E2",
+          "observation_status": "OBSERVED",
+          "source_status_is_claim_ceiling": false
+        },
+        "equations": [
+          "V != C != P != L",
+          "Check != Admit",
+          "review opened != check executed",
+          "same summary != same action support"
+        ],
+        "implementation_references": [
+          "app/dome-world/holonomy-loom/standard-portable-client.js",
+          "app/engine/portable-loom-standard-runtime.js",
+          "scripts/portable-loom-runtime-kit.mjs"
+        ],
+        "bounded_json": {
+          "source_content_included": false,
+          "scene_reference": "flowped_scene_bbc2b86688c602718d754425",
+          "transition_reference": "flowped_tx_0a5a0442a6fc2ce3ca5720ed",
+          "canonical_projection": "{\"contradictions\":[],\"missingness\":[\"Actual receiver compliance not exercised\",\"Browser execution blocked by cloud file-URL policy\",\"Declared source-inspection design model, not measured human burden\"],\"phase\":\"NAME\",\"scene_reference\":\"flowped_scene_bbc2b86688c602718d754425\",\"transition_reference\":\"flowped_tx_0a5a0442a6fc2ce3ca5720ed\"}"
+        },
+        "technical_terms": [
+          "AIA invariant report",
+          "canonical packet digest",
+          "finite quotient fibre",
+          "typed epistemic deficit"
+        ]
+      },
+      "rest": {
+        "available": true,
+        "penalty": false
+      },
+      "exit": {
+        "available": true,
+        "penalty": false
+      },
+      "authority": {
+        "station_mutation_authorized": false,
+        "automatic_release": false,
+        "automatic_redesign": false,
+        "route_inference_allowed": false,
+        "authority_may_cross": false,
+        "human_closure_required": true
+      },
+      "closure": {
+        "status": "OPEN",
+        "closed_by": null
+      },
+      "user_level_score": null,
+      "diagnostic_claim": null
+    }
+  ],
+  "aia_surface_family_report": {
+    "schema": "td613.aia.surface-family-report/v0.1",
+    "surface_reference": "Standard non-demo executable Portable Loom",
+    "host_station": "Dome-World",
+    "governed_reference": "flowped_scene_bbc2b86688c602718d754425:flowped_tx_0a5a0442a6fc2ce3ca5720ed",
+    "routes": [
+      "EXPERIENTIAL",
+      "CUSTODIAL",
+      "AUDIT",
+      "IMPLEMENTATION"
+    ],
+    "pair_count": 6,
+    "all_invariants_preserved": true,
+    "all_surfaces_non_equivalent": true,
+    "route_inference_forbidden": true,
+    "authority_transferred": false,
+    "human_closure_required": true,
+    "closure": {
+      "status": "OPEN",
+      "closed_by": null
+    }
+  },
+  "baseline_route_graph": {
+    "schema": "td613.flowcore.route-graph/v0.1",
+    "graph_id": "flowcore_route_8f13388084952bbbff6ab585",
+    "graph_digest": "sha256:d9f0e625d26783bfa79b353806f9074fe84816ac8f13388084952bbbff6ab585",
+    "scene_reference": "flowped_scene_a8669e05cab8e96d0327e062",
+    "transition_references": [],
+    "nodes": [
+      {
+        "step_id": "notice",
+        "label": "Manual equivalent: See the selected task and unchecked Gate scope",
+        "phase": "NOTICE",
+        "required_fields": [
+          "footer rule",
+          "private targets remain local",
+          "selected sources"
+        ],
+        "dependencies": [],
+        "legibility_millipoints": 500,
+        "affordance_millipoints": 500,
+        "gluing_obstruction_millipoints": 0,
+        "projection_crossings": 0,
+        "route_memory_edges": 0,
+        "operator_action_required": false,
+        "downstream_dependency_count": 7
+      },
+      {
+        "step_id": "prepare",
+        "label": "Manual equivalent: Prepare and deliberately register the task",
+        "phase": "ACT",
+        "required_fields": [
+          "current root",
+          "explicit sources",
+          "inherited rules"
+        ],
+        "dependencies": [
+          "notice"
+        ],
+        "legibility_millipoints": 500,
+        "affordance_millipoints": 500,
+        "gluing_obstruction_millipoints": 0,
+        "projection_crossings": 1,
+        "route_memory_edges": 1,
+        "operator_action_required": true,
+        "downstream_dependency_count": 6
+      },
+      {
+        "step_id": "return",
+        "label": "Manual equivalent: Read the captured structured return with its footer",
+        "phase": "WORLD_ANSWERS",
+        "required_fields": [
+          "capture-origin declaration",
+          "exact reply bytes",
+          "return commitments"
+        ],
+        "dependencies": [
+          "prepare"
+        ],
+        "legibility_millipoints": 500,
+        "affordance_millipoints": 500,
+        "gluing_obstruction_millipoints": 0,
+        "projection_crossings": 0,
+        "route_memory_edges": 1,
+        "operator_action_required": false,
+        "downstream_dependency_count": 5
+      },
+      {
+        "step_id": "check",
+        "label": "Manual equivalent: Check the registered return or declared Gate capture",
+        "phase": "ACT",
+        "required_fields": [
+          "explicit capture",
+          "local retained registration",
+          "private local answer keys"
+        ],
+        "dependencies": [
+          "return"
+        ],
+        "legibility_millipoints": 500,
+        "affordance_millipoints": 500,
+        "gluing_obstruction_millipoints": 0,
+        "projection_crossings": 0,
+        "route_memory_edges": 1,
+        "operator_action_required": true,
+        "downstream_dependency_count": 4
+      },
+      {
+        "step_id": "finding",
+        "label": "Manual equivalent: See held exposure, missingness or checked candidate",
+        "phase": "WORLD_ANSWERS",
+        "required_fields": [
+          "checked scope",
+          "counts and denominators",
+          "head unchanged by Check"
+        ],
+        "dependencies": [
+          "check"
+        ],
+        "legibility_millipoints": 500,
+        "affordance_millipoints": 500,
+        "gluing_obstruction_millipoints": 0,
+        "projection_crossings": 0,
+        "route_memory_edges": 1,
+        "operator_action_required": false,
+        "downstream_dependency_count": 3
+      },
+      {
+        "step_id": "admit",
+        "label": "Manual equivalent: Review and explicitly admit only an eligible candidate",
+        "phase": "ACT",
+        "required_fields": [
+          "exact candidate",
+          "explicit operator gesture",
+          "unresolved claims visible"
+        ],
+        "dependencies": [
+          "finding"
+        ],
+        "legibility_millipoints": 500,
+        "affordance_millipoints": 500,
+        "gluing_obstruction_millipoints": 0,
+        "projection_crossings": 0,
+        "route_memory_edges": 1,
+        "operator_action_required": true,
+        "downstream_dependency_count": 2
+      },
+      {
+        "step_id": "inspect",
+        "label": "Manual equivalent: Inspect local chronology and exact verification report",
+        "phase": "NAME",
+        "required_fields": [
+          "full nomenclature",
+          "prefix-only earlier evidence",
+          "separate receiver views"
+        ],
+        "dependencies": [
+          "admit"
+        ],
+        "legibility_millipoints": 500,
+        "affordance_millipoints": 500,
+        "gluing_obstruction_millipoints": 0,
+        "projection_crossings": 1,
+        "route_memory_edges": 1,
+        "operator_action_required": true,
+        "downstream_dependency_count": 1
+      },
+      {
+        "step_id": "rest",
+        "label": "Manual equivalent: Rest, resume or exit without clearing findings",
+        "phase": "REST",
+        "required_fields": [
+          "exit available",
+          "history retained",
+          "no new demands"
+        ],
+        "dependencies": [
+          "inspect"
+        ],
+        "legibility_millipoints": 500,
+        "affordance_millipoints": 500,
+        "gluing_obstruction_millipoints": 0,
+        "projection_crossings": 0,
+        "route_memory_edges": 1,
+        "operator_action_required": true,
+        "downstream_dependency_count": 0
+      }
+    ],
+    "totals": {
+      "step_count": 8,
+      "required_field_count": 24,
+      "dependency_edge_count": 7,
+      "projection_crossing_count": 2,
+      "route_memory_edge_count": 7
+    },
+    "missing_inputs": [
+      "human comprehension and measured burden",
+      "independent ChatGPT compliance capture",
+      "rendered candidate browser witness"
+    ],
+    "station_owner": "Dome-World",
+    "diagnostic_use_forbidden": true,
+    "user_level_score_forbidden": true,
+    "automatic_redesign_forbidden": true,
+    "design_hypothesis_only": true,
+    "authority": {
+      "flowcore_commands_station": false,
+      "automatic_ash_action": false,
+      "station_mutation_authorized": false,
+      "human_closure_required": true
+    },
+    "closure": {
+      "status": "OPEN",
+      "closed_by": null
+    }
+  },
+  "proposed_route_graph": {
+    "schema": "td613.flowcore.route-graph/v0.1",
+    "graph_id": "flowcore_route_109ea7a4a4ff289c70e5f956",
+    "graph_digest": "sha256:c16e7371e24b384cf399b16799c919a854d9ad25109ea7a4a4ff289c70e5f956",
+    "scene_reference": "flowped_scene_bbc2b86688c602718d754425",
+    "transition_references": [
+      "flowped_tx_8b0b22f97dc079e07d28de0a",
+      "flowped_tx_395cc5de589e39bb8bb05c17",
+      "flowped_tx_a5dd8cdde1cf295b917546fa",
+      "flowped_tx_0a5a0442a6fc2ce3ca5720ed",
+      "flowped_tx_f50ff0370363822e9c2c85fd"
+    ],
+    "nodes": [
+      {
+        "step_id": "notice",
+        "label": "See the selected task and unchecked Gate scope",
+        "phase": "NOTICE",
+        "required_fields": [
+          "footer rule",
+          "private targets remain local",
+          "selected sources"
+        ],
+        "dependencies": [],
+        "legibility_millipoints": 500,
+        "affordance_millipoints": 500,
+        "gluing_obstruction_millipoints": 0,
+        "projection_crossings": 0,
+        "route_memory_edges": 0,
+        "operator_action_required": false,
+        "downstream_dependency_count": 7
+      },
+      {
+        "step_id": "prepare",
+        "label": "Prepare and deliberately register the task",
+        "phase": "ACT",
+        "required_fields": [
+          "current root",
+          "explicit sources",
+          "inherited rules"
+        ],
+        "dependencies": [
+          "notice"
+        ],
+        "legibility_millipoints": 500,
+        "affordance_millipoints": 500,
+        "gluing_obstruction_millipoints": 0,
+        "projection_crossings": 1,
+        "route_memory_edges": 1,
+        "operator_action_required": true,
+        "downstream_dependency_count": 6
+      },
+      {
+        "step_id": "return",
+        "label": "Read the captured structured return with its footer",
+        "phase": "WORLD_ANSWERS",
+        "required_fields": [
+          "capture-origin declaration",
+          "exact reply bytes",
+          "return commitments"
+        ],
+        "dependencies": [
+          "prepare"
+        ],
+        "legibility_millipoints": 500,
+        "affordance_millipoints": 500,
+        "gluing_obstruction_millipoints": 0,
+        "projection_crossings": 0,
+        "route_memory_edges": 1,
+        "operator_action_required": false,
+        "downstream_dependency_count": 5
+      },
+      {
+        "step_id": "check",
+        "label": "Check the registered return or declared Gate capture",
+        "phase": "ACT",
+        "required_fields": [
+          "explicit capture",
+          "local retained registration",
+          "private local answer keys"
+        ],
+        "dependencies": [
+          "return"
+        ],
+        "legibility_millipoints": 500,
+        "affordance_millipoints": 500,
+        "gluing_obstruction_millipoints": 0,
+        "projection_crossings": 0,
+        "route_memory_edges": 1,
+        "operator_action_required": true,
+        "downstream_dependency_count": 4
+      },
+      {
+        "step_id": "finding",
+        "label": "See held exposure, missingness or checked candidate",
+        "phase": "WORLD_ANSWERS",
+        "required_fields": [
+          "checked scope",
+          "counts and denominators",
+          "head unchanged by Check"
+        ],
+        "dependencies": [
+          "check"
+        ],
+        "legibility_millipoints": 500,
+        "affordance_millipoints": 500,
+        "gluing_obstruction_millipoints": 0,
+        "projection_crossings": 0,
+        "route_memory_edges": 1,
+        "operator_action_required": false,
+        "downstream_dependency_count": 3
+      },
+      {
+        "step_id": "admit",
+        "label": "Review and explicitly admit only an eligible candidate",
+        "phase": "ACT",
+        "required_fields": [
+          "exact candidate",
+          "explicit operator gesture",
+          "unresolved claims visible"
+        ],
+        "dependencies": [
+          "finding"
+        ],
+        "legibility_millipoints": 500,
+        "affordance_millipoints": 500,
+        "gluing_obstruction_millipoints": 0,
+        "projection_crossings": 0,
+        "route_memory_edges": 1,
+        "operator_action_required": true,
+        "downstream_dependency_count": 2
+      },
+      {
+        "step_id": "inspect",
+        "label": "Inspect local chronology and exact verification report",
+        "phase": "NAME",
+        "required_fields": [
+          "full nomenclature",
+          "prefix-only earlier evidence",
+          "separate receiver views"
+        ],
+        "dependencies": [
+          "admit"
+        ],
+        "legibility_millipoints": 500,
+        "affordance_millipoints": 500,
+        "gluing_obstruction_millipoints": 0,
+        "projection_crossings": 1,
+        "route_memory_edges": 1,
+        "operator_action_required": true,
+        "downstream_dependency_count": 1
+      },
+      {
+        "step_id": "rest",
+        "label": "Rest, resume or exit without clearing findings",
+        "phase": "REST",
+        "required_fields": [
+          "exit available",
+          "history retained",
+          "no new demands"
+        ],
+        "dependencies": [
+          "inspect"
+        ],
+        "legibility_millipoints": 500,
+        "affordance_millipoints": 500,
+        "gluing_obstruction_millipoints": 0,
+        "projection_crossings": 0,
+        "route_memory_edges": 1,
+        "operator_action_required": true,
+        "downstream_dependency_count": 0
+      }
+    ],
+    "totals": {
+      "step_count": 8,
+      "required_field_count": 24,
+      "dependency_edge_count": 7,
+      "projection_crossing_count": 2,
+      "route_memory_edge_count": 7
+    },
+    "missing_inputs": [
+      "human comprehension and measured burden",
+      "independent ChatGPT compliance capture",
+      "rendered candidate browser witness"
+    ],
+    "station_owner": "Dome-World",
+    "diagnostic_use_forbidden": true,
+    "user_level_score_forbidden": true,
+    "automatic_redesign_forbidden": true,
+    "design_hypothesis_only": true,
+    "authority": {
+      "flowcore_commands_station": false,
+      "automatic_ash_action": false,
+      "station_mutation_authorized": false,
+      "human_closure_required": true
+    },
+    "closure": {
+      "status": "OPEN",
+      "closed_by": null
+    }
+  },
+  "route_memory_comparison": {
+    "schema": "td613.flowcore.pedagogue-route-comparison/v0.2",
+    "expected": {
+      "schema": "td613.flowcore.pedagogue-route-memory/v0.2",
+      "steps": [
+        "notice",
+        "prepare",
+        "return",
+        "check",
+        "finding",
+        "admit",
+        "inspect",
+        "rest"
+      ],
+      "endpoint": "Standard non-demo executable Portable Loom",
+      "step_count": 8,
+      "route_projection": "{\"endpoint\":\"Standard non-demo executable Portable Loom\",\"steps\":[\"notice\",\"prepare\",\"return\",\"check\",\"finding\",\"admit\",\"inspect\",\"rest\"]}",
+      "user_level_score": null,
+      "diagnostic_claim": null,
+      "authority": {
+        "endpoint_equivalence_grants_authority": false,
+        "automatic_redesign": false,
+        "automatic_release": false,
+        "human_closure_required": true
+      }
+    },
+    "observed": {
+      "schema": "td613.flowcore.pedagogue-route-memory/v0.2",
+      "steps": [
+        "notice",
+        "prepare",
+        "return",
+        "check",
+        "finding",
+        "admit",
+        "inspect",
+        "rest"
+      ],
+      "endpoint": "Standard non-demo executable Portable Loom",
+      "step_count": 8,
+      "route_projection": "{\"endpoint\":\"Standard non-demo executable Portable Loom\",\"steps\":[\"notice\",\"prepare\",\"return\",\"check\",\"finding\",\"admit\",\"inspect\",\"rest\"]}",
+      "user_level_score": null,
+      "diagnostic_claim": null,
+      "authority": {
+        "endpoint_equivalence_grants_authority": false,
+        "automatic_redesign": false,
+        "automatic_release": false,
+        "human_closure_required": true
+      }
+    },
+    "endpoint_equivalent": true,
+    "exact_route_match": true,
+    "same_endpoint_not_same_history": false,
+    "edit_distance_steps": 0,
+    "route_divergence_millipoints": 0,
+    "retained_boundary_millipoints": 1000,
+    "endpoint_holonomy_residue_millipoints": 0,
+    "math": {
+      "model": "DISCRETE_ROUTE_DIVERGENCE_SURROGATE",
+      "equation_route_divergence": "D_route = round(1000 * d_L(R_expected,R_observed) / max(|R_expected|,|R_observed|,1))",
+      "equation_endpoint_residue": "H_endpoint = D_route when endpoints are equal; otherwise unresolved",
+      "geometric_holonomy_claim": false,
+      "comparative_structural_measure_only": true
+    },
+    "common_prefix_steps": 8,
+    "common_suffix_steps": 0,
+    "first_divergence_index": null,
+    "deltas": [],
+    "route_holonomy_posture": "EXACT_ROUTE_MEMORY",
+    "child_legible": {
+      "now": "The route arrived by the expected path.",
+      "why": "The destination and path both match.",
+      "exact": "No route difference was observed."
+    },
+    "authority": {
+      "same_endpoint_grants_authority": false,
+      "route_history_may_be_discarded": false,
+      "automatic_redesign": false,
+      "automatic_release": false,
+      "human_closure_required": true
+    }
+  },
+  "baseline_burden": {
+    "schema": "td613.flowcore.route-burden-comparison/v0.1",
+    "graph_reference": "flowcore_route_8f13388084952bbbff6ab585",
+    "model_results": [
+      {
+        "schema": "td613.flowcore.route-burden-result/v0.1",
+        "graph_reference": "flowcore_route_8f13388084952bbbff6ab585",
+        "model_id": "FIELD_COUNT_BASELINE",
+        "model_assumptions": [
+          "declared fields and actions approximate structural handling demand",
+          "field count does not measure cognition, ability, distress, or user quality"
+        ],
+        "raw_components": {
+          "required_fields": 24,
+          "operator_actions": 5,
+          "steps": 8
+        },
+        "normalized_components_millipoints": {
+          "required_fields": 1000,
+          "operator_actions": 550,
+          "steps": 720
+        },
+        "total_millipoints": 757,
+        "sensitivity": {
+          "minus_ten_percent": 681,
+          "plus_ten_percent": 833,
+          "parameterization_is_declared": true
+        },
+        "missing_inputs": [
+          "human comprehension and measured burden",
+          "independent ChatGPT compliance capture",
+          "rendered candidate browser witness"
+        ],
+        "observed_interaction_outcomes_included": false,
+        "correlation_is_causality": false,
+        "route_design_hypothesis": "STRUCTURALLY_HIGH_LOAD_CANDIDATE",
+        "route_design_hypothesis_requires_interaction_evidence": true,
+        "automatic_redesign_command": null,
+        "user_level_score": null,
+        "diagnostic_claim": null,
+        "authority": {
+          "flowcore_commands_station": false,
+          "automatic_ash_action": false,
+          "station_mutation_authorized": false,
+          "human_closure_required": true
+        },
+        "closure": {
+          "status": "OPEN",
+          "closed_by": null
+        }
+      },
+      {
+        "schema": "td613.flowcore.route-burden-result/v0.1",
+        "graph_reference": "flowcore_route_8f13388084952bbbff6ab585",
+        "model_id": "DEPENDENCY_COUNT",
+        "model_assumptions": [
+          "downstream dependencies increase recovery and sequencing demand",
+          "dependency structure does not establish observed difficulty or causality"
+        ],
+        "raw_components": {
+          "dependency_edges": 7,
+          "maximum_downstream_dependencies": 7,
+          "branching_steps": 6
+        },
+        "normalized_components_millipoints": {
+          "dependency_edges": 840,
+          "maximum_downstream_dependencies": 980,
+          "branching_steps": 1000
+        },
+        "total_millipoints": 940,
+        "sensitivity": {
+          "minus_ten_percent": 846,
+          "plus_ten_percent": 1000,
+          "parameterization_is_declared": true
+        },
+        "missing_inputs": [
+          "human comprehension and measured burden",
+          "independent ChatGPT compliance capture",
+          "rendered candidate browser witness"
+        ],
+        "observed_interaction_outcomes_included": false,
+        "correlation_is_causality": false,
+        "route_design_hypothesis": "STRUCTURALLY_HIGH_LOAD_CANDIDATE",
+        "route_design_hypothesis_requires_interaction_evidence": true,
+        "automatic_redesign_command": null,
+        "user_level_score": null,
+        "diagnostic_claim": null,
+        "authority": {
+          "flowcore_commands_station": false,
+          "automatic_ash_action": false,
+          "station_mutation_authorized": false,
+          "human_closure_required": true
+        },
+        "closure": {
+          "status": "OPEN",
+          "closed_by": null
+        }
+      },
+      {
+        "schema": "td613.flowcore.route-burden-result/v0.1",
+        "graph_reference": "flowcore_route_8f13388084952bbbff6ab585",
+        "model_id": "AIA_TRANSPORT_SURROGATE",
+        "model_assumptions": [
+          "declared demand is moderated by declared legibility and affordance",
+          "transport burden is a design surrogate rather than a user score"
+        ],
+        "raw_components": {
+          "demand_units": 4910,
+          "average_legibility_millipoints": 500,
+          "average_affordance_millipoints": 500
+        },
+        "normalized_components_millipoints": {
+          "transport_surrogate": 614,
+          "low_legibility_exposure": 500,
+          "low_affordance_exposure": 500
+        },
+        "total_millipoints": 538,
+        "sensitivity": {
+          "minus_ten_percent": 484,
+          "plus_ten_percent": 592,
+          "parameterization_is_declared": true
+        },
+        "missing_inputs": [
+          "human comprehension and measured burden",
+          "independent ChatGPT compliance capture",
+          "rendered candidate browser witness"
+        ],
+        "observed_interaction_outcomes_included": false,
+        "correlation_is_causality": false,
+        "route_design_hypothesis": "STRUCTURALLY_MODERATE_OR_LOW_CANDIDATE",
+        "route_design_hypothesis_requires_interaction_evidence": true,
+        "automatic_redesign_command": null,
+        "user_level_score": null,
+        "diagnostic_claim": null,
+        "authority": {
+          "flowcore_commands_station": false,
+          "automatic_ash_action": false,
+          "station_mutation_authorized": false,
+          "human_closure_required": true
+        },
+        "closure": {
+          "status": "OPEN",
+          "closed_by": null
+        }
+      },
+      {
+        "schema": "td613.flowcore.route-burden-result/v0.1",
+        "graph_reference": "flowcore_route_8f13388084952bbbff6ab585",
+        "model_id": "HETEROSTRATIGRAPHIC_EXTENSION",
+        "model_assumptions": [
+          "gluing obstruction, route memory, and projection crossings add structural demand",
+          "heterostratigraphic burden remains a comparative hypothesis requiring interaction evidence"
+        ],
+        "raw_components": {
+          "average_gluing_obstruction_millipoints": 0,
+          "projection_crossings": 2,
+          "route_memory_edges": 7
+        },
+        "normalized_components_millipoints": {
+          "gluing_obstruction": 0,
+          "projection_crossings": 380,
+          "route_memory": 630
+        },
+        "total_millipoints": 337,
+        "sensitivity": {
+          "minus_ten_percent": 303,
+          "plus_ten_percent": 371,
+          "parameterization_is_declared": true
+        },
+        "missing_inputs": [
+          "human comprehension and measured burden",
+          "independent ChatGPT compliance capture",
+          "rendered candidate browser witness"
+        ],
+        "observed_interaction_outcomes_included": false,
+        "correlation_is_causality": false,
+        "route_design_hypothesis": "STRUCTURALLY_MODERATE_OR_LOW_CANDIDATE",
+        "route_design_hypothesis_requires_interaction_evidence": true,
+        "automatic_redesign_command": null,
+        "user_level_score": null,
+        "diagnostic_claim": null,
+        "authority": {
+          "flowcore_commands_station": false,
+          "automatic_ash_action": false,
+          "station_mutation_authorized": false,
+          "human_closure_required": true
+        },
+        "closure": {
+          "status": "OPEN",
+          "closed_by": null
+        }
+      }
+    ],
+    "model_disagreements": [
+      {
+        "left_model": "FIELD_COUNT_BASELINE",
+        "right_model": "DEPENDENCY_COUNT",
+        "absolute_delta_millipoints": 183
+      },
+      {
+        "left_model": "FIELD_COUNT_BASELINE",
+        "right_model": "AIA_TRANSPORT_SURROGATE",
+        "absolute_delta_millipoints": 219
+      },
+      {
+        "left_model": "FIELD_COUNT_BASELINE",
+        "right_model": "HETEROSTRATIGRAPHIC_EXTENSION",
+        "absolute_delta_millipoints": 420
+      },
+      {
+        "left_model": "DEPENDENCY_COUNT",
+        "right_model": "AIA_TRANSPORT_SURROGATE",
+        "absolute_delta_millipoints": 402
+      },
+      {
+        "left_model": "DEPENDENCY_COUNT",
+        "right_model": "HETEROSTRATIGRAPHIC_EXTENSION",
+        "absolute_delta_millipoints": 603
+      },
+      {
+        "left_model": "AIA_TRANSPORT_SURROGATE",
+        "right_model": "HETEROSTRATIGRAPHIC_EXTENSION",
+        "absolute_delta_millipoints": 201
+      }
+    ],
+    "inspection_order": [
+      "DEPENDENCY_COUNT",
+      "FIELD_COUNT_BASELINE",
+      "AIA_TRANSPORT_SURROGATE",
+      "HETEROSTRATIGRAPHIC_EXTENSION"
+    ],
+    "crowned_model": null,
+    "crowned_score": null,
+    "comparative_consensus": {
+      "high_load_model_count": 2,
+      "model_count": 4,
+      "route_design_hypothesis": "HIGH_LOAD_PASSAGE_FROM_DECLARED_STRUCTURE",
+      "requires_interaction_evidence": true
+    },
+    "missing_inputs": [
+      "human comprehension and measured burden",
+      "independent ChatGPT compliance capture",
+      "rendered candidate browser witness"
+    ],
+    "no_automatic_redesign_command": true,
+    "no_user_level_score": true,
+    "no_diagnosis": true,
+    "authority": {
+      "observatory_only": true,
+      "flowcore_commands_station": false,
+      "automatic_ash_action": false,
+      "human_closure_required": true
+    },
+    "closure": {
+      "status": "OPEN",
+      "closed_by": null
+    }
+  },
+  "proposed_burden": {
+    "schema": "td613.flowcore.route-burden-comparison/v0.1",
+    "graph_reference": "flowcore_route_109ea7a4a4ff289c70e5f956",
+    "model_results": [
+      {
+        "schema": "td613.flowcore.route-burden-result/v0.1",
+        "graph_reference": "flowcore_route_109ea7a4a4ff289c70e5f956",
+        "model_id": "FIELD_COUNT_BASELINE",
+        "model_assumptions": [
+          "declared fields and actions approximate structural handling demand",
+          "field count does not measure cognition, ability, distress, or user quality"
+        ],
+        "raw_components": {
+          "required_fields": 24,
+          "operator_actions": 5,
+          "steps": 8
+        },
+        "normalized_components_millipoints": {
+          "required_fields": 1000,
+          "operator_actions": 550,
+          "steps": 720
+        },
+        "total_millipoints": 757,
+        "sensitivity": {
+          "minus_ten_percent": 681,
+          "plus_ten_percent": 833,
+          "parameterization_is_declared": true
+        },
+        "missing_inputs": [
+          "human comprehension and measured burden",
+          "independent ChatGPT compliance capture",
+          "rendered candidate browser witness"
+        ],
+        "observed_interaction_outcomes_included": false,
+        "correlation_is_causality": false,
+        "route_design_hypothesis": "STRUCTURALLY_HIGH_LOAD_CANDIDATE",
+        "route_design_hypothesis_requires_interaction_evidence": true,
+        "automatic_redesign_command": null,
+        "user_level_score": null,
+        "diagnostic_claim": null,
+        "authority": {
+          "flowcore_commands_station": false,
+          "automatic_ash_action": false,
+          "station_mutation_authorized": false,
+          "human_closure_required": true
+        },
+        "closure": {
+          "status": "OPEN",
+          "closed_by": null
+        }
+      },
+      {
+        "schema": "td613.flowcore.route-burden-result/v0.1",
+        "graph_reference": "flowcore_route_109ea7a4a4ff289c70e5f956",
+        "model_id": "DEPENDENCY_COUNT",
+        "model_assumptions": [
+          "downstream dependencies increase recovery and sequencing demand",
+          "dependency structure does not establish observed difficulty or causality"
+        ],
+        "raw_components": {
+          "dependency_edges": 7,
+          "maximum_downstream_dependencies": 7,
+          "branching_steps": 6
+        },
+        "normalized_components_millipoints": {
+          "dependency_edges": 840,
+          "maximum_downstream_dependencies": 980,
+          "branching_steps": 1000
+        },
+        "total_millipoints": 940,
+        "sensitivity": {
+          "minus_ten_percent": 846,
+          "plus_ten_percent": 1000,
+          "parameterization_is_declared": true
+        },
+        "missing_inputs": [
+          "human comprehension and measured burden",
+          "independent ChatGPT compliance capture",
+          "rendered candidate browser witness"
+        ],
+        "observed_interaction_outcomes_included": false,
+        "correlation_is_causality": false,
+        "route_design_hypothesis": "STRUCTURALLY_HIGH_LOAD_CANDIDATE",
+        "route_design_hypothesis_requires_interaction_evidence": true,
+        "automatic_redesign_command": null,
+        "user_level_score": null,
+        "diagnostic_claim": null,
+        "authority": {
+          "flowcore_commands_station": false,
+          "automatic_ash_action": false,
+          "station_mutation_authorized": false,
+          "human_closure_required": true
+        },
+        "closure": {
+          "status": "OPEN",
+          "closed_by": null
+        }
+      },
+      {
+        "schema": "td613.flowcore.route-burden-result/v0.1",
+        "graph_reference": "flowcore_route_109ea7a4a4ff289c70e5f956",
+        "model_id": "AIA_TRANSPORT_SURROGATE",
+        "model_assumptions": [
+          "declared demand is moderated by declared legibility and affordance",
+          "transport burden is a design surrogate rather than a user score"
+        ],
+        "raw_components": {
+          "demand_units": 4910,
+          "average_legibility_millipoints": 500,
+          "average_affordance_millipoints": 500
+        },
+        "normalized_components_millipoints": {
+          "transport_surrogate": 614,
+          "low_legibility_exposure": 500,
+          "low_affordance_exposure": 500
+        },
+        "total_millipoints": 538,
+        "sensitivity": {
+          "minus_ten_percent": 484,
+          "plus_ten_percent": 592,
+          "parameterization_is_declared": true
+        },
+        "missing_inputs": [
+          "human comprehension and measured burden",
+          "independent ChatGPT compliance capture",
+          "rendered candidate browser witness"
+        ],
+        "observed_interaction_outcomes_included": false,
+        "correlation_is_causality": false,
+        "route_design_hypothesis": "STRUCTURALLY_MODERATE_OR_LOW_CANDIDATE",
+        "route_design_hypothesis_requires_interaction_evidence": true,
+        "automatic_redesign_command": null,
+        "user_level_score": null,
+        "diagnostic_claim": null,
+        "authority": {
+          "flowcore_commands_station": false,
+          "automatic_ash_action": false,
+          "station_mutation_authorized": false,
+          "human_closure_required": true
+        },
+        "closure": {
+          "status": "OPEN",
+          "closed_by": null
+        }
+      },
+      {
+        "schema": "td613.flowcore.route-burden-result/v0.1",
+        "graph_reference": "flowcore_route_109ea7a4a4ff289c70e5f956",
+        "model_id": "HETEROSTRATIGRAPHIC_EXTENSION",
+        "model_assumptions": [
+          "gluing obstruction, route memory, and projection crossings add structural demand",
+          "heterostratigraphic burden remains a comparative hypothesis requiring interaction evidence"
+        ],
+        "raw_components": {
+          "average_gluing_obstruction_millipoints": 0,
+          "projection_crossings": 2,
+          "route_memory_edges": 7
+        },
+        "normalized_components_millipoints": {
+          "gluing_obstruction": 0,
+          "projection_crossings": 380,
+          "route_memory": 630
+        },
+        "total_millipoints": 337,
+        "sensitivity": {
+          "minus_ten_percent": 303,
+          "plus_ten_percent": 371,
+          "parameterization_is_declared": true
+        },
+        "missing_inputs": [
+          "human comprehension and measured burden",
+          "independent ChatGPT compliance capture",
+          "rendered candidate browser witness"
+        ],
+        "observed_interaction_outcomes_included": false,
+        "correlation_is_causality": false,
+        "route_design_hypothesis": "STRUCTURALLY_MODERATE_OR_LOW_CANDIDATE",
+        "route_design_hypothesis_requires_interaction_evidence": true,
+        "automatic_redesign_command": null,
+        "user_level_score": null,
+        "diagnostic_claim": null,
+        "authority": {
+          "flowcore_commands_station": false,
+          "automatic_ash_action": false,
+          "station_mutation_authorized": false,
+          "human_closure_required": true
+        },
+        "closure": {
+          "status": "OPEN",
+          "closed_by": null
+        }
+      }
+    ],
+    "model_disagreements": [
+      {
+        "left_model": "FIELD_COUNT_BASELINE",
+        "right_model": "DEPENDENCY_COUNT",
+        "absolute_delta_millipoints": 183
+      },
+      {
+        "left_model": "FIELD_COUNT_BASELINE",
+        "right_model": "AIA_TRANSPORT_SURROGATE",
+        "absolute_delta_millipoints": 219
+      },
+      {
+        "left_model": "FIELD_COUNT_BASELINE",
+        "right_model": "HETEROSTRATIGRAPHIC_EXTENSION",
+        "absolute_delta_millipoints": 420
+      },
+      {
+        "left_model": "DEPENDENCY_COUNT",
+        "right_model": "AIA_TRANSPORT_SURROGATE",
+        "absolute_delta_millipoints": 402
+      },
+      {
+        "left_model": "DEPENDENCY_COUNT",
+        "right_model": "HETEROSTRATIGRAPHIC_EXTENSION",
+        "absolute_delta_millipoints": 603
+      },
+      {
+        "left_model": "AIA_TRANSPORT_SURROGATE",
+        "right_model": "HETEROSTRATIGRAPHIC_EXTENSION",
+        "absolute_delta_millipoints": 201
+      }
+    ],
+    "inspection_order": [
+      "DEPENDENCY_COUNT",
+      "FIELD_COUNT_BASELINE",
+      "AIA_TRANSPORT_SURROGATE",
+      "HETEROSTRATIGRAPHIC_EXTENSION"
+    ],
+    "crowned_model": null,
+    "crowned_score": null,
+    "comparative_consensus": {
+      "high_load_model_count": 2,
+      "model_count": 4,
+      "route_design_hypothesis": "HIGH_LOAD_PASSAGE_FROM_DECLARED_STRUCTURE",
+      "requires_interaction_evidence": true
+    },
+    "missing_inputs": [
+      "human comprehension and measured burden",
+      "independent ChatGPT compliance capture",
+      "rendered candidate browser witness"
+    ],
+    "no_automatic_redesign_command": true,
+    "no_user_level_score": true,
+    "no_diagnosis": true,
+    "authority": {
+      "observatory_only": true,
+      "flowcore_commands_station": false,
+      "automatic_ash_action": false,
+      "human_closure_required": true
+    },
+    "closure": {
+      "status": "OPEN",
+      "closed_by": null
+    }
+  },
+  "burden_comparison": {
+    "baseline": {
+      "FIELD_COUNT_BASELINE": 757,
+      "DEPENDENCY_COUNT": 940,
+      "AIA_TRANSPORT_SURROGATE": 538,
+      "HETEROSTRATIGRAPHIC_EXTENSION": 337
+    },
+    "proposed": {
+      "FIELD_COUNT_BASELINE": 757,
+      "DEPENDENCY_COUNT": 940,
+      "AIA_TRANSPORT_SURROGATE": 538,
+      "HETEROSTRATIGRAPHIC_EXTENSION": 337
+    },
+    "delta_millipoints": {
+      "FIELD_COUNT_BASELINE": 0,
+      "DEPENDENCY_COUNT": 0,
+      "AIA_TRANSPORT_SURROGATE": 0,
+      "HETEROSTRATIGRAPHIC_EXTENSION": 0
+    },
+    "non_worsening_model_count": 4,
+    "improved_model_count": 0,
+    "all_models_non_worsening": true
+  },
+  "interface_diagnosis": null,
+  "lineage_review": null,
+  "institutional_time_audit": null,
+  "cadence_audit": null,
+  "lineage_second_pass": {
+    "schema": "td613.flowcore.pedagogue-lineage-second-pass/v0.1",
+    "pass_id": "standard-portable-executable-design-20261009:lineage-second-pass",
+    "diagnostic_input_posture": "SUPPLIED_OR_COMPILED_SYSTEM_DIAGNOSTICS_FOR_QUESTION_ROUTING_ONLY",
+    "input_receipt_authenticity_independently_verified": false,
+    "observed_receipts": {
+      "interface_diagnosis": false,
+      "institutional_time_audit": false,
+      "cadence_audit": false,
+      "route_burden_comparison": true
+    },
+    "declared_system_signals": [],
+    "activated_lenses": [],
+    "dormant_lenses": [
+      "PREPARED_ENVIRONMENT",
+      "THIRD_TEACHER_DOCUMENTATION",
+      "EXPERIENCE_CONTINUITY",
+      "RHYTHM_AND_CADENCE",
+      "ANTI_PATHOLOGIZATION",
+      "INTERPRETIVE_LABOR",
+      "RELATIONAL_SAFETY",
+      "COMMUNITY_EMBEDDEDNESS",
+      "TEMPORAL_SOVEREIGNTY",
+      "LEGIBILITY_WITHOUT_EXPERT_MONOPOLY",
+      "EPISTEMIC_REFRACTION",
+      "RACIAL_HIERARCHY_QUARANTINE",
+      "INSTITUTIONAL_TIME",
+      "DROMOLOGICAL_COMPRESSION"
+    ],
+    "activation_count": 0,
+    "activation_count_is_not_score": true,
+    "activation_establishes_source_claim": false,
+    "activation_establishes_design_defect": false,
+    "thinker_vote_forbidden": true,
+    "convergence_not_computed": true,
+    "human_profile_inference": false,
+    "recommendation_only": true,
+    "authority": {
+      "product_mutation_authorized": false,
+      "production_mutation_authorized": false,
+      "automatic_redesign": false,
+      "automatic_intervention": false,
+      "automatic_release": false,
+      "human_closure_required": true
+    }
+  },
+  "design_gate": {
+    "consequence_before_ontology": true,
+    "rest_and_exit_preserved": true,
+    "aia_invariants_preserved": true,
+    "aia_surface_bound": true,
+    "route_history_explicit": true,
+    "route_burden_non_worsening": true,
+    "user_level_score_forbidden": true,
+    "automatic_redesign_forbidden": true,
+    "interface_diagnosis_non_authoritative": true,
+    "lineage_review_non_authoritative": true,
+    "institutional_time_audit_non_authoritative": true,
+    "cadence_audit_non_authoritative": true,
+    "lineage_second_pass_non_authoritative": true,
+    "human_closure_required": true
+  }
+}
