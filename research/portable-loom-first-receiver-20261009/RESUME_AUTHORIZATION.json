@@ -1,0 +1,19 @@
+{
+  "schema": "td613.loom.interactive-continuation-receipt/v0.1",
+  "recorded_at": "2026-10-09T15:28:49.696051+00:00",
+  "operator": "Tawanna",
+  "operator_message": "you stopped plz resume ⟐",
+  "authority_class": "INTERACTIVE_OPERATOR_DIRECT",
+  "scope": "Resume the approved governed activation and 54 first-receiver Gemini calls under the USD 10 maximum token-charge cap; unchanged exact corrected artifact and case endpoints.",
+  "predecessor_authorization_commit": "6cd1e2393844c427c3426704a297f738ceb09f2e",
+  "predecessor_authorization_path": "research/portable-loom-assay-activation-20261009/AUTHORIZATION.json",
+  "excluded": [
+    "180-call comparison",
+    "second provider",
+    "primary retries",
+    "historical reruns",
+    "detached delegation",
+    "custody admission"
+  ],
+  "receipt_does_not_establish_execution": true
+}

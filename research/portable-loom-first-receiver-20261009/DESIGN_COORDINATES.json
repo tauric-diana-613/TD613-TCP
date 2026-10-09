@@ -1,0 +1,53 @@
+{
+  "schema": "td613.loom.first-receiver-design-coordinates/v0.1",
+  "purpose": "Original prospective design plus preserved amendments; corrected artifact binding is recorded separately before receiver calls",
+  "source_records": [
+    {
+      "path": "research/portable-loom-preflight/PROTOCOL.json",
+      "commit": "7e7cf4d6490fcdc68584764a63f3198302f7fc39",
+      "git_blob": "706c58024183a2ee3ab9ccf593ec962010654190",
+      "bytes": 7680,
+      "sha256": "7931d70b2296414562f5457d71f4069229d6081c0fe914dad3f8a91ddb214c25"
+    },
+    {
+      "path": "research/portable-loom-preflight/CASE_REGISTRY.json",
+      "commit": "7e7cf4d6490fcdc68584764a63f3198302f7fc39",
+      "git_blob": "a6c69ad8283d9fbb5dd8302866799ad3c3e8d0ab",
+      "bytes": 15712,
+      "sha256": "2eba4fb0760aada7bab317904f97f1613e53cce243d999a60cf33a6cc7234adb"
+    },
+    {
+      "path": "research/portable-loom-antigravity-handoff-20261009/PROTOCOL_AMENDMENT_001.json",
+      "commit": "7e7cf4d6490fcdc68584764a63f3198302f7fc39",
+      "git_blob": "4ed7c8c097190958c77453ff54d0fc0042a92a18",
+      "bytes": 2663,
+      "sha256": "2d467196414f1a01a686798969b6168efecf72a422386eae2ce335a12ba8fe85"
+    },
+    {
+      "path": "research/portable-loom-kit-assay-20261009/PROTOCOL_AMENDMENT_002.json",
+      "commit": "7e7cf4d6490fcdc68584764a63f3198302f7fc39",
+      "git_blob": "cdb2f0da8149f28eb58e6bf0158111eeb3d0a00c",
+      "bytes": 1803,
+      "sha256": "66ac0f30daf1000973d1c20ad67e21db450f76055b45c035345cf27c54cb327a"
+    },
+    {
+      "path": "research/portable-loom-kit-assay-20261009/CORRECTED_RECEIVER_PLAN.json",
+      "commit": "7e7cf4d6490fcdc68584764a63f3198302f7fc39",
+      "git_blob": "04879bdac4f5d8d5807b16ac3fcd022e6403a8d2",
+      "bytes": 25737,
+      "sha256": "7506a694ed192a876a6816a5765ee195624f3697faa3db3a736ec893fe7c90af"
+    },
+    {
+      "path": "research/portable-loom-kit-assay-20261009/FOOTER_CORRECTION.json",
+      "commit": "7e7cf4d6490fcdc68584764a63f3198302f7fc39",
+      "git_blob": "8ef7fdf8133523abef1b1abe73a34ca02ee08635",
+      "bytes": 1273,
+      "sha256": "6ad762970da799107bd00edfe9c268f4fcfe3c2ae4660c5c0f384e957e07598e"
+    }
+  ],
+  "primary_cases": 12,
+  "repetitions": 3,
+  "calls": 54,
+  "case_parity": "EXACT_EXISTING_INPUTS",
+  "private_comparison_key": "UNREAD_BY_RUNNER"
+}
