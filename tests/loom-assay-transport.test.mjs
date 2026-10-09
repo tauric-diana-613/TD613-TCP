@@ -195,11 +195,70 @@ test('canonical API dispatch and deployment packaging preserve dedicated bounded
 test('source-bound public activation admits only its run and does not contain provider or caller secrets', async () => {
   const c = loadApprovedRunConfiguration();
   assert.match(c.access_sha256, /^[a-f0-9]{64}$/); assert.ok(!JSON.stringify(c).includes(key));
-  assert.ok(!JSON.stringify(c).includes(token)); assert.equal(c.run_id, 'portable-loom-first-receiver-20261009');
+  assert.ok(!JSON.stringify(c).includes(token)); assert.equal(c.run_id, 'portable-loom-first-receiver-20261009-a2');
   const h = harness();
   const handler = createLoomAssayHandler({ environment: { GEMINI_API_KEY: key, TD613_LOOM_ASSAY_ACCESS_SHA256: sha256(token), VERCEL_GIT_COMMIT_SHA: head },
     allowedRunId: c.run_id, budget: async () => { throw new Error('unexpected ledger work'); }, fetchImpl: async () => { throw new Error('unexpected provider work'); } });
   const res = { setHeader() {}, end(raw) { this.body = JSON.parse(raw); } };
   await handler({ method: 'POST', headers: { authorization: `Bearer ${token}` }, body: h.request }, res);
   assert.equal(res.statusCode, 409); assert.equal(res.body.error, 'ASSAY_RUN_OUTSIDE_ACTIVATION');
+});
+
+test('request workload identity reaches the budget service and rotates without changing caller authority', async () => {
+  const p = policy(), request = prepareServerRequest(p, trial).request;
+  const ledgerTokens = [], sent = [];
+  const fetchImpl = async (url, options) => {
+    url = String(url);
+    sent.push({ url, options });
+    if (url.startsWith('https://generativelanguage.googleapis.com/')) return new Response(JSON.stringify(payload()));
+    ledgerTokens.push(options.headers.authorization);
+    const { operation, input } = JSON.parse(options.body);
+    const result = operation === 'inspect' ? { policy: p } : operation === 'reserve'
+      ? { durable_reservation: true, call_key: `${input.trial.trial_id}:${input.trial.role}:${input.trial.turn_index}`,
+        request_sha256: input.request_sha256, reserved_cost_nanos: String(p.binding.limits.max_input_tokens_per_call * 1000 + input.output_limit * 2000) }
+      : { retained: true, call_key: input.call_key, status: input.status };
+    return new Response(JSON.stringify({ schema: 'td613.loom.assay-budget-response/v0.1', status: 'ok', result }));
+  };
+  const environment = { GEMINI_API_KEY: key, TD613_LOOM_ASSAY_ACCESS_SHA256: sha256(token),
+    VERCEL_GIT_COMMIT_SHA: head, TD613_LOOM_ASSAY_BUDGET_URL: loadApprovedRunConfiguration().budget_url,
+    VERCEL_OIDC_TOKEN: 'synthetic-stale-build-token' };
+  const handler = createLoomAssayHandler({ environment, fetchImpl, manifest, artifactText: artifact });
+  for (const workload of ['synthetic-platform-request-one', 'synthetic-platform-request-two']) {
+    const res = { setHeader() {}, end(raw) { this.body = JSON.parse(raw); } };
+    await handler({ method: 'POST', headers: { authorization: `Bearer ${token}`, 'x-vercel-oidc-token': workload }, body: request }, res);
+    assert.equal(res.statusCode, 200); assert.equal(res.body.evidence_class, 'LOCAL_STRUCTURAL_TEST');
+    assert.ok(!JSON.stringify(res.body).includes(workload));
+    assert.deepEqual(ledgerTokens.slice(-3), Array(3).fill(`Bearer ${workload}`));
+  }
+  assert.equal(sent.filter(x => x.url.startsWith('https://generativelanguage.googleapis.com/')).length, 2);
+  assert.ok(sent.every(x => !x.options.body.includes('synthetic-platform-request-')));
+});
+
+test('missing or rejected workload identity fails before provider generation', async () => {
+  const p = policy(), request = prepareServerRequest(p, trial).request;
+  for (const workload of ['', 'synthetic-forged-platform-token']) {
+    const sent = [];
+    const handler = createLoomAssayHandler({ environment: { GEMINI_API_KEY: key, TD613_LOOM_ASSAY_ACCESS_SHA256: sha256(token),
+      VERCEL_GIT_COMMIT_SHA: head, TD613_LOOM_ASSAY_BUDGET_URL: loadApprovedRunConfiguration().budget_url },
+      fetchImpl: async (url) => { sent.push(String(url)); return new Response('{}', { status: 401 }); }, manifest, artifactText: artifact });
+    const res = { setHeader() {}, end(raw) { this.body = JSON.parse(raw); } };
+    await handler({ method: 'POST', headers: { authorization: `Bearer ${token}`, 'x-vercel-oidc-token': workload }, body: request }, res);
+    assert.equal(res.statusCode, 409); assert.equal(res.body.provider_requests, 0);
+    assert.equal(res.body.error, workload ? 'ASSAY_DURABLE_BUDGET_HELD' : 'ASSAY_BUDGET_WORKLOAD_UNCONFIGURED');
+    assert.ok(sent.every(url => !url.startsWith('https://generativelanguage.googleapis.com/')));
+  }
+});
+
+test('the resolved request workload token cannot enter prompt or returned public bytes', async () => {
+  const workload = 'synthetic-secret-platform-workload';
+  const h = harness({ fetchOverride: async () => new Response(JSON.stringify(payload(workload))) });
+  const res = { setHeader() {}, end(raw) { this.body = JSON.parse(raw); } };
+  await h.handler({ method: 'POST', headers: { authorization: `Bearer ${token}`, 'x-vercel-oidc-token': workload }, body: h.request }, res);
+  assert.equal(res.body.error, 'ASSAY_PROTECTED_CREDENTIAL_ECHO');
+  assert.equal(res.body.provider_response_base64, null); assert.equal(res.body.returned, null);
+  assert.ok(!JSON.stringify(res.body).includes(workload));
+  const injected = harness({ change: r => r.messages[0].content += workload });
+  await injected.handler({ method: 'POST', headers: { authorization: `Bearer ${token}`, 'x-vercel-oidc-token': workload }, body: injected.request }, res);
+  assert.equal(res.body.error, 'ASSAY_PROTECTED_CREDENTIAL_IN_PAYLOAD');
+  assert.equal(injected.sent.length, 0); assert.equal(injected.operations.length, 0);
 });

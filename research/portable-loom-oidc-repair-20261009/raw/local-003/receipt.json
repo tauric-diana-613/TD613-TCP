@@ -1,0 +1,40 @@
+{
+  "source_parent": "916ed6cfc6f21f49d30198c407f57c6f9ed0b0d0",
+  "source_status": "WORKING_REPAIR_WITH_INACTIVE_FOLLOW_ON_CONFIGURATION",
+  "sources": [
+    {
+      "path": "server/loom-assay.js",
+      "sha256": "72541faf2ba4dbcead0d757ac60a013bff00f5bffe8bd141ca9a16cafcfb5dd2",
+      "bytes": 9369
+    },
+    {
+      "path": "server/loom-assay-run-config.json",
+      "sha256": "1c03dcc5858f624df5c3b982c268885bf806096c902d42f6c8868529f0881a7e",
+      "bytes": 401
+    },
+    {
+      "path": "tests/loom-assay-transport.test.mjs",
+      "sha256": "fd4a024ab9534a8a448a620781e1fad154db684df046477f4d4d9180a13546e1",
+      "bytes": 20153
+    }
+  ],
+  "started_at": "2026-10-09T15:52:10.814195+00:00",
+  "ended_at": "2026-10-09T15:52:11.150258+00:00",
+  "command": [
+    "node",
+    "--test",
+    "--test-reporter=tap",
+    "tests/loom-assay-transport.test.mjs",
+    "tests/loom-assay-primary-run.test.mjs",
+    "tests/khonapolit-api-contract.test.mjs",
+    "tests/gemini-generation-envelope.test.mjs",
+    "tests/giving-vercel-route.test.mjs",
+    "tests/vercel-deploy-hygiene.test.mjs"
+  ],
+  "exit_code": 0,
+  "stdout_sha256": "d6f9ff8c6e73ab450004713f79415921017dee35421cc55aa40b0b635c4a0548",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "actual_generation_calls": 0,
+  "follow_on_authorization": "PENDING"
+}

@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import { timingSafeEqual } from 'node:crypto';
 import { ASSAY_RESPONSE_SCHEMA, sha256, exactFields, requireThat, buildAssayProviderWire, inspectAssayResponse } from './loom-assay-contract.js';
 import { createAssayBudgetClient } from './loom-assay-budget-client.js';
+import { readLoomDemoVercelOidcToken } from './loom-demo-custody-client.js';
 
 const estate = 'research/portable-loom-server-transport-20261009';
 function send(res, status, body) {
@@ -21,28 +22,35 @@ function authorization(req, env) {
   requireThat(timingSafeEqual(Buffer.from(observed), Buffer.from(digest)), 'ASSAY_UNAUTHORIZED');
   return { token, credential_sha256: observed };
 }
-export function createLoomAssayHandler({ environment = process.env, fetchImpl = fetch, budget = createAssayBudgetClient({ environment }),
+export function createLoomAssayHandler({ environment = process.env, fetchImpl = fetch, budget = null,
   manifest, artifactText, fixture = false, allowedRunId = null } = {}) {
   fixture = fixture || fetchImpl !== globalThis.fetch;
   return async (req, res) => {
     if (req.method !== 'POST') return send(res, 405, { status: 'HELD', error: 'ASSAY_POST_REQUIRED' });
-    let auth, request, policy, wire, reservation;
+    let auth, request, policy, wire, reservation, activeBudget, workloadToken;
     try {
       auth = authorization(req, environment);
+      // Vercel Functions supplies identity on this request, rather than the
+      // build-time environment. Resolve it afresh; Neon still verifies it.
+      workloadToken = readLoomDemoVercelOidcToken({ environment, requestHeaders: req.headers });
+      activeBudget = budget ?? createAssayBudgetClient({
+        environment: { ...environment, VERCEL_OIDC_TOKEN: workloadToken }, fetchImpl
+      });
       requireThat(typeof environment.GEMINI_API_KEY === 'string' && environment.GEMINI_API_KEY.length > 0, 'ASSAY_PROVIDER_UNCONFIGURED');
       const raw = typeof req.body === 'string' || Buffer.isBuffer(req.body) ? Buffer.from(req.body)
         : Buffer.from(JSON.stringify(req.body));
       requireThat(raw.length <= 2000000, 'ASSAY_REQUEST_BYTE_LIMIT');
-      requireThat(!raw.includes(Buffer.from(environment.GEMINI_API_KEY)) && !raw.includes(Buffer.from(auth.token)), 'ASSAY_PROTECTED_CREDENTIAL_IN_PAYLOAD');
+      requireThat(![environment.GEMINI_API_KEY, auth.token, workloadToken].filter(Boolean)
+        .some(secret => raw.includes(Buffer.from(secret))), 'ASSAY_PROTECTED_CREDENTIAL_IN_PAYLOAD');
       request = JSON.parse(raw.toString('utf8'));
       requireThat(allowedRunId === null || request.run_id === allowedRunId, 'ASSAY_RUN_OUTSIDE_ACTIVATION');
       requireThat(/^[a-f0-9]{40}$/.test(environment.VERCEL_GIT_COMMIT_SHA || '')
         && request.protocol_commit === environment.VERCEL_GIT_COMMIT_SHA, 'ASSAY_DEPLOYED_SOURCE_MISMATCH');
-      ({ policy } = await budget('inspect', { run_id: request.run_id, credential_sha256: auth.credential_sha256 }));
+      ({ policy } = await activeBudget('inspect', { run_id: request.run_id, credential_sha256: auth.credential_sha256 }));
       const m = manifest ?? JSON.parse(readFileSync(resolve(estate, 'TRIAL_MANIFEST.json')));
       const artifact = artifactText ?? readFileSync(resolve(m.artifact_path), 'utf8');
       wire = buildAssayProviderWire(request, policy, m, artifact);
-      reservation = await budget('reserve', { run_id: request.run_id, credential_sha256: auth.credential_sha256,
+      reservation = await activeBudget('reserve', { run_id: request.run_id, credential_sha256: auth.credential_sha256,
         protocol_commit: request.protocol_commit, artifact_sha256: request.artifact_sha256, trial: request.trial,
         request_sha256: wire.request_sha256, output_limit: wire.output_limit, prior_assistant_sha256: wire.prior_assistant_sha256 });
       requireThat(reservation.durable_reservation === true && reservation.request_sha256 === wire.request_sha256
@@ -73,13 +81,13 @@ export function createLoomAssayHandler({ environment = process.env, fetchImpl = 
     } catch (e) { error = /^ASSAY_[A-Z_]+$/.test(e.message) ? e.message : 'ASSAY_PROVIDER_TRANSPORT_HELD'; }
     finally { clearTimeout(timer); }
     const rawResponse = Buffer.concat(chunks);
-    const credentialEcho = [environment.GEMINI_API_KEY, auth.token, environment.VERCEL_OIDC_TOKEN].filter(Boolean)
+    const credentialEcho = [environment.GEMINI_API_KEY, auth.token, workloadToken].filter(Boolean)
       .some(secret => rawResponse.includes(Buffer.from(secret)));
     if (credentialEcho) { error = 'ASSAY_PROTECTED_CREDENTIAL_ECHO'; returned = null; }
     const status = error ? 'HELD_EVIDENCE_GAP' : 'CAPTURED_NOT_ADMITTED';
     let completion;
     try {
-      completion = await budget('complete', { run_id: request.run_id, credential_sha256: auth.credential_sha256,
+      completion = await activeBudget('complete', { run_id: request.run_id, credential_sha256: auth.credential_sha256,
         call_key: reservation.call_key, request_sha256: wire.request_sha256, response_sha256: sha256(rawResponse),
         answer_sha256: returned?.answer_sha256 ?? null, status });
       requireThat(completion.retained === true && completion.call_key === reservation.call_key && completion.status === status, 'ASSAY_COMPLETION_RECEIPT_MISMATCH');
