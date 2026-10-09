@@ -1,0 +1,19 @@
+✔ missing financial, exact model or no-retry binding fails closed (6.36874ms)
+✔ wire enforces per-role output, conservative input and financial bounds (1.729948ms)
+✔ OpenAI wire keeps explicit bound completion cap and disables storage (0.653736ms)
+✔ all four role requests share case evidence and exclude scorer/key inputs (79.874449ms)
+✔ receiver continuation retains actual captured text; altered predecessor rejected (24.236471ms)
+✔ response model, usage, completeness and tool invocation checked independently (1.270726ms)
+✔ missing credential causes zero transport calls and creates no attempt (2.67856ms)
+✔ mock transport always retains fixture class; exact raw bytes and budget reservation survive (11.019783ms)
+✔ transport error retains the original partial attempt without retry (1.688637ms)
+✔ typed role outputs retain HOLDs and reject authority widening or wrong role (0.70246ms)
+✔ forged capture objects cannot enter governed model-role synthesis (1.978103ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 320.384824

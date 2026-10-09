@@ -1,0 +1,29 @@
+{
+  "schema": "td613.loom.provider-conduit-compatibility/v0.1",
+  "record_function": "CURRENT_DEPLOYED_API_METADATA_PLUS_SOURCE_INSPECTION",
+  "live_observation_class": "DEPLOYED_API_METADATA_RESPONSE_NOT_MODEL_TRIAL",
+  "source_inspected": "2afc82fa57660412b7bec3cbac6b0a0b67d322f4",
+  "deployed_source_byte_equality": "UNESTABLISHED",
+  "has_server_side_gemini_key_reported": true,
+  "configured_primary": "gemini-3.8-flash",
+  "configured_fallbacks": [
+    "gemini-3.7-flash",
+    "gemini-3.6-flash",
+    "gemini-3.5-flash",
+    "gemini-3-flash-preview"
+  ],
+  "native_route": "https://td613.com/api/khonapolit",
+  "native_max_provider_requests": 6,
+  "native_max_output_tokens": 65536,
+  "native_request_configurable_model_token_controls": false,
+  "loom_task_total_input_character_limit": 60000,
+  "frozen_comparison_max_model_requests_per_role": 1,
+  "frozen_comparison_max_output_tokens_per_role": 2048,
+  "frozen_monolith_max_output_tokens": 8192,
+  "comparison_transport_status": "INCOMPATIBLE_WITH_FROZEN_LIMITS",
+  "native_release_canary": "Release/liveness lane; not silently repurposed as research execution authority.",
+  "protected_provider_key": "Remains server-side; not exported to local runner.",
+  "inference_trials": 0,
+  "prior_receipt_refinement": "Local credentials were absent; live deployed metadata now establishes reported server-side configuration. No retroactive provider trial credit.",
+  "next_mechanism": "Provider-neutral bounded API/capture client with explicit configuration, one request, zero retries, pre-reserved budget, exact raw byte retention and strict typed role admission."
+}

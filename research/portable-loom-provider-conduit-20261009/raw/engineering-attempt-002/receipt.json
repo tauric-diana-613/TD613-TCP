@@ -1,0 +1,28 @@
+{
+  "schema": "td613.loom.capture-harness-engineering-receipt/v0.1",
+  "started_at": "2026-10-09T03:14:04.808471+00:00",
+  "ended_at": "2026-10-09T03:14:05.081801+00:00",
+  "exit_code": 0,
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "mock_HTTP_only": true,
+  "receiver_trials": 0,
+  "paid_calls": 0,
+  "source_status": "CURRENT_UNCOMMITTED_CANDIDATE",
+  "source_records": [
+    {
+      "path": "research/portable-loom-provider-conduit-20261009/assay-harness.mjs",
+      "sha256": "5da0a9cdd76c8eb679556ae3637a8d8169535736adb01e635cfa7eef10d242ed"
+    },
+    {
+      "path": "research/portable-loom-provider-conduit-20261009/run-model-assay.mjs",
+      "sha256": "4f1ae24f1325ae75009c0b1dfb1feab7883ea26aadd66c1e3ae93fba7b54dea1"
+    },
+    {
+      "path": "tests/portable-loom-bound-model-capture.test.mjs",
+      "sha256": "99c8926600442238f496ba24db051b6be455c848e634a2a45ba1d3d87b65eae2"
+    }
+  ],
+  "pass": 11,
+  "fail": 0,
+  "retest_reason": "Trial identity and authenticated local predecessor-capture checks added after first engineering run. Not a research-trial repeat."
+}

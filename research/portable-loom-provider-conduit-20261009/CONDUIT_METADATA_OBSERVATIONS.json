@@ -1,0 +1,26 @@
+[
+  {
+    "name": "readiness",
+    "url": "https://td613.com/api/khonapolit?operation=gemini-readiness",
+    "method": "GET",
+    "http_status": 200,
+    "started_at": "2026-10-09T02:59:34.342860+00:00",
+    "ended_at": "2026-10-09T02:59:38.189659+00:00",
+    "bytes": 16244,
+    "sha256": "6399efebb8ca548ce4e654964a61d22793d8acd1c4208ceeccef29868031748e",
+    "inference_calls": 0,
+    "observation_class": "DEPLOYED_API_METADATA_RESPONSE_NOT_MODEL_TRIAL"
+  },
+  {
+    "name": "native-status",
+    "url": "https://td613.com/api/khonapolit",
+    "method": "GET",
+    "http_status": 200,
+    "started_at": "2026-10-09T02:59:38.189997+00:00",
+    "ended_at": "2026-10-09T02:59:40.887386+00:00",
+    "bytes": 6494,
+    "sha256": "9e262e490db7ff385db7f4aba3b7c706b3358f14bc7ccfb55f81d19ff80df9a5",
+    "inference_calls": 0,
+    "observation_class": "DEPLOYED_API_METADATA_RESPONSE_NOT_MODEL_TRIAL"
+  }
+]

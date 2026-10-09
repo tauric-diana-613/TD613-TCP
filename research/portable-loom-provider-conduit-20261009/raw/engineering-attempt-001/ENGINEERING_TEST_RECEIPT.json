@@ -1,0 +1,11 @@
+{
+  "schema": "td613.loom.capture-harness-engineering-receipt/v0.1",
+  "started_at": "2026-10-09T03:09:42.110711+00:00",
+  "ended_at": "2026-10-09T03:09:42.566981+00:00",
+  "exit_code": 0,
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "mock_HTTP_only": true,
+  "receiver_trials": 0,
+  "paid_calls": 0,
+  "source_status": "CURRENT_UNCOMMITTED_CANDIDATE"
+}

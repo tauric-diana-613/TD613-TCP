@@ -1,0 +1,36 @@
+{
+  "schema": "td613.loom.bound-model-transport/v0.1",
+  "protocol_commit": null,
+  "provider": "GEMINI_GENERATE_CONTENT",
+  "model": "gemini-3.8-flash",
+  "response_model_ids": [
+    "gemini-3.8-flash"
+  ],
+  "credential_env": "GEMINI_API_KEY",
+  "generation_parameters": {
+    "temperature": null,
+    "top_p": null,
+    "thinking_level": "medium"
+  },
+  "limits": {
+    "max_calls": 180,
+    "max_input_tokens_per_call": 200000,
+    "max_output_tokens_per_call": 8192,
+    "max_cost_usd": null,
+    "timeout_ms": 120000,
+    "max_response_bytes": 2000000
+  },
+  "pricing": {
+    "input_usd_per_million": null,
+    "output_usd_per_million": null,
+    "source": null,
+    "verified_at": null
+  },
+  "authorization": {
+    "record": "Current interactive operator directs the next eligible bounded assay work.",
+    "scope": "Frozen prospective case set only; no credential export, detached agents, merge or deployment."
+  },
+  "tools": "DISABLED",
+  "retrieval": "DISABLED",
+  "retries": 0
+}
