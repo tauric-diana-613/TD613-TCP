@@ -1,0 +1,18 @@
+{
+  "destination": "/workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/research/portable-loom-export-carriage-repair-20261009/artifact",
+  "source_revision": "c8ebea69e42c424f2aa87ce05e9198fba3f6f9b8",
+  "session_root_ref": "3a650303fb9bc1d3a3484fff0b0eb42dc341a6bf1575505f52c04ff7b2618c63",
+  "files": [
+    {
+      "name": "portable-loom-standard.json",
+      "bytes": 81380,
+      "sha256": "fd2b81f591451e4c72d2e8f80fd567421b6fe2d6e3ad30e081d99f4334624dd3"
+    },
+    {
+      "name": "portable-loom-standard.md",
+      "bytes": 85429,
+      "sha256": "9f82b7177491391e73ae8bcfec8901ad3a592bc9a23d0432b765aaf22a2e3257"
+    }
+  ],
+  "status": "EXPORTED_AWAITING_ARTIFACT_ASSAY"
+}

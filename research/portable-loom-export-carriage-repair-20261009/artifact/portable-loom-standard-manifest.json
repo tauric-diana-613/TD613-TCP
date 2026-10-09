@@ -1,0 +1,32 @@
+{
+  "schema": "td613.loom.standard-export-manifest/v0.1",
+  "source_revision": "c8ebea69e42c424f2aa87ce05e9198fba3f6f9b8",
+  "created_at": "2026-10-09T04:35:42.567Z",
+  "artifact_kind": "STANDARD_NON_DEMO_PORTABLE_LOOM",
+  "session_root_ref": "3a650303fb9bc1d3a3484fff0b0eb42dc341a6bf1575505f52c04ff7b2618c63",
+  "portable_packet_digest": "fd88aeb93ecbb51fe7a0d40bbf3be28bdfac9c9295b59aa136b17b90e2a41fc3",
+  "selected_source_count": 0,
+  "captured_gate_report_count": 0,
+  "admitted_work_unit_count": 0,
+  "receiver_binding": "ANY_LLM; CHATGPT_FIRST_SPECIFIED",
+  "artifact_assay_status": "AWAITING_OPERATOR_AUTHORIZATION",
+  "browser_candidate_witness": "UNPERFORMED",
+  "foreign_receiver_compliance": "UNPERFORMED",
+  "basic_export_checks": [
+    "independent canonical-core recomputation",
+    "root packet digest match",
+    "no seeded scenario or result"
+  ],
+  "files": [
+    {
+      "name": "portable-loom-standard.json",
+      "bytes": 81380,
+      "sha256": "fd2b81f591451e4c72d2e8f80fd567421b6fe2d6e3ad30e081d99f4334624dd3"
+    },
+    {
+      "name": "portable-loom-standard.md",
+      "bytes": 85429,
+      "sha256": "9f82b7177491391e73ae8bcfec8901ad3a592bc9a23d0432b765aaf22a2e3257"
+    }
+  ]
+}

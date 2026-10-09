@@ -1,0 +1,45 @@
+{
+  "schema": "td613.loom.export-carriage-repair-receipt/v0.1",
+  "source_commit": "c8ebea69e42c424f2aa87ce05e9198fba3f6f9b8",
+  "repair_scope": "Markdown receiver presentation only; underlying governance engine unchanged",
+  "started_at": "2026-10-09T04:35:42.414887+00:00",
+  "ended_at": "2026-10-09T04:35:42.576262+00:00",
+  "export_process_exit_code": 0,
+  "engineering_tests": {
+    "pass": 2,
+    "fail": 0,
+    "skip": 0,
+    "execution_source": "node --test tests/portable-loom-standard-presentation.test.mjs; exact tool result retained in active conversation"
+  },
+  "export_checks": [
+    "independent canonical-core recomputation",
+    "root packet digest match",
+    "no seeded scenario or result",
+    "all manifest byte counts and SHA-256 values recomputed",
+    "controller assay-authorization instruction absent from receiver Markdown"
+  ],
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "new_provider_calls": 0,
+  "old_artifact_overwritten": false,
+  "frozen_old_prompt_envelopes_overwritten": false,
+  "old_assay_receipts_rehabilitated": false,
+  "fresh_session_root": "3a650303fb9bc1d3a3484fff0b0eb42dc341a6bf1575505f52c04ff7b2618c63",
+  "source_record_kept": "2091c426a1cbba2ff1a7a06019c0693ddc5be398",
+  "old_md_sha256": "aee654a57edbd931eb5f7ab47b50427ef464530ef5731e5309d49c02eb444eee",
+  "new_artifact_files": [
+    {
+      "name": "portable-loom-standard.json",
+      "bytes": 81380,
+      "sha256": "fd2b81f591451e4c72d2e8f80fd567421b6fe2d6e3ad30e081d99f4334624dd3"
+    },
+    {
+      "name": "portable-loom-standard.md",
+      "bytes": 85429,
+      "sha256": "9f82b7177491391e73ae8bcfec8901ad3a592bc9a23d0432b765aaf22a2e3257"
+    }
+  ],
+  "new_artifact_receiver_trial_status": "NOT_RUN; source repair and export checks give no receiver-adherence credit",
+  "old_assay_binding_status": "Historical freeze retained; cannot silently substitute the changed Markdown into prior request commitments",
+  "merge": false,
+  "deploy": false
+}
