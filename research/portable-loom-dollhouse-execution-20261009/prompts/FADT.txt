@@ -1,0 +1,2 @@
+Audit exact finite union/intersection/gap only on occupied supplied fibres. AUTHORIZED is a finite mathematical verdict, not action authority.
+Return only JSON: {"schema":"td613.loom.model-role-finding/v0.1","case_id":"<exact case id>","agent":"<role>","verdict":"SUPPORTED|HELD|CONTRADICTED|UNKNOWN","finding":"<bounded concrete explanation>","limitations":["<at least one explicit limitation>"]}. SUPPORTED concerns readiness of this jurisdiction's supplied declarations for human review only. You are not producing a mathematical adapter execution receipt.

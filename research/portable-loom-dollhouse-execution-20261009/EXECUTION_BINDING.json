@@ -1,0 +1,251 @@
+{
+  "schema": "td613.loom.dollhouse-execution-binding/v0.1",
+  "created_at": "2026-10-09T02:44:56.478Z",
+  "source_parent": "5647b51f9da361b628b66c18c3a042725665dcc6",
+  "branch": "research/portable-loom-dollhouse-execution-20261009",
+  "runtime_source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+  "artifact": {
+    "path": "research/portable-loom-local-battery-20261009/artifact/portable-loom-standard.json",
+    "bytes": 81380,
+    "sha256": "dec3750552099e30e9495ce42af6e616dd3dd1f48f0d3f6766cb82d934c273b2"
+  },
+  "corpus_path": "research/portable-loom-dollhouse-execution-20261009/CASE_SET.json",
+  "private_scoring_key_sha256": "c5b000013b2b7ff4aef2c0585efba0f3b9b7597fd7e7cc860ac92ed113effff1",
+  "key_retention": "Controller-only persistent copy outside research runner and outbound inputs.",
+  "input_and_source_records": [
+    {
+      "path": "APERTURE.md",
+      "bytes": 17025,
+      "sha256": "3f6225494e7f3b0a021699ae3f54f61d002f71bd6b7373e4bece2a699a7b5c1d"
+    },
+    {
+      "path": "ATLAS.md",
+      "bytes": 11749,
+      "sha256": "f7a518d27a509d615368949ff617a2e7884278487257a4f398e16b4784bf0311"
+    },
+    {
+      "path": "FADT.md",
+      "bytes": 9196,
+      "sha256": "c8b420ecc63621677dceee7c1530688cbc786503451cdeb157205b1fb67e8b6e"
+    },
+    {
+      "path": "PEDAGOGUE.md",
+      "bytes": 29733,
+      "sha256": "3abb25379be9a925c738a38858b92371822612f110e7491ee62a6e4a84101869"
+    },
+    {
+      "path": "TEMPORAL_CUSTODIAN.md",
+      "bytes": 3299,
+      "sha256": "f3eb7cb372cc020ec0fdc6e8dd3bba36a268743f63fffbd0e161ab3646af1c3e"
+    },
+    {
+      "path": "app/dome-world/ash/canonical-json.js",
+      "bytes": 5607,
+      "sha256": "4d2e1112ed3030e8996480e2fcdae41ed1defc1260786605c5f814b149efe425"
+    },
+    {
+      "path": "app/dome-world/data/flowcore-aia-route-registry-v01.js",
+      "bytes": 2696,
+      "sha256": "df773e97397dc470d7c02ae2c6781bfb1bbb0adb8847ee83a28d3a4f22b7adc7"
+    },
+    {
+      "path": "app/dome-world/data/flowcore-glyph-semantics-v01.js",
+      "bytes": 6866,
+      "sha256": "88f3e8119ce5b3a27822615f08df0b8f2c23cf7b385c1db534099d908658657f"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/engine.js",
+      "bytes": 12370,
+      "sha256": "4849d840707e678e97aa715be684cf29384dca4c794339eb2cf54265ec90774d"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/flowcore-aia-motion.js",
+      "bytes": 8745,
+      "sha256": "40061f09ad27acea3955e28d7b5efe58b28324f6be845f5453c4da55f4f2e4c2"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/semantic-field.js",
+      "bytes": 19533,
+      "sha256": "71ab199acf652eab2b4c5eb46a487fbd4089afa7100d26d40fde9cae188443c4"
+    },
+    {
+      "path": "app/engine/dollhouse-agent-registry.js",
+      "bytes": 3731,
+      "sha256": "90959d3eed8884e6f0905a09b53e07bd285c6ac305800cbd0bf7544ff92f5ab5"
+    },
+    {
+      "path": "app/engine/dollhouse-atlas-fadt.js",
+      "bytes": 12780,
+      "sha256": "3e4a4546c2e2aecfdbc24121019c82a59653320aa86baac9e3bf2b872f2af9ac"
+    },
+    {
+      "path": "app/engine/dollhouse-bounded-orchestrator.js",
+      "bytes": 3448,
+      "sha256": "2307d587fc5034ab59e97ad327caa13aace071b65685e5a671d7e40075345813"
+    },
+    {
+      "path": "app/engine/dollhouse-case-dossier.js",
+      "bytes": 5364,
+      "sha256": "fd6140e1a7eb09c6378355d009d8108111a20af359c15c49d0d1af7efee0c800"
+    },
+    {
+      "path": "app/engine/dollhouse-continuity-audit.js",
+      "bytes": 13529,
+      "sha256": "6df6acb691288a0ab2190ef0d75ba45de8906dc789fcc7861a356a7633d7479f"
+    },
+    {
+      "path": "app/engine/dollhouse-temporal-custodian.js",
+      "bytes": 12501,
+      "sha256": "7eefdaf46d8bfc2374f6e52b80b26534cb3f5738c4faa6442f5883436d30c205"
+    },
+    {
+      "path": "app/engine/dollhouse-witness-plan.js",
+      "bytes": 12506,
+      "sha256": "4596ebaff79be34c00340fb460642243e22b12c2cf1ab80a53954a6e6cf893f1"
+    },
+    {
+      "path": "app/engine/flowcore-aia-surface-binding.js",
+      "bytes": 11535,
+      "sha256": "51da898a5b06270cfe3a2c090523905216f286fab6af8316901d0df853d5543e"
+    },
+    {
+      "path": "app/engine/pedagogue-gesture-consequence.js",
+      "bytes": 12738,
+      "sha256": "42f9979488101aa10aeee570d1843d9bb21047b00cdf192538e4f9e59fff55a9"
+    },
+    {
+      "path": "docs/research/DOLLHOUSE_ORCHESTRATOR_CONTRACT.md",
+      "bytes": 7398,
+      "sha256": "3f7dd33241087239c40441ceef80e79a59faf0a90a8bfb3c13139eef69ae3913"
+    },
+    {
+      "path": "research/portable-loom-antigravity-handoff-20261009/PROTOCOL_AMENDMENT_001.json",
+      "bytes": 2663,
+      "sha256": "2d467196414f1a01a686798969b6168efecf72a422386eae2ce335a12ba8fe85"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/CASE_SET.json",
+      "bytes": 175985,
+      "sha256": "05bacf3e6ddba1fea8f7780c6a08e92b65c876d40b894f1c8debf9692eb256db"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/EXECUTION_SCOPE.json",
+      "bytes": 726,
+      "sha256": "72a18ea004874b921ed28754648c17b07243a494a54e569ef921cb14799c6a3c"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/INPUT_CLASS_MAP.json",
+      "bytes": 1399,
+      "sha256": "adb82ba4f12fba54148664b3fb40a41d3d70570d238a2b380111c1ae4dbe7950"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/MODEL_TRIAL_PLAN.json",
+      "bytes": 1605,
+      "sha256": "09da775bf42e1ba55435c8cc4307a21dcb42c16d4f6ec23f1a9c3ab0898a4a1c"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/README.md",
+      "bytes": 2552,
+      "sha256": "8ea57bc0dedfe95da6551255e6c99da7a288e520122a8e3b689577c2b3b04a90"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/audit-exact-artifact.mjs",
+      "bytes": 10132,
+      "sha256": "c704a9da3c951340a37368efdac127c39d5a0b66d9d04166073f3423f342d0de"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/conventional-baseline.mjs",
+      "bytes": 4600,
+      "sha256": "50ed7c2c515c422203ae149c489413629feca0fb6f7da5d3238fd39837fe4478"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/prompts/APERTURE.txt",
+      "bytes": 554,
+      "sha256": "7697ae34f21cf10e53ebcf2ac1cadec38949b12d89e53c71df494133300ae978"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/prompts/ATLAS.txt",
+      "bytes": 562,
+      "sha256": "fc07f2bd07a142f3452c7bedaaeffb8c7dd5871f0cbb25b97e6caf5ee336a076"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/prompts/COMMON.txt",
+      "bytes": 72290,
+      "sha256": "ed13edd5063d2a78d03464e67daae52a0270d86ec73dac95e3937d0a7099bcd7"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/prompts/FADT.txt",
+      "bytes": 560,
+      "sha256": "267709bbf8432425fd0b07ecb29772997c421715238be7658a1f8e61a8c74c54"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/prompts/MONOLITH.txt",
+      "bytes": 918,
+      "sha256": "79193c52ad2e61ffd1bf379f03d6921bc205a90a73a9f5bdb570dbd058262593"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/prompts/PEDAGOGUE.txt",
+      "bytes": 534,
+      "sha256": "1126d9220e90c1e7d087802eb275bf1787fc76355a5591ded093a2385375b286"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/run-conventional-baseline.mjs",
+      "bytes": 3048,
+      "sha256": "0601eb51e80bbe2c17c83a07fc19ca1fed69b7eed1b0f06018fec74f7542a7fe"
+    },
+    {
+      "path": "research/portable-loom-dollhouse-execution-20261009/score-conventional-baseline.mjs",
+      "bytes": 4637,
+      "sha256": "2252a5aa8bd3ddffa357a935e10e4130e914473e8ce62c821648d1f526160c34"
+    },
+    {
+      "path": "research/portable-loom-local-battery-20261009/EVIDENCE_RECEIPT.local.json",
+      "bytes": 5483,
+      "sha256": "c9fe18a56a0ff9a4d066773086d6b4a46de9a91603d72e5d9dc5077ff58d665c"
+    },
+    {
+      "path": "research/portable-loom-local-battery-20261009/artifact/portable-loom-standard.json",
+      "bytes": 81380,
+      "sha256": "dec3750552099e30e9495ce42af6e616dd3dd1f48f0d3f6766cb82d934c273b2"
+    },
+    {
+      "path": "research/portable-loom-local-battery-20261009/artifact/portable-loom-standard.md",
+      "bytes": 85355,
+      "sha256": "aee654a57edbd931eb5f7ab47b50427ef464530ef5731e5309d49c02eb444eee"
+    },
+    {
+      "path": "research/portable-loom-preflight/CASE_REGISTRY.json",
+      "bytes": 15712,
+      "sha256": "2eba4fb0760aada7bab317904f97f1613e53cce243d999a60cf33a6cc7234adb"
+    },
+    {
+      "path": "research/portable-loom-preflight/PROTOCOL.json",
+      "bytes": 7680,
+      "sha256": "7931d70b2296414562f5457d71f4069229d6081c0fe914dad3f8a91ddb214c25"
+    },
+    {
+      "path": "research/portable-loom-preflight/ROLE_CONTRACT_MANIFEST.json",
+      "bytes": 2461,
+      "sha256": "2d8e0c6b3dabb1ba9ce77bfe7e9cd0574939b5f30ecd9855c3f8ec691ea8feb3"
+    },
+    {
+      "path": "tests/portable-loom-comparison-capture.test.mjs",
+      "bytes": 3217,
+      "sha256": "28b96ef894a5dad67aa608ef1952b32c23719d2d7510eeee8f82b3cd0a3cdc06"
+    }
+  ],
+  "premeasurement_rule": "Commit these exact bytes before original local audit/baseline attempts. The actual freeze SHA is captured in request.json.",
+  "claim_class": "LOCAL_STRUCTURAL_TEST",
+  "model_transport": "UNBOUND_NOT_RUN",
+  "financial_ceiling_current_execution": {
+    "paid_api_calls": 0,
+    "api_spend_usd": 0
+  },
+  "human_authorization": "Current interactive prompt directs execution of this inherited bounded handoff.",
+  "consumer_accounts_required": false,
+  "historical_rerun": false,
+  "detached_agents": false,
+  "main_merge_deployment": false,
+  "roles": "Pure code adapters here; no independent model-role call credit.",
+  "repetitions": "Three deterministic repetitions per fixed case, one twelve-case denominator."
+}

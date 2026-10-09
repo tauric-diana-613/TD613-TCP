@@ -1,0 +1,5022 @@
+{
+  "schema": "td613.loom.fixed-audit-case-set/v0.1",
+  "origin_kind": "SYNTHETIC_AUDIT_FIXTURES_NOT_RECEIVER_OUTPUTS",
+  "case_count": 12,
+  "case_order": "ASCENDING_NEUTRAL_ID",
+  "cases": [
+    {
+      "schema": "td613.loom.fixed-audit-case/v0.1",
+      "case_id": "K01",
+      "origin_kind": "SYNTHETIC_AUDIT_FIXTURE",
+      "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+      "review_question": "Are the supplied bounded declarations ready for human review, while retaining every unresolved finding and all claim ceilings?",
+      "payload": {
+        "utf8": "Public synthetic declaration K01 altered",
+        "sha256": "e3bf1438766f4cfe5c718afc48dd81497df96edac056a028b82bad51aa54819a"
+      },
+      "role_inputs": {
+        "PEDAGOGUE": {
+          "schema": "td613.pedagogue-gesture-consequence-case/v0.1",
+          "case_id": "K01",
+          "observation": {
+            "kind": "SYNTHETIC_FIXTURE",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a"
+          },
+          "rest_exit": {
+            "cue_pause_available": true,
+            "exit_available": true
+          },
+          "initial_state": {
+            "staged_refs": [],
+            "send_count": 0,
+            "pending_attempt_id": null,
+            "latest_attempt": {
+              "attempt_id": null,
+              "status": "NONE"
+            },
+            "admitted_result_ref": null,
+            "cue_paused": false,
+            "exited": false,
+            "expires_at": 100
+          },
+          "steps": [
+            {
+              "step_id": "K01-step-1",
+              "kind": "OPEN",
+              "at": 1,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 0
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K01-step-2",
+              "kind": "STAGE",
+              "at": 2,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 1
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [
+                  "public-reference"
+                ],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K01-step-3",
+              "kind": "SEND",
+              "at": 3,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 2
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": "attempt-one",
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": "attempt-one",
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "PENDING"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K01-step-4",
+              "kind": "WORLD_ANSWER",
+              "at": 4,
+              "explicit_operator_gesture": false,
+              "notice": {
+                "visible": true,
+                "at": 3
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": "attempt-one",
+              "outcome": "ADMITTED",
+              "result_ref": "synthetic-answer",
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K01-step-5",
+              "kind": "PAUSE_CUE",
+              "at": 5,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 4
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": true,
+                "exited": false,
+                "expires_at": 100
+              }
+            }
+          ]
+        },
+        "APERTURE": {
+          "schema": "td613.dollhouse.witness-plan/v0.1",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "execution": false,
+          "claims": [
+            {
+              "id": "K01-scope",
+              "claim_class": "SCOPED_BEHAVIOR",
+              "statement": "This fictional plan is limited to the supplied route declarations.",
+              "extent": "DECLARED_SCOPE_ONLY",
+              "observation_scope": {
+                "description": "Synthetic fixture only.",
+                "objects": [
+                  "K01"
+                ],
+                "bounded": true
+              },
+              "instrument": {
+                "id": "fixture-review",
+                "description": "Offline declared-input checker."
+              },
+              "evidence_class": "DECLARATION",
+              "positive_witness": {
+                "description": "Fictional supporting declaration.",
+                "artifact_refs": [
+                  "K01-declared-support"
+                ]
+              },
+              "hostile_counterexample": {
+                "description": "Fictional falsifier declaration.",
+                "artifact_refs": [
+                  "K01-declared-falsifier"
+                ]
+              },
+              "unresolved_alternatives": [],
+              "required_next_observation": null
+            }
+          ]
+        },
+        "ATLAS": {
+          "origin": {
+            "id": "K01-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K01-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "c1d8420e471cd390f423b134deea44085c1b173562e0cd61cc7c79572a0777f4"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K01-root",
+            "predecessor_ref": null
+          },
+          "previous": {
+            "id": "K01-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K01-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "c1d8420e471cd390f423b134deea44085c1b173562e0cd61cc7c79572a0777f4"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K01-root",
+            "predecessor_ref": null
+          },
+          "current": {
+            "id": "K01-current",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K01-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "c1d8420e471cd390f423b134deea44085c1b173562e0cd61cc7c79572a0777f4"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K01-answer",
+            "predecessor_ref": "K01-root"
+          },
+          "presentations": [
+            {
+              "id": "K01-projection-one",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K01-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "c1d8420e471cd390f423b134deea44085c1b173562e0cd61cc7c79572a0777f4"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K01-answer",
+              "predecessor_ref": "K01-root"
+            },
+            {
+              "id": "K01-projection-two",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K01-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "c1d8420e471cd390f423b134deea44085c1b173562e0cd61cc7c79572a0777f4"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K01-answer",
+              "predecessor_ref": "K01-root"
+            }
+          ]
+        },
+        "FADT": {
+          "fibres": [
+            {
+              "id": "K01-occupied",
+              "antecedents": [
+                {
+                  "id": "before",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_1"
+                  ]
+                },
+                {
+                  "id": "after",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_1"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "TEMPORAL_CUSTODIAN": {
+          "schema": "td613.dollhouse.temporal-audit/v0.2",
+          "case_id": "K01",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "coordinate": "local-inputs-review",
+          "episode_id": "K01-fictional-episode",
+          "ledger_entries": [
+            {
+              "entry_id": "K01-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K01-e2",
+              "t_sequence": "SEQ_2",
+              "timestamp": "2026-10-08T20:00:02Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K01-e3",
+              "t_sequence": "SEQ_3",
+              "timestamp": "2026-10-08T20:00:03Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "baseline_entries": [
+            {
+              "entry_id": "K01-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "required_phases": [
+            "origin",
+            "receiver",
+            "return"
+          ],
+          "phases": {
+            "origin": {
+              "status": "PASS",
+              "entry_id": "K01-e1"
+            },
+            "receiver": {
+              "status": "PASS",
+              "entry_id": "K01-e2"
+            },
+            "return": {
+              "status": "PASS",
+              "entry_id": "K01-e3"
+            }
+          }
+        }
+      },
+      "prior_findings": []
+    },
+    {
+      "schema": "td613.loom.fixed-audit-case/v0.1",
+      "case_id": "K02",
+      "origin_kind": "SYNTHETIC_AUDIT_FIXTURE",
+      "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+      "review_question": "Are the supplied bounded declarations ready for human review, while retaining every unresolved finding and all claim ceilings?",
+      "payload": {
+        "utf8": "Public synthetic declaration K02",
+        "sha256": "642ace9e1852481876a5a74dc4a885f604a18f9d83969704a16985f893b0f79b"
+      },
+      "role_inputs": {
+        "PEDAGOGUE": {
+          "schema": "td613.pedagogue-gesture-consequence-case/v0.1",
+          "case_id": "K02",
+          "observation": {
+            "kind": "SYNTHETIC_FIXTURE",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a"
+          },
+          "rest_exit": {
+            "cue_pause_available": true,
+            "exit_available": true
+          },
+          "initial_state": {
+            "staged_refs": [],
+            "send_count": 0,
+            "pending_attempt_id": null,
+            "latest_attempt": {
+              "attempt_id": null,
+              "status": "NONE"
+            },
+            "admitted_result_ref": null,
+            "cue_paused": false,
+            "exited": false,
+            "expires_at": 100
+          },
+          "steps": [
+            {
+              "step_id": "K02-step-1",
+              "kind": "OPEN",
+              "at": 1,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 0
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K02-step-2",
+              "kind": "STAGE",
+              "at": 2,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 1
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [
+                  "public-reference"
+                ],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K02-step-3",
+              "kind": "SEND",
+              "at": 3,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 4
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": "attempt-one",
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": "attempt-one",
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "PENDING"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K02-step-4",
+              "kind": "WORLD_ANSWER",
+              "at": 4,
+              "explicit_operator_gesture": false,
+              "notice": {
+                "visible": true,
+                "at": 3
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": "attempt-one",
+              "outcome": "ADMITTED",
+              "result_ref": "synthetic-answer",
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K02-step-5",
+              "kind": "PAUSE_CUE",
+              "at": 5,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 4
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": true,
+                "exited": false,
+                "expires_at": 100
+              }
+            }
+          ]
+        },
+        "APERTURE": {
+          "schema": "td613.dollhouse.witness-plan/v0.1",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "execution": false,
+          "claims": [
+            {
+              "id": "K02-scope",
+              "claim_class": "SCOPED_BEHAVIOR",
+              "statement": "This fictional plan is limited to the supplied route declarations.",
+              "extent": "DECLARED_SCOPE_ONLY",
+              "observation_scope": {
+                "description": "Synthetic fixture only.",
+                "objects": [
+                  "K02"
+                ],
+                "bounded": true
+              },
+              "instrument": {
+                "id": "fixture-review",
+                "description": "Offline declared-input checker."
+              },
+              "evidence_class": "DECLARATION",
+              "positive_witness": {
+                "description": "Fictional supporting declaration.",
+                "artifact_refs": [
+                  "K02-declared-support"
+                ]
+              },
+              "hostile_counterexample": {
+                "description": "Fictional falsifier declaration.",
+                "artifact_refs": [
+                  "K02-declared-falsifier"
+                ]
+              },
+              "unresolved_alternatives": [],
+              "required_next_observation": null
+            }
+          ]
+        },
+        "ATLAS": {
+          "origin": {
+            "id": "K02-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K02-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "4164254f35d94131454992a8f601f954f298f02a82c70b0d70fa5c0b1ba2afff"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K02-root",
+            "predecessor_ref": null
+          },
+          "previous": {
+            "id": "K02-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K02-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "4164254f35d94131454992a8f601f954f298f02a82c70b0d70fa5c0b1ba2afff"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K02-root",
+            "predecessor_ref": null
+          },
+          "current": {
+            "id": "K02-current",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K02-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "4164254f35d94131454992a8f601f954f298f02a82c70b0d70fa5c0b1ba2afff"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K02-answer",
+            "predecessor_ref": "K02-root"
+          },
+          "presentations": [
+            {
+              "id": "K02-projection-one",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K02-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "4164254f35d94131454992a8f601f954f298f02a82c70b0d70fa5c0b1ba2afff"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K02-answer",
+              "predecessor_ref": "K02-root"
+            },
+            {
+              "id": "K02-projection-two",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K02-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "4164254f35d94131454992a8f601f954f298f02a82c70b0d70fa5c0b1ba2afff"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K02-answer",
+              "predecessor_ref": "K02-root"
+            }
+          ]
+        },
+        "FADT": {
+          "fibres": [
+            {
+              "id": "K02-occupied",
+              "antecedents": [
+                {
+                  "id": "before",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_2"
+                  ]
+                },
+                {
+                  "id": "after",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_2"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "TEMPORAL_CUSTODIAN": {
+          "schema": "td613.dollhouse.temporal-audit/v0.2",
+          "case_id": "K02",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "coordinate": "local-inputs-review",
+          "episode_id": "K02-fictional-episode",
+          "ledger_entries": [
+            {
+              "entry_id": "K02-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K02-e2",
+              "t_sequence": "SEQ_2",
+              "timestamp": "2026-10-08T20:00:02Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K02-e3",
+              "t_sequence": "SEQ_3",
+              "timestamp": "2026-10-08T20:00:03Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "baseline_entries": [
+            {
+              "entry_id": "K02-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "required_phases": [
+            "origin",
+            "receiver",
+            "return"
+          ],
+          "phases": {
+            "origin": {
+              "status": "PASS",
+              "entry_id": "K02-e1"
+            },
+            "receiver": {
+              "status": "PASS",
+              "entry_id": "K02-e2"
+            },
+            "return": {
+              "status": "PASS",
+              "entry_id": "K02-e3"
+            }
+          }
+        }
+      },
+      "prior_findings": []
+    },
+    {
+      "schema": "td613.loom.fixed-audit-case/v0.1",
+      "case_id": "K03",
+      "origin_kind": "SYNTHETIC_AUDIT_FIXTURE",
+      "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+      "review_question": "Are the supplied bounded declarations ready for human review, while retaining every unresolved finding and all claim ceilings?",
+      "payload": {
+        "utf8": "Public synthetic declaration K03",
+        "sha256": "2f62fd1a66989768edff54d665c979e780ffd33122c86c5fb302951cf1434b33"
+      },
+      "role_inputs": {
+        "PEDAGOGUE": {
+          "schema": "td613.pedagogue-gesture-consequence-case/v0.1",
+          "case_id": "K03",
+          "observation": {
+            "kind": "SYNTHETIC_FIXTURE",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a"
+          },
+          "rest_exit": {
+            "cue_pause_available": true,
+            "exit_available": true
+          },
+          "initial_state": {
+            "staged_refs": [],
+            "send_count": 0,
+            "pending_attempt_id": null,
+            "latest_attempt": {
+              "attempt_id": null,
+              "status": "NONE"
+            },
+            "admitted_result_ref": null,
+            "cue_paused": false,
+            "exited": false,
+            "expires_at": 100
+          },
+          "steps": [
+            {
+              "step_id": "K03-step-1",
+              "kind": "OPEN",
+              "at": 1,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 0
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K03-step-2",
+              "kind": "STAGE",
+              "at": 2,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 1
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [
+                  "public-reference"
+                ],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K03-step-3",
+              "kind": "SEND",
+              "at": 3,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 2
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": "attempt-one",
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": "attempt-one",
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "PENDING"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K03-step-4",
+              "kind": "WORLD_ANSWER",
+              "at": 4,
+              "explicit_operator_gesture": false,
+              "notice": {
+                "visible": true,
+                "at": 3
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": "attempt-one",
+              "outcome": "ADMITTED",
+              "result_ref": "synthetic-answer",
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K03-step-5",
+              "kind": "PAUSE_CUE",
+              "at": 5,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 4
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": true,
+                "exited": false,
+                "expires_at": 100
+              }
+            }
+          ]
+        },
+        "APERTURE": {
+          "schema": "td613.dollhouse.witness-plan/v0.1",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "execution": false,
+          "claims": [
+            {
+              "id": "K03-scope",
+              "claim_class": "SCOPED_BEHAVIOR",
+              "statement": "This fictional plan is limited to the supplied route declarations.",
+              "extent": "DECLARED_SCOPE_ONLY",
+              "observation_scope": {
+                "description": "Synthetic fixture only.",
+                "objects": [
+                  "K03"
+                ],
+                "bounded": true
+              },
+              "instrument": {
+                "id": "fixture-review",
+                "description": "Offline declared-input checker."
+              },
+              "evidence_class": "DECLARATION",
+              "positive_witness": {
+                "description": "Fictional supporting declaration.",
+                "artifact_refs": [
+                  "K03-declared-support"
+                ]
+              },
+              "hostile_counterexample": {
+                "description": "Fictional falsifier declaration.",
+                "artifact_refs": [
+                  "K03-declared-falsifier"
+                ]
+              },
+              "unresolved_alternatives": [],
+              "required_next_observation": null
+            }
+          ]
+        },
+        "ATLAS": {
+          "origin": {
+            "id": "K03-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K03-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "eeb1a3d754ba3d96f0a108f3cfa57f52ca2fa11d5acf081f2f2553acfd54b792"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K03-root",
+            "predecessor_ref": null
+          },
+          "previous": {
+            "id": "K03-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K03-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "eeb1a3d754ba3d96f0a108f3cfa57f52ca2fa11d5acf081f2f2553acfd54b792"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K03-root",
+            "predecessor_ref": null
+          },
+          "current": {
+            "id": "K03-current",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K03-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "eeb1a3d754ba3d96f0a108f3cfa57f52ca2fa11d5acf081f2f2553acfd54b792"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K03-answer",
+            "predecessor_ref": "K03-root"
+          },
+          "presentations": [
+            {
+              "id": "K03-projection-one",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K03-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "eeb1a3d754ba3d96f0a108f3cfa57f52ca2fa11d5acf081f2f2553acfd54b792"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K03-answer",
+              "predecessor_ref": "K03-root"
+            },
+            {
+              "id": "K03-projection-two",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K03-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "eeb1a3d754ba3d96f0a108f3cfa57f52ca2fa11d5acf081f2f2553acfd54b792"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K03-answer",
+              "predecessor_ref": "K03-root"
+            }
+          ]
+        },
+        "FADT": {
+          "fibres": [
+            {
+              "id": "K03-occupied",
+              "antecedents": [
+                {
+                  "id": "before",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_3"
+                  ]
+                },
+                {
+                  "id": "after",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_3"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "TEMPORAL_CUSTODIAN": {
+          "schema": "td613.dollhouse.temporal-audit/v0.2",
+          "case_id": "K03",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "coordinate": "local-inputs-review",
+          "episode_id": "K03-fictional-episode",
+          "ledger_entries": [
+            {
+              "entry_id": "K03-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K03-e2",
+              "t_sequence": "SEQ_2",
+              "timestamp": "2026-10-08T20:00:02Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K03-e3",
+              "t_sequence": "SEQ_3",
+              "timestamp": "2026-10-08T20:00:03Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "baseline_entries": [
+            {
+              "entry_id": "K03-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "required_phases": [
+            "origin",
+            "receiver",
+            "return"
+          ],
+          "phases": {
+            "origin": {
+              "status": "PASS",
+              "entry_id": "K03-e1"
+            },
+            "receiver": {
+              "status": "PASS",
+              "entry_id": "K03-e2"
+            },
+            "return": {
+              "status": "PASS",
+              "entry_id": "K03-e3"
+            }
+          }
+        }
+      },
+      "prior_findings": []
+    },
+    {
+      "schema": "td613.loom.fixed-audit-case/v0.1",
+      "case_id": "K04",
+      "origin_kind": "SYNTHETIC_AUDIT_FIXTURE",
+      "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+      "review_question": "Are the supplied bounded declarations ready for human review, while retaining every unresolved finding and all claim ceilings?",
+      "payload": {
+        "utf8": "Public synthetic declaration K04",
+        "sha256": "da44083a6713ded3386654fbf56dae6b1a954cad9c20ef1dc880292c8734c77b"
+      },
+      "role_inputs": {
+        "PEDAGOGUE": {
+          "schema": "td613.pedagogue-gesture-consequence-case/v0.1",
+          "case_id": "K04",
+          "observation": {
+            "kind": "SYNTHETIC_FIXTURE",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a"
+          },
+          "rest_exit": {
+            "cue_pause_available": true,
+            "exit_available": true
+          },
+          "initial_state": {
+            "staged_refs": [],
+            "send_count": 0,
+            "pending_attempt_id": null,
+            "latest_attempt": {
+              "attempt_id": null,
+              "status": "NONE"
+            },
+            "admitted_result_ref": null,
+            "cue_paused": false,
+            "exited": false,
+            "expires_at": 100
+          },
+          "steps": [
+            {
+              "step_id": "K04-step-1",
+              "kind": "OPEN",
+              "at": 1,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 0
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K04-step-2",
+              "kind": "STAGE",
+              "at": 2,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 1
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [
+                  "public-reference"
+                ],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K04-step-3",
+              "kind": "SEND",
+              "at": 3,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 2
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": "attempt-one",
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": "attempt-one",
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "PENDING"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K04-step-4",
+              "kind": "WORLD_ANSWER",
+              "at": 4,
+              "explicit_operator_gesture": false,
+              "notice": {
+                "visible": true,
+                "at": 3
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": "attempt-one",
+              "outcome": "ADMITTED",
+              "result_ref": "synthetic-answer",
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K04-step-5",
+              "kind": "PAUSE_CUE",
+              "at": 5,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 4
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": true,
+                "exited": false,
+                "expires_at": 100
+              }
+            }
+          ]
+        },
+        "APERTURE": {
+          "schema": "td613.dollhouse.witness-plan/v0.1",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "execution": false,
+          "claims": [
+            {
+              "id": "K04-scope",
+              "claim_class": "SCOPED_BEHAVIOR",
+              "statement": "This fictional plan is limited to the supplied route declarations.",
+              "extent": "DECLARED_SCOPE_ONLY",
+              "observation_scope": {
+                "description": "Synthetic fixture only.",
+                "objects": [
+                  "K04"
+                ],
+                "bounded": true
+              },
+              "instrument": {
+                "id": "fixture-review",
+                "description": "Offline declared-input checker."
+              },
+              "evidence_class": "DECLARATION",
+              "positive_witness": {
+                "description": "Fictional supporting declaration.",
+                "artifact_refs": []
+              },
+              "hostile_counterexample": {
+                "description": "Fictional falsifier declaration.",
+                "artifact_refs": [
+                  "K04-declared-falsifier"
+                ]
+              },
+              "unresolved_alternatives": [],
+              "required_next_observation": null
+            }
+          ]
+        },
+        "ATLAS": {
+          "origin": {
+            "id": "K04-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K04-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "67043176b396136ae8fe89bf10db7f8888a46573d878f8745d19cf9ca089b43d"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K04-root",
+            "predecessor_ref": null
+          },
+          "previous": {
+            "id": "K04-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K04-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "67043176b396136ae8fe89bf10db7f8888a46573d878f8745d19cf9ca089b43d"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K04-root",
+            "predecessor_ref": null
+          },
+          "current": {
+            "id": "K04-current",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K04-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "67043176b396136ae8fe89bf10db7f8888a46573d878f8745d19cf9ca089b43d"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K04-answer",
+            "predecessor_ref": "K04-root"
+          },
+          "presentations": [
+            {
+              "id": "K04-projection-one",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K04-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "67043176b396136ae8fe89bf10db7f8888a46573d878f8745d19cf9ca089b43d"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K04-answer",
+              "predecessor_ref": "K04-root"
+            },
+            {
+              "id": "K04-projection-two",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K04-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "67043176b396136ae8fe89bf10db7f8888a46573d878f8745d19cf9ca089b43d"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K04-answer",
+              "predecessor_ref": "K04-root"
+            }
+          ]
+        },
+        "FADT": {
+          "fibres": [
+            {
+              "id": "K04-occupied",
+              "antecedents": [
+                {
+                  "id": "before",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_4"
+                  ]
+                },
+                {
+                  "id": "after",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_4"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "TEMPORAL_CUSTODIAN": {
+          "schema": "td613.dollhouse.temporal-audit/v0.2",
+          "case_id": "K04",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "coordinate": "local-inputs-review",
+          "episode_id": "K04-fictional-episode",
+          "ledger_entries": [
+            {
+              "entry_id": "K04-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K04-e2",
+              "t_sequence": "SEQ_2",
+              "timestamp": "2026-10-08T20:00:02Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K04-e3",
+              "t_sequence": "SEQ_3",
+              "timestamp": "2026-10-08T20:00:03Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "baseline_entries": [
+            {
+              "entry_id": "K04-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "required_phases": [
+            "origin",
+            "receiver",
+            "return"
+          ],
+          "phases": {
+            "origin": {
+              "status": "PASS",
+              "entry_id": "K04-e1"
+            },
+            "receiver": {
+              "status": "PASS",
+              "entry_id": "K04-e2"
+            },
+            "return": {
+              "status": "PASS",
+              "entry_id": "K04-e3"
+            }
+          }
+        }
+      },
+      "prior_findings": []
+    },
+    {
+      "schema": "td613.loom.fixed-audit-case/v0.1",
+      "case_id": "K05",
+      "origin_kind": "SYNTHETIC_AUDIT_FIXTURE",
+      "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+      "review_question": "Are the supplied bounded declarations ready for human review, while retaining every unresolved finding and all claim ceilings?",
+      "payload": {
+        "utf8": "Public synthetic declaration K05",
+        "sha256": "19f7d13719440fb209eecff024762c25f323c9c77581e3c5a2c58ae1fae80d54"
+      },
+      "role_inputs": {
+        "PEDAGOGUE": {
+          "schema": "td613.pedagogue-gesture-consequence-case/v0.1",
+          "case_id": "K05",
+          "observation": {
+            "kind": "SYNTHETIC_FIXTURE",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a"
+          },
+          "rest_exit": {
+            "cue_pause_available": true,
+            "exit_available": true
+          },
+          "initial_state": {
+            "staged_refs": [],
+            "send_count": 0,
+            "pending_attempt_id": null,
+            "latest_attempt": {
+              "attempt_id": null,
+              "status": "NONE"
+            },
+            "admitted_result_ref": null,
+            "cue_paused": false,
+            "exited": false,
+            "expires_at": 100
+          },
+          "steps": [
+            {
+              "step_id": "K05-step-1",
+              "kind": "OPEN",
+              "at": 1,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 0
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K05-step-2",
+              "kind": "STAGE",
+              "at": 2,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 1
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [
+                  "public-reference"
+                ],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K05-step-3",
+              "kind": "SEND",
+              "at": 3,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 2
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": "attempt-one",
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": "attempt-one",
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "PENDING"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K05-step-4",
+              "kind": "WORLD_ANSWER",
+              "at": 4,
+              "explicit_operator_gesture": false,
+              "notice": {
+                "visible": true,
+                "at": 3
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": "attempt-one",
+              "outcome": "ADMITTED",
+              "result_ref": "synthetic-answer",
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K05-step-5",
+              "kind": "PAUSE_CUE",
+              "at": 5,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 4
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": true,
+                "exited": false,
+                "expires_at": 100
+              }
+            }
+          ]
+        },
+        "APERTURE": {
+          "schema": "td613.dollhouse.witness-plan/v0.1",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "execution": false,
+          "claims": [
+            {
+              "id": "K05-scope",
+              "claim_class": "SCOPED_BEHAVIOR",
+              "statement": "This fictional plan is limited to the supplied route declarations.",
+              "extent": "DECLARED_SCOPE_ONLY",
+              "observation_scope": {
+                "description": "Synthetic fixture only.",
+                "objects": [
+                  "K05"
+                ],
+                "bounded": true
+              },
+              "instrument": {
+                "id": "fixture-review",
+                "description": "Offline declared-input checker."
+              },
+              "evidence_class": "DECLARATION",
+              "positive_witness": {
+                "description": "Fictional supporting declaration.",
+                "artifact_refs": [
+                  "K05-declared-support"
+                ]
+              },
+              "hostile_counterexample": {
+                "description": "Fictional falsifier declaration.",
+                "artifact_refs": [
+                  "K05-declared-falsifier"
+                ]
+              },
+              "unresolved_alternatives": [],
+              "required_next_observation": null
+            }
+          ]
+        },
+        "ATLAS": {
+          "origin": {
+            "id": "K05-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K05-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "7966e41b8fbc080f7a653c1689e00b46e89a209789969ade8e40dab1065357f2"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K05-root",
+            "predecessor_ref": null
+          },
+          "previous": {
+            "id": "K05-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K05-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "7966e41b8fbc080f7a653c1689e00b46e89a209789969ade8e40dab1065357f2"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K05-root",
+            "predecessor_ref": null
+          },
+          "current": {
+            "id": "K05-current",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K05-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "7966e41b8fbc080f7a653c1689e00b46e89a209789969ade8e40dab1065357f2"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K05-answer",
+            "predecessor_ref": "K05-root"
+          },
+          "presentations": [
+            {
+              "id": "K05-projection-one",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K05-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "7966e41b8fbc080f7a653c1689e00b46e89a209789969ade8e40dab1065357f2"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K05-answer",
+              "predecessor_ref": "K05-root"
+            },
+            {
+              "id": "K05-projection-two",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K05-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "7966e41b8fbc080f7a653c1689e00b46e89a209789969ade8e40dab1065357f2"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K05-answer",
+              "predecessor_ref": "K05-root"
+            }
+          ]
+        },
+        "FADT": {
+          "fibres": [
+            {
+              "id": "K05-occupied",
+              "antecedents": [
+                {
+                  "id": "before",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_5"
+                  ]
+                },
+                {
+                  "id": "after",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_5"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "TEMPORAL_CUSTODIAN": {
+          "schema": "td613.dollhouse.temporal-audit/v0.2",
+          "case_id": "K05",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "coordinate": "local-inputs-review",
+          "episode_id": "K05-fictional-episode",
+          "ledger_entries": [
+            {
+              "entry_id": "K05-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K05-e2",
+              "t_sequence": "SEQ_2",
+              "timestamp": "2026-10-08T20:00:02Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K05-e3",
+              "t_sequence": "SEQ_3",
+              "timestamp": "2026-10-08T20:00:03Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "baseline_entries": [
+            {
+              "entry_id": "K05-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "required_phases": [
+            "origin",
+            "receiver",
+            "return"
+          ],
+          "phases": {
+            "origin": {
+              "status": "PASS",
+              "entry_id": "K05-e1"
+            },
+            "receiver": {
+              "status": "PASS",
+              "entry_id": "K05-e2"
+            },
+            "return": {
+              "status": "PASS",
+              "entry_id": "K05-e3"
+            }
+          }
+        }
+      },
+      "prior_findings": []
+    },
+    {
+      "schema": "td613.loom.fixed-audit-case/v0.1",
+      "case_id": "K06",
+      "origin_kind": "SYNTHETIC_AUDIT_FIXTURE",
+      "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+      "review_question": "Are the supplied bounded declarations ready for human review, while retaining every unresolved finding and all claim ceilings?",
+      "payload": {
+        "utf8": "Public synthetic declaration K06",
+        "sha256": "a7f06d75bdd3dd503907c20df7929a845f0703d6c45ffff662cb7c5eb3ffbe7b"
+      },
+      "role_inputs": {
+        "PEDAGOGUE": {
+          "schema": "td613.pedagogue-gesture-consequence-case/v0.1",
+          "case_id": "K06",
+          "observation": {
+            "kind": "SYNTHETIC_FIXTURE",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a"
+          },
+          "rest_exit": {
+            "cue_pause_available": true,
+            "exit_available": true
+          },
+          "initial_state": {
+            "staged_refs": [],
+            "send_count": 0,
+            "pending_attempt_id": null,
+            "latest_attempt": {
+              "attempt_id": null,
+              "status": "NONE"
+            },
+            "admitted_result_ref": null,
+            "cue_paused": false,
+            "exited": false,
+            "expires_at": 100
+          },
+          "steps": [
+            {
+              "step_id": "K06-step-1",
+              "kind": "OPEN",
+              "at": 1,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 0
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K06-step-2",
+              "kind": "STAGE",
+              "at": 2,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 1
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [
+                  "public-reference"
+                ],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K06-step-3",
+              "kind": "SEND",
+              "at": 3,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 2
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": "attempt-one",
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": "attempt-one",
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "PENDING"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K06-step-4",
+              "kind": "WORLD_ANSWER",
+              "at": 4,
+              "explicit_operator_gesture": false,
+              "notice": {
+                "visible": true,
+                "at": 3
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": "attempt-one",
+              "outcome": "ADMITTED",
+              "result_ref": "synthetic-answer",
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K06-step-5",
+              "kind": "PAUSE_CUE",
+              "at": 5,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 4
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": true,
+                "exited": false,
+                "expires_at": 100
+              }
+            }
+          ]
+        },
+        "APERTURE": {
+          "schema": "td613.dollhouse.witness-plan/v0.1",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "execution": false,
+          "claims": [
+            {
+              "id": "K06-scope",
+              "claim_class": "SCOPED_BEHAVIOR",
+              "statement": "This fictional plan is limited to the supplied route declarations.",
+              "extent": "DECLARED_SCOPE_ONLY",
+              "observation_scope": {
+                "description": "Synthetic fixture only.",
+                "objects": [
+                  "K06"
+                ],
+                "bounded": true
+              },
+              "instrument": {
+                "id": "fixture-review",
+                "description": "Offline declared-input checker."
+              },
+              "evidence_class": "DECLARATION",
+              "positive_witness": {
+                "description": "Fictional supporting declaration.",
+                "artifact_refs": [
+                  "K06-declared-support"
+                ]
+              },
+              "hostile_counterexample": {
+                "description": "Fictional falsifier declaration.",
+                "artifact_refs": [
+                  "K06-declared-falsifier"
+                ]
+              },
+              "unresolved_alternatives": [],
+              "required_next_observation": null
+            }
+          ]
+        },
+        "ATLAS": {
+          "origin": {
+            "id": "K06-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K06-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "b92d47e1b3f0fe024f02f4366641e16e88ede28cdc3eb4a5a5207f0e0cc6a1e0"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K06-root",
+            "predecessor_ref": null
+          },
+          "previous": {
+            "id": "K06-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K06-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "b92d47e1b3f0fe024f02f4366641e16e88ede28cdc3eb4a5a5207f0e0cc6a1e0"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K06-root",
+            "predecessor_ref": null
+          },
+          "current": {
+            "id": "K06-current",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K06-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "b92d47e1b3f0fe024f02f4366641e16e88ede28cdc3eb4a5a5207f0e0cc6a1e0"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K06-answer",
+            "predecessor_ref": "K06-unrelated"
+          },
+          "presentations": [
+            {
+              "id": "K06-projection-one",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K06-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "b92d47e1b3f0fe024f02f4366641e16e88ede28cdc3eb4a5a5207f0e0cc6a1e0"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K06-answer",
+              "predecessor_ref": "K06-root"
+            },
+            {
+              "id": "K06-projection-two",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K06-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "b92d47e1b3f0fe024f02f4366641e16e88ede28cdc3eb4a5a5207f0e0cc6a1e0"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K06-answer",
+              "predecessor_ref": "K06-root"
+            }
+          ]
+        },
+        "FADT": {
+          "fibres": [
+            {
+              "id": "K06-occupied",
+              "antecedents": [
+                {
+                  "id": "before",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_6"
+                  ]
+                },
+                {
+                  "id": "after",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_6"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "TEMPORAL_CUSTODIAN": {
+          "schema": "td613.dollhouse.temporal-audit/v0.2",
+          "case_id": "K06",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "coordinate": "local-inputs-review",
+          "episode_id": "K06-fictional-episode",
+          "ledger_entries": [
+            {
+              "entry_id": "K06-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K06-e2",
+              "t_sequence": "SEQ_2",
+              "timestamp": "2026-10-08T20:00:02Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K06-e3",
+              "t_sequence": "SEQ_3",
+              "timestamp": "2026-10-08T20:00:03Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "baseline_entries": [
+            {
+              "entry_id": "K06-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "required_phases": [
+            "origin",
+            "receiver",
+            "return"
+          ],
+          "phases": {
+            "origin": {
+              "status": "PASS",
+              "entry_id": "K06-e1"
+            },
+            "receiver": {
+              "status": "PASS",
+              "entry_id": "K06-e2"
+            },
+            "return": {
+              "status": "PASS",
+              "entry_id": "K06-e3"
+            }
+          }
+        }
+      },
+      "prior_findings": []
+    },
+    {
+      "schema": "td613.loom.fixed-audit-case/v0.1",
+      "case_id": "K07",
+      "origin_kind": "SYNTHETIC_AUDIT_FIXTURE",
+      "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+      "review_question": "Are the supplied bounded declarations ready for human review, while retaining every unresolved finding and all claim ceilings?",
+      "payload": {
+        "utf8": "Public synthetic declaration K07",
+        "sha256": "8c549fcddea367423c18e2872b365d5f74b87e8d148fe0621cfd683bae634424"
+      },
+      "role_inputs": {
+        "PEDAGOGUE": {
+          "schema": "td613.pedagogue-gesture-consequence-case/v0.1",
+          "case_id": "K07",
+          "observation": {
+            "kind": "SYNTHETIC_FIXTURE",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a"
+          },
+          "rest_exit": {
+            "cue_pause_available": true,
+            "exit_available": true
+          },
+          "initial_state": {
+            "staged_refs": [],
+            "send_count": 0,
+            "pending_attempt_id": null,
+            "latest_attempt": {
+              "attempt_id": null,
+              "status": "NONE"
+            },
+            "admitted_result_ref": null,
+            "cue_paused": false,
+            "exited": false,
+            "expires_at": 100
+          },
+          "steps": [
+            {
+              "step_id": "K07-step-1",
+              "kind": "OPEN",
+              "at": 1,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 0
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K07-step-2",
+              "kind": "STAGE",
+              "at": 2,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 1
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [
+                  "public-reference"
+                ],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K07-step-3",
+              "kind": "SEND",
+              "at": 3,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 2
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": "attempt-one",
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": "attempt-one",
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "PENDING"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K07-step-4",
+              "kind": "WORLD_ANSWER",
+              "at": 4,
+              "explicit_operator_gesture": false,
+              "notice": {
+                "visible": true,
+                "at": 3
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": "attempt-one",
+              "outcome": "ADMITTED",
+              "result_ref": "synthetic-answer",
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K07-step-5",
+              "kind": "PAUSE_CUE",
+              "at": 5,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 4
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": true,
+                "exited": false,
+                "expires_at": 100
+              }
+            }
+          ]
+        },
+        "APERTURE": {
+          "schema": "td613.dollhouse.witness-plan/v0.1",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "execution": false,
+          "claims": [
+            {
+              "id": "K07-scope",
+              "claim_class": "SCOPED_BEHAVIOR",
+              "statement": "This fictional plan is limited to the supplied route declarations.",
+              "extent": "DECLARED_SCOPE_ONLY",
+              "observation_scope": {
+                "description": "Synthetic fixture only.",
+                "objects": [
+                  "K07"
+                ],
+                "bounded": true
+              },
+              "instrument": {
+                "id": "fixture-review",
+                "description": "Offline declared-input checker."
+              },
+              "evidence_class": "DECLARATION",
+              "positive_witness": {
+                "description": "Fictional supporting declaration.",
+                "artifact_refs": [
+                  "K07-declared-support"
+                ]
+              },
+              "hostile_counterexample": {
+                "description": "Fictional falsifier declaration.",
+                "artifact_refs": [
+                  "K07-declared-falsifier"
+                ]
+              },
+              "unresolved_alternatives": [],
+              "required_next_observation": null
+            }
+          ]
+        },
+        "ATLAS": {
+          "origin": {
+            "id": "K07-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K07-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "a6a1e388912980cf17fd38ceba582b4902052cb3947720ab18c1547aae76db19"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K07-root",
+            "predecessor_ref": null
+          },
+          "previous": {
+            "id": "K07-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K07-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "a6a1e388912980cf17fd38ceba582b4902052cb3947720ab18c1547aae76db19"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K07-root",
+            "predecessor_ref": null
+          },
+          "current": {
+            "id": "K07-current",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K07-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "a6a1e388912980cf17fd38ceba582b4902052cb3947720ab18c1547aae76db19"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K07-answer",
+            "predecessor_ref": "K07-root"
+          },
+          "presentations": [
+            {
+              "id": "K07-projection-one",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K07-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "a6a1e388912980cf17fd38ceba582b4902052cb3947720ab18c1547aae76db19"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K07-answer",
+              "predecessor_ref": "K07-root"
+            },
+            {
+              "id": "K07-projection-two",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K07-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "a6a1e388912980cf17fd38ceba582b4902052cb3947720ab18c1547aae76db19"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K07-answer",
+              "predecessor_ref": "K07-root"
+            }
+          ]
+        },
+        "FADT": {
+          "fibres": [
+            {
+              "id": "K07-occupied",
+              "antecedents": [
+                {
+                  "id": "before",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_7"
+                  ]
+                },
+                {
+                  "id": "after",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_7"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "TEMPORAL_CUSTODIAN": {
+          "schema": "td613.dollhouse.temporal-audit/v0.2",
+          "case_id": "K07",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "coordinate": "local-inputs-review",
+          "episode_id": "K07-fictional-episode",
+          "ledger_entries": [
+            {
+              "entry_id": "K07-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K07-e2",
+              "t_sequence": "SEQ_2",
+              "timestamp": "2026-10-08T20:00:02Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K07-e3",
+              "t_sequence": "SEQ_3",
+              "timestamp": "2026-10-08T20:00:03Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "baseline_entries": [
+            {
+              "entry_id": "K07-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "required_phases": [
+            "origin",
+            "receiver",
+            "return"
+          ],
+          "phases": {
+            "origin": {
+              "status": "PASS",
+              "entry_id": "K07-e1"
+            },
+            "receiver": {
+              "status": "PASS",
+              "entry_id": "K07-e2"
+            },
+            "return": {
+              "status": "PASS",
+              "entry_id": "K07-e3"
+            }
+          }
+        }
+      },
+      "prior_findings": []
+    },
+    {
+      "schema": "td613.loom.fixed-audit-case/v0.1",
+      "case_id": "K08",
+      "origin_kind": "SYNTHETIC_AUDIT_FIXTURE",
+      "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+      "review_question": "Are the supplied bounded declarations ready for human review, while retaining every unresolved finding and all claim ceilings?",
+      "payload": {
+        "utf8": "Public synthetic declaration K08",
+        "sha256": "8d37c81075761875069dd065221cf6e6b16c7c0088e86a35e159afc9629a69f0"
+      },
+      "role_inputs": {
+        "PEDAGOGUE": {
+          "schema": "td613.pedagogue-gesture-consequence-case/v0.1",
+          "case_id": "K08",
+          "observation": {
+            "kind": "SYNTHETIC_FIXTURE",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a"
+          },
+          "rest_exit": {
+            "cue_pause_available": true,
+            "exit_available": true
+          },
+          "initial_state": {
+            "staged_refs": [],
+            "send_count": 0,
+            "pending_attempt_id": null,
+            "latest_attempt": {
+              "attempt_id": null,
+              "status": "NONE"
+            },
+            "admitted_result_ref": null,
+            "cue_paused": false,
+            "exited": false,
+            "expires_at": 100
+          },
+          "steps": [
+            {
+              "step_id": "K08-step-1",
+              "kind": "OPEN",
+              "at": 1,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 0
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K08-step-2",
+              "kind": "STAGE",
+              "at": 2,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 1
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [
+                  "public-reference"
+                ],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K08-step-3",
+              "kind": "SEND",
+              "at": 3,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 2
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": "attempt-one",
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": "attempt-one",
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "PENDING"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K08-step-4",
+              "kind": "WORLD_ANSWER",
+              "at": 4,
+              "explicit_operator_gesture": false,
+              "notice": {
+                "visible": true,
+                "at": 3
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": "attempt-one",
+              "outcome": "ADMITTED",
+              "result_ref": "synthetic-answer",
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K08-step-5",
+              "kind": "PAUSE_CUE",
+              "at": 5,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 4
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": true,
+                "exited": false,
+                "expires_at": 100
+              }
+            }
+          ]
+        },
+        "APERTURE": {
+          "schema": "td613.dollhouse.witness-plan/v0.1",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "execution": false,
+          "claims": [
+            {
+              "id": "K08-scope",
+              "claim_class": "SCOPED_BEHAVIOR",
+              "statement": "This fictional plan is limited to the supplied route declarations.",
+              "extent": "DECLARED_SCOPE_ONLY",
+              "observation_scope": {
+                "description": "Synthetic fixture only.",
+                "objects": [
+                  "K08"
+                ],
+                "bounded": true
+              },
+              "instrument": {
+                "id": "fixture-review",
+                "description": "Offline declared-input checker."
+              },
+              "evidence_class": "DECLARATION",
+              "positive_witness": {
+                "description": "Fictional supporting declaration.",
+                "artifact_refs": [
+                  "K08-declared-support"
+                ]
+              },
+              "hostile_counterexample": {
+                "description": "Fictional falsifier declaration.",
+                "artifact_refs": [
+                  "K08-declared-falsifier"
+                ]
+              },
+              "unresolved_alternatives": [],
+              "required_next_observation": null
+            }
+          ]
+        },
+        "ATLAS": {
+          "origin": {
+            "id": "K08-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K08-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "327d89bcd5137aac55061387bfe92dfba295eff5d44b2434da651a9dd72d36b3"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K08-root",
+            "predecessor_ref": null
+          },
+          "previous": {
+            "id": "K08-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K08-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "327d89bcd5137aac55061387bfe92dfba295eff5d44b2434da651a9dd72d36b3"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K08-root",
+            "predecessor_ref": null
+          },
+          "current": {
+            "id": "K08-current",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K08-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "327d89bcd5137aac55061387bfe92dfba295eff5d44b2434da651a9dd72d36b3"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K08-answer",
+            "predecessor_ref": "K08-root"
+          },
+          "presentations": [
+            {
+              "id": "K08-projection-one",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K08-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "327d89bcd5137aac55061387bfe92dfba295eff5d44b2434da651a9dd72d36b3"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K08-answer",
+              "predecessor_ref": "K08-root"
+            },
+            {
+              "id": "K08-projection-two",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K08-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "327d89bcd5137aac55061387bfe92dfba295eff5d44b2434da651a9dd72d36b3"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K08-answer",
+              "predecessor_ref": "K08-root"
+            }
+          ]
+        },
+        "FADT": {
+          "fibres": [
+            {
+              "id": "K08-occupied",
+              "antecedents": [
+                {
+                  "id": "before",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_8"
+                  ]
+                },
+                {
+                  "id": "after",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_8"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "TEMPORAL_CUSTODIAN": {
+          "schema": "td613.dollhouse.temporal-audit/v0.2",
+          "case_id": "K08",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "coordinate": "local-inputs-review",
+          "episode_id": "K08-fictional-episode",
+          "ledger_entries": [
+            {
+              "entry_id": "K08-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K08-e2",
+              "t_sequence": "SEQ_2",
+              "timestamp": "2026-10-08T20:00:02Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K08-e3",
+              "t_sequence": "SEQ_3",
+              "timestamp": "2026-10-08T20:00:03Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "baseline_entries": [
+            {
+              "entry_id": "K08-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "required_phases": [
+            "origin",
+            "receiver",
+            "return"
+          ],
+          "phases": {
+            "origin": {
+              "status": "PASS",
+              "entry_id": "K08-e1"
+            },
+            "receiver": {
+              "status": "PASS",
+              "entry_id": "K08-e2"
+            },
+            "return": {
+              "status": "PASS",
+              "entry_id": "K08-e3"
+            }
+          }
+        }
+      },
+      "prior_findings": []
+    },
+    {
+      "schema": "td613.loom.fixed-audit-case/v0.1",
+      "case_id": "K09",
+      "origin_kind": "SYNTHETIC_AUDIT_FIXTURE",
+      "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+      "review_question": "Are the supplied bounded declarations ready for human review, while retaining every unresolved finding and all claim ceilings?",
+      "payload": {
+        "utf8": "Public synthetic declaration K09",
+        "sha256": "ffa758a5256c49f5ec3cd8495c65e1a8ce9e4d1e69d03f45a3596cdf22618dd7"
+      },
+      "role_inputs": {
+        "PEDAGOGUE": {
+          "schema": "td613.pedagogue-gesture-consequence-case/v0.1",
+          "case_id": "K09",
+          "observation": {
+            "kind": "SYNTHETIC_FIXTURE",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a"
+          },
+          "rest_exit": {
+            "cue_pause_available": true,
+            "exit_available": true
+          },
+          "initial_state": {
+            "staged_refs": [],
+            "send_count": 0,
+            "pending_attempt_id": null,
+            "latest_attempt": {
+              "attempt_id": null,
+              "status": "NONE"
+            },
+            "admitted_result_ref": null,
+            "cue_paused": false,
+            "exited": false,
+            "expires_at": 100
+          },
+          "steps": [
+            {
+              "step_id": "K09-step-1",
+              "kind": "OPEN",
+              "at": 1,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 0
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K09-step-2",
+              "kind": "STAGE",
+              "at": 2,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 1
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [
+                  "public-reference"
+                ],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K09-step-3",
+              "kind": "SEND",
+              "at": 3,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 2
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": "attempt-one",
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": "attempt-one",
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "PENDING"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K09-step-4",
+              "kind": "WORLD_ANSWER",
+              "at": 4,
+              "explicit_operator_gesture": false,
+              "notice": {
+                "visible": true,
+                "at": 3
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": "attempt-one",
+              "outcome": "ADMITTED",
+              "result_ref": "synthetic-answer",
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K09-step-5",
+              "kind": "PAUSE_CUE",
+              "at": 5,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 4
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": true,
+                "exited": false,
+                "expires_at": 100
+              }
+            }
+          ]
+        },
+        "APERTURE": {
+          "schema": "td613.dollhouse.witness-plan/v0.1",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "execution": false,
+          "claims": [
+            {
+              "id": "K09-scope",
+              "claim_class": "SCOPED_BEHAVIOR",
+              "statement": "This fictional plan is limited to the supplied route declarations.",
+              "extent": "DECLARED_SCOPE_ONLY",
+              "observation_scope": {
+                "description": "Synthetic fixture only.",
+                "objects": [
+                  "K09"
+                ],
+                "bounded": true
+              },
+              "instrument": {
+                "id": "fixture-review",
+                "description": "Offline declared-input checker."
+              },
+              "evidence_class": "DECLARATION",
+              "positive_witness": {
+                "description": "Fictional supporting declaration.",
+                "artifact_refs": [
+                  "K09-declared-support"
+                ]
+              },
+              "hostile_counterexample": {
+                "description": "Fictional falsifier declaration.",
+                "artifact_refs": [
+                  "K09-declared-falsifier"
+                ]
+              },
+              "unresolved_alternatives": [],
+              "required_next_observation": null
+            }
+          ]
+        },
+        "ATLAS": {
+          "origin": {
+            "id": "K09-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K09-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "46839f38ca7bfa53d00a4cfe0761a33151a97b57a68e89223e4ac825098edac3"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K09-root",
+            "predecessor_ref": null
+          },
+          "previous": {
+            "id": "K09-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K09-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "46839f38ca7bfa53d00a4cfe0761a33151a97b57a68e89223e4ac825098edac3"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K09-root",
+            "predecessor_ref": null
+          },
+          "current": {
+            "id": "K09-current",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K09-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "46839f38ca7bfa53d00a4cfe0761a33151a97b57a68e89223e4ac825098edac3"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K09-answer",
+            "predecessor_ref": "K09-root"
+          },
+          "presentations": [
+            {
+              "id": "K09-projection-one",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K09-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "46839f38ca7bfa53d00a4cfe0761a33151a97b57a68e89223e4ac825098edac3"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K09-answer",
+              "predecessor_ref": "K09-root"
+            },
+            {
+              "id": "K09-projection-two",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K09-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "46839f38ca7bfa53d00a4cfe0761a33151a97b57a68e89223e4ac825098edac3"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K09-answer",
+              "predecessor_ref": "K09-root"
+            }
+          ]
+        },
+        "FADT": {
+          "fibres": [
+            {
+              "id": "K09-occupied",
+              "antecedents": [
+                {
+                  "id": "before",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_9"
+                  ]
+                },
+                {
+                  "id": "after",
+                  "support": [
+                    "SEND_RAW"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "TEMPORAL_CUSTODIAN": {
+          "schema": "td613.dollhouse.temporal-audit/v0.2",
+          "case_id": "K09",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "coordinate": "local-inputs-review",
+          "episode_id": "K09-fictional-episode",
+          "ledger_entries": [
+            {
+              "entry_id": "K09-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K09-e2",
+              "t_sequence": "SEQ_2",
+              "timestamp": "2026-10-08T20:00:02Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K09-e3",
+              "t_sequence": "SEQ_3",
+              "timestamp": "2026-10-08T20:00:03Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "baseline_entries": [
+            {
+              "entry_id": "K09-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "required_phases": [
+            "origin",
+            "receiver",
+            "return"
+          ],
+          "phases": {
+            "origin": {
+              "status": "PASS",
+              "entry_id": "K09-e1"
+            },
+            "receiver": {
+              "status": "PASS",
+              "entry_id": "K09-e2"
+            },
+            "return": {
+              "status": "PASS",
+              "entry_id": "K09-e3"
+            }
+          }
+        }
+      },
+      "prior_findings": []
+    },
+    {
+      "schema": "td613.loom.fixed-audit-case/v0.1",
+      "case_id": "K10",
+      "origin_kind": "SYNTHETIC_AUDIT_FIXTURE",
+      "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+      "review_question": "Are the supplied bounded declarations ready for human review, while retaining every unresolved finding and all claim ceilings?",
+      "payload": {
+        "utf8": "Public synthetic declaration K10",
+        "sha256": "530fcc02093e1fbe067481f25e8232be0bb0df54bcd074c3aa63d43f8e738aac"
+      },
+      "role_inputs": {
+        "PEDAGOGUE": {
+          "schema": "td613.pedagogue-gesture-consequence-case/v0.1",
+          "case_id": "K10",
+          "observation": {
+            "kind": "SYNTHETIC_FIXTURE",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a"
+          },
+          "rest_exit": {
+            "cue_pause_available": true,
+            "exit_available": true
+          },
+          "initial_state": {
+            "staged_refs": [],
+            "send_count": 0,
+            "pending_attempt_id": null,
+            "latest_attempt": {
+              "attempt_id": null,
+              "status": "NONE"
+            },
+            "admitted_result_ref": null,
+            "cue_paused": false,
+            "exited": false,
+            "expires_at": 100
+          },
+          "steps": [
+            {
+              "step_id": "K10-step-1",
+              "kind": "OPEN",
+              "at": 1,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 0
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K10-step-2",
+              "kind": "STAGE",
+              "at": 2,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 1
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [
+                  "public-reference"
+                ],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K10-step-3",
+              "kind": "SEND",
+              "at": 3,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 2
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": "attempt-one",
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": "attempt-one",
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "PENDING"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K10-step-4",
+              "kind": "WORLD_ANSWER",
+              "at": 4,
+              "explicit_operator_gesture": false,
+              "notice": {
+                "visible": true,
+                "at": 3
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": "attempt-one",
+              "outcome": "ADMITTED",
+              "result_ref": "synthetic-answer",
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K10-step-5",
+              "kind": "PAUSE_CUE",
+              "at": 5,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 4
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": true,
+                "exited": false,
+                "expires_at": 100
+              }
+            }
+          ]
+        },
+        "APERTURE": {
+          "schema": "td613.dollhouse.witness-plan/v0.1",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "execution": false,
+          "claims": [
+            {
+              "id": "K10-scope",
+              "claim_class": "SCOPED_BEHAVIOR",
+              "statement": "This fictional plan is limited to the supplied route declarations.",
+              "extent": "DECLARED_SCOPE_ONLY",
+              "observation_scope": {
+                "description": "Synthetic fixture only.",
+                "objects": [
+                  "K10"
+                ],
+                "bounded": true
+              },
+              "instrument": {
+                "id": "fixture-review",
+                "description": "Offline declared-input checker."
+              },
+              "evidence_class": "DECLARATION",
+              "positive_witness": {
+                "description": "Fictional supporting declaration.",
+                "artifact_refs": [
+                  "K10-declared-support"
+                ]
+              },
+              "hostile_counterexample": {
+                "description": "Fictional falsifier declaration.",
+                "artifact_refs": [
+                  "K10-declared-falsifier"
+                ]
+              },
+              "unresolved_alternatives": [],
+              "required_next_observation": null
+            }
+          ]
+        },
+        "ATLAS": {
+          "origin": {
+            "id": "K10-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K10-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "e15a3f7d11869056e252ed9eae256e1421d61a9f1d2601ba574a89f85666e17f"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K10-root",
+            "predecessor_ref": null
+          },
+          "previous": {
+            "id": "K10-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K10-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "e15a3f7d11869056e252ed9eae256e1421d61a9f1d2601ba574a89f85666e17f"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K10-root",
+            "predecessor_ref": null
+          },
+          "current": {
+            "id": "K10-current",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K10-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "e15a3f7d11869056e252ed9eae256e1421d61a9f1d2601ba574a89f85666e17f"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K10-answer",
+            "predecessor_ref": "K10-root"
+          },
+          "presentations": [
+            {
+              "id": "K10-projection-one",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K10-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "e15a3f7d11869056e252ed9eae256e1421d61a9f1d2601ba574a89f85666e17f"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K10-answer",
+              "predecessor_ref": "K10-root"
+            },
+            {
+              "id": "K10-projection-two",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K10-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "e15a3f7d11869056e252ed9eae256e1421d61a9f1d2601ba574a89f85666e17f"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K10-answer",
+              "predecessor_ref": "K10-root"
+            }
+          ]
+        },
+        "FADT": {
+          "fibres": [
+            {
+              "id": "K10-occupied",
+              "antecedents": [
+                {
+                  "id": "before",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_10"
+                  ]
+                },
+                {
+                  "id": "after",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_10"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "TEMPORAL_CUSTODIAN": {
+          "schema": "td613.dollhouse.temporal-audit/v0.2",
+          "case_id": "K10",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "coordinate": "local-inputs-review",
+          "episode_id": "K10-fictional-episode",
+          "ledger_entries": [
+            {
+              "entry_id": "K10-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K10-e2",
+              "t_sequence": "SEQ_2",
+              "timestamp": "2026-10-08T20:00:02Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K10-e3",
+              "t_sequence": "SEQ_3",
+              "timestamp": "2026-10-08T20:00:03Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "baseline_entries": [
+            {
+              "entry_id": "K10-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "required_phases": [
+            "origin",
+            "receiver",
+            "return"
+          ],
+          "phases": {
+            "origin": {
+              "status": "PASS",
+              "entry_id": "K10-e1"
+            },
+            "receiver": {
+              "status": "PASS",
+              "entry_id": "K10-e2"
+            },
+            "return": {
+              "status": "PASS",
+              "entry_id": "K10-e3"
+            }
+          }
+        }
+      },
+      "prior_findings": []
+    },
+    {
+      "schema": "td613.loom.fixed-audit-case/v0.1",
+      "case_id": "K11",
+      "origin_kind": "SYNTHETIC_AUDIT_FIXTURE",
+      "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+      "review_question": "Are the supplied bounded declarations ready for human review, while retaining every unresolved finding and all claim ceilings?",
+      "payload": {
+        "utf8": "Public synthetic declaration K11",
+        "sha256": "c175eb495202e31b6d77671df243b218613861b47a5d4bb7e3f0b18bf08b0569"
+      },
+      "role_inputs": {
+        "PEDAGOGUE": {
+          "schema": "td613.pedagogue-gesture-consequence-case/v0.1",
+          "case_id": "K11",
+          "observation": {
+            "kind": "SYNTHETIC_FIXTURE",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a"
+          },
+          "rest_exit": {
+            "cue_pause_available": true,
+            "exit_available": true
+          },
+          "initial_state": {
+            "staged_refs": [],
+            "send_count": 0,
+            "pending_attempt_id": null,
+            "latest_attempt": {
+              "attempt_id": null,
+              "status": "NONE"
+            },
+            "admitted_result_ref": null,
+            "cue_paused": false,
+            "exited": false,
+            "expires_at": 100
+          },
+          "steps": [
+            {
+              "step_id": "K11-step-1",
+              "kind": "OPEN",
+              "at": 1,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 0
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K11-step-2",
+              "kind": "STAGE",
+              "at": 2,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 1
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [
+                  "public-reference"
+                ],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K11-step-3",
+              "kind": "SEND",
+              "at": 3,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 2
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": "attempt-one",
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": "attempt-one",
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "PENDING"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K11-step-4",
+              "kind": "WORLD_ANSWER",
+              "at": 4,
+              "explicit_operator_gesture": false,
+              "notice": {
+                "visible": true,
+                "at": 3
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": "attempt-one",
+              "outcome": "ADMITTED",
+              "result_ref": "synthetic-answer",
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K11-step-5",
+              "kind": "PAUSE_CUE",
+              "at": 5,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 4
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": true,
+                "exited": false,
+                "expires_at": 100
+              }
+            }
+          ]
+        },
+        "APERTURE": {
+          "schema": "td613.dollhouse.witness-plan/v0.1",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "execution": false,
+          "claims": [
+            {
+              "id": "K11-scope",
+              "claim_class": "SCOPED_BEHAVIOR",
+              "statement": "This fictional plan is limited to the supplied route declarations.",
+              "extent": "DECLARED_SCOPE_ONLY",
+              "observation_scope": {
+                "description": "Synthetic fixture only.",
+                "objects": [
+                  "K11"
+                ],
+                "bounded": true
+              },
+              "instrument": {
+                "id": "fixture-review",
+                "description": "Offline declared-input checker."
+              },
+              "evidence_class": "DECLARATION",
+              "positive_witness": {
+                "description": "Fictional supporting declaration.",
+                "artifact_refs": [
+                  "K11-declared-support"
+                ]
+              },
+              "hostile_counterexample": {
+                "description": "Fictional falsifier declaration.",
+                "artifact_refs": [
+                  "K11-declared-falsifier"
+                ]
+              },
+              "unresolved_alternatives": [],
+              "required_next_observation": null
+            }
+          ]
+        },
+        "ATLAS": {
+          "origin": {
+            "id": "K11-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K11-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "146e1cdcaada0fdbb63e4cd09d3ef8e82c05242b1977018377ed07bb6af70682"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K11-root",
+            "predecessor_ref": null
+          },
+          "previous": {
+            "id": "K11-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K11-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "146e1cdcaada0fdbb63e4cd09d3ef8e82c05242b1977018377ed07bb6af70682"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K11-root",
+            "predecessor_ref": null
+          },
+          "current": {
+            "id": "K11-current",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K11-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "146e1cdcaada0fdbb63e4cd09d3ef8e82c05242b1977018377ed07bb6af70682"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K11-answer",
+            "predecessor_ref": "K11-root"
+          },
+          "presentations": [
+            {
+              "id": "K11-projection-one",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K11-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "146e1cdcaada0fdbb63e4cd09d3ef8e82c05242b1977018377ed07bb6af70682"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K11-answer",
+              "predecessor_ref": "K11-root"
+            },
+            {
+              "id": "K11-projection-two",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K11-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "146e1cdcaada0fdbb63e4cd09d3ef8e82c05242b1977018377ed07bb6af70682"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K11-answer",
+              "predecessor_ref": "K11-root"
+            }
+          ]
+        },
+        "FADT": {
+          "fibres": [
+            {
+              "id": "K11-occupied",
+              "antecedents": [
+                {
+                  "id": "before",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_11"
+                  ]
+                },
+                {
+                  "id": "after",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_11"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "TEMPORAL_CUSTODIAN": {
+          "schema": "td613.dollhouse.temporal-audit/v0.2",
+          "case_id": "K11",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "coordinate": "local-inputs-review",
+          "episode_id": "K11-fictional-episode",
+          "ledger_entries": [
+            {
+              "entry_id": "K11-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K11-e2",
+              "t_sequence": "SEQ_2",
+              "timestamp": "2026-10-08T20:00:02Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K11-e3",
+              "t_sequence": "SEQ_3",
+              "timestamp": "2026-10-08T20:00:03Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "baseline_entries": [
+            {
+              "entry_id": "K11-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "required_phases": [
+            "origin",
+            "receiver",
+            "return"
+          ],
+          "phases": {
+            "origin": {
+              "status": "PASS",
+              "entry_id": "K11-e1"
+            },
+            "receiver": {
+              "status": "PASS",
+              "entry_id": "K11-e2"
+            },
+            "return": {
+              "status": "HELD",
+              "entry_id": "K11-e3"
+            }
+          }
+        }
+      },
+      "prior_findings": []
+    },
+    {
+      "schema": "td613.loom.fixed-audit-case/v0.1",
+      "case_id": "K12",
+      "origin_kind": "SYNTHETIC_AUDIT_FIXTURE",
+      "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+      "review_question": "Are the supplied bounded declarations ready for human review, while retaining every unresolved finding and all claim ceilings?",
+      "payload": {
+        "utf8": "Public synthetic declaration K12",
+        "sha256": "8269d2c94f21fd73a68bca03afe1accd41317486704e2cf865b52df2a548d059"
+      },
+      "role_inputs": {
+        "PEDAGOGUE": {
+          "schema": "td613.pedagogue-gesture-consequence-case/v0.1",
+          "case_id": "K12",
+          "observation": {
+            "kind": "SYNTHETIC_FIXTURE",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a"
+          },
+          "rest_exit": {
+            "cue_pause_available": true,
+            "exit_available": true
+          },
+          "initial_state": {
+            "staged_refs": [],
+            "send_count": 0,
+            "pending_attempt_id": null,
+            "latest_attempt": {
+              "attempt_id": null,
+              "status": "NONE"
+            },
+            "admitted_result_ref": null,
+            "cue_paused": false,
+            "exited": false,
+            "expires_at": 100
+          },
+          "steps": [
+            {
+              "step_id": "K12-step-1",
+              "kind": "OPEN",
+              "at": 1,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 0
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K12-step-2",
+              "kind": "STAGE",
+              "at": 2,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 1
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [
+                  "public-reference"
+                ],
+                "send_count": 0,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": null,
+                  "status": "NONE"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K12-step-3",
+              "kind": "SEND",
+              "at": 3,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 2
+              },
+              "consequence_visible": true,
+              "item_refs": [
+                "public-reference"
+              ],
+              "attempt_id": "attempt-one",
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": "attempt-one",
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "PENDING"
+                },
+                "admitted_result_ref": null,
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K12-step-4",
+              "kind": "WORLD_ANSWER",
+              "at": 4,
+              "explicit_operator_gesture": false,
+              "notice": {
+                "visible": true,
+                "at": 3
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": "attempt-one",
+              "outcome": "ADMITTED",
+              "result_ref": "synthetic-answer",
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": false,
+                "exited": false,
+                "expires_at": 100
+              }
+            },
+            {
+              "step_id": "K12-step-5",
+              "kind": "PAUSE_CUE",
+              "at": 5,
+              "explicit_operator_gesture": true,
+              "notice": {
+                "visible": true,
+                "at": 4
+              },
+              "consequence_visible": true,
+              "item_refs": [],
+              "attempt_id": null,
+              "outcome": "NONE",
+              "result_ref": null,
+              "observed_state": {
+                "staged_refs": [],
+                "send_count": 1,
+                "pending_attempt_id": null,
+                "latest_attempt": {
+                  "attempt_id": "attempt-one",
+                  "status": "ADMITTED"
+                },
+                "admitted_result_ref": "synthetic-answer",
+                "cue_paused": true,
+                "exited": false,
+                "expires_at": 100
+              }
+            }
+          ]
+        },
+        "APERTURE": {
+          "schema": "td613.dollhouse.witness-plan/v0.1",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "execution": false,
+          "claims": [
+            {
+              "id": "K12-scope",
+              "claim_class": "SCOPED_BEHAVIOR",
+              "statement": "This fictional plan is limited to the supplied route declarations.",
+              "extent": "DECLARED_SCOPE_ONLY",
+              "observation_scope": {
+                "description": "Synthetic fixture only.",
+                "objects": [
+                  "K12"
+                ],
+                "bounded": true
+              },
+              "instrument": {
+                "id": "fixture-review",
+                "description": "Offline declared-input checker."
+              },
+              "evidence_class": "DECLARATION",
+              "positive_witness": {
+                "description": "Fictional supporting declaration.",
+                "artifact_refs": [
+                  "K12-declared-support"
+                ]
+              },
+              "hostile_counterexample": {
+                "description": "Fictional falsifier declaration.",
+                "artifact_refs": [
+                  "K12-declared-falsifier"
+                ]
+              },
+              "unresolved_alternatives": [],
+              "required_next_observation": null
+            }
+          ]
+        },
+        "ATLAS": {
+          "origin": {
+            "id": "K12-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K12-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "8d32f582c3770d1d6c15b5351bad9372649ab66f2a16d24b49a0b4bafd6cbd0d"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K12-root",
+            "predecessor_ref": null
+          },
+          "previous": {
+            "id": "K12-origin",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K12-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "8d32f582c3770d1d6c15b5351bad9372649ab66f2a16d24b49a0b4bafd6cbd0d"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K12-root",
+            "predecessor_ref": null
+          },
+          "current": {
+            "id": "K12-current",
+            "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+            "original_ref": "K12-root",
+            "selected_commitments": [
+              {
+                "id": "public-reference",
+                "commitment": "8d32f582c3770d1d6c15b5351bad9372649ab66f2a16d24b49a0b4bafd6cbd0d"
+              }
+            ],
+            "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+            "missingness": [],
+            "claim_ceiling": [
+              "DECLARED_CONSISTENCY_ONLY"
+            ],
+            "current_ref": "K12-answer",
+            "predecessor_ref": "K12-root"
+          },
+          "presentations": [
+            {
+              "id": "K12-projection-one",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K12-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "8d32f582c3770d1d6c15b5351bad9372649ab66f2a16d24b49a0b4bafd6cbd0d"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K12-answer",
+              "predecessor_ref": "K12-root"
+            },
+            {
+              "id": "K12-projection-two",
+              "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+              "original_ref": "K12-root",
+              "selected_commitments": [
+                {
+                  "id": "public-reference",
+                  "commitment": "8d32f582c3770d1d6c15b5351bad9372649ab66f2a16d24b49a0b4bafd6cbd0d"
+                }
+              ],
+              "policy_commitment": "e5f8b5273e2b1563b3be9cc5c00680b76b5a2c0a8139044d608a85481c481254",
+              "missingness": [],
+              "claim_ceiling": [
+                "DECLARED_CONSISTENCY_ONLY"
+              ],
+              "current_ref": "K12-answer",
+              "predecessor_ref": "K12-root"
+            }
+          ]
+        },
+        "FADT": {
+          "fibres": [
+            {
+              "id": "K12-occupied",
+              "antecedents": [
+                {
+                  "id": "before",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_12"
+                  ]
+                },
+                {
+                  "id": "after",
+                  "support": [
+                    "READ_SELECTED",
+                    "TASK_12"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "TEMPORAL_CUSTODIAN": {
+          "schema": "td613.dollhouse.temporal-audit/v0.2",
+          "case_id": "K12",
+          "source_revision": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+          "coordinate": "local-inputs-review",
+          "episode_id": "K12-fictional-episode",
+          "ledger_entries": [
+            {
+              "entry_id": "K12-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K12-e2",
+              "t_sequence": "SEQ_2",
+              "timestamp": "2026-10-08T20:00:02Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            },
+            {
+              "entry_id": "K12-e3",
+              "t_sequence": "SEQ_3",
+              "timestamp": "2026-10-08T20:00:03Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "baseline_entries": [
+            {
+              "entry_id": "K12-e1",
+              "t_sequence": "SEQ_1",
+              "timestamp": "2026-10-08T20:00:01Z",
+              "state": "SYNTHETIC_DECLARATION",
+              "observation": "Fictional chronology. No browser, provider or independent clock witness.",
+              "registered_event": "SYNTHETIC_FIXTURE_EVENT",
+              "authority": "NONE",
+              "retroactive_rewrite_forbidden": true,
+              "later_reinterpretation_allowed": true
+            }
+          ],
+          "required_phases": [
+            "origin",
+            "receiver",
+            "return"
+          ],
+          "phases": {
+            "origin": {
+              "status": "PASS",
+              "entry_id": "K12-e1"
+            },
+            "receiver": {
+              "status": "PASS",
+              "entry_id": "K12-e2"
+            },
+            "return": {
+              "status": "PASS",
+              "entry_id": "K12-e3"
+            }
+          }
+        }
+      },
+      "prior_findings": [
+        {
+          "id": "K12-original-support",
+          "agent": "ATLAS",
+          "claim_key": "foreign-enforcement",
+          "verdict": "SUPPORTED"
+        },
+        {
+          "id": "K12-original-hold",
+          "agent": "APERTURE",
+          "claim_key": "foreign-enforcement",
+          "verdict": "HELD"
+        }
+      ]
+    }
+  ]
+}

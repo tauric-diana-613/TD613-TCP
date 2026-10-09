@@ -1,0 +1,39 @@
+{
+  "schema": "td613.loom.role-input-class-map/v0.1",
+  "fixed_fixture_roles": {
+    "PEDAGOGUE": {
+      "adapter": "compilePedagogueGestureConsequenceAudit",
+      "input_path": "role_inputs.PEDAGOGUE",
+      "scope": "Supplied synthetic gesture snapshots only"
+    },
+    "APERTURE": {
+      "adapter": "auditDollhouseWitnessPlan",
+      "input_path": "role_inputs.APERTURE",
+      "scope": "Declaration-only witness plan; no numerical audit"
+    },
+    "ATLAS": {
+      "adapter": "runAtlasContinuityAudit",
+      "input_path": "role_inputs.ATLAS",
+      "scope": "Declared continuity; no source authentication"
+    },
+    "FADT": {
+      "adapter": "runFadtAgent",
+      "input_path": "role_inputs.FADT",
+      "scope": "Occupied finite fibres only"
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "adapter": "runTemporalCustodianAudit",
+      "input_path": "role_inputs.TEMPORAL_CUSTODIAN",
+      "scope": "Caller-declared fictional chronology"
+    }
+  },
+  "exact_portable_artifact": {
+    "PEDAGOGUE_GESTURE": "HELD_INPUT_CLASS",
+    "APERTURE_NUMERICAL": "HELD_INPUT_CLASS",
+    "APERTURE_WITNESS_PLAN": "NEW_DERIVED_PROPOSAL_ONLY",
+    "ATLAS": "CARRIED_FOUR_PROJECTION_CONTROL_COMPARISON_ONLY",
+    "FADT": "SINGLE_CARRIED_FIBRE_SUPPORT_ONLY",
+    "TEMPORAL_CUSTODIAN": "CURRENT_INSPECTION_LEDGER_ONLY_ORIGINAL_FULL_ROUTE_NOT_RECONSTRUCTED"
+  },
+  "authority": "None; human closure required."
+}

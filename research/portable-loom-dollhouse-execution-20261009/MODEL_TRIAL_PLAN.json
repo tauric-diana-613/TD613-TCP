@@ -1,0 +1,62 @@
+{
+  "schema": "td613.loom.fixed-comparison-model-plan/v0.1",
+  "status": "NOT_RUN_CONFIGURATION_AND_TRANSPORT_UNBOUND",
+  "arms": [
+    "A",
+    "D",
+    "E"
+  ],
+  "case_order": [
+    "K01",
+    "K02",
+    "K03",
+    "K04",
+    "K05",
+    "K06",
+    "K07",
+    "K08",
+    "K09",
+    "K10",
+    "K11",
+    "K12"
+  ],
+  "repetitions": 3,
+  "arm_A": {
+    "calls_per_case": 1,
+    "prompt_parts": [
+      "prompts/COMMON.txt",
+      "prompts/MONOLITH.txt"
+    ],
+    "output_limit": 8192
+  },
+  "arm_D": {
+    "calls_per_case": 4,
+    "roles": [
+      "PEDAGOGUE",
+      "APERTURE",
+      "ATLAS",
+      "FADT"
+    ],
+    "prompt_parts": [
+      "prompts/COMMON.txt",
+      "prompts/<ROLE>.txt"
+    ],
+    "output_limit_per_role": 2048,
+    "temporal": "Deterministic sidecar; not a fifth model call",
+    "synthesis": "Strict typed outputs -> retain raw role calls -> bounded Orchestrator, no vote"
+  },
+  "arm_E": {
+    "model_calls": 0,
+    "runner": "run-conventional-baseline.mjs",
+    "scope": "Conventional deterministic code; not arm D"
+  },
+  "envelope_rule": "UTF-8 COMMON + newline + exact role/monolith prompt + newline + JSON.stringify(case); record exact bytes before any call. All model calls receive identical case evidence and all five complete source contracts.",
+  "same_model_and_decoding_required": true,
+  "fresh_context_each_call": true,
+  "retrieval_and_tools": "DISABLED_REQUIRED",
+  "maximum_model_calls": 180,
+  "paid_budget": "UNBOUND_NO_PAID_EXECUTION",
+  "provider_model_transport": "UNBOUND",
+  "private_key_in_runner_inputs": false,
+  "model_calls_in_current_execution": 0
+}
