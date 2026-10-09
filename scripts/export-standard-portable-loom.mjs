@@ -5,7 +5,9 @@ import { createHash, webcrypto } from 'node:crypto';
 import { createLoomAiGovernance, createCanonicalPortableLoomPacket } from '../app/dome-world/holonomy-loom/ai-handoff.js';
 import { STANDARD_PORTABLE_LOOM_TASK, STANDARD_PORTABLE_LOOM_RULES } from '../app/engine/portable-loom-policy.js';
 import { verifyPortableLoomCore } from '../app/engine/portable-loom-core.js';
-import { createPortableLoomSession, createPortableLoomSessionExport, createPortableLoomSessionPrompt, portableLoomDigest } from '../app/engine/portable-loom-session.js';
+import { createPortableLoomSession, createPortableLoomSessionExport, portableLoomDigest } from '../app/engine/portable-loom-session.js';
+
+import { formatStandardPortableLoomMarkdown } from './standard-portable-loom-presentation.mjs';
 
 const destination = resolve(process.argv[2] || '');
 if (!process.argv[2]) throw new Error('Provide a new export directory.');
@@ -22,7 +24,7 @@ if (session.root.packet_digest !== await portableLoomDigest(artifact.portable_ta
 if (artifact.portable_task.documents.length || artifact.loom_gate_reports.length || artifact.session.work_units.length) throw new Error('Standard export cannot seed scenario content or results.');
 const files = [
   ['portable-loom-standard.json', JSON.stringify(artifact, null, 2) + '\n'],
-  ['portable-loom-standard.md', '# Standard Portable Loom\n\nReceiver-neutral session governance; ChatGPT is the first specified output format. This export contains no demo, source documents, private keys, captured Gate results or admitted returned work. Supply the real task and deliberately selected sources when activating it.\n\n## Activation payload\n\n```text\n' + createPortableLoomSessionPrompt(artifact) + '\n```\n\n## Review commands\n\nEvery active-session answer carries phase, minimized public session/explicit route label, posture, authorization state, receipt availability, HOLD, Gate status and checked scope, plus **米 Check Loom Gate** and the ⟐ seal. Enter **米** for Gate review; Gate answers also offer **How do I know? 下**. Enter **下** for methods, evidence, references and the conventional nomenclature.\n\nThe contract applies to any receiving LLM. ChatGPT’s first binding uses prose, Markdown links and the single-glyph commands. Receiving-model compliance remains untested until a captured episode is checked. A receiver without a local verifier gives capture instructions and retains NOT_RUN.\n\nGate checks need defined captured channels, local protected targets and declared reconstruction attempts. Report counts and missing coverage. Complete-conversation leakage percentages require measured coverage and a defined denominator. The portable carries no local answer keys.\n\nA receiver receipt declares what was used. Return Check and explicit reviewed admission remain separate. Parsed exports preserve review material; live local custody capabilities stay in the originating process. Registry entries identify implementation scope; task-specific state manifests and finite observation-design inputs must be explicitly supplied before those computations can apply.\n\n## Requested next step\n\nAwait operator authorization for a Dollhouse-led battery and an Antigravity six-sequence evidence assay on this exact artifact. No assay outcome is seeded into the payload.\n'],
+  ['portable-loom-standard.md', formatStandardPortableLoomMarkdown(artifact)],
 ];
 await mkdir(destination, { recursive: false });
 const manifest = { schema: 'td613.loom.standard-export-manifest/v0.1', source_revision: revision, created_at: new Date().toISOString(),
