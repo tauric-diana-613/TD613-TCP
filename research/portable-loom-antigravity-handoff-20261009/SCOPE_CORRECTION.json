@@ -1,0 +1,30 @@
+{
+  "schema": "td613.loom.execution-scope-correction/v0.1",
+  "recorded_at": "2026-10-09T02:23:51.698135+00:00",
+  "function": "APPEND_ONLY_CORRECTION",
+  "incorrect_requirement": "Bind a consumer ChatGPT account and obtain browser sign-in before continuing the requested battery/assay.",
+  "current_authority": "WITHDRAWN_AS_ASSISTANT_INTRODUCED_DETOUR",
+  "operator_correction": {
+    "source": "ACTIVE_INTERACTIVE_CHAT",
+    "verbatim": "what? idk what you’re talking about. we shouldn’t be binding ChatGPT accounts. can we get back on course on what you’ve been asked to do pls ⟐"
+  },
+  "historical_action_receipt": {
+    "commit": "b7b0b5544a2881fadec2a7105f9363b17184567b",
+    "path": "research/portable-loom-local-battery-20261009/BROWSER_ACCESS_BOUNDARY.json",
+    "status": "RETAINED_TRUE_REPORT_OF_ABANDONED_ACTION; NOT_A_GOVERNING_RESEARCH_HOLD"
+  },
+  "completed_local_receipt": {
+    "commit": "b7b0b5544a2881fadec2a7105f9363b17184567b",
+    "path": "research/portable-loom-local-battery-20261009/EVIDENCE_RECEIPT.local.json",
+    "evidence_class": "LOCAL_STRUCTURAL_TEST",
+    "cases_supported": 12,
+    "named_tests_passed": 41,
+    "provider_results": 0
+  },
+  "retrieval_boundary": "Personal-context search returned a conversation-search error during this correction; exact missing predecessor authorizations were not reconstructed from memory. Current explicit user steering and inspected Git contracts bound this work.",
+  "antigravity_capability": "No callable Antigravity tool is available in this session. Handoff preparation is not remote execution.",
+  "product_source_changes": false,
+  "artifact_bytes_changed": false,
+  "historical_results_rewritten": false,
+  "new_assay_execution": false
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "td613.loom.prospective-protocol-amendment/v0.1",
+  "amendment_id": "001",
+  "version": "1.0.1",
+  "recorded_at": "2026-10-09T02:23:51.698135+00:00",
+  "record_function": "PROSPECTIVE_TRANSPORT_SCOPE_CORRECTION_BEFORE_RECEIVER_EXECUTION",
+  "supersedes_transport_choice_only": {
+    "protocol_commit": "fb2c16a2fa41edd9a1b2c8567dd951fca839d803",
+    "protocol_file": "research/portable-loom-preflight/PROTOCOL.json",
+    "binding_template": "research/portable-loom-preflight/EXECUTION_BINDING.template.json",
+    "old_slot": "CHATGPT_FIRST_SPECIFIED",
+    "old_transport": "OPERATOR_DRIVEN_CHATGPT"
+  },
+  "operator_steering": {
+    "source": "ACTIVE_INTERACTIVE_CHAT",
+    "verbatim": "what? idk what you’re talking about. we shouldn’t be binding ChatGPT accounts. can we get back on course on what you’ve been asked to do pls ⟐"
+  },
+  "consumer_account_binding": "OUT_OF_SCOPE_NOT_AN_ASSAY_GATE",
+  "browser_sign_in": "OUT_OF_SCOPE",
+  "receiver_slots": [
+    "FIRST_CONFIGURED_RECEIVER",
+    "SECOND_PROVIDER"
+  ],
+  "execution_path": "Existing authorized receiver conduit in the operator-directed Antigravity workflow; exact runtime/provider configuration recorded before measurement",
+  "product_transport_identity": "Record actual identity. API response does not establish ChatGPT UI behavior. No account identity is required in experimental public metadata.",
+  "unchanged": [
+    "Exact artifact bytes and digests",
+    "R01-R12 prompts and endpoints",
+    "L01-L12 completed local results",
+    "12 case endpoints; 3 fresh contexts per receiver; 2 receivers; maximum 72 primary trials; maximum 4 outputs each",
+    "A/D/E comparison design and token/call ceilings",
+    "Scoring, raw capture, hidden-key separation, no primary retries, evidence classes, temporal laws and claim ceilings"
+  ],
+  "execution_configuration_still_required": [
+    "Provider/model/transport and actual available decoding/context/tool controls",
+    "Exact request construction and raw capture path",
+    "Predeclared call/token/cost ceiling; no new paid-call authority inferred",
+    "Scorer commitment and protected-key separation",
+    "For comparison: fixed audit inputs, role prompt commitments and compatible input-class mapping"
+  ],
+  "authorization": "Retain active operator artifact-testing authorization. The correction removes an invented consumer-account prerequisite; it creates no detached delegation or deployment authority.",
+  "new_receiver_results": [],
+  "amendment_effect": "New receiver bindings reference original protocol plus this amendment. Original design and abandoned browser-action receipt retain their historical bytes."
+}

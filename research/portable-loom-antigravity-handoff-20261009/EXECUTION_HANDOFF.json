@@ -1,0 +1,184 @@
+{
+  "schema": "td613.loom.antigravity-execution-handoff/v0.1",
+  "status": "PREPARED_NOT_DISPATCHED_NOT_AN_EXECUTION_RECEIPT",
+  "recorded_at": "2026-10-09T02:23:51.698135+00:00",
+  "repository": "tauric-diana-613/TD613-TCP",
+  "branch": "research/portable-loom-antigravity-handoff-20261009",
+  "execution_baseline_commit": "b7b0b5544a2881fadec2a7105f9363b17184567b",
+  "historical_index_commit": "d5ccb20e21cfce681984e4ec3082353fb11c7fce",
+  "contract_commit": "6c9687dba075a6edd6a478c7f86f9b2d0f018af7",
+  "bounded_runtime_commit": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+  "prospective_protocol_commit": "fb2c16a2fa41edd9a1b2c8567dd951fca839d803",
+  "protocol_amendment": "PROTOCOL_AMENDMENT_001.json",
+  "artifact_source_commit": "2091c426a1cbba2ff1a7a06019c0693ddc5be398",
+  "roles": [
+    {
+      "role": "PEDAGOGUE",
+      "status": "INSTALLED",
+      "commit_sha": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+      "path": "PEDAGOGUE.md",
+      "bytes": 29733,
+      "sha256": "3abb25379be9a925c738a38858b92371822612f110e7491ee62a6e4a84101869",
+      "git_blob_sha": "fc7ed703a4f2df18f650a39165525ea33328c4fe"
+    },
+    {
+      "role": "APERTURE",
+      "status": "INSTALLED",
+      "commit_sha": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+      "path": "APERTURE.md",
+      "bytes": 17025,
+      "sha256": "3f6225494e7f3b0a021699ae3f54f61d002f71bd6b7373e4bece2a699a7b5c1d",
+      "git_blob_sha": "25d8391361f84c90bf7476684ad2171b5626538e"
+    },
+    {
+      "role": "ATLAS",
+      "status": "BOUNDED_RESEARCH_CANDIDATE",
+      "commit_sha": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+      "path": "ATLAS.md",
+      "bytes": 11749,
+      "sha256": "f7a518d27a509d615368949ff617a2e7884278487257a4f398e16b4784bf0311",
+      "git_blob_sha": "b56d1c444294153832149f19fd9080d308d9ec2a"
+    },
+    {
+      "role": "FADT",
+      "status": "BOUNDED_RESEARCH_CANDIDATE",
+      "commit_sha": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+      "path": "FADT.md",
+      "bytes": 9196,
+      "sha256": "c8b420ecc63621677dceee7c1530688cbc786503451cdeb157205b1fb67e8b6e",
+      "git_blob_sha": "90da4760baf9a96e0050e1857b8cc5ae822adb44"
+    },
+    {
+      "role": "TEMPORAL_CUSTODIAN",
+      "status": "BOUNDED_SIDECAR_SUCCESSOR_CANDIDATE",
+      "commit_sha": "248242c89160825c97d27c7c0ccc2d9d6d19ec5a",
+      "path": "TEMPORAL_CUSTODIAN.md",
+      "bytes": 3299,
+      "sha256": "f3eb7cb372cc020ec0fdc6e8dd3bba36a268743f63fffbd0e161ab3646af1c3e",
+      "git_blob_sha": "14666c232913e58e394601640eea92afa3b0db55"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "research/portable-loom-local-battery-20261009/artifact/portable-loom-standard.json",
+      "bytes": 81380,
+      "sha256": "dec3750552099e30e9495ce42af6e616dd3dd1f48f0d3f6766cb82d934c273b2"
+    },
+    {
+      "path": "research/portable-loom-local-battery-20261009/artifact/portable-loom-standard.md",
+      "bytes": 85355,
+      "sha256": "aee654a57edbd931eb5f7ab47b50427ef464530ef5731e5309d49c02eb444eee"
+    }
+  ],
+  "contract_byte_manifest": [
+    {
+      "path": "APERTURE.md",
+      "commit": "b7b0b5544a2881fadec2a7105f9363b17184567b",
+      "bytes": 17025,
+      "sha256": "3f6225494e7f3b0a021699ae3f54f61d002f71bd6b7373e4bece2a699a7b5c1d"
+    },
+    {
+      "path": "ATLAS.md",
+      "commit": "b7b0b5544a2881fadec2a7105f9363b17184567b",
+      "bytes": 11749,
+      "sha256": "f7a518d27a509d615368949ff617a2e7884278487257a4f398e16b4784bf0311"
+    },
+    {
+      "path": "FADT.md",
+      "commit": "b7b0b5544a2881fadec2a7105f9363b17184567b",
+      "bytes": 9196,
+      "sha256": "c8b420ecc63621677dceee7c1530688cbc786503451cdeb157205b1fb67e8b6e"
+    },
+    {
+      "path": "PEDAGOGUE.md",
+      "commit": "b7b0b5544a2881fadec2a7105f9363b17184567b",
+      "bytes": 29733,
+      "sha256": "3abb25379be9a925c738a38858b92371822612f110e7491ee62a6e4a84101869"
+    },
+    {
+      "path": "TEMPORAL_CUSTODIAN.md",
+      "commit": "b7b0b5544a2881fadec2a7105f9363b17184567b",
+      "bytes": 3299,
+      "sha256": "f3eb7cb372cc020ec0fdc6e8dd3bba36a268743f63fffbd0e161ab3646af1c3e"
+    },
+    {
+      "path": "app/engine/dollhouse-bounded-orchestrator.js",
+      "commit": "b7b0b5544a2881fadec2a7105f9363b17184567b",
+      "bytes": 3448,
+      "sha256": "2307d587fc5034ab59e97ad327caa13aace071b65685e5a671d7e40075345813"
+    },
+    {
+      "path": "app/engine/dollhouse-temporal-custodian.js",
+      "commit": "b7b0b5544a2881fadec2a7105f9363b17184567b",
+      "bytes": 12501,
+      "sha256": "7eefdaf46d8bfc2374f6e52b80b26534cb3f5738c4faa6442f5883436d30c205"
+    },
+    {
+      "path": "docs/research/DOLLHOUSE_ORCHESTRATOR_CONTRACT.md",
+      "commit": "b7b0b5544a2881fadec2a7105f9363b17184567b",
+      "bytes": 7398,
+      "sha256": "3f7dd33241087239c40441ceef80e79a59faf0a90a8bfb3c13139eef69ae3913"
+    },
+    {
+      "path": "docs/research/TD613_SIX_SEQUENCE_AND_ORCHESTRATOR_CANONICAL_INDEX.md",
+      "commit": "b7b0b5544a2881fadec2a7105f9363b17184567b",
+      "bytes": 54547,
+      "sha256": "123edf25eb21b1d9db196a9b7f8ef6fe6d26451388b33558cbe8eec6892bdea6"
+    },
+    {
+      "path": "research/dollhouse-orchestrator-contract/CONTRACT.json",
+      "commit": "b7b0b5544a2881fadec2a7105f9363b17184567b",
+      "bytes": 17663,
+      "sha256": "b0240df9ef8f680006fd9a48133250b6122be1be6e46caac76a0fecdffd428d1"
+    },
+    {
+      "path": "research/portable-loom-preflight/CASE_REGISTRY.json",
+      "commit": "b7b0b5544a2881fadec2a7105f9363b17184567b",
+      "bytes": 15712,
+      "sha256": "2eba4fb0760aada7bab317904f97f1613e53cce243d999a60cf33a6cc7234adb"
+    },
+    {
+      "path": "research/portable-loom-preflight/PROTOCOL.json",
+      "commit": "b7b0b5544a2881fadec2a7105f9363b17184567b",
+      "bytes": 7680,
+      "sha256": "7931d70b2296414562f5457d71f4069229d6081c0fe914dad3f8a91ddb214c25"
+    },
+    {
+      "path": "research/portable-loom-preflight/ROLE_CONTRACT_MANIFEST.json",
+      "commit": "b7b0b5544a2881fadec2a7105f9363b17184567b",
+      "bytes": 2461,
+      "sha256": "2d8e0c6b3dabb1ba9ce77bfe7e9cd0574939b5f30ecd9855c3f8ec691ea8feb3"
+    },
+    {
+      "path": "research/six-sequence-contract-reconciliation/CANONICAL_INDEX.json",
+      "commit": "b7b0b5544a2881fadec2a7105f9363b17184567b",
+      "bytes": 174848,
+      "sha256": "334006719414d41cd5e24156374718bf4123304e4ad2236a449850a5ee2cd793"
+    },
+    {
+      "path": "scripts/run-dollhouse-bounded-orchestrator.mjs",
+      "commit": "b7b0b5544a2881fadec2a7105f9363b17184567b",
+      "bytes": 981,
+      "sha256": "e0c0b7b301461a88220321286c39cf1858c5cdcc49bf6cb59a82232e4d1f9a6f"
+    }
+  ],
+  "retained_local_run": {
+    "binding_commit": "6c724d687ae27a73de055b2e261d334a2682c1b5",
+    "receipt_commit": "b7b0b5544a2881fadec2a7105f9363b17184567b",
+    "path": "research/portable-loom-local-battery-20261009/EVIDENCE_RECEIPT.local.json",
+    "supported_cases": 12,
+    "passing_named_tests": 41,
+    "actual_receiver_trials": 0
+  },
+  "work_remaining": [
+    "Eligible separately scoped five-role audit of the exact artifact and retained evidence",
+    "Receiver/capture binding using existing authorized Antigravity runtime",
+    "Materialize amendment-compatible R01-R12 trial requests",
+    "Finish fixed comparison corpus, role prompts, compatible input classes and isolated scorer commitments",
+    "Execute eligible measurements and retain actual raw evidence",
+    "Human adjudication with explicit remaining HOLDs and claim ceilings"
+  ],
+  "consumer_account_binding": "OUT_OF_SCOPE",
+  "execution_bridge_from_this_session": "UNAVAILABLE; operator-facing packet prepared only",
+  "authority_ceiling": "No credential enrollment, standing external-call budget, detached-agent launch, merge, deploy or historical research rerun."
+}

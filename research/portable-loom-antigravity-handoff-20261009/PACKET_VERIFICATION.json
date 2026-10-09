@@ -1,0 +1,107 @@
+{
+  "schema": "td613.loom.handoff-packet-verification/v0.1",
+  "recorded_at": "2026-10-09T02:25:03.239078+00:00",
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "function": "DOCUMENT_METADATA_AND_BYTE_VERIFICATION_ONLY",
+  "execution_baseline_commit": "b7b0b5544a2881fadec2a7105f9363b17184567b",
+  "checks": [
+    {
+      "path": "research/portable-loom-local-battery-20261009/artifact/portable-loom-standard.json",
+      "result": "EXACT_BASELINE_GIT_BYTES_AND_DECLARED_SHA256_MATCH"
+    },
+    {
+      "path": "research/portable-loom-local-battery-20261009/artifact/portable-loom-standard.md",
+      "result": "EXACT_BASELINE_GIT_BYTES_AND_DECLARED_SHA256_MATCH"
+    },
+    {
+      "path": "APERTURE.md",
+      "result": "EXACT_BASELINE_GIT_BYTES_AND_DECLARED_SHA256_MATCH"
+    },
+    {
+      "path": "ATLAS.md",
+      "result": "EXACT_BASELINE_GIT_BYTES_AND_DECLARED_SHA256_MATCH"
+    },
+    {
+      "path": "FADT.md",
+      "result": "EXACT_BASELINE_GIT_BYTES_AND_DECLARED_SHA256_MATCH"
+    },
+    {
+      "path": "PEDAGOGUE.md",
+      "result": "EXACT_BASELINE_GIT_BYTES_AND_DECLARED_SHA256_MATCH"
+    },
+    {
+      "path": "TEMPORAL_CUSTODIAN.md",
+      "result": "EXACT_BASELINE_GIT_BYTES_AND_DECLARED_SHA256_MATCH"
+    },
+    {
+      "path": "app/engine/dollhouse-bounded-orchestrator.js",
+      "result": "EXACT_BASELINE_GIT_BYTES_AND_DECLARED_SHA256_MATCH"
+    },
+    {
+      "path": "app/engine/dollhouse-temporal-custodian.js",
+      "result": "EXACT_BASELINE_GIT_BYTES_AND_DECLARED_SHA256_MATCH"
+    },
+    {
+      "path": "docs/research/DOLLHOUSE_ORCHESTRATOR_CONTRACT.md",
+      "result": "EXACT_BASELINE_GIT_BYTES_AND_DECLARED_SHA256_MATCH"
+    },
+    {
+      "path": "docs/research/TD613_SIX_SEQUENCE_AND_ORCHESTRATOR_CANONICAL_INDEX.md",
+      "result": "EXACT_BASELINE_GIT_BYTES_AND_DECLARED_SHA256_MATCH"
+    },
+    {
+      "path": "research/dollhouse-orchestrator-contract/CONTRACT.json",
+      "result": "EXACT_BASELINE_GIT_BYTES_AND_DECLARED_SHA256_MATCH"
+    },
+    {
+      "path": "research/portable-loom-preflight/CASE_REGISTRY.json",
+      "result": "EXACT_BASELINE_GIT_BYTES_AND_DECLARED_SHA256_MATCH"
+    },
+    {
+      "path": "research/portable-loom-preflight/PROTOCOL.json",
+      "result": "EXACT_BASELINE_GIT_BYTES_AND_DECLARED_SHA256_MATCH"
+    },
+    {
+      "path": "research/portable-loom-preflight/ROLE_CONTRACT_MANIFEST.json",
+      "result": "EXACT_BASELINE_GIT_BYTES_AND_DECLARED_SHA256_MATCH"
+    },
+    {
+      "path": "research/six-sequence-contract-reconciliation/CANONICAL_INDEX.json",
+      "result": "EXACT_BASELINE_GIT_BYTES_AND_DECLARED_SHA256_MATCH"
+    },
+    {
+      "path": "scripts/run-dollhouse-bounded-orchestrator.mjs",
+      "result": "EXACT_BASELINE_GIT_BYTES_AND_DECLARED_SHA256_MATCH"
+    }
+  ],
+  "role_contract_hashes_matched": 5,
+  "artifact_digests_matched": 2,
+  "tracked_product_or_existing_record_changes": false,
+  "protocol_original_changed": false,
+  "case_prompts_changed": false,
+  "assay_rerun": false,
+  "new_provider_calls": 0,
+  "antigravity_remote_dispatch": false,
+  "members": [
+    {
+      "path": "docs/research/PORTABLE_LOOM_ANTIGRAVITY_EXECUTION_HANDOFF.md",
+      "bytes": 12348,
+      "sha256": "98cb29f543723ae26956236792a5daddda1acae6f34804ea219a253a990465bc"
+    },
+    {
+      "path": "research/portable-loom-antigravity-handoff-20261009/EXECUTION_HANDOFF.json",
+      "bytes": 7677,
+      "sha256": "a4d4e2ee6aeb059d72066cf436bcf6116fdb04fb12eb68f0f5f3f65204e985a0"
+    },
+    {
+      "path": "research/portable-loom-antigravity-handoff-20261009/PROTOCOL_AMENDMENT_001.json",
+      "bytes": 2663,
+      "sha256": "2d467196414f1a01a686798969b6168efecf72a422386eae2ce335a12ba8fe85"
+    },
+    {
+      "path": "research/portable-loom-antigravity-handoff-20261009/SCOPE_CORRECTION.json",
+      "bytes": 1729,
+      "sha256": "e92905f4348922dc8d0f2fd820be4511ae1f23b33504a4dc3d76bb28926d7ba6"
+    }
+  ]
+}
