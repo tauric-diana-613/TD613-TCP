@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { createLoomAssayHandler } from '../server/loom-assay.js';
+import { createLoomAssayHandler, loadApprovedRunConfiguration } from '../server/loom-assay.js';
 import { buildAssayProviderWire, validateAssayPolicy, sha256 } from '../server/loom-assay-contract.js';
 import { loadServerManifest, prepareServerRequest, captureServerCall } from '../research/portable-loom-server-transport-20261009/server-client.mjs';
 import { createAssayBudgetClient } from '../server/loom-assay-budget-client.js';
@@ -190,4 +190,16 @@ test('canonical API dispatch and deployment packaging preserve dedicated bounded
   const config = JSON.parse(readFileSync('vercel.json'));
   assert.match(config.functions['api/khonapolit.js'].includeFiles, /TRIAL_MANIFEST\.json/);
   assert.match(config.functions['api/khonapolit.js'].includeFiles, /corrected-artifact\/portable-loom-standard\.md/);
+  assert.match(config.functions['api/khonapolit.js'].includeFiles, /server\/loom-assay-run-config\.json/);
+});
+test('source-bound public activation admits only its run and does not contain provider or caller secrets', async () => {
+  const c = loadApprovedRunConfiguration();
+  assert.match(c.access_sha256, /^[a-f0-9]{64}$/); assert.ok(!JSON.stringify(c).includes(key));
+  assert.ok(!JSON.stringify(c).includes(token)); assert.equal(c.run_id, 'portable-loom-first-receiver-20261009');
+  const h = harness();
+  const handler = createLoomAssayHandler({ environment: { GEMINI_API_KEY: key, TD613_LOOM_ASSAY_ACCESS_SHA256: sha256(token), VERCEL_GIT_COMMIT_SHA: head },
+    allowedRunId: c.run_id, budget: async () => { throw new Error('unexpected ledger work'); }, fetchImpl: async () => { throw new Error('unexpected provider work'); } });
+  const res = { setHeader() {}, end(raw) { this.body = JSON.parse(raw); } };
+  await handler({ method: 'POST', headers: { authorization: `Bearer ${token}` }, body: h.request }, res);
+  assert.equal(res.statusCode, 409); assert.equal(res.body.error, 'ASSAY_RUN_OUTSIDE_ACTIVATION');
 });
