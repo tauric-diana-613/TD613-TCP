@@ -13,12 +13,18 @@ export function createAssayBudgetFunction({ pool, verifyWorkload = verifyVercelO
       await verifyWorkload(token.slice(7)); // Before parsing a body or touching Postgres.
     } catch { return response(401, { status: 'HELD', error: 'ASSAY_WORKLOAD_UNAUTHORIZED' }); }
     try {
-      const text = await request.text();
-      if (Buffer.byteLength(text) > 16000) throw new Error('ASSAY_LEDGER_BODY_LIMIT');
+      const chunks = []; let length = 0;
+      if (request.body) for await (const chunk of request.body) {
+        length += chunk.length;
+        if (length > 16000) throw new Error('ASSAY_LEDGER_BODY_LIMIT');
+        chunks.push(Buffer.from(chunk));
+      }
+      const text = Buffer.concat(chunks).toString('utf8');
       const body = JSON.parse(text);
       if (body.schema !== 'td613.loom.assay-budget-request/v0.1') throw new Error('ASSAY_LEDGER_SCHEMA');
-      const operation = { inspect: inspectRun, reserve: reserveCall, complete: completeCall }[body.operation];
-      if (!operation || Object.keys(body).length !== 3) throw new Error('ASSAY_LEDGER_OPERATION');
+      const operations = { inspect: inspectRun, reserve: reserveCall, complete: completeCall };
+      if (!Object.hasOwn(operations, body.operation) || Object.keys(body).length !== 3) throw new Error('ASSAY_LEDGER_OPERATION');
+      const operation = operations[body.operation];
       const result = await operation(pool, body.input);
       return response(200, { schema: 'td613.loom.assay-budget-response/v0.1', status: 'ok', result });
     } catch { return response(409, { schema: 'td613.loom.assay-budget-response/v0.1', status: 'HELD', error: 'ASSAY_BUDGET_OR_BINDING_HELD' }); }

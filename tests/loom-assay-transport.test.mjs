@@ -129,6 +129,14 @@ test('budget function verifies workload before body parsing or database work', a
   const r = await fn.fetch(new Request('https://budget.invalid', { method: 'POST', body: 'invalid JSON', headers: { authorization: 'Bearer bad' } }));
   assert.equal(r.status, 401); assert.equal(connects, 0);
 });
+test('budget dispatch rejects inherited operation names and oversized bodies before database work', async () => {
+  let connects = 0;
+  const fn = createAssayBudgetFunction({ pool: { connect: async () => { connects++; } }, verifyWorkload: async () => ({}) });
+  for (const body of [JSON.stringify({ schema: 'td613.loom.assay-budget-request/v0.1', operation: 'constructor', input: {} }), 'x'.repeat(16001)]) {
+    const r = await fn.fetch(new Request('https://budget.invalid', { method: 'POST', body, headers: { authorization: 'Bearer fixture' } }));
+    assert.equal(r.status, 409); assert.equal(connects, 0);
+  }
+});
 test('client retains exact mock bytes, keeps fixture evidence class, and rejects existing attempts', async () => {
   const root = mkdtempSync(join(tmpdir(), 'td613-server-capture-')), path = join(root, 'attempt');
   try {

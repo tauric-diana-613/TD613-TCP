@@ -63,13 +63,14 @@ export async function captureServerCall(policy, request, directory, { environmen
   writeFileSync(join(directory, 'request.json'), JSON.stringify(record, null, 2) + '\n', { flag: 'wx' });
   const controller = new AbortController(), timer = setTimeout(() => controller.abort(), policy.binding.limits.timeout_ms + 20000);
   const chunks = []; let response, parsed = null, error = null, length = 0;
+  const relayLimit = policy.binding.limits.max_response_bytes * 3 + 32768;
   try {
     response = await fetchImpl(url, { method: 'POST', redirect: 'error', signal: controller.signal,
       headers: { 'content-type': 'application/json', authorization: `Bearer ${token}` }, body });
     for await (const chunk of response.body) {
-      const data = Buffer.from(chunk), available = Math.max(0, 3000000 - length);
+      const data = Buffer.from(chunk), available = Math.max(0, relayLimit - length);
       chunks.push(data.subarray(0, available)); length += data.length;
-      if (length > 3000000) { controller.abort(); throw new Error('ASSAY_CAPTURE_BYTE_LIMIT'); }
+      if (length > relayLimit) { controller.abort(); throw new Error('ASSAY_CAPTURE_BYTE_LIMIT'); }
     }
     parsed = JSON.parse(Buffer.concat(chunks).toString('utf8'));
     requireThat(response.ok && parsed.schema === ASSAY_RESPONSE_SCHEMA && parsed.status === 'CAPTURED_NOT_ADMITTED'
