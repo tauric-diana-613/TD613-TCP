@@ -1,0 +1,35 @@
+{
+  "schema": "td613.loom.governed-release-request/v0.1",
+  "recorded_at": "2026-10-09T15:36:19.295Z",
+  "merge_result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Action completed."
+      }
+    ],
+    "structuredContent": {
+      "sha": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "merged": true,
+      "message": "Pull Request successfully merged"
+    },
+    "isError": false
+  },
+  "exact_current_main": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+  "validation_head": "3474a14acc2f585e8dcf6b5e8d104a7ac5ea4181",
+  "release_gesture": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Action completed."
+      }
+    ],
+    "structuredContent": {
+      "id": 6084105131
+    },
+    "isError": false
+  },
+  "gesture_count": 1,
+  "production_status": "REQUESTED_RECEIPT_PENDING",
+  "actual_generation_calls": 0
+}

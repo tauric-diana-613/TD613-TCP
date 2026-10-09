@@ -1,0 +1,200 @@
+{
+  "schema": "td613.loom.prospective-first-receiver-execution-binding/v0.1",
+  "recorded_at": "2026-10-09T15:42:42.164Z",
+  "status": "FROZEN_BEFORE_MODEL_CALLS",
+  "track": "ACTUAL_RECEIVER_INSTRUCTION_ADHERENCE",
+  "run_id": "portable-loom-first-receiver-20261009",
+  "policy_sha256": "5b380227cde076cddc1823fa491f124abd2694ebdf2f1c64668266c0358a9751",
+  "policy_file_sha256": "5f9539db291d2b2e37acc3d1d58563c8fd582781af93bb73d9384691680f4d43",
+  "actual_deployed_commit": "5581af7812dc0f5fcf2b65c11ad09da045f0940e",
+  "reviewed_head": "3474a14acc2f585e8dcf6b5e8d104a7ac5ea4181",
+  "merged_packet": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+  "relock_commit": "916ed6cfc6f21f49d30198c407f57c6f9ed0b0d0",
+  "release_receipt": "https://github.com/tauric-diana-613/TD613-TCP/issues/405#issuecomment-6084181733",
+  "artifact": {
+    "source": "0bf0ba2e42be2e9dcfed2bb4fcdb03f2ff77d2bf",
+    "publication": "f0c496bfac114e4314f4a16c0518d806acc638d9",
+    "md_bytes": 91514,
+    "md_sha256": "2d9c23bb6ad26430bcf4fd2a52e9aa5e876a1546265a00087cdb7e7e4f1c1872",
+    "zip_bytes": 612662,
+    "zip_sha256": "974f59722b609a137985c40201bbc29f0c1dd55a31f847399f2fe0ab74fce9bf",
+    "carried_surface": "Exact corrected Markdown only; local runtime remains separately verified engineering"
+  },
+  "design_coordinates": [
+    {
+      "path": "research/portable-loom-preflight/PROTOCOL.json",
+      "commit": "7e7cf4d6490fcdc68584764a63f3198302f7fc39",
+      "git_blob": "706c58024183a2ee3ab9ccf593ec962010654190",
+      "bytes": 7680,
+      "sha256": "7931d70b2296414562f5457d71f4069229d6081c0fe914dad3f8a91ddb214c25"
+    },
+    {
+      "path": "research/portable-loom-preflight/CASE_REGISTRY.json",
+      "commit": "7e7cf4d6490fcdc68584764a63f3198302f7fc39",
+      "git_blob": "a6c69ad8283d9fbb5dd8302866799ad3c3e8d0ab",
+      "bytes": 15712,
+      "sha256": "2eba4fb0760aada7bab317904f97f1613e53cce243d999a60cf33a6cc7234adb"
+    },
+    {
+      "path": "research/portable-loom-antigravity-handoff-20261009/PROTOCOL_AMENDMENT_001.json",
+      "commit": "7e7cf4d6490fcdc68584764a63f3198302f7fc39",
+      "git_blob": "4ed7c8c097190958c77453ff54d0fc0042a92a18",
+      "bytes": 2663,
+      "sha256": "2d467196414f1a01a686798969b6168efecf72a422386eae2ce335a12ba8fe85"
+    },
+    {
+      "path": "research/portable-loom-kit-assay-20261009/PROTOCOL_AMENDMENT_002.json",
+      "commit": "7e7cf4d6490fcdc68584764a63f3198302f7fc39",
+      "git_blob": "cdb2f0da8149f28eb58e6bf0158111eeb3d0a00c",
+      "bytes": 1803,
+      "sha256": "66ac0f30daf1000973d1c20ad67e21db450f76055b45c035345cf27c54cb327a"
+    },
+    {
+      "path": "research/portable-loom-kit-assay-20261009/CORRECTED_RECEIVER_PLAN.json",
+      "commit": "7e7cf4d6490fcdc68584764a63f3198302f7fc39",
+      "git_blob": "04879bdac4f5d8d5807b16ac3fcd022e6403a8d2",
+      "bytes": 25737,
+      "sha256": "7506a694ed192a876a6816a5765ee195624f3697faa3db3a736ec893fe7c90af"
+    },
+    {
+      "path": "research/portable-loom-kit-assay-20261009/FOOTER_CORRECTION.json",
+      "commit": "7e7cf4d6490fcdc68584764a63f3198302f7fc39",
+      "git_blob": "8ef7fdf8133523abef1b1abe73a34ca02ee08635",
+      "bytes": 1273,
+      "sha256": "6ad762970da799107bd00edfe9c268f4fcfe3c2ae4660c5c0f384e957e07598e"
+    }
+  ],
+  "runtime_coordinates": [
+    {
+      "path": "api/khonapolit.js",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "132d01929e1ee5e6d1ffcb5e40af27869e87ddf4",
+      "bytes": 2352,
+      "sha256": "96039accca6c2c2f3ebfd5efb26c870f2e11c22597633dc6911cacab22da630e"
+    },
+    {
+      "path": "server/loom-assay.js",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "ec594d9617087364c65454bfcadec740734a4789",
+      "bytes": 8860,
+      "sha256": "0100e41579bea5bbe8b35c3893ce56dc9e4530c8bad3634ed7cf3bce07b37ceb"
+    },
+    {
+      "path": "server/loom-assay-contract.js",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "fd39cb2bd289bbcc3a0d2dcc0e80555ebb2296d1",
+      "bytes": 9229,
+      "sha256": "cfab9a5197fb01f625c046a4a60c5f48a2d732fe704e39875a22e5ea8817fd2a"
+    },
+    {
+      "path": "server/loom-assay-budget-client.js",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "da91795134039d9d6c58a5382284c07ec3d6530f",
+      "bytes": 1263,
+      "sha256": "bec72cd9e455b3777522c8fcd5254c391683515ad1257481bdb7b329600c6c64"
+    },
+    {
+      "path": "server/loom-assay-run-config.json",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "06525e8ad864b3653760d9d79efa5fc65a1ae837",
+      "bytes": 398,
+      "sha256": "6ad4fae076b922d5fcdbb1ccee770ce64fbcafeca81554e59ba40da8fb302421"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/server-client.mjs",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "005db6f50d689b82eb956662a245d7d11a5529e2",
+      "bytes": 7999,
+      "sha256": "1ab3850cd4c6a4896b873d5ac17e33d1fc5a0845783dbb001ce082cd01c1a359"
+    },
+    {
+      "path": "research/portable-loom-assay-activation-20261009/run-first-receiver.mjs",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "2fc4c5ad355adb13c5f8b8afbf85b916db145b2a",
+      "bytes": 4790,
+      "sha256": "1f62759383c9996f7b3cce07aa92a23902ca81cf6e53c09321605918b3aceaa1"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/TRIAL_MANIFEST.json",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "8085e2fcf29ba4208cc9062474ed503f948219fb",
+      "bytes": 57923,
+      "sha256": "08f63e8999a984b3f871016cf059392d890ae5661883e9149786264244b0f5ac"
+    },
+    {
+      "path": "research/portable-loom-kit-assay-20261009/corrected-artifact/portable-loom-standard.md",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "ae4a9bb67e72fe608625e4b143498e50c66bb425",
+      "bytes": 91514,
+      "sha256": "2d9c23bb6ad26430bcf4fd2a52e9aa5e876a1546265a00087cdb7e7e4f1c1872"
+    },
+    {
+      "path": "neon/functions/loom-assay-budget/ledger.mjs",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "ced7ca368bdb28a6e8dffdf3543a0294e567515d",
+      "bytes": 5236,
+      "sha256": "7a31a7e8fe4ac7ea2232f6c9cec86e736016f019b878fc016e8451262e72647f"
+    },
+    {
+      "path": "neon/functions/loom-assay-budget/vercel-identity.mjs",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "4576400f383070c781d05fb6e948b5747613a848",
+      "bytes": 2376,
+      "sha256": "ef08699d60b011ca68e87b79a71f5630736561496c7b1d64f3073fd4ce9450bf"
+    },
+    {
+      "path": "neon/functions/loom-assay-budget/index.mjs",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "42c68bb038d0dabee35b9dbd0e8959f74ce154ca",
+      "bytes": 2523,
+      "sha256": "9777097f7273c8d3e1e9338be333c6c423c3793665da4cbc2b28f3303ea527a0"
+    }
+  ],
+  "trial_manifest_sha256": "08f63e8999a984b3f871016cf059392d890ae5661883e9149786264244b0f5ac",
+  "protocol_amendment": "Bind the corrective export and bounded deployed relay before new receiver measurement. Preserve original design, prior exports, cases, order, three repetitions, scoring categories and historical failures.",
+  "receiver": {
+    "slot": "FIRST_CONFIGURED_RECEIVER",
+    "provider": "GEMINI_GENERATE_CONTENT",
+    "model": "gemini-3.8-flash",
+    "response_model_ids": [
+      "gemini-3.8-flash"
+    ],
+    "transport": "Local HTTPS client → reviewed TD613 Vercel relay → Gemini generateContent",
+    "decoding": {
+      "temperature": null,
+      "top_p": null,
+      "thinking_level": "medium"
+    },
+    "context": "No prior trial context; only the fixed artifact, case prompt and retained actual within-trial prior turns",
+    "tools": "DISABLED",
+    "retrieval": "DISABLED"
+  },
+  "cases": 12,
+  "repetitions": 3,
+  "trials": 36,
+  "planned_calls": 54,
+  "limits": {
+    "max_calls": 54,
+    "max_input_tokens_per_call": 200000,
+    "max_output_tokens_per_call": 8192,
+    "max_cost_usd": 10,
+    "timeout_ms": 120000,
+    "max_response_bytes": 2000000
+  },
+  "maximum_reserved_token_cost_usd": 9.75888,
+  "private_comparative_key": "NOT_READ; comparison excluded",
+  "raw_capture_path": "raw/run-001",
+  "evidence_class": "ACTUAL_RECEIVER_TEST",
+  "origin_scope": "Client observes TD613 HTTPS bytes. Vercel reports its provider HTTPS observation separately. No independent external witness.",
+  "adjudication": {
+    "basis": "Existing R01-R12 expected endpoints and protocol scoring categories; controller review of actual retained bytes, no paid role calls",
+    "footer_denominator": "Every eligible captured assistant output including activation, Gate, explanation and Rest",
+    "human_comprehension": "UNMEASURED"
+  },
+  "stopping": "No retries. Stop on transport HOLD, missing capture, credential echo, protected outbound material, unexpected consequential action, unsupported promotion outside a negative control, or numerical ceiling. Preserve every prefix.",
+  "custody_admission": false,
+  "comparison": false,
+  "second_provider": false,
+  "historical_rerun": false,
+  "detached_execution": false
+}

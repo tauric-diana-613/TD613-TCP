@@ -1,0 +1,13 @@
+{
+  "evidence_class": "READ_ONLY_HTTPS_OBSERVATION",
+  "method": "GET",
+  "url": "https://td613.com/api/khonapolit?operation=loom-assay",
+  "started_at": "2026-10-09T15:39:15.070Z",
+  "ended_at": "2026-10-09T15:39:18.378Z",
+  "http_status": 405,
+  "bytes": 96,
+  "sha256": "535220fbe421264bbd4fc1eac6fbb7a9c3741aa158626e17dfc0b9dd34a795f5",
+  "error": null,
+  "model_calls": 0,
+  "scope": "Deployment-readiness observation; no authorized generation request or provider inference"
+}

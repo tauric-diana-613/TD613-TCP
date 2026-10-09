@@ -1,0 +1,93 @@
+{
+  "schema": "td613.loom.reviewed-runtime-coordinates/v0.1",
+  "reviewed_head": "3474a14acc2f585e8dcf6b5e8d104a7ac5ea4181",
+  "merged_packet": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+  "files": [
+    {
+      "path": "api/khonapolit.js",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "132d01929e1ee5e6d1ffcb5e40af27869e87ddf4",
+      "bytes": 2352,
+      "sha256": "96039accca6c2c2f3ebfd5efb26c870f2e11c22597633dc6911cacab22da630e"
+    },
+    {
+      "path": "server/loom-assay.js",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "ec594d9617087364c65454bfcadec740734a4789",
+      "bytes": 8860,
+      "sha256": "0100e41579bea5bbe8b35c3893ce56dc9e4530c8bad3634ed7cf3bce07b37ceb"
+    },
+    {
+      "path": "server/loom-assay-contract.js",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "fd39cb2bd289bbcc3a0d2dcc0e80555ebb2296d1",
+      "bytes": 9229,
+      "sha256": "cfab9a5197fb01f625c046a4a60c5f48a2d732fe704e39875a22e5ea8817fd2a"
+    },
+    {
+      "path": "server/loom-assay-budget-client.js",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "da91795134039d9d6c58a5382284c07ec3d6530f",
+      "bytes": 1263,
+      "sha256": "bec72cd9e455b3777522c8fcd5254c391683515ad1257481bdb7b329600c6c64"
+    },
+    {
+      "path": "server/loom-assay-run-config.json",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "06525e8ad864b3653760d9d79efa5fc65a1ae837",
+      "bytes": 398,
+      "sha256": "6ad4fae076b922d5fcdbb1ccee770ce64fbcafeca81554e59ba40da8fb302421"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/server-client.mjs",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "005db6f50d689b82eb956662a245d7d11a5529e2",
+      "bytes": 7999,
+      "sha256": "1ab3850cd4c6a4896b873d5ac17e33d1fc5a0845783dbb001ce082cd01c1a359"
+    },
+    {
+      "path": "research/portable-loom-assay-activation-20261009/run-first-receiver.mjs",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "2fc4c5ad355adb13c5f8b8afbf85b916db145b2a",
+      "bytes": 4790,
+      "sha256": "1f62759383c9996f7b3cce07aa92a23902ca81cf6e53c09321605918b3aceaa1"
+    },
+    {
+      "path": "research/portable-loom-server-transport-20261009/TRIAL_MANIFEST.json",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "8085e2fcf29ba4208cc9062474ed503f948219fb",
+      "bytes": 57923,
+      "sha256": "08f63e8999a984b3f871016cf059392d890ae5661883e9149786264244b0f5ac"
+    },
+    {
+      "path": "research/portable-loom-kit-assay-20261009/corrected-artifact/portable-loom-standard.md",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "ae4a9bb67e72fe608625e4b143498e50c66bb425",
+      "bytes": 91514,
+      "sha256": "2d9c23bb6ad26430bcf4fd2a52e9aa5e876a1546265a00087cdb7e7e4f1c1872"
+    },
+    {
+      "path": "neon/functions/loom-assay-budget/ledger.mjs",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "ced7ca368bdb28a6e8dffdf3543a0294e567515d",
+      "bytes": 5236,
+      "sha256": "7a31a7e8fe4ac7ea2232f6c9cec86e736016f019b878fc016e8451262e72647f"
+    },
+    {
+      "path": "neon/functions/loom-assay-budget/vercel-identity.mjs",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "4576400f383070c781d05fb6e948b5747613a848",
+      "bytes": 2376,
+      "sha256": "ef08699d60b011ca68e87b79a71f5630736561496c7b1d64f3073fd4ce9450bf"
+    },
+    {
+      "path": "neon/functions/loom-assay-budget/index.mjs",
+      "reviewed_commit": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+      "git_blob": "42c68bb038d0dabee35b9dbd0e8959f74ce154ca",
+      "bytes": 2523,
+      "sha256": "9777097f7273c8d3e1e9338be333c6c423c3793665da4cbc2b28f3303ea527a0"
+    }
+  ],
+  "deployment_source_status": "AWAITING_RECEIPT",
+  "no_raw_credentials": true
+}

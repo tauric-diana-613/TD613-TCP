@@ -1,0 +1,18 @@
+{
+  "schema": "td613.loom.deployed-source-byte-verification/v0.1",
+  "verified_at": "2026-10-09T15:43:18.336Z",
+  "deployment_commit": "5581af7812dc0f5fcf2b65c11ad09da045f0940e",
+  "verified_files": 12,
+  "all_reviewed_runtime_bytes_unchanged": true,
+  "deployment_delta": [
+    "app/giving/history/release-source.json",
+    "vercel.json"
+  ],
+  "relock_delta": [
+    "vercel.json"
+  ],
+  "private_capability_matches_reviewed_digest": true,
+  "tracked_worktree_clean": true,
+  "evidence_scope": "Actual remote Git objects and local checked-out bytes; live source and release witness are separate retained receipts",
+  "actual_generation_calls": 0
+}

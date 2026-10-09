@@ -1,0 +1,13 @@
+{
+  "evidence_class": "READ_ONLY_HTTPS_OBSERVATION",
+  "method": "GET",
+  "url": "https://td613.com/giving/history/release-source.json?td613_assay_source_observation=20261009",
+  "started_at": "2026-10-09T15:39:12.158Z",
+  "ended_at": "2026-10-09T15:39:15.069Z",
+  "http_status": 200,
+  "bytes": 119,
+  "sha256": "557ffa6d4c874e7b3a6ee4d72d56ce43f3d323a13a0b21047787c6a9a5ed96ff",
+  "error": null,
+  "model_calls": 0,
+  "scope": "Deployment-readiness observation; no authorized generation request or provider inference"
+}

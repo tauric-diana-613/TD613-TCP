@@ -1,0 +1,362 @@
+{
+  "schema": "td613.loom.governed-release-receipt/v0.1",
+  "observed_at": "2026-10-09T15:42:41.658Z",
+  "receipt": {
+    "url": "https://api.github.com/repos/tauric-diana-613/TD613-TCP/issues/comments/6084181733",
+    "html_url": "https://github.com/tauric-diana-613/TD613-TCP/issues/405#issuecomment-6084181733",
+    "issue_url": "https://api.github.com/repos/tauric-diana-613/TD613-TCP/issues/405",
+    "id": 6084181733,
+    "node_id": "IC_kwDORqWEks8AAAABaqU-5Q",
+    "user": {
+      "login": "github-actions[bot]",
+      "id": 41898282,
+      "node_id": "MDM6Qm90NDE4OTgyODI=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-actions",
+      "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "created_at": "2026-10-09T15:40:55Z",
+    "updated_at": "2026-10-09T15:40:55Z",
+    "body": "𝌋 Vercel production release completed and bounded observation passed.\n\n```text\nsource_packet_commit = fd75425c36f65210dc7fb10e685e5b272bae370a\nrelease_mode = git-fallback\nrelease_commit = 5581af7812dc0f5fcf2b65c11ad09da045f0940e\nrelock_commit = 916ed6cfc6f21f49d30198c407f57c6f9ed0b0d0\ntarget = PRODUCTION\ndeployment_count = 1\ndeployment_url = https://td613.com\nvalidation_scope = full\nexact_source_receipt = PASS\nexact_source_content = PASS\nstale_queue_stability_window = PASS\npost_witness_source_guard = PASS\npremerge_deep_browser_diagnostics = MANUAL_ONLY_NOT_RELEASE_AUTHORITY\npremerge_witness_scope = FAST_CONTRACT_LANE\nproduction_giving_history = NOT_APPLICABLE\nproduction_practice_fixture = NOT_APPLICABLE\nproduction_full_product_browser_witness = NOT_REQUIRED_EXACT_SOURCE_ONLY\nash_production_ceremony = RETIRED\nproduction_loom_demo1_canary = MANUAL_ONLY\nautomatic_live_ai_provider_calls = 0\nliterary_benchmark = NOT_ESTABLISHED_BY_DEPLOYMENT\nmodel_output_length_and_voice_quality = UNMEASURED_BY_DEPLOYMENT\ncounts_as_human_evidence = false\nchild_study_authorized = false\npublic_route_promotion_authorized = false\napplication_tree_drift = none\ngit_auto_deploy = disabled\n```\n\nThe fallback deployment gate was relocked immediately after the single deployable commit was admitted. Production success is exact-source deployment success: source receipt, application bytes, Vercel adoption, stability, and post-witness source custody. Deep browser estates, Ash lifecycle ceremony, literary quality, sustained Kʰonapolit development, native-bot morphology, and provider liveness are manual diagnostics and cannot relabel a verified deployment. This receipt grants no human-evidence, child-study, release-future, custody, or program-closure authority. Sealed ⟐",
+    "author_association": "CONTRIBUTOR",
+    "pin": null,
+    "reactions": {
+      "url": "https://api.github.com/repos/tauric-diana-613/TD613-TCP/issues/comments/6084181733/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "performed_via_github_app": {
+      "id": 15368,
+      "client_id": "Iv1.05c79e9ad1f6bdfa",
+      "slug": "github-actions",
+      "node_id": "MDM6QXBwMTUzNjg=",
+      "owner": {
+        "login": "github",
+        "id": 9919,
+        "node_id": "MDEyOk9yZ2FuaXphdGlvbjk5MTk=",
+        "avatar_url": "https://avatars.githubusercontent.com/u/9919?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/github",
+        "html_url": "https://github.com/github",
+        "followers_url": "https://api.github.com/users/github/followers",
+        "following_url": "https://api.github.com/users/github/following{/other_user}",
+        "gists_url": "https://api.github.com/users/github/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/github/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/github/subscriptions",
+        "organizations_url": "https://api.github.com/users/github/orgs",
+        "repos_url": "https://api.github.com/users/github/repos",
+        "events_url": "https://api.github.com/users/github/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/github/received_events",
+        "type": "Organization",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "name": "GitHub Actions",
+      "description": "Automate your workflow from idea to production",
+      "external_url": "https://help.github.com/en/actions",
+      "html_url": "https://github.com/apps/github-actions",
+      "created_at": "2018-07-30T09:30:17Z",
+      "updated_at": "2026-06-18T16:17:48Z",
+      "permissions": {
+        "actions": "write",
+        "administration": "read",
+        "artifact_metadata": "write",
+        "attestations": "write",
+        "checks": "write",
+        "code_quality": "write",
+        "contents": "write",
+        "copilot_requests": "write",
+        "deployments": "write",
+        "discussions": "write",
+        "drives": "write",
+        "issues": "write",
+        "merge_queues": "write",
+        "metadata": "read",
+        "models": "read",
+        "packages": "write",
+        "pages": "write",
+        "pull_requests": "write",
+        "repository_hooks": "write",
+        "repository_projects": "write",
+        "security_events": "write",
+        "statuses": "write",
+        "vulnerability_alerts": "read"
+      },
+      "events": [
+        "branch_protection_rule",
+        "check_run",
+        "check_suite",
+        "create",
+        "delete",
+        "deployment",
+        "deployment_status",
+        "discussion",
+        "discussion_comment",
+        "fork",
+        "gollum",
+        "issues",
+        "issue_comment",
+        "label",
+        "merge_group",
+        "milestone",
+        "page_build",
+        "public",
+        "pull_request",
+        "pull_request_review",
+        "pull_request_review_comment",
+        "push",
+        "registry_package",
+        "release",
+        "repository",
+        "repository_dispatch",
+        "status",
+        "watch",
+        "workflow_dispatch",
+        "workflow_run"
+      ]
+    },
+    "minimized": null
+  },
+  "jobs": {
+    "jobs": [
+      {
+        "id": 113896258727,
+        "name": "release",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 37952979909,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Check out current main",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Set up Node",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Validate operator authorization and exact commit",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Classify the authorized release witness scope",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Record accepted release gesture",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Install repository dependencies once",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Verify release-critical contracts only",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Verify Giving-only release contracts",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 9
+          },
+          {
+            "name": "Verify canonical practice fixture release contracts",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 10
+          },
+          {
+            "name": "Choose one bounded Vercel release route",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11
+          },
+          {
+            "name": "Materialize the exact-source receipt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12
+          },
+          {
+            "name": "Link exact repository to the existing Vercel project",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 13
+          },
+          {
+            "name": "Pull production environment and build once",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 14
+          },
+          {
+            "name": "Deploy the completed packet once through the token bridge",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 15
+          },
+          {
+            "name": "Create one bounded Git-fallback release commit",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16
+          },
+          {
+            "name": "Await Vercel adoption of exact Git-fallback commit",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          },
+          {
+            "name": "Restore the Git deployment lock immediately after Vercel adoption",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18
+          },
+          {
+            "name": "Resolve deployed production URL",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19
+          },
+          {
+            "name": "Await exact-source receipt before stability window",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 20
+          },
+          {
+            "name": "Verify deployed bytes match the authorized source packet",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 21
+          },
+          {
+            "name": "Hold authorized source stable against stale queued rollbacks",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 22
+          },
+          {
+            "name": "Reconfirm exact deployed bytes after stability window",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 23
+          },
+          {
+            "name": "Install one production browser engine for Giving/practice only",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 24
+          },
+          {
+            "name": "Confirm deployed Campaign Deputy Giving History exports on Chromium",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 25
+          },
+          {
+            "name": "Confirm deployed canonical practice fixture on Chromium",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 26
+          },
+          {
+            "name": "Record live AI observation as manual-only",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 27
+          },
+          {
+            "name": "Confirm authorized source still owns production after witness",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 28
+          },
+          {
+            "name": "Preserve bounded production evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 29
+          },
+          {
+            "name": "Seal successful production release",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 30
+          },
+          {
+            "name": "Record held release",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 31
+          },
+          {
+            "name": "Post Set up Node",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 61
+          },
+          {
+            "name": "Post Check out current main",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 62
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 63
+          }
+        ]
+      }
+    ]
+  },
+  "verified_source_packet": "fd75425c36f65210dc7fb10e685e5b272bae370a",
+  "actual_deployment_commit": "5581af7812dc0f5fcf2b65c11ad09da045f0940e",
+  "relock_commit": "916ed6cfc6f21f49d30198c407f57c6f9ed0b0d0",
+  "automatic_generation_calls": 0
+}
