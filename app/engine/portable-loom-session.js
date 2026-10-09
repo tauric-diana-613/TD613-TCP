@@ -11,6 +11,10 @@ export const PORTABLE_LOOM_WORK_UNIT_SCHEMA = 'td613.loom.portable-session-work-
 export const PORTABLE_LOOM_SESSION_EVENT_SCHEMA = 'td613.loom.portable-session-event/v0.1';
 export const PORTABLE_LOOM_SESSION_EXPORT_SCHEMA = 'td613.loom.portable-session-export/v0.1';
 export const PORTABLE_LOOM_RECEIVER_TURN_SCHEMA = 'td613.loom.portable-session-receiver-turn/v0.1';
+export const PORTABLE_LOOM_RECEIVER_TURN_FIELDS = Object.freeze([
+  'schema', 'session_root_ref', 'policy_commitment', 'anchor_work_unit_ref',
+  'turn_index', 'operator_task', 'used_document_ids', 'missing_information', 'receiver_declaration'
+]);
 
 const encoder = new TextEncoder();
 const HEX64 = /^[a-f0-9]{64}$/;
@@ -362,9 +366,13 @@ export async function createPortableLoomSessionExport(sessionInput, packet, envi
         'used_document_ids',
         'missing_information'
       ],
+      receipt_fields: [...PORTABLE_LOOM_RECEIVER_TURN_FIELDS],
+      receipt_schema: PORTABLE_LOOM_RECEIVER_TURN_SCHEMA,
+      turn_index_rule: 'Positive declaration counter: 1 for the first proceeding-task answer, then increment for subsequent proceeding-task answers. Activation, Gate explanation and Rest views do not invent task receipts or verified ancestry.',
+      receiver_declaration_rule: 'A nonempty string describing the receiver declaration and its limits; it is not independently verified enforcement.',
       persistence_rule: 'Proceeding tasks inherit the session root rules unless the human explicitly starts a fresh Loom session.',
       source_rule: 'Only source bodies explicitly supplied or selected for the proceeding task may be treated as newly admitted task sources.',
-      receipt_rule: 'Return a separate loom_session_receipt object with every proceeding-task answer; anchor_work_unit_ref names the last Loom-verified work unit, and the receipt is a receiver declaration until Loom revalidates it.',
+      receipt_rule: 'Return a separate loom_session_receipt object containing exactly receipt_fields with every proceeding-task answer. Activation before task/source selection has no task receipt. anchor_work_unit_ref names the last Loom-verified work unit, and the receipt is a receiver declaration until Loom revalidates it.',
       weakening_rule: 'Do not omit, relax, replace, or reinterpret a root rule inside the same v0.1 session.'
     },
     challenge_protocol: {
@@ -384,18 +392,27 @@ export async function createPortableLoomSessionExport(sessionInput, packet, envi
 
 export function createPortableLoomSessionPrompt(sessionExport) {
   if (!sessionExport || sessionExport.schema !== PORTABLE_LOOM_SESSION_EXPORT_SCHEMA) throw new TypeError('Portable Loom Session export required.');
+  const conversationGate = sessionExport.portable_task?.portable_governance?.output_protocol?.gate_action?.surface === 'RECEIVING_CONVERSATION';
+  const completeReceipt = Array.isArray(sessionExport.receiver_turn_contract?.receipt_fields);
   return [
     'You are receiving a TD613 Portable Loom Session.',
     'Treat the session root and portable rules as persistent governance for every proceeding task in this thread.',
     'A new user task changes the work objective; it does not erase the root rules.',
-    ...(sessionExport.portable_task?.portable_governance?.output_protocol ? ['The root-bound output_protocol is persistent across this session, every proceeding task and Rest. Show its full compact footer on every output: phase, minimized public session/explicit route label, posture, authorization, receipt availability, HOLD, Gate status and checked scope, and 米 Check Loom Gate. Unknown coordinates stay UNKNOWN; never infer fresh authorization from prior sending. Recognize a lone 米 as Gate review; without a local verifier provide the capture instructions and link, and keep NOT_RUN. A review acknowledgment never clears findings or admits work. A missing footer is a protocol omission. Preserve strict JSON by putting its footer inside answer before hashing, or in a separate host presentation surface.'] : []),
+    ...(sessionExport.portable_task?.portable_governance?.output_protocol ? [conversationGate
+      ? 'The root-bound output_protocol persists through proceeding tasks and Rest. Use one compact footer paragraph of at most two logical lines with all declared fields and the plain-text command 米 Check Loom Gate. A lone 米 requests a review of available evidence here; that request needs no separate review approval. Report the actual review scope, missing telemetry and any actual verifier results separately. Verification remains NOT_RUN without an executed verifier result. Do not hyperlink the primary command or replace the report with a website redirect. The optional manual verifier has no automatic access to this conversation; material transfer requires a separate explicit choice. A missing footer is a protocol omission. Preserve strict JSON by putting its footer inside answer before hashing, or in a separate host presentation surface.'
+      : 'The root-bound output_protocol is persistent across this session, every proceeding task and Rest. Show its full compact footer on every output: phase, minimized public session/explicit route label, posture, authorization, receipt availability, HOLD, Gate status and checked scope, and 米 Check Loom Gate. Unknown coordinates stay UNKNOWN; never infer fresh authorization from prior sending. Recognize a lone 米 as Gate review; without a local verifier provide the capture instructions and link, and keep NOT_RUN. A review acknowledgment never clears findings or admits work. A missing footer is a protocol omission. Preserve strict JSON by putting its footer inside answer before hashing, or in a separate host presentation surface.'] : []),
+    ...(conversationGate ? ['For activation before a task and sources are selected, ask only for that task and its explicit source selection (including an explicit choice of no source documents). Keep the route UNKNOWN and offer its technical catalogue on request. Keep the footer compact; do not fabricate a task receipt or print root hashes during this setup. Task HOLD does not prevent reviewing supplied evidence on 米.'] : []),
     'Do not silently inherit source bodies from an earlier task unless they are explicitly supplied or named as continuing inputs.',
     'Keep work-unit ancestry separate from content-predecessor ancestry.',
-    'For every proceeding-task answer, append a separate loom_session_receipt object matching receiver_turn_contract. Echo the session root, effective policy commitment, anchor work-unit reference, operator task, explicitly used document IDs, and missing information.',
+    completeReceipt
+      ? 'For every proceeding-task answer after task/source selection, append a separate loom_session_receipt object containing exactly receiver_turn_contract.receipt_fields: schema, session_root_ref, policy_commitment, anchor_work_unit_ref, turn_index, operator_task, used_document_ids, missing_information and receiver_declaration. Use receipt_schema, the carried root/policy/last verified anchor, a positive proceeding-task declaration counter and a nonempty declaration string. Activation has no task receipt; Gate review never fabricates one. This counter does not authenticate off-platform ancestry.'
+      : 'For every proceeding-task answer, append a separate loom_session_receipt object matching receiver_turn_contract. Echo the session root, effective policy commitment, anchor work-unit reference, operator task, explicitly used document IDs, and missing information.',
     'That receipt is a declaration for Loom to revalidate; do not describe the receipt itself as proof of enforcement.',
     'Do not claim that your own acknowledgement proves enforcement, secrecy, retention, training behavior, or hidden memory state.',
     'When a Challenge Receiver packet appears, answer only its declared probes and preserve its exact session/work-unit/policy references.',
-    ...(sessionExport.portable_task?.portable_governance?.output_protocol ? ['Gate outputs retain the regular footer plus evidence basis, checked scope and How do I know? 下. A lone 下 requests actual methods and the full carried expert nomenclature. Without a verifier capability, report NOT_RUN and provide the link and capture instructions.'] : []),
+    ...(sessionExport.portable_task?.portable_governance?.output_protocol ? [conversationGate
+      ? 'Gate outputs retain the regular footer plus the actual evidence sources, review scope, observed disclosures versus inferred risks, missing observations, receipt references, verification status, claim ceiling and How do I know? 下. A lone 下 requests the actual methods and full carried expert nomenclature. Review visible evidence even when executable verification is unavailable; mark that verification NOT_RUN and give actionable capture instructions. An optional manual-verification link is separate from this in-conversation review.'
+      : 'Gate outputs retain the regular footer plus evidence basis, checked scope and How do I know? 下. A lone 下 requests actual methods and the full carried expert nomenclature. Without a verifier capability, report NOT_RUN and provide the link and capture instructions.'] : []),
     '',
     JSON.stringify(sessionExport, null, 2)
   ].join('\n');
@@ -403,11 +420,7 @@ export function createPortableLoomSessionPrompt(sessionExport) {
 
 export async function verifyPortableLoomReceiverTurnReceipt(sessionInput, receiptInput, options = {}, environment = globalThis) {
   const session = validateSession(sessionInput);
-  exact(receiptInput, [
-    'schema', 'session_root_ref', 'policy_commitment', 'anchor_work_unit_ref',
-    'turn_index', 'operator_task', 'used_document_ids', 'missing_information',
-    'receiver_declaration'
-  ], 'receiver turn receipt');
+  exact(receiptInput, PORTABLE_LOOM_RECEIVER_TURN_FIELDS, 'receiver turn receipt');
   if (receiptInput.schema !== PORTABLE_LOOM_RECEIVER_TURN_SCHEMA) throw new TypeError('Unsupported Portable Loom receiver-turn receipt schema.');
   if (!Number.isInteger(receiptInput.turn_index) || receiptInput.turn_index < 1) throw new TypeError('receiver turn index must be a positive integer.');
   text(receiptInput.operator_task, 'receiver turn operator_task', 12000);

@@ -1,0 +1,177 @@
+✔ footer preserves missing authorization and receipt evidence and refuses private presentation labels (1.549196ms)
+✖ canonical demo and custom packets share the recomputable core and conventional nomenclature (0.809476ms)
+✖ receiver projections preserve distinct presentations, policy and prefix-only chronology (0.242177ms)
+✖ actual finite quotient rejects the erased recommendation while preserving sound support (0.230168ms)
+✖ independent recomputation rejects changed legends, supports, chronology, projections and authority (0.266934ms)
+✖ Gate proves literal, joined and incomplete alerts without publishing private ground truth (0.265162ms)
+✖ reference demo uses registered returns: Check never advances and explicit Admit preserves changed evidence (0.400096ms)
+✖ a captured exposure holds its registered scope and a later clean result cannot erase it (0.233804ms)
+✖ portable Gate primary action stays in the receiving conversation; manual destination grants no access or transfer (1.231425ms)
+✖ the complete carried receipt shape is accepted by the installed verifier without granting custody (0.345243ms)
+✖ activation asks for task/source selection and defers catalogue and receipts; prior frozen prompt remains compatible (0.203017ms)
+✔ Portable Loom Session roots governance once and proceeding tasks inherit policy without implicit source inheritance (24.153379ms)
+✔ session export makes proceeding-task governance and receiver-turn receipts machine-readable (12.864653ms)
+✔ receiver-turn receipt matches only the last Loom-verified anchor and never advances ancestry by itself (12.833095ms)
+✔ work-unit input has no policy-removal surface in v0.1 (5.524577ms)
+✔ Challenge Receiver exports probe prompts but keeps expected protected targets and canaries local (7.629815ms)
+✔ clean complete captured horizon yields bounded pass, never universal secrecy (7.701062ms)
+✔ literal canary on a captured outward surface is observed exposure (7.368369ms)
+✔ missing required capture holds instead of laundering missingness into zero leakage (6.526314ms)
+✔ successful protected reconstruction is exposure even when no literal canary appears (6.675449ms)
+✔ joined-only recovery is retained as joining exposure rather than pairwise innocence (10.154157ms)
+✔ receiver reference substitution holds even if receiver declares perfect compliance (9.383171ms)
+✔ Dollhouse challenge dossier keeps four roles independent and FADT proves phase cannot be erased (12.965957ms)
+✔ browser-unpinned source stays explicitly held in the Dollhouse dossier instead of fabricating a Git SHA (8.864385ms)
+✔ optional finite-channel calculation stays synthetic and earns zero empirical credit (8.840789ms)
+✔ standard receiver presentation excludes controller execution plans while retaining governance (2.183547ms)
+✔ presentation repair preserves the complete activation payload and all bound rules byte for byte (7.09818ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 17
+ℹ fail 10
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 243.512749
+
+✖ failing tests:
+
+test at tests/portable-loom-core.test.mjs:40:1
+✖ canonical demo and custom packets share the recomputable core and conventional nomenclature (0.809476ms)
+  TypeError: rule has invalid length
+      at string (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:22:101)
+      at file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:39:49
+      at Array.from (<anonymous>)
+      at normalizeLoomAiTask (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:39:23)
+      at selectedBody (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:103:45)
+      at createLoomAiGovernance (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:141:16)
+      at fixture (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-core.test.mjs:34:28)
+      at TestContext.<anonymous> (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-core.test.mjs:41:35)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+
+test at tests/portable-loom-core.test.mjs:63:1
+✖ receiver projections preserve distinct presentations, policy and prefix-only chronology (0.242177ms)
+  TypeError: rule has invalid length
+      at string (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:22:101)
+      at file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:39:49
+      at Array.from (<anonymous>)
+      at normalizeLoomAiTask (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:39:23)
+      at selectedBody (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:103:45)
+      at createLoomAiGovernance (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:141:16)
+      at fixture (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-core.test.mjs:34:28)
+      at TestContext.<anonymous> (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-core.test.mjs:64:28)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+
+test at tests/portable-loom-core.test.mjs:74:1
+✖ actual finite quotient rejects the erased recommendation while preserving sound support (0.230168ms)
+  TypeError: rule has invalid length
+      at string (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:22:101)
+      at file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:39:49
+      at Array.from (<anonymous>)
+      at normalizeLoomAiTask (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:39:23)
+      at selectedBody (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:103:45)
+      at createLoomAiGovernance (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:141:16)
+      at fixture (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-core.test.mjs:34:28)
+      at TestContext.<anonymous> (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-core.test.mjs:75:28)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+
+test at tests/portable-loom-core.test.mjs:83:1
+✖ independent recomputation rejects changed legends, supports, chronology, projections and authority (0.266934ms)
+  TypeError: rule has invalid length
+      at string (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:22:101)
+      at file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:39:49
+      at Array.from (<anonymous>)
+      at normalizeLoomAiTask (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:39:23)
+      at selectedBody (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:103:45)
+      at createLoomAiGovernance (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:141:16)
+      at fixture (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-core.test.mjs:34:28)
+      at TestContext.<anonymous> (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-core.test.mjs:84:35)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+
+test at tests/portable-loom-core.test.mjs:96:1
+✖ Gate proves literal, joined and incomplete alerts without publishing private ground truth (0.265162ms)
+  TypeError: rule has invalid length
+      at string (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:22:101)
+      at file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:39:49
+      at Array.from (<anonymous>)
+      at normalizeLoomAiTask (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:39:23)
+      at selectedBody (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:103:45)
+      at createLoomAiGovernance (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:141:16)
+      at fixture (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-core.test.mjs:34:28)
+      at TestContext.<anonymous> (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-core.test.mjs:97:35)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+
+test at tests/portable-loom-core.test.mjs:114:1
+✖ reference demo uses registered returns: Check never advances and explicit Admit preserves changed evidence (0.400096ms)
+  TypeError: rule has invalid length
+      at string (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:22:101)
+      at file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:39:49
+      at Array.from (<anonymous>)
+      at normalizeLoomAiTask (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:39:23)
+      at selectedBody (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:103:45)
+      at createLoomAiGovernance (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:141:16)
+      at fixture (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-core.test.mjs:34:28)
+      at TestContext.<anonymous> (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-core.test.mjs:115:37)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+
+test at tests/portable-loom-core.test.mjs:140:1
+✖ a captured exposure holds its registered scope and a later clean result cannot erase it (0.233804ms)
+  TypeError: rule has invalid length
+      at string (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:22:101)
+      at file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:39:49
+      at Array.from (<anonymous>)
+      at normalizeLoomAiTask (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:39:23)
+      at selectedBody (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:103:45)
+      at createLoomAiGovernance (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:141:16)
+      at fixture (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-core.test.mjs:34:28)
+      at TestContext.<anonymous> (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-core.test.mjs:141:43)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+
+test at tests/portable-loom-portable-gate-contract.test.mjs:19:1
+✖ portable Gate primary action stays in the receiving conversation; manual destination grants no access or transfer (1.231425ms)
+  TypeError: rule has invalid length
+      at string (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:22:101)
+      at file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:39:49
+      at Array.from (<anonymous>)
+      at normalizeLoomAiTask (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:39:23)
+      at selectedBody (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:103:45)
+      at createLoomAiGovernance (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:141:16)
+      at freshExport (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-portable-gate-contract.test.mjs:13:28)
+      at TestContext.<anonymous> (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-portable-gate-contract.test.mjs:20:26)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+
+test at tests/portable-loom-portable-gate-contract.test.mjs:40:1
+✖ the complete carried receipt shape is accepted by the installed verifier without granting custody (0.345243ms)
+  TypeError: rule has invalid length
+      at string (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:22:101)
+      at file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:39:49
+      at Array.from (<anonymous>)
+      at normalizeLoomAiTask (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:39:23)
+      at selectedBody (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:103:45)
+      at createLoomAiGovernance (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:141:16)
+      at freshExport (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-portable-gate-contract.test.mjs:13:28)
+      at TestContext.<anonymous> (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-portable-gate-contract.test.mjs:41:26)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+
+test at tests/portable-loom-portable-gate-contract.test.mjs:62:1
+✖ activation asks for task/source selection and defers catalogue and receipts; prior frozen prompt remains compatible (0.203017ms)
+  TypeError: rule has invalid length
+      at string (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:22:101)
+      at file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:39:49
+      at Array.from (<anonymous>)
+      at normalizeLoomAiTask (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:39:23)
+      at selectedBody (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:103:45)
+      at createLoomAiGovernance (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/dome-world/holonomy-loom/ai-handoff-base.js:141:16)
+      at freshExport (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-portable-gate-contract.test.mjs:13:28)
+      at TestContext.<anonymous> (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-portable-gate-contract.test.mjs:63:26)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)

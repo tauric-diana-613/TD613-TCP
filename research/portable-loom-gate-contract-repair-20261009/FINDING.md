@@ -1,0 +1,11 @@
+# Portable Gate and receipt contract repair
+
+An operator-reported fresh receiver reply used the carried TD613.com link for 米, presented the technical route catalogue during activation and printed a six-field receipt. The URL and route names were in the supplied export. The installed receipt verifier requires nine fields: schema, session_root_ref, policy_commitment, anchor_work_unit_ref, turn_index, operator_task, used_document_ids, missing_information and receiver_declaration. The exported instructions previously specified only six.
+
+Output-footer v0.3 now makes the plain-text 米 command request a review of the evidence available in the receiving conversation. The optional manual verification destination has no automatic chat access or material transfer. Review scope, inferred risks, missing telemetry and actual executable verification stay separate. Without an actual verifier result, verification remains NOT_RUN. This instruction contract grants no hidden provider inspection.
+
+Activation asks for the task and explicit source selection, retains UNKNOWN route, defers the technical catalogue until requested, emits a compact footer, and creates no task receipt. Proceeding-task answers carry the complete declared receipt shape. Its counter remains a receiver declaration rather than authenticated ancestry. The exporter still excludes controller assay plans.
+
+Validation: 27 distinct affected local checks pass on the final source. Attempt 001 exposed a root rule exceeding the existing 1000-character limit; the rule was shortened to 980 without widening ingress. Attempt 002 passed 24 checks and exposed a missing source_revision in the new test fixture. The fixture was corrected with explicit LOCAL_STRUCTURAL_TEST metadata and the three affected checks passed in attempt 003; already-passing checks were not repeated. All attempts and source digests remain retained.
+
+This is source repair and LOCAL_STRUCTURAL_TEST evidence. Fresh receiver compliance remains NOT_RUN. Prior artifacts, frozen request commitments and research results remain untouched. Changed payload bytes require a new receiver binding; none are silently substituted into the old assay. No provider call, main merge, deployment or issue #405 action was executed during this repair.

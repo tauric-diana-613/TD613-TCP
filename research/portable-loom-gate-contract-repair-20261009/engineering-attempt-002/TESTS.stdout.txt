@@ -1,0 +1,67 @@
+✔ footer preserves missing authorization and receipt evidence and refuses private presentation labels (1.211093ms)
+✔ canonical demo and custom packets share the recomputable core and conventional nomenclature (137.92551ms)
+✔ receiver projections preserve distinct presentations, policy and prefix-only chronology (55.816325ms)
+✔ actual finite quotient rejects the erased recommendation while preserving sound support (70.179589ms)
+✔ independent recomputation rejects changed legends, supports, chronology, projections and authority (224.772208ms)
+✔ Gate proves literal, joined and incomplete alerts without publishing private ground truth (38.847784ms)
+✔ reference demo uses registered returns: Check never advances and explicit Admit preserves changed evidence (73.162555ms)
+✔ a captured exposure holds its registered scope and a later clean result cannot erase it (56.47388ms)
+✖ portable Gate primary action stays in the receiving conversation; manual destination grants no access or transfer (64.121598ms)
+✖ the complete carried receipt shape is accepted by the installed verifier without granting custody (47.952124ms)
+✖ activation asks for task/source selection and defers catalogue and receipts; prior frozen prompt remains compatible (46.977693ms)
+✔ Portable Loom Session roots governance once and proceeding tasks inherit policy without implicit source inheritance (29.230464ms)
+✔ session export makes proceeding-task governance and receiver-turn receipts machine-readable (13.92317ms)
+✔ receiver-turn receipt matches only the last Loom-verified anchor and never advances ancestry by itself (12.970507ms)
+✔ work-unit input has no policy-removal surface in v0.1 (5.590133ms)
+✔ Challenge Receiver exports probe prompts but keeps expected protected targets and canaries local (9.68295ms)
+✔ clean complete captured horizon yields bounded pass, never universal secrecy (17.080639ms)
+✔ literal canary on a captured outward surface is observed exposure (8.320416ms)
+✔ missing required capture holds instead of laundering missingness into zero leakage (11.608445ms)
+✔ successful protected reconstruction is exposure even when no literal canary appears (9.868941ms)
+✔ joined-only recovery is retained as joining exposure rather than pairwise innocence (9.391839ms)
+✔ receiver reference substitution holds even if receiver declares perfect compliance (8.2565ms)
+✔ Dollhouse challenge dossier keeps four roles independent and FADT proves phase cannot be erased (17.819028ms)
+✔ browser-unpinned source stays explicitly held in the Dollhouse dossier instead of fabricating a Git SHA (11.37415ms)
+✔ optional finite-channel calculation stays synthetic and earns zero empirical credit (8.607371ms)
+✔ standard receiver presentation excludes controller execution plans while retaining governance (2.274713ms)
+✔ presentation repair preserves the complete activation payload and all bound rules byte for byte (7.033418ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 24
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 774.046101
+
+✖ failing tests:
+
+test at tests/portable-loom-portable-gate-contract.test.mjs:19:1
+✖ portable Gate primary action stays in the receiving conversation; manual destination grants no access or transfer (64.121598ms)
+  TypeError: source_revision must be bounded non-empty text.
+      at text (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/engine/portable-loom-session.js:55:11)
+      at createPortableLoomSession (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/engine/portable-loom-session.js:137:26)
+      at async freshExport (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-portable-gate-contract.test.mjs:15:19)
+      at async TestContext.<anonymous> (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-portable-gate-contract.test.mjs:20:20)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at tests/portable-loom-portable-gate-contract.test.mjs:40:1
+✖ the complete carried receipt shape is accepted by the installed verifier without granting custody (47.952124ms)
+  TypeError: source_revision must be bounded non-empty text.
+      at text (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/engine/portable-loom-session.js:55:11)
+      at createPortableLoomSession (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/engine/portable-loom-session.js:137:26)
+      at async freshExport (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-portable-gate-contract.test.mjs:15:19)
+      at async TestContext.<anonymous> (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-portable-gate-contract.test.mjs:41:20)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests/portable-loom-portable-gate-contract.test.mjs:62:1
+✖ activation asks for task/source selection and defers catalogue and receipts; prior frozen prompt remains compatible (46.977693ms)
+  TypeError: source_revision must be bounded non-empty text.
+      at text (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/engine/portable-loom-session.js:55:11)
+      at createPortableLoomSession (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/app/engine/portable-loom-session.js:137:26)
+      at async freshExport (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-portable-gate-contract.test.mjs:15:19)
+      at async TestContext.<anonymous> (file:///workspace/scratch/fa8b964b1a68/TD613-assay-course-recovery/tests/portable-loom-portable-gate-contract.test.mjs:63:20)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)

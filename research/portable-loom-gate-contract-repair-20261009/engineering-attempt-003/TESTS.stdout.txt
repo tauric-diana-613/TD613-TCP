@@ -1,0 +1,11 @@
+✔ portable Gate primary action stays in the receiving conversation; manual destination grants no access or transfer (57.360912ms)
+✔ the complete carried receipt shape is accepted by the installed verifier without granting custody (34.154869ms)
+✔ activation asks for task/source selection and defers catalogue and receipts; prior frozen prompt remains compatible (41.291384ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 231.967441

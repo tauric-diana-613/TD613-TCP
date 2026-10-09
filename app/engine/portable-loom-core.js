@@ -120,8 +120,9 @@ export async function createPortableLoomCore(input, { observationBasis = null, s
     evidence_classes: [...LOOM_EVIDENCE_CLASSES], mechanisms: copy(PORTABLE_LOOM_MECHANISMS),
     return_protocol: { schema: 'td613.loom.bound-receiver-turn/v0.2', registration_required: true, stages: ['REGISTER', 'CAPTURE', 'CHECK', 'EXPLICIT_ADMIT', 'REST'], check_advances_head: false, imported_json_restores_custody: false },
     output_protocol: copy(PORTABLE_LOOM_OUTPUT_PROTOCOL), gate_explanation: copy(LOOM_GATE_EXPLANATION),
-    loom_gate: { action: 'CHECK_LOOM_GATE', label: LOOM_GATE_LABEL, href: LOOM_GATE_HREF,
-      status: 'NOT_RUN', instruction: 'Keep private target values local. Bring captured receiver replies and declared reconstruction attempts to Loom Gate. A copied packet alone contains no capture of the rest of this conversation.', conversation_leakage_fraction: null },
+    loom_gate: { action: 'CHECK_LOOM_GATE', label: LOOM_GATE_LABEL, command: '米', primary_surface: 'RECEIVING_CONVERSATION',
+      manual_verification: { href: LOOM_GATE_HREF, automatic_conversation_access: false, automatic_material_transfer: false, transfer_requires_explicit_choice: true },
+      status: 'NOT_RUN', instruction: 'On 米, review the evidence available in this conversation and expose missing observations. Keep executable verification NOT_RUN without an actual verifier result. Keep private target values local. Optional manual verification requires deliberately supplied captures and declared reconstruction attempts; the destination has no automatic access to this chat. A copied packet alone captures no other conversation turns.', conversation_leakage_fraction: null },
     authority: { packet_carriage_only: true, receiver_authority_transferred: false, external_action_authorized: false, live_custody_capability: false, empirical_credit: 0, human_closure_required: true }
   };
   return freeze({ ...body, ref: await portableLoomCoreDigest(body, environment) });
