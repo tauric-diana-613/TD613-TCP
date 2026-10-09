@@ -263,4 +263,24 @@ those evidence classes.
 
 `HISTORICAL_DEVICE_WITNESS != CURRENT_BUILD_DEVICE_CLOSURE`.
 
+## Bounded fifth-jurisdiction runner candidate
+
+The source-bound [Orchestrator contract](docs/research/DOLLHOUSE_ORCHESTRATOR_CONTRACT.md)
+has a bounded successor: `app/engine/dollhouse-bounded-orchestrator.js` consumes the
+existing four-role dossier and a separately attributed [Temporal Custodian](TEMPORAL_CUSTODIAN.md).
+Strict ledger validity, a retained baseline, explicit phase completeness and
+matching case/episode/source identities precede any review recommendation.
+Temporal vetoes and original role disagreements remain visible.
+
+```bash
+npm run test:dollhouse:bounded
+npm run dollhouse:bounded -- /absolute/case.json
+```
+
+This is deterministic local adjudication of caller-declared findings. It performs
+no role-model scheduling, provider calls, artifact authentication, product custody
+mutation or promotion of the installed registry. PRESENT_TO_HUMAN and local PASS
+remain bounded review states with all consequential authority closed. The prior
+candidate and historical research records retain their original coordinates.
+
 Sealed ⟐

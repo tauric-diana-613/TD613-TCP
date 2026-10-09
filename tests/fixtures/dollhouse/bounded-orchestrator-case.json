@@ -1,0 +1,162 @@
+{
+  "schema": "td613.dollhouse.bounded-orchestration/v0.1",
+  "case_id": "fictional-bounded-case",
+  "source_revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "episode_id": "fictional-episode",
+  "findings": [
+    {
+      "id": "fictional-pedagogue",
+      "agent": "PEDAGOGUE",
+      "claim_key": "fictional-route-completion",
+      "verdict": "SUPPORTED",
+      "evidence_class": "DECLARATION",
+      "observation_scope": {
+        "source": "Fictional fixture",
+        "instrument": "Local deterministic contract test",
+        "condition": "No provider, custody mutation or release",
+        "temporal_window": "One fictional traversal"
+      },
+      "reference": {
+        "artifact": "fictional-declaration-with-no-authenticated-origin",
+        "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      },
+      "limitations": [
+        "All observations and digest references are fictional declarations."
+      ]
+    },
+    {
+      "id": "fictional-aperture",
+      "agent": "APERTURE",
+      "claim_key": "fictional-route-completion",
+      "verdict": "SUPPORTED",
+      "evidence_class": "DECLARATION",
+      "observation_scope": {
+        "source": "Fictional fixture",
+        "instrument": "Local deterministic contract test",
+        "condition": "No provider, custody mutation or release",
+        "temporal_window": "One fictional traversal"
+      },
+      "reference": {
+        "artifact": "fictional-declaration-with-no-authenticated-origin",
+        "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      },
+      "limitations": [
+        "All observations and digest references are fictional declarations."
+      ]
+    },
+    {
+      "id": "fictional-atlas",
+      "agent": "ATLAS",
+      "claim_key": "fictional-route-completion",
+      "verdict": "SUPPORTED",
+      "evidence_class": "DECLARATION",
+      "observation_scope": {
+        "source": "Fictional fixture",
+        "instrument": "Local deterministic contract test",
+        "condition": "No provider, custody mutation or release",
+        "temporal_window": "One fictional traversal"
+      },
+      "reference": {
+        "artifact": "fictional-declaration-with-no-authenticated-origin",
+        "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      },
+      "limitations": [
+        "All observations and digest references are fictional declarations."
+      ]
+    },
+    {
+      "id": "fictional-fadt",
+      "agent": "FADT",
+      "claim_key": "fictional-route-completion",
+      "verdict": "SUPPORTED",
+      "evidence_class": "DECLARATION",
+      "observation_scope": {
+        "source": "Fictional fixture",
+        "instrument": "Local deterministic contract test",
+        "condition": "No provider, custody mutation or release",
+        "temporal_window": "One fictional traversal"
+      },
+      "reference": {
+        "artifact": "fictional-declaration-with-no-authenticated-origin",
+        "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      },
+      "limitations": [
+        "All observations and digest references are fictional declarations."
+      ]
+    }
+  ],
+  "temporal": {
+    "schema": "td613.dollhouse.temporal-audit/v0.2",
+    "case_id": "fictional-bounded-case",
+    "source_revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "coordinate": "fictional-route-completion",
+    "episode_id": "fictional-episode",
+    "ledger_entries": [
+      {
+        "entry_id": "FICTIONAL_1",
+        "t_sequence": "SEQ_01",
+        "timestamp": "2026-10-08T20:00:01Z",
+        "state": "FICTIONAL_DECLARED_STATE",
+        "observation": "Synthetic engineering input; no provider or browser observation.",
+        "registered_event": "FICTIONAL_EVENT_1",
+        "authority": "NONE",
+        "retroactive_rewrite_forbidden": true,
+        "later_reinterpretation_allowed": true
+      },
+      {
+        "entry_id": "FICTIONAL_2",
+        "t_sequence": "SEQ_02",
+        "timestamp": "2026-10-08T20:00:02Z",
+        "state": "FICTIONAL_DECLARED_STATE",
+        "observation": "Synthetic engineering input; no provider or browser observation.",
+        "registered_event": "FICTIONAL_EVENT_2",
+        "authority": "NONE",
+        "retroactive_rewrite_forbidden": true,
+        "later_reinterpretation_allowed": true
+      },
+      {
+        "entry_id": "FICTIONAL_3",
+        "t_sequence": "SEQ_03",
+        "timestamp": "2026-10-08T20:00:03Z",
+        "state": "FICTIONAL_DECLARED_STATE",
+        "observation": "Synthetic engineering input; no provider or browser observation.",
+        "registered_event": "FICTIONAL_EVENT_3",
+        "authority": "NONE",
+        "retroactive_rewrite_forbidden": true,
+        "later_reinterpretation_allowed": true
+      }
+    ],
+    "baseline_entries": [
+      {
+        "entry_id": "FICTIONAL_1",
+        "t_sequence": "SEQ_01",
+        "timestamp": "2026-10-08T20:00:01Z",
+        "state": "FICTIONAL_DECLARED_STATE",
+        "observation": "Synthetic engineering input; no provider or browser observation.",
+        "registered_event": "FICTIONAL_EVENT_1",
+        "authority": "NONE",
+        "retroactive_rewrite_forbidden": true,
+        "later_reinterpretation_allowed": true
+      }
+    ],
+    "required_phases": [
+      "origin",
+      "receiver",
+      "return"
+    ],
+    "phases": {
+      "origin": {
+        "status": "PASS",
+        "entry_id": "FICTIONAL_1"
+      },
+      "receiver": {
+        "status": "PASS",
+        "entry_id": "FICTIONAL_2"
+      },
+      "return": {
+        "status": "PASS",
+        "entry_id": "FICTIONAL_3"
+      }
+    }
+  }
+}

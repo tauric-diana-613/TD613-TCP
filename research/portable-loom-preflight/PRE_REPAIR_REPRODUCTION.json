@@ -1,0 +1,42 @@
+{
+  "schema": "td613.dollhouse.pre-repair-engineering-reproduction/v0.1",
+  "recorded_at": "2026-10-09T00:45:53.375Z",
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "historical_research_rerun": false,
+  "source_revision": "88f128c75cd8efd58db9a77249f293e69d08762e",
+  "source_path": "app/engine/dollhouse-temporal-custodian.js",
+  "source_sha256": "1eabdea8063d0153fb85a89c259938abf956bb506a57385c5a5436bbc915fe4b",
+  "cases": [
+    {
+      "id": "MISSING_ALL_INPUT",
+      "observed": "PASS",
+      "required": "HELD"
+    },
+    {
+      "id": "EMPTY_PHASES",
+      "observed": "PASS",
+      "required": "HELD"
+    },
+    {
+      "id": "EARLY_FAIL_NO_PASS",
+      "observed": "PASS",
+      "required": "HELD"
+    },
+    {
+      "id": "UNKNOWN_DOWNSTREAM",
+      "observed": "PASS",
+      "required": "HELD"
+    },
+    {
+      "id": "UNPARSEABLE_CHRONOLOGY",
+      "observed": true,
+      "required": false
+    },
+    {
+      "id": "DUPLICATE_ENTRY_ID",
+      "observed": true,
+      "required": false
+    }
+  ],
+  "scope": "Pure adapter calls on newly constructed fictional engineering inputs; zero provider/browser/empirical execution."
+}
