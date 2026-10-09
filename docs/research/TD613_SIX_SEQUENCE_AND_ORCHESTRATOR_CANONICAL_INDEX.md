@@ -10,7 +10,9 @@ Git objects outrank prose recollection. Remote commits outrank short SHAs from c
 
 ## A. Dollhouse Orchestrator
 
-Canonical bounded contract: [docs/research/2026-10-04-dollhouse-orchestration-episode-1428-x.md](https://github.com/tauric-diana-613/TD613-TCP/blob/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9/docs/research/2026-10-04-dollhouse-orchestration-episode-1428-x.md) at [b08a7cbf851d326fa5d79aea45d38d93c7bd63c9](https://github.com/tauric-diana-613/TD613-TCP/commit/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9) on `amari/loom-mobile-dollhouse-closure-1430`. Sections VII, XI, XIII and XIX define the decision gate, whole-route veto, closure audit and self-audit; sections VI and VIII–X retain disagreements and bounded comparisons.
+Current explicit contract: [DOLLHOUSE_ORCHESTRATOR_CONTRACT.md](https://github.com/tauric-diana-613/TD613-TCP/blob/6c9687dba075a6edd6a478c7f86f9b2d0f018af7/docs/research/DOLLHOUSE_ORCHESTRATOR_CONTRACT.md) and [CONTRACT.json](https://github.com/tauric-diana-613/TD613-TCP/blob/6c9687dba075a6edd6a478c7f86f9b2d0f018af7/research/dollhouse-orchestrator-contract/CONTRACT.json) at [6c9687dba075a6edd6a478c7f86f9b2d0f018af7](https://github.com/tauric-diana-613/TD613-TCP/commit/6c9687dba075a6edd6a478c7f86f9b2d0f018af7). This dated formalization follows the recovered historical contract. Its exact interfaces and source-defined capability limits govern current review; it carries no retrospective execution credit.
+
+Historical Episode contract: [docs/research/2026-10-04-dollhouse-orchestration-episode-1428-x.md](https://github.com/tauric-diana-613/TD613-TCP/blob/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9/docs/research/2026-10-04-dollhouse-orchestration-episode-1428-x.md) at [b08a7cbf851d326fa5d79aea45d38d93c7bd63c9](https://github.com/tauric-diana-613/TD613-TCP/commit/b08a7cbf851d326fa5d79aea45d38d93c7bd63c9) on `amari/loom-mobile-dollhouse-closure-1430`. Sections VII, XI, XIII and XIX define the decision gate, whole-route veto, closure audit and self-audit; sections VI and VIII–X retain disagreements and bounded comparisons.
 
 This is a composite decision and adjudication contract with executable deterministic components. It is not evidence of a general autonomous multi-provider scheduler. The canonical role question below is an editorial synthesis of those sections, not a fabricated quotation:
 
@@ -20,7 +22,7 @@ This is a composite decision and adjudication contract with executable determini
 |---|---|
 | Inputs | Frozen evidence/source packet; distinct role findings; declared service-journey state; evidence classes; scope and human closure requirements. |
 | Roles | Pedagogue: explanation and consequence. Aperture: evidence/admissibility. Atlas: continuity and structure. FADT: finite erasure/action-support evaluation under its contract. Temporal Custodian: chronological non-retroactivity and whole-route regression veto. |
-| Installed versus established | Episode registry has four installed adapters. Temporal Custodian is the fifth jurisdiction, with its separate bounded candidate ref. Orchestrator is not the fifth doll. |
+| Installed versus established | Episode registry has four registered jurisdictions: Pedagogue and Aperture are INSTALLED; Atlas and FADT are BOUNDED_RESEARCH_CANDIDATE. Temporal Custodian is the fifth jurisdiction, with its separate bounded candidate ref. Orchestrator is not the fifth doll. |
 | Disagreement retention | Preserve original findings, coordinates and evidence references. Keep synthesis distinct; do not resolve missing evidence by consensus or overwrite an unresolved role finding. |
 | Synthesis | Decision gate balances role imperatives against evidence, operational stability, bounded scope and human closure. Auditor finding does not automatically require mutation. |
 | Temporal Custodian | LOCAL_PASS_PLUS_GLOBAL_ROUTE_REGRESSION -> HELD. Later evidence cannot rewrite an earlier observable epistemic state. |
@@ -208,7 +210,7 @@ Research-branch artifacts are not assumed to be in main. Commit != merge; merge 
 - **sequence-3-formal-tournament-closure — UNLOCATED**. Numbered tranche and implementation are located; separate preregistered tournament raw scoring/closure ledger was not located. Searched: 6c21813c commit/tree, LAB_FEEDBACK_FROM_PRODUCT.md, 39-carrier engine, dedicated composition test and design branch ancestry.
 - **sequence-6-global-final-rest2-countersignature — UNLOCATED**. REST 2 recommendation is retained; native deterministic browser PASS exists; a separate global final scientific countersignature is not established. Searched: staging branch through 257848567fdc95c5dabee20b43d8bb17da1deb43, surviving-relations records, architecture freeze, 3A report, 3B native changes, exact-head CI run and browser job.
 - **candidate-x-direct-remote-object — DIRECT_GITHUB_OBJECT_UNLOCATED; BUNDLE_GIT_OBJECT_RECOVERED**. Exact object and parent/tree recovered from retained remote Git bundle; no invented SHA and no direct GitHub commit link asserted. Searched: GitHub git/commits/41112992ffd82dd1f06552b3c5881dc43de3cb20 returned 404; remote Episode B bundle at 582a1f04 was fetched and verified.
-- **registry-versus-fifth-role — PRESERVED_REF_DIFFERENCE**. Four installed roles at the Episode contract coordinate; Temporal Custodian is fifth jurisdiction with separate bounded first-class adapter. Orchestrator is not fifth doll. Searched: b08a7cb registry/DOLLHOUSE.md and Temporal Custodian candidate ref 88f128c.
+- **registry-versus-fifth-role — PRESERVED_REF_DIFFERENCE**. Four registered jurisdictions retain their source-defined installation/candidate statuses. Temporal Custodian is the separate fifth jurisdiction; the Orchestrator remains distinct. Searched: b08a7cb registry/DOLLHOUSE.md and Temporal Custodian candidate ref 88f128c.
 - **model-a-collision — RESOLVED_NAMESPACE_SEPARATION**. Episode 1428-X Model A means setup acknowledgment plus first substantive continuation. REST 1 comparison Model A means monolithic model call. These are different namespaces. Searched: Episode 1428-X II-A and Sequence 6 REST 1 VII.
 
 UNLOCATED != NEVER_EXISTED. These are bounded search results, not claims that the repository has never contained another artifact. A connector rejection for an encoded branch URL was resolved by raw git/ref lookup and was not treated as negative evidence.
@@ -224,3 +226,23 @@ V != C != P != L. Internal integrity != external origin. Cryptographic integrity
 `ORCHESTRATOR_AND_SIX_SEQUENCE_CONTRACT_RECOVERY = ADMISSIBLE_FOR_CONTINUATION`
 
 Both flags concern recovered addresses and contracts, including corrective authority for invalidated evidence. They do not certify orchestration superiority, general autonomous scheduling, full empirical closure of every surface or future execution permission. The contract-location HOLD can lift. The battery and assay remain paused; stop at this archival return.
+
+## I. Operator-directed contract-gap repair
+
+Published record commit: [6c9687dba075a6edd6a478c7f86f9b2d0f018af7](https://github.com/tauric-diana-613/TD613-TCP/commit/6c9687dba075a6edd6a478c7f86f9b2d0f018af7). The original research heads, source files and failed/corrective evidence remain unchanged.
+
+| Gap | Current repair address | Remaining evidentiary boundary |
+|---|---|---|
+| Explicit Orchestrator interface | [Current contract](https://github.com/tauric-diana-613/TD613-TCP/blob/6c9687dba075a6edd6a478c7f86f9b2d0f018af7/docs/research/DOLLHOUSE_ORCHESTRATOR_CONTRACT.md) · [Machine contract](https://github.com/tauric-diana-613/TD613-TCP/blob/6c9687dba075a6edd6a478c7f86f9b2d0f018af7/research/dollhouse-orchestrator-contract/CONTRACT.json) | Existing deterministic clerk and report auditor; no general autonomous scheduler. |
+| Sequence 3 disposition | [Archival adjudication](https://github.com/tauric-diana-613/TD613-TCP/blob/6c9687dba075a6edd6a478c7f86f9b2d0f018af7/research/six-sequence-contract-reconciliation/SEQUENCE_3_ARCHIVAL_ADJUDICATION.json) | Original preregistration, raw tournament scores and original formal closure remain UNLOCATED. |
+| Sequence 6 REST 2 review | [Qualified archival countersignature](https://github.com/tauric-diana-613/TD613-TCP/blob/6c9687dba075a6edd6a478c7f86f9b2d0f018af7/research/six-sequence-contract-reconciliation/SEQUENCE_6_REST_2_ARCHIVAL_COUNTERSIGNATURE.json) | Retained native-route deterministic browser PASS; original global closure and new provider/physical/human witnesses remain unestablished. |
+
+The interface review corrects registry wording: Pedagogue and Aperture have INSTALLED status; Atlas and FADT remain BOUNDED_RESEARCH_CANDIDATE. Four roles are registered. The fifth established Temporal Custodian jurisdiction remains on its separate candidate ref and is rejected as a finding agent by the current clerk.
+
+The Temporal Custodian candidate also has source-inferred missing-input, phase-completeness and chronology-validation gaps. The new contract records those limitations and preserves a human-reviewed whole-route veto. This documentation tranche supplies no automatic integration or runtime patch.
+
+The closure auditor evaluates supplied report fields. Its raw PROVEN_LIVE_PRODUCTION labels require independent episode evidence before admission. It acquires no artifact bytes, signatures or provider-origin authentication.
+
+These are dated later records. They provide current review addresses while preserving temporal non-retroactivity. No original experiment, preregistration, raw output, human observation or final historical closure is manufactured.
+
+The battery and assay remain paused. Product code, main, deployment and Issue #405 retain their prior state.

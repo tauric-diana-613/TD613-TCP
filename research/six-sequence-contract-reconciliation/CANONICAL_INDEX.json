@@ -1,12 +1,13 @@
 {
-  "schema": "td613.six-sequence-and-orchestrator-canonical-index/v1.0",
+  "schema": "td613.six-sequence-and-orchestrator-canonical-index/v1.1",
   "reconciled_on": "2026-10-08",
   "repository": "tauric-diana-613/TD613-TCP",
   "scope": "Archival contract-address recovery. No research rerun, receiver execution, product patch, merge or deployment.",
   "reconciliation": {
     "branch": "research/six-sequence-contract-reconciliation-20261008",
     "base_sha": "8d57bdfcd69cff9c5760cd001549197f3180c00a",
-    "self_commit_sha": "Resolve the Git commit containing this file; no self-referential invented SHA."
+    "self_commit_sha": "Resolve the Git commit containing this file; no self-referential invented SHA.",
+    "previous_index_commit": "878d878d1daf61fc2f93b50c5cd21876ecf9cc21"
   },
   "canonicality_laws": [
     "GIT_OBJECTS > PROSE_RECOLLECTION",
@@ -20,13 +21,13 @@
     "UNLOCATED != NEVER_EXISTED"
   ],
   "orchestrator": {
-    "canonical_contract_artifact": "orchestrator-contract",
-    "canonical_commit_sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
-    "branch_ref": "amari/loom-mobile-dollhouse-closure-1430",
-    "canonical_contract_kind": "COMPOSITE_BOUNDED_ORCHESTRATION_AND_ADJUDICATION_CONTRACT",
+    "canonical_contract_artifact": "orchestrator-current-contract",
+    "canonical_commit_sha": "6c9687dba075a6edd6a478c7f86f9b2d0f018af7",
+    "branch_ref": "research/six-sequence-contract-reconciliation-20261008",
+    "canonical_contract_kind": "CURRENT_SOURCE_BOUND_BOUNDED_CONTRACT_WITH_HISTORICAL_EPISODE_LINEAGE",
     "role_question": {
-      "kind": "EDITORIAL_SYNTHESIS_OF_SECTIONS_VII_XI_XIII_XIX",
-      "text": "Which role findings are admissible at their declared evidence coordinates, which disagreements must survive, and what bounded recommendation can be made without whole-route regression or exceeding human authority?"
+      "kind": "CURRENT_FORMALIZED_CONTRACT",
+      "text": "What bounded recommendation survives the independently scoped findings, preserved disagreements, temporal veto and evidence ceiling under the operator-defined case?"
     },
     "inputs": [
       "Frozen source/evidence packet",
@@ -42,12 +43,6 @@
       "Atlas",
       "FADT",
       "Temporal Custodian"
-    ],
-    "installed_registry_at_canonical_commit": [
-      "Pedagogue",
-      "Aperture",
-      "Atlas",
-      "FADT"
     ],
     "temporal_custodian_coordinate": {
       "contract_artifact": "temporal-role",
@@ -131,7 +126,52 @@
       "layered_contract_closure": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
       "merged_coordinate": "5b4b34278c6100d3c21ced35984c046da157e097",
       "candidate_x_successor": "41112992ffd82dd1f06552b3c5881dc43de3cb20",
-      "comparative_trial_contract": "4871e0c53749985facbf62749e1161d13a420e0e"
+      "comparative_trial_contract": "4871e0c53749985facbf62749e1161d13a420e0e",
+      "current_formalization": "6c9687dba075a6edd6a478c7f86f9b2d0f018af7"
+    },
+    "historical_episode_contract_artifact": "orchestrator-contract",
+    "historical_episode_contract_sha": "b08a7cbf851d326fa5d79aea45d38d93c7bd63c9",
+    "historical_episode_branch_ref": "amari/loom-mobile-dollhouse-closure-1430",
+    "current_machine_contract_artifact": "orchestrator-current-machine-contract",
+    "registered_roles_at_historical_contract_commit": [
+      "Pedagogue",
+      "Aperture",
+      "Atlas",
+      "FADT"
+    ],
+    "current_implementation_revision": "8d57bdfcd69cff9c5760cd001549197f3180c00a",
+    "registry_statuses_at_implementation_revision": {
+      "PEDAGOGUE": "INSTALLED",
+      "APERTURE": "INSTALLED",
+      "ATLAS": "BOUNDED_RESEARCH_CANDIDATE",
+      "FADT": "BOUNDED_RESEARCH_CANDIDATE",
+      "TEMPORAL_CUSTODIAN": "SEPARATE_REF_BOUNDED_RESEARCH_CANDIDATE"
+    },
+    "temporal_custodian_input_class": "REQUIRES_SEPARATE_SIDECAR; REJECTED_BY_CURRENT_FOUR_ROLE_CLERK",
+    "temporal_custodian_enforcement": "NORMATIVE_HUMAN_REVIEW_VETO; NO_AUTOMATIC_SIDECAR_CONSUMER_ESTABLISHED",
+    "temporal_custodian_candidate_limitations": [
+      {
+        "id": "TC_MISSING_INPUT_PASS",
+        "class": "SOURCE_INFERRED_FAILURE_MODE",
+        "detail": "runTemporalCustodianAudit initializes PASS when both ledger_entries and phases are absent. No fresh execution performed here."
+      },
+      {
+        "id": "TC_PHASE_COMPLETENESS_GAP",
+        "class": "SOURCE_INFERRED_FAILURE_MODE",
+        "detail": "Empty phases and an early FAIL without prior PASS can escape the candidate whole-route regression predicate; source inspection alone establishes this decision-path concern."
+      },
+      {
+        "id": "TC_TIMESTAMP_VALIDATION_GAP",
+        "class": "SOURCE_INFERRED_FAILURE_MODE",
+        "detail": "Unparseable timestamps or sequence strings are skipped by candidate monotonicity comparisons. Strict input validity must precede reliance on its output."
+      }
+    ],
+    "closure_auditor_boundary": {
+      "input": "closureReport plus optional episodeObservatory/disagreementLedger and source metrics.",
+      "checks": "Ten episode-specific contradiction/overclaim predicates, including network response, predecessor declaration, return workspace, provider classification, timeout, observer mutation and content ancestry.",
+      "authentication": "No artifact byte acquisition, signature verification, author verification or provider-origin authentication is performed by this function.",
+      "label_handling": "PROVEN_LIVE_PRODUCTION in raw layered output is a derived label from supplied report fields. Admissibility requires the bound retained episode evidence; caller booleans alone cannot establish a live witness.",
+      "scope": "Episode-specific Model A report audit. It cannot serve as a universal Sequence 6 closure engine."
     }
   },
   "six_top_level_sequences": [
@@ -211,10 +251,12 @@
         "s3-design-contract",
         "s3-composition-tests"
       ],
-      "audit_correction": [],
+      "audit_correction": [
+        "s3-current-archival-adjudication"
+      ],
       "final_result": "Committed product/design tranche: 39 carriers, 6 near / 13 mid / 20 far, one clock, route-state semantics, reduced-motion and responsive contract.",
       "claim_ceiling": "Source implementation and test contract. Feedback about comprehension is not a preserved scored human-comprehension assay.",
-      "closure_status": "IMPLEMENTATION_AND_FEEDBACK_RETAINED; SEPARATE_FORMAL_TOURNAMENT_CLOSURE_UNLOCATED",
+      "closure_status": "IMPLEMENTATION_AND_FEEDBACK_RETAINED; CURRENT_ARCHIVAL_ADJUDICATION_LOCATED; ORIGINAL_FORMAL_TOURNAMENT_CLOSURE_UNLOCATED",
       "successor": "4",
       "numbering_evidence": "Full remote Git commit message explicitly says Sequence 3: Product Demo Cathedral - Flow-Core 39-carrier presentation tournament.",
       "branch_ref": "design/loom-first-crossing-cathedral-20261005",
@@ -222,7 +264,8 @@
       "git_parent_shas": [
         "539c93021b6376f36ab2b3a7b65c8ae978dc766e"
       ],
-      "predecessor": "2"
+      "predecessor": "2",
+      "current_adjudication_sha": "6c9687dba075a6edd6a478c7f86f9b2d0f018af7"
     },
     {
       "sequence": "4",
@@ -298,11 +341,12 @@
       ],
       "audit_correction": [
         "s6-custody-repair",
-        "s6-browser-manifest"
+        "s6-browser-manifest",
+        "s6-current-archival-countersignature"
       ],
       "final_result": "REST 1 architecture frozen. Custody repairs and Tranche 3B native route located. Retained exact-head CI reports PASS_NATIVE_CUTOVER_DETERMINISTIC_RECEIVER.",
       "claim_ceiling": "Native browser UI with deterministic simulated receiver is BROWSER_WITNESS plus SIMULATED_RECEIVER_TEST, not ACTUAL_RECEIVER_TEST, physical-device, measured comprehension or independent external witness.",
-      "closure_status": "BOUNDED_NATIVE_CUTOVER_WITNESSED; REST_2_RECOMMENDATION_RETAINED; SEPARATE_GLOBAL_FINAL_COUNTERSIGNATURE_UNLOCATED",
+      "closure_status": "BOUNDED_NATIVE_CUTOVER_WITNESSED; CURRENT_BOUNDED_ARCHIVAL_COUNTERSIGNATURE_LOCATED; ORIGINAL_GLOBAL_SCIENTIFIC_CLOSURE_UNLOCATED",
       "successor": "Later product/release reconciliation is separate from the scientific execution contract.",
       "scientific_predecessor": "5.5",
       "git_parent_is_not_scientific_predecessor": true,
@@ -311,7 +355,8 @@
       "git_parent_shas": [
         "2775ad20515c83c83f8df6689207e6f63342770b"
       ],
-      "predecessor": "5.5"
+      "predecessor": "5.5",
+      "current_bounded_rest2_countersignature_sha": "6c9687dba075a6edd6a478c7f86f9b2d0f018af7"
     }
   ],
   "intermediate_stages": [
@@ -725,6 +770,34 @@
       "superseding_artifact": "This canonical index and eca486ab7d999eb29005576d9caa80dfe8838d35",
       "reason": "Full Git ancestry and dispersed contracts recover the addresses; no new assay was needed.",
       "current_authority": "Contract-location HOLD can lift. Execution suitability and operator assay authorization are separate decisions."
+    },
+    {
+      "artifact": "Index v1.0 four installed adapters wording",
+      "old_claim": "Four installed adapters were implied by the registered role list.",
+      "superseding_artifact": "orchestrator-current-contract + actual registry source",
+      "reason": "Registry distinguishes INSTALLED Pedagogue/Aperture from BOUNDED_RESEARCH_CANDIDATE Atlas/FADT.",
+      "current_authority": "Four registered jurisdictions; per-role status retained exactly. Temporal Custodian stays separately attributed."
+    },
+    {
+      "artifact": "Closure auditor raw PROVEN_LIVE_PRODUCTION labels",
+      "old_claim": "A consistency-auditor output label could be read as independent authentication.",
+      "superseding_artifact": "orchestrator-current-machine-contract",
+      "reason": "Inspected function checks supplied fields and acquires/verifies no underlying bytes, signatures, author or provider origin.",
+      "current_authority": "Declaration-consistency result; actual bound episode evidence is required for admission."
+    },
+    {
+      "artifact": "Unlocated Sequence 3/6 original closure records",
+      "old_claim": "Missing original records prevent every current disposition from having an address.",
+      "superseding_artifact": "s3-current-archival-adjudication + s6-current-archival-countersignature",
+      "reason": "Operator-directed later review supplies dated qualified records without backdating historical evidence.",
+      "current_authority": "Current bounded archival adjudication/countersignature located; missing original empirical closure remains explicit."
+    },
+    {
+      "artifact": "Temporal Custodian candidate PASS without input-class qualification",
+      "old_claim": "Candidate role parity or a PASS could be used to discharge missing-evidence HOLD.",
+      "superseding_artifact": "orchestrator-current-machine-contract",
+      "reason": "Source-inferred missing-input, phase-completeness and chronology-parse gaps; uninstalled sidecar.",
+      "current_authority": "Standalone fail-closed promotion authority HELD; normative veto preserved with human review. No runtime patch in this documentation tranche."
     }
   ],
   "unresolved_ambiguities_and_boundaries": [
@@ -732,19 +805,22 @@
       "id": "general-orchestrator-runtime",
       "status": "UNLOCATED",
       "searched": "DOLLHOUSE.md, registry, case dossier, closure auditor, claim ceilings, invariant tests, Episode 1428-X, fixed-fixture ablation and Sequence 6 REST 1 comparison contract; history terms orchestrator/orchestration/governed clerk/monolithic/dumb concat.",
-      "boundary": "No general autonomous multi-provider scheduler established. Bounded adjudication and deterministic disagreement retention are located."
+      "boundary": "Current explicit source-bound contract is formalized. General autonomous multi-provider scheduling remains UNLOCATED; no new runtime is created by this documentation repair.",
+      "current_contract_sha": "6c9687dba075a6edd6a478c7f86f9b2d0f018af7"
     },
     {
       "id": "sequence-3-formal-tournament-closure",
       "status": "UNLOCATED",
       "searched": "6c21813c commit/tree, LAB_FEEDBACK_FROM_PRODUCT.md, 39-carrier engine, dedicated composition test and design branch ancestry.",
-      "boundary": "Numbered tranche and implementation are located; separate preregistered tournament raw scoring/closure ledger was not located."
+      "boundary": "Current archival adjudication is located. Original preregistration, raw tournament scoring and formal tournament closure remain UNLOCATED; implementation claims retain bounded scope.",
+      "current_archival_adjudication_sha": "6c9687dba075a6edd6a478c7f86f9b2d0f018af7"
     },
     {
       "id": "sequence-6-global-final-rest2-countersignature",
       "status": "UNLOCATED",
       "searched": "staging branch through 257848567fdc95c5dabee20b43d8bb17da1deb43, surviving-relations records, architecture freeze, 3A report, 3B native changes, exact-head CI run and browser job.",
-      "boundary": "REST 2 recommendation is retained; native deterministic browser PASS exists; a separate global final scientific countersignature is not established."
+      "boundary": "Current bounded source/retained-CI countersignature is located. Original global final countersignature remains UNLOCATED; the later record creates no new live-provider, physical, human or external-origin evidence.",
+      "current_bounded_archival_countersignature_sha": "6c9687dba075a6edd6a478c7f86f9b2d0f018af7"
     },
     {
       "id": "candidate-x-direct-remote-object",
@@ -756,13 +832,20 @@
       "id": "registry-versus-fifth-role",
       "status": "PRESERVED_REF_DIFFERENCE",
       "searched": "b08a7cb registry/DOLLHOUSE.md and Temporal Custodian candidate ref 88f128c.",
-      "boundary": "Four installed roles at the Episode contract coordinate; Temporal Custodian is fifth jurisdiction with separate bounded first-class adapter. Orchestrator is not fifth doll."
+      "boundary": "Four registered jurisdictions: Pedagogue/Aperture INSTALLED and Atlas/FADT BOUNDED_RESEARCH_CANDIDATE. Temporal Custodian is the separate fifth jurisdiction; its candidate sidecar is rejected by the current four-role clerk."
     },
     {
       "id": "model-a-collision",
       "status": "RESOLVED_NAMESPACE_SEPARATION",
       "searched": "Episode 1428-X II-A and Sequence 6 REST 1 VII.",
       "boundary": "Episode 1428-X Model A means setup acknowledgment plus first substantive continuation. REST 1 comparison Model A means monolithic model call. These are different namespaces."
+    },
+    {
+      "id": "temporal-custodian-input-validity",
+      "status": "SOURCE_INFERRED_IMPLEMENTATION_HOLD",
+      "searched": "88f128c75cd8efd58db9a77249f293e69d08762e: app/engine/dollhouse-temporal-custodian.js",
+      "boundary": "Missing audit material, incomplete phase sets and invalid chronology values can evade candidate checks. No new counterexample execution performed; standalone fail-closed promotion remains HELD.",
+      "current_contract_sha": "6c9687dba075a6edd6a478c7f86f9b2d0f018af7"
     }
   ],
   "remote_ref_snapshots": {
@@ -1547,6 +1630,17 @@
       "message": "research(assay): append credential and billing provenance amendment to execution receipt schema",
       "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/0469c721fb195a3fd45396446452679eb9776ab7",
       "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_LOCAL_GIT_OBJECT"
+    },
+    "6c9687dba075a6edd6a478c7f86f9b2d0f018af7": {
+      "sha": "6c9687dba075a6edd6a478c7f86f9b2d0f018af7",
+      "tree_sha": "817a66dd6bdd226f8236ab6a23619165a9126890",
+      "parent_shas": [
+        "878d878d1daf61fc2f93b50c5cd21876ecf9cc21"
+      ],
+      "committed_at": "2026-10-09T00:07:40Z",
+      "message": "docs(research): formalize bounded Orchestrator and archival adjudications\n\nBind the existing clerk interfaces and authority ceiling. Record qualified Sequence 3 addressing and Sequence 6 retained native-route evidence without backdating closure or rerunning research.",
+      "immutable_commit_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/6c9687dba075a6edd6a478c7f86f9b2d0f018af7",
+      "remote_resolution": "GITHUB_GIT_COMMIT_GET_MATCHED_CREATED_SOURCE_BOUND_TREE"
     }
   },
   "artifact_catalog": [
@@ -3045,6 +3139,72 @@
       "disposition": "CANONICAL_RETAINED_FAMILY",
       "immutable_tree_url": "https://github.com/tauric-diana-613/TD613-TCP/tree/257848567fdc95c5dabee20b43d8bb17da1deb43/research/sequence-6-surviving-relations",
       "inspection": "GIT_TREE_INVENTORY; key files separately byte-inspected"
+    },
+    {
+      "id": "orchestrator-current-contract",
+      "path": "docs/research/DOLLHOUSE_ORCHESTRATOR_CONTRACT.md",
+      "commit_sha": "6c9687dba075a6edd6a478c7f86f9b2d0f018af7",
+      "branch_ref": "research/six-sequence-contract-reconciliation-20261008",
+      "git_blob_sha": "6d901e0f8fafff382c616b13cc3e541f35952381",
+      "bytes": 7398,
+      "sha256": "3f7dd33241087239c40441ceef80e79a59faf0a90a8bfb3c13139eef69ae3913",
+      "functions": [
+        "CURRENT_CONTRACT_FORMALIZATION"
+      ],
+      "disposition": "CURRENT_FORMALIZATION_OR_LATER_RECONCILIATION",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/6c9687dba075a6edd6a478c7f86f9b2d0f018af7/docs/research/DOLLHOUSE_ORCHESTRATOR_CONTRACT.md",
+      "inspection": "ACTUAL_AUTHORED_BYTES_MATCHED_REMOTE_GIT_BLOB",
+      "temporal_ceiling": "Later record; carries no retrospective execution, preregistration or original-closure credit."
+    },
+    {
+      "id": "orchestrator-current-machine-contract",
+      "path": "research/dollhouse-orchestrator-contract/CONTRACT.json",
+      "commit_sha": "6c9687dba075a6edd6a478c7f86f9b2d0f018af7",
+      "branch_ref": "research/six-sequence-contract-reconciliation-20261008",
+      "git_blob_sha": "9615477389fc56fb734c1e41aa5eaa87f6cf7c63",
+      "bytes": 17663,
+      "sha256": "b0240df9ef8f680006fd9a48133250b6122be1be6e46caac76a0fecdffd428d1",
+      "functions": [
+        "CURRENT_CONTRACT_FORMALIZATION"
+      ],
+      "disposition": "CURRENT_FORMALIZATION_OR_LATER_RECONCILIATION",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/6c9687dba075a6edd6a478c7f86f9b2d0f018af7/research/dollhouse-orchestrator-contract/CONTRACT.json",
+      "inspection": "ACTUAL_AUTHORED_BYTES_MATCHED_REMOTE_GIT_BLOB",
+      "temporal_ceiling": "Later record; carries no retrospective execution, preregistration or original-closure credit."
+    },
+    {
+      "id": "s3-current-archival-adjudication",
+      "path": "research/six-sequence-contract-reconciliation/SEQUENCE_3_ARCHIVAL_ADJUDICATION.json",
+      "commit_sha": "6c9687dba075a6edd6a478c7f86f9b2d0f018af7",
+      "branch_ref": "research/six-sequence-contract-reconciliation-20261008",
+      "git_blob_sha": "5db79dc87f940892bbce277d12bc13a045c2ee62",
+      "bytes": 4167,
+      "sha256": "d6a52e32dbd101b9d60d100d3902c508b7184687cecb1c5ef2fb31f471c3fe6f",
+      "functions": [
+        "LATER_ARCHIVAL_ADJUDICATION",
+        "AUDIT"
+      ],
+      "disposition": "CURRENT_FORMALIZATION_OR_LATER_RECONCILIATION",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/6c9687dba075a6edd6a478c7f86f9b2d0f018af7/research/six-sequence-contract-reconciliation/SEQUENCE_3_ARCHIVAL_ADJUDICATION.json",
+      "inspection": "ACTUAL_AUTHORED_BYTES_MATCHED_REMOTE_GIT_BLOB",
+      "temporal_ceiling": "Later record; carries no retrospective execution, preregistration or original-closure credit."
+    },
+    {
+      "id": "s6-current-archival-countersignature",
+      "path": "research/six-sequence-contract-reconciliation/SEQUENCE_6_REST_2_ARCHIVAL_COUNTERSIGNATURE.json",
+      "commit_sha": "6c9687dba075a6edd6a478c7f86f9b2d0f018af7",
+      "branch_ref": "research/six-sequence-contract-reconciliation-20261008",
+      "git_blob_sha": "fc89228b7ee1e87947c5b17e10a42b7ff081944e",
+      "bytes": 7763,
+      "sha256": "4c61bbd09df4ea65b60a89c956ac97e76d0874e1e4f48c6fadbb6d5391877e9b",
+      "functions": [
+        "LATER_ARCHIVAL_COUNTERSIGNATURE",
+        "COUNTERSIGNATURE"
+      ],
+      "disposition": "CURRENT_FORMALIZATION_OR_LATER_RECONCILIATION",
+      "immutable_file_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/6c9687dba075a6edd6a478c7f86f9b2d0f018af7/research/six-sequence-contract-reconciliation/SEQUENCE_6_REST_2_ARCHIVAL_COUNTERSIGNATURE.json",
+      "inspection": "ACTUAL_AUTHORED_BYTES_MATCHED_REMOTE_GIT_BLOB",
+      "temporal_ceiling": "Later record; carries no retrospective execution, preregistration or original-closure credit."
     }
   ],
   "retained_execution_receipts": [
@@ -3123,7 +3283,8 @@
     "Actual source-file byte inspection and SHA-256 cataloging",
     "Retained CI run/job log inspection",
     "Remote bundle Git-object recovery",
-    "Documentation-only index validation"
+    "Documentation-only index validation",
+    "Current contract field limits and 21 source-byte bindings inspected; later archival records explicitly classified."
   ],
   "execution_performed_here": {
     "receiver_models": false,
@@ -3144,6 +3305,26 @@
     "SIX_SEQUENCE_CANONICAL_EXECUTION_INDEX_COMPLETE": true,
     "status": "ORCHESTRATOR_AND_SIX_SEQUENCE_CONTRACT_RECOVERY = ADMISSIBLE_FOR_CONTINUATION",
     "hold_lift_scope": "Contract-location HOLD only. Future execution authority, receiver suitability and any missing empirical witnesses remain separate.",
-    "stop": "Do not begin a battery or assay from this archival receipt."
+    "stop": "Do not begin a battery or assay from this archival receipt.",
+    "current_contract_gap_repair": "CURRENT_EXPLICIT_CONTRACT_AND_BOUNDED_ARCHIVAL_REVIEW_ADDRESSES_PUBLISHED",
+    "runtime_suitability": "FOUR_ROLE_CLERK_BOUNDED; TEMPORAL_INTEGRATION_AND_GENERAL_SCHEDULER_HELD"
+  },
+  "updated_at": "2026-10-09T00:06:32.219342+00:00",
+  "contract_gap_repair": {
+    "record_commit_sha": "6c9687dba075a6edd6a478c7f86f9b2d0f018af7",
+    "record_tree_sha": "817a66dd6bdd226f8236ab6a23619165a9126890",
+    "branch_ref": "research/six-sequence-contract-reconciliation-20261008",
+    "operator_local_date": "2026-10-08",
+    "record_function": "CURRENT_CONTRACT_AND_LATER_ARCHIVAL_ADJUDICATION",
+    "original_historical_evidence_unchanged": true,
+    "research_rerun": false,
+    "runtime_code_changed": false,
+    "files": [
+      "docs/research/DOLLHOUSE_ORCHESTRATOR_CONTRACT.md",
+      "research/dollhouse-orchestrator-contract/CONTRACT.json",
+      "research/six-sequence-contract-reconciliation/SEQUENCE_3_ARCHIVAL_ADJUDICATION.json",
+      "research/six-sequence-contract-reconciliation/SEQUENCE_6_REST_2_ARCHIVAL_COUNTERSIGNATURE.json"
+    ],
+    "scope": "Repair missing explicit interfaces and current review addresses; preserve original missing evidence and implementation blockers."
   }
 }
