@@ -1,0 +1,37 @@
+{
+  "schema": "td613.loom.interactive-activation-authorization/v0.1",
+  "operator": "Tawanna",
+  "operator_message": "proceed \ud834\udf0b",
+  "submitted_at": "2026-10-09T03:17:47-04:00",
+  "authorization_basis": "Direct reply to governed activation and a recommended USD 10 cap for the 54-call first-receiver Gemini run.",
+  "artifact_md_sha256": "2d9c23bb6ad26430bcf4fd2a52e9aa5e876a1546265a00087cdb7e7e4f1c1872",
+  "artifact_zip_sha256": "974f59722b609a137985c40201bbc29f0c1dd55a31f847399f2fe0ab74fce9bf",
+  "reviewed_transport_source": "600580858627609608ebf725cf0ddb9d98945809",
+  "activation_base_main": "8d57bdfcd69cff9c5760cd001549197f3180c00a",
+  "authorized_trial_family": "FIRST_CONFIGURED_RECEIVER",
+  "model": "gemini-3.8-flash",
+  "maximum_generation_calls": 54,
+  "maximum_gemini_token_charges_usd": 10,
+  "pricing": {
+    "input_usd_per_million": 0.75,
+    "output_including_thinking_usd_per_million": 3.75,
+    "source": "https://ai.google.dev/gemini-api/docs/pricing",
+    "verified_at": "2026-10-09T07:32:43.725309+00:00",
+    "rate_period_end": "2026-12-31",
+    "scope": "Standard Gemini token charges; taxes and unrelated platform charges are excluded.",
+    "verification_scope": "Official Gemini Developer API pricing page retrieved during this activation turn; standard Gemini 3.8 Flash rates."
+  },
+  "execution_authority": "Active operator-directed execution; exact deployment, policy and runtime enrollment must be bound before calls.",
+  "release_authority": "Necessary governed activation only, exact-head validation before merge, one Issue 405 gesture for verified current-main; no direct Vercel deployment or auto-deploy bypass.",
+  "exclusions": [
+    "180-call comparison",
+    "second provider",
+    "historical assay reruns",
+    "detached agents",
+    "ChatGPT account binding",
+    "custody admission",
+    "scientific promotion"
+  ],
+  "financial_expenditure_established_by_this_record": false,
+  "authority_class": "INTERACTIVE_OPERATOR_DIRECT"
+}

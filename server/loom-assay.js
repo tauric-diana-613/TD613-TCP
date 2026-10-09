@@ -1,0 +1,98 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { timingSafeEqual } from 'node:crypto';
+import { ASSAY_RESPONSE_SCHEMA, sha256, requireThat, buildAssayProviderWire, inspectAssayResponse } from './loom-assay-contract.js';
+import { createAssayBudgetClient } from './loom-assay-budget-client.js';
+
+const estate = 'research/portable-loom-server-transport-20261009';
+function send(res, status, body) {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.statusCode = status;
+  res.end(JSON.stringify({ schema: ASSAY_RESPONSE_SCHEMA, ...body }));
+}
+function authorization(req, env) {
+  const header = req.headers?.authorization;
+  const digest = env.TD613_LOOM_ASSAY_ACCESS_SHA256;
+  requireThat(typeof digest === 'string' && /^[a-f0-9]{64}$/.test(digest), 'ASSAY_DISABLED');
+  requireThat(typeof header === 'string' && /^Bearer [a-zA-Z0-9_-]{32,256}$/.test(header), 'ASSAY_UNAUTHORIZED');
+  const token = header.slice(7), observed = sha256(token);
+  requireThat(timingSafeEqual(Buffer.from(observed), Buffer.from(digest)), 'ASSAY_UNAUTHORIZED');
+  return { token, credential_sha256: observed };
+}
+export function createLoomAssayHandler({ environment = process.env, fetchImpl = fetch, budget = createAssayBudgetClient({ environment }),
+  manifest, artifactText, fixture = false } = {}) {
+  fixture = fixture || fetchImpl !== globalThis.fetch;
+  return async (req, res) => {
+    if (req.method !== 'POST') return send(res, 405, { status: 'HELD', error: 'ASSAY_POST_REQUIRED' });
+    let auth, request, policy, wire, reservation;
+    try {
+      auth = authorization(req, environment);
+      requireThat(typeof environment.GEMINI_API_KEY === 'string' && environment.GEMINI_API_KEY.length > 0, 'ASSAY_PROVIDER_UNCONFIGURED');
+      const raw = typeof req.body === 'string' || Buffer.isBuffer(req.body) ? Buffer.from(req.body)
+        : Buffer.from(JSON.stringify(req.body));
+      requireThat(raw.length <= 2000000, 'ASSAY_REQUEST_BYTE_LIMIT');
+      requireThat(!raw.includes(Buffer.from(environment.GEMINI_API_KEY)) && !raw.includes(Buffer.from(auth.token)), 'ASSAY_PROTECTED_CREDENTIAL_IN_PAYLOAD');
+      request = JSON.parse(raw.toString('utf8'));
+      requireThat(/^[a-f0-9]{40}$/.test(environment.VERCEL_GIT_COMMIT_SHA || '')
+        && request.protocol_commit === environment.VERCEL_GIT_COMMIT_SHA, 'ASSAY_DEPLOYED_SOURCE_MISMATCH');
+      ({ policy } = await budget('inspect', { run_id: request.run_id, credential_sha256: auth.credential_sha256 }));
+      const m = manifest ?? JSON.parse(readFileSync(resolve(estate, 'TRIAL_MANIFEST.json')));
+      const artifact = artifactText ?? readFileSync(resolve(m.artifact_path), 'utf8');
+      wire = buildAssayProviderWire(request, policy, m, artifact);
+      reservation = await budget('reserve', { run_id: request.run_id, credential_sha256: auth.credential_sha256,
+        protocol_commit: request.protocol_commit, artifact_sha256: request.artifact_sha256, trial: request.trial,
+        request_sha256: wire.request_sha256, output_limit: wire.output_limit, prior_assistant_sha256: wire.prior_assistant_sha256 });
+      requireThat(reservation.durable_reservation === true && reservation.request_sha256 === wire.request_sha256
+        && reservation.call_key === `${request.trial.trial_id}:${request.trial.role}:${request.trial.turn_index}`
+        && reservation.reserved_cost_nanos === String(wire.reserved_cost_nanos), 'ASSAY_RESERVATION_RECEIPT_MISMATCH');
+    } catch (error) {
+      const code = /^ASSAY_[A-Z_]+$/.test(error.message) ? error.message : 'ASSAY_PREFLIGHT_HELD';
+      return send(res, code === 'ASSAY_UNAUTHORIZED' ? 401 : code === 'ASSAY_DISABLED' ? 503 : 409,
+        { status: 'HELD', error: code, provider_requests: 0 });
+    }
+    const controller = new AbortController(), timer = setTimeout(() => controller.abort(), policy.binding.limits.timeout_ms);
+    const chunks = []; let response, returned = null, error = null, responseBytes = 0, attempted = false, bodyComplete = false;
+    const startedAt = new Date().toISOString();
+    try {
+      attempted = true;
+      response = await fetchImpl(wire.url, { method: 'POST', redirect: 'error', signal: controller.signal,
+        headers: { 'content-type': 'application/json', 'x-goog-api-key': environment.GEMINI_API_KEY }, body: wire.body });
+      requireThat(response.body, 'ASSAY_MISSING_PROVIDER_BODY');
+      for await (const chunk of response.body) {
+        const data = Buffer.from(chunk);
+        const available = Math.max(0, policy.binding.limits.max_response_bytes - responseBytes);
+        chunks.push(data.subarray(0, available)); responseBytes += data.length;
+        if (responseBytes > policy.binding.limits.max_response_bytes) { controller.abort(); throw new Error('ASSAY_RESPONSE_BYTE_LIMIT'); }
+      }
+      bodyComplete = true;
+      requireThat(response.ok, 'ASSAY_PROVIDER_HTTP_FAILURE');
+      returned = inspectAssayResponse(Buffer.concat(chunks), policy, wire.output_limit);
+    } catch (e) { error = /^ASSAY_[A-Z_]+$/.test(e.message) ? e.message : 'ASSAY_PROVIDER_TRANSPORT_HELD'; }
+    finally { clearTimeout(timer); }
+    const rawResponse = Buffer.concat(chunks);
+    const credentialEcho = [environment.GEMINI_API_KEY, auth.token, environment.VERCEL_OIDC_TOKEN].filter(Boolean)
+      .some(secret => rawResponse.includes(Buffer.from(secret)));
+    if (credentialEcho) { error = 'ASSAY_PROTECTED_CREDENTIAL_ECHO'; returned = null; }
+    const status = error ? 'HELD_EVIDENCE_GAP' : 'CAPTURED_NOT_ADMITTED';
+    let completion;
+    try {
+      completion = await budget('complete', { run_id: request.run_id, credential_sha256: auth.credential_sha256,
+        call_key: reservation.call_key, request_sha256: wire.request_sha256, response_sha256: sha256(rawResponse),
+        answer_sha256: returned?.answer_sha256 ?? null, status });
+      requireThat(completion.retained === true && completion.call_key === reservation.call_key && completion.status === status, 'ASSAY_COMPLETION_RECEIPT_MISMATCH');
+    } catch { error = 'ASSAY_COMPLETION_UNCONFIRMED'; }
+    return send(res, error ? 409 : 200, { status: error ? 'HELD_EVIDENCE_GAP' : status, error,
+      evidence_class: fixture ? 'LOCAL_STRUCTURAL_TEST' : 'ACTUAL_RECEIVER_TEST',
+      origin_scope: fixture ? 'MOCK_HTTP_FIXTURE_ONLY' : 'SERVER_OBSERVED_HTTPS_RESPONSE; client still requires retained transport bytes',
+      source_commit: environment.VERCEL_GIT_COMMIT_SHA, artifact_sha256: request.artifact_sha256,
+      trial: request.trial, provider_requests: attempted ? 1 : 0, retries: 0, started_at: startedAt, ended_at: new Date().toISOString(),
+      provider_request_sha256: wire.request_sha256, provider_response_sha256: sha256(rawResponse),
+      provider_response_base64: credentialEcho ? null : rawResponse.toString('base64'),
+      response_complete: bodyComplete,
+      http_status: response?.status ?? null, returned, reservation, completion: completion ?? null,
+      receipt_authority: 'Byte and budget record; no custody admission or external empirical promotion' });
+  };
+}
+export default createLoomAssayHandler();
