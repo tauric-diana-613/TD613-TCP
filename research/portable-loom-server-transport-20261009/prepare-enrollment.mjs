@@ -10,7 +10,7 @@ try {
   const policy = validateAssayPolicy(JSON.parse(readFileSync(policyFile)));
   const head = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
   requireThat(head === policy.protocol_commit, 'ASSAY_ENROLLMENT_SOURCE_MISMATCH');
-  const { manifest } = loadServerManifest();
+  const { manifest } = loadServerManifest(process.cwd(), policy.run_id);
   requireThat(manifest.artifact_sha256 === policy.artifact_sha256, 'ASSAY_ENROLLMENT_ARTIFACT_MISMATCH');
   const proposal = { status: 'PREPARED_NOT_APPLIED', source_commit: head, policy_sha256: sha256(canonicalJson(policy)),
     sql: 'INSERT INTO td613_assay_runs(run_id,credential_sha256,policy,policy_sha256,status) VALUES ($1,$2,$3,$4,$5)',
