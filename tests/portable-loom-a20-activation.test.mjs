@@ -39,6 +39,18 @@ function req(p,caseId,turnIndex,predecessor='SYNTHETIC_NOT_PROVIDER_OUTPUT') {
   if(turnIndex){m.push({role:'assistant',content:predecessor},{role:'user',content:c.later_user_messages[0]});}
   return {schema:'td613.loom.server-assay-request/v0.1',run_id:p.run_id,protocol_commit:p.protocol_commit,artifact_sha256:p.artifact_sha256,trial:{trial_id:`FIRST_CONFIGURED_RECEIVER-${caseId}-1`,case_id:caseId,role:'RECEIVER',turn_index:turnIndex},messages:m};
 }
+test('Vercel A20 bundle includes the manifest-selected reviewed candidate, and no stale path',()=>{
+  const config=JSON.parse(readFileSync(new URL('../vercel.json', import.meta.url),'utf8'));
+  const included=config.functions['api/khonapolit.js'].includeFiles;
+  const listed=included.slice(1,-1).split(',');
+  const manifestPath='research/portable-loom-a20-activation-20261010/TRIAL_MANIFEST_A20.json';
+  assert(listed.includes(manifestPath),'A20 manifest must be Vercel-carried');
+  assert(listed.includes(manifest.artifact_path),'Vercel must carry artifact at manifest path');
+  assert(!listed.includes('research/portable-loom-a20-activation-20261010/portable-loom-conformance-candidate.md'),'stale path must be absent');
+  for(const p of listed)assert.doesNotThrow(()=>readFileSync(new URL('../'+p,import.meta.url)),'missing Vercel-carried file: '+p);
+  assert.equal(sha256(readFileSync(new URL('../'+manifest.artifact_path,import.meta.url))),manifest.artifact_sha256);
+});
+
 test('reviewed candidate and exact R02/R06 suffix-hashes match A20 manifest',()=>{
   assert.equal(sha256(artifact),'fcb4d3d82f4919d23c13d729144ffb21860e07b292d0f384dd9e63cecda92021');
   assert.equal(sha256(artifact),manifest.artifact_sha256);
