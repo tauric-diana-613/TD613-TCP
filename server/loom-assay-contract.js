@@ -7,7 +7,7 @@ export const ASSAY_RECOVERY_POLICY_SCHEMA = 'td613.loom.server-assay-policy/v0.3
 export const ASSAY_MAX_PROVIDER_TIMEOUT_MS = 240000;
 export const ASSAY_CLIENT_RETURN_MARGIN_MS = 40000;
 const recoveryBase = 'portable-loom-first-receiver-20261009';
-export const ASSAY_RECOVERY_RUN_IDS = Object.freeze(Array.from({ length: 13 }, (_, i) => `${recoveryBase}-a${i + 4}`));
+export const ASSAY_RECOVERY_RUN_IDS = Object.freeze(Array.from({ length: 14 }, (_, i) => `${recoveryBase}-a${i + 4}`));
 export const ASSAY_RECOVERY_PROGRAM = Object.freeze({
   id: recoveryBase,
   run_ids: Object.freeze([recoveryBase, `${recoveryBase}-a2`, `${recoveryBase}-a3`, ...ASSAY_RECOVERY_RUN_IDS]),
@@ -43,6 +43,8 @@ export function validateAssayPolicy(p, at = Date.now()) {
     && Array.isArray(b.response_model_ids) && b.response_model_ids.length > 0
     && b.response_model_ids.every(x => typeof x === 'string' && /^[a-zA-Z0-9._-]{1,100}$/.test(x)), 'ASSAY_MODEL_BINDING');
   const l = b.limits, g = b.generation_parameters, pricing = b.pricing;
+  requireThat(p.run_id !== `${recoveryBase}-a17` || l?.max_calls === 3
+    && l.max_cost_usd <= 0.54216, 'ASSAY_A17_SCOPE_UNBOUND');
   requireThat(!recovery || b.trial_family === 'FIRST_CONFIGURED_RECEIVER' && b.model === 'gemini-3.8-flash'
     && canonicalJson(b.response_model_ids) === canonicalJson(['gemini-3.8-flash'])
     && canonicalJson(g) === canonicalJson({ temperature: null, top_p: null, thinking_level: 'medium' })
@@ -77,6 +79,8 @@ export function validateTrial(t) {
 }
 export function outputLimit(p, t) { return t.role === 'RECEIVER' ? p.receiver_output_tokens : t.role === 'MONOLITH' ? 8192 : 2048; }
 export function requireTrialFamily(p, t) {
+  requireThat(p.run_id !== `${recoveryBase}-a17` || t?.trial_id === 'FIRST_CONFIGURED_RECEIVER-R06-2'
+    && t.case_id === 'R06' && t.role === 'RECEIVER' && [0, 1, 2].includes(t.turn_index), 'ASSAY_A17_TRIAL_UNBOUND');
   requireThat(p.binding.trial_family === (t.role === 'RECEIVER' ? 'FIRST_CONFIGURED_RECEIVER' : 'COMPARISON'), 'ASSAY_TRIAL_FAMILY_UNAUTHORIZED');
 }
 export function reservationNanos(p, limit, inputBound = p.binding.limits.max_input_tokens_per_call) {
@@ -149,4 +153,5 @@ export function inspectAssayResponse(bytes, p, limit, inputBound = p.binding.lim
   return { text, answer_sha256: sha256(text), model: body.modelVersion, usage: u,
     output_tokens_including_thinking: u.totalTokenCount - u.promptTokenCount };
 }
+
 
