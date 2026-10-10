@@ -14,13 +14,55 @@
     button,input,select,textarea{font:inherit;color:inherit}button,a{touch-action:manipulation}button{cursor:pointer}button:disabled{cursor:not-allowed}
     button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
     [hidden]{display:none!important}
-    html[data-loom-boot="loading"] main{visibility:hidden}
+    /* The opaque full-viewport boot veil owns loading concealment. Do not set
+       visibility:hidden on main: WebKit can retain inherited hidden visibility
+       on descendants after the boot state changes, even when main is visible. */
     #loomBootVeil{position:fixed;inset:0;z-index:1000;display:grid;place-content:center;background:#05060a;color:var(--cyan);font:600 12px/1.5 var(--mono);letter-spacing:.14em;text-transform:uppercase}
     html:not([data-loom-boot="loading"]) #loomBootVeil{display:none}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
+    /* A real failed import must never masquerade as an empty tutorial. */
+    #loomBootVeil{background:radial-gradient(ellipse at 50% 37%,#132029 0%,#080e15 49%,#05060a 82%);gap:12px;text-align:center;min-width:100%}
+    #loomBootVeil::before{content:"𝌋";font:500 44px/1 var(--sans);color:#e6d0b2;text-shadow:0 0 28px rgba(142,232,230,.25)}
+    #loomBootVeil::after{content:"YOUR PRIVACY · YOUR CUSTODY";font:500 10px/1.5 var(--mono);letter-spacing:.15em;color:#a4b5bb}
+    .loom-boot-failure{width:min(620px,calc(100% - 36px));margin:clamp(68px,13vh,160px) auto 64px;padding:32px clamp(20px,5vw,44px);border:1px solid rgba(192,206,212,.35);border-block:3px double #d4b993;background:radial-gradient(ellipse at 50% 0,rgba(24,42,49,.94),rgba(6,11,18,.96) 74%);box-shadow:0 24px 70px rgba(0,0,0,.28)}
+    .loom-boot-failure .loom-boot-glyph{font-size:32px;color:#d6bf9f}
+    .loom-boot-failure h1{font-size:clamp(25px,6vw,38px);font-weight:550;letter-spacing:-.05em;line-height:1.15;margin:18px 0}
+    .loom-boot-failure p{color:#c1d0d9;font-size:14px;line-height:1.6;margin:0 0 18px}
+    .loom-boot-failure button{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:12px 25px;border:1px solid #cfb58f;border-radius:0;background:#cfb58f;color:#061017;font-size:14px;font-weight:650}
+    .loom-boot-failure small{display:block;margin-top:18px;font:11px/1.5 var(--mono);color:#9eafba}
   </style>
-  <script>document.documentElement.dataset.loomBoot="loading";setTimeout(()=>{if(document.documentElement.dataset.loomBoot==="loading")document.documentElement.dataset.loomBoot="fallback";},8000);</script>
-  <link rel="stylesheet" href="./holonomy-loom/loom-product-v6.css?v=20261003-consumer-ingress-v1">
+  <script>
+  (() => {
+    const html = document.documentElement;
+    html.dataset.loomBoot = 'loading';
+    // Fail visibly and locally. A missing JavaScript module must not create
+    // fictional events, clear browser state, call a provider, or blank the UI.
+    const fail = code => {
+      if (html.dataset.loomBoot === 'ready') return;
+      const root = document.getElementById('loomAiWorkspace');
+      if (!root) {
+        document.addEventListener('DOMContentLoaded', () => fail(code), { once: true });
+        return;
+      }
+      if (root.querySelector('#loomBootFailure')) return;
+      html.dataset.loomBoot = 'failed';
+      html.dataset.loomBootReason = code;
+      root.innerHTML = '<section class="loom-boot-failure" id="loomBootFailure" role="alert" aria-labelledby="loomBootFailureTitle"><div class="loom-boot-glyph" aria-hidden="true">𝄐</div><h1 id="loomBootFailureTitle">Loom could not finish opening.</h1><p>Your session stayed local. The tutorial could not start on this visit. Try loading the page again; if it persists, share the start code so we can repair it.</p><button type="button" id="loomBootRetry">Reload Loom →</button><small>START CODE: ' + code + '</small></section>';
+      root.querySelector('#loomBootRetry').addEventListener('click', () => {
+        const next = new URL(location.href);
+        next.searchParams.set('td613_loom_boot', String(Date.now()));
+        location.assign(next.href);
+      });
+    };
+    window.td613LoomBootFailure = fail;
+    window.addEventListener('error', event => {
+      if (event.target?.tagName === 'LINK' && event.target.rel === 'stylesheet') fail('CSS_LOAD_FAILED');
+    }, true);
+    window.addEventListener('unhandledrejection', () => fail('STARTUP_REJECTION'));
+    window.setTimeout(() => { if (html.dataset.loomBoot === 'loading') fail('START_TIMEOUT'); }, 12000);
+  })();
+  </script>
+  <link rel="stylesheet" href="./holonomy-loom/loom-product-v6.css?v=20261010-couture-layout-v2">
 </head>
 <body>
 <div id="loomBootVeil" role="status">Opening Loom…</div>
@@ -34,6 +76,13 @@
 <main data-flowcore-pedagogue="holonomy-loom" data-held="false" aria-busy="false" data-aia-route-inference="false" data-authority-cross="false">
   <section id="loomAiWorkspace" aria-label="Loom workspace"><p>Opening Loom…</p></section>
 </main>
-<script type="module" src="./holonomy-loom/ai-workspace.js?v=20261003-consumer-ingress-v1"></script>
+<script type="module">
+  import('./holonomy-loom/ai-workspace.js?v=20261010-loom-boot-v1')
+    .then(() => {
+      if (document.documentElement.dataset.loomBoot !== 'ready')
+        window.td613LoomBootFailure?.('MODULE_WITHOUT_READY');
+    })
+    .catch(() => window.td613LoomBootFailure?.('MODULE_LOAD_FAILED'));
+</script>
 </body>
 </html>

@@ -649,7 +649,11 @@ body:has(#loomAiWorkspace[data-first-crossing="active"]) .loom-topbar a[href*="l
   overflow:visible;
 }
 #loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-copy{
-  position:relative;isolation:isolate;width:min(690px,100%);
+  /* Legacy absolute-layout left:50% survives the later position:relative.
+     With transform:none in the couture grid it shoves this entire heading off
+     the right edge on desktop. Neutralize offsets at this semantic boundary. */
+  position:relative;left:auto;right:auto;top:auto;bottom:auto;
+  isolation:isolate;justify-self:center;width:min(690px,100%);
   padding:8px 26px 14px;pointer-events:none
 }
 #loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-copy::before{

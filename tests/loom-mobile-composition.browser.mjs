@@ -222,6 +222,38 @@ async function bindPage(context, posture, base = served.base, { firstCrossingCom
 try {
   browser = await chromium.launch({ headless: true });
 
+  // Reproduce the operator's exact frozen HTML-shell failure: a stylesheet
+  // loads, but the entry module never mounts the actual tutorial. The user
+  // must get a recoverable styled failure rather than stranded placeholder.
+  {
+    const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'no-preference' });
+    const page = await context.newPage();
+    try {
+      await page.route('**/holonomy-loom/ai-workspace.js?*', route => route.abort());
+      await page.goto(`${served.base}/dome-world/holonomy-loom.html`);
+      await page.waitForFunction(() => document.documentElement.dataset.loomBoot === 'failed', { timeout: 8000 });
+      const state = await page.evaluate(() => {
+        const failure = document.querySelector('#loomBootFailure');
+        const retry = document.querySelector('#loomBootRetry');
+        const bounds = failure?.getBoundingClientRect(), style = failure && getComputedStyle(failure);
+        return {
+          reason: document.documentElement.dataset.loomBootReason,
+          visible: !!bounds?.width && !!bounds?.height && style.display !== 'none',
+          role: failure?.getAttribute('role'),
+          retry: retry?.textContent,
+          main_copy: document.querySelector('#loomAiWorkspace')?.textContent
+        };
+      });
+      record('blocked entry module yields a styled, recoverable startup HOLD',
+        state.reason === 'MODULE_LOAD_FAILED' && state.visible && state.role === 'alert' &&
+        /Reload Loom/.test(state.retry || '') && !/^Opening Loom…$/.test((state.main_copy || '').trim()), state);
+      await screenshot(page, 'boot-blocked-entry-recovery');
+    } catch (error) {
+      record('blocked entry module yields a styled, recoverable startup HOLD', false, { error: error.message });
+    } finally { await context.close(); }
+  }
+
+
   // First-use witness is separate from the returning-operator composition
   // loop. It proves the tutorial gate uses local Loom event grammar, makes no
   // provider request, persists completion, and only then exposes Open Loom.
