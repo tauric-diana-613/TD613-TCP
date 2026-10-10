@@ -76,13 +76,13 @@ test('FADT Defect D1: early custody reservation failure closes mock governor (fa
   assert.equal(mockRes.body.error, 'LOOM_DEMO_CUSTODY_UNAVAILABLE');
 });
 
-test('Pedagogue Defect D2: Tutorial stop button is labeled "Finish tutorial →" to avoid collision with Demo tab', async () => {
+test('Pedagogue Defect D2: Tutorial completion has a distinct Rest action, not the builder Demo tab', async () => {
   const { loomWorkspaceTemplate } = await import('../app/dome-world/holonomy-loom/workspace-template.js');
   const dom = new JSDOM(loomWorkspaceTemplate);
   const stopBtn = dom.window.document.querySelector('#loomFirstCrossingStop');
   assert.ok(stopBtn, '#loomFirstCrossingStop exists in template');
   assert.notEqual(stopBtn.textContent.trim(), 'Finish demo →', 'Tutorial button must not collide with builder Demo tab');
-  assert.match(stopBtn.textContent, /Finish tutorial/i);
+  assert.match(stopBtn.textContent, /Complete the lesson/i);
 });
 
 test('Pedagogue Requirement D3: First Crossing private note is an explanatory non-interactive note (role="note") ensuring privacy cannot be ambiguously toggled into AI request', async () => {
