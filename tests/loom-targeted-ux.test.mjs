@@ -393,6 +393,7 @@ test('selection and readiness publish consequences before naming the Flow-Core r
   assert.deepEqual(h.ui.inspect().runtime.view.event.selected_document_ids, ['brief']);
   assert.equal(h.ui.inspect().runtime.view.event.binding_verified, false);
   assert.equal(h.$('#loomFirstCrossingAction').hidden, true, 'one selection cannot create readiness');
+  await until(() => !h.$('[data-first-crossing-item="source"]').disabled, 'à completes before evidence selection');
   h.$('[data-first-crossing-item="source"]').click();
   assert.equal(h.$('#loomFirstCrossingAction').hidden, true, 'new relation stays unnamed while its async projection compiles');
   await until(() => !h.$('#loomFirstCrossingAction').hidden, 'published gathering consequence');
