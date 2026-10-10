@@ -1,0 +1,20 @@
+{
+  "branch_source_commit": "f70a22ddda870ea4d243298a2ab3975f2c5917ca",
+  "compiler": "esbuild@0.25.11",
+  "deployments_performed": 0,
+  "entry": "index.mjs",
+  "index_bytes": 209285,
+  "index_sha256": "b320f683c0dcbb73cd26659d672d6de6564cfe6e20b32d58b64bb0a4d04620de",
+  "provider_calls": 0,
+  "runtime": "nodejs24",
+  "schema": "td613.a20.neon-function-bundle/v1",
+  "source_parent_main": "ad058966708a98f2310fff3414c89f16b6c42188",
+  "source_sha256": {
+    "neon/functions/loom-assay-budget/index.mjs": "9777097f7273c8d3e1e9338be333c6c423c3793665da4cbc2b28f3303ea527a0",
+    "neon/functions/loom-assay-budget/ledger.mjs": "a025245cd434a49161eed6537a1a3a39676efa6272b6e468fa721346e437ebd3",
+    "neon/functions/loom-assay-budget/vercel-identity.mjs": "ef08699d60b011ca68e87b79a71f5630736561496c7b1d64f3073fd4ce9450bf",
+    "server/loom-assay-contract.js": "2088f61ff20a4487c9bbb98348da474f3a8b5b61d607e78add2648907a944731"
+  },
+  "zip_bytes": 45332,
+  "zip_sha256": "90d9538f80d07e533952d6ca6c89d64817dbc317065b9bc0840f9195c61071f9"
+}
