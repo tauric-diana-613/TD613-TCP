@@ -1,0 +1,58 @@
+{
+  "schema": "td613.loom.a20.step4-execution-preflight-held/v1",
+  "date": "2026-10-10",
+  "run_id": "portable-loom-first-receiver-20261010-a20",
+  "operator_authorization": "STEP4_EXECUTION_AUTHORIZED",
+  "status": "HELD_BEFORE_FREEZE_AND_ENROLLMENT",
+  "reason": "ORIGINAL_RELAY_BEARER_NOT_PRESENT_IN_CURRENT_SESSION",
+  "source": {
+    "approved_packet": "56f93f3d8b7789eb909e436a52091f3174ac5a05",
+    "deployment_commit": "2ea0bebf6f03e6ba58b22434a991b5ac6c4ed070",
+    "main_relock": "ad058966708a98f2310fff3414c89f16b6c42188",
+    "vercel_deployment": "dpl_3Wjh7VB587ri5xqGrYZ12CpGvK4M",
+    "vercel_state": "READY",
+    "candidate_sha256": "fcb4d3d82f4919d23c13d729144ffb21860e07b292d0f384dd9e63cecda92021",
+    "r06_turn0_sha256": "84aaa820bc379234d8ba45ebc9cf1015131e749b9833cb5750a05ef69c0ab0f4",
+    "r02_turn0_sha256": "7302afa1b99699517e132157fd99453f1db9e2112082262fada10e7a2316d7e2"
+  },
+  "neon": {
+    "project_id": "late-glade-40477105",
+    "branch_id": "br-round-union-b5v3ludi",
+    "function": "loomassaybudget",
+    "active_deployment": 9,
+    "active_deployment_status": "completed",
+    "historical_runs": 19,
+    "active_runs": 0,
+    "a20_rows": 0,
+    "historical_reservations": 83,
+    "reserved_cost_nanos": "9474171750",
+    "prospective_program_cap_calls": 88,
+    "prospective_program_cap_cost_nanos": "11000000000"
+  },
+  "planned_order": [
+    "R06-1:t0",
+    "R06-1:t1",
+    "R02-1:t0",
+    "R02-1:t1"
+  ],
+  "model": "gemini-3.8-flash",
+  "max_provider_calls": 4,
+  "per_call_reservation_max_usd": 0.25,
+  "run_reservation_max_usd": 1,
+  "credential_recovery_note": "Original private file path /workspace/scratch/9d69e9b2a01d/recovery-private/assay-relay-access.token belongs to prior workspace and is absent here. Do not print, guess, or replace the original bearer.",
+  "route_observation": "Vercel web fetch connector returned HTTP 403 at protection-bypass authorization layer for both production alias and deployment hostname. This is NOT evidence the assay server returned 403.",
+  "blocking_prerequisites": [
+    "Recover original private bearer capability in an authorized execution workspace",
+    "Use authenticated credential-observation route to establish current production Gemini fingerprint and deployment source",
+    "Validate exact request and cost again against live ledger before policy freeze and enrollment"
+  ],
+  "actions_in_this_step": {
+    "freeze": 0,
+    "enrollment": 0,
+    "reservation": 0,
+    "provider_calls": 0,
+    "captures": 0
+  },
+  "scientific_disposition": "NO_NEW_EMPIRICAL_OBSERVATION / ALL_A20_CALLS_UNATTEMPTED",
+  "nonclaims": "This preflight HOLD is neither a Gemini provider failure nor an empirical behavioral outcome. Source/read-only ledger integrity is independently evidenced."
+}
