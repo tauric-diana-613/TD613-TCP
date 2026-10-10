@@ -910,3 +910,34 @@ body:has(#loomAiWorkspace[data-first-crossing="active"]) .loom-topbar a[href*="l
   .loom-topbar nav{gap:clamp(2px,1.3vw,6px)}
   .loom-topbar .loom-flowcore-panel .loom-flowcore-legend span{font-size:11px}
 }
+
+/* TD613 post-release viewport/cadence correction (human screenshot, 2026-10-10).
+   The top-level Loom introduction is retained; tutorial content belongs inside
+   the first visible viewport when it fits. This does not alter animation time. */
+@media (min-width:761px){
+  #loomAiWorkspace[data-first-crossing="active"] .loom-stage{
+    height:clamp(555px,calc(100dvh - 165px),710px);
+    min-height:0;overflow:hidden;border-bottom:0;padding-bottom:0
+  }
+  #loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing{
+    padding:clamp(30px,4vh,50px) clamp(18px,3vw,34px) clamp(24px,3.5vh,44px)!important;
+    grid-template-rows:max-content minmax(8px,1fr) max-content max-content max-content;
+    row-gap:clamp(8px,1.3vh,14px)
+  }
+  #loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-copy{
+    padding:4px 18px 8px
+  }
+  #loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-answer{
+    min-height:0!important;padding:5px 16px
+  }
+  #loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-actions{
+    min-height:54px
+  }
+  /* A genuine short browser window may need natural scrolling; never crop
+     tutorial gestures merely to maintain a one-screen aesthetic. */
+  @media (max-height:690px){
+    #loomAiWorkspace[data-first-crossing="active"] .loom-stage{
+      height:auto;min-height:560px;overflow:visible
+    }
+  }
+}

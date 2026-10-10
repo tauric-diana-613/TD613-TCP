@@ -51,7 +51,7 @@ test('actual lattice phase changes the same fixed family carrier deformation',()
   const gradient=reference.computeGradientMisfit(150,40,options);
   const shear=Math.max(-1,Math.min(1,(gradient.g_triangular[0]-gradient.g_quasiperiodic[0])*32));
   const expectedDx=1.35*58*(sample.triangular+.35*sample.quasiperiodic+shear*.55);
-  assert.ok(Math.abs(after.dx-expectedDx)<1e-10);
+  assert.ok(Math.abs(after.dx-expectedDx)<.015, 'analytic centered derivative may differ subpixel from rounded intermediate sampler');
 });
 
 test('all eight family projections remain finite across the complete carrier field',()=>{
@@ -78,4 +78,19 @@ test('米 repeats a bounded, reversible figure-eight rather than an orbital drif
     const point=projectFlowcoreMotionFamily('revisit-lemniscate',{...opts,index,seconds:2.3});
     assert.ok(Math.abs(point.dx)<55&&Math.abs(point.dy)<35,'米 must stay bounded within its depth plane');
   }
+});
+
+test('fast motion derivative matches canonical centered finite differences throughout the Loom field',()=>{
+  for(const [x,y] of [[0,0],[17.5,-31],[280,160],[-630,470],[517.25,-284.3]])
+    for(const options of [{},{theta:0,phase:0},{theta:.12,k:.049,kPhi:.021,phase:.7,eps:.4}]){
+      const fast=lattice.computeHeterostratigraphicMotionSample(x,y,options);
+      const canonical=lattice.computeHeterostratigraphicPotential(x,y,options);
+      const gradient=lattice.computeGradientMisfit(x,y,options);
+      assert.equal(fast.triangular,canonical.triangular);
+      assert.equal(fast.quasiperiodic,canonical.quasiperiodic);
+      for(const [key,reference] of [['g_triangular',gradient.g_triangular],['g_quasiperiodic',gradient.g_quasiperiodic]])
+        for(let dim=0;dim<2;dim++)
+          assert.ok(Math.abs(fast[key][dim]-reference[dim])<.000003,
+            `Fast analytic finite difference must preserve Dome-Art ${key} axis ${dim}`);
+    }
 });

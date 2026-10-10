@@ -186,6 +186,43 @@ try {
             error:error.message,page_errors:errors,external_requests:externalRequests});
         } finally { await context.close(); }
       }
+      // Operator screenshot: at a realistic short desktop window the tutorial
+      // must keep both choice cards and the skip gesture above the fold.
+      // This is a viewport/paint witness, not a claim about aesthetic approval.
+      {
+        const context=await browser.newContext({viewport:{width:1536,height:768},reducedMotion:'reduce'});
+        const page=await context.newPage();
+        const errors=[];
+        page.on('pageerror', e=>errors.push(e.message));
+        try{
+          await page.goto(`${base}/dome-world/holonomy-loom.html`,{waitUntil:'domcontentloaded'});
+          await page.waitForFunction(()=>document.documentElement.dataset.loomBoot==='ready',null,{timeout:16000});
+          await page.evaluate(()=>new Promise(done=>requestAnimationFrame(()=>requestAnimationFrame(done))));
+          const box=await page.evaluate(()=>{
+            const rect=selector=>{
+              const element=document.querySelector(selector),r=element.getBoundingClientRect();
+              return {top:r.top,bottom:r.bottom,left:r.left,right:r.right,height:r.height,
+                visible:getComputedStyle(element).visibility==='visible'};
+            };
+            return {width:innerWidth,height:innerHeight,
+              stage:rect('#loomAiWorkspace .loom-stage'),
+              copy:rect('.loom-first-crossing-copy'),
+              cards:rect('#loomFirstCrossingObjects'),
+              skip:rect('#loomFirstCrossingLeave'),
+              rootScrollHeight:document.documentElement.scrollHeight,
+              stageBorder:getComputedStyle(document.querySelector('#loomAiWorkspace .loom-stage')).borderBottomWidth};
+          });
+          const pass=box.copy.top>=52&&box.cards.top>box.copy.bottom&&
+            box.cards.bottom<box.height-12&&box.skip.bottom<box.height-6&&
+            box.cards.left>=0&&box.cards.right<=box.width&&
+            box.stageBorder==='0px'&&errors.length===0;
+          records.push({engine:name,mode:'SHORT_DESKTOP_FIRST_FOLD',status:pass?'PASS':'FAIL',geometry:box,page_errors:errors});
+          if(!pass)failed=true;
+        }catch(error){
+          failed=true;
+          records.push({engine:name,mode:'SHORT_DESKTOP_FIRST_FOLD',status:'FAIL',error:error.message,page_errors:errors});
+        }finally{await context.close();}
+      }
     } catch (error) {
       failed = true;
       records.push({ engine: name, status: 'UNAVAILABLE', error: error.message });

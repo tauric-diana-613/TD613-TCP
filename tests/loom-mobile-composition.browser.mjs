@@ -450,7 +450,10 @@ try {
       });
       record(`${posture.name}: Flow-Core owns the cinematic arrival scene`,
         Math.abs(fieldGeometry.width-stageGeometry.width)<=1&&fieldGeometry.width>=posture.viewport.width*.8&&
-          Math.abs(fieldGeometry.height-stageGeometry.height)<=2&&stageGeometry.height>=Math.min(760,posture.viewport.height-60)&&
+          Math.abs(fieldGeometry.height-stageGeometry.height)<=2&&
+          stageGeometry.height>=(posture.viewport.width>760
+            ? Math.min(680,Math.max(530,posture.viewport.height-190))
+            : Math.min(760,posture.viewport.height-60))&&
           sceneArrival.controls.loomFirstCrossingLeave.visible&&sceneArrival.controls.loomFirstCrossingLeave.fully_in_view,
         { viewport: posture.viewport, field: fieldGeometry, stage: stageGeometry, skip: sceneArrival.controls.loomFirstCrossingLeave });
       await tutorialComposition(page,`${posture.name}-arrival`);
