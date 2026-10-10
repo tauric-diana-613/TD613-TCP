@@ -31,9 +31,9 @@ test('Loom boot binds fresh October 10 assets and contains a catchable module fa
   const doc = new JSDOM(html).window.document;
   const css = doc.querySelector('link[href*="loom-product-v6.css"]');
   const module = [...doc.querySelectorAll('script[type="module"]')].find(node => node.textContent.includes('ai-workspace.js'));
-  assert.match(css.href, /20261010-couture-layout-v2/);
+  assert.match(css.href, /20261010-flowcore-pedagogy-v1/);
   assert.ok(module, 'the entrypoint must be an observable dynamic module import');
-  assert.match(module.textContent, /import\('\.\/holonomy-loom\/ai-workspace\.js\?v=20261010-loom-boot-v1'\)/);
+  assert.match(module.textContent, /import\('\.\/holonomy-loom\/ai-workspace\.js\?v=20261010-flowcore-pedagogy-v1'\)/);
   assert.match(module.textContent, /\.catch\(\(\) => window\.td613LoomBootFailure/);
   assert.equal(doc.querySelectorAll('script[type="module"][src*="20261003"]').length, 0);
 });
