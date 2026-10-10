@@ -15,7 +15,8 @@ export const FLOWCORE_MOTION_FAMILIES = Object.freeze({
   'threnodic-gossamer': Object.freeze({rate:.026,x:31,y:28,roll:9,scale:.065,moire:.36,quasi:.86,torsion:.12,shear:.16,rise:-.14,phase:.71}),
   'phasonic-rise': Object.freeze({rate:.044,x:33,y:48,roll:10,scale:.105,moire:.31,quasi:.92,torsion:.26,shear:.14,rise:1,phase:.83}),
   'gradient-stampede': Object.freeze({rate:.055,x:64,y:34,roll:16,scale:.13,moire:.54,quasi:.38,torsion:.42,shear:.72,rise:.38,phase:.97}),
-  'quiet-recurrence': Object.freeze({rate:.017,x:20,y:15,roll:4,scale:.045,moire:.24,quasi:.7,torsion:.08,shear:.06,rise:.01,phase:.07})
+  'quiet-recurrence': Object.freeze({rate:.017,x:20,y:15,roll:4,scale:.045,moire:.24,quasi:.7,torsion:.08,shear:.06,rise:.01,phase:.07}),
+  'revisit-lemniscate': Object.freeze({rate:.038,x:38,y:23,roll:6,scale:.048,moire:.26,quasi:.69,torsion:.09,shear:.08,rise:0,phase:.11})
 });
 
 const TAU=Math.PI*2,PHI=(1+Math.sqrt(5))/2;
@@ -43,6 +44,19 @@ export function projectFlowcoreMotionFamily(familyId,{index,count=39,seconds=0,p
   const shear=Math.max(-1,Math.min(1,(tx-qx)*32));
   const rise=(quasi+1)/2;
   const depthGain=depth==='flight-near'?1.35:depth==='flight-mid'?.82:.46;
+  if(familyId==='revisit-lemniscate'){
+    // 米 has a return path, not an erratic orbit: each depth plane traces a
+    // bounded figure-eight and revisits its starting offset every full period.
+    // Phase shifts are shallow so 39 carriers read as braided recurrence.
+    const angle=seconds*.78 + phase*.18 + TAU*u*.13;
+    return Object.freeze({
+      dx:depthGain*family.x*Math.sin(angle),
+      dy:depthGain*family.y*Math.sin(2*angle),
+      roll:depthGain*family.roll*Math.cos(angle),
+      scale:1+depthGain*family.scale*Math.cos(2*angle),
+      opacity:Math.max(.82,Math.min(1, .94+depthGain*.05*Math.sin(angle)))
+    });
+  }
   const dx=depthGain*family.x*(family.moire*moire+family.quasi*quasi+family.shear*shear*.55);
   const dy=depthGain*family.y*(family.moire*moire-family.quasi*quasi+family.torsion*torsion*.7)+family.rise*(rise-.5)*52;
   return Object.freeze({
