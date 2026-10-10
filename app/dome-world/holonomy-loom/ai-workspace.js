@@ -1108,7 +1108,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
   flowcoreHelp.addEventListener('keydown',event=>{if(event.key==='Escape'&&flowcoreHelp.open){event.preventDefault();event.stopPropagation();closeFlowcoreHelp();}});
   // Copy only on the operator's direct gesture. The labels remain plain text,
   // with no instructional badge, affordance copy, or new transport capability.
-  let flowcoreCopyTimer=null;
+  let flowcoreCopyTimer=null,flowcoreClearTimer=null;
   const flowcoreNotice=flowcoreHelp.querySelector('#loomFlowcoreCopyNotice');
   flowcoreHelp.querySelectorAll('[data-flowcore-copy]').forEach(control=>{
     control.addEventListener('click',async()=>{
@@ -1128,13 +1128,14 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
         }
       } catch {}
       if(flowcoreCopyTimer!==null)environment.clearTimeout(flowcoreCopyTimer);
+      if(flowcoreClearTimer!==null)environment.clearTimeout(flowcoreClearTimer);
       flowcoreNotice.textContent=copied?`${glyph} Copied!`:'Copy unavailable';
       flowcoreNotice.dataset.copyState='visible';
       flowcoreCopyTimer=environment.setTimeout(()=>{
         flowcoreNotice.dataset.copyState='rest';
-        flowcoreNotice.textContent='';
         flowcoreCopyTimer=null;
-      },1900);
+        flowcoreClearTimer=environment.setTimeout(()=>{flowcoreNotice.textContent='';flowcoreClearTimer=null;},360);
+      },1540);
     });
   });
   $('loomReplayFirstCrossing').addEventListener('click',()=>{
@@ -1161,7 +1162,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
   if(environment.location?.hash==='#loomGate'){openLoomThreshold();openTools('challenge');}
   visibility();
   environment.document.documentElement.dataset.loomBoot='ready';
-  const dispose=()=>{disposed=true;if(flowcoreCopyTimer!==null)environment.clearTimeout(flowcoreCopyTimer);clearThresholdTimers();stageObserver?.disconnect();returnedReview.dispose();marrowlineChild=null;reentry.dispose();if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();runtime.dispose();coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);delete environment.document.documentElement.dataset.loomJourney;delete environment.document.documentElement.dataset.loomFlowPhase;};
+  const dispose=()=>{disposed=true;if(flowcoreCopyTimer!==null)environment.clearTimeout(flowcoreCopyTimer);if(flowcoreClearTimer!==null)environment.clearTimeout(flowcoreClearTimer);clearThresholdTimers();stageObserver?.disconnect();returnedReview.dispose();marrowlineChild=null;reentry.dispose();if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();runtime.dispose();coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);delete environment.document.documentElement.dataset.loomJourney;delete environment.document.documentElement.dataset.loomFlowPhase;};
   environment.addEventListener('pagehide',dispose,{once:true});return {dispose,inspect:()=>({mode:workspaceMode,session:portableSession?inspectPortableLoomSession(portableSession):null,turn_receipt:turnReceiptVerification?{status:turnReceiptVerification.status,ref:turnReceiptVerification.ref}:null,challenge:challengeVerification?{status:challengeVerification.status,ref:challengeVerification.ref}:null,events:[...events],clock:coordinator.inspect(),replay:{index:replayIndex,count:sceneHistory.length},runtime:runtime.inspect(),geometry:null})};
 }
 if(typeof document!=='undefined')mountLoomAiWorkspace(document.querySelector('#loomAiWorkspace'));
