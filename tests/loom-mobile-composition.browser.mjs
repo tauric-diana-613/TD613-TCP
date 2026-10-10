@@ -254,7 +254,10 @@ try {
         firstCrossingVisual.background === 'rgba(0, 0, 0, 0)' &&
         firstCrossingVisual.border_top === '0px' &&
         firstCrossingVisual.visible_chrome.length === 0 &&
-        firstCrossingVisual.objects.length===3&&firstCrossingVisual.objects.every(object=>object.visible&&object.width>=44&&object.height>=44),
+        firstCrossingVisual.objects.length===3&&
+        firstCrossingVisual.objects.filter(object=>object.id!=='loomFirstCrossingPrivate')
+          .every(object=>object.visible&&object.width>=44&&object.height>=44)&&
+        firstCrossingVisual.objects.find(object=>object.id==='loomFirstCrossingPrivate')?.visible===false,
         firstCrossingVisual);
       await screenshot(page, 'first-crossing-mobile-notice');
       await tutorialComposition(page,'first-crossing-mobile-notice');
