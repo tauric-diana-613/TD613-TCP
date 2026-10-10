@@ -5,7 +5,7 @@ export const LOOM_TUTORIAL_OPERATORS = Object.freeze([
   { glyph: 'hõt', relations: ['bounded_emergence', 'protected_continuity'], family: 'moire-shear', label: 'Review references' },
   { glyph: '上', relations: ['created_potential'], family: 'phasonic-rise', label: 'Check AI request' },
   { glyph: '出', relations: ['release'], family: 'gradient-stampede', label: 'Send request' },
-  { glyph: '米', relations: ['recurrence'], family: 'orbital-braid', label: 'Revisit privacy' },
+  { glyph: '米', relations: ['recurrence'], family: 'revisit-lemniscate', label: 'Revisit privacy' },
   { glyph: '下', relations: ['released_tendency'], family: 'threnodic-gossamer', label: 'Return proof' },
   { glyph: '𝄐', relations: ['structural_rest'], family: 'quiet-recurrence', label: 'Ready / Rest' }
 ].map(item => Object.freeze({ ...item, relations: Object.freeze(item.relations) })));

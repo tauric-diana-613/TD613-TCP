@@ -17,12 +17,15 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
     </div>
     <details class="loom-flowcore-help">
       <summary>What is Flow-Core runtime?</summary>
-      <button type="button" id="loomFlowcoreHelpClose" class="loom-flowcore-help-close" aria-label="Close Flow-Core explanation">×</button>
-      <p>Flow-Core maps the choices in your Loom session: what you share, what stays private, when you send, and how you review returned work. Each symbol has its own motion. The tutorial illustrates the route with fictional material; the working session follows actual request events.</p>
-      <p id="loomFlowcoreMessage" class="loom-flowcore-message" aria-live="polite"></p>
-      <div class="loom-flowcore-legend">
-        <span><b>à</b> Gather</span><span><b>米</b> Revisit</span><span><b>出</b> Send</span><span><b>hõt</b> Review</span>
-        <span><b>cōl</b> Keep private</span><span><b>上</b> Ready</span><span><b>下</b> Return</span><span><b>𝄐</b> Rest</span>
+      <div class="loom-flowcore-panel">
+        <button type="button" id="loomFlowcoreHelpClose" class="loom-flowcore-help-close" aria-label="Close Flow-Core explanation">×</button>
+        <p>Flow-Core maps the choices in your Loom session: what you share, what stays private, when you send, and how you review returned work. Each symbol has its own motion. The tutorial illustrates the route with fictional material; the working session follows actual request events.</p>
+        <p id="loomFlowcoreMessage" class="loom-flowcore-message" aria-live="polite"></p>
+        <div class="loom-flowcore-legend">
+          <span><button type="button" data-flowcore-copy="à" aria-label="à">à</button> Gather</span><span><button type="button" data-flowcore-copy="米" aria-label="米">米</button> Revisit</span><span><button type="button" data-flowcore-copy="出" aria-label="出">出</button> Send</span><span><button type="button" data-flowcore-copy="hõt" aria-label="hõt">hõt</button> Review</span>
+          <span><button type="button" data-flowcore-copy="cōl" aria-label="cōl">cōl</button> Keep private</span><span><button type="button" data-flowcore-copy="上" aria-label="上">上</button> Ready</span><span><button type="button" data-flowcore-copy="下" aria-label="下">下</button> Return</span><span><button type="button" data-flowcore-copy="𝄐" aria-label="𝄐">𝄐</button> Rest</span>
+        </div>
+        <p id="loomFlowcoreCopyNotice" class="loom-flowcore-copy-notice" role="status" aria-live="polite" aria-atomic="true"></p>
       </div>
     </details>
     <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="How Loom controls an AI request">

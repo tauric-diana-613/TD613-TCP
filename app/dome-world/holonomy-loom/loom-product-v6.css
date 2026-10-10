@@ -849,3 +849,64 @@ body:has(#loomAiWorkspace[data-first-crossing="active"]) .loom-topbar a[href*="l
   #loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-objects button,
   #loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-actions button{transition:none}
 }
+
+/* Shared Flow-Core guide: one text-first explainer, always in the Loom header.
+   The panel floats above both tutorial and builder without cloning glyphs. */
+.loom-topbar{position:relative;z-index:50}
+.loom-topbar nav{position:relative;align-items:center}
+.loom-topbar .loom-flowcore-help{position:relative;color:#a9c7ca;font-size:12px;flex-shrink:0}
+.loom-topbar .loom-flowcore-help summary{
+  cursor:pointer;display:flex;align-items:center;min-height:44px;
+  list-style:none;white-space:nowrap;outline-offset:3px;color:#a9c7ca
+}
+.loom-topbar .loom-flowcore-help summary::-webkit-details-marker{display:none}
+.loom-topbar .loom-flowcore-help .loom-flowcore-panel{
+  /* The explainer belongs to the viewport, not the narrow header trigger.
+     Right-aligning to that trigger clipped glyph controls on 390px Safari. */
+  display:none;position:fixed;top:56px;right:clamp(10px,2vw,24px);z-index:60;
+  width:min(350px,calc(100vw - 22px));max-height:min(75dvh,620px);
+  padding:18px 16px 20px;overflow-y:auto;overscroll-behavior:contain;
+  border:1px solid rgba(142,232,230,.26);
+  background:rgba(7,12,17,.98);box-shadow:0 18px 60px rgba(0,0,0,.54);
+  color:#c5d1da;font-size:12px;text-align:left
+}
+.loom-topbar .loom-flowcore-help[open] .loom-flowcore-panel{display:block}
+.loom-topbar .loom-flowcore-help-close{
+  position:absolute;top:4px;right:6px;display:grid;place-items:center;
+  width:44px;height:44px;padding:0;border:0;background:transparent;
+  font:400 25px/1 var(--sans);color:#d3e6e2
+}
+.loom-topbar .loom-flowcore-panel>p{margin:0 0 12px;padding-right:20px;font-size:12px;line-height:1.5}
+.loom-topbar .loom-flowcore-panel .loom-flowcore-message{max-width:52ch;color:#89a4ac;font-size:11px;line-height:1.5}
+.loom-topbar .loom-flowcore-legend{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px}
+.loom-topbar .loom-flowcore-legend span{color:#aebcc5;white-space:nowrap;font-size:12px}
+.loom-topbar .loom-flowcore-legend button{
+  display:inline-block;min-width:29px;min-height:30px;margin:0 1px 0 0;padding:0 2px;
+  border:0;border-radius:0;background:transparent;box-shadow:none;
+  color:#baf8f1;text-align:left;vertical-align:baseline;
+  font:500 16px/1.25 "Loom Flow-Core",var(--sans);cursor:pointer
+}
+.loom-topbar .loom-flowcore-legend button:hover{color:#fff}
+.loom-topbar .loom-flowcore-legend button:focus-visible{outline:2px solid #8ee8e6;outline-offset:2px}
+.loom-topbar .loom-flowcore-copy-notice{
+  min-height:18px;margin:10px 0 0!important;padding:0!important;
+  color:#baf8f1!important;font:500 11px/1.4 var(--mono)!important;opacity:0;
+  transform:translateY(-3px);transition:opacity .32s ease,transform .32s ease
+}
+.loom-topbar .loom-flowcore-copy-notice[data-copy-state="visible"]{
+  opacity:1;transform:translateY(0)
+}
+/* The second choice is physically present but sealed until à concludes. */
+#loomAiWorkspace[data-first-crossing="active"][data-first-crossing-step="0"] .loom-first-crossing-objects button[data-first-crossing-item="source"]{
+  opacity:1;filter:none;transition:opacity .45s ease,filter .45s ease,border-color .45s ease
+}
+#loomAiWorkspace[data-first-crossing="active"][data-first-crossing-step="0"] .loom-first-crossing-objects button[data-first-crossing-item="source"]:disabled{
+  opacity:.32;filter:saturate(.45);box-shadow:none;pointer-events:none
+}
+@media(max-width:760px){
+  .loom-topbar .loom-flowcore-help{font-size:clamp(9px,2.6vw,11px)}
+  .loom-topbar .loom-flowcore-help .loom-flowcore-panel{top:52px;right:10px}
+  .loom-topbar .loom-flowcore-help summary{font-size:inherit}
+  .loom-topbar nav{gap:clamp(2px,1.3vw,6px)}
+  .loom-topbar .loom-flowcore-panel .loom-flowcore-legend span{font-size:11px}
+}

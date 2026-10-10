@@ -31,9 +31,9 @@ test('Loom boot binds fresh October 10 assets and contains a catchable module fa
   const doc = new JSDOM(html).window.document;
   const css = doc.querySelector('link[href*="loom-product-v6.css"]');
   const module = [...doc.querySelectorAll('script[type="module"]')].find(node => node.textContent.includes('ai-workspace.js'));
-  assert.match(css.href, /20261010-couture-layout-v2/);
+  assert.match(css.href, /20261010-flowcore-pedagogy-v1/);
   assert.ok(module, 'the entrypoint must be an observable dynamic module import');
-  assert.match(module.textContent, /import\('\.\/holonomy-loom\/ai-workspace\.js\?v=20261010-loom-boot-v1'\)/);
+  assert.match(module.textContent, /import\('\.\/holonomy-loom\/ai-workspace\.js\?v=20261010-flowcore-pedagogy-v1'\)/);
   assert.match(module.textContent, /\.catch\(\(\) => window\.td613LoomBootFailure/);
   assert.equal(doc.querySelectorAll('script[type="module"][src*="20261003"]').length, 0);
 });
@@ -123,6 +123,32 @@ test('cinematic route field and builder are separate scenes while advanced tools
   }
   assert.match(workspaceSource, /root\.innerHTML\s*=\s*loomWorkspaceTemplate/);
   assert.match(product, /#loomAiWorkspace \.loom-stage\{[\s\S]*?height:calc\(100svh - 52px\)/);
+});
+
+test('Flow-Core remains a single accessible header guide with eight text-only glyph copy controls', () => {
+  const doc = new JSDOM(html).window.document;
+  assert.ok(doc.querySelector('.loom-topbar nav'), 'persistent header must exist');
+  const template = new JSDOM(loomWorkspaceTemplate).window.document;
+  const help=template.querySelector('.loom-flowcore-help');
+  assert.ok(help);
+  const glyphs=[...help.querySelectorAll('[data-flowcore-copy]')];
+  assert.deepEqual(glyphs.map(node=>node.dataset.flowcoreCopy),['à','米','出','hõt','cōl','上','下','𝄐']);
+  assert.ok(glyphs.every(node=>node.tagName==='BUTTON'&&node.textContent===node.dataset.flowcoreCopy));
+  assert.doesNotMatch(help.textContent, /click.*copy|tap.*copy|copy.*glyph/i);
+  assert.match(workspaceSource, /\.loom-topbar nav'\)\?\.prepend\(flowcoreHelp\)/);
+  assert.match(workspaceSource, /navigator\?\.clipboard\?\.writeText/);
+  assert.match(product, /\.loom-topbar \.loom-flowcore-help\[open\] \.loom-flowcore-panel\{display:block\}/);
+});
+
+test('à completion, rather than the first tap, gates hõt/cōl', () => {
+  const template = new JSDOM(loomWorkspaceTemplate).window.document;
+  assert.equal(template.querySelectorAll('[data-first-crossing-item]').length,2);
+  assert.match(workspaceSource,/firstCrossingSourceUnlocked=false/);
+  assert.match(workspaceSource,/gathered\?\.glyph==='à'/);
+  assert.match(workspaceSource,/snapshot.reducedMotion \|\| snapshot.progress>=1/);
+  assert.match(workspaceSource,/if\(id==='source'&&!firstCrossingSourceUnlocked\)return/);
+  assert.match(workspaceSource,/button.disabled=!firstCrossingSourceUnlocked && firstCrossingStep===0/);
+  assert.match(product,/data-first-crossing-item="source"\]:disabled/);
 });
 
 test('How Loom works is a recoverable handoff preview with a living Flow-Core remix', () => {
@@ -368,6 +394,7 @@ test('selection and readiness publish consequences before naming the Flow-Core r
   assert.deepEqual(h.ui.inspect().runtime.view.event.selected_document_ids, ['brief']);
   assert.equal(h.ui.inspect().runtime.view.event.binding_verified, false);
   assert.equal(h.$('#loomFirstCrossingAction').hidden, true, 'one selection cannot create readiness');
+  await until(() => !h.$('[data-first-crossing-item="source"]').disabled, 'à completes before evidence selection');
   h.$('[data-first-crossing-item="source"]').click();
   assert.equal(h.$('#loomFirstCrossingAction').hidden, true, 'new relation stays unnamed while its async projection compiles');
   await until(() => !h.$('#loomFirstCrossingAction').hidden, 'published gathering consequence');
@@ -422,6 +449,7 @@ test('selection and readiness publish consequences before naming the Flow-Core r
 test('leaving during an async practice binding prevents late completion or scene takeover', async t => {
   const h = practiceHarness(t);
   h.$('[data-first-crossing-item="brief"]').click();
+  await until(() => !h.$('[data-first-crossing-item="source"]').disabled, 'à completion to unlock hõt/cōl');
   h.$('[data-first-crossing-item="source"]').click();
   await until(() => !h.$('#loomFirstCrossingAction').hidden, 'gathering');
   let release, entered;
@@ -461,6 +489,7 @@ test('How it works replay preserves an existing real Loom root and prepared expo
   h.$('#loomReturnThreshold').click();
   assert.equal(h.root.dataset.firstCrossing,'active','How it works enters the replay directly');
   h.$('[data-first-crossing-item="brief"]').click();
+  await until(() => !h.$('[data-first-crossing-item="source"]').disabled, 'à completion to unlock hõt/cōl');
   h.$('[data-first-crossing-item="source"]').click();
   await until(() => !h.$('#loomFirstCrossingAction').hidden, 'replayed gathering');
   h.$('#loomFirstCrossingAction').click();
@@ -479,6 +508,7 @@ test('completed handoff preview reopens from How it works in one deliberate gest
   const h = practiceHarness(t);
   async function finishPractice() {
     h.$('[data-first-crossing-item="brief"]').click();
+    await until(() => !h.$('[data-first-crossing-item="source"]').disabled, 'à completion on tutorial replay');
     h.$('[data-first-crossing-item="source"]').click();
     await until(() => !h.$('#loomFirstCrossingAction').hidden, 'published gathering');
     h.$('#loomFirstCrossingAction').click();
@@ -505,7 +535,7 @@ test('completed handoff preview reopens from How it works in one deliberate gest
   assert.equal(h.$('#loomThresholdGate').hidden, true);
   for (const item of h.root.querySelectorAll('[data-first-crossing-item]')) {
     assert.equal(item.getAttribute('aria-pressed'), 'false', 'a fresh replay carries no prior selection');
-    assert.equal(item.disabled, false);
+    assert.equal(item.disabled, item.dataset.firstCrossingItem==='source', 'hõt/cōl relocks until à completes on replay');
   }
   assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), 'complete', 'actual prior completion remains recorded');
   assert.equal(h.ui.inspect().session, null, 'replay creates no real custody root');

@@ -68,8 +68,17 @@ function setup(t,{intersection=false}={}) {
   };
 }
 
-async function gather(h) {
+async function settleGatherUnlock(h) {
+  // One visual consequence must complete before the next operator can act.
   h.$('[data-first-crossing-item="brief"]').click();
+  assert.equal(h.$('[data-first-crossing-item="source"]').disabled,true);
+  await until(() => h.ui.inspect().runtime.status === 'CURRENT', 'à projection');
+  h.advance(4000);
+  await until(() => h.$('[data-first-crossing-item="source"]').disabled===false
+    && h.root.dataset.firstCrossingGather==='complete', 'à completed before hõt/cōl');
+}
+async function gather(h) {
+  await settleGatherUnlock(h);
   h.$('[data-first-crossing-item="source"]').click();
   await until(() => h.ui.inspect().runtime.status === 'CURRENT', 'gathering projection');
   h.advance(3400);
@@ -130,7 +139,7 @@ test('hidden readiness events cannot bind before the current gathering consequen
     getRandomValues: value => webcrypto.getRandomValues(value),
     subtle: webcrypto.subtle
   });
-  h.$('[data-first-crossing-item="brief"]').click();
+  await settleGatherUnlock(h);
   h.$('[data-first-crossing-item="source"]').click();
   assert.equal(h.ui.inspect().runtime.status, 'COMPILING');
   assert.equal(h.$('#loomFirstCrossingAction').hidden, true);
@@ -236,7 +245,7 @@ test('an old gathering frame retains the binding HOLD explanation until an expli
 test('keyboard focus follows visible tutorial consequences and its final live action', async t => {
   const h=setup(t);
   h.$('[data-first-crossing-item="brief"]').focus();
-  h.$('[data-first-crossing-item="brief"]').click();
+  await settleGatherUnlock(h);
   h.$('[data-first-crossing-item="source"]').focus();
   h.$('[data-first-crossing-item="source"]').click();
   assert.equal(h.environment.document.activeElement,h.$('#loomFirstCrossing'),'the disappearing selected card hands focus to visible tutorial content');
@@ -265,22 +274,23 @@ test('Flow-Core help closes with × or Escape and returns focus to its opener',a
 
 test('each tutorial choice illustrates its operator while actual sending stays unobserved',async t=>{
   const h=setup(t);
+  assert.equal(h.$('[data-first-crossing-item="source"]').disabled,true,'hõt/cōl begins unavailable');
+  h.$('[data-first-crossing-item="source"]').click();
+  assert.equal(h.root.dataset.firstCrossingCue,'choose','disabled source cannot skip à');
+  await settleGatherUnlock(h);
+  assert.equal(h.$('[data-instrument-active-glyph]').textContent,'à');
   h.$('[data-first-crossing-item="source"]').click();
   await until(()=>h.ui.inspect().runtime.status==='CURRENT','reference choice');
   assert.equal(h.$('[data-instrument-active-glyph]').textContent,'hõt');
   assert.ok([...h.root.querySelectorAll('.loom-field-flight text')].some(node=>node.dataset.flightRelation==='protected_continuity'), 'cōl remains a separate animated relation');
   assert.ok([...h.root.querySelectorAll('.loom-field-flight text')].every(node=>node.dataset.flightEvidence==='presentation-only'));
-  h.$('[data-first-crossing-item="source"]').click();
-  h.$('[data-first-crossing-item="brief"]').click();
-  await until(()=>h.ui.inspect().runtime.status==='CURRENT','request choice');
-  assert.equal(h.$('[data-instrument-active-glyph]').textContent,'à');
   assert.equal(h.ui.inspect().runtime.view.event.outbound_submitted,false);
   assert.equal(h.ui.inspect().session,null);
 });
 
 test('a finite tutorial consequence preserves focus deliberately moved to help', async t => {
   const h=setup(t);
-  h.$('[data-first-crossing-item="brief"]').click();
+  await settleGatherUnlock(h);
   h.$('[data-first-crossing-item="source"]').click();
   const help=h.$('.loom-flowcore-help summary');
   help.focus();
