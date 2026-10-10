@@ -2,18 +2,21 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
-import { ASSAY_REQUEST_SCHEMA, ASSAY_RESPONSE_SCHEMA, ASSAY_CLIENT_RETURN_MARGIN_MS, sha256, requireThat, validateAssayPolicy, buildAssayProviderWire, inspectAssayResponse } from '../../server/loom-assay-contract.js';
+import { ASSAY_REQUEST_SCHEMA, ASSAY_RESPONSE_SCHEMA, ASSAY_CLIENT_RETURN_MARGIN_MS, ASSAY_A20_RUN_ID, sha256, requireThat, validateAssayPolicy, buildAssayProviderWire, inspectAssayResponse } from '../../server/loom-assay-contract.js';
 
 const estate = 'research/portable-loom-server-transport-20261009';
-export function loadServerManifest(root = process.cwd()) {
-  const manifest = JSON.parse(readFileSync(resolve(root, estate, 'TRIAL_MANIFEST.json')));
+export function loadServerManifest(root = process.cwd(), runId = null) {
+  const manifestPath = runId === ASSAY_A20_RUN_ID
+    ? 'research/portable-loom-a20-activation-20261010/TRIAL_MANIFEST_A20.json'
+    : `${estate}/TRIAL_MANIFEST.json`;
+  const manifest = JSON.parse(readFileSync(resolve(root, manifestPath)));
   const artifact = readFileSync(resolve(root, manifest.artifact_path), 'utf8');
   requireThat(sha256(artifact) === manifest.artifact_sha256, 'ASSAY_CORRECTED_ARTIFACT_CHANGED');
   return { manifest, artifact };
 }
 export function prepareServerRequest(policy, trial, { priorCaptures = [], comparisonPrompt = null, root = process.cwd() } = {}) {
   validateAssayPolicy(policy);
-  const { manifest, artifact } = loadServerManifest(root);
+  const { manifest, artifact } = loadServerManifest(root, policy.run_id);
   let messages;
   if (trial.role === 'RECEIVER') {
     const c = manifest.receivers.find(c => c.case_id === trial.case_id);
@@ -24,6 +27,7 @@ export function prepareServerRequest(policy, trial, { priorCaptures = [], compar
       if (i < trial.turn_index) {
         const cap = priorCaptures[i];
         requireThat(cap?.status === 'CAPTURED_NOT_ADMITTED' && cap.evidence_class === 'ACTUAL_RECEIVER_TEST'
+          && (policy.run_id !== ASSAY_A20_RUN_ID || cap.run_id === policy.run_id)
           && cap.trial.trial_id === trial.trial_id && cap.trial.case_id === trial.case_id && cap.trial.turn_index === i
           && cap.source_commit === policy.protocol_commit && cap.artifact_sha256 === policy.artifact_sha256
           && cap.returned?.answer_sha256 === sha256(cap.returned.text), 'ASSAY_PREDECESSOR_CAPTURE_HELD');
@@ -39,7 +43,7 @@ export function prepareServerRequest(policy, trial, { priorCaptures = [], compar
 export async function captureServerCall(policy, request, directory, { environment = process.env, fetchImpl = fetch } = {}) {
   validateAssayPolicy(policy);
   const fixture = fetchImpl !== globalThis.fetch;
-  const { manifest, artifact } = loadServerManifest();
+  const { manifest, artifact } = loadServerManifest(process.cwd(), policy.run_id);
   const wire = buildAssayProviderWire(request, policy, manifest, artifact);
   const token = environment.TD613_LOOM_ASSAY_TOKEN;
   requireThat(typeof token === 'string' && /^[a-zA-Z0-9_-]{32,256}$/.test(token), 'ASSAY_CALLER_CAPABILITY_UNBOUND');
@@ -56,7 +60,7 @@ export async function captureServerCall(policy, request, directory, { environmen
   writeFileSync(join(directory, 'provider-request.body.json'), wire.body, { flag: 'wx', mode: 0o600 });
   const url = 'https://td613.com/api/khonapolit?operation=loom-assay';
   const started = new Date().toISOString();
-  const record = { schema: 'td613.loom.server-assay-capture/v0.1', source_commit: policy.protocol_commit,
+  const record = { schema: 'td613.loom.server-assay-capture/v0.1', run_id: request.run_id, source_commit: policy.protocol_commit,
     artifact_sha256: policy.artifact_sha256, trial: request.trial, fixture_transport: fixture,
     evidence_class: fixture ? 'LOCAL_STRUCTURAL_TEST' : 'ACTUAL_RECEIVER_TEST', url,
     request_sha256: sha256(body), provider_request_sha256: wire.request_sha256, started_at: started, retries: 0 };
