@@ -1,0 +1,62 @@
+name: TD613 A20 Neon Budget Source-Only Bundle
+on:
+  push:
+    branches:
+      - research/a20-neon-budget-build-20261010
+    paths:
+      - .github/workflows/td613-a20-neon-bundle.yml
+permissions:
+  contents: write
+jobs:
+  package:
+    if: github.repository == 'tauric-diana-613/TD613-TCP'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Build A20 Neon budget function bundle without deploying
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm install --no-save --no-package-lock --ignore-scripts --no-audit --no-fund esbuild@0.25.11 pg@8.23.1 @neon/functions@0.11.0
+          mkdir -p /tmp/td613-a20-neon
+          ./node_modules/.bin/esbuild neon/functions/loom-assay-budget/index.mjs --bundle --platform=node --target=node24 --format=esm --outfile=/tmp/td613-a20-neon/index.mjs --banner:js="import {createRequire} from 'node:module';const require=createRequire(import.meta.url);" --log-level=warning
+          node --check /tmp/td613-a20-neon/index.mjs
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64, hashlib, json, os, subprocess, zipfile
+          root=Path.cwd()
+          out=root/'.td613'/'a20-neon-budget-bundle-20261010'
+          out.mkdir(parents=True,exist_ok=True)
+          js=Path('/tmp/td613-a20-neon/index.mjs').read_bytes()
+          assert 3000<len(js)<4000000
+          zpath=out/'bundle.zip'
+          with zipfile.ZipFile(zpath,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
+              info=zipfile.ZipInfo('index.mjs',date_time=(2026,10,10,0,0,0))
+              info.compress_type=zipfile.ZIP_DEFLATED
+              z.writestr(info,js,compress_type=zipfile.ZIP_DEFLATED,compresslevel=9)
+          with zipfile.ZipFile(zpath) as z:
+              assert z.namelist()==['index.mjs']
+              assert z.read('index.mjs')==js
+          binary=zpath.read_bytes()
+          (out/'bundle.base64').write_text(base64.b64encode(binary).decode('ascii')+'\n')
+          paths=['neon/functions/loom-assay-budget/index.mjs','neon/functions/loom-assay-budget/ledger.mjs','neon/functions/loom-assay-budget/vercel-identity.mjs','server/loom-assay-contract.js']
+          receipt={'schema':'td613.a20.neon-function-bundle/v1','source_parent_main':'ad058966708a98f2310fff3414c89f16b6c42188','branch_source_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'compiler':'esbuild@0.25.11','runtime':'nodejs24','entry':'index.mjs','zip_sha256':hashlib.sha256(binary).hexdigest(),'index_sha256':hashlib.sha256(js).hexdigest(),'zip_bytes':len(binary),'index_bytes':len(js),'source_sha256':{p:hashlib.sha256((root/p).read_bytes()).hexdigest() for p in paths},'deployments_performed':0,'provider_calls':0}
+          (out/'BUILD_RECEIPT.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          print(json.dumps({k:v for k,v in receipt.items() if k!='source_sha256'}))
+          zpath.unlink()
+          PY
+      - name: Publish source-only bundle receipt to this isolated research branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .td613/a20-neon-budget-bundle-20261010/{bundle.base64,BUILD_RECEIPT.json}
+          git commit -m "research(a20): record inert Neon bundle for independently authorized deployment [skip ci]"
+          git push origin HEAD:research/a20-neon-budget-build-20261010
