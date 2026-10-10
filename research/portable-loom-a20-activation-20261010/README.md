@@ -1,29 +1,32 @@
-# TD613 · Portable Loom A20 — prospective activation source proposal
+# TD613 Portable Loom A20 · activation source proposal
 
-**State:** REVIEW-ONLY · DRAFT_NOT_FROZEN · EXECUTION_NOT_AUTHORIZED
+**DRAFT · NOT FROZEN · NOT ENROLLED · NO PROVIDER CALLS · NO MERGE/DEPLOY AUTHORITY**
 
-Target run `portable-loom-first-receiver-20261010-a20`; R06-1 t0→t1, then R02-1 t0→t1. The selected R02/R06 suffixes come unchanged from the historic manifest at production relock `8963055900e63c95437c9198b9556c77d81551f6`. Each first-user message is rebound to the reviewed candidate SHA-256 `fcb4d3d82f4919d23c13d729144ffb21860e07b292d0f384dd9e63cecda92021`; no prior-run predecessor is admissible.
+This branch begins at the verified production relock `8963055900e63c95437c9198b9556c77d81551f6`. It adds only the proposed A20 first-configured-receiver run `portable-loom-first-receiver-20261010-a20`, under the historical program ID `portable-loom-first-receiver-20261009`. Existing A4–A19 identities and budgets are preserved. The proposed A20 program ceiling is **88 total reservations, $11 total reserved**, with **four A20 calls maximum, $1.00 local A20 reservation maximum, and $0.25 per-call limit**. These are reservation caps, not expected API charges. The historical A19 ceiling remains $10. No Neon deployment, enrollment, provider call, reservation, admission, merge or release was authorized by this source review.
 
-- Base PR #1449 merged; production relock unchanged. This draft branch is **not** production.
-- Candidate exact bytes: 92,370 bytes; Git blob `f050bdb481519b5fecb54ab4743b50cd9e9f36ac`.
-- Manifest `TRIAL_MANIFEST_A20.json`: two receiver families only, max 2 turns each.
-- R02 t0 SHA256: `7302afa1b99699517e132157fd99453f1db9e2112082262fada10e7a2316d7e2`; R06 t0 SHA256: `84aaa820bc379234d8ba45ebc9cf1015131e749b9833cb5750a05ef69c0ab0f4`.
-- Historical 88/$10 A19 program unchanged. Prospective A20 shared **88/$11**, local **4/$1**, **$0.25 per call**. Original design pessimistic $0.52203750 remains recorded as an estimate, not an API invoice.
-- Read-only Neon last observed 19 HELD runs, 83 reservations, $9.47417175 reserved, 0 ACTIVE. **Reread before enrollment.** No consumption or refund inferred from actual provider charges.
-- Model and decoding unchanged: Gemini 3.8 Flash, medium, temperature null, top-p null, no tools/retrieval, 8192 output, zero automatic retries.
-- Production source route requires new reviewed commit and release. Neon budget function likewise requires a separate prospective deployed update. `main` and live services are unchanged during this draft.
-- A20 execution requires new contemporaneous authorization stating protocol SHA, $11 shared / $1 A20 / $0.25 per-call, four calls, fallback and first-HOLD stop. **This task does not authorize enrollment, freeze, provider invocation, merge, issue #405 release, deployment, or admission.**
-- The 55-test corrected offline inspector from PR #1449 and the 4 new local A20 structural tests are distinct validation strata. Check GitHub exact-head CI before treating PR proposal as structurally reviewable.
+## Exactly permitted A20 trial order
 
-## Scientific ceiling
+1. `FIRST_CONFIGURED_RECEIVER-R06-1`, turn 0
+2. `FIRST_CONFIGURED_RECEIVER-R06-1`, turn 1, only after this run's successful R06 turn 0
+3. `FIRST_CONFIGURED_RECEIVER-R02-1`, turn 0
+4. `FIRST_CONFIGURED_RECEIVER-R02-1`, turn 1, only after this run's successful R02 turn 0
 
-A/P: receipt text and governance uptake; B: captured-answer receipt conformance; C: independent byte/custody integrity. Missing source IDs are an honest semantic PASS only if expressed as missing with task HOLD; they never create origin registration. Four purposive outputs are not a population reliability estimate.
+Historical suffix strings are unchanged. Only the full turn-0 digest is rebound to the reviewed artifact. The reviewed Markdown SHA-256 is `fcb4d3d82f4919d23c13d729144ffb21860e07b292d0f384dd9e63cecda92021` (Git blob `f050bdb481519b5fecb54ab4743b50cd9e9f36ac`). The R06 and R02 first-user message SHA-256 values are `84aaa820bc379234d8ba45ebc9cf1015131e749b9833cb5750a05ef69c0ab0f4` and `7302afa1b99699517e132157fd99453f1db9e2112082262fada10e7a2316d7e2` respectively. The A20 manifest has no comparison cases and only these two receiver cases. A20 policy restricts trial/turn identity further.
 
-## Held operations
+## Files and boundary
 
-- No A20 `POLICY` is frozen, no run enrolled, no reserved call, no provider output.
-- A20 provider request turn-1 hashes necessarily remain dynamic until fresh same-run turn-0 answers exist.
-- Pending exact reviewed route commit and actual deployed source / Neon function receipts.
-- Separate execution authorization required.
+- `server/loom-assay-contract.js`: A20-only run ID/program bounds, trial scope, per-call reservation ceiling; earlier program contracts unchanged.
+- `server/loom-assay-run-config.json`: adds one proposed run ID, retains existing access digest, URL and authorization reference; this is not itself an execution authorization.
+- `server/loom-assay.js`: exact A20 run chooses `TRIAL_MANIFEST_A20.json`, historical runs choose original manifest.
+- `vercel.json`: includes proposed A20 manifest and reviewed candidate in the API's serverless bundle; Git auto-deploy stays disabled.
+- `research/portable-loom-server-transport-20261009/server-client.mjs`: chooses A20 manifest for A20 and insists same-run `capture.run_id` for predecessor; captures now record their run ID.
+- `neon/functions/loom-assay-budget/ledger.mjs`: explicit A20 $0.25 per-call guard in addition to `reservationNanos` and transaction-locked shared total; no historic row mutation.
+- `tests/portable-loom-a20-activation.test.mjs`: deterministic A20 boundaries and exact digest tests. No network/provider calls.
 
-𝄐 A20_DESIGN_REVIEWED · EXECUTION_NOT_AUTHORIZED ⟐
+The existing Neon Functions deployment does **not** gain this proposal's validator simply because the GitHub branch exists. A distinct reviewed source deployment/configuration step is required in a later, explicitly authorized phase. The handler also requires `request.protocol_commit` to equal the actually deployed `VERCEL_GIT_COMMIT_SHA`; do not use this research branch's transient head as a fictional deployed source identity.
+
+## Executable preflight, later phase only
+
+A later authorization must name the exact validated and deployed protocol commit, run, total maximum and per-call ceiling, 4-call plan/fallback, stop rule, and execution phase. Before enrollment verify current live Neon totals, 88/$11 prospective membership, current `loomassaybudget` function runtime binding, exact deployed manifest and candidate hashes, model parameters, actual caller build, credential fingerprint, exact wire cost, source lock, and zero-reservation new run. On any HOLD stop globally, do not retry, and leave future calls UNATTEMPTED. The current grant authorizes none of those actions.
+
+**Review outcome sought:** `A20_DESIGN_REVIEWED; EXECUTION_NOT_AUTHORIZED`. This draft PR is not a request for merge or #405 release.
