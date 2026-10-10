@@ -96,6 +96,37 @@ try {
           records.push({ engine: name, mode: blocked ? 'BLOCKED_MODULE' : 'HEALTHY', status: pass ? 'PASS' : 'FAIL',
             evidence, page_errors: pageErrors, external_requests: externalRequests });
           if (!pass || externalRequests.length) failed = true;
+          if(!blocked && pass){
+            // A controlled local clipboard witness checks the same text glyph
+            // interaction in WebKit and Chromium, before and after entering Loom.
+            await page.evaluate(() => {
+              window.__td613CopiedGlyphs=[];
+              Object.defineProperty(navigator,'clipboard',{configurable:true,value:{
+                writeText: glyph => {window.__td613CopiedGlyphs.push(glyph);return Promise.resolve();}
+              }});
+            });
+            const guide=page.locator('.loom-topbar nav > .loom-flowcore-help');
+            const glyphs=['à','米','出','hõt','cōl','上','下','𝄐'];
+            await guide.locator('summary').click();
+            for(const glyph of glyphs){
+              await guide.locator('[data-flowcore-copy="'+glyph+'"]').click();
+              await page.waitForFunction(value=>document.querySelector('#loomFlowcoreCopyNotice')?.textContent===value+' Copied!',glyph);
+            }
+            await guide.locator('#loomFlowcoreHelpClose').click();
+            await page.locator('#loomFirstCrossingLeave').click();
+            await page.locator('.loom-builder-shell').waitFor({state:'visible'});
+            const copyEvidence={
+              copied:await page.evaluate(()=>window.__td613CopiedGlyphs),
+              persisted:await guide.count()===1 && await guide.isVisible(),
+              header_order:await page.locator('.loom-topbar nav').evaluate(node=>[...node.children].map(el=>el.className||el.id)),
+              page_errors:pageErrors,external_requests:externalRequests
+            };
+            const copyPass=JSON.stringify(copyEvidence.copied)===JSON.stringify(glyphs) &&
+              copyEvidence.persisted && copyEvidence.header_order[0].includes('loom-flowcore-help') &&
+              pageErrors.length===0 && externalRequests.length===0;
+            records.push({engine:name,mode:'PERSISTENT_FLOWCORE_GLYPH_COPY',status:copyPass?'PASS':'FAIL',evidence:copyEvidence});
+            if(!copyPass)failed=true;
+          }
         } catch (error) {
           failed = true;
           records.push({ engine: name, mode: blocked ? 'BLOCKED_MODULE' : 'HEALTHY',
