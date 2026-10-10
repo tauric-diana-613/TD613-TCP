@@ -267,7 +267,8 @@ test('each tutorial choice illustrates its operator while actual sending stays u
   const h=setup(t);
   h.$('[data-first-crossing-item="source"]').click();
   await until(()=>h.ui.inspect().runtime.status==='CURRENT','reference choice');
-  assert.equal(h.$('[data-instrument-active-glyph]').textContent,'hõt // cōl');
+  assert.equal(h.$('[data-instrument-active-glyph]').textContent,'hõt');
+  assert.ok([...h.root.querySelectorAll('.loom-field-flight text')].some(node=>node.dataset.flightRelation==='protected_continuity'), 'cōl remains a separate animated relation');
   assert.ok([...h.root.querySelectorAll('.loom-field-flight text')].every(node=>node.dataset.flightEvidence==='presentation-only'));
   h.$('[data-first-crossing-item="source"]').click();
   h.$('[data-first-crossing-item="brief"]').click();

@@ -76,8 +76,8 @@ test('How Loom works is a recoverable handoff preview with a living Flow-Core re
   assert.match(workspaceSource, /flowcore_choreography:firstCrossingChoreography/);
   assert.match(workspaceSource, /coordinator\.setContinuous\(true\)/);
   assert.match(workspaceSource, /title:'Protect your work when you use AI\.'/);
-  assert.match(workspaceSource, /title:'You’re ready to try Loom\.'/);
-  assert.match(workspaceSource, /Try Loom →/);
+  assert.match(workspaceSource, /title:'You’re ready to enter Loom\.'/);
+  assert.match(workspaceSource, /Enter Loom →/);
   assert.doesNotMatch(workspaceSource, /title:'Prepared is not transmitted\.'/);
   assert.doesNotMatch(workspaceSource, /title:'They gathered\. Nothing crossed\.'/);
   assert.doesNotMatch(workspaceSource, /title:'Watch readiness form\.'/);
@@ -471,4 +471,30 @@ test('own-work exit restores the editable task after a previously opened prepare
   assert.equal(h.$('#aiSessionReceipt').textContent, originalExport);
   assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), null, 'exit grants no unearned practice completion');
   assert.equal(h.requests.length, 0);
+});
+
+
+test('opening overture contains all eight relations without borrowing the à illustration or a second clock', async () => {
+  const { loomOpeningPresentation } = await import('../app/dome-world/holonomy-loom/tutorial-membrane.js');
+  const { FLOWCORE_CHOREOGRAPHIES } = await import('../app/dome-world/holonomy-loom/flowcore-choreography.js');
+  const score = FLOWCORE_CHOREOGRAPHIES[0];
+  const opening = loomOpeningPresentation(score);
+  assert.equal(opening.tutorial_operator, null);
+  assert.equal(opening.flowcore_choreography.relations.length, 8);
+  assert.equal(new Set(opening.flowcore_choreography.relations).size, 8);
+  assert.match(opening.flowcore_choreography.id,/^ingress-overture-/);
+  assert.equal(opening.flowcore_choreography.evidence_class,'TUTORIAL_ILLUSTRATION_ONLY');
+  assert.match(workspaceSource,/loomOpeningPresentation\(firstCrossingChoreography\)/);
+  assert.match(workspaceSource,/firstCrossingStep===0\?loomOpeningPresentation/);
+  assert.doesNotMatch(workspaceSource,/packet\.presentation=\{\.\.\.packet\.presentation,\.\.\.loomTutorialPresentation\(0\)\}/);
+});
+test('couture ingress retains the two selectable sources and gives receipts their own row', () => {
+  const doc = new JSDOM(loomWorkspaceTemplate).window.document;
+  assert.equal(doc.querySelectorAll('[data-first-crossing-item]').length,2);
+  assert.match(doc.querySelector('[data-first-crossing-item=source]').textContent,/hõt[\s\S]*cōl/);
+  assert.doesNotMatch(doc.querySelector('[data-first-crossing-item=source]').textContent,/\/\//);
+  assert.match(product,/\.loom-tutorial-proof:not\(\[hidden\]\)\{[\s\S]*?grid-row:4/);
+  assert.match(product,/:not\(\[data-first-crossing-step="0"\]\)\s*\.loom-first-crossing-objects\{display:none!important\}/);
+  assert.match(product,/#loomAiWorkspace \.loom-flowcore-help/);
+  assert.equal(doc.querySelector('#loomBegin').textContent.trim(),'Enter Loom →');
 });

@@ -1,5 +1,5 @@
 import { FIRST_CROSSING_PRACTICE, bindFirstCrossingPractice, checkFirstCrossingPrivacy, createFirstCrossingReturnProof } from './first-crossing-practice.js';
-import { loomTutorialPresentation } from './tutorial-membrane.js';
+import { loomTutorialPresentation, loomOpeningPresentation } from './tutorial-membrane.js';
 import { nextFlowcoreChoreography } from './flowcore-choreography.js';
 import { mountReturnedSessionReview } from './returned-session-review.js';
 import { loomWorkspaceTemplate } from './workspace-template.js';
@@ -330,15 +330,15 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
         firstCrossingGatheringPublished=true;
         setFirstCrossingCue('gathering-named',{
           title:'Share what helps. Keep the rest private.',
-          prompt:'Your request and reference can travel to AI. The private note stays in this browser.',
-          answer:'hõt reviews your references; cōl keeps excluded material local. Next, check the outgoing request.',
+          prompt:'Two selected items would travel together. Excluded material remains outside the request.',
+          answer:'hõt reviews the evidence. cōl marks a separate decision: excluded material stays local. Inspect the crossing before sending.',
           action:true
         });
       }else{
         setFirstCrossingCue('gathering-motion',{
           title:'Preview what AI can use.',
-          prompt:'Review the two selected items. Your private note stays outside the outgoing request.',
-          answer:'A fictional example: ask about garden hours without sharing your private note.'
+          prompt:'Review the selected question and reference. Anything withheld stays outside the outgoing request.',
+          answer:'The garden-hours question can be answered using its selected source without exposing private material.'
         });
       }
       return;
@@ -348,8 +348,8 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
         firstCrossingReadinessPublished=true;
         setFirstCrossingCue('potential-named',{
           title:'You control what leaves.',
-          prompt:'Loom checked this request: two selected documents, one private note excluded.',
-          answer:'上 means ready. Sending is a separate choice. This tutorial stays local.',
+          prompt:'Two items selected. One fictional private reference excluded. Outbound authority remains yours.',
+          answer:'上 means ready. The next gesture previews the send; no provider is called by this tutorial.',
           stop:true
         });
       }else{
@@ -523,12 +523,12 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     firstCrossingWasAlreadyComplete=true;
     storageWrite(FIRST_CROSSING_KEY,'complete');
     setFirstCrossingCue('complete',{
-      title:'You’re ready to try Loom.',
+      title:'You’re ready to enter Loom.',
       prompt:'Choose what AI receives. Revisit privacy. Bring the answer and its receipt back into your custody.',
-      answer:'𝄐 means Rest. Start with your own request when you choose.'
+      answer:'𝄐 · Rest. The fictional route is complete. Enter Loom when you are ready to work with your own material.'
     });
     $('loomBegin').hidden=false;
-    $('loomBegin').textContent='Try Loom →';
+    $('loomBegin').textContent='Enter Loom →';
     if(environment.document.activeElement===$('loomFirstCrossing'))$('loomBegin').focus?.({preventScroll:true});
     $('loomReplayFirstCrossing').hidden=true;
     if(firstCrossingPacket){
@@ -570,10 +570,10 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     setFirstCrossingCue('choose',{
       title:'Protect your work when you use AI.',
       prompt:'Choose what AI receives and keep custody of what comes back. Start by selecting this fictional request and its reference.',
-      answer:'Your private note stays here. Sending, privacy review, and accepting returned work are separate choices.'
+      answer:'Select the question and its evidence to preview a governed AI request. Nothing leaves your browser during this lesson.'
     });
     $('loomFlowcoreMessage').textContent=firstCrossingChoreography.message;
-    $('loomFirstCrossingAction').textContent='Check AI request →';
+    $('loomFirstCrossingAction').textContent='Inspect what AI receives →';
     $('loomFirstCrossingPause').textContent='𝌋';
     $('loomFirstCrossingPause').setAttribute('aria-pressed','false');
     firstCrossingItems.forEach(button=>{button.disabled=false;button.setAttribute('aria-pressed','false');delete button.dataset.held;});
@@ -581,7 +581,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     const packet=projectLoomRequestEvent(neutral);
     packet.scene={...packet.scene,id:'first-crossing-notice',project_title:'How Loom works',rules_count:1,documents:FIRST_CROSSING_PRACTICE.documents.map(item=>({id:item.id,name:item.name,share:false}))};
     packet.geometry={...packet.geometry,rest:false};
-    packet.presentation={...packet.presentation,...loomTutorialPresentation(0)};
+    packet.presentation={...packet.presentation,...loomOpeningPresentation(firstCrossingChoreography)};
     thresholdObservation={events:[],replay:{index:null},source_revision:'browser-unpinned'};
     firstCrossingPacket=packet;
     coordinator.setContinuous(true);
@@ -606,11 +606,11 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       $('loomFirstCrossingBack').hidden=false;
       setFirstCrossingCue('gathering-motion',{
         title:'Preview what AI can use.',
-        prompt:'Review the request and reference you selected. The private note stays outside the outgoing request.',
-        answer:'A fictional example: ask about garden hours without sharing your private note.'
+        prompt:'The selected question and source gather into one local request preview. Withheld material stays outside.',
+        answer:'The garden-hours question can be answered using its selected source without exposing private material.'
       });
       projectFirstCrossing(firstCrossingEvent('prepared'));
-      $('loomFirstCrossingAction').textContent='Check AI request →';
+      $('loomFirstCrossingAction').textContent='Inspect what AI receives →';
       return;
     }
     if(firstCrossingStep===1){
@@ -637,7 +637,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
           answer:'Loom binds the request and its rules so returned work can be checked against them.'
         });
         projectFirstCrossing(firstCrossingEvent('checking',binding.facts??binding));
-        $('loomFirstCrossingStop').textContent='出 Send request · demo →';
+        $('loomFirstCrossingStop').textContent='出 · Preview the send →';
       }catch(error){
         if(disposed||!firstCrossingActive||token!==firstCrossingGeneration)return;
         firstCrossingBindingState='HELD';
@@ -648,9 +648,9 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
 
   function renderFirstCrossingLesson(published=false){
     const lessons={
-      3:{cue:'send',title:'Send only what you chose.',prompt:'Send the selected request and rules when you choose. Unselected files stay local.',answer:'This is a local illustration. Nothing is sent to an AI provider during the tutorial.',next:'米 Revisit privacy →'},
-      4:{cue:'privacy',title:'Revisit your session privacy.',prompt:'Check Loom Gate for protected details or attempted reconstruction in captured replies. Each result tells you what was checked.',answer:'Local example: 2 documents selected, 1 excluded. The guard blocked a planted private-term export. These results cover this check; provider retention needs separate evidence.',next:'下 Return proof →'},
-      5:{cue:'proof',title:'Bring the answer back with its receipt.',prompt:'“The garden opens at nine.” This fictional answer has a receipt linking its exact bytes and used sources to your checked request.',answer:'Check the returned work, then explicitly approve eligible work for local custody. The receipt links the bytes; evidence supports the answer.',next:'Finish tutorial →'}
+      3:{cue:'send',title:'Send only what you chose.',prompt:'A deliberate send would carry only the selected request, evidence and rules. This is a local rehearsal.',answer:'The field illustrates 出, release. No AI provider is contacted during this tutorial.',next:'米 · Verify what stays private →'},
+      4:{cue:'privacy',title:'Revisit your session privacy.',prompt:'Revisit the exclusion boundary. The private-reference test must reject any attempted protected-term export.',answer:'Local guard: two items selected, one excluded; a planted protected term was blocked. Provider retention requires separate evidence.',next:'下 · Examine the return →'},
+      5:{cue:'proof',title:'Bring the answer back with its receipt.',prompt:'“The garden opens at nine.” Inspect the fictional return receipt: it links the answer, checked request and selected evidence.',answer:'Review comes before local admission. The receipt documents a fictional return; it cannot approve itself.',next:'𝄐 · Complete the lesson →'}
     };
     const lesson=lessons[firstCrossingStep];
     if(!lesson)return;
@@ -1069,7 +1069,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     $('loomFlowcoreMessage').textContent=firstCrossingChoreography.message;
     root.dataset.flowcoreChoreography=firstCrossingChoreography.id;
     if(firstCrossingPacket){
-      firstCrossingPacket={...firstCrossingPacket,presentation:loomTutorialPresentation(firstCrossingStep,firstCrossingChoreography)};
+      firstCrossingPacket={...firstCrossingPacket,presentation:{...firstCrossingPacket.presentation,...(firstCrossingStep===0?loomOpeningPresentation(firstCrossingChoreography):loomTutorialPresentation(firstCrossingStep,firstCrossingChoreography))}};
       coordinator.setContinuous(firstCrossingStep!==6);
       coordinator.setPacket(firstCrossingPacket);
       coordinator.play();

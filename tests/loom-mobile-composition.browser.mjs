@@ -254,7 +254,10 @@ try {
         firstCrossingVisual.background === 'rgba(0, 0, 0, 0)' &&
         firstCrossingVisual.border_top === '0px' &&
         firstCrossingVisual.visible_chrome.length === 0 &&
-        firstCrossingVisual.objects.length===3&&firstCrossingVisual.objects.every(object=>object.visible&&object.width>=44&&object.height>=44),
+        firstCrossingVisual.objects.length===3&&
+        firstCrossingVisual.objects.filter(object=>object.id!=='loomFirstCrossingPrivate')
+          .every(object=>object.visible&&object.width>=44&&object.height>=44)&&
+        firstCrossingVisual.objects.find(object=>object.id==='loomFirstCrossingPrivate')?.visible===false,
         firstCrossingVisual);
       await screenshot(page, 'first-crossing-mobile-notice');
       await tutorialComposition(page,'first-crossing-mobile-notice');
@@ -313,7 +316,7 @@ try {
       record('first crossing: completion unlocks the live Loom CTA',
         await page.locator('#loomBegin').isVisible() &&
         await page.evaluate(() => localStorage.getItem('td613.loom.first-crossing.v1')) === 'complete' &&
-        /Try Loom/.test(await page.locator('#loomBegin').textContent()),
+        /Enter Loom/.test(await page.locator('#loomBegin').textContent()),
         { open_visible: await page.locator('#loomBegin').isVisible(), label:await page.locator('#loomBegin').textContent() });
       record('first crossing: tutorial made zero provider or non-GET requests',
         !report.requests.some(request => request.posture === 'first-crossing-mobile' && request.method !== 'GET'),
