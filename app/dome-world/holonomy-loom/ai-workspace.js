@@ -58,6 +58,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
   // A single Flow-Core guide survives the stage → builder transition.
   const flowcoreHelp=root.querySelector('.loom-flowcore-help');
   environment.document.querySelector('.loom-topbar nav')?.prepend(flowcoreHelp);
+  const flowcoreMessage=flowcoreHelp.querySelector('#loomFlowcoreMessage');
   const $ = id => root.querySelector(`#${id}`);
   const lines = id => $(id).value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
   let activeWorkspace = 'build', marrowlineChild = null;
@@ -565,6 +566,8 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     firstCrossingBindingState='IDLE';
     firstCrossingPaused=false;
     firstCrossingGatheringPublished=false;
+    firstCrossingSourceUnlocked=false;
+    root.dataset.firstCrossingGather='idle';
     firstCrossingReadinessPublished=false;
     firstCrossingLessonPublished=false;
     firstCrossingBinding=null;
@@ -590,7 +593,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       prompt:'Choose what AI receives and keep custody of what comes back. Start by selecting this fictional request and its reference.',
       answer:'Select the question and its evidence to preview a governed AI request. Nothing leaves your browser during this lesson.'
     });
-    $('loomFlowcoreMessage').textContent=firstCrossingChoreography.message;
+    flowcoreMessage.textContent=firstCrossingChoreography.message;
     $('loomFirstCrossingAction').textContent='Inspect what AI receives →';
     $('loomFirstCrossingPause').textContent='𝌋';
     $('loomFirstCrossingPause').setAttribute('aria-pressed','false');
@@ -1087,7 +1090,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     // 𝌋 is a presentation remix only. It changes no request, selection,
     // authority, custody, or event history.
     firstCrossingChoreography=nextFlowcoreChoreography(firstCrossingChoreography?.id, environment.Math?.random?.() ?? Math.random());
-    $('loomFlowcoreMessage').textContent=firstCrossingChoreography.message;
+    flowcoreMessage.textContent=firstCrossingChoreography.message;
     root.dataset.flowcoreChoreography=firstCrossingChoreography.id;
     if(firstCrossingPacket){
       firstCrossingPacket={...firstCrossingPacket,presentation:{...firstCrossingPacket.presentation,...(firstCrossingStep===0?loomOpeningPresentation(firstCrossingChoreography):loomTutorialPresentation(firstCrossingStep,firstCrossingChoreography))}};
@@ -1101,12 +1104,12 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
   $('loomFirstCrossingAction').addEventListener('click',actFirstCrossing);
   $('loomFirstCrossingStop').addEventListener('click',advanceFirstCrossing);
   const closeFlowcoreHelp=()=>{flowcoreHelp.open=false;flowcoreHelp.querySelector('summary').focus?.({preventScroll:true});};
-  $('loomFlowcoreHelpClose').addEventListener('click',closeFlowcoreHelp);
+  flowcoreHelp.querySelector('#loomFlowcoreHelpClose').addEventListener('click',closeFlowcoreHelp);
   flowcoreHelp.addEventListener('keydown',event=>{if(event.key==='Escape'&&flowcoreHelp.open){event.preventDefault();event.stopPropagation();closeFlowcoreHelp();}});
   // Copy only on the operator's direct gesture. The labels remain plain text,
   // with no instructional badge, affordance copy, or new transport capability.
   let flowcoreCopyTimer=null;
-  const flowcoreNotice=$('loomFlowcoreCopyNotice');
+  const flowcoreNotice=flowcoreHelp.querySelector('#loomFlowcoreCopyNotice');
   flowcoreHelp.querySelectorAll('[data-flowcore-copy]').forEach(control=>{
     control.addEventListener('click',async()=>{
       const glyph=control.dataset.flowcoreCopy;
