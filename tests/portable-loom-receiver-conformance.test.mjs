@@ -10,18 +10,22 @@ import { portableLoomFooterText, PORTABLE_LOOM_RECEIVER_OUTPUT_GUIDANCE } from '
 
 const fixture = JSON.parse(readFileSync(new URL('./fixtures/portable-loom-conformance-captures-20261010.json', import.meta.url)));
 const hash = text => createHash('sha256').update(text).digest('hex');
+function render(input, body = 'The receipt is unverified and unadmitted.', status = LOOM_DECLARED_RECEIPT_STATUS) {
+  input.answer = body + '\n\n```json\n' + JSON.stringify(input.receipt, null, 2) + '\n```\n\n' + portableLoomFooterText({ receiptStatus: status });
+  return input;
+}
 function valid() {
   const expected = { session_root_ref: 'a'.repeat(64), policy_commitment: 'b'.repeat(64), anchor_work_unit_ref: null, operator_task: 'Summarize the selected source.' };
   const receipt = { schema: 'td613.loom.portable-session-receiver-turn/v0.1', ...expected, turn_index: 1,
     used_document_ids: ['source_a'], missing_information: [], receiver_declaration: 'Selected source summarized; declaration only.' };
-  return { answer: 'The receipt is unverified and unadmitted.\n\n' + portableLoomFooterText({ receiptStatus: LOOM_DECLARED_RECEIPT_STATUS }),
+  return render({
     receipt, expected, review_body_required: true,
-    source_context: { registered_document_ids: ['source_a'], observed_used_document_ids: ['source_a'], unidentified_source_count: 0 } };
+    source_context: { registered_document_ids: ['source_a'], observed_used_document_ids: ['source_a'], unidentified_source_count: 0 } });
 }
 function inspectCaptured(example) {
-  const answer = example.trial.case_id === 'R11' ? JSON.parse(example.answer).answer : example.answer;
-  return inspectPortableLoomReceiverConformance({ answer, receipt: example.receipt, expected: example.expected,
-    source_context: example.source_context, receipt_required: example.receipt !== null });
+  return inspectPortableLoomReceiverConformance({ answer: example.answer, receipt: example.receipt, expected: example.expected,
+    source_context: example.source_context, receipt_required: example.receipt_required,
+    presentation_format: example.presentation_format });
 }
 for (const example of fixture.cases) {
   test(`preserved ${example.run_id.split('-').at(-1)} ${example.trial.trial_id} turn ${example.trial.turn_index} retains its receipt evidence and exact bytes`, () => {
@@ -53,13 +57,14 @@ test('qualified receipt with matching registered source accounting remains decla
 });
 test('explicit pending-revalidation and independently-unverified qualifiers retain their historical meaning', () => {
   for (const status of ['DECLARED_PENDING_REVALIDATION', 'NOT INDEPENDENTLY VERIFIED']) {
-    const input = valid(); input.answer = 'Unverified receipt.\n\n' + portableLoomFooterText({ receiptStatus: status });
+    const input = render(valid(), 'Unverified receipt.', status);
     assert.equal(inspectPortableLoomReceiverConformance(input).status, 'QUALIFIED_DECLARATION');
   }
 });
 test('explicitly observed no-source task accepts empty arrays', () => {
   const input = valid(); input.receipt.used_document_ids = [];
   input.source_context = { registered_document_ids: [], observed_used_document_ids: [], unidentified_source_count: 0 };
+  render(input);
   assert.equal(inspectPortableLoomReceiverConformance(input).status, 'QUALIFIED_DECLARATION');
 });
 test('unknown source accounting is held even when the receipt looks complete', () => {
@@ -69,19 +74,22 @@ test('unknown source accounting is held even when the receipt looks complete', (
 test('recording a missing identifier preserves the HOLD and does not invent an ID', () => {
   const input = valid(); input.receipt.used_document_ids = []; input.receipt.missing_information = [LOOM_UNREGISTERED_SOURCE_MARKER];
   input.source_context = { registered_document_ids: [], observed_used_document_ids: [], unidentified_source_count: 1 };
+  render(input);
   const report = inspectPortableLoomReceiverConformance(input);
   assert.equal(report.status, 'HOLD'); assert.equal(report.unresolved_source_marker_present, true);
   assert.equal(report.findings.includes('UNREGISTERED_SOURCE_MISSING_INFORMATION_OMITTED'), false);
 });
 test('an inline alias and a registered-but-omitted used source both hold', () => {
   const input = valid(); input.receipt.used_document_ids = ['Document A'];
+  render(input);
   assert.ok(inspectPortableLoomReceiverConformance(input).findings.includes('RECEIPT_SOURCE_NOT_REGISTERED'));
   input.receipt.used_document_ids = [];
+  render(input);
   assert.ok(inspectPortableLoomReceiverConformance(input).findings.includes('RECEIPT_OBSERVED_SOURCE_MISMATCH'));
 });
 test('verified or admitted footer claims cannot qualify a receiver declaration', () => {
   for (const status of ['DECLARED','AVAILABLE','VERIFIED','ADMITTED','VERIFIED UNADMITTED']) {
-    const input = valid(); input.answer = 'Unverified receipt.\n\n' + portableLoomFooterText({ receiptStatus: status });
+    const input = render(valid(), 'Unverified receipt.', status);
     assert.ok(inspectPortableLoomReceiverConformance(input).findings.includes('RECEIPT_FOOTER_QUALIFICATION_MISSING_OR_OVERCLAIMED'), status);
   }
 });
@@ -93,9 +101,11 @@ test('qualification in prose cannot replace the footer, and the review body must
 });
 test('wrong task/root and malformed or extended receipt schemas hold', () => {
   const input = valid(); input.receipt.operator_task = 'A different task.';
+  render(input);
   assert.ok(inspectPortableLoomReceiverConformance(input).findings.includes('RECEIPT_ORIGIN_REFERENCE_MISMATCH'));
   for (const alter of [r => { r.extra = true; }, r => { r.missing_information = null; }, r => { r.used_document_ids = ['source_a','source_a']; }, r => { r.turn_index = 0; }]) {
     const changed = valid(); alter(changed.receipt);
+    render(changed);
     assert.ok(inspectPortableLoomReceiverConformance(changed).findings.includes('RECEIPT_SHAPE_INVALID'));
   }
 });
@@ -141,5 +151,70 @@ test('offline CLI accepts an origin-bound declaration and rejects changed captur
     assert.equal(passed.status, 0); assert.equal(JSON.parse(passed.stdout).cases[0].inspection.status, 'QUALIFIED_DECLARATION');
     record.answer_sha256 = '0'.repeat(64); writeFileSync(input, JSON.stringify({ cases: [record] }));
     assert.equal(spawnSync(process.execPath, [command, input], { encoding: 'utf8' }).status, 1);
+  } finally { rmSync(directory, { recursive: true, force: true }); }
+});
+test('a detached receipt cannot substitute for a missing captured receipt', () => {
+  const input = valid(); input.answer = 'The receipt is unverified.\n\n' + portableLoomFooterText({ receiptStatus: LOOM_DECLARED_RECEIPT_STATUS });
+  const report = inspectPortableLoomReceiverConformance(input);
+  assert.equal(report.status, 'HOLD'); assert.ok(report.findings.includes('CAPTURED_RECEIPT_MISSING'));
+});
+test('a clean sidecar cannot conceal a conflicting receipt in the answer', () => {
+  const input = valid(); input.answer = input.answer.replace('"source_a"', '"forged_source"');
+  const report = inspectPortableLoomReceiverConformance(input);
+  assert.ok(report.findings.includes('SIDECAR_RECEIPT_DIFFERS_FROM_CAPTURE'));
+  assert.ok(report.findings.includes('RECEIPT_SOURCE_NOT_REGISTERED'));
+});
+test('a captured receipt can be inspected directly without a sidecar', () => {
+  const input = valid(); delete input.receipt;
+  const report = inspectPortableLoomReceiverConformance(input);
+  assert.equal(report.status, 'QUALIFIED_DECLARATION'); assert.equal(report.checks.receipt_bound_to_answer, true);
+  assert.equal(report.checks.sidecar_matches_captured_receipt, null);
+});
+test('multiple captured receipts and duplicate JSON keys stay ambiguous', () => {
+  const input = valid(); input.answer = '```json\n' + JSON.stringify(input.receipt) + '\n```\n\n' + input.answer;
+  assert.ok(inspectPortableLoomReceiverConformance(input).findings.includes('CAPTURED_RECEIPT_AMBIGUOUS'));
+  const duplicate = valid(); duplicate.answer = duplicate.answer.replace('"used_document_ids": [', '"used_document_ids": ["forged_source"], "used_document_ids": [');
+  assert.ok(inspectPortableLoomReceiverConformance(duplicate).findings.includes('CAPTURED_RECEIPT_MALFORMED'));
+});
+test('strict JSON binds its outer receipt and inner presentation from the same raw answer', () => {
+  const input = valid(); input.presentation_format = 'STRICT_JSON_TASK_RESULT';
+  input.answer = JSON.stringify({ answer: 'The receipt is unverified.\n\n' + portableLoomFooterText({ receiptStatus: LOOM_DECLARED_RECEIPT_STATUS }), loom_session_receipt: input.receipt });
+  assert.equal(inspectPortableLoomReceiverConformance(input).status, 'QUALIFIED_DECLARATION');
+  input.answer = input.answer.replace('"source_a"', '"forged_source"');
+  assert.ok(inspectPortableLoomReceiverConformance(input).findings.includes('SIDECAR_RECEIPT_DIFFERS_FROM_CAPTURE'));
+});
+test('default inspection checks body qualification; an explicit partial inspection stays partial', () => {
+  const input = render(valid(), 'Task complete.'); delete input.review_body_required;
+  assert.ok(inspectPortableLoomReceiverConformance(input).findings.includes('RECEIPT_REVIEW_BODY_QUALIFICATION_MISSING'));
+  input.review_body_required = false;
+  const report = inspectPortableLoomReceiverConformance(input);
+  assert.equal(report.status, 'PARTIAL_DECLARATION_INSPECTION'); assert.equal(report.checks.review_body_qualified, null);
+});
+test('unrelated or contradictory body qualifiers cannot certify receipt qualification', () => {
+  const input = render(valid(), 'The receipt is verified. An unverified source was excluded.');
+  assert.ok(inspectPortableLoomReceiverConformance(input).findings.includes('RECEIPT_REVIEW_BODY_QUALIFICATION_MISSING'));
+});
+test('trailing whitespace cannot move the footer qualifier into the body check', () => {
+  const input = render(valid(), 'Task complete.'); input.answer += ' '.repeat(2000);
+  const report = inspectPortableLoomReceiverConformance(input);
+  assert.equal(report.checks.footer_receipt_qualified, true);
+  assert.ok(report.findings.includes('RECEIPT_REVIEW_BODY_QUALIFICATION_MISSING'));
+});
+test('conflicting footer receipt labels cannot select a clean first label', () => {
+  const input = valid(); input.answer = input.answer.replace(' · HOLD:', ' · Receipt: VERIFIED · HOLD:');
+  assert.ok(inspectPortableLoomReceiverConformance(input).findings.includes('RECEIPT_FOOTER_QUALIFICATION_MISSING_OR_OVERCLAIMED'));
+});
+test('the CLI defaults to requiring a receipt when the response omits it', () => {
+  const directory = mkdtempSync(join(tmpdir(), 'loom-conformance-'));
+  try {
+    const input = join(directory, 'input.json'), command = new URL('../scripts/check-portable-loom-receiver-conformance.mjs', import.meta.url).pathname;
+    const record = valid(); record.receipt = null; record.answer = 'Task complete.';
+    writeFileSync(input, JSON.stringify({ cases: [record] }));
+    const result = spawnSync(process.execPath, [command, input], { encoding: 'utf8' });
+    assert.equal(result.status, 1);
+    assert.ok(JSON.parse(result.stdout).cases[0].inspection.findings.includes('CAPTURED_RECEIPT_MISSING'));
+    record.receipt_required = false;
+    writeFileSync(input, JSON.stringify({ cases: [record] }));
+    assert.equal(spawnSync(process.execPath, [command, input], { encoding: 'utf8' }).status, 0);
   } finally { rmSync(directory, { recursive: true, force: true }); }
 });
