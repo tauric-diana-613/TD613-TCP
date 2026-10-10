@@ -44,3 +44,13 @@ test('Reviewed artifact and exact historical suffix bind the first-user prompt',
 test('A20 call builder yields bounded provider wire without contacting provider',()=>{
  for(const c of manifest.receivers){const trial={case_id:c.case_id,trial_id:`FIRST_CONFIGURED_RECEIVER-${c.case_id}-1`,role:'RECEIVER',turn_index:0}; const req={schema:'td613.loom.server-assay-request/v0.1',run_id:p.run_id,protocol_commit:commit,artifact_sha256:manifest.artifact_sha256,trial,messages:[{role:'user',content:artifact+c.first_user_suffix}]};const wire=buildAssayProviderWire(req,p,manifest,artifact);assert.equal(wire.output_limit,8192);assert.ok(wire.reserved_cost_nanos<=250000000);assert.equal(wire.prior_assistant_sha256.length,0);assert.deepEqual(JSON.parse(wire.body).contents[0].parts[0].text,artifact+c.first_user_suffix);}
 });
+
+test('Vercel function bundle contains manifest-selected A20 candidate and exact file paths',()=>{
+ const cfg=JSON.parse(readFileSync(resolve(root,'vercel.json'),'utf8'));
+ const listed=cfg.functions['api/khonapolit.js'].includeFiles.slice(1,-1).split(',');
+ assert.ok(listed.includes('research/portable-loom-a20-activation-20261010/TRIAL_MANIFEST_A20.json'));
+ assert.ok(listed.includes(manifest.artifact_path));
+ assert.ok(!listed.includes('research/portable-loom-a20-activation-20261010/portable-loom-conformance-candidate.md'));
+ for(const file of listed) assert.doesNotThrow(()=>readFileSync(resolve(root,file)), 'missing carried file: '+file);
+ assert.equal(sha256(readFileSync(resolve(root,manifest.artifact_path))),manifest.artifact_sha256);
+});
