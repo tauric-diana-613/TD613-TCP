@@ -82,6 +82,7 @@ assert.equal(vercel.functions?.['api/ash-local-commitment.py']?.maxDuration, 60)
 assert.equal(vercel.functions?.['api/ash-local-commitment-guard.py']?.maxDuration, 60);
 for (const [name, config] of Object.entries(vercel.functions || {})) {
   if ('includeFiles' in config) assert.equal(typeof config.includeFiles, 'string', `${name}.includeFiles must be a string`);
+  if ('includeFiles' in config) assert.ok(config.includeFiles.length<=256, `${name}.includeFiles must not exceed Vercel's 256-character schema ceiling`);
   if ('excludeFiles' in config) assert.equal(typeof config.excludeFiles, 'string', `${name}.excludeFiles must be a string`);
 }
 assert.match(vercel.functions['api/ash-local-commitment.py'].includeFiles, /ash_\*\.py/);

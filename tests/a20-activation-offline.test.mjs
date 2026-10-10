@@ -48,9 +48,13 @@ test('A20 call builder yields bounded provider wire without contacting provider'
 test('Vercel function bundle contains manifest-selected A20 candidate and exact file paths',()=>{
  const cfg=JSON.parse(readFileSync(resolve(root,'vercel.json'),'utf8'));
  const listed=cfg.functions['api/khonapolit.js'].includeFiles.slice(1,-1).split(',');
- assert.ok(listed.includes('research/portable-loom-a20-activation-20261010/TRIAL_MANIFEST_A20.json'));
- assert.ok(listed.includes(manifest.artifact_path));
- assert.ok(!listed.includes('research/portable-loom-a20-activation-20261010/portable-loom-conformance-candidate.md'));
- for(const file of listed) assert.doesNotThrow(()=>readFileSync(resolve(root,file)), 'missing carried file: '+file);
+ assert.ok(cfg.functions['api/khonapolit.js'].includeFiles.length<=256,'Vercel includeFiles must stay within schema limit');
+ const a20Prefix='research/portable-loom-a20-activation-20261010/';
+ assert.deepEqual(listed.slice(0,3),['server/loom-assay-run-config.json','research/portable-loom-server-transport-20261009/TRIAL_MANIFEST.json','research/portable-loom-receiver-repair-20261010/candidate-artifact/portable-loom-standard.md']);
+ assert.equal(listed[3],a20Prefix+'**','A20 must be carried inside its own bounded subtree');
+ assert.equal(listed.length,4,'No unrelated carriage globs');
+ assert.ok(('research/portable-loom-a20-activation-20261010/TRIAL_MANIFEST_A20.json').startsWith(a20Prefix));
+ assert.ok(manifest.artifact_path.startsWith(a20Prefix));
+ for(const file of [...listed.slice(0,3),a20Prefix+'TRIAL_MANIFEST_A20.json',manifest.artifact_path]) assert.doesNotThrow(()=>readFileSync(resolve(root,file)), 'missing Vercel-carried file: '+file);
  assert.equal(sha256(readFileSync(resolve(root,manifest.artifact_path))),manifest.artifact_sha256);
 });
