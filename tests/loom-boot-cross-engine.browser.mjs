@@ -104,6 +104,57 @@ try {
           await context.close();
         }
       }
+      // 1536px operator desktop regression: the couture typography may not
+      // retain the legacy left:50% after the centering transform is retired.
+      {
+        const context = await browser.newContext({ viewport: { width: 1536, height: 960 }, reducedMotion: 'reduce' });
+        const page = await context.newPage();
+        const errors = [];
+        const externalRequests = [];
+        page.on('pageerror', error => errors.push(error.message));
+        await page.route('**/*', route => {
+          const request = route.request(), url = request.url();
+          if (request.method() !== 'GET' || !url.startsWith(base + '/')) {
+            externalRequests.push(url);
+            return route.abort();
+          }
+          return route.continue();
+        });
+        try {
+          await page.goto(`${base}/dome-world/holonomy-loom.html`, { waitUntil: 'domcontentloaded' });
+          await page.waitForFunction(() => document.documentElement.dataset.loomBoot === 'ready', null, {timeout:16000});
+          await page.evaluate(() => new Promise(done => requestAnimationFrame(() => requestAnimationFrame(done))));
+          const geometry = await page.evaluate(() => {
+            const root = document.querySelector('#loomAiWorkspace');
+            const copy = document.querySelector('.loom-first-crossing-copy');
+            const title = document.querySelector('#loomFirstCrossingTitle');
+            const prompt = document.querySelector('#loomFirstCrossingPrompt');
+            const cards = document.querySelector('#loomFirstCrossingObjects');
+            const rect = node => { const r=node.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height}; };
+            const visible = node => { const x=getComputedStyle(node);return x.display!=='none'&&x.visibility==='visible'; };
+            const c=rect(copy), t=rect(title), p=rect(prompt), o=rect(cards);
+            return {viewport:innerWidth,boot:document.documentElement.dataset.loomBoot,
+              active:root.dataset.firstCrossing,copy:c,title:t,prompt:p,cards:o,
+              copy_visible:visible(copy),title_visible:visible(title),prompt_visible:visible(prompt),
+              copy_left:getComputedStyle(copy).left,copy_transform:getComputedStyle(copy).transform,
+              center_error:Math.abs(c.left+c.width/2-innerWidth/2),
+              horizontal_overflow:document.documentElement.scrollWidth-innerWidth};
+          });
+          const pass = geometry.active==='active'&&geometry.copy_visible&&geometry.title_visible&&geometry.prompt_visible&&
+            geometry.copy.left>=0&&geometry.copy.right<=geometry.viewport&&
+            geometry.title.left>=0&&geometry.title.right<=geometry.viewport&&
+            geometry.prompt.left>=0&&geometry.prompt.right<=geometry.viewport&&
+            geometry.center_error<16&&geometry.horizontal_overflow<=1&&
+            errors.length===0&&externalRequests.length===0;
+          records.push({engine:name,mode:'DESKTOP_TUTORIAL_GEOMETRY',status:pass?'PASS':'FAIL',
+            geometry,page_errors:errors,external_requests:externalRequests});
+          if(!pass)failed=true;
+        } catch(error) {
+          failed=true;
+          records.push({engine:name,mode:'DESKTOP_TUTORIAL_GEOMETRY',status:'FAIL',
+            error:error.message,page_errors:errors,external_requests:externalRequests});
+        } finally { await context.close(); }
+      }
     } catch (error) {
       failed = true;
       records.push({ engine: name, status: 'UNAVAILABLE', error: error.message });
