@@ -9,6 +9,10 @@ import { sha256, canonicalJson, inspectAssayResponse, ASSAY_RECOVERY_POLICY_SCHE
 const { manifest } = loadServerManifest();
 function policy() {
   const p = JSON.parse(readFileSync('research/portable-loom-server-transport-20261009/POLICY.template.json'));
+  // This is a synthetic runner fixture, not a re-enrollment of the historical
+  // policy. Bind it to the currently source-selected manifest while retaining
+  // the template's numerical/transport limits and all coordinate checks.
+  p.artifact_sha256 = manifest.artifact_sha256;
   p.protocol_commit = p.binding.protocol_commit = 'a'.repeat(40); p.expires_at = '2099-01-01T00:00:00Z';
   p.binding.limits.max_cost_usd = 10;
   p.binding.pricing = { input_usd_per_million: 0.75, output_usd_per_million: 3.75, source: 'synthetic test pricing', verified_at: '2026-10-01T00:00:00Z' };

@@ -215,8 +215,10 @@ test('canonical API dispatch and deployment packaging preserve dedicated bounded
   assert.match(api, /requestedOperation\(req\) === 'loom-assay'/);
   const config = JSON.parse(readFileSync('vercel.json'));
   assert.match(config.functions['api/khonapolit.js'].includeFiles, /TRIAL_MANIFEST\.json/);
-  assert.match(config.functions['api/khonapolit.js'].includeFiles, /corrected-artifact\/portable-loom-standard\.md/);
+  assert.match(config.functions['api/khonapolit.js'].includeFiles, /candidate-artifact\/portable-loom-standard\.md/);
   assert.match(config.functions['api/khonapolit.js'].includeFiles, /server\/loom-assay-run-config\.json/);
+  assert.equal(config.functions['api/khonapolit.js'].includeFiles.includes(manifest.artifact_path), true,
+    'The source-selected assay artifact must be carried by the deployed function.');
 });
 test('source-bound public activation admits only its run and does not contain provider or caller secrets', async () => {
   const c = loadApprovedRunConfiguration();

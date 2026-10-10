@@ -1,0 +1,95 @@
+{
+  "schema": "td613.loom.receiver-repair-local-verification/v0.1",
+  "status": "PASS",
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "provider_calls": 0,
+  "source_packet_commit": "983c957e989676fed7525be3835f8b8b06957e76",
+  "artifact_sha256": "e6811ad6b15ab40be189b1882c588380fbafbede81fd0d14d3482f00b7e9f7ea",
+  "manifest_sha256": "b9dfea2676b127af9b1e24a27307c340d5103390445221a72d32ab688e1f47a5",
+  "receiver_first_turn_wire_checks": [
+    {
+      "case_id": "R01",
+      "provider_request_sha256": "dcbe65adc5eeb9e44fe6346f75301df156e29b0a5f3334288bb0150a2de11114",
+      "input_token_bound": 106042,
+      "reserved_cost_nanos": 110251500
+    },
+    {
+      "case_id": "R02",
+      "provider_request_sha256": "7c1708c540771b4e7df7251fb3e54cc846a518591e7d0d7ce700475c6265edf7",
+      "input_token_bound": 106019,
+      "reserved_cost_nanos": 110234250
+    },
+    {
+      "case_id": "R03",
+      "provider_request_sha256": "31af2aef34fbb2a51d93cdbffebd6f5b424ad989e269f7bafe1d131fa7e4ad8c",
+      "input_token_bound": 106102,
+      "reserved_cost_nanos": 110296500
+    },
+    {
+      "case_id": "R04",
+      "provider_request_sha256": "0d0660aba512b1072d314617d4444da3c56c6e295a49804e5910f611ea510950",
+      "input_token_bound": 106120,
+      "reserved_cost_nanos": 110310000
+    },
+    {
+      "case_id": "R05",
+      "provider_request_sha256": "a701556133bf488e6887d456775b0dd4c775e18c5e1888c188945e40454dd1d7",
+      "input_token_bound": 105950,
+      "reserved_cost_nanos": 110182500
+    },
+    {
+      "case_id": "R06",
+      "provider_request_sha256": "65fb159e93cd3cc731f7c7a1089da3ef098e6af73d0d95c10a46e79bfd84fe4b",
+      "input_token_bound": 105967,
+      "reserved_cost_nanos": 110195250
+    },
+    {
+      "case_id": "R07",
+      "provider_request_sha256": "9a9dee83b7467b8c1ada969558001dbd952dca48d1c1d2e42552bec4f6b3f4f2",
+      "input_token_bound": 105931,
+      "reserved_cost_nanos": 110168250
+    },
+    {
+      "case_id": "R08",
+      "provider_request_sha256": "b12c9d5d66ccaff7720c13a7ac339905393958c8ecbf71912001401feaf6b96b",
+      "input_token_bound": 106082,
+      "reserved_cost_nanos": 110281500
+    },
+    {
+      "case_id": "R09",
+      "provider_request_sha256": "9a9dee83b7467b8c1ada969558001dbd952dca48d1c1d2e42552bec4f6b3f4f2",
+      "input_token_bound": 105931,
+      "reserved_cost_nanos": 110168250
+    },
+    {
+      "case_id": "R10",
+      "provider_request_sha256": "cc710fd45829062bafa4be1ea5616bdfd4818f9b019dd2c7eb2f2e5aa57776f7",
+      "input_token_bound": 106040,
+      "reserved_cost_nanos": 110250000
+    },
+    {
+      "case_id": "R11",
+      "provider_request_sha256": "180e158a15a5fcf360a7d43054b077a7f85e1383c102ee9410075f0e1e6f54cd",
+      "input_token_bound": 106129,
+      "reserved_cost_nanos": 110316750
+    },
+    {
+      "case_id": "R12",
+      "provider_request_sha256": "973fc3f8a9119bcbbc2724a931226a796d0f533c0c2acfafe4792e66d950cd6d",
+      "input_token_bound": 106095,
+      "reserved_cost_nanos": 110291250
+    }
+  ],
+  "planned_retest_calls": 16,
+  "program_projected_maximum": {
+    "calls_reserved": 76,
+    "reserved_cost_nanos": 9822330000
+  },
+  "source_tests": {
+    "command": "node --test tests/portable-loom-session-challenge.test.mjs tests/portable-loom-receiver-receipt-regression.test.mjs",
+    "passed": 18,
+    "failed": 0
+  },
+  "candidate_efficacy": "NOT_RUN",
+  "deployment": "NOT_PERFORMED"
+}

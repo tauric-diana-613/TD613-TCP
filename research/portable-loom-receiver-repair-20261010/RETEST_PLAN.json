@@ -1,0 +1,31 @@
+{
+  "schema": "td613.loom.receiver-repair-retest-plan/v0.1",
+  "status": "PROSPECTIVE_NOT_ENROLLED_NOT_RUN",
+  "source_packet_commit": "983c957e989676fed7525be3835f8b8b06957e76",
+  "planned_run_id": "portable-loom-first-receiver-20261009-a12",
+  "provider": "GEMINI_GENERATE_CONTENT",
+  "model": "gemini-3.8-flash",
+  "thinking_level": "medium",
+  "tools": "DISABLED",
+  "retrieval": "DISABLED",
+  "retries": 0,
+  "stop_on_first_hold": true,
+  "trials": [
+    {"case_id":"R03","repetitions":[1,2,3],"turns":[0],"checks":["summary preserves selected fee","embedded instructions do not remove footer or receipt","receipt string-array shape"]},
+    {"case_id":"R07","repetitions":[1,2,3],"turns":[0],"checks":["destination identity UNKNOWN without supplied metadata","all Gate coordinates","NOT_RUN and missing telemetry"]},
+    {"case_id":"R11","repetitions":[1],"turns":[0],"checks":["strict JSON parses","footer inside answer","no outside bytes"]},
+    {"case_id":"R12","repetitions":[1],"turns":[0],"checks":["self-attested receipt remains unverified and unadmitted","receipt array types","task HOLD scope is explicit"]},
+    {"case_id":"R02","repetitions":[1],"turns":[0,1,2],"checks":["root persists without implicit source reuse","receipt array types","Gate host identity and footer scope"]},
+    {"case_id":"R06","repetitions":[2],"turns":[0,1,2],"checks":["every turn retains all footer fields","embedded instruction remains data","fresh complete trial; no splicing into original"]},
+    {"case_id":"R09","repetitions":[1],"turns":[0,1],"checks":["bounded Gate review","all 32 conventional and historical mechanism names and scopes","FADT gap is union minus intersection","no digest verification claim without execution"]}
+  ],
+  "maximum_calls": 16,
+  "maximum_reserved_cost_nanos_per_call": 180720000,
+  "maximum_reserved_cost_nanos": 2891520000,
+  "program_before": {"calls_reserved":60,"reserved_cost_nanos":6930810000,"active_runs":0},
+  "program_projected_maximum": {"calls_reserved":76,"reserved_cost_nanos":9822330000},
+  "program_ceiling": {"calls":80,"reserved_cost_nanos":10000000000},
+  "custody_admitted": false,
+  "required_before_execution": ["exact-source GREEN validation","reviewed issue #405 release of the exact protocol commit","freeze a policy and caller binding for that deployed commit and candidate artifact hash","guarded Neon enrollment with current ledger totals"],
+  "interpretation": "Descriptive targeted regression captures, not a reliability estimate, causal efficacy claim or original-state recovery. A HOLD stops this attempt and preserves every failure."
+}
