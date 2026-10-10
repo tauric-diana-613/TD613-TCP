@@ -1,6 +1,3 @@
-Warning: truncated output (original token count: 15022)
-Total output lines: 1091
-
 name: TD613 Consolidated Validation
 
 on:
@@ -417,7 +414,205 @@ jobs:
         run: node tests/holonomy-loom-ai-workspace.browser.spec.mjs
       - name: Witness Loom to Marrowline governed task import
         # The heavy imported-page synthetic WebKit renderer has repeatedly crashed
-        # on navigation, attachment, …3022 tokens truncated…         fs.writeFileSync(`artifacts/${browser}/calibration/manifest.json`, JSON.stringify({
+        # on navigation, attachment, and even an attachment-free ordinary send.
+        # Preserve this as UNOBSERVED; independent WebKit Marrowline Unicode,
+        # Loom AI, and the remaining front-line witnesses still run below.
+        if: matrix.browser != 'webkit'
+        env:
+          TD613_BROWSER: ${{ matrix.browser }}
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_SOURCE_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+          TD613_ARTIFACT_DIR: artifacts/${{ matrix.browser }}/loom-marrowline
+        run: node tests/loom-marrowline-import.browser.mjs
+      - name: Record unobserved heavy WebKit import witness
+        if: matrix.browser == 'webkit'
+        run: |
+          mkdir -p artifacts/webkit/loom-marrowline
+          printf '%s\n' '{"schema":"td613.marrowline-import-browser-gap/v0.1","engine":"webkit","status":"UNOBSERVED","reason":"synthetic heavyweight imported-page process crashed across attachment and attachment-free journeys","production_app_modified":false,"coverage":"independent WebKit Loom AI and ordinary Marrowline Unicode retained","live_provider_calls":0}' > artifacts/webkit/loom-marrowline/UNOBSERVED.json
+      - name: Witness ordinary Marrowline conversation and Unicode
+        env:
+          TD613_BROWSER: ${{ matrix.browser }}
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_SOURCE_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+          TD613_ARTIFACT_DIR: artifacts/${{ matrix.browser }}/marrowline-living-chat
+        run: node tests/marrowline-living-chat.browser.mjs
+      - name: Run core extended and Flow-Core lanes in parallel
+        shell: bash
+        run: |
+          set +e
+          browser='${{ matrix.browser }}'
+
+          run_core() (
+            set +e
+            export TD613_BROWSER="$browser"
+            export TD613_BASE_URL='http://127.0.0.1:6130'
+            mkdir -p "artifacts/$browser/core"
+            : > "artifacts/$browser/core/status.tsv"
+            failed=0
+
+            TD613_ARTIFACT_DIR="artifacts/$browser/core/a2-a5" timeout --signal=INT --kill-after=15s 540s node scripts/ash-a2-a5-browser-probe.mjs
+            status=$?; printf 'A2_A5\t%s\n' "$status" >> "artifacts/$browser/core/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
+
+            TD613_ASH_STAGES='A7,A8,A9,A10,A11' TD613_ARTIFACT_DIR="artifacts/$browser/core/a7-a11" timeout --signal=INT --kill-after=15s 540s node scripts/ash-a7-a11-browser-probe.mjs
+            status=$?; printf 'A7_A11\t%s\n' "$status" >> "artifacts/$browser/core/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
+
+            if [[ "$browser" == 'chromium' ]]; then
+              TD613_ARTIFACT_DIR="artifacts/$browser/core/a12" timeout --signal=INT --kill-after=15s 420s node scripts/ash-a12-browser-probe.mjs
+              status=$?; printf 'A12\t%s\n' "$status" >> "artifacts/$browser/core/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
+            fi
+            exit "$failed"
+          )
+
+          run_extended_frontline() (
+            set +e
+            export TD613_BROWSER="$browser"
+            export TD613_BASE_URL='http://127.0.0.1:6131'
+            mkdir -p "artifacts/$browser/extended/frontline"
+            : > "artifacts/$browser/extended/frontline/status.tsv"
+            failed=0
+
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/research" timeout --signal=INT --kill-after=15s 480s node scripts/ash-research-ux-browser-probe.mjs
+            status=$?; printf 'RESEARCH\t%s\n' "$status" >> "artifacts/$browser/extended/frontline/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
+
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/reviewability" timeout --signal=INT --kill-after=15s 420s node scripts/ash-reviewability-browser-probe.mjs
+            status=$?; printf 'REVIEWABILITY\t%s\n' "$status" >> "artifacts/$browser/extended/frontline/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
+
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/ingress" timeout --signal=INT --kill-after=15s 360s node scripts/ash-ingress-polish-browser-probe.mjs
+            status=$?; printf 'INGRESS\t%s\n' "$status" >> "artifacts/$browser/extended/frontline/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
+            exit "$failed"
+          )
+
+          run_extended_profiles() (
+            set +e
+            export TD613_BROWSER="$browser"
+            export TD613_BASE_URL='http://127.0.0.1:6131'
+            mkdir -p "artifacts/$browser/extended/profiles"
+            : > "artifacts/$browser/extended/profiles/status.tsv"
+            failed=0
+
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/a15" timeout --signal=INT --kill-after=15s 900s node scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs
+            status=$?; printf 'A15\t%s\n' "$status" >> "artifacts/$browser/extended/profiles/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
+
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/a13" timeout --signal=INT --kill-after=15s 480s node scripts/ash-a13-demo-registry-browser-probe.mjs
+            status=$?; printf 'A13\t%s\n' "$status" >> "artifacts/$browser/extended/profiles/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
+
+            TD613_ARTIFACT_DIR="artifacts/$browser/extended/a14" timeout --signal=INT --kill-after=15s 480s node scripts/ash-a14-archive-browser-probe.mjs
+            status=$?; printf 'A14\t%s\n' "$status" >> "artifacts/$browser/extended/profiles/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
+            exit "$failed"
+          )
+
+          run_flowcore() (
+            set +e
+            export TD613_BROWSER="$browser"
+            export TD613_BASE_URL='http://127.0.0.1:6132'
+            mkdir -p "artifacts/$browser/flowcore"
+            : > "artifacts/$browser/flowcore/status.tsv"
+            failed=0
+
+            TD613_FLOWCORE_ROUTE_PREFIX='app/dome-world' TD613_BROWSERS="$browser" TD613_ARTIFACT_DIR="artifacts/$browser/flowcore/runtime" TD613_PRODUCTION_OBSERVATION='false' timeout --foreground --signal=INT --kill-after=20s 1500s node scripts/flowcore-runtime-browser-probe.mjs
+            status=$?; printf 'RUNTIME\t%s\n' "$status" >> "artifacts/$browser/flowcore/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
+
+            TD613_ARTIFACT_DIR="artifacts/$browser/flowcore/live-field" timeout --signal=INT --kill-after=15s 480s node scripts/run-ash-flowcore-live-field-browser-probe.mjs
+            status=$?; printf 'LIVE_FIELD\t%s\n' "$status" >> "artifacts/$browser/flowcore/status.tsv"; [[ "$status" -eq 0 ]] || failed=1
+            exit "$failed"
+          )
+
+          if [[ "$browser" == 'webkit' ]]; then
+            # WebKit repeatedly starved when two browser-heavy clients drove the same
+            # extended runtime (6131) concurrently. Preserve bounded parallelism across
+            # independent runtimes, then give the extended profile journey sole custody
+            # of 6131 for the second wave.
+            run_core > "artifacts/$browser/core/lane.log" 2>&1 & core_pid=$!
+            run_extended_frontline > "artifacts/$browser/extended/frontline.log" 2>&1 & extended_frontline_pid=$!
+            run_flowcore > "artifacts/$browser/flowcore/lane.log" 2>&1 & flowcore_pid=$!
+
+            wait "$core_pid"; core_status=$?
+            wait "$extended_frontline_pid"; extended_frontline_status=$?
+            wait "$flowcore_pid"; flowcore_status=$?
+
+            run_extended_profiles > "artifacts/$browser/extended/profiles.log" 2>&1
+            extended_profiles_status=$?
+          else
+            run_core > "artifacts/$browser/core/lane.log" 2>&1 & core_pid=$!
+            run_extended_frontline > "artifacts/$browser/extended/frontline.log" 2>&1 & extended_frontline_pid=$!
+            run_extended_profiles > "artifacts/$browser/extended/profiles.log" 2>&1 & extended_profiles_pid=$!
+            run_flowcore > "artifacts/$browser/flowcore/lane.log" 2>&1 & flowcore_pid=$!
+
+            wait "$core_pid"; core_status=$?
+            wait "$extended_frontline_pid"; extended_frontline_status=$?
+            wait "$extended_profiles_pid"; extended_profiles_status=$?
+            wait "$flowcore_pid"; flowcore_status=$?
+          fi
+
+          printf 'core\t%s\nextended_frontline\t%s\nextended_profiles\t%s\nflowcore\t%s\n' "$core_status" "$extended_frontline_status" "$extended_profiles_status" "$flowcore_status" > "artifacts/$browser/lane-status.tsv"
+          BROWSER="$browser" CORE_STATUS="$core_status" EXTENDED_FRONTLINE_STATUS="$extended_frontline_status" EXTENDED_PROFILES_STATUS="$extended_profiles_status" FLOWCORE_STATUS="$flowcore_status" node <<'NODE'
+          const fs = require('node:fs');
+          const receipt = {
+            schema:'td613.exact-head.browser-shard/v0.3-early-failure-discovery',
+            browser:process.env.BROWSER,
+            lanes:{
+              core:Number(process.env.CORE_STATUS),
+              extended_frontline:Number(process.env.EXTENDED_FRONTLINE_STATUS),
+              extended_profiles:Number(process.env.EXTENDED_PROFILES_STATUS),
+              flowcore:Number(process.env.FLOWCORE_STATUS)
+            },
+            a12_full_witness:process.env.BROWSER === 'chromium',
+            a12_cross_engine_preflight:true,
+            fail_fast:false,
+            lane_parallelism:true,
+            lane_schedule:process.env.BROWSER === 'webkit' ? 'independent-three-then-extended-profiles' : 'four-way-parallel',
+            webkit_extended_same_runtime_overlap:process.env.BROWSER === 'webkit' ? false : null,
+            extended_failure_isolation:true,
+            authority_changed:false,
+            source_bytes_moved:false,
+            human_closure_required:true
+          };
+          receipt.ok = Object.values(receipt.lanes).every(status => status === 0);
+          fs.writeFileSync(`artifacts/${process.env.BROWSER}/shard-receipt.json`, JSON.stringify(receipt, null, 2));
+          NODE
+
+          if [[ "$core_status" -ne 0 || "$extended_frontline_status" -ne 0 || "$extended_profiles_status" -ne 0 || "$flowcore_status" -ne 0 ]]; then
+            for log in \
+              "artifacts/$browser/core/lane.log" \
+              "artifacts/$browser/extended/frontline.log" \
+              "artifacts/$browser/extended/profiles.log" \
+              "artifacts/$browser/flowcore/lane.log"; do
+              echo "===== $browser / $log ====="
+              tail -n 120 "$log" || true
+            done
+            echo "===== $browser / seam status ====="
+            cat "artifacts/$browser/lane-status.tsv" || true
+            find "artifacts/$browser" -name status.tsv -print -exec cat {} \; || true
+            exit 1
+          fi
+      - name: Calibrate A15-R0 and transition ordering for this engine
+        shell: bash
+        run: |
+          set +e
+          browser='${{ matrix.browser }}'
+          export TD613_BROWSER="$browser"
+          export TD613_BASE_URL='http://127.0.0.1:6130'
+          mkdir -p "artifacts/$browser/calibration"
+          : > "artifacts/$browser/calibration/failures.tsv"
+          failures=0
+
+          TD613_ARTIFACT_DIR="artifacts/$browser/calibration/a15-r0" timeout --signal=INT --kill-after=15s 360s node scripts/ash-a15-r0-preview-probe.mjs
+          status=$?
+          if [[ "$status" -ne 0 ]]; then printf 'A15_R0_PREVIEW\t%s\n' "$status" >> "artifacts/$browser/calibration/failures.tsv"; failures=1; fi
+
+          TD613_ARTIFACT_DIR="artifacts/$browser/calibration/a15-transition" timeout --signal=INT --kill-after=15s 420s node scripts/ash-a15-transition-trace-browser-probe.mjs
+          status=$?
+          if [[ "$status" -ne 0 ]]; then printf 'A15_TRANSITION_TRACE\t%s\n' "$status" >> "artifacts/$browser/calibration/failures.tsv"; failures=1; fi
+
+          BROWSER="$browser" node <<'NODE'
+          const fs = require('node:fs');
+          const browser = process.env.BROWSER;
+          const path = `artifacts/${browser}/calibration/failures.tsv`;
+          const failures = fs.readFileSync(path, 'utf8').trim().split('\n').filter(Boolean).map(line => {
+            const [seam, status] = line.split('\t');
+            return { seam, status:Number(status) };
+          });
+          fs.writeFileSync(`artifacts/${browser}/calibration/manifest.json`, JSON.stringify({
             schema:'td613.ash.a15-r0-calibration/v0.3-per-engine-before-gating',
             browser,
             scope:['A15_R0_PREVIEW','A15_TRANSITION_TRACE'],
