@@ -1,0 +1,29 @@
+{
+  "schema": "td613.loom.receiver-repair-artifact/v0.1",
+  "source_revision": "983c957e989676fed7525be3835f8b8b06957e76",
+  "created_at": "2026-10-10T00:22:19.251Z",
+  "artifact_status": "FROZEN_SOURCE_CANDIDATE; PROVIDER_RETEST_NOT_RUN",
+  "session_root_ref": "7c33bbab9e0f1d8b6fbe31e5213a05b25779b428151ad41025fe4af388ee10b9",
+  "selected_source_count": 0,
+  "captured_gate_report_count": 0,
+  "admitted_work_unit_count": 0,
+  "output_protocol_schema": "td613.loom.output-footer/v0.4",
+  "checks": [
+    "independent canonical-core recomputation",
+    "root packet digest match",
+    "no seeded documents, reports or admitted work"
+  ],
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "files": [
+    {
+      "name": "portable-loom-standard.md",
+      "bytes": 91296,
+      "sha256": "e6811ad6b15ab40be189b1882c588380fbafbede81fd0d14d3482f00b7e9f7ea"
+    },
+    {
+      "name": "portable-loom-standard.json",
+      "bytes": 86170,
+      "sha256": "e38786104538c49ef3a411ccd15d88cef59b4d15d72592d0b00e7d92a32a59b0"
+    }
+  ]
+}
