@@ -741,6 +741,7 @@ body:has(#loomAiWorkspace[data-first-crossing="active"]) .loom-topbar a[href*="l
 /* The fictional private note is a first-selection contrast only. Its verified
    exclusion remains part of the fixture and the later privacy check. */
 #loomAiWorkspace[data-first-crossing="active"] #loomFirstCrossingPrivate{
+  display:none!important;/* Exclusion remains in the local fixture/guard, never a zombie banner. */
   grid-column:1/-1;min-height:28px;justify-content:center;flex-wrap:wrap;
   padding:3px 8px;gap:8px 12px;color:#b5c2cf;
   border:0!important;background:transparent!important;
