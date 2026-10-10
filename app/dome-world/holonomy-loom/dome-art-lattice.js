@@ -61,3 +61,44 @@ export function computeGradientMisfit(x=0, y=0, opts={}){
   const misfit = Math.hypot(gT[0]-gQ[0], gT[1]-gQ[1]);
   return { schema:'td613.heterostratigraphic.gradient-misfit/v0.4.3', x:round(x,3), y:round(y,3), g_triangular:gT.map(v=>round(v,6)), g_quasiperiodic:gQ.map(v=>round(v,6)), gradient_misfit:round(clamp(misfit*16),6), claim_ceiling:'heterostratigraphic-visual-diagnostic-not-material-proof' };
 }
+
+
+/**
+ * Analytic, single-pass derivative projection for the 39-carrier motion field.
+ * The public canonical samplers above are unchanged. This uses the exact
+ * centered-difference trigonometric identity:
+ *   (cos(a+d)-cos(a-d))/(2*eps) = -sin(a)*sin(d)/eps
+ * instead of recomputing 8 complete 10-term lattice samples per carrier/frame.
+ * It is a presentation optimization, NOT a new empirical or geometric claim.
+ */
+export function computeHeterostratigraphicMotionSample(x=0,y=0,opts={}){
+  const k=opts.k||.036, theta=opts.theta??.055;
+  const kPhi=opts.kPhi||.026,phase=opts.phase||0,eps=opts.eps||2.5;
+  let tri=0,quasi=0,gTx=0,gTy=0,gQx=0,gQy=0;
+  for(let i=0;i<3;i++){
+    const base=i*Math.PI/3;
+    for(const angle of [base,base+theta]){
+      const cx=Math.cos(angle),cy=Math.sin(angle);
+      const arg=k*(cx*x+cy*y),sin=Math.sin(arg);
+      tri+=Math.cos(arg);
+      gTx-=sin*Math.sin(k*cx*eps)/eps;
+      gTy-=sin*Math.sin(k*cy*eps)/eps;
+    }
+  }
+  tri/=6;gTx/=6;gTy/=6;
+  const phi=(1+Math.sqrt(5))/2;
+  for(let m=0;m<10;m++){
+    const angle=m*Math.PI/5, factor=m%2?1:phi/2;
+    const ax=kPhi*Math.cos(angle)*factor,ay=kPhi*Math.sin(angle)*factor;
+    const arg=ax*x+ay*y+Math.sin((m+1)*phi+phase)*Math.PI;
+    const sin=Math.sin(arg);
+    quasi+=Math.cos(arg);
+    gQx-=sin*Math.sin(ax*eps)/eps;
+    gQy-=sin*Math.sin(ay*eps)/eps;
+  }
+  return {
+    triangular:round(tri/1,6),quasiperiodic:round(quasi/10,6),
+    g_triangular:[round(gTx,6),round(gTy,6)],
+    g_quasiperiodic:[round(gQx/10,6),round(gQy/10,6)]
+  };
+}
