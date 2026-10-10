@@ -1,3 +1,4 @@
+import './loom-assay-a19-activation.test.mjs';
 import './loom-assay-a18-activation.test.mjs';
 import './loom-assay-a17-activation.test.mjs';
 import './loom-assay-a16-activation.test.mjs';
@@ -8,7 +9,7 @@ import { createRequire } from 'node:module';
 import { generateKeyPairSync, sign } from 'node:crypto';
 import { reserveCall, completeCall, inspectRun } from '../neon/functions/loom-assay-budget/ledger.mjs';
 import { verifyVercelOidc } from '../neon/functions/loom-assay-budget/vercel-identity.mjs';
-import { sha256, canonicalJson, ASSAY_A18_PROGRAM, ASSAY_RECOVERY_POLICY_SCHEMA, ASSAY_RECOVERY_PROGRAM, ASSAY_RECOVERY_RUN_IDS } from '../server/loom-assay-contract.js';
+import { sha256, canonicalJson, ASSAY_A18_PROGRAM, ASSAY_A19_PROGRAM, ASSAY_RECOVERY_POLICY_SCHEMA, ASSAY_RECOVERY_PROGRAM, ASSAY_RECOVERY_RUN_IDS } from '../server/loom-assay-contract.js';
 const require = createRequire(new URL('../neon/functions/loom-assay-budget/package.json', import.meta.url));
 const { PGlite } = require('@electric-sql/pglite');
 const digest = 'a'.repeat(64), head = 'b'.repeat(40);
@@ -234,3 +235,32 @@ test('a18 carries five calls after 77 historical reservations and rejects the 83
 });
 
 
+
+
+test('a19 admits two same-run R09 turns after 81 reservations and stops at the 88-call ceiling', async () => {
+  for (const historicalCalls of [81, 87]) {
+    const p = recoveryPolicy(ASSAY_A19_PROGRAM.run_ids.at(-1));
+    p.program = structuredClone(ASSAY_A19_PROGRAM);
+    p.binding.limits.max_calls = 2; p.binding.limits.max_cost_usd = 0.3;
+    const { db, pool } = await setup(p);
+    try {
+      const legacy = policy(); legacy.run_id = ASSAY_A19_PROGRAM.run_ids[0];
+      await insertRun(db, legacy, {status:'HELD',calls:historicalCalls,cost:'9251949000'});
+      const t0 = {trial_id:'FIRST_CONFIGURED_RECEIVER-R09-1',case_id:'R09',role:'RECEIVER',turn_index:0};
+      const first = await reserveCall(pool,{...recoveryInput(p.run_id),trial:t0});
+      await completeCall(pool,{...complete(first),run_id:p.run_id});
+      const t1 = {...recoveryInput(p.run_id),trial:{...t0,turn_index:1},prior_assistant_sha256:['e'.repeat(64)]};
+      if (historicalCalls === 81) {
+        const second = await reserveCall(pool,t1); await completeCall(pool,{...complete(second),run_id:p.run_id});
+        const totals=(await db.query('SELECT SUM(calls_reserved) AS calls,SUM(reserved_cost_nanos)::text AS cost FROM td613_assay_runs')).rows[0];
+        assert.equal(Number(totals.calls),83); assert.equal(totals.cost,'9463389000');
+      } else {
+        await assert.rejects(reserveCall(pool,t1),/PROGRAM_BUDGET_EXHAUSTED/);
+        const totals=(await db.query('SELECT SUM(calls_reserved) AS calls FROM td613_assay_runs')).rows[0];
+        assert.equal(Number(totals.calls),88);
+      }
+      const old=(await db.query('SELECT status,calls_reserved FROM td613_assay_runs WHERE run_id=$1',[legacy.run_id])).rows[0];
+      assert.deepEqual(old,{status:'HELD',calls_reserved:historicalCalls});
+    } finally { await db.close(); }
+  }
+});

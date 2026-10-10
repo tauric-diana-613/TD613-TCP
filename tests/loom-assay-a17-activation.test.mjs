@@ -1,13 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { ASSAY_RECOVERY_POLICY_SCHEMA, ASSAY_RECOVERY_PROGRAM, ASSAY_RECOVERY_RUN_IDS, validateAssayPolicy, requireTrialFamily } from '../server/loom-assay-contract.js';
+import { ASSAY_RECOVERY_POLICY_SCHEMA, ASSAY_RECOVERY_PROGRAM, ASSAY_RECOVERY_RUN_IDS, ASSAY_ACTIVATION_RUN_IDS, validateAssayPolicy, requireTrialFamily } from '../server/loom-assay-contract.js';
 
 test('a17 admits exactly R06-2 with three calls inside unchanged program caps', () => {
   const run_id = 'portable-loom-first-receiver-20261009-a17';
   const config = JSON.parse(readFileSync(new URL('../server/loom-assay-run-config.json', import.meta.url)));
   assert.ok(ASSAY_RECOVERY_RUN_IDS.includes(run_id));
-  assert.deepEqual(config.run_ids, ASSAY_RECOVERY_RUN_IDS);
+  assert.deepEqual(config.run_ids, ASSAY_ACTIVATION_RUN_IDS);
   assert.equal(ASSAY_RECOVERY_PROGRAM.max_calls, 80);
   assert.equal(ASSAY_RECOVERY_PROGRAM.max_cost_usd, 10);
   const p = JSON.parse(readFileSync(new URL('../research/portable-loom-server-transport-20261009/POLICY.template.json', import.meta.url)));
