@@ -42,7 +42,7 @@ if (baselineProjection.functions?.['api/khonapolit.js']) {
   // inputs in the existing function. Reject additions or substitutions before
   // normalizing this separately governed file-carriage allowance.
   assert.equal(baselineProjection.functions['api/khonapolit.js'].includeFiles,
-    '{server/loom-assay-run-config.json,research/portable-loom-server-transport-20261009/TRIAL_MANIFEST.json,research/portable-loom-receiver-repair-20261010/candidate-artifact/portable-loom-standard.md,research/portable-loom-a20-activation-20261010/TRIAL_MANIFEST_A20.json,research/portable-loom-a20-activation-20261010/portable-loom-conformance-candidate.md}',
+    '{server/loom-assay-run-config.json,research/portable-loom-server-transport-20261009/TRIAL_MANIFEST.json,research/portable-loom-receiver-repair-20261010/candidate-artifact/portable-loom-standard.md,research/portable-loom-a20-activation-20261010/TRIAL_MANIFEST_A20.json,research/portable-loom-a20-activation-20261010/candidate-reviewed/portable-loom-conformance-candidate.md}',
     'the bounded Loom transport carries the historical reviewed three files plus exactly the scoped proposed A20 manifest and exact candidate');
   delete baselineProjection.functions['api/khonapolit.js'].includeFiles;
   baselineProjection.functions['api/khonapolit.js'].maxDuration = 60;
