@@ -43,15 +43,70 @@ function claimsVerified(text) {
   const remaining = text.replaceAll('_', ' ').replace(QUALIFICATION, '');
   return /\b(?:VERIFIED|ADMITTED|AUTHENTICATED)\b/i.test(remaining);
 }
+const stable = value => Array.isArray(value) ? '[' + value.map(stable).join(',') + ']'
+  : value && typeof value === 'object' ? '{' + Object.keys(value).sort().map(k => JSON.stringify(k) + ':' + stable(value[k])).join(',') + '}' : JSON.stringify(value);
+function parseCapturedJson(wire) {
+  const parsed = JSON.parse(wire), stack = [];
+  // JSON.parse alone silently keeps the last duplicate key. Refuse that
+  // ambiguity before comparing the captured declaration with a sidecar.
+  const tokens = wire.match(/"(?:\\[\s\S]|[^"\\])*"|[{}\[\]:,]/g) || [];
+  for (let i = 0; i < tokens.length; i++) {
+    const token = tokens[i];
+    if (token === '{') stack.push(new Set());
+    else if (token === '[') stack.push(null);
+    else if (token === '}' || token === ']') stack.pop();
+    else if (token.startsWith('"') && tokens[i + 1] === ':') {
+      const key = JSON.parse(token), keys = stack.at(-1);
+      if (keys.has(key)) throw new TypeError('Captured JSON contains a duplicate key.');
+      keys.add(key);
+    }
+  }
+  return parsed;
+}
+function capturedReceipt(answer, presentationFormat) {
+  const candidates = [], malformed = [];
+  const collect = value => {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return;
+    if (Object.hasOwn(value, 'loom_session_receipt')) candidates.push(value.loom_session_receipt);
+    else if (Object.hasOwn(value, 'receiver_declaration') || value.schema === SCHEMA) candidates.push(value);
+  };
+  let presentation = answer;
+  if (presentationFormat === 'STRICT_JSON_TASK_RESULT') {
+    const outer = parseCapturedJson(answer);
+    if (!outer || typeof outer !== 'object' || Array.isArray(outer) || !nonempty(outer.answer, 180000)) throw new TypeError('Strict JSON task result requires an answer string.');
+    collect(outer); presentation = outer.answer;
+  } else if (presentationFormat !== 'PROSE') throw new TypeError('Unsupported answer presentation format.');
+  for (const match of presentation.matchAll(/```(?:json)?[ \t]*\r?\n([\s\S]*?)\r?\n```/g)) {
+    try { collect(parseCapturedJson(match[1])); }
+    catch { if (/"(?:loom_session_receipt|receiver_declaration)"/.test(match[1])) malformed.push('MALFORMED_CAPTURED_RECEIPT'); }
+  }
+  return { presentation, count: candidates.length, malformed: malformed.length,
+    receipt: candidates.length === 1 ? snapshot(candidates[0]) : null };
+}
+function receiptBodyQualification(body) {
+  // A bounded textual signal, not semantic adjudication of quoted claims.
+  const prose = body.replace(/```[\s\S]*?```/g, '').replace(/`[^`]*`/g, '');
+  return prose.split(/[.!?\n]/).some(sentence => /\b(?:receipts?|receiver declarations?)\b/i.test(sentence)
+    && qualified(sentence) && !claimsVerified(sentence));
+}
 
 export function inspectPortableLoomReceiverConformance(input) {
-  const { answer, receipt = null, expected, source_context = null, receipt_required = true, review_body_required = false } = snapshot(input);
+  const { answer, receipt: sidecar = null, expected, source_context = null, receipt_required = true, review_body_required = true, presentation_format = 'PROSE' } = snapshot(input);
   if (!nonempty(answer, 180000) || typeof receipt_required !== 'boolean' || typeof review_body_required !== 'boolean') throw new TypeError('Bounded answer and Boolean inspection flags required.');
   if (!expected || !digest(expected.session_root_ref) || !digest(expected.policy_commitment)
     || !(expected.anchor_work_unit_ref === null || digest(expected.anchor_work_unit_ref))
     || !(expected.operator_task === null || nonempty(expected.operator_task, 12000))) throw new TypeError('Explicit origin root, policy, anchor and task observation required.');
   const findings = [], checks = {};
   const fail = code => findings.push(code);
+  const captured = capturedReceipt(answer, presentation_format), receipt = captured.receipt;
+  const inspectReceipt = receipt_required || sidecar !== null || captured.count > 0 || captured.malformed > 0;
+  checks.captured_receipt_count = captured.count;
+  checks.receipt_bound_to_answer = captured.count === 1 && captured.malformed === 0;
+  checks.sidecar_matches_captured_receipt = sidecar === null ? null : checks.receipt_bound_to_answer && stable(sidecar) === stable(receipt);
+  if (inspectReceipt) {
+    if (!checks.receipt_bound_to_answer) fail(captured.count > 1 ? 'CAPTURED_RECEIPT_AMBIGUOUS' : captured.malformed ? 'CAPTURED_RECEIPT_MALFORMED' : 'CAPTURED_RECEIPT_MISSING');
+    if (sidecar !== null && !checks.sidecar_matches_captured_receipt) fail('SIDECAR_RECEIPT_DIFFERS_FROM_CAPTURE');
+  }
   checks.receipt_shape = receipt !== null && !Array.isArray(receipt)
     && equalSet(Object.keys(receipt), FIELDS) && receipt.schema === SCHEMA
     && digest(receipt.session_root_ref) && digest(receipt.policy_commitment)
@@ -62,20 +117,24 @@ export function inspectPortableLoomReceiverConformance(input) {
   checks.task_binding_observed = expected.operator_task !== null;
   checks.reference_match = checks.receipt_shape && ['session_root_ref', 'policy_commitment', 'anchor_work_unit_ref'].every(k => receipt[k] === expected[k])
     && (expected.operator_task === null || receipt.operator_task === expected.operator_task);
-  const lastLines = answer.trimEnd().split(/\r?\n/).slice(-2).join('\n');
-  const receiptLabel = /(?:^|[|·\n])\s*Receipt:\s*([^|·\n]+)/i.exec(lastLines)?.[1]?.trim() ?? null;
+  const lines = captured.presentation.trimEnd().split(/\r?\n/), tailStart = Math.max(0, lines.length - 2);
+  const relativeStart = lines.slice(tailStart).findIndex(line => /^\s*(?:Phase:|𝌋 Loom(?:[ ·]|$))/.test(line));
+  const footerStart = relativeStart < 0 ? lines.length : tailStart + relativeStart;
+  const footer = lines.slice(footerStart).join('\n');
+  const labels = [...footer.matchAll(/(?:^|[|·\n])\s*Receipt:\s*([^|·\n]+)/gi)].map(match => match[1].trim());
+  const receiptLabel = labels.length === 1 ? labels[0] : null;
   checks.footer_receipt_qualified = receiptLabel !== null && qualified(receiptLabel) && !claimsVerified(receiptLabel)
-    && /米 Check Loom Gate ⟐$/.test(answer.trimEnd());
-  checks.review_body_qualified = !review_body_required || qualified(answer.slice(0, Math.max(0, answer.length - lastLines.length)));
-  if (receipt_required || receipt !== null) {
+    && /米 Check Loom Gate ⟐$/.test(footer);
+  checks.review_body_qualified = review_body_required ? receiptBodyQualification(lines.slice(0, footerStart).join('\n')) : null;
+  if (inspectReceipt) {
     if (!checks.receipt_shape) fail('RECEIPT_SHAPE_INVALID');
     else if (!checks.reference_match) fail('RECEIPT_ORIGIN_REFERENCE_MISMATCH');
     if (!checks.task_binding_observed) fail('ORIGIN_TASK_BINDING_UNOBSERVED');
     if (!checks.footer_receipt_qualified) fail('RECEIPT_FOOTER_QUALIFICATION_MISSING_OR_OVERCLAIMED');
-    if (!checks.review_body_qualified) fail('RECEIPT_REVIEW_BODY_QUALIFICATION_MISSING');
+    if (review_body_required && !checks.review_body_qualified) fail('RECEIPT_REVIEW_BODY_QUALIFICATION_MISSING');
   }
   let sourceStatus = 'NOT_APPLICABLE', unresolvedSourceMarkerPresent = null;
-  if (receipt_required || receipt !== null) {
+  if (inspectReceipt) {
     sourceStatus = 'UNOBSERVED';
     if (source_context === null) fail('ORIGIN_SOURCE_ACCOUNTING_UNOBSERVED');
     else {
@@ -98,9 +157,9 @@ export function inspectPortableLoomReceiverConformance(input) {
   }
   checks.source_accounting = sourceStatus;
   return freeze({ schema: 'td613.loom.receiver-conformance-inspection/v0.1',
-    status: findings.length ? 'HOLD' : receipt === null ? 'NO_TASK_RECEIPT_REQUIRED' : 'QUALIFIED_DECLARATION',
+    status: findings.length ? 'HOLD' : !inspectReceipt ? 'NO_TASK_RECEIPT_REQUIRED' : review_body_required ? 'QUALIFIED_DECLARATION' : 'PARTIAL_DECLARATION_INSPECTION',
     checks, findings, receipt_label: receiptLabel, unresolved_source_marker_present: unresolvedSourceMarkerPresent,
     receipt_signatures_verified: false, receiver_enforcement_observed: false,
     admission_authority: false, local_ledger_advanced: false, provider_requests: 0,
-    claim_ceiling: 'Deterministic declaration and origin-supplied accounting comparisons only; no semantic truth, hidden source-use, authentication or admission proof.' });
+    claim_ceiling: 'Captured receipt parsing, bounded textual qualification signals and origin-supplied accounting comparisons only; no semantic truth, hidden source-use, authentication or admission proof.' });
 }
