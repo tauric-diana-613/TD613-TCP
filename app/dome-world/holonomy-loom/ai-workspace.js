@@ -329,7 +329,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     // The hõt/cōl source gesture opens only after the à gather field has
     // actually completed its finite presentation. A click never grants it.
     if(firstCrossingStep===0 && firstCrossingSelected.has('brief') && !firstCrossingSourceUnlocked){
-      if(projectionCurrent && (snapshot.reducedMotion || snapshot.progress>=.82)){
+      if(projectionCurrent && (snapshot.reducedMotion || snapshot.progress>=1)){
         firstCrossingSourceUnlocked=true;
         root.dataset.firstCrossingGather='complete';
         renderFirstCrossingSelection();
