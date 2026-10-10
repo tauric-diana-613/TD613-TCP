@@ -44,10 +44,14 @@ test('Vercel A20 bundle includes the manifest-selected reviewed candidate, and n
   const included=config.functions['api/khonapolit.js'].includeFiles;
   const listed=included.slice(1,-1).split(',');
   const manifestPath='research/portable-loom-a20-activation-20261010/TRIAL_MANIFEST_A20.json';
-  assert(listed.includes(manifestPath),'A20 manifest must be Vercel-carried');
-  assert(listed.includes(manifest.artifact_path),'Vercel must carry artifact at manifest path');
-  assert(!listed.includes('research/portable-loom-a20-activation-20261010/portable-loom-conformance-candidate.md'),'stale path must be absent');
-  for(const p of listed)assert.doesNotThrow(()=>readFileSync(new URL('../'+p,import.meta.url)),'missing Vercel-carried file: '+p);
+  const a20Prefix='research/portable-loom-a20-activation-20261010/';
+  assert(included.length<=256,'Vercel includeFiles must remain under platform schema bound');
+  assert.deepEqual(listed.slice(0,3),['server/loom-assay-run-config.json','research/portable-loom-server-transport-20261009/TRIAL_MANIFEST.json','research/portable-loom-receiver-repair-20261010/candidate-artifact/portable-loom-standard.md']);
+  assert.equal(listed[3],a20Prefix+'**','A20 candidate must be carried by bounded research-directory glob');
+  assert.equal(listed.length,4,'Do not widen file carriage beyond the reviewed scope');
+  assert(manifestPath.startsWith(a20Prefix));
+  assert(manifest.artifact_path.startsWith(a20Prefix));
+  for(const p of [...listed.slice(0,3),manifestPath,manifest.artifact_path])assert.doesNotThrow(()=>readFileSync(new URL('../'+p,import.meta.url)),'missing Vercel-carried file: '+p);
   assert.equal(sha256(readFileSync(new URL('../'+manifest.artifact_path,import.meta.url))),manifest.artifact_sha256);
 });
 
