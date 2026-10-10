@@ -6,6 +6,7 @@ import marrowlineAttachmentHandler from '../server/marrowline-attachment-quality
 import khonapolitHandler from '../server/khonapolit-quality.js';
 import loomAdvisoryHandler from '../server/holonomy-loom-khonapolit-advisory.js';
 import loomAssayHandler from '../server/loom-assay.js';
+import loomAssayCredentialHandler from '../server/loom-assay-credential.js';
 import {
   GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
   withGeminiGenerationProfile
@@ -35,6 +36,7 @@ function requestHasAttachments(req = {}) {
 }
 
 export default function handler(req, res) {
+  if (requestedOperation(req) === 'loom-assay-credential') return loomAssayCredentialHandler(req, res);
   if (requestedOperation(req) === 'loom-assay') return loomAssayHandler(req, res);
   if (requestedOperation(req) === 'loom-advisory') return withGeminiGenerationProfile(
     GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
