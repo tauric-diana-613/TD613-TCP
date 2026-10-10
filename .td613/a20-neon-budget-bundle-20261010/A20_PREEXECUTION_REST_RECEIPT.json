@@ -1,0 +1,77 @@
+{
+  "schema": "td613.a20.preexecution-rest/v1",
+  "recorded_for": "2026-10-10",
+  "run_id": "portable-loom-first-receiver-20261010-a20",
+  "status": "A20_RUNTIME_BOUND_BEFORE_EXECUTION_AUTHORIZATION",
+  "scope": "GH merge + Vercel #405 source release + independently compiled Neon budget runtime; no A20 freeze, enrollment, reservation, provider or custody admission",
+  "source": {
+    "original_source_merge": "faa55160c3ea81cffb1b2c1e00f770136757e76c",
+    "packaging_repair_pr": 1451,
+    "packaging_repair_source": "56f93f3d8b7789eb909e436a52091f3174ac5a05",
+    "packaging_CI_run": 38068439501,
+    "packaging_CI_conclusion": "success",
+    "vercel_includeFiles_length": 247,
+    "vercel_includeFiles_limit": 256,
+    "reviewed_candidate_sha256": "fcb4d3d82f4919d23c13d729144ffb21860e07b292d0f384dd9e63cecda92021",
+    "a20_manifest_path": "research/portable-loom-a20-activation-20261010/TRIAL_MANIFEST_A20.json",
+    "release_gate_issue": 405,
+    "release_run": 38068620540,
+    "release_result": "success",
+    "vercel_release_commit": "2ea0bebf6f03e6ba58b22434a991b5ac6c4ed070",
+    "relock_commit": "ad058966708a98f2310fff3414c89f16b6c42188",
+    "vercel_deployment_id": "dpl_3Wjh7VB587ri5xqGrYZ12CpGvK4M",
+    "vercel_deployment_state": "READY",
+    "vercel_gate_checks": [
+      "exact_source_receipt=PASS",
+      "exact_source_content=PASS",
+      "stale_queue_stability_window=PASS",
+      "post_witness_source_guard=PASS"
+    ]
+  },
+  "neon": {
+    "project_id": "late-glade-40477105",
+    "branch_id": "br-round-union-b5v3ludi",
+    "function_slug": "loomassaybudget",
+    "build_workflow_run": 38069232459,
+    "build_workflow_status": "success",
+    "bundle_provenance_commit": "f70a22ddda870ea4d243298a2ab3975f2c5917ca",
+    "bundle_zip_sha256": "90d9538f80d07e533952d6ca6c89d64817dbc317065b9bc0840f9195c61071f9",
+    "bundle_index_sha256": "b320f683c0dcbb73cd26659d672d6de6564cfe6e20b32d58b64bb0a4d04620de",
+    "bundle_zip_bytes": 45332,
+    "deployment_before": "8 (active/completed; source contents not independently witnessed)",
+    "deployment_after": 9,
+    "deployment_after_status": "active/completed",
+    "ledger_all_runs": 19,
+    "ledger_active_runs": 0,
+    "ledger_a20_runs": 0,
+    "ledger_total_reserved_calls": 83,
+    "ledger_total_reserved_cost_nanos": "9474171750",
+    "runtime_negative_http_authentication": "UNMEASURED_FROM_THIS_SESSION_DNS_UNAVAILABLE",
+    "runtime_model_behavior": "UNMEASURED"
+  },
+  "planned_execution": {
+    "sequence": [
+      "R06-1:t0",
+      "R06-1:t1 same run predecessor",
+      "R02-1:t0",
+      "R02-1:t1 same run predecessor"
+    ],
+    "max_calls": 4,
+    "per_call_reserved_usd": 0.25,
+    "local_reserved_cap_usd": 1,
+    "program_reserved_calls_cap": 88,
+    "program_reserved_usd_cap": 11,
+    "stop_rule": "FIRST_PROVIDER_OR_CUSTODY_HOLD_GLOBAL_STOP_NO_RETRIES",
+    "next_gate": "4. EXECUTION AUTHORIZATION — NOT ENTERED",
+    "next_gate_requires": [
+      "fresh credential/source observation",
+      "fresh Neon ledger totals and budget headroom",
+      "read-only/live runtime checks where available",
+      "exact freeze and enrollment only after the operator's next step"
+    ]
+  },
+  "immutable_historical_evidence_preserved": true,
+  "provider_calls_this_preexecution_phase": 0,
+  "new_a20_reservations": 0,
+  "caution": "Neon deployment-completed is a control-plane receipt; unauthenticated live function HTTP contract was not independently witnessed from the available DNS environment. No model or custody results are inferred."
+}
