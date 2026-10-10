@@ -13,7 +13,7 @@ function send(res, status, body) {
   res.statusCode = status;
   res.end(JSON.stringify({ schema: ASSAY_RESPONSE_SCHEMA, ...body }));
 }
-function authorization(req, env) {
+export function authorizeLoomAssayRequest(req, env) {
   const header = req.headers?.authorization;
   const digest = env.TD613_LOOM_ASSAY_ACCESS_SHA256;
   requireThat(typeof digest === 'string' && /^[a-f0-9]{64}$/.test(digest), 'ASSAY_DISABLED');
@@ -29,7 +29,7 @@ export function createLoomAssayHandler({ environment = process.env, fetchImpl = 
     if (req.method !== 'POST') return send(res, 405, { status: 'HELD', error: 'ASSAY_POST_REQUIRED' });
     let auth, request, policy, wire, reservation, activeBudget, workloadToken;
     try {
-      auth = authorization(req, environment);
+      auth = authorizeLoomAssayRequest(req, environment);
       // Vercel Functions supplies identity on this request, rather than the
       // build-time environment. Resolve it afresh; Neon still verifies it.
       workloadToken = readLoomDemoVercelOidcToken({ environment, requestHeaders: req.headers });
@@ -37,6 +37,11 @@ export function createLoomAssayHandler({ environment = process.env, fetchImpl = 
         environment: { ...environment, VERCEL_OIDC_TOKEN: workloadToken }, fetchImpl
       });
       requireThat(typeof environment.GEMINI_API_KEY === 'string' && environment.GEMINI_API_KEY.length > 0, 'ASSAY_PROVIDER_UNCONFIGURED');
+      const expectedCredential = req.headers?.['x-td613-expected-credential-sha256'];
+      requireThat(expectedCredential === undefined || typeof expectedCredential === 'string'
+        && /^[a-f0-9]{64}$/.test(expectedCredential), 'ASSAY_PROVIDER_CREDENTIAL_EXPECTATION_MALFORMED');
+      requireThat(expectedCredential === undefined || expectedCredential === sha256(environment.GEMINI_API_KEY),
+        'ASSAY_PROVIDER_CREDENTIAL_MISMATCH');
       const raw = typeof req.body === 'string' || Buffer.isBuffer(req.body) ? Buffer.from(req.body)
         : Buffer.from(JSON.stringify(req.body));
       requireThat(raw.length <= 2000000, 'ASSAY_REQUEST_BYTE_LIMIT');
@@ -105,6 +110,7 @@ export function createLoomAssayHandler({ environment = process.env, fetchImpl = 
       evidence_class: fixture ? 'LOCAL_STRUCTURAL_TEST' : 'ACTUAL_RECEIVER_TEST',
       origin_scope: fixture ? 'MOCK_HTTP_FIXTURE_ONLY' : 'SERVER_OBSERVED_HTTPS_RESPONSE; client still requires retained transport bytes',
       source_commit: environment.VERCEL_GIT_COMMIT_SHA, artifact_sha256: request.artifact_sha256,
+      provider_credential_sha256: sha256(environment.GEMINI_API_KEY),
       trial: request.trial, provider_requests: attempted ? 1 : 0, retries: 0, started_at: startedAt, ended_at: new Date().toISOString(),
       provider_request_sha256: wire.request_sha256, provider_response_sha256: sha256(rawResponse),
       provider_response_base64: credentialEcho ? null : rawResponse.toString('base64'),
