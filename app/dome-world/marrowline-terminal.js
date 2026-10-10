@@ -373,6 +373,21 @@ function transcriptText(messages = []) {
     return `${header}${speaker}\n${entryText(entry)}${entry.sealed ? `\nSealed ${SEAL_GLYPH}` : ''}`;
   }).join('\n\n— — —\n\n');
 }
+function normalizeMarrowlineThreadSearch(value = '') {
+  return String(value ?? '').normalize('NFKC').toLocaleLowerCase();
+}
+export function marrowlineThreadMatchesSearch(thread = {}, query = '') {
+  const terms = normalizeMarrowlineThreadSearch(query).trim().split(/\s+/u).filter(Boolean);
+  if (!terms.length) return true;
+  const haystack = normalizeMarrowlineThreadSearch([
+    thread.conversationTitle || '',
+    thread.pendingTask || '',
+    thread.draft || '',
+    ...asArray(thread.messages).map(entry => entryText(entry))
+  ].join('\n'));
+  return terms.every(term => haystack.includes(term));
+}
+
 function updateReceipt(doc, root, state) {
   const node = byId(doc, 'khonapolitReceipt');
   if (node) node.textContent = state.lastFailure
@@ -697,6 +712,28 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   let storeReady = false;
   let requestInFlight = false;
   let attachmentStagingActive = false;
+  let threadSearchQuery = '';
+  const retryAttachmentSlot = Symbol('td613.marrowline.retry-attachments');
+  const retryAttachmentsFor = entry => Array.isArray(entry?.[retryAttachmentSlot])
+    ? entry[retryAttachmentSlot].map(item => ({ ...item }))
+    : [];
+  const bindRetryAttachments = (entry, items = []) => {
+    // Raw bytes live only with the current in-memory turn. The Symbol property
+    // is non-enumerable, so IndexedDB/localStorage keep receipt metadata without
+    // silently becoming a duplicate binary store.
+    for (const candidate of state.messages) {
+      if (candidate && typeof candidate === 'object'
+        && Object.prototype.hasOwnProperty.call(candidate, retryAttachmentSlot)) {
+        delete candidate[retryAttachmentSlot];
+      }
+    }
+    if (entry && items.length) {
+      Object.defineProperty(entry, retryAttachmentSlot, {
+        value: items.map(item => ({ ...item })),
+        configurable: true
+      });
+    }
+  };
   let activeRequestController = null;
   let activeRequestCancelRequested = false;
   const sendControl = byId(doc, 'khonapolitSend');
@@ -727,8 +764,12 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     const list = byId(doc, 'marrowlineThreadList');
     if (!list) return;
     const threads = await threadLibrary.all();
+    const query = safe(threadSearchQuery);
+    const visibleThreads = query
+      ? threads.filter(thread => marrowlineThreadMatchesSearch(thread, query))
+      : threads;
     list.replaceChildren();
-    for (const thread of threads) {
+    for (const thread of visibleThreads) {
       const row = doc.createElement('div'); row.className = 'marrowline-thread-row';
       row.dataset.threadId = thread.id;
       const open = doc.createElement('button'); open.type = 'button'; open.className = 'marrowline-thread-open';
@@ -745,6 +786,21 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       del.setAttribute('aria-label', 'Delete conversation');
       del.addEventListener('click', () => void deleteThread(thread.id));
       row.append(open, rename, del); list.append(row);
+    }
+    if (!visibleThreads.length) {
+      const empty = doc.createElement('p');
+      empty.className = 'marrowline-thread-empty';
+      empty.textContent = query
+        ? 'No saved conversation contains all of those search terms.'
+        : 'No saved conversations yet.';
+      list.append(empty);
+    }
+    const searchStatus = byId(doc, 'marrowlineThreadSearchStatus');
+    if (searchStatus) {
+      searchStatus.hidden = !query;
+      searchStatus.textContent = query
+        ? `${visibleThreads.length} of ${threads.length} conversation${threads.length === 1 ? '' : 's'}`
+        : '';
     }
   };
   const threadContentSnapshot = record => ({
@@ -884,6 +940,37 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   byId(doc, 'marrowlineThreadOpen')?.setAttribute('aria-expanded', 'false');
   const conversationToggle = byId(doc, 'marrowlineThreadOpen');
   const conversationDrawer = byId(doc, 'marrowlineThreadDrawer');
+  const conversationSearchToggle = byId(doc, 'marrowlineThreadSearchToggle');
+  const conversationSearchPanel = byId(doc, 'marrowlineThreadSearchPanel');
+  const conversationSearchInput = byId(doc, 'marrowlineThreadSearchInput');
+  const setConversationSearchExpanded = expanded => {
+    if (conversationSearchPanel) conversationSearchPanel.hidden = !expanded;
+    conversationSearchToggle?.setAttribute('aria-expanded', String(expanded));
+    if (expanded) conversationSearchInput?.focus?.({ preventScroll: true });
+  };
+  conversationSearchToggle?.addEventListener('click', event => {
+    event.preventDefault();
+    event.stopPropagation();
+    const expand = Boolean(conversationSearchPanel?.hidden);
+    setConversationSearchExpanded(expand);
+    if (expand) void renderThreadLibrary().catch(() => {});
+  });
+  conversationSearchInput?.addEventListener('input', () => {
+    threadSearchQuery = conversationSearchInput.value || '';
+    void renderThreadLibrary().catch(() => {});
+  });
+  conversationSearchInput?.addEventListener('keydown', event => {
+    if (event.key !== 'Escape') return;
+    event.stopPropagation();
+    if (conversationSearchInput.value) {
+      conversationSearchInput.value = '';
+      threadSearchQuery = '';
+      void renderThreadLibrary().catch(() => {});
+    } else {
+      setConversationSearchExpanded(false);
+      conversationSearchToggle?.focus?.({ preventScroll: true });
+    }
+  });
   const closeConversationDrawer = () => {
     if (conversationDrawer) conversationDrawer.open = false;
     conversationToggle?.setAttribute('aria-expanded', 'false');
@@ -1036,7 +1123,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   shiInput?.addEventListener('input', () => refreshKeyState(doc));
   issuanceToggle?.addEventListener('change', () => refreshKeyState(doc));
 
-  const submitTask = async (messageOverride = '', { independentRetry = false, backgroundResume = false } = {}) => {
+  const submitTask = async (messageOverride = '', { independentRetry = false, backgroundResume = false, attachmentOverride = null } = {}) => {
     const loomTransport = root.__TD613_LOOM_DEMO_CONTROLLER__?.snapshot().active ? root.__TD613_LOOM_DEMO_CONTROLLER__ : null;
     const prompt = byId(doc, 'khonapolitPrompt');
     const message = safe(messageOverride || prompt?.value);
@@ -1059,7 +1146,9 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         'The selected attachment is still being prepared in this browser; Send will unlock when staging is complete.');
       return;
     }
-    const attachments = getMarrowlineAttachments();
+    const attachments = Array.isArray(attachmentOverride)
+      ? attachmentOverride.map(item => ({ ...item }))
+      : getMarrowlineAttachments();
     const retrying = Boolean(state.pendingTask && state.pendingTask === message && state.messages.at(-1)?.role === 'user' && safe(state.messages.at(-1)?.text) === message);
     if (!retrying && !backgroundResume) backgroundResumeSpentTask = '';
     const historyForPacket = retrying ? state.messages.slice(0, -1) : state.messages;
@@ -1094,7 +1183,13 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     if (status) status.dataset.progressStage = 'submitted';
     setPedagogueStatus(status, 'pending', 'The Red Deer releases a word…',
       'Human submission observed; preserving the task locally before dispatch');
-    if (!retrying) state.messages.push({ role: 'user', text: message, mode, sealed: false });
+    if (!retrying) {
+      const userEntry = { role: 'user', text: message, mode, sealed: false };
+      state.messages.push(userEntry);
+      bindRetryAttachments(userEntry, attachments);
+    } else {
+      bindRetryAttachments(state.messages.at(-1), attachments);
+    }
     // A suspended page can be restored as a preserved task. An old HTTP return
     // is never silently assumed to have arrived after a browser restart.
     state.pendingTask = message;
@@ -1462,18 +1557,35 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     }
     if (!storeReady || requestInFlight) return;
     const userIndex = lastUserMessageIndex(state.messages || []);
-    const message = safe(state.pendingTask) || (userIndex >= 0 ? entryText(state.messages[userIndex]) : '');
+    const userEntry = userIndex >= 0 ? state.messages[userIndex] : null;
+    const message = safe(state.pendingTask) || (userEntry ? entryText(userEntry) : '');
     if (!message) {
       setPedagogueStatus(byId(doc, 'khonapolitTerminalStatus'), 'held', 'NO PRIOR PROMPT · nothing to retry');
       return;
     }
+
+    const replayAttachments = retryAttachmentsFor(userEntry);
+    const stagedAttachments = getMarrowlineAttachments();
+    const sourceReply = userIndex >= 0
+      ? state.messages.slice(userIndex + 1).find(entry => entry?.role === 'model')
+      : null;
+    const expectedAttachments = modelAttachmentReceipt(sourceReply);
+    let retryAttachments = replayAttachments;
+    if (!retryAttachments.length && stagedAttachments.length) retryAttachments = stagedAttachments.map(item => ({ ...item }));
+    if (!retryAttachments.length && expectedAttachments.length) {
+      setPedagogueStatus(byId(doc, 'khonapolitTerminalStatus'), 'held',
+        'REATTACH ORIGINAL FILES · saved receipt kept metadata, not raw bytes',
+        'This saved prompt originally carried attachments. Reloaded conversation history cannot recreate their bytes; reattach the file or photo, then press Retry again.');
+      return;
+    }
+
     if (userIndex >= 0) {
       // A new retry is a new attempt. Retain the prior response and its receipt.
       state.pendingTask = message;
       void scheduleSave();
       renderMessages(doc, state);
     }
-    submitTask(message, { independentRetry });
+    submitTask(message, { independentRetry, attachmentOverride: retryAttachments });
   };
   byId(doc, 'retryKhonapolitTask')?.addEventListener('click', () => retryLastPrompt());
   // Corner ↻ is a separate human retry gesture: it never delegates to a

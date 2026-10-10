@@ -46,6 +46,13 @@
       </div>
       <details class="marrowline-thread-drawer" id="marrowlineThreadDrawer">
          <summary>Saved conversations · this browser</summary>
+         <div class="marrowline-thread-search-tools">
+           <button type="button" id="marrowlineThreadSearchToggle" aria-expanded="false" aria-controls="marrowlineThreadSearchPanel" aria-label="Search saved conversations" title="Search saved conversations">⌕</button>
+         </div>
+         <div class="marrowline-thread-search-panel" id="marrowlineThreadSearchPanel" hidden>
+           <input id="marrowlineThreadSearchInput" type="search" autocomplete="off" spellcheck="false" aria-label="Filter saved conversations by Red Deer or Kʰonapolit text" placeholder="Search Red Deer + Kʰonapolit text" />
+         </div>
+         <p id="marrowlineThreadSearchStatus" class="marrowline-thread-search-status" role="status" aria-live="polite" hidden></p>
          <p>Saved on this device. Browser data removal or storage eviction may erase local threads; cross-device sync is not enabled.</p>
          <div id="marrowlineThreadList" class="marrowline-thread-list" role="list" aria-label="Saved Marrowline conversations"></div>
        </details>

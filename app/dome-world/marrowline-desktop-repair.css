@@ -721,7 +721,18 @@
 .marrowline-thread-nav button:hover,.marrowline-thread-nav button:focus-visible{border-color:#9de8db;color:white}
 .marrowline-thread-drawer{flex:0 0 auto;margin:0 10px;background:#14112d;border:1px solid rgba(136,122,217,.34);border-radius:12px;color:#d8e5df}
 .marrowline-thread-drawer:not([open]){display:none}
-.marrowline-thread-drawer>summary{cursor:pointer;padding:11px 13px;font:600 12px/1.35 var(--marrowline-chat-sans,system-ui,sans-serif)}
+.marrowline-thread-drawer>summary{cursor:pointer;padding:11px 52px 11px 13px;font:600 12px/1.35 var(--marrowline-chat-sans,system-ui,sans-serif)}
+.marrowline-thread-search-tools{position:absolute;top:7px;right:9px;z-index:3}
+.marrowline-thread-search-tools button{appearance:none;display:grid;place-items:center;width:30px;height:30px;min-width:30px;min-height:30px;padding:0;border:1px solid rgba(112,222,213,.26);border-radius:8px;background:rgba(31,29,65,.88);color:#cfe7e1;font:500 19px/1 var(--marrowline-chat-sans,system-ui,sans-serif);text-transform:none;letter-spacing:0;cursor:pointer}
+.marrowline-thread-search-tools button:hover,.marrowline-thread-search-tools button:focus-visible{border-color:#9de8db;color:#fff;outline:2px solid rgba(126,221,220,.34);outline-offset:1px}
+.marrowline-thread-search-panel{padding:0 12px 8px}
+.marrowline-thread-search-panel[hidden]{display:none!important}
+.marrowline-thread-search-panel input{box-sizing:border-box;width:100%;min-height:38px;padding:8px 10px;border:1px solid rgba(126,221,220,.28);border-radius:9px;background:#0f1027;color:#eef6f2;font:500 12px/1.35 var(--marrowline-chat-sans,system-ui,sans-serif);outline:none}
+.marrowline-thread-search-panel input::placeholder{color:#81958f}
+.marrowline-thread-search-panel input:focus{border-color:#85e4dc;box-shadow:0 0 0 2px rgba(126,221,220,.12)}
+.marrowline-thread-search-status{padding:0 13px!important;margin:0 0 5px!important;color:#91bdb4!important;font:500 10px/1.35 var(--marrowline-chat-sans,system-ui,sans-serif)!important}
+.marrowline-thread-search-status[hidden]{display:none!important}
+.marrowline-thread-empty{margin:8px 4px 2px;padding:8px 6px;color:#98ada6;font:500 11px/1.45 var(--marrowline-chat-sans,system-ui,sans-serif)}
 .marrowline-thread-drawer>p{padding:0 13px;margin:0 0 9px;color:#a4b8b0;font:400 11px/1.5 var(--marrowline-chat-sans,system-ui,sans-serif)}
 .marrowline-thread-list{max-height:min(43dvh,360px);overflow:auto;padding:0 9px 10px}
 .marrowline-thread-row{display:flex;gap:4px;align-items:center;padding:4px 0;border-top:1px solid rgba(255,255,255,.06)}
