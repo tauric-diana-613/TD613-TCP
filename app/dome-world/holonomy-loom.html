@@ -62,7 +62,7 @@
     window.setTimeout(() => { if (html.dataset.loomBoot === 'loading') fail('START_TIMEOUT'); }, 12000);
   })();
   </script>
-  <link rel="stylesheet" href="./holonomy-loom/loom-product-v6.css?v=20261010-flowcore-pedagogy-v1">
+  <link rel="stylesheet" href="./holonomy-loom/loom-product-v6.css?v=20261010-viewport-cadence-v1">
 </head>
 <body>
 <div id="loomBootVeil" role="status">Opening Loom…</div>
@@ -77,7 +77,7 @@
   <section id="loomAiWorkspace" aria-label="Loom workspace"><p>Opening Loom…</p></section>
 </main>
 <script type="module">
-  import('./holonomy-loom/ai-workspace.js?v=20261010-flowcore-pedagogy-v1')
+  import('./holonomy-loom/ai-workspace.js?v=20261010-viewport-cadence-v1')
     .then(() => {
       if (document.documentElement.dataset.loomBoot !== 'ready')
         window.td613LoomBootFailure?.('MODULE_WITHOUT_READY');
