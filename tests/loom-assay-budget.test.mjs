@@ -1,3 +1,4 @@
+import './loom-assay-a16-activation.test.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -204,3 +205,4 @@ test('the program call cap applies across distinct runs independently of the fin
     assert.equal(Number((await db.query('SELECT SUM(calls_reserved) AS n FROM td613_assay_runs')).rows[0].n), 80);
   } finally { await db.close(); }
 });
+

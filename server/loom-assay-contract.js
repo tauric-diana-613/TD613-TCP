@@ -7,7 +7,7 @@ export const ASSAY_RECOVERY_POLICY_SCHEMA = 'td613.loom.server-assay-policy/v0.3
 export const ASSAY_MAX_PROVIDER_TIMEOUT_MS = 240000;
 export const ASSAY_CLIENT_RETURN_MARGIN_MS = 40000;
 const recoveryBase = 'portable-loom-first-receiver-20261009';
-export const ASSAY_RECOVERY_RUN_IDS = Object.freeze(Array.from({ length: 12 }, (_, i) => `${recoveryBase}-a${i + 4}`));
+export const ASSAY_RECOVERY_RUN_IDS = Object.freeze(Array.from({ length: 13 }, (_, i) => `${recoveryBase}-a${i + 4}`));
 export const ASSAY_RECOVERY_PROGRAM = Object.freeze({
   id: recoveryBase,
   run_ids: Object.freeze([recoveryBase, `${recoveryBase}-a2`, `${recoveryBase}-a3`, ...ASSAY_RECOVERY_RUN_IDS]),
@@ -149,3 +149,4 @@ export function inspectAssayResponse(bytes, p, limit, inputBound = p.binding.lim
   return { text, answer_sha256: sha256(text), model: body.modelVersion, usage: u,
     output_tokens_including_thinking: u.totalTokenCount - u.promptTokenCount };
 }
+
