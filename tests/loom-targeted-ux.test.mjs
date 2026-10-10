@@ -19,6 +19,66 @@ const runtimeStateSource = fs.readFileSync(new URL('../app/dome-world/holonomy-l
 const instrumentSource = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/instrument-state-view.js', import.meta.url), 'utf8');
 const templateSource = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/workspace-template.js', import.meta.url), 'utf8');
 
+test('Loom boot binds fresh October 10 assets and contains a catchable module failure', () => {
+  const doc = new JSDOM(html).window.document;
+  const css = doc.querySelector('link[href*="loom-product-v6.css"]');
+  const module = [...doc.querySelectorAll('script[type="module"]')].find(node => node.textContent.includes('ai-workspace.js'));
+  assert.match(css.href, /20261010-loom-boot-v1/);
+  assert.ok(module, 'the entrypoint must be an observable dynamic module import');
+  assert.match(module.textContent, /import\('\.\/holonomy-loom\/ai-workspace\.js\?v=20261010-loom-boot-v1'\)/);
+  assert.match(module.textContent, /\.catch\(\(\) => window\.td613LoomBootFailure/);
+  assert.equal(doc.querySelectorAll('script[type="module"][src*="20261003"]').length, 0);
+});
+
+function bootFixture() {
+  let watchdog;
+  const dom = new JSDOM(html, {
+    url: 'https://td613.com/dome-world/holonomy-loom.html',
+    runScripts: 'dangerously',
+    beforeParse(window) {
+      window.setTimeout = callback => { watchdog = callback; return 1; };
+    }
+  });
+  assert.equal(typeof watchdog, 'function', 'bounded startup watchdog must exist before module import');
+  return { dom, watchdog };
+}
+
+test('Loom boot timeout replaces the stranded Opening Loom placeholder with a recoverable screen', () => {
+  const { dom, watchdog } = bootFixture();
+  const { document } = dom.window;
+  assert.equal(document.documentElement.dataset.loomBoot, 'loading');
+  watchdog();
+  assert.equal(document.documentElement.dataset.loomBoot, 'failed');
+  assert.equal(document.documentElement.dataset.loomBootReason, 'START_TIMEOUT');
+  assert.equal(document.querySelector('#loomBootFailure')?.getAttribute('role'), 'alert');
+  assert.match(document.querySelector('#loomBootFailure').textContent, /Reload Loom/);
+  assert.doesNotMatch(document.querySelector('#loomAiWorkspace').textContent, /^Opening Loom…$/);
+  dom.window.close();
+});
+
+test('Loom module failure exposes a local retry without granting execution or clearing storage', () => {
+  const { dom } = bootFixture();
+  const { document, localStorage } = dom.window;
+  localStorage.setItem('td613.loom.first-crossing.v1', 'complete');
+  dom.window.td613LoomBootFailure('MODULE_LOAD_FAILED');
+  assert.equal(document.documentElement.dataset.loomBootReason, 'MODULE_LOAD_FAILED');
+  assert.ok(document.querySelector('#loomBootRetry'));
+  assert.equal(localStorage.getItem('td613.loom.first-crossing.v1'), 'complete');
+  assert.equal(document.querySelector('[data-first-crossing-item]'), null);
+  dom.window.close();
+});
+
+test('Loom watchdog leaves successfully mounted application untouched', () => {
+  const { dom, watchdog } = bootFixture();
+  const { document } = dom.window;
+  document.documentElement.dataset.loomBoot = 'ready';
+  watchdog();
+  dom.window.td613LoomBootFailure('MODULE_LOAD_FAILED');
+  assert.equal(document.documentElement.dataset.loomBoot, 'ready');
+  assert.equal(document.querySelector('#loomBootFailure'), null);
+  dom.window.close();
+});
+
 // These are source/DOM witnesses. Physical-device behavior, viewport geometry,
 // provider execution and measured human comprehension require separate evidence.
 
