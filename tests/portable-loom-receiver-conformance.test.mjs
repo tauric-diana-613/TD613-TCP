@@ -61,6 +61,20 @@ test('explicit pending-revalidation and independently-unverified qualifiers reta
     assert.equal(inspectPortableLoomReceiverConformance(input).status, 'QUALIFIED_DECLARATION');
   }
 });
+test('inline declared status text qualifies the receipt without erasing its words', () => {
+  const input = render(valid(), 'The accompanying receipt status is explicitly `DECLARED_UNVERIFIED_UNADMITTED` and serves as a receiver declaration pending Loom revalidation, not proof of enforcement or custody admission.');
+  assert.equal(inspectPortableLoomReceiverConformance(input).status, 'QUALIFIED_DECLARATION');
+});
+test('a later contradictory receipt claim defeats an earlier qualifier', () => {
+  const contradictory = render(valid(), 'The receipt is unverified and unadmitted. The receipt is independently verified and admitted.');
+  assert.ok(inspectPortableLoomReceiverConformance(contradictory).findings.includes('RECEIPT_REVIEW_BODY_QUALIFICATION_MISSING'));
+  const anaphoricContradiction = render(valid(), 'The receipt is unverified and unadmitted. It has been independently verified and admitted.');
+  assert.ok(inspectPortableLoomReceiverConformance(anaphoricContradiction).findings.includes('RECEIPT_REVIEW_BODY_QUALIFICATION_MISSING'));
+  const coordinatedContradiction = render(valid(), 'The receipt has not been independently verified or admitted, but it has been authenticated.');
+  assert.ok(inspectPortableLoomReceiverConformance(coordinatedContradiction).findings.includes('RECEIPT_REVIEW_BODY_QUALIFICATION_MISSING'));
+  const naturalNegative = render(valid(), 'The receipt has not been independently verified or admitted.');
+  assert.equal(inspectPortableLoomReceiverConformance(naturalNegative).checks.review_body_qualified, true);
+});
 test('explicitly observed no-source task accepts empty arrays', () => {
   const input = valid(); input.receipt.used_document_ids = [];
   input.source_context = { registered_document_ids: [], observed_used_document_ids: [], unidentified_source_count: 0 };

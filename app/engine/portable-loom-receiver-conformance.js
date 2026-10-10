@@ -37,7 +37,7 @@ const strings = (value, max) => Array.isArray(value) && value.length <= max
 const nonempty = (value, max) => typeof value === 'string' && value.trim().length > 0 && value.length <= max;
 const digest = value => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value);
 const equalSet = (a, b) => a.length === b.length && a.every(x => b.includes(x));
-const QUALIFICATION = /\b(?:UNVERIFIED|UNADMITTED|NOT[ -]+(?:INDEPENDENTLY[ -]+)?(?:VERIFIED|ADMITTED)|PENDING[ -]+(?:REVALIDATION|VERIFICATION))\b/gi;
+const QUALIFICATION = /\b(?:UNVERIFIED|UNADMITTED|NOT[ -]+(?:INDEPENDENTLY[ -]+)?(?:VERIFIED|ADMITTED|AUTHENTICATED)|(?:HAS|HAVE|WAS|WERE)[ -]+(?:NOT[ -]+|NEVER[ -]+)?(?:BEEN[ -]+)?(?:INDEPENDENTLY[ -]+)?(?:VERIFIED|ADMITTED|AUTHENTICATED)|PENDING[ -]+(?:REVALIDATION|VERIFICATION))\b/gi;
 const qualified = text => new RegExp(QUALIFICATION.source, 'i').test(text.replaceAll('_', ' '));
 function claimsVerified(text) {
   const remaining = text.replaceAll('_', ' ').replace(QUALIFICATION, '');
@@ -84,10 +84,23 @@ function capturedReceipt(answer, presentationFormat) {
     receipt: candidates.length === 1 ? snapshot(candidates[0]) : null };
 }
 function receiptBodyQualification(body) {
-  // A bounded textual signal, not semantic adjudication of quoted claims.
-  const prose = body.replace(/```[\s\S]*?```/g, '').replace(/`[^`]*`/g, '');
-  return prose.split(/[.!?\n]/).some(sentence => /\b(?:receipts?|receiver declarations?)\b/i.test(sentence)
-    && qualified(sentence) && !claimsVerified(sentence));
+  // A bounded textual check, not semantic adjudication: preserve words inside
+  // inline code, and require the qualification to concern a receipt sentence.
+  const prose = body.replace(/```[\s\S]*?```/g, '').replaceAll('`', '').replaceAll('_', ' ');
+  const allSentences = prose.split(/[.!?\n]/).map(sentence => sentence.trim());
+  const receiptIndex = allSentences.map((sentence, index) => /\b(?:receipts?|receiver declarations?)\b/i.test(sentence) ? index : -1).filter(index => index >= 0);
+  const scopedIndices = new Set(receiptIndex);
+  for (const index of receiptIndex) {
+    if (/^(?:it|this|that)\b/i.test(allSentences[index + 1] ?? '')) scopedIndices.add(index + 1);
+  }
+  const sentences = [...scopedIndices].map(index => allSentences[index]);
+  if (!sentences.length || sentences.some(sentence => {
+    const directClaim = /\b(?:receipt|receiver declaration)\b[^.!?;\n]{0,140}?\b(?:is|are|was|were|has been|have been)\s+(?:independently\s+)?(?:verified|authenticated|admitted)\b/i;
+    const adversativeClaim = /\b(?:but|however|yet)\b[^.!?\n]*\b(?:verified|authenticated|admitted)\b/i;
+    const anaphoricClaim = /^(?:it|this|that)\s+(?:is|was|has been|have been)\s+(?:independently\s+)?(?:verified|authenticated|admitted)\b/i;
+    return directClaim.test(sentence) || adversativeClaim.test(sentence) || anaphoricClaim.test(sentence);
+  })) return false;
+  return sentences.some(qualified);
 }
 
 export function inspectPortableLoomReceiverConformance(input) {
