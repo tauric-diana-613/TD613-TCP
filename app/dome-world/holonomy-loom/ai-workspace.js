@@ -55,6 +55,9 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
   const LOOM_AI_CLIENT_TIMEOUT_MS = 225000;
   if (!root) return;
   root.innerHTML = loomWorkspaceTemplate;
+  // A single Flow-Core guide survives the stage → builder transition.
+  const flowcoreHelp=root.querySelector('.loom-flowcore-help');
+  environment.document.querySelector('.loom-topbar nav')?.prepend(flowcoreHelp);
   const $ = id => root.querySelector(`#${id}`);
   const lines = id => $(id).value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
   let activeWorkspace = 'build', marrowlineChild = null;
@@ -157,6 +160,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
   let firstCrossingBindingState = 'IDLE';
   let firstCrossingGeneration = 0;
   let firstCrossingGatheringPublished = false;
+  let firstCrossingSourceUnlocked = false;
   let firstCrossingReadinessPublished = false;
   let firstCrossingLessonPublished = false;
   let firstCrossingBinding = null;
@@ -321,6 +325,17 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     if(firstCrossingBindingState==='PENDING'||firstCrossingBindingState==='HELD')return;
     const expectedRelation=firstCrossingStep===2?'created_potential':'gathering';
     const projectionCurrent=$('aiRuntimeState').dataset.projectionState==='CURRENT' && $('aiRuntimeState').dataset.activeRelation===expectedRelation;
+    // The hõt/cōl source gesture opens only after the à gather field has
+    // actually completed its finite presentation. A click never grants it.
+    if(firstCrossingStep===0 && firstCrossingSelected.has('brief') && !firstCrossingSourceUnlocked){
+      if(projectionCurrent && (snapshot.reducedMotion || snapshot.progress>=.82)){
+        firstCrossingSourceUnlocked=true;
+        root.dataset.firstCrossingGather='complete';
+        renderFirstCrossingSelection();
+        $('loomFirstCrossingAnswer').textContent='à · Gather complete. Your reference is ready to select.';
+      }
+      return;
+    }
     const alreadyPublished=firstCrossingStep===1?firstCrossingGatheringPublished:firstCrossingReadinessPublished;
     // A presentation remix cannot withdraw a consequence already observed for
     // this same selection/binding. Restarting the tutorial resets these flags.
@@ -483,6 +498,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       const id=button.dataset.firstCrossingItem;
       button.setAttribute('aria-pressed',String(firstCrossingSelected.has(id)));
       button.dataset.held=String(id==='private'&&!firstCrossingSelected.has('private'));
+      if(id==='source')button.disabled=!firstCrossingSourceUnlocked && firstCrossingStep===0;
     }
   }
   function restoreThresholdField(){
@@ -490,6 +506,8 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     firstCrossingBindingState='IDLE';
     firstCrossingPaused=false;
     firstCrossingGatheringPublished=false;
+    firstCrossingSourceUnlocked=false;
+    root.dataset.firstCrossingGather='idle';
     firstCrossingReadinessPublished=false;
     firstCrossingLessonPublished=false;
     firstCrossingBinding=null;
@@ -508,7 +526,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     $('loomReplayFirstCrossing').hidden=false;
     $('loomReplayFirstCrossing').textContent='Start tutorial';
     $('loomBegin').hidden=false;
-    firstCrossingItems.forEach(button=>{button.disabled=false;button.setAttribute('aria-pressed','false');delete button.dataset.held;});
+    firstCrossingItems.forEach(button=>{button.disabled=button.dataset.firstCrossingItem==='source';button.setAttribute('aria-pressed','false');delete button.dataset.held;});
     $('loomFirstCrossingAction').hidden=false;
     $('loomFirstCrossingStop').hidden=true;
     if(lastPacket)showPacket(lastPacket);
@@ -1048,7 +1066,10 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
   firstCrossingItems.forEach(button=>button.addEventListener('click',()=>{
     if(!firstCrossingActive||firstCrossingStep!==0)return;
     const id=button.dataset.firstCrossingItem;
+    if(id==='source'&&!firstCrossingSourceUnlocked)return;
+    if(id==='brief'&&firstCrossingSelected.has('brief'))return;
     if(firstCrossingSelected.has(id))firstCrossingSelected.delete(id);else firstCrossingSelected.add(id);
+    if(id==='brief')root.dataset.firstCrossingGather='motion';
     renderFirstCrossingSelection();
     const correct=firstCrossingSelected.has('brief')&&firstCrossingSelected.has('source')&&!firstCrossingSelected.has('private')&&firstCrossingSelected.size===2;
     if(correct){
@@ -1079,10 +1100,40 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
   $('loomFirstCrossingLeave').addEventListener('click',()=>openLoomThreshold({skipPractice:true}));
   $('loomFirstCrossingAction').addEventListener('click',actFirstCrossing);
   $('loomFirstCrossingStop').addEventListener('click',advanceFirstCrossing);
-  const flowcoreHelp=root.querySelector('.loom-flowcore-help');
   const closeFlowcoreHelp=()=>{flowcoreHelp.open=false;flowcoreHelp.querySelector('summary').focus?.({preventScroll:true});};
   $('loomFlowcoreHelpClose').addEventListener('click',closeFlowcoreHelp);
   flowcoreHelp.addEventListener('keydown',event=>{if(event.key==='Escape'&&flowcoreHelp.open){event.preventDefault();event.stopPropagation();closeFlowcoreHelp();}});
+  // Copy only on the operator's direct gesture. The labels remain plain text,
+  // with no instructional badge, affordance copy, or new transport capability.
+  let flowcoreCopyTimer=null;
+  const flowcoreNotice=$('loomFlowcoreCopyNotice');
+  flowcoreHelp.querySelectorAll('[data-flowcore-copy]').forEach(control=>{
+    control.addEventListener('click',async()=>{
+      const glyph=control.dataset.flowcoreCopy;
+      let copied=false;
+      try {
+        if(environment.navigator?.clipboard?.writeText){
+          await environment.navigator.clipboard.writeText(glyph);
+          copied=true;
+        } else if(typeof environment.document.execCommand==='function'){
+          const input=environment.document.createElement('textarea');
+          input.value=glyph;input.readOnly=true;
+          input.style.cssText='position:fixed;left:-10000px;top:0;opacity:0';
+          environment.document.body.append(input);
+          try {input.select();copied=Boolean(environment.document.execCommand('copy'));}
+          finally {input.remove();}
+        }
+      } catch {}
+      if(flowcoreCopyTimer!==null)environment.clearTimeout(flowcoreCopyTimer);
+      flowcoreNotice.textContent=copied?`${glyph} Copied!`:'Copy unavailable';
+      flowcoreNotice.dataset.copyState='visible';
+      flowcoreCopyTimer=environment.setTimeout(()=>{
+        flowcoreNotice.dataset.copyState='rest';
+        flowcoreNotice.textContent='';
+        flowcoreCopyTimer=null;
+      },1900);
+    });
+  });
   $('loomReplayFirstCrossing').addEventListener('click',()=>{
     if(firstCrossingActive&&firstCrossingReplayMode&&firstCrossingStep<6){restoreThresholdField();return;}
     startFirstCrossing({replay:true});
@@ -1107,7 +1158,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
   if(environment.location?.hash==='#loomGate'){openLoomThreshold();openTools('challenge');}
   visibility();
   environment.document.documentElement.dataset.loomBoot='ready';
-  const dispose=()=>{disposed=true;clearThresholdTimers();stageObserver?.disconnect();returnedReview.dispose();marrowlineChild=null;reentry.dispose();if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();runtime.dispose();coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);delete environment.document.documentElement.dataset.loomJourney;delete environment.document.documentElement.dataset.loomFlowPhase;};
+  const dispose=()=>{disposed=true;if(flowcoreCopyTimer!==null)environment.clearTimeout(flowcoreCopyTimer);clearThresholdTimers();stageObserver?.disconnect();returnedReview.dispose();marrowlineChild=null;reentry.dispose();if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();runtime.dispose();coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);delete environment.document.documentElement.dataset.loomJourney;delete environment.document.documentElement.dataset.loomFlowPhase;};
   environment.addEventListener('pagehide',dispose,{once:true});return {dispose,inspect:()=>({mode:workspaceMode,session:portableSession?inspectPortableLoomSession(portableSession):null,turn_receipt:turnReceiptVerification?{status:turnReceiptVerification.status,ref:turnReceiptVerification.ref}:null,challenge:challengeVerification?{status:challengeVerification.status,ref:challengeVerification.ref}:null,events:[...events],clock:coordinator.inspect(),replay:{index:replayIndex,count:sceneHistory.length},runtime:runtime.inspect(),geometry:null})};
 }
 if(typeof document!=='undefined')mountLoomAiWorkspace(document.querySelector('#loomAiWorkspace'));
