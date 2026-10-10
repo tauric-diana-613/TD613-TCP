@@ -1,8 +1,8 @@
 {
   "schema": "td613.loom.server-assay-trials/v0.1",
-  "artifact_source_commit": "0bf0ba2e42be2e9dcfed2bb4fcdb03f2ff77d2bf",
-  "artifact_publication_commit": "f0c496bfac114e4314f4a16c0518d806acc638d9",
-  "artifact_path": "research/portable-loom-a20-activation-20261010/portable-loom-conformance-candidate.md",
+  "artifact_source_commit": "2514c7af164b119c2cbde4565c230ae9342af7e4",
+  "artifact_publication_commit": "e84dc2a6e5e3fd05795d518e7fc0f50a238a1b3a",
+  "artifact_path": "research/portable-loom-a20-activation-20261010/candidate-reviewed/portable-loom-conformance-candidate.md",
   "artifact_sha256": "fcb4d3d82f4919d23c13d729144ffb21860e07b292d0f384dd9e63cecda92021",
   "receivers": [
     {
@@ -28,13 +28,10 @@
   ],
   "comparison": [],
   "receiver_repair": {
-    "source_revision": "983c957e989676fed7525be3835f8b8b06957e76",
-    "status": "A20_PROSPECTIVE_NOT_FROZEN",
-    "original_artifact_sha256": "2d9c23bb6ad26430bcf4fd2a52e9aa5e876a1546265a00087cdb7e7e4f1c1872",
+    "source_revision": "2514c7af164b119c2cbde4565c230ae9342af7e4",
+    "status": "A20_DRAFT_NOT_FROZEN_NOT_ENROLLED_NOT_RUN",
+    "original_artifact_sha256": "e6811ad6b15ab40be189b1882c588380fbafbede81fd0d14d3482f00b7e9f7ea",
     "original_artifact_bytes_preserved": true,
-    "comparison_status": "HELD_NOT_AUTHORIZED_BY_THIS_RETEST_PLAN",
-    "a20_candidate_sha256": "fcb4d3d82f4919d23c13d729144ffb21860e07b292d0f384dd9e63cecda92021",
-    "historical_manifest_blob": "2c5e11857d4972cc4fa3921cc49e1c583db1a8ac",
-    "source_witness": "A20 design archive with exact historical suffixes and reviewed candidate"
+    "comparison_status": "HISTORICAL_USER_SUFFIXES_UNCHANGED; FULL_INPUT_HASHES_UPDATED"
   }
 }
