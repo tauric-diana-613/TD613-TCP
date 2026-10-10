@@ -1,0 +1,31 @@
+{
+  "schema": "td613.loom.a19-analytical-continuity/v1",
+  "operator": "Tawanna C. Miller",
+  "program": "October 2026 Gemini Portable Loom first-configured-receiver acquisition and subsequent authorized analytical review",
+  "remembering": {
+    "tool_returned_evidence": true,
+    "raw_result": "inputs/ANALYTICAL_REMEMBERING_RAW.json",
+    "decisions_used": [
+      "Preserve V/C/P/L, evidence classes, predecessor boundaries and temporal non-retroactivity.",
+      "Recover original receiver defects and the descriptive regression contract.",
+      "Keep Dollhouse comparison and higher-model review distinct from new provider acquisition or admission."
+    ],
+    "conflicts": [
+      "Some retrieval timestamps and relative labels were inconsistent; they were not used as execution chronology proof.",
+      "Unrelated July/September product milestones were excluded by purpose, date, repository and run namespace."
+    ]
+  },
+  "authoritative_verification": [
+    "Exact preserved original and revised artifact hashes",
+    "Full-ID live Neon run/call rows",
+    "82 available raw captures and 70 answer preimages",
+    "Frozen 16-output retest scope and revised output obligations",
+    "Immutable GitHub bounded orchestrator contract and source"
+  ],
+  "count_qualification": "Earlier 52-entry original-program review comprises 51 original-slot preimages and one separate a9 replacement. a11 setup and the revised regression corpus are separate.",
+  "operator_steering": "Proceed with analysis despite missing a8 bytes; preserve that limitation without blocking review completion.",
+  "paid_association": "OPERATOR_ATTESTED_PAID",
+  "new_provider_calls": 0,
+  "custody_admitted": false,
+  "report_status": "COMPLETE_WITH_EXPLICIT_EVIDENCE_LIMITATIONS"
+}

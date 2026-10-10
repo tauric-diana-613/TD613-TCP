@@ -1,0 +1,14 @@
+{
+  "original_planned_slots": 54,
+  "retained_original_slot_preimages": 51,
+  "a8_original_R12_3_preimage": "UNLOCATED",
+  "a9_separate_replacement_preimages": 1,
+  "original_program_review_dataset_entries_including_replacement": 52,
+  "a11_fresh_setup_supplement": 1,
+  "selected_revised_targeted_outputs": 16,
+  "earlier_revised_R06_setup_supplement": 1,
+  "all_locally_retained_answers": 70,
+  "ledger_answer_rows": 71,
+  "logical_case_turn_coverage_with_separate_replacement_trials": 54,
+  "qualification": "Logical label coverage across artifacts/runs is not recovery of the original experimental states. Saved earlier acquisition counts remain unchanged."
+}

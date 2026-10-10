@@ -1,0 +1,22 @@
+{
+  "schema": "td613.loom.manual-temporal-review/v1",
+  "role": "TEMPORAL_CUSTODIAN",
+  "reviewed_at": "2026-10-10T09:25:11.651083+00:00",
+  "execution": "MANUAL_SIDECAR; separate candidate adapter not invoked",
+  "verdict": "HELD_FOR_FULL_ACCEPTANCE",
+  "local_a19_acquisition": "COMPLETE_TWO_ANSWERS_NO_PROVIDER_HOLD",
+  "global_output_contract": "Five receipt qualifier failures retained; no later clean answer clears them.",
+  "history_preserved": true,
+  "earlier_ledgers_unchanged": true,
+  "a13_bundle_preimage": "UNLOCATED",
+  "a8_R12_3_original_bytes": "UNLOCATED",
+  "count_correction": "51 retained original-slot preimages plus a9 replacement = prior 52-entry review dataset; fresh setup supplements are separate.",
+  "non_retroactivity": "Later source repair, release, capture, and this review supply no earlier chronology or original-state recovery.",
+  "independence": "Same single analyst; separate jurisdiction, not independent witness or fifth installed clerk role.",
+  "authority": {
+    "admit": false,
+    "provider": false,
+    "release": false,
+    "deployment": false
+  }
+}

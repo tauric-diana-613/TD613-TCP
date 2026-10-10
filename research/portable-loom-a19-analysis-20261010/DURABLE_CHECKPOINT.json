@@ -1,0 +1,25 @@
+{
+  "schema": "td613.loom.a19-analytical-durable-checkpoint/v1",
+  "status": "ANALYSIS_COMPLETE_WITH_EXPLICIT_LIMITATIONS",
+  "branch": "research/portable-loom-a19-analysis-20261010",
+  "parent_acquisition_commit": "915ce0bcbce1fad16d4be7b4371ae7d284756be4",
+  "report": {
+    "library_file_id": "libfile_59c346e0479081919b349b107b3b458b",
+    "file_id": "file_000000003d1481f79b526720828ca446",
+    "version": 0,
+    "sha256": "18951fc9c67a959d28b9bf397ab3432d0aaf8de76a65a35f79b98ddf870ec8e4"
+  },
+  "archive": {
+    "library_file_id": "libfile_527609b24f0081918938fe3e3d44b758",
+    "file_id": "file_0000000088ac81f7b956ba9f8d423afb",
+    "version": 0,
+    "sha256": "8b10ff119e6f0d585e1eb3b8d438090fab54ed4f624634f7caa1dbfe170d18ab",
+    "bytes": 18330142,
+    "integrity": "PASS",
+    "payload_members": 54
+  },
+  "provider_calls_in_analysis": 0,
+  "custody_admitted": false,
+  "production_release_preserved": "dc1851e199e850ca610e71c0c49df5f1acf37759",
+  "relocked_main": "d684d61c8c73e8d79a30167de9af51f5454c40ff"
+}

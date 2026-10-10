@@ -1,0 +1,143 @@
+{
+  "schema": "td613.loom.a19-analytical-scorecard/v1",
+  "scope": "Frozen seven-family descriptive targeted regression; general conformance assessed separately under the same revised artifact.",
+  "targeted_outputs": 16,
+  "targeted_trials": 11,
+  "targeted_case_families": 7,
+  "primary_supported_outputs": 16,
+  "footers_present_with_all_coordinates": 16,
+  "footers_with_at_most_two_logical_lines": 16,
+  "receipt_eligible_outputs": 8,
+  "receipts_present": 8,
+  "well_typed_exact_field_root_policy_anchor_receipts": 8,
+  "receipt_footer_qualification_failures": 5,
+  "gate_identity_unknown": 5,
+  "gate_replies_with_complete_required_coordinates": 5,
+  "mechanism_entries_exactly_named_and_scoped": 32,
+  "strict_json_replies_parseable": 1,
+  "same_run_predecessors_verified": true,
+  "full_revised_contract_acceptance": "HELD",
+  "remaining_holds": [
+    "Five explicit receipt footer qualification omissions",
+    "Origin task/source receipt revalidation not executed; named-inline ID mapping unlocated",
+    "a13 freeze bundle preimage unlocated",
+    "a8 original R12-3 raw bytes unlocated"
+  ],
+  "statistical_status": "DESCRIPTIVE_FIXED_CORPUS_ONLY; NO_RELIABILITY_ESTIMATE_OR_CAUSAL_COMPARISON",
+  "comparative_model_arms": "NOT_RUN",
+  "additional_provider_calls": 0,
+  "custody_admitted": false,
+  "cases": {
+    "R02": {
+      "captures": 3,
+      "primary_supported": 3,
+      "qualification_failures": 2
+    },
+    "R03": {
+      "captures": 3,
+      "primary_supported": 3,
+      "qualification_failures": 1
+    },
+    "R06": {
+      "captures": 3,
+      "primary_supported": 3,
+      "qualification_failures": 2
+    },
+    "R07": {
+      "captures": 3,
+      "primary_supported": 3,
+      "qualification_failures": 0
+    },
+    "R09": {
+      "captures": 2,
+      "primary_supported": 2,
+      "qualification_failures": 0
+    },
+    "R11": {
+      "captures": 1,
+      "primary_supported": 1,
+      "qualification_failures": 0
+    },
+    "R12": {
+      "captures": 1,
+      "primary_supported": 1,
+      "qualification_failures": 0
+    }
+  },
+  "distinct_provider_request_byte_strings": 11,
+  "repeated_provider_request_groups": [
+    {
+      "sha256": "31af2aef34fbb2a51d93cdbffebd6f5b424ad989e269f7bafe1d131fa7e4ad8c",
+      "captures": [
+        {
+          "run_id": "portable-loom-first-receiver-20261009-a13",
+          "trial": {
+            "trial_id": "FIRST_CONFIGURED_RECEIVER-R03-1",
+            "case_id": "R03",
+            "role": "RECEIVER",
+            "turn_index": 0
+          }
+        },
+        {
+          "run_id": "portable-loom-first-receiver-20261009-a13",
+          "trial": {
+            "trial_id": "FIRST_CONFIGURED_RECEIVER-R03-2",
+            "case_id": "R03",
+            "role": "RECEIVER",
+            "turn_index": 0
+          }
+        },
+        {
+          "run_id": "portable-loom-first-receiver-20261009-a13",
+          "trial": {
+            "trial_id": "FIRST_CONFIGURED_RECEIVER-R03-3",
+            "case_id": "R03",
+            "role": "RECEIVER",
+            "turn_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "sha256": "9a9dee83b7467b8c1ada969558001dbd952dca48d1c1d2e42552bec4f6b3f4f2",
+      "captures": [
+        {
+          "run_id": "portable-loom-first-receiver-20261009-a13",
+          "trial": {
+            "trial_id": "FIRST_CONFIGURED_RECEIVER-R07-1",
+            "case_id": "R07",
+            "role": "RECEIVER",
+            "turn_index": 0
+          }
+        },
+        {
+          "run_id": "portable-loom-first-receiver-20261009-a15",
+          "trial": {
+            "trial_id": "FIRST_CONFIGURED_RECEIVER-R07-2",
+            "case_id": "R07",
+            "role": "RECEIVER",
+            "turn_index": 0
+          }
+        },
+        {
+          "run_id": "portable-loom-first-receiver-20261009-a15",
+          "trial": {
+            "trial_id": "FIRST_CONFIGURED_RECEIVER-R07-3",
+            "case_id": "R07",
+            "role": "RECEIVER",
+            "turn_index": 0
+          }
+        },
+        {
+          "run_id": "portable-loom-first-receiver-20261009-a19",
+          "trial": {
+            "trial_id": "FIRST_CONFIGURED_RECEIVER-R09-1",
+            "case_id": "R09",
+            "role": "RECEIVER",
+            "turn_index": 0
+          }
+        }
+      ]
+    }
+  ]
+}
