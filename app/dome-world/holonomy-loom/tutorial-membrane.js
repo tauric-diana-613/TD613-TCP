@@ -2,7 +2,7 @@
 // credit and never replace the underlying observed request relation.
 export const LOOM_TUTORIAL_OPERATORS = Object.freeze([
   { glyph: 'à', relations: ['gathering'], family: 'phi-gossamer', label: 'Your request' },
-  { glyph: 'hõt // cōl', relations: ['bounded_emergence', 'protected_continuity'], family: 'moire-shear', label: 'Review references' },
+  { glyph: 'hõt', relations: ['bounded_emergence', 'protected_continuity'], family: 'moire-shear', label: 'Review references' },
   { glyph: '上', relations: ['created_potential'], family: 'phasonic-rise', label: 'Check AI request' },
   { glyph: '出', relations: ['release'], family: 'gradient-stampede', label: 'Send request' },
   { glyph: '米', relations: ['recurrence'], family: 'orbital-braid', label: 'Revisit privacy' },
