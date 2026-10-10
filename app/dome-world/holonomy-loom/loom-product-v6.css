@@ -888,20 +888,19 @@ body:has(#loomAiWorkspace[data-first-crossing="active"]) .loom-topbar a[href*="l
 .loom-topbar .loom-flowcore-legend button:focus-visible{outline:2px solid #8ee8e6;outline-offset:2px}
 .loom-topbar .loom-flowcore-copy-notice{
   min-height:18px;margin:10px 0 0!important;padding:0!important;
-  color:#baf8f1!important;font:500 11px/1.4 var(--mono)!important;opacity:0
+  color:#baf8f1!important;font:500 11px/1.4 var(--mono)!important;opacity:0;
+  transform:translateY(-3px);transition:opacity .32s ease,transform .32s ease
 }
 .loom-topbar .loom-flowcore-copy-notice[data-copy-state="visible"]{
-  animation:loom-glyph-copied 1.9s ease-out both
+  opacity:1;transform:translateY(0)
 }
-@keyframes loom-glyph-copied{0%{opacity:0;transform:translateY(3px)}12%,65%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-4px)}}
 /* The second choice is physically present but sealed until à concludes. */
+#loomAiWorkspace[data-first-crossing="active"][data-first-crossing-step="0"] .loom-first-crossing-objects button[data-first-crossing-item="source"]{
+  opacity:1;filter:none;transition:opacity .45s ease,filter .45s ease,border-color .45s ease
+}
 #loomAiWorkspace[data-first-crossing="active"][data-first-crossing-step="0"] .loom-first-crossing-objects button[data-first-crossing-item="source"]:disabled{
   opacity:.32;filter:saturate(.45);box-shadow:none;pointer-events:none
 }
-#loomAiWorkspace[data-first-crossing="active"][data-first-crossing-step="0"][data-first-crossing-gather="complete"] .loom-first-crossing-objects button[data-first-crossing-item="source"]:not(:disabled){
-  animation:loom-reference-awaken .58s ease-out both
-}
-@keyframes loom-reference-awaken{0%{opacity:.32;filter:saturate(.5)}100%{opacity:1;filter:none}}
 @media(max-width:760px){
   .loom-topbar .loom-flowcore-help{font-size:clamp(9px,2.6vw,11px)}
   .loom-topbar .loom-flowcore-help summary{font-size:inherit}
