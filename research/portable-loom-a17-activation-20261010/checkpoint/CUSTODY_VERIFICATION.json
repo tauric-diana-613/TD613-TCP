@@ -1,0 +1,255 @@
+{
+  "schema": "td613.loom.a17-custody-verification/v1",
+  "status": "PASS",
+  "checked_at": "2026-10-10T07:17:33.727825+00:00",
+  "checks": [
+    {
+      "check": "policy canonical",
+      "pass": true
+    },
+    {
+      "check": "plan canonical",
+      "pass": true
+    },
+    {
+      "check": "runner frozen",
+      "pass": true
+    },
+    {
+      "check": "freeze actual preimage",
+      "pass": true
+    },
+    {
+      "check": "freeze member AUTHORIZATION.json",
+      "pass": true
+    },
+    {
+      "check": "freeze member POLICY.json",
+      "pass": true
+    },
+    {
+      "check": "freeze member PLAN.json",
+      "pass": true
+    },
+    {
+      "check": "freeze member RECONSTRUCTED_CALLER_BINDING.json",
+      "pass": true
+    },
+    {
+      "check": "freeze member SOURCE_VERIFICATION.json",
+      "pass": true
+    },
+    {
+      "check": "freeze member CREDENTIAL_BINDING.json",
+      "pass": true
+    },
+    {
+      "check": "freeze member PRE_FREEZE_CHECK.json",
+      "pass": true
+    },
+    {
+      "check": "freeze member LIVE_LEDGER_PRE_FREEZE.json",
+      "pass": true
+    },
+    {
+      "check": "freeze member credential.body.bin",
+      "pass": true
+    },
+    {
+      "check": "freeze member credential.receipt.json",
+      "pass": true
+    },
+    {
+      "check": "freeze member source.body.bin",
+      "pass": true
+    },
+    {
+      "check": "freeze member source.receipt.json",
+      "pass": true
+    },
+    {
+      "check": "freeze member run-targeted-a17.mjs",
+      "pass": true
+    },
+    {
+      "check": "freeze member RELEASE_BINDING.json",
+      "pass": true
+    },
+    {
+      "check": "freeze member NEON_BUDGET_BINDING.json",
+      "pass": true
+    },
+    {
+      "check": "freeze member ARTIFACT_RECHECK_RECEIPT.json",
+      "pass": true
+    },
+    {
+      "check": "freeze member OPERATOR_PAID_BINDING.json",
+      "pass": true
+    },
+    {
+      "check": "freeze member OPERATOR_PAID_TIER_SCREENSHOT.png",
+      "pass": true
+    },
+    {
+      "check": "caller head",
+      "pass": true
+    },
+    {
+      "check": "caller clean",
+      "pass": true
+    },
+    {
+      "check": "caller source lock",
+      "pass": true
+    },
+    {
+      "check": "source bytes server/loom-assay-contract.js",
+      "pass": true
+    },
+    {
+      "check": "source bytes server/loom-assay-run-config.json",
+      "pass": true
+    },
+    {
+      "check": "source bytes research/portable-loom-server-transport-20261009/server-client.mjs",
+      "pass": true
+    },
+    {
+      "check": "source bytes research/portable-loom-server-transport-20261009/TRIAL_MANIFEST.json",
+      "pass": true
+    },
+    {
+      "check": "source bytes research/portable-loom-receiver-repair-20261010/candidate-artifact/portable-loom-standard.md",
+      "pass": true
+    },
+    {
+      "check": "source bytes restore-caller-guard.mjs",
+      "pass": true
+    },
+    {
+      "check": "exact a16 first complete trial order",
+      "pass": true
+    },
+    {
+      "check": "a12 unchanged HELD",
+      "pass": true
+    },
+    {
+      "check": "a13 unchanged HELD",
+      "pass": true
+    },
+    {
+      "check": "a14 unchanged HELD",
+      "pass": true
+    },
+    {
+      "check": "a15 unchanged HELD",
+      "pass": true
+    },
+    {
+      "check": "a16 unchanged HELD",
+      "pass": true
+    },
+    {
+      "check": "capture identity FIRST_CONFIGURED_RECEIVER-R06-2:RECEIVER:0",
+      "pass": true
+    },
+    {
+      "check": "request identity FIRST_CONFIGURED_RECEIVER-R06-2:RECEIVER:0",
+      "pass": true
+    },
+    {
+      "check": "wire identity FIRST_CONFIGURED_RECEIVER-R06-2:RECEIVER:0",
+      "pass": true
+    },
+    {
+      "check": "response identity FIRST_CONFIGURED_RECEIVER-R06-2:RECEIVER:0",
+      "pass": true
+    },
+    {
+      "check": "envelope identity FIRST_CONFIGURED_RECEIVER-R06-2:RECEIVER:0",
+      "pass": true
+    },
+    {
+      "check": "trial identity FIRST_CONFIGURED_RECEIVER-R06-2:RECEIVER:0",
+      "pass": true
+    },
+    {
+      "check": "same-run predecessor bytes FIRST_CONFIGURED_RECEIVER-R06-2:RECEIVER:0",
+      "pass": true
+    },
+    {
+      "check": "frozen first wire FIRST_CONFIGURED_RECEIVER-R06-2:RECEIVER:0",
+      "pass": true
+    },
+    {
+      "check": "provider identity FIRST_CONFIGURED_RECEIVER-R06-2:RECEIVER:0",
+      "pass": true
+    },
+    {
+      "check": "actual fingerprint FIRST_CONFIGURED_RECEIVER-R06-2:RECEIVER:0",
+      "pass": true
+    },
+    {
+      "check": "actual source FIRST_CONFIGURED_RECEIVER-R06-2:RECEIVER:0",
+      "pass": true
+    },
+    {
+      "check": "Neon provider hashes FIRST_CONFIGURED_RECEIVER-R06-2:RECEIVER:0",
+      "pass": true
+    },
+    {
+      "check": "Neon status FIRST_CONFIGURED_RECEIVER-R06-2:RECEIVER:0",
+      "pass": true
+    },
+    {
+      "check": "Neon reservation FIRST_CONFIGURED_RECEIVER-R06-2:RECEIVER:0",
+      "pass": true
+    },
+    {
+      "check": "zero retries FIRST_CONFIGURED_RECEIVER-R06-2:RECEIVER:0",
+      "pass": true
+    },
+    {
+      "check": "unattempted no Neon FIRST_CONFIGURED_RECEIVER-R06-2:RECEIVER:1",
+      "pass": true
+    },
+    {
+      "check": "unattempted no Neon FIRST_CONFIGURED_RECEIVER-R06-2:RECEIVER:2",
+      "pass": true
+    },
+    {
+      "check": "run closed",
+      "pass": true
+    },
+    {
+      "check": "run row count",
+      "pass": true
+    },
+    {
+      "check": "run reservation sum",
+      "pass": true
+    },
+    {
+      "check": "program cap",
+      "pass": true
+    },
+    {
+      "check": "stop first HOLD",
+      "pass": true
+    },
+    {
+      "check": "answer count",
+      "pass": true
+    },
+    {
+      "check": "prior archive retained Portable_Loom_A16_Acquisition_Evidence_20261010.zip",
+      "pass": true
+    }
+  ],
+  "custody_admitted": false,
+  "semantic_adjudication_performed": false,
+  "billing_status": "OPERATOR_ATTESTED_PAID",
+  "inherited_a13_bundle_preimage": "UNLOCATED; retained as unresolved; individual files remain preserved"
+}

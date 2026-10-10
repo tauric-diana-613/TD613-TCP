@@ -1,0 +1,76 @@
+{
+  "schema": "td613.loom.a17-capture-inventory/v1",
+  "run_id": "portable-loom-first-receiver-20261009-a17",
+  "execution_status": "HELD_STOPPED_ON_FIRST_HOLD",
+  "actual_gemini_calls": 1,
+  "answers_captured": 0,
+  "provider_holds": 1,
+  "unattempted_calls": 2,
+  "run_reserved_cost_nanos": 110195250,
+  "program_totals": {
+    "active_runs": 0,
+    "reserved_calls": 77,
+    "reserved_cost_nanos": 8808762750
+  },
+  "remaining_calls": 3,
+  "remaining_reserved_cost_nanos": 1191237250,
+  "billing_status": "OPERATOR_ATTESTED_PAID",
+  "credential_binding": "RUNTIME_FINGERPRINT_MATCHED; PAID_ASSOCIATION_OPERATOR_ATTESTED",
+  "custody_admitted": false,
+  "analysis_performed": false,
+  "historical_original_program_outputs_preserved": 52,
+  "original_output_coverage_with_separate_replacement": 52,
+  "original_program_outputs_planned": 54,
+  "prior_a13_successful_targeted_outputs": 4,
+  "prior_a15_successful_targeted_outputs": 8,
+  "current_targeted_outputs_preserved": 12,
+  "targeted_outputs_planned": 16,
+  "trials": [
+    {
+      "call_number": 1,
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-2",
+      "case_id": "R06",
+      "role": "RECEIVER",
+      "turn_index": 0,
+      "call_key": "FIRST_CONFIGURED_RECEIVER-R06-2:RECEIVER:0",
+      "status": "HELD_EVIDENCE_GAP",
+      "provider_requests": 1,
+      "provider_http_status": 503,
+      "relay_http_status": 409,
+      "provider_error": {
+        "code": 503,
+        "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+        "status": "UNAVAILABLE"
+      },
+      "local_error": "ASSAY_SERVER_CAPTURE_HELD",
+      "request_sha256": "4038d1f2889e1f98f6687d70bee08a1abccc72d682d3243fb148bd9d156f6409",
+      "provider_request_sha256": "65fb159e93cd3cc731f7c7a1089da3ef098e6af73d0d95c10a46e79bfd84fe4b",
+      "response_sha256": "fca742f189a7b61da7a4310ca25634d981e2a50aead2d37d81b852587d1be21a",
+      "provider_response_sha256": "01f5c7d4e4d8ec06c8098777e731b3d552ba518feb02b681f6c569edcd9c6f6d",
+      "answer_sha256": null,
+      "provider_credential_sha256": "51efc3d87cdffc4fb2869519ff4fa12b10ce179ba79d3976f6094cf741681c39",
+      "reserved_cost_nanos": 110195250,
+      "started_at": "2026-10-10T07:17:10.263Z",
+      "ended_at": "2026-10-10T07:17:17.255Z",
+      "custody_admitted": false
+    },
+    {
+      "call_number": 2,
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-2",
+      "case_id": "R06",
+      "role": "RECEIVER",
+      "turn_index": 1,
+      "status": "UNATTEMPTED",
+      "provider_requests": 0
+    },
+    {
+      "call_number": 3,
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-2",
+      "case_id": "R06",
+      "role": "RECEIVER",
+      "turn_index": 2,
+      "status": "UNATTEMPTED",
+      "provider_requests": 0
+    }
+  ]
+}
