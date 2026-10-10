@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdtempSync, rmSync, existsSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import {
   ASSAY_A20_RUN_ID, ASSAY_A20_PROGRAM, ASSAY_A19_PROGRAM,
@@ -22,6 +24,26 @@ const binding={
  authorization:{record:'A20_EXECUTION_REQUIRES_SEPARATE_GESTURE',scope:'A20_DRAFT_TEST_ONLY'}
 };
 const p={schema:ASSAY_RECOVERY_POLICY_SCHEMA,run_id:ASSAY_A20_RUN_ID,protocol_commit:commit,artifact_sha256:manifest.artifact_sha256,expires_at:'2026-12-01T00:00:00Z',binding,receiver_output_tokens:8192,program:ASSAY_A20_PROGRAM};
+
+test('enrollment preparation chooses the same A20 manifest as acquisition and spends nothing', () => {
+ const dir=mkdtempSync(resolve(tmpdir(),'a20-enrollment-'));
+ try {
+  const head=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
+  const policy={...p,protocol_commit:head,expires_at:new Date(Date.now()+60000).toISOString(),binding:{...binding,protocol_commit:head}};
+  const file=resolve(dir,'policy.json'),output=resolve(dir,'prepared.json');
+  writeFileSync(file,JSON.stringify(policy));
+  const run=()=>spawnSync(process.execPath,['research/portable-loom-server-transport-20261009/prepare-enrollment.mjs',file,'a'.repeat(64),output],{cwd:root,encoding:'utf8'});
+  const prepared=run();
+  assert.equal(prepared.status,0,prepared.stderr);
+  const proposal=JSON.parse(readFileSync(output,'utf8'));
+  assert.equal(proposal.status,'PREPARED_NOT_APPLIED');
+  assert.equal(proposal.params[2].artifact_sha256,manifest.artifact_sha256);
+  rmSync(output);
+  writeFileSync(file,JSON.stringify({...policy,artifact_sha256:'0'.repeat(64)}));
+  assert.equal(run().status,2);
+  assert.equal(existsSync(output),false,'a mismatched artifact cannot prepare an enrollment');
+ } finally {rmSync(dir,{recursive:true,force:true});}
+});
 
 test('A20 is an explicit future route; legacy 88/$10 frozen program survives',()=>{
  assert.equal(ASSAY_ACTIVATION_RUN_IDS.at(-1),ASSAY_A20_RUN_ID);

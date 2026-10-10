@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
 import { createLoomAssayCredentialHandler } from '../server/loom-assay-credential.js';
 import { sha256 } from '../server/loom-assay-contract.js';
 import { createLoomAssayHandler } from '../server/loom-assay.js';
@@ -8,6 +9,26 @@ import { createLoomAssayHandler } from '../server/loom-assay.js';
 const token = 'synthetic-assay-capability-for-credential-test';
 const key = 'synthetic-google-key-for-credential-test';
 const source = 'a'.repeat(40);
+
+test('the complete API import closure uses traceable local filesystem specifiers', () => {
+  // Node accepts browser query suffixes in ESM imports, but Vercel's file
+  // tracer treats them as filenames and omits the dependency from the bundle.
+  // Walk from the actual route, rather than just testing the credential factory.
+  const pending = [resolve('api/khonapolit.js')], visited = new Set();
+  while (pending.length) {
+    const file = pending.pop();
+    if (visited.has(file)) continue;
+    visited.add(file);
+    const text = readFileSync(file, 'utf8');
+    for (const match of text.matchAll(/\b(?:from\s*|import\s*)['"](\.{1,2}\/[^'"]+)['"]/g)) {
+      const dependency = resolve(dirname(file), match[1]);
+      assert.ok(existsSync(dependency), `Untraceable API dependency: ${file} → ${match[1]}`);
+      pending.push(dependency);
+    }
+  }
+  assert.ok(visited.has(resolve('app/dome-world/holonomy-loom/dome-art-lattice.js')),
+    'the shared animation lattice must survive the server import closure');
+});
 function run({ env = {}, headers = {}, method = 'GET' } = {}) {
   const environment = { GEMINI_API_KEY: key, VERCEL_GIT_COMMIT_SHA: source,
     VERCEL_ENV: 'production', TD613_LOOM_ASSAY_ACCESS_SHA256: sha256(token), ...env };

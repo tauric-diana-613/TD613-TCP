@@ -4,7 +4,9 @@
 // new Flow-Core semantics. They sequence existing canonical relations into
 // coherent illustrative messages and select a Dome-Art-derived motion family
 // for Loom's existing 39-carrier field.
-import { computeHeterostratigraphicMotionSample } from './dome-art-lattice.js?v=20261010-viewport-cadence-v1';
+// Shared with the API dependency graph: keep this filesystem specifier
+// traceable. Browser cache versioning belongs on the workspace entry module.
+import { computeHeterostratigraphicMotionSample } from './dome-art-lattice.js';
 export const FLOWCORE_CHOREOGRAPHY_SCHEMA = 'td613.loom.flowcore-choreography/v0.1';
 
 export const FLOWCORE_MOTION_FAMILIES = Object.freeze({
