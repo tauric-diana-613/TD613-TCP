@@ -125,6 +125,31 @@ test('cinematic route field and builder are separate scenes while advanced tools
   assert.match(product, /#loomAiWorkspace \.loom-stage\{[\s\S]*?height:calc\(100svh - 52px\)/);
 });
 
+test('Flow-Core remains a single accessible header guide with eight text-only glyph copy controls', () => {
+  const doc = new JSDOM(html).window.document;
+  assert.ok(doc.querySelector('.loom-topbar nav'), 'persistent header must exist');
+  const template = new JSDOM(loomWorkspaceTemplate).window.document;
+  const help=template.querySelector('.loom-flowcore-help');
+  assert.ok(help);
+  const glyphs=[...help.querySelectorAll('[data-flowcore-copy]')];
+  assert.deepEqual(glyphs.map(node=>node.dataset.flowcoreCopy),['à','米','出','hõt','cōl','上','下','𝄐']);
+  assert.ok(glyphs.every(node=>node.tagName==='BUTTON'&&node.textContent===node.dataset.flowcoreCopy));
+  assert.doesNotMatch(help.textContent, /click.*copy|tap.*copy|copy.*glyph/i);
+  assert.match(workspaceSource, /\.loom-topbar nav'\)\?\.prepend\(flowcoreHelp\)/);
+  assert.match(workspaceSource, /navigator\?\.clipboard\?\.writeText/);
+  assert.match(product, /\.loom-topbar \.loom-flowcore-help\[open\] \.loom-flowcore-panel\{display:block\}/);
+});
+
+test('à completion, rather than the first tap, gates hõt/cōl', () => {
+  const template = new JSDOM(loomWorkspaceTemplate).window.document;
+  assert.equal(template.querySelectorAll('[data-first-crossing-item]').length,2);
+  assert.match(workspaceSource,/firstCrossingSourceUnlocked=false/);
+  assert.match(workspaceSource,/projectionCurrent && \(snapshot.reducedMotion \|\| snapshot.progress>=\.82\)/);
+  assert.match(workspaceSource,/if\(id==='source'&&!firstCrossingSourceUnlocked\)return/);
+  assert.match(workspaceSource,/button.disabled=!firstCrossingSourceUnlocked && firstCrossingStep===0/);
+  assert.match(product,/data-first-crossing-item="source"\]:disabled/);
+});
+
 test('How Loom works is a recoverable handoff preview with a living Flow-Core remix', () => {
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
   assert.equal(doc.querySelector('.loom-builder-shell').hidden, true);
