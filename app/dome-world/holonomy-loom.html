@@ -14,7 +14,9 @@
     button,input,select,textarea{font:inherit;color:inherit}button,a{touch-action:manipulation}button{cursor:pointer}button:disabled{cursor:not-allowed}
     button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
     [hidden]{display:none!important}
-    html[data-loom-boot="loading"] main{visibility:hidden}
+    /* The opaque full-viewport boot veil owns loading concealment. Do not set
+       visibility:hidden on main: WebKit can retain inherited hidden visibility
+       on descendants after the boot state changes, even when main is visible. */
     #loomBootVeil{position:fixed;inset:0;z-index:1000;display:grid;place-content:center;background:#05060a;color:var(--cyan);font:600 12px/1.5 var(--mono);letter-spacing:.14em;text-transform:uppercase}
     html:not([data-loom-boot="loading"]) #loomBootVeil{display:none}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
