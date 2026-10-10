@@ -17,8 +17,8 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
     </div>
     <details class="loom-flowcore-help">
       <summary>What is Flow-Core runtime?</summary>
-      <button type="button" id="loomFlowcoreHelpClose" class="loom-flowcore-help-close" aria-label="Close Flow-Core explanation">×</button>
       <div class="loom-flowcore-panel">
+        <button type="button" id="loomFlowcoreHelpClose" class="loom-flowcore-help-close" aria-label="Close Flow-Core explanation">×</button>
         <p>Flow-Core maps the choices in your Loom session: what you share, what stays private, when you send, and how you review returned work. Each symbol has its own motion. The tutorial illustrates the route with fictional material; the working session follows actual request events.</p>
         <p id="loomFlowcoreMessage" class="loom-flowcore-message" aria-live="polite"></p>
         <div class="loom-flowcore-legend">
