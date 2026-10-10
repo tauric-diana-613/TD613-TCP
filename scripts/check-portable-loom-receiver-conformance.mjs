@@ -10,11 +10,10 @@ const cases = input.cases.map((record, index) => {
   const answerBytes = Buffer.from(record.answer, 'utf8');
   const answerHash = createHash('sha256').update(answerBytes).digest('hex');
   if (record.answer_sha256 && record.answer_sha256 !== answerHash) throw new Error(`Case ${index} answer byte hash differs.`);
-  const answer = record.presentation_format === 'STRICT_JSON_TASK_RESULT' ? JSON.parse(record.answer).answer : record.answer;
   return { id: record.id ?? `${record.run_id}:${record.trial?.trial_id}:${record.trial?.turn_index}`, answer_sha256: answerHash,
-    inspection: inspectPortableLoomReceiverConformance({ answer, receipt: record.receipt, expected: record.expected,
-      source_context: record.source_context, receipt_required: record.receipt_required ?? record.receipt !== null,
-      review_body_required: record.review_body_required ?? false }) };
+    inspection: inspectPortableLoomReceiverConformance({ answer: record.answer, receipt: record.receipt ?? null, expected: record.expected,
+      source_context: record.source_context ?? null, receipt_required: record.receipt_required ?? true,
+      review_body_required: record.review_body_required ?? true, presentation_format: record.presentation_format ?? 'PROSE' }) };
 });
 const report = { schema: 'td613.loom.receiver-conformance-review/v0.1', observed_at: new Date().toISOString(),
   input_sha256: createHash('sha256').update(bytes).digest('hex'), cases,
