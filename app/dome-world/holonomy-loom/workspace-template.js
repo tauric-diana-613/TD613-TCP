@@ -26,13 +26,13 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
       </div>
     </details>
     <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="How Loom controls an AI request">
-      <button type="button" data-first-crossing-item="brief" aria-pressed="false"><span>à · REQUEST</span><strong>Your request</strong><small>When does the garden open?</small></button>
-      <button type="button" data-first-crossing-item="source" aria-pressed="false"><span>hõt // cōl · REFERENCES</span><strong>References</strong><small>Garden hours: opens at nine.</small></button>
-      <div id="loomFirstCrossingPrivate" class="loom-first-crossing-private" role="note"><span>NOT SHARED</span><strong>Private note</strong><small>Stays in this browser.</small></div>
+      <button type="button" data-first-crossing-item="brief" aria-pressed="false"><span>à · GATHER</span><strong>Select your question</strong><small>When does the garden open?</small></button>
+      <button type="button" data-first-crossing-item="source" aria-pressed="false"><span class="loom-operator-pair"><span><b>hõt</b> REVIEW</span><span><b>cōl</b> PROTECT</span></span><strong>Select your evidence</strong><small>Garden hours: opens at nine.</small></button>
+      <div id="loomFirstCrossingPrivate" class="loom-first-crossing-private" role="note"><span>WITHHELD BY DESIGN</span><strong>Private note</strong><small>Stays in this browser.</small></div>
     </div>
     <div class="loom-first-crossing-actions">
-      <button type="button" id="loomFirstCrossingAction" hidden>Check AI request →</button>
-      <button type="button" id="loomFirstCrossingStop" hidden>Finish tutorial →</button>
+      <button type="button" id="loomFirstCrossingAction" hidden>Inspect what AI receives →</button>
+      <button type="button" id="loomFirstCrossingStop" hidden>𝄐 · Complete the lesson →</button>
     </div>
     <div class="loom-practice-controls">
       <button type="button" id="loomFirstCrossingBack" hidden>← Start over</button>
@@ -41,11 +41,11 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
       <button type="button" id="loomFirstCrossingLeave">Skip tutorial →</button>
     </div>
     <p id="loomFirstCrossingAnswer" class="loom-first-crossing-answer" aria-live="polite"></p>
-    <details id="loomTutorialProof" class="loom-tutorial-proof" hidden><summary>Inspect the fictional return receipt</summary><pre id="loomTutorialProofRecord"></pre></details>
+    <details id="loomTutorialProof" class="loom-tutorial-proof" hidden><summary>Inspect the fictional return receipt <span aria-hidden="true">↗</span></summary><pre id="loomTutorialProofRecord"></pre></details>
   </section>
 </div>
 <div class="loom-hero-route" aria-hidden="true"><span data-hero-step="loom"><b>1</b> Loom</span><i>→</i><span data-hero-step="marrowline"><b>2</b> Marrowline</span><i>→</i><span data-hero-step="return"><b>3</b> Return</span></div>
-<button type="button" id="loomBegin" class="loom-begin">Try Loom →</button>
+<button type="button" id="loomBegin" class="loom-begin">Enter Loom →</button>
 </section>
 <section class="loom-builder-shell" aria-label="Loom builder" hidden>
 <div id="loomWorkspaceField" class="loom-workspace-field" aria-label="Current AI request state"></div>
