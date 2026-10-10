@@ -259,6 +259,13 @@ try {
   // provider request, persists completion, and only then exposes Open Loom.
   {
     const context = await browser.newContext({ viewport: { width: 390, height: 700 }, reducedMotion: 'no-preference' });
+    // Controlled clipboard witness, never an external clipboard or provider call.
+    await context.addInitScript(() => {
+      window.__flowcoreCopies = [];
+      Object.defineProperty(navigator,'clipboard',{configurable:true,value:{
+        writeText: glyph => {window.__flowcoreCopies.push(glyph);return Promise.resolve();}
+      }});
+    });
     const page = await bindPage(context, 'first-crossing-mobile', served.base, { firstCrossingComplete: false });
     try {
       record('first crossing: builder is withheld before practice completion',
@@ -296,8 +303,16 @@ try {
       record('first crossing: private note is explanatory rather than an ambiguous control',
         await page.locator('#loomFirstCrossingPrivate').evaluate(node=>node.tagName==='DIV'&&!node.hasAttribute('aria-expanded')),
         { text: await page.locator('#loomFirstCrossingPrivate').textContent() });
+      const lockedSource=page.locator('[data-first-crossing-item="source"]');
+      record('à opens alone; hõt/cōl stays dim and disabled',await lockedSource.isDisabled() &&
+        await lockedSource.evaluate(node=>Number(getComputedStyle(node).opacity)<=.4));
       await page.locator('[data-first-crossing-item="brief"]').click();
-      await page.locator('[data-first-crossing-item="source"]').click();
+      record('hõt/cōl remains locked during the à consequence',await lockedSource.isDisabled() &&
+        await page.locator('#loomAiWorkspace').getAttribute('data-first-crossing-gather')==='motion');
+      await page.waitForFunction(()=>document.querySelector('#loomAiWorkspace')?.dataset.firstCrossingGather==='complete');
+      record('hõt/cōl awakens only after observed gathering',await lockedSource.isEnabled() &&
+        await page.locator('#loomAiWorkspace').getAttribute('data-first-crossing-gather')==='complete');
+      await lockedSource.click();
       record('first crossing: consequence begins before terminology is named',
         /Preview what AI can use\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
         !/That relation is à/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
@@ -356,6 +371,23 @@ try {
       await screenshot(page, 'first-crossing-mobile-complete');
       await page.locator('#loomBegin').click();
       await page.locator('.loom-builder-shell').waitFor({ state: 'visible' });
+      const persistentGuide=page.locator('.loom-topbar nav > .loom-flowcore-help');
+      record('Flow-Core guide persists in header beside Lab and Home',
+        await persistentGuide.count()===1 && await page.locator('.loom-topbar nav a[href*="loom-instrument-lab"]').isVisible() &&
+        await page.locator('.loom-topbar nav #ashKeepReturn').isVisible());
+      await persistentGuide.locator('summary').click();
+      const copiedGlyphs=['à','米','出','hõt','cōl','上','下','𝄐'];
+      for(const glyph of copiedGlyphs) {
+        await persistentGuide.locator('[data-flowcore-copy="'+glyph+'"]').click();
+        await page.waitForFunction(g=>document.querySelector('#loomFlowcoreCopyNotice')?.textContent===g+' Copied!',glyph);
+      }
+      record('eight plaintext Flow-Core glyphs copy individually on direct gesture',
+        JSON.stringify(await page.evaluate(()=>window.__flowcoreCopies))===JSON.stringify(copiedGlyphs));
+      await page.waitForFunction(()=>document.querySelector('#loomFlowcoreCopyNotice')?.textContent==='',
+        null,{timeout:5000});
+      record('Flow-Core copied acknowledgment fades and clears without clutter',
+        await page.locator('#loomFlowcoreCopyNotice').getAttribute('data-copy-state')==='rest');
+      await persistentGuide.locator('#loomFlowcoreHelpClose').click();
       record('first crossing: completion enters the real Loom builder without a second Threshold membrane',
         await page.locator('.loom-builder-shell').isVisible() && await page.locator('.loom-stage').isHidden(),
         { threshold_state: await page.locator('#loomAiWorkspace').getAttribute('data-threshold-state') });
