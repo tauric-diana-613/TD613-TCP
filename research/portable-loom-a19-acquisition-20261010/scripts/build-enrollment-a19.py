@@ -1,0 +1,12 @@
+import pathlib,json,datetime
+r=pathlib.Path('/workspace/scratch/26d2ceda3f9e/continuation-a19')
+read=lambda n:json.loads((r/n).read_bytes())
+p=read('POLICY.json');f=read('FREEZE_COMMIT.json');c=read('CREDENTIAL_BINDING.json');ledger=read('LIVE_LEDGER_PRE_FREEZE.json')
+q=lambda s:"'"+s.replace("'","''")+"'"
+assert p['run_id']=='portable-loom-first-receiver-20261009-a19' and p['binding']['limits']['max_calls']==2 and p['binding']['limits']['max_cost_usd']==.3 and p['program']['max_calls']==88 and p['program']['max_cost_usd']==10
+tuples=','.join('('+','.join([q(x['run_id']),q(x['status']),str(x['calls_reserved']),str(x['reserved_cost_nanos']),q(x['policy_sha256']),q(x['credential_sha256'])])+')' for x in ledger['runs'])
+guard="DO $$ BEGIN IF EXISTS (SELECT 1 FROM td613_assay_runs WHERE run_id="+q(p['run_id'])+") OR EXISTS (SELECT 1 FROM td613_assay_runs WHERE status='ACTIVE') OR (SELECT count(*) FROM td613_assay_runs)<>18 OR (SELECT COALESCE(sum(calls_reserved),0) FROM td613_assay_runs)<>81 OR (SELECT COALESCE(sum(reserved_cost_nanos),0) FROM td613_assay_runs)<>9251949000 OR (SELECT count(*) FROM td613_assay_runs WHERE (run_id,status,calls_reserved,reserved_cost_nanos,policy_sha256,credential_sha256) IN ("+tuples+"))<>18 THEN RAISE EXCEPTION 'A19_ENROLLMENT_PRECONDITION_CHANGED'; END IF; END $$"
+insert='INSERT INTO td613_assay_runs(run_id,credential_sha256,policy,status,policy_sha256) VALUES ('+','.join([q(p['run_id']),q(c['relay_access_sha256']),q(json.dumps(p,ensure_ascii=False,separators=(',',':')))+'::jsonb',"'ACTIVE'",q(f['policy_sha256'])])+') RETURNING run_id,status,policy_sha256,calls_reserved,reserved_cost_nanos'
+with (r/'ENROLLMENT_SQL_STATEMENTS.json').open('x') as out:json.dump(['LOCK TABLE td613_assay_runs IN SHARE ROW EXCLUSIVE MODE',guard,insert],out,indent=2);out.write('\n')
+with (r/'PREEXECUTION_CHECK.json').open('x') as out:json.dump({'status':'PASS','recorded_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'preflight_command':'NODE_USE_ENV_PROXY=1 node run-targeted-a19.mjs --preflight','preflight_exit_code':0,'freeze':f,'source_http_status':200,'credential_http_status':200,'billing_status':'OPERATOR_ATTESTED_PAID','local_budget_nanos':300000000,'shared_remaining_nanos_before_enrollment':748051000,'a19_absent_full_id':True,'historical_ledger_transaction_guard':True,'calls':2,'provider_calls_before_enrollment':0,'analysis_authorized':False},out,indent=2);out.write('\n')
+print('A19_ENROLLMENT_TRANSACTION_PREPARED')

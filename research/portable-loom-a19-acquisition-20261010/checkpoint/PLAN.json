@@ -1,0 +1,67 @@
+{
+  "schema": "td613.loom.receiver-repair-execution/v0.1",
+  "status": "FROZEN_BEFORE_MEASUREMENT",
+  "run_id": "portable-loom-first-receiver-20261009-a19",
+  "protocol_commit": "dc1851e199e850ca610e71c0c49df5f1acf37759",
+  "source_packet_commit": "d5a1583d405912cf723c2508aed395754d882ab0",
+  "local_caller_commit": "d31b3f604579af9cd6c0d1929009d115673e4e6d",
+  "artifact_path": "research/portable-loom-receiver-repair-20261010/candidate-artifact/portable-loom-standard.md",
+  "artifact_sha256": "e6811ad6b15ab40be189b1882c588380fbafbede81fd0d14d3482f00b7e9f7ea",
+  "provider": "GEMINI_GENERATE_CONTENT",
+  "model": "gemini-3.8-flash",
+  "thinking_level": "medium",
+  "tools": "DISABLED",
+  "retrieval": "DISABLED",
+  "retries": 0,
+  "stop_on_first_hold": true,
+  "maximum_calls": 2,
+  "maximum_reserved_cost_nanos": 300000000,
+  "maximum_reserved_cost_per_call_nanos": 150000000,
+  "original_prospective_plan_sha256": "fe8c8db1fc107950f2e17fbc15e41354191b480be2249dda61c47ca4c67878f7",
+  "trial_order": [
+    {
+      "case_id": "R09",
+      "repetition": 1,
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R09-1",
+      "turns": [
+        0,
+        1
+      ],
+      "first_provider_request_sha256": "9a9dee83b7467b8c1ada969558001dbd952dca48d1c1d2e42552bec4f6b3f4f2",
+      "first_reserved_cost_nanos": 110168250
+    }
+  ],
+  "calls": [
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R09-1",
+      "case_id": "R09",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R09-1",
+      "case_id": "R09",
+      "role": "RECEIVER",
+      "turn_index": 1
+    }
+  ],
+  "interpretation_ceiling": "CAPTURE_AND_HASH_ONLY; no comprehensive semantic or statistical adjudication in this execution",
+  "transport_environment": {
+    "NODE_USE_ENV_PROXY": "1",
+    "node_version": "v24.19.0",
+    "working_directory": "/workspace/scratch/26d2ceda3f9e/caller-a19"
+  },
+  "runner_sha256": "51e337a1d1c1829b86d26ff40541ac50fbad7b32fc6a64f6d3bbf697e536a99a",
+  "continuation": {
+    "source_a18_plan_file_sha256": "4d80eefcf56997f8d41856b478e25bebfb78f63a02bc0460cea40c94c09aa0b4",
+    "prior_run": "portable-loom-first-receiver-20261009-a18",
+    "prior_call_numbers": [
+      4,
+      5
+    ],
+    "call_1_class": "SEPARATELY_AUTHORIZED_REPLACEMENT_OF_A18_PROVIDER_HOLD",
+    "call_2_class": "ORIGINALLY_UNATTEMPTED_REQUIRES_FRESH_A19_PREDECESSOR",
+    "same_run_predecessors_required": true,
+    "prior_answer_bytes_imported": false
+  }
+}

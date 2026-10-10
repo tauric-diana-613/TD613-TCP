@@ -1,0 +1,40 @@
+{
+  "schema": "td613.loom.a19-durable-acquisition-checkpoint/v1",
+  "run_id": "portable-loom-first-receiver-20261009-a19",
+  "archive": {
+    "filename": "Portable_Loom_A19_Acquisition_Evidence_20261010.zip",
+    "library_file_id": "libfile_a9f43a430c0c8191b5cb2770a24d3182",
+    "directory_id": "libdir_016415d9ea3c8191ad89129ff8fc9160",
+    "sha256": "0b623d6e19a425fb8777fd9551263f1fe653f696738fc097cd10f819bc471688",
+    "bytes": 18040373,
+    "integrity": "PASS_89_PAYLOAD_HASHES_AND_CRC"
+  },
+  "actual_gemini_calls": 2,
+  "answers_captured": 2,
+  "provider_holds": 0,
+  "unattempted_turns": 0,
+  "new_reserved_cost_nanos": 222222750,
+  "shared_reserved_calls": 83,
+  "shared_reserved_cost_nanos": 9474171750,
+  "remaining_reservations": 5,
+  "remaining_reserved_cost_nanos": 525828250,
+  "shared_caps": {
+    "calls": 88,
+    "cost_usd": 10
+  },
+  "capture_status": "CAPTURED_NOT_ADMITTED",
+  "parked_run_status": "HELD",
+  "targeted_capture_coverage": {
+    "preserved": 16,
+    "planned": 16
+  },
+  "original_historical_bytes_preserved": 52,
+  "original_slot_coverage_with_separate_replacement": 54,
+  "inherited_a13_bundle_preimage": "UNLOCATED",
+  "billing": "OPERATOR_ATTESTED_PAID",
+  "runtime_fingerprint_match": true,
+  "analysis_performed": false,
+  "release_repeated": false,
+  "source_release": "dc1851e199e850ca610e71c0c49df5f1acf37759",
+  "caller_commit": "d31b3f604579af9cd6c0d1929009d115673e4e6d"
+}

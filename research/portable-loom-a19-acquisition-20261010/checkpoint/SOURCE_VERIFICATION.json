@@ -1,0 +1,13 @@
+{
+  "checked_at": "2026-10-10T09:00:34.864656+00:00",
+  "source_packet_commit": "d5a1583d405912cf723c2508aed395754d882ab0",
+  "release_commit": "dc1851e199e850ca610e71c0c49df5f1acf37759",
+  "artifact_sha256": "e6811ad6b15ab40be189b1882c588380fbafbede81fd0d14d3482f00b7e9f7ea",
+  "artifact_bytes": 91296,
+  "caller_commit": "d31b3f604579af9cd6c0d1929009d115673e4e6d",
+  "source_lock_sha256": "a0875945db3aa51f633fa394a0de6c8b5438f4dee719352cf0ad0f122c84fe66",
+  "current_contract_config_and_artifact_github_bytes_match": true,
+  "budget_source_comparison_ref": "BUDGET_SOURCE_BYTE_COMPARISON.json",
+  "exact_a18_final_two_calls_retained": true,
+  "provider_calls": 0
+}

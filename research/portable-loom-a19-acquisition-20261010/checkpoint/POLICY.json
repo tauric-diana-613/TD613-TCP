@@ -1,0 +1,71 @@
+{
+  "schema": "td613.loom.server-assay-policy/v0.3",
+  "run_id": "portable-loom-first-receiver-20261009-a19",
+  "protocol_commit": "dc1851e199e850ca610e71c0c49df5f1acf37759",
+  "artifact_sha256": "e6811ad6b15ab40be189b1882c588380fbafbede81fd0d14d3482f00b7e9f7ea",
+  "expires_at": "2026-10-10T12:00:34.864656+00:00",
+  "binding": {
+    "schema": "td613.loom.bound-model-transport/v0.1",
+    "protocol_commit": "dc1851e199e850ca610e71c0c49df5f1acf37759",
+    "provider": "GEMINI_GENERATE_CONTENT",
+    "trial_family": "FIRST_CONFIGURED_RECEIVER",
+    "model": "gemini-3.8-flash",
+    "response_model_ids": [
+      "gemini-3.8-flash"
+    ],
+    "credential_env": "GEMINI_API_KEY",
+    "generation_parameters": {
+      "temperature": null,
+      "top_p": null,
+      "thinking_level": "medium"
+    },
+    "limits": {
+      "max_calls": 2,
+      "max_input_tokens_per_call": 200000,
+      "max_output_tokens_per_call": 8192,
+      "max_cost_usd": 0.3,
+      "timeout_ms": 240000,
+      "max_response_bytes": 2000000
+    },
+    "pricing": {
+      "input_usd_per_million": 0.75,
+      "output_usd_per_million": 3.75,
+      "source": "https://ai.google.dev/gemini-api/docs/pricing",
+      "verified_at": "2026-10-09T07:32:43.725309Z"
+    },
+    "authorization": {
+      "record": "/workspace/scratch/26d2ceda3f9e/continuation-a19/AUTHORIZATION.json",
+      "scope": "Fresh R09-1 RECEIVER turns 0 then 1 only. Turn 0 separately replaces a18 failed turn 0; turn 1 requires successful turn-0 answer from this same a19 run. Shared ceiling 88 reservations and USD 10; local ceiling 2 calls and USD 0.30. Zero automatic retries; stop globally at first provider HOLD. Raw capture and custody compilation only. Expected production fingerprint 51efc3d87cdffc4fb2869519ff4fa12b10ce179ba79d3976f6094cf741681c39; OPERATOR_ATTESTED_PAID."
+    },
+    "tools": "DISABLED",
+    "retrieval": "DISABLED",
+    "retries": 0
+  },
+  "receiver_output_tokens": 8192,
+  "program": {
+    "id": "portable-loom-first-receiver-20261009",
+    "run_ids": [
+      "portable-loom-first-receiver-20261009",
+      "portable-loom-first-receiver-20261009-a2",
+      "portable-loom-first-receiver-20261009-a3",
+      "portable-loom-first-receiver-20261009-a4",
+      "portable-loom-first-receiver-20261009-a5",
+      "portable-loom-first-receiver-20261009-a6",
+      "portable-loom-first-receiver-20261009-a7",
+      "portable-loom-first-receiver-20261009-a8",
+      "portable-loom-first-receiver-20261009-a9",
+      "portable-loom-first-receiver-20261009-a10",
+      "portable-loom-first-receiver-20261009-a11",
+      "portable-loom-first-receiver-20261009-a12",
+      "portable-loom-first-receiver-20261009-a13",
+      "portable-loom-first-receiver-20261009-a14",
+      "portable-loom-first-receiver-20261009-a15",
+      "portable-loom-first-receiver-20261009-a16",
+      "portable-loom-first-receiver-20261009-a17",
+      "portable-loom-first-receiver-20261009-a18",
+      "portable-loom-first-receiver-20261009-a19"
+    ],
+    "max_calls": 88,
+    "max_cost_usd": 10
+  }
+}

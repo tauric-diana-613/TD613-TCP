@@ -1,0 +1,21 @@
+import fs from 'node:fs';
+import {execFileSync} from 'node:child_process';
+import {sha256,canonicalJson,validateAssayPolicy} from '/workspace/scratch/26d2ceda3f9e/caller-a19/server/loom-assay-contract.js';
+import {prepareServerRequest} from '/workspace/scratch/26d2ceda3f9e/caller-a19/research/portable-loom-server-transport-20261009/server-client.mjs';
+const root='/workspace/scratch/26d2ceda3f9e/continuation-a19',caller='/workspace/scratch/26d2ceda3f9e/caller-a19';
+const read=n=>JSON.parse(fs.readFileSync(`${root}/${n}`));const write=(n,v)=>fs.writeFileSync(`${root}/${n}`,JSON.stringify(v,null,2)+'\n',{flag:'wx'});const check=(ok,code)=>{if(!ok)throw Error(code);};
+const policy=read('POLICY.json'),plan=read('PLAN.json'),binding=read('RECONSTRUCTED_CALLER_BINDING.json');validateAssayPolicy(policy);
+check(execFileSync('git',['rev-parse','HEAD'],{cwd:caller,encoding:'utf8'}).trim()===binding.local_git_commit&&execFileSync('git',['status','--porcelain'],{cwd:caller,encoding:'utf8'}).trim()==='','CALLER_CHANGED');
+check(plan.calls.length===2&&policy.binding.limits.max_calls===2&&policy.binding.limits.max_cost_usd===0.3&&policy.program.max_calls===88&&policy.program.max_cost_usd===10,'LIMITS_CHANGED');
+fs.mkdirSync(`${root}/prospective-turn-zero`);
+const rows=[];
+for(const t of plan.trial_order){const trial={trial_id:t.trial_id,case_id:t.case_id,role:'RECEIVER',turn_index:0};const w=prepareServerRequest(policy,trial,{priorCaptures:[],root:caller});
+ check(w.provider_wire.request_sha256===t.first_provider_request_sha256&&w.provider_wire.reserved_cost_nanos===t.first_reserved_cost_nanos,'PROMPT_OR_GENERATION_CHANGED');
+ fs.writeFileSync(`${root}/prospective-turn-zero/${t.trial_id}.request.json`,JSON.stringify(w.request),{flag:'wx'});fs.writeFileSync(`${root}/prospective-turn-zero/${t.trial_id}.provider.json`,w.provider_wire.body,{flag:'wx'});
+ rows.push({trial_id:t.trial_id,provider_request_sha256:w.provider_wire.request_sha256,reserved_cost_nanos:w.provider_wire.reserved_cost_nanos});
+}
+check(plan.maximum_reserved_cost_per_call_nanos*plan.calls.length===300000000&&read('LIVE_LEDGER_PRE_FREEZE.json').totals.reserved_cost_nanos+300000000<=10000000000&&read('LIVE_LEDGER_PRE_FREEZE.json').totals.calls_reserved+2<=88,'PROSPECTIVE_BUDGET_BOUND');
+write('PRE_FREEZE_CHECK.json',{per_call_ceiling_nanos:150000000,prospective_total_ceiling_nanos:300000000,second_turn_wire_requires_successful_same_run_answer:true,status:'PASS_ZERO_PROVIDER_CALLS',all_turn_zero_wire_hashes_match_a18:true,rows,source_lock_match:sha256(fs.readFileSync(`${caller}/RESTORED_SOURCE_LOCK.json`))===binding.source_lock_sha256,same_run_predecessors:true,billing_status:'OPERATOR_ATTESTED_PAID',automatic_retries:0,provider_calls:0});
+const names=fs.readdirSync(root).filter(n=>fs.statSync(`${root}/${n}`).isFile()).sort();
+const at=new Date().toISOString();write('FREEZE_BUNDLE.json',{schema:'td613.loom.freeze-bundle/v0.1',frozen_at:at,run_id:policy.run_id,files:names.map(path=>{const b=fs.readFileSync(`${root}/${path}`);return{path,sha256:sha256(b),bytes:b.length,content_base64:b.toString('base64')};})});
+const freeze={schema:'td613.loom.receiver-repair-freeze/v0.1',status:'FROZEN_AUTHORIZED_BEFORE_MEASUREMENT',run_id:policy.run_id,frozen_at:at,protocol_commit:policy.protocol_commit,source_packet_commit:plan.source_packet_commit,local_caller_commit:binding.local_git_commit,source_lock_sha256:binding.source_lock_sha256,runner_sha256:plan.runner_sha256,policy_sha256:sha256(canonicalJson(policy)),plan_sha256:sha256(canonicalJson(plan)),artifact_sha256:policy.artifact_sha256,planned_calls:2,maximum_reserved_cost_nanos:300000000,first_provider_request_sha256:plan.trial_order[0].first_provider_request_sha256,bundle_sha256:sha256(fs.readFileSync(`${root}/FREEZE_BUNDLE.json`)),bundle_preimage:'FREEZE_BUNDLE.json',expected_provider_credential_sha256:read('CREDENTIAL_BINDING.json').expected_provider_credential_sha256,billing_status:'OPERATOR_ATTESTED_PAID',prior_a12_through_a18_preserved:true,preflight_provider_calls:0,custody_admitted:false};write('FREEZE_COMMIT.json',freeze);console.log(JSON.stringify(freeze));

@@ -1,0 +1,19 @@
+{
+  "recorded_at": "2026-10-10T09:00:34.864656+00:00",
+  "remembering_called": true,
+  "retrieved_decisions": [
+    "2026-10-10T08:18:27Z: 88 reservations, USD 10, fresh same-run R09-1 0→1 only, raw-only, stop first HOLD",
+    "2026-10-10T07:35:02Z: finish mechanical work and stop before higher-model analysis"
+  ],
+  "retrieved_assistant_checkpoint": "2026-10-10T08:41:41Z: a19 unenrolled pending fingerprint; release completed",
+  "accepted_operator_paid_association_source": "Current explicit operator handoff and preserved OPERATOR_PAID_BINDING.json; current Remembering search did not independently return the earlier paid acceptance message",
+  "conflicts_and_corrections": [
+    "Earlier checkpoint paid-binding prose superseded prospectively by accepted OPERATOR_ATTESTED_PAID; no historical receipt changed",
+    "Full a19 run ID absent in live snapshot, replacing inadequate shorthand filter",
+    "Fresh Node HTTP source/fingerprint reads succeeded; previous EPERM and browser failure remain historical",
+    "Vercel deployment get 404 and list 403 remain observed limitations, not evidence TD613 downtime",
+    "Inherited a13 bundle preimage UNLOCATED retained"
+  ],
+  "authoritative_live_snapshot_at": "2026-10-10T08:56:27.579223+00:00",
+  "analysis_performed": false
+}

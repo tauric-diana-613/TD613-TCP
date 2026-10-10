@@ -1,0 +1,22 @@
+{
+  "files": [
+    {
+      "path": "neon/functions/loom-assay-budget/index.mjs",
+      "github_sha256": "9777097f7273c8d3e1e9338be333c6c423c3793665da4cbc2b28f3303ea527a0",
+      "local_sha256": "b5fad8ee8a4b26e2f9cafee18c1bbf59658fe12e498f2a1101335754294b97b6",
+      "exact_match": false,
+      "difference": "LOCAL_HAS_ONE_EXTRA_TRAILING_NEWLINE",
+      "executable_text_identical": true
+    },
+    {
+      "path": "neon/functions/loom-assay-budget/ledger.mjs",
+      "github_sha256": "cdae76fe3a2ea9d4cb2d089a576a4fc05daa5b622490dccee28c1c7bf5f1d1a2",
+      "local_sha256": "cdae76fe3a2ea9d4cb2d089a576a4fc05daa5b622490dccee28c1c7bf5f1d1a2",
+      "exact_match": true,
+      "difference": "NONE",
+      "executable_text_identical": true
+    }
+  ],
+  "exact_ledger_match": true,
+  "runtime_bundle_verified_separately": true
+}
