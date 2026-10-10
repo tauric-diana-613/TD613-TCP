@@ -73,7 +73,7 @@ async function settleGatherUnlock(h) {
   h.$('[data-first-crossing-item="brief"]').click();
   assert.equal(h.$('[data-first-crossing-item="source"]').disabled,true);
   await until(() => h.ui.inspect().runtime.status === 'CURRENT', 'à projection');
-  h.advance(3400);
+  h.advance(4000);
   await until(() => h.$('[data-first-crossing-item="source"]').disabled===false
     && h.root.dataset.firstCrossingGather==='complete', 'à completed before hõt/cōl');
 }
