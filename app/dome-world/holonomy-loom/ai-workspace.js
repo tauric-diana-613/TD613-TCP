@@ -597,7 +597,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     $('loomFirstCrossingAction').textContent='Inspect what AI receives →';
     $('loomFirstCrossingPause').textContent='𝌋';
     $('loomFirstCrossingPause').setAttribute('aria-pressed','false');
-    firstCrossingItems.forEach(button=>{button.disabled=false;button.setAttribute('aria-pressed','false');delete button.dataset.held;});
+    firstCrossingItems.forEach(button=>{button.disabled=button.dataset.firstCrossingItem==='source';button.setAttribute('aria-pressed','false');delete button.dataset.held;});
     const neutral=firstCrossingEvent('prepared');
     const packet=projectLoomRequestEvent(neutral);
     packet.scene={...packet.scene,id:'first-crossing-notice',project_title:'How Loom works',rules_count:1,documents:FIRST_CROSSING_PRACTICE.documents.map(item=>({id:item.id,name:item.name,share:false}))};
