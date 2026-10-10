@@ -570,7 +570,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     setFirstCrossingCue('choose',{
       title:'Protect your work when you use AI.',
       prompt:'Choose what AI receives and keep custody of what comes back. Start by selecting this fictional request and its reference.',
-      answer:'Select the question and its evidence to preview a governed AI request. Nothing leaves your browser during this lesson.'
+      answer:'Select the question and its evidence. Nothing is sent.'
     });
     $('loomFlowcoreMessage').textContent=firstCrossingChoreography.message;
     $('loomFirstCrossingAction').textContent='Inspect what AI receives →';
