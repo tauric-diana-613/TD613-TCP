@@ -495,6 +495,6 @@ test('couture ingress retains the two selectable sources and gives receipts thei
   assert.doesNotMatch(doc.querySelector('[data-first-crossing-item=source]').textContent,/\/\//);
   assert.match(product,/\.loom-tutorial-proof:not\(\[hidden\]\)\{[\s\S]*?grid-row:4/);
   assert.match(product,/:not\(\[data-first-crossing-step="0"\]\)\s*\.loom-first-crossing-objects\{display:none!important\}/);
-  assert.match(product,/#loomAiWorkspace\.loom-flowcore-help/);
+  assert.match(product,/#loomAiWorkspace \.loom-flowcore-help/);
   assert.equal(doc.querySelector('#loomBegin').textContent.trim(),'Enter Loom →');
 });
