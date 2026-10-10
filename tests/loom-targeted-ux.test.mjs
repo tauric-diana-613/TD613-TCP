@@ -19,6 +19,14 @@ const runtimeStateSource = fs.readFileSync(new URL('../app/dome-world/holonomy-l
 const instrumentSource = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/instrument-state-view.js', import.meta.url), 'utf8');
 const templateSource = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/workspace-template.js', import.meta.url), 'utf8');
 
+test('Loom loading veil replaces inherited visibility gate that strands WebKit tutorial', () => {
+  assert.doesNotMatch(html, /html\[data-loom-boot=["']loading["']\]\s+main\s*\{\s*visibility\s*:\s*hidden/i);
+  const doc = new JSDOM(html).window.document;
+  assert.ok(doc.querySelector('#loomBootVeil'), 'visible opaque veil guards initial paint');
+  assert.match(html, /#loomBootVeil\{[^}]*position:fixed;inset:0;z-index:1000/);
+  assert.match(html, /html:not\(\[data-loom-boot=["']loading["']\]\) #loomBootVeil\{display:none\}/);
+});
+
 test('Loom boot binds fresh October 10 assets and contains a catchable module failure', () => {
   const doc = new JSDOM(html).window.document;
   const css = doc.querySelector('link[href*="loom-product-v6.css"]');
