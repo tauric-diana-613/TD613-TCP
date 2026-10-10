@@ -447,6 +447,7 @@ test('selection and readiness publish consequences before naming the Flow-Core r
 test('leaving during an async practice binding prevents late completion or scene takeover', async t => {
   const h = practiceHarness(t);
   h.$('[data-first-crossing-item="brief"]').click();
+  await until(() => !h.$('[data-first-crossing-item="source"]').disabled, 'à completion to unlock hõt/cōl');
   h.$('[data-first-crossing-item="source"]').click();
   await until(() => !h.$('#loomFirstCrossingAction').hidden, 'gathering');
   let release, entered;
@@ -486,6 +487,7 @@ test('How it works replay preserves an existing real Loom root and prepared expo
   h.$('#loomReturnThreshold').click();
   assert.equal(h.root.dataset.firstCrossing,'active','How it works enters the replay directly');
   h.$('[data-first-crossing-item="brief"]').click();
+  await until(() => !h.$('[data-first-crossing-item="source"]').disabled, 'à completion to unlock hõt/cōl');
   h.$('[data-first-crossing-item="source"]').click();
   await until(() => !h.$('#loomFirstCrossingAction').hidden, 'replayed gathering');
   h.$('#loomFirstCrossingAction').click();
@@ -504,6 +506,7 @@ test('completed handoff preview reopens from How it works in one deliberate gest
   const h = practiceHarness(t);
   async function finishPractice() {
     h.$('[data-first-crossing-item="brief"]').click();
+    await until(() => !h.$('[data-first-crossing-item="source"]').disabled, 'à completion on tutorial replay');
     h.$('[data-first-crossing-item="source"]').click();
     await until(() => !h.$('#loomFirstCrossingAction').hidden, 'published gathering');
     h.$('#loomFirstCrossingAction').click();
@@ -530,7 +533,7 @@ test('completed handoff preview reopens from How it works in one deliberate gest
   assert.equal(h.$('#loomThresholdGate').hidden, true);
   for (const item of h.root.querySelectorAll('[data-first-crossing-item]')) {
     assert.equal(item.getAttribute('aria-pressed'), 'false', 'a fresh replay carries no prior selection');
-    assert.equal(item.disabled, false);
+    assert.equal(item.disabled, item.dataset.firstCrossingItem==='source', 'hõt/cōl relocks until à completes on replay');
   }
   assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), 'complete', 'actual prior completion remains recorded');
   assert.equal(h.ui.inspect().session, null, 'replay creates no real custody root');
