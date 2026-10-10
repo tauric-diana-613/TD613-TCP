@@ -943,7 +943,7 @@ jobs:
       - if: steps.layout_scope.outputs.changed == 'true'
         run: npm install --no-save --package-lock=false playwright@1.53.2
       - if: steps.layout_scope.outputs.changed == 'true'
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium webkit
       - name: Run bounded Marrowline handoff contracts
         if: steps.layout_scope.outputs.changed == 'true'
         run: |
@@ -1042,6 +1042,9 @@ jobs:
         env:
           TD613_LOOM_MOBILE_ARTIFACT_DIR: artifacts/loom-mobile-composition
         run: node tests/loom-mobile-composition.browser.mjs
+      - name: Loom first-paint Chromium and WebKit fail-closed boot witness
+        if: steps.layout_scope.outputs.changed == 'true'
+        run: node tests/loom-boot-cross-engine.browser.mjs
       - uses: actions/upload-artifact@v4
         if: always() && steps.layout_scope.outputs.changed == 'true'
         with:
