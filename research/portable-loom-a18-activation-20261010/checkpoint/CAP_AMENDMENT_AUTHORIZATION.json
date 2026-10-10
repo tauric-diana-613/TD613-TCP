@@ -1,0 +1,14 @@
+{
+  "status": "OPERATOR_AUTHORIZED_PROSPECTIVE_AMENDMENT",
+  "operator": "Tawanna C. Miller",
+  "operator_message_at": "2026-10-10T03:23:15-04:00",
+  "operator_message": "it\u2019s ok you can unfreeze that cap since you only spend $1.02 total on everything so far let\u2019s just get this fuckin done \ud834\udf0b",
+  "prior_program_call_cap": 80,
+  "prospective_a18_program_call_cap": 82,
+  "program_cost_cap_usd": 10,
+  "a18_max_calls": 5,
+  "a18_max_reserved_cost_nanos": 903600000,
+  "historical_reservations_rewritten": false,
+  "operator_reported_billed_usd": 1.02,
+  "billed_amount_independently_verified": false
+}

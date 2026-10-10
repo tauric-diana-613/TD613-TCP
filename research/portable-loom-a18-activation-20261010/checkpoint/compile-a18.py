@@ -1,0 +1,70 @@
+import pathlib,json,base64,hashlib,datetime,zipfile,subprocess
+ROOT=pathlib.Path('/workspace/scratch/26d2ceda3f9e');RUN=ROOT/'continuation-a18';CALLER=ROOT/'caller-a18';OLD=pathlib.Path('/workspace/scratch/9d69e9b2a01d');PREV=pathlib.Path('/workspace/scratch/3a1fda34907f')
+def read(p):return json.loads(p.read_bytes())
+def h(b):return hashlib.sha256(b).hexdigest()
+def canon(v):return json.dumps(v,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()
+def save(n,v):
+ with (RUN/n).open('x') as f:json.dump(v,f,indent=2,ensure_ascii=False);f.write('\n')
+checks=[]
+def check(label,ok):
+ checks.append({'check':label,'pass':bool(ok)})
+ if not ok:raise RuntimeError(label)
+policy=read(RUN/'POLICY.json');plan=read(RUN/'PLAN.json');freeze=read(RUN/'FREEZE_COMMIT.json');execution=read(RUN/'raw/run-001/execution.json');ledger=read(RUN/'NEON_FINAL_STATE_RAW.json');cred=read(RUN/'CREDENTIAL_BINDING.json')
+check('policy canonical',h(canon(policy))==freeze['policy_sha256']);check('plan canonical',h(canon(plan))==freeze['plan_sha256']);check('runner frozen',h((RUN/'run-targeted-a18.mjs').read_bytes())==freeze['runner_sha256']);check('freeze actual preimage',h((RUN/'FREEZE_BUNDLE.json').read_bytes())==freeze['bundle_sha256'])
+for f in read(RUN/'FREEZE_BUNDLE.json')['files']:
+ b=(RUN/f['path']).read_bytes();check('freeze member '+f['path'],h(b)==f['sha256'] and len(b)==f['bytes'] and b==base64.b64decode(f['content_base64'],validate=True))
+check('caller head',subprocess.check_output(['git','rev-parse','HEAD'],cwd=CALLER,text=True).strip()==freeze['local_caller_commit']);check('caller clean',subprocess.check_output(['git','status','--porcelain'],cwd=CALLER,text=True).strip()=='');check('caller source lock',h((CALLER/'RESTORED_SOURCE_LOCK.json').read_bytes())==freeze['source_lock_sha256'])
+for f in read(CALLER/'RESTORED_SOURCE_LOCK.json')['files']:check('source bytes '+f['path'],h((CALLER/f['path']).read_bytes())==f['local_sha256'])
+check('exact complete a16 call order',plan['calls']==read(ROOT/'continuation-a16/PLAN.json')['calls'])
+for a,count,cost in [('a12',0,0),('a13',5,551226000),('a14',1,110168250),('a15',9,996168000),('a16',1,110195250),('a17',1,110195250)]:
+ r=next(x for x in ledger['runs'] if x['run_id'].endswith('-'+a));check(a+' unchanged HELD',r['status']=='HELD' and int(r['calls_reserved'])==count and int(r['reserved_cost_nanos'])==cost)
+rows={r['call_key']:r for r in ledger['calls']};prior={};inventory=[];providers=0;answers=0
+for index,item in enumerate(plan['calls'],1):
+ folder=RUN/'raw/run-001'/f'call-{index:02d}';key=f"{item['trial_id']}:{item['role']}:{item['turn_index']}"
+ if not (folder/'capture.json').exists():
+  check('unattempted no Neon '+key,key not in rows);inventory.append({'call_number':index,**item,'status':'UNATTEMPTED','provider_requests':0});continue
+ c=read(folder/'capture.json');r=read(RUN/'raw/run-001'/f'call-{index:02d}-receipt.json');req=(folder/'request.body.json').read_bytes();wire=(folder/'provider-request.body.json').read_bytes();outer=(folder/'response.body.bin').read_bytes();e=json.loads(outer) if outer else None
+ check('capture identity '+key,h((folder/'capture.json').read_bytes())==r['capture_sha256']);check('request identity '+key,h(req)==c['request_sha256']);check('wire identity '+key,h(wire)==c['provider_request_sha256']==r['provider_request_sha256']);check('response identity '+key,h(outer)==c['response_sha256']);check('envelope identity '+key,e==c['response']);check('trial identity '+key,c['trial']==item)
+ predecessors=prior.get(item['trial_id'],[]);messages=json.loads(req)['messages'];check('same-run predecessor bytes '+key,len(predecessors)==item['turn_index'] and [m['content'] for m in messages if m['role']=='assistant']==predecessors)
+ if item['turn_index']==0:check('frozen first wire '+key,h(wire)==next(t['first_provider_request_sha256'] for t in plan['trial_order'] if t['trial_id']==item['trial_id']))
+ actual=int((e or {}).get('provider_requests',0));providers+=actual;provider=None;answer=None;ah=None;ph=None;error=None
+ if e and e.get('provider_response_base64') is not None:
+  provider=base64.b64decode(e['provider_response_base64'],validate=True);ph=h(provider);check('provider identity '+key,ph==e['provider_response_sha256']);(folder/'provider-response.body.bin').write_bytes(provider)
+  body=json.loads(provider) if provider else {};error=body.get('error')
+  if c['status']=='CAPTURED_NOT_ADMITTED':
+   candidate=body['candidates'][0];answer=''.join(p['text'] for p in candidate['content']['parts'] if not p.get('thought'));ah=h(answer.encode());check('answer identity '+key,answer==c['returned']['text']==e['returned']['text'] and ah==c['returned']['answer_sha256']==e['returned']['answer_sha256']);check('provider completion '+key,candidate['finishReason']=='STOP' and body['modelVersion']=='gemini-3.8-flash');(folder/'answer.utf8.txt').write_bytes(answer.encode())
+ if actual:
+  check('actual fingerprint '+key,e['provider_credential_sha256']==cred['expected_provider_credential_sha256']);check('actual source '+key,e['source_commit']==policy['protocol_commit'] and e['artifact_sha256']==policy['artifact_sha256']);row=rows[key];check('Neon provider hashes '+key,row['request_sha256']==h(wire) and row['response_sha256']==ph and row['answer_sha256']==ah);check('Neon status '+key,row['status']==c['status']);check('Neon reservation '+key,int(row['reserved_cost_nanos'])==int(e['reservation']['reserved_cost_nanos']));check('zero retries '+key,e['retries']==c['retries']==0)
+ else:check('no provider no reservation '+key,key not in rows)
+ if answer is not None:answers+=1;predecessors.append(answer);prior[item['trial_id']]=predecessors
+ inventory.append({'call_number':index,**item,'call_key':key,'status':c['status'],'provider_requests':actual,'provider_http_status':(e or {}).get('http_status'),'relay_http_status':c['http_status'],'provider_error':error,'local_error':c['error'],'request_sha256':h(req),'provider_request_sha256':h(wire),'response_sha256':h(outer),'provider_response_sha256':ph,'answer_sha256':ah,'provider_credential_sha256':(e or {}).get('provider_credential_sha256'),'reserved_cost_nanos':int(rows[key]['reserved_cost_nanos']) if key in rows else 0,'started_at':c['started_at'],'ended_at':c['ended_at'],'custody_admitted':False})
+run=next(r for r in ledger['runs'] if r['run_id']==policy['run_id']);tot=ledger['totals'];check('run closed',run['status']=='HELD');check('run row count',int(run['calls_reserved'])==len(rows));check('run reservation sum',int(run['reserved_cost_nanos'])==sum(int(r['reserved_cost_nanos']) for r in rows.values()));check('program cap',tot['reserved_calls']<=82 and tot['reserved_cost_nanos']<=10000000000 and tot['active_runs']==0);check('stop first HOLD',execution['calls_held']<=1 and (execution['calls_held']==0 or execution['stop']['held_call_number']==execution['calls_attempted']));check('answer count',answers==execution['calls_captured_not_admitted'])
+summary={'schema':'td613.loom.a18-capture-inventory/v1','run_id':policy['run_id'],'execution_status':execution['status'],'actual_gemini_calls':providers,'answers_captured':answers,'provider_holds':sum(x['provider_requests']>0 and x['status']!='CAPTURED_NOT_ADMITTED' for x in inventory),'unattempted_calls':sum(x['status']=='UNATTEMPTED' for x in inventory),'run_reserved_cost_nanos':int(run['reserved_cost_nanos']),'program_totals':tot,'remaining_calls':82-tot['reserved_calls'],'remaining_reserved_cost_nanos':10000000000-tot['reserved_cost_nanos'],'billing_status':'OPERATOR_ATTESTED_PAID','credential_binding':'RUNTIME_FINGERPRINT_MATCHED; PAID_ASSOCIATION_OPERATOR_ATTESTED','custody_admitted':False,'analysis_performed':False,'historical_original_program_outputs_preserved':52,'original_output_coverage_with_separate_replacement':52+sum(x['status']=='CAPTURED_NOT_ADMITTED' and x['case_id']=='R06' and x['turn_index']>0 for x in inventory),'original_program_outputs_planned':54,'prior_a13_successful_targeted_outputs':4,'prior_a15_successful_targeted_outputs':8,'current_targeted_outputs_preserved':12+sum(x['status']=='CAPTURED_NOT_ADMITTED' and not(x['case_id']=='R06' and x['turn_index']==0) for x in inventory),'targeted_outputs_planned':16,'trials':inventory};save('A18_CAPTURE_INVENTORY.json',summary)
+subprocess.run(['git','bundle','create',str(RUN/'CALLER_A18.bundle'),'--all'],cwd=CALLER,check=True,capture_output=True)
+prior_archives={'Portable_Loom_A17_Acquisition_Evidence_20261010.zip':'bb9249f9748d36bec09d1ed8457c1dfbbd29c3158bbf686698ee24b5c3a2dec7'}
+for name,digest in prior_archives.items():check('prior archive retained '+name,h((ROOT/name).read_bytes())==digest)
+save('CUSTODY_VERIFICATION.json',{'schema':'td613.loom.a18-custody-verification/v1','status':'PASS','checked_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'checks':checks,'custody_admitted':False,'semantic_adjudication_performed':False,'billing_status':'OPERATOR_ATTESTED_PAID','inherited_a13_bundle_preimage':'UNLOCATED; retained as unresolved; individual files remain preserved'})
+lines=['𝌋 TD613 · PORTABLE LOOM A18 · Acquisition receipt','',f"Run: {policy['run_id']}",f"Actual Gemini calls: {providers}",f"Answers captured: {answers}",f"Provider HOLDs: {summary['provider_holds']}",f"Unattempted calls: {summary['unattempted_calls']}",f"A18 reservations: ${int(run['reserved_cost_nanos'])/1e9:.8f}",f"Program reservations: {tot['reserved_calls']} calls; ${tot['reserved_cost_nanos']/1e9:.8f}",f"Remaining cap: {summary['remaining_calls']} calls; ${summary['remaining_reserved_cost_nanos']/1e9:.8f}",'','These amounts are conservative reservations, separate from actual billed charges. Paid association is OPERATOR_ATTESTED_PAID, supported by the operator screenshot and confirmation. The production fingerprint remains independently observed; exact Google-key fingerprint comparison was not performed. Every actual attempt binds the current release and the observed production fingerprint. Zero retries; stop globally at first HOLD.','',f"Release: {policy['protocol_commit']}",f"Artifact SHA-256: {policy['artifact_sha256']}",f"Provider fingerprint: {cred['expected_provider_credential_sha256']}",f"Freeze bundle SHA-256: {freeze['bundle_sha256']}",'','Original a12/a13/a14/a15/a16/a17 states and archives remain untouched. Captures retain CAPTURED_NOT_ADMITTED. Historical original-program capture remains 52/54 preserved, with a9 replacing unrecovered R12-3 a8 bytes and historical R06-2 incomplete. Current original-output slot coverage with the separately preserved a18 R06 replacement is '+str(summary['original_output_coverage_with_separate_replacement'])+'/54. a11 remains a separate partial replicate. Four successful a13 targeted captures remain separate; current targeted inventory contains '+str(summary['current_targeted_outputs_preserved'])+'/16 preserved outputs. A18 staged the full five-call a16 sequence. Actual captured, failed and unattempted turns are listed below. The prospective shared call cap was explicitly amended to 82; the USD 10 cap remains. R06-2 turn 0 separately replaces the a17 HOLD and provides same-run predecessor setup; turn 1 separately replaces the a15 HOLD. R06-2 turn 2 and R09-1 turns 0–1 were originally unattempted. Every original and replacement remains separate.','', '| Call | Trial | Turn | Status | Provider HTTP |','|---:|---|---:|---|---:|']
+for x in inventory:lines.append(f"| {x['call_number']} | {x['trial_id']} | {x['turn_index']} | {x['status']} | {x.get('provider_http_status','—')} |")
+for x in inventory:
+ if x.get('provider_error'):lines+=['','Provider error: '+json.dumps(x['provider_error'],ensure_ascii=False)]
+lines+=['','Local request/provider/answer hashes match live Neon. Fresh policy, plan, authorization, actual freeze preimage, original raw bytes, timestamps, ledger totals and source/fingerprint receipts are carried. The inherited a13 ancillary freeze-bundle preimage remains unresolved; no missing preimage was invented. No semantic/statistical adjudication or product-readiness determination occurred.','','𝄐 ACQUISITION REST · AWAITING HIGHER-MODEL ANALYTICAL ASSAY ⟐'];(RUN/'A18_ACQUISITION_RECEIPT.md').write_text('\n'.join(lines)+'\n')
+files={'a18/'+str(p.relative_to(RUN)):p.read_bytes() for p in sorted(RUN.rglob('*')) if p.is_file()}
+for name in prior_archives:files['prior/'+name]=(ROOT/name).read_bytes()
+for p in sorted(CALLER.rglob('*')):
+ if p.is_file() and '.git' not in p.parts:files['caller/'+str(p.relative_to(CALLER))]=p.read_bytes()
+for p in sorted((ROOT/'a18-repair/receipts').rglob('*')):
+ if p.is_file():files['activation-repair/receipts/'+str(p.relative_to(ROOT/'a18-repair/receipts'))]=p.read_bytes()
+for name in ('neon-a18-bundle/BUILD_RECEIPT.json','neon-a18-bundle/BUDGET_FUNCTION.zip'):
+ files['activation-repair/'+name]=(ROOT/'a18-repair'/name).read_bytes()
+for name in ('prepare-a18.py','freeze-a18.mjs','recheck-a18.mjs','build-enrollment-a18.py','compile-a18.py'):files['scripts/'+name]=(ROOT/name).read_bytes()
+token=(OLD/'recovery-private/assay-relay-access.token').read_bytes().strip()
+for name,b in files.items():
+ if token in b:raise RuntimeError('Protected capability found; archive refused')
+manifest={'schema':'td613.loom.archive-integrity/v1','manifest_excludes_itself':True,'files':[{'path':name,'bytes':len(b),'sha256':h(b)} for name,b in sorted(files.items())]};files['INTEGRITY_MANIFEST.json']=(json.dumps(manifest,indent=2)+'\n').encode();archive=ROOT/'Portable_Loom_A18_Acquisition_Evidence_20261010.zip'
+with zipfile.ZipFile(archive,'x',zipfile.ZIP_DEFLATED) as z:
+ for name,b in sorted(files.items()):z.writestr(name,b)
+with zipfile.ZipFile(archive) as z:
+ assert z.testzip() is None
+ for r in manifest['files']:assert h(z.read(r['path']))==r['sha256'] and len(z.read(r['path']))==r['bytes']
+print(json.dumps({'archive':str(archive),'sha256':h(archive.read_bytes()),'bytes':archive.stat().st_size,'payload_members':len(manifest['files']),'integrity':'PASS_ALL_PAYLOAD_HASHES_AND_CRC','acquisition':{k:v for k,v in summary.items() if k!='trials'}}))

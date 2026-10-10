@@ -1,0 +1,87 @@
+{
+  "status": "STAGED_NOT_FROZEN_NOT_ENROLLED",
+  "run_id": "portable-loom-first-receiver-20261009-a18",
+  "calls": [
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-2",
+      "case_id": "R06",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-2",
+      "case_id": "R06",
+      "role": "RECEIVER",
+      "turn_index": 1
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-2",
+      "case_id": "R06",
+      "role": "RECEIVER",
+      "turn_index": 2
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R09-1",
+      "case_id": "R09",
+      "role": "RECEIVER",
+      "turn_index": 0
+    },
+    {
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R09-1",
+      "case_id": "R09",
+      "role": "RECEIVER",
+      "turn_index": 1
+    }
+  ],
+  "trial_order": [
+    {
+      "case_id": "R06",
+      "repetition": 2,
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-2",
+      "turns": [
+        0,
+        1,
+        2
+      ],
+      "first_provider_request_sha256": "65fb159e93cd3cc731f7c7a1089da3ef098e6af73d0d95c10a46e79bfd84fe4b",
+      "first_reserved_cost_nanos": 110195250
+    },
+    {
+      "case_id": "R09",
+      "repetition": 1,
+      "trial_id": "FIRST_CONFIGURED_RECEIVER-R09-1",
+      "turns": [
+        0,
+        1
+      ],
+      "first_provider_request_sha256": "9a9dee83b7467b8c1ada969558001dbd952dca48d1c1d2e42552bec4f6b3f4f2",
+      "first_reserved_cost_nanos": 110168250
+    }
+  ],
+  "missing_targeted_outputs": 4,
+  "same_run_setup_calls": 1,
+  "maximum_calls": 5,
+  "maximum_reserved_cost_nanos": 903600000,
+  "program_max_calls": 82,
+  "program_max_cost_usd": 10,
+  "source_activation_pr": 1447,
+  "source_head": "9789f659720f51a2a616417f570907c0381f1939",
+  "remaining_source_actions": [
+    "exact-head GREEN",
+    "verified merge",
+    "Neon budget adoption",
+    "one #405 release",
+    "source bytes stability relock"
+  ],
+  "next_actions": [
+    "fresh freeze after release",
+    "guarded enrollment",
+    "execute once",
+    "stop first HOLD",
+    "raw custody compilation"
+  ],
+  "prior_archive": {
+    "library_file_id": "libfile_16e1c91befb48191ae3db4beb5543224",
+    "sha256": "bb9249f9748d36bec09d1ed8457c1dfbbd29c3158bbf686698ee24b5c3a2dec7"
+  }
+}
