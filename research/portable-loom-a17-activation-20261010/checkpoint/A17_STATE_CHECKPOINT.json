@@ -1,0 +1,66 @@
+{
+  "schema": "td613.loom.a17-durable-checkpoint/v1",
+  "recorded_at": "2026-10-10T07:11:53.824171Z",
+  "status": "RELEASE_COMPLETE_NOT_ENROLLED_NO_GENERATION",
+  "branch": "loom/a17-paid-attested-bounded-20261010",
+  "pr": 1446,
+  "validated_head": "baa4491251c4091ece051232d0fc72fa1b31500c",
+  "merged_source": "3684bade5f958d4269ac978eae2377227ebbd28b",
+  "deployed_release": "3e41902900a0b52b83a4e1e7ffa716127b49e2c6",
+  "relock_main": "8d33195c9ec5fcae2652116a212c234a4cffc208",
+  "release_workflow": 38028239403,
+  "release_receipt_comment": 6094317748,
+  "release_gestures": 1,
+  "deployment_count": 1,
+  "neon_budget_active_deployment": 5,
+  "run_id": "portable-loom-first-receiver-20261009-a17",
+  "planned_calls": 3,
+  "trial_id": "FIRST_CONFIGURED_RECEIVER-R06-2",
+  "turns": [
+    0,
+    1,
+    2
+  ],
+  "max_reserved_cost_nanos": 542160000,
+  "provider_fingerprint": "51efc3d87cdffc4fb2869519ff4fa12b10ce179ba79d3976f6094cf741681c39",
+  "billing_class": "OPERATOR_ATTESTED_PAID",
+  "artifact_sha256": "e6811ad6b15ab40be189b1882c588380fbafbede81fd0d14d3482f00b7e9f7ea",
+  "last_live_ledger": {
+    "reserved_calls": 76,
+    "reserved_cost_nanos": 8698567500,
+    "active_runs": 0,
+    "a17": null
+  },
+  "caps": {
+    "calls": 80,
+    "cost_nanos": 10000000000
+  },
+  "remaining": {
+    "calls": 4,
+    "cost_nanos": 1301432500
+  },
+  "a17_provider_calls": 0,
+  "a17_answers": 0,
+  "a17_enrolled": false,
+  "freeze_created": false,
+  "prior_runs_remain_held": true,
+  "prior_a16_archive": {
+    "library_file_id": "libfile_df4c5ddeeff48191b64713372dd00ab3",
+    "sha256": "d6c15008bf578ef5d551a6557246f43753be6e166aa941cbc2378c4828cd0eab"
+  },
+  "evidence_directory": "libdir_016415d9ea3c8191ad89129ff8fc9160",
+  "next_steps": [
+    "Recover caller-a16 from prior A16 evidence archive; never reconstruct missing answer bytes.",
+    "Recheck live source and production fingerprint with NODE_USE_ENV_PROXY=1; expected release 3e41902900a0b52b83a4e1e7ffa716127b49e2c6. Recheck ledger and active Neon function deployment 5.",
+    "Create fresh three-call a17 policy/plan/authorization with a fresh deadline using prepare-a17.py; verify carried source/prompt hashes; freeze using freeze-a17.mjs.",
+    "Run local --preflight, build guarded enrollment SQL, reverify all boundaries, enroll exactly once.",
+    "Execute exactly once; stop the entire run at the first HOLD; no automatic retries.",
+    "Close successful acquisition to HELD/REST without modifying reservations; compile hashes against Neon and save a new evidence archive.",
+    "Leave R09-1 pending under the frozen 80-call cap. Stop after raw custody."
+  ],
+  "critical_recovery_constraint": "Relay capability bytes must stay outside GitHub and every evidence archive. If the capability path is lost, use the already authorized secure capability recovery path; never insert Google key bytes. No second release gesture is needed or authorized for this completed release.",
+  "recovery_checkpoint_archive": {
+    "library_file_id": "libfile_65ee67700154819189ebd29bccfc3da4",
+    "sha256": "a233c47ef56c0adb3b67603b05e814b85ac3ecde1e318370ddd4f5b558ffab49"
+  }
+}

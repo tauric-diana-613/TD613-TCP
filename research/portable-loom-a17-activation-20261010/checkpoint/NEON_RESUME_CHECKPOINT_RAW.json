@@ -1,0 +1,9 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "[\n  {\n    \"checkpoint\": {\n      \"a17\": null,\n      \"checked_at\": \"2026-10-10T07:11:53.824171+00:00\",\n      \"active_runs\": 0,\n      \"reserved_calls\": 76,\n      \"reserved_cost_nanos\": 8698567500\n    }\n  }\n]"
+    }
+  ],
+  "isError": false
+}
