@@ -144,7 +144,7 @@ test('à completion, rather than the first tap, gates hõt/cōl', () => {
   const template = new JSDOM(loomWorkspaceTemplate).window.document;
   assert.equal(template.querySelectorAll('[data-first-crossing-item]').length,2);
   assert.match(workspaceSource,/firstCrossingSourceUnlocked=false/);
-  assert.match(workspaceSource,/projectionCurrent && \(snapshot.reducedMotion \|\| snapshot.progress>=\.82\)/);
+  assert.match(workspaceSource,/projectionCurrent && \(snapshot.reducedMotion \|\| snapshot.progress>=1\)/);
   assert.match(workspaceSource,/if\(id==='source'&&!firstCrossingSourceUnlocked\)return/);
   assert.match(workspaceSource,/button.disabled=!firstCrossingSourceUnlocked && firstCrossingStep===0/);
   assert.match(product,/data-first-crossing-item="source"\]:disabled/);
