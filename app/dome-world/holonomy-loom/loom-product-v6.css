@@ -824,6 +824,12 @@ body:has(#loomAiWorkspace[data-first-crossing="active"]) .loom-topbar a[href*="l
   #loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-answer{
     padding:8px 10px;width:100%;font-size:12px!important
   }
+  /* Browser witness: the painted inline hint extended 27px below its initial
+     grid box at 390px. Reserve 34px inside step-0's actual row; move the
+     painted line upward, never over the selection targets. */
+  #loomAiWorkspace[data-first-crossing="active"][data-first-crossing-step="0"] .loom-first-crossing-answer{
+    padding-bottom:42px
+  }
   #loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-actions button{
     width:min(340px,100%);font-size:13px;padding:12px 14px
   }
