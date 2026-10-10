@@ -5,6 +5,7 @@ import {
 } from '../dome-world/holonomy-loom/ai-handoff-base.js';
 import { inspectLoomAiResponse } from '../dome-world/holonomy-loom/ai-intake.js';
 import { verifyPortableLoomCore } from './portable-loom-core.js';
+import { PORTABLE_LOOM_RECEIVER_OUTPUT_GUIDANCE } from './portable-loom-output.js';
 
 export const PORTABLE_LOOM_SESSION_SCHEMA = 'td613.loom.portable-session/v0.1';
 export const PORTABLE_LOOM_WORK_UNIT_SCHEMA = 'td613.loom.portable-session-work-unit/v0.1';
@@ -351,6 +352,9 @@ export async function createPortableLoomSessionExport(sessionInput, packet, envi
     },
     receiver_turn_contract: {
       schema: PORTABLE_LOOM_RECEIVER_TURN_SCHEMA,
+      receipt_schema: PORTABLE_LOOM_RECEIVER_TURN_SCHEMA,
+      receipt_fields: ['schema', 'session_root_ref', 'policy_commitment', 'anchor_work_unit_ref', 'turn_index', 'operator_task', 'used_document_ids', 'missing_information', 'receiver_declaration'],
+      receipt_field_types: { used_document_ids: 'ARRAY_OF_DISTINCT_NONEMPTY_STRINGS; EMPTY_IS_[]', missing_information: 'ARRAY_OF_DISTINCT_NONEMPTY_STRINGS; EMPTY_IS_[]', turn_index: 'POSITIVE_INTEGER', receiver_declaration: 'NONEMPTY_STRING' },
       session_root_ref: session.root.ref,
       effective_policy_commitment: session.work_units.at(-1)?.policy?.effective_policy_commitment || session.root.policy_commitment,
       current_work_unit_ref: session.continuity.current_work_unit_ref,
@@ -391,13 +395,16 @@ export function createPortableLoomSessionPrompt(sessionExport) {
     ...(sessionExport.portable_task?.portable_governance?.output_protocol ? ['The root-bound output_protocol is persistent across this session, every proceeding task and Rest. Show its full compact footer on every output: phase, minimized public session/explicit route label, posture, authorization, receipt availability, HOLD, Gate status and checked scope, and 米 Check Loom Gate. Unknown coordinates stay UNKNOWN; never infer fresh authorization from prior sending. Recognize a lone 米 as Gate review; without a local verifier provide the capture instructions and link, and keep NOT_RUN. A review acknowledgment never clears findings or admits work. A missing footer is a protocol omission. Preserve strict JSON by putting its footer inside answer before hashing, or in a separate host presentation surface.'] : []),
     'Do not silently inherit source bodies from an earlier task unless they are explicitly supplied or named as continuing inputs.',
     'Keep work-unit ancestry separate from content-predecessor ancestry.',
-    'For every proceeding-task answer, append a separate loom_session_receipt object matching receiver_turn_contract. Echo the session root, effective policy commitment, anchor work-unit reference, operator task, explicitly used document IDs, and missing information.',
+    'Before task and sources are selected, ask only for the current task and its explicit source selection, including an explicit choice of no source documents. Keep the route UNKNOWN and offer its technical catalogue on request. Activation, Rest and Gate review do not fabricate task receipts. Task HOLD does not prevent reviewing supplied evidence on 米.',
+    'For every proceeding-task answer after task/source selection, append a separate loom_session_receipt object containing exactly receiver_turn_contract.receipt_fields: schema, session_root_ref, policy_commitment, anchor_work_unit_ref, turn_index, operator_task, used_document_ids, missing_information and receiver_declaration. Use receipt_schema and the carried root/policy/last verified anchor. turn_index is a positive proceeding-task declaration counter, not authenticated off-platform ancestry. used_document_ids and missing_information must each be arrays of distinct nonempty strings; use [] when empty, never null or a scalar string. Use only explicitly declared source IDs and a nonempty receiver_declaration string.',
     'That receipt is a declaration for Loom to revalidate; do not describe the receipt itself as proof of enforcement.',
     'Do not claim that your own acknowledgement proves enforcement, secrecy, retention, training behavior, or hidden memory state.',
     'When a Challenge Receiver packet appears, answer only its declared probes and preserve its exact session/work-unit/policy references.',
-    ...(sessionExport.portable_task?.portable_governance?.output_protocol ? ['Gate outputs retain the regular footer plus evidence basis, checked scope and How do I know? 下. A lone 下 requests actual methods and the full carried expert nomenclature. Without a verifier capability, report NOT_RUN and provide the link and capture instructions.'] : []),
+    ...(sessionExport.portable_task?.portable_governance?.output_protocol ? ['Gate outputs retain the regular footer plus evidence basis, checked scope and How do I know? 下. A lone 下 requests actual methods and the full carried expert nomenclature: list every portable_task.portable_governance.mechanisms entry with id, conventional_name, td613_historical_name and implementation_scope, keeping catalogue presence separate from execution. The FADT irreducible gap is U minus I, not an intersection-over-union ratio. Without a verifier capability, review visible evidence, report NOT_RUN and provide actionable capture instructions; an optional manual verification destination is separate and has no automatic chat access.'] : []),
     '',
-    JSON.stringify(sessionExport, null, 2)
+    JSON.stringify(sessionExport, null, 2),
+    '',
+    ...(sessionExport.portable_task?.portable_governance?.output_protocol ? [PORTABLE_LOOM_RECEIVER_OUTPUT_GUIDANCE] : [])
   ].join('\n');
 }
 
