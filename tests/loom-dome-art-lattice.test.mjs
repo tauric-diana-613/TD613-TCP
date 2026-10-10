@@ -64,3 +64,18 @@ test('all eight family projections remain finite across the complete carrier fie
       }
   assert.throws(()=>projectFlowcoreMotionFamily('phi-gossamer',{index:0,x:Infinity}),/finite/);
 });
+
+test('米 repeats a bounded, reversible figure-eight rather than an orbital drift', () => {
+  const opts={index:14,count:39,phase:.3,depth:'flight-mid',x:564,y:205};
+  const sample=seconds=>projectFlowcoreMotionFamily('revisit-lemniscate',{...opts,seconds});
+  const a=sample(.25),half=sample(.25+Math.PI/.78),returning=sample(.25+2*Math.PI/.78);
+  for(const key of ['dx','dy','roll','scale','opacity']){
+    assert.ok(Number.isFinite(a[key]));
+    assert.ok(Math.abs(a[key]-returning[key])<1e-8,`米 must return at a full cycle: ${key}`);
+  }
+  assert.ok(Math.abs(a.dx-half.dx)>6,'half a cycle must meaningfully move the carrier');
+  for(const index of [0,7,14,21,38]){
+    const point=projectFlowcoreMotionFamily('revisit-lemniscate',{...opts,index,seconds:2.3});
+    assert.ok(Math.abs(point.dx)<55&&Math.abs(point.dy)<35,'米 must stay bounded within its depth plane');
+  }
+});
