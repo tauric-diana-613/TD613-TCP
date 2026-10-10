@@ -1,0 +1,43 @@
+{
+  "schema": "td613.loom.a20-prospective-budget-amendment/v0.1",
+  "status": "PROPOSED_ONLY_NOT_FROZEN_NOT_ENROLLED",
+  "operator_request": "2026-10-10: raise prospective A20 reservation ceiling due to substantial difference between pessimistic reservation and observed pay-as-you-go charges",
+  "historical_policy_mutations": 0,
+  "historical_a19_program": {
+    "max_calls": 88,
+    "max_cost_usd": 10,
+    "status": "UNCHANGED"
+  },
+  "a20_new_shared_program": {
+    "max_calls": 88,
+    "max_cost_usd": 11,
+    "previous_10_dollar_program_preserved": true
+  },
+  "a20_local": {
+    "max_calls": 4,
+    "max_cost_usd": 1.0,
+    "per_call_cost_ceiling_usd": 0.25,
+    "automatic_retries": 0
+  },
+  "prior_draft_estimate": {
+    "four_call_reserved_cost_usd": 0.5220375,
+    "status": "HISTORICAL_PESSIMISTIC_ESTIMATE_NOT_AN_API_BILL"
+  },
+  "observed_live_ledger": {
+    "run_count": 19,
+    "reservation_rows": 83,
+    "calls_reserved": 83,
+    "reserved_cost_nanos": 9474171750,
+    "active_runs": 0,
+    "time_scope": "Observed once during A20 mechanical handoff; must recheck before any later enrollment"
+  },
+  "prospective_headroom_at_observation": {
+    "reserved_cost_usd": 1.52582825,
+    "remaining_calls": 5
+  },
+  "primary_4_call_ceiling_usd": 1.0,
+  "two_call_fallback_ceiling_usd": 0.5,
+  "authorization": "DESIGN_CHANGE_ONLY; DEPLOYMENT AND SPENDING UNAUTHORIZED",
+  "pricing": "Historic fixed Gemini price table remains unchanged; changing cap does not change actual fees nor authorize refunds",
+  "no_google_credential_values": true
+}

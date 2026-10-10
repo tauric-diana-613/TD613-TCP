@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { timingSafeEqual } from 'node:crypto';
-import { ASSAY_RESPONSE_SCHEMA, ASSAY_RECOVERY_POLICY_SCHEMA, ASSAY_ACTIVATION_RUN_IDS, sha256, canonicalJson, exactFields, requireThat, buildAssayProviderWire, inspectAssayResponse } from './loom-assay-contract.js';
+import { ASSAY_RESPONSE_SCHEMA, ASSAY_RECOVERY_POLICY_SCHEMA, ASSAY_ACTIVATION_RUN_IDS, ASSAY_A20_RUN_ID, sha256, canonicalJson, exactFields, requireThat, buildAssayProviderWire, inspectAssayResponse } from './loom-assay-contract.js';
 import { createAssayBudgetClient } from './loom-assay-budget-client.js';
 import { readLoomDemoVercelOidcToken } from './loom-demo-custody-client.js';
 
@@ -53,7 +53,10 @@ export function createLoomAssayHandler({ environment = process.env, fetchImpl = 
       requireThat(/^[a-f0-9]{40}$/.test(environment.VERCEL_GIT_COMMIT_SHA || '')
         && request.protocol_commit === environment.VERCEL_GIT_COMMIT_SHA, 'ASSAY_DEPLOYED_SOURCE_MISMATCH');
       ({ policy } = await activeBudget('inspect', { run_id: request.run_id, credential_sha256: auth.credential_sha256 }));
-      const m = manifest ?? JSON.parse(readFileSync(resolve(estate, 'TRIAL_MANIFEST.json')));
+      const manifestPath = request.run_id === ASSAY_A20_RUN_ID
+        ? 'research/portable-loom-a20-activation-20261010/TRIAL_MANIFEST_A20.json'
+        : resolve(estate, 'TRIAL_MANIFEST.json');
+      const m = manifest ?? JSON.parse(readFileSync(resolve(manifestPath)));
       const artifact = artifactText ?? readFileSync(resolve(m.artifact_path), 'utf8');
       wire = buildAssayProviderWire(request, policy, m, artifact);
       reservation = await activeBudget('reserve', { run_id: request.run_id, credential_sha256: auth.credential_sha256,

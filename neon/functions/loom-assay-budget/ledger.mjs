@@ -1,4 +1,4 @@
-import { validateAssayPolicy, validateTrial, requireTrialFamily, outputLimit, reservationNanos, exactFields, requireThat, sha256, canonicalJson } from '../../../server/loom-assay-contract.js';
+import { validateAssayPolicy, ASSAY_A20_RUN_ID, validateTrial, requireTrialFamily, outputLimit, reservationNanos, exactFields, requireThat, sha256, canonicalJson } from '../../../server/loom-assay-contract.js';
 
 // No payload bodies, no automatic run provisioning, no refunds or replay.
 // Each operation uses its own transaction and locks the run before admission.
@@ -46,6 +46,8 @@ export async function reserveCall(pool, input) {
       && input.input_token_bound <= p.binding.limits.max_input_tokens_per_call, 'ASSAY_INPUT_RESERVATION_BOUND');
     const cost = BigInt(reservationNanos(p, input.output_limit, input.input_token_bound));
     const ceiling = BigInt(Math.floor(p.binding.limits.max_cost_usd * 1000000000));
+    // Prospective A20 per-call reservation guard; no effect on historical freezes.
+    requireThat(p.run_id !== ASSAY_A20_RUN_ID || cost <= 250000000n, 'ASSAY_A20_PER_CALL_BUDGET_EXHAUSTED');
     requireThat(Number(row.calls_reserved) < p.binding.limits.max_calls
       && BigInt(row.reserved_cost_nanos) + cost <= ceiling, 'ASSAY_BUDGET_EXHAUSTED');
     if (p.program) {
