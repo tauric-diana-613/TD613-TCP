@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { timingSafeEqual } from 'node:crypto';
-import { ASSAY_RESPONSE_SCHEMA, ASSAY_RECOVERY_POLICY_SCHEMA, ASSAY_RECOVERY_RUN_IDS, sha256, canonicalJson, exactFields, requireThat, buildAssayProviderWire, inspectAssayResponse } from './loom-assay-contract.js';
+import { ASSAY_RESPONSE_SCHEMA, ASSAY_RECOVERY_POLICY_SCHEMA, ASSAY_ACTIVATION_RUN_IDS, sha256, canonicalJson, exactFields, requireThat, buildAssayProviderWire, inspectAssayResponse } from './loom-assay-contract.js';
 import { createAssayBudgetClient } from './loom-assay-budget-client.js';
 import { readLoomDemoVercelOidcToken } from './loom-demo-custody-client.js';
 
@@ -124,7 +124,7 @@ export function loadApprovedRunConfiguration(path = resolve('server/loom-assay-r
   const c = JSON.parse(readFileSync(path, 'utf8'));
   const recovery = c.schema === 'td613.loom.approved-assay-activation/v0.2';
   exactFields(c, ['schema', recovery ? 'run_ids' : 'run_id', 'access_sha256', 'budget_url', 'authorization_ref']);
-  requireThat((recovery ? canonicalJson(c.run_ids) === canonicalJson(ASSAY_RECOVERY_RUN_IDS)
+  requireThat((recovery ? canonicalJson(c.run_ids) === canonicalJson(ASSAY_ACTIVATION_RUN_IDS)
     : c.schema === 'td613.loom.approved-assay-activation/v0.1' && /^[a-zA-Z0-9_-]{1,80}$/.test(c.run_id))
     && /^[a-f0-9]{64}$/.test(c.access_sha256)
     && c.budget_url === 'https://br-round-union-b5v3ludi-loomassaybudget.compute.c-7.us-east-2.aws.neon.tech/'

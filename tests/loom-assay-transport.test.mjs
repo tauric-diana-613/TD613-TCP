@@ -5,7 +5,7 @@ import { readFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createLoomAssayHandler, loadApprovedRunConfiguration } from '../server/loom-assay.js';
-import { ASSAY_CLIENT_RETURN_MARGIN_MS, ASSAY_RECOVERY_POLICY_SCHEMA, ASSAY_RECOVERY_PROGRAM, ASSAY_RECOVERY_RUN_IDS, buildAssayProviderWire, validateAssayPolicy, sha256 } from '../server/loom-assay-contract.js';
+import { ASSAY_CLIENT_RETURN_MARGIN_MS, ASSAY_RECOVERY_POLICY_SCHEMA, ASSAY_RECOVERY_PROGRAM, ASSAY_RECOVERY_RUN_IDS, ASSAY_ACTIVATION_RUN_IDS, buildAssayProviderWire, validateAssayPolicy, sha256 } from '../server/loom-assay-contract.js';
 import { loadServerManifest, prepareServerRequest, captureServerCall } from '../research/portable-loom-server-transport-20261009/server-client.mjs';
 import { createAssayBudgetClient } from '../server/loom-assay-budget-client.js';
 import { createAssayBudgetFunction } from '../neon/functions/loom-assay-budget/index.mjs';
@@ -224,7 +224,7 @@ test('canonical API dispatch and deployment packaging preserve dedicated bounded
 test('source-bound public activation admits only its run and does not contain provider or caller secrets', async () => {
   const c = loadApprovedRunConfiguration();
   assert.match(c.access_sha256, /^[a-f0-9]{64}$/); assert.ok(!JSON.stringify(c).includes(key));
-  assert.ok(!JSON.stringify(c).includes(token)); assert.deepEqual(c.run_ids, ASSAY_RECOVERY_RUN_IDS);
+  assert.ok(!JSON.stringify(c).includes(token)); assert.deepEqual(c.run_ids, ASSAY_ACTIVATION_RUN_IDS);
   const h = harness();
   const handler = createLoomAssayHandler({ environment: { GEMINI_API_KEY: key, TD613_LOOM_ASSAY_ACCESS_SHA256: sha256(token), VERCEL_GIT_COMMIT_SHA: head },
     allowedRunIds: c.run_ids, budget: async () => { throw new Error('unexpected ledger work'); }, fetchImpl: async () => { throw new Error('unexpected provider work'); } });
@@ -317,3 +317,4 @@ test('recovery rejects a widened program, legacy escape, changed model, comparis
     const p = recoveryPolicy(); mutate(p); assert.throws(() => validateAssayPolicy(p));
   }
 });
+

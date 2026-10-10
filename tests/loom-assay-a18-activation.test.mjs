@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { ASSAY_A18_PROGRAM, ASSAY_RECOVERY_PROGRAM, ASSAY_RECOVERY_RUN_IDS, ASSAY_RECOVERY_POLICY_SCHEMA, validateAssayPolicy, requireTrialFamily } from '../server/loom-assay-contract.js';
+import { ASSAY_A18_PROGRAM, ASSAY_RECOVERY_PROGRAM, ASSAY_RECOVERY_RUN_IDS, ASSAY_ACTIVATION_RUN_IDS, ASSAY_RECOVERY_POLICY_SCHEMA, validateAssayPolicy, requireTrialFamily } from '../server/loom-assay-contract.js';
 
 test('a18 alone admits the full five-call queue and two additional historical-counted slots', () => {
   const config = JSON.parse(readFileSync(new URL('../server/loom-assay-run-config.json', import.meta.url)));
-  assert.deepEqual(config.run_ids, ASSAY_RECOVERY_RUN_IDS);
+  assert.deepEqual(config.run_ids, ASSAY_ACTIVATION_RUN_IDS);
   assert.equal(ASSAY_RECOVERY_PROGRAM.max_calls, 80);
   assert.equal(ASSAY_A18_PROGRAM.max_calls, 82);
   assert.equal(ASSAY_A18_PROGRAM.max_cost_usd, 10);

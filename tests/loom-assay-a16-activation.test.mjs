@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { ASSAY_RECOVERY_POLICY_SCHEMA, ASSAY_RECOVERY_PROGRAM, ASSAY_RECOVERY_RUN_IDS, validateAssayPolicy } from '../server/loom-assay-contract.js';
+import { ASSAY_RECOVERY_POLICY_SCHEMA, ASSAY_RECOVERY_PROGRAM, ASSAY_RECOVERY_RUN_IDS, ASSAY_ACTIVATION_RUN_IDS, validateAssayPolicy } from '../server/loom-assay-contract.js';
 
 test('the historical a16 activation prefix and frozen program ceilings remain retained', () => {
   const base = 'portable-loom-first-receiver-20261009';
