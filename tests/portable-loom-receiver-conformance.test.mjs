@@ -70,6 +70,8 @@ test('a later contradictory receipt claim defeats an earlier qualifier', () => {
   assert.ok(inspectPortableLoomReceiverConformance(contradictory).findings.includes('RECEIPT_REVIEW_BODY_QUALIFICATION_MISSING'));
   const anaphoricContradiction = render(valid(), 'The receipt is unverified and unadmitted. It has been independently verified and admitted.');
   assert.ok(inspectPortableLoomReceiverConformance(anaphoricContradiction).findings.includes('RECEIPT_REVIEW_BODY_QUALIFICATION_MISSING'));
+  const demonstrativeContradiction = render(valid(), 'The receipt is unverified and unadmitted. This is independently verified and admitted.');
+  assert.ok(inspectPortableLoomReceiverConformance(demonstrativeContradiction).findings.includes('RECEIPT_REVIEW_BODY_QUALIFICATION_MISSING'));
   const coordinatedContradiction = render(valid(), 'The receipt has not been independently verified or admitted, but it has been authenticated.');
   assert.ok(inspectPortableLoomReceiverConformance(coordinatedContradiction).findings.includes('RECEIPT_REVIEW_BODY_QUALIFICATION_MISSING'));
   const naturalNegative = render(valid(), 'The receipt has not been independently verified or admitted.');
