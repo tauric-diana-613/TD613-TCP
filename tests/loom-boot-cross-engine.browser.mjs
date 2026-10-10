@@ -59,6 +59,11 @@ try {
           await page.goto(`${base}/dome-world/holonomy-loom.html`, { waitUntil: 'domcontentloaded' });
           await page.waitForFunction(() =>
             ['ready', 'failed'].includes(document.documentElement.dataset.loomBoot), null, { timeout: 16000 });
+          // WebKit can publish an observable DOM state before committing the
+          // first layout. Never credit an unpainted or zero-rect first sample.
+          await page.evaluate(() => new Promise(resolve =>
+            requestAnimationFrame(() => requestAnimationFrame(resolve))));
+          await page.waitForTimeout(100);
           const evidence = await page.evaluate(() => {
             const html = document.documentElement;
             const tutorial = document.querySelector('#loomFirstCrossing');
@@ -70,10 +75,18 @@ try {
               const rect = node.getBoundingClientRect(), style = getComputedStyle(node);
               return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
             };
+            const geometry = node => {
+              if (!node) return null;
+              const box = node.getBoundingClientRect(), style = getComputedStyle(node);
+              return { x: box.x, y: box.y, width: box.width, height: box.height,
+                display: style.display, visibility: style.visibility, opacity: style.opacity };
+            };
             return { boot: html.dataset.loomBoot, reason: html.dataset.loomBootReason || null,
               tutorial_present: !!tutorial, tutorial_visible: shown(tutorial),
               failure_visible: shown(failure), retry_visible: shown(retry),
-              stylesheet, placeholder_stranded: document.querySelector('#loomAiWorkspace')?.textContent.trim() === 'Opening Loom…' };
+              stylesheet, placeholder_stranded: document.querySelector('#loomAiWorkspace')?.textContent.trim() === 'Opening Loom…',
+              main_geometry: geometry(document.querySelector('main')),
+              tutorial_geometry: geometry(tutorial), failure_geometry: geometry(failure) };
           });
           const pass = blocked
             ? evidence.boot === 'failed' && evidence.reason === 'MODULE_LOAD_FAILED' &&
