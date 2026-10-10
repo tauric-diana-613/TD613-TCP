@@ -8,7 +8,8 @@ export const ASSAY_MAX_PROVIDER_TIMEOUT_MS = 240000;
 export const ASSAY_CLIENT_RETURN_MARGIN_MS = 40000;
 const recoveryBase = 'portable-loom-first-receiver-20261009';
 export const ASSAY_RECOVERY_RUN_IDS = Object.freeze(Array.from({ length: 15 }, (_, i) => `${recoveryBase}-a${i + 4}`));
-export const ASSAY_ACTIVATION_RUN_IDS = Object.freeze([...ASSAY_RECOVERY_RUN_IDS, `${recoveryBase}-a19`]);
+export const ASSAY_A20_RUN_ID = 'portable-loom-first-receiver-20261010-a20';
+export const ASSAY_ACTIVATION_RUN_IDS = Object.freeze([...ASSAY_RECOVERY_RUN_IDS, `${recoveryBase}-a19`, ASSAY_A20_RUN_ID]);
 export const ASSAY_RECOVERY_PROGRAM = Object.freeze({
   id: recoveryBase,
   run_ids: Object.freeze([recoveryBase, `${recoveryBase}-a2`, `${recoveryBase}-a3`, ...ASSAY_RECOVERY_RUN_IDS.slice(0, -1)]),
@@ -25,6 +26,13 @@ export const ASSAY_A19_PROGRAM = Object.freeze({
   id: recoveryBase,
   run_ids: Object.freeze([...ASSAY_A18_PROGRAM.run_ids, `${recoveryBase}-a19`]),
   max_calls: 88, max_cost_usd: 10
+});
+// Prospective A20 adds $1 of reserved headroom while historical A19 remains 88/$10.
+// A20 policy is bound independently; this declaration enrolls nothing.
+export const ASSAY_A20_PROGRAM = Object.freeze({
+  id: recoveryBase,
+  run_ids: Object.freeze([...ASSAY_A19_PROGRAM.run_ids, ASSAY_A20_RUN_ID]),
+  max_calls: 88, max_cost_usd: 11
 });
 export const sha256 = value => createHash('sha256').update(value).digest('hex');
 export function canonicalJson(value) {
@@ -45,10 +53,11 @@ export function validateAssayPolicy(p, at = Date.now()) {
   requireThat([ASSAY_POLICY_SCHEMA, ASSAY_RECOVERY_POLICY_SCHEMA].includes(p.schema) && /^[a-zA-Z0-9_-]{1,80}$/.test(p.run_id)
     && /^[a-f0-9]{40}$/.test(p.protocol_commit) && /^[a-f0-9]{64}$/.test(p.artifact_sha256)
     && Number.isFinite(Date.parse(p.expires_at)) && Date.parse(p.expires_at) > at, 'ASSAY_POLICY_UNBOUND_OR_EXPIRED');
-  requireThat(recovery ? (ASSAY_RECOVERY_RUN_IDS.includes(p.run_id) || p.run_id === `${recoveryBase}-a19`)
+  requireThat(recovery ? (ASSAY_RECOVERY_RUN_IDS.includes(p.run_id) || p.run_id === `${recoveryBase}-a19` || p.run_id === ASSAY_A20_RUN_ID)
     && canonicalJson(p.program) === canonicalJson(p.run_id === `${recoveryBase}-a18` ? ASSAY_A18_PROGRAM
-      : p.run_id === `${recoveryBase}-a19` ? ASSAY_A19_PROGRAM : ASSAY_RECOVERY_PROGRAM)
-    : !ASSAY_RECOVERY_RUN_IDS.includes(p.run_id) && p.run_id !== `${recoveryBase}-a19`, 'ASSAY_RECOVERY_PROGRAM_UNBOUND');
+      : p.run_id === `${recoveryBase}-a19` ? ASSAY_A19_PROGRAM
+      : p.run_id === ASSAY_A20_RUN_ID ? ASSAY_A20_PROGRAM : ASSAY_RECOVERY_PROGRAM)
+    : !ASSAY_RECOVERY_RUN_IDS.includes(p.run_id) && p.run_id !== `${recoveryBase}-a19` && p.run_id !== ASSAY_A20_RUN_ID, 'ASSAY_RECOVERY_PROGRAM_UNBOUND');
   const b = p.binding;
   requireThat(b?.provider === 'GEMINI_GENERATE_CONTENT' && b.protocol_commit === p.protocol_commit
     && ['FIRST_CONFIGURED_RECEIVER', 'COMPARISON'].includes(b.trial_family)
@@ -63,6 +72,8 @@ export function validateAssayPolicy(p, at = Date.now()) {
     && l.max_cost_usd <= 0.9036, 'ASSAY_A18_SCOPE_UNBOUND');
   requireThat(p.run_id !== `${recoveryBase}-a19` || l?.max_calls === 2
     && l.max_cost_usd <= 0.3, 'ASSAY_A19_SCOPE_UNBOUND');
+  requireThat(p.run_id !== ASSAY_A20_RUN_ID || l?.max_calls === 4
+    && l.max_cost_usd <= 1, 'ASSAY_A20_SCOPE_UNBOUND');
   requireThat(!recovery || b.trial_family === 'FIRST_CONFIGURED_RECEIVER' && b.model === 'gemini-3.8-flash'
     && canonicalJson(b.response_model_ids) === canonicalJson(['gemini-3.8-flash'])
     && canonicalJson(g) === canonicalJson({ temperature: null, top_p: null, thinking_level: 'medium' })
@@ -104,6 +115,9 @@ export function requireTrialFamily(p, t) {
       || (t.trial_id === 'FIRST_CONFIGURED_RECEIVER-R09-1' && t.case_id === 'R09' && [0, 1].includes(t.turn_index))), 'ASSAY_A18_TRIAL_UNBOUND');
   requireThat(p.run_id !== `${recoveryBase}-a19` || t?.trial_id === 'FIRST_CONFIGURED_RECEIVER-R09-1'
     && t.case_id === 'R09' && t.role === 'RECEIVER' && [0, 1].includes(t.turn_index), 'ASSAY_A19_TRIAL_UNBOUND');
+  requireThat(p.run_id !== ASSAY_A20_RUN_ID || t?.role === 'RECEIVER'
+    && ((t.trial_id === 'FIRST_CONFIGURED_RECEIVER-R06-1' && t.case_id === 'R06' && [0, 1].includes(t.turn_index))
+      || (t.trial_id === 'FIRST_CONFIGURED_RECEIVER-R02-1' && t.case_id === 'R02' && [0, 1].includes(t.turn_index))), 'ASSAY_A20_TRIAL_UNBOUND');
   requireThat(p.binding.trial_family === (t.role === 'RECEIVER' ? 'FIRST_CONFIGURED_RECEIVER' : 'COMPARISON'), 'ASSAY_TRIAL_FAMILY_UNAUTHORIZED');
 }
 export function reservationNanos(p, limit, inputBound = p.binding.limits.max_input_tokens_per_call) {
