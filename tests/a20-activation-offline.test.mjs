@@ -46,7 +46,8 @@ test('enrollment preparation chooses the same A20 manifest as acquisition and sp
 });
 
 test('A20 is an explicit future route; legacy 88/$10 frozen program survives',()=>{
- assert.equal(ASSAY_ACTIVATION_RUN_IDS.at(-1),ASSAY_A20_RUN_ID);
+ assert.ok(ASSAY_ACTIVATION_RUN_IDS.includes(ASSAY_A20_RUN_ID));
+ assert.equal(ASSAY_ACTIVATION_RUN_IDS.at(-1),'portable-loom-registered-source-control-20261011-r01');
  assert.equal(ASSAY_A19_PROGRAM.max_calls,88);assert.equal(ASSAY_A19_PROGRAM.max_cost_usd,10);
  assert.equal(ASSAY_A20_PROGRAM.max_calls,88);assert.equal(ASSAY_A20_PROGRAM.max_cost_usd,11);
  assert.deepEqual(ASSAY_A20_PROGRAM.run_ids.slice(0,-1),ASSAY_A19_PROGRAM.run_ids);
