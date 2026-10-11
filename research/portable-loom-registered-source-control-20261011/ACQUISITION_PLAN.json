@@ -1,0 +1,48 @@
+{
+  "schema": "td613.loom.registered-source-control-plan-proposal/v0.1",
+  "proposal_id": "portable-loom-registered-source-control-20261011-r01",
+  "status": "AUTHORIZED_NOT_EXECUTED",
+  "source_revision": "82d73f92e8c560753d2604446269f01f2f856061",
+  "execution": false,
+  "question": "Does one fresh receiver task preserve an origin-registered selected source ID and qualified receipt when exact source commitments are carried?",
+  "comparison_frame": "One prospective functional positive control. New root, selected source and one task; no activation call. Not an exact replay or causal intervention on A20.",
+  "proposed_call_count": 1,
+  "fresh_context_required": true,
+  "model_reference": {
+    "name": "gemini-3.8-flash",
+    "basis": "Official Gemini API documentation rechecked 2026-10-11; model ID and Oct–Dec 2026 prices match the frozen budget."
+  },
+  "authorization": {
+    "provider_calls": 1,
+    "reservations": 1,
+    "neon_enrollment": 1,
+    "retries": 0,
+    "deployments": 1,
+    "durable_custody_mutations": 0
+  },
+  "historical_budget": {
+    "observations_only": true,
+    "program_reservations": 87,
+    "reserved_usd": 9.920505,
+    "ceiling_reservations": 88,
+    "ceiling_usd": 11
+  },
+  "future_dispatch_requirements": [
+    "Direct current-conversation authority covers this single fresh run only; the A20 grant remains A20-only.",
+    "Current shared ledger reconciled; Gemini 3.8 Flash and pricing verified from official Gemini API docs.",
+    "Final request identity inserted; origin and session commitments regenerated and frozen before enrollment and dispatch.",
+    "Bind the approved policy and no-retry/no-tool/no-retrieval transport to the exact provider body and cost ceiling.",
+    "Capture raw request/response/answer evidence, preserve failures and reconcile the single record separately from A20.",
+    "Inspect the captured receipt against the pre-dispatch origin inventory; review the task answer separately. Return on HOLD without a retry."
+  ],
+  "historical_a20": {
+    "run_id": "portable-loom-first-receiver-20261010-a20",
+    "state": "CLOSED",
+    "captured_answers": "NOT_ADMITTED",
+    "preserved_source_registration_holds": [
+      "R06 turn 1",
+      "R02 turn 0"
+    ]
+  },
+  "claim_ceiling": "Origin construction and offline scoring readiness only. No new receiver observation, reservation, acquisition, admission or reliability estimate."
+}

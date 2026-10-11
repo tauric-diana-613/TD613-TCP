@@ -2,13 +2,15 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
-import { ASSAY_REQUEST_SCHEMA, ASSAY_RESPONSE_SCHEMA, ASSAY_CLIENT_RETURN_MARGIN_MS, ASSAY_A20_RUN_ID, sha256, requireThat, validateAssayPolicy, buildAssayProviderWire, inspectAssayResponse } from '../../server/loom-assay-contract.js';
+import { ASSAY_REQUEST_SCHEMA, ASSAY_RESPONSE_SCHEMA, ASSAY_CLIENT_RETURN_MARGIN_MS, ASSAY_A20_RUN_ID, ASSAY_REGISTERED_SOURCE_CONTROL_RUN_ID, sha256, requireThat, validateAssayPolicy, buildAssayProviderWire, inspectAssayResponse } from '../../server/loom-assay-contract.js';
 
 const estate = 'research/portable-loom-server-transport-20261009';
 export function loadServerManifest(root = process.cwd(), runId = null) {
   const manifestPath = runId === ASSAY_A20_RUN_ID
     ? 'research/portable-loom-a20-activation-20261010/TRIAL_MANIFEST_A20.json'
-    : `${estate}/TRIAL_MANIFEST.json`;
+    : runId === ASSAY_REGISTERED_SOURCE_CONTROL_RUN_ID
+      ? 'research/portable-loom-registered-source-control-20261011/TRIAL_MANIFEST.json'
+      : `${estate}/TRIAL_MANIFEST.json`;
   const manifest = JSON.parse(readFileSync(resolve(root, manifestPath)));
   const artifact = readFileSync(resolve(root, manifest.artifact_path), 'utf8');
   requireThat(sha256(artifact) === manifest.artifact_sha256, 'ASSAY_CORRECTED_ARTIFACT_CHANGED');
