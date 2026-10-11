@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { ASSAY_ACTIVATION_RUN_IDS, ASSAY_REQUEST_SCHEMA, sha256, validateAssayPolicy, buildAssayProviderWire } from '../server/loom-assay-contract.js';
-import { loadApprovedRunConfiguration } from '../server/loom-assay.js';
+import { createLoomAssayHandler, loadApprovedRunConfiguration } from '../server/loom-assay.js';
 import { loadServerManifest, prepareServerRequest } from '../research/portable-loom-server-transport-20261009/server-client.mjs';
 
 const runId = 'portable-loom-registered-source-control-20261011-r01';
@@ -61,4 +61,44 @@ test('positive-control prompt, source registry, exact trial and bounded request 
   assert.equal(p.binding.retries, 0);
   assert.equal(p.binding.tools, 'DISABLED');
   assert.equal(p.binding.retrieval, 'DISABLED');
+});
+
+
+test('production route selects the new manifest and completes one fixture-only request', async () => {
+  const { manifest } = loadServerManifest(process.cwd(), runId);
+  const p = policy(manifest);
+  const { request } = prepareServerRequest(p, trial, { root: process.cwd() });
+  const token = 'A'.repeat(40), apiKey = 'test-provider-key';
+  const operations = [];
+  let providerCalls = 0;
+  const budget = async (operation, input) => {
+    operations.push(operation);
+    if (operation === 'inspect') return { policy: p, calls_reserved: 0, reserved_cost_nanos: '0' };
+    if (operation === 'reserve') return { durable_reservation: true, request_sha256: input.request_sha256,
+      call_key: `${trial.trial_id}:${trial.role}:${trial.turn_index}`, reserved_cost_nanos: '180720000' };
+    if (operation === 'complete') return { retained: true, call_key: input.call_key, status: input.status };
+    throw new Error('unexpected budget operation');
+  };
+  const fetchImpl = async () => {
+    providerCalls++;
+    return new Response(JSON.stringify({ modelVersion: 'gemini-3.8-flash',
+      usageMetadata: { promptTokenCount: 1, totalTokenCount: 5 },
+      candidates: [{ finishReason: 'STOP', content: { parts: [{ text: 'One local fixture result.' }] } }] }),
+      { status: 200, headers: { 'content-type': 'application/json' } });
+  };
+  const handler = createLoomAssayHandler({ environment: {
+    TD613_LOOM_ASSAY_ACCESS_SHA256: sha256(token), GEMINI_API_KEY: apiKey,
+    VERCEL_GIT_COMMIT_SHA: protocolCommit
+  }, fetchImpl, budget });
+  const res = { headers: {}, setHeader(k, v) { this.headers[k] = v; }, end(body) { this.body = body; } };
+  await handler({ method: 'POST', headers: { authorization: `Bearer ${token}`,
+    'x-vercel-oidc-token': 'test-oidc-token', 'x-td613-expected-credential-sha256': sha256(apiKey) }, body: request }, res);
+  const result = JSON.parse(res.body);
+  assert.equal(res.statusCode, 200);
+  assert.equal(result.status, 'CAPTURED_NOT_ADMITTED');
+  assert.equal(result.evidence_class, 'LOCAL_STRUCTURAL_TEST');
+  assert.equal(result.provider_requests, 1);
+  assert.equal(result.retries, 0);
+  assert.equal(providerCalls, 1);
+  assert.deepEqual(operations, ['inspect', 'reserve', 'complete']);
 });
