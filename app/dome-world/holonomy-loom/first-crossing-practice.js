@@ -17,16 +17,16 @@ export const FIRST_CROSSING_PRACTICE = freeze({
   id: 'loom-first-crossing-v1',
   input_class: 'CANONICAL_FICTIONAL_PRACTICE',
   fictional: true,
-  task: 'Use the supporting source to answer the fictional garden-hours question.',
+  task: 'Summarize only the selected project notes for a public update.',
   rules: [
     'Use only the selected task note and supporting source. Keep the private note out of the AI handoff.'
   ],
   documents: [
-    { id: 'brief', name: 'Task note', text: 'Fictional task note: What time does the garden open?', share: true },
-    { id: 'source', name: 'Supporting source', text: 'Fictional supporting source: the garden opens at nine.', share: true },
-    { id: 'private', name: 'Private note', text: 'Fictional private note withheld from the AI handoff.', share: false }
+    { id: 'brief', name: 'Task note', text: 'Fictional task note: Prepare a short public update from the selected project notes.', share: true },
+    { id: 'source', name: 'Supporting source', text: 'Fictional project notes: The draft is complete. Team review comes next.', share: true },
+    { id: 'private', name: 'Private note', text: 'Fictional private planning note: PRIVATE_PLANNING_NOTE_613. Keep this note out of the public update.', share: false }
   ],
-  protectedTerms: ['PRIVATE_GARDEN_NOTE_613']
+  protectedTerms: ['PRIVATE_PLANNING_NOTE_613']
 });
 
 function selectedPracticeIds(selectedIds) {
@@ -118,7 +118,7 @@ export function checkFirstCrossingPrivacy() {
 /** A real digest binds the fictional answer to the checked local request. */
 export async function createFirstCrossingReturnProof(binding, environment = globalThis) {
   if (binding?.binding_verified !== true || binding.fixture_id !== FIRST_CROSSING_PRACTICE.id) throw new TypeError('A checked tutorial request is required.');
-  const answer = 'Fictional answer: the garden opens at nine.';
+  const answer = 'Fictional example answer: The draft is complete. Team review comes next.';
   const receipt = { schema: 'td613.loom.tutorial-return/v0.1', evidence_class: 'OFFLINE_TEST', fictional: true,
     request_digest: binding.input_digest, answer_digest: await portableLoomDigest(answer, environment),
     used_document_ids: [...binding.selected_document_ids], provider_called: false, custody_admitted: false };

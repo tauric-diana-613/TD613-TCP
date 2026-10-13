@@ -436,7 +436,7 @@ export function projectLoomInstrumentStateFrame(view, snapshot = {}) {
 /** DOM-only renderer. The host owns Rest/Replay/Exit and all animation timing.
  * Nodes persist across ticks, so focus and an opened inspection drawer survive.
  */
-export function mountLoomInstrumentStateView(root) {
+export function mountLoomInstrumentStateView(root, { fullPage = false } = {}) {
   if (!root?.ownerDocument) throw new TypeError('An instrument state root is required.');
   const doc = root.ownerDocument;
   const el = (tag, className, textValue) => {
@@ -473,7 +473,8 @@ export function mountLoomInstrumentStateView(root) {
   for(const [offset,color] of [['0%','#eff4ee'],['24%','#a7dcdf'],['42%','#f2edc8'],['52%','#7296b8'],['57%','#e4e8df'],['77%','#e4b48c'],['100%','#8785c4']])metal.append(svgEl('stop',{offset,'stop-color':color}));
   const lensGlow = svgEl('filter',{id:`${uid}-lens`,x:'-100%',y:'-300%',width:'300%',height:'700%','color-interpolation-filters':'sRGB'});
   lensGlow.append(svgEl('feGaussianBlur',{stdDeviation:'8'}));
-  defs.append(spectrum,core,glow,metal,lensGlow);svg.append(title,defs,svgEl('rect',{width:1000,height:520,fill:'#080b12'}),svgEl('ellipse',{cx:500,cy:262,rx:430,ry:250,fill:`url(#${uid}-core)`}));
+  const fieldBackground=svgEl('rect',{width:1000,height:520,fill:'#080b12'});
+  defs.append(spectrum,core,glow,metal,lensGlow);svg.append(title,defs,fieldBackground,svgEl('ellipse',{cx:500,cy:262,rx:430,ry:250,fill:`url(#${uid}-core)`}));
   const seam = svgEl('path',{d:'M140 260 Q500 240 860 260',fill:'none',stroke:`url(#${uid}-spectrum)`,'stroke-width':4,opacity:.27,filter:`url(#${uid}-lens)`});svg.append(seam);
   const horizon = svgEl('g',{class:'loom-field-horizon',stroke:`url(#${uid}-spectrum)`,fill:'none','stroke-width':'.65'});
   for(let i=0;i<5;i++)horizon.append(svgEl('ellipse',{cx:500,cy:266,rx:170+i*50,ry:50+i*16,opacity:.05+i*.013}));
@@ -586,8 +587,21 @@ export function mountLoomInstrumentStateView(root) {
         filaments.forEach((node,index)=>{node.style.display=compact&&index>=10?'none':'';});
         particles.forEach((node,index)=>{node.style.display=compact&&index>=12?'none':'';});
         // All 39 carriers retain the depth strata; mobile reduces auxiliary lines.
-        setProjectedAttribute(svg,'viewBox',compact?'200 -220 600 1120':'0 0 1000 520');
+        if(!fullPage)setProjectedAttribute(svg,'viewBox',compact?'200 -220 600 1120':'0 0 1000 520');
         depth.forEach((node,index)=>{node.style.display=compact&&index>=4?'none':'';});
+      }
+      // Page-wide Loom: adapt the spatial coordinates to the measured host,
+      // not the glyph outlines. The previous portrait viewBox added empty
+      // space around a landscape trajectory, leaving motion in a narrow band.
+      // ResizeObserver supplies the dimensions; no per-frame layout reads.
+      const fieldHeight=fullPage?1000*Math.max(.25,Math.min(4,Number(snapshot.viewport?.height??520)/Math.max(1,Number(snapshot.viewport?.width??1000)))):520;
+      const projectY=y=>fullPage?260+(y-260)*fieldHeight/520:y;
+      if(fullPage){
+        setProjectedAttribute(svg,'viewBox',`0 ${260-fieldHeight/2} 1000 ${fieldHeight}`);
+        setProjectedAttribute(fieldBackground,'y',260-fieldHeight/2);
+        setProjectedAttribute(fieldBackground,'height',fieldHeight);
+        setProjectedAttribute(filamentLayer,'transform',`translate(0 260) scale(1 ${fieldHeight/520}) translate(0 -260)`);
+        setProjectedAttribute(horizon,'transform',`translate(0 260) scale(1 ${fieldHeight/520}) translate(0 -260)`);
       }
       const filamentCount = compact ? 10 : filaments.length;
       const particleCount = compact ? 12 : particles.length;
@@ -704,7 +718,7 @@ export function mountLoomInstrumentStateView(root) {
         const t=((i/particles.length+particleTime*.016)%1+1)%1;
         const angle=t*Math.PI*2, radius=185+(i%5)*31;
         setProjectedAttribute(particles[i],'cx',(500+Math.cos(angle)*radius*1.3).toFixed(2));
-        setProjectedAttribute(particles[i],'cy',(260+Math.sin(angle)*radius*.48).toFixed(2));
+        setProjectedAttribute(particles[i],'cy',projectY(260+Math.sin(angle)*radius*.48).toFixed(2));
         setProjectedAttribute(particles[i],'opacity',(frame.reduced_motion?.3:.23+Math.sin(i+seconds*.4)**2*.52).toFixed(3));
       }
       const evidencedTrail=frame.descriptor ? (view.event_relation_history??[]).filter(item=>item?.glyph&&item?.relation_key) : [];
@@ -738,8 +752,8 @@ export function mountLoomInstrumentStateView(root) {
         const seed=(i+.5)/flightGlyphs.length;
         if(frame.reduced_motion){
           const col=i%7,row=Math.floor(i/7);
-          const x=compact ? 240+col*80 : 110+col*130;
-          const y=compact ? 40+row*100 : 92+row*112;
+          const x=fullPage ? 70+col*143 : compact ? 240+col*80 : 110+col*130;
+          const y=fullPage ? projectY(40+row*88) : compact ? 40+row*100 : 92+row*112;
           setProjectedAttribute(node,'x',String(x));setProjectedAttribute(node,'y',String(y));
           setProjectedAttribute(node,'transform',`rotate(${(col-3)*3} ${x} ${y})`);
           continue;
@@ -832,6 +846,7 @@ export function mountLoomInstrumentStateView(root) {
           const smooth=value=>{const t=Math.max(0,Math.min(1,value));return t*t*(3-2*t);};
           opacity*=smooth(phase/.12)*smooth((1-phase)/.12);
         }
+        y=projectY(y);
         setProjectedAttribute(node,'opacity',opacity.toFixed(3));
         setProjectedAttribute(node,'x',x.toFixed(2));setProjectedAttribute(node,'y',y.toFixed(2));
         setProjectedAttribute(node,'transform',`translate(${x.toFixed(2)} ${y.toFixed(2)}) rotate(${roll.toFixed(2)}) scale(${scale.toFixed(2)}) translate(${-x.toFixed(2)} ${-y.toFixed(2)})`);

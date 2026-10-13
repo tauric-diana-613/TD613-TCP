@@ -4,11 +4,11 @@ import { compileLoomInstrumentStateView, mountLoomInstrumentStateView } from './
  * sole AnimationCoordinator; this adapter owns no clock or custody capability.
  */
 export function mountLoomRuntimeStateView(root, {
-  coordinator, environment = globalThis, observe = () => ({}),
+  coordinator, environment = globalThis, fullPage = false, observe = () => ({}),
   compatibilityHost = null, inspectionContent = null
 } = {}) {
   if (!root?.ownerDocument || !coordinator?.registerPass) throw new TypeError('The runtime state view requires its existing workspace coordinator.');
-  const doc = root.ownerDocument, renderer = mountLoomInstrumentStateView(root);
+  const doc = root.ownerDocument, renderer = mountLoomInstrumentStateView(root, { fullPage });
   const section = root.querySelector('.loom-instrument-state');
   const mode = root.querySelector('.loom-instrument-state-mode');
   const inspection = root.querySelector('.loom-instrument-state-inspection');

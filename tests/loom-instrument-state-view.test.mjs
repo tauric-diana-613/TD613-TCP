@@ -412,3 +412,43 @@ test('unchanged projection attributes stay quiet while all 39 carriers keep thei
     });
   }finally{dom.window.Element.prototype.setAttribute=original;renderer.destroy();dom.window.close();}
 });
+
+test('page-wide projection uses the viewport without stretching glyphs or changing the shared semantic snapshot',async()=>{
+  const {loomOpeningPresentation}=await import('../app/dome-world/holonomy-loom/tutorial-membrane.js');
+  const input=packet('prepared',{scene:{id:'first-crossing-pagewide'},request_id:null,task_present:false,
+    selected_document_ids:[],shared:0,local:0,presentation:loomOpeningPresentation()});
+  const view=await compile(input),original=JSON.stringify(view);
+  const dom=new JSDOM('<div id="compact"></div><div id="page"></div>');
+  const compactRoot=dom.window.document.getElementById('compact'),pageRoot=dom.window.document.getElementById('page');
+  const compact=mountLoomInstrumentStateView(compactRoot),page=mountLoomInstrumentStateView(pageRoot,{fullPage:true});
+  const frame=t=>({packet:input,progress:1,motionTimeMs:t,viewport:{width:390,height:844,dpr:1}});
+  const carriers=root=>[...root.querySelectorAll('.loom-field-flight text')];
+  try{
+    compact.update(view,frame(1000));page.update(view,frame(1000));
+    const bounds=pageRoot.querySelector('svg').getAttribute('viewBox').split(' ').map(Number);
+    assert.equal(bounds[2],1000);
+    assert.ok(Math.abs(bounds[3]/bounds[2]-844/390)<1e-9);
+    assert.notEqual(pageRoot.querySelector('svg').getAttribute('viewBox'),compactRoot.querySelector('svg').getAttribute('viewBox'));
+    const before=carriers(pageRoot).map(node=>node.getAttribute('transform'));
+    assert.equal(before.length,39);
+    for(const [i,node] of carriers(pageRoot).entries()){
+      const other=carriers(compactRoot)[i];
+      assert.equal(node.textContent,other.textContent);
+      assert.equal(node.getAttribute('font-size'),other.getAttribute('font-size'));
+      assert.equal(node.dataset.flightRelation,other.dataset.flightRelation);
+      assert.equal(node.dataset.flightEvidence,'presentation-only');
+      const expected=260+(Number(other.getAttribute('y'))-260)*(1000*844/390)/520;
+      assert.ok(Math.abs(Number(node.getAttribute('y'))-expected)<.04,'only the path position expands vertically');
+    }
+    page.update(view,frame(2000));
+    assert.ok(carriers(pageRoot).every((node,i)=>node.getAttribute('transform')!==before[i]));
+    page.update(view,frame(1000));
+    assert.deepEqual(carriers(pageRoot).map(node=>node.getAttribute('transform')),before,'same snapshot/time replays deterministically');
+    page.update(view,{...frame(3000),reducedMotion:true});
+    const still=carriers(pageRoot).map(node=>node.outerHTML);
+    page.update(view,{...frame(8000),reducedMotion:true});
+    assert.deepEqual(carriers(pageRoot).map(node=>node.outerHTML),still);
+    assert.equal(JSON.stringify(view),original,'rendering cannot rewrite semantic evidence');
+    assert.equal(page.inspect().owns_animation_loop,false);
+  }finally{compact.destroy();page.destroy();dom.window.close();}
+});

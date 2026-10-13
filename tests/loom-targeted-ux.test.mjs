@@ -31,9 +31,9 @@ test('Loom boot binds fresh Phase 09 assets and contains a catchable module fail
   const doc = new JSDOM(html).window.document;
   const css = doc.querySelector('link[href*="loom-product-v6.css"]');
   const module = [...doc.querySelectorAll('script[type="module"]')].find(node => node.textContent.includes('ai-workspace.js'));
-  assert.match(css.href, /20261013-phase09-v1/);
+  assert.match(css.href, /20261013-pagewide-v2/);
   assert.ok(module, 'the entrypoint must be an observable dynamic module import');
-  assert.match(module.textContent, /import\('\.\/holonomy-loom\/ai-workspace\.js\?v=20261013-phase09-v1'\)/);
+  assert.match(module.textContent, /import\('\.\/holonomy-loom\/ai-workspace\.js\?v=20261013-pagewide-v2'\)/);
   assert.match(module.textContent, /\.catch\(\(\) => window\.td613LoomBootFailure/);
   assert.equal(doc.querySelectorAll('script[type="module"][src*="20261003"]').length, 0);
 });
@@ -98,7 +98,7 @@ test('primary Loom is one product route, not a nested laboratory archive', () =>
   assert.equal(doc.querySelector('#ashKeepReturn')?.getAttribute('href'), '/dome-world/');
   assert.equal(doc.querySelector('#ashKeepReturn')?.textContent, 'Home');
   assert.equal(doc.querySelector('#ashKeepReturn')?.getAttribute('aria-label'), 'Dome-World home');
-  assert.match(product, /body:has\(#loomAiWorkspace\[data-first-crossing="active"\]\) \.loom-topbar a\[href\*="loom-instrument-lab"\]\{display:none\}/);
+  assert.ok(doc.querySelector('a[href*="loom-instrument-lab"]').getAttribute('target')==='_blank');
   assert.equal(doc.querySelectorAll('link[href*="ai-workspace.css"],link[href*="reentry-workspace.css"],link[href*="loom-product-v3.css"],link[href*="ux-repair.css"],link[href*="cinematic-rescue.css"],link[href*="dromological-regime.css"]').length,0);
 });
 
@@ -148,7 +148,7 @@ test('à completion, rather than the first tap, gates hõt/cōl', () => {
   assert.match(workspaceSource,/snapshot.reducedMotion \|\| snapshot.progress>=1/);
   assert.match(workspaceSource,/if\(id==='source'&&!firstCrossingSourceUnlocked\)return/);
   assert.match(workspaceSource,/button.disabled=!firstCrossingSourceUnlocked && firstCrossingStep===0/);
-  assert.match(product,/data-first-crossing-item="source"\]:disabled/);
+  assert.match(product,/button:disabled\{opacity:\.4;cursor:not-allowed/);
 });
 
 test('How Loom works is a recoverable handoff preview with a living Flow-Core remix', () => {
@@ -160,7 +160,7 @@ test('How Loom works is a recoverable handoff preview with a living Flow-Core re
   assert.equal(doc.querySelectorAll('[data-first-crossing-item]').length, 2);
   assert.equal(doc.querySelector('#loomFirstCrossingPrivate').tagName, 'DIV', 'private note is explanatory, not a mystery button');
   assert.equal(doc.querySelector('#loomFirstCrossingPause').textContent, '𝌋');
-  assert.equal(doc.querySelector('#loomTutorialProgress').textContent, '1 of 7 · Your request');
+  assert.equal(doc.querySelector('#loomTutorialProgress').textContent, '1 of 7 · Choose');
   const consumerCopy=doc.querySelector('#loomFirstCrossing').cloneNode(true);
   consumerCopy.querySelector('.loom-flowcore-help')?.remove();
   assert.doesNotMatch(consumerCopy.textContent, /First Crossing|private scrap|short brief|public source|locally|packet|Preparation ≠ transmission|Prepared is not transmitted|Nothing crossed/i);
@@ -169,9 +169,9 @@ test('How Loom works is a recoverable handoff preview with a living Flow-Core re
   assert.match(workspaceSource, /nextFlowcoreChoreography/);
   assert.match(workspaceSource, /flowcore_choreography:firstCrossingChoreography/);
   assert.match(workspaceSource, /coordinator\.setContinuous\(true\)/);
-  assert.match(workspaceSource, /title:'Protect your work when you use AI\.'/);
-  assert.match(workspaceSource, /title:'You’re ready to enter Loom\.'/);
-  assert.match(workspaceSource, /Enter Loom →/);
+  assert.match(workspaceSource, /title:'Choose what AI can read\.'/);
+  assert.match(workspaceSource, /title:'Make it yours\.'/);
+  assert.match(workspaceSource, /Start my own task →/);
   assert.doesNotMatch(workspaceSource, /title:'Prepared is not transmitted\.'/);
   assert.doesNotMatch(workspaceSource, /title:'They gathered\. Nothing crossed\.'/);
   assert.doesNotMatch(workspaceSource, /title:'Watch readiness form\.'/);
@@ -188,7 +188,7 @@ test('The handoff preview leaves spatial consequence to the one canonical render
   const crossing=doc.querySelector('#loomFirstCrossing');
   assert.ok(crossing);
   assert.equal(crossing.querySelectorAll('[data-first-crossing-item]').length,2);
-  assert.match(product, /#loomAiWorkspace \.loom-first-crossing\{[\s\S]*?inset:0!important[\s\S]*?border:0!important[\s\S]*?background:transparent!important/);
+  assert.match(product,/#loomAiWorkspace \.ai-runtime,#loomAiWorkspace \.loom-workspace-field\{position:fixed;inset:0/);
   assert.doesNotMatch(product, /--fc-x|--fc-y/, 'source controls must not own a second CSS trajectory');
   assert.doesNotMatch(runtimeStateSource, /coordinator\.seek\(0\);[\s\S]*?coordinator\.play\(\)/, 'async publication must preserve operator pause and scrub');
   assert.doesNotMatch(product, /\.loom-first-crossing\{[^}]*background:rgba\(5,8,12,.67\)/);
@@ -212,9 +212,9 @@ test('mobile keeps consequential boundaries and source-defined focus protection'
   assert.match(product, /@media\(prefers-reduced-motion:reduce\)/);
   assert.doesNotMatch(product, /grid-template-columns:116px\s+minmax\(0,1fr\)/);
   assert.match(product, /#loomAiWorkspace \.loom-stage\{[\s\S]*?height:calc\(100svh - 52px\)/);
-  assert.match(product, /@media\(max-width:760px\)[\s\S]*?#loomAiWorkspace \.loom-stage\{[\s\S]*?height:calc\(100svh - 48px\)/);
-  assert.match(product, /#loomAiWorkspace \.loom-instrument-state-boundary\{[\s\S]*?display:block!important/);
-  assert.match(product, /\.loom-tools \[data-tool-panel="session"\] \.ai-room-replay\{[\s\S]*?position:static!important/);
+  assert.match(product, /@media\(max-width:760px\)[\s\S]*?#loomAiWorkspace \.loom-stage\{[\s\S]*?height:calc\(100svh - 52px\)/);
+  assert.match(product,/\.loom-instrument-state-boundary[\s\S]*?display:none/);
+  assert.match(product,/\.loom-tools \[data-tool-panel="session"\] :is\([\s\S]*?position:static/);
   assert.doesNotMatch(product, /Georgia|Times New Roman|var\(--serif\)/);
 });
 
@@ -253,7 +253,7 @@ test('cinematic route labels remain on the field while deep inspection stays ins
   assert.match(workspaceSource, /stateTools[\s\S]{0,260}\.ai-room-replay/);
   assert.doesNotMatch(workspaceSource, /stateTools[\s\S]{0,220}loom-instrument-state-endpoints/);
   assert.doesNotMatch(workspaceSource, /stateTools[\s\S]{0,180}loom-instrument-state-relation/);
-  assert.match(product, /\.loom-tools \[data-tool-panel="session"\] \.loom-instrument-state-inspection\{[\s\S]*?position:static!important/);
+  assert.match(product,/\.loom-tools \[data-tool-panel="session"\] :is\([\s\S]*?position:static/);
 });
 
 test('product shell owns no second animation clock or network authority', () => {
@@ -373,7 +373,7 @@ test('first use explains private material, remixes presentation, and skips witho
   assert.equal(privateNote.tagName,'DIV');
   assert.equal(privateNote.getAttribute('role'),'note');
   assert.match(privateNote.textContent,/Private note/);
-  assert.match(privateNote.textContent,/Stays in this browser/);
+  assert.match(privateNote.textContent,/stays in this browser/i);
   assert.equal(privateNote.hasAttribute('aria-pressed'), false);
   const before=h.$('#loomFlowcoreMessage').textContent;
   h.$('#loomFirstCrossingPause').click();
@@ -420,9 +420,9 @@ test('selection and readiness publish consequences before naming the Flow-Core r
   // send illustration, privacy egress check, and digest-bound return inspection.
   // Finishing before all three consequences publish must stay forbidden.
   for (const [step, cue, progress] of [
-    [3, 'send-named', '4 of 7 · Send request'],
-    [4, 'privacy-named', '5 of 7 · Revisit privacy'],
-    [5, 'proof-named', '6 of 7 · Return proof']
+    [3, 'send-named', '4 of 7 · Sending'],
+    [4, 'privacy-named', '5 of 7 · Privacy'],
+    [5, 'proof-named', '6 of 7 · Answer']
   ]) {
     h.$('#loomFirstCrossingStop').click();
     await until(() => h.root.dataset.firstCrossingStep === String(step)
@@ -440,7 +440,7 @@ test('selection and readiness publish consequences before naming the Flow-Core r
   assert.ok(proof.receipt_digest);
   h.$('#loomFirstCrossingStop').click();
   assert.equal(h.root.dataset.firstCrossingCue, 'complete', 'reduced motion retains deliberate legitimate completion');
-  assert.equal(h.$('#loomTutorialProgress').textContent, '7 of 7 · Ready / Rest');
+  assert.equal(h.$('#loomTutorialProgress').textContent, '7 of 7 · Your turn');
   assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), 'complete');
   assert.equal(h.ui.inspect().session, null);
   assert.equal(h.requests.length, 0);
@@ -586,15 +586,41 @@ test('opening overture contains all eight relations without borrowing the à ill
   assert.match(workspaceSource,/firstCrossingStep===0\?loomOpeningPresentation/);
   assert.doesNotMatch(workspaceSource,/packet\.presentation=\{\.\.\.packet\.presentation,\.\.\.loomTutorialPresentation\(0\)\}/);
 });
-test('couture ingress retains the two selectable sources and gives receipts their own row', () => {
+test('privacy tutorial retains two selections and optional answer details in document flow', () => {
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
   assert.equal(doc.querySelectorAll('[data-first-crossing-item]').length,2);
-  assert.match(doc.querySelector('[data-first-crossing-item=source]').textContent,/hõt[\s\S]*cōl/);
+  assert.match(doc.querySelector('[data-first-crossing-item=source]').textContent,/Select reference/);
   assert.doesNotMatch(doc.querySelector('[data-first-crossing-item=source]').textContent,/\/\//);
-  assert.match(product,/\.loom-tutorial-proof:not\(\[hidden\]\)\{[\s\S]*?grid-row:4/);
-  assert.match(product,/:not\(\[data-first-crossing-step="0"\]\)\s*\.loom-first-crossing-objects\{display:none!important\}/);
-  assert.match(product,/#loomAiWorkspace \.loom-flowcore-help/);
-  assert.equal(doc.querySelector('#loomBegin').textContent.trim(),'Enter Loom →');
+  assert.match(product,/\.loom-tutorial-proof\{order:4/);
+  assert.match(product,/:not\(\[data-first-crossing-step="0"\]\)\s*\.loom-first-crossing-objects\{display:none\}/);
+  assert.match(product,/\.loom-topbar \.loom-flowcore-help/);
+  assert.equal(doc.querySelector('#loomBegin').textContent.trim(),'Start my own task →');
+});
+
+test('request review shows literal selected content without rendering markup or leaking unselected files', async t => {
+  const h=practiceHarness(t);
+  h.$('#loomFirstCrossingLeave').click();
+  const selected='<img src=x onerror=alert(1)> Selected reference text';
+  const privateBody='PRIVATE_REVIEW_BODY_MUST_STAY_LOCAL';
+  const file=(name,body)=>{const data=new TextEncoder().encode(body);return {name,type:'text/plain',size:data.byteLength,arrayBuffer:async()=>data.buffer};};
+  Object.defineProperty(h.$('#aiUpload'),'files',{configurable:true,value:[file('selected.txt',selected),file('private.txt',privateBody)]});
+  h.$('#aiUpload').dispatchEvent(new h.environment.Event('change',{bubbles:true}));
+  await until(()=>h.$('#aiDocuments').querySelectorAll('input[type=checkbox]').length===2,'local files');
+  const choices=h.$('#aiDocuments').querySelectorAll('input[type=checkbox]');
+  assert.equal(choices[0].checked,false);assert.equal(choices[1].checked,false);
+  choices[0].click();
+  h.$('#aiTask').value='Summarize the selected source. <b>Keep this literal.</b>';
+  h.$('#aiTask').dispatchEvent(new h.environment.Event('input',{bubbles:true}));
+  h.$('#aiPreparePortable').click();
+  await until(()=>!h.$('#aiResult').hidden&&h.root.getAttribute('aria-busy')!=='true','request review');
+  const review=h.$('#aiAnswer');
+  assert.ok(review.textContent.includes(selected));
+  assert.ok(review.textContent.includes(h.$('#aiTask').value));
+  assert.ok(review.textContent.includes('AI instructions'));
+  assert.equal(review.querySelector('img,b'),null,'source bytes are text, never executable markup');
+  assert.ok(!review.textContent.includes(privateBody));
+  assert.ok(!review.textContent.includes('private.txt'));
+  assert.equal(h.requests.length,0,'review cannot send to an AI provider');
 });
 
 test('independent Lab links preserve unsent Loom work by opening another tab without an opener', () => {

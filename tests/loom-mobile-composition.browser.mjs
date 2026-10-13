@@ -220,7 +220,7 @@ async function bindPage(context, posture, base = served.base, { firstCrossingCom
 }
 
 try {
-  browser = await chromium.launch({ headless: true });
+  browser = await chromium.launch({ headless: true, ...(process.env.TD613_BROWSER_EXECUTABLE ? { executablePath: process.env.TD613_BROWSER_EXECUTABLE, args: ['--no-sandbox'] } : {}) });
 
   // Reproduce the operator's exact frozen HTML-shell failure: a stylesheet
   // loads, but the entry module never mounts the actual tutorial. The user
@@ -291,15 +291,15 @@ try {
           visible_chrome:visibleChrome,objects:objectStyles
         };
       });
-      record('tutorial: centered translucent reading surface keeps the field and ordinary chrome separate',
-        firstCrossingVisual.background === 'rgba(6, 13, 20, 0.78)' &&
+      record('tutorial: centered unframed composition keeps the field and ordinary chrome separate',
+        firstCrossingVisual.background === 'rgba(0, 0, 0, 0)' &&
         firstCrossingVisual.width<=720 && firstCrossingVisual.center_error<=1 &&
         firstCrossingVisual.border_top === '0px' &&
         firstCrossingVisual.visible_chrome.length === 0 &&
         firstCrossingVisual.objects.length===3&&
         firstCrossingVisual.objects.filter(object=>object.id!=='loomFirstCrossingPrivate')
           .every(object=>object.visible&&object.width>=44&&object.height>=44)&&
-        firstCrossingVisual.objects.find(object=>object.id==='loomFirstCrossingPrivate')?.visible===false,
+        firstCrossingVisual.objects.find(object=>object.id==='loomFirstCrossingPrivate')?.visible===true,
         firstCrossingVisual);
       await screenshot(page, 'first-crossing-mobile-notice');
       await tutorialComposition(page,'first-crossing-mobile-notice');
@@ -320,7 +320,7 @@ try {
         await page.locator('#loomAiWorkspace').getAttribute('data-first-crossing-gather')==='complete');
       await lockedSource.click();
       record('first crossing: consequence begins before terminology is named',
-        /Preview what AI can use\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
+        /Review your selections\.|Share what helps\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
         !/That relation is à/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
         { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
       await observeFiniteConsequence(page,'gathering','first-crossing-mobile-gathering');
@@ -373,7 +373,7 @@ try {
       record('first crossing: completion unlocks the live Loom CTA',
         await page.locator('#loomBegin').isVisible() &&
         await page.evaluate(() => localStorage.getItem('td613.loom.first-crossing.v1')) === 'complete' &&
-        /Enter Loom/.test(await page.locator('#loomBegin').textContent()),
+        /Start my own task/.test(await page.locator('#loomBegin').textContent()),
         { open_visible: await page.locator('#loomBegin').isVisible(), label:await page.locator('#loomBegin').textContent() });
       record('first crossing: tutorial made zero provider or non-GET requests',
         !report.requests.some(request => request.posture === 'first-crossing-mobile' && request.method !== 'GET'),
@@ -462,8 +462,8 @@ try {
         return { x: r.x, y: r.y, width: r.width, height: r.height, bottom: r.bottom, right: r.right };
       });
       record(`${posture.name}: Flow-Core owns the cinematic arrival scene`,
-        Math.abs(fieldGeometry.width-stageGeometry.width)<=1&&fieldGeometry.width>=posture.viewport.width*.8&&
-          Math.abs(fieldGeometry.height-stageGeometry.height)<=2&&
+        Math.abs(fieldGeometry.width-posture.viewport.width)<=1&&Math.abs(fieldGeometry.x)<=1&&Math.abs(fieldGeometry.y)<=1&&
+          Math.abs(fieldGeometry.height-posture.viewport.height)<=2&&
           stageGeometry.height>=(posture.viewport.width>760
             ? Math.min(680,Math.max(530,posture.viewport.height-190))
             : Math.min(760,posture.viewport.height-60))&&
@@ -487,8 +487,8 @@ try {
       record(`${posture.name}: workspace retains one live field and matching ingress typography`,
         frameComposition.runtime_count===1&&frameComposition.original_runtime_preserved&&frameComposition.runtime_in_background&&
           frameComposition.font_family===frameComposition.ingress_font,frameComposition);
-      if(posture.name==='desktop')record('desktop: workspace is a centered contained transparent frame',
-        frameComposition.width<posture.viewport.width-100&&frameComposition.center_error<=1&&frameComposition.background==='rgba(0, 0, 0, 0)',frameComposition);
+      if(posture.name==='desktop')record('desktop: workspace is centered with a translucent reading surface',
+        frameComposition.width<posture.viewport.width-100&&frameComposition.center_error<=1&&frameComposition.background==='rgba(6, 13, 20, 0.84)',frameComposition);
       const arrival = await geometry(page, ['aiTask', 'aiPreparePortable', 'loomRulesOpen', 'loomBoundaryOpen', 'aiPortableMode', 'aiDemoMode', 'loomToolsOpen']);
       const bounds = await spill(page);
       record(`${posture.name}: no root or visible horizontal spill`, bounds.document_width <= posture.viewport.width && bounds.outside.length === 0, bounds);
@@ -516,7 +516,7 @@ try {
       record(`${posture.name}: keyboard Escape restores Tools opener`, !(await page.locator('#loomTools').evaluate(node => node.open)) && await page.evaluate(() => document.activeElement?.id) === 'loomToolsOpen', { active_element: await page.evaluate(() => document.activeElement?.id) });
       await page.locator('#loomBoundaryOpen').focus(); await page.keyboard.press('Enter');
       const boundary = await page.locator('[data-tool-panel="boundary"]').textContent();
-      record(`${posture.name}: boundary accessible before crossing`, await page.locator('[data-tool-panel="boundary"]').isVisible() && /remain unobserved/.test(boundary) && /no model request/.test(boundary), { text: boundary });
+      record(`${posture.name}: boundary accessible before crossing`, await page.locator('[data-tool-panel="boundary"]').isVisible() && /unselected stay in this browser/.test(boundary) && /Review that content before sending/.test(boundary) && /service’s own privacy and retention policies/.test(boundary), { text: boundary });
       await page.keyboard.press('Escape');
       await page.locator('#loomRulesOpen').focus(); await page.keyboard.press('Enter');
       const ruleFont = await page.locator('#aiRules').evaluate(node => Number.parseFloat(getComputedStyle(node).fontSize));
