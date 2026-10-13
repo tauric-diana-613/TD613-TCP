@@ -7,7 +7,7 @@ import { JSDOM } from 'jsdom';
 import './marrowline-attachment-quality.test.mjs';
 import './marrowline-ios-keyboard-contract.test.mjs';
 import './marrowline-threads.test.mjs';
-import { classifyMarrowlineClientFailure, deriveMarrowlineConversationTitle, marrowlineWaitingLabel, installKhonapolitTerminal } from '../app/dome-world/marrowline-terminal.js';
+import { classifyMarrowlineClientFailure, deriveMarrowlineConversationTitle, marrowlineThreadMatchesSearch, marrowlineWaitingLabel, installKhonapolitTerminal } from '../app/dome-world/marrowline-terminal.js';
 import { installMarrowlineMobileShell } from '../app/dome-world/marrowline-mobile-shell.js';
 import { installMarrowlineLivingChat, buildMarrowlineReplyFollowupDraft } from '../app/dome-world/marrowline-living-chat.js';
 import { attachmentState, clearMarrowlineAttachments, stageMarrowlineAttachments } from '../app/dome-world/marrowline-attachments.js';
@@ -130,6 +130,25 @@ test('thread titles identify the actual subject rather than copying an opening v
   ]) assert.ok(title.trim().split(/\s+/u).length <= 5, `generated title exceeds five words: ${title}`);
 });
 
+test('saved-conversation search matches Red Deer and Kʰonapolit text with all keywords', () => {
+  const thread = {
+    conversationTitle: 'Unrelated title',
+    messages: [
+      { role: 'user', text: 'Red Deer leaves an orchid marker in this request.' },
+      { role: 'model', relay: { parts: [
+        { id: 'khonapolit', label: 'Kʰonapolit ∴ Tauric Diana bots', present: true, text: 'The covenant answer keeps a shoreline witness.' }
+      ] } }
+    ]
+  };
+  assert.equal(marrowlineThreadMatchesSearch(thread, 'orchid'), true);
+  assert.equal(marrowlineThreadMatchesSearch(thread, 'covenant'), true);
+  assert.equal(marrowlineThreadMatchesSearch(thread, 'orchid covenant'), true,
+    'keywords may be satisfied across Red Deer input and Kʰonapolit output in one conversation');
+  assert.equal(marrowlineThreadMatchesSearch(thread, 'orchid absentword'), false);
+  assert.equal(marrowlineThreadMatchesSearch(thread, 'khonapolit'), true,
+    'NFKC search makes the Kʰonapolit label discoverable from plain keyboard text');
+});
+
 test('photo replies keep a reply-local Attachments action after send clears raw bytes', async t => {
   clearMarrowlineAttachments(globalThis);
   const h = harness(t);
@@ -160,6 +179,67 @@ test('photo replies keep a reply-local Attachments action after send clears raw 
   const saved = await h.saved();
   assert.equal(saved.conversationTitle, 'What Does This Photo Mean',
     'five-word natural question survives as a readable conversation title');
+});
+
+test('↻ resends the exact original file and photo payloads after successful staging clears', async t => {
+  clearMarrowlineAttachments(globalThis);
+  const h = harness(t);
+  await h.ready();
+  const fileBytes = new TextEncoder().encode('retry-file-canary');
+  const photoBytes = new Uint8Array([0xff, 0xd8, 0x54, 0x44, 0x36, 0x31, 0x33, 0xff, 0xd9]);
+  await stageMarrowlineAttachments([{
+    name: 'retry-canary.txt', type: 'text/plain', size: fileBytes.byteLength,
+    arrayBuffer: async () => fileBytes.buffer
+  }], { kind: 'file', environment: h.win });
+  await stageMarrowlineAttachments([{
+    name: 'retry-photo.jpg', type: 'image/jpeg', size: photoBytes.byteLength,
+    arrayBuffer: async () => photoBytes.buffer
+  }], { kind: 'photo', environment: h.win });
+
+  h.send('Retry this exact attachment-backed prompt.');
+  await h.settled(); await flush();
+  assert.equal(h.calls.length, 1);
+  const firstAttachments = h.calls[0].attachments;
+  assert.equal(firstAttachments.length, 2);
+  assert.equal(attachmentState().count, 0, 'successful first send clears the visible staging tray');
+
+  h.doc.dispatchEvent(new h.win.CustomEvent('td613:marrowline:retry-independent'));
+  await h.settled(); await flush();
+  assert.equal(h.calls.length, 2);
+  assert.deepEqual(h.calls[1].attachments, firstAttachments,
+    'explicit retry carries the same file/photo ids, MIME metadata, sizes, and base64 bodies');
+  assert.equal(h.doc.querySelectorAll('#khonapolitMessages .message[data-role="user"]').length, 1,
+    'retry replaces the prior answer rather than duplicating the Red Deer prompt');
+  const saved = await h.saved();
+  assert.equal(JSON.stringify(saved).includes('data_base64'), false,
+    'raw replay bytes remain non-enumerable live memory and never enter durable thread JSON');
+});
+
+test('conversation ⌕ filters saved threads locally without spending a provider call', async t => {
+  const h = harness(t);
+  await h.ready();
+  h.send('First archive carries the copper-otter marker for local search.');
+  await h.settled(); await flush();
+  h.$('marrowlineNewThread').click();
+  await flush();
+  h.send('Second archive carries a violet-heron marker instead.');
+  await h.settled(); await flush();
+  const callsBeforeSearch = h.calls.length;
+
+  h.$('marrowlineThreadOpen').click();
+  await flush();
+  assert.equal(h.doc.querySelectorAll('#marrowlineThreadList .marrowline-thread-row').length, 2);
+  h.$('marrowlineThreadSearchToggle').click();
+  const input = h.$('marrowlineThreadSearchInput');
+  assert.equal(h.$('marrowlineThreadSearchPanel').hidden, false);
+  input.value = 'copper-otter';
+  input.dispatchEvent(new h.win.Event('input', { bubbles: true }));
+  await flush();
+
+  const rows = [...h.doc.querySelectorAll('#marrowlineThreadList .marrowline-thread-row')];
+  assert.equal(rows.length, 1);
+  assert.match(h.$('marrowlineThreadSearchStatus').textContent, /1 of 2 conversations/);
+  assert.equal(h.calls.length, callsBeforeSearch, 'search is browser-local and performs no provider request');
 });
 
 test('landing and New stay transient until a human turn is actually sent', async t => {
