@@ -1,1 +1,0 @@
-ash/receipts/stages/ASH_KEEP_V1_PRODUCTION_DEMO_RECEIPT.md

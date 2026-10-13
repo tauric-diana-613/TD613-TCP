@@ -1,1 +1,0 @@
-"""Proposal/confirmation trainer boundary."""

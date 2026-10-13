@@ -1,1 +1,0 @@
-information-dome/receipts/PHASE_3_PRODUCTION_DEMO_RECEIPT.md

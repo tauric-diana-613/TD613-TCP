@@ -1,7 +1,0 @@
-{
-  "schema": "td613.domeblox.game-index/v1",
-  "manifests": [
-    "./games/domeworld-roblox.json",
-    "./games/forward-battery.json"
-  ]
-}
