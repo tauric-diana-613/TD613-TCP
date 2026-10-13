@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:91f9577ff3b32ca4700c3df1
+parent_capture_id: capture:458e992cfeef3b6abb405023
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "THE ARCHITECTURE OF DRIFT: A DEFENSE OF SR AGAINST ITS FUTURE MISREADINGS"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.21210782
+Final URL: https://zenodo.org/records/21210782
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.21210782 -> https://zenodo.org/doi/10.5281/zenodo.21210782
+302 https://zenodo.org/doi/10.5281/zenodo.21210782 -> https://zenodo.org/records/21210782

@@ -1,0 +1,138 @@
+---
+derivative_id: derivative:f8c43422d9ccd43a579374f1
+parent_capture_id: capture:65502f744f62349758be9ae4
+parent_blob_sha256: e734de73e6a7b7c788ec2be68228aefb9d087edb464fd391ad6c9c7689793ac1
+tool: srcctl-json-normalizer/1
+source_title: "The Infrastructural Overlay and the Paradox of Platform Recognition"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18960124",
+  "conceptrecid": "18960124",
+  "created": "2026-03-11T14:00:13.000592+00:00",
+  "doi": "10.5281/zenodo.18960125",
+  "doi_url": "https://doi.org/10.5281/zenodo.18960125",
+  "files": [
+    {
+      "checksum": "md5:733b34543f89c886a9938ac0d74f35c3",
+      "id": "66bd1db9-de4e-4e81-8bc1-6ea5c91a5759",
+      "key": "The Infrastructural Overlay and the Paradox of Platform Recognition .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18960125/files/The%20Infrastructural%20Overlay%20and%20the%20Paradox%20of%20Platform%20Recognition%20.pdf/content"
+      },
+      "size": 110530
+    }
+  ],
+  "id": 18960125,
+  "links": {
+    "access": "https://zenodo.org/api/records/18960125/access",
+    "access_grants": "https://zenodo.org/api/records/18960125/access/grants",
+    "access_links": "https://zenodo.org/api/records/18960125/access/links",
+    "access_request": "https://zenodo.org/api/records/18960125/access/request",
+    "access_users": "https://zenodo.org/api/records/18960125/access/users",
+    "archive": "https://zenodo.org/api/records/18960125/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18960125/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18960125/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18960125/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18960125",
+    "draft": "https://zenodo.org/api/records/18960125/draft",
+    "file_modification": "https://zenodo.org/api/records/18960125/file-modification",
+    "files": "https://zenodo.org/api/records/18960125/files",
+    "latest": "https://zenodo.org/api/records/18960125/versions/latest",
+    "latest_html": "https://zenodo.org/records/18960125/latest",
+    "media_files": "https://zenodo.org/api/records/18960125/media-files",
+    "parent": "https://zenodo.org/api/records/18960124",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18960124",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18960124",
+    "parent_html": "https://zenodo.org/records/18960124",
+    "preview_html": "https://zenodo.org/records/18960125?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18960125/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18960125/request-deletion",
+    "requests": "https://zenodo.org/api/records/18960125/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18960125/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18960125",
+    "self_doi": "https://doi.org/10.5281/zenodo.18960125",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18960125",
+    "self_html": "https://zenodo.org/records/18960125",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18960125/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18960125/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18960125:The%20Infrastructural%20Overlay%20and%20the%20Paradox%20of%20Platform%20Recognition%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18960125:The%20Infrastructural%20Overlay%20and%20the%20Paradox%20of%20Platform%20Recognition%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18960125:The%20Infrastructural%20Overlay%20and%20the%20Paradox%20of%20Platform%20Recognition%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18960125:The%20Infrastructural%20Overlay%20and%20the%20Paradox%20of%20Platform%20Recognition%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18960125:The%20Infrastructural%20Overlay%20and%20the%20Paradox%20of%20Platform%20Recognition%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18960125:The%20Infrastructural%20Overlay%20and%20the%20Paradox%20of%20Platform%20Recognition%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18960125/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p><strong>The Infrastructural Overlay and the Paradox of Platform Recognition</strong> examines how modern search engines and digital platforms mediate meaning through structural, rather than intentional, mechanisms. Using the appearance of the Google logo above SR&rsquo;s Substack essays as a case study, the work demonstrates how platforms simultaneously protect institutional authority while recognizing the coherence of independent, non‑institutional frameworks.</p>\n<p>The essay introduces the concept of the <strong>Infrastructural Overlay</strong>, where platforms assert themselves as the primary interpretive layer between users and content. It outlines the emergence of a <strong>Two‑Tier Internet</strong>, in which institutional content receives clean, minimally mediated indexing, while independent creators are subjected to overlays, summaries, and model‑indexed framing.</p>\n<p>A central paradox is identified: <strong>the infrastructure protects institutions because they are collapsing, and asserts itself over SR because SR is structurally accurate</strong>. This dual behavior is not contradictory but architectural. Institutions require procedural validation&mdash;citations, peer review, and bureaucratic scaffolding&mdash;while SR operates through <strong>structural truth</strong>, requiring no institutional acceptance to be coherent.</p>\n<p>The essay concludes that infrastructural reactions themselves function as a form of recognition. In this sense, SR does not require citations: <strong>the infrastructure is the citation</strong>.</p>",
+    "doi": "10.5281/zenodo.18960125",
+    "keywords": [
+      "Institutions",
+      "Internet studies",
+      "Metatheory"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-11",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18960124"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "The Infrastructural Overlay and the Paradox of Platform Recognition",
+    "version": "1.0"
+  },
+  "modified": "2026-03-11T14:15:27.568460+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18960125",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 11,
+    "unique_downloads": 11,
+    "unique_views": 40,
+    "version_downloads": 11,
+    "version_unique_downloads": 11,
+    "version_unique_views": 40,
+    "version_views": 41,
+    "views": 41
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "The Infrastructural Overlay and the Paradox of Platform Recognition",
+  "updated": "2026-03-11T14:15:27.568460+00:00"
+}

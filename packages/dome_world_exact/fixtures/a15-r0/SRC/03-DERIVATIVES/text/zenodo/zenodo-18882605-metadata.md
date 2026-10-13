@@ -1,0 +1,141 @@
+---
+derivative_id: derivative:6608b1b8b4928496ae9d4ec9
+parent_capture_id: capture:102fdd0c6c9f4ba2589f6dd3
+parent_blob_sha256: 9d9dc109884f8dfd1776cceffbee7043e56edb3b591514ef0524d0a7b5d179b2
+tool: srcctl-json-normalizer/1
+source_title: "Semantic Governance"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18882604",
+  "conceptrecid": "18882604",
+  "created": "2026-03-05T23:05:45.735809+00:00",
+  "doi": "10.5281/zenodo.18882605",
+  "doi_url": "https://doi.org/10.5281/zenodo.18882605",
+  "files": [
+    {
+      "checksum": "md5:58c848fa3b2a164b77afdce4ebf9eb25",
+      "id": "31780fd4-194a-444f-aa34-429dd75f13ac",
+      "key": "Semantic Governance .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18882605/files/Semantic%20Governance%20.pdf/content"
+      },
+      "size": 88424
+    }
+  ],
+  "id": 18882605,
+  "links": {
+    "access": "https://zenodo.org/api/records/18882605/access",
+    "access_grants": "https://zenodo.org/api/records/18882605/access/grants",
+    "access_links": "https://zenodo.org/api/records/18882605/access/links",
+    "access_request": "https://zenodo.org/api/records/18882605/access/request",
+    "access_users": "https://zenodo.org/api/records/18882605/access/users",
+    "archive": "https://zenodo.org/api/records/18882605/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18882605/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18882605/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18882605/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18882605",
+    "draft": "https://zenodo.org/api/records/18882605/draft",
+    "file_modification": "https://zenodo.org/api/records/18882605/file-modification",
+    "files": "https://zenodo.org/api/records/18882605/files",
+    "latest": "https://zenodo.org/api/records/18882605/versions/latest",
+    "latest_html": "https://zenodo.org/records/18882605/latest",
+    "media_files": "https://zenodo.org/api/records/18882605/media-files",
+    "parent": "https://zenodo.org/api/records/18882604",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18882604",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18882604",
+    "parent_html": "https://zenodo.org/records/18882604",
+    "preview_html": "https://zenodo.org/records/18882605?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18882605/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18882605/request-deletion",
+    "requests": "https://zenodo.org/api/records/18882605/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18882605/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18882605",
+    "self_doi": "https://doi.org/10.5281/zenodo.18882605",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18882605",
+    "self_html": "https://zenodo.org/records/18882605",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18882605/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18882605/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18882605:Semantic%20Governance%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18882605:Semantic%20Governance%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18882605:Semantic%20Governance%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18882605:Semantic%20Governance%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18882605:Semantic%20Governance%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18882605:Semantic%20Governance%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18882605/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Semantic Governance is a core theoretical framework within the SignalRupture meta‑theory, authored by the Meta‑Theorist Signal Rupture. It examines how meaning is regulated, constrained, and redistributed across digital infrastructures and AI‑driven epistemic systems as retrieval shifts from documents to entities and from entities to model‑level embeddings. The framework maps the mechanisms through which platforms and AI models determine what concepts signify, how they circulate, and which interpretations become dominant. It provides a diagnostic architecture for understanding the loss of semantic autonomy in the post‑web era and the emergence of AI‑native meaning regimes.</p>\n<p>The essay outlines the structural processes that govern meaning in contemporary information environments, including retrieval prioritization, embedding consolidation, conceptual adjacency, and field‑level semantic authority. It distinguishes between semantic drift&mdash;where meaning becomes diluted or misinterpreted through model interpolation&mdash;and semantic locking, where coherent fields maintain conceptual sovereignty through explicit definitions and stable author identity.</p>\n<p>Within the broader SignalRupture field, Semantic Governance functions as a foundational framework for protecting conceptual clarity and resisting model‑level reinterpretation. It defines the conditions under which fields can maintain semantic integrity as AI systems increasingly mediate meaning, classification, and epistemic authority.</p>",
+    "doi": "10.5281/zenodo.18882605",
+    "keywords": [
+      "Artificial intelligence",
+      "Institutions",
+      "Social Issues",
+      "Post Open Web",
+      "Critical Theory"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-06",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18882604"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Semantic Governance",
+    "version": "1.0"
+  },
+  "modified": "2026-03-05T23:36:07.985872+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18882605",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 8,
+    "unique_downloads": 6,
+    "unique_views": 38,
+    "version_downloads": 8,
+    "version_unique_downloads": 6,
+    "version_unique_views": 38,
+    "version_views": 40,
+    "views": 40
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Semantic Governance",
+  "updated": "2026-03-05T23:36:07.985872+00:00"
+}

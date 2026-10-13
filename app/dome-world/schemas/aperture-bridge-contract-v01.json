@@ -1,0 +1,45 @@
+{
+  "schema": "td613.phase4.reciprocal-bridge/v0.1",
+  "title": "TD613 Phase IV Reciprocal Receipt Circle",
+  "posture": "reciprocal_receipts_without_reciprocal_authority",
+  "route": [
+    "compile_diagnostic_pure",
+    "explicit_operator_send",
+    "guarded_bridge_validation",
+    "flowcore_v01_instrumentation",
+    "returned_context_receipt",
+    "local_aperture_audit",
+    "local_round_trip_receipt",
+    "optional_operator_save_or_export"
+  ],
+  "invariants": {
+    "reciprocal_receipts": true,
+    "reciprocal_authority": false,
+    "artifact_relation": false,
+    "artifact_blind": true,
+    "automatic_ash_action": false,
+    "prediction_authorized": false,
+    "recommendation_not_command": true,
+    "operator_closure_required": true,
+    "open_field_auto_promotion": false,
+    "runtime_default": "BACKGROUND",
+    "new_serverless_function": false
+  },
+  "digest_domains": {
+    "diagnostic": "TD613:PHASE4:DIAGNOSTIC:v1",
+    "context": "TD613:PHASE4:CONTEXT:v1",
+    "audit": "TD613:PHASE4:AUDIT:v1",
+    "round_trip": "TD613:PHASE4:ROUNDTRIP:v1"
+  },
+  "deferred": [
+    "Relation Envelope runtime",
+    "Phason relation lifecycle",
+    "Cinder transport",
+    "Ash execution",
+    "prediction",
+    "legal adjudication",
+    "identity proof",
+    "authorship proof",
+    "trusted-time proof"
+  ]
+}

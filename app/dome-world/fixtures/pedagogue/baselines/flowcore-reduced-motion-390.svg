@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844" role="img" aria-labelledby="title desc">
+  <title id="title">Flow-Core reduced-motion baseline</title>
+  <desc id="desc">Simultaneous static causal frame showing start, route, end, residual, claim ceiling, rest, replay, return, and exit.</desc>
+  <rect width="390" height="844" fill="#090b14"/>
+  <rect x="12" y="12" width="366" height="820" rx="22" fill="#111528" stroke="#d9d4ff"/>
+  <text x="28" y="48" fill="#f3f0ff" font-family="system-ui,sans-serif" font-size="17">U+10D613 · Reduced motion</text>
+  <text x="28" y="76" fill="#c7c0ff" font-family="system-ui,sans-serif" font-size="13">autoplay false · flashing false · oscillation false</text>
+  <g font-family="system-ui,sans-serif">
+    <circle cx="54" cy="138" r="22" fill="#1a2038" stroke="#8d86d9"/><text x="48" y="144" fill="#f3f0ff" font-size="16">1</text>
+    <text x="90" y="132" fill="#f3f0ff" font-size="16">Start state</text><text x="90" y="158" fill="#d9d4ff" font-size="13">Visible condition and source boundary.</text>
+    <line x1="54" y1="160" x2="54" y2="220" stroke="#8d86d9" stroke-width="2"/>
+    <circle cx="54" cy="246" r="22" fill="#1a2038" stroke="#8d86d9"/><text x="48" y="252" fill="#f3f0ff" font-size="16">2</text>
+    <text x="90" y="240" fill="#f3f0ff" font-size="16">Declared route</text><text x="90" y="266" fill="#d9d4ff" font-size="13">Action, authority, reversibility.</text>
+    <line x1="54" y1="268" x2="54" y2="328" stroke="#8d86d9" stroke-width="2"/>
+    <circle cx="54" cy="354" r="22" fill="#1a2038" stroke="#8d86d9"/><text x="48" y="360" fill="#f3f0ff" font-size="16">3</text>
+    <text x="90" y="348" fill="#f3f0ff" font-size="16">End state</text><text x="90" y="374" fill="#d9d4ff" font-size="13">Observed change or explicit unresolved relation.</text>
+  </g>
+  <rect x="28" y="416" width="334" height="96" rx="14" fill="#0d1120" stroke="#6f6aa6"/>
+  <text x="44" y="448" fill="#f3f0ff" font-family="system-ui,sans-serif" font-size="15">Residual and missingness</text>
+  <text x="44" y="478" fill="#d9d4ff" font-family="system-ui,sans-serif" font-size="13">Visible beside alternatives and contradictions.</text>
+  <rect x="28" y="530" width="334" height="112" rx="14" fill="#0d1120" stroke="#6f6aa6"/>
+  <text x="44" y="562" fill="#f3f0ff" font-family="system-ui,sans-serif" font-size="15">Claim ceiling</text>
+  <text x="44" y="592" fill="#d9d4ff" font-family="system-ui,sans-serif" font-size="13">Static composition grants no truth, identity,</text>
+  <text x="44" y="616" fill="#d9d4ff" font-family="system-ui,sans-serif" font-size="13">station, Ash, release, or closure authority.</text>
+  <rect x="28" y="662" width="334" height="108" rx="14" fill="#14192c" stroke="#8d86d9"/>
+  <text x="44" y="696" fill="#f3f0ff" font-family="system-ui,sans-serif" font-size="15">𝄐 Rest · Replay · Return · Exit</text>
+  <text x="44" y="728" fill="#d9d4ff" font-family="system-ui,sans-serif" font-size="13">No information is carried only by motion.</text>
+  <text x="44" y="752" fill="#d9d4ff" font-family="system-ui,sans-serif" font-size="13">𝌋‌ · Unicode normalization NONE · ⟐</text>
+</svg>

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:availability-event:v1",
+  "title": "SignalRupture manifestation availability event",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["event_id", "manifestation_id", "observed_at", "state", "canonical_url", "result", "evidence_receipt"],
+  "properties": {
+    "event_id": {"type": "string", "minLength": 1},
+    "manifestation_id": {"type": "string", "minLength": 1},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "state": {"enum": ["AVAILABLE", "PARTIAL", "AUTH_REQUIRED", "RATE_LIMITED", "UNAVAILABLE", "UNKNOWN"]},
+    "canonical_url": {"type": "string", "format": "uri"},
+    "result": {"type": "object"},
+    "last_preserved_sha256": {"type": ["string", "null"], "pattern": "^[a-fA-F0-9]{64}$"},
+    "evidence_receipt": {"type": "string", "minLength": 1},
+    "causal_claim": {"type": ["string", "null"]}
+  }
+}

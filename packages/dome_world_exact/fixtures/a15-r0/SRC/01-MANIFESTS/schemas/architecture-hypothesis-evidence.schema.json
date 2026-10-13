@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:architecture-hypothesis-evidence:v1",
+  "title": "SignalRupture architecture-hypothesis evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "evidence_record_id", "hypothesis_id", "unit_of_analysis_id",
+    "evidence_type", "polarity", "time_relation", "origin", "evidence_ids", "adjudication_status"
+  ],
+  "properties": {
+    "schema_version": {"const": "architecture-hypothesis-evidence/v1"},
+    "evidence_record_id": {"type": "string", "minLength": 1},
+    "hypothesis_id": {"type": "string", "minLength": 1},
+    "unit_of_analysis_id": {"type": "string", "minLength": 1},
+    "evidence_type": {"enum": [
+      "FORWARD_REFERENCE", "PREDECLARED_ROLE", "STABLE_NUMBERED_SEQUENCE", "EARLY_MAP_ANTICIPATION",
+      "LATER_ROLE_ASSIGNMENT", "LATER_COMPILATION", "TAXONOMIC_REORGANIZATION", "LEGACY_RECLASSIFICATION",
+      "EXPLICIT_CONSOLIDATION", "CONFLICT_RESOLUTION", "EMPIRICAL_REFORMULATION", "RECIPROCAL_TYPED_RELATION",
+      "REPRESENTATION_LIFT", "NAVIGATION_ROUTE", "PROVENANCE_CONTRADICTION"
+    ]},
+    "polarity": {"enum": ["SUPPORTS", "WEAKENS", "AMBIGUOUS", "UNRESOLVED"]},
+    "time_relation": {"enum": ["BEFORE_TARGET_PUBLICATION", "CONTEMPORANEOUS", "AFTER_TARGET_PUBLICATION", "UNRESOLVED"]},
+    "origin": {"enum": ["explicit-source", "archive-inferred", "researcher-proposed"]},
+    "evidence_ids": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "adjudication_status": {"enum": ["WITNESSED", "CANDIDATE", "DISPUTED", "REJECTED", "UNRESOLVED"]},
+    "interpretive_limit": {"type": ["string", "null"]}
+  }
+}

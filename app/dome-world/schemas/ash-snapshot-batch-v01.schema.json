@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://td613.com/schemas/ash-snapshot-batch-v01.schema.json",
+  "title": "TD613 Ash snapshot batch receipt v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "batch_id", "created_at", "time_posture", "experiment_id", "source_receipt_reference", "entries", "snapshot_count", "included_count", "unresolved_count", "null_result_count", "raw_observation_content_present", "artifact_digest_present", "server_persistence", "automatic_exclusion", "automatic_ash_action", "scope_statement", "cannot_establish", "promotion_conditions", "operator_closure", "batch_digest"],
+  "properties": {
+    "schema": { "const": "td613.ash.snapshot-batch-receipt/v0.1" },
+    "batch_id": { "type": "string", "pattern": "^ashsnap_[A-Za-z0-9_-]{6,128}$" },
+    "created_at": { "type": "string" },
+    "time_posture": { "const": "local-clock-not-trusted-time" },
+    "experiment_id": { "type": "string" },
+    "source_receipt_reference": { "type": "string" },
+    "entries": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/entry" } },
+    "snapshot_count": { "type": "integer", "minimum": 1 },
+    "included_count": { "type": "integer", "minimum": 0 },
+    "unresolved_count": { "type": "integer", "minimum": 0 },
+    "null_result_count": { "type": "integer", "minimum": 0 },
+    "raw_observation_content_present": { "const": false },
+    "artifact_digest_present": { "const": false },
+    "server_persistence": { "const": false },
+    "automatic_exclusion": { "const": false },
+    "automatic_ash_action": { "const": false },
+    "scope_statement": { "type": "string" },
+    "cannot_establish": { "type": "array", "items": { "type": "string" } },
+    "promotion_conditions": { "type": "array", "items": { "type": "string" } },
+    "operator_closure": { "$ref": "#/$defs/closure" },
+    "batch_digest": { "$ref": "#/$defs/digest" }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "closure": { "type": "object", "additionalProperties": false, "required": ["required", "status"], "properties": { "required": { "const": true }, "status": { "const": "OPEN" } } },
+    "entry": {
+      "type": "object", "additionalProperties": false,
+      "required": ["snapshot_id", "trial", "temporal_coordinate", "instrument_id", "source_status", "inclusion_status", "observation_reference", "observation_digest", "context_receipt_reference", "missingness", "operator_included"],
+      "properties": {
+        "snapshot_id": { "type": "string" }, "trial": { "type": "integer", "minimum": 1 }, "temporal_coordinate": { "type": "string" }, "instrument_id": { "type": "string" },
+        "source_status": { "enum": ["OBSERVED", "SUPPLIED", "DERIVED", "SIMULATED", "INFERRED", "ATTESTED", "UNRESOLVED"] },
+        "inclusion_status": { "enum": ["INCLUDED", "NULL_RESULT", "MISSING", "REJECTED", "UNCAPTURED", "ENCODER_REQUIRED"] },
+        "observation_reference": { "type": ["string", "null"] }, "observation_digest": { "oneOf": [{ "$ref": "#/$defs/digest" }, { "type": "null" }] }, "context_receipt_reference": { "type": ["string", "null"] },
+        "missingness": { "type": "array", "items": { "type": "string" } }, "operator_included": { "type": "boolean" }
+      }
+    }
+  }
+}

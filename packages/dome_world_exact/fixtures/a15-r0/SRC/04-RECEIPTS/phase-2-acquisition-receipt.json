@@ -1,0 +1,10 @@
+{
+  "phase": "phase-2-public-original-acquisition",
+  "started_at_utc": "2026-08-24T01:47:32.4959704Z",
+  "completed_at_utc": "2026-08-24T01:47:45.7747786Z",
+  "selection_rule": "Open CC-BY 4.0 Zenodo records; core-title priority; first 5 eligible records.",
+  "records_selected": 5,
+  "files_verified": 5,
+  "failures": [],
+  "next_step": "Continue in small verified tranches, then reconcile platform indices before labeling the corpus canonical."
+}

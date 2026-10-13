@@ -1,0 +1,17 @@
+{
+  "captured_at": "2026-09-10T04:52:59.929Z",
+  "receipt": {
+    "handoff": {
+      "digest": "3fbd709155deaf68194f0951c70aacb3bbcafb579940c3ccdcd3e794b0b0ba9a",
+      "issued_at": 1789015859103,
+      "consumed_at": 1789015860506,
+      "source": "/dome-world/holonomy-loom.html",
+      "destination": "/dome-world/marrowline.html"
+    },
+    "request_id": "8bdd824b-6ac1-4b29-9b5f-51397f113b36",
+    "started_at": "2026-09-10T04:52:59.713Z",
+    "state": "HELD",
+    "reason": "Task held: The AIA session held this request. Restore the selected task or resume the workspace."
+  },
+  "status": "Task held: The AIA session held this request. Restore the selected task or resume the workspace."
+}

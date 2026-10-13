@@ -1,0 +1,140 @@
+---
+derivative_id: derivative:e1ea603faa22ac8e289e45cc
+parent_capture_id: capture:3f20b7a4e767e3d45c8fd0b7
+parent_blob_sha256: 6fe011980f9599b4a68b2a3998d71c55c251b491520eb5d473bbbba59c10a099
+tool: srcctl-json-normalizer/1
+source_title: "Mental Health Reimagined: A Nutritional, Neurobiological, and Trauma-Informed Framework for Recovery"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18108997",
+  "conceptrecid": "18108997",
+  "created": "2025-12-31T15:06:12.574818+00:00",
+  "doi": "10.5281/zenodo.18108998",
+  "doi_url": "https://doi.org/10.5281/zenodo.18108998",
+  "files": [
+    {
+      "checksum": "md5:a81295957f430f01973053be98f82ec3",
+      "id": "2948cef7-1900-4801-a219-d966f8ba82d5",
+      "key": "Mental Health.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18108998/files/Mental%20Health.pdf/content"
+      },
+      "size": 95662
+    }
+  ],
+  "id": 18108998,
+  "links": {
+    "access": "https://zenodo.org/api/records/18108998/access",
+    "access_grants": "https://zenodo.org/api/records/18108998/access/grants",
+    "access_links": "https://zenodo.org/api/records/18108998/access/links",
+    "access_request": "https://zenodo.org/api/records/18108998/access/request",
+    "access_users": "https://zenodo.org/api/records/18108998/access/users",
+    "archive": "https://zenodo.org/api/records/18108998/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18108998/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18108998/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18108998/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18108998",
+    "draft": "https://zenodo.org/api/records/18108998/draft",
+    "file_modification": "https://zenodo.org/api/records/18108998/file-modification",
+    "files": "https://zenodo.org/api/records/18108998/files",
+    "latest": "https://zenodo.org/api/records/18108998/versions/latest",
+    "latest_html": "https://zenodo.org/records/18108998/latest",
+    "media_files": "https://zenodo.org/api/records/18108998/media-files",
+    "parent": "https://zenodo.org/api/records/18108997",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18108997",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18108997",
+    "parent_html": "https://zenodo.org/records/18108997",
+    "preview_html": "https://zenodo.org/records/18108998?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18108998/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18108998/request-deletion",
+    "requests": "https://zenodo.org/api/records/18108998/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18108998/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18108998",
+    "self_doi": "https://doi.org/10.5281/zenodo.18108998",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18108998",
+    "self_html": "https://zenodo.org/records/18108998",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18108998/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18108998/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18108998:Mental%20Health.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18108998:Mental%20Health.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18108998:Mental%20Health.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18108998:Mental%20Health.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18108998:Mental%20Health.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18108998:Mental%20Health.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18108998/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This essay challenges the traditional diagnosis‑and‑medication model of mental health by reframing psychiatric distress through a nutritional, neurobiological, and trauma‑informed lens. It argues that many symptoms labeled as depression, anxiety, ADHD, bipolar disorder, psychosis, and substance‑related distress may emerge from underlying biological and environmental dysregulation &mdash; including micronutrient depletion, chronic stress physiology, and gut‑brain disruption. Drawing on research from nutritional psychiatry, trauma science, and systems biology, the essay examines how deficiencies in magnesium, B6, B12, folate, zinc, and omega‑3s intersect with trauma exposure, gut permeability, and processed food environments to shape emotional and cognitive outcomes. Case studies and population‑level findings illustrate how biochemical imbalance can mimic or intensify psychiatric presentations, while systemic omission of nutritional assessment reinforces misdiagnosis and delay. The essay proposes a regenerative mental health framework that integrates nutrient status, trauma‑informed care, and gut‑brain support to restore dignity, context, and biological clarity to recovery.</p>",
+    "doi": "10.5281/zenodo.18108998",
+    "keywords": [
+      "Nutritional Psychiatry",
+      "Psychology",
+      "Social Science",
+      "Healthcare"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2025-12-31",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18108997"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Mental Health Reimagined: A Nutritional, Neurobiological, and Trauma-Informed Framework for Recovery",
+    "version": "1.3"
+  },
+  "modified": "2026-01-29T02:01:31.365357+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18108998",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 18,
+    "unique_downloads": 16,
+    "unique_views": 33,
+    "version_downloads": 18,
+    "version_unique_downloads": 16,
+    "version_unique_views": 33,
+    "version_views": 36,
+    "views": 36
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Mental Health Reimagined: A Nutritional, Neurobiological, and Trauma-Informed Framework for Recovery",
+  "updated": "2026-01-29T02:01:31.365357+00:00"
+}

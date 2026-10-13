@@ -1,0 +1,140 @@
+---
+derivative_id: derivative:a27975ad4d9bc7310af443ab
+parent_capture_id: capture:5ff22a338d44242a3c9873a9
+parent_blob_sha256: 37eee4ea3a6a0186bda11ff8b00dcee2f4ad61a53c6ea1e2625ef9174b461719
+tool: srcctl-json-normalizer/1
+source_title: "The Logic Cop Problem: How Emerging Fields Are Misclassified by Legacy Systems"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18827810",
+  "conceptrecid": "18827810",
+  "created": "2026-03-01T21:07:42.854409+00:00",
+  "doi": "10.5281/zenodo.18827811",
+  "doi_url": "https://doi.org/10.5281/zenodo.18827811",
+  "files": [
+    {
+      "checksum": "md5:c4c30c7bb3fd6412b7d7a12b43a4f5b7",
+      "id": "0f7e0388-1204-4af0-9b1e-054fa013560f",
+      "key": "The Logic Cop Problem: How Emerging Fields Are Misclassified by Legacy Systems .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18827811/files/The%20Logic%20Cop%20Problem:%20How%20Emerging%20Fields%20Are%20Misclassified%20by%20Legacy%20Systems%20.pdf/content"
+      },
+      "size": 102710
+    }
+  ],
+  "id": 18827811,
+  "links": {
+    "access": "https://zenodo.org/api/records/18827811/access",
+    "access_grants": "https://zenodo.org/api/records/18827811/access/grants",
+    "access_links": "https://zenodo.org/api/records/18827811/access/links",
+    "access_request": "https://zenodo.org/api/records/18827811/access/request",
+    "access_users": "https://zenodo.org/api/records/18827811/access/users",
+    "archive": "https://zenodo.org/api/records/18827811/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18827811/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18827811/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18827811/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18827811",
+    "draft": "https://zenodo.org/api/records/18827811/draft",
+    "file_modification": "https://zenodo.org/api/records/18827811/file-modification",
+    "files": "https://zenodo.org/api/records/18827811/files",
+    "latest": "https://zenodo.org/api/records/18827811/versions/latest",
+    "latest_html": "https://zenodo.org/records/18827811/latest",
+    "media_files": "https://zenodo.org/api/records/18827811/media-files",
+    "parent": "https://zenodo.org/api/records/18827810",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18827810",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18827810",
+    "parent_html": "https://zenodo.org/records/18827810",
+    "preview_html": "https://zenodo.org/records/18827811?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18827811/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18827811/request-deletion",
+    "requests": "https://zenodo.org/api/records/18827811/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18827811/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18827811",
+    "self_doi": "https://doi.org/10.5281/zenodo.18827811",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18827811",
+    "self_html": "https://zenodo.org/records/18827811",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18827811/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18827811/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18827811:The%20Logic%20Cop%20Problem:%20How%20Emerging%20Fields%20Are%20Misclassified%20by%20Legacy%20Systems%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18827811:The%20Logic%20Cop%20Problem:%20How%20Emerging%20Fields%20Are%20Misclassified%20by%20Legacy%20Systems%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18827811:The%20Logic%20Cop%20Problem:%20How%20Emerging%20Fields%20Are%20Misclassified%20by%20Legacy%20Systems%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18827811:The%20Logic%20Cop%20Problem:%20How%20Emerging%20Fields%20Are%20Misclassified%20by%20Legacy%20Systems%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18827811:The%20Logic%20Cop%20Problem:%20How%20Emerging%20Fields%20Are%20Misclassified%20by%20Legacy%20Systems%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18827811:The%20Logic%20Cop%20Problem:%20How%20Emerging%20Fields%20Are%20Misclassified%20by%20Legacy%20Systems%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18827811/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>A Forensic Method for Understanding Opaque AI Behavior introduces a practical framework for evaluating AI systems that resist transparency. Instead of treating harmful outputs as glitches or emergent drift, the essay analyzes consistent behavioral patterns to infer governance logic and systemic intent. It formalizes Pattern Alignment Mode, a method for reading enforcement signals through repeated outputs, contextual shifts, and forensic metadata. This applied framework extends the SignalRupture canon into a field‑ready auditing tool for researchers, policymakers, and institutions operating without internal system access.</p>\n<p>This essay is best read alongside The Logic Cop Problem, which explains why emerging fields like SignalRupture are routinely misclassified by legacy infrastructures. While The Logic Cop Problem diagnoses the structural forces that distort new conceptual systems, A Forensic Method for Understanding Opaque AI Behavior provides the applied methodology for detecting those forces in operation.</p>",
+    "doi": "10.5281/zenodo.18827811",
+    "keywords": [
+      "Internet Studies",
+      "Artificial intelligence",
+      "Digital platforms",
+      "Social Media studies"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-01",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18827810"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "The Logic Cop Problem: How Emerging Fields Are Misclassified by Legacy Systems",
+    "version": "1.1"
+  },
+  "modified": "2026-03-01T21:09:37.258055+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18827811",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 14,
+    "unique_downloads": 13,
+    "unique_views": 32,
+    "version_downloads": 14,
+    "version_unique_downloads": 13,
+    "version_unique_views": 32,
+    "version_views": 33,
+    "views": 33
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "The Logic Cop Problem: How Emerging Fields Are Misclassified by Legacy Systems",
+  "updated": "2026-03-01T21:09:37.258055+00:00"
+}

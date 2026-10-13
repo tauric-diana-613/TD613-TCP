@@ -1,0 +1,12 @@
+{
+  "persona": "Archivist",
+  "profile": {
+    "id": "archivist",
+    "name": "Archivist",
+    "bias": "quiet continuity pressure"
+  },
+  "analysis_source": "browser_exploratory",
+  "schema_version": "td613-browser-v2",
+  "feature_vector_name": "F_browser_v2",
+  "text_sample_b": "The room kept returning the same clause openings until the route problem felt larger than style."
+}

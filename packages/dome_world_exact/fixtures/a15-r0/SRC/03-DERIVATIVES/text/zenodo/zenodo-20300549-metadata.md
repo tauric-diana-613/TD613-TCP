@@ -1,0 +1,138 @@
+---
+derivative_id: derivative:d0ffdf84b1c550f7879130ec
+parent_capture_id: capture:8fa001bdb2d579caba202d21
+parent_blob_sha256: 51762b6a1e2b1affa79b4bd86ee04d5aede384e0e8829a3dc984a940fb8ea2e8
+tool: srcctl-json-normalizer/1
+source_title: "Compression Equilibrium: The Saturation Theorem of Governance Architecture"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.20300548",
+  "conceptrecid": "20300548",
+  "created": "2026-05-20T00:20:06.796297+00:00",
+  "doi": "10.5281/zenodo.20300549",
+  "doi_url": "https://doi.org/10.5281/zenodo.20300549",
+  "files": [
+    {
+      "checksum": "md5:b130e3ebe17765784bf4d02d90d3c32b",
+      "id": "93fee38c-f6af-4f9d-8fea-7b4ea864fd00",
+      "key": "Compression Equilibrium: The Saturation Theorem of Governance Architecture .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/20300549/files/Compression%20Equilibrium:%20The%20Saturation%20Theorem%20of%20Governance%20Architecture%20.pdf/content"
+      },
+      "size": 179135
+    }
+  ],
+  "id": 20300549,
+  "links": {
+    "access": "https://zenodo.org/api/records/20300549/access",
+    "access_grants": "https://zenodo.org/api/records/20300549/access/grants",
+    "access_links": "https://zenodo.org/api/records/20300549/access/links",
+    "access_request": "https://zenodo.org/api/records/20300549/access/request",
+    "access_users": "https://zenodo.org/api/records/20300549/access/users",
+    "archive": "https://zenodo.org/api/records/20300549/files-archive",
+    "archive_media": "https://zenodo.org/api/records/20300549/media-files-archive",
+    "communities": "https://zenodo.org/api/records/20300549/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/20300549/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.20300549",
+    "draft": "https://zenodo.org/api/records/20300549/draft",
+    "file_modification": "https://zenodo.org/api/records/20300549/file-modification",
+    "files": "https://zenodo.org/api/records/20300549/files",
+    "latest": "https://zenodo.org/api/records/20300549/versions/latest",
+    "latest_html": "https://zenodo.org/records/20300549/latest",
+    "media_files": "https://zenodo.org/api/records/20300549/media-files",
+    "parent": "https://zenodo.org/api/records/20300548",
+    "parent_doi": "https://doi.org/10.5281/zenodo.20300548",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20300548",
+    "parent_html": "https://zenodo.org/records/20300548",
+    "preview_html": "https://zenodo.org/records/20300549?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/20300549/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/20300549/request-deletion",
+    "requests": "https://zenodo.org/api/records/20300549/requests",
+    "reserve_doi": "https://zenodo.org/api/records/20300549/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/20300549",
+    "self_doi": "https://doi.org/10.5281/zenodo.20300549",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20300549",
+    "self_html": "https://zenodo.org/records/20300549",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20300549/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20300549/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:20300549:Compression%20Equilibrium:%20The%20Saturation%20Theorem%20of%20Governance%20Architecture%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:20300549:Compression%20Equilibrium:%20The%20Saturation%20Theorem%20of%20Governance%20Architecture%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:20300549:Compression%20Equilibrium:%20The%20Saturation%20Theorem%20of%20Governance%20Architecture%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:20300549:Compression%20Equilibrium:%20The%20Saturation%20Theorem%20of%20Governance%20Architecture%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:20300549:Compression%20Equilibrium:%20The%20Saturation%20Theorem%20of%20Governance%20Architecture%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:20300549:Compression%20Equilibrium:%20The%20Saturation%20Theorem%20of%20Governance%20Architecture%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/20300549/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Compression Equilibrium formalizes the third foundational theorem of the SignalRupture (SR) field, demonstrating that governance systems converge toward stable abstraction thresholds beyond which additional proceduralization no longer produces substantial increases in representational distortion. Drawing on cross‑domain SR metrics&mdash;including AAI, GTDI, and SCR&mdash;the paper shows that institutions compress behavioural complexity rapidly during early governance altitude transitions (GA1 &rarr; GA3), but abstraction growth plateaus once systems reach operational saturation. This equilibrium emerges from the interaction of throughput pressure, audit dependency, liability constraints, procedural interoperability demands, and institutional cognition limits. The paper positions Compression Equilibrium as the adaptive stabilization point at which governance systems balance the need for abstraction with the operational risks of excessive representational drift.</p>",
+    "doi": "10.5281/zenodo.20300549",
+    "keywords": [
+      "Institutions",
+      "Metatheory"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-05-20",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "20300548"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Compression Equilibrium: The Saturation Theorem of Governance Architecture",
+    "version": "1.0"
+  },
+  "modified": "2026-05-20T00:20:07.060202+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "20300549",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 6,
+    "unique_downloads": 6,
+    "unique_views": 12,
+    "version_downloads": 6,
+    "version_unique_downloads": 6,
+    "version_unique_views": 12,
+    "version_views": 12,
+    "views": 12
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Compression Equilibrium: The Saturation Theorem of Governance Architecture",
+  "updated": "2026-05-20T00:20:07.060202+00:00"
+}

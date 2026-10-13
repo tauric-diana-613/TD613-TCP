@@ -1,0 +1,433 @@
+name: Vercel Relock Safety
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  relock-safety:
+    if: >-
+      github.event.issue.number == 405 &&
+      github.event.issue.pull_request == null &&
+      (github.event.comment.user.login == github.repository_owner || github.event.comment.user.login == 'chatgpt-codex-connector[bot]') &&
+      startsWith(github.event.comment.body, '/td613-vercel-relock ')
+    concurrency:
+      group: td613-vercel-production-release
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      RELEASE_GATE_ISSUE: '405'
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Check out live main after the release lane
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Validate authorized source ancestry and close stranded lock
+        id: relock
+        env:
+          AUTHORIZATION: ${{ github.event.comment.body }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          read -r COMMAND TARGET SELECTED_SHA EXTRA <<< "$AUTHORIZATION"
+          [[ "$COMMAND" == '/td613-vercel-relock' ]] || { echo 'Unexpected relock-safety command.' >&2; exit 1; }
+          [[ "$TARGET" == 'PRODUCTION' ]] || { echo 'Unexpected target.' >&2; exit 1; }
+          [[ -z "${EXTRA:-}" && "$SELECTED_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'Malformed release command.' >&2; exit 1; }
+
+          git fetch origin main
+          git reset --hard origin/main
+          git merge-base --is-ancestor "$SELECTED_SHA" HEAD || {
+            echo 'Live main no longer descends from the authorized source packet.' >&2
+            exit 1
+          }
+
+          LOCK_STATE="$(node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const config = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
+          process.stdout.write(String(config.git?.deploymentEnabled));
+          NODE
+          )"
+
+          if [[ "$LOCK_STATE" == 'false' ]]; then
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+            echo "relock_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          [[ "$LOCK_STATE" == 'true' ]] || { echo "Unexpected Vercel lock state: $LOCK_STATE" >&2; exit 1; }
+
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const path = 'vercel.json';
+          const config = JSON.parse(fs.readFileSync(path, 'utf8'));
+          config.git = { ...(config.git || {}), deploymentEnabled: false };
+          fs.writeFileSync(path, `${JSON.stringify(config, null, 2)}\n`);
+          NODE
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add vercel.json
+          git commit -m "release: safety-relock Vercel for $SELECTED_SHA"
+          git push origin HEAD:main
+          echo 'changed=true' >> "$GITHUB_OUTPUT"
+          echo "relock_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Record relock safety receipt
+        if: success()
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF_COMMENT
+          𝌋 Explicit Vercel relock safety completed.
+
+          \`\`\`text
+          source_packet_commit = $(awk '{print $3}' <<< '${{ github.event.comment.body }}')
+          safety_relock_changed_main = ${{ steps.relock.outputs.changed }}
+          relock_commit = ${{ steps.relock.outputs.relock_sha }}
+          git_auto_deploy = disabled
+          deployment_count = 0
+          \`\`\`
+
+          This explicit recovery membrane creates no deployment. It only closes a stranded Git deployment lock on the latest descendant of the authorized source packet. Ordinary /td613-vercel-release gestures do not trigger this job. Sealed ⟐
+          EOF_COMMENT
+          )"
+
+      - name: Record relock safety hold
+        if: failure()
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
+            -f body="𝌋 Explicit Vercel relock safety held. No deployment or retry authority follows. Inspect workflow $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID. ⟐"
+
+  src-zenodo-sync:
+    if: >-
+      github.event.issue.number == 758 &&
+      github.event.issue.pull_request == null &&
+      (github.event.comment.user.login == github.repository_owner || github.event.comment.user.login == 'chatgpt-codex-connector[bot]') &&
+      github.event.comment.body == '/src-zenodo-sync ATELIER'
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GATE_ISSUE: '758'
+      ATELIER_PR: '731'
+      ATELIER_BRANCH: amari/src-projective-routing-grammar
+      SRC_ROOT: packages/dome_world_exact/fixtures/a15-r0/SRC
+      CREATOR_ORCID: 0009-0009-9348-3534
+      SYNC_SUMMARY: /tmp/src-zenodo-sync-summary.json
+
+    steps:
+      - name: Record accepted SRC sync gesture
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/issues/$GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF_COMMENT
+          𝌋 SRC Zenodo sync gesture accepted.
+
+          \`\`\`text
+          command = /src-zenodo-sync ATELIER
+          relay = ${{ github.event.comment.user.login }}
+          target_branch = $ATELIER_BRANCH
+          target_pr = #$ATELIER_PR
+          creator_orcid = $CREATOR_ORCID
+          run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          authority = one bounded public-Zenodo delta sync
+          \`\`\`
+
+          No merge, seal promotion, scientific promotion, publication, production, or Vercel authority is created. ⟐
+          EOF_COMMENT
+          )"
+
+      - name: Verify configured live Atelier surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          PR_JSON="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$ATELIER_PR")"
+          STATE="$(jq -r '.state' <<<"$PR_JSON")"
+          MERGED="$(jq -r '.merged' <<<"$PR_JSON")"
+          HEAD_REF="$(jq -r '.head.ref' <<<"$PR_JSON")"
+          [[ "$STATE" == 'open' ]] || { echo "Atelier PR #$ATELIER_PR is not open." >&2; exit 1; }
+          [[ "$MERGED" == 'false' ]] || { echo "Atelier PR #$ATELIER_PR is merged; rotate the gate target." >&2; exit 1; }
+          [[ "$HEAD_REF" == "$ATELIER_BRANCH" ]] || { echo "Atelier branch mismatch: $HEAD_REF != $ATELIER_BRANCH" >&2; exit 1; }
+
+      - name: Check out live Atelier branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ATELIER_BRANCH }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate SRC acquisition implementation
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f scripts/src-zenodo-operator-sync.py
+          python -m py_compile scripts/src-zenodo-operator-sync.py
+
+      - name: Install bounded PDF text extractor
+        run: python -m pip install --disable-pip-version-check 'pypdf>=5,<7'
+
+      - name: Freeze pre-sync custody witnesses
+        id: src_before
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "head=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "phase2_tree=$(git rev-parse HEAD:$SRC_ROOT/04-RECEIPTS/phase2)" >> "$GITHUB_OUTPUT"
+          echo "phase2_manifest_tree=$(git rev-parse HEAD:$SRC_ROOT/01-MANIFESTS/phase2)" >> "$GITHUB_OUTPUT"
+
+      - name: Run exact-creator Zenodo delta sync
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/src-zenodo-operator-sync.py \
+            --root "$SRC_ROOT" \
+            --creator-orcid "$CREATOR_ORCID" \
+            --run-id "$GITHUB_RUN_ID" \
+            --gate-issue "$GATE_ISSUE" \
+            --relay-identity '${{ github.event.comment.user.login }}' \
+            --atelier-branch "$ATELIER_BRANCH" \
+            --summary-path "$SYNC_SUMMARY"
+          jq . "$SYNC_SUMMARY"
+
+      - name: Enforce SRC live-post-seal write membrane
+        shell: bash
+        env:
+          BEFORE_PHASE2_TREE: ${{ steps.src_before.outputs.phase2_tree }}
+          BEFORE_PHASE2_MANIFEST_TREE: ${{ steps.src_before.outputs.phase2_manifest_tree }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import subprocess
+
+          allowed = (
+              'packages/dome_world_exact/fixtures/a15-r0/SRC/01-MANIFESTS/live/',
+              'packages/dome_world_exact/fixtures/a15-r0/SRC/02-ORIGINALS/live/',
+              'packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/live/',
+              'packages/dome_world_exact/fixtures/a15-r0/SRC/04-RECEIPTS/live/',
+          )
+          raw = subprocess.check_output(['git', 'status', '--porcelain=v1', '-z'])
+          entries = [x for x in raw.decode('utf-8', errors='surrogateescape').split('\0') if x]
+          paths = [entry[3:] for entry in entries]
+          bad = [path for path in paths if not path.startswith(allowed)]
+          if bad:
+              raise SystemExit('Zenodo sync write membrane violated by: ' + ', '.join(bad))
+          print(f'SRC live-path membrane PASS ({len(paths)} changed paths)')
+          PY
+          [[ "$(git rev-parse HEAD:$SRC_ROOT/04-RECEIPTS/phase2)" == "$BEFORE_PHASE2_TREE" ]]
+          [[ "$(git rev-parse HEAD:$SRC_ROOT/01-MANIFESTS/phase2)" == "$BEFORE_PHASE2_MANIFEST_TREE" ]]
+
+      - name: Commit one bounded SRC live-intake packet
+        id: src_commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for path in \
+            "$SRC_ROOT/01-MANIFESTS/live" \
+            "$SRC_ROOT/02-ORIGINALS/live" \
+            "$SRC_ROOT/03-DERIVATIVES/text/live" \
+            "$SRC_ROOT/04-RECEIPTS/live"; do
+            [[ -e "$path" ]] && git add -A -- "$path"
+          done
+          git diff --cached --quiet && { echo 'No SRC live intake changes were produced.' >&2; exit 1; }
+          git commit -m "src: operator Zenodo delta sync run $GITHUB_RUN_ID"
+          AFTER_SHA="$(git rev-parse HEAD)"
+          git push origin "HEAD:$ATELIER_BRANCH"
+          echo "after_sha=$AFTER_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Record completed SRC sync and return gate to dormant
+        if: success()
+        shell: bash
+        env:
+          BEFORE_SHA: ${{ steps.src_before.outputs.head }}
+          AFTER_SHA: ${{ steps.src_commit.outputs.after_sha }}
+        run: |
+          set -euo pipefail
+          COUNT="$(jq -r '.new_record_count' "$SYNC_SUMMARY")"
+          IDS="$(jq -r '.new_record_ids | join(", ")' "$SYNC_SUMMARY")"
+          PARTIAL="$(jq -r '.partial_body_extraction_record_ids | join(", ")' "$SYNC_SUMMARY")"
+          [[ -n "$IDS" ]] || IDS='none'
+          [[ -n "$PARTIAL" ]] || PARTIAL='none'
+          gh api "repos/$GITHUB_REPOSITORY/issues/$GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF_COMMENT
+          𝌋 Zenodo delta sync complete.
+
+          \`\`\`text
+          run = $GITHUB_RUN_ID
+          before_head = $BEFORE_SHA
+          after_head = $AFTER_SHA
+          new_record_count = $COUNT
+          new_record_ids = $IDS
+          partial_body_extraction = $PARTIAL
+          target = $ATELIER_BRANCH / PR #$ATELIER_PR
+          sealed_phase2_mutation = false
+          A15-R0_scientific_mutation = false
+          merge = false
+          publication = false
+          production = false
+          \`\`\`
+
+          Gate #$GATE_ISSUE returns to **DORMANT**. A later sync requires a fresh explicit operator gesture. ⟐
+          EOF_COMMENT
+          )"
+
+      - name: Record held SRC sync
+        if: failure()
+        shell: bash
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF_COMMENT
+          𝌋 Zenodo delta sync **HELD**.
+
+          \`\`\`text
+          run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          target = $ATELIER_BRANCH / PR #$ATELIER_PR
+          repository_push_after_failure = not authorized
+          automatic_retry = not authorized
+          \`\`\`
+
+          The gate returns to **DORMANT**. A failed run creates no retry, merge, seal, publication, or production authority. ⟐
+          EOF_COMMENT
+          )"
+
+  wendbine-operator-sync:
+    # Separate from SRC #758. A new comment is required for each bounded pass.
+    if: >-
+      github.event.issue.number == 1308 &&
+      github.event.issue.pull_request == null &&
+      (github.event.comment.user.login == github.repository_owner || github.event.comment.user.login == 'chatgpt-codex-connector[bot]') &&
+      github.event.comment.body == '/wendbine-sync ATELIER'
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: read
+    # Isolated from Vercel release and SRC; never cancel a running capture.
+    concurrency:
+      group: wendbine-operator-sync-${{ github.repository }}-${{ github.event.issue.number }}
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GATE_ISSUE: '1308'
+      ATELIER_PR: '1134'
+      ATELIER_BRANCH: research/wendbine-public-atelier-sync-20260913
+      WENDBINE_ROOT: packages/dome_world_exact/fixtures/a15-r0/WENDBINE
+      SYNC_RECEIPT: /tmp/wendbine-operator-sync-receipt.json
+    steps:
+      - name: Accept exactly one operator gesture
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/issues/$GATE_ISSUE/comments" -f body="𝌋 Wendbine sync accepted. command=/wendbine-sync ATELIER; gesture=${{ github.event.comment.id }}; run=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID; scope=one bounded archival discovery; gate=RUNNING. No merge, deployment, scientific promotion or automatic retry. ⟐"
+      - name: Verify exact research branch and PR state
+        id: before
+        shell: bash
+        run: |
+          set -euo pipefail
+          data="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$ATELIER_PR")"
+          [[ "$(jq -r '.state' <<<"$data")" == open ]]
+          [[ "$(jq -r '.merged' <<<"$data")" == false ]]
+          [[ "$(jq -r '.head.ref' <<<"$data")" == "$ATELIER_BRANCH" ]]
+          echo "head=$(jq -r '.head.sha' <<<"$data")" >> "$GITHUB_OUTPUT"
+      - name: Checkout exact inspected Atelier head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.before.outputs.head }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate Wendbine sync and sealed-query contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check "$WENDBINE_ROOT/99-ADMIN/wendbine-src-autosync.mjs"
+          node tests/wendbine-src-autosync.test.mjs
+          node tests/wendbine-srcquery.test.mjs
+      - name: Acquire bounded archive and prepare sealed private handoff
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/wendbine-private"
+          node "$WENDBINE_ROOT/99-ADMIN/wendbine-src-autosync.mjs" \
+            --output-root "$WENDBINE_ROOT" \
+            --encrypted-output "$RUNNER_TEMP/wendbine-private/source-capture.sealed.json" \
+            > "$SYNC_RECEIPT"
+          test -s "$RUNNER_TEMP/wendbine-private/source-capture.sealed.json"
+          jq '{atelier_snapshot_id,seal_id,observed,new,changed,unchanged,not_seen_prior,held,encrypted_handoff_created}' "$SYNC_RECEIPT"
+      - name: Preserve ciphertext outside public source tree
+        uses: actions/upload-artifact@v4
+        with:
+          name: wendbine-operator-encrypted-${{ github.run_id }}
+          path: ${{ runner.temp }}/wendbine-private/source-capture.sealed.json
+          retention-days: 90
+          if-no-files-found: error
+      - name: Enforce source-specific append-only public write membrane
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import subprocess
+          prefix='packages/dome_world_exact/fixtures/a15-r0/WENDBINE/'
+          allowed_dirs=('01-MANIFESTS/phase2/', '04-RECEIPTS/phase2/',
+             '05-OPERATIONS/phase2/', '07-ARCHIVE-LEDGER/syncs/')
+          allowed_files=('01-MANIFESTS/registry-index.json',
+             '05-OPERATIONS/relations/typed-edges.jsonl')
+          raw=subprocess.check_output(['git','status','--porcelain=v1','-z','--untracked-files=all'])
+          paths=[line[3:] for line in raw.decode('utf8',errors='surrogateescape').split('\0') if line]
+          bad=[p for p in paths if not p.startswith(prefix) or not (p[len(prefix):] in allowed_files or p[len(prefix):].startswith(allowed_dirs))]
+          if bad:raise SystemExit('WENDBINE_WRITE_MEMBRANE_VIOLATION:'+repr(bad))
+          if not paths:raise SystemExit('WENDBINE_RUN_RECEIPT_MISSING')
+          print('Wendbine-only write membrane PASS',len(paths))
+          PY
+      - name: Commit one bounded Atelier epoch to research branch
+        id: committed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- "$WENDBINE_ROOT/01-MANIFESTS/phase2" \
+            "$WENDBINE_ROOT/01-MANIFESTS/registry-index.json" \
+            "$WENDBINE_ROOT/04-RECEIPTS/phase2" \
+            "$WENDBINE_ROOT/05-OPERATIONS/phase2" \
+            "$WENDBINE_ROOT/05-OPERATIONS/relations/typed-edges.jsonl" \
+            "$WENDBINE_ROOT/07-ARCHIVE-LEDGER/syncs"
+          git diff --cached --quiet && { echo NO_SYNC_RECEIPT_TO_COMMIT >&2; exit 1; }
+          git commit -m "wendbine: operator source sync $GITHUB_RUN_ID"
+          after="$(git rev-parse HEAD)"
+          git push origin "HEAD:$ATELIER_BRANCH"
+          echo "head=$after" >> "$GITHUB_OUTPUT"
+      - name: Receipt successful run and return gate to DORMANT
+        if: success()
+        shell: bash
+        env:
+          BEFORE_SHA: ${{ steps.before.outputs.head }}
+          AFTER_SHA: ${{ steps.committed.outputs.head }}
+        run: |
+          set -euo pipefail
+          summary="$(jq -c '{atelier_snapshot_id,seal_id,observed,new,changed,unchanged,not_seen_prior,held,encrypted_handoff_created}' "$SYNC_RECEIPT")"
+          gh api "repos/$GITHUB_REPOSITORY/issues/$GATE_ISSUE/comments" -f body="𝌋 Wendbine bounded public-projection sync complete. run=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID; before=$BEFORE_SHA; after=$AFTER_SHA; summary=$summary; encrypted_handoff=wendbine-operator-encrypted-$GITHUB_RUN_ID; private_source_custody=PENDING_DURABLE_PRIVATE_TRANSFER; artifact_retention_days=90; exact_head_validation=PENDING_CI; archive_version_not_live_state=true; merge=false; production=false; scientific_promotion=false. Gate #$GATE_ISSUE DORMANT. Fresh gesture required for next sync. ⟐"
+      - name: Record HELD and return gate to DORMANT
+        if: failure()
+        shell: bash
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$GATE_ISSUE/comments" -f body="𝌋 Wendbine sync HELD. run=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID; automatic_retry=false; merge=false; deployment=false; scientific_promotion=false. Gate #$GATE_ISSUE DORMANT. ⟐"

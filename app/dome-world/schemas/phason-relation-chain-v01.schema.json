@@ -1,0 +1,15 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"td613.phason.relation-chain/v0.1",
+  "title":"TD613 Phason Relation Chain v0.1",
+  "type":"object","additionalProperties":false,
+  "required":["schema","relation_id","event_references","events","current_state","fork_detected","forks","artifact_digest_present","chain_digest","seal"],
+  "properties":{
+    "schema":{"const":"td613.phason.relation-chain/v0.1"},
+    "relation_id":{"type":"string","pattern":"^rel_[0-9a-f]{20}$"},
+    "event_references":{"type":"array"},"events":{"type":"array","items":{"$ref":"td613.phason.relation-event/v0.1"}},
+    "current_state":{"enum":["PROPOSED","CONFIRMED","REVISED","WITHDRAWN","SUPERSEDED"]},
+    "fork_detected":{"type":"boolean"},"forks":{"type":"array"},"artifact_digest_present":{"const":false},
+    "chain_digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"seal":{"const":"⟐"}
+  }
+}

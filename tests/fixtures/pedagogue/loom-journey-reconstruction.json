@@ -1,0 +1,222 @@
+{
+  "schema": "td613.pedagogue-design-fixture/v0.1",
+  "design_id": "loom-journey-reconstruction-20261003",
+  "surface_reference": "Holonomy Loom / Marrowline / returned-work review and local admission",
+  "governance_context": "TD613",
+  "determinism": {
+    "frozenClock": "2026-10-03T04:26:18Z",
+    "idSeed": "loom-journey-reconstruction-20261003",
+    "idScope": "Loom/JourneyReconstruction"
+  },
+  "scene_input": {
+    "scene_kind": "GENERIC",
+    "station_owner": "Dome-World",
+    "source_status": "E1",
+    "observation_status": "UNRESOLVED",
+    "world_state_reference": "cea7dc05b4fb5bdd12b197e9eaaeed709c65a027",
+    "provenance": {
+      "source_references": [
+        "e9f8f4ac6b6a4c77fbd53b96c25a4a449f7a1453",
+        "cea7dc05b4fb5bdd12b197e9eaaeed709c65a027",
+        "app/dome-world/holonomy-loom/ai-workspace.js",
+        "app/dome-world/holonomy-loom/loom-product-v4.css",
+        "app/dome-world/holonomy-loom/reentry-workspace.js",
+        "app/dome-world/marrowline-loom-demo.js",
+        "docs/receipts/loom-journey-reconstruction-20261003.md"
+      ],
+      "evidence_basis": [
+        "Root-session cloud production traversal reported a 1363 by 936 desktop viewport, an 884px field, and builder start at document y936.",
+        "Root-session production inspection reported 28 details elements after fictional Practice preparation and aiProjectChoices hidden=true while its effective display was grid.",
+        "Source inspection identifies ai-workspace.js template composition, the 100svh field rule, inherited disclosure stacks, and preparation scrollIntoView targeting aiRuntime.",
+        "This candidate comparison declares structural engineering inputs; equal 700 millipoint legibility and affordance inputs are assumptions, never measured understanding or operator scores.",
+        "The reconstructed complete route remains unobserved at an exact candidate head. Production browser evidence, source evidence, and offline fixture evidence remain separate."
+      ],
+      "transformations": [
+        "Place the task entrance and evidence-bound Flow-Core field in one arrival composition.",
+        "Keep Prepare the primary action for both personal work and fictional Practice material.",
+        "Replace the post-preparation field detour with foreground crossing/result focus.",
+        "Move research, compatibility and exact inspection tooling out of the ordinary journey without deleting capability.",
+        "Expose returned demo-chain review without promoting integrity checks into signature authentication or local admission.",
+        "Keep process-local v0.2 registration, Check, exact candidate review and explicit Admit as their own custody lane.",
+        "Retire public Portable AIA wording while preserving legacy schema and API compatibility identifiers."
+      ],
+      "station_owners": ["Dome-World"]
+    },
+    "visible_condition": {
+      "plain_language": "Write a task, choose which documents travel, and prepare locally. Continue in Marrowline through explicit sends, then bring the latest work back for review. Returned demo records remain review-only; a separately registered local custody return requires Check and explicit admission.",
+      "surface_reference": "Holonomy Loom / Marrowline / returned-work review and local admission"
+    },
+    "available_affordances": [{
+      "action_id": "prepare_and_review_loom_journey",
+      "purpose": "Prepare selected work locally, continue through explicit native Marrowline sends, and review the latest returned state without collapsing review into admission.",
+      "authorized_by_station": "Human",
+      "reversible": true
+    }],
+    "route_topology": {
+      "entry": "Task and field together on Loom arrival",
+      "exit": "Rest, leave, or retain a private review record without compulsory admission",
+      "same_endpoint_not_same_history": true,
+      "missing_inputs": ["Exact-candidate browser acceptance", "Live provider continuation witness", "Physical-device witness", "Human comprehension measurement"],
+      "steps": [
+        {"step_id":"notice","label":"See the task entrance, route and local preparation consequence together","phase":"NOTICE","required_fields":["Loom to Marrowline to Return","task entrance","selected material travels only after explicit crossing"],"dependencies":[],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":0,"operator_action_required":false},
+        {"step_id":"task","label":"Write the task or explicitly load fictional Practice material","phase":"ACT","required_fields":["exact task","Practice loading sends nothing and replaces no active root"],"dependencies":["notice"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":true},
+        {"step_id":"select","label":"Choose documents and optional traveling rules","phase":"ACT","required_fields":["explicit document selection","local exclusions","traveling rules"],"dependencies":["task"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":true},
+        {"step_id":"prepare","label":"Prepare locally using the same primary action in both modes","phase":"ACT","required_fields":["explicit Prepare","no model request","active-root replacement needs separate notice Save and acknowledgment"],"dependencies":["select"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":true},
+        {"step_id":"prepared","label":"Read preparation result and adjacent crossing action","phase":"WORLD_ANSWERS","required_fields":["prepared exact task","selected/local summary","Continue in Marrowline"],"dependencies":["prepare"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":false},
+        {"step_id":"crossing_notice","label":"See custody survival and Save opportunity before crossing","phase":"NOTICE","required_fields":["original tab owns live local lane","private Save preserves review material only","blocked popup leaves current lane intact"],"dependencies":["prepared"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":false},
+        {"step_id":"cross","label":"Continue in a route-scoped native Marrowline conversation","phase":"ACT","required_fields":["explicit crossing","ordinary direct-entry chat remains ordinary"],"dependencies":["crossing_notice"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":1,"route_memory_edges":1,"operator_action_required":true},
+        {"step_id":"send_activation","label":"Stage source-free activation and explicitly send it","phase":"ACT","required_fields":["staging is local","separate native Send","source bodies and source-bearing prior answer excluded"],"dependencies":["cross"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":true},
+        {"step_id":"activation_answer","label":"Read the admitted activation acknowledgment","phase":"WORLD_ANSWERS","required_fields":["stage receipt","acknowledgment differs from substantive content predecessor","HELD leaves next stage locked"],"dependencies":["send_activation"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":false},
+        {"step_id":"send_files","label":"Stage selected files and explicitly send the source-bearing continuation","phase":"ACT","required_fields":["explicit selected source bodies","separate native Send","committed origin prior answer where applicable"],"dependencies":["activation_answer"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":true},
+        {"step_id":"continuation_answer","label":"Read the admitted continuation and preserve the immediate content predecessor","phase":"WORLD_ANSWERS","required_fields":["latest admitted source-bearing answer","later continuations follow it","latest attempted output differs from admitted output"],"dependencies":["send_files"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":false},
+        {"step_id":"export_return","label":"Export latest admitted state and return to Loom","phase":"TRANSFER","required_fields":["original task and selected source identities","rules missingness provenance and route history","latest state and predecessors","review-only export authority"],"dependencies":["continuation_answer"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":1,"route_memory_edges":1,"operator_action_required":true},
+        {"step_id":"review_demo","label":"Review the returned demo chain in the primary return workspace","phase":"WORLD_ANSWERS","required_fields":["integrity consistency result","signature verification HELD","no live custody or restore authority","no local v0.2 admission inferred"],"dependencies":["export_return"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":false},
+        {"step_id":"local_register","label":"For the separate local lane register a foreign task before it leaves","phase":"ACT","required_fields":["live process-local v0.2 seed","exact local task registration","head remains unchanged","sources start unselected"],"dependencies":["prepared"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":true},
+        {"step_id":"local_check","label":"Check an exact return from that registered local excursion","phase":"WORLD_ANSWERS","required_fields":["all registered returns","explicit inherited-rule review","issued exact candidate or HELD","head remains unchanged"],"dependencies":["local_register"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":true},
+        {"step_id":"local_admit","label":"Explicitly review and admit only the issued local candidate","phase":"ACT","required_fields":["candidate-specific acknowledgment","old/new head consequence","head revision expiry compare-and-swap","HELD preserves prior admitted head"],"dependencies":["local_check"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":true},
+        {"step_id":"rest_exit","label":"Rest or leave without compelled admission or silent custody extension","phase":"REST","required_fields":["cue pause only","actual expiry continues","private Save remains private","reloaded records remain review-only"],"dependencies":["review_demo"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":true}
+      ]
+    },
+    "causal_structure": {
+      "input": "Exact task, explicitly selected materials, traveling rules, separately gestured preparation and sends, carried review records, and separately registered local returns",
+      "operator": "Existing Loom preparation, native Marrowline stage binding, review-only demo-chain inspection, and process-local v0.2 custodian",
+      "observable": "A visible next action follows preparation; returned records have bounded review outcomes; only explicit admission of an issued local candidate may change that local head",
+      "authority": "Contemporaneous operator gestures; demo signatures remain unverified by integrity inspection; research, external origin, release and deployment authority remain closed",
+      "equations": []
+    },
+    "research_frame": {
+      "question": "Can the complete governed journey reduce source-visible handling demand while preserving distinct preparation, staged crossing, review-only return and explicit local admission contracts?",
+      "hypothesis": "A task-and-field arrival, foreground crossing result, contextual return workspace and separate tooling reduce detours and disclosure burden without merging authority classes.",
+      "observable_behavior": [
+        "The first task entrance is available in the arrival viewport",
+        "Practice and personal work share the primary Prepare action",
+        "Preparation makes no model request and foregrounds the next crossing action",
+        "Hidden practice choices remain hidden until explicitly opened",
+        "Native Marrowline uses separate explicit sends and immediate admitted substantive predecessors",
+        "Returned demo-chain review retains signature verification HELD and review-only authority",
+        "Local v0.2 Check leaves the head unchanged and exact explicit Admit owns head advancement",
+        "Mobile retains consequential boundaries through an accessible composition",
+        "Research and compatibility tools remain available outside the ordinary route"
+      ],
+      "alternative_explanations": [
+        "A shorter visible layout may conceal consequential distinctions rather than reduce handling demand",
+        "Provider latency may dominate the eventual live route despite improved local composition",
+        "Native Marrowline familiarity may affect apparent ease independently of route restructuring"
+      ],
+      "expected_failure_modes": [
+        "Old disclosure composition survives under new styling",
+        "The field remains a full-viewport task-entry obstacle",
+        "A specificity override defeats hidden controls",
+        "Practice promotes optional model transmission into its primary action",
+        "Activation stage receipt is confused with substantive content predecessor",
+        "Integrity inspection promotes unverified signatures or a demo export into local custody admission",
+        "Reloaded records acquire live admission authority without a separately reviewed witness",
+        "Simplification hides mobile missingness or local exclusion consequences"
+      ],
+      "falsifier": [
+        "The task entrance remains below a mandatory full-height field",
+        "Prepare scrolls to the field while the next action remains below the builder",
+        "Opening Practice or staging files submits a request or replaces an active root",
+        "A held attempted result replaces the admitted predecessor or latest export",
+        "Returned demo signatures are presented as verified by consistency inspection",
+        "Check, inspection, challenge or restored storage silently advances the local admitted head",
+        "The branch remains the old Loom composition with the animation moved"
+      ],
+      "abstention_conditions": [
+        "Exact-head branch browser acceptance has not occurred",
+        "The live provider route cannot be exercised",
+        "A required return lacks original live local registration",
+        "Original tab custody is unavailable or expired",
+        "The signature verification contract is absent or unobserved"
+      ]
+    },
+    "missingness": [
+      "Exact candidate browser acceptance remains HELD",
+      "Production baseline geometry is parent-reported cloud-browser evidence, not this fixture's observation",
+      "No physical-device or measured human-comprehension witness",
+      "Demo export inspection provides no receipt-signature authentication",
+      "Generic gesture auditor lacks candidate/head-aware CHECK and ADMIT input classes"
+    ],
+    "contradictions": [],
+    "claim_ceiling": {
+      "allowed_claims": [
+        "This fixture compares declared source-level route structures under explicit equal engineering assumptions",
+        "The candidate preserves preparation, staged sends, review-only demo return and separate local admission consequences",
+        "Public product wording can change while legacy schema aliases remain compatible"
+      ],
+      "forbidden_claims": [
+        "Design Gate PASS establishes browser acceptance or human comprehension",
+        "Burden inputs measure a learner or operator",
+        "Hash integrity authenticates signatures or external origin",
+        "Demo-chain review restores a live local custody lane",
+        "A generic SEND gesture may substitute for v0.2 CHECK or ADMIT",
+        "Fixture agreement grants merge deployment provider-quality or Golden Egg authority"
+      ]
+    },
+    "technical_terms_withheld": ["Portable AIA", "compare-and-swap", "commitment digest", "stage receipt", "v0.2 custodian"]
+  },
+  "baseline_route_steps": [
+    {"step_id":"field_notice","label":"Encounter a full-viewport field before task entry","phase":"NOTICE","required_fields":["Loom","Flow-Core route field","state mode","state relation","three-part route"],"dependencies":[],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":0,"operator_action_required":false},
+    {"step_id":"builder_scroll","label":"Scroll or activate Build the route to reach the builder","phase":"ACT","required_fields":["Build the route","field boundary","builder location"],"dependencies":["field_notice"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":1,"route_memory_edges":1,"operator_action_required":true},
+    {"step_id":"mode","label":"Choose My work or Practice and reconcile its action hierarchy","phase":"ACT","required_fields":["mode","project chooser","Prepare transfer","primary model test in Practice"],"dependencies":["builder_scroll"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":true},
+    {"step_id":"task","label":"Write task after route copy and boundary projection","phase":"ACT","required_fields":["exact task","task cue","project brief"],"dependencies":["mode"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":true},
+    {"step_id":"select","label":"Add and select files with per-file disclosures","phase":"ACT","required_fields":["upload","sharing checkboxes","file explanation","document preview","local exclusion"],"dependencies":["task"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":true},
+    {"step_id":"rules","label":"Find optional rules and private blocks among builder controls","phase":"ACT","required_fields":["Rules drawer","traveling rules","private blocks","model profile","model request distinction"],"dependencies":["select"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":1,"route_memory_edges":1,"operator_action_required":true},
+    {"step_id":"prepare","label":"Prepare locally","phase":"ACT","required_fields":["Prepare","no model request","active root notice Save acknowledgment"],"dependencies":["rules"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":true},
+    {"step_id":"field_detour","label":"Preparation scrolls to the runtime field above the result","phase":"WORLD_ANSWERS","required_fields":["field state","offscreen prepared result","runtime scroll target"],"dependencies":["prepare"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":1,"route_memory_edges":1,"operator_action_required":false},
+    {"step_id":"result_hunt","label":"Find the prepared result below the builder again","phase":"ACT","required_fields":["prepared result","session summary","crossing location"],"dependencies":["field_detour"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":1,"route_memory_edges":1,"operator_action_required":true},
+    {"step_id":"result_tools","label":"Distinguish crossing from receipt and research tooling","phase":"NAME","required_fields":["session inspection","proceeding-task verification","Challenge Receiver","joining assay","one-hop tools","crossing"],"dependencies":["result_hunt"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":2,"route_memory_edges":1,"operator_action_required":false},
+    {"step_id":"crossing_notice","label":"Read original-tab survival note beside crossing","phase":"NOTICE","required_fields":["new tab","original live Check Admit lane","private Save","review-only reload"],"dependencies":["result_tools"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":false},
+    {"step_id":"cross","label":"Open route-scoped Marrowline","phase":"ACT","required_fields":["explicit crossing","native chat","blocked popup recovery"],"dependencies":["crossing_notice"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":1,"route_memory_edges":1,"operator_action_required":true},
+    {"step_id":"send_activation","label":"Stage and explicitly send source-free activation","phase":"ACT","required_fields":["plus menu","Loom submenu","activation staging","native Send","source bodies excluded"],"dependencies":["cross"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":1,"route_memory_edges":1,"operator_action_required":true},
+    {"step_id":"activation_answer","label":"Read activation acknowledgment","phase":"WORLD_ANSWERS","required_fields":["stage receipt","source-free acknowledgment","HELD stage lock"],"dependencies":["send_activation"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":false},
+    {"step_id":"send_files","label":"Find file stage then explicitly send selected source bytes","phase":"ACT","required_fields":["plus menu","Loom submenu","selected source bodies","native Send","origin prior answer where applicable"],"dependencies":["activation_answer"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":1,"route_memory_edges":1,"operator_action_required":true},
+    {"step_id":"continuation_answer","label":"Read the admitted source-bearing continuation","phase":"WORLD_ANSWERS","required_fields":["admitted answer","content predecessor","stage predecessor","current export authority"],"dependencies":["send_files"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":false},
+    {"step_id":"export_return","label":"Find export and return to original Loom tab","phase":"TRANSFER","required_fields":["Gate or native reply action","latest export","original task","rules missingness provenance","original opener"],"dependencies":["continuation_answer"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":2,"route_memory_edges":1,"operator_action_required":true},
+    {"step_id":"review_demo","label":"Separate demo review from the local return admission disclosure","phase":"WORLD_ANSWERS","required_fields":["review-only consistency","unverified signatures","local custody boundary","restore authority absent"],"dependencies":["export_return"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":1,"route_memory_edges":1,"operator_action_required":false},
+    {"step_id":"local_drawer","label":"Open the separate local returned-work disclosure","phase":"ACT","required_fields":["Bring work back","v0.2 local root","admitted head","private recovery warning"],"dependencies":["result_hunt"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":1,"route_memory_edges":1,"operator_action_required":true},
+    {"step_id":"local_register","label":"Register an exact local foreign task before copying","phase":"ACT","required_fields":["exact task","source JSON drawer","withheld count","Prepare registration","Copy return contract","head unchanged"],"dependencies":["local_drawer"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":1,"route_memory_edges":1,"operator_action_required":true},
+    {"step_id":"local_check","label":"Paste exact ordered returns and check after policy review","phase":"WORLD_ANSWERS","required_fields":["ordered return array","exact rules disclosure","policy review","Challenge scope","issued candidate","head unchanged"],"dependencies":["local_register"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":1,"route_memory_edges":1,"operator_action_required":true},
+    {"step_id":"local_admit","label":"Explicitly accept the exact local candidate and admit","phase":"ACT","required_fields":["candidate-specific acknowledgment","old/new head notice","foreign claims unresolved","head revision expiry compare-and-swap"],"dependencies":["local_check"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":0,"route_memory_edges":1,"operator_action_required":true},
+    {"step_id":"rest_exit","label":"Find rest discard Save and exit controls after the disclosure stack","phase":"REST","required_fields":["Rest","Discard pending tasks","Save private record","expiry continues","review-only reload"],"dependencies":["review_demo"],"legibility_millipoints":700,"affordance_millipoints":700,"gluing_obstruction_millipoints":0,"projection_crossings":1,"route_memory_edges":1,"operator_action_required":true}
+  ],
+  "action": {"action_id":"prepare_and_review_loom_journey"},
+  "world_delta": {
+    "observation_status": "UNRESOLVED",
+    "causal_trace": [
+      "Proposed: explicit local preparation binds selected work and foregrounds crossing without provider transmission",
+      "Proposed: native Marrowline staged sends retain source-free activation and source-bearing continuation boundaries",
+      "Proposed: latest export returns to bounded integrity review with signature verification HELD",
+      "Proposed: only a separately registered live local v0.2 exact return may reach Check and explicit candidate admission"
+    ],
+    "losses": [],
+    "missingness": ["Exact candidate browser and live provider witnesses remain HELD", "No measured human comprehension"],
+    "contradictions": [],
+    "unresolved_relations": ["Demo integrity inspection has no signature authentication or local restore authority", "Generic gesture adapter cannot audit explicit v0.2 admission"],
+    "glyph_candidates": [],
+    "static_equivalent": {
+      "summary": "Prepare selected work locally, continue through explicit native sends, and review returned state. Demo review stays review-only; separate local admission requires an exact registered candidate and explicit acknowledgment.",
+      "steps": ["write task", "select material", "prepare locally", "choose crossing", "send activation", "send selected files", "review latest returned state", "use separate registered local admission only when eligible", "rest or leave"]
+    }
+  },
+  "name": {
+    "plain_language": "Loom carries selected work through a visible journey while preserving the different consequences of preparation, transmission, review and local admission.",
+    "glyph_relation": null,
+    "technical_term": "governed service journey with separate review and admission lanes",
+    "non_equivalence": [
+      "Preparation differs from model transmission",
+      "Stage predecessor differs from substantive content predecessor",
+      "Integrity consistency differs from signature authentication",
+      "Returned demo review differs from process-local v0.2 admission",
+      "Private saved review material differs from live custody restoration",
+      "Synthetic route comparison differs from exact-head browser acceptance"
+    ]
+  },
+  "transfer_context": {
+    "context": {"surface":"Loom reconstruction candidate review"},
+    "shared_relation_candidate": "Simplify consequence order and route composition while preserving the distinctions that condition lawful action",
+    "observable_correspondence": ["The same explicit preparation and custody contracts can survive changed presentation without exposing their internal ontology as the primary route"],
+    "alternative_explanations": ["Concealed required controls may falsely look like lower burden"],
+    "abstention_conditions": ["A consequential boundary is hidden", "Exact-head candidate route remains unobserved", "Review records gain unauthorized admission or restore authority"]
+  }
+}

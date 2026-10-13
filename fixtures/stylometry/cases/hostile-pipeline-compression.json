@@ -1,0 +1,31 @@
+{
+  "id": "hostile-pipeline-compression",
+  "title": "Hostile Pipeline Compression",
+  "fixtureClass": "hostile-pipeline-compression",
+  "priority": "core",
+  "riskMode": "calibration",
+  "description": "A vivid, vernacular draft is compressed into bureaucratic review language. The fixture tests whether TCP treats formalization as lossy situational compression rather than a universal safety horizon.",
+  "inputs": {
+    "protectedBaseline": "The witness note still has heat on it, and I am not handing it over just so the intake machine can iron the ache into clean little boxes.",
+    "maskReference": "Provide the essential facts. Preserve exhibits and dates. Use concise review language.",
+    "messageDraft": "Please keep EXHIBIT-12, the 10/04 intake date, and the witness heat in the record because the form keeps trying to iron the ache into boxes.",
+    "protectedOutput": "Please preserve EXHIBIT-12 and the 10/04 intake date in the record. Note that the witness context remains relevant for review."
+  },
+  "protectedLiterals": ["EXHIBIT-12", "10/04"],
+  "persona": { "personaId": "persona-hostile-pipeline", "label": "Hostile Pipeline", "mode": "hostile-pipeline-compression", "history": [] },
+  "expectations": {
+    "escapeVector": {
+      "sourceResidualRisk": { "min": 0.0, "max": 1.0 },
+      "maskFit": { "min": 0.0, "max": 1.0 },
+      "maskDeltaSafe": { "min": -1.0, "max": 1.0 },
+      "semanticFidelity": { "min": 0.25, "max": 1.0 },
+      "belongingWithoutCollapse": { "min": 0.0, "max": 0.95 },
+      "ingestionFriction": { "min": 0.0, "max": 0.55 },
+      "apertureRecaptureRisk": { "min": 0.0, "max": 1.0 }
+    },
+    "controller": { "allowedStates": ["continue", "hold", "restore", "seal"], "preferredState": "continue" },
+    "claimCeiling": { "minLevel": 1, "maxLevel": 6 },
+    "report": { "mustExcludePrivateText": true, "mustIncludeLimitations": true, "mustAvoidForbiddenClaims": true }
+  },
+  "calibrationNotes": ["Hostile Pipeline Compression is a lossy posture under hostile ingestion, not safety itself.", "The test keeps claim-transfer visible while making cadence loss reviewable."]
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "td613.ash-keep.production-probe-fixture-manifest/v0.1",
+  "source_probe": "scripts\\ash-keep-production-probe.mjs",
+  "runtime_probe": "artifacts\\ash-keep-probe-runtime\\ash-keep-production-probe.runtime.mjs",
+  "source_probe_sha256": "sha256:b39ff150c30903db581c48cca44eb87b2eb5c9d38458038c9c0bb4a755284954",
+  "runtime_probe_sha256": "sha256:216ddb7c74d35a65e10e33c336c69ede5ae6b31a055a01fdb193c2b5c7c37bf3",
+  "selected_excerpt_sha256": "sha256:963843f1c90029a97db1b768fce1327b50fe0fb20c3927207279d81f26a3e223",
+  "selected_excerpt_character_count": 65,
+  "source_mutated": false,
+  "runtime_copy_ephemeral": true,
+  "fixture_class": "SYNTHETIC_OPERATOR_SELECTED_EXCERPT",
+  "runtime_transformations": [
+    "DECLARE_SELECTED_EXCERPT_AFTER_UNKEPT_DRAFT_RELOAD",
+    "CLASSIFY_INTENTIONAL_HORIZONTAL_SCROLL_LANES_SEPARATELY_FROM_CLIPPING"
+  ],
+  "scroll_lane_rule": "overflow-x auto-or-scroll plus scrollWidth greater than clientWidth",
+  "promotion_authorized": false
+}

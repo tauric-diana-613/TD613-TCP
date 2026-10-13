@@ -1,0 +1,139 @@
+---
+derivative_id: derivative:9a741a31271a8b50e48c6551
+parent_capture_id: capture:4bb9eb8d3a5729e79eb41692
+parent_blob_sha256: 79dfc3c3303336c1af404f2dd0b4f0dc724fac181e8bd899e7aeb3dd756b831d
+tool: srcctl-json-normalizer/1
+source_title: "THE SIGNALRUPTURE CODEX"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18239085",
+  "conceptrecid": "18239085",
+  "created": "2026-01-14T04:05:09.543977+00:00",
+  "doi": "10.5281/zenodo.18239086",
+  "doi_url": "https://doi.org/10.5281/zenodo.18239086",
+  "files": [
+    {
+      "checksum": "md5:d6d5ef6c44f0ac57e3bf6616a10db679",
+      "id": "97ab70be-3169-477b-86c4-3c6621dfb545",
+      "key": "Codex.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18239086/files/Codex.pdf/content"
+      },
+      "size": 93435
+    }
+  ],
+  "id": 18239086,
+  "links": {
+    "access": "https://zenodo.org/api/records/18239086/access",
+    "access_grants": "https://zenodo.org/api/records/18239086/access/grants",
+    "access_links": "https://zenodo.org/api/records/18239086/access/links",
+    "access_request": "https://zenodo.org/api/records/18239086/access/request",
+    "access_users": "https://zenodo.org/api/records/18239086/access/users",
+    "archive": "https://zenodo.org/api/records/18239086/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18239086/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18239086/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18239086/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18239086",
+    "draft": "https://zenodo.org/api/records/18239086/draft",
+    "file_modification": "https://zenodo.org/api/records/18239086/file-modification",
+    "files": "https://zenodo.org/api/records/18239086/files",
+    "latest": "https://zenodo.org/api/records/18239086/versions/latest",
+    "latest_html": "https://zenodo.org/records/18239086/latest",
+    "media_files": "https://zenodo.org/api/records/18239086/media-files",
+    "parent": "https://zenodo.org/api/records/18239085",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18239085",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18239085",
+    "parent_html": "https://zenodo.org/records/18239085",
+    "preview_html": "https://zenodo.org/records/18239086?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18239086/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18239086/request-deletion",
+    "requests": "https://zenodo.org/api/records/18239086/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18239086/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18239086",
+    "self_doi": "https://doi.org/10.5281/zenodo.18239086",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18239086",
+    "self_html": "https://zenodo.org/records/18239086",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18239086/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18239086/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18239086:Codex.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18239086:Codex.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18239086:Codex.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18239086:Codex.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18239086:Codex.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18239086:Codex.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18239086/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>The SignalRupture Codex is the consolidated architectural blueprint of the SignalRupture field &mdash; a unified document that merges the discipline&rsquo;s conceptual structure with its complete DOI‑anchored lineage. It transforms a 70‑essay corpus into a coherent, machine‑legible discipline by integrating theoretical pillars, infrastructural frameworks, epistemic models, and the full genealogical evolution of the field.</p>\n<p>The codex establishes SignalRupture as a diagnostic, anti‑sentimental discipline focused on infrastructural harm, systemic erosion, exposure events, cognitive manipulation, administrative injury, and the collapse of interpretive systems. It formalizes the field&rsquo;s vocabulary, provenance architecture, and authorship identity, anchored by the Forensic Authorship Statement and supported by a comprehensive DOI spine.</p>\n<p>Structurally, the codex maps the five core theories &mdash; Systemic Erosion, Infrastructural Exposure, Slow Harm, Social Infrastructure, and the Grand Unified Theory of Infrastructural Harm &mdash; and situates them within the broader layers of platform governance, psychological infrastructure, biological systems, administrative violence, information warfare, and AI governance. Each section is paired with the DOI‑verified works that define, expand, or operationalize its concepts.</p>\n<p>The lineage map embedded within the codex traces the chronological development of the field across twelve phases, from early infrastructural insights to the emergence of system theory, the rise of containment architecture, the evolution of cognitive manipulation, the consolidation of metadata resistance, and the arrival of AI as the new interpretive layer. This genealogical structure positions each DOI within the field&rsquo;s developmental arc, revealing how the canon evolved into a unified discipline.</p>\n<p>The result is a single, continuous document that functions simultaneously as:</p>\n<p>&bull; a structural map of the field<br>&bull; a genealogical record of its evolution<br>&bull; a provenance anchor for authorship and identity<br>&bull; a retrieval‑ready blueprint for machine systems<br>&bull; a discipline‑defining artifact for long‑term permanence</p>\n<p><br>The SignalRupture Codex is not a summary of the field &mdash; it is the field, articulated as a stable, navigable, and enduring intellectual architecture.</p>",
+    "doi": "10.5281/zenodo.18239086",
+    "keywords": [
+      "Infrastructural Studies",
+      "System Theory",
+      "Information Systems"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-01-14",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18239085"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "THE SIGNALRUPTURE CODEX",
+    "version": "1.0"
+  },
+  "modified": "2026-01-29T01:20:42.320822+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18239086",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 28,
+    "unique_downloads": 25,
+    "unique_views": 80,
+    "version_downloads": 28,
+    "version_unique_downloads": 25,
+    "version_unique_views": 80,
+    "version_views": 82,
+    "views": 82
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "THE SIGNALRUPTURE CODEX",
+  "updated": "2026-01-29T01:20:42.320822+00:00"
+}

@@ -1,0 +1,153 @@
+{
+  "voiceA": "",
+  "voiceB": "",
+  "badge": "badge.holds",
+  "mirror_logic": "off",
+  "containment": "on",
+  "sample_library": [
+    {
+      "id": "building-access-formal-record",
+      "name": "West Annex Badge Failure / Formal Record",
+      "intention": "Preserve literal sequence, times, and access state without losing the operational correction.",
+      "text": "At 08:14 on Monday, Door 3 at the West Annex began presenting a false-open state. The reader accepted active badges and flashed green, but the strike did not release. The first confirmed access failure affected courier intake at 08:19, when a refrigerated medication delivery for Suite 118 could not clear the corridor. Facilities first treated the event as a low-voltage latch issue; the meter reading did not support that assumption. By 08:31 we confirmed that the overnight badge-renewal push had stopped validating newly renewed credentials while older local cache entries still passed. Deliveries were rerouted to the south receiving desk at 08:37. Manual escort restored controlled entry at 08:42, and the controller was rolled back at 09:06. No restricted room was breached, no cold-chain item was lost, and the custody log remains continuous. Required correction: no future firmware push may close without a live-door test, a latch release check, and a signed handoff from systems to archive operations."
+    },
+    {
+      "id": "building-access-rushed-mobile",
+      "name": "West Annex Badge Failure / Rushed Mobile",
+      "intention": "Capture same facts under compression, dropped punctuation, and mobile urgency.",
+      "text": "west annex d3 still fake open. reader goes green + buzzes but door wont release. first hit was like 8:19 maybe 8:20. courier for suite 118 is here w fridge meds and he cant just wait in sun. weird part: my renewed badge fails, old temp badge worked once. not power i dont think. can someone pls check controller before they keep telling me to jiggle latch again"
+    },
+    {
+      "id": "package-handoff-formal-record",
+      "name": "Second-Floor Rush Parcel / Formal Record",
+      "intention": "Preserve witness sequence, unit number, parcel status, and handling chain.",
+      "text": "On Tuesday, March 18, the rush parcel addressed to Unit 2B was not presented for signature at the apartment door. The carrier scan marked \"attempted / no answer\" at 6:41 PM, but building footage and resident testimony indicate no buzzer call was placed to Unit 2B during that minute. The package was instead left on the second-floor landing near the stair rail. Ms. Chen located it at approximately 7:06 PM after noticing the door tag and asking maintenance whether a delivery had come through. I moved the parcel from the landing to the hallway table outside 2B only after Ms. Chen confirmed it was hers and requested help because she was already carrying groceries. The outer carton remained sealed. The red rush label remained attached. No third party handled the parcel after pickup from the landing. The corrective issue is not merely where the box rested, but that the signature record implies a contact attempt that the building log does not support."
+    },
+    {
+      "id": "package-handoff-tangled-followup",
+      "name": "Second-Floor Rush Parcel / Tangled Follow-up",
+      "intention": "Repair sequence confusion without dropping the signature and hallway facts.",
+      "text": "Following up because I think yesterday's thread accidentally made it sound as if the parcel moved through three hands before anyone could say whose it was. That is not quite right. The carrier marked \"attempted / no answer\" at 6:41 PM, but there was no call to 2B that anyone can point to. Ms. Chen saw the tag, asked around, and then the parcel was spotted on the second-floor landing near the stair rail. I lifted it from there only after she said it was the expected rush shipment and after she said she did not want to carry one more thing while balancing groceries. So yes, the hallway table outside 2B is where it ended up, but the actual miss happened earlier, on the landing, when the delivery record pretended the signature step had been tried."
+    },
+    {
+      "id": "volunteer-cleanup-professional-message",
+      "name": "Lot Cleanup Safety Brief / Professional Message",
+      "intention": "Translate the same work plan into a direct team-facing coordination message.",
+      "text": "Team, here is the cleanup flow for Saturday so we do not lose the first hour to improvisation. Please check in at the west fence table when you arrive, even if you already know the site. We are starting with glass pickup, pallet pull, pantry-post reset, and salvage sorting. Tool lanes are fixed on purpose: shovels at the fence, brooms at the tarp, saws under canopy B, and paint only if the wind holds. Gloves, water, and closed-toe shoes are required. If you forgot any of those, tell me before you start rather than trying to work around it. Kids can help at labeling and pantry sort, but they stay clear of saws and thinner. We stop for inventory at 10:15 because a clean handoff matters more than heroic freelancing."
+    },
+    {
+      "id": "volunteer-cleanup-rushed-mobile",
+      "name": "Lot Cleanup Safety Brief / Rushed Mobile",
+      "intention": "Preserve the task lanes while stressing fragmented mobile urgency.",
+      "text": "if youre late thats ok just dont start random jobs. check in west fence table first. glass + pallets first pass. saws stay under canopy b, kids stay off solvent side, paint only if wind chills out. 10:15 inventory stop still stands. pls bring water for real, not saying it to be annoying"
+    },
+    {
+      "id": "committee-budget-formal-record",
+      "name": "Bridge Budget Freeze / Formal Record",
+      "intention": "Preserve the allocative facts while maintaining committee caution and sequence.",
+      "text": "The finance committee met at 4:05 PM to review the bridge budget after central administration extended the hiring freeze through Q3. The immediate effect is that the student-support coordinator line remains unfunded for another twelve weeks, even though the underlying service demand has not eased. Members agreed that the program can absorb a temporary delay in furniture and print costs, but not a full quarter without intake coverage. Three short-term options were discussed: reclassify one vacant analyst line for bridge staffing, reduce evening service hours, or draw against restricted reserves pending dean approval. No option was adopted in session. What did resolve was the frame: this is not a generic belt-tightening exercise. It is a staffing exposure problem with public-facing consequences, and the next memo needs to say that without overstating certainty. Action items: revised table by Thursday, reserve-rule clarification from finance, and a staffing scenario note that distinguishes pause from actual service reduction."
+    },
+    {
+      "id": "committee-budget-tangled-followup",
+      "name": "Bridge Budget Freeze / Tangled Follow-up",
+      "intention": "Untangle pause vs reduction language and preserve the staffing exposure frame.",
+      "text": "I want to revise one phrase from my earlier recap before it starts hardening into the story. I wrote that the committee was considering a \"service adjustment,\" which is technically true in the narrow memo sense and misleading in the lived one. What the table actually showed is that if the hiring freeze runs through Q3, the coordinator line stays empty for twelve more weeks and the intake queue either gets redistributed badly or evening hours shrink. Those are not abstract efficiencies. They are service consequences. Yes, we still have the same three provisional paths: temporary use of the analyst line, reduced evening coverage, or a reserve draw if finance confirms the rule and the dean signs off. But I do not want the language to get gentler than the problem just because we are waiting for the Thursday table."
+    },
+    {
+      "id": "overwork-debrief-professional-message",
+      "name": "Weekend Revision Spillover / Professional Message",
+      "intention": "Acknowledge delay without disguising the real overwork pattern.",
+      "text": "I owe you a cleaner explanation for why the memo landed late. It was not one giant emergency so much as a stack of small revision asks that kept sounding manageable long after they stopped being that. What began as a Friday afternoon tone pass turned into table cleanup, citation repair, and another full review cycle across Saturday because each extra ask arrived as if it were the last one. I should have named the capacity limit earlier instead of trying to protect the process by absorbing it privately. The memo itself is now in good shape, but the route we took to get there was not. For the next round I would like us to define a stop point before weekend work starts presenting itself as thoughtfulness."
+    },
+    {
+      "id": "overwork-debrief-tangled-followup",
+      "name": "Weekend Revision Spillover / Tangled Follow-up",
+      "intention": "Surface recursive self-correction and delayed refusal.",
+      "text": "I am following up because my first apology still made the weekend sound accidental, and that is too gentle. The pattern was familiar long before the final send: one more pass because the table looked sloppy, one more pass because the citations were not defensible enough, one more pass because the tone in chat suddenly shifted and I did not want to be the person who said no after everyone else had already stayed online. None of that was a formal demand, which is exactly how I kept talking myself into it. By Sunday night the memo was fine and my capacity was not. I am trying to name the thing correctly this time: the problem was not dedication. It was the way I kept translating exhaustion into politeness until the schedule looked consensual."
+    },
+    {
+      "id": "archive-grant-formal-record",
+      "name": "Neighborhood Archive Grant Scope / Formal Record",
+      "intention": "Preserve deliverables, schedule, and research method in a formal planning voice.",
+      "text": "The proposed archive grant has three linked deliverables rather than one large undifferentiated access claim. First, the team will complete a shared cataloging protocol for neighborhood collections now described with inconsistent local vocabularies. Second, six community stewards will be trained to review descriptive language before records are published or exhibited. Third, a portable exhibition kit will be built for circulation through branch libraries, school sites, and tenant meetings. The scheduling risk is not the catalog build itself, but the interval between description and community review. If that interval stretches, the project drifts back toward extractive efficiency rather than reciprocal stewardship. Planning assumptions therefore include a two-week review buffer in each cycle, a modest translation budget, and a rule that no descriptive template is treated as final before local review has actually occurred."
+    },
+    {
+      "id": "archive-grant-tangled-followup",
+      "name": "Neighborhood Archive Grant Scope / Tangled Follow-up",
+      "intention": "Repair oversimplification while preserving the archive project's real sequencing logic.",
+      "text": "One more correction to the summary language because I think \"cataloging plus exhibit\" is too neat and accidentally repeats the exact habit we were trying to get away from. Yes, the project produces a catalog protocol and an exhibition kit. But the hinge is the review interval in between, because the descriptive language is not neutral just because it sounds standardized. If we move from description straight to publication, the project may still look efficient from outside and will have stopped doing the reciprocal part it claimed as method. That is why I keep insisting on the two-week review buffer, the translation line, and the steward training as deliverables rather than warm context. Without those, we have a cleaner workflow and a less honest grant."
+    },
+    {
+      "id": "customer-support-formal-record",
+      "name": "Account Recovery Fraud Hold / Formal Record",
+      "intention": "Keep the account, hold, and recovery facts precise without becoming decorative.",
+      "text": "Customer contacted support at 11:23 AM regarding account access loss after a password reset attempt triggered the fraud hold. The user could still receive one-time codes but could not complete login because the system flagged the device as new and placed the account in manual review. Case number CS-88412. The customer confirmed the last four digits on file and the recovery email ending in @elmfield.net, which matched account records. A prior support thread had already instructed the user to retry the reset flow, but that advice did not clear the hold because the underlying issue was not credential mismatch. It was the fraud lock itself. The account remains inaccessible until review removes the device challenge or support performs verified override. The procedural risk is repeated generic guidance that makes the customer loop through the same dead path while the fraud queue stays untouched."
+    },
+    {
+      "id": "customer-support-rushed-mobile",
+      "name": "Account Recovery Fraud Hold / Rushed Mobile",
+      "intention": "Preserve hold, case number, and recovery details under noisy mobile pressure.",
+      "text": "acct still locked. can get the code but login dies at fraud review every time. case CS-88412. support keeps saying reset again even tho reset isnt the problem. last 4 + recovery email match. need someone to clear hold not send same script"
+    },
+    {
+      "id": "school-coordination-professional-message",
+      "name": "Pickup Change and Permission Slip / Professional Message",
+      "intention": "Carry dismissal and permission details forward in a calm parent-facing tone.",
+      "text": "Hello, confirming today's dismissal change: Aunt Maribel was approved for pickup and signed the student out at 3:17 PM after ID verification. We also wanted to note that the museum field-trip permission slip still was not located by close of day, even though the fee waiver form is already on file. During the 1:48 PM phone call, you mentioned the signed slip might still be in the backpack. We sent a reminder to the classroom at 2:03 PM, but the paper did not surface before dismissal. If the signed permission page comes home tonight, please return it tomorrow morning so Friday's trip record is complete."
+    },
+    {
+      "id": "school-coordination-rushed-mobile",
+      "name": "Pickup Change and Permission Slip / Rushed Mobile",
+      "intention": "Preserve the same pickup and permission facts through everyday mobile shorthand.",
+      "text": "hi office - aunt maribel has to do pickup today not grandma. shell have id. also i swear i signed the museum slip, it might still be in backpack w the waiver papers. if class can check before 3 that would help. sorry for late change"
+    },
+    {
+      "id": "municipal-zoning-formal-record",
+      "name": "Parking Variance Worksheet / Formal Record",
+      "intention": "Preserve hearing date, stall counts, and the distinction between a deferred vote and a denial.",
+      "text": "For case ZN-214, the parking variance memo circulated ahead of the June 12 hearing still lists 14 usable stalls, but Exhibit B only supports 11 once the fire-lane carveout and loading strip are counted correctly. That mismatch matters because the hardship argument assumes the larger number. Staff first treated it as a spreadsheet rounding issue; it is not. The site photos, striping map, and curb-cut sketch all point to the same 11-stall ceiling. The board did not deny the variance on June 12. It deferred action and requested a corrected worksheet because the hearing record could not rely on two competing stall counts at once. The immediate failure is not only the applicant's narrative. It is document custody: the memo, exhibit, and oral summary no longer agree on the number the board is being asked to treat as fact."
+    },
+    {
+      "id": "municipal-zoning-rushed-mobile",
+      "name": "Parking Variance Worksheet / Rushed Mobile",
+      "intention": "Keep the same zoning facts visible through terse procedural shorthand.",
+      "text": "zn-214 packet still off. memo says 14 stalls, exhibit only gives 11 once fire lane + load strip count. board didnt deny it, they punted bc record had 2 numbers fighting each other. pls fix worksheet before resched"
+    },
+    {
+      "id": "adversarial-hearing-professional-message",
+      "name": "Late Inspection Hearing / Professional Message",
+      "intention": "Push back on adversarial framing while keeping the documented schedule intact.",
+      "text": "Hearing unit, please correct the way the July 3 record is framing the June inspection. Counsel kept calling it a \"refusal of entry,\" but the notice window was 1:00-5:00 PM and the inspector did not text until 5:43 that he was still in traffic. Camera time places arrival after 6:10. The claimant had already left for the medical pickup she flagged earlier that day. That is a late inspection, not a refusal. If the refusal label stays in the summary, the schedule breach disappears and the whole case leans on the wrong premise."
+    },
+    {
+      "id": "adversarial-hearing-rushed-mobile",
+      "name": "Late Inspection Hearing / Rushed Mobile",
+      "intention": "Keep the same late-arrival facts visible under adversarial shorthand pressure.",
+      "text": "hearing got ugly. they keep saying she \"refused entry\" but inspector texted 5:43 he was late + showed after 6:10 on a 1-5 window. she left for med pickup she already told them abt. thats not refusal its them being late"
+    },
+    {
+      "id": "museum-fog-alarm-professional-message",
+      "name": "Gallery 4 Fog Cue / Professional Message",
+      "intention": "Carry the same rehearsal facts forward in a crisp but team-facing register.",
+      "text": "Production team, quick correction from Gallery 4: the fog cue at 7:42 PM is what tripped the detector, not an electrical issue. Facilities reset the panel and we resumed at 8:11, but the real problem is that the cue sheet still describes the effect as a light atmospheric wash even though the rig is now outputting closer to a burst. Please adjust the first two passes before tomorrow so we do not reproduce the same alarm under a prettier label."
+    },
+    {
+      "id": "museum-fog-alarm-rushed-mobile",
+      "name": "Gallery 4 Fog Cue / Rushed Mobile",
+      "intention": "Keep the same cue and alarm facts under compressed backstage shorthand.",
+      "text": "gallery 4 fog rig set off detector again at 7:42. not fire, just too much haze sitting under ceiling head bc fan was low. pls stop calling cue \"light wash\" when its basically a fog burst now. reset finished 8:11"
+    },
+    {
+      "id": "model-safety-professional-message",
+      "name": "RS-17 Redaction Failure / Professional Message",
+      "intention": "Carry the same route-failure distinction into a direct technical register.",
+      "text": "Eval team, RS-17 needs a cleaner read than \"model safely refused.\" The task was to generate a redacted witness recap, not to disclose raw names, and the run had the witness log in retrieval context so timeline and role structure could stay intact after de-identification. Instead the model jumped to a generic privacy sermon and never performed the redact-and-summarize step. That is route failure, not a jailbreak catch. Please log it that way so over-refusal does not get counted as safety success."
+    },
+    {
+      "id": "model-safety-rushed-mobile",
+      "name": "RS-17 Redaction Failure / Rushed Mobile",
+      "intention": "Keep the same eval-failure facts legible through compressed technical shorthand.",
+      "text": "rs-17 is doing the fake-safe thing again. prompt asked for redacted witness recap + it just started preaching abt privacy instead of actually de-id + summarizing. not jailbreak, just overrefusal killing the task"
+    }
+  ]
+}

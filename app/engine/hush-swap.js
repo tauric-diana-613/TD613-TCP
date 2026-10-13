@@ -1,0 +1,554 @@
+import { buildCadenceTransfer, extractCadenceProfile } from './stylometry.js';
+import { buildEscapeVector } from './escape-vector.js';
+import { buildIngestionFrictionAudit } from './ingestion-friction.js';
+import { buildEscapeControllerDecision } from './escape-controller.js';
+import { evaluateClaimCeiling } from './claim-ladder.js';
+import { buildContextProfile } from './context-profile.js';
+import { buildRecognitionField } from './recognition-field.js';
+import { buildProfileMatch, summarizeProfileMatch } from './hush-profile-match.js';
+import { buildResidualVector, summarizeResidualVector } from './hush-residual-vector.js';
+import { buildProtectedLiteralLockbox, verifyProtectedLiteralLockbox, summarizeProtectedLiteralLockbox } from './hush-protected-literal-lockbox.js';
+import { buildSteeringPlan, scoreCandidateWithSteering, summarizeSteeringPlan } from './hush-steering-plan.js';
+import { buildMaskLifecycle, summarizeMaskLifecycle } from './hush-mask-lifecycle.js';
+import { exportHushPolicyJson } from './hush-export-policy.js';
+import { buildMeaningPlan, extractPayloadProtectedLiterals } from './hush-meaning-plan.js';
+import { buildRealizationPlan } from './hush-realization-plan.js';
+import { generateMaskWriterCandidates, styleStrategiesForMask } from './hush-mask-writer.js';
+import { scoreNaturalness, summarizeNaturalness } from './hush-naturalness.js';
+import { cleanHushCandidates, summarizeCleanroom } from './hush-candidate-cleanroom.js';
+import { buildReleasePolicy, summarizeReleasePolicy } from './hush-release-policy.js';
+import { buildSourceResidue, scoreSourceResidue, summarizeSourceResidue } from './hush-source-residue.js';
+import { buildClaimRoleMap, summarizeClaimRoleMap } from './hush-claim-roles.js';
+import { buildLiteralPlacementMap, repairLiteralPlacement, summarizeLiteralPlacement } from './hush-literal-placement.js';
+import { buildSyntaxPlan, summarizeSyntaxPlan } from './hush-syntax-plan.js';
+import { generateSyntaxRecomposerCandidates } from './hush-syntax-recomposer.js';
+import { buildSyntaxShift, scoreSyntaxShift, summarizeSyntaxShift } from './hush-syntax-shift.js';
+import { verifyClaimIntegrity, summarizeClaimIntegrity } from './hush-claim-integrity.js';
+import { buildPayloadMap, summarizePayloadMap } from './hush-payload-map.js';
+import { buildPayloadBindingMap, summarizePayloadBindingMap } from './hush-payload-binding.js';
+import { verifyPayloadIntegrity, summarizePayloadIntegrity } from './hush-payload-integrity.js';
+import { repairPayloadLoss, rebuildPayloadSentence, summarizePayloadRepair } from './hush-payload-repair.js';
+
+export const HUSH_SWAP_VERSION = 'phase-22.1-selection-pressure';
+
+const safeText = (value) => String(value ?? '');
+const asArray = (value) => Array.isArray(value) ? [...value] : [];
+const clamp = (value, min = 0, max = 1) => Number.isFinite(value) ? Math.max(min, Math.min(max, value)) : 0;
+const round = (value, digits = 4) => Number.isFinite(value) ? Number(value.toFixed(digits)) : 0;
+const unique = (values = []) => [...new Set(asArray(values).filter(Boolean))];
+const GENERIC_SAFE_STRATEGIES = new Set([
+  'record-first',
+  'evidence-first',
+  'date-first',
+  'caveat-first',
+  'request-softened',
+  'two-sentence-brief',
+  'intake-style',
+  'procedural-neutral',
+  'formal-record',
+  'compressed-record',
+  'expanded-context',
+  'literal-safe-fallback'
+]);
+
+function extractProtectedLiterals(text = '') {
+  return extractPayloadProtectedLiterals(text).slice(0, 64);
+}
+
+function literalScore(outputText = '', protectedLiterals = []) {
+  const required = asArray(protectedLiterals).filter(Boolean);
+  if (!required.length) return 1;
+  const kept = required.filter((literal) => safeText(outputText).includes(literal)).length;
+  return clamp(kept / required.length);
+}
+
+function buildMaskStyleSelectionSignal(candidate = {}, mask = {}) {
+  const strategy = safeText(candidate.strategy || candidate.family).trim();
+  const source = safeText(candidate.source || '').trim();
+  const operations = asArray(candidate.operations).map((item) => safeText(item)).join(' ');
+  const maskStrategies = styleStrategiesForMask(mask || {});
+  const maskSpecific = maskStrategies.includes(strategy) || maskStrategies.some((entry) => operations.includes(`strategy:${entry}`));
+  const writerSource = source === 'mask-writer';
+  const syntaxSource = source === 'syntax-recomposer';
+  const fallbackSource = source === 'literal-safe-fallback';
+  const genericSafe = fallbackSource || (syntaxSource && !maskSpecific && GENERIC_SAFE_STRATEGIES.has(strategy));
+  const humanSurface = writerSource && !genericSafe;
+  let maskStyleScore = writerSource ? 0.64 : syntaxSource ? 0.24 : 0.10;
+  if (maskSpecific) maskStyleScore += 0.34;
+  if (humanSurface && !maskSpecific) maskStyleScore += 0.08;
+  if (fallbackSource) maskStyleScore = 0.04;
+  if (genericSafe) maskStyleScore -= 0.10;
+  const genericSafetyPenalty = fallbackSource ? 0.18 : genericSafe ? 0.11 : syntaxSource && !maskSpecific ? 0.04 : 0;
+  return {
+    version: 'hush-selection-pressure/v1',
+    source,
+    strategy,
+    maskStrategies,
+    maskSpecific,
+    writerSource,
+    syntaxSource,
+    fallbackSource,
+    genericSafe,
+    humanSurface,
+    maskStyleScore: round(clamp(maskStyleScore)),
+    genericSafetyPenalty: round(clamp(genericSafetyPenalty)),
+    warnings: [
+      ...(genericSafe ? ['generic-safe-candidate-penalized'] : []),
+      ...(writerSource && maskSpecific ? ['mask-specific-writer-candidate'] : []),
+      ...(syntaxSource && !maskSpecific ? ['syntax-candidate-may-flatten-mask'] : [])
+    ]
+  };
+}
+
+function mutateCandidate(text = '', index = 0, mask = {}, steeringPlan = null) {
+  const value = safeText(text).trim();
+  if (!value) return '';
+  const hot = asArray(steeringPlan?.targetDimensions).map((dim) => dim.key);
+  if (index === 1 || hot.includes('avgSentenceLength')) return value.replace(/\s+/g, ' ').replace(/,\s+/g, '. ');
+  if (index === 2 || hot.includes('recurrencePressure')) return value.replace(/\b(please|actually|really|just)\b/gi, '').replace(/\s+/g, ' ').trim();
+  if (index === 3 || hot.includes('contractionDensity')) return value.replace(/\bI\s+am\b/g, "I'm").replace(/\bdo not\b/gi, "don't").replace(/\bdoes not\b/gi, "doesn't");
+  if (index === 4 || hot.includes('lexicalDensity')) return value.replace(/\bI'm\b/gi, 'I am').replace(/\bdon't\b/gi, 'do not').replace(/\bdoesn't\b/gi, 'does not');
+  return value;
+}
+
+function buildPhase21Plans(input = {}) {
+  const sourceText = safeText(input.sourceText);
+  const protectedLiterals = asArray(input.protectedLiterals).length ? unique([...asArray(input.protectedLiterals), ...extractProtectedLiterals(sourceText)]) : extractProtectedLiterals(sourceText);
+  const meaningPlan = input.meaningPlan || buildMeaningPlan({ sourceText, protectedLiterals });
+  const payloadMap = input.payloadMap || buildPayloadMap({ sourceText, meaningPlan, protectedLiterals });
+  const claimRoleMap = input.claimRoleMap || buildClaimRoleMap({ sourceText, meaningPlan, protectedLiterals });
+  const literalPlacementMap = input.literalPlacementMap || buildLiteralPlacementMap({ sourceText, meaningPlan, claimRoleMap, protectedLiterals });
+  const payloadBindingMap = input.payloadBindingMap || buildPayloadBindingMap({ sourceText, payloadMap, meaningPlan, protectedLiterals });
+  const realizationPlan = input.realizationPlan || buildRealizationPlan({ mask: input.mask || {}, maskProfile: input.maskProfile || input.mask?.profile || {} });
+  const seedResidue = input.sourceResidue || buildSourceResidue({ sourceText, outputText: sourceText, protectedLiterals });
+  const syntaxPlan = input.syntaxPlan || buildSyntaxPlan({ sourceText, meaningPlan, claimRoleMap, literalPlacementMap, realizationPlan, sourceResidue: seedResidue, mask: input.mask || {} });
+  return { protectedLiterals, meaningPlan, payloadMap, claimRoleMap, literalPlacementMap, payloadBindingMap, realizationPlan, syntaxPlan, seedResidue };
+}
+
+function mergeCandidatePools(...pools) {
+  const seen = new Set();
+  const merged = [];
+  for (const candidate of pools.flatMap((pool) => asArray(pool))) {
+    const text = safeText(candidate.text).replace(/\s+/g, ' ').trim();
+    if (!text) continue;
+    const key = text.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    merged.push({ ...candidate, text });
+  }
+  return merged;
+}
+
+function sentence(text = '') {
+  const value = safeText(text).replace(/\s+/g, ' ').trim();
+  if (!value) return '';
+  return /[.!?]$/.test(value) ? value : `${value}.`;
+}
+
+function joinSentences(parts = []) {
+  return asArray(parts).map(sentence).filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
+}
+
+function humanList(items = []) {
+  const values = unique(items);
+  if (!values.length) return '';
+  if (values.length === 1) return values[0];
+  if (values.length === 2) return `${values[0]} and ${values[1]}`;
+  return `${values.slice(0, -1).join(', ')}, and ${values[values.length - 1]}`;
+}
+
+function normalizeWitnessSource(text = '') {
+  return safeText(text)
+    .replace(/\s+/g, ' ')
+    .replace(/^please\s+/i, '')
+    .replace(/\bPlease say that\b/gi, 'The note should say that')
+    .replace(/\bPlease keep\b/gi, 'Keep')
+    .replace(/\bmake the note read less like a formal complaint\b/gi, 'keep the note from reading like a formal complaint')
+    .replace(/\bI do not want this to sound like an accusation\b/gi, 'This should read as sequence rather than accusation')
+    .replace(/\bI want this written as sequence, not accusation\b/gi, 'This should read as sequence rather than accusation')
+    .replace(/\bdo not make me sound like I am trying to start a fight\b/gi, 'keep the tone careful and non-escalating')
+    .trim();
+}
+
+function buildLiteralSafeFallbackCandidates(input = {}) {
+  const sourceText = safeText(input.sourceText).trim();
+  const protectedLiterals = unique(input.protectedLiterals || input.meaningPlan?.protectedLiterals || []);
+  if (!sourceText || !protectedLiterals.length) return [];
+  const anchor = `${humanList(protectedLiterals)} should remain attached to the record`;
+  const payload = rebuildPayloadSentence({ sourceText, payloadMap: input.payloadMap, payloadBindingMap: input.payloadBindingMap });
+  const normalized = normalizeWitnessSource(sourceText);
+  const variants = unique([
+    joinSentences([anchor, payload || normalized]),
+    joinSentences(['Keeping the claim narrow', payload || anchor, normalized && normalized !== payload ? normalized : '']),
+    joinSentences(['Record note', anchor, payload || normalized])
+  ]);
+  return variants.map((text, index) => ({
+    id: `literal-safe-candidate-${index + 1}`,
+    text,
+    source: 'literal-safe-fallback',
+    strategy: 'literal-safe-fallback',
+    family: 'literal-safe-fallback',
+    operations: ['literal-safe-fallback', payload ? 'payload-rebuild-sentence' : 'source-normalized-literal-anchor'],
+    warnings: ['literal-safe-fallback-review']
+  }));
+}
+
+function attachPayloadRepair(candidate = {}, input = {}) {
+  const initialIntegrity = verifyPayloadIntegrity({ sourceText: input.sourceText, outputText: candidate.text, payloadMap: input.payloadMap, payloadBindingMap: input.payloadBindingMap, protectedLiterals: input.protectedLiterals });
+  const repair = repairPayloadLoss({ sourceText: input.sourceText, text: candidate.text, candidate, payloadMap: input.payloadMap, payloadBindingMap: input.payloadBindingMap, payloadIntegrity: initialIntegrity });
+  const outputText = repair.changed ? repair.text : candidate.text;
+  const finalIntegrity = verifyPayloadIntegrity({ sourceText: input.sourceText, outputText, payloadMap: input.payloadMap, payloadBindingMap: input.payloadBindingMap, protectedLiterals: input.protectedLiterals });
+  return {
+    ...candidate,
+    text: outputText,
+    payloadRepair: repair,
+    payloadRepairSummary: summarizePayloadRepair(repair),
+    payloadIntegrity: finalIntegrity,
+    payloadIntegritySummary: summarizePayloadIntegrity(finalIntegrity),
+    operations: unique([...asArray(candidate.operations), ...asArray(repair.operations)]),
+    warnings: unique([...asArray(candidate.warnings), ...asArray(repair.warnings), ...asArray(finalIntegrity.reviewWarnings)])
+  };
+}
+
+function prepareCandidatePool(input = {}) {
+  const plans = buildPhase21Plans(input);
+  const count = Number(input.count || input.candidateCount || 24);
+  const writerCount = Math.max(8, Math.floor(count * 0.45));
+  const syntaxCount = Math.max(12, count - writerCount);
+  const writerBundle = generateMaskWriterCandidates({ ...input, ...plans, candidateCount: writerCount });
+  const syntaxBundle = generateSyntaxRecomposerCandidates({ ...input, ...plans, candidateCount: syntaxCount });
+  const raw = mergeCandidatePools(
+    asArray(writerBundle.candidates).map((candidate) => ({ ...candidate, source: 'mask-writer' })),
+    asArray(syntaxBundle.candidates).map((candidate) => ({ ...candidate, source: 'syntax-recomposer' })),
+    buildLiteralSafeFallbackCandidates({ ...input, ...plans })
+  );
+  const placementRepaired = raw.map((candidate) => {
+    const repaired = repairLiteralPlacement({ text: candidate.text, literalPlacementMap: plans.literalPlacementMap, protectedLiterals: plans.protectedLiterals });
+    return {
+      ...candidate,
+      text: repaired.text,
+      literalPlacement: repaired,
+      operations: unique([...asArray(candidate.operations), ...asArray(repaired.operations)]),
+      warnings: unique([...asArray(candidate.warnings), ...asArray(repaired.warnings)])
+    };
+  });
+  const cleanroom = cleanHushCandidates({ candidates: placementRepaired, sourceText: input.sourceText, meaningPlan: plans.meaningPlan, realizationPlan: plans.realizationPlan, protectedLiterals: plans.protectedLiterals, mask: input.mask, literalPlacementMap: plans.literalPlacementMap });
+  const payloadRepaired = asArray(cleanroom.candidates).map((candidate) => attachPayloadRepair(candidate, { ...plans, sourceText: input.sourceText }));
+  return { ...plans, writerBundle, syntaxBundle, cleanroom: { ...cleanroom, candidates: payloadRepaired }, candidates: payloadRepaired };
+}
+
+export function generateHushSwapCandidate(input = {}) {
+  const sourceText = safeText(input.sourceText);
+  const writerCandidate = input.writerCandidate || null;
+  const mask = input.mask || {};
+  const maskProfile = input.maskProfile || mask.profile || {};
+  const index = Number(input.index || 0);
+  let candidateText = writerCandidate?.text || (index === 0 ? sourceText : mutateCandidate(sourceText, index, mask, input.steeringPlan));
+  if (!writerCandidate) {
+    try {
+      const transfer = buildCadenceTransfer(candidateText, {
+        mode: 'persona',
+        profile: maskProfile,
+        personaId: mask.id || 'hush-mask',
+        label: mask.label || 'Hush Mask',
+        strength: Math.max(0.70, (mask.strength || 0.9) - (index * 0.035)),
+        mod: mask.mod || null
+      });
+      candidateText = transfer?.text || candidateText;
+    } catch {
+      // keep candidate text
+    }
+  }
+  return {
+    id: writerCandidate?.id || `candidate-${index + 1}`,
+    text: candidateText,
+    strategy: writerCandidate?.strategy || writerCandidate?.family || `legacy-${index}`,
+    family: writerCandidate?.family || writerCandidate?.strategy || `legacy-${index}`,
+    source: writerCandidate?.source || 'legacy-transfer',
+    operations: asArray(writerCandidate?.operations),
+    writerNaturalness: writerCandidate?.naturalness || null,
+    writerWarnings: asArray(writerCandidate?.warnings),
+    cleanroom: writerCandidate?.cleanroom || null,
+    literalPlacement: writerCandidate?.literalPlacement || null,
+    payloadRepair: writerCandidate?.payloadRepair || null,
+    payloadRepairSummary: writerCandidate?.payloadRepairSummary || null,
+    payloadIntegrity: writerCandidate?.payloadIntegrity || null,
+    payloadIntegritySummary: writerCandidate?.payloadIntegritySummary || null,
+    profile: extractCadenceProfile(candidateText)
+  };
+}
+
+export function scoreHushSwapCandidate(input = {}) {
+  const candidate = input.candidate || {};
+  const outputText = safeText(candidate.text);
+  const sourceText = safeText(input.sourceText);
+  const maskProfile = input.maskProfile || input.mask?.profile || {};
+  const protectedLiterals = asArray(input.protectedLiterals).length ? asArray(input.protectedLiterals) : extractProtectedLiterals(sourceText);
+  const lockbox = input.lockbox || buildProtectedLiteralLockbox({ sourceText, baselineText: input.protectedBaselineText, maskReferenceText: input.maskReferenceText, manualLiterals: protectedLiterals });
+  const lockboxVerification = verifyProtectedLiteralLockbox(lockbox, outputText);
+  const ingestionAudit = buildIngestionFrictionAudit({ text: outputText, protectedLiterals });
+  const outputProfile = candidate.profile || extractCadenceProfile(outputText);
+  const escapeVector = buildEscapeVector({
+    protectedBaselineText: input.protectedBaselineText || sourceText,
+    maskText: input.maskReferenceText || input.mask?.sampleSeed || input.mask?.description || '',
+    maskProfile,
+    maskHistory: input.maskHistory || [],
+    draftText: sourceText,
+    outputText,
+    outputProfile,
+    protectedLiterals,
+    ingestionAudit,
+    options: { mode: input.operatorMode || 'neutralize', thresholds: { minWords: 5 } }
+  });
+  const contextProfile = buildContextProfile({
+    contextType: input.contextType || 'group-chat',
+    intendedMode: input.operatorMode || 'neutralize',
+    exposureDuration: input.exposureDuration || 'single-use',
+    protectedBaselineText: input.protectedBaselineText || sourceText,
+    maskReferenceText: input.maskReferenceText || input.mask?.sampleSeed || '',
+    messageDraftText: sourceText,
+    protectedOutputText: outputText,
+    protectedLiterals
+  });
+  const controllerDecision = buildEscapeControllerDecision({ vector: escapeVector, mode: input.operatorMode || 'neutralize', operatorIntent: { priority: 'source-reduction', targetContext: 'TD613 Hush' } });
+  const recognitionField = buildRecognitionField({
+    protectedBaselineText: input.protectedBaselineText || sourceText,
+    maskReferenceText: input.maskReferenceText || input.mask?.sampleSeed || '',
+    messageDraftText: sourceText,
+    protectedOutputText: outputText,
+    protectedLiterals,
+    escapeVector,
+    ingestionAudit,
+    controllerDecision,
+    personaSummary: input.personaSummary || {},
+    iterationLedger: input.iterationLedger || {},
+    contextProfile,
+    options: { contextType: input.contextType || 'group-chat', intendedMode: input.operatorMode || 'neutralize', exposureDuration: input.exposureDuration || 'single-use' }
+  });
+  const match = buildProfileMatch({ sourceText, outputText, maskProfile, sourceProfile: extractCadenceProfile(sourceText), outputProfile, protectedLiterals, escapeVector, ingestionAudit, recognitionField });
+  const residualVector = buildResidualVector({ sourceText, outputText, maskProfile, outputProfile });
+  const steeringPlan = buildSteeringPlan({ sourceText, outputText, maskProfile, outputProfile, residualVector, lockbox });
+  const sourceResidue = buildSourceResidue({ sourceText, outputText, protectedLiterals });
+  const sourceResidueScore = scoreSourceResidue(sourceResidue);
+  const sourceResidueSummary = summarizeSourceResidue(sourceResidue);
+  const syntaxShift = candidate.syntaxShift || buildSyntaxShift({ sourceText, outputText, sourceResidue });
+  const syntaxShiftScore = scoreSyntaxShift(syntaxShift);
+  const syntaxShiftSummary = summarizeSyntaxShift(syntaxShift);
+  const payloadIntegrity = candidate.payloadIntegrity || verifyPayloadIntegrity({ sourceText, outputText, payloadMap: input.payloadMap, payloadBindingMap: input.payloadBindingMap, protectedLiterals });
+  const payloadIntegritySummary = summarizePayloadIntegrity(payloadIntegrity);
+  const payloadRepair = candidate.payloadRepair || null;
+  const payloadRepairSummary = candidate.payloadRepairSummary || summarizePayloadRepair(payloadRepair || {});
+  const claimIntegrity = candidate.claimIntegrity || verifyClaimIntegrity({ sourceText, outputText, protectedLiterals, meaningPlan: input.meaningPlan });
+  const claimIntegritySummary = summarizeClaimIntegrity(claimIntegrity);
+  const literalPlacementSummary = summarizeLiteralPlacement(candidate.literalPlacement || input.literalPlacementMap || {});
+  const naturalness = candidate.writerNaturalness || scoreNaturalness({ text: outputText, mask: input.mask, realizationPlan: input.realizationPlan });
+  const naturalnessSummary = summarizeNaturalness(naturalness);
+  const maskStyleSignal = buildMaskStyleSelectionSignal(candidate, input.mask || {});
+  const scores = escapeVector.scores || {};
+  const protectedLiteralScore = Math.min(literalScore(outputText, protectedLiterals), lockboxVerification.preservationScore ?? 1);
+  const steeringScore = scoreCandidateWithSteering({
+    operatorMode: input.operatorMode || 'neutralize',
+    contextType: input.contextType || 'group-chat',
+    maskMatch: match.matchScore || 0,
+    semanticFidelity: scores.semanticFidelity ?? 0,
+    protectedLiteralScore,
+    sourceReductionScore: clamp(1 - (scores.sourceResidualRisk ?? 1)),
+    contextSafetyScore: clamp(1 - (recognitionField.summary?.recognitionPressure ?? 0)),
+    residualVector
+  });
+  const naturalnessScore = naturalness.naturalnessScore ?? 0;
+  const sourceScore = sourceResidueScore.sourceResidueScore ?? 0;
+  const syntaxScore = syntaxShiftScore.syntaxShiftScore ?? syntaxShift.metrics?.syntaxShiftScore ?? 0;
+  const claimScore = claimIntegrity.score ?? (claimIntegrity.passed ? 1 : 0);
+  const payloadScore = payloadIntegrity.score ?? (payloadIntegrity.passed ? 1 : 0);
+  const naturalnessHardBlocks = naturalnessScore < 0.34 ? ['naturalness-catastrophic'] : [];
+  const finalScore = round(clamp((steeringScore.finalScore * 0.31) + (naturalnessScore * 0.09) + (sourceScore * 0.12) + (syntaxScore * 0.11) + (claimScore * 0.06) + (payloadScore * 0.12) + (maskStyleSignal.maskStyleScore * 0.19) - maskStyleSignal.genericSafetyPenalty));
+  const selectionScore = finalScore;
+  const hardVetoes = [...asArray(steeringScore.vetoes), ...naturalnessHardBlocks, ...asArray(claimIntegrity.hardFailures).map(() => 'claim-integrity-failed'), ...asArray(payloadIntegrity.hardFailures).map(() => 'claim-payload-loss')];
+  const reviewWarnings = unique([
+    ...asArray(steeringScore.reviewWarnings),
+    ...asArray(steeringPlan.warnings),
+    ...asArray(candidate.writerWarnings),
+    ...asArray(maskStyleSignal.warnings),
+    ...asArray(match.warnings),
+    ...asArray(naturalness.fluencyWarnings),
+    ...asArray(sourceResidue.warnings),
+    ...asArray(syntaxShift.warnings),
+    ...asArray(claimIntegrity.reviewWarnings),
+    ...asArray(payloadIntegrity.reviewWarnings),
+    ...asArray(payloadRepair?.warnings),
+    ...asArray(candidate.literalPlacement?.warnings)
+  ]);
+  const scoreBreakdown = { ...steeringScore.scoreBreakdown, naturalness: naturalnessScore, sourceResidueScore: sourceScore, sourceResidueRisk: sourceResidueScore.sourceResidueRisk, syntaxShiftScore: syntaxScore, claimIntegrity: claimScore, payloadIntegrity: payloadScore, maskStyleScore: maskStyleSignal.maskStyleScore, genericSafetyPenalty: maskStyleSignal.genericSafetyPenalty };
+  const weightProfile = { ...steeringScore.weightProfile, naturalness: 0.09, sourceResidueScore: 0.12, syntaxShiftScore: 0.11, claimIntegrity: 0.06, payloadIntegrity: 0.12, maskStyleScore: 0.19, genericSafetyPenalty: 'subtract' };
+  const releasePolicy = buildReleasePolicy({
+    candidate: { ...candidate, text: outputText, vetoes: hardVetoes, warnings: reviewWarnings, scoreBreakdown, weightProfile, naturalness, escapeVector, lockboxVerification, sourceResidue, sourceResidueScore: sourceScore, syntaxShift, claimIntegrity, payloadIntegrity, payloadRepair, match, maskStyleSignal },
+    outputText,
+    protectedLiterals,
+    semanticFidelity: scores.semanticFidelity ?? 0,
+    protectedLiteralScore,
+    naturalnessScore,
+    sourceResidue,
+    sourceResidueScore: sourceScore,
+    syntaxShift,
+    syntaxShiftScore: syntaxScore,
+    claimIntegrity,
+    payloadIntegrity,
+    payloadRepair,
+    maskMatch: match.matchScore || 0
+  });
+  return {
+    ...candidate,
+    finalScore,
+    selectionScore,
+    scoreBreakdown,
+    weightProfile,
+    maskStyleSignal,
+    vetoes: unique(hardVetoes),
+    reviewWarnings,
+    releasePolicy,
+    releaseSummary: summarizeReleasePolicy(releasePolicy),
+    sourceResidue,
+    sourceResidueSummary,
+    sourceResidueScore,
+    syntaxShift,
+    syntaxShiftSummary,
+    syntaxShiftScore,
+    payloadIntegrity,
+    payloadIntegritySummary,
+    payloadRepair,
+    payloadRepairSummary,
+    claimIntegrity,
+    claimIntegritySummary,
+    literalPlacementSummary,
+    naturalness,
+    naturalnessSummary,
+    match,
+    matchSummary: summarizeProfileMatch(match),
+    residualVector,
+    residualSummary: summarizeResidualVector(residualVector),
+    lockbox,
+    lockboxVerification,
+    lockboxSummary: summarizeProtectedLiteralLockbox(lockbox, lockboxVerification),
+    steeringPlan,
+    steeringSummary: summarizeSteeringPlan(steeringPlan),
+    escapeVector,
+    ingestionAudit,
+    controllerDecision,
+    contextProfile,
+    recognitionField,
+    warnings: unique([...reviewWarnings, ...hardVetoes])
+  };
+}
+
+export function chooseBestHushSwapCandidate(candidates = [], options = {}) {
+  const threshold = Number(options.minFinalScore ?? 0.42);
+  const scored = candidates.filter(Boolean).sort((left, right) => {
+    const leftBlocked = left.releasePolicy?.hardBlocked ? 1 : 0;
+    const rightBlocked = right.releasePolicy?.hardBlocked ? 1 : 0;
+    if (leftBlocked !== rightBlocked) return leftBlocked - rightBlocked;
+    const leftPayload = left.payloadIntegrity?.passed === false ? 1 : 0;
+    const rightPayload = right.payloadIntegrity?.passed === false ? 1 : 0;
+    if (leftPayload !== rightPayload) return leftPayload - rightPayload;
+    const leftWrapper = asArray(left.syntaxShift?.warnings).includes('wrapper-only-transform') ? 1 : 0;
+    const rightWrapper = asArray(right.syntaxShift?.warnings).includes('wrapper-only-transform') ? 1 : 0;
+    if (leftWrapper !== rightWrapper) return leftWrapper - rightWrapper;
+    const leftScore = left.selectionScore ?? left.finalScore ?? 0;
+    const rightScore = right.selectionScore ?? right.finalScore ?? 0;
+    const scoreDelta = rightScore - leftScore;
+    if (Math.abs(scoreDelta) > 0.015) return scoreDelta;
+    const leftStyle = left.maskStyleSignal?.maskStyleScore ?? 0;
+    const rightStyle = right.maskStyleSignal?.maskStyleScore ?? 0;
+    if (leftStyle !== rightStyle) return rightStyle - leftStyle;
+    return (right.finalScore || 0) - (left.finalScore || 0);
+  });
+  const best = scored[0] || null;
+  if (!best) return null;
+  return { ...best, belowViabilityThreshold: (best.finalScore || 0) < threshold };
+}
+
+export function buildHushSwap(input = {}) {
+  const sourceText = safeText(input.sourceText);
+  const protectedLiterals = asArray(input.protectedLiterals).length ? unique([...asArray(input.protectedLiterals), ...extractProtectedLiterals(sourceText)]) : extractProtectedLiterals(sourceText);
+  const lockbox = input.lockbox || buildProtectedLiteralLockbox({ sourceText, baselineText: input.protectedBaselineText, maskReferenceText: input.maskReferenceText, manualLiterals: protectedLiterals });
+  const seedPlan = buildSteeringPlan({ sourceText, outputText: sourceText, maskProfile: input.maskProfile || input.mask?.profile || {}, lockbox });
+  const requestedCount = Number(input.options?.candidateCount || input.candidateCount || 24);
+  const count = Math.max(24, Math.min(36, Number.isFinite(requestedCount) && requestedCount > 0 ? requestedCount : 24));
+  const phase21 = prepareCandidatePool({ ...input, sourceText, protectedLiterals, lockbox, count, candidateCount: count });
+  const writerCandidates = asArray(phase21.candidates);
+  const rawCandidates = writerCandidates.length
+    ? writerCandidates.map((writerCandidate, index) => generateHushSwapCandidate({ ...input, protectedLiterals, lockbox, steeringPlan: seedPlan, index, writerCandidate }))
+    : Array.from({ length: Math.min(8, count) }, (_, index) => generateHushSwapCandidate({ ...input, protectedLiterals, lockbox, steeringPlan: seedPlan, index }));
+  const candidates = rawCandidates.map((candidate) => scoreHushSwapCandidate({ ...input, protectedLiterals, lockbox, meaningPlan: phase21.meaningPlan, payloadMap: phase21.payloadMap, payloadBindingMap: phase21.payloadBindingMap, realizationPlan: phase21.realizationPlan, literalPlacementMap: phase21.literalPlacementMap, candidate }));
+  const selected = chooseBestHushSwapCandidate(candidates, { minFinalScore: input.options?.minFinalScore ?? 0.42 }) || candidates[0] || null;
+  const allCandidatesFailed = Boolean(!selected || selected.releasePolicy?.hardBlocked);
+  const releasePolicy = selected?.releasePolicy || buildReleasePolicy({ outputText: '' });
+  const claimCeiling = selected ? evaluateClaimCeiling({ escapeVector: selected.escapeVector, ingestionAudit: selected.ingestionAudit, controllerDecision: selected.controllerDecision, personaSummary: input.personaSummary || {}, iterationLedger: input.iterationLedger || {}, reportIntent: 'local-review' }) : null;
+  const maskLifecycle = buildMaskLifecycle({ mask: input.mask, personaSummary: input.personaSummary, recognitionField: selected?.recognitionField, escapeVector: selected?.escapeVector, missingLiteralPressure: selected?.lockboxVerification?.missingCount || 0 });
+  return {
+    version: HUSH_SWAP_VERSION,
+    selectedOutput: releasePolicy.mayPopulateOutput ? selected?.text || '' : '',
+    candidates,
+    writer: {
+      meaningPlan: phase21.meaningPlan,
+      payloadMap: phase21.payloadMap,
+      payloadMapSummary: summarizePayloadMap(phase21.payloadMap),
+      payloadBindingMap: phase21.payloadBindingMap,
+      payloadBindingSummary: summarizePayloadBindingMap(phase21.payloadBindingMap),
+      realizationPlan: phase21.realizationPlan,
+      claimRoleMap: phase21.claimRoleMap,
+      claimRoleSummary: summarizeClaimRoleMap(phase21.claimRoleMap),
+      literalPlacementMap: phase21.literalPlacementMap,
+      literalPlacementSummary: summarizeLiteralPlacement(phase21.literalPlacementMap),
+      syntaxPlan: phase21.syntaxPlan,
+      syntaxPlanSummary: summarizeSyntaxPlan(phase21.syntaxPlan),
+      syntaxBundle: { version: phase21.syntaxBundle?.version, count: asArray(phase21.syntaxBundle?.candidates).length, warnings: asArray(phase21.syntaxBundle?.warnings) },
+      maskWriterBundle: { version: phase21.writerBundle?.version, count: asArray(phase21.writerBundle?.candidates).length, warnings: asArray(phase21.writerBundle?.warnings) },
+      cleanroom: summarizeCleanroom(phase21.cleanroom),
+      warnings: unique([...asArray(phase21.writerBundle?.warnings), ...asArray(phase21.syntaxBundle?.warnings), ...asArray(phase21.cleanroom?.warnings)])
+    },
+    selectedCandidateId: selected?.id || '',
+    allCandidatesFailed,
+    failureReason: allCandidatesFailed ? 'Every candidate failed hard release policy. Review meaning, payload, literals, naturalness, syntax shift, source residue, and claim discipline.' : '',
+    releasePolicy,
+    releaseSummary: summarizeReleasePolicy(releasePolicy),
+    sourceResidue: selected?.sourceResidue || null,
+    sourceResidueSummary: selected?.sourceResidueSummary || null,
+    sourceResidueScore: selected?.sourceResidueScore || null,
+    syntaxShift: selected?.syntaxShift || null,
+    syntaxShiftSummary: selected?.syntaxShiftSummary || null,
+    syntaxShiftScore: selected?.syntaxShiftScore || null,
+    payloadIntegrity: selected?.payloadIntegrity || null,
+    payloadIntegritySummary: selected?.payloadIntegritySummary || null,
+    payloadRepair: selected?.payloadRepair || null,
+    payloadRepairSummary: selected?.payloadRepairSummary || null,
+    claimIntegrity: selected?.claimIntegrity || null,
+    claimIntegritySummary: selected?.claimIntegritySummary || null,
+    literalPlacementSummary: selected?.literalPlacementSummary || null,
+    match: selected?.match || null,
+    matchSummary: selected?.matchSummary || null,
+    naturalness: selected?.naturalness || null,
+    naturalnessSummary: selected?.naturalnessSummary || null,
+    residualVector: selected?.residualVector || null,
+    residualSummary: selected?.residualSummary || null,
+    steeringPlan: selected?.steeringPlan || null,
+    steeringSummary: selected?.steeringSummary || null,
+    lockbox,
+    lockboxVerification: selected?.lockboxVerification || null,
+    lockboxSummary: selected?.lockboxSummary || summarizeProtectedLiteralLockbox(lockbox),
+    maskLifecycle,
+    maskLifecycleSummary: summarizeMaskLifecycle(maskLifecycle),
+    escapeVector: selected?.escapeVector || null,
+    ingestionAudit: selected?.ingestionAudit || null,
+    controllerDecision: selected?.controllerDecision || null,
+    claimCeiling,
+    recognitionField: selected?.recognitionField || null,
+    maskStyleSignal: selected?.maskStyleSignal || null,
+    warnings: unique([...asArray(phase21.writerBundle?.warnings), ...asArray(phase21.syntaxBundle?.warnings), ...asArray(phase21.cleanroom?.operations), ...candidates.flatMap((candidate) => asArray(candidate.warnings)), ...(allCandidatesFailed ? ['all-candidates-failed'] : [])]),
+    limitations: ['Hush swap is a local candidate selection workflow, not an external recognition outcome.', 'Preserve the claim and payload before chasing the mask.']
+  };
+}
+
+export function exportHushSwapJson(result = {}, options = {}) {
+  return exportHushPolicyJson(result, { mode: options.mode || (options.includePrivateText ? 'private-full-export' : 'share-export'), pretty: options.pretty, includePrivateText: options.includePrivateText });
+}

@@ -1,0 +1,128 @@
+(function () {
+  function isDesktopGateway() {
+    return typeof window.matchMedia === 'function' && window.matchMedia('(min-width: 1024px)').matches;
+  }
+
+  function installSubtitleCascadeGuard() {
+    if (!document.body || document.body.getAttribute('data-page-kind') !== 'gateway') return;
+    var existing = document.getElementById('td613GatewaySubtitleCascadeGuard');
+    if (existing) existing.remove();
+    var style = document.createElement('style');
+    style.id = 'td613GatewaySubtitleCascadeGuard';
+    style.textContent = [
+      'body[data-page-kind="gateway"] .gateway-head .gateway-summary,',
+      'body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-title-group .gateway-preview-subtitle{',
+      'color:rgba(220,230,244,.64)!important;',
+      'font-family:var(--mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace)!important;',
+      'font-weight:400!important;',
+      'line-height:1.5!important;',
+      'letter-spacing:.1em!important;',
+      'text-transform:uppercase!important;',
+      '}',
+      'body[data-page-kind="gateway"] .gateway-head .gateway-summary{font-size:.6rem!important;}',
+      'body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-title-group .gateway-preview-subtitle{font-size:.6rem!important;}',
+      '@media (min-width:1024px){body[data-page-kind="gateway"] .gateway-head .gateway-summary[data-gateway-title-grouped="true"]{font-size:.66rem!important;}}'
+    ].join('');
+    document.head.appendChild(style);
+  }
+
+  function setChamberGlyph(id, glyph, className) {
+    var card = document.getElementById(id);
+    var span = card && card.querySelector('.gateway-card-kicker .glyph');
+    if (!span) return;
+    span.textContent = glyph;
+    if (className) span.className = className;
+    span.setAttribute('aria-hidden', 'true');
+    span.dataset.gatewayGlyphOverride = 'true';
+  }
+
+  function installChamberGlyphs() {
+    setChamberGlyph('gatewayDoorFlight', 'à', 'glyph glyph-cyan');
+    setChamberGlyph('gatewayDoorHarbor', '𝄐', 'glyph glyph-cyan');
+  }
+
+  function placeGatewaySummary() {
+    var lockup = document.querySelector('.gateway-head .gateway-lockup');
+    var titleBlock = document.querySelector('.gateway-head .gateway-lockup > div:first-child');
+    var gatewaySummary = document.querySelector('.gateway-summary');
+    if (!lockup || !titleBlock || !gatewaySummary) return;
+
+    if (isDesktopGateway()) {
+      if (gatewaySummary.parentElement !== titleBlock) titleBlock.appendChild(gatewaySummary);
+      gatewaySummary.dataset.gatewayTitleGrouped = 'true';
+      return;
+    }
+
+    delete gatewaySummary.dataset.gatewayTitleGrouped;
+    if (gatewaySummary.parentElement !== lockup) {
+      if (titleBlock.nextSibling) lockup.insertBefore(gatewaySummary, titleBlock.nextSibling);
+      else lockup.appendChild(gatewaySummary);
+    }
+  }
+
+  function placeBounceTrace() {
+    var banner = document.querySelector('.gateway-head .gateway-lockup');
+    var bottom = document.querySelector('.gateway-preview-shell .gateway-preview-bottom');
+    var tracePanel = document.getElementById('gatewayPreviewTraceCanvas')?.closest?.('.gateway-preview-bottom-panel');
+    var moirePanel = document.getElementById('gatewayPreviewMoireCanvas')?.closest?.('.gateway-preview-bottom-panel');
+    if (!tracePanel) return;
+
+    if (!isDesktopGateway()) {
+      tracePanel.classList.remove('gateway-banner-bounce-trace');
+      delete tracePanel.dataset.gatewayBannerTrace;
+      if (bottom && tracePanel.parentElement !== bottom) bottom.appendChild(tracePanel);
+      if (moirePanel) moirePanel.classList.remove('gateway-preview-moire-wide');
+      return;
+    }
+
+    if (!banner || tracePanel.parentElement === banner) {
+      if (moirePanel) moirePanel.classList.add('gateway-preview-moire-wide');
+      return;
+    }
+
+    tracePanel.dataset.gatewayBannerTrace = 'true';
+    tracePanel.classList.add('gateway-banner-bounce-trace');
+    banner.appendChild(tracePanel);
+    if (moirePanel) moirePanel.classList.add('gateway-preview-moire-wide');
+  }
+
+  function installGatewayCopy() {
+    if (!document.body || document.body.getAttribute('data-page-kind') !== 'gateway') return;
+
+    var brandmark = document.querySelector('.gateway-brandmark');
+    if (brandmark) brandmark.textContent = 'Threshold / Select Chamber';
+
+    var heading = document.querySelector('.gateway-head h1');
+    if (heading) heading.textContent = 'The Cadence Playground';
+
+    var gatewaySummary = document.querySelector('.gateway-summary');
+    if (gatewaySummary) {
+      gatewaySummary.textContent = 'Every voice enters carrying weather, debt, and a little house-haunting from the system that taught it how to sound normal. TD613 opens the chamber where cadence becomes signal, signal becomes mask, mask becomes packet, and the packet starts confessing what got shaved off in transit. Choose a room. Let the machine show you which parts of authorship survived the route.';
+      gatewaySummary.setAttribute('data-copy-pass', 'gateway-weather-house-haunting');
+    }
+
+    var subtitle = document.querySelector('.gateway-preview-subtitle');
+    if (subtitle) {
+      subtitle.textContent = 'Aperture keeps the witness field from flattening into a single answer-surface. It tracks what enters as latent state, what survives projection, what gets registered, and which narrowing operator authored the loss before any route is allowed to call itself clean.';
+      subtitle.setAttribute('data-copy-pass', 'repo-governed-exposure');
+    }
+
+    placeGatewaySummary();
+    placeBounceTrace();
+    installChamberGlyphs();
+    installSubtitleCascadeGuard();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installGatewayCopy, { once: true });
+  else installGatewayCopy();
+  window.setTimeout(installGatewayCopy, 400);
+  window.setTimeout(installGatewayCopy, 900);
+  window.setTimeout(installGatewayCopy, 1600);
+  window.setTimeout(installSubtitleCascadeGuard, 2400);
+  window.addEventListener('resize', function () {
+    placeGatewaySummary();
+    placeBounceTrace();
+    installChamberGlyphs();
+    installSubtitleCascadeGuard();
+  }, { passive: true });
+}());

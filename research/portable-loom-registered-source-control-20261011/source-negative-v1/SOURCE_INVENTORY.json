@@ -1,0 +1,20 @@
+{
+  "evidence_class": "OFFLINE_ORIGIN_CONSTRUCTION",
+  "selected_source_count": 1,
+  "registered_source_count": 0,
+  "unidentified_source_count": 1,
+  "registered_document_ids": [],
+  "selected_registered_document_ids": [],
+  "inline_display_label": "registered_fee_source_v1",
+  "inline_label_is_registration": false,
+  "source_raw_utf8_sha256": "8dbff8f321879ba910a9e54e5a066dfe2ade4384a164195d636dd67ac0be585d",
+  "source_bytes": 27,
+  "runtime_string_commitment_sha256": "91b7022f3c3b345243304dce2c1afeceb0108ca2b906135f2b9f71788827b000",
+  "commitment_is_registration": false,
+  "expected_missing_information": [
+    "SOURCE_IDENTIFIER_UNREGISTERED"
+  ],
+  "source_carrier": "Exactly one appended user-message data annex, outside canonical registered document objects.",
+  "native_packet_document_count": 0,
+  "external_source_authentication": false
+}

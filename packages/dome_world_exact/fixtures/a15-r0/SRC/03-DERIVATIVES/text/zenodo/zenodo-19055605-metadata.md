@@ -1,0 +1,139 @@
+---
+derivative_id: derivative:b16de626b43668db72c657c4
+parent_capture_id: capture:5dabce0f69c4f69dffacb34a
+parent_blob_sha256: 5538bb9b14229a59e7e29116c73f0be670f3cda566d8749e445f8241340c3e15
+tool: srcctl-json-normalizer/1
+source_title: "Infrastructural Harm & Legal Blindness: Why Systems Cause Harm but Individuals Are Blamed"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.19055604",
+  "conceptrecid": "19055604",
+  "created": "2026-03-16T19:16:21.423515+00:00",
+  "doi": "10.5281/zenodo.19055605",
+  "doi_url": "https://doi.org/10.5281/zenodo.19055605",
+  "files": [
+    {
+      "checksum": "md5:1f860aaa46cdc422f632d11738a396e5",
+      "id": "bf602ae6-10fe-4aab-86d1-7325b3c8e76c",
+      "key": "Infrastructural Harm & Legal Blindness: Why Systems Cause Harm but Individuals Are Blamed .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/19055605/files/Infrastructural%20Harm%20&%20Legal%20Blindness:%20Why%20Systems%20Cause%20Harm%20but%20Individuals%20Are%20Blamed%20.pdf/content"
+      },
+      "size": 129960
+    }
+  ],
+  "id": 19055605,
+  "links": {
+    "access": "https://zenodo.org/api/records/19055605/access",
+    "access_grants": "https://zenodo.org/api/records/19055605/access/grants",
+    "access_links": "https://zenodo.org/api/records/19055605/access/links",
+    "access_request": "https://zenodo.org/api/records/19055605/access/request",
+    "access_users": "https://zenodo.org/api/records/19055605/access/users",
+    "archive": "https://zenodo.org/api/records/19055605/files-archive",
+    "archive_media": "https://zenodo.org/api/records/19055605/media-files-archive",
+    "communities": "https://zenodo.org/api/records/19055605/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/19055605/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.19055605",
+    "draft": "https://zenodo.org/api/records/19055605/draft",
+    "file_modification": "https://zenodo.org/api/records/19055605/file-modification",
+    "files": "https://zenodo.org/api/records/19055605/files",
+    "latest": "https://zenodo.org/api/records/19055605/versions/latest",
+    "latest_html": "https://zenodo.org/records/19055605/latest",
+    "media_files": "https://zenodo.org/api/records/19055605/media-files",
+    "parent": "https://zenodo.org/api/records/19055604",
+    "parent_doi": "https://doi.org/10.5281/zenodo.19055604",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19055604",
+    "parent_html": "https://zenodo.org/records/19055604",
+    "preview_html": "https://zenodo.org/records/19055605?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/19055605/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/19055605/request-deletion",
+    "requests": "https://zenodo.org/api/records/19055605/requests",
+    "reserve_doi": "https://zenodo.org/api/records/19055605/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/19055605",
+    "self_doi": "https://doi.org/10.5281/zenodo.19055605",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19055605",
+    "self_html": "https://zenodo.org/records/19055605",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19055605/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19055605/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:19055605:Infrastructural%20Harm%20&%20Legal%20Blindness:%20Why%20Systems%20Cause%20Harm%20but%20Individuals%20Are%20Blamed%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:19055605:Infrastructural%20Harm%20&%20Legal%20Blindness:%20Why%20Systems%20Cause%20Harm%20but%20Individuals%20Are%20Blamed%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:19055605:Infrastructural%20Harm%20&%20Legal%20Blindness:%20Why%20Systems%20Cause%20Harm%20but%20Individuals%20Are%20Blamed%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:19055605:Infrastructural%20Harm%20&%20Legal%20Blindness:%20Why%20Systems%20Cause%20Harm%20but%20Individuals%20Are%20Blamed%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:19055605:Infrastructural%20Harm%20&%20Legal%20Blindness:%20Why%20Systems%20Cause%20Harm%20but%20Individuals%20Are%20Blamed%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:19055605:Infrastructural%20Harm%20&%20Legal%20Blindness:%20Why%20Systems%20Cause%20Harm%20but%20Individuals%20Are%20Blamed%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/19055605/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Infrastructural Harm &amp; Legal Blindness examines why modern systems can produce catastrophic harm while no individual, organization, or institution can be held legally responsible. Drawing from the SignalRupture (SR) framework, the essay demonstrates that the most consequential harms of the 21st century&mdash;medication shortages, algorithmic denials, supply‑chain collapse, administrative overload, financial erosion, and digital cognitive harm&mdash;are not caused by negligent actors but by infrastructures whose design, incentives, and interdependencies generate predictable harm.</p>\n<p>The paper shows that the legal system remains anchored in a pre‑infrastructural model of responsibility that requires individual negligence, direct causation, and discrete decision‑makers. Modern infrastructures violate all three assumptions. Pharmaceutical scarcity emerges from PBM rebate structures, global supply fragility, manufacturer consolidation, and AI allocation systems. Administrative harm arises from procedural density and overload. Digital harm emerges from algorithmic optimization. In each case, harm is produced by architecture, not intention&mdash;yet the law searches for a single negligent actor who does not exist.</p>\n<p>By introducing the SR concept of Infrastructural Harm Without Accountability, the essay explains why infrastructures can produce death, scarcity, erosion, and collapse while remaining legally untouchable. It maps how distributed causation, systemic incentives, opacity, and post‑institutional power render modern harm invisible to legal frameworks built for a different era.</p>\n<p>The work integrates this analysis into The Society Blueprint as a new cross‑cutting infrastructural layer, connecting Infrastructure Determinism, the Blind System, Post‑Institutional Power, the Harm Stack, the PBM pharmaceutical architecture, and the emergence of the Eroded Subject. It reframes accountability as a structural, not individual, problem and argues for a shift toward infrastructural responsibility&mdash;recognizing systemic causation, architectural incentives, and distributed harm.</p>\n<p>This essay contributes a foundational theoretical framework for understanding why modern systems cause harm without producing legally accountable actors. It provides the conceptual tools needed to analyze accountability failure in an age where infrastructures, not individuals, govern the conditions of life.</p>",
+    "doi": "10.5281/zenodo.19055605",
+    "keywords": [
+      "Law",
+      "Justice System",
+      "Social Issues"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-16",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "19055604"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Infrastructural Harm & Legal Blindness: Why Systems Cause Harm but Individuals Are Blamed",
+    "version": "1.0"
+  },
+  "modified": "2026-03-16T19:16:21.885414+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "19055605",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 17,
+    "unique_downloads": 17,
+    "unique_views": 31,
+    "version_downloads": 17,
+    "version_unique_downloads": 17,
+    "version_unique_views": 31,
+    "version_views": 31,
+    "views": 31
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Infrastructural Harm & Legal Blindness: Why Systems Cause Harm but Individuals Are Blamed",
+  "updated": "2026-03-16T19:16:21.885414+00:00"
+}

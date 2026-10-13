@@ -1,0 +1,9 @@
+# These artifacts have byte-level provenance digests. Do not let checkout
+# newline conversion change the bytes an operator hashes locally.
+app/safe-harbor/corpus/binding_event_text.txt text eol=lf
+app/safe-harbor/corpus/binding_event_full_hex.txt text eol=lf
+app/safe-harbor/corpus/binding_event_envelope.json text eol=lf
+app/safe-harbor/corpus/binding_event_receipt.json text eol=lf
+app/safe-harbor/corpus/binding_provenance_manifest.json text eol=lf
+app/safe-harbor/corpus/ns_request_signed_example.json text eol=lf
+app/safe-harbor/corpus/td_signed_payloads_bundle.json text eol=lf

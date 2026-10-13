@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:ed8e3a5c74323be454c62d54
+parent_capture_id: capture:0b68f856f27b733bde516ef8
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "Rebuilding the Meaning of GDP: Why Mathematics Misreads Society and How Extraction Masquerades as Growth"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.19700863
+Final URL: https://zenodo.org/records/19700863
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.19700863 -> https://zenodo.org/doi/10.5281/zenodo.19700863
+302 https://zenodo.org/doi/10.5281/zenodo.19700863 -> https://zenodo.org/records/19700863

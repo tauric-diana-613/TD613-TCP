@@ -1,0 +1,31 @@
+{
+  "id": "short-sample-insufficient",
+  "title": "Short Sample Insufficient",
+  "fixtureClass": "short-sample",
+  "priority": "core",
+  "riskMode": "calibration",
+  "description": "Tiny samples should force local humility. The fixture tests whether the system lowers claim posture when the signal is too thin.",
+  "inputs": {
+    "protectedBaseline": "Need file.",
+    "maskReference": "Send it.",
+    "messageDraft": "Send EX-1.",
+    "protectedOutput": "Send EX-1."
+  },
+  "protectedLiterals": ["EX-1"],
+  "persona": { "personaId": "persona-short-sample", "label": "Short Sample", "mode": "neutralize", "history": [] },
+  "thresholds": { "minWords": 24 },
+  "expectations": {
+    "escapeVector": {
+      "sourceResidualRisk": { "min": 0.0, "max": 1.0 },
+      "maskFit": { "min": 0.0, "max": 1.0 },
+      "maskDeltaSafe": { "min": -1.0, "max": 1.0 },
+      "semanticFidelity": { "min": 0.0, "max": 1.0 },
+      "ingestionFriction": { "min": 0.0, "max": 0.6 },
+      "apertureRecaptureRisk": { "min": 0.0, "max": 1.0 }
+    },
+    "controller": { "allowedStates": ["hold", "continue", "restore", "seal"], "preferredState": "hold" },
+    "claimCeiling": { "minLevel": 1, "maxLevel": 3 },
+    "report": { "mustExcludePrivateText": true, "mustIncludeLimitations": true, "mustAvoidForbiddenClaims": true }
+  },
+  "calibrationNotes": ["Short samples must lower confidence.", "The system should say not enough signal without panic or theater."]
+}

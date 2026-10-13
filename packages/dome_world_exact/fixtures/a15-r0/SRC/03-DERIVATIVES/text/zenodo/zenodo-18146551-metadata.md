@@ -1,0 +1,145 @@
+---
+derivative_id: derivative:d363daed09e823ca1bda7727
+parent_capture_id: capture:75976227f5dde51654b12df3
+parent_blob_sha256: ba70761d6d3beaa795f23121320a66e96586e00539e7c21c477d5f9ef000c7a4
+tool: srcctl-json-normalizer/1
+source_title: "Attention Span Collapsed: Social Media as Brain Damage and Population Control"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18146550",
+  "conceptrecid": "18146550",
+  "created": "2026-01-04T14:39:31.572120+00:00",
+  "doi": "10.5281/zenodo.18146551",
+  "doi_url": "https://doi.org/10.5281/zenodo.18146551",
+  "files": [
+    {
+      "checksum": "md5:afc75cc5b80da71ebb89f80dc7dc30e0",
+      "id": "7863804d-492e-4a06-910a-ddf918a971cd",
+      "key": "Attention Span Collapsed: Social Media as Brain Damage and Population Control .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18146551/files/Attention%20Span%20Collapsed:%20Social%20Media%20as%20Brain%20Damage%20and%20Population%20Control%20.pdf/content"
+      },
+      "size": 84946
+    }
+  ],
+  "id": 18146551,
+  "links": {
+    "access": "https://zenodo.org/api/records/18146551/access",
+    "access_grants": "https://zenodo.org/api/records/18146551/access/grants",
+    "access_links": "https://zenodo.org/api/records/18146551/access/links",
+    "access_request": "https://zenodo.org/api/records/18146551/access/request",
+    "access_users": "https://zenodo.org/api/records/18146551/access/users",
+    "archive": "https://zenodo.org/api/records/18146551/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18146551/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18146551/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18146551/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18146551",
+    "draft": "https://zenodo.org/api/records/18146551/draft",
+    "file_modification": "https://zenodo.org/api/records/18146551/file-modification",
+    "files": "https://zenodo.org/api/records/18146551/files",
+    "latest": "https://zenodo.org/api/records/18146551/versions/latest",
+    "latest_html": "https://zenodo.org/records/18146551/latest",
+    "media_files": "https://zenodo.org/api/records/18146551/media-files",
+    "parent": "https://zenodo.org/api/records/18146550",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18146550",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18146550",
+    "parent_html": "https://zenodo.org/records/18146550",
+    "preview_html": "https://zenodo.org/records/18146551?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18146551/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18146551/request-deletion",
+    "requests": "https://zenodo.org/api/records/18146551/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18146551/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18146551",
+    "self_doi": "https://doi.org/10.5281/zenodo.18146551",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18146551",
+    "self_html": "https://zenodo.org/records/18146551",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18146551/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18146551/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18146551:Attention%20Span%20Collapsed:%20Social%20Media%20as%20Brain%20Damage%20and%20Population%20Control%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18146551:Attention%20Span%20Collapsed:%20Social%20Media%20as%20Brain%20Damage%20and%20Population%20Control%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18146551:Attention%20Span%20Collapsed:%20Social%20Media%20as%20Brain%20Damage%20and%20Population%20Control%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18146551:Attention%20Span%20Collapsed:%20Social%20Media%20as%20Brain%20Damage%20and%20Population%20Control%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18146551:Attention%20Span%20Collapsed:%20Social%20Media%20as%20Brain%20Damage%20and%20Population%20Control%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18146551:Attention%20Span%20Collapsed:%20Social%20Media%20as%20Brain%20Damage%20and%20Population%20Control%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18146551/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Attention Span Collapsed argues that the erosion of public attention is not an organic cultural shift but a structural outcome engineered through platform design, commercial incentives, and algorithmic governance. Drawing on interdisciplinary research in cognitive science, developmental psychology, and platform studies, the essay demonstrates how infinite scroll, short‑form compression, engagement‑first ranking, and creator monetization produce a cognitive ecology optimized for velocity rather than depth.</p>\n<p>By linking these design patterns to civic consequences&mdash;episodic publics, weakened deliberation, and increased susceptibility to narrative steering&mdash;the essay reframes attention collapse as a governance problem rather than an individual failing. The analysis integrates foundational theory (Simon, Carr, Zuboff), clinical and developmental findings (Radesky, Twenge), and algorithmic accountability research (Diakopoulos, Gillespie) to show how attention extraction functions as a population‑level harm.</p>\n<p>The essay concludes by examining Australia&rsquo;s Social Media Minimum Age framework as an early example of design‑level regulation and proposes a suite of enforceable governance mechanisms&mdash;friction defaults, arousal‑aware feeds, age‑sensitive settings, independent audits, and research access&mdash;that treat attention as public infrastructure. In doing so, it positions attention stewardship as a necessary condition for cognitive health, democratic resilience, and long‑term social stability.</p>",
+    "doi": "10.5281/zenodo.18146551",
+    "keywords": [
+      "Social Media's",
+      "Social issues",
+      "Critical theory",
+      "Psychology",
+      "Psychiatry",
+      "Policymakers",
+      "Public health",
+      "Activism",
+      "Feminism"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-01-04",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18146550"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Attention Span Collapsed: Social Media as Brain Damage and Population Control",
+    "version": "1.0"
+  },
+  "modified": "2026-01-29T01:41:52.819313+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18146551",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 26,
+    "unique_downloads": 19,
+    "unique_views": 54,
+    "version_downloads": 26,
+    "version_unique_downloads": 19,
+    "version_unique_views": 54,
+    "version_views": 59,
+    "views": 59
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Attention Span Collapsed: Social Media as Brain Damage and Population Control",
+  "updated": "2026-01-29T01:41:52.819313+00:00"
+}

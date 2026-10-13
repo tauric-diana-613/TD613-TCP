@@ -1,0 +1,99 @@
+{
+  "schema": "td613.prcsa-ordering-scab-assay/v0.4",
+  "date": "2026-09-11",
+  "state": "SOURCE_BOUND_SYNTHETIC_ORDERING_ASSAY_NO_NOVELTY_PROMOTION",
+  "question": "Does the exact PRCS-A stage order capacity -> projection -> admissibility -> naming -> registered event have an intrinsic formal consequence that survives hostile permutation, or is it a non-identifiable implementation factorization unless stage-specific witnesses/interventions are supplied?",
+  "authority": {
+    "scientific_promotion": false,
+    "legal_prior_art_search": false,
+    "exhaustive_literature_review": false,
+    "private_wendbine_material_admitted": false,
+    "historical_wendbine_expansion": false,
+    "deployment": false,
+    "vercel": false,
+    "human_closure_required": true
+  },
+  "laws": [
+    "STAGE_COUNT != IDENTIFIABILITY",
+    "ORDER_EFFECT != ORDER_IDENTIFICATION",
+    "TERMINAL_OUTPUT_EQUIVALENCE != INTERNAL_STAGE_EQUIVALENCE",
+    "NONCOMMUTATIVITY != NOVELTY",
+    "TYPE_DEPENDENCY != EMPIRICAL_CAUSAL_ORDER",
+    "FINAL_EVENT != UNIQUE_PIPELINE_ORDER",
+    "INTERMEDIATE_WITNESS_OR_INTERVENTION_IS_REQUIRED_FOR_STAGE_ATTRIBUTION_WHEN_TERMINAL_BEHAVIOR_IS_EQUIVALENT"
+  ],
+  "external_source_bank": [
+    {
+      "id": "ANI_SURVEY",
+      "title": "Abstract interpretation-based approaches to Security - A survey on Abstract non-Interference and its challenging application",
+      "url": "https://iris.univr.it/handle/11562/583157",
+      "bounded_use": "Observation, protection and semantics are already explicit dimensions of abstract noninterference policies."
+    },
+    {
+      "id": "KNOWLEDGE_POLICY",
+      "title": "Dynamic enforcement of knowledge-based security policies using probabilistic abstract interpretation",
+      "url": "https://doi.org/10.3233/JCS-130469",
+      "bounded_use": "Selective answer release based on predicted information gain is established security-policy machinery."
+    },
+    {
+      "id": "UCON_ABC",
+      "title": "The UCONABC usage control model",
+      "url": "https://doi.org/10.1145/984334.984339",
+      "bounded_use": "Continuous authorization, obligations, conditions, and mutable usage state are established usage-control concepts."
+    },
+    {
+      "id": "REALIZATION_NONUNIQUENESS",
+      "title": "Minimal state-space realization in linear system theory: an overview",
+      "url": "https://doi.org/10.1016/S0377-0427(00)00341-1",
+      "bounded_use": "Input-output behavior need not uniquely identify one internal realization; used only as a conventional realization-theory neighbor, not as a direct equivalence to PRCS-A."
+    }
+  ],
+  "synthetic_fixture": {
+    "inputs": [0, 1, 2, 3, 4, 5],
+    "terminal_registration_fixed_last": true,
+    "permuted_prefix_stages": ["K", "P", "A", "N"],
+    "canonical_prefix": ["K", "P", "A", "N"],
+    "stage_definitions": {
+      "K": "capacity clamp: payload := min(payload, 2)",
+      "P": "projection/coarsening: payload := payload mod 2",
+      "A": "admissibility: released := (payload == 1); if false payload := 0",
+      "N": "naming: label := ALLOW/HOLD when released is known, otherwise ODD/EVEN from payload parity",
+      "E": "terminal registration snapshots payload, released, and label"
+    },
+    "hostile_permutation_count": 24,
+    "observed_terminal_signature_classes": 5,
+    "canonical_terminal_equivalence_class_size": 9,
+    "commuting_control_prefix_permutations": 24,
+    "commuting_control_terminal_signature_classes": 1,
+    "selected_terminal_equivalent_pair": {
+      "canonical": ["K", "P", "A", "N", "E"],
+      "alternative": ["A", "K", "P", "N", "E"],
+      "terminal_equivalent_over_declared_inputs": true,
+      "intermediate_stage_1_distinguishable_for_input_3": true
+    }
+  },
+  "adjudication": {
+    "exact_order_intrinsic_novelty": "REJECTED_NO_CREDIT",
+    "order_sensitivity_in_declared_fixture": "SUPPORTED",
+    "canonical_order_identifiable_from_terminal_event": "REJECTED_IN_DECLARED_FIXTURE",
+    "terminal_factorization_uniqueness": "REJECTED_IN_DECLARED_FIXTURE",
+    "intermediate_witness_breaks_selected_terminal_equivalence": "SUPPORTED_IN_DECLARED_FIXTURE",
+    "prcsa_scientific_facing_status": "HYPOTHESIZED_TYPED_FACTORIZATION_NOT_THEOREM",
+    "preferred_description": "typed policy-conditioned observation/release pipeline with stage-order sensitivity certificate"
+  },
+  "repair_requirements": [
+    "Declare each stage domain/codomain rather than infer ontology from labels.",
+    "Bind any claimed order effect to an explicit operator pair or permutation witness.",
+    "Report terminal-equivalence classes rather than assume one output identifies one internal order.",
+    "Use intermediate observation or controlled intervention before attributing an effect to a particular stage.",
+    "Treat K/P/A/N stage boundaries as implementation hypotheses unless independently observed or intervention-identified.",
+    "Keep PRCS-A as a legacy/internal label only unless a future theorem or empirical advantage is separately earned."
+  ],
+  "claim_ceiling": [
+    "Synthetic finite operator behavior is not a claim about any external model or platform.",
+    "Five terminal signature classes do not establish a universal count.",
+    "Canonical-class nonuniqueness in this fixture does not prove all real pipelines are non-identifiable.",
+    "Realization-theory analogy does not identify PRCS-A with linear state-space models.",
+    "No novelty, causation, hidden-state access, or implementation claim is promoted."
+  ]
+}

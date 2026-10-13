@@ -1,0 +1,20 @@
+{
+  "snapshot_date": "2026-08-23",
+  "scope": "public-profile pointer and DOI reconciliation; no Phase 2 bulk acquisition",
+  "substack_zenodo_doi_evidence": {
+    "observed_substack_posts_with_doi": 91,
+    "doi_links": 91,
+    "resolved_to_current_zenodo_census": 91,
+    "same_normalized_title": 74,
+    "retitled_or_title_varied": 17,
+    "substack_title_clusters_previously_apparent_single_platform": 13,
+    "source": "01-MANIFESTS/crosswalk/doi-links.jsonl"
+  },
+  "academia_download_pointer_evidence": {
+    "academia_manifestations": 499,
+    "public_download_pointers_observed_on_rendered_profile": 469,
+    "public_metadata_pages_explicitly_stating_not_uploaded": 30,
+    "source": "01-MANIFESTS/platforms/academia-download-pointers.jsonl"
+  },
+  "interpretive_limit": "A DOI link establishes a declared cross-platform relationship. It does not prove identical bytes or authorize discarding either manifestation. Academia's explicit not-uploaded state describes that platform manifestation only; it is not evidence that the work is unavailable elsewhere, removed, or suppressed."
+}

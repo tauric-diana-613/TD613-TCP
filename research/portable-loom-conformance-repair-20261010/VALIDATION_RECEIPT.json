@@ -1,0 +1,41 @@
+{
+  "schema": "td613.loom.conformance-repair-offline-validation/v0.1",
+  "source_baseline": "d684d61c8c73e8d79a30167de9af51f5454c40ff",
+  "test_command": "node --test tests/portable-loom-core.test.mjs tests/portable-loom-receiver-receipt-regression.test.mjs tests/portable-loom-receiver-conformance.test.mjs",
+  "tests_passed": 45,
+  "tests_failed": 0,
+  "source_blob_baseline_checks": 60,
+  "preserved_answer_hash_checks": 16,
+  "known_qualification_omissions_detected": 5,
+  "unidentified_source_missingness_detected": true,
+  "historical_task_receipts_held": 8,
+  "provider_requests": 0,
+  "new_reservations": 0,
+  "custody_admissions": 0,
+  "fresh_receiver_compliance": "NOT_RUN",
+  "artifact_freeze_enrollment": "NOT_PERFORMED",
+  "remote_CI": "NOT_YET_OBSERVED",
+  "scope": "Focused offline contracts and counterexamples; no whole-estate or browser witness claim",
+  "evidence_files": [
+    {
+      "path": "focused-tests.tap",
+      "bytes": 11382,
+      "sha256": "a950a53473b5fa2e0c52a9985e61dc5aea31bba56cb6074d233550035a18ddf4"
+    },
+    {
+      "path": "preserved-capture-review.json",
+      "bytes": 19038,
+      "sha256": "b869549d9788a357f464a68109f7c52a3f07b6cbaf09a8c807cf2c51b3cd95c8"
+    },
+    {
+      "path": "LEDGER_SNAPSHOT.json",
+      "bytes": 551,
+      "sha256": "ab0c362843cab32efb58e26ed72c5d5898ff5bb86e96e40c96f071b112e352ca"
+    },
+    {
+      "path": "CONTINUITY_RECEIPT.json",
+      "bytes": 1824,
+      "sha256": "fb2faba6e7c3bd8e3c2f656b00e32ec5a9cbaa4615cf8fd7b8f4063dcadd1a14"
+    }
+  ]
+}

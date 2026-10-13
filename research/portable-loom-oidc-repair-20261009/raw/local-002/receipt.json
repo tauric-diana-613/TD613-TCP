@@ -1,0 +1,40 @@
+{
+  "source_parent": "916ed6cfc6f21f49d30198c407f57c6f9ed0b0d0",
+  "source_status": "WORKING_REPAIR_BEFORE_PUBLICATION",
+  "sources": [
+    {
+      "path": "server/loom-assay.js",
+      "sha256": "72541faf2ba4dbcead0d757ac60a013bff00f5bffe8bd141ca9a16cafcfb5dd2",
+      "bytes": 9369
+    },
+    {
+      "path": "tests/loom-assay-transport.test.mjs",
+      "sha256": "5fa34c242031f19f43c7b62804f77c429116a8242afcc3d358086442ddac5267",
+      "bytes": 20150
+    }
+  ],
+  "started_at": "2026-10-09T15:50:34.820271+00:00",
+  "ended_at": "2026-10-09T15:50:35.167937+00:00",
+  "command": [
+    "node",
+    "--test",
+    "--test-reporter=tap",
+    "tests/loom-assay-transport.test.mjs",
+    "tests/loom-assay-primary-run.test.mjs",
+    "tests/khonapolit-api-contract.test.mjs",
+    "tests/gemini-generation-envelope.test.mjs",
+    "tests/giving-vercel-route.test.mjs",
+    "tests/vercel-deploy-hygiene.test.mjs"
+  ],
+  "exit_code": 0,
+  "stdout_sha256": "88484917c42c0230eff3b9d3c68f3448db0add442a59dfa23b4348eaf9cb1dab",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "evidence_class": "LOCAL_STRUCTURAL_TEST",
+  "actual_generation_calls": 0,
+  "original_local_attempt": {
+    "pass": 25,
+    "fail": 2,
+    "reason": "Two new mock fetch fixtures assumed a URL string; budget client correctly supplies a URL object. Fixed fixture normalization only.",
+    "raw_capture": "UNRETAINED_TOOL_CONSOLE; no retrospective execution receipt manufactured"
+  }
+}

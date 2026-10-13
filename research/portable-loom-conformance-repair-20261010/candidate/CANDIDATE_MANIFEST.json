@@ -1,0 +1,42 @@
+{
+  "schema": "td613.loom.conformance-candidate-manifest/v0.1",
+  "source_revision": "1b9ed4b27e4aca221c6353d7f4cb3171347d87f1",
+  "created_at": "2026-10-10T14:45:47.106Z",
+  "status": "NOT_FROZEN_NOT_ENROLLED_NOT_RUN",
+  "source_revision_authentication": "CALLER_MUST_VERIFY_EXACT_GITHUB_SOURCE_BYTES",
+  "session_root_ref": "a2da5deff96afc5e72b4d17e86e7ef371a4ecc7a4a474e4234c82ea0d92cfa44",
+  "policy_commitment": "80fa0fef88dd88cc4b05dec13434cd9fceefbe1b94f7eb45e9524bb798cbff19",
+  "selected_source_count": 0,
+  "admitted_work_unit_count": 0,
+  "provider_requests": 0,
+  "basic_export_integrity": "PASS",
+  "source_files": [
+    {
+      "path": "app/engine/portable-loom-output.js",
+      "bytes": 8948,
+      "sha256": "b4df5e488454cace69ae2b2684fa6e6dfc942c6206c6b90fc1df68c8ef7558cb"
+    },
+    {
+      "path": "app/engine/portable-loom-session.js",
+      "bytes": 27302,
+      "sha256": "ac502970873004ec61425ccb65b7040b4f68a926e01cc0bbb370a589b3a285db"
+    },
+    {
+      "path": "app/engine/portable-loom-receiver-conformance.js",
+      "bytes": 8255,
+      "sha256": "35ff36e87370b4546b93aa44b3064f80f029dd880ea4223f48bc527c866046ce"
+    }
+  ],
+  "files": [
+    {
+      "name": "portable-loom-conformance-candidate.json",
+      "bytes": 86695,
+      "sha256": "ea963acf266a0aa7b621c49bb40de19ed4c06af78b2b47bfb53f21fd89c6362a"
+    },
+    {
+      "name": "portable-loom-conformance-candidate.md",
+      "bytes": 92370,
+      "sha256": "95600daba488a36e29d4200ff9a43e73fae30f2b6872eb1434c36978167c5344"
+    }
+  ]
+}

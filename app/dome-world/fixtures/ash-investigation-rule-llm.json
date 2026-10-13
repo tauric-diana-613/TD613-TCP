@@ -1,0 +1,1 @@
+{"route_id":"route_llm_analysis","allowed_room_ids":["room_ai","room_claims","room_chronology","room_gaps"],"local_link_keys":["edge_identity_alias","edge_personal_packet","edge_routesource_alias"],"allowed_node_types":["artifact","claim","event","evidence-gap","hypothesis","intended-action"]}

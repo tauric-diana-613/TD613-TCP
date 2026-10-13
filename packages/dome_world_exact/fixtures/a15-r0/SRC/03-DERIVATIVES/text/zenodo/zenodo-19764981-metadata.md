@@ -1,0 +1,143 @@
+---
+derivative_id: derivative:d462729e9d92e9fa0fe59b41
+parent_capture_id: capture:e649871458a3b97b9fda7f97
+parent_blob_sha256: 03653cba46cabd131834f03bb50100003d322bffb1845b8b7a0e2e667e6bacf6
+tool: srcctl-json-normalizer/1
+source_title: "Zombie Metrics III: The Eroded Subject"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.19764980",
+  "conceptrecid": "19764980",
+  "created": "2026-04-25T14:39:02.556417+00:00",
+  "doi": "10.5281/zenodo.19764981",
+  "doi_url": "https://doi.org/10.5281/zenodo.19764981",
+  "files": [
+    {
+      "checksum": "md5:bba269c4e410c403d8b7627da81cb0e0",
+      "id": "c3cee076-fbca-42b6-a722-264a91154bd1",
+      "key": "Zombie Metrics III: The Eroded Subject .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/19764981/files/Zombie%20Metrics%20III:%20The%20Eroded%20Subject%20.pdf/content"
+      },
+      "size": 150526
+    }
+  ],
+  "id": 19764981,
+  "links": {
+    "access": "https://zenodo.org/api/records/19764981/access",
+    "access_grants": "https://zenodo.org/api/records/19764981/access/grants",
+    "access_links": "https://zenodo.org/api/records/19764981/access/links",
+    "access_request": "https://zenodo.org/api/records/19764981/access/request",
+    "access_users": "https://zenodo.org/api/records/19764981/access/users",
+    "archive": "https://zenodo.org/api/records/19764981/files-archive",
+    "archive_media": "https://zenodo.org/api/records/19764981/media-files-archive",
+    "communities": "https://zenodo.org/api/records/19764981/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/19764981/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.19764981",
+    "draft": "https://zenodo.org/api/records/19764981/draft",
+    "file_modification": "https://zenodo.org/api/records/19764981/file-modification",
+    "files": "https://zenodo.org/api/records/19764981/files",
+    "latest": "https://zenodo.org/api/records/19764981/versions/latest",
+    "latest_html": "https://zenodo.org/records/19764981/latest",
+    "media_files": "https://zenodo.org/api/records/19764981/media-files",
+    "parent": "https://zenodo.org/api/records/19764980",
+    "parent_doi": "https://doi.org/10.5281/zenodo.19764980",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19764980",
+    "parent_html": "https://zenodo.org/records/19764980",
+    "preview_html": "https://zenodo.org/records/19764981?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/19764981/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/19764981/request-deletion",
+    "requests": "https://zenodo.org/api/records/19764981/requests",
+    "reserve_doi": "https://zenodo.org/api/records/19764981/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/19764981",
+    "self_doi": "https://doi.org/10.5281/zenodo.19764981",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19764981",
+    "self_html": "https://zenodo.org/records/19764981",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19764981/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19764981/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:19764981:Zombie%20Metrics%20III:%20The%20Eroded%20Subject%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:19764981:Zombie%20Metrics%20III:%20The%20Eroded%20Subject%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:19764981:Zombie%20Metrics%20III:%20The%20Eroded%20Subject%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:19764981:Zombie%20Metrics%20III:%20The%20Eroded%20Subject%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:19764981:Zombie%20Metrics%20III:%20The%20Eroded%20Subject%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:19764981:Zombie%20Metrics%20III:%20The%20Eroded%20Subject%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/19764981/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "doi": "10.5281/zenodo.19764981",
+    "keywords": [
+      "Metatheory",
+      "Citizens",
+      "Burnout",
+      "Society",
+      "Jobs",
+      "Employees",
+      "HR",
+      "Institutions"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-04-25",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "19764980"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Zombie Metrics III: The Eroded Subject",
+    "version": "1.0"
+  },
+  "modified": "2026-04-25T14:39:03.079109+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "19764981",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 5,
+    "unique_downloads": 4,
+    "unique_views": 16,
+    "version_downloads": 5,
+    "version_unique_downloads": 4,
+    "version_unique_views": 16,
+    "version_views": 16,
+    "views": 16
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Zombie Metrics III: The Eroded Subject",
+  "updated": "2026-04-25T14:39:03.079109+00:00"
+}

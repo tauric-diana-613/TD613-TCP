@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.room-rules/v0.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "case_id",
+    "created_at",
+    "rules",
+    "timing_shield",
+    "source_status",
+    "evidence_basis",
+    "observations",
+    "missingness",
+    "alternatives",
+    "open_questions",
+    "operator_notes",
+    "closure",
+    "rules_digest"
+  ],
+  "properties": {
+    "schema": {
+      "const": "td613.ash.room-rules/v0.1"
+    },
+    "case_id": {
+      "type": "string"
+    },
+    "rules": {
+      "type": "array"
+    },
+    "timing_shield": {
+      "type": "object",
+      "required": [
+        "cover_traffic",
+        "chronology_falsification",
+        "silent_urgent_delay"
+      ]
+    },
+    "rules_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "created_at": {},
+    "source_status": {},
+    "evidence_basis": {},
+    "observations": {},
+    "missingness": {},
+    "alternatives": {},
+    "open_questions": {},
+    "operator_notes": {},
+    "closure": {}
+  },
+  "additionalProperties": false
+}

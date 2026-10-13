@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title desc">
+  <title id="title">Blip portrait</title>
+  <desc id="desc">A compact neon signal mask with shorthand nodes and a mantis-like faceplate.</desc>
+  <defs>
+    <radialGradient id="blip-bg" cx="50%" cy="44%" r="62%">
+      <stop offset="0" stop-color="#1affc6" stop-opacity=".22"/>
+      <stop offset=".56" stop-color="#3bff7c" stop-opacity=".12"/>
+      <stop offset="1" stop-color="#060911" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="blip-line" x1="38" y1="34" x2="204" y2="206">
+      <stop offset="0" stop-color="#7fffd4"/>
+      <stop offset=".48" stop-color="#b7ff72"/>
+      <stop offset="1" stop-color="#7f7cff"/>
+    </linearGradient>
+  </defs>
+  <rect width="240" height="240" rx="42" fill="#050811"/>
+  <rect x="13" y="13" width="214" height="214" rx="34" fill="url(#blip-bg)" stroke="#223247"/>
+  <path d="M66 74h108l22 34-25 82H69l-25-82Z" fill="#08121b" stroke="url(#blip-line)" stroke-width="4"/>
+  <path d="M77 92h34l9 22-21 15-26-11Z" fill="#102329" stroke="#7fffd4" stroke-width="3"/>
+  <path d="M129 92h34l4 26-26 11-21-15Z" fill="#102329" stroke="#b7ff72" stroke-width="3"/>
+  <path d="M120 118v47" stroke="#6fffc9" stroke-width="4" stroke-linecap="round"/>
+  <path d="M87 164h66" stroke="#7f7cff" stroke-width="4" stroke-linecap="round"/>
+  <g fill="none" stroke="#b7ff72" stroke-width="3" stroke-linecap="round">
+    <path d="M44 105H24"/>
+    <path d="M196 105h20"/>
+    <path d="M62 72 43 52"/>
+    <path d="m178 72 19-20"/>
+  </g>
+  <g fill="#b7ff72" font-family="Consolas, monospace" font-size="16" font-weight="700">
+    <text x="72" y="205">rn</text>
+    <text x="105" y="205">idk</text>
+    <text x="149" y="205">fr</text>
+  </g>
+</svg>

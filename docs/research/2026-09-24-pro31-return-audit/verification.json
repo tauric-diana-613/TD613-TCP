@@ -1,0 +1,79 @@
+{
+  "scope": "local arithmetic and selected operator-pasted excerpts; no live model attribution",
+  "unicode_database": "15.0.0",
+  "posterior_all_positive": "65536/65537",
+  "posterior_six_positive": "256/257",
+  "posterior_six_positive_decimal": 0.9961089494163424,
+  "mixture": {
+    "0": 0.9999847414437646,
+    "1/20": 0.9522296965206611,
+    "1/2": 0.8287318978783853,
+    "1": 0.8
+  },
+  "six_positive_count_likelihood_given_Z": 0.29360128,
+  "disagreement_probability_under_B": 0.83222528,
+  "heat_three_cycles": [
+    6,
+    12,
+    18
+  ],
+  "24_receipts_zero_accumulation_schedule": [
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "typography": {
+    "p2_regular_private": {
+      "base_preserved": true,
+      "marks": 116,
+      "unique_mark_codepoints": 1,
+      "ccc_counts": {
+        "220": 116
+      },
+      "max_marks_per_base": 1,
+      "bases_with_both_ccc220_and_ccc230": 0
+    },
+    "p2_regular_public": {
+      "base_preserved": true,
+      "marks": 199,
+      "unique_mark_codepoints": 52,
+      "ccc_counts": {
+        "1": 139,
+        "216": 2,
+        "220": 28,
+        "230": 25,
+        "234": 1,
+        "202": 2,
+        "232": 2
+      },
+      "max_marks_per_base": 3,
+      "bases_with_both_ccc220_and_ccc230": 23
+    },
+    "p2_longer_private": {
+      "base_preserved": true,
+      "marks": 116,
+      "unique_mark_codepoints": 1,
+      "ccc_counts": {
+        "220": 116
+      },
+      "max_marks_per_base": 1,
+      "bases_with_both_ccc220_and_ccc230": 0
+    },
+    "p2_longer_public": {
+      "base_preserved": true,
+      "marks": 116,
+      "unique_mark_codepoints": 1,
+      "ccc_counts": {
+        "230": 116
+      },
+      "max_marks_per_base": 1,
+      "bases_with_both_ccc220_and_ccc230": 0
+    }
+  },
+  "opening_THE_overlay_marks": 27,
+  "exact_laugh_reuse": true,
+  "regular_proposed_patch_syntax": "SyntaxError",
+  "checks": "PASS"
+}

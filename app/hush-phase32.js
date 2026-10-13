@@ -1,0 +1,186 @@
+import * as bench from './adversarial-bench.mjs';
+import { buildHushSwap, HUSH_SWAP_PHASE34_VERSION } from './engine/hush-swap-phase34.js';
+
+export const HUSH_PHASE32_UI_VERSION = 'phase-32-mask-surface-ui+phase-34-expressive-generation-ui+custom-mask-capsule';
+
+const $ = (id, doc = document) => doc.getElementById(id);
+const text = (value) => String(value ?? '').trim();
+const esc = (value = '') => String(value ?? '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
+let suppressAuto = false;
+
+function patch38OwnsTransform(doc = document) {
+  return doc?.body?.dataset?.hushPatch38 === 'true' || Boolean($('hushGeneratorMode', doc));
+}
+
+function selectedMask(state = bench.benchState || {}) {
+  const masks = [...(state.hushMasks || []), ...(state.customMasks || [])];
+  return masks.find((mask) => mask.id === state.selectedHushMaskId) || state.selectedHushMask || masks[0] || null;
+}
+
+function activeField(state = bench.benchState || {}) {
+  const mask = selectedMask(state) || {};
+  return state.profiles?.maskReference || mask.profile || {};
+}
+
+function customMaskLabel(state = bench.benchState || {}) {
+  const active = state.activeCustomMask || (state.selectedHushMask?.source === 'custom' ? state.selectedHushMask : null);
+  const label = text(active?.label || active?.name || '');
+  return label && !/^unsaved custom mask$/i.test(label) ? label : 'Custom Mask Empty';
+}
+
+function capsuleHtml(label = 'Custom Mask Empty') {
+  return `<span id="hushCustomMaskCapsuleName" class="hush-custom-mask-capsule-name">${esc(label)}</span><span class="hush-custom-mask-capsule-links"><button id="hushPhase31ImportMaskLink" type="button" class="hush-custom-mask-capsule-link">import</button><button id="hushPhase31ExportMaskLink" type="button" class="hush-custom-mask-capsule-link">export</button></span>`;
+}
+
+function renderCustomMaskCapsule(doc = document) {
+  const target = $('hushPhase32Diagnostics', doc);
+  if (!target) return;
+  target.classList.add('hush-custom-mask-capsule');
+  target.dataset.capsule = 'custom-mask';
+  if (!$('hushCustomMaskCapsuleName', doc) || !$('hushPhase31ImportMaskLink', doc) || !$('hushPhase31ExportMaskLink', doc)) target.innerHTML = capsuleHtml(customMaskLabel(bench.benchState || {}));
+  const label = $('hushCustomMaskCapsuleName', doc);
+  if (label) label.textContent = customMaskLabel(bench.benchState || {});
+}
+
+function renderDiagnostics(result = {}, doc = document) {
+  const target = $('hushPhase32Diagnostics', doc);
+  if (!target) return;
+  const g = result.phase34Diagnostics || {};
+  renderCustomMaskCapsule(doc);
+  target.dataset.selectedCandidate = text(g.selectedCandidateId || 'none');
+  target.dataset.generatedCount = text(g.generatedCount ?? '');
+  target.dataset.warning = text(g.warning || '');
+}
+
+function readStateInputs(doc = document) {
+  const state = bench.benchState || {};
+  state.protectedBaselineText = $('protectedBaselineInput', doc)?.value || '';
+  state.maskReferenceText = $('maskReferenceInput', doc)?.value || '';
+  state.messageDraftText = $('messageDraftInput', doc)?.value || '';
+  state.protectedOutputText = $('protectedOutputInput', doc)?.value || '';
+  state.selectedHushMaskId = $('maskFieldSelect', doc)?.value || state.selectedHushMaskId;
+  return state;
+}
+
+function runPhase32Transform(doc = document) {
+  const state = readStateInputs(doc);
+  const source = text(state.messageDraftText);
+  if (!source) return null;
+  const mask = selectedMask(state);
+  const expressiveMode = $('recognitionIntentMode', doc)?.value === 'expressive-theory' || /rose bush|dromological|rot latency|scholastic|potentiality/i.test(source);
+  const result = buildHushSwap({
+    sourceText: state.messageDraftText,
+    protectedBaselineText: state.protectedBaselineText,
+    mask,
+    maskProfile: activeField(state) || mask?.profile || {},
+    maskReferenceText: state.maskReferenceText || mask?.sampleSeed || '',
+    protectedLiterals: [],
+    operatorMode: expressiveMode ? 'expressive-theory' : (state.recognitionIntentMode || 'neutralize'),
+    contextType: state.recognitionContextType || 'group-chat',
+    exposureDuration: state.recognitionExposureDuration || 'single-use',
+    personaSummary: {},
+    iterationLedger: state.iterationLedger || {},
+    options: { candidateCount: 30, includePrivateText: false, expressiveMode }
+  });
+  state.hushSwapResult = result;
+  state.hushProfileMatch = result.match;
+  state.selectedHushMask = mask;
+  state.protectedOutputText = result.selectedOutput || '';
+  const output = $('protectedOutputInput', doc);
+  if (output) output.value = state.protectedOutputText;
+  renderDiagnostics(result, doc);
+  if (typeof bench.analyzeProtectedOutput === 'function' && state.protectedOutputText.trim()) bench.analyzeProtectedOutput();
+  return result;
+}
+
+function clearInput(doc = document) {
+  const input = $('messageDraftInput', doc);
+  if (input) input.value = '';
+  const state = bench.benchState || {};
+  state.messageDraftText = '';
+}
+
+function installClearInput(doc = document) {
+  const input = $('messageDraftInput', doc);
+  if (!input || $('hushPhase32ClearInput', doc)) return;
+  input.insertAdjacentHTML('afterend', '<button id="hushPhase32ClearInput" type="button" class="hush-phase32-clear-input">clear input</button>');
+  $('hushPhase32ClearInput', doc)?.addEventListener('click', () => clearInput(doc));
+}
+
+function installDiagnostics(doc = document) {
+  const warnings = $('hushSwapWarningsPanel', doc);
+  if (!warnings) return;
+  let target = $('hushPhase32Diagnostics', doc);
+  if (!target) {
+    warnings.insertAdjacentHTML('afterend', `<div id="hushPhase32Diagnostics" class="hush-phase32-diagnostic-panel hush-custom-mask-capsule" data-capsule="custom-mask">${capsuleHtml()}</div>`);
+    target = $('hushPhase32Diagnostics', doc);
+  }
+  renderCustomMaskCapsule(doc);
+}
+
+function compactControls(doc = document) {
+  const row = $('generateMaskedOutputBtn', doc)?.closest('.hush-action-row');
+  if (row) row.classList.add('hush-phase32-compact-actions');
+}
+
+function fixLoaderDots(doc = document) {
+  const dots = $('td613HushLoadingDots', doc);
+  if (dots) dots.textContent = '...';
+}
+
+function installExpressiveMode(doc = document) {
+  const select = $('recognitionIntentMode', doc);
+  if (!select || select.querySelector('option[value="expressive-theory"]')) return;
+  const option = doc.createElement('option');
+  option.value = 'expressive-theory';
+  option.textContent = 'Expressive / Theory';
+  select.appendChild(option);
+}
+
+function installAutoMaskTransform(doc = document) {
+  const select = $('maskFieldSelect', doc);
+  if (!select || select.dataset.phase32Auto === 'true') return;
+  select.dataset.phase32Auto = 'true';
+  select.addEventListener('change', () => {
+    renderCustomMaskCapsule(doc);
+    if (suppressAuto || patch38OwnsTransform(doc)) return;
+    window.setTimeout(() => { if (text($('messageDraftInput', doc)?.value) && !patch38OwnsTransform(doc)) runPhase32Transform(doc); }, 0);
+  });
+}
+
+function interceptTransforms(doc = document) {
+  const transform = $('generateMaskedOutputBtn', doc);
+  if (transform && transform.dataset.phase32Intercept !== 'true') {
+    transform.dataset.phase32Intercept = 'true';
+    transform.addEventListener('click', (event) => {
+      if (patch38OwnsTransform(doc)) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      runPhase32Transform(doc);
+    }, true);
+  }
+}
+
+export function initHushPhase32(doc = document) {
+  if (!doc?.body || doc.body.dataset.pageKind !== 'adversarial-bench') return { installed: false, version: HUSH_PHASE32_UI_VERSION };
+  doc.body.dataset.hushPhase32 = 'true';
+  doc.body.dataset.hushPhase33 = 'true';
+  doc.body.dataset.hushPhase34 = 'true';
+  compactControls(doc);
+  installClearInput(doc);
+  installDiagnostics(doc);
+  installExpressiveMode(doc);
+  installAutoMaskTransform(doc);
+  interceptTransforms(doc);
+  fixLoaderDots(doc);
+  if (typeof window !== 'undefined') window.__TD613_HUSH_PHASE32__ = { version: HUSH_PHASE32_UI_VERSION, selectorVersion: HUSH_SWAP_PHASE34_VERSION, runPhase32Transform, renderCustomMaskCapsule };
+  return { installed: true, version: HUSH_PHASE32_UI_VERSION };
+}
+
+if (typeof document !== 'undefined') {
+  const boot = () => initHushPhase32(document);
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
+  else boot();
+  window.setTimeout(boot, 120);
+  window.setTimeout(boot, 480);
+}

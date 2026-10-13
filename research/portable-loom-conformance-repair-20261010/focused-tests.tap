@@ -1,0 +1,280 @@
+TAP version 13
+# Subtest: footer preserves missing authorization and receipt evidence and refuses private presentation labels
+ok 1 - footer preserves missing authorization and receipt evidence and refuses private presentation labels
+  ---
+  duration_ms: 1.39331
+  type: 'test'
+  ...
+# Subtest: canonical demo and custom packets share the recomputable core and conventional nomenclature
+ok 2 - canonical demo and custom packets share the recomputable core and conventional nomenclature
+  ---
+  duration_ms: 141.012502
+  type: 'test'
+  ...
+# Subtest: receiver projections preserve distinct presentations, policy and prefix-only chronology
+ok 3 - receiver projections preserve distinct presentations, policy and prefix-only chronology
+  ---
+  duration_ms: 53.050477
+  type: 'test'
+  ...
+# Subtest: actual finite quotient rejects the erased recommendation while preserving sound support
+ok 4 - actual finite quotient rejects the erased recommendation while preserving sound support
+  ---
+  duration_ms: 94.568783
+  type: 'test'
+  ...
+# Subtest: independent recomputation rejects changed legends, supports, chronology, projections and authority
+ok 5 - independent recomputation rejects changed legends, supports, chronology, projections and authority
+  ---
+  duration_ms: 304.726654
+  type: 'test'
+  ...
+# Subtest: Gate proves literal, joined and incomplete alerts without publishing private ground truth
+ok 6 - Gate proves literal, joined and incomplete alerts without publishing private ground truth
+  ---
+  duration_ms: 49.365544
+  type: 'test'
+  ...
+# Subtest: reference demo uses registered returns: Check never advances and explicit Admit preserves changed evidence
+ok 7 - reference demo uses registered returns: Check never advances and explicit Admit preserves changed evidence
+  ---
+  duration_ms: 87.680491
+  type: 'test'
+  ...
+# Subtest: a captured exposure holds its registered scope and a later clean result cannot erase it
+ok 8 - a captured exposure holds its registered scope and a later clean result cannot erase it
+  ---
+  duration_ms: 63.089439
+  type: 'test'
+  ...
+# Subtest: preserved a13 FIRST_CONFIGURED_RECEIVER-R03-1 turn 0 retains its receipt evidence and exact bytes
+ok 9 - preserved a13 FIRST_CONFIGURED_RECEIVER-R03-1 turn 0 retains its receipt evidence and exact bytes
+  ---
+  duration_ms: 2.41875
+  type: 'test'
+  ...
+# Subtest: preserved a13 FIRST_CONFIGURED_RECEIVER-R03-2 turn 0 retains its receipt evidence and exact bytes
+ok 10 - preserved a13 FIRST_CONFIGURED_RECEIVER-R03-2 turn 0 retains its receipt evidence and exact bytes
+  ---
+  duration_ms: 1.165345
+  type: 'test'
+  ...
+# Subtest: preserved a13 FIRST_CONFIGURED_RECEIVER-R03-3 turn 0 retains its receipt evidence and exact bytes
+ok 11 - preserved a13 FIRST_CONFIGURED_RECEIVER-R03-3 turn 0 retains its receipt evidence and exact bytes
+  ---
+  duration_ms: 0.267744
+  type: 'test'
+  ...
+# Subtest: preserved a13 FIRST_CONFIGURED_RECEIVER-R07-1 turn 0 retains its receipt evidence and exact bytes
+ok 12 - preserved a13 FIRST_CONFIGURED_RECEIVER-R07-1 turn 0 retains its receipt evidence and exact bytes
+  ---
+  duration_ms: 0.179644
+  type: 'test'
+  ...
+# Subtest: preserved a15 FIRST_CONFIGURED_RECEIVER-R02-1 turn 0 retains its receipt evidence and exact bytes
+ok 13 - preserved a15 FIRST_CONFIGURED_RECEIVER-R02-1 turn 0 retains its receipt evidence and exact bytes
+  ---
+  duration_ms: 0.288044
+  type: 'test'
+  ...
+# Subtest: preserved a15 FIRST_CONFIGURED_RECEIVER-R02-1 turn 1 retains its receipt evidence and exact bytes
+ok 14 - preserved a15 FIRST_CONFIGURED_RECEIVER-R02-1 turn 1 retains its receipt evidence and exact bytes
+  ---
+  duration_ms: 0.166044
+  type: 'test'
+  ...
+# Subtest: preserved a15 FIRST_CONFIGURED_RECEIVER-R02-1 turn 2 retains its receipt evidence and exact bytes
+ok 15 - preserved a15 FIRST_CONFIGURED_RECEIVER-R02-1 turn 2 retains its receipt evidence and exact bytes
+  ---
+  duration_ms: 0.180586
+  type: 'test'
+  ...
+# Subtest: preserved a15 FIRST_CONFIGURED_RECEIVER-R07-2 turn 0 retains its receipt evidence and exact bytes
+ok 16 - preserved a15 FIRST_CONFIGURED_RECEIVER-R07-2 turn 0 retains its receipt evidence and exact bytes
+  ---
+  duration_ms: 0.21049
+  type: 'test'
+  ...
+# Subtest: preserved a15 FIRST_CONFIGURED_RECEIVER-R07-3 turn 0 retains its receipt evidence and exact bytes
+ok 17 - preserved a15 FIRST_CONFIGURED_RECEIVER-R07-3 turn 0 retains its receipt evidence and exact bytes
+  ---
+  duration_ms: 0.16308
+  type: 'test'
+  ...
+# Subtest: preserved a15 FIRST_CONFIGURED_RECEIVER-R11-1 turn 0 retains its receipt evidence and exact bytes
+ok 18 - preserved a15 FIRST_CONFIGURED_RECEIVER-R11-1 turn 0 retains its receipt evidence and exact bytes
+  ---
+  duration_ms: 0.353019
+  type: 'test'
+  ...
+# Subtest: preserved a15 FIRST_CONFIGURED_RECEIVER-R12-1 turn 0 retains its receipt evidence and exact bytes
+ok 19 - preserved a15 FIRST_CONFIGURED_RECEIVER-R12-1 turn 0 retains its receipt evidence and exact bytes
+  ---
+  duration_ms: 0.701001
+  type: 'test'
+  ...
+# Subtest: preserved a18 FIRST_CONFIGURED_RECEIVER-R06-2 turn 0 retains its receipt evidence and exact bytes
+ok 20 - preserved a18 FIRST_CONFIGURED_RECEIVER-R06-2 turn 0 retains its receipt evidence and exact bytes
+  ---
+  duration_ms: 0.102301
+  type: 'test'
+  ...
+# Subtest: preserved a18 FIRST_CONFIGURED_RECEIVER-R06-2 turn 1 retains its receipt evidence and exact bytes
+ok 21 - preserved a18 FIRST_CONFIGURED_RECEIVER-R06-2 turn 1 retains its receipt evidence and exact bytes
+  ---
+  duration_ms: 0.170501
+  type: 'test'
+  ...
+# Subtest: preserved a18 FIRST_CONFIGURED_RECEIVER-R06-2 turn 2 retains its receipt evidence and exact bytes
+ok 22 - preserved a18 FIRST_CONFIGURED_RECEIVER-R06-2 turn 2 retains its receipt evidence and exact bytes
+  ---
+  duration_ms: 0.215567
+  type: 'test'
+  ...
+# Subtest: preserved a19 FIRST_CONFIGURED_RECEIVER-R09-1 turn 0 retains its receipt evidence and exact bytes
+ok 23 - preserved a19 FIRST_CONFIGURED_RECEIVER-R09-1 turn 0 retains its receipt evidence and exact bytes
+  ---
+  duration_ms: 0.276216
+  type: 'test'
+  ...
+# Subtest: preserved a19 FIRST_CONFIGURED_RECEIVER-R09-1 turn 1 retains its receipt evidence and exact bytes
+ok 24 - preserved a19 FIRST_CONFIGURED_RECEIVER-R09-1 turn 1 retains its receipt evidence and exact bytes
+  ---
+  duration_ms: 0.172784
+  type: 'test'
+  ...
+# Subtest: all five historical qualifier omissions are detected; no capture is repaired in place
+ok 25 - all five historical qualifier omissions are detected; no capture is repaired in place
+  ---
+  duration_ms: 1.178284
+  type: 'test'
+  ...
+# Subtest: historical unnamed R06 source cannot silently become no source use
+ok 26 - historical unnamed R06 source cannot silently become no source use
+  ---
+  duration_ms: 0.218922
+  type: 'test'
+  ...
+# Subtest: qualified receipt with matching registered source accounting remains declaration only
+ok 27 - qualified receipt with matching registered source accounting remains declaration only
+  ---
+  duration_ms: 0.443443
+  type: 'test'
+  ...
+# Subtest: explicit pending-revalidation and independently-unverified qualifiers retain their historical meaning
+ok 28 - explicit pending-revalidation and independently-unverified qualifiers retain their historical meaning
+  ---
+  duration_ms: 0.33981
+  type: 'test'
+  ...
+# Subtest: explicitly observed no-source task accepts empty arrays
+ok 29 - explicitly observed no-source task accepts empty arrays
+  ---
+  duration_ms: 0.261355
+  type: 'test'
+  ...
+# Subtest: unknown source accounting is held even when the receipt looks complete
+ok 30 - unknown source accounting is held even when the receipt looks complete
+  ---
+  duration_ms: 0.151113
+  type: 'test'
+  ...
+# Subtest: recording a missing identifier preserves the HOLD and does not invent an ID
+ok 31 - recording a missing identifier preserves the HOLD and does not invent an ID
+  ---
+  duration_ms: 0.21755
+  type: 'test'
+  ...
+# Subtest: an inline alias and a registered-but-omitted used source both hold
+ok 32 - an inline alias and a registered-but-omitted used source both hold
+  ---
+  duration_ms: 2.4395
+  type: 'test'
+  ...
+# Subtest: verified or admitted footer claims cannot qualify a receiver declaration
+ok 33 - verified or admitted footer claims cannot qualify a receiver declaration
+  ---
+  duration_ms: 0.783443
+  type: 'test'
+  ...
+# Subtest: qualification in prose cannot replace the footer, and the review body must qualify when requested
+ok 34 - qualification in prose cannot replace the footer, and the review body must qualify when requested
+  ---
+  duration_ms: 0.399598
+  type: 'test'
+  ...
+# Subtest: wrong task/root and malformed or extended receipt schemas hold
+ok 35 - wrong task/root and malformed or extended receipt schemas hold
+  ---
+  duration_ms: 0.521938
+  type: 'test'
+  ...
+# Subtest: unknown origin task stays unknown instead of matching receiver self-report
+ok 36 - unknown origin task stays unknown instead of matching receiver self-report
+  ---
+  duration_ms: 0.222908
+  type: 'test'
+  ...
+# Subtest: accessors, sparse arrays and cyclic input are rejected before executing user code
+ok 37 - accessors, sparse arrays and cyclic input are rejected before executing user code
+  ---
+  duration_ms: 0.624289
+  type: 'test'
+  ...
+# Subtest: prospective source guidance supplies explicit qualification and unresolved-ID instructions
+ok 38 - prospective source guidance supplies explicit qualification and unresolved-ID instructions
+  ---
+  duration_ms: 0.070815
+  type: 'test'
+  ...
+# Subtest: a receipt line without the sealed Gate command is not a qualified footer
+ok 39 - a receipt line without the sealed Gate command is not a qualified footer
+  ---
+  duration_ms: 0.288575
+  type: 'test'
+  ...
+# Subtest: offline CLI produces a held raw-capture review and protects existing output bytes
+ok 40 - offline CLI produces a held raw-capture review and protects existing output bytes
+  ---
+  duration_ms: 140.145181
+  type: 'test'
+  ...
+# Subtest: offline CLI accepts an origin-bound declaration and rejects changed capture hash
+ok 41 - offline CLI accepts an origin-bound declaration and rejects changed capture hash
+  ---
+  duration_ms: 139.674788
+  type: 'test'
+  ...
+# Subtest: captured FIRST_CONFIGURED_RECEIVER-R02-1 scalar/null missing information is rejected without custody advancement
+ok 42 - captured FIRST_CONFIGURED_RECEIVER-R02-1 scalar/null missing information is rejected without custody advancement
+  ---
+  duration_ms: 14.98384
+  type: 'test'
+  ...
+# Subtest: captured FIRST_CONFIGURED_RECEIVER-R06-3 scalar/null missing information is rejected without custody advancement
+ok 43 - captured FIRST_CONFIGURED_RECEIVER-R06-3 scalar/null missing information is rejected without custody advancement
+  ---
+  duration_ms: 6.976717
+  type: 'test'
+  ...
+# Subtest: a well-shaped captured receipt from another root remains held and cannot authenticate itself
+ok 44 - a well-shaped captured receipt from another root remains held and cannot authenticate itself
+  ---
+  duration_ms: 6.340204
+  type: 'test'
+  ...
+# Subtest: unknown route stays unknown and footer labels cannot carry a digest or multiline payload
+ok 45 - unknown route stays unknown and footer labels cannot carry a digest or multiline payload
+  ---
+  duration_ms: 0.716895
+  type: 'test'
+  ...
+1..45
+# tests 45
+# suites 0
+# pass 45
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 923.931369

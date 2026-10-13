@@ -1,0 +1,18 @@
+{
+  "status": "ACTIVATED_BY_DIRECT_OPERATOR",
+  "operator": "Tawanna C. Miller",
+  "authority_class": "INTERACTIVE_OPERATOR_DIRECT",
+  "instruction": "you are authorized to try over and over again until this is fixed 𝌋",
+  "recorded_at": "2026-10-11T20:33:27.596184+00:00",
+  "continuity_date": "2026-10-11",
+  "protocol_sha256": "c372f4c2917af5e9c5aa0a55204bef55b4a0beafffc078dc0866ed7fab86ac9b",
+  "provider_requests": 5,
+  "reservation_ceiling_usd": 2.5,
+  "automatic_retries": 0,
+  "manual_retries": 4,
+  "fresh_enrollments": 5,
+  "vercel_deployments": 1,
+  "neon_validator_deployments": 1,
+  "detached_delegation": false,
+  "scope": "First prospectively bounded repair batch, five distinct run policies, each one request / USD0.50 ceiling. Stop first complete capture. Continue future repair only through new declared prospective bounds."
+}

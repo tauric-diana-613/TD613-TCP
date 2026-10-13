@@ -1,0 +1,138 @@
+---
+derivative_id: derivative:501f0c03622136f8b6230921
+parent_capture_id: capture:881f90e6db9d98fdc8d0d6a4
+parent_blob_sha256: 0244d70d1add6f5e328d4f5be82c4784f1b68fcc9c0d1be52d40119e6f274b4a
+tool: srcctl-json-normalizer/1
+source_title: "The End of Search: AI as the New Interpretive Layer After the Collapse of the Open Web"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18213766",
+  "conceptrecid": "18213766",
+  "created": "2026-01-11T14:24:11.754667+00:00",
+  "doi": "10.5281/zenodo.18213767",
+  "doi_url": "https://doi.org/10.5281/zenodo.18213767",
+  "files": [
+    {
+      "checksum": "md5:2d52d26e42b8bc97f51787f8783bbaf6",
+      "id": "a9e107ae-51b6-4f1f-a3ee-5b386264f3fe",
+      "key": "The End of Search: AI as the New Interpretive Layer After the Collapse of the Open Web .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18213767/files/The%20End%20of%20Search:%20AI%20as%20the%20New%20Interpretive%20Layer%20After%20the%20Collapse%20of%20the%20Open%20Web%20.pdf/content"
+      },
+      "size": 65202
+    }
+  ],
+  "id": 18213767,
+  "links": {
+    "access": "https://zenodo.org/api/records/18213767/access",
+    "access_grants": "https://zenodo.org/api/records/18213767/access/grants",
+    "access_links": "https://zenodo.org/api/records/18213767/access/links",
+    "access_request": "https://zenodo.org/api/records/18213767/access/request",
+    "access_users": "https://zenodo.org/api/records/18213767/access/users",
+    "archive": "https://zenodo.org/api/records/18213767/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18213767/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18213767/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18213767/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18213767",
+    "draft": "https://zenodo.org/api/records/18213767/draft",
+    "file_modification": "https://zenodo.org/api/records/18213767/file-modification",
+    "files": "https://zenodo.org/api/records/18213767/files",
+    "latest": "https://zenodo.org/api/records/18213767/versions/latest",
+    "latest_html": "https://zenodo.org/records/18213767/latest",
+    "media_files": "https://zenodo.org/api/records/18213767/media-files",
+    "parent": "https://zenodo.org/api/records/18213766",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18213766",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18213766",
+    "parent_html": "https://zenodo.org/records/18213766",
+    "preview_html": "https://zenodo.org/records/18213767?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18213767/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18213767/request-deletion",
+    "requests": "https://zenodo.org/api/records/18213767/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18213767/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18213767",
+    "self_doi": "https://doi.org/10.5281/zenodo.18213767",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18213767",
+    "self_html": "https://zenodo.org/records/18213767",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18213767/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18213767/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18213767:The%20End%20of%20Search:%20AI%20as%20the%20New%20Interpretive%20Layer%20After%20the%20Collapse%20of%20the%20Open%20Web%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18213767:The%20End%20of%20Search:%20AI%20as%20the%20New%20Interpretive%20Layer%20After%20the%20Collapse%20of%20the%20Open%20Web%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18213767:The%20End%20of%20Search:%20AI%20as%20the%20New%20Interpretive%20Layer%20After%20the%20Collapse%20of%20the%20Open%20Web%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18213767:The%20End%20of%20Search:%20AI%20as%20the%20New%20Interpretive%20Layer%20After%20the%20Collapse%20of%20the%20Open%20Web%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18213767:The%20End%20of%20Search:%20AI%20as%20the%20New%20Interpretive%20Layer%20After%20the%20Collapse%20of%20the%20Open%20Web%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18213767:The%20End%20of%20Search:%20AI%20as%20the%20New%20Interpretive%20Layer%20After%20the%20Collapse%20of%20the%20Open%20Web%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18213767/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "description": "<p>This paper analyzes the structural transformation of digital knowledge systems as the open web undergoes rapid decay. With long‑tail content disappearing, independent archives collapsing, and traditional search engines losing access to a functional information substrate, the act of &ldquo;searching the web&rdquo; becomes increasingly symbolic. The paper argues that AI systems now function as the primary interpretive layer, synthesizing meaning rather than retrieving documents, and thereby replacing the epistemic role once held by the open web. It examines the consequences of this shift for creators, institutions, and public knowledge, highlighting the emergence of AI as a meaning‑engine that mediates inquiry in a post‑retrieval environment. The analysis also explores how unified, machine‑legible theoretical frameworks gain influence within this new substrate, shaping the future of interpretation after the collapse of traditional search.</p>",
+    "doi": "10.5281/zenodo.18213767",
+    "keywords": [
+      "Governance",
+      "Centralized governance",
+      "Social Media",
+      "Social issues",
+      "Activism",
+      "Artificial Intelligence",
+      "Internet"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-01-11",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18213766"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "The End of Search: AI as the New Interpretive Layer After the Collapse of the Open Web",
+    "version": "1.0"
+  },
+  "modified": "2026-01-29T01:27:34.782983+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18213767",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 24,
+    "unique_downloads": 19,
+    "unique_views": 42,
+    "version_downloads": 24,
+    "version_unique_downloads": 19,
+    "version_unique_views": 42,
+    "version_views": 48,
+    "views": 48
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "The End of Search: AI as the New Interpretive Layer After the Collapse of the Open Web",
+  "updated": "2026-01-29T01:27:34.782983+00:00"
+}

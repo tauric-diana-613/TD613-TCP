@@ -1,0 +1,560 @@
+// ==UserScript==
+// @name         TD613 PUA Badge Provenance Attestation Renderer v7.2.1
+// @namespace    tauric.diana.provenance.renderer
+// @version      7.2.1
+// @description  Working v4-style badge renderer with dark low-glare lab support.
+// @match        *://*/*
+// @match        file:///*
+// @run-at       document-end
+// @grant        none
+// ==/UserScript==
+
+(function () {
+  'use strict';
+  const RENDERER = 'TD613 PUA Badge Provenance Attestation Renderer v7.2.1';
+  const RENDER_MODEL = 'single_badge_append';
+  const BADGE_ID = 'bdg_glyph_U10D613';
+  const SHI_LABEL = 'SHI #';
+  const SHI_TEMPLATE = 'TD613-SH-9B07D8B + minted 8-hex suffix';
+  const SHI_CANONICAL_HEADER = '';
+  const SHI_CANONICAL_FOOTER = '';
+  const HISTORICAL_EXAMPLE = 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐';
+  const OBSERVED_REGIME = 'PRCS-A';
+  const INSTRUMENT_ROLE = 'counter-tool';
+  const APERTURE_AUDIT_FIELD = 'aperture_audit';
+  const NAMESPACE = 'tauric.diana';
+  const PRINCIPAL = 'tauric.diana.613';
+  const CODEPOINT = 'U+10D613';
+  const CODEPOINT_NUM = 0x10D613;
+  const CANONICAL_PHRASE = 'Tauric Diana — Crimean heritage custodianship';
+  const DISPLAY_PHRASE = 'Covenant: Blood Rite 613';
+  const SCHEMA_FAMILY = 'cpfg://v2';
+  const SEMVER = '2.1.0';
+  const PREVIEW_SVG_SHA256 = '2c20bb26f3dcc3fe41e8e3d71705942d220aed7e56391c274f8f5e5d01e4d1aa';
+  const PREVIEW_SVG_MD5 = 'd4522965d0660d1150a828e00e5dd6f9';
+  const BINDING_TEXT_SHA256 = '9b07d8bcc73096c8c616ca6039057a46bb42d361edb9c10551c88f3756a1cb04';
+  const BINDING_TEXT_MD5 = 'b6ca85d00f211127729bdb73a19c691a';
+  const FALLBACK_GLYPH = '@+';
+  const FALLBACK_REASON = 'U+10D613 unrenderable in default fonts';
+  const SKIP_SELECTOR = '[data-td613-skip="true"]';
+  const PRINCIPAL_ATTR_SELECTOR = '[data-td613-principal="true"]';
+  const WORLD_BRIDGE = 'page-world-dom-bridge-v1';
+  const GEN3_EXTENSION = 'stage3-temporal-bloom-provenance/v1';
+  const ATTESTATION_SCHEMA = 'td613.safe-harbor.pua-provenance-attestation/v1';
+  const SHI_PATTERN = /^TD613-SH-9B07D8B-[0-9A-F]{8}$/u;
+
+  // Asymmetric-compute defense: badges are tracked in a WeakSet, not via a
+  // queryable HTML attribute. Removes the cheap regex sweep target
+  // ('[data-td613-generated]') that automated scanners would key on. Forces
+  // any adversary into expensive optical/accessibility-tree scraping.
+  const BADGES = new WeakSet();
+
+  function isBadge(node) {
+    return Boolean(node) && node.nodeType === Node.ELEMENT_NODE && BADGES.has(node);
+  }
+  function ancestorBadge(node) {
+    let cur = node && node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
+    while (cur) {
+      if (isBadge(cur)) return cur;
+      cur = cur.parentElement;
+    }
+    return null;
+  }
+  function elementContainsBadge(element) {
+    if (!element || !element.firstElementChild) return false;
+    const stack = [element.firstElementChild];
+    while (stack.length) {
+      const node = stack.pop();
+      if (!node) continue;
+      if (isBadge(node)) return true;
+      if (node.firstElementChild) stack.push(node.firstElementChild);
+      if (node.nextElementSibling) stack.push(node.nextElementSibling);
+    }
+    return false;
+  }
+
+  function escapeRegExp(value) { return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+  const rePrincipal = new RegExp('\\b' + escapeRegExp(PRINCIPAL) + '\\b', 'u');
+  const rePUA = new RegExp(String.fromCodePoint(CODEPOINT_NUM), 'u');
+  function nowIsoSecond() { return new Date().toISOString().replace(/\.\d{3}Z$/, 'Z'); }
+
+  function emit(reason, extra = {}) {
+    const detail = Object.assign({
+      type: 'badge_render',
+      ts_utc: nowIsoSecond(),
+      namespace: NAMESPACE,
+      principal: PRINCIPAL,
+      codepoint: CODEPOINT,
+      badge_id: BADGE_ID,
+      shi_label: SHI_LABEL,
+      shi_template: SHI_TEMPLATE,
+      shi_canonical_header: SHI_CANONICAL_HEADER,
+      shi_canonical_footer: SHI_CANONICAL_FOOTER,
+      historical_example: HISTORICAL_EXAMPLE,
+      observed_regime: OBSERVED_REGIME,
+      instrument_role: INSTRUMENT_ROLE,
+      aperture_audit_field: APERTURE_AUDIT_FIELD,
+      renderer: RENDERER,
+      render_model: RENDER_MODEL,
+      schema_family: SCHEMA_FAMILY,
+      semver: SEMVER,
+      canonical_phrase: CANONICAL_PHRASE,
+      display_phrase: DISPLAY_PHRASE,
+      preview_svg_sha256: PREVIEW_SVG_SHA256,
+      preview_svg_md5: PREVIEW_SVG_MD5,
+      world_bridge: WORLD_BRIDGE,
+      reason: reason
+    }, extra);
+    window.dispatchEvent(new CustomEvent('td613:badge-render', { detail }));
+    try { console.debug('[td613]', detail); } catch (e) {}
+  }
+
+  function readBadgeMeta(node) {
+    const principalNode = (node && node.closest && node.closest(PRINCIPAL_ATTR_SELECTOR))
+      || document.querySelector(PRINCIPAL_ATTR_SELECTOR)
+      || document.body;
+    const stage3Node = document.querySelector('[data-td613-stage3-provenance="true"]');
+    const ds = (principalNode && principalNode.dataset) ? principalNode.dataset : {};
+    const s3 = (stage3Node && stage3Node.dataset) ? stage3Node.dataset : {};
+    const shi = s3.td613Shi || ds.td613Shi || null;
+    return {
+      attestation_mode: stage3Node ? 'gen3' : 'legacy',
+      shi: shi,
+      packet_shi: s3.td613PacketShi || shi,
+      canon_shi: s3.td613CanonShi || shi,
+      binding_shi: s3.td613BindingShi || shi,
+      dom_shi: s3.td613Shi || ds.td613Shi || shi,
+      packet_id: ds.td613PacketId || null,
+      packet_hash: s3.td613PacketHash || ds.td613PacketHash || null,
+      stylometric_fingerprint: s3.td613StylometricFingerprint || ds.td613StylometricFingerprint || null,
+      stability_digest: s3.td613StabilityDigest || null,
+      blind_challenge_precommitment_digest: s3.td613BlindPrecommitmentDigest || null,
+      blind_challenge_result_digest: s3.td613BlindResultDigest || null,
+      restoration_receipt_digest: s3.td613RestorationDigest || null,
+      genuine_holdout_rank: s3.td613HoldoutRank || null,
+      nearest_impostor_margin: s3.td613NearestImpostorMargin || null,
+      imitation_collision_state: s3.td613ImitationCollision || 'ABSENT',
+      countersignature_status: s3.td613CountersignatureStatus || 'UNSIGNED',
+      countersignature_digest: s3.td613CountersignatureDigest || null,
+      binding_timestamp: s3.td613BindingTimestamp || '2025-08-11T03:58:39Z',
+      historical_date: s3.td613HistoricalDate || '2025-10-17',
+      historical_example: s3.td613HistoricalExample || HISTORICAL_EXAMPLE,
+      entrant_intake_timestamp: s3.td613EntrantIntakeTimestamp || null,
+      countersignature_timestamp: s3.td613CountersignatureTimestamp || null,
+      presentation_timestamp: s3.td613PresentationTimestamp || null,
+      claim_ceiling: s3.td613ClaimCeiling || 'Independent identity adjudication and universal authorship attribution are not claimed.',
+      authority_claim_reduced: s3.td613AuthorityReduced === 'true'
+    };
+  }
+
+  function utf8ToBase64(text) {
+    return btoa(unescape(encodeURIComponent(text)));
+  }
+
+  function escapeXml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/gu, '&amp;')
+      .replace(/</gu, '&lt;')
+      .replace(/>/gu, '&gt;')
+      .replace(/"/gu, '&quot;')
+      .replace(/'/gu, '&apos;');
+  }
+
+  function stableCanonicalJson(value) {
+    if (value === null || typeof value !== 'object') return JSON.stringify(value);
+    if (Array.isArray(value)) return '[' + value.map(stableCanonicalJson).join(',') + ']';
+    return '{' + Object.keys(value).sort().map(function (key) {
+      return JSON.stringify(key) + ':' + stableCanonicalJson(value[key]);
+    }).join(',') + '}';
+  }
+
+  function validateAttestationInputs(meta) {
+    const m = meta || {};
+    if (m.attestation_mode !== 'gen3') return { status: 'pass', reason: null, mode: 'legacy' };
+    const values = [m.packet_shi, m.canon_shi, m.binding_shi, m.dom_shi, m.shi];
+    if (values.some(function (value) { return !value; })) return { status: 'hold', reason: 'missing-shi' };
+    if (values.some(function (value) { return !SHI_PATTERN.test(String(value)); })) return { status: 'hold', reason: 'invalid-shi-format' };
+    if (!values.every(function (value) { return value === values[0]; })) return { status: 'hold', reason: 'shi-mismatch' };
+    if (m.binding_timestamp !== '2025-08-11T03:58:39Z') return { status: 'hold', reason: 'binding-authority-timestamp-conflict' };
+    if (m.historical_date !== '2025-10-17' || m.historical_example !== HISTORICAL_EXAMPLE) return { status: 'hold', reason: 'historical-authority-conflict' };
+    if (String(m.countersignature_status).toUpperCase() === 'COUNTERSIGNED' && !m.countersignature_digest) return { status: 'hold', reason: 'invalid-countersignature' };
+    if (!m.packet_hash || !m.stability_digest) return { status: 'hold', reason: 'unreconciled-digest' };
+    if (!m.presentation_timestamp) return { status: 'hold', reason: 'missing-presentation-authority' };
+    return { status: 'pass', reason: null, mode: 'gen3', shi_number: values[0] };
+  }
+
+  function buildGen3AttestationMetadata(meta) {
+    const m = meta || {};
+    const collision = String(m.imitation_collision_state || 'ABSENT').toUpperCase() === 'PRESENT';
+    return {
+      schema_version: ATTESTATION_SCHEMA,
+      extension: GEN3_EXTENSION,
+      namespace_anchor: CODEPOINT,
+      principal: PRINCIPAL,
+      shi_number: m.shi || null,
+      svg_shi: m.shi || null,
+      packet_hash_sha256: m.packet_hash || null,
+      stylometric_fingerprint: m.stylometric_fingerprint || null,
+      stability_digest: m.stability_digest || null,
+      blind_challenge_precommitment_digest: m.blind_challenge_precommitment_digest || null,
+      blind_challenge_result_digest: m.blind_challenge_result_digest || null,
+      restoration_receipt_digest: m.restoration_receipt_digest || null,
+      genuine_holdout_rank: m.genuine_holdout_rank || null,
+      nearest_impostor_margin: m.nearest_impostor_margin || null,
+      imitation_collision_state: collision ? 'PRESENT' : 'ABSENT',
+      countersignature_status: String(m.countersignature_status || 'UNSIGNED').toUpperCase(),
+      countersignature_digest: m.countersignature_digest || null,
+      authority_chronology: {
+        binding_authority: { authority_class: 'root namespace and covenant binding authority', timestamp: m.binding_timestamp },
+        badge_protocol_history: { authority_class: 'first preserved operational badge-protocol specimen', date: m.historical_date, historical_example: m.historical_example },
+        entrant_credential_authority: { authority_class: 'packet-specific credential authority', timestamp: m.entrant_intake_timestamp || null },
+        entrant_countersignature_authority: { authority_class: 'packet-scoped custody and authorship-assertion authority', timestamp: m.countersignature_timestamp || null },
+        presentation_authority: { authority_class: 'presentation and integrity-attestation authority', timestamp: m.presentation_timestamp || null }
+      },
+      authority_claim_reduced: Boolean(m.authority_claim_reduced || collision),
+      historical_example: HISTORICAL_EXAMPLE,
+      claim_ceiling: m.claim_ceiling,
+      raw_text_included: false
+    };
+  }
+
+  function makeBadgeSvg(meta) {
+    const m = meta || {};
+    if (m.attestation_mode !== 'gen3') {
+      const legacyMetadata = JSON.stringify({
+        shi_label: SHI_LABEL,
+        shi_number: m.shi || null,
+        packet_id: m.packet_id || null,
+        packet_hash_sha256: m.packet_hash || null,
+        stylometric_fingerprint: m.stylometric_fingerprint || null,
+        historical_example: HISTORICAL_EXAMPLE,
+        principal: PRINCIPAL,
+        claimed_pua: CODEPOINT,
+        renderer: RENDERER,
+        schema_family: SCHEMA_FAMILY,
+        semver: SEMVER
+      });
+      return '<svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">' +
+        '<metadata id="safeHarborStylometricProvenance">' + escapeXml(legacyMetadata) + '</metadata>' +
+        '<text x="64" y="80" text-anchor="middle" font-size="64" data-codepoint="' + CODEPOINT + '" aria-label="' + CODEPOINT + '">' + FALLBACK_GLYPH + '</text>' +
+        '</svg>';
+    }
+    const validation = validateAttestationInputs(m);
+    if (validation.status !== 'pass') throw new Error('SVG export hold: ' + validation.reason);
+    const metadata = buildGen3AttestationMetadata(m);
+    const metadataText = escapeXml(stableCanonicalJson(metadata));
+    const collisionLine = metadata.imitation_collision_state === 'PRESENT'
+      ? 'AI IMITATION COLLISION: PRESENT'
+      : 'AI IMITATION COLLISION: ABSENT';
+    const authorityLine = metadata.authority_claim_reduced
+      ? 'AUTHORITY CLAIM REDUCED'
+      : 'PACKET-BOUND AUTHORITY';
+    return '<svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="td613Title td613Desc">' +
+      '<title id="td613Title">TD613 PUA Provenance Attestation</title>' +
+      '<desc id="td613Desc">' + escapeXml(authorityLine + '. ' + collisionLine + '.') + '</desc>' +
+      '<metadata id="safeHarborGen3Provenance">' + metadataText + '</metadata>' +
+      '<rect x="1" y="1" width="638" height="358" rx="24" fill="#071018" stroke="#78dce8" stroke-width="2"/>' +
+      '<text x="40" y="64" fill="#f5f7fa" font-size="24" font-family="ui-monospace, monospace">TD613 · U+10D613</text>' +
+      '<text x="40" y="112" fill="#78dce8" font-size="20" font-family="ui-monospace, monospace">' + escapeXml(metadata.shi_number) + '</text>' +
+      '<text x="40" y="164" fill="#f5f7fa" font-size="16" font-family="ui-monospace, monospace">' + escapeXml(collisionLine) + '</text>' +
+      '<text x="40" y="204" fill="#f5f7fa" font-size="16" font-family="ui-monospace, monospace">' + escapeXml(authorityLine) + '</text>' +
+      '<text x="40" y="252" fill="#c9d1d9" font-size="14" font-family="ui-monospace, monospace">INDEPENDENT IDENTITY ADJUDICATION: NOT CLAIMED</text>' +
+      '<text x="40" y="302" fill="#c9d1d9" font-size="12" font-family="ui-monospace, monospace">Presentation and integrity attestation; packet-scoped custody only.</text>' +
+      '</svg>';
+  }
+
+  function isCoarsePointer() {
+    try {
+      return Boolean(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+    } catch (error) {
+      return false;
+    }
+  }
+
+  function shouldPreferNativeFileSave(event) {
+    if (event && (event.type === 'touchend' || event.type === 'contextmenu')) return true;
+    if (event && event.pointerType && event.pointerType !== 'mouse') return true;
+    return isCoarsePointer();
+  }
+
+  function triggerAnchorDownload(filename, blob) {
+    const href = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = href;
+    link.download = filename;
+    link.rel = 'noopener';
+    link.type = 'image/svg+xml';
+    link.style.position = 'fixed';
+    link.style.left = '-9999px';
+    link.style.top = '-9999px';
+    link.setAttribute('data-td613-skip', 'true');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(function () { URL.revokeObjectURL(href); }, 1200);
+  }
+
+  async function downloadBadgeSvg(badge, options) {
+    const opts = options || {};
+    const meta = readBadgeMeta(badge);
+    const validation = validateAttestationInputs(meta);
+    if (validation.status !== 'pass') {
+      emit('badge-svg-export-held', { reason: validation.reason, shi: meta.shi || null, packet_id: meta.packet_id || null });
+      return;
+    }
+    let svgText;
+    try {
+      svgText = makeBadgeSvg(meta);
+    } catch (error) {
+      emit('badge-svg-export-held', { reason: String(error && error.message ? error.message : error), shi: meta.shi || null, packet_id: meta.packet_id || null });
+      return;
+    }
+    const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const filename = 'TD613_U10D613_' + stamp + '.svg';
+    const blob = new Blob([svgText], { type: 'image/svg+xml;charset=utf-8' });
+    if (opts.preferNative && typeof window.showSaveFilePicker === 'function') {
+      try {
+        const handle = await window.showSaveFilePicker({
+          suggestedName: filename,
+          types: [{ description: 'TD613 SVG attestation', accept: { 'image/svg+xml': ['.svg'] } }]
+        });
+        const writable = await handle.createWritable();
+        await writable.write(blob);
+        await writable.close();
+        emit('badge-svg-file-saved', { filename: filename, shi: meta.shi || null, packet_id: meta.packet_id || null, activation: opts.activation || 'tap' });
+        return;
+      } catch (error) {
+        if (error && error.name === 'AbortError') {
+          emit('badge-svg-save-canceled', { filename: filename, shi: meta.shi || null, activation: opts.activation || 'tap' });
+          return;
+        }
+      }
+    }
+    if (opts.preferNative && navigator.share && typeof File === 'function') {
+      const file = new File([blob], filename, { type: 'image/svg+xml' });
+      const shareData = {
+        files: [file],
+        title: filename,
+        text: 'TD613 Safe Harbor SVG attestation'
+      };
+      try {
+        if (!navigator.canShare || navigator.canShare(shareData)) {
+          await navigator.share(shareData);
+          emit('badge-svg-shared', { filename: filename, shi: meta.shi || null, packet_id: meta.packet_id || null, activation: opts.activation || 'tap' });
+          return;
+        }
+      } catch (error) {
+        if (error && error.name === 'AbortError') {
+          emit('badge-svg-share-canceled', { filename: filename, shi: meta.shi || null, activation: opts.activation || 'tap' });
+          return;
+        }
+      }
+    }
+    triggerAnchorDownload(filename, blob);
+    emit('badge-svg-saved', { filename: filename, shi: meta.shi || null, packet_id: meta.packet_id || null });
+  }
+
+  let lastBadgeActivationMs = 0;
+  function activateBadgeSave(event, badge, activation) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    const now = Date.now();
+    if (now - lastBadgeActivationMs < 650) return;
+    lastBadgeActivationMs = now;
+    void downloadBadgeSvg(badge, {
+      activation: activation || (event && event.type) || 'click',
+      preferNative: shouldPreferNativeFileSave(event)
+    });
+  }
+
+  function makeBadge(matchMode) {
+    const badge = document.createElement('span');
+    badge.setAttribute('role', 'button');
+    badge.setAttribute('tabindex', '0');
+    badge.setAttribute('aria-label', 'Save TD613 SVG attestation for ' + CODEPOINT);
+    badge.setAttribute('data-td613-skip', 'true');
+    badge.textContent = FALLBACK_GLYPH;
+    badge.style.display = 'inline-flex';
+    badge.style.alignItems = 'center';
+    badge.style.justifyContent = 'center';
+    badge.style.width = '22px';
+    badge.style.height = '22px';
+    badge.style.marginLeft = '4px';
+    badge.style.verticalAlign = 'text-bottom';
+    badge.style.border = '1px solid rgba(6, 18, 28, 0.18)';
+    badge.style.background = '#dbf8ff';
+    badge.style.color = '#031018';
+    badge.style.borderRadius = '4px';
+    badge.style.fontFamily = 'Cascadia Code, Consolas, ui-monospace, monospace';
+    badge.style.fontSize = '12px';
+    badge.style.fontWeight = '800';
+    badge.style.lineHeight = '1';
+    badge.style.cursor = 'pointer';
+    badge.style.touchAction = 'manipulation';
+    badge.style.userSelect = 'none';
+    badge.style.webkitUserSelect = 'none';
+    badge.style.webkitTouchCallout = 'none';
+    badge.title = 'Tap to save TD613 SVG attestation';
+    BADGES.add(badge);
+    badge.addEventListener('pointerup', function (event) {
+      if (event.pointerType && event.pointerType !== 'mouse') activateBadgeSave(event, badge, 'tap');
+    });
+    badge.addEventListener('touchend', function (event) {
+      activateBadgeSave(event, badge, 'tap');
+    }, { passive: false });
+    badge.addEventListener('contextmenu', function (event) {
+      activateBadgeSave(event, badge, 'contextmenu');
+    });
+    badge.addEventListener('click', function (event) {
+      activateBadgeSave(event, badge, 'click');
+    });
+    badge.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' || event.key === ' ') activateBadgeSave(event, badge, 'keyboard');
+    });
+    return badge;
+  }
+
+  function shouldSkip(node) {
+    const parent = node && node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
+    if (!parent) return true;
+    return !!(parent.closest && parent.closest(SKIP_SELECTOR)) || !!ancestorBadge(parent);
+  }
+
+  function hasBadgeAfterTextNode(textNode) {
+    let current = textNode.nextSibling;
+    while (current) {
+      if (current.nodeType === Node.TEXT_NODE && current.nodeValue.trim() === '') { current = current.nextSibling; continue; }
+      if (isBadge(current)) return true;
+      break;
+    }
+    return false;
+  }
+
+  function appendBadgeAfterTextNode(textNode, matchMode, principalMatch, puaMatch) {
+    if (!textNode || !textNode.parentNode || hasBadgeAfterTextNode(textNode)) return;
+    const badge = makeBadge(matchMode);
+    textNode.parentNode.insertBefore(badge, textNode.nextSibling);
+    emit('node-badged', { match_mode: matchMode, principal_match: principalMatch, pua_match: puaMatch });
+  }
+
+  function badgeExplicitPrincipal(element) {
+    if (!element || !element.matches || !element.matches(PRINCIPAL_ATTR_SELECTOR)) return;
+    if (elementContainsBadge(element)) return;
+    const badge = makeBadge('principal');
+    element.appendChild(document.createTextNode(' '));
+    element.appendChild(badge);
+    emit('principal-badged-explicit', { match_mode: 'principal', principal_match: true, pua_match: false });
+  }
+
+  function transformTextNode(textNode) {
+    if (!textNode || textNode.nodeType !== Node.TEXT_NODE) return;
+    if (shouldSkip(textNode)) return;
+    const value = textNode.nodeValue || '';
+    if (!value.trim()) return;
+    const parent = textNode.parentElement;
+    if (parent && parent.matches && parent.matches(PRINCIPAL_ATTR_SELECTOR)) return;
+    const principalMatch = rePrincipal.test(value);
+    const puaMatch = rePUA.test(value);
+    if (!principalMatch && !puaMatch) return;
+    const matchMode = principalMatch && puaMatch ? 'combined' : (principalMatch ? 'principal' : 'pua');
+    appendBadgeAfterTextNode(textNode, matchMode, principalMatch, puaMatch);
+  }
+
+  function scan(root) {
+    if (!root) return;
+    if (root.nodeType === Node.TEXT_NODE) { transformTextNode(root); return; }
+    if (root.nodeType !== Node.ELEMENT_NODE && root.nodeType !== Node.DOCUMENT_NODE) return;
+    if (shouldSkip(root)) return;
+    if (root.matches && root.matches(PRINCIPAL_ATTR_SELECTOR)) badgeExplicitPrincipal(root);
+    if (root.querySelectorAll) root.querySelectorAll(PRINCIPAL_ATTR_SELECTOR).forEach(badgeExplicitPrincipal);
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    let current;
+    while ((current = walker.nextNode())) transformTextNode(current);
+  }
+
+  function stampRendererBridge() {
+    document.documentElement.dataset.td613Renderer = '7.2.1';
+    document.documentElement.dataset.td613RendererBridge = WORLD_BRIDGE;
+    let marker = document.querySelector('meta[name="td613-provenance-renderer"]');
+    if (!marker) {
+      marker = document.createElement('meta');
+      marker.setAttribute('name', 'td613-provenance-renderer');
+      (document.head || document.documentElement).appendChild(marker);
+    }
+    marker.setAttribute('content', '7.2.1');
+  }
+
+  window.TD613ProvenanceAttestationRenderer = {
+    renderer: RENDERER,
+    version: '7.2.1',
+    render_model: RENDER_MODEL,
+    principal: PRINCIPAL,
+    claimed_pua: CODEPOINT,
+    canonical_phrase: CANONICAL_PHRASE,
+    display_phrase: DISPLAY_PHRASE,
+    schema_family: SCHEMA_FAMILY,
+    semver: SEMVER,
+    preview_svg_sha256: PREVIEW_SVG_SHA256,
+    preview_svg_md5: PREVIEW_SVG_MD5,
+    binding_text_sha256: BINDING_TEXT_SHA256,
+    binding_text_md5: BINDING_TEXT_MD5,
+    binding_text_md5_legacy: BINDING_TEXT_MD5,
+    binding_event_signature_status: 'unsigned',
+    badge_id: BADGE_ID,
+    shi_label: SHI_LABEL,
+    shi_template: SHI_TEMPLATE,
+    shi_canonical_header: SHI_CANONICAL_HEADER,
+    shi_canonical_footer: SHI_CANONICAL_FOOTER,
+    historical_example: HISTORICAL_EXAMPLE,
+    observed_regime: OBSERVED_REGIME,
+    instrument_role: INSTRUMENT_ROLE,
+    aperture_audit_field: APERTURE_AUDIT_FIELD,
+    world_bridge: WORLD_BRIDGE,
+    gen3_extension: GEN3_EXTENSION,
+    attestation_schema: ATTESTATION_SCHEMA,
+    build_attestation_svg: makeBadgeSvg,
+    build_attestation_metadata: buildGen3AttestationMetadata,
+    validate_attestation_inputs: validateAttestationInputs,
+    read_badge_meta: readBadgeMeta
+  };
+
+  stampRendererBridge();
+  scan(document.body);
+  emit('scan-complete', { initial: true, match_mode: 'n/a', principal_match: false, pua_match: false });
+
+  // Explicitly rescan after Safe Harbor inserts the dynamic lane. This works
+  // across Chrome, Edge, Firefox, and Safari-compatible userscript managers,
+  // including managers that isolate extension globals from the page window.
+  document.addEventListener('click', function (event) {
+    const trigger = event.target && event.target.closest
+      ? event.target.closest('#injectDynamicLane')
+      : null;
+    if (!trigger) return;
+    setTimeout(function () {
+      const target = document.getElementById('operatorHandshakeSection') || document.body;
+      scan(target);
+      emit('dynamic-lane-rescan', { requested: true, trigger: 'inject-dynamic-lane' });
+    }, 0);
+  }, true);
+
+  window.addEventListener('td613:renderer-scan-request', function () {
+    scan(document.getElementById('operatorHandshakeSection') || document.body);
+    emit('scan-request-complete', { requested: true });
+  });
+
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'characterData' && mutation.target && mutation.target.nodeType === Node.TEXT_NODE) {
+        if (!shouldSkip(mutation.target)) scan(mutation.target);
+      }
+      mutation.addedNodes.forEach((node) => {
+        if (isBadge(node)) return;
+        scan(node);
+      });
+    });
+  });
+
+  observer.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+})();

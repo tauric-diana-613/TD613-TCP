@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:capture:v1",
+  "title": "SignalRupture archival capture",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["capture_id", "manifestation_id", "canonical_url", "platform", "platform_title", "author_attribution", "published_at", "retrieved_at", "media_type", "byte_length", "sha256", "rights_statement", "archive_path", "acquisition_method", "archive_lineage"],
+  "properties": {
+    "capture_id": {"type": "string", "minLength": 1},
+    "manifestation_id": {"type": "string", "minLength": 1},
+    "canonical_url": {"type": "string", "format": "uri"},
+    "platform": {"type": "string", "minLength": 1},
+    "platform_title": {"type": "string"},
+    "author_attribution": {"type": "string", "minLength": 1},
+    "published_at": {"type": ["string", "null"]},
+    "retrieved_at": {"type": "string", "format": "date-time"},
+    "media_type": {"type": "string", "minLength": 1},
+    "byte_length": {"type": "integer", "minimum": 0},
+    "sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+    "rights_statement": {"type": "string", "minLength": 1},
+    "archive_path": {"type": "string", "minLength": 1},
+    "acquisition_method": {"type": "string", "minLength": 1},
+    "archive_lineage": {"type": "array", "items": {"type": "string"}}
+  }
+}

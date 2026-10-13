@@ -1,0 +1,28 @@
+{
+  "schema": "td613.pedagogue-practice-fixture/v0.1",
+  "fixture_id": "ash-loom.moss-lantern-calibration/v0.1",
+  "surface_reference": "ash-keep/tomography-research-only",
+  "operator_label": "Moss Lantern practice capsule",
+  "manifestly_fictional": true,
+  "runtime_binding": false,
+  "operator_read_only_retrieval_allowed": false,
+  "practice_custody_write_allowed": false,
+  "fictional_payload": {
+    "fictional": true,
+    "container_label": "PRACTICE — Moss Lantern capsule",
+    "principal_label": "Moss Lantern",
+    "secondary_labels": [
+      "fictional custody note",
+      "fictional projection marker",
+      "fictional return marker"
+    ]
+  },
+  "expected_route_steps": [
+    "open-practice-case",
+    "custody-hold",
+    "projection-observe",
+    "rest",
+    "return"
+  ],
+  "expected_endpoint": "returned-practice-capsule"
+}

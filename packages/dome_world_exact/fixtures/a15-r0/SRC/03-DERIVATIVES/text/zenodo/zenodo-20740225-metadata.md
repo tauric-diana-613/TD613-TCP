@@ -1,0 +1,140 @@
+---
+derivative_id: derivative:67ec55adf1a16a595215439b
+parent_capture_id: capture:41247762e11ec6ea764389fd
+parent_blob_sha256: 1071a115585fe2bd54bf5e3a78aa4ee28805daa2758bd31838a7005426f16a1b
+tool: srcctl-json-normalizer/1
+source_title: "Knowledge Was Never Meant to Be Siloed: The Epistemic Fragmentation Theorem and the Structural Origins of Blindness"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.20740224",
+  "conceptrecid": "20740224",
+  "created": "2026-06-18T02:48:17.641943+00:00",
+  "doi": "10.5281/zenodo.20740225",
+  "doi_url": "https://doi.org/10.5281/zenodo.20740225",
+  "files": [
+    {
+      "checksum": "md5:536cfb413b053a6e92222efbdeefe837",
+      "id": "07964086-5403-47a8-b697-7033df089f2b",
+      "key": "Knowledge Was Never Meant to Be Siloed: .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/20740225/files/Knowledge%20Was%20Never%20Meant%20to%20Be%20Siloed:%20.pdf/content"
+      },
+      "size": 158937
+    }
+  ],
+  "id": 20740225,
+  "links": {
+    "access": "https://zenodo.org/api/records/20740225/access",
+    "access_grants": "https://zenodo.org/api/records/20740225/access/grants",
+    "access_links": "https://zenodo.org/api/records/20740225/access/links",
+    "access_request": "https://zenodo.org/api/records/20740225/access/request",
+    "access_users": "https://zenodo.org/api/records/20740225/access/users",
+    "archive": "https://zenodo.org/api/records/20740225/files-archive",
+    "archive_media": "https://zenodo.org/api/records/20740225/media-files-archive",
+    "communities": "https://zenodo.org/api/records/20740225/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/20740225/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.20740225",
+    "draft": "https://zenodo.org/api/records/20740225/draft",
+    "file_modification": "https://zenodo.org/api/records/20740225/file-modification",
+    "files": "https://zenodo.org/api/records/20740225/files",
+    "latest": "https://zenodo.org/api/records/20740225/versions/latest",
+    "latest_html": "https://zenodo.org/records/20740225/latest",
+    "media_files": "https://zenodo.org/api/records/20740225/media-files",
+    "parent": "https://zenodo.org/api/records/20740224",
+    "parent_doi": "https://doi.org/10.5281/zenodo.20740224",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20740224",
+    "parent_html": "https://zenodo.org/records/20740224",
+    "preview_html": "https://zenodo.org/records/20740225?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/20740225/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/20740225/request-deletion",
+    "requests": "https://zenodo.org/api/records/20740225/requests",
+    "reserve_doi": "https://zenodo.org/api/records/20740225/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/20740225",
+    "self_doi": "https://doi.org/10.5281/zenodo.20740225",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20740225",
+    "self_html": "https://zenodo.org/records/20740225",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20740225/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20740225/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:20740225:Knowledge%20Was%20Never%20Meant%20to%20Be%20Siloed:%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:20740225:Knowledge%20Was%20Never%20Meant%20to%20Be%20Siloed:%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:20740225:Knowledge%20Was%20Never%20Meant%20to%20Be%20Siloed:%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:20740225:Knowledge%20Was%20Never%20Meant%20to%20Be%20Siloed:%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:20740225:Knowledge%20Was%20Never%20Meant%20to%20Be%20Siloed:%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:20740225:Knowledge%20Was%20Never%20Meant%20to%20Be%20Siloed:%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/20740225/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p><strong>Knowledge Was Never Meant to Be Siloed: The Epistemic Fragmentation Theorem and the Structural Origins of Blindness</strong> reconstructs the historical, institutional, and structural processes through which human knowledge&mdash;originally integrated across domains&mdash;became partitioned into the disciplinary architectures that dominate modern inquiry. The paper traces a genealogy from ancient integrated knowledge systems to the medieval university, demonstrating how administrative categories gradually hardened into epistemic boundaries. Drawing on sociology of knowledge, governance theory, infrastructure studies, and history of science, the paper shows how institutions optimized for credentialing, specialization, and administrative legibility rather than systemic intelligibility.</p>\n<p>The central contribution is the <strong>Epistemic Fragmentation Theorem</strong>, which formalizes the structural tradeoff between local explanatory performance and global observability. Using a graph‑theoretic model of disciplinary coupling, the theorem demonstrates that increasing silo intensity reduces the system&rsquo;s ability to recover global states, producing predictable forms of structural blindness. SignalRupture (SR) is introduced as a post‑silo structural ontology that restores system‑level visibility through operators such as drift, visibility lag, substrate failure, and institutional recoil. The paper concludes by outlining a post‑silo epistemic architecture in which disciplines remain valuable local modules while structural frameworks provide integration across domains.</p>",
+    "doi": "10.5281/zenodo.20740225",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Social Issues",
+      "Governance"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-06-18",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "20740224"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Knowledge Was Never Meant to Be Siloed: The Epistemic Fragmentation Theorem and the Structural Origins of Blindness",
+    "version": "1.0"
+  },
+  "modified": "2026-06-25T20:24:20.112037+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "20740225",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 2,
+    "unique_downloads": 2,
+    "unique_views": 16,
+    "version_downloads": 2,
+    "version_unique_downloads": 2,
+    "version_unique_views": 16,
+    "version_views": 17,
+    "views": 17
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Knowledge Was Never Meant to Be Siloed: The Epistemic Fragmentation Theorem and the Structural Origins of Blindness",
+  "updated": "2026-06-25T20:24:20.112037+00:00"
+}

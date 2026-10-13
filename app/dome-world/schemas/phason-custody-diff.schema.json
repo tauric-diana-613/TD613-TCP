@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.phason.custody-diff/v0.5",
+  "title": "TD613 Phason Custody Diff",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema", "content_invariant", "projection_changed", "custody_changed", "changed_fields", "decision", "claimCeiling"],
+  "properties": {
+    "schema": { "const": "td613.phason.custody-diff/v0.5" },
+    "status": { "type": "string" },
+    "content_invariant": { "type": "boolean" },
+    "projection_changed": { "type": "boolean" },
+    "custody_changed": { "type": "boolean" },
+    "changed_fields": { "type": "array", "items": { "type": "string" } },
+    "previous_artifact_id": { "type": ["string", "null"] },
+    "current_artifact_id": { "type": ["string", "null"] },
+    "decision": { "type": "string" },
+    "claimCeiling": { "const": "phason-custody-diff-not-external-enforcement-or-permission-proof" }
+  }
+}

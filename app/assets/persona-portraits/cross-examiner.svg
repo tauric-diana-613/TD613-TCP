@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Cross-Examiner portrait</title>
+  <desc id="desc">A split-face adversarial portrait with oxide-red pressure and clipped structural cuts.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#12070a"/>
+      <stop offset="100%" stop-color="#050405"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <path d="M126 170h548" stroke="#d63f3f" stroke-width="3" opacity=".18"/>
+  <path d="M168 214h464" stroke="#74eaff" stroke-width="1.5" opacity=".12"/>
+  <path d="M220 890c40-126 76-222 120-306 22-42 44-88 60-154 16 66 38 112 60 154 44 84 80 180 120 306H220z" fill="#0b0709"/>
+  <path d="M314 218c28-56 60-88 86-108 26 20 58 52 86 108l-18 254-68 86-68-86-18-254z" fill="#14090d" stroke="#3c171e" stroke-width="3"/>
+  <path d="M400 132v394" stroke="#d63f3f" stroke-width="3" opacity=".7"/>
+  <path d="M324 262h64M412 262h64M338 330h44M418 330h44M350 404h34M416 404h34" stroke="#f2b3b3" stroke-width="4" opacity=".78"/>
+  <path d="M362 470c12 6 24 8 38 8 14 0 26-2 38-8" fill="none" stroke="#74eaff" stroke-width="2.5" opacity=".56"/>
+  <path d="M258 804c54-10 102-38 142-88 40 50 88 78 142 88" fill="none" stroke="#d63f3f" stroke-width="4" opacity=".36"/>
+</svg>

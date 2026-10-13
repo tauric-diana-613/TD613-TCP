@@ -1,0 +1,32 @@
+{
+  "schema": "td613.loom.proposed-repair-activation/v0.1",
+  "status": "PREPARED_PENDING_FRESH_OPERATOR_AUTHORIZATION",
+  "recorded_at": "2026-10-09T15:52:10.213391+00:00",
+  "original_run": "portable-loom-first-receiver-20261009",
+  "original_remote_freeze": "a768d834e0f57089e2feacbde3d0650101db4aed",
+  "original_run_status": "HELD",
+  "original_deployed_commit": "5581af7812dc0f5fcf2b65c11ad09da045f0940e",
+  "retained_failure": "ASSAY_BUDGET_WORKLOAD_UNCONFIGURED; provider_requests=0; calls_reserved=0",
+  "proposed_run": "portable-loom-first-receiver-20261009-a2",
+  "proposed_calls": 54,
+  "maximum_token_charges_usd": 10,
+  "artifact_md_sha256": "2d9c23bb6ad26430bcf4fd2a52e9aa5e876a1546265a00087cdb7e7e4f1c1872",
+  "request": "One governed release of the exact green repair and a separately frozen receiver attempt; preserve the stopped attempt and add no independent case credit.",
+  "fresh_capability": "Prepared privately; only its digest is in reviewed configuration. No enrollment or model call has occurred for this proposed run.",
+  "activation_requires": [
+    "Fresh direct operator grant for this repair release and retained follow-on attempt",
+    "Exact-head GREEN and merge",
+    "One new exact-current-main Issue 405 gesture",
+    "Verified actual deployed source and fresh expiry",
+    "New append-only binding and new budget enrollment"
+  ],
+  "original_authorization_ref": "Existing AUTHORIZATION.json is historical context; it does not authorize this proposed retry or second release.",
+  "excluded": [
+    "Comparison",
+    "Second provider",
+    "Historical research reruns",
+    "Detached delegation",
+    "Custody admission",
+    "Revival or rewriting of stopped run"
+  ]
+}

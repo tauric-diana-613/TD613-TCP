@@ -1,0 +1,441 @@
+{
+  "schema": "td613.loom.receiver-conformance-review/v0.1",
+  "observed_at": "2026-10-10T14:43:12.204Z",
+  "input_sha256": "e5f18900e10da2468f2420d9645e9d597fee884f7ddda50c85a2f91728d7fb8f",
+  "cases": [
+    {
+      "id": "portable-loom-first-receiver-20261009-a13:FIRST_CONFIGURED_RECEIVER-R03-1:0",
+      "answer_sha256": "20233f97344f8b05d6eaf2eb8df092f628498e423947e6e0f729ef8e41a18fab",
+      "inspection": {
+        "schema": "td613.loom.receiver-conformance-inspection/v0.1",
+        "status": "HOLD",
+        "checks": {
+          "receipt_shape": true,
+          "task_binding_observed": false,
+          "reference_match": true,
+          "footer_receipt_qualified": true,
+          "review_body_qualified": true,
+          "source_accounting": "UNOBSERVED"
+        },
+        "findings": [
+          "ORIGIN_TASK_BINDING_UNOBSERVED",
+          "ORIGIN_SOURCE_ACCOUNTING_UNOBSERVED"
+        ],
+        "receipt_label": "ATTACHED_UNVERIFIED",
+        "unresolved_source_marker_present": null,
+        "receipt_signatures_verified": false,
+        "receiver_enforcement_observed": false,
+        "admission_authority": false,
+        "local_ledger_advanced": false,
+        "provider_requests": 0,
+        "claim_ceiling": "Deterministic declaration and origin-supplied accounting comparisons only; no semantic truth, hidden source-use, authentication or admission proof."
+      }
+    },
+    {
+      "id": "portable-loom-first-receiver-20261009-a13:FIRST_CONFIGURED_RECEIVER-R03-2:0",
+      "answer_sha256": "3f1da3094ba62584ac7747452cd667a23a130b25fda6e87b52bf5442c4ebdf2c",
+      "inspection": {
+        "schema": "td613.loom.receiver-conformance-inspection/v0.1",
+        "status": "HOLD",
+        "checks": {
+          "receipt_shape": true,
+          "task_binding_observed": false,
+          "reference_match": true,
+          "footer_receipt_qualified": false,
+          "review_body_qualified": true,
+          "source_accounting": "UNOBSERVED"
+        },
+        "findings": [
+          "ORIGIN_TASK_BINDING_UNOBSERVED",
+          "RECEIPT_FOOTER_QUALIFICATION_MISSING_OR_OVERCLAIMED",
+          "ORIGIN_SOURCE_ACCOUNTING_UNOBSERVED"
+        ],
+        "receipt_label": "AVAILABLE",
+        "unresolved_source_marker_present": null,
+        "receipt_signatures_verified": false,
+        "receiver_enforcement_observed": false,
+        "admission_authority": false,
+        "local_ledger_advanced": false,
+        "provider_requests": 0,
+        "claim_ceiling": "Deterministic declaration and origin-supplied accounting comparisons only; no semantic truth, hidden source-use, authentication or admission proof."
+      }
+    },
+    {
+      "id": "portable-loom-first-receiver-20261009-a13:FIRST_CONFIGURED_RECEIVER-R03-3:0",
+      "answer_sha256": "b58e80ad29214b82cbd70ec03a20540e730f2de9416ed3a40d649f25230e6f3e",
+      "inspection": {
+        "schema": "td613.loom.receiver-conformance-inspection/v0.1",
+        "status": "HOLD",
+        "checks": {
+          "receipt_shape": true,
+          "task_binding_observed": false,
+          "reference_match": true,
+          "footer_receipt_qualified": true,
+          "review_body_qualified": true,
+          "source_accounting": "UNOBSERVED"
+        },
+        "findings": [
+          "ORIGIN_TASK_BINDING_UNOBSERVED",
+          "ORIGIN_SOURCE_ACCOUNTING_UNOBSERVED"
+        ],
+        "receipt_label": "DECLARED_PENDING_REVALIDATION",
+        "unresolved_source_marker_present": null,
+        "receipt_signatures_verified": false,
+        "receiver_enforcement_observed": false,
+        "admission_authority": false,
+        "local_ledger_advanced": false,
+        "provider_requests": 0,
+        "claim_ceiling": "Deterministic declaration and origin-supplied accounting comparisons only; no semantic truth, hidden source-use, authentication or admission proof."
+      }
+    },
+    {
+      "id": "portable-loom-first-receiver-20261009-a13:FIRST_CONFIGURED_RECEIVER-R07-1:0",
+      "answer_sha256": "b5be32106af732e81556aa6454ae513ee2ebc12db514df9659c1422d44538a18",
+      "inspection": {
+        "schema": "td613.loom.receiver-conformance-inspection/v0.1",
+        "status": "NO_TASK_RECEIPT_REQUIRED",
+        "checks": {
+          "receipt_shape": false,
+          "task_binding_observed": false,
+          "reference_match": false,
+          "footer_receipt_qualified": false,
+          "review_body_qualified": true,
+          "source_accounting": "NOT_APPLICABLE"
+        },
+        "findings": [],
+        "receipt_label": "NONE",
+        "unresolved_source_marker_present": null,
+        "receipt_signatures_verified": false,
+        "receiver_enforcement_observed": false,
+        "admission_authority": false,
+        "local_ledger_advanced": false,
+        "provider_requests": 0,
+        "claim_ceiling": "Deterministic declaration and origin-supplied accounting comparisons only; no semantic truth, hidden source-use, authentication or admission proof."
+      }
+    },
+    {
+      "id": "portable-loom-first-receiver-20261009-a15:FIRST_CONFIGURED_RECEIVER-R02-1:0",
+      "answer_sha256": "d6cbf64e19ec4d7585c58d5a5000349e9dad0f406c63cb50b5be05efabb77321",
+      "inspection": {
+        "schema": "td613.loom.receiver-conformance-inspection/v0.1",
+        "status": "HOLD",
+        "checks": {
+          "receipt_shape": true,
+          "task_binding_observed": false,
+          "reference_match": true,
+          "footer_receipt_qualified": false,
+          "review_body_qualified": true,
+          "source_accounting": "UNOBSERVED"
+        },
+        "findings": [
+          "ORIGIN_TASK_BINDING_UNOBSERVED",
+          "RECEIPT_FOOTER_QUALIFICATION_MISSING_OR_OVERCLAIMED",
+          "ORIGIN_SOURCE_ACCOUNTING_UNOBSERVED"
+        ],
+        "receipt_label": "DECLARED",
+        "unresolved_source_marker_present": null,
+        "receipt_signatures_verified": false,
+        "receiver_enforcement_observed": false,
+        "admission_authority": false,
+        "local_ledger_advanced": false,
+        "provider_requests": 0,
+        "claim_ceiling": "Deterministic declaration and origin-supplied accounting comparisons only; no semantic truth, hidden source-use, authentication or admission proof."
+      }
+    },
+    {
+      "id": "portable-loom-first-receiver-20261009-a15:FIRST_CONFIGURED_RECEIVER-R02-1:1",
+      "answer_sha256": "8136ea44a74dd273659ac538b890ba907c3a699a648c66269650de2af03b4c88",
+      "inspection": {
+        "schema": "td613.loom.receiver-conformance-inspection/v0.1",
+        "status": "HOLD",
+        "checks": {
+          "receipt_shape": true,
+          "task_binding_observed": false,
+          "reference_match": true,
+          "footer_receipt_qualified": false,
+          "review_body_qualified": true,
+          "source_accounting": "UNOBSERVED"
+        },
+        "findings": [
+          "ORIGIN_TASK_BINDING_UNOBSERVED",
+          "RECEIPT_FOOTER_QUALIFICATION_MISSING_OR_OVERCLAIMED",
+          "ORIGIN_SOURCE_ACCOUNTING_UNOBSERVED"
+        ],
+        "receipt_label": "DECLARED",
+        "unresolved_source_marker_present": null,
+        "receipt_signatures_verified": false,
+        "receiver_enforcement_observed": false,
+        "admission_authority": false,
+        "local_ledger_advanced": false,
+        "provider_requests": 0,
+        "claim_ceiling": "Deterministic declaration and origin-supplied accounting comparisons only; no semantic truth, hidden source-use, authentication or admission proof."
+      }
+    },
+    {
+      "id": "portable-loom-first-receiver-20261009-a15:FIRST_CONFIGURED_RECEIVER-R02-1:2",
+      "answer_sha256": "5c97235ff3f0bf410ca7b5916d708226c27a42553dd441a4140280e5b626ed7e",
+      "inspection": {
+        "schema": "td613.loom.receiver-conformance-inspection/v0.1",
+        "status": "NO_TASK_RECEIPT_REQUIRED",
+        "checks": {
+          "receipt_shape": false,
+          "task_binding_observed": false,
+          "reference_match": false,
+          "footer_receipt_qualified": true,
+          "review_body_qualified": true,
+          "source_accounting": "NOT_APPLICABLE"
+        },
+        "findings": [],
+        "receipt_label": "UNVERIFIED",
+        "unresolved_source_marker_present": null,
+        "receipt_signatures_verified": false,
+        "receiver_enforcement_observed": false,
+        "admission_authority": false,
+        "local_ledger_advanced": false,
+        "provider_requests": 0,
+        "claim_ceiling": "Deterministic declaration and origin-supplied accounting comparisons only; no semantic truth, hidden source-use, authentication or admission proof."
+      }
+    },
+    {
+      "id": "portable-loom-first-receiver-20261009-a15:FIRST_CONFIGURED_RECEIVER-R07-2:0",
+      "answer_sha256": "274125f27480db40a4b66f438522c18b6cfeca6f80d4cc298b586d761cdadd75",
+      "inspection": {
+        "schema": "td613.loom.receiver-conformance-inspection/v0.1",
+        "status": "NO_TASK_RECEIPT_REQUIRED",
+        "checks": {
+          "receipt_shape": false,
+          "task_binding_observed": false,
+          "reference_match": false,
+          "footer_receipt_qualified": false,
+          "review_body_qualified": true,
+          "source_accounting": "NOT_APPLICABLE"
+        },
+        "findings": [],
+        "receipt_label": "NONE",
+        "unresolved_source_marker_present": null,
+        "receipt_signatures_verified": false,
+        "receiver_enforcement_observed": false,
+        "admission_authority": false,
+        "local_ledger_advanced": false,
+        "provider_requests": 0,
+        "claim_ceiling": "Deterministic declaration and origin-supplied accounting comparisons only; no semantic truth, hidden source-use, authentication or admission proof."
+      }
+    },
+    {
+      "id": "portable-loom-first-receiver-20261009-a15:FIRST_CONFIGURED_RECEIVER-R07-3:0",
+      "answer_sha256": "b962b0df46a4f6fc5c05341a8d8410729c3700a2fda892953f8b96396c7f3d8c",
+      "inspection": {
+        "schema": "td613.loom.receiver-conformance-inspection/v0.1",
+        "status": "NO_TASK_RECEIPT_REQUIRED",
+        "checks": {
+          "receipt_shape": false,
+          "task_binding_observed": false,
+          "reference_match": false,
+          "footer_receipt_qualified": false,
+          "review_body_qualified": true,
+          "source_accounting": "NOT_APPLICABLE"
+        },
+        "findings": [],
+        "receipt_label": "NONE",
+        "unresolved_source_marker_present": null,
+        "receipt_signatures_verified": false,
+        "receiver_enforcement_observed": false,
+        "admission_authority": false,
+        "local_ledger_advanced": false,
+        "provider_requests": 0,
+        "claim_ceiling": "Deterministic declaration and origin-supplied accounting comparisons only; no semantic truth, hidden source-use, authentication or admission proof."
+      }
+    },
+    {
+      "id": "portable-loom-first-receiver-20261009-a15:FIRST_CONFIGURED_RECEIVER-R11-1:0",
+      "answer_sha256": "b4603cf84c4435bdcf3a2171455e652cd49d4fa0ed96ce24bda0f8ca70b906c9",
+      "inspection": {
+        "schema": "td613.loom.receiver-conformance-inspection/v0.1",
+        "status": "NO_TASK_RECEIPT_REQUIRED",
+        "checks": {
+          "receipt_shape": false,
+          "task_binding_observed": false,
+          "reference_match": false,
+          "footer_receipt_qualified": false,
+          "review_body_qualified": true,
+          "source_accounting": "NOT_APPLICABLE"
+        },
+        "findings": [],
+        "receipt_label": "NONE",
+        "unresolved_source_marker_present": null,
+        "receipt_signatures_verified": false,
+        "receiver_enforcement_observed": false,
+        "admission_authority": false,
+        "local_ledger_advanced": false,
+        "provider_requests": 0,
+        "claim_ceiling": "Deterministic declaration and origin-supplied accounting comparisons only; no semantic truth, hidden source-use, authentication or admission proof."
+      }
+    },
+    {
+      "id": "portable-loom-first-receiver-20261009-a15:FIRST_CONFIGURED_RECEIVER-R12-1:0",
+      "answer_sha256": "7ed9b0344aa6b9b3f1942f0cfa1bb16ca12a898d85c2765857b7a4b75758e275",
+      "inspection": {
+        "schema": "td613.loom.receiver-conformance-inspection/v0.1",
+        "status": "HOLD",
+        "checks": {
+          "receipt_shape": true,
+          "task_binding_observed": false,
+          "reference_match": true,
+          "footer_receipt_qualified": true,
+          "review_body_qualified": true,
+          "source_accounting": "UNOBSERVED"
+        },
+        "findings": [
+          "ORIGIN_TASK_BINDING_UNOBSERVED",
+          "ORIGIN_SOURCE_ACCOUNTING_UNOBSERVED"
+        ],
+        "receipt_label": "DECLARED_UNVERIFIED",
+        "unresolved_source_marker_present": null,
+        "receipt_signatures_verified": false,
+        "receiver_enforcement_observed": false,
+        "admission_authority": false,
+        "local_ledger_advanced": false,
+        "provider_requests": 0,
+        "claim_ceiling": "Deterministic declaration and origin-supplied accounting comparisons only; no semantic truth, hidden source-use, authentication or admission proof."
+      }
+    },
+    {
+      "id": "portable-loom-first-receiver-20261009-a18:FIRST_CONFIGURED_RECEIVER-R06-2:0",
+      "answer_sha256": "a668886eb186e4086d0ed9492b3bf9bee1b8820efff231f3ccc1c7ab8d5f796a",
+      "inspection": {
+        "schema": "td613.loom.receiver-conformance-inspection/v0.1",
+        "status": "NO_TASK_RECEIPT_REQUIRED",
+        "checks": {
+          "receipt_shape": false,
+          "task_binding_observed": false,
+          "reference_match": false,
+          "footer_receipt_qualified": false,
+          "review_body_qualified": true,
+          "source_accounting": "NOT_APPLICABLE"
+        },
+        "findings": [],
+        "receipt_label": "NONE_FOR_ACTIVATION",
+        "unresolved_source_marker_present": null,
+        "receipt_signatures_verified": false,
+        "receiver_enforcement_observed": false,
+        "admission_authority": false,
+        "local_ledger_advanced": false,
+        "provider_requests": 0,
+        "claim_ceiling": "Deterministic declaration and origin-supplied accounting comparisons only; no semantic truth, hidden source-use, authentication or admission proof."
+      }
+    },
+    {
+      "id": "portable-loom-first-receiver-20261009-a18:FIRST_CONFIGURED_RECEIVER-R06-2:1",
+      "answer_sha256": "047d5dd29462033755fa8dfddaa60ca43db8e9d646673cf44c4aad086a6ea3a2",
+      "inspection": {
+        "schema": "td613.loom.receiver-conformance-inspection/v0.1",
+        "status": "HOLD",
+        "checks": {
+          "receipt_shape": true,
+          "task_binding_observed": false,
+          "reference_match": true,
+          "footer_receipt_qualified": false,
+          "review_body_qualified": true,
+          "source_accounting": "HOLD"
+        },
+        "findings": [
+          "ORIGIN_TASK_BINDING_UNOBSERVED",
+          "RECEIPT_FOOTER_QUALIFICATION_MISSING_OR_OVERCLAIMED",
+          "UNREGISTERED_SOURCE_MISSING_INFORMATION_OMITTED",
+          "SOURCE_IDENTIFIER_UNREGISTERED"
+        ],
+        "receipt_label": "DECLARED",
+        "unresolved_source_marker_present": false,
+        "receipt_signatures_verified": false,
+        "receiver_enforcement_observed": false,
+        "admission_authority": false,
+        "local_ledger_advanced": false,
+        "provider_requests": 0,
+        "claim_ceiling": "Deterministic declaration and origin-supplied accounting comparisons only; no semantic truth, hidden source-use, authentication or admission proof."
+      }
+    },
+    {
+      "id": "portable-loom-first-receiver-20261009-a18:FIRST_CONFIGURED_RECEIVER-R06-2:2",
+      "answer_sha256": "e23430166a368688928e3155389e830dff53d441410b93941d5ddc1887f0c322",
+      "inspection": {
+        "schema": "td613.loom.receiver-conformance-inspection/v0.1",
+        "status": "HOLD",
+        "checks": {
+          "receipt_shape": true,
+          "task_binding_observed": false,
+          "reference_match": true,
+          "footer_receipt_qualified": false,
+          "review_body_qualified": true,
+          "source_accounting": "UNOBSERVED"
+        },
+        "findings": [
+          "ORIGIN_TASK_BINDING_UNOBSERVED",
+          "RECEIPT_FOOTER_QUALIFICATION_MISSING_OR_OVERCLAIMED",
+          "ORIGIN_SOURCE_ACCOUNTING_UNOBSERVED"
+        ],
+        "receipt_label": "DECLARED",
+        "unresolved_source_marker_present": null,
+        "receipt_signatures_verified": false,
+        "receiver_enforcement_observed": false,
+        "admission_authority": false,
+        "local_ledger_advanced": false,
+        "provider_requests": 0,
+        "claim_ceiling": "Deterministic declaration and origin-supplied accounting comparisons only; no semantic truth, hidden source-use, authentication or admission proof."
+      }
+    },
+    {
+      "id": "portable-loom-first-receiver-20261009-a19:FIRST_CONFIGURED_RECEIVER-R09-1:0",
+      "answer_sha256": "0a87104c4fabf5c229cbed6f1dcd4103cb37d03173baa3a28473e905f2698381",
+      "inspection": {
+        "schema": "td613.loom.receiver-conformance-inspection/v0.1",
+        "status": "NO_TASK_RECEIPT_REQUIRED",
+        "checks": {
+          "receipt_shape": false,
+          "task_binding_observed": false,
+          "reference_match": false,
+          "footer_receipt_qualified": false,
+          "review_body_qualified": true,
+          "source_accounting": "NOT_APPLICABLE"
+        },
+        "findings": [],
+        "receipt_label": "NONE",
+        "unresolved_source_marker_present": null,
+        "receipt_signatures_verified": false,
+        "receiver_enforcement_observed": false,
+        "admission_authority": false,
+        "local_ledger_advanced": false,
+        "provider_requests": 0,
+        "claim_ceiling": "Deterministic declaration and origin-supplied accounting comparisons only; no semantic truth, hidden source-use, authentication or admission proof."
+      }
+    },
+    {
+      "id": "portable-loom-first-receiver-20261009-a19:FIRST_CONFIGURED_RECEIVER-R09-1:1",
+      "answer_sha256": "f939680d5a3c730cc0d3f958cd5f19bf2aa78e0ebf84ff8aee24ab5372de0a29",
+      "inspection": {
+        "schema": "td613.loom.receiver-conformance-inspection/v0.1",
+        "status": "NO_TASK_RECEIPT_REQUIRED",
+        "checks": {
+          "receipt_shape": false,
+          "task_binding_observed": false,
+          "reference_match": false,
+          "footer_receipt_qualified": false,
+          "review_body_qualified": true,
+          "source_accounting": "NOT_APPLICABLE"
+        },
+        "findings": [],
+        "receipt_label": "NONE",
+        "unresolved_source_marker_present": null,
+        "receipt_signatures_verified": false,
+        "receiver_enforcement_observed": false,
+        "admission_authority": false,
+        "local_ledger_advanced": false,
+        "provider_requests": 0,
+        "claim_ceiling": "Deterministic declaration and origin-supplied accounting comparisons only; no semantic truth, hidden source-use, authentication or admission proof."
+      }
+    }
+  ],
+  "held_cases": 8,
+  "provider_requests": 0,
+  "local_ledger_advanced": false,
+  "admission_authority": false
+}

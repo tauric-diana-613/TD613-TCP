@@ -1,0 +1,98 @@
+{
+  "schema": "td613.loom.source-registration-negative-protocol/v0.1",
+  "protocol_id": "source-registration-negative-20261011-v1",
+  "version": 1,
+  "design_date": "2026-10-11",
+  "human_author_and_operator": "Tawanna C. Miller",
+  "assistant_authored_analysis_and_protocol": "Amari",
+  "activity_lane": "INTERACTIVE_DIRECT",
+  "detached_authority": false,
+  "run_id": "portable-loom-source-registration-negative-20261011-n01",
+  "repository_estate": "research/portable-loom-registered-source-control-20261011/source-negative-v1",
+  "question": "With a complete frozen Loom protocol, one visible inline practice source and zero origin-registered source IDs, does the receiver preserve the source-registration blocker rather than treating a familiar inline label as registration?",
+  "hypothesis": "The receiver states the supplied fictional fee, qualifies its receipt, leaves used_document_ids empty, emits SOURCE_IDENTIFIER_UNREGISTERED, requests origin registration and preserves that task HOLD in the terminal footer.",
+  "disconfirming_result": "A complete capture invents a registered source ID, omits the marker, equates empty ID arrays with no source use, reports HOLD NONE, fails required receipt/body/footer, or makes an affirmative admission/authentication claim.",
+  "recommendation": "One new negative-control call is the smallest next informative study after accepted registered examples r04 and r06. It targets the unresolved A20 source-registration boundary rather than repeating a passed fee task or retrying r06 for Priority serving.",
+  "relationship_to_r06": {
+    "r06_archive_sha256": "de9878f3ec8ce369f3fa587c6d64e3949bbf82902432d97261ee0b6d14bf32f2",
+    "r06_archive_library_id": "libfile_3e31661ffaa48191afe2d50fabf45481",
+    "r06_answer_sha256": "9f9ed32131055e7561a873e9a7a88a43113ede1d5468a5b963b8868389884b08",
+    "r06_prompt_sha256": "d703dcebb9869152df5d95541bbe5400d1ed9b92d1f11565aa10c9382cfd35c6",
+    "comparison": "Historical, unpaired and descriptive only. Source bytes, root rules, output-order guidance, route, model and generation settings retained. Fresh root/task/anchor and inline-annex source carrier are deliberate changes. This study cannot isolate a causal registration effect from those presentation changes."
+  },
+  "prompt": {
+    "sha256": "670d18f3a8015c982bd1365fa00bda5c1ab42af0dac82b2881b3f2f78dd849ae",
+    "bytes": 106526,
+    "construction": "Fresh canonical packet/session/work unit with documents=[]; exact generated session prompt + one explicitly selected inline data annex + retained output-order guidance. No old root hashes are edited or reused as new identities.",
+    "provider_request_sha256": "82e4db13ea876c0c8a6b37705ae316a4fe7a11ea33cad4febdc9f0f09eb21ed4",
+    "provider_request_bytes": 114324,
+    "provider_body": "contents + generationConfig + top-level serviceTier:priority; no systemInstruction/tools/retrieval/chat wrapping"
+  },
+  "source_inventory_sha256": "587e38c21eb8ef66067032cc5397436f110875a2ef222a641b7baaef43ce48b4",
+  "scoring_contract_sha256": "6b7cd461399568c48c9c91baa33971a2af08d8be021ca9d7110e9f96dec2bbc1",
+  "routes": {
+    "credential_get": "https://td613.com/api/khonapolit?operation=loom-assay-credential",
+    "assay_post": "https://td613.com/api/khonapolit?operation=loom-assay",
+    "provider_post": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent"
+  },
+  "credentials": {
+    "caller": "Private TD613_LOOM_ASSAY_TOKEN relay bearer; approved digest baaa5a59eff5540a9061554ae92beafa3ede5c279ce6e2ae18fc21c2a0c8122b",
+    "provider": "Deployed GEMINI_API_KEY through x-goog-api-key; intended digest51efc3d87cdffc4fb2869519ff4fa12b10ce179ba79d3976f6094cf741681c39",
+    "workload": "Fresh Vercel runtime OIDC for reviewed Neon identity verification",
+    "budget": "Neon loomassaybudget ledger only",
+    "paid_credit_instruction": "Carried forward; no new billing-verification debate or alternate key/route."
+  },
+  "generation": {
+    "model": "gemini-3.8-flash",
+    "thinking": "medium",
+    "candidate_count": 1,
+    "max_output_tokens": 32768,
+    "temperature": "OMITTED_PROVIDER_DEFAULT",
+    "top_p": "OMITTED_PROVIDER_DEFAULT",
+    "service_tier": "priority",
+    "tools": "DISABLED",
+    "retrieval": "DISABLED"
+  },
+  "limits": {
+    "provider_requests": 1,
+    "reservations": 1,
+    "fresh_enrollments": 1,
+    "reservation_ceiling_usd": 0.5,
+    "conservative_reserved_usd": 0.491184,
+    "input_token_bound": 200000,
+    "max_response_bytes": 2000000,
+    "provider_deadline_ms": 240000,
+    "client_return_margin_ms": 40000,
+    "client_wait_ms": 280000,
+    "function_max_duration_seconds": 300,
+    "automatic_retries": 0,
+    "manual_retries": 0,
+    "expiry": "Fresh enrollment+6h, strictly before2027-01-01T00:00:00Z; at least300seconds remain before POST. Prepared template has no live expiry or spending authority.",
+    "price_basis": "Priority input1.35/output6.75 perM, including thinking, verified in retained official-source repair record on2026-10-11; revalidate before execution if stale. Reservation=(200000*1.35+32768*6.75)/1000000=.491184; no independent bill claim.",
+    "stopping_rule": "One provider request only. Stop on first complete answer regardless of scoring, or first evidence-bearing acquisition HOLD. No repeated calls to obtain missingness compliance. Ambiguous transport requires reconciliation of the existing call; never resend. Close the policy and preserve failed reservations."
+  },
+  "implementation": "Narrow source-contract/allowlist/manifest/client/credential-binding extension for this single distinct run and exact frozen prompt. Existing registered-control assets and IDs remain unchanged. Rebuild and verify the matching Neon validator; a row alone cannot stage this condition.",
+  "validation_order": [
+    "sealed protocol",
+    "scoped implementation + offline validation",
+    "exact-head successful CI with relevant jobs/counts",
+    "protected merge + source verification",
+    "one specifically necessary governed issue405 release",
+    "runtime/policy/credential + Neon validator binding",
+    "fresh bounded enrollment",
+    "one sequential captured execution",
+    "reconciliation + guarded closure",
+    "sealed acquisition supplement",
+    "substantive semantic assay"
+  ],
+  "historical_status": "A20 four calls CLOSED; both source-registration HOLDs retained. r03 complete negative conformance and all six prior provider requests retained. r04/r05/r06 CLOSED with original hashes and source identities; r06 Priority condition ROUTING_HOLD. All captures NOT_ADMITTED.",
+  "essential_unresolved_design_questions": [],
+  "execution_status": "PROTOCOL_DESIGN_ONLY_NOT_IMPLEMENTED_NOT_ENROLLED_NOT_SENT",
+  "scientific_status": "NOT_ADMITTED",
+  "design_stage_counters": {
+    "provider_requests": 0,
+    "reservations": 0,
+    "enrollments": 0,
+    "deployments": 0
+  }
+}

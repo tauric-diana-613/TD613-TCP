@@ -1,0 +1,210 @@
+{
+  "targetUrl": "https://td613.com/dome-world/holonomy-loom.html",
+  "timestamp": "2026-10-04T03:40:13.383Z",
+  "viewports": {
+    "mobile_390x700": {
+      "httpStatus": 200,
+      "screenshot": "C:\\Users\\timst\\OneDrive\\Desktop\\tcp-repository\\docs\\receipts\\1428-baseline\\mobile_390x700.png",
+      "metrics": {
+        "viewport": {
+          "winW": 390,
+          "winH": 700,
+          "dpr": 3,
+          "touchPoints": 1,
+          "isCoarse": true,
+          "docW": 390,
+          "hasHorizontalScroll": false
+        },
+        "spilledCount": 0,
+        "spilledElements": [],
+        "touchTargetsCount": 7,
+        "sub44Targets": [
+          {
+            "id": null,
+            "text": "Loom",
+            "width": 42,
+            "height": 24,
+            "below24": false,
+            "below44": true
+          }
+        ],
+        "sub24Targets": [],
+        "carriers": {
+          "count": 39,
+          "planes": {
+            "near": 0,
+            "mid": 0,
+            "far": 0
+          }
+        },
+        "uiState": {
+          "tutorialHeading": "Loom",
+          "demoButtons": [
+            "Finish demo →",
+            "Demo",
+            "Choose a demo +",
+            "Demo 1Evaluate an acquisition without revealing the dealCompare suppliers, reconcile contradictions, and build a decision brief while the identity ledger stays here.",
+            "Demo 2Analyze research without exposing participantsMake a real aggregate analysis while names, rare combinations, and interview linkage stay local.",
+            "Demo 3Investigate an incident without shipping secretsAsk an AI to reconcile sanitized logs and plan containment while credentials and customer linkage stay local."
+          ]
+        }
+      },
+      "consoleLogs": [],
+      "pageErrors": [],
+      "failedRequests": []
+    },
+    "mobile_390x844": {
+      "httpStatus": 200,
+      "screenshot": "C:\\Users\\timst\\OneDrive\\Desktop\\tcp-repository\\docs\\receipts\\1428-baseline\\mobile_390x844.png",
+      "metrics": {
+        "viewport": {
+          "winW": 390,
+          "winH": 844,
+          "dpr": 3,
+          "touchPoints": 1,
+          "isCoarse": true,
+          "docW": 390,
+          "hasHorizontalScroll": false
+        },
+        "spilledCount": 0,
+        "spilledElements": [],
+        "touchTargetsCount": 7,
+        "sub44Targets": [
+          {
+            "id": null,
+            "text": "Loom",
+            "width": 42,
+            "height": 24,
+            "below24": false,
+            "below44": true
+          }
+        ],
+        "sub24Targets": [],
+        "carriers": {
+          "count": 39,
+          "planes": {
+            "near": 0,
+            "mid": 0,
+            "far": 0
+          }
+        },
+        "uiState": {
+          "tutorialHeading": "Loom",
+          "demoButtons": [
+            "Finish demo →",
+            "Demo",
+            "Choose a demo +",
+            "Demo 1Evaluate an acquisition without revealing the dealCompare suppliers, reconcile contradictions, and build a decision brief while the identity ledger stays here.",
+            "Demo 2Analyze research without exposing participantsMake a real aggregate analysis while names, rare combinations, and interview linkage stay local.",
+            "Demo 3Investigate an incident without shipping secretsAsk an AI to reconcile sanitized logs and plan containment while credentials and customer linkage stay local."
+          ]
+        }
+      },
+      "consoleLogs": [],
+      "pageErrors": [],
+      "failedRequests": []
+    },
+    "mobile_360x740": {
+      "httpStatus": 200,
+      "screenshot": "C:\\Users\\timst\\OneDrive\\Desktop\\tcp-repository\\docs\\receipts\\1428-baseline\\mobile_360x740.png",
+      "metrics": {
+        "viewport": {
+          "winW": 360,
+          "winH": 740,
+          "dpr": 2.5999999046325684,
+          "touchPoints": 1,
+          "isCoarse": true,
+          "docW": 360,
+          "hasHorizontalScroll": false
+        },
+        "spilledCount": 0,
+        "spilledElements": [],
+        "touchTargetsCount": 7,
+        "sub44Targets": [
+          {
+            "id": null,
+            "text": "Loom",
+            "width": 42,
+            "height": 24,
+            "below24": false,
+            "below44": true
+          }
+        ],
+        "sub24Targets": [],
+        "carriers": {
+          "count": 39,
+          "planes": {
+            "near": 0,
+            "mid": 0,
+            "far": 0
+          }
+        },
+        "uiState": {
+          "tutorialHeading": "Loom",
+          "demoButtons": [
+            "Finish demo →",
+            "Demo",
+            "Choose a demo +",
+            "Demo 1Evaluate an acquisition without revealing the dealCompare suppliers, reconcile contradictions, and build a decision brief while the identity ledger stays here.",
+            "Demo 2Analyze research without exposing participantsMake a real aggregate analysis while names, rare combinations, and interview linkage stay local.",
+            "Demo 3Investigate an incident without shipping secretsAsk an AI to reconcile sanitized logs and plan containment while credentials and customer linkage stay local."
+          ]
+        }
+      },
+      "consoleLogs": [],
+      "pageErrors": [],
+      "failedRequests": []
+    },
+    "landscape_844x390": {
+      "httpStatus": 200,
+      "screenshot": "C:\\Users\\timst\\OneDrive\\Desktop\\tcp-repository\\docs\\receipts\\1428-baseline\\landscape_844x390.png",
+      "metrics": {
+        "viewport": {
+          "winW": 844,
+          "winH": 390,
+          "dpr": 3,
+          "touchPoints": 1,
+          "isCoarse": true,
+          "docW": 844,
+          "hasHorizontalScroll": false
+        },
+        "spilledCount": 0,
+        "spilledElements": [],
+        "touchTargetsCount": 7,
+        "sub44Targets": [
+          {
+            "id": null,
+            "text": "Loom",
+            "width": 42,
+            "height": 24,
+            "below24": false,
+            "below44": true
+          }
+        ],
+        "sub24Targets": [],
+        "carriers": {
+          "count": 39,
+          "planes": {
+            "near": 0,
+            "mid": 0,
+            "far": 0
+          }
+        },
+        "uiState": {
+          "tutorialHeading": "Loom",
+          "demoButtons": [
+            "Finish demo →",
+            "Demo",
+            "Choose a demo +",
+            "Demo 1Evaluate an acquisition without revealing the dealCompare suppliers, reconcile contradictions, and build a decision brief while the identity ledger stays here.",
+            "Demo 2Analyze research without exposing participantsMake a real aggregate analysis while names, rare combinations, and interview linkage stay local.",
+            "Demo 3Investigate an incident without shipping secretsAsk an AI to reconcile sanitized logs and plan containment while credentials and customer linkage stay local."
+          ]
+        }
+      },
+      "consoleLogs": [],
+      "pageErrors": [],
+      "failedRequests": []
+    }
+  }
+}

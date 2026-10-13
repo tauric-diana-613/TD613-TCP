@@ -1,0 +1,157 @@
+import { stableStringify, sha256Text } from './hush-customizer-packet.js';
+import { buildMaskCentroid, buildGenericAIBaseline } from './hush-stylometric-feature-vector.js';
+import { PHASE8_UNIVERSAL_THRESHOLDS, GLITCHING_PIXIE_THRESHOLDS, KEISHA_SOFT_CIRCLE_THRESHOLDS, CRYO_CRISTIANO_THRESHOLDS, REX_FRACTURA_THRESHOLDS } from './hush-phase8-numeric-decision.js';
+import { RECEIPTS_QUEENIE_THRESHOLDS, RECEIPTS_QUEENIE_CADENCE_HEATMAP, buildReceiptsQueenieCentroid, isReceiptsQueenieRecord } from './hush-phase8-receipts-queenie.js';
+import { SOL_STRATIGRAPHIX_THRESHOLDS, SOL_STRATIGRAPHIX_CADENCE_HEATMAP, buildSolStratigraphixCentroid, isSolStratigraphixRecord } from './hush-phase8-sol-stratigraphix.js';
+import { HARBOR_ZORA_THRESHOLDS, HARBOR_ZORA_CADENCE_HEATMAP, buildHarborZoraCentroid, isHarborZoraRecord } from './hush-phase8-harbor-zora.js';
+import { NOLAN_NEEDLER_THRESHOLDS, NOLAN_NEEDLER_CADENCE_HEATMAP, buildNolanNeedlerCentroid, isNolanNeedlerRecord } from './hush-phase8-nolan-needler.js';
+import { BLOOPING_BLIP_THRESHOLDS, BLOOPING_BLIP_CADENCE_HEATMAP, buildBloopingBlipCentroid, isBloopingBlipRecord } from './hush-phase8-blooping-blip.js';
+import { BLACKSTAR_SHEREE_THRESHOLDS, BLACKSTAR_SHEREE_CADENCE_HEATMAP, buildBlackstarShereeCentroid, isBlackstarShereeRecord } from './hush-phase8-blackstar-sheree.js';
+import { LULU_QUASAR_THRESHOLDS, LULU_QUASAR_CADENCE_HEATMAP, buildLuluQuasarCentroid, isLuluQuasarRecord } from './hush-phase8-lulu-quasar.js';
+import { DROMOLOGICAL_PAUL_THRESHOLDS, DROMOLOGICAL_PAUL_CADENCE_HEATMAP, buildDromologicalPaulCentroid, isDromologicalPaulRecord } from './hush-phase8-dromological-paul.js';
+import { LUZ_INDEX_THRESHOLDS, LUZ_INDEX_CADENCE_HEATMAP, buildLuzIndexCentroid, isLuzIndexRecord } from './hush-phase8-luz-index.js';
+import { calibrateQueenieThresholds } from './hush-phase8-qs-calibration-hotfix.js';
+
+export const HUSH_STYLOMETRIC_PASSPORT_SCHEMA = 'td613.hush.phase8.stylometric-passport/v1';
+export const HUSH_ONTOLOGY_BINDINGS_SCHEMA = 'td613.hush.phase8.ontology-bindings/v1';
+
+const LULU_QUASAR_CALIBRATION_OVERRIDES = Object.freeze({
+  blue_orange_syntax_score_min: 0.28,
+  bizarre_relief_score_min: 0.2,
+  function_word_signature_similarity_max: 0.62,
+  punctuation_fingerprint_retention_max: 0.48
+});
+
+const PHASE8_CENTROID_BASE_FEATURES = Object.freeze({
+  mean_sentence_length: 12,
+  sentence_length_cv: 0.5,
+  lexical_density: 0.62,
+  generic_helper_voice_score: 0.04,
+  api_sheen_score: 0.04,
+  bounded_irregularity_index: 0.42,
+  source_adaptive: true,
+  public_default_allowed: false
+});
+
+export const PHASE8_GOVERNANCE_FLOOR = Object.freeze({
+  public_default_allowed: false,
+  raw_sample_text_allowed: false,
+  candidate_text_stored: false,
+  sample_seed_phrase_overlap_max: 0,
+  sample_seed_lexical_overlap_max: 0.12,
+  profile_reconstruction_risk_max: 0.2
+});
+
+function asArray(value) { return Array.isArray(value) ? value : []; }
+async function hashObject(value) { return sha256Text(stableStringify(value == null ? null : value)); }
+function composePhase8Thresholds(maskThresholds = {}, overrides = {}) {
+  return Object.freeze({
+    ...PHASE8_GOVERNANCE_FLOOR,
+    ...(maskThresholds || {}),
+    ...(overrides || {}),
+    public_default_allowed: false
+  });
+}
+async function normalizePhase8CentroidBaseKeys(centroid = {}, role = null) {
+  if (!centroid || typeof centroid !== 'object') return centroid;
+  const current = centroid.centroid_features && typeof centroid.centroid_features === 'object' ? centroid.centroid_features : {};
+  const features = Object.freeze({ ...PHASE8_CENTROID_BASE_FEATURES, ...current, source_adaptive: current.source_adaptive ?? centroid.source_adaptive ?? PHASE8_CENTROID_BASE_FEATURES.source_adaptive, public_default_allowed: current.public_default_allowed ?? false });
+  const normalized = { ...centroid, role: centroid.role || role, source_adaptive: centroid.source_adaptive ?? features.source_adaptive, centroid_features: features };
+  return Object.freeze({ ...normalized, centroid_hash_sha256: await hashObject(features) });
+}
+function thresholdFor(maskRecord = {}) {
+  if (isLuzIndexRecord(maskRecord)) return composePhase8Thresholds(LUZ_INDEX_THRESHOLDS);
+  if (isDromologicalPaulRecord(maskRecord)) return composePhase8Thresholds(DROMOLOGICAL_PAUL_THRESHOLDS);
+  if (isLuluQuasarRecord(maskRecord)) return composePhase8Thresholds(LULU_QUASAR_THRESHOLDS, LULU_QUASAR_CALIBRATION_OVERRIDES);
+  if (isBlackstarShereeRecord(maskRecord)) return composePhase8Thresholds(BLACKSTAR_SHEREE_THRESHOLDS);
+  if (isBloopingBlipRecord(maskRecord)) return composePhase8Thresholds(BLOOPING_BLIP_THRESHOLDS);
+  if (isNolanNeedlerRecord(maskRecord)) return composePhase8Thresholds(NOLAN_NEEDLER_THRESHOLDS);
+  if (isHarborZoraRecord(maskRecord)) return composePhase8Thresholds(HARBOR_ZORA_THRESHOLDS);
+  if (isSolStratigraphixRecord(maskRecord)) return composePhase8Thresholds(SOL_STRATIGRAPHIX_THRESHOLDS);
+  if (isReceiptsQueenieRecord(maskRecord)) return composePhase8Thresholds(calibrateQueenieThresholds(RECEIPTS_QUEENIE_THRESHOLDS));
+  if (maskRecord.mask_id === 'phase22-jagged-record') return composePhase8Thresholds(REX_FRACTURA_THRESHOLDS);
+  if (maskRecord.mask_id === 'night-shift-note') return composePhase8Thresholds(CRYO_CRISTIANO_THRESHOLDS);
+  if (maskRecord.mask_id === 'group-chat-soft') return composePhase8Thresholds(KEISHA_SOFT_CIRCLE_THRESHOLDS);
+  if (maskRecord.mask_id === 'phase28-transform-to-chatspeak') return composePhase8Thresholds(GLITCHING_PIXIE_THRESHOLDS);
+  return composePhase8Thresholds(PHASE8_UNIVERSAL_THRESHOLDS);
+}
+function roleForPassport(maskRecord = {}) {
+  if (isLuzIndexRecord(maskRecord)) return 'custodial_index';
+  if (isDromologicalPaulRecord(maskRecord)) return 'public_forum_dromology';
+  if (isLuluQuasarRecord(maskRecord)) return 'blue_orange_relief';
+  if (isBlackstarShereeRecord(maskRecord)) return 'chosen_target_register';
+  if (isBloopingBlipRecord(maskRecord)) return 'hyperchat_custody';
+  if (isNolanNeedlerRecord(maskRecord)) return 'low_heat_edge';
+  if (isHarborZoraRecord(maskRecord)) return 'source_register';
+  if (isSolStratigraphixRecord(maskRecord)) return 'document_distance';
+  if (isReceiptsQueenieRecord(maskRecord)) return 'warm_receipts';
+  if (maskRecord.mask_id === 'phase22-jagged-record') return 'adversarial_fracture';
+  if (maskRecord.mask_id === 'night-shift-note') return 'quick_handoff';
+  if (maskRecord.mask_id === 'group-chat-soft') return 'small circle';
+  return maskRecord.intended_role || maskRecord.gallery_role || maskRecord.family || null;
+}
+function heatmapFor(maskRecord = {}, role = null) {
+  if (role === 'custodial_index' && isLuzIndexRecord(maskRecord)) return LUZ_INDEX_CADENCE_HEATMAP;
+  if (role === 'public_forum_dromology' && isDromologicalPaulRecord(maskRecord)) return DROMOLOGICAL_PAUL_CADENCE_HEATMAP;
+  if (role === 'blue_orange_relief' && isLuluQuasarRecord(maskRecord)) return LULU_QUASAR_CADENCE_HEATMAP;
+  if (role === 'chosen_target_register' && isBlackstarShereeRecord(maskRecord)) return BLACKSTAR_SHEREE_CADENCE_HEATMAP;
+  if (role === 'hyperchat_custody' && isBloopingBlipRecord(maskRecord)) return BLOOPING_BLIP_CADENCE_HEATMAP;
+  if (role === 'low_heat_edge' && isNolanNeedlerRecord(maskRecord)) return NOLAN_NEEDLER_CADENCE_HEATMAP;
+  if (role === 'source_register' && isHarborZoraRecord(maskRecord)) return HARBOR_ZORA_CADENCE_HEATMAP;
+  if (role === 'document_distance' && isSolStratigraphixRecord(maskRecord)) return SOL_STRATIGRAPHIX_CADENCE_HEATMAP;
+  if (role === 'warm_receipts') return RECEIPTS_QUEENIE_CADENCE_HEATMAP;
+  return null;
+}
+
+export function buildPhase8OntologyBindings(extra = {}) {
+  return Object.freeze({
+    schema: HUSH_ONTOLOGY_BINDINGS_SCHEMA,
+    classes: Object.freeze(['MaskRegistryRecord', 'PerMaskPacket', 'StylometricPassport', 'MaskCentroid', 'GenericAIBaseline', 'CandidateRealization', 'SourceObligationSet', 'HumanImperfectionEnvelope', 'AntiSlopVector', 'SampleReuseVector', 'CollisionPosture', 'ClaimCeiling', 'PacketDecisionSurface', 'CandidatePresenceGate', 'EntrypointAssertion', ...asArray(extra.classes)]),
+    relations: Object.freeze(['PerMaskPacket derivesFrom MaskRegistryRecord', 'PerMaskPacket contains StylometricPassport', 'StylometricPassport hasCentroid MaskCentroid', 'StylometricPassport comparesAgainst GenericAIBaseline', 'CandidateRealization mustSatisfy SourceObligationSet', 'CandidateRealization measuredAgainst MaskCentroid', 'CandidateRealization constrainedBy ClaimCeiling', 'PacketDecisionSurface acceptsIf NumericThresholdsPass', 'CandidatePresenceGate separates SourceText from CandidateText', ...asArray(extra.relations)]),
+    forbidden_equivalences: Object.freeze(['stylometric_fit != identity_proof', 'mask_breath != authorship_proof', 'human_irregularity != consent', 'candidate_pass != public_release_permission', 'source_text != candidate_text', 'source_obligation_set != candidate_realization', 'candidate_hash != source_hash', 'candidate_presence != source_presence', ...asArray(extra.forbidden_equivalences)])
+  });
+}
+
+export async function buildStylometricPassport(maskRecord = {}, options = {}) {
+  const thresholds = Object.freeze({ ...thresholdFor(maskRecord), ...(options.thresholds || {}), public_default_allowed: false });
+  const role = roleForPassport(maskRecord);
+  const centroidRecord = { ...maskRecord, gallery_role: role, intended_role: role };
+  const rawMaskCentroid = role === 'custodial_index' && isLuzIndexRecord(maskRecord)
+    ? await buildLuzIndexCentroid(centroidRecord, options.calibrationSamples || [])
+    : role === 'public_forum_dromology' && isDromologicalPaulRecord(maskRecord)
+      ? await buildDromologicalPaulCentroid(centroidRecord, options.calibrationSamples || [])
+      : role === 'blue_orange_relief' && isLuluQuasarRecord(maskRecord)
+        ? await buildLuluQuasarCentroid(centroidRecord, options.calibrationSamples || [])
+        : role === 'chosen_target_register' && isBlackstarShereeRecord(maskRecord)
+          ? await buildBlackstarShereeCentroid(centroidRecord, options.calibrationSamples || [])
+          : role === 'hyperchat_custody' && isBloopingBlipRecord(maskRecord)
+            ? await buildBloopingBlipCentroid(centroidRecord, options.calibrationSamples || [])
+            : role === 'low_heat_edge' && isNolanNeedlerRecord(maskRecord)
+              ? await buildNolanNeedlerCentroid(centroidRecord, options.calibrationSamples || [])
+              : role === 'source_register' && isHarborZoraRecord(maskRecord)
+                ? await buildHarborZoraCentroid(centroidRecord, options.calibrationSamples || [])
+                : role === 'document_distance' && isSolStratigraphixRecord(maskRecord)
+                  ? await buildSolStratigraphixCentroid(centroidRecord, options.calibrationSamples || [])
+                  : role === 'warm_receipts'
+                    ? await buildReceiptsQueenieCentroid(centroidRecord, options.calibrationSamples || [])
+                    : await buildMaskCentroid(centroidRecord, options.calibrationSamples || []);
+  const maskCentroid = await normalizePhase8CentroidBaseKeys(rawMaskCentroid, role);
+  const genericBaseline = await buildGenericAIBaseline(options.genericFixtures || []);
+  const featureWeights = Object.freeze({ source_custody: 0.24, mask_fit: 0.2, generic_distance: 0.16, anti_slop: 0.16, human_irregularity: 0.14, sample_reuse: 0.1 });
+  const minimumEvidence = Object.freeze({ registry_record_hash_required: true, source_file_required: true, source_index_required: true, raw_sample_text_allowed: false, candidate_text_stored: false, candidate_presence_gate_required: true, numeric_decision_required: true });
+  const passport = {
+    schema: HUSH_STYLOMETRIC_PASSPORT_SCHEMA,
+    metric_set_version: 'hush-authorship-sciences-core/v1',
+    passport_tag: 'phase8-hard-metric-passport/v1',
+    mask_id: maskRecord.mask_id || null,
+    role,
+    mask_centroid: maskCentroid,
+    generic_ai_baseline: genericBaseline,
+    tolerance_bands: thresholds,
+    cadence_heatmap: heatmapFor(maskRecord, role),
+    feature_weights: featureWeights,
+    minimum_evidence: minimumEvidence,
+    limitations: Object.freeze(['numeric passport measures packet admissibility only', 'no civil identity conclusion', 'no public release authority'])
+  };
+  return Object.freeze({ ...passport, passport_hash_sha256: await hashObject(passport) });
+}

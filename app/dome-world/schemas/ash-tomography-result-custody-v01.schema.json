@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://td613.com/schemas/ash-tomography-result-custody-v01.schema.json",
+  "title": "TD613 Ash tomography result custody v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "custody_id", "created_at", "time_posture", "experiment_manifest_reference", "snapshot_batch_reference", "tomography_receipt_reference", "tomography_receipt_digest", "source_drift_status", "coverage_status", "tamper_status", "raw_artifact_content_present", "raw_observation_content_present", "derivative_present", "cinder_present", "transport_authorized", "automatic_export", "automatic_ash_action", "scope_statement", "cannot_establish", "promotion_conditions", "operator_closure", "custody_digest"],
+  "properties": {
+    "schema": { "const": "td613.ash.tomography-result-custody/v0.1" },
+    "custody_id": { "type": "string", "pattern": "^ashtomo_[A-Za-z0-9_-]{6,128}$" },
+    "created_at": { "type": "string" }, "time_posture": { "const": "local-clock-not-trusted-time" },
+    "experiment_manifest_reference": { "type": "string" }, "snapshot_batch_reference": { "type": "string" }, "tomography_receipt_reference": { "type": "string" },
+    "tomography_receipt_digest": { "$ref": "#/$defs/digest" }, "source_drift_status": { "type": "string" }, "coverage_status": { "type": "string" }, "tamper_status": { "type": "string" },
+    "raw_artifact_content_present": { "const": false }, "raw_observation_content_present": { "const": false }, "derivative_present": { "const": false }, "cinder_present": { "const": false }, "transport_authorized": { "const": false }, "automatic_export": { "const": false }, "automatic_ash_action": { "const": false },
+    "scope_statement": { "type": "string" }, "cannot_establish": { "type": "array", "items": { "type": "string" } }, "promotion_conditions": { "type": "array", "items": { "type": "string" } }, "operator_closure": { "$ref": "#/$defs/closure" }, "custody_digest": { "$ref": "#/$defs/digest" }
+  },
+  "$defs": { "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }, "closure": { "type": "object", "additionalProperties": false, "required": ["required", "status"], "properties": { "required": { "const": true }, "status": { "const": "OPEN" } } } }
+}

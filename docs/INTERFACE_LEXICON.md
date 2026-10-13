@@ -1,0 +1,115 @@
+# INTERFACE LEXICON
+
+Use this after [START_HERE.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/START_HERE.md) and [SYSTEM_OVERVIEW.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/SYSTEM_OVERVIEW.md) if you want a compact translation table between the playful UI and the stricter model vocabulary.
+
+TCP uses a small vocabulary that does double duty: it has interface meaning and model meaning at the same time. This file keeps those terms brief, explicit, and non-mystical.
+
+The glyph/state language is part of that vocabulary. In TCP, surface roles such as threshold, anchor, shelf, witness, encounter, and forge are registered runtime states, not decoration.
+
+## Core controls
+
+| Term | In the app | In the model |
+| --- | --- | --- |
+| `Analyze Cadences` | Runs a solo or paired scan on the current text bays and wakes the latent metric surfaces. | Recomputes stylometric features, route pressure, archive state, and harbor recommendation. |
+| `Swap Text` | Moves the raw source text between the two deck bays. | A setup utility that changes bay placement without performing shell transfer. |
+| `Swap Cadences` | Moves the cadence shells between the two bays without moving the text. | Tests whether shell-level stylometric bias changes the readout and `Shell Duel` when content stays fixed. |
+| `Save Cadence as Persona` | Captures the active bay as a reusable in-app shell. | Converts the current cadence profile into a reusable stylometric modifier. |
+| `Reset bay` | Restores the seeded opening pair and default switches. | Clears local shell state and returns the demo to native cadence mode. |
+
+## Homebase controls
+
+| Term | In the app | In the model |
+| --- | --- | --- |
+| `Cadence Lockbox` | The corpus input in `Homebase` where you stage one voice across one or more samples. | The local corpus used to derive a stable cadence lock profile. |
+| `Lock` | Builds a staged cadence draft from the lockbox text without writing it into the archive. | Extracts a draft lock profile and makes it available for unrevealed mask comparison. |
+| `Reveal` | Opens the deep dossier and wakes the global solo Telemetry/Harbor path for the active lock. | Runs the shared one-sample readout logic on the current Homebase lock. |
+| `Save` | Persists the staged lock into the local lock archive. | Commits the draft cadence lock to local storage without changing its measured profile. |
+| `Bring into Homebase` | Moves the chosen shelf mask into the Homebase worn-mask stage. | Sets the current Homebase mask without changing deck shell assignment. |
+| `Open in Clone` | Sends the current mask context into the forge without claiming a generated result yet. | Carries persona and source context into the shared clone runtime so a real draft can be forged there. |
+| `Forge Draft` | Builds a live candidate passage in `Clone`. | Uses the default Generator V2 writer on current Homebase/Deck/extracted-corpus context. If V2 misses honestly, Clone shows a visible hold docket instead of fake output. |
+| `Try on Deck A` | Sends a persona shell to the reference bay in `Deck`. | Assigns the selected shell to slot `A` for live deck analysis. |
+| `Try on Deck B` | Sends a persona shell to the probe bay in `Deck`. | Assigns the selected shell to slot `B` for live deck analysis. |
+
+## Contact loop
+
+| Term | In the app | In the model |
+| --- | --- | --- |
+| `chosen on shelf` | A mask has been selected on the `Homebase / Personas` shelf, but is not yet worn in the contact bay. | `gallerySelectedMaskId` is set while `homebaseWornMaskId` is still empty or different. |
+| `Worn mask` | The dedicated Homebase stage that shows which mask is actively steering passage. | The current `homebaseWornMaskId` plus its resolved shell/profile data. |
+| `Source` | The unmasked comparison text on the Homebase passage bench. | The raw comparison passage before persona transfer. |
+| `Through Mask` | The transformed passage produced by the worn mask, or a blank output when the writer explicitly holds. | The registered output of `buildCadenceTransfer(...)` through the worn shell. If Generator V2 holds, Homebase should show the hold docket instead of leaking internal candidate text. |
+| `Before Contact` | Raw-to-lock reading before the mask touches the text. | Similarity and traceability of the source passage against the active lock. |
+| `After Contact` | Masked-to-lock reading after the passage has been transformed. | Similarity and traceability of the transformed passage against the active lock. |
+| `What Moved` | The compact line that names the changed dimensions and whether the passage stayed near home. | A transfer summary derived from real changed dimensions, lexical movement, and contact state. |
+| `What Clung` | The short forensic summary of what still reads as home after contact. | Sticky axes, held lanes, and contact summaries derived from the lock comparison, with the full Aperture ledger kept in the drawer rather than dumped into the main surface. |
+| `Tool state` | The short headline above the Homebase result. | The operator-facing summary of whether the landed output is usable, distinct, or held. |
+| `Aperture ledger` | The secondary detail drawer beneath the main result. | The full warning / repair / registration trace that used to flood the main readout. |
+
+## State controls
+
+| Term | In the app | In the model |
+| --- | --- | --- |
+| `Mirror shield` | A route gate. When armed, the deck stays exploratory; when opened, passage can resolve. | Controls whether high recognition is allowed to count as route availability. |
+| `Custody badge` | A small demo-state switch that changes the deck language and harbor posture. | Encodes branch-holding / buffering posture in the current prototype logic. |
+| `Containment` | A stability flag shown in the state rail. | A bounded field modifier that slightly raises or lowers field potential. |
+| `Ingress dev bypass` | A URL-only development shortcut, not a visible control in the live interface. | The `?ingress=off` flag that skips the custody handshake and opens the deck directly for testing. |
+
+## Readouts
+
+| Term | In the app | In the model |
+| --- | --- | --- |
+| `Cadence similarity` | How close the two voice samples feel in aggregate. | The bounded pairwise similarity score `S`. |
+| `Traceability` | How strongly sentence-shape habits survive surface variation. | The bounded pairwise traceability score `T`. |
+| `Toolability` | Whether the resulting mask feels usable on first read. | The downstream candidate-quality audit that combines readability, sentence integrity, persona distinctness, and artifact penalties. |
+| `Route pressure` | Whether recognition is starting to demand a path instead of staying decorative. | The bounded route score `Pi`. |
+| `Effective archive` | Which side is currently functioning as the effective archive. | The threshold result `A_I` or `A_W` from the custody delta rule; `A_I` means institutional custody remains the effective archive, and `A_W` means witness custody is carrying the archive. |
+| `Harbor` | The recommended structured response once the field needs handling. | A provenance-constrained passage function selected from the harbor library. |
+| `Receipt stream` | The demo ledger preview in the UI. | A sample row showing how event, archive, burden, and harbor are recorded. |
+| `Shell Duel` | The side-by-side instrument on the `Deck` tab that stages the reference bay under its shell and the probe bay under its shell. | A direct view of shell transfer using each bay's transformed sample, heatmaps, signatures, and a pairwise delta strip. |
+| `Ingress Membrane` | The full-screen ritual that appears before the deck unlocks on normal visits. | A custody-handshake layer that resolves containment, mirror posture, and badge state before the live shell opens. |
+| `Deep dossier` | The revealed Homebase panel that shows cadence metrics, risk interpretation, and archive character for the active lock. | A rich summary layer built from the lock profile and solo readout quantities. |
+| `Mask bench` | The Homebase comparison area that stages source passage, through-mask passage, before/after readings, and residue. | A local counterstyle test surface that compares transformed text against the active lock profile. |
+| `Cast report` | The pre-analysis Deck strip that names contrast, branch heat, and swap promise before the duel wakes. | A lightweight pre-scan summary derived from the current pair state before route law is computed. |
+
+## Shell language
+
+| Term | In the app | In the model |
+| --- | --- | --- |
+| `Cadence shell` | The stylometric wrapper currently applied to a bay. | A deterministic cadence-transfer layer driven by Generator V2 that rewrites sentence shape, connector/stance texture, contraction posture, and punctuation finish while preserving protected literals and raw source text. |
+| `Persona shell` | A named, reusable cadence shell. | A saved transfer profile that can be reassigned to any bay. |
+| `Native cadence` | The unmodified text as written. | The raw extracted stylometric profile before any shell bias is applied. |
+| `Borrowed cadence` | A shell captured from the other bay during swap. | A derived modifier built from the effective profile of the opposite bay and used as a donor target for Generator V2. |
+| `Source sample` | The unchanged raw textarea text in each bay, as staged by `Shell Duel`. | The reference-side input and the probe-side input, each bent by its currently attached shell for visual comparison. |
+
+## Decision states
+
+| Term | In the app | In the model |
+| --- | --- | --- |
+| `weak-signal` | The deck stays exploratory. | Recognition has not crossed the current routing threshold. |
+| `hold-branch` | The deck preserves the branch without escalating. | Recognition is present, but route is not yet open. |
+| `criticality` | The deck warns that recognition is outrunning route. | Dense recognition has formed while passage is still blocked. |
+| `passage` | The deck can name a harbor and safe-passage state. | Recognition is dense enough and the route gate is open. |
+| `generator-hold` | The visible blank-output miss state on write surfaces. | A non-catastrophic V2 miss where the engine chose not to publish a weak rewrite. |
+
+## Structural terms
+
+| Term | In the app | In the model |
+| --- | --- | --- |
+| `Deck` | The encounter station with bays, controls, cast report, and `Shell Duel`. | The public membrane where cadence play and route-state education happen first. |
+| `Homebase / Personas` | The cadence home and mask shelf for lock, reveal, save, archive, dossier, mask selection, and mask work. | The private lock-and-compare surface that stages one voice and one worn mask before or alongside deck play. |
+| `Readout` | The witness/law station that exposes scores, formulas, and ledger preview. | The explicit metric layer where similarity, route, and archive state are made legible. |
+| `Station route` | The hash-routed room selector such as `#homebase`, `#readout`, `#deck`, or `#clone`. | A public navigation alias over one browser runtime; the route changes shell identity, not engine truth. `#console` remains a compatibility alias that resolves to `#homebase`, and `#trainer` remains a legacy alias for `#clone`. |
+| `Branch` | The branch formula shown in the readout/debug layer. | The rule that unwanted surplus is preserved until it can be interpreted or dismissed responsibly. |
+| `Field` | The whole comparison environment shown on the deck. | The bounded environment in which similarity, recurrence, and route pressure interact. |
+| `Harbor deck` | The panel that recommends structured passage. | The safe-harbor layer that lowers witness burden without destroying provenance. |
+
+## One-line translation
+
+If a label sounds ceremonial, the plain reading is usually this:
+
+- `mirror` = route gate
+- `badge` = posture switch
+- `shell` = stylometric wrapper
+- `lock` = staged cadence base
+- `harbor` = structured passage
+- `archive` = who is carrying continuity

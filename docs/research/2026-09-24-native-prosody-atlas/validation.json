@@ -1,0 +1,41 @@
+{
+  "evidence_class": "offline verification; synthetic oracle, not a provider return",
+  "tests_exit_code": 0,
+  "tests_passed": 10,
+  "image_hashes_verified": 12,
+  "original_image_bytes_total": 7216433,
+  "prompt_oracle": [
+    {
+      "cycle": 1,
+      "chamber": 8,
+      "annex": 8,
+      "exterior_received_cumulative": 0,
+      "total_inventory": 16
+    },
+    {
+      "cycle": 2,
+      "chamber": 6,
+      "annex": 16,
+      "exterior_received_cumulative": 0,
+      "total_inventory": 22
+    },
+    {
+      "cycle": 3,
+      "chamber": 4,
+      "annex": 16,
+      "exterior_received_cumulative": 8,
+      "total_inventory": 28
+    }
+  ],
+  "runtime_source_edited": false,
+  "paid_provider_calls": 0,
+  "test_output": "test_astral_offset_uses_scalars (test_boundary_audit.BoundaryAuditTests.test_astral_offset_uses_scalars) ... ok\ntest_equal_text_carries_no_claim_about_pixels (test_boundary_audit.BoundaryAuditTests.test_equal_text_carries_no_claim_about_pixels) ... ok\ntest_invalid_capture_rejected (test_boundary_audit.BoundaryAuditTests.test_invalid_capture_rejected) ... ok\ntest_mark_beyond_basic_combining_block (test_boundary_audit.BoundaryAuditTests.test_mark_beyond_basic_combining_block) ... ok\ntest_missing_is_distinct_from_observed_empty (test_boundary_audit.BoundaryAuditTests.test_missing_is_distinct_from_observed_empty) ... ok\ntest_no_capture_is_unknown_not_plain (test_boundary_audit.BoundaryAuditTests.test_no_capture_is_unknown_not_plain) ... ok\ntest_normalization_difference_remains_recorded (test_boundary_audit.BoundaryAuditTests.test_normalization_difference_remains_recorded) ... ok\ntest_same_length_replacement_is_detected (test_boundary_audit.BoundaryAuditTests.test_same_length_replacement_is_detected) ... ok\ntest_envelope_against_known_band (test_pixels.PixelMeasurementTests.test_envelope_against_known_band) ... ok\ntest_known_rectangle_area_and_grid (test_pixels.PixelMeasurementTests.test_known_rectangle_area_and_grid) ... /workspace/scratch/40d107d0bb63/repair/docs/research/2026-09-24-native-prosody-atlas/measure_pixels.py:24: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.\n  px = list(gray.getdata())\nok\n\n----------------------------------------------------------------------\nRan 10 tests in 0.083s\n\nOK\n",
+  "staged_runtime_candidate": {
+    "artifact": "pattern-permission.patch",
+    "changed_files": 2,
+    "clause_replacements": 6,
+    "node_syntax_checks": "passed for both candidate files",
+    "git_apply_check": "passed against exact source snapshots",
+    "integration_and_provider_behavior": "not run; unapplied candidate"
+  }
+}

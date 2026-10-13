@@ -1,0 +1,89 @@
+{
+  "schema": "td613.flowcore.pedagogue-research-literature-fixture/v0.1",
+  "fixture_id": "pedagogue.research-hydration.2026-observability-aliasing-fourth-pass/v0.1",
+  "research_only": true,
+  "raw_source_content_included": false,
+  "part": "D",
+  "cards": [
+    {
+      "card_id": "lit-cross-view-dynamics-identification-2026",
+      "source": {
+        "title": "From data chaos to physically interpretable deterministic mapping",
+        "venue": "Nature Communications",
+        "publication_date": "2026-07-13",
+        "source_class": "PRIMARY_PEER_REVIEWED",
+        "source_reference": "doi:10.1038/s41467-026-75164-9"
+      },
+      "domain_family": "DYNAMICAL_SYSTEM_DISCOVERY",
+      "domain_tags": ["system-identification", "cross-view-consistency"],
+      "mechanism_id": "CROSS_VIEW_CONSISTENCY_TESTS_STRUCTURAL_STABILITY",
+      "observed_relation": "The reported structured operator-learning framework combines scale-resolved decomposition, sparse projection, and cross-view consistency across perturbed observations to improve stable interpretable recovery of governing dynamics under noise and distribution shift.",
+      "transferable_relation": "An inferred dynamical relation is methodologically stronger when it remains structurally consistent across deliberately perturbed observation views rather than fitting only one admitted representation.",
+      "admissible_assays": ["Perturb the observation view while holding the latent forward process fixed and test whether the inferred relation remains stable without receiving hidden-state leakage."],
+      "alternative_explanations": ["Cross-view agreement may reflect shared model regularization or correlated perturbations rather than uniquely identified latent dynamics."],
+      "falsifiers": ["The inferred structural relation changes materially under admissible observation perturbations while predictive fit remains superficially high."],
+      "forbidden_inferences": ["Cross-view stability does not prove that an inferred equation or TD613 mechanism is the unique true physical governing law."],
+      "claim_ceiling": "CROSS_VIEW_STRUCTURAL_STABILITY_RELATION_ONLY"
+    },
+    {
+      "card_id": "lit-koopman-sampling-aliasing-2026",
+      "source": {
+        "title": "Koopman Representations for Non-Vanishing Time Intervals: An Optimization Approach and Sampling Effects",
+        "venue": "arXiv",
+        "publication_date": "2026-04-13",
+        "source_class": "PRIMARY_PREPRINT",
+        "source_reference": "arxiv:2604.11715"
+      },
+      "domain_family": "DYNAMICAL_SYSTEMS",
+      "domain_tags": ["koopman", "sampling", "aliasing"],
+      "mechanism_id": "OBSERVATION_PATTERN_CAN_CREATE_OR_BREAK_ALIASING",
+      "observed_relation": "The preprint analyzes Koopman representations from observations at non-vanishing time intervals, identifies aliasing induced by oscillatory dynamics and sampling pattern, and reports that irregular sampling can break aliases through phase cancellation.",
+      "transferable_relation": "Indistinguishability can be created by the observation schedule itself; changing the admitted sampling pattern can sometimes recover distinctions without changing the underlying dynamics.",
+      "admissible_assays": ["Hold the forward process fixed while varying only a predeclared observation schedule or aperture, then measure candidate collisions separately from forward-state collisions."],
+      "alternative_explanations": ["A gain from irregular observation may be specific to oscillatory structure, optimization geometry, or the candidate frequency family rather than a generic anti-aliasing effect."],
+      "falsifiers": ["Changing only the declared observation pattern fails to alter aliases attributed to sampling, or apparent recovery requires changing the forward dynamics as well."],
+      "forbidden_inferences": ["Sampling-induced aliasing in Koopman estimation does not establish TD613 curvature, holonomy, or a physical oscillatory spectrum."],
+      "claim_ceiling": "OBSERVATION_SCHEDULE_ALIASING_RELATION_ONLY"
+    },
+    {
+      "card_id": "lit-vla-state-aliasing-inverse-dynamics-2026",
+      "source": {
+        "title": "Mitigating State Aliasing in Vision-Language-Action Models via Inverse Dynamics Learning",
+        "venue": "arXiv",
+        "publication_date": "2026-05-28",
+        "source_class": "PRIMARY_PREPRINT",
+        "source_reference": "arxiv:2605.29577"
+      },
+      "domain_family": "ROBOTICS_VLA",
+      "domain_tags": ["state-aliasing", "representation", "inverse-dynamics"],
+      "mechanism_id": "REPRESENTATION_AFFECTS_IDENTIFIABILITY",
+      "observed_relation": "The preprint identifies state aliasing when learned visual representations are insensitive to subtle state distinctions required for different actions and uses inverse-dynamics supervision to encourage more state-discriminative features.",
+      "transferable_relation": "A representation can destroy distinctions needed by a downstream inverse or control task even when those distinctions exist in the underlying state; representation design can therefore change practical identifiability.",
+      "admissible_assays": ["Hold underlying terminal states fixed while comparing a rich representation with a deliberately lossy representation and measure which latent distinctions survive."],
+      "alternative_explanations": ["Representation gains may be benchmark-specific or arise from additional supervision rather than a general solution to state aliasing."],
+      "falsifiers": ["A purportedly richer representation does not reduce held-out state collisions or a lossy representation performs identically on the distinctions required by the downstream task."],
+      "forbidden_inferences": ["Reduced representation aliasing in robot learning does not establish latent physical geometry or unique state ontology in TD613."],
+      "claim_ceiling": "REPRESENTATION_ALIASING_AND_IDENTIFIABILITY_RELATION_ONLY"
+    },
+    {
+      "card_id": "lit-correlation-aware-sensor-placement-2026",
+      "source": {
+        "title": "Data-driven sensor placement for predictive applications: a Correlation-Assisted Attribution Framework (CAAF)",
+        "venue": "Communications AI & Computing",
+        "publication_date": "2026-08-05",
+        "source_class": "PRIMARY_PEER_REVIEWED",
+        "source_reference": "doi:10.1038/s44488-026-00011-1"
+      },
+      "domain_family": "SENSOR_PLACEMENT",
+      "domain_tags": ["sensor-placement", "correlation", "redundancy"],
+      "mechanism_id": "PROBE_DIVERSITY_NEEDS_DEPENDENCE_CONTROL",
+      "observed_relation": "The study reports that highly correlated candidate sensors can receive redundant feature-attribution importance and introduces correlation-aware clustering to select diverse representative sensors before prediction and attribution.",
+      "transferable_relation": "A larger set of nominal probes can contain overlapping information; dependence-aware probe selection is needed before probe count is interpreted as measurement diversity.",
+      "admissible_assays": ["Match total probe count or reading budget while varying correlation/redundancy among probe positions and compare reconstruction or predictive performance."],
+      "alternative_explanations": ["Clustering may improve performance through regularization or computational simplification rather than information diversity alone."],
+      "falsifiers": ["Dependence-aware selection offers no advantage over equally sized correlated selections under matched prediction targets and budgets."],
+      "forbidden_inferences": ["Correlation-aware sensor placement does not by itself establish statistical independence among TD613 probes or validate a Fisher-information claim."],
+      "claim_ceiling": "DEPENDENCE_AWARE_PROBE_DIVERSITY_RELATION_ONLY"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:lifecycle-operator:v1",
+  "title": "SignalRupture epistemic-object lifecycle operator",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "operator_event_id", "operator_type", "input_object_ids", "output_object_ids", "before_state_ids", "after_state_ids", "declared_by_id", "temporal_provenance_mode", "realization_status", "evidence_ids"],
+  "properties": {
+    "schema_version": {"const": "lifecycle-operator/v1"},
+    "operator_event_id": {"type": "string", "minLength": 1},
+    "operator_type": {"enum": ["PUBLISH", "MANIFEST_ON_SURFACE", "CAPTURE", "RETITLE", "T_SURFACE", "T_EPISTEMIC", "DECLARE_RELATION", "RETROSPECTIVELY_COMPILE", "FORM_FIELD", "ISSUE_CANON_MAP", "TIGHTEN_CLAIM", "RECLASSIFY_AUTHORITY", "SUPERSEDE_SCOPE", "REHABILITATE"]},
+    "source_operator_type_raw": {"type": "string", "minLength": 1},
+    "input_object_ids": {"type": "array", "items": {"type": "string"}},
+    "output_object_ids": {"type": "array", "items": {"type": "string"}},
+    "before_state_ids": {"type": "array", "items": {"type": "string"}},
+    "after_state_ids": {"type": "array", "items": {"type": "string"}},
+    "transformation_id": {"type": ["string", "null"]},
+    "declared_by_id": {"type": ["string", "null"]},
+    "temporal_provenance_mode": {"enum": ["CONTEMPORANEOUS", "FORWARD_DECLARED", "RETROSPECTIVE", "INFERRED", "UNRESOLVED"]},
+    "source_temporal_mode_raw": {"type": "string", "minLength": 1},
+    "realization_status": {"enum": ["SOURCE_DECLARED", "ARCHIVE_OBSERVED", "ARCHIVE_INFERRED", "COUNTERFACTUAL_SIMULATION"]},
+    "source_realization_status_raw": {"type": "string", "minLength": 1},
+    "evidence_ids": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "interpretive_limit": {"type": ["string", "null"]}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"operator_type": {"enum": ["T_SURFACE", "T_EPISTEMIC"]}}},
+      "then": {"required": ["transformation_id"], "properties": {"transformation_id": {"type": "string", "minLength": 1}}}
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+.export-action-cluster {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.export-action-button {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 25px;
+  height: 25px;
+  padding: 0 8px;
+  border: 1px solid rgba(200, 235, 213, .17);
+  border-radius: 0;
+  cursor: pointer;
+  color: var(--muted);
+  background: rgba(11, 36, 28, .66);
+  font: 750 8px/1 var(--mono);
+  letter-spacing: .025em;
+  white-space: nowrap;
+  clip-path: var(--clip-small);
+}
+.export-action-button:hover {
+  border-color: rgba(118, 234, 212, .42);
+  color: var(--bright);
+  background: rgba(18, 51, 41, .84);
+}
+.export-action-button:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+.contributions-export-actions {
+  margin-left: auto;
+}
+
+@media (max-width: 760px) {
+  .section-head:has(.contributions-export-actions) {
+    flex-wrap: wrap;
+  }
+  .contributions-export-actions {
+    width: 100%;
+    margin-left: 0;
+    justify-content: flex-start;
+  }
+  .export-action-button {
+    min-height: 27px;
+    height: 27px;
+    padding-inline: 7px;
+  }
+}

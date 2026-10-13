@@ -1,0 +1,1434 @@
+{
+  "suite": "lambda2c-emissiongap-verification",
+  "description": "Per-claim exact-arithmetic verification of the two companion papers.",
+  "generated_utc": "2026-06-29T23:48:34.350344+00:00",
+  "completed_utc": "2026-06-29T23:55:18.099816+00:00",
+  "meta": {
+    "trigger": "run_tests.py",
+    "versions": {
+      "python": "3.14.3",
+      "sympy": "1.14.0",
+      "mpmath": "1.3.0",
+      "numpy": "2.4.4",
+      "pytest": "9.1.1"
+    }
+  },
+  "results": [
+    {
+      "test_id": "CONST-01",
+      "paper": "shared",
+      "locus": "catalog: golden seeds",
+      "claim": "phi is the root of x^2-x-1; tau the root of x^2+x-1; phi*psi=-1, phi+psi=1",
+      "equation": "minpoly(phi)=x^2-x-1, minpoly(tau)=x^2+x-1",
+      "status": "FORCED",
+      "detail": {
+        "phi": 1.618033988749895,
+        "phi_psi_product": -1,
+        "phi_psi_sum": 1
+      },
+      "logged_utc": "2026-06-29T23:48:39.224275+00:00"
+    },
+    {
+      "test_id": "CONST-02",
+      "paper": "shared",
+      "locus": "Smyth floor",
+      "claim": "mu_S is the plastic number, real root of x^3-x-1, and mu_S < phi",
+      "equation": "mu_S^3 - mu_S - 1 = 0",
+      "status": "FORCED",
+      "detail": {
+        "mu_S": 1.324717957244746,
+        "phi": 1.618033988749895,
+        "mu_S<phi": true
+      },
+      "logged_utc": "2026-06-29T23:48:39.262016+00:00"
+    },
+    {
+      "test_id": "CONST-03",
+      "paper": "shared",
+      "locus": "Lehmer number",
+      "claim": "Lehmer's degree-10 polynomial is an irreducible Salem polynomial with Mahler measure ~1.17628 < mu_S",
+      "equation": "M(Lehmer) < mu_S < phi",
+      "status": "FORCED",
+      "detail": {
+        "M_lehmer": 1.1762808182599176,
+        "mu_S": 1.324717957244746,
+        "is_salem": true
+      },
+      "logged_utc": "2026-06-29T23:48:39.451327+00:00"
+    },
+    {
+      "test_id": "CONST-04",
+      "paper": "shared",
+      "locus": "degree-4 Salem floor",
+      "claim": "x^4-x^3-x^2-x+1 is the minimal degree-4 Salem polynomial; beta4 ~1.72208 > phi",
+      "equation": "beta4 = M(x^4-x^3-x^2-x+1) > phi",
+      "status": "FORCED",
+      "detail": {
+        "beta4": 1.7220838057390422,
+        "phi": 1.618033988749895
+      },
+      "logged_utc": "2026-06-29T23:48:39.523215+00:00"
+    },
+    {
+      "test_id": "CONST-05",
+      "paper": "shared",
+      "locus": "gate-ladder radicand seeds",
+      "claim": "x^2-D for D in {2,3,5} are the gate seeds; M(x^2-D)=D exactly",
+      "equation": "minpoly(sqrt(D))=x^2-D, M(x^2-D)=D",
+      "status": "FORCED",
+      "detail": {
+        "D": [
+          2,
+          3,
+          5
+        ],
+        "mahler": [
+          2.0,
+          3.0,
+          5.0
+        ]
+      },
+      "logged_utc": "2026-06-29T23:48:39.594661+00:00"
+    },
+    {
+      "test_id": "CONST-06",
+      "paper": "shared",
+      "locus": "gap seed",
+      "claim": "gap = phi^4 has minimal polynomial x^2-7x+1; phi^4 + phi^-4 = L_4 = 7",
+      "equation": "minpoly(phi^4)=x^2-7x+1, trace=L_4=7",
+      "status": "FORCED",
+      "detail": {
+        "gap": 6.854101966249685,
+        "L4": 7
+      },
+      "logged_utc": "2026-06-29T23:48:39.804857+00:00"
+    },
+    {
+      "test_id": "CONST-07",
+      "paper": "shared",
+      "locus": "K-formation seed",
+      "claim": "K = 5^(1/4)/phi has minimal polynomial x^4 + 5x^2 - 5",
+      "equation": "minpoly(K)=x^4+5x^2-5",
+      "status": "FORCED",
+      "detail": {
+        "K": 0.9241763718304448
+      },
+      "logged_utc": "2026-06-29T23:48:39.898748+00:00"
+    },
+    {
+      "test_id": "CONST-08",
+      "paper": "shared",
+      "locus": "hex anchor & critical",
+      "claim": "z_c = sqrt3/2 has minpoly 4x^2-3 (C=1/2 gate, D=3); CRITICAL = phi^2/3 has minpoly 9x^2-9x+1",
+      "equation": "minpoly(sqrt3/2)=4x^2-3, minpoly(phi^2/3)=9x^2-9x+1",
+      "status": "FORCED",
+      "detail": {
+        "z_c": 0.8660254037844386,
+        "critical": 0.8726779962499649
+      },
+      "logged_utc": "2026-06-29T23:48:39.989037+00:00"
+    },
+    {
+      "test_id": "CONST-09",
+      "paper": "shared",
+      "locus": "Lucas/Fibonacci anchors",
+      "claim": "{F3,F4,F5}={2,3,5} are the gate discriminants; L4=7=F3+F5; Pell L4^2-5F4^2=4",
+      "equation": "{F3,F4,F5}={2,3,5}, L4=F3+F5=7, L4^2-5F4^2=4",
+      "status": "FORCED",
+      "detail": {
+        "F3F4F5": [
+          2,
+          3,
+          5
+        ],
+        "L4": 7,
+        "pell": 4
+      },
+      "logged_utc": "2026-06-29T23:48:40.448802+00:00"
+    },
+    {
+      "test_id": "P1-IDENT-01",
+      "paper": "lambda_2c",
+      "locus": "Thm 3.1 / eq:lambda2c",
+      "claim": "lambda = 2c, derived from the 2nd-order KL / MDL balance; the factor 2 is the inverted 1/2 of the quadratic KL term and carries no freedom",
+      "equation": "lambda = 2*c   (c=1 -> 2, c=n -> 2n)",
+      "status": "FORCED",
+      "detail": {
+        "lambda": "2*c",
+        "at_c1": 2,
+        "at_cn": "2*n"
+      },
+      "logged_utc": "2026-06-29T23:48:44.568903+00:00"
+    },
+    {
+      "test_id": "P1-IDENT-02",
+      "paper": "lambda_2c",
+      "locus": "Rem 3.2 (variance reading)",
+      "claim": "the precision sigma equals 1/(2c) = 1/lambda; the conformal scale is the model variance",
+      "equation": "sigma = 1/(2c) = 1/lambda",
+      "status": "FORCED",
+      "detail": {
+        "sigma": "1/(2*c)",
+        "lambda": "2*c"
+      },
+      "logged_utc": "2026-06-29T23:48:44.607881+00:00"
+    },
+    {
+      "test_id": "P1-IDENT-03",
+      "paper": "lambda_2c",
+      "locus": "Thm 4.1 (Cencov scaling)",
+      "claim": "F = G/c; rescaling c -> k c rescales F -> F/k, so no invariance argument fixes c (the impossibility is Cencov's cited theorem; the scaling identity is exact)",
+      "equation": "F = G/c, c->k*c  =>  F -> F/k",
+      "status": "FORCED",
+      "detail": {
+        "F": "G/c",
+        "rescaled": "F/k"
+      },
+      "logged_utc": "2026-06-29T23:48:44.649739+00:00"
+    },
+    {
+      "test_id": "P1-IDENT-04",
+      "paper": "lambda_2c",
+      "locus": "Sec 5 (three canonicalizations)",
+      "claim": "c in {1 (Jeffreys), n (degree), sqrt(1+4C)/(2C) (frame-shift)}; at the golden gate C=1 the frame-shift gives c=sqrt5/2, lambda=sqrt5",
+      "equation": "c_frame(C) = sqrt(1+4C)/(2C);  c_frame(1)=sqrt5/2, lambda=sqrt5",
+      "status": "FORCED",
+      "detail": {
+        "c_frame_at_C1": 1.118033988749895,
+        "lambda_at_C1": 2.23606797749979
+      },
+      "logged_utc": "2026-06-29T23:48:44.692704+00:00"
+    },
+    {
+      "test_id": "P1-IDENT-05",
+      "paper": "lambda_2c",
+      "locus": "Thm 4.1 + Sec 5 (c free, lambda unfrozen)",
+      "claim": "c is a free parameter (Cencov), so lambda=2c is an identity, never a single frozen number; the canonicalizations disagree (c=1->2, c=n->2n) and the frame-shift over the three forced gates gives three distinct values {4sqrt2, 2sqrt3, sqrt5}",
+      "equation": "lambda = 2c (identity in free c); frame-shift over gates -> {4sqrt2,2sqrt3,sqrt5}",
+      "status": "FORCED",
+      "detail": {
+        "is_identity": true,
+        "frameshift_lambda_by_gate": {
+          "1/4": "4 sqrt2",
+          "1/2": "2 sqrt3",
+          "1": "sqrt5"
+        }
+      },
+      "logged_utc": "2026-06-29T23:48:44.744971+00:00"
+    },
+    {
+      "test_id": "P1-LAD-01",
+      "paper": "lambda_2c",
+      "locus": "eq:companion",
+      "claim": "R_C=[[0,C],[1,-1]] has charpoly x^2+x-C and discriminant D=1+4C; the eigenvalue gap is sqrt(1+4C)",
+      "equation": "charpoly(R_C)=x^2+x-C, disc=1+4C, gap=sqrt(1+4C)",
+      "status": "FORCED",
+      "detail": {
+        "charpoly": "x^2+x-C",
+        "discriminant": "1+4C"
+      },
+      "logged_utc": "2026-06-29T23:48:50.570810+00:00"
+    },
+    {
+      "test_id": "P1-LAD-02",
+      "paper": "lambda_2c",
+      "locus": "Thm 6.2 (trifurcation)",
+      "claim": "spec(ad_{R_C}) = {-sqrt(1+4C), 0, +sqrt(1+4C)} with 0 of multiplicity 2; charpoly = t^2 (t^2 - (1+4C))",
+      "equation": "spec(ad_RC)={-sqrt(1+4C),0,+sqrt(1+4C)}; charpoly_ad = t^4-(1+4C)t^2",
+      "status": "FORCED",
+      "detail": {
+        "spectrum": "{-sqrt(1+4C),0,+sqrt(1+4C)}",
+        "zero_mult": 2
+      },
+      "logged_utc": "2026-06-29T23:48:51.410565+00:00"
+    },
+    {
+      "test_id": "P1-LAD-03",
+      "paper": "lambda_2c",
+      "locus": "Thm 6.2 (centralizer)",
+      "claim": "the 0-eigenspace of ad_{R_C} is span{I, R_C}, dimension 2: the CAPTURED channel is the centralizer and cannot be removed",
+      "equation": "dim ker(ad_RC) = 2 = dim span{I,R_C}",
+      "status": "FORCED",
+      "detail": {
+        "kernel_dim": 2
+      },
+      "logged_utc": "2026-06-29T23:48:51.495997+00:00"
+    },
+    {
+      "test_id": "P1-LAD-04",
+      "paper": "lambda_2c",
+      "locus": "Sec 6 ladder table",
+      "claim": "the three gates C in {1/4,1/2,1} give D=1+4C in {2,3,5}, fields Q(sqrt2),Q(sqrt3),Q(sqrt5); M(x^2-D)=D for each",
+      "equation": "C in {1/4,1/2,1} -> D in {2,3,5}, M(x^2-D)=D",
+      "status": "FORCED",
+      "detail": {
+        "ladder": [
+          {
+            "C": "1/4",
+            "D": 2
+          },
+          {
+            "C": "1/2",
+            "D": 3
+          },
+          {
+            "C": "1",
+            "D": 5
+          }
+        ]
+      },
+      "logged_utc": "2026-06-29T23:48:51.572549+00:00"
+    },
+    {
+      "test_id": "P1-LAD-05",
+      "paper": "lambda_2c",
+      "locus": "Rem 6.4 + eq:gatebalance",
+      "claim": "the self-action radius r(R_C)=sqrt(1+4C)=sqrt(M(x^2-D)); the gate balance lambda*C = r(R_C) sits at the 0->+ channel boundary",
+      "equation": "r(R_C)=sqrt(1+4C)=sqrt(M(x^2-D)); lambda*C = sqrt(1+4C)",
+      "status": "FORCED",
+      "detail": {
+        "r": "sqrt(1+4C)",
+        "M_x2mD": "1+4C",
+        "at_C1": 2.23606797749979
+      },
+      "logged_utc": "2026-06-29T23:48:51.674346+00:00"
+    },
+    {
+      "test_id": "P1-LAD-06",
+      "paper": "lambda_2c",
+      "locus": "Sec 6 (three valid gates forced)",
+      "claim": "the gate set is forced, not chosen: integrality (C in (1/4)Z) + golden ceiling (0<C<=1) give quarter-gates {1/4,1/2,3/4,1} -> D in {2,3,4,5}; D=4 is a perfect square (degenerate), leaving exactly three valid gates {1/4,1/2,1} -> {2,3,5}",
+      "equation": "valid gates = {1/4,1/2,1} -> D in {2,3,5}; C=3/4 (D=4) degenerate",
+      "status": "FORCED",
+      "detail": {
+        "valid_gates": {
+          "1/4": 2,
+          "1/2": 3,
+          "1": 5
+        },
+        "excluded": {
+          "3/4": 4
+        }
+      },
+      "logged_utc": "2026-06-29T23:48:51.753676+00:00"
+    },
+    {
+      "test_id": "P1-FRAME-01",
+      "paper": "lambda_2c",
+      "locus": "Def 7.1 / eq:frameshift",
+      "claim": "the gate balance 2cC = sqrt(1+4C) solves to the frame-shift constant c = sqrt(1+4C)/(2C)",
+      "equation": "c = sqrt(1+4C)/(2C)",
+      "status": "FORCED",
+      "detail": {
+        "c_frame": "sqrt(1+4C)/(2C)"
+      },
+      "logged_utc": "2026-06-29T23:48:59.987526+00:00"
+    },
+    {
+      "test_id": "P1-FRAME-02",
+      "paper": "lambda_2c",
+      "locus": "eq:frameshift at C=1",
+      "claim": "at the golden gate C=1 the frame-shift gives c=sqrt5/2 and lambda=2c=sqrt5=phi-psi",
+      "equation": "c(1)=sqrt5/2, lambda=sqrt5=phi-psi",
+      "status": "FORCED",
+      "detail": {
+        "c": 1.118033988749895,
+        "lambda": 2.23606797749979
+      },
+      "logged_utc": "2026-06-29T23:49:00.050140+00:00"
+    },
+    {
+      "test_id": "P1-GATE-01",
+      "paper": "lambda_2c",
+      "locus": "Prop 8.1 (ternary <=> deg 2)",
+      "claim": "the number of distinct signed channels of ad_R for a degree-d seed is d^2-d+1, which equals 3 iff d=2; the 0-channel (centralizer) is always present",
+      "equation": "#channels(d) = d^2 - d + 1;  = 3 <=> d = 2",
+      "status": "FORCED",
+      "detail": {
+        "channels_by_degree": {
+          "2": 3,
+          "3": 7,
+          "4": 13,
+          "5": 21,
+          "6": 31
+        }
+      },
+      "logged_utc": "2026-06-29T23:49:05.802564+00:00"
+    },
+    {
+      "test_id": "P1-GATE-02",
+      "paper": "lambda_2c",
+      "locus": "Lem 8.2 (min-cost quadratic)",
+      "claim": "the minimum Mahler measure > 1 over irreducible integer quadratics is phi, attained only at discriminant 5 (x^2-x-1 and x^2+x-1)",
+      "equation": "min M(deg 2) = phi, discriminant set = {5}",
+      "status": "FORCED",
+      "detail": {
+        "min_M": 1.618033988749895,
+        "phi": 1.618033988749895,
+        "minimizers": [
+          [
+            -1,
+            -1,
+            5
+          ],
+          [
+            1,
+            -1,
+            5
+          ]
+        ]
+      },
+      "logged_utc": "2026-06-29T23:49:33.280737+00:00"
+    },
+    {
+      "test_id": "P1-GATE-03",
+      "paper": "lambda_2c",
+      "locus": "base gap (1,phi) empty",
+      "claim": "no irreducible integer quadratic has Mahler measure strictly in (1, phi)",
+      "equation": "integer-quadratic Mahler spectrum = {1} U [phi, inf)",
+      "status": "FORCED",
+      "detail": {
+        "hits_in_(1,phi)": [],
+        "scanned_box": "|b|,|c|<=40"
+      },
+      "logged_utc": "2026-06-29T23:50:16.243773+00:00"
+    },
+    {
+      "test_id": "P1-GATE-04",
+      "paper": "lambda_2c",
+      "locus": "Rem 8.3 (cubic objection dissolves)",
+      "claim": "the plastic mu_S < phi is the global non-reciprocal infimum but is degree 3, giving 7 channels, so it is excluded by the ternary (degree-2) lock",
+      "equation": "M(x^3-x-1)=mu_S<phi; channels(3)=7 != 3",
+      "status": "FORCED",
+      "detail": {
+        "mu_S": 1.324717957244746,
+        "phi": 1.618033988749895,
+        "channels_deg3": 7
+      },
+      "logged_utc": "2026-06-29T23:50:16.282817+00:00"
+    },
+    {
+      "test_id": "P1-GATE-05a",
+      "paper": "lambda_2c",
+      "locus": "Prop 8.5 (minpoly firewall)",
+      "claim": "any direct sum of k golden blocks satisfies x^2-x-1 (degree-2 minpoly): the block count k is forgotten (the firewall is one-way)",
+      "equation": "(+_k golden) satisfies R^2 - R - I = 0 for all k",
+      "status": "FORCED",
+      "detail": {
+        "k_tested": [
+          1,
+          2,
+          3,
+          5
+        ]
+      },
+      "logged_utc": "2026-06-29T23:50:16.319064+00:00"
+    },
+    {
+      "test_id": "P1-GATE-05b",
+      "paper": "lambda_2c",
+      "locus": "Prop 8.5 (squaring firewall)",
+      "claim": "squaring y=x^2 collapses the K-formation x^4+5x^2-5 to y^2+5y-5 with discriminant 45=9*5, landing in Q(sqrt5); minpoly(K^2)=x^2+5x-5",
+      "equation": "x^4+5x^2-5 --(y=x^2)--> y^2+5y-5, disc=45 -> Q(sqrt5)",
+      "status": "FORCED",
+      "detail": {
+        "disc": 45
+      },
+      "logged_utc": "2026-06-29T23:50:16.373733+00:00"
+    },
+    {
+      "test_id": "P1-GATE-06",
+      "paper": "lambda_2c",
+      "locus": "Lem 8.6 (keystone unique)",
+      "claim": "among the seed companions only the golden one satisfies R^2=R+I; tau gives R^2=I-R and each radicand seed gives R^2=DI",
+      "equation": "golden: R^2=R+I (unique); tau: R^2=I-R; sqrt(D): R^2=DI",
+      "status": "FORCED",
+      "detail": {
+        "phi   x^2-x-1": "R^2=R+I",
+        "tau   x^2+x-1": "R^2=I-R",
+        "sqrt2 x^2-2": "R^2=2I",
+        "sqrt3 x^2-3": "R^2=3I",
+        "sqrt5 x^2-5": "R^2=5I"
+      },
+      "logged_utc": "2026-06-29T23:50:16.407882+00:00"
+    },
+    {
+      "test_id": "P1-KEY-01",
+      "paper": "lambda_2c",
+      "locus": "Lem 10.1 (golden tie)",
+      "claim": "the degree-2 Mahler minimum is a tie {phi, tau} = {x^2-x-1, x^2+x-1}, both discriminant 5",
+      "equation": "argmin M(deg2) = {x^2-x-1, x^2+x-1}",
+      "status": "FORCED",
+      "detail": {
+        "min_M": 1.618033988749895,
+        "minimizers": [
+          [
+            -1,
+            -1
+          ],
+          [
+            1,
+            -1
+          ]
+        ]
+      },
+      "logged_utc": "2026-06-29T23:50:25.820789+00:00"
+    },
+    {
+      "test_id": "P1-KEY-02",
+      "paper": "lambda_2c",
+      "locus": "Lem 10.2 (Perron breaks tie)",
+      "claim": "the golden seed attains its spectral radius at +phi (R^2=R+I); tau attains it at -phi (R^2=I-R). Requiring positive growth selects the keystone; det R=-1 follows",
+      "equation": "spectral radius at +phi -> R^2=R+I; det R=-1 a consequence",
+      "status": "FORCED",
+      "detail": {
+        "det_R": -1
+      },
+      "logged_utc": "2026-06-29T23:50:25.927615+00:00"
+    },
+    {
+      "test_id": "P1-KEY-03",
+      "paper": "lambda_2c",
+      "locus": "Thm 10.3 (smallest Perron root)",
+      "claim": "phi is the smallest Perron root of a 2x2 primitive non-negative integer matrix, realised by the Fibonacci matrix [[0,1],[1,1]] (and its transpose)",
+      "equation": "min Perron root (2x2 primitive nonneg int) = phi at [[0,1],[1,1]]",
+      "status": "FORCED",
+      "detail": {
+        "smallest": 1.6180339887,
+        "matrix": [
+          0,
+          1,
+          1,
+          1
+        ]
+      },
+      "logged_utc": "2026-06-29T23:50:27.104259+00:00"
+    },
+    {
+      "test_id": "P1-KEY-04",
+      "paper": "lambda_2c",
+      "locus": "App (drop-one load-bearing)",
+      "claim": "each constraint of the keystone's type is load-bearing: drop degree-2 -> plastic mu_S; drop Perron -> tau (Clifford); drop growth -> cyclotomic M=1",
+      "equation": "drop{deg2->mu_S, Perron->tau, growth->M=1}",
+      "status": "FORCED",
+      "detail": {
+        "mu_S": 1.324717957244746,
+        "phi": 1.618033988749895
+      },
+      "logged_utc": "2026-06-29T23:50:27.159920+00:00"
+    },
+    {
+      "test_id": "P1-L4-01",
+      "paper": "lambda_2c",
+      "locus": "Lem 10.4 (keystone powers)",
+      "claim": "R^n = F_n R + F_{n-1} I; eigenvalues phi^n,psi^n; tr(R^n)=L_n integer; det(R^n)=(-1)^n",
+      "equation": "R^n = F_n R + F_{n-1} I, tr=L_n, det=(-1)^n",
+      "status": "FORCED",
+      "detail": {
+        "L_1..6": [
+          1,
+          3,
+          4,
+          7,
+          11,
+          18
+        ]
+      },
+      "logged_utc": "2026-06-29T23:50:32.168019+00:00"
+    },
+    {
+      "test_id": "P1-L4-02",
+      "paper": "lambda_2c",
+      "locus": "Lem 10.5 (Pell forced)",
+      "claim": "L_n^2 - 5 F_n^2 = 4(-1)^n; charpoly(R^n)=x^2-L_n x+(-1)^n has discriminant 5 F_n^2",
+      "equation": "L_n^2 - 5 F_n^2 = 4(-1)^n",
+      "status": "FORCED",
+      "detail": {
+        "checked_n": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "logged_utc": "2026-06-29T23:50:32.891304+00:00"
+    },
+    {
+      "test_id": "P1-L4-03",
+      "paper": "lambda_2c",
+      "locus": "Prop 10.6 (L4=7 forced)",
+      "claim": "R^4 = 3R+2I = [[2,3],[3,5]] with charpoly x^2-7x+1 (the gap seed); entries {2,3,5}={F3,F4,F5}; L_4 = F_3+F_5 = 7 and Pell L_4^2 = 5 F_4^2 + 4 = 49",
+      "equation": "R^4=[[2,3],[3,5]], charpoly=x^2-7x+1, L_4=7={F3+F5}",
+      "status": "FORCED",
+      "detail": {
+        "R4": [
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            5
+          ]
+        ],
+        "L4": 7,
+        "entries": [
+          2,
+          3,
+          5
+        ]
+      },
+      "logged_utc": "2026-06-29T23:50:33.137785+00:00"
+    },
+    {
+      "test_id": "P1-L4-04",
+      "paper": "lambda_2c",
+      "locus": "gap seed roots",
+      "claim": "the gap seed x^2-7x+1 has roots phi^4 and phi^-4 (product 1, sum L_4=7)",
+      "equation": "roots(x^2-7x+1) = {phi^4, phi^-4}",
+      "status": "FORCED",
+      "detail": {
+        "roots": [
+          "phi^4",
+          "phi^-4"
+        ]
+      },
+      "logged_utc": "2026-06-29T23:50:33.224699+00:00"
+    },
+    {
+      "test_id": "P1-FLIP-01",
+      "paper": "lambda_2c",
+      "locus": "Thm 11.1 (canonical flip)",
+      "claim": "the sign of D=1+4C sets the regime: D>0 real/off-circle (hyperbolic), D<0 complex on-circle (elliptic). At C=-1: roots e^{+-2pi i/3}, |z|=1, M=1, D=-3",
+      "equation": "sign(D) sets eigenvalue/field/channel; C=-1 -> on circle, M=1, D=-3",
+      "status": "FORCED",
+      "detail": {
+        "flip_table": [
+          {
+            "C": "1",
+            "D": 5,
+            "on_circle": false
+          },
+          {
+            "C": "0",
+            "D": 1,
+            "on_circle": false
+          },
+          {
+            "C": "-1/4",
+            "D": 0,
+            "on_circle": false
+          },
+          {
+            "C": "-1",
+            "D": -3,
+            "on_circle": true
+          },
+          {
+            "C": "-2",
+            "D": -7,
+            "on_circle": false
+          }
+        ]
+      },
+      "logged_utc": "2026-06-29T23:50:39.298103+00:00"
+    },
+    {
+      "test_id": "P1-FLIP-02",
+      "paper": "lambda_2c",
+      "locus": "Prop 11.2 (det G = 4D)",
+      "claim": "in the gap basis {1, sqrt D} the trace-form Gram is diag(2, 2D) with det G = 4D; positive-definite iff D>0, Lorentzian iff D<0",
+      "equation": "G = diag(2, 2D), det G = 4D",
+      "status": "FORCED",
+      "detail": {
+        "Gram": "diag(2, 2D)",
+        "det": "4D"
+      },
+      "logged_utc": "2026-06-29T23:50:39.349048+00:00"
+    },
+    {
+      "test_id": "P1-FLIP-03",
+      "paper": "lambda_2c",
+      "locus": "Prop 11.2 + Sec 12 (co-location)",
+      "claim": "Q(i) gives trace form diag(2,-2), det=-4=4D at D=-1; the gate (scale collapse) and the flip (regime inversion) co-locate at D=0, i.e. C=-1/4",
+      "equation": "Q(i): det G = -4 = 4D; gate/flip co-locate at C=-1/4",
+      "status": "FORCED",
+      "detail": {
+        "Qi_det": -4,
+        "colocation_C": "-1/4"
+      },
+      "logged_utc": "2026-06-29T23:50:39.432844+00:00"
+    },
+    {
+      "test_id": "P1-BND-01",
+      "paper": "lambda_2c",
+      "locus": "Prop 13.x (perfect square)",
+      "claim": "D=(2x+1)^2=1+4(x^2+x) is a perfect square in the real state; equivalently D=4z^2 with C=z^2-1/4 (z=sqrt D/2)",
+      "equation": "D=(2x+1)^2=1+4C; D=4z^2, C=z^2-1/4",
+      "status": "FORCED",
+      "detail": {
+        "D_as_square": "(2x+1)^2",
+        "D_in_z": "4 z^2"
+      },
+      "logged_utc": "2026-06-29T23:50:44.978817+00:00"
+    },
+    {
+      "test_id": "P1-BND-02",
+      "paper": "lambda_2c",
+      "locus": "Prop 13.x (real-state pinning)",
+      "claim": "under any real coherence (z real) D=4z^2>=0, so the flow can decohere to the boundary (z->0) but never crosses into D<0",
+      "equation": "z real => D = 4 z^2 >= 0 (=0 iff z=0)",
+      "status": "FORCED",
+      "detail": {
+        "min_D": 0
+      },
+      "logged_utc": "2026-06-29T23:50:45.516874+00:00"
+    },
+    {
+      "test_id": "P1-BND-03",
+      "paper": "lambda_2c",
+      "locus": "Sec 14 (Kuramoto z_c)",
+      "claim": "the Kuramoto critical coherence z_c=sqrt3/2 corresponds to C=z_c^2-1/4=1/2, the C=1/2 gate with D=3",
+      "equation": "z_c = sqrt3/2 -> C=1/2, D=3",
+      "status": "FORCED",
+      "detail": {
+        "z_c": 0.8660254037844386,
+        "C": "1/2",
+        "D": 3
+      },
+      "logged_utc": "2026-06-29T23:50:45.603809+00:00"
+    },
+    {
+      "test_id": "P1-KFORM-01",
+      "paper": "lambda_2c",
+      "locus": "Prop 16.1 (fold straddle)",
+      "claim": "x^4+5x^2-5 as y^2+5y-5 (y=x^2) has roots straddling 0: y+=(-5+3sqrt5)/2>0 (real terrain) and y-=(-5-3sqrt5)/2<0 (rotation)",
+      "equation": "y+ = (-5+3sqrt5)/2 > 0, y- = (-5-3sqrt5)/2 < 0",
+      "status": "FORCED",
+      "detail": {
+        "y_plus": 0.8541019662496846,
+        "y_minus": -5.854101966249685
+      },
+      "logged_utc": "2026-06-29T23:50:51.509725+00:00"
+    },
+    {
+      "test_id": "P1-KFORM-02",
+      "paper": "lambda_2c",
+      "locus": "Prop 16.1 (K, beta, Mahler)",
+      "claim": "the real roots are +-K with K=5^(1/4)/phi; the imaginary roots are +-i beta with beta=sqrt|y-|; M(x^4+5x^2-5)=beta^2=(5+3sqrt5)/2",
+      "equation": "K=5^(1/4)/phi, M(f)=beta^2=(5+3sqrt5)/2",
+      "status": "FORCED",
+      "detail": {
+        "K": 0.9241763718304448,
+        "beta": 2.4195251530516653,
+        "M": 5.854101966249685
+      },
+      "logged_utc": "2026-06-29T23:50:51.916846+00:00"
+    },
+    {
+      "test_id": "P1-2FLIP-01",
+      "paper": "lambda_2c",
+      "locus": "Sec 17 (multiplicative flip)",
+      "claim": "the multiplicative flip on |lambda|: =1 is the cyclotomic (Kronecker) floor M=1; >1 is expanding M>1; <1 contracting (no contribution)",
+      "equation": "|lambda|=1 <=> cyclotomic <=> M=1 (Kronecker)",
+      "status": "FORCED",
+      "detail": {
+        "M_x2p1": 1.0,
+        "M_x2mxp1": 1.0
+      },
+      "logged_utc": "2026-06-29T23:50:57.358242+00:00"
+    },
+    {
+      "test_id": "P1-2FLIP-02",
+      "paper": "lambda_2c",
+      "locus": "Prop 18.1 (flips meet)",
+      "claim": "at C=-1 the gate polynomial is x^2+x+1 with roots e^{+-2pi i/3} on the unit circle, M=1, D=-3: the additive flip (D<0) meets the multiplicative flip (|z|=1)",
+      "equation": "C=-1: x^2+x+1, roots e^{+-2pi i/3}, M=1, D=-3",
+      "status": "FORCED",
+      "detail": {
+        "M": 1.0,
+        "D": -3
+      },
+      "logged_utc": "2026-06-29T23:50:57.516690+00:00"
+    },
+    {
+      "test_id": "P1-2FLIP-03",
+      "paper": "lambda_2c",
+      "locus": "Rem 17.x (Lehmer band)",
+      "claim": "the band ordering is 1 < L(=1.17628) < mu_S(=1.32472) < phi(=1.61803); the Lehmer band (1,L) is the frontier resolved within the system",
+      "equation": "1 < L < mu_S < phi",
+      "status": "FORCED",
+      "detail": {
+        "L": 1.1762808182599176,
+        "mu_S": 1.324717957244746,
+        "phi": 1.618033988749895
+      },
+      "logged_utc": "2026-06-29T23:50:57.742259+00:00"
+    },
+    {
+      "test_id": "P1-EMIS-01",
+      "paper": "lambda_2c",
+      "locus": "Sec 15.1-15.2 (catalog)",
+      "claim": "the catalog's seven seed Mahler measures lie in {1} U [phi, inf) with minimum phi, and no catalog seed is a Salem number",
+      "equation": "M(catalog) subset {1} U [phi, inf), min = phi, no Salem",
+      "status": "FORCED",
+      "detail": {
+        "measures": {
+          "phi   x^2-x-1": 1.61803,
+          "tau   x^2+x-1": 1.61803,
+          "sqrt2 x^2-2": 2.0,
+          "sqrt3 x^2-3": 3.0,
+          "sqrt5 x^2-5": 5.0,
+          "gap   x^2-7x+1": 6.8541,
+          "K     x^4+5x^2-5": 5.8541
+        }
+      },
+      "logged_utc": "2026-06-29T23:51:01.505100+00:00"
+    },
+    {
+      "test_id": "P1-EMIS-02",
+      "paper": "lambda_2c",
+      "locus": "Thm 15.x (floor resolved)",
+      "claim": "for emittable theta with M>1 the cost lambda log M >= lambda log phi > 0; the band (1, mu_S) is disjoint from the catalog measures (full proof in Emission-Gap paper)",
+      "equation": "lambda log M >= lambda log phi > 0; (1, mu_S) disjoint from catalog",
+      "status": "FORCED",
+      "detail": {
+        "log_phi": 0.48121182505960347,
+        "catalog_in_(1,mu_S)": []
+      },
+      "logged_utc": "2026-06-29T23:51:01.589628+00:00"
+    },
+    {
+      "test_id": "P2-ALG-01",
+      "paper": "emission_gap",
+      "locus": "Lem 2.1 (conjugate-travel hinge)",
+      "claim": "an integer matrix has integer characteristic polynomial, so an eigenvalue drags its entire conjugate set along; the companion's charpoly equals the minimal polynomial, hence carries every conjugate root",
+      "equation": "charpoly(companion(p)) = p  (all Q-conjugates are eigenvalues)",
+      "status": "FORCED",
+      "detail": {
+        "checked_degrees": [
+          2,
+          2,
+          4,
+          4
+        ]
+      },
+      "logged_utc": "2026-06-29T23:51:05.006554+00:00"
+    },
+    {
+      "test_id": "P2-ALG-02",
+      "paper": "emission_gap",
+      "locus": "Def 2.3 ((x) composes)",
+      "claim": "the tensor A (x) B has eigenvalues mu_i * nu_j; here {+-sqrt2}*{+-sqrt3}={+-sqrt6}, so the spectral operator (x) composes the constituent spectra",
+      "equation": "spec(A (x) B) = { mu_i * nu_j }",
+      "status": "FORCED",
+      "detail": {
+        "example": "sqrt2 (x) sqrt3 -> +-sqrt6"
+      },
+      "logged_utc": "2026-06-29T23:51:05.063679+00:00"
+    },
+    {
+      "test_id": "P2-ALG-03",
+      "paper": "emission_gap",
+      "locus": "Def 2.3 ((+) multiplies Mahler)",
+      "claim": "the direct sum A (+) B has spectrum spec(A) U spec(B) and Mahler M(A)*M(B); here M(x^2-x-1)*M(x^2-5) = phi*5 (note M(x^2-5)=5, both roots off the unit circle)",
+      "equation": "spec(A (+) B) = spec(A) U spec(B), M(A (+) B) = M(A) M(B)",
+      "status": "FORCED",
+      "detail": {
+        "M_sum": 8.090169943749475,
+        "factors": [
+          "phi",
+          "5"
+        ]
+      },
+      "logged_utc": "2026-06-29T23:51:05.168597+00:00"
+    },
+    {
+      "test_id": "P2-ALG-04",
+      "paper": "emission_gap",
+      "locus": "Def 2.3 ((.)^2 squares Mahler)",
+      "claim": "squaring the matrix squares each eigenvalue, hence squares the Mahler measure: M(A^2)=M(A)^2 (here phi^2)",
+      "equation": "M(A^2) = M(A)^2",
+      "status": "FORCED",
+      "detail": {
+        "M_squared": 2.618033988749895
+      },
+      "logged_utc": "2026-06-29T23:51:05.247140+00:00"
+    },
+    {
+      "test_id": "P2-ANG-01",
+      "paper": "emission_gap",
+      "locus": "Lem 3.1 (catalog args)",
+      "claim": "every catalog eigenvalue has argument in (pi/2)Z: the real seeds give args 0 or pi, and K's complex roots +-i beta give args +-pi/2",
+      "equation": "arg(catalog eigenvalues) in (pi/2)Z = {0, pi/2, pi, 3pi/2}",
+      "status": "FORCED",
+      "detail": {
+        "catalog": [
+          "phi",
+          "tau",
+          "sqrt2",
+          "sqrt3",
+          "sqrt5",
+          "gap",
+          "K"
+        ]
+      },
+      "logged_utc": "2026-06-29T23:51:12.450283+00:00"
+    },
+    {
+      "test_id": "P2-ANG-02",
+      "paper": "emission_gap",
+      "locus": "Lem 3.3 (closure)",
+      "claim": "(pi/2)Z is closed under addition (tensor) and doubling (square) but not halving; the spectral operators therefore cannot manufacture a pi/4 angle",
+      "equation": "(pi/2)Z closed under {+, *2}; pi/4 not in (pi/2)Z",
+      "status": "FORCED",
+      "detail": {
+        "closed_ops": [
+          "add",
+          "double"
+        ],
+        "escapes": "halve -> pi/4"
+      },
+      "logged_utc": "2026-06-29T23:51:12.625597+00:00"
+    },
+    {
+      "test_id": "P2-ANG-03",
+      "paper": "emission_gap",
+      "locus": "Lem 3.4 (on-circle -> 4th root)",
+      "claim": "an on-circle eigenvalue whose argument is in (pi/2)Z must be a 4th root of unity, i.e. in {1, i, -1, -i}",
+      "equation": "|z|=1 and arg(z) in (pi/2)Z  =>  z in {1,i,-1,-i}",
+      "status": "FORCED",
+      "detail": {
+        "fourth_roots": [
+          "1",
+          "i",
+          "-1",
+          "-i"
+        ]
+      },
+      "logged_utc": "2026-06-29T23:51:13.523527+00:00"
+    },
+    {
+      "test_id": "P2-ANG-04",
+      "paper": "emission_gap",
+      "locus": "Lem 3.5 (Salem on-circle irrational)",
+      "claim": "a Salem number's on-circle conjugates have irrational angle (not roots of unity); for Lehmer they avoid the axes entirely",
+      "equation": "Salem on-circle conjugate: arg/pi irrational, not in (pi/2)Z",
+      "status": "FORCED",
+      "detail": {
+        "n_on_circle": 8
+      },
+      "logged_utc": "2026-06-29T23:51:13.875699+00:00"
+    },
+    {
+      "test_id": "P2-ANG-05",
+      "paper": "emission_gap",
+      "locus": "Thm 3.2 (no Salem emitted)",
+      "claim": "an emitted Salem would force an on-circle conjugate onto the (pi/2)Z axes (a 4th root of unity), contradicting the irrational angle of Salem on-circle conjugates; hence no Salem is emitted",
+      "equation": "emission => 4th-root-of-unity conjugate; Salem => irrational-angle conjugate; \u22a5",
+      "status": "FORCED",
+      "detail": {
+        "contradiction": true
+      },
+      "logged_utc": "2026-06-29T23:51:14.386273+00:00"
+    },
+    {
+      "test_id": "P2-GAP-01",
+      "paper": "emission_gap",
+      "locus": "Lem 4.1 (base case)",
+      "claim": "no irreducible integer quadratic has Mahler measure in (1, phi): reciprocal x^2-bx+1 gives M=1 (|b|<=2) then jumps to phi^2 (|b|=3); non-reciprocal |c|>=2 gives M>=2",
+      "equation": "integer-quadratic Mahler spectrum = {1} U [phi, inf)",
+      "status": "FORCED",
+      "detail": {
+        "hits_in_(1,phi)": [],
+        "M_recip_b3": 2.618033988749895
+      },
+      "logged_utc": "2026-06-29T23:52:29.981879+00:00"
+    },
+    {
+      "test_id": "P2-GAP-02",
+      "paper": "emission_gap",
+      "locus": "Lem 4.2 (degree raising)",
+      "claim": "the spectral operators raise but never lower below phi: (+) multiplies measures, (.)^2 squares, (x) composes, so the image stays inside {1} U [phi, inf)",
+      "equation": "image(spectral ops) subset {1} U [phi, inf)",
+      "status": "FORCED",
+      "detail": {
+        "cases": [
+          "phi (+) sqrt5",
+          "phi^2 (square)",
+          "phi (+) phi"
+        ]
+      },
+      "logged_utc": "2026-06-29T23:52:30.445484+00:00"
+    },
+    {
+      "test_id": "P2-GAP-03",
+      "paper": "emission_gap",
+      "locus": "Cor 4.3 (cost floor)",
+      "claim": "an emitted measure with M>1 has M>=phi, so the entropy cost log M >= log phi > 0; phi realizes the floor and the absolute Smyth value mu_S<phi is never emitted",
+      "equation": "M>1 emitted => M >= phi => cost = log M >= log phi",
+      "status": "FORCED",
+      "detail": {
+        "log_phi": 0.48121182505960347,
+        "mu_S": 1.324717957244746
+      },
+      "logged_utc": "2026-06-29T23:52:30.557048+00:00"
+    },
+    {
+      "test_id": "P2-NL-01",
+      "paper": "emission_gap",
+      "locus": "Rem 5.2 (four-gap non-local identity)",
+      "claim": "the four gaps share one structure but distinct endpoints: height phi=1.618, entropy log phi=0.481, channel sqrt5=2.236; they are analogous, not equal",
+      "equation": "phi != log phi != sqrt5 (structurally analogous gaps)",
+      "status": "FORCED",
+      "detail": {
+        "height_phi": 1.618034,
+        "entropy_logphi": 0.481212,
+        "channel_sqrt5": 2.236068
+      },
+      "logged_utc": "2026-06-29T23:52:36.521428+00:00"
+    },
+    {
+      "test_id": "P2-NL-02",
+      "paper": "emission_gap",
+      "locus": "Prop 5.3 (catalog Lorentzian, off circle)",
+      "claim": "the K-formation field has signature (2,1); its complex places sit OFF the unit circle (|i beta|~2.4195, |5^(1/4) i|~1.4953), unlike Salem on-circle conjugates",
+      "equation": "sig(Q(K)) = (2,1); complex places off |z|=1",
+      "status": "FORCED",
+      "detail": {
+        "signature": [
+          2,
+          1
+        ],
+        "beta": 2.4195251530516653
+      },
+      "logged_utc": "2026-06-29T23:52:38.200417+00:00"
+    },
+    {
+      "test_id": "P2-NL-03",
+      "paper": "emission_gap",
+      "locus": "Prop 5.3 (Salem signature)",
+      "claim": "a degree-2m Salem field has signature (2, m-1) (2 real: lambda,1/lambda; m-1 complex pairs on the circle); Lehmer -> (2,4), beta4 -> (2,1)",
+      "equation": "sig(Salem deg 2m) = (2, m-1)",
+      "status": "FORCED",
+      "detail": {
+        "lehmer_sig": [
+          2,
+          4
+        ],
+        "beta4_sig": [
+          2,
+          1
+        ]
+      },
+      "logged_utc": "2026-06-29T23:52:38.250525+00:00"
+    },
+    {
+      "test_id": "P2-NL-04",
+      "paper": "emission_gap",
+      "locus": "Rem 5.4 (finitely generated)",
+      "claim": "the emission Mahler spectrum is a discrete sub-semigroup of [phi, inf) with generators {phi,2,3,5,phi^4,beta^2}; bounded away from 1 (open gap (1,phi))",
+      "equation": "generators {phi,2,3,5,phi^4,beta^2} subset [phi, inf), no accumulation at 1",
+      "status": "FORCED",
+      "detail": {
+        "generator_measures": {
+          "phi": 1.618,
+          "2": 2.0,
+          "3": 3.0,
+          "5": 5.0,
+          "phi^4(gap)": 6.8541,
+          "beta^2(Kform)": 5.8541
+        }
+      },
+      "logged_utc": "2026-06-29T23:52:38.334983+00:00"
+    },
+    {
+      "test_id": "P2-DELTA-01",
+      "paper": "emission_gap",
+      "locus": "Def 6.1 (trace-down)",
+      "claim": "the trace-down T satisfies R(x)=x^m T(x+1/x) for reciprocal R of degree 2m; verified by reconstructing x^4-x^3-x^2-x+1 from its trace-down",
+      "equation": "R(x) = x^m T(x + 1/x)",
+      "status": "FORCED",
+      "detail": {
+        "seed": "x^4-x^3-x^2-x+1",
+        "m": 2
+      },
+      "logged_utc": "2026-06-29T23:52:43.262068+00:00"
+    },
+    {
+      "test_id": "P2-DELTA-02",
+      "paper": "emission_gap",
+      "locus": "Lem 6.2 (salem flip)",
+      "claim": "a Salem polynomial's trace-down is totally real with exactly one root in (2,inf) and the rest in (-2,2); verified for beta4 and Lehmer",
+      "equation": "Salem <=> T totally real, one root in (2,inf), m-1 in (-2,2)",
+      "status": "FORCED",
+      "detail": {
+        "checked": [
+          "beta4",
+          "Lehmer"
+        ]
+      },
+      "logged_utc": "2026-06-29T23:52:43.378970+00:00"
+    },
+    {
+      "test_id": "P2-DELTA-03",
+      "paper": "emission_gap",
+      "locus": "Thm 6.3 (delta)",
+      "claim": "M emits a Salem iff a reciprocal factor's trace-down straddles t=2; the Sturm certificate agrees with Salem classification across a battery (cyclotomic and totally-real reciprocals do NOT straddle)",
+      "equation": "emits Salem <=> trace-down straddles t=2 (Sturm-decidable)",
+      "status": "FORCED",
+      "detail": {
+        "battery": {
+          "beta4 (Salem)": true,
+          "cyclotomic x^4+x^3+x^2+x+1": false,
+          "biquadratic x^4-10x^2+1": false,
+          "Lehmer (Salem)": true
+        }
+      },
+      "logged_utc": "2026-06-29T23:52:43.561354+00:00"
+    },
+    {
+      "test_id": "P2-DELTA-04",
+      "paper": "emission_gap",
+      "locus": "Prop 6.4 (spectral flip)",
+      "claim": "spectral on-circle eigenvalues (4th roots of unity) have trace-downs z+1/z in {2,0,-2}, never in (2,inf); so spectral operators cannot produce the Salem straddle",
+      "equation": "rho({1,i,-1,-i}) = {2,0,-2}, never > 2",
+      "status": "FORCED",
+      "detail": {
+        "trace_downs": {
+          "1": "2",
+          "I": "0",
+          "-1": "-2",
+          "-I": "0"
+        }
+      },
+      "logged_utc": "2026-06-29T23:52:43.686432+00:00"
+    },
+    {
+      "test_id": "P2-CIRC-01",
+      "paper": "emission_gap",
+      "locus": "Prop 7.1 (no Salem circulant)",
+      "claim": "a circulant matrix has an abelian (cyclotomic) eigenvalue field, hence totally real or CM; the Salem signature (2,m-1) is neither, so no integer circulant emits a Salem number (40 random circulants checked)",
+      "equation": "circulant field abelian => not Salem signature => no Salem",
+      "status": "FORCED",
+      "detail": {
+        "circulants_checked": 40
+      },
+      "logged_utc": "2026-06-29T23:52:47.659725+00:00"
+    },
+    {
+      "test_id": "P2-CART-01",
+      "paper": "emission_gap",
+      "locus": "Prop 7.3 (Cartan totally real)",
+      "claim": "the Cartan matrices A_n have eigenvalues 2-2cos(k pi/(n+1)) in [0,4], all real, so their fields are totally real and emit no Salem; (+) acts multiplicatively",
+      "equation": "spec(Cartan A_n) = {2-2cos(k pi/(n+1))} subset [0,4], totally real",
+      "status": "FORCED",
+      "detail": {
+        "cartan": [
+          {
+            "A_n": 2,
+            "real_roots": 2
+          },
+          {
+            "A_n": 3,
+            "real_roots": 3
+          },
+          {
+            "A_n": 4,
+            "real_roots": 4
+          },
+          {
+            "A_n": 5,
+            "real_roots": 5
+          }
+        ]
+      },
+      "logged_utc": "2026-06-29T23:52:47.867640+00:00"
+    },
+    {
+      "test_id": "P2-COMM-01",
+      "paper": "emission_gap",
+      "locus": "Prop 7.4 (generic commutator)",
+      "claim": "a Salem quartic has nonzero trace, but a commutator is traceless; the traceless reciprocal quartic x^4+bx^2+1 has the symmetric trace-down t^2+(b-2), which cannot straddle t=2, so a free commutator reaches no degree-4 Salem",
+      "equation": "trace([X,Y])=0; trace-down of x^4+bx^2+1 = t^2+(b-2) symmetric => no straddle",
+      "status": "FORCED",
+      "detail": {
+        "beta4_trace": 1,
+        "traceless_tracedown": "t^2+(b-2)"
+      },
+      "logged_utc": "2026-06-29T23:52:47.995624+00:00"
+    },
+    {
+      "test_id": "P2-UNIF-01",
+      "paper": "emission_gap",
+      "locus": "Lem 8.1 (difference spectrum)",
+      "claim": "the self-action spectrum is the difference set spec(ad_M)={mu_i-mu_j}; for the golden seed spec(ad_R)={0,+-sqrt5} since phi-psi=sqrt5",
+      "equation": "spec(ad_M) = {mu_i - mu_j};  spec(ad_R) = {0, +-sqrt5}",
+      "status": "FORCED",
+      "detail": {
+        "golden_spectrum": "{0, +sqrt5, -sqrt5}",
+        "zero_mult": 2
+      },
+      "logged_utc": "2026-06-29T23:52:52.656302+00:00"
+    },
+    {
+      "test_id": "P2-UNIF-02",
+      "paper": "emission_gap",
+      "locus": "Lem 8.2 (difference field K)",
+      "claim": "real eigenvalue differences live in K=Q(sqrt2,sqrt3,5^(1/4)); 2K has minimal polynomial x^4+20x^2-80 with signature (2,1)",
+      "equation": "minpoly(2K)=x^4+20x^2-80, sig=(2,1)",
+      "status": "FORCED",
+      "detail": {
+        "signature": [
+          2,
+          1
+        ]
+      },
+      "logged_utc": "2026-06-29T23:52:52.772008+00:00"
+    },
+    {
+      "test_id": "P2-UNIF-03",
+      "paper": "emission_gap",
+      "locus": "Thm 8.3 (signature lattice, exhaustive)",
+      "claim": "EXHAUSTIVE enumeration of all 27 subfields of K (Galois correspondence on K(i), G=C2xC2xD4): every subfield is totally real or has signature (2k,k). Salem-shape (2,1) is necessary for a Salem; exactly 4 quartic subfields have it (Q(m^(1/4)), m in {5,20,45,180}). Uniqueness of Q(5^(1/4)) is NOT claimed -- the exclusion rests on the invariant, not on uniqueness",
+      "equation": "for all 27 subfields(K): r2=0 or sig=(2k,k); #deg-4 (2,1) = 4; K=(8,4)",
+      "status": "FORCED",
+      "detail": {
+        "n_subfields": 27,
+        "census": {
+          "(1, 1, 0)": 1,
+          "(2, 2, 0)": 7,
+          "(4, 2, 1)": 4,
+          "(4, 4, 0)": 7,
+          "(8, 4, 2)": 6,
+          "(8, 8, 0)": 1,
+          "(16, 8, 4)": 1
+        },
+        "deg4_2_1_count": 4,
+        "K_signature": [
+          8,
+          4
+        ]
+      },
+      "logged_utc": "2026-06-29T23:53:16.958766+00:00"
+    },
+    {
+      "test_id": "P2-UNIF-04",
+      "paper": "emission_gap",
+      "locus": "Cor 8.4 (degree-4 Salem floor)",
+      "claim": "the minimal degree-4 Salem number is beta4 ~1.72208, root of x^4-x^3-x^2-x+1, and beta4 > phi; so any emitted (degree-4) Salem has M >= beta4 > phi",
+      "equation": "min deg-4 Salem = beta4 = M(x^4-x^3-x^2-x+1) > phi",
+      "status": "FORCED",
+      "detail": {
+        "beta4": 1.7220838057390422,
+        "phi": 1.618033988749895,
+        "argmin": [
+          -1,
+          -1
+        ]
+      },
+      "logged_utc": "2026-06-29T23:53:18.610977+00:00"
+    },
+    {
+      "test_id": "P2-UNIF-05",
+      "paper": "emission_gap",
+      "locus": "Prop 8.6 (exclusion)",
+      "claim": "image(emission) intersect {Salem : M<phi} = empty: an emitted Salem is forced to degree 4 with M>=beta4>phi, so sub-phi Salem (e.g. Lehmer, M~1.176, degree 10) cannot be emitted",
+      "equation": "image(emission) \u2229 {Salem : M < phi} = \u2205",
+      "status": "FORCED",
+      "detail": {
+        "lehmer_M": 1.1762808182599176,
+        "phi": 1.618033988749895,
+        "beta4_floor": 1.7220838057390422
+      },
+      "logged_utc": "2026-06-29T23:53:18.859386+00:00"
+    },
+    {
+      "test_id": "P2-GUARD-01",
+      "paper": "emission_gap",
+      "locus": "Sec 8 (closure self-resolves)",
+      "claim": "every framework operation (kron, dsum, square, self-action, and their compositions) preserves the invariant: the guard certifies FORCED, so the Salem locus is never constructed",
+      "equation": "verdict(framework op) = FORCED for all probed compositions",
+      "status": "FORCED",
+      "detail": {
+        "ops_checked": 7,
+        "all_forced": true
+      },
+      "logged_utc": "2026-06-29T23:53:23.196941+00:00"
+    },
+    {
+      "test_id": "P2-GUARD-02",
+      "paper": "emission_gap",
+      "locus": "Sec 8 (foreign tripwire)",
+      "claim": "a traceless matrix (a commutator by Shoda) carrying Lehmer's sub-phi Salem is caught: verdict INVALID_CLOSURE; the free commutator is the one field-breaking operation and the guard is its tripwire",
+      "equation": "verdict(traceless Lehmer carrier) = INVALID_CLOSURE",
+      "status": "FORCED",
+      "detail": {
+        "traceless": true,
+        "salem_degree": 10,
+        "below_phi": true
+      },
+      "logged_utc": "2026-06-29T23:53:23.479647+00:00"
+    },
+    {
+      "test_id": "P2-GUARD-03",
+      "paper": "emission_gap",
+      "locus": "Sec 8 (floor emerges, not asserted)",
+      "claim": "phi is not hard-coded as the floor; it emerges as the boundary the guard derives. Over planted Salem straddling phi, the guard's EXACT below-phi verdict matches a float oracle on every case (Lehmer below, beta4 above)",
+      "equation": "guard's exact (beta<phi) == oracle for all planted Salem; floor = phi emerges",
+      "status": "FORCED",
+      "detail": {
+        "cases": 5,
+        "includes_sub_phi": true
+      },
+      "logged_utc": "2026-06-29T23:54:11.649760+00:00"
+    },
+    {
+      "test_id": "P2-GUARD-04",
+      "paper": "emission_gap",
+      "locus": "Sec 8 (above-floor Salem)",
+      "claim": "the minimal degree-4 Salem beta4=1.72208 > phi reads FORCED_ABOVE_FLOOR (Salem present, floor intact) -- distinguishing a floor violation from a benign above-floor Salem",
+      "equation": "verdict(beta4 carrier) = FORCED_ABOVE_FLOOR (beta4 > phi)",
+      "status": "FORCED",
+      "detail": {
+        "beta4": 1.7220838,
+        "verdict": "FORCED_ABOVE_FLOOR"
+      },
+      "logged_utc": "2026-06-29T23:54:11.722717+00:00"
+    },
+    {
+      "test_id": "P2-GUARD-05",
+      "paper": "emission_gap",
+      "locus": "Sec 8 (cyclotomic control)",
+      "claim": "cyclotomic reciprocals (roots of unity, on the circle) carry no Salem factor and read FORCED, confirming the guard does not false-positive on on-circle spectra",
+      "equation": "verdict(cyclotomic reciprocal) = FORCED",
+      "status": "FORCED",
+      "detail": {
+        "controls": [
+          "x^6+1",
+          "x^4+1",
+          "x^4+x^2+1"
+        ]
+      },
+      "logged_utc": "2026-06-29T23:54:11.779589+00:00"
+    },
+    {
+      "test_id": "P2-EALG-01",
+      "paper": "emission_gap",
+      "locus": "Sec 8 (seeds at/above floor)",
+      "claim": "every catalog seed respects the floor: Mahler >= phi and cost >= 2c*log(phi); the floor is realized (phi attains it)",
+      "equation": "for all seeds: M >= phi and cost = 2c log M >= 2c log phi",
+      "status": "FORCED",
+      "detail": {
+        "seeds": [
+          "phi",
+          "tau",
+          "sqrt2",
+          "sqrt3",
+          "sqrt5",
+          "gap",
+          "Kform"
+        ],
+        "floor_cost_c1": 0.9624236501192069
+      },
+      "logged_utc": "2026-06-29T23:54:17.695302+00:00"
+    },
+    {
+      "test_id": "P2-EALG-02",
+      "paper": "emission_gap",
+      "locus": "Sec 8 (floor is a system invariant)",
+      "claim": "the floor survives every framework operation and composition (kron, dsum, square, nested self-action): it is a global invariant of the generating field, not a per-object bound that might fail somewhere",
+      "equation": "cost(op(...)) >= 2c log phi for all framework compositions",
+      "status": "FORCED",
+      "detail": {
+        "objects_checked": 8
+      },
+      "logged_utc": "2026-06-29T23:54:18.162382+00:00"
+    },
+    {
+      "test_id": "P2-EALG-03",
+      "paper": "emission_gap",
+      "locus": "Sec 8 (forbidden channel empty)",
+      "claim": "the FORBIDDEN channel (on-circle-expanding ad-eigenvalues) is empty on every object -- the diagnostic reading of 'no Salem emitted' (the exact certificate is the closure guard)",
+      "equation": "channel['FORBIDDEN'] = 0 for all framework objects",
+      "status": "FORCED",
+      "detail": {
+        "objects_checked": 9
+      },
+      "logged_utc": "2026-06-29T23:55:16.195803+00:00"
+    },
+    {
+      "test_id": "P2-EALG-04",
+      "paper": "emission_gap",
+      "locus": "Sec 8 (field confinement, provenance)",
+      "claim": "under framework operations the field class stays in {K(i), totally_real, abelian}, never foreign; tracked as provenance (the exact field certificate is the guard)",
+      "equation": "field_class(framework composition) in safe fields",
+      "status": "FORCED",
+      "detail": {
+        "field_class": "K(i)"
+      },
+      "logged_utc": "2026-06-29T23:55:16.456082+00:00"
+    },
+    {
+      "test_id": "P2-EALG-05",
+      "paper": "emission_gap",
+      "locus": "Sec 8 (foreign op rejected)",
+      "claim": "the algebra refuses to emit a foreign (free-commutator) matrix carrying a sub-phi Salem: _emit raises rather than registering it, so the closed system cannot admit a floor violation",
+      "equation": "emit(foreign sub-phi Salem) raises ValueError",
+      "status": "FORCED",
+      "detail": {
+        "operation": "free_commutator",
+        "rejected": true
+      },
+      "logged_utc": "2026-06-29T23:55:16.823905+00:00"
+    },
+    {
+      "test_id": "P2-EALG-06",
+      "paper": "emission_gap",
+      "locus": "Sec 8 (floor parametrized over c)",
+      "claim": "the cost floor is 2c*log(phi), linear in the free conformal constant c and never frozen at c=1; c stays free (Cencov) so the floor scales, it does not collapse to one number",
+      "equation": "floor_cost(c) = 2c log phi  (checked c in {1,2,5,1/2})",
+      "status": "FORCED",
+      "detail": {
+        "c_values": [
+          1,
+          2,
+          5,
+          0.5
+        ]
+      },
+      "logged_utc": "2026-06-29T23:55:16.943305+00:00"
+    },
+    {
+      "test_id": "P2-EALG-07",
+      "paper": "emission_gap",
+      "locus": "Sec 8 (four readouts consistent)",
+      "claim": "the four readouts of the single invariant agree: entropy = log(height), r1 + 2 r2 = degree, and cost = 2c * entropy",
+      "equation": "entropy=log height; r1+2r2=deg; cost=2c*entropy",
+      "status": "FORCED",
+      "detail": {
+        "dim": 8,
+        "signature": [
+          4,
+          2
+        ]
+      },
+      "logged_utc": "2026-06-29T23:55:17.106766+00:00"
+    }
+  ],
+  "summary": {
+    "total_claims": 90,
+    "forced": 90,
+    "computed": 0,
+    "failed": 0,
+    "by_paper": {
+      "lambda_2c": 41,
+      "emission_gap": 40
+    },
+    "runner": "run_tests.py",
+    "aggregate_exit": 0
+  }
+}

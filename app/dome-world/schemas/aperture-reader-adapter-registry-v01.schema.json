@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.aperture.reader-adapter-registry/v0.1",
+  "title": "TD613 Reader Adapter Registry v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "version", "registry_id", "created_at", "adapters",
+    "source_status", "evidence_basis", "missingness", "alternatives",
+    "open_questions", "operator_notes", "closure",
+    "reader_execution_performed", "provider_call_performed",
+    "transport_authorized", "release_authorized", "prediction_authorized",
+    "automatic_hold", "registry_digest"
+  ],
+  "properties": {
+    "schema": { "const": "td613.aperture.reader-adapter-registry/v0.1" },
+    "version": { "const": "v0.1" },
+    "registry_id": { "type": "string", "pattern": "^registry_[A-Za-z0-9_-]{6,128}$" },
+    "created_at": { "type": "string" },
+    "adapters": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/adapter" }
+    },
+    "source_status": { "type": "string" },
+    "evidence_basis": { "$ref": "#/$defs/stringArray" },
+    "missingness": { "$ref": "#/$defs/stringArray" },
+    "alternatives": { "$ref": "#/$defs/stringArray" },
+    "open_questions": { "$ref": "#/$defs/stringArray" },
+    "operator_notes": { "$ref": "#/$defs/stringArray" },
+    "closure": { "$ref": "#/$defs/closure" },
+    "reader_execution_performed": { "const": false },
+    "provider_call_performed": { "const": false },
+    "transport_authorized": { "const": false },
+    "release_authorized": { "const": false },
+    "prediction_authorized": { "const": false },
+    "automatic_hold": { "const": false },
+    "registry_digest": { "$ref": "#/$defs/sha256" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "stringArray": { "type": "array", "items": { "type": "string" } },
+    "closure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "status"],
+      "properties": {
+        "required": { "const": true },
+        "status": { "type": "string" }
+      }
+    },
+    "adapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "adapter_id", "label", "adapter_class", "version",
+        "accepted_reader_classes", "allowed_acquisition_routes",
+        "allowed_execution_environments", "requires_provider_receipt",
+        "source_status", "reader_execution_performed_by_registry",
+        "provider_call_performed_by_registry", "transport_authorized",
+        "release_authorized", "identity_inference_authorized",
+        "authorship_attribution_authorized",
+        "surveillance_probability_authorized", "automatic_hold"
+      ],
+      "properties": {
+        "adapter_id": { "type": "string", "pattern": "^[a-z][a-z0-9_]{2,127}$" },
+        "label": { "type": "string" },
+        "adapter_class": {
+          "enum": ["DETERMINISTIC_REFERENCE", "LOCAL_RUNTIME", "IMPORTED_RESULT", "SYNTHETIC_FIXTURE"]
+        },
+        "version": { "type": "string" },
+        "accepted_reader_classes": { "$ref": "#/$defs/stringArray" },
+        "allowed_acquisition_routes": { "$ref": "#/$defs/stringArray" },
+        "allowed_execution_environments": { "$ref": "#/$defs/stringArray" },
+        "requires_provider_receipt": { "type": "boolean" },
+        "source_status": { "type": "string" },
+        "reader_execution_performed_by_registry": { "const": false },
+        "provider_call_performed_by_registry": { "const": false },
+        "transport_authorized": { "const": false },
+        "release_authorized": { "const": false },
+        "identity_inference_authorized": { "const": false },
+        "authorship_attribution_authorized": { "const": false },
+        "surveillance_probability_authorized": { "const": false },
+        "automatic_hold": { "const": false }
+      }
+    }
+  }
+}

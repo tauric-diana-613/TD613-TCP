@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613-src/connector-session/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "atelier_snapshot_id", "seal_id", "public_seal_verified", "private_seal_verified", "cross_epoch"],
+  "properties": {
+    "schema_version": {"const": "connector-session/v1"},
+    "atelier_snapshot_id": {"type": "string", "minLength": 1},
+    "seal_id": {"type": "string", "pattern": "^src-seal:[a-f0-9]{64}$"},
+    "public_seal_verified": {"const": true},
+    "private_seal_verified": {"const": true},
+    "cross_epoch": {"const": false}
+  }
+}

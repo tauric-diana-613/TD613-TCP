@@ -1,0 +1,662 @@
+{
+  "schema": "td613.pedagogue.reentry-encounter-witness/v0.1",
+  "status": "PASS",
+  "harness_sha256": "775ecccdab86a3bdc0843b3425e8a2461482ee0376a5d76141c1f31e70dbabf8",
+  "source_sha": "e6ca876653889cda7766dea46801c6caebe8b91f",
+  "working_tree": [
+    "M docs/reentry/ATLAS_FINDINGS.md",
+    " M docs/reentry/PEDAGOGUE_FINDINGS.md",
+    " M docs/reentry/RELATION_MAP.md",
+    "?? docs/reentry/FADT_RESUME_FINDINGS.md",
+    "?? docs/reentry/PEDAGOGUE_BROWSER_CANDIDATE_REVIEW.md",
+    "?? docs/reentry/PRODUCTION_BOUNDARY_RECHECK.json",
+    "?? docs/reentry/browser-evidence/",
+    "?? tests/portable-loom-reentry-atlas-browser.mjs",
+    "?? tests/portable-loom-reentry-pedagogue.browser.mjs"
+  ],
+  "observed_at": "2026-10-02T16:06:29.191Z",
+  "browser": "Chromium",
+  "context": "LOCAL_RENDERED_UI_WITH_SYNTHETIC_CAPTURES",
+  "human_comprehension_measured": false,
+  "foreign_execution_observed": false,
+  "live_provider_calls": 0,
+  "served_source_bytes": {
+    "app/dome-world/holonomy-loom.html": "eb725f3b6c2091bb6fe7be1e9ab924e7a27c221781501fd9f7565842332745f9",
+    "app/site-epoch-preflight.js": "e72dc1f8847a2d04e669b1eeaa5ab95da46bed3b57c1bc40c2cb5447faa1c8c2",
+    "app/dome-world/holonomy-loom/theater.css": "9eec8b8b74628ac7e1a3016f90edb5acc35362dc09288fe8b93ea361d947c90b",
+    "app/dome-world/holonomy-loom/living-geometry.css": "90f0a821587f0c05f4730e927cd57b7e35a50517250ff6652d916a61078a7857",
+    "app/dome-world/holonomy-loom/ai-workspace.css": "118d746388b73948e4bceb3d2940e240ae6ade377c198cba4f5e613747a343bf",
+    "app/dome-world/holonomy-loom/reentry-workspace.css": "0f793123c737f85a94505df363768c70f6ff361f931c189b6cf02584cc783f7a",
+    "app/dome-world/holonomy-loom/living-room.css": "5e2313823c509163826c1c0fbe55a250473b23668d94f7ac752c94d5aeae2bc9",
+    "app/dome-world/holonomy-loom/observer-chamber.css": "7982e4e1277c02b471b937c63f0f4a4a11d2f1b5c4686b2ba2cbd199ac7e8931",
+    "app/dome-world/holonomy-loom/ux-repair.css": "4bb8481205133a994b7b43d4331bc4abf6663f4004ab13c8456c4f7b85d93c0d",
+    "app/dome-world/holonomy-loom/theater.js": "2ab1abdbea00a4e41c0678992ffef9a9041e00c5c2287d38648f7550b06476af",
+    "app/dome-world/holonomy-loom/observer-chamber.js": "62f0f5209dc2e143fdc63449205e833666bcbe1143aa74a48d7511b44e096fa7",
+    "app/dome-world/holonomy-loom/ai-workspace.js": "3d066ec6eda4f71f65dc5275b9fb1533290baddf6deef1b1c43de22670337a01",
+    "app/dome-world/holonomy-loom/human-polish.css": "fd5ea3fd246d1c59e8136cee6803b38b4ec5bb73d9d74407bdc4ac65bef86d99",
+    "app/dome-world/holonomy-loom/engine.js": "4849d840707e678e97aa715be684cf29384dca4c794339eb2cf54265ec90774d",
+    "app/dome-world/holonomy-loom/flowcore-aia-motion.js": "40061f09ad27acea3955e28d7b5efe58b28324f6be845f5453c4da55f4f2e4c2",
+    "app/dome-world/holonomy-loom/animation-coordinator.js": "ed0f5eb0f14bfac747fbf2b76f42febc50a661b647787789a8f1769fbca5102f",
+    "app/dome-world/holonomy-loom/theater-geometry.js": "eea0c202e40c4b38075c97fbab0ea9e7ed53f4c48ecdeb37a951e6eaa3335a87",
+    "app/dome-world/holonomy-loom/semantic-field.js": "9621b566dfe6d752e7f04eec59c839e817c29fd4c2b16e7f5048e6e81740d617",
+    "app/dome-world/holonomy-loom/portable-workbench.js": "c25e69e98499c91d00669036645f47b470670987765ea659e2bf2b711f041687",
+    "app/dome-world/holonomy-loom/observer-channel.js": "c67e7e0b5e2a0f3373800abfd00aacf9f72c02905cddd4b6661ba70955a50036",
+    "app/dome-world/holonomy-loom/observer-cases.js": "f4f9da2d8c6c508f7cfb648f81ce775b2c79c5b8f9ab742292adbf820d1e9ef2",
+    "app/dome-world/holonomy-loom/ai-projects.js": "e22abfff645f66dce683af86df08f73b615d5fa585efa8d325680116bffcb5c5",
+    "app/dome-world/holonomy-loom/ai-handoff.js": "8318df32a8a85ea6908af678aec0442afa5a7f3b3f5f9b742dcf7774c344625e",
+    "app/dome-world/holonomy-loom/ai-intake.js": "beaeb697e30d82bde292bb1aa68059992200177381017610223209cd8b398420",
+    "app/dome-world/holonomy-loom/ai-project-checks.js": "077fb51582b32e7f9b5d21c64fb098754f6cca02d5cb62a2c0ea5dd73b7d7a8b",
+    "app/dome-world/holonomy-loom/living-room.js": "f7eeabd0c0126b035196240e1432f44c7c30b4d5afad01d9b2fab75a63a9f4c3",
+    "app/dome-world/holonomy-loom/ai-result-view.js": "2876df93f431b46f96eed1eea38f4888ef3f84fdc3ac7f915c1e98200f2e9318",
+    "app/dome-world/holonomy-loom/ai-failure.js": "d05841ede86222189a03fb2d96c8b5399a2f4a0e964cfa4af6609900ce4dbd7c",
+    "app/dome-world/holonomy-loom/living-geometry.js": "58285fab43035fda6a6f2048c01eb43c54dbebc2527a62aaee6bd4fce7dd53a9",
+    "app/gemini-consumption-ledger.js": "fbfa811e088a2e19ff5169c7955d9dd9f28f390b7c6ca921f93cbc0351d8d6b2",
+    "app/dome-world/khonapolit-covenant.js": "90a9e93cad516b21c3528cff59ca2e5d11874a6a488ed5dd0876e5b3d3616a2a",
+    "app/dome-world/holonomy-loom/reentry-workspace.js": "6de1cc529b893ddd197ed404f893c0b66d85a5e927338811cd7449547fcb362f",
+    "app/engine/portable-loom-session.js": "d718813f0e3679a2e0394f2f11c48c5ccbe319fc7a5f769875f11abf3dcf4b27",
+    "app/engine/portable-loom-challenge.js": "4901263372bd4abc03c675497e06fa05d7578c1b3f58ebdd4327329f85276832",
+    "app/engine/flowcore-aia-surface-binding.js": "51da898a5b06270cfe3a2c090523905216f286fab6af8316901d0df853d5543e",
+    "app/dome-world/data/flowcore-glyph-semantics-v01.js": "88f3e8119ce5b3a27822615f08df0b8f2c23cf7b385c1db534099d908658657f",
+    "app/engine/dollhouse-portable-aia-roundtrip.js": "f23858793844c9d225d810c7ab3cda06cce16ab75544fbb807fa4c75db2f2218",
+    "app/engine/loom-portable-governor.js": "38f5103fce7c0b6828c062aa47514d1689758f2429df1f8c989db1e009b6ff3b",
+    "app/dome-world/marrowline-portable-companion.js": "cff557b5cd534668dc0a6b1909d24d26340fb9db925447405c86548e4ec2e2d4",
+    "app/dome-world/holonomy-loom/ai-evidence-review.js": "c02c73afe8b284053040047fc865dac3dc266dabe227781b8441bdb87e8ac179",
+    "app/dome-world/holonomy-loom/ai-handoff-base.js": "76b11a2a2a91db536de50d6ae9e80394a41244d30cbf41db27cd452ca7159374",
+    "app/dome-world/holonomy-loom/living-room-state.js": "990dfd4f56e20597623b3304deea08e710bf636eca0618a195eeb1258bcbcc64",
+    "app/engine/portable-loom-reentry.js": "6981ca094b2b8b69d9927a255a8ba4264cfb7c6527e42b6c40d1107c24488a7b",
+    "app/dome-world/ash/canonical-json.js": "4d2e1112ed3030e8996480e2fcdae41ed1defc1260786605c5f814b149efe425",
+    "app/dome-world/data/flowcore-aia-route-registry-v01.js": "df773e97397dc470d7c02ae2c6781bfb1bbb0adb8847ee83a28d3a4f22b7adc7",
+    "app/engine/dollhouse-continuity-audit.js": "6df6acb691288a0ab2190ef0d75ba45de8906dc789fcc7861a356a7633d7479f",
+    "app/engine/dollhouse-witness-plan.js": "4596ebaff79be34c00340fb460642243e22b12c2cf1ab80a53954a6e6cf893f1",
+    "app/engine/dollhouse-case-dossier.js": "fd6140e1a7eb09c6378355d009d8108111a20af359c15c49d0d1af7efee0c800",
+    "app/engine/dollhouse-atlas-fadt.js": "3e4a4546c2e2aecfdbc24121019c82a59653320aa86baac9e3bf2b872f2af9ac",
+    "app/dome-world/holonomy-loom/ai-request-field.js": "3eaf349d4568a5b3650f99dd4df7b683f613a365c4b411ac8c80c7474ff0e610",
+    "app/engine/dollhouse-agent-registry.js": "90959d3eed8884e6f0905a09b53e07bd285c6ac305800cbd0bf7544ff92f5ab5"
+  },
+  "checks": [
+    {
+      "posture": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "status": "PASS",
+      "malformed": {
+        "text": "\n        HOLD · local operation stopped.Expected property name or '}' in JSON at position 1 (line 1 column 2) No admission occurred; the admitted head is unchanged.\n      ",
+        "box": {
+          "x": 76,
+          "y": 483.90625,
+          "width": 1128,
+          "height": 83
+        },
+        "viewport": {
+          "width": 1280,
+          "height": 900
+        },
+        "intersects": true,
+        "fully_exposed": true
+      },
+      "notice_after_check": {
+        "text": "Admit adds these 1 exact returned task, answers and selected source commitments as Loom's next local descendants. The admitted head changes from none to a new descendant after departure anchor 3f4b7de05c41…. Root rules remain bound to 40dd4a76e740…. The foreign assistant's enforcement remains unobserved.",
+        "box": {
+          "x": 76,
+          "y": 578.90625,
+          "width": 1128,
+          "height": 61.65625
+        },
+        "viewport": {
+          "width": 1280,
+          "height": 900
+        },
+        "intersects": true,
+        "fully_exposed": true
+      },
+      "notice_at_keyboard_admit": {
+        "text": "Admit adds these 1 exact returned task, answers and selected source commitments as Loom's next local descendants. The admitted head changes from none to a new descendant after departure anchor 3f4b7de05c41…. Root rules remain bound to 40dd4a76e740…. The foreign assistant's enforcement remains unobserved.",
+        "box": {
+          "x": 76,
+          "y": 578.90625,
+          "width": 1128,
+          "height": 61.65625
+        },
+        "viewport": {
+          "width": 1280,
+          "height": 900
+        },
+        "intersects": true,
+        "fully_exposed": true
+      },
+      "private_save": {
+        "control": {
+          "text": "Save private custody record",
+          "box": {
+            "x": 551.8125,
+            "y": 554.78125,
+            "width": 227.0625,
+            "height": 44
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "intersects": true,
+          "fully_exposed": true
+        },
+        "notice": {
+          "text": "This working custody lane lives in this tab. Its private record includes selected source bodies, pasted returns and any attached local challenge answer keys. Save it locally before leaving; do not paste it into a receiver. Reloaded or imported records require a separate custody witness and gain no admission authority here.",
+          "box": {
+            "x": 76,
+            "y": -746.859375,
+            "width": 1128,
+            "height": 39.65625
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "intersects": false,
+          "fully_exposed": false
+        },
+        "adjacent_warning": {
+          "text": "Private Save includes selected source bodies, pasted returns and local challenge answer keys. Keep the file here; do not send it to a receiver. Reloaded records remain review-only.",
+          "box": {
+            "x": 76,
+            "y": 609.78125,
+            "width": 1128,
+            "height": 39.65625
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "intersects": true,
+          "fully_exposed": true
+        },
+        "source_bodies_retained": true,
+        "raw_capture_retained": true,
+        "local_answer_key_retained": true
+      },
+      "public_carrier": {
+        "preceding_answer_carried": true,
+        "sources_explicitly_empty": true,
+        "raw_capture_absent": true,
+        "local_answer_key_absent": true,
+        "clipboard_equal_visible_preview": true
+      },
+      "replacement": {
+        "notice": {
+          "text": "\n        Preparing or testing a new packet replaces this tab's active Loom root and admission lane. The current admitted head and pending tasks will leave the active route. Editing the builder alone keeps that lane.\n        Current root e6f3e0b9067f… · 1 admitted descendant(s) · 1 registered pending task(s).\n        Save current private custody record\n        This local file includes source bodies, pasted returns and local challenge keys. Keep it private. Saving preserves a review record; it grants no restored admission authority.\n         I choose a new Loom root and accept replacing this active custody lane.\n      ",
+          "box": {
+            "x": 80,
+            "y": 192.71875,
+            "width": 1120,
+            "height": 209.3125
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "intersects": true,
+          "fully_exposed": true
+        },
+        "control": {
+          "text": "Prepare demo as Portable AIA",
+          "box": {
+            "x": 377.125,
+            "y": 427.765625,
+            "width": 265.875,
+            "height": 44
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "intersects": true,
+          "fully_exposed": true
+        },
+        "old_root": "e6f3e0b9067fbc46c0148cf61a10decda8dafb2af2fbb67079250ba81c5a61c9",
+        "new_root": "72b104143f986f21e3fcd93d270b57f6d616b2df18c6321e6a8223dfa981f484",
+        "old_head": "f9ec75f7ed5f6c265622fb99071a2d6670aca6a82e992ffcc0934e643f3f41f6",
+        "new_head": "",
+        "new_count": "0",
+        "guarded": {
+          "first_attempt_denied": true,
+          "focus_on_notice": true,
+          "pending_registration_retained": true,
+          "unchecking_cancels": true,
+          "builder_edit_revokes_acknowledgment": true,
+          "adjacent_private_save_preserves_lane": true,
+          "denied_notice": {
+            "text": "\n        Preparing or testing a new packet replaces this tab's active Loom root and admission lane. The current admitted head and pending tasks will leave the active route. Editing the builder alone keeps that lane.\n        Current root e6f3e0b9067f… · 1 admitted descendant(s) · 1 registered pending task(s).\n        Save current private custody record\n        This local file includes source bodies, pasted returns and local challenge keys. Keep it private. Saving preserves a review record; it grants no restored admission authority.\n         I choose a new Loom root and accept replacing this active custody lane.\n      ",
+            "box": {
+              "x": 80,
+              "y": 192.71875,
+              "width": 1120,
+              "height": 209.3125
+            },
+            "viewport": {
+              "width": 1280,
+              "height": 900
+            },
+            "intersects": true,
+            "fully_exposed": true
+          },
+          "acknowledged_checkbox": {
+            "text": "",
+            "box": {
+              "x": 93,
+              "y": 371.03125,
+              "width": 18,
+              "height": 18
+            },
+            "viewport": {
+              "width": 1280,
+              "height": 900
+            },
+            "intersects": true,
+            "fully_exposed": true
+          },
+          "acknowledged_notice": {
+            "text": "\n        Preparing or testing a new packet replaces this tab's active Loom root and admission lane. The current admitted head and pending tasks will leave the active route. Editing the builder alone keeps that lane.\n        Current root e6f3e0b9067f… · 1 admitted descendant(s) · 1 registered pending task(s).\n        Save current private custody record\n        This local file includes source bodies, pasted returns and local challenge keys. Keep it private. Saving preserves a review record; it grants no restored admission authority.\n         I choose a new Loom root and accept replacing this active custody lane.\n      ",
+            "box": {
+              "x": 80,
+              "y": 192.71875,
+              "width": 1120,
+              "height": 209.3125
+            },
+            "viewport": {
+              "width": 1280,
+              "height": 900
+            },
+            "intersects": true,
+            "fully_exposed": true
+          },
+          "acknowledged_consequence": {
+            "text": "Preparing or testing a new packet replaces this tab's active Loom root and admission lane. The current admitted head and pending tasks will leave the active route. Editing the builder alone keeps that lane.",
+            "box": {
+              "x": 93,
+              "y": 213.71875,
+              "width": 1094,
+              "height": 39.65625
+            },
+            "viewport": {
+              "width": 1280,
+              "height": 900
+            },
+            "intersects": true,
+            "fully_exposed": true
+          },
+          "acknowledged_privacy": {
+            "text": "This local file includes source bodies, pasted returns and local challenge keys. Keep it private. Saving preserves a review record; it grants no restored admission authority.",
+            "box": {
+              "x": 93,
+              "y": 341.203125,
+              "width": 1094,
+              "height": 19.828125
+            },
+            "viewport": {
+              "width": 1280,
+              "height": 900
+            },
+            "intersects": true,
+            "fully_exposed": true
+          },
+          "acknowledged_label": {
+            "text": " I choose a new Loom root and accept replacing this active custody lane.",
+            "box": {
+              "x": 93,
+              "y": 369.03125,
+              "width": 1094,
+              "height": 20
+            },
+            "viewport": {
+              "width": 1280,
+              "height": 900
+            },
+            "intersects": true,
+            "fully_exposed": true
+          },
+          "acknowledged_action": {
+            "text": "Prepare demo as Portable AIA",
+            "box": {
+              "x": 377.125,
+              "y": 427.765625,
+              "width": 265.875,
+              "height": 44
+            },
+            "viewport": {
+              "width": 1280,
+              "height": 900
+            },
+            "intersects": true,
+            "fully_exposed": true
+          }
+        }
+      },
+      "expiry": {
+        "synthetic_clock": true,
+        "deadline_unchanged": "Registered excursion expires 10/2/2026, 11:21:35 AM. Rest does not extend this deadline.",
+        "rest_preserves_head": true,
+        "resume_keeps_hold": true,
+        "discard_releases_pending": true
+      },
+      "layout": {
+        "width": 1280,
+        "scroll": 1280,
+        "inspectors": [
+          0,
+          0,
+          0,
+          260
+        ]
+      },
+      "checks": [
+        "explicit-source staging preserves head",
+        "task copy matches disclosed prompt",
+        "bounded Challenge scope retained",
+        "malformed HOLD visible and focused",
+        "check preserves head",
+        "keyboard acknowledgment then explicit Admit",
+        "admission returns focus to consequence",
+        "private download distinct from public carrier",
+        "builder edits preserve admitted lane",
+        "new-root gesture measured",
+        "rest expiry discard",
+        "reload grants no custody authority"
+      ]
+    },
+    {
+      "posture": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "malformed": {
+        "text": "\n        HOLD · local operation stopped.Expected property name or '}' in JSON at position 1 (line 1 column 2) No admission occurred; the admitted head is unchanged.\n      ",
+        "box": {
+          "x": 19,
+          "y": 456.09375,
+          "width": 352,
+          "height": 120.40625
+        },
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "intersects": true,
+        "fully_exposed": true
+      },
+      "notice_after_check": {
+        "text": "Admit adds these 1 exact returned task, answers and selected source commitments as Loom's next local descendants. The admitted head changes from none to a new descendant after departure anchor 624b7659e038…. Root rules remain bound to 40dd4a76e740…. The foreign assistant's enforcement remains unobserved.",
+        "box": {
+          "x": 19,
+          "y": 588.5,
+          "width": 352,
+          "height": 155.546875
+        },
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "intersects": true,
+        "fully_exposed": true
+      },
+      "notice_at_keyboard_admit": {
+        "text": "Admit adds these 1 exact returned task, answers and selected source commitments as Loom's next local descendants. The admitted head changes from none to a new descendant after departure anchor 624b7659e038…. Root rules remain bound to 40dd4a76e740…. The foreign assistant's enforcement remains unobserved.",
+        "box": {
+          "x": 19,
+          "y": 99.5,
+          "width": 352,
+          "height": 155.546875
+        },
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "intersects": true,
+        "fully_exposed": true
+      },
+      "private_save": {
+        "control": {
+          "text": "Save private custody record",
+          "box": {
+            "x": 19,
+            "y": 411.171875,
+            "width": 352,
+            "height": 44
+          },
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "intersects": true,
+          "fully_exposed": true
+        },
+        "notice": {
+          "text": "This working custody lane lives in this tab. Its private record includes selected source bodies, pasted returns and any attached local challenge answer keys. Save it locally before leaving; do not paste it into a receiver. Reloaded or imported records require a separate custody witness and gain no admission authority here.",
+          "box": {
+            "x": 19,
+            "y": -1427.796875,
+            "width": 352,
+            "height": 114.46875
+          },
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "intersects": false,
+          "fully_exposed": false
+        },
+        "adjacent_warning": {
+          "text": "Private Save includes selected source bodies, pasted returns and local challenge answer keys. Keep the file here; do not send it to a receiver. Reloaded records remain review-only.",
+          "box": {
+            "x": 19,
+            "y": 466.171875,
+            "width": 352,
+            "height": 76.3125
+          },
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "intersects": true,
+          "fully_exposed": true
+        },
+        "source_bodies_retained": true,
+        "raw_capture_retained": true,
+        "local_answer_key_retained": true
+      },
+      "public_carrier": {
+        "preceding_answer_carried": true,
+        "sources_explicitly_empty": true,
+        "raw_capture_absent": true,
+        "local_answer_key_absent": true,
+        "clipboard_equal_visible_preview": true
+      },
+      "replacement": {
+        "notice": {
+          "text": "\n        Preparing or testing a new packet replaces this tab's active Loom root and admission lane. The current admitted head and pending tasks will leave the active route. Editing the builder alone keeps that lane.\n        Current root d87a332b405d… · 1 admitted descendant(s) · 1 registered pending task(s).\n        Save current private custody record\n        This local file includes source bodies, pasted returns and local challenge keys. Keep it private. Saving preserves a review record; it grants no restored admission authority.\n         I choose a new Loom root and accept replacing this active custody lane.\n      ",
+          "box": {
+            "x": 21,
+            "y": -44.375,
+            "width": 348,
+            "height": 366.484375
+          },
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "intersects": true,
+          "fully_exposed": false
+        },
+        "control": {
+          "text": "Prepare demo as Portable AIA",
+          "box": {
+            "x": 25,
+            "y": 399.578125,
+            "width": 340,
+            "height": 44
+          },
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "intersects": true,
+          "fully_exposed": true
+        },
+        "old_root": "d87a332b405d0099c1f2f00ac22d18cf140ce9d06bd23eac627282c50eebbe09",
+        "new_root": "06b396687289d5bde06296c67548a88eef960e423a74950126b2f53c27d1f13e",
+        "old_head": "5ff95a963d4be4c44cb3f7c3c7b87ab90f2f77ae2043fd3fbf93052f25c713a4",
+        "new_head": "",
+        "new_count": "0",
+        "guarded": {
+          "first_attempt_denied": true,
+          "focus_on_notice": true,
+          "pending_registration_retained": true,
+          "unchecking_cancels": true,
+          "builder_edit_revokes_acknowledgment": true,
+          "adjacent_private_save_preserves_lane": true,
+          "denied_notice": {
+            "text": "\n        Preparing or testing a new packet replaces this tab's active Loom root and admission lane. The current admitted head and pending tasks will leave the active route. Editing the builder alone keeps that lane.\n        Current root d87a332b405d… · 1 admitted descendant(s) · 1 registered pending task(s).\n        Save current private custody record\n        This local file includes source bodies, pasted returns and local challenge keys. Keep it private. Saving preserves a review record; it grants no restored admission authority.\n         I choose a new Loom root and accept replacing this active custody lane.\n      ",
+            "box": {
+              "x": 21,
+              "y": -0.375,
+              "width": 348,
+              "height": 366.484375
+            },
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "intersects": true,
+            "fully_exposed": false
+          },
+          "acknowledged_checkbox": {
+            "text": "",
+            "box": {
+              "x": 34,
+              "y": 316.734375,
+              "width": 18,
+              "height": 18
+            },
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "intersects": true,
+            "fully_exposed": true
+          },
+          "acknowledged_notice": {
+            "text": "\n        Preparing or testing a new packet replaces this tab's active Loom root and admission lane. The current admitted head and pending tasks will leave the active route. Editing the builder alone keeps that lane.\n        Current root d87a332b405d… · 1 admitted descendant(s) · 1 registered pending task(s).\n        Save current private custody record\n        This local file includes source bodies, pasted returns and local challenge keys. Keep it private. Saving preserves a review record; it grants no restored admission authority.\n         I choose a new Loom root and accept replacing this active custody lane.\n      ",
+            "box": {
+              "x": 21,
+              "y": -0.375,
+              "width": 348,
+              "height": 366.484375
+            },
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "intersects": true,
+            "fully_exposed": false
+          },
+          "acknowledged_consequence": {
+            "text": "Preparing or testing a new packet replaces this tab's active Loom root and admission lane. The current admitted head and pending tasks will leave the active route. Editing the builder alone keeps that lane.",
+            "box": {
+              "x": 34,
+              "y": 20.625,
+              "width": 322,
+              "height": 99.140625
+            },
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "intersects": true,
+            "fully_exposed": true
+          },
+          "acknowledged_privacy": {
+            "text": "This local file includes source bodies, pasted returns and local challenge keys. Keep it private. Saving preserves a review record; it grants no restored admission authority.",
+            "box": {
+              "x": 34,
+              "y": 227.421875,
+              "width": 322,
+              "height": 79.3125
+            },
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "intersects": true,
+            "fully_exposed": true
+          },
+          "acknowledged_label": {
+            "text": " I choose a new Loom root and accept replacing this active custody lane.",
+            "box": {
+              "x": 34,
+              "y": 314.734375,
+              "width": 322,
+              "height": 38.375
+            },
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "intersects": true,
+            "fully_exposed": true
+          },
+          "acknowledged_action": {
+            "text": "Prepare demo as Portable AIA",
+            "box": {
+              "x": 25,
+              "y": 443.578125,
+              "width": 340,
+              "height": 44
+            },
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "intersects": true,
+            "fully_exposed": true
+          }
+        }
+      },
+      "expiry": {
+        "synthetic_clock": true,
+        "deadline_unchanged": "Registered excursion expires 10/2/2026, 11:21:38 AM. Rest does not extend this deadline.",
+        "rest_preserves_head": true,
+        "resume_keeps_hold": true,
+        "discard_releases_pending": true
+      },
+      "layout": {
+        "width": 390,
+        "scroll": 390,
+        "inspectors": [
+          0,
+          0,
+          0,
+          260
+        ]
+      },
+      "checks": [
+        "explicit-source staging preserves head",
+        "task copy matches disclosed prompt",
+        "bounded Challenge scope retained",
+        "malformed HOLD visible and focused",
+        "check preserves head",
+        "keyboard acknowledgment then explicit Admit",
+        "admission returns focus to consequence",
+        "private download distinct from public carrier",
+        "builder edits preserve admitted lane",
+        "new-root gesture measured",
+        "rest expiry discard",
+        "reload grants no custody authority"
+      ]
+    }
+  ],
+  "vetoes": [],
+  "failures": []
+}

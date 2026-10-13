@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.phase5.constants-bridge/v1",
+  "title": "TD613 Phase 5 Constants Bridge",
+  "type": "object",
+  "required": ["schema", "aperture_canonical", "source_constants", "translation_status", "symbol_collision_detected", "hard_stop_on_ambiguity"],
+  "properties": {
+    "schema": { "const": "td613.phase5.constants-bridge/v1" },
+    "aperture_canonical": {
+      "type": "object",
+      "required": ["Z_C", "fold_A", "fold_B", "fold_C", "theta"],
+      "properties": {
+        "Z_C": { "const": "sqrt(3)/2" },
+        "fold_A": { "type": "array" },
+        "fold_B": { "type": "array" },
+        "fold_C": { "type": "array" },
+        "theta": { "const": "pi/3" }
+      }
+    },
+    "source_constants": { "type": "object" },
+    "translation_status": { "enum": ["passed", "pending", "failed", "not-applicable"] },
+    "symbol_collision_detected": { "type": "boolean" },
+    "hard_stop_on_ambiguity": { "const": true }
+  },
+  "additionalProperties": false
+}

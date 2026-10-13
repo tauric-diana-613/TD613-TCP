@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:d94f096e651e327ed2903005
+parent_capture_id: capture:aa576ba629a99e828fc3ab47
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "AI as Interpretive Governance: The New Architecture of Political Meaning"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.19040999
+Final URL: https://zenodo.org/records/19040999
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.19040999 -> https://zenodo.org/doi/10.5281/zenodo.19040999
+302 https://zenodo.org/doi/10.5281/zenodo.19040999 -> https://zenodo.org/records/19040999

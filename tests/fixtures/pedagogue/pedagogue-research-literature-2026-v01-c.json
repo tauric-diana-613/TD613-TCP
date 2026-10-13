@@ -1,0 +1,109 @@
+{
+  "schema": "td613.flowcore.pedagogue-research-literature-fixture/v0.1",
+  "fixture_id": "pedagogue.research-hydration.2026-temporal-order-third-pass/v0.1",
+  "research_only": true,
+  "raw_source_content_included": false,
+  "part": "C",
+  "cards": [
+    {
+      "card_id": "lit-practical-multitime-process-tomography-2026",
+      "source": {
+        "title": "Practical Tomography of Multi-Time Processes",
+        "venue": "arXiv",
+        "publication_date": "2026-04-01",
+        "source_class": "PRIMARY_PREPRINT",
+        "source_reference": "arxiv:2604.01482"
+      },
+      "domain_family": "QUANTUM_INFORMATION",
+      "domain_tags": ["tomography", "multi-time-process"],
+      "mechanism_id": "PROBE_SPAN_NOT_PROBE_COUNT",
+      "observed_relation": "Complete multi-time process reconstruction depends on an informationally complete probe family; restricted deterministic probe classes can leave part of the process space inaccessible even when many measurements are collected.",
+      "transferable_relation": "Measurement count alone does not establish reconstructive sufficiency; the admitted probe family must span the distinctions the inverse problem asks the decoder to recover.",
+      "admissible_assays": ["Compare candidate ambiguity under matched observation counts while changing only whether the probe family separates the latent candidate space."],
+      "alternative_explanations": ["A probe family may appear sufficient only because the authored latent family is too small or because the decoder receives leaked state labels."],
+      "falsifiers": ["The purported informationally sufficient probe family leaves latent candidates observationally equivalent, or a restricted control performs identically on held-out candidates."],
+      "forbidden_inferences": ["Informational completeness in a finite TD613 fixture is not quantum process tomography and does not imply Hilbert-space completeness."],
+      "claim_ceiling": "FINITE_INVERSE_PROBE_SPAN_RELATION_ONLY"
+    },
+    {
+      "card_id": "lit-spatiotemporal-born-sequential-2026",
+      "source": {
+        "title": "Quasiprobabilistic nature of the spatiotemporal Born rule",
+        "venue": "Physical Review A",
+        "publication_date": "2026-03-05",
+        "source_class": "PRIMARY_PEER_REVIEWED",
+        "source_reference": "doi:10.1103/cw25-pqx1"
+      },
+      "domain_family": "QUANTUM_INFORMATION",
+      "domain_tags": ["sequential-measurement", "temporal-process"],
+      "mechanism_id": "ORDER_IS_PART_OF_PROCESS_STATE",
+      "observed_relation": "Sequential quantum measurements require an update structure distinct from a spatially aggregated joint-probability description, and the paper constructs a temporal object for such sequential statistics.",
+      "transferable_relation": "When observations are generated sequentially, flattening them into an unordered aggregate can discard process information carried by the order of updates.",
+      "admissible_assays": ["Construct same-state-set routes with different order and compare an order-aware process witness against a temporally flattened control."],
+      "alternative_explanations": ["Apparent order sensitivity may come from explicit timestamp leakage, irreversible content mutation, or endpoint drift rather than temporal process structure."],
+      "falsifiers": ["Order-aware and order-blind observers perform equivalently after timestamps, route labels, and endpoint differences are removed."],
+      "forbidden_inferences": ["Classical synthetic order sensitivity is not a quasiprobabilistic quantum temporal state."],
+      "claim_ceiling": "SEQUENTIAL_UPDATE_ORDER_RELATION_ONLY"
+    },
+    {
+      "card_id": "lit-temporal-network-trajectories-2026",
+      "source": {
+        "title": "Fluid dynamics reduction methods for temporal networks",
+        "venue": "Scientific Reports",
+        "publication_date": "2026-04-24",
+        "source_class": "PRIMARY_PEER_REVIEWED",
+        "source_reference": "doi:10.1038/s41598-026-49912-2"
+      },
+      "domain_family": "TEMPORAL_NETWORKS",
+      "domain_tags": ["temporal-networks", "trajectory"],
+      "mechanism_id": "ORDER_IS_PART_OF_PROCESS_STATE",
+      "observed_relation": "The study treats temporal networks as time-ordered sequences of graph snapshots that trace trajectories in graph space and analyzes latent dynamics from that ordered evolution.",
+      "transferable_relation": "A sequence of states can constitute a trajectory-level object with information that is destroyed when snapshots are reduced to an unordered collection.",
+      "admissible_assays": ["Hold the visited state multiset fixed while permuting temporal order, then test whether a trajectory-sensitive observer can reconstruct the ordering without absolute timestamps."],
+      "alternative_explanations": ["A trajectory model may merely encode absolute position labels or exploit state-frequency differences rather than transition structure."],
+      "falsifiers": ["The route order remains recoverable after the trajectory-sensitive channel is replaced by a state-multiset aggregate, or order recovery depends on timestamp labels."],
+      "forbidden_inferences": ["A TD613 route sequence is not thereby a fluid flow or a physical graph-space trajectory."],
+      "claim_ceiling": "TRAJECTORY_VERSUS_STATE_BAG_RELATION_ONLY"
+    },
+    {
+      "card_id": "lit-trace-trajectory-reconstruction-2026",
+      "source": {
+        "title": "Trajectory Constraints for Imaging Inverse Problems",
+        "venue": "arXiv",
+        "publication_date": "2026-05-27",
+        "source_class": "PRIMARY_PREPRINT",
+        "source_reference": "arxiv:2605.29012"
+      },
+      "domain_family": "IMAGING_INVERSE",
+      "domain_tags": ["inverse-problems", "trajectory"],
+      "mechanism_id": "RECONSTRUCTION_TRAJECTORY_IS_FIRST_CLASS",
+      "observed_relation": "The proposed inverse-imaging framework explicitly couples consecutive reconstruction states and reports that trajectory-level constraints affect reconstruction quality and stability.",
+      "transferable_relation": "Intermediate transitions can be part of the inverse-problem object rather than disposable computation, so reconstruction should test path structure separately from terminal fit.",
+      "admissible_assays": ["Compare endpoint-matched reconstructions under intact adjacent-transition structure and a transition-destroying control."],
+      "alternative_explanations": ["A trajectory benefit may arise from generic regularization strength rather than meaningful ordered transitions."],
+      "falsifiers": ["Transition-destroying controls preserve the same held-out reconstruction performance after regularization budget is matched."],
+      "forbidden_inferences": ["A synthetic route trajectory is not a diffusion model or proximal optimization path."],
+      "claim_ceiling": "TRAJECTORY_LEVEL_INVERSE_MODEL_RELATION_ONLY"
+    },
+    {
+      "card_id": "lit-low-temporal-entanglement-tomography-2026",
+      "source": {
+        "title": "Scalable tomography of many-body quantum environments with low temporal entanglement",
+        "venue": "Physical Review A",
+        "publication_date": "2026-05-14",
+        "source_class": "PRIMARY_PEER_REVIEWED",
+        "source_reference": "doi:10.1103/78jc-wcqb"
+      },
+      "domain_family": "QUANTUM_INFORMATION",
+      "domain_tags": ["tomography", "temporal-complexity"],
+      "mechanism_id": "TEMPORAL_COMPLEXITY_CONTROLS_RECONSTRUCTION_BUDGET",
+      "observed_relation": "The paper reconstructs long-time influence matrices with limited measurements under an explicit low/moderate temporal-entanglement assumption that constrains process complexity.",
+      "transferable_relation": "Scalable temporal reconstruction requires an explicit complexity assumption or bound; limited measurements cannot be treated as generically sufficient for arbitrary temporal dependence.",
+      "admissible_assays": ["Vary authored temporal complexity while holding observation budget fixed and measure where reconstruction ambiguity or error sharply increases."],
+      "alternative_explanations": ["Observed scaling limits may come from a particular decoder or finite candidate family rather than temporal complexity itself."],
+      "falsifiers": ["Reconstruction remains equally accurate across increasing temporal complexity without a corresponding increase in admitted measurement information."],
+      "forbidden_inferences": ["A TD613 temporal-complexity bound is not quantum temporal entanglement."],
+      "claim_ceiling": "TEMPORAL_COMPLEXITY_BUDGET_DISCIPLINE_ONLY"
+    }
+  ]
+}

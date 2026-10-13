@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:relation-assertion:v2",
+  "title": "SignalRupture typed, time-aware relation assertion",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "edge_id", "from_id", "relation", "to_id", "graph_kind",
+    "declared_by_id", "source_predicate_raw", "origin", "relation_provenance_mode",
+    "source_time", "subject_time", "evidence_ids", "adjudication_status"
+  ],
+  "properties": {
+    "schema_version": {"const": "relation-assertion/v2"},
+    "edge_id": {"type": "string", "minLength": 1},
+    "from_id": {"type": "string", "minLength": 1},
+    "relation": {"type": "string", "minLength": 1},
+    "to_id": {"type": "string", "minLength": 1},
+    "graph_kind": {"enum": ["HISTORICAL", "CONCEPTUAL", "OPERATIONAL", "NAVIGATIONAL", "MANIFESTATION", "AUTHORITY"]},
+    "declared_by_id": {"type": ["string", "null"]},
+    "compiled_into_id": {"type": ["string", "null"]},
+    "source_predicate_raw": {"type": ["string", "null"]},
+    "origin": {"enum": ["explicit-source", "archive-inferred", "researcher-proposed"]},
+    "relation_provenance_mode": {"enum": ["CONTEMPORANEOUS", "FORWARD_DECLARED", "RETROSPECTIVE", "INFERRED", "UNRESOLVED"]},
+    "source_time": {"type": ["string", "null"]},
+    "subject_time": {"type": ["string", "null"]},
+    "scope": {"type": "object"},
+    "derived_from_edge_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "route_context": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["router_manifestation_id", "route_namespace", "audience_raw", "entry_condition_id", "entry_condition_raw", "fallback"],
+      "properties": {
+        "router_manifestation_id": {"type": ["string", "null"]},
+        "route_namespace": {"type": ["string", "null"]},
+        "audience_raw": {"type": ["string", "null"]},
+        "entry_condition_id": {"type": ["string", "null"]},
+        "entry_condition_raw": {"type": ["string", "null"]},
+        "fallback": {"type": ["boolean", "null"]}
+      }
+    },
+    "ordinal": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["token", "value", "namespace_id", "namespace_status", "predecessor_expected_by_ordinal", "predecessor_id", "predecessor_status"],
+      "properties": {
+        "token": {"type": "string"},
+        "value": {"type": ["integer", "null"], "minimum": 1},
+        "namespace_id": {"type": ["string", "null"]},
+        "namespace_status": {"enum": ["RESOLVED", "UNRESOLVED", "CONTESTED"]},
+        "predecessor_expected_by_ordinal": {"type": "boolean"},
+        "predecessor_id": {"type": ["string", "null"]},
+        "predecessor_status": {"enum": ["WITNESSED", "UNRESOLVED_TARGET", "EXPLICITLY_ABSENT", "NOT_APPLICABLE"]}
+      }
+    },
+    "evidence_ids": {"type": "array", "items": {"type": "string"}, "minItems": 1, "uniqueItems": true},
+    "adjudication_status": {"enum": ["WITNESSED", "CANDIDATE", "DISPUTED", "REJECTED", "UNRESOLVED"]},
+    "interpretive_limit": {"type": ["string", "null"]}
+  }
+}

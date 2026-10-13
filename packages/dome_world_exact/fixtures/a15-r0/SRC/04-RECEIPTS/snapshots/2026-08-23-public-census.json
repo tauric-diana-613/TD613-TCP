@@ -1,0 +1,27 @@
+{
+  "snapshot_date": "2026-08-23",
+  "timezone": "America/New_York",
+  "platform_artifacts": {
+    "zenodo": 442,
+    "academia_edu": 499,
+    "substack": 257,
+    "medium": 210,
+    "total": 1408
+  },
+  "normalized_title_clusters": 691,
+  "exact_title_single_platform_clusters": 255,
+  "possible_retitle_or_related_edition_candidates": 118,
+  "provisional_distinct_work_band": {
+    "low": 573,
+    "high": 691,
+    "status": "not-final; content-level reconciliation required"
+  },
+  "preserved_original_files": 5,
+  "phase_2_status": "paused pending Phase 1.5 catalog reconciliation",
+  "count_methods": {
+    "zenodo": "public API, exact creator-linked query",
+    "academia_edu": "public rendered profile expanded until count remained stable",
+    "substack": "public archive API paginated until empty",
+    "medium": "public rendered profile expanded until count remained stable"
+  }
+}

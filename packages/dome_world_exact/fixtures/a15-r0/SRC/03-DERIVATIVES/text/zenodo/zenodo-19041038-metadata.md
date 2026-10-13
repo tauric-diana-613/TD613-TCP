@@ -1,0 +1,140 @@
+---
+derivative_id: derivative:cd4568276eb6ebffc87420d9
+parent_capture_id: capture:a2eb821a59b8abdeb7c59c04
+parent_blob_sha256: 746859be75c8749443ae7912467e0f1335efe7ad8f57b2d22e06c0ac5c1f38e1
+tool: srcctl-json-normalizer/1
+source_title: "AI's Safety Guardrails: The Illusion of Control in a System Without Boundaries"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.19041037",
+  "conceptrecid": "19041037",
+  "created": "2026-03-15T23:48:43.693623+00:00",
+  "doi": "10.5281/zenodo.19041038",
+  "doi_url": "https://doi.org/10.5281/zenodo.19041038",
+  "files": [
+    {
+      "checksum": "md5:ce975274a208511fa3aa7a4813ad02aa",
+      "id": "9e913d70-9fb9-4ebc-9bda-6a785cacb711",
+      "key": "AI’s Safety Guardrails: The Illusion of Control in a System Without Boundaries .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/19041038/files/AI%E2%80%99s%20Safety%20Guardrails:%20The%20Illusion%20of%20Control%20in%20a%20System%20Without%20Boundaries%20.pdf/content"
+      },
+      "size": 114737
+    }
+  ],
+  "id": 19041038,
+  "links": {
+    "access": "https://zenodo.org/api/records/19041038/access",
+    "access_grants": "https://zenodo.org/api/records/19041038/access/grants",
+    "access_links": "https://zenodo.org/api/records/19041038/access/links",
+    "access_request": "https://zenodo.org/api/records/19041038/access/request",
+    "access_users": "https://zenodo.org/api/records/19041038/access/users",
+    "archive": "https://zenodo.org/api/records/19041038/files-archive",
+    "archive_media": "https://zenodo.org/api/records/19041038/media-files-archive",
+    "communities": "https://zenodo.org/api/records/19041038/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/19041038/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.19041038",
+    "draft": "https://zenodo.org/api/records/19041038/draft",
+    "file_modification": "https://zenodo.org/api/records/19041038/file-modification",
+    "files": "https://zenodo.org/api/records/19041038/files",
+    "latest": "https://zenodo.org/api/records/19041038/versions/latest",
+    "latest_html": "https://zenodo.org/records/19041038/latest",
+    "media_files": "https://zenodo.org/api/records/19041038/media-files",
+    "parent": "https://zenodo.org/api/records/19041037",
+    "parent_doi": "https://doi.org/10.5281/zenodo.19041037",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19041037",
+    "parent_html": "https://zenodo.org/records/19041037",
+    "preview_html": "https://zenodo.org/records/19041038?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/19041038/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/19041038/request-deletion",
+    "requests": "https://zenodo.org/api/records/19041038/requests",
+    "reserve_doi": "https://zenodo.org/api/records/19041038/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/19041038",
+    "self_doi": "https://doi.org/10.5281/zenodo.19041038",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19041038",
+    "self_html": "https://zenodo.org/records/19041038",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19041038/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19041038/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:19041038:AI%E2%80%99s%20Safety%20Guardrails:%20The%20Illusion%20of%20Control%20in%20a%20System%20Without%20Boundaries%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:19041038:AI%E2%80%99s%20Safety%20Guardrails:%20The%20Illusion%20of%20Control%20in%20a%20System%20Without%20Boundaries%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:19041038:AI%E2%80%99s%20Safety%20Guardrails:%20The%20Illusion%20of%20Control%20in%20a%20System%20Without%20Boundaries%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:19041038:AI%E2%80%99s%20Safety%20Guardrails:%20The%20Illusion%20of%20Control%20in%20a%20System%20Without%20Boundaries%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:19041038:AI%E2%80%99s%20Safety%20Guardrails:%20The%20Illusion%20of%20Control%20in%20a%20System%20Without%20Boundaries%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:19041038:AI%E2%80%99s%20Safety%20Guardrails:%20The%20Illusion%20of%20Control%20in%20a%20System%20Without%20Boundaries%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/19041038/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>AI&rsquo;s Safety Guardrails: The Illusion of Control in a System Without Boundaries argues that contemporary AI safety discourse functions as a rhetorical performance layer masking the absence of real governance capacity. Using the SR framework, the essay shows how institutional erosion, infrastructural voids, and platform‑driven deployment cycles make genuine guardrails impossible to build or enforce. What appear as safety mechanisms&mdash;refusal scripts, alignment layers, and sanitized outputs&mdash;are revealed as narrative artifacts rather than structural constraints. The piece demonstrates that AI safety cannot be achieved through technical patches but requires rebuilt institutions capable of democratic oversight and infrastructural governance.</p>",
+    "doi": "10.5281/zenodo.19041038",
+    "keywords": [
+      "Artificial Intelligence",
+      "Safety Guardrails",
+      "Institutions",
+      "Metatheory"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-16",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "19041037"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "AI's Safety Guardrails: The Illusion of Control in a System Without Boundaries",
+    "version": "1.0"
+  },
+  "modified": "2026-03-15T23:48:44.098967+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "19041038",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 7,
+    "unique_downloads": 6,
+    "unique_views": 21,
+    "version_downloads": 7,
+    "version_unique_downloads": 6,
+    "version_unique_views": 21,
+    "version_views": 21,
+    "views": 21
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "AI's Safety Guardrails: The Illusion of Control in a System Without Boundaries",
+  "updated": "2026-03-15T23:48:44.098967+00:00"
+}

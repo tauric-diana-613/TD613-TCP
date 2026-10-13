@@ -1,0 +1,140 @@
+---
+derivative_id: derivative:d09cfa58d8e84ebb87c10be9
+parent_capture_id: capture:6e6f8ed84c018663e1a2523f
+parent_blob_sha256: 525861af2d69ed3bdfb9d8267531f4c43c354c300945ed9ec238220ed768597b
+tool: srcctl-json-normalizer/1
+source_title: "Indexing Stall: When Platforms Freeze the Visibility Layer"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.19042517",
+  "conceptrecid": "19042517",
+  "created": "2026-03-16T02:59:49.496497+00:00",
+  "doi": "10.5281/zenodo.19042518",
+  "doi_url": "https://doi.org/10.5281/zenodo.19042518",
+  "files": [
+    {
+      "checksum": "md5:c6b2cb9c6027d259a3cfa0999a9cae8a",
+      "id": "7c785ebf-c88e-44b4-8af0-3c896b68e983",
+      "key": "Indexing Stall: When Platforms Freeze the Visibility Layer .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/19042518/files/Indexing%20Stall:%20When%20Platforms%20Freeze%20the%20Visibility%20Layer%20.pdf/content"
+      },
+      "size": 86601
+    }
+  ],
+  "id": 19042518,
+  "links": {
+    "access": "https://zenodo.org/api/records/19042518/access",
+    "access_grants": "https://zenodo.org/api/records/19042518/access/grants",
+    "access_links": "https://zenodo.org/api/records/19042518/access/links",
+    "access_request": "https://zenodo.org/api/records/19042518/access/request",
+    "access_users": "https://zenodo.org/api/records/19042518/access/users",
+    "archive": "https://zenodo.org/api/records/19042518/files-archive",
+    "archive_media": "https://zenodo.org/api/records/19042518/media-files-archive",
+    "communities": "https://zenodo.org/api/records/19042518/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/19042518/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.19042518",
+    "draft": "https://zenodo.org/api/records/19042518/draft",
+    "file_modification": "https://zenodo.org/api/records/19042518/file-modification",
+    "files": "https://zenodo.org/api/records/19042518/files",
+    "latest": "https://zenodo.org/api/records/19042518/versions/latest",
+    "latest_html": "https://zenodo.org/records/19042518/latest",
+    "media_files": "https://zenodo.org/api/records/19042518/media-files",
+    "parent": "https://zenodo.org/api/records/19042517",
+    "parent_doi": "https://doi.org/10.5281/zenodo.19042517",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19042517",
+    "parent_html": "https://zenodo.org/records/19042517",
+    "preview_html": "https://zenodo.org/records/19042518?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/19042518/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/19042518/request-deletion",
+    "requests": "https://zenodo.org/api/records/19042518/requests",
+    "reserve_doi": "https://zenodo.org/api/records/19042518/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/19042518",
+    "self_doi": "https://doi.org/10.5281/zenodo.19042518",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19042518",
+    "self_html": "https://zenodo.org/records/19042518",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19042518/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19042518/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:19042518:Indexing%20Stall:%20When%20Platforms%20Freeze%20the%20Visibility%20Layer%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:19042518:Indexing%20Stall:%20When%20Platforms%20Freeze%20the%20Visibility%20Layer%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:19042518:Indexing%20Stall:%20When%20Platforms%20Freeze%20the%20Visibility%20Layer%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:19042518:Indexing%20Stall:%20When%20Platforms%20Freeze%20the%20Visibility%20Layer%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:19042518:Indexing%20Stall:%20When%20Platforms%20Freeze%20the%20Visibility%20Layer%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:19042518:Indexing%20Stall:%20When%20Platforms%20Freeze%20the%20Visibility%20Layer%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/19042518/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Indexing Stall defines the structural event in which a platform&rsquo;s visibility layer freezes while the operational layer continues functioning, creating the illusion of zero engagement despite ongoing activity. Using the SR diagnostic framework, the essay maps how backend recalibration, dominant‑cluster formation, and semantic reclassification interrupt metric‑writing pipelines, producing sudden visibility cliffs rather than behavioral declines. It argues that indexing stalls are not anomalies but predictable infrastructural events that reveal how platforms fail at the level of representation, not operation, and why legibility collapses long before systems themselves degrade.</p>",
+    "doi": "10.5281/zenodo.19042518",
+    "keywords": [
+      "Indexing",
+      "Internet studies",
+      "Artificial intelligence",
+      "Institutions"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-16",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "19042517"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Indexing Stall: When Platforms Freeze the Visibility Layer",
+    "version": "1.0"
+  },
+  "modified": "2026-03-16T02:59:50.122810+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "19042518",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 8,
+    "unique_downloads": 7,
+    "unique_views": 20,
+    "version_downloads": 8,
+    "version_unique_downloads": 7,
+    "version_unique_views": 20,
+    "version_views": 20,
+    "views": 20
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Indexing Stall: When Platforms Freeze the Visibility Layer",
+  "updated": "2026-03-16T02:59:50.122810+00:00"
+}

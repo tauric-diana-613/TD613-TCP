@@ -1,0 +1,19 @@
+{
+  "schema": "td613.dome-world.docs-migration-compatibility-amendment/v0.1",
+  "namespace": "U+10D613",
+  "amends": "DOCS_MIGRATION_MAP_V0_1.json",
+  "reason": "The Flow-Core P0-P10 completion contract reads the runtime release closure receipt through its historical flat path.",
+  "added_compatibility_symlink": {
+    "old_path": "app/dome-world/docs/FLOWCORE_RUNTIME_RELEASE_CLOSURE_RECEIPT_V0_1.md",
+    "canonical_path": "app/dome-world/docs/flowcore/receipts/FLOWCORE_RUNTIME_RELEASE_CLOSURE_RECEIPT_V0_1.md",
+    "target_from_docs_root": "flowcore/receipts/FLOWCORE_RUNTIME_RELEASE_CLOSURE_RECEIPT_V0_1.md",
+    "canonical_blob_sha": "6045e7d5dfb30ea23a3be6b65eda6173e9942e63",
+    "consumer": "tests/flowcore-p0-p10-completion.test.mjs",
+    "temporary": true
+  },
+  "compatibility_symlink_count_after_amendment": 27,
+  "canonical_document_count_changed": false,
+  "runtime_mutation": false,
+  "deployment_authorized": false,
+  "a16_authorized": false
+}

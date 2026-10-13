@@ -1,0 +1,141 @@
+---
+derivative_id: derivative:f5b7b5a9ff2db1b7cafbc8e1
+parent_capture_id: capture:979ac6bcad6287206211a901
+parent_blob_sha256: 337a49a100d0e876dc85ba20a2eb7f227a6ee786bc1cf8ca25e20fc58e8ef85f
+tool: srcctl-json-normalizer/1
+source_title: "Interpretive Sovereignty Theory: The Post‑Open‑Web Society"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18726709",
+  "conceptrecid": "18726709",
+  "created": "2026-02-21T19:35:11.433079+00:00",
+  "doi": "10.5281/zenodo.18726710",
+  "doi_url": "https://doi.org/10.5281/zenodo.18726710",
+  "files": [
+    {
+      "checksum": "md5:8192a0a5c2971d2d38ec081622f59bb1",
+      "id": "e8b5b0a2-9a4b-4ec4-87b1-74728cbf2599",
+      "key": "Interpretive Sovereignty Theory: The Post‑Open‑Web Society .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18726710/files/Interpretive%20Sovereignty%20Theory:%20The%20Post%E2%80%91Open%E2%80%91Web%20Society%20.pdf/content"
+      },
+      "size": 95346
+    }
+  ],
+  "id": 18726710,
+  "links": {
+    "access": "https://zenodo.org/api/records/18726710/access",
+    "access_grants": "https://zenodo.org/api/records/18726710/access/grants",
+    "access_links": "https://zenodo.org/api/records/18726710/access/links",
+    "access_request": "https://zenodo.org/api/records/18726710/access/request",
+    "access_users": "https://zenodo.org/api/records/18726710/access/users",
+    "archive": "https://zenodo.org/api/records/18726710/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18726710/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18726710/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18726710/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18726710",
+    "draft": "https://zenodo.org/api/records/18726710/draft",
+    "file_modification": "https://zenodo.org/api/records/18726710/file-modification",
+    "files": "https://zenodo.org/api/records/18726710/files",
+    "latest": "https://zenodo.org/api/records/18726710/versions/latest",
+    "latest_html": "https://zenodo.org/records/18726710/latest",
+    "media_files": "https://zenodo.org/api/records/18726710/media-files",
+    "parent": "https://zenodo.org/api/records/18726709",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18726709",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18726709",
+    "parent_html": "https://zenodo.org/records/18726709",
+    "preview_html": "https://zenodo.org/records/18726710?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18726710/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18726710/request-deletion",
+    "requests": "https://zenodo.org/api/records/18726710/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18726710/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18726710",
+    "self_doi": "https://doi.org/10.5281/zenodo.18726710",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18726710",
+    "self_html": "https://zenodo.org/records/18726710",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18726710/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18726710/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18726710:Interpretive%20Sovereignty%20Theory:%20The%20Post%E2%80%91Open%E2%80%91Web%20Society%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18726710:Interpretive%20Sovereignty%20Theory:%20The%20Post%E2%80%91Open%E2%80%91Web%20Society%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18726710:Interpretive%20Sovereignty%20Theory:%20The%20Post%E2%80%91Open%E2%80%91Web%20Society%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18726710:Interpretive%20Sovereignty%20Theory:%20The%20Post%E2%80%91Open%E2%80%91Web%20Society%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18726710:Interpretive%20Sovereignty%20Theory:%20The%20Post%E2%80%91Open%E2%80%91Web%20Society%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18726710:Interpretive%20Sovereignty%20Theory:%20The%20Post%E2%80%91Open%E2%80%91Web%20Society%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18726710/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Interpretive Sovereignty Theory: The Post‑Open‑Web Society examines the structural transformation of meaning in an era where platforms and AI systems mediate public understanding more rapidly and comprehensively than governments or traditional institutions can respond. The collapse of the open web has shifted interpretive authority away from states and toward platform‑AI infrastructures that control visibility, indexing, semantic clustering, and narrative framing. This essay introduces Interpretive Sovereignty Theory as a framework for understanding how meaning is produced, contested, and stabilized in the post‑open‑web society.</p>\n<p>The work analyzes the erosion of hyperlink‑based discovery, the rise of platform‑controlled epistemic infrastructure, and the emergence of AI as the primary interpreter of events. It argues that governments now operate downstream of meaning, unable to see or influence the interpretive processes that shape legitimacy and public understanding. The essay outlines the inversion of the societal stack&mdash;Platforms &rarr; AI &rarr; Public &rarr; State&mdash;and identifies the vulnerabilities introduced by AI interpretation, including hallucination, bias, conspiratorial drift, and institutional capture.</p>\n<p>The theory demonstrates why governments cannot reclaim interpretive sovereignty: they lack access to platform telemetry, model internals, semantic infrastructure, and real‑time interpretive pipelines. As a result, the epistemic center of society has moved permanently outside the state. The essay concludes by arguing for the necessity of independent interpretive frameworks capable of providing conceptual stability, epistemic anchoring, and non‑institutional neutrality in a world where neither states nor platforms can reliably stabilize meaning.</p>\n<p>This work contributes to emerging research on epistemic infrastructure, platform power, AI mediation, and the governance challenges of the post‑open‑web era.</p>",
+    "doi": "10.5281/zenodo.18726710",
+    "keywords": [
+      "Internet studies",
+      "Post Open Web",
+      "Critical Theory",
+      "Social Issues",
+      "Artificial Intelligence"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-02-21",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18726709"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Interpretive Sovereignty Theory: The Post‑Open‑Web Society",
+    "version": "1.0"
+  },
+  "modified": "2026-02-21T19:35:11.863886+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18726710",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 13,
+    "unique_downloads": 10,
+    "unique_views": 48,
+    "version_downloads": 13,
+    "version_unique_downloads": 10,
+    "version_unique_views": 48,
+    "version_views": 48,
+    "views": 48
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Interpretive Sovereignty Theory: The Post‑Open‑Web Society",
+  "updated": "2026-02-21T19:35:11.863886+00:00"
+}

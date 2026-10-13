@@ -1,0 +1,250 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.aperture.reader-disagreement-ledger/v0.1",
+  "title": "TD613 Reader Disagreement Ledger v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "version", "ledger_id", "created_at", "mode",
+    "registry_reference", "matched_context", "comparison_state",
+    "reader_count", "observed_reader_count", "incomplete_provenance_count",
+    "unresolved_result_count", "entries", "set_components",
+    "numeric_components", "pairwise", "disagreement_detected",
+    "universal_disagreement_score", "real_surveillance_probability",
+    "raw_reader_input_present", "raw_reader_result_present",
+    "readers_executed_by_ledger", "provider_call_performed",
+    "network_called", "storage_mutated", "transport_authorized",
+    "release_authorized", "identity_inference_authorized",
+    "authorship_attribution_authorized", "ownership_inference_authorized",
+    "prediction_authorized", "automatic_hold", "recommendation_not_command",
+    "source_status", "evidence_basis", "missingness", "alternatives",
+    "open_questions", "operator_notes", "closure", "ledger_digest"
+  ],
+  "properties": {
+    "schema": { "const": "td613.aperture.reader-disagreement-ledger/v0.1" },
+    "version": { "const": "v0.1" },
+    "ledger_id": { "type": "string", "pattern": "^readerdisagree_[A-Za-z0-9_-]{6,128}$" },
+    "created_at": { "type": "string" },
+    "mode": { "const": "PROVENANCE_GATED_COMPONENTWISE_DISAGREEMENT" },
+    "registry_reference": { "$ref": "#/$defs/sha256" },
+    "matched_context": { "$ref": "#/$defs/matchedContext" },
+    "comparison_state": { "enum": ["OBSERVED_READER_DISAGREEMENT", "PARTIAL_READER_DISAGREEMENT"] },
+    "reader_count": { "type": "integer", "minimum": 2 },
+    "observed_reader_count": { "type": "integer", "minimum": 0 },
+    "incomplete_provenance_count": { "type": "integer", "minimum": 0 },
+    "unresolved_result_count": { "type": "integer", "minimum": 0 },
+    "entries": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/entry" } },
+    "set_components": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node_ids", "relationship_ids", "room_bridge_ids", "hypothesis_ids", "next_action_ids"],
+      "properties": {
+        "node_ids": { "$ref": "#/$defs/setSupport" },
+        "relationship_ids": { "$ref": "#/$defs/setSupport" },
+        "room_bridge_ids": { "$ref": "#/$defs/setSupport" },
+        "hypothesis_ids": { "$ref": "#/$defs/setSupport" },
+        "next_action_ids": { "$ref": "#/$defs/setSupport" }
+      }
+    },
+    "numeric_components": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["chronology_millipoints", "source_style_linkage_millipoints"],
+      "properties": {
+        "chronology_millipoints": { "$ref": "#/$defs/numericSupport" },
+        "source_style_linkage_millipoints": { "$ref": "#/$defs/numericSupport" }
+      }
+    },
+    "pairwise": { "type": "array", "items": { "$ref": "#/$defs/pairwise" } },
+    "disagreement_detected": { "type": "boolean" },
+    "universal_disagreement_score": { "type": "null" },
+    "real_surveillance_probability": { "type": "null" },
+    "raw_reader_input_present": { "const": false },
+    "raw_reader_result_present": { "const": false },
+    "readers_executed_by_ledger": { "const": false },
+    "provider_call_performed": { "const": false },
+    "network_called": { "const": false },
+    "storage_mutated": { "const": false },
+    "transport_authorized": { "const": false },
+    "release_authorized": { "const": false },
+    "identity_inference_authorized": { "const": false },
+    "authorship_attribution_authorized": { "const": false },
+    "ownership_inference_authorized": { "const": false },
+    "prediction_authorized": { "const": false },
+    "automatic_hold": { "const": false },
+    "recommendation_not_command": { "const": true },
+    "source_status": { "type": "string" },
+    "evidence_basis": { "$ref": "#/$defs/stringArray" },
+    "missingness": { "$ref": "#/$defs/stringArray" },
+    "alternatives": { "$ref": "#/$defs/stringArray" },
+    "open_questions": { "$ref": "#/$defs/stringArray" },
+    "operator_notes": { "$ref": "#/$defs/stringArray" },
+    "closure": { "$ref": "#/$defs/closure" },
+    "ledger_digest": { "$ref": "#/$defs/sha256" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "stringArray": { "type": "array", "items": { "type": "string" } },
+    "closure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "status"],
+      "properties": {
+        "required": { "const": true },
+        "status": { "type": "string" }
+      }
+    },
+    "matchedContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "case_map_digest", "route_memory_digest", "reader_input_digest", "result_schema", "registry_reference"],
+      "properties": {
+        "case_id": { "type": "string" },
+        "case_map_digest": { "$ref": "#/$defs/sha256" },
+        "route_memory_digest": { "$ref": "#/$defs/sha256" },
+        "reader_input_digest": { "$ref": "#/$defs/sha256" },
+        "result_schema": { "type": "string", "minLength": 1 },
+        "registry_reference": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "node_ids", "relationship_ids", "room_bridge_ids", "hypothesis_ids",
+        "next_action_ids", "chronology_millipoints", "source_style_linkage_millipoints"
+      ],
+      "properties": {
+        "node_ids": { "$ref": "#/$defs/stringArray" },
+        "relationship_ids": { "$ref": "#/$defs/stringArray" },
+        "room_bridge_ids": { "$ref": "#/$defs/stringArray" },
+        "hypothesis_ids": { "$ref": "#/$defs/stringArray" },
+        "next_action_ids": { "$ref": "#/$defs/stringArray" },
+        "chronology_millipoints": { "type": "integer", "minimum": 0, "maximum": 1000 },
+        "source_style_linkage_millipoints": { "type": "integer", "minimum": 0, "maximum": 1000 }
+      }
+    },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reader_id", "reader_class", "reader_digest", "provenance_id",
+        "provenance_digest", "provenance_state", "result_state",
+        "upstream_result_digest", "result_schema", "summary_relation",
+        "summary", "summary_digest", "missingness"
+      ],
+      "properties": {
+        "reader_id": { "type": "string" },
+        "reader_class": { "type": "string" },
+        "reader_digest": { "$ref": "#/$defs/sha256" },
+        "provenance_id": { "type": "string" },
+        "provenance_digest": { "$ref": "#/$defs/sha256" },
+        "provenance_state": { "enum": ["PROVENANCE_BOUND", "PROVENANCE_INCOMPLETE"] },
+        "result_state": { "enum": ["OBSERVED", "NULL", "REJECTED", "MISSING", "CONTRADICTORY", "UNCAPTURED", "ENCODER_REQUIRED", "UNRESOLVED"] },
+        "upstream_result_digest": { "$ref": "#/$defs/sha256" },
+        "result_schema": { "type": "string" },
+        "summary_relation": { "const": "DECLARED_PURPOSE_SHAPED_SUMMARY" },
+        "summary": { "$ref": "#/$defs/summary" },
+        "summary_digest": { "$ref": "#/$defs/sha256" },
+        "missingness": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "supportRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "reader_ids", "count", "denominator"],
+      "properties": {
+        "id": { "type": "string" },
+        "reader_ids": { "$ref": "#/$defs/stringArray" },
+        "count": { "type": "integer", "minimum": 1 },
+        "denominator": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "setSupport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["observed_reader_count", "union_ids", "consensus_ids", "disagreement_ids", "support"],
+      "properties": {
+        "observed_reader_count": { "type": "integer", "minimum": 0 },
+        "union_ids": { "$ref": "#/$defs/stringArray" },
+        "consensus_ids": { "$ref": "#/$defs/stringArray" },
+        "disagreement_ids": { "$ref": "#/$defs/stringArray" },
+        "support": { "type": "array", "items": { "$ref": "#/$defs/supportRow" } }
+      }
+    },
+    "numericValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reader_id", "value"],
+      "properties": {
+        "reader_id": { "type": "string" },
+        "value": { "type": "integer", "minimum": 0, "maximum": 1000 }
+      }
+    },
+    "numericSupport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["observed_reader_count", "values", "minimum", "maximum", "spread"],
+      "properties": {
+        "observed_reader_count": { "type": "integer", "minimum": 0 },
+        "values": { "type": "array", "items": { "$ref": "#/$defs/numericValue" } },
+        "minimum": { "type": "integer", "minimum": 0, "maximum": 1000 },
+        "maximum": { "type": "integer", "minimum": 0, "maximum": 1000 },
+        "spread": { "type": "integer", "minimum": 0, "maximum": 1000 }
+      }
+    },
+    "pairSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["shared_ids", "only_left_ids", "only_right_ids"],
+      "properties": {
+        "shared_ids": { "$ref": "#/$defs/stringArray" },
+        "only_left_ids": { "$ref": "#/$defs/stringArray" },
+        "only_right_ids": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "pairNumeric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["left_value", "right_value", "absolute_delta"],
+      "properties": {
+        "left_value": { "type": "integer", "minimum": 0, "maximum": 1000 },
+        "right_value": { "type": "integer", "minimum": 0, "maximum": 1000 },
+        "absolute_delta": { "type": "integer", "minimum": 0, "maximum": 1000 }
+      }
+    },
+    "pairwise": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pair_id", "reader_ids", "comparison_state", "set_components", "numeric_components", "disagreement_detected", "missingness"],
+      "properties": {
+        "pair_id": { "type": "string" },
+        "reader_ids": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "type": "string" } },
+        "comparison_state": { "enum": ["OBSERVED", "UNRESOLVED"] },
+        "set_components": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["node_ids", "relationship_ids", "room_bridge_ids", "hypothesis_ids", "next_action_ids"],
+          "properties": {
+            "node_ids": { "$ref": "#/$defs/pairSet" },
+            "relationship_ids": { "$ref": "#/$defs/pairSet" },
+            "room_bridge_ids": { "$ref": "#/$defs/pairSet" },
+            "hypothesis_ids": { "$ref": "#/$defs/pairSet" },
+            "next_action_ids": { "$ref": "#/$defs/pairSet" }
+          }
+        },
+        "numeric_components": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["chronology_millipoints", "source_style_linkage_millipoints"],
+          "properties": {
+            "chronology_millipoints": { "$ref": "#/$defs/pairNumeric" },
+            "source_style_linkage_millipoints": { "$ref": "#/$defs/pairNumeric" }
+          }
+        },
+        "disagreement_detected": { "type": "boolean" },
+        "missingness": { "$ref": "#/$defs/stringArray" }
+      }
+    }
+  }
+}

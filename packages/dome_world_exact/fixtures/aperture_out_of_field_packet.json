@@ -1,0 +1,9 @@
+{
+  "schema": "td613.aperture-to-dome.route-weather/v1",
+  "source": { "tool": "TD613 Aperture", "version": "v2.9.3", "role": "counter-tool" },
+  "active_lane": "phason_gate_scan",
+  "artifact_id": "art_new_generator",
+  "observation_coords": [0, 0, 1, 0],
+  "_note": "theta^2 in K=Q(sqrt2+sqrt3); out of span{1,theta} -> residual 96 (2sqrt6), grows basis by minpoly x^2-24, grade CONSTRUCTION",
+  "claim_ceiling": "aperture-to-flowcore-translation-not-aperture-execution"
+}

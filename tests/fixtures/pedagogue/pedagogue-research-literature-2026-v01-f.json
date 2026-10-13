@@ -1,0 +1,89 @@
+{
+  "schema": "td613.flowcore.pedagogue-research-literature-fixture/v0.1",
+  "fixture_id": "pedagogue.research-hydration.2026-stochastic-decision-sixth-pass/v0.1",
+  "research_only": true,
+  "raw_source_content_included": false,
+  "part": "F",
+  "cards": [
+    {
+      "card_id": "lit-distribution-clustering-tv-sample-complexity-2026",
+      "source": {
+        "title": "A Distribution Testing Approach to Clustering Distributions",
+        "venue": "Proceedings of Thirty Ninth Conference on Learning Theory",
+        "publication_date": "2026",
+        "source_class": "PRIMARY_PEER_REVIEWED",
+        "source_reference": "pmlr:v336:kumar26a"
+      },
+      "domain_family": "DISTRIBUTION_TESTING",
+      "domain_tags": ["distribution-testing", "sample-complexity", "total-variation"],
+      "mechanism_id": "FINITE_SAMPLE_RECOVERABILITY_DEPENDS_ON_SEPARATION_AND_BUDGET",
+      "observed_relation": "The paper studies recovery of a hidden clustering of distributions under an explicit pairwise total-variation separation assumption and derives sample-complexity bounds that depend on separation, domain size, number of distributions, and cluster sizes.",
+      "transferable_relation": "A population separation condition does not by itself specify finite-sample recoverability; the observation budget and problem dimensions belong to the decision claim.",
+      "admissible_assays": ["Hold route-conditioned population laws fixed while varying declared sample budget, candidate count, or separation and report population equivalence separately from finite-budget decision error."],
+      "alternative_explanations": ["The exact sample-complexity dependence is specific to the studied distribution-clustering problem and should not be imported into unrelated inverse problems."],
+      "falsifiers": ["A proposed finite-budget criterion reports unchanged recoverability after material changes to sample budget or separation in a fixture authored to make those changes decision-relevant."],
+      "forbidden_inferences": ["Use of total variation in a distribution-testing theorem does not make total variation the universal metric of stochastic identifiability."],
+      "claim_ceiling": "POPULATION_SEPARATION_VERSUS_FINITE_SAMPLE_RECOVERY_RELATION_ONLY"
+    },
+    {
+      "card_id": "lit-multidistribution-bayes-benchmark-sample-cost-2026",
+      "source": {
+        "title": "Is Multi-Distribution Learning as Easy as PAC Learning: Sharp Rates with Bounded Label Noise",
+        "venue": "Proceedings of Thirty Ninth Conference on Learning Theory",
+        "publication_date": "2026",
+        "source_class": "PRIMARY_PEER_REVIEWED",
+        "source_reference": "pmlr:v336:hanashiro26a"
+      },
+      "domain_family": "STATISTICAL_LEARNING_THEORY",
+      "domain_tags": ["multi-distribution-learning", "sample-complexity", "bayes-error"],
+      "mechanism_id": "FINITE_SAMPLE_RECOVERABILITY_DEPENDS_ON_DECISION_SPECIFICATION",
+      "observed_relation": "The paper derives different sample-complexity behavior for multi-distribution learning under bounded label noise and shows that the statistical cost depends on the number of distributions and on the benchmark, including comparison with each distribution's optimal Bayes error.",
+      "transferable_relation": "Finite-sample performance belongs to a declared decision problem and benchmark; changing the source family, noise model, or target benchmark can change sample requirements without changing the meaning of population distribution equality.",
+      "admissible_assays": ["Keep population route distributions fixed while changing the declared decision benchmark or sample budget and report the resulting risk separately from population equivalence classes."],
+      "alternative_explanations": ["The sharp rates arise from the specific multi-distribution classification setup and bounded-noise assumptions."],
+      "falsifiers": ["A criterion labeled finite-budget recoverability remains numerically and semantically invariant to changes in parameters that explicitly define its decision problem."],
+      "forbidden_inferences": ["Bayes error under one prior, loss, or benchmark is not a universal identifiability scalar."],
+      "claim_ceiling": "DECISION_SPECIFICATION_AND_SAMPLE_BUDGET_RELATION_ONLY"
+    },
+    {
+      "card_id": "lit-information-theoretic-partial-identification-bounds-2026",
+      "source": {
+        "title": "Information-Theoretic Causal Bounds under Unmeasured Confounding",
+        "venue": "Proceedings of the Fifth Conference on Causal Learning and Reasoning",
+        "publication_date": "2026",
+        "source_class": "PRIMARY_PEER_REVIEWED",
+        "source_reference": "pmlr:v323:jung26a"
+      },
+      "domain_family": "CAUSAL_PARTIAL_IDENTIFICATION",
+      "domain_tags": ["partial-identification", "bounds", "divergence"],
+      "mechanism_id": "PARTIAL_IDENTIFICATION_REQUIRES_BOUNDED_CLAIMS",
+      "observed_relation": "The paper develops divergence-based sharp partial-identification bounds for causal effects under unmeasured confounding rather than presenting an unavailable point-identified quantity as uniquely recovered.",
+      "transferable_relation": "When the observation and assumption set supports an identified set or bound rather than a unique latent value, the bounded equivalence class is the result and must not be flattened into point identification or failure.",
+      "admissible_assays": ["Construct candidate families with observationally equivalent members and require the research output to preserve the identified set or equivalence class instead of forcing one winner."],
+      "alternative_explanations": ["The particular divergence bounds and causal interpretation are specific to the paper's confounding framework."],
+      "falsifiers": ["A purported partial-identification discipline still selects one latent candidate when several remain equivalent under the declared observation and assumptions."],
+      "forbidden_inferences": ["Causal partial-identification bounds do not establish a TD613 causal model or authorize importing causal divergences as universal route metrics."],
+      "claim_ceiling": "IDENTIFIED_SET_AND_BOUNDED_CLAIM_RELATION_ONLY"
+    },
+    {
+      "card_id": "lit-epidemic-observation-design-identifiability-information-2026",
+      "source": {
+        "title": "Identifiability and Information-Based Inference for Epidemic Transmission Models Under Partial Observation",
+        "venue": "arXiv",
+        "publication_date": "2026-07-25",
+        "source_class": "PRIMARY_PREPRINT",
+        "source_reference": "arxiv:2607.23079"
+      },
+      "domain_family": "EPIDEMIC_STATISTICAL_INFERENCE",
+      "domain_tags": ["partial-observation", "identifiability", "fisher-information", "observation-design"],
+      "mechanism_id": "OBSERVATION_DESIGN_AFFECTS_IDENTIFIABILITY_AND_PRECISION",
+      "observed_relation": "The preprint analyzes identifiability and information loss in partially observed epidemic transmission models and studies how observation frequency, network coverage, and measurement accuracy affect estimability and inferential precision.",
+      "transferable_relation": "Observation design can change practical information and estimation precision without changing the latent process definition, so measurement regime must remain explicit in an identifiability or recoverability claim.",
+      "admissible_assays": ["Hold the latent route-conditioned process fixed while varying a predeclared observation regime and separately report equivalence classes, decision error, and information/precision diagnostics."],
+      "alternative_explanations": ["The reported information quantities and observation effects may be specific to epidemic network models and their likelihood structure."],
+      "falsifiers": ["A claimed observation-design effect disappears under a controlled model where only the admitted measurement regime changes, or the effect requires changing the latent process as well."],
+      "forbidden_inferences": ["Fisher information in an epidemic model does not establish TD613 information curvature or physical geometry."],
+      "claim_ceiling": "OBSERVATION_DESIGN_AND_INFERENTIAL_PRECISION_RELATION_ONLY"
+    }
+  ]
+}

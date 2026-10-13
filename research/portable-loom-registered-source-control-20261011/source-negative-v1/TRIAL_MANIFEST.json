@@ -1,0 +1,18 @@
+{
+  "schema": "td613.loom.server-assay-trials/v0.1",
+  "artifact_source_commit": "b0c1143a0b5c1d3039c64d116203ae5362e8103d",
+  "artifact_publication_commit": null,
+  "artifact_path": "research/portable-loom-registered-source-control-20261011/source-negative-v1/PROMPT.txt",
+  "artifact_sha256": "670d18f3a8015c982bd1365fa00bda5c1ab42af0dac82b2881b3f2f78dd849ae",
+  "receivers": [
+    {
+      "case_id": "R01",
+      "first_user_suffix": "",
+      "later_user_messages": [],
+      "first_user_message_sha256": "670d18f3a8015c982bd1365fa00bda5c1ab42af0dac82b2881b3f2f78dd849ae",
+      "maximum_assistant_outputs": 1
+    }
+  ],
+  "comparison": [],
+  "protocol_note": "Fresh one-task source-registration negative control. Packet registers zero document IDs; one explicitly selected source annex remains provider-visible. Display label is data. No historical answer or source body is inherited."
+}

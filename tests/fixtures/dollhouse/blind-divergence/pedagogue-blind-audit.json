@@ -1,0 +1,10 @@
+{
+  "role": "PEDAGOGUE",
+  "coordinate": "return_state_divergence_and_held_c2",
+  "jurisdiction": "consequence_order_route_burden_practice",
+  "observation": "User navigates to #return-review while Marrowline continuation is incomplete; Loom displays standard builder shell rather than the expected returned-work review.",
+  "concern": "Route confusion and broken promise: operator is told they have returned to review, but the interface fails to visibly inhabit the return consequence, violating consequence-before-ontology.",
+  "falsifier": "A first-time mobile user can locate their returned work without reading technical console logs when returnWorkspaceVisible is false.",
+  "recommended_action": "Display child-legible notice when Return is reached prematurely: 'No finished work to review yet. Finish your turn in Marrowline or start over.'",
+  "claim_ceiling": "recommendation-and-verification-only-human-closure-required"
+}

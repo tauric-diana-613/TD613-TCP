@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:ordinal-series-observation:v1",
+  "title": "SignalRupture ordinal series observation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "series_observation_id",
+    "series_namespace_id",
+    "status",
+    "stages",
+    "later_compiler_id",
+    "later_compiler_status",
+    "normalization_limits",
+    "origin",
+    "relation_provenance_mode",
+    "evidence_ids"
+  ],
+  "properties": {
+    "schema_version": {"const": "ordinal-series-observation/v1"},
+    "series_observation_id": {"type": "string", "minLength": 1},
+    "series_namespace_id": {"type": ["string", "null"], "minLength": 1},
+    "status": {"type": "string", "pattern": "^[A-Z0-9_]+$"},
+    "stages": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/stage"},
+      "minItems": 1
+    },
+    "later_compiler_id": {"type": ["string", "null"], "minLength": 1},
+    "later_compiler_status": {"type": "string", "pattern": "^[A-Z0-9_]+$"},
+    "normalization_limits": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "origin": {"enum": ["explicit-source", "archive-inferred", "researcher-proposed", "collaborator-proposed"]},
+    "relation_provenance_mode": {
+      "enum": ["CONTEMPORANEOUS", "FORWARD_DECLARED", "RETROSPECTIVE", "INFERRED", "MIXED", "UNRESOLVED"]
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "stage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manifestation_id",
+        "manifestation_created_at",
+        "ordinal",
+        "source_role_summary",
+        "source_title",
+        "evidence_ids"
+      ],
+      "properties": {
+        "manifestation_id": {"type": "string", "minLength": 1},
+        "manifestation_created_at": {"type": ["string", "null"], "minLength": 1},
+        "ordinal": {"type": "integer", "minimum": 1},
+        "ordinal_token": {"type": "string", "minLength": 1},
+        "source_role_summary": {"type": "string", "minLength": 1},
+        "source_title": {"type": "string", "minLength": 1},
+        "evidence_ids": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

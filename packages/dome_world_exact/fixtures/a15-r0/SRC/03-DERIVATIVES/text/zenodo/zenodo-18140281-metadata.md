@@ -1,0 +1,144 @@
+---
+derivative_id: derivative:6d273c372c84bda9b2e34fa4
+parent_capture_id: capture:a19363ce0b49e77b3bdd77f5
+parent_blob_sha256: 0b9def3caef1d06d83fbddf309eec063d82155445d7b065625557dc3cd3cea2c
+tool: srcctl-json-normalizer/1
+source_title: "The Architecture of Absorption: A Systems‑Level Analysis of Harm, Infrastructure, and Disappearance"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18140280",
+  "conceptrecid": "18140280",
+  "created": "2026-01-03T14:38:26.669968+00:00",
+  "doi": "10.5281/zenodo.18140281",
+  "doi_url": "https://doi.org/10.5281/zenodo.18140281",
+  "files": [
+    {
+      "checksum": "md5:4906277f485716c489dc9ebbeca58f5e",
+      "id": "e930d28d-19a3-4c4b-b20d-5a84238afef3",
+      "key": "The Architecture of Absorption: A Systems‑Level Analysis of Harm, Infrastructure, and Disappearance .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18140281/files/The%20Architecture%20of%20Absorption:%20A%20Systems%E2%80%91Level%20Analysis%20of%20Harm,%20Infrastructure,%20and%20Disappearance%20.pdf/content"
+      },
+      "size": 97925
+    }
+  ],
+  "id": 18140281,
+  "links": {
+    "access": "https://zenodo.org/api/records/18140281/access",
+    "access_grants": "https://zenodo.org/api/records/18140281/access/grants",
+    "access_links": "https://zenodo.org/api/records/18140281/access/links",
+    "access_request": "https://zenodo.org/api/records/18140281/access/request",
+    "access_users": "https://zenodo.org/api/records/18140281/access/users",
+    "archive": "https://zenodo.org/api/records/18140281/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18140281/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18140281/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18140281/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18140281",
+    "draft": "https://zenodo.org/api/records/18140281/draft",
+    "file_modification": "https://zenodo.org/api/records/18140281/file-modification",
+    "files": "https://zenodo.org/api/records/18140281/files",
+    "latest": "https://zenodo.org/api/records/18140281/versions/latest",
+    "latest_html": "https://zenodo.org/records/18140281/latest",
+    "media_files": "https://zenodo.org/api/records/18140281/media-files",
+    "parent": "https://zenodo.org/api/records/18140280",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18140280",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18140280",
+    "parent_html": "https://zenodo.org/records/18140280",
+    "preview_html": "https://zenodo.org/records/18140281?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18140281/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18140281/request-deletion",
+    "requests": "https://zenodo.org/api/records/18140281/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18140281/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18140281",
+    "self_doi": "https://doi.org/10.5281/zenodo.18140281",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18140281",
+    "self_html": "https://zenodo.org/records/18140281",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18140281/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18140281/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18140281:The%20Architecture%20of%20Absorption:%20A%20Systems%E2%80%91Level%20Analysis%20of%20Harm,%20Infrastructure,%20and%20Disappearance%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18140281:The%20Architecture%20of%20Absorption:%20A%20Systems%E2%80%91Level%20Analysis%20of%20Harm,%20Infrastructure,%20and%20Disappearance%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18140281:The%20Architecture%20of%20Absorption:%20A%20Systems%E2%80%91Level%20Analysis%20of%20Harm,%20Infrastructure,%20and%20Disappearance%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18140281:The%20Architecture%20of%20Absorption:%20A%20Systems%E2%80%91Level%20Analysis%20of%20Harm,%20Infrastructure,%20and%20Disappearance%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18140281:The%20Architecture%20of%20Absorption:%20A%20Systems%E2%80%91Level%20Analysis%20of%20Harm,%20Infrastructure,%20and%20Disappearance%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18140281:The%20Architecture%20of%20Absorption:%20A%20Systems%E2%80%91Level%20Analysis%20of%20Harm,%20Infrastructure,%20and%20Disappearance%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18140281/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>The Architecture of Absorption examines how contemporary systems convert structural violence into individualized experience through a process the essay names absorption&mdash;the infrastructural metabolizing of harm, grief, and disappearance. Building on work in structural violence, necropolitics, media governance, Indigenous studies, and public‑health research, the essay argues that phenomena often treated as unrelated&mdash;sleep disruption, stress, gut instability, geopolitical violence, and the disappearance of Indigenous youth&mdash;are in fact coordinated outputs of a shared systemic logic. Absorption is presented not as metaphor but as a design function: a mechanism through which institutions distribute harm downward into bodies and communities while obscuring the conditions that produce it.</p>\n<p>Through analyses of wellness discourse, algorithmic suppression, jurisdictional fragmentation, and infrastructural neglect, the essay maps how systems stabilize themselves by reframing collective injury as personal responsibility. The work extends the author&rsquo;s broader stylometric project, which treats publishing as an infrastructural method&mdash;modular, recursive, and indexable&mdash;designed to reveal patterns of governance that remain hidden at the level of individual experience. The Architecture of Absorption ultimately argues for a shift from event‑based explanations to traceability, insisting that only by naming the architecture can systemic harm be recognized, mapped, and dismantled.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+    "doi": "10.5281/zenodo.18140281",
+    "keywords": [
+      "Sociology",
+      "Criminology",
+      "Social Issuess",
+      "Social Psychology",
+      "Critical Theory",
+      "Feminism",
+      "Minority Studies",
+      "Activism"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-01-03",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18140280"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "The Architecture of Absorption: A Systems‑Level Analysis of Harm, Infrastructure, and Disappearance",
+    "version": "1.0"
+  },
+  "modified": "2026-01-29T01:48:42.352860+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18140281",
+  "revision": 6,
+  "state": "done",
+  "stats": {
+    "downloads": 16,
+    "unique_downloads": 13,
+    "unique_views": 29,
+    "version_downloads": 16,
+    "version_unique_downloads": 13,
+    "version_unique_views": 29,
+    "version_views": 33,
+    "views": 33
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "The Architecture of Absorption: A Systems‑Level Analysis of Harm, Infrastructure, and Disappearance",
+  "updated": "2026-01-29T01:48:42.352860+00:00"
+}

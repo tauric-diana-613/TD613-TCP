@@ -1,0 +1,206 @@
+
+#loomAiWorkspace .ai-turn-verify{margin-top:9px}
+#loomAiWorkspace .ai-turn-verify>p{margin:9px 0}
+#loomAiWorkspace .ai-turn-verify label{display:grid;gap:5px;margin:9px 0;color:#e9c18e;font:650 .7rem/1.35 var(--sans)}
+#loomAiWorkspace .ai-turn-verify textarea{width:100%;box-sizing:border-box;padding:9px 10px;border:1px solid #a98cc63d;border-radius:9px;background:#0a0910;color:#eee8f2;font:400 16px/1.4 var(--sans);resize:vertical}
+#loomAiWorkspace .ai-turn-result{margin-top:10px;padding:11px;border:1px solid rgba(143,216,201,.2);border-radius:10px;background:#0c1514}
+#loomAiWorkspace .ai-turn-result[hidden]{display:none!important}
+#loomAiWorkspace .ai-turn-result pre{max-height:280px;overflow:auto;white-space:pre-wrap;word-break:break-word;font-size:.67rem}
+
+
+#loomAiWorkspace .ai-challenge-advanced{padding:10px 11px;border:1px solid rgba(229,189,138,.2);border-radius:10px;background:#120f16}
+#loomAiWorkspace .ai-challenge-advanced>summary{cursor:pointer;color:#e6c491;font:650 .72rem/1.35 var(--sans)}
+#loomAiWorkspace .ai-challenge-advanced[open]>summary{margin-bottom:10px}
+
+
+/* Portable Loom Session + Challenge Receiver */
+#loomAiWorkspace .ai-session-summary{margin:18px 0 12px;padding:15px 16px;border:1px solid rgba(137,216,201,.28);border-radius:14px;background:linear-gradient(135deg,rgba(11,31,29,.9),rgba(18,14,27,.88))}
+#loomAiWorkspace .ai-session-summary[hidden]{display:none!important}
+#loomAiWorkspace .ai-session-summary h3{margin:2px 0 10px;font:500 1.15rem/1.25 var(--serif);color:#f2ebe5}
+#loomAiWorkspace .ai-session-inspect{margin-top:9px}
+#loomAiWorkspace .ai-session-inspect>summary{cursor:pointer;color:#ddd1e8;font:650 .74rem/1.4 var(--sans)}
+#loomAiWorkspace .ai-session-inspect pre{max-height:320px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;padding:12px;border:1px solid rgba(143,216,201,.16);border-radius:9px;background:#07110f;font:.68rem/1.55 var(--mono)}
+#loomAiWorkspace .ai-session-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#loomAiWorkspace .ai-session-facts span{display:block;padding:10px;border:1px solid rgba(143,216,201,.16);border-radius:10px;background:#0b1515b8}
+#loomAiWorkspace .ai-session-facts small{display:block;color:#8fd8c9;font:700 .61rem/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase}
+#loomAiWorkspace .ai-session-facts b{display:block;margin-top:4px;color:#e8f0ed;font:600 .76rem/1.35 var(--sans)}
+#loomAiWorkspace .ai-onehop-drawer{margin-top:10px}
+#loomAiWorkspace .ai-challenge-drawer{margin-top:12px;border-color:rgba(255,105,195,.24);background:rgba(30,15,33,.58)}
+#loomAiWorkspace .ai-challenge-drawer>summary span{display:grid;gap:2px}
+#loomAiWorkspace .ai-challenge-drawer>summary small{font:400 .7rem/1.35 var(--sans);color:#bcaebe}
+#loomAiWorkspace .ai-challenge-body{display:grid;gap:12px;padding-top:14px}
+#loomAiWorkspace .ai-challenge-body label{display:grid;gap:6px;font:650 .72rem/1.3 var(--sans);color:#e9c18e}
+#loomAiWorkspace .ai-challenge-body textarea{width:100%;box-sizing:border-box;min-height:72px;padding:10px 11px;border:1px solid #b698d742;border-radius:10px;background:#0b0912;color:#eee8f2;font:400 16px/1.45 var(--sans);resize:vertical}
+#loomAiWorkspace .ai-challenge-body textarea:focus-visible{outline:2px solid #ff79c9;outline-offset:2px}
+#loomAiWorkspace .ai-challenge-actions{display:flex;flex-wrap:wrap;gap:8px}
+#loomAiWorkspace .ai-challenge-actions button{min-height:40px}
+#loomAiWorkspace .ai-challenge-result{padding:14px 15px;border:1px solid rgba(143,216,201,.27);border-radius:12px;background:#0d1716}
+#loomAiWorkspace .ai-challenge-result[hidden]{display:none!important}
+#loomAiWorkspace .ai-challenge-result h3{margin:2px 0 9px;font:500 1.05rem/1.3 var(--serif)}
+#loomAiWorkspace .ai-challenge-result ul{margin:0 0 10px;padding-left:18px;color:#ddd7e2}
+#loomAiWorkspace .ai-challenge-result li{margin:5px 0;font-size:.78rem;line-height:1.45}
+#loomAiWorkspace .ai-challenge-result pre{max-height:360px;overflow:auto;white-space:pre-wrap;word-break:break-word;font-size:.68rem}
+@media(max-width:700px){#loomAiWorkspace .ai-session-facts{grid-template-columns:1fr}#loomAiWorkspace .ai-challenge-actions{display:grid;grid-template-columns:1fr}#loomAiWorkspace .ai-challenge-actions button{width:100%}}
+
+
+/* In Portable AIA mode the builder, not the live demo room, carries the hierarchy. */
+#loomAiWorkspace[data-loom-mode="portable"] .ai-columns{grid-template-columns:minmax(0,1fr)}
+#loomAiWorkspace[data-loom-mode="portable"] .ai-composer{max-width:900px;margin-inline:auto;width:100%}
+#loomAiWorkspace[data-loom-mode="portable"] .ai-observer{display:none}
+#loomAiWorkspace[data-loom-mode="portable"] .ai-portable-drawer{display:none}
+#loomAiWorkspace[data-loom-mode="portable"] #aiPreparePortable{order:-2}
+#loomAiWorkspace[data-loom-mode="portable"] #aiRun{order:-1;background:#251a32;color:#eadff0;border-color:#c8a3e35a}
+#loomAiWorkspace[data-loom-mode="demo"] #aiRun{order:-2}
+#loomAiWorkspace[data-loom-mode="demo"] #aiPreparePortable{order:-1;background:#251a32;color:#eadff0;border-color:#c8a3e35a}
+
+/* Portable-governance-first shell: one builder, two explicit modes. */
+#loomAiWorkspace .ai-mode-shell{margin:0 0 24px;padding:20px;border:1px solid #c6a1e84a;border-radius:20px;background:linear-gradient(135deg,rgba(31,20,43,.96),rgba(13,10,23,.95));box-shadow:0 24px 80px #03020655}
+#loomAiWorkspace .ai-mode-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
+#loomAiWorkspace .ai-mode-head h2{font:500 clamp(1.7rem,3vw,2.5rem)/1.05 var(--serif);margin:4px 0 8px}
+#loomAiWorkspace .ai-mode-tabs{display:flex;gap:4px;padding:4px;border:1px solid #b598d84a;border-radius:14px;background:#0c0914}
+#loomAiWorkspace .ai-mode-tabs button{min-height:42px;padding:9px 16px;border:0;background:transparent;color:#c7b8d0}
+#loomAiWorkspace .ai-mode-tabs button[aria-selected="true"]{background:#3b2850;color:#fff1df;box-shadow:inset 0 0 0 1px #f0c38f6b,0 0 24px #b37bd526}
+#loomAiWorkspace .ai-mode-panel{margin-top:18px;padding:17px 18px;border:1px solid #b69ade33;border-radius:14px;background:#120e1bcc}
+#loomAiWorkspace .ai-mode-panel[hidden],#loomAiWorkspace .ai-demo-welcome[hidden],.loom-legacy[hidden]{display:none!important}
+#loomAiWorkspace .ai-mode-copy h3,#loomAiWorkspace .ai-mode-panel h3{font:500 1.25rem/1.2 var(--serif);margin:0 0 6px}
+#loomAiWorkspace .ai-issuance-gate{margin-top:14px;padding:14px;border-left:3px solid #d891a5;background:#1c111b;border-radius:8px}
+#loomAiWorkspace .ai-issuance-gate[data-state="ready"]{border-left-color:#8fd8c9;background:#101c1a}
+#loomAiWorkspace .ai-issuance-gate[data-state="practice"]{border-left-color:#edbe85;background:#1d1710}
+#loomAiWorkspace .ai-issuance-gate>label{display:block;margin-bottom:7px;font:700 .68rem/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#e9c18e}
+#loomAiWorkspace .ai-shi-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}
+#loomAiWorkspace .ai-shi-row input{width:100%;min-height:44px;padding:10px 12px;border:1px solid #c6a7e860;border-radius:10px;background:#0b0912;color:#f5edf7;font:500 16px/1.3 var(--mono);text-transform:uppercase}
+#loomAiWorkspace .ai-shi-row input:focus-visible{outline:2px solid #edbe85;outline-offset:2px}
+#loomAiWorkspace .ai-shi-row a{display:inline-grid;place-items:center;min-height:44px;padding:9px 13px;border:1px solid #e5bd8a70;border-radius:10px;color:#f4c994;text-decoration:none;font:700 .78rem/1.3 var(--sans);white-space:nowrap}
+#loomAiWorkspace #aiShiStatus{margin-top:10px;font-weight:650}
+#loomAiWorkspace .ai-portable-projection{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:14px}
+#loomAiWorkspace .ai-portable-projection>div{padding:12px 13px;border:1px solid #a58bca31;border-radius:11px;background:#0b0914aa}
+#loomAiWorkspace .ai-portable-projection span{display:block;color:#edbe85;font:700 .61rem/1.3 var(--mono);letter-spacing:.07em}
+#loomAiWorkspace .ai-portable-projection strong{display:block;margin-top:5px;color:#e9e0eb;font:550 .78rem/1.5 var(--sans)}
+#loomAiWorkspace .ai-projection-depth{grid-column:1/-1;border:1px solid #a58bca31;border-radius:11px;background:#0b0914aa;overflow:hidden}
+#loomAiWorkspace .ai-projection-depth>summary{display:flex;align-items:center;min-height:42px;padding:9px 12px;list-style:none;cursor:pointer;color:#d9cde1;font:650 .75rem/1.4 var(--sans)}
+#loomAiWorkspace .ai-projection-depth>summary::-webkit-details-marker{display:none}
+#loomAiWorkspace .ai-projection-depth>summary::after{content:'+';margin-left:auto;color:var(--gold);font:400 21px/1 var(--sans)}
+#loomAiWorkspace .ai-projection-depth[open]>summary::after{content:'−'}
+#loomAiWorkspace .ai-projection-depth-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:0 9px 9px}
+#loomAiWorkspace .ai-projection-depth-grid>div{padding:10px 11px;border-top:1px solid #a58bca28}
+@media(max-width:760px){#loomAiWorkspace .ai-projection-depth-grid{grid-template-columns:1fr}}
+@media(max-width:760px){#loomAiWorkspace .ai-mode-shell{padding:15px;border-radius:15px}#loomAiWorkspace .ai-mode-head{align-items:stretch;flex-direction:column}.ai-mode-tabs{width:100%}#loomAiWorkspace .ai-mode-tabs button{flex:1}#loomAiWorkspace .ai-portable-projection{grid-template-columns:1fr}}
+@media(max-width:500px){#loomAiWorkspace .ai-shi-row{grid-template-columns:1fr}#loomAiWorkspace .ai-shi-row a{width:100%}}
+
+/* Loom's working surface: task first, observation beside consequence. */
+.wrap{width:min(1160px,calc(100% - 40px))}.hero{padding:28px 0 20px}.hero h1{font-size:clamp(2.8rem,6vw,4.8rem)}.hero p{margin:10px 0;max-width:760px}.hero>.mark{font-size:.65rem}body{background-image:radial-gradient(ellipse at 85% 10%,#10342b70,transparent 55%)}
+#loomAiWorkspace{--soft:#afc6ba;color:#eef4e7;font-size:.94rem;line-height:1.55}#loomAiWorkspace *{min-width:0}#loomAiWorkspace button{font:600 .84rem/1.3 var(--sans);letter-spacing:.01em;border-radius:10px;margin:0;padding:12px 16px;background:#113027}#loomAiWorkspace button:hover{border-color:var(--mint)}#loomAiWorkspace button:disabled{opacity:.45}#loomAiWorkspace .ai-primary{background:var(--mint);color:#06241a;border-color:var(--mint);padding:15px 24px;font-weight:800}#loomAiWorkspace p{margin:8px 0}#loomAiWorkspace .ai-muted{color:var(--soft);font-size:.8rem}#loomAiWorkspace h2{font:500 1.7rem/1.15 var(--serif);margin:0}#loomAiWorkspace h3{font:600 1rem var(--sans);margin:8px 0}.ai-projects{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0 20px}#loomAiWorkspace .ai-projects button{text-align:left;padding:16px 18px;background:linear-gradient(145deg,#102e25,#071911);border:1px solid #71978740;display:grid;gap:7px;min-height:100px}#loomAiWorkspace .ai-projects button[aria-pressed=true]{border-color:var(--gold);background:linear-gradient(145deg,#2c3020,#0e221a)}.ai-projects strong{font-size:.98rem}.ai-projects span{font-size:.75rem;color:var(--soft);font-weight:400}.ai-columns{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:20px;align-items:start}.ai-composer,.ai-observer,.ai-result{border:1px solid #8ac4a92c;border-radius:20px;background:linear-gradient(130deg,#0e251b,#061510);overflow:hidden;padding:24px}.ai-composer{border-top:2px solid var(--gold)}.ai-composer label[for=aiTask]{display:block;font:500 1.65rem var(--serif);margin-bottom:12px}#loomAiWorkspace textarea{background:transparent;border:0;border-left:2px solid #e4c66c70;border-radius:0;padding:5px 0 5px 17px;font:400 1rem/1.75 var(--sans);color:#e8eee3;min-height:175px;max-height:420px;resize:vertical;box-shadow:none}#loomAiWorkspace textarea::placeholder{color:#91a897}#loomAiWorkspace textarea:focus{outline:0;border-left-color:var(--gold)}#loomAiWorkspace textarea:focus-visible{outline:2px solid var(--gold);outline-offset:4px}.ai-toolbar,.ai-send-row,.ai-output-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:15px}.ai-upload{position:relative;display:inline-flex;align-items:center;border:1px dashed #8aac94;border-radius:10px;min-height:44px;padding:10px 14px;font-size:.8rem;cursor:pointer}.ai-upload input{position:absolute;opacity:0;width:100%;height:100%;inset:0;cursor:pointer}.ai-upload:focus-within{outline:2px solid var(--gold)}.ai-documents{list-style:none;padding:0;margin:14px 0;display:grid;gap:8px}.ai-documents li{border:1px solid #acc7b025;border-radius:10px;padding:10px 12px;overflow-wrap:anywhere}.ai-documents label{display:flex;gap:9px;align-items:center;font-size:.8rem}.ai-documents input{accent-color:var(--mint);width:18px;height:18px;flex-shrink:0}.ai-documents summary{font-size:.75rem;color:var(--soft)}#loomAiWorkspace .ai-documents details{margin-top:5px;padding-top:5px;border:0}.ai-documents pre{max-height:180px;white-space:pre-wrap;font:.8rem/1.6 var(--sans);overflow:auto}.ai-observer{position:sticky;top:18px;padding:21px}.ai-phase{display:flex;align-items:center;justify-content:space-between;gap:12px}.ai-phase .ai-dot{width:8px;height:8px;border-radius:50%;background:var(--mint);box-shadow:0 0 12px #76ead466}.ai-field{width:100%;display:block;margin:10px 0}.ai-field text{font:12px var(--sans);fill:var(--soft)}.ai-field .ai-glyph{font:34px var(--serif);fill:var(--gold)}.ai-field path,.ai-field circle,.ai-field ellipse{vector-effect:non-scaling-stroke}.ai-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}.ai-facts div{border-top:1px solid #a8c9b833;padding-top:9px}.ai-facts dt{font-size:.68rem;color:var(--soft)}.ai-facts dd{font:500 1.3rem var(--sans);margin:5px 0}.ai-events{padding-left:20px;font-size:.78rem;color:var(--soft);max-height:190px;overflow:auto}.ai-result{margin-top:20px}.ai-result[hidden]{display:none}.ai-answer{font:400 1rem/1.8 var(--sans);white-space:pre-wrap;overflow-wrap:anywhere;padding:12px 0;max-height:600px;overflow:auto}.ai-inspector pre{font:.73rem/1.6 var(--mono);overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;max-height:350px}.ai-error{color:#ffc29c}.loom-legacy{margin-top:35px}.loom-legacy>summary{font-size:.82rem;color:#9ab4aa}.ai-view-switch{display:flex;gap:7px;margin:12px 0}#loomAiWorkspace .ai-view-switch button{padding:8px 12px;font-size:.72rem;min-height:36px}.ai-view-switch button[aria-pressed=true]{border-color:var(--gold)}
+@media(max-width:760px){.wrap{width:calc(100% - 26px)}.mast{gap:8px}.mast .mark{max-width:55%;line-height:1.7}.ai-projects{gap:7px}#loomAiWorkspace .ai-projects button{padding:12px 10px;min-height:120px}.ai-projects strong{font-size:.8rem}.ai-columns{grid-template-columns:1fr}.ai-composer,.ai-observer,.ai-result{padding:18px;border-radius:15px}.ai-observer{position:static}.hero{padding:24px 0 12px}.hero p{font-size:.97rem}#loomAiWorkspace textarea{font-size:16px}.ai-field{max-height:260px}.ai-facts{margin:10px 0}}
+@media(prefers-reduced-motion:reduce){#loomAiWorkspace *,#loomAiWorkspace *::before,#loomAiWorkspace *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+#loomAiWorkspace #aiRules,#loomAiWorkspace #aiPrivate{min-height:72px;font-size:.85rem}#loomAiWorkspace .ai-documents button{padding:5px 10px;min-height:30px;font-size:.7rem;margin-top:5px}
+
+#loomAiWorkspace .ai-answer{white-space:normal;max-height:none;overflow:visible}#loomAiWorkspace .ai-result-lead{font:400 1.12rem/1.75 var(--serif);max-width:82ch}#loomAiWorkspace .ai-result-next{margin:20px 0;padding:16px 18px;border-left:2px solid var(--gold);background:#e4c66c08}#loomAiWorkspace .ai-result-unknowns li{margin:12px 0}
+
+#loomAiWorkspace table{border-collapse:collapse;width:100%;font-size:.8rem}#loomAiWorkspace th,#loomAiWorkspace td{text-align:left;padding:10px 7px;border-bottom:1px solid #8aac9440}
+
+/* Living Loom: one canvas clock behind calm, legible reading plates. */
+:root{--ink:#08070e;--deep:#100c18;--panel:#17111f;--line:rgba(197,162,230,.24);--line2:rgba(238,182,119,.38);--mint:#cbb0f0;--gold:#edbe85;--paper:#f4ece4;--muted:#b6aabd}
+html,body{background:#08070e}body{background-image:none}
+#loomLivingGeometry{position:fixed;inset:0;z-index:0}
+body>.wrap{position:relative;z-index:1}
+.mast{border-bottom-color:#cfb3ed30}.return{background:#110d18dc}
+.hero{padding:38px 0 30px}.hero h1{text-shadow:0 3px 36px #08070e;font-size:clamp(3.2rem,7vw,6.1rem)}
+.hero p{color:#e3d6e5;max-width:650px;text-shadow:0 2px 8px #08070e}.hero .mark{color:var(--gold)}
+#loomAiWorkspace{--soft:#bcb0c6;color:#f4ece8}
+#loomAiWorkspace button{background:#251a32;border-color:#c8a3e33b}
+#loomAiWorkspace .ai-primary{background:#e9be8d;color:#251321;border-color:#f6cea5}
+#loomAiWorkspace .ai-composer,#loomAiWorkspace .ai-observer,#loomAiWorkspace .ai-result{background:rgba(18,13,26,.95);border-color:#d2a9ed38;box-shadow:0 20px 70px #03020666;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+#loomAiWorkspace .ai-composer{border-top-color:#edbe85}
+#loomAiWorkspace .ai-observer{background:rgba(22,15,32,.95)}
+#loomAiWorkspace textarea{color:#f1e7f2;border-left-color:#c299e480}
+#loomAiWorkspace textarea::placeholder{color:#ab9bb4}
+.ai-upload{border-color:#bc9ad7}.ai-documents li{border-color:#bd94da35}.ai-documents input{accent-color:#d2adf1}
+.ai-facts div{border-top-color:#c8a1e437}.ai-field text{fill:#c6b6d0}.ai-phase .ai-dot{background:#d4a7f5;box-shadow:0 0 12px #d4a7f540}
+.ai-demo-welcome{margin:0 0 20px;max-width:770px}
+#loomAiWorkspace .ai-demo-invitation,.loom-legacy>.loom-laboratory-invitation{--invitation-focus:0;display:flex;align-items:center;gap:18px;width:100%;text-align:left;padding:20px 24px;border:1px solid #e5b8ee85;border-radius:16px;color:#faeadd;background:linear-gradient(120deg,#382040ee,#191020f5 62%,#372136eb);box-shadow:0 0 calc(12px + var(--invitation-focus)*35px) rgba(201,127,230,calc(.08 + var(--invitation-focus)*.23)),inset 0 1px #ffdfba25;transform:translateY(calc(var(--invitation-focus)*-3px));list-style:none}
+#loomAiWorkspace .ai-demo-invitation:hover,.loom-legacy>.loom-laboratory-invitation:hover{border-color:#f6d0a6;background:linear-gradient(120deg,#43274e,#25182f 70%,#382443)}
+.ai-demo-invitation strong,.loom-laboratory-invitation strong{display:block;font:500 clamp(1.15rem,2vw,1.6rem)/1.25 var(--serif);letter-spacing:-.015em}
+#loomAiWorkspace .ai-demo-invitation small,.loom-laboratory-invitation small{display:block;margin-top:5px;font:400 .78rem/1.5 var(--sans);color:#d0bdd9}
+.ai-invitation-orbit{display:grid;place-items:center;flex:0 0 48px;height:48px;border:1px solid #ebbc8a88;border-radius:50%;color:#f6c895;background:#e4ac7610;font:400 1.6rem var(--sans)}
+.ai-invitation-arrow{margin-left:auto;color:#f2c397;font:400 1.5rem var(--sans)}
+#loomAiWorkspace .ai-projects[hidden]{display:none}
+#loomAiWorkspace .ai-projects button{background:linear-gradient(140deg,#25162fef,#100c18f5);border-color:#c699e155;min-height:130px}
+#loomAiWorkspace .ai-projects button[aria-pressed=true]{background:linear-gradient(140deg,#39233f,#191023);border-color:#f0c38f}
+#loomAiWorkspace .ai-projects .ai-demo-number{color:#e8ba88;font:700 .64rem var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.loom-legacy{border:0;margin-top:30px;padding-top:0}.loom-legacy>.loom-laboratory-invitation{padding:24px;background:linear-gradient(120deg,#25132fed,#17101fec 62%,#30202eef)}
+.loom-laboratory-invitation::-webkit-details-marker{display:none}.loom-legacy[open]>.loom-laboratory-invitation{margin-bottom:22px}.loom-legacy[open]>.loom-laboratory-invitation .ai-invitation-arrow{transform:rotate(45deg)}
+@media(max-width:760px){.hero{padding:28px 0 22px}.ai-projects{grid-template-columns:1fr}#loomAiWorkspace .ai-projects button{min-height:0;padding:15px 18px}.ai-projects strong{font-size:1rem}#loomAiWorkspace .ai-demo-invitation,.loom-legacy>.loom-laboratory-invitation{padding:17px 15px;gap:12px}.ai-invitation-orbit{flex-basis:39px;height:39px}.hero h1{font-size:clamp(3.2rem,13vw,5rem)}}
+@media(prefers-reduced-motion:reduce){#loomAiWorkspace .ai-demo-invitation,.loom-legacy>.loom-laboratory-invitation{transform:none!important;box-shadow:0 0 22px #c97fe626,inset 0 1px #ffdfba25}}
+@media(forced-colors:active){#loomAiWorkspace .ai-demo-invitation,.loom-legacy>.loom-laboratory-invitation{background:Canvas;color:ButtonText;border:2px solid ButtonText}.ai-invitation-orbit{border-color:ButtonText;color:ButtonText}}
+
+/* Consequential disclosures: full-row controls, stable right-hand affordance. */
+#loomAiWorkspace .ai-disclosure{border:1px solid #a997ef66;border-radius:12px;padding:0;background:linear-gradient(125deg,#29216499,#11112ef2);margin:15px 0}
+#loomAiWorkspace .ai-disclosure>summary{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:48px;padding:13px 15px;list-style:none;font:600 .88rem/1.5 var(--sans);color:#e9ddfc;cursor:pointer}
+#loomAiWorkspace .ai-disclosure>summary::-webkit-details-marker,#loomAiWorkspace .ai-file-note>summary::-webkit-details-marker{display:none}
+#loomAiWorkspace .ai-disclosure>summary::after{content:'+';font:400 24px/1 var(--sans);color:var(--gold);margin-left:auto;flex:none}
+#loomAiWorkspace .ai-disclosure[open]>summary::after{content:'−'}
+#loomAiWorkspace .ai-disclosure>summary small{display:block;font:400 .73rem/1.5 var(--sans);color:#c0b8de;margin-top:3px}
+#loomAiWorkspace .ai-disclosure[open]>summary{border-bottom:1px solid #a997ef40}
+#loomAiWorkspace .ai-disclosure>label,#loomAiWorkspace .ai-disclosure>p{display:block;margin:13px 15px}
+#loomAiWorkspace .ai-disclosure>textarea{width:calc(100% - 30px);margin:0 15px 15px}
+#loomAiWorkspace .ai-disclosure>button{margin:0 15px 15px}
+.ai-document-row{display:flex;align-items:start;gap:10px;justify-content:space-between;position:relative}.ai-document-row>label{flex:1;min-height:32px}
+#loomAiWorkspace .ai-file-note{border:0;margin:0;padding:0;flex:none}
+#loomAiWorkspace .ai-file-note>summary{display:grid;place-items:center;list-style:none;width:32px;min-height:32px;border:1px solid #af9bda55;border-radius:50%;color:var(--gold);font:20px/1 var(--sans);cursor:pointer}
+#loomAiWorkspace .ai-file-note[open]{flex-basis:100%;display:grid;grid-template-columns:auto 1fr;gap:10px}.ai-document-row:has(.ai-file-note[open]){flex-wrap:wrap}
+#loomAiWorkspace .ai-file-note p{margin:0;padding:10px 12px;background:#242056;border-radius:10px;color:#e0d9f3;font:.8rem/1.6 var(--sans)}
+#loomAiWorkspace .ai-documents .ai-document-preview{border:1px solid #9e8ae24d;margin:7px 0 0;padding:0;background:#181638a8}
+#loomAiWorkspace .ai-document-preview>summary{min-height:42px;padding:9px 12px;font-size:.76rem}
+#loomAiWorkspace .ai-document-preview pre{margin:0;padding:16px;background:#100f29}
+#loomAiWorkspace .ai-portable-drawer{margin-top:24px;max-width:690px;background:#14122bc9}
+#loomAiWorkspace .ai-provider-note{font-size:.72rem;color:#b6abc6}
+#loomAiWorkspace #aiPending[hidden]{display:none}#loomAiWorkspace .ai-pending{display:flex;align-items:center;gap:15px;padding:17px 16px;margin-top:14px;background:linear-gradient(105deg,#2d286e,#1a1437);border:1px solid #b398ec7a;border-radius:12px}
+.ai-pending strong{display:block;font:600 .9rem/1.5 var(--sans)}.ai-pending #aiPendingTime{display:block;color:#d3c6ea;font:.76rem/1.6 var(--sans);margin-top:4px}
+.ai-wait-orbit{display:block;flex:none;width:30px;height:30px;border:2px solid #a99edf44;border-top-color:var(--gold);border-right-color:#d4a7f5;border-radius:50%;transform:rotate(var(--wait-turn,0deg));will-change:transform}
+#aiResult{scroll-margin-top:24px}#aiResult:focus{outline:2px solid #b39fe055;outline-offset:5px}
+/* Laboratory and theater share the indigo field; evidence colors retain their roles. */
+#loomLegacy .loom-theater,#loomLegacy .lp-workbench{background:radial-gradient(ellipse at 65% 20%,#4037a3 0%,#211958 42%,#100e2a 88%)}
+#loomLegacy .panel,#loomLegacy .checker-panel{background:linear-gradient(125deg,#282164f5,#131130f5);border-color:#a692e866}
+#loomLegacy textarea,#loomLegacy .checker-panel textarea#message,#loomLegacy pre,#loomLegacy .glyph-path,#loomLegacy .glyph-node{background:#13112de8;color:#ebe6fb;border-color:#9d8bdb77}
+#loomLegacy .lt-node,#loomLegacy .lp-journey circle{fill:#242057}
+#loomLegacy .lp-workbench select,#loomLegacy .lp-answer{background:#211c52}
+#loomLegacy .lt-story p,#loomLegacy .lt-client-case p,#loomLegacy .lt-caption,#loomLegacy .lt-stage svg text{color:#d8d0f2;fill:#d8d0f2}
+#loomLegacy .lt-stage .lt-grid,#loomLegacy .lp-grid{stroke:#b5a1ff}
+@media(prefers-reduced-motion:reduce){.ai-wait-orbit{transform:none!important;will-change:auto}}
+
+/* The route can be revisited without sending the task again. */
+#loomAiWorkspace .ai-room-replay{border-top:1px solid #bc9de638;padding-top:12px;margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+#loomAiWorkspace .ai-room-replay [hidden]{display:none!important}
+#loomAiWorkspace .ai-room-replay label,#loomAiWorkspace .ai-room-replay p{flex-basis:100%;font:12px/1.6 var(--sans)}
+#loomAiWorkspace .ai-room-replay input{width:100%;accent-color:#dbb572}
+#loomAiWorkspace .ai-view-switch{flex-wrap:wrap}
+
+/* Episode 6 repair: make the editable instruction visually and semantically primary. */
+#loomAiWorkspace .ai-project-brief{padding:13px 15px;background:linear-gradient(125deg,#211c4e99,#11112ee6)}
+#loomAiWorkspace .ai-task-surface{margin:18px 0 12px;padding:16px;border:1px solid #e2bd806e;border-radius:14px;background:#0808178f;box-shadow:inset 0 0 0 1px #c59de61f}
+#loomAiWorkspace .ai-task-surface label[for=aiTask]{margin-bottom:4px}
+#loomAiWorkspace .ai-task-surface #aiTaskCue{margin:0 0 10px;color:#d9cae0}
+#loomAiWorkspace textarea#aiTask{box-sizing:border-box;width:100%;min-height:190px;padding:14px 15px;border:1px solid #c6a7e86e;border-left:3px solid var(--gold);border-radius:10px;background:#0c0b1e;color:#f5edf7;font-size:16px;line-height:1.65;resize:vertical;overflow:auto;box-shadow:0 8px 30px #05030c40}
+#loomAiWorkspace textarea#aiTask:focus{border-color:#f0c78e;border-left-color:#f0c78e;outline:2px solid #f0c78e55;outline-offset:2px}
+#loomAiWorkspace .ai-submitted-task{display:grid;gap:6px;margin:16px 0 6px;padding:14px 16px;border:1px solid #d6b77c55;border-radius:12px;background:#e4c66c08}
+#loomAiWorkspace .ai-submitted-task[hidden]{display:none}
+#loomAiWorkspace .ai-submitted-task strong{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+#loomAiWorkspace .ai-submitted-task span{white-space:pre-wrap;font:500 .9rem/1.55 var(--sans);color:#f1e8f3}
+#loomAiWorkspace .ai-result-disclosure{margin:12px 0;padding:0 14px;border:1px solid #9e8ae24d;border-radius:12px;background:#15133190}
+#loomAiWorkspace .ai-result-disclosure>summary{display:flex;align-items:center;gap:12px;min-height:46px;list-style:none;cursor:pointer;font:600 .82rem/1.45 var(--sans);color:#e5dafa}
+#loomAiWorkspace .ai-result-disclosure>summary::-webkit-details-marker{display:none}
+#loomAiWorkspace .ai-result-disclosure>summary::after{content:'+';margin-left:auto;color:var(--gold);font:400 24px/1 var(--sans);flex:none}
+#loomAiWorkspace .ai-result-disclosure[open]>summary::after{content:'−'}
+#loomAiWorkspace .ai-result-disclosure>pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:360px;overflow:auto}
+@media(max-width:560px){#loomAiWorkspace .ai-project-brief{margin:10px 0;padding:10px 12px}#loomAiWorkspace .ai-project-brief h2{font-size:1.25rem}#loomAiWorkspace .ai-project-brief #aiBriefRoute{display:none}#loomAiWorkspace .ai-task-surface{margin-top:12px;padding:13px 12px}#loomAiWorkspace textarea#aiTask{min-height:220px;font-size:16px;line-height:1.6}#loomAiWorkspace .ai-submitted-task{padding:12px 13px}}
+
+#loomAiWorkspace .ai-challenge-result[data-state="HOLD"]{border-color:#dbb164;background:#211b12}
+#loomAiWorkspace .ai-challenge-result[data-state="EXPOSURE"]{border-color:#eb8989;background:#241414}
+
+#loomAiWorkspace .ai-new-root-notice{margin:12px 0;padding:12px;border:1px solid #efb38d73;border-radius:9px;background:#23181b;color:#f1dfc7}
+#loomAiWorkspace .ai-new-root-notice p{font-size:.8rem;overflow-wrap:anywhere}
+#loomAiWorkspace .ai-new-root-notice label{display:flex;align-items:flex-start;gap:9px;font-size:.8rem;line-height:1.5}
+#loomAiWorkspace .ai-new-root-notice input{width:18px;height:18px;min-width:18px;margin:2px 0 0;accent-color:#8fd8c9}
+#loomAiWorkspace .ai-new-root-notice:focus{outline:2px solid #8fd8c9;outline-offset:3px}
+#loomAiWorkspace [data-loom-reentry="challenge-history"]{max-height:260px;overflow:auto}

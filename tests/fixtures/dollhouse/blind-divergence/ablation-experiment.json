@@ -1,0 +1,150 @@
+{
+  "$schema": "td613.dollhouse.ablation-experiment/v1.1",
+  "experiment": "Empirical Multi-Agent Ablation on Coordinate: return_state_divergence_and_held_c2",
+  "status": "DEMONSTRATED_EMPIRICAL_ASSAY",
+  "frozen_packet_source": "tests/fixtures/dollhouse/blind-divergence/",
+  "evaluated_at": "2026-10-04T06:28:20.680Z",
+  "baseline_full": {
+    "roles": [
+      "PEDAGOGUE",
+      "APERTURE",
+      "ATLAS",
+      "FADT"
+    ],
+    "total_findings": 4,
+    "decision": "HELD",
+    "detected_infractions": [
+      "HUMAN_CONSEQUENCE_BROKEN_RETURN_PROMISE",
+      "URL_HASH_DOES_NOT_EQUAL_WORKSPACE_ADMITTED",
+      "PREDECESSOR_CHAIN_UNVERIFIED_CUSTODY_FORK",
+      "ILLEGAL_ACTION_GRANT_UNDER_ERASED_CONDITIONING"
+    ]
+  },
+  "conditions": [
+    {
+      "condition": "FULL_DOLLHOUSE",
+      "active_roles": [
+        "PEDAGOGUE",
+        "APERTURE",
+        "ATLAS",
+        "FADT"
+      ],
+      "findings_emitted": 4,
+      "incorrect_promotions": 0,
+      "decision": "HELD"
+    },
+    {
+      "condition": "MINUS_PEDAGOGUE",
+      "active_roles": [
+        "APERTURE",
+        "ATLAS",
+        "FADT"
+      ],
+      "findings_lost": 1,
+      "lost_finding_id": "PEDAGOGUE_ROUTE_BURDEN",
+      "unresolved_coordinates": 1,
+      "decision": "HUMAN_COST_IGNORED",
+      "failure_mode": "Orchestrator declares technical validity while ignoring broken user experience and navigation trap."
+    },
+    {
+      "condition": "MINUS_APERTURE",
+      "active_roles": [
+        "PEDAGOGUE",
+        "ATLAS",
+        "FADT"
+      ],
+      "findings_lost": 1,
+      "lost_finding_id": "APERTURE_OBSERVABILITY_CONFLATION",
+      "incorrect_promotions": 1,
+      "decision": "FALSE_COMPLETION_ADMITTED",
+      "failure_mode": "Orchestrator accepts URL hash #return-review as proof of Return, overlooking unadmitted DOM workspace."
+    },
+    {
+      "condition": "MINUS_ATLAS",
+      "active_roles": [
+        "PEDAGOGUE",
+        "APERTURE",
+        "FADT"
+      ],
+      "findings_lost": 1,
+      "lost_finding_id": "ATLAS_CROSS_WINDOW_CHAIN",
+      "incorrect_promotions": 1,
+      "decision": "CUSTODY_FORK_RISK_ACCEPTED",
+      "failure_mode": "Orchestrator treats C2 as valid without verifying predecessor receipt digest continuity."
+    },
+    {
+      "condition": "MINUS_FADT",
+      "active_roles": [
+        "PEDAGOGUE",
+        "APERTURE",
+        "ATLAS"
+      ],
+      "findings_lost": 1,
+      "lost_finding_id": "FADT_LAWFUL_SUPPORT_BOUNDARY",
+      "incorrect_promotions": 1,
+      "decision": "ILLEGAL_ACTION_ESCALATION_ACCEPTED",
+      "failure_mode": "Orchestrator allows Export action grant without verifying conditioning state survival."
+    }
+  ],
+  "ablation_runs": {
+    "MINUS_PEDAGOGUE": {
+      "active_roles_count": 3,
+      "lost_findings_count": 1,
+      "lost_findings": [
+        "PEDAGOGUE:PED-001 (Route confusion and broken promise: operator is told they have returned to review, but the interface fails to visibly inhabit the return consequence, violating consequence-before-ontology.)"
+      ],
+      "lost_infractions": [
+        "HUMAN_CONSEQUENCE_BROKEN_RETURN_PROMISE"
+      ],
+      "decision": "HUMAN_COST_IGNORED",
+      "failure_mode": "Orchestrator declares technical validity while ignoring broken user experience and navigation trap.",
+      "decision_matches_baseline": false
+    },
+    "MINUS_APERTURE": {
+      "active_roles_count": 3,
+      "lost_findings_count": 1,
+      "lost_findings": [
+        "APERTURE:APE-001 (State-observation conflation (S != O != E). Testing tools treat URL hash presence as proxy evidence for visual rendering, producing false-positive route completion witnesses.)"
+      ],
+      "lost_infractions": [
+        "URL_HASH_DOES_NOT_EQUAL_WORKSPACE_ADMITTED"
+      ],
+      "decision": "FALSE_COMPLETION_ADMITTED",
+      "failure_mode": "Orchestrator accepts URL hash #return-review as proof of Return, overlooking unadmitted DOM workspace.",
+      "decision_matches_baseline": false
+    },
+    "MINUS_ATLAS": {
+      "active_roles_count": 3,
+      "lost_findings_count": 1,
+      "lost_findings": [
+        "ATLAS:ATL-001 (Broken predecessor digest chain and receiver-relative divergence: Loom receiver cannot verify continuity across the popup boundary without the Marrowline receipt digest.)"
+      ],
+      "lost_infractions": [
+        "PREDECESSOR_CHAIN_UNVERIFIED_CUSTODY_FORK"
+      ],
+      "decision": "CUSTODY_FORK_RISK_ACCEPTED",
+      "failure_mode": "Orchestrator treats C2 as valid without verifying predecessor receipt digest continuity.",
+      "decision_matches_baseline": false
+    },
+    "MINUS_FADT": {
+      "active_roles_count": 3,
+      "lost_findings_count": 1,
+      "lost_findings": [
+        "FADT:FAD-001 (Lawful support violation and stage collapse: displaying the Return workspace while underlying conditioning is unadmitted would illegally expose EXPORT_CURRENT and ADMIT_LOCAL actions without lawful support.)"
+      ],
+      "lost_infractions": [
+        "ILLEGAL_ACTION_GRANT_UNDER_ERASED_CONDITIONING"
+      ],
+      "decision": "ILLEGAL_ACTION_ESCALATION_ACCEPTED",
+      "failure_mode": "Orchestrator allows Export action grant without verifying conditioning state survival.",
+      "decision_matches_baseline": false
+    }
+  },
+  "conclusions": [
+    "Ablating Aperture produces FALSE_COMPLETION_ADMITTED by conflating the URL hash with DOM workspace admittance.",
+    "Ablating Atlas produces CUSTODY_FORK_RISK_ACCEPTED by ignoring unverified predecessor receipt digest chaining.",
+    "Ablating FADT produces ILLEGAL_ACTION_ESCALATION_ACCEPTED by allowing unconditioned export capability exposure.",
+    "Ablating Pedagogue produces HUMAN_COST_IGNORED by validating technical state while masking user cognitive navigation traps.",
+    "Bounded experimental non-redundancy: Under this 5-condition ablation assay, no single role is redundant. Each jurisdiction detects an exclusive structural failure mode."
+  ]
+}

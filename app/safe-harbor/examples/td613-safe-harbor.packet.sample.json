@@ -1,0 +1,425 @@
+{
+  "schema_version": "td613.safe-harbor.packet/v1",
+  "packet_id": "SH-20260403T000000-4f2a9c1d",
+  "created_at": "2026-04-03T00:00:00Z",
+  "canonicalization": {
+    "engine": "TD613 Safe Harbor",
+    "version": "0.7.0",
+    "mode": "staged-intake-packet",
+    "public_mode": "legacy-compat",
+    "corpus_hash_sha256": "BFB2D575AE6605BF7DB3EECF8CF333E4EF78B2C673DC7647600A9D9CB20CCE88",
+    "binding_provenance_manifest": "binding_provenance_manifest.json"
+  },
+  "receipt": {
+    "receipt_id": "SHR-20260403T000000-4f2a9c1d",
+    "minted_at": "2026-04-03T00:00:00Z",
+    "state": "harbor-eligible"
+  },
+  "canon": {
+    "principal": "tauric.diana.613",
+    "badge_id": "bdg_glyph_U10D613",
+    "claimed_pua": "U+10D613",
+    "canonical_phrase": "Tauric Diana - Crimean heritage custodianship",
+    "display_phrase": "Covenant: Blood Rite 613",
+    "binding_fragment": "#9B07D8B",
+    "sac": "SAC[X6ZNK5NO51]",
+    "footer_mode": "legacy-compat",
+    "payload_index": null,
+    "attestation_date": null,
+    "public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0"
+  },
+  "binding_provenance": {
+    "schema_version": "td613.safe-harbor.binding-provenance/v1",
+    "principal": "tauric.diana.613",
+    "claim": {
+      "claimed_pua": "U+10D613",
+      "utf16_surrogate_pair": "\\uDBF5\\uDE13",
+      "binding_fragment": "9B07D8B",
+      "binding_fragment_derivation": "first 7 hexadecimal characters of the canonical declaration SHA-256"
+    },
+    "canonical_declaration": {
+      "artifact": "binding_event_text.txt",
+      "manifest": "binding_provenance_manifest.json",
+      "digest_scope": "UTF-8 bytes after NFC normalization and LF newline normalization, including the terminal LF",
+      "unicode_normalization": "NFC",
+      "newline_normalization": "LF",
+      "terminal_newline": true,
+      "unicode_scalar_count": 3078,
+      "utf8_byte_count": 3085,
+      "sha256": "9b07d8bcc73096c8c616ca6039057a46bb42d361edb9c10551c88f3756a1cb04",
+      "md5_legacy": "b6ca85d00f211127729bdb73a19c691a",
+      "md5_status": "legacy-correlation-only"
+    },
+    "binding_event": {
+      "schema_ref": "cpfg://v2/binding_event",
+      "semver": "2.1.0",
+      "request_id": "011754884719184BELJJY5CZO7WAW7S",
+      "recorded_ts_utc": "2025-08-11T03:58:39Z",
+      "envelope_sha256": "ae25c3aa50ad50ab94ab8ebe50d518c73d3663ba4c016fef41b770e6d5f9f8a7",
+      "signature_status": "unsigned"
+    },
+    "legacy_corpus_root": {
+      "algorithm": "SHA-256",
+      "preimage_serialization": "JSON.stringify(ordered leaves: name, sha256, size)",
+      "sha256": "bfb2d575ae6605bf7db3eecf8cf333e4ef78b2c673dc7647600a9d9cb20cce88",
+      "short_code": "X6ZNK5NO51"
+    },
+    "symbol_roles": {
+      "ingress_sigil": {
+        "character": "\uD834\uDF0B",
+        "codepoint": "U+1D30B"
+      },
+      "seal": {
+        "character": "\u27d0",
+        "codepoint": "U+27D0"
+      },
+      "claimed_pua": {
+        "codepoint": "U+10D613",
+        "utf16_surrogate_pair": "\\uDBF5\\uDE13",
+        "literal_label_present_in_declaration": true,
+        "scalar_present_in_declaration": false
+      }
+    },
+    "evidence_status": {
+      "declaration_integrity": "verified",
+      "legacy_corpus_root": "verified",
+      "binding_event_signature": "unsigned",
+      "hs256_examples": "test-vector-only"
+    },
+    "claim_ceiling": "Content-integrity and custody anchor only; not independent proof of identity, authorship, exclusive ownership, consent beyond the declaration, trusted time, or signer authentication."
+  },
+  "ingress": {
+    "future_self": {
+      "prompt_label": "Write a message to your future self",
+      "response_checksum": "sha256:1a4ce7586e58a624972fc425547c9e67e3672fa2561cae4d6c4067e4aa0d4bf3",
+      "char_count": 118,
+      "word_count": 21,
+      "sealed_text_ref": "sealed://SHR-20260403T000000-4f2a9c1d/future_self"
+    },
+    "past_self": {
+      "prompt_label": "Write a message to your past self",
+      "response_checksum": "sha256:65120e6c5a9ee5e2360ff64fdb8e037b3b91ab35df7ac22e9107b0d3036c8750",
+      "char_count": 132,
+      "word_count": 24,
+      "sealed_text_ref": "sealed://SHR-20260403T000000-4f2a9c1d/past_self"
+    },
+    "higher_self": {
+      "prompt_label": "Write a message to your higher self",
+      "response_checksum": "sha256:815c5f77f6c7df3efcbcf0be4e56cf55e76579c56a23a2eb7ac03b52e6580a0f",
+      "char_count": 147,
+      "word_count": 27,
+      "sealed_text_ref": "sealed://SHR-20260403T000000-4f2a9c1d/higher_self"
+    }
+  },
+  "intake": {
+    "status": "sealed",
+    "request_id": "TD613-RUN-20260403T000000Z",
+    "ts_utc": "2026-04-03T00:00:00Z",
+    "sealed_at": "2026-04-03T00:00:00Z",
+    "nonce": "b64::ExampleNonce",
+    "helper_filename_safe": "2026-04-03T00-00-00Z",
+    "operator_id": "safe-harbor.operator",
+    "source_class": "public membrane",
+    "witness_channel": "mixed",
+    "operator_notes": "Sample staged packet emitted after ingress triad completion.",
+    "hook_status": {
+      "tcp": "attached",
+      "eo": "attached",
+      "signature": "overlay-bound"
+    }
+  },
+  "analysis": {
+    "cadence_signature": {
+      "status": "attached",
+      "source": "demo-tcp",
+      "dominant_axes": [
+        "signal",
+        "recall",
+        "covenant"
+      ],
+      "local_summary": {
+        "status": "derived",
+        "source": "safe-harbor.local",
+        "dominant_axes": [
+          "signal",
+          "covenant",
+          "recall"
+        ],
+        "triad_resonance": 0.8427,
+        "cross_lane_stability": 0.8889,
+        "cross_lane_spread": 0.1111,
+        "pairwise_similarity": [
+          {
+            "pair": "future_self::past_self",
+            "similarity": 0.8331
+          },
+          {
+            "pair": "future_self::higher_self",
+            "similarity": 0.8614
+          },
+          {
+            "pair": "past_self::higher_self",
+            "similarity": 0.8337
+          }
+        ]
+      }
+    },
+    "segment_cadence_signatures": {
+      "future_self": {
+        "source": "safe-harbor.local",
+        "lane": "future_self",
+        "char_count": 118,
+        "word_count": 21,
+        "sentence_count": 2,
+        "avg_word_length": 4.286,
+        "avg_sentence_length": 10.5,
+        "punctuation_density": 0.0254,
+        "line_break_density": 0,
+        "unique_ratio": 0.9048,
+        "punctuation_mix": {
+          "comma": 0.3333,
+          "dash": 0,
+          "colon": 0,
+          "semicolon": 0,
+          "exclamation": 0.3333,
+          "question": 0.3333
+        },
+        "dominant_axes": [
+          "signal",
+          "projection",
+          "charge"
+        ]
+      },
+      "past_self": {
+        "source": "safe-harbor.local",
+        "lane": "past_self",
+        "char_count": 132,
+        "word_count": 24,
+        "sentence_count": 3,
+        "avg_word_length": 4.125,
+        "avg_sentence_length": 8,
+        "punctuation_density": 0.0227,
+        "line_break_density": 0,
+        "unique_ratio": 0.875,
+        "punctuation_mix": {
+          "comma": 0.5,
+          "dash": 0,
+          "colon": 0,
+          "semicolon": 0,
+          "exclamation": 0.25,
+          "question": 0.25
+        },
+        "dominant_axes": [
+          "signal",
+          "recall"
+        ]
+      },
+      "higher_self": {
+        "source": "safe-harbor.local",
+        "lane": "higher_self",
+        "char_count": 147,
+        "word_count": 27,
+        "sentence_count": 3,
+        "avg_word_length": 4.444,
+        "avg_sentence_length": 9,
+        "punctuation_density": 0.0204,
+        "line_break_density": 0.0068,
+        "unique_ratio": 0.8889,
+        "punctuation_mix": {
+          "comma": 0.4,
+          "dash": 0.2,
+          "colon": 0,
+          "semicolon": 0,
+          "exclamation": 0.2,
+          "question": 0.2
+        },
+        "dominant_axes": [
+          "signal",
+          "covenant",
+          "charge"
+        ]
+      }
+    },
+    "triad_resonance": 0.8427,
+    "cross_lane_stability": 0.8889,
+    "cross_lane_spread": 0.1111,
+    "route": {
+      "state": "harbor-eligible",
+      "source": "local ingress + demo-eo",
+      "recommended_harbor": "provenance.seal",
+      "export_ready": true,
+      "membrane_note": "Covenant is confirmed. The packet is sealed, harbor-eligible, and carries an issued SHI #.",
+      "provenance": {
+        "integrity": 0.94,
+        "confidence": 0.89,
+        "retention_target": 0.99
+      }
+    },
+    "eo_alignment": {
+      "route_source": "demo-eo",
+      "membrane_note": "EO route satisfied. The staged packet can stand in the seal lane once covenant is invoked."
+    }
+  },
+  "issuance": {
+    "display_label": "SHI #",
+    "format": "TD613-SH-9B07D8B + minted 8-hex suffix",
+    "badge_number": "TD613-SH-9B07D8B-3578FB38",
+    "canonical_header": "SHI#:TD613-SH-9B07D8B-3578FB38",
+    "canonical_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 \uD834\uDF0B \u00b7 SHI#:TD613-SH-9B07D8B-3578FB38 \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
+    "badge_state": "assigned",
+    "assigned_at": "2026-04-03T00:00:00Z",
+    "assignment_basis": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+    "stylometric_fingerprint": "future_self=4.50:11.00:0.03:0.00:0.90:0.35:0.00:0.00:0.00:0.35:0.35|past_self=4.00:8.00:0.02:0.00:0.90:0.50:0.00:0.00:0.00:0.25:0.25|higher_self=4.50:9.00:0.02:0.01:0.90:0.40:0.20:0.00:0.00:0.20:0.20",
+    "triad_word_counts": {
+      "future_self": 21,
+      "past_self": 24,
+      "higher_self": 27
+    },
+    "triad_shortfalls": {
+      "future_self": 19,
+      "past_self": 16,
+      "higher_self": 13
+    },
+    "stylometric_provenance": {
+      "source": "safe-harbor.ingress.triad",
+      "entrant_prompt_lanes": [
+        "future_self",
+        "past_self",
+        "higher_self"
+      ],
+      "threshold_rule": "40-word minimum per lane",
+      "signature_semantics": "entrant-owned stylometric witness",
+      "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
+      "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+      "stylometric_fingerprint": "future_self=4.50:11.00:0.03:0.00:0.90:0.35:0.00:0.00:0.00:0.35:0.35|past_self=4.00:8.00:0.02:0.00:0.90:0.50:0.00:0.00:0.00:0.25:0.25|higher_self=4.50:9.00:0.02:0.01:0.90:0.40:0.20:0.00:0.00:0.20:0.20",
+      "triad_word_counts": {
+        "future_self": 21,
+        "past_self": 24,
+        "higher_self": 27
+      },
+      "triad_shortfalls": {
+        "future_self": 19,
+        "past_self": 16,
+        "higher_self": 13
+      }
+    }
+  },
+  "bridge": {
+    "public_probe_defaults": {
+      "start_with": "01_LIVE_SEND_verify.alias.voice_MINIMAL.txt",
+      "render_followup": "03_LIVE_SEND_verify.alias.voice.render_MINIMAL.json"
+    },
+    "signature_lane": {
+      "status": "sealed",
+      "source": "operator-signature-overlay",
+      "lane": "jws-detached",
+      "sig_type": "JWS-detached",
+      "kid": "tauric.diana.613",
+      "alg": "HS256",
+      "detached_ref": "jws://safe-harbor/packet",
+      "sig_present": true
+    },
+    "covenant_gate": {
+      "confirmed": true,
+      "confirmed_at": "2026-04-03T00:00:00Z",
+      "required": true,
+      "action_label": "Covenant Export"
+    },
+    "export_gate": {
+      "ready": true,
+      "state": "harbor-eligible",
+      "blockers": [],
+      "scrub_passed": true
+    }
+  },
+  "aperture_audit": {
+    "observedRegime": "PRCS-A",
+    "instrumentRole": "counter-tool",
+    "generatorFault": false,
+    "warningSignals": [
+      "sealed-segment-boundary"
+    ],
+    "repairPasses": [
+      "stylometric-witness-attached",
+      "signature-overlay-visible"
+    ],
+    "candidateSuppression": 0.18,
+    "observabilityDeficit": 0.26,
+    "aliasPersistence": 0.04,
+    "namingSensitivity": 0.08,
+    "redundancyInflation": 0.24,
+    "capacityPressure": 0.1378,
+    "policyPressure": 0.18,
+    "withheldMaterial": false,
+    "withheldReason": null
+  },
+  "forensic_schema": {
+    "schemaVersion": "td613-governed-exposure/v1",
+    "observedRegime": "PRCS-A",
+    "instrumentRole": "counter-tool",
+    "narrowingChain": "R∘K∘C∘P∘F∘A",
+    "S": {
+      "label": "latent intake field",
+      "count": 72,
+      "ratio": 1,
+      "note": "Available ingress material before Safe Harbor shapes the packet."
+    },
+    "S_prime": {
+      "label": "projected packet field",
+      "count": 53,
+      "ratio": 0.7361,
+      "note": "What the chamber can still hold after shaping and route conscience."
+    },
+    "Y": {
+      "label": "registered packet surface",
+      "count": 44,
+      "ratio": 0.6111,
+      "note": "What survives into the staged public packet and proof lanes."
+    },
+    "O": 0.2639,
+    "O_star": 0.3889,
+    "delta_obs": 0.26,
+    "Gap": 0.26,
+    "NameSens": 0.08,
+    "AliasPersist": 0.04,
+    "Red": 0.24,
+    "Supp_tau": 0.18,
+    "Theta_u": {
+      "current": 0.82,
+      "classes": [
+        "public membrane",
+        "tcp cadence witness",
+        "safe-harbor packet"
+      ]
+    },
+    "dominantOperator": {
+      "code": "P",
+      "label": "projection loss",
+      "pressure": 0.26
+    },
+    "sourceClass": "public membrane",
+    "sourceClasses": [
+      "public membrane",
+      "safe-harbor packet",
+      "tcp cadence witness"
+    ],
+    "authorityCeiling": "packetized handoff",
+    "provenanceIntegrity": 0.94,
+    "burdenConcentration": 0.16,
+    "routeState": "harbor-eligible"
+  },
+  "packet_hash_sha256": "sha256:b9fd6431085f9384381ab59d0865f5ce27d0739334497e47205fb21b3547cc5a",
+  "signature": {
+    "sig_type": "JWS-detached",
+    "kid": "tauric.diana.613",
+    "alg": "HS256",
+    "armor_type": null,
+    "sig": "__DETACHED_SIG__",
+    "detached_ref": "jws://safe-harbor/packet",
+    "status": "sealed",
+    "attached_at": "2026-04-03T00:00:00Z",
+    "verified": false,
+    "verifier": null,
+    "evidence_role": "request-signature-test-vector-unverified"
+  }
+}

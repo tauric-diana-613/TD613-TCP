@@ -1,0 +1,18 @@
+{
+  "at": "2026-08-24T09:25:22.609564Z",
+  "atelier_snapshot_id": "src-20260824-p2-001",
+  "claim_ceiling": "No cycle means only survives the captured scope; unlike edge predicates are never mixed.",
+  "counterexample_components": [],
+  "edge_ids": [],
+  "predicates": [
+    "BUILDS_ON",
+    "CONCEPTUALLY_PRECEDES",
+    "CONCEPTUAL_FOUNDATION_FOR",
+    "EXTENDS",
+    "FORMALIZES"
+  ],
+  "result": "SURVIVES_CAPTURED_SCOPE",
+  "schema_version": "conceptual-dag-assay/v1",
+  "scope": "source-witnessed conceptual dependency predicates with local evidence",
+  "strongly_connected_components": []
+}

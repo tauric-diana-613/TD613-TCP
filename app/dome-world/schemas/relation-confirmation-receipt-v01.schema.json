@@ -1,0 +1,22 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"td613.relation-confirmation-receipt/v0.1",
+  "title":"TD613 Relation Confirmation Receipt v0.1",
+  "type":"object","additionalProperties":false,
+  "required":["schema","confirmation_receipt_id","relation_id","proposal_digest","aperture_audit_id","aperture_audit_digest","prior_state","new_state","explicit_operator_action","action_posture","created_at","time_posture","recommendation_not_command","external_permission_claim","does_not_establish","confirmation_digest","seal"],
+  "properties":{
+    "schema":{"const":"td613.relation-confirmation-receipt/v0.1"},
+    "confirmation_receipt_id":{"type":"string","pattern":"^relconf_[0-9a-f]{20}$"},
+    "relation_id":{"type":"string","pattern":"^rel_[0-9a-f]{20}$"},
+    "proposal_digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},
+    "aperture_audit_id":{"type":"string","pattern":"^relaud_[0-9a-f]{20}$"},
+    "aperture_audit_digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},
+    "prior_state":{"const":"PROPOSED"},"new_state":{"const":"CONFIRMED"},
+    "explicit_operator_action":{"const":true},
+    "action_posture":{"const":"human-gesture-after-visible-proposal-and-audit"},
+    "created_at":{"type":"string"},"time_posture":{"const":"local-clock-not-trusted-time"},
+    "recommendation_not_command":{"const":true},"external_permission_claim":{"const":false},
+    "does_not_establish":{"type":"array","items":{"type":"string"}},
+    "confirmation_digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"seal":{"const":"⟐"}
+  }
+}

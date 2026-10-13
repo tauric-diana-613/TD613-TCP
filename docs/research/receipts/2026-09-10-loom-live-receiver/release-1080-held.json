@@ -1,0 +1,307 @@
+{
+  "schema": "td613.ash.lifecycle-production-observation/v0.1",
+  "status": "HOLD_FOR_REPAIR",
+  "promotion_authorized": false,
+  "base_url": "https://td613.com",
+  "dome_url": "https://td613.com/dome-world",
+  "threshold_url": "https://td613.com/dome-world/ash-threshold.html",
+  "keep_url": "https://td613.com/dome-world/ash-keep.html?presentation=legacy",
+  "browser": "chromium-headless",
+  "source_status": "DEPLOYED_OBSERVATION",
+  "threshold": {
+    "wrong_order_reset": true,
+    "correct_order_cleared": true,
+    "local_storage_before_entry": [],
+    "session_storage_before_entry": [],
+    "cleared_arrival_module_settlement": {
+      "cache_preflight": "complete",
+      "module_graph": "ready",
+      "live_aia": "td613.ash.live-aia-browser/v0.2-task-continuity",
+      "live_aia_ready": true,
+      "aia3_version": "td613.ash.aia3-composition/v0.5-human-profile-choice",
+      "aia3": {
+        "session_open": false,
+        "case_id": null,
+        "profile": null,
+        "membrane_ready": false,
+        "hold": "WAITING_INGRESS_PROFILE",
+        "lifecycle_state": null,
+        "route_count": 0,
+        "task_count": 0
+      },
+      "aia_route_controls": 4,
+      "aia_task_controls": 4,
+      "flowcore_loader": {
+        "version": "td613.ash.flowcore-ingress-portal-loader/v0.4-stage-owner-reacquisition",
+        "eligible": true,
+        "portal_version": "td613.ash.flowcore-ingress-portal/v0.10-stage-owner-reacquisition"
+      },
+      "flowcore_portal": {
+        "visible_host": "INGRESS",
+        "case_open": false,
+        "visible": true,
+        "proxy_present": true,
+        "proxy_count": 1,
+        "field_count": 2,
+        "duplicate_visible_fields": 1
+      },
+      "neutral_ingress_preserved": true,
+      "aia3_installation_ready": true,
+      "human_profile_choice_required": true,
+      "human_profile_choice_completed": false,
+      "dependency_imports_settled": true,
+      "specialist_navigation_admitted": true
+    },
+    "specialist_presentation_request": "legacy",
+    "specialist_presentation_route": "legacy-request-canonicalized",
+    "specialist_visible_url": "/dome-world/ash-threshold.html",
+    "specialist_cache_preflight": {
+      "legacy_bypass": true,
+      "visible_url": "/dome-world/ash-threshold.html",
+      "aia3_route_required": false,
+      "reload_required": false
+    }
+  },
+  "readiness": {
+    "schema": "td613.ash.readiness-receipt/v0.1",
+    "lifecycle_schema": "td613.ash.lifecycle/v0.1",
+    "state": "READINESS_OBSERVED",
+    "observed_at": "2026-09-10T05:22:21.540Z",
+    "source_surface": "dome-world-ash-threshold",
+    "artifact_posture": {
+      "artifact_class": "unclassified",
+      "media_type": null,
+      "byte_length": null,
+      "local_commitment_reference": null
+    },
+    "threshold_gestures": {
+      "arrival_acknowledged": true,
+      "boundary_acknowledged": true,
+      "custody_acknowledged": true
+    },
+    "source_status": "OBSERVED",
+    "raw_content_accepted": false,
+    "raw_content_persisted": false,
+    "transport_performed": false,
+    "readiness_is_custody": false,
+    "missingness": [
+      "artifact metadata not yet supplied",
+      "custody digest spine not yet verified",
+      "case root not yet bound"
+    ],
+    "alternatives": [
+      "metadata-only custody root",
+      "browser-local exact-byte commitment",
+      "continue without artifact bytes"
+    ],
+    "open_questions": [
+      "Which artifact or metadata object should become the custody root?"
+    ],
+    "readiness_digest": "sha256:f5f7cb99eedf9c5998fbb11830be866887c5357d6fb14fe11fc91b158780b3d7",
+    "receipt_id": "ash_readiness_4fe11fc91b158780b3d7"
+  },
+  "pre_custody_hold": {
+    "test_workspace_navigable": true,
+    "test_action_held": true,
+    "pre_custody_exact_state": "READINESS_OBSERVED",
+    "message": "Test this draft held · CASE_BOUND required; current lifecycle state READINESS_OBSERVED.",
+    "state": "READINESS_OBSERVED"
+  },
+  "custody": {
+    "assurance_class": "L1_BROWSER_LOCAL_ARTIFACT_DIGEST",
+    "receipt_id": "ashc_2c782f091c351c99b271",
+    "receipt_digest": "sha256:259b7b396892b0c61dd26b77918861a8eeed87a733d12c782f091c351c99b271",
+    "manifest_digest": "sha256:b6d77e6be41a70dcbad17d696106096eceb5c5e1abe0608bc45c6b6301cbe661",
+    "registration_posts_added": 1,
+    "raw_bytes_sent": false
+  },
+  "case_binding": {
+    "case_id": "case_a33578cdbb6b99617f29",
+    "before_digest": "sha256:6031c545d482cf8356c26269bd3c7945fad07e3d7242a860b40af44827f4f029",
+    "after_digest": "sha256:8edc0529b7cdf14440d27239ba33082da566b1cad0d107a01ca3c5d662fbd9eb",
+    "custody_reference": "ashc_2c782f091c351c99b271",
+    "root_node_id": "node_custody_782f091c351c99b271",
+    "root_disclosure_state": "LOCAL"
+  },
+  "rebuild": {
+    "test_id": "rebuild_50687f77eb46fc0b56da",
+    "test_digest": "sha256:09e8024062f8752de4885450626e7493a47b82e2270f60713ee01760c3426ad8",
+    "case_map_digest": "sha256:8edc0529b7cdf14440d27239ba33082da566b1cad0d107a01ca3c5d662fbd9eb",
+    "state": "REBUILD_ELIGIBLE"
+  },
+  "draft_review_release": {
+    "draft_id": "draft_1c69b50c6e91827cfda5",
+    "draft_case_map_digest": "sha256:8edc0529b7cdf14440d27239ba33082da566b1cad0d107a01ca3c5d662fbd9eb",
+    "draft_body_sha256": "sha256:657cb3231db1d6269622d6d038978ad1aa50f3e78b311b2366c530210d281c5a",
+    "review_id": "review_49589557ff26d9da388d",
+    "review_status": "READY_FOR_LOCAL_RELEASE_APPROVAL",
+    "release_receipt_id": "release_bf4ba5ee686e2e811609",
+    "release_case_map_digest": "sha256:8edc0529b7cdf14440d27239ba33082da566b1cad0d107a01ca3c5d662fbd9eb",
+    "transmission_performed": false,
+    "lifecycle_state": "RELEASE_ELIGIBLE"
+  },
+  "continuity": {
+    "save_point_id": "save_5b8f6314c1cff697093f",
+    "case_map_digest": "sha256:8edc0529b7cdf14440d27239ba33082da566b1cad0d107a01ca3c5d662fbd9eb",
+    "lifecycle_state": "CONTINUITY_SEALED",
+    "capsule_digest": "sha256:9e471273aed890e24d97dd1db35f6c0e03773d3ab421d40e215089e4f8b20dc9",
+    "wrong_passphrase_hold": true,
+    "tamper_hold": true
+  },
+  "desktop": {
+    "width": 1440,
+    "height": 1000,
+    "document_width": 1440,
+    "horizontal_overflow": 0,
+    "unreachable_controls": [],
+    "lifecycle_state": "CONTINUITY_SEALED",
+    "selected_workspace": "custody",
+    "reduced_motion": true
+  },
+  "mobile_portrait": {
+    "width": 390,
+    "height": 844,
+    "document_width": 390,
+    "horizontal_overflow": 0,
+    "unreachable_controls": [],
+    "lifecycle_state": "CONTINUITY_SEALED",
+    "selected_workspace": "custody",
+    "reduced_motion": true
+  },
+  "mobile_landscape": {
+    "width": 844,
+    "height": 390,
+    "document_width": 844,
+    "horizontal_overflow": 0,
+    "unreachable_controls": [],
+    "lifecycle_state": "CONTINUITY_SEALED",
+    "selected_workspace": "custody",
+    "reduced_motion": true
+  },
+  "storage": {
+    "indexeddb_store_counts": {
+      "authorityBindings": 1,
+      "authorityContexts": 22,
+      "caseStates": 0,
+      "cases": 1,
+      "compatibilityAudits": 0,
+      "custodyReceipts": 1,
+      "deletionPlans": 0,
+      "deletionReceipts": 0,
+      "drafts": 1,
+      "invalidations": 2,
+      "lifecycle": 1,
+      "notes": 1,
+      "operations": 1,
+      "releases": 1,
+      "reviews": 1,
+      "roomRules": 1,
+      "routeMemory": 1,
+      "savePoints": 1,
+      "savedCases": 0,
+      "tests": 1,
+      "tombstones": 0,
+      "unexpectedDetails": 0
+    },
+    "local_storage_keys": [
+      "td613.ash.cache-flush.epoch",
+      "td613.ash.session.epoch",
+      "td613.ash-keep.current-case",
+      "td613.ash.cache-flush.aia3.epoch",
+      "td613.ash-keep.preferences",
+      "td613.ash.cache-preflight.epoch"
+    ],
+    "session_storage_keys": [
+      "td613:ash-threshold:readiness:v0.1"
+    ],
+    "raw_artifact_in_local_storage": false
+  },
+  "network": {
+    "total_requests": 211,
+    "non_read_requests": [
+      {
+        "method": "POST",
+        "url": "https://td613.com/api/dome-world/ash-custody-register",
+        "resource_type": "fetch"
+      }
+    ],
+    "disallowed_non_read_requests": [],
+    "provider_or_transport_requests": [],
+    "http_errors": [],
+    "request_failures": [
+      {
+        "method": "GET",
+        "url": "https://td613.com/api/dome-world-shell?surface=cache-evict&epoch=td613.ash.cache-flush%2F2026-07-27-a15-postclosure-v1&asset_epoch=20260727-a15-postclosure-v1&nonce=28fc3f3f-baea-4a3a-af6b-0effbc65ff2a",
+        "resource_type": "fetch",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "https://td613.com/dome-world/ash-a11-capsule-recompilation.js?v=20260724-a12-release-v1",
+        "resource_type": "script",
+        "failure": "net::ERR_ABORTED"
+      }
+    ],
+    "raw_artifact_in_request_body": false,
+    "active_stylesheet_hrefs": [
+      "https://td613.com/dome-world/ash-premium-ui.css",
+      "https://td613.com/dome-world/ash-guided-operator-ui.css?v=20260718-stable-membrane-v4",
+      "https://td613.com/dome-world/ash-flowcore-pedagogy-field.css?v=20260721-flowcore-live-field-v2",
+      "https://td613.com/dome-world/ash-whole-instrument-pedagogy.css?v=20260723-a2-a5-v1"
+    ],
+    "guided_stylesheet_active": true,
+    "expected_transition_aborts": [
+      {
+        "method": "GET",
+        "url": "https://td613.com/api/dome-world-shell?surface=cache-evict&epoch=td613.ash.cache-flush%2F2026-07-27-a15-postclosure-v1&asset_epoch=20260727-a15-postclosure-v1&nonce=28fc3f3f-baea-4a3a-af6b-0effbc65ff2a",
+        "resource_type": "fetch",
+        "failure": "net::ERR_ABORTED"
+      }
+    ],
+    "unexpected_request_failures": [
+      {
+        "method": "GET",
+        "url": "https://td613.com/dome-world/ash-a11-capsule-recompilation.js?v=20260724-a12-release-v1",
+        "resource_type": "script",
+        "failure": "net::ERR_ABORTED"
+      }
+    ]
+  },
+  "declared_route": [
+    "ARRIVAL_UNPERSISTED",
+    "READINESS_OBSERVED",
+    "CUSTODY_ROOT_VERIFIED",
+    "CASE_BOUND",
+    "REBUILD_ELIGIBLE",
+    "RELEASE_ELIGIBLE",
+    "CONTINUITY_SEALED"
+  ],
+  "non_claims": [
+    "readiness is not custody",
+    "custody is not authenticity",
+    "case binding is not truth",
+    "rebuild eligibility is not release authority",
+    "continuity is not transport"
+  ],
+  "evidence_files": {},
+  "http_errors": [],
+  "request_failures": [
+    {
+      "method": "GET",
+      "url": "https://td613.com/api/dome-world-shell?surface=cache-evict&epoch=td613.ash.cache-flush%2F2026-07-27-a15-postclosure-v1&asset_epoch=20260727-a15-postclosure-v1&nonce=28fc3f3f-baea-4a3a-af6b-0effbc65ff2a",
+      "resource_type": "fetch",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "url": "https://td613.com/dome-world/ash-a11-capsule-recompilation.js?v=20260724-a12-release-v1",
+      "resource_type": "script",
+      "failure": "net::ERR_ABORTED"
+    }
+  ],
+  "console_errors": [],
+  "error": {
+    "message": "Unexpected request failures observed: net::ERR_ABORTED script https://td613.com/dome-world/ash-a11-capsule-recompilation.js?v=20260724-a12-release-v1",
+    "stack": "Error: Unexpected request failures observed: net::ERR_ABORTED script https://td613.com/dome-world/ash-a11-capsule-recompilation.js?v=20260724-a12-release-v1\n    at assert (file:///home/runner/work/TD613-TCP/TD613-TCP/artifacts/lifecycle-production/ash-lifecycle-production-probe.runtime.mjs?fixture=1789017738651:34:25)\n    at file:///home/runner/work/TD613-TCP/TD613-TCP/artifacts/lifecycle-production/ash-lifecycle-production-probe.runtime.mjs?fixture=1789017738651:545:3"
+  }
+}

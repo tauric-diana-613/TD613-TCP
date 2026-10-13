@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:b2095cc946946e4e3f57b734
+parent_capture_id: capture:3a657ca4e8fd56321332ab4e
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "SUBSTRATE COUPLING AND GOVERNANCE FRAGMENTATION: Two Universal SignalRupture Operators"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.22003453
+Final URL: https://zenodo.org/records/22003453
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.22003453 -> https://zenodo.org/doi/10.5281/zenodo.22003453
+302 https://zenodo.org/doi/10.5281/zenodo.22003453 -> https://zenodo.org/records/22003453

@@ -1,0 +1,462 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\definecolor{forcedc}{RGB}{15,110,86}
+\definecolor{declaredc}{RGB}{24,95,165}
+\definecolor{positedc}{RGB}{170,105,20}
+\definecolor{openc}{RGB}{163,45,45}
+\newcommand{\forced}{\textcolor{forcedc}{\textsc{[forced]}}}
+\newcommand{\declared}{\textcolor{declaredc}{\textsc{[declared]}}}
+\newcommand{\posited}{\textcolor{positedc}{\textsc{[posited]}}}
+\newcommand{\openq}{\textcolor{openc}{\textsc{[open]}}}
+\newcommand{\computed}{\textcolor{forcedc}{\textsc{[computed]}}}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Cx}{\mathbb{C}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\Mah}{\mathrm{M}}
+\newcommand{\spec}{\operatorname{spec}}
+\newcommand{\charp}{\chi}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\Scal}{\mathcal{S}}
+\newcommand{\Acal}{\mathcal{A}}
+\newcommand{\Ccal}{\mathcal{C}}
+
+\title{\textbf{The Emission--Gap Theorem:}\\[2pt]
+\large No Salem Number in the Spectral Image, and the Cost Floor It Forces\\[6pt]
+\normalsize A Companion to \emph{The Exchange Rate $\lambda = 2c$}}
+\author{Echo--Squirrel Research}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The residual--return growth rule charges $\lambda\log\Mah(\theta)$ to adjoin an algebraic direction $\theta$, where $\Mah$ is the Mahler measure. The rule has a positive cost floor iff $\Mah$ is bounded away from $1$ over everything the construction can emit. This is open for one reason only: Salem numbers --- reciprocal units with conjugates on the unit circle --- evade Smyth's non--reciprocal bound $\Mah\ge\mu_S$ and can lie arbitrarily close to $1$ as far as anyone has proved (Lehmer's problem). We do \emph{not} resolve Lehmer. We prove instead a system--internal statement strictly weaker than Lehmer and sufficient for the floor: \emph{no Salem number lies in the image of the spectral emission algebra.} The mechanism is an angle--confinement invariant: every catalog eigenvalue has argument in $\tfrac\pi2\Z$, the spectral operations $\{\otimes,\oplus,\ (\cdot)^2,\ \text{minpoly},\ \Phi\}$ preserve this, so every emitted on--circle eigenvalue is a fourth root of unity --- whereas a Salem number's on--circle conjugates are, by irreducibility, \emph{not} roots of unity. The two are disjoint, so the spectral image omits every Salem number, and with it the entire band $(1,\mu_S)$; the cost floor is then $\log\mu_S>0$ by Smyth, realised at $\log\varphi$. We give the theorem in four equivalent forms --- Mahler, entropy, channel--spectral, and metric--signature --- which are the same ``excluded middle'' seen across the domains of the companion paper. We then close the entry--level operators, not by extending the angle argument but by relocating the Salem question to a single boundary: a number is Salem exactly when its trace--down $\theta+\theta^{-1}$ is totally real with one conjugate past $t=2$ and the rest inside $(-2,2)$ --- the $\lambda=2c$ flip. Read against that boundary the circulant is forced with no delta (its eigenvalues lie in cyclotomic, hence totally real or CM, fields, which a Salem field's signature $(2,m-1)$ can never be), and the commutator is forced in context: it is safe off an explicit, Sturm--decidable flip--straddle locus on whose safe side the emission is certified. We then upgrade the commutator from per--instance to uniform by using the structure the algebra is derived from: the framework's commutator is the \emph{self--action} $\operatorname{ad}_R=[R,\cdot]$, a derivation, so its spectrum is forced to be the eigenvalue difference set; real differences of spectral eigenvalues lie in the real field $K=\Q(\sqrt2,\sqrt3,5^{1/4})$, whose every subfield is totally real or of signature $(2k,k)$, so the only Salem--bearing subfield is $\Q(5^{1/4})$ of degree four, where Salem measures exceed $\varphi$. The floor $\log\varphi$ is therefore forced at \emph{every} size, not checked instance by instance --- the gate's discriminant flip $D=t^2-4$ reappearing as the field's signature split. The cost floor is then $\log\mu_S>0$ by Smyth, realised at $\log\varphi$. What remains is honestly narrow --- the free (non--self--action) commutator at unbounded size and, beyond the system, Lehmer's problem. Every non--asymptotic claim is machine--verified in exact arithmetic.
+\end{abstract}
+
+\tableofcontents
+
+\section{The cost floor and the strategy}\label{sec:intro}
+
+The companion paper's growth rule adjoins a candidate direction $\theta$ iff $\norm{r}_G^2\ge\lambda\log\Mah(\theta)$, charging the description cost $\log\Mah(\theta)$, where $\Mah(p)=\abs{a_n}\prod_i\max(1,\abs{\alpha_i})$ for $p=a_n\prod(x-\alpha_i)$ and $\Mah(\theta)=\Mah(m_\theta)$ for the minimal polynomial. The rule is well posed with a \emph{uniform positive floor} iff
+\begin{equation}\label{eq:floorgoal}
+\inf\{\Mah(\theta)>1:\theta\ \text{emittable}\}>1.
+\end{equation}
+The obstruction is sharp and singular. By Kronecker, $\Mah(p)=1$ iff $p$ is cyclotomic (times $x^k$); by \textbf{Smyth} \cite{Smyth}, any \emph{non--reciprocal} monic integer $p$ has $\Mah(p)\ge\mu_S=1.3247179\ldots$, the plastic number (root of $x^3-x-1$). The only escape from a positive floor is through \emph{reciprocal} polynomials, specifically \textbf{Salem} numbers --- and the smallest known, Lehmer's number $\Mah(L)=1.1762808\ldots$, already sits below $\mu_S$. Whether Salem numbers approach $1$ is \textbf{Lehmer's problem} \cite{Lehmer}, open since 1933; Dobrowolski's bound $\Mah(p)>1+c(\log\log n/\log n)^3$ \cite{Dobrowolski} degrades to $1$ with degree, giving no uniform floor.
+
+We do not attempt Lehmer. The construction does not emit \emph{all} integer polynomials; it emits a finitely generated algebra. The strategy is therefore to prove the system--internal statement
+\begin{equation}\label{eq:strategy}
+\boxed{\text{no Salem number lies in the emission image}}
+\end{equation}
+which, with Smyth, yields \eqref{eq:floorgoal} with floor $\mu_S$ --- \emph{without} touching Lehmer, because \eqref{eq:strategy} is a closure property of one specific algebra, not a universal height bound. We prove \eqref{eq:strategy} for the \emph{spectral} sub--algebra and isolate exactly which operators remain.
+
+\section{The emission algebra}\label{sec:algebra}
+
+\begin{definition}[Catalog]\label{def:catalog}
+The catalog is the finite set of seed companions $\Ccal=\{C(m_\theta):\theta\in\{\varphi,\tau,\sqrt2,\sqrt3,\sqrt5,\mathrm{gap},K\}\}$ with minimal polynomials, respectively, $x^2-x-1,\ x^2+x-1,\ x^2-2,\ x^2-3,\ x^2-5,\ x^2-7x+1,\ x^4+5x^2-5$.
+\end{definition}
+
+\begin{definition}[Operators]\label{def:ops}
+The construction's matrix operators, each paired with the spectral action it induces, split into two classes.
+\emph{Spectral operators} act on eigenvalue multisets by a fixed rule:
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}lll@{}}
+\toprule
+operator & matrix action & action on $\spec$ \\
+\midrule
+$\otimes$ (kron) & $A\otimes B$ & products $\{\lambda_i\mu_j\}$ \\
+$\oplus$ (dsum) & $A\oplus B$ & union $\{\lambda_i\}\cup\{\mu_j\}$ \\
+$(\cdot)^2$ (squaring) & $\theta\mapsto\theta^2$ & squares $\{\lambda_i^2\}$ \\
+$\mathrm{minpoly}$ & $M\mapsto C(m_M)$ & preserves (radical of spectrum) \\
+$\Phi$ (closure) & $\operatorname{companion}\circ\charp$ & preserves spectrum \\
+\bottomrule
+\end{tabular}
+\end{center}
+\emph{Entry--level operators} act on matrix entries and do \emph{not} determine the output spectrum from the input spectra: the commutator $[A,B]=AB-BA$; the Cartan embedding $A_n,D_n,E_8$; the circulant $\operatorname{circ}(\cdot)$.
+\end{definition}
+
+\begin{definition}[Sub--algebra, full algebra, image]\label{def:images}
+The \textbf{spectral sub--algebra} $\Scal$ is the closure of $\Ccal$ under the spectral operators. The \textbf{full algebra} $\Acal\supseteq\Scal$ adjoins the entry--level operators. The \textbf{Mahler image} of a class $\Acal'$ is $\Mah(\Acal')=\{\Mah(\charp_M):M\in\Acal'\}$, and a number $\theta$ is \textbf{emittable in} $\Acal'$ if it is the spectral radius of some $M\in\Acal'$ with $m_\theta\mid\charp_M$.
+\end{definition}
+
+Because the seeds have sizes $2$ and $4$ and the operators preserve integrality, every $M\in\Acal$ is an integer matrix; hence $\charp_M\in\Z[x]$ is monic, and for every eigenvalue $\theta$ of $M$ \emph{all $\Q$--conjugates of $\theta$ are eigenvalues of $M$} (they are roots of the same $\charp_M$). This elementary closure --- conjugates travel together --- is the hinge of the main proof.
+
+\section{The theorem and its four forms}\label{sec:theorem}
+
+\begin{definition}[Salem number]\label{def:salem}
+A \textbf{Salem number} is a real algebraic integer $\beta>1$ whose conjugates all lie in the closed unit disk with at least one on the unit circle; equivalently $m_\beta$ is reciprocal of even degree $\ge4$ with roots $\beta,\ \beta^{-1}$, and $(\deg-2)/2$ conjugate pairs on $\abs z=1$. The \textbf{Salem band} is $(1,\mu_S)$, into which every Salem number below the plastic number falls.
+\end{definition}
+
+\begin{theorem}[Emission--Gap Theorem, spectral form]\label{thm:main}
+No Salem number is emittable in $\Scal$. Equivalently $\Mah(\Scal)\cap(1,\mu_S)=\varnothing$, and the four statements
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2.2em,topsep=2pt,itemsep=1pt]
+\item \textbf{(Mahler)} $\Mah(\Scal)\subseteq\{1\}\cup[\mu_S,\infty)$;
+\item \textbf{(entropy)} the topological entropy $h=\log\Mah$ of every emitted companion toral automorphism lies in $\{0\}\cup[\log\mu_S,\infty)$;
+\item \textbf{(spectral)} every emitted self--action keeps the trifurcation channel gap empty --- no on--circle expanding channel;
+\item \textbf{(metric)} no field generated by an element of $\Scal$ places a complex embedding on the unit circle
+\end{enumerate}
+are equivalent and each holds. \forced{} (residual: $\Acal\setminus\Scal$, Section~\ref{sec:residual})
+\end{theorem}
+
+The proof occupies Sections~\ref{sec:confine}--\ref{sec:floor}. The equivalences are the content of the non--local identity (Section~\ref{sec:nonlocal}); the entropy reading is Lind--Schmidt--Ward \cite{LSW}, $\Mah(p)=\exp h(C(p))$ on $\T^n$.
+
+\section{Angle confinement}\label{sec:confine}
+
+Write $\arg z\in[0,2\pi)$ for the argument of $z\in\Cx^\times$, and let $\tfrac\pi2\Z$ denote the subgroup $\{0,\tfrac\pi2,\pi,\tfrac{3\pi}2\}$ of $\R/2\pi\Z$.
+
+\begin{lemma}[Catalog arguments]\label{lem:catargs}
+Every eigenvalue of every catalog companion has argument in $\tfrac\pi2\Z$. \forced
+\end{lemma}
+
+\begin{proof}
+The quadratic seeds have real spectra: $\varphi,\tau,\sqrt2,\sqrt3,\sqrt5,\mathrm{gap}$ give roots on $\R$, with argument $0$ (positive) or $\pi$ (negative). The quartic $K$ ($x^4+5x^2-5$) has spectrum $\{\pm K,\ \pm i\beta\}$ with $K,\beta\in\R$: arguments $0,\pi$ (the real pair) and $\tfrac\pi2,\tfrac{3\pi}2$ (the imaginary pair). All lie in $\tfrac\pi2\Z$. Verified exactly (Appendix~\ref{app:emit}). \end{proof}
+
+\begin{lemma}[Spectral operators preserve $\tfrac\pi2\Z$]\label{lem:closure}
+If every eigenvalue of $A$ and of $B$ has argument in $\tfrac\pi2\Z$, then so does every eigenvalue of $A\otimes B$, $A\oplus B$, $A^2$ (i.e.\ $\theta\mapsto\theta^2$), $C(m_A)$, and $\Phi(A)$. Consequently every eigenvalue of every $M\in\Scal$ has argument in $\tfrac\pi2\Z$. \forced
+\end{lemma}
+
+\begin{proof}
+The subgroup $\tfrac\pi2\Z\le\R/2\pi\Z$ is closed under addition and under doubling. Kron: $\arg(\lambda_i\mu_j)=\arg\lambda_i+\arg\mu_j\in\tfrac\pi2\Z$ (closed under $+$). Dsum: the spectrum is the union, arguments unchanged. Squaring: $\arg(\lambda_i^2)=2\arg\lambda_i\in\tfrac\pi2\Z$ (closed under doubling, since $2\cdot\tfrac\pi2\Z\subseteq\tfrac\pi2\Z$). Minpoly and $\Phi$ preserve the spectrum (the latter is spectrum--preserving on companions; minpoly takes the radical of the spectrum, a subset). The final clause is induction on word length: the base is Lemma~\ref{lem:catargs}, the step is the four cases just shown. \end{proof}
+
+\begin{remark}[Why doubling, not halving]\label{rem:nohalve}
+The invariant survives because no spectral operator takes \emph{square roots} of eigenvalues: squaring is the only argument--scaling operator and it \emph{doubles}, which $\tfrac\pi2\Z$ absorbs. A halving operator would generate $\tfrac\pi4\Z,\tfrac\pi8\Z,\dots$ --- still rational angles, still roots of unity on the circle, so the conclusion of Lemma~\ref{lem:oncircle} would persist, but the clean closed form $\{0,\tfrac\pi2,\pi,\tfrac{3\pi}2\}$ would coarsen. The construction contains no such operator.
+\end{remark}
+
+\begin{lemma}[On--circle emitted eigenvalues are fourth roots of unity]\label{lem:oncircle}
+If $\theta$ is an eigenvalue of some $M\in\Scal$ with $\abs\theta=1$, then $\theta\in\{1,i,-1,-i\}$. \forced
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:closure}, $\arg\theta\in\{0,\tfrac\pi2,\pi,\tfrac{3\pi}2\}$; with $\abs\theta=1$ this forces $\theta\in\{1,i,-1,-i\}$, the fourth roots of unity. \end{proof}
+
+\section{The Salem signature and the main proof}\label{sec:proof}
+
+\begin{lemma}[Salem on--circle conjugates are not roots of unity]\label{lem:salemirr}
+Let $\beta$ be a Salem number and $\zeta$ a conjugate of $\beta$ with $\abs\zeta=1$. Then $\zeta$ is not a root of unity; in particular $\arg\zeta$ is an irrational multiple of $\pi$, so $\zeta\notin\{1,i,-1,-i\}$. \forced
+\end{lemma}
+
+\begin{proof}
+$\zeta$ and $\beta$ share the minimal polynomial $m_\beta$ (conjugates). If $\zeta$ were a root of unity, $m_\beta$ would be its minimal polynomial, hence a cyclotomic polynomial $\Phi_d$; but then $\beta$, a root of $m_\beta=\Phi_d$, would be a root of unity, contradicting $\beta>1$. So $\zeta$ is a non--root--of--unity point on the circle, i.e.\ $\arg\zeta\in\pi(\R\setminus\Q)$, excluding the four rational arguments of Lemma~\ref{lem:oncircle}. (For the Lehmer polynomial the eight on--circle arguments are $\approx62.8^\circ,107.0^\circ,137.3^\circ,\dots$ --- none a multiple of $90^\circ$; Appendix~\ref{app:emit}.) \end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}, statement \textup{(i)} and ``no Salem'']
+Suppose, for contradiction, that a Salem number $\beta$ is emittable in $\Scal$: some $M\in\Scal$ has $\beta$ as an eigenvalue with $m_\beta\mid\charp_M$. Since $M$ is an integer matrix and $m_\beta\mid\charp_M$, \emph{all} conjugates of $\beta$ are eigenvalues of $M$ --- including its on--circle conjugates $\zeta$ (Definition~\ref{def:salem}, $\deg\ge4$ guarantees at least one). By Lemma~\ref{lem:closure} every eigenvalue of $M$ has argument in $\tfrac\pi2\Z$, so by Lemma~\ref{lem:oncircle} each such $\zeta\in\{1,i,-1,-i\}$ is a fourth root of unity. But Lemma~\ref{lem:salemirr} says no on--circle conjugate of a Salem number is a root of unity. Contradiction. Hence no Salem number is emittable in $\Scal$, so $\Mah(\Scal)$ contains no Salem value; since every measure in $(1,\mu_S)$ is realised only by a reciprocal (Salem--type) number --- non--reciprocals obey Smyth --- statement (i) follows: $\Mah(\Scal)\subseteq\{1\}\cup[\mu_S,\infty)$. \end{proof}
+
+\begin{remark}[Why this is not a Lehmer proof]\label{rem:notlehmer}
+The argument never bounds the Mahler measure of an arbitrary reciprocal polynomial. It shows the \emph{specific} reciprocal polynomials that could carry a small measure --- Salem polynomials, whose defining feature is irrational on--circle conjugates --- cannot appear as factors of $\charp_M$ for $M\in\Scal$, because the emitted spectrum is constrained to rational angles. A Salem number still exists (Lehmer's); it simply is not in the image. The general infimum \eqref{eq:floorgoal} over all integer polynomials remains Lehmer's open problem. \openq{} (general Lehmer, untouched)
+\end{remark}
+
+\section{The Mahler gap, directly}\label{sec:mahlergap}
+
+The angle argument (Sections~\ref{sec:confine}--\ref{sec:proof}) proves the theorem through the spectrum. The same conclusion has a second, independent proof through the Mahler measure itself; it supplies the base case and the degree induction that the height form rests on, and pins the realised floor at $\varphi$.
+
+\begin{lemma}[Base case: the degree--two gap is empty]\label{lem:base}
+No integer polynomial of degree $2$ has Mahler measure in $(1,\varphi)$. The measure is exactly $1$ for the cyclotomic quadratics and $\ge\varphi$ otherwise, the value $\varphi$ realised by the golden seed $x^2-x-1$. \forced
+\end{lemma}
+
+\begin{proof}
+Let $p=x^2+bx+c\in\Z[x]$. By Kronecker's theorem $\Mah(p)=1$ iff every root is a root of unity, i.e.\ $p$ is a product of cyclotomics; otherwise $p$ has a root strictly off the closed unit disk and $\Mah(p)>1$. \emph{Reciprocal case} ($c=1$, $p=x^2-bx+1$): the roots are a reciprocal pair; for $\abs b\le2$ they sit on the circle, $\Mah=1$, and for $\abs b\ge3$ the dominant root is $\ge\tfrac{3+\sqrt5}2=\varphi^2$, so $\Mah\ge\varphi^2$. \emph{Non--reciprocal case} ($\abs c\ge2$): complex roots have modulus $\sqrt{\abs c}\ge\sqrt2$ giving $\Mah=\abs c\ge2$; real roots have off--disk product $\ge2$. The only remaining non--cyclotomic points ($\abs c\le1$) are $x^2-x-1,\ x^2+x-1$ and sign variants, each $\Mah=\varphi$. A scan of all $625$ quadratics with $\abs b,\abs c\le12$ confirms both the empty interval and the minimiser $\varphi$ (Appendix~\ref{app:emit}). \end{proof}
+
+\begin{lemma}[Degree raising preserves the gap]\label{lem:degraise}
+Under the spectral operators the Mahler image stays in $\{1\}\cup[\mu_S,\infty)$, with every realised value in $\{1\}\cup[\varphi,\infty)$: $\oplus$ multiplies measures ($\Mah(p\oplus q)=\Mah(p)\Mah(q)$) and squaring squares them ($\Mah(\theta\mapsto\theta^2)=\Mah(\,\cdot\,)^2$), both fixing $1$ and mapping $[\varphi,\infty)$ into itself; $\otimes,\mathrm{minpoly},\Phi$ keep the measure off the Salem band by the angle argument and at $\ge\mu_S$ by Smyth, with no realised value in $(1,\varphi)$ (Appendix~\ref{app:emit}). Hence $\Mah(\Scal)\subseteq\{1\}\cup[\mu_S,\infty)$, an independent proof of Theorem~\ref{thm:main}\,(i), realised at $\varphi$. \forced
+\end{lemma}
+
+\begin{proof}
+$\Mah$ is multiplicative over factorisation, so $\Mah(p\oplus q)=\Mah(\charp_p\,\charp_q)=\Mah(p)\Mah(q)$, and a product of two values in $\{1\}\cup[\varphi,\infty)$ stays there. For squaring, $\prod_i\max(1,\abs{\lambda_i}^2)=\big(\prod_i\max(1,\abs{\lambda_i})\big)^2$, so the measure is squared and $\ge\varphi^2$ when $>1$. For $\otimes$ the spectrum is $\{\lambda_i\mu_j\}$: Theorem~\ref{thm:main} forbids a Salem factor, Smyth bounds any non--reciprocal factor by $\mu_S$, and a reciprocal non--Salem factor has all conjugates off the circle (Lemma~\ref{lem:salemirr}) hence $\Mah\ge\varphi^2$; the sampled products realise only values $\ge\varphi$ (Appendix~\ref{app:emit}). $\mathrm{minpoly}$ and $\Phi$ act on the same spectrum (radical, re--companion) and leave $\Mah$ fixed. Induction on word length from Lemma~\ref{lem:base} gives the image bound. \end{proof}
+
+\begin{remark}[Two proofs, one gap]\label{rem:twoproofs}
+Lemma~\ref{lem:degraise} and the angle argument are the height-- and spectrum--side readings of one fact. The angle argument is sharper in \emph{mechanism} --- it names which polynomials are excluded, those with irrational on--circle angles; the Mahler induction is sharper in \emph{value} --- it pins the realised floor at $\varphi$, not merely $\mu_S$. The excluded interval $(1,\varphi)\supset(1,\mu_S)$ is named on both sides.
+\end{remark}
+
+\section{The cost floor}\label{sec:floor}
+
+\begin{corollary}[Positive cost floor on the spectral emission]\label{cor:floor}
+For every $\theta$ emittable in $\Scal$ with $\Mah(\theta)>1$, $\Mah(\theta)\ge\mu_S$, so the description cost satisfies
+\[
+\lambda\log\Mah(\theta)\ \ge\ \lambda\log\mu_S\ >\ 0,\qquad \log\mu_S=0.281200\ldots\ \text{nats}.
+\]
+The realised stock attains the sharper value $\log\varphi=0.481212\ldots$ (the golden seed, the smallest catalog measure). \forced
+\end{corollary}
+
+\begin{proof}
+Let $\theta$ be emittable in $\Scal$ with $\Mah(\theta)>1$ and $m_\theta$ its (irreducible) minimal polynomial. By Theorem~\ref{thm:main}, $\theta$ is not Salem. If $m_\theta$ is non--reciprocal, Smyth gives $\Mah(\theta)\ge\mu_S$. If $m_\theta$ is reciprocal and non--cyclotomic, then $\theta$ is not Salem yet reciprocal, so by Lemma~\ref{lem:salemirr}'s contrapositive any on--circle conjugate would be a root of unity, forcing a cyclotomic factor and contradicting irreducibility unless there are \emph{no} on--circle conjugates; then $m_\theta$ is a reciprocal polynomial with all conjugates off the circle, whose real reciprocal pairs are units with $\Mah\ge\varphi$ (the minimal real quadratic unit; the catalog's $\mathrm{gap}=\varphi^4$ is the instance). In all cases $\Mah(\theta)\in\{1\}\cup[\mu_S,\infty)$, and the realised minimum over the catalog and its products is $\varphi$ (Appendix~\ref{app:emit}). \end{proof}
+
+This closes \eqref{eq:floorgoal} for $\Scal$: the cost floor that was open is positive, pinned by Smyth at $\mu_S$ and realised at $\varphi$, with general Lehmer left exactly where it was.
+
+\section{The non--local identity: one gap, four domains}\label{sec:nonlocal}
+
+The four forms of Theorem~\ref{thm:main} are not four results but one, read in the four domains the companion paper already carries. The Salem band sits inside the trifurcation gap, $(1,\mu_S)\subset(1,\varphi)$, and that gap appears identically as:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}lll@{}}
+\toprule
+domain & the gap & equivalence to (i) \\
+\midrule
+height (Mahler) & $(1,\varphi)$, empty for integer quadratics & definitional \\
+dynamics (entropy $h=\log\Mah$) & $(0,\log\varphi)$, no small positive entropy & LSW \cite{LSW}: $\Mah=e^{h}$ \\
+decision (self--action $\operatorname{ad}_R$) & channel gap $(0,\sqrt5)$, no fourth channel & spectrum $=\{-\sqrt5,0,\sqrt5\}$ \\
+geometry (trace form, $\det G=4D$) & Riemannian $\leftrightarrow$ Lorentzian at $D=0$ & Salem $\Rightarrow$ indefinite \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}[The gaps are analogous, not identical]\label{rem:analogous}
+The four gaps are one \emph{structurally} --- each is the empty middle of the same forced trifurcation --- but they are not one \emph{number}. Their right endpoints are distinct quantities: the channel threshold $\sqrt D=\sqrt5\approx2.236$ (an eigenvalue of $\operatorname{ad}_R$), the height $\varphi\approx1.618$, the entropy $\log\varphi\approx0.481$. Height and entropy are genuinely the same datum under a map, $h=\log\Mah$, so the gaps $(1,\varphi)$ and $(0,\log\varphi)$ are images of each other. The channel gap $(0,\sqrt D)$ is tied to these \emph{not} by a numerical equality but structurally: $\sqrt D$ is the decision threshold separating \textsc{grow} from \textsc{captured}, and ``no realised value strictly inside $(0,\sqrt D)$ at an irrational angle'' is the same absence as ``no Mahler value in $(1,\varphi)$'' --- a Salem conjugate in both readings. The unifying object is the missing fourth channel, never a shared endpoint. Conflating $\sqrt D$ with $\varphi$ or $\log\varphi$ would be a category error; the correspondence is of \emph{emptiness}, transported across domains.
+\end{remark}
+
+\begin{proposition}[Salem forces a Lorentzian signature with on--circle places]\label{prop:lorentz}
+A Salem field of degree $2m$ has signature $(r_1,r_2)=(2,m-1)$ and trace--form signature $(m+1,m-1)$, indefinite for $m\ge2$. A number is Salem only if its field carries a complex embedding \emph{on} the unit circle. The catalog's only indefinite (Lorentzian) generator is $K\in\Q(5^{1/4})$ --- signature $(2,1)$, trace form $(3,1)$ --- and its complex place is \emph{off} the circle ($\abs{i\beta}=2.4195$, and $\abs{5^{1/4}\!\cdot i}=1.4953$). The totally real seeds have positive--definite trace form $(n,0)$ and no complex place at all. \forced
+\end{proposition}
+
+\begin{proof}
+The $2$ real embeddings are $\beta,\beta^{-1}$; the remaining $m-1$ conjugate pairs are the on--circle conjugates, giving $(r_1,r_2)=(2,m-1)$ and trace--form signature $(r_1+r_2,r_2)=(m+1,m-1)$ \cite{LSW,Smyth}. ``On the circle'' is the defining condition. The catalog signatures and complex--place moduli are computed exactly (Appendix~\ref{app:emit}). \end{proof}
+
+The metric form (iv) of Theorem~\ref{thm:main} is thus the geometric face of angle confinement: a Salem number needs an on--circle complex place, the construction's one Lorentzian field has its complex place at modulus $\gg1$, and the spectral operators (which only multiply, union, double, and preserve spectra) cannot rotate it onto the circle without producing a rational angle (Lemma~\ref{lem:closure}), i.e.\ a root of unity, not a Salem conjugate. The decision form (iii) is the same statement once more: the Salem regime --- on--circle but expanding --- would be a \emph{fourth} channel between \textsc{captured} (self--action eigenvalue $0$, in the height reading $\Mah=1$) and \textsc{grow} (self--action eigenvalue $+\sqrt D$, in the height reading $\Mah\ge\varphi$), and the ternary trifurcation has no slot for it. The eigenvalue $\sqrt D$ and the height $\varphi$ are different quantities labelling the same channel (Remark~\ref{rem:analogous}); what transfers is the emptiness of the middle, not a number.
+
+\begin{remark}[Finitely generated, hence no limit points]\label{rem:fg}
+Salem's theorem makes every Salem number a two--sided limit of Pisot numbers, and the catalog \emph{has} Pisot generators ($\varphi,\varphi^4$). But $\Scal$ is a finitely generated algebraic orbit; its Mahler spectrum is a discrete sub--semigroup of $[\varphi,\infty)$, generated by the catalog measures $\{\varphi,2,3,5,\varphi^4,\beta^2\}$ under the operators ($\oplus$ multiplying, squaring squaring, $\otimes$ composing), with no accumulation at $1$. Limits are not operations: the construction cannot reach the Salem limit points of its own generators. This is an independent witness for (i) consistent with the angle proof. \forced
+\end{remark}
+
+\section{The delta: localizing Salem at the flip}\label{sec:residual}
+
+Theorem~\ref{thm:main} settles the spectral operators by angle confinement, an argument that does not transfer to the entry--level operators because their characteristic polynomials are not determined by the inputs' spectra. Leaving them as a blanket obstruction is unacceptable: an operator is either safe or it is not, and the boundary should be \emph{stated}. This section supplies that boundary. We replace ``open'' by an exact, decidable criterion --- a \emph{delta} --- that pins precisely when an operator can emit a Salem number, and show it forces both entry--level operators in context: the circulant unconditionally, the commutator off an explicit locus the emission never reaches. The criterion is the companion paper's own flip.
+
+\subsection{The trace--down and the flip}\label{sec:tracedown}
+
+\begin{definition}[Trace--down]\label{def:tracedown}
+For $\theta\in\Cx^\times$ write $\rho(\theta)=\theta+\theta^{-1}$. On the unit circle $\rho(e^{i\psi})=2\cos\psi\in[-2,2]$; off the disk $\rho$ carries a reciprocal real pair $\{\beta,\beta^{-1}\}$ to $\beta+\beta^{-1}>2$. The \textbf{flip points} are $t=\pm2$, where the companion discriminant $D(t)=t^2-4$ of $x^2-tx+1$ vanishes --- exactly the boundary of the $\lambda=2c$ frame--shift: $D>2$ real (growth) on one side, $D<0$ on--circle (rotation) on the other.
+\end{definition}
+
+\begin{lemma}[Salem $=$ flip--straddle]\label{lem:salemflip}
+A reciprocal integer polynomial $R$ of degree $2m\ge4$, irreducible, defines a Salem number iff its \textbf{trace--down polynomial} $T\in\Z[t]$ of degree $m$ --- characterized by $R(x)=x^m\,T(x+x^{-1})$ --- is totally real with \emph{exactly one} root in $(2,\infty)$ and the remaining $m-1$ roots in $(-2,2)$. \forced
+\end{lemma}
+
+\begin{proof}
+The reciprocal pairs $\{\theta_i,\theta_i^{-1}\}$ of $R$ are the preimages under $\rho$ of the roots $s_i=\rho(\theta_i)$ of $T$. A pair is a real off--disk pair $\{\beta,\beta^{-1}\}$ (one root $\beta>1$ outside) iff $s_i>2$ ($D(s_i)>0$); it is an on--circle pair $\{e^{i\psi},e^{-i\psi}\}$ iff $s_i\in(-2,2)$ ($D(s_i)<0$). The Salem condition --- one root outside, the rest on the circle, none inside (reciprocity forbids the fourth case) --- is therefore exactly one $s_i>2$ and $m-1$ in $(-2,2)$, all real. For the Lehmer polynomial $T$ has roots $\{2.0264,\,0.9137,\,-0.5847,\,-1.4689,\,-1.8866\}$: one past the flip, four inside (Appendix~\ref{app:emit}). \end{proof}
+
+Lemma~\ref{lem:salemflip} relocates the entire Salem question onto a single totally real polynomial and a single boundary. ``Emits a Salem number'' becomes ``has a reciprocal factor whose trace--down straddles $t=2$ in the one--past pattern,'' and that is decidable in exact arithmetic: factor $\charp_M$ over $\Z$, test each factor for palindromy, build $T$ by the resultant $T(t)\sim\operatorname{Res}_x\!\big(R(x),\,x^2-tx+1\big)$, and Sturm--count its real roots against $\{-2,2\}$. No floating point crosses the decision.
+
+\begin{theorem}[The emission delta]\label{thm:delta}
+A matrix $M\in\Acal$ emits a Salem number if and only if $\charp_M$ has an irreducible reciprocal factor $R$ of degree $2m\ge4$ whose trace--down $T$ satisfies the flip--straddle of Lemma~\ref{lem:salemflip}. Off this locus --- in particular whenever $\charp_M$ has no reciprocal factor of degree $\ge4$, or every reciprocal factor's $T$ fails to be totally real, or has its outside root count $\ne1$ --- $M$ emits no Salem number. \forced
+\end{theorem}
+
+The remaining subsections evaluate the delta on each operator class.
+
+\subsection{The spectral image, re--read through the flip}\label{sec:specflip}
+
+\begin{proposition}[Spectral operators sit at the flip, never astride it]\label{prop:specflip}
+For $M\in\Scal$ every on--circle eigenvalue is a fourth root of unity (Lemma~\ref{lem:oncircle}), so its trace--down lies in $\{\rho(1),\rho(i),\rho(-1)\}=\{2,0,-2\}$ --- \emph{on} the flip boundary or at its center, never strictly inside $(-2,2)$ at a non--central point. Hence no reciprocal factor of an emitted spectral matrix can have a trace--down root in $(-2,2)\setminus\{0\}$, the straddle of Lemma~\ref{lem:salemflip} is impossible, and Theorem~\ref{thm:delta} reproduces Theorem~\ref{thm:main}. \forced
+\end{proposition}
+
+This is the angle argument seen geometrically: the rational angles $\{0,\tfrac\pi2,\pi\}$ are precisely the three trace--down values $\{2,0,-2\}$ that cannot participate in a flip--straddle, whereas a Salem number needs an on--circle conjugate at an irrational angle, i.e.\ a trace--down strictly interior. The two formulations are one.
+
+\subsection{Circulant is forced --- unconditionally}\label{sec:circ}
+
+\begin{proposition}[Cyclotomic obstruction]\label{prop:circ}
+No circulant of integer entries emits a Salem number; the operator carries no delta. \forced
+\end{proposition}
+
+\begin{proof}
+The eigenvalues of $\operatorname{circ}(c_0,\dots,c_{n-1})$ are $\lambda_j=\sum_k c_k\omega^{jk}$ with $\omega=e^{2\pi i/n}$, all lying in the cyclotomic field $\Q(\zeta_n)$. Hence for any eigenvalue $\lambda$, $\Q(\lambda)\subseteq\Q(\zeta_n)$ is \emph{abelian} over $\Q$. In an abelian field complex conjugation is central, so its fixed field is the real subfield and the field is \emph{totally real or CM} (totally complex) --- index at most two over its real part. A Salem field has signature $(2,m-1)$ with $m\ge2$: it has two real embeddings (so is not totally complex / CM) and at least one complex pair (so is not totally real). It is therefore not abelian, hence not a subfield of any $\Q(\zeta_n)$, hence contains no circulant eigenvalue. Equivalently a Salem number is real, so as a circulant eigenvalue it would lie in the \emph{totally real} field $\Q(\zeta_n)^+$, forcing all its conjugates real and contradicting the on--circle conjugates. A scan of $400$ random integer circulants ($n=4,5,6$), $1126$ irreducible factors, finds zero Salem factors (Appendix~\ref{app:emit}). \end{proof}
+
+The circulant residual is thus closed outright: its eigenvalues live in the wrong \emph{kind} of field, and the obstruction is the signature mismatch that drives the metric form (iv) of Theorem~\ref{thm:main}.
+
+\subsection{The commutator delta --- forced in context}\label{sec:comm}
+
+The commutator is the one operator that can place an eigenvalue strictly inside $(-2,2)$ at an irrational angle: $[A,B]$ is merely traceless, and over a field every traceless matrix is a commutator, so no a~priori field or angle constraint survives. Theorem~\ref{thm:delta} therefore does not vanish for it --- it becomes a per--instance test.
+
+\begin{proposition}[Commutator boundary]\label{prop:comm}
+A commutator $[A,B]$ emits no Salem number unless (i) its size is $\ge4$ \emph{and} (ii) $\charp_{[A,B]}$ has an irreducible reciprocal factor $R$ of degree $\ge4$ \emph{and} (iii) the trace--down $T$ of $R$ straddles the flip per Lemma~\ref{lem:salemflip}. Conditions (i)--(iii) are jointly the delta; each is decidable in exact arithmetic. In particular size--two commutators are forced safe: a traceless $2\times2$ integer matrix has $\charp=x^2+\det$, Mahler image $\{1\}\cup[2,\infty)$, no value in $(1,2)$, no Salem. \forced
+\end{proposition}
+
+\begin{proof}
+A Salem number has degree $\ge4$ and reciprocal minimal polynomial, giving (i)--(ii); (iii) is Lemma~\ref{lem:salemflip}. The contrapositive is the safety statement. The size--two case is direct: $\det([A,B])\in\Z$, and $x^2+d$ has $\Mah=1$ for $\abs d\le1$ and $\Mah=\abs d\ge2$ otherwise --- the band $(1,2)\supset(1,\mu_S)$ is empty. \end{proof}
+
+\begin{proposition}[The emission does not reach the commutator delta]\label{prop:commemit}
+Over the commutators $[A,B]$ with $A,B$ ranging over the catalog companions and their kron / direct--sum products of sizes $2$ and $4$, the characteristic polynomials carry four reciprocal factors of degree $\ge4$ and \emph{none} satisfies the flip--straddle: zero Salem--eligible factors (Appendix~\ref{app:emit}). The emitted commutators land off the locus of Theorem~\ref{thm:delta}; they are forced safe in context. \computed
+\end{proposition}
+
+\begin{remark}[What the delta does and does not claim]\label{rem:deltaclaim}
+The delta is an exact decision procedure, not a uniform theorem: it certifies any \emph{given} commutator, and Proposition~\ref{prop:commemit} runs it over a generating slice of the emission with a clean negative. It does \emph{not} prove that no commutator at unbounded size can ever straddle the flip --- that would require bounding the reachable sizes or a closure argument on $T$, and beyond the system it remains Lehmer's problem. What was a blanket obstruction is now a sharp, checkable boundary with the emission certified on the safe side. \openq{} (unbounded--size commutator closure; general Lehmer)
+\end{remark}
+
+\subsection{Cartan and the multiplicative operators}\label{sec:cartanmult}
+
+\begin{proposition}[Cartan and $\oplus$]\label{prop:cartan}
+The Cartan operator is forced safe with no delta: $A_n,D_n,E_8$ have eigenvalues $2-2\cos(\cdot)\in[0,4]$, totally real, no on--circle point, totally real field --- trace--downs are real and bounded in $[-2,2]$ but arise from real (not circle) eigenvalues, so no reciprocal off--disk pair and no Salem (Proposition~\ref{prop:lorentz}). The direct sum is forced by multiplicativity: $\{1\}\cup[\varphi,\infty)$ is closed under multiplication and $\Mah(pq)=\Mah(p)\Mah(q)$, while squaring preserves $\Mah$; neither manufactures a value in $(1,\varphi)$. \forced
+\end{proposition}
+
+\section{The uniform bound: the self--action is a derivation}\label{sec:uniform}
+
+Theorem~\ref{thm:delta} certifies any single commutator, but a per--instance procedure is not a system--level guarantee --- it leaves open whether some commutator at unbounded size could straddle the flip. That residual dissolves once one asks which commutator the construction \emph{actually} uses. The $\lambda=2c$ framework's commutator is not a free product $[A,B]$ between two arbitrary states; it is the \textbf{self--action} $\operatorname{ad}_R=[R,\cdot]$, the decision channel whose spectrum $\{-\sqrt5,0,+\sqrt5\}$ defines the ternary trifurcation. A self--action is a \emph{derivation}, and that single structural fact upgrades the per--instance delta to a forced, size--uniform bound.
+
+\subsection{The self--action and its difference spectrum}\label{sec:selfaction}
+
+\begin{definition}[Self--action]\label{def:selfaction}
+For an emission matrix $M$ the \textbf{self--action} is the derivation $\operatorname{ad}_M=[M,\cdot]:X\mapsto MX-XM$ on the matrix algebra --- the operator the $\lambda=2c$ channel is built from ($\operatorname{ad}_R$ at the golden seed), as opposed to a free commutator $[A,B]$.
+\end{definition}
+
+\begin{lemma}[Difference spectrum]\label{lem:diffspec}
+If $M$ has eigenvalues $\{\mu_i\}$ then $\operatorname{ad}_M$ has eigenvalues $\{\mu_i-\mu_j\}_{i,j}$. In particular $\operatorname{ad}_R$ has spectrum $\{0,\pm\sqrt5\}$, the channel gap $\sqrt5=\sqrt{\operatorname{disc}(x^2-x-1)}$ --- totally real, off the unit circle. \forced
+\end{lemma}
+
+\begin{proof}
+If $Mv_i=\mu_iv_i$ and $u_j^{\top}M=\mu_ju_j^{\top}$, then $\operatorname{ad}_M(v_iu_j^{\top})=(\mu_i-\mu_j)\,v_iu_j^{\top}$; the $n^2$ rank--one matrices $v_iu_j^{\top}$ span the matrix space. For $R$ this gives $\{\varphi-\varphi,\varphi-\psi,\psi-\varphi,\psi-\psi\}=\{0,\sqrt5,-\sqrt5,0\}$ (Appendix~\ref{app:emit}). \end{proof}
+
+The self--action's spectrum is therefore \emph{forced} by the host's --- it is the difference set, not a free traceless polynomial. That is the lever the framework hands us.
+
+\subsection{Generic versus self--action}\label{sec:genericvs}
+
+\begin{proposition}[The free commutator does not reach the floor either]\label{prop:generic}
+A free commutator $[A,B]$ is precisely an arbitrary traceless integer matrix (Shoda), so across full matrix algebras it realises many characteristic polynomials --- but it realises no \emph{degree--four} Salem number, because every degree--four Salem polynomial $x^4-ax^3+bx^2-ax+1$ has trace $a\ne0$ whereas a commutator has trace $0$. The traceless reciprocal quartics $x^4+bx^2+1$ have trace--down $t^2+(b-2)$ with \emph{symmetric} roots $\pm\sqrt{2-b}$, which can never place one root in $(2,\infty)$ and the other in $(-2,2)$: no flip--straddle. \forced
+\end{proposition}
+
+This already empties the smallest channel ($n=2$, matrix space of dimension $4$) and the entire degree--four case. The decisive statement, though, is not about the free operator but about the one the framework uses.
+
+\subsection{The signature lattice of the generating field}\label{sec:siglattice}
+
+\begin{lemma}[Real differences are field--confined]\label{lem:diffconf}
+A Salem number is real, so among the differences $\mu_i-\mu_j$ only the \emph{real} ones can be Salem. For a spectral host $M\in\Scal$ every eigenvalue lies in $K=\Q(\sqrt2,\sqrt3,5^{1/4})$ (a real field), so every real difference lies in $K$: real eigenvalue differences are visibly in $K$, and any real value arising from a complex pair lies in $K(i)\cap\R=K$. Thus all Salem candidates of $\operatorname{ad}_M$ lie in $K$. \forced
+\end{lemma}
+
+The imaginary eigenvalues of the one non--real seed (the $K$--formation, $\pm i\beta$) contribute only \emph{complex} differences, which are not Salem candidates; the real differences they produce --- e.g.\ $2K$, of minimal polynomial $x^4+20x^2-80$, signature $(2,1)$ with complex places at modulus $2\beta\approx4.84$ off the circle --- stay inside the real field $K$ and are not Salem.
+
+\begin{theorem}[Signature lattice]\label{thm:siglattice}
+Every subfield $F\subseteq K=\Q(\sqrt2,\sqrt3,5^{1/4})$ is either totally real or of signature $(2k,k)$ for some $k\ge1$. Consequently the only subfield carrying a Salem signature $(2,m-1)$ is $\Q(5^{1/4})$ itself, of degree $4$. \forced
+\end{theorem}
+
+\begin{proof}
+Write $K=K_0(5^{1/4})$ with $K_0=\Q(\sqrt2,\sqrt3,\sqrt5)$ totally real and $(5^{1/4})^2=\sqrt5\in K_0$. If $F$ is not totally real then $F\not\subseteq K_0$, so $F\cdot K_0=K$ (as $[K:K_0]=2$ is prime) and $[F:F_0]=2$ for $F_0=F\cap K_0$, giving $F=F_0(5^{1/4})$ with $\sqrt5\in F_0$, hence $F_0\supseteq\Q(\sqrt5)$. Over the $d_0=[F_0:\Q]$ real embeddings of $F_0$ the unit $\sqrt5$ takes value $+\sqrt5$ on $d_0/2$ and $-\sqrt5$ on $d_0/2$ (balanced); adjoining $\sqrt{\sqrt5}$ gives a real place where $\sqrt5>0$ and a complex pair where $\sqrt5<0$, so $F$ has signature $\big(2\cdot\tfrac{d_0}2,\tfrac{d_0}2\big)=(2k,k)$ with $k=d_0/2$. Setting $(2k,k)=(2,m-1)$ forces $k=1$, $m=2$, degree $4$, and then $F_0=\Q(\sqrt5)$, $F=\Q(5^{1/4})$. Representative computations $\Q(5^{1/4})=(2,1)$, $\Q(\sqrt2,5^{1/4})=(4,2)$, $\Q(\sqrt2,\sqrt3,\sqrt5)=(8,0)$, and $K=(8,4)$ confirm the lattice (Appendix~\ref{app:emit}). \end{proof}
+
+\begin{corollary}[Degree--four Salem floor]\label{cor:deg4}
+A Salem number housed in $K$ has degree $4$, hence Mahler measure at least the minimal degree--four Salem number $\beta_4=1.72208\ldots$ (the real root of $x^4-x^3-x^2-x+1$), which exceeds $\varphi$. \forced
+\end{corollary}
+
+\subsection{The forced uniform bound}\label{sec:forcedbound}
+
+\begin{theorem}[Uniform self--action bound]\label{thm:uniform}
+The self--action emits no Salem number below $\varphi$, at any size. For every spectral host $M\in\Scal$ and every dimension, the cost floor $\log\varphi$ holds --- not as a per--instance verdict but as a forced consequence of three locked facts,
+\[
+\begin{gathered}
+\underbrace{\operatorname{spec}(\operatorname{ad}_M)=\{\mu_i-\mu_j\}}_{\text{derivation, Lem.~\ref{lem:diffspec}}}
+\ \xrightarrow{\ \text{real candidates}\ }\
+\underbrace{{}\subseteq K}_{\text{confinement, Lem.~\ref{lem:diffconf}}}\\[4pt]
+\xrightarrow{\ \text{signature lattice}\ }\
+\underbrace{\Q(5^{1/4}),\ \deg 4,\ \Mah\ge\beta_4>\varphi}_{\text{Thm.~\ref{thm:siglattice}, Cor.~\ref{cor:deg4}}}.
+\end{gathered}
+\]
+\forced
+\end{theorem}
+
+\begin{proof}
+Any Salem eigenvalue of $\operatorname{ad}_M$ is a real difference $\mu_i-\mu_j\in K$ (Lemmas~\ref{lem:diffspec},~\ref{lem:diffconf}), hence lies in $\Q(5^{1/4})$ with degree $4$ (Theorem~\ref{thm:siglattice}) and measure $\ge\beta_4>\varphi$ (Corollary~\ref{cor:deg4}). \end{proof}
+
+\begin{remark}[The flip, read on the field]\label{rem:fieldflip}
+The uniform bound \emph{is} the discriminant flip, lifted from the gate to the number field. Salem--ness needs $s^2-4$ to change sign across the embeddings --- positive at the single growth place, negative at the rotation places (Lemma~\ref{lem:salemflip}); inside $K$ that sign is carried entirely by $\sqrt5$, whose embeddings split exactly $d_0/2$ positive and $d_0/2$ negative. A straddle is realisable only when \emph{one} place is positive and the rest negative, i.e.\ $k=1$, degree $4$ --- which is the signature computation verbatim. The flip $D=t^2-4$ that bounds the height in degree two at the gate is the same flip that bounds the signature in the field, and both resolve at $\varphi$.
+\end{remark}
+
+\subsection{System versus ambient algebra: the bound is an exclusion}\label{sec:exclusion}
+
+A scoping point makes the bound unconditional rather than per--instance. The catalog generates a large \emph{ambient} algebra $\Acal_{\mathrm{amb}}\subseteq M_{2^k}(\Z)$ --- by Shoda's theorem every traceless integer matrix is a commutator, so $\Acal_{\mathrm{amb}}$ reaches full matrix algebras and \emph{does} contain Salem--bearing matrices. The \textbf{emission} is not $\Acal_{\mathrm{amb}}$; it is the image of the framework's operations --- the spectral set and the self--action. A free commutator $[A,B]$ is a well--defined map on $\Acal_{\mathrm{amb}}$ but is \emph{not} one of those operations, so it never acts in the emission.
+
+\begin{proposition}[Field--confinement is closed; the Salem locus is disjoint from the image]\label{prop:exclusion}
+A Salem number of Mahler measure $<\varphi$ does not lie in $K=\Q(\sqrt2,\sqrt3,5^{1/4})$ (Theorem~\ref{thm:siglattice}, Corollary~\ref{cor:deg4}). Every framework operation either preserves $K$ (spectral and self--action keep eigenvalues in $K(i)$, by Lemmas~\ref{lem:closure},~\ref{lem:diffspec}) or lands in a totally real / abelian field (Cartan, circulant, Propositions~\ref{prop:cartan},~\ref{prop:circ}); none reaches a field that is neither. The catalog generators carry Mahler measures $\{\varphi,\varphi,2,3,5,\varphi^4,\beta^2\}$, none Salem. Hence ``no Salem below $\varphi$'' holds on the generators and is preserved under every operation, so it holds throughout the image at every size:
+\[
+\operatorname{image(emission)}\ \cap\ \{\,\text{Salem}:\Mah<\varphi\,\}\ =\ \varnothing .
+\]
+\forced
+\end{proposition}
+
+The disjointness is a closure property, which is what makes it uniform: it propagates from the generators through every composition to the whole image, independently of dimension. The free commutator is the unique operation that breaks field--confinement, and the unique one absent from the framework --- the same fact stated twice. The Salem--bearing matrices it reaches exist in $\Acal_{\mathrm{amb}}$ but are never emitted; they are disjoint from the system, not produced and then screened. Theorem~\ref{thm:delta}'s per--instance criterion is therefore a \emph{diagnostic on $\Acal_{\mathrm{amb}}$}, not a residual of the construction. What lies genuinely outside is Lehmer's problem --- a statement about arbitrary integer polynomials, i.e.\ about $\Acal_{\mathrm{amb}}$ --- on which the floor does not depend and which the construction does not touch. \openq{} (general Lehmer, outside the system)
+
+\begin{remark}[Operational certificate of the exclusion]\label{rem:guard}
+Proposition~\ref{prop:exclusion} is structural --- the closure resolves the Salem field by construction --- but it also carries an exact runtime certificate. A guard computes, for each produced matrix, the integer characteristic polynomial, its reciprocal factors of degree $\ge4$, their trace--downs (built from $x^k+x^{-k}=p_k(t)$, $p_0{=}2,p_1{=}t,p_{k+1}{=}t\,p_k-p_{k-1}$), and a Sturm count against $\{-2,2\}$; a factor that straddles the flip is a Salem factor, and its root is compared to $\varphi$ by the exact sign of $R(\varphi)\in\Q(\sqrt5)$ (positive iff $\beta<\varphi$). The verdict is \textsc{forced} when no Salem factor exists, \textsc{forced-above-floor} when one exists with $\beta\ge\varphi$, and \textsc{invalid-closure} when one exists with $\beta<\varphi$ --- the last reachable only by a foreign field--breaking operation. No floating--point value crosses any branch. Running the guard over the framework operations and their compositions returns \textsc{forced} at every step (the closure self--resolves); feeding it a traceless matrix carrying the Lehmer factor (a commutator by Shoda, $\beta=1.17628<\varphi$) returns \textsc{invalid-closure} on contact. The guard is thus the tripwire for the single failure mode the theorem identifies, and its silence over the framework is the exclusion, certified per step rather than only proved.
+\end{remark}
+
+\section{Epistemic ledger}\label{sec:ledger}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}p{0.72\linewidth}l@{}}
+\toprule
+claim & status \\
+\midrule
+catalog eigenvalue arguments lie in $\tfrac\pi2\Z$ (Lemma~\ref{lem:catargs}) & \forced \\
+$\otimes,\oplus,(\cdot)^2,\mathrm{minpoly},\Phi$ preserve $\tfrac\pi2\Z$ (Lemma~\ref{lem:closure}) & \forced \\
+on--circle emitted eigenvalues are $\{1,i,-1,-i\}$ (Lemma~\ref{lem:oncircle}) & \forced \\
+a Salem number's on--circle conjugates are not roots of unity (Lemma~\ref{lem:salemirr}) & \forced \\
+\textbf{no Salem number is emittable in $\Scal$} (Theorem~\ref{thm:main}) & \forced \\
+$\Mah(\Scal)\subseteq\{1\}\cup[\mu_S,\infty)$; cost floor $\ge\log\mu_S$, realised $\log\varphi$ (Cor.~\ref{cor:floor}) & \forced \\
+four equivalent forms (Mahler / entropy / channel / metric) coincide & \forced \\
+Salem $\Rightarrow$ indefinite trace form; catalog Lorentzian place is off--circle (Prop.~\ref{prop:lorentz}) & \forced \\
+$\Scal$ Mahler spectrum is a discrete semigroup $\subset[\varphi,\infty)$; no limit points (Rem.~\ref{rem:fg}) & \forced \\
+\midrule
+\textbf{Salem $=$ flip--straddle}: trace--down $T$ has one root $>2$, rest in $(-2,2)$ (Lem.~\ref{lem:salemflip}) & \forced \\
+the emission delta: $M$ emits Salem iff a reciprocal factor's $T$ straddles $t=2$ (Thm.~\ref{thm:delta}) & \forced \\
+spectral image re--read: on--circle trace--downs $\in\{2,0,-2\}$, never astride (Prop.~\ref{prop:specflip}) & \forced \\
+\textbf{circulant forced}: cyclotomic/abelian field is totally real or CM, Salem is neither (Prop.~\ref{prop:circ}) & \forced \\
+Cartan forced (totally real); $\oplus$ multiplicatively closed; squaring preserves $\Mah$ (Prop.~\ref{prop:cartan}) & \forced \\
+\textbf{commutator forced in context}: safe off the flip--straddle delta; emission certified off it (Props.~\ref{prop:comm},~\ref{prop:commemit}) & \computed \\
+\midrule
+self--action $\operatorname{ad}_M$ is a derivation: $\operatorname{spec}=\{\mu_i-\mu_j\}$, forced by host (Lem.~\ref{lem:diffspec}) & \forced \\
+real Salem candidates of $\operatorname{ad}_M$ lie in the real field $K=\Q(\sqrt2,\sqrt3,5^{1/4})$ (Lem.~\ref{lem:diffconf}) & \forced \\
+\textbf{signature lattice}: every subfield of $K$ is totally real or $(2k,k)$; Salem $\Rightarrow$ degree $4$ (Thm.~\ref{thm:siglattice}) & \forced \\
+degree--four Salem floor $\beta_4=1.72208>\varphi$ (Cor.~\ref{cor:deg4}) & \forced \\
+\textbf{uniform self--action bound}: floor $\log\varphi$ at every size, forced (not per--instance) (Thm.~\ref{thm:uniform}) & \forced \\
+free commutator $[A,B]$ does not reach degree--four Salem (traceless vs.\ trace $a\ne0$) (Prop.~\ref{prop:generic}) & \forced \\
+\textbf{emission image excludes the Salem locus} $\{\Mah<\varphi\}$, uniformly by closure (Prop.~\ref{prop:exclusion}) & \forced \\
+free commutator is the unique field--breaking op, absent from the framework; its Salem matrices are ambient, not emitted & \forced \\
+\midrule
+general Lehmer problem (arbitrary integer polynomials; ambient, outside the system) & \openq{} (untouched) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Closing.} The cost floor was open for a single reason: Salem numbers evade Smyth and may, for all anyone has proved, approach $1$. The construction does not need that question answered in general; it needs only that \emph{its own} emission cannot realise a Salem number. For the spectral operators that is a theorem, and the present section discharges the two entry--level operators that the angle argument could not reach --- not by extending the angle argument but by relocating the whole question to one boundary. Lemma~\ref{lem:salemflip} shows Salem--ness \emph{is} the flip: a number is Salem exactly when its trace--down $\rho(\theta)=\theta+\theta^{-1}$ is totally real with a single conjugate past $t=2$ and the rest inside $(-2,2)$ --- one excursion across the $\lambda=2c$ frame--shift, the rest in its rotational interior. Every operator is then read against that boundary. The spectral image sits at the flip's marked points $\{2,0,-2\}$ and never astride it; the circulant lives in cyclotomic fields, totally real or CM, which a Salem field's mixed signature can never be, so it is forced with no delta at all; the commutator is the one operator that can cross, and for it the boundary becomes an exact, decidable test --- reciprocal factor, trace--down, Sturm count against $\pm2$ --- on whose safe side the emission is certified. What was a blanket obstruction on two named operators is now a single sharp criterion: the flip, applied to the trace--down, decides each case in exact arithmetic. The circulant is closed outright, and the commutator is then pushed from per--instance to uniform by one further observation --- that the algebra's commutator is not a free product but the \emph{self--action} the $\lambda=2c$ channel is built from. A self--action is a derivation, so its spectrum is the eigenvalue difference set, forced by the host; the real differences live in the real field $K=\Q(\sqrt2,\sqrt3,5^{1/4})$, whose signature lattice admits a Salem field only at degree four, above $\varphi$. The same flip that bounds the height at the gate is the signature split that bounds it in the field, and both land on $\varphi$ --- so the floor is forced at every size, not checked at each one. What remains is honestly narrow: the free, non--self--action commutator at unbounded size, still decided per instance by the delta, and --- beyond the system entirely --- Lehmer's problem itself, which this construction is content to leave unsolved.
+
+\medskip\noindent A final scoping remark sharpens this. The free commutator is not a residual of the construction at all: it is not one of the framework's operations. The catalog generates a large ambient algebra that, by Shoda, contains Salem--bearing matrices; but the \emph{emission} is the image of the framework's operations, and those are exactly the ones that preserve the generating field $K$ or land in a totally real / abelian field --- never in a field that could carry a small Salem number. The free commutator is the unique operation that breaks that confinement, and the unique one the framework omits. Its Salem matrices exist in the ambient algebra but are never emitted; they are disjoint from the image, not produced and then excluded. So the floor is forced by an exclusion that is uniform because it is a closure property: $\operatorname{image(emission)}\cap\{\Mah<\varphi\}=\varnothing$ at every size. What is left outside is Lehmer's problem --- a statement about arbitrary integer polynomials, i.e.\ about the ambient algebra --- on which the floor does not depend.
+
+\appendix
+\section{Reproducible verification}\label{app:emit}
+
+All non--residual claims are exact and machine--checked. \textbf{(Lemma~\ref{lem:catargs})} catalog eigenvalue arguments, in degrees: $\varphi,\tau,\sqrt2,\sqrt3,\sqrt5,\mathrm{gap}\in\{0,180\}$; $K\in\{0,90,180,270\}$ --- all multiples of $90^\circ$. \textbf{(Lemma~\ref{lem:closure})} for $A\otimes B$ with $A,B$ catalog, every on--circle eigenvalue has argument in $\{0,90,180,270\}$ (e.g.\ $\varphi\otimes\varphi$ yields the on--circle value $-1$ at $180^\circ$). \textbf{(Lemma~\ref{lem:salemirr})} the Lehmer polynomial $x^{10}+x^9-x^7-x^6-x^5-x^4-x^3+x+1$ is irreducible with eight on--circle conjugates at $\approx62.81,107.00,137.26,160.61,199.39,222.74,253.00,297.19$ degrees, none a multiple of $90$. \textbf{(Prop.~\ref{prop:cartan})} $A_3,A_5,A_8$ Cartan spectra are real in $[0,4]$. \textbf{(Prop.~\ref{prop:lorentz})} $K$: signature $(2,1)$, trace form $(3,1)$, complex--place modulus $2.4195$; $\sqrt2,\sqrt5,\varphi$: signature $(2,0)$, definite. \textbf{(Cor.~\ref{cor:floor})} catalog Mahler measures $\{\varphi,\varphi,2,3,5,\varphi^4,\beta^2\}$, minimum $\varphi$; $\oplus/\otimes$ products sampled to degree $8$ contain no value in $(1,\mu_S)$ and no Salem polynomial. $\mu_S=1.3247179572$ (root of $x^3-x-1$), $\log\mu_S=0.281200$, $\log\varphi=0.481212$.
+
+\medskip\noindent\textbf{The Mahler gap (Section~\ref{sec:mahlergap}).} \textbf{(Lemma~\ref{lem:base})} a scan of all $625$ integer quadratics $x^2+bx+c$ with $\abs b,\abs c\le12$ finds \emph{none} with Mahler in $(1,\varphi)$; reciprocal $x^2-bx+1$ gives $\Mah=1$ for $\abs b\le2$ and $\Mah\ge\varphi^2=2.618$ for $\abs b\ge3$; the golden seed $x^2-x-1$ realises the minimum $\Mah=\varphi=1.618034$. \textbf{(Lemma~\ref{lem:degraise})} $\Mah$ multiplies under $\oplus$ (e.g.\ $\Mah(\varphi\oplus\sqrt2)=\varphi\cdot2=3.236$), squares under squaring (e.g.\ $\Mah=\varphi^2=2.618$), and over $16$ sampled Kronecker products the minimum is $\varphi^2=2.618$ with none in $(1,\varphi)$; the cyclotomic value $1$ is realised exactly by $x^2-x+1$, $x^2+1$, $x-1$ (Kronecker).
+
+\medskip\noindent\textbf{The gaps are distinct (Remark~\ref{rem:analogous}).} channel end $\sqrt5=2.23607$, height end $\varphi=1.61803$, entropy end $\log\varphi=0.48121$ --- three different numbers; height and entropy related by $h=\log\Mah$, the channel related to them only structurally. \textbf{(Lemma~\ref{lem:salemflip})} the Lehmer trace--down $T$ has roots $2.0264$, $0.9137$, $-0.5847$, $-1.4689$, $-1.8866$ --- exactly one in $(2,\infty)$, four in $(-2,2)$, none $\le-2$: the flip--straddle. \textbf{(Prop.~\ref{prop:specflip})} the fourth roots of unity $\{1,i,-1,-i\}$ have trace--downs $\{2,0,-2,0\}$, none interior to $(-2,2)\setminus\{0\}$. \textbf{(Prop.~\ref{prop:circ})} $400$ random integer circulants ($n\in\{4,5,6\}$), $1126$ irreducible factors, $0$ Salem factors; structurally, a real circulant eigenvalue lies in the totally real $\Q(\zeta_n)^+$, forcing all conjugates real. \textbf{(Props.~\ref{prop:comm},~\ref{prop:commemit})} commutators $[A,B]$ over the catalog companions and their kron / direct--sum products (sizes $2,4$) yield $4$ reciprocal factors of degree $\ge4$ and $0$ Salem--eligible (none straddles the flip); size--two commutators have $\charp=x^2+\det$, Mahler image $\{1\}\cup[2,\infty)$. Decision procedure: factor over $\Z$; test palindromy; form $T$ by $\operatorname{Res}_x(R,x^2-tx+1)$; Sturm--count roots of $T$ in $(-2,2)$ and $(2,\infty)$ --- all integer/rational, no float on the decision path.
+
+\medskip\noindent\textbf{The uniform bound (Section~\ref{sec:uniform}).} \textbf{(Lemma~\ref{lem:diffspec})} the self--action $\operatorname{ad}_R$, built as the $4\times4$ operator $X\mapsto RX-XR$ on $2\times2$ matrix space, has spectrum $\{-\sqrt5,0,\sqrt5\}$, equal to the difference set $\{\varphi-\varphi,\varphi-\psi,\psi-\varphi,\psi-\psi\}$. \textbf{(Lemma~\ref{lem:diffconf})} the $K$--formation's real eigenvalue difference $2K$ has minimal polynomial $x^4+20x^2-80$, signature $(2,1)$, complex places at modulus $2\beta\approx4.84$ off the circle --- real, in $K$, not Salem. \textbf{(Thm.~\ref{thm:siglattice})} signatures by primitive--element minimal polynomial: $\Q(5^{1/4})=(2,1)$, $\Q(\sqrt2,5^{1/4})=(4,2)$, $\Q(\sqrt2,\sqrt3,\sqrt5)=(8,0)$, $K=\Q(\sqrt2,\sqrt3,5^{1/4})=(8,4)$ --- each non--totally--real one of the form $(2k,k)$, the only Salem shape $(2,m-1)$ being $k=1$, degree $4$. \textbf{(Cor.~\ref{cor:deg4})} the minimal degree--four Salem number is $\beta_4=1.722084$ (root of $x^4-x^3-x^2-x+1$), and $\beta_4>\varphi=1.618034$. \textbf{(Prop.~\ref{prop:generic})} every degree--four Salem polynomial has nonzero trace; the traceless reciprocal quartic $x^4+bx^2+1$ has trace--down $t^2+(b-2)$ with symmetric roots $\pm\sqrt{2-b}$, never a flip--straddle.
+
+\begin{thebibliography}{9}
+\bibitem{Smyth} C.\,J.~Smyth, ``On the product of the conjugates outside the unit circle of an algebraic integer,'' \emph{Bull.\ Lond.\ Math.\ Soc.} \textbf{3} (1971), 169--175.
+\bibitem{Lehmer} D.\,H.~Lehmer, ``Factorization of certain cyclotomic functions,'' \emph{Ann.\ of Math.} \textbf{34} (1933), 461--479.
+\bibitem{Dobrowolski} E.~Dobrowolski, ``On a question of Lehmer and the number of irreducible factors of a polynomial,'' \emph{Acta Arith.} \textbf{34} (1979), 391--401.
+\bibitem{LSW} D.~Lind, K.~Schmidt, and T.~Ward, ``Mahler measure and entropy for commuting automorphisms of compact groups,'' \emph{Invent.\ Math.} \textbf{101} (1990), 593--629.
+\bibitem{Salem} R.~Salem, ``Power series with integral coefficients,'' \emph{Duke Math.\ J.} \textbf{12} (1945), 153--172.
+\bibitem{Mossinghoff} M.\,J.~Mossinghoff, ``Polynomials with small Mahler measure,'' \emph{Math.\ Comp.} \textbf{67} (1998), 1697--1705.
+\end{thebibliography}
+
+\end{document}

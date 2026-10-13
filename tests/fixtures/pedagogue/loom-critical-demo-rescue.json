@@ -1,0 +1,1000 @@
+{
+  "schema": "td613.pedagogue-design-fixture/v0.1",
+  "design_id": "loom-critical-demo-rescue-20261003",
+  "surface_reference": "Holonomy Loom / consequential First Crossing / native Marrowline / direct Return",
+  "governance_context": "TD613",
+  "determinism": {
+    "frozenClock": "2026-10-03T12:00:00Z",
+    "idSeed": "loom-critical-demo-rescue-20261003",
+    "idScope": "Loom/CriticalDemoRescue"
+  },
+  "scene_input": {
+    "scene_kind": "GENERIC",
+    "station_owner": "Dome-World",
+    "source_status": "E0",
+    "observation_status": "UNRESOLVED",
+    "world_state_reference": "working-tree",
+    "provenance": {
+      "source_references": [
+        "5f588ad444f6b5cacc0fc4ec9eddfc62dc69a70c",
+        "c6ede88496db614643bdc2197659c6d6b403dd3a",
+        "app/dome-world/holonomy-loom/first-crossing-practice.js",
+        "app/dome-world/holonomy-loom/ai-workspace.js",
+        "app/dome-world/holonomy-loom/runtime-state-view.js",
+        "app/dome-world/holonomy-loom/instrument-state-view.js",
+        "app/dome-world/holonomy-loom/animation-coordinator.js",
+        "app/dome-world/marrowline-loom-gate-continuity.js",
+        "tests/loom-targeted-ux.test.mjs",
+        "docs/research/2026-10-02-LOOM-INSTRUMENT-PLATFORM-WORK-HANDOFF.md"
+      ],
+      "evidence_basis": [
+        "Declared working-tree candidate compared with source-bound production baseline 5f588ad; this fixture supplies no browser, provider, physical-device or human-comprehension observation.",
+        "Baseline readiness was declared through binding_verified=true without actual preparation. Candidate uses existing intake, AIA and FADT authorization with fictional selected input and no session creation.",
+        "Baseline consequence names appeared synchronously ahead of async publication; candidate requires current relation publication and finite presentation before names.",
+        "Baseline First Crossing hid Still and first-use exit. Candidate exposes persistent pause and exit without marking unfinished practice complete.",
+        "All route legibility, affordance and obstruction calibration stays equal across baseline and candidate. Comparison isolates declared consequence semantics and claims no measured reduction in handling demand.",
+        "The separate loom-instrument-platform-design.json transport-surrogate HOLD remains unchanged and is not closed by this fixture."
+      ],
+      "transformations": [
+        "Preserve one immutable request-state snapshot and one AnimationCoordinator while withholding the finite presentation during async compile.",
+        "Keep accessible material controls at the field edge and derive cinematic motion from evidenced current relation and recorded history.",
+        "Run fictional local preparation through the installed intake, governance and finite authorization functions before projecting created potential.",
+        "Preserve native stage/content predecessors, held current head and direct Return while leaving ordinary direct-entry Marrowline untouched."
+      ],
+      "station_owners": [
+        "Dome-World"
+      ]
+    },
+    "visible_condition": {
+      "plain_language": "Practice selection and local preparation on fictional material, or choose your own work immediately. Sending requires a separate gesture. Continue prepared work through native Marrowline and bring its latest admitted result back to Loom for review.",
+      "surface_reference": "Holonomy Loom / consequential First Crossing / native Marrowline / direct Return"
+    },
+    "available_affordances": [
+      {
+        "action_id": "prepare_continue_review",
+        "purpose": "Practice harmless selection or prepare personal work locally; explicitly send in native Marrowline and review the latest returned result.",
+        "authorized_by_station": "Human",
+        "reversible": true
+      }
+    ],
+    "route_topology": {
+      "entry": "Cinematic Threshold with optional consequential practice and direct own-work exit",
+      "exit": "Pause or leave at every practice step; final returned work remains reviewable without compelled admission",
+      "same_endpoint_not_same_history": true,
+      "missing_inputs": [
+        "Exact final-head browser and provider route witnesses",
+        "Current physical-iPhone witness",
+        "Measured human comprehension",
+        "Signature authentication by returned-chain consistency inspection"
+      ],
+      "steps": [
+        {
+          "step_id": "notice",
+          "label": "See harmless practice and the available pause and exit",
+          "phase": "NOTICE",
+          "required_fields": [
+            "fictional material",
+            "preparation stays local",
+            "pause and own work"
+          ],
+          "dependencies": [],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 0,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "select",
+          "label": "Select the brief and public source; inspect the held private scrap",
+          "phase": "ACT",
+          "required_fields": [
+            "selected source identities",
+            "local private material"
+          ],
+          "dependencies": [
+            "notice"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "gather",
+          "label": "The current canonical field expresses the actual selected/local state",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "current gathering relation",
+            "local source exclusion"
+          ],
+          "dependencies": [
+            "select"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "name_gather",
+          "label": "Name the gathering after published motion or static equivalent",
+          "phase": "NAME",
+          "required_fields": [
+            "à gathering",
+            "selected differs from sent"
+          ],
+          "dependencies": [
+            "gather"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "prepare_practice",
+          "label": "Explicitly request the real local preparation of fictional input",
+          "phase": "ACT",
+          "required_fields": [
+            "local preparation gesture",
+            "same installed intake and authorization"
+          ],
+          "dependencies": [
+            "name_gather"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "ready_practice",
+          "label": "A successful local authorization yields the published readiness relation",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "binding verified by actual local result",
+            "current created-potential field"
+          ],
+          "dependencies": [
+            "prepare_practice"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "name_ready",
+          "label": "Name readiness after its consequence becomes available",
+          "phase": "NAME",
+          "required_fields": [
+            "上 created potential",
+            "prepared differs from transmitted"
+          ],
+          "dependencies": [
+            "ready_practice"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "practice_rest",
+          "label": "Pause or finish without sending; unfinished exit remains available",
+          "phase": "REST",
+          "required_fields": [
+            "cue demand only",
+            "exit does not manufacture completion"
+          ],
+          "dependencies": [
+            "name_ready"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "builder",
+          "label": "Open the separate real builder or leave practice directly for it",
+          "phase": "TRANSFER",
+          "required_fields": [
+            "explicit own-work entrance",
+            "active custody preserved"
+          ],
+          "dependencies": [
+            "practice_rest"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "task_select",
+          "label": "Write the task and select source bodies and traveling rules",
+          "phase": "ACT",
+          "required_fields": [
+            "exact task",
+            "selected/local source distinction",
+            "rules"
+          ],
+          "dependencies": [
+            "builder"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "prepare_real",
+          "label": "Prepare selected work through the existing governed route",
+          "phase": "ACT",
+          "required_fields": [
+            "explicit Prepare",
+            "no model request",
+            "new-root notice and acknowledgment when applicable"
+          ],
+          "dependencies": [
+            "task_select"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "prepared",
+          "label": "Read the prepared result with the next crossing action adjacent",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "local readiness",
+            "foreground result",
+            "Marrowline next action"
+          ],
+          "dependencies": [
+            "prepare_real"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "cross",
+          "label": "Review survival and Save notice, then open route-scoped Marrowline",
+          "phase": "TRANSFER",
+          "required_fields": [
+            "original tab owns live lane",
+            "private Save",
+            "explicit departure"
+          ],
+          "dependencies": [
+            "prepared"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "stage_send_activation",
+          "label": "Stage source-free activation and use native Send",
+          "phase": "ACT",
+          "required_fields": [
+            "local staging",
+            "separate Send",
+            "selected source bodies withheld"
+          ],
+          "dependencies": [
+            "cross"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "activation",
+          "label": "Read the admitted source-free acknowledgment",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "stage predecessor",
+            "acknowledgment differs from content predecessor",
+            "HELD keeps stage locked"
+          ],
+          "dependencies": [
+            "stage_send_activation"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "stage_send_content",
+          "label": "Stage selected files and send the substantive continuation",
+          "phase": "ACT",
+          "required_fields": [
+            "explicit source bodies",
+            "native Send",
+            "origin content predecessor when applicable"
+          ],
+          "dependencies": [
+            "activation"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "content",
+          "label": "Read admitted substantive content and bind subsequent continuations to it",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "current content predecessor",
+            "accepted stage predecessor",
+            "held attempts retain admitted head"
+          ],
+          "dependencies": [
+            "stage_send_content"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "export_return",
+          "label": "Export latest admitted content and return directly to Loom",
+          "phase": "TRANSFER",
+          "required_fields": [
+            "original task sources and rules",
+            "latest result and predecessor",
+            "missingness source revision and history"
+          ],
+          "dependencies": [
+            "content"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "review_return",
+          "label": "Inspect direct Return while keeping review and admission distinct",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "threshold bypass",
+            "review-only consistency",
+            "signature verification HELD"
+          ],
+          "dependencies": [
+            "export_return"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "separate_admission",
+          "label": "Use separately registered local custody only when its exact candidate permits it",
+          "phase": "ACT",
+          "required_fields": [
+            "live local seed and registration",
+            "Check leaves head unchanged",
+            "explicit exact-candidate Admit"
+          ],
+          "dependencies": [
+            "review_return"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "rest_exit",
+          "label": "Rest or leave with private review material and unchanged actual expiry",
+          "phase": "REST",
+          "required_fields": [
+            "pause demand only",
+            "Save stays private",
+            "reload grants review only"
+          ],
+          "dependencies": [
+            "review_return"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        }
+      ]
+    },
+    "causal_structure": {
+      "input": "Explicit harmless practice selection, actual local binding facts, real task sources and rules, native stage/content predecessors and returned review records",
+      "operator": "Existing intake, AIA/FADT local authorization, canonical Pedagogue compiler, one presentation coordinator, native Marrowline custody and separate local admission",
+      "observable": "Selected/local state precedes gathering nomenclature; real binding precedes readiness; staged native sends precede admitted results; direct Return preserves review/admission distinction",
+      "authority": "Contemporaneous gestures; practice has no provider, live session, custody mutation, transfer or evidence authority",
+      "equations": []
+    },
+    "research_frame": {
+      "question": "Can the same canonical state become the cinematic pedagogue while the whole native continuation and return route remains intact?",
+      "hypothesis": "Current-generation published consequences, real local preparation and persistent pause/exit correct temporal and composition deficits without erasing governed continuity.",
+      "observable_behavior": [
+        "One-source selection enters the canonical state",
+        "Names wait for the current relation projection",
+        "Practice binds through installed pure intake/authorization functions",
+        "Pause and unfinished exit remain available",
+        "No practice provider call or live custody creation",
+        "Native latest content remains the predecessor of later continuation",
+        "Direct Return bypasses Threshold and preserves signature uncertainty"
+      ],
+      "alternative_explanations": [
+        "Changed transforms may remain perceptually invisible after viewport cropping",
+        "A readable synthetic DOM state may still fail on an actual phone",
+        "A finite motion completion provides no measured comprehension evidence"
+      ],
+      "expected_failure_modes": [
+        "Hidden rest/exit",
+        "Late binding takes over a departed scene",
+        "Names precede current projection",
+        "Intermediate selection changes controls without projected state",
+        "Practice replaces active root",
+        "Stale or activation-only content replaces admitted content predecessor"
+      ],
+      "falsifier": [
+        "Any practice stage sends a request or creates live custody",
+        "Unfinished exit marks completion",
+        "Canonical current relation is absent when its name is shown",
+        "Latest admitted content lineage disappears during continued staging",
+        "Returned consistency record silently grants signature authentication or admission"
+      ],
+      "abstention_conditions": [
+        "Candidate exact-source route is unwitnessed",
+        "Browser/provider or physical-device observation missing",
+        "Projection or local binding HELD",
+        "Returned signature verification remains unavailable"
+      ]
+    },
+    "missingness": [
+      "Declared source/DOM candidate; full browser acceptance remains separate",
+      "No measured human comprehension",
+      "Existing platform transport-surrogate HOLD remains retained",
+      "Signature authentication and review-only reload capability remain distinct"
+    ],
+    "contradictions": [],
+    "claim_ceiling": {
+      "allowed_claims": [
+        "The fixture declares a consequence-preserving whole service journey",
+        "Equal engineering calibration isolates route semantics rather than asserting lower measured burden"
+      ],
+      "forbidden_claims": [
+        "Design Gate proves observed cinema or human comprehension",
+        "Any synthetic declaration closes production or physical-device acceptance",
+        "The fixture changes original Instrument Platform HOLD",
+        "Practice local binding grants live custody or model execution",
+        "Returned consistency authenticates source or signatures",
+        "Dollhouse agreement earns Golden Egg"
+      ]
+    },
+    "technical_terms_withheld": [
+      "NOTICE",
+      "WORLD ANSWERS",
+      "projection progress",
+      "finite authorization audit",
+      "custody compare-and-swap"
+    ]
+  },
+  "baseline_route_steps": [
+    {
+      "step_id": "notice",
+      "label": "Encounter mandatory practice while ordinary Still and first-use exit are hidden",
+      "phase": "NOTICE",
+      "required_fields": [
+        "fictional material",
+        "preparation stays local",
+        "pause and own work"
+      ],
+      "dependencies": [],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 0,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "select",
+      "label": "Select the brief and public source; inspect the held private scrap",
+      "phase": "ACT",
+      "required_fields": [
+        "selected source identities",
+        "local private material"
+      ],
+      "dependencies": [
+        "notice"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "gather",
+      "label": "CSS objects relocate while async canonical projection is withheld",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": [
+        "current gathering relation",
+        "local source exclusion"
+      ],
+      "dependencies": [
+        "select"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "name_gather",
+      "label": "Synchronous copy declares gathering before async field publication",
+      "phase": "NAME",
+      "required_fields": [
+        "à gathering",
+        "selected differs from sent"
+      ],
+      "dependencies": [
+        "gather"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "prepare_practice",
+      "label": "A readiness gesture changes a fabricated binding flag",
+      "phase": "ACT",
+      "required_fields": [
+        "local preparation gesture",
+        "same installed intake and authorization"
+      ],
+      "dependencies": [
+        "name_gather"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "ready_practice",
+      "label": "Compiler projects supplied readiness without real intake or authorization",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": [
+        "binding verified by actual local result",
+        "current created-potential field"
+      ],
+      "dependencies": [
+        "prepare_practice"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "name_ready",
+      "label": "Name readiness after its consequence becomes available",
+      "phase": "NAME",
+      "required_fields": [
+        "上 created potential",
+        "prepared differs from transmitted"
+      ],
+      "dependencies": [
+        "ready_practice"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "practice_rest",
+      "label": "Complete the compulsory lesson before reaching any practice exit",
+      "phase": "REST",
+      "required_fields": [
+        "cue demand only",
+        "exit does not manufacture completion"
+      ],
+      "dependencies": [
+        "name_ready"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "builder",
+      "label": "Open the separate real builder or leave practice directly for it",
+      "phase": "TRANSFER",
+      "required_fields": [
+        "explicit own-work entrance",
+        "active custody preserved"
+      ],
+      "dependencies": [
+        "practice_rest"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "task_select",
+      "label": "Write the task and select source bodies and traveling rules",
+      "phase": "ACT",
+      "required_fields": [
+        "exact task",
+        "selected/local source distinction",
+        "rules"
+      ],
+      "dependencies": [
+        "builder"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "prepare_real",
+      "label": "Prepare selected work through the existing governed route",
+      "phase": "ACT",
+      "required_fields": [
+        "explicit Prepare",
+        "no model request",
+        "new-root notice and acknowledgment when applicable"
+      ],
+      "dependencies": [
+        "task_select"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "prepared",
+      "label": "Read the prepared result with the next crossing action adjacent",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": [
+        "local readiness",
+        "foreground result",
+        "Marrowline next action"
+      ],
+      "dependencies": [
+        "prepare_real"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "cross",
+      "label": "Review survival and Save notice, then open route-scoped Marrowline",
+      "phase": "TRANSFER",
+      "required_fields": [
+        "original tab owns live lane",
+        "private Save",
+        "explicit departure"
+      ],
+      "dependencies": [
+        "prepared"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 1,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "stage_send_activation",
+      "label": "Stage source-free activation and use native Send",
+      "phase": "ACT",
+      "required_fields": [
+        "local staging",
+        "separate Send",
+        "selected source bodies withheld"
+      ],
+      "dependencies": [
+        "cross"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "activation",
+      "label": "Read the admitted source-free acknowledgment",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": [
+        "stage predecessor",
+        "acknowledgment differs from content predecessor",
+        "HELD keeps stage locked"
+      ],
+      "dependencies": [
+        "stage_send_activation"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "stage_send_content",
+      "label": "Stage selected files and send the substantive continuation",
+      "phase": "ACT",
+      "required_fields": [
+        "explicit source bodies",
+        "native Send",
+        "origin content predecessor when applicable"
+      ],
+      "dependencies": [
+        "activation"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "content",
+      "label": "Read admitted substantive content and bind subsequent continuations to it",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": [
+        "current content predecessor",
+        "accepted stage predecessor",
+        "held attempts retain admitted head"
+      ],
+      "dependencies": [
+        "stage_send_content"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "export_return",
+      "label": "Export latest admitted content and return directly to Loom",
+      "phase": "TRANSFER",
+      "required_fields": [
+        "original task sources and rules",
+        "latest result and predecessor",
+        "missingness source revision and history"
+      ],
+      "dependencies": [
+        "content"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 1,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "review_return",
+      "label": "Inspect direct Return while keeping review and admission distinct",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": [
+        "threshold bypass",
+        "review-only consistency",
+        "signature verification HELD"
+      ],
+      "dependencies": [
+        "export_return"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "separate_admission",
+      "label": "Use separately registered local custody only when its exact candidate permits it",
+      "phase": "ACT",
+      "required_fields": [
+        "live local seed and registration",
+        "Check leaves head unchanged",
+        "explicit exact-candidate Admit"
+      ],
+      "dependencies": [
+        "review_return"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "rest_exit",
+      "label": "Rest or leave with private review material and unchanged actual expiry",
+      "phase": "REST",
+      "required_fields": [
+        "pause demand only",
+        "Save stays private",
+        "reload grants review only"
+      ],
+      "dependencies": [
+        "review_return"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    }
+  ],
+  "action": {
+    "action_id": "prepare_continue_review"
+  },
+  "world_delta": {
+    "observation_status": "UNRESOLVED",
+    "causal_trace": [
+      "Declared candidate: actual selected/local source state enters canonical gathering before relation naming",
+      "Declared candidate: real fictional intake and local authorization precede readiness",
+      "Declared candidate: pause and exit preserve unfinished state and active root",
+      "Declared candidate: native staged sends preserve immediate stage/content predecessors and direct Return"
+    ],
+    "losses": [],
+    "missingness": [
+      "Declared source/DOM candidate; full browser acceptance remains separate",
+      "No measured human comprehension",
+      "Existing platform transport-surrogate HOLD remains retained",
+      "Signature authentication and review-only reload capability remain distinct"
+    ],
+    "contradictions": [],
+    "unresolved_relations": [
+      "Visible consequence does not measure understanding",
+      "Synthetic local tests do not close native production/provider or physical-iPhone acceptance"
+    ],
+    "glyph_candidates": [],
+    "static_equivalent": {
+      "summary": "Practice selection and local preparation on fictional material, or choose your own work immediately. Sending requires a separate gesture. Continue prepared work through native Marrowline and bring its latest admitted result back to Loom for review.",
+      "steps": [
+        "see optional practice",
+        "select and inspect",
+        "observe gathering",
+        "name relation",
+        "prepare locally",
+        "observe readiness",
+        "pause or leave",
+        "prepare real work",
+        "native staged sends",
+        "direct returned review"
+      ]
+    }
+  },
+  "name": {
+    "plain_language": "Loom lets the selected work change visibly before explaining the relation and preserves explicit preparation, sending, return review and local admission.",
+    "glyph_relation": null,
+    "technical_term": "consequence-first governed service journey",
+    "non_equivalence": [
+      "Selected differs from sent",
+      "Prepared differs from transmitted",
+      "Activation stage predecessor differs from substantive content predecessor",
+      "Returned review differs from admitted local custody",
+      "Paused cues differ from paused custody expiry",
+      "Published cinema differs from measured comprehension",
+      "Local integrity differs from authenticated external origin"
+    ]
+  },
+  "transfer_context": {
+    "context": {
+      "surface": "Loom critical demo rescue working-tree review"
+    },
+    "shared_relation_candidate": "Preserve consequence order and lawful action support through changed presentation",
+    "observable_correspondence": [
+      "The same bounded input and immediate predecessor distinctions survive cinematic practice, native continuation and direct return"
+    ],
+    "alternative_explanations": [
+      "Removing visible controls may masquerade as reduced demand"
+    ],
+    "abstention_conditions": [
+      "Consequence remains outside viewport",
+      "Rest or exit disappears",
+      "Candidate browser route missing",
+      "Practice widens authority"
+    ]
+  }
+}

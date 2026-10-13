@@ -1,0 +1,91 @@
+{
+  "schema": "td613.gemini-visibility-availability-non-equivalence/v0.1",
+  "date": "2026-09-11",
+  "execution_parent": "c580f87544f3a95e617cd0dae44161413c897d7e",
+  "model": "gemini-3.8-flash",
+  "observations": {
+    "pre_failure_listing": {
+      "source_sha": "0381ac21c435360b09d613201f10ca831572e6eb",
+      "run_id": "34290086133",
+      "run_attempt": 1,
+      "environment": "gemini-observation",
+      "started_at": "2026-09-08T23:19:17.023Z",
+      "completed_at": "2026-09-08T23:19:17.205Z",
+      "status": 200,
+      "ok": true,
+      "complete": true,
+      "cached": false,
+      "page_count": 1,
+      "model_visible": true,
+      "artifact_id": 10080991110,
+      "artifact_digest": "sha256:a0b549ac3f952f44bd8245566104069f4ad68bd317d2b20a16ea30c43b6a11e6"
+    },
+    "generation_failure": {
+      "request_id": "725cbb98-93f0-4baf-bb90-f9be56e38ad9",
+      "observed_at": "2026-09-10T20:41:46.561Z",
+      "status": 503,
+      "elapsed_ms": 2196,
+      "call_count": 1,
+      "diagnostic": "PROVIDER_HTTP_ERROR",
+      "stage": "provider-transport",
+      "successful_generation": false,
+      "repository_source": "docs/research/2026-09-10-LOOM-LIVING-ROOM-HANDOFF.md"
+    },
+    "post_failure_listing": {
+      "source_sha": "0381ac21c435360b09d613201f10ca831572e6eb",
+      "run_id": "34290086133",
+      "run_attempt": 2,
+      "environment": "gemini-observation",
+      "started_at": "2026-09-11T02:06:58.043Z",
+      "completed_at": "2026-09-11T02:06:58.235Z",
+      "status": 200,
+      "ok": true,
+      "complete": true,
+      "cached": false,
+      "page_count": 1,
+      "model_visible": true,
+      "artifact_id": 10181598615,
+      "artifact_digest": "sha256:2660d03a18385f60abe0748d6a1b80e1f4212bad4e411e1f90870f40794461a9",
+      "acquisition_code_blob": "53e8787c1bceef708b32cd08b56e9ec4c061d1d1",
+      "wrapper_code_blob": "e38a1228094ee38fd61edcbd5172f5b3d9e397c1",
+      "current_main_dispatch": false
+    }
+  },
+  "lifecycle": {
+    "registry_version": "td613.gemini-lifecycle/v0.2-20260910",
+    "registry_stability": "stable",
+    "registry_lifecycle": "current",
+    "official_model_id": "gemini-3.8-flash",
+    "official_status": "GA_STABLE",
+    "official_latest_update": "2026-09-02",
+    "official_shutdown_announced": false,
+    "official_sources": [
+      "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash",
+      "https://ai.google.dev/gemini-api/docs/deprecations",
+      "https://ai.google.dev/gemini-api/docs/changelog"
+    ]
+  },
+  "temporal_order": [
+    "PRE_FAILURE_LISTING_VISIBLE",
+    "GENERATION_EPISODE_HTTP_503",
+    "POST_FAILURE_LISTING_VISIBLE"
+  ],
+  "earned_if_valid": [
+    "CREDENTIAL_SCOPED_LIST_VISIBILITY_DOES_NOT_IMPLY_GENERATION_EPISODE_SUCCESS",
+    "DOCUMENTED_CURRENT_LIFECYCLE_DOES_NOT_IMPLY_PER_EPISODE_TRANSPORT_SUCCESS",
+    "THE_2026_09_10_HTTP_503_IS_NOT_EVIDENCE_OF_GLOBAL_GEMINI_3_8_FLASH_RETIREMENT"
+  ],
+  "claim_ceiling": {
+    "same_secret_bytes_across_observations": false,
+    "same_credential_between_observation_environment_and_production": false,
+    "current_main_observation_dispatch_closed": false,
+    "quota_proven": false,
+    "quality_proven": false,
+    "provider_wide_outage_proven": false,
+    "routing_superiority_proven": false,
+    "future_availability_proven": false,
+    "empirical_exteriority_for_unrelated_target_records": false,
+    "western_horizon_reopened": false,
+    "golden_egg_credit": false
+  }
+}

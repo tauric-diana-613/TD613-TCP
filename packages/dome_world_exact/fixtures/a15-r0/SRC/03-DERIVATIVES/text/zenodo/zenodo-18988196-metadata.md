@@ -1,0 +1,140 @@
+---
+derivative_id: derivative:8e76593b16f3a411e8925371
+parent_capture_id: capture:0182df6f72a8a64ccbbefe91
+parent_blob_sha256: a2f12cb8abc9604cd36b244f8d8402c119bb60b0f5fd9256571bb55ebf7e1a12
+tool: srcctl-json-normalizer/1
+source_title: "SignalRupture and the Empirical Landscape of Contemporary Erosion"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18988195",
+  "conceptrecid": "18988195",
+  "created": "2026-03-12T18:42:23.602310+00:00",
+  "doi": "10.5281/zenodo.18988196",
+  "doi_url": "https://doi.org/10.5281/zenodo.18988196",
+  "files": [
+    {
+      "checksum": "md5:36ad3f094354ed224a6264f608127687",
+      "id": "89763974-b987-428b-ab0b-1780fe7eaae6",
+      "key": "SignalRupture and the Empirical Landscape of Contemporary Erosion .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18988196/files/SignalRupture%20and%20the%20Empirical%20Landscape%20of%20Contemporary%20Erosion%20.pdf/content"
+      },
+      "size": 153766
+    }
+  ],
+  "id": 18988196,
+  "links": {
+    "access": "https://zenodo.org/api/records/18988196/access",
+    "access_grants": "https://zenodo.org/api/records/18988196/access/grants",
+    "access_links": "https://zenodo.org/api/records/18988196/access/links",
+    "access_request": "https://zenodo.org/api/records/18988196/access/request",
+    "access_users": "https://zenodo.org/api/records/18988196/access/users",
+    "archive": "https://zenodo.org/api/records/18988196/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18988196/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18988196/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18988196/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18988196",
+    "draft": "https://zenodo.org/api/records/18988196/draft",
+    "file_modification": "https://zenodo.org/api/records/18988196/file-modification",
+    "files": "https://zenodo.org/api/records/18988196/files",
+    "latest": "https://zenodo.org/api/records/18988196/versions/latest",
+    "latest_html": "https://zenodo.org/records/18988196/latest",
+    "media_files": "https://zenodo.org/api/records/18988196/media-files",
+    "parent": "https://zenodo.org/api/records/18988195",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18988195",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18988195",
+    "parent_html": "https://zenodo.org/records/18988195",
+    "preview_html": "https://zenodo.org/records/18988196?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18988196/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18988196/request-deletion",
+    "requests": "https://zenodo.org/api/records/18988196/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18988196/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18988196",
+    "self_doi": "https://doi.org/10.5281/zenodo.18988196",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18988196",
+    "self_html": "https://zenodo.org/records/18988196",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18988196/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18988196/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18988196:SignalRupture%20and%20the%20Empirical%20Landscape%20of%20Contemporary%20Erosion%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18988196:SignalRupture%20and%20the%20Empirical%20Landscape%20of%20Contemporary%20Erosion%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18988196:SignalRupture%20and%20the%20Empirical%20Landscape%20of%20Contemporary%20Erosion%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18988196:SignalRupture%20and%20the%20Empirical%20Landscape%20of%20Contemporary%20Erosion%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18988196:SignalRupture%20and%20the%20Empirical%20Landscape%20of%20Contemporary%20Erosion%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18988196:SignalRupture%20and%20the%20Empirical%20Landscape%20of%20Contemporary%20Erosion%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18988196/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This paper presents the technical foundation of SignalRupture (SR), a meta‑diagnostic framework that synthesizes empirical findings across scarcity research, stress physiology, cognitive load theory, burnout studies, institutional trust erosion, and platform‑mediated arousal. Drawing on published effect sizes, correlations, odds ratios, and reliability coefficients, the paper demonstrates that these independent literatures exhibit a recurring erosion signature characterized by narrowing, depletion, overload, fragmentation, distrust, and epistemic drift.</p>\n<p>The paper harmonizes effect sizes across domains using standard transformations (Fisher&rsquo;s z, Hedges&rsquo; g) and evaluates cross‑surface convergence through variance compression, directional consistency, and heuristic independence testing. While not a formal meta‑analysis, the convergence indicators collectively suggest that the observed cross‑domain alignment is unlikely to arise under a simple independence‑by‑chance model, with approximate support on the order of 95% confidence.</p>\n<p>SignalRupture is presented as a unified empirical and conceptual architecture for diagnosing contemporary erosion across physiological, cognitive, institutional, and digital systems.</p>",
+    "doi": "10.5281/zenodo.18988196",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Artificial intelligence",
+      "Social science"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-12",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18988195"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "SignalRupture and the Empirical Landscape of Contemporary Erosion",
+    "version": "1.1"
+  },
+  "modified": "2026-03-12T18:42:23.888309+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18988196",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 6,
+    "unique_downloads": 5,
+    "unique_views": 16,
+    "version_downloads": 6,
+    "version_unique_downloads": 5,
+    "version_unique_views": 16,
+    "version_views": 16,
+    "views": 16
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "SignalRupture and the Empirical Landscape of Contemporary Erosion",
+  "updated": "2026-03-12T18:42:23.888309+00:00"
+}

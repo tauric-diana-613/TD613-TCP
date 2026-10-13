@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.custody-receipt/v0.8",
+  "title": "TD613 Ash Custody Receipt v0.8",
+  "description": "Phase 2 receipt with separate artifact, manifest, and receipt digests. Receipt and manifest digests are local comparison instruments, not public identity handles or proof of possession, authorship, authenticity, permission, truth, or trusted time.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "receipt_id", "receipt_id_basis", "created_at", "domeWorldVersion", "canonicalization", "receipt_digest", "assurance_class", "artifact_digest_present", "manifest_digest", "manifest", "public_surface", "export_boundary", "anti_extraction_defaults", "decision", "does_not_establish", "seal"],
+  "properties": {
+    "schema": {"const": "td613.ash.custody-receipt/v0.8"},
+    "receipt_id": {"type": "string", "pattern": "^ashc_[0-9a-f]{20}$"},
+    "receipt_id_basis": {"const": "receipt-digest-prefix"},
+    "created_at": {"type": "string", "minLength": 1},
+    "domeWorldVersion": {"type": "string"},
+    "canonicalization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["profile", "digest_domain", "encoding", "unicode_normalization", "number_profile"],
+      "properties": {
+        "profile": {"const": "td613.ash.canonical-json/v0.1"},
+        "digest_domain": {"const": "td613.ash.receipt-digest/v0.1"},
+        "encoding": {"const": "UTF-8"},
+        "unicode_normalization": {"const": "none"},
+        "number_profile": {"const": "safe-integers-only"}
+      }
+    },
+    "receipt_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "assurance_class": {"enum": ["L0_METADATA_ONLY", "L1_BROWSER_LOCAL_ARTIFACT_DIGEST"]},
+    "artifact_digest_present": {"type": "boolean"},
+    "manifest_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "manifest": {
+      "type": "object",
+      "required": ["schema", "manifest_digest"],
+      "properties": {
+        "schema": {"const": "td613.ash.custody-manifest/v0.8"},
+        "manifest_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    },
+    "public_surface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["content_exported", "text_preview", "quantized_weather_only", "visual_signature", "artifact_digest_exported", "manifest_digest_exported", "receipt_digest_exported", "digest_visibility"],
+      "properties": {
+        "content_exported": {"const": false},
+        "text_preview": {"const": null},
+        "quantized_weather_only": {"const": true},
+        "visual_signature": {"type": "string"},
+        "artifact_digest_exported": {"const": false},
+        "manifest_digest_exported": {"const": false},
+        "receipt_digest_exported": {"const": false},
+        "digest_visibility": {"const": "local-receipt-only"}
+      }
+    },
+    "export_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "raw_content_allowed", "summary_before_custody", "arrival_as_consent", "universal_stable_digest_allowed"],
+      "properties": {
+        "status": {"const": "receipt-only"},
+        "raw_content_allowed": {"const": false},
+        "summary_before_custody": {"const": false},
+        "arrival_as_consent": {"const": false},
+        "universal_stable_digest_allowed": {"const": false}
+      }
+    },
+    "anti_extraction_defaults": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["local_hold", "no_content_export", "public_weather_only", "receipt_not_proof", "beauty_not_verification"],
+      "properties": {
+        "local_hold": {"const": true},
+        "no_content_export": {"const": true},
+        "public_weather_only": {"const": true},
+        "receipt_not_proof": {"const": true},
+        "beauty_not_verification": {"const": true}
+      }
+    },
+    "migration": {"type": "object"},
+    "decision": {"enum": ["artifact-registered-as-metadata-only-custody-event", "artifact-registered-with-browser-local-byte-commitment", "v0.7-manifest-migrated-with-validated-assurance", "legacy-manifest-migrated-without-byte-promotion"]},
+    "does_not_establish": {
+      "type": "array",
+      "items": {"type": "string"},
+      "allOf": [
+        {"contains": {"const": "possession"}},
+        {"contains": {"const": "authorship"}},
+        {"contains": {"const": "trusted-time"}}
+      ]
+    },
+    "seal": {"const": "⟐"}
+  }
+}

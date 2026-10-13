@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.aperture.instrument-adapter-receipt/v0.2",
+  "title": "TD613 Aperture instrument adapter receipt v0.2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "receipt_id", "created_at", "time_posture", "adapter_id", "adapter_class", "source_status", "input_contract", "output_contract", "transformation_history", "missingness", "operational_state", "claim_authority", "target_operational_state", "no_authority_transfer", "automatic_model_selection", "automatic_run_promotion", "automatic_ash_action", "evidence_basis", "observations", "alternatives", "open_questions", "operator_notes", "closure", "adapter_digest", "seal"],
+  "properties": {
+    "schema": { "const": "td613.aperture.instrument-adapter-receipt/v0.2" },
+    "receipt_id": { "type": "string" },
+    "created_at": { "type": "string" },
+    "time_posture": { "const": "local-clock-not-trusted-time" },
+    "adapter_id": { "type": "string" },
+    "adapter_class": { "enum": ["EO-RFD", "ACEDIT", "KIRA", "DECLARED_INSTRUMENT"] },
+    "source_status": { "type": "string" },
+    "input_contract": { "type": "string" },
+    "output_contract": { "type": "string" },
+    "transformation_history": { "$ref": "#/$defs/textList" },
+    "missingness": { "$ref": "#/$defs/textList" },
+    "operational_state": { "type": "string" },
+    "claim_authority": { "type": "string" },
+    "target_operational_state": { "type": "string" },
+    "no_authority_transfer": { "const": true },
+    "automatic_model_selection": { "const": false },
+    "automatic_run_promotion": { "const": false },
+    "automatic_ash_action": { "const": false },
+    "evidence_basis": { "$ref": "#/$defs/textList" },
+    "observations": { "type": "array" },
+    "alternatives": { "type": "array" },
+    "open_questions": { "$ref": "#/$defs/textList" },
+    "operator_notes": { "$ref": "#/$defs/textList" },
+    "closure": { "$ref": "#/$defs/closure" },
+    "adapter_digest": { "$ref": "#/$defs/digest" },
+    "seal": { "type": "string" }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "textList": { "type": "array", "items": { "type": "string" } },
+    "closure": { "type": "object", "required": ["required", "status"], "properties": { "required": { "const": true }, "status": { "enum": ["OPEN", "CLOSED"] } }, "additionalProperties": false }
+  }
+}

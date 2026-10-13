@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:transformation-assertion:v1",
+  "title": "SignalRupture representation transformation assertion",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "transformation_id", "from_id", "to_id", "transformation_kind",
+    "declared_by_id", "origin", "relation_provenance_mode", "claim_effects",
+    "commutation_family_id", "evidence_ids", "adjudication_status"
+  ],
+  "properties": {
+    "schema_version": {"const": "transformation-assertion/v1"},
+    "transformation_id": {"type": "string", "minLength": 1},
+    "from_id": {"type": "string", "minLength": 1},
+    "to_id": {"type": "string", "minLength": 1},
+    "transformation_kind": {"enum": ["SURFACE_TRANSLATION", "EPISTEMIC_LIFT", "FORMALIZATION", "EMPIRICAL_COMPANION", "CLAIM_NARROWING", "CLAIM_INFLATION", "UNRESOLVED"]},
+    "declared_by_id": {"type": ["string", "null"]},
+    "origin": {"enum": ["explicit-source", "archive-inferred", "researcher-proposed"]},
+    "relation_provenance_mode": {"enum": ["CONTEMPORANEOUS", "FORWARD_DECLARED", "RETROSPECTIVE", "INFERRED", "UNRESOLVED"]},
+    "claim_effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["semantic_core", "scope", "causality", "universality", "variables", "falsifiers", "caveats"],
+      "properties": {
+        "semantic_core": {"$ref": "#/$defs/effect"},
+        "scope": {"$ref": "#/$defs/effect"},
+        "causality": {"$ref": "#/$defs/effect"},
+        "universality": {"$ref": "#/$defs/effect"},
+        "variables": {"$ref": "#/$defs/effect"},
+        "falsifiers": {"$ref": "#/$defs/effect"},
+        "caveats": {"$ref": "#/$defs/effect"}
+      }
+    },
+    "commutation_family_id": {"type": ["string", "null"]},
+    "evidence_ids": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "adjudication_status": {"enum": ["WITNESSED", "CANDIDATE", "DISPUTED", "REJECTED", "UNRESOLVED"]},
+    "interpretive_limit": {"type": ["string", "null"]}
+  },
+  "$defs": {
+    "effect": {"enum": ["PRESERVED", "ADDED", "REMOVED", "NARROWED", "BROADENED", "CHANGED", "PARTIAL", "UNKNOWN", "NOT_ASSESSED"]}
+  }
+}

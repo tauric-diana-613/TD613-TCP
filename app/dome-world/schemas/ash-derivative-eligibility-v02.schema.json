@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.derivative-eligibility-receipt/v0.2",
+  "title": "TD613 Ash derivative eligibility receipt v0.2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "eligibility_id", "created_at", "time_posture", "tomography_result_custody_reference", "operator_purpose", "inputs", "decision", "reasons", "recommendation_only", "derivative_constructed", "export_authorized", "cinder_constructed", "transport_authorized", "automatic_ash_action", "source_status", "evidence_basis", "observations", "missingness", "alternatives", "open_questions", "operator_notes", "closure", "eligibility_digest"],
+  "properties": {
+    "schema": { "const": "td613.ash.derivative-eligibility-receipt/v0.2" },
+    "eligibility_id": { "type": "string" },
+    "created_at": { "type": "string" },
+    "time_posture": { "const": "local-clock-not-trusted-time" },
+    "tomography_result_custody_reference": { "type": "string" },
+    "operator_purpose": { "type": "string", "minLength": 1 },
+    "inputs": { "type": "object" },
+    "decision": { "type": "string" },
+    "reasons": { "$ref": "#/$defs/textList" },
+    "recommendation_only": { "const": true },
+    "derivative_constructed": { "const": false },
+    "export_authorized": { "const": false },
+    "cinder_constructed": { "const": false },
+    "transport_authorized": { "const": false },
+    "automatic_ash_action": { "const": false },
+    "source_status": { "type": "string" },
+    "evidence_basis": { "$ref": "#/$defs/textList" },
+    "observations": { "type": "array" },
+    "missingness": { "type": "array" },
+    "alternatives": { "type": "array" },
+    "open_questions": { "$ref": "#/$defs/textList" },
+    "operator_notes": { "$ref": "#/$defs/textList" },
+    "closure": { "$ref": "#/$defs/closure" },
+    "eligibility_digest": { "$ref": "#/$defs/digest" }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "textList": { "type": "array", "items": { "type": "string" } },
+    "closure": { "type": "object", "required": ["required", "status"], "properties": { "required": { "const": true }, "status": { "enum": ["OPEN", "CLOSED"] } }, "additionalProperties": false }
+  }
+}

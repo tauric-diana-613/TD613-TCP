@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+const blind = JSON.parse(readFileSync(new URL('../app/safe-harbor/schemas/td613-safe-harbor.blind-custody-challenge.v1.schema.json', import.meta.url), 'utf8'));
+const perturbation = JSON.parse(readFileSync(new URL('../app/safe-harbor/schemas/td613-safe-harbor.perturbation-invariance.v1.schema.json', import.meta.url), 'utf8'));
+assert.equal(blind.$id, 'td613.safe-harbor.blind-custody-challenge/v1');
+assert.equal(blind.properties.schema_version.const, blind.$id);
+assert.deepEqual(blind.$defs.results.properties.challenge_result.enum, ['SUPPORTED','INCONCLUSIVE','FAILED','CONTAMINATED','PROMPT-DOMINATED','IMITATION-COLLISION']);
+assert.equal(blind.$defs.researchGate.properties.baseline_intake_authorized.const, false);
+assert.equal(perturbation.$id, 'td613.safe-harbor.perturbation-invariance/v1');
+assert.equal(perturbation.properties.protocol.properties.keystroke_telemetry_collected.const, false);
+assert.equal(perturbation.properties.protocol.properties.adaptive_personal_vulnerability_targeting.const, false);
+assert.equal(perturbation.properties.research_gate.properties.production_promotion_authorized.const, false);
+console.log('track r schemas: ok');

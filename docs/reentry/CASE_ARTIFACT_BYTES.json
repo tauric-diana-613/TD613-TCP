@@ -1,0 +1,57 @@
+{
+  "schema": "td613.reentry.dossier-artifact-byte-check/v0.1",
+  "source_revision": "7f7008f99ce8dd563ce31c34e2ff3d6bf76d9f8c",
+  "root_browser_source": "7f7008f99ce8dd563ce31c34e2ff3d6bf76d9f8c",
+  "root_application_bytes_match_current_commit": true,
+  "status": "PASS",
+  "scope": "Local referenced bytes hashed by this separate script. Dossier clerk does not perform these checks.",
+  "upstream_authentication": false,
+  "evidence_multiplication": false,
+  "files": [
+    {
+      "artifact": "docs/reentry/browser-evidence/pedagogue-resumed/receipt.json",
+      "bytes": 21303,
+      "sha256": "5ad4ec43a7f49ecbcb967ee3b0037c1885604ea67a20ed05c583307337e7c6e7"
+    },
+    {
+      "artifact": "docs/reentry/browser-evidence/pedagogue-repair/receipt.json",
+      "bytes": 29756,
+      "sha256": "d519dc6c92453b945bfa31cbd05b31d23ffaef5780a7e4e3dc3f434068bb5e50"
+    },
+    {
+      "artifact": "docs/reentry/APERTURE_FINDINGS.md",
+      "bytes": 32832,
+      "sha256": "f2a2a8142235349e2f14ab990f2ac64784a1b7e7603082426154ca17f923b1db"
+    },
+    {
+      "artifact": "docs/reentry/EVIDENCE_AND_HOLDS.md",
+      "bytes": 31859,
+      "sha256": "65e7f394ff4419a84207abd7acf698de788d25773f65f26e5dd03d8773dd94fd"
+    },
+    {
+      "artifact": "docs/reentry/browser-evidence/atlas-scope-fourth/receipt.json",
+      "bytes": 4244,
+      "sha256": "c1360a1ebf9d188592882492adf7060ce960097f0a52825d3b8a4fe45ad49797"
+    },
+    {
+      "artifact": "docs/reentry/RELATION_MAP.md",
+      "bytes": 22435,
+      "sha256": "dd48f8fb861fedce67156f6bf34fc469da4c6fe6a1d1d7649e2c07f44dc98e20"
+    },
+    {
+      "artifact": "docs/reentry/FADT_RESUME_FINDINGS.md",
+      "bytes": 11171,
+      "sha256": "1cd2c48579c2691a4189e8ba552acc2b01e1e6217dae456054eb335aede81e28"
+    },
+    {
+      "artifact": "docs/reentry/FADT_RESUME_FINDINGS.md",
+      "bytes": 11171,
+      "sha256": "1cd2c48579c2691a4189e8ba552acc2b01e1e6217dae456054eb335aede81e28"
+    },
+    {
+      "artifact": "docs/reentry/browser-evidence/candidate/receipt.json",
+      "bytes": 3513,
+      "sha256": "85d263507adeb6df35f0087872a82e6924c7a10eeb296c4a77388776a5b67eb7"
+    }
+  ]
+}

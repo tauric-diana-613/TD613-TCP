@@ -1,0 +1,63 @@
+const preflight = globalThis.__td613AshAia3Preflight;
+if (preflight && typeof preflight.then === 'function') await preflight;
+
+const legacyPresentation = new URLSearchParams(location.search).get('presentation') === 'legacy'
+  || globalThis.__td613AshAia3PreflightReceipt?.legacy_bypass === true;
+const ASH_RELEASE_ASSET_EPOCH = '20260727-a15-postclosure-v1';
+// Historical A12 delivery baseline retained for A2–A6 provenance: 20260724-a12-release-v1.
+
+if (!legacyPresentation) {
+  if (!document.getElementById('td613-ash-composition-veil-style')) {
+    const style = document.createElement('style');
+    style.id = 'td613-ash-composition-veil-style';
+    style.textContent = `
+      html[data-ash-composition-hydrating="true"] body{opacity:0!important;pointer-events:none!important;user-select:none!important}
+      html[data-ash-composition-hydrating="true"]::before{content:"Preparing Ash Keep · preserving local cases";position:fixed;inset:0;z-index:2147483646;display:grid;place-items:center;padding:24px;background:#010806;color:#fff8da;font:600 13px/1.5 ui-monospace,monospace;letter-spacing:.04em;text-align:center}
+    `;
+    document.head.append(style);
+  }
+  document.documentElement.dataset.ashCompositionHydrating = 'true';
+}
+
+await import(`./ash-cache-flush.js?v=${ASH_RELEASE_ASSET_EPOCH}`);
+await import(`./ash-ingress-layout-hydration.js?v=${ASH_RELEASE_ASSET_EPOCH}`);
+await import(`./ash-lifecycle-core.js?v=${ASH_RELEASE_ASSET_EPOCH}`);
+
+async function ensureStyle(href, marker) {
+  let link = document.querySelector(`link[${marker}]`);
+  if (!link) {
+    link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
+    link.setAttribute(marker, 'true');
+    document.head.append(link);
+  }
+  if (link.sheet) return;
+  await Promise.race([
+    new Promise((resolve, reject) => {
+      link.addEventListener('load', resolve, { once:true });
+      link.addEventListener('error', () => reject(new Error(`Ash stylesheet failed: ${href}`)), { once:true });
+    }),
+    new Promise((_, reject) => setTimeout(() => reject(new Error(`Ash stylesheet timed out: ${href}`)), 8000))
+  ]);
+}
+
+if (legacyPresentation) {
+  document.documentElement.dataset.ashAiaLegacy = 'true';
+  delete document.documentElement.dataset.ashAia3;
+  delete document.documentElement.dataset.ashAia3Ready;
+  delete document.documentElement.dataset.ashCompositionHydrating;
+} else {
+  document.documentElement.dataset.ashAia3 = 'td613.ash.aia3-composition/v0.5-human-profile-choice';
+  await import(`./ash-cache-eviction-aia3.js?v=${ASH_RELEASE_ASSET_EPOCH}`);
+  await Promise.all([
+    ensureStyle(`/dome-world/ash-keep-aia.css?v=${ASH_RELEASE_ASSET_EPOCH}`, 'data-ash-live-aia'),
+    ensureStyle(`/dome-world/ash-keep-aia3.css?v=${ASH_RELEASE_ASSET_EPOCH}`, 'data-ash-aia3-style'),
+    ensureStyle(`/dome-world/ash-keep-aia3-compact.css?v=${ASH_RELEASE_ASSET_EPOCH}`, 'data-ash-aia3-compact'),
+    ensureStyle(`/dome-world/ash-keep-aia3-interaction.css?v=${ASH_RELEASE_ASSET_EPOCH}`, 'data-ash-aia3-interaction')
+  ]);
+  await import(`./ash-keep-aia.js?v=${ASH_RELEASE_ASSET_EPOCH}`);
+  await import(`./ash-aia3-composition.js?v=${ASH_RELEASE_ASSET_EPOCH}`);
+  await import(`./ash-keep-aia-workspace-bridge.js?v=${ASH_RELEASE_ASSET_EPOCH}`);
+  await import(`./ash-flowcore-workspace-remount.js?v=${ASH_RELEASE_ASSET_EPOCH}`);
+}

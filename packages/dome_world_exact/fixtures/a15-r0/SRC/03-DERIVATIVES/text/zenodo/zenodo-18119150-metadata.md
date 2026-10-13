@@ -1,0 +1,142 @@
+---
+derivative_id: derivative:e72b430593f55173b4473673
+parent_capture_id: capture:74f28a7ae1df6dd4a6f47ac2
+parent_blob_sha256: 860644d2738c3d66fa89c748cbdd2d4cd3a0c633520ddf0312f4e947aed9fb5a
+tool: srcctl-json-normalizer/1
+source_title: "Pathologized Infrastructure: How Bureaucratic Systems Produce Clinical Harm"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18101077",
+  "conceptrecid": "18101077",
+  "created": "2026-01-01T19:15:08.991987+00:00",
+  "doi": "10.5281/zenodo.18119150",
+  "doi_url": "https://doi.org/10.5281/zenodo.18119150",
+  "files": [
+    {
+      "checksum": "md5:fae199e81aa8de7820216a11cad09fd7",
+      "id": "15bb6c3b-b443-4053-ba06-6156115fb146",
+      "key": "Pathologized Infrastructure: How Bureaucratic Systems Produce Clinical Harm .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18119150/files/Pathologized%20Infrastructure:%20How%20Bureaucratic%20Systems%20Produce%20Clinical%20Harm%20.pdf/content"
+      },
+      "size": 88714
+    }
+  ],
+  "id": 18119150,
+  "links": {
+    "access": "https://zenodo.org/api/records/18119150/access",
+    "access_grants": "https://zenodo.org/api/records/18119150/access/grants",
+    "access_links": "https://zenodo.org/api/records/18119150/access/links",
+    "access_request": "https://zenodo.org/api/records/18119150/access/request",
+    "access_users": "https://zenodo.org/api/records/18119150/access/users",
+    "archive": "https://zenodo.org/api/records/18119150/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18119150/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18119150/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18119150/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18119150",
+    "draft": "https://zenodo.org/api/records/18119150/draft",
+    "file_modification": "https://zenodo.org/api/records/18119150/file-modification",
+    "files": "https://zenodo.org/api/records/18119150/files",
+    "latest": "https://zenodo.org/api/records/18119150/versions/latest",
+    "latest_html": "https://zenodo.org/records/18119150/latest",
+    "media_files": "https://zenodo.org/api/records/18119150/media-files",
+    "parent": "https://zenodo.org/api/records/18101077",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18101077",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18101077",
+    "parent_html": "https://zenodo.org/records/18101077",
+    "preview_html": "https://zenodo.org/records/18119150?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18119150/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18119150/request-deletion",
+    "requests": "https://zenodo.org/api/records/18119150/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18119150/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18119150",
+    "self_doi": "https://doi.org/10.5281/zenodo.18119150",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18119150",
+    "self_html": "https://zenodo.org/records/18119150",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18119150/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18119150/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18119150:Pathologized%20Infrastructure:%20How%20Bureaucratic%20Systems%20Produce%20Clinical%20Harm%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18119150:Pathologized%20Infrastructure:%20How%20Bureaucratic%20Systems%20Produce%20Clinical%20Harm%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18119150:Pathologized%20Infrastructure:%20How%20Bureaucratic%20Systems%20Produce%20Clinical%20Harm%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18119150:Pathologized%20Infrastructure:%20How%20Bureaucratic%20Systems%20Produce%20Clinical%20Harm%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18119150:Pathologized%20Infrastructure:%20How%20Bureaucratic%20Systems%20Produce%20Clinical%20Harm%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18119150:Pathologized%20Infrastructure:%20How%20Bureaucratic%20Systems%20Produce%20Clinical%20Harm%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18119150/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This paper introduces the concept of pathologized infrastructure to explain how modern bureaucratic systems generate clinical, psychological, and social harm through their routine design features. Drawing on research in public administration, trauma studies, and systems theory, the paper argues that bureaucratic friction&mdash;delays, opacity, fragmentation, and unpredictability&mdash;functions as a structural stressor with measurable physiological and emotional consequences. It formalizes administrative trauma as a mechanism through which individuals experience chronic uncertainty, loss of control, and repeated invalidation when interacting with institutional systems. By reframing bureaucratic harm as an infrastructural phenomenon rather than an individual failing, the paper provides a framework for trauma‑informed institutional design and interdisciplinary collaboration across clinical, policy, and systems domains.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+    "doi": "10.5281/zenodo.18119150",
+    "keywords": [
+      "Sociology",
+      "Criminology",
+      "Feminism",
+      "Psychology",
+      "Social issues",
+      "Critical theory"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-01",
+    "relations": {
+      "version": [
+        {
+          "index": 1,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18101077"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Pathologized Infrastructure: How Bureaucratic Systems Produce Clinical Harm",
+    "version": "1.1"
+  },
+  "modified": "2026-01-29T01:56:58.292889+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18119150",
+  "revision": 6,
+  "state": "done",
+  "stats": {
+    "downloads": 45,
+    "unique_downloads": 42,
+    "unique_views": 46,
+    "version_downloads": 34,
+    "version_unique_downloads": 32,
+    "version_unique_views": 33,
+    "version_views": 36,
+    "views": 49
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Pathologized Infrastructure: How Bureaucratic Systems Produce Clinical Harm",
+  "updated": "2026-01-29T01:56:58.292889+00:00"
+}

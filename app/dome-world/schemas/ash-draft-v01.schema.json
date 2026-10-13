@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.ash-draft/v0.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "draft_id",
+    "case_id",
+    "created_at",
+    "version",
+    "body",
+    "draft_digest",
+    "selected_route",
+    "recipient_class",
+    "purpose",
+    "disclosed_opaque_references",
+    "room_ids",
+    "transformations",
+    "available_actions",
+    "provider_generation_approved",
+    "local_export_approved",
+    "recipient_transmission_approved",
+    "source_status",
+    "evidence_basis",
+    "observations",
+    "missingness",
+    "alternatives",
+    "open_questions",
+    "operator_notes",
+    "closure",
+    "record_digest"
+  ],
+  "properties": {
+    "schema": {
+      "const": "td613.ash.ash-draft/v0.1"
+    },
+    "draft_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "recipient_transmission_approved": {
+      "const": false
+    },
+    "record_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "draft_id": {},
+    "case_id": {},
+    "created_at": {},
+    "version": {},
+    "body": {},
+    "selected_route": {},
+    "recipient_class": {},
+    "purpose": {},
+    "disclosed_opaque_references": {},
+    "room_ids": {},
+    "transformations": {},
+    "available_actions": {},
+    "provider_generation_approved": {},
+    "local_export_approved": {},
+    "source_status": {},
+    "evidence_basis": {},
+    "observations": {},
+    "missingness": {},
+    "alternatives": {},
+    "open_questions": {},
+    "operator_notes": {},
+    "closure": {}
+  },
+  "additionalProperties": false
+}

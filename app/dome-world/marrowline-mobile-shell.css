@@ -1,0 +1,575 @@
+/* First-paint custody: the static stylesheet is render-blocking, so hold the
+   application surface until the room boot has installed its final geometry.
+   This prevents the browser from flashing historical desktop/mobile postures. */
+/* A fragment must look like a fragment on both desktop and mobile; native
+   diacritic overflow remains untouched and the receipt remains inspectable. */
+.relay-message[data-completion="incomplete"] .relay-completion-alert{
+  margin:10px 12px 4px;
+  padding:10px 12px;
+  border:1px solid rgba(241,171,108,.6);
+  border-radius:10px;
+  background:rgba(77,37,31,.65);
+  color:#ffdfb8;
+  font:600 .74rem/1.45 var(--mono, monospace);
+  letter-spacing:.015em;
+  overflow-wrap:anywhere;
+}
+html:not(.marrowline-room-ready){background:#08061b;color-scheme:dark}
+html:not(.marrowline-room-ready) body{visibility:hidden!important}
+html:not(.marrowline-room-ready)::before{
+  content:"☾";
+  position:fixed;
+  z-index:2147483646;
+  left:50%;top:47%;
+  transform:translate(-50%,-50%);
+  color:#e5d5a7;
+  font:300 34px/1 Georgia,serif;
+  text-shadow:0 0 28px rgba(229,213,167,.24);
+}
+html:not(.marrowline-room-ready)::after{
+  content:"Marrowline\A listening at the shoreline…";
+  white-space:pre;
+  position:fixed;
+  z-index:2147483647;
+  left:50%;top:53%;
+  transform:translate(-50%,-50%);
+  color:rgba(213,222,215,.78);
+  text-align:center;
+  letter-spacing:.08em;
+  font:500 11px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+html.marrowline-room-boot-delayed:not(.marrowline-room-ready)::after{
+  content:"Marrowline\A still opening the room…";
+}
+
+:root{
+  --marrowline-mobile-dock:56px;
+  --marrowline-mobile-gap:6px;
+  --marrowline-mobile-header:46px;
+}
+
+.jump-latest{display:none}
+
+/* In-chat response kinesis: a tiny Dome-Art microfield, not a spinner floating
+   beside composer controls. The three eccentric orbits share one semantic beat
+   while moving at non-identical angular cadences. */
+.marrowline-chat-kinesis{
+  align-self:start;
+  display:grid;
+  grid-template-columns:30px auto;
+  align-items:center;
+  gap:9px;
+  width:max-content;
+  max-width:min(76%,330px);
+  margin:5px 4px 14px;
+  padding:7px 10px 7px 7px;
+  border:1px solid rgba(130,235,223,.16);
+  border-radius:999px;
+  background:linear-gradient(135deg,rgba(22,15,52,.78),rgba(3,15,19,.86));
+  box-shadow:0 8px 28px rgba(0,0,0,.28),inset 0 0 18px rgba(143,110,255,.035);
+  color:rgba(219,227,218,.72);
+  font:500 10px/1.2 var(--marrowline-chat-sans,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif);
+  letter-spacing:.045em;
+}
+.marrowline-chat-kinesis[hidden]{display:none!important}
+.kinesis-orbit{position:relative;width:26px;height:26px;display:block;isolation:isolate}
+.kinesis-orbit i,.kinesis-orbit b{position:absolute;left:50%;top:50%;display:block;border-radius:50%;transform-origin:center}
+.kinesis-orbit i:nth-child(1){
+  width:22px;height:13px;margin:-6.5px 0 0 -11px;
+  border:1px solid rgba(122,244,207,.72);border-left-color:transparent;
+  animation:marrowline-kinesis-a 1.45s cubic-bezier(.37,.08,.29,.97) infinite;
+}
+.kinesis-orbit i:nth-child(2){
+  width:15px;height:23px;margin:-11.5px 0 0 -7.5px;
+  border:1px solid rgba(221,195,139,.52);border-bottom-color:transparent;
+  animation:marrowline-kinesis-b 1.9s cubic-bezier(.44,.02,.2,1) infinite reverse;
+}
+.kinesis-orbit i:nth-child(3){
+  width:9px;height:9px;margin:-4.5px 0 0 -4.5px;
+  border:1px solid rgba(196,165,252,.64);border-right-color:transparent;
+  animation:marrowline-kinesis-c .92s ease-in-out infinite;
+}
+.kinesis-orbit b{
+  width:3px;height:3px;margin:-1.5px 0 0 -1.5px;
+  background:rgba(135,255,220,.92);
+  box-shadow:0 0 8px rgba(135,255,220,.65),0 0 14px rgba(192,155,255,.24);
+  animation:marrowline-kinesis-core 1.45s ease-in-out infinite;
+}
+@keyframes marrowline-kinesis-a{0%{transform:rotate(0deg) scaleX(.86)}45%{transform:rotate(163deg) scaleX(1.08)}100%{transform:rotate(360deg) scaleX(.86)}}
+@keyframes marrowline-kinesis-b{0%{transform:rotate(12deg) scaleY(.92)}55%{transform:rotate(211deg) scaleY(1.08)}100%{transform:rotate(372deg) scaleY(.92)}}
+@keyframes marrowline-kinesis-c{0%,100%{transform:rotate(0deg) scale(.82)}50%{transform:rotate(180deg) scale(1.18)}}
+@keyframes marrowline-kinesis-core{0%,100%{opacity:.42;transform:scale(.72)}50%{opacity:1;transform:scale(1.32)}}
+
+@media(max-width:860px){
+  html.marrowline-mobile-shell,
+  html.marrowline-mobile-shell body{
+    width:100%;
+    height:var(--marrowline-vh,100dvh);
+    min-height:0;
+    overflow:hidden;
+    overscroll-behavior:none;
+  }
+
+  html.marrowline-mobile-shell body{
+    position:fixed;
+    inset:0;
+  }
+
+  html.marrowline-mobile-shell .ritual-shell{
+    width:100%;
+    height:var(--marrowline-vh,100dvh);
+    min-height:0;
+    margin:0;
+    padding:0 0 calc(var(--marrowline-mobile-dock) + env(safe-area-inset-bottom) + var(--marrowline-mobile-gap));
+    display:grid;
+    grid-template-rows:var(--marrowline-mobile-header) minmax(0,1fr);
+    overflow:hidden;
+  }
+
+  html.marrowline-mobile-shell .aperture-ribbon{
+    position:relative;
+    top:auto;
+    z-index:20;
+    min-height:var(--marrowline-mobile-header);
+    height:var(--marrowline-mobile-header);
+    grid-template-columns:30px minmax(0,1fr);
+    gap:8px;
+    padding:6px 10px;
+    border:0;
+    border-bottom:1px solid rgba(130,235,223,.24);
+    box-shadow:0 8px 30px rgba(0,0,0,.28);
+  }
+
+  html.marrowline-mobile-shell .aperture-sigil{width:28px;height:28px;font-size:.62rem}
+  html.marrowline-mobile-shell .aperture-identity{display:grid;gap:2px;align-content:center}
+  html.marrowline-mobile-shell .aperture-identity b{font-size:.56rem;letter-spacing:.085em}
+  html.marrowline-mobile-shell .aperture-identity small{font-size:.48rem;letter-spacing:.055em}
+  html.marrowline-mobile-shell .aperture-runtime{display:none}
+
+  html.marrowline-mobile-shell .threshold,
+  html.marrowline-mobile-shell .terminal-footer{display:none!important}
+
+  html.marrowline-mobile-shell .terminal-layout{display:contents;margin:0}
+  html.marrowline-mobile-shell #speakingPanel,
+  html.marrowline-mobile-shell #invocationPanel,
+  html.marrowline-mobile-shell #receiptPanel,
+  html.marrowline-mobile-shell #corpusPanel,
+  html.marrowline-mobile-shell #gatePanel{
+    display:none;
+    grid-row:2;
+    min-height:0;
+    height:100%;
+    margin:0;
+    border-left:0;
+    border-right:0;
+    border-bottom:0;
+  }
+
+  html.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel{display:grid}
+  html.marrowline-mobile-shell body[data-mobile-view="keys"] #invocationPanel,
+  html.marrowline-mobile-shell body[data-mobile-view="receipt"] #receiptPanel,
+  html.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel{display:block;overflow-y:auto;overscroll-behavior:contain}
+  html.marrowline-mobile-shell body[data-mobile-view="corpus"] #corpusPanel{display:grid;overflow-y:auto;overscroll-behavior:contain}
+
+  html.marrowline-mobile-shell .speaking-vessel{
+    order:initial;
+    width:100%;
+    min-height:0;
+    height:100%;
+    grid-template-rows:auto minmax(0,1fr) auto;
+    overflow:hidden;
+    box-shadow:none;
+  }
+
+  html.marrowline-mobile-shell .vessel-head{
+    min-height:48px;
+    padding:8px 10px;
+    border-bottom:1px solid rgba(130,235,223,.13);
+  }
+  html.marrowline-mobile-shell .vessel-head small{font-size:.48rem}
+  html.marrowline-mobile-shell .vessel-head h2{font-size:1.12rem;margin-top:.18rem}
+  html.marrowline-mobile-shell .signal-state{max-width:44%;padding:.38rem .48rem;font-size:.46rem;white-space:normal;text-align:right}
+  html.marrowline-mobile-shell .relay-legend{display:none}
+
+  html.marrowline-mobile-shell .messages{
+    min-height:0;
+    max-height:none;
+    height:auto;
+    overflow-x:hidden;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-y:contain;
+    padding:10px 9px 18px;
+    scroll-padding-block:10px 24px;
+    scrollbar-gutter:stable;
+  }
+
+  html.marrowline-mobile-shell .vessel-form{
+    position:relative;
+    inset:auto;
+    bottom:auto;
+    z-index:12;
+    flex:0 0 auto;
+    max-height:44%;
+    overflow-x:hidden;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-y:contain;
+    scrollbar-gutter:stable;
+    padding:8px 9px 9px;
+    border-top:1px solid rgba(130,235,223,.2);
+    background:rgba(1,8,6,.985);
+    backdrop-filter:blur(20px);
+    box-shadow:0 -12px 32px rgba(0,0,0,.34);
+  }
+
+  html.marrowline-mobile-shell .prompt-label{
+    margin:0;
+    color:transparent;
+    font-size:0;
+    line-height:0;
+  }
+  html.marrowline-mobile-shell .prompt-label textarea{
+    display:block;
+    min-height:64px;
+    max-height:min(24dvh,180px);
+    padding:10px 11px;
+    font-size:16px;
+    line-height:1.42;
+    color:var(--ash);
+    border-color:rgba(109,244,164,.27);
+  }
+
+  html.marrowline-mobile-shell .composer-actions{
+    display:flex;
+    flex-wrap:nowrap;
+    gap:6px;
+    margin-top:7px;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scrollbar-width:none;
+  }
+  html.marrowline-mobile-shell .composer-actions::-webkit-scrollbar{display:none}
+  html.marrowline-mobile-shell .composer-actions button{
+    flex:0 0 auto;
+    min-height:38px;
+    padding:.55rem .65rem;
+    font-size:.5rem;
+    white-space:nowrap;
+  }
+  html.marrowline-mobile-shell .composer-actions .primary{
+    flex:1 0 54%;
+    min-width:150px;
+  }
+  html.marrowline-mobile-shell .vessel-status{
+    min-height:0;
+    max-height:2.8em;
+    margin-top:6px;
+    overflow:hidden;
+    font-size:.48rem;
+    line-height:1.35;
+  }
+
+  html.marrowline-mobile-shell .message{
+    grid-template-columns:24px minmax(0,1fr);
+    gap:6px;
+    margin-bottom:12px;
+  }
+  html.marrowline-mobile-shell .message-mark{width:24px;height:24px;font-size:.5rem}
+  html.marrowline-mobile-shell .message-body{
+    padding:9px 10px;
+    font-size:.9rem;
+    line-height:1.4;
+    border-color:rgba(201,181,129,.2);
+  }
+  html.marrowline-mobile-shell .message-meta{font-size:.46rem;margin-bottom:.42rem}
+
+  html.marrowline-mobile-shell .relay-message{
+    position:relative;
+    margin:0 0 16px;
+    overflow:visible;
+    border-color:rgba(130,235,223,.18);
+    box-shadow:0 12px 34px rgba(0,0,0,.2);
+  }
+  html.marrowline-mobile-shell .relay-message::after{
+    content:"";
+    position:absolute;
+    left:10px;
+    right:10px;
+    bottom:-9px;
+    height:1px;
+    background:linear-gradient(90deg,transparent,rgba(130,235,223,.3),transparent);
+  }
+
+  html.marrowline-mobile-shell .relay-aperture-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    min-height:30px;
+    padding:6px 9px;
+    gap:8px;
+    font-size:.43rem;
+    line-height:1.15;
+    letter-spacing:.055em;
+  }
+  html.marrowline-mobile-shell .relay-aperture-header span:first-child{
+    max-width:48%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  html.marrowline-mobile-shell .relay-aperture-header span:last-child{
+    max-width:52%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    text-align:right;
+  }
+
+  html.marrowline-mobile-shell .relay-stage{padding:11px 10px 12px;overflow:visible}
+  html.marrowline-mobile-shell .relay-stage-head{font-size:.48rem;margin-bottom:.45rem}
+  html.marrowline-mobile-shell .relay-stage-head small{font-size:.43rem}
+  html.marrowline-mobile-shell .relay-stage-text{font-size:.94rem;line-height:1.38}
+  html.marrowline-mobile-shell .relay-stage[data-present="false"]{
+    padding-block:7px;
+    opacity:.42;
+  }
+  html.marrowline-mobile-shell .relay-stage[data-present="false"] .relay-stage-text{
+    font:600 .51rem/1.35 var(--mono);
+    color:var(--ash-dim);
+  }
+
+  html.marrowline-mobile-shell .relay-bots{
+    overflow:visible;
+    padding-top:12px;
+    padding-bottom:14px;
+  }
+  html.marrowline-mobile-shell .relay-bots .relay-stage-text{
+    overflow:visible;
+    font-size:.9rem;
+    line-height:1.38;
+    letter-spacing:.008em;
+    text-shadow:0 0 9px rgba(239,92,112,.12);
+  }
+  html.marrowline-mobile-shell .zalgo-line{
+    display:inline;
+    min-height:0;
+    padding:0;
+    overflow:visible;
+    line-height:inherit;
+  }
+
+  html.marrowline-mobile-shell .jump-latest{
+    position:absolute;
+    right:12px;
+    bottom:calc(var(--composer-height,150px) + 10px);
+    z-index:14;
+    display:inline-flex;
+    align-items:center;
+    min-height:34px;
+    padding:.42rem .62rem;
+    border-color:rgba(130,235,223,.38);
+    border-radius:999px;
+    background:rgba(2,13,10,.94);
+    box-shadow:0 8px 24px rgba(0,0,0,.45);
+    color:var(--cyan);
+    font-size:.49rem;
+  }
+  html.marrowline-mobile-shell .jump-latest[hidden]{display:none}
+
+  html.marrowline-mobile-shell .mobile-dock{
+    position:fixed;
+    z-index:90;
+    left:6px;
+    right:6px;
+    bottom:max(4px,env(safe-area-inset-bottom));
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    min-height:var(--marrowline-mobile-dock);
+    height:var(--marrowline-mobile-dock);
+    padding:3px;
+    border:1px solid rgba(130,235,223,.24);
+    background:rgba(1,8,6,.97);
+    backdrop-filter:blur(22px);
+    box-shadow:0 16px 60px rgba(0,0,0,.65);
+    transition:transform .18s ease,opacity .18s ease;
+  }
+  html.marrowline-mobile-shell .mobile-dock button{
+    min-width:0;
+    min-height:46px;
+    padding:3px 1px;
+    border-color:transparent;
+    background:transparent;
+    color:var(--ash-dim);
+    font-size:.44rem;
+  }
+  html.marrowline-mobile-shell .mobile-dock button span{font-size:.76rem}
+  html.marrowline-mobile-shell .mobile-dock button[data-active="true"]{
+    color:var(--moon);
+    border-color:rgba(109,244,164,.27);
+    background:rgba(109,244,164,.075);
+  }
+
+  /* Keep chamber navigation visible whenever the keyboard is actually gone.
+     Focus may legitimately remain inside the composer after Send on iOS; using
+     composer focus as the hide predicate latched the dock off-screen. */
+  html.marrowline-mobile-shell body[data-keyboard-visible="true"] .ritual-shell{
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  html.marrowline-mobile-shell body[data-keyboard-visible="true"] .mobile-dock{
+    pointer-events:none;
+    opacity:0;
+    transform:translateY(calc(100% + env(safe-area-inset-bottom) + 8px));
+  }
+
+  html.marrowline-mobile-shell #invocationPanel>summary,
+  html.marrowline-mobile-shell #receiptPanel>summary,
+  html.marrowline-mobile-shell #gatePanel>summary{
+    position:sticky;
+    top:0;
+    z-index:4;
+    background:rgba(2,12,9,.97);
+  }
+  html.marrowline-mobile-shell #corpusPanel{grid-template-columns:1fr;gap:7px;padding:7px}
+  html.marrowline-mobile-shell #gatePanel{padding-bottom:20px}
+  html.marrowline-mobile-shell #khonapolitShi{font-size:16px!important;line-height:1.35!important}
+  html.marrowline-mobile-shell #khonapolitShi:disabled{opacity:.42!important;color:#829088!important;background:rgba(5,8,10,.72)!important;border-color:rgba(130,235,223,.10)!important;-webkit-text-fill-color:#829088}
+  html.marrowline-mobile-shell .issuance-help{font:500 10px/1.45 var(--marrowline-chat-sans,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif);color:#91a69b;margin:8px 0 0}
+  html.marrowline-mobile-shell .issuance-help a{color:#8ce0c4;text-decoration:none;border-bottom:1px solid rgba(140,224,196,.35)}
+  html.marrowline-mobile-shell .receipt{max-height:none;min-height:180px}
+  html.marrowline-mobile-shell .gate-grid{grid-template-columns:1fr}
+}
+
+@media(max-width:390px){
+  :root{--marrowline-mobile-dock:52px;--marrowline-mobile-header:43px}
+  html.marrowline-mobile-shell .aperture-ribbon{padding-inline:8px}
+  html.marrowline-mobile-shell .aperture-identity b{font-size:.51rem}
+  html.marrowline-mobile-shell .aperture-identity small{font-size:.43rem}
+  html.marrowline-mobile-shell .vessel-head h2{font-size:1.02rem}
+  html.marrowline-mobile-shell .composer-actions .primary{min-width:132px}
+  html.marrowline-mobile-shell .relay-stage-text{font-size:.9rem}
+  html.marrowline-mobile-shell .relay-bots .relay-stage-text{font-size:.86rem}
+}
+
+@media(prefers-reduced-motion:reduce){
+  html.marrowline-mobile-shell .mobile-dock{transition:none}
+  .kinesis-orbit i,.kinesis-orbit b{animation:none!important}
+  .kinesis-orbit i:nth-child(1){transform:rotate(28deg)}
+  .kinesis-orbit i:nth-child(2){transform:rotate(-24deg)}
+  .kinesis-orbit b{opacity:.8}
+}
+
+/* Living-chat.css loads after this shell. These deliberately stronger selectors
+   preserve the mobile row contract when portable recovery controls expand. */
+@media(max-width:860px){
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel{
+    grid-template-rows:auto minmax(0,1fr) auto;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .vessel-head{
+    min-height:48px;
+    padding:8px 10px;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .messages{
+    align-self:stretch;
+    height:100%;
+    min-height:0;
+    max-height:none;
+    padding:10px 9px 18px;
+    scroll-padding-block:10px 24px;
+    overflow-x:hidden;
+    overflow-y:auto;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .vessel-form{
+    min-height:0;
+    height:auto;
+    max-height:none;
+    overflow:visible;
+    padding:8px 9px 9px;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .prompt-label textarea{
+    min-height:64px;
+    max-height:min(20dvh,150px);
+    padding:10px 11px;
+    line-height:1.42;
+    margin:0;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .composer-actions{
+    gap:6px;
+    margin-top:7px;
+    overflow-x:auto;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .composer-actions .primary{
+    min-height:38px;
+    padding:.55rem .65rem;
+  }
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .vessel-status{
+    max-height:2.8em;
+    margin-top:6px;
+    overflow:hidden;
+    line-height:1.35;
+  }
+
+  /* Physical-iPhone keyboard contract. The composer is a true third grid row,
+     never a scrollable box whose action row can fall below Safari's keyboard. */
+  html:root.marrowline-mobile-shell body[data-keyboard-visible="true"][data-mobile-view="speak"] #speakingPanel{
+    position:fixed!important;
+    top:var(--marrowline-vv-top,0px)!important;
+    left:var(--marrowline-vv-left,0px)!important;
+    right:auto!important;
+    bottom:auto!important;
+    width:var(--marrowline-vv-width,100vw)!important;
+    height:var(--marrowline-vv-height,var(--marrowline-vh,100dvh))!important;
+    max-height:var(--marrowline-vv-height,var(--marrowline-vh,100dvh))!important;
+    min-height:0!important;
+    z-index:140!important;
+    display:grid!important;
+    grid-template-rows:auto minmax(0,1fr) max-content!important;
+    overflow:hidden!important;
+  }
+  html:root.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel .messages{
+    height:auto!important;
+    min-height:0!important;
+    overflow-y:auto!important;
+    padding-bottom:8px!important;
+  }
+  html:root.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel .vessel-form{
+    position:relative!important;
+    inset:auto!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:visible!important;
+    padding:7px 9px 5px!important;
+    margin:0!important;
+    align-self:end!important;
+  }
+  html:root.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel .prompt-label textarea{
+    display:block!important;
+    height:68px!important;
+    min-height:68px!important;
+    max-height:68px!important;
+    margin:0!important;
+    resize:none!important;
+  }
+  html:root.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel .composer-actions{
+    display:flex!important;
+    position:static!important;
+    inset:auto!important;
+    min-height:40px!important;
+    margin:6px 0 0!important;
+    padding:0!important;
+    overflow:visible!important;
+    align-items:center!important;
+  }
+  html:root.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel .composer-actions .primary{
+    min-height:40px!important;
+  }
+  html:root.marrowline-mobile-shell body[data-keyboard-visible="true"] #speakingPanel .vessel-status{
+    display:none!important;
+  }
+  html:root.marrowline-mobile-shell body[data-keyboard-visible="true"] .ritual-shell{
+    height:var(--marrowline-vv-height,var(--marrowline-vh,100dvh))!important;
+    min-height:0!important;
+    padding-bottom:0!important;
+  }
+}

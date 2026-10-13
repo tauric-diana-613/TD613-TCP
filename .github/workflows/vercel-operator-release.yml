@@ -1,0 +1,576 @@
+name: Vercel Operator Release
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: td613-vercel-production-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: >-
+      github.event.issue.number == 405 &&
+      github.event.issue.pull_request == null &&
+      (github.event.comment.user.login == github.repository_owner || github.event.comment.user.login == 'chatgpt-codex-connector[bot]') &&
+      startsWith(github.event.comment.body, '/td613-vercel-release ')
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      RELEASE_GATE_ISSUE: '405'
+      VERCEL_PROJECT: td-613-tcp
+      VERCEL_SCOPE: tauric-diana-s-projects
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      TD613_CANONICAL_PRODUCTION_URL: https://td613.com
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Check out current main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Validate operator authorization and exact commit
+        id: authorize
+        shell: bash
+        env:
+          AUTHORIZATION: ${{ github.event.comment.body }}
+        run: |
+          set -euo pipefail
+          read -r COMMAND TARGET SELECTED_SHA EXTRA <<< "$AUTHORIZATION"
+          [[ "$COMMAND" == '/td613-vercel-release' ]] || { echo 'Unexpected release command.' >&2; exit 1; }
+          [[ "$TARGET" == 'PRODUCTION' ]] || { echo 'Only the explicitly named PRODUCTION target is accepted.' >&2; exit 1; }
+          [[ -z "${EXTRA:-}" ]] || { echo 'Release command must contain exactly command, target, and SHA.' >&2; exit 1; }
+          [[ "$SELECTED_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'Release command omitted a valid 40-character commit SHA.' >&2; exit 1; }
+          CURRENT_MAIN="$(git rev-parse HEAD)"
+          [[ "$SELECTED_SHA" == "$CURRENT_MAIN" ]] || { echo "Authorized SHA $SELECTED_SHA is not current main $CURRENT_MAIN." >&2; exit 1; }
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const config = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
+          if (config.git?.deploymentEnabled !== false) throw new Error('Git-triggered Vercel deployment lock is not active.');
+          NODE
+          echo "selected_sha=$SELECTED_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Classify the authorized release witness scope
+        id: scope
+        shell: bash
+        env:
+          SELECTED_SHA: ${{ steps.authorize.outputs.selected_sha }}
+        run: |
+          set -euo pipefail
+          git diff --name-only -z "${SELECTED_SHA}^1" "$SELECTED_SHA" \
+            | node scripts/classify-validation-scope.mjs --github-output "$GITHUB_OUTPUT"
+
+      - name: Record accepted release gesture
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF_COMMENT
+          𝌋 Operator release gesture accepted.
+
+          \`\`\`text
+          target = PRODUCTION
+          selected_commit = ${{ steps.authorize.outputs.selected_sha }}
+          release_relay = ${{ github.event.comment.user.login }}
+          deployment_ceiling = 1
+          validation_scope = ${{ steps.scope.outputs.validation_scope }}
+          premerge_browser_authority = FAST_CONTRACT_LANE; DEEP_BROWSER_DIAGNOSTICS_MANUAL_ONLY
+          production_confirmation = exact-source receipt + exact application bytes + source-stability guards
+          git_auto_deploy = disabled
+          live_provider_benchmark_authority = none
+          workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          \`\`\`
+
+          The gate rechecks release law, admits exactly one deployable commit when fallback is needed, requires bounded Vercel adoption of that exact transient commit, relocks immediately after adoption, verifies the authorized source receipt and exact application bytes, and holds that source stable against stale queued rollbacks. Deep Ash/Flow-Core/browser diagnostics and live provider observation are manual diagnostics, not release authority. ⟐
+          EOF_COMMENT
+          )"
+
+      - name: Install repository dependencies once
+        run: npm ci
+
+      - name: Verify release-critical contracts only
+        run: |
+          node tests/workflow-estate.test.mjs
+          node tests/tcp-smoke.test.mjs
+          node tests/vercel-deploy-hygiene.test.mjs
+          node tests/vercel-operator-release-gate.test.mjs
+          node tests/vercel-relock-safety.test.mjs
+          node tests/release-plumbing.test.mjs
+          node tests/product-architecture/shell.test.mjs
+          node tests/giving-validation-scope.test.mjs
+
+      - name: Verify Giving-only release contracts
+        if: steps.scope.outputs.validation_scope == 'giving'
+        run: |
+          node tests/giving-history-package.test.mjs
+          node tests/giving-campaign-deputy-import.test.mjs
+          node tests/giving-production-readiness.test.mjs
+          node tests/giving-dispatcher.test.mjs
+          node tests/giving-client-surface.test.mjs
+          node tests/giving-vercel-release-receipt.test.mjs
+
+      - name: Verify canonical practice fixture release contracts
+        if: steps.scope.outputs.validation_scope == 'practice'
+        run: |
+          node tests/pedagogue-practice-fixture.test.mjs
+          node tests/pedagogue-design-gate.test.mjs
+          node tests/giving-post640-polish.test.mjs
+
+      - name: Choose one bounded Vercel release route
+        id: mode
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${VERCEL_TOKEN:-}" ]]; then
+            echo 'mode=git-fallback' >> "$GITHUB_OUTPUT"
+            echo 'token_probe=absent' >> "$GITHUB_OUTPUT"
+          elif npx --yes vercel@latest whoami --token "$VERCEL_TOKEN" >/dev/null 2>&1; then
+            echo 'mode=direct-token' >> "$GITHUB_OUTPUT"
+            echo 'token_probe=valid' >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::VERCEL_TOKEN failed Vercel identity validation; preserving the governed Git-fallback release path."
+            echo 'mode=git-fallback' >> "$GITHUB_OUTPUT"
+            echo 'token_probe=invalid' >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Materialize the exact-source receipt
+        env:
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const sourcePacketCommit = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
+          if (!/^[0-9a-f]{40}$/.test(sourcePacketCommit)) throw new Error('Release receipt requires the authorized source commit.');
+          const receipt = {
+            schema: 'td613.giving.release-source/v1',
+            source_packet_commit: sourcePacketCommit
+          };
+          fs.writeFileSync('app/giving/history/release-source.json', `${JSON.stringify(receipt, null, 2)}\n`);
+          NODE
+
+      - name: Link exact repository to the existing Vercel project
+        if: steps.mode.outputs.mode == 'direct-token'
+        run: npx --yes vercel@latest link --yes --project "$VERCEL_PROJECT" --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN"
+
+      - name: Pull production environment and build once
+        if: steps.mode.outputs.mode == 'direct-token'
+        run: |
+          npx --yes vercel@latest pull --yes --environment=production --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN"
+          npx --yes vercel@latest build --prod --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN"
+
+      - name: Deploy the completed packet once through the token bridge
+        if: steps.mode.outputs.mode == 'direct-token'
+        id: direct_deploy
+        env:
+          VERCEL_GIT_COMMIT_SHA: ${{ steps.authorize.outputs.selected_sha }}
+          VERCEL_GIT_COMMIT_REF: main
+          VERCEL_GIT_REPO_SLUG: TD613-TCP
+          VERCEL_GIT_REPO_OWNER: tauric-diana-613
+        run: |
+          set -euo pipefail
+          DEPLOY_LOG="$(mktemp)"
+          npx --yes vercel@latest deploy --prebuilt --prod --yes --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN" | tee "$DEPLOY_LOG"
+          DEPLOY_URL="$(grep -Eo 'https://[^[:space:]]+' "$DEPLOY_LOG" | tail -n 1)"
+          [[ -n "$DEPLOY_URL" ]] || { echo 'Vercel returned no deployment URL.' >&2; exit 1; }
+          echo "deployment_url=$DEPLOY_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Create one bounded Git-fallback release commit
+        if: steps.mode.outputs.mode == 'git-fallback'
+        id: fallback_release
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const path = 'vercel.json';
+          const config = JSON.parse(fs.readFileSync(path, 'utf8'));
+          if (config.git?.deploymentEnabled !== false) throw new Error('Fallback requires the deployment lock to begin closed.');
+          config.git.deploymentEnabled = true;
+          fs.writeFileSync(path, `${JSON.stringify(config, null, 2)}\n`);
+          NODE
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add vercel.json app/giving/history/release-source.json
+          git commit -m "release: enable one Vercel deployment for ${{ steps.authorize.outputs.selected_sha }}"
+          RELEASE_SHA="$(git rev-parse HEAD)"
+          git push origin HEAD:main
+          echo "release_sha=$RELEASE_SHA" >> "$GITHUB_OUTPUT"
+          echo "deployment_url=$TD613_CANONICAL_PRODUCTION_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Await Vercel adoption of exact Git-fallback commit
+        if: steps.mode.outputs.mode == 'git-fallback' && steps.fallback_release.outputs.release_sha != ''
+        id: fallback_adoption
+        env:
+          RELEASE_SHA: ${{ steps.fallback_release.outputs.release_sha }}
+          TD613_VERCEL_ADOPTION_ATTEMPTS: '45'
+          TD613_VERCEL_ADOPTION_DELAY_MS: '2000'
+        run: |
+          node --input-type=module <<'NODE'
+          const repository = String(process.env.GITHUB_REPOSITORY || '').trim();
+          const token = String(process.env.GH_TOKEN || process.env.GITHUB_TOKEN || '').trim();
+          const releaseSha = String(process.env.RELEASE_SHA || '').trim();
+          const attempts = Number(process.env.TD613_VERCEL_ADOPTION_ATTEMPTS || 45);
+          const delayMs = Number(process.env.TD613_VERCEL_ADOPTION_DELAY_MS || 2000);
+          if (!/^[^/]+\/[^/]+$/.test(repository)) throw new Error('GITHUB_REPOSITORY is required for Vercel adoption acknowledgement.');
+          if (!token) throw new Error('GH_TOKEN is required for Vercel adoption acknowledgement.');
+          if (!/^[0-9a-f]{40}$/.test(releaseSha)) throw new Error('Vercel adoption acknowledgement requires the transient release SHA.');
+          if (!Number.isSafeInteger(attempts) || attempts < 1 || attempts > 120) throw new Error('TD613_VERCEL_ADOPTION_ATTEMPTS must be 1..120.');
+          if (!Number.isSafeInteger(delayMs) || delayMs < 500 || delayMs > 10000) throw new Error('TD613_VERCEL_ADOPTION_DELAY_MS must be 500..10000.');
+          const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+          let lastState = 'MISSING';
+          for (let attempt = 1; attempt <= attempts; attempt += 1) {
+            const response = await fetch(`https://api.github.com/repos/${repository}/commits/${releaseSha}/status`, {
+              headers: {
+                accept: 'application/vnd.github+json',
+                authorization: `Bearer ${token}`,
+                'x-github-api-version': '2022-11-28'
+              },
+              redirect: 'follow',
+              signal: AbortSignal.timeout(10000)
+            });
+            if (!response.ok) {
+              if ([408, 425, 429].includes(response.status) || response.status >= 500) {
+                lastState = `HTTP_${response.status}`;
+                console.log(`[td613-vercel-adoption] pending attempt=${attempt}/${attempts} observation=${lastState}`);
+                if (attempt < attempts) await sleep(delayMs);
+                continue;
+              }
+              throw new Error(`Vercel adoption status lookup returned non-retryable ${response.status}.`);
+            }
+            const payload = await response.json();
+            const status = Array.isArray(payload?.statuses)
+              ? payload.statuses.find(item => item?.context === 'Vercel')
+              : null;
+            lastState = String(status?.state || 'MISSING').toUpperCase();
+            if (status) {
+              if (lastState === 'FAILURE' || lastState === 'ERROR') {
+                throw new Error(`Vercel adopted ${releaseSha} but reported ${lastState} before relock.`);
+              }
+              console.log(`[td613-vercel-adoption] adopted release_sha=${releaseSha} state=${lastState} attempt=${attempt}/${attempts}`);
+              process.exit(0);
+            }
+            console.log(`[td613-vercel-adoption] pending attempt=${attempt}/${attempts} observation=${lastState}`);
+            if (attempt < attempts) await sleep(delayMs);
+          }
+          throw new Error(`Vercel never acknowledged transient release commit ${releaseSha} before bounded relock; last state ${lastState}.`);
+          NODE
+
+      - name: Restore the Git deployment lock immediately after Vercel adoption
+        if: always() && steps.mode.outputs.mode == 'git-fallback' && steps.fallback_release.outputs.release_sha != ''
+        id: relock
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const path = 'vercel.json';
+          const config = JSON.parse(fs.readFileSync(path, 'utf8'));
+          if (config.git?.deploymentEnabled !== true) throw new Error('Adoption-gated relock expected the single release commit to hold the gate open.');
+          config.git = { ...(config.git || {}), deploymentEnabled: false };
+          fs.writeFileSync(path, `${JSON.stringify(config, null, 2)}\n`);
+          NODE
+          git add vercel.json
+          git commit -m "release: restore Vercel deployment lock for ${{ steps.authorize.outputs.selected_sha }}"
+          RELOCK_SHA="$(git rev-parse HEAD)"
+          git push origin HEAD:main
+          echo "relock_sha=$RELOCK_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Resolve deployed production URL
+        id: deployed
+        run: |
+          if [[ "${{ steps.mode.outputs.mode }}" == 'direct-token' ]]; then
+            URL='${{ steps.direct_deploy.outputs.deployment_url }}'
+          else
+            URL='${{ steps.fallback_release.outputs.deployment_url }}'
+          fi
+          [[ -n "$URL" ]] || { echo 'Release route produced no production URL.' >&2; exit 1; }
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+
+      - name: Await exact-source receipt before stability window
+        env:
+          TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
+          TD613_RECEIPT_ACQUIRE_ATTEMPTS: ${{ steps.mode.outputs.mode == 'git-fallback' && '72' || '24' }}
+          TD613_RECEIPT_ACQUIRE_DELAY_MS: '5000'
+        run: |
+          node --input-type=module <<'NODE'
+          const base = String(process.env.TD613_BASE_URL || '').replace(/\/$/, '');
+          const expected = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
+          const attempts = Number(process.env.TD613_RECEIPT_ACQUIRE_ATTEMPTS || 72);
+          const delayMs = Number(process.env.TD613_RECEIPT_ACQUIRE_DELAY_MS || 5000);
+          if (!base) throw new Error('TD613_BASE_URL is required for release receipt acquisition.');
+          if (!/^[0-9a-f]{40}$/.test(expected)) throw new Error('Release receipt acquisition requires the authorized source SHA.');
+          if (!Number.isSafeInteger(attempts) || attempts < 1 || attempts > 120) throw new Error('TD613_RECEIPT_ACQUIRE_ATTEMPTS must be 1..120.');
+          if (!Number.isSafeInteger(delayMs) || delayMs < 1000 || delayMs > 30000) throw new Error('TD613_RECEIPT_ACQUIRE_DELAY_MS must be 1000..30000.');
+          const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+          let lastObservation = 'none';
+          for (let attempt = 1; attempt <= attempts; attempt += 1) {
+            const url = new URL('/giving/history/release-source.json', `${base}/`);
+            url.searchParams.set('td613_receipt_acquire', expected);
+            url.searchParams.set('td613_receipt_attempt', String(attempt));
+            url.searchParams.set('td613_receipt_nonce', `${Date.now()}-${attempt}`);
+            try {
+              const response = await fetch(url, {
+                headers: { 'cache-control': 'no-cache' },
+                redirect: 'follow',
+                signal: AbortSignal.timeout(15000)
+              });
+              if (!response.ok) {
+                lastObservation = `HTTP ${response.status}`;
+                if ([404, 408, 425, 429].includes(response.status) || response.status >= 500) {
+                  console.log(`[td613-release-receipt] Receipt acquisition pending attempt=${attempt}/${attempts} observation=${lastObservation}`);
+                } else {
+                  throw new Error(`Release receipt acquisition returned non-retryable ${response.status}.`);
+                }
+              } else {
+                let payload;
+                try {
+                  payload = await response.json();
+                } catch (error) {
+                  lastObservation = `invalid-json:${error?.message || String(error)}`;
+                  console.log(`[td613-release-receipt] Receipt acquisition pending attempt=${attempt}/${attempts} observation=${lastObservation}`);
+                  payload = null;
+                }
+                const observed = String(payload?.source_packet_commit || '').trim();
+                if (observed === expected) {
+                  console.log(`[td613-release-receipt] acquired source=${observed} attempt=${attempt}/${attempts}`);
+                  process.exit(0);
+                }
+                if (payload) {
+                  lastObservation = observed ? `source ${observed}` : 'source missing';
+                  console.log(`[td613-release-receipt] Receipt acquisition pending attempt=${attempt}/${attempts} observation=${lastObservation}`);
+                }
+              }
+            } catch (error) {
+              if (String(error?.message || '').includes('non-retryable')) throw error;
+              lastObservation = `transport:${error?.name || 'Error'}:${error?.message || String(error)}`;
+              console.log(`[td613-release-receipt] Receipt acquisition pending attempt=${attempt}/${attempts} observation=${lastObservation}`);
+            }
+            if (attempt < attempts) await sleep(delayMs);
+          }
+          throw new Error(`Authorized source receipt never arrived after ${attempts} attempts: expected ${expected}, last observation ${lastObservation}.`);
+          NODE
+
+      - name: Verify deployed bytes match the authorized source packet
+        env:
+          TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
+          TD613_ARTIFACT_DIR: artifacts/exact-source
+          TD613_PROBE_ATTEMPTS: '1'
+          TD613_PROBE_DELAY_MS: '0'
+        run: node scripts/flowcore-release-content-probe.mjs
+
+      - name: Hold authorized source stable against stale queued rollbacks
+        env:
+          TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
+          TD613_STABILITY_CHECKS: '10'
+          TD613_STABILITY_DELAY_MS: '10000'
+        run: |
+          node --input-type=module <<'NODE'
+          const base = String(process.env.TD613_BASE_URL || '').replace(/\/$/, '');
+          const expected = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
+          const checks = Number(process.env.TD613_STABILITY_CHECKS || 10);
+          const delayMs = Number(process.env.TD613_STABILITY_DELAY_MS || 10000);
+          if (!base) throw new Error('TD613_BASE_URL is required for release stability.');
+          if (!/^[0-9a-f]{40}$/.test(expected)) throw new Error('Release stability requires the authorized source SHA.');
+          if (!Number.isSafeInteger(checks) || checks < 2 || checks > 30) throw new Error('TD613_STABILITY_CHECKS must be 2..30.');
+          if (!Number.isSafeInteger(delayMs) || delayMs < 1000 || delayMs > 30000) throw new Error('TD613_STABILITY_DELAY_MS must be 1000..30000.');
+          const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+          for (let index = 1; index <= checks; index += 1) {
+            const url = new URL('/giving/history/release-source.json', `${base}/`);
+            url.searchParams.set('td613_release_stability', expected);
+            url.searchParams.set('td613_stability_check', String(index));
+            url.searchParams.set('td613_stability_nonce', `${Date.now()}-${index}`);
+            const response = await fetch(url, {
+              headers: { 'cache-control': 'no-cache' },
+              redirect: 'follow',
+              signal: AbortSignal.timeout(15000)
+            });
+            if (!response.ok) throw new Error(`Release stability receipt returned ${response.status} at check ${index}.`);
+            const payload = await response.json();
+            const observed = String(payload?.source_packet_commit || '').trim();
+            if (observed !== expected) {
+              throw new Error(`Stale queued deployment displaced authorized source at stability check ${index}: expected ${expected}, observed ${observed || 'missing'}.`);
+            }
+            console.log(`[td613-release-stability] check=${index}/${checks} source=${observed}`);
+            if (index < checks) await sleep(delayMs);
+          }
+          NODE
+
+      - name: Reconfirm exact deployed bytes after stability window
+        env:
+          TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
+          TD613_ARTIFACT_DIR: artifacts/exact-source-stable
+          TD613_PROBE_ATTEMPTS: '1'
+          TD613_PROBE_DELAY_MS: '0'
+        run: node scripts/flowcore-release-content-probe.mjs
+
+      - name: Install one production browser engine for Giving/practice only
+        if: steps.scope.outputs.validation_scope == 'giving' || steps.scope.outputs.validation_scope == 'practice'
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps chromium
+
+      - name: Confirm deployed Campaign Deputy Giving History exports on Chromium
+        if: steps.scope.outputs.validation_scope == 'giving'
+        env:
+          TD613_BROWSER: chromium
+          TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
+          TD613_PRODUCTION_OBSERVATION: 'true'
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
+          TD613_GIVING_PROBE_ATTEMPTS: '72'
+          TD613_GIVING_PROBE_DELAY_MS: '5000'
+          TD613_GIVING_PROBE_REQUEST_TIMEOUT_MS: '15000'
+          TD613_ARTIFACT_DIR: artifacts/giving-production
+        run: timeout --foreground --signal=INT --kill-after=15s 600s node scripts/giving-browser-probe.mjs
+
+      - name: Confirm deployed canonical practice fixture on Chromium
+        if: steps.scope.outputs.validation_scope == 'practice'
+        env:
+          TD613_BROWSER: chromium
+          TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
+          TD613_PRODUCTION_OBSERVATION: 'true'
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
+          TD613_GIVING_PROBE_ATTEMPTS: '72'
+          TD613_GIVING_PROBE_DELAY_MS: '5000'
+          TD613_GIVING_PROBE_REQUEST_TIMEOUT_MS: '15000'
+          TD613_ARTIFACT_DIR: artifacts/practice-production
+        run: timeout --foreground --signal=INT --kill-after=15s 600s node scripts/giving-browser-probe.mjs
+
+      - name: Record live AI observation as manual-only
+        if: steps.scope.outputs.validation_scope == 'full'
+        env:
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
+        run: |
+          mkdir -p artifacts/loom-production-canary
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const source = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
+          const receipt = {
+            schema: 'td613.production-ai-witness-manual/v0.2',
+            source_packet_commit: source,
+            automatic_provider_calls: 0,
+            deployment_success_authority: false,
+            literary_benchmark_authority: false,
+            observation_route: 'OPERATOR_DIRECTED_MANUAL_DIAGNOSTIC',
+            reason: 'Live provider liveness and literary quality are independent diagnostics; they do not determine exact-source deployment success.',
+            counts_as_human_evidence: false,
+            recorded_at: new Date().toISOString()
+          };
+          fs.writeFileSync('artifacts/loom-production-canary/deferred.json', `${JSON.stringify(receipt, null, 2)}\n`);
+          console.log(`[td613-release-ai-witness] manual-only source=${source} automatic_provider_calls=0`);
+          NODE
+
+      - name: Confirm authorized source still owns production after witness
+        if: >-
+          always() &&
+          steps.deployed.outputs.url != '' &&
+          steps.authorize.outputs.selected_sha != ''
+        env:
+          TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
+        run: |
+          node --input-type=module <<'NODE'
+          const base = String(process.env.TD613_BASE_URL || '').replace(/\/$/, '');
+          const expected = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
+          const url = new URL('/giving/history/release-source.json', `${base}/`);
+          url.searchParams.set('td613_post_witness_guard', `${expected}-${Date.now()}`);
+          const response = await fetch(url, {
+            headers: { 'cache-control': 'no-cache' },
+            redirect: 'follow',
+            signal: AbortSignal.timeout(15000)
+          });
+          if (!response.ok) throw new Error(`Post-witness release receipt returned ${response.status}.`);
+          const payload = await response.json();
+          const observed = String(payload?.source_packet_commit || '').trim();
+          if (observed !== expected) throw new Error(`Production source changed during witness: expected ${expected}, observed ${observed || 'missing'}.`);
+          console.log(`[td613-post-witness-source] source=${observed}`);
+          NODE
+
+      - name: Preserve bounded production evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: td613-bounded-production-release-evidence
+          path: |
+            artifacts/exact-source/
+            artifacts/exact-source-stable/
+            artifacts/loom-production-canary/
+            artifacts/giving-production/
+            artifacts/practice-production/
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Seal successful production release
+        if: success()
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF_COMMENT
+          𝌋 Vercel production release completed and bounded observation passed.
+
+          \`\`\`text
+          source_packet_commit = ${{ steps.authorize.outputs.selected_sha }}
+          release_mode = ${{ steps.mode.outputs.mode }}
+          release_commit = ${{ steps.fallback_release.outputs.release_sha || 'not-applicable' }}
+          relock_commit = ${{ steps.relock.outputs.relock_sha || 'not-applicable' }}
+          target = PRODUCTION
+          deployment_count = 1
+          deployment_url = ${{ steps.deployed.outputs.url }}
+          validation_scope = ${{ steps.scope.outputs.validation_scope }}
+          exact_source_receipt = PASS
+          exact_source_content = PASS
+          stale_queue_stability_window = PASS
+          post_witness_source_guard = PASS
+          premerge_deep_browser_diagnostics = MANUAL_ONLY_NOT_RELEASE_AUTHORITY
+          premerge_witness_scope = FAST_CONTRACT_LANE
+          production_giving_history = ${{ steps.scope.outputs.validation_scope == 'giving' && 'PASS' || 'NOT_APPLICABLE' }}
+          production_practice_fixture = ${{ steps.scope.outputs.validation_scope == 'practice' && 'PASS' || 'NOT_APPLICABLE' }}
+          production_full_product_browser_witness = ${{ steps.scope.outputs.validation_scope == 'full' && 'NOT_REQUIRED_EXACT_SOURCE_ONLY' || 'NOT_APPLICABLE' }}
+          ash_production_ceremony = RETIRED
+          production_loom_demo1_canary = ${{ steps.scope.outputs.validation_scope == 'full' && 'MANUAL_ONLY' || 'NOT_APPLICABLE' }}
+          automatic_live_ai_provider_calls = 0
+          literary_benchmark = NOT_ESTABLISHED_BY_DEPLOYMENT
+          model_output_length_and_voice_quality = UNMEASURED_BY_DEPLOYMENT
+          counts_as_human_evidence = false
+          child_study_authorized = false
+          public_route_promotion_authorized = false
+          application_tree_drift = none
+          git_auto_deploy = disabled
+          \`\`\`
+
+          The fallback deployment gate was relocked immediately after the single deployable commit was admitted. Production success is exact-source deployment success: source receipt, application bytes, Vercel adoption, stability, and post-witness source custody. Deep browser estates, Ash lifecycle ceremony, literary quality, sustained Kʰonapolit development, native-bot morphology, and provider liveness are manual diagnostics and cannot relabel a verified deployment. This receipt grants no human-evidence, child-study, release-future, custody, or program-closure authority. Sealed ⟐
+          EOF_COMMENT
+          )"
+
+      - name: Record held release
+        if: failure()
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF_COMMENT
+          𝌋 Vercel production release held.
+
+          \`\`\`text
+          source_packet_commit = ${{ steps.authorize.outputs.selected_sha || 'unresolved' }}
+          release_mode = ${{ steps.mode.outputs.mode || 'unresolved' }}
+          release_commit = ${{ steps.fallback_release.outputs.release_sha || 'not-created' }}
+          relock_commit = ${{ steps.relock.outputs.relock_sha || 'not-created' }}
+          target = PRODUCTION
+          validation_scope = ${{ steps.scope.outputs.validation_scope || 'unresolved' }}
+          deployment_ceiling = 1
+          workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          \`\`\`
+
+          The fallback gate is relocked immediately after admission when a release commit is created; independent relock safety remains available for interruption recovery. No additional deployment attempt is authorized by this failure. ⟐
+          EOF_COMMENT
+          )"

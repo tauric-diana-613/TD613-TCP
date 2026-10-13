@@ -1,0 +1,142 @@
+---
+derivative_id: derivative:80f95b7cccc92bdfb2e52741
+parent_capture_id: capture:865315619bfb6c533d28425a
+parent_blob_sha256: e5f86a285ce5e678b2fd93afa845707bbc6f5049b254c46782504a734fbed455
+tool: srcctl-json-normalizer/1
+source_title: "Structural Insulation, Incentive Architecture, and the Moral Load of Society — The Structural Insulation Theorem: Insulation Determines Consequence Exposure, Navigation Strategy, and System Motion"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.21477281",
+  "conceptrecid": "21477281",
+  "created": "2026-07-21T16:01:07.541119+00:00",
+  "doi": "10.5281/zenodo.21477282",
+  "doi_url": "https://doi.org/10.5281/zenodo.21477282",
+  "files": [
+    {
+      "checksum": "md5:c0e135700786139962c338db37cae3c3",
+      "id": "cd61517a-ebf3-4239-86b3-d2d0a4b418c6",
+      "key": "Structural Insulation, Incentive Architecture, and the Moral Load of Society .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/21477282/files/Structural%20Insulation,%20Incentive%20Architecture,%20and%20the%20Moral%20Load%20of%20Society%20.pdf/content"
+      },
+      "size": 529643
+    }
+  ],
+  "id": 21477282,
+  "links": {
+    "access": "https://zenodo.org/api/records/21477282/access",
+    "access_grants": "https://zenodo.org/api/records/21477282/access/grants",
+    "access_links": "https://zenodo.org/api/records/21477282/access/links",
+    "access_request": "https://zenodo.org/api/records/21477282/access/request",
+    "access_users": "https://zenodo.org/api/records/21477282/access/users",
+    "archive": "https://zenodo.org/api/records/21477282/files-archive",
+    "archive_media": "https://zenodo.org/api/records/21477282/media-files-archive",
+    "communities": "https://zenodo.org/api/records/21477282/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/21477282/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.21477282",
+    "draft": "https://zenodo.org/api/records/21477282/draft",
+    "file_modification": "https://zenodo.org/api/records/21477282/file-modification",
+    "files": "https://zenodo.org/api/records/21477282/files",
+    "latest": "https://zenodo.org/api/records/21477282/versions/latest",
+    "latest_html": "https://zenodo.org/records/21477282/latest",
+    "media_files": "https://zenodo.org/api/records/21477282/media-files",
+    "parent": "https://zenodo.org/api/records/21477281",
+    "parent_doi": "https://doi.org/10.5281/zenodo.21477281",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21477281",
+    "parent_html": "https://zenodo.org/records/21477281",
+    "preview_html": "https://zenodo.org/records/21477282?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/21477282/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/21477282/request-deletion",
+    "requests": "https://zenodo.org/api/records/21477282/requests",
+    "reserve_doi": "https://zenodo.org/api/records/21477282/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/21477282",
+    "self_doi": "https://doi.org/10.5281/zenodo.21477282",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21477282",
+    "self_html": "https://zenodo.org/records/21477282",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:21477282/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:21477282/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:21477282:Structural%20Insulation,%20Incentive%20Architecture,%20and%20the%20Moral%20Load%20of%20Society%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:21477282:Structural%20Insulation,%20Incentive%20Architecture,%20and%20the%20Moral%20Load%20of%20Society%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:21477282:Structural%20Insulation,%20Incentive%20Architecture,%20and%20the%20Moral%20Load%20of%20Society%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:21477282:Structural%20Insulation,%20Incentive%20Architecture,%20and%20the%20Moral%20Load%20of%20Society%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:21477282:Structural%20Insulation,%20Incentive%20Architecture,%20and%20the%20Moral%20Load%20of%20Society%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:21477282:Structural%20Insulation,%20Incentive%20Architecture,%20and%20the%20Moral%20Load%20of%20Society%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/21477282/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p><strong>Structural Insulation, Incentive Architecture, and the Moral Load of Society</strong><br><em>The Structural Insulation Theorem: Insulation Determines Consequence Exposure, Navigation Strategy, and System Motion</em></p>\n<p>This paper introduces <strong>Structural Insulation</strong> as the first causal layer beneath social behaviour. It argues that societies distribute not only resources and opportunities, but also the <strong>capacity to absorb consequences</strong>, producing predictable behavioural asymmetries across actors, institutions, and systems. The paper formalizes the <strong>Structural Insulation Theorem</strong>, demonstrating that insulation determines:</p>\n<ul>\n<li>\n<p>consequence exposure</p>\n</li>\n<li>\n<p>navigation strategy (moral vs incentive)</p>\n</li>\n<li>\n<p>drift accumulation</p>\n</li>\n<li>\n<p>collapse thresholds</p>\n</li>\n<li>\n<p>reorganization emergence</p>\n</li>\n</ul>\n<p>The work integrates classical theory&mdash;Bourdieu, Foucault, Bauman, Beck, Castells, Zuboff&mdash;into a unified structural grammar, showing that insulation is the missing mechanism beneath capital, power, risk, networks, and surveillance. It presents a <strong>five‑operator model</strong> (Pressure, Reflex, Drift, Collapse, Reorganization) and a <strong>measurement formula</strong> that quantifies insulation using resource buffers, institutional access, legal protection, social capital, and network position.</p>\n<p>The result is a theory that explains not what people intend, but <strong>what structures make possible</strong>.</p>",
+    "doi": "10.5281/zenodo.21477282",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Infrastructure",
+      "Governance",
+      "Government",
+      "Social Issues"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-07-21",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "21477281"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Structural Insulation, Incentive Architecture, and the Moral Load of Society — The Structural Insulation Theorem: Insulation Determines Consequence Exposure, Navigation Strategy, and System Motion",
+    "version": "1.0"
+  },
+  "modified": "2026-07-21T16:06:59.891709+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "21477282",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 1,
+    "unique_downloads": 1,
+    "unique_views": 10,
+    "version_downloads": 1,
+    "version_unique_downloads": 1,
+    "version_unique_views": 10,
+    "version_views": 12,
+    "views": 12
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Structural Insulation, Incentive Architecture, and the Moral Load of Society — The Structural Insulation Theorem: Insulation Determines Consequence Exposure, Navigation Strategy, and System Motion",
+  "updated": "2026-07-21T16:06:59.891709+00:00"
+}

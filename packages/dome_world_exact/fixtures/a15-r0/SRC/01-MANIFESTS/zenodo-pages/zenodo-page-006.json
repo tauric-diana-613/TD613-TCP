@@ -1,0 +1,3490 @@
+{
+  "hits": {
+    "hits": [
+      {
+        "created": "2026-04-28T21:39:47.937664-04:00",
+        "modified": "2026-04-28T21:39:48.391244-04:00",
+        "id": 19871030,
+        "conceptrecid": "19871029",
+        "doi": "10.5281/zenodo.19871030",
+        "conceptdoi": "10.5281/zenodo.19871029",
+        "doi_url": "https://doi.org/10.5281/zenodo.19871030",
+        "metadata": {
+          "title": "The Institutional Legitimacy Experiment: How Systems Built on Fragile Knowledge Collapse in Plain Sight",
+          "doi": "10.5281/zenodo.19871030",
+          "publication_date": "2026-04-29",
+          "description": "<p>The Institutional Legitimacy Experiment: How Systems Built on Fragile Knowledge Collapse in Plain Sight examines institutional legitimacy as the final downstream layer of a collapsing epistemic stack. Rather than treating legitimacy as a stable property of modern governance, the essay demonstrates how institutions inherit structural distortions from peer review, academic publishing, disciplinary silos, indexing systems, citation economies, and evidence‑based policy. Drawing on documented patterns of retractions, compromised review processes, publishing inequities, indexing failures, and citation bias, the paper shows how institutions mistake visibility for validity and operationalize epistemic drift as policy. This analysis reframes institutional authority as a visibility‑driven artifact of a fragile knowledge pipeline and exposes the systemic incoherence that emerges when governance depends on structurally unreliable epistemic inputs. The essay argues for the development of integrative, cross‑domain epistemic infrastructures capable of restoring coherence in a post‑web environment.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions",
+            "Social issues",
+            "Governance"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19871029"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Institutional Legitimacy Experiment: How Systems Built on Fragile Knowledge Collapse in Plain Sight",
+        "links": {
+          "self": "https://zenodo.org/api/records/19871030",
+          "self_html": "https://zenodo.org/records/19871030",
+          "preview_html": "https://zenodo.org/records/19871030?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19871030",
+          "self_doi": "https://doi.org/10.5281/zenodo.19871030",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19871030",
+          "reserve_doi": "https://zenodo.org/api/records/19871030/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19871029",
+          "parent_html": "https://zenodo.org/records/19871029",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19871029",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19871029",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19871030/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19871030/sequence/default",
+          "files": "https://zenodo.org/api/records/19871030/files",
+          "media_files": "https://zenodo.org/api/records/19871030/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19871030:The%20Institutional%20Legitimacy%20Experiment:%20How%20Systems%20Built%20on%20Fragile%20Knowledge%20Collapse%20in%20Plain%20Sight%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19871030:The%20Institutional%20Legitimacy%20Experiment:%20How%20Systems%20Built%20on%20Fragile%20Knowledge%20Collapse%20in%20Plain%20Sight%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19871030:The%20Institutional%20Legitimacy%20Experiment:%20How%20Systems%20Built%20on%20Fragile%20Knowledge%20Collapse%20in%20Plain%20Sight%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19871030:The%20Institutional%20Legitimacy%20Experiment:%20How%20Systems%20Built%20on%20Fragile%20Knowledge%20Collapse%20in%20Plain%20Sight%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19871030:The%20Institutional%20Legitimacy%20Experiment:%20How%20Systems%20Built%20on%20Fragile%20Knowledge%20Collapse%20in%20Plain%20Sight%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19871030:The%20Institutional%20Legitimacy%20Experiment:%20How%20Systems%20Built%20on%20Fragile%20Knowledge%20Collapse%20in%20Plain%20Sight%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19871030/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19871030/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19871030/versions/latest",
+          "latest_html": "https://zenodo.org/records/19871030/latest",
+          "versions": "https://zenodo.org/api/records/19871030/versions",
+          "draft": "https://zenodo.org/api/records/19871030/draft",
+          "access_links": "https://zenodo.org/api/records/19871030/access/links",
+          "access_grants": "https://zenodo.org/api/records/19871030/access/grants",
+          "access_users": "https://zenodo.org/api/records/19871030/access/users",
+          "access_request": "https://zenodo.org/api/records/19871030/access/request",
+          "access": "https://zenodo.org/api/records/19871030/access",
+          "communities": "https://zenodo.org/api/records/19871030/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19871030/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19871030/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19871030/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19871030/quota-increase",
+          "requests": "https://zenodo.org/api/records/19871030/requests"
+        },
+        "updated": "2026-04-28T21:39:48.391244-04:00",
+        "recid": "19871030",
+        "revision": 3,
+        "files": [
+          {
+            "id": "b4bb7af1-266a-4250-ace1-56e53936eddc",
+            "key": "The Institutional Legitimacy Experiment: How Systems Built on Fragile Knowledge Collapse in Plain Sight .pdf",
+            "size": 122989,
+            "checksum": "md5:85aae1bee817e13f451d0545615ddd3f",
+            "links": {
+              "self": "https://zenodo.org/api/records/19871030/files/The%20Institutional%20Legitimacy%20Experiment:%20How%20Systems%20Built%20on%20Fragile%20Knowledge%20Collapse%20in%20Plain%20Sight%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 5,
+          "unique_downloads": 5,
+          "views": 17,
+          "unique_views": 17,
+          "version_downloads": 5,
+          "version_unique_downloads": 5,
+          "version_unique_views": 17,
+          "version_views": 17
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-26T18:16:01.614123-04:00",
+        "modified": "2026-04-26T18:16:02.069887-04:00",
+        "id": 19801202,
+        "conceptrecid": "19801201",
+        "doi": "10.5281/zenodo.19801202",
+        "conceptdoi": "10.5281/zenodo.19801201",
+        "doi_url": "https://doi.org/10.5281/zenodo.19801202",
+        "metadata": {
+          "title": "Pandemic Governance and the Architecture of Negligence",
+          "doi": "10.5281/zenodo.19801202",
+          "publication_date": "2026-04-27",
+          "description": "<p>This paper examines how global pandemic governance repeatedly fails not because of biological unpredictability, but because institutions are structurally configured to overlook catastrophic risks. As the document states, &ldquo;the most consequential failures arise not from pathogens themselves but from the structural limitations of the institutions tasked with managing them.&rdquo;</p>\n<p>Using COVID‑19 as a diagnostic case, the paper analyzes decades of ignored SARS‑like spillover warnings, the political and economic incentives that deprioritize prevention, and the governance‑layer mechanisms that transform crises into opportunities for institutional expansion. It also identifies the next generation of high‑risk viruses&mdash;Henipaviruses, Filoviruses, Paramyxoviruses, Orthopoxviruses, novel coronaviruses, and arboviruses&mdash;that remain unmonitored despite clear evidence of pandemic potential. The work is framed within the SignalRupture paradigm, positioning institutional failure as a predictable outcome of incentive architecture rather than isolated error.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions",
+            "Pandemia",
+            "SARS",
+            "Viruses",
+            "WHO",
+            "Social Issues"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19801201"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Pandemic Governance and the Architecture of Negligence",
+        "links": {
+          "self": "https://zenodo.org/api/records/19801202",
+          "self_html": "https://zenodo.org/records/19801202",
+          "preview_html": "https://zenodo.org/records/19801202?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19801202",
+          "self_doi": "https://doi.org/10.5281/zenodo.19801202",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19801202",
+          "reserve_doi": "https://zenodo.org/api/records/19801202/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19801201",
+          "parent_html": "https://zenodo.org/records/19801201",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19801201",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19801201",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19801202/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19801202/sequence/default",
+          "files": "https://zenodo.org/api/records/19801202/files",
+          "media_files": "https://zenodo.org/api/records/19801202/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19801202:Pandemic%20Governance%20and%20the%20Architecture%20of%20Negligence%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19801202:Pandemic%20Governance%20and%20the%20Architecture%20of%20Negligence%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19801202:Pandemic%20Governance%20and%20the%20Architecture%20of%20Negligence%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19801202:Pandemic%20Governance%20and%20the%20Architecture%20of%20Negligence%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19801202:Pandemic%20Governance%20and%20the%20Architecture%20of%20Negligence%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19801202:Pandemic%20Governance%20and%20the%20Architecture%20of%20Negligence%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19801202/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19801202/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19801202/versions/latest",
+          "latest_html": "https://zenodo.org/records/19801202/latest",
+          "versions": "https://zenodo.org/api/records/19801202/versions",
+          "draft": "https://zenodo.org/api/records/19801202/draft",
+          "access_links": "https://zenodo.org/api/records/19801202/access/links",
+          "access_grants": "https://zenodo.org/api/records/19801202/access/grants",
+          "access_users": "https://zenodo.org/api/records/19801202/access/users",
+          "access_request": "https://zenodo.org/api/records/19801202/access/request",
+          "access": "https://zenodo.org/api/records/19801202/access",
+          "communities": "https://zenodo.org/api/records/19801202/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19801202/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19801202/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19801202/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19801202/quota-increase",
+          "requests": "https://zenodo.org/api/records/19801202/requests"
+        },
+        "updated": "2026-04-26T18:16:02.069887-04:00",
+        "recid": "19801202",
+        "revision": 3,
+        "files": [
+          {
+            "id": "a2da04bc-2bdb-4c73-96dd-3a2a232a8f4b",
+            "key": "Pandemic Governance and the Architecture of Negligence .pdf",
+            "size": 168660,
+            "checksum": "md5:8c30c9f65716f89d879a4cb2df634718",
+            "links": {
+              "self": "https://zenodo.org/api/records/19801202/files/Pandemic%20Governance%20and%20the%20Architecture%20of%20Negligence%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 8,
+          "unique_downloads": 7,
+          "views": 22,
+          "unique_views": 21,
+          "version_downloads": 8,
+          "version_unique_downloads": 7,
+          "version_unique_views": 21,
+          "version_views": 22
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-25T12:20:14.893742-04:00",
+        "modified": "2026-04-25T12:20:15.479276-04:00",
+        "id": 19766913,
+        "conceptrecid": "19766912",
+        "doi": "10.5281/zenodo.19766913",
+        "conceptdoi": "10.5281/zenodo.19766912",
+        "doi_url": "https://doi.org/10.5281/zenodo.19766913",
+        "metadata": {
+          "title": "SignalRupture: A Paradigm for Diagnosing Late‑Drift Societies",
+          "doi": "10.5281/zenodo.19766913",
+          "publication_date": "2026-04-25",
+          "description": "<p>SignalRupture: A Paradigm for Diagnosing Late‑Drift Societies is the foundational declaration of the SignalRupture (SR) field. It establishes SR as a diagnostic paradigm for analyzing societies and institutions in late‑stage drift, where systems continue to operate despite eroded internal coherence. The declaration defines the three core SR conditions&mdash;Zombie Society, Zombie Systems, and the Surplus Population&mdash;and positions Zombie Society as the canonical entry text for the field.<br>This document formalizes the conceptual boundaries of SR, articulates its purpose as a governance‑layer diagnostic instrument, and anchors the initial lattice of the SR canon. It is intended as the primary reference object for academic citation, institutional indexing, and future SR publications.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19766912"
+                }
+              }
+            ]
+          }
+        },
+        "title": "SignalRupture: A Paradigm for Diagnosing Late‑Drift Societies",
+        "links": {
+          "self": "https://zenodo.org/api/records/19766913",
+          "self_html": "https://zenodo.org/records/19766913",
+          "preview_html": "https://zenodo.org/records/19766913?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19766913",
+          "self_doi": "https://doi.org/10.5281/zenodo.19766913",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19766913",
+          "reserve_doi": "https://zenodo.org/api/records/19766913/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19766912",
+          "parent_html": "https://zenodo.org/records/19766912",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19766912",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19766912",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19766913/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19766913/sequence/default",
+          "files": "https://zenodo.org/api/records/19766913/files",
+          "media_files": "https://zenodo.org/api/records/19766913/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19766913:SignalRupture:%20A%20Paradigm%20for%20Diagnosing%20Late%E2%80%91Drift%20Societies%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19766913:SignalRupture:%20A%20Paradigm%20for%20Diagnosing%20Late%E2%80%91Drift%20Societies%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19766913:SignalRupture:%20A%20Paradigm%20for%20Diagnosing%20Late%E2%80%91Drift%20Societies%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19766913:SignalRupture:%20A%20Paradigm%20for%20Diagnosing%20Late%E2%80%91Drift%20Societies%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19766913:SignalRupture:%20A%20Paradigm%20for%20Diagnosing%20Late%E2%80%91Drift%20Societies%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19766913:SignalRupture:%20A%20Paradigm%20for%20Diagnosing%20Late%E2%80%91Drift%20Societies%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19766913/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19766913/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19766913/versions/latest",
+          "latest_html": "https://zenodo.org/records/19766913/latest",
+          "versions": "https://zenodo.org/api/records/19766913/versions",
+          "draft": "https://zenodo.org/api/records/19766913/draft",
+          "access_links": "https://zenodo.org/api/records/19766913/access/links",
+          "access_grants": "https://zenodo.org/api/records/19766913/access/grants",
+          "access_users": "https://zenodo.org/api/records/19766913/access/users",
+          "access_request": "https://zenodo.org/api/records/19766913/access/request",
+          "access": "https://zenodo.org/api/records/19766913/access",
+          "communities": "https://zenodo.org/api/records/19766913/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19766913/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19766913/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19766913/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19766913/quota-increase",
+          "requests": "https://zenodo.org/api/records/19766913/requests"
+        },
+        "updated": "2026-04-25T12:20:15.479276-04:00",
+        "recid": "19766913",
+        "revision": 3,
+        "files": [
+          {
+            "id": "e69ebbec-c136-482e-8262-5255fdc97815",
+            "key": "SignalRupture: A Paradigm for Diagnosing Late‑Drift Societies .pdf",
+            "size": 79356,
+            "checksum": "md5:fd52544df2435c8c27174fb6b6993519",
+            "links": {
+              "self": "https://zenodo.org/api/records/19766913/files/SignalRupture:%20A%20Paradigm%20for%20Diagnosing%20Late%E2%80%91Drift%20Societies%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 10,
+          "unique_downloads": 9,
+          "views": 61,
+          "unique_views": 59,
+          "version_downloads": 10,
+          "version_unique_downloads": 9,
+          "version_unique_views": 59,
+          "version_views": 61
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-25T10:39:02.556417-04:00",
+        "modified": "2026-04-25T10:39:03.079109-04:00",
+        "id": 19764981,
+        "conceptrecid": "19764980",
+        "doi": "10.5281/zenodo.19764981",
+        "conceptdoi": "10.5281/zenodo.19764980",
+        "doi_url": "https://doi.org/10.5281/zenodo.19764981",
+        "metadata": {
+          "title": "Zombie Metrics III: The Eroded Subject",
+          "doi": "10.5281/zenodo.19764981",
+          "publication_date": "2026-04-25",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Citizens",
+            "Burnout",
+            "Society",
+            "Jobs",
+            "Employees",
+            "HR",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19764980"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Zombie Metrics III: The Eroded Subject",
+        "links": {
+          "self": "https://zenodo.org/api/records/19764981",
+          "self_html": "https://zenodo.org/records/19764981",
+          "preview_html": "https://zenodo.org/records/19764981?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19764981",
+          "self_doi": "https://doi.org/10.5281/zenodo.19764981",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19764981",
+          "reserve_doi": "https://zenodo.org/api/records/19764981/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19764980",
+          "parent_html": "https://zenodo.org/records/19764980",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19764980",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19764980",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19764981/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19764981/sequence/default",
+          "files": "https://zenodo.org/api/records/19764981/files",
+          "media_files": "https://zenodo.org/api/records/19764981/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19764981:Zombie%20Metrics%20III:%20The%20Eroded%20Subject%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19764981:Zombie%20Metrics%20III:%20The%20Eroded%20Subject%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19764981:Zombie%20Metrics%20III:%20The%20Eroded%20Subject%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19764981:Zombie%20Metrics%20III:%20The%20Eroded%20Subject%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19764981:Zombie%20Metrics%20III:%20The%20Eroded%20Subject%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19764981:Zombie%20Metrics%20III:%20The%20Eroded%20Subject%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19764981/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19764981/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19764981/versions/latest",
+          "latest_html": "https://zenodo.org/records/19764981/latest",
+          "versions": "https://zenodo.org/api/records/19764981/versions",
+          "draft": "https://zenodo.org/api/records/19764981/draft",
+          "access_links": "https://zenodo.org/api/records/19764981/access/links",
+          "access_grants": "https://zenodo.org/api/records/19764981/access/grants",
+          "access_users": "https://zenodo.org/api/records/19764981/access/users",
+          "access_request": "https://zenodo.org/api/records/19764981/access/request",
+          "access": "https://zenodo.org/api/records/19764981/access",
+          "communities": "https://zenodo.org/api/records/19764981/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19764981/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19764981/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19764981/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19764981/quota-increase",
+          "requests": "https://zenodo.org/api/records/19764981/requests"
+        },
+        "updated": "2026-04-25T10:39:03.079109-04:00",
+        "recid": "19764981",
+        "revision": 3,
+        "files": [
+          {
+            "id": "c3cee076-fbca-42b6-a722-264a91154bd1",
+            "key": "Zombie Metrics III: The Eroded Subject .pdf",
+            "size": 150526,
+            "checksum": "md5:bba269c4e410c403d8b7627da81cb0e0",
+            "links": {
+              "self": "https://zenodo.org/api/records/19764981/files/Zombie%20Metrics%20III:%20The%20Eroded%20Subject%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 5,
+          "unique_downloads": 4,
+          "views": 16,
+          "unique_views": 16,
+          "version_downloads": 5,
+          "version_unique_downloads": 4,
+          "version_unique_views": 16,
+          "version_views": 16
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-23T21:47:59.400254-04:00",
+        "modified": "2026-04-23T21:48:00.381917-04:00",
+        "id": 19718850,
+        "conceptrecid": "19718849",
+        "doi": "10.5281/zenodo.19718850",
+        "conceptdoi": "10.5281/zenodo.19718849",
+        "doi_url": "https://doi.org/10.5281/zenodo.19718850",
+        "metadata": {
+          "title": "Zombie Metrics II: Unemployment as a Post‑Functional Signal",
+          "doi": "10.5281/zenodo.19718850",
+          "publication_date": "2026-04-24",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Unemployment",
+            "Employment",
+            "Social issues",
+            "Institutions",
+            "Measurements",
+            "HR"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            },
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19718849"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Zombie Metrics II: Unemployment as a Post‑Functional Signal",
+        "links": {
+          "self": "https://zenodo.org/api/records/19718850",
+          "self_html": "https://zenodo.org/records/19718850",
+          "preview_html": "https://zenodo.org/records/19718850?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19718850",
+          "self_doi": "https://doi.org/10.5281/zenodo.19718850",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19718850",
+          "reserve_doi": "https://zenodo.org/api/records/19718850/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19718849",
+          "parent_html": "https://zenodo.org/records/19718849",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19718849",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19718849",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19718850/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19718850/sequence/default",
+          "files": "https://zenodo.org/api/records/19718850/files",
+          "media_files": "https://zenodo.org/api/records/19718850/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19718850:Zombie%20Metrics%20II:%20Unemployment%20as%20a%20Post%E2%80%91Functional%20Signal%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19718850:Zombie%20Metrics%20II:%20Unemployment%20as%20a%20Post%E2%80%91Functional%20Signal%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19718850:Zombie%20Metrics%20II:%20Unemployment%20as%20a%20Post%E2%80%91Functional%20Signal%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19718850:Zombie%20Metrics%20II:%20Unemployment%20as%20a%20Post%E2%80%91Functional%20Signal%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19718850:Zombie%20Metrics%20II:%20Unemployment%20as%20a%20Post%E2%80%91Functional%20Signal%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19718850:Zombie%20Metrics%20II:%20Unemployment%20as%20a%20Post%E2%80%91Functional%20Signal%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19718850/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19718850/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19718850/versions/latest",
+          "latest_html": "https://zenodo.org/records/19718850/latest",
+          "versions": "https://zenodo.org/api/records/19718850/versions",
+          "draft": "https://zenodo.org/api/records/19718850/draft",
+          "access_links": "https://zenodo.org/api/records/19718850/access/links",
+          "access_grants": "https://zenodo.org/api/records/19718850/access/grants",
+          "access_users": "https://zenodo.org/api/records/19718850/access/users",
+          "access_request": "https://zenodo.org/api/records/19718850/access/request",
+          "access": "https://zenodo.org/api/records/19718850/access",
+          "communities": "https://zenodo.org/api/records/19718850/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19718850/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19718850/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19718850/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19718850/quota-increase",
+          "requests": "https://zenodo.org/api/records/19718850/requests"
+        },
+        "updated": "2026-04-23T21:48:00.381917-04:00",
+        "recid": "19718850",
+        "revision": 3,
+        "files": [
+          {
+            "id": "02462358-2501-477b-8d37-fe0bf45277f4",
+            "key": "Zombie Metrics II: Unemployment as a Post‑Functional Signal .pdf",
+            "size": 163835,
+            "checksum": "md5:70c6f26639b7585e46be570dce5220ee",
+            "links": {
+              "self": "https://zenodo.org/api/records/19718850/files/Zombie%20Metrics%20II:%20Unemployment%20as%20a%20Post%E2%80%91Functional%20Signal%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 5,
+          "unique_downloads": 5,
+          "views": 15,
+          "unique_views": 15,
+          "version_downloads": 5,
+          "version_unique_downloads": 5,
+          "version_unique_views": 15,
+          "version_views": 15
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-22T17:03:03.658401-04:00",
+        "modified": "2026-04-22T17:03:04.001378-04:00",
+        "id": 19700863,
+        "conceptrecid": "19700862",
+        "doi": "10.5281/zenodo.19700863",
+        "conceptdoi": "10.5281/zenodo.19700862",
+        "doi_url": "https://doi.org/10.5281/zenodo.19700863",
+        "metadata": {
+          "title": "Rebuilding the Meaning of GDP: Why Mathematics Misreads Society and How Extraction Masquerades as Growth",
+          "doi": "10.5281/zenodo.19700863",
+          "publication_date": "2026-04-22",
+          "description": "<p><strong>Rebuilding the Meaning of GDP</strong> examines why Gross Domestic Product has become a post‑functional metric within modern economies. Although GDP was originally designed to measure industrial output in the 1930s, it is now routinely used as a proxy for well‑being, ecological stability, and institutional health &mdash; domains it was never built to represent. As the paper notes, <em>&ldquo;GDP is not incorrect&mdash;it is blind to system quality.&rdquo;</em></p>\n<p>The essay reframes GDP as a zombie metric operating within necromantic infrastructure: a system that continues to move and update while misreading the underlying conditions of society. It explains how GDP rises through depletion, illness, disaster, and debt‑driven consumption, and why the mathematical abstraction behind GDP cannot distinguish between regenerative and extractive activity.</p>\n<p>Using case studies from healthcare, housing, telecommunications, the 2008 financial crisis, and climate‑driven disasters, the paper demonstrates how GDP systematically obscures fragility, inequality, and ecological loss. It introduces a four‑layer interpretive framework &mdash; GDP, GDP‑D (Distortions), GDP‑C (Corrections), and GDP‑S (Stability) &mdash; to restore meaning to economic measurement and reconnect metrics with real social and ecological conditions.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Economics",
+            "Society",
+            "Social Issues",
+            "Measurements",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19700862"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Rebuilding the Meaning of GDP: Why Mathematics Misreads Society and How Extraction Masquerades as Growth",
+        "links": {
+          "self": "https://zenodo.org/api/records/19700863",
+          "self_html": "https://zenodo.org/records/19700863",
+          "preview_html": "https://zenodo.org/records/19700863?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19700863",
+          "self_doi": "https://doi.org/10.5281/zenodo.19700863",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19700863",
+          "reserve_doi": "https://zenodo.org/api/records/19700863/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19700862",
+          "parent_html": "https://zenodo.org/records/19700862",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19700862",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19700862",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19700863/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19700863/sequence/default",
+          "files": "https://zenodo.org/api/records/19700863/files",
+          "media_files": "https://zenodo.org/api/records/19700863/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19700863:Rebuilding%20the%20Meaning%20of%20GDP:%20Why%20Mathematics%20Misreads%20Society%20and%20How%20Extraction%20Masquerades%20as%20Growth%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19700863:Rebuilding%20the%20Meaning%20of%20GDP:%20Why%20Mathematics%20Misreads%20Society%20and%20How%20Extraction%20Masquerades%20as%20Growth%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19700863:Rebuilding%20the%20Meaning%20of%20GDP:%20Why%20Mathematics%20Misreads%20Society%20and%20How%20Extraction%20Masquerades%20as%20Growth%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19700863:Rebuilding%20the%20Meaning%20of%20GDP:%20Why%20Mathematics%20Misreads%20Society%20and%20How%20Extraction%20Masquerades%20as%20Growth%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19700863:Rebuilding%20the%20Meaning%20of%20GDP:%20Why%20Mathematics%20Misreads%20Society%20and%20How%20Extraction%20Masquerades%20as%20Growth%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19700863:Rebuilding%20the%20Meaning%20of%20GDP:%20Why%20Mathematics%20Misreads%20Society%20and%20How%20Extraction%20Masquerades%20as%20Growth%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19700863/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19700863/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19700863/versions/latest",
+          "latest_html": "https://zenodo.org/records/19700863/latest",
+          "versions": "https://zenodo.org/api/records/19700863/versions",
+          "draft": "https://zenodo.org/api/records/19700863/draft",
+          "access_links": "https://zenodo.org/api/records/19700863/access/links",
+          "access_grants": "https://zenodo.org/api/records/19700863/access/grants",
+          "access_users": "https://zenodo.org/api/records/19700863/access/users",
+          "access_request": "https://zenodo.org/api/records/19700863/access/request",
+          "access": "https://zenodo.org/api/records/19700863/access",
+          "communities": "https://zenodo.org/api/records/19700863/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19700863/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19700863/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19700863/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19700863/quota-increase",
+          "requests": "https://zenodo.org/api/records/19700863/requests"
+        },
+        "updated": "2026-04-22T17:03:04.001378-04:00",
+        "recid": "19700863",
+        "revision": 3,
+        "files": [
+          {
+            "id": "16eecd98-d04e-4cb3-8a07-a40f6f831fa4",
+            "key": "Rebuilding the Meaning of GDP: Why Mathematics Misreads Society and How Extraction Masquerades as Growth .pdf",
+            "size": 182416,
+            "checksum": "md5:8fd5e9174ed5bb1d54a8ef503cb8c337",
+            "links": {
+              "self": "https://zenodo.org/api/records/19700863/files/Rebuilding%20the%20Meaning%20of%20GDP:%20Why%20Mathematics%20Misreads%20Society%20and%20How%20Extraction%20Masquerades%20as%20Growth%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 8,
+          "unique_downloads": 7,
+          "views": 15,
+          "unique_views": 15,
+          "version_downloads": 8,
+          "version_unique_downloads": 7,
+          "version_unique_views": 15,
+          "version_views": 15
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-20T19:05:47.865418-04:00",
+        "modified": "2026-04-20T19:08:16.613823-04:00",
+        "id": 19672759,
+        "conceptrecid": "19672758",
+        "doi": "10.5281/zenodo.19672759",
+        "conceptdoi": "10.5281/zenodo.19672758",
+        "doi_url": "https://doi.org/10.5281/zenodo.19672759",
+        "metadata": {
+          "title": "Zombie Systems: A Unified Field Theory of Necromantic Infrastructure, Metric Drift, and Human Capacity Collapse",
+          "doi": "10.5281/zenodo.19672759",
+          "publication_date": "2026-04-21",
+          "description": "<p>Zombie Systems formalizes the quantitative architecture underlying Zombie Society, defining the measurable dynamics of post‑functional governance. It models how modern institutions persist beyond functional death through structural inertia, metric distortion, and human compensation. The paper introduces Zombie Systems Theory (ZST) &mdash; a unified field framework integrating necromantic infrastructure, distorted macroeconomic indicators, and human‑capacity depletion into a single coupled dynamical system.<br>Using tensor‑based modeling, ZST demonstrates that GDP, unemployment, and labor participation are not independent metrics but correlated projections of a deeper system state governed by institutional drift and human exhaustion. The Eroded Subject emerges as the stabilizing substrate that absorbs systemic failure to preserve superficial equilibrium. The paper derives eigenstate conditions for collapse and identifies metastable regimes where apparent macroeconomic health masks latent structural decay.<br>This work provides the mathematical foundation for the qualitative system‑state described in Zombie Society, establishing the empirical tractability of the SignalRupture canon.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Measurements",
+            "Institutions",
+            "Social issues",
+            "Society",
+            "Governance"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19672758"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Zombie Systems: A Unified Field Theory of Necromantic Infrastructure, Metric Drift, and Human Capacity Collapse",
+        "links": {
+          "self": "https://zenodo.org/api/records/19672759",
+          "self_html": "https://zenodo.org/records/19672759",
+          "preview_html": "https://zenodo.org/records/19672759?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19672759",
+          "self_doi": "https://doi.org/10.5281/zenodo.19672759",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19672759",
+          "reserve_doi": "https://zenodo.org/api/records/19672759/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19672758",
+          "parent_html": "https://zenodo.org/records/19672758",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19672758",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19672758",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19672759/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19672759/sequence/default",
+          "files": "https://zenodo.org/api/records/19672759/files",
+          "media_files": "https://zenodo.org/api/records/19672759/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19672759:Zombie%20Systems:%20A%20Unified%20Field%20Theory%20of%20Necromantic%20Infrastructure,%20Metric%20Drift,%20and%20Human%20Capacity%20Collapse%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19672759:Zombie%20Systems:%20A%20Unified%20Field%20Theory%20of%20Necromantic%20Infrastructure,%20Metric%20Drift,%20and%20Human%20Capacity%20Collapse%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19672759:Zombie%20Systems:%20A%20Unified%20Field%20Theory%20of%20Necromantic%20Infrastructure,%20Metric%20Drift,%20and%20Human%20Capacity%20Collapse%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19672759:Zombie%20Systems:%20A%20Unified%20Field%20Theory%20of%20Necromantic%20Infrastructure,%20Metric%20Drift,%20and%20Human%20Capacity%20Collapse%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19672759:Zombie%20Systems:%20A%20Unified%20Field%20Theory%20of%20Necromantic%20Infrastructure,%20Metric%20Drift,%20and%20Human%20Capacity%20Collapse%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19672759:Zombie%20Systems:%20A%20Unified%20Field%20Theory%20of%20Necromantic%20Infrastructure,%20Metric%20Drift,%20and%20Human%20Capacity%20Collapse%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19672759/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19672759/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19672759/versions/latest",
+          "latest_html": "https://zenodo.org/records/19672759/latest",
+          "versions": "https://zenodo.org/api/records/19672759/versions",
+          "draft": "https://zenodo.org/api/records/19672759/draft",
+          "access_links": "https://zenodo.org/api/records/19672759/access/links",
+          "access_grants": "https://zenodo.org/api/records/19672759/access/grants",
+          "access_users": "https://zenodo.org/api/records/19672759/access/users",
+          "access_request": "https://zenodo.org/api/records/19672759/access/request",
+          "access": "https://zenodo.org/api/records/19672759/access",
+          "communities": "https://zenodo.org/api/records/19672759/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19672759/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19672759/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19672759/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19672759/quota-increase",
+          "requests": "https://zenodo.org/api/records/19672759/requests"
+        },
+        "updated": "2026-04-20T19:08:16.613823-04:00",
+        "recid": "19672759",
+        "revision": 5,
+        "files": [
+          {
+            "id": "e88b61d5-c203-4072-b721-9ba30248a110",
+            "key": "Zombie Systems: A Unified Field Theory of Necromantic Infrastructure, Metric Drift, and Human Capacity Collapse .pdf",
+            "size": 153750,
+            "checksum": "md5:498f8f8550a983cf15e5000380c45648",
+            "links": {
+              "self": "https://zenodo.org/api/records/19672759/files/Zombie%20Systems:%20A%20Unified%20Field%20Theory%20of%20Necromantic%20Infrastructure,%20Metric%20Drift,%20and%20Human%20Capacity%20Collapse%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 7,
+          "unique_downloads": 7,
+          "views": 24,
+          "unique_views": 22,
+          "version_downloads": 7,
+          "version_unique_downloads": 7,
+          "version_unique_views": 22,
+          "version_views": 24
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-20T18:29:19.850959-04:00",
+        "modified": "2026-04-20T18:29:20.26106-04:00",
+        "id": 19672591,
+        "conceptrecid": "19672590",
+        "doi": "10.5281/zenodo.19672591",
+        "conceptdoi": "10.5281/zenodo.19672590",
+        "doi_url": "https://doi.org/10.5281/zenodo.19672591",
+        "metadata": {
+          "title": "Zombie Society: A Structural Theory of Post‑Functional Governance",
+          "doi": "10.5281/zenodo.19672591",
+          "publication_date": "2026-04-21",
+          "description": "<p>Zombie Society: A Structural Theory of Post‑Functional Governance formalizes the concept of Zombie Society as a measurable system‑state in which governance persists despite the decoupling of economic, labor, and human‑capacity metrics from the underlying conditions they are intended to represent. Building on the Zombie Metrics Trilogy&mdash;GDP distortion, unemployment distortion, and the Eroded Subject&mdash;this paper defines Zombie Society as an emergent configuration of post‑functional governance in which systemic strain is continuously displaced across measurement layers, institutional buffers, and human cognitive capacity.<br>Rather than treating societal deterioration as collapse, crisis, or anomaly, the paper models Zombie Society as a stable but misaligned equilibrium: a system that maintains operational continuity by ensuring that no single metric reflects total system failure. The paper also situates Zombie Society within the broader SignalRupture canon by distinguishing its qualitative system‑state description from the quantitative measurement architecture developed in Zombie Systems: A Unified Field Theory of Necromantic Infrastructure, Metric Drift, and Human Capacity Collapse.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions",
+            "Social issues",
+            "Economics",
+            "Capitalism"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19672590"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Zombie Society: A Structural Theory of Post‑Functional Governance",
+        "links": {
+          "self": "https://zenodo.org/api/records/19672591",
+          "self_html": "https://zenodo.org/records/19672591",
+          "preview_html": "https://zenodo.org/records/19672591?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19672591",
+          "self_doi": "https://doi.org/10.5281/zenodo.19672591",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19672591",
+          "reserve_doi": "https://zenodo.org/api/records/19672591/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19672590",
+          "parent_html": "https://zenodo.org/records/19672590",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19672590",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19672590",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19672591/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19672591/sequence/default",
+          "files": "https://zenodo.org/api/records/19672591/files",
+          "media_files": "https://zenodo.org/api/records/19672591/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19672591:Zombie%20Society:%20A%20Structural%20Theory%20of%20Post%E2%80%91Functional%20Governance%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19672591:Zombie%20Society:%20A%20Structural%20Theory%20of%20Post%E2%80%91Functional%20Governance%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19672591:Zombie%20Society:%20A%20Structural%20Theory%20of%20Post%E2%80%91Functional%20Governance%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19672591:Zombie%20Society:%20A%20Structural%20Theory%20of%20Post%E2%80%91Functional%20Governance%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19672591:Zombie%20Society:%20A%20Structural%20Theory%20of%20Post%E2%80%91Functional%20Governance%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19672591:Zombie%20Society:%20A%20Structural%20Theory%20of%20Post%E2%80%91Functional%20Governance%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19672591/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19672591/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19672591/versions/latest",
+          "latest_html": "https://zenodo.org/records/19672591/latest",
+          "versions": "https://zenodo.org/api/records/19672591/versions",
+          "draft": "https://zenodo.org/api/records/19672591/draft",
+          "access_links": "https://zenodo.org/api/records/19672591/access/links",
+          "access_grants": "https://zenodo.org/api/records/19672591/access/grants",
+          "access_users": "https://zenodo.org/api/records/19672591/access/users",
+          "access_request": "https://zenodo.org/api/records/19672591/access/request",
+          "access": "https://zenodo.org/api/records/19672591/access",
+          "communities": "https://zenodo.org/api/records/19672591/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19672591/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19672591/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19672591/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19672591/quota-increase",
+          "requests": "https://zenodo.org/api/records/19672591/requests"
+        },
+        "updated": "2026-04-20T18:29:20.26106-04:00",
+        "recid": "19672591",
+        "revision": 3,
+        "files": [
+          {
+            "id": "bc25a08f-143f-4701-8d3b-f110a6b09c62",
+            "key": "Zombie Society: A Structural Theory of Post‑Functional Governance .pdf",
+            "size": 149263,
+            "checksum": "md5:4aea5c3366cf68692dea6dcd31b295a3",
+            "links": {
+              "self": "https://zenodo.org/api/records/19672591/files/Zombie%20Society:%20A%20Structural%20Theory%20of%20Post%E2%80%91Functional%20Governance%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 8,
+          "unique_downloads": 8,
+          "views": 26,
+          "unique_views": 26,
+          "version_downloads": 8,
+          "version_unique_downloads": 8,
+          "version_unique_views": 26,
+          "version_views": 26
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-19T12:17:46.331811-04:00",
+        "modified": "2026-04-19T12:17:46.69718-04:00",
+        "id": 19653285,
+        "conceptrecid": "19653284",
+        "doi": "10.5281/zenodo.19653285",
+        "conceptdoi": "10.5281/zenodo.19653284",
+        "doi_url": "https://doi.org/10.5281/zenodo.19653285",
+        "metadata": {
+          "title": "Necromantic Infrastructure: How the Dead Systems Govern the Living World",
+          "doi": "10.5281/zenodo.19653285",
+          "publication_date": "2026-04-19",
+          "description": "<p>Necromantic Infrastructure introduces a structural framework for understanding why modern institutions fail in predictable, cascading ways. The paper argues that contemporary societies are governed by undead systems&mdash;legacy architectures, obsolete laws, corrupted data, and administrative machinery that persist long after their functional lifespan. These necromantic systems cannot be replaced, yet they continue to determine what is possible across governance, healthcare, finance, education, and digital infrastructure.</p>\n<p>The paper operationalizes the concept through measurable indicators (SAI, DD, PFR, HOL, DPER), a predictive failure model, and a state‑classification system distinguishing dormant from active necromantic systems. It extends the analysis to universities, showing how epistemic and administrative necromancy shape knowledge production and institutional governance. Cross‑system case studies from Canada, the United States, and the United Kingdom demonstrate that necromantic infrastructure is not a national anomaly but a global structural condition.</p>\n<p>The work positions AI not as a solution but as an acceleration layer that inherits and amplifies the contradictions of legacy systems. The paper concludes by outlining how SignalRupture&rsquo;s diagnostic architecture identifies where collapse will occur and where rebuilding must begin.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions",
+            "Social Issues",
+            "Artificial Intelligence",
+            "Infrastructure"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19653284"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Necromantic Infrastructure: How the Dead Systems Govern the Living World",
+        "links": {
+          "self": "https://zenodo.org/api/records/19653285",
+          "self_html": "https://zenodo.org/records/19653285",
+          "preview_html": "https://zenodo.org/records/19653285?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19653285",
+          "self_doi": "https://doi.org/10.5281/zenodo.19653285",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19653285",
+          "reserve_doi": "https://zenodo.org/api/records/19653285/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19653284",
+          "parent_html": "https://zenodo.org/records/19653284",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19653284",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19653284",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19653285/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19653285/sequence/default",
+          "files": "https://zenodo.org/api/records/19653285/files",
+          "media_files": "https://zenodo.org/api/records/19653285/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19653285:Necromantic%20Infrastructure:%20How%20the%20Dead%20Systems%20Govern%20the%20Living%20World.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19653285:Necromantic%20Infrastructure:%20How%20the%20Dead%20Systems%20Govern%20the%20Living%20World.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19653285:Necromantic%20Infrastructure:%20How%20the%20Dead%20Systems%20Govern%20the%20Living%20World.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19653285:Necromantic%20Infrastructure:%20How%20the%20Dead%20Systems%20Govern%20the%20Living%20World.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19653285:Necromantic%20Infrastructure:%20How%20the%20Dead%20Systems%20Govern%20the%20Living%20World.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19653285:Necromantic%20Infrastructure:%20How%20the%20Dead%20Systems%20Govern%20the%20Living%20World.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19653285/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19653285/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19653285/versions/latest",
+          "latest_html": "https://zenodo.org/records/19653285/latest",
+          "versions": "https://zenodo.org/api/records/19653285/versions",
+          "draft": "https://zenodo.org/api/records/19653285/draft",
+          "access_links": "https://zenodo.org/api/records/19653285/access/links",
+          "access_grants": "https://zenodo.org/api/records/19653285/access/grants",
+          "access_users": "https://zenodo.org/api/records/19653285/access/users",
+          "access_request": "https://zenodo.org/api/records/19653285/access/request",
+          "access": "https://zenodo.org/api/records/19653285/access",
+          "communities": "https://zenodo.org/api/records/19653285/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19653285/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19653285/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19653285/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19653285/quota-increase",
+          "requests": "https://zenodo.org/api/records/19653285/requests"
+        },
+        "updated": "2026-04-19T12:17:46.69718-04:00",
+        "recid": "19653285",
+        "revision": 3,
+        "files": [
+          {
+            "id": "a71686b1-22fa-41a6-a36d-00770fb2972c",
+            "key": "Necromantic Infrastructure: How the Dead Systems Govern the Living World.pdf",
+            "size": 204092,
+            "checksum": "md5:23e7d6f19d2c43dbba5c1cee73752a2b",
+            "links": {
+              "self": "https://zenodo.org/api/records/19653285/files/Necromantic%20Infrastructure:%20How%20the%20Dead%20Systems%20Govern%20the%20Living%20World.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 11,
+          "unique_downloads": 11,
+          "views": 29,
+          "unique_views": 29,
+          "version_downloads": 11,
+          "version_unique_downloads": 11,
+          "version_unique_views": 29,
+          "version_views": 29
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-18T11:41:29.816396-04:00",
+        "modified": "2026-04-18T11:41:30.136028-04:00",
+        "id": 19643719,
+        "conceptrecid": "19643718",
+        "doi": "10.5281/zenodo.19643719",
+        "conceptdoi": "10.5281/zenodo.19643718",
+        "doi_url": "https://doi.org/10.5281/zenodo.19643719",
+        "metadata": {
+          "title": "Zombie Infrastructure: When Systems Outlive the Human Subject",
+          "doi": "10.5281/zenodo.19643719",
+          "publication_date": "2026-04-18",
+          "description": "<p>Zombie Infrastructure: When Systems Outlive the Human Subject examines the emergence of socio‑technical systems that continue to operate after the human subject has been displaced from meaningful participation. Drawing on empirical evidence from financial markets, cognitive science, automation research, and machine‑learning infrastructure, the paper demonstrates that modern systems increasingly function at speeds, scales, and levels of complexity that exceed human interpretability. This condition produces a measurable latency asymmetry, machine‑dominated economic activity, cognitive overload, and governance lag.</p>\n<p>The paper introduces the Ghost Economy as a quantifiable state in which machine‑executed activity surpasses human‑executed activity, and the Eroded Subject as the cognitively depleted human agent required to maintain systems they can no longer meaningfully influence. Through the integration of Model Drift, Infrastructural Overshoot, and Governance Lag, the paper provides a structural explanation for why institutions persist procedurally while losing substantive control. Zombie Infrastructure is presented not as a failure mode but as the predictable outcome of optimization regimes that externalize cognitive, economic, and institutional costs.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Economics",
+            "Institutions",
+            "Social Issues",
+            "HR",
+            "Artificial intelligence"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19643718"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Zombie Infrastructure: When Systems Outlive the Human Subject",
+        "links": {
+          "self": "https://zenodo.org/api/records/19643719",
+          "self_html": "https://zenodo.org/records/19643719",
+          "preview_html": "https://zenodo.org/records/19643719?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19643719",
+          "self_doi": "https://doi.org/10.5281/zenodo.19643719",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19643719",
+          "reserve_doi": "https://zenodo.org/api/records/19643719/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19643718",
+          "parent_html": "https://zenodo.org/records/19643718",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19643718",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19643718",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19643719/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19643719/sequence/default",
+          "files": "https://zenodo.org/api/records/19643719/files",
+          "media_files": "https://zenodo.org/api/records/19643719/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19643719:Zombie%20Infrastructure:%20When%20Systems%20Outlive%20the%20Human%20Subject%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19643719:Zombie%20Infrastructure:%20When%20Systems%20Outlive%20the%20Human%20Subject%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19643719:Zombie%20Infrastructure:%20When%20Systems%20Outlive%20the%20Human%20Subject%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19643719:Zombie%20Infrastructure:%20When%20Systems%20Outlive%20the%20Human%20Subject%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19643719:Zombie%20Infrastructure:%20When%20Systems%20Outlive%20the%20Human%20Subject%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19643719:Zombie%20Infrastructure:%20When%20Systems%20Outlive%20the%20Human%20Subject%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19643719/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19643719/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19643719/versions/latest",
+          "latest_html": "https://zenodo.org/records/19643719/latest",
+          "versions": "https://zenodo.org/api/records/19643719/versions",
+          "draft": "https://zenodo.org/api/records/19643719/draft",
+          "access_links": "https://zenodo.org/api/records/19643719/access/links",
+          "access_grants": "https://zenodo.org/api/records/19643719/access/grants",
+          "access_users": "https://zenodo.org/api/records/19643719/access/users",
+          "access_request": "https://zenodo.org/api/records/19643719/access/request",
+          "access": "https://zenodo.org/api/records/19643719/access",
+          "communities": "https://zenodo.org/api/records/19643719/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19643719/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19643719/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19643719/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19643719/quota-increase",
+          "requests": "https://zenodo.org/api/records/19643719/requests"
+        },
+        "updated": "2026-04-18T11:41:30.136028-04:00",
+        "recid": "19643719",
+        "revision": 3,
+        "files": [
+          {
+            "id": "8db59b9e-df23-43d5-bbfa-b1e1281db712",
+            "key": "Zombie Infrastructure: When Systems Outlive the Human Subject .pdf",
+            "size": 198104,
+            "checksum": "md5:4f1730a2b1211ad1851de58c7b5c09ad",
+            "links": {
+              "self": "https://zenodo.org/api/records/19643719/files/Zombie%20Infrastructure:%20When%20Systems%20Outlive%20the%20Human%20Subject%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 8,
+          "unique_downloads": 8,
+          "views": 29,
+          "unique_views": 27,
+          "version_downloads": 8,
+          "version_unique_downloads": 8,
+          "version_unique_views": 27,
+          "version_views": 29
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-17T19:16:15.551363-04:00",
+        "modified": "2026-04-17T19:16:15.891183-04:00",
+        "id": 19637008,
+        "conceptrecid": "19637007",
+        "doi": "10.5281/zenodo.19637008",
+        "conceptdoi": "10.5281/zenodo.19637007",
+        "doi_url": "https://doi.org/10.5281/zenodo.19637008",
+        "metadata": {
+          "title": "Burnout as Structural Cognitive Extraction: How Modern Economies Convert Human Capacity Into Exhaustion: A Structural Synthesis Using Labour‑Market and Economic Indicators",
+          "doi": "10.5281/zenodo.19637008",
+          "publication_date": "2026-04-18",
+          "description": "<p>This paper presents burnout not as an individual psychological condition but as a measurable structural outcome of modern economic systems. Using labour‑market indicators from the OECD, Statistics Canada, the Health and Safety Executive, and the International Labour Organization, it demonstrates that rising stress, absenteeism, presenteeism, turnover, and disability claims form a coherent pattern of cognitive and emotional over‑extraction. The paper argues that burnout emerges when institutional demands on attention, decision‑making, emotional regulation, and identity exceed human recovery capacity &mdash; a dynamic captured in the document&rsquo;s core formulation that burnout is &ldquo;the point at which the system exceeds the human capacity it depends on.&rdquo; Through a synthesis of economic pressures, work&ndash;family contradictions, and behavioural indicators, the paper reframes burnout as a boundary condition of system‑level imbalance rather than a personal deficit.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Labour",
+            "Extraction",
+            "HR",
+            "Human Resources",
+            "Institutions",
+            "Social Issues",
+            "Artificial intelligence"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19637007"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Burnout as Structural Cognitive Extraction: How Modern Economies Convert Human Capacity Into Exhaustion: A Structural Synthesis Using Labour‑Market and Economic Indicators",
+        "links": {
+          "self": "https://zenodo.org/api/records/19637008",
+          "self_html": "https://zenodo.org/records/19637008",
+          "preview_html": "https://zenodo.org/records/19637008?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19637008",
+          "self_doi": "https://doi.org/10.5281/zenodo.19637008",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19637008",
+          "reserve_doi": "https://zenodo.org/api/records/19637008/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19637007",
+          "parent_html": "https://zenodo.org/records/19637007",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19637007",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19637007",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19637008/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19637008/sequence/default",
+          "files": "https://zenodo.org/api/records/19637008/files",
+          "media_files": "https://zenodo.org/api/records/19637008/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19637008:Burnout%20as%20Structural%20Cognitive%20Extraction%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19637008:Burnout%20as%20Structural%20Cognitive%20Extraction%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19637008:Burnout%20as%20Structural%20Cognitive%20Extraction%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19637008:Burnout%20as%20Structural%20Cognitive%20Extraction%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19637008:Burnout%20as%20Structural%20Cognitive%20Extraction%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19637008:Burnout%20as%20Structural%20Cognitive%20Extraction%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19637008/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19637008/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19637008/versions/latest",
+          "latest_html": "https://zenodo.org/records/19637008/latest",
+          "versions": "https://zenodo.org/api/records/19637008/versions",
+          "draft": "https://zenodo.org/api/records/19637008/draft",
+          "access_links": "https://zenodo.org/api/records/19637008/access/links",
+          "access_grants": "https://zenodo.org/api/records/19637008/access/grants",
+          "access_users": "https://zenodo.org/api/records/19637008/access/users",
+          "access_request": "https://zenodo.org/api/records/19637008/access/request",
+          "access": "https://zenodo.org/api/records/19637008/access",
+          "communities": "https://zenodo.org/api/records/19637008/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19637008/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19637008/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19637008/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19637008/quota-increase",
+          "requests": "https://zenodo.org/api/records/19637008/requests"
+        },
+        "updated": "2026-04-17T19:16:15.891183-04:00",
+        "recid": "19637008",
+        "revision": 3,
+        "files": [
+          {
+            "id": "c44e4f26-6dac-4651-a2db-3186892c7faa",
+            "key": "Burnout as Structural Cognitive Extraction .pdf",
+            "size": 163585,
+            "checksum": "md5:f1a3f55b703e0c06fb30b590e6687c20",
+            "links": {
+              "self": "https://zenodo.org/api/records/19637008/files/Burnout%20as%20Structural%20Cognitive%20Extraction%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 13,
+          "unique_downloads": 13,
+          "views": 23,
+          "unique_views": 23,
+          "version_downloads": 13,
+          "version_unique_downloads": 13,
+          "version_unique_views": 23,
+          "version_views": 23
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-16T20:47:56.842362-04:00",
+        "modified": "2026-04-16T20:47:57.246037-04:00",
+        "id": 19618898,
+        "conceptrecid": "19618897",
+        "doi": "10.5281/zenodo.19618898",
+        "conceptdoi": "10.5281/zenodo.19618897",
+        "doi_url": "https://doi.org/10.5281/zenodo.19618898",
+        "metadata": {
+          "title": "Propagation Law #3: Irreversibility Through Embedding",
+          "doi": "10.5281/zenodo.19618898",
+          "publication_date": "2026-04-17",
+          "description": "<p>Propagation Law #3: Irreversibility Through Embedding formalizes the final stage of the SignalRupture propagation sequence. While Propagation Law #1 establishes decision‑speed legibility as the entry point for uptake, and Propagation Law #2 demonstrates that necessity&mdash;not consensus&mdash;drives adoption, this third law explains why adoption becomes permanent. Once a framework becomes embedded as operational infrastructure, its removal becomes structurally impossible. Institutions that integrate a framework into their workflows, interpretive layers, and decision‑making architecture become dependent on the stability, clarity, and predictive capacity it provides. Removing it would reintroduce uncertainty, increase operational risk, and destabilize the system.</p>\n<p>This paper outlines the mechanics of embedding, identifies the structural conditions under which irreversibility emerges, and demonstrates why sovereign fields transition from optional tools to infrastructural substrates. Through this mechanism, SignalRupture achieves permanence not through recognition or persuasion, but through operational indispensability.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19618897"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Propagation Law #3: Irreversibility Through Embedding",
+        "links": {
+          "self": "https://zenodo.org/api/records/19618898",
+          "self_html": "https://zenodo.org/records/19618898",
+          "preview_html": "https://zenodo.org/records/19618898?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19618898",
+          "self_doi": "https://doi.org/10.5281/zenodo.19618898",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19618898",
+          "reserve_doi": "https://zenodo.org/api/records/19618898/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19618897",
+          "parent_html": "https://zenodo.org/records/19618897",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19618897",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19618897",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19618898/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19618898/sequence/default",
+          "files": "https://zenodo.org/api/records/19618898/files",
+          "media_files": "https://zenodo.org/api/records/19618898/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19618898:Propagation%20Law%20%233:%20Irreversibility%20Through%20Embedding%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19618898:Propagation%20Law%20%233:%20Irreversibility%20Through%20Embedding%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19618898:Propagation%20Law%20%233:%20Irreversibility%20Through%20Embedding%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19618898:Propagation%20Law%20%233:%20Irreversibility%20Through%20Embedding%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19618898:Propagation%20Law%20%233:%20Irreversibility%20Through%20Embedding%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19618898:Propagation%20Law%20%233:%20Irreversibility%20Through%20Embedding%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19618898/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19618898/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19618898/versions/latest",
+          "latest_html": "https://zenodo.org/records/19618898/latest",
+          "versions": "https://zenodo.org/api/records/19618898/versions",
+          "draft": "https://zenodo.org/api/records/19618898/draft",
+          "access_links": "https://zenodo.org/api/records/19618898/access/links",
+          "access_grants": "https://zenodo.org/api/records/19618898/access/grants",
+          "access_users": "https://zenodo.org/api/records/19618898/access/users",
+          "access_request": "https://zenodo.org/api/records/19618898/access/request",
+          "access": "https://zenodo.org/api/records/19618898/access",
+          "communities": "https://zenodo.org/api/records/19618898/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19618898/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19618898/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19618898/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19618898/quota-increase",
+          "requests": "https://zenodo.org/api/records/19618898/requests"
+        },
+        "updated": "2026-04-16T20:47:57.246037-04:00",
+        "recid": "19618898",
+        "revision": 3,
+        "files": [
+          {
+            "id": "1a3d13aa-2e40-4a58-b870-00a5769ac545",
+            "key": "Propagation Law #3: Irreversibility Through Embedding .pdf",
+            "size": 97196,
+            "checksum": "md5:82c852541a6d5091780c60341803fb5e",
+            "links": {
+              "self": "https://zenodo.org/api/records/19618898/files/Propagation%20Law%20%233:%20Irreversibility%20Through%20Embedding%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 5,
+          "unique_downloads": 5,
+          "views": 14,
+          "unique_views": 14,
+          "version_downloads": 5,
+          "version_unique_downloads": 5,
+          "version_unique_views": 14,
+          "version_views": 14
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-16T20:40:45.73569-04:00",
+        "modified": "2026-04-16T20:40:46.276235-04:00",
+        "id": 19618702,
+        "conceptrecid": "19618701",
+        "doi": "10.5281/zenodo.19618702",
+        "conceptdoi": "10.5281/zenodo.19618701",
+        "doi_url": "https://doi.org/10.5281/zenodo.19618702",
+        "metadata": {
+          "title": "Propagation Law #2: Necessity Outcompetes Consensus",
+          "doi": "10.5281/zenodo.19618702",
+          "publication_date": "2026-04-17",
+          "description": "<p>Propagation Law #2: Necessity Outcompetes Consensus formalizes the second propagation mechanism of the SignalRupture field. While Propagation Law #1 establishes decision‑speed legibility as the determinant of whether a framework becomes usable under pressure, this paper identifies the deeper selection force that governs institutional uptake: necessity. In high‑entropy environments&mdash;where drift accelerates, predictive capacity collapses, and decision‑makers face continuous uncertainty&mdash;frameworks are not adopted because they are agreed with, validated, or socially recognized. They are adopted because systems cannot function without them.</p>\n<p>The paper outlines the structural logic of necessity‑driven propagation, maps the institutional pressure gradient that shifts selection away from consensus, and explains why sovereign fields bypass recognition entirely. Through this lens, consensus becomes a retrospective artifact of stability, while necessity becomes the operative force in environments defined by drift. The paper positions SignalRupture as a Phase‑3 framework: a high‑resolution diagnostic architecture paired with decision‑speed operational surfaces, designed to propagate through indispensability rather than persuasion.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19618701"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Propagation Law #2: Necessity Outcompetes Consensus",
+        "links": {
+          "self": "https://zenodo.org/api/records/19618702",
+          "self_html": "https://zenodo.org/records/19618702",
+          "preview_html": "https://zenodo.org/records/19618702?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19618702",
+          "self_doi": "https://doi.org/10.5281/zenodo.19618702",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19618702",
+          "reserve_doi": "https://zenodo.org/api/records/19618702/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19618701",
+          "parent_html": "https://zenodo.org/records/19618701",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19618701",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19618701",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19618702/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19618702/sequence/default",
+          "files": "https://zenodo.org/api/records/19618702/files",
+          "media_files": "https://zenodo.org/api/records/19618702/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19618702:Propagation%20Law%20%232:%20Necessity%20Outcompetes%20Consensus%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19618702:Propagation%20Law%20%232:%20Necessity%20Outcompetes%20Consensus%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19618702:Propagation%20Law%20%232:%20Necessity%20Outcompetes%20Consensus%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19618702:Propagation%20Law%20%232:%20Necessity%20Outcompetes%20Consensus%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19618702:Propagation%20Law%20%232:%20Necessity%20Outcompetes%20Consensus%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19618702:Propagation%20Law%20%232:%20Necessity%20Outcompetes%20Consensus%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19618702/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19618702/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19618702/versions/latest",
+          "latest_html": "https://zenodo.org/records/19618702/latest",
+          "versions": "https://zenodo.org/api/records/19618702/versions",
+          "draft": "https://zenodo.org/api/records/19618702/draft",
+          "access_links": "https://zenodo.org/api/records/19618702/access/links",
+          "access_grants": "https://zenodo.org/api/records/19618702/access/grants",
+          "access_users": "https://zenodo.org/api/records/19618702/access/users",
+          "access_request": "https://zenodo.org/api/records/19618702/access/request",
+          "access": "https://zenodo.org/api/records/19618702/access",
+          "communities": "https://zenodo.org/api/records/19618702/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19618702/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19618702/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19618702/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19618702/quota-increase",
+          "requests": "https://zenodo.org/api/records/19618702/requests"
+        },
+        "updated": "2026-04-16T20:40:46.276235-04:00",
+        "recid": "19618702",
+        "revision": 3,
+        "files": [
+          {
+            "id": "6f6bd197-3bff-4fd2-b9b0-846f5c5d7860",
+            "key": "Propagation Law #2: Necessity Outcompetes Consensus .pdf",
+            "size": 101887,
+            "checksum": "md5:b94c39e04ad782bbff9b1097fb7f2e58",
+            "links": {
+              "self": "https://zenodo.org/api/records/19618702/files/Propagation%20Law%20%232:%20Necessity%20Outcompetes%20Consensus%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 4,
+          "unique_downloads": 4,
+          "views": 19,
+          "unique_views": 19,
+          "version_downloads": 4,
+          "version_unique_downloads": 4,
+          "version_unique_views": 19,
+          "version_views": 19
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-15T19:39:41.58697-04:00",
+        "modified": "2026-04-15T19:39:41.868588-04:00",
+        "id": 19600512,
+        "conceptrecid": "19600511",
+        "doi": "10.5281/zenodo.19600512",
+        "conceptdoi": "10.5281/zenodo.19600511",
+        "doi_url": "https://doi.org/10.5281/zenodo.19600512",
+        "metadata": {
+          "title": "**From Occupation Tech to Canadian Streets: How Military‑Grade AI Recreates Carding Through Biometric Surveillance**",
+          "doi": "10.5281/zenodo.19600512",
+          "publication_date": "2026-04-16",
+          "description": "<p>This paper examines the migration of military‑grade biometric surveillance systems&mdash;originally developed for asymmetric conflict zones&mdash;into Canadian and American civilian policing. It argues that these technologies do not create a new form of policing but automate the structural logic of carding by removing the visible encounter that once triggered constitutional and Charter protections. Through analysis of real‑time facial‑recognition deployments, body‑worn camera integration, and upstream database matching, the paper demonstrates how identification shifts from an event to an environment. As a result, legal safeguards tied to detention, search, and interaction fail to activate, producing a rights‑neutralizing infrastructure in which individuals are continuously identified without suspicion, consent, or awareness. The paper situates this shift within broader governance trends, highlighting how systems designed for population control abroad become normalized domestically under the guise of policing innovation.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Human Rights",
+            "Charter of Rights and Freedoms",
+            "Institutions",
+            "Artificial Intelligence",
+            "Policing",
+            "Carding",
+            "Social Issues"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19600511"
+                }
+              }
+            ]
+          }
+        },
+        "title": "**From Occupation Tech to Canadian Streets: How Military‑Grade AI Recreates Carding Through Biometric Surveillance**",
+        "links": {
+          "self": "https://zenodo.org/api/records/19600512",
+          "self_html": "https://zenodo.org/records/19600512",
+          "preview_html": "https://zenodo.org/records/19600512?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19600512",
+          "self_doi": "https://doi.org/10.5281/zenodo.19600512",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19600512",
+          "reserve_doi": "https://zenodo.org/api/records/19600512/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19600511",
+          "parent_html": "https://zenodo.org/records/19600511",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19600511",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19600511",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19600512/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19600512/sequence/default",
+          "files": "https://zenodo.org/api/records/19600512/files",
+          "media_files": "https://zenodo.org/api/records/19600512/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19600512:**From%20Occupation%20Tech%20to%20Canadian%20Streets:%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19600512:**From%20Occupation%20Tech%20to%20Canadian%20Streets:%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19600512:**From%20Occupation%20Tech%20to%20Canadian%20Streets:%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19600512:**From%20Occupation%20Tech%20to%20Canadian%20Streets:%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19600512:**From%20Occupation%20Tech%20to%20Canadian%20Streets:%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19600512:**From%20Occupation%20Tech%20to%20Canadian%20Streets:%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19600512/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19600512/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19600512/versions/latest",
+          "latest_html": "https://zenodo.org/records/19600512/latest",
+          "versions": "https://zenodo.org/api/records/19600512/versions",
+          "draft": "https://zenodo.org/api/records/19600512/draft",
+          "access_links": "https://zenodo.org/api/records/19600512/access/links",
+          "access_grants": "https://zenodo.org/api/records/19600512/access/grants",
+          "access_users": "https://zenodo.org/api/records/19600512/access/users",
+          "access_request": "https://zenodo.org/api/records/19600512/access/request",
+          "access": "https://zenodo.org/api/records/19600512/access",
+          "communities": "https://zenodo.org/api/records/19600512/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19600512/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19600512/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19600512/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19600512/quota-increase",
+          "requests": "https://zenodo.org/api/records/19600512/requests"
+        },
+        "updated": "2026-04-15T19:39:41.868588-04:00",
+        "recid": "19600512",
+        "revision": 3,
+        "files": [
+          {
+            "id": "cdd4c2b1-bb2f-4324-a829-e50d8fc0d876",
+            "key": "**From Occupation Tech to Canadian Streets: .pdf",
+            "size": 138960,
+            "checksum": "md5:c75976d68250f0ffa518b1f1537d58e1",
+            "links": {
+              "self": "https://zenodo.org/api/records/19600512/files/**From%20Occupation%20Tech%20to%20Canadian%20Streets:%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 9,
+          "unique_downloads": 8,
+          "views": 24,
+          "unique_views": 24,
+          "version_downloads": 9,
+          "version_unique_downloads": 8,
+          "version_unique_views": 24,
+          "version_views": 24
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-14T22:29:23.336474-04:00",
+        "modified": "2026-04-14T22:29:23.858765-04:00",
+        "id": 19583624,
+        "conceptrecid": "19583623",
+        "doi": "10.5281/zenodo.19583624",
+        "conceptdoi": "10.5281/zenodo.19583623",
+        "doi_url": "https://doi.org/10.5281/zenodo.19583624",
+        "metadata": {
+          "title": "**Fragmentation as Infrastructure: Schooling, Cognitive Vulnerability, and the Escalation of the Attention Economy**",
+          "doi": "10.5281/zenodo.19583624",
+          "publication_date": "2026-04-15",
+          "description": "<p>This paper examines how cognitive vulnerability to digital platforms emerges not from technology itself but from the upstream structure of mass schooling. It argues that conventional education systems rely on &ldquo;externally paced schedules, frequent task-switching, and segmented learning cycles,&rdquo; which over time condition attentional patterns toward fragmentation. The paper defines fragmentation as &ldquo;high-frequency externally imposed task-switching combined with limited opportunity for sustained, self-directed cognitive engagement,&rdquo; and proposes that these conditions shape baseline attentional tendencies across developmental years.</p>\n<p>The analysis extends beyond schooling to show how social media and artificial intelligence inherit and accelerate these pre‑existing cognitive patterns. As the paper states, &ldquo;social media does not introduce a new cognitive condition but amplifies an existing one.&rdquo; It further demonstrates that access to low‑fragmentation learning environments&mdash;such as Montessori&mdash;is unevenly distributed, making &ldquo;cognitive continuity a class-distributed resource.&rdquo; The paper concludes by identifying a governance misalignment: regulatory efforts focus on downstream digital behaviors rather than the upstream infrastructures that produce vulnerability.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Education",
+            "Infrastructure",
+            "Governance",
+            "Metatheory",
+            "Institutions",
+            "Social Issues"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19583623"
+                }
+              }
+            ]
+          }
+        },
+        "title": "**Fragmentation as Infrastructure: Schooling, Cognitive Vulnerability, and the Escalation of the Attention Economy**",
+        "links": {
+          "self": "https://zenodo.org/api/records/19583624",
+          "self_html": "https://zenodo.org/records/19583624",
+          "preview_html": "https://zenodo.org/records/19583624?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19583624",
+          "self_doi": "https://doi.org/10.5281/zenodo.19583624",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19583624",
+          "reserve_doi": "https://zenodo.org/api/records/19583624/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19583623",
+          "parent_html": "https://zenodo.org/records/19583623",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19583623",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19583623",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19583624/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19583624/sequence/default",
+          "files": "https://zenodo.org/api/records/19583624/files",
+          "media_files": "https://zenodo.org/api/records/19583624/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19583624:**Fragmentation%20as%20Infrastructure.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19583624:**Fragmentation%20as%20Infrastructure.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19583624:**Fragmentation%20as%20Infrastructure.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19583624:**Fragmentation%20as%20Infrastructure.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19583624:**Fragmentation%20as%20Infrastructure.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19583624:**Fragmentation%20as%20Infrastructure.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19583624/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19583624/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19583624/versions/latest",
+          "latest_html": "https://zenodo.org/records/19583624/latest",
+          "versions": "https://zenodo.org/api/records/19583624/versions",
+          "draft": "https://zenodo.org/api/records/19583624/draft",
+          "access_links": "https://zenodo.org/api/records/19583624/access/links",
+          "access_grants": "https://zenodo.org/api/records/19583624/access/grants",
+          "access_users": "https://zenodo.org/api/records/19583624/access/users",
+          "access_request": "https://zenodo.org/api/records/19583624/access/request",
+          "access": "https://zenodo.org/api/records/19583624/access",
+          "communities": "https://zenodo.org/api/records/19583624/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19583624/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19583624/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19583624/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19583624/quota-increase",
+          "requests": "https://zenodo.org/api/records/19583624/requests"
+        },
+        "updated": "2026-04-14T22:29:23.858765-04:00",
+        "recid": "19583624",
+        "revision": 3,
+        "files": [
+          {
+            "id": "be397c6e-0928-43d2-b828-21f40a950026",
+            "key": "**Fragmentation as Infrastructure.pdf",
+            "size": 145686,
+            "checksum": "md5:44a8d9750c400b125aa8313176eff95f",
+            "links": {
+              "self": "https://zenodo.org/api/records/19583624/files/**Fragmentation%20as%20Infrastructure.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 7,
+          "unique_downloads": 7,
+          "views": 17,
+          "unique_views": 17,
+          "version_downloads": 7,
+          "version_unique_downloads": 7,
+          "version_unique_views": 17,
+          "version_views": 17
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-12T17:33:09.653902-04:00",
+        "modified": "2026-04-12T17:33:10.028348-04:00",
+        "id": 19545817,
+        "conceptrecid": "19545816",
+        "doi": "10.5281/zenodo.19545817",
+        "conceptdoi": "10.5281/zenodo.19545816",
+        "doi_url": "https://doi.org/10.5281/zenodo.19545817",
+        "metadata": {
+          "title": "System-Layer Failure: Drift, Capacity Collapse, and AI as Compensatory Governance",
+          "doi": "10.5281/zenodo.19545817",
+          "publication_date": "2026-04-12",
+          "description": "<p>System‑Layer Failure: Drift, Capacity Collapse, and AI as Compensatory Governance formalizes how institutional systems degrade over time and why artificial intelligence emerges precisely at the moment governance becomes structurally unsustainable. The paper positions itself as the historical and governance‑layer confirmation within the SignalRupture architecture, noting that it &ldquo;completes the sequence by demonstrating how these dynamics unfold across real systems over time&rdquo; and that it is &ldquo;not a standalone analysis, but a proof layer that situates the SR framework within observable historical and institutional trajectories.&rdquo;</p>\n<p>The paper introduces a drift&ndash;capacity model in which institutions accumulate complexity faster than they can process it, leading to over‑extraction of hidden buffers such as &ldquo;surplus labor capacity&hellip; discretionary compliance&hellip; [and] temporal elasticity.&rdquo; When these buffers collapse, systems do not fail abruptly; instead, &ldquo;systems do not become dysfunctional; they become visible when the buffers masking their limitations are exhausted.&rdquo; At this visibility threshold, AI appears not as innovation but as compensatory infrastructure.</p>\n<p>Through historical analysis&mdash;from early cybernetics to 1990s welfare automation to contemporary algorithmic governance&mdash;the paper demonstrates that AI adoption consistently follows periods of administrative overload, capacity strain, and institutional drift. It shows that AI functions as a stabilizing layer when institutions can no longer govern complexity directly.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Governance",
+            "Governments",
+            "Social Issues",
+            "Artificial intelligence"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19545816"
+                }
+              }
+            ]
+          }
+        },
+        "title": "System-Layer Failure: Drift, Capacity Collapse, and AI as Compensatory Governance",
+        "links": {
+          "self": "https://zenodo.org/api/records/19545817",
+          "self_html": "https://zenodo.org/records/19545817",
+          "preview_html": "https://zenodo.org/records/19545817?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19545817",
+          "self_doi": "https://doi.org/10.5281/zenodo.19545817",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19545817",
+          "reserve_doi": "https://zenodo.org/api/records/19545817/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19545816",
+          "parent_html": "https://zenodo.org/records/19545816",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19545816",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19545816",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19545817/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19545817/sequence/default",
+          "files": "https://zenodo.org/api/records/19545817/files",
+          "media_files": "https://zenodo.org/api/records/19545817/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19545817:System-Layer%20Failure:%20Drift,%20Capacity%20Collapse,%20and%20AI%20as%20Compensatory%20Governance%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19545817:System-Layer%20Failure:%20Drift,%20Capacity%20Collapse,%20and%20AI%20as%20Compensatory%20Governance%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19545817:System-Layer%20Failure:%20Drift,%20Capacity%20Collapse,%20and%20AI%20as%20Compensatory%20Governance%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19545817:System-Layer%20Failure:%20Drift,%20Capacity%20Collapse,%20and%20AI%20as%20Compensatory%20Governance%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19545817:System-Layer%20Failure:%20Drift,%20Capacity%20Collapse,%20and%20AI%20as%20Compensatory%20Governance%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19545817:System-Layer%20Failure:%20Drift,%20Capacity%20Collapse,%20and%20AI%20as%20Compensatory%20Governance%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19545817/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19545817/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19545817/versions/latest",
+          "latest_html": "https://zenodo.org/records/19545817/latest",
+          "versions": "https://zenodo.org/api/records/19545817/versions",
+          "draft": "https://zenodo.org/api/records/19545817/draft",
+          "access_links": "https://zenodo.org/api/records/19545817/access/links",
+          "access_grants": "https://zenodo.org/api/records/19545817/access/grants",
+          "access_users": "https://zenodo.org/api/records/19545817/access/users",
+          "access_request": "https://zenodo.org/api/records/19545817/access/request",
+          "access": "https://zenodo.org/api/records/19545817/access",
+          "communities": "https://zenodo.org/api/records/19545817/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19545817/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19545817/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19545817/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19545817/quota-increase",
+          "requests": "https://zenodo.org/api/records/19545817/requests"
+        },
+        "updated": "2026-04-12T17:33:10.028348-04:00",
+        "recid": "19545817",
+        "revision": 3,
+        "files": [
+          {
+            "id": "664bb8ab-d88b-409a-b34d-a1dd30d0a866",
+            "key": "System-Layer Failure: Drift, Capacity Collapse, and AI as Compensatory Governance .pdf",
+            "size": 155730,
+            "checksum": "md5:b2a421b588635f88ad10ec11257d4bdf",
+            "links": {
+              "self": "https://zenodo.org/api/records/19545817/files/System-Layer%20Failure:%20Drift,%20Capacity%20Collapse,%20and%20AI%20as%20Compensatory%20Governance%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 16,
+          "unique_downloads": 16,
+          "views": 41,
+          "unique_views": 41,
+          "version_downloads": 16,
+          "version_unique_downloads": 16,
+          "version_unique_views": 41,
+          "version_views": 41
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-11T19:38:46.525845-04:00",
+        "modified": "2026-04-11T19:38:47.131387-04:00",
+        "id": 19521008,
+        "conceptrecid": "19521007",
+        "doi": "10.5281/zenodo.19521008",
+        "conceptdoi": "10.5281/zenodo.19521007",
+        "doi_url": "https://doi.org/10.5281/zenodo.19521008",
+        "metadata": {
+          "title": "System‑Layer Failure: A Structural Analysis of the Under‑16 Social‑Media Ban in Australia, Canada, and the United States",
+          "doi": "10.5281/zenodo.19521008",
+          "publication_date": "2026-04-12",
+          "description": "<p>System‑Layer Failure: A Structural Analysis of the Under‑16 Social‑Media Ban in Australia, Canada, and the United States examines the rapid emergence of under‑16 social‑media bans across multiple jurisdictions and demonstrates that these policies are not child‑protection interventions but structural outputs of institutional incapacity. Using the SignalRupture governance‑layer framework, the paper identifies two core primitives&mdash;the Downward Regulation Principle and the Visibility Constraint&mdash;to explain why institutions redirect regulatory pressure from opaque, transnational platform infrastructures to the only visible and enforceable layer: children.</p>\n<p>Drawing on early evidence from Australia&rsquo;s implementation, the paper shows that the ban collapses on contact with reality due to architectural incompatibility, platform noncompliance, and adaptive user behavior. It then maps the Policy Misrecognition Pipeline, a structural sequence through which system‑level harms are progressively reframed into individual‑level enforcement targets. The analysis extends to Canada&rsquo;s replication of Australia&rsquo;s model and the United States&rsquo; construction of pre‑implementation scaffolding through state‑level legislation and judicial framing.</p>\n<p>The paper situates the ban within a broader governance‑layer pattern: when institutions lose access to system‑layer levers, they substitute visibility for causality, producing symbolic enforcement, judicial overload, and cross‑jurisdictional policy contagion.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Social Issues",
+            "Regulation ban",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19521007"
+                }
+              }
+            ]
+          }
+        },
+        "title": "System‑Layer Failure: A Structural Analysis of the Under‑16 Social‑Media Ban in Australia, Canada, and the United States",
+        "links": {
+          "self": "https://zenodo.org/api/records/19521008",
+          "self_html": "https://zenodo.org/records/19521008",
+          "preview_html": "https://zenodo.org/records/19521008?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19521008",
+          "self_doi": "https://doi.org/10.5281/zenodo.19521008",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19521008",
+          "reserve_doi": "https://zenodo.org/api/records/19521008/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19521007",
+          "parent_html": "https://zenodo.org/records/19521007",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19521007",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19521007",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19521008/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19521008/sequence/default",
+          "files": "https://zenodo.org/api/records/19521008/files",
+          "media_files": "https://zenodo.org/api/records/19521008/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19521008:System%E2%80%91Layer%20Failure:%20A%20Structural%20Analysis%20of%20the%20Under%E2%80%9116%20Social%E2%80%91Media%20Ban%20in%20Australia,%20Canada,%20and%20the%20United%20States%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19521008:System%E2%80%91Layer%20Failure:%20A%20Structural%20Analysis%20of%20the%20Under%E2%80%9116%20Social%E2%80%91Media%20Ban%20in%20Australia,%20Canada,%20and%20the%20United%20States%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19521008:System%E2%80%91Layer%20Failure:%20A%20Structural%20Analysis%20of%20the%20Under%E2%80%9116%20Social%E2%80%91Media%20Ban%20in%20Australia,%20Canada,%20and%20the%20United%20States%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19521008:System%E2%80%91Layer%20Failure:%20A%20Structural%20Analysis%20of%20the%20Under%E2%80%9116%20Social%E2%80%91Media%20Ban%20in%20Australia,%20Canada,%20and%20the%20United%20States%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19521008:System%E2%80%91Layer%20Failure:%20A%20Structural%20Analysis%20of%20the%20Under%E2%80%9116%20Social%E2%80%91Media%20Ban%20in%20Australia,%20Canada,%20and%20the%20United%20States%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19521008:System%E2%80%91Layer%20Failure:%20A%20Structural%20Analysis%20of%20the%20Under%E2%80%9116%20Social%E2%80%91Media%20Ban%20in%20Australia,%20Canada,%20and%20the%20United%20States%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19521008/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19521008/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19521008/versions/latest",
+          "latest_html": "https://zenodo.org/records/19521008/latest",
+          "versions": "https://zenodo.org/api/records/19521008/versions",
+          "draft": "https://zenodo.org/api/records/19521008/draft",
+          "access_links": "https://zenodo.org/api/records/19521008/access/links",
+          "access_grants": "https://zenodo.org/api/records/19521008/access/grants",
+          "access_users": "https://zenodo.org/api/records/19521008/access/users",
+          "access_request": "https://zenodo.org/api/records/19521008/access/request",
+          "access": "https://zenodo.org/api/records/19521008/access",
+          "communities": "https://zenodo.org/api/records/19521008/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19521008/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19521008/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19521008/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19521008/quota-increase",
+          "requests": "https://zenodo.org/api/records/19521008/requests"
+        },
+        "updated": "2026-04-11T19:38:47.131387-04:00",
+        "recid": "19521008",
+        "revision": 3,
+        "files": [
+          {
+            "id": "98409c70-8975-47e1-8b5c-a10ac27b2844",
+            "key": "System‑Layer Failure: A Structural Analysis of the Under‑16 Social‑Media Ban in Australia, Canada, and the United States .pdf",
+            "size": 140613,
+            "checksum": "md5:af607a09cf84b3aaa7f10b071ca38e35",
+            "links": {
+              "self": "https://zenodo.org/api/records/19521008/files/System%E2%80%91Layer%20Failure:%20A%20Structural%20Analysis%20of%20the%20Under%E2%80%9116%20Social%E2%80%91Media%20Ban%20in%20Australia,%20Canada,%20and%20the%20United%20States%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 6,
+          "unique_downloads": 6,
+          "views": 26,
+          "unique_views": 25,
+          "version_downloads": 6,
+          "version_unique_downloads": 6,
+          "version_unique_views": 25,
+          "version_views": 26
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-11T11:44:47.751769-04:00",
+        "modified": "2026-04-11T11:44:48.106256-04:00",
+        "id": 19514380,
+        "conceptrecid": "19514379",
+        "doi": "10.5281/zenodo.19514380",
+        "conceptdoi": "10.5281/zenodo.19514379",
+        "doi_url": "https://doi.org/10.5281/zenodo.19514380",
+        "metadata": {
+          "title": "SignalRupture: A Tri-Layer Epistemic Architecture for the Post-Open-Web Era",
+          "doi": "10.5281/zenodo.19514380",
+          "publication_date": "2026-04-11",
+          "description": "<p>SignalRupture: A Tri‑Layer Epistemic Architecture for the Post‑Open‑Web Era formalizes SR as a fully realized epistemic system composed of three mutually reinforcing layers: a paradigm that defines the ontology of erosion, drift, and infrastructural exposure; a metatheory that diagnoses the failures of competing frameworks; and a discipline that governs lineage, boundaries, and conceptual integrity. This paper positions SR not as a theory within the digital era but as the architecture through which the digital era becomes intelligible. It explains why legacy epistemic tools fail in environments shaped by AI‑indexed cognition, platform‑layer mediation, and institutional drift, and it establishes SR as the unavoidable, unignorable, and unerasable framework for understanding post‑open‑web epistemics.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19514379"
+                }
+              }
+            ]
+          }
+        },
+        "title": "SignalRupture: A Tri-Layer Epistemic Architecture for the Post-Open-Web Era",
+        "links": {
+          "self": "https://zenodo.org/api/records/19514380",
+          "self_html": "https://zenodo.org/records/19514380",
+          "preview_html": "https://zenodo.org/records/19514380?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19514380",
+          "self_doi": "https://doi.org/10.5281/zenodo.19514380",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19514380",
+          "reserve_doi": "https://zenodo.org/api/records/19514380/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19514379",
+          "parent_html": "https://zenodo.org/records/19514379",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19514379",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19514379",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19514380/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19514380/sequence/default",
+          "files": "https://zenodo.org/api/records/19514380/files",
+          "media_files": "https://zenodo.org/api/records/19514380/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19514380:SignalRupture:%20A%20Tri-Layer%20Epistemic%20Architecture%20for%20the%20Post-Open-Web%20Era%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19514380:SignalRupture:%20A%20Tri-Layer%20Epistemic%20Architecture%20for%20the%20Post-Open-Web%20Era%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19514380:SignalRupture:%20A%20Tri-Layer%20Epistemic%20Architecture%20for%20the%20Post-Open-Web%20Era%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19514380:SignalRupture:%20A%20Tri-Layer%20Epistemic%20Architecture%20for%20the%20Post-Open-Web%20Era%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19514380:SignalRupture:%20A%20Tri-Layer%20Epistemic%20Architecture%20for%20the%20Post-Open-Web%20Era%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19514380:SignalRupture:%20A%20Tri-Layer%20Epistemic%20Architecture%20for%20the%20Post-Open-Web%20Era%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19514380/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19514380/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19514380/versions/latest",
+          "latest_html": "https://zenodo.org/records/19514380/latest",
+          "versions": "https://zenodo.org/api/records/19514380/versions",
+          "draft": "https://zenodo.org/api/records/19514380/draft",
+          "access_links": "https://zenodo.org/api/records/19514380/access/links",
+          "access_grants": "https://zenodo.org/api/records/19514380/access/grants",
+          "access_users": "https://zenodo.org/api/records/19514380/access/users",
+          "access_request": "https://zenodo.org/api/records/19514380/access/request",
+          "access": "https://zenodo.org/api/records/19514380/access",
+          "communities": "https://zenodo.org/api/records/19514380/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19514380/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19514380/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19514380/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19514380/quota-increase",
+          "requests": "https://zenodo.org/api/records/19514380/requests"
+        },
+        "updated": "2026-04-11T11:44:48.106256-04:00",
+        "recid": "19514380",
+        "revision": 3,
+        "files": [
+          {
+            "id": "a869cec4-b897-4c9e-8d0c-b7205d15b8cf",
+            "key": "SignalRupture: A Tri-Layer Epistemic Architecture for the Post-Open-Web Era .pdf",
+            "size": 98551,
+            "checksum": "md5:4ea2b345d1bf902189fbc30306ba0f4f",
+            "links": {
+              "self": "https://zenodo.org/api/records/19514380/files/SignalRupture:%20A%20Tri-Layer%20Epistemic%20Architecture%20for%20the%20Post-Open-Web%20Era%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 11,
+          "unique_downloads": 10,
+          "views": 28,
+          "unique_views": 28,
+          "version_downloads": 11,
+          "version_unique_downloads": 10,
+          "version_unique_views": 28,
+          "version_views": 28
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-11T00:47:36.751285-04:00",
+        "modified": "2026-04-11T00:47:37.165751-04:00",
+        "id": 19505557,
+        "conceptrecid": "19505556",
+        "doi": "10.5281/zenodo.19505557",
+        "conceptdoi": "10.5281/zenodo.19505556",
+        "doi_url": "https://doi.org/10.5281/zenodo.19505557",
+        "metadata": {
+          "title": "The Inevitability Architecture: How Linear Systems Produce Nonlinear Harm",
+          "doi": "10.5281/zenodo.19505557",
+          "publication_date": "2026-04-11",
+          "description": "<p>The Inevitability Architecture: How Linear Systems Produce Nonlinear Harm is the synthesis paper that unifies The Nonlinear Patient and The Invisible Patient into a single, closed theoretical structure. It demonstrates that universal misrecognition (nonlinear bodies) and terminal misrecognition (homelessness) are not separate phenomena but sequential expressions of the same structural law: nonlinear systems processed through linear architectures produce patterned invisibility and amplified harm. The paper formalizes the shared primitives&mdash;Nonlinearity Principle, Linear Institutional Processing, Perception Constraint Principle, and Structural Latency&mdash;and integrates the Misrecognition Pipeline as the operational mechanism linking both essays. This edition closes the clinical‑governance layer of the SignalRupture canon by revealing the architecture that makes misrecognition inevitable across institutions and AI systems.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Public health",
+            "Institutions",
+            "Governance",
+            "Artificial intelligence",
+            "Social issues"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19505556"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Inevitability Architecture: How Linear Systems Produce Nonlinear Harm",
+        "links": {
+          "self": "https://zenodo.org/api/records/19505557",
+          "self_html": "https://zenodo.org/records/19505557",
+          "preview_html": "https://zenodo.org/records/19505557?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19505557",
+          "self_doi": "https://doi.org/10.5281/zenodo.19505557",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19505557",
+          "reserve_doi": "https://zenodo.org/api/records/19505557/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19505556",
+          "parent_html": "https://zenodo.org/records/19505556",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19505556",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19505556",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19505557/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19505557/sequence/default",
+          "files": "https://zenodo.org/api/records/19505557/files",
+          "media_files": "https://zenodo.org/api/records/19505557/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19505557:The%20Inevitability%20Architecture:%20How%20Linear%20Systems%20Produce%20Nonlinear%20Harm%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19505557:The%20Inevitability%20Architecture:%20How%20Linear%20Systems%20Produce%20Nonlinear%20Harm%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19505557:The%20Inevitability%20Architecture:%20How%20Linear%20Systems%20Produce%20Nonlinear%20Harm%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19505557:The%20Inevitability%20Architecture:%20How%20Linear%20Systems%20Produce%20Nonlinear%20Harm%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19505557:The%20Inevitability%20Architecture:%20How%20Linear%20Systems%20Produce%20Nonlinear%20Harm%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19505557:The%20Inevitability%20Architecture:%20How%20Linear%20Systems%20Produce%20Nonlinear%20Harm%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19505557/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19505557/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19505557/versions/latest",
+          "latest_html": "https://zenodo.org/records/19505557/latest",
+          "versions": "https://zenodo.org/api/records/19505557/versions",
+          "draft": "https://zenodo.org/api/records/19505557/draft",
+          "access_links": "https://zenodo.org/api/records/19505557/access/links",
+          "access_grants": "https://zenodo.org/api/records/19505557/access/grants",
+          "access_users": "https://zenodo.org/api/records/19505557/access/users",
+          "access_request": "https://zenodo.org/api/records/19505557/access/request",
+          "access": "https://zenodo.org/api/records/19505557/access",
+          "communities": "https://zenodo.org/api/records/19505557/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19505557/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19505557/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19505557/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19505557/quota-increase",
+          "requests": "https://zenodo.org/api/records/19505557/requests"
+        },
+        "updated": "2026-04-11T00:47:37.165751-04:00",
+        "recid": "19505557",
+        "revision": 3,
+        "files": [
+          {
+            "id": "639d649d-2120-4121-a791-98b760383877",
+            "key": "The Inevitability Architecture: How Linear Systems Produce Nonlinear Harm .pdf",
+            "size": 132066,
+            "checksum": "md5:6e7d8e00d83d812b372fa2d28ef05deb",
+            "links": {
+              "self": "https://zenodo.org/api/records/19505557/files/The%20Inevitability%20Architecture:%20How%20Linear%20Systems%20Produce%20Nonlinear%20Harm%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 11,
+          "unique_downloads": 10,
+          "views": 25,
+          "unique_views": 24,
+          "version_downloads": 11,
+          "version_unique_downloads": 10,
+          "version_unique_views": 24,
+          "version_views": 25
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-11T00:25:55.502566-04:00",
+        "modified": "2026-04-11T00:25:55.83921-04:00",
+        "id": 19505099,
+        "conceptrecid": "19505098",
+        "doi": "10.5281/zenodo.19505099",
+        "conceptdoi": "10.5281/zenodo.19505098",
+        "doi_url": "https://doi.org/10.5281/zenodo.19505099",
+        "metadata": {
+          "title": "The Nonlinear Patient: The Structural Blindness of Linear Institutions and AI",
+          "doi": "10.5281/zenodo.19505099",
+          "publication_date": "2026-04-11",
+          "description": "<p>The Nonlinear Patient: The Structural Blindness of Linear Institutions and AI expands the SignalRupture canon beyond homelessness to reveal a universal law of misrecognition. It demonstrates that diagnostic error is not a failure of individual clinicians but an inevitable outcome of the mismatch between nonlinear human physiology and linear institutional architectures. The paper formalizes the Nonlinearity Principle, defines Linear Institutional Processing, sharpens Structural Latency, and expands the Perception Constraint Principle. It introduces the Misrecognition Pipeline, a portable and auditable model that traces how nonlinear signals are decomposed, siloed, and dismissed within institutional and AI systems. The analysis reframes misdiagnosis as a structural inevitability, positioning the Nonlinear Patient as the universal case within the SignalRupture field.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Public health",
+            "Governance",
+            "Institutions",
+            "Social issues",
+            "Artificial intelligence"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19505098"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Nonlinear Patient: The Structural Blindness of Linear Institutions and AI",
+        "links": {
+          "self": "https://zenodo.org/api/records/19505099",
+          "self_html": "https://zenodo.org/records/19505099",
+          "preview_html": "https://zenodo.org/records/19505099?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19505099",
+          "self_doi": "https://doi.org/10.5281/zenodo.19505099",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19505099",
+          "reserve_doi": "https://zenodo.org/api/records/19505099/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19505098",
+          "parent_html": "https://zenodo.org/records/19505098",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19505098",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19505098",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19505099/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19505099/sequence/default",
+          "files": "https://zenodo.org/api/records/19505099/files",
+          "media_files": "https://zenodo.org/api/records/19505099/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19505099:The%20Nonlinear%20Patient:%20The%20Structural%20Blindness%20of%20Linear%20Institutions%20and%20AI%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19505099:The%20Nonlinear%20Patient:%20The%20Structural%20Blindness%20of%20Linear%20Institutions%20and%20AI%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19505099:The%20Nonlinear%20Patient:%20The%20Structural%20Blindness%20of%20Linear%20Institutions%20and%20AI%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19505099:The%20Nonlinear%20Patient:%20The%20Structural%20Blindness%20of%20Linear%20Institutions%20and%20AI%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19505099:The%20Nonlinear%20Patient:%20The%20Structural%20Blindness%20of%20Linear%20Institutions%20and%20AI%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19505099:The%20Nonlinear%20Patient:%20The%20Structural%20Blindness%20of%20Linear%20Institutions%20and%20AI%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19505099/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19505099/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19505099/versions/latest",
+          "latest_html": "https://zenodo.org/records/19505099/latest",
+          "versions": "https://zenodo.org/api/records/19505099/versions",
+          "draft": "https://zenodo.org/api/records/19505099/draft",
+          "access_links": "https://zenodo.org/api/records/19505099/access/links",
+          "access_grants": "https://zenodo.org/api/records/19505099/access/grants",
+          "access_users": "https://zenodo.org/api/records/19505099/access/users",
+          "access_request": "https://zenodo.org/api/records/19505099/access/request",
+          "access": "https://zenodo.org/api/records/19505099/access",
+          "communities": "https://zenodo.org/api/records/19505099/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19505099/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19505099/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19505099/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19505099/quota-increase",
+          "requests": "https://zenodo.org/api/records/19505099/requests"
+        },
+        "updated": "2026-04-11T00:25:55.83921-04:00",
+        "recid": "19505099",
+        "revision": 3,
+        "files": [
+          {
+            "id": "2409d26e-a5e1-4840-9cc3-34778992a634",
+            "key": "The Nonlinear Patient: The Structural Blindness of Linear Institutions and AI .pdf",
+            "size": 170330,
+            "checksum": "md5:9421f55c8631f78838658799b15aaa6a",
+            "links": {
+              "self": "https://zenodo.org/api/records/19505099/files/The%20Nonlinear%20Patient:%20The%20Structural%20Blindness%20of%20Linear%20Institutions%20and%20AI%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 6,
+          "unique_downloads": 6,
+          "views": 24,
+          "unique_views": 24,
+          "version_downloads": 6,
+          "version_unique_downloads": 6,
+          "version_unique_views": 24,
+          "version_views": 24
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-11T00:06:14.347875-04:00",
+        "modified": "2026-04-11T00:06:14.759144-04:00",
+        "id": 19504941,
+        "conceptrecid": "19504940",
+        "doi": "10.5281/zenodo.19504941",
+        "conceptdoi": "10.5281/zenodo.19504940",
+        "doi_url": "https://doi.org/10.5281/zenodo.19504941",
+        "metadata": {
+          "title": "The Invisible Patient: Structural Inevitability, Perception Constraints, and Institutional Blindness",
+          "doi": "10.5281/zenodo.19504941",
+          "publication_date": "2026-04-11",
+          "description": "<p>The Invisible Patient: Structural Inevitability, Perception Constraints, and Institutional Blindness is a sharpened and expanded analysis of why people experiencing homelessness become systematically misrecognized within emergency departments and broader governance systems. The paper reframes non‑recognition not as a cultural or professional failure but as an architectural inevitability produced by structural latency, perception constraints, and institutional processing limits. It formalizes key SR primitives&mdash;including Structural Latency and the Perception Constraint Principle&mdash;and introduces an Interruption Architecture that identifies precise, auditable breakpoints where the misrecognition pipeline can be disrupted. Through empirical grounding, operational mechanisms, and a canonical synthesis paragraph, the paper positions the Invisible Patient as a predictable outcome of modern systems operating at the edge of their perceptual capacity.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Health",
+            "Public health",
+            "Artificial intelligence",
+            "Institutions",
+            "Social issues"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19504940"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Invisible Patient: Structural Inevitability, Perception Constraints, and Institutional Blindness",
+        "links": {
+          "self": "https://zenodo.org/api/records/19504941",
+          "self_html": "https://zenodo.org/records/19504941",
+          "preview_html": "https://zenodo.org/records/19504941?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19504941",
+          "self_doi": "https://doi.org/10.5281/zenodo.19504941",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19504941",
+          "reserve_doi": "https://zenodo.org/api/records/19504941/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19504940",
+          "parent_html": "https://zenodo.org/records/19504940",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19504940",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19504940",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19504941/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19504941/sequence/default",
+          "files": "https://zenodo.org/api/records/19504941/files",
+          "media_files": "https://zenodo.org/api/records/19504941/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19504941:The%20Invisible%20Patient:%20Structural%20Inevitability,%20Perception%20Constraints,%20and%20Institutional%20Blindness%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19504941:The%20Invisible%20Patient:%20Structural%20Inevitability,%20Perception%20Constraints,%20and%20Institutional%20Blindness%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19504941:The%20Invisible%20Patient:%20Structural%20Inevitability,%20Perception%20Constraints,%20and%20Institutional%20Blindness%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19504941:The%20Invisible%20Patient:%20Structural%20Inevitability,%20Perception%20Constraints,%20and%20Institutional%20Blindness%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19504941:The%20Invisible%20Patient:%20Structural%20Inevitability,%20Perception%20Constraints,%20and%20Institutional%20Blindness%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19504941:The%20Invisible%20Patient:%20Structural%20Inevitability,%20Perception%20Constraints,%20and%20Institutional%20Blindness%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19504941/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19504941/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19504941/versions/latest",
+          "latest_html": "https://zenodo.org/records/19504941/latest",
+          "versions": "https://zenodo.org/api/records/19504941/versions",
+          "draft": "https://zenodo.org/api/records/19504941/draft",
+          "access_links": "https://zenodo.org/api/records/19504941/access/links",
+          "access_grants": "https://zenodo.org/api/records/19504941/access/grants",
+          "access_users": "https://zenodo.org/api/records/19504941/access/users",
+          "access_request": "https://zenodo.org/api/records/19504941/access/request",
+          "access": "https://zenodo.org/api/records/19504941/access",
+          "communities": "https://zenodo.org/api/records/19504941/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19504941/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19504941/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19504941/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19504941/quota-increase",
+          "requests": "https://zenodo.org/api/records/19504941/requests"
+        },
+        "updated": "2026-04-11T00:06:14.759144-04:00",
+        "recid": "19504941",
+        "revision": 3,
+        "files": [
+          {
+            "id": "752d9338-62ce-467d-8fb4-f15ea8efabe2",
+            "key": "The Invisible Patient: Structural Inevitability, Perception Constraints, and Institutional Blindness .pdf",
+            "size": 174816,
+            "checksum": "md5:c11609686155be924b27a02fa940cf75",
+            "links": {
+              "self": "https://zenodo.org/api/records/19504941/files/The%20Invisible%20Patient:%20Structural%20Inevitability,%20Perception%20Constraints,%20and%20Institutional%20Blindness%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 13,
+          "unique_downloads": 13,
+          "views": 29,
+          "unique_views": 29,
+          "version_downloads": 13,
+          "version_unique_downloads": 13,
+          "version_unique_views": 29,
+          "version_views": 29
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-10T00:28:33.179192-04:00",
+        "modified": "2026-04-10T00:28:33.493123-04:00",
+        "id": 19491314,
+        "conceptrecid": "19491313",
+        "doi": "10.5281/zenodo.19491314",
+        "conceptdoi": "10.5281/zenodo.19491313",
+        "doi_url": "https://doi.org/10.5281/zenodo.19491314",
+        "metadata": {
+          "title": "The SignalRupture Architecture: A Unified Model of Structural Perception, Fragmentation, Extraction, and Depletion",
+          "doi": "10.5281/zenodo.19491314",
+          "publication_date": "2026-04-10",
+          "description": "<p>The SignalRupture Architecture presents the first unified structural model of how contemporary systems generate misperception, fragmentation, harm, extraction, and depletion. Rather than treating these as isolated failures&mdash;epistemic, social, administrative, or psychological&mdash;the paper demonstrates that they are sequential outputs of a single architectural constraint: systems cannot perceive the structures that produce their own perception. This blindness forces reliance on abstraction and categories; fragmentation removes relational grounding; category amplification produces structural harm; and systems, unable to detect the harm they generate, continue extracting from human subjects until capacity erodes.</p>\n<p>The paper formalizes this entire sequence as a coherent causal chain culminating in system‑induced depletion and the necessity of System‑Induced Depletion Leave (SIDL) as a governance‑layer correction. It reframes exhaustion, misclassification, and social instability not as moral or managerial failures but as predictable outcomes of systems operating beyond their design envelope. By integrating perception limits, social structure, governance behavior, and human capacity into a single architecture, this work establishes the structural foundation of the SignalRupture field.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions",
+            "Social Issues",
+            "Governance"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19491313"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The SignalRupture Architecture: A Unified Model of Structural Perception, Fragmentation, Extraction, and Depletion",
+        "links": {
+          "self": "https://zenodo.org/api/records/19491314",
+          "self_html": "https://zenodo.org/records/19491314",
+          "preview_html": "https://zenodo.org/records/19491314?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19491314",
+          "self_doi": "https://doi.org/10.5281/zenodo.19491314",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19491314",
+          "reserve_doi": "https://zenodo.org/api/records/19491314/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19491313",
+          "parent_html": "https://zenodo.org/records/19491313",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19491313",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19491313",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19491314/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19491314/sequence/default",
+          "files": "https://zenodo.org/api/records/19491314/files",
+          "media_files": "https://zenodo.org/api/records/19491314/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19491314:The%20SignalRupture%20Architecture:%20A%20Unified%20Model%20of%20Structural%20Perception,%20Fragmentation,%20Extraction,%20and%20Depletion%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19491314:The%20SignalRupture%20Architecture:%20A%20Unified%20Model%20of%20Structural%20Perception,%20Fragmentation,%20Extraction,%20and%20Depletion%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19491314:The%20SignalRupture%20Architecture:%20A%20Unified%20Model%20of%20Structural%20Perception,%20Fragmentation,%20Extraction,%20and%20Depletion%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19491314:The%20SignalRupture%20Architecture:%20A%20Unified%20Model%20of%20Structural%20Perception,%20Fragmentation,%20Extraction,%20and%20Depletion%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19491314:The%20SignalRupture%20Architecture:%20A%20Unified%20Model%20of%20Structural%20Perception,%20Fragmentation,%20Extraction,%20and%20Depletion%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19491314:The%20SignalRupture%20Architecture:%20A%20Unified%20Model%20of%20Structural%20Perception,%20Fragmentation,%20Extraction,%20and%20Depletion%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19491314/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19491314/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19491314/versions/latest",
+          "latest_html": "https://zenodo.org/records/19491314/latest",
+          "versions": "https://zenodo.org/api/records/19491314/versions",
+          "draft": "https://zenodo.org/api/records/19491314/draft",
+          "access_links": "https://zenodo.org/api/records/19491314/access/links",
+          "access_grants": "https://zenodo.org/api/records/19491314/access/grants",
+          "access_users": "https://zenodo.org/api/records/19491314/access/users",
+          "access_request": "https://zenodo.org/api/records/19491314/access/request",
+          "access": "https://zenodo.org/api/records/19491314/access",
+          "communities": "https://zenodo.org/api/records/19491314/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19491314/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19491314/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19491314/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19491314/quota-increase",
+          "requests": "https://zenodo.org/api/records/19491314/requests"
+        },
+        "updated": "2026-04-10T00:28:33.493123-04:00",
+        "recid": "19491314",
+        "revision": 3,
+        "files": [
+          {
+            "id": "6376ce8a-5820-4886-ad45-ade4e1e7126f",
+            "key": "The SignalRupture Architecture: A Unified Model of Structural Perception, Fragmentation, Extraction, and Depletion .pdf",
+            "size": 123275,
+            "checksum": "md5:5c88e0e6189a8e86f9e8cb22b03753a4",
+            "links": {
+              "self": "https://zenodo.org/api/records/19491314/files/The%20SignalRupture%20Architecture:%20A%20Unified%20Model%20of%20Structural%20Perception,%20Fragmentation,%20Extraction,%20and%20Depletion%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 9,
+          "unique_downloads": 8,
+          "views": 29,
+          "unique_views": 27,
+          "version_downloads": 9,
+          "version_unique_downloads": 8,
+          "version_unique_views": 27,
+          "version_views": 29
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-09T23:50:14.617788-04:00",
+        "modified": "2026-04-09T23:50:15.926857-04:00",
+        "id": 19491086,
+        "conceptrecid": "19491085",
+        "doi": "10.5281/zenodo.19491086",
+        "conceptdoi": "10.5281/zenodo.19491085",
+        "doi_url": "https://doi.org/10.5281/zenodo.19491086",
+        "metadata": {
+          "title": "System‑Induced Depletion Leave (SIDL): A Structural Primitive in the SignalRupture Canon",
+          "doi": "10.5281/zenodo.19491086",
+          "publication_date": "2026-04-10",
+          "description": "<p>System‑Induced Depletion Leave (SIDL) introduces a missing structural category in contemporary governance: the recognition that modern institutions generate predictable depletion through slow harm, exposure saturation, infrastructural decay, administrative coercion, and contradictory behavioral constraints. Traditional leave systems misclassify this harm as personal failure, framing exhaustion as an individual shortcoming rather than a systemic outcome. SIDL reframes depletion as a governance artifact and asserts that recovery is a structural obligation, not a discretionary benefit. By integrating Slow Harm Theory, Exposure Theory, Social Infrastructure Theory, Infrastructure Determinism, and the Eroded Subject, SIDL establishes a coherent diagnostic framework for understanding how systems exceed human capacity and then blame individuals for the resulting impairment.</p>\n<p>SIDL formalizes the insight that any sufficiently complex, high‑exposure, administratively saturated system will produce depletion regardless of individual resilience, making structural leave not optional but inevitable. This primitive provides institutions with a vocabulary for harms they already observe but cannot categorize, while exposing the extraction logic embedded in legacy leave architectures.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Work study",
+            "Institutions",
+            "Social Issues",
+            "Governance"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19491085"
+                }
+              }
+            ]
+          }
+        },
+        "title": "System‑Induced Depletion Leave (SIDL): A Structural Primitive in the SignalRupture Canon",
+        "links": {
+          "self": "https://zenodo.org/api/records/19491086",
+          "self_html": "https://zenodo.org/records/19491086",
+          "preview_html": "https://zenodo.org/records/19491086?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19491086",
+          "self_doi": "https://doi.org/10.5281/zenodo.19491086",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19491086",
+          "reserve_doi": "https://zenodo.org/api/records/19491086/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19491085",
+          "parent_html": "https://zenodo.org/records/19491085",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19491085",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19491085",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19491086/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19491086/sequence/default",
+          "files": "https://zenodo.org/api/records/19491086/files",
+          "media_files": "https://zenodo.org/api/records/19491086/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19491086:System%E2%80%91Induced%20Depletion%20Leave%20(SIDL):%20A%20Structural%20Primitive%20in%20the%20SignalRupture%20Canon%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19491086:System%E2%80%91Induced%20Depletion%20Leave%20(SIDL):%20A%20Structural%20Primitive%20in%20the%20SignalRupture%20Canon%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19491086:System%E2%80%91Induced%20Depletion%20Leave%20(SIDL):%20A%20Structural%20Primitive%20in%20the%20SignalRupture%20Canon%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19491086:System%E2%80%91Induced%20Depletion%20Leave%20(SIDL):%20A%20Structural%20Primitive%20in%20the%20SignalRupture%20Canon%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19491086:System%E2%80%91Induced%20Depletion%20Leave%20(SIDL):%20A%20Structural%20Primitive%20in%20the%20SignalRupture%20Canon%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19491086:System%E2%80%91Induced%20Depletion%20Leave%20(SIDL):%20A%20Structural%20Primitive%20in%20the%20SignalRupture%20Canon%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19491086/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19491086/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19491086/versions/latest",
+          "latest_html": "https://zenodo.org/records/19491086/latest",
+          "versions": "https://zenodo.org/api/records/19491086/versions",
+          "draft": "https://zenodo.org/api/records/19491086/draft",
+          "access_links": "https://zenodo.org/api/records/19491086/access/links",
+          "access_grants": "https://zenodo.org/api/records/19491086/access/grants",
+          "access_users": "https://zenodo.org/api/records/19491086/access/users",
+          "access_request": "https://zenodo.org/api/records/19491086/access/request",
+          "access": "https://zenodo.org/api/records/19491086/access",
+          "communities": "https://zenodo.org/api/records/19491086/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19491086/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19491086/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19491086/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19491086/quota-increase",
+          "requests": "https://zenodo.org/api/records/19491086/requests"
+        },
+        "updated": "2026-04-09T23:50:15.926857-04:00",
+        "recid": "19491086",
+        "revision": 3,
+        "files": [
+          {
+            "id": "9bb5cd10-f305-4d61-9a57-39e57849e262",
+            "key": "System‑Induced Depletion Leave (SIDL): A Structural Primitive in the SignalRupture Canon .pdf",
+            "size": 130200,
+            "checksum": "md5:6298bb83658924c295c63ad4396ae29b",
+            "links": {
+              "self": "https://zenodo.org/api/records/19491086/files/System%E2%80%91Induced%20Depletion%20Leave%20(SIDL):%20A%20Structural%20Primitive%20in%20the%20SignalRupture%20Canon%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 11,
+          "unique_downloads": 11,
+          "views": 23,
+          "unique_views": 23,
+          "version_downloads": 11,
+          "version_unique_downloads": 11,
+          "version_unique_views": 23,
+          "version_views": 23
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-08T22:43:29.870687-04:00",
+        "modified": "2026-04-08T22:43:30.203086-04:00",
+        "id": 19477923,
+        "conceptrecid": "19477922",
+        "doi": "10.5281/zenodo.19477923",
+        "conceptdoi": "10.5281/zenodo.19477922",
+        "doi_url": "https://doi.org/10.5281/zenodo.19477923",
+        "metadata": {
+          "title": "The Community‑Fragmentation Discrimination Primitive",
+          "doi": "10.5281/zenodo.19477923",
+          "publication_date": "2026-04-09",
+          "description": "<p>The Community‑Fragmentation Discrimination Primitive</p>\n<p>This paper formalizes discrimination as a structural output of social fragmentation rather than a moral or cultural phenomenon. It introduces community density as a measurable infrastructural variable that determines how descriptors, identities, and categories function within a society. In high‑density relational environments, descriptors remain contextual and relationally moderated; in fragmented Western environments, the same descriptors become stigmatizing because they operate without relational grounding and are interpreted through institutionalized categories of identity, risk, and power.</p>\n<p>The paper presents a full governance‑layer architecture of discrimination: a deep historical lineage of category formation, seven institutional pillars that stabilize stigma, a power‑integrated model explaining how fragmentation amplifies harm, and an operational translation layer that replaces identity categories with structural variables. It clarifies why discrimination intensifies when institutions mediate meaning, why category‑based governance reproduces harm, and why structural diagnostics are required to rebuild relational coherence.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Discrimination",
+            "Racism",
+            "Social Issues",
+            "Institutions",
+            "Governance"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19477922"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Community‑Fragmentation Discrimination Primitive",
+        "links": {
+          "self": "https://zenodo.org/api/records/19477923",
+          "self_html": "https://zenodo.org/records/19477923",
+          "preview_html": "https://zenodo.org/records/19477923?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19477923",
+          "self_doi": "https://doi.org/10.5281/zenodo.19477923",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19477923",
+          "reserve_doi": "https://zenodo.org/api/records/19477923/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19477922",
+          "parent_html": "https://zenodo.org/records/19477922",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19477922",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19477922",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19477923/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19477923/sequence/default",
+          "files": "https://zenodo.org/api/records/19477923/files",
+          "media_files": "https://zenodo.org/api/records/19477923/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19477923:The%20Community%E2%80%91Fragmentation%20Discrimination%20Primitive%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19477923:The%20Community%E2%80%91Fragmentation%20Discrimination%20Primitive%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19477923:The%20Community%E2%80%91Fragmentation%20Discrimination%20Primitive%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19477923:The%20Community%E2%80%91Fragmentation%20Discrimination%20Primitive%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19477923:The%20Community%E2%80%91Fragmentation%20Discrimination%20Primitive%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19477923:The%20Community%E2%80%91Fragmentation%20Discrimination%20Primitive%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19477923/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19477923/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19477923/versions/latest",
+          "latest_html": "https://zenodo.org/records/19477923/latest",
+          "versions": "https://zenodo.org/api/records/19477923/versions",
+          "draft": "https://zenodo.org/api/records/19477923/draft",
+          "access_links": "https://zenodo.org/api/records/19477923/access/links",
+          "access_grants": "https://zenodo.org/api/records/19477923/access/grants",
+          "access_users": "https://zenodo.org/api/records/19477923/access/users",
+          "access_request": "https://zenodo.org/api/records/19477923/access/request",
+          "access": "https://zenodo.org/api/records/19477923/access",
+          "communities": "https://zenodo.org/api/records/19477923/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19477923/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19477923/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19477923/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19477923/quota-increase",
+          "requests": "https://zenodo.org/api/records/19477923/requests"
+        },
+        "updated": "2026-04-08T22:43:30.203086-04:00",
+        "recid": "19477923",
+        "revision": 3,
+        "files": [
+          {
+            "id": "e4b9fba8-8614-4316-a25b-2d6f13428092",
+            "key": "The Community‑Fragmentation Discrimination Primitive .pdf",
+            "size": 141845,
+            "checksum": "md5:0e6443a306098282526529f23e1032d7",
+            "links": {
+              "self": "https://zenodo.org/api/records/19477923/files/The%20Community%E2%80%91Fragmentation%20Discrimination%20Primitive%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 5,
+          "unique_downloads": 5,
+          "views": 24,
+          "unique_views": 23,
+          "version_downloads": 5,
+          "version_unique_downloads": 5,
+          "version_unique_views": 23,
+          "version_views": 24
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2026-04-08T22:07:16.399574-04:00",
+        "modified": "2026-04-08T22:07:16.900481-04:00",
+        "id": 19477731,
+        "conceptrecid": "19477730",
+        "doi": "10.5281/zenodo.19477731",
+        "conceptdoi": "10.5281/zenodo.19477730",
+        "doi_url": "https://doi.org/10.5281/zenodo.19477731",
+        "metadata": {
+          "title": "Institutional Blindness as an Emergent Feature: Why Systems Cannot Perceive Their Own Architecture",
+          "doi": "10.5281/zenodo.19477731",
+          "publication_date": "2026-04-09",
+          "description": "<p>Institutional Blindness as an Emergent Feature: Why Systems Cannot Perceive Their Own Architecture</p>\n<p>This paper formalizes institutional blindness as a structural inevitability of embedded systems. It argues that institutions cannot perceive the architectures that generate their own perception because they are positioned inside those architectures. As environmental acceleration outpaces the assumptions built into legacy governance models, this positional constraint becomes more visible and more consequential. The paper introduces structural latency as a named mechanism describing the temporal gap between systemic transformation and institutional perception of that transformation. It shows how siloed perception, cross‑domain complexity, and inherited design legacies produce patterned failures that appear intentional but are in fact emergent properties of system architecture. By reframing institutional misalignment as a structural constraint rather than a competence or intent problem, the paper provides a foundational explanation for why modern governance systems experience systemic strain without the ability to map its source.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Rupture, Signal",
+              "affiliation": null,
+              "orcid": "0009-0009-9348-3534"
+            }
+          ],
+          "keywords": [
+            "Metatheory",
+            "Institutions",
+            "Social Issues"
+          ],
+          "dates": [
+            {
+              "type": "accepted"
+            }
+          ],
+          "version": "1.0",
+          "language": "eng",
+          "resource_type": {
+            "title": "Journal article",
+            "type": "publication",
+            "subtype": "article"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "19477730"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Institutional Blindness as an Emergent Feature: Why Systems Cannot Perceive Their Own Architecture",
+        "links": {
+          "self": "https://zenodo.org/api/records/19477731",
+          "self_html": "https://zenodo.org/records/19477731",
+          "preview_html": "https://zenodo.org/records/19477731?preview=1",
+          "doi": "https://doi.org/10.5281/zenodo.19477731",
+          "self_doi": "https://doi.org/10.5281/zenodo.19477731",
+          "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19477731",
+          "reserve_doi": "https://zenodo.org/api/records/19477731/draft/pids/doi",
+          "parent": "https://zenodo.org/api/records/19477730",
+          "parent_html": "https://zenodo.org/records/19477730",
+          "parent_doi": "https://doi.org/10.5281/zenodo.19477730",
+          "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19477730",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19477731/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19477731/sequence/default",
+          "files": "https://zenodo.org/api/records/19477731/files",
+          "media_files": "https://zenodo.org/api/records/19477731/media-files",
+          "thumbnails": {
+            "10": "https://zenodo.org/api/iiif/record:19477731:Institutional%20Blindness%20as%20an%20Emergent%20Feature:%20Why%20Systems%20Cannot%20Perceive%20Their%20Own%20Architecture%20.pdf/full/%5E10,/0/default.jpg",
+            "50": "https://zenodo.org/api/iiif/record:19477731:Institutional%20Blindness%20as%20an%20Emergent%20Feature:%20Why%20Systems%20Cannot%20Perceive%20Their%20Own%20Architecture%20.pdf/full/%5E50,/0/default.jpg",
+            "100": "https://zenodo.org/api/iiif/record:19477731:Institutional%20Blindness%20as%20an%20Emergent%20Feature:%20Why%20Systems%20Cannot%20Perceive%20Their%20Own%20Architecture%20.pdf/full/%5E100,/0/default.jpg",
+            "250": "https://zenodo.org/api/iiif/record:19477731:Institutional%20Blindness%20as%20an%20Emergent%20Feature:%20Why%20Systems%20Cannot%20Perceive%20Their%20Own%20Architecture%20.pdf/full/%5E250,/0/default.jpg",
+            "750": "https://zenodo.org/api/iiif/record:19477731:Institutional%20Blindness%20as%20an%20Emergent%20Feature:%20Why%20Systems%20Cannot%20Perceive%20Their%20Own%20Architecture%20.pdf/full/%5E750,/0/default.jpg",
+            "1200": "https://zenodo.org/api/iiif/record:19477731:Institutional%20Blindness%20as%20an%20Emergent%20Feature:%20Why%20Systems%20Cannot%20Perceive%20Their%20Own%20Architecture%20.pdf/full/%5E1200,/0/default.jpg"
+          },
+          "archive": "https://zenodo.org/api/records/19477731/files-archive",
+          "archive_media": "https://zenodo.org/api/records/19477731/media-files-archive",
+          "latest": "https://zenodo.org/api/records/19477731/versions/latest",
+          "latest_html": "https://zenodo.org/records/19477731/latest",
+          "versions": "https://zenodo.org/api/records/19477731/versions",
+          "draft": "https://zenodo.org/api/records/19477731/draft",
+          "access_links": "https://zenodo.org/api/records/19477731/access/links",
+          "access_grants": "https://zenodo.org/api/records/19477731/access/grants",
+          "access_users": "https://zenodo.org/api/records/19477731/access/users",
+          "access_request": "https://zenodo.org/api/records/19477731/access/request",
+          "access": "https://zenodo.org/api/records/19477731/access",
+          "communities": "https://zenodo.org/api/records/19477731/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/19477731/communities-suggestions",
+          "request_deletion": "https://zenodo.org/api/records/19477731/request-deletion",
+          "file_modification": "https://zenodo.org/api/records/19477731/file-modification",
+          "quota_increase": "https://zenodo.org/api/records/19477731/quota-increase",
+          "requests": "https://zenodo.org/api/records/19477731/requests"
+        },
+        "updated": "2026-04-08T22:07:16.900481-04:00",
+        "recid": "19477731",
+        "revision": 4,
+        "files": [
+          {
+            "id": "6fdbd51a-02da-466e-84eb-b1fbc7ed0e4c",
+            "key": "Institutional Blindness as an Emergent Feature: Why Systems Cannot Perceive Their Own Architecture .pdf",
+            "size": 82081,
+            "checksum": "md5:0f60d152f833ba69a75bc33845d23804",
+            "links": {
+              "self": "https://zenodo.org/api/records/19477731/files/Institutional%20Blindness%20as%20an%20Emergent%20Feature:%20Why%20Systems%20Cannot%20Perceive%20Their%20Own%20Architecture%20.pdf/content"
+            }
+          }
+        ],
+        "swh": null,
+        "owners": [
+          {
+            "id": "1502336"
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 8,
+          "unique_downloads": 8,
+          "views": 25,
+          "unique_views": 24,
+          "version_downloads": 8,
+          "version_unique_downloads": 8,
+          "version_unique_views": 24,
+          "version_views": 25
+        },
+        "state": "done",
+        "submitted": true
+      }
+    ],
+    "total": 442
+  },
+  "aggregations": {
+    "publication_date": {
+      "buckets": [
+        {
+          "key": "2025",
+          "doc_count": 17,
+          "label": "2025",
+          "is_selected": false
+        },
+        {
+          "key": "2026",
+          "doc_count": 425,
+          "label": "2026",
+          "is_selected": false
+        }
+      ],
+      "label": "Publication date"
+    },
+    "access_status": {
+      "buckets": [
+        {
+          "key": "open",
+          "doc_count": 442,
+          "label": "Open",
+          "is_selected": false
+        }
+      ],
+      "label": "Access status"
+    },
+    "resource_type": {
+      "buckets": [
+        {
+          "key": "publication",
+          "doc_count": 441,
+          "label": "Publication",
+          "is_selected": false,
+          "inner": {
+            "buckets": [
+              {
+                "key": "publication-article",
+                "doc_count": 430,
+                "label": "Journal article",
+                "is_selected": false
+              },
+              {
+                "key": "publication-preprint",
+                "doc_count": 11,
+                "label": "Preprint",
+                "is_selected": false
+              }
+            ]
+          }
+        },
+        {
+          "key": "dataset",
+          "doc_count": 1,
+          "label": "Dataset",
+          "is_selected": false,
+          "inner": {
+            "buckets": []
+          }
+        }
+      ],
+      "label": "Resource types"
+    },
+    "subject": {
+      "buckets": [
+        {
+          "key": "Institutions",
+          "doc_count": 282,
+          "label": "Institutions",
+          "is_selected": false
+        },
+        {
+          "key": "Metatheory",
+          "doc_count": 236,
+          "label": "Metatheory",
+          "is_selected": false
+        },
+        {
+          "key": "Social Issues",
+          "doc_count": 154,
+          "label": "Social Issues",
+          "is_selected": false
+        },
+        {
+          "key": "Governance",
+          "doc_count": 95,
+          "label": "Governance",
+          "is_selected": false
+        },
+        {
+          "key": "Artificial intelligence",
+          "doc_count": 86,
+          "label": "Artificial intelligence",
+          "is_selected": false
+        },
+        {
+          "key": "Critical Theory",
+          "doc_count": 75,
+          "label": "Critical Theory",
+          "is_selected": false
+        },
+        {
+          "key": "Artificial Intelligence",
+          "doc_count": 60,
+          "label": "Artificial Intelligence",
+          "is_selected": false
+        },
+        {
+          "key": "Internet Studies",
+          "doc_count": 51,
+          "label": "Internet Studies",
+          "is_selected": false
+        },
+        {
+          "key": "Social issues",
+          "doc_count": 44,
+          "label": "Social issues",
+          "is_selected": false
+        },
+        {
+          "key": "Feminism",
+          "doc_count": 41,
+          "label": "Feminism",
+          "is_selected": false
+        }
+      ],
+      "label": "Subjects"
+    },
+    "file_type": {
+      "buckets": [
+        {
+          "key": "pdf",
+          "doc_count": 433,
+          "label": "PDF",
+          "is_selected": false
+        },
+        {
+          "key": "docx",
+          "doc_count": 9,
+          "label": "DOCX",
+          "is_selected": false
+        }
+      ],
+      "label": "File type"
+    }
+  },
+  "links": {
+    "prev": "https://zenodo.org/api/records?page=5&q=creators.name:%22Rupture,+Signal%22&size=25&sort=publication_date",
+    "self": "https://zenodo.org/api/records?page=6&q=creators.name:%22Rupture,+Signal%22&size=25&sort=publication_date",
+    "next": "https://zenodo.org/api/records?page=7&q=creators.name:%22Rupture,+Signal%22&size=25&sort=publication_date"
+  }
+}

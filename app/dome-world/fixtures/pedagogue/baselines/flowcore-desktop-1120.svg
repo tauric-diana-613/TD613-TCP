@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="760" viewBox="0 0 1120 760" role="img" aria-labelledby="title desc">
+  <title id="title">Flow-Core desktop baseline</title>
+  <desc id="desc">Static consequence-first baseline for the Information Dome with explicit source, action, world answer, relation, rest, and exit.</desc>
+  <rect width="1120" height="760" fill="#090b14"/>
+  <rect x="40" y="40" width="1040" height="680" rx="24" fill="#111528" stroke="#d9d4ff" stroke-width="2"/>
+  <text x="76" y="92" fill="#f3f0ff" font-family="system-ui,sans-serif" font-size="24">U+10D613 · Flow-Core Pedagogue · Desktop 1120×760</text>
+  <text x="76" y="128" fill="#c7c0ff" font-family="system-ui,sans-serif" font-size="16">NOTICE → ACT → WORLD_ANSWERS → NAME → REST</text>
+  <g font-family="system-ui,sans-serif" font-size="17" fill="#f3f0ff">
+    <rect x="76" y="170" width="188" height="124" rx="16" fill="#1a2038" stroke="#8d86d9"/>
+    <text x="96" y="204">1 · Visible condition</text><text x="96" y="238">Source and limits</text><text x="96" y="272">remain inspectable.</text>
+    <rect x="282" y="170" width="188" height="124" rx="16" fill="#1a2038" stroke="#8d86d9"/>
+    <text x="302" y="204">2 · Meaningful act</text><text x="302" y="238">Authority and</text><text x="302" y="272">reversibility shown.</text>
+    <rect x="488" y="170" width="188" height="124" rx="16" fill="#1a2038" stroke="#8d86d9"/>
+    <text x="508" y="204">3 · World answers</text><text x="508" y="238">Causal trace or</text><text x="508" y="272">unresolved relation.</text>
+    <rect x="694" y="170" width="188" height="124" rx="16" fill="#1a2038" stroke="#8d86d9"/>
+    <text x="714" y="204">4 · Relation named</text><text x="714" y="238">Only after the</text><text x="714" y="272">consequence.</text>
+    <rect x="900" y="170" width="144" height="124" rx="16" fill="#1a2038" stroke="#8d86d9"/>
+    <text x="920" y="204">5 · 𝄐</text><text x="920" y="238">Rest, replay,</text><text x="920" y="272">return, exit.</text>
+  </g>
+  <path d="M264 232h18M470 232h18M676 232h18M882 232h18" stroke="#d9d4ff" stroke-width="3"/>
+  <rect x="76" y="338" width="968" height="164" rx="18" fill="#0d1120" stroke="#6f6aa6"/>
+  <text x="96" y="376" fill="#f3f0ff" font-family="system-ui,sans-serif" font-size="20">Invariant field</text>
+  <g fill="#d9d4ff" font-family="system-ui,sans-serif" font-size="16">
+    <text x="96" y="410">provenance · missingness · contradictions · causal structure · claim ceiling</text>
+    <text x="96" y="440">station ownership · authorized actions · local-section boundaries · source status</text>
+    <text x="96" y="470">four non-equivalent AIA routes · no inferred route · no automatic closure</text>
+  </g>
+  <rect x="76" y="536" width="968" height="118" rx="18" fill="#14192c" stroke="#8d86d9"/>
+  <text x="96" y="574" fill="#f3f0ff" font-family="system-ui,sans-serif" font-size="19">Static equivalent</text>
+  <text x="96" y="608" fill="#d9d4ff" font-family="system-ui,sans-serif" font-size="16">No animation owns unique meaning. Hidden views draw zero. Human closure remains required.</text>
+  <text x="96" y="638" fill="#d9d4ff" font-family="system-ui,sans-serif" font-size="16">𝌋‌ · namespace preserved · Unicode normalization: NONE · seal: ⟐</text>
+</svg>

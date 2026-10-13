@@ -1,0 +1,264 @@
+/* Loom targeted hierarchy repair v1.
+   Task first; route subordinate; laboratory and observer research remain opt-in.
+   No routing, measurement, provider, storage, or animation authority changes. */
+
+:root{
+  --loom-ux-gap:14px;
+  --loom-ux-radius:15px;
+}
+
+/* The title should orient, not consume the first viewport. */
+.hero{
+  padding:18px 0 14px!important;
+}
+.hero h1{
+  margin:5px 0 7px!important;
+  font-size:clamp(2.35rem,5vw,4.2rem)!important;
+  line-height:.94!important;
+}
+.hero p{
+  margin:6px 0!important;
+  max-width:620px!important;
+  font-size:.98rem!important;
+  line-height:1.5!important;
+}
+.hero>.mark{font-size:.62rem!important}
+
+/* One vertical journey: task → route observation → portable continuation → result. */
+#loomAiWorkspace .ai-columns{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:var(--loom-ux-gap)!important;
+  align-items:start!important;
+}
+#loomAiWorkspace .ai-composer{
+  padding:18px 19px!important;
+  border-radius:var(--loom-ux-radius)!important;
+  box-shadow:0 16px 48px rgba(3,2,6,.38)!important;
+}
+#loomAiWorkspace .ai-observer{
+  position:static!important;
+  top:auto!important;
+  padding:13px 15px!important;
+  border-radius:13px!important;
+  background:rgba(16,12,25,.84)!important;
+  border-color:rgba(193,160,222,.22)!important;
+  box-shadow:none!important;
+}
+#loomAiWorkspace .ai-observer .ai-phase{
+  min-height:28px;
+}
+#loomAiWorkspace .ai-observer .ai-phase .mark{
+  font-size:.6rem!important;
+}
+#loomAiWorkspace .ai-observer>h2{
+  margin:2px 0 7px!important;
+  font-size:1.03rem!important;
+  line-height:1.25!important;
+}
+#loomAiWorkspace .ai-observer .ai-facts{
+  margin:8px 0!important;
+  gap:8px!important;
+}
+#loomAiWorkspace .ai-observer .ai-facts dd{
+  margin:2px 0!important;
+  font-size:1rem!important;
+}
+#loomAiWorkspace .ai-observer .ai-events{
+  max-height:100px!important;
+}
+#loomAiWorkspace .ai-observer .ai-view-switch{
+  margin:7px 0!important;
+}
+#loomAiWorkspace .ai-observer .ai-view-switch button,
+#loomAiWorkspace .ai-observer .ai-room-replay button{
+  min-height:32px!important;
+  padding:6px 9px!important;
+  font-size:.68rem!important;
+}
+
+/* The living room remains visible for browser witnesses, but stops competing with the editor. */
+#loomAiWorkspace .loom-living-room{
+  margin-top:6px!important;
+  padding:10px!important;
+}
+#loomAiWorkspace .loom-living-room .lr-stage{
+  min-height:150px!important;
+}
+#loomAiWorkspace .loom-living-room .lr-station-captions{
+  gap:6px!important;
+}
+#loomAiWorkspace .loom-living-room .lr-station-captions p{
+  padding:6px 7px!important;
+}
+#loomAiWorkspace .loom-living-room .lr-now,
+#loomAiWorkspace .loom-living-room .lr-why{
+  margin:6px 0!important;
+}
+#loomAiWorkspace .loom-living-room .lr-cause{
+  margin-top:6px!important;
+}
+
+/* Entry choices and repeated instructional chrome become supporting material. */
+#loomAiWorkspace .ai-demo-welcome{
+  margin:0 0 10px!important;
+}
+#loomAiWorkspace .ai-demo-invitation,
+.loom-legacy>.loom-laboratory-invitation{
+  gap:11px!important;
+  padding:11px 14px!important;
+  min-height:54px!important;
+  border-radius:13px!important;
+  transform:none!important;
+}
+#loomAiWorkspace .ai-demo-invitation strong,
+.loom-laboratory-invitation strong{
+  font-size:1rem!important;
+}
+#loomAiWorkspace .ai-demo-invitation small,
+.loom-laboratory-invitation small{
+  margin-top:2px!important;
+  font-size:.7rem!important;
+}
+.ai-invitation-orbit{
+  flex-basis:34px!important;
+  width:34px!important;
+  height:34px!important;
+  font-size:1.05rem!important;
+}
+.ai-invitation-arrow{font-size:1.05rem!important}
+#loomAiWorkspace .ai-demo-welcome>.ai-muted{
+  margin:4px 1px 0!important;
+  font-size:.7rem!important;
+}
+#loomAiWorkspace .ai-projects{
+  margin:8px 0 12px!important;
+}
+#loomAiWorkspace .ai-projects button{
+  min-height:78px!important;
+  padding:10px 12px!important;
+}
+#loomAiWorkspace .ai-project-brief{
+  margin:0 0 10px!important;
+  padding:10px 12px!important;
+}
+#loomAiWorkspace .ai-task-surface{
+  margin:10px 0!important;
+  padding:12px!important;
+}
+#loomAiWorkspace textarea#aiTask{
+  min-height:175px!important;
+}
+#loomAiWorkspace .ai-toolbar,
+#loomAiWorkspace .ai-send-row{
+  margin-top:10px!important;
+}
+#loomAiWorkspace .ai-portable-drawer{
+  margin-top:13px!important;
+}
+.loom-legacy{
+  margin-top:18px!important;
+  border-top-color:rgba(195,161,225,.20)!important;
+}
+.loom-legacy>.loom-laboratory-invitation{
+  margin:0!important;
+}
+
+/* The finite research chamber stays available without becoming the page hierarchy. */
+.loom-legacy .oc-shell{
+  margin:12px 0!important;
+  border-radius:13px!important;
+}
+.loom-legacy .oc-shell>summary{
+  min-height:44px!important;
+  padding:11px 13px!important;
+  font-size:.86rem!important;
+}
+.loom-legacy .observer-chamber{
+  padding:2px 14px 18px!important;
+}
+.loom-legacy .observer-chamber h2{
+  margin:7px 0 10px!important;
+  font-size:1.35rem!important;
+}
+
+/* The result stays roomy; the machinery before it should not. */
+#loomAiWorkspace .ai-result{
+  margin-top:14px!important;
+  padding:18px!important;
+  border-radius:var(--loom-ux-radius)!important;
+}
+
+@media(max-width:760px){
+  .wrap{
+    width:min(100% - 18px,1160px)!important;
+    padding-top:10px!important;
+  }
+  .mast{
+    padding:8px 0 12px!important;
+  }
+  .hero{
+    padding:14px 0 10px!important;
+  }
+  .hero h1{
+    font-size:clamp(2.15rem,12vw,3.2rem)!important;
+  }
+  .hero p{
+    font-size:.92rem!important;
+    line-height:1.45!important;
+  }
+  #loomAiWorkspace .ai-composer{
+    padding:14px 13px!important;
+  }
+  #loomAiWorkspace textarea#aiTask{
+    min-height:190px!important;
+    font-size:16px!important;
+  }
+  #loomAiWorkspace .ai-observer{
+    padding:11px!important;
+  }
+  #loomAiWorkspace .ai-projects{
+    grid-template-columns:1fr!important;
+  }
+  #loomAiWorkspace .ai-projects button{
+    min-height:62px!important;
+  }
+  #loomAiWorkspace .ai-send-row{
+    display:grid!important;
+    grid-template-columns:1fr auto!important;
+  }
+  #loomAiWorkspace .ai-send-row .ai-primary{
+    width:100%!important;
+  }
+  #loomAiWorkspace #aiSendSummary{
+    grid-column:1/-1!important;
+  }
+}
+@media(max-width:420px){
+  .wrap{width:calc(100% - 14px)!important}
+  .mast{gap:8px!important}
+  .mast .mark{max-width:62%!important;font-size:.58rem!important}
+  .return{padding:7px 8px!important;font-size:.61rem!important}
+  #loomAiWorkspace .ai-composer,
+  #loomAiWorkspace .ai-observer,
+  #loomAiWorkspace .ai-result{
+    border-radius:12px!important;
+  }
+  #loomAiWorkspace .ai-toolbar{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+  }
+  #loomAiWorkspace .ai-upload,
+  #loomAiWorkspace #aiNew{
+    width:100%!important;
+  }
+  #loomAiWorkspace .ai-send-row{
+    grid-template-columns:1fr!important;
+  }
+  #loomAiWorkspace #aiStop{width:100%!important}
+  .loom-legacy .observer-chamber{padding-inline:10px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  #loomAiWorkspace .ai-demo-invitation,
+  .loom-legacy>.loom-laboratory-invitation{transform:none!important}
+}

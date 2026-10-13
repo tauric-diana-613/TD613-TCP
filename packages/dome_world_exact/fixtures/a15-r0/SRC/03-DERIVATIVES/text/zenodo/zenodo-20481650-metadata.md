@@ -1,0 +1,139 @@
+---
+derivative_id: derivative:92e5f5ac03ab59ce1951d048
+parent_capture_id: capture:d23ba0c4930c6e845183dfae
+parent_blob_sha256: 029479a960edfbe0824b668a8f4c9d41a7ea0b3f22e8138eb792f484e54a17a6
+tool: srcctl-json-normalizer/1
+source_title: "Institutional Recoil: A Conceptual Paper"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.20481649",
+  "conceptrecid": "20481649",
+  "created": "2026-06-01T00:36:43.146554+00:00",
+  "doi": "10.5281/zenodo.20481650",
+  "doi_url": "https://doi.org/10.5281/zenodo.20481650",
+  "files": [
+    {
+      "checksum": "md5:22653a9000969544f360da8c8fbf3fb2",
+      "id": "0753f999-9325-403a-91f8-5a2c41468f2a",
+      "key": "Institutional Recoil: A Conceptual Paper .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/20481650/files/Institutional%20Recoil:%20A%20Conceptual%20Paper%20.pdf/content"
+      },
+      "size": 89909
+    }
+  ],
+  "id": 20481650,
+  "links": {
+    "access": "https://zenodo.org/api/records/20481650/access",
+    "access_grants": "https://zenodo.org/api/records/20481650/access/grants",
+    "access_links": "https://zenodo.org/api/records/20481650/access/links",
+    "access_request": "https://zenodo.org/api/records/20481650/access/request",
+    "access_users": "https://zenodo.org/api/records/20481650/access/users",
+    "archive": "https://zenodo.org/api/records/20481650/files-archive",
+    "archive_media": "https://zenodo.org/api/records/20481650/media-files-archive",
+    "communities": "https://zenodo.org/api/records/20481650/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/20481650/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.20481650",
+    "draft": "https://zenodo.org/api/records/20481650/draft",
+    "file_modification": "https://zenodo.org/api/records/20481650/file-modification",
+    "files": "https://zenodo.org/api/records/20481650/files",
+    "latest": "https://zenodo.org/api/records/20481650/versions/latest",
+    "latest_html": "https://zenodo.org/records/20481650/latest",
+    "media_files": "https://zenodo.org/api/records/20481650/media-files",
+    "parent": "https://zenodo.org/api/records/20481649",
+    "parent_doi": "https://doi.org/10.5281/zenodo.20481649",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20481649",
+    "parent_html": "https://zenodo.org/records/20481649",
+    "preview_html": "https://zenodo.org/records/20481650?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/20481650/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/20481650/request-deletion",
+    "requests": "https://zenodo.org/api/records/20481650/requests",
+    "reserve_doi": "https://zenodo.org/api/records/20481650/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/20481650",
+    "self_doi": "https://doi.org/10.5281/zenodo.20481650",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20481650",
+    "self_html": "https://zenodo.org/records/20481650",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20481650/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20481650/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:20481650:Institutional%20Recoil:%20A%20Conceptual%20Paper%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:20481650:Institutional%20Recoil:%20A%20Conceptual%20Paper%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:20481650:Institutional%20Recoil:%20A%20Conceptual%20Paper%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:20481650:Institutional%20Recoil:%20A%20Conceptual%20Paper%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:20481650:Institutional%20Recoil:%20A%20Conceptual%20Paper%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:20481650:Institutional%20Recoil:%20A%20Conceptual%20Paper%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/20481650/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>The Institutional Recoil Theorem (SR‑IRT): Conceptual Architecture establishes recoil as a fundamental governance‑layer response pattern that emerges whenever institutional narratives diverge from substrate‑level conditions. Rather than treating recoil as a moral failure, a political pathology, or an administrative breakdown, the conceptual paper reframes it as a structural equilibrium behavior produced by drift, misalignment, and asymmetric cost structures.<br>The paper formalizes recoil as a predictable system‑level reaction that activates when public recognition of harm exceeds institutional tolerance thresholds, escalates when narrative defense is cheaper than correction, and collapses when accumulated drift overwhelms narrative capacity.<br>Within the broader SignalRupture canon, the conceptual paper positions SR‑IRT as a core primitive: a mechanism that explains why institutions defend narratives even when correction is feasible, why visibility collapses recur across domains, and why legitimacy preservation often supersedes harm reduction.</p>",
+    "doi": "10.5281/zenodo.20481650",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Governance"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-06-01",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "20481649"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Institutional Recoil: A Conceptual Paper",
+    "version": "1.0"
+  },
+  "modified": "2026-06-01T00:36:43.524219+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "20481650",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 10,
+    "unique_downloads": 9,
+    "unique_views": 13,
+    "version_downloads": 10,
+    "version_unique_downloads": 9,
+    "version_unique_views": 13,
+    "version_views": 13,
+    "views": 13
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Institutional Recoil: A Conceptual Paper",
+  "updated": "2026-06-01T00:36:43.524219+00:00"
+}

@@ -1,0 +1,73 @@
+{
+  "schema": "td613.phase4.fixture-bank/v0.1",
+  "fixtures": [
+    {
+      "id": "valid-derived-round-trip",
+      "diagnostic": {
+        "schema": "td613.aperture.diagnostic-receipt/v3.0-alpha",
+        "receipt_id": "apdiag_fixture_valid_000001",
+        "instrument": "TD613 Aperture",
+        "version": "v3.0-alpha",
+        "firmwareSchema": "td613-aperture/v3.0-alpha",
+        "posture": "recommendation-not-command",
+        "taskIntent": {"primary_route": "REQUESTED_SYNTHESIS", "runtime_materiality": "BACKGROUND", "automatic_redirect": false},
+        "source": {"status": "DERIVED"},
+        "runtime": {"materiality": "BACKGROUND"},
+        "produced": {"context_request": {"metrics": {"omissionPressure": 0.2, "coherence": 0.75, "divergence": 0.3, "namingSensitivity": 0.4, "rupturePressure": 0.1}}}
+      },
+      "expected": {"status": "OPEN", "context_posture": "CONTEXT_READY", "routePressure": 0.2125}
+    },
+    {
+      "id": "missing-coherence-abstains",
+      "diagnostic": {
+        "schema": "td613.aperture.diagnostic-receipt/v3.0-alpha",
+        "receipt_id": "apdiag_fixture_missing_0001",
+        "instrument": "TD613 Aperture",
+        "version": "v3.0-alpha",
+        "firmwareSchema": "td613-aperture/v3.0-alpha",
+        "posture": "recommendation-not-command",
+        "taskIntent": {"primary_route": "REQUESTED_SYNTHESIS", "runtime_materiality": "BACKGROUND", "automatic_redirect": false},
+        "source": {"status": "DERIVED"},
+        "runtime": {"materiality": "BACKGROUND"},
+        "produced": {"context_request": {"metrics": {"omissionPressure": 0.2, "divergence": 0.3}}}
+      },
+      "expected": {"status": "ABSTAIN", "context_posture": "ABSTAIN_INSUFFICIENT_CONTEXT", "weather": null}
+    },
+    {
+      "id": "invalid-divergence-abstains",
+      "diagnostic": {
+        "schema": "td613.aperture.diagnostic-receipt/v3.0-alpha",
+        "receipt_id": "apdiag_fixture_range_000001",
+        "instrument": "TD613 Aperture",
+        "version": "v3.0-alpha",
+        "firmwareSchema": "td613-aperture/v3.0-alpha",
+        "posture": "recommendation-not-command",
+        "taskIntent": {"primary_route": "REQUESTED_SYNTHESIS", "runtime_materiality": "BACKGROUND", "automatic_redirect": false},
+        "source": {"status": "DERIVED"},
+        "runtime": {"materiality": "BACKGROUND"},
+        "produced": {"context_request": {"metrics": {"omissionPressure": 0.2, "coherence": 0.75, "divergence": 1.2}}}
+      },
+      "expected": {"status": "ABSTAIN", "missingness": "weather metric outside [0,1]"}
+    },
+    {
+      "id": "artifact-injection-rejected",
+      "mutation": {"artifact_digest": "sha256:must-reject"},
+      "expected": {"http_status": 400, "receipt_returned": false}
+    },
+    {
+      "id": "authority-injection-rejected",
+      "returned_context_mutation": {"automatic_ash_action": true},
+      "expected": {"audit": "REJECT_AUTHORITY_BREACH"}
+    },
+    {
+      "id": "reference-substitution-held",
+      "returned_context_mutation": {"diagnostic_receipt_reference": "apdiag_wrong_reference"},
+      "expected": {"audit": "HOLD_FOR_REPAIR"}
+    },
+    {
+      "id": "legacy-vnext-migration",
+      "legacy_context": {"schema": "td613.flowcore.context-receipt/vNext", "artifact_reference": null, "source_status": "DERIVED"},
+      "expected": {"migration_status": "LEGACY_PROVISIONAL_NORMALIZED", "native_v01": false}
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+---
+derivative_id: derivative:0a682ed87025378890b74577
+parent_capture_id: capture:3c966d22a41fbd0296722def
+parent_blob_sha256: ac5c1342c3904823e33797680b100de20e6c958368c78b08bae7100403e12f07
+tool: srcctl-json-normalizer/1
+source_title: "Agent‑Based Simulation of Institutional–Public Temporal Divergence"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.20076615",
+  "conceptrecid": "20076615",
+  "created": "2026-05-07T23:42:15.927266+00:00",
+  "doi": "10.5281/zenodo.20076616",
+  "doi_url": "https://doi.org/10.5281/zenodo.20076616",
+  "files": [
+    {
+      "checksum": "md5:094f8263e5e61088467ed6f311825095",
+      "id": "bab860df-7ecf-4945-b480-927e4ed4b4de",
+      "key": "Agent‑Based Simulation of Institutional–Public Temporal Divergence .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/20076616/files/Agent%E2%80%91Based%20Simulation%20of%20Institutional%E2%80%93Public%20Temporal%20Divergence%20.pdf/content"
+      },
+      "size": 167249
+    }
+  ],
+  "id": 20076616,
+  "links": {
+    "access": "https://zenodo.org/api/records/20076616/access",
+    "access_grants": "https://zenodo.org/api/records/20076616/access/grants",
+    "access_links": "https://zenodo.org/api/records/20076616/access/links",
+    "access_request": "https://zenodo.org/api/records/20076616/access/request",
+    "access_users": "https://zenodo.org/api/records/20076616/access/users",
+    "archive": "https://zenodo.org/api/records/20076616/files-archive",
+    "archive_media": "https://zenodo.org/api/records/20076616/media-files-archive",
+    "communities": "https://zenodo.org/api/records/20076616/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/20076616/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.20076616",
+    "draft": "https://zenodo.org/api/records/20076616/draft",
+    "file_modification": "https://zenodo.org/api/records/20076616/file-modification",
+    "files": "https://zenodo.org/api/records/20076616/files",
+    "latest": "https://zenodo.org/api/records/20076616/versions/latest",
+    "latest_html": "https://zenodo.org/records/20076616/latest",
+    "media_files": "https://zenodo.org/api/records/20076616/media-files",
+    "parent": "https://zenodo.org/api/records/20076615",
+    "parent_doi": "https://doi.org/10.5281/zenodo.20076615",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20076615",
+    "parent_html": "https://zenodo.org/records/20076615",
+    "preview_html": "https://zenodo.org/records/20076616?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/20076616/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/20076616/request-deletion",
+    "requests": "https://zenodo.org/api/records/20076616/requests",
+    "reserve_doi": "https://zenodo.org/api/records/20076616/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/20076616",
+    "self_doi": "https://doi.org/10.5281/zenodo.20076616",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.20076616",
+    "self_html": "https://zenodo.org/records/20076616",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:20076616/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:20076616/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:20076616:Agent%E2%80%91Based%20Simulation%20of%20Institutional%E2%80%93Public%20Temporal%20Divergence%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:20076616:Agent%E2%80%91Based%20Simulation%20of%20Institutional%E2%80%93Public%20Temporal%20Divergence%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:20076616:Agent%E2%80%91Based%20Simulation%20of%20Institutional%E2%80%93Public%20Temporal%20Divergence%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:20076616:Agent%E2%80%91Based%20Simulation%20of%20Institutional%E2%80%93Public%20Temporal%20Divergence%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:20076616:Agent%E2%80%91Based%20Simulation%20of%20Institutional%E2%80%93Public%20Temporal%20Divergence%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:20076616:Agent%E2%80%91Based%20Simulation%20of%20Institutional%E2%80%93Public%20Temporal%20Divergence%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/20076616/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p><em>Agent‑Based Simulation of Institutional&ndash;Public Temporal Divergence</em> (Paper III) is the generative‑mechanism layer of the SignalRupture Conspiracy Shield research program. Where Paper II measured temporal misalignment empirically, Paper III builds a <strong>computational model</strong> that reproduces those empirical patterns from first principles.</p>\n<p>The paper simulates public and institutional agents interacting under asymmetric information velocity, legitimacy constraints, and delayed validation pipelines. The result is a generative system in which the statistical signatures identified in Paper II&mdash;log‑normal lag distributions, dismissal‑to‑validation asymmetries, and narrative clustering&mdash;emerge naturally without requiring coordination, secrecy, or intent.</p>\n<p>Paper III demonstrates that the Conspiracy Shield is not a deliberate mechanism but an <strong>emergent synchronization failure</strong> in dual‑speed epistemic systems. It closes the loop between conceptual definition (Paper I), empirical measurement (Paper II), and computational mechanism (Paper III), completing the foundational SR trilogy.</p>",
+    "doi": "10.5281/zenodo.20076616",
+    "keywords": [
+      "Institutions",
+      "Conspiracy Theory",
+      "Metatheory",
+      "Society",
+      "Governance",
+      "Governments"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-05-08",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "20076615"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Agent‑Based Simulation of Institutional–Public Temporal Divergence",
+    "version": "1.0"
+  },
+  "modified": "2026-05-07T23:42:16.328236+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "20076616",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 28,
+    "unique_downloads": 26,
+    "unique_views": 50,
+    "version_downloads": 28,
+    "version_unique_downloads": 26,
+    "version_unique_views": 50,
+    "version_views": 53,
+    "views": 53
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Agent‑Based Simulation of Institutional–Public Temporal Divergence",
+  "updated": "2026-05-07T23:42:16.328236+00:00"
+}

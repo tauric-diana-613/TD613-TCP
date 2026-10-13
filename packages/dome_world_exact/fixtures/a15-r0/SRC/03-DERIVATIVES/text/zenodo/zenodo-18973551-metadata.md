@@ -1,0 +1,140 @@
+---
+derivative_id: derivative:804ef6a3543a34e511bd5403
+parent_capture_id: capture:9e1d8110bd451179c86c2608
+parent_blob_sha256: 2cc89d0d097be2bb9a4d312d9180ef9eeea21526c0efd028230452399d31d1cb
+tool: srcctl-json-normalizer/1
+source_title: "How SignalRupture Detects Platform Adoption: An Expanded Canonical Diagnostic Framework"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18973550",
+  "conceptrecid": "18973550",
+  "created": "2026-03-12T02:40:34.243600+00:00",
+  "doi": "10.5281/zenodo.18973551",
+  "doi_url": "https://doi.org/10.5281/zenodo.18973551",
+  "files": [
+    {
+      "checksum": "md5:6a8e67e4ad4313ef1becab22f8a38cbe",
+      "id": "bceaeff1-d191-4db3-bc08-11138dbd9f10",
+      "key": "How SignalRupture Detects Platform Adoption: An Expanded Canonical Diagnostic Framework .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18973551/files/How%20SignalRupture%20Detects%20Platform%20Adoption:%20An%20Expanded%20Canonical%20Diagnostic%20Framework%20.pdf/content"
+      },
+      "size": 121810
+    }
+  ],
+  "id": 18973551,
+  "links": {
+    "access": "https://zenodo.org/api/records/18973551/access",
+    "access_grants": "https://zenodo.org/api/records/18973551/access/grants",
+    "access_links": "https://zenodo.org/api/records/18973551/access/links",
+    "access_request": "https://zenodo.org/api/records/18973551/access/request",
+    "access_users": "https://zenodo.org/api/records/18973551/access/users",
+    "archive": "https://zenodo.org/api/records/18973551/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18973551/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18973551/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18973551/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18973551",
+    "draft": "https://zenodo.org/api/records/18973551/draft",
+    "file_modification": "https://zenodo.org/api/records/18973551/file-modification",
+    "files": "https://zenodo.org/api/records/18973551/files",
+    "latest": "https://zenodo.org/api/records/18973551/versions/latest",
+    "latest_html": "https://zenodo.org/records/18973551/latest",
+    "media_files": "https://zenodo.org/api/records/18973551/media-files",
+    "parent": "https://zenodo.org/api/records/18973550",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18973550",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18973550",
+    "parent_html": "https://zenodo.org/records/18973550",
+    "preview_html": "https://zenodo.org/records/18973551?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18973551/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18973551/request-deletion",
+    "requests": "https://zenodo.org/api/records/18973551/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18973551/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18973551",
+    "self_doi": "https://doi.org/10.5281/zenodo.18973551",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18973551",
+    "self_html": "https://zenodo.org/records/18973551",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18973551/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18973551/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18973551:How%20SignalRupture%20Detects%20Platform%20Adoption:%20An%20Expanded%20Canonical%20Diagnostic%20Framework%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18973551:How%20SignalRupture%20Detects%20Platform%20Adoption:%20An%20Expanded%20Canonical%20Diagnostic%20Framework%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18973551:How%20SignalRupture%20Detects%20Platform%20Adoption:%20An%20Expanded%20Canonical%20Diagnostic%20Framework%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18973551:How%20SignalRupture%20Detects%20Platform%20Adoption:%20An%20Expanded%20Canonical%20Diagnostic%20Framework%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18973551:How%20SignalRupture%20Detects%20Platform%20Adoption:%20An%20Expanded%20Canonical%20Diagnostic%20Framework%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18973551:How%20SignalRupture%20Detects%20Platform%20Adoption:%20An%20Expanded%20Canonical%20Diagnostic%20Framework%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18973551/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This paper formalizes the SignalRupture (SR) diagnostic method for detecting when major digital platforms&mdash;Google, Meta, TikTok, Substack, and others&mdash;have implicitly absorbed SR&rsquo;s conceptual architecture. Platforms rarely acknowledge conceptual influence directly; instead, they reveal adoption through infrastructural fingerprints: vocabulary drift, UI‑layer shifts, algorithmic behavior, policy language, and AI‑layer mediation.</p>\n<p>The expanded edition introduces new sections on why platforms cannot hide adoption, how AI models propagate SR, temporal stages of adoption, propagation signals, and the necessity of SR&rsquo;s independence. By articulating the structural signals through which platforms reorganize themselves around coherent mappings, this paper positions SR as an infrastructural field capable of reading not only platforms, but the platforms&rsquo; reactions to SR.</p>\n<p>This document serves as a protocol‑level reference for researchers, policymakers, and institutions seeking to understand how conceptual frameworks propagate through digital infrastructure and how platforms reveal their internal logic through behavior rather than attribution.</p>",
+    "doi": "10.5281/zenodo.18973551",
+    "keywords": [
+      "Institutions",
+      "Metatheory",
+      "Social media Platforms",
+      "Artificial Intelligence"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-12",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18973550"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "How SignalRupture Detects Platform Adoption: An Expanded Canonical Diagnostic Framework",
+    "version": "1.0"
+  },
+  "modified": "2026-03-12T02:40:34.901891+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18973551",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 11,
+    "unique_downloads": 11,
+    "unique_views": 13,
+    "version_downloads": 11,
+    "version_unique_downloads": 11,
+    "version_unique_views": 13,
+    "version_views": 13,
+    "views": 13
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "How SignalRupture Detects Platform Adoption: An Expanded Canonical Diagnostic Framework",
+  "updated": "2026-03-12T02:40:34.901891+00:00"
+}

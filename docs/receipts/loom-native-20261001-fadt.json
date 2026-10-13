@@ -1,0 +1,1717 @@
+{
+  "role": "FADT",
+  "source_base": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f",
+  "evidence_class": "caller-declared finite support audit",
+  "retained": {
+    "schema": "td613.dollhouse.fadt-stage-audit/v0.1",
+    "agent": "FADT",
+    "retained_coordinates": [
+      "admission",
+      "head",
+      "stage"
+    ],
+    "erased_coordinates": [
+      "surface"
+    ],
+    "occupied_states": [
+      {
+        "id": "activation-admitted",
+        "conditioning": {
+          "admission": "ADMITTED",
+          "head": "ACTIVATION",
+          "stage": "AIA_SENT",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST",
+          "STAGE_FILES"
+        ]
+      },
+      {
+        "id": "activation-held",
+        "conditioning": {
+          "admission": "HELD",
+          "head": "NONE",
+          "stage": "AIA_STAGED",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST",
+          "SEND_AIA"
+        ]
+      },
+      {
+        "id": "activation-staged",
+        "conditioning": {
+          "admission": "NONE",
+          "head": "NONE",
+          "stage": "AIA_STAGED",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST",
+          "SEND_AIA"
+        ]
+      },
+      {
+        "id": "arrival",
+        "conditioning": {
+          "admission": "NONE",
+          "head": "NONE",
+          "stage": "ARRIVED",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST",
+          "STAGE_AIA"
+        ]
+      },
+      {
+        "id": "current-admitted",
+        "conditioning": {
+          "admission": "ADMITTED",
+          "head": "CURRENT",
+          "stage": "DONE",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "EXPORT_CURRENT",
+          "REST",
+          "SEND_FOLLOWUP"
+        ]
+      },
+      {
+        "id": "files-pending",
+        "conditioning": {
+          "admission": "PENDING",
+          "head": "ACTIVATION",
+          "stage": "CONTINUING",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST",
+          "STOP"
+        ]
+      },
+      {
+        "id": "files-staged",
+        "conditioning": {
+          "admission": "ADMITTED",
+          "head": "ACTIVATION",
+          "stage": "FILES_STAGED",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST",
+          "SEND_FILES"
+        ]
+      },
+      {
+        "id": "followup-held",
+        "conditioning": {
+          "admission": "HELD",
+          "head": "CURRENT",
+          "stage": "DONE",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "EXPORT_CURRENT",
+          "REST",
+          "SEND_FOLLOWUP"
+        ]
+      },
+      {
+        "id": "historic-admitted",
+        "conditioning": {
+          "admission": "ADMITTED",
+          "head": "STALE",
+          "stage": "DONE",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST"
+        ]
+      },
+      {
+        "id": "malformed-transfer",
+        "conditioning": {
+          "admission": "MALFORMED",
+          "head": "NONE",
+          "stage": "REJECTED",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST"
+        ]
+      },
+      {
+        "id": "ordinary-entry",
+        "conditioning": {
+          "admission": "ORDINARY",
+          "head": "NONE",
+          "stage": "ORDINARY",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST",
+          "SEND_ORDINARY"
+        ]
+      }
+    ],
+    "projections": [
+      {
+        "fibre_id": "occupied-fibre-0",
+        "projection": {
+          "admission": "ADMITTED",
+          "head": "ACTIVATION",
+          "stage": "AIA_SENT"
+        }
+      },
+      {
+        "fibre_id": "occupied-fibre-1",
+        "projection": {
+          "admission": "ADMITTED",
+          "head": "ACTIVATION",
+          "stage": "FILES_STAGED"
+        }
+      },
+      {
+        "fibre_id": "occupied-fibre-2",
+        "projection": {
+          "admission": "ADMITTED",
+          "head": "CURRENT",
+          "stage": "DONE"
+        }
+      },
+      {
+        "fibre_id": "occupied-fibre-3",
+        "projection": {
+          "admission": "ADMITTED",
+          "head": "STALE",
+          "stage": "DONE"
+        }
+      },
+      {
+        "fibre_id": "occupied-fibre-4",
+        "projection": {
+          "admission": "HELD",
+          "head": "CURRENT",
+          "stage": "DONE"
+        }
+      },
+      {
+        "fibre_id": "occupied-fibre-5",
+        "projection": {
+          "admission": "HELD",
+          "head": "NONE",
+          "stage": "AIA_STAGED"
+        }
+      },
+      {
+        "fibre_id": "occupied-fibre-6",
+        "projection": {
+          "admission": "MALFORMED",
+          "head": "NONE",
+          "stage": "REJECTED"
+        }
+      },
+      {
+        "fibre_id": "occupied-fibre-7",
+        "projection": {
+          "admission": "NONE",
+          "head": "NONE",
+          "stage": "AIA_STAGED"
+        }
+      },
+      {
+        "fibre_id": "occupied-fibre-8",
+        "projection": {
+          "admission": "NONE",
+          "head": "NONE",
+          "stage": "ARRIVED"
+        }
+      },
+      {
+        "fibre_id": "occupied-fibre-9",
+        "projection": {
+          "admission": "ORDINARY",
+          "head": "NONE",
+          "stage": "ORDINARY"
+        }
+      },
+      {
+        "fibre_id": "occupied-fibre-10",
+        "projection": {
+          "admission": "PENDING",
+          "head": "ACTIVATION",
+          "stage": "CONTINUING"
+        }
+      }
+    ],
+    "finite_audit": {
+      "schema": "td613.dollhouse.fadt-agent/v0.1",
+      "agent": "FADT",
+      "occupied_fibre_count": 11,
+      "all_fibres_exact": true,
+      "fibres": [
+        {
+          "fibre_id": "occupied-fibre-0",
+          "antecedents": [
+            {
+              "id": "activation-admitted",
+              "support": [
+                "EXIT",
+                "REST",
+                "STAGE_FILES"
+              ]
+            }
+          ],
+          "union": [
+            "EXIT",
+            "REST",
+            "STAGE_FILES"
+          ],
+          "intersection": [
+            "EXIT",
+            "REST",
+            "STAGE_FILES"
+          ],
+          "irreducible_gap": [],
+          "gap_size": 0,
+          "support_constant_on_fibre": true,
+          "exact_descended_admissibility": true,
+          "largest_universally_sound_rule": [
+            "EXIT",
+            "REST",
+            "STAGE_FILES"
+          ],
+          "smallest_universally_complete_rule": [
+            "EXIT",
+            "REST",
+            "STAGE_FILES"
+          ],
+          "verdict": "AUTHORIZED"
+        },
+        {
+          "fibre_id": "occupied-fibre-1",
+          "antecedents": [
+            {
+              "id": "files-staged",
+              "support": [
+                "EXIT",
+                "REST",
+                "SEND_FILES"
+              ]
+            }
+          ],
+          "union": [
+            "EXIT",
+            "REST",
+            "SEND_FILES"
+          ],
+          "intersection": [
+            "EXIT",
+            "REST",
+            "SEND_FILES"
+          ],
+          "irreducible_gap": [],
+          "gap_size": 0,
+          "support_constant_on_fibre": true,
+          "exact_descended_admissibility": true,
+          "largest_universally_sound_rule": [
+            "EXIT",
+            "REST",
+            "SEND_FILES"
+          ],
+          "smallest_universally_complete_rule": [
+            "EXIT",
+            "REST",
+            "SEND_FILES"
+          ],
+          "verdict": "AUTHORIZED"
+        },
+        {
+          "fibre_id": "occupied-fibre-2",
+          "antecedents": [
+            {
+              "id": "current-admitted",
+              "support": [
+                "EXIT",
+                "EXPORT_CURRENT",
+                "REST",
+                "SEND_FOLLOWUP"
+              ]
+            }
+          ],
+          "union": [
+            "EXIT",
+            "EXPORT_CURRENT",
+            "REST",
+            "SEND_FOLLOWUP"
+          ],
+          "intersection": [
+            "EXIT",
+            "EXPORT_CURRENT",
+            "REST",
+            "SEND_FOLLOWUP"
+          ],
+          "irreducible_gap": [],
+          "gap_size": 0,
+          "support_constant_on_fibre": true,
+          "exact_descended_admissibility": true,
+          "largest_universally_sound_rule": [
+            "EXIT",
+            "EXPORT_CURRENT",
+            "REST",
+            "SEND_FOLLOWUP"
+          ],
+          "smallest_universally_complete_rule": [
+            "EXIT",
+            "EXPORT_CURRENT",
+            "REST",
+            "SEND_FOLLOWUP"
+          ],
+          "verdict": "AUTHORIZED"
+        },
+        {
+          "fibre_id": "occupied-fibre-3",
+          "antecedents": [
+            {
+              "id": "historic-admitted",
+              "support": [
+                "EXIT",
+                "REST"
+              ]
+            }
+          ],
+          "union": [
+            "EXIT",
+            "REST"
+          ],
+          "intersection": [
+            "EXIT",
+            "REST"
+          ],
+          "irreducible_gap": [],
+          "gap_size": 0,
+          "support_constant_on_fibre": true,
+          "exact_descended_admissibility": true,
+          "largest_universally_sound_rule": [
+            "EXIT",
+            "REST"
+          ],
+          "smallest_universally_complete_rule": [
+            "EXIT",
+            "REST"
+          ],
+          "verdict": "AUTHORIZED"
+        },
+        {
+          "fibre_id": "occupied-fibre-4",
+          "antecedents": [
+            {
+              "id": "followup-held",
+              "support": [
+                "EXIT",
+                "EXPORT_CURRENT",
+                "REST",
+                "SEND_FOLLOWUP"
+              ]
+            }
+          ],
+          "union": [
+            "EXIT",
+            "EXPORT_CURRENT",
+            "REST",
+            "SEND_FOLLOWUP"
+          ],
+          "intersection": [
+            "EXIT",
+            "EXPORT_CURRENT",
+            "REST",
+            "SEND_FOLLOWUP"
+          ],
+          "irreducible_gap": [],
+          "gap_size": 0,
+          "support_constant_on_fibre": true,
+          "exact_descended_admissibility": true,
+          "largest_universally_sound_rule": [
+            "EXIT",
+            "EXPORT_CURRENT",
+            "REST",
+            "SEND_FOLLOWUP"
+          ],
+          "smallest_universally_complete_rule": [
+            "EXIT",
+            "EXPORT_CURRENT",
+            "REST",
+            "SEND_FOLLOWUP"
+          ],
+          "verdict": "AUTHORIZED"
+        },
+        {
+          "fibre_id": "occupied-fibre-5",
+          "antecedents": [
+            {
+              "id": "activation-held",
+              "support": [
+                "EXIT",
+                "REST",
+                "SEND_AIA"
+              ]
+            }
+          ],
+          "union": [
+            "EXIT",
+            "REST",
+            "SEND_AIA"
+          ],
+          "intersection": [
+            "EXIT",
+            "REST",
+            "SEND_AIA"
+          ],
+          "irreducible_gap": [],
+          "gap_size": 0,
+          "support_constant_on_fibre": true,
+          "exact_descended_admissibility": true,
+          "largest_universally_sound_rule": [
+            "EXIT",
+            "REST",
+            "SEND_AIA"
+          ],
+          "smallest_universally_complete_rule": [
+            "EXIT",
+            "REST",
+            "SEND_AIA"
+          ],
+          "verdict": "AUTHORIZED"
+        },
+        {
+          "fibre_id": "occupied-fibre-6",
+          "antecedents": [
+            {
+              "id": "malformed-transfer",
+              "support": [
+                "EXIT",
+                "REST"
+              ]
+            }
+          ],
+          "union": [
+            "EXIT",
+            "REST"
+          ],
+          "intersection": [
+            "EXIT",
+            "REST"
+          ],
+          "irreducible_gap": [],
+          "gap_size": 0,
+          "support_constant_on_fibre": true,
+          "exact_descended_admissibility": true,
+          "largest_universally_sound_rule": [
+            "EXIT",
+            "REST"
+          ],
+          "smallest_universally_complete_rule": [
+            "EXIT",
+            "REST"
+          ],
+          "verdict": "AUTHORIZED"
+        },
+        {
+          "fibre_id": "occupied-fibre-7",
+          "antecedents": [
+            {
+              "id": "activation-staged",
+              "support": [
+                "EXIT",
+                "REST",
+                "SEND_AIA"
+              ]
+            }
+          ],
+          "union": [
+            "EXIT",
+            "REST",
+            "SEND_AIA"
+          ],
+          "intersection": [
+            "EXIT",
+            "REST",
+            "SEND_AIA"
+          ],
+          "irreducible_gap": [],
+          "gap_size": 0,
+          "support_constant_on_fibre": true,
+          "exact_descended_admissibility": true,
+          "largest_universally_sound_rule": [
+            "EXIT",
+            "REST",
+            "SEND_AIA"
+          ],
+          "smallest_universally_complete_rule": [
+            "EXIT",
+            "REST",
+            "SEND_AIA"
+          ],
+          "verdict": "AUTHORIZED"
+        },
+        {
+          "fibre_id": "occupied-fibre-8",
+          "antecedents": [
+            {
+              "id": "arrival",
+              "support": [
+                "EXIT",
+                "REST",
+                "STAGE_AIA"
+              ]
+            }
+          ],
+          "union": [
+            "EXIT",
+            "REST",
+            "STAGE_AIA"
+          ],
+          "intersection": [
+            "EXIT",
+            "REST",
+            "STAGE_AIA"
+          ],
+          "irreducible_gap": [],
+          "gap_size": 0,
+          "support_constant_on_fibre": true,
+          "exact_descended_admissibility": true,
+          "largest_universally_sound_rule": [
+            "EXIT",
+            "REST",
+            "STAGE_AIA"
+          ],
+          "smallest_universally_complete_rule": [
+            "EXIT",
+            "REST",
+            "STAGE_AIA"
+          ],
+          "verdict": "AUTHORIZED"
+        },
+        {
+          "fibre_id": "occupied-fibre-9",
+          "antecedents": [
+            {
+              "id": "ordinary-entry",
+              "support": [
+                "EXIT",
+                "REST",
+                "SEND_ORDINARY"
+              ]
+            }
+          ],
+          "union": [
+            "EXIT",
+            "REST",
+            "SEND_ORDINARY"
+          ],
+          "intersection": [
+            "EXIT",
+            "REST",
+            "SEND_ORDINARY"
+          ],
+          "irreducible_gap": [],
+          "gap_size": 0,
+          "support_constant_on_fibre": true,
+          "exact_descended_admissibility": true,
+          "largest_universally_sound_rule": [
+            "EXIT",
+            "REST",
+            "SEND_ORDINARY"
+          ],
+          "smallest_universally_complete_rule": [
+            "EXIT",
+            "REST",
+            "SEND_ORDINARY"
+          ],
+          "verdict": "AUTHORIZED"
+        },
+        {
+          "fibre_id": "occupied-fibre-10",
+          "antecedents": [
+            {
+              "id": "files-pending",
+              "support": [
+                "EXIT",
+                "REST",
+                "STOP"
+              ]
+            }
+          ],
+          "union": [
+            "EXIT",
+            "REST",
+            "STOP"
+          ],
+          "intersection": [
+            "EXIT",
+            "REST",
+            "STOP"
+          ],
+          "irreducible_gap": [],
+          "gap_size": 0,
+          "support_constant_on_fibre": true,
+          "exact_descended_admissibility": true,
+          "largest_universally_sound_rule": [
+            "EXIT",
+            "REST",
+            "STOP"
+          ],
+          "smallest_universally_complete_rule": [
+            "EXIT",
+            "REST",
+            "STOP"
+          ],
+          "verdict": "AUTHORIZED"
+        }
+      ],
+      "theorem_surface": "finite exact admissibility descends iff lawful support is constant on every occupied quotient fibre; union/intersection preserve the complete/sound extremals and their difference remains visible",
+      "claim_ceiling": [
+        "finite support audit only",
+        "no unoccupied quotient state receives invented support authority",
+        "gap minimization does not identify a uniquely correct surviving rule",
+        "finite FADT adapter is not a universal AI information-loss theorem",
+        "no source-state reconstruction merge deployment release provider or Vercel authority"
+      ]
+    },
+    "verdict": "CONSISTENT_DECLARATIONS",
+    "evidence_boundary": {
+      "support_authenticated": false,
+      "stage_admission_verified": false,
+      "actions_executed": false,
+      "authority_transferred": false,
+      "human_closure_required": true
+    },
+    "claim_ceiling": [
+      "exact union intersection and gap apply only to the supplied occupied finite states",
+      "declared lawful support remains caller supplied and unauthenticated",
+      "a constant occupied fibre grants no authority to an unobserved state or a provider operation",
+      "no universal information loss source reconstruction release or deployment authority"
+    ]
+  },
+  "surface_only": {
+    "schema": "td613.dollhouse.fadt-stage-audit/v0.1",
+    "agent": "FADT",
+    "retained_coordinates": [
+      "surface"
+    ],
+    "erased_coordinates": [
+      "admission",
+      "head",
+      "stage"
+    ],
+    "occupied_states": [
+      {
+        "id": "activation-admitted",
+        "conditioning": {
+          "admission": "ADMITTED",
+          "head": "ACTIVATION",
+          "stage": "AIA_SENT",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST",
+          "STAGE_FILES"
+        ]
+      },
+      {
+        "id": "activation-held",
+        "conditioning": {
+          "admission": "HELD",
+          "head": "NONE",
+          "stage": "AIA_STAGED",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST",
+          "SEND_AIA"
+        ]
+      },
+      {
+        "id": "activation-staged",
+        "conditioning": {
+          "admission": "NONE",
+          "head": "NONE",
+          "stage": "AIA_STAGED",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST",
+          "SEND_AIA"
+        ]
+      },
+      {
+        "id": "arrival",
+        "conditioning": {
+          "admission": "NONE",
+          "head": "NONE",
+          "stage": "ARRIVED",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST",
+          "STAGE_AIA"
+        ]
+      },
+      {
+        "id": "current-admitted",
+        "conditioning": {
+          "admission": "ADMITTED",
+          "head": "CURRENT",
+          "stage": "DONE",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "EXPORT_CURRENT",
+          "REST",
+          "SEND_FOLLOWUP"
+        ]
+      },
+      {
+        "id": "files-pending",
+        "conditioning": {
+          "admission": "PENDING",
+          "head": "ACTIVATION",
+          "stage": "CONTINUING",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST",
+          "STOP"
+        ]
+      },
+      {
+        "id": "files-staged",
+        "conditioning": {
+          "admission": "ADMITTED",
+          "head": "ACTIVATION",
+          "stage": "FILES_STAGED",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST",
+          "SEND_FILES"
+        ]
+      },
+      {
+        "id": "followup-held",
+        "conditioning": {
+          "admission": "HELD",
+          "head": "CURRENT",
+          "stage": "DONE",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "EXPORT_CURRENT",
+          "REST",
+          "SEND_FOLLOWUP"
+        ]
+      },
+      {
+        "id": "historic-admitted",
+        "conditioning": {
+          "admission": "ADMITTED",
+          "head": "STALE",
+          "stage": "DONE",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST"
+        ]
+      },
+      {
+        "id": "malformed-transfer",
+        "conditioning": {
+          "admission": "MALFORMED",
+          "head": "NONE",
+          "stage": "REJECTED",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST"
+        ]
+      },
+      {
+        "id": "ordinary-entry",
+        "conditioning": {
+          "admission": "ORDINARY",
+          "head": "NONE",
+          "stage": "ORDINARY",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST",
+          "SEND_ORDINARY"
+        ]
+      }
+    ],
+    "projections": [
+      {
+        "fibre_id": "occupied-fibre-0",
+        "projection": {
+          "surface": "native-chat"
+        }
+      }
+    ],
+    "finite_audit": {
+      "schema": "td613.dollhouse.fadt-agent/v0.1",
+      "agent": "FADT",
+      "occupied_fibre_count": 1,
+      "all_fibres_exact": false,
+      "fibres": [
+        {
+          "fibre_id": "occupied-fibre-0",
+          "antecedents": [
+            {
+              "id": "activation-admitted",
+              "support": [
+                "EXIT",
+                "REST",
+                "STAGE_FILES"
+              ]
+            },
+            {
+              "id": "activation-held",
+              "support": [
+                "EXIT",
+                "REST",
+                "SEND_AIA"
+              ]
+            },
+            {
+              "id": "activation-staged",
+              "support": [
+                "EXIT",
+                "REST",
+                "SEND_AIA"
+              ]
+            },
+            {
+              "id": "arrival",
+              "support": [
+                "EXIT",
+                "REST",
+                "STAGE_AIA"
+              ]
+            },
+            {
+              "id": "current-admitted",
+              "support": [
+                "EXIT",
+                "EXPORT_CURRENT",
+                "REST",
+                "SEND_FOLLOWUP"
+              ]
+            },
+            {
+              "id": "files-pending",
+              "support": [
+                "EXIT",
+                "REST",
+                "STOP"
+              ]
+            },
+            {
+              "id": "files-staged",
+              "support": [
+                "EXIT",
+                "REST",
+                "SEND_FILES"
+              ]
+            },
+            {
+              "id": "followup-held",
+              "support": [
+                "EXIT",
+                "EXPORT_CURRENT",
+                "REST",
+                "SEND_FOLLOWUP"
+              ]
+            },
+            {
+              "id": "historic-admitted",
+              "support": [
+                "EXIT",
+                "REST"
+              ]
+            },
+            {
+              "id": "malformed-transfer",
+              "support": [
+                "EXIT",
+                "REST"
+              ]
+            },
+            {
+              "id": "ordinary-entry",
+              "support": [
+                "EXIT",
+                "REST",
+                "SEND_ORDINARY"
+              ]
+            }
+          ],
+          "union": [
+            "EXIT",
+            "EXPORT_CURRENT",
+            "REST",
+            "SEND_AIA",
+            "SEND_FILES",
+            "SEND_FOLLOWUP",
+            "SEND_ORDINARY",
+            "STAGE_AIA",
+            "STAGE_FILES",
+            "STOP"
+          ],
+          "intersection": [
+            "EXIT",
+            "REST"
+          ],
+          "irreducible_gap": [
+            "EXPORT_CURRENT",
+            "SEND_AIA",
+            "SEND_FILES",
+            "SEND_FOLLOWUP",
+            "SEND_ORDINARY",
+            "STAGE_AIA",
+            "STAGE_FILES",
+            "STOP"
+          ],
+          "gap_size": 8,
+          "support_constant_on_fibre": false,
+          "exact_descended_admissibility": false,
+          "largest_universally_sound_rule": [
+            "EXIT",
+            "REST"
+          ],
+          "smallest_universally_complete_rule": [
+            "EXIT",
+            "EXPORT_CURRENT",
+            "REST",
+            "SEND_AIA",
+            "SEND_FILES",
+            "SEND_FOLLOWUP",
+            "SEND_ORDINARY",
+            "STAGE_AIA",
+            "STAGE_FILES",
+            "STOP"
+          ],
+          "verdict": "HOLD"
+        }
+      ],
+      "theorem_surface": "finite exact admissibility descends iff lawful support is constant on every occupied quotient fibre; union/intersection preserve the complete/sound extremals and their difference remains visible",
+      "claim_ceiling": [
+        "finite support audit only",
+        "no unoccupied quotient state receives invented support authority",
+        "gap minimization does not identify a uniquely correct surviving rule",
+        "finite FADT adapter is not a universal AI information-loss theorem",
+        "no source-state reconstruction merge deployment release provider or Vercel authority"
+      ]
+    },
+    "verdict": "HOLD",
+    "evidence_boundary": {
+      "support_authenticated": false,
+      "stage_admission_verified": false,
+      "actions_executed": false,
+      "authority_transferred": false,
+      "human_closure_required": true
+    },
+    "claim_ceiling": [
+      "exact union intersection and gap apply only to the supplied occupied finite states",
+      "declared lawful support remains caller supplied and unauthenticated",
+      "a constant occupied fibre grants no authority to an unobserved state or a provider operation",
+      "no universal information loss source reconstruction release or deployment authority"
+    ]
+  },
+  "stage_and_admission_without_head": {
+    "schema": "td613.dollhouse.fadt-stage-audit/v0.1",
+    "agent": "FADT",
+    "retained_coordinates": [
+      "admission",
+      "stage"
+    ],
+    "erased_coordinates": [
+      "head",
+      "surface"
+    ],
+    "occupied_states": [
+      {
+        "id": "activation-admitted",
+        "conditioning": {
+          "admission": "ADMITTED",
+          "head": "ACTIVATION",
+          "stage": "AIA_SENT",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST",
+          "STAGE_FILES"
+        ]
+      },
+      {
+        "id": "activation-held",
+        "conditioning": {
+          "admission": "HELD",
+          "head": "NONE",
+          "stage": "AIA_STAGED",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST",
+          "SEND_AIA"
+        ]
+      },
+      {
+        "id": "activation-staged",
+        "conditioning": {
+          "admission": "NONE",
+          "head": "NONE",
+          "stage": "AIA_STAGED",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST",
+          "SEND_AIA"
+        ]
+      },
+      {
+        "id": "arrival",
+        "conditioning": {
+          "admission": "NONE",
+          "head": "NONE",
+          "stage": "ARRIVED",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST",
+          "STAGE_AIA"
+        ]
+      },
+      {
+        "id": "current-admitted",
+        "conditioning": {
+          "admission": "ADMITTED",
+          "head": "CURRENT",
+          "stage": "DONE",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "EXPORT_CURRENT",
+          "REST",
+          "SEND_FOLLOWUP"
+        ]
+      },
+      {
+        "id": "files-pending",
+        "conditioning": {
+          "admission": "PENDING",
+          "head": "ACTIVATION",
+          "stage": "CONTINUING",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST",
+          "STOP"
+        ]
+      },
+      {
+        "id": "files-staged",
+        "conditioning": {
+          "admission": "ADMITTED",
+          "head": "ACTIVATION",
+          "stage": "FILES_STAGED",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST",
+          "SEND_FILES"
+        ]
+      },
+      {
+        "id": "followup-held",
+        "conditioning": {
+          "admission": "HELD",
+          "head": "CURRENT",
+          "stage": "DONE",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "EXPORT_CURRENT",
+          "REST",
+          "SEND_FOLLOWUP"
+        ]
+      },
+      {
+        "id": "historic-admitted",
+        "conditioning": {
+          "admission": "ADMITTED",
+          "head": "STALE",
+          "stage": "DONE",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST"
+        ]
+      },
+      {
+        "id": "malformed-transfer",
+        "conditioning": {
+          "admission": "MALFORMED",
+          "head": "NONE",
+          "stage": "REJECTED",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST"
+        ]
+      },
+      {
+        "id": "ordinary-entry",
+        "conditioning": {
+          "admission": "ORDINARY",
+          "head": "NONE",
+          "stage": "ORDINARY",
+          "surface": "native-chat"
+        },
+        "support": [
+          "EXIT",
+          "REST",
+          "SEND_ORDINARY"
+        ]
+      }
+    ],
+    "projections": [
+      {
+        "fibre_id": "occupied-fibre-0",
+        "projection": {
+          "admission": "ADMITTED",
+          "stage": "AIA_SENT"
+        }
+      },
+      {
+        "fibre_id": "occupied-fibre-1",
+        "projection": {
+          "admission": "ADMITTED",
+          "stage": "DONE"
+        }
+      },
+      {
+        "fibre_id": "occupied-fibre-2",
+        "projection": {
+          "admission": "ADMITTED",
+          "stage": "FILES_STAGED"
+        }
+      },
+      {
+        "fibre_id": "occupied-fibre-3",
+        "projection": {
+          "admission": "HELD",
+          "stage": "AIA_STAGED"
+        }
+      },
+      {
+        "fibre_id": "occupied-fibre-4",
+        "projection": {
+          "admission": "HELD",
+          "stage": "DONE"
+        }
+      },
+      {
+        "fibre_id": "occupied-fibre-5",
+        "projection": {
+          "admission": "MALFORMED",
+          "stage": "REJECTED"
+        }
+      },
+      {
+        "fibre_id": "occupied-fibre-6",
+        "projection": {
+          "admission": "NONE",
+          "stage": "AIA_STAGED"
+        }
+      },
+      {
+        "fibre_id": "occupied-fibre-7",
+        "projection": {
+          "admission": "NONE",
+          "stage": "ARRIVED"
+        }
+      },
+      {
+        "fibre_id": "occupied-fibre-8",
+        "projection": {
+          "admission": "ORDINARY",
+          "stage": "ORDINARY"
+        }
+      },
+      {
+        "fibre_id": "occupied-fibre-9",
+        "projection": {
+          "admission": "PENDING",
+          "stage": "CONTINUING"
+        }
+      }
+    ],
+    "finite_audit": {
+      "schema": "td613.dollhouse.fadt-agent/v0.1",
+      "agent": "FADT",
+      "occupied_fibre_count": 10,
+      "all_fibres_exact": false,
+      "fibres": [
+        {
+          "fibre_id": "occupied-fibre-0",
+          "antecedents": [
+            {
+              "id": "activation-admitted",
+              "support": [
+                "EXIT",
+                "REST",
+                "STAGE_FILES"
+              ]
+            }
+          ],
+          "union": [
+            "EXIT",
+            "REST",
+            "STAGE_FILES"
+          ],
+          "intersection": [
+            "EXIT",
+            "REST",
+            "STAGE_FILES"
+          ],
+          "irreducible_gap": [],
+          "gap_size": 0,
+          "support_constant_on_fibre": true,
+          "exact_descended_admissibility": true,
+          "largest_universally_sound_rule": [
+            "EXIT",
+            "REST",
+            "STAGE_FILES"
+          ],
+          "smallest_universally_complete_rule": [
+            "EXIT",
+            "REST",
+            "STAGE_FILES"
+          ],
+          "verdict": "AUTHORIZED"
+        },
+        {
+          "fibre_id": "occupied-fibre-1",
+          "antecedents": [
+            {
+              "id": "current-admitted",
+              "support": [
+                "EXIT",
+                "EXPORT_CURRENT",
+                "REST",
+                "SEND_FOLLOWUP"
+              ]
+            },
+            {
+              "id": "historic-admitted",
+              "support": [
+                "EXIT",
+                "REST"
+              ]
+            }
+          ],
+          "union": [
+            "EXIT",
+            "EXPORT_CURRENT",
+            "REST",
+            "SEND_FOLLOWUP"
+          ],
+          "intersection": [
+            "EXIT",
+            "REST"
+          ],
+          "irreducible_gap": [
+            "EXPORT_CURRENT",
+            "SEND_FOLLOWUP"
+          ],
+          "gap_size": 2,
+          "support_constant_on_fibre": false,
+          "exact_descended_admissibility": false,
+          "largest_universally_sound_rule": [
+            "EXIT",
+            "REST"
+          ],
+          "smallest_universally_complete_rule": [
+            "EXIT",
+            "EXPORT_CURRENT",
+            "REST",
+            "SEND_FOLLOWUP"
+          ],
+          "verdict": "HOLD"
+        },
+        {
+          "fibre_id": "occupied-fibre-2",
+          "antecedents": [
+            {
+              "id": "files-staged",
+              "support": [
+                "EXIT",
+                "REST",
+                "SEND_FILES"
+              ]
+            }
+          ],
+          "union": [
+            "EXIT",
+            "REST",
+            "SEND_FILES"
+          ],
+          "intersection": [
+            "EXIT",
+            "REST",
+            "SEND_FILES"
+          ],
+          "irreducible_gap": [],
+          "gap_size": 0,
+          "support_constant_on_fibre": true,
+          "exact_descended_admissibility": true,
+          "largest_universally_sound_rule": [
+            "EXIT",
+            "REST",
+            "SEND_FILES"
+          ],
+          "smallest_universally_complete_rule": [
+            "EXIT",
+            "REST",
+            "SEND_FILES"
+          ],
+          "verdict": "AUTHORIZED"
+        },
+        {
+          "fibre_id": "occupied-fibre-3",
+          "antecedents": [
+            {
+              "id": "activation-held",
+              "support": [
+                "EXIT",
+                "REST",
+                "SEND_AIA"
+              ]
+            }
+          ],
+          "union": [
+            "EXIT",
+            "REST",
+            "SEND_AIA"
+          ],
+          "intersection": [
+            "EXIT",
+            "REST",
+            "SEND_AIA"
+          ],
+          "irreducible_gap": [],
+          "gap_size": 0,
+          "support_constant_on_fibre": true,
+          "exact_descended_admissibility": true,
+          "largest_universally_sound_rule": [
+            "EXIT",
+            "REST",
+            "SEND_AIA"
+          ],
+          "smallest_universally_complete_rule": [
+            "EXIT",
+            "REST",
+            "SEND_AIA"
+          ],
+          "verdict": "AUTHORIZED"
+        },
+        {
+          "fibre_id": "occupied-fibre-4",
+          "antecedents": [
+            {
+              "id": "followup-held",
+              "support": [
+                "EXIT",
+                "EXPORT_CURRENT",
+                "REST",
+                "SEND_FOLLOWUP"
+              ]
+            }
+          ],
+          "union": [
+            "EXIT",
+            "EXPORT_CURRENT",
+            "REST",
+            "SEND_FOLLOWUP"
+          ],
+          "intersection": [
+            "EXIT",
+            "EXPORT_CURRENT",
+            "REST",
+            "SEND_FOLLOWUP"
+          ],
+          "irreducible_gap": [],
+          "gap_size": 0,
+          "support_constant_on_fibre": true,
+          "exact_descended_admissibility": true,
+          "largest_universally_sound_rule": [
+            "EXIT",
+            "EXPORT_CURRENT",
+            "REST",
+            "SEND_FOLLOWUP"
+          ],
+          "smallest_universally_complete_rule": [
+            "EXIT",
+            "EXPORT_CURRENT",
+            "REST",
+            "SEND_FOLLOWUP"
+          ],
+          "verdict": "AUTHORIZED"
+        },
+        {
+          "fibre_id": "occupied-fibre-5",
+          "antecedents": [
+            {
+              "id": "malformed-transfer",
+              "support": [
+                "EXIT",
+                "REST"
+              ]
+            }
+          ],
+          "union": [
+            "EXIT",
+            "REST"
+          ],
+          "intersection": [
+            "EXIT",
+            "REST"
+          ],
+          "irreducible_gap": [],
+          "gap_size": 0,
+          "support_constant_on_fibre": true,
+          "exact_descended_admissibility": true,
+          "largest_universally_sound_rule": [
+            "EXIT",
+            "REST"
+          ],
+          "smallest_universally_complete_rule": [
+            "EXIT",
+            "REST"
+          ],
+          "verdict": "AUTHORIZED"
+        },
+        {
+          "fibre_id": "occupied-fibre-6",
+          "antecedents": [
+            {
+              "id": "activation-staged",
+              "support": [
+                "EXIT",
+                "REST",
+                "SEND_AIA"
+              ]
+            }
+          ],
+          "union": [
+            "EXIT",
+            "REST",
+            "SEND_AIA"
+          ],
+          "intersection": [
+            "EXIT",
+            "REST",
+            "SEND_AIA"
+          ],
+          "irreducible_gap": [],
+          "gap_size": 0,
+          "support_constant_on_fibre": true,
+          "exact_descended_admissibility": true,
+          "largest_universally_sound_rule": [
+            "EXIT",
+            "REST",
+            "SEND_AIA"
+          ],
+          "smallest_universally_complete_rule": [
+            "EXIT",
+            "REST",
+            "SEND_AIA"
+          ],
+          "verdict": "AUTHORIZED"
+        },
+        {
+          "fibre_id": "occupied-fibre-7",
+          "antecedents": [
+            {
+              "id": "arrival",
+              "support": [
+                "EXIT",
+                "REST",
+                "STAGE_AIA"
+              ]
+            }
+          ],
+          "union": [
+            "EXIT",
+            "REST",
+            "STAGE_AIA"
+          ],
+          "intersection": [
+            "EXIT",
+            "REST",
+            "STAGE_AIA"
+          ],
+          "irreducible_gap": [],
+          "gap_size": 0,
+          "support_constant_on_fibre": true,
+          "exact_descended_admissibility": true,
+          "largest_universally_sound_rule": [
+            "EXIT",
+            "REST",
+            "STAGE_AIA"
+          ],
+          "smallest_universally_complete_rule": [
+            "EXIT",
+            "REST",
+            "STAGE_AIA"
+          ],
+          "verdict": "AUTHORIZED"
+        },
+        {
+          "fibre_id": "occupied-fibre-8",
+          "antecedents": [
+            {
+              "id": "ordinary-entry",
+              "support": [
+                "EXIT",
+                "REST",
+                "SEND_ORDINARY"
+              ]
+            }
+          ],
+          "union": [
+            "EXIT",
+            "REST",
+            "SEND_ORDINARY"
+          ],
+          "intersection": [
+            "EXIT",
+            "REST",
+            "SEND_ORDINARY"
+          ],
+          "irreducible_gap": [],
+          "gap_size": 0,
+          "support_constant_on_fibre": true,
+          "exact_descended_admissibility": true,
+          "largest_universally_sound_rule": [
+            "EXIT",
+            "REST",
+            "SEND_ORDINARY"
+          ],
+          "smallest_universally_complete_rule": [
+            "EXIT",
+            "REST",
+            "SEND_ORDINARY"
+          ],
+          "verdict": "AUTHORIZED"
+        },
+        {
+          "fibre_id": "occupied-fibre-9",
+          "antecedents": [
+            {
+              "id": "files-pending",
+              "support": [
+                "EXIT",
+                "REST",
+                "STOP"
+              ]
+            }
+          ],
+          "union": [
+            "EXIT",
+            "REST",
+            "STOP"
+          ],
+          "intersection": [
+            "EXIT",
+            "REST",
+            "STOP"
+          ],
+          "irreducible_gap": [],
+          "gap_size": 0,
+          "support_constant_on_fibre": true,
+          "exact_descended_admissibility": true,
+          "largest_universally_sound_rule": [
+            "EXIT",
+            "REST",
+            "STOP"
+          ],
+          "smallest_universally_complete_rule": [
+            "EXIT",
+            "REST",
+            "STOP"
+          ],
+          "verdict": "AUTHORIZED"
+        }
+      ],
+      "theorem_surface": "finite exact admissibility descends iff lawful support is constant on every occupied quotient fibre; union/intersection preserve the complete/sound extremals and their difference remains visible",
+      "claim_ceiling": [
+        "finite support audit only",
+        "no unoccupied quotient state receives invented support authority",
+        "gap minimization does not identify a uniquely correct surviving rule",
+        "finite FADT adapter is not a universal AI information-loss theorem",
+        "no source-state reconstruction merge deployment release provider or Vercel authority"
+      ]
+    },
+    "verdict": "HOLD",
+    "evidence_boundary": {
+      "support_authenticated": false,
+      "stage_admission_verified": false,
+      "actions_executed": false,
+      "authority_transferred": false,
+      "human_closure_required": true
+    },
+    "claim_ceiling": [
+      "exact union intersection and gap apply only to the supplied occupied finite states",
+      "declared lawful support remains caller supplied and unauthenticated",
+      "a constant occupied fibre grants no authority to an unobserved state or a provider operation",
+      "no universal information loss source reconstruction release or deployment authority"
+    ]
+  }
+}

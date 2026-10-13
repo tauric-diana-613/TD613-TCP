@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.safe-harbor.forensic-authorship-report/v1",
+  "title": "TD613 Safe Harbor Forensic Authorship Report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "report_version",
+    "evidence_links",
+    "section_order",
+    "sections",
+    "interpretation_provenance",
+    "evidence_link_audit",
+    "anti_flattery_audit"
+  ],
+  "properties": {
+    "schema_version": { "const": "td613.safe-harbor.forensic-authorship-report/v1" },
+    "report_version": { "type": "string", "minLength": 1 },
+    "evidence_links": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "$ref": "#/$defs/evidenceLink" }
+    },
+    "section_order": {
+      "const": [
+        "evidentiary_posture",
+        "authorship_signature",
+        "temporal_lane_portraits",
+        "within_lane_invariants",
+        "cross_lane_invariants",
+        "productive_contradictions",
+        "blind_return",
+        "deformation_and_recovery",
+        "evidentiary_fractures",
+        "interpretive_salience",
+        "claim_ceiling"
+      ]
+    },
+    "sections": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidentiary_posture",
+        "authorship_signature",
+        "temporal_lane_portraits",
+        "within_lane_invariants",
+        "cross_lane_invariants",
+        "productive_contradictions",
+        "blind_return",
+        "deformation_and_recovery",
+        "evidentiary_fractures",
+        "interpretive_salience",
+        "claim_ceiling"
+      ],
+      "properties": {
+        "evidentiary_posture": { "$ref": "#/$defs/reportSection" },
+        "authorship_signature": { "$ref": "#/$defs/reportSection" },
+        "temporal_lane_portraits": { "$ref": "#/$defs/reportSection" },
+        "within_lane_invariants": { "$ref": "#/$defs/reportSection" },
+        "cross_lane_invariants": { "$ref": "#/$defs/reportSection" },
+        "productive_contradictions": { "$ref": "#/$defs/reportSection" },
+        "blind_return": { "$ref": "#/$defs/reportSection" },
+        "deformation_and_recovery": { "$ref": "#/$defs/reportSection" },
+        "evidentiary_fractures": { "$ref": "#/$defs/reportSection" },
+        "interpretive_salience": { "$ref": "#/$defs/reportSection" },
+        "claim_ceiling": { "$ref": "#/$defs/reportSection" }
+      }
+    },
+    "interpretation_provenance": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "interpreter_class",
+        "interpretation_version",
+        "generated_from_hash_covered_evidence",
+        "revisable_without_native_packet_hash_migration",
+        "raw_text_consumed",
+        "external_identity_data_consumed",
+        "claim_ceiling_enforced"
+      ],
+      "properties": {
+        "schema_version": { "const": "td613.safe-harbor.interpretation-provenance/v1" },
+        "generated_from_hash_covered_evidence": { "const": true },
+        "revisable_without_native_packet_hash_migration": { "const": true },
+        "raw_text_consumed": { "const": false },
+        "external_identity_data_consumed": { "const": false },
+        "claim_ceiling_enforced": { "const": true }
+      }
+    },
+    "evidence_link_audit": { "$ref": "#/$defs/audit" },
+    "anti_flattery_audit": { "$ref": "#/$defs/audit" }
+  },
+  "$defs": {
+    "evidenceLink": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "path", "role", "status"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "minLength": 1 },
+        "role": { "type": "string", "minLength": 1 },
+        "status": { "type": "string", "minLength": 1 }
+      }
+    },
+    "reportSection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "status", "evidence_refs", "content"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "status": { "type": "string", "minLength": 1 },
+        "evidence_refs": { "type": "array", "items": { "type": "string" } },
+        "content": { "type": "object" }
+      }
+    },
+    "audit": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

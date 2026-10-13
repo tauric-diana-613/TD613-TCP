@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:6f68121e5ec00cc896e8c0e4
+parent_capture_id: capture:c3d872a90f7cca9310a21af5
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "Intersectional Infrastructural Bias: How Modern Systems Reproduce Historical Power"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.19040272
+Final URL: https://zenodo.org/records/19040272
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.19040272 -> https://zenodo.org/doi/10.5281/zenodo.19040272
+302 https://zenodo.org/doi/10.5281/zenodo.19040272 -> https://zenodo.org/records/19040272

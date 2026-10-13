@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:coverage-entry:v1",
+  "title": "SignalRupture Phase 1.5 coverage ledger entry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "trail_id", "audit_status", "reachability", "source_status_raw", "implemented_in", "blocker_ids", "phase_2_run", "interpretive_limit"],
+  "properties": {
+    "schema_version": {"const": "coverage-entry/v1"},
+    "trail_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+    "audit_status": {"enum": ["IMPLEMENTED", "PARTIAL", "BLOCKED", "SCHEMA_ONLY", "HUMAN_GATED"]},
+    "reachability": {"enum": ["SCHEMA_ONLY", "SEEDED", "BOUNDED_EXECUTED", "BLOCKED_BY_SOURCE", "HUMAN_GATED"]},
+    "source_status_raw": {"type": "string", "minLength": 1},
+    "implemented_in": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+    "blocker_ids": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "phase_2_run": {"const": false},
+    "interpretive_limit": {"type": "string", "minLength": 1}
+  }
+}

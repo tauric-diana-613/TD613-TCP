@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:926be7acf1f531b1126f1cf3
+parent_capture_id: capture:db38d75b3acb4db29a3d82e5
+parent_blob_sha256: fcb89f265040ef3fe08caf5f89d2f1283076bbdf05a278e247a588391442dd7e
+tool: srcctl-doi-resolver-receipt/1
+source_title: "Systemic Public Health Failure: When Infrastructure Becomes the Disease"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.18103100
+Final URL: https://zenodo.org/records/18103100
+Status: 200
+Request method: GET_LEGACY_CAPTURE
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.18103100 -> https://zenodo.org/doi/10.5281/zenodo.18103100
+302 https://zenodo.org/doi/10.5281/zenodo.18103100 -> https://zenodo.org/records/18103100

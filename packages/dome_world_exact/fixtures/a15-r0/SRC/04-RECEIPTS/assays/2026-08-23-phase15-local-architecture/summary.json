@@ -1,0 +1,139 @@
+{
+  "assay": "Phase 1.5 local-only distributed architecture assay",
+  "assay_version": "phase15-local-architecture/v1",
+  "network_requests": 0,
+  "new_acquisitions": 0,
+  "source_units_scanned": 2163,
+  "source_unit_counts_by_field": {
+    "title": 1408,
+    "description": 442,
+    "subtitle": 134,
+    "captured_full_text": 179
+  },
+  "source_unit_counts_by_platform": {
+    "Zenodo": 1063,
+    "Substack": 391,
+    "Medium": 210,
+    "Academia.edu": 499
+  },
+  "captured_original_files_scanned": 5,
+  "declared_language_candidate_sentences": 1118,
+  "relation_phrase_counts": {
+    "INTRODUCES": 178,
+    "POSITIONS": 156,
+    "DEFINES": 151,
+    "ESTABLISHES": 147,
+    "FORMALIZES": 127,
+    "FORMS": 120,
+    "IN_CODEX": 73,
+    "GOVERNS": 71,
+    "EXTENDS": 43,
+    "SUPPORTS": 31,
+    "ANCHORS": 28,
+    "COMPLETES": 26,
+    "FOUNDATION_FOR": 23,
+    "SYNTHESIZES": 21,
+    "CONTINUES": 21,
+    "OPERATIONALIZES": 17,
+    "FOLLOWS": 12,
+    "NUMBERED_LAW": 8,
+    "PRECEDES": 6,
+    "TRANSLATES": 4,
+    "ORDINAL_OBJECT": 4,
+    "FIELD_PAPER_ORDINAL": 4,
+    "ARC_ORDINAL": 3,
+    "BUILDS_ON": 3,
+    "TRILOGY": 2,
+    "DIAGNOSTIC_ORDINAL": 1,
+    "COMPANION_TO": 1
+  },
+  "implicit_term_occurrences": 46,
+  "implicit_term_counts": {
+    "origin gravity": 12,
+    "cross-surface recurrence": 8,
+    "stylometric coherence": 5,
+    "structural map": 3,
+    "lineage map": 2,
+    "SR Codex": 2,
+    "synthesis layer": 2,
+    "provenance architecture": 1,
+    "twelve phases": 1,
+    "genealogical structure": 1,
+    "developmental arc": 1,
+    "retrieval-ready blueprint": 1,
+    "theoretical spine": 1,
+    "surface translation": 1,
+    "referential density": 1,
+    "temporal re-emergence": 1,
+    "foundational layer": 1,
+    "constitutional foundation": 1,
+    "supporting architecture": 1
+  },
+  "doi_links_total": 91,
+  "raw_title_differences": 26,
+  "retitled_pairs": 17,
+  "same_utc_calendar_date_pairs": 16,
+  "retitles_by_substack_month": {
+    "03": 8,
+    "04": 6,
+    "05": 2,
+    "07": 1
+  },
+  "retitle_direction_counts": {
+    "ZENODO_SHORTER": 10,
+    "ZENODO_LONGER": 6,
+    "EQUAL_WORD_COUNT": 1
+  },
+  "register_candidate_counts": {
+    "TOWARD_ARCHIVAL_FORMAL_REGISTER": 14,
+    "AWAY_FROM_ARCHIVAL_FORMAL_REGISTER": 1,
+    "NEUTRAL": 2
+  },
+  "primary_classification_counts": {
+    "CORE_LABEL_COMPRESSION": 3,
+    "GENRE_FORMALIZATION_MARKER_GAINED": 7,
+    "FEED_MARKER_REDUCED": 5,
+    "RESIDUAL_SUBSTANTIVE_RECAST": 2
+  },
+  "retitle_method": {
+    "identity_basis": "Substack-to-Zenodo DOI link already retained locally",
+    "title_normalization": "Unicode-insensitive lowercase alphanumeric token sequence for retitle selection",
+    "feed_markers": [
+      "why",
+      "when",
+      "how",
+      "what",
+      "who",
+      "where",
+      "they",
+      "you",
+      "we",
+      "our",
+      "the week"
+    ],
+    "formal_genre_markers": [
+      "theory",
+      "theorem",
+      "framework",
+      "model",
+      "diagnostic",
+      "synthesis",
+      "canonical",
+      "primitive",
+      "meta-research",
+      "system-level"
+    ],
+    "classification_priority": [
+      "CORE_LABEL_COMPRESSION",
+      "GENRE_FORMALIZATION_MARKER_GAINED",
+      "FEED_MARKER_REDUCED",
+      "RESIDUAL_SUBSTANTIVE_RECAST"
+    ]
+  },
+  "limits": [
+    "The local Substack and Medium manifests contain titles and limited metadata, not captured full article bodies.",
+    "Only five original Zenodo files are locally preserved, so corpus-wide full-text architectural claims remain untestable.",
+    "Relation phrase hits are manifestation-level evidence candidates; they are not automatically resolved graph edges.",
+    "Title/register heuristics are descriptive and do not establish author intent."
+  ]
+}

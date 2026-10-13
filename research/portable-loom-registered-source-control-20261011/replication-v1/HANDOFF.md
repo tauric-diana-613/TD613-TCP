@@ -1,0 +1,18 @@
+# Frozen r04 replication: r05
+
+Human author and operator: Tawanna C. Miller. Assistant-authored analysis and mechanics: Amari. Direct interactive activation; no detached delegation.
+
+1. Verify PROTOCOL.json and every referenced unchanged asset against SHA256_MANIFEST.json. Do not modify historical prompt or scoring files.
+2. Run the focused conformance suite and the six-file bounded suite. Run the budget ZIP negative regression and build-and-verify.py from a clean exact commit. Record commands, test counts and exit status. The ZIP must contain bundled pg and @neon/functions, load outside the repository and return 503/401/405 at the three offline gates.
+3. Require successful CI for the exact proposed head, including the bounded suite and Neon budget deployment ZIP startup job. Protect the merge and verify merged source tree.
+4. If production activation requires new code, issue one `/td613-vercel-release PRODUCTION <exact-40-character-main-SHA>` gesture to #405. Accept only exact source/application bytes, stability, post-witness and relock PASS. Keep source packet, runtime release, relock and historical experiment SHA separate.
+5. Build and verify the Neon validator from the clean matching runtime source, deploy that verified ZIP once, retain its hashes and deployment receipt. Preserve runtime OIDC/owner/project/production checks and environment. No inference gateway.
+6. Recover the private caller bearer through its authorized private record without emitting it. Observe the credential route using expected source and provider fingerprint headers. Confirm caller/provider/workload roles separately. No billing debate is reopened.
+7. Materialize exactly one r05 policy from the r04 binding, changing only run ID, current actual runtime protocol_commit, six-hour future expiry and execution authorization reference. Require exact prompt/provider-request hashes in PROTOCOL.json. Enrollment ceiling one/.30, reservation .27288. Use parameterized enrollment and verify readback/hash/zero counters.
+8. Perform authenticated zero-cost readiness by setting only the relay artifact digest to a deliberately wrong value: expect ASSAY_COORDINATE_MISMATCH after budget inspect, with no reservation/provider call. Confirm ledger zero. This readiness probe is not an empirical provider request.
+9. Execute the repository server-client once from a clean checkout of actual runtime SHA, with TD613_LOOM_ASSAY_TOKEN and expected credential digest injected privately. Use a new attempt directory. Preserve 240s provider deadline +40s return margin; continue the same process if its execution tool yields.
+10. Stop at the first complete answer, regardless of score. On any failure, reconcile existing bytes, call key and ledger before any further action; no second provider request is authorized. Retain failure rows and reservations.
+11. Independently decode/hash the returned provider bytes; apply the unchanged r04 scoring contract and repaired inspector, then record every semantic acceptance item and contradiction check. All captures remain NOT_ADMITTED. The authorization caption concerns only the supplied current task, as in the r04 semantic review.
+12. Reconcile policy/call key/request/response/answer/reserved cost. Close r05 with a guarded update, retaining all rows. Seal a new acquisition supplement with predecessor hashes, separate CI/release/credential/ledger/semantic receipts and SHA256 manifest. Report actual effects and any HOLD candidly.
+
+No reuse of r04 slots; it is CLOSED. A20 source-registration HOLDs and the r03 negative fixture remain unchanged. This replication supplies no general reliability estimate, hidden source-use proof, source authenticity or custody admission.

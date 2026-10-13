@@ -1,0 +1,275 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {
+  GEMINI_CONSUMPTION_SCHEMA,
+  buildGeminiConsumptionReceipt
+} from '../server/gemini-consumption-receipt.js';
+import {
+  GEMINI_BROWSER_DAILY_BUDGET_SCHEMA,
+  GEMINI_BROWSER_LEDGER_SCHEMA,
+  GEMINI_BROWSER_LEDGER_KEY,
+  clearGeminiBrowserLedger,
+  currentGeminiDailyBudgetHints,
+  currentGeminiQuotaCooldownHints,
+  ingestGeminiConsumption,
+  summarizeGeminiBrowserLedger
+} from '../app/gemini-consumption-ledger.js';
+
+function storage() {
+  const map = new Map();
+  return {
+    getItem(key) { return map.has(key) ? map.get(key) : null; },
+    setItem(key, value) { map.set(key, String(value)); },
+    removeItem(key) { map.delete(key); }
+  };
+}
+
+test('request-local Gemini consumption receipt preserves route model outcome and bounded quota evidence', () => {
+  const receipt = buildGeminiConsumptionReceipt({
+    route: 'marrowline',
+    requestId: 'human-turn-1',
+    observedAt: '2026-09-20T06:20:00.000Z',
+    attempts: [
+      {
+        model: 'gemini-3.8-flash',
+        status: 429,
+        elapsedMs: 180,
+        timeoutMs: 50000,
+        rateLimit: {
+          scope: 'model',
+          quotaId: 'GenerateRequestsPerDayPerProjectPerModel-FreeTier',
+          metric: 'generativelanguage.googleapis.com/generate_content_free_tier_requests',
+          model: 'gemini-3.8-flash',
+          limit: 20,
+          retryAfterSeconds: 13
+        }
+      },
+      { model: 'gemini-3.5-flash', status: 503, elapsedMs: 24000, timeoutMs: 30000 },
+      { model: 'gemini-3.6-flash', status: 200, elapsedMs: 9400, timeoutMs: 30000 }
+    ]
+  });
+  assert.equal(receipt.schema, GEMINI_CONSUMPTION_SCHEMA);
+  assert.equal(receipt.coverage, 'request-local-provider-attempts-only');
+  assert.equal(receipt.provider_daily_total, null);
+  assert.equal(receipt.call_count, 3);
+  assert.deepEqual(receipt.models, {
+    'gemini-3.8-flash': 1,
+    'gemini-3.5-flash': 1,
+    'gemini-3.6-flash': 1
+  });
+  assert.deepEqual(receipt.events.map(event => [event.model, event.status, event.outcome]), [
+    ['gemini-3.8-flash', 429, 'rate-limit'],
+    ['gemini-3.5-flash', 503, 'provider-unavailable'],
+    ['gemini-3.6-flash', 200, 'provider-response']
+  ]);
+  assert.equal(receipt.events[0].quota.quota_id, 'GenerateRequestsPerDayPerProjectPerModel-FreeTier');
+  assert.equal(receipt.events[0].quota.limit, 20);
+  assert.equal(receipt.events[0].quota.retry_after_seconds, 13);
+  assert.ok(receipt.events.every(event => event.event_id.includes('human-turn-1')));
+});
+
+test('release-witness flag and request identity do not promote partial telemetry into provider daily truth', () => {
+  const first = buildGeminiConsumptionReceipt({
+    route: 'release-witness:marrowline',
+    requestId: 'release-a',
+    releaseWitness: true,
+    attempts: [{ model: 'gemini-3.7-flash', status: 429 }]
+  });
+  const second = buildGeminiConsumptionReceipt({
+    route: 'release-witness:marrowline',
+    requestId: 'release-b',
+    releaseWitness: true,
+    attempts: [{ model: 'gemini-3.7-flash', status: 429 }]
+  });
+  assert.notEqual(first.events[0].event_id, second.events[0].event_id);
+  assert.equal(first.events[0].release_witness, true);
+  assert.equal(first.provider_daily_total, null);
+  assert.equal(second.provider_daily_total, null);
+});
+
+test('browser ledger deduplicates exact events and labels its coverage as browser-local evidence', () => {
+  const root = { localStorage: storage() };
+  clearGeminiBrowserLedger(root);
+  const hush = buildGeminiConsumptionReceipt({
+    route: 'hush',
+    requestId: 'hush-1',
+    attempts: [{ model: 'gemini-3.8-flash', status: 200 }]
+  });
+  const marrowline = buildGeminiConsumptionReceipt({
+    route: 'marrowline',
+    requestId: 'marrowline-1',
+    attempts: [
+      { model: 'gemini-3.8-flash', status: 429 },
+      { model: 'gemini-3.5-flash', status: 429 }
+    ]
+  });
+
+  ingestGeminiConsumption({ gemini_consumption: hush }, root);
+  ingestGeminiConsumption({ gemini_consumption: hush }, root);
+  ingestGeminiConsumption({ failure: { gemini_consumption: marrowline } }, root);
+  const summary = summarizeGeminiBrowserLedger(root);
+
+  assert.equal(summary.schema, GEMINI_BROWSER_LEDGER_SCHEMA);
+  assert.equal(summary.coverage, 'this-browser-interactive-receipts-only');
+  assert.equal(summary.provider_daily_total, null);
+  assert.equal(summary.observed_calls, 3);
+  assert.deepEqual(summary.by_route, { hush: 1, marrowline: 2 });
+  assert.deepEqual(summary.by_model, { 'gemini-3.8-flash': 2, 'gemini-3.5-flash': 1 });
+  assert.ok(root.localStorage.getItem(GEMINI_BROWSER_LEDGER_KEY));
+});
+
+
+test('browser model-scoped 429 cooldown hints survive isolate churn only for the bounded retry window', () => {
+  const root = { localStorage: storage() };
+  clearGeminiBrowserLedger(root);
+  const limited = buildGeminiConsumptionReceipt({
+    route: 'marrowline',
+    requestId: 'quota-cooldown-1',
+    observedAt: '2026-09-20T15:56:12.221Z',
+    attempts: [{
+      model: 'gemini-3-flash-preview',
+      status: 429,
+      rateLimit: {
+        scope: 'model',
+        quotaId: 'GenerateRequestsPerDayPerProjectPerModel-FreeTier',
+        metric: 'generativelanguage.googleapis.com/generate_content_free_tier_requests',
+        model: 'gemini-3-flash',
+        limit: 20,
+        retryAfterSeconds: 48
+      }
+    }]
+  });
+  const shared = buildGeminiConsumptionReceipt({
+    route: 'marrowline',
+    requestId: 'shared-burst-1',
+    observedAt: '2026-09-20T15:56:12.221Z',
+    attempts: [{
+      model: 'gemini-3.5-flash',
+      status: 429,
+      rateLimit: {
+        scope: 'shared',
+        quotaId: 'GenerateRequestsPerMinutePerProject',
+        metric: 'generativelanguage.googleapis.com/generate_content_requests_per_minute',
+        model: null,
+        limit: 10,
+        retryAfterSeconds: 5
+      }
+    }]
+  });
+
+  ingestGeminiConsumption({ gemini_consumption: limited }, root);
+  ingestGeminiConsumption({ gemini_consumption: shared }, root);
+
+  const active = currentGeminiQuotaCooldownHints(root, new Date('2026-09-20T15:56:40.000Z'));
+  assert.equal(active.schema, 'td613.gemini-browser-quota-cooldown-hints/v0.2');
+  assert.equal(active.coverage, 'this-browser-active-model-scoped-429-cooldowns-only');
+  assert.deepEqual(active.models, ['gemini-3-flash-preview'], 'actual called seat wins over a provider-normalized quota model alias');
+  assert.equal(active.retry_after_seconds_by_model['gemini-3-flash-preview'], 48);
+  assert.equal(active.cooldown_until_by_model['gemini-3-flash-preview'], '2026-09-20T15:57:00.221Z');
+
+  const expiredSameDay = currentGeminiQuotaCooldownHints(root, new Date('2026-09-20T15:57:01.000Z'));
+  assert.deepEqual(expiredSameDay.models, [], 'explicit Retry-After expiry must reopen the seat even on the same provider calendar day');
+});
+
+test('model-scoped 429 without Retry-After uses the bounded Hush-style 120-second browser cooldown', () => {
+  const root = { localStorage: storage() };
+  clearGeminiBrowserLedger(root);
+  const limited = buildGeminiConsumptionReceipt({
+    route: 'marrowline',
+    requestId: 'quota-cooldown-default',
+    observedAt: '2026-09-20T12:00:00.000Z',
+    attempts: [{
+      model: 'gemini-3.8-flash',
+      status: 429,
+      rateLimit: {
+        scope: 'model',
+        quotaId: 'GenerateRequestsPerDayPerProjectPerModel-FreeTier',
+        metric: 'generativelanguage.googleapis.com/generate_content_free_tier_requests',
+        model: 'gemini-3.8-flash',
+        limit: 20,
+        retryAfterSeconds: 0
+      }
+    }]
+  });
+  ingestGeminiConsumption({ gemini_consumption: limited }, root);
+
+  const active = currentGeminiQuotaCooldownHints(root, new Date('2026-09-20T12:01:59.000Z'));
+  assert.deepEqual(active.models, ['gemini-3.8-flash']);
+  assert.equal(active.retry_after_seconds_by_model['gemini-3.8-flash'], 120);
+
+  const expired = currentGeminiQuotaCooldownHints(root, new Date('2026-09-20T12:02:01.000Z'));
+  assert.deepEqual(expired.models, []);
+});
+
+
+test('Pacific-day budget hints share browser evidence across routes without claiming provider totals', () => {
+  const root = { localStorage: storage() };
+  clearGeminiBrowserLedger(root);
+
+  const yesterday = buildGeminiConsumptionReceipt({
+    route: 'marrowline',
+    requestId: 'previous-limit',
+    observedAt: '2026-09-20T06:50:00.000Z',
+    attempts: [{
+      model: 'gemini-3.8-flash',
+      status: 429,
+      rateLimit: {
+        scope: 'model',
+        quotaId: 'GenerateRequestsPerDayPerProjectPerModel-FreeTier',
+        metric: 'generativelanguage.googleapis.com/generate_content_free_tier_requests',
+        model: 'gemini-3.8-flash',
+        limit: 20,
+        retryAfterSeconds: 1
+      }
+    }]
+  });
+  ingestGeminiConsumption({ gemini_consumption: yesterday }, root);
+
+  for (let i = 0; i < 17; i += 1) {
+    const route = i % 2 ? 'hush' : 'marrowline';
+    const receipt = buildGeminiConsumptionReceipt({
+      route,
+      requestId: `today-${i}`,
+      observedAt: `2026-09-20T1${String(i % 10).padStart(1, '0')}:00:00.000Z`,
+      attempts: [{ model: 'gemini-3.8-flash', status: 200 }]
+    });
+    ingestGeminiConsumption({ gemini_consumption: receipt }, root);
+  }
+  const hints = currentGeminiDailyBudgetHints(root, new Date('2026-09-20T20:00:00.000Z'), { reservePerModel: 2 });
+  assert.equal(hints.schema, GEMINI_BROWSER_DAILY_BUDGET_SCHEMA);
+  assert.equal(hints.pacific_day, '2026-09-20');
+  assert.equal(hints.known_daily_limit_by_model['gemini-3.8-flash'], 20);
+  assert.equal(hints.observed_today_by_model['gemini-3.8-flash'], 17);
+  assert.equal(hints.optional_repair_allowed_by_model['gemini-3.8-flash'], false);
+  assert.equal(hints.provider_daily_total, null);
+  assert.match(hints.claim_ceiling, /browser-local-partial-budget-evidence/);
+});
+
+test('Pacific midnight resets observed call counts while retaining the last observed model limit', () => {
+  const root = { localStorage: storage() };
+  clearGeminiBrowserLedger(root);
+  const receipt = buildGeminiConsumptionReceipt({
+    route: 'marrowline',
+    requestId: 'late-pacific',
+    observedAt: '2026-09-20T06:59:59.000Z',
+    attempts: [{
+      model: 'gemini-3.5-flash',
+      status: 429,
+      rateLimit: {
+        scope: 'model',
+        quotaId: 'GenerateRequestsPerDayPerProjectPerModel-FreeTier',
+        metric: 'generativelanguage.googleapis.com/generate_content_free_tier_requests',
+        model: 'gemini-3.5-flash',
+        limit: 20,
+        retryAfterSeconds: 1
+      }
+    }]
+  });
+  ingestGeminiConsumption({ gemini_consumption: receipt }, root);
+
+  const nextDay = currentGeminiDailyBudgetHints(root, new Date('2026-09-20T07:00:01.000Z'));
+  assert.equal(nextDay.pacific_day, '2026-09-20');
+  assert.equal(nextDay.observed_today_by_model['gemini-3.5-flash'] || 0, 0);
+  assert.equal(nextDay.known_daily_limit_by_model['gemini-3.5-flash'], 20);
+  assert.equal(nextDay.optional_repair_allowed_by_model['gemini-3.5-flash'], true);
+});

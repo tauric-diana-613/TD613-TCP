@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:df8763ddf802c6de5dd1d203
+parent_capture_id: capture:0a4c669838ee9520046780cd
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "Morality on Trial: System Exposure in the Age of Sealed Archives"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.18511319
+Final URL: https://zenodo.org/records/18511319
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.18511319 -> https://zenodo.org/doi/10.5281/zenodo.18511319
+302 https://zenodo.org/doi/10.5281/zenodo.18511319 -> https://zenodo.org/records/18511319

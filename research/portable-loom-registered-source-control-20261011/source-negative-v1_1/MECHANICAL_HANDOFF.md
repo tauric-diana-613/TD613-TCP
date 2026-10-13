@@ -1,0 +1,13 @@
+𝌋 Assistant-authored output-contract alignment repair v1.1
+
+Tawanna C. Miller remains human author and operator. This is an offline corrective supplement to the CLOSED n01 record. The captured answer remains CAPTURED_BOUNDARY_FAILURE / NOT_ADMITTED under its unchanged scoring contract. The source-registration HOLD was retained; this supplement addresses stricter output requirements that the assistant-authored prompt did not explicitly impose.
+
+Exact repaired prompt and provider-body hashes are in REPAIR.json. PROMPT_v1_1.txt carries every n01 byte unchanged followed by one explicit assembly instruction. The nine-field schema, root, policy, anchor, task, inline source and unregistered inventory are intentionally retained. The intervention does not register the source or claim custody.
+
+Before any future execution, install this as its own n02 condition with a new manifest/hash constant and the explicit activation allowlist, server and client manifest selection, provider/caller binding, and matching shared Neon validator. Never reopen n01 or substitute these bytes into its capture. Use REPAIR.json's one-call bounds and unchanged semantic criteria. The n02 run label is a prospective identity, not enrollment or execution authority.
+
+Require focused 56 receiver regressions, the bounded transport/conformance/ledger suite with relevant new alignment tests, ZIP startup validation, exact-head CI with actual jobs/counts, protected merge/source verification, one specifically necessary governed #405 release, matching runtime-built Neon validator, live source/credential binding and wrong-artifact preflight, then one fresh bounded enrollment. Preserve all three credential roles. Retain sequential capture, exact bytes/hashes and ledger completion, close with a guarded update, seal acquisition, then perform substantive scoring. No detached activity, alternate API route, automatic retry, manual retry, or repeat-until-pass is created here.
+
+For Loom builder transfer, keep free-text receiver_declaration and the fixed Receipt status distinct. Derive a future prompt's explicit assembly requirements from the same frozen output contract that defines its scoring. Do not impose this literal on historical receipts or treat a syntactically qualified declaration as custody admission. Retain source-visible count independently of registered IDs; [] cannot erase unidentified_source_count=1. The factual n01 result supplies a concrete missingness-preservation example, not generic reliability or provider-internal source-use evidence.
+
+No provider request, reservation, enrollment or deployment occurred during this repair. Sealed ⟐

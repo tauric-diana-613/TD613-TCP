@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.a15-r0.open-research-hypothesis-registry/v0.1",
+  "title": "A15-R0 Open Research Hypothesis Registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "source_status",
+    "authority_class",
+    "hypotheses",
+    "closed_by_counterexample",
+    "bounded_support",
+    "research_frontier",
+    "sequence_authority",
+    "next_stage",
+    "stage_unlocks",
+    "promotion_authority",
+    "human_closure_required",
+    "finding"
+  ],
+  "properties": {
+    "schema": { "const": "td613.ash.a15-r0.open-research-hypothesis-registry/v0.1" },
+    "source_status": { "const": "DERIVED_FROM_SIMULATED_FIELD" },
+    "authority_class": { "const": "A2_DERIVATIONAL" },
+    "hypotheses": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["hypothesis_id", "question", "falsifier", "evidence", "status", "claim_ceiling"],
+        "properties": {
+          "hypothesis_id": { "type": "string", "pattern": "^H_[A-Z0-9_]+$" },
+          "question": { "type": "string", "minLength": 1 },
+          "falsifier": { "type": "string", "minLength": 1 },
+          "evidence": { "type": "object" },
+          "status": {
+            "enum": [
+              "FALSIFIED_IN_SYNTHETIC_FIELD",
+              "FALSIFIED_BY_IMPLEMENTATION",
+              "SUPPORTED_BY_SYNTHETIC_CONTRACT",
+              "SUPPORTED_IN_BOUNDED_SYNTHETIC_FAMILY",
+              "OPEN",
+              "OPEN_UNMEASURED",
+              "OPEN_RESEARCH_PROGRAM"
+            ]
+          },
+          "claim_ceiling": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "closed_by_counterexample": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^H_[A-Z0-9_]+$" }
+    },
+    "bounded_support": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^H_[A-Z0-9_]+$" }
+    },
+    "research_frontier": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^H_[A-Z0-9_]+$" }
+    },
+    "sequence_authority": { "const": false },
+    "next_stage": { "type": "null" },
+    "stage_unlocks": { "type": "array", "maxItems": 0 },
+    "promotion_authority": { "const": false },
+    "human_closure_required": { "const": true },
+    "finding": { "type": "string", "minLength": 1 }
+  }
+}

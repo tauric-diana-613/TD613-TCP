@@ -1,0 +1,30 @@
+{
+  "id": "semantic-preservation-literals",
+  "title": "Semantic Preservation Literals",
+  "fixtureClass": "semantic-literals",
+  "priority": "core",
+  "riskMode": "calibration",
+  "description": "The output drops a protected literal. The fixture tests whether evidentiary survival outranks stylish transformation.",
+  "inputs": {
+    "protectedBaseline": "When a record names EXHIBIT-42 and the 6/13 deadline, the literal markers must not evaporate just because the sentence wants to look cleaner.",
+    "maskReference": "Keep the markers. Keep the date. Keep the chain short.",
+    "messageDraft": "Please preserve EXHIBIT-42, the 6/13 deadline, and REF-ALPHA in the custody note.",
+    "protectedOutput": "Please preserve EXHIBIT-42 and the custody note. Keep the chain short."
+  },
+  "protectedLiterals": ["EXHIBIT-42", "6/13", "REF-ALPHA"],
+  "persona": { "personaId": "persona-literal-keeper", "label": "Literal Keeper", "mode": "neutralize", "history": [] },
+  "expectations": {
+    "escapeVector": {
+      "sourceResidualRisk": { "min": 0.0, "max": 1.0 },
+      "maskFit": { "min": 0.0, "max": 1.0 },
+      "maskDeltaSafe": { "min": -1.0, "max": 1.0 },
+      "semanticFidelity": { "min": 0.0, "max": 1.0 },
+      "ingestionFriction": { "min": 0.0, "max": 0.7 },
+      "apertureRecaptureRisk": { "min": 0.0, "max": 1.0 }
+    },
+    "controller": { "allowedStates": ["restore", "hold", "continue", "seal"], "preferredState": "restore" },
+    "claimCeiling": { "minLevel": 1, "maxLevel": 5 },
+    "report": { "mustExcludePrivateText": true, "mustIncludeLimitations": true, "mustAvoidForbiddenClaims": true }
+  },
+  "calibrationNotes": ["Protected literals should survive style transfer.", "Dropped evidence markers should cap claim posture and invite restore behavior."]
+}

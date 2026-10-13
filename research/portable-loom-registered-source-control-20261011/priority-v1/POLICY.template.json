@@ -1,0 +1,46 @@
+{
+  "schema": "td613.loom.server-assay-policy/v0.2",
+  "run_id": "portable-loom-registered-source-control-20261011-r06",
+  "protocol_commit": null,
+  "artifact_sha256": "d703dcebb9869152df5d95541bbe5400d1ed9b92d1f11565aa10c9382cfd35c6",
+  "expires_at": null,
+  "binding": {
+    "schema": "td613.loom.bound-model-transport/v0.1",
+    "protocol_commit": null,
+    "provider": "GEMINI_GENERATE_CONTENT",
+    "trial_family": "FIRST_CONFIGURED_RECEIVER",
+    "model": "gemini-3.8-flash",
+    "response_model_ids": [
+      "gemini-3.8-flash"
+    ],
+    "credential_env": "GEMINI_API_KEY",
+    "generation_parameters": {
+      "temperature": null,
+      "top_p": null,
+      "thinking_level": "medium"
+    },
+    "limits": {
+      "max_calls": 1,
+      "max_input_tokens_per_call": 200000,
+      "max_output_tokens_per_call": 32768,
+      "max_cost_usd": 0.5,
+      "timeout_ms": 240000,
+      "max_response_bytes": 2000000
+    },
+    "pricing": {
+      "input_usd_per_million": 1.35,
+      "output_usd_per_million": 6.75,
+      "source": "https://ai.google.dev/gemini-api/docs/pricing",
+      "verified_at": "2026-10-11T00:00:00Z"
+    },
+    "authorization": {
+      "record": "research/portable-loom-registered-source-control-20261011/priority-v1/EXECUTION_AUTHORIZATION.json",
+      "scope": "Direct operator repeated-attempt repair authorization, 2026-10-11. This individual run permits exactly one request and one reservation, USD0.50 maximum; no automatic retries, tools, retrieval or custody admission. Batch maximum five calls / USD2.50, stop first complete capture."
+    },
+    "tools": "DISABLED",
+    "retrieval": "DISABLED",
+    "retries": 0,
+    "service_tier": "priority"
+  },
+  "receiver_output_tokens": 32768
+}

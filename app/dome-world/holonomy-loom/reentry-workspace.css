@@ -1,0 +1,34 @@
+#loomAiWorkspace .loom-reentry{margin-top:14px;border:1px solid #ae95c751;border-radius:12px;background:#0e1019;overflow:hidden}
+#loomAiWorkspace .loom-reentry>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:46px;padding:12px 15px;cursor:pointer;color:#eee0f2;font:600 .84rem/1.4 var(--sans);list-style:none}
+#loomAiWorkspace .loom-reentry>summary::-webkit-details-marker{display:none}
+#loomAiWorkspace .loom-reentry>summary::after{content:'＋';color:#8fd8c9;font:400 1.1rem var(--sans)}
+#loomAiWorkspace .loom-reentry[open]>summary::after{content:'−'}
+#loomAiWorkspace .loom-reentry>summary small{display:block;margin-top:2px;color:#bbaac8;font:400 .73rem/1.4 var(--sans)}
+#loomAiWorkspace .loom-reentry-body{padding:0 15px 16px}
+#loomAiWorkspace .loom-reentry-body p{font-size:.8rem;overflow-wrap:anywhere}
+#loomAiWorkspace .loom-reentry-state{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0 13px}
+#loomAiWorkspace .loom-reentry-state div{padding:9px;border:1px solid #85b8ad35;border-radius:8px;background:#0a1618}
+#loomAiWorkspace .loom-reentry-state dt{color:#8fd8c9;font:600 .63rem/1.4 var(--sans);text-transform:uppercase;letter-spacing:.035em}
+#loomAiWorkspace .loom-reentry-state dd{margin:4px 0 0;color:#eee4f0;font:500 .75rem/1.45 var(--sans);overflow-wrap:anywhere}
+#loomAiWorkspace .loom-reentry-body label:not(.loom-reentry-review){display:grid;gap:5px;margin:12px 0;color:#ebc797;font:600 .75rem/1.4 var(--sans)}
+#loomAiWorkspace .loom-reentry-body textarea{box-sizing:border-box;width:100%;min-height:88px;max-height:340px;padding:10px 11px;border:1px solid #aa8cb846;border-radius:9px;background:#090b13;color:#eee4f0;font:400 16px/1.5 var(--sans);resize:vertical;overflow:auto}
+#loomAiWorkspace .loom-reentry-body textarea[data-loom-reentry="returns"]{min-height:140px}
+#loomAiWorkspace .loom-reentry-body input[type="number"]{box-sizing:border-box;max-width:120px;min-height:40px;padding:7px;border:1px solid #aa8cb846;border-radius:7px;background:#090b13;color:#eee4f0;font:400 16px var(--sans)}
+#loomAiWorkspace .loom-reentry-body details{margin:10px 0;border:1px solid #8f819938;border-radius:8px;background:#10101c}
+#loomAiWorkspace .loom-reentry-body details>summary{padding:9px 11px;min-height:38px;cursor:pointer;color:#dbd0e3;font:500 .76rem/1.45 var(--sans)}
+#loomAiWorkspace .loom-reentry-body details>div{padding:0 11px 10px}
+#loomAiWorkspace .loom-reentry-body pre{max-height:260px;margin:0;padding:11px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font:400 .7rem/1.55 var(--mono);color:#ddd4e7;background:#0a0b14;border-radius:7px}
+#loomAiWorkspace .loom-reentry-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:11px 0}
+#loomAiWorkspace .loom-reentry-actions button{min-height:44px;font-size:.77rem;padding:10px 13px}
+#loomAiWorkspace .loom-reentry-turns{padding-left:21px;margin:10px 0;font-size:.76rem;line-height:1.65;color:#c7b8d2;overflow-wrap:anywhere}
+#loomAiWorkspace .loom-reentry-result{margin:12px 0;padding:12px;border:1px solid #8fd8c959;border-radius:9px;background:#0b1919}
+#loomAiWorkspace .loom-reentry-result[data-state="HELD"]{border-color:#efb38d73;background:#23181b}
+#loomAiWorkspace .loom-reentry-result h4{margin:0 0 5px;font:600 .98rem/1.35 var(--sans);color:#f4e9f4}
+#loomAiWorkspace .loom-reentry-result:focus{outline:2px solid #9dcfc4;outline-offset:3px}
+#loomAiWorkspace .loom-reentry-review{display:flex;align-items:flex-start;gap:9px;margin:12px 0;color:#dbcfe3;font:400 .77rem/1.5 var(--sans)}
+#loomAiWorkspace .loom-reentry-review input{width:18px;height:18px;min-width:18px;margin:2px 0 0;accent-color:#8fd8c9}
+#loomAiWorkspace .loom-reentry-notice{padding:11px 12px;border-left:2px solid #e8bd88;background:#211a24;border-radius:0 8px 8px 0;color:#f1dfc7}
+#loomAiWorkspace .loom-reentry-rules{padding-left:20px;margin:9px 0;font-size:.75rem;color:#cfc2da;overflow-wrap:anywhere}
+#loomAiWorkspace .loom-reentry-body [hidden]{display:none!important}
+#loomAiWorkspace .loom-reentry :is(summary,button,textarea,input):focus-visible{outline:2px solid #8fd8c9;outline-offset:3px}
+@media(max-width:600px){#loomAiWorkspace .loom-reentry-body{padding:0 11px 13px}#loomAiWorkspace .loom-reentry-state{grid-template-columns:1fr}#loomAiWorkspace .loom-reentry-actions{display:grid;grid-template-columns:1fr}#loomAiWorkspace .loom-reentry-actions button{width:100%;text-align:left}#loomAiWorkspace .loom-reentry-body p{font-size:.77rem}}

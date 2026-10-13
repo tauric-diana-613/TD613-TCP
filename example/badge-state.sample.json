@@ -1,0 +1,9 @@
+{
+  "badge": "badge.holds",
+  "binding": "#9B07D8B/SAC[X6ZNK5NO51]",
+  "payload": 130,
+  "route": "buffered",
+  "mirror_logic": "off",
+  "containment": "on",
+  "surrogate": "\\uDBF5\\uDE13"
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.custody-migration/v0.8",
+  "title": "TD613 Ash Custody Migration v0.8",
+  "description": "Explicit migration receipt for v0.5/v0.7 custody manifests. Legacy content hashes never become artifact digests without a validated v0.7 L1 local commitment.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["status", "schema", "migration_performed", "source_manifest_schema", "target_manifest_schema", "decision", "does_not_establish"],
+  "properties": {
+    "status": {"enum": ["MIGRATED", "CURRENT"]},
+    "schema": {"const": "td613.ash.custody-migration/v0.8"},
+    "migration_performed": {"type": "boolean"},
+    "source_manifest_schema": {"type": "string"},
+    "target_manifest_schema": {"const": "td613.ash.custody-manifest/v0.8"},
+    "source_assurance_class": {"type": "string"},
+    "target_assurance_class": {"enum": ["L0_METADATA_ONLY", "L1_BROWSER_LOCAL_ARTIFACT_DIGEST"]},
+    "migrated_receipt": {"type": ["object", "null"]},
+    "decision": {"type": "string"},
+    "does_not_establish": {
+      "type": "array",
+      "items": {"type": "string"},
+      "allOf": [
+        {"contains": {"const": "possession"}},
+        {"contains": {"const": "authorship"}},
+        {"contains": {"const": "trusted-time"}}
+      ]
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "record_function": "DEVELOPMENT_OBSERVATION; not an original raw execution receipt",
+  "observation_source": "Actual tool execution output retained in this active conversation",
+  "local_SQL_first_run": {
+    "pass": 5,
+    "fail": 2,
+    "tests": 7,
+    "reason": "Two numeric-value assertions expected BigInt; embedded driver returned equal-valued numbers",
+    "code_failure_established": false
+  },
+  "correction": "Compare the exact integer value independent of driver representation; do not change spending arithmetic",
+  "original_raw_receipt_location": "Active conversation tool response; no reconstructed stdout file manufactured",
+  "later_tests": "Separate newly captured attempt under raw/engineering-001",
+  "historical_research_rerun": false
+}

@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.safe-harbor.authorship-evidence/v1",
+  "title": "TD613 Safe Harbor Authorship Evidence v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "sampling_sufficiency",
+    "checkpoint_snapshots",
+    "within_lane_invariants",
+    "cross_lane_invariants",
+    "prompt_conditioned_features",
+    "elicitation_context",
+    "stability_receipt",
+    "evidence_contract"
+  ],
+  "properties": {
+    "schema_version": { "const": "td613.safe-harbor.authorship-evidence/v1" },
+    "sampling_sufficiency": { "$ref": "#/$defs/samplingSufficiency" },
+    "checkpoint_snapshots": { "type": "object" },
+    "within_lane_invariants": { "type": "object" },
+    "cross_lane_invariants": { "type": "object" },
+    "prompt_conditioned_features": { "type": "object" },
+    "elicitation_context": { "$ref": "#/$defs/elicitationContext" },
+    "stability_receipt": { "$ref": "#/$defs/stabilityReceipt" },
+    "blind_custody_challenge": { "type": ["object", "null"] },
+    "perturbation_invariance": { "type": ["object", "null"] },
+    "evidence_contract": { "$ref": "#/$defs/evidenceContract" }
+  },
+  "$defs": {
+    "samplingSufficiency": {
+      "type": "object",
+      "required": ["policy_version", "target_words_per_lane", "checkpoint_targets", "counts_hidden_in_public_ui", "lanes", "triad_state"],
+      "properties": {
+        "policy_version": { "const": "td613.safe-harbor.sampling-sufficiency/v1" },
+        "target_words_per_lane": { "const": 360 },
+        "checkpoint_targets": { "const": [120, 240, 360] },
+        "counts_hidden_in_public_ui": { "const": true },
+        "lanes": {
+          "type": "object",
+          "required": ["future_self", "past_self", "higher_self"],
+          "additionalProperties": false,
+          "properties": {
+            "future_self": { "$ref": "#/$defs/laneSufficiency" },
+            "past_self": { "$ref": "#/$defs/laneSufficiency" },
+            "higher_self": { "$ref": "#/$defs/laneSufficiency" }
+          }
+        },
+        "triad_state": { "enum": ["insufficient", "provisional", "comparative", "stability-eligible"] }
+      }
+    },
+    "laneSufficiency": {
+      "type": "object",
+      "required": ["observed_words", "checkpoint_coverage", "state"],
+      "additionalProperties": false,
+      "properties": {
+        "observed_words": { "type": "integer", "minimum": 0 },
+        "checkpoint_coverage": {
+          "type": "array",
+          "prefixItems": [{ "type": "boolean" }, { "type": "boolean" }, { "type": "boolean" }],
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "state": { "enum": ["insufficient", "provisional", "comparative", "stability-eligible"] }
+      }
+    },
+    "elicitationContext": {
+      "type": "object",
+      "required": ["schema_version", "lane_order", "checkpoint_targets", "public_counts_visible", "keystroke_telemetry_collected", "pause_timing_collected", "revision_history_exported", "raw_text_exported"],
+      "properties": {
+        "schema_version": { "const": "td613.safe-harbor.elicitation-context/v1" },
+        "lane_order": { "const": ["future_self", "past_self", "higher_self"] },
+        "checkpoint_targets": { "const": [120, 240, 360] },
+        "public_counts_visible": { "const": false },
+        "keystroke_telemetry_collected": { "const": false },
+        "pause_timing_collected": { "const": false },
+        "revision_history_exported": { "const": false },
+        "raw_text_exported": { "const": false }
+      }
+    },
+    "stabilityReceipt": {
+      "type": "object",
+      "required": ["schema_version", "status", "stability_digest", "raw_text_included", "identity_probability"],
+      "properties": {
+        "schema_version": { "const": "td613.safe-harbor.stability-receipt/v1" },
+        "status": { "type": "string" },
+        "stability_digest": { "type": ["string", "null"] },
+        "raw_text_included": { "const": false },
+        "identity_probability": { "type": "null" }
+      }
+    },
+    "evidenceContract": {
+      "type": "object",
+      "required": ["schema_version", "packet_validity_separate_from_sample_sufficiency", "sample_sufficiency_separate_from_evidence_maturity", "identity_or_ownership_adjudication", "raw_text_included", "historical_example", "claim_ceiling"],
+      "properties": {
+        "schema_version": { "const": "td613.safe-harbor.gen3-stage1/v1" },
+        "packet_validity_separate_from_sample_sufficiency": { "const": true },
+        "sample_sufficiency_separate_from_evidence_maturity": { "const": true },
+        "identity_or_ownership_adjudication": { "const": false },
+        "raw_text_included": { "const": false },
+        "historical_example": { "const": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐" },
+        "claim_ceiling": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

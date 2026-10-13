@@ -1,0 +1,401 @@
+import crypto from 'node:crypto';
+import { execFileSync } from 'node:child_process';
+import fsp from 'node:fs/promises';
+import path from 'node:path';
+
+const base = String(process.env.TD613_BASE_URL || '').replace(/\/$/, '');
+const out = path.resolve(process.env.TD613_ARTIFACT_DIR || 'artifacts/flowcore-production-observation');
+const sourcePacketCommit = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
+const attempts = Number(process.env.TD613_PROBE_ATTEMPTS || 72);
+const delayMs = Number(process.env.TD613_PROBE_DELAY_MS || 5000);
+const sourceReceiptAttempts = Number(process.env.TD613_SOURCE_RECEIPT_ATTEMPTS || 288);
+const sourceReceiptDelayMs = Number(process.env.TD613_SOURCE_RECEIPT_DELAY_MS || delayMs);
+const sourceReceiptRequestTimeoutMs = Number(process.env.TD613_SOURCE_RECEIPT_REQUEST_TIMEOUT_MS || 15000);
+const settlementAttempts = Number(process.env.TD613_VERCEL_SETTLEMENT_ATTEMPTS || 72);
+const settlementDelayMs = Number(process.env.TD613_VERCEL_SETTLEMENT_DELAY_MS || 5000);
+const settlementRequestTimeoutMs = Number(process.env.TD613_VERCEL_SETTLEMENT_REQUEST_TIMEOUT_MS || 8000);
+
+if (!base) throw new Error('TD613_BASE_URL is required.');
+if (!/^[0-9a-f]{40}$/.test(sourcePacketCommit)) throw new Error('TD613_SOURCE_PACKET_COMMIT must be an exact 40-character SHA.');
+
+const entrypoints = Object.freeze([
+  'app/dome-world/information-dome-pedagogue.html',
+  'app/dome-world/route-burden-observatory.html',
+  'app/dome-world/ash-custody-pedagogue.html',
+  'app/dome-world/station-propagation-observatory.html',
+  'app/dome-world/physical-flowcore.html',
+  'app/dome-world/flowcore-validation-lab.html',
+  'app/dome-world/flowcore-promotion-dashboard.html'
+]);
+
+const allowedExtensions = new Set(['.html', '.js', '.mjs', '.css', '.json', '.svg']);
+const sha256 = value => crypto.createHash('sha256').update(value).digest('hex');
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const vercelConfig = JSON.parse(await fsp.readFile('vercel.json', 'utf8'));
+const isRetryableSettlementLookupStatus = status =>
+  status === 408 || status === 425 || status === 429 || (status >= 500 && status <= 599);
+
+async function waitForAuthorizedSourceReceipt() {
+  if (!Number.isSafeInteger(sourceReceiptAttempts) || sourceReceiptAttempts < 1 || sourceReceiptAttempts > 360) {
+    throw new Error('Release-source receipt attempts must be 1..360.');
+  }
+  if (!Number.isSafeInteger(sourceReceiptDelayMs) || sourceReceiptDelayMs < 0 || sourceReceiptDelayMs > 60000) {
+    throw new Error('Release-source receipt delay must be 0..60000ms.');
+  }
+  if (!Number.isSafeInteger(sourceReceiptRequestTimeoutMs) || sourceReceiptRequestTimeoutMs < 1000 || sourceReceiptRequestTimeoutMs > 30000) {
+    throw new Error('Release-source receipt request timeout must be 1000..30000ms.');
+  }
+
+  let lastObserved = 'MISSING';
+  let lastIssue = null;
+  for (let attempt = 1; attempt <= sourceReceiptAttempts; attempt += 1) {
+    try {
+      const url = new URL('/giving/history/release-source.json', `${base}/`);
+      url.searchParams.set('td613_source_receipt', sourcePacketCommit);
+      url.searchParams.set('td613_receipt_attempt', String(attempt));
+      url.searchParams.set('td613_receipt_nonce', `${Date.now()}-${attempt}`);
+      const response = await fetch(url, {
+        headers: { 'cache-control': 'no-cache' },
+        redirect: 'follow',
+        signal: AbortSignal.timeout(sourceReceiptRequestTimeoutMs)
+      });
+      if (!response.ok) {
+        lastIssue = `HTTP ${response.status}`;
+      } else {
+        const payload = await response.json();
+        lastObserved = String(payload?.source_packet_commit || '').trim() || 'MISSING';
+        lastIssue = lastObserved === sourcePacketCommit ? null : `observed ${lastObserved}`;
+        if (lastObserved === sourcePacketCommit) {
+          const receipt = Object.freeze({
+            schema: 'td613.release-source-readiness/v0.1',
+            status: 'PASS',
+            source_packet_commit: sourcePacketCommit,
+            observed_source_packet_commit: lastObserved,
+            attempt,
+            observed_at: new Date().toISOString()
+          });
+          await fsp.writeFile(path.join(out, 'release-source-readiness.json'), `${JSON.stringify(receipt, null, 2)}\n`, 'utf8');
+          return receipt;
+        }
+      }
+    } catch (error) {
+      lastIssue = `${error?.name || 'Error'}: ${error?.message || String(error)}`;
+    }
+    if (attempt < sourceReceiptAttempts) await sleep(sourceReceiptDelayMs);
+  }
+
+  const held = Object.freeze({
+    schema: 'td613.release-source-readiness/v0.1',
+    status: 'HELD',
+    source_packet_commit: sourcePacketCommit,
+    observed_source_packet_commit: lastObserved,
+    attempts: sourceReceiptAttempts,
+    hold_reason: lastIssue || `observed ${lastObserved}`,
+    observed_at: new Date().toISOString()
+  });
+  await fsp.writeFile(path.join(out, 'release-source-readiness.json'), `${JSON.stringify(held, null, 2)}\n`, 'utf8');
+  throw new Error(`Authorized release-source receipt did not reach production; expected ${sourcePacketCommit}, last ${lastIssue || `observed ${lastObserved}`}.`);
+}
+
+async function waitForGitFallbackSettlement() {
+  if (vercelConfig.git?.deploymentEnabled !== true) {
+    return Object.freeze({ required: false, status: 'NOT_APPLICABLE_DIRECT_TOKEN_OR_LOCKED_SOURCE' });
+  }
+  if (!Number.isSafeInteger(settlementAttempts) || settlementAttempts < 1 || settlementAttempts > 120) {
+    throw new Error('Vercel settlement attempts must be 1..120.');
+  }
+  if (!Number.isSafeInteger(settlementDelayMs) || settlementDelayMs < 0 || settlementDelayMs > 60000) {
+    throw new Error('Vercel settlement delay must be 0..60000ms.');
+  }
+  if (!Number.isSafeInteger(settlementRequestTimeoutMs) || settlementRequestTimeoutMs < 1000 || settlementRequestTimeoutMs > 30000) {
+    throw new Error('Vercel settlement request timeout must be 1000..30000ms.');
+  }
+
+  const releaseSha = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+  const repository = String(process.env.GITHUB_REPOSITORY || '').trim();
+  const token = String(process.env.GH_TOKEN || process.env.GITHUB_TOKEN || '').trim();
+  if (!/^[0-9a-f]{40}$/.test(releaseSha)) throw new Error('Git-fallback settlement could not resolve the transient release SHA.');
+  if (!/^[^/]+\/[^/]+$/.test(repository)) throw new Error('GITHUB_REPOSITORY is required for Git-fallback settlement.');
+  if (!token) throw new Error('GH_TOKEN or GITHUB_TOKEN is required for Git-fallback settlement.');
+
+  let lastState = 'MISSING';
+  let lastTargetUrl = null;
+  let lastLookupIssue = null;
+  let transientLookupFailures = 0;
+  for (let attempt = 1; attempt <= settlementAttempts; attempt += 1) {
+    let response;
+    try {
+      response = await fetch(`https://api.github.com/repos/${repository}/commits/${releaseSha}/status`, {
+        headers: {
+          accept: 'application/vnd.github+json',
+          authorization: `Bearer ${token}`,
+          'x-github-api-version': '2022-11-28'
+        },
+        redirect: 'follow',
+        signal: AbortSignal.timeout(settlementRequestTimeoutMs)
+      });
+    } catch (error) {
+      transientLookupFailures += 1;
+      lastLookupIssue = `transport ${error?.name || 'Error'}: ${error?.message || String(error)}`;
+      if (attempt < settlementAttempts) {
+        await sleep(settlementDelayMs);
+        continue;
+      }
+      break;
+    }
+
+    if (!response.ok) {
+      if (isRetryableSettlementLookupStatus(response.status)) {
+        transientLookupFailures += 1;
+        lastLookupIssue = `HTTP ${response.status}`;
+        if (attempt < settlementAttempts) {
+          await sleep(settlementDelayMs);
+          continue;
+        }
+        break;
+      }
+      throw new Error(`Vercel settlement status lookup returned non-retryable ${response.status}.`);
+    }
+
+    let payload;
+    try {
+      payload = await response.json();
+    } catch (error) {
+      transientLookupFailures += 1;
+      lastLookupIssue = `invalid JSON: ${error?.message || String(error)}`;
+      if (attempt < settlementAttempts) {
+        await sleep(settlementDelayMs);
+        continue;
+      }
+      break;
+    }
+
+    const vercelStatus = Array.isArray(payload?.statuses)
+      ? payload.statuses.find(item => item?.context === 'Vercel')
+      : null;
+    lastState = String(vercelStatus?.state || 'MISSING').toUpperCase();
+    lastTargetUrl = vercelStatus?.target_url || null;
+    lastLookupIssue = null;
+
+    if (lastState === 'SUCCESS') {
+      const receipt = Object.freeze({
+        schema: 'td613.vercel.git-settlement/v0.2-transient-resilient',
+        required: true,
+        status: 'PASS',
+        release_sha: releaseSha,
+        source_packet_commit: sourcePacketCommit,
+        vercel_status: 'success',
+        target_url: lastTargetUrl,
+        attempt,
+        transient_lookup_failures: transientLookupFailures,
+        observed_at: new Date().toISOString()
+      });
+      await fsp.writeFile(path.join(out, 'vercel-git-settlement.json'), `${JSON.stringify(receipt, null, 2)}\n`, 'utf8');
+      return receipt;
+    }
+    if (lastState === 'FAILURE' || lastState === 'ERROR') {
+      throw new Error(`Vercel deployment for ${releaseSha} reported ${lastState}.`);
+    }
+    if (attempt < settlementAttempts) await sleep(settlementDelayMs);
+  }
+  const lookupDetail = lastLookupIssue ? `; last lookup issue ${lastLookupIssue}` : '';
+  throw new Error(`Vercel deployment for ${releaseSha} did not settle before observation; last state ${lastState}${lookupDetail}.`);
+}
+
+function localToRemote(localPath) {
+  const normalized = localPath.replaceAll('\\', '/');
+  if (normalized.startsWith('app/dome-world/')) return `/dome-world/${normalized.slice('app/dome-world/'.length)}`;
+  if (normalized.startsWith('app/engine/')) return `/engine/${normalized.slice('app/engine/'.length)}`;
+  throw new Error(`No governed production route for ${localPath}.`);
+}
+
+function remoteToLocal(reference) {
+  if (reference.startsWith('/dome-world/')) return `app/dome-world/${reference.slice('/dome-world/'.length)}`;
+  if (reference.startsWith('/engine/')) return `app/engine/${reference.slice('/engine/'.length)}`;
+  if (reference.startsWith('/app/dome-world/')) return reference.slice(1);
+  if (reference.startsWith('/app/engine/')) return reference.slice(1);
+  return null;
+}
+
+function exactStaticRewrite(remotePath) {
+  const rewrite = (vercelConfig.rewrites || []).find(candidate => candidate?.source === remotePath);
+  if (!rewrite) return null;
+  const destination = String(rewrite.destination || '').split('?', 1)[0];
+  const localPath = remoteToLocal(destination);
+  return localPath && allowedExtensions.has(path.extname(localPath).toLowerCase())
+    ? { source: remotePath, destination, local_path: localPath }
+    : null;
+}
+
+function referencesFor(filePath, source) {
+  const extension = path.extname(filePath).toLowerCase();
+  const references = [];
+  const collect = expression => {
+    for (const match of source.matchAll(expression)) if (match[1]) references.push(match[1]);
+  };
+  if (extension === '.html') {
+    collect(/\bsrc\s*=\s*["']([^"'#?]+)["']/gi);
+    collect(/<link\b[^>]*\bhref\s*=\s*["']([^"'#?]+)["'][^>]*>/gi);
+  }
+  if (extension === '.js' || extension === '.mjs') {
+    collect(/(?:import\s+(?:[^"']+?\s+from\s+)?|export\s+[^"']*?\s+from\s+|import\s*\()\s*["']([^"']+)["']/g);
+    collect(/fetch\s*\(\s*["']([^"']+)["']/g);
+  }
+  if (extension === '.css') collect(/url\(\s*["']?([^"')]+)["']?\s*\)/g);
+  return references;
+}
+
+async function resolveReference(fromPath, reference) {
+  const clean = String(reference).split(/[?#]/, 1)[0].trim();
+  if (!clean || /^(?:data:|https?:|mailto:|tel:|#)/i.test(clean)) return null;
+  const rooted = remoteToLocal(clean);
+  const candidate = path.normalize(rooted || path.resolve(path.dirname(fromPath), clean));
+  const relative = path.relative(process.cwd(), candidate).replaceAll('\\', '/');
+  if (relative.startsWith('../') || path.isAbsolute(relative)) return null;
+  if (!allowedExtensions.has(path.extname(relative).toLowerCase())) return null;
+  try {
+    const stat = await fsp.stat(relative);
+    return stat.isFile() ? relative : null;
+  } catch {
+    return null;
+  }
+}
+
+async function discoverRuntimeClosure() {
+  const queue = entrypoints.map(file => ({ file, discovered_from: 'entrypoint' }));
+  const found = new Map();
+  while (queue.length) {
+    const next = queue.shift();
+    if (found.has(next.file)) continue;
+    const bytes = await fsp.readFile(next.file);
+    found.set(next.file, { bytes, discovered_from: next.discovered_from });
+    const source = bytes.toString('utf8');
+    for (const reference of referencesFor(next.file, source)) {
+      const resolved = await resolveReference(next.file, reference);
+      if (resolved && !found.has(resolved)) queue.push({ file: resolved, discovered_from: next.file });
+    }
+  }
+  return [...found.entries()].sort(([left], [right]) => left.localeCompare(right));
+}
+
+await fsp.mkdir(out, { recursive: true });
+const releaseSourceReceipt = await waitForAuthorizedSourceReceipt();
+const vercelGitSettlement = await waitForGitFallbackSettlement();
+const closure = await discoverRuntimeClosure();
+const local = await Promise.all(closure.map(async ([localPath, value]) => {
+  const remotePath = localToRemote(localPath);
+  const rewrite = exactStaticRewrite(remotePath);
+  const expectedLocalPath = rewrite?.local_path || localPath;
+  const expectedBytes = expectedLocalPath === localPath ? value.bytes : await fsp.readFile(expectedLocalPath);
+  return {
+    local_path: localPath,
+    expected_local_path: expectedLocalPath,
+    remote_path: remotePath,
+    declared_rewrite: rewrite,
+    discovered_from: value.discovered_from,
+    sha256: sha256(expectedBytes),
+    size: expectedBytes.length
+  };
+}));
+
+for (const required of [
+  'app/dome-world/station-propagation-observatory.js',
+  'app/engine/flowcore-station-propagation.js',
+  'app/dome-world/fixtures/pedagogue/cross-station-propagation.json'
+]) {
+  if (!local.some(item => item.local_path === required)) throw new Error(`Runtime dependency closure omitted ${required}.`);
+}
+if (local.length < 20) throw new Error(`Runtime dependency closure is unexpectedly small (${local.length}).`);
+if (local.some(item => item.discovered_from !== 'entrypoint' && item.local_path.endsWith('.html'))) {
+  throw new Error('Runtime dependency closure followed a navigational HTML document.');
+}
+
+let observation = null;
+let lastError = null;
+for (let attempt = 1; attempt <= attempts; attempt += 1) {
+  try {
+    const remote = [];
+    for (const item of local) {
+      const url = new URL(item.remote_path, `${base}/`);
+      url.searchParams.set('td613_source_packet', sourcePacketCommit);
+      url.searchParams.set('td613_probe_attempt', String(attempt));
+      const response = await fetch(url, { headers: { 'cache-control': 'no-cache' }, redirect: 'follow' });
+      if (!response.ok) throw new Error(`${item.remote_path} returned ${response.status}.`);
+      const bytes = Buffer.from(await response.arrayBuffer());
+      const digest = sha256(bytes);
+      if (digest !== item.sha256) {
+        const rewriteDetail = item.declared_rewrite ? ` after declared rewrite to ${item.declared_rewrite.destination}` : '';
+        throw new Error(`${item.remote_path} digest ${digest} does not match source ${item.sha256}${rewriteDetail}.`);
+      }
+      remote.push({
+        remote_path: item.remote_path,
+        expected_local_path: item.expected_local_path,
+        declared_rewrite: item.declared_rewrite,
+        final_url: response.url,
+        sha256: digest,
+        size: bytes.length,
+        status: response.status
+      });
+    }
+    observation = {
+      schema: 'td613.flowcore.production-content-observation/v0.5-release-receipt-bound-vercel-settled-rewrite-aware-asset-closure',
+      status: 'PASS',
+      source_packet_commit: sourcePacketCommit,
+      production_base_url: base,
+      release_source_receipt: releaseSourceReceipt,
+      exact_source_content_verified: true,
+      dependency_closure_verified: true,
+      navigation_links_excluded: true,
+      declared_static_rewrites_resolved: true,
+      vercel_git_settlement: vercelGitSettlement,
+      dependency_count: local.length,
+      application_tree_drift: 'none',
+      attempt,
+      local,
+      remote,
+      observed_at: new Date().toISOString(),
+      authority: {
+        authorizes_public_route_promotion: false,
+        counts_as_human_evidence: false,
+        closes_program: false
+      }
+    };
+    break;
+  } catch (error) {
+    lastError = error;
+    if (attempt < attempts) await sleep(delayMs);
+  }
+}
+
+if (!observation) {
+  observation = {
+    schema: 'td613.flowcore.production-content-observation/v0.5-release-receipt-bound-vercel-settled-rewrite-aware-asset-closure',
+    status: 'HELD',
+    source_packet_commit: sourcePacketCommit,
+    production_base_url: base,
+    release_source_receipt: releaseSourceReceipt,
+    exact_source_content_verified: false,
+    dependency_closure_verified: false,
+    navigation_links_excluded: true,
+    declared_static_rewrites_resolved: true,
+    vercel_git_settlement: vercelGitSettlement,
+    dependency_count: local.length,
+    application_tree_drift: 'UNRESOLVED',
+    hold_reason: lastError?.message || 'Production content was not observed.',
+    attempts,
+    local,
+    observed_at: new Date().toISOString()
+  };
+}
+
+const artifactPath = path.join(out, 'flowcore-production-content-observation.json');
+await fsp.writeFile(artifactPath, `${JSON.stringify(observation, null, 2)}\n`, 'utf8');
+if (observation.status !== 'PASS') throw new Error(observation.hold_reason);
+console.log(JSON.stringify({
+  status: observation.status,
+  source_packet_commit: sourcePacketCommit,
+  release_source_receipt: releaseSourceReceipt.status,
+  artifact: artifactPath,
+  dependency_count: local.length,
+  vercel_git_settlement: vercelGitSettlement.status
+}, null, 2));

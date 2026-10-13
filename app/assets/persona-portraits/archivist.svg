@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Archivist portrait</title>
+  <desc id="desc">A hooded procedural portrait with gold and cyan witness-ledger accents.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f1115"/>
+      <stop offset="100%" stop-color="#040508"/>
+    </linearGradient>
+    <linearGradient id="halo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffd65c" stop-opacity=".9"/>
+      <stop offset="100%" stop-color="#74eaff" stop-opacity=".2"/>
+    </linearGradient>
+    <linearGradient id="robe" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#15161a"/>
+      <stop offset="100%" stop-color="#090a0d"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <g opacity=".22">
+    <path d="M120 0v1000M220 0v1000M320 0v1000M420 0v1000M520 0v1000M620 0v1000" stroke="#74eaff" stroke-width="1"/>
+  </g>
+  <circle cx="400" cy="270" r="150" fill="none" stroke="url(#halo)" stroke-width="3" opacity=".6"/>
+  <path d="M220 900c40-220 72-360 180-520 108 160 140 300 180 520H220z" fill="url(#robe)"/>
+  <path d="M210 892c70-350 118-496 190-610 72 114 120 260 190 610" fill="none" stroke="#15171b" stroke-width="28" stroke-linecap="round"/>
+  <path d="M275 295c34-118 116-178 125-184 9 6 91 66 125 184-8 89-46 156-125 214-79-58-117-125-125-214z" fill="#090a0e" stroke="#23272f" stroke-width="3"/>
+  <path d="M350 280c16-18 34-24 50-24s34 6 50 24" fill="none" stroke="#ffd65c" stroke-width="4" opacity=".8"/>
+  <path d="M342 368c18 12 39 18 58 18s40-6 58-18" fill="none" stroke="#74eaff" stroke-width="3" opacity=".8"/>
+  <path d="M398 274v125" stroke="#ffd65c" stroke-width="2" opacity=".7"/>
+  <path d="M292 226c38-46 67-62 108-80 41 18 70 34 108 80" fill="none" stroke="#5e5030" stroke-width="2" opacity=".9"/>
+  <path d="M286 836h228" stroke="#ffd65c" stroke-width="2" opacity=".45"/>
+  <path d="M252 876h296" stroke="#74eaff" stroke-width="1.5" opacity=".35"/>
+</svg>

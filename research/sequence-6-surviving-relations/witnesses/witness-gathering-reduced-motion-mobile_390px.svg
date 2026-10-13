@@ -1,0 +1,61 @@
+<!--
+  TD613 Flow-Core Semantic Motion Bridge Visual Witness
+  Relation: gathering (à)
+  Active View ID: cockpit
+  Carrier Count: 39 (Distribution: 6 near / 13 mid / 20 far)
+  Reduced Motion: ENABLED
+  Viewport: 390x844 (viewBox: 200 -220 600 1120)
+  Claim Ceiling: VISUAL_RELATION != EXTERNAL_REALITY | AMBIENT_MOTION != EVENT_HISTORY | AESTHETIC_BINDING != EMPIRICAL_VALIDATION
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="200 -220 600 1120" width="390" height="844" style="background:#0a0a0c;">
+  <style>
+    .flight-near { font-family: 'JetBrains Mono', 'PingFang SC', monospace; font-weight: bold; }
+    .flight-mid  { font-family: 'JetBrains Mono', 'PingFang SC', monospace; }
+    .flight-far  { font-family: 'JetBrains Mono', 'PingFang SC', monospace; opacity: 0.20; }
+  </style>
+  <g class="loom-field-flight" aria-hidden="true" data-active-relation="gathering">
+    <text x="220" y="120" font-size="184" fill="#f3bd86" class="flight-near" opacity="0.38" transform="translate(220 120) rotate(-5) scale(1.25) translate(-220 -120)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="308" y="120" font-size="26" fill="#b69be9" class="flight-far" opacity="0.2" transform="translate(308 120) rotate(-2.5) scale(0.72) translate(-308 -120)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="396" y="120" font-size="26" fill="#b69be9" class="flight-far" opacity="0.2" transform="translate(396 120) rotate(0) scale(0.72) translate(-396 -120)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="484" y="120" font-size="26" fill="#b69be9" class="flight-far" opacity="0.2" transform="translate(484 120) rotate(2.5) scale(0.72) translate(-484 -120)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="572" y="120" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.24" transform="translate(572 120) rotate(5) scale(0.95) translate(-572 -120)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="220" y="206" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.2" transform="translate(220 206) rotate(-5) scale(0.72) translate(-220 -206)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="308" y="206" font-size="26" fill="#b69be9" class="flight-far" opacity="0.2" transform="translate(308 206) rotate(-2.5) scale(0.72) translate(-308 -206)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="396" y="206" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.24" transform="translate(396 206) rotate(0) scale(0.95) translate(-396 -206)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="484" y="206" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.24" transform="translate(484 206) rotate(2.5) scale(0.95) translate(-484 -206)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="572" y="206" font-size="26" fill="#f3bd86" class="flight-far" opacity="0.2" transform="translate(572 206) rotate(5) scale(0.72) translate(-572 -206)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="220" y="292" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.2" transform="translate(220 292) rotate(-5) scale(0.72) translate(-220 -292)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="308" y="292" font-size="132" fill="#b69be9" class="flight-near" opacity="0.38" transform="translate(308 292) rotate(-2.5) scale(1.25) translate(-308 -292)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="396" y="292" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.24" transform="translate(396 292) rotate(0) scale(0.95) translate(-396 -292)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="484" y="292" font-size="184" fill="#b69be9" class="flight-near" opacity="0.38" transform="translate(484 292) rotate(2.5) scale(1.25) translate(-484 -292)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="572" y="292" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.24" transform="translate(572 292) rotate(5) scale(0.95) translate(-572 -292)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="220" y="378" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.2" transform="translate(220 378) rotate(-5) scale(0.72) translate(-220 -378)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="308" y="378" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.24" transform="translate(308 378) rotate(-2.5) scale(0.95) translate(-308 -378)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="396" y="378" font-size="26" fill="#b69be9" class="flight-far" opacity="0.2" transform="translate(396 378) rotate(0) scale(0.72) translate(-396 -378)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="484" y="378" font-size="26" fill="#f3bd86" class="flight-far" opacity="0.2" transform="translate(484 378) rotate(2.5) scale(0.72) translate(-484 -378)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="572" y="378" font-size="26" fill="#b69be9" class="flight-far" opacity="0.2" transform="translate(572 378) rotate(5) scale(0.72) translate(-572 -378)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="220" y="464" font-size="56" fill="#9ce7e4" class="flight-mid" opacity="0.24" transform="translate(220 464) rotate(-5) scale(0.95) translate(-220 -464)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="308" y="464" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.24" transform="translate(308 464) rotate(-2.5) scale(0.95) translate(-308 -464)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="396" y="464" font-size="132" fill="#b69be9" class="flight-near" opacity="0.38" transform="translate(396 464) rotate(0) scale(1.25) translate(-396 -464)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="484" y="464" font-size="26" fill="#b69be9" class="flight-far" opacity="0.2" transform="translate(484 464) rotate(2.5) scale(0.72) translate(-484 -464)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="572" y="464" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.24" transform="translate(572 464) rotate(5) scale(0.95) translate(-572 -464)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="220" y="550" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.2" transform="translate(220 550) rotate(-5) scale(0.72) translate(-220 -550)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="308" y="550" font-size="184" fill="#b69be9" class="flight-near" opacity="0.38" transform="translate(308 550) rotate(-2.5) scale(1.25) translate(-308 -550)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="396" y="550" font-size="26" fill="#f3bd86" class="flight-far" opacity="0.2" transform="translate(396 550) rotate(0) scale(0.72) translate(-396 -550)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="484" y="550" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.24" transform="translate(484 550) rotate(2.5) scale(0.95) translate(-484 -550)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="572" y="550" font-size="26" fill="#b69be9" class="flight-far" opacity="0.2" transform="translate(572 550) rotate(5) scale(0.72) translate(-572 -550)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="220" y="636" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.2" transform="translate(220 636) rotate(-5) scale(0.72) translate(-220 -636)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="308" y="636" font-size="26" fill="#b69be9" class="flight-far" opacity="0.2" transform="translate(308 636) rotate(-2.5) scale(0.72) translate(-308 -636)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="396" y="636" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.24" transform="translate(396 636) rotate(0) scale(0.95) translate(-396 -636)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="484" y="636" font-size="132" fill="#b69be9" class="flight-near" opacity="0.38" transform="translate(484 636) rotate(2.5) scale(1.25) translate(-484 -636)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="572" y="636" font-size="26" fill="#b69be9" class="flight-far" opacity="0.2" transform="translate(572 636) rotate(5) scale(0.72) translate(-572 -636)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="220" y="722" font-size="56" fill="#9ce7e4" class="flight-mid" opacity="0.24" transform="translate(220 722) rotate(-5) scale(0.95) translate(-220 -722)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="308" y="722" font-size="56" fill="#f3bd86" class="flight-mid" opacity="0.24" transform="translate(308 722) rotate(-2.5) scale(0.95) translate(-308 -722)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="396" y="722" font-size="26" fill="#b69be9" class="flight-far" opacity="0.2" transform="translate(396 722) rotate(0) scale(0.72) translate(-396 -722)" text-anchor="middle" dominant-baseline="middle">à</text>
+    <text x="484" y="722" font-size="26" fill="#b69be9" class="flight-far" opacity="0.2" transform="translate(484 722) rotate(2.5) scale(0.72) translate(-484 -722)" text-anchor="middle" dominant-baseline="middle">à</text>
+  </g>
+  <g class="loom-field-center-glyph" text-anchor="middle" dominant-baseline="middle">
+    <text x="500" y="260" font-size="140" fill="#f4f4f0" opacity="0.88">à</text>
+    <text x="500" y="360" font-size="18" fill="#d97706" letter-spacing="2" opacity="0.95">GATHERING</text>
+  </g>
+</svg>

@@ -1,0 +1,33 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+
+const safety = fs.readFileSync('.github/workflows/vercel-relock-safety.yml', 'utf8').replace(/\r\n/g, '\n');
+const config = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
+
+assert.equal(config.git?.deploymentEnabled, false, 'Vercel Git auto-deploy lock must be closed at rest');
+assert.match(safety, /^\s{2}issue_comment:\s*$/m);
+assert.match(safety, /github\.event\.issue\.number == 405/);
+assert.match(safety, /github\.event\.comment\.user\.login == github\.repository_owner/);
+assert.match(safety, /github\.event\.comment\.user\.login == 'chatgpt-codex-connector\[bot\]'/);
+assert.match(safety, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-relock '\)/);
+assert.doesNotMatch(safety, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-release '\)/,
+  'relock safety must never race the ordinary production-release gesture');
+assert.match(safety, /\[\[ "\$COMMAND" == '\/td613-vercel-relock' \]\]/);
+assert.match(safety, /group: td613-vercel-production-release/);
+assert.doesNotMatch(safety, /^concurrency:\s*$/m,
+  'relock safety must not reserve release concurrency at workflow-dispatch time');
+assert.match(safety, /relock-safety:[\s\S]*?concurrency:\n\s+group: td613-vercel-production-release/,
+  'only the authorized relock job may enter the shared release concurrency group');
+assert.match(safety, /cancel-in-progress: false/);
+assert.match(safety, /git fetch origin main/);
+assert.match(safety, /git reset --hard origin\/main/);
+assert.match(safety, /git merge-base --is-ancestor/);
+assert.match(safety, /deploymentEnabled: false/);
+assert.match(safety, /safety-relock Vercel/);
+assert.match(safety, /deployment_count = 0/);
+assert.match(safety, /git_auto_deploy = disabled/);
+assert.doesNotMatch(safety, /vercel@latest deploy|deploymentEnabled = true/);
+assert.doesNotMatch(safety, /confirm-production-practice|td613-vercel-confirm|td613-production-reobserve|td613-marrowline-dollhouse-trial/,
+  'Recovery/research listener must not resurrect retired confirmation or provider-observation gates.');
+
+console.log('vercel-relock-safety.test.mjs passed');

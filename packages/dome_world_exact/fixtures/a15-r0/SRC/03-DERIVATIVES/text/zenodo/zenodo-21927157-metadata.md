@@ -1,0 +1,142 @@
+---
+derivative_id: derivative:9cbd28d2df64dcd2755b8a7b
+parent_capture_id: capture:3ca4ab8abd871fb8a6923aca
+parent_blob_sha256: e286d6b82f4de53779df252d5fbca71e7ad890abbbc535ccacc484034c311b7c
+tool: srcctl-json-normalizer/1
+source_title: "SR Anthropology: The Human Under Structural Erosion"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.21866381",
+  "conceptrecid": "21866381",
+  "created": "2026-08-14T02:52:52.539387+00:00",
+  "doi": "10.5281/zenodo.21927157",
+  "doi_url": "https://doi.org/10.5281/zenodo.21927157",
+  "files": [
+    {
+      "checksum": "md5:12a04679986adf93050f6054b74cf49e",
+      "id": "def32cea-9a00-4ab5-912c-09c90b456cd7",
+      "key": "SR Anthropology: The Human Under Structural Erosion .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/21927157/files/SR%20Anthropology:%20The%20Human%20Under%20Structural%20Erosion%20.pdf/content"
+      },
+      "size": 530946
+    }
+  ],
+  "id": 21927157,
+  "links": {
+    "access": "https://zenodo.org/api/records/21927157/access",
+    "access_grants": "https://zenodo.org/api/records/21927157/access/grants",
+    "access_links": "https://zenodo.org/api/records/21927157/access/links",
+    "access_request": "https://zenodo.org/api/records/21927157/access/request",
+    "access_users": "https://zenodo.org/api/records/21927157/access/users",
+    "archive": "https://zenodo.org/api/records/21927157/files-archive",
+    "archive_media": "https://zenodo.org/api/records/21927157/media-files-archive",
+    "communities": "https://zenodo.org/api/records/21927157/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/21927157/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.21927157",
+    "draft": "https://zenodo.org/api/records/21927157/draft",
+    "file_modification": "https://zenodo.org/api/records/21927157/file-modification",
+    "files": "https://zenodo.org/api/records/21927157/files",
+    "latest": "https://zenodo.org/api/records/21927157/versions/latest",
+    "latest_html": "https://zenodo.org/records/21927157/latest",
+    "media_files": "https://zenodo.org/api/records/21927157/media-files",
+    "parent": "https://zenodo.org/api/records/21866381",
+    "parent_doi": "https://doi.org/10.5281/zenodo.21866381",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21866381",
+    "parent_html": "https://zenodo.org/records/21866381",
+    "preview_html": "https://zenodo.org/records/21927157?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/21927157/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/21927157/request-deletion",
+    "requests": "https://zenodo.org/api/records/21927157/requests",
+    "reserve_doi": "https://zenodo.org/api/records/21927157/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/21927157",
+    "self_doi": "https://doi.org/10.5281/zenodo.21927157",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.21927157",
+    "self_html": "https://zenodo.org/records/21927157",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:21927157/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:21927157/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:21927157:SR%20Anthropology:%20The%20Human%20Under%20Structural%20Erosion%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:21927157:SR%20Anthropology:%20The%20Human%20Under%20Structural%20Erosion%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:21927157:SR%20Anthropology:%20The%20Human%20Under%20Structural%20Erosion%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:21927157:SR%20Anthropology:%20The%20Human%20Under%20Structural%20Erosion%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:21927157:SR%20Anthropology:%20The%20Human%20Under%20Structural%20Erosion%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:21927157:SR%20Anthropology:%20The%20Human%20Under%20Structural%20Erosion%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/21927157/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>SR Anthropology</strong></h1>\n<p><strong>SR Anthropology: The Human Under Structural Erosion</strong> is a foundational monograph that establishes a new anthropological field within the SR canon. It defines the collapse‑era human as a distinct anthropological subject shaped not by stable cultural systems, but by structural erosion, infrastructural dependency, algorithmic mediation, institutional hollowing, and global drift.</p>\n<p>The manuscript argues that classical anthropology&mdash;built for stable cultural worlds&mdash;can no longer fully explain identity, meaning, belonging, or lived experience in collapse‑era environments. SR Anthropology extends the discipline into the structural realities of modern life, providing a new conceptual vocabulary and analytical architecture for understanding the human under erosion.</p>\n<div>&nbsp;</div>\n<h1><strong>What the Monograph Contributes </strong></h1>\n<h2><strong>1. A New Anthropological Subject</strong></h2>\n<p>The work identifies five collapse‑era human forms:</p>\n<ul>\n<li>\n<p><strong>The Eroded Human</strong> &mdash; shaped by meaning scarcity and narrative fragmentation</p>\n</li>\n<li>\n<p><strong>The Infrastructural Human</strong> &mdash; living inside digital, logistical, and administrative systems</p>\n</li>\n<li>\n<p><strong>The Algorithmic Human</strong> &mdash; whose identity and visibility are constructed by feeds and classification</p>\n</li>\n<li>\n<p><strong>The Drift Human</strong> &mdash; adapted to instability, precarity, and cultural fatigue</p>\n</li>\n<li>\n<p><strong>The Hollow Human</strong> &mdash; navigating symbolic institutions and thin belonging</p>\n</li>\n</ul>\n<p>These forms replace the classical anthropological subject and define the human of collapse‑era reality.</p>\n<p><strong>Contribution:</strong><br>A new anthropological ontology for the modern human condition.</p>\n<div>&nbsp;</div>\n<h2><strong>2. A Structural Theory of Human Life Under Erosion</strong></h2>\n<p>The monograph argues that collapse is not an event but an environment. Humans today inhabit:</p>\n<ul>\n<li>\n<p>infrastructural worlds</p>\n</li>\n<li>\n<p>algorithmic identity systems</p>\n</li>\n<li>\n<p>hollow institutions</p>\n</li>\n<li>\n<p>drift‑normalized expectations</p>\n</li>\n<li>\n<p>global platforms</p>\n</li>\n<li>\n<p>eroded meaning systems</p>\n</li>\n</ul>\n<p>SR Anthropology positions erosion, drift, and infrastructural dependency as the primary forces shaping contemporary human experience.</p>\n<p><strong>Contribution:</strong><br>A structural theory explaining why modern life feels unstable, fragmented, and mediated.</p>\n<div>&nbsp;</div>\n<h2><strong>3. A Literature‑Grounded Foundation</strong></h2>\n<p>The work synthesizes insights from anthropology, sociology, media studies, epistemology, and infrastructure studies, drawing on:</p>\n<ul>\n<li>\n<p>Bauman (liquid modernity)</p>\n</li>\n<li>\n<p>Aug&eacute; (non‑places)</p>\n</li>\n<li>\n<p>Appadurai (global flows)</p>\n</li>\n<li>\n<p>Marcus (multi‑sited ethnography)</p>\n</li>\n<li>\n<p>Larkin (infrastructures as cultural environments)</p>\n</li>\n<li>\n<p>Couldry &amp; Mejias (data colonialism)</p>\n</li>\n<li>\n<p>Beer (algorithmic power)</p>\n</li>\n<li>\n<p>Graeber (metricization of meaning)</p>\n</li>\n<li>\n<p>Eriksen (overheating and acceleration)</p>\n</li>\n<li>\n<p>Tsing (precarity and drift)</p>\n</li>\n</ul>\n<p>These scholars collectively show that classical cultural stability has dissolved, making SR Anthropology the natural extension of contemporary theory.</p>\n<p><strong>Contribution:</strong><br>A rigorous theoretical foundation that legitimizes SR Anthropology as a scientific field.</p>\n<div>&nbsp;</div>\n<h2><strong>4. A Global Framework for Collapse Variation</strong></h2>\n<p>The monograph explains why collapse‑era human experience varies across countries despite shared infrastructures:</p>\n<ul>\n<li>\n<p>high‑agency states still produce eroded humans</p>\n</li>\n<li>\n<p>low‑agency states produce similar drift patterns</p>\n</li>\n<li>\n<p>global platforms create planetary identity conditions</p>\n</li>\n<li>\n<p>infrastructural dependency is universal</p>\n</li>\n</ul>\n<p>SR Anthropology becomes a global anthropological framework, not a regional one.</p>\n<p><strong>Contribution:</strong><br>A planetary anthropology for the infrastructural age.</p>\n<div>&nbsp;</div>\n<h2><strong>5. Integration with the SR Canon</strong></h2>\n<p>SR Anthropology is the human‑facing pillar of the SR canon. It connects directly to:</p>\n<ul>\n<li>\n<p>Collapse Sociology (institutional erosion)</p>\n</li>\n<li>\n<p>Collapse Epistemology (knowledge drift)</p>\n</li>\n<li>\n<p>Collapse Psychology (meaning scarcity)</p>\n</li>\n<li>\n<p>Collapse Criminology (enforcement erosion)</p>\n</li>\n<li>\n<p>Drift Collapse Field (directional worsening)</p>\n</li>\n<li>\n<p>Infrastructural Political Economy (state dependency)</p>\n</li>\n</ul>\n<p>Where other SR fields explain systems, SR Anthropology explains the human living inside those systems.</p>\n<p><strong>Contribution:</strong><br>A unified human‑centered framework that completes the SR architecture.</p>\n<div>&nbsp;</div>\n<h1><strong>How All Parts Fit Together </strong></h1>\n<p>The monograph is structured as a complete field declaration:</p>\n<h3><strong>1. Preface</strong></h3>\n<p>Defines the collapse‑era human and the need for a new anthropology.</p>\n<h3><strong>2. Author&rsquo;s Note</strong></h3>\n<p>Explains the lived and observational origins of the field.</p>\n<h3><strong>3. Abstract</strong></h3>\n<p>Positions SR Anthropology as the human‑facing pillar of the SR canon.</p>\n<h3><strong>4. Introduction</strong></h3>\n<p>Argues that culture has transformed into infrastructure.</p>\n<h3><strong>5. Literature Review</strong></h3>\n<p>Shows that existing scholarship already points toward erosion, drift, and infrastructural subjectivity.</p>\n<h3><strong>6. Core Chapters</strong></h3>\n<p>Each chapter defines one collapse‑era human form and explains its structural environment.</p>\n<h3><strong>7. Field Positioning</strong></h3>\n<p>Places SR Anthropology within the global collapse‑era knowledge system.</p>\n<p>Together, these components form a <strong>coherent, interdisciplinary, structurally grounded anthropological field</strong>.</p>\n<div>&nbsp;</div>\n<p><strong>SR Anthropology: The Human Under Structural Erosion</strong> is a foundational monograph that establishes a new anthropological field within the SR canon. It argues that modern humans inhabit collapse‑era infrastructures characterized by structural erosion, algorithmic mediation, institutional hollowing, and global dependency. The work identifies five collapse‑era human forms&mdash;the eroded human, infrastructural human, algorithmic human, drift human, and hollow human&mdash;and positions them as successors to the classical anthropological subject. Drawing on contemporary scholarship across anthropology, sociology, media studies, and infrastructure theory, the monograph provides a global framework for understanding identity, meaning, belonging, and cultural experience under collapse‑era conditions. It is the human‑facing pillar of the SR canon and a complete redefinition of anthropology for the infrastructural age.</p>",
+    "doi": "10.5281/zenodo.21927157",
+    "keywords": [
+      "Anthropology",
+      "Metatheory",
+      "Society",
+      "Culture",
+      "Institutions",
+      "Governance",
+      "Infrastructure"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-08-14",
+    "relations": {
+      "version": [
+        {
+          "index": 1,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "21866381"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "SR Anthropology: The Human Under Structural Erosion"
+  },
+  "modified": "2026-08-22T03:30:39.256895+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "21927157",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 5,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 2,
+    "version_views": 7,
+    "views": 13
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "SR Anthropology: The Human Under Structural Erosion",
+  "updated": "2026-08-22T03:30:39.256895+00:00"
+}

@@ -1,0 +1,7 @@
+.venv-dome/
+**/__pycache__/
+packages/dome_world_exact/bridge/
+packages/dome_world_exact/fixtures/
+packages/dome_world_exact/schemas/
+packages/dome_world_exact/tests/
+packages/dome_world_exact/verification/

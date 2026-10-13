@@ -1,0 +1,505 @@
+{
+  "schema": "td613.pedagogue-design-fixture/v0.1",
+  "design_id": "loom-native-marrowline-consequence-route",
+  "surface_reference": "Holonomy Loom / native Marrowline / Portable AIA",
+  "governance_context": "TD613",
+  "determinism": {
+    "frozenClock": "2026-10-01T00:00:00Z",
+    "idSeed": "loom-native-marrowline-consequence-route",
+    "idScope": "Loom/Marrowline"
+  },
+  "scene_input": {
+    "scene_kind": "GENERIC",
+    "station_owner": "Dome-World",
+    "source_status": "E0",
+    "observation_status": "UNRESOLVED",
+    "world_state_reference": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f",
+    "provenance": {
+      "source_references": [
+        "app/dome-world/marrowline-loom-demo.js",
+        "app/dome-world/marrowline.html",
+        "app/khonapolit.js",
+        "app/dome-world/holonomy-loom/demo-contract.js"
+      ],
+      "evidence_basis": [
+        "Source-bound comparison with declared candidate route; metrics are hypothetical engineering inputs, not human measurements."
+      ],
+      "transformations": [
+        "Remove separate transcript and composer banner while retaining staging, receipt validation and optional Gate inspection."
+      ],
+      "station_owners": [
+        "Dome-World"
+      ]
+    },
+    "visible_condition": {
+      "plain_language": "A task from Loom can continue in a fresh Marrowline chat. Stage the handoff, send it, then stage and send the selected files. Local-only documents stay here.",
+      "surface_reference": "Holonomy Loom / native Marrowline / Portable AIA"
+    },
+    "available_affordances": [
+      {
+        "action_id": "continue_native_chat",
+        "purpose": "Continue the Loom task through two explicit sends in the normal Marrowline composer.",
+        "authorized_by_station": "Human",
+        "reversible": true
+      }
+    ],
+    "route_topology": {
+      "entry": "Loom handoff opens fresh native Marrowline home",
+      "exit": "Normal native New, saved conversation selection, or return to Loom",
+      "same_endpoint_not_same_history": true,
+      "missing_inputs": [],
+      "steps": [
+        {
+          "step_id": "notice",
+          "label": "See what each send carries",
+          "phase": "NOTICE",
+          "required_fields": [
+            "handoff only first",
+            "selected files second",
+            "local-only excluded"
+          ],
+          "dependencies": [],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 0,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "stage1",
+          "label": "Stage Loom handoff from plus menu",
+          "phase": "ACT",
+          "required_fields": [
+            "activation attachment"
+          ],
+          "dependencies": [
+            "notice"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "send1",
+          "label": "Send Loom handoff",
+          "phase": "ACT",
+          "required_fields": [
+            "native Send",
+            "activation attachment"
+          ],
+          "dependencies": [
+            "stage1"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "answer1",
+          "label": "Read normal bots reply",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "native user bubble",
+            "normal generating animation",
+            "normal reply"
+          ],
+          "dependencies": [
+            "send1"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "stage2",
+          "label": "Stage selected files from plus menu",
+          "phase": "ACT",
+          "required_fields": [
+            "selected files"
+          ],
+          "dependencies": [
+            "answer1"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "send2",
+          "label": "Send selected files",
+          "phase": "ACT",
+          "required_fields": [
+            "native Send",
+            "selected files"
+          ],
+          "dependencies": [
+            "stage2"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "answer2",
+          "label": "Read normal bots continuation",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "native reply",
+            "immediate predecessor"
+          ],
+          "dependencies": [
+            "send2"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "inspect",
+          "label": "Optionally inspect or export current result",
+          "phase": "TRANSFER",
+          "required_fields": [
+            "Loom Gate",
+            "current Portable AIA"
+          ],
+          "dependencies": [
+            "answer2"
+          ],
+          "legibility_millipoints": 700,
+          "affordance_millipoints": 700,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        }
+      ]
+    },
+    "causal_structure": {
+      "input": "Explicit staging and Send gestures with only selected lawful bytes",
+      "operator": "Native chatbot runtime, governed request binding and authenticated stage admission",
+      "observable": "Native user turn, generating animation and bots reply; admitted #1 unlocks file staging; latest admitted file-bearing continuation alone can export",
+      "authority": "Contemporaneous operator instruction, receipt validation, fail-closed Neon custody",
+      "equations": []
+    },
+    "research_frame": {
+      "question": "Can normal Marrowline carry the two-stage task without a second conversation surface or required audit detour?",
+      "hypothesis": "Removing the separate transcript, composer banner and required Gate detour reduces declared structural handling demand while preserving lawful send stages.",
+      "observable_behavior": [
+        "A returning user sees a fresh native home and retains saved threads",
+        "Opening or staging sends nothing",
+        "Native pending and Stop appear immediately after Send",
+        "Files become selectable after admitted activation",
+        "Gate remains optional"
+      ],
+      "alternative_explanations": [
+        "Native familiarity may explain apparent improvement independently of fewer crossings",
+        "Latency may dominate perceived send failure"
+      ],
+      "expected_failure_modes": [
+        "Activation leaks selected bodies",
+        "Held result unlocks file stage",
+        "Ordinary chat becomes governed export",
+        "Old conversation is reused",
+        "Native shell looks normal but still uses a special assistant provider persona"
+      ],
+      "falsifier": [
+        "Any opening or staging transmits bytes",
+        "No native generating animation during request",
+        "Files require a Gate visit",
+        "Held or stale output replaces current export",
+        "An existing saved conversation is silently adopted"
+      ],
+      "abstention_conditions": [
+        "No browser/provider witness",
+        "No authenticated custody response",
+        "Expired or malformed transfer"
+      ]
+    },
+    "missingness": [
+      "Proposed route is unobserved at this source revision",
+      "No physical-device acceptance witness",
+      "No human comprehension measurement"
+    ],
+    "contradictions": [],
+    "claim_ceiling": {
+      "allowed_claims": [
+        "This fixture compares declared route structure",
+        "The proposal preserves two explicit sends and optional inspection"
+      ],
+      "forbidden_claims": [
+        "Design Gate proves production behavior",
+        "Burden values measure users",
+        "Native renderer alone proves native provider runtime",
+        "This fixture grants merge or deployment authority"
+      ]
+    },
+    "technical_terms_withheld": [
+      "governed continuation",
+      "admitted response",
+      "prior-result commitment",
+      "compare-and-swap",
+      "request digest"
+    ]
+  },
+  "baseline_route_steps": [
+    {
+      "step_id": "notice",
+      "label": "Read dense composer banner",
+      "phase": "NOTICE",
+      "required_fields": [
+        "governed continuation",
+        "AIA commitment",
+        "file exclusion",
+        "restore",
+        "leave"
+      ],
+      "dependencies": [],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 0,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "stage1",
+      "label": "Stage activation",
+      "phase": "ACT",
+      "required_fields": [
+        "activation attachment"
+      ],
+      "dependencies": [
+        "notice"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "send1",
+      "label": "Send activation",
+      "phase": "ACT",
+      "required_fields": [
+        "Send",
+        "activation attachment"
+      ],
+      "dependencies": [
+        "stage1"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "answer1",
+      "label": "Read specialized assessment",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": [
+        "assessment card",
+        "open questions",
+        "binding details"
+      ],
+      "dependencies": [
+        "send1"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "gate",
+      "label": "Inspect first return in Gate",
+      "phase": "ACT",
+      "required_fields": [
+        "Inspect #1",
+        "Gate"
+      ],
+      "dependencies": [
+        "answer1"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 1,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "back",
+      "label": "Return to chat",
+      "phase": "ACT",
+      "required_fields": [
+        "Back to Chat"
+      ],
+      "dependencies": [
+        "gate"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 1,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "stage2",
+      "label": "Rediscover file step",
+      "phase": "ACT",
+      "required_fields": [
+        "plus",
+        "Loom submenu",
+        "upload files"
+      ],
+      "dependencies": [
+        "back"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "send2",
+      "label": "Send files",
+      "phase": "ACT",
+      "required_fields": [
+        "Send",
+        "selected files"
+      ],
+      "dependencies": [
+        "stage2"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "answer2",
+      "label": "Read specialized result",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": [
+        "assessment card",
+        "binding details"
+      ],
+      "dependencies": [
+        "send2"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "inspect",
+      "label": "Inspect continuity or export",
+      "phase": "TRANSFER",
+      "required_fields": [
+        "Gate",
+        "current Portable AIA"
+      ],
+      "dependencies": [
+        "answer2"
+      ],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 700,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 1,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    }
+  ],
+  "action": {
+    "action_id": "continue_native_chat"
+  },
+  "world_delta": {
+    "observation_status": "UNRESOLVED",
+    "causal_trace": [
+      "Human stages activation then sends",
+      "Authenticated activation unlocks selected-file stage",
+      "Human stages selected files then sends",
+      "Authenticated continuation preserves immediate predecessor and latest export"
+    ],
+    "losses": [],
+    "missingness": [
+      "Proposed route is unobserved at this source revision",
+      "No physical-device acceptance witness",
+      "No human comprehension measurement"
+    ],
+    "contradictions": [],
+    "unresolved_relations": [
+      "Browser/provider behavior remains to be witnessed"
+    ],
+    "glyph_candidates": [],
+    "static_equivalent": {
+      "summary": "Two normal chat sends continue the Loom task; optional Gate inspection retains custody detail.",
+      "steps": [
+        "stage handoff",
+        "send",
+        "stage selected files",
+        "send",
+        "optionally inspect/export"
+      ]
+    }
+  },
+  "name": {
+    "plain_language": "The normal chatbot has received portable instructions and then the selected files.",
+    "glyph_relation": null,
+    "technical_term": "two-stage governed continuation",
+    "non_equivalence": [
+      "Staging is not sending",
+      "Activation is not file-bearing analysis",
+      "Native rendering is not provider authenticity",
+      "Latest admitted result is not latest attempted result"
+    ]
+  },
+  "transfer_context": {
+    "context": {
+      "surface": "Portable AIA onward use"
+    },
+    "shared_relation_candidate": "Simplify the visible route while retaining the distinctions that govern lawful action",
+    "observable_correspondence": [
+      "Optional export follows only the latest admitted file-bearing result"
+    ],
+    "alternative_explanations": [
+      "Prior familiarity with native chat may influence continuity judgments"
+    ],
+    "abstention_conditions": [
+      "Failed, malformed, stale or ordinary-chat output has no export authority"
+    ]
+  }
+}

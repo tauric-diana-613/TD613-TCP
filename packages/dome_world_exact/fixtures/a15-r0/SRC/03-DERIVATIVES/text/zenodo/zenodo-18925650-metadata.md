@@ -1,0 +1,140 @@
+---
+derivative_id: derivative:294a8b0ffd3b640342c8315a
+parent_capture_id: capture:a3736e511008e0daeb576da6
+parent_blob_sha256: be7a73fb9a6ea0872c06994f116cf3fc3839d8554af001d30fdbb424a451ac97
+tool: srcctl-json-normalizer/1
+source_title: "The Architecture of Harm"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18925649",
+  "conceptrecid": "18925649",
+  "created": "2026-03-09T15:22:56.995179+00:00",
+  "doi": "10.5281/zenodo.18925650",
+  "doi_url": "https://doi.org/10.5281/zenodo.18925650",
+  "files": [
+    {
+      "checksum": "md5:d5053760503bf0945945e9936dd3a8d0",
+      "id": "5f04b61d-f882-4d41-a498-5006aa73bc10",
+      "key": "The Architecture of Harm .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18925650/files/The%20Architecture%20of%20Harm%20.pdf/content"
+      },
+      "size": 74107
+    }
+  ],
+  "id": 18925650,
+  "links": {
+    "access": "https://zenodo.org/api/records/18925650/access",
+    "access_grants": "https://zenodo.org/api/records/18925650/access/grants",
+    "access_links": "https://zenodo.org/api/records/18925650/access/links",
+    "access_request": "https://zenodo.org/api/records/18925650/access/request",
+    "access_users": "https://zenodo.org/api/records/18925650/access/users",
+    "archive": "https://zenodo.org/api/records/18925650/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18925650/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18925650/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18925650/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18925650",
+    "draft": "https://zenodo.org/api/records/18925650/draft",
+    "file_modification": "https://zenodo.org/api/records/18925650/file-modification",
+    "files": "https://zenodo.org/api/records/18925650/files",
+    "latest": "https://zenodo.org/api/records/18925650/versions/latest",
+    "latest_html": "https://zenodo.org/records/18925650/latest",
+    "media_files": "https://zenodo.org/api/records/18925650/media-files",
+    "parent": "https://zenodo.org/api/records/18925649",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18925649",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18925649",
+    "parent_html": "https://zenodo.org/records/18925649",
+    "preview_html": "https://zenodo.org/records/18925650?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18925650/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18925650/request-deletion",
+    "requests": "https://zenodo.org/api/records/18925650/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18925650/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18925650",
+    "self_doi": "https://doi.org/10.5281/zenodo.18925650",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18925650",
+    "self_html": "https://zenodo.org/records/18925650",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18925650/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18925650/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18925650:The%20Architecture%20of%20Harm%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18925650:The%20Architecture%20of%20Harm%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18925650:The%20Architecture%20of%20Harm%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18925650:The%20Architecture%20of%20Harm%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18925650:The%20Architecture%20of%20Harm%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18925650:The%20Architecture%20of%20Harm%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18925650/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Harm in the 21st century is no longer primarily produced by malicious actors or intentional decisions. It emerges from infrastructures, defaults, and automated systems that operate beyond the speed, scale, and interpretive capacity of traditional institutions. This essay introduces the concept of architectural harm&mdash;harm generated not by intent, but by the structural properties of the systems we inhabit. It maps how harm arises from algorithmic mediation, economic incentives, governance lag, and infrastructural interdependence, arguing that modern harm is a byproduct of optimization rather than agency. The essay calls for an architecture‑aware ethics capable of diagnosing systemic behavior in environments where responsibility is distributed, opaque, and drifting.</p>\n<p>Keywords:<br>architectural harm, infrastructural ethics, systemic harm, governance lag, optimization, algorithmic mediation, world infrastructure, post‑web systems</p>\n<p>Contribution to the SR Canon:<br>This essay formalizes architectural harm as a core diagnostic concept within the SignalRupture framework. It extends SR&rsquo;s infrastructural analysis by showing how harm emerges from system design rather than individual intention, reinforcing the shift from actor‑centric to structure‑centric interpretation. It strengthens the canon&rsquo;s treatment of governance failure, semantic drift, and systemic opacity, providing a conceptual tool for analyzing harm in tightly coupled, accelerating infrastructures.</p>",
+    "doi": "10.5281/zenodo.18925650",
+    "keywords": [
+      "Institutions",
+      "Metatheory",
+      "Social issues",
+      "Artificial intelligence"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-09",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18925649"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "The Architecture of Harm",
+    "version": "1.0"
+  },
+  "modified": "2026-03-09T15:23:44.058999+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18925650",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 25,
+    "unique_downloads": 23,
+    "unique_views": 36,
+    "version_downloads": 25,
+    "version_unique_downloads": 23,
+    "version_unique_views": 36,
+    "version_views": 37,
+    "views": 37
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "The Architecture of Harm",
+  "updated": "2026-03-09T15:23:44.058999+00:00"
+}

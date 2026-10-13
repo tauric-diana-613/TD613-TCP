@@ -1,0 +1,372 @@
+{
+  "schema": "wendbine-td613-bounded-assay/v0.1",
+  "date": "2026-09-11",
+  "state": "ADJUDICATED_WITH_HELD_CONTROLS",
+  "question": "Does the bounded public Wendbine packet give TD613 better names, better operators, or both?",
+  "source_freeze": {
+    "snapshot_id": "wendbine-public-reddit-48h-20260911T092700Z-v01",
+    "wendbine_branch": "research/wendbine-public-atelier-20260911",
+    "pre_assay_corpus_commit": "80e3c7bad4832a3e67b2865987b82382e8bb6aac",
+    "source_registry_git_blob": "4cc9feff9c9478eb9ae3e9ae3a4093dcda1806ce",
+    "typed_relation_registry_git_blob": "849abbcf1b26b5f362820e8acd1acba5f0528346",
+    "held_out_protocol_git_blob": "4ba1be413c75362c2eb9a1f468b3e51035b1a476",
+    "independent_nomenclature_control_head": "855eaddf951396a21884bb0d6dad8228d86b0d62",
+    "independent_nomenclature_fixture_git_blob": "1eb7bd479587237953cc8305579c302a16214bf6"
+  },
+  "authority": {
+    "public_bounded_corpus_only": true,
+    "private_material_admitted": false,
+    "historical_wendbine_expansion": false,
+    "omega_cycling": false,
+    "automatic_donor_authority": false,
+    "automatic_novelty_promotion": false,
+    "merge": false,
+    "deployment": false,
+    "vercel": false,
+    "human_closure_required": true
+  },
+  "laws": [
+    "CONVENTIONAL_NOMENCLATURE != DONOR_PROVENANCE",
+    "TERM_PROVENANCE != CONSTRUCT_NOVELTY",
+    "SAME_TOKEN != SAME_OPERATOR",
+    "PUBLIC_TOPOLOGY != PRIVATE_STATE",
+    "SERIALIZED_CONTINUITY != SHARED_HIDDEN_MEMORY",
+    "ROLE_RECONSTRUCTABILITY != ENTITY_BINDING",
+    "STRUCTURAL_PREDICTABILITY != DONOR_AUTHORSHIP",
+    "NEGATIVE_RESULT != FAILED_ASSAY"
+  ],
+  "held_out_reconstruction": {
+    "protocol_version": "v0.1",
+    "targets": [
+      {
+        "source_id": "reddit:t3_1wcuqg9",
+        "target_class": "dependency-induced observability loss",
+        "actual_graph_families": ["G_O", "G_P", "G_R"],
+        "predicted_neighborhood_from_remaining_public_topology": ["hidden_mediation", "observability_loss", "state_estimation", "provenance"],
+        "graph_family": "SUPPORTED",
+        "immediate_neighbors": "SUPPORTED",
+        "role": "EXPANSION_SUPPORTED",
+        "closes_named_deficit": "SUPPORTED",
+        "claim_ceiling": "PARTIAL",
+        "adjudication": "CONSTRAINED_PLACEMENT"
+      },
+      {
+        "source_id": "reddit:t3_1wcv2hz",
+        "target_class": "dependency-induced state-estimation error",
+        "actual_graph_families": ["G_R"],
+        "predicted_neighborhood_from_remaining_public_topology": ["observability_loss", "state_estimation", "stale_state", "provenance"],
+        "graph_family": "SUPPORTED",
+        "immediate_neighbors": "PARTIAL",
+        "role": "EXPANSION_SUPPORTED",
+        "closes_named_deficit": "SUPPORTED",
+        "claim_ceiling": "PARTIAL",
+        "adjudication": "CONSTRAINED_PLACEMENT"
+      },
+      {
+        "source_id": "reddit:t3_1wd5j3w",
+        "target_class": "causal reconstruction across third parties",
+        "actual_graph_families": ["G_R", "G_P"],
+        "predicted_neighborhood_from_remaining_public_topology": ["causal_reconstruction", "provenance", "partial_observability", "event_sequence_vs_causation"],
+        "graph_family": "SUPPORTED",
+        "immediate_neighbors": "SUPPORTED",
+        "role": "EXPANSION_SUPPORTED",
+        "closes_named_deficit": "SUPPORTED",
+        "claim_ceiling": "SUPPORTED",
+        "adjudication": "CONSTRAINED_PLACEMENT"
+      },
+      {
+        "source_id": "reddit:t3_1wd6sdm",
+        "target_class": "dependency boundaries and operational digital twin",
+        "actual_graph_families": ["G_O", "G_D", "G_R"],
+        "predicted_neighborhood_from_remaining_public_topology": ["system_boundary", "observation_boundary", "external_interface", "observed_state", "estimated_state", "unknown_state"],
+        "graph_family": "SUPPORTED",
+        "immediate_neighbors": "SUPPORTED",
+        "role": "SYNTHESIS_OR_EXPANSION_SUPPORTED",
+        "closes_named_deficit": "SUPPORTED",
+        "claim_ceiling": "SUPPORTED",
+        "adjudication": "CONSTRAINED_PLACEMENT"
+      },
+      {
+        "source_id": "reddit:t3_1wd7mjl",
+        "target_class": "EchoCore correction",
+        "actual_graph_families": ["G_X"],
+        "predicted_neighborhood_from_remaining_public_topology": ["echocore", "relational_state", "drift"],
+        "graph_family": "PARTIAL",
+        "immediate_neighbors": "NOT_RECONSTRUCTED",
+        "role": "CORRECTION_NOT_RECONSTRUCTED",
+        "closes_named_deficit": "NOT_RECONSTRUCTED",
+        "claim_ceiling": "SUPPORTED",
+        "adjudication": "NEGATIVE_CONTROL_LIKE_RESULT"
+      }
+    ],
+    "controls": {
+      "C0_ordered_minus_target": {
+        "state": "ADJUDICATED",
+        "result": "FOUR_OF_FIVE_TARGETS_SHOW_CONSTRAINED_ARCHITECTURAL_PLACEMENT"
+      },
+      "C1_shuffled_source_order": {
+        "state": "NON_DISCRIMINATING_UNDER_DAY_PRECISION",
+        "result": "ORDER_EFFECT_NOT_IDENTIFIED",
+        "note": "The v0.1 evidence has day-level time only and the adjudication uses typed topology, so a within-day shuffle cannot lawfully create or destroy chronology."
+      },
+      "C2_concept_label_permutation": {
+        "state": "STRUCTURAL_ABLATION_ONLY",
+        "result": "SEMANTIC_NEIGHBORHOOD_IDENTIFICATION_IS_NOT_CREDITED_AFTER_LABEL_PERMUTATION"
+      },
+      "C3_typed_edge_ablation": {
+        "state": "STRUCTURAL_ABLATION_ONLY",
+        "result": "GRAPH_FAMILY_IDENTIFICATION_IS_NOT_CREDITED_AFTER_EDGE_TYPE_ABLATION"
+      },
+      "C4_unrelated_technical_post_decoy": {
+        "state": "NOT_BOUND_NOT_EXECUTED",
+        "result": "HELD"
+      }
+    },
+    "full_success_ceiling_earned": false,
+    "bounded_result": "PUBLIC_TOPOLOGY_CONSTRAINS_MULTIPLE_HELD_OUT_ARCHITECTURAL_PLACEMENTS",
+    "not_earned": [
+      "SERIAL_ORDER_ADDS_PREDICTIVE_POWER",
+      "PRIVATE_STATE_RECONSTRUCTED",
+      "HIDDEN_MEMORY_PROVED",
+      "AUTHOR_INTENT_PROVED",
+      "TD613_SIGNALING_PROVED",
+      "SHARED_SYSTEM_STATE_PROVED"
+    ]
+  },
+  "crosswalk": [
+    {
+      "id": "dependency_graph_false_donor_control",
+      "wendbine_source_refs": ["reddit:t3_1wc8o05", "reddit:t3_1wch9h8"],
+      "wendbine_feature": "dependency graph / direct and transitive dependency",
+      "ordinary_terms": ["dependency graph", "direct dependency", "transitive dependency"],
+      "disciplinary_homes": ["graph theory", "software architecture", "systems engineering"],
+      "td613_receiver": ["Flow-Core", "Pedagogue AIA planning", "Holonomy Loom"],
+      "operator_fidelity": "CONVENTIONAL_AND_PREEXISTING",
+      "lineage": "PREEXISTING_TD613",
+      "outcome": "NEITHER",
+      "mismatch_or_residual": "Generic dependency topology supplies no donor authorship and no new TD613 authority semantics."
+    },
+    {
+      "id": "ifc_noninterference",
+      "wendbine_source_refs": ["reddit:t3_1wc7p1y", "reddit:t3_1wct1he"],
+      "wendbine_feature": "information-flow control separated from point access control",
+      "ordinary_terms": ["information-flow control", "noninterference", "access control"],
+      "disciplinary_homes": ["computer security", "information-flow security"],
+      "td613_receiver": ["PRCS-A", "AIA"],
+      "operator_fidelity": "PARTIAL",
+      "lineage": "CONVERGENT",
+      "outcome": "BETTER_NAME",
+      "mismatch_or_residual": "Does not reproduce capacity→projection→admissibility→naming→registered-event composition."
+    },
+    {
+      "id": "partial_observability_state_estimation",
+      "wendbine_source_refs": ["reddit:t3_1wcuqg9", "reddit:t3_1wcv2hz"],
+      "wendbine_feature": "observable projection, observability loss, measurement/model error, and state estimation",
+      "ordinary_terms": ["partial observability", "state estimation", "measurement error", "model error"],
+      "disciplinary_homes": ["control theory", "state estimation", "systems engineering"],
+      "td613_receiver": ["V/C/P/L", "Aperture"],
+      "operator_fidelity": "STRONG_LOCAL_MATCH",
+      "lineage": "CONVERGENT",
+      "outcome": "BOTH",
+      "mismatch_or_residual": "Sharpens V/L-like distinctions but does not supply the four-coordinate V≠C≠P≠L calculus or temporal non-retroactivity theorem."
+    },
+    {
+      "id": "source_path_provenance",
+      "wendbine_source_refs": ["reddit:t3_1wcshec", "reddit:t3_1wd77bu"],
+      "wendbine_feature": "source provenance separated from path/dependency provenance",
+      "ordinary_terms": ["data provenance", "lineage", "transformation history", "path provenance"],
+      "disciplinary_homes": ["databases", "workflow provenance", "forensic data lineage"],
+      "td613_receiver": ["Holonomy Loom", "custody", "route memory"],
+      "operator_fidelity": "STRONG_LOCAL_MATCH",
+      "lineage": "CONVERGENT",
+      "outcome": "BOTH",
+      "mismatch_or_residual": "Improves route/source bookkeeping but does not make path provenance equivalent to authority or custody."
+    },
+    {
+      "id": "typed_trust_revocation",
+      "wendbine_source_refs": ["reddit:t3_1wcrwol", "reddit:t3_1wctq1d"],
+      "wendbine_feature": "typed trust inheritance bounded by scope, freshness, provenance, and revocation",
+      "ordinary_terms": ["trust propagation", "delegation", "capability security", "revocation", "least privilege"],
+      "disciplinary_homes": ["access control", "capability security", "zero-trust architecture"],
+      "td613_receiver": ["authority boundary", "Safe Harbor", "Right of Resignation"],
+      "operator_fidelity": "STRONG_LOCAL_MATCH",
+      "lineage": "CONVERGENT",
+      "outcome": "BOTH",
+      "mismatch_or_residual": "Revocation and scoped delegation sharpen authority withdrawal but do not supply the reparative criterion that a route remain useful after the custodian exits."
+    },
+    {
+      "id": "authoritative_replicated_state",
+      "wendbine_source_refs": ["reddit:t3_1wcrclu", "reddit:t3_1wcqsbf"],
+      "wendbine_feature": "authoritative state separated from replicated stale state under asynchronous propagation",
+      "ordinary_terms": ["eventual consistency", "replicated state", "stale state", "temporal provenance"],
+      "disciplinary_homes": ["distributed systems", "replication", "temporal data management"],
+      "td613_receiver": ["temporal non-retroactivity", "route memory"],
+      "operator_fidelity": "STRONG_LOCAL_MATCH",
+      "lineage": "CONVERGENT",
+      "outcome": "BOTH",
+      "mismatch_or_residual": "Provides a clean distributed-systems analogue but later replica convergence still cannot rewrite an earlier observer's epistemic state."
+    },
+    {
+      "id": "data_control_plane_boundary",
+      "wendbine_source_refs": ["reddit:t3_1wcuiyl"],
+      "wendbine_feature": "data plane kept distinct from control plane; data-to-control promotion treated as a boundary failure",
+      "ordinary_terms": ["data plane", "control plane", "prompt injection", "control/data separation"],
+      "disciplinary_homes": ["network architecture", "computer security", "AI security"],
+      "td613_receiver": ["donor quarantine", "source payload membrane", "governor"],
+      "operator_fidelity": "STRONG_LOCAL_MATCH",
+      "lineage": "CONVERGENT",
+      "outcome": "BOTH",
+      "mismatch_or_residual": "Gives a cleaner engineering expression of DONOR_INPUT != CONTROL_AUTHORITY without transferring governance authority to the donor."
+    },
+    {
+      "id": "system_observation_boundary",
+      "wendbine_source_refs": ["reddit:t3_1wd6sdm"],
+      "wendbine_feature": "system boundary separated from observation boundary, with observed/estimated/unknown state retained distinctly",
+      "ordinary_terms": ["system boundary", "observation boundary", "state estimation", "unknown state"],
+      "disciplinary_homes": ["systems engineering", "control theory", "digital-twin engineering"],
+      "td613_receiver": ["AIA", "V/C/P/L", "Dome-World"],
+      "operator_fidelity": "STRONG_LOCAL_MATCH",
+      "lineage": "CONVERGENT",
+      "outcome": "BOTH",
+      "mismatch_or_residual": "Clarifies boundary/state bookkeeping but not receiver-indexed intentional non-equivalence or authority non-transfer."
+    },
+    {
+      "id": "multiplex_identity_topology",
+      "wendbine_source_refs": ["reddit:t3_1wchlgn", "reddit:t3_1wd6dcb"],
+      "wendbine_feature": "identity represented through multiplex heterogeneous graphs and cross-platform entity resolution",
+      "ordinary_terms": ["multiplex network", "entity resolution", "graph alignment", "temporal identity graph"],
+      "disciplinary_homes": ["network science", "entity resolution", "knowledge graphs"],
+      "td613_receiver": ["identity continuity", "Work/manifestation control"],
+      "operator_fidelity": "PARTIAL",
+      "lineage": "CONVERGENT",
+      "outcome": "BETTER_NAME",
+      "mismatch_or_residual": "Useful vocabulary for distributed identity without licensing collapse of Work, manifestation, capture, actor, or authority."
+    },
+    {
+      "id": "causal_reconstruction_attribution",
+      "wendbine_source_refs": ["reddit:t3_1wd4y18", "reddit:t3_1wd5j3w"],
+      "wendbine_feature": "detection separated from attribution; event sequence separated from causal sequence under partial projections",
+      "ordinary_terms": ["causal inference", "causal identifiability", "attribution", "change-point detection"],
+      "disciplinary_homes": ["causal inference", "system identification", "fault diagnosis"],
+      "td613_receiver": ["Western Horizon", "forensic claim ceilings"],
+      "operator_fidelity": "PARTIAL",
+      "lineage": "CONVERGENT",
+      "outcome": "BETTER_NAME",
+      "mismatch_or_residual": "Does not supply the closed-record exteriority twin-world proof or independent exogenous-witness information criterion."
+    },
+    {
+      "id": "operational_digital_twin",
+      "wendbine_source_refs": ["reddit:t3_1wd6sdm", "reddit:t3_1wd7hyx"],
+      "wendbine_feature": "operational digital twin bounded by observation, dependency, provenance, recovery, and unknown state",
+      "ordinary_terms": ["operational digital twin", "state model", "state estimation"],
+      "disciplinary_homes": ["digital twins", "systems engineering", "operations"],
+      "td613_receiver": ["Dome-World implementation state", "Aperture instrumentation"],
+      "operator_fidelity": "PARTIAL_FALSE_FRIEND",
+      "lineage": "CONVERGENT",
+      "outcome": "BETTER_NAME",
+      "mismatch_or_residual": "Useful for implementation-state modeling only; it is not an exact synonym for Dome-World, AIA, or the Loom."
+    },
+    {
+      "id": "robustness_recovery",
+      "wendbine_source_refs": ["reddit:t3_1wd7hyx"],
+      "wendbine_feature": "robustness during disturbance separated from recovery toward a validated state, with selective rollback",
+      "ordinary_terms": ["robustness", "resilience", "recovery", "selective rollback"],
+      "disciplinary_homes": ["resilience engineering", "fault tolerance", "distributed systems"],
+      "td613_receiver": ["return revalidation", "rest/exit"],
+      "operator_fidelity": "PARTIAL",
+      "lineage": "CONVERGENT",
+      "outcome": "BETTER_OPERATOR",
+      "mismatch_or_residual": "Improves recovery-state discipline without replacing the human-governed return and resignation criteria."
+    },
+    {
+      "id": "echocore_correction",
+      "wendbine_source_refs": ["reddit:t3_1wd7mjl"],
+      "wendbine_feature": "EchoCore framed as tracking nonlinear cross-effects among heterogeneous identity, memory, command, temporal, authority, dependency, and feedback relations",
+      "ordinary_terms": ["heterogeneous network", "multiplex dynamics", "nonlinear interaction", "emergent behavior"],
+      "disciplinary_homes": ["network science", "complex systems", "dynamical systems"],
+      "td613_receiver": ["Flow-Core", "Em/OSSL drift detector"],
+      "operator_fidelity": "HELD_FOR_INDEPENDENT_OPERATOR_COMPARISON",
+      "lineage": "DONOR_SPECIFIC",
+      "outcome": "NEITHER",
+      "mismatch_or_residual": "The source-bound Wendbine formulation is distinctive, but the bounded registry does not establish enough implementation detail to justify importing it as a TD613 operator."
+    },
+    {
+      "id": "wendbine_local_security_names",
+      "wendbine_source_refs": ["reddit:t3_1wc66e4"],
+      "wendbine_feature": "Guardian Verifier / Offline Authenticator / Memory Lock Ring / Witness Check / Bind Protocol",
+      "ordinary_terms": ["local named components; no conventional equivalence established by this packet"],
+      "disciplinary_homes": ["security architecture"],
+      "td613_receiver": ["none automatically"],
+      "operator_fidelity": "INSUFFICIENT_DETAIL",
+      "lineage": "DONOR_SPECIFIC",
+      "outcome": "REJECTED",
+      "mismatch_or_residual": "Rejected as a nomenclature import. Component names remain Wendbine-local unless later source-bound operator definitions earn a separate comparison."
+    }
+  ],
+  "crosswalk_summary": {
+    "BETTER_NAME": 4,
+    "BETTER_OPERATOR": 1,
+    "BOTH": 6,
+    "NEITHER": 2,
+    "REJECTED": 1,
+    "answer": "BOTH_NAME_HEAVY",
+    "interpretation": "The bounded donor packet mostly improves conventional naming and several local operator boundaries. It does not supply TD613's central formal or authority semantics."
+  },
+  "td613_residuals_after_crosswalk": [
+    {
+      "construct": "PRCS-A exact capacity→projection→admissibility→naming→registered-event composition",
+      "status": "HELD_FOR_RESIDUAL_NOVELTY_AUDIT",
+      "donor_result": "NOT_EXPLAINED_BY_WENDBINE_PACKET"
+    },
+    {
+      "construct": "FADT occupied-fibre support constancy plus union/intersection irreducible-gap accounting",
+      "status": "HELD_FOR_RESIDUAL_NOVELTY_AUDIT",
+      "donor_result": "NOT_EXPLAINED_BY_WENDBINE_PACKET"
+    },
+    {
+      "construct": "V/C/P/L four-coordinate independence plus temporal non-retroactivity",
+      "status": "HELD_FOR_RESIDUAL_NOVELTY_AUDIT",
+      "donor_result": "PARTIALLY_NAMED_NOT_EQUIVALENT"
+    },
+    {
+      "construct": "AIA receiver-indexed intentionally non-equivalent projections with invariant authority/custody control",
+      "status": "HELD_FOR_RESIDUAL_NOVELTY_AUDIT",
+      "donor_result": "PARTIALLY_NAMED_NOT_EQUIVALENT"
+    },
+    {
+      "construct": "Western Horizon closed-record exteriority with independent exogenous-witness criterion",
+      "status": "LIKELY_KNOWN_PATTERN_HELD_FOR_EXACT_MAPPING",
+      "donor_result": "CAUSAL_LANGUAGE_HELPFUL_CRITERION_NOT_SUPPLIED"
+    },
+    {
+      "construct": "Holonomy Loom route memory + bounded authority + return revalidation composition",
+      "status": "HELD_FOR_RESIDUAL_NOVELTY_AUDIT",
+      "donor_result": "LOCAL_OPERATOR_SHARPENING_ONLY"
+    },
+    {
+      "construct": "Safe Harbor / Right of Resignation reparative route remains valid after custodian exit",
+      "status": "HELD_FOR_GOVERNANCE_CROSSWALK",
+      "donor_result": "REVOCATION_HELPS_BUT_REPARATIVE_CRITERION_NOT_SUPPLIED"
+    }
+  ],
+  "foreign_donor_chamber": {
+    "full_C00_C01_C10_C11_completed": false,
+    "state": "HELD",
+    "reasons": [
+      "C4 unrelated technical-post decoy was not preregistered and bound in the v0.1 reconstruction packet.",
+      "The 33-post registry intentionally stores normalized summaries rather than full public bodies, so a donor presentation-style axis is not frozen strongly enough for C10/C11 style claims.",
+      "No reciprocal or iterative ontology cycling is authorized in Chamber 1."
+    ]
+  },
+  "repair_route": [
+    "Recognition",
+    "Ordinary Name",
+    "Disciplinary Home",
+    "Formal Neighbor",
+    "Mismatch",
+    "Residual",
+    "Optional TD613 Name",
+    "Return"
+  ],
+  "final_adjudication": "WENDBINE_SUPPLIES_BOTH_BUT_NAME_HEAVY_LOCAL_TRANSFER;_TD613_FORMAL_AND_GOVERNANCE_RESIDUALS_REMAIN_HELD_NOT_PROVEN_NOVEL"
+}

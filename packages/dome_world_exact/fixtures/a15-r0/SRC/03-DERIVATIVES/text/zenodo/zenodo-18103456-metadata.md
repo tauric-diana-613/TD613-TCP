@@ -1,0 +1,144 @@
+---
+derivative_id: derivative:30a01243bd2f4765c378b12a
+parent_capture_id: capture:61941da2d344fac266ba3d66
+parent_blob_sha256: 24fa25c4186984c97a68e3937b07f62a6d98522612ae9d3bd955e2f2065bdc5a
+tool: srcctl-json-normalizer/1
+source_title: "Information Terrorism: The New Face of Terrorism"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18103455",
+  "conceptrecid": "18103455",
+  "created": "2025-12-31T05:11:08.958104+00:00",
+  "doi": "10.5281/zenodo.18103456",
+  "doi_url": "https://doi.org/10.5281/zenodo.18103456",
+  "files": [
+    {
+      "checksum": "md5:114d8214732adf6ef271b7bd1254b862",
+      "id": "ed53791c-022d-4a90-bf6f-3576ddc37c5a",
+      "key": "Information Terrorism: The New Face of Terrorism.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18103456/files/Information%20Terrorism:%20The%20New%20Face%20of%20Terrorism.pdf/content"
+      },
+      "size": 185294
+    }
+  ],
+  "id": 18103456,
+  "links": {
+    "access": "https://zenodo.org/api/records/18103456/access",
+    "access_grants": "https://zenodo.org/api/records/18103456/access/grants",
+    "access_links": "https://zenodo.org/api/records/18103456/access/links",
+    "access_request": "https://zenodo.org/api/records/18103456/access/request",
+    "access_users": "https://zenodo.org/api/records/18103456/access/users",
+    "archive": "https://zenodo.org/api/records/18103456/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18103456/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18103456/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18103456/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18103456",
+    "draft": "https://zenodo.org/api/records/18103456/draft",
+    "file_modification": "https://zenodo.org/api/records/18103456/file-modification",
+    "files": "https://zenodo.org/api/records/18103456/files",
+    "latest": "https://zenodo.org/api/records/18103456/versions/latest",
+    "latest_html": "https://zenodo.org/records/18103456/latest",
+    "media_files": "https://zenodo.org/api/records/18103456/media-files",
+    "parent": "https://zenodo.org/api/records/18103455",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18103455",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18103455",
+    "parent_html": "https://zenodo.org/records/18103455",
+    "preview_html": "https://zenodo.org/records/18103456?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18103456/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18103456/request-deletion",
+    "requests": "https://zenodo.org/api/records/18103456/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18103456/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18103456",
+    "self_doi": "https://doi.org/10.5281/zenodo.18103456",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18103456",
+    "self_html": "https://zenodo.org/records/18103456",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18103456/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18103456/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18103456:Information%20Terrorism:%20The%20New%20Face%20of%20Terrorism.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18103456:Information%20Terrorism:%20The%20New%20Face%20of%20Terrorism.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18103456:Information%20Terrorism:%20The%20New%20Face%20of%20Terrorism.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18103456:Information%20Terrorism:%20The%20New%20Face%20of%20Terrorism.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18103456:Information%20Terrorism:%20The%20New%20Face%20of%20Terrorism.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18103456:Information%20Terrorism:%20The%20New%20Face%20of%20Terrorism.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18103456/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This preprint reframes disinformation not as a communication failure, a political nuisance, or a content‑moderation challenge, but as terrorism conducted through informational means. By introducing the term information terrorism, the essay shifts the analytic lens from accidental misinformation to deliberate, systemic, and profit‑driven informational violence. The reframe exposes how engineered capsules&mdash;papas, deepfakes, propaganda packages&mdash;operate as weapons designed to destabilize trust, overwhelm cognitive bandwidth, and sedate populations. Rather than treating fake news as a cultural irritant or a moderation problem, the essay positions it as an infrastructural threat: a coordinated assault on epistemic stability enabled by platform incentives, governmental silence, and algorithmic amplification. Naming this phenomenon as terrorism restores moral clarity, foregrounds the violence embedded in digital ecosystems, and challenges the containment logic that treats disinformation as harmless noise rather than a systemic attack on democratic resilience.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+    "doi": "10.5281/zenodo.18103456",
+    "keywords": [
+      "AI",
+      "Artificial Intelligence",
+      "Social Issues",
+      "Social Media",
+      "Social Psychology",
+      "Social Issuesa",
+      "Criminology",
+      "Sociology"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2025-12-31",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18103455"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "Information Terrorism: The New Face of Terrorism",
+    "version": "1.0"
+  },
+  "modified": "2026-01-29T02:03:09.488511+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18103456",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 20,
+    "unique_downloads": 18,
+    "unique_views": 29,
+    "version_downloads": 20,
+    "version_unique_downloads": 18,
+    "version_unique_views": 29,
+    "version_views": 31,
+    "views": 31
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Information Terrorism: The New Face of Terrorism",
+  "updated": "2026-01-29T02:03:09.488511+00:00"
+}

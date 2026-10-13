@@ -1,0 +1,144 @@
+---
+derivative_id: derivative:3ad4511b914c270a2936e694
+parent_capture_id: capture:eed889a128b1dd8c8942223d
+parent_blob_sha256: 57a2d40c8e16d60e1d728d502b62155880e1a4aa372bbcc42c08d39ceaff32ea
+tool: srcctl-json-normalizer/1
+source_title: "Infrastructural Conditioning: How Systems Shape Populations Through Exposure and Drift"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18328800",
+  "conceptrecid": "18328800",
+  "created": "2026-01-21T15:58:12.519413+00:00",
+  "doi": "10.5281/zenodo.18328801",
+  "doi_url": "https://doi.org/10.5281/zenodo.18328801",
+  "files": [
+    {
+      "checksum": "md5:4b883c5d827ceafaacaa7b5926b9008f",
+      "id": "e0d1ab2f-ccfc-4587-b66e-9dfbf4cf2556",
+      "key": "Infrastructural Conditioning: How Systems Shape Populations Through Exposure and Drift.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18328801/files/Infrastructural%20Conditioning:%20How%20Systems%20Shape%20Populations%20Through%20Exposure%20and%20Drift.pdf/content"
+      },
+      "size": 95149
+    }
+  ],
+  "id": 18328801,
+  "links": {
+    "access": "https://zenodo.org/api/records/18328801/access",
+    "access_grants": "https://zenodo.org/api/records/18328801/access/grants",
+    "access_links": "https://zenodo.org/api/records/18328801/access/links",
+    "access_request": "https://zenodo.org/api/records/18328801/access/request",
+    "access_users": "https://zenodo.org/api/records/18328801/access/users",
+    "archive": "https://zenodo.org/api/records/18328801/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18328801/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18328801/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18328801/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18328801",
+    "draft": "https://zenodo.org/api/records/18328801/draft",
+    "file_modification": "https://zenodo.org/api/records/18328801/file-modification",
+    "files": "https://zenodo.org/api/records/18328801/files",
+    "latest": "https://zenodo.org/api/records/18328801/versions/latest",
+    "latest_html": "https://zenodo.org/records/18328801/latest",
+    "media_files": "https://zenodo.org/api/records/18328801/media-files",
+    "parent": "https://zenodo.org/api/records/18328800",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18328800",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18328800",
+    "parent_html": "https://zenodo.org/records/18328800",
+    "preview_html": "https://zenodo.org/records/18328801?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18328801/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18328801/request-deletion",
+    "requests": "https://zenodo.org/api/records/18328801/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18328801/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18328801",
+    "self_doi": "https://doi.org/10.5281/zenodo.18328801",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18328801",
+    "self_html": "https://zenodo.org/records/18328801",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18328801/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18328801/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18328801:Infrastructural%20Conditioning:%20How%20Systems%20Shape%20Populations%20Through%20Exposure%20and%20Drift.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18328801:Infrastructural%20Conditioning:%20How%20Systems%20Shape%20Populations%20Through%20Exposure%20and%20Drift.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18328801:Infrastructural%20Conditioning:%20How%20Systems%20Shape%20Populations%20Through%20Exposure%20and%20Drift.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18328801:Infrastructural%20Conditioning:%20How%20Systems%20Shape%20Populations%20Through%20Exposure%20and%20Drift.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18328801:Infrastructural%20Conditioning:%20How%20Systems%20Shape%20Populations%20Through%20Exposure%20and%20Drift.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18328801:Infrastructural%20Conditioning:%20How%20Systems%20Shape%20Populations%20Through%20Exposure%20and%20Drift.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18328801/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Infrastructural Conditioning maps the sequence through which large‑scale digital systems shape population‑level behavior without intention or centralized control. The essay argues that stress accumulation, coping‑loop platforms, attention erosion, cognitive offloading, and predictive mediation form a continuous conditioning gradient that reorganizes cognition at scale. Rather than framing these shifts as manipulation or psychological failure, the work positions them as structural adaptations to environments that exceed human cognitive bandwidth. By introducing structural accountability, the essay shows how infrastructures can be governed based on predictable outcomes rather than intent. Positioned within the SignalRupture canon, this piece reveals how exposure, erosion, drift, and offloading prepare populations for predictive systems and illuminate the deeper mechanics of the Post‑Web Shift.</p>\n<p>Within the SignalRupture canon, Infrastructural Conditioning functions as the integrative map that links erosion, exposure, offloading, drift, and predictive mediation into a single structural sequence. It shows how Systemic Erosion generates the pressures that initiate behavioral adaptation, how Infrastructure Exposure reveals system boundaries through strain, how Cognitive Offloading transforms coping into dependency, and how Predictive Mediation emerges as the final layer of system‑directed cognition. By articulating conditioning as an emergent gradient rather than an intentional design, the essay consolidates the canon&rsquo;s core argument: infrastructures reorganize human behavior through scale, incentives, and accumulated pressure, preparing populations for the Post‑Web Shift without coercion or control.</p>",
+    "doi": "10.5281/zenodo.18328801",
+    "keywords": [
+      "Infrastructural theory",
+      "Social Issues",
+      "Psychology",
+      "Artificial intelligence",
+      "Sociology",
+      "Criminology",
+      "Post-Open Web",
+      "SR Cannon"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-01-21",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18328800"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Infrastructural Conditioning: How Systems Shape Populations Through Exposure and Drift",
+    "version": "1.0"
+  },
+  "modified": "2026-01-28T05:32:59.773568+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18328801",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 10,
+    "unique_downloads": 9,
+    "unique_views": 31,
+    "version_downloads": 10,
+    "version_unique_downloads": 9,
+    "version_unique_views": 31,
+    "version_views": 32,
+    "views": 32
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Infrastructural Conditioning: How Systems Shape Populations Through Exposure and Drift",
+  "updated": "2026-01-28T05:32:59.773568+00:00"
+}

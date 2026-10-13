@@ -1,0 +1,48 @@
+{
+  "schema": "td613.pedagogue-interface-specimen/v0.1",
+  "surface_reference": "app/giving/history :: contributions + committee workspace + fictional practice",
+  "specimen_kind": "EVIDENCE_WORKFLOW_INTERFACE",
+  "observed": {
+    "shared_control_rule": false,
+    "dedicated_input_typography": true,
+    "dedicated_textarea_treatment": true,
+    "dedicated_numeric_typography": true,
+    "native_temporal_control": false,
+    "placeholder_is_primary_visual": false,
+    "status_claim_exceeds_evidence": true,
+    "cross_lane_same_entity": true,
+    "zero_result_scope_bounded": true,
+    "advisory_without_inspection_route": true,
+    "loaded_context_visible_but_search_unbound": true,
+    "responsive_spatial_correspondence_lost": true
+  },
+  "constraints": {
+    "implementation_this_round": false,
+    "preserve_native_accessibility": true,
+    "practice_provenance_must_remain_explicit": true,
+    "source_receipts_may_not_be_rewritten": true,
+    "negative_results_may_not_be_globalized": true,
+    "same_name_same_identity_inference_forbidden": true,
+    "automatic_repo_transfer_forbidden": true
+  },
+  "actions": [
+    {
+      "action_id": "LOAD_COMMITTEE_CONTEXT",
+      "label": "Load committee",
+      "context_effect": "REPLACE_ACTIVE_CONTEXT",
+      "destination_reference": "Contributions"
+    },
+    {
+      "action_id": "INSPECT_MATCH_CLUSTER",
+      "label": "Inspect suggested records",
+      "context_effect": "PRESERVE_ACTIVE_CONTEXT",
+      "destination_reference": "Contributions"
+    },
+    {
+      "action_id": "RUN_CONTACT_QUEUE",
+      "label": "Search queue",
+      "context_effect": "PRESERVE_ACTIVE_CONTEXT",
+      "destination_reference": "Contributions"
+    }
+  ]
+}

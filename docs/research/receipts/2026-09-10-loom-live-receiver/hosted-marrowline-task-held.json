@@ -1,0 +1,19 @@
+{
+  "source": "VISIBLE_DOM",
+  "observed_at": "2026-09-10T04:15:44.166Z",
+  "status": "Task held: provider-response-not-admitted",
+  "receipt": {
+    "handoff": {
+      "digest": "2dc63d6528d325a15d65494ec506a647649a10bbdbb2ebbc6226d23b73e1a579",
+      "issued_at": 1789013557698,
+      "consumed_at": 1789013559035,
+      "source": "/dome-world/holonomy-loom.html",
+      "destination": "/dome-world/marrowline.html"
+    },
+    "request_id": "dda86293-d880-47f8-b26b-8c15b1055afc",
+    "started_at": "2026-09-10T04:13:07.853Z",
+    "state": "HELD",
+    "reason": "Task held: provider-response-not-admitted"
+  },
+  "observation": "One explicit Run after successful import. Server error was surfaced; its detailed cause is not present in this deployed client receipt."
+}

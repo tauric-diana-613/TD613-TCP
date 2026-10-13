@@ -1,0 +1,144 @@
+---
+derivative_id: derivative:35d62cbf9f3bcc8deffdf0c5
+parent_capture_id: capture:9004528979cf18e4943b7bc4
+parent_blob_sha256: 1836059e69bf91305f57c85cafc7ac18fac2317e7e22041f6040a8e9dcb4b8d4
+tool: srcctl-json-normalizer/1
+source_title: "Bureaucratic Friction and Systemic Delay: Time as Infrastructure of Suppression"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18140730",
+  "conceptrecid": "18140730",
+  "created": "2026-01-03T15:54:16.565142+00:00",
+  "doi": "10.5281/zenodo.18140731",
+  "doi_url": "https://doi.org/10.5281/zenodo.18140731",
+  "files": [
+    {
+      "checksum": "md5:89dab8efd472c95df51b7cef1a0725a8",
+      "id": "f266029f-3270-49de-a60a-04d2888eb119",
+      "key": "Bureaucratic Friction and Systemic Delay: Time as Infrastructure of Suppression.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18140731/files/Bureaucratic%20Friction%20and%20Systemic%20Delay:%20Time%20as%20Infrastructure%20of%20Suppression.pdf/content"
+      },
+      "size": 76159
+    }
+  ],
+  "id": 18140731,
+  "links": {
+    "access": "https://zenodo.org/api/records/18140731/access",
+    "access_grants": "https://zenodo.org/api/records/18140731/access/grants",
+    "access_links": "https://zenodo.org/api/records/18140731/access/links",
+    "access_request": "https://zenodo.org/api/records/18140731/access/request",
+    "access_users": "https://zenodo.org/api/records/18140731/access/users",
+    "archive": "https://zenodo.org/api/records/18140731/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18140731/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18140731/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18140731/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18140731",
+    "draft": "https://zenodo.org/api/records/18140731/draft",
+    "file_modification": "https://zenodo.org/api/records/18140731/file-modification",
+    "files": "https://zenodo.org/api/records/18140731/files",
+    "latest": "https://zenodo.org/api/records/18140731/versions/latest",
+    "latest_html": "https://zenodo.org/records/18140731/latest",
+    "media_files": "https://zenodo.org/api/records/18140731/media-files",
+    "parent": "https://zenodo.org/api/records/18140730",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18140730",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18140730",
+    "parent_html": "https://zenodo.org/records/18140730",
+    "preview_html": "https://zenodo.org/records/18140731?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18140731/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18140731/request-deletion",
+    "requests": "https://zenodo.org/api/records/18140731/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18140731/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18140731",
+    "self_doi": "https://doi.org/10.5281/zenodo.18140731",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18140731",
+    "self_html": "https://zenodo.org/records/18140731",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18140731/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18140731/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18140731:Bureaucratic%20Friction%20and%20Systemic%20Delay:%20Time%20as%20Infrastructure%20of%20Suppression.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18140731:Bureaucratic%20Friction%20and%20Systemic%20Delay:%20Time%20as%20Infrastructure%20of%20Suppression.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18140731:Bureaucratic%20Friction%20and%20Systemic%20Delay:%20Time%20as%20Infrastructure%20of%20Suppression.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18140731:Bureaucratic%20Friction%20and%20Systemic%20Delay:%20Time%20as%20Infrastructure%20of%20Suppression.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18140731:Bureaucratic%20Friction%20and%20Systemic%20Delay:%20Time%20as%20Infrastructure%20of%20Suppression.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18140731:Bureaucratic%20Friction%20and%20Systemic%20Delay:%20Time%20as%20Infrastructure%20of%20Suppression.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18140731/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Bureaucratic Friction and Systemic Delay: Time as Infrastructure of Suppression argues that modern institutions do not merely slow processes&mdash;they convert time itself into a governing instrument. Through procedural hurdles, verification loops, backlogs, and algorithmic moderation, systems weaponize delay to exhaust dissent, metabolize urgency into silence, and stabilize inequality under the appearance of administrative order. Drawing on case studies from law, healthcare, social assistance, and digital platforms, the essay demonstrates how friction and delay operate as infrastructures of containment rather than administrative failures.</p>\n<p>Building on SR&rsquo;s Morality on Trial and the broader SR theoretical canon, the essay reframes bureaucratic delay as a structural technology of suppression. It shows how systems transform trauma into compliance, urgency into waiting, and need into procedural dependency. By naming time as infrastructure, the work exposes the hidden architecture through which modern governance produces harm, rationing access to rights, services, and visibility through temporal control.</p>",
+    "doi": "10.5281/zenodo.18140731",
+    "keywords": [
+      "Social science",
+      "Bourocratic system",
+      "criminology",
+      "Sociology",
+      "Social Psychology",
+      "Feminism",
+      "Activism",
+      "Minority Studies"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-01-03",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18140730"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Bureaucratic Friction and Systemic Delay: Time as Infrastructure of Suppression",
+    "version": "1.0"
+  },
+  "modified": "2026-01-29T01:48:09.804436+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18140731",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 16,
+    "unique_downloads": 14,
+    "unique_views": 26,
+    "version_downloads": 16,
+    "version_unique_downloads": 14,
+    "version_unique_views": 26,
+    "version_views": 28,
+    "views": 28
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Bureaucratic Friction and Systemic Delay: Time as Infrastructure of Suppression",
+  "updated": "2026-01-29T01:48:09.804436+00:00"
+}

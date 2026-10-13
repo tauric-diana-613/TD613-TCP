@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613-src/private-locator/v1",
+  "type": "object",
+  "required": ["private_body_locator_id", "target_id", "capture_id"],
+  "properties": {
+    "private_body_locator_id": {"type": "string", "pattern": "^src-private-locator:[a-f0-9]{24}$"},
+    "target_id": {"type": "string"},
+    "capture_id": {"type": "string"}
+  }
+}

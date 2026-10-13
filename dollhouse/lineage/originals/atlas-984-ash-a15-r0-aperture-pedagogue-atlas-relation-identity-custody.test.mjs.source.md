@@ -1,0 +1,5 @@
+import assert from 'node:assert/strict';
+import { ATLAS_RELATION_IDENTITY_CUSTODY_CERTIFICATE as C, atlasRelationIdentityCustody } from '../app/dome-world/previews/a15-r0/atlas-relation-identity-custody.js';
+assert.equal(C.parent_exact,true);assert.equal(C.formal_cells,42);assert.equal(C.gap_slices,112);assert.equal(C.support_objects,9912);assert.equal(C.fixed_self,190);assert.equal(C.exact_nonfixed_identity,9722);assert.equal(C.oriented_mirror_checks,9722);assert.equal(C.no_collapse_checks,9722);assert.equal(C.orbit_consistency_checks,9722);assert.equal(C.same_slice_nonmirror_controls,92);assert.equal(C.failures,0);assert.equal(C.passed,true);
+const l={a:2,b:1,s:0,path:['N','E','E']},r={a:2,b:1,s:0,path:['E','E','N']};const x=atlasRelationIdentityCustody(l,r);assert.equal(x.relation,'MIRROR_MATES');assert.deepEqual(x.left_custody,l);assert.deepEqual(x.right_custody,r);assert.notDeepEqual(x.left_custody.path,x.right_custody.path);assert.equal(x.shared_orbit,true);assert.notEqual(x.left_orbit.orientation,x.right_orbit.orientation);
+console.log('Ash A15-R0 Atlas relation-identity custody tests passed.');

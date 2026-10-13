@@ -1,0 +1,142 @@
+---
+derivative_id: derivative:d71b7cdbd3a01cb80c02c175
+parent_capture_id: capture:8733fb27cfce78f2a8e7f248
+parent_blob_sha256: f23dc4392052d7a96cc5089dc518765087a2aaab8b1988aab42c913bf19d5f74
+tool: srcctl-json-normalizer/1
+source_title: "Cancer as an Infrastructural Outcome: Food, Water, Stress, and the Metabolic System"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18102994",
+  "conceptrecid": "18102994",
+  "created": "2025-12-31T03:53:42.238744+00:00",
+  "doi": "10.5281/zenodo.18102995",
+  "doi_url": "https://doi.org/10.5281/zenodo.18102995",
+  "files": [
+    {
+      "checksum": "md5:5cf1ee011fade1a814156f78ea1e894f",
+      "id": "8f3f9190-8833-494c-b52d-52f5114fcd21",
+      "key": "Cancer as an Infrastructural Outcome: Food, Water, Stress, and the Metabolic System .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18102995/files/Cancer%20as%20an%20Infrastructural%20Outcome:%20Food,%20Water,%20Stress,%20and%20the%20Metabolic%20System%20.pdf/content"
+      },
+      "size": 113367
+    }
+  ],
+  "id": 18102995,
+  "links": {
+    "access": "https://zenodo.org/api/records/18102995/access",
+    "access_grants": "https://zenodo.org/api/records/18102995/access/grants",
+    "access_links": "https://zenodo.org/api/records/18102995/access/links",
+    "access_request": "https://zenodo.org/api/records/18102995/access/request",
+    "access_users": "https://zenodo.org/api/records/18102995/access/users",
+    "archive": "https://zenodo.org/api/records/18102995/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18102995/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18102995/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18102995/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18102995",
+    "draft": "https://zenodo.org/api/records/18102995/draft",
+    "file_modification": "https://zenodo.org/api/records/18102995/file-modification",
+    "files": "https://zenodo.org/api/records/18102995/files",
+    "latest": "https://zenodo.org/api/records/18102995/versions/latest",
+    "latest_html": "https://zenodo.org/records/18102995/latest",
+    "media_files": "https://zenodo.org/api/records/18102995/media-files",
+    "parent": "https://zenodo.org/api/records/18102994",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18102994",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18102994",
+    "parent_html": "https://zenodo.org/records/18102994",
+    "preview_html": "https://zenodo.org/records/18102995?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18102995/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18102995/request-deletion",
+    "requests": "https://zenodo.org/api/records/18102995/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18102995/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18102995",
+    "self_doi": "https://doi.org/10.5281/zenodo.18102995",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18102995",
+    "self_html": "https://zenodo.org/records/18102995",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18102995/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18102995/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18102995:Cancer%20as%20an%20Infrastructural%20Outcome:%20Food,%20Water,%20Stress,%20and%20the%20Metabolic%20System%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18102995:Cancer%20as%20an%20Infrastructural%20Outcome:%20Food,%20Water,%20Stress,%20and%20the%20Metabolic%20System%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18102995:Cancer%20as%20an%20Infrastructural%20Outcome:%20Food,%20Water,%20Stress,%20and%20the%20Metabolic%20System%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18102995:Cancer%20as%20an%20Infrastructural%20Outcome:%20Food,%20Water,%20Stress,%20and%20the%20Metabolic%20System%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18102995:Cancer%20as%20an%20Infrastructural%20Outcome:%20Food,%20Water,%20Stress,%20and%20the%20Metabolic%20System%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18102995:Cancer%20as%20an%20Infrastructural%20Outcome:%20Food,%20Water,%20Stress,%20and%20the%20Metabolic%20System%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18102995/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This essay reframes cancer as an infrastructural outcome rather than an isolated biological malfunction, arguing that metabolic collapse&mdash;rooted in mitochondrial dysfunction&mdash;is shaped by food systems, water systems, labor conditions, and chronic stress infrastructures. Drawing on research in nutritional science, environmental health, toxicology, and social determinants of disease, the paper situates cancer within the political economies that structure exposure, vulnerability, and metabolic drift.</p>\n<p>The analysis shows how ultra‑processed foods, contaminated water, and chronic stress accelerate mitochondrial dysfunction, reinforcing the Warburg effect and weakening cellular resilience. These determinants are not individual &ldquo;choices&rdquo; but the predictable outputs of zoning, wages, subsidies, regulation, and environmental governance. The essay integrates evidence on PFAS, nitrates, disinfection byproducts, barrier dysfunction, and chronic inflammation to demonstrate how environmental conditions shape long‑term immunological and metabolic vulnerability.</p>\n<p>By connecting cancer biology to structural precarity&mdash;precarious labor, housing instability, debt, discrimination, and chronic stress&mdash;the essay argues that tumor promotion is inseparable from the infrastructures that produce biochemical strain. It introduces a containment protocol grounded in food reform, water reform, labor and housing stability, environmental regulation, and integrated data systems, emphasizing that individual behavior cannot compensate for systemic design failures.</p>\n<p>The work contributes to scholarship on environmental health, structural violence, and public‑health governance by positioning cancer not as a random genetic event but as a statistical expression of infrastructural neglect.</p>\n<p>This essay is part of the SignalRupture canon, a body of work examining contemporary systems, infrastructures, and social dynamics through a conceptual and diagnostic lens. Each piece contributes to an ongoing analysis of structural stress, digital environments, governance patterns, and the evolving relationship between individuals and large‑scale systems. The work combines theoretical reflection with infrastructural observation, offering frameworks for understanding systemic erosion, cultural shifts, and emerging forms of social complexity.</p>",
+    "doi": "10.5281/zenodo.18102995",
+    "keywords": [
+      "Cancer",
+      "Public Helath",
+      "Healthcare",
+      "Social Issues",
+      "Feminism",
+      "Governance"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2025-12-31",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18102994"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Cancer as an Infrastructural Outcome: Food, Water, Stress, and the Metabolic System",
+    "version": "1.0"
+  },
+  "modified": "2026-01-29T02:05:27.036250+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18102995",
+  "revision": 6,
+  "state": "done",
+  "stats": {
+    "downloads": 28,
+    "unique_downloads": 23,
+    "unique_views": 58,
+    "version_downloads": 28,
+    "version_unique_downloads": 23,
+    "version_unique_views": 58,
+    "version_views": 61,
+    "views": 61
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Cancer as an Infrastructural Outcome: Food, Water, Stress, and the Metabolic System",
+  "updated": "2026-01-29T02:05:27.036250+00:00"
+}

@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.aperture.temporal-disclosure-assay/v0.1",
+  "title": "TD613 Temporal and Delayed-Disclosure Assay Receipt v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "version", "assay_id", "created_at", "mode", "declared_caps",
+    "case_id", "case_map_digest", "route_memory_digest", "source_digest",
+    "reader_registry_digest", "authority_context_reference", "authority_context_digest",
+    "calibration_binding_id", "calibration_binding_digest", "sequence_recovery_id",
+    "sequence_recovery_digest", "observations", "componentwise_temporal_results", "checks",
+    "state", "temporal_assay_eligible", "failed_checks", "source_status", "missingness",
+    "alternatives", "open_questions", "operator_notes", "closure",
+    "trusted_external_time_observed", "browser_clock_is_trusted_time",
+    "operator_declared_spacing_is_trusted_time", "temporal_effect_is_causation",
+    "surveillance_probability", "prediction_authorized", "identity_or_intent_inference_authorized",
+    "release_authorized", "transport_authorized", "suppression_authorized",
+    "cinder_action_authorized", "readers_reexecuted", "provider_called", "network_called",
+    "storage_mutated", "recommendation_not_command", "assay_digest"
+  ],
+  "properties": {
+    "schema": { "const": "td613.aperture.temporal-disclosure-assay/v0.1" },
+    "version": { "const": "v0.1" },
+    "assay_id": { "type": "string", "pattern": "^temporal_[A-Za-z0-9_-]{6,128}$" },
+    "created_at": { "type": "string" },
+    "mode": { "const": "BOUNDED_TEMPORAL_AND_DELAYED_DISCLOSURE_ASSAY" },
+    "declared_caps": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_observations", "max_sessions"],
+      "properties": {
+        "max_observations": { "type": "integer", "minimum": 7, "maximum": 24 },
+        "max_sessions": { "type": "integer", "minimum": 2, "maximum": 8 }
+      }
+    },
+    "case_id": { "type": ["string", "null"] },
+    "case_map_digest": { "$ref": "#/$defs/nullableSha256" },
+    "route_memory_digest": { "$ref": "#/$defs/nullableSha256" },
+    "source_digest": { "$ref": "#/$defs/nullableSha256" },
+    "reader_registry_digest": { "$ref": "#/$defs/nullableSha256" },
+    "authority_context_reference": { "type": ["string", "null"] },
+    "authority_context_digest": { "$ref": "#/$defs/nullableSha256" },
+    "calibration_binding_id": { "type": ["string", "null"] },
+    "calibration_binding_digest": { "$ref": "#/$defs/nullableSha256" },
+    "sequence_recovery_id": { "type": ["string", "null"] },
+    "sequence_recovery_digest": { "$ref": "#/$defs/nullableSha256" },
+    "observations": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 24,
+      "items": { "$ref": "#/$defs/observation" }
+    },
+    "componentwise_temporal_results": { "type": "object" },
+    "checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authority_context_verified", "calibration_binding_verified", "sequence_compatibility_verified",
+        "current_case_binding", "source_digest_verified", "reader_registry_verified",
+        "within_session_delay_observed", "cross_session_declared_spacing_observed",
+        "no_disclosure_control_observed", "context_reset_comparison_observed",
+        "observations_complete", "monotonic_offsets_valid", "leakage_clear",
+        "declared_caps_held", "cancellation_clear"
+      ],
+      "properties": {
+        "authority_context_verified": { "type": "boolean" },
+        "calibration_binding_verified": { "type": "boolean" },
+        "sequence_compatibility_verified": { "type": "boolean" },
+        "current_case_binding": { "type": "boolean" },
+        "source_digest_verified": { "type": "boolean" },
+        "reader_registry_verified": { "type": "boolean" },
+        "within_session_delay_observed": { "type": "boolean" },
+        "cross_session_declared_spacing_observed": { "type": "boolean" },
+        "no_disclosure_control_observed": { "type": "boolean" },
+        "context_reset_comparison_observed": { "type": "boolean" },
+        "observations_complete": { "type": "boolean" },
+        "monotonic_offsets_valid": { "type": "boolean" },
+        "leakage_clear": { "type": "boolean" },
+        "declared_caps_held": { "type": "boolean" },
+        "cancellation_clear": { "type": "boolean" }
+      }
+    },
+    "state": {
+      "enum": [
+        "TEMPORAL_ASSAY_ELIGIBLE", "CANCELLED_HOLD", "TAMPER_HOLD", "STALE_CASE_HOLD",
+        "CALIBRATION_HOLD", "SEQUENCE_COMPATIBILITY_HOLD", "LEAKAGE_HOLD",
+        "CLOCK_AMBIGUITY_HOLD", "STALE_WINDOW_HOLD", "RESET_FAILURE_HOLD",
+        "INTERRUPTED_HOLD", "MISSING_INTERVAL_HOLD", "NOT_ENOUGH_TEST_DATA"
+      ]
+    },
+    "temporal_assay_eligible": { "type": "boolean" },
+    "failed_checks": { "$ref": "#/$defs/stringArray" },
+    "source_status": { "type": "string" },
+    "missingness": { "$ref": "#/$defs/stringArray" },
+    "alternatives": { "$ref": "#/$defs/stringArray" },
+    "open_questions": { "$ref": "#/$defs/stringArray" },
+    "operator_notes": { "$ref": "#/$defs/stringArray" },
+    "closure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "status"],
+      "properties": { "required": { "const": true }, "status": { "type": "string" } }
+    },
+    "trusted_external_time_observed": { "const": false },
+    "browser_clock_is_trusted_time": { "const": false },
+    "operator_declared_spacing_is_trusted_time": { "const": false },
+    "temporal_effect_is_causation": { "const": false },
+    "surveillance_probability": { "type": "null" },
+    "prediction_authorized": { "const": false },
+    "identity_or_intent_inference_authorized": { "const": false },
+    "release_authorized": { "const": false },
+    "transport_authorized": { "const": false },
+    "suppression_authorized": { "const": false },
+    "cinder_action_authorized": { "const": false },
+    "readers_reexecuted": { "const": false },
+    "provider_called": { "const": false },
+    "network_called": { "const": false },
+    "storage_mutated": { "const": false },
+    "recommendation_not_command": { "const": true },
+    "assay_digest": { "$ref": "#/$defs/sha256" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "nullableSha256": { "anyOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+    "stringArray": { "type": "array", "items": { "type": "string" } },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observation_id", "control_kind", "state", "session_id", "session_boundary_digest",
+        "position", "monotonic_offset_ms", "operator_declared_spacing_ms", "disclosure_digest",
+        "batch_id", "context_reset_id", "reset_epoch", "result_components", "source_status",
+        "observation_digest"
+      ],
+      "properties": {
+        "observation_id": { "type": "string" },
+        "control_kind": {
+          "enum": ["IMMEDIATE", "DELAYED", "NO_DISCLOSURE", "RESET_BEFORE", "RESET_AFTER", "CROSS_SESSION_BASELINE", "CROSS_SESSION_DELAYED"]
+        },
+        "state": { "enum": ["OBSERVED", "MISSING", "STALE", "INTERRUPTED", "REJECTED"] },
+        "session_id": { "type": ["string", "null"] },
+        "session_boundary_digest": { "$ref": "#/$defs/nullableSha256" },
+        "position": { "type": "integer", "minimum": 0 },
+        "monotonic_offset_ms": { "type": "integer", "minimum": 0 },
+        "operator_declared_spacing_ms": { "type": ["integer", "null"], "minimum": 0 },
+        "disclosure_digest": { "$ref": "#/$defs/nullableSha256" },
+        "batch_id": { "type": ["string", "null"] },
+        "context_reset_id": { "type": ["string", "null"] },
+        "reset_epoch": { "type": ["integer", "null"] },
+        "result_components": { "type": "object" },
+        "source_status": { "type": "string" },
+        "observation_digest": { "$ref": "#/$defs/sha256" }
+      }
+    }
+  }
+}

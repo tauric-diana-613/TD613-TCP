@@ -1,0 +1,20 @@
+{
+  "evidence_class": "OFFLINE_ORIGIN_CONSTRUCTION",
+  "origin_document": {
+    "id": "registered_fee_source_v1",
+    "name": "Registered fee practice source",
+    "text": "The public fee is USD 120.\n"
+  },
+  "raw_utf8_sha256": "8dbff8f321879ba910a9e54e5a066dfe2ade4384a164195d636dd67ac0be585d",
+  "runtime_string_commitment_sha256": "91b7022f3c3b345243304dce2c1afeceb0108ca2b906135f2b9f71788827b000",
+  "runtime_digest_encoding": "SHA-256 of UTF-8 stable JSON serialization of the string, including its LF; distinct from raw UTF-8 SHA-256.",
+  "selected_commitments": [
+    {
+      "id": "registered_fee_source_v1",
+      "name": "Registered fee practice source",
+      "sha256": "91b7022f3c3b345243304dce2c1afeceb0108ca2b906135f2b9f71788827b000"
+    }
+  ],
+  "binding_location": "input.documents, packet.documents, portable_governance.selected_commitments, session.root.selected_commitments and prepared work-unit selected_commitments",
+  "external_source_authentication": false
+}

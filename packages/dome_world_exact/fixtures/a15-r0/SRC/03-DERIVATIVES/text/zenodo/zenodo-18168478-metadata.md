@@ -1,0 +1,144 @@
+---
+derivative_id: derivative:9a3bcc34a3cc28ffe0b34bce
+parent_capture_id: capture:e7da128430d69420b72ef784
+parent_blob_sha256: 997bf2dcff963cbdad0860cc9d27223721bc460cd49c8da66fd2973410e34522
+tool: srcctl-json-normalizer/1
+source_title: "Platform Exit Barriers: How Containment Became the Default Logic of the Modern Web"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18168477",
+  "conceptrecid": "18168477",
+  "created": "2026-01-07T03:50:34.967526+00:00",
+  "doi": "10.5281/zenodo.18168478",
+  "doi_url": "https://doi.org/10.5281/zenodo.18168478",
+  "files": [
+    {
+      "checksum": "md5:0f91f0ff1c0061ab2b597814bdae31e3",
+      "id": "9aaef2bc-7143-4e35-ab9c-c445848a0844",
+      "key": "Platform Exit Barriers: How Containment Became the Default Logic of the Modern Web .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18168478/files/Platform%20Exit%20Barriers:%20How%20Containment%20Became%20the%20Default%20Logic%20of%20the%20Modern%20Web%20.pdf/content"
+      },
+      "size": 86069
+    }
+  ],
+  "id": 18168478,
+  "links": {
+    "access": "https://zenodo.org/api/records/18168478/access",
+    "access_grants": "https://zenodo.org/api/records/18168478/access/grants",
+    "access_links": "https://zenodo.org/api/records/18168478/access/links",
+    "access_request": "https://zenodo.org/api/records/18168478/access/request",
+    "access_users": "https://zenodo.org/api/records/18168478/access/users",
+    "archive": "https://zenodo.org/api/records/18168478/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18168478/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18168478/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18168478/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18168478",
+    "draft": "https://zenodo.org/api/records/18168478/draft",
+    "file_modification": "https://zenodo.org/api/records/18168478/file-modification",
+    "files": "https://zenodo.org/api/records/18168478/files",
+    "latest": "https://zenodo.org/api/records/18168478/versions/latest",
+    "latest_html": "https://zenodo.org/records/18168478/latest",
+    "media_files": "https://zenodo.org/api/records/18168478/media-files",
+    "parent": "https://zenodo.org/api/records/18168477",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18168477",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18168477",
+    "parent_html": "https://zenodo.org/records/18168477",
+    "preview_html": "https://zenodo.org/records/18168478?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18168478/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18168478/request-deletion",
+    "requests": "https://zenodo.org/api/records/18168478/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18168478/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18168478",
+    "self_doi": "https://doi.org/10.5281/zenodo.18168478",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18168478",
+    "self_html": "https://zenodo.org/records/18168478",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18168478/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18168478/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18168478:Platform%20Exit%20Barriers:%20How%20Containment%20Became%20the%20Default%20Logic%20of%20the%20Modern%20Web%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18168478:Platform%20Exit%20Barriers:%20How%20Containment%20Became%20the%20Default%20Logic%20of%20the%20Modern%20Web%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18168478:Platform%20Exit%20Barriers:%20How%20Containment%20Became%20the%20Default%20Logic%20of%20the%20Modern%20Web%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18168478:Platform%20Exit%20Barriers:%20How%20Containment%20Became%20the%20Default%20Logic%20of%20the%20Modern%20Web%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18168478:Platform%20Exit%20Barriers:%20How%20Containment%20Became%20the%20Default%20Logic%20of%20the%20Modern%20Web%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18168478:Platform%20Exit%20Barriers:%20How%20Containment%20Became%20the%20Default%20Logic%20of%20the%20Modern%20Web%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18168478/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This essay presents Applied Diagnostic #1 in the 2026 series, analyzing the rise of platform exit barriers as a defining feature of contemporary digital governance. Building on the author&rsquo;s canonical works&mdash;Quiet Governance, Systemic Erosion Theory, Infrastructural Exposure Theory, Slow Harm Theory, and Social Infrastructure Theory&mdash;the essay demonstrates how modern platforms convert user retention into a form of infrastructural containment. It identifies four types of exit barriers (frictional, structural, identity‑bound, and temporal) and explains how these mechanisms are enforced through automated rules, or &ldquo;logic cops,&rdquo; that prioritize system logic over user autonomy. The essay situates these dynamics within the broader context of administrative trauma and systemic erosion, arguing that exit barriers represent a quiet but consequential form of procedural harm. This diagnostic provides a conceptual tool for researchers, policymakers, and activists seeking to understand and challenge the subtle architectures of digital captivity.</p>",
+    "doi": "10.5281/zenodo.18168478",
+    "keywords": [
+      "Social Media Friction",
+      "Social Media",
+      "Crawlers",
+      "Indexing",
+      "Stylometric",
+      "Social Issues",
+      "Public policy",
+      "Social Media regulation"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-01-07",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18168477"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Platform Exit Barriers: How Containment Became the Default Logic of the Modern Web",
+    "version": "1.0"
+  },
+  "modified": "2026-01-29T01:35:11.927271+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18168478",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 24,
+    "unique_downloads": 19,
+    "unique_views": 25,
+    "version_downloads": 24,
+    "version_unique_downloads": 19,
+    "version_unique_views": 25,
+    "version_views": 29,
+    "views": 29
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Platform Exit Barriers: How Containment Became the Default Logic of the Modern Web",
+  "updated": "2026-01-29T01:35:11.927271+00:00"
+}

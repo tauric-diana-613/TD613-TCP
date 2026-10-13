@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:94e55066d50c7820defded72
+parent_capture_id: capture:81940578bb99552fcfe58be5
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "Epistemicide Diagnostics: A Foundational SR Framework"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.18817184
+Final URL: https://zenodo.org/records/18817184
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.18817184 -> https://zenodo.org/doi/10.5281/zenodo.18817184
+302 https://zenodo.org/doi/10.5281/zenodo.18817184 -> https://zenodo.org/records/18817184

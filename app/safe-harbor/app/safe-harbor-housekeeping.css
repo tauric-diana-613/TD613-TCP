@@ -1,0 +1,400 @@
+/* PR147 Safe Harbor housekeeping: scroll, desktop shell, and recall ergonomics. */
+html.safe-harbor-pr147,
+html.safe-harbor-pr147 body {
+  min-height: 100%;
+  height: auto !important;
+  overflow-y: auto !important;
+  overscroll-behavior-y: auto;
+}
+
+html.safe-harbor-pr147 body {
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+html.safe-harbor-pr147 body.vault-sealed {
+  overflow-y: auto !important;
+}
+
+html.safe-harbor-pr147 .ingress-membrane:not(.is-hidden) {
+  position: relative !important;
+  inset: auto !important;
+  min-height: 100dvh;
+  max-height: none !important;
+  display: block !important;
+  overflow: visible !important;
+  padding: clamp(18px, 3vw, 36px) clamp(14px, 4vw, 42px) clamp(32px, 5vw, 64px) !important;
+}
+
+html.safe-harbor-pr147 .ingress-shell {
+  width: min(1180px, calc(100vw - 32px));
+  margin-inline: auto;
+  padding: clamp(18px, 2.4vw, 30px);
+  overflow: visible;
+}
+
+html.safe-harbor-pr147 .ingress-shell::after {
+  opacity: 0.42;
+}
+
+html.safe-harbor-pr147 .ingress-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 18px 24px;
+  margin-bottom: 18px;
+}
+
+html.safe-harbor-pr147 .ingress-head .title-group {
+  min-width: 0;
+}
+
+html.safe-harbor-pr147 .ingress-head h1,
+html.safe-harbor-pr147 .masthead h1 {
+  font-size: clamp(2.45rem, 5vw, 4.85rem);
+  line-height: 0.9;
+  letter-spacing: 0.1em;
+  text-wrap: balance;
+}
+
+html.safe-harbor-pr147 .ingress-head-actions {
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 8px;
+  margin-left: 0;
+}
+
+html.safe-harbor-pr147 .ingress-status {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-start;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 0 0;
+}
+
+html.safe-harbor-pr147 .ingress-status .status-pill {
+  min-width: 0;
+  width: auto;
+  padding-inline: 10px;
+}
+
+html.safe-harbor-pr147 .ingress-stage-rail {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+html.safe-harbor-pr147 .ingress-stage-chip {
+  min-height: 42px;
+  padding: 9px 12px;
+  border-radius: 14px;
+  font-size: 0.62rem;
+}
+
+html.safe-harbor-pr147 .ingress-handshake-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  gap: 16px;
+}
+
+html.safe-harbor-pr147 .ingress-step-panel,
+html.safe-harbor-pr147 .ingress-console-panel {
+  padding: clamp(16px, 2vw, 22px);
+  overflow: visible;
+}
+
+html.safe-harbor-pr147 .ingress-textarea {
+  min-height: clamp(180px, 26vh, 260px);
+}
+
+html.safe-harbor-pr147 .ingress-rings {
+  opacity: 0.24;
+  pointer-events: none;
+}
+
+html.safe-harbor-pr147 .ingress-bypass[data-pr147-ready="false"] .ingress-bypass-summary,
+html.safe-harbor-pr147 .ingress-bypass[data-pr147-ready="false"] .ingress-bypass-body {
+  opacity: 0.72;
+}
+
+html.safe-harbor-pr147 .safe-harbor-pr147-note {
+  margin-top: 8px;
+  color: var(--gold);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html.safe-harbor-pr147 .chrome-grid {
+  width: min(1500px, 100%);
+  margin-inline: auto;
+}
+
+html.safe-harbor-pr147 .main-grid {
+  grid-template-rows: auto auto;
+  align-items: start;
+}
+
+html.safe-harbor-pr147 .panel,
+html.safe-harbor-pr147 .dock {
+  min-height: 0;
+  overflow: visible;
+}
+
+@media (max-width: 1100px) {
+  html.safe-harbor-pr147 .ingress-head,
+  html.safe-harbor-pr147 .masthead {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  html.safe-harbor-pr147 .ingress-head-actions,
+  html.safe-harbor-pr147 .status-strip {
+    justify-content: flex-start;
+  }
+
+  html.safe-harbor-pr147 .ingress-handshake-grid,
+  html.safe-harbor-pr147 .main-grid,
+  html.safe-harbor-pr147 .witness-grid,
+  html.safe-harbor-pr147 .forge-grid {
+    grid-template-columns: 1fr !important;
+    grid-template-areas: none !important;
+  }
+
+  html.safe-harbor-pr147 .panel-left,
+  html.safe-harbor-pr147 .panel-center,
+  html.safe-harbor-pr147 .panel-right,
+  html.safe-harbor-pr147 .dock-left,
+  html.safe-harbor-pr147 .dock-right {
+    grid-column: auto !important;
+    grid-row: auto !important;
+  }
+}
+
+@media (max-width: 720px) {
+  html.safe-harbor-pr147 .ingress-shell {
+    width: 100%;
+    border-radius: 24px;
+  }
+
+  html.safe-harbor-pr147 .ingress-head h1,
+  html.safe-harbor-pr147 .masthead h1 {
+    font-size: clamp(2rem, 13vw, 3.4rem);
+    letter-spacing: 0.07em;
+  }
+
+  html.safe-harbor-pr147 .ingress-stage-rail {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  html.safe-harbor-pr147 .ingress-status,
+  html.safe-harbor-pr147 .ingress-head-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  html.safe-harbor-pr147 .flight-launch {
+    width: 100%;
+  }
+}
+
+/* PR164 opened Safe Harbor mobile flow: keep vault panels in document flow and contain canon fields. */
+@media (max-width: 720px) {
+  html.safe-harbor-pr147 body:not(.vault-sealed) .chrome-grid,
+  html.safe-harbor-pr147 body.vault-open .chrome-grid,
+  html.safe-harbor-pr147[data-safe-harbor-session-open="true"] body .chrome-grid {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    padding-inline: max(8px, env(safe-area-inset-left, 0px)) max(8px, env(safe-area-inset-right, 0px)) !important;
+    overflow-x: hidden !important;
+  }
+
+  html.safe-harbor-pr147 .main-grid,
+  html.safe-harbor-pr147 .panel,
+  html.safe-harbor-pr147 .panel-center,
+  html.safe-harbor-pr147 .chamber-panel,
+  html.safe-harbor-pr147 .witness-surface,
+  html.safe-harbor-pr147 .witness-grid {
+    box-sizing: border-box !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  html.safe-harbor-pr147 .main-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+  }
+
+  html.safe-harbor-pr147 .panel,
+  html.safe-harbor-pr147 .dock {
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+  }
+
+  html.safe-harbor-pr147 .witness-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    grid-template-columns: none !important;
+    grid-template-areas: none !important;
+    align-items: stretch !important;
+  }
+
+  html.safe-harbor-pr147 .witness-grid > .surface-card,
+  html.safe-harbor-pr147 .witness-grid > .batch-intake-card,
+  html.safe-harbor-pr147 .witness-grid > .render-face-card,
+  html.safe-harbor-pr147 .witness-grid > .reliquary-card {
+    box-sizing: border-box !important;
+    position: relative !important;
+    display: block !important;
+    grid-area: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  html.safe-harbor-pr147 .witness-grid > .reliquary-card { order: 1 !important; }
+  html.safe-harbor-pr147 .witness-grid > .batch-intake-card { order: 2 !important; }
+  html.safe-harbor-pr147 .witness-grid > .render-face-card { order: 3 !important; }
+
+  html.safe-harbor-pr147 .metric-block,
+  html.safe-harbor-pr147 .proof-stack,
+  html.safe-harbor-pr147 .triad-summary,
+  html.safe-harbor-pr147 .intake-canon-card,
+  html.safe-harbor-pr147 .footer-template,
+  html.safe-harbor-pr147 .code-panel,
+  html.safe-harbor-pr147 .code-area,
+  html.safe-harbor-pr147 .dynamic-target,
+  html.safe-harbor-pr147 .forge-card,
+  html.safe-harbor-pr147 .field-grid,
+  html.safe-harbor-pr147 .field,
+  html.safe-harbor-pr147 .field-wide {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  html.safe-harbor-pr147 .metric-row,
+  html.safe-harbor-pr147 .summary-row,
+  html.safe-harbor-pr147 .proof-row,
+  html.safe-harbor-pr147 .data-row {
+    box-sizing: border-box !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 0.72fr) minmax(0, 1fr) !important;
+    gap: 8px !important;
+    align-items: start !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  html.safe-harbor-pr147 .label,
+  html.safe-harbor-pr147 .data-label,
+  html.safe-harbor-pr147 .summary-label,
+  html.safe-harbor-pr147 .proof-label,
+  html.safe-harbor-pr147 .value,
+  html.safe-harbor-pr147 .data-value,
+  html.safe-harbor-pr147 .summary-value,
+  html.safe-harbor-pr147 .proof-value {
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+    white-space: normal !important;
+  }
+
+  html.safe-harbor-pr147 .value,
+  html.safe-harbor-pr147 .data-value,
+  html.safe-harbor-pr147 .summary-value,
+  html.safe-harbor-pr147 .proof-value {
+    text-align: right !important;
+  }
+
+  html.safe-harbor-pr147 .intake-canon-card .field-grid,
+  html.safe-harbor-pr147 .intake-canon-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  html.safe-harbor-pr147 .intake-canon-card input,
+  html.safe-harbor-pr147 .intake-canon-card textarea,
+  html.safe-harbor-pr147 .intake-canon-card select,
+  html.safe-harbor-pr147 .field input,
+  html.safe-harbor-pr147 .field textarea,
+  html.safe-harbor-pr147 .field select {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+  }
+}
+
+/* PR99 opened Safe Harbor mobile correction: handshake before buffered intake + compact nav cluster. */
+@media (max-width: 720px) {
+  html.safe-harbor-pr147 .witness-grid > .reliquary-card { order: 1 !important; }
+  html.safe-harbor-pr147 .witness-grid > .render-face-card { order: 2 !important; }
+  html.safe-harbor-pr147 .witness-grid > .batch-intake-card { order: 3 !important; }
+
+  html.safe-harbor-pr147 .masthead .status-strip {
+    display: flex !important;
+    flex-flow: row wrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    grid-template-columns: none !important;
+  }
+
+  html.safe-harbor-pr147 .masthead .status-strip .status-pill {
+    flex: 1 1 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  html.safe-harbor-pr147 .masthead .status-strip .flight-launch.flight-launch-compact,
+  html.safe-harbor-pr147 .masthead .status-strip .signout-launch {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: max-content !important;
+    min-height: 30px !important;
+    padding: 7px 10px !important;
+    margin: 0 !important;
+    font-size: clamp(0.48rem, 1.9vw, 0.62rem) !important;
+    line-height: 1 !important;
+    letter-spacing: 0.08em !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+  }
+
+  html.safe-harbor-pr147 .masthead .status-strip a.flight-launch-compact[href*="index"] {
+    font-size: 0 !important;
+    letter-spacing: 0 !important;
+  }
+
+  html.safe-harbor-pr147 .masthead .status-strip a.flight-launch-compact[href*="index"]::before {
+    content: '← Gateway' !important;
+    display: inline !important;
+    font-size: clamp(0.48rem, 1.9vw, 0.62rem) !important;
+    letter-spacing: 0.08em !important;
+  }
+}

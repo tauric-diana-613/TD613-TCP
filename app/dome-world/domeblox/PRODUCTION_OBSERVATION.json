@@ -1,0 +1,31 @@
+{
+  "schema": "td613.domeblox.playable-production-observation/v2",
+  "game_url": "https://td613.com/dome-world/domeblox/",
+  "forward_battery_url": "https://td613.com/dome-world/domeblox/forward-battery/",
+  "status": "PASS",
+  "terminal_stage": "complete",
+  "observed_at": "2026-07-20T06:18:03.857Z",
+  "exact_u10d613_present": true,
+  "initial_player": { "x": 0, "y": 180 },
+  "moved_player": { "x": 0, "y": 45.849877777187494 },
+  "water_before": 20,
+  "water_after": 30.496157252,
+  "objective_after": 1,
+  "persisted_player": { "x": 0, "y": 45.849877777187494 },
+  "verified_operations": [
+    "enter-dome",
+    "avatar-movement",
+    "fountain-interaction",
+    "world-state-mutation",
+    "map-rendering",
+    "local-save",
+    "reload-persistence",
+    "forward-battery-subroute",
+    "assay-tab-activation"
+  ],
+  "console_errors": [],
+  "page_errors": [],
+  "request_failures": [],
+  "artifact_sha256": "c034a6d9d72a4cc50cb71f92a08cfddd61df0600635f1c831abbdd426859199f",
+  "authority": "external GitHub-hosted Chromium observation; no user data submitted"
+}

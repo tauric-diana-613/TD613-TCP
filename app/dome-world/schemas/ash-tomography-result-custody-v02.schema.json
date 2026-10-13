@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.tomography-result-custody/v0.2",
+  "title": "TD613 Ash tomography result custody v0.2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "custody_id", "created_at", "time_posture", "experiment_manifest_reference", "snapshot_batch_reference", "tomography_receipt_reference", "tomography_receipt_digest", "source_drift_status", "coverage_status", "tamper_status", "raw_artifact_content_present", "raw_observation_content_present", "derivative_present", "cinder_present", "transport_authorized", "automatic_export", "automatic_ash_action", "source_status", "evidence_basis", "observations", "missingness", "alternatives", "open_questions", "operator_notes", "closure", "custody_digest"],
+  "properties": {
+    "schema": { "const": "td613.ash.tomography-result-custody/v0.2" },
+    "custody_id": { "type": "string" },
+    "created_at": { "type": "string" },
+    "time_posture": { "const": "local-clock-not-trusted-time" },
+    "experiment_manifest_reference": { "type": "string" },
+    "snapshot_batch_reference": { "type": "string" },
+    "tomography_receipt_reference": { "type": "string" },
+    "tomography_receipt_digest": { "$ref": "#/$defs/digest" },
+    "source_drift_status": { "type": "string" },
+    "coverage_status": { "type": "string" },
+    "tamper_status": { "type": "string" },
+    "raw_artifact_content_present": { "const": false },
+    "raw_observation_content_present": { "const": false },
+    "derivative_present": { "const": false },
+    "cinder_present": { "const": false },
+    "transport_authorized": { "const": false },
+    "automatic_export": { "const": false },
+    "automatic_ash_action": { "const": false },
+    "source_status": { "type": "string" },
+    "evidence_basis": { "$ref": "#/$defs/textList" },
+    "observations": { "type": "array" },
+    "missingness": { "type": "array" },
+    "alternatives": { "type": "array" },
+    "open_questions": { "$ref": "#/$defs/textList" },
+    "operator_notes": { "$ref": "#/$defs/textList" },
+    "closure": { "$ref": "#/$defs/closure" },
+    "custody_digest": { "$ref": "#/$defs/digest" }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "textList": { "type": "array", "items": { "type": "string" } },
+    "closure": { "type": "object", "required": ["required", "status"], "properties": { "required": { "const": true }, "status": { "enum": ["OPEN", "CLOSED"] } }, "additionalProperties": false }
+  }
+}

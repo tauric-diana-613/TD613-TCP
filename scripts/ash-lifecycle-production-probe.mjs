@@ -1,0 +1,249 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
+
+const artifactDir = path.resolve(process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-lifecycle-deployed-observation');
+const baseProbeUrl = new URL('./ash-lifecycle-production-probe-base.mjs', import.meta.url);
+const runtimeProbePath = path.join(artifactDir, 'ash-lifecycle-production-probe.runtime.mjs');
+const syntheticDraft = 'Synthetic public index request derived from the custody-bound case; no recipient route.';
+
+function replaceExactly(source, marker, replacement, label) {
+  const count = source.split(marker).length - 1;
+  if (count !== 1) throw new Error(`${label} expected exactly one marker; observed ${count}`);
+  return source.replace(marker, replacement);
+}
+
+await fs.mkdir(artifactDir, { recursive: true });
+let runtime = await fs.readFile(baseProbeUrl, 'utf8');
+// The site-wide destructive browser epoch was retired 2026-09-29.
+ // Ash production observation now begins directly without deleting browser state
+ // or waiting on a reset marker before the lifecycle witness.
+runtime = replaceExactly(
+  runtime,
+  "const requests = [];\nconst consoleErrors = [];\npage.on('request', request => requests.push({\n  method: request.method(),\n  url: request.url(),\n  resource_type: request.resourceType(),\n  post_data: request.postData() || null\n}));\npage.on('console', message => { if (message.type() === 'error') consoleErrors.push(message.text()); });\npage.on('pageerror', error => consoleErrors.push(error.message));",
+  "const requests = [];\nconst httpErrors = [];\nconst requestFailures = [];\nconst consoleErrors = [];\npage.on('request', request => requests.push({\n  method: request.method(),\n  url: request.url(),\n  resource_type: request.resourceType(),\n  post_data: request.postData() || null\n}));\npage.on('response', response => {\n  if (response.status() >= 400) httpErrors.push({\n    status:response.status(),\n    url:response.url(),\n    resource_type:response.request().resourceType()\n  });\n});\npage.on('requestfailed', request => requestFailures.push({\n  method:request.method(),\n  url:request.url(),\n  resource_type:request.resourceType(),\n  failure:request.failure()?.errorText || 'UNKNOWN'\n}));\npage.on('console', message => {\n  if (message.type() === 'error') consoleErrors.push({\n    text:message.text(),\n    location:message.location() || null\n  });\n});\npage.on('pageerror', error => consoleErrors.push({ text:error.message, location:null }));",
+  'forensic network and console diagnostics'
+);
+runtime = replaceExactly(
+  runtime,
+  "page.on('pageerror', error => consoleErrors.push({ text:error.message, location:null }));",
+  "page.on('pageerror', error => consoleErrors.push({ text:error.message, location:null }));\nfunction isExpectedTransitionAbort(item, activeStylesheetHrefs = new Set()) {\n  if (item?.failure !== 'net::ERR_ABORTED' || item?.method !== 'GET') return false;\n  let url;\n  try { url = new URL(item.url); } catch { return false; }\n  const cacheEvictionTransition = item.resource_type === 'fetch'\n    && url.pathname === '/api/dome-world-shell'\n    && url.searchParams.get('surface') === 'cache-evict'\n    && url.searchParams.has('epoch')\n    && url.searchParams.has('asset_epoch')\n    && url.searchParams.has('nonce');\n  const supersededAia3Navigation = item.resource_type === 'script'\n    && url.pathname === '/dome-world/ash-aia3-composition.js'\n    && url.searchParams.has('v');\n  const supersededGuidedStylesheet = item.resource_type === 'stylesheet'\n    && url.pathname === '/dome-world/ash-guided-operator-ui.css'\n    && url.searchParams.get('v') === '20260718-stable-membrane-v4'\n    && activeStylesheetHrefs.has(item.url);\n  return cacheEvictionTransition || supersededAia3Navigation || supersededGuidedStylesheet;\n}",
+  'named transition-abort classifier'
+);
+runtime = replaceExactly(
+  runtime,
+  "  evidence_files: {},\n  console_errors: consoleErrors,",
+  "  evidence_files: {},\n  http_errors: httpErrors,\n  request_failures: requestFailures,\n  console_errors: consoleErrors,",
+  'diagnostic report surfaces'
+);
+runtime = replaceExactly(
+  runtime,
+  "  report.network = {\n    total_requests: requests.length,\n    non_read_requests: nonReadRequests.map(({ method, url, resource_type }) => ({ method, url, resource_type })),\n    disallowed_non_read_requests: [],\n    provider_or_transport_requests: [],\n    raw_artifact_in_request_body: false\n  };\n  assert(consoleErrors.length === 0, `Browser console errors observed: ${consoleErrors.join(' | ')}`);",
+  "  report.network = {\n    total_requests: requests.length,\n    non_read_requests: nonReadRequests.map(({ method, url, resource_type }) => ({ method, url, resource_type })),\n    disallowed_non_read_requests: [],\n    provider_or_transport_requests: [],\n    http_errors:httpErrors,\n    request_failures:requestFailures,\n    raw_artifact_in_request_body: false\n  };\n  assert(httpErrors.length === 0, `HTTP resource errors observed: ${httpErrors.map(item => `${item.status} ${item.resource_type} ${item.url}`).join(' | ')}`);\n  assert(requestFailures.length === 0, `Request failures observed: ${requestFailures.map(item => `${item.failure} ${item.resource_type} ${item.url}`).join(' | ')}`);\n  assert(consoleErrors.length === 0, `Browser console errors observed: ${consoleErrors.map(item => `${item.text} @ ${item.location?.url || 'unknown'}:${item.location?.lineNumber ?? 0}`).join(' | ')}`);",
+  'forensic terminal network assertions'
+);
+runtime = replaceExactly(
+  runtime,
+  "  assert(requestFailures.length === 0, `Request failures observed: ${requestFailures.map(item => `${item.failure} ${item.resource_type} ${item.url}`).join(' | ')}`);",
+  "  const activeStylesheetHrefs = new Set(await page.evaluate(() => Array.from(document.styleSheets).map(sheet => sheet.href).filter(Boolean)));\n  const guidedStylesheetActive = [...activeStylesheetHrefs].some(href => {\n    let url;\n    try { url = new URL(href); } catch { return false; }\n    return url.pathname === '/dome-world/ash-guided-operator-ui.css'\n      && url.searchParams.get('v') === '20260718-stable-membrane-v4';\n  });\n  const expectedTransitionAborts = requestFailures.filter(item => isExpectedTransitionAbort(item, activeStylesheetHrefs));\n  const unexpectedRequestFailures = requestFailures.filter(item => !isExpectedTransitionAbort(item, activeStylesheetHrefs));\n  report.network.active_stylesheet_hrefs = [...activeStylesheetHrefs];\n  report.network.guided_stylesheet_active = guidedStylesheetActive;\n  report.network.expected_transition_aborts = expectedTransitionAborts;\n  report.network.unexpected_request_failures = unexpectedRequestFailures;\n  assert(guidedStylesheetActive, 'Guided operator stylesheet is not active at terminal lifecycle');\n  assert(unexpectedRequestFailures.length === 0, `Unexpected request failures observed: ${unexpectedRequestFailures.map(item => `${item.failure} ${item.resource_type} ${item.url}`).join(' | ')}`);",
+  'named transition-abort terminal classification'
+);
+runtime = replaceExactly(
+  runtime,
+  "const SYNTHETIC_ARTIFACT = 'TD613 ASH LIFECYCLE PROBE — synthetic local artifact; no recipient route.';",
+  "const SYNTHETIC_ARTIFACT = 'TD613 ASH LIFECYCLE PROBE — synthetic local artifact; no recipient route.';\nconst SYNTHETIC_DRAFT = 'Synthetic public index request derived from the custody-bound case; no recipient route.';",
+  'synthetic draft declaration'
+);
+runtime = replaceExactly(
+  runtime,
+  "const keepUrl = `${base}/dome-world/ash-keep.html`;",
+  "const keepUrl = `${base}/dome-world/ash-keep.html?presentation=legacy`;",
+  'specialist presentation route declaration'
+);
+runtime = replaceExactly(
+  runtime,
+  "    page.waitForURL(/\\/dome-world\\/ash-threshold\\.html\\?arrival=cleared/, { timeout: 30_000 }),",
+  "    page.waitForURL(url => url.pathname === '/dome-world/ash-threshold.html' && url.searchParams.get('arrival') === 'cleared', { timeout: 30_000 }),",
+  'query-order independent threshold arrival'
+);
+runtime = replaceExactly(
+  runtime,
+  "const ALLOWED_LOCAL_KEYS = new Set([\n  'td613.ash-keep.current-case',\n  'td613.ash-keep.preferences'\n]);",
+  "const ALLOWED_LOCAL_KEYS = new Set([\n  'td613.ash-keep.current-case',\n  'td613.ash-keep.preferences',\n  'td613.ash.cache-flush.epoch',\n  'td613.ash.cache-flush.aia3.epoch',\n  'td613.ash.cache-preflight.epoch',\n  'td613.ash.session.epoch',\n  'td613.site.browser-reset.epoch'\n]);",
+  'bounded legacy and AIA3 maintenance marker allowance'
+);
+runtime = replaceExactly(
+  runtime,
+  "async function openWorkspace(page, name) {\n  await page.locator(`.work-tab[data-workspace=\"${name}\"]`).click();\n  await page.locator(`#workspace-${name}`).waitFor({ state: 'visible' });\n}",
+  "async function openWorkspace(page, name) {\n  await page.evaluate(workspace => {\n    const open = window.__td613AshPremiumUI?.open\n      || window.__td613OpenAshWorkspace\n      || window.__td613AshKeep?.openWorkspace;\n    if (typeof open !== 'function') throw new Error('Ash guided workspace API is unavailable.');\n    open(workspace);\n  }, name);\n  await page.waitForFunction(workspace => document.getElementById(`workspace-${workspace}`)?.classList.contains('active'), name);\n}",
+  'guided workspace navigation'
+);
+runtime = replaceExactly(
+  runtime,
+  "      selected_workspace: document.querySelector('.work-tab[aria-selected=\"true\"]')?.dataset.workspace || null,",
+  "      selected_workspace: document.documentElement.dataset.ashPremiumWorkspace || document.querySelector('.workspace.active')?.id?.replace('workspace-', '') || null,",
+  'active workspace receipt'
+);
+runtime = replaceExactly(
+  runtime,
+  "  report.readiness = readiness;\n\n  await page.locator('#startDemo').click();",
+  "  report.readiness = readiness;\n\n  await page.goto(keepUrl, { waitUntil: 'domcontentloaded', timeout: 60_000 });\n  await page.waitForFunction(() => location.pathname === '/dome-world/ash-threshold.html'\n    && location.search === ''\n    && window.__td613AshAia3PreflightReceipt?.legacy_bypass === true\n    && window.__td613AshAia3PreflightReceipt?.visible_url === '/dome-world/ash-threshold.html'\n    && document.documentElement.dataset.ashCachePreflight === 'complete'\n    && document.documentElement.dataset.ashModuleGraph === 'ready'\n    && document.body.dataset.ashLifecycle === 'READINESS_OBSERVED'\n    && window.__td613AshProfileDemos?.profiles?.includes('political_campaign')\n    && document.getElementById('newProfile')?.getClientRects().length > 0, null, { timeout: 60_000 });\n  const specialistPreflight = await page.evaluate(() => window.__td613AshAia3PreflightReceipt);\n  report.threshold.specialist_presentation_request = 'legacy';\n  report.threshold.specialist_presentation_route = 'legacy-request-canonicalized';\n  report.threshold.specialist_visible_url = '/dome-world/ash-threshold.html';\n  report.threshold.specialist_cache_preflight = {\n    legacy_bypass: specialistPreflight.legacy_bypass === true,\n    visible_url: specialistPreflight.visible_url,\n    aia3_route_required: false,\n    reload_required: false\n  };\n\n  await page.locator('#startDemo').click();",
+  'post-threshold specialist route transition'
+);
+runtime = replaceExactly(
+  runtime,
+  "  report.readiness = readiness;\n\n  await page.goto(keepUrl, { waitUntil: 'domcontentloaded', timeout: 60_000 });",
+  "  report.readiness = readiness;\n\n  await page.waitForFunction(() => {\n    const aia3 = window.__td613AshAia3Composition?.current?.();\n    const portal = window.__td613AshFlowcoreIngressPortal?.current?.();\n    const loader = window.__td613AshFlowcoreIngressPortalLoader;\n    const membrane = document.getElementById('ashAiaMembrane');\n    return document.documentElement.dataset.ashCachePreflight === 'complete'\n      && document.documentElement.dataset.ashModuleGraph === 'ready'\n      && document.documentElement.dataset.ashAiaReady === 'true'\n      && window.__td613AshLiveAIA?.version === 'td613.ash.live-aia-browser/v0.2-task-continuity'\n      && window.__td613AshAia3Composition?.version === 'td613.ash.aia3-composition/v0.5-human-profile-choice'\n      && Boolean(window.__td613AshA11ModulePromise)\n      && window.__td613AshA11Capsule?.version === 'td613.ash.a11-capsule-recompilation/v0.1'\n      && window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.3-a15'\n      && document.documentElement.dataset.ashDemoRegistryOwners === 'APEQ_PAIA,RESEARCH,LEGAL,ARCHIVE'\n      && Boolean(document.documentElement.dataset.ashDemoRegistryEmpirical)\n      && aia3?.session_open === false\n      && aia3?.case_id == null\n      && aia3?.membrane_ready === false\n      && aia3?.hold === 'WAITING_INGRESS_PROFILE'\n      && aia3?.route_count === 0\n      && aia3?.task_count === 0\n      && membrane?.querySelectorAll('[data-aia-route]').length === 4\n      && membrane?.querySelectorAll('[data-aia-task]').length === 4\n      && loader?.eligible === true\n      && Boolean(loader?.portal_version)\n      && portal?.visible === true\n      && portal?.duplicate_visible_fields === 1\n      && !document.body.dataset.ashAiaHeld\n      && !document.documentElement.dataset.ashFlowcorePortalLoaderHold;\n  }, null, { timeout: 60_000 });\n  report.threshold.cleared_arrival_module_settlement = await page.evaluate(() => {\n    const membrane = document.getElementById('ashAiaMembrane');\n    return {\n      cache_preflight:document.documentElement.dataset.ashCachePreflight,\n      module_graph:document.documentElement.dataset.ashModuleGraph,\n      live_aia:window.__td613AshLiveAIA?.version || null,\n      live_aia_ready:document.documentElement.dataset.ashAiaReady === 'true',\n      aia3_version:window.__td613AshAia3Composition?.version || null,\n      a11_module_requested:Boolean(window.__td613AshA11ModulePromise),\n      a11_capsule_version:window.__td613AshA11Capsule?.version || null,\n      demo_registry_version:window.__td613AshDemoRegistry?.version || null,\n      demo_registry_owners:document.documentElement.dataset.ashDemoRegistryOwners || null,\n      demo_registry_empirical:document.documentElement.dataset.ashDemoRegistryEmpirical || null,\n      demo_registry_owner_imports_settled:document.documentElement.dataset.ashDemoRegistryOwners === 'APEQ_PAIA,RESEARCH,LEGAL,ARCHIVE',\n      aia3:window.__td613AshAia3Composition?.current?.() || null,\n      aia_route_controls:membrane?.querySelectorAll('[data-aia-route]').length || 0,\n      aia_task_controls:membrane?.querySelectorAll('[data-aia-task]').length || 0,\n      flowcore_loader:window.__td613AshFlowcoreIngressPortalLoader || null,\n      flowcore_portal:window.__td613AshFlowcoreIngressPortal?.current?.() || null,\n      neutral_ingress_preserved:true,\n      aia3_installation_ready:true,\n      human_profile_choice_required:true,\n      human_profile_choice_completed:false,\n      dependency_imports_settled:true,\n      specialist_navigation_admitted:true\n    };\n  });\n\n  await page.goto(keepUrl, { waitUntil: 'domcontentloaded', timeout: 60_000 });",
+  'cleared-arrival neutral-ingress module settlement before specialist navigation'
+);
+runtime = replaceExactly(
+  runtime,
+  "  await page.locator('#startDemo').click();\n  await page.locator('#launch').waitFor({ state: 'hidden' });\n  await waitForText(page, '#caseTitle', /Glasshouse Archive inquiry/);",
+  "  await page.locator('#newProfile').selectOption('political_campaign');\n  await page.waitForFunction(() => !document.getElementById('startDemo')?.disabled && /Political Campaign/.test(document.getElementById('startDemo')?.textContent || ''));\n  await page.locator('#startDemo').click();\n  await page.locator('#launch').waitFor({ state: 'hidden' });\n  await waitForText(page, '#caseTitle', /Harbor City Mayoral Campaign/);",
+  'explicit synthetic profile launch'
+);
+runtime = replaceExactly(
+  runtime,
+  "  await page.locator('.work-tab[data-workspace=\"test\"]').click();\n  await page.locator('#workspace-custody').waitFor({ state: 'visible' });\n  const heldMessage = await waitForText(page, '#custodyStatus', /Test held/i);\n  report.pre_custody_hold = { test_workspace_held: true, message: heldMessage, state: await page.evaluate(() => document.body.dataset.ashLifecycle) };",
+  "  await openWorkspace(page, 'test');\n  await page.locator('#workspace-test').waitFor({ state: 'visible' });\n  const preCustodyExactState = await page.evaluate(() => document.body.dataset.ashLifecycle || null);\n  assert(preCustodyExactState === 'READINESS_OBSERVED', `Guided Test opened under unexpected lifecycle state: ${preCustodyExactState}`);\n  await page.locator('#runTest').click();\n  await page.locator('#workspace-custody').waitFor({ state: 'visible' });\n  const heldMessage = await waitForText(page, '#custodyStatus', /held/i);\n  report.pre_custody_hold = { test_workspace_navigable: true, test_action_held: true, pre_custody_exact_state: preCustodyExactState, message: heldMessage, state: await page.evaluate(() => document.body.dataset.ashLifecycle) };",
+  'workspace navigation and held action observation'
+);
+runtime = replaceExactly(
+  runtime,
+  "  await openWorkspace(page, 'draft');\n  await page.locator('#keepDraft').click();",
+  "  await openWorkspace(page, 'draft');\n  await page.locator('#draftBody').fill(SYNTHETIC_DRAFT);\n  await page.locator('#draftRefs').fill('node_kickoff, node_launch_message, node_press_inquiry');\n  await page.locator('#keepDraft').click();",
+  'draft fixture entry'
+);
+runtime = replaceExactly(
+  runtime,
+  "  const draft = afterDraft.drafts.map(item => item.value).find(item => item.case_id === caseMap.case_id);",
+  "  const draft = afterDraft.drafts.map(item => item.value).find(item => item.case_id === caseMap.case_id && item.body === SYNTHETIC_DRAFT);",
+  'declared draft selection'
+);
+runtime = replaceExactly(
+  runtime,
+  "  assert(draft?.case_map_digest === caseMap.case_map_digest, 'Draft is not bound to the custody-root Case Map');",
+  "  assert(draft?.case_map_digest === caseMap.case_map_digest, 'Draft is not bound to the custody-root Case Map');\n  assert(draft?.body === SYNTHETIC_DRAFT, 'Kept draft does not match the declared synthetic derivative');",
+  'draft fixture verification'
+);
+runtime = replaceExactly(
+  runtime,
+  '    draft_case_map_digest: draft.case_map_digest,',
+  '    draft_case_map_digest: draft.case_map_digest,\n    draft_body_sha256: sha256(SYNTHETIC_DRAFT),',
+  'draft digest evidence'
+);
+runtime = replaceExactly(
+  runtime,
+  "  await waitForText(page, '#capsuleStatus', /Encrypted copy exported/);",
+  "  await waitForText(page, '#capsuleStatus', /(?:return-ready\\s+)?encrypted copy exported/i);",
+  'return-ready Capsule export confirmation'
+);
+runtime = replaceExactly(
+  runtime,
+  "  await page.locator('#importCapsule').click();\n  await waitForText(page, '#capsuleStatus', /Authenticated capsule opened/);\n  const capsule = JSON.parse(await fs.readFile(capsulePath, 'utf8'));",
+  "  await page.locator('#importCapsule').click();\n  await waitForText(page, '#capsuleStatus', /Authenticated capsule opened/);\n  await openWorkspace(page, 'save');\n  await page.locator('#capsulePassphrase').waitFor({ state: 'visible' });\n  const capsule = JSON.parse(await fs.readFile(capsulePath, 'utf8'));",
+  'guided Capsule return before tamper assay'
+);
+runtime = replaceExactly(
+  runtime,
+  "  assert(providerOrTransport.length === 0, 'Lifecycle probe reached a provider or recipient transport route');",
+  "  assert(providerOrTransport.length === 0, 'Lifecycle probe reached a provider or recipient transport route');\n  assert(!requests.some(item => item.post_data?.includes(SYNTHETIC_DRAFT)), 'Synthetic draft entered a request body');",
+  'draft request boundary'
+);
+
+// The cleared-arrival application schedules A9, A10, and A11 from the same
+// canonical module-graph transition.  Navigation must not supersede any one of
+// those application-owned imports merely because a later sibling settled first.
+runtime = replaceExactly(
+  runtime,
+  "      && window.__td613AshAia3Composition?.version === 'td613.ash.aia3-composition/v0.5-human-profile-choice'\n      && Boolean(window.__td613AshA11ModulePromise)",
+  "      && window.__td613AshAia3Composition?.version === 'td613.ash.aia3-composition/v0.5-human-profile-choice'\n      && Boolean(window.__td613AshA9ModulePromise)\n      && window.__td613AshA9Work?.version === 'td613.ash.a9-work-recompilation/v0.2'\n      && Boolean(window.__td613AshA10ModulePromise)\n      && window.__td613AshA10Choir?.version === 'td613.ash.a10-choir-recompilation/v0.1'\n      && Boolean(window.__td613AshA11ModulePromise)",
+  'A9-A11 stage-import settlement predicate'
+);
+runtime = replaceExactly(
+  runtime,
+  "      aia3_version:window.__td613AshAia3Composition?.version || null,\n      a11_module_requested:Boolean(window.__td613AshA11ModulePromise),",
+  "      aia3_version:window.__td613AshAia3Composition?.version || null,\n      a9_module_requested:Boolean(window.__td613AshA9ModulePromise),\n      a9_work_version:window.__td613AshA9Work?.version || null,\n      a10_module_requested:Boolean(window.__td613AshA10ModulePromise),\n      a10_choir_version:window.__td613AshA10Choir?.version || null,\n      a11_module_requested:Boolean(window.__td613AshA11ModulePromise),",
+  'A9-A11 stage-import settlement receipt'
+);
+runtime = replaceExactly(
+  runtime,
+  "      dependency_imports_settled:true,\n      specialist_navigation_admitted:true",
+  "      stage_imports_settled:true,\n      dependency_imports_settled:true,\n      specialist_navigation_admitted:true",
+  'stage-import settlement receipt flag'
+);
+if (!runtime.includes(syntheticDraft)
+  || !runtime.includes("url.searchParams.get('arrival') === 'cleared'")
+  || !runtime.includes('ash-keep.html?presentation=legacy')
+  || !runtime.includes("location.pathname === '/dome-world/ash-threshold.html'")
+  || !runtime.includes("location.search === ''")
+  || !runtime.includes("specialist_presentation_route = 'legacy-request-canonicalized'")
+  || !runtime.includes("specialist_visible_url = '/dome-world/ash-threshold.html'")
+  || !runtime.includes('legacy_bypass === true')
+  || !runtime.includes("visible_url === '/dome-world/ash-threshold.html'")
+  || !runtime.includes("dataset.ashCachePreflight === 'complete'")
+  || !runtime.includes("dataset.ashModuleGraph === 'ready'")
+  || !runtime.includes('aia3_route_required: false')
+  || runtime.includes("searchParams.get('presentation') === 'legacy'")
+  || runtime.includes("current?.().route === 'IMPLEMENTATION'")
+  || !runtime.includes("selectOption('political_campaign')")
+  || !runtime.includes('Ash guided workspace API is unavailable.')
+  || !runtime.includes('td613.ash.cache-flush.epoch')
+  || !runtime.includes('td613.ash.cache-flush.aia3.epoch')
+  || !runtime.includes('td613.ash.cache-preflight.epoch')
+  || !runtime.includes('td613.ash.session.epoch')
+  || !runtime.includes('pre_custody_exact_state: preCustodyExactState')
+  || runtime.includes('#workspace-test .workspace-lifecycle-note')
+  || !runtime.includes("guided Capsule return before tamper assay") && !runtime.includes("await openWorkspace(page, 'save');\n  await page.locator('#capsulePassphrase').waitFor({ state: 'visible' });")
+  || !runtime.includes('draft_body_sha256')
+  || !runtime.includes('item.body === SYNTHETIC_DRAFT')
+  || !runtime.includes('test_workspace_navigable: true')
+  || !runtime.includes('return-ready\\s+')
+  || !runtime.includes("page.on('response'")
+  || !runtime.includes('http_errors:httpErrors')
+  || !runtime.includes('expected_transition_aborts')
+  || !runtime.includes('unexpected_request_failures')
+  || !runtime.includes("url.pathname === '/api/dome-world-shell'")
+  || !runtime.includes("url.pathname === '/dome-world/ash-aia3-composition.js'")
+  || runtime.includes("url.pathname === '/dome-world/ash-research-demo-hydration.js'")
+  || runtime.includes("url.pathname === '/dome-world/ash-a9-work-recompilation.js'")
+  || runtime.includes("url.pathname === '/dome-world/ash-a10-choir-recompilation.js'")
+  || runtime.includes("url.pathname === '/dome-world/ash-a11-capsule-recompilation.js'")
+  || !runtime.includes("item.resource_type === 'stylesheet'")
+  || !runtime.includes("url.pathname === '/dome-world/ash-guided-operator-ui.css'")
+  || !runtime.includes("url.searchParams.get('v') === '20260718-stable-membrane-v4'")
+  || !runtime.includes('activeStylesheetHrefs.has(item.url)')
+  || !runtime.includes('guided_stylesheet_active')
+  || !runtime.includes('Guided operator stylesheet is not active at terminal lifecycle')
+  || !runtime.includes('Unexpected request failures observed:')
+  || !runtime.includes('cleared_arrival_module_settlement')
+  || !runtime.includes("dataset.ashAiaReady === 'true'")
+  || !runtime.includes('__td613AshLiveAIA?.version')
+  || !runtime.includes("__td613AshAia3Composition?.version === 'td613.ash.aia3-composition/v0.5-human-profile-choice'")
+  || !runtime.includes('Boolean(window.__td613AshA9ModulePromise)')
+  || !runtime.includes("window.__td613AshA9Work?.version === 'td613.ash.a9-work-recompilation/v0.2'")
+  || !runtime.includes('Boolean(window.__td613AshA10ModulePromise)')
+  || !runtime.includes("window.__td613AshA10Choir?.version === 'td613.ash.a10-choir-recompilation/v0.1'")
+  || !runtime.includes('Boolean(window.__td613AshA11ModulePromise)')
+  || !runtime.includes("window.__td613AshA11Capsule?.version === 'td613.ash.a11-capsule-recompilation/v0.1'")
+  || !runtime.includes('a9_module_requested:')
+  || !runtime.includes('a10_module_requested:')
+  || !runtime.includes('stage_imports_settled:true')
+  || !runtime.includes("__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.3-a15'")
+  || !runtime.includes("dataset.ashDemoRegistryOwners === 'APEQ_PAIA,RESEARCH,LEGAL,ARCHIVE'")
+  || !runtime.includes('demo_registry_owner_imports_settled:')
+  || !runtime.includes("aia3?.case_id == null")
+  || !runtime.includes("aia3?.hold === 'WAITING_INGRESS_PROFILE'")
+  || !runtime.includes("querySelectorAll('[data-aia-route]').length === 4")
+  || !runtime.includes("querySelectorAll('[data-aia-task]').length === 4")
+  || !runtime.includes('__td613AshFlowcoreIngressPortalLoader')
+  || !runtime.includes('__td613AshFlowcoreIngressPortal?.current?.()')
+  || !runtime.includes('neutral_ingress_preserved:true')
+  || !runtime.includes('aia3_installation_ready:true')
+  || !runtime.includes('human_profile_choice_required:true')
+  || !runtime.includes('human_profile_choice_completed:false')
+  || !runtime.includes('dependency_imports_settled:true')
+  || !runtime.includes('specialist_navigation_admitted:true')
+  || !runtime.includes('message.location()')) throw new Error('Synthetic guided lifecycle fixture compilation failed.');
+await fs.writeFile(runtimeProbePath, runtime);
+await import(`${pathToFileURL(runtimeProbePath).href}?fixture=${Date.now()}`);

@@ -1,0 +1,142 @@
+---
+derivative_id: derivative:4a2bce50617a7acaf7cba53f
+parent_capture_id: capture:7e092d04ce68082433473a30
+parent_blob_sha256: 5a48244f7f48d639c95f4119cd03a3de9a960ed04a60496890c4222ad2883e29
+tool: srcctl-json-normalizer/1
+source_title: "The Inevitability Architecture: How Linear Systems Produce Nonlinear Harm"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.19505556",
+  "conceptrecid": "19505556",
+  "created": "2026-04-11T04:47:36.751285+00:00",
+  "doi": "10.5281/zenodo.19505557",
+  "doi_url": "https://doi.org/10.5281/zenodo.19505557",
+  "files": [
+    {
+      "checksum": "md5:6e7d8e00d83d812b372fa2d28ef05deb",
+      "id": "639d649d-2120-4121-a791-98b760383877",
+      "key": "The Inevitability Architecture: How Linear Systems Produce Nonlinear Harm .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/19505557/files/The%20Inevitability%20Architecture:%20How%20Linear%20Systems%20Produce%20Nonlinear%20Harm%20.pdf/content"
+      },
+      "size": 132066
+    }
+  ],
+  "id": 19505557,
+  "links": {
+    "access": "https://zenodo.org/api/records/19505557/access",
+    "access_grants": "https://zenodo.org/api/records/19505557/access/grants",
+    "access_links": "https://zenodo.org/api/records/19505557/access/links",
+    "access_request": "https://zenodo.org/api/records/19505557/access/request",
+    "access_users": "https://zenodo.org/api/records/19505557/access/users",
+    "archive": "https://zenodo.org/api/records/19505557/files-archive",
+    "archive_media": "https://zenodo.org/api/records/19505557/media-files-archive",
+    "communities": "https://zenodo.org/api/records/19505557/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/19505557/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.19505557",
+    "draft": "https://zenodo.org/api/records/19505557/draft",
+    "file_modification": "https://zenodo.org/api/records/19505557/file-modification",
+    "files": "https://zenodo.org/api/records/19505557/files",
+    "latest": "https://zenodo.org/api/records/19505557/versions/latest",
+    "latest_html": "https://zenodo.org/records/19505557/latest",
+    "media_files": "https://zenodo.org/api/records/19505557/media-files",
+    "parent": "https://zenodo.org/api/records/19505556",
+    "parent_doi": "https://doi.org/10.5281/zenodo.19505556",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19505556",
+    "parent_html": "https://zenodo.org/records/19505556",
+    "preview_html": "https://zenodo.org/records/19505557?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/19505557/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/19505557/request-deletion",
+    "requests": "https://zenodo.org/api/records/19505557/requests",
+    "reserve_doi": "https://zenodo.org/api/records/19505557/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/19505557",
+    "self_doi": "https://doi.org/10.5281/zenodo.19505557",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19505557",
+    "self_html": "https://zenodo.org/records/19505557",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19505557/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19505557/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:19505557:The%20Inevitability%20Architecture:%20How%20Linear%20Systems%20Produce%20Nonlinear%20Harm%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:19505557:The%20Inevitability%20Architecture:%20How%20Linear%20Systems%20Produce%20Nonlinear%20Harm%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:19505557:The%20Inevitability%20Architecture:%20How%20Linear%20Systems%20Produce%20Nonlinear%20Harm%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:19505557:The%20Inevitability%20Architecture:%20How%20Linear%20Systems%20Produce%20Nonlinear%20Harm%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:19505557:The%20Inevitability%20Architecture:%20How%20Linear%20Systems%20Produce%20Nonlinear%20Harm%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:19505557:The%20Inevitability%20Architecture:%20How%20Linear%20Systems%20Produce%20Nonlinear%20Harm%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/19505557/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>The Inevitability Architecture: How Linear Systems Produce Nonlinear Harm is the synthesis paper that unifies The Nonlinear Patient and The Invisible Patient into a single, closed theoretical structure. It demonstrates that universal misrecognition (nonlinear bodies) and terminal misrecognition (homelessness) are not separate phenomena but sequential expressions of the same structural law: nonlinear systems processed through linear architectures produce patterned invisibility and amplified harm. The paper formalizes the shared primitives&mdash;Nonlinearity Principle, Linear Institutional Processing, Perception Constraint Principle, and Structural Latency&mdash;and integrates the Misrecognition Pipeline as the operational mechanism linking both essays. This edition closes the clinical‑governance layer of the SignalRupture canon by revealing the architecture that makes misrecognition inevitable across institutions and AI systems.</p>",
+    "doi": "10.5281/zenodo.19505557",
+    "keywords": [
+      "Metatheory",
+      "Public health",
+      "Institutions",
+      "Governance",
+      "Artificial intelligence",
+      "Social issues"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-04-11",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "19505556"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "The Inevitability Architecture: How Linear Systems Produce Nonlinear Harm",
+    "version": "1.0"
+  },
+  "modified": "2026-04-11T04:47:37.165751+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "19505557",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 11,
+    "unique_downloads": 10,
+    "unique_views": 24,
+    "version_downloads": 11,
+    "version_unique_downloads": 10,
+    "version_unique_views": 24,
+    "version_views": 25,
+    "views": 25
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "The Inevitability Architecture: How Linear Systems Produce Nonlinear Harm",
+  "updated": "2026-04-11T04:47:37.165751+00:00"
+}

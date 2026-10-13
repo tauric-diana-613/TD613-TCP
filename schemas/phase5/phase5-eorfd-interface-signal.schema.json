@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.phase5.eorfd-interface-signal/v1",
+  "title": "TD613 Phase 5 EO-RFD Interface Signal",
+  "type": "object",
+  "required": ["schema", "phase", "source_family", "runtime_loaded", "runtime_executed", "signal_class", "foundation_lane", "recent_receipt_class", "authority_boundary", "constants_namespace", "register_translation", "receipt", "claim_ceiling", "allowed_effects", "forbidden_effects", "payload_ref", "raw_payload_included"],
+  "properties": {
+    "schema": { "const": "td613.phase5.eorfd-interface-signal/v1" },
+    "phase": { "const": "PHASE_5_EO_RFD_INTERFACE_LAYER" },
+    "source_family": { "enum": ["EO-RFD", "ACEDIT", "KIRA", "VECTOR_RESIDUAL", "TOPOLOGY", "UNKNOWN"] },
+    "source_name": { "type": ["string", "null"] },
+    "runtime_loaded": { "const": false },
+    "runtime_executed": { "const": false },
+    "signal_class": { "enum": ["rupture", "layer", "encoding", "substrate", "residual", "topology", "unknown"] },
+    "foundation_lane": { "enum": ["admissibility", "projection", "capacity", "naming", "rupture", "temporal", "geometry", "residual", "route", "witness", "harbor", "packet", "unresolved"] },
+    "recent_receipt_class": { "enum": ["adapter", "witness", "receipt", "extension", "unresolved"] },
+    "authority_boundary": { "const": "signal-source-only" },
+    "constants_namespace": { "type": "object" },
+    "register_translation": { "type": "object" },
+    "receipt": { "type": "object" },
+    "claim_ceiling": { "type": "object" },
+    "allowed_effects": { "type": "array", "items": { "enum": ["warn", "route_pressure", "witness_note", "adapter_preflight", "audit_priority"] } },
+    "forbidden_effects": { "type": "array", "items": { "enum": ["release", "validate", "prove", "identify", "authorize", "override", "publish"] } },
+    "payload_ref": { "type": ["string", "null"] },
+    "raw_payload_included": { "const": false }
+  },
+  "additionalProperties": true
+}

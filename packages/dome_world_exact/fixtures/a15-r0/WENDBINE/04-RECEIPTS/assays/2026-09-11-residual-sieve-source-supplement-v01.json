@@ -1,0 +1,42 @@
+{
+  "schema": "td613.residual-literature-sieve-source-supplement/v0.1",
+  "date": "2026-09-11",
+  "state": "SOURCE_BINDING_CORRECTION",
+  "amends": "2026-09-11-td613-residual-literature-sieve-v02.json",
+  "reason": "The v0.2 prose invoked statistical non-identifiability, information-processing limits, and selective classification more specifically than the initial machine source bank bound them. This supplement binds those exact conventional neighbors instead of allowing an uncited inference bridge.",
+  "sources": [
+    {
+      "id": "I2_STATISTICAL_IDENTIFIABILITY",
+      "family": "statistics_identifiability",
+      "title": "Nonidentifiability in model calibration and implications for medical decision making",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6156799/",
+      "bounded_use": "Different parameter values must induce different observable distributions for identifiability; observationally identical distributions cannot distinguish the hidden parameter."
+    },
+    {
+      "id": "I3_MIT_DATA_PROCESSING",
+      "family": "information_theory",
+      "title": "MIT 6.441 Information Theory, Chapter 2: Mutual Information",
+      "url": "https://ocw.mit.edu/courses/6-441-information-theory-spring-2016/184197ca5d5418da2415d37e929860b9_MIT6_441S16_chapter_2.pdf",
+      "bounded_use": "Data processing bounds information after a Markov processing channel; deterministic post-processing cannot create information absent from its input."
+    },
+    {
+      "id": "C2_SELECTIVE_CLASSIFICATION",
+      "family": "machine_learning_selective_prediction",
+      "title": "On the Foundations of Noise-free Selective Classification",
+      "url": "https://jmlr.org/papers/v11/el-yaniv10a.html",
+      "bounded_use": "Selective classification is classification with a reject option, trading coverage against error/performance by allowing abstention."
+    }
+  ],
+  "applies_to": {
+    "WESTERN_HORIZON": ["I2_STATISTICAL_IDENTIFIABILITY", "I3_MIT_DATA_PROCESSING"],
+    "PRCS_A": ["C2_SELECTIVE_CLASSIFICATION"]
+  },
+  "authority": {
+    "changes_verdicts": false,
+    "promotes_novelty": false,
+    "expands_private_corpus": false,
+    "merge": false,
+    "deployment": false,
+    "human_closure_required": true
+  }
+}

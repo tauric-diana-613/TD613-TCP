@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.grade-gate/v0.6",
+  "type": "object",
+  "required": ["schema", "force_status", "claimCeiling"],
+  "properties": {
+    "schema": { "const": "td613.ash.grade-gate/v0.6" },
+    "force_status": { "type": "string" },
+    "claimCeiling": { "const": "ash-grade-gate-context-record-not-third-party-enforcement" }
+  }
+}

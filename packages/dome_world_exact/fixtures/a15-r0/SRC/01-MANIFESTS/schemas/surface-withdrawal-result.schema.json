@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:surface-withdrawal-result:v2",
+  "title": "SignalRupture simulated surface-withdrawal result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "assay_id", "subject_work_id", "input_snapshot_hashes",
+    "withdrawn_surface_id", "simulation_only", "baseline", "after_withdrawal",
+    "remaining_evidence_ids", "scalar_score", "rubric_id"
+  ],
+  "properties": {
+    "schema_version": {"const": "surface-withdrawal-result/v2"},
+    "assay_id": {"type": "string", "minLength": 1},
+    "subject_work_id": {"type": "string", "minLength": 1},
+    "input_snapshot_hashes": {"type": "array", "items": {"type": "string", "pattern": "^[a-f0-9]{64}$"}, "minItems": 1},
+    "withdrawn_surface_id": {"enum": ["Substack", "Medium", "Zenodo", "Academia.edu"]},
+    "simulation_only": {"const": true},
+    "baseline": {"$ref": "#/$defs/recoverability"},
+    "after_withdrawal": {"$ref": "#/$defs/recoverability"},
+    "remaining_evidence_ids": {"type": "array", "items": {"type": "string"}},
+    "scalar_score": {"const": null},
+    "rubric_id": {"const": null},
+    "interpretive_limit": {"type": ["string", "null"]}
+  },
+  "$defs": {
+    "dimension": {
+      "type": "object",
+      "required": ["state", "evidence_ids"],
+      "properties": {
+        "state": {"enum": ["COMPLETE", "PARTIAL", "NONE", "NOT_ASSESSED"]},
+        "evidence_ids": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "textDimension": {
+      "allOf": [
+        {"$ref": "#/$defs/dimension"},
+        {
+          "type": "object",
+          "properties": {"fidelity": {"enum": ["BYTE_EXACT", "FULL_TEXT_EQUIVALENT", "NORMALIZED_DERIVATIVE_ONLY", "EXCERPT_OR_SUMMARY_ONLY", "NONE", "UNKNOWN"]}},
+          "required": ["fidelity"]
+        }
+      ]
+    },
+    "authorityDimension": {
+      "allOf": [
+        {"$ref": "#/$defs/dimension"},
+        {
+          "type": "object",
+          "properties": {"authority_assertion_ids": {"type": "array", "items": {"type": "string"}}},
+          "required": ["authority_assertion_ids"]
+        }
+      ]
+    },
+    "recoverability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["identity", "text", "lineage", "relations", "chronology", "authority"],
+      "properties": {
+        "identity": {"$ref": "#/$defs/dimension"},
+        "text": {"$ref": "#/$defs/textDimension"},
+        "lineage": {"$ref": "#/$defs/dimension"},
+        "relations": {"$ref": "#/$defs/dimension"},
+        "chronology": {"$ref": "#/$defs/dimension"},
+        "authority": {"$ref": "#/$defs/authorityDimension"}
+      }
+    }
+  }
+}

@@ -1,0 +1,253 @@
+{
+  "schema": "td613.pedagogue-design-fixture/v0.1",
+  "design_id": "giving-discovery-handoff-route-memory",
+  "surface_reference": "Giving/Individual Contributor prepared handoff",
+  "governance_context": "TD613",
+  "determinism": {
+    "frozenClock": "2026-08-18T00:48:00Z",
+    "idSeed": "giving-discovery-handoff-route-memory-v1",
+    "idScope": "Giving/discovery-handoff"
+  },
+  "scene_input": {
+    "scene_kind": "GENERIC",
+    "station_owner": "Dome-World",
+    "source_status": "E2",
+    "observation_status": "OBSERVED",
+    "world_state_reference": "giving_discovery_handoff_v1",
+    "provenance": {
+      "source_references": [
+        "app/giving/history/giving-contributor-handoff.js",
+        "app/giving/history/giving-practice-directory.js",
+        "app/giving/history/giving-activity-contributor-handoff.js"
+      ],
+      "evidence_basis": [
+        "a contributor name can already be prepared from another Giving surface without starting retrieval",
+        "the current handoff preserves from/through metadata in an event but gives the operator little persistent visual route memory"
+      ],
+      "transformations": [
+        "retain discovery origin beside the prepared contributor",
+        "state explicitly that the handoff has not started retrieval",
+        "preserve the explicit SEARCH gesture",
+        "clear stale origin context when the prepared name changes"
+      ],
+      "station_owners": ["Dome-World"]
+    },
+    "visible_condition": {
+      "plain_language": "A name discovered elsewhere in Giving can be prepared in Individual Contributor while the reason for following that name remains visible and no search starts automatically.",
+      "surface_reference": "Giving/Individual Contributor prepared handoff"
+    },
+    "available_affordances": [{
+      "action_id": "prepare_discovered_contributor",
+      "purpose": "Carry a discovered contributor and its route origin into Individual Contributor without changing search semantics or starting retrieval.",
+      "authorized_by_station": "Human",
+      "reversible": true
+    }],
+    "route_topology": {
+      "entry": "discovered contributor breadcrumb",
+      "exit": "explicit SEARCH, edit prepared name, or return to prior surface",
+      "same_endpoint_not_same_history": true,
+      "missing_inputs": [],
+      "steps": [
+        {
+          "step_id": "handoff_notice",
+          "label": "See what was prepared and where it came from",
+          "phase": "NOTICE",
+          "required_fields": ["prepared contributor", "discovery origin", "retrieval not started"],
+          "dependencies": [],
+          "legibility_millipoints": 950,
+          "affordance_millipoints": 940,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "handoff_review",
+          "label": "Review or edit the prepared search",
+          "phase": "ACT",
+          "required_fields": ["name", "date range", "exact-match posture"],
+          "dependencies": ["handoff_notice"],
+          "legibility_millipoints": 940,
+          "affordance_millipoints": 950,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "handoff_search",
+          "label": "Search only after the operator chooses",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": ["explicit search gesture", "preserved origin context"],
+          "dependencies": ["handoff_review"],
+          "legibility_millipoints": 950,
+          "affordance_millipoints": 960,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 2,
+          "operator_action_required": true
+        }
+      ]
+    },
+    "causal_structure": {
+      "input": "operator clicks a discovered contributor breadcrumb",
+      "operator": "Giving prepares the contributor plus origin context without retrieval",
+      "observable": "Individual Contributor shows the prepared name, visible origin, and a statement that SEARCH still requires an explicit gesture",
+      "authority": "human search authority; Giving route-memory handoff; no automatic retrieval authority",
+      "equations": []
+    },
+    "research_frame": {
+      "question": "Can Giving preserve why a discovered contributor is being followed without adding another retrieval step or implying that retrieval already ran?",
+      "hypothesis": "A compact prepared-handoff ribbon will reduce route-gluing burden and preserve route history while leaving search semantics unchanged.",
+      "observable_behavior": [
+        "operator can identify the prepared contributor",
+        "operator can identify the source surface or political object that led to the handoff",
+        "operator can identify that no retrieval ran until SEARCH is pressed",
+        "editing to another name clears stale discovery origin"
+      ],
+      "alternative_explanations": [
+        "the status message alone may be sufficient for some operators",
+        "familiarity with Giving may reduce the value of persistent route memory"
+      ],
+      "expected_failure_modes": [
+        "origin context disappears after the scroll snap",
+        "the ribbon implies retrieval already occurred",
+        "editing the prepared name leaves a false origin attached",
+        "the handoff changes Exact Match or date semantics"
+      ],
+      "falsifier": [
+        "the added route-memory surface increases navigation or interpretation burden across the burden models",
+        "the origin ribbon survives after the operator changes to an unrelated name"
+      ],
+      "abstention_conditions": [
+        "the destination surface stops using an explicit SEARCH gesture",
+        "the handoff begins retrieval automatically"
+      ]
+    },
+    "missingness": ["human comprehension evidence is not yet observed"],
+    "contradictions": [],
+    "claim_ceiling": {
+      "allowed_claims": [
+        "the handoff can preserve a declared origin without starting retrieval",
+        "the prepared contributor remains editable",
+        "search authority remains with the explicit operator gesture"
+      ],
+      "forbidden_claims": [
+        "the origin proves why a donor gave",
+        "a discovered association proves coordination or allegiance",
+        "the design proves comprehension"
+      ]
+    },
+    "technical_terms_withheld": ["route memory", "projection crossing", "gluing obstruction"]
+  },
+  "baseline_route_steps": [
+    {
+      "step_id": "baseline_click",
+      "label": "Click discovered name",
+      "phase": "NOTICE",
+      "required_fields": ["contributor name"],
+      "dependencies": [],
+      "legibility_millipoints": 700,
+      "affordance_millipoints": 820,
+      "gluing_obstruction_millipoints": 80,
+      "projection_crossings": 0,
+      "route_memory_edges": 0,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "baseline_scroll",
+      "label": "Arrive at Individual Contributor",
+      "phase": "ACT",
+      "required_fields": ["prepared name"],
+      "dependencies": ["baseline_click"],
+      "legibility_millipoints": 720,
+      "affordance_millipoints": 820,
+      "gluing_obstruction_millipoints": 120,
+      "projection_crossings": 1,
+      "route_memory_edges": 1,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "baseline_reconstruct",
+      "label": "Remember why this name was followed",
+      "phase": "ACT",
+      "required_fields": ["prior committee or activity context"],
+      "dependencies": ["baseline_scroll"],
+      "legibility_millipoints": 480,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 260,
+      "projection_crossings": 1,
+      "route_memory_edges": 0,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "baseline_verify",
+      "label": "Verify that no search ran yet",
+      "phase": "ACT",
+      "required_fields": ["status message or empty run state"],
+      "dependencies": ["baseline_scroll"],
+      "legibility_millipoints": 650,
+      "affordance_millipoints": 620,
+      "gluing_obstruction_millipoints": 140,
+      "projection_crossings": 0,
+      "route_memory_edges": 0,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "baseline_search",
+      "label": "Press SEARCH",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": ["explicit search gesture"],
+      "dependencies": ["baseline_verify"],
+      "legibility_millipoints": 900,
+      "affordance_millipoints": 950,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    }
+  ],
+  "action": {"action_id": "prepare_discovered_contributor"},
+  "world_delta": {
+    "observation_status": "OBSERVED",
+    "causal_trace": [
+      "the operator selects a contributor discovered elsewhere in Giving",
+      "Giving prepares that contributor in Individual Contributor",
+      "the handoff records and displays the discovery origin",
+      "no retrieval occurs until the operator presses SEARCH"
+    ],
+    "losses": [],
+    "missingness": ["human comprehension evidence is not yet observed"],
+    "contradictions": [],
+    "unresolved_relations": ["discovery origin does not establish motive, coordination, or identity"],
+    "glyph_candidates": [],
+    "static_equivalent": {
+      "summary": "Prepared from this discovery route; nothing searched yet.",
+      "steps": ["see origin", "review prepared search", "press SEARCH"]
+    }
+  },
+  "name": {
+    "plain_language": "Carry the reason for the next search forward without carrying authority forward with it.",
+    "glyph_relation": null,
+    "technical_term": "route-memory handoff",
+    "non_equivalence": [
+      "prepared query is not completed retrieval",
+      "discovery origin is not causal proof",
+      "shared route is not shared authority"
+    ]
+  },
+  "transfer_context": {
+    "context": {"surface": "Dome-hosted discovery-to-next-route surfaces"},
+    "shared_relation_candidate": "a prepared next step can preserve its origin while leaving execution authority with the human",
+    "observable_correspondence": [
+      "another surface can carry a bounded origin label into a prepared action without firing that action"
+    ],
+    "alternative_explanations": [
+      "some single-step surfaces may not need persistent route memory"
+    ],
+    "abstention_conditions": [
+      "the origin itself contains sensitive information that should not persist on the destination surface",
+      "the destination action has no separate operator execution gesture"
+    ]
+  }
+}

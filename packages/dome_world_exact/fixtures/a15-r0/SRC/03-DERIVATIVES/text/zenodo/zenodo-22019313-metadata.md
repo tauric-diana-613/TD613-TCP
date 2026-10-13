@@ -1,0 +1,138 @@
+---
+derivative_id: derivative:8455e2d176109a70704cf6be
+parent_capture_id: capture:70281e92015e57e237c29434
+parent_blob_sha256: abb40b2e7da228e9e8d029fab369747d2613cd412d703f211aae055642cbfd1c
+tool: srcctl-json-normalizer/1
+source_title: "Exposure‑Silo Bias (ESB)"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.22019312",
+  "conceptrecid": "22019312",
+  "created": "2026-08-19T23:18:52.260209+00:00",
+  "doi": "10.5281/zenodo.22019313",
+  "doi_url": "https://doi.org/10.5281/zenodo.22019313",
+  "files": [
+    {
+      "checksum": "md5:9e2672b9561036a88eb445152f46b89c",
+      "id": "ffbd7108-4f2b-47a7-8d07-97e3d8792918",
+      "key": "EXPOSURE-SILO BIAS.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22019313/files/EXPOSURE-SILO%20BIAS.pdf/content"
+      },
+      "size": 212035
+    }
+  ],
+  "id": 22019313,
+  "links": {
+    "access": "https://zenodo.org/api/records/22019313/access",
+    "access_grants": "https://zenodo.org/api/records/22019313/access/grants",
+    "access_links": "https://zenodo.org/api/records/22019313/access/links",
+    "access_request": "https://zenodo.org/api/records/22019313/access/request",
+    "access_users": "https://zenodo.org/api/records/22019313/access/users",
+    "archive": "https://zenodo.org/api/records/22019313/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22019313/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22019313/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22019313/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22019313",
+    "draft": "https://zenodo.org/api/records/22019313/draft",
+    "file_modification": "https://zenodo.org/api/records/22019313/file-modification",
+    "files": "https://zenodo.org/api/records/22019313/files",
+    "latest": "https://zenodo.org/api/records/22019313/versions/latest",
+    "latest_html": "https://zenodo.org/records/22019313/latest",
+    "media_files": "https://zenodo.org/api/records/22019313/media-files",
+    "parent": "https://zenodo.org/api/records/22019312",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22019312",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22019312",
+    "parent_html": "https://zenodo.org/records/22019312",
+    "preview_html": "https://zenodo.org/records/22019313?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22019313/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22019313/request-deletion",
+    "requests": "https://zenodo.org/api/records/22019313/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22019313/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22019313",
+    "self_doi": "https://doi.org/10.5281/zenodo.22019313",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22019313",
+    "self_html": "https://zenodo.org/records/22019313",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22019313/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22019313/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22019313:EXPOSURE-SILO%20BIAS.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22019313:EXPOSURE-SILO%20BIAS.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22019313:EXPOSURE-SILO%20BIAS.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22019313:EXPOSURE-SILO%20BIAS.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22019313:EXPOSURE-SILO%20BIAS.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22019313:EXPOSURE-SILO%20BIAS.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22019313/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>Exposure‑Silo Bias (ESB) </strong></h1>\n<p><strong>Exposure‑Silo Bias (ESB)</strong> is a <strong>universal SignalRupture operator</strong> that detects when structurally co‑occurring exposures are separated into analytic silos and the resulting partial estimate is mistakenly treated as a sufficient explanation of the whole system. ESB formalizes the SR rule that <strong>analytic separation &ne; structural separation</strong>, meaning variables may be isolated for measurement but are not isolated in reality. ESB identifies boundary failure: the moment when a model&rsquo;s justified analytical boundary (BM) is exceeded by the explanatory claim boundary (BC). The operator compares the exposure architecture represented in a model (ℰM) with the system&rsquo;s actual exposure architecture (ℰS), identifying the omitted exposure surface (𝒪ESB) and testing whether omission materially distorts interpretation. ESB emerges when three conditions co‑occur: <strong>A</strong> (relevant exposures are analytically separated), <strong>O</strong> (consequential exposure architecture is omitted), and <strong>I</strong> (the partial estimate is interpreted beyond its justified boundary). ESB is not an argument against controlled analysis; it is an argument against converting analytical isolation into ontological isolation. It applies across all SR pillars&mdash;psychology, economics, criminology, infrastructure, AI, governance&mdash;because compound systems produce outcomes through interacting exposures, not siloed ones. ESB governs policy failure by showing that interventions targeting isolated exposures (&Delta;Eⱼ) do not guarantee system‑level change (&Delta;S) when upstream pressures remain intact. ESB integrates with Drift, Collapse, Propagation, Visibility Lag, Structural Ignorance, and Institutional Blindness by identifying when visible exposures are propagation nodes rather than structural origins. Its falsification requires explicit co‑exposure modeling, tested topology, stable coefficients under compound specifications, bounded interpretation, and demonstrated system‑level intervention effects. The canonical SR laws of ESB establish that <strong>valid partial estimates do not produce sufficient system explanations</strong>, <strong>exposure sets do not equal exposure architecture</strong>, <strong>visible exposures do not equal structural origins</strong>, and <strong>changing one exposure does not guarantee system recovery</strong>. ESB&rsquo;s canonical declaration: <strong>Correct about the part ⇏ correct about the whole.</strong> Its function is to preserve that boundary and prevent silo analysis from becoming structural distortion.</p>",
+    "doi": "10.5281/zenodo.22019313",
+    "keywords": [
+      "Metatheory",
+      "Institutions"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-08-20",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22019312"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "Exposure‑Silo Bias (ESB)",
+    "version": "1.0"
+  },
+  "modified": "2026-08-19T23:18:52.650651+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22019313",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 1,
+    "unique_downloads": 1,
+    "unique_views": 1,
+    "version_downloads": 1,
+    "version_unique_downloads": 1,
+    "version_unique_views": 1,
+    "version_views": 1,
+    "views": 1
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Exposure‑Silo Bias (ESB)",
+  "updated": "2026-08-19T23:18:52.650651+00:00"
+}

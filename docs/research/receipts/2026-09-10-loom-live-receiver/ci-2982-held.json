@@ -1,0 +1,56 @@
+{
+  "schema": "td613.loom.ci-observation/v0.1",
+  "run_id": 34431466781,
+  "run_number": 2982,
+  "source_sha": "183739e9518b7c8c64c438fb1ff4969e889ccc38",
+  "classification": "OBSERVER_FAILURE",
+  "status": "HELD",
+  "preserved_reports": [
+    {
+      "engine": "chromium",
+      "job_id": 102727741749,
+      "report": {
+        "browser": "chromium",
+        "exact_head_fetch_performed": true,
+        "execution_repository_sha": "a7cf7e545e9e092f0fe14bab1baba17f90f67fb8",
+        "failed": [
+          "ordinary-language task instruction visibly renders",
+          "child-legible operational route visibly renders",
+          "CHECK THIS MESSAGE is a visible operator control",
+          "release-candidate review browser witness completed"
+        ],
+        "markdown": "artifacts/chromium/calibration/a15-transition/holonomy-loom-release-candidate-product-review.md",
+        "markdown_sha256": "00046bcbe5a9ff5d141f56177f0c8c8b560f28744e38116f1854419cbc6d3790",
+        "receipt": "artifacts/chromium/calibration/a15-transition/holonomy-loom-release-candidate-product-review-chromium.json",
+        "reviewed_repository_head": "183739e9518b7c8c64c438fb1ff4969e889ccc38",
+        "status": "HELD"
+      }
+    },
+    {
+      "engine": "firefox",
+      "job_id": 102727741731,
+      "report": {
+        "browser": "firefox",
+        "exact_head_fetch_performed": true,
+        "execution_repository_sha": "a7cf7e545e9e092f0fe14bab1baba17f90f67fb8",
+        "failed": [
+          "ordinary-language task instruction visibly renders",
+          "child-legible operational route visibly renders",
+          "CHECK THIS MESSAGE is a visible operator control",
+          "release-candidate review browser witness completed"
+        ],
+        "markdown": "artifacts/firefox/calibration/a15-transition/holonomy-loom-release-candidate-product-review.md",
+        "markdown_sha256": "00046bcbe5a9ff5d141f56177f0c8c8b560f28744e38116f1854419cbc6d3790",
+        "receipt": "artifacts/firefox/calibration/a15-transition/holonomy-loom-release-candidate-product-review-firefox.json",
+        "reviewed_repository_head": "183739e9518b7c8c64c438fb1ff4969e889ccc38",
+        "status": "HELD"
+      }
+    }
+  ],
+  "passed_before_failure": [
+    "New AI workspace desktop and reduced-motion mobile: Chromium, Firefox, WebKit",
+    "Loom to Marrowline governed task import desktop and mobile: Chromium, Firefox, WebKit"
+  ],
+  "repair": "Open the visible legacy laboratory disclosure before legacy checker controls; keep separate primary AI-task arrival assertions. No product checks or exact-source checks removed.",
+  "live_provider_call_performed": false
+}

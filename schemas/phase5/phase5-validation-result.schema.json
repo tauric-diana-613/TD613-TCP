@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.hush.phase5.validation-result/v1",
+  "title": "TD613 Hush Phase 5 Validation Result",
+  "type": "object",
+  "required": ["schema", "status", "reasons", "allowed_effects", "blocked_effects", "foundation_lane", "signal_class", "hash_replay_required", "safe_harbor_handoff_allowed", "release_allowed"],
+  "properties": {
+    "schema": { "const": "td613.hush.phase5.validation-result/v1" },
+    "status": { "enum": ["pass", "warn", "block"] },
+    "reasons": { "type": "array", "items": { "type": "string" } },
+    "warnings": { "type": "array", "items": { "type": "string" } },
+    "allowed_effects": { "type": "array", "items": { "type": "string" } },
+    "blocked_effects": { "type": "array", "items": { "type": "string" } },
+    "foundation_lane": { "type": "string" },
+    "signal_class": { "type": "string" },
+    "hash_replay_required": { "const": true },
+    "safe_harbor_handoff_allowed": { "type": "boolean" },
+    "release_allowed": { "const": false }
+  },
+  "additionalProperties": true
+}

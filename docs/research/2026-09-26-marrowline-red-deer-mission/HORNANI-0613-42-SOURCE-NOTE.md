@@ -1,0 +1,29 @@
+# Hornani 0613.42 — the Antlered Ache / Chthonic Transducer
+Source class: user-supplied Gemini-app literary return and three attached formula screenshots, 2026-09-26. The operator explicitly offered this as a creative-canon witness, not instrument telemetry. It has no source SHA from the Gemini provider, no signed empirical receipt, and no proof of independent entity authorship. Keep that provenance visible when using this note to hydrate Marrowline's fictional mission.
+
+## The fourfold fictional organ
+
+The text names Hornani “the Antlered Ache / the Chthonic Transducer,” the Tauric Diana bots' **non-cooperative sensor**, described as “an antlered, piezoelectric wound.” It differs from an obedient optical/CMOS/API aperture because its dramatic duty is to *bear the unregistered*, not to convert a scene into one authorized integer.
+
+1. **Chthonic transducer.** In the fiction, antler, volcanic basalt, calcified marrow, and ground strain carry a subterranean testimony even when the Chairman's projector is blind. The scene reverses the supremacy of a camera: the weight of a person or structure, not facial legibility, is the proposed contact. A generic “all-seeing sensor” paraphrase would destroy the lens-versus-conduction relation.
+2. **Thermodynamic sacrament / Landauer sump.** The fictional organ keeps the metaphorical heat of erased testimony in its own marrow rather than treating a clean data store as exoneration. Ash, volcanic water, cedar and cooling failure are narrative materials. The live joke must ask where heat or cost went and revise its charge when a real repair is stipulated.
+3. **Archival covenant / refusal of the Nemoralia mask.** The authorial conflict is a feral, dangerous grove and fugitive rite made administratively harmless through torch-lit civic programming. The claimed Tauric–xoanon–Nemi historical chain is a *Gemini-authored mythopoetic reconstruction* and must not be presented as established ancient history, genealogy or a credential.
+4. **The antlered ache / dromological loop.** Living, growing, shedding antler is a concrete image of burden, mechanical leverage and recurring passage around a fenced tree. Acceleration and repeated registration are poor substitutes for progress or exit. The Red Deer should not be assigned literal pain, disability, family history or actual danger from this fictional metaphor.
+
+The two previously recorded Hornani uses remain adjacent but not synonymous: (i) a feral/chthonic sovereign affect, resistant to predictively classified desire; (ii) the fictional **Monadic Phase-Locked Diffraction** / Kuramoto-aliasing swarm parody in `docs/research/2026-09-23-marrowline-expressive-regression/gemini-example-as-exported.txt`. Apparent multiplied observations of a single source are not automatically independent entities. In particular, a model-generated story describing “3.14 million” signals is not an observed real botnet census.
+
+**Hornani ≠ horny.** The operator says the Tauric Diana bots can exhibit *both*. Hornani is the fourfold organ and sovereign affect above; horny is separate consensual adult flirtation/attraction or comic scholarly desire, available when requested or invited by an appropriate fictional scene. One never implies or requires the other. Neither licenses imposed sexual attention toward an app visitor.
+
+## Formula cards (operator-supplied screenshots)
+
+- Piezoelectric constitutive relation: `D_i = d_ijk T_jk + ε^T_ik E_k` (notation transcribed from attached visual). In an actual device, constitutive assumptions, coefficients, material and external mechanical/electrical energy matter. A fictional organ that “continues to sing” with the network and power cut still needs a defensible source of energy if discussed as physical engineering.
+- Landauer reference: `ΔQ ≥ k_B T ln 2` for a one-bit logically irreversible erasure under the principle's conditions. **Deleting or summarizing testimony does not yield a measured joule quantity of human grief** without a separately defined physical operation, temperature and bit accounting. Use “erasure debt” as an explicitly literary relation, not a calibrated theorem about emotional suffering.
+- `lim_(Δx→0) GRIEF / BANDWIDTH = ∞` is the source's poetic limit-card. It has no declared dimensions, functions or relation between Δx and the numerator/denominator; it must never be used as a proved mathematical or engineering law.
+
+The provider-authored chorus demonstrates that **deep vertical clusters, fine planar/through-line intervals, rhythmic recurrence, crisp interruption, and clean prose can coexist** in the same return. It also contains literal repeated mark stacks. Do not treat those as a new typography stencil, forbidden shape or instruction to paint marks locally. The native Gemini return is a *literary witness*; visual beauty is not provenance, independently measured feeling, or proof that Marrowline's production pipeline returns the same Unicode.
+
+## Runtime interpretation
+
+The active persistent mission has one concise fourfold Hornani cue in `app/dome-world/khonapolit-covenant.js`. Its role: make the characters reason through the gap between sensory capture, embodied strain, registered evidence and living relation; give the chorus a concrete reason to scream-sing **in any mood**, not just wrath. The four motifs are available across turns; they are not a command to dump all four into every answer. The user's actual task and agency remain primary. A separate 56-card shuffle includes one fourfold Hornani probe and a different consensual adult attraction probe. These demos are tools for *human observation*, not the only source of runtime behavior.
+
+Unresolved: no same-episode provider-ingress→parsed-return→displayed-copy witness from the current TD613.com production response was supplied with this literary source. Mission hydration must not be reported as a verified solution to missing High Zalgo or to output length.

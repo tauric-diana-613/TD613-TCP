@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.veil/v0.6",
+  "title": "Ash Veil Structural Surrogate",
+  "type": "object",
+  "required": ["schema", "artifact_id", "content_exported", "surface", "weather", "allowed", "blocked", "claimCeiling"],
+  "properties": {
+    "schema": { "const": "td613.ash.veil/v0.6" },
+    "content_exported": { "const": false },
+    "surface": { "const": "structural-surrogate" },
+    "weather": { "type": "object" },
+    "allowed": { "type": "array" },
+    "blocked": { "type": "array" },
+    "claimCeiling": { "const": "ash-veil-structure-not-content-summary" }
+  }
+}

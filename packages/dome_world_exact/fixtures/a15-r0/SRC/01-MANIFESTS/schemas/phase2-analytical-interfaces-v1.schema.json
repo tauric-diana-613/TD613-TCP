@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613://src/schemas/phase2-analytical-interfaces-v1",
+  "title": "SRC Phase 2 analytical interface row",
+  "type": "object",
+  "required": ["schema_version", "atelier_snapshot_id", "seal_epoch_binding", "source_status", "observation_status"],
+  "properties": {
+    "schema_version": {
+      "enum": [
+        "expected-object-observation/v1",
+        "contextual-role-assertion/v1",
+        "compilation-pass/v1",
+        "evidence-unit-fingerprint/v1",
+        "evidence-lineage-assertion/v1",
+        "compiler-conservation-observation/v1",
+        "authority-jurisdiction-assertion/v1",
+        "claim-evidence-tomography/v1",
+        "reference-assertion/v1",
+        "canon-map-speech-act/v1",
+        "publishing-regime-observation/v1",
+        "capture-repetition-observation/v1"
+      ]
+    },
+    "atelier_snapshot_id": {"type": "string", "minLength": 1},
+    "seal_epoch_binding": {"const": "RESOLVE_MATCHED_CURRENT_SEAL"},
+    "source_status": {"type": "string", "minLength": 1},
+    "observation_status": {"type": "string", "minLength": 1},
+    "evidence_ids": {"type": "array", "items": {"type": "string"}},
+    "interpretive_limit": {"type": ["string", "null"]}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"schema_version": {"const": "expected-object-observation/v1"}}},
+      "then": {"required": ["expected_object_id", "state", "resolver_ids"]}
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": "contextual-role-assertion/v1"}}},
+      "then": {"required": ["contextual_role_assertion_id", "subject_id", "architecture_id", "role_normalized"]}
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": "compilation-pass/v1"}}},
+      "then": {"required": ["compilation_pass_id", "compiler_id", "input_ids", "input_role_assertion_ids"]}
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": "evidence-unit-fingerprint/v1"}}},
+      "then": {"required": ["evidence_unit_id", "capture_id", "body_text_sha256", "fingerprints"]}
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": "evidence-lineage-assertion/v1"}}},
+      "then": {
+        "required": [
+          "evidence_lineage_assertion_id",
+          "relationship",
+          "common_ancestor_evidence_unit_ids",
+          "independence_basis",
+          "independence_dimensions",
+          "unresolved_shared_inputs"
+        ]
+      }
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": "claim-evidence-tomography/v1"}}},
+      "then": {"required": ["delta_evidence", "delta_scope", "delta_falsifier_granularity", "delta_asserted_authority", "composite_score"]}
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": "reference-assertion/v1"}}},
+      "then": {"required": ["reference_assertion_id", "source_span", "source_bibliography_graph_status", "semantic_body_graph_status", "archive_reconstructed_graph_status", "repair_applied"]}
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": "capture-repetition-observation/v1"}}},
+      "then": {"required": ["capture_repetition_observation_id", "target_id", "current_capture_id", "classification", "captures", "source_mutation_established"]}
+    }
+  ],
+  "additionalProperties": true
+}

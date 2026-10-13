@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.safe-harbor-custody-binding/v0.1",
+  "title": "TD613 Safe Harbor Custody-Reference Binding v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "version", "binding_id", "created_at", "envelope_id", "envelope_digest",
+    "packet_id", "packet_hash_sha256", "binding_level", "binding_scope", "case_id",
+    "case_map_digest", "route_memory_digest", "authority_context_reference",
+    "authority_context_digest", "selected_provenance_references", "checks", "state",
+    "custody_reference_bound", "custody_root_created", "case_created", "relation_created",
+    "authenticity_concluded", "identity_concluded", "authorship_concluded", "truth_concluded",
+    "trusted_external_time_observed", "server_custody_created", "provider_called",
+    "network_called", "destination_transport_authorized", "release_authorized",
+    "suppression_authorized", "cinder_action_authorized", "failed_checks", "closure",
+    "binding_digest"
+  ],
+  "properties": {
+    "schema": { "const": "td613.ash.safe-harbor-custody-binding/v0.1" },
+    "version": { "const": "v0.1" },
+    "binding_id": { "type": "string", "pattern": "^harborbinding_[A-Za-z0-9_-]{6,160}$" },
+    "created_at": { "type": "string" },
+    "envelope_id": { "type": ["string", "null"] },
+    "envelope_digest": { "$ref": "#/$defs/nullableSha256" },
+    "packet_id": { "type": ["string", "null"] },
+    "packet_hash_sha256": { "$ref": "#/$defs/nullableSha256" },
+    "binding_level": { "enum": ["L0", "L1", null] },
+    "binding_scope": { "enum": ["REFERENCE_ONLY_NO_CASE_REQUIRED", "VERIFIED_PROVENANCE_REFERENCE_WITH_CURRENT_CASE"] },
+    "case_id": { "type": ["string", "null"] },
+    "case_map_digest": { "$ref": "#/$defs/nullableSha256" },
+    "route_memory_digest": { "$ref": "#/$defs/nullableSha256" },
+    "authority_context_reference": { "type": ["string", "null"] },
+    "authority_context_digest": { "$ref": "#/$defs/nullableSha256" },
+    "selected_provenance_references": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "digest"],
+        "properties": {
+          "kind": { "type": "string" },
+          "digest": { "$ref": "#/$defs/sha256" }
+        }
+      }
+    },
+    "checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "envelope_verified", "envelope_eligible", "operator_gesture_verified",
+        "binding_level_verified", "current_authority_context_verified", "raw_body_absent",
+        "universal_join_key_absent"
+      ],
+      "properties": {
+        "envelope_verified": { "type": "boolean" },
+        "envelope_eligible": { "type": "boolean" },
+        "operator_gesture_verified": { "type": "boolean" },
+        "binding_level_verified": { "type": "boolean" },
+        "current_authority_context_verified": { "type": "boolean" },
+        "raw_body_absent": { "type": "boolean" },
+        "universal_join_key_absent": { "type": "boolean" }
+      }
+    },
+    "state": { "enum": ["CUSTODY_REFERENCE_BOUND", "CANCELLED_HOLD", "TAMPER_HOLD", "STALE_CASE_HOLD", "INGRESS_ENVELOPE_HOLD", "BINDING_LEVEL_HOLD"] },
+    "custody_reference_bound": { "type": "boolean" },
+    "custody_root_created": { "const": false },
+    "case_created": { "const": false },
+    "relation_created": { "const": false },
+    "authenticity_concluded": { "const": false },
+    "identity_concluded": { "const": false },
+    "authorship_concluded": { "const": false },
+    "truth_concluded": { "const": false },
+    "trusted_external_time_observed": { "const": false },
+    "server_custody_created": { "const": false },
+    "provider_called": { "const": false },
+    "network_called": { "const": false },
+    "destination_transport_authorized": { "const": false },
+    "release_authorized": { "const": false },
+    "suppression_authorized": { "const": false },
+    "cinder_action_authorized": { "const": false },
+    "failed_checks": { "$ref": "#/$defs/stringArray" },
+    "closure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "status"],
+      "properties": {
+        "required": { "const": true },
+        "status": { "type": "string" }
+      }
+    },
+    "binding_digest": { "$ref": "#/$defs/sha256" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "nullableSha256": { "anyOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+    "stringArray": { "type": "array", "items": { "type": "string" } }
+  }
+}

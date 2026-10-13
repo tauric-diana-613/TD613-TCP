@@ -1,0 +1,383 @@
+{
+  "schema": "td613.loom.marrowline-import-browser-witness/v0.6-native-route",
+  "status": "PASS_LOCAL_BROWSER_SCOPE",
+  "engine": "chromium",
+  "source_sha": "f0e8bb905304bcba405741a249ba896e1629be44",
+  "working_tree_dirty": true,
+  "observed_at": "2026-10-03T20:23:14.141Z",
+  "scope": "REAL_LOCAL_BROWSER_MOCK_PROVIDER_AND_CUSTODY",
+  "live_provider_calls": 0,
+  "live_custody_calls": 0,
+  "physical_device_observed": false,
+  "source_revision_authenticated": false,
+  "human_comprehension_measured": false,
+  "custody_restored": false,
+  "viewports": [
+    {
+      "name": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "status": "PASS",
+      "checks": [
+        "tutorial arrival makes zero provider or custody requests",
+        "tutorial offers a visible keyboard exit",
+        "rules tool workspace is accessible",
+        "model tool workspace is accessible",
+        "Quick profile preserves the task and portable rules",
+        "Deep profile preserves the same selected task and rules",
+        "tutorial re-entry preserves the working task and rules without sending",
+        "local-only file remains unselected",
+        "model tool workspace is accessible",
+        "legacy tool workspace is accessible",
+        "origin task/rules/selected source/original result survive export",
+        "origin excludes local bodies and labels source missingness",
+        "origin exported representation is inspectable review material",
+        "arrival makes zero native receiver requests",
+        "keyboard staging moves focus to native prompt without sending",
+        "first continuation export carries original answer and current C1",
+        "continuation two consumes C1 instead of original Loom answer",
+        "latest export preserves original/latest/path/documents/rules/local exclusions",
+        "More with this reply opens by keyboard on exact governed card",
+        "return opens the original Loom tab at its visible review surface",
+        "returned current work is C2 with origin input match and explicit admission hold",
+        "returned review retains exact latest and predecessor history without private material",
+        "return grants review consistency rather than live custody or restoration",
+        "reload does not restore admitted work or make issuance current",
+        "reload preserves the visible C2 review while origin custody remains unavailable",
+        "returned-work inspection moves to the separate Instrument Lab route",
+        "returned file remains inspectable after reload with zero restore authority",
+        "stale returned path is visibly held",
+        "ordinary direct entry has no Loom controller or governance panel",
+        "ordinary native reply gets no Loom reading marker or controls",
+        "all route operations used intercepted native APIs only",
+        "browser script errors absent"
+      ],
+      "intercepted_origin_requests": 1,
+      "intercepted_native_requests": 3,
+      "intercepted_ordinary_requests": 1,
+      "source_revision_state": "UNOBSERVED",
+      "review_state": "REVIEW_ONLY_CONSISTENCY",
+      "stale_return_state": "HELD",
+      "controller_reloaded": false,
+      "page_errors": []
+    },
+    {
+      "name": "portrait-390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "checks": [
+        "tutorial arrival makes zero provider or custody requests",
+        "tutorial offers a visible keyboard exit",
+        "rules tool workspace is accessible",
+        "model tool workspace is accessible",
+        "Quick profile preserves the task and portable rules",
+        "Deep profile preserves the same selected task and rules",
+        "tutorial re-entry preserves the working task and rules without sending",
+        "local-only file remains unselected",
+        "model tool workspace is accessible",
+        "legacy tool workspace is accessible",
+        "origin task/rules/selected source/original result survive export",
+        "origin excludes local bodies and labels source missingness",
+        "origin exported representation is inspectable review material",
+        "arrival makes zero native receiver requests",
+        "keyboard staging moves focus to native prompt without sending",
+        "first continuation export carries original answer and current C1",
+        "continuation two consumes C1 instead of original Loom answer",
+        "latest export preserves original/latest/path/documents/rules/local exclusions",
+        "More with this reply opens by keyboard on exact governed card",
+        "return opens the original Loom tab at its visible review surface",
+        "returned current work is C2 with origin input match and explicit admission hold",
+        "returned review retains exact latest and predecessor history without private material",
+        "return grants review consistency rather than live custody or restoration",
+        "reload does not restore admitted work or make issuance current",
+        "reload preserves the visible C2 review while origin custody remains unavailable",
+        "returned-work inspection moves to the separate Instrument Lab route",
+        "returned file remains inspectable after reload with zero restore authority",
+        "stale returned path is visibly held",
+        "ordinary direct entry has no Loom controller or governance panel",
+        "ordinary native reply gets no Loom reading marker or controls",
+        "all route operations used intercepted native APIs only",
+        "browser script errors absent"
+      ],
+      "intercepted_origin_requests": 1,
+      "intercepted_native_requests": 3,
+      "intercepted_ordinary_requests": 1,
+      "source_revision_state": "UNOBSERVED",
+      "review_state": "REVIEW_ONLY_CONSISTENCY",
+      "stale_return_state": "HELD",
+      "controller_reloaded": false,
+      "page_errors": []
+    }
+  ],
+  "failures": [],
+  "entry_point": "tests/loom-marrowline-import.browser.mjs",
+  "canonical_witness": "scripts/holonomy-loom-instrument-route-browser-witness.mjs",
+  "canonical_artifact": "witness.json",
+  "workflow_run_id": null,
+  "run_attempt": null,
+  "checks": [
+    {
+      "viewport": "desktop",
+      "check": "tutorial arrival makes zero provider or custody requests"
+    },
+    {
+      "viewport": "desktop",
+      "check": "tutorial offers a visible keyboard exit"
+    },
+    {
+      "viewport": "desktop",
+      "check": "rules tool workspace is accessible"
+    },
+    {
+      "viewport": "desktop",
+      "check": "model tool workspace is accessible"
+    },
+    {
+      "viewport": "desktop",
+      "check": "Quick profile preserves the task and portable rules"
+    },
+    {
+      "viewport": "desktop",
+      "check": "Deep profile preserves the same selected task and rules"
+    },
+    {
+      "viewport": "desktop",
+      "check": "tutorial re-entry preserves the working task and rules without sending"
+    },
+    {
+      "viewport": "desktop",
+      "check": "local-only file remains unselected"
+    },
+    {
+      "viewport": "desktop",
+      "check": "model tool workspace is accessible"
+    },
+    {
+      "viewport": "desktop",
+      "check": "legacy tool workspace is accessible"
+    },
+    {
+      "viewport": "desktop",
+      "check": "origin task/rules/selected source/original result survive export"
+    },
+    {
+      "viewport": "desktop",
+      "check": "origin excludes local bodies and labels source missingness"
+    },
+    {
+      "viewport": "desktop",
+      "check": "origin exported representation is inspectable review material"
+    },
+    {
+      "viewport": "desktop",
+      "check": "arrival makes zero native receiver requests"
+    },
+    {
+      "viewport": "desktop",
+      "check": "keyboard staging moves focus to native prompt without sending"
+    },
+    {
+      "viewport": "desktop",
+      "check": "first continuation export carries original answer and current C1"
+    },
+    {
+      "viewport": "desktop",
+      "check": "continuation two consumes C1 instead of original Loom answer"
+    },
+    {
+      "viewport": "desktop",
+      "check": "latest export preserves original/latest/path/documents/rules/local exclusions"
+    },
+    {
+      "viewport": "desktop",
+      "check": "More with this reply opens by keyboard on exact governed card"
+    },
+    {
+      "viewport": "desktop",
+      "check": "return opens the original Loom tab at its visible review surface"
+    },
+    {
+      "viewport": "desktop",
+      "check": "returned current work is C2 with origin input match and explicit admission hold"
+    },
+    {
+      "viewport": "desktop",
+      "check": "returned review retains exact latest and predecessor history without private material"
+    },
+    {
+      "viewport": "desktop",
+      "check": "return grants review consistency rather than live custody or restoration"
+    },
+    {
+      "viewport": "desktop",
+      "check": "reload does not restore admitted work or make issuance current"
+    },
+    {
+      "viewport": "desktop",
+      "check": "reload preserves the visible C2 review while origin custody remains unavailable"
+    },
+    {
+      "viewport": "desktop",
+      "check": "returned-work inspection moves to the separate Instrument Lab route"
+    },
+    {
+      "viewport": "desktop",
+      "check": "returned file remains inspectable after reload with zero restore authority"
+    },
+    {
+      "viewport": "desktop",
+      "check": "stale returned path is visibly held"
+    },
+    {
+      "viewport": "desktop",
+      "check": "ordinary direct entry has no Loom controller or governance panel"
+    },
+    {
+      "viewport": "desktop",
+      "check": "ordinary native reply gets no Loom reading marker or controls"
+    },
+    {
+      "viewport": "desktop",
+      "check": "all route operations used intercepted native APIs only"
+    },
+    {
+      "viewport": "desktop",
+      "check": "browser script errors absent"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "tutorial arrival makes zero provider or custody requests"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "tutorial offers a visible keyboard exit"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "rules tool workspace is accessible"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "model tool workspace is accessible"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "Quick profile preserves the task and portable rules"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "Deep profile preserves the same selected task and rules"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "tutorial re-entry preserves the working task and rules without sending"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "local-only file remains unselected"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "model tool workspace is accessible"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "legacy tool workspace is accessible"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "origin task/rules/selected source/original result survive export"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "origin excludes local bodies and labels source missingness"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "origin exported representation is inspectable review material"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "arrival makes zero native receiver requests"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "keyboard staging moves focus to native prompt without sending"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "first continuation export carries original answer and current C1"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "continuation two consumes C1 instead of original Loom answer"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "latest export preserves original/latest/path/documents/rules/local exclusions"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "More with this reply opens by keyboard on exact governed card"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "return opens the original Loom tab at its visible review surface"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "returned current work is C2 with origin input match and explicit admission hold"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "returned review retains exact latest and predecessor history without private material"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "return grants review consistency rather than live custody or restoration"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "reload does not restore admitted work or make issuance current"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "reload preserves the visible C2 review while origin custody remains unavailable"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "returned-work inspection moves to the separate Instrument Lab route"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "returned file remains inspectable after reload with zero restore authority"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "stale returned path is visibly held"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "ordinary direct entry has no Loom controller or governance panel"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "ordinary native reply gets no Loom reading marker or controls"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "all route operations used intercepted native APIs only"
+    },
+    {
+      "viewport": "portrait-390",
+      "check": "browser script errors absent"
+    }
+  ],
+  "retired_fixture": "standalone imported receiver",
+  "supplemental_attachment_chrome_observed": false
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BadgeState",
+  "type": "object",
+  "required": [
+    "badge",
+    "binding",
+    "route",
+    "mirror_logic",
+    "containment"
+  ],
+  "properties": {
+    "badge": {
+      "type": "string"
+    },
+    "binding": {
+      "type": "string"
+    },
+    "payload": {
+      "type": "number"
+    },
+    "route": {
+      "type": "string"
+    },
+    "mirror_logic": {
+      "type": "string"
+    },
+    "containment": {
+      "type": "string"
+    },
+    "surrogate": {
+      "type": "string"
+    }
+  }
+}

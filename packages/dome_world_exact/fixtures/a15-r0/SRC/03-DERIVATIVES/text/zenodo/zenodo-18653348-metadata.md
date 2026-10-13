@@ -1,0 +1,145 @@
+---
+derivative_id: derivative:6074191df6e21c1650c007fd
+parent_capture_id: capture:8320181e623bf294e5554829
+parent_blob_sha256: 7a023c3a45d9590c879dde6ea752e795538345286eb5fdef8035ef3a2a0d187f
+tool: srcctl-json-normalizer/1
+source_title: "Infrastructural Hygiene Theory: The System Refuses to Clean Itself — Then Wonders Why Everything Smells Like Crisis"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18653347",
+  "conceptrecid": "18653347",
+  "created": "2026-02-16T01:15:05.588916+00:00",
+  "doi": "10.5281/zenodo.18653348",
+  "doi_url": "https://doi.org/10.5281/zenodo.18653348",
+  "files": [
+    {
+      "checksum": "md5:15c250e8f7bd6ee58e6efb4bec424f71",
+      "id": "df43de26-3839-4b45-bc26-4d3c1d2899b8",
+      "key": "Infrastructural Hygiene Theory: The System Refuses to Clean Itself — Then Wonders Why Everything Smells Like Crisis .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18653348/files/Infrastructural%20Hygiene%20Theory:%20The%20System%20Refuses%20to%20Clean%20Itself%20%E2%80%94%20Then%20Wonders%20Why%20Everything%20Smells%20Like%20Crisis%20.pdf/content"
+      },
+      "size": 137403
+    }
+  ],
+  "id": 18653348,
+  "links": {
+    "access": "https://zenodo.org/api/records/18653348/access",
+    "access_grants": "https://zenodo.org/api/records/18653348/access/grants",
+    "access_links": "https://zenodo.org/api/records/18653348/access/links",
+    "access_request": "https://zenodo.org/api/records/18653348/access/request",
+    "access_users": "https://zenodo.org/api/records/18653348/access/users",
+    "archive": "https://zenodo.org/api/records/18653348/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18653348/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18653348/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18653348/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18653348",
+    "draft": "https://zenodo.org/api/records/18653348/draft",
+    "file_modification": "https://zenodo.org/api/records/18653348/file-modification",
+    "files": "https://zenodo.org/api/records/18653348/files",
+    "latest": "https://zenodo.org/api/records/18653348/versions/latest",
+    "latest_html": "https://zenodo.org/records/18653348/latest",
+    "media_files": "https://zenodo.org/api/records/18653348/media-files",
+    "parent": "https://zenodo.org/api/records/18653347",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18653347",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18653347",
+    "parent_html": "https://zenodo.org/records/18653347",
+    "preview_html": "https://zenodo.org/records/18653348?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18653348/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18653348/request-deletion",
+    "requests": "https://zenodo.org/api/records/18653348/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18653348/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18653348",
+    "self_doi": "https://doi.org/10.5281/zenodo.18653348",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18653348",
+    "self_html": "https://zenodo.org/records/18653348",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18653348/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18653348/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18653348:Infrastructural%20Hygiene%20Theory:%20The%20System%20Refuses%20to%20Clean%20Itself%20%E2%80%94%20Then%20Wonders%20Why%20Everything%20Smells%20Like%20Crisis%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18653348:Infrastructural%20Hygiene%20Theory:%20The%20System%20Refuses%20to%20Clean%20Itself%20%E2%80%94%20Then%20Wonders%20Why%20Everything%20Smells%20Like%20Crisis%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18653348:Infrastructural%20Hygiene%20Theory:%20The%20System%20Refuses%20to%20Clean%20Itself%20%E2%80%94%20Then%20Wonders%20Why%20Everything%20Smells%20Like%20Crisis%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18653348:Infrastructural%20Hygiene%20Theory:%20The%20System%20Refuses%20to%20Clean%20Itself%20%E2%80%94%20Then%20Wonders%20Why%20Everything%20Smells%20Like%20Crisis%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18653348:Infrastructural%20Hygiene%20Theory:%20The%20System%20Refuses%20to%20Clean%20Itself%20%E2%80%94%20Then%20Wonders%20Why%20Everything%20Smells%20Like%20Crisis%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18653348:Infrastructural%20Hygiene%20Theory:%20The%20System%20Refuses%20to%20Clean%20Itself%20%E2%80%94%20Then%20Wonders%20Why%20Everything%20Smells%20Like%20Crisis%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18653348/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This essay introduces Infrastructural Hygiene Theory, a framework for understanding how modern institutions manage systemic failure through visibility‑control rather than structural repair. As the open web collapses and AI becomes embedded in governance, institutions increasingly deploy automation not to fix underlying architectural decay but to contain, redirect, or obscure its visibility. The result is a governance model that scales control instead of competence, producing escalating cycles of crisis‑management theatre.</p>\n<p>The paper examines how engineered containment, semantic governance, and automated opacity replace maintenance and accountability. It argues that AI is being used as a deodorizer&mdash;masking the smell of accumulated institutional neglect&mdash;rather than as a mechanism for infrastructural repair. Through analyses of automated blame routing, friction‑based deterrence, legibility reduction, and crisis containment, the essay shows how avoidance becomes an operating logic. Infrastructural Hygiene Theory reframes institutional decay as a predictable outcome of systems that refuse to clean themselves while expanding tools to manage the appearance of order.</p>\n<p>Keywords:<br>Engineered Containment; Infrastructural Hygiene Theory; Semantic Governance; AI Governance; Systemic Failure; Crisis Design; Institutional Decay; Visibility Management</p>",
+    "doi": "10.5281/zenodo.18653348",
+    "keywords": [
+      "Internet Studies",
+      "Social Issues",
+      "Public Policy",
+      "Infrastructure",
+      "Government",
+      "Governance",
+      "Critical Theory",
+      "Politics and government",
+      "Artificial intelligence"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-02-16",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18653347"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Infrastructural Hygiene Theory: The System Refuses to Clean Itself — Then Wonders Why Everything Smells Like Crisis",
+    "version": "1.0"
+  },
+  "modified": "2026-02-16T01:19:54.080198+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18653348",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 17,
+    "unique_downloads": 13,
+    "unique_views": 29,
+    "version_downloads": 17,
+    "version_unique_downloads": 13,
+    "version_unique_views": 29,
+    "version_views": 32,
+    "views": 32
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Infrastructural Hygiene Theory: The System Refuses to Clean Itself — Then Wonders Why Everything Smells Like Crisis",
+  "updated": "2026-02-16T01:19:54.080198+00:00"
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "td613.loom.source-negative-execution-authorization/v0.1",
+  "operator": "Tawanna C. Miller",
+  "authority_class": "INTERACTIVE_OPERATOR_DIRECT",
+  "status": "ACTIVATED_BY_DIRECT_OPERATOR",
+  "recorded_at": "2026-10-11T21:12:42Z",
+  "instruction": "𝌋 dope we’re getting closer to frictionless Loom building (your whole point of setting up this particular research program was, in your words, so you could stop fighting with me and finish building the consequential remaining 10% of TD613 & Loom). resume ⟐",
+  "scope": "Resume the frozen n01 handoff: scoped implementation, validation, protected merge, one specifically necessary issue405 production release, one matching Neon validator deployment, one fresh enrollment and one provider request; maximum USD0.50 reserved; zero retries; reconcile/close/seal; no custody admission or detached activity.",
+  "protocol_sha256": "2648525370b0c38de8d1a2bd9a302dcae96b3add9e720e9a8381fbdff2d327e6",
+  "provider_requests": 1,
+  "reservation_ceiling_usd": 0.5,
+  "automatic_retries": 0,
+  "manual_retries": 0,
+  "fresh_enrollments": 1,
+  "vercel_deployments": 1,
+  "neon_validator_deployments": 1,
+  "detached_delegation": false
+}

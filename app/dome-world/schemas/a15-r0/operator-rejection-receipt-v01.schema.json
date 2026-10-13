@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.a15-r0.operator-rejection-receipt/v0.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "a15_technical_production_closure",
+    "a15_operator_acceptance",
+    "current_a15_shell",
+    "a16",
+    "golden_egg",
+    "production_action",
+    "deployment_action",
+    "historical_a15_receipts_rewritten",
+    "human_closure_required"
+  ],
+  "properties": {
+    "schema": { "const": "td613.ash.a15-r0.operator-rejection-receipt/v0.1" },
+    "a15_technical_production_closure": { "const": "PASSED" },
+    "a15_operator_acceptance": { "const": "FAILED" },
+    "current_a15_shell": { "const": "WITNESS_NOT_ACCEPTED" },
+    "a16": { "const": "HELD" },
+    "golden_egg": { "const": "HELD" },
+    "production_action": { "const": false },
+    "deployment_action": { "const": false },
+    "historical_a15_receipts_rewritten": { "const": false },
+    "human_closure_required": { "const": true }
+  },
+  "additionalProperties": false
+}

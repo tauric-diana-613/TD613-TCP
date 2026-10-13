@@ -1,0 +1,647 @@
+/* TD613 Hush Phase 31.1 / Corpus Cockpit */
+#td613HushLoading {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(49,255,138,.16), transparent 38%),
+    linear-gradient(135deg, #020706, #05000a 54%, #070403);
+  color: #caffdf;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+#td613HushLoading[hidden] { display: none !important; }
+.td613-hush-loading-core {
+  border: 1px solid rgba(87,255,172,.46);
+  border-radius: 22px;
+  padding: 1rem 1.25rem;
+  min-width: min(22rem, calc(100vw - 2rem));
+  box-shadow: 0 0 44px rgba(49,255,138,.18), inset 0 1px 0 rgba(255,255,255,.12);
+  background: rgba(0,10,8,.72);
+  text-align: center;
+}
+.td613-hush-loading-mark { color: #7dffe1; font-size: .68rem; margin-bottom: .42rem; }
+.td613-hush-loading-text { font-size: .9rem; }
+.td613-hush-loading-dots { display: inline-block; min-width: 1.6em; color: #31ff8a; text-align: left; }
+
+.hush-phase31-customizer {
+  margin: .72rem 0;
+  padding: .8rem;
+  border: 1px solid rgba(137,255,240,.30);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 16% 0%, rgba(125,255,225,.14), transparent 34%),
+    radial-gradient(circle at 92% 18%, rgba(189,147,249,.13), transparent 36%),
+    linear-gradient(145deg, rgba(3,21,18,.92), rgba(9,4,16,.80));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.09), 0 18px 38px rgba(0,0,0,.26);
+  position: relative;
+  overflow: visible;
+  min-height: 28rem;
+}
+.hush-phase31-customizer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(125,255,225,.08), transparent);
+  opacity: .36;
+  transform: translateX(-42%);
+}
+.hush-phase31-customizer[hidden], .hush-phase31-modal[hidden] { display: none !important; }
+.hush-phase31-customizer:not([hidden]) .hush-phase31-corpus-meter,
+.hush-phase31-customizer:not([hidden]) .hush-phase31-sample-tools,
+.hush-phase31-customizer:not([hidden]) .hush-phase31-ledger-head,
+.hush-phase31-customizer:not([hidden]) .hush-phase31-actions,
+.hush-phase31-customizer:not([hidden]) #hushPhase31SampleStatus,
+.hush-phase31-customizer:not([hidden]) #hushPhase31ResetCustomizer {
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: none !important;
+  max-height: none !important;
+  pointer-events: auto !important;
+}
+.hush-phase31-customizer:not([hidden]) .hush-phase31-corpus-meter,
+.hush-phase31-customizer:not([hidden]) .hush-phase31-ledger-head { display: grid !important; }
+.hush-phase31-customizer:not([hidden]) .hush-phase31-sample-tools { display: grid !important; }
+.hush-phase31-customizer:not([hidden]) .hush-phase31-actions { display: flex !important; }
+.hush-phase31-customizer:not([hidden]) #hushVoiceReferenceSamplesSaved {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  min-height: 7.2rem !important;
+  max-height: 14rem !important;
+  pointer-events: auto !important;
+  resize: vertical !important;
+}
+.hush-phase31-customizer:not([hidden]) #hushPhase31LogSampleBtn,
+.hush-phase31-customizer:not([hidden]) #hushPhase31SaveMaskBtn,
+.hush-phase31-customizer:not([hidden]) #hushPhase31Undo,
+.hush-phase31-customizer:not([hidden]) #hushPhase31ResetCustomizer {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+.hush-phase31-head {
+  display: flex;
+  justify-content: space-between;
+  gap: .75rem;
+  align-items: flex-start;
+  margin-bottom: .62rem;
+  position: relative;
+  z-index: 1;
+}
+.hush-phase31-title {
+  margin: 0;
+  font-size: .78rem;
+  color: #caffdf;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.hush-phase31-note {
+  margin: .22rem 0 0;
+  font-size: .66rem;
+  color: rgba(226,255,236,.72);
+  line-height: 1.42;
+}
+.hush-phase31-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: .26rem .5rem;
+  border: 1px solid rgba(125,255,225,.24);
+  border-radius: 999px;
+  background: rgba(0,0,0,.24);
+  font-size: .56rem;
+  color: #7dffe1;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  white-space: nowrap;
+}
+
+.hush-phase31-corpus-meter {
+  display: grid;
+  gap: .42rem;
+  margin: .6rem 0 .7rem;
+  padding: .62rem;
+  border: 1px solid rgba(137,255,240,.22);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.28), rgba(0,0,0,.18)),
+    radial-gradient(circle at 50% 0%, rgba(49,255,138,.10), transparent 52%);
+  position: relative;
+  z-index: 1;
+}
+.hush-phase31-meter-top, .hush-phase31-tier-row, .hush-phase31-stat-grid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+}
+.hush-phase31-corpus-status {
+  color: #f1fff6;
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.hush-phase31-meter-small {
+  color: rgba(202,255,223,.68);
+  font-size: .54rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.hush-phase31-meter-track {
+  height: .52rem;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(125,255,225,.18);
+  background: rgba(0,0,0,.38);
+  box-shadow: inset 0 0 18px rgba(0,0,0,.34);
+}
+.hush-phase31-meter-fill {
+  display: block;
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(125,255,225,.82), rgba(49,255,138,.86), rgba(189,147,249,.76));
+  box-shadow: 0 0 18px rgba(49,255,138,.24);
+  transition: width .24s ease;
+}
+.hush-phase31-tier-row span {
+  flex: 1;
+  min-width: 0;
+  padding: .24rem .32rem;
+  border: 1px solid rgba(137,255,240,.15);
+  border-radius: 999px;
+  color: rgba(226,255,236,.58);
+  background: rgba(0,0,0,.20);
+  font-size: .50rem;
+  letter-spacing: .1em;
+  text-align: center;
+  text-transform: uppercase;
+}
+.hush-phase31-tier-row span[data-state="passed"] {
+  color: #031009;
+  border-color: rgba(49,255,138,.72);
+  background: linear-gradient(180deg, rgba(202,255,223,.96), rgba(49,255,138,.78));
+  box-shadow: 0 0 14px rgba(49,255,138,.16);
+}
+.hush-phase31-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.hush-phase31-stat-grid span {
+  display: grid;
+  gap: .1rem;
+  padding: .42rem .32rem;
+  border-radius: 14px;
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(137,255,240,.12);
+  text-align: center;
+}
+.hush-phase31-stat-grid strong { color: #31ff8a; font-size: .78rem; line-height: 1; }
+.hush-phase31-stat-grid em {
+  color: rgba(226,255,236,.58);
+  font-style: normal;
+  font-size: .48rem;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+
+.hush-phase31-sample-tools {
+  display: grid;
+  grid-template-columns: minmax(8rem, .8fr) minmax(0, 1.2fr);
+  gap: .48rem;
+  margin-bottom: .62rem;
+  position: relative;
+  z-index: 1;
+}
+.hush-phase31-label { display: grid; gap: .26rem; position: relative; z-index: 1; }
+.hush-phase31-label span:first-child {
+  font-size: .62rem;
+  color: #d9ffe9;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.hush-phase31-label span:nth-child(2) {
+  font-size: .58rem;
+  color: rgba(226,255,236,.62);
+  line-height: 1.32;
+}
+.hush-phase31-ledger-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: .5rem;
+  margin: .26rem 0 .48rem;
+  position: relative;
+  z-index: 2;
+}
+.hush-phase31-ledger-head .hush-phase31-label { min-width: 0; }
+.hush-phase31-draft-utility {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: .5rem;
+  white-space: nowrap;
+  align-self: end;
+  justify-self: end;
+  padding-bottom: .14rem;
+}
+.hush-phase31-clear-draft,
+.hush-phase31-word-floor {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: .48rem;
+  line-height: 1;
+  letter-spacing: .12em;
+}
+#hushPhase31ClearDraft.hush-phase31-clear-draft {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  display: inline !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  color: rgba(255, 118, 104, .92) !important;
+  font-family: var(--font-mono, ui-monospace, monospace) !important;
+  font-size: .48rem !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  letter-spacing: .04em !important;
+  text-transform: none !important;
+  text-decoration: none !important;
+  text-underline-offset: 2px !important;
+  cursor: pointer !important;
+  transition: color 120ms ease, text-shadow 120ms ease !important;
+}
+#hushPhase31ClearDraft.hush-phase31-clear-draft:hover,
+#hushPhase31ClearDraft.hush-phase31-clear-draft:focus-visible {
+  color: rgba(255, 135, 113, 1) !important;
+  text-decoration: underline !important;
+  text-shadow: 0 0 10px rgba(255, 118, 104, .28) !important;
+  outline: none !important;
+  transform: none !important;
+}
+.hush-phase31-word-floor {
+  min-width: 2.15rem;
+  text-align: right;
+  color: rgba(202,255,223,.62);
+  text-transform: uppercase;
+}
+.hush-phase31-word-floor[data-state="ready"] { color: #31ff8a; }
+#hushPhase31SampleCategory,
+#hushPhase31ContextLabel,
+#hushVoiceReferenceSamplesSaved {
+  border-radius: 14px;
+  border: 1px solid rgba(137,255,240,.28);
+  background: rgba(0,0,0,.32);
+  color: #f1fff6;
+  padding: .58rem .62rem;
+  font-size: .68rem;
+  line-height: 1.24;
+  outline: none;
+}
+#hushPhase31SampleCategory:focus,
+#hushPhase31ContextLabel:focus,
+#hushVoiceReferenceSamplesSaved:focus {
+  border-color: rgba(49,255,138,.52);
+  box-shadow: 0 0 0 1px rgba(49,255,138,.14), 0 0 20px rgba(49,255,138,.08);
+}
+#hushVoiceReferenceSamplesSaved {
+  display: block;
+  width: 100%;
+  min-height: 7.2rem;
+  max-height: 11rem;
+  margin-top: .18rem;
+  resize: vertical;
+  overflow: auto;
+  position: relative;
+  z-index: 1;
+}
+.hush-phase31-actions {
+  display: flex;
+  align-items: center;
+  gap: .46rem;
+  flex-wrap: wrap;
+  margin-top: .52rem;
+  position: relative;
+  z-index: 1;
+}
+.hush-phase31-actions button {
+  min-height: 1.78rem;
+  padding: .34rem .62rem;
+  font-size: .58rem;
+  letter-spacing: .1em;
+}
+.hush-phase31-mini {
+  font-size: .56rem;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: rgba(202,255,223,.70);
+}
+#hushPhase31Undo { color: #ffb86b; cursor: pointer; }
+#hushPhase31Undo[aria-disabled=true] { opacity: .42; cursor: not-allowed; }
+
+#hushPhase32Diagnostics.hush-custom-mask-capsule {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  min-height: 2.1rem;
+  margin: .72rem 0 .66rem;
+  padding: .46rem .64rem;
+  border: 1px solid rgba(137,255,240,.25);
+  border-radius: 14px;
+  background: linear-gradient(90deg, rgba(4,18,16,.68), rgba(9,5,18,.68));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 0 18px rgba(49,255,138,.06);
+  font-family: var(--font-mono, ui-monospace, monospace);
+}
+.hush-custom-mask-capsule-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #caffdf;
+  font-size: .58rem;
+  font-weight: 800;
+  letter-spacing: .05em;
+}
+.hush-custom-mask-capsule-links {
+  display: inline-flex;
+  align-items: center;
+  gap: .48rem;
+  white-space: nowrap;
+}
+.hush-custom-mask-capsule-link {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: .1rem 0;
+  color: #7dffe1;
+  font: inherit;
+  font-size: .54rem;
+  letter-spacing: .08em;
+  text-transform: lowercase;
+  cursor: pointer;
+  opacity: .84;
+}
+.hush-custom-mask-capsule-link:hover,
+.hush-custom-mask-capsule-link:focus-visible {
+  opacity: 1;
+  color: #31ff8a;
+  outline: none;
+  text-shadow: 0 0 12px rgba(49,255,138,.28);
+}
+
+.hush-phase31-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483600;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(0,0,0,.58);
+}
+.hush-phase31-modal-card {
+  width: min(35rem, calc(100vw - 2rem));
+  max-height: min(42rem, calc(100dvh - 2rem));
+  overflow: auto;
+  border: 1px solid rgba(49,255,138,.35);
+  border-radius: 22px;
+  background: linear-gradient(145deg, rgba(3,18,16,.98), rgba(12,5,20,.96));
+  box-shadow: 0 24px 70px rgba(0,0,0,.62), 0 0 42px rgba(49,255,138,.18);
+  padding: 1rem;
+}
+.hush-phase31-modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .62rem; }
+.hush-phase31-modal-grid .wide { grid-column: 1 / -1; }
+.hush-phase31-modal label {
+  display: grid;
+  gap: .22rem;
+  font-size: .58rem;
+  color: rgba(226,255,236,.74);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.hush-phase31-modal input, .hush-phase31-modal textarea {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(137,255,240,.24);
+  background: rgba(0,0,0,.34);
+  color: #f1fff6;
+  padding: .5rem;
+  font-size: .66rem;
+  line-height: 1.22;
+}
+.hush-phase31-modal textarea { min-height: 4.8rem; }
+.hush-phase31-modal-actions { display: flex; justify-content: flex-end; gap: .5rem; margin-top: .8rem; }
+.hush-phase31-modal-status { min-height: 1.1rem; margin-top: .5rem; font-size: .62rem; color: #ffb86b; }
+
+textarea, input, select { font-size: .72rem !important; line-height: 1.24 !important; }
+#messageDraftInput,#protectedOutputInput,#protectedBaselineInput,#maskReferenceInput,#hushCustomMaskSampleInput,#ledgerExportOutput,#reportExportOutput {
+  font-size: .66rem !important;
+  line-height: 1.2 !important;
+}
+
+@media (max-width: 820px) {
+  textarea, input, select { font-size: 12px !important; line-height: 1.22 !important; }
+  #messageDraftInput,#protectedOutputInput,#protectedBaselineInput,#maskReferenceInput,#hushCustomMaskSampleInput,#ledgerExportOutput,#reportExportOutput,#hushVoiceReferenceSamplesSaved {
+    font-size: 11px !important;
+    line-height: 1.18 !important;
+    max-height: 7.8rem;
+  }
+  .hush-phase31-modal input,.hush-phase31-modal textarea { font-size: 11px !important; line-height: 1.18 !important; }
+  .hush-phase31-modal-grid,.hush-phase31-sample-tools { grid-template-columns: 1fr; }
+  .hush-phase31-status { white-space: normal; }
+  .hush-phase31-stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hush-phase31-meter-top,.hush-phase31-tier-row { align-items: stretch; flex-direction: column; }
+  .hush-phase31-ledger-head { grid-template-columns: 1fr; row-gap: .34rem; }
+  .hush-phase31-draft-utility { justify-self: end; }
+}
+
+.hush-phase31-edit-corpus {
+  appearance: none;
+  -webkit-appearance: none;
+  justify-self: center;
+  width: max-content;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: .12rem 0 0;
+  margin: .1rem auto 0;
+  color: rgba(255, 118, 104, .92);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: .48rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: .04em;
+  text-transform: none;
+  cursor: pointer;
+  transition: color 120ms ease, text-shadow 120ms ease;
+}
+.hush-phase31-edit-corpus:hover,
+.hush-phase31-edit-corpus:focus-visible {
+  color: rgba(255, 135, 113, 1);
+  text-decoration: underline;
+  text-shadow: 0 0 10px rgba(255, 118, 104, .28);
+  outline: none;
+}
+.hush-phase31-edit-card { width: min(38rem, calc(100vw - 2rem)); }
+.hush-phase31-edit-note {
+  margin: -.2rem 0 .7rem;
+  color: rgba(226,255,236,.68);
+  font-size: .6rem;
+  line-height: 1.35;
+}
+.hush-phase31-edit-list {
+  display: grid;
+  gap: .72rem;
+}
+.hush-phase31-edit-sample {
+  position: relative;
+  display: grid;
+  gap: .5rem;
+  padding: .72rem;
+  border: 1px solid rgba(137,255,240,.22);
+  border-radius: 18px;
+  background: rgba(0,0,0,.22);
+}
+.hush-phase31-edit-sample label { padding-right: 1.15rem; }
+.hush-phase31-edit-remove {
+  appearance: none;
+  -webkit-appearance: none;
+  position: absolute;
+  top: .38rem;
+  right: .5rem;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 118, 104, .94);
+  font-size: .78rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.hush-phase31-edit-remove:hover,
+.hush-phase31-edit-remove:focus-visible {
+  color: rgba(255, 135, 113, 1);
+  text-shadow: 0 0 10px rgba(255, 118, 104, .28);
+  outline: none;
+}
+.hush-phase31-edit-empty {
+  margin: 0;
+  color: rgba(226,255,236,.7);
+  font-size: .66rem;
+}
+.hush-phase31-edit-modal textarea { min-height: 5.8rem; }
+.hush-phase31-edit-context { min-height: 3.1rem !important; }
+
+/* Late control hygiene: protect tiny edit/remove controls from global pill styles. */
+#hushPhase31EditCorpus.hush-phase31-edit-corpus {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  display: block !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  width: max-content !important;
+  height: auto !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: .12rem 0 0 !important;
+  margin: .16rem auto 0 !important;
+  color: rgba(255, 118, 104, .92) !important;
+  font-family: var(--font-mono, ui-monospace, monospace) !important;
+  font-size: .48rem !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  letter-spacing: .04em !important;
+  text-transform: none !important;
+  text-decoration: none !important;
+  text-underline-offset: 2px !important;
+  cursor: pointer !important;
+  transition: color 120ms ease, text-shadow 120ms ease !important;
+}
+#hushPhase31EditCorpus.hush-phase31-edit-corpus:hover,
+#hushPhase31EditCorpus.hush-phase31-edit-corpus:focus-visible {
+  color: rgba(255, 135, 113, 1) !important;
+  text-decoration: underline !important;
+  text-shadow: 0 0 10px rgba(255, 118, 104, .28) !important;
+  outline: none !important;
+  transform: none !important;
+}
+.hush-phase31-edit-card {
+  display: grid !important;
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto !important;
+  overflow: hidden !important;
+}
+.hush-phase31-edit-list {
+  min-height: 0 !important;
+  max-height: min(28rem, calc(100dvh - 14rem)) !important;
+  overflow: auto !important;
+  padding-right: .12rem !important;
+  overscroll-behavior: contain !important;
+}
+.hush-phase31-edit-card .hush-phase31-modal-actions {
+  position: sticky !important;
+  bottom: 0 !important;
+  z-index: 4 !important;
+  padding-top: .72rem !important;
+  padding-bottom: .08rem !important;
+  background: linear-gradient(180deg, rgba(3,18,16,0), rgba(3,18,16,.96) 28%, rgba(12,5,20,.98)) !important;
+}
+.hush-phase31-edit-remove.hush-phase31-edit-remove {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  position: absolute !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  width: 1rem !important;
+  height: 1rem !important;
+  max-width: 1rem !important;
+  max-height: 1rem !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  top: .42rem !important;
+  right: .48rem !important;
+  left: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  color: rgba(255, 118, 104, .94) !important;
+  font-family: var(--font-mono, ui-monospace, monospace) !important;
+  font-size: .62rem !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  text-transform: none !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+}
+.hush-phase31-edit-remove.hush-phase31-edit-remove:hover,
+.hush-phase31-edit-remove.hush-phase31-edit-remove:focus-visible {
+  color: rgba(255, 135, 113, 1) !important;
+  text-shadow: 0 0 10px rgba(255, 118, 104, .28) !important;
+  outline: none !important;
+  transform: none !important;
+}
+@media (max-width: 820px) {
+  .hush-phase31-edit-card { max-height: min(38rem, calc(100dvh - 2rem)) !important; }
+  .hush-phase31-edit-list { max-height: calc(100dvh - 12.5rem) !important; }
+}

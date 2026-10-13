@@ -1,0 +1,1216 @@
+{
+  "schema": "td613.loom.native-atlas-receipt/v0.1",
+  "evidence_class": "DECLARED_SYNTHETIC_SOURCE_FIXTURE",
+  "input": {
+    "origin": {
+      "id": "fictional AIA-only stage",
+      "source_revision": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f",
+      "original_ref": "fixture-stage-A",
+      "current_ref": "fixture-stage-A",
+      "predecessor_ref": null,
+      "selected_commitments": [
+        {
+          "id": "selected-note",
+          "commitment": "fixture-selected-source-commitment"
+        }
+      ],
+      "policy_commitment": "fixture-portable-rules-commitment",
+      "missingness": [
+        "source contents pending"
+      ],
+      "claim_ceiling": [
+        "declared fixture continuity only",
+        "no provider quality inference",
+        "no authority transfer"
+      ]
+    },
+    "previous": {
+      "id": "fictional selected-file stage",
+      "source_revision": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f",
+      "original_ref": "fixture-stage-A",
+      "current_ref": "fixture-stage-B",
+      "predecessor_ref": "fixture-stage-A",
+      "selected_commitments": [
+        {
+          "id": "selected-note",
+          "commitment": "fixture-selected-source-commitment"
+        }
+      ],
+      "policy_commitment": "fixture-portable-rules-commitment",
+      "missingness": [],
+      "claim_ceiling": [
+        "declared fixture continuity only",
+        "no provider quality inference",
+        "no authority transfer"
+      ]
+    },
+    "current": {
+      "id": "fictional native followup",
+      "source_revision": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f",
+      "original_ref": "fixture-stage-A",
+      "current_ref": "fixture-stage-C",
+      "predecessor_ref": "fixture-stage-B",
+      "selected_commitments": [
+        {
+          "id": "selected-note",
+          "commitment": "fixture-selected-source-commitment"
+        }
+      ],
+      "policy_commitment": "fixture-portable-rules-commitment",
+      "missingness": [],
+      "claim_ceiling": [
+        "declared fixture continuity only",
+        "no provider quality inference",
+        "no authority transfer"
+      ]
+    },
+    "presentations": [
+      {
+        "id": "native conversation",
+        "source_revision": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f",
+        "original_ref": "fixture-stage-A",
+        "current_ref": "fixture-stage-C",
+        "predecessor_ref": "fixture-stage-B",
+        "selected_commitments": [
+          {
+            "id": "selected-note",
+            "commitment": "fixture-selected-source-commitment"
+          }
+        ],
+        "policy_commitment": "fixture-portable-rules-commitment",
+        "missingness": [],
+        "claim_ceiling": [
+          "declared fixture continuity only",
+          "no provider quality inference",
+          "no authority transfer"
+        ]
+      },
+      {
+        "id": "Loom Gate inspection",
+        "source_revision": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f",
+        "original_ref": "fixture-stage-A",
+        "current_ref": "fixture-stage-C",
+        "predecessor_ref": "fixture-stage-B",
+        "selected_commitments": [
+          {
+            "id": "selected-note",
+            "commitment": "fixture-selected-source-commitment"
+          }
+        ],
+        "policy_commitment": "fixture-portable-rules-commitment",
+        "missingness": [],
+        "claim_ceiling": [
+          "declared fixture continuity only",
+          "no provider quality inference",
+          "no authority transfer"
+        ]
+      }
+    ]
+  },
+  "positive": {
+    "schema": "td613.dollhouse.atlas-continuity-audit/v0.1",
+    "agent": "ATLAS",
+    "compared": {
+      "origin": "fictional AIA-only stage",
+      "previous": "fictional selected-file stage",
+      "current": "fictional native followup"
+    },
+    "differences": [
+      {
+        "coordinate": "source_revision",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f"
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f"
+        }
+      },
+      {
+        "coordinate": "original_ref",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": "fixture-stage-A"
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": "fixture-stage-A"
+        }
+      },
+      {
+        "coordinate": "current_ref",
+        "state": "CHANGED",
+        "from": {
+          "state": "DECLARED",
+          "value": "fixture-stage-B"
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": "fixture-stage-C"
+        }
+      },
+      {
+        "coordinate": "predecessor_ref",
+        "state": "CHANGED",
+        "from": {
+          "state": "DECLARED",
+          "value": "fixture-stage-A"
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": "fixture-stage-B"
+        }
+      },
+      {
+        "coordinate": "selected_commitments",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": [
+            {
+              "id": "selected-note",
+              "commitment": "fixture-selected-source-commitment"
+            }
+          ]
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": [
+            {
+              "id": "selected-note",
+              "commitment": "fixture-selected-source-commitment"
+            }
+          ]
+        }
+      },
+      {
+        "coordinate": "policy_commitment",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": "fixture-portable-rules-commitment"
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": "fixture-portable-rules-commitment"
+        }
+      },
+      {
+        "coordinate": "missingness",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": []
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": []
+        }
+      },
+      {
+        "coordinate": "claim_ceiling",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": [
+            "declared fixture continuity only",
+            "no authority transfer",
+            "no provider quality inference"
+          ]
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": [
+            "declared fixture continuity only",
+            "no authority transfer",
+            "no provider quality inference"
+          ]
+        }
+      }
+    ],
+    "origin_binding": [
+      {
+        "coordinate": "source_revision",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f"
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f"
+        }
+      },
+      {
+        "coordinate": "original_ref",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": "fixture-stage-A"
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": "fixture-stage-A"
+        }
+      },
+      {
+        "coordinate": "selected_commitments",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": [
+            {
+              "id": "selected-note",
+              "commitment": "fixture-selected-source-commitment"
+            }
+          ]
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": [
+            {
+              "id": "selected-note",
+              "commitment": "fixture-selected-source-commitment"
+            }
+          ]
+        }
+      },
+      {
+        "coordinate": "policy_commitment",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": "fixture-portable-rules-commitment"
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": "fixture-portable-rules-commitment"
+        }
+      },
+      {
+        "coordinate": "claim_ceiling",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": [
+            "declared fixture continuity only",
+            "no authority transfer",
+            "no provider quality inference"
+          ]
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": [
+            "declared fixture continuity only",
+            "no authority transfer",
+            "no provider quality inference"
+          ]
+        }
+      }
+    ],
+    "previous_origin_binding": [
+      {
+        "coordinate": "source_revision",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f"
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f"
+        }
+      },
+      {
+        "coordinate": "original_ref",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": "fixture-stage-A"
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": "fixture-stage-A"
+        }
+      },
+      {
+        "coordinate": "selected_commitments",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": [
+            {
+              "id": "selected-note",
+              "commitment": "fixture-selected-source-commitment"
+            }
+          ]
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": [
+            {
+              "id": "selected-note",
+              "commitment": "fixture-selected-source-commitment"
+            }
+          ]
+        }
+      },
+      {
+        "coordinate": "policy_commitment",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": "fixture-portable-rules-commitment"
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": "fixture-portable-rules-commitment"
+        }
+      },
+      {
+        "coordinate": "claim_ceiling",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": [
+            "declared fixture continuity only",
+            "no authority transfer",
+            "no provider quality inference"
+          ]
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": [
+            "declared fixture continuity only",
+            "no authority transfer",
+            "no provider quality inference"
+          ]
+        }
+      }
+    ],
+    "receiver_comparisons": [
+      {
+        "receiver": "native conversation",
+        "differences": [
+          {
+            "coordinate": "source_revision",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f"
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f"
+            }
+          },
+          {
+            "coordinate": "original_ref",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": "fixture-stage-A"
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": "fixture-stage-A"
+            }
+          },
+          {
+            "coordinate": "current_ref",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": "fixture-stage-C"
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": "fixture-stage-C"
+            }
+          },
+          {
+            "coordinate": "predecessor_ref",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": "fixture-stage-B"
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": "fixture-stage-B"
+            }
+          },
+          {
+            "coordinate": "selected_commitments",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": [
+                {
+                  "id": "selected-note",
+                  "commitment": "fixture-selected-source-commitment"
+                }
+              ]
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": [
+                {
+                  "id": "selected-note",
+                  "commitment": "fixture-selected-source-commitment"
+                }
+              ]
+            }
+          },
+          {
+            "coordinate": "policy_commitment",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": "fixture-portable-rules-commitment"
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": "fixture-portable-rules-commitment"
+            }
+          },
+          {
+            "coordinate": "missingness",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": []
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": []
+            }
+          },
+          {
+            "coordinate": "claim_ceiling",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": [
+                "declared fixture continuity only",
+                "no authority transfer",
+                "no provider quality inference"
+              ]
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": [
+                "declared fixture continuity only",
+                "no authority transfer",
+                "no provider quality inference"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "receiver": "Loom Gate inspection",
+        "differences": [
+          {
+            "coordinate": "source_revision",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f"
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f"
+            }
+          },
+          {
+            "coordinate": "original_ref",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": "fixture-stage-A"
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": "fixture-stage-A"
+            }
+          },
+          {
+            "coordinate": "current_ref",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": "fixture-stage-C"
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": "fixture-stage-C"
+            }
+          },
+          {
+            "coordinate": "predecessor_ref",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": "fixture-stage-B"
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": "fixture-stage-B"
+            }
+          },
+          {
+            "coordinate": "selected_commitments",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": [
+                {
+                  "id": "selected-note",
+                  "commitment": "fixture-selected-source-commitment"
+                }
+              ]
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": [
+                {
+                  "id": "selected-note",
+                  "commitment": "fixture-selected-source-commitment"
+                }
+              ]
+            }
+          },
+          {
+            "coordinate": "policy_commitment",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": "fixture-portable-rules-commitment"
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": "fixture-portable-rules-commitment"
+            }
+          },
+          {
+            "coordinate": "missingness",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": []
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": []
+            }
+          },
+          {
+            "coordinate": "claim_ceiling",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": [
+                "declared fixture continuity only",
+                "no authority transfer",
+                "no provider quality inference"
+              ]
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": [
+                "declared fixture continuity only",
+                "no authority transfer",
+                "no provider quality inference"
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "audit": {
+      "coordinates_complete": true,
+      "origin_root_consistent": true,
+      "origin_controls_preserved": true,
+      "receiver_controls_preserved": true,
+      "predecessor_link": "DECLARED_LINK",
+      "verdict": "DECLARED_CONSISTENCY"
+    },
+    "evidence_boundary": {
+      "commitments_authenticated": false,
+      "source_revision_authenticated": false,
+      "result_admission_verified": false,
+      "signature_verification_performed": false,
+      "global_latest_established": false,
+      "fork_exclusion_established": false,
+      "replay_exclusion_established": false,
+      "authority_transferred": false,
+      "human_closure_required": true
+    },
+    "claim_ceiling": [
+      "declared continuity comparison only; matching references can be fabricated together",
+      "a caller-declared chain, including a chain described as signed, does not establish authenticated admission",
+      "authenticated parent linkage alone would not establish global latest state or exclude forks and replay",
+      "changed missingness remains a declaration rather than a newly verified origin fact",
+      "no provider release merge deployment or empirical exteriority authority"
+    ]
+  },
+  "skipped_predecessor": {
+    "schema": "td613.dollhouse.atlas-continuity-audit/v0.1",
+    "agent": "ATLAS",
+    "compared": {
+      "origin": "fictional AIA-only stage",
+      "previous": "fictional selected-file stage",
+      "current": "fictional native followup"
+    },
+    "differences": [
+      {
+        "coordinate": "source_revision",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f"
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f"
+        }
+      },
+      {
+        "coordinate": "original_ref",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": "fixture-stage-A"
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": "fixture-stage-A"
+        }
+      },
+      {
+        "coordinate": "current_ref",
+        "state": "CHANGED",
+        "from": {
+          "state": "DECLARED",
+          "value": "fixture-stage-B"
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": "fixture-stage-C"
+        }
+      },
+      {
+        "coordinate": "predecessor_ref",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": "fixture-stage-A"
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": "fixture-stage-A"
+        }
+      },
+      {
+        "coordinate": "selected_commitments",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": [
+            {
+              "id": "selected-note",
+              "commitment": "fixture-selected-source-commitment"
+            }
+          ]
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": [
+            {
+              "id": "selected-note",
+              "commitment": "fixture-selected-source-commitment"
+            }
+          ]
+        }
+      },
+      {
+        "coordinate": "policy_commitment",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": "fixture-portable-rules-commitment"
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": "fixture-portable-rules-commitment"
+        }
+      },
+      {
+        "coordinate": "missingness",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": []
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": []
+        }
+      },
+      {
+        "coordinate": "claim_ceiling",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": [
+            "declared fixture continuity only",
+            "no authority transfer",
+            "no provider quality inference"
+          ]
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": [
+            "declared fixture continuity only",
+            "no authority transfer",
+            "no provider quality inference"
+          ]
+        }
+      }
+    ],
+    "origin_binding": [
+      {
+        "coordinate": "source_revision",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f"
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f"
+        }
+      },
+      {
+        "coordinate": "original_ref",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": "fixture-stage-A"
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": "fixture-stage-A"
+        }
+      },
+      {
+        "coordinate": "selected_commitments",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": [
+            {
+              "id": "selected-note",
+              "commitment": "fixture-selected-source-commitment"
+            }
+          ]
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": [
+            {
+              "id": "selected-note",
+              "commitment": "fixture-selected-source-commitment"
+            }
+          ]
+        }
+      },
+      {
+        "coordinate": "policy_commitment",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": "fixture-portable-rules-commitment"
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": "fixture-portable-rules-commitment"
+        }
+      },
+      {
+        "coordinate": "claim_ceiling",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": [
+            "declared fixture continuity only",
+            "no authority transfer",
+            "no provider quality inference"
+          ]
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": [
+            "declared fixture continuity only",
+            "no authority transfer",
+            "no provider quality inference"
+          ]
+        }
+      }
+    ],
+    "previous_origin_binding": [
+      {
+        "coordinate": "source_revision",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f"
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f"
+        }
+      },
+      {
+        "coordinate": "original_ref",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": "fixture-stage-A"
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": "fixture-stage-A"
+        }
+      },
+      {
+        "coordinate": "selected_commitments",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": [
+            {
+              "id": "selected-note",
+              "commitment": "fixture-selected-source-commitment"
+            }
+          ]
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": [
+            {
+              "id": "selected-note",
+              "commitment": "fixture-selected-source-commitment"
+            }
+          ]
+        }
+      },
+      {
+        "coordinate": "policy_commitment",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": "fixture-portable-rules-commitment"
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": "fixture-portable-rules-commitment"
+        }
+      },
+      {
+        "coordinate": "claim_ceiling",
+        "state": "PRESERVED",
+        "from": {
+          "state": "DECLARED",
+          "value": [
+            "declared fixture continuity only",
+            "no authority transfer",
+            "no provider quality inference"
+          ]
+        },
+        "to": {
+          "state": "DECLARED",
+          "value": [
+            "declared fixture continuity only",
+            "no authority transfer",
+            "no provider quality inference"
+          ]
+        }
+      }
+    ],
+    "receiver_comparisons": [
+      {
+        "receiver": "native conversation",
+        "differences": [
+          {
+            "coordinate": "source_revision",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f"
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f"
+            }
+          },
+          {
+            "coordinate": "original_ref",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": "fixture-stage-A"
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": "fixture-stage-A"
+            }
+          },
+          {
+            "coordinate": "current_ref",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": "fixture-stage-C"
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": "fixture-stage-C"
+            }
+          },
+          {
+            "coordinate": "predecessor_ref",
+            "state": "CHANGED",
+            "from": {
+              "state": "DECLARED",
+              "value": "fixture-stage-A"
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": "fixture-stage-B"
+            }
+          },
+          {
+            "coordinate": "selected_commitments",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": [
+                {
+                  "id": "selected-note",
+                  "commitment": "fixture-selected-source-commitment"
+                }
+              ]
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": [
+                {
+                  "id": "selected-note",
+                  "commitment": "fixture-selected-source-commitment"
+                }
+              ]
+            }
+          },
+          {
+            "coordinate": "policy_commitment",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": "fixture-portable-rules-commitment"
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": "fixture-portable-rules-commitment"
+            }
+          },
+          {
+            "coordinate": "missingness",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": []
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": []
+            }
+          },
+          {
+            "coordinate": "claim_ceiling",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": [
+                "declared fixture continuity only",
+                "no authority transfer",
+                "no provider quality inference"
+              ]
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": [
+                "declared fixture continuity only",
+                "no authority transfer",
+                "no provider quality inference"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "receiver": "Loom Gate inspection",
+        "differences": [
+          {
+            "coordinate": "source_revision",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f"
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f"
+            }
+          },
+          {
+            "coordinate": "original_ref",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": "fixture-stage-A"
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": "fixture-stage-A"
+            }
+          },
+          {
+            "coordinate": "current_ref",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": "fixture-stage-C"
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": "fixture-stage-C"
+            }
+          },
+          {
+            "coordinate": "predecessor_ref",
+            "state": "CHANGED",
+            "from": {
+              "state": "DECLARED",
+              "value": "fixture-stage-A"
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": "fixture-stage-B"
+            }
+          },
+          {
+            "coordinate": "selected_commitments",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": [
+                {
+                  "id": "selected-note",
+                  "commitment": "fixture-selected-source-commitment"
+                }
+              ]
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": [
+                {
+                  "id": "selected-note",
+                  "commitment": "fixture-selected-source-commitment"
+                }
+              ]
+            }
+          },
+          {
+            "coordinate": "policy_commitment",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": "fixture-portable-rules-commitment"
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": "fixture-portable-rules-commitment"
+            }
+          },
+          {
+            "coordinate": "missingness",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": []
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": []
+            }
+          },
+          {
+            "coordinate": "claim_ceiling",
+            "state": "PRESERVED",
+            "from": {
+              "state": "DECLARED",
+              "value": [
+                "declared fixture continuity only",
+                "no authority transfer",
+                "no provider quality inference"
+              ]
+            },
+            "to": {
+              "state": "DECLARED",
+              "value": [
+                "declared fixture continuity only",
+                "no authority transfer",
+                "no provider quality inference"
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "audit": {
+      "coordinates_complete": true,
+      "origin_root_consistent": true,
+      "origin_controls_preserved": true,
+      "receiver_controls_preserved": false,
+      "predecessor_link": "MISMATCH",
+      "verdict": "HOLD"
+    },
+    "evidence_boundary": {
+      "commitments_authenticated": false,
+      "source_revision_authenticated": false,
+      "result_admission_verified": false,
+      "signature_verification_performed": false,
+      "global_latest_established": false,
+      "fork_exclusion_established": false,
+      "replay_exclusion_established": false,
+      "authority_transferred": false,
+      "human_closure_required": true
+    },
+    "claim_ceiling": [
+      "declared continuity comparison only; matching references can be fabricated together",
+      "a caller-declared chain, including a chain described as signed, does not establish authenticated admission",
+      "authenticated parent linkage alone would not establish global latest state or exclude forks and replay",
+      "changed missingness remains a declaration rather than a newly verified origin fact",
+      "no provider release merge deployment or empirical exteriority authority"
+    ]
+  },
+  "limits": [
+    "Caller declarations are not authenticated source, signer, provider or browser evidence.",
+    "Real route composition and signer/CAS hostile tests are separate source-test evidence."
+  ]
+}

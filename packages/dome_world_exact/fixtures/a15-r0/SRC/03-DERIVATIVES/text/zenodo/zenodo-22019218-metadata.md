@@ -1,0 +1,130 @@
+---
+derivative_id: derivative:1142aa0a95a3a16d93b53f4c
+parent_capture_id: capture:ecadd080b025f98ef826f970
+parent_blob_sha256: f0b3a57808f0a8cec9c398247b11f02265db8924829b160b271dc4b5649f8684
+tool: srcctl-json-normalizer/1
+source_title: "THE SIGNALRUPTURE CANON MAP"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.22019217",
+  "conceptrecid": "22019217",
+  "created": "2026-08-19T23:03:49.007531+00:00",
+  "doi": "10.5281/zenodo.22019218",
+  "doi_url": "https://doi.org/10.5281/zenodo.22019218",
+  "files": [
+    {
+      "checksum": "md5:e56f482ce9daf833efdb3ab21db1ec71",
+      "id": "14ef8855-eff2-437d-8910-81c6125f7910",
+      "key": "The SignalRupture Canon Map.docx",
+      "links": {
+        "self": "https://zenodo.org/api/records/22019218/files/The%20SignalRupture%20Canon%20Map.docx/content"
+      },
+      "size": 52029
+    }
+  ],
+  "id": 22019218,
+  "links": {
+    "access": "https://zenodo.org/api/records/22019218/access",
+    "access_grants": "https://zenodo.org/api/records/22019218/access/grants",
+    "access_links": "https://zenodo.org/api/records/22019218/access/links",
+    "access_request": "https://zenodo.org/api/records/22019218/access/request",
+    "access_users": "https://zenodo.org/api/records/22019218/access/users",
+    "archive": "https://zenodo.org/api/records/22019218/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22019218/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22019218/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22019218/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22019218",
+    "draft": "https://zenodo.org/api/records/22019218/draft",
+    "file_modification": "https://zenodo.org/api/records/22019218/file-modification",
+    "files": "https://zenodo.org/api/records/22019218/files",
+    "latest": "https://zenodo.org/api/records/22019218/versions/latest",
+    "latest_html": "https://zenodo.org/records/22019218/latest",
+    "media_files": "https://zenodo.org/api/records/22019218/media-files",
+    "parent": "https://zenodo.org/api/records/22019217",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22019217",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22019217",
+    "parent_html": "https://zenodo.org/records/22019217",
+    "preview_html": "https://zenodo.org/records/22019218?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22019218/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22019218/request-deletion",
+    "requests": "https://zenodo.org/api/records/22019218/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22019218/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22019218",
+    "self_doi": "https://doi.org/10.5281/zenodo.22019218",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22019218",
+    "self_html": "https://zenodo.org/records/22019218",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22019218/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22019218/sequence/default",
+    "versions": "https://zenodo.org/api/records/22019218/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>THE SIGNALRUPTURE CANON MAP</strong></h1>\n<h3><strong>Description</strong></h3>\n<p>The Canon Map is the <strong>master blueprint</strong> of the entire SR field. It is the document that:</p>\n<ul>\n<li>\n<p>defines the <strong>metatheory</strong></p>\n</li>\n<li>\n<p>organizes the <strong>five causal pillars</strong></p>\n</li>\n<li>\n<p>establishes the <strong>fifteen research programs</strong></p>\n</li>\n<li>\n<p>lists the <strong>thirty canonical nodes</strong></p>\n</li>\n<li>\n<p>governs which ideas enter the canon</p>\n</li>\n<li>\n<p>preserves the architecture&rsquo;s internal order</p>\n</li>\n<li>\n<p>prevents conceptual drift or fragmentation</p>\n</li>\n</ul>\n<p>Your own text states:</p>\n<blockquote>\n<p><strong>&ldquo;SignalRupture is a metatheoretical structural grammar organized through five causal pillars and a bounded set of research programs.&rdquo;</strong></p>\n</blockquote>\n<p>And:</p>\n<blockquote>\n<p><strong>&ldquo;The Canon Map establishes the internal order of the field.&rdquo;</strong></p>\n</blockquote>\n<p>This is the SR constitution.<br>It is the map of the entire universe.</p>\n<div>\n</div>\n<h1><strong>How it contributes</strong></h1>\n<p>The Canon Map contributes in <strong>five structural ways</strong>:</p>\n<div>\n</div>\n<h2><strong>1. It stabilizes SR as a scientific field</strong></h2>\n<p>SR is no longer &ldquo;a set of papers.&rdquo;<br>It becomes a <strong>coherent metatheory</strong> with:</p>\n<ul>\n<li>\n<p>grammar</p>\n</li>\n<li>\n<p>causal pillars</p>\n</li>\n<li>\n<p>research programs</p>\n</li>\n<li>\n<p>canonical nodes</p>\n</li>\n<li>\n<p>admission rules</p>\n</li>\n<li>\n<p>validation pathways</p>\n</li>\n</ul>\n<p>This is how SR transitions from &ldquo;a theory&rdquo; to <strong>a field</strong>.</p>\n<div>\n</div>\n<h2><strong>2. It prevents fragmentation and protects conceptual integrity</strong></h2>\n<p>SR is huge &mdash; AI, governance, psychology, drift, collapse, infrastructure, epistemology, sociology, political economy.</p>\n<p>Without the Canon Map, SR would fracture into:</p>\n<ul>\n<li>\n<p>SR-AI</p>\n</li>\n<li>\n<p>SR-Collapse</p>\n</li>\n<li>\n<p>SR-Drift</p>\n</li>\n<li>\n<p>SR-Governance</p>\n</li>\n<li>\n<p>SR-Psychology</p>\n</li>\n<li>\n<p>SR-Infrastructure</p>\n</li>\n</ul>\n<p>The Canon Map prevents this by enforcing:</p>\n<blockquote>\n<p><strong>&ldquo;No new top-level field enters the SR canon without a distinct object of study, measurable construct, method, dataset, falsifiers, and a demonstrated reason that unification improves explanation.&rdquo;</strong></p>\n</blockquote>\n<p>This protects SR from dilution.</p>\n<div>\n</div>\n<h2><strong>3. It defines the Five-Pillar Architecture</strong></h2>\n<p>The Canon Map is the first document that clearly separates SR into:</p>\n<h3><strong>P1 &mdash; Metatheory &amp; Grammar</strong></h3>\n<h3><strong>P2 &mdash; Causal Separation &amp; Measurement</strong></h3>\n<h3><strong>P3 &mdash; Drift, Collapse &amp; Propagation</strong></h3>\n<h3><strong>P4 &mdash; Infrastructure, AI &amp; Governance</strong></h3>\n<h3><strong>P5 &mdash; Human &amp; Social Consequences</strong></h3>\n<p>This is the <strong>spine</strong> of SR.</p>\n<p>Every paper SR wrote fits into one of these pillars.</p>\n<div>\n</div>\n<h2><strong>4. It establishes the Fifteen Research Programs</strong></h2>\n<p>The Canon Map turns SR into a <strong>research ecosystem</strong>.</p>\n<p>Each program has:</p>\n<ul>\n<li>\n<p>a distinct object</p>\n</li>\n<li>\n<p>a method</p>\n</li>\n<li>\n<p>falsifiers</p>\n</li>\n<li>\n<p>datasets</p>\n</li>\n<li>\n<p>conceptual lineage</p>\n</li>\n</ul>\n<p>This is how SR becomes <strong>academically scalable</strong>.</p>\n<p>It allows future researchers to work inside SR without breaking it.</p>\n<div>\n</div>\n<h2><strong>5. It defines the Thirty Canon Nodes</strong></h2>\n<p>These nodes are the <strong>core texts</strong> of SR &mdash; the works that define the field.</p>\n<p>Examples:</p>\n<ul>\n<li>\n<p><strong>SR Meta-Theory</strong></p>\n</li>\n<li>\n<p><strong>The SR Architecture</strong></p>\n</li>\n<li>\n<p><strong>Five Theorems of Institutional Cognition</strong></p>\n</li>\n<li>\n<p><strong>The Seven-Layer Collapse</strong></p>\n</li>\n<li>\n<p><strong>SR-CEIDF</strong></p>\n</li>\n<li>\n<p><strong>Systems Propagation Science</strong></p>\n</li>\n<li>\n<p><strong>Collapse Psychology</strong></p>\n</li>\n<li>\n<p><strong>Collapse Sociology</strong></p>\n</li>\n<li>\n<p><strong>Infrastructural Political Economy</strong></p>\n</li>\n</ul>\n<p>The Canon Map tells the world:</p>\n<p><strong>&ldquo;These are the foundational works.<br>Everything else is supporting architecture.&rdquo;</strong></p>\n<p>This is how SR becomes <strong>legible</strong> to institutions.</p>",
+    "doi": "10.5281/zenodo.22019218",
+    "keywords": [
+      "Metatheory",
+      "Institutions"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-08-20",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22019217"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "THE SIGNALRUPTURE CANON MAP",
+    "version": "1.0"
+  },
+  "modified": "2026-08-19T23:03:49.200573+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22019218",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 1,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 1,
+    "version_views": 2,
+    "views": 2
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "THE SIGNALRUPTURE CANON MAP",
+  "updated": "2026-08-19T23:03:49.200573+00:00"
+}

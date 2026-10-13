@@ -1,0 +1,302 @@
+{
+  "schema": "td613.holonomy-loom.flowcore-aia-glyph-control-browser-witness/v0.1",
+  "status": "HELD",
+  "browser": "webkit",
+  "route": "/dome-world/holonomy-loom.html",
+  "interaction_scope": "EXPLICIT_LOCAL_RULE_LABORATORY",
+  "source_status": "OBSERVED",
+  "authority_class": "A1_OBSERVATIONAL",
+  "witness_instrumentation": {
+    "clipboard_stub": true,
+    "element_animate_counter": true,
+    "product_bytes_mutated": false
+  },
+  "flowcore_aia": {
+    "explicit_route_selection": "EXPERIENTIAL",
+    "route_inference_performed": false,
+    "generic_flowcore_taxonomy_mutated": false,
+    "canonical_glyph_sequence": [
+      "à",
+      "米",
+      "hõt",
+      "出",
+      "cōl",
+      "𝄐"
+    ],
+    "static_equivalent_required": true
+  },
+  "preserved_red_lineage": [
+    "Ready run 2828 Chromium + Firefox: witness attempted to fill hidden #protected before explicitly opening Protection rules; product bytes unchanged",
+    "Ready run 2828 WebKit: independent A15 mobile-reduced political_campaign custodial route timeout occurred in Step 7 before glyph witness execution"
+  ],
+  "request_summary": {
+    "total_request_count": 50,
+    "external_request_count": 0,
+    "mutation_request_count": 0,
+    "canary_egress_count": 0
+  },
+  "provider_call_performed": false,
+  "human_comprehension_observed": false,
+  "human_operator_production_observation": false,
+  "merge_authority": false,
+  "vercel_authority": false,
+  "production_release_authority": false,
+  "provider_release_authority": false,
+  "human_closure_required": true,
+  "exogenous_witness_credit": 0,
+  "golden_egg_credit": 0,
+  "checks": [
+    {
+      "name": "local laboratory starts optional and closed",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "local laboratory opened explicitly before glyph-control traversal",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "hosted Loom route loaded",
+      "status": "PASS",
+      "detail": "http://127.0.0.1:6130/dome-world/holonomy-loom.html"
+    },
+    {
+      "name": "glyph path is hidden before any consequence",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "SHOW THE PATH is not visible before result",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "visible child body contains no Flow-Core implementation jargon before result",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "plain GREEN consequence renders before glyph path",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "glyph path remains hidden after consequence until explicit operator request",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "SHOW THE PATH becomes visible only after consequence",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "SHOW THE PATH can receive keyboard focus",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "explicit path action selects EXPERIENTIAL AIA route",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "path declares route inference false",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "root declares authority crossing false",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "canonical glyph sequence is rendered exactly",
+      "status": "PASS",
+      "detail": [
+        "à",
+        "米",
+        "hõt",
+        "出",
+        "cōl",
+        "𝄐"
+      ]
+    },
+    {
+      "name": "ordinary-language labels remain beside every glyph",
+      "status": "PASS",
+      "detail": [
+        "Gathered",
+        "Compared",
+        "Safer copy",
+        "Copy checked",
+        "Return",
+        "Rest"
+      ]
+    },
+    {
+      "name": "GREEN release control is available but not yet released",
+      "status": "PASS",
+      "detail": {
+        "state": "AVAILABLE"
+      }
+    },
+    {
+      "name": "path selection itself triggers no decorative animation",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "à motion is operator-triggered and finite",
+      "status": "PASS",
+      "detail": {
+        "before": 0,
+        "after": 1
+      }
+    },
+    {
+      "name": "successful clipboard completion advances 出 to RELEASED",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "successful clipboard completion is required before outward 出 motion",
+      "status": "PASS",
+      "detail": {
+        "before": 0,
+        "after": 1
+      }
+    },
+    {
+      "name": "clipboard success was observed once for GREEN release",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "RED fixture opens Protection rules explicitly before editing protected terms",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "new CHECK hides prior glyph path again",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "RED consequence remains ordinary-language and visible before path",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "RED path renders release as BLOCKED",
+      "status": "PASS",
+      "detail": {
+        "state": "BLOCKED"
+      }
+    },
+    {
+      "name": "blocked 出 cannot produce outward motion",
+      "status": "PASS",
+      "detail": {
+        "before": 1,
+        "after": 1
+      }
+    },
+    {
+      "name": "hõt safer-copy action advances its bounded state to READY",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "deterministic safer copy can make the release control available",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "clipboard rejection advances 出 to bounded COPY BLOCKED state",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "clipboard rejection produces no outward 出 animation",
+      "status": "PASS",
+      "detail": {
+        "before": 1,
+        "after": 1
+      }
+    },
+    {
+      "name": "browser-boundary refusal copy is visible in plain language",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "release can recover after browser clipboard permission returns",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "𝄐 leaves an inspectable SETTLED state",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "Rest keeps Return and Exit visible",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "no motion remains running after structural Rest settles",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "𝄐 blocks new path pulses after structural Rest",
+      "status": "PASS",
+      "detail": {
+        "before": 1,
+        "after": 1
+      }
+    },
+    {
+      "name": "cōl Return keeps the checked result present",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "cōl Return returns focus to the message control",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "name": "cōl Return records the message anchor",
+      "status": "PASS",
+      "detail": "http://127.0.0.1:6130/dome-world/holonomy-loom.html#messageTitle"
+    },
+    {
+      "name": "mobile layout does not introduce horizontal page overflow",
+      "status": "PASS",
+      "detail": {
+        "scrollWidth": 390,
+        "clientWidth": 390
+      }
+    },
+    {
+      "name": "glyph-control browser witness completed",
+      "status": "FAIL",
+      "detail": "locator.fill: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('#message')\n    - locator resolved to <textarea id=\"message\" spellcheck=\"true\" autocomplete=\"off\" aria-label=\"Message to check\" placeholder=\"Paste the message you are thinking about sending…\"></textarea>\n    - fill(\"ordinary reduced motion message\")\n  - attempting fill action\n    2 × waiting for element to be visible, enabled and editable\n      - element is not visible\n    - retrying fill action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and editable\n      - element is not visible\n    - retrying fill action\n      - waiting 100ms\n    60 × waiting for element to be visible, enabled and editable\n       - element is not visible\n     - retrying fill action\n       - waiting 500ms\n"
+    }
+  ],
+  "page_errors": [
+    "locator.fill: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('#message')\n    - locator resolved to <textarea id=\"message\" spellcheck=\"true\" autocomplete=\"off\" aria-label=\"Message to check\" placeholder=\"Paste the message you are thinking about sending…\"></textarea>\n    - fill(\"ordinary reduced motion message\")\n  - attempting fill action\n    2 × waiting for element to be visible, enabled and editable\n      - element is not visible\n    - retrying fill action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and editable\n      - element is not visible\n    - retrying fill action\n      - waiting 100ms\n    60 × waiting for element to be visible, enabled and editable\n       - element is not visible\n     - retrying fill action\n       - waiting 500ms\n\n    at /home/runner/work/TD613-TCP/TD613-TCP/scripts/holonomy-loom-flowcore-aia-glyph-control-browser-witness.mjs?td613_holonomy_loom_flowcore_aia_glyph_control=1789010575186:205:34"
+  ],
+  "console_errors": [],
+  "failed_checks": [
+    "glyph-control browser witness completed"
+  ],
+  "workflow_run_id": 34432270774,
+  "source_sha": "4248c7126d85c587faa723ccfa6b736f3b69807b",
+  "classification": "OBSERVER_FAILURE",
+  "exact_failure": "Reduced-motion reload left optional legacy laboratory closed in WebKit before #message.fill."
+}

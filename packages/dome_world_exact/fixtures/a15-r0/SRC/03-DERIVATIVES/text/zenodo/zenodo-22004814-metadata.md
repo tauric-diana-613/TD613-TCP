@@ -1,0 +1,137 @@
+---
+derivative_id: derivative:d86aa0cc0271c31e68054db1
+parent_capture_id: capture:fa1b8c4f200682419f656eb8
+parent_blob_sha256: 320aaa31db94d54d732c0bff9dec5d71e282c9062bb38a81782be9aaea3c1825
+tool: srcctl-json-normalizer/1
+source_title: "FROM HISTORICAL SUBSTRATE TO ALGORITHMIC ALLOCATION: A Cross-Domain Empirical Test of SignalRupture System Inheritance"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.22004813",
+  "conceptrecid": "22004813",
+  "created": "2026-08-19T02:22:14.346900+00:00",
+  "doi": "10.5281/zenodo.22004814",
+  "doi_url": "https://doi.org/10.5281/zenodo.22004814",
+  "files": [
+    {
+      "checksum": "md5:591acfdf6edccc04969b2694cc6156c7",
+      "id": "4c621f41-3d40-4cf6-bbba-54ef09ae5384",
+      "key": "SignalRupture Cross-Domain Empirical Synthesis.docx",
+      "links": {
+        "self": "https://zenodo.org/api/records/22004814/files/SignalRupture%20Cross-Domain%20Empirical%20Synthesis.docx/content"
+      },
+      "size": 225928
+    }
+  ],
+  "id": 22004814,
+  "links": {
+    "access": "https://zenodo.org/api/records/22004814/access",
+    "access_grants": "https://zenodo.org/api/records/22004814/access/grants",
+    "access_links": "https://zenodo.org/api/records/22004814/access/links",
+    "access_request": "https://zenodo.org/api/records/22004814/access/request",
+    "access_users": "https://zenodo.org/api/records/22004814/access/users",
+    "archive": "https://zenodo.org/api/records/22004814/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22004814/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22004814/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22004814/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22004814",
+    "draft": "https://zenodo.org/api/records/22004814/draft",
+    "file_modification": "https://zenodo.org/api/records/22004814/file-modification",
+    "files": "https://zenodo.org/api/records/22004814/files",
+    "latest": "https://zenodo.org/api/records/22004814/versions/latest",
+    "latest_html": "https://zenodo.org/records/22004814/latest",
+    "media_files": "https://zenodo.org/api/records/22004814/media-files",
+    "parent": "https://zenodo.org/api/records/22004813",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22004813",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22004813",
+    "parent_html": "https://zenodo.org/records/22004813",
+    "preview_html": "https://zenodo.org/records/22004814?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22004814/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22004814/request-deletion",
+    "requests": "https://zenodo.org/api/records/22004814/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22004814/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22004814",
+    "self_doi": "https://doi.org/10.5281/zenodo.22004814",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22004814",
+    "self_html": "https://zenodo.org/records/22004814",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22004814/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22004814/sequence/default",
+    "versions": "https://zenodo.org/api/records/22004814/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      },
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p><strong>System Inheritance</strong> is a SignalRupture operator that identifies how historically produced structures &mdash; geographic classifications, institutional records, enforcement patterns, administrative actions, and proxy variables &mdash; remain statistically and operationally legible inside contemporary systems even after explicit labels are removed. It does not require intentional reproduction of past injustice. It asks whether earlier structures persist in present substrates; whether contemporary variables can reconstruct those structures; whether institutional actions become inputs into later decisions; and whether recursive deployment increases, preserves, or interrupts unequal exposure. System inheritance is demonstrated when three measurable properties appear: <strong>persistence</strong> (historical or prior institutional exposure predicts later outcomes), <strong>recoverability</strong> (neutral variables reconstruct protected or historically classified geography), and <strong>institutional carryover</strong> (prior administrative or enforcement actions predict later institutional records). Amplification is a stronger claim requiring longitudinal evidence that model‑conditioned action increases disparity across cycles; this paper shows inheritance clearly while placing amplification under empirical reservation.</p>\n<p>System inheritance contributes to SignalRupture by providing a <strong>cross‑domain empirical foundation</strong> for SR&rsquo;s dynamic operators. It shows that removing explicit race or historical labels does not remove the structure generated around them, and that institutions repeatedly reuse inherited records in ways that shape later classification and allocation. It unifies redlining, mortgage underwriting, policing, school administration, and AI proxy recovery under a single structural sequence: <strong>historical record &rarr; contemporary substrate &rarr; classification/allocation &rarr; later institutional record</strong>. It strengthens SR&rsquo;s architecture by demonstrating that variables can be legitimate indicators of need while still encoding inherited inequality, that institutions are part of the model rather than external to it, and that recursive effects depend on institutional use rather than model accuracy alone. The contribution is therefore twofold: it empirically validates SR&rsquo;s weaker claims &mdash; persistence, proxy legibility, and institutional carryover &mdash; and it establishes the next threshold for SR research: longitudinal causal tests of recursive amplification. System inheritance becomes the empirical backbone of SR&rsquo;s dynamic fields, supporting operators like <strong>SSO</strong>, <strong>ESB</strong>, <strong>EAO</strong>, and <strong>RDA</strong> by showing that the substrate they diagnose is not hypothetical &mdash; it is measurable, recoverable, and already present in contemporary systems.</p>",
+    "doi": "10.5281/zenodo.22004814",
+    "keywords": [
+      "Metatheory",
+      "System Inheritance",
+      "Institutions",
+      "Artificial Intelligence",
+      "Society",
+      "Discrimination"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-08-19",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22004813"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "FROM HISTORICAL SUBSTRATE TO ALGORITHMIC ALLOCATION: A Cross-Domain Empirical Test of SignalRupture System Inheritance",
+    "version": "1.0"
+  },
+  "modified": "2026-08-19T02:22:14.751301+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22004814",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 3,
+    "unique_downloads": 2,
+    "unique_views": 2,
+    "version_downloads": 3,
+    "version_unique_downloads": 2,
+    "version_unique_views": 2,
+    "version_views": 4,
+    "views": 4
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "FROM HISTORICAL SUBSTRATE TO ALGORITHMIC ALLOCATION: A Cross-Domain Empirical Test of SignalRupture System Inheritance",
+  "updated": "2026-08-19T02:22:14.751301+00:00"
+}

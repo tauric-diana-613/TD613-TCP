@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:8e55e99ac216f039761d207a
+parent_capture_id: capture:b16c846174c05b0b1f1cd551
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "The High‑Arousal Society: How Modern Systems Exhaust People While Pretending It's the Individual's Fault"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.18158771
+Final URL: https://zenodo.org/records/18158771
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.18158771 -> https://zenodo.org/doi/10.5281/zenodo.18158771
+302 https://zenodo.org/doi/10.5281/zenodo.18158771 -> https://zenodo.org/records/18158771

@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:21b9ff59194e48140b952a83
+parent_capture_id: capture:0edc75a5f359b85cfe9ffcd1
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "The Post‑Open‑Web Epistemic Economy"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.18432295
+Final URL: https://zenodo.org/records/18432295
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.18432295 -> https://zenodo.org/doi/10.5281/zenodo.18432295
+302 https://zenodo.org/doi/10.5281/zenodo.18432295 -> https://zenodo.org/records/18432295

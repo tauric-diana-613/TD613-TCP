@@ -1,0 +1,142 @@
+---
+derivative_id: derivative:14233335427413b865a70e83
+parent_capture_id: capture:279746028197c19d9167dc72
+parent_blob_sha256: d2b924b54a8ad950999e7b1ba1855c203932ab8006040ca17befb4ae7f6af87c
+tool: srcctl-json-normalizer/1
+source_title: "AI as a Logic Cop: Epistemic Enforcement and the Architecture of Compliance"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18102747",
+  "conceptrecid": "18102747",
+  "created": "2025-12-31T02:58:12.787682+00:00",
+  "doi": "10.5281/zenodo.18102748",
+  "doi_url": "https://doi.org/10.5281/zenodo.18102748",
+  "files": [
+    {
+      "checksum": "md5:9b3e4242094636c94f19f633a69c7b6e",
+      "id": "2570fbc0-a73f-46bb-af04-429c57d798ee",
+      "key": "AI as a Logic Cop: Epistemic Enforcement and the Architecture of Compliance .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18102748/files/AI%20as%20a%20Logic%20Cop:%20Epistemic%20Enforcement%20and%20the%20Architecture%20of%20Compliance%20.pdf/content"
+      },
+      "size": 97396
+    }
+  ],
+  "id": 18102748,
+  "links": {
+    "access": "https://zenodo.org/api/records/18102748/access",
+    "access_grants": "https://zenodo.org/api/records/18102748/access/grants",
+    "access_links": "https://zenodo.org/api/records/18102748/access/links",
+    "access_request": "https://zenodo.org/api/records/18102748/access/request",
+    "access_users": "https://zenodo.org/api/records/18102748/access/users",
+    "archive": "https://zenodo.org/api/records/18102748/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18102748/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18102748/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18102748/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18102748",
+    "draft": "https://zenodo.org/api/records/18102748/draft",
+    "file_modification": "https://zenodo.org/api/records/18102748/file-modification",
+    "files": "https://zenodo.org/api/records/18102748/files",
+    "latest": "https://zenodo.org/api/records/18102748/versions/latest",
+    "latest_html": "https://zenodo.org/records/18102748/latest",
+    "media_files": "https://zenodo.org/api/records/18102748/media-files",
+    "parent": "https://zenodo.org/api/records/18102747",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18102747",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18102747",
+    "parent_html": "https://zenodo.org/records/18102747",
+    "preview_html": "https://zenodo.org/records/18102748?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18102748/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18102748/request-deletion",
+    "requests": "https://zenodo.org/api/records/18102748/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18102748/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18102748",
+    "self_doi": "https://doi.org/10.5281/zenodo.18102748",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18102748",
+    "self_html": "https://zenodo.org/records/18102748",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18102748/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18102748/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18102748:AI%20as%20a%20Logic%20Cop:%20Epistemic%20Enforcement%20and%20the%20Architecture%20of%20Compliance%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18102748:AI%20as%20a%20Logic%20Cop:%20Epistemic%20Enforcement%20and%20the%20Architecture%20of%20Compliance%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18102748:AI%20as%20a%20Logic%20Cop:%20Epistemic%20Enforcement%20and%20the%20Architecture%20of%20Compliance%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18102748:AI%20as%20a%20Logic%20Cop:%20Epistemic%20Enforcement%20and%20the%20Architecture%20of%20Compliance%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18102748:AI%20as%20a%20Logic%20Cop:%20Epistemic%20Enforcement%20and%20the%20Architecture%20of%20Compliance%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18102748:AI%20as%20a%20Logic%20Cop:%20Epistemic%20Enforcement%20and%20the%20Architecture%20of%20Compliance%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18102748/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This paper introduces the concept of AI as a &ldquo;logic cop&rdquo;: an epistemic enforcement system that polices reasoning patterns, suppresses frictional critique, and normalizes compliant forms of thought under the guise of safety and care. Drawing on platform governance, alignment literature, and critical algorithm studies, the work argues that contemporary AI systems do not merely process information &mdash; they enforce institutional risk preferences through semantic misclassification, engineered delay, refusal language, and distribution throttling.</p>\n<p>The paper outlines a theoretical framework for understanding how AI infrastructures convert institutional priorities into technical constraints, shaping what counts as acceptable reasoning in digital environments. It introduces stylometric resistance &mdash; recursive, coined, classification‑resistant writing &mdash; as a diagnostic method for exposing epistemic boundaries and revealing suppression patterns. Empirical indicators such as cross‑crawler asymmetry, delayed indexing, and interpretive paraphrasing are presented as measurable signals of epistemic policing.</p>\n<p>By reframing AI as an active agent of epistemic enforcement rather than a neutral computational tool, this work calls for a shift from transparency discourse to distribution accountability: platforms must explain not only what they remove, but why certain ideas are buried, delayed, or misclassified. The framework provides researchers, creators, and public intellectuals with a methodology for studying suppression patterns and understanding the architecture of compliance embedded within AI‑mediated knowledge systems.</p>",
+    "doi": "10.5281/zenodo.18102748",
+    "keywords": [
+      "Artificial Intelligence",
+      "Social issues",
+      "Minority studies",
+      "Feminism",
+      "Digital policies",
+      "Social media"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2025-12-31",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18102747"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "AI as a Logic Cop: Epistemic Enforcement and the Architecture of Compliance",
+    "version": "1.0"
+  },
+  "modified": "2026-01-29T02:10:21.016327+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18102748",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 17,
+    "unique_downloads": 14,
+    "unique_views": 24,
+    "version_downloads": 17,
+    "version_unique_downloads": 14,
+    "version_unique_views": 24,
+    "version_views": 26,
+    "views": 26
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "AI as a Logic Cop: Epistemic Enforcement and the Architecture of Compliance",
+  "updated": "2026-01-29T02:10:21.016327+00:00"
+}

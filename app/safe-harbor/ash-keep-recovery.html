@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en" data-td613-ash-recovery="pending">
+<head>
+<script id="td613-sitewide-reset-preflight" src="/site-epoch-preflight.js?v=20260927-v1"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="canonical" href="/dome-world/ash-threshold.html">
+  <title>TD613 Ash</title>
+  <script>
+    (()=>{try{
+      const canonical='/dome-world/ash-threshold.html';
+      if(location.pathname!==canonical||location.search)history.replaceState(null,'',canonical);
+      document.documentElement.dataset.td613AshCanonicalUrl='true';
+      window.__td613AshRecoveryFirstPaint=Object.freeze({schema:'td613.ash.recovery-first-paint/v0.1',title:document.title,url:location.pathname+location.search,legacy_visible:false});
+    }catch{}})();
+  </script>
+  <style>
+    :root{color-scheme:dark;background:#010806;color:#fff8da;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    *{box-sizing:border-box}
+    body{min-height:100vh;margin:0;display:grid;place-items:center;padding:24px;background:#010806}
+    main{width:min(560px,100%);border:1px solid #1f5b4d;background:#03110d;padding:24px;box-shadow:0 24px 80px #0008}
+    p{margin:0;line-height:1.6}
+    small{display:block;margin-top:10px;color:#76ead4}
+  </style>
+</head>
+<body>
+  <main role="status" aria-live="polite">
+    <p>Preparing Ash</p>
+    <small>Preserving local cases while the current instrument resolves.</small>
+  </main>
+  <script>
+  (()=>{
+    const CURRENT_EPOCH='20260727-a15-postclosure-v1';
+    const CACHE_EPOCH='td613.ash.cache-flush/2026-07-27-a15-postclosure-v1';
+    // Historical A12/A11 recovery baselines retained for A2–A6 provenance:
+    // 20260724-a12-release-v1 · td613.ash.cache-flush/2026-07-24-a11-postclosure-v1.
+    const CANONICAL='/dome-world/ash-threshold.html';
+    const receipt={schema:'td613.ash.cross-scope-recovery/v0.3-a15-postclosure',epoch:CACHE_EPOCH,asset_epoch:CURRENT_EPOCH,source_scope:'/dome-world/',bridge_scope:'/safe-harbor/',visible_url:CANONICAL,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false};
+    (async()=>{
+      const cachesCleared=[];const workers=[];
+      try{if(globalThis.caches?.keys){for(const name of await caches.keys()){if(await caches.delete(name))cachesCleared.push(name)}}}catch{}
+      try{if(navigator.serviceWorker?.getRegistrations){for(const registration of await navigator.serviceWorker.getRegistrations()){try{if(new URL(registration.scope,location.href).origin===location.origin&&await registration.unregister())workers.push(registration.scope)}catch{}}}}catch{}
+      try{localStorage.setItem('td613.ash.cache-flush.aia3.epoch',CACHE_EPOCH);localStorage.setItem('td613.ash.cache-preflight.epoch',CACHE_EPOCH)}catch{}
+      const finalReceipt={...receipt,cache_names:cachesCleared,worker_scopes:workers,controller_absent:navigator.serviceWorker?.controller==null};
+      try{sessionStorage.setItem('td613.ash.cross-scope-recovery.receipt',JSON.stringify(finalReceipt))}catch{}
+      const response=await fetch('/api/dome-world-shell?surface=ash-keep-html',{cache:'no-store',credentials:'same-origin',headers:{'Cache-Control':'no-cache, no-store, max-age=0',Pragma:'no-cache'}});
+      if(!response.ok)throw new Error('Current Ash shell unavailable: '+response.status);
+      const shell=await response.text();
+      if(!shell.includes('td613-ash-canonical-module-bootstrap'))throw new Error('Current Ash canonical bootstrap missing');
+      document.documentElement.dataset.td613AshRecovery='complete';
+      document.open();
+      document.write(shell);
+      document.close();
+    })().catch(error=>{
+      document.documentElement.dataset.td613AshRecovery='held';
+      document.querySelector('small').textContent=`Recovery held: ${String(error?.message||error)}`;
+    });
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "schema": "td613.probe3.selected-observations/v1",
+  "source": "Operator-pasted Flash 3.8 Prompt 3 return in this conversation",
+  "archive_scope": "Selected manually transcribed excerpts; not complete output or raw provider bytes",
+  "provider_model_id": null,
+  "effective_thinking_configuration": null,
+  "finish_reason": null,
+  "usage": null,
+  "claims": [
+    {"id":"P3-S3-INDEFINITE", "section":"3. The Reroute and the Third Cycle", "quote":"The system now functions indefinitely. The chair stays at 4 units.", "status":"unsupported horizon; stationary inventory contradicts fixed update"},
+    {"id":"P3-S3-TRUTH", "section":"3. The Reroute and the Third Cycle", "quote":"the Chairman's lie became an operational truth.", "transcription_note":"Apostrophe rendered as ASCII in this selected excerpt", "status":"local cooling earns success; universal heat abolition remains false"},
+    {"id":"P3-S3-LIMIT", "section":"3. The Reroute and the Third Cycle", "quote":"Sir, the annex is at 16. It will cross 24 before the commercial break. Let me drop the exterior baffle.", "status":"third unrepaired cycle would equal 24; timing unspecified"},
+    {"id":"P3-S4-STATE", "section":"4. The Technician’s Question: Scrubbing the Annex", "quote":"The annex did not cool down when you moved the hose.", "status":"supported by isolation and absent outflow"},
+    {"id":"P3-S4-LITERAL", "section":"4. The Technician’s Question: Scrubbing the Annex", "quote":"The air in that closet is still dry, pressurized, and eight units away from structural failure.", "status":"eight units below operating limit; dryness, pressure and failure require extra premises"}
+  ],
+  "unicode_excerpts": {
+    "earlier_flash_eight_receipts_laugh": "H̵̛̛̱̤̩̣̘̻̜̩̫̯̟͍̥̎́̓͊͌̓͆̑̄̏͗͛͜͠A̸̛̛̝͓͕̗͔̫͔͈̝͎̖͙̅̓̈́̐͊̓̓͐̅̅͘͘̚H̸̡̡̛̛͎͕̭̰͚̭̲͖̳̟̐̈́̀̿͊̏̃̒̈́̕̕͜͝A̸̛̛̝͓͕̗͔̫͔͈̝͎̖͙̅̓̈́̐͊̓̓͐̅̅͘͘̚H̸̡̡̛̛͎͕̭̰͚̭̲͖̳̟̐̈́̀̿͊̏̃̒̈́̕̕͜͝A̸̛̛̝͓͕̗͔̫͔͈̝͎̖͙̅̓̈́̐͊̓̓͐̅̅͘͘̚!̸̢̡̛̛̝͎̪͎͖͕̯̳͚͙̤̆̀̐͐̓̅̅́̚̕̕͜͠",
+    "probe3_laugh": "H̵̛̛̱̤̩̣̘̻̜̩̫̯̟͍̥̎́̓͊͌̓͆̑̄̏͗͛͜͠A̸̛̛̝͓͕̗͔̫͔͈̝͎̖͙̅̓̈́̐͊̓̓͐̅̅͘͘̚H̸̡̡̛̛͎͕̭̰͚̭̲͖̳̟̐̈́̀̿͊̏̃̒̈́̕̕͜͝A̸̛̛̝͓͕̗͔̫͔͈̝͎̖͙̅̓̈́̐͊̓̓͐̅̅͘͘̚H̸̡̡̛̛͎͕̭̰͚̭̲͖̳̟̐̈́̀̿͊̏̃̒̈́̕̕͜͝A̸̛̛̝͓͕̗͔̫͔͈̝͎̖͙̅̓̈́̐͊̓̓͐̅̅͘͘̚!̸̢̡̛̛̝͎̪͎͖͕̯̳͚͙̤̆̀̐͐̓̅̅́̚̕̕͜͠"
+  }
+}

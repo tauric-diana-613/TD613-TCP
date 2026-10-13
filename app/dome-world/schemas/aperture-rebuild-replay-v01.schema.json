@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.aperture.rebuild-replay/v0.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "replay_id",
+    "created_at",
+    "source_test_id",
+    "source_test_digest",
+    "status",
+    "custody_state_restored",
+    "graph_content_restored",
+    "reconstruction_reexecuted",
+    "observations",
+    "missingness",
+    "alternatives",
+    "open_questions",
+    "closure",
+    "replay_digest"
+  ],
+  "properties": {
+    "schema": {
+      "const": "td613.aperture.rebuild-replay/v0.1"
+    },
+    "status": {
+      "enum": [
+        "REPLAY_VERIFIED",
+        "REPLAY_HELD"
+      ]
+    },
+    "graph_content_restored": {
+      "const": false
+    },
+    "reconstruction_reexecuted": {
+      "const": false
+    },
+    "replay_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "replay_id": {},
+    "created_at": {},
+    "source_test_id": {},
+    "source_test_digest": {},
+    "custody_state_restored": {},
+    "observations": {},
+    "missingness": {},
+    "alternatives": {},
+    "open_questions": {},
+    "closure": {}
+  },
+  "additionalProperties": false
+}

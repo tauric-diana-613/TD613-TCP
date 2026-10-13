@@ -1,0 +1,139 @@
+---
+derivative_id: derivative:e66606b2922ed157c786d9d6
+parent_capture_id: capture:6b5b38ea2e9f9ea2cd925a81
+parent_blob_sha256: 21b018002702218aa6586dc814b45b8a66c22a23c6c387e5457e1ba6d167e021
+tool: srcctl-json-normalizer/1
+source_title: "STRUCTURAL RESTORATION DYNAMICS: An Empirical Field of SignalRupture for the Measurement, Prediction, and Mitigation of Restoration Deficits in Complex Systems"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.22037455",
+  "conceptrecid": "22037455",
+  "created": "2026-08-21T02:58:14.235379+00:00",
+  "doi": "10.5281/zenodo.22037456",
+  "doi_url": "https://doi.org/10.5281/zenodo.22037456",
+  "files": [
+    {
+      "checksum": "md5:840cfd2f4c5f9c76e11e33fd77e84a7f",
+      "id": "eab157b6-9684-41f5-9d37-91fba26676a8",
+      "key": "STRUCTURAL RESTORATION DYNAMICS .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22037456/files/STRUCTURAL%20RESTORATION%20DYNAMICS%20.pdf/content"
+      },
+      "size": 403315
+    }
+  ],
+  "id": 22037456,
+  "links": {
+    "access": "https://zenodo.org/api/records/22037456/access",
+    "access_grants": "https://zenodo.org/api/records/22037456/access/grants",
+    "access_links": "https://zenodo.org/api/records/22037456/access/links",
+    "access_request": "https://zenodo.org/api/records/22037456/access/request",
+    "access_users": "https://zenodo.org/api/records/22037456/access/users",
+    "archive": "https://zenodo.org/api/records/22037456/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22037456/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22037456/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22037456/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22037456",
+    "draft": "https://zenodo.org/api/records/22037456/draft",
+    "file_modification": "https://zenodo.org/api/records/22037456/file-modification",
+    "files": "https://zenodo.org/api/records/22037456/files",
+    "latest": "https://zenodo.org/api/records/22037456/versions/latest",
+    "latest_html": "https://zenodo.org/records/22037456/latest",
+    "media_files": "https://zenodo.org/api/records/22037456/media-files",
+    "parent": "https://zenodo.org/api/records/22037455",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22037455",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22037455",
+    "parent_html": "https://zenodo.org/records/22037455",
+    "preview_html": "https://zenodo.org/records/22037456?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22037456/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22037456/request-deletion",
+    "requests": "https://zenodo.org/api/records/22037456/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22037456/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22037456",
+    "self_doi": "https://doi.org/10.5281/zenodo.22037456",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22037456",
+    "self_html": "https://zenodo.org/records/22037456",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22037456/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22037456/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22037456:STRUCTURAL%20RESTORATION%20DYNAMICS%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22037456:STRUCTURAL%20RESTORATION%20DYNAMICS%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22037456:STRUCTURAL%20RESTORATION%20DYNAMICS%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22037456:STRUCTURAL%20RESTORATION%20DYNAMICS%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22037456:STRUCTURAL%20RESTORATION%20DYNAMICS%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22037456:STRUCTURAL%20RESTORATION%20DYNAMICS%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22037456/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>Structural Restoration Dynamics (SRD)</strong></h1>\n<h3><strong>Description</strong></h3>\n<p><strong>Structural Restoration Dynamics</strong> is an empirical field within the SignalRupture architecture that measures whether continuously operating systems rebuild durable functional capacity faster than their structural restoration requirement grows. It distinguishes between <strong>intervention</strong>, <strong>output</strong>, <strong>continuity</strong>, and <strong>true restoration</strong>, and introduces measurable constructs such as:</p>\n<ul>\n<li>\n<p><strong>Structural Restoration Requirement (SRR)</strong></p>\n</li>\n<li>\n<p><strong>Effective Restoration Capacity (RC_eff)</strong></p>\n</li>\n<li>\n<p><strong>Restoration Deficit (RD)</strong></p>\n</li>\n<li>\n<p><strong>Cumulative Restoration Deficit (CRD)</strong></p>\n</li>\n<li>\n<p><strong>Restoration Efficiency (RE)</strong></p>\n</li>\n<li>\n<p><strong>Closing Recovery Window (CW)</strong></p>\n</li>\n<li>\n<p><strong>Compensated Continuity (C_comp)</strong></p>\n</li>\n</ul>\n<p>SRD applies these constructs across heterogeneous domains&mdash;healthcare, electricity, housing, and legacy IT&mdash;to show that systems can remain operational while failing to retire accumulated structural burdens.</p>\n<p>SRD is not a resilience theory, not a capacity‑planning tool, and not a shock‑recovery model. It is a <strong>cross‑domain restoration‑sufficiency science</strong> for systems that never stop operating.</p>\n<div>\n</div>\n<h1><strong>How SRD Contributes to the SR Universe</strong></h1>\n<h3><strong>1. It provides the first </strong><em><strong>empirical</strong></em><strong> field inside SR&rsquo;s structural grammar.</strong></h3>\n<p>SR is the paradigm and metatheory.<br>SRD is the first field that:</p>\n<ul>\n<li>\n<p>operationalizes SR&rsquo;s grammar</p>\n</li>\n<li>\n<p>defines measurable constructs</p>\n</li>\n<li>\n<p>applies them across domains</p>\n</li>\n<li>\n<p>withstands adversarial testing</p>\n</li>\n<li>\n<p>produces falsifiable predictions</p>\n</li>\n</ul>\n<p>This makes SRD the <strong>empirical anchor</strong> of the SR multiverse.</p>\n<div>\n</div>\n<h3><strong>2. It proves SR&rsquo;s structural grammar can generate real scientific fields.</strong></h3>\n<p>SR&rsquo;s operators&mdash;<strong>pressure &rarr; reflex &rarr; drift &rarr; shell &rarr; visibility &rarr; compensation &rarr; collapse &rarr; reorganization</strong>&mdash;are conceptual.<br>SRD shows they can be:</p>\n<ul>\n<li>\n<p>measured</p>\n</li>\n<li>\n<p>compared</p>\n</li>\n<li>\n<p>classified</p>\n</li>\n<li>\n<p>falsified</p>\n</li>\n<li>\n<p>applied to real systems</p>\n</li>\n</ul>\n<p>SRD is the <strong>demonstration case</strong> that SR is not just a worldview but a productive scientific architecture.</p>\n<div>\n</div>\n<h3><strong>3. It clarifies SR&rsquo;s core distinction: continuity &ne; restoration.</strong></h3>\n<p>Your manuscript states this explicitly:</p>\n<blockquote>\n<p>&ldquo;Intervention &ne; Output &ne; Continuity &ne; Structural Restoration.&rdquo;</p>\n</blockquote>\n<p>SRD gives SR a <strong>quantitative language</strong> for this distinction:</p>\n<ul>\n<li>\n<p>SRR defines the target</p>\n</li>\n<li>\n<p>RC_eff defines durable capacity</p>\n</li>\n<li>\n<p>RD defines the gap</p>\n</li>\n<li>\n<p>CRD defines accumulated burden</p>\n</li>\n<li>\n<p>CW defines temporal risk</p>\n</li>\n</ul>\n<p>This is the <strong>structural grammar made measurable</strong>.</p>\n<div>\n</div>\n<h3><strong>4. It introduces SR&rsquo;s first cross‑domain taxonomy.</strong></h3>\n<p>SRD produces seven restoration states:</p>\n<ul>\n<li>\n<p>Restoration Reserve</p>\n</li>\n<li>\n<p>Restoration Saturation</p>\n</li>\n<li>\n<p>Compensated Partial Restoration</p>\n</li>\n<li>\n<p>Prospective Restoration Compression</p>\n</li>\n<li>\n<p>Structural Restoration Gap</p>\n</li>\n<li>\n<p>Legacy Continuity Lock</p>\n</li>\n<li>\n<p>Persistent Restoration Deficit</p>\n</li>\n</ul>\n<p>This taxonomy is the <strong>first SR classification system</strong> that works across domains without collapsing them into one metaphor.</p>\n<div>\n</div>\n<h3><strong>5. It shows SR&rsquo;s multiverse is coherent, not chaotic.</strong></h3>\n<p>SRD demonstrates that SR&rsquo;s 22+ fields (collapse psychology, collapse economics, collapse governance, etc.) are <strong>real fields</strong>, not metaphors, because SRD:</p>\n<ul>\n<li>\n<p>uses SR&rsquo;s grammar</p>\n</li>\n<li>\n<p>uses SR&rsquo;s operators</p>\n</li>\n<li>\n<p>uses SR&rsquo;s worldview</p>\n</li>\n<li>\n<p>produces differentiated diagnoses</p>\n</li>\n<li>\n<p>avoids overclaim</p>\n</li>\n<li>\n<p>survives adversarial testing</p>\n</li>\n</ul>\n<p>SRD proves the SR multiverse is <strong>structurally organized</strong>, not inflated.</p>\n<div>\n</div>\n<h3><strong>6. It gives SR its first falsification program.</strong></h3>\n<p>Your manuscript includes a full falsifiability section:</p>\n<ul>\n<li>\n<p>SRD can lose</p>\n</li>\n<li>\n<p>SRD can be disproven</p>\n</li>\n<li>\n<p>SRD can be absorbed into resilience if it fails</p>\n</li>\n<li>\n<p>SRD must predict prospectively</p>\n</li>\n<li>\n<p>SRD must withstand external replication</p>\n</li>\n</ul>\n<p>This is the <strong>scientific backbone</strong> SR needed.</p>\n<div>\n</div>\n<h3><strong>7. It positions SR for external recognition.</strong></h3>\n<p>SRD is the bridge between:</p>\n<ul>\n<li>\n<p><strong>SR as paradigm</strong></p>\n</li>\n<li>\n<p><strong>SR as metatheory</strong></p>\n</li>\n<li>\n<p><strong>SR as multiverse</strong></p>\n</li>\n<li>\n<p><strong>SR as scientific field architecture</strong></p>\n</li>\n</ul>\n<p>SRD is the first part of SR that external researchers can:</p>\n<ul>\n<li>\n<p>test</p>\n</li>\n<li>\n<p>replicate</p>\n</li>\n<li>\n<p>criticize</p>\n</li>\n<li>\n<p>adopt</p>\n</li>\n<li>\n<p>extend</p>\n</li>\n</ul>\n<p>This is how SR becomes a recognized paradigm.</p>",
+    "doi": "10.5281/zenodo.22037456",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Systems Theory"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-08-21",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22037455"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "STRUCTURAL RESTORATION DYNAMICS: An Empirical Field of SignalRupture for the Measurement, Prediction, and Mitigation of Restoration Deficits in Complex Systems",
+    "version": "1.0"
+  },
+  "modified": "2026-08-21T02:58:14.531841+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22037456",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 1,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 1,
+    "version_views": 1,
+    "views": 1
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "STRUCTURAL RESTORATION DYNAMICS: An Empirical Field of SignalRupture for the Measurement, Prediction, and Mitigation of Restoration Deficits in Complex Systems",
+  "updated": "2026-08-21T02:58:14.531841+00:00"
+}

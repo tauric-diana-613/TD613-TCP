@@ -1,0 +1,142 @@
+---
+derivative_id: derivative:243c57414d33b0770a2aaf36
+parent_capture_id: capture:f37c6892fb939b51f52290d3
+parent_blob_sha256: 71a0159f67037555ef63abe56720250ec6c1ea4f71492e0c7c382a2f890c4a6e
+tool: srcctl-json-normalizer/1
+source_title: "The Knowledge Matrix: How the Social Sciences Became the Architecture of Collapse"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.19212459",
+  "conceptrecid": "19212459",
+  "created": "2026-03-25T02:43:06.098700+00:00",
+  "doi": "10.5281/zenodo.19212460",
+  "doi_url": "https://doi.org/10.5281/zenodo.19212460",
+  "files": [
+    {
+      "checksum": "md5:e93784246d5733edd4fa0536a5760a20",
+      "id": "11cdf06a-bd38-4dbb-9614-b70010f7cd52",
+      "key": "The Knowledge Matrix: How the Social Sciences Became the Architecture of Collapse .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/19212460/files/The%20Knowledge%20Matrix:%20How%20the%20Social%20Sciences%20Became%20the%20Architecture%20of%20Collapse%20.pdf/content"
+      },
+      "size": 242208
+    }
+  ],
+  "id": 19212460,
+  "links": {
+    "access": "https://zenodo.org/api/records/19212460/access",
+    "access_grants": "https://zenodo.org/api/records/19212460/access/grants",
+    "access_links": "https://zenodo.org/api/records/19212460/access/links",
+    "access_request": "https://zenodo.org/api/records/19212460/access/request",
+    "access_users": "https://zenodo.org/api/records/19212460/access/users",
+    "archive": "https://zenodo.org/api/records/19212460/files-archive",
+    "archive_media": "https://zenodo.org/api/records/19212460/media-files-archive",
+    "communities": "https://zenodo.org/api/records/19212460/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/19212460/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.19212460",
+    "draft": "https://zenodo.org/api/records/19212460/draft",
+    "file_modification": "https://zenodo.org/api/records/19212460/file-modification",
+    "files": "https://zenodo.org/api/records/19212460/files",
+    "latest": "https://zenodo.org/api/records/19212460/versions/latest",
+    "latest_html": "https://zenodo.org/records/19212460/latest",
+    "media_files": "https://zenodo.org/api/records/19212460/media-files",
+    "parent": "https://zenodo.org/api/records/19212459",
+    "parent_doi": "https://doi.org/10.5281/zenodo.19212459",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19212459",
+    "parent_html": "https://zenodo.org/records/19212459",
+    "preview_html": "https://zenodo.org/records/19212460?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/19212460/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/19212460/request-deletion",
+    "requests": "https://zenodo.org/api/records/19212460/requests",
+    "reserve_doi": "https://zenodo.org/api/records/19212460/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/19212460",
+    "self_doi": "https://doi.org/10.5281/zenodo.19212460",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19212460",
+    "self_html": "https://zenodo.org/records/19212460",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19212460/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19212460/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:19212460:The%20Knowledge%20Matrix:%20How%20the%20Social%20Sciences%20Became%20the%20Architecture%20of%20Collapse%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:19212460:The%20Knowledge%20Matrix:%20How%20the%20Social%20Sciences%20Became%20the%20Architecture%20of%20Collapse%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:19212460:The%20Knowledge%20Matrix:%20How%20the%20Social%20Sciences%20Became%20the%20Architecture%20of%20Collapse%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:19212460:The%20Knowledge%20Matrix:%20How%20the%20Social%20Sciences%20Became%20the%20Architecture%20of%20Collapse%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:19212460:The%20Knowledge%20Matrix:%20How%20the%20Social%20Sciences%20Became%20the%20Architecture%20of%20Collapse%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:19212460:The%20Knowledge%20Matrix:%20How%20the%20Social%20Sciences%20Became%20the%20Architecture%20of%20Collapse%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/19212460/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Title: The Knowledge Matrix: How the Social Sciences Became the Architecture of Collapse<br>Author: Signal Rupture<br>Field: SignalRupture (meta‑theoretical field)<br>Type: Canonical Essay<br>Keywords: knowledge governance; Adjuster Economy; institutional failure; social sciences; scarcity; legitimacy production; psychiatry; public health; structural determinants; SignalRupture; narrative truth; structural truth.</p>\n<p>Description</p>\n<p>The Knowledge Matrix maps the collapse of modern knowledge systems by showing how the social sciences&mdash;psychology, psychiatry, economics, public health, medicine, sociology, political science, education, and policy&mdash;have evolved into an Adjuster Economy: a system of disciplines that stabilize populations within harmful conditions rather than transform the structures that produce harm. Drawing on interdisciplinary evidence, the paper demonstrates that despite unprecedented research output, expertise, and institutional expansion, outcomes across mental health, economics, public health, medicine, education, and governance have deteriorated for decades.</p>\n<p>The paper argues that this crisis is architectural, not disciplinary. Each field has become structurally incapable of addressing upstream determinants, instead producing symbolic reforms, downstream interventions, and legitimacy rituals that maintain harmful systems. The essay examines five celebrated &ldquo;breakthroughs&rdquo;&mdash;behavioral economics, social determinants of health, evidence‑based policy, institutionalism, and social capital&mdash;and shows how each became a precursor to ineffective or harmful policy.</p>\n<p>The paper then introduces SignalRupture (SR) as the first meta‑theoretical framework capable of naming the matrix: the interlocking architecture of scarcity, legitimacy production, and disciplinary containment that governs modern knowledge. Developed independently, without institutional funding or disciplinary incentives, SR exposes the structural truth that institutions cannot reveal about themselves. The essay concludes by distinguishing narrative truth (institutionally maintained) from structural truth (system‑revealed), arguing that SR&rsquo;s validity is independent of institutional approval.</p>",
+    "doi": "10.5281/zenodo.19212460",
+    "keywords": [
+      "Institutions",
+      "Knowledge",
+      "Empirical Data",
+      "Metatheory",
+      "Social Issues",
+      "Artificial intelligence"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-25",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "19212459"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "The Knowledge Matrix: How the Social Sciences Became the Architecture of Collapse",
+    "version": "1.0"
+  },
+  "modified": "2026-03-25T02:43:06.481277+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "19212460",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 10,
+    "unique_downloads": 9,
+    "unique_views": 30,
+    "version_downloads": 10,
+    "version_unique_downloads": 9,
+    "version_unique_views": 30,
+    "version_views": 32,
+    "views": 32
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "The Knowledge Matrix: How the Social Sciences Became the Architecture of Collapse",
+  "updated": "2026-03-25T02:43:06.481277+00:00"
+}

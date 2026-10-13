@@ -1,0 +1,319 @@
+{
+  "schema": "td613.pedagogue-gesture-consequence-case/v0.1",
+  "case_id": "fictional-document-revision-review",
+  "observation": {
+    "kind": "SYNTHETIC_FIXTURE",
+    "source_revision": null
+  },
+  "rest_exit": {
+    "cue_pause_available": true,
+    "exit_available": true
+  },
+  "initial_state": {
+    "staged_refs": [],
+    "send_count": 0,
+    "pending_attempt_id": null,
+    "latest_attempt": {
+      "attempt_id": null,
+      "status": "NONE"
+    },
+    "admitted_result_ref": null,
+    "cue_paused": false,
+    "exited": false,
+    "expires_at": 600
+  },
+  "steps": [
+    {
+      "step_id": "fictional-document-revision-review:1",
+      "kind": "OPEN",
+      "at": 10,
+      "explicit_operator_gesture": true,
+      "notice": {
+        "visible": true,
+        "at": 9
+      },
+      "consequence_visible": true,
+      "item_refs": [],
+      "attempt_id": null,
+      "outcome": "NONE",
+      "result_ref": null,
+      "observed_state": {
+        "staged_refs": [],
+        "send_count": 0,
+        "pending_attempt_id": null,
+        "latest_attempt": {
+          "attempt_id": null,
+          "status": "NONE"
+        },
+        "admitted_result_ref": null,
+        "cue_paused": false,
+        "exited": false,
+        "expires_at": 600
+      }
+    },
+    {
+      "step_id": "fictional-document-revision-review:2",
+      "kind": "PAUSE_CUE",
+      "at": 20,
+      "explicit_operator_gesture": true,
+      "notice": {
+        "visible": true,
+        "at": 19
+      },
+      "consequence_visible": true,
+      "item_refs": [],
+      "attempt_id": null,
+      "outcome": "NONE",
+      "result_ref": null,
+      "observed_state": {
+        "staged_refs": [],
+        "send_count": 0,
+        "pending_attempt_id": null,
+        "latest_attempt": {
+          "attempt_id": null,
+          "status": "NONE"
+        },
+        "admitted_result_ref": null,
+        "cue_paused": true,
+        "exited": false,
+        "expires_at": 600
+      }
+    },
+    {
+      "step_id": "fictional-document-revision-review:3",
+      "kind": "RESUME_CUE",
+      "at": 30,
+      "explicit_operator_gesture": true,
+      "notice": {
+        "visible": true,
+        "at": 29
+      },
+      "consequence_visible": true,
+      "item_refs": [],
+      "attempt_id": null,
+      "outcome": "NONE",
+      "result_ref": null,
+      "observed_state": {
+        "staged_refs": [],
+        "send_count": 0,
+        "pending_attempt_id": null,
+        "latest_attempt": {
+          "attempt_id": null,
+          "status": "NONE"
+        },
+        "admitted_result_ref": null,
+        "cue_paused": false,
+        "exited": false,
+        "expires_at": 600
+      }
+    },
+    {
+      "step_id": "fictional-document-revision-review:4",
+      "kind": "STAGE",
+      "at": 40,
+      "explicit_operator_gesture": true,
+      "notice": {
+        "visible": true,
+        "at": 39
+      },
+      "consequence_visible": true,
+      "item_refs": [
+        "fictional-local-revision-1"
+      ],
+      "attempt_id": null,
+      "outcome": "NONE",
+      "result_ref": null,
+      "observed_state": {
+        "staged_refs": [
+          "fictional-local-revision-1"
+        ],
+        "send_count": 0,
+        "pending_attempt_id": null,
+        "latest_attempt": {
+          "attempt_id": null,
+          "status": "NONE"
+        },
+        "admitted_result_ref": null,
+        "cue_paused": false,
+        "exited": false,
+        "expires_at": 600
+      }
+    },
+    {
+      "step_id": "fictional-document-revision-review:5",
+      "kind": "SEND",
+      "at": 50,
+      "explicit_operator_gesture": true,
+      "notice": {
+        "visible": true,
+        "at": 49
+      },
+      "consequence_visible": true,
+      "item_refs": [
+        "fictional-local-revision-1"
+      ],
+      "attempt_id": "review-1",
+      "outcome": "NONE",
+      "result_ref": null,
+      "observed_state": {
+        "staged_refs": [],
+        "send_count": 1,
+        "pending_attempt_id": "review-1",
+        "latest_attempt": {
+          "attempt_id": "review-1",
+          "status": "PENDING"
+        },
+        "admitted_result_ref": null,
+        "cue_paused": false,
+        "exited": false,
+        "expires_at": 600
+      }
+    },
+    {
+      "step_id": "fictional-document-revision-review:6",
+      "kind": "WORLD_ANSWER",
+      "at": 60,
+      "explicit_operator_gesture": false,
+      "notice": {
+        "visible": false,
+        "at": null
+      },
+      "consequence_visible": true,
+      "item_refs": [],
+      "attempt_id": "review-1",
+      "outcome": "ADMITTED",
+      "result_ref": "review-accepted-1",
+      "observed_state": {
+        "staged_refs": [],
+        "send_count": 1,
+        "pending_attempt_id": null,
+        "latest_attempt": {
+          "attempt_id": "review-1",
+          "status": "ADMITTED"
+        },
+        "admitted_result_ref": "review-accepted-1",
+        "cue_paused": false,
+        "exited": false,
+        "expires_at": 600
+      }
+    },
+    {
+      "step_id": "fictional-document-revision-review:7",
+      "kind": "STAGE",
+      "at": 70,
+      "explicit_operator_gesture": true,
+      "notice": {
+        "visible": true,
+        "at": 69
+      },
+      "consequence_visible": true,
+      "item_refs": [
+        "fictional-local-revision-2"
+      ],
+      "attempt_id": null,
+      "outcome": "NONE",
+      "result_ref": null,
+      "observed_state": {
+        "staged_refs": [
+          "fictional-local-revision-2"
+        ],
+        "send_count": 1,
+        "pending_attempt_id": null,
+        "latest_attempt": {
+          "attempt_id": "review-1",
+          "status": "ADMITTED"
+        },
+        "admitted_result_ref": "review-accepted-1",
+        "cue_paused": false,
+        "exited": false,
+        "expires_at": 600
+      }
+    },
+    {
+      "step_id": "fictional-document-revision-review:8",
+      "kind": "SEND",
+      "at": 80,
+      "explicit_operator_gesture": true,
+      "notice": {
+        "visible": true,
+        "at": 79
+      },
+      "consequence_visible": true,
+      "item_refs": [
+        "fictional-local-revision-2"
+      ],
+      "attempt_id": "review-2",
+      "outcome": "NONE",
+      "result_ref": null,
+      "observed_state": {
+        "staged_refs": [],
+        "send_count": 2,
+        "pending_attempt_id": "review-2",
+        "latest_attempt": {
+          "attempt_id": "review-2",
+          "status": "PENDING"
+        },
+        "admitted_result_ref": "review-accepted-1",
+        "cue_paused": false,
+        "exited": false,
+        "expires_at": 600
+      }
+    },
+    {
+      "step_id": "fictional-document-revision-review:9",
+      "kind": "WORLD_ANSWER",
+      "at": 90,
+      "explicit_operator_gesture": false,
+      "notice": {
+        "visible": false,
+        "at": null
+      },
+      "consequence_visible": true,
+      "item_refs": [],
+      "attempt_id": "review-2",
+      "outcome": "HELD",
+      "result_ref": null,
+      "observed_state": {
+        "staged_refs": [],
+        "send_count": 2,
+        "pending_attempt_id": null,
+        "latest_attempt": {
+          "attempt_id": "review-2",
+          "status": "HELD"
+        },
+        "admitted_result_ref": "review-accepted-1",
+        "cue_paused": false,
+        "exited": false,
+        "expires_at": 600
+      }
+    },
+    {
+      "step_id": "fictional-document-revision-review:10",
+      "kind": "EXIT",
+      "at": 100,
+      "explicit_operator_gesture": true,
+      "notice": {
+        "visible": true,
+        "at": 99
+      },
+      "consequence_visible": true,
+      "item_refs": [],
+      "attempt_id": null,
+      "outcome": "NONE",
+      "result_ref": null,
+      "observed_state": {
+        "staged_refs": [],
+        "send_count": 2,
+        "pending_attempt_id": null,
+        "latest_attempt": {
+          "attempt_id": "review-2",
+          "status": "HELD"
+        },
+        "admitted_result_ref": "review-accepted-1",
+        "cue_paused": true,
+        "exited": true,
+        "expires_at": 600
+      }
+    }
+  ]
+}

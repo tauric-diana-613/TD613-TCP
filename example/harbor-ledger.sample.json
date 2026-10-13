@@ -1,0 +1,21 @@
+[
+  {
+    "event_id": "evt-001",
+    "timestamp": "2026-03-18T00:00:00Z",
+    "operator_id": "op-a",
+    "witness_channel": "inside-frame",
+    "source_class": "public membrane",
+    "evidentiary_class": "receipt-bearing",
+    "harbor_function": "mirror.off",
+    "group_size": 4,
+    "effective_archive": "A_W",
+    "solo_cost": 3.16,
+    "shared_cost": 1.301,
+    "reuse_gain": 1.859,
+    "provenance_retention": 0.95,
+    "witness_load": 0.49,
+    "justice_deficit": 0.708,
+    "route_status": "buffered",
+    "receipt_hash": "sha256:example001"
+  }
+]

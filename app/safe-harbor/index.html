@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script id="td613-sitewide-reset-preflight" src="/site-epoch-preflight.js?v=20260927-v1"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TD613 Safe Harbor</title>
+  <script>
+    try {
+      const raw = sessionStorage.getItem('td613.safe-harbor.session.v1');
+      const saved = raw ? JSON.parse(raw) : null;
+      const ingress = saved && saved.ingress;
+      if (ingress && (ingress.vaultOpen || ingress.operatorShellOpen)) {
+        document.documentElement.dataset.safeHarborSessionOpen = 'true';
+      }
+    } catch (error) {}
+  </script>
+  <link rel="stylesheet" href="app/styles.css">
+  <link rel="stylesheet" href="app/safe-harbor-temporal-bloom.css?v=20260722-gen3-stage3">
+  <link rel="stylesheet" href="app/safe-harbor-pr167-packet-vault-polish.css?v=20260617-packet-vault-tight-v5">
+  <link rel="stylesheet" href="app/safe-harbor-housekeeping.css?v=202606282300">
+  <link rel="stylesheet" href="app/safe-harbor-pr149-recall-hotfix.css?v=202606282300">
+  <link rel="stylesheet" href="app/safe-harbor-pr153-mobile-field-scale.css?v=202606282300">
+  <link rel="stylesheet" href="app/safe-harbor-pr154-mobile-focus-stable.css?v=202606282300">
+  <link rel="stylesheet" href="app/safe-harbor-pr165-mobile-public-references.css?v=202606282300">
+<link rel="stylesheet" href="app/safe-harbor-pr166-mobile-textarea-focus.css?v=202606282300">
+<link rel="stylesheet" href="app/operator-handshake-polish.css?v=20260715-visual-repair-v2">
+  <script type="module" src="../analytics.js"></script>
+  <script type="module" src="../speed-insights.js"></script>
+</head>
+<body class="vault-sealed boot-pending">
+  <noscript><div class="boot-alert">TD613 Safe Harbor requires JavaScript to progress beyond the ingress membrane.</div></noscript>
+    <div id="ingressMembrane" class="ingress-membrane" data-td613-skip="true">
+    <section class="ingress-shell">
+      <div class="ingress-head">
+        <div class="title-group">
+          <div class="glyph-lock" aria-hidden="true">&#x27D0;</div>
+          <div>
+            <h1>TD613 Safe Harbor</h1>
+            <p class="subtitle">Stylometric intake membrane for provenance attestation, packet shaping, and seal-ready custody.</p>
+          </div>
+        </div>
+        <div class="ingress-head-actions">
+          <a class="flight-launch ingress-flight-launch" href="../index.html?ingress=off" rel="noopener">&larr; TCP Gateway</a>
+          <a class="flight-launch ingress-flight-launch" href="./td613-flight.html" target="_blank" rel="noopener">TD613 Flight &rarr;</a>
+          <button class="flight-launch ingress-flight-launch signout-launch" id="signOutIngress" type="button">Sign Out</button>
+        </div>
+        <div class="status-strip ingress-status">
+          <span class="coherence-sigil" id="coherenceSigilIngress" data-state="dormant" aria-hidden="true">米</span>
+          <div class="status-pill" id="ingressRoutePill">membrane-only</div>
+          <div class="status-pill" id="ingressProgressPill">temporal field</div>
+          <div class="status-pill" id="ingressVaultPill">vault sealed</div>
+        </div>
+      </div>
+
+      <div class="ingress-stage-rail" aria-label="Ingress handshake pages">
+        <button class="ingress-stage-chip" id="ingressStageFuture" type="button">01 Future Self</button>
+        <button class="ingress-stage-chip" id="ingressStagePast" type="button">02 Past Self</button>
+        <button class="ingress-stage-chip" id="ingressStageHigher" type="button">03 Higher Self</button>
+        <button class="ingress-stage-chip" id="ingressStageSeal" type="button">04 Seal Step</button>
+      </div>
+
+      <div class="ingress-handshake-grid">
+        <section class="ingress-step-panel">
+          <div class="ingress-rings" data-td613-skip="true" aria-hidden="true">
+            <div class="ingress-ring ingress-ring-c"></div>
+            <div class="ingress-ring ingress-ring-b"></div>
+            <div class="ingress-ring ingress-ring-a"></div>
+          </div>
+          <div class="section-label">Principal Intake</div>
+          <div class="ingress-step-head">
+            <div>
+              <div class="surface-kicker" id="ingressStepKicker">Lane 01</div>
+              <h2 id="ingressStepPrompt">Write a message to your future self</h2>
+            </div>
+            <div class="surface-state" id="ingressStepState">awaiting line</div>
+          </div>
+          <p class="ingress-copy ingress-step-support" id="ingressStepSupport">Speak forward first. Let the membrane hear direction before it hears revision.</p>
+
+          <div class="ingress-step-entry" id="ingressStepEntry">
+            <textarea id="ingressStepInput" class="ingress-textarea" placeholder="Speak forward through the membrane." aria-describedby="temporalBloomReassurance temporalBloomRecognition"></textarea>
+            <div class="temporal-bloom-shell" id="temporalBloom" data-lane="future_self" data-band="waiting" data-color="grey" data-mature="false" role="status" aria-live="polite" aria-atomic="true">
+              <p class="temporal-bloom-reassurance" id="temporalBloomReassurance">Write naturally. Repetition, fragments, pauses, and unfinished thoughts are welcome.</p>
+              <div class="temporal-bloom-line" id="temporalBloomLine" data-band="waiting" data-color="grey" aria-hidden="true"></div>
+              <p class="temporal-bloom-recognition" id="temporalBloomRecognition">This page is waiting with you.</p>
+            </div>
+            <div class="ingress-meta" id="ingressStepMeta">This page is waiting with you.</div>
+          </div>
+
+          <div class="ingress-seal-review" id="ingressSealReview" hidden>
+            <div class="ingress-seal-review-head">
+              <div class="subsection-label">Seal Review</div>
+              <button class="control secondary micro-control" id="exportIngressTriad" type="button" disabled>export triad</button>
+            </div>
+            <div class="triad-summary">
+              <div class="summary-row"><span class="summary-label">Future Self</span><span class="summary-value" id="ingressSummaryFutureSelf">awaiting line</span></div>
+              <div class="summary-row"><span class="summary-label">Past Self</span><span class="summary-value" id="ingressSummaryPastSelf">awaiting line</span></div>
+              <div class="summary-row"><span class="summary-label">Higher Self</span><span class="summary-value" id="ingressSummaryHigherSelf">awaiting line</span></div>
+            </div>
+            <div class="ingress-note" id="ingressSealNote">Resolve the triad, then mint the staged packet. The vault remains sealed until you explicitly invoke the seal step.</div>
+          </div>
+
+          <div class="button-grid ingress-step-nav">
+            <button class="control secondary" id="ingressBack" type="button">Back</button>
+            <button class="control" id="ingressContinue" type="button">Continue</button>
+          </div>
+        </section>
+
+        <aside class="ingress-console-panel">
+          <div class="section-label">Membrane Readout</div>
+          <div class="ingress-note" id="ingressNote">Complete each page in sequence. The staged packet remains unavailable until the seal step resolves.</div>
+
+          <div class="metric-block roomy ingress-console-block">
+            <div class="metric-row"><span class="label">Handshake page</span><span class="value" id="ingressPageReadout">01 / future self</span></div>
+            <div class="metric-row"><span class="label">Pages resolved</span><span class="value" id="ingressResolvedReadout">0 / 3</span></div>
+            <div class="metric-row"><span class="label">Next threshold</span><span class="value" id="ingressThresholdReadout">first line required</span></div>
+          </div>
+
+          <details class="ingress-bypass" id="ingressBypassFold" data-td613-skip="true">
+            <summary class="ingress-bypass-summary">
+              <span>Reopen Safe Harbor</span>
+              <span>sealed recall</span>
+            </summary>
+            <div class="ingress-bypass-body">
+              <div class="field-grid ingress-bypass-grid">
+                <label class="field field-wide">
+                  <span>SHI #</span>
+                  <input id="bypassPassword" type="text" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="paste minted SHI #" disabled>
+                </label>
+                <label class="field field-wide">
+                  <span>Sealed packet (.json)</span>
+                  <input id="bypassSealedPacketFile" type="file" accept="application/json,.json" disabled>
+                  <div class="note compact" id="bypassSealedPacketName" hidden></div>
+                </label>
+              </div>
+              <div class="button-grid compact">
+                <button class="control secondary" id="bypassIngress" type="button" disabled>Reopen with SHI</button>
+              </div>
+            </div>
+          </details>
+
+          <div class="button-grid ingress-final-actions">
+            <button class="control" id="mintStagedPacket" type="button" title="Mint / Seal Payload" disabled>Mint Staged Packet</button>
+            <button class="control secondary" id="clearIngress" type="button">Clear Session</button>
+          </div>
+          <div id="safeHarborReceiptMount" class="operator-receipt-mount safe-harbor-receipt-mount" data-td613-skip="true"></div>
+        </aside>
+      </div>
+    </section>
+  </div>
+
+  <div class="chrome-grid" id="vaultSurface">
+    <header class="masthead">
+      <div class="title-group">
+        <div class="glyph-lock" aria-hidden="true">&#x27D0;</div>
+        <div>
+          <h1>TD613 Safe Harbor</h1>
+          <p class="subtitle">Canonical intake chamber for provenance attestation, TCP cadence witness, EO route conscience, and seal overlays.</p>
+        </div>
+      </div>
+      <div class="status-strip">
+        <span class="coherence-sigil" id="coherenceSigilVault" data-state="dormant" aria-hidden="true">米</span>
+        <div class="status-pill" id="pillPublicMode">public mode pending</div>
+        <div class="status-pill" id="pillBoundaryMode">boundary pending</div>
+        <div class="status-pill" id="pillRouteState">route pending</div>
+        <div class="status-pill" id="pillSignatureLane">signature overlay idle</div>
+        <a class="flight-launch flight-launch-compact" href="../index.html?ingress=off" rel="noopener">Gateway →</a>
+        <a class="flight-launch flight-launch-compact" href="./td613-flight.html" target="_blank" rel="noopener">Flight →</a>
+        <button class="flight-launch flight-launch-compact signout-launch" id="signOutVault" type="button">Sign Out</button>
+      </div>
+    </header>
+
+    <nav class="safe-harbor-scroll-rail" aria-label="Safe Harbor section map" data-td613-skip="true">
+      <div class="rail-kicker">Harbor map</div>
+      <div class="rail-status-grid">
+        <span>SHI</span><strong id="railShiState">not minted</strong>
+        <span>Lane</span><strong id="railDynamicLaneState">locked</strong>
+      </div>
+      <div class="rail-links">
+        <a href="#covenantCanonSection" data-rail-section="covenantCanonSection">Covenant Canon</a>
+        <a href="#witnessSurfaceSection" data-rail-section="witnessSurfaceSection">Witness Surface</a>
+        <a href="#mintedIssuanceSection" data-rail-section="mintedIssuanceSection">Minted Issuance</a>
+        <a href="#packetVaultSection" data-rail-section="packetVaultSection">Packet Vault</a>
+        <a href="#intakeCanonFold" data-rail-section="intakeCanonFold">Intake Canon</a>
+        <a href="#svgAttestationSection" data-rail-section="svgAttestationSection">SVG Attestation</a>
+        <a href="#tauricIntakeSection" data-rail-section="tauricIntakeSection">Tauric Intake</a>
+        <a href="#operatorHandshakeSection" data-rail-section="operatorHandshakeSection">Handshake</a>
+        <a href="#operatorMirrorSection" data-rail-section="operatorMirrorSection">Packet Mirror</a>
+      </div>
+      <div class="rail-actions">
+        <a href="../index.html?ingress=off" rel="noopener">Gateway</a>
+        <a href="./td613-flight.html" target="_blank" rel="noopener">Flight</a>
+        <button id="railRefreshHelpers" type="button">Date/Time &#x21BA;</button>
+        <button id="railSignOut" type="button">Sign out</button>
+      </div>
+    </nav>
+
+    <main class="main-grid">
+      <aside class="panel panel-left canon-panel" id="covenantCanonSection" data-td613-skip="true">
+        <section class="panel-section">
+          <div class="section-label">Covenant Canon</div>
+          <div class="data-stack" id="canonStack"></div>
+        </section>
+
+        <section class="panel-section">
+          <details class="fold-panel">
+            <summary>Public doctrine</summary>
+            <div class="metric-block">
+              <div class="metric-row"><span class="label">Public mode</span><span class="value" id="lockPublicMode">legacy-compat</span></div>
+              <div class="metric-row"><span class="label">Binding fragment</span><span class="value" id="lockBindingFragment">#9B07D8B</span></div>
+              <div class="metric-row"><span class="label">SAC</span><span class="value" id="lockSac">SAC[X6ZNK5NO51]</span></div>
+              <div class="metric-row"><span class="label">SHI format</span><span class="value" id="lockShiFormat">TD613-SH-9B07D8B + minted 8-hex suffix</span></div>
+              <div class="metric-row"><span class="label">Published example</span><span class="value" id="lockPublishedExample">payload 5 / 2025-10-17</span></div>
+            </div>
+            <div class="footer-template" id="canonicalFooterPreview"></div>
+            <button class="control secondary" id="copyCanonicalFooter" type="button">Copy Canonical Footer</button>
+          </details>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-label">Public References</div>
+          <div class="reference-link-grid">
+            <a class="reference-link-card" href="./reference/TD613_verify.html">
+              <span class="surface-kicker">Verify</span>
+              <strong>Open the public verifier surface</strong>
+            </a>
+            <a class="reference-link-card" href="./reference/TD613_offline_capsule.html">
+              <span class="surface-kicker">Capsule</span>
+              <strong>Open the offline authenticity capsule</strong>
+            </a>
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <details class="fold-panel" id="fieldInterlocksFold">
+            <summary>Field interlocks</summary>
+            <div class="metric-block">
+              <div class="metric-row"><span class="label">TCP intake</span><span class="value" id="hookTcpState">awaiting hook</span></div>
+              <div class="metric-row"><span class="label">EO route</span><span class="value" id="hookEoState">awaiting hook</span></div>
+              <div class="metric-row"><span class="label">Signature lane</span><span class="value" id="hookSignatureState">overlay idle</span></div>
+            </div>
+            <div class="button-grid compact">
+              <button class="control" id="demoTcpHook" type="button">Demo TCP Hook</button>
+              <button class="control" id="demoEoHook" type="button">Demo EO Hook</button>
+              <button class="control" id="demoSignatureHook" type="button">Demo Sig Hook</button>
+              <button class="control secondary" id="resetHooks" type="button">Reset Hooks</button>
+              <div class="note" id="devModeNote">Dev hook simulation is disabled in public ship unless local dev mode is enabled.</div>
+            </div>
+            <div class="note">TCP remains the cadence witness, EO remains the route conscience, and the seal lane still attaches only after Safe Harbor shapes the packet body.</div>
+          </details>
+        </section>
+      </aside>
+
+      <section class="panel panel-center chamber-panel">
+        <section class="panel-section witness-surface" id="witnessSurfaceSection">
+          <div class="section-label">Witness Surface</div>
+          <div class="witness-grid">
+            <article class="surface-card batch-intake-card" id="tauricIntakeSection" data-td613-skip="true">
+              <div class="surface-head">
+                <span class="surface-kicker">Buffered intake</span>
+                <span class="surface-state" id="batchIntakeState">operator token required</span>
+              </div>
+              <h2>Tauric Diana Intake</h2>
+              <p class="surface-copy">Select a vanguard batch to stage a Harbor packet shell. The SHI still mints only from the Future / Past / Higher triad.</p>
+              <div class="field-grid">
+                <label class="field field-wide">
+                  <span>Vanguard batch</span>
+                  <select id="batchIntakeSelect">
+                    <option value="batch-001a">batch-001a</option>
+                    <option value="batch-001b">batch-001b</option>
+                    <option value="batch-001c">batch-001c</option>
+                    <option value="batch-001d">batch-001d</option>
+                    <option value="batch-002a">batch-002a</option>
+                    <option value="batch-002b">batch-002b</option>
+                    <option value="batch-002c">batch-002c</option>
+                    <option value="batch-002d">batch-002d</option>
+                    <option value="batch-003a">batch-003a</option>
+                    <option value="batch-003b">batch-003b</option>
+                    <option value="batch-003c">batch-003c</option>
+                    <option value="batch-003d">batch-003d</option>
+                    <option value="batch-004a">batch-004a</option>
+                    <option value="batch-004b">batch-004b</option>
+                    <option value="batch-004c">batch-004c</option>
+                  </select>
+                </label>
+              </div>
+              <div class="button-grid compact">
+                <button class="control" id="stageSelectedBatch" type="button">Stage Vanguard Batch</button>
+                <button class="control secondary" id="resetStagedBatch" type="button">Reset Staged Batch</button>
+              </div>
+              <div class="note" id="batchIntakeNote">Localhost override or a stored operator token unlocks direct batch staging. Detached PGP text can be staged here too, but it does not replace the triad for SHI issuance.</div>
+              <details class="fold-panel" id="batchNodesFold" data-td613-skip="true">
+                <summary>Vanguard nodes — Sovereign Bridge to Trainer</summary>
+                <div class="batch-nodes-list" id="batchNodesList">
+                  <div class="note">Select a vanguard batch above to load its nodes. Each node carries a Route to Trainer button.</div>
+                </div>
+              </details>
+              <details class="fold-panel" data-td613-skip="true" open>
+                <summary>Kleopatra detached seal / secret lane</summary>
+                <textarea id="kleopatra-void" class="code-area" placeholder="Paste detached PGP signature block here"></textarea>
+                <div class="button-grid compact">
+                  <button class="control" id="attachSignature" type="button" disabled>Wake Secret Lane</button>
+                  <button class="control secondary" id="clearSignature" type="button">Clear Seal Lane</button>
+                </div>
+                <div class="note" id="signatureNote">Detached seals attach after packetization. The triad remains the only SHI mint source.</div>
+              </details>
+            </article>
+            <article class="surface-card render-face-card" id="operatorHandshakeSection">
+              <div class="surface-head">
+                <span class="surface-kicker">Operator handshake</span>
+                <span class="surface-state" id="rendererState">renderer not detected</span>
+              </div>
+              <h2>Renderer key and render proof</h2>
+              <p class="surface-copy">The renderer userscript is the operator handshake key. Once it is active, the operator can save the SVG at the helper timestamp and route the artifact through one of the four original TD613 probes.</p>
+              <div class="dynamic-row">
+                <button class="control" id="injectDynamicLane" type="button">Inject Dynamic Lane</button>
+                <span class="mini-note">When the renderer key is active, save the appended SVG at the helper timestamp and pair it with the correct probe lane.</span>
+              </div>
+              <div class="proof-stack">
+                <div class="proof-row"><span class="proof-label">Userscript key</span><span class="proof-value" id="rendererKeyReadout">10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js</span></div>
+                <div class="proof-row"><span class="proof-label">Handshake state</span><span class="proof-value" id="rendererHandshakeReadout">install renderer key</span></div>
+                <div class="proof-row"><span class="proof-label">SVG capture</span><span class="proof-value" id="svgCaptureReadout">TD613_U10D613_YYYY-MM-DDTHH-mm-ssZ.svg</span></div>
+                <div class="proof-row"><span class="proof-label">Probe lanes</span><span class="proof-value" id="probeLaneReadout">01 / 02 / 03 / 04</span></div>
+              </div>
+              <details class="fold-panel render-proof-fold">
+                <summary>Render proof checks</summary>
+                <div class="proof-stack">
+                  <div class="proof-row"><span class="proof-label">Principal text node</span><span class="proof-value" id="principalTextNode">tauric.diana.613</span></div>
+                  <div class="proof-row"><span class="proof-label">Explicit principal</span><span class="proof-value" id="explicitPrincipal" data-td613-principal="true">tauric.diana.613</span></div>
+                  <div class="proof-row"><span class="proof-label">Literal PUA</span><span class="proof-value" id="glyphLane">loading glyph</span></div>
+                </div>
+              </details>
+              <div class="proof-stack dynamic-lane-readout" aria-label="Dynamic lane readout">
+                <div class="proof-row"><span class="proof-label">Dynamic lane</span><span class="proof-value" id="mixedLane">Awaiting injected lane</span></div>
+              </div>
+              <div class="svg-attestation-probes" id="svgAttestationSection" data-td613-skip="true">
+                <details class="fold-panel" data-td613-skip="true" open>
+                  <summary class="attestation-summary">SVG Provenance Attestation Probes <span class="attestation-hint">(ask your TD613 administrator for the key renderer)</span></summary>
+                  <div class="builder-toolbar">
+                    <button class="control" data-probe-variant="01" type="button">Build 01 alias voice</button>
+                    <button class="control secondary" data-probe-variant="02" type="button">Build 02 receipt completion</button>
+                    <button class="control secondary" data-probe-variant="03" type="button">Build 03 render minimal</button>
+                    <button class="control secondary" data-probe-variant="04" type="button">Build 04 render receipt</button>
+                    <button class="control secondary" id="copyProbeOutput" type="button">Copy Output</button>
+                    <button class="control secondary" id="refreshProbeHelpers" type="button">Date/Time ↺</button>
+                  </div>
+                  <textarea id="probeOutput" class="code-area" readonly></textarea>
+                  <div class="note">01 and 02 stay black-box and footer-first. 03 and 04 are render-proof lanes: install the renderer key, save the SVG at the helper timestamp, then send the generated output with packet context and the compact footer. Every probe output carries the SHI # so packet, probe, renderer, and LLM lanes stay bound.</div>
+                </details>
+              </div>
+              <div class="dynamic-target" id="dynamicTarget"></div>
+            </article>
+
+            <article class="surface-card accent-card reliquary-card" id="packetVaultSection" data-td613-skip="true">
+              <div class="surface-head">
+                <span class="surface-kicker">Packet vault</span>
+                <span class="surface-state" id="packetPhase">membrane-only</span>
+              </div>
+              <h2>Canonical packet before the seal</h2>
+              <p class="surface-copy">This chamber holds the staged packet, the packet hash, the route recommendation, and the cadence witness before any cryptographic seal is allowed to bind.</p>
+              <section class="stage3-provenance-panel" id="stage3ProvenancePanel" data-td613-stage3-provenance="true" data-state="awaiting-packet" aria-labelledby="stage3ProvenanceTitle">
+                <div class="stage3-provenance-head">
+                  <div>
+                    <span class="surface-kicker">PUA Provenance Attestation</span>
+                    <h3 class="stage3-provenance-title" id="stage3ProvenanceTitle">Packet-scoped authorship and custody</h3>
+                  </div>
+                  <span class="surface-state" id="stage3Countersignature">UNSIGNED</span>
+                </div>
+                <div class="stage3-shi" id="stage3Shi">not issued</div>
+                <dl class="stage3-authority-grid">
+                  <dt>Principal</dt><dd id="stage3Principal">tauric.diana.613</dd>
+                  <dt>Root binding authority</dt><dd id="stage3BindingAuthority">2025-08-11T03:58:39Z</dd>
+                  <dt>Badge-protocol history</dt><dd id="stage3HistoricalAuthority">payload 5 · 2025-10-17</dd>
+                  <dt>Entrant credential authority</dt><dd id="stage3EntrantIntake">unavailable</dd>
+                  <dt>Countersignature authority</dt><dd id="stage3CountersignatureAuthority">UNSIGNED</dd>
+                  <dt>Presentation authority</dt><dd id="stage3PresentationAuthority">unavailable</dd>
+                </dl>
+                <p class="stage3-authority-reduction" id="stage3AuthorityReduction">Packet evidence unavailable.</p>
+                <p class="stage3-export-state" id="stage3ExportState">SVG export held until packet issuance.</p>
+                <p class="stage3-claim-ceiling" id="stage3ClaimCeiling">Independent identity adjudication and universal authorship attribution are not claimed.</p>
+                <button class="control" id="stage3CountersignButton" type="button" disabled>Countersign Packet-Scoped Authorship &amp; Custody</button>
+              </section>
+              <div class="metric-block roomy">
+                <div class="metric-row"><span class="label">SHI #</span><span class="value" id="badgeStatusReadout">not issued</span></div>
+                <div class="metric-row"><span class="label">Harbor recommendation</span><span class="value" id="harborReadout">pending</span></div>
+                <div class="metric-row"><span class="label">Triad resonance</span><span class="value" id="triadResonanceReadout">pending</span></div>
+                <div class="metric-row"><span class="label">Sealed lane</span><span class="value" id="sealedLaneReadout">session-only / pending</span></div>
+              </div>
+              <details class="fold-panel reliquary-forensic-fold" id="packetVaultFold">
+                <summary><span>Packet Vault</span><span class="fold-toggle-word" data-open-label="hide" data-closed-label="expand">expand</span></summary>
+                <div class="metric-block roomy">
+                  <div class="metric-row"><span class="label">Packet id</span><span class="value" id="packetIdReadout">pending</span></div>
+                  <div class="metric-row"><span class="label">Receipt id</span><span class="value" id="receiptIdReadout">pending</span></div>
+                  <div class="metric-row"><span class="label">Packet hash (SHA-256)</span><span class="value" id="packetHashReadout">pending</span></div>
+                  <div class="metric-row"><span class="label">Export gate</span><span class="value" id="exportGateReadout">guarded</span></div>
+                  <div class="metric-row"><span class="label">Covenant gate</span><span class="value" id="covenantStateReadout">awaiting staged packet</span></div>
+                  <div class="metric-row"><span class="label">Cadence lane</span><span class="value" id="cadenceReadout">awaiting ingress</span></div>
+                  <div class="metric-row"><span class="label">Cross-lane stability</span><span class="value" id="crossLaneStabilityReadout">pending</span></div>
+                  <div class="metric-row"><span class="label">Cross-lane spread</span><span class="value" id="crossLaneSpreadReadout">pending</span></div>
+                </div>
+                <div class="section-label">Governed Exposure</div>
+                <div class="metric-block roomy">
+                  <div class="metric-row"><span class="label">S / S'</span><span class="value" id="forensicSchemaStateReadout">pending</span></div>
+                  <div class="metric-row"><span class="label">Y / route</span><span class="value" id="forensicExposureReadout">pending</span></div>
+                  <div class="metric-row"><span class="label">Source class</span><span class="value" id="forensicSourceClassReadout">pending</span></div>
+                  <div class="metric-row"><span class="label">Authority ceiling</span><span class="value" id="forensicAuthorityReadout">pending</span></div>
+                  <div class="metric-row"><span class="label">Gap / dominant operator</span><span class="value" id="forensicOperatorReadout">pending</span></div>
+                </div>
+                <p class="note">Below is the forensic schema preview for the staged packet. Once sealed, Copy mirrors the exact Export packet JSON to your clipboard for handoff or audit.</p>
+                <div class="dock-toolbar">
+                  <button class="control secondary" id="copyForensicSchemaPreview" type="button" disabled>Copy</button>
+                  <button class="control secondary" id="exportPacketPreview" type="button" disabled>Export</button>
+                  <button class="control secondary" id="openPacketTxtPreview" type="button" disabled aria-disabled="true">Open .txt</button>
+                  <button class="control secondary" id="resetStagedPacket" type="button" disabled>Reset</button>
+                </div>
+                <div class="note compact" id="exportReopenHint">Save the exported .json. To reopen Safe Harbor later, upload it and paste your SHI #.</div>
+                <pre class="code-panel" id="forensicSchemaPreview">forensic schema pending</pre>
+                <div class="button-grid">
+                  <button class="control" id="covenantExport" type="button">Seal Payload</button>
+                  <button class="control secondary" id="forgeBatch" type="button" hidden>Forge Batch</button>
+                </div>
+                <div class="note" id="covenantNote">Vault-open stages the packet only. Seal Payload appends any pasted Kleopatra signature text and advances the packet toward harbor eligibility and SHI # assignment. Export Packet unlocks once the seal lane completes.</div>
+              </details>
+              <div class="mint-altar" id="mintedIssuanceSection" data-td613-skip="true">
+                <div class="mint-altar-head">
+                  <span class="surface-kicker">Minted issuance</span>
+                  <span class="surface-state" id="shiMintState">format locked</span>
+                </div>
+                <h3 class="mint-title">Copy the SHI # exactly</h3>
+                <div class="mint-value" id="shiMintValue"></div>
+                <div class="mint-copy" id="shiCopyNote">The SHI # is the minted Safe Harbor issuance code. Copy it exactly so packet, probe, renderer, and LLM lanes do not drift.</div>
+                <div class="footer-template" id="canonicalHeaderPreview"></div>
+                <div class="footer-template secondary" id="extendedFooterPreview"></div>
+                <div class="button-grid compact">
+                  <button class="control" id="copyShiNumber" type="button" disabled>Copy SHI #</button>
+                  <button class="control secondary" id="setBypassToken" type="button" disabled>Bind Reopen Token</button>
+                  <button class="control secondary" id="copyCanonicalHeader" type="button" disabled>Copy Canonical Header</button>
+                  <button class="control secondary" id="copyExtendedFooter" type="button" disabled>Copy Canonical Footer</button>
+                </div>
+              </div>
+              <details class="fold-panel intake-canon-fold" id="intakeCanonFold" data-td613-skip="true">
+                <summary><span>Intake canon</span><span class="fold-toggle-word" data-open-label="hide" data-closed-label="expand">expand</span></summary>
+                <div class="intake-canon-card">
+                  <div class="triad-summary">
+                    <div class="summary-row"><span class="summary-label">Future Self</span><span class="summary-value" id="summaryFutureSelf">awaiting ingress</span></div>
+                    <div class="summary-row"><span class="summary-label">Past Self</span><span class="summary-value" id="summaryPastSelf">awaiting ingress</span></div>
+                    <div class="summary-row"><span class="summary-label">Higher Self</span><span class="summary-value" id="summaryHigherSelf">awaiting ingress</span></div>
+                  </div>
+                  <div class="field-grid intake-canon-grid">
+                    <label class="field">
+                      <span>Footer mode</span>
+                      <select id="inputFooterMode">
+                        <option value="legacy-compat">legacy-compat</option>
+                        <option value="legacy">legacy</option>
+                        <option value="sac-only">sac-only</option>
+                      </select>
+                    </label>
+                    <label class="field"><span>Payload index</span><input id="inputPayloadIndex" type="number" min="1" step="1" inputmode="numeric"></label>
+                    <label class="field"><span>Attestation date</span><input id="inputAttestationDate" type="date"></label>
+                    <label class="field"><span>Operator id</span><input id="inputOperatorId" placeholder="safe-harbor.operator"></label>
+                    <label class="field"><span>Source class</span><input id="inputSourceClass" placeholder="futurecore membrane"></label>
+                    <label class="field"><span>Witness channel</span><input id="inputWitnessChannel" placeholder="ritual + cadence"></label>
+                    <label class="field field-wide"><span>Operator notes</span><textarea id="inputOperatorNotes" placeholder="Packet shaping notes, harbor constraints, route posture, or Safe Harbor guidance."></textarea></label>
+                  </div>
+                  <div class="subsection-label intake-canon-subsection">Temporal keys</div>
+                  <div class="forge-card helper-card">
+                    <div class="field-grid intake-canon-grid">
+                      <label class="field"><span>ts_utc</span><input id="helperTs" readonly></label>
+                      <label class="field"><span>request_id</span><input id="helperRequestId" readonly></label>
+                      <label class="field"><span>sealed_at</span><input id="helperSealedAt" readonly></label>
+                      <label class="field"><span>nonce</span><input id="helperNonce" readonly></label>
+                      <label class="field"><span>filename-safe UTC</span><input id="helperFilenameSafe" readonly></label>
+                    </div>
+                    <div class="button-grid">
+                      <button class="control" id="refreshHelpers" type="button">Date/Time ↺</button>
+                      <button class="control secondary" data-copy-target="helperTs" type="button">Copy ts_utc</button>
+                      <button class="control secondary" data-copy-target="helperRequestId" type="button">Copy request_id</button>
+                      <button class="control secondary" data-copy-target="helperNonce" type="button">Copy nonce</button>
+                      <button class="control secondary" data-copy-target="helperFilenameSafe" type="button">Copy filename-safe UTC</button>
+                    </div>
+                  </div>
+                </div>
+              </details>
+            </article>
+          </div>
+        </section>
+
+      </section>
+
+      <aside class="panel panel-right conscience-panel" data-td613-skip="true">
+        <section class="panel-section">
+          <div class="section-label">Route Conscience</div>
+          <div class="metric-block roomy">
+            <div class="metric-row"><span class="label">Packet state</span><span class="value" id="packetStateReadout">awaiting ingress</span></div>
+            <div class="metric-row"><span class="label">Route state</span><span class="value" id="routeStateReadout">membrane-only</span></div>
+            <div class="metric-row"><span class="label">Membrane note</span><span class="value" id="membraneNoteReadout">awaiting ingress triad</span></div>
+            <div class="metric-row"><span class="label">Signature lane</span><span class="value" id="signatureLaneReadout">overlay idle</span></div>
+            <div class="metric-row"><span class="label">Provenance retention</span><span class="value" id="provenanceRetentionReadout">pending</span></div>
+            <div class="metric-row"><span class="label">Renderer contract</span><span class="value" id="rendererContractReadout">waiting</span></div>
+            <div class="metric-row"><span class="label">Route source</span><span class="value" id="routeSourceReadout">local ingress</span></div>
+          </div>
+          <div id="safeHarborVaultReceiptMount" class="operator-receipt-mount safe-harbor-receipt-mount" data-td613-skip="true"></div>
+        </section>
+
+        <section class="panel-section">
+          <details class="fold-panel reference-drawer">
+            <summary>Reference</summary>
+            <section class="subsection">
+              <div class="subsection-label">Doctrine invariants</div>
+              <ul class="bullet-list" id="invariantList"></ul>
+            </section>
+            <section class="subsection">
+              <div class="subsection-label">Chamber structure</div>
+              <ul class="bullet-list" id="repoLayoutList"></ul>
+            </section>
+            <section class="subsection">
+              <div class="subsection-label">Reference interlocks</div>
+              <ul class="bullet-list" id="referenceLaneList"></ul>
+            </section>
+          </details>
+        </section>
+      </aside>
+
+      <section class="dock dock-left operator-dock" id="operatorMirrorSection" data-td613-skip="true">
+        <details class="dock-fold" id="operatorPacketMirrorFold">
+          <summary>Operator packet mirror</summary>
+          <div class="dock-toolbar"><button class="control secondary" id="copyPacketPreview" type="button">Copy Packet</button></div>
+          <pre id="packetPreview" class="code-panel">packet pending</pre>
+        </details>
+      </section>
+
+      <section class="dock dock-right audit-dock" data-td613-skip="true">
+        <details class="dock-fold">
+          <summary>Audit veil</summary>
+          <pre id="auditLog" class="code-panel">awaiting events</pre>
+        </details>
+      </section>
+    </main>
+  </div>
+
+  <script src="../operator-receipt.js?v=202606282250"></script>
+  <script src="app/binding-provenance.js?v=202607022110"></script>
+  <script src="app/data.js?v=202607022110"></script>
+  <script src="app/main.js?v=20260722-gen3-stage3"></script>
+  <script type="module" src="app/safe-harbor-temporal-bloom.js?v=20260722-gen3-stage3"></script>
+  <script src="app/safe-harbor-housekeeping.js?v=202606290035"></script>
+  <script src="app/safe-harbor-pr169-packet-vault-direct.js?v=202606290700" defer></script>
+</body>
+</html>

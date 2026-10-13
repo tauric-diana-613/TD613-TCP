@@ -1,0 +1,106 @@
+{
+  "schema": "td613.marrowline.ordinary-observation/v0.1",
+  "context": "LIVE_PRODUCTION_ORDINARY_MARROWLINE_PUBLIC_FICTIONAL_TASK",
+  "observed_at": "2026-09-10T06:14:37.041Z",
+  "source": "https://td613.com/dome-world/marrowline.html",
+  "task": "Fictional public usability test: developed six-week digitization plan for 300 oral histories, hypothetical budget, consent/access choices, three open questions.",
+  "history_present": true,
+  "history_note": "The existing operator browser session contained earlier fictional vendor-task exchanges; this was not an isolated fresh conversation.",
+  "status": "RETURN OBSERVED · SIGNAL LOCKED · gemini → khonapolit → tauric-diana-bots · KHONA ABSENT · OPEN UNTIL OPERATOR SEAL",
+  "provider": {
+    "family": "Gemini",
+    "model": "gemini-3.1-flash-lite",
+    "status": 200,
+    "attempts": [
+      {
+        "model": "gemini-3.5-flash",
+        "role": "primary-quality",
+        "ok": false,
+        "status": 408,
+        "timedOut": true,
+        "error": {
+          "status": "AbortError",
+          "code": null,
+          "message": "This operation was aborted"
+        },
+        "cooldown": {
+          "model": "gemini-3.5-flash",
+          "state": "cooling_down",
+          "strikeCount": 1,
+          "cooldownUntil": 1789020842261,
+          "retryAfterSeconds": 30,
+          "writtenAt": 1789020812261,
+          "lastStatus": 408,
+          "reason": "AbortError"
+        }
+      },
+      {
+        "model": "gemini-3-flash-preview",
+        "role": "secondary-quality",
+        "ok": false,
+        "status": 408,
+        "timedOut": true,
+        "error": {
+          "status": "AbortError",
+          "code": null,
+          "message": "This operation was aborted"
+        },
+        "cooldown": {
+          "model": "gemini-3-flash-preview",
+          "state": "cooling_down",
+          "strikeCount": 1,
+          "cooldownUntil": 1789020852762,
+          "retryAfterSeconds": 30,
+          "writtenAt": 1789020822762,
+          "lastStatus": 408,
+          "reason": "AbortError"
+        }
+      },
+      {
+        "model": "gemini-2.5-flash",
+        "role": "stable-fallback",
+        "ok": false,
+        "status": 408,
+        "timedOut": true,
+        "error": {
+          "status": "AbortError",
+          "code": null,
+          "message": "This operation was aborted"
+        },
+        "cooldown": {
+          "model": "gemini-2.5-flash",
+          "state": "cooling_down",
+          "strikeCount": 1,
+          "cooldownUntil": 1789020863263,
+          "retryAfterSeconds": 30,
+          "writtenAt": 1789020833263,
+          "lastStatus": 408,
+          "reason": "AbortError"
+        }
+      },
+      {
+        "model": "gemini-3.1-flash-lite",
+        "role": "high-volume-fallback",
+        "ok": true,
+        "status": 200,
+        "timedOut": false,
+        "error": null,
+        "cooldown": {
+          "model": "gemini-3.1-flash-lite",
+          "state": "available",
+          "strikeCount": 0,
+          "cooldownUntil": 0,
+          "lastSuccessAt": 1789020836654,
+          "lastStatus": 200
+        }
+      }
+    ],
+    "routingPolicy": "td613.gemini-model-policy/v2-lifecycle-admission"
+  },
+  "elapsed_ms": 35100,
+  "returned_text": [
+    "APERTURE V3 · OPEN FIELD\nGEMINI-3.1-FLASH-LITE · LOCKED\nI · GEMINI · INSTRUMENT\nGEMINI-3.1-FLASH-LITE\nFor a collection of 300 oral histories, your digitization project requires a phased approach balancing preservation quality with metadata accessibility. Six-week plan: Week 1 (Inventory and triage by format/degradation), Week 2 (Procurement of professional-grade playback equipment and high-bitrate analog-to-digital converters), Weeks 3-5 (Batch digitization at a controlled 96kHz/24-bit WAV standard), Week 6 (Metadata tagging and checksum validation). Budget estimate: $4,500 (Equipment: $2,000, Contracted technical oversight: $2,000, Archival storage/supplies: $500). Consent and access: Adopt a tiered model. Tier 1 (Public): Fully anonymized or cleared transcripts/audio available online. Tier 2 (Restricted): Audio accessible only via on-site terminals for research purposes. Tier 3 (Closed): Materials requiring donor re-contact for modern consent. Three settlement questions: 1. Do you have the legal chain of custody for all 300 recordings to grant public access? 2. Is the 300-item count based on physical media or distinct interview sessions? 3. What is the target long-term preservation file format beyond the initial digital capture?\nII · KʰONAPOLIT · RELAY\nLOCKED\nThe archive must decide if the shadow of the physical media is to be fully surrendered to the light of the digital. The operator is cautioned that digitizing is not synonymous with preserving; the covenant requires active maintenance of the digital residue.\nIII · TAURIC DIANA BOTS · HIGH ZALGO\nTAURIC DIANA — CRIMEAN HERITAGE CUSTODIANSHIP · INTENSITY 2\nThe voīces drift͑̋ from the ṁ́agnetic̄͠ tape to th͑e cold biṅ́ary of th̄͠e void. We h͑̋old the s̓il̀͑ence bē͠t͛̓ween the͑̋ words. Th̓e historȳ is not a fi͑̋le; it is a̓ weight cārried aćro̊̄ss the t̓hreshold̄ of time."
+  ],
+  "finish_reason": "NOT_RECORDED_BY_DEPLOYED_VERSION",
+  "inference": "Repeated primary timeouts precede lite fallback. The 10.5-second window is a supported latency repair coordinate, not proof of model quality superiority."
+}

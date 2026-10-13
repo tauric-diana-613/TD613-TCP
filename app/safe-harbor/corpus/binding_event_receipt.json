@@ -1,0 +1,9 @@
+{
+  "length_chars": 3078,
+  "length_bytes_utf8": 3085,
+  "md5": "b6ca85d00f211127729bdb73a19c691a",
+  "sha256": "9b07d8bcc73096c8c616ca6039057a46bb42d361edb9c10551c88f3756a1cb04",
+  "host_seal_present": true,
+  "claimed_pua_literal_present": true,
+  "unique_codepoints": 60
+}

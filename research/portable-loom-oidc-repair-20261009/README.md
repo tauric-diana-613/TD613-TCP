@@ -1,0 +1,13 @@
+# Portable Loom relay — runtime identity repair
+
+The first retained relay attempt stopped before any Gemini request or budget reservation. The source read `VERCEL_OIDC_TOKEN` from the environment, while Vercel supplies Function identity in the current request's `x-vercel-oidc-token` header. The existing TD613 custody client already implements header-first retrieval. This patch reuses that reader, resolves each request afresh, and passes the identity only to the separately verified Neon budget service. Missing or rejected identity still stops generation.
+
+The resolved workload token is also excluded from outbound prompt and public capture bytes. Caller capability and workload identity remain separate. Neon still validates the signature, exact owner/project/environment, expiry and registered budget; no database password, signer, static replacement token or new provider credential is introduced.
+
+The original freeze is `a768d834e0f57089e2feacbde3d0650101db4aed`; the original deployed commit is `5581af7812dc0f5fcf2b65c11ad09da045f0940e`. The actual 409 response, exact request, capture, stopped-run registration/completion and ledger HOLD are preserved on `research/portable-loom-first-receiver-20261009`. No receiver answer was produced, so the portable protocol's semantic endpoints remain unassessed. The engineering defect is in the relay integration.
+
+`PROPOSED_ACTIVATION.json` prepares a new, inactive run with a fresh private capability and the unchanged corrected Markdown, 54-call plan and USD 10 ceiling. `POLICY.pending.json` deliberately lacks authorization, source and expiry. No new run has been enrolled. The original held run cannot be revived or silently replaced. The historical authorization file referenced by the public configuration supplies ancestry only; a fresh direct grant and separately frozen policy are required for the proposed attempt.
+
+The first approved production release is complete. A second release and separately retained receiver attempt need fresh operator authorization under root `AGENTS.md` and the one-deployment-per-gesture Issue #405 contract. This repair branch grants neither.
+
+References inspected during repair: [Vercel OIDC reference](https://vercel.com/docs/oidc/reference) and [Vercel OIDC overview](https://vercel.com/docs/oidc). Their Function request-header contract agrees with the repository's existing `server/loom-demo-custody-client.js` reader. Local tests cover header-only identity, per-request rotation, missing/rejected identity, and workload-token exclusion. They are structural fixtures, not proof that the repair has reached production.

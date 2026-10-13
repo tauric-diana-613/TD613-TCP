@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.independent-provenance-verification/v0.1",
+  "title": "TD613 Independent Provenance Verification v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "version", "verification_id", "created_at", "registry_reference", "adapter", "reference",
+    "source_local_posture", "checks", "state", "verification_eligible", "evidence_class_preserved",
+    "failed_checks", "missingness", "operator_notes", "closure", "raw_body_present", "raw_corpus_present",
+    "universal_join_key", "adapter_agreement_universal_trust_score", "provider_called", "reader_executed",
+    "network_called", "storage_mutated", "identity_inferred", "authorship_inferred", "permission_inferred",
+    "authenticity_inferred", "truth_inferred", "relation_inferred", "custody_inferred", "causation_inferred",
+    "external_time_inferred", "delivery_inferred", "recipient_behavior_inferred",
+    "destination_transport_authorized", "release_authorized", "suppression_authorized",
+    "cinder_action_authorized", "automatic_hold", "recommendation_not_command", "verification_digest"
+  ],
+  "properties": {
+    "schema": { "const": "td613.ash.independent-provenance-verification/v0.1" },
+    "version": { "const": "v0.1" },
+    "verification_id": { "type": "string", "pattern": "^indprovverify_[A-Za-z0-9_-]{6,160}$" },
+    "created_at": { "type": "string" },
+    "registry_reference": { "$ref": "#/$defs/sha256" },
+    "adapter": {
+      "type": "object", "additionalProperties": false,
+      "required": ["adapter_id", "evidence_class", "adapter_schema", "digest_domain", "verification_mode"],
+      "properties": {
+        "adapter_id": { "type": "string" }, "evidence_class": { "type": "string" },
+        "adapter_schema": { "type": "string" }, "digest_domain": { "type": "string" },
+        "verification_mode": { "type": "string" }
+      }
+    },
+    "reference": {
+      "type": "object", "additionalProperties": false,
+      "required": ["reference_id", "source_id", "expected_source_id", "source_namespace", "source_local_reference", "expected_digest", "observed_digest"],
+      "properties": {
+        "reference_id": { "type": ["string", "null"] },
+        "source_id": { "type": ["string", "null"] },
+        "expected_source_id": { "type": ["string", "null"] },
+        "source_namespace": { "type": "string" },
+        "source_local_reference": { "type": ["string", "null"] },
+        "expected_digest": { "$ref": "#/$defs/nullableSha256" },
+        "observed_digest": { "$ref": "#/$defs/nullableSha256" }
+      }
+    },
+    "source_local_posture": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "staleness_reason", "revocation_reference", "collision_detected", "collision_resolved", "trusted_external_time_used"],
+      "properties": {
+        "status": { "enum": ["CURRENT", "STALE", "REVOKED", "UNKNOWN"] },
+        "staleness_reason": { "type": ["string", "null"] },
+        "revocation_reference": { "type": ["string", "null"] },
+        "collision_detected": { "type": "boolean" },
+        "collision_resolved": { "type": "boolean" },
+        "trusted_external_time_used": { "const": false }
+      }
+    },
+    "checks": { "type": "object", "additionalProperties": { "type": "boolean" } },
+    "state": { "enum": [
+      "INDEPENDENT_PROVENANCE_VERIFIED", "MISSING_REFERENCE_HOLD", "UNSUPPORTED_DOMAIN_HOLD",
+      "WRONG_DOMAIN_HOLD", "SOURCE_MISMATCH_HOLD", "STALE_REFERENCE_HOLD", "REVOKED_REFERENCE_HOLD",
+      "COLLISION_HOLD", "TAMPER_HOLD", "CANCELLED_HOLD", "REPLAY_HOLD"
+    ] },
+    "verification_eligible": { "type": "boolean" },
+    "evidence_class_preserved": { "type": "boolean" },
+    "failed_checks": { "type": "array", "items": { "type": "string" } },
+    "missingness": { "type": "array", "items": { "type": "string" } },
+    "operator_notes": { "type": "array", "items": { "type": "string" } },
+    "closure": { "$ref": "#/$defs/closure" },
+    "raw_body_present": { "const": false },
+    "raw_corpus_present": { "const": false },
+    "universal_join_key": { "type": "null" },
+    "adapter_agreement_universal_trust_score": { "type": "null" },
+    "provider_called": { "const": false },
+    "reader_executed": { "const": false },
+    "network_called": { "const": false },
+    "storage_mutated": { "const": false },
+    "identity_inferred": { "const": false },
+    "authorship_inferred": { "const": false },
+    "permission_inferred": { "const": false },
+    "authenticity_inferred": { "const": false },
+    "truth_inferred": { "const": false },
+    "relation_inferred": { "const": false },
+    "custody_inferred": { "const": false },
+    "causation_inferred": { "const": false },
+    "external_time_inferred": { "const": false },
+    "delivery_inferred": { "const": false },
+    "recipient_behavior_inferred": { "const": false },
+    "destination_transport_authorized": { "const": false },
+    "release_authorized": { "const": false },
+    "suppression_authorized": { "const": false },
+    "cinder_action_authorized": { "const": false },
+    "automatic_hold": { "const": false },
+    "recommendation_not_command": { "const": true },
+    "verification_digest": { "$ref": "#/$defs/sha256" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "nullableSha256": { "anyOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+    "closure": {
+      "type": "object", "additionalProperties": false, "required": ["required", "status"],
+      "properties": { "required": { "const": true }, "status": { "type": "string" } }
+    }
+  }
+}

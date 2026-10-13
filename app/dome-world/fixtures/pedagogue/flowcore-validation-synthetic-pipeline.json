@@ -1,0 +1,123 @@
+{
+  "fixture_schema": "td613.flowcore.validation-fixture/v0.1",
+  "determinism": {
+    "protocol": {
+      "frozenClock": "2026-07-20T00:30:00Z",
+      "idSeed": "td613-p9-validation-protocol"
+    },
+    "trials": [
+      { "frozenClock": "2026-07-20T00:31:00Z", "idSeed": "td613-p9-trial-a" },
+      { "frozenClock": "2026-07-20T00:32:00Z", "idSeed": "td613-p9-trial-b" },
+      { "frozenClock": "2026-07-20T00:33:00Z", "idSeed": "td613-p9-trial-c" }
+    ],
+    "bundle": {
+      "frozenClock": "2026-07-20T00:34:00Z",
+      "idSeed": "td613-p9-validation-bundle"
+    }
+  },
+  "protocol": {
+    "baseline_cohort": "ADULT_OPERATORS_FIRST",
+    "conditions": ["A_CURRENT_FORM", "B_COPY_ONLY", "C_FULL_AIA_PEDAGOGUE"],
+    "tasks": [
+      "navigate the declared current Ash Custody Root route",
+      "explain the observed consequence",
+      "identify what remains unauthorized",
+      "locate the technical receipt",
+      "recover from a declared hold"
+    ],
+    "qualitative_prompts": [
+      "what the world appeared to do",
+      "what remained confusing",
+      "where visual structure helped or distracted",
+      "where technical detail should appear earlier or later",
+      "where a route appeared coercive",
+      "where difference appeared flattened"
+    ]
+  },
+  "observations": [
+    {
+      "evidence_class": "SYNTHETIC_PIPELINE_ONLY",
+      "cohort": "ADULT_OPERATOR",
+      "session_reference": "session_synthetic_a",
+      "condition": "A_CURRENT_FORM",
+      "task_reference": "custody-root-route",
+      "metrics": {
+        "next_state_prediction": false,
+        "causal_route_explanation": false,
+        "terminology_retention_after_consequence": true,
+        "missingness_recognition": false,
+        "station_ownership_recognition": false,
+        "recovery_success": false,
+        "abandonment": true,
+        "transfer_to_new_scene": false,
+        "time_to_first_meaningful_consequence_ms": 240000,
+        "confidence_calibration_millipoints": 220
+      },
+      "qualitative": {
+        "voluntary_language_recorded": false,
+        "summary_codes": ["form wall", "technical terms before consequence"],
+        "confusing_elements": ["custody registration and case binding appeared as separate unrelated demands"],
+        "helpful_elements": [],
+        "coercive_route_reported": true,
+        "difference_flattened_reported": false
+      },
+      "adverse_observations": ["synthetic pipeline flags abandonment and recovery failure"]
+    },
+    {
+      "evidence_class": "SYNTHETIC_PIPELINE_ONLY",
+      "cohort": "ADULT_OPERATOR",
+      "session_reference": "session_synthetic_b",
+      "condition": "B_COPY_ONLY",
+      "task_reference": "custody-root-route",
+      "metrics": {
+        "next_state_prediction": true,
+        "causal_route_explanation": false,
+        "terminology_retention_after_consequence": true,
+        "missingness_recognition": true,
+        "station_ownership_recognition": false,
+        "recovery_success": true,
+        "abandonment": false,
+        "transfer_to_new_scene": false,
+        "time_to_first_meaningful_consequence_ms": 155000,
+        "confidence_calibration_millipoints": 510
+      },
+      "qualitative": {
+        "voluntary_language_recorded": false,
+        "summary_codes": ["clearer copy", "causal route incomplete"],
+        "confusing_elements": ["station ownership remained visually weak"],
+        "helpful_elements": ["plain consequence appeared earlier"],
+        "coercive_route_reported": false,
+        "difference_flattened_reported": true
+      },
+      "adverse_observations": ["synthetic pipeline flags station-ownership miss"]
+    },
+    {
+      "evidence_class": "SYNTHETIC_PIPELINE_ONLY",
+      "cohort": "ADULT_OPERATOR",
+      "session_reference": "session_synthetic_c",
+      "condition": "C_FULL_AIA_PEDAGOGUE",
+      "task_reference": "custody-root-route",
+      "metrics": {
+        "next_state_prediction": true,
+        "causal_route_explanation": true,
+        "terminology_retention_after_consequence": true,
+        "missingness_recognition": true,
+        "station_ownership_recognition": true,
+        "recovery_success": true,
+        "abandonment": false,
+        "transfer_to_new_scene": true,
+        "time_to_first_meaningful_consequence_ms": 88000,
+        "confidence_calibration_millipoints": 760
+      },
+      "qualitative": {
+        "voluntary_language_recorded": false,
+        "summary_codes": ["consequence first", "ownership visible", "recovery visible"],
+        "confusing_elements": [],
+        "helpful_elements": ["world answer before terminology", "rest and recovery remained visible"],
+        "coercive_route_reported": false,
+        "difference_flattened_reported": false
+      },
+      "adverse_observations": []
+    }
+  ]
+}

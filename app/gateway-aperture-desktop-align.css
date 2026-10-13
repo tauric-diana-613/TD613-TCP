@@ -1,0 +1,114 @@
+/* Desktop-only Aperture header control alignment.
+   Compact grid pass: no absolute overlay, no transform nudges, no title collision. */
+
+@media (min-width: 1024px) {
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head {
+    display: grid !important;
+    grid-template-columns: minmax(24rem, 34rem) minmax(28rem, 1fr) !important;
+    gap: clamp(1.15rem, 2vw, 2.25rem) !important;
+    align-items: stretch !important;
+    min-height: clamp(10.2rem, 10.8vw, 12.4rem) !important;
+    padding: 12px 18px 16px !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-title-group {
+    grid-column: 1 !important;
+    position: relative !important;
+    z-index: 3 !important;
+    align-self: stretch !important;
+    display: flex !important;
+    flex-direction: column !important;
+    max-width: 34rem !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-title-group .gateway-preview-subtitle {
+    max-width: 32.5rem !important;
+    margin-top: clamp(0.72rem, 0.9vw, 1rem) !important;
+    color: rgba(220, 230, 244, 0.64) !important;
+    font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace) !important;
+    font-size: 0.6rem !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    letter-spacing: 0.1em !important;
+    text-transform: uppercase !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls {
+    grid-column: 2 !important;
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: 7.35rem 8.7rem 8.7rem !important;
+    grid-template-rows: 2.65rem minmax(0.6rem, 1fr) 2.35rem 2.35rem !important;
+    grid-template-areas:
+      "open open open"
+      ". . ."
+      "bounces reset moire"
+      "bounces run run" !important;
+    justify-self: end !important;
+    align-self: stretch !important;
+    align-content: stretch !important;
+    justify-content: end !important;
+    gap: .48rem .55rem !important;
+    width: min(100%, 25.95rem) !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: auto !important;
+    z-index: 4 !important;
+    transform: none !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayApertureOpenFull.gateway-aperture-open-top {
+    grid-area: open !important;
+    position: static !important;
+    width: 18rem !important;
+    min-height: 2.65rem !important;
+    justify-self: end !important;
+    align-self: start !important;
+    transform: none !important;
+    pointer-events: auto !important;
+    z-index: 6 !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewBounceStatus,
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewRun,
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewPropagate,
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewMoire,
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewReset {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+    min-height: 2.35rem !important;
+    margin: 0 !important;
+    padding: 0 .58rem !important;
+    transform: none !important;
+    pointer-events: auto !important;
+    z-index: 5 !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewBounceStatus {
+    grid-area: bounces !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 5.18rem !important;
+    padding: 0 .55rem !important;
+    text-align: center !important;
+    white-space: normal !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewReset {
+    grid-area: reset !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewMoire {
+    grid-area: moire !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewRun,
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewPropagate {
+    grid-area: run !important;
+  }
+}

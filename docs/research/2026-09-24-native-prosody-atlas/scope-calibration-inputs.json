@@ -1,0 +1,10 @@
+{
+  "status": "OPTIONAL_UNAPPLIED_CANDIDATE",
+  "source_path": "server/khonapolit-quality.js",
+  "source_blob": "4faaeea6112216627ae96d78cafa4436b9290978",
+  "candidate_blob": "9d29e47aa7c0d5dfd126cb44482b071993069bb4",
+  "git_apply_check": "PASS",
+  "node_syntax_check": "PASS",
+  "runtime_integration": "NOT_RUN",
+  "provider_effect": "UNTESTED"
+}

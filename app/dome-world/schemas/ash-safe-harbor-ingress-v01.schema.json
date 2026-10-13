@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.safe-harbor-ingress/v0.1",
+  "title": "TD613 Safe Harbor to Ash Ingress Envelope v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "version", "envelope_id", "token", "created_at", "local_expiry_posture",
+    "origin", "packet", "selected_provenance_references", "signature_lane", "declared_omissions",
+    "operator_intent", "raw_body_included", "raw_corpus_included", "complete_case_map_included",
+    "complete_route_memory_included", "room_keys_included", "capsule_plaintext_included",
+    "private_aliases_included", "local_filesystem_paths_included", "universal_join_key",
+    "server_custody_created", "provider_called", "network_called_by_envelope",
+    "destination_transport_authorized", "release_authorized", "suppression_authorized",
+    "cinder_action_authorized", "automatic_case_creation", "automatic_relation_creation",
+    "automatic_custody_root_creation", "duplicate_review_required", "replay_detected",
+    "source_status", "state", "ingress_eligible", "failed_checks", "envelope_digest"
+  ],
+  "properties": {
+    "schema": { "const": "td613.ash.safe-harbor-ingress/v0.1" },
+    "version": { "const": "v0.1" },
+    "envelope_id": { "type": "string", "pattern": "^harboringress_[A-Za-z0-9_-]{6,160}$" },
+    "token": { "type": "string", "pattern": "^ash_ingress_[A-Za-z0-9_-]{12,160}$" },
+    "created_at": { "type": "string" },
+    "local_expiry_posture": {
+      "type": "object", "additionalProperties": false,
+      "required": ["ttl_ms", "elapsed_ms_at_compile", "locally_expired", "trusted_external_time_used"],
+      "properties": {
+        "ttl_ms": { "type": "integer", "minimum": 60000, "maximum": 86400000 },
+        "elapsed_ms_at_compile": { "type": "integer", "minimum": 0 },
+        "locally_expired": { "type": "boolean" },
+        "trusted_external_time_used": { "const": false }
+      }
+    },
+    "origin": { "type": "string", "pattern": "^https?://" },
+    "packet": {
+      "type": "object", "additionalProperties": false,
+      "required": ["packet_id", "schema_version", "packet_hash_sha256", "source_status", "authority_surface_status", "hash_replay_status"],
+      "properties": {
+        "packet_id": { "type": ["string", "null"] },
+        "schema_version": { "type": ["string", "null"] },
+        "packet_hash_sha256": { "$ref": "#/$defs/nullableSha256" },
+        "source_status": { "type": "string" },
+        "authority_surface_status": { "type": "string" },
+        "hash_replay_status": { "enum": ["PASS", "HOLD"] }
+      }
+    },
+    "selected_provenance_references": {
+      "type": "array", "minItems": 1, "maxItems": 16,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["kind", "digest"],
+        "properties": { "kind": { "type": "string" }, "digest": { "$ref": "#/$defs/sha256" } }
+      }
+    },
+    "signature_lane": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "detached_signature_present", "operator_signature_claimed", "signature_verified_by_adapter"],
+      "properties": {
+        "status": { "type": "string" },
+        "detached_signature_present": { "type": "boolean" },
+        "operator_signature_claimed": { "type": "boolean" },
+        "signature_verified_by_adapter": { "const": false }
+      }
+    },
+    "declared_omissions": { "$ref": "#/$defs/stringArray" },
+    "operator_intent": { "const": "CONSIDER_SAFE_HARBOR_REFERENCE_IN_ASH" },
+    "raw_body_included": { "const": false },
+    "raw_corpus_included": { "const": false },
+    "complete_case_map_included": { "const": false },
+    "complete_route_memory_included": { "const": false },
+    "room_keys_included": { "const": false },
+    "capsule_plaintext_included": { "const": false },
+    "private_aliases_included": { "const": false },
+    "local_filesystem_paths_included": { "const": false },
+    "universal_join_key": { "type": "null" },
+    "server_custody_created": { "const": false },
+    "provider_called": { "const": false },
+    "network_called_by_envelope": { "const": false },
+    "destination_transport_authorized": { "const": false },
+    "release_authorized": { "const": false },
+    "suppression_authorized": { "const": false },
+    "cinder_action_authorized": { "const": false },
+    "automatic_case_creation": { "const": false },
+    "automatic_relation_creation": { "const": false },
+    "automatic_custody_root_creation": { "const": false },
+    "duplicate_review_required": { "type": "boolean" },
+    "replay_detected": { "type": "boolean" },
+    "source_status": { "type": "string" },
+    "state": { "enum": ["INGRESS_ENVELOPE_ELIGIBLE", "TAMPER_HOLD", "ORIGIN_MISMATCH_HOLD", "EXPIRED_LOCAL_POSTURE_HOLD", "REPLAY_HOLD", "DUPLICATE_REVIEW_HOLD", "MISSING_REFERENCE_HOLD", "MALFORMED_PACKET_HOLD"] },
+    "ingress_eligible": { "type": "boolean" },
+    "failed_checks": { "$ref": "#/$defs/stringArray" },
+    "envelope_digest": { "$ref": "#/$defs/sha256" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "nullableSha256": { "anyOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+    "stringArray": { "type": "array", "items": { "type": "string" } }
+  }
+}

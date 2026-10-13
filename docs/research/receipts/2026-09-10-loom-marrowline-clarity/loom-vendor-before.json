@@ -1,0 +1,92 @@
+{
+  "observed_at": "2026-09-10T08:08:12.267Z",
+  "context": "LIVE_PRODUCTION_VENDOR_DEMO",
+  "answer": "",
+  "receipt": {
+    "schema": "td613.loom.request-observation/v0.1",
+    "events": [
+      {
+        "phase": "checking",
+        "selected_document_ids": [
+          "requirements",
+          "offer",
+          "comparison"
+        ],
+        "shared": 3,
+        "local": 1,
+        "at": "2026-09-10T08:04:56.423Z"
+      },
+      {
+        "phase": "pending",
+        "selected_document_ids": [
+          "requirements",
+          "offer",
+          "comparison"
+        ],
+        "shared": 3,
+        "local": 1,
+        "at": "2026-09-10T08:04:56.439Z",
+        "request_id": "3c2706da-e2cd-4a45-b3dd-1c6f6c6df124",
+        "provider_call_observed": false,
+        "note": "3 documents submitted to the Loom provider route."
+      },
+      {
+        "phase": "held",
+        "selected_document_ids": [
+          "requirements",
+          "offer",
+          "comparison"
+        ],
+        "shared": 3,
+        "local": 1,
+        "at": "2026-09-10T08:05:27.600Z",
+        "request_id": "3c2706da-e2cd-4a45-b3dd-1c6f6c6df124",
+        "note": "Gemini reached its output limit before completing a valid answer. Try a shorter task or fewer documents.",
+        "provider_failure": {
+          "error": "provider-response-not-admitted",
+          "observations": {
+            "elapsed_ms": 30564,
+            "provider_calls": 1,
+            "document_count": 3,
+            "rule_count": 3,
+            "input_characters": 5686,
+            "model": "gemini-3.5-flash",
+            "model_policy": "td613.gemini-model-policy/v2-lifecycle-admission",
+            "http_status": 200,
+            "source_claims": "model-reported-unverified",
+            "usage": {
+              "promptTokenCount": 1287,
+              "candidatesTokenCount": 1182,
+              "totalTokenCount": 9463,
+              "thoughtsTokenCount": 6994
+            }
+          },
+          "diagnostic": {
+            "schema": "td613.loom.ai-task-diagnostic/v0.1",
+            "stage": "output-admission",
+            "code": "OUTPUT_TOKEN_LIMIT"
+          }
+        },
+        "observations": {
+          "elapsed_ms": 30564,
+          "provider_calls": 1,
+          "document_count": 3,
+          "rule_count": 3,
+          "input_characters": 5686,
+          "model": "gemini-3.5-flash",
+          "model_policy": "td613.gemini-model-policy/v2-lifecycle-admission",
+          "http_status": 200,
+          "source_claims": "model-reported-unverified",
+          "usage": {
+            "promptTokenCount": 1287,
+            "candidatesTokenCount": 1182,
+            "totalTokenCount": 9463,
+            "thoughtsTokenCount": 6994
+          }
+        }
+      }
+    ],
+    "visual_mapping": "request-events/v0.1"
+  },
+  "status": "Gemini reached its output limit before completing a valid answer. Try a shorter task or fewer documents."
+}

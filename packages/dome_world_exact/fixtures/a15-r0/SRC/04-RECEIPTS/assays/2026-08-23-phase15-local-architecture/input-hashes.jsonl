@@ -1,0 +1,14 @@
+{"role":"assay-input","path":"01-MANIFESTS/candidate-corpus.jsonl","bytes":1254190,"sha256":"45bed7f04d4bcbfb894b46712b43f4c1c22edcde6149adc2923569d0e12604a7"}
+{"role":"assay-input","path":"01-MANIFESTS/platforms/academia.jsonl","bytes":171477,"sha256":"7a166e39686d91017a7216f22e1a3f2a9b0cba008c7c5ca40a6ab5a9f576b1ae"}
+{"role":"assay-input","path":"01-MANIFESTS/platforms/substack.jsonl","bytes":101971,"sha256":"ed4069787324f3dc3c1cd644a4172cc108b8a5b83c62649c27d1c0117943478a"}
+{"role":"assay-input","path":"01-MANIFESTS/platforms/medium.jsonl","bytes":74938,"sha256":"81b00ed43b772922d4f64394a2c478d087f398814be39d773b8eb8083f1dc912"}
+{"role":"assay-input","path":"01-MANIFESTS/platforms/substack-doi-links.jsonl","bytes":29702,"sha256":"aa8601f178de526ab161c9dca5a6591e7f13aabda33a444625b511b666b026fd"}
+{"role":"assay-input","path":"01-MANIFESTS/crosswalk/doi-links.jsonl","bytes":50501,"sha256":"e2394c1a4d2f1963df6e4c6d8f9650d9c9497b1b61365913ceba79f7ba4fadf3"}
+{"role":"assay-input","path":"01-MANIFESTS/crosswalk/exact-title-crosswalk.jsonl","bytes":644688,"sha256":"f101c4158625c8093ecff0288e4e1af5b1431b15594f522b70b2d07bc47e8eff"}
+{"role":"assay-input","path":"01-MANIFESTS/integrity-ledger.jsonl","bytes":3378,"sha256":"05461bb2e06e8f97c9a7b007bdfbfc63b16b778cf81520bb221b5d21f879ee5a"}
+{"role":"assay-input","path":"99-ADMIN/phase15-local-assay.py","bytes":18635,"sha256":"a3cd3b85cd653bcbf2ca9b1e46594cc1939e6c9c46589e864f13f962b528b01b"}
+{"role":"assay-input","path":"02-ORIGINALS/18096652--01--Social Infrastructure Theory_ A Structural Framework for Understanding Social Outcomes .docx","bytes":12207,"sha256":"47f76064af16c92b26b24b19778c7d1fe80997a5633d4ff20fe2d4a332141887"}
+{"role":"assay-input","path":"02-ORIGINALS/18097205--01--Slow Harm Theory_ The Architecture of Cumulative Injury.docx","bytes":11054,"sha256":"523747e00a2550fd86fed4738d0a322295cc5343f48599b3bbd939e5a325689b"}
+{"role":"assay-input","path":"02-ORIGINALS/18097491--01--Copy of Infrastructural Exposure Theory_ How Systems Generate Harm Through Designed Contact .pdf","bytes":102256,"sha256":"14a91c0a72e9d014921b5f6103aabcbfa739240d17381c0ba8a63feac2655f4e"}
+{"role":"assay-input","path":"02-ORIGINALS/18097568--01--Systemic Erosion Theory_ How Systems Deplete Capacity, Stability, and Resilience Over Time  2.pdf","bytes":96160,"sha256":"5e30c8bcd09df477251770abf088845194c3b583a922f4837d1b0b0e862c6ba5"}
+{"role":"assay-input","path":"02-ORIGINALS/18098106--01--The STAR Framework_ Integrating Social Infrastructure Theory, Exposure, Slow Harm, and Systemic Erosion  .pdf","bytes":107688,"sha256":"f5b27d45276b1d15ea32e101862fd085f6c90974705e7b1843ce7e7b0f740abe"}

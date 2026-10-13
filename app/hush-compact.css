@@ -1,0 +1,63 @@
+/* Phase 13 — Compact Hush / Mobile Operator Surface */
+body[data-page-kind="adversarial-bench"] .shell-station{--hush-gap:1rem;--hush-field-min:8.5rem;--hush-field-compact:6.25rem;--hush-export-min:8rem}
+body[data-page-kind="adversarial-bench"] .adversarial-bench-grid{grid-template-columns:minmax(0,.92fr) minmax(0,1fr) minmax(0,1.12fr);gap:var(--hush-gap)}
+body[data-page-kind="adversarial-bench"] .bench-pane textarea,
+body[data-page-kind="adversarial-bench"] .bench-output-lane textarea{min-height:var(--hush-field-min)!important;max-height:38vh;resize:vertical}
+body[data-page-kind="adversarial-bench"] #protectedBaselineInput,
+body[data-page-kind="adversarial-bench"] #maskReferenceInput,
+body[data-page-kind="adversarial-bench"] #hushCustomMaskSampleInput{min-height:var(--hush-field-compact)!important}
+body[data-page-kind="adversarial-bench"] #messageDraftInput,
+body[data-page-kind="adversarial-bench"] #protectedOutputInput{min-height:9rem!important}
+body[data-page-kind="adversarial-bench"] .ledger-export-output,
+body[data-page-kind="adversarial-bench"] .report-export-output{min-height:var(--hush-export-min)!important;max-height:32vh;resize:vertical}
+body[data-page-kind="adversarial-bench"] .hush-compact-flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.55rem;margin:.75rem 0 1rem}
+body[data-page-kind="adversarial-bench"] .hush-compact-step{border:1px solid rgba(255,255,255,.13);border-radius:.85rem;padding:.62rem;background:rgba(255,255,255,.045)}
+body[data-page-kind="adversarial-bench"] .hush-compact-step strong{display:block;font-size:.9rem}
+body[data-page-kind="adversarial-bench"] .hush-compact-step span{display:block;font-size:.76rem;opacity:.82;margin-top:.15rem}
+body[data-page-kind="adversarial-bench"] .hush-compact-note{display:none}
+body[data-page-kind="adversarial-bench"] .hush-review-shell{display:grid;gap:1rem;margin-top:1rem}
+body[data-page-kind="adversarial-bench"] .hush-review-shell>.bench-telemetry-grid{margin-top:0}
+@media(max-width:960px){
+  body[data-page-kind="adversarial-bench"] .hush-compact-flow{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:720px){
+  body[data-page-kind="adversarial-bench"] .shell-station{--hush-gap:.7rem;--hush-field-min:6.35rem;--hush-field-compact:4.65rem;--hush-export-min:6.25rem;padding:.65rem}
+  body[data-page-kind="adversarial-bench"] .station-masthead-copy .lead,
+  body[data-page-kind="adversarial-bench"] .section-note{font-size:.86rem;line-height:1.35}
+  body[data-page-kind="adversarial-bench"] .station-masthead-links{display:none}
+  body[data-page-kind="adversarial-bench"] .statusrail{gap:.35rem;overflow-x:auto;scrollbar-width:none}
+  body[data-page-kind="adversarial-bench"] .statusrail .statepill{white-space:nowrap}
+  body[data-page-kind="adversarial-bench"] .active-bench>.panel-heading{display:block}
+  body[data-page-kind="adversarial-bench"] .active-bench>.panel-heading h2{font-size:1.25rem}
+  body[data-page-kind="adversarial-bench"] .hush-compact-flow{grid-template-columns:1fr 1fr;gap:.45rem;margin:.55rem 0 .75rem}
+  body[data-page-kind="adversarial-bench"] .hush-compact-step{padding:.5rem;border-radius:.7rem}
+  body[data-page-kind="adversarial-bench"] .hush-compact-note{display:block;border:1px solid rgba(255,255,255,.12);border-radius:.8rem;padding:.55rem .65rem;margin:.5rem 0 .75rem;background:rgba(255,255,255,.045);font-size:.86rem;line-height:1.35}
+  body[data-page-kind="adversarial-bench"] .bench-pane,
+  body[data-page-kind="adversarial-bench"] .bench-output-lane,
+  body[data-page-kind="adversarial-bench"] .telemetry-panel{padding:.8rem}
+  body[data-page-kind="adversarial-bench"] .bench-pane textarea,
+  body[data-page-kind="adversarial-bench"] .bench-output-lane textarea{max-height:32vh}
+  body[data-page-kind="adversarial-bench"] #messageDraftInput,
+  body[data-page-kind="adversarial-bench"] #protectedOutputInput{min-height:7.15rem!important}
+  body[data-page-kind="adversarial-bench"] #protectedBaselineInput,
+  body[data-page-kind="adversarial-bench"] #maskReferenceInput,
+  body[data-page-kind="adversarial-bench"] #hushCustomMaskSampleInput{min-height:4.4rem!important}
+  body[data-page-kind="adversarial-bench"] .field-copy,
+  body[data-page-kind="adversarial-bench"] .bench-pane .section-note{font-size:.78rem}
+  body[data-page-kind="adversarial-bench"] .hush-subpanel{padding:.6rem;margin:.5rem 0}
+  body[data-page-kind="adversarial-bench"] .hush-mask-tabs button,
+  body[data-page-kind="adversarial-bench"] .bench-controls button{min-height:2.65rem}
+  body[data-page-kind="adversarial-bench"] .bench-output-lane .bench-controls{position:sticky;bottom:.5rem;z-index:4;padding:.5rem;border:1px solid rgba(255,255,255,.14);border-radius:.85rem;background:rgba(12,12,18,.88);backdrop-filter:blur(10px)}
+  body[data-page-kind="adversarial-bench"] .bench-output-lane .bench-controls button{flex:1 1 calc(50% - .4rem)}
+  body[data-page-kind="adversarial-bench"] .escape-vector-grid{grid-template-columns:1fr}
+  body[data-page-kind="adversarial-bench"] .recognition-field-controls{gap:.55rem}
+  body[data-page-kind="adversarial-bench"] .iteration-preview-table{font-size:.78rem;display:block;overflow-x:auto}
+  body[data-page-kind="adversarial-bench"] .ledger-export-output,
+  body[data-page-kind="adversarial-bench"] .report-export-output{max-height:26vh}
+}
+@media(max-width:420px){
+  body[data-page-kind="adversarial-bench"] .hush-compact-flow{grid-template-columns:1fr}
+  body[data-page-kind="adversarial-bench"] .bench-output-lane .bench-controls button{flex:1 1 100%}
+  body[data-page-kind="adversarial-bench"] .hush-metric-row{display:block}
+  body[data-page-kind="adversarial-bench"] .hush-metric-row span+span{display:block;margin-top:.15rem}
+}

@@ -1,0 +1,141 @@
+---
+derivative_id: derivative:efccc363107ea85341638c6b
+parent_capture_id: capture:4f75e0a090fa9ebe9a873006
+parent_blob_sha256: df42dbd3c686c8139f2748a80698540599745e2c345a800579d0f27d6a5db8a4
+tool: srcctl-json-normalizer/1
+source_title: "Obsolete by Design: Institutional Self-Protection and the Production of Epistemic Failure"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.19324151",
+  "conceptrecid": "19324151",
+  "created": "2026-03-29T23:40:25.889015+00:00",
+  "doi": "10.5281/zenodo.19324152",
+  "doi_url": "https://doi.org/10.5281/zenodo.19324152",
+  "files": [
+    {
+      "checksum": "md5:c590bd8ca1027075ba9ab6fd094e05fd",
+      "id": "72afbfdd-46b4-4bb2-b8c8-b0d125e79e30",
+      "key": "Obsolete by Design: Institutional Self-Protection and the Production of Epistemic Failure .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/19324152/files/Obsolete%20by%20Design:%20Institutional%20Self-Protection%20and%20the%20Production%20of%20Epistemic%20Failure%20.pdf/content"
+      },
+      "size": 208976
+    }
+  ],
+  "id": 19324152,
+  "links": {
+    "access": "https://zenodo.org/api/records/19324152/access",
+    "access_grants": "https://zenodo.org/api/records/19324152/access/grants",
+    "access_links": "https://zenodo.org/api/records/19324152/access/links",
+    "access_request": "https://zenodo.org/api/records/19324152/access/request",
+    "access_users": "https://zenodo.org/api/records/19324152/access/users",
+    "archive": "https://zenodo.org/api/records/19324152/files-archive",
+    "archive_media": "https://zenodo.org/api/records/19324152/media-files-archive",
+    "communities": "https://zenodo.org/api/records/19324152/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/19324152/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.19324152",
+    "draft": "https://zenodo.org/api/records/19324152/draft",
+    "file_modification": "https://zenodo.org/api/records/19324152/file-modification",
+    "files": "https://zenodo.org/api/records/19324152/files",
+    "latest": "https://zenodo.org/api/records/19324152/versions/latest",
+    "latest_html": "https://zenodo.org/records/19324152/latest",
+    "media_files": "https://zenodo.org/api/records/19324152/media-files",
+    "parent": "https://zenodo.org/api/records/19324151",
+    "parent_doi": "https://doi.org/10.5281/zenodo.19324151",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19324151",
+    "parent_html": "https://zenodo.org/records/19324151",
+    "preview_html": "https://zenodo.org/records/19324152?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/19324152/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/19324152/request-deletion",
+    "requests": "https://zenodo.org/api/records/19324152/requests",
+    "reserve_doi": "https://zenodo.org/api/records/19324152/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/19324152",
+    "self_doi": "https://doi.org/10.5281/zenodo.19324152",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19324152",
+    "self_html": "https://zenodo.org/records/19324152",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19324152/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19324152/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:19324152:Obsolete%20by%20Design:%20Institutional%20Self-Protection%20and%20the%20Production%20of%20Epistemic%20Failure%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:19324152:Obsolete%20by%20Design:%20Institutional%20Self-Protection%20and%20the%20Production%20of%20Epistemic%20Failure%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:19324152:Obsolete%20by%20Design:%20Institutional%20Self-Protection%20and%20the%20Production%20of%20Epistemic%20Failure%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:19324152:Obsolete%20by%20Design:%20Institutional%20Self-Protection%20and%20the%20Production%20of%20Epistemic%20Failure%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:19324152:Obsolete%20by%20Design:%20Institutional%20Self-Protection%20and%20the%20Production%20of%20Epistemic%20Failure%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:19324152:Obsolete%20by%20Design:%20Institutional%20Self-Protection%20and%20the%20Production%20of%20Epistemic%20Failure%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/19324152/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Obsolete by Design: Institutional Self‑Protection and the Production of Epistemic Failure examines how contemporary institutions maintain epistemic infrastructures that persist despite long‑standing methodological critique. Drawing on Science and Technology Studies, sociology of knowledge, and philosophy of science, the paper argues that institutional obsolescence emerges from structural selection pressures that prioritize stability, legibility, and administrative utility over epistemic accuracy. The analysis introduces infrastructural hygiene as a measurable property of epistemic systems and demonstrates how non‑maintenance&mdash;rather than ignorance&mdash;produces drift between institutional models and the phenomena they claim to represent.</p>\n<p>The paper develops the SignalRupture (SR) framework as a diagnostic tool for auditing model specification. Through conceptual re‑specification, SR shows how omitted structural variables inflate effect sizes, generate misleading statistical significance, and contribute to broader replication challenges. Case analyses of obedience research, delay‑of‑gratification studies, and mindset interventions illustrate how institutional methods systematically misattribute causality. The paper concludes by positioning AI systems as epistemic stress tests that reveal inconsistencies and hidden assumptions within institutional models, and by outlining pathways for reconstructing epistemic infrastructures capable of handling complexity and structural variability.</p>",
+    "doi": "10.5281/zenodo.19324152",
+    "keywords": [
+      "Metatheory",
+      "Artificial intelligence",
+      "Institutions",
+      "Social Issues",
+      "Governance"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-30",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "19324151"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Obsolete by Design: Institutional Self-Protection and the Production of Epistemic Failure",
+    "version": "1.0"
+  },
+  "modified": "2026-03-29T23:40:26.290858+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "19324152",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 3,
+    "unique_downloads": 3,
+    "unique_views": 16,
+    "version_downloads": 3,
+    "version_unique_downloads": 3,
+    "version_unique_views": 16,
+    "version_views": 16,
+    "views": 16
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Obsolete by Design: Institutional Self-Protection and the Production of Epistemic Failure",
+  "updated": "2026-03-29T23:40:26.290858+00:00"
+}

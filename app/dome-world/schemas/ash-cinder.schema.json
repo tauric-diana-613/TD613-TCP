@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.cinder/v0.6",
+  "title": "Ash Cinder Minimal Fragment",
+  "type": "object",
+  "required": ["schema", "cinder_id", "source_receipt_id", "fragment_class", "content_exported", "raw_document_exported", "leak_challenge", "claimCeiling"],
+  "properties": {
+    "schema": { "const": "td613.ash.cinder/v0.6" },
+    "fragment_class": { "type": "string" },
+    "content_exported": { "type": "boolean" },
+    "raw_document_exported": { "const": false },
+    "leak_challenge": { "type": "object" },
+    "claimCeiling": { "const": "ash-cinder-fragment-not-full-document" }
+  }
+}

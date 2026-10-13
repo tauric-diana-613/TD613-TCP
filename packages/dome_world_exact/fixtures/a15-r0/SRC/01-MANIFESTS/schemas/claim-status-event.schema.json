@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:claim-status-event:v1",
+  "title": "SignalRupture claim-status event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "claim_event_id", "claim_id", "claim_lineage_id", "source_manifestation_id",
+    "source_status_raw", "normalized_status", "normalization_basis", "source_asserted_at", "source_updated_at",
+    "observed_at", "origin", "evidence_ids", "adjudication_status"
+  ],
+  "properties": {
+    "schema_version": {"const": "claim-status-event/v1"},
+    "claim_event_id": {"type": "string", "minLength": 1},
+    "claim_id": {"type": "string", "minLength": 1},
+    "claim_lineage_id": {"type": ["string", "null"]},
+    "source_manifestation_id": {"type": "string", "minLength": 1},
+    "source_status_raw": {"type": ["string", "null"]},
+    "normalized_status": {"enum": ["DECLARED_LAW", "CANDIDATE_MECHANISM", "SUPPORTED", "PARTIAL", "NOT_ESTABLISHED", "REJECTED_UNIVERSAL", "LEGACY", "CONTESTED", "UNCLASSIFIED"]},
+    "normalization_basis": {"enum": ["EXACT_SOURCE_TERM", "CONTROLLED_ARCHIVE_MAPPING", "NONE"]},
+    "scope_raw": {"type": ["string", "null"]},
+    "evidence_schema_id": {"type": ["string", "null"]},
+    "evidence_class_raw": {"type": ["string", "null"]},
+    "measurement_definition_ids": {"type": "array", "items": {"type": "string"}},
+    "competing_explanation_ids": {"type": "array", "items": {"type": "string"}},
+    "falsifier_ids": {"type": "array", "items": {"type": "string"}},
+    "counterexample_ids": {"type": "array", "items": {"type": "string"}},
+    "prior_event_ids": {"type": "array", "items": {"type": "string"}},
+    "source_asserted_at": {"type": ["string", "null"]},
+    "source_updated_at": {"type": ["string", "null"]},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "origin": {"enum": ["explicit-source", "archive-inferred", "researcher-proposed"]},
+    "evidence_ids": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "adjudication_status": {"enum": ["WITNESSED", "CANDIDATE", "DISPUTED", "REJECTED", "UNRESOLVED"]},
+    "source_adjudication_status_raw": {"type": "string", "minLength": 1},
+    "interpretive_limit": {"type": ["string", "null"]}
+  }
+}

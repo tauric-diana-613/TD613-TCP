@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:4910778474b210160d1d84db
+parent_capture_id: capture:b063b2a6dcc3dea9a07674c9
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "Administrative Trauma"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.18201725
+Final URL: https://zenodo.org/records/18201725
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.18201725 -> https://zenodo.org/doi/10.5281/zenodo.18201725
+302 https://zenodo.org/doi/10.5281/zenodo.18201725 -> https://zenodo.org/records/18201725

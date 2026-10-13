@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.aperture.reader-result-provenance-replay/v0.1",
+  "title": "TD613 Reader Result Provenance Replay v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "version", "replay_id", "created_at", "source_provenance_id",
+    "source_provenance_digest", "registry_reference", "status",
+    "provenance_digest_verified", "registry_digest_verified",
+    "adapter_relation_verified", "input_content_restored",
+    "result_content_restored", "reader_reexecuted", "provider_called",
+    "network_called", "storage_mutated", "transport_authorized",
+    "release_authorized", "identity_inference_authorized",
+    "authorship_attribution_authorized", "surveillance_probability_authorized",
+    "prediction_authorized", "automatic_hold", "recommendation_not_command",
+    "observations", "missingness", "alternatives", "open_questions",
+    "closure", "replay_digest"
+  ],
+  "properties": {
+    "schema": { "const": "td613.aperture.reader-result-provenance-replay/v0.1" },
+    "version": { "const": "v0.1" },
+    "replay_id": { "type": "string", "pattern": "^readerprovreplay_[A-Za-z0-9_-]{6,128}$" },
+    "created_at": { "type": "string" },
+    "source_provenance_id": { "type": ["string", "null"] },
+    "source_provenance_digest": { "type": ["string", "null"] },
+    "registry_reference": { "type": ["string", "null"] },
+    "status": { "enum": ["READER_RESULT_PROVENANCE_REPLAY_VERIFIED", "READER_RESULT_PROVENANCE_REPLAY_HELD"] },
+    "provenance_digest_verified": { "type": "boolean" },
+    "registry_digest_verified": { "type": "boolean" },
+    "adapter_relation_verified": { "type": "boolean" },
+    "input_content_restored": { "const": false },
+    "result_content_restored": { "const": false },
+    "reader_reexecuted": { "const": false },
+    "provider_called": { "const": false },
+    "network_called": { "const": false },
+    "storage_mutated": { "const": false },
+    "transport_authorized": { "const": false },
+    "release_authorized": { "const": false },
+    "identity_inference_authorized": { "const": false },
+    "authorship_attribution_authorized": { "const": false },
+    "surveillance_probability_authorized": { "const": false },
+    "prediction_authorized": { "const": false },
+    "automatic_hold": { "const": false },
+    "recommendation_not_command": { "const": true },
+    "observations": { "type": "array" },
+    "missingness": { "type": "array", "items": { "type": "string" } },
+    "alternatives": { "type": "array", "items": { "type": "string" } },
+    "open_questions": { "type": "array", "items": { "type": "string" } },
+    "closure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "status"],
+      "properties": {
+        "required": { "const": true },
+        "status": { "type": "string" }
+      }
+    },
+    "replay_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+  }
+}

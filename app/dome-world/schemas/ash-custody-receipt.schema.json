@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.custody-receipt/v0.5",
+  "title": "TD613 Ash Custody Receipt",
+  "description": "Canonical metadata-only Ash custody receipt. A receipt records custody posture and public weather boundaries; it does not prove content custody, permission, identity, truth, document authenticity, or verification.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "receipt_id",
+    "created_at",
+    "manifest",
+    "public_surface",
+    "export_boundary",
+    "anti_extraction_defaults",
+    "decision",
+    "claimCeiling"
+  ],
+  "properties": {
+    "schema": {
+      "const": "td613.ash.custody-receipt/v0.5"
+    },
+    "receipt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "domeWorldVersion": {
+      "type": "string"
+    },
+    "manifest": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["schema"],
+      "properties": {
+        "schema": {
+          "const": "td613.ash.custody-manifest/v0.5"
+        }
+      }
+    },
+    "public_surface": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "content_exported",
+        "text_preview",
+        "quantized_weather_only"
+      ],
+      "properties": {
+        "content_exported": {
+          "const": false,
+          "description": "Raw content is never exported through the public receipt surface."
+        },
+        "text_preview": {
+          "const": null,
+          "description": "No preview text is emitted from Ash custody receipts."
+        },
+        "quantized_weather_only": {
+          "const": true,
+          "description": "Only quantized public route weather may move outward."
+        },
+        "visual_signature": {
+          "type": "string"
+        }
+      }
+    },
+    "export_boundary": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "raw_content_allowed",
+        "summary_before_custody",
+        "arrival_as_consent"
+      ],
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "raw_content_allowed": {
+          "const": false,
+          "description": "Ash receipts never authorize raw content export."
+        },
+        "summary_before_custody": {
+          "const": false,
+          "description": "Ash refuses summary-before-custody extraction."
+        },
+        "arrival_as_consent": {
+          "const": false,
+          "description": "Artifact arrival never becomes consent."
+        }
+      }
+    },
+    "anti_extraction_defaults": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "local_hold",
+        "no_content_export",
+        "public_weather_only",
+        "receipt_not_proof",
+        "beauty_not_verification"
+      ],
+      "properties": {
+        "local_hold": {
+          "const": true
+        },
+        "no_content_export": {
+          "const": true
+        },
+        "public_weather_only": {
+          "const": true
+        },
+        "receipt_not_proof": {
+          "const": true
+        },
+        "beauty_not_verification": {
+          "const": true
+        }
+      }
+    },
+    "decision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "claimCeiling": {
+      "const": "ash-custody-receipt-not-content-custody-or-permission-proof"
+    },
+    "seal": {
+      "type": "string"
+    }
+  }
+}

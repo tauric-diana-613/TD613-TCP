@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# .githooks/commit-msg — reject placeholder commit messages.
+#
+# Enabled per-clone by `npm install` (which runs the `prepare` script,
+# which sets `core.hooksPath` to `.githooks/`).
+#
+# Why: "Patch 33.7.1" tells future readers nothing about why the change
+# was made. The commit log is the project's archaeology layer; placeholder
+# messages destroy it.
+
+set -euo pipefail
+
+msg_file="${1:-}"
+if [[ -z "$msg_file" || ! -f "$msg_file" ]]; then
+  exit 0
+fi
+
+# Strip comment lines and blank lines, leaving the actual message body.
+msg="$(grep -v '^#' "$msg_file" | sed -e '/^[[:space:]]*$/d')"
+
+if [[ -z "$msg" ]]; then
+  echo "commit-msg: rejected — empty commit message." >&2
+  exit 1
+fi
+
+first_line="$(printf '%s\n' "$msg" | head -n 1)"
+
+# Reject "Patch 33.7.1", "patch 1.0", "Patch 7", etc. — placeholder versioning.
+if [[ "$first_line" =~ ^[Pp]atch[[:space:]]+[0-9]+(\.[0-9]+)*$ ]]; then
+  cat <<'EOF' >&2
+commit-msg: rejected — "Patch X.Y.Z" is a placeholder, not a description.
+
+Write what changed and *why*. The commit log is the project's archaeology
+layer — `git blame` and `git log` are how future readers understand
+decisions. A version number tells them nothing.
+
+Good shape:
+    Short imperative summary, under 70 chars
+
+    Why this change was made — the problem it solves, the constraint
+    it was working under, the tradeoff considered. The "what" is in
+    the diff; the "why" lives only here.
+EOF
+  exit 1
+fi
+
+# Reject "WIP".
+if [[ "$first_line" =~ ^[Ww][Ii][Pp]$ ]]; then
+  echo "commit-msg: rejected — 'WIP' is a placeholder." >&2
+  echo "Describe the work-in-progress; the message survives the cleanup." >&2
+  exit 1
+fi
+
+exit 0

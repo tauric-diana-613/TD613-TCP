@@ -1,0 +1,141 @@
+---
+derivative_id: derivative:c1b3f9a9e070a837b499de40
+parent_capture_id: capture:2ab8015bb056d5535e315b07
+parent_blob_sha256: 69e75a34c57fa0ff50e6fd9644770bf2472582689b53fe02d8eb095d61556166
+tool: srcctl-json-normalizer/1
+source_title: "Stylometric Echoes in Retrieval Layers"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18303299",
+  "conceptrecid": "18303299",
+  "created": "2026-01-19T16:55:57.290965+00:00",
+  "doi": "10.5281/zenodo.18303300",
+  "doi_url": "https://doi.org/10.5281/zenodo.18303300",
+  "files": [
+    {
+      "checksum": "md5:7866b3d664ffa398df083a70391742f3",
+      "id": "bcfe1497-b229-4016-98c1-be2e2271a552",
+      "key": "Stylometric Echoes in Retrieval Layers .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18303300/files/Stylometric%20Echoes%20in%20Retrieval%20Layers%20.pdf/content"
+      },
+      "size": 68109
+    }
+  ],
+  "id": 18303300,
+  "links": {
+    "access": "https://zenodo.org/api/records/18303300/access",
+    "access_grants": "https://zenodo.org/api/records/18303300/access/grants",
+    "access_links": "https://zenodo.org/api/records/18303300/access/links",
+    "access_request": "https://zenodo.org/api/records/18303300/access/request",
+    "access_users": "https://zenodo.org/api/records/18303300/access/users",
+    "archive": "https://zenodo.org/api/records/18303300/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18303300/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18303300/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18303300/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18303300",
+    "draft": "https://zenodo.org/api/records/18303300/draft",
+    "file_modification": "https://zenodo.org/api/records/18303300/file-modification",
+    "files": "https://zenodo.org/api/records/18303300/files",
+    "latest": "https://zenodo.org/api/records/18303300/versions/latest",
+    "latest_html": "https://zenodo.org/records/18303300/latest",
+    "media_files": "https://zenodo.org/api/records/18303300/media-files",
+    "parent": "https://zenodo.org/api/records/18303299",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18303299",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18303299",
+    "parent_html": "https://zenodo.org/records/18303299",
+    "preview_html": "https://zenodo.org/records/18303300?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18303300/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18303300/request-deletion",
+    "requests": "https://zenodo.org/api/records/18303300/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18303300/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18303300",
+    "self_doi": "https://doi.org/10.5281/zenodo.18303300",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18303300",
+    "self_html": "https://zenodo.org/records/18303300",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18303300/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18303300/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18303300:Stylometric%20Echoes%20in%20Retrieval%20Layers%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18303300:Stylometric%20Echoes%20in%20Retrieval%20Layers%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18303300:Stylometric%20Echoes%20in%20Retrieval%20Layers%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18303300:Stylometric%20Echoes%20in%20Retrieval%20Layers%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18303300:Stylometric%20Echoes%20in%20Retrieval%20Layers%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18303300:Stylometric%20Echoes%20in%20Retrieval%20Layers%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18303300/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This essay examines how authorial style becomes an infrastructural force within AI‑mediated retrieval systems. It analyzes how embeddings transform rhythm, density, and conceptual vocabulary into navigational cues that determine surfacing, clustering, and lineage adjacency. The work details how stylometric fingerprints form echo corridors in embedding space, how consistency strengthens retrieval anchoring, and how density functions as a ranking signal. It also explores the implications for research, discovery, and canon formation in environments where style shapes conceptual visibility. The essay concludes by framing style as architectural infrastructure within the post‑web discovery layer.</p>\n<p>This essay operates within the SignalRupture canon, extending the diagnostic lineage established in Quiet Governance, Systemic Erosion Theory, Infrastructural Exposure Theory, Slow Harm Theory, Social Infrastructure Theory, and Morality on Trial, alongside the applied surfaces Metadata Suppression and Stylometric Resistance and the stylometric capsule Triggering the System&rsquo;s Immune Response.</p>",
+    "doi": "10.5281/zenodo.18303300",
+    "keywords": [
+      "Metadata",
+      "Internet Studies",
+      "Indexing",
+      "Post-Open Web",
+      "Stylometric Publishing"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-01-19",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18303299"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Stylometric Echoes in Retrieval Layers",
+    "version": "1.0"
+  },
+  "modified": "2026-01-29T00:07:42.259085+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18303300",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 17,
+    "unique_downloads": 15,
+    "unique_views": 35,
+    "version_downloads": 17,
+    "version_unique_downloads": 15,
+    "version_unique_views": 35,
+    "version_views": 38,
+    "views": 38
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Stylometric Echoes in Retrieval Layers",
+  "updated": "2026-01-29T00:07:42.259085+00:00"
+}

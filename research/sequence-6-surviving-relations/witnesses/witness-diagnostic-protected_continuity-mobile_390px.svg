@@ -1,0 +1,61 @@
+<!--
+  TD613 Flow-Core Semantic Motion Bridge Visual Witness
+  Relation: protected_continuity (cōl)
+  Active View ID: cockpit
+  Carrier Count: 39 (Distribution: 6 near / 13 mid / 20 far)
+  Reduced Motion: DISABLED
+  Viewport: 390x844 (viewBox: 200 -220 600 1120)
+  Claim Ceiling: VISUAL_RELATION != EXTERNAL_REALITY | AMBIENT_MOTION != EVENT_HISTORY | AESTHETIC_BINDING != EMPIRICAL_VALIDATION
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="200 -220 600 1120" width="390" height="844" style="background:#0a0a0c;">
+  <style>
+    .flight-near { font-family: 'JetBrains Mono', 'PingFang SC', monospace; font-weight: bold; }
+    .flight-mid  { font-family: 'JetBrains Mono', 'PingFang SC', monospace; }
+    .flight-far  { font-family: 'JetBrains Mono', 'PingFang SC', monospace; opacity: 0.20; }
+  </style>
+  <g class="loom-field-flight" aria-hidden="true" data-active-relation="protected_continuity">
+    <text x="666.97" y="276.27" font-size="184" fill="#f3bd86" class="flight-near" opacity="0.646" transform="translate(666.97 276.27) rotate(1.15) scale(0.776) translate(-666.97 -276.27)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="616.62" y="330.31" font-size="26" fill="#b69be9" class="flight-far" opacity="0.245" transform="translate(616.62 330.31) rotate(2.94) scale(0.495) translate(-616.62 -330.31)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="493.36" y="357" font-size="26" fill="#b69be9" class="flight-far" opacity="0.245" transform="translate(493.36 357) rotate(3.98) scale(0.544) translate(-493.36 -357)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="352.26" y="346.66" font-size="26" fill="#b69be9" class="flight-far" opacity="0.245" transform="translate(352.26 346.66) rotate(2.99) scale(0.601) translate(-352.26 -346.66)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="233.23" y="290.99" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.359" transform="translate(233.23 290.99) rotate(1.06) scale(0.54) translate(-233.23 -290.99)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="335.91" y="231.21" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.245" transform="translate(335.91 231.21) rotate(-1.32) scale(0.493) translate(-335.91 -231.21)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="394.18" y="184.53" font-size="26" fill="#b69be9" class="flight-far" opacity="0.245" transform="translate(394.18 184.53) rotate(-3.34) scale(0.546) translate(-394.18 -184.53)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="515.98" y="159.38" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.359" transform="translate(515.98 159.38) rotate(-3.96) scale(0.737) translate(-515.98 -159.38)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="674.15" y="184.31" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.359" transform="translate(674.15 184.31) rotate(-2.99) scale(0.547) translate(-674.15 -184.31)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="763.98" y="235.07" font-size="26" fill="#f3bd86" class="flight-far" opacity="0.245" transform="translate(763.98 235.07) rotate(-0.83) scale(0.493) translate(-763.98 -235.07)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="658.17" y="292.5" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.245" transform="translate(658.17 292.5) rotate(1.84) scale(0.544) translate(-658.17 -292.5)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="592.38" y="333.86" font-size="132" fill="#b69be9" class="flight-near" opacity="0.646" transform="translate(592.38 333.86) rotate(3.53) scale(1.019) translate(-592.38 -333.86)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="462.92" y="354.54" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.359" transform="translate(462.92 354.54) rotate(4.15) scale(0.546) translate(-462.92 -354.54)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="340.63" y="343.56" font-size="184" fill="#b69be9" class="flight-near" opacity="0.646" transform="translate(340.63 343.56) rotate(3.06) scale(0.853) translate(-340.63 -343.56)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="228.17" y="273.37" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.359" transform="translate(228.17 273.37) rotate(0.41) scale(0.676) translate(-228.17 -273.37)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="346.06" y="222.64" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.245" transform="translate(346.06 222.64) rotate(-2.02) scale(0.595) translate(-346.06 -222.64)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="413.68" y="177.99" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.359" transform="translate(413.68 177.99) rotate(-3.48) scale(0.546) translate(-413.68 -177.99)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="544" y="163.07" font-size="26" fill="#b69be9" class="flight-far" opacity="0.245" transform="translate(544 163.07) rotate(-3.92) scale(0.491) translate(-544 -163.07)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="691.08" y="190.88" font-size="26" fill="#f3bd86" class="flight-far" opacity="0.245" transform="translate(691.08 190.88) rotate(-2.57) scale(0.547) translate(-691.08 -190.88)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="770.1" y="250.26" font-size="26" fill="#b69be9" class="flight-far" opacity="0.245" transform="translate(770.1 250.26) rotate(-0.18) scale(0.596) translate(-770.1 -250.26)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="647.33" y="301.12" font-size="56" fill="#9ce7e4" class="flight-mid" opacity="0.359" transform="translate(647.33 301.12) rotate(1.89) scale(0.545) translate(-647.33 -301.12)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="566.31" y="339.37" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.359" transform="translate(566.31 339.37) rotate(3.93) scale(0.609) translate(-566.31 -339.37)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="429.83" y="350.51" font-size="132" fill="#b69be9" class="flight-near" opacity="0.646" transform="translate(429.83 350.51) rotate(3.82) scale(0.919) translate(-429.83 -350.51)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="306.73" y="328.45" font-size="26" fill="#b69be9" class="flight-far" opacity="0.245" transform="translate(306.73 328.45) rotate(2.05) scale(0.593) translate(-306.73 -328.45)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="224.55" y="260.91" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.359" transform="translate(224.55 260.91) rotate(0.25) scale(0.543) translate(-224.55 -260.91)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="359.44" y="212.85" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.245" transform="translate(359.44 212.85) rotate(-2.4) scale(0.498) translate(-359.44 -212.85)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="435.25" y="170.71" font-size="184" fill="#b69be9" class="flight-near" opacity="0.646" transform="translate(435.25 170.71) rotate(-3.75) scale(0.933) translate(-435.25 -170.71)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="573.34" y="165.03" font-size="26" fill="#f3bd86" class="flight-far" opacity="0.245" transform="translate(573.34 165.03) rotate(-3.78) scale(0.598) translate(-573.34 -165.03)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="707.17" y="204.31" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.359" transform="translate(707.17 204.31) rotate(-2.29) scale(0.54) translate(-707.17 -204.31)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="769.89" y="265.94" font-size="26" fill="#b69be9" class="flight-far" opacity="0.245" transform="translate(769.89 265.94) rotate(0.15) scale(0.492) translate(-769.89 -265.94)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="635.27" y="308.74" font-size="26" fill="#9ce7e4" class="flight-far" opacity="0.245" transform="translate(635.27 308.74) rotate(2.61) scale(0.546) translate(-635.27 -308.74)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="543.85" y="343.18" font-size="26" fill="#b69be9" class="flight-far" opacity="0.245" transform="translate(543.85 343.18) rotate(3.86) scale(0.596) translate(-543.85 -343.18)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="408.72" y="346.65" font-size="56" fill="#b69be9" class="flight-mid" opacity="0.359" transform="translate(408.72 346.65) rotate(3.76) scale(0.55) translate(-408.72 -346.65)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="293.37" y="313.15" font-size="132" fill="#b69be9" class="flight-near" opacity="0.646" transform="translate(293.37 313.15) rotate(1.26) scale(0.855) translate(-293.37 -313.15)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="228.41" y="245.33" font-size="26" fill="#b69be9" class="flight-far" opacity="0.245" transform="translate(228.41 245.33) rotate(-0.57) scale(0.543) translate(-228.41 -245.33)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="371.3" y="206.72" font-size="56" fill="#9ce7e4" class="flight-mid" opacity="0.359" transform="translate(371.3 206.72) rotate(-3) scale(0.734) translate(-371.3 -206.72)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="462.16" y="171.96" font-size="56" fill="#f3bd86" class="flight-mid" opacity="0.359" transform="translate(462.16 171.96) rotate(-4.01) scale(0.543) translate(-462.16 -171.96)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="600.28" y="172.7" font-size="26" fill="#b69be9" class="flight-far" opacity="0.245" transform="translate(600.28 172.7) rotate(-3.62) scale(0.49) translate(-600.28 -172.7)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+    <text x="721.17" y="211.46" font-size="26" fill="#b69be9" class="flight-far" opacity="0.245" transform="translate(721.17 211.46) rotate(-1.86) scale(0.545) translate(-721.17 -211.46)" text-anchor="middle" dominant-baseline="middle">cōl</text>
+  </g>
+  <g class="loom-field-center-glyph" text-anchor="middle" dominant-baseline="middle">
+    <text x="500" y="260" font-size="140" fill="#f4f4f0" opacity="0.88">cōl</text>
+    <text x="500" y="360" font-size="18" fill="#d97706" letter-spacing="2" opacity="0.95">PROTECTED_CONTINUITY</text>
+  </g>
+</svg>

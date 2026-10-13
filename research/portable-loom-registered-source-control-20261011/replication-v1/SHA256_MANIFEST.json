@@ -1,0 +1,38 @@
+{
+  "schema": "td613.integrity.sha256/v1",
+  "protocol_id": "registered-source-r04-replication-20261011-v1",
+  "files": {
+    "research/portable-loom-registered-source-control-20261011/replication-v1/EXECUTION_AUTHORIZATION.json": {
+      "sha256": "23d393f21a07091f1f0fabd304261854ca7d2e49c3e61a7ae179d702f000fb60",
+      "bytes": 1090
+    },
+    "research/portable-loom-registered-source-control-20261011/replication-v1/HANDOFF.md": {
+      "sha256": "966aab69a9cdb2ad1dc6363b8f50fae9eb9c4471b8d39394cfef7a4052f4a8a8",
+      "bytes": 3707
+    },
+    "research/portable-loom-registered-source-control-20261011/replication-v1/PROTOCOL.json": {
+      "sha256": "411bdbc2aa86822ba4d2fec9cb1a3accce06c711b5d0f2143087b57bcad28565",
+      "bytes": 7552
+    },
+    "research/portable-loom-registered-source-control-20261011/next-protocol-v1/PROMPT.txt": {
+      "sha256": "d703dcebb9869152df5d95541bbe5400d1ed9b92d1f11565aa10c9382cfd35c6",
+      "bytes": 109285
+    },
+    "research/portable-loom-registered-source-control-20261011/next-protocol-v1/SCORING_CONTRACT.json": {
+      "sha256": "af7b5637019ca0693fa4916d2b164e167a579d0f5f8cccffbe93e44eb15a0bff",
+      "bytes": 3676
+    },
+    "research/portable-loom-registered-source-control-20261011/next-protocol-v1/ORIGIN_SOURCE_REGISTRATION.json": {
+      "sha256": "b7e1b65d02b677c57af466be099f76f7454b22d9485466318760c9b8c69aaf3c",
+      "bytes": 984
+    },
+    "research/portable-loom-registered-source-control-20261011/next-protocol-v1/SOURCE.txt": {
+      "sha256": "8dbff8f321879ba910a9e54e5a066dfe2ade4384a164195d636dd67ac0be585d",
+      "bytes": 27
+    },
+    "research/portable-loom-registered-source-control-20261011/next-protocol-v1/TRIAL_MANIFEST.json": {
+      "sha256": "eaa2b2513f329d2e25595ae1fac994d9b28cdf3d3c46823868884ada3c3143ba",
+      "bytes": 1113
+    }
+  }
+}

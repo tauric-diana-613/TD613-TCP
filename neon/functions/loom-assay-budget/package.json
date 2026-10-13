@@ -1,0 +1,12 @@
+{
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "@neon/functions": "0.11.0",
+    "pg": "8.23.1"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.8",
+    "esbuild": "0.27.0"
+  }
+}

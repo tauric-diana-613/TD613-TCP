@@ -1,0 +1,151 @@
+/* TD613 Giving · Pedagogue mobile hierarchy reprocess · 2026-08-19 */
+
+@media (max-width: 760px) {
+  /* Pedagogue: temporal constraints should read as quiet bounds, not hero controls. */
+  .giving-date-range-filter {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    align-items: end !important;
+    gap: 10px !important;
+    width: 100%;
+    min-width: 0;
+    overflow: visible !important;
+  }
+  .giving-date-range-filter > .field {
+    display: grid;
+    gap: 3px;
+    width: 100%;
+    min-width: 0;
+  }
+  .giving-date-range-filter > .field > span {
+    margin: 0 !important;
+    font-size: 8.75px !important;
+    line-height: 1.15 !important;
+  }
+  .giving-date-range-filter input[type="date"] {
+    display: block;
+    box-sizing: border-box;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    padding: 0 2px 2px !important;
+    border: 0 !important;
+    border-bottom: 1px solid rgba(118, 234, 212, .28) !important;
+    border-radius: 0 !important;
+    color: var(--bright) !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    -webkit-appearance: none;
+    appearance: none;
+    font-family: var(--sans) !important;
+    font-size: 16px !important;
+    font-weight: 650 !important;
+    line-height: 1 !important;
+    letter-spacing: -.018em !important;
+    font-variant-numeric: tabular-nums;
+    text-align: left;
+    color-scheme: dark;
+  }
+  .giving-date-range-filter input[type="date"]::-webkit-date-and-time-value,
+  .giving-date-range-filter input[type="date"]::-webkit-datetime-edit {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+  }
+  .giving-date-range-filter input[type="date"]::-webkit-calendar-picker-indicator {
+    margin: 0;
+    padding: 0;
+    opacity: .62;
+  }
+  .giving-date-presets {
+    justify-content: center !important;
+    margin-top: 8px !important;
+  }
+
+  /* Pedagogue: optional committee context is one compact modifier, not a subsection. */
+  .committee-context-filter[data-repair-placement="before-filing-sources"] {
+    position: relative;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 3px 7px !important;
+    margin: 8px 0 10px !important;
+    padding: 7px 9px !important;
+    border: 0 !important;
+    border-top: 1px solid rgba(127, 215, 255, .16) !important;
+    border-bottom: 1px solid rgba(127, 215, 255, .16) !important;
+    background: rgba(127, 215, 255, .018) !important;
+  }
+  .committee-context-filter[data-repair-placement="before-filing-sources"] > label {
+    grid-column: 1 / -1;
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center !important;
+    gap: 7px !important;
+    min-width: 0;
+    margin: 0;
+  }
+  .committee-context-filter[data-repair-placement="before-filing-sources"] > label > input {
+    margin: 0 !important;
+  }
+  .committee-context-filter[data-repair-placement="before-filing-sources"] label > span {
+    display: block !important;
+    min-width: 0;
+  }
+  .committee-context-filter[data-repair-placement="before-filing-sources"] strong {
+    display: block;
+    font-size: 10.5px !important;
+    line-height: 1.2 !important;
+  }
+  .committee-context-filter[data-repair-placement="before-filing-sources"] label small {
+    display: none !important;
+  }
+  .committee-context-filter[data-repair-placement="before-filing-sources"] .committee-filter-jump {
+    grid-column: 2;
+    justify-self: center !important;
+    align-self: center !important;
+    margin: 0 !important;
+    padding: 2px 3px 1px !important;
+    white-space: nowrap;
+    font-size: 8.5px !important;
+    line-height: 1.2 !important;
+    text-decoration: underline !important;
+    text-decoration-thickness: 1px !important;
+    text-underline-offset: 3px !important;
+  }
+  .committee-context-filter[data-repair-placement="before-filing-sources"] .committee-filter-summary {
+    grid-column: 3;
+    justify-self: start;
+    align-self: center;
+    min-width: 0;
+    max-width: 100%;
+    margin: 0 !important;
+    overflow: hidden;
+    color: var(--dim);
+    font-size: 7.5px !important;
+    line-height: 1.2 !important;
+    text-align: left !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .committee-context-filter[data-repair-placement="before-filing-sources"] .committee-filter-summary[data-ready="true"] {
+    color: var(--cyan);
+  }
+}
+
+@media (max-width: 430px) {
+  .giving-date-range-filter {
+    gap: 8px !important;
+  }
+  .giving-date-range-filter input[type="date"] {
+    padding-inline: 1px !important;
+  }
+  .committee-context-filter[data-repair-placement="before-filing-sources"] {
+    padding-inline: 8px !important;
+  }
+  .committee-context-filter[data-repair-placement="before-filing-sources"] .committee-filter-summary {
+    font-size: 7.25px !important;
+  }
+}

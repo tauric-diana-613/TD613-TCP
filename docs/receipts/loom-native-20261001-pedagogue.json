@@ -1,0 +1,84 @@
+{
+  "source_revision": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f",
+  "observation_class": "SYNTHETIC_FIXTURE",
+  "design_gate": {
+    "consequence_before_ontology": true,
+    "rest_and_exit_preserved": true,
+    "aia_invariants_preserved": true,
+    "aia_surface_bound": true,
+    "route_history_explicit": true,
+    "route_burden_non_worsening": true,
+    "user_level_score_forbidden": true,
+    "automatic_redesign_forbidden": true,
+    "interface_diagnosis_non_authoritative": true,
+    "lineage_review_non_authoritative": true,
+    "institutional_time_audit_non_authoritative": true,
+    "cadence_audit_non_authoritative": true,
+    "lineage_second_pass_non_authoritative": true,
+    "human_closure_required": true
+  },
+  "burden_comparison": {
+    "baseline": {
+      "FIELD_COUNT_BASELINE": 890,
+      "DEPENDENCY_COUNT": 1000,
+      "AIA_TRANSPORT_SURROGATE": 328,
+      "HETEROSTRATIGRAPHIC_EXTENSION": 460
+    },
+    "proposed": {
+      "FIELD_COUNT_BASELINE": 757,
+      "DEPENDENCY_COUNT": 940,
+      "AIA_TRANSPORT_SURROGATE": 315,
+      "HETEROSTRATIGRAPHIC_EXTENSION": 273
+    },
+    "delta_millipoints": {
+      "FIELD_COUNT_BASELINE": -133,
+      "DEPENDENCY_COUNT": -60,
+      "AIA_TRANSPORT_SURROGATE": -13,
+      "HETEROSTRATIGRAPHIC_EXTENSION": -187
+    },
+    "non_worsening_model_count": 4,
+    "improved_model_count": 4,
+    "all_models_non_worsening": true
+  },
+  "gesture": {
+    "schema": "td613.pedagogue-gesture-consequence-audit/v0.1",
+    "classification": "DECLARED_GESTURE_CONSEQUENCES_PRESERVED",
+    "findings": [],
+    "scope": {
+      "explicit_snapshots_only": true,
+      "notice_visibility_declared_only": true,
+      "natural_language_comprehension_measured": false,
+      "user_level_score_created": false,
+      "result_admission_authenticated": false,
+      "source_observation_authenticated": false,
+      "synthetic_fixture_establishes_production_behavior": false,
+      "cue_pause_extends_custody": false
+    },
+    "authority": {
+      "recommendation_only": true,
+      "automatic_redesign": false,
+      "product_mutation_authorized": false,
+      "automatic_release": false,
+      "human_closure_required": true
+    }
+  },
+  "implementation_acceptance": {
+    "observation_class": "OFFLINE_SOURCE_ROUTE",
+    "tests": [
+      "tests/loom-native-route-consequence.test.mjs",
+      "tests/marrowline-loom-demo-pedagogue.test.mjs",
+      "tests/marrowline-desktop-repair-contract.test.mjs"
+    ],
+    "passed_tests": 36,
+    "source_fixes": [
+      "Live-phase submenu access independent of next-step attention",
+      "Pause/resume visual cue in existing plus menu",
+      "Pause/reduced-motion stop Send and plus animations",
+      "Hidden recovery controls remain display:none",
+      "Submenu scroll retains End and Close in short viewport"
+    ],
+    "provider_authentication_observed": false,
+    "browser_layout_observed": false,
+    "physical_device_observed": false
+  }
+}

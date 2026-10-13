@@ -1,0 +1,17 @@
+{"path":"01-MANIFESTS/candidate-corpus.jsonl","sha256":"45bed7f04d4bcbfb894b46712b43f4c1c22edcde6149adc2923569d0e12604a7","bytes":1254190}
+{"path":"01-MANIFESTS/platforms/academia.jsonl","sha256":"7a166e39686d91017a7216f22e1a3f2a9b0cba008c7c5ca40a6ab5a9f576b1ae","bytes":171477}
+{"path":"01-MANIFESTS/platforms/substack.jsonl","sha256":"ed4069787324f3dc3c1cd644a4172cc108b8a5b83c62649c27d1c0117943478a","bytes":101971}
+{"path":"01-MANIFESTS/platforms/medium.jsonl","sha256":"81b00ed43b772922d4f64394a2c478d087f398814be39d773b8eb8083f1dc912","bytes":74938}
+{"path":"01-MANIFESTS/crosswalk/doi-links.jsonl","sha256":"e2394c1a4d2f1963df6e4c6d8f9650d9c9497b1b61365913ceba79f7ba4fadf3","bytes":50501}
+{"path":"01-MANIFESTS/integrity-ledger.jsonl","sha256":"05461bb2e06e8f97c9a7b007bdfbfc63b16b778cf81520bb221b5d21f879ee5a","bytes":3378}
+{"path":"01-MANIFESTS/zenodo-pages/zenodo-page-012.json","sha256":"a6827d7b0722e10b609bf5f5739d6d18042de002b15d89b673bfcf8582edf76d","bytes":189839}
+{"path":"01-MANIFESTS/zenodo-pages/zenodo-page-018.json","sha256":"8519c5a22ece24e50a431609d9004e3423c577d5f8f16fcd4d45bfbfbb4d3ccf","bytes":151263}
+{"path":"02-ORIGINALS/18096652--01--Social Infrastructure Theory_ A Structural Framework for Understanding Social Outcomes .docx","sha256":"47f76064af16c92b26b24b19778c7d1fe80997a5633d4ff20fe2d4a332141887","bytes":12207}
+{"path":"02-ORIGINALS/18097205--01--Slow Harm Theory_ The Architecture of Cumulative Injury.docx","sha256":"523747e00a2550fd86fed4738d0a322295cc5343f48599b3bbd939e5a325689b","bytes":11054}
+{"path":"02-ORIGINALS/18097491--01--Copy of Infrastructural Exposure Theory_ How Systems Generate Harm Through Designed Contact .pdf","sha256":"14a91c0a72e9d014921b5f6103aabcbfa739240d17381c0ba8a63feac2655f4e","bytes":102256}
+{"path":"02-ORIGINALS/18097568--01--Systemic Erosion Theory_ How Systems Deplete Capacity, Stability, and Resilience Over Time  2.pdf","sha256":"5e30c8bcd09df477251770abf088845194c3b583a922f4837d1b0b0e862c6ba5","bytes":96160}
+{"path":"02-ORIGINALS/18098106--01--The STAR Framework_ Integrating Social Infrastructure Theory, Exposure, Slow Harm, and Systemic Erosion  .pdf","sha256":"f5b27d45276b1d15ea32e101862fd085f6c90974705e7b1843ce7e7b0f740abe","bytes":107688}
+{"path":"04-RECEIPTS/assays/2026-08-23-phase15-local-architecture/summary.json","sha256":"5cd7def406257b19f875049b81fc588f4b67a6488bc39ca303a09ca33b559666","bytes":3865}
+{"path":"04-RECEIPTS/assays/2026-08-23-phase15-local-architecture/retitle-assay.jsonl","sha256":"c2e90ccccb0e6d0bc630a0b16042fd7c9ef730978d5641377df56a19c771cc2c","bytes":27734}
+{"path":"04-RECEIPTS/assays/2026-08-23-phase15-local-architecture/witnessed-edge-candidates.jsonl","sha256":"bde9d124e896ff551fd7dd088fb8ac828b8fdb04ecfcdc7795329319c36d5ceb","bytes":11661}
+{"path":"04-RECEIPTS/assays/2026-08-23-phase15-local-architecture/output-hashes.jsonl","sha256":"25543e17d0be2637d3d5c41e19a1e0d415e2c14fee63d9872af7c31999d204ba","bytes":1003}

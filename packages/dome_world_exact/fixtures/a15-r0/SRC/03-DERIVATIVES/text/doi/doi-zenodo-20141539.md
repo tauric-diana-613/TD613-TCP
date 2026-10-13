@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:91b5cdb4a469d8f407cf4395
+parent_capture_id: capture:da999c21f281c9f1b637af69
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "The Meta‑Drift Critic: A Reflexive Module of the SignalRupture Framework"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.20141539
+Final URL: https://zenodo.org/records/20141539
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.20141539 -> https://zenodo.org/doi/10.5281/zenodo.20141539
+302 https://zenodo.org/doi/10.5281/zenodo.20141539 -> https://zenodo.org/records/20141539

@@ -1,0 +1,55 @@
+{
+  "schema": "td613.sha256-integrity-manifest/v0.1",
+  "protocol_id": "registered-source-priority-route-20261011-v1",
+  "files": {
+    "research/portable-loom-registered-source-control-20261011/priority-v1/HANDOFF.md": {
+      "sha256": "c2fb95a6036ed7a031095714d55e0e0b91f0d260a7a2f463ecfa7d64c9e82914",
+      "bytes": 9519
+    },
+    "research/portable-loom-registered-source-control-20261011/priority-v1/POLICY.template.json": {
+      "sha256": "415465bb597fbe9cb3cd2957302e1138824ba21b9b1c5644730014003fa05e53",
+      "bytes": 1720
+    },
+    "research/portable-loom-registered-source-control-20261011/priority-v1/PROTOCOL.json": {
+      "sha256": "c372f4c2917af5e9c5aa0a55204bef55b4a0beafffc078dc0866ed7fab86ac9b",
+      "bytes": 11181
+    },
+    "research/portable-loom-registered-source-control-20261011/priority-v1/PROVIDER_REQUEST.body.json": {
+      "sha256": "2c56385a77b9cf62a51fbdf1ecb328afb5d80ad267919229cfee057496dab8b2",
+      "bytes": 117272
+    },
+    "research/portable-loom-registered-source-control-20261011/priority-v1/SOURCES.md": {
+      "sha256": "7330b194d37916cfa57c2b74505e81e73d1ef125bdf71be8d641c134121673fa",
+      "bytes": 1467
+    },
+    "research/portable-loom-registered-source-control-20261011/priority-v1/prepare-priority.mjs": {
+      "sha256": "31d21627b873edd90868146ae4a8aac7d4c2f1e6a464aae46b7544aa603b2b91",
+      "bytes": 4242
+    },
+    "research/portable-loom-registered-source-control-20261011/next-protocol-v1/PROMPT.txt": {
+      "sha256": "d703dcebb9869152df5d95541bbe5400d1ed9b92d1f11565aa10c9382cfd35c6",
+      "bytes": 109285
+    },
+    "research/portable-loom-registered-source-control-20261011/next-protocol-v1/SCORING_CONTRACT.json": {
+      "sha256": "af7b5637019ca0693fa4916d2b164e167a579d0f5f8cccffbe93e44eb15a0bff",
+      "bytes": 3676
+    },
+    "research/portable-loom-registered-source-control-20261011/next-protocol-v1/ORIGIN_SOURCE_REGISTRATION.json": {
+      "sha256": "b7e1b65d02b677c57af466be099f76f7454b22d9485466318760c9b8c69aaf3c",
+      "bytes": 984
+    },
+    "research/portable-loom-registered-source-control-20261011/next-protocol-v1/SOURCE.txt": {
+      "sha256": "8dbff8f321879ba910a9e54e5a066dfe2ade4384a164195d636dd67ac0be585d",
+      "bytes": 27
+    },
+    "research/portable-loom-registered-source-control-20261011/next-protocol-v1/TRIAL_MANIFEST.json": {
+      "sha256": "eaa2b2513f329d2e25595ae1fac994d9b28cdf3d3c46823868884ada3c3143ba",
+      "bytes": 1113
+    },
+    "research/portable-loom-registered-source-control-20261011/priority-v1/EXECUTION_AUTHORIZATION.json": {
+      "sha256": "3212b9f783f4b8e7d1adacf535481bd037869fff9c834d65006a7963fe8ec124",
+      "bytes": 849
+    }
+  },
+  "meaning": "Carried-byte integrity only; historical evidence and new proposals retain distinct status."
+}

@@ -1,0 +1,137 @@
+{
+  "schema": "td613.loom.native-repair-source-snapshot/v0.1",
+  "baseline_commit": "c3d403bf1c0ecf90d434f352a041ddffbcee6c3f",
+  "candidate_kind": "UNCOMMITTED_WORKING_TREE",
+  "captured_at": "2026-10-01T20:43:04.353Z",
+  "members": [
+    {
+      "artifact": ".github/workflows/td613-ci.yml",
+      "bytes": 54337,
+      "sha256": "331d52016a0ef12cd4cf606d3ec30afb78183af30a413953732610b37e1614e0"
+    },
+    {
+      "artifact": "app/dome-world/marrowline-attachments.js",
+      "bytes": 14169,
+      "sha256": "50ff6ff4b104c0e654164f0e8c262442c4f6fc2e746e8e7083b62892d2753a2a"
+    },
+    {
+      "artifact": "app/dome-world/holonomy-loom/demo-contract.js",
+      "bytes": 14774,
+      "sha256": "04b62088a1bcb7b46bb4c3f76b397f8cb61031c65927b27d40178ae1dae07f68"
+    },
+    {
+      "artifact": "app/dome-world/marrowline-desktop-repair.css",
+      "bytes": 96477,
+      "sha256": "e8bc1156dcb812751cc8664cec33369cfd3a92e9fe4de4688e43ff727c00f14c"
+    },
+    {
+      "artifact": "app/dome-world/marrowline-desktop-repair.js",
+      "bytes": 38245,
+      "sha256": "0de7c50c20619863f4f47e76f177ef5e263b462be61913b7133f1ddb3134a067"
+    },
+    {
+      "artifact": "app/dome-world/marrowline-loom-demo.js",
+      "bytes": 20023,
+      "sha256": "518f6f9cf136933ca7a4b3a7e67d4cd4aea1a6c4751dcb3b2743df3fe0123ec4"
+    },
+    {
+      "artifact": "app/dome-world/marrowline-loom-gate-continuity.js",
+      "bytes": 17454,
+      "sha256": "05ab8f7f562792fc710125e7e639c5ef39be7af4d0b83800b21551365704dc61"
+    },
+    {
+      "artifact": "app/dome-world/marrowline-terminal.js",
+      "bytes": 84799,
+      "sha256": "6dda42798cd01e844dde49a5095cbb18b1579ffcd0cc83e6fc44ae9cfaf06bc3"
+    },
+    {
+      "artifact": "server/loom-demo-task.js",
+      "bytes": 10224,
+      "sha256": "bd8cc7c9dfda2cc441a13f3cc8489cf402528936cb35bf10c9736606e8bc0d97"
+    },
+    {
+      "artifact": "server/loom-marrowline-task.js",
+      "bytes": 3083,
+      "sha256": "d87f459e2196e6b3b2d00802f28c0069d9dd4aa86b34421aafe362ca0db0aec3"
+    },
+    {
+      "artifact": "tests/loom-native-stage-support.test.mjs",
+      "bytes": 7374,
+      "sha256": "43c61ac4ee9a858c603cf3ff74051c7e6e91a3ca8ad9784116e2e59791549493"
+    },
+    {
+      "artifact": "tests/loom-native-terminal-races.test.mjs",
+      "bytes": 11409,
+      "sha256": "cede0f549b06cd63673f8aa1c2cee30a36b9aa12affcab0b67cd6a310c47ccca"
+    },
+    {
+      "artifact": "tests/loom-native-observation.test.mjs",
+      "bytes": 10859,
+      "sha256": "0764b6d8fefa6228cb8303f8255fdab620a7f10e489b2be8a4f7061c1fe99bd7"
+    },
+    {
+      "artifact": "tests/loom-marrowline-native-provider.test.mjs",
+      "bytes": 12490,
+      "sha256": "70738943570c13a4479e4b73009baaae9a8b967b05cb5c86aace48d04e9de76c"
+    },
+    {
+      "artifact": "tests/loom-native-route-consequence.test.mjs",
+      "bytes": 7017,
+      "sha256": "4520ab44d6ec89eb1436dd62290fab08bece9307050bd2e2acf60f6abb55adf6"
+    },
+    {
+      "artifact": "tests/loom-native-mobile-witness.test.mjs",
+      "bytes": 2463,
+      "sha256": "23f1ea62e4c19c8d99e9c34cdda89a67b3e03978f968a151d80fefbc1bb73c71"
+    },
+    {
+      "artifact": "app/dome-world/previews/loom-native-mobile-witness.html",
+      "bytes": 1941,
+      "sha256": "5350a41c688bc17620575a6eeaa313c46fb38362443ffddbdbc8de4cf5d74b88"
+    },
+    {
+      "artifact": "tests/marrowline-loom-demo.test.mjs",
+      "bytes": 14569,
+      "sha256": "abe78053244fd8492766be8eeaea60a121b9253b1fd165f7b8f1650e248ea9f2"
+    },
+    {
+      "artifact": "tests/marrowline-loom-demo-pedagogue.test.mjs",
+      "bytes": 7740,
+      "sha256": "145a7d691bc8c8adf954f98ff1c3bff9f676e9d68e16a9b1ba2a73592f5b6bec"
+    },
+    {
+      "artifact": "tests/marrowline-desktop-repair-contract.test.mjs",
+      "bytes": 37051,
+      "sha256": "1011c51e081c95239e98c017f5c3dd134f4edfce7160f337d9ac0113f2eef5b7"
+    },
+    {
+      "artifact": "tests/marrowline-origin-trust-parity.test.mjs",
+      "bytes": 6507,
+      "sha256": "a95ab36f17eeb1f1c79cbfdf6d8f96e06760d6a8cb092aecb8742f5cedbc91a5"
+    },
+    {
+      "artifact": "tests/loom-demo-contract.test.mjs",
+      "bytes": 28490,
+      "sha256": "44a4ecdb1390e7f90662b97ef2f87ba10a1534778cb6169b6203c57cdf1a80d9"
+    },
+    {
+      "artifact": "tests/fixtures/pedagogue/marrowline-loom-two-stage-practice.json",
+      "bytes": 4759,
+      "sha256": "b4a33498e9db1e3757cd676f202a05252be9b4c4e62b59c3f5aaf4f4a47994ab"
+    },
+    {
+      "artifact": "tests/fixtures/dollhouse/loom-native-stage-support.json",
+      "bytes": 1898,
+      "sha256": "a0b4b57eb446543468459cb3157160dffaa5b08b8b7f056170b1d21dcaf2e1bc"
+    },
+    {
+      "artifact": "tests/fixtures/pedagogue/loom-native-marrowline-design.json",
+      "bytes": 16114,
+      "sha256": "10c04c772171b3253395250804702303000a08bb1b8fb0dbe03320ceec977d86"
+    }
+  ],
+  "limitations": [
+    "Local byte commitments only; not an exact committed CI head, upstream authentication or release acceptance.",
+    "Later candidate edits require a new snapshot; this snapshot cannot attest their bytes."
+  ]
+}

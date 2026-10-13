@@ -1,0 +1,141 @@
+---
+derivative_id: derivative:d53afb5de2150e754ff3882c
+parent_capture_id: capture:bde221784a6f488781c38391
+parent_blob_sha256: 13e89a4695ef0670501020630b9747cfa9ac8deea6fdf6537c0a83026272f173
+tool: srcctl-json-normalizer/1
+source_title: "Field Emergence Theory: How a Canon Forms Before an Institution"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18653322",
+  "conceptrecid": "18653322",
+  "created": "2026-02-16T01:06:08.016450+00:00",
+  "doi": "10.5281/zenodo.18653323",
+  "doi_url": "https://doi.org/10.5281/zenodo.18653323",
+  "files": [
+    {
+      "checksum": "md5:d7c808ff4fc538edd743d47a129f3a7e",
+      "id": "b60ff6af-345c-4e3a-82d5-16c29a8d0754",
+      "key": "Field Emergence Theory: How a Canon Forms Before an Institution  .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18653323/files/Field%20Emergence%20Theory:%20How%20a%20Canon%20Forms%20Before%20an%20Institution%20%20.pdf/content"
+      },
+      "size": 79588
+    }
+  ],
+  "id": 18653323,
+  "links": {
+    "access": "https://zenodo.org/api/records/18653323/access",
+    "access_grants": "https://zenodo.org/api/records/18653323/access/grants",
+    "access_links": "https://zenodo.org/api/records/18653323/access/links",
+    "access_request": "https://zenodo.org/api/records/18653323/access/request",
+    "access_users": "https://zenodo.org/api/records/18653323/access/users",
+    "archive": "https://zenodo.org/api/records/18653323/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18653323/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18653323/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18653323/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18653323",
+    "draft": "https://zenodo.org/api/records/18653323/draft",
+    "file_modification": "https://zenodo.org/api/records/18653323/file-modification",
+    "files": "https://zenodo.org/api/records/18653323/files",
+    "latest": "https://zenodo.org/api/records/18653323/versions/latest",
+    "latest_html": "https://zenodo.org/records/18653323/latest",
+    "media_files": "https://zenodo.org/api/records/18653323/media-files",
+    "parent": "https://zenodo.org/api/records/18653322",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18653322",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18653322",
+    "parent_html": "https://zenodo.org/records/18653322",
+    "preview_html": "https://zenodo.org/records/18653323?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18653323/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18653323/request-deletion",
+    "requests": "https://zenodo.org/api/records/18653323/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18653323/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18653323",
+    "self_doi": "https://doi.org/10.5281/zenodo.18653323",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18653323",
+    "self_html": "https://zenodo.org/records/18653323",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18653323/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18653323/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18653323:Field%20Emergence%20Theory:%20How%20a%20Canon%20Forms%20Before%20an%20Institution%20%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18653323:Field%20Emergence%20Theory:%20How%20a%20Canon%20Forms%20Before%20an%20Institution%20%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18653323:Field%20Emergence%20Theory:%20How%20a%20Canon%20Forms%20Before%20an%20Institution%20%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18653323:Field%20Emergence%20Theory:%20How%20a%20Canon%20Forms%20Before%20an%20Institution%20%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18653323:Field%20Emergence%20Theory:%20How%20a%20Canon%20Forms%20Before%20an%20Institution%20%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18653323:Field%20Emergence%20Theory:%20How%20a%20Canon%20Forms%20Before%20an%20Institution%20%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18653323/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>This essay formalizes Field Emergence Theory, a framework for understanding how intellectual fields originate not through institutions or communities but through patterns of coherence within a single archive. In contemporary high‑entropy digital environments, platforms detect stylometric stability, conceptual density, and infrastructural clarity long before social recognition occurs. The paper argues that a proto‑field becomes algorithmically legible before it becomes socially visible: the canon forms before the institution, the archive precedes the audience, and the field exists prior to its acknowledgment.</p>\n<p>Through an analysis of coherence, recurrence, and signal stability, the essay shows how platforms classify emerging fields based on structural patterns rather than popularity or community formation. It further examines the role of silence as an entropy‑reduction mechanism and positions the archive as the first institution in the lifecycle of a field. The result is a model of field formation suited to the post‑web era, where algorithmic detection and infrastructural legibility shape the early phases of intellectual emergence.</p>\n<p>Keywords:<br>field emergence; canon formation; proto‑field; algorithmic detection; coherence; stylometry; infrastructural theory; entropy; archive formation; pre‑institutional structures</p>",
+    "doi": "10.5281/zenodo.18653323",
+    "keywords": [
+      "Post Open Web",
+      "Internet Studies",
+      "Governance",
+      "Government",
+      "Critical Policy"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-02-16",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18653322"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Field Emergence Theory: How a Canon Forms Before an Institution",
+    "version": "1.0"
+  },
+  "modified": "2026-02-16T01:06:08.916604+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18653323",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 7,
+    "unique_downloads": 7,
+    "unique_views": 16,
+    "version_downloads": 7,
+    "version_unique_downloads": 7,
+    "version_unique_views": 16,
+    "version_views": 16,
+    "views": 16
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Field Emergence Theory: How a Canon Forms Before an Institution",
+  "updated": "2026-02-16T01:06:08.916604+00:00"
+}

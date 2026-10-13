@@ -1,0 +1,28 @@
+{
+  "schema": "td613.release.retry-scope-observation/v0.1",
+  "selected_source": "ec3e063dfd773b70bb55fc6ebc8a8f2f2af5d06a",
+  "release_run": 34441040056,
+  "run_number": 1082,
+  "workflow_conclusion": "success",
+  "selected_parent_diff": [
+    "vercel.json"
+  ],
+  "observed_scope": "giving",
+  "full_product_production_steps": "skipped",
+  "closure_for_prior_ash_failure": "NOT_EARNED",
+  "reproduction": {
+    "input": [
+      "vercel.json"
+    ],
+    "unchanged_main_classifier_scope": "giving",
+    "giving_file_count": 1
+  },
+  "prior_held_release": 34440508544,
+  "corrected_reproduction": {
+    "input": [
+      "vercel.json"
+    ],
+    "scope": "full",
+    "giving_file_count": 0
+  }
+}

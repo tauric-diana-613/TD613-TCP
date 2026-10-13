@@ -1,0 +1,139 @@
+---
+derivative_id: derivative:05b185215548ea6869c92dd0
+parent_capture_id: capture:369653d9589a3603420e216c
+parent_blob_sha256: d48c5fb9997760e36d9eb0d4ab3526a15d880746adc91c7962c14bbd08f7a064
+tool: srcctl-json-normalizer/1
+source_title: "Platform Power and the Collapse of Democratic Legibility"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18926430",
+  "conceptrecid": "18926430",
+  "created": "2026-03-09T16:31:32.572092+00:00",
+  "doi": "10.5281/zenodo.18926431",
+  "doi_url": "https://doi.org/10.5281/zenodo.18926431",
+  "files": [
+    {
+      "checksum": "md5:58a3382c0c0c761caa5cdfc4c1a0e0dc",
+      "id": "2aff76cf-f680-4e5e-bbee-a3640116262f",
+      "key": "Platform Power and the Collapse of Democratic Legibility .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18926431/files/Platform%20Power%20and%20the%20Collapse%20of%20Democratic%20Legibility%20.pdf/content"
+      },
+      "size": 75448
+    }
+  ],
+  "id": 18926431,
+  "links": {
+    "access": "https://zenodo.org/api/records/18926431/access",
+    "access_grants": "https://zenodo.org/api/records/18926431/access/grants",
+    "access_links": "https://zenodo.org/api/records/18926431/access/links",
+    "access_request": "https://zenodo.org/api/records/18926431/access/request",
+    "access_users": "https://zenodo.org/api/records/18926431/access/users",
+    "archive": "https://zenodo.org/api/records/18926431/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18926431/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18926431/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18926431/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18926431",
+    "draft": "https://zenodo.org/api/records/18926431/draft",
+    "file_modification": "https://zenodo.org/api/records/18926431/file-modification",
+    "files": "https://zenodo.org/api/records/18926431/files",
+    "latest": "https://zenodo.org/api/records/18926431/versions/latest",
+    "latest_html": "https://zenodo.org/records/18926431/latest",
+    "media_files": "https://zenodo.org/api/records/18926431/media-files",
+    "parent": "https://zenodo.org/api/records/18926430",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18926430",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18926430",
+    "parent_html": "https://zenodo.org/records/18926430",
+    "preview_html": "https://zenodo.org/records/18926431?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18926431/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18926431/request-deletion",
+    "requests": "https://zenodo.org/api/records/18926431/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18926431/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18926431",
+    "self_doi": "https://doi.org/10.5281/zenodo.18926431",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18926431",
+    "self_html": "https://zenodo.org/records/18926431",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18926431/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18926431/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18926431:Platform%20Power%20and%20the%20Collapse%20of%20Democratic%20Legibility%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18926431:Platform%20Power%20and%20the%20Collapse%20of%20Democratic%20Legibility%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18926431:Platform%20Power%20and%20the%20Collapse%20of%20Democratic%20Legibility%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18926431:Platform%20Power%20and%20the%20Collapse%20of%20Democratic%20Legibility%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18926431:Platform%20Power%20and%20the%20Collapse%20of%20Democratic%20Legibility%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18926431:Platform%20Power%20and%20the%20Collapse%20of%20Democratic%20Legibility%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18926431/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Title: Platform Power and the Collapse of Democratic Legibility</p>\n<p>Abstract:<br>Platforms have become de facto political institutions, structuring visibility, moderating speech, and shaping public discourse. Yet unlike democratic institutions, they operate through opaque infrastructures, proprietary algorithms, and unaccountable decision‑making processes. This opacity produces a collapse of democratic legibility&mdash;the ability of citizens to understand how political meaning is constructed, circulated, and suppressed. Drawing on the SignalRupture diagnostic framework, this essay maps the infrastructural failure modes through which platforms distort democratic processes, including metric freezes, routing anomalies, semantic drift, and recursive collapse. It argues that platform governance has become a central challenge for modern democracy and that restoring democratic legibility requires treating platforms as political actors subject to infrastructural oversight.</p>\n<p>Keywords:<br>platform power, democratic legibility, visibility layer, algorithmic governance, infrastructural politics, public discourse, SignalRupture, platform failure modes</p>\n<p>Contribution to the SR Canon:<br>This essay deepens the SignalRupture framework by formalizing the collapse of democratic legibility as an infrastructural phenomenon. It extends SR&rsquo;s analysis of platform governance, interpretive instability, and visibility‑layer dynamics, demonstrating how platform failure modes function as political events. The essay strengthens the canon&rsquo;s treatment of infrastructural politics and positions platform opacity as a structural threat to democratic stability. It provides a diagnostic vocabulary for understanding how platforms govern meaning and why democratic oversight must operate at the infrastructural layer.</p>",
+    "doi": "10.5281/zenodo.18926431",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Artificial intelligence"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-09",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18926430"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Platform Power and the Collapse of Democratic Legibility",
+    "version": "1.0"
+  },
+  "modified": "2026-03-09T16:31:33.044396+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18926431",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 20,
+    "unique_downloads": 18,
+    "unique_views": 26,
+    "version_downloads": 20,
+    "version_unique_downloads": 18,
+    "version_unique_views": 26,
+    "version_views": 26,
+    "views": 26
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Platform Power and the Collapse of Democratic Legibility",
+  "updated": "2026-03-09T16:31:33.044396+00:00"
+}

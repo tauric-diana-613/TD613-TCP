@@ -1,0 +1,19 @@
+{
+  "schema": "td613.loom.neon-budget-bundle/v0.1",
+  "entry": "index.mjs",
+  "bundle_bytes": 206831,
+  "bundle_sha256": "86c4fd274212c24dfef53792068e18a247c9f3d79b83f263863ef39195d95923",
+  "zip_bytes": 44766,
+  "zip_sha256": "a5a7909e08f4913412bd187be294ec7a57a54407dde022b7af4e2bf3a81a2832",
+  "compiler": "esbuild@0.25.11",
+  "target": "node24",
+  "format": "esm",
+  "source_entry": "neon/functions/loom-assay-budget/index.mjs",
+  "runtime": "nodejs24",
+  "project_id": "late-glade-40477105",
+  "branch_id": "br-round-union-b5v3ludi",
+  "function_slug": "loomassaybudget",
+  "invocation_url": "UNRESOLVED_UNTIL_REMOTE_RECEIPT",
+  "deployment_state": "PREPARED_NOT_DEPLOYED",
+  "vendor_lockfile_sha256": "b3e38f34bc68c2fc0cf5a49ca4eabc501004e1dee39b56f0569c9bae7597819d"
+}

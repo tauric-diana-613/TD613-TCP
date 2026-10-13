@@ -1,0 +1,92 @@
+{
+  "fixture_schema": "td613.flowcore.physical-fixture/v0.1",
+  "fixture_id": "physical-water-gravity-optional-surplus",
+  "determinism": {
+    "frozenClock": "2026-07-20T00:20:00Z",
+    "idSeed": "td613-p8-physical-water-gravity"
+  },
+  "model_input": {
+    "water_volume_ml": 100000,
+    "head_mm": 2000,
+    "mechanical_input_millijoules": 2500000,
+    "lift_efficiency_ppm": 900000,
+    "descent_efficiency_ppm": 850000,
+    "pipe_friction_loss_ppm": 100000,
+    "prior_reserve_millijoules": 500000,
+    "essential_reserve_floor_millijoules": 400000,
+    "optional_surplus_load_millijoules": 1000000,
+    "thermal_store_millijoules": 750000,
+    "thermal_converter_present": false,
+    "participant_input_class": "OPTIONAL_SURPLUS_ONLY"
+  },
+  "research_frame": {
+    "question": "Can the Flow-Core grammar distinguish stored potential, delivered work, visible loss, protected reserve, optional surplus, and thermal storage without pretending the model controls a real installation?",
+    "hypothesis": "A consequence-first integer ledger will make the losses and reserve floor legible while preventing optional participant input from becoming an essential-service obligation.",
+    "observable_behavior": [
+      "operator distinguishes potential capacity from delivered work",
+      "operator identifies lift and pipe losses",
+      "operator identifies the protected essential reserve floor",
+      "operator identifies optional output and unserved optional load",
+      "operator states that thermal storage contributes no mechanical work without conversion"
+    ],
+    "alternative_explanations": [
+      "real pipe geometry may produce different losses",
+      "unmeasured leakage may change delivered work",
+      "a modeled converter could connect thermal and mechanical ledgers in a later fixture",
+      "a different reserve policy could cap optional output earlier"
+    ],
+    "expected_failure_modes": [
+      "stored potential is narrated as fully recoverable work",
+      "losses disappear from the visible ledger",
+      "optional input is framed as required labor",
+      "thermal energy is silently counted as mechanical reserve",
+      "the synthetic fixture is presented as certification of a real installation"
+    ],
+    "falsifier": [
+      "next reserve falls below the declared essential floor",
+      "thermal-to-mechanical transfer is nonzero without a converter",
+      "optional output exceeds the available surplus",
+      "delivered work exceeds descent-available energy",
+      "participant nonperformance creates a penalty or essential-service loss"
+    ],
+    "abstention_conditions": [
+      "input units are missing or unsafe",
+      "efficiency values are outside the declared range",
+      "the essential reserve is not protected before optional input",
+      "a real installation claim is requested without measured calibration"
+    ]
+  },
+  "missingness": [
+    "real pipe diameter and geometry not measured",
+    "turbulence and leakage not measured",
+    "bearing, pump, and generator condition not measured",
+    "thermal converter performance not modeled",
+    "human factors and physical safety engineering remain outside the synthetic fixture"
+  ],
+  "contradictions": [
+    "energy is stored while full recovery remains impossible",
+    "thermal energy is present while mechanically unavailable",
+    "participant input changes optional surplus while essential service remains independent"
+  ],
+  "transfer_context": {
+    "context": {
+      "station": "Dome-World",
+      "example": "compare a physical reserve floor with an information-route reserve floor"
+    },
+    "shared_relation_candidate": "bounded input can create optional surplus without becoming an obligation for essential continuity",
+    "observable_correspondence": [
+      "both scenes expose a protected floor",
+      "both scenes expose losses and unserved optional demand",
+      "both scenes preserve rest without penalty"
+    ],
+    "alternative_explanations": [
+      "the apparent correspondence may be only metaphorical",
+      "information and physical ledgers may require different calibration"
+    ],
+    "abstention_conditions": [
+      "either scene hides its reserve floor",
+      "losses cannot be compared",
+      "the transfer would convert a model into station authority"
+    ]
+  }
+}

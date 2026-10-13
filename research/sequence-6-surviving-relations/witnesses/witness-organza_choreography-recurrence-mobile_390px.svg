@@ -1,0 +1,228 @@
+<!--
+  TD613 Flow-Core Semantic Motion Bridge Visual Witness [Direction: Organza Choreography]
+  Relation: recurrence (米)
+  Active View ID: cockpit
+  Carrier Count: 39 (Distribution: 6 near / 13 mid / 20 far)
+  Reduced Motion: DISABLED
+  Viewport: 390x844 (viewBox: 200 -220 600 1120)
+  Visual Theory: Haute Couture Diaphanous Membrane, Moiré Pleats & Calligraphic Silk
+  Claim Ceiling: VISUAL_RELATION != EXTERNAL_REALITY | AMBIENT_MOTION != EVENT_HISTORY | AESTHETIC_BINDING != EMPIRICAL_VALIDATION
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="200 -220 600 1120" width="390" height="844" style="background:#05040a;">
+  <defs>
+    <radialGradient id="organzaAura" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#2a1240" stop-opacity="0.45"/>
+      <stop offset="60%" stop-color="#0e071c" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#05040a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="silkRibbon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c4b5fd"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#f43f5e"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#organzaAura)"/>
+  <g class="organza-field-flight" aria-hidden="true" data-active-relation="recurrence" data-visual-direction="organza_choreography">
+    <g class="organza-near" transform="translate(646.11 329.12) rotate(10.13) scale(1.291) translate(-646.11 -329.12)" style="mix-blend-mode: screen;">
+      <path d="M598.11,345.12 Q646.11,299.12 694.11,341.12" fill="none" stroke="url(#silkRibbon)" stroke-width="2.6" opacity="0.9025"/>
+      <path d="M602.11,349.12 Q650.11,303.12 698.11,344.12" fill="none" stroke="#f43f5e" stroke-width="0.8" opacity="0.57"/>
+      <text x="646.11" y="334.12" font-size="32" font-family="'Bodoni Moda', 'Playfair Display', 'PingFang SC', serif" font-style="italic" fill="#fdf6e2" opacity="0.855" text-anchor="middle" dominant-baseline="middle">米</text>
+    </g>
+    <g class="organza-far" transform="translate(467.48 365.01) rotate(14.06) scale(0.542) translate(-467.48 -365.01)">
+      <circle cx="467.48" cy="365.01" r="2" fill="#e9d5ff" opacity="0.324"/>
+      <circle cx="467.48" cy="365.01" r="6" fill="#c4b5fd" opacity="0.09"/>
+      <text x="473.48" y="368.01" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.252">米</text>
+    </g>
+    <g class="organza-far" transform="translate(247.87 340.4) rotate(8.84) scale(0.411) translate(-247.87 -340.4)">
+      <circle cx="247.87" cy="340.4" r="2" fill="#e9d5ff" opacity="0.324"/>
+      <circle cx="247.87" cy="340.4" r="6" fill="#c4b5fd" opacity="0.09"/>
+      <text x="253.87" y="343.4" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.252">米</text>
+    </g>
+    <g class="organza-far" transform="translate(132.14 249.27) rotate(-1.33) scale(0.61) translate(-132.14 -249.27)">
+      <circle cx="132.14" cy="249.27" r="2" fill="#e9d5ff" opacity="0.324"/>
+      <circle cx="132.14" cy="249.27" r="6" fill="#c4b5fd" opacity="0.09"/>
+      <text x="138.14" y="252.27" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.252">米</text>
+    </g>
+    <g class="organza-mid" transform="translate(217.83 130.83) rotate(-10.7) scale(0.92) translate(-217.83 -130.83)">
+      <ellipse cx="217.83" cy="130.83" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.0792" stroke="#c4b5fd" stroke-width="0.8" opacity="0.528"/>
+      <line x1="199.83" y1="130.83" x2="235.83" y2="130.83" stroke="#f59e0b" stroke-width="0.6" opacity="0.3696"/>
+      <text x="217.83" y="134.83" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.44880000000000003" text-anchor="middle" dominant-baseline="middle">米</text>
+    </g>
+    <g class="organza-far" transform="translate(531.72 75.76) rotate(-14.12) scale(0.559) translate(-531.72 -75.76)">
+      <circle cx="531.72" cy="75.76" r="2" fill="#e9d5ff" opacity="0.324"/>
+      <circle cx="531.72" cy="75.76" r="6" fill="#c4b5fd" opacity="0.09"/>
+      <text x="537.72" y="78.76" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.252">米</text>
+    </g>
+    <g class="organza-far" transform="translate(888.11 120.77) rotate(-9.61) scale(0.408) translate(-888.11 -120.77)">
+      <circle cx="888.11" cy="120.77" r="2" fill="#e9d5ff" opacity="0.324"/>
+      <circle cx="888.11" cy="120.77" r="6" fill="#c4b5fd" opacity="0.09"/>
+      <text x="894.11" y="123.77" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.252">米</text>
+    </g>
+    <g class="organza-mid" transform="translate(718.87 259.78) rotate(0.39) scale(0.725) translate(-718.87 -259.78)">
+      <ellipse cx="718.87" cy="259.78" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.0792" stroke="#c4b5fd" stroke-width="0.8" opacity="0.528"/>
+      <line x1="700.87" y1="259.78" x2="736.87" y2="259.78" stroke="#f59e0b" stroke-width="0.6" opacity="0.3696"/>
+      <text x="718.87" y="263.78" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.44880000000000003" text-anchor="middle" dominant-baseline="middle">米</text>
+    </g>
+    <g class="organza-mid" transform="translate(695.23 343.7) rotate(10.38) scale(0.914) translate(-695.23 -343.7)">
+      <ellipse cx="695.23" cy="343.7" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.0792" stroke="#c4b5fd" stroke-width="0.8" opacity="0.528"/>
+      <line x1="677.23" y1="343.7" x2="713.23" y2="343.7" stroke="#f59e0b" stroke-width="0.6" opacity="0.3696"/>
+      <text x="695.23" y="347.7" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.44880000000000003" text-anchor="middle" dominant-baseline="middle">米</text>
+    </g>
+    <g class="organza-far" transform="translate(499.69 386.22) rotate(14.02) scale(0.581) translate(-499.69 -386.22)">
+      <circle cx="499.69" cy="386.22" r="2" fill="#e9d5ff" opacity="0.324"/>
+      <circle cx="499.69" cy="386.22" r="6" fill="#c4b5fd" opacity="0.09"/>
+      <text x="505.69" y="389.22" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.252">米</text>
+    </g>
+    <g class="organza-far" transform="translate(237.69 364.29) rotate(10.04) scale(0.409) translate(-237.69 -364.29)">
+      <circle cx="237.69" cy="364.29" r="2" fill="#e9d5ff" opacity="0.324"/>
+      <circle cx="237.69" cy="364.29" r="6" fill="#c4b5fd" opacity="0.09"/>
+      <text x="243.69" y="367.29" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.252">米</text>
+    </g>
+    <g class="organza-near" transform="translate(76.42 260.45) rotate(0.83) scale(0.984) translate(-76.42 -260.45)" style="mix-blend-mode: screen;">
+      <path d="M28.42,276.45 Q76.42,230.45 124.42,272.45" fill="none" stroke="url(#silkRibbon)" stroke-width="2.6" opacity="0.9025"/>
+      <path d="M32.42,280.45 Q80.42,234.45 128.42000000000002,275.45" fill="none" stroke="#f43f5e" stroke-width="0.8" opacity="0.57"/>
+      <text x="76.42" y="265.45" font-size="32" font-family="'Bodoni Moda', 'Playfair Display', 'PingFang SC', serif" font-style="italic" fill="#fdf6e2" opacity="0.855" text-anchor="middle" dominant-baseline="middle">米</text>
+    </g>
+    <g class="organza-mid" transform="translate(145.27 134.28) rotate(-9.24) scale(0.911) translate(-145.27 -134.28)">
+      <ellipse cx="145.27" cy="134.28" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.0792" stroke="#c4b5fd" stroke-width="0.8" opacity="0.528"/>
+      <line x1="127.27000000000001" y1="134.28" x2="163.27" y2="134.28" stroke="#f59e0b" stroke-width="0.6" opacity="0.3696"/>
+      <text x="145.27" y="138.28" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.44880000000000003" text-anchor="middle" dominant-baseline="middle">米</text>
+    </g>
+    <g class="organza-near" transform="translate(485.62 59.61) rotate(-13.11) scale(1.028) translate(-485.62 -59.61)" style="mix-blend-mode: screen;">
+      <path d="M437.62,75.61 Q485.62,29.61 533.62,71.61" fill="none" stroke="url(#silkRibbon)" stroke-width="2.6" opacity="0.9025"/>
+      <path d="M441.62,79.61 Q489.62,33.61 537.62,74.61" fill="none" stroke="#f43f5e" stroke-width="0.8" opacity="0.57"/>
+      <text x="485.62" y="64.61" font-size="32" font-family="'Bodoni Moda', 'Playfair Display', 'PingFang SC', serif" font-style="italic" fill="#fdf6e2" opacity="0.855" text-anchor="middle" dominant-baseline="middle">米</text>
+    </g>
+    <g class="organza-mid" transform="translate(655.11 194.47) rotate(-10.22) scale(0.514) translate(-655.11 -194.47)">
+      <ellipse cx="655.11" cy="194.47" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.0792" stroke="#c4b5fd" stroke-width="0.8" opacity="0.528"/>
+      <line x1="637.11" y1="194.47" x2="673.11" y2="194.47" stroke="#f59e0b" stroke-width="0.6" opacity="0.3696"/>
+      <text x="655.11" y="198.47" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.44880000000000003" text-anchor="middle" dominant-baseline="middle">米</text>
+    </g>
+    <g class="organza-far" transform="translate(773.33 250.27) rotate(-1.16) scale(0.549) translate(-773.33 -250.27)">
+      <circle cx="773.33" cy="250.27" r="2" fill="#e9d5ff" opacity="0.324"/>
+      <circle cx="773.33" cy="250.27" r="6" fill="#c4b5fd" opacity="0.09"/>
+      <text x="779.33" y="253.27" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.252">米</text>
+    </g>
+    <g class="organza-mid" transform="translate(747.86 339.05) rotate(8.95) scale(0.922) translate(-747.86 -339.05)">
+      <ellipse cx="747.86" cy="339.05" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.0792" stroke="#c4b5fd" stroke-width="0.8" opacity="0.528"/>
+      <line x1="729.86" y1="339.05" x2="765.86" y2="339.05" stroke="#f59e0b" stroke-width="0.6" opacity="0.3696"/>
+      <text x="747.86" y="343.05" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.44880000000000003" text-anchor="middle" dominant-baseline="middle">米</text>
+    </g>
+    <g class="organza-far" transform="translate(541.4 405.66) rotate(13.82) scale(0.617) translate(-541.4 -405.66)">
+      <circle cx="541.4" cy="405.66" r="2" fill="#e9d5ff" opacity="0.324"/>
+      <circle cx="541.4" cy="405.66" r="6" fill="#c4b5fd" opacity="0.09"/>
+      <text x="547.4" y="408.66" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.252">米</text>
+    </g>
+    <g class="organza-far" transform="translate(238.24 391.16) rotate(11.05) scale(0.413) translate(-238.24 -391.16)">
+      <circle cx="238.24" cy="391.16" r="2" fill="#e9d5ff" opacity="0.324"/>
+      <circle cx="238.24" cy="391.16" r="6" fill="#c4b5fd" opacity="0.09"/>
+      <text x="244.24" y="394.16" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.252">米</text>
+    </g>
+    <g class="organza-far" transform="translate(27.18 285.07) rotate(1.89) scale(0.532) translate(-27.18 -285.07)">
+      <circle cx="27.18" cy="285.07" r="2" fill="#e9d5ff" opacity="0.324"/>
+      <circle cx="27.18" cy="285.07" r="6" fill="#c4b5fd" opacity="0.09"/>
+      <text x="33.18" y="288.07" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.252">米</text>
+    </g>
+    <g class="organza-mid" transform="translate(70.46 135.56) rotate(-8.27) scale(0.914) translate(-70.46 -135.56)">
+      <ellipse cx="70.46" cy="135.56" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.0792" stroke="#c4b5fd" stroke-width="0.8" opacity="0.528"/>
+      <line x1="52.459999999999994" y1="135.56" x2="88.46" y2="135.56" stroke="#f59e0b" stroke-width="0.6" opacity="0.3696"/>
+      <text x="70.46" y="139.56" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.44880000000000003" text-anchor="middle" dominant-baseline="middle">米</text>
+    </g>
+    <g class="organza-mid" transform="translate(457.2 172.36) rotate(-13.82) scale(0.776) translate(-457.2 -172.36)">
+      <ellipse cx="457.2" cy="172.36" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.0792" stroke="#c4b5fd" stroke-width="0.8" opacity="0.528"/>
+      <line x1="439.2" y1="172.36" x2="475.2" y2="172.36" stroke="#f59e0b" stroke-width="0.6" opacity="0.3696"/>
+      <text x="457.2" y="176.36" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.44880000000000003" text-anchor="middle" dominant-baseline="middle">米</text>
+    </g>
+    <g class="organza-near" transform="translate(675.14 175.04) rotate(-11.94) scale(0.735) translate(-675.14 -175.04)" style="mix-blend-mode: screen;">
+      <path d="M627.14,191.04 Q675.14,145.04 723.14,187.04" fill="none" stroke="url(#silkRibbon)" stroke-width="2.6" opacity="0.9025"/>
+      <path d="M631.14,195.04 Q679.14,149.04 727.14,190.04" fill="none" stroke="#f43f5e" stroke-width="0.8" opacity="0.57"/>
+      <text x="675.14" y="180.04" font-size="32" font-family="'Bodoni Moda', 'Playfair Display', 'PingFang SC', serif" font-style="italic" fill="#fdf6e2" opacity="0.855" text-anchor="middle" dominant-baseline="middle">米</text>
+    </g>
+    <g class="organza-far" transform="translate(820.73 236.98) rotate(-2.75) scale(0.51) translate(-820.73 -236.98)">
+      <circle cx="820.73" cy="236.98" r="2" fill="#e9d5ff" opacity="0.324"/>
+      <circle cx="820.73" cy="236.98" r="6" fill="#c4b5fd" opacity="0.09"/>
+      <text x="826.73" y="239.98" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.252">米</text>
+    </g>
+    <g class="organza-mid" transform="translate(814.79 337.76) rotate(8.06) scale(0.912) translate(-814.79 -337.76)">
+      <ellipse cx="814.79" cy="337.76" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.0792" stroke="#c4b5fd" stroke-width="0.8" opacity="0.528"/>
+      <line x1="796.79" y1="337.76" x2="832.79" y2="337.76" stroke="#f59e0b" stroke-width="0.6" opacity="0.3696"/>
+      <text x="814.79" y="341.76" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.44880000000000003" text-anchor="middle" dominant-baseline="middle">米</text>
+    </g>
+    <g class="organza-far" transform="translate(595.11 420.86) rotate(13.58) scale(0.656) translate(-595.11 -420.86)">
+      <circle cx="595.11" cy="420.86" r="2" fill="#e9d5ff" opacity="0.324"/>
+      <circle cx="595.11" cy="420.86" r="6" fill="#c4b5fd" opacity="0.09"/>
+      <text x="601.11" y="423.86" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.252">米</text>
+    </g>
+    <g class="organza-near" transform="translate(248.34 416.83) rotate(11.96) scale(0.726) translate(-248.34 -416.83)" style="mix-blend-mode: screen;">
+      <path d="M200.34,432.83 Q248.34,386.83 296.34000000000003,428.83" fill="none" stroke="url(#silkRibbon)" stroke-width="2.6" opacity="0.9025"/>
+      <path d="M204.34,436.83 Q252.34,390.83 300.34000000000003,431.83" fill="none" stroke="#f43f5e" stroke-width="0.8" opacity="0.57"/>
+      <text x="248.34" y="421.83" font-size="32" font-family="'Bodoni Moda', 'Playfair Display', 'PingFang SC', serif" font-style="italic" fill="#fdf6e2" opacity="0.855" text-anchor="middle" dominant-baseline="middle">米</text>
+    </g>
+    <g class="organza-far" transform="translate(-7.47 315.14) rotate(3.44) scale(0.492) translate(7.47 -315.14)">
+      <circle cx="-7.47" cy="315.14" r="2" fill="#e9d5ff" opacity="0.324"/>
+      <circle cx="-7.47" cy="315.14" r="6" fill="#c4b5fd" opacity="0.09"/>
+      <text x="-1.4699999999999998" y="318.14" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.252">米</text>
+    </g>
+    <g class="organza-mid" transform="translate(304.45 218.52) rotate(-6.49) scale(0.887) translate(-304.45 -218.52)">
+      <ellipse cx="304.45" cy="218.52" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.0792" stroke="#c4b5fd" stroke-width="0.8" opacity="0.528"/>
+      <line x1="286.45" y1="218.52" x2="322.45" y2="218.52" stroke="#f59e0b" stroke-width="0.6" opacity="0.3696"/>
+      <text x="304.45" y="222.52" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.44880000000000003" text-anchor="middle" dominant-baseline="middle">米</text>
+    </g>
+    <g class="organza-far" transform="translate(420.26 154.76) rotate(-13.42) scale(0.671) translate(-420.26 -154.76)">
+      <circle cx="420.26" cy="154.76" r="2" fill="#e9d5ff" opacity="0.324"/>
+      <circle cx="420.26" cy="154.76" r="6" fill="#c4b5fd" opacity="0.09"/>
+      <text x="426.26" y="157.76" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.252">米</text>
+    </g>
+    <g class="organza-far" transform="translate(656.46 150.32) rotate(-12.25) scale(0.437) translate(-656.46 -150.32)">
+      <circle cx="656.46" cy="150.32" r="2" fill="#e9d5ff" opacity="0.324"/>
+      <circle cx="656.46" cy="150.32" r="6" fill="#c4b5fd" opacity="0.09"/>
+      <text x="662.46" y="153.32" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.252">米</text>
+    </g>
+    <g class="organza-far" transform="translate(858.27 215.1) rotate(-4.32) scale(0.479) translate(-858.27 -215.1)">
+      <circle cx="858.27" cy="215.1" r="2" fill="#e9d5ff" opacity="0.324"/>
+      <circle cx="858.27" cy="215.1" r="6" fill="#c4b5fd" opacity="0.09"/>
+      <text x="864.27" y="218.1" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.252">米</text>
+    </g>
+    <g class="organza-mid" transform="translate(877.35 336.64) rotate(6.2) scale(0.863) translate(-877.35 -336.64)">
+      <ellipse cx="877.35" cy="336.64" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.0792" stroke="#c4b5fd" stroke-width="0.8" opacity="0.528"/>
+      <line x1="859.35" y1="336.64" x2="895.35" y2="336.64" stroke="#f59e0b" stroke-width="0.6" opacity="0.3696"/>
+      <text x="877.35" y="340.64" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.44880000000000003" text-anchor="middle" dominant-baseline="middle">米</text>
+    </g>
+    <g class="organza-near" transform="translate(660.37 433.65) rotate(12.33) scale(1.175) translate(-660.37 -433.65)" style="mix-blend-mode: screen;">
+      <path d="M612.37,449.65 Q660.37,403.65 708.37,445.65" fill="none" stroke="url(#silkRibbon)" stroke-width="2.6" opacity="0.9025"/>
+      <path d="M616.37,453.65 Q664.37,407.65 712.37,448.65" fill="none" stroke="#f43f5e" stroke-width="0.8" opacity="0.57"/>
+      <text x="660.37" y="438.65" font-size="32" font-family="'Bodoni Moda', 'Playfair Display', 'PingFang SC', serif" font-style="italic" fill="#fdf6e2" opacity="0.855" text-anchor="middle" dominant-baseline="middle">米</text>
+    </g>
+    <g class="organza-far" transform="translate(278.93 445.95) rotate(12.77) scale(0.451) translate(-278.93 -445.95)">
+      <circle cx="278.93" cy="445.95" r="2" fill="#e9d5ff" opacity="0.324"/>
+      <circle cx="278.93" cy="445.95" r="6" fill="#c4b5fd" opacity="0.09"/>
+      <text x="284.93" y="448.95" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.252">米</text>
+    </g>
+    <g class="organza-mid" transform="translate(292.56 289.08) rotate(4.92) scale(0.579) translate(-292.56 -289.08)">
+      <ellipse cx="292.56" cy="289.08" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.0792" stroke="#c4b5fd" stroke-width="0.8" opacity="0.528"/>
+      <line x1="274.56" y1="289.08" x2="310.56" y2="289.08" stroke="#f59e0b" stroke-width="0.6" opacity="0.3696"/>
+      <text x="292.56" y="293.08" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.44880000000000003" text-anchor="middle" dominant-baseline="middle">米</text>
+    </g>
+    <g class="organza-mid" transform="translate(244.44 214.42) rotate(-5.45) scale(0.871) translate(-244.44 -214.42)">
+      <ellipse cx="244.44" cy="214.42" rx="26" ry="11" fill="#c4b5fd" fill-opacity="0.0792" stroke="#c4b5fd" stroke-width="0.8" opacity="0.528"/>
+      <line x1="226.44" y1="214.42" x2="262.44" y2="214.42" stroke="#f59e0b" stroke-width="0.6" opacity="0.3696"/>
+      <text x="244.44" y="218.42" font-size="15" font-family="'PingFang SC', sans-serif" fill="#fdf6e2" opacity="0.44880000000000003" text-anchor="middle" dominant-baseline="middle">米</text>
+    </g>
+    <g class="organza-far" transform="translate(374.78 144.3) rotate(-12.69) scale(0.699) translate(-374.78 -144.3)">
+      <circle cx="374.78" cy="144.3" r="2" fill="#e9d5ff" opacity="0.324"/>
+      <circle cx="374.78" cy="144.3" r="6" fill="#c4b5fd" opacity="0.09"/>
+      <text x="380.78" y="147.3" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.252">米</text>
+    </g>
+    <g class="organza-far" transform="translate(638.04 123.17) rotate(-13.27) scale(0.463) translate(-638.04 -123.17)">
+      <circle cx="638.04" cy="123.17" r="2" fill="#e9d5ff" opacity="0.324"/>
+      <circle cx="638.04" cy="123.17" r="6" fill="#c4b5fd" opacity="0.09"/>
+      <text x="644.04" y="126.17" font-size="9" font-family="'PingFang SC', sans-serif" fill="#a855f7" opacity="0.252">米</text>
+    </g>
+  </g>
+  <g class="organza-center-glyph" text-anchor="middle" dominant-baseline="middle">
+    <circle cx="500" cy="260" r="82" fill="none" stroke="#f59e0b" stroke-width="0.8" stroke-dasharray="4 6" opacity="0.6"/>
+    <circle cx="500" cy="260" r="92" fill="none" stroke="#c4b5fd" stroke-width="0.5" stroke-dasharray="2 4" opacity="0.4"/>
+    <text x="500" y="268" font-size="118" font-family="'Bodoni Moda', 'Didot', 'PingFang SC', serif" font-style="italic" font-weight="300" fill="#fdf6e2" opacity="0.95">米</text>
+    <text x="500" y="328" font-size="10" font-family="'Bodoni Moda', serif" font-style="italic" fill="#c4b5fd" letter-spacing="4" opacity="0.9">SEQUENCE 6 // HAUTE COUTURE // RECURRENCE</text>
+  </g>
+</svg>

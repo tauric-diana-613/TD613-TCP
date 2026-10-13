@@ -1,0 +1,136 @@
+---
+derivative_id: derivative:95f1130237c2a500ed96847d
+parent_capture_id: capture:48b3155952ca01d48e4a944b
+parent_blob_sha256: db8ba7cf2fdc420637f6730d8bf0c49354a507e0a97033d75951c9a46c93c35d
+tool: srcctl-json-normalizer/1
+source_title: "The Poverty Research Illusion: How Modern Infrastructures Manufacture Scarcity and Produce False Narratives of Progress"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.19207132",
+  "conceptrecid": "19207132",
+  "created": "2026-03-24T16:17:35.221693+00:00",
+  "doi": "10.5281/zenodo.19207133",
+  "doi_url": "https://doi.org/10.5281/zenodo.19207133",
+  "files": [
+    {
+      "checksum": "md5:282b33eeb36b30725d8482f2ea3572b9",
+      "id": "049749a4-5716-4399-b0da-482f4e8a30b0",
+      "key": "The Poverty Research Illusion:.pdf.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/19207133/files/The%20Poverty%20Research%20Illusion:.pdf.pdf/content"
+      },
+      "size": 156825
+    }
+  ],
+  "id": 19207133,
+  "links": {
+    "access": "https://zenodo.org/api/records/19207133/access",
+    "access_grants": "https://zenodo.org/api/records/19207133/access/grants",
+    "access_links": "https://zenodo.org/api/records/19207133/access/links",
+    "access_request": "https://zenodo.org/api/records/19207133/access/request",
+    "access_users": "https://zenodo.org/api/records/19207133/access/users",
+    "archive": "https://zenodo.org/api/records/19207133/files-archive",
+    "archive_media": "https://zenodo.org/api/records/19207133/media-files-archive",
+    "communities": "https://zenodo.org/api/records/19207133/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/19207133/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.19207133",
+    "draft": "https://zenodo.org/api/records/19207133/draft",
+    "file_modification": "https://zenodo.org/api/records/19207133/file-modification",
+    "files": "https://zenodo.org/api/records/19207133/files",
+    "latest": "https://zenodo.org/api/records/19207133/versions/latest",
+    "latest_html": "https://zenodo.org/records/19207133/latest",
+    "media_files": "https://zenodo.org/api/records/19207133/media-files",
+    "parent": "https://zenodo.org/api/records/19207132",
+    "parent_doi": "https://doi.org/10.5281/zenodo.19207132",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19207132",
+    "parent_html": "https://zenodo.org/records/19207132",
+    "preview_html": "https://zenodo.org/records/19207133?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/19207133/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/19207133/request-deletion",
+    "requests": "https://zenodo.org/api/records/19207133/requests",
+    "reserve_doi": "https://zenodo.org/api/records/19207133/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/19207133",
+    "self_doi": "https://doi.org/10.5281/zenodo.19207133",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19207133",
+    "self_html": "https://zenodo.org/records/19207133",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19207133/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19207133/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:19207133:The%20Poverty%20Research%20Illusion:.pdf.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:19207133:The%20Poverty%20Research%20Illusion:.pdf.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:19207133:The%20Poverty%20Research%20Illusion:.pdf.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:19207133:The%20Poverty%20Research%20Illusion:.pdf.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:19207133:The%20Poverty%20Research%20Illusion:.pdf.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:19207133:The%20Poverty%20Research%20Illusion:.pdf.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/19207133/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "description": "<p>The Poverty Research Illusion: How Modern Infrastructures Manufacture Scarcity and Produce False Narratives of Progress examines why centuries of anti‑poverty interventions have failed to produce durable improvements in material conditions. Through a meta‑research analysis, the paper shows that poverty research is structurally designed to generate the appearance of progress while leaving the infrastructures that manufacture scarcity untouched.</p>\n<p>The study identifies three core distortions embedded in contemporary poverty measurement:</p>\n<p>&bull; short‑window measurement, which captures temporary liquidity effects rather than structural change;<br>&bull; baseline manipulation, which inflates apparent gains by comparing outcomes to crisis years;<br>&bull; cost‑of‑living omission, which obscures the material pressures driving long‑term precarity.</p>\n<p><br>The paper also exposes the threshold‑crossing illusion, demonstrating how global poverty metrics classify individuals as &ldquo;non‑poor&rdquo; once they exceed $2.15/day, even when they remain in chronic deprivation. A comparative analysis of historical poverty data shows that reported gains reflect definitional movement rather than material transformation.</p>\n<p>Building on administrative burden research and affordability data, the paper maps the infrastructures that actively produce poverty: wage suppression, housing scarcity, debt extraction, and bureaucratic friction. A new section examines how AI systems now automate these scarcity‑preserving mechanisms, including concrete examples such as automated fraud‑detection tools that deny benefits based on outdated income proxies. These systems inherit flawed metrics, scale institutional bias, and extend administrative burden into digital environments.</p>\n<p>The paper concludes that poverty persists not because interventions fail, but because the system is structured to preserve scarcity &mdash; a dynamic now accelerated by AI‑driven governance.</p>",
+    "doi": "10.5281/zenodo.19207133",
+    "keywords": [
+      "Poverty",
+      "Institutions",
+      "Metatheory",
+      "Meta research",
+      "Artificial intelligence"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-24",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "19207132"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "The Poverty Research Illusion: How Modern Infrastructures Manufacture Scarcity and Produce False Narratives of Progress",
+    "version": "1.0"
+  },
+  "modified": "2026-03-24T16:17:35.606076+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "19207133",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 16,
+    "unique_downloads": 15,
+    "unique_views": 26,
+    "version_downloads": 16,
+    "version_unique_downloads": 15,
+    "version_unique_views": 26,
+    "version_views": 27,
+    "views": 27
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "The Poverty Research Illusion: How Modern Infrastructures Manufacture Scarcity and Produce False Narratives of Progress",
+  "updated": "2026-03-24T16:17:35.606076+00:00"
+}

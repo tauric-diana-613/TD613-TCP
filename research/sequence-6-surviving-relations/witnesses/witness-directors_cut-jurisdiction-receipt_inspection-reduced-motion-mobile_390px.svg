@@ -1,0 +1,202 @@
+<!--
+  TD613 Flow-Core Semantic Motion Bridge Visual Witness [Direction: Director's Cut / Couture Tectonic]
+  Jurisdiction: RECEIPT_INSPECTION
+  Relation: gathering (à)
+  Active View ID: cockpit
+  Carrier Count: 39 (Distribution: 6 near / 13 mid / 20 far)
+  Reduced Motion: ENABLED
+  Viewport: 390x844 (viewBox: 200 -220 600 1120)
+  Visual Theory: Haute Couture Tectonic Federalism (Mugler Couture x Scarpa Architecture x Aperture Precision)
+  Claim Ceiling: VISUAL_RELATION != EXTERNAL_REALITY | AMBIENT_MOTION != EVENT_HISTORY | AESTHETIC_BINDING != EMPIRICAL_VALIDATION
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="200 -220 600 1120" width="390" height="844" style="background:#06070a;">
+  <defs>
+    <pattern id="coutureTectonicGrid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#141824" stroke-width="0.6" stroke-dasharray="2 4"/>
+    </pattern>
+    <linearGradient id="coutureSilk" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c4b5fd"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#f43f5e"/>
+    </linearGradient>
+    <radialGradient id="coutureAura" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#1f142b" stop-opacity="0.6"/>
+      <stop offset="60%" stop-color="#0a0c12" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#06070a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="amberRestAura" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#2d1a08" stop-opacity="0.7"/>
+      <stop offset="70%" stop-color="#0d0e12" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#06070a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#coutureTectonicGrid)" opacity="0.7"/>
+  <rect width="100%" height="100%" fill="url(#coutureAura)"/>
+  <g class="couture-field-flight" aria-hidden="true" data-active-relation="gathering" data-jurisdiction="receipt_inspection" data-visual-direction="directors_cut">
+    <g class="receipt-card" transform="translate(220 120) rotate(-5) scale(1.25) translate(-220 -120)">
+      <rect x="50" y="92" width="340" height="56" fill="#0d1117" stroke="#334155" stroke-width="1.2" rx="3" opacity="0.38"/>
+      <rect x="56" y="98" width="72" height="18" fill="#1e293b" rx="2"/>
+      <text x="92" y="110" font-size="8" font-family="'JetBrains Mono', monospace" font-weight="700" fill="#10b981" text-anchor="middle">[OBSERVED]</text>
+      <text x="136" y="110" font-size="8.5" font-family="'JetBrains Mono', monospace" fill="#e2e8f0">50 SACRIFICIAL UNITS // 0 RETRIES</text>
+      <text x="70" y="134" font-size="18" font-family="'PingFang SC', monospace" fill="#94a3b8">à</text>
+      <text x="350" y="136" font-size="7" font-family="'JetBrains Mono', monospace" fill="#64748b">CARRIER-0</text>
+    </g>
+    <g class="receipt-grid-pin" transform="translate(308 120) rotate(-2.5) scale(0.72) translate(-308 -120)">
+      <circle cx="308" cy="120" r="1.8" fill="#475569" opacity="0.16000000000000003"/>
+    </g>
+    <g class="receipt-grid-pin" transform="translate(396 120) rotate(0) scale(0.72) translate(-396 -120)">
+      <circle cx="396" cy="120" r="1.8" fill="#475569" opacity="0.16000000000000003"/>
+    </g>
+    <g class="receipt-grid-pin" transform="translate(484 120) rotate(2.5) scale(0.72) translate(-484 -120)">
+      <circle cx="484" cy="120" r="1.8" fill="#475569" opacity="0.16000000000000003"/>
+    </g>
+    <g class="receipt-ruler-tick" transform="translate(572 120) rotate(5) scale(0.95) translate(-572 -120)">
+      <line x1="572" y1="114" x2="572" y2="126" stroke="#94a3b8" stroke-width="1" opacity="0.24"/>
+      <text x="572" y="110" font-size="7" font-family="'JetBrains Mono', monospace" fill="#94a3b8" text-anchor="middle">T4</text>
+    </g>
+    <g class="receipt-grid-pin" transform="translate(220 206) rotate(-5) scale(0.72) translate(-220 -206)">
+      <circle cx="220" cy="206" r="1.8" fill="#475569" opacity="0.16000000000000003"/>
+    </g>
+    <g class="receipt-grid-pin" transform="translate(308 206) rotate(-2.5) scale(0.72) translate(-308 -206)">
+      <circle cx="308" cy="206" r="1.8" fill="#475569" opacity="0.16000000000000003"/>
+    </g>
+    <g class="receipt-ruler-tick" transform="translate(396 206) rotate(0) scale(0.95) translate(-396 -206)">
+      <line x1="396" y1="200" x2="396" y2="212" stroke="#94a3b8" stroke-width="1" opacity="0.24"/>
+      <text x="396" y="196" font-size="7" font-family="'JetBrains Mono', monospace" fill="#94a3b8" text-anchor="middle">T7</text>
+    </g>
+    <g class="receipt-ruler-tick" transform="translate(484 206) rotate(2.5) scale(0.95) translate(-484 -206)">
+      <line x1="484" y1="200" x2="484" y2="212" stroke="#94a3b8" stroke-width="1" opacity="0.24"/>
+      <text x="484" y="196" font-size="7" font-family="'JetBrains Mono', monospace" fill="#94a3b8" text-anchor="middle">T8</text>
+    </g>
+    <g class="receipt-grid-pin" transform="translate(572 206) rotate(5) scale(0.72) translate(-572 -206)">
+      <circle cx="572" cy="206" r="1.8" fill="#475569" opacity="0.16000000000000003"/>
+    </g>
+    <g class="receipt-grid-pin" transform="translate(220 292) rotate(-5) scale(0.72) translate(-220 -292)">
+      <circle cx="220" cy="292" r="1.8" fill="#475569" opacity="0.16000000000000003"/>
+    </g>
+    <g class="receipt-card" transform="translate(308 292) rotate(-2.5) scale(1.25) translate(-308 -292)">
+      <rect x="138" y="264" width="340" height="56" fill="#0d1117" stroke="#334155" stroke-width="1.2" rx="3" opacity="0.38"/>
+      <rect x="144" y="270" width="72" height="18" fill="#1e293b" rx="2"/>
+      <text x="180" y="282" font-size="8" font-family="'JetBrains Mono', monospace" font-weight="700" fill="#10b981" text-anchor="middle">[OBSERVED]</text>
+      <text x="224" y="282" font-size="8.5" font-family="'JetBrains Mono', monospace" fill="#e2e8f0">PREDECESSOR CHAIN // MONOTONIC TIME</text>
+      <text x="158" y="306" font-size="18" font-family="'PingFang SC', monospace" fill="#94a3b8">à</text>
+      <text x="438" y="308" font-size="7" font-family="'JetBrains Mono', monospace" fill="#64748b">CARRIER-11</text>
+    </g>
+    <g class="receipt-ruler-tick" transform="translate(396 292) rotate(0) scale(0.95) translate(-396 -292)">
+      <line x1="396" y1="286" x2="396" y2="298" stroke="#94a3b8" stroke-width="1" opacity="0.24"/>
+      <text x="396" y="282" font-size="7" font-family="'JetBrains Mono', monospace" fill="#94a3b8" text-anchor="middle">T12</text>
+    </g>
+    <g class="receipt-card" transform="translate(484 292) rotate(2.5) scale(1.25) translate(-484 -292)">
+      <rect x="314" y="264" width="340" height="56" fill="#0d1117" stroke="#334155" stroke-width="1.2" rx="3" opacity="0.38"/>
+      <rect x="320" y="270" width="72" height="18" fill="#1e293b" rx="2"/>
+      <text x="356" y="282" font-size="8" font-family="'JetBrains Mono', monospace" font-weight="700" fill="#10b981" text-anchor="middle">[OBSERVED]</text>
+      <text x="400" y="282" font-size="8.5" font-family="'JetBrains Mono', monospace" fill="#e2e8f0">AUDIT WITNESSES // 678 COMMITTED BLOBS</text>
+      <text x="334" y="306" font-size="18" font-family="'PingFang SC', monospace" fill="#94a3b8">à</text>
+      <text x="614" y="308" font-size="7" font-family="'JetBrains Mono', monospace" fill="#64748b">CARRIER-13</text>
+    </g>
+    <g class="receipt-ruler-tick" transform="translate(572 292) rotate(5) scale(0.95) translate(-572 -292)">
+      <line x1="572" y1="286" x2="572" y2="298" stroke="#94a3b8" stroke-width="1" opacity="0.24"/>
+      <text x="572" y="282" font-size="7" font-family="'JetBrains Mono', monospace" fill="#94a3b8" text-anchor="middle">T14</text>
+    </g>
+    <g class="receipt-grid-pin" transform="translate(220 378) rotate(-5) scale(0.72) translate(-220 -378)">
+      <circle cx="220" cy="378" r="1.8" fill="#475569" opacity="0.16000000000000003"/>
+    </g>
+    <g class="receipt-ruler-tick" transform="translate(308 378) rotate(-2.5) scale(0.95) translate(-308 -378)">
+      <line x1="308" y1="372" x2="308" y2="384" stroke="#94a3b8" stroke-width="1" opacity="0.24"/>
+      <text x="308" y="368" font-size="7" font-family="'JetBrains Mono', monospace" fill="#94a3b8" text-anchor="middle">T16</text>
+    </g>
+    <g class="receipt-grid-pin" transform="translate(396 378) rotate(0) scale(0.72) translate(-396 -378)">
+      <circle cx="396" cy="378" r="1.8" fill="#475569" opacity="0.16000000000000003"/>
+    </g>
+    <g class="receipt-grid-pin" transform="translate(484 378) rotate(2.5) scale(0.72) translate(-484 -378)">
+      <circle cx="484" cy="378" r="1.8" fill="#475569" opacity="0.16000000000000003"/>
+    </g>
+    <g class="receipt-grid-pin" transform="translate(572 378) rotate(5) scale(0.72) translate(-572 -378)">
+      <circle cx="572" cy="378" r="1.8" fill="#475569" opacity="0.16000000000000003"/>
+    </g>
+    <g class="receipt-ruler-tick" transform="translate(220 464) rotate(-5) scale(0.95) translate(-220 -464)">
+      <line x1="220" y1="458" x2="220" y2="470" stroke="#94a3b8" stroke-width="1" opacity="0.24"/>
+      <text x="220" y="454" font-size="7" font-family="'JetBrains Mono', monospace" fill="#94a3b8" text-anchor="middle">T20</text>
+    </g>
+    <g class="receipt-ruler-tick" transform="translate(308 464) rotate(-2.5) scale(0.95) translate(-308 -464)">
+      <line x1="308" y1="458" x2="308" y2="470" stroke="#94a3b8" stroke-width="1" opacity="0.24"/>
+      <text x="308" y="454" font-size="7" font-family="'JetBrains Mono', monospace" fill="#94a3b8" text-anchor="middle">T21</text>
+    </g>
+    <g class="receipt-card" transform="translate(396 464) rotate(0) scale(1.25) translate(-396 -464)">
+      <rect x="226" y="436" width="340" height="56" fill="#0d1117" stroke="#334155" stroke-width="1.2" rx="3" opacity="0.38"/>
+      <rect x="232" y="442" width="72" height="18" fill="#1e293b" rx="2"/>
+      <text x="268" y="454" font-size="8" font-family="'JetBrains Mono', monospace" font-weight="700" fill="#22d3ee" text-anchor="middle">[DERIVED]</text>
+      <text x="312" y="454" font-size="8.5" font-family="'JetBrains Mono', monospace" fill="#e2e8f0">RFC 8785 CANONICAL SHA-256 JCS</text>
+      <text x="246" y="478" font-size="18" font-family="'PingFang SC', monospace" fill="#94a3b8">à</text>
+      <text x="526" y="480" font-size="7" font-family="'JetBrains Mono', monospace" fill="#64748b">CARRIER-22</text>
+    </g>
+    <g class="receipt-grid-pin" transform="translate(484 464) rotate(2.5) scale(0.72) translate(-484 -464)">
+      <circle cx="484" cy="464" r="1.8" fill="#475569" opacity="0.16000000000000003"/>
+    </g>
+    <g class="receipt-ruler-tick" transform="translate(572 464) rotate(5) scale(0.95) translate(-572 -464)">
+      <line x1="572" y1="458" x2="572" y2="470" stroke="#94a3b8" stroke-width="1" opacity="0.24"/>
+      <text x="572" y="454" font-size="7" font-family="'JetBrains Mono', monospace" fill="#94a3b8" text-anchor="middle">T24</text>
+    </g>
+    <g class="receipt-grid-pin" transform="translate(220 550) rotate(-5) scale(0.72) translate(-220 -550)">
+      <circle cx="220" cy="550" r="1.8" fill="#475569" opacity="0.16000000000000003"/>
+    </g>
+    <g class="receipt-card" transform="translate(308 550) rotate(-2.5) scale(1.25) translate(-308 -550)">
+      <rect x="138" y="522" width="340" height="56" fill="#0d1117" stroke="#334155" stroke-width="1.2" rx="3" opacity="0.38"/>
+      <rect x="144" y="528" width="72" height="18" fill="#1e293b" rx="2"/>
+      <text x="180" y="540" font-size="8" font-family="'JetBrains Mono', monospace" font-weight="700" fill="#f59e0b" text-anchor="middle">[HELD]</text>
+      <text x="224" y="540" font-size="8.5" font-family="'JetBrains Mono', monospace" fill="#e2e8f0">K3 PAIR-04 TRANSITION (DIAGNOSTIC)</text>
+      <text x="158" y="564" font-size="18" font-family="'PingFang SC', monospace" fill="#94a3b8">à</text>
+      <text x="438" y="566" font-size="7" font-family="'JetBrains Mono', monospace" fill="#64748b">CARRIER-26</text>
+    </g>
+    <g class="receipt-grid-pin" transform="translate(396 550) rotate(0) scale(0.72) translate(-396 -550)">
+      <circle cx="396" cy="550" r="1.8" fill="#475569" opacity="0.16000000000000003"/>
+    </g>
+    <g class="receipt-ruler-tick" transform="translate(484 550) rotate(2.5) scale(0.95) translate(-484 -550)">
+      <line x1="484" y1="544" x2="484" y2="556" stroke="#94a3b8" stroke-width="1" opacity="0.24"/>
+      <text x="484" y="540" font-size="7" font-family="'JetBrains Mono', monospace" fill="#94a3b8" text-anchor="middle">T28</text>
+    </g>
+    <g class="receipt-grid-pin" transform="translate(572 550) rotate(5) scale(0.72) translate(-572 -550)">
+      <circle cx="572" cy="550" r="1.8" fill="#475569" opacity="0.16000000000000003"/>
+    </g>
+    <g class="receipt-grid-pin" transform="translate(220 636) rotate(-5) scale(0.72) translate(-220 -636)">
+      <circle cx="220" cy="636" r="1.8" fill="#475569" opacity="0.16000000000000003"/>
+    </g>
+    <g class="receipt-grid-pin" transform="translate(308 636) rotate(-2.5) scale(0.72) translate(-308 -636)">
+      <circle cx="308" cy="636" r="1.8" fill="#475569" opacity="0.16000000000000003"/>
+    </g>
+    <g class="receipt-ruler-tick" transform="translate(396 636) rotate(0) scale(0.95) translate(-396 -636)">
+      <line x1="396" y1="630" x2="396" y2="642" stroke="#94a3b8" stroke-width="1" opacity="0.24"/>
+      <text x="396" y="626" font-size="7" font-family="'JetBrains Mono', monospace" fill="#94a3b8" text-anchor="middle">T32</text>
+    </g>
+    <g class="receipt-card" transform="translate(484 636) rotate(2.5) scale(1.25) translate(-484 -636)">
+      <rect x="314" y="608" width="340" height="56" fill="#0d1117" stroke="#334155" stroke-width="1.2" rx="3" opacity="0.38"/>
+      <rect x="320" y="614" width="72" height="18" fill="#1e293b" rx="2"/>
+      <text x="356" y="626" font-size="8" font-family="'JetBrains Mono', monospace" font-weight="700" fill="#f59e0b" text-anchor="middle">[HELD]</text>
+      <text x="400" y="626" font-size="8.5" font-family="'JetBrains Mono', monospace" fill="#e2e8f0">APERTURE TREATMENT EFFECT (NULL)</text>
+      <text x="334" y="650" font-size="18" font-family="'PingFang SC', monospace" fill="#94a3b8">à</text>
+      <text x="614" y="652" font-size="7" font-family="'JetBrains Mono', monospace" fill="#64748b">CARRIER-33</text>
+    </g>
+    <g class="receipt-grid-pin" transform="translate(572 636) rotate(5) scale(0.72) translate(-572 -636)">
+      <circle cx="572" cy="636" r="1.8" fill="#475569" opacity="0.16000000000000003"/>
+    </g>
+    <g class="receipt-ruler-tick" transform="translate(220 722) rotate(-5) scale(0.95) translate(-220 -722)">
+      <line x1="220" y1="716" x2="220" y2="728" stroke="#94a3b8" stroke-width="1" opacity="0.24"/>
+      <text x="220" y="712" font-size="7" font-family="'JetBrains Mono', monospace" fill="#94a3b8" text-anchor="middle">T35</text>
+    </g>
+    <g class="receipt-ruler-tick" transform="translate(308 722) rotate(-2.5) scale(0.95) translate(-308 -722)">
+      <line x1="308" y1="716" x2="308" y2="728" stroke="#94a3b8" stroke-width="1" opacity="0.24"/>
+      <text x="308" y="712" font-size="7" font-family="'JetBrains Mono', monospace" fill="#94a3b8" text-anchor="middle">T36</text>
+    </g>
+    <g class="receipt-grid-pin" transform="translate(396 722) rotate(0) scale(0.72) translate(-396 -722)">
+      <circle cx="396" cy="722" r="1.8" fill="#475569" opacity="0.16000000000000003"/>
+    </g>
+    <g class="receipt-grid-pin" transform="translate(484 722) rotate(2.5) scale(0.72) translate(-484 -722)">
+      <circle cx="484" cy="722" r="1.8" fill="#475569" opacity="0.16000000000000003"/>
+    </g>
+  </g>
+  <g class="receipt-header" text-anchor="middle">
+    <text x="500" y="44" font-size="11" font-family="'JetBrains Mono', monospace" font-weight="700" fill="#e2e8f0" letter-spacing="3">TD613 EVIDENCE &amp; RECEIPT LEDGER // APERTURE REGISTER</text>
+    <text x="500" y="58" font-size="7.5" font-family="'JetBrains Mono', monospace" fill="#94a3b8">CALM HIERARCHY · ZERO RADAR THEATER · RFC 8785 VERIFIED</text>
+    <line x1="220" y1="68" x2="780" y2="68" stroke="#334155" stroke-width="0.8"/>
+  </g>
+</svg>

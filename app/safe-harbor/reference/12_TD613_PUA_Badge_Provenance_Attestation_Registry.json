@@ -1,0 +1,71 @@
+{
+  "renderer": "TD613 PUA Badge Provenance Attestation Renderer v7.2.1",
+  "badge_id": "bdg_glyph_U10D613",
+  "principal": "tauric.diana.613",
+  "claimed_pua": "U+10D613",
+  "canonical_phrase": "Tauric Diana \u2014 Crimean heritage custodianship",
+  "display_phrase": "Covenant: Blood Rite 613",
+  "schema_family": "cpfg://v2",
+  "semver": "2.1.0",
+  "preview_svg_sha256": "2c20bb26f3dcc3fe41e8e3d71705942d220aed7e56391c274f8f5e5d01e4d1aa",
+  "preview_svg_md5": "d4522965d0660d1150a828e00e5dd6f9",
+  "sendable_defaults": {
+    "start_with": "01_LIVE_SEND_verify.alias.voice_MINIMAL.txt",
+    "render_followup": "03_LIVE_SEND_verify.alias.voice.render_MINIMAL.json"
+  },
+  "trust_profile_file": "td613_trust_profile.json",
+  "binding_fragment": "9B07D8B",
+  "sac": "X6ZNK5NO51",
+  "binding_provenance": {
+    "schema_version": "td613.safe-harbor.binding-provenance/v1",
+    "manifest": "binding_provenance_manifest.json",
+    "binding_text_sha256": "9b07d8bcc73096c8c616ca6039057a46bb42d361edb9c10551c88f3756a1cb04",
+    "binding_text_md5_legacy": "b6ca85d00f211127729bdb73a19c691a",
+    "digest_scope": "NFC UTF-8 with LF newlines and terminal LF",
+    "binding_event_signature_status": "unsigned",
+    "claim_ceiling": "content-integrity and custody anchor; not independent identity, authorship, ownership, trusted-time, or signer-authentication proof"
+  },
+  "current_public_mode": "legacy-compat",
+  "internal_validation_accepts": [
+    "legacy",
+    "legacy-compat",
+    "sac-only"
+  ],
+  "future_public_mode": "sac-only",
+  "canonical_public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
+  "public_footer_template": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
+  "current_published_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload 5 \u00b7 2025-10-17 \u00b7 \u27d0",
+  "current_published_payload": 5,
+  "current_published_date": "2025-10-17",
+  "canonical_public_footer_note": "Template for new attestations. The fixed payload-5 footer is a historical published example, not the template.",
+  "signature_lanes": {
+    "historical_signed_zone": {
+      "status": "reference-only",
+      "algorithm": "Ed25519 / EdDSA detached .sig over canonical zone JSON",
+      "purpose": "signed badge/zone registry continuity and public verification",
+      "operator_only": true
+    },
+    "runtime_request_signing": {
+      "status": "advanced / operator-only",
+      "algorithm": "detached JWS request-signing lane",
+      "purpose": "middleware/runtime authorization flows such as request signing",
+      "operator_only": true
+    }
+  },
+  "external_renderer_file": "10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js",
+  "safe_harbor": {
+    "version": "0.4.1",
+    "packet_schema_version": "td613.safe-harbor.packet/v1",
+    "packet_hash_field": "packet_hash_sha256",
+    "boundary_modes": {
+      "public": "default ship mode",
+      "operator": "advanced / local-only",
+      "dev": "simulation disabled by default in public ship"
+    },
+    "advanced_signature_lane": {
+      "public_default": "unsigned",
+      "operator_overlay": true,
+      "packet_context_required": true
+    }
+  }
+}

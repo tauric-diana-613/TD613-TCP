@@ -1,0 +1,11 @@
+{
+  "source_head": "93e813186c915cd1dbf78387f1fb226c82aa9e2a",
+  "workflow_run": 37951697750,
+  "job": 113891938769,
+  "upstream_log": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/37951697750/job/113891938769",
+  "conclusion": "failure",
+  "reason": "Existing Giving Vercel baseline-projection assertion did not admit new exact Loom includeFiles",
+  "raw_log_sha256": "b4660f5a95df36e12cbc9cdf76637c870767bfe9b30d224c81f979fbe2aba8bb",
+  "raw_log_bytes": 401799,
+  "raw_scope": "Full decoded job log; provider consumption entries are local mocked test output, not live assay captures"
+}

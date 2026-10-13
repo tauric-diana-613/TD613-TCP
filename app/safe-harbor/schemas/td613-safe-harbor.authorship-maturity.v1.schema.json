@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.safe-harbor.authorship-maturity/v1",
+  "title": "TD613 Safe Harbor Authorship Maturity v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "window_policy_version",
+    "feature_policy_version",
+    "stability_policy_version",
+    "lane_analyses",
+    "checkpoint_snapshots",
+    "within_lane_invariants",
+    "cross_lane_invariants",
+    "prompt_conditioned_features",
+    "stability_receipt",
+    "bounded_interpretation",
+    "null_and_adversarial_posture",
+    "raw_text_included"
+  ],
+  "properties": {
+    "schema_version": { "const": "td613.safe-harbor.authorship-maturity/v1" },
+    "window_policy_version": { "const": "td613.safe-harbor.sentence-aware-window-policy/v1" },
+    "feature_policy_version": { "const": "td613.safe-harbor.recurrence-feature-policy/v1" },
+    "stability_policy_version": { "const": "td613.safe-harbor.stability-policy/v1" },
+    "lane_analyses": {
+      "type": "object",
+      "required": ["future_self", "past_self", "higher_self"],
+      "additionalProperties": false,
+      "properties": {
+        "future_self": { "$ref": "#/$defs/laneAnalysis" },
+        "past_self": { "$ref": "#/$defs/laneAnalysis" },
+        "higher_self": { "$ref": "#/$defs/laneAnalysis" }
+      }
+    },
+    "checkpoint_snapshots": { "type": "object" },
+    "within_lane_invariants": { "type": "object" },
+    "cross_lane_invariants": { "type": "object" },
+    "prompt_conditioned_features": { "type": "object" },
+    "stability_receipt": { "$ref": "#/$defs/stabilityReceipt" },
+    "bounded_interpretation": {
+      "type": "object",
+      "required": ["statement", "uncertainty", "supported_claim", "prohibited_claims"],
+      "properties": {
+        "statement": { "type": "string" },
+        "uncertainty": { "type": "array", "items": { "type": "string" } },
+        "supported_claim": { "type": "string" },
+        "prohibited_claims": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "null_and_adversarial_posture": {
+      "type": "object",
+      "required": [
+        "prompt_vocabulary_ablation_applied",
+        "lexical_content_ngram_features_excluded",
+        "entrant_swap_audit_digest",
+        "chronology_claimed",
+        "external_identity_data_consumed",
+        "raw_text_exported"
+      ],
+      "properties": {
+        "prompt_vocabulary_ablation_applied": { "const": true },
+        "lexical_content_ngram_features_excluded": { "const": true },
+        "entrant_swap_audit_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "chronology_claimed": { "const": false },
+        "external_identity_data_consumed": { "const": false },
+        "raw_text_exported": { "const": false }
+      }
+    },
+    "raw_text_included": { "const": false }
+  },
+  "$defs": {
+    "laneAnalysis": {
+      "type": "object",
+      "required": [
+        "lane",
+        "sentence_count",
+        "observed_words",
+        "local_window_count",
+        "local_window_target",
+        "non_overlapping_local_windows",
+        "checkpoints",
+        "local_windows",
+        "feature_families",
+        "raw_text_included"
+      ],
+      "properties": {
+        "lane": { "enum": ["future_self", "past_self", "higher_self"] },
+        "sentence_count": { "type": "integer", "minimum": 0 },
+        "observed_words": { "type": "integer", "minimum": 0 },
+        "local_window_count": { "type": "integer", "minimum": 0, "maximum": 3 },
+        "local_window_target": { "const": 120 },
+        "non_overlapping_local_windows": { "const": true },
+        "checkpoints": { "type": "array", "minItems": 3, "maxItems": 3 },
+        "local_windows": { "type": "array", "maxItems": 3 },
+        "feature_families": { "type": "object" },
+        "raw_text_included": { "const": false }
+      }
+    },
+    "stabilityReceipt": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "policy_version",
+        "maturity_state",
+        "status",
+        "stable_feature_families",
+        "context_responsive_feature_families",
+        "unstable_feature_families",
+        "insufficient_feature_families",
+        "prompt_conditioned_feature_families",
+        "blockers",
+        "bounded_statement",
+        "raw_text_included",
+        "identity_probability",
+        "psychological_inference_performed",
+        "demographic_inference_performed",
+        "stability_digest",
+        "anti_sameness_digest",
+        "anti_flattery_audit",
+        "evidence_traceability"
+      ],
+      "properties": {
+        "schema_version": { "const": "td613.safe-harbor.stability-receipt/v1" },
+        "policy_version": { "const": "td613.safe-harbor.stability-policy/v1" },
+        "maturity_state": { "enum": ["insufficient", "provisional", "comparative", "comparative-with-instability", "mature"] },
+        "status": { "enum": ["insufficient", "provisional", "comparative", "comparative-with-instability", "mature"] },
+        "stable_feature_families": { "type": "array", "items": { "type": "string" } },
+        "context_responsive_feature_families": { "type": "array", "items": { "type": "string" } },
+        "unstable_feature_families": { "type": "array", "items": { "type": "string" } },
+        "insufficient_feature_families": { "type": "array", "items": { "type": "string" } },
+        "prompt_conditioned_feature_families": { "type": "array", "items": { "type": "string" } },
+        "blockers": { "type": "array", "items": { "type": "string" } },
+        "bounded_statement": { "type": "string" },
+        "raw_text_included": { "const": false },
+        "identity_probability": { "type": "null" },
+        "psychological_inference_performed": { "const": false },
+        "demographic_inference_performed": { "const": false },
+        "stability_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "anti_sameness_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "anti_flattery_audit": { "type": "object" },
+        "evidence_traceability": { "type": "object" }
+      }
+    }
+  }
+}

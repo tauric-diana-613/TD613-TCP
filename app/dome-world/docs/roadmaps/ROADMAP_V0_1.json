@@ -1,0 +1,42 @@
+{
+  "schema": "td613.roadmap.aperture-dome-ash/v0.1",
+  "title": "TD613 Aperture / Flow-Core / Dome-World / Ash Roadmap",
+  "working_title": "The Crayon Map",
+  "baseline": {
+    "aperture": "v3.0-alpha",
+    "dome_world": "v0.5.0",
+    "ash_commitment": "v0.7",
+    "ash_derivative_lineage": "v0.6",
+    "exact_substrate": "v0.4.3"
+  },
+  "governing_laws": [
+    "Open Field governs idea generation; review begins only at operator-requested promotion.",
+    "Artifact, context, and relation are separate strata.",
+    "Receipts may cross stations; authority does not.",
+    "The human custodian remains the decision point for consequential Ash actions.",
+    "Proof is limited to propositions whose truth conditions formally close.",
+    "Prediction remains research-only until calibration, abstention, drift, and harm tests are satisfied.",
+    "No new claim-ceiling mechanism is introduced by this roadmap."
+  ],
+  "phases": [
+    {"phase": 0, "name": "Baseline Freeze and Contract Ledger", "status": "implemented-and-hardened"},
+    {"phase": 1, "name": "Ash Local Commitment Kernel", "status": "implemented-and-hardened"},
+    {"phase": 2, "name": "Canonical Digest and Receipt Spine", "status": "planned"},
+    {"phase": 3, "name": "Flow-Core Context Instrumentation", "status": "planned"},
+    {"phase": 4, "name": "Reciprocal Receipt Bridge", "status": "aperture-design-instantiated-api-deferred"},
+    {"phase": 5, "name": "Relation Envelope and Phason Continuity", "status": "aperture-landing-zone-instantiated-runtime-deferred"},
+    {"phase": 6, "name": "Human-Gated Ash Derivatives", "status": "held-plaintext-cinder-disabled"},
+    {"phase": 7, "name": "Independent Provenance Adapters", "status": "planned"},
+    {"phase": 8, "name": "Advanced Privacy Research Lane", "status": "open-field-research-only"},
+    {"phase": 9, "name": "Validation Deployment and Release Discipline", "status": "partially-instantiated-continuous"}
+  ],
+  "closing_invariant": [
+    "Aperture audits.",
+    "Flow-Core contextualizes.",
+    "Dome-World holds the ecology.",
+    "Ash owns custody.",
+    "Phason records governed change.",
+    "Receipts cross the bridge.",
+    "The human decides."
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TD613 Phason Gate Event",
+  "type": "object",
+  "required": [
+    "schema",
+    "artifact_content_changed",
+    "projection_changed",
+    "previous_projection",
+    "new_projection",
+    "claim_ceiling"
+  ],
+  "properties": {
+    "schema": {
+      "const": "td613.phason-gate/v1"
+    },
+    "artifact_content_changed": {
+      "type": "boolean"
+    },
+    "projection_changed": {
+      "type": "boolean"
+    },
+    "previous_projection": {
+      "type": "string"
+    },
+    "new_projection": {
+      "type": "string"
+    },
+    "claim_ceiling": {
+      "type": "string"
+    }
+  }
+}

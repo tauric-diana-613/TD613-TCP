@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.constitutional-composition/v0.1",
+  "type": "object",
+  "required": ["schema", "receipt_id", "layers", "transport_enabled", "automatic_cinder_enabled", "manifest_digest"],
+  "properties": {
+    "schema": { "const": "td613.ash.constitutional-composition/v0.1" },
+    "receipt_id": { "type": "string", "minLength": 1 },
+    "layers": {
+      "type": "array",
+      "minItems": 11,
+      "items": {
+        "type": "object",
+        "required": ["index", "layer_id", "prerequisite_version", "capabilities", "mutation_surface", "runtime_permissions", "idempotence_marker", "failure_posture"]
+      }
+    },
+    "transport_enabled": { "const": false },
+    "automatic_cinder_enabled": { "const": false },
+    "manifest_digest": { "type": "string", "pattern": "^sha256:" }
+  }
+}

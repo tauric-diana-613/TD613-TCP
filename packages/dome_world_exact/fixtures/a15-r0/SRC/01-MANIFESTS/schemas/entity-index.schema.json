@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:entity-index:v1",
+  "title": "SignalRupture connector entity resolver entry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "entity_id", "entity_kind", "label", "definition_status", "defined_in_path", "defined_by_record_id", "source_entity_ids", "interpretive_limit"],
+  "properties": {
+    "schema_version": {"const": "entity-index/v1"},
+    "entity_id": {"type": "string", "minLength": 1},
+    "entity_kind": {
+      "enum": [
+        "ACQUISITION_PRIORITY", "ARCHITECTURE", "ASSAY", "AUTHORITY_ASSERTION", "BLOCKER", "CLAIM", "CLAIM_EVENT", "CLASS",
+        "COMPILER_INPUT_CANDIDATE", "CORPUS_SNAPSHOT", "COVERAGE_ENTRY", "EVIDENCE", "EVIDENCE_TAXONOMY", "FALSIFIER", "FORMULATION",
+        "GENEALOGY", "HUMAN_GATE", "HYPOTHESIS", "LIFECYCLE_EVENT", "LINEAGE", "MANIFESTATION", "MAP_NODE", "MAP_SNAPSHOT",
+        "MEASUREMENT_DEFINITION", "MODULE", "REGISTRY_RECORD", "RELATION", "REPRESENTATION_FAMILY", "ROLE", "SEARCH_RECEIPT",
+        "SEARCH_SCOPE", "SERIES_NAMESPACE", "SERIES_OBSERVATION", "STATE_ASSERTION", "STRUCTURAL_ANATOMY", "SURFACE", "TRANSFORMATION",
+        "TYPE_CONTROL", "UNRESOLVED_OBJECT"
+      ]
+    },
+    "label": {"type": "string", "minLength": 1},
+    "definition_status": {"enum": ["DEFINED", "PLACEHOLDER", "UNRESOLVED"]},
+    "defined_in_path": {"type": "string", "minLength": 1},
+    "defined_by_record_id": {"type": ["string", "null"]},
+    "source_entity_ids": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "interpretive_limit": {"type": ["string", "null"]}
+  }
+}

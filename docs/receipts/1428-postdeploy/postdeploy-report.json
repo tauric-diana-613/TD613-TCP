@@ -1,0 +1,98 @@
+{
+  "targetUrl": "https://td613.com/dome-world/holonomy-loom.html",
+  "timestamp": "2026-10-04T04:27:33.553Z",
+  "viewports": {
+    "mobile_390x700": {
+      "httpStatus": 200,
+      "screenshot": "C:\\Users\\timst\\OneDrive\\Desktop\\tcp-repository\\docs\\receipts\\1428-postdeploy\\mobile_390x700.png",
+      "metrics": {
+        "viewport": {
+          "winW": 390,
+          "winH": 700,
+          "dpr": 3,
+          "docW": 390,
+          "hasHorizontalScroll": false
+        },
+        "spilledCount": 0,
+        "carrierCount": 39,
+        "farCarrierOpacity": "0.2",
+        "wordmarkHeight": 44,
+        "stopBtnText": "Finish tutorial →",
+        "privateTag": "div",
+        "privateRole": "note"
+      },
+      "consoleLogs": [],
+      "pageErrors": [],
+      "failedRequests": []
+    },
+    "mobile_390x844": {
+      "httpStatus": 200,
+      "screenshot": "C:\\Users\\timst\\OneDrive\\Desktop\\tcp-repository\\docs\\receipts\\1428-postdeploy\\mobile_390x844.png",
+      "metrics": {
+        "viewport": {
+          "winW": 390,
+          "winH": 844,
+          "dpr": 3,
+          "docW": 390,
+          "hasHorizontalScroll": false
+        },
+        "spilledCount": 0,
+        "carrierCount": 39,
+        "farCarrierOpacity": "0.2",
+        "wordmarkHeight": 44,
+        "stopBtnText": "Finish tutorial →",
+        "privateTag": "div",
+        "privateRole": "note"
+      },
+      "consoleLogs": [],
+      "pageErrors": [],
+      "failedRequests": []
+    },
+    "mobile_360x740": {
+      "httpStatus": 200,
+      "screenshot": "C:\\Users\\timst\\OneDrive\\Desktop\\tcp-repository\\docs\\receipts\\1428-postdeploy\\mobile_360x740.png",
+      "metrics": {
+        "viewport": {
+          "winW": 360,
+          "winH": 740,
+          "dpr": 2.5999999046325684,
+          "docW": 360,
+          "hasHorizontalScroll": false
+        },
+        "spilledCount": 0,
+        "carrierCount": 39,
+        "farCarrierOpacity": "0.2",
+        "wordmarkHeight": 44,
+        "stopBtnText": "Finish tutorial →",
+        "privateTag": "div",
+        "privateRole": "note"
+      },
+      "consoleLogs": [],
+      "pageErrors": [],
+      "failedRequests": []
+    },
+    "landscape_844x390": {
+      "httpStatus": 200,
+      "screenshot": "C:\\Users\\timst\\OneDrive\\Desktop\\tcp-repository\\docs\\receipts\\1428-postdeploy\\landscape_844x390.png",
+      "metrics": {
+        "viewport": {
+          "winW": 844,
+          "winH": 390,
+          "dpr": 3,
+          "docW": 844,
+          "hasHorizontalScroll": false
+        },
+        "spilledCount": 0,
+        "carrierCount": 39,
+        "farCarrierOpacity": "0.2",
+        "wordmarkHeight": 44,
+        "stopBtnText": "Finish tutorial →",
+        "privateTag": "div",
+        "privateRole": "note"
+      },
+      "consoleLogs": [],
+      "pageErrors": [],
+      "failedRequests": []
+    }
+  }
+}

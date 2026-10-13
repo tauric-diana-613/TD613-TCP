@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.compatibility-audit/v0.1",
+  "type": "object",
+  "required": ["schema", "receipt_id", "mode", "findings", "mutation_performed", "migration_performed", "audit_digest"],
+  "properties": {
+    "schema": { "const": "td613.ash.compatibility-audit/v0.1" },
+    "receipt_id": { "type": "string" },
+    "mode": { "const": "DRY_AUDIT_ONLY" },
+    "findings": { "type": "array", "items": { "type": "object", "required": ["code", "reference"] } },
+    "mutation_performed": { "const": false },
+    "migration_performed": { "const": false },
+    "audit_digest": { "type": "string", "pattern": "^sha256:" }
+  }
+}

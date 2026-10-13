@@ -1,0 +1,364 @@
+{
+  "fictional_inputs": true,
+  "evidence_class": "DECLARATION",
+  "fixtures": [
+    {
+      "id": "fixed_selection_declared_chain",
+      "input": {
+        "origin": {
+          "id": "fictional departure A",
+          "source_revision": "3ef1ba86701843f7fde2fec29ede2bab038d934b",
+          "original_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "current_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "predecessor_ref": null,
+          "selected_commitments": [
+            {
+              "id": "doc_a",
+              "commitment": "d76b125d3b79e793f0e9eeacb4324e31e4f1612187cd0e05e7af729e897c4b8a"
+            }
+          ],
+          "policy_commitment": "0b19478a5a0b01b8ab99f3ee78a9b9cc5df8927b6f795a188205330dbaadd678",
+          "missingness": [
+            "Foreign enforcement remains unobserved."
+          ],
+          "claim_ceiling": [
+            "declared reference comparison only",
+            "no exteriority proof",
+            "no authenticated foreign history"
+          ]
+        },
+        "previous": {
+          "id": "fictional registered foreign turn one",
+          "source_revision": "3ef1ba86701843f7fde2fec29ede2bab038d934b",
+          "original_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "current_ref": "declared_foreign_answer_1",
+          "predecessor_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "selected_commitments": [
+            {
+              "id": "doc_a",
+              "commitment": "d76b125d3b79e793f0e9eeacb4324e31e4f1612187cd0e05e7af729e897c4b8a"
+            }
+          ],
+          "policy_commitment": "0b19478a5a0b01b8ab99f3ee78a9b9cc5df8927b6f795a188205330dbaadd678",
+          "missingness": [
+            "Foreign enforcement remains unobserved."
+          ],
+          "claim_ceiling": [
+            "declared reference comparison only",
+            "no exteriority proof",
+            "no authenticated foreign history"
+          ]
+        },
+        "current": {
+          "id": "fictional registered foreign turn two",
+          "source_revision": "3ef1ba86701843f7fde2fec29ede2bab038d934b",
+          "original_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "current_ref": "declared_foreign_answer_2",
+          "predecessor_ref": "declared_foreign_answer_1",
+          "selected_commitments": [
+            {
+              "id": "doc_a",
+              "commitment": "d76b125d3b79e793f0e9eeacb4324e31e4f1612187cd0e05e7af729e897c4b8a"
+            }
+          ],
+          "policy_commitment": "0b19478a5a0b01b8ab99f3ee78a9b9cc5df8927b6f795a188205330dbaadd678",
+          "missingness": [
+            "Foreign enforcement remains unobserved."
+          ],
+          "claim_ceiling": [
+            "declared reference comparison only",
+            "no exteriority proof",
+            "no authenticated foreign history"
+          ]
+        },
+        "presentations": []
+      }
+    },
+    {
+      "id": "stale_declared_content_predecessor",
+      "input": {
+        "origin": {
+          "id": "fictional departure A",
+          "source_revision": "3ef1ba86701843f7fde2fec29ede2bab038d934b",
+          "original_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "current_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "predecessor_ref": null,
+          "selected_commitments": [
+            {
+              "id": "doc_a",
+              "commitment": "d76b125d3b79e793f0e9eeacb4324e31e4f1612187cd0e05e7af729e897c4b8a"
+            }
+          ],
+          "policy_commitment": "0b19478a5a0b01b8ab99f3ee78a9b9cc5df8927b6f795a188205330dbaadd678",
+          "missingness": [
+            "Foreign enforcement remains unobserved."
+          ],
+          "claim_ceiling": [
+            "declared reference comparison only",
+            "no exteriority proof",
+            "no authenticated foreign history"
+          ]
+        },
+        "previous": {
+          "id": "fictional registered foreign turn one",
+          "source_revision": "3ef1ba86701843f7fde2fec29ede2bab038d934b",
+          "original_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "current_ref": "declared_foreign_answer_1",
+          "predecessor_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "selected_commitments": [
+            {
+              "id": "doc_a",
+              "commitment": "d76b125d3b79e793f0e9eeacb4324e31e4f1612187cd0e05e7af729e897c4b8a"
+            }
+          ],
+          "policy_commitment": "0b19478a5a0b01b8ab99f3ee78a9b9cc5df8927b6f795a188205330dbaadd678",
+          "missingness": [
+            "Foreign enforcement remains unobserved."
+          ],
+          "claim_ceiling": [
+            "declared reference comparison only",
+            "no exteriority proof",
+            "no authenticated foreign history"
+          ]
+        },
+        "current": {
+          "id": "fictional registered foreign turn two",
+          "source_revision": "3ef1ba86701843f7fde2fec29ede2bab038d934b",
+          "original_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "current_ref": "declared_foreign_answer_2",
+          "predecessor_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "selected_commitments": [
+            {
+              "id": "doc_a",
+              "commitment": "d76b125d3b79e793f0e9eeacb4324e31e4f1612187cd0e05e7af729e897c4b8a"
+            }
+          ],
+          "policy_commitment": "0b19478a5a0b01b8ab99f3ee78a9b9cc5df8927b6f795a188205330dbaadd678",
+          "missingness": [
+            "Foreign enforcement remains unobserved."
+          ],
+          "claim_ceiling": [
+            "declared reference comparison only",
+            "no exteriority proof",
+            "no authenticated foreign history"
+          ]
+        },
+        "presentations": []
+      }
+    },
+    {
+      "id": "explicit_new_source_outside_fixed_selection_adapter",
+      "input": {
+        "origin": {
+          "id": "fictional departure A",
+          "source_revision": "3ef1ba86701843f7fde2fec29ede2bab038d934b",
+          "original_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "current_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "predecessor_ref": null,
+          "selected_commitments": [
+            {
+              "id": "doc_a",
+              "commitment": "d76b125d3b79e793f0e9eeacb4324e31e4f1612187cd0e05e7af729e897c4b8a"
+            }
+          ],
+          "policy_commitment": "0b19478a5a0b01b8ab99f3ee78a9b9cc5df8927b6f795a188205330dbaadd678",
+          "missingness": [
+            "Foreign enforcement remains unobserved."
+          ],
+          "claim_ceiling": [
+            "declared reference comparison only",
+            "no exteriority proof",
+            "no authenticated foreign history"
+          ]
+        },
+        "previous": {
+          "id": "fictional registered foreign turn one",
+          "source_revision": "3ef1ba86701843f7fde2fec29ede2bab038d934b",
+          "original_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "current_ref": "declared_foreign_answer_1",
+          "predecessor_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "selected_commitments": [
+            {
+              "id": "doc_a",
+              "commitment": "d76b125d3b79e793f0e9eeacb4324e31e4f1612187cd0e05e7af729e897c4b8a"
+            }
+          ],
+          "policy_commitment": "0b19478a5a0b01b8ab99f3ee78a9b9cc5df8927b6f795a188205330dbaadd678",
+          "missingness": [
+            "Foreign enforcement remains unobserved."
+          ],
+          "claim_ceiling": [
+            "declared reference comparison only",
+            "no exteriority proof",
+            "no authenticated foreign history"
+          ]
+        },
+        "current": {
+          "id": "fictional registered foreign turn two",
+          "source_revision": "3ef1ba86701843f7fde2fec29ede2bab038d934b",
+          "original_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "current_ref": "declared_foreign_answer_2",
+          "predecessor_ref": "declared_foreign_answer_1",
+          "selected_commitments": [
+            {
+              "id": "doc_a",
+              "commitment": "d76b125d3b79e793f0e9eeacb4324e31e4f1612187cd0e05e7af729e897c4b8a"
+            },
+            {
+              "id": "doc_b",
+              "commitment": "declared_new_explicit_source_commitment"
+            }
+          ],
+          "policy_commitment": "0b19478a5a0b01b8ab99f3ee78a9b9cc5df8927b6f795a188205330dbaadd678",
+          "missingness": [
+            "Foreign enforcement remains unobserved."
+          ],
+          "claim_ceiling": [
+            "declared reference comparison only",
+            "no exteriority proof",
+            "no authenticated foreign history"
+          ]
+        },
+        "presentations": []
+      }
+    },
+    {
+      "id": "missing_source_coordinate",
+      "input": {
+        "origin": {
+          "id": "fictional departure A",
+          "source_revision": "3ef1ba86701843f7fde2fec29ede2bab038d934b",
+          "original_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "current_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "predecessor_ref": null,
+          "selected_commitments": [
+            {
+              "id": "doc_a",
+              "commitment": "d76b125d3b79e793f0e9eeacb4324e31e4f1612187cd0e05e7af729e897c4b8a"
+            }
+          ],
+          "policy_commitment": "0b19478a5a0b01b8ab99f3ee78a9b9cc5df8927b6f795a188205330dbaadd678",
+          "missingness": [
+            "Foreign enforcement remains unobserved."
+          ],
+          "claim_ceiling": [
+            "declared reference comparison only",
+            "no exteriority proof",
+            "no authenticated foreign history"
+          ]
+        },
+        "previous": {
+          "id": "fictional registered foreign turn one",
+          "source_revision": "3ef1ba86701843f7fde2fec29ede2bab038d934b",
+          "original_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "current_ref": "declared_foreign_answer_1",
+          "predecessor_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "selected_commitments": [
+            {
+              "id": "doc_a",
+              "commitment": "d76b125d3b79e793f0e9eeacb4324e31e4f1612187cd0e05e7af729e897c4b8a"
+            }
+          ],
+          "policy_commitment": "0b19478a5a0b01b8ab99f3ee78a9b9cc5df8927b6f795a188205330dbaadd678",
+          "missingness": [
+            "Foreign enforcement remains unobserved."
+          ],
+          "claim_ceiling": [
+            "declared reference comparison only",
+            "no exteriority proof",
+            "no authenticated foreign history"
+          ]
+        },
+        "current": {
+          "id": "fictional registered foreign turn two",
+          "source_revision": "3ef1ba86701843f7fde2fec29ede2bab038d934b",
+          "original_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "current_ref": "declared_foreign_answer_2",
+          "predecessor_ref": "declared_foreign_answer_1",
+          "policy_commitment": "0b19478a5a0b01b8ab99f3ee78a9b9cc5df8927b6f795a188205330dbaadd678",
+          "missingness": [
+            "Foreign enforcement remains unobserved."
+          ],
+          "claim_ceiling": [
+            "declared reference comparison only",
+            "no exteriority proof",
+            "no authenticated foreign history"
+          ]
+        },
+        "presentations": []
+      }
+    },
+    {
+      "id": "changed_policy_coordinate",
+      "input": {
+        "origin": {
+          "id": "fictional departure A",
+          "source_revision": "3ef1ba86701843f7fde2fec29ede2bab038d934b",
+          "original_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "current_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "predecessor_ref": null,
+          "selected_commitments": [
+            {
+              "id": "doc_a",
+              "commitment": "d76b125d3b79e793f0e9eeacb4324e31e4f1612187cd0e05e7af729e897c4b8a"
+            }
+          ],
+          "policy_commitment": "0b19478a5a0b01b8ab99f3ee78a9b9cc5df8927b6f795a188205330dbaadd678",
+          "missingness": [
+            "Foreign enforcement remains unobserved."
+          ],
+          "claim_ceiling": [
+            "declared reference comparison only",
+            "no exteriority proof",
+            "no authenticated foreign history"
+          ]
+        },
+        "previous": {
+          "id": "fictional registered foreign turn one",
+          "source_revision": "3ef1ba86701843f7fde2fec29ede2bab038d934b",
+          "original_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "current_ref": "declared_foreign_answer_1",
+          "predecessor_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "selected_commitments": [
+            {
+              "id": "doc_a",
+              "commitment": "d76b125d3b79e793f0e9eeacb4324e31e4f1612187cd0e05e7af729e897c4b8a"
+            }
+          ],
+          "policy_commitment": "0b19478a5a0b01b8ab99f3ee78a9b9cc5df8927b6f795a188205330dbaadd678",
+          "missingness": [
+            "Foreign enforcement remains unobserved."
+          ],
+          "claim_ceiling": [
+            "declared reference comparison only",
+            "no exteriority proof",
+            "no authenticated foreign history"
+          ]
+        },
+        "current": {
+          "id": "fictional registered foreign turn two",
+          "source_revision": "3ef1ba86701843f7fde2fec29ede2bab038d934b",
+          "original_ref": "286dd215f78110730adc7e43687e634305eb22992c609fdb15fd0efdb3a6870c",
+          "current_ref": "declared_foreign_answer_2",
+          "predecessor_ref": "declared_foreign_answer_1",
+          "selected_commitments": [
+            {
+              "id": "doc_a",
+              "commitment": "d76b125d3b79e793f0e9eeacb4324e31e4f1612187cd0e05e7af729e897c4b8a"
+            }
+          ],
+          "policy_commitment": "declared_weakened_policy",
+          "missingness": [
+            "Foreign enforcement remains unobserved."
+          ],
+          "claim_ceiling": [
+            "declared reference comparison only",
+            "no exteriority proof",
+            "no authenticated foreign history"
+          ]
+        },
+        "presentations": []
+      }
+    }
+  ]
+}

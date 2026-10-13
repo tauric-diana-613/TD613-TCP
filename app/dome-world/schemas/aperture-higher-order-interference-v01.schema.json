@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.aperture.higher-order-interference/v0.1",
+  "title": "TD613 Higher-Order Interference Receipt v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "version", "assay_id", "created_at", "mode", "order_k", "dimensions",
+    "declared_caps", "required_subset_count", "observed_subset_count", "case_id",
+    "case_map_digest", "route_memory_digest", "authority_context_reference",
+    "authority_context_digest", "calibration_binding_id", "calibration_binding_digest",
+    "control_bank_digest", "observations", "componentwise_residue", "checks", "state",
+    "interference_eligible", "failed_checks", "source_status", "missingness", "alternatives",
+    "open_questions", "operator_notes", "closure", "emergent_residue_is_causation",
+    "surveillance_probability", "identity_or_intent_inference_authorized",
+    "release_authorized", "transport_authorized", "suppression_authorized",
+    "cinder_action_authorized", "recommendation_not_command", "assay_digest"
+  ],
+  "properties": {
+    "schema": { "const": "td613.aperture.higher-order-interference/v0.1" },
+    "version": { "const": "v0.1" },
+    "assay_id": { "type": "string", "pattern": "^higherorder_[A-Za-z0-9_-]{6,128}$" },
+    "created_at": { "type": "string" },
+    "mode": { "const": "BOUNDED_K_ORDER_INTERFERENCE" },
+    "order_k": { "type": "integer", "minimum": 3, "maximum": 6 },
+    "dimensions": { "type": "array", "minItems": 3, "maxItems": 6, "uniqueItems": true, "items": { "type": "string" } },
+    "declared_caps": {
+      "type": "object", "additionalProperties": false,
+      "required": ["max_dimensions", "max_subsets"],
+      "properties": {
+        "max_dimensions": { "type": "integer", "minimum": 3, "maximum": 6 },
+        "max_subsets": { "type": "integer", "minimum": 8, "maximum": 64 }
+      }
+    },
+    "required_subset_count": { "type": "integer", "minimum": 8, "maximum": 64 },
+    "observed_subset_count": { "type": "integer", "minimum": 0, "maximum": 64 },
+    "case_id": { "type": ["string", "null"] },
+    "case_map_digest": { "$ref": "#/$defs/nullableSha256" },
+    "route_memory_digest": { "$ref": "#/$defs/nullableSha256" },
+    "authority_context_reference": { "type": ["string", "null"] },
+    "authority_context_digest": { "$ref": "#/$defs/nullableSha256" },
+    "calibration_binding_id": { "type": ["string", "null"] },
+    "calibration_binding_digest": { "$ref": "#/$defs/nullableSha256" },
+    "control_bank_digest": { "$ref": "#/$defs/nullableSha256" },
+    "observations": { "type": "array", "maxItems": 64, "items": { "type": "object" } },
+    "componentwise_residue": { "type": "object" },
+    "checks": {
+      "type": "object", "additionalProperties": false,
+      "required": ["authority_context_verified", "calibration_binding_verified", "current_case_binding", "all_required_subsets_observed", "components_complete", "combinatorial_cap_held", "cancellation_clear"],
+      "properties": {
+        "authority_context_verified": { "type": "boolean" },
+        "calibration_binding_verified": { "type": "boolean" },
+        "current_case_binding": { "type": "boolean" },
+        "all_required_subsets_observed": { "type": "boolean" },
+        "components_complete": { "type": "boolean" },
+        "combinatorial_cap_held": { "type": "boolean" },
+        "cancellation_clear": { "type": "boolean" }
+      }
+    },
+    "state": { "enum": ["INTERFERENCE_ELIGIBLE", "CANCELLED_HOLD", "TAMPER_HOLD", "STALE_CASE_HOLD", "CALIBRATION_HOLD", "COMBINATORIAL_CAP_HOLD", "NOT_ENOUGH_TEST_DATA"] },
+    "interference_eligible": { "type": "boolean" },
+    "failed_checks": { "$ref": "#/$defs/stringArray" },
+    "source_status": { "type": "string" },
+    "missingness": { "$ref": "#/$defs/stringArray" },
+    "alternatives": { "$ref": "#/$defs/stringArray" },
+    "open_questions": { "$ref": "#/$defs/stringArray" },
+    "operator_notes": { "$ref": "#/$defs/stringArray" },
+    "closure": { "type": "object", "required": ["required", "status"], "properties": { "required": { "const": true }, "status": { "type": "string" } } },
+    "emergent_residue_is_causation": { "const": false },
+    "surveillance_probability": { "type": "null" },
+    "identity_or_intent_inference_authorized": { "const": false },
+    "release_authorized": { "const": false },
+    "transport_authorized": { "const": false },
+    "suppression_authorized": { "const": false },
+    "cinder_action_authorized": { "const": false },
+    "recommendation_not_command": { "const": true },
+    "assay_digest": { "$ref": "#/$defs/sha256" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "nullableSha256": { "anyOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+    "stringArray": { "type": "array", "items": { "type": "string" } }
+  }
+}

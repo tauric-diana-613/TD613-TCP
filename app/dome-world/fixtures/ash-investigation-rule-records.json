@@ -1,0 +1,1 @@
+{"route_id":"route_records_request","allowed_room_ids":["room_custody","room_chronology","room_gaps","room_routes"],"local_link_keys":["edge_tip_alias","edge_audit_window"],"allowed_node_types":["artifact","event","evidence-gap","intended-action"]}

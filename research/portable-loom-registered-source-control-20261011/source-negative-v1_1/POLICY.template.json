@@ -1,0 +1,46 @@
+{
+  "schema": "td613.loom.server-assay-policy/v0.2",
+  "run_id": "portable-loom-source-registration-negative-20261011-n02",
+  "protocol_commit": "BIND_TO_ACTUAL_RUNTIME_SHA",
+  "artifact_sha256": "fe9b67427a4abe49566daf94373abef212c85df2b1bb608efaf491fe5279abe2",
+  "expires_at": "ENROLLMENT_TIMESTAMP_PLUS_6H",
+  "binding": {
+    "schema": "td613.loom.bound-model-transport/v0.1",
+    "protocol_commit": "BIND_TO_ACTUAL_RUNTIME_SHA",
+    "provider": "GEMINI_GENERATE_CONTENT",
+    "trial_family": "FIRST_CONFIGURED_RECEIVER",
+    "model": "gemini-3.8-flash",
+    "response_model_ids": [
+      "gemini-3.8-flash"
+    ],
+    "credential_env": "GEMINI_API_KEY",
+    "generation_parameters": {
+      "temperature": null,
+      "top_p": null,
+      "thinking_level": "medium"
+    },
+    "limits": {
+      "max_calls": 1,
+      "max_input_tokens_per_call": 200000,
+      "max_output_tokens_per_call": 32768,
+      "max_cost_usd": 0.5,
+      "timeout_ms": 240000,
+      "max_response_bytes": 2000000
+    },
+    "pricing": {
+      "input_usd_per_million": 1.35,
+      "output_usd_per_million": 6.75,
+      "source": "https://ai.google.dev/gemini-api/docs/pricing",
+      "verified_at": "2026-10-11T00:00:00Z"
+    },
+    "authorization": {
+      "record": "BIND_TO_INTERACTIVE_EXECUTION_RECORD",
+      "scope": "One n02 request and one reservation, maximum USD0.50, six-hour expiry, zero automatic or manual retries, no custody admission or detached activity."
+    },
+    "tools": "DISABLED",
+    "retrieval": "DISABLED",
+    "retries": 0,
+    "service_tier": "priority"
+  },
+  "receiver_output_tokens": 32768
+}

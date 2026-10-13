@@ -1,0 +1,144 @@
+---
+derivative_id: derivative:21de13661ed57c42321e8fa2
+parent_capture_id: capture:eea4b9aeb9ac54264a7aeee6
+parent_blob_sha256: 019ade50f456199c0d3efb71ab2771a92caf0b9f8f31e2ad86f36c6c07062451
+tool: srcctl-json-normalizer/1
+source_title: "GRAND UNIFIED THEORY OF INFRASTRUCTURAL HARM"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18217960",
+  "conceptrecid": "18217960",
+  "created": "2026-01-12T05:38:24.866787+00:00",
+  "doi": "10.5281/zenodo.18218135",
+  "doi_url": "https://doi.org/10.5281/zenodo.18218135",
+  "files": [
+    {
+      "checksum": "md5:87c96b96d70217356a13a9db5091ee1c",
+      "id": "1e31e793-cd54-48e6-9ece-7e3eddb5952f",
+      "key": "GRAND UNIFIED THEORY OF INFRASTRUCTURAL HARM .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18218135/files/GRAND%20UNIFIED%20THEORY%20OF%20INFRASTRUCTURAL%20HARM%20.pdf/content"
+      },
+      "size": 634151
+    }
+  ],
+  "id": 18218135,
+  "links": {
+    "access": "https://zenodo.org/api/records/18218135/access",
+    "access_grants": "https://zenodo.org/api/records/18218135/access/grants",
+    "access_links": "https://zenodo.org/api/records/18218135/access/links",
+    "access_request": "https://zenodo.org/api/records/18218135/access/request",
+    "access_users": "https://zenodo.org/api/records/18218135/access/users",
+    "archive": "https://zenodo.org/api/records/18218135/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18218135/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18218135/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18218135/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18218135",
+    "draft": "https://zenodo.org/api/records/18218135/draft",
+    "file_modification": "https://zenodo.org/api/records/18218135/file-modification",
+    "files": "https://zenodo.org/api/records/18218135/files",
+    "latest": "https://zenodo.org/api/records/18218135/versions/latest",
+    "latest_html": "https://zenodo.org/records/18218135/latest",
+    "media_files": "https://zenodo.org/api/records/18218135/media-files",
+    "parent": "https://zenodo.org/api/records/18217960",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18217960",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18217960",
+    "parent_html": "https://zenodo.org/records/18217960",
+    "preview_html": "https://zenodo.org/records/18218135?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18218135/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18218135/request-deletion",
+    "requests": "https://zenodo.org/api/records/18218135/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18218135/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18218135",
+    "self_doi": "https://doi.org/10.5281/zenodo.18218135",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18218135",
+    "self_html": "https://zenodo.org/records/18218135",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18218135/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18218135/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18218135:GRAND%20UNIFIED%20THEORY%20OF%20INFRASTRUCTURAL%20HARM%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18218135:GRAND%20UNIFIED%20THEORY%20OF%20INFRASTRUCTURAL%20HARM%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18218135:GRAND%20UNIFIED%20THEORY%20OF%20INFRASTRUCTURAL%20HARM%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18218135:GRAND%20UNIFIED%20THEORY%20OF%20INFRASTRUCTURAL%20HARM%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18218135:GRAND%20UNIFIED%20THEORY%20OF%20INFRASTRUCTURAL%20HARM%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18218135:GRAND%20UNIFIED%20THEORY%20OF%20INFRASTRUCTURAL%20HARM%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18218135/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>A comprehensive synthesis of the SignalRupture canon, articulating a unified model of how modern infrastructures generate, distribute, and normalize harm. This essay consolidates the core frameworks of Quiet Governance, Systemic Erosion Theory, Infrastructural Exposure Theory, Slow Harm Theory, and Social Infrastructure Theory into a single explanatory architecture. It maps harm as an emergent property of design rather than failure, revealing the recursive mechanisms&mdash;scarcity, filtration, trauma, and administrative force&mdash;that govern lived experience across systems.</p>",
+    "doi": "10.5281/zenodo.18218135",
+    "keywords": [
+      "Social issues",
+      "Social infrastructure",
+      "Activism",
+      "Social media",
+      "Sociology",
+      "Criminology",
+      "Social psychology",
+      "Governance"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-01",
+    "relations": {
+      "version": [
+        {
+          "index": 1,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18217960"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "GRAND UNIFIED THEORY OF INFRASTRUCTURAL HARM",
+    "version": "1.1"
+  },
+  "modified": "2026-01-29T01:26:53.724493+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18218135",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 33,
+    "unique_downloads": 32,
+    "unique_views": 54,
+    "version_downloads": 23,
+    "version_unique_downloads": 22,
+    "version_unique_views": 39,
+    "version_views": 40,
+    "views": 55
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "GRAND UNIFIED THEORY OF INFRASTRUCTURAL HARM",
+  "updated": "2026-01-29T01:26:53.724493+00:00"
+}

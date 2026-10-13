@@ -1,0 +1,134 @@
+---
+derivative_id: derivative:1f21713d159a7d6688350f97
+parent_capture_id: capture:1d64e435f0fa7da0881b0094
+parent_blob_sha256: a399eec95911bd55c8e6c49b67d5aefa1d483d0078098868e465a0cda928776d
+tool: srcctl-json-normalizer/1
+source_title: "The Custodial Burden: When Institutions Turn Witnesses Into Ledgers"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18816197",
+  "conceptrecid": "18816197",
+  "created": "2026-02-28T15:50:12.593630+00:00",
+  "doi": "10.5281/zenodo.18816198",
+  "doi_url": "https://doi.org/10.5281/zenodo.18816198",
+  "files": [
+    {
+      "checksum": "md5:1866f784cbbab0b3aa2c0d6422a45bbe",
+      "id": "50b9bf21-1058-4361-b8d5-f1a46805d4df",
+      "key": "The Custodial Burden: When Institutions Turn Witnesses Into Ledgers .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18816198/files/The%20Custodial%20Burden:%20When%20Institutions%20Turn%20Witnesses%20Into%20Ledgers%20.pdf/content"
+      },
+      "size": 76655
+    }
+  ],
+  "id": 18816198,
+  "links": {
+    "access": "https://zenodo.org/api/records/18816198/access",
+    "access_grants": "https://zenodo.org/api/records/18816198/access/grants",
+    "access_links": "https://zenodo.org/api/records/18816198/access/links",
+    "access_request": "https://zenodo.org/api/records/18816198/access/request",
+    "access_users": "https://zenodo.org/api/records/18816198/access/users",
+    "archive": "https://zenodo.org/api/records/18816198/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18816198/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18816198/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18816198/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18816198",
+    "draft": "https://zenodo.org/api/records/18816198/draft",
+    "file_modification": "https://zenodo.org/api/records/18816198/file-modification",
+    "files": "https://zenodo.org/api/records/18816198/files",
+    "latest": "https://zenodo.org/api/records/18816198/versions/latest",
+    "latest_html": "https://zenodo.org/records/18816198/latest",
+    "media_files": "https://zenodo.org/api/records/18816198/media-files",
+    "parent": "https://zenodo.org/api/records/18816197",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18816197",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18816197",
+    "parent_html": "https://zenodo.org/records/18816197",
+    "preview_html": "https://zenodo.org/records/18816198?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18816198/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18816198/request-deletion",
+    "requests": "https://zenodo.org/api/records/18816198/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18816198/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18816198",
+    "self_doi": "https://doi.org/10.5281/zenodo.18816198",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18816198",
+    "self_html": "https://zenodo.org/records/18816198",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18816198/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18816198/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18816198:The%20Custodial%20Burden:%20When%20Institutions%20Turn%20Witnesses%20Into%20Ledgers%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18816198:The%20Custodial%20Burden:%20When%20Institutions%20Turn%20Witnesses%20Into%20Ledgers%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18816198:The%20Custodial%20Burden:%20When%20Institutions%20Turn%20Witnesses%20Into%20Ledgers%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18816198:The%20Custodial%20Burden:%20When%20Institutions%20Turn%20Witnesses%20Into%20Ledgers%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18816198:The%20Custodial%20Burden:%20When%20Institutions%20Turn%20Witnesses%20Into%20Ledgers%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18816198:The%20Custodial%20Burden:%20When%20Institutions%20Turn%20Witnesses%20Into%20Ledgers%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18816198/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "description": "<p>The Custodial Burden: When Institutions Turn Witnesses Into Ledgers examines the structural conditions that force individuals to become de facto governance infrastructure inside collapsing institutional environments. The essay maps the trajectory by which witnesses, auditors, and whistleblowers are transformed into custodians of harm&mdash;not through personal choice, but through systemic failures in archival integrity, access governance, and institutional accountability. It introduces opacity as a survival technology, containment as a form of governance, and drift as a signal of institutional lag. The work situates the custodial burden within the broader post‑web governance landscape, where institutions can no longer metabolize informational strain and individuals are left to carry the ledger alone. The essay calls for the development of safe‑harbor architectures capable of holding dangerous truth without sacrificing the people who witness it.</p>",
+    "doi": "10.5281/zenodo.18816198",
+    "keywords": [
+      "Critical theory",
+      "Governance",
+      "Post open web"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-02-28",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18816197"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "The Custodial Burden: When Institutions Turn Witnesses Into Ledgers",
+    "version": "1.0"
+  },
+  "modified": "2026-02-28T15:50:13.112898+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18816198",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 7,
+    "unique_downloads": 5,
+    "unique_views": 36,
+    "version_downloads": 7,
+    "version_unique_downloads": 5,
+    "version_unique_views": 36,
+    "version_views": 39,
+    "views": 39
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "The Custodial Burden: When Institutions Turn Witnesses Into Ledgers",
+  "updated": "2026-02-28T15:50:13.112898+00:00"
+}

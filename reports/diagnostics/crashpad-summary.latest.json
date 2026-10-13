@@ -1,0 +1,76 @@
+{
+  "timestamp": "2026-05-14T22:36:30.266Z",
+  "extracted_data": {
+    "tmp-edge-profile-final-2/Crashpad/reports/373d8b16-8a99-4b4f-ac1a-026e36be5ca2.dmp": {
+      "type": "minidump",
+      "strings": [
+        "msedge.exe.pdb",
+        "kernel32.pdb",
+        "kernelbase.pdb",
+        "iMJCLLD PDB.",
+        "msedge_elf.dll.pdb",
+        "combase.pdb",
+        "ucrtbase.pdb",
+        "rpcrt4.pdb",
+        "bcryptprimitives.pdb",
+        "advapi32.pdb",
+        "msvcrt.pdb",
+        "sechost.pdb",
+        "user32.pdb",
+        "win32u.pdb",
+        "gdi32full.pdb",
+        "msvcp_win.pdb",
+        "uxtheme.pdb",
+        "GenuineIntel",
+        "Intel(R) Co",
+        "edPipe: Access i",
+        "[0319/151645.498:FATAL:third_party\\crashpad\\crashpad\\util\\win\\exception_handler_server.cc:317] Check failed: . CreateNamedPipe: Access is denied. (0x5)",
+        "crashpad-handler",
+        "crashpad-handler",
+        "ProcessPeakPagefileUsage",
+        "ProcessPeakWorkingSetSize",
+        "ProcessPrivateUsage",
+        "SystemCommitLimit",
+        "SystemCommitRemaining",
+        "crashpad-handler",
+        "146.0.3856.62"
+      ]
+    },
+    "tmp-edge-profile-final-2/Crashpad/metadata": {
+      "type": "data",
+      "strings": [
+        "373d8b16-8a99-4b4f-ac1a-026e36be5ca2.dmp"
+      ]
+    },
+    "tmp-edge-profile-final-2/Crashpad/settings.dat": {
+      "type": "data",
+      "strings": []
+    },
+    "tmp-edge-profile-final-2/Crashpad/throttle_store.dat": {
+      "type": "data",
+      "strings": [
+        "level=none expiry=0"
+      ]
+    },
+    "tmp-edge-profile-ingress/Crashpad/settings.dat": {
+      "type": "data",
+      "strings": []
+    },
+    "tmp-edge-profile-ingress/Crashpad/throttle_store.dat": {
+      "type": "data",
+      "strings": [
+        "level=none expiry=0"
+      ]
+    },
+    "tmp-edge-profile-codex/Crashpad/settings.dat": {
+      "type": "data",
+      "strings": []
+    },
+    "tmp-edge-profile-codex/Crashpad/throttle_store.dat": {
+      "type": "data",
+      "strings": [
+        "level=none expiry=0"
+      ]
+    }
+  }
+}

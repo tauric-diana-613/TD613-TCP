@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:epistemic-object-state:v1",
+  "title": "SignalRupture epistemic-object state assertion",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "state_assertion_id", "subject_id", "object_kind", "observed_at",
+    "as_of_time", "knowledge_cutoff", "dimensions", "origin", "evidence_ids", "adjudication_status"
+  ],
+  "properties": {
+    "schema_version": {"const": "epistemic-object-state/v1"},
+    "state_assertion_id": {"type": "string", "minLength": 1},
+    "subject_id": {"type": "string", "minLength": 1},
+    "object_kind": {"enum": ["WORK", "EDITION", "MANIFESTATION", "CAPTURE", "CLAIM", "FORMULATION", "FIELD", "CLASS", "MAP", "EXPECTED_OBJECT"]},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "as_of_time": {"type": ["string", "null"]},
+    "knowledge_cutoff": {"type": ["string", "null"]},
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["E_existence", "V_visibility", "R_retrievability", "P_provenance", "L_lineage", "A_authority"],
+      "properties": {
+        "E_existence": {"$ref": "#/$defs/existence"},
+        "V_visibility": {"$ref": "#/$defs/visibility"},
+        "R_retrievability": {"$ref": "#/$defs/retrievability"},
+        "P_provenance": {"$ref": "#/$defs/provenance"},
+        "L_lineage": {"$ref": "#/$defs/lineage"},
+        "A_authority": {"$ref": "#/$defs/authority"}
+      }
+    },
+    "origin": {"enum": ["explicit-source", "archive-observed", "archive-inferred", "researcher-proposed"]},
+    "evidence_ids": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "adjudication_status": {"enum": ["WITNESSED", "CANDIDATE", "DISPUTED", "REJECTED", "UNRESOLVED"]},
+    "interpretive_limit": {"type": ["string", "null"]}
+  },
+  "$defs": {
+    "baseEvidence": {
+      "type": "object",
+      "required": ["state", "scope", "evidence_ids"],
+      "properties": {
+        "state": {"type": "string"},
+        "scope": {"type": "object"},
+        "evidence_ids": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "existence": {"allOf": [{"$ref": "#/$defs/baseEvidence"}, {"properties": {"state": {"enum": ["WITNESSED", "SOURCE_ASSERTED", "NOT_WITNESSED_IN_BOUNDED_SCOPE", "UNRESOLVED", "NOT_ASSESSED"]}}}]},
+    "visibility": {"allOf": [{"$ref": "#/$defs/baseEvidence"}, {"properties": {"state": {"enum": ["VISIBLE", "PARTIALLY_VISIBLE", "NOT_VISIBLE_IN_BOUNDED_SCOPE", "UNKNOWN", "NOT_ASSESSED"]}}}]},
+    "retrievability": {"allOf": [{"$ref": "#/$defs/baseEvidence"}, {"properties": {"state": {"enum": ["RETRIEVABLE", "PARTIAL", "AUTH_REQUIRED", "RATE_LIMITED", "UNAVAILABLE", "UNKNOWN", "NOT_ASSESSED"]}}}]},
+    "provenance": {"allOf": [{"$ref": "#/$defs/baseEvidence"}, {"properties": {"state": {"enum": ["WITNESSED", "PARTIAL", "CONTESTED", "UNKNOWN", "NOT_ASSESSED"]}}}]},
+    "lineage": {"allOf": [{"$ref": "#/$defs/baseEvidence"}, {"properties": {"state": {"enum": ["WITNESSED", "PARTIAL", "CONTESTED", "UNRESOLVED", "NOT_ASSESSED"]}}}]},
+    "authority": {
+      "allOf": [
+        {"$ref": "#/$defs/baseEvidence"},
+        {
+          "properties": {
+            "state": {"enum": ["RESOLVED", "PARTIAL", "CONTESTED", "UNRESOLVED", "NOT_ASSESSED"]},
+            "authority_assertion_ids": {"type": "array", "items": {"type": "string"}}
+          },
+          "required": ["authority_assertion_ids"]
+        }
+      ]
+    }
+  }
+}

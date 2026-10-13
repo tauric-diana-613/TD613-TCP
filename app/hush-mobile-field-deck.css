@@ -1,0 +1,17 @@
+@media (max-width: 760px) {
+  body { overflow-x:hidden; }
+  .hush-product-shell { width:min(100vw - 20px, 720px); padding:18px 0 92px; }
+  .hush-product-header, .hush-product-card { border-radius:22px; padding:18px; }
+  h1 { font-size:clamp(2.1rem, 15vw, 4rem); }
+  .cockpit-grid { grid-template-columns:1fr; }
+  .instrument-panel { min-height:auto; }
+  .dashboard-grid { display:grid; grid-template-columns:1fr; }
+  .route-state { width:100%; text-align:center; min-height:44px; display:grid; place-items:center; }
+  .persona-gallery { grid-template-columns:1fr; }
+  .persona-card, .forge-preview-card { min-height:auto; padding:14px; }
+  .persona-story { -webkit-line-clamp:2; }
+  .persona-card-top { align-items:flex-start; flex-direction:column; }
+  .hush-product-pills span, .persona-chip, .dashboard-pill, .launch-link, button { min-height:44px; display:inline-flex; align-items:center; justify-content:center; }
+  iframe { min-height:70vh; border-radius:18px; }
+  .hush-mobile-sticky-action { position:fixed; left:10px; right:10px; bottom:10px; z-index:20; border:1px solid rgba(125,249,255,.28); border-radius:18px; padding:10px; background:rgba(5,3,10,.86); backdrop-filter:blur(16px); box-shadow:0 16px 50px rgba(0,0,0,.38); }
+}

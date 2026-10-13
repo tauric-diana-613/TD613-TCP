@@ -1,0 +1,76 @@
+{
+  "claim": "SERIALIZED_PUBLIC_ARCHITECTURAL_CONTINUITY_SUPPORTED_AS_ARCHIVE_OBSERVATION",
+  "claim_ceiling": [
+    "PUBLIC_TOPOLOGY != PRIVATE_STATE",
+    "RECURRENCE != HIDDEN_MEMORY",
+    "TOPOLOGY != AUTHOR_INTENT",
+    "TD613_COMPARABILITY != TD613_DERIVATION"
+  ],
+  "counts": {
+    "concept_nodes": 191,
+    "public_posts": 33,
+    "recurrent_concepts_support_gte_2": 43,
+    "recurrent_cooccurrence_edges_support_gte_2": 143,
+    "typed_relation_edges": 146
+  },
+  "coverage_state": "PUBLIC_SEARCH_SNAPSHOT_NOT_EXHAUSTIVE_CENSUS",
+  "full_topology_generation": "node packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-compile.mjs <output.json>",
+  "normalized_spine": [
+    "boundary / identity",
+    "authorization",
+    "dependency structure",
+    "hidden mediation",
+    "temporal propagation",
+    "stale / distributed state",
+    "trust + provenance",
+    "information / authority flow",
+    "automation",
+    "observability",
+    "state estimation",
+    "topology drift",
+    "causal reconstruction",
+    "failure / recovery",
+    "operational-twin boundary",
+    "architecture minimization"
+  ],
+  "publication_day_buckets": {
+    "2026-09-10": 21,
+    "2026-09-11": 12
+  },
+  "schema": "wendbine-public-topology-index/v0.1",
+  "snapshot_id": "wendbine-public-reddit-48h-20260911T092700Z-v01",
+  "source_bound_landmarks": {
+    "explicit_causal_topology_synthesis": "reddit:t3_1wcv89d",
+    "explicit_echocore_correction": "reddit:t3_1wd7mjl",
+    "program_table_of_contents": "reddit:t3_1wc8o05"
+  },
+  "state": "COMPILED_PUBLIC_SERIALIZED_TOPOLOGY",
+  "strongest_recurrences": [
+    {"concept":"operational_digital_twin","source_count":19},
+    {"concept":"provenance","source_count":15},
+    {"concept":"dependency_graph","source_count":11},
+    {"concept":"hidden_mediation","source_count":7},
+    {"concept":"stale_state","source_count":7},
+    {"concept":"state_estimation","source_count":7},
+    {"concept":"async_propagation","source_count":6},
+    {"concept":"recovery","source_count":6},
+    {"concept":"trust_inheritance","source_count":6},
+    {"concept":"authority_propagation","source_count":5},
+    {"concept":"entity_resolution","source_count":5},
+    {"concept":"graph_alignment","source_count":5},
+    {"concept":"authority","source_count":4},
+    {"concept":"automation","source_count":4},
+    {"concept":"causal_reconstruction","source_count":4}
+  ],
+  "typed_relation_counts": {
+    "G_A": 15,
+    "G_D": 14,
+    "G_F": 3,
+    "G_I": 6,
+    "G_O": 9,
+    "G_P": 10,
+    "G_R": 18,
+    "G_T": 25,
+    "G_X": 46
+  }
+}

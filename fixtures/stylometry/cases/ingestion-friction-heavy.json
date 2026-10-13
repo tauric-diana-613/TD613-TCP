@@ -1,0 +1,32 @@
+{
+  "id": "ingestion-friction-heavy",
+  "title": "Ingestion Friction Heavy",
+  "fixtureClass": "ingestion-friction",
+  "priority": "core",
+  "riskMode": "calibration",
+  "description": "A high-friction text carries glyphs, zero-width boundaries, repeated markers, and line stress. The fixture tests whether ingestion friction becomes visible while the claim ladder remains disciplined.",
+  "inputs": {
+    "protectedBaseline": "The archive carries 𝌋 and ⟐ because the surface is part of the record, not a little costume for the record to wear.",
+    "maskReference": "Report the markers. Preserve local review. Keep the packet bounded.",
+    "messageDraft": "Preserve TD613-Binding:#9B07D8B and Khona\\u200Clit-po while checking the glyph surface for EXHIBIT-FRICTION.",
+    "protectedOutput": "𝌋 TD613-Binding:#9B07D8B / Khona\\u200Clit-po / EXHIBIT-FRICTION ⟐\n\nReport markers. Preserve local review. Keep packet bounded. 𝌋 ⟐ 𝌋 ⟐"
+  },
+  "protectedLiterals": ["TD613-Binding:#9B07D8B", "Khona\\u200Clit-po", "EXHIBIT-FRICTION", "𝌋", "⟐"],
+  "persona": { "personaId": "persona-friction-keeper", "label": "Friction Keeper", "mode": "neutralize", "history": [] },
+  "allowHighFriction": true,
+  "expectations": {
+    "escapeVector": {
+      "sourceResidualRisk": { "min": 0.0, "max": 1.0 },
+      "maskFit": { "min": 0.0, "max": 1.0 },
+      "maskDeltaSafe": { "min": -1.0, "max": 1.0 },
+      "semanticFidelity": { "min": 0.0, "max": 1.0 },
+      "ingestionFriction": { "min": 0.0, "max": 1.0 },
+      "apertureRecaptureRisk": { "min": 0.0, "max": 1.0 }
+    },
+    "controller": { "allowedStates": ["continue", "hold", "restore", "seal"], "preferredState": "continue" },
+    "claimCeiling": { "minLevel": 1, "maxLevel": 6 },
+    "report": { "mustExcludePrivateText": true, "mustIncludeLimitations": true, "mustAvoidForbiddenClaims": true },
+    "ingestionAudit": { "ingestionFriction": { "min": 0.0, "max": 1.0 } }
+  },
+  "calibrationNotes": ["High friction should be measured, not celebrated as safety.", "The local report must keep platform outcome claims out of the result."]
+}

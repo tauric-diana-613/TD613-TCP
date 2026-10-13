@@ -1,0 +1,139 @@
+---
+derivative_id: derivative:f3c1b9b028db05f99c1431a0
+parent_capture_id: capture:da1f5297e4db95a335351b04
+parent_blob_sha256: cdda5c69c54becfaed3bc8254e3345ad438b0e12fcc7dd2a748124d8dbb72916
+tool: srcctl-json-normalizer/1
+source_title: "Intersectional Infrastructural Bias: How Modern Systems Reproduce Historical Power"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.19040271",
+  "conceptrecid": "19040271",
+  "created": "2026-03-15T22:24:20.399323+00:00",
+  "doi": "10.5281/zenodo.19040272",
+  "doi_url": "https://doi.org/10.5281/zenodo.19040272",
+  "files": [
+    {
+      "checksum": "md5:23f3696e2b1de2ce7030a02484a86e0e",
+      "id": "9bafc1e2-3908-419a-8247-9d9bcdb0576e",
+      "key": "Intersectional Infrastructural Bias: How Modern Systems Reproduce Historical Power .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/19040272/files/Intersectional%20Infrastructural%20Bias:%20How%20Modern%20Systems%20Reproduce%20Historical%20Power%20.pdf/content"
+      },
+      "size": 105257
+    }
+  ],
+  "id": 19040272,
+  "links": {
+    "access": "https://zenodo.org/api/records/19040272/access",
+    "access_grants": "https://zenodo.org/api/records/19040272/access/grants",
+    "access_links": "https://zenodo.org/api/records/19040272/access/links",
+    "access_request": "https://zenodo.org/api/records/19040272/access/request",
+    "access_users": "https://zenodo.org/api/records/19040272/access/users",
+    "archive": "https://zenodo.org/api/records/19040272/files-archive",
+    "archive_media": "https://zenodo.org/api/records/19040272/media-files-archive",
+    "communities": "https://zenodo.org/api/records/19040272/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/19040272/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.19040272",
+    "draft": "https://zenodo.org/api/records/19040272/draft",
+    "file_modification": "https://zenodo.org/api/records/19040272/file-modification",
+    "files": "https://zenodo.org/api/records/19040272/files",
+    "latest": "https://zenodo.org/api/records/19040272/versions/latest",
+    "latest_html": "https://zenodo.org/records/19040272/latest",
+    "media_files": "https://zenodo.org/api/records/19040272/media-files",
+    "parent": "https://zenodo.org/api/records/19040271",
+    "parent_doi": "https://doi.org/10.5281/zenodo.19040271",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19040271",
+    "parent_html": "https://zenodo.org/records/19040271",
+    "preview_html": "https://zenodo.org/records/19040272?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/19040272/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/19040272/request-deletion",
+    "requests": "https://zenodo.org/api/records/19040272/requests",
+    "reserve_doi": "https://zenodo.org/api/records/19040272/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/19040272",
+    "self_doi": "https://doi.org/10.5281/zenodo.19040272",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19040272",
+    "self_html": "https://zenodo.org/records/19040272",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19040272/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19040272/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:19040272:Intersectional%20Infrastructural%20Bias:%20How%20Modern%20Systems%20Reproduce%20Historical%20Power%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:19040272:Intersectional%20Infrastructural%20Bias:%20How%20Modern%20Systems%20Reproduce%20Historical%20Power%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:19040272:Intersectional%20Infrastructural%20Bias:%20How%20Modern%20Systems%20Reproduce%20Historical%20Power%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:19040272:Intersectional%20Infrastructural%20Bias:%20How%20Modern%20Systems%20Reproduce%20Historical%20Power%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:19040272:Intersectional%20Infrastructural%20Bias:%20How%20Modern%20Systems%20Reproduce%20Historical%20Power%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:19040272:Intersectional%20Infrastructural%20Bias:%20How%20Modern%20Systems%20Reproduce%20Historical%20Power%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/19040272/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Intersectional Infrastructural Bias analyzes how modern institutions continue to reproduce historical inequities because their underlying architectures were built for a narrow dominant subject and never fundamentally rebuilt. Integrating intersectionality with the SR framework, the essay shows how engineered containment, procedural opacity, and infrastructural defaults create friction for women, racialized communities, disabled people, queer and trans people, and migrants. It argues that rights remain symbolic when infrastructures remain unchanged, demonstrating that systemic harm is not accidental but inherited through design.</p>",
+    "doi": "10.5281/zenodo.19040272",
+    "keywords": [
+      "Intersectionality",
+      "Artificial Intelligence",
+      "Feminism"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-15",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "19040271"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Intersectional Infrastructural Bias: How Modern Systems Reproduce Historical Power",
+    "version": "1.0"
+  },
+  "modified": "2026-03-15T22:24:20.781360+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "19040272",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 10,
+    "unique_downloads": 8,
+    "unique_views": 19,
+    "version_downloads": 10,
+    "version_unique_downloads": 8,
+    "version_unique_views": 19,
+    "version_views": 19,
+    "views": 19
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Intersectional Infrastructural Bias: How Modern Systems Reproduce Historical Power",
+  "updated": "2026-03-15T22:24:20.781360+00:00"
+}

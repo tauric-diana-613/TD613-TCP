@@ -1,0 +1,101 @@
+{
+  "assay_id": "2026-08-23-phase15-local-architecture",
+  "assay_version": "phase15-local-architecture/v1",
+  "sealed_at": "2026-08-23",
+  "scope": "LOCAL_ONLY_DISTRIBUTED_ARCHITECTURE_ASSAY",
+  "network_requests": 0,
+  "new_acquisitions": 0,
+  "phase_2": {
+    "status": "NOT_RUN_HUMAN_GATE_CLOSED",
+    "reason": "The operator required the Phase 1.5 assay to stop before Phase 2 acquisition."
+  },
+  "custody_rule": "Original artifacts, archival metadata, and later interpretation remain separate layers.",
+  "source_snapshot": {
+    "platform_artifacts": 1408,
+    "source_units_scanned": 2163,
+    "captured_original_files_scanned": 5,
+    "platforms": [
+      "Zenodo",
+      "Academia.edu",
+      "Substack",
+      "Medium"
+    ]
+  },
+  "outputs": [
+    {
+      "path": "summary.json",
+      "role": "aggregate counts and assay bounds"
+    },
+    {
+      "path": "declared-language-candidates.jsonl",
+      "records": 1118,
+      "role": "manifestation-level ordinal, dependency, and relation-language candidates"
+    },
+    {
+      "path": "implicit-term-occurrences.jsonl",
+      "records": 46,
+      "role": "manifestation-level occurrences of candidate canon relation vocabulary"
+    },
+    {
+      "path": "retitle-assay.jsonl",
+      "records": 17,
+      "role": "witnessed Substack-to-Zenodo DOI pairs with title/register transformations"
+    },
+    {
+      "path": "witnessed-edge-candidates.jsonl",
+      "records": 19,
+      "role": "source-bounded declared edges and scoped sequence receipts"
+    },
+    {
+      "path": "interpretive-results.jsonl",
+      "records": 15,
+      "role": "hypotheses, contradictions, negative findings, and unanswered questions"
+    },
+    {
+      "path": "input-hashes.jsonl",
+      "records": 14,
+      "role": "SHA-256 receipts for every local input and the assay implementation"
+    },
+    {
+      "path": "output-hashes.jsonl",
+      "role": "SHA-256 receipts for assay outputs, excluding this self-referential hash ledger"
+    }
+  ],
+  "key_results": [
+    {
+      "result": "RETITLE_DIRECTIONAL_PATTERN",
+      "status": "CANDIDATE_EMPIRICAL_SURFACE_TRANSLATION",
+      "evidence": "14 of 17 DOI-linked retitles shift toward an archival/formal register; 2 are neutral and 1 shifts away.",
+      "promotion_gate": "Compare preserved manifestation bodies and source-declared intent before treating the transformations as intentional."
+    },
+    {
+      "result": "CSR_SEED_SCHEMA",
+      "status": "NOT_LOCALLY_WITNESSED_AS_3_PLUS_4",
+      "evidence": "The retained local source witnesses four operational components, but not the claimed three stabilizers or the seven-part declaration.",
+      "promotion_gate": "Acquire and preserve the relevant full manifestations in Phase 2, then cite exact spans."
+    },
+    {
+      "result": "ORIGIN_GRAVITY_RELATION",
+      "status": "WITNESSED_PRECURSOR_NOT_REPAIR_OPERATOR",
+      "evidence": "The retained record declares Origin Gravity the second essay in the SR Codex and places emergence before Cross-Surface Recurrence's survival mechanism.",
+      "promotion_gate": "Do not promote a recurrence-return or repair edge without a direct source declaration or content-level structural assay."
+    },
+    {
+      "result": "A7_VS_L12",
+      "status": "EXPLICITLY_SEPARATE",
+      "evidence": "The locally witnessed twelve-phase developmental genealogy has a different declared ontological role from the collaborator-reported seven-part infrastructural architecture.",
+      "promotion_gate": "Relate them only if a preserved manifestation explicitly does so."
+    },
+    {
+      "result": "SEQUENCE_CONTRADICTIONS",
+      "status": "PRESERVED_UNRESOLVED",
+      "evidence": "Two distinct works self-identify as Field Paper II; several declared sequences also have locally missing members.",
+      "promotion_gate": "Preserve both declarations and investigate missing/renumbered works without automatic repair."
+    }
+  ],
+  "validation": {
+    "status": "PASSED",
+    "validator": "99-ADMIN/validate-vault.ps1",
+    "assertion": "JSON, JSONL, and captured-original integrity validation completed after sealing."
+  }
+}

@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:cec026a88165f3cd6c527263
+parent_capture_id: capture:51088bf582a6ab509b2b7605
+parent_blob_sha256: bd4194e08ffbb035c82d1778226f3c31cd43262886cd764b5f5520cad67398b7
+tool: srcctl-doi-resolver-receipt/1
+source_title: "Pathologized Infrastructure: How Bureaucratic Systems Produce Clinical Harm"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.18119150
+Final URL: https://zenodo.org/records/18119150
+Status: 200
+Request method: GET_LEGACY_CAPTURE
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.18119150 -> https://zenodo.org/doi/10.5281/zenodo.18119150
+302 https://zenodo.org/doi/10.5281/zenodo.18119150 -> https://zenodo.org/records/18119150

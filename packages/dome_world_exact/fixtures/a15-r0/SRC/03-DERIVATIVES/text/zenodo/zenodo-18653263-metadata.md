@@ -1,0 +1,143 @@
+---
+derivative_id: derivative:c21c9c35507fbabd3c6353c3
+parent_capture_id: capture:106faca999c717d04bd6cae0
+parent_blob_sha256: 27f917743364aa169f0579629f56b74fb0ceff8cb51807df8ba57be7aa51c1c8
+tool: srcctl-json-normalizer/1
+source_title: "The Post‑Google Web: Indexing Collapse and the Fragmentation of Knowledge"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18653262",
+  "conceptrecid": "18653262",
+  "created": "2026-02-16T00:44:12.895947+00:00",
+  "doi": "10.5281/zenodo.18653263",
+  "doi_url": "https://doi.org/10.5281/zenodo.18653263",
+  "files": [
+    {
+      "checksum": "md5:70d2ac244173311a0351e889bc2fefb7",
+      "id": "b88adad8-8e99-494d-9ec7-ad9dbeb9565e",
+      "key": "The Post‑Google Web: Indexing Collapse and the Fragmentation of Knowledge .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18653263/files/The%20Post%E2%80%91Google%20Web:%20Indexing%20Collapse%20and%20the%20Fragmentation%20of%20Knowledge%20.pdf/content"
+      },
+      "size": 79881
+    }
+  ],
+  "id": 18653263,
+  "links": {
+    "access": "https://zenodo.org/api/records/18653263/access",
+    "access_grants": "https://zenodo.org/api/records/18653263/access/grants",
+    "access_links": "https://zenodo.org/api/records/18653263/access/links",
+    "access_request": "https://zenodo.org/api/records/18653263/access/request",
+    "access_users": "https://zenodo.org/api/records/18653263/access/users",
+    "archive": "https://zenodo.org/api/records/18653263/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18653263/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18653263/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18653263/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18653263",
+    "draft": "https://zenodo.org/api/records/18653263/draft",
+    "file_modification": "https://zenodo.org/api/records/18653263/file-modification",
+    "files": "https://zenodo.org/api/records/18653263/files",
+    "latest": "https://zenodo.org/api/records/18653263/versions/latest",
+    "latest_html": "https://zenodo.org/records/18653263/latest",
+    "media_files": "https://zenodo.org/api/records/18653263/media-files",
+    "parent": "https://zenodo.org/api/records/18653262",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18653262",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18653262",
+    "parent_html": "https://zenodo.org/records/18653262",
+    "preview_html": "https://zenodo.org/records/18653263?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18653263/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18653263/request-deletion",
+    "requests": "https://zenodo.org/api/records/18653263/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18653263/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18653263",
+    "self_doi": "https://doi.org/10.5281/zenodo.18653263",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18653263",
+    "self_html": "https://zenodo.org/records/18653263",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18653263/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18653263/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18653263:The%20Post%E2%80%91Google%20Web:%20Indexing%20Collapse%20and%20the%20Fragmentation%20of%20Knowledge%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18653263:The%20Post%E2%80%91Google%20Web:%20Indexing%20Collapse%20and%20the%20Fragmentation%20of%20Knowledge%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18653263:The%20Post%E2%80%91Google%20Web:%20Indexing%20Collapse%20and%20the%20Fragmentation%20of%20Knowledge%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18653263:The%20Post%E2%80%91Google%20Web:%20Indexing%20Collapse%20and%20the%20Fragmentation%20of%20Knowledge%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18653263:The%20Post%E2%80%91Google%20Web:%20Indexing%20Collapse%20and%20the%20Fragmentation%20of%20Knowledge%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18653263:The%20Post%E2%80%91Google%20Web:%20Indexing%20Collapse%20and%20the%20Fragmentation%20of%20Knowledge%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18653263/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "doi": "10.5281/zenodo.18653263",
+    "keywords": [
+      "Post Open Web",
+      "Internet Studies",
+      "Critical Theory",
+      "Agentic AI",
+      "Artificial intelligence",
+      "Government",
+      "Governance",
+      "Public Policy"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-02-16",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18653262"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "The Post‑Google Web: Indexing Collapse and the Fragmentation of Knowledge",
+    "version": "1.0"
+  },
+  "modified": "2026-02-16T13:37:06.509864+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18653263",
+  "revision": 7,
+  "state": "done",
+  "stats": {
+    "downloads": 44,
+    "unique_downloads": 40,
+    "unique_views": 16,
+    "version_downloads": 44,
+    "version_unique_downloads": 40,
+    "version_unique_views": 16,
+    "version_views": 22,
+    "views": 22
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "The Post‑Google Web: Indexing Collapse and the Fragmentation of Knowledge",
+  "updated": "2026-02-16T13:37:06.509864+00:00"
+}

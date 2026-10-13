@@ -1,0 +1,30 @@
+{
+  "schema": "td613.domeblox.playable-route-readiness/v1.2",
+  "route": "/dome-world/domeblox/",
+  "route_role": "playable-browser-game",
+  "forward_battery_route": "/dome-world/domeblox/forward-battery/",
+  "status": "PRODUCTION_PLAYABLE",
+  "browser_runtime_version": "1.2.2",
+  "repository_static_contract": "PASS_CANDIDATE_PENDING_PR_GATES",
+  "serverless_delta": 0,
+  "deployment_lock_changed": false,
+  "runtime_closure": {
+    "safe_visual_viewport_access": true,
+    "focused_controls_yield_gameplay_shortcuts": true,
+    "overlay_escape_recovery": true,
+    "forward_battery_navigation": "preopened-new-tab-with-same-tab-fallback"
+  },
+  "last_production_observation": {
+    "status": "PASS",
+    "observed_runtime": "1.2.0",
+    "observed_at": "2026-07-20T16:22:07Z",
+    "source_merge": "261ae7356c21eb58f67d86927e97dd3ec75bd71b",
+    "release_commit": "2c0ddf789d6b10ea1802bd9f6a01ebde6cf98b6c",
+    "relock_commit": "69f63938d00a11d0ec64d14dbe7705da84439de2",
+    "artifact_sha256": "07a542e62cdcad32376c6bb89e2c27572ada77f47f5ffc27c4ab2e28defdaeaf"
+  },
+  "observation_policy": "Production observation receipts are external evidence and may postdate this static manifest.",
+  "roblox_studio_runtime": "SEPARATE_SOURCE_LINEAGE_NOT_REOBSERVED_IN_THIS_PACKET",
+  "human_closure": "OPEN",
+  "archive_sha256": "50de9d5ef11b322b8ac95dbcf09d6a4f788b791790d2106e692abd1592480386"
+}

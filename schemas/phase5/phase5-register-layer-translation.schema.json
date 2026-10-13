@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.phase5.register-layer-translation/v1",
+  "title": "TD613 Phase 5 Register Layer Translation",
+  "type": "object",
+  "required": ["schema", "source_family", "target_td613_lane", "translation_confidence", "translation_notes", "may_route"],
+  "properties": {
+    "schema": { "const": "td613.phase5.register-layer-translation/v1" },
+    "source_family": { "enum": ["EO-RFD", "ACEDIT", "UNKNOWN"] },
+    "source_layer_label": { "type": ["string", "null"] },
+    "source_register_label": { "type": ["string", "null"] },
+    "target_td613_lane": { "enum": ["admissibility", "projection", "capacity", "naming", "rupture", "temporal", "geometry", "residual", "witness", "route", "harbor", "packet", "unresolved"] },
+    "translation_confidence": { "enum": ["exact", "bounded", "unresolved", "blocked"] },
+    "translation_notes": { "type": "array", "items": { "type": "string" } },
+    "may_route": { "type": "boolean" }
+  },
+  "additionalProperties": false
+}

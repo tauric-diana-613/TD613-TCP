@@ -1,0 +1,141 @@
+---
+derivative_id: derivative:64fa0f043a45de15d4b5c51e
+parent_capture_id: capture:23b0349da6e035f7d1553dc2
+parent_blob_sha256: f946c7bfa79dc430c0d68072cacc6ef61b252d4c6337f1d65104de8f163c790c
+tool: srcctl-json-normalizer/1
+source_title: "Constraint‑Driven Identity Collapse: How Platforms Reshape, Compress, and Erode the Self"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18733362",
+  "conceptrecid": "18733362",
+  "created": "2026-02-22T16:30:40.859019+00:00",
+  "doi": "10.5281/zenodo.18733363",
+  "doi_url": "https://doi.org/10.5281/zenodo.18733363",
+  "files": [
+    {
+      "checksum": "md5:5e251c35e34109b247d5d39fe18ea31f",
+      "id": "8b7f289a-0afd-481d-bcca-c3f1ddafd7bc",
+      "key": "Constraint‑Driven Identity Collapse: How Platforms Reshape, Compress, and Erode the Self .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18733363/files/Constraint%E2%80%91Driven%20Identity%20Collapse:%20How%20Platforms%20Reshape,%20Compress,%20and%20Erode%20the%20Self%20.pdf/content"
+      },
+      "size": 82499
+    }
+  ],
+  "id": 18733363,
+  "links": {
+    "access": "https://zenodo.org/api/records/18733363/access",
+    "access_grants": "https://zenodo.org/api/records/18733363/access/grants",
+    "access_links": "https://zenodo.org/api/records/18733363/access/links",
+    "access_request": "https://zenodo.org/api/records/18733363/access/request",
+    "access_users": "https://zenodo.org/api/records/18733363/access/users",
+    "archive": "https://zenodo.org/api/records/18733363/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18733363/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18733363/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18733363/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18733363",
+    "draft": "https://zenodo.org/api/records/18733363/draft",
+    "file_modification": "https://zenodo.org/api/records/18733363/file-modification",
+    "files": "https://zenodo.org/api/records/18733363/files",
+    "latest": "https://zenodo.org/api/records/18733363/versions/latest",
+    "latest_html": "https://zenodo.org/records/18733363/latest",
+    "media_files": "https://zenodo.org/api/records/18733363/media-files",
+    "parent": "https://zenodo.org/api/records/18733362",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18733362",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18733362",
+    "parent_html": "https://zenodo.org/records/18733362",
+    "preview_html": "https://zenodo.org/records/18733363?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18733363/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18733363/request-deletion",
+    "requests": "https://zenodo.org/api/records/18733363/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18733363/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18733363",
+    "self_doi": "https://doi.org/10.5281/zenodo.18733363",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18733363",
+    "self_html": "https://zenodo.org/records/18733363",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18733363/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18733363/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18733363:Constraint%E2%80%91Driven%20Identity%20Collapse:%20How%20Platforms%20Reshape,%20Compress,%20and%20Erode%20the%20Self%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18733363:Constraint%E2%80%91Driven%20Identity%20Collapse:%20How%20Platforms%20Reshape,%20Compress,%20and%20Erode%20the%20Self%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18733363:Constraint%E2%80%91Driven%20Identity%20Collapse:%20How%20Platforms%20Reshape,%20Compress,%20and%20Erode%20the%20Self%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18733363:Constraint%E2%80%91Driven%20Identity%20Collapse:%20How%20Platforms%20Reshape,%20Compress,%20and%20Erode%20the%20Self%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18733363:Constraint%E2%80%91Driven%20Identity%20Collapse:%20How%20Platforms%20Reshape,%20Compress,%20and%20Erode%20the%20Self%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18733363:Constraint%E2%80%91Driven%20Identity%20Collapse:%20How%20Platforms%20Reshape,%20Compress,%20and%20Erode%20the%20Self%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18733363/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Constraint‑Driven Identity Collapse examines how digital platforms reshape identity through structural limits embedded in their architectures. Rather than treating identity as an act of self‑expression, the paper demonstrates that online selfhood is produced through representational compression, behavioral narrowing, semantic flattening, and algorithmic drift. Identity becomes a system output: a platform‑legible artifact constrained by what the system can store, classify, retrieve, and amplify. This essay maps the mechanics of identity collapse and shows how the self becomes increasingly optimized for platform grammars until its complexity exceeds what the system can hold. In the post‑open‑web era, identity is not an autonomous narrative but an infrastructural negotiation shaped by constraint regimes and representational limits.</p>",
+    "doi": "10.5281/zenodo.18733363",
+    "keywords": [
+      "Critical Theory",
+      "Internet Studies",
+      "Society",
+      "Social Media Studies",
+      "Artificial Intelligence"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-02-22",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18733362"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Constraint‑Driven Identity Collapse: How Platforms Reshape, Compress, and Erode the Self",
+    "version": "1.0"
+  },
+  "modified": "2026-02-22T16:30:41.444243+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18733363",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 12,
+    "unique_downloads": 12,
+    "unique_views": 21,
+    "version_downloads": 12,
+    "version_unique_downloads": 12,
+    "version_unique_views": 21,
+    "version_views": 21,
+    "views": 21
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "Constraint‑Driven Identity Collapse: How Platforms Reshape, Compress, and Erode the Self",
+  "updated": "2026-02-22T16:30:41.444243+00:00"
+}

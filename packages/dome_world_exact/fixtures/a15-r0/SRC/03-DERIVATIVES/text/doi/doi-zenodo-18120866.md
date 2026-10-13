@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:557d07e34f536363c7f87d02
+parent_capture_id: capture:5ae7dd331ccd0a7c2a07a1f7
+parent_blob_sha256: fcede3d26854f6a09b401fcc17149fe399c401536f562eaa09165ae310345ef1
+tool: srcctl-doi-resolver-receipt/1
+source_title: "Triggering the System's Immune Response: Stylometric Publishing, Algorithmic Governance, and the Structural Silencing of Minority Voices"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.18120866
+Final URL: https://zenodo.org/records/18120866
+Status: 200
+Request method: GET_LEGACY_CAPTURE
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.18120866 -> https://zenodo.org/doi/10.5281/zenodo.18120866
+302 https://zenodo.org/doi/10.5281/zenodo.18120866 -> https://zenodo.org/records/18120866

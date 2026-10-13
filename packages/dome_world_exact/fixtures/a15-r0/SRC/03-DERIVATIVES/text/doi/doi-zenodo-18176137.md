@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:972bc593a45f573c20040b28
+parent_capture_id: capture:2d9c4e63200cc50cb22f5610
+parent_blob_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tool: srcctl-doi-resolver-receipt/1
+source_title: "Exact‑Match Governance: How Indexing Friction Became the New Architecture of Disappearance"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.18176137
+Final URL: https://zenodo.org/records/18176137
+Status: 200
+Request method: HEAD
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.18176137 -> https://zenodo.org/doi/10.5281/zenodo.18176137
+302 https://zenodo.org/doi/10.5281/zenodo.18176137 -> https://zenodo.org/records/18176137

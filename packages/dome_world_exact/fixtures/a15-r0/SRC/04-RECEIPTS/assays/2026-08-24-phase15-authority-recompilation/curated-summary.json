@@ -1,0 +1,51 @@
+{
+  "assay": "Phase 1.5 curated authority, recompilation, representation, and topology register",
+  "assay_version": "phase15-authority-recompilation/v2",
+  "observed_at": "2026-08-24T05:00:00Z",
+  "network_requests": 0,
+  "new_acquisitions": 0,
+  "phase_2": "NOT_RUN_HUMAN_GATE_CLOSED",
+  "candidate_manifest_sha256": "45bed7f04d4bcbfb894b46712b43f4c1c22edcde6149adc2923569d0e12604a7",
+  "outputs": {
+    "witnessed_evidence": 188,
+    "authority_assertions": 9,
+    "legacy_membership_candidates": 17,
+    "canon_map_snapshots": 3,
+    "recompilation_edges": 50,
+    "typed_graph_edges": 50,
+    "representation_lift_candidates": 34,
+    "representation_families": 26,
+    "claim_status_events": 15,
+    "evidence_taxonomy_observations": 4,
+    "graph_assay_observations": 37,
+    "in_place_revision_risks": 5,
+    "structural_anatomy_lines": 3,
+    "ordinal_series_observations": 7,
+    "lifecycle_operator_events": 27,
+    "epistemic_object_states": 1,
+    "interpretation_updates": 4,
+    "coverage_trails": 49,
+    "phase_2_priorities": 27,
+    "compiler_input_candidates": 22
+  },
+  "highest_value_local_findings": [
+    "A 2025-12-30 lineage contains both a forward-declared successor and a same-morning retrospective compiler, supporting latent and retrospective architecture in one bounded case.",
+    "Retrospective compilation is already structural in the early canon: Grand Unified Theory compiles a core lineage, the Authorship Capsule promotes it as a canonical reference, and the Codex compiles a seventy-essay machine-legible discipline by January 13.",
+    "Three immutable Canon Map self-models are locally witnessed: February (9 layers), June (9 pillars/4 layers), and August (5 pillars/15 programs/30 nodes).",
+    "Legacy SR supplies a class-level authority transition in which genealogy persists while canonical, empirical, and field-defining authority is denied.",
+    "The STAR bibliography cross-swaps all four predecessor DOI assignments; the source defect is preserved rather than silently repaired.",
+    "Theorem is an SR-native structural-generalizability label, not proof; no theorem label can promote authority automatically.",
+    "Five same-day Society Blueprint modules forward-declare their membership before a later compiler assigns higher-order infrastructure roles; source-declared module roles and retrospective compiler roles remain distinct.",
+    "The institutional-cognition five-theorem compiler appears before the local manifestation self-labeling Theorem II, while local creation order is IV, V, III, compiler, II; conceptual, ordinal, and manifestation order cannot be collapsed.",
+    "April, July, and August each supply a different authority-bearing anchor—canonical entry, canonical reference, and constitutional definition—with no witnessed supersession chain; the archive therefore preserves all three time slices.",
+    "High-Arousal v1 to v1.1 is a clean metadata-level maturation case: the source says the thesis is retained while a measurement construct is added, pending body-level diff.",
+    "Policy Substrate is explicitly reclassified from an autonomous field to a specialized framework/research program; lineage, authority, and edition identity remain separate questions.",
+    "The local canon contains multiple typed representation grammars—including reciprocal qualitative/quantitative pairs and conceptual→empirical→generative→forecasting pipelines—without promoting them into one universal operator."
+  ],
+  "limits": [
+    "Most evidence is author-supplied platform metadata; only five originals are locally preserved.",
+    "Collaborator-reported full-text findings are represented as acquisition gates where local exact spans are absent.",
+    "No network request, download, checksum replacement, or Phase 2 acquisition occurred.",
+    "No contradiction, missing ordinal, or relation target was automatically repaired."
+  ]
+}

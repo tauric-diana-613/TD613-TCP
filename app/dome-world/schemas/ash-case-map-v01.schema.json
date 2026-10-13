@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.case-map/v0.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "case_id",
+    "profile",
+    "object_label",
+    "title",
+    "created_at",
+    "updated_at",
+    "custody_reference",
+    "tamper_state",
+    "rooms",
+    "nodes",
+    "relationships",
+    "private_chronology",
+    "intended_actions",
+    "source_status",
+    "evidence_basis",
+    "observations",
+    "missingness",
+    "alternatives",
+    "open_questions",
+    "operator_notes",
+    "closure",
+    "case_map_digest"
+  ],
+  "properties": {
+    "schema": {
+      "const": "td613.ash.case-map/v0.1"
+    },
+    "case_id": {
+      "type": "string",
+      "pattern": "^case_"
+    },
+    "profile": {
+      "enum": [
+        "investigation",
+        "research",
+        "legal",
+        "archive",
+        "organizing",
+        "unpublished"
+      ]
+    },
+    "object_label": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "rooms": {
+      "type": "array",
+      "minItems": 1
+    },
+    "nodes": {
+      "type": "array"
+    },
+    "relationships": {
+      "type": "array"
+    },
+    "case_map_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "version": {},
+    "created_at": {},
+    "updated_at": {},
+    "custody_reference": {},
+    "tamper_state": {},
+    "private_chronology": {},
+    "intended_actions": {},
+    "source_status": {},
+    "evidence_basis": {},
+    "observations": {},
+    "missingness": {},
+    "alternatives": {},
+    "open_questions": {},
+    "operator_notes": {},
+    "closure": {}
+  },
+  "additionalProperties": false
+}

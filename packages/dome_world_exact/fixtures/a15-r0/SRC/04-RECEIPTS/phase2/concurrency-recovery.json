@@ -1,0 +1,14 @@
+{
+  "atelier_snapshot_id": "src-20260824-p2-001",
+  "classification_counts": {
+    "METHOD_CHANGE_OR_SOURCE_STATE_DIFFERENCE_REQUIRES_ADJUDICATION": 3,
+    "SAME_BYTES_REPEATED_OBSERVATION": 63
+  },
+  "current_pointer_rule": "targets.capture_id identifies the current target observation; every contextual capture remains append-only evidence",
+  "interpretive_limit": "Concurrency recovery explains why repetition was inspected; it does not explain any source-byte difference. Those remain unresolved for adjudication.",
+  "registry_path": "05-OPERATIONS/phase2/capture-repetition-observations.jsonl",
+  "repeated_target_count": 66,
+  "schema_version": "src-concurrency-recovery-receipt/v1",
+  "source_mutation_established": false,
+  "status": "RECOVERED_WITHOUT_EVENT_DELETION"
+}

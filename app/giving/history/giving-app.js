@@ -1,0 +1,1554 @@
+import {
+  CUSTODY_MODE,
+  IDENTITY_STATUS,
+  addSearchPage,
+  committeeLedger,
+  compactText,
+  createDossier,
+  dossierCsv,
+  exactNameMatch,
+  formatCurrency,
+  recordBelongsToTarget,
+  recordDigest,
+  reviewedSummaryCsv,
+  safeFilename,
+  searchTargetFromQuery,
+  setIdentityDecision
+} from './giving-model.js';
+import { GivingApiClient, GivingApiError } from './giving-api.js';
+import { openGivingStore } from './giving-store.js';
+import { decryptDossier, encryptDossier, fromHostedVaultRow, toHostedVaultPayload } from './giving-vault.js';
+import { createGivingField } from './giving-field.js';
+import { buildDossierXlsx } from './giving-xlsx.js';
+import {
+  buildCampaignDeputyGivingHistoryBundle,
+  campaignDeputyGivingHistoryCsv,
+  campaignDeputyGivingHistoryRow
+} from './giving-campaign-deputy-import.js';
+
+const MAX_SOURCE_CONCURRENCY = 3;
+const MAX_REVIEW_RENDER = 300;
+const $ = (selector) => document.querySelector(selector);
+const $$ = (selector) => [...document.querySelectorAll(selector)];
+const api = new GivingApiClient();
+const givingField = createGivingField($('#givingFieldCanvas'));
+
+const state = {
+  store: null,
+  registry: null,
+  dossier: createDossier(),
+  dirty: true,
+  run: { active: false, cancelRequested: false, queue: [], controllers: new Map(), workers: [] },
+  peopleContinuation: null,
+  selectedPersonId: null,
+  vaultVersions: [],
+  saveTimer: null,
+  holdReview: false,
+  reviewSort: { key: null, direction: 'asc' },
+  reviewTargetId: 'ALL',
+  campaignTargetId: null
+};
+
+function identityStatusLabel(status) {
+  if (status === IDENTITY_STATUS.CONFIRMED) return 'Identity confirmed';
+  if (status === IDENTITY_STATUS.EXCLUDED) return 'Excluded';
+  if (status === IDENTITY_STATUS.CANDIDATE) return 'Candidate';
+  return 'Unreviewed';
+}
+
+function updateField(view) {
+  const sources = (state.dossier.source_ids || []).map((id) => ({
+    id,
+    status: state.dossier.source_states?.[id]?.status || 'IDLE'
+  }));
+  const confirmed = Object.values(state.dossier.decisions || {})
+    .filter((status) => status === IDENTITY_STATUS.CONFIRMED).length;
+  givingField.update({
+    ...(view ? { view } : {}),
+    sources,
+    confirmed,
+    custody: state.dossier.custody || CUSTODY_MODE.LOCAL
+  });
+}
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>'"]/g, (character) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+  })[character]);
+}
+
+function humanError(error) {
+  if (error instanceof GivingApiError) return error.message;
+  return compactText(error?.message || error) || 'The operation did not complete.';
+}
+
+function toast(message, kind = 'info') {
+  const item = document.createElement('div');
+  item.className = `toast ${kind === 'error' ? 'error' : ''}`;
+  item.textContent = message;
+  $('#toastStack').append(item);
+  setTimeout(() => item.remove(), 5200);
+}
+
+function dataOf(result, key) {
+  if (key && result?.data?.[key] !== undefined) return result.data[key];
+  return result?.data ?? result ?? null;
+}
+
+function receiptOf(result) {
+  return result?.receipt || result?.data?.receipt || null;
+}
+
+function addReceipt(receipt, kind = 'operation') {
+  if (!receipt) return;
+  const value = typeof receipt === 'string'
+    ? { schema: 'td613.giving.client-receipt/v1', at: new Date().toISOString(), event: receipt }
+    : receipt;
+  state.dossier.operator_receipts = [...state.dossier.operator_receipts, { ...value, client_kind: kind }];
+  renderReceipts();
+}
+
+function download(filename, body, type) {
+  const url = URL.createObjectURL(new Blob([body], { type }));
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = filename;
+  anchor.rel = 'noopener';
+  document.body.append(anchor);
+  anchor.click();
+  anchor.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function sessionOpen() {
+  document.documentElement.dataset.session = 'open';
+  $('#sessionMembrane').hidden = true;
+  $('#operatorShell').hidden = false;
+  givingField.update({ sessionOpen: true });
+}
+
+function sessionClosed(message = 'Enter the operator secret to continue.') {
+  document.documentElement.dataset.session = 'closed';
+  $('#sessionMembrane').hidden = false;
+  $('#operatorShell').hidden = true;
+  $('#sessionMessage').textContent = message;
+  givingField.update({ sessionOpen: false });
+  $('#accessSecret').focus();
+}
+
+function queryFromForm() {
+  return {
+    name: compactText($('#searchName').value),
+    aliases: $('#searchAliases').value.split(/\r?\n|;/).map(compactText).filter(Boolean),
+    hints: compactText($('#searchHints').value),
+    date_from: $('#dateFrom').value,
+    date_to: $('#dateTo').value,
+    exact_match: Boolean($('#exactMatchToggle')?.checked)
+  };
+}
+
+function targets() {
+  return Array.isArray(state.dossier.search_targets) ? state.dossier.search_targets : [];
+}
+
+function targetById(targetId) {
+  return targets().find((target) => target.id === targetId) || null;
+}
+
+function targetRecordCount(targetId) {
+  return state.dossier.records.filter((record) => recordBelongsToTarget(record, targetId)).length;
+}
+
+function targetNameForRecord(record) {
+  const names = Array.isArray(record.search_target_names) ? record.search_target_names.map(compactText).filter(Boolean) : [];
+  return [...new Set(names)].join(' · ');
+}
+
+function renderTargetSelectors() {
+  const available = targets();
+  const ids = new Set(available.map((target) => target.id));
+  if (state.reviewTargetId !== 'ALL' && !ids.has(state.reviewTargetId)) state.reviewTargetId = 'ALL';
+  if (state.campaignTargetId && !ids.has(state.campaignTargetId)) state.campaignTargetId = null;
+  if (!state.campaignTargetId && available.length) {
+    state.campaignTargetId = ids.has(state.dossier.active_target_id) ? state.dossier.active_target_id : available[0].id;
+  }
+
+  const reviewSelect = $('#reviewTargetFilter');
+  if (reviewSelect) {
+    reviewSelect.innerHTML = '<option value="ALL">All contacts</option>' + available.map((target) =>
+      `<option value="${escapeHtml(target.id)}">${escapeHtml(target.name || target.id)} · ${targetRecordCount(target.id)} records</option>`
+    ).join('');
+    reviewSelect.value = state.reviewTargetId;
+  }
+
+  const campaignSelect = $('#campaignTargetSelect');
+  if (campaignSelect) {
+    campaignSelect.innerHTML = available.length
+      ? available.map((target) => `<option value="${escapeHtml(target.id)}">${escapeHtml(target.name || target.id)} · ${targetRecordCount(target.id)} records</option>`).join('')
+      : '<option value="">No reviewed contact target</option>';
+    if (state.campaignTargetId && ids.has(state.campaignTargetId)) campaignSelect.value = state.campaignTargetId;
+  }
+
+  const summary = $('#campaignTargetSummary');
+  if (summary) {
+    const target = targetById(state.campaignTargetId);
+    if (!target) summary.textContent = 'Search and review a contact before Campaign Deputy handoff.';
+    else {
+      const confirmed = state.dossier.records.filter((record) => recordBelongsToTarget(record, target.id) && state.dossier.decisions[recordDigest(record)] === IDENTITY_STATUS.CONFIRMED).length;
+      summary.textContent = `${target.name} · ${targetRecordCount(target.id)} retrieved · ${confirmed} identity confirmed`;
+    }
+  }
+}
+
+function renderHoldState() {
+  const button = $('#holdReviewButton');
+  if (!button) return;
+  button.dataset.held = state.holdReview ? 'true' : 'false';
+  button.setAttribute('aria-pressed', String(state.holdReview));
+  button.title = state.holdReview
+    ? 'Held: later searches append to this Identity Review. Activate to release.'
+    : 'Keep this Identity Review in place and append results from later searches.';
+}
+
+function resetReviewControls() {
+  state.reviewSort = { key: null, direction: 'asc' };
+  state.reviewTargetId = 'ALL';
+  if ($('#reviewFilter')) $('#reviewFilter').value = 'ALL';
+  if ($('#reviewSearch')) $('#reviewSearch').value = '';
+  if ($('#reviewTargetFilter')) $('#reviewTargetFilter').value = 'ALL';
+}
+
+function hydrateForm() {
+  const dossier = state.dossier;
+  $('#dossierTitle').value = dossier.title || '';
+  $('#custodyMode').value = dossier.custody || CUSTODY_MODE.LOCAL;
+  $('#searchName').value = dossier.query?.name || '';
+  $('#searchAliases').value = (dossier.query?.aliases || []).join('\n');
+  $('#searchHints').value = dossier.query?.hints || '';
+  $('#dateFrom').value = dossier.query?.date_from || '2000-01-01';
+  $('#dateTo').value = dossier.query?.date_to || new Date().toISOString().slice(0, 10);
+  if ($('#exactMatchToggle')) $('#exactMatchToggle').checked = Boolean(dossier.query?.exact_match);
+  for (const input of $$('#sourceRegistry input[type="checkbox"]')) input.checked = dossier.source_ids?.includes(input.value) || false;
+  updateSelectedSourceCount();
+  renderHoldState();
+  renderTargetSelectors();
+}
+
+function updateDossierFromForm() {
+  state.dossier = {
+    ...state.dossier,
+    title: compactText($('#dossierTitle').value) || state.dossier.title,
+    custody: $('#custodyMode').value,
+    query: queryFromForm(),
+    source_ids: selectedSourceIds(),
+    updated_at: new Date().toISOString()
+  };
+}
+
+function markDirty({ localAutosave = true } = {}) {
+  state.dirty = true;
+  $('#saveState').textContent = 'unsaved';
+  if (localAutosave && [CUSTODY_MODE.LOCAL, CUSTODY_MODE.HYBRID].includes(state.dossier.custody) && state.store) {
+    clearTimeout(state.saveTimer);
+    state.saveTimer = setTimeout(async () => {
+      try {
+        updateDossierFromForm();
+        await state.store.writeDossier(state.dossier);
+        $('#saveState').textContent = state.dossier.custody === CUSTODY_MODE.HYBRID ? 'local branch saved' : 'saved local';
+        state.dirty = false;
+        await renderLocalDossiers();
+      } catch (error) {
+        $('#saveState').textContent = 'save failed';
+      }
+    }, 500);
+  }
+}
+
+async function renderLocalDossiers() {
+  if (!state.store) return;
+  const dossiers = await state.store.listDossiers();
+  const select = $('#localDossierSelect');
+  const current = select.value;
+  select.innerHTML = '<option value="">No local dossier selected</option>' + dossiers.map((dossier) =>
+    `<option value="${escapeHtml(dossier.id)}">${escapeHtml(dossier.title)} · ${escapeHtml(dossier.updated_at?.slice(0, 10))}</option>`
+  ).join('');
+  if (dossiers.some((dossier) => dossier.id === current)) select.value = current;
+}
+
+function newDossier() {
+  const selected = selectedSourceIds();
+  state.dossier = createDossier({ sourceIds: selected, query: { date_from: '2000-01-01', date_to: new Date().toISOString().slice(0, 10) } });
+  state.dirty = true;
+  state.selectedPersonId = null;
+  state.peopleContinuation = null;
+  state.holdReview = false;
+  state.campaignTargetId = null;
+  resetReviewControls();
+  hydrateForm();
+  renderAll();
+  toast('New local-first dossier opened.');
+}
+
+async function openLocalDossier() {
+  const id = $('#localDossierSelect').value;
+  if (!id || !state.store) return toast('Select a local dossier first.', 'error');
+  const dossier = await state.store.readDossier(id);
+  if (!dossier) return toast('That dossier is no longer present.', 'error');
+  state.dossier = { search_targets: [], active_target_id: null, ...dossier };
+  state.dirty = false;
+  state.holdReview = false;
+  state.selectedPersonId = null;
+  state.campaignTargetId = null;
+  resetReviewControls();
+  hydrateForm();
+  renderAll();
+  $('#saveState').textContent = 'saved local';
+  toast('Dossier opened from local custody.');
+}
+
+async function saveDossier({ forceVault = false } = {}) {
+  updateDossierFromForm();
+  const mode = state.dossier.custody;
+  try {
+    if (mode === CUSTODY_MODE.LOCAL && !forceVault) {
+      if (!state.store) throw new Error('IndexedDB is unavailable. Use an encrypted export.');
+      await state.store.writeDossier(state.dossier);
+      $('#saveState').textContent = 'saved local';
+      state.dirty = false;
+      await renderLocalDossiers();
+      toast('Dossier saved to local custody.');
+      return;
+    }
+    if (mode === CUSTODY_MODE.HYBRID && state.store) await state.store.writeDossier(state.dossier);
+    await syncVault();
+    if (mode === CUSTODY_MODE.HOSTED && state.store) await state.store.deleteDossier(state.dossier.id);
+    await renderLocalDossiers();
+  } catch (error) {
+    $('#saveState').textContent = 'save failed';
+    toast(humanError(error), 'error');
+  }
+}
+
+function selectedSourceIds() {
+  return $$('#sourceRegistry input[type="checkbox"]:checked').map((input) => input.value);
+}
+
+function updateSelectedSourceCount() {
+  const count = selectedSourceIds().length;
+  $('#selectedSourceCount').textContent = `${count} source${count === 1 ? '' : 's'}`;
+}
+
+function sourceById(id) {
+  return state.registry?.instances?.find((source) => source.id === id) || { id, custodian: id, family: 'UNKNOWN', state: 'UNAVAILABLE' };
+}
+
+function renderRegistry() {
+  const instances = state.registry?.instances || [];
+  if (!instances.length) {
+    $('#sourceRegistry').innerHTML = '<div class="empty-state"><strong>Registry unavailable.</strong><span>Refresh readiness before searching.</span></div>';
+    return;
+  }
+  const selected = new Set(state.dossier.source_ids || []);
+  const families = new Map();
+  for (const source of instances) {
+    const list = families.get(source.family) || [];
+    list.push(source);
+    families.set(source.family, list);
+  }
+  $('#sourceRegistry').innerHTML = [...families.entries()].map(([family, sources]) => `
+    <div class="source-family-label">${escapeHtml(family)} · ${sources.length}</div>
+    ${sources.map((source) => {
+      const available = source.state !== 'UNAVAILABLE';
+      return `<label class="source-option ${available ? '' : 'unavailable'}">
+        <input type="checkbox" value="${escapeHtml(source.id)}" ${selected.has(source.id) ? 'checked' : ''} ${available ? '' : 'disabled'}>
+        <span><strong>${escapeHtml(source.custodian)}</strong><small>${escapeHtml(source.jurisdiction)} · ${escapeHtml(source.electronic_scope)}</small></span>
+        <em>${escapeHtml(source.state)}</em>
+      </label>`;
+    }).join('')}
+  `).join('');
+  $$('#sourceRegistry input').forEach((input) => input.addEventListener('change', () => {
+    updateSelectedSourceCount();
+    markDirty();
+  }));
+  updateSelectedSourceCount();
+}
+
+async function loadRegistry() {
+  const result = await api.call('registry.read', {}, { mutation: false });
+  const data = dataOf(result, 'registry');
+  state.registry = data?.instances ? data : data?.registry || data;
+  addReceipt(receiptOf(result), 'registry');
+  renderRegistry();
+  hydrateForm();
+}
+
+function sourceState(sourceId, patch = {}) {
+  const previous = state.dossier.source_states[sourceId] || {};
+  state.dossier.source_states = {
+    ...state.dossier.source_states,
+    [sourceId]: { ...previous, ...patch, updated_at: new Date().toISOString() }
+  };
+  renderSourceProgress();
+}
+
+function recordName(record) {
+  return compactText(record.contributor_name_raw || record.contributor_name || record.raw_contributor_name || record.contributor_name_parsed?.display || 'Name unavailable');
+}
+
+function recordCommittee(record) {
+  return compactText(record.committee || record.committee_name || record.candidate || record.candidate_name || 'Committee not stated');
+}
+
+async function runSourceTask(task) {
+  const { sourceId, continuation = null, pendingContinuations = [] } = task;
+  const controller = new AbortController();
+  state.run.controllers.set(sourceId, controller);
+  sourceState(sourceId, { status: 'RUNNING', continuation_requested: continuation, error: null });
+  try {
+    const variants = continuation
+      ? [{ name: continuation.query_name || state.dossier.query.name, token: continuation.token || continuation }]
+      : [state.dossier.query.name, ...(state.dossier.query.aliases || [])].map((name) => ({ name, token: null }));
+    const continuations = [...pendingContinuations];
+    let returned = 0;
+    let lastCoverage = null;
+    let lastReceipt = null;
+    const variantReceipts = [];
+    for (const variant of variants) {
+      const result = await api.call('search.page', {
+        source_instance_id: sourceId,
+        query: {
+          name: variant.name,
+          start_date: state.dossier.query.date_from,
+          end_date: state.dossier.query.date_to,
+          page_size: 200
+        },
+        continuation: variant.token
+      }, { mutation: false, signal: controller.signal, timeoutMs: 18000, purpose: `retrieve ${sourceId}` });
+      const data = dataOf(result, 'page');
+      const rawPage = data?.records ? data : data?.page || data || { records: [] };
+      const rawRecords = Array.isArray(rawPage.records) ? rawPage.records : [];
+      const records = state.dossier.query?.exact_match
+        ? rawRecords.filter((record) => exactNameMatch(recordName(record), variant.name))
+        : rawRecords;
+      const page = records === rawRecords ? rawPage : {
+        ...rawPage,
+        records,
+        client_exact_match: {
+          enabled: true,
+          observed_records: rawRecords.length,
+          retained_records: records.length,
+          query_name: variant.name
+        }
+      };
+      const receipt = page.receipt || receiptOf(result) || { source_instance_id: sourceId, state: 'READY' };
+      const previousCount = state.dossier.source_states[sourceId]?.count || 0;
+      state.dossier = addSearchPage(state.dossier, sourceId, page, receipt);
+      returned += page.records?.length || 0;
+      lastCoverage = page.coverage || data?.coverage || receipt.coverage || lastCoverage;
+      lastReceipt = receipt;
+      variantReceipts.push({
+        query_name: variant.name,
+        state: compactText(receipt?.state || page.source_status || 'READY').toUpperCase(),
+        receipt,
+        ...(page.client_exact_match ? { exact_match: page.client_exact_match } : {})
+      });
+      const next = page.continuation || data?.continuation || null;
+      if (next) continuations.push({ query_name: variant.name, token: next });
+      state.dossier.source_states[sourceId].count = previousCount + (page.records?.length || 0);
+    }
+    const nextContinuation = continuations[0] || null;
+    const badVariants = variantReceipts.filter((item) => item.state !== 'READY');
+    const goodVariants = variantReceipts.filter((item) => item.state === 'READY');
+    const settledStatus = badVariants.length
+      ? (goodVariants.length ? 'PARTIAL' : badVariants[0].state)
+      : 'COMPLETE';
+    state.dossier.source_states[sourceId] = {
+      ...state.dossier.source_states[sourceId],
+      status: continuations.length ? 'PARTIAL' : settledStatus,
+      continuation: nextContinuation,
+      pending_continuations: continuations.slice(1),
+      returned_this_run: returned,
+      variant_receipts: variantReceipts,
+      coverage: lastCoverage,
+      receipt: lastReceipt
+    };
+    markDirty();
+  } catch (error) {
+    const cancelled = error?.code === 'REQUEST_CANCELLED';
+    sourceState(sourceId, {
+      status: cancelled ? 'CANCELLED' : 'FAILED',
+      error: humanError(error),
+      retryable: cancelled ? true : error?.retryable !== false,
+      continuation
+    });
+    if (error?.receipt) addReceipt(error.receipt, 'error');
+  } finally {
+    state.run.controllers.delete(sourceId);
+    renderAll();
+  }
+}
+
+async function runQueue() {
+  if (state.run.active) return;
+  state.run.active = true;
+  state.run.cancelRequested = false;
+  $('#cancelSearchButton').disabled = false;
+  $('#runSearchButton').disabled = true;
+  const worker = async () => {
+    while (!state.run.cancelRequested) {
+      const task = state.run.queue.shift();
+      if (!task) break;
+      await runSourceTask(task);
+    }
+  };
+  state.run.workers = Array.from({ length: Math.min(MAX_SOURCE_CONCURRENCY, state.run.queue.length) }, () => worker());
+  await Promise.allSettled(state.run.workers);
+  state.run.active = false;
+  state.run.workers = [];
+  $('#cancelSearchButton').disabled = true;
+  $('#runSearchButton').disabled = false;
+  renderAll();
+}
+
+function clearReviewForNewSearch() {
+  state.dossier = {
+    ...state.dossier,
+    search_targets: [],
+    active_target_id: null,
+    records: [],
+    decisions: {},
+    clusters: [],
+    source_states: {}
+  };
+  state.campaignTargetId = null;
+  state.selectedPersonId = null;
+  resetReviewControls();
+  renderReview();
+  renderLedger();
+  renderCampaign();
+}
+
+async function startSearch(event) {
+  event.preventDefault();
+  const ids = selectedSourceIds();
+  if (!ids.length) return toast('Select at least one electronic source.', 'error');
+  const query = queryFromForm();
+  if (!query.name) return toast('Enter a contributor name.', 'error');
+  if (!query.date_from || !query.date_to || query.date_from > query.date_to) return toast('Use a valid beginning and ending date.', 'error');
+  updateDossierFromForm();
+  if (!state.holdReview) clearReviewForNewSearch();
+  const target = searchTargetFromQuery(state.dossier.query);
+  const targetMap = new Map(targets().map((item) => [item.id, item]));
+  targetMap.set(target.id, { ...target, updated_at: new Date().toISOString() });
+  state.dossier.search_targets = [...targetMap.values()];
+  state.dossier.active_target_id = target.id;
+  if (!state.campaignTargetId) state.campaignTargetId = target.id;
+  state.reviewTargetId = state.holdReview && state.dossier.search_targets.length > 1 ? 'ALL' : target.id;
+  state.dossier.version += 1;
+  state.dossier.source_ids = ids;
+  state.run.queue = ids.map((sourceId) => ({ sourceId, continuation: null }));
+  for (const sourceId of ids) sourceState(sourceId, { status: 'QUEUED', count: 0, continuation: null, error: null });
+  markDirty();
+  renderTargetSelectors();
+  switchView('search');
+  await runQueue();
+}
+
+function cancelSearch() {
+  state.run.cancelRequested = true;
+  for (const controller of state.run.controllers.values()) controller.abort(new DOMException('Operator cancelled.', 'AbortError'));
+  for (const task of state.run.queue) sourceState(task.sourceId, { status: 'CANCELLED', error: 'Cancelled before dispatch.', retryable: true });
+  state.run.queue = [];
+  toast('Cancellation sent. Completed source evidence remains in the dossier.');
+}
+
+async function enqueueSource(sourceId, continuation = null, pendingContinuations = []) {
+  if (state.run.active) return toast('Let the current three-wide source queue settle first.', 'error');
+  state.run.queue = [{ sourceId, continuation, pendingContinuations }];
+  await runQueue();
+}
+
+function renderSourceProgress() {
+  const ids = state.dossier.source_ids || [];
+  if (!ids.length) {
+    $('#sourceProgress').innerHTML = '<div class="empty-state"><strong>Waiting for a query.</strong><span>Choose searchable electronic custodians from the left rail.</span></div>';
+    $('#runSummary').textContent = 'No search has run.';
+    $('#coverageWarning').hidden = true;
+    $('#coverageExecutiveLine').textContent = 'No source coverage receipt yet.';
+    $('#coverageExecutiveLine').dataset.state = 'empty';
+    updateField();
+    return;
+  }
+  const states = ids.map((id) => state.dossier.source_states[id] || { status: 'NOT_RUN', count: 0 });
+  const completed = states.filter((item) => item.status === 'COMPLETE').length;
+  const partial = states.filter((item) => item.status === 'PARTIAL').length;
+  const unavailable = states.filter((item) => ['FAILED', 'ERROR', 'DRIFTED', 'UNAVAILABLE', 'CANCELLED'].includes(item.status)).length;
+  const running = states.filter((item) => item.status === 'RUNNING').length;
+  const pending = ids.length - completed - partial - unavailable;
+  const receiptTimes = states
+    .map((item) => item.receipt?.completed_at || item.receipt?.at || null)
+    .filter(Boolean)
+    .map((value) => new Date(value))
+    .filter((value) => !Number.isNaN(value.getTime()));
+  const retrieved = receiptTimes.length
+    ? new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: '2-digit' }).format(new Date(Math.max(...receiptTimes.map((value) => value.getTime()))))
+    : 'not yet';
+  const activeText = pending ? ` · ${pending} active or pending` : '';
+  const coverageText = `${completed}/${ids.length} selected sources complete · ${partial} partial · ${unavailable} unavailable${activeText} · retrieved ${retrieved}`;
+  $('#runSummary').textContent = `${completed}/${ids.length} complete · ${partial} partial · ${running} active · ${unavailable} unavailable`;
+  $('#coverageExecutiveLine').textContent = coverageText;
+  $('#coverageExecutiveLine').dataset.state = unavailable || partial ? 'qualified' : completed === ids.length ? 'complete' : 'running';
+  $('#coverageWarning').hidden = unavailable === 0 && partial === 0;
+  $('#sourceProgress').innerHTML = ids.map((id) => {
+    const source = sourceById(id);
+    const item = state.dossier.source_states[id] || { status: 'NOT_RUN', count: 0 };
+    const continuation = item.continuation;
+    const canRetry = ['FAILED', 'ERROR', 'DRIFTED', 'UNAVAILABLE', 'CANCELLED'].includes(item.status);
+    return `<article class="source-run-card" data-status="${escapeHtml(item.status)}">
+      <div class="source-run-head"><strong>${escapeHtml(source.custodian)}</strong><span class="source-run-status">${escapeHtml(item.status)}</span></div>
+      <div class="source-run-meta">
+        <span>${escapeHtml(source.family)} · ${escapeHtml(source.jurisdiction)}</span>
+        <span>${Number(item.count || 0).toLocaleString()} records retained</span>
+        ${item.coverage ? `<span>${escapeHtml(typeof item.coverage === 'string' ? item.coverage : JSON.stringify(item.coverage))}</span>` : ''}
+        ${item.error ? `<span>${escapeHtml(item.error)}</span>` : ''}
+      </div>
+      ${item.status === 'RUNNING' ? '<div class="progress-line"><span></span></div>' : ''}
+      <div class="source-run-actions">
+        ${continuation ? `<button class="mini-button" type="button" data-source-continue="${escapeHtml(id)}">Continue next page</button>` : ''}
+        ${canRetry ? `<button class="mini-button" type="button" data-source-retry="${escapeHtml(id)}">Retry source</button>` : ''}
+      </div>
+    </article>`;
+  }).join('');
+  $$('[data-source-continue]').forEach((button) => button.addEventListener('click', () => {
+    const id = button.dataset.sourceContinue;
+    const source = state.dossier.source_states[id] || {};
+    const current = source.continuation;
+    const pending = source.pending_continuations || [];
+    source.continuation = pending[0] || null;
+    source.pending_continuations = pending.slice(1);
+    enqueueSource(id, current, pending);
+  }));
+  $$('[data-source-retry]').forEach((button) => button.addEventListener('click', () => enqueueSource(button.dataset.sourceRetry)));
+  updateField();
+}
+
+function clusterFor(digest) {
+  return state.dossier.clusters?.find((cluster) => cluster.members.includes(digest));
+}
+
+function reviewSortValue(record, key) {
+  if (key === 'contributor') return recordName(record);
+  if (key === 'committee') return recordCommittee(record);
+  if (key === 'status') return state.dossier.decisions[recordDigest(record)] || IDENTITY_STATUS.UNREVIEWED;
+  if (key === 'amount') return Number.isSafeInteger(record.amount_cents) ? record.amount_cents : null;
+  return '';
+}
+
+function compareReviewRecords(left, right) {
+  const { key, direction } = state.reviewSort;
+  if (!key) return 0;
+  const a = reviewSortValue(left, key);
+  const b = reviewSortValue(right, key);
+  let result = 0;
+  if (key === 'amount') {
+    if (a === null && b === null) result = 0;
+    else if (a === null) return 1;
+    else if (b === null) return -1;
+    else result = a - b;
+  } else {
+    result = String(a).localeCompare(String(b), undefined, { sensitivity: 'base', numeric: true });
+  }
+  return direction === 'desc' ? -result : result;
+}
+
+function renderReviewSortControls() {
+  $$('[data-review-sort]').forEach((button) => {
+    const active = button.dataset.reviewSort === state.reviewSort.key;
+    const label = button.dataset.label || button.textContent.replace(/[↑↓]/g, '').trim();
+    button.dataset.label = label;
+    button.dataset.active = active ? 'true' : 'false';
+    button.setAttribute('aria-pressed', String(active));
+    button.textContent = `${label}${active ? (state.reviewSort.direction === 'asc' ? ' ↑' : ' ↓') : ''}`;
+  });
+}
+
+function setReviewSort(key) {
+  if (state.reviewSort.key === key) {
+    state.reviewSort.direction = state.reviewSort.direction === 'asc' ? 'desc' : 'asc';
+  } else {
+    state.reviewSort = { key, direction: 'asc' };
+  }
+  renderReview();
+}
+
+function renderReview() {
+  renderTargetSelectors();
+  const statusFilter = $('#reviewFilter')?.value || 'ALL';
+  const phrase = compactText($('#reviewSearch')?.value).toUpperCase();
+  const targetId = state.reviewTargetId === 'ALL' ? null : state.reviewTargetId;
+  const records = state.dossier.records.filter((record) => {
+    if (targetId && !recordBelongsToTarget(record, targetId)) return false;
+    const status = state.dossier.decisions[recordDigest(record)] || IDENTITY_STATUS.UNREVIEWED;
+    if (statusFilter !== 'ALL' && status !== statusFilter) return false;
+    if (!phrase) return true;
+    return [recordName(record), recordCommittee(record), record.city, record.state, record.employer, record.occupation, targetNameForRecord(record)]
+      .some((value) => compactText(value).toUpperCase().includes(phrase));
+  });
+  if (state.reviewSort.key) records.sort(compareReviewRecords);
+  renderReviewSortControls();
+  renderHoldState();
+  $('#reviewCount').textContent = String(state.dossier.records.length);
+  const visibleDigests = new Set(records.map(recordDigest));
+  const clusters = (state.dossier.clusters || []).filter((cluster) => cluster.members.some((digest) => visibleDigests.has(digest)));
+  $('#clusterNotice').textContent = clusters.length
+    ? `${clusters.length} candidate cluster${clusters.length === 1 ? '' : 's'} suggested in this contact view. Similarity is an inspection aid, never an identity decision.`
+    : 'No candidate clusters have been proposed in this contact view.';
+  if (!records.length) {
+    $('#recordList').innerHTML = '<div class="empty-state"><strong>No matching records.</strong><span>Search results will arrive with their source lineage intact.</span></div>';
+    return;
+  }
+  const visible = records.slice(0, MAX_REVIEW_RENDER);
+  $('#recordList').innerHTML = visible.map((record) => {
+    const digest = recordDigest(record);
+    const status = state.dossier.decisions[digest] || IDENTITY_STATUS.UNREVIEWED;
+    const cluster = clusterFor(digest);
+    const comparison = cluster?.comparisons?.find((item) => item.left === digest || item.right === digest);
+    const amount = Number.isSafeInteger(record.amount_cents) ? formatCurrency(record.amount_cents) : 'amount missing';
+    const targetLabel = targetNameForRecord(record);
+    return `<article class="record-card" data-record="${escapeHtml(digest)}" data-identity-status="${escapeHtml(status)}">
+      <button class="record-exclude-button" type="button" data-exclude-record="${escapeHtml(digest)}" aria-label="Exclude this record from ordinary exports and committee totals" title="Exclude from ordinary exports; keep in audit trail" ${status === IDENTITY_STATUS.EXCLUDED ? 'disabled' : ''}>×</button>
+      <div class="record-main">
+        <div class="record-person"><strong>${escapeHtml(recordName(record))}</strong><small>${escapeHtml([record.address, record.city, record.state, record.zip].filter(Boolean).join(' · '))}</small></div>
+        <div class="record-committee"><strong>${escapeHtml(recordCommittee(record))}</strong><small>${escapeHtml([record.office, record.election || record.cycle, record.contribution_date].filter(Boolean).join(' · '))}</small></div>
+        <div class="record-amount"><strong>${escapeHtml(amount)}</strong><small>${escapeHtml(record.contribution_type || record.amendment_status || '')}</small></div>
+        <div class="record-actions">
+          ${Object.values(IDENTITY_STATUS).filter((choice) => choice !== IDENTITY_STATUS.EXCLUDED).map((choice) => `<button class="decision-button" type="button" data-decision="${choice}" data-digest="${escapeHtml(digest)}" ${choice === status ? 'disabled' : ''}>${escapeHtml(identityStatusLabel(choice))}</button>`).join('')}
+        </div>
+      </div>
+      <div class="record-lineage">
+        <span class="identity-state" data-state="${escapeHtml(status)}">${escapeHtml(identityStatusLabel(status))}</span>
+        ${targetLabel ? ` · <span class="target-lineage">target ${escapeHtml(targetLabel)}</span>` : ''}
+        · ${escapeHtml(record.source_family)} / ${escapeHtml(record.source_instance_id || record.source_instance)}
+        · ${escapeHtml(record.evidence_status || 'OBSERVED')}
+        · digest ${escapeHtml(digest.slice(0, 18))}…
+        ${comparison ? `<span class="record-reasons"> · suggested: ${escapeHtml(comparison.reasons.join(', ') || 'weak shared fields')}${comparison.cautions.length ? `; caution: ${escapeHtml(comparison.cautions.join(', '))}` : ''}</span>` : ''}
+      </div>
+    </article>`;
+  }).join('') + (records.length > visible.length ? `<div class="coverage-warning">Showing the first ${visible.length} of ${records.length} filtered records after sorting. Narrow the review filter to inspect the remainder.</div>` : '');
+  $$('[data-decision]').forEach((button) => button.addEventListener('click', () => {
+    try {
+      state.dossier = setIdentityDecision(state.dossier, button.dataset.digest, button.dataset.decision);
+      markDirty();
+      renderReview();
+      renderLedger();
+      renderCampaign();
+      renderReceipts();
+    } catch (error) {
+      toast(humanError(error), 'error');
+    }
+  }));
+  $$('[data-exclude-record]').forEach((button) => button.addEventListener('click', () => {
+    try {
+      state.dossier = setIdentityDecision(state.dossier, button.dataset.excludeRecord, IDENTITY_STATUS.EXCLUDED, 'Excluded from ordinary exports and committee totals by operator. Evidence retained.');
+      markDirty();
+      renderReview();
+      renderLedger();
+      renderCampaign();
+      renderReceipts();
+      toast('Record excluded from ordinary exports and totals. The evidence remains in the dossier and forensic exports.');
+    } catch (error) {
+      toast(humanError(error), 'error');
+    }
+  }));
+}
+
+function exportCampaignDeputyCommitteeCsv(group) {
+  const identity = group.records.find((record) => record.committee_id || record.fec_committee_id || record.raw_source_row?.committee_id);
+  const suffix = identity?.committee_id || identity?.fec_committee_id || identity?.raw_source_row?.committee_id || group.cycle || 'committee';
+  const filename = `${safeFilename(group.committee)}-${safeFilename(suffix)}-campaign-deputy-giving-history.csv`;
+  download(filename, campaignDeputyGivingHistoryCsv(group.records), 'text/csv;charset=utf-8');
+  addReceipt({
+    schema: 'td613.giving.export-receipt/v1',
+    at: new Date().toISOString(),
+    kind: 'CAMPAIGN_DEPUTY_GIVING_HISTORY_COMMITTEE_CSV',
+    dossier_id: state.dossier.id,
+    committee: group.committee,
+    record_count: group.records.length,
+    one_committee_per_import: true
+  }, 'export');
+  toast(`${group.records.length} identity-confirmed record${group.records.length === 1 ? '' : 's'} prepared in Campaign Deputy's official Giving History format for ${group.committee}.`);
+}
+
+function exportCampaignDeputyBundle(records, { preparedBatch = null, targetMode = 'DOSSIER_CONFIRMED_RECORDS', title = state.dossier.title } = {}) {
+  const bundle = buildCampaignDeputyGivingHistoryBundle({ records, preparedBatch, targetMode, title });
+  download(bundle.filename, bundle.bytes, 'application/zip');
+  addReceipt({
+    schema: 'td613.giving.export-receipt/v1',
+    at: new Date().toISOString(),
+    kind: 'CAMPAIGN_DEPUTY_GIVING_HISTORY_COMMITTEE_BUNDLE',
+    dossier_id: state.dossier.id,
+    record_count: records.length,
+    committee_file_count: bundle.partitions.length,
+    batch_id: preparedBatch?.batch_id || null,
+    external_mutation: false
+  }, 'export');
+  return bundle;
+}
+
+function renderLedger() {
+  const groups = committeeLedger(state.dossier);
+  const total = groups.reduce((sum, group) => sum + group.amount_cents, 0);
+  const deterministicTotal = groups.reduce((sum, group) => sum + group.deterministic_amount_cents, 0);
+  const provisionalTotal = groups.reduce((sum, group) => sum + group.provisional_amount_cents, 0);
+  const recordCount = groups.reduce((sum, group) => sum + group.records.length, 0);
+  $('#ledgerCount').textContent = String(groups.length);
+  $('#confirmedTotal').textContent = formatCurrency(total);
+  $('#confirmedRecordCount').textContent = `${recordCount} identity-confirmed record${recordCount === 1 ? '' : 's'}`;
+  $('#confirmedTotalBreakdown').textContent = `Deterministic-lineage ${formatCurrency(deterministicTotal)} · provisional-lineage ${formatCurrency(provisionalTotal)}`;
+  $('#filingTotalState').textContent = provisionalTotal
+    ? 'Identity confirmed · filing total provisional'
+    : groups.length ? 'Identity confirmed · filing totals deterministic within retrieved receipts' : 'No filing total yet';
+  $('#filingTotalState').dataset.provisional = provisionalTotal ? 'true' : 'false';
+  if (!groups.length) {
+    $('#committeeLedger').innerHTML = '<div class="empty-state"><strong>No identity-confirmed giving.</strong><span>Committee totals remain asleep until you confirm record identity.</span></div>';
+    return;
+  }
+  $('#committeeLedger').innerHTML = groups.map((group, index) => `<article class="committee-card">
+    <div class="committee-summary">
+      <strong>${escapeHtml(group.committee)}</strong>
+      <span class="money">${escapeHtml(formatCurrency(group.amount_cents))}</span>
+      <b class="committee-filing-state" data-provisional="${group.provisional ? 'true' : 'false'}">${group.provisional ? 'IDENTITY CONFIRMED · FILING TOTAL PROVISIONAL' : 'IDENTITY CONFIRMED · DETERMINISTIC WITHIN RECEIPTS'}</b>
+      <small>${escapeHtml([group.jurisdiction, group.office, group.cycle].filter(Boolean).join(' · '))} · ${group.records.length} identity-confirmed</small>
+      <small class="committee-total-breakdown">Deterministic-lineage ${escapeHtml(formatCurrency(group.deterministic_amount_cents))} · provisional-lineage ${escapeHtml(formatCurrency(group.provisional_amount_cents))}</small>
+      <button class="button committee-cd-export" type="button" data-cd-committee-index="${index}">CD Giving History .csv</button>
+    </div>
+    <div class="committee-records">${group.records.map((record) => `${escapeHtml(record.contribution_date || 'date missing')} · ${escapeHtml(formatCurrency(record.amount_cents || 0))} · ${escapeHtml(record.source_family)}${targetNameForRecord(record) ? ` · ${escapeHtml(targetNameForRecord(record))}` : ''}`).join('<br>')}</div>
+  </article>`).join('');
+  $$('[data-cd-committee-index]').forEach((button) => button.addEventListener('click', () => {
+    const group = groups[Number(button.dataset.cdCommitteeIndex)];
+    if (!group) return;
+    try {
+      exportCampaignDeputyCommitteeCsv(group);
+    } catch (error) {
+      toast(humanError(error), 'error');
+    }
+  }));
+}
+
+async function exportEncrypted() {
+  const passphrase = $('#vaultPassphrase').value;
+  if (passphrase.length < 12) {
+    switchView('vault');
+    $('#vaultPassphrase').focus();
+    return toast('Enter the separate vault passphrase before encrypted export.', 'error');
+  }
+  try {
+    updateDossierFromForm();
+    const envelope = await encryptDossier(state.dossier, passphrase);
+    download(`${safeFilename(state.dossier.title)}.encrypted.json`, JSON.stringify(envelope, null, 2), 'application/json');
+    addReceipt({ schema: 'td613.giving.export-receipt/v1', at: new Date().toISOString(), kind: 'ENCRYPTED_JSON', dossier_id: state.dossier.id, envelope_digest: envelope.digest }, 'export');
+    toast('Encrypted recovery export prepared.');
+  } catch (error) {
+    toast(humanError(error), 'error');
+  }
+}
+
+async function syncVault({ mergeParentVersionIds = [], operation = 'vault.write' } = {}) {
+  const passphrase = $('#vaultPassphrase').value;
+  if (passphrase.length < 12) {
+    switchView('vault');
+    $('#vaultPassphrase').focus();
+    throw new Error('Enter a separate vault passphrase of at least 12 characters.');
+  }
+  updateDossierFromForm();
+  const envelope = await encryptDossier(state.dossier, passphrase);
+  const hostedPayload = toHostedVaultPayload(envelope, {
+    parentVersionId: mergeParentVersionIds.length ? null : state.dossier.vault_head_version_id || null,
+    mergeParentVersionIds,
+    custodyMode: state.dossier.custody
+  });
+  const result = await api.call(operation, hostedPayload, {
+    mutation: true,
+    purpose: mergeParentVersionIds.length ? 'record human-reconciled encrypted dossier branch' : 'write encrypted dossier branch'
+  });
+  const data = dataOf(result);
+  addReceipt(receiptOf(result), data?.conflict ? 'conflict' : 'vault');
+  if (data?.conflict || data?.branches?.length > 1) {
+    state.vaultVersions = data.branches || data.versions || (data.head_version_ids || []).map((version_id) => ({ version_id, branch_head: true }));
+    renderVaultVersions();
+    $('#conflictPanel').hidden = false;
+    $('#saveState').textContent = 'parallel branch';
+    toast('A parallel vault branch was preserved for human reconciliation.', 'error');
+    return;
+  }
+  state.dossier = {
+    ...state.dossier,
+    version: state.dossier.version + 1,
+    ancestry: [envelope.digest],
+    vault_head_version_id: data?.version_id || envelope.version_id,
+    updated_at: new Date().toISOString()
+  };
+  if (state.dossier.custody === CUSTODY_MODE.HYBRID && state.store) await state.store.writeDossier(state.dossier);
+  state.dirty = false;
+  $('#saveState').textContent = state.dossier.custody === CUSTODY_MODE.HYBRID ? 'hybrid synced' : 'vault saved';
+  toast('Encrypted dossier branch stored; plaintext remained in this browser.');
+  await listVaultVersions();
+}
+
+async function listVaultVersions() {
+  try {
+    const result = await api.call('vault.list', { dossier_id: state.dossier.id }, { mutation: false });
+    const data = dataOf(result);
+    state.vaultVersions = Array.isArray(data) ? data : data?.versions || [];
+    addReceipt(receiptOf(result), 'vault');
+    renderVaultVersions();
+  } catch (error) {
+    toast(humanError(error), 'error');
+  }
+}
+
+function renderVaultVersions() {
+  const versions = state.vaultVersions || [];
+  if (!versions.length) {
+    $('#vaultVersions').innerHTML = '<span class="muted">No hosted versions loaded.</span>';
+    $('#conflictPanel').hidden = true;
+    return;
+  }
+  $('#vaultVersions').innerHTML = versions.map((version) => {
+    const versionId = version.version_id || version.digest || version.envelope_digest;
+    return `<div class="version-item">
+      <span class="state-badge">v${escapeHtml(version.version || version.dossier_version || '?')}</span>
+      <span><strong>${escapeHtml(String(versionId || '').slice(0, 24))}…</strong><small>${escapeHtml(version.created_at || version.updated_at || '')}</small></span>
+      <button class="mini-button" type="button" data-vault-open="${escapeHtml(versionId)}">Open</button>
+    </div>`;
+  }).join('');
+  $$('[data-vault-open]').forEach((button) => button.addEventListener('click', () => openVaultVersion(button.dataset.vaultOpen)));
+  const branches = versions.filter((version) => version.conflict || version.branch_head);
+  $('#conflictPanel').hidden = branches.length < 2;
+  $('#conflictActions').innerHTML = branches.map((version) => {
+    const versionId = version.version_id || version.digest || version.envelope_digest;
+    return `<button class="button" type="button" data-resolve-branch="${escapeHtml(versionId)}">Use ${escapeHtml(String(versionId).slice(0, 10))}… as reconciled parent</button>`;
+  }).join('');
+  $$('[data-resolve-branch]').forEach((button) => button.addEventListener('click', () => resolveVaultConflict(button.dataset.resolveBranch)));
+}
+
+async function openVaultVersion(versionId) {
+  const passphrase = $('#vaultPassphrase').value;
+  if (passphrase.length < 12) return toast('Enter the separate vault passphrase first.', 'error');
+  try {
+    const result = await api.call('vault.read', { dossier_id: state.dossier.id, version_id: versionId }, { mutation: false });
+    const data = dataOf(result);
+    const envelope = fromHostedVaultRow(data?.envelope || data);
+    const dossier = await decryptDossier(envelope, passphrase);
+    state.dossier = { search_targets: [], active_target_id: null, ...dossier };
+    state.dirty = false;
+    state.holdReview = false;
+    state.selectedPersonId = null;
+    state.campaignTargetId = null;
+    resetReviewControls();
+    hydrateForm();
+    renderAll();
+    addReceipt(receiptOf(result), 'vault');
+    toast('Encrypted version opened in browser memory.');
+    return true;
+  } catch (error) {
+    toast(humanError(error), 'error');
+    return false;
+  }
+}
+
+async function resolveVaultConflict(chosenVersionId) {
+  const branchVersionIds = state.vaultVersions
+    .filter((version) => version.conflict || version.branch_head)
+    .map((version) => version.version_id || version.digest || version.envelope_digest)
+    .filter(Boolean);
+  try {
+    const opened = await openVaultVersion(chosenVersionId);
+    if (!opened) return;
+    state.dossier = {
+      ...state.dossier,
+      version: state.dossier.version + 1,
+      vault_head_version_id: null,
+      updated_at: new Date().toISOString()
+    };
+    await syncVault({ mergeParentVersionIds: branchVersionIds, operation: 'vault.resolve-conflict' });
+    markDirty();
+    $('#conflictPanel').hidden = true;
+    toast('Reconciliation ancestry recorded. Competing ciphertext versions were preserved.');
+  } catch (error) {
+    toast(humanError(error), 'error');
+  }
+}
+
+function personDisplay(person) {
+  const name = compactText(person.display_name || person.name?.displayName || person.name?.fullName || [person.firstName, person.lastName].filter(Boolean).join(' ') || person.name);
+  return name || `Person ${person.id}`;
+}
+
+async function loadPeoplePage(reset = true) {
+  try {
+    const continuation = reset ? null : state.peopleContinuation;
+    const result = await api.call('campaign-deputy.people-page', { last_evaluated_key: continuation }, { mutation: false });
+    const data = dataOf(result);
+    const people = data?.people || data?.items || data?.records || [];
+    const current = reset ? [] : state.dossier.campaign_deputy.people_index;
+    const map = new Map(current.map((person) => [person.id, person]));
+    people.forEach((person) => { if (person?.id) map.set(person.id, person); });
+    state.dossier.campaign_deputy.people_index = [...map.values()];
+    state.peopleContinuation = data?.continuation || data?.lastEvaluatedKey || null;
+    addReceipt(receiptOf(result), 'campaign-deputy-index');
+    markDirty();
+    renderPeopleIndex();
+    toast(`${people.length} Campaign Deputy people added to this dossier index.`);
+  } catch (error) {
+    toast(humanError(error), 'error');
+  }
+}
+
+function renderPeopleIndex() {
+  const phrase = compactText($('#peopleFilter')?.value).toUpperCase();
+  const people = (state.dossier.campaign_deputy?.people_index || []).filter((person) =>
+    !phrase || [personDisplay(person), person.primaryEmailAddress, person.email, person.primaryPhone, person.phone]
+      .some((value) => compactText(value).toUpperCase().includes(phrase))
+  );
+  if (!people.length) {
+    $('#peopleIndex').innerHTML = '<span class="muted">No Campaign Deputy people match the loaded dossier index.</span>';
+  } else {
+    $('#peopleIndex').innerHTML = people.slice(0, 250).map((person) => `<label class="person-option">
+      <input type="radio" name="campaign_person" value="${escapeHtml(person.id)}" ${state.selectedPersonId === person.id ? 'checked' : ''}>
+      <span><strong>${escapeHtml(personDisplay(person))}</strong><small>${escapeHtml(person.primaryEmailAddress || person.email || '')} · ${escapeHtml(person.primaryPhone || person.phone || '')}</small></span>
+      <em class="state-badge">exact ID</em>
+    </label>`).join('');
+    $$('#peopleIndex input[type="radio"]').forEach((input) => input.addEventListener('change', () => {
+      state.selectedPersonId = input.value;
+      updateCampaignButtons();
+    }));
+  }
+  $('#morePeopleButton').hidden = !state.peopleContinuation;
+  updateCampaignButtons();
+}
+
+function confirmedRecords(targetId = null) {
+  return state.dossier.records.filter((record) =>
+    state.dossier.decisions[recordDigest(record)] === IDENTITY_STATUS.CONFIRMED &&
+    (!targetId || recordBelongsToTarget(record, targetId))
+  );
+}
+
+function renderCampaign() {
+  renderTargetSelectors();
+  renderPeopleIndex();
+  const targetId = state.campaignTargetId;
+  const records = targetId ? confirmedRecords(targetId) : [];
+  const groups = targetId ? committeeLedger(state.dossier, targetId) : [];
+  const currentRecord = $('#createRecordSelect')?.value;
+  const currentCommittee = $('#committeeSelect')?.value;
+  $('#createRecordSelect').innerHTML = '<option value="">Select an identity-confirmed record</option>' + records.map((record) =>
+    `<option value="${escapeHtml(recordDigest(record))}">${escapeHtml(recordName(record))} · ${escapeHtml(recordCommittee(record))}</option>`
+  ).join('');
+  if (records.some((record) => recordDigest(record) === currentRecord)) $('#createRecordSelect').value = currentRecord;
+  $('#committeeSelect').innerHTML = '<option value="">Select an identity-confirmed committee</option>' + groups.map((group) =>
+    `<option value="${escapeHtml(group.committee)}">${escapeHtml(group.committee)} · ${escapeHtml(formatCurrency(group.amount_cents))} · ${group.records.length} records</option>`
+  ).join('');
+  if (groups.some((group) => group.committee === currentCommittee)) $('#committeeSelect').value = currentCommittee;
+  updateCampaignButtons();
+  const receipts = state.dossier.campaign_deputy?.write_receipts || [];
+  $('#campaignReceipts').innerHTML = receipts.map((receipt) => receiptMarkup(receipt)).join('');
+}
+
+function updateCampaignButtons() {
+  const committee = $('#committeeSelect')?.value;
+  const targetId = state.campaignTargetId;
+  const groups = targetId ? committeeLedger(state.dossier, targetId) : [];
+  $('#linkExistingButton').disabled = !state.selectedPersonId || !committee || !targetId;
+  $('#syncTargetButton').disabled = !state.selectedPersonId || !targetId || groups.length === 0;
+  $('#prepareGivingHistoryButton').disabled = !state.selectedPersonId || !targetId || confirmedRecords(targetId).length === 0;
+  $('#createContactButton').disabled = !$('#createRecordSelect')?.value || !committee || !targetId;
+}
+
+function givingHistoryPackageRecord(record) {
+  const importRow = campaignDeputyGivingHistoryRow(record);
+  const sourceIds = record.source_native_ids || {};
+  const committeeName = compactText(record.committee || record.committee_name || record.candidate || record.candidate_name || '');
+  return {
+    record_digest: recordDigest(record),
+    identity_status: 'CONFIRMED',
+    committee_name: committeeName || null,
+    committee_id: record.committee_id || record.fec_committee_id || record.raw_source_row?.committee_id || record.candidate_or_committee_id || sourceIds.committee_id || sourceIds.candidate_or_committee_id || null,
+    contribution_date: record.contribution_date,
+    amount_cents: record.amount_cents,
+    contributor: {
+      first_name: importRow[0],
+      last_name: importRow[1],
+      organization_name: importRow[2],
+      address_line_1: importRow[3],
+      address_city: importRow[4],
+      address_state: importRow[5],
+      address_zip: importRow[6],
+      occupation: importRow[7],
+      employer: importRow[8]
+    },
+    cycle: record.cycle,
+    election: record.election,
+    election_type: /primary/i.test(record.election || '') ? 'Primary' : /general/i.test(record.election || '') ? 'General' : /special/i.test(record.election || '') ? 'Special' : null,
+    office: record.office,
+    jurisdiction: record.jurisdiction,
+    source_instance_id: record.source_instance_id,
+    source_native_ids: record.source_native_ids,
+    source_locator: record.source_locator,
+    retrieved_at: record.retrieved_at,
+    query_digest: record.query_digest,
+    amendment_status: record.amendment_status,
+    lineage: record.lineage
+  };
+}
+
+async function prepareGivingHistoryBatch() {
+  const targetId = state.campaignTargetId;
+  const target = targetById(targetId);
+  const records = targetId ? confirmedRecords(targetId) : [];
+  if (!state.selectedPersonId || !target || !records.length) return;
+  if (!window.confirm(`Prepare a held Campaign Deputy Giving History package for ${target.name} with ${records.length} confirmed individual gift${records.length === 1 ? '' : 's'}? This will not write to Campaign Deputy.`)) return;
+  try {
+    const result = await api.call('campaign-deputy.prepare-giving-history', {
+      dossier_id: state.dossier.id,
+      person_id: state.selectedPersonId,
+      dossier_target_id: targetId,
+      confirmed: true,
+      records: records.map(givingHistoryPackageRecord)
+    }, { mutation: false, purpose: 'prepare held Campaign Deputy Giving History batch without external write' });
+    const batch = dataOf(result);
+    const bundle = exportCampaignDeputyBundle(records, { preparedBatch: batch, targetMode: 'SINGLE_EXACT_PERSON', title: `${state.dossier.title}-${target.name}` });
+    appendCampaignReceipt({
+      schema: 'td613.giving.campaign-deputy-giving-history-stage-receipt/v1',
+      at: new Date().toISOString(),
+      action: 'GIVING_HISTORY_BATCH_PREPARED_AND_HELD',
+      batch_id: batch.batch_id,
+      record_count: batch.record_count,
+      committee_count: batch.committees?.length || 0,
+      external_mutation: false,
+      search_target_id: targetId
+    });
+    toast(`${batch.record_count} individual Giving History record${batch.record_count === 1 ? '' : 's'} prepared in ${bundle.partitions.length} committee import file${bundle.partitions.length === 1 ? '' : 's'} and held; Campaign Deputy was not mutated.`);
+  } catch (error) {
+    toast(humanError(error), 'error');
+  }
+}
+
+async function prepareMultiContactGivingHistory(event) {
+  const exactTargets = Array.isArray(event?.detail?.targets) ? event.detail.targets : [];
+  const targets = exactTargets.map((target) => ({
+    person_id: target.person_id,
+    dossier_target_id: target.dossier_target_id,
+    exact_match: true,
+    records: confirmedRecords(target.dossier_target_id)
+  })).filter((target) => target.records.length > 0);
+  if (!targets.length) return toast('No exact Campaign Deputy contacts also have confirmed Giving History records.', 'error');
+  const recordCount = targets.reduce((sum, target) => sum + target.records.length, 0);
+  if (!window.confirm(`Prepare a held Campaign Deputy Giving History bundle for ${targets.length} exact contact${targets.length === 1 ? '' : 's'} and ${recordCount} confirmed gift${recordCount === 1 ? '' : 's'}? This will not write to Campaign Deputy.`)) return;
+  try {
+    const result = await api.call('campaign-deputy.prepare-giving-history', {
+      dossier_id: state.dossier.id,
+      confirmed: true,
+      targets: targets.map((target) => ({
+        person_id: target.person_id,
+        dossier_target_id: target.dossier_target_id,
+        exact_match: true,
+        records: target.records.map(givingHistoryPackageRecord)
+      }))
+    }, { mutation: false, purpose: 'prepare held multi-contact Campaign Deputy Giving History batch without external write' });
+    const batch = dataOf(result);
+    const records = targets.flatMap((target) => target.records);
+    const bundle = exportCampaignDeputyBundle(records, { preparedBatch: batch, targetMode: 'MULTI_CONTACT_EXACT_MATCH_BATCH' });
+    appendCampaignReceipt({
+      schema: 'td613.giving.campaign-deputy-giving-history-stage-receipt/v1',
+      at: new Date().toISOString(),
+      action: 'MULTI_CONTACT_GIVING_HISTORY_BATCH_PREPARED_AND_HELD',
+      batch_id: batch.batch_id,
+      target_count: batch.target_count,
+      record_count: batch.record_count,
+      committee_count: bundle.partitions.length,
+      external_mutation: false
+    });
+    toast(`${batch.target_count} exact contacts and ${batch.record_count} Giving History records prepared and held across ${bundle.partitions.length} committee files.`);
+  } catch (error) {
+    toast(humanError(error), 'error');
+  }
+}
+
+function appendCampaignReceipt(receipt, { render = true } = {}) {
+  state.dossier.campaign_deputy.write_receipts = [...(state.dossier.campaign_deputy.write_receipts || []), receipt];
+  addReceipt(receipt, 'campaign-deputy-write');
+  markDirty();
+  if (render) renderCampaign();
+}
+
+async function linkPersonCommittee(personId, committee, targetId) {
+  const result = await api.call('campaign-deputy.link-existing', {
+    dossier_id: state.dossier.id,
+    person_id: personId,
+    committee,
+    confirmed: true
+  }, { mutation: true, purpose: `link exact Campaign Deputy person to ${targetId || 'reviewed target'} committee list` });
+  const receipt = receiptOf(result) || dataOf(result)?.receipt || {
+    at: new Date().toISOString(), event: 'CAMPAIGN_DEPUTY_LINKED', person_id: personId, committee, search_target_id: targetId
+  };
+  appendCampaignReceipt({ ...receipt, search_target_id: targetId }, { render: false });
+  return receipt;
+}
+
+async function syncTargetCommittees(personId, targetId, { skipCommittee = null } = {}) {
+  const groups = committeeLedger(state.dossier, targetId).filter((group) => group.committee !== skipCommittee);
+  let synced = 0;
+  for (const group of groups) {
+    try {
+      await linkPersonCommittee(personId, group.committee, targetId);
+      synced += 1;
+    } catch (error) {
+      return { synced, total: groups.length, error };
+    }
+  }
+  return { synced, total: groups.length, error: null };
+}
+
+async function linkExisting() {
+  const committee = $('#committeeSelect').value;
+  const targetId = state.campaignTargetId;
+  if (!state.selectedPersonId || !committee || !targetId) return;
+  try {
+    await linkPersonCommittee(state.selectedPersonId, committee, targetId);
+    renderCampaign();
+    toast('Exact Campaign Deputy person linked idempotently to the selected reviewed committee.');
+  } catch (error) {
+    toast(humanError(error), 'error');
+  }
+}
+
+async function syncSelectedTarget() {
+  const targetId = state.campaignTargetId;
+  const target = targetById(targetId);
+  const groups = targetId ? committeeLedger(state.dossier, targetId) : [];
+  if (!state.selectedPersonId || !target || !groups.length) return;
+  if (!window.confirm(`Sync all ${groups.length} reviewed committee relationship${groups.length === 1 ? '' : 's'} for ${target.name} to the exact selected Campaign Deputy person?`)) return;
+  const result = await syncTargetCommittees(state.selectedPersonId, targetId);
+  renderCampaign();
+  if (result.error) return toast(`${result.synced}/${result.total} committee relationships synced before Campaign Deputy held: ${humanError(result.error)}`, 'error');
+  toast(`${result.synced} reviewed committee relationship${result.synced === 1 ? '' : 's'} synced to the exact Campaign Deputy person.`);
+}
+
+function contactPayload(record, fields) {
+  const parsed = record.contributor_name_parsed || {};
+  const fallbackTokens = recordName(record).split(/\s+/).filter(Boolean);
+  const include = (field) => fields.includes(field);
+  const person = {};
+  if (include('name')) person.name = {
+    givenName: parsed.given || fallbackTokens[0] || null,
+    middleName: parsed.middle || null,
+    familyName: parsed.family || fallbackTokens.slice(1).join(' ') || fallbackTokens[0] || null,
+    suffix: parsed.suffix || null
+  };
+  if (include('email')) person.primaryEmailAddress = record.email || record.email_address || null;
+  if (include('phone')) person.primaryPhone = record.phone || record.phone_number || null;
+  if (include('employer')) person.employer = record.employer || null;
+  if (include('occupation')) person.occupation = record.occupation || null;
+  if (include('city_state_zip') || include('street_address')) {
+    person.primaryAddress = {
+      deliveryLine1: include('street_address') ? record.address || null : null,
+      city: include('city_state_zip') ? record.city || null : null,
+      stateProvince: include('city_state_zip') ? record.state || null : null,
+      postalCode: include('city_state_zip') ? record.zip || null : null
+    };
+  }
+  return person;
+}
+
+function campaignDeputySelectedFields(fields) {
+  const selected = new Set(fields);
+  const mapped = ['name'];
+  if (selected.has('email')) mapped.push('primaryEmailAddress');
+  if (selected.has('phone')) mapped.push('primaryPhone');
+  if (selected.has('employer')) mapped.push('employer');
+  if (selected.has('occupation')) mapped.push('occupation');
+  if (selected.has('city_state_zip') || selected.has('street_address')) mapped.push('primaryAddress');
+  return [...new Set(mapped)];
+}
+
+async function createContact() {
+  const digest = $('#createRecordSelect').value;
+  const committee = $('#committeeSelect').value;
+  const targetId = state.campaignTargetId;
+  const target = targetById(targetId);
+  const record = state.dossier.records.find((item) => recordDigest(item) === digest);
+  if (!record || state.dossier.decisions[digest] !== IDENTITY_STATUS.CONFIRMED || !committee || !targetId || !recordBelongsToTarget(record, targetId)) return;
+  if (record.contributor_name_parsed?.kind === 'ORGANIZATION') return toast('This endpoint creates people, not organization contacts. Withhold or link an existing exact person instead.', 'error');
+  const fields = $$('#createFieldChoices input:checked').map((input) => input.value);
+  if (!fields.includes('name')) return toast('A name is required for explicit contact creation.', 'error');
+  const groups = committeeLedger(state.dossier, targetId);
+  if (!window.confirm(`Create a new Campaign Deputy person for ${target?.name || recordName(record)} after duplicate review, then sync this contact to ${groups.length} reviewed committee relationship${groups.length === 1 ? '' : 's'}?`)) return;
+  try {
+    const result = await api.call('campaign-deputy.create-confirmed', {
+      dossier_id: state.dossier.id,
+      record_digest: digest,
+      selected_fields: campaignDeputySelectedFields(fields),
+      person: contactPayload(record, fields),
+      committee,
+      confirmed: true,
+      duplicate_reviewed: true,
+      create_new_confirmed: true
+    }, { mutation: true, purpose: 'explicitly create Campaign Deputy person and seed reviewed target committee link' });
+    const data = dataOf(result);
+    const receipt = receiptOf(result) || data?.receipt;
+    const createdPersonId = data?.person?.id || data?.person?.personId || data?.personId || null;
+    appendCampaignReceipt({ ...(receipt || { at: new Date().toISOString(), event: 'CAMPAIGN_DEPUTY_CREATED', record_digest: digest, committee }), search_target_id: targetId }, { render: false });
+    let additional = { synced: 0, total: 0, error: null };
+    if (createdPersonId) {
+      state.selectedPersonId = createdPersonId;
+      additional = await syncTargetCommittees(createdPersonId, targetId, { skipCommittee: committee });
+    }
+    renderCampaign();
+    if (additional.error) return toast(`New Campaign Deputy person created; ${1 + additional.synced}/${1 + additional.total} reviewed committee relationships synced before a hold: ${humanError(additional.error)}`, 'error');
+    toast(`New Campaign Deputy person created and synced across ${1 + additional.synced} reviewed committee relationship${1 + additional.synced === 1 ? '' : 's'}.`);
+  } catch (error) {
+    toast(humanError(error), 'error');
+  }
+}
+
+async function withholdWriteback() {
+  try {
+    const result = await api.call('campaign-deputy.withhold', {
+      dossier_id: state.dossier.id,
+      reviewed_at: new Date().toISOString()
+    }, { mutation: true, purpose: 'record explicit Campaign Deputy withhold' });
+    appendCampaignReceipt({ ...(receiptOf(result) || { schema: 'td613.giving.writeback-receipt/v1', at: new Date().toISOString(), action: 'WITHHOLD', dossier_id: state.dossier.id }), search_target_id: state.campaignTargetId });
+    toast('WITHHOLD recorded; Campaign Deputy was not mutated.');
+  } catch (error) {
+    toast(humanError(error), 'error');
+  }
+}
+
+function receiptMarkup(receipt) {
+  const kind = /error|fail/i.test(receipt?.status || receipt?.client_kind || '') ? 'error' : /withhold/i.test(receipt?.action || receipt?.status || receipt?.client_kind || '') ? 'withheld' : 'normal';
+  const title = receipt?.action || receipt?.event || receipt?.status || receipt?.schema || 'Operator receipt';
+  return `<article class="receipt-card" data-kind="${kind}"><strong>${escapeHtml(title)}</strong><pre>${escapeHtml(JSON.stringify(receipt, null, 2))}</pre></article>`;
+}
+
+function renderReceipts() {
+  const receipts = state.dossier.operator_receipts || [];
+  $('#receiptList').innerHTML = receipts.length
+    ? [...receipts].reverse().map(receiptMarkup).join('')
+    : '<div class="empty-state"><strong>No receipts yet.</strong><span>Retrieval and operator decisions will be recorded here without donor search inputs.</span></div>';
+}
+
+function renderAll() {
+  renderTargetSelectors();
+  renderSourceProgress();
+  renderReview();
+  renderLedger();
+  renderCampaign();
+  renderReceipts();
+  $('#saveState').textContent = state.dirty ? 'unsaved' : 'saved';
+  const sourceStates = Object.values(state.dossier.source_states || {});
+  const running = sourceStates.filter((item) => item.status === 'RUNNING').length;
+  const returned = sourceStates.filter((item) => ['COMPLETE', 'PARTIAL'].includes(item.status)).length;
+  const confirmed = Object.values(state.dossier.decisions || {})
+    .filter((status) => status === IDENTITY_STATUS.CONFIRMED).length;
+  $('#wakeSourceState').textContent = running
+    ? `${running} source${running === 1 ? '' : 's'} active`
+    : returned
+      ? `${returned} source${returned === 1 ? '' : 's'} returned`
+      : 'sources quiet';
+  $('#wakeIdentityState').textContent = `${confirmed} identity confirmed`;
+  $('#wakeCustodyState').textContent = `${String(state.dossier.custody || CUSTODY_MODE.LOCAL).toLowerCase()} custody`;
+  updateField();
+}
+
+function switchView(name) {
+  $$('.tab').forEach((tab) => tab.classList.toggle('active', tab.dataset.view === name));
+  $$('[data-view-panel]').forEach((panel) => {
+    const active = panel.dataset.viewPanel === name;
+    panel.classList.toggle('active', active);
+    panel.hidden = !active;
+  });
+  updateField(name);
+  if (window.matchMedia('(max-width: 760px)').matches) {
+    $('#givingControlRail').classList.remove('mobile-open');
+    $('#mobileControlToggle').setAttribute('aria-expanded', 'false');
+  }
+}
+
+async function readiness() {
+  try {
+    const result = await api.call('readiness', {}, { mutation: false });
+    addReceipt(receiptOf(result) || dataOf(result), 'readiness');
+    switchView('receipts');
+    toast('Giving readiness receipt added.');
+  } catch (error) {
+    toast(humanError(error), 'error');
+  }
+}
+
+async function bootAuthenticated() {
+  sessionOpen();
+  try {
+    await Promise.all([loadRegistry(), renderLocalDossiers()]);
+  } catch (error) {
+    toast(`Signed session opened, but registry readiness is held: ${humanError(error)}`, 'error');
+  }
+  hydrateForm();
+  renderAll();
+}
+
+function bindEvents() {
+  $('#sessionForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const secret = $('#accessSecret').value;
+    $('#sessionMessage').textContent = 'Opening signed session…';
+    try {
+      await api.createSession(secret);
+      $('#accessSecret').value = '';
+      await bootAuthenticated();
+    } catch (error) {
+      $('#accessSecret').value = '';
+      sessionClosed(humanError(error));
+    }
+  });
+  $('#signOutButton').addEventListener('click', async () => {
+    cancelSearch();
+    try { await api.closeSession(); } catch (error) {}
+    state.dossier = createDossier();
+    state.holdReview = false;
+    state.selectedPersonId = null;
+    state.campaignTargetId = null;
+    resetReviewControls();
+    sessionClosed('Signed session closed. Local dossiers remain under browser custody.');
+  });
+  $('#readinessButton').addEventListener('click', readiness);
+  $('#mobileControlToggle').addEventListener('click', () => {
+    const open = $('#givingControlRail').classList.toggle('mobile-open');
+    $('#mobileControlToggle').setAttribute('aria-expanded', String(open));
+  });
+  $('#newDossierButton').addEventListener('click', newDossier);
+  $('#openDossierButton').addEventListener('click', openLocalDossier);
+  $('#saveDossierButton').addEventListener('click', () => saveDossier());
+  $('#searchForm').addEventListener('submit', startSearch);
+  $('#cancelSearchButton').addEventListener('click', cancelSearch);
+  $('#selectAllSources').addEventListener('click', () => {
+    $$('#sourceRegistry input:not(:disabled)').forEach((input) => { input.checked = true; });
+    updateSelectedSourceCount();
+    markDirty();
+  });
+  $('#clearSources').addEventListener('click', () => {
+    $$('#sourceRegistry input').forEach((input) => { input.checked = false; });
+    updateSelectedSourceCount();
+    markDirty();
+  });
+  $$('.tab').forEach((tab) => tab.addEventListener('click', () => switchView(tab.dataset.view)));
+  $('#reviewFilter').addEventListener('change', renderReview);
+  $('#reviewSearch').addEventListener('input', renderReview);
+  $('#reviewTargetFilter').addEventListener('change', () => {
+    state.reviewTargetId = $('#reviewTargetFilter').value || 'ALL';
+    renderReview();
+  });
+  $('#holdReviewButton').addEventListener('click', () => {
+    state.holdReview = !state.holdReview;
+    renderHoldState();
+    toast(state.holdReview
+      ? 'Identity Review held. Later searches append as separate contact targets.'
+      : 'Hold released. The next search will replace this Identity Review.');
+  });
+  $$('[data-review-sort]').forEach((button) => button.addEventListener('click', () => setReviewSort(button.dataset.reviewSort)));
+  $('#exactMatchToggle').addEventListener('change', () => markDirty());
+  $('#exportReviewedSummaryButton').addEventListener('click', () => {
+    updateDossierFromForm();
+    const confirmedCount = state.dossier.records.filter((record) => state.dossier.decisions[recordDigest(record)] === IDENTITY_STATUS.CONFIRMED).length;
+    download(`${safeFilename(state.dossier.title)}-reviewed-summary.csv`, reviewedSummaryCsv(state.dossier), 'text/csv;charset=utf-8');
+    addReceipt({ schema: 'td613.giving.export-receipt/v1', at: new Date().toISOString(), kind: 'REVIEWED_SUMMARY_CSV', dossier_id: state.dossier.id, record_count: confirmedCount, excluded_records_omitted: true, raw_fields_omitted: true, donor_query_parameters_omitted: true }, 'export');
+    toast(`Reviewed summary prepared with ${confirmedCount} identity-confirmed record${confirmedCount === 1 ? '' : 's'}; excluded and raw forensic fields were omitted.`);
+  });
+  $('#exportCsvButton').addEventListener('click', () => {
+    updateDossierFromForm();
+    download(`${safeFilename(state.dossier.title)}.csv`, dossierCsv(state.dossier), 'text/csv;charset=utf-8');
+    addReceipt({ schema: 'td613.giving.export-receipt/v1', at: new Date().toISOString(), kind: 'CSV', dossier_id: state.dossier.id, record_count: state.dossier.records.length }, 'export');
+    toast('Forensic CSV prepared with the complete evidence and decision trail, including excluded records.');
+  });
+  $('#exportSpreadsheetButton').addEventListener('click', () => {
+    updateDossierFromForm();
+    const workbook = buildDossierXlsx(state.dossier);
+    download(`${safeFilename(state.dossier.title)}.xlsx`, workbook, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    addReceipt({ schema: 'td613.giving.export-receipt/v1', at: new Date().toISOString(), kind: 'XLSX', dossier_id: state.dossier.id, record_count: state.dossier.records.length }, 'export');
+    toast('Forensic spreadsheet prepared with frozen headers, filters, contact targets, identity state, and source lineage.');
+  });
+  $('#exportCampaignDeputyBundleButton').addEventListener('click', () => {
+    try {
+      updateDossierFromForm();
+      const records = confirmedRecords();
+      const bundle = exportCampaignDeputyBundle(records);
+      toast(`${records.length} identity-confirmed Giving History record${records.length === 1 ? '' : 's'} prepared as ${bundle.partitions.length} Campaign Deputy committee import file${bundle.partitions.length === 1 ? '' : 's'}.`);
+    } catch (error) {
+      toast(humanError(error), 'error');
+    }
+  });
+  $('#exportEncryptedButton').addEventListener('click', exportEncrypted);
+  $('#syncVaultButton').addEventListener('click', () => saveDossier({ forceVault: true }));
+  $('#refreshVaultButton').addEventListener('click', listVaultVersions);
+  $('#campaignTargetSelect').addEventListener('change', () => {
+    const next = $('#campaignTargetSelect').value || null;
+    if (next !== state.campaignTargetId) state.selectedPersonId = null;
+    state.campaignTargetId = next;
+    renderCampaign();
+  });
+  $('#loadPeopleButton').addEventListener('click', () => loadPeoplePage(true));
+  $('#morePeopleButton').addEventListener('click', () => loadPeoplePage(false));
+  $('#peopleFilter').addEventListener('input', renderPeopleIndex);
+  $('#committeeSelect').addEventListener('change', updateCampaignButtons);
+  $('#createRecordSelect').addEventListener('change', updateCampaignButtons);
+  $('#linkExistingButton').addEventListener('click', linkExisting);
+  $('#syncTargetButton').addEventListener('click', syncSelectedTarget);
+  $('#prepareGivingHistoryButton').addEventListener('click', prepareGivingHistoryBatch);
+  window.addEventListener('td613:prepare-campaign-deputy-giving-history', prepareMultiContactGivingHistory);
+  $('#createContactButton').addEventListener('click', createContact);
+  $('#withholdButton').addEventListener('click', withholdWriteback);
+  $('#copyReceiptsButton').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(state.dossier.operator_receipts || [], null, 2));
+      toast('Receipt ledger copied.');
+    } catch (error) { toast('Clipboard access was refused.', 'error'); }
+  });
+  ['dossierTitle', 'searchName', 'searchAliases', 'searchHints', 'dateFrom', 'dateTo'].forEach((id) => {
+    $(`#${id}`).addEventListener('input', () => markDirty());
+  });
+  $('#custodyMode').addEventListener('change', () => {
+    updateDossierFromForm();
+    markDirty({ localAutosave: state.dossier.custody !== CUSTODY_MODE.HOSTED });
+    if (state.dossier.custody === CUSTODY_MODE.HOSTED) toast('Hosted mode will remove this dossier’s local plaintext after its encrypted branch is accepted.');
+    updateField();
+  });
+  document.addEventListener('td613:giving-select-target', (event) => {
+    const targetId = compactText(event.detail?.targetId);
+    if (!targetId || !targetById(targetId)) return;
+    state.reviewTargetId = targetId;
+    if (state.campaignTargetId !== targetId) state.selectedPersonId = null;
+    state.campaignTargetId = targetId;
+    renderTargetSelectors();
+    renderReview();
+    renderCampaign();
+    switchView('review');
+    toast(`${targetById(targetId)?.name || 'Contact'} selected as the active review target.`);
+  });
+}
+
+async function boot() {
+  bindEvents();
+  $('#dateFrom').value = '2000-01-01';
+  $('#dateTo').value = new Date().toISOString().slice(0, 10);
+  try { state.store = await openGivingStore(); } catch (error) { state.store = null; }
+  try {
+    await api.status();
+    await bootAuthenticated();
+  } catch (error) {
+    sessionClosed('Enter the operator access secret to open this private ledger.');
+  }
+}
+
+boot();
+

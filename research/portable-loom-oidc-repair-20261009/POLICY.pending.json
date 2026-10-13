@@ -1,0 +1,45 @@
+{
+  "schema": "td613.loom.server-assay-policy/v0.2",
+  "run_id": "portable-loom-first-receiver-20261009-a2",
+  "protocol_commit": null,
+  "artifact_sha256": "2d9c23bb6ad26430bcf4fd2a52e9aa5e876a1546265a00087cdb7e7e4f1c1872",
+  "expires_at": null,
+  "binding": {
+    "schema": "td613.loom.bound-model-transport/v0.1",
+    "protocol_commit": null,
+    "provider": "GEMINI_GENERATE_CONTENT",
+    "trial_family": "FIRST_CONFIGURED_RECEIVER",
+    "model": "gemini-3.8-flash",
+    "response_model_ids": [
+      "gemini-3.8-flash"
+    ],
+    "credential_env": "GEMINI_API_KEY",
+    "generation_parameters": {
+      "temperature": null,
+      "top_p": null,
+      "thinking_level": "medium"
+    },
+    "limits": {
+      "max_calls": 54,
+      "max_input_tokens_per_call": 200000,
+      "max_output_tokens_per_call": 8192,
+      "max_cost_usd": 10,
+      "timeout_ms": 120000,
+      "max_response_bytes": 2000000
+    },
+    "pricing": {
+      "input_usd_per_million": 0.75,
+      "output_usd_per_million": 3.75,
+      "source": "https://ai.google.dev/gemini-api/docs/pricing",
+      "verified_at": "2026-10-09T07:32:43.725309+00:00"
+    },
+    "authorization": {
+      "record": null,
+      "scope": "54 calls, FIRST_CONFIGURED_RECEIVER only, Gemini 3.8 Flash, USD 10 maximum token charges. No comparison, second provider, retries, tools, retrieval or custody admission."
+    },
+    "tools": "DISABLED",
+    "retrieval": "DISABLED",
+    "retries": 0
+  },
+  "receiver_output_tokens": 8192
+}

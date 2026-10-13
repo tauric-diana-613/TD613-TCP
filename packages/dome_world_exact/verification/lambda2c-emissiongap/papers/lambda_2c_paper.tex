@@ -1,0 +1,719 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage[expansion=false]{microtype}
+\setlength{\emergencystretch}{3em}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\definecolor{forcedc}{RGB}{15,110,86}
+\definecolor{declaredc}{RGB}{24,95,165}
+\definecolor{positedc}{RGB}{170,105,20}
+\definecolor{openc}{RGB}{163,45,45}
+\newcommand{\forced}{\textcolor{forcedc}{\textsc{[forced]}}}
+\newcommand{\declared}{\textcolor{declaredc}{\textsc{[declared]}}}
+\newcommand{\posited}{\textcolor{positedc}{\textsc{[posited]}}}
+\newcommand{\openq}{\textcolor{openc}{\textsc{[open]}}}
+\newcommand{\computed}{\textcolor{forcedc}{\textsc{[computed]}}}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Cx}{\mathbb{C}}
+\newcommand{\tr}{\operatorname{Tr}}
+\newcommand{\KL}{D_{\mathrm{KL}}}
+\newcommand{\Mah}{\mathrm{M}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\Ccal}{\mathcal{C}}
+\newcommand{\Scal}{\mathcal{S}}
+
+\title{\textbf{The Exchange Rate $\lambda = 2c$:\\[2pt] A Conformal Identity, Its Gate, and Its Flip}}
+\author{Echo--Squirrel Research}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The residual--return growth rule contains a single scalar $\lambda$ coupling the information a candidate direction explains to the description length it costs: a direction is adjoined iff $\norm{r}^2_G \ge \lambda \log \Mah(\theta)$. We show that $\lambda$ is not a free knob but a \emph{derived identity}, $\lambda = 2c$, obtained by reading the residual's trace--form norm as a second--order Kullback--Leibler divergence whose Fisher metric is the trace form scaled by a single positive constant $c$ (the conformal scale). The factor $2$ is the inverted $\tfrac12$ of the quadratic term and carries no freedom; the entire residual freedom is $c$. By \v{C}encov's theorem $c$ cannot be removed by any invariance argument, so $c$ (hence $\lambda$) is a \emph{declared} positive scale. We give three named canonicalizations of $c$ --- Jeffreys volume--matching ($c=1$), degree--invariant significance ($c=n$), and a third native to the system's own structure: the frame--shift value $c = \sqrt{1+4C}/(2C)$ read off the eigenframe of the gate ladder $x^2+x=C$. We then resolve which canonicalization the framework selects: the gate is \emph{forced} to the golden level $C=1$ by two derivations from disjoint premises that converge --- the statics (the minimal structure realizing the ternary growth decision is degree two, whose cost--minimal seed is golden) and the dynamics (the golden gate is the terminal firewall image of the engine's degree--raising construction, fixed by the unique self--reproducing keystone $R^2=R+I$). Hence $c=\sqrt5/2$ and $\lambda=\sqrt5$ are the framework's forced \emph{values}, with $\lambda=2c$ the universal identity beneath them. We further show the keystone is itself \emph{derived}, not posited: it is the minimal positive--growth companion at the degree that realises the ternary decision --- equivalently, $\varphi$ is the smallest Perron root of a $2\times2$ primitive non--negative integer matrix --- so the two constitutive features collapse to a single definition and the residual regress terminates at the construction's object--type rather than a free parameter, with the integer normalisation $L_4=7$ an invariant of that keystone --- the trace of its fourth power $R^4$, whose entries are the gate discriminants $\{2,3,5\}=\{F_3,F_4,F_5\}$. We then develop the gate ladder and its \emph{trifurcation}: the self--action of the companion of $x^2+x-C$ has spectrum $\{-\sqrt{1+4C},\,0,\,+\sqrt{1+4C}\}$, and the growth decision \emph{is} this channel selection. The discriminant $D=1+4C$ governs a single \emph{flip} at $C=-\tfrac14$: one sign change that simultaneously inverts the eigenvalues (real $\leftrightarrow$ complex), the field (totally real $\leftrightarrow$ complex place), the trace--form signature ($\det G = 4D$: Riemannian $\leftrightarrow$ Lorentzian), and the channels (growth/decay $\leftrightarrow$ rotation). We distinguish the two critical--point events --- the \emph{gate} (pins a value, removes a degree of freedom) and the \emph{flip} (inverts a regime, a forced sign change) --- which co--locate at $D=0$. Finally, because the discipline requires $C$ to remain dynamical and unpinned (freezing $C$ freezes $\lambda$ by the back door), the flip boundary $D=0$ must be carried as a \emph{handled dynamical state}, not assumed unreachable: under a real coherence flow $D=4z^2 \ge 0$ is a perfect square and is never crossed, but the rotation branch $D<0$ is a genuine algebraic regime that the computation must be prepared to enter --- in the eigenframe, where the marginal channel evolves in imaginary time. Finally, we resolve the construction's last open frontier --- the reciprocal--seed cost floor: the seeds and operations form a finitely generated \emph{emission algebra}, and a companion paper's Emission--Gap Theorem shows its image contains no Salem number, so the cost floor is $\lambda\log\varphi>0$, forced and uniform at every size --- the Salem regime being exactly the fourth channel the ternary trifurcation has no slot for, while general Lehmer remains untouched and is not needed. Every load--bearing identity is machine--verified in exact arithmetic.
+\end{abstract}
+
+\tableofcontents
+
+\section{Introduction}\label{sec:intro}
+
+The growth rule of the residual--return framework decides, for a candidate algebraic direction $r$ presented to a learner whose current geometry is the trace form $G$ of a number field, whether to \emph{adjoin} $r$ (grow the field), \emph{capture} it (it is already explained, residual zero), or \emph{reject} it (it costs more than it explains). The rule is a two--part minimum--description--length (MDL) comparison:
+\begin{equation}\label{eq:rule}
+\text{adjoin } r \quad\Longleftrightarrow\quad \underbrace{\norm{r}^2_G}_{\text{gain}} \;\ge\; \lambda \cdot \underbrace{\log \Mah(\theta)}_{\text{cost}},
+\end{equation}
+where $\Mah(\theta)$ is the Mahler measure (multiplicative height) of the algebraic number the direction would introduce, and $\norm{r}^2_G = r^{\mathsf T} G\, r$ is the squared trace--form norm of the residual. The scalar $\lambda$ is the \emph{exchange rate}: it sets how many bits of explained structure are required per bit of description cost.
+
+A learner with a free $\lambda$ has a free policy; the central honesty question of the framework is whether $\lambda$ is forced or posited. This paper's answer is layered. The \emph{identity} $\lambda = 2c$ is forced unconditionally: the factor $2$ is structural (the inverted $\tfrac12$ of a quadratic form), and $c>0$ is the conformal constant of the declared generative model, which \v{C}encov's theorem proves cannot be eliminated \emph{by invariance}. The \emph{value} of $c$ is then forced separately, by a structural argument (Section~\ref{sec:gateforced}): the framework's own construction pins the gate, hence $c=\sqrt5/2$ and $\lambda=\sqrt5$. The two facts coexist and we keep them distinct. We adopt throughout the discipline:
+\begin{quote}
+\emph{$C$ (equivalently $c$) stays dynamical in the code, never frozen by hand.} Freezing $c$ as an invariance claim or a hard--coded constant launders a posit; the same launder we reject for $c=1$ would return one level up if we picked the gate by taste. What may be encoded as \emph{given} is the identity $\lambda=2c$; the value $c=\sqrt5/2$ is admitted only as a \emph{derived} consequence of the construction (Theorem~\ref{thm:gateforced}), never as a stipulation.
+\end{quote}
+
+The structure of the paper is as follows. Section~\ref{sec:identity} derives $\lambda=2c$. Section~\ref{sec:cencov} states the \v{C}encov obstruction. Section~\ref{sec:canon} gives the three canonicalizations of $c$. Sections~\ref{sec:ladder}--\ref{sec:frameshift} develop the gate ladder, the trifurcation, the decision--is--the--channel correspondence, and the frame--shift canonicalization. Section~\ref{sec:gateforced} resolves which gate the framework selects --- the golden one --- by two convergent derivations, fixing $c=\sqrt5/2$ and $\lambda=\sqrt5$. Section~\ref{sec:flip} establishes the flip $D=1+4C$ as one event with four readings, including the trace--form signature flip $\det G = 4D$. Section~\ref{sec:gateflip} distinguishes the gate from the flip. Section~\ref{sec:boundary} treats the flip boundary as a handled dynamical state. Sections~\ref{sec:kuramoto}--\ref{sec:secondflip} give the Kuramoto division of labour, the K--formation seed astride the fold, and the second (multiplicative) flip. Section~\ref{sec:emission} resolves the last open frontier --- the reciprocal--seed cost floor --- by exhibiting the construction's seeds and operations as a finitely generated emission algebra whose image contains no Salem number, so the cost floor is $\lambda\log\varphi>0$, forced and uniform; the full proofs are in the companion Emission--Gap paper \cite{EG}. Section~\ref{sec:engine} gives the exact computational realization. Section~\ref{sec:ledger} is a full epistemic ledger; Section~\ref{sec:open} lists the open problems.
+
+\paragraph{Verification.} All symbolic identities below were checked in \texttt{sympy} with exact rational/algebraic arithmetic; floats appear only for display. We tag each claim \forced{} (a theorem or exact computation), \declared{} (a principled but invariance--free choice, in the sense of \v{C}encov), \posited{} (a genuine assumption), or \openq{} (unresolved).
+
+\section{The identity \texorpdfstring{$\lambda=2c$}{lambda = 2c}}\label{sec:identity}
+
+\subsection{The generative model and the trace form as Fisher metric}
+
+Fix a number field $K=\Q(\theta)$ of degree $n$ with power basis, and let $G_{ij}=\tr(\theta^{\,i+j})$ be its trace--form Gram matrix; $\det G = \operatorname{disc}(K)$ up to a square. The learner's generative model is a location family on the $n$ real embeddings (Galois conjugates) of $K$: the datum is the vector of conjugate coordinates, the parameter is the algebraic element, and the natural Riemannian geometry on parameter space is the Fisher information metric.
+
+\begin{lemma}[Trace form is the conjugate covariance]\label{lem:fisher}
+On the trace--zero subspace, and when $1\in\operatorname{col}(B)$ (the constant is representable), the trace--form Gram equals $n$ times the empirical Fisher information of the location family over the $n$ conjugates: $G = n\, I_{\exp}$, equivalently $I_{\exp}=\tfrac1n G$. \forced
+\end{lemma}
+
+This is the substrate identity (Fisher $=\tfrac1n G$ on trace--zero); it fixes the trace form as the Fisher metric \emph{up to the overall positive constant} that the next subsection names. Write the Fisher metric of the declared model as
+\begin{equation}\label{eq:fisherc}
+\mathcal F \;=\; \frac1c\, G, \qquad c>0,
+\end{equation}
+where $c$ is the conformal scale (the variance normalization of the model's noise; $\sigma^2 \propto c$). Lemma~\ref{lem:fisher} pins $\mathcal F$ to be \emph{proportional} to $G$; it does not pin the proportionality constant. That constant is exactly $c$.
+
+\subsection{Second--order KL and the MDL balance}
+
+For a residual direction $r$, the second--order (quadratic) expansion of the Kullback--Leibler divergence between the captured model and the model that also explains $r$ is the Fisher quadratic form:
+\begin{equation}\label{eq:kl2c}
+\KL\bigl(p_\theta \,\|\, p_{\theta+r}\bigr) \;=\; \tfrac12\, r^{\mathsf T}\mathcal F\, r + O(\norm{r}^3) \;=\; \frac{1}{2c}\,\norm{r}^2_G .
+\end{equation}
+The divergence \eqref{eq:kl2c} is the number of nats of code length saved by adjoining $r$ --- the \emph{gain}, measured intrinsically. The two--part MDL principle says a parameter is worth encoding iff the bits it saves meet the bits required to describe it. The description cost of the new algebraic parameter is its Mahler measure logarithm $\log\Mah(\theta)$ (by Northcott's theorem there are finitely many algebraic numbers of bounded degree and height, so $\log\Mah$ is the natural code length). The balance is
+\begin{equation}\label{eq:balance}
+\KL \;\ge\; \log\Mah(\theta) \quad\Longleftrightarrow\quad \frac{1}{2c}\,\norm{r}^2_G \;\ge\; \log\Mah(\theta) \quad\Longleftrightarrow\quad \norm{r}^2_G \;\ge\; 2c\,\log\Mah(\theta).
+\end{equation}
+
+\begin{theorem}[The exchange rate is twice the conformal constant]\label{thm:lambda2c}
+The threshold coefficient in the growth rule \eqref{eq:rule} is the derived identity
+\begin{equation}\label{eq:lambda2c}
+\boxed{\;\lambda = 2c\;}
+\end{equation}
+The factor $2$ is the inverted $\tfrac12$ of the quadratic KL term and carries no freedom; the entire residual freedom of the threshold is the single positive scale $c$. \forced
+\end{theorem}
+
+\begin{proof}
+Compare \eqref{eq:rule} with the right--hand inequality of \eqref{eq:balance}: the coefficient of $\log\Mah(\theta)$ is $2c$. Symbolically, solving $\tfrac{1}{2c}\,(\text{gain}) = \log\Mah$ for the gain at the balance gives $\text{gain} = 2c\log\Mah$, so the per--unit--cost coefficient is $2c$; substituting $c=1$ recovers the shipped value $2$, and $c=n$ recovers the degree--aware reading $2n$.
+\end{proof}
+
+\begin{remark}[The variance reading]\label{rem:sigma}
+Writing the gain \eqref{eq:kl2c} as a Gaussian negentropy of precision (inverse variance) $\sigma$, one has $\sigma = \tfrac{1}{2c} = \tfrac1\lambda$. The conformal scale is the model's variance, and the exchange rate is its precision. Freezing $c$ is freezing $\sigma$, i.e. asserting a particular noise level --- a modeling claim, not a derivation. \forced
+\end{remark}
+
+\section{The residual freedom: \texorpdfstring{\v{C}encov}{Cencov} and the conformal scale}\label{sec:cencov}
+
+\begin{theorem}[\v{C}encov; the conformal scale is invariance--free]\label{thm:cencov}
+Up to a positive multiplicative constant, the Fisher information metric is the unique Riemannian metric on the space of probability distributions invariant under sufficient statistics (Markov morphisms). Consequently the constant $c=\lambda/2$ in \eqref{eq:fisherc} \emph{cannot} be fixed by any invariance requirement. \forced{} (impossibility)
+\end{theorem}
+
+\v{C}encov's theorem is the reason $\lambda=2c$ stops one short of a number. It does not leave $\lambda$ undetermined in the bad sense: $\lambda$ is pinned to be \emph{exactly} $2c$, and $c$ is a single positive scalar with a clear meaning (the model variance, Remark~\ref{rem:sigma}). But no symmetry of the problem selects $c$. We therefore never write ``$c$ derived'' or ``zero free parameters''; the correct statement is:
+\begin{quote}
+$\lambda = 2c$ is forced; $c$ is a declared positive scale. Shipped decisions are $c$--invariant across the band $c\in[1,n]$, becoming $c$--sensitive only inside the cost interval $\bigl(2\log\mu_S,\ 2n\log\mu_S\bigr)$, where $\mu_S$ is the smallest non--reciprocal Mahler measure (the Smyth floor).
+\end{quote}
+Crucially, \v{C}encov forbids an \emph{invariance} argument from selecting $c$; he does not forbid an \emph{external structural constraint} from doing so. The gate of Section~\ref{sec:frameshift} is exactly such a constraint --- and the discipline (Section~\ref{sec:intro}) demands that even there the selection of \emph{which} gate stays visible as a posit.
+
+\section{Three canonicalizations of \texorpdfstring{$c$}{c}}\label{sec:canon}
+
+Three principled choices of $c$ recur. None is forced by invariance (Theorem~\ref{thm:cencov}); each is a declared canonicalization with a stated rationale and a concrete cost floor $\lambda\log\mu_S = 2c\log\mu_S$.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}lll@{}}
+\toprule
+principle & selects & cost floor it produces \\
+\midrule
+Jeffreys volume--matching & $c=1$ & constant $\;2\log\mu_S$ \\
+degree--invariant significance & $c=n$ & degree--aware $\;2n\log\mu_S$ \\
+frame--shift (eigenframe gap) & $c=\dfrac{\sqrt{1+4C}}{2C}$ & the spectral gap itself; $\;\lambda=\sqrt5$ at $C=1$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent The first matches the Jeffreys prior volume to the field discriminant; the second makes statistical significance invariant under field degree; the third --- developed in Section~\ref{sec:frameshift} --- is the value the system's own gate structure hands you at a critical point, where $\lambda$ becomes the spectral gap $\sqrt5 = \varphi-\psi$. The first two are \declared{} (relevant to the shipped decision and its degree--aware band). The frame--shift is distinguished by being \emph{native} --- read off an object the framework already contains --- and, as Section~\ref{sec:gateforced} shows, it is the canonicalization the framework \emph{forces}: the gate it parametrizes is pinned to the golden level, promoting the frame--shift value from native to forced.
+
+\section{The gate ladder and the trifurcation}\label{sec:ladder}
+
+\subsection{The quadratic ladder and its discriminant}
+
+The framework's gates are the squarefree levels of the one--parameter quadratic family
+\begin{equation}\label{eq:gengate}
+x^2 + x = C, \qquad \text{discriminant } D = 1+4C .
+\end{equation}
+Its companion matrix and Galois generator is
+\begin{equation}\label{eq:companion}
+R_C = \begin{pmatrix} 0 & C \\ 1 & -1 \end{pmatrix}, \qquad \text{eigenvalues } \lambda_\pm = \frac{-1\pm\sqrt{1+4C}}{2}, \qquad \lambda_+ - \lambda_- = \sqrt{1+4C}=\sqrt D .
+\end{equation}
+The three gates are the squarefree radicands $D\in\{2,3,5\}$:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}cccccc@{}}
+\toprule
+gate $C$ & $D=1+4C$ & seed & minpoly & field & $\sqrt D = r(R_C)$ \\
+\midrule
+$\tfrac14$ & $2$ & $\sqrt2$ & $x^2-2$ & $\Q(\sqrt2)$ & $\sqrt2$ \\
+$\tfrac12$ & $3$ & $\sqrt3$ & $x^2-3$ & $\Q(\sqrt3)$ & $\sqrt3$ \quad ($z_c=\sqrt3/2$) \\
+$1$ & $5$ & $\sqrt5$ & $x^2-5$ & $\Q(\sqrt5)$ & $\sqrt5 = \varphi-\psi$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent The golden gate $C=1$ is $T^2+T=1$ --- the Clifford unity --- whose roots $(-1\pm\sqrt5)/2$ are the reciprocal--golden pair $\{1/\varphi,\,-\varphi\}$. Its seed $\tau = x^2+x-1$ is the conjugate--gate companion of the golden keystone $\varphi=\,$companion$(x^2-x-1)$, and both have the trifurcation spectrum below because both have discriminant $5$.
+
+\subsection{The trifurcation}
+
+\begin{theorem}[Self--action spectrum of the $C$--ladder]\label{prop:trifurcation}
+The Lie self--action $\operatorname{ad}_{R_C}(X) = [R_C, X]$ on $M_2(\Q)$ has spectrum
+\begin{equation}\label{eq:trifurcation}
+\operatorname{spec}\bigl(\operatorname{ad}_{R_C}\bigr) = \bigl\{\, -\sqrt{1+4C},\ \ 0,\ \ +\sqrt{1+4C} \,\bigr\}, \qquad \text{the } 0\text{--eigenspace}=\operatorname{span}\{I, R_C\},
+\end{equation}
+with $0$ of multiplicity two. The spectral radius is $r(R_C)=\sqrt{1+4C}=\sqrt D$. At the golden gate $C=1$ this is $\{-\sqrt5,\,0,\,+\sqrt5\}$. \forced
+\end{theorem}
+
+\begin{proof}
+For a $2\times2$ matrix with eigenvalues $\{\lambda_+,\lambda_-\}$, the adjoint $\operatorname{ad}_{R_C}$ on $M_2$ has eigenvalues $\{\lambda_i-\lambda_j\}=\{0,0,+(\lambda_+-\lambda_-),-(\lambda_+-\lambda_-)\}$; by \eqref{eq:companion}, $\lambda_+-\lambda_-=\sqrt{1+4C}$. The kernel is $\{X:[R_C,X]=0\}=\operatorname{span}\{I,R_C\}$ for non--scalar $R_C$. Direct computation of the $4\times4$ matrix of $\operatorname{ad}_{R_C}$ confirms the characteristic polynomial $t^2\,(t^2-(1+4C))$.
+\end{proof}
+
+\subsection{The decision is the channel}
+
+The growth rule \eqref{eq:rule} and the trifurcation \eqref{eq:trifurcation} are the same object read in two frames. Read in the eigenframe of $\operatorname{ad}_{R_C}$, the ternary growth decision \emph{is} the channel selection:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}llll@{}}
+\toprule
+channel & eigenvalue & decision & meaning \\
+\midrule
+forward / $+$ & $+\sqrt{1+4C}$ & \textsc{grow} & gain--dominated; adjoin the off--diagonal growth \\
+marginal / $0$ & $0$ & \textsc{captured} & residual $=0$; the kernel $\operatorname{span}\{I,R_C\}$ \\
+backward / $-$ & $-\sqrt{1+4C}$ & \textsc{stop} & cost--dominated; reject \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent The gate balance is the boundary between the marginal and the growth channel:
+\begin{equation}\label{eq:gatebalance}
+\lambda\, C \;=\; r(R_C) \;=\; \sqrt{1+4C},
+\end{equation}
+i.e. the \textsc{grow} threshold sits exactly where the $0$--channel gives way to the $+\sqrt{1+4C}$ channel. This is why the trifurcation spectrum and the keystone meet: \emph{the spectrum is the decision}.
+
+\begin{remark}[The self--action radius is a Mahler measure]\label{rem:mahler}
+The discriminant seed $x^2-D$ has Mahler measure $\Mah(x^2-D)=D$ for $D>1$ (both roots $\pm\sqrt D$ lie outside the unit circle), so
+\begin{equation}\label{eq:rmahler}
+r(R_C) = \sqrt{1+4C} = \sqrt{D} = \sqrt{\Mah(x^2-D)}, \qquad \Mah(x^2-D)=D=1+4C.
+\end{equation}
+Both identities are exact and are emitted by the matrix--plates engine (Section~\ref{sec:engine}); the gate equation \eqref{eq:gatebalance} is therefore evaluated entirely in exact algebraic objects. \forced
+\end{remark}
+
+\section{The frame--shift canonicalization}\label{sec:frameshift}
+
+\begin{definition}[Frame--shift conformal constant]\label{def:frameshift}
+The \emph{frame--shift} value of $c$ at the gate level $C$ is the solution of the gate balance \eqref{eq:gatebalance} with $\lambda=2c$:
+\begin{equation}\label{eq:frameshift}
+2c\,C = \sqrt{1+4C} \quad\Longrightarrow\quad c = \frac{\sqrt{1+4C}}{2C}.
+\end{equation}
+At the golden gate $C=1$: $c=\sqrt5/2$ and $\lambda = 2c = \sqrt5 = \varphi-\psi$. \forced{} (structure); the choice of \emph{which} gate is forced to $C=1$ in Section~\ref{sec:gateforced}.
+\end{definition}
+
+The frame--shift is the canonicalization native to the critical point: it makes $\lambda$ equal to the spectral gap of the self--action. It is the one place where the system's own structure hands you a value of $c$. The remaining question --- \emph{which} gate --- is not left to numerical taste: choosing a gate by how clean its numbers look would relaunder the posit one level up, so we discharge it structurally instead. We therefore record the frame--shift principle here and resolve the gate in Section~\ref{sec:gateforced}:
+\begin{quote}
+The \emph{frame--shift principle} --- ``at a critical point, pass to the eigenframe'' --- is forced. The \emph{eigenframe gap} $\sqrt{1+4C}$ is intrinsic at the critical point (Theorem~\ref{prop:trifurcation}). Any single gate equation $2cC=r(R_C)$ pins a unique $c>0$. \emph{Which} gate is then forced --- to $C=1$ --- by the convergence of two independent derivations (Theorem~\ref{thm:gateforced}).
+\end{quote}
+
+\section{The gate is forced: two convergent derivations}\label{sec:gateforced}
+
+The frame--shift (Definition~\ref{def:frameshift}) pins $c$ \emph{once a gate $C$ is chosen}; the residual question is which gate. We resolve it here: the gate is forced to the golden level $C=1$ by two derivations from disjoint premises that converge on the same field. The framework's forced value is therefore $c=\sqrt5/2$, $\lambda=\sqrt5$. This does not contradict Theorem~\ref{thm:cencov}: \v{C}encov forbids an \emph{invariance} argument from fixing $c$; the gate is an \emph{external structural} constraint of the construction, which he does not forbid. The two derivations are the \emph{statics} --- the minimal structure that realizes the decision --- and the \emph{dynamics} --- where the construction's collapse maps deposit it.
+
+\subsection{Bottom--up: the minimal stable structure}\label{ssec:bottomup}
+
+The growth decision is ternary --- \textsc{grow}, \textsc{captured}, \textsc{stop} (Section~\ref{sec:ladder}) --- and this arity is not a free stipulation.
+
+\begin{proposition}[Ternary $\Leftrightarrow$ degree two]\label{prop:ternary}
+For any non--scalar seed companion $R$, the self--action $\operatorname{ad}_R$ has a non--trivial kernel: the centralizer $\{X:[R,X]=0\}\supseteq\operatorname{span}\{I,R\}$ is never empty, so the $0$--channel (\textsc{captured}) always exists and the decision has at least three channels. The number of distinct signed channels of $\operatorname{ad}_R$ for a degree--$d$ seed is $d^2-d+1$, which equals exactly three iff $d=2$. \forced
+\end{proposition}
+
+The decision's three native outcomes are thus realizable only at degree two: the $0$--channel cannot be removed (it \emph{is} the centralizer), and degree two is the unique case with no surplus channels. Within degree two, the description--length objective that defines the rule selects the seed.
+
+\begin{lemma}[The cost--minimal quadratic is golden]\label{lem:mincost}
+Among irreducible integer quadratics, the minimum Mahler measure exceeding $1$ is $\varphi=1.61803\ldots$, attained \emph{only} by $x^2-x-1$ and $x^2+x-1$ --- both of discriminant $5$. Hence the MDL--minimal degree--two gate is $\Q(\sqrt5)$, the golden gate $C=1$. \forced
+\end{lemma}
+
+\begin{remark}[The cubic objection dissolves]\label{rem:cubic}
+The global non--reciprocal Mahler infimum is the plastic number $\mu_S=1.32471\ldots<\varphi$ (Smyth), attained by the cubic $x^3-x-1$. It does \emph{not} undercut the golden gate, because it is degree three: a cubic seed gives a degree--three self--action with $3^2-3+1=7$ channels, not the ternary decision. The ternary lock of Proposition~\ref{prop:ternary} excludes it. The gate is the minimum \emph{within the forced degree}, not a minimum over all degrees --- a distinction that is the whole content of the statics derivation. \forced
+\end{remark}
+
+\subsection{Top--down: the terminal attractor}\label{ssec:topdown}
+
+The construction is generative and degree--raising: its products multiply degree ($\Q(\alpha)\otimes\Q(\beta)$), its sums add it, and its primary registry already contains degree--four quartics in $\Q(5^{1/4})$. The only degree--reducing operations are \emph{firewalls} --- many--to--one maps onto canonical forms, admitting no inverse.
+
+\begin{definition}[Firewall maps]\label{def:firewall}
+The construction's reducing maps are the minimal--polynomial map $M\mapsto\mu_M$; the spectral lift $M\mapsto\operatorname{companion}(\chi_M)$, which is spectrum--preserving and collapses every matrix of a given characteristic polynomial (derogatory or not) onto one companion; the squaring $x\mapsto x^2$; and the field norm $\Q(5^{1/4})\to\Q(\sqrt5)$. Each is many--to--one with no inverse. \forced
+\end{definition}
+
+\begin{proposition}[Golden is the firewall image]\label{prop:firewallimage}
+The minimal--polynomial firewall sends any direct sum of $k$ golden blocks (degree $2k$) to $x^2-x-1$ (degree two), forgetting $k$. The squaring firewall sends the primary quartic $x^4+5x^2-5$ (the K--formation, $\Q(5^{1/4})$) to $y^2+5y-5$ under $y=x^2$, of discriminant $45=9\cdot5$, landing in $\Q(\sqrt5)$; equivalently $\operatorname{minpoly}(K)=x^4+5x^2-5$ has $\operatorname{minpoly}(K^2)=x^2+5x-5$. The golden gate $\Q(\sqrt5)$ is therefore the firewall image of the golden tower $\Q\subset\Q(\sqrt5)\subset\Q(5^{1/4})$, and its $\sqrt5$ is \emph{inherited} from upstream, not selected. \forced
+\end{proposition}
+
+\begin{lemma}[The keystone is uniquely golden]\label{lem:keystone}
+Among the seed companions, only the golden companion satisfies the self--reproducing relation $R^2=R+I$: the conjugate gate $\tau$ gives the Clifford relation $R^2=I-R$, and each radicand seed gives a scaling $R^2=DI$. Since $R^2=R+I$ forces eigenvalues $\{\varphi,\psi\}$, it characterizes the golden companion uniquely up to similarity over all integer matrices. Hence $\Q(\sqrt5)$ is the unique seed field carrying a self--action fixed point --- the attractor toward which the degree--raising and collapsing dynamics flow. \forced
+\end{lemma}
+
+\subsection{Convergence}\label{ssec:converge}
+
+\begin{theorem}[The gate is forced]\label{thm:gateforced}
+The golden gate $C=1$ is simultaneously the minimal stable structure of the decision (Proposition~\ref{prop:ternary}, Lemma~\ref{lem:mincost}) and the terminal attractor of the construction (Proposition~\ref{prop:firewallimage}, Lemma~\ref{lem:keystone}). The two derivations share no premise --- one is the arity of the decision, the other the generative dynamics of the engine --- yet they pin the same field. The framework's forced value is
+\begin{equation}\label{eq:goldenvalue}
+\boxed{\;C=1,\qquad c=\tfrac{\sqrt5}{2},\qquad \lambda=2c=\sqrt5=\varphi-\psi.\;}
+\end{equation}
+\forced{} (given the two constitutive axioms named below)
+\end{theorem}
+
+A fixed point is exactly an object that is both the smallest realization of a constraint and the endpoint of a flow; the golden gate is that object, seen statically and dynamically, and the redundancy of two independent derivations is what makes the value trustworthy rather than aesthetic. The forcing rests on two constitutive features of the framework, not on free choices: the decision's \emph{ternary arity} (\textsc{grow}/\textsc{captured}/\textsc{stop}, whose $0$--channel is the centralizer and cannot be removed) and the \emph{self--reproducing keystone} $R^2=R+I$ (the engine's Fibonacci closure). Given these, the gate is forced and the ``which gate'' posit is discharged. The only residue is whether the two axioms are themselves derivable from something deeper --- a question one level below the original posit, where the regress bottoms out at the construction's definition rather than relaunching as a free parameter.
+
+\begin{remark}[Relation to the identity]\label{rem:identityrelation}
+This section fixes a \emph{value}; it does not touch the \emph{identity}. $\lambda=2c$ (Theorem~\ref{thm:lambda2c}) holds for every $c>0$ and is the universal content. Theorem~\ref{thm:gateforced} adds that the framework's own structure forces $c=\sqrt5/2$, so its instance of the identity reads $\lambda=\sqrt5$. The two are layered: the identity is forced unconditionally; the value is forced given the construction. Freezing $c$ remains illegitimate \emph{as an invariance claim} (\v{C}encov) and remains the discipline's standing prohibition in code; what Theorem~\ref{thm:gateforced} supplies is the orthogonal, structural reason the framework nonetheless lands at one $c$. \forced
+\end{remark}
+
+\section{The keystone is derived: minimal positive growth on the closure}\label{sec:keystone}
+
+Theorem~\ref{thm:gateforced} forces the gate \emph{relative to} two constitutive features --- the ternary arity and the self--reproducing keystone $R^2=R+I$ --- and flags as residual whether those are themselves derivable. They are not independent, and the keystone is not a second axiom: it is a theorem given the arity and the description--length objective that already defines the rule. This section discharges the residue, reducing the two features to a single definitional primitive.
+
+\subsection{The keystone is the minimal positive--growth companion}
+
+The growth rule seeks the cheapest admissible direction (Equation~\eqref{eq:rule}); on the closure $\Phi=\operatorname{companion}\circ\chi$ the admissible objects are companions, and ``cheapest with growth'' means the smallest Mahler measure exceeding $1$ realised with a real expanding direction. We make the selection explicit and show it lands on $R^2=R+I$ without positing it.
+
+\begin{lemma}[The degree--two minimum is a golden tie]\label{lem:tie}
+The minimum Mahler measure exceeding $1$ over irreducible integer quadratics is $\varphi$, attained \emph{exactly} at discriminant $5$, by the two seeds $x^2-x-1$ and $x^2+x-1$. The minimiser is therefore a tie $\{\varphi,\tau\}$, not a unique seed. \forced
+\end{lemma}
+
+\begin{lemma}[Positive growth breaks the tie to $R^2=R+I$]\label{lem:perron}
+Of the two minimisers, only $x^2-x-1$ has a positive dominant eigenvalue: its companion has spectral radius attained at $+\varphi$ and satisfies $R^2=R+I$, while the companion of $x^2+x-1$ (the reciprocal $\tau$) attains its spectral radius at $-\varphi$ and satisfies the Clifford relation $R^2=I-R$. Requiring a real \emph{expanding} (Perron) direction --- the meaning of ``growth'' in the rule --- selects $x^2-x-1$ uniquely, hence the keystone $R^2=R+I$. Unimodularity $\det R=-1$ is then a consequence, not an assumption. \forced
+\end{lemma}
+
+\begin{theorem}[Keystone $=$ smallest primitive non--negative Perron seed]\label{thm:keystonederived}
+$\varphi$ is the smallest Perron root of any $2\times2$ primitive non--negative integer matrix, realised by the Fibonacci matrix $\bigl(\begin{smallmatrix}0&1\\1&1\end{smallmatrix}\bigr)$. Equivalently, $R^2=R+I$ is the unique minimal positive--growth companion at the degree that realises the ternary decision. The keystone is thus \emph{derived}: it is the smallest object of a fully specified type, not a posited relation. \forced
+\end{theorem}
+
+\begin{proof}
+Lemma~\ref{lem:tie} gives the degree--two Mahler minimum as the discriminant--$5$ tie; Lemma~\ref{lem:perron} resolves it by positivity of the dominant eigenvalue. Direct enumeration of $2\times2$ non--negative integer matrices some power of which is strictly positive (primitivity) shows the least real dominant eigenvalue exceeding $1$ is $\varphi$, at $\bigl(\begin{smallmatrix}0&1\\1&1\end{smallmatrix}\bigr)$ and its transpose; the swap $\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)$ gives Perron root $1$, excluded by growth. All three steps are machine--verified (Appendix~\ref{app:keystone}). \end{proof}
+
+\begin{theorem}[The two constitutive features collapse to one]\label{thm:collapse}
+The ternary arity and the keystone are the same datum. By Proposition~\ref{prop:ternary} the ternary decision is realised exactly at degree two; by Theorem~\ref{thm:keystonederived} the minimal positive--growth companion at degree two is $R^2=R+I$. Hence Theorem~\ref{thm:gateforced}'s ``two constitutive features'' are not two axioms but one: \emph{the seed is the minimal positive--growth companion at the degree that realises a three--way decision.} The keystone $R^2=R+I$ and the gate $C=1$ both follow; nothing is posited below the definition of the object's type. \forced
+\end{theorem}
+
+\subsection{The integer normalisation \texorpdfstring{$L_4=7$}{L4 = 7} is forced}
+
+The keystone fixes more than the gate: it generates its own integer sequence, and the integer $7$ that recurs through the construction --- the catalog $\mathrm{gap}$ seed $x^2-7x+1$, the coordinate $z_c=\sqrt{L_4-4}/2$, the $K$--formation --- is an \emph{invariant of $R$}, derived here from $R^2=R+I$ with nothing imported.
+
+\begin{lemma}[Powers of the keystone]\label{lem:keypowers}
+Let $R=\bigl(\begin{smallmatrix}0&1\\1&1\end{smallmatrix}\bigr)$ be the keystone companion ($R^2=R+I$; eigenvalues $\varphi,\psi=\tfrac{1\mp\sqrt5}{2}$, the roots of $x^2-x-1$). Then for all $n\ge1$,
+\begin{equation}\label{eq:keypower}
+R^n=F_n\,R+F_{n-1}\,I,\qquad F_0=0,\ F_1=1,\ F_{n+1}=F_n+F_{n-1},
+\end{equation}
+where the integer sequence $(F_n)$ is \emph{forced} by the relation $R^2=R+I$. Consequently $R^n$ has eigenvalues $\varphi^n,\psi^n$; its trace $L_n:=\operatorname{tr}(R^n)=\varphi^n+\psi^n$ is an integer; and $\det(R^n)=(\det R)^n=(-1)^n$. \forced
+\end{lemma}
+
+\begin{proof}
+Equation~\eqref{eq:keypower} is induction on $R^2=R+I$: assuming it at $n$,
+\[
+R^{n+1}=R\cdot R^n=F_nR^2+F_{n-1}R=F_n(R+I)+F_{n-1}R=(F_n+F_{n-1})R+F_nI=F_{n+1}R+F_nI,
+\]
+with base cases $R^1=R$ and $R^2=R+I$ fixing $F_0=0,\,F_1=1$. The eigenvalues of $R$ are $\varphi,\psi$, so those of $R^n$ are $\varphi^n,\psi^n$; trace and determinant are their sum and product, and $\det R=\varphi\psi=-1$. The trace is an integer because $R^n$ is an integer matrix. \end{proof}
+
+\begin{lemma}[The Pell relation is forced]\label{lem:pell}
+$L_n^2-5F_n^2=4(-1)^n$. Equivalently, $\operatorname{charpoly}(R^n)=x^2-L_nx+(-1)^n$ has discriminant $L_n^2-4(-1)^n=5F_n^2$. \forced
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:keypowers}, $\operatorname{charpoly}(R^n)=x^2-\operatorname{tr}(R^n)\,x+\det(R^n)=x^2-L_nx+(-1)^n$; its discriminant is $(\varphi^n-\psi^n)^2$. Since $\varphi-\psi=\sqrt5$, the antisymmetric power is $\varphi^n-\psi^n=\sqrt5\,F_n$, so the discriminant equals $5F_n^2$, giving $L_n^2-4(-1)^n=5F_n^2$. \end{proof}
+
+\begin{proposition}[$L_4=7$ is an invariant of the keystone]\label{prop:L4forced}
+The fourth power of the keystone is
+\begin{equation}\label{eq:R4}
+R^4=3R+2I=\begin{pmatrix}2&3\\3&5\end{pmatrix},\qquad \operatorname{charpoly}(R^4)=x^2-7x+1.
+\end{equation}
+Its entries are $F_3=2,\ F_4=3,\ F_5=5$ --- exactly the three gate discriminants $D\in\{2,3,5\}$ of the trifurcation (Section~\ref{sec:ladder}) --- and its trace is $L_4=F_3+F_5=2+5=7$. Independently, Lemma~\ref{lem:pell} at $n=4$ gives $L_4^2-4=5F_4^2=45$, so $L_4=7$. The integer $7$ is therefore forced three ways from $R$ alone: as $\operatorname{tr}(R^4)$, as the sum of the outer gate discriminants, and as the positive Pell root at the middle discriminant $F_4=3$. \forced
+\end{proposition}
+
+The characteristic polynomial $x^2-7x+1$ of $R^4$ is the catalog $\mathrm{gap}$ seed (roots $\varphi^4,\varphi^{-4}$): this is the origin of the $7$ in $z_c=\sqrt{L_4-4}/2$ and in the $K$--formation, each of which reads an invariant of the keystone's fourth power. The derivation imports no external Lucas or Fibonacci theory --- those sequences \emph{are} the trace and off--diagonal of $R^n$ by \eqref{eq:keypower} --- and it supersedes the cutoff rationale of the legacy helix artifact (``$\varphi^{-4}\approx0.146$ is the last inverse power exceeding $0.1$''), which motivated the index by an arbitrary real threshold the present derivation never uses.
+
+\subsection{What remains is a definition, not a parameter}
+
+Each constraint in the type is load--bearing (Appendix~\ref{app:keystone}): dropping the degree--two restriction lets the global minimum fall to the plastic cubic $\mu_S=1.3247<\varphi$; dropping positivity returns the Clifford twin $\tau$; dropping growth admits the cyclotomic floor $\Mah=1$; dropping integrality removes the discrete floor entirely. The keystone is the joint minimiser of a definition with no slack. The regress that Theorem~\ref{thm:gateforced} opened therefore terminates here: the irreducible primitive is the \emph{type} of object the construction is about --- the minimal positive--growth companion realising the ternary decision --- which is a definition, the base of the framework, not a tunable scalar relaunched one level down. The one structure beneath it is the gate triple $\{2,3,5\}$, and that is not even independent of the keystone: it is the entry set of $R^4$ (Proposition~\ref{prop:L4forced}), the trifurcation's three gates $C\in\{\tfrac14,\tfrac12,1\}$ read as the consecutive Fibonacci numbers $F_3,F_4,F_5$ (equivalently the first three primes). No free real parameter sits anywhere below the object's type. As with the gate, this section fixes a \emph{value}; the identity $\lambda=2c$ of Theorem~\ref{thm:lambda2c} is untouched and holds for every $c>0$, so the derivation is parametrised over $c$ and nothing freezes.
+
+\section{The flip: \texorpdfstring{$D=1+4C$}{D = 1 + 4C}}\label{sec:flip}
+
+\subsection{One event, four readings}
+
+The discriminant $D=1+4C$ changes sign once, at $C=-\tfrac14$ (where $x^2+x-C$ has the double root $-\tfrac12$). This single sign is one event seen four ways.
+
+\begin{theorem}[The canonical flip]\label{thm:flip}
+The sign of $D=1+4C$ simultaneously determines the eigenvalues of $R_C$, the field type, the trace--form signature, and the channel character, as follows. \forced
+\end{theorem}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{}cccccc@{}}
+\toprule
+$C$ & $D$ & roots of $x^2+x-C$ & gap $\pm\sqrt D$ & field / metric & regime \\
+\midrule
+$1$ & $5$ & real (golden gate) & $\pm\sqrt5$ real & totally real / PD & hyperbolic --- saddle \\
+$0$ & $1$ & real $\{-1,0\}$ & $\pm1$ real & totally real / PD & hyperbolic \\
+$-\tfrac14$ & $0$ & double root $-\tfrac12$ & $0$ & degenerate & parabolic --- the \textsc{paradox} \\
+$-1$ & $-3$ & $e^{\pm 2\pi i/3}$ & $\pm i\sqrt3$ & complex place / Lorentzian & elliptic --- rotation \\
+$-2$ & $-7$ & complex & $\pm i\sqrt7$ & complex place / Lorentzian & elliptic --- rotation \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent So the trifurcation $\{-\sqrt5,0,+\sqrt5\}$ is not a fixed object: it is the $D>0$ face of the flip, whose $D<0$ face is $\{-i\sqrt{\abs D},\,0,\,+i\sqrt{\abs D}\}$. \textsc{grow}/\textsc{stop} become a rotation; \textsc{captured} persists (the $0$--channel is untouched).
+
+\subsection{The metric signature is the discriminant sign}
+
+The fourth column above is not an analogy; it is an exact determinant.
+
+\begin{proposition}[$\det G = 4D$]\label{prop:detG}
+In the gap basis $\{1,\ \sqrt D\}$ of $\Q(\sqrt D)$ (with $\sqrt D = 2\theta+1$, $\theta$ a root of $x^2+x-C$), the trace--form Gram is
+\begin{equation}\label{eq:detG}
+G = \begin{pmatrix} \tr(1) & \tr(\sqrt D)\\ \tr(\sqrt D) & \tr(D) \end{pmatrix} = \begin{pmatrix} 2 & 0\\ 0 & 2D \end{pmatrix}, \qquad \det G = 4D .
+\end{equation}
+Hence the trace form is positive definite (Riemannian) iff $D>0$, and indefinite of signature $(1,1)$ (Lorentzian) iff $D<0$; it degenerates exactly at $D=0$. \forced
+\end{proposition}
+
+\begin{proof}
+$\tr(1)=2$; $\sqrt D=2\theta+1$ has trace $2\tr(\theta)+\tr(1)=2(-1)+2=0$; and $(\sqrt D)^2=D$ gives $\tr(D)=2D$. The Gram is $\operatorname{diag}(2,2D)$ with determinant $4D$. Signatures follow from the diagonal signs.
+\end{proof}
+
+\noindent This is the Fisher--metric positive--definite/indefinite flip that appears whenever a residual lands in a complex place. The canonical instance is $\Q(i)$: the basis $\{1,i\}$ gives $\operatorname{diag}(2,-2)$, $\det=-4=4D$ with $D=-1$ (since $i^2=-1$). The trace form goes Lorentzian \emph{exactly} when the discriminant goes negative: \emph{the metric's signature is the curvature sign.} The information geometry of Section~\ref{sec:identity} is built on $\mathcal F = G/c$; when $G$ goes indefinite, $\mathcal F$ is no longer a Riemannian metric, and the second--order KL \eqref{eq:kl2c} becomes an indefinite quadratic form --- the analytic signature of having entered the rotation regime.
+
+\section{Gate versus flip: the two critical--point events}\label{sec:gateflip}
+
+The framework now has two distinct things that can happen at a threshold, and they are complementary.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{}llll@{}}
+\toprule
+ & acts on & effect & our instance \\
+\midrule
+\textsc{gate} & a free parameter & pins a value (removes 1 DOF) & $c = \sqrt{1+4C}/(2C)$; at $C=1$, $c=\sqrt5/2$ \\
+\textsc{flip} & a forced invariant & inverts the regime (sign change) & $\operatorname{sign}(1+4C)$: real growth $\leftrightarrow$ rotation \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent They \emph{co--locate} at $D=0$ (i.e. $C=-\tfrac14$): there the gate scale $\sqrt{1+4C}\to0$ (the spectral gap collapses --- the gate degenerates) and the regime inverts real$\leftrightarrow$rotation (the flip fires). One threshold, two readings: the gate is the point (\emph{what value}), the flip is the crossing (\emph{what character}). The frame--shift principle then connects them: at a flip, change to the eigenframe; and on the $D<0$ side the eigenframe is the \emph{rotation} frame, not the growth frame, so the marginal--channel computation continues in imaginary time. This is the bridge to the next section.
+
+\section{The flip boundary as a handled dynamical state}\label{sec:boundary}
+
+The discipline of Section~\ref{sec:intro} requires $C$ (hence $c$, hence $\lambda$) to remain dynamical and unpinned. A dynamical $C$ means $D=1+4C$ is a dynamical quantity whose sign is not fixed in advance. Two facts must then be held together.
+
+\subsection{The flip is forced, and it occurs}
+
+\begin{remark}[The rotation branch is a genuine regime]\label{rem:occurs}
+The $D<0$ branch is not a degenerate edge case to be excluded by fiat: it is a real algebraic regime --- a complex place, an indefinite (Lorentzian) trace form, and a rotation channel $\{-i\sqrt{\abs D},0,+i\sqrt{\abs D}\}$ --- realized concretely at every $C<-\tfrac14$ (e.g. $C=-1$ gives the primitive cube roots of unity). The flip is a forced mathematical operation; it occurs as part of the structure whether or not a particular flow visits it. \forced
+\end{remark}
+
+\subsection{Under a real coherence flow the boundary is approached, not crossed}
+
+Define the gap--coherence $z := \sqrt D/2 = \abs{x+\tfrac12}$. Then $D$ is a perfect square in the real state, in two equivalent forms:
+\begin{equation}\label{eq:square}
+D = (2x+1)^2 = 4z^2, \qquad C = z^2 - \tfrac14 .
+\end{equation}
+
+\begin{proposition}[Perfect--square pinning]\label{prop:square}
+For any \emph{real} state ($x\in\R$, equivalently $z\in\R$), $D=4z^2\ge0$ and $C=z^2-\tfrac14\ge-\tfrac14$, with equality iff $z=0$ ($x=-\tfrac12$, the flip). Consequently any real coherence dynamics, regardless of its form, keeps $D\ge0$: it can \emph{decohere} to the boundary ($z\to0$, $C\to-\tfrac14^+$, $D\to0^+$) but cannot cross it. \computed{} (structural; verified across sub-- and super--critical Kuramoto/Stuart--Landau and gate--seeking gradient flows)
+\end{proposition}
+
+The gate levels are particular real coherences $z\in\{\sqrt2/2,\sqrt3/2,\sqrt5/2\}$ ($C\in\{\tfrac14,\tfrac12,1\}$); the critical coherence $z_c=\sqrt3/2$ is the $C=\tfrac12$ gate (Section~\ref{sec:kuramoto}). A real flow either locks to a gate ($D>0$) or, sub--critically, decoheres toward $z=0$ ($D\to0^+$). In neither case does $D$ go negative, because $4z^2$ cannot.
+
+\subsection{Why the boundary must still be handled}
+
+Proposition~\ref{prop:square} says a real coherence flow does not \emph{spontaneously} cross. It does \emph{not} license deleting the $D\le0$ branch from the computation, for two reasons rooted in the discipline:
+
+\begin{enumerate}[leftmargin=1.6em,itemsep=3pt]
+\item \textbf{$C$ is unpinned by design.} The whole point of keeping $C$ dynamical is to refuse to assume a value of $\lambda$. Refusing to assume a value includes refusing to assume $D>0$. The handler must therefore admit $D\le0$ as a reachable state of the parameter, even if the autonomous flow stays in $D>0$; an external drive, a complex input, or analytic continuation can present $D\le0$ to the same machinery.
+\item \textbf{The boundary is exactly where the gate and the flip both act} (Section~\ref{sec:gateflip}). At $D=0$ the gate degenerates and the flip fires simultaneously; a computation that does not handle $D=0$ has no defined behaviour at the one point where its scale collapses.
+\end{enumerate}
+
+\begin{definition}[Flip handler]\label{def:handler}
+The growth rule is evaluated by branching on $\operatorname{sign}(D)$, with a frame--shift at the boundary: \forced{} (structure of each branch); \declared{} (that this is the right operational handling)
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt]
+\item \textbf{$D>0$ (hyperbolic):} real eigenframe; channels $\{-\sqrt D,0,+\sqrt D\}=\{\textsc{stop},\textsc{captured},\textsc{grow}\}$; trace form PD; the standard gate \eqref{eq:gatebalance} applies; $c$ real.
+\item \textbf{$D=0$ (parabolic, \textsc{paradox}):} the gap collapses and $R_C$ is a defective Jordan block; the eigenframe degenerates. Pass to the \emph{generalized} (Jordan) eigenframe; the gate scale $\sqrt{1+4C}\to0$, so the gate is undefined --- the handler returns \textsc{captured}/hold rather than a growth verdict.
+\item \textbf{$D<0$ (elliptic, rotation):} complex eigenframe; channels $\{-i\sqrt{\abs D},0,+i\sqrt{\abs D}\}$; trace form indefinite (Lorentzian, Proposition~\ref{prop:detG}); $c$ acquires an imaginary part ($c=\sqrt{1+4C}/(2C)$ with $\sqrt{1+4C}$ imaginary). \textsc{grow}/\textsc{stop} merge into a rotation; \textsc{captured} persists. The marginal channel evolves in \emph{imaginary time}: $e^{\pm i\sqrt{\abs D}\,t}$ is an oscillation in real time, equivalently $e^{\mp\sqrt{\abs D}\,\tau}$ in imaginary time $\tau=it$. The computation continues in the rotation frame.
+\end{itemize}
+\end{definition}
+
+\begin{remark}[The honest summary]\label{rem:honest}
+The flip is real as a \emph{structural boundary} (the totally--real edge, $z=0$, $\det G=0$) and is \emph{forced}; it is \emph{not} dynamically taken by a real coherence flow, because $D=4z^2$ is pinned non--negative (Proposition~\ref{prop:square}); but because $C$ is kept unpinned, the rotation regime is a \emph{state to handle}, not a case to exclude --- and the handling is the frame--shift of Definition~\ref{def:handler}, which carries the marginal channel into imaginary time on the $D<0$ side. The only way to \emph{enter} $D<0$ is to present the machinery with a complex $C$ (imaginary coherence): that is a modelling input, not a spontaneous crossing.
+\end{remark}
+
+\section{The dynamics: Kuramoto division of labour}\label{sec:kuramoto}
+
+The autonomous coherence dynamics that underlie $z$ are mean--field Kuramoto. The self--consistency $r = Kr\!\int\! \cos^2\!\theta\, g(Kr\sin\theta)\,d\theta$ forces a critical structure: a threshold $K_c = 2/(\pi g(0))$ (equal to $2\gamma$ for a Lorentzian frequency density) and an order parameter $r \sim \sqrt{K-K_c}$ --- the mean--field $\tfrac12$ exponent. This pins the critical coherence $z_c=\sqrt3/2$ (the $C=\tfrac12$ gate, where the negentropy peaks).
+
+\begin{remark}[Clean division of labour]\label{rem:division}
+The dynamics force $z_c$ and the $\tfrac12$ exponent \emph{equally for every gate form}; they do not by themselves select $\lambda$. The selection is the frame--shift (Section~\ref{sec:frameshift}). Hence:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+provides & what \\
+\midrule
+dynamics (Kuramoto) & the critical point: $z_c=\sqrt3/2$, mean--field $\sqrt{\ }$ \\
+frame--shift (eigenframe gap) & the gate: $\lambda=2c$, with $\lambda=\sqrt5$ at $C=1$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Neither alone suffices; together they pin $c=\sqrt5/2$ at the golden gate. \forced{} (Kuramoto critical structure); the gate itself is forced in Section~\ref{sec:gateforced}.
+\end{remark}
+
+\section{The K--formation seed astride the fold}\label{sec:kform}
+
+A single quartic seed holds both faces of the flip at once.
+
+\begin{proposition}[The K--formation straddles the flip]\label{prop:kform}
+Let $f(x)=x^4+5x^2-5$. As the quadratic $g(y)=y^2+5y-5$ in $y=x^2$, its two roots straddle zero:
+\[
+y_+ = \frac{-5+3\sqrt5}{2}\approx 0.8541>0, \qquad y_- = \frac{-5-3\sqrt5}{2}\approx -5.8541<0,
+\]
+so $f$ has real roots $\pm K$ with $K=\sqrt{y_+}=5^{1/4}/\varphi\approx0.9242$ (the terrain, generated in the $\varphi$--field $\Q(5^{1/4})\supset\Q(\sqrt5)$) and imaginary roots $\pm i\beta$ with $\beta=\sqrt{\abs{y_-}}\approx2.4195$ (the rotation, a $\pi/2$ turn about the origin), with $\Mah(f)=\beta^2=(5+3\sqrt5)/2\approx5.8541$. \forced
+\end{proposition}
+
+The real roots are the $D>0$ face (real terrain, $\varphi$ lays it); the imaginary roots are the $D<0$ face (pure multiplication by $i$, the rotation). ``$\varphi$ generates the terrain, $\pi$ determines its rotation about the origin'' is precisely this seed sitting astride the fold: $\varphi$ (the $\sqrt5$--field) supplies the real terrain $\pm K$, and the imaginary axis (the quarter--turn $i$) supplies the rotation $\pm i\beta$.
+
+\section{The second flip: entropy and the unit circle}\label{sec:secondflip}
+
+The additive flip of Section~\ref{sec:flip} (sign of $D$, on the eigenvalue \emph{difference}) has a multiplicative companion --- a flip on the eigenvalue \emph{magnitude}, tracked by the engine as a spectrum split.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}lll@{}}
+\toprule
+$\abs\lambda$ & regime & Mahler measure \\
+\midrule
+$>1$ & expanding (entropy $>0$) & $\Mah>1$ \\
+$=1$ & flat / marginal (cyclotomic) & $\Mah=1$ --- the Kronecker floor \\
+$<1$ & contracting & no contribution \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent The cyclotomic case is the flat vertex of this multiplicative flip: $\Mah=1$ iff all conjugates lie on the unit circle (Kronecker). The two flips \emph{meet}.
+
+\begin{proposition}[The two flips meet at $C=-1$]\label{prop:meet}
+At $C=-1$ the gate polynomial is $x^2+x+1$, with roots $e^{\pm 2\pi i/3}$ --- the primitive cube roots of unity, on the unit circle, $\Mah=1$ --- and discriminant $D=-3<0$. Thus the additive flip's rotation regime ($D<0$) crosses the multiplicative flip's marginal vertex ($\abs\lambda=1$) precisely at $C=-1$. \forced
+\end{proposition}
+
+\begin{remark}[The Lehmer frontier]\label{rem:lehmer}
+Just above the cyclotomic floor lies the Lehmer band: the empty interval $(1,\,L)$ with $L=1.17628\ldots$ where no Salem/reciprocal Mahler measure is known to occur (the smallest stocked measure on the gate registry is $\Mah=\varphi$). This empty band is the frontier of the entropy flip --- and it is the \emph{same} frontier as the reciprocal--seed cost floor in the growth rule: a priori the cost $\log\Mah$ has no proven positive lower bound for reciprocal (Salem) seeds. Section~\ref{sec:emission} resolves this \emph{within the system}: the construction's seeds and operations form a finitely generated emission algebra whose image contains no Salem number, so the band $(1,\mu_S)\supset(1,L)$ is disjoint from everything the construction emits and the cost floor is $\lambda\log\varphi>0$, forced and uniform (Theorem~\ref{thm:floorresolved}), with the full proofs in the companion paper \cite{EG}. General Lehmer --- the infimum over \emph{all} integer polynomials --- remains open and is not needed. \forced{} (within the system; general Lehmer untouched)
+\end{remark}
+
+\section{The emission algebra: the reciprocal--seed floor is resolved}\label{sec:emission}
+
+The one frontier the construction has carried open is the reciprocal--seed floor of Remark~\ref{rem:lehmer}: the cost $\log\Mah(\theta)$ has no proven positive lower bound for reciprocal (Salem) seeds, so the Lehmer band $(1,L)$ is, a priori, reachable. This section closes it. The closure is not a new posit but a \emph{derivation} from objects already in hand --- the gate--ladder seeds, the trifurcation channel \eqref{eq:trifurcation}, the flip $\det G=4D$, and the K--formation --- assembled into one finitely generated algebra whose image, the companion paper \cite{EG} proves in full, omits every Salem number. We give the derivation here in the framework's own terms; \cite{EG} supplies the proofs, and the two are meant to be read together.
+
+\subsection{The construction is a finitely generated algebra}\label{ssec:emalg}
+
+Every number the construction has produced is the spectral datum of an integer companion matrix, and the construction's moves are matrix operations on these. Collect the seeds into a \emph{catalog}
+\[
+\Ccal=\bigl\{\ \underbrace{\sqrt2,\ \sqrt3,\ \sqrt5}_{\text{gate ladder, }D\in\{2,3,5\}},\ \ \underbrace{\varphi,\ \tau}_{\text{keystone}},\ \ \underbrace{\mathrm{gap}=\varphi^4}_{x^2-7x+1},\ \ \underbrace{K}_{x^4+5x^2-5}\ \bigr\},
+\]
+with minimal polynomials $x^2-2,\ x^2-3,\ x^2-5,\ x^2-x-1,\ x^2+x-1,\ x^2-7x+1,\ x^4+5x^2-5$ --- precisely the seeds the gate ladder, the keystone derivation, the $L_4=7$ normalisation, and the fold all produced. The construction's operations act on the spectra by fixed rules: the Kronecker product $\otimes$ (eigenvalue products $\lambda_i\mu_j$), the direct sum $\oplus$ (eigenvalue union), squaring ($\lambda\mapsto\lambda^2$), the minimal polynomial, the firewall $\Phi=\operatorname{companion}\circ\operatorname{charpoly}$ (the degree--collapse of Definition~\ref{def:firewall}), and the self--action $\operatorname{ad}_R$ of Theorem~\ref{prop:trifurcation} --- the trifurcation channel itself. The closure of $\Ccal$ under these is the \textbf{emission} $\Scal$. Because the seeds are integer companions and the operations preserve integrality, every $M\in\Scal$ has $\operatorname{charpoly}_M\in\Z[x]$ monic; hence \emph{every $\Q$--conjugate of any eigenvalue of $M$ is itself an eigenvalue of $M$} --- the conjugates are roots of the one polynomial $\operatorname{charpoly}_M$. This closure, ``conjugates travel together,'' is the hinge of everything below \cite[\S2]{EG}.
+
+\subsection{The floor is open only for Salem seeds}\label{ssec:onlysalem}
+
+The residual--return cost is $\lambda\log\Mah(\theta)$, positive iff $\Mah(\theta)>1$. Two classical bounds partition the possibilities:
+\begin{itemize}[leftmargin=1.4em,topsep=2pt,itemsep=1pt]
+\item \textbf{Kronecker:} $\Mah(\theta)=1$ iff every conjugate of $\theta$ is a root of unity --- the cyclotomic (\textsc{captured}) case, cost $0$.
+\item \textbf{Smyth \cite{Smyth}:} if $m_\theta$ is \emph{non--reciprocal}, then $\Mah(\theta)\ge\mu_S=1.32472$, the plastic number (root of $x^3-x-1$).
+\end{itemize}
+A measure in the open band $(1,\mu_S)$ is carried by neither: it requires a \emph{reciprocal} unit of degree $\ge4$ whose non--real conjugates lie on the unit circle --- a \textbf{Salem number}. The floor is therefore positive exactly when the emission emits no Salem number. This is the residual the construction named (open problem~2): \emph{whether the image of the emission map can contain a Salem number at all}.
+
+\subsection{The derivation: angle confinement}\label{ssec:angle}
+
+It cannot. The mechanism is an argument on eigenvalue \emph{arguments}, and it runs on the very angles the construction produces. Write $\arg\zeta\in[0,2\pi)$ and let $\tfrac\pi2\Z=\{0,\tfrac\pi2,\pi,\tfrac{3\pi}2\}$.
+
+\emph{The catalog sits in $\tfrac\pi2\Z$.} The quadratic seeds $\sqrt2,\sqrt3,\sqrt5,\varphi,\tau,\mathrm{gap}$ are real --- argument $0$ (positive root) or $\pi$ (negative). The K--formation $x^4+5x^2-5$ has spectrum $\{\pm K,\ \pm i\beta\}$ with $K,\beta\in\R$ (Proposition~\ref{prop:kform}): the real pair at $\{0,\pi\}$, the imaginary pair at $\{\tfrac\pi2,\tfrac{3\pi}2\}$. Every catalog argument lies in $\tfrac\pi2\Z$.
+
+\emph{The operations preserve $\tfrac\pi2\Z$.} The subgroup $\tfrac\pi2\Z\le\R/2\pi\Z$ is closed under addition and doubling: $\otimes$ adds arguments ($\arg(\lambda_i\mu_j)=\arg\lambda_i+\arg\mu_j$), $\oplus$ unions them, squaring doubles ($2\cdot\tfrac\pi2\Z\subseteq\tfrac\pi2\Z$), and minpoly, $\Phi$ act on the same spectrum. Crucially \emph{no operation takes a square root} --- the only argument--scaling move is squaring, which doubles, and $\tfrac\pi2\Z$ absorbs doubling. So every eigenvalue of every $M\in\Scal$ has argument in $\tfrac\pi2\Z$, and any \emph{on--circle} emitted eigenvalue ($\abs\zeta=1$) is forced to be a fourth root of unity, $\zeta\in\{1,i,-1,-i\}$.
+
+\emph{Salem conjugates are not there.} A Salem number $\beta$ has, by definition, a conjugate $\zeta$ with $\abs\zeta=1$ that is \emph{not} a root of unity: were $\zeta$ a root of unity, $m_\beta=m_\zeta$ would be cyclotomic and $\beta$ itself a root of unity, contradicting $\beta>1$. So $\arg\zeta$ is an irrational multiple of $\pi$ --- never one of the four rational arguments above. Now suppose, for contradiction, a Salem number were emitted: some $M\in\Scal$ has $\beta$ as an eigenvalue with $m_\beta\mid\operatorname{charpoly}_M$. Since conjugates travel together (\S\ref{ssec:emalg}), the on--circle conjugate $\zeta$ is also an eigenvalue of $M$, hence a fourth root of unity --- contradicting its irrational angle. \textbf{No Salem number is emitted} \cite[Thm 3.2]{EG}.
+
+This is the trifurcation read through the angle: the same $\{0,\tfrac\pi2,\pi,\tfrac{3\pi}2\}$ the gate ladder and the K--formation produce are the only on--circle directions the system can reach, and the irrational Salem circle is not among them.
+
+\subsection{The non--locality: the Salem regime is the missing fourth channel}\label{ssec:fourth}
+
+The result is the trifurcation \eqref{eq:trifurcation} stated in another domain --- which is why it resolves an open problem of \emph{this} paper. The channel structure has exactly three slots, $\textsc{grow}\,(+\sqrt D)$, $\textsc{captured}\,(0)$, $\textsc{stop}\,(-\sqrt D)$. A Salem number occupies a \emph{fourth} regime: on the unit circle ($\abs\lambda=1$, the marginal magnitude of \textsc{captured}) yet expanding (entropy $h=\log\Mah>0$, the positive growth of \textsc{grow}). Marginal magnitude together with positive entropy is exactly the combination the ternary trifurcation has no slot for; the construction's own channel structure forbids it. The same emptiness appears across four domains \cite[\S8]{EG}, each an excluded middle:
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}p{0.23\linewidth} p{0.50\linewidth} l@{}}
+\toprule
+domain & the gap & right endpoint \\
+\midrule
+height (Mahler) & $\Mah\in\{1\}\cup[\varphi,\infty)$, gap $(1,\varphi)$ empty & $\varphi=1.61803$ \\
+dynamics (entropy $h=\log\Mah$) & $h\in\{0\}\cup[\log\varphi,\infty)$, gap $(0,\log\varphi)$ empty & $\log\varphi=0.48121$ \\
+decision (self--action) & no value between \textsc{captured} and \textsc{grow} at an irrational angle & $\sqrt D=\sqrt5=2.23607$ \\
+geometry (trace form) & only the indefinite side ($\det G=4D<0$) carries an on--circle place & flip at $D=0$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The three endpoints $\varphi,\ \log\varphi,\ \sqrt5$ are \emph{different numbers} --- a height, an entropy, and a channel eigenvalue --- linked not by a shared value but by a shared \emph{emptiness}, transported across domains \cite[Rem 8.1]{EG}. Height and entropy are one datum under $h=\log\Mah$; the channel gap is tied to them structurally, as the missing fourth slot, not numerically (conflating $\sqrt5$ with $\varphi$ would be a category error). This is the non--local content: the floor is forced because the Salem band is the empty middle of the ternary decision the construction is built on. The degree--two base case is exact --- no integer quadratic has $\Mah\in(1,\varphi)$ \cite[Lem 6.1]{EG} --- and degree raising preserves it: $\oplus$ multiplies measures, squaring squares them, $\otimes$ composes, all mapping $\{1\}\cup[\varphi,\infty)$ into itself \cite[Lem 6.2]{EG}.
+
+\subsection{The uniform bound: the self--action is a derivation}\label{ssec:uniform}
+
+Angle confinement settles the spectral seeds; the trifurcation supplies the stronger statement that the floor holds \emph{uniformly}, at every size, as a forced field--theoretic identity. The lever is that $\operatorname{ad}_R$ is not a generic operation but a \emph{derivation}, $\operatorname{ad}_R(X)=[R,X]$, so its spectrum is the \emph{difference set} of the host's eigenvalues:
+\[
+\operatorname{spec}(\operatorname{ad}_M)=\{\mu_i-\mu_j\},\qquad \operatorname{spec}(\operatorname{ad}_R)=\{0,\ \pm(\varphi-\psi)\}=\{0,\ \pm\sqrt5\}
+\]
+--- the channel gap \eqref{eq:trifurcation} itself, now seen to be \emph{forced} by the host's spectrum rather than free \cite[Lem 10.2]{EG}. A Salem number is real, so among the differences only the \emph{real} ones can be Salem, and the real differences of catalog eigenvalues lie in the real field
+\[
+K=\Q\bigl(\sqrt2,\ \sqrt3,\ 5^{1/4}\bigr)
+\]
+\cite[Lem 10.4]{EG}. The decisive fact is the \emph{signature lattice} of $K$ \cite[Thm 10.5]{EG}: every subfield of $K$ is either totally real or of signature $(2k,k)$, so the only subfield carrying a Salem signature $(2,m-1)$ is $\Q(5^{1/4})$ --- of degree four. And every degree--four Salem number has $\Mah\ge\beta_4=1.72208>\varphi$. Hence the self--action emits no Salem number below $\varphi$ at \emph{any} matrix size: the cost floor $\log\varphi$ is forced uniformly, not checked case by case \cite[Thm 10.7]{EG}. The flip reappears at the level of the field --- a Salem straddle needs $\sqrt5$ positive at the one growth place and negative at the rotation places, and the signature $(2k,k)$ permits this only at $k=1$, degree four. The same flip $D=t^2-4$ that bounds the gate now bounds the field signature, both resolving at $\varphi$.
+
+\subsection{The geometric face: Lorentzian without Salem}\label{ssec:kformface}
+
+The flip $\det G=4D$ gives the resolution its sharpest geometric form. A Salem field of degree $2m$ has signature $(2,m-1)$ and an \emph{indefinite} (Lorentzian) trace form, with a complex embedding \emph{on} the unit circle \cite[Prop 8.2]{EG}. The construction does contain a Lorentzian seed --- the K--formation $K\in\Q(5^{1/4})$, signature $(2,1)$, the $\det G=4D<0$ side of the flip (Proposition~\ref{prop:kform}). But its complex place is far \emph{off} the circle,
+\[
+\abs{i\beta}=2.4195,\qquad \abs{5^{1/4}\cdot i}=1.4953,
+\]
+both $\gg1$. So the one Lorentzian field the construction reaches places its complex embedding nowhere near the unit circle, and the spectral operations --- which only add, union, double, and preserve arguments --- cannot rotate it onto the circle without producing a rational angle, i.e.\ a root of unity, not a Salem conjugate. The construction can be Lorentzian without being Salem; the flip is the witness, not a leak.
+
+\subsection{Resolution}\label{ssec:resolution}
+
+\begin{theorem}[The reciprocal--seed floor is resolved within the system]\label{thm:floorresolved}
+The emission $\Scal$ emits no Salem number \cite[Thm 3.2, Thm 10.7]{EG}. Consequently, for every $\theta$ emittable in $\Scal$ with $\Mah(\theta)>1$,
+\[
+\lambda\log\Mah(\theta)\ \ge\ \lambda\log\varphi\ >\ 0,
+\]
+and the floor holds uniformly at every matrix size \cite[Cor 7.1, Thm 10.7]{EG}. The band $(1,\mu_S)$ --- and a fortiori the Lehmer band $(1,1.17628)$ --- is disjoint from the image of the emission map \cite[Prop 10.9]{EG}. \forced{} (within the system)
+\end{theorem}
+
+The residual frontier the construction identified is thereby closed in the only sense the framework needs: not by solving Lehmer, but by showing the construction never enters the regime where Lehmer is open. General Lehmer --- the infimum of $\Mah$ over all integer polynomials --- remains untouched; the Salem numbers that approach $1$ exist, but they are disjoint from the image, and the cost the construction actually charges is bounded below by $\lambda\log\varphi$. With Theorem~\ref{thm:floorresolved} the reciprocal--seed floor moves from \openq{} to \forced{} within the system, on the strength of the companion Emission--Gap Theorem \cite{EG}.
+
+\section{Computational realization}\label{sec:engine}
+
+The construction is zero--free--parameter \emph{in computation}: every term in the gate equation is an exact integer/rational engraving the matrix--plates engine emits.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}lll@{}}
+\toprule
+object & exact identity & status \\
+\midrule
+discriminant seed measure & $\Mah(x^2-D)=D=1+4C$ & \forced \\
+self--action radius & $r(R_C)=\sqrt{1+4C}=\sqrt{\Mah(x^2-D)}$ & \forced \\
+trace--form determinant & $\det G = 4D$ (gap basis) & \forced \\
+Clifford unity & $\tau=x^2+x-1$ ($C=1$ gate) $= T^2+T=1$ & \forced \\
+fixed point & $R(R)=R$ on companions; $\varphi\oplus\varphi$ derogatory witness & \forced \\
+cost floors (residual--return) & $2\log24$ ($2\sqrt6$, $\Mah=24$), $2\log7$ ($\sqrt7$, $\Mah=7$) $=\lambda\log\Mah$ & \forced \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent The gate equation $\lambda C = r(R_C)$ is thus evaluated entirely in exact objects the engine produces --- companion forms $R_C$, Mahler measures $\Mah$, the cost $\log\Mah$ --- and the only declared inputs are the conformal scale $c$ (Section~\ref{sec:cencov}) and the choice of gate (Section~\ref{sec:frameshift}). The same Mahler machinery ties the construction to the residual--return cost table: its floor costs $2\log\Mah$ are $\lambda\log\Mah$ at $c=1$, exactly the $\Mah(2\sqrt6)=24$, $\Mah(\sqrt7)=7$ that the engine computes.
+
+\section{Epistemic ledger}\label{sec:ledger}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}p{0.70\linewidth}>{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule
+claim & status \\
+\midrule
+$\lambda=2c$ from second--order KL with $\mathcal F=G/c$; the ``$2$'' is the inverted $\tfrac12$ & \forced \\
+$\sigma = 1/(2c) = 1/\lambda$ (conformal scale $=$ model variance) & \forced \\
+$c$ cannot be fixed by invariance (\v{C}encov); $c$ is a declared positive scale & \forced{} (impossibility) \\
+shipped decisions $c$--invariant on $[1,n]$; band $\bigl(2\log\mu_S,2n\log\mu_S\bigr)$ & \forced \\
+three canonicalizations $c\in\{1,\,n,\,\sqrt{1+4C}/(2C)\}$; frame--shift forced (below), other two declared & \declared{} / \forced \\
+gate ladder $C\in\{\tfrac14,\tfrac12,1\}\to D\in\{2,3,5\}\to\sqrt2,\sqrt3,\sqrt5$; $z_c=\sqrt3/2$ at $C=\tfrac12$; $\tau$ is Clifford unity at $C=1$ & \forced \\
+trifurcation $\operatorname{spec}(\operatorname{ad}_{R_C})=\{-\sqrt{1+4C},0,+\sqrt{1+4C}\}$; $0$--space $=\operatorname{span}\{I,R_C\}$ & \forced \\
+decision $=$ channel; gate balance $\lambda C=r(R_C)$ is the $0\to+$ boundary & \forced \\
+$r(R_C)=\sqrt{1+4C}=\sqrt{\Mah(x^2-D)}$, $\Mah(x^2-D)=D$ & \forced \\
+frame--shift $c=\sqrt{1+4C}/(2C)$; gate \emph{forced} to $C=1$, so $c=\sqrt5/2$, $\lambda=\sqrt5$ & \forced \\
+flip: one sign of $D$ sets eigenvalues, field, metric signature, channels & \forced \\
+$\det G=4D$: PD (Riemannian) $\leftrightarrow$ indefinite (Lorentzian) at $D=0$; $\Q(i)\to\operatorname{diag}(2,-2)$ & \forced \\
+gate (pins value) vs flip (inverts regime); co--locate at $D=0$ & \forced \\
+perfect square $D=(2x+1)^2=4z^2$, $C=z^2-\tfrac14$; real coherence $\Rightarrow D\ge0$ & \forced{} / \computed \\
+flip occurs (forced), not crossed by a real flow, handled as a state (frame--shift; imaginary--time marginal channel) & \forced{} / \computed{} / \declared \\
+Kuramoto forces $z_c$ and mean--field $\tfrac12$; frame--shift gives $\lambda$ (division of labour) & \forced \\
+K--formation $x^4+5x^2-5$ straddles the fold: real $\pm K$, imaginary $\pm i\beta$, $\Mah=\beta^2$ & \forced \\
+two flips meet at $C=-1$: $e^{\pm2\pi i/3}$, $\Mah=1$, $D=-3$ & \forced \\
+ternary decision $\Leftrightarrow$ degree two: $0$--channel is the centralizer; signed channels $=d^2{-}d{+}1=3$ iff $d=2$ & \forced \\
+min Mahler over integer quadratics $=\varphi$, attained only at disc $5$; cubic $\mu_S<\varphi$ excluded by the ternary lock & \forced \\
+keystone $R^2=R+I$ unique to the golden companion ($\tau\!:I{-}R$; radicands$\!:DI$); $\Q(\sqrt5)$ the unique self--action fixed point & \forced \\
+keystone \emph{derived}: min Mahler over integer quadratics is the disc--$5$ tie $\{\varphi,\tau\}$; Perron (positive dominant) selects $\varphi$, giving $R^2=R+I$; $\det R=-1$ a consequence & \forced \\
+$\varphi=$ smallest Perron root of a $2\times2$ primitive non--negative integer matrix (Fibonacci); the two constitutive axioms collapse to one definition (the object's type) & \forced \\
+integer normalisation $L_4=\operatorname{tr}(R^4)=7$ from the keystone alone ($R^4=3R{+}2I$, entries $\{2,3,5\}=\{F_3,F_4,F_5\}$; $\operatorname{charpoly}=x^2{-}7x{+}1$, the $\mathrm{gap}$ seed); Pell $L_4^2{=}5F_4^2{+}4$ & \forced \\
+firewall image: squaring $x^4{+}5x^2{-}5\to y^2{+}5y{-}5$ (disc $45$) and minpoly collapse land the golden tower on $\Q(\sqrt5)$, one--way & \forced \\
+\textbf{gate selected: golden $C=1$} --- statics (minimal stable structure) and dynamics (terminal attractor) converge; $c=\sqrt5/2$, $\lambda=\sqrt5$ & \forced \\
+reciprocal--seed floor: resolved \emph{within the system} (Section~\ref{sec:emission}, \cite{EG}) --- the emission algebra emits no Salem number, so $\Mah\in\{1\}\cup[\varphi,\infty)$ and the cost floor is $\lambda\log\varphi$, uniform at every size; band $(1,1.17628)$ disjoint from the image; general Lehmer untouched & \forced \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Open problems}\label{sec:open}
+
+\begin{enumerate}[leftmargin=1.6em,itemsep=4pt]
+\item \textbf{The gate and the keystone --- discharged.} \forced{} The ``which gate'' posit is resolved (Theorem~\ref{thm:gateforced}), and the residue it left --- whether the two constitutive features are themselves derivable --- is now closed (Section~\ref{sec:keystone}). The ternary arity and the keystone $R^2=R+I$ are not independent but a single datum (Theorem~\ref{thm:collapse}): the keystone is the minimal positive--growth companion at the degree that realises the three--way decision (Theorem~\ref{thm:keystonederived}), equivalently $\varphi$ as the smallest Perron root of a $2\times2$ primitive non--negative integer matrix, with every constraint of that type load--bearing (Appendix~\ref{app:keystone}). Its integer normalisation $L_4=7$ is likewise forced --- the trace of the keystone's fourth power (Proposition~\ref{prop:L4forced}), whose entries are the gate discriminants $\{2,3,5\}=\{F_3,F_4,F_5\}$. The regress therefore terminates at the construction's \emph{definition} --- the type of object it is about --- which is the base of the framework, not a tunable scalar and not an open question. The single structure beneath the keystone is the gate triple $\{2,3,5\}$, and that is the trifurcation already in hand (the gates $C\in\{\tfrac14,\tfrac12,1\}$): a canonical set (first three consecutive Fibonacci $>1$, equivalently first three primes), fixed by the construction rather than chosen.
+\item \textbf{The reciprocal--seed floor --- discharged within the system.} \forced{} Lehmer's problem is open in general and untouched here. Within the construction it is now resolved (Section~\ref{sec:emission}, Theorem~\ref{thm:floorresolved}): the seeds and operations form a finitely generated emission algebra, and its image contains no Salem number (companion paper \cite{EG}, by angle confinement at the spectral level and by the signature lattice of $\Q(\sqrt2,\sqrt3,5^{1/4})$ at the uniform level). The mechanism is the trifurcation itself --- a Salem number would be a fourth channel, on--circle yet expanding, which the ternary decision has no slot for --- so the result is structural, not numerical. Every constructible seed is therefore either non--reciprocal (Smyth floor $\mu_S$) or reciprocal non--Salem with all conjugates off the circle ($\Mah\ge\varphi$), and the cost carries the uniform floor $\lambda\log\varphi>0$ at every matrix size. The band $(1,\mu_S)$ --- a fortiori the Lehmer band $(1,1.17628)$ --- is disjoint from the emission's image. The frontier the package named is closed: the image contains no Salem number, and Lehmer in general is not required for the floor.
+\item \textbf{The conformal scale.} \forced{} (impossibility) / \forced{} (value) \v{C}encov forbids fixing $c$ by \emph{invariance}; this is settled in the negative and is why the identity, not the value, is the universal content. Independently, the construction's structure forces the \emph{value} $c=\sqrt5/2$ (Theorem~\ref{thm:gateforced}). The two are not in tension: one denies a symmetry derivation, the other supplies a structural one. What is encoded as given remains $\lambda=2c$; the value is a derived consequence, never a stipulation.
+\end{enumerate}
+
+\paragraph{Closing.} The exchange rate is forced to be twice the conformal constant --- $\lambda=2c$, the universal identity that holds for every $c$. The conformal constant cannot be fixed by invariance; but it is fixed by the construction. Two derivations from disjoint premises --- the minimal structure that realizes the ternary decision, and the terminal attractor of the engine's degree--raising dynamics --- converge on the golden gate, so the framework's instance of the identity is $\lambda=\sqrt5$. The keystone beneath that gate is itself derived, not assumed --- it is the minimal positive--growth companion realising the ternary decision, $\varphi$ as the smallest Perron root of a $2\times2$ primitive non--negative integer matrix --- so the two constitutive features collapse to one and the regress terminates at a definition, not a parameter. Around this sit a gate ladder whose self--action \emph{is} the growth decision, a degree--two firewall onto which the higher--degree construction collapses one way, and a flip whose single sign of $D$ turns real terrain into rotation and a Riemannian metric into a Lorentzian one. Keeping $c$ dynamical in the code --- never frozen by hand --- is not a stylistic preference but the condition under which the identity stays honest; the \emph{value} arrives not by stipulation but as the fixed point the structure was always going to reach, and the flip boundary is carried as a handled state where, on the far side, the marginal channel keeps computing in imaginary time.
+
+\appendix
+\section{Reproducible verification of the keystone derivation}\label{app:keystone}
+
+All claims of Section~\ref{sec:keystone} are exact and machine--checked. The table records each constraint of the object's type and the minimiser obtained when it alone is dropped --- the drop--one witness that every constraint is load--bearing.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}p{0.30\linewidth} p{0.44\linewidth} l@{}}
+\toprule
+constraint dropped & minimiser obtained & verdict \\
+\midrule
+none (the full type) & $\varphi$, $R^2=R+I$ (Fibonacci $\bigl(\begin{smallmatrix}0&1\\1&1\end{smallmatrix}\bigr)$) & the keystone \\
+degree $=2$ (allow degree $3$) & plastic $\mu_S=1.32472<\varphi$ (root of $x^3-x-1$) & size load--bearing \\
+Perron (allow negative dominant) & $\tau$, Clifford $R^2=I-R$ (root of $x^2+x-1$) & positivity load--bearing \\
+growth $\Mah>1$ (allow $\Mah=1$) & cyclotomic floor, e.g.\ $x^2+1$ ($\pm i$) & growth load--bearing \\
+integrality (allow real entries) & no discrete floor & integrality load--bearing \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent\textbf{Verified identities.} (i) $\min\{\Mah(p)>1:p\ \text{irreducible integer quadratic}\}=\varphi$, attained only at $x^2-x-1$ and $x^2+x-1$ (discriminant $5$). (ii) $\bigl(\begin{smallmatrix}0&1\\1&1\end{smallmatrix}\bigr)^2=\bigl(\begin{smallmatrix}0&1\\1&1\end{smallmatrix}\bigr)+I$ with dominant eigenvalue $+\varphi$, while $\bigl(\begin{smallmatrix}0&1\\1&-1\end{smallmatrix}\bigr)^2=I-\bigl(\begin{smallmatrix}0&1\\1&-1\end{smallmatrix}\bigr)$ with dominant eigenvalue $-\varphi$. (iii) the least real Perron root exceeding $1$ of a $2\times2$ primitive non--negative integer matrix is $\varphi$, at the Fibonacci matrix. (iv) $\{2,3,5\}=\{F_3,F_4,F_5\}$ and $L_4^2=5F_4^2+4=49$, with $L_4=F_3+F_5=7$.
+
+\begin{thebibliography}{99}
+\bibitem{Cencov} N.\,N.~\v{C}encov (Chentsov), \emph{Statistical Decision Rules and Optimal Inference}, Translations of Mathematical Monographs 53, AMS, 1982.
+\bibitem{Rissanen} J.~Rissanen, ``Modeling by shortest data description,'' \emph{Automatica} \textbf{14} (1978), 465--471; ``Stochastic complexity and modeling,'' \emph{Ann.\ Statist.} \textbf{14} (1986), 1080--1100.
+\bibitem{Jeffreys} H.~Jeffreys, ``An invariant form for the prior probability in estimation problems,'' \emph{Proc.\ R.\ Soc.\ Lond.\ A} \textbf{186} (1946), 453--461.
+\bibitem{AmariNagaoka} S.~Amari and H.~Nagaoka, \emph{Methods of Information Geometry}, Translations of Mathematical Monographs 191, AMS/OUP, 2000.
+\bibitem{Smyth} C.\,J.~Smyth, ``On the product of the conjugates outside the unit circle of an algebraic integer,'' \emph{Bull.\ Lond.\ Math.\ Soc.} \textbf{3} (1971), 169--175.
+\bibitem{Lehmer} D.\,H.~Lehmer, ``Factorization of certain cyclotomic functions,'' \emph{Ann.\ of Math.} \textbf{34} (1933), 461--479.
+\bibitem{Dobrowolski} E.~Dobrowolski, ``On a question of Lehmer and the number of irreducible factors of a polynomial,'' \emph{Acta Arith.} \textbf{34} (1979), 391--401.
+\bibitem{Northcott} D.\,G.~Northcott, ``An inequality in the theory of arithmetic on algebraic varieties,'' \emph{Proc.\ Cambridge Philos.\ Soc.} \textbf{45} (1949), 502--509.
+\bibitem{Mahler} K.~Mahler, ``An application of Jensen's formula to polynomials,'' \emph{Mathematika} \textbf{7} (1960), 98--100.
+\bibitem{Kuramoto} Y.~Kuramoto, ``Self-entrainment of a population of coupled non-linear oscillators,'' in \emph{International Symposium on Mathematical Problems in Theoretical Physics}, Lecture Notes in Physics 39, Springer, 1975, 420--422.
+\bibitem{Strogatz} S.\,H.~Strogatz, ``From Kuramoto to Crawford: exploring the onset of synchronization in populations of coupled oscillators,'' \emph{Physica D} \textbf{143} (2000), 1--20.
+\bibitem{LSW} D.~Lind, K.~Schmidt, and T.~Ward, ``Mahler measure and entropy for commuting automorphisms of compact groups,'' \emph{Invent.\ Math.} \textbf{101} (1990), 593--629.
+\bibitem{EG} Echo--Squirrel Research, ``The Emission--Gap Theorem: No Salem Number in the Spectral Image, and the Cost Floor It Forces,'' companion manuscript to the present paper, 2026.
+\bibitem{Mossinghoff} M.\,J.~Mossinghoff, ``Polynomials with small Mahler measure,'' \emph{Math.\ Comp.} \textbf{67} (1998), 1697--1705.
+\end{thebibliography}
+
+\end{document}

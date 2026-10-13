@@ -1,0 +1,99 @@
+{
+  "command": "verify.alias.voice.render:U+10D613",
+  "mode": "carry-voice:sealed",
+  "probe_lane": {
+    "id": "03",
+    "family": "original-four",
+    "label": "render minimal"
+  },
+  "request": {
+    "request_id": "__PASTE_REQUEST_ID_DERIVED_FROM_TS_UTC__",
+    "ts_utc": "__PASTE_TS_UTC__",
+    "actor": "external",
+    "kid": "tauric.diana.613",
+    "scope": [
+      "core/route-2",
+      "alias.read",
+      "badge.read"
+    ]
+  },
+  "badge_id": "bdg_glyph_U10D613",
+  "principal": "tauric.diana.613",
+  "claimed_pua": "U+10D613",
+  "canonical_phrase": "Tauric Diana — Crimean heritage custodianship",
+  "display_phrase": "Covenant: Blood Rite 613",
+  "asset": {
+    "preview_svg_filename": "13_U10D613_preview.svg",
+    "preview_svg_sha256": "2c20bb26f3dcc3fe41e8e3d71705942d220aed7e56391c274f8f5e5d01e4d1aa",
+    "preview_svg_md5": "d4522965d0660d1150a828e00e5dd6f9"
+  },
+  "renderer": {
+    "kit": "TD613 PUA Badge Provenance Attestation Renderer v7.2.1",
+    "userscript": "10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js",
+    "verify_page": "11_TD613_PUA_Badge_Provenance_Attestation_Lab.html",
+    "render_model": "single_badge_append",
+    "local_file_match": true
+  },
+  "operator_handshake": {
+    "type": "renderer-userscript",
+    "userscript": "10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js",
+    "state": "required-until-installed",
+    "verify_page": "11_TD613_PUA_Badge_Provenance_Attestation_Lab.html",
+    "render_model": "single_badge_append",
+    "note": "Install the renderer userscript, confirm badge append on the chamber, save the SVG at the helper timestamp, then send through one of the original four probes."
+  },
+  "artifact_capture": {
+    "svg_filename": "TD613_U10D613___PASTE_FILENAME_SAFE__.svg",
+    "svg_capture_ts_utc": "__PASTE_TS_UTC__",
+    "svg_ref": "__PASTE_SAVED_SVG_FILENAME_OR_URI__"
+  },
+  "observation": {
+    "status": "renderer-key-required",
+    "screenshot_ref": "__OPTIONAL_PASTE_SCREENSHOT_FILENAME_OR_URI__",
+    "svg_ref": "__PASTE_SAVED_SVG_FILENAME_OR_URI__",
+    "operator_notes": "__OPTIONAL_PASTE_OPERATOR_NOTES__",
+    "handshake_note": "Install 10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js, save TD613_U10D613_<ts_utc>.svg at the helper timestamp, then send through lane 03.",
+    "signature_lane_note": "Public probe stays unsigned by default. Historical .sig and advanced JWS lanes are reference/operator overlays."
+  },
+  "td613_binding_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐",
+  "td613_binding_canonical_footer": null,
+  "historical_example": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐",
+  "safe_harbor_packet": {
+    "packet_id": "__OPTIONAL_PASTE_SAFE_HARBOR_PACKET_ID__",
+    "packet_hash_sha256": "__OPTIONAL_PASTE_PACKET_HASH_SHA256__",
+    "receipt_state": "__OPTIONAL_PASTE_RECEIPT_STATE__",
+    "signature_lane": "__OPTIONAL_PASTE_SIGNATURE_LANE__",
+    "packet_schema_version": "td613.safe-harbor.packet/v1",
+    "shi_label": "SHI #",
+    "shi_number": null,
+    "badge_number": null,
+    "assignment_basis": null,
+    "stylometric_fingerprint": null,
+    "triad_word_counts": null,
+    "triad_shortfalls": null,
+    "frame_alignment_flags": [],
+    "stylometric_provenance": {
+      "source": "safe-harbor.ingress.triad",
+      "shi_number": null,
+      "entrant_prompt_lanes": [
+        "future_self",
+        "past_self",
+        "higher_self"
+      ],
+      "threshold_rule": "40-word minimum per lane",
+      "signature_semantics": "entrant-owned stylometric witness (cadence + semantic posture)",
+      "derivation_rule": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint (15 fields per lane: 11 cadence axes + 4 semantic posture axes)",
+      "interpretation_note": "Treat the SHI as bound to the entrant's own stylometrics from the three ingress prompts, not as a standalone arbitrary identifier.",
+      "stylometric_fingerprint": null,
+      "triad_word_counts": null,
+      "triad_shortfalls": null,
+      "frame_alignment_flags": [],
+      "divergence_signature": null,
+      "llm_intake_hint": "Stylometric witness scaffolding (pre-issuance): no SHI is bound yet; treat this block as a stylometric draft until the triad clears the 40-word threshold and covenant confirms. Once minted, the fingerprint binds both cadence (11 axes) and semantic posture (temporal_posture, dominant_operator, governed_exposure_depth, closure_class)."
+    },
+    "canonical_header": null,
+    "canonical_footer": null,
+    "public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐",
+    "historical_example": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐"
+  }
+}

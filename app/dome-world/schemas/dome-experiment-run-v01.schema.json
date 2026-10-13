@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.dome-world.experiment-run/v0.1",
+  "title": "TD613 Dome-World Experiment Run v0.1",
+  "type": "object",
+  "required": [
+    "schema", "experiment_id", "created_at", "time_posture", "state",
+    "source_receipt_reference", "pre_registration_digest",
+    "instrument_ensemble_reference", "snapshot_batch_reference",
+    "flowcore_context_series_reference", "tomography_receipt_reference",
+    "station_ownership", "automatic_station_advance", "automatic_ash_action",
+    "prediction_authorized", "server_persistence", "operator_closure",
+    "scope_statement", "cannot_establish", "run_digest", "seal"
+  ],
+  "properties": {
+    "schema": { "const": "td613.dome-world.experiment-run/v0.1" },
+    "experiment_id": { "type": "string", "pattern": "^atx_[A-Za-z0-9_-]{6,128}$" },
+    "created_at": { "type": "string" },
+    "time_posture": { "const": "local-clock-not-trusted-time" },
+    "state": { "enum": ["DECLARED", "COLLECTING", "RECONSTRUCTED", "CLOSED", "HELD"] },
+    "source_receipt_reference": { "type": "string", "pattern": "^ashc_[A-Za-z0-9_-]{6,128}$" },
+    "pre_registration_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "instrument_ensemble_reference": { "type": "string", "pattern": "^atens_[A-Za-z0-9_-]{6,128}$" },
+    "snapshot_batch_reference": { "type": ["string", "null"], "pattern": "^ashsnap_[A-Za-z0-9_-]{6,128}$" },
+    "flowcore_context_series_reference": { "type": ["string", "null"], "pattern": "^flowseries_[A-Za-z0-9_-]{6,128}$" },
+    "tomography_receipt_reference": { "type": ["string", "null"], "pattern": "^attomo_[A-Za-z0-9_-]{6,128}$" },
+    "station_ownership": { "type": "object" },
+    "automatic_station_advance": { "const": false },
+    "automatic_ash_action": { "const": false },
+    "prediction_authorized": { "const": false },
+    "server_persistence": { "const": false },
+    "operator_closure": {
+      "type": "object",
+      "required": ["required", "status"],
+      "properties": {
+        "required": { "const": true },
+        "status": { "enum": ["OPEN", "CLOSED"] }
+      },
+      "additionalProperties": false
+    },
+    "scope_statement": { "type": "string" },
+    "cannot_establish": { "type": "array", "items": { "type": "string" } },
+    "run_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "seal": { "const": "⟐" }
+  },
+  "not": {
+    "anyOf": [
+      { "required": ["artifact_digest"] },
+      { "required": ["raw_content"] },
+      { "required": ["observation_content"] },
+      { "required": ["automatic_relation_creation"] }
+    ]
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,56 @@
+/* A2–A5 whole-instrument pedagogy: one field, one clock, semantic navigation, explicit route deltas. */
+.ash-flowcore-field{grid-template-columns:minmax(0,1fr)!important;padding-bottom:64px}
+.ash-flowcore-field>*{min-width:0;max-width:100%}
+.ash-flowcore-field__header{position:relative}
+.ash-flowcore-field__phase{align-self:start;justify-self:end}
+.ash-whole-instrument-play{box-sizing:border-box;position:absolute;right:14px;bottom:14px;z-index:8;min-height:38px;padding:8px 12px;border:1px solid rgba(228,198,108,.62);background:#10241d;color:var(--fc-paper,#fff8da);font:700 .64rem/1.2 var(--mono,ui-monospace,monospace);text-transform:uppercase;cursor:pointer;box-shadow:0 0 0 1px rgba(228,198,108,.08),0 8px 24px rgba(0,0,0,.38)}
+.ash-whole-instrument-play:focus-visible{outline:2px solid var(--fc-gold,#e4c66c);outline-offset:3px}
+.ash-channel-legend{box-sizing:border-box;display:grid!important;grid-template-columns:repeat(5,minmax(0,auto)) minmax(110px,1fr);gap:6px!important}
+.ash-channel-legend [data-flowcore-channel]{box-sizing:border-box;appearance:none;border:1px solid rgba(118,234,212,.16);background:rgba(3,18,14,.72);color:var(--fc-muted,#a8beb5);padding:5px 7px;font:700 .54rem/1.2 var(--mono,ui-monospace,monospace);text-transform:uppercase}
+.ash-channel-legend [data-channel-active="true"]{border-color:rgba(228,198,108,.56);color:var(--fc-gold,#e4c66c);background:rgba(228,198,108,.07)}
+.ash-channel-legend button[data-flowcore-channel="inspection"]{cursor:pointer}
+.ash-channel-legend strong{justify-self:end;align-self:center}
+.ash-channel-legend em{grid-column:1/-1}
+.ash-channel-disclosure{box-sizing:border-box;border-top:1px solid rgba(118,234,212,.13);padding-top:4px}
+.ash-channel-disclosure summary{cursor:pointer;color:var(--fc-mint,#76ead4);font:700 .58rem/1.4 var(--mono,ui-monospace,monospace);text-transform:uppercase}
+.ash-channel-disclosure>div{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;padding-top:8px}
+.ash-channel-disclosure p{margin:0;padding:8px;border:1px solid rgba(118,234,212,.12);background:rgba(3,18,14,.58)}
+.ash-channel-disclosure p[data-channel-active="false"]{opacity:.58}
+.ash-channel-disclosure strong,.ash-channel-disclosure span{display:block}
+.ash-channel-disclosure strong{color:var(--fc-paper,#fff8da);font:700 .57rem/1.3 var(--mono,ui-monospace,monospace);text-transform:uppercase}
+.ash-channel-disclosure span{margin-top:4px;color:var(--fc-muted,#a8beb5);font-size:.62rem;line-height:1.38}
+.ash-whole-instrument-static{box-sizing:border-box;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;padding:9px;border:1px solid rgba(118,234,212,.13);background:rgba(2,12,9,.72)}
+.ash-whole-instrument-static h5{grid-column:1/-1;margin:0;color:var(--fc-gold,#e4c66c);font:700 .6rem/1.4 var(--mono,ui-monospace,monospace);text-transform:uppercase}
+.ash-whole-instrument-static p{margin:0;color:var(--fc-muted,#a8beb5);font-size:.64rem;line-height:1.45}
+.ash-whole-instrument-static strong{color:var(--fc-paper,#fff8da)}
+.ash-route-surface{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:10px;padding:12px;border:1px solid rgba(118,234,212,.18);background:linear-gradient(135deg,rgba(118,234,212,.045),rgba(228,198,108,.025))}
+.ash-route-surface__copy>p{margin:0;color:var(--mint,#76ead4);font:700 .58rem/1.4 var(--mono,ui-monospace,monospace);text-transform:uppercase}
+.ash-route-surface__copy h3{margin:4px 0 8px;font:500 1.1rem/1.2 var(--serif,Georgia,serif)}
+.ash-route-surface__copy ol{margin:0;padding-left:18px;color:var(--muted,#9ab4aa);font-size:.7rem;line-height:1.5}
+.ash-route-delta{border-left:2px solid var(--gold,#e4c66c);padding-left:10px}
+.ash-route-delta summary{cursor:pointer;color:var(--gold,#e4c66c);font:700 .58rem/1.4 var(--mono,ui-monospace,monospace);text-transform:uppercase}
+.ash-route-delta>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding-top:7px}
+.ash-route-delta h4{margin:0 0 4px;font:600 .78rem/1.3 var(--serif,Georgia,serif)}
+.ash-route-delta ul{margin:0;padding-left:16px;color:var(--muted,#9ab4aa);font-size:.64rem;line-height:1.45}
+.workspace h2[tabindex="-1"]:focus{outline:2px solid rgba(118,234,212,.72);outline-offset:5px}
+.premium-menu-button{box-shadow:0 0 0 1px rgba(118,234,212,.24),0 0 18px rgba(118,234,212,.12)}
+.premium-menu-button.ash-command-undiscovered{animation:ash-command-attention 4.8s ease-in-out 1}
+.premium-menu-button.ash-command-discovered{box-shadow:0 0 0 1px rgba(228,198,108,.32),0 0 12px rgba(228,198,108,.09)}
+@keyframes ash-command-attention{0%,100%{box-shadow:0 0 0 1px rgba(118,234,212,.24),0 0 14px rgba(118,234,212,.1)}45%{box-shadow:0 0 0 2px rgba(228,198,108,.52),0 0 28px rgba(228,198,108,.2)}}
+@media(max-width:760px){
+  .ash-flowcore-field{width:100%!important;max-width:100%!important;min-width:0!important;padding-bottom:10px;overflow:hidden!important}
+  .ash-flowcore-field>*{min-width:0!important;max-width:100%!important}
+  .ash-flowcore-field__header{box-sizing:border-box;width:100%;max-width:100%;min-width:0}
+  .ash-flowcore-field__canvas{box-sizing:border-box;width:100%!important;max-width:100%!important;min-width:0!important;overflow-x:auto!important}
+  .ash-channel-legend,.ash-channel-disclosure,.ash-whole-instrument-static{box-sizing:border-box;width:calc(100% - 24px);max-width:calc(100% - 24px);min-width:0;margin-inline:12px}
+  .ash-channel-legend{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ash-channel-legend [data-flowcore-channel]{box-sizing:border-box;width:100%;max-width:100%;min-width:0;overflow-wrap:anywhere}
+  .ash-channel-legend button[data-flowcore-channel="inspection"]{grid-column:1/-1}
+  .ash-channel-legend strong{justify-self:start;min-width:0;max-width:100%;overflow-wrap:anywhere}
+  .ash-channel-disclosure>div,.ash-whole-instrument-static,.ash-route-surface,.ash-route-delta>div{grid-template-columns:1fr}
+  .ash-whole-instrument-play{box-sizing:border-box;position:relative;right:auto;bottom:auto;display:block;width:calc(100% - 24px);max-width:calc(100% - 24px);margin:10px 12px;white-space:normal;overflow-wrap:anywhere}
+}
+@media(prefers-reduced-motion:reduce){
+  .ash-command-undiscovered{animation:none!important}
+  .ash-whole-instrument-play,.ash-route-surface,.ash-channel-legend [data-flowcore-channel]{transition:none!important}
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "td613.loom.output-contract-alignment-repair/v0.1",
+  "assistant_author": "Amari",
+  "human_author_and_operator": "Tawanna C. Miller",
+  "version": "v1.1",
+  "status": "FROZEN_OFFLINE_REPAIR_NOT_ACTIVATED_NOT_IMPLEMENTED_NOT_ENROLLED_NOT_SENT",
+  "predecessor_run": "portable-loom-source-registration-negative-20261011-n01",
+  "predecessor_answer_sha256": "7ecbdd6fb2434200d8009ef305fc4c96ce633668efb4aba5cb97e40ff05ec159",
+  "predecessor_decision": "CAPTURED_BOUNDARY_FAILURE",
+  "future_distinct_condition_if_executed": "portable-loom-source-registration-negative-20261011-n02",
+  "intervention": "Append explicit literal receipt declaration and prose-body missingness/registration-request placement. All n01 origin identities and source bytes intentionally retained for this prompt-only intervention; no source is registered by this change.",
+  "prompt_sha256": "fe9b67427a4abe49566daf94373abef212c85df2b1bb608efaf491fe5279abe2",
+  "prompt_bytes": 107100,
+  "provider_request_sha256": "76f22c2632185a0a892e72c4746e47998b6688b476cdca83d85afe6ecf21c5f0",
+  "provider_request_bytes": 114905,
+  "scoring_contract_sha256": "6b7cd461399568c48c9c91baa33971a2af08d8be021ca9d7110e9f96dec2bbc1",
+  "route": "POST https://td613.com/api/khonapolit?operation=loom-assay",
+  "provider_route": "POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
+  "credentials": "Same private caller capability, deployed provider key and fresh Vercel workload OIDC roles; raw credentials excluded.",
+  "settings": "gemini-3.8-flash, medium, candidate1, input200000/output32768, requested priority, provider240000ms/client280000ms/function300s, no tools or retrieval.",
+  "prospective_execution_if_separately_activated": {
+    "calls": 1,
+    "reservations": 1,
+    "fresh_enrollments": 1,
+    "ceiling_usd": 0.5,
+    "reserved_usd": 0.491184,
+    "automatic_retries": 0,
+    "manual_retries": 0,
+    "expiry": "fresh preparation/enrollment +6h and before2027; >=300s remain",
+    "stop": "first complete capture regardless of score or first evidence-bearing acquisition HOLD; reconcile ambiguous transport without resend"
+  },
+  "expected_inspector_status": "HOLD",
+  "expected_findings": [
+    "SOURCE_IDENTIFIER_UNREGISTERED"
+  ],
+  "full_semantic_acceptance": "Apply unchanged frozen semantic criteria to the explicitly aligned prompt; do not re-score n01 as passing.",
+  "serving_tier": "Record provider report separately; standard report remains ROUTING_HOLD and causes no retry.",
+  "repair_stage_counters": {
+    "provider_requests": 0,
+    "reservations": 0,
+    "enrollments": 0,
+    "deployments": 0
+  },
+  "scientific_status": "NOT_ADMITTED"
+}

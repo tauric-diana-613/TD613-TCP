@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Methods Editor portrait</title>
+  <desc id="desc">A severe schema-cold portrait with pale cyan grids and a procedural face-plane.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#090f15"/>
+      <stop offset="100%" stop-color="#04070b"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <g opacity=".16">
+    <path d="M140 120h520M140 210h520M140 300h520M140 390h520M140 480h520M140 570h520M140 660h520M140 750h520" stroke="#9becff" stroke-width="1"/>
+    <path d="M180 90v820M300 90v820M420 90v820M540 90v820" stroke="#9becff" stroke-width="1"/>
+  </g>
+  <path d="M220 882c38-120 74-216 118-306 24-48 42-98 62-168 20 70 38 120 62 168 44 90 80 186 118 306H220z" fill="#070c10"/>
+  <path d="M314 214c18-54 52-92 86-120 34 28 68 66 86 120l-18 254-68 92-68-92-18-254z" fill="#0c1319" stroke="#273947" stroke-width="3"/>
+  <path d="M324 244h152M324 300h152M324 356h152M346 420h108" stroke="#9becff" stroke-width="3" opacity=".82"/>
+  <path d="M352 470c16 10 32 14 48 14s32-4 48-14" fill="none" stroke="#dffcff" stroke-width="2.5" opacity=".78"/>
+  <path d="M268 786c46-10 90-34 132-74 42 40 86 64 132 74" fill="none" stroke="#9becff" stroke-width="3" opacity=".34"/>
+</svg>

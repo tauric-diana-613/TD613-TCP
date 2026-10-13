@@ -1,0 +1,16 @@
+{
+  "a19": {
+    "run_id": "portable-loom-first-receiver-20261009-a19",
+    "status": "HELD",
+    "created_at": "2026-10-10T09:01:28.305509+00:00",
+    "policy_sha256": "a08d920d93cae771286ce66c3d3fe9a8ca5dcff4678f8e99d978ec29e92b6479",
+    "calls_reserved": 2,
+    "credential_sha256": "baaa5a59eff5540a9061554ae92beafa3ede5c279ce6e2ae18fc21c2a0c8122b",
+    "reserved_cost_nanos": 222222750
+  },
+  "run_count": 19,
+  "active_runs": 0,
+  "observed_at": "2026-10-10T14:44:22.407017+00:00",
+  "reserved_calls": 83,
+  "reserved_cost_nanos": 9474171750
+}

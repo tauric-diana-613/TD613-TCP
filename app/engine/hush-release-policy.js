@@ -1,0 +1,159 @@
+import { detectForbiddenClaims } from './claim-ladder.js';
+
+export const HUSH_RELEASE_POLICY_VERSION = 'phase-21';
+
+const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
+const safeText = (value) => String(value ?? '');
+
+export const HARD_BLOCK_REASONS = Object.freeze([
+  'empty-output',
+  'semantic-fidelity-below-mode-floor',
+  'protected-literal-score-below-mode-floor',
+  'protected-literal-drop',
+  'naturalness-catastrophic',
+  'forbidden-positive-claim',
+  'source-body-exact-or-near-exact',
+  'source-body-severe-with-weak-mask-movement',
+  'claim-integrity-failed',
+  'syntax-shift-too-low-with-source-body',
+  'claim-payload-loss',
+  'payload-repair-failed',
+  'truncated-identifier',
+  'truncated-timestamp',
+  'dangling-negation',
+  'dangling-preposition'
+]);
+
+export const REVIEW_WARNING_REASONS = Object.freeze([
+  'source-residual-high',
+  'critical-source-residual-hot',
+  'critical-residual-dimension-hot',
+  'residual-pressure-over-threshold',
+  'low-mask-movement',
+  'mask-match-low',
+  'candidate-set-weak',
+  'naturalness-veto',
+  'source-body-attached',
+  'source-body-severe',
+  'source-opening-retained',
+  'source-closing-retained',
+  'claim-integrity-review',
+  'syntax-shift-low',
+  'wrapper-only-transform',
+  'literal-placement-review',
+  'literal-tail-stuffed',
+  'claim-payload-review',
+  'payload-distance-high',
+  'reason-compressed-review',
+  'version-context-compressed-review',
+  'instruction-softened-review',
+  'payload-repair-review'
+]);
+
+export function classifyHushReasons(reasons = []) {
+  const unique = [...new Set(asArray(reasons))];
+  const hardBlockReasons = [];
+  const reviewWarnings = [];
+  for (const reason of unique) {
+    if (HARD_BLOCK_REASONS.includes(reason)) hardBlockReasons.push(reason);
+    else reviewWarnings.push(reason);
+  }
+  return { hardBlockReasons: [...new Set(hardBlockReasons)], reviewWarnings: [...new Set(reviewWarnings)] };
+}
+
+export function isExactOrNearExactSourceBody(sourceResidue = {}) {
+  const metrics = sourceResidue?.metrics || {};
+  const cadenceBodyRisk = Number(metrics.cadenceBodyRisk ?? 0);
+  const nonLiteralTokenRetention = Number(metrics.nonLiteralTokenRetention ?? 0);
+  const longestCopiedRun = Number(metrics.longestCopiedRun ?? 0);
+  return cadenceBodyRisk >= 0.97 || (nonLiteralTokenRetention >= 0.98 && longestCopiedRun >= 12);
+}
+
+function hasDanglingFragments(text = '') {
+  const value = safeText(text).trim();
+  return {
+    danglingNegation: /(?:^|[.!?;]\s*)(?:not|without|did not|do not|cannot)\.?$/i.test(value) || /\b(?:not|without|did not|do not|cannot)\.$/i.test(value),
+    danglingPreposition: /\b(?:on|at|with|until|from|to|by)\.$/i.test(value)
+  };
+}
+
+export function buildReleasePolicy(input = {}) {
+  const candidate = input.candidate || {};
+  const outputText = safeText(input.outputText ?? candidate.text);
+  const semantic = Number(input.semanticFidelity ?? candidate.scoreBreakdown?.semanticFidelity ?? candidate.escapeVector?.scores?.semanticFidelity ?? 0);
+  const literal = Number(input.protectedLiteralScore ?? candidate.scoreBreakdown?.protectedLiteralScore ?? candidate.lockboxVerification?.preservationScore ?? 1);
+  const naturalness = Number(input.naturalnessScore ?? candidate.naturalness?.naturalnessScore ?? 1);
+  const sourceResidue = input.sourceResidue || candidate.sourceResidue || null;
+  const syntaxShift = input.syntaxShift || candidate.syntaxShift || null;
+  const claimIntegrity = input.claimIntegrity || candidate.claimIntegrity || null;
+  const payloadIntegrity = input.payloadIntegrity || candidate.payloadIntegrity || null;
+  const payloadRepair = input.payloadRepair || candidate.payloadRepair || null;
+  const sourceResidueScore = Number(input.sourceResidueScore ?? candidate.scoreBreakdown?.sourceResidueScore ?? candidate.sourceResidueScore ?? 1);
+  const syntaxShiftScore = Number(input.syntaxShiftScore ?? candidate.scoreBreakdown?.syntaxShiftScore ?? syntaxShift?.metrics?.syntaxShiftScore ?? 1);
+  const maskMatch = Number(input.maskMatch ?? candidate.scoreBreakdown?.maskMatch ?? candidate.match?.matchScore ?? 1);
+  const hardFloorSemantic = Number(input.minSemanticFidelity ?? candidate.weightProfile?.minSemanticFidelity ?? 0.58);
+  const hardFloorLiteral = Number(input.minProtectedLiteralScore ?? candidate.weightProfile?.minProtectedLiteralScore ?? 0.92);
+  const fragments = hasDanglingFragments(outputText);
+  const reasons = [
+    ...asArray(input.reasons),
+    ...asArray(candidate.vetoes),
+    ...asArray(candidate.warnings),
+    ...asArray(sourceResidue?.warnings),
+    ...asArray(syntaxShift?.warnings),
+    ...asArray(claimIntegrity?.reviewWarnings),
+    ...asArray(payloadIntegrity?.reviewWarnings),
+    ...asArray(payloadRepair?.warnings)
+  ];
+  if (!outputText.trim()) reasons.push('empty-output');
+  if (semantic < hardFloorSemantic) reasons.push('semantic-fidelity-below-mode-floor');
+  if (literal < hardFloorLiteral) reasons.push('protected-literal-score-below-mode-floor');
+  if (literal < 1 && asArray(input.protectedLiterals).length) reasons.push('protected-literal-drop');
+  if (naturalness < Number(input.minNaturalness ?? 0.34)) reasons.push('naturalness-catastrophic');
+  if (detectForbiddenClaims(outputText).hasForbiddenClaim) reasons.push('forbidden-positive-claim');
+  if (isExactOrNearExactSourceBody(sourceResidue)) reasons.push('source-body-exact-or-near-exact');
+  if (claimIntegrity && claimIntegrity.passed === false) reasons.push('claim-integrity-failed');
+  if (claimIntegrity && asArray(claimIntegrity.reviewWarnings).length) reasons.push('claim-integrity-review');
+  if (payloadIntegrity && payloadIntegrity.passed === false) reasons.push('claim-payload-loss');
+  if (payloadIntegrity && asArray(payloadIntegrity.reviewWarnings).length) reasons.push('claim-payload-review');
+  if (payloadRepair && asArray(payloadRepair.warnings).includes('payload-repair-failed')) reasons.push('payload-repair-failed');
+  if (asArray(payloadIntegrity?.hardFailures).includes('evidence-id-truncated')) reasons.push('truncated-identifier');
+  if (asArray(payloadIntegrity?.hardFailures).includes('timestamp-truncated')) reasons.push('truncated-timestamp');
+  if (fragments.danglingNegation) reasons.push('dangling-negation');
+  if (fragments.danglingPreposition) reasons.push('dangling-preposition');
+  if (syntaxShift && syntaxShiftScore < 0.35) reasons.push('syntax-shift-low');
+  if (asArray(syntaxShift?.warnings).includes('wrapper-only-transform')) reasons.push('wrapper-only-transform');
+  const severeSourceBody = asArray(sourceResidue?.warnings).includes('source-body-severe') || Number(sourceResidue?.metrics?.cadenceBodyRisk ?? 0) > 0.82 || sourceResidueScore < 0.18;
+  const weakMaskMovement = maskMatch < Number(input.minMaskMatchForSevereResidue ?? 0.35) || asArray(reasons).includes('low-mask-movement');
+  if (severeSourceBody && weakMaskMovement) reasons.push('source-body-severe-with-weak-mask-movement');
+  if (severeSourceBody && syntaxShiftScore < 0.20) reasons.push('syntax-shift-too-low-with-source-body');
+  const classified = classifyHushReasons(reasons);
+  const hardBlocked = classified.hardBlockReasons.length > 0;
+  const releaseStatus = hardBlocked ? 'blocked' : classified.reviewWarnings.length ? 'needs-review' : 'emit';
+  return {
+    version: HUSH_RELEASE_POLICY_VERSION,
+    hardBlocked,
+    releaseStatus,
+    hardBlockReasons: classified.hardBlockReasons,
+    reviewWarnings: classified.reviewWarnings,
+    operatorMessage: hardBlocked
+      ? 'Output blocked because meaning, protected literals, payload integrity, naturalness, claim integrity, syntax shift, exact source copying, or severe source-body retention failed.'
+      : releaseStatus === 'needs-review'
+        ? 'Output may populate, but review warnings remain. Do not treat this as sealed.'
+        : 'Output may populate for local review.',
+    mayPopulateOutput: !hardBlocked,
+    maySeal: !hardBlocked && classified.reviewWarnings.length === 0,
+    limitations: ['Release policy controls local output population only; it does not predict external recognition outcomes.']
+  };
+}
+
+export function summarizeReleasePolicy(policy = {}) {
+  return {
+    version: policy.version || HUSH_RELEASE_POLICY_VERSION,
+    releaseStatus: policy.releaseStatus || 'blocked',
+    mayPopulateOutput: Boolean(policy.mayPopulateOutput),
+    maySeal: Boolean(policy.maySeal),
+    hardBlockCount: asArray(policy.hardBlockReasons).length,
+    reviewWarningCount: asArray(policy.reviewWarnings).length,
+    operatorMessage: policy.operatorMessage || ''
+  };
+}

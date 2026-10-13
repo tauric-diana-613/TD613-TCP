@@ -1,0 +1,30 @@
+{
+  "authority": {
+    "deployment": false,
+    "donor_import": false,
+    "human_closure_required": true,
+    "merge": false,
+    "td613_promotion": false
+  },
+  "captured_at": "2026-09-11T09:27:00Z",
+  "coverage_state": "PUBLIC_SEARCH_SNAPSHOT_NOT_EXHAUSTIVE_CENSUS",
+  "full_source_bodies_stored": false,
+  "handle_binding_status": "HUMAN_PROVENANCE_ONLY",
+  "human_reported_handle": "u/Upset-Ratio502",
+  "known_missingness": [
+    "Exact intra-day publication timestamps were not available from the retrieval surface.",
+    "The retrieval surface did not provide an exhaustive live subreddit census.",
+    "A human-reported public title 'Third-Party Dependencies, Data Flow, and Reconstruction' remains URL-unbound and is not admitted."
+  ],
+  "manifest_sha256": "5c13b34c0f3ffae8518aa57d14e5a81bd3ed45de7df15455dfb3f88a66c5d420",
+  "private_google_group_admitted": false,
+  "publication_day_counts": {"2026-09-10":21,"2026-09-11":12},
+  "real_person_identity_adjudicated": false,
+  "requested_window": {"end_utc":"2026-09-11T09:27:00Z","hours":48,"start_utc":"2026-09-09T09:27:00Z"},
+  "schema": "wendbine-public-intake-receipt/v0.1",
+  "snapshot_id": "wendbine-public-reddit-48h-20260911T092700Z-v01",
+  "source_count": 33,
+  "source_rights_note": "No full Reddit post bodies are mirrored. Canonical URLs remain the source reference.",
+  "source_surface": "public Reddit / r/Wendbine",
+  "typed_relation_registry_sha256": "343ce7465342c8bc6a9363c67830232ea146d4d5db505146a4fb2ffd861a4b60"
+}

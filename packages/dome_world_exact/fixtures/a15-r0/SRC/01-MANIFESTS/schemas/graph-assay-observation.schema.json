@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:td613:signalrupture-vault:graph-assay-observation:v2",
+  "title": "SignalRupture typed graph-assay observation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "observation_id", "observation_kind", "status", "evidence_ids", "payload", "interpretive_limit"],
+  "properties": {
+    "schema_version": {"const": "graph-assay-observation/v2"},
+    "observation_id": {"type": "string", "minLength": 1},
+    "observation_kind": {"enum": ["TYPED_CYCLE", "REPRESENTATION_COMMUTATION", "ROUTE_CONDITIONED_ENDPOINT", "SELF_MAP_GRAPH_DELTA", "GOVERNANCE_RULE_CASE", "ORDINAL_NAMESPACE", "FIRST_APPEARANCE", "PROVENANCE_CONTRADICTION"]},
+    "status": {"enum": ["WITNESSED", "CANDIDATE", "PARTIAL", "NOT_TESTABLE", "UNRESOLVED", "REJECTED"]},
+    "evidence_ids": {"$ref": "#/$defs/nonEmptyIdArray"},
+    "payload": {"type": "object"},
+    "interpretive_limit": {"type": "string", "minLength": 1},
+    "assay_id": {"type": ["string", "null"]}
+  },
+  "oneOf": [
+    {"properties": {"observation_kind": {"const": "TYPED_CYCLE"}, "payload": {"$ref": "#/$defs/typedCycle"}}},
+    {"properties": {"observation_kind": {"const": "REPRESENTATION_COMMUTATION"}, "payload": {"$ref": "#/$defs/representationCommutation"}}},
+    {"properties": {"observation_kind": {"const": "ROUTE_CONDITIONED_ENDPOINT"}, "payload": {"$ref": "#/$defs/routeEndpoint"}}},
+    {"properties": {"observation_kind": {"const": "SELF_MAP_GRAPH_DELTA"}, "payload": {"$ref": "#/$defs/selfMapDelta"}}},
+    {"properties": {"observation_kind": {"const": "GOVERNANCE_RULE_CASE"}, "payload": {"$ref": "#/$defs/governanceCase"}}},
+    {"properties": {"observation_kind": {"const": "ORDINAL_NAMESPACE"}, "payload": {"$ref": "#/$defs/ordinalNamespace"}}},
+    {"properties": {"observation_kind": {"const": "FIRST_APPEARANCE"}, "payload": {"$ref": "#/$defs/firstAppearance"}}},
+    {"properties": {"observation_kind": {"const": "PROVENANCE_CONTRADICTION"}, "payload": {"$ref": "#/$defs/provenanceContradiction"}}}
+  ],
+  "$defs": {
+    "idArray": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "nonEmptyIdArray": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+    "nullableId": {"type": ["string", "null"]},
+    "graphProjection": {"enum": ["HISTORICAL", "CONCEPTUAL", "OPERATIONAL", "NAVIGATIONAL", "MANIFESTATION", "AUTHORITY"]},
+    "order": {
+      "type": "object", "additionalProperties": false,
+      "required": ["order_kind", "scope_id", "node_ids", "edge_ids"],
+      "properties": {
+        "order_kind": {"$ref": "#/$defs/graphProjection"}, "scope_id": {"$ref": "#/$defs/nullableId"},
+        "node_ids": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 2},
+        "edge_ids": {"$ref": "#/$defs/idArray"}
+      }
+    },
+    "predicateTriple": {
+      "type": "array", "prefixItems": [{"type": "string", "minLength": 1}, {"type": "string", "minLength": 1}, {"type": "string", "minLength": 1}],
+      "items": false, "minItems": 3, "maxItems": 3
+    },
+    "typedCycle": {
+      "type": "object", "additionalProperties": false,
+      "required": ["closure_type", "ordered_edge_ids", "node_ids", "graph_projections", "orders"],
+      "properties": {
+        "closure_type": {"enum": ["DIRECTED_TYPED_CYCLE", "RECIPROCAL_TYPED_PAIR", "CROSS_GRAPH_ANTI_CYCLE", "CROSS_GRAPH_MUTUAL_REFERENCE", "SURFACE_RELATIVE_CHRONOLOGY", "PATH_WITH_UNRESOLVED_CLOSURE"]},
+        "ordered_edge_ids": {"$ref": "#/$defs/nonEmptyIdArray"},
+        "node_ids": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 2, "uniqueItems": true},
+        "graph_projections": {"type": "array", "items": {"$ref": "#/$defs/graphProjection"}, "minItems": 1, "uniqueItems": true},
+        "orders": {"type": "array", "items": {"$ref": "#/$defs/order"}},
+        "predicate_triples": {"type": "array", "items": {"$ref": "#/$defs/predicateTriple"}},
+        "summary": {"type": ["string", "null"]}
+      }
+    },
+    "commutationResult": {"enum": ["COMMUTES", "DOES_NOT_COMMUTE", "PARTIAL", "NOT_TESTABLE"]},
+    "representationCommutation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["family_id", "corner_ids", "surface_transformation_ids", "epistemic_transformation_ids", "dimension_results", "missing_requirements"],
+      "properties": {
+        "family_id": {"$ref": "#/$defs/nullableId"},
+        "corner_ids": {"type": "object", "additionalProperties": false, "required": ["a_s1", "a_s2", "b_s1", "b_s2"], "properties": {"a_s1": {"$ref": "#/$defs/nullableId"}, "a_s2": {"$ref": "#/$defs/nullableId"}, "b_s1": {"$ref": "#/$defs/nullableId"}, "b_s2": {"$ref": "#/$defs/nullableId"}}},
+        "surface_transformation_ids": {"$ref": "#/$defs/idArray"}, "epistemic_transformation_ids": {"$ref": "#/$defs/idArray"},
+        "dimension_results": {"type": "object", "additionalProperties": false, "required": ["concept_identity", "semantic_core", "claim_scope", "role_structure", "authority_state"], "properties": {"concept_identity": {"$ref": "#/$defs/commutationResult"}, "semantic_core": {"$ref": "#/$defs/commutationResult"}, "claim_scope": {"$ref": "#/$defs/commutationResult"}, "role_structure": {"$ref": "#/$defs/commutationResult"}, "authority_state": {"$ref": "#/$defs/commutationResult"}}},
+        "missing_requirements": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+      }
+    },
+    "routeEndpoint": {
+      "type": "object", "additionalProperties": false,
+      "required": ["summary", "router_ids", "entry_condition_ids", "route_edge_ids", "endpoint_ids", "endpoint_state_ids", "termination_state", "unresolved_reason"],
+      "properties": {
+        "summary": {"type": "string", "minLength": 1}, "router_ids": {"$ref": "#/$defs/nonEmptyIdArray"}, "entry_condition_ids": {"$ref": "#/$defs/idArray"}, "route_edge_ids": {"$ref": "#/$defs/idArray"}, "endpoint_ids": {"$ref": "#/$defs/idArray"}, "endpoint_state_ids": {"$ref": "#/$defs/idArray"},
+        "termination_state": {"enum": ["RESOLVED_UNIQUE", "RESOLVED_MULTIPLE", "FALLBACK", "DEAD_END", "CYCLE", "UNRESOLVED", "NOT_TESTABLE"]}, "unresolved_reason": {"type": ["string", "null"]}
+      }
+    },
+    "alignment": {"type": "object", "additionalProperties": false, "required": ["c_ids", "g_ids", "status"], "properties": {"c_ids": {"$ref": "#/$defs/idArray"}, "g_ids": {"$ref": "#/$defs/idArray"}, "status": {"enum": ["IN_BOTH", "C_ONLY", "G_ONLY", "LABEL_MISMATCH", "EDGE_TYPE_MISMATCH", "SCOPE_MISMATCH", "UNRESOLVED"]}}},
+    "selfMapDelta": {
+      "type": "object", "additionalProperties": false,
+      "required": ["summary", "comparison_mode", "c_snapshot_ids", "g_snapshot_ids", "authority_assertion_ids", "node_alignments", "edge_alignments"],
+      "properties": {"summary": {"type": "string", "minLength": 1}, "comparison_mode": {"enum": ["C_TIME_SERIES", "C_VS_G_CONTEMPORANEOUS", "C_VS_G_HINDSIGHT_AUGMENTED", "AUTHORITY_CONTINUITY"]}, "c_snapshot_ids": {"$ref": "#/$defs/idArray"}, "g_snapshot_ids": {"$ref": "#/$defs/idArray"}, "authority_assertion_ids": {"$ref": "#/$defs/idArray"}, "node_alignments": {"type": "array", "items": {"$ref": "#/$defs/alignment"}}, "edge_alignments": {"type": "array", "items": {"$ref": "#/$defs/alignment"}}}
+    },
+    "governanceCase": {
+      "type": "object", "additionalProperties": false,
+      "required": ["summary", "rule_claim_id", "subject_case_ids", "applicability_status", "outcome", "revision_or_supersession_ids"],
+      "properties": {"summary": {"type": "string", "minLength": 1}, "rule_claim_id": {"$ref": "#/$defs/nullableId"}, "subject_case_ids": {"$ref": "#/$defs/nonEmptyIdArray"}, "applicability_status": {"enum": ["ESTABLISHED", "UNRESOLVED", "NOT_APPLICABLE", "NOT_ASSESSED"]}, "outcome": {"enum": ["SATISFIED", "VIOLATED", "RESOLVED_BY_LATER_RULE", "CONFLICT_WITNESSED", "INDETERMINATE", "NOT_ASSESSED"]}, "revision_or_supersession_ids": {"$ref": "#/$defs/idArray"}}
+    },
+    "ordinalNamespace": {
+      "type": "object", "additionalProperties": false,
+      "required": ["case_type", "summary", "ordinal_token", "candidate_namespace_ids", "compared_structure_ids", "expected_predecessor", "predecessor_identified"],
+      "properties": {"case_type": {"enum": ["SERIES_ORDINAL", "CROSS_ARCHITECTURE_CARDINALITY"]}, "summary": {"type": "string", "minLength": 1}, "ordinal_token": {"type": ["string", "null"]}, "candidate_namespace_ids": {"$ref": "#/$defs/idArray"}, "compared_structure_ids": {"$ref": "#/$defs/idArray"}, "expected_predecessor": {"type": ["boolean", "null"]}, "predecessor_identified": {"type": ["boolean", "null"]}}
+    },
+    "firstAppearance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["summary", "hypothesis_effect", "ordered_manifestation_ids", "search_scope_id"],
+      "properties": {"summary": {"type": "string", "minLength": 1}, "hypothesis_effect": {"type": ["string", "null"]}, "ordered_manifestation_ids": {"type": "array", "items": {"type": "string", "minLength": 1}}, "search_scope_id": {"$ref": "#/$defs/nullableId"}}
+    },
+    "provenanceContradiction": {
+      "type": "object", "additionalProperties": false,
+      "required": ["summary", "subject_ids", "conflicting_reference_ids", "repair_status"],
+      "properties": {"summary": {"type": "string", "minLength": 1}, "subject_ids": {"$ref": "#/$defs/nonEmptyIdArray"}, "conflicting_reference_ids": {"$ref": "#/$defs/idArray"}, "repair_status": {"enum": ["PRESERVED_UNREPAIRED", "SOURCE_CORRECTED", "ARCHIVE_CORRECTION_NOTE_ONLY", "UNRESOLVED"]}}
+    }
+  }
+}

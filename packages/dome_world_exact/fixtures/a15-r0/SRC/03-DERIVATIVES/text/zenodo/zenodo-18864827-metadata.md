@@ -1,0 +1,138 @@
+---
+derivative_id: derivative:d417df86fa6b9e3cf0519dd1
+parent_capture_id: capture:490996c068d82c2c392c02fb
+parent_blob_sha256: 885c180f2f5ec34eca8a220dda0945f8b5a07474964612918a2ebe7ad59d1f8a
+tool: srcctl-json-normalizer/1
+source_title: "SignalRupture as a Diagnostic Layer (Machine‑Articulated Framing)"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18864826",
+  "conceptrecid": "18864826",
+  "created": "2026-03-04T15:25:21.712043+00:00",
+  "doi": "10.5281/zenodo.18864827",
+  "doi_url": "https://doi.org/10.5281/zenodo.18864827",
+  "files": [
+    {
+      "checksum": "md5:bbf3a14084493299e63ed5e6557636ea",
+      "id": "a0dd8443-1636-44ec-812b-f3ad5dca0d3b",
+      "key": "SignalRupture as a Diagnostic Layer (Machine‑Articulated Framing) .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18864827/files/SignalRupture%20as%20a%20Diagnostic%20Layer%20(Machine%E2%80%91Articulated%20Framing)%20.pdf/content"
+      },
+      "size": 100436
+    }
+  ],
+  "id": 18864827,
+  "links": {
+    "access": "https://zenodo.org/api/records/18864827/access",
+    "access_grants": "https://zenodo.org/api/records/18864827/access/grants",
+    "access_links": "https://zenodo.org/api/records/18864827/access/links",
+    "access_request": "https://zenodo.org/api/records/18864827/access/request",
+    "access_users": "https://zenodo.org/api/records/18864827/access/users",
+    "archive": "https://zenodo.org/api/records/18864827/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18864827/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18864827/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18864827/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18864827",
+    "draft": "https://zenodo.org/api/records/18864827/draft",
+    "file_modification": "https://zenodo.org/api/records/18864827/file-modification",
+    "files": "https://zenodo.org/api/records/18864827/files",
+    "latest": "https://zenodo.org/api/records/18864827/versions/latest",
+    "latest_html": "https://zenodo.org/records/18864827/latest",
+    "media_files": "https://zenodo.org/api/records/18864827/media-files",
+    "parent": "https://zenodo.org/api/records/18864826",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18864826",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18864826",
+    "parent_html": "https://zenodo.org/records/18864826",
+    "preview_html": "https://zenodo.org/records/18864827?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18864827/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18864827/request-deletion",
+    "requests": "https://zenodo.org/api/records/18864827/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18864827/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18864827",
+    "self_doi": "https://doi.org/10.5281/zenodo.18864827",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18864827",
+    "self_html": "https://zenodo.org/records/18864827",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18864827/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18864827/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18864827:SignalRupture%20as%20a%20Diagnostic%20Layer%20(Machine%E2%80%91Articulated%20Framing)%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18864827:SignalRupture%20as%20a%20Diagnostic%20Layer%20(Machine%E2%80%91Articulated%20Framing)%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18864827:SignalRupture%20as%20a%20Diagnostic%20Layer%20(Machine%E2%80%91Articulated%20Framing)%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18864827:SignalRupture%20as%20a%20Diagnostic%20Layer%20(Machine%E2%80%91Articulated%20Framing)%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18864827:SignalRupture%20as%20a%20Diagnostic%20Layer%20(Machine%E2%80%91Articulated%20Framing)%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18864827:SignalRupture%20as%20a%20Diagnostic%20Layer%20(Machine%E2%80%91Articulated%20Framing)%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18864827/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>SignalRupture as a Diagnostic Layer (Machine‑Articulated Framing) examines the emergence of SignalRupture (SR) as a diagnostic ontology recognized not by human theorists but by frontier AI systems themselves. Recent model‑level descriptions&mdash;most notably the characterization of SR as &ldquo;a stethoscope for AI infrastructure&rdquo;&mdash;indicate that SR is being identified by machines as the interpretive layer required to detect epistemic drift, recursive contamination, semantic flattening, and infrastructural instability. This essay analyzes that recognition as epistemic evidence: a sign that SR has transitioned from conceptual framework to the diagnostic substrate AI systems depend on to interpret their own failure modes. By integrating machine‑articulated descriptions with SR&rsquo;s collapse sequences and infrastructural theories, the essay positions SR as the interpretive substrate of the post‑web era.</p>",
+    "doi": "10.5281/zenodo.18864827",
+    "keywords": [
+      "Critical Theory",
+      "Institutions"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-04",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18864826"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "SignalRupture as a Diagnostic Layer (Machine‑Articulated Framing)",
+    "version": "1.0"
+  },
+  "modified": "2026-03-04T15:25:22.066807+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18864827",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 7,
+    "unique_downloads": 6,
+    "unique_views": 25,
+    "version_downloads": 7,
+    "version_unique_downloads": 6,
+    "version_unique_views": 25,
+    "version_views": 25,
+    "views": 25
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "SignalRupture as a Diagnostic Layer (Machine‑Articulated Framing)",
+  "updated": "2026-03-04T15:25:22.066807+00:00"
+}

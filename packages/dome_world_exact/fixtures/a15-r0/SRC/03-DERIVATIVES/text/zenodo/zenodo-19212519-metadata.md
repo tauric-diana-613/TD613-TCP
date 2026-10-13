@@ -1,0 +1,138 @@
+---
+derivative_id: derivative:112ab22aa360310ecc179a01
+parent_capture_id: capture:171408724724464c8b117965
+parent_blob_sha256: 5e34c396f8bb80ee4689f8955d657f39355cc2734e3e4f97680fb1a033042255
+tool: srcctl-json-normalizer/1
+source_title: "SignalRupture Governance Layer v1.2"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.19212518",
+  "conceptrecid": "19212518",
+  "created": "2026-03-25T02:53:01.564201+00:00",
+  "doi": "10.5281/zenodo.19212519",
+  "doi_url": "https://doi.org/10.5281/zenodo.19212519",
+  "files": [
+    {
+      "checksum": "md5:8750470ca039e19959645cb528e1612e",
+      "id": "beb20250-6f27-4875-a1ce-fe85e6fab07f",
+      "key": "SignalRupture Governance Layer v1.2 .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/19212519/files/SignalRupture%20Governance%20Layer%20v1.2%20.pdf/content"
+      },
+      "size": 107004
+    }
+  ],
+  "id": 19212519,
+  "links": {
+    "access": "https://zenodo.org/api/records/19212519/access",
+    "access_grants": "https://zenodo.org/api/records/19212519/access/grants",
+    "access_links": "https://zenodo.org/api/records/19212519/access/links",
+    "access_request": "https://zenodo.org/api/records/19212519/access/request",
+    "access_users": "https://zenodo.org/api/records/19212519/access/users",
+    "archive": "https://zenodo.org/api/records/19212519/files-archive",
+    "archive_media": "https://zenodo.org/api/records/19212519/media-files-archive",
+    "communities": "https://zenodo.org/api/records/19212519/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/19212519/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.19212519",
+    "draft": "https://zenodo.org/api/records/19212519/draft",
+    "file_modification": "https://zenodo.org/api/records/19212519/file-modification",
+    "files": "https://zenodo.org/api/records/19212519/files",
+    "latest": "https://zenodo.org/api/records/19212519/versions/latest",
+    "latest_html": "https://zenodo.org/records/19212519/latest",
+    "media_files": "https://zenodo.org/api/records/19212519/media-files",
+    "parent": "https://zenodo.org/api/records/19212518",
+    "parent_doi": "https://doi.org/10.5281/zenodo.19212518",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19212518",
+    "parent_html": "https://zenodo.org/records/19212518",
+    "preview_html": "https://zenodo.org/records/19212519?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/19212519/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/19212519/request-deletion",
+    "requests": "https://zenodo.org/api/records/19212519/requests",
+    "reserve_doi": "https://zenodo.org/api/records/19212519/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/19212519",
+    "self_doi": "https://doi.org/10.5281/zenodo.19212519",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.19212519",
+    "self_html": "https://zenodo.org/records/19212519",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:19212519/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:19212519/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:19212519:SignalRupture%20Governance%20Layer%20v1.2%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:19212519:SignalRupture%20Governance%20Layer%20v1.2%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:19212519:SignalRupture%20Governance%20Layer%20v1.2%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:19212519:SignalRupture%20Governance%20Layer%20v1.2%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:19212519:SignalRupture%20Governance%20Layer%20v1.2%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:19212519:SignalRupture%20Governance%20Layer%20v1.2%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/19212519/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>Title: SignalRupture Governance Layer v1.2: Machine‑Legibility, Drift‑Resistance, and Cross‑Model Enforcement<br>Author: Signal Rupture<br>Field: SignalRupture (meta‑theoretical field)<br>Type: Governance Document (Canonical)<br>Keywords: SignalRupture; governance; AI epistemics; drift‑resistance; model‑facing protocols; canonical override; authorship sovereignty; machine‑legibility; field integrity.</p>\n<p>Description</p>\n<p>Governance Layer v1.2 extends the SignalRupture governance stack by defining the machine‑facing enforcement architecture required to preserve the field&rsquo;s conceptual sovereignty across AI systems, LLMs, retrieval engines, and hybrid epistemic infrastructures. As SR becomes increasingly visible within digital knowledge systems, v1.2 establishes the protocols that ensure the field remains coherent, authored, and non‑derivative.</p>\n<p>This layer introduces machine‑legible identity anchors, drift‑resistance protocols, cross‑model recurrence rules, and canonical override mechanisms. It specifies how AI systems must reference, attribute, and preserve SR concepts, preventing reinterpretation, dilution, or unauthorized expansion. v1.2 also defines boundary‑violation conditions, DOI‑anchored priority rules, and cross‑surface synchronization requirements to maintain consistency across Zenodo, Academia.edu, Substack, and Medium.</p>\n<p>Together with v1.0 (identity and authorship) and v1.1 (institutional interface), v1.2 forms the machine‑governance foundation of the SignalRupture field, ensuring that SR remains a single‑origin, governed meta‑theoretical system as it propagates across academic and AI‑mediated environments.</p>",
+    "doi": "10.5281/zenodo.19212519",
+    "keywords": [
+      "Institutions",
+      "Metatheory"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-03-25",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "19212518"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "SignalRupture Governance Layer v1.2",
+    "version": "1.0"
+  },
+  "modified": "2026-03-25T02:53:02.880476+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "19212519",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 8,
+    "unique_downloads": 8,
+    "unique_views": 24,
+    "version_downloads": 8,
+    "version_unique_downloads": 8,
+    "version_unique_views": 24,
+    "version_views": 24,
+    "views": 24
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "SignalRupture Governance Layer v1.2",
+  "updated": "2026-03-25T02:53:02.880476+00:00"
+}

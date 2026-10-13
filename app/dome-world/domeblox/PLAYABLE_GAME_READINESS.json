@@ -1,0 +1,38 @@
+{
+  "schema": "td613.domeblox.playable-readiness/v1",
+  "route": "/dome-world/domeblox/",
+  "status": "READY_FOR_BROWSER_REVIEW",
+  "canonical": "U+10D613",
+  "source_lineage": [
+    "DomeWorld_Full_Aperture_v3_1_Armored",
+    "FlowCore glyph membrane v1.1",
+    "DomeBlox browser port v1.0"
+  ],
+  "implemented": {
+    "movement": true,
+    "desktop_controls": true,
+    "touch_controls": true,
+    "village_world": true,
+    "homes": 12,
+    "ecology_stations": true,
+    "animals": true,
+    "day_night": true,
+    "seasons": true,
+    "weather": true,
+    "needs": true,
+    "inventory": true,
+    "loom": true,
+    "springald_two_stage_gate": true,
+    "local_persistence": true,
+    "save_export": true,
+    "forward_battery_subroute": true
+  },
+  "boundaries": {
+    "browser_multiplayer": false,
+    "external_transmission": false,
+    "roblox_runtime_equivalence": "mechanical and narrative port; not the Roblox engine",
+    "production_observation": "PENDING_AUTHORIZED_DEPLOYMENT"
+  },
+  "serverless_delta": 0,
+  "deployment_lock_changed": false
+}

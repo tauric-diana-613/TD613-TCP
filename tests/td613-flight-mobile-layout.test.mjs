@@ -1,0 +1,119 @@
+import assert from 'assert';
+import fs from 'fs';
+import { JSDOM } from 'jsdom';
+
+const html = fs.readFileSync('app/safe-harbor/td613-flight.html', 'utf8');
+const analytics = fs.readFileSync('app/analytics.js', 'utf8');
+const speedInsights = fs.readFileSync('app/speed-insights.js', 'utf8');
+const chamberBootstrap = fs.readFileSync('app/chamber-bootstrap.js', 'utf8');
+
+assert(html.includes('TD613 Flight'));
+assert(html.includes('Seal payload to begin Flight'));
+assert(html.includes('mobile-prompt-rail'));
+assert(html.includes('mobile-prompt-rail-top'));
+assert(html.includes('mobile-flight-switcher'));
+assert(html.includes('mobile-lane-tab'));
+assert(html.includes('data-flight-lane-target="prompt"'));
+assert(html.includes('data-flight-lane-target="output"'));
+assert(html.includes('Your Prompt'));
+assert(html.includes('Sealed Output'));
+assert(html.includes('Prompt Output'));
+assert(html.includes('Copy Seal'));
+assert(html.includes('href="https://td613.com/adversarial-bench.html" target="_blank" rel="noopener noreferrer">Hush</a>'));
+assert(html.includes('href="./index.html" target="_blank" rel="noopener noreferrer">Safe Harbor</a>'));
+assert(html.includes('href="../aperture/index.html" target="_blank" rel="noopener noreferrer">Aperture</a>'));
+assert(html.includes('Append lozenge'));
+assert(html.includes('Append lozenge + SAC'));
+assert(/authorship wrap/i.test(html));
+assert(/payload #/i.test(html));
+assert(html.includes('<input checked="" id="authIncludeBinding" type="checkbox"/>Include binding line'));
+assert(html.includes('<input checked="" id="authIncludeTetragram" type="checkbox"/>Include 𝌋 marker'));
+assert(html.includes('<input checked="" id="authIncludeDiamond" type="checkbox"/>Include closing ⟐'));
+assert(html.includes('document.getElementById("authIncludeBinding").checked = true;'));
+assert(html.includes('document.getElementById("authIncludeTetragram").checked = true;'));
+assert(html.includes('document.getElementById("authIncludeDiamond").checked = true;'));
+assert(html.includes('document.getElementById("authOutputToggle").checked = true;'));
+assert(html.includes('grid-template-areas: "counts payload" ". auth" !important;'));
+assert(!html.includes('grid-template-areas: "counts auth" ". payload" !important;'));
+assert(analytics.includes('grid-template-areas: "counts payload" ". auth" !important;'));
+assert(!analytics.includes('grid-template-areas: "counts auth" ". payload" !important;'));
+assert(chamberBootstrap.includes('grid-template-areas:"counts payload" ". auth"!important'));
+assert(!chamberBootstrap.includes('grid-template-areas:"counts auth" ". payload"!important'));
+
+assert(html.indexOf('<div class="card output-card">') < html.indexOf('<div class="card seal-card">'));
+assert(html.indexOf('mobile-prompt-rail') < html.indexOf('devSettingsDrawer'));
+assert(html.includes('>Copy</button>'));
+assert(html.includes('>Clear</button>'));
+assert(!html.includes('Copy from output'));
+assert(!html.includes('Clear output'));
+assert(!html.includes('Loading TD613 Flight'));
+assert(!html.includes('td613-flight-legacy.html'));
+assert(!html.includes('<iframe'));
+
+assert(!html.includes('grid.scrollIntoView'));
+assert(html.includes('PR168_SENTINEL TD613 Flight iOS output lane scroll stabilizer'));
+assert(html.includes('td613-flight-pr168-ios-output-scroll-stabilizer'));
+assert(html.includes('data-flight-pr168-lane-stack="stable"'));
+assert(html.includes('window.TD613FlightIOSOutputScrollStabilizer'));
+assert(html.includes('--td613-flight-grid-height'));
+assert(html.includes('laneHeight(prompt), laneHeight(output), viewportHeight() * 0.62'));
+assert(html.includes('PR169_SENTINEL TD613 Flight desktop cockpit density restore'));
+assert(html.includes('html body .page-wrap header .flight-quick-nav > a') || html.includes('.flight-quick-nav a,'));
+assert(html.includes('width: min(168ch, calc(100vw - 25rem))'));
+assert(html.includes('grid-template-areas:'));
+assert(html.includes('"howto tags" !important'));
+assert(html.includes('justify-self: end !important'));
+assert(html.includes('transform: translateX(calc(clamp(12rem, 21vw, 16.75rem) - .86rem)) !important'));
+assert(html.includes('header details.howto .howto-hint'));
+assert(html.includes('flightHowtoModal'));
+assert(html.includes('flightHowtoClose'));
+assert(html.includes('window.TD613FlightHowtoModal'));
+assert(html.includes('width: fit-content !important'));
+assert(html.includes('max-width: min(100%, 42rem) !important'));
+assert(html.includes('.seal-card .radio-row,'));
+assert(html.includes('max-width: min(100%, 18rem) !important'));
+assert(html.includes('PR171_SENTINEL TD613 Flight natural chip flow terminal override'));
+assert(html.includes('width: max-content !important'));
+assert(html.includes('justify-content: flex-start !important'));
+assert(html.includes('.flight-lane-prompt > .card:nth-of-type(4) .checkbox-row > label'));
+assert(!html.includes('class="checkbox-row flight-tile-grid"'), 'Flight keeps the standalone checkbox markup intact on mobile');
+assert(html.includes('id="flight-tile-layout-repair"'), 'Flight loads the targeted desktop tile-flow repair');
+assert(html.includes('@media (min-width: 821px)'), 'Flight limits the requested tile flow to desktop viewports');
+assert(html.includes('.checkbox-row:has(#hdrBloodRite)'), 'Flight targets Covenant lines without changing mobile markup');
+assert(html.includes('.checkbox-row:has(#hdrContainment)'), 'Flight targets Macros without changing mobile markup');
+assert(html.includes('.checkbox-row:has(#bodyPhraseCircle)'), 'Flight targets Body phrases without changing mobile markup');
+assert(html.includes('flex: 0 1 auto !important;'), 'Flight desktop tiles retain natural widths');
+const flightTileRepair = html.match(/<style id="flight-tile-layout-repair">([\s\S]*?)<\/style>/)?.[1] || '';
+assert(!flightTileRepair.includes('grid-template-columns'), 'Flight does not force the requested groups into an equal grid');
+assert(html.includes('Include PUA-B codepoint U+10D613'));
+assert(html.includes('Include surrogate pair (\\uDBF5\\uDE13)'));
+
+assert(speedInsights.includes('TD613FlightSealGlyphModeSwitch'));
+assert(speedInsights.includes("window.addEventListener('input', syncSealGlyphModeBeforeRebuild, true)"));
+
+const sealDom = new JSDOM(`<!doctype html><title>TD613 Flight</title>
+  <input id="sealUseDiamond" type="checkbox">
+  <input id="sealUseSacDiamond" type="checkbox">`, {
+  url: 'https://td613.com/safe-harbor/td613-flight.html',
+  runScripts: 'outside-only'
+});
+sealDom.window.eval(speedInsights);
+const minimalSeal = sealDom.window.document.getElementById('sealUseDiamond');
+const sacSeal = sealDom.window.document.getElementById('sealUseSacDiamond');
+const observedDuringRebuild = [];
+minimalSeal.addEventListener('input', () => observedDuringRebuild.push([minimalSeal.checked, sacSeal.checked]));
+sacSeal.checked = true;
+minimalSeal.checked = true;
+minimalSeal.dispatchEvent(new sealDom.window.Event('input', { bubbles: true }));
+assert.deepEqual(observedDuringRebuild.at(-1), [true, false], 'Minimal seal must win before Flight rebuilds output');
+assert.equal(minimalSeal.checked, true);
+assert.equal(sacSeal.checked, false);
+
+sacSeal.addEventListener('input', () => observedDuringRebuild.push([minimalSeal.checked, sacSeal.checked]));
+sacSeal.checked = true;
+sacSeal.dispatchEvent(new sealDom.window.Event('input', { bubbles: true }));
+assert.deepEqual(observedDuringRebuild.at(-1), [false, true], 'SAC seal must still replace minimal seal in one click');
+assert.equal(minimalSeal.checked, false);
+assert.equal(sacSeal.checked, true);
+
+console.log('td613-flight-mobile-layout tests passed');

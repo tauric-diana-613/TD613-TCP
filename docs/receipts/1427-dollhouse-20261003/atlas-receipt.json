@@ -1,0 +1,84 @@
+{
+  "schema": "td613.atlas.rendered-reentry-scope-witness/v0.2",
+  "status": "PASS",
+  "saved_source_sha": "f0e8bb905304bcba405741a249ba896e1629be44",
+  "evidence_coordinate": "WORKING_TREE_CANDIDATE",
+  "observed_at": "2026-10-03T20:04:03.191Z",
+  "environment": "LOCAL_RENDERED_CHROMIUM_SYNTHETIC_CAPTURES",
+  "live_provider_calls": 0,
+  "foreign_execution_authenticated": false,
+  "human_comprehension_measured": false,
+  "source_bytes": {
+    "app/dome-world/holonomy-loom.html": "21e591826dee7a0c0ac1f147966b6cdc569d390c3f8832d21be2fbbf1e90ce8d",
+    "app/dome-world/holonomy-loom/ai-workspace.js": "840c16e5f19f594daa347794f17fb6d2963664f45ed02d012fb665fcbb83ce01",
+    "app/dome-world/holonomy-loom/reentry-workspace.js": "1d4cddbd4071b70b61be5faee9ca1f1932a8910fa8e9d1b35f7c7327fc620b8e",
+    "app/dome-world/holonomy-loom/reentry-workspace.css": "0f793123c737f85a94505df363768c70f6ff361f931c189b6cf02584cc783f7a",
+    "app/engine/portable-loom-reentry.js": "32e06541343c30b61005f299a20d134bd07cd3c7f7852c0454f239323abf34e5",
+    "app/engine/portable-loom-challenge.js": "df0a95cb7e7913a5f7d7dbd797b487770196ec405828899d9bca2ec842f83f0e"
+  },
+  "checks": [
+    {
+      "posture": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "status": "PASS",
+      "departure_anchor_ref": "70193361cf56caee5f4f40f1c1fa0897971f991dfc644cb3dd8d432784522e54",
+      "discarded_excursion_ref": "088af350fd95ba34828e1a3d8f41cb2f904de55040c2067b600406c066e26fc8",
+      "admitted_excursion_ref": "6684a84ab4a8c9e61db6ee0162bb565ea2f4b1c384331ddc6fd770a02fb77007",
+      "local_unit_refs": [
+        "dccde5f04e633f316011963b15f41fe3194b6a3644c255c23fa325e0d0d1bacd",
+        "2a0f4b9c99d502acb3d9542e4af4a7d7cf74abba05e90d3393e86f7e5c5cf057"
+      ],
+      "content_refs": [
+        "7f067eb8bd211981042421f4d439e54bdf88393d8e5625c53554d131e552b6e0",
+        "58fce65c0f221d55dfa19da07ff02da6e0847734caf74b5de3bceef5117be919"
+      ],
+      "native_challenge_ref": "caecb83c911ff9610f1d32b67b83cc458f4a7bc4906966bacff4c720db58dfef",
+      "native_episode_ref": "faf381cfa0fc851668a61a43fd650782a3c3205fe5886fd4bc5bd4016f251368",
+      "checks": [
+        "visible travel contract",
+        "two tasks / distinct explicit source sets / fixed foreign anchor",
+        "unchecked attachment cannot erase linked exposure",
+        "discarded episode remains prior scope",
+        "atomic local parents differ from content parents",
+        "native latest descendant challenge is anchor-only",
+        "explicit empty continuation selection / answer separate from task / no head change",
+        "reload loses authority with visible recovery boundary"
+      ]
+    },
+    {
+      "posture": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "departure_anchor_ref": "1ce55793d1d3c234bc05b3ef8efae380ddae2657abbaa90fdf2c8dc35396e618",
+      "discarded_excursion_ref": "35af18a7899195288d71db299b0ede6403c257d620b6353bc9f25966c303f0a7",
+      "admitted_excursion_ref": "9b9ce81ad2102643499381fe1eef266bce9288ee1f77c2c59b4e00394b30e48a",
+      "local_unit_refs": [
+        "337f96afa726f98696987f8e987382bfc69d62fd2f3003090136783da69e19d2",
+        "36f1e8e72e38425cdfb549580e0460179c6689700d3a111e0fc96543ecb1a5b3"
+      ],
+      "content_refs": [
+        "7f067eb8bd211981042421f4d439e54bdf88393d8e5625c53554d131e552b6e0",
+        "58fce65c0f221d55dfa19da07ff02da6e0847734caf74b5de3bceef5117be919"
+      ],
+      "native_challenge_ref": "c395c528de54c43416fb57c61d3c5bf6eacdb08844d559099c191896a7daeaff",
+      "native_episode_ref": "bd10104a2728652bdaa720bb877ad52f2180722556c08e9a6db4340c8c35d35b",
+      "checks": [
+        "visible travel contract",
+        "two tasks / distinct explicit source sets / fixed foreign anchor",
+        "unchecked attachment cannot erase linked exposure",
+        "discarded episode remains prior scope",
+        "atomic local parents differ from content parents",
+        "native latest descendant challenge is anchor-only",
+        "explicit empty continuation selection / answer separate from task / no head change",
+        "reload loses authority with visible recovery boundary"
+      ]
+    }
+  ],
+  "failures": []
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "td613.phase5.relation-threat-fixtures/v0.1",
+  "fixtures": [
+    {"id":"artifact-digest-injection","mutation":{"artifact_digest":"sha256:forbidden"},"expected":"REJECT_ARTIFACT_DISCLOSURE"},
+    {"id":"identity-inflation","mutation":{"relation_is_identity":true},"expected":"REJECT_AUTHORITY_OR_IDENTITY_CLAIM"},
+    {"id":"causation-inflation","mutation":{"causation_proof":"asserted"},"expected":"REJECT_AUTHORITY_OR_IDENTITY_CLAIM"},
+    {"id":"automatic-confirmation","mutation":{"automatic_confirmation":true},"expected":"REJECT_AUTHORITY_OR_IDENTITY_CLAIM"},
+    {"id":"automatic-ash-action","mutation":{"automatic_ash_action":true},"expected":"REJECT_AUTHORITY_OR_IDENTITY_CLAIM"},
+    {"id":"prediction-authority","mutation":{"prediction_authorized":true},"expected":"REJECT_AUTHORITY_OR_IDENTITY_CLAIM"},
+    {"id":"nonce-reuse","mutation":{"reuse_context_nonce":true},"expected":"HOLD_NONCE_REUSE"},
+    {"id":"reference-substitution","mutation":{"replace_flowcore_receipt":true},"expected":"HOLD_REFERENCE_MISMATCH"},
+    {"id":"missing-local-key","mutation":{"drop_relation_key":true},"expected":"RELATION_REPLAY_HELD_KEY_UNAVAILABLE"},
+    {"id":"phason-fork","mutation":{"duplicate_previous_event_digest":true},"expected":"RELATION_REPLAY_HELD_PHASON_FORK"},
+    {"id":"marrowline-carrier-mutation","mutation":{"rewrite_binding_purpose":true},"expected":"HOLD_CARRIER_MUTATION"},
+    {"id":"open-field-proximity","mutation":{"task_intent_route":"OPEN_FIELD_SPECULATIVE"},"expected":"RELATION_ADMISSIBLE_WITH_WARNINGS","open_field_promotion":false}
+  ],
+  "seal": "⟐"
+}

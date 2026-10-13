@@ -1,0 +1,147 @@
+{
+  "schema_version": "connector-registry-index/v1",
+  "vault": "SignalRupture Preservation Vault",
+  "phase": "PHASE_1_5_OPEN",
+  "phase_2": "NOT_RUN_HUMAN_GATE_CLOSED",
+  "human_entrypoint": "CONNECTOR_ENTRY.md",
+  "current_assay": "04-RECEIPTS/assays/2026-08-24-phase15-authority-recompilation/curated-summary.json",
+  "evidence_resolver": "04-RECEIPTS/assays/2026-08-24-phase15-authority-recompilation/witnessed-evidence.jsonl",
+  "registries": [
+    {
+      "path": "01-MANIFESTS/entity-index.jsonl",
+      "object": "connector entity resolver",
+      "primary_key": "entity_id",
+      "schema": "01-MANIFESTS/schemas/entity-index.schema.json"
+    },
+    {
+      "path": "04-RECEIPTS/assays/2026-08-24-phase15-authority-recompilation/witnessed-evidence.jsonl",
+      "object": "manifestation-level evidence receipt",
+      "primary_key": "evidence_id",
+      "schema": "01-MANIFESTS/schemas/witnessed-evidence.schema.json"
+    },
+    {
+      "path": "05-OPERATIONS/authority/authority-assertions.jsonl",
+      "object": "time-indexed five-axis authority assertion",
+      "primary_key": "authority_assertion_id",
+      "schema": "01-MANIFESTS/schemas/authority-assertion.schema.json"
+    },
+    {
+      "path": "05-OPERATIONS/authority/legacy-membership-candidates.jsonl",
+      "object": "criterion match without individual authority assignment",
+      "primary_key": "subject_id",
+      "schema": "01-MANIFESTS/schemas/legacy-membership-candidate.schema.json"
+    },
+    {
+      "path": "05-OPERATIONS/claims/claim-status-events.jsonl",
+      "object": "claim status event",
+      "primary_key": "claim_event_id",
+      "schema": "01-MANIFESTS/schemas/claim-status-event.schema.json"
+    },
+    {
+      "path": "05-OPERATIONS/claims/evidence-taxonomy-observations.jsonl",
+      "object": "source-specific evidence taxonomy",
+      "primary_key": "taxonomy_id",
+      "schema": "01-MANIFESTS/schemas/evidence-taxonomy-observation.schema.json"
+    },
+    {
+      "path": "05-OPERATIONS/maps/canon-map-snapshots.jsonl",
+      "object": "immutable author self-model snapshot C_t",
+      "primary_key": "snapshot_id",
+      "schema": "01-MANIFESTS/schemas/canon-map-snapshot.schema.json"
+    },
+    {
+      "path": "05-OPERATIONS/relations/recompilation-edges.jsonl",
+      "object": "typed, time-aware source/compiler relation",
+      "primary_key": "edge_id",
+      "schema": "01-MANIFESTS/schemas/relation-assertion-v2.schema.json"
+    },
+    {
+      "path": "05-OPERATIONS/relations/typed-edges.jsonl",
+      "object": "typed graph edge used by graph observations",
+      "primary_key": "edge_id",
+      "schema": "01-MANIFESTS/schemas/relation-assertion-v2.schema.json"
+    },
+    {
+      "path": "05-OPERATIONS/relations/compiler-input-candidates.jsonl",
+      "object": "source-declared compiler slot with unresolved exact inputs",
+      "primary_key": "compiler_candidate_id",
+      "schema": "01-MANIFESTS/schemas/compiler-input-candidate.schema.json"
+    },
+    {
+      "path": "05-OPERATIONS/relations/representation-families.jsonl",
+      "object": "non-collapsed representation family",
+      "primary_key": "family_id",
+      "schema": "01-MANIFESTS/schemas/representation-family.schema.json"
+    },
+    {
+      "path": "05-OPERATIONS/relations/representation-lift-candidates.jsonl",
+      "object": "surface or epistemic transformation assertion",
+      "primary_key": "transformation_id",
+      "schema": "01-MANIFESTS/schemas/transformation-assertion.schema.json"
+    },
+    {
+      "path": "05-OPERATIONS/relations/ordinal-series-observations.jsonl",
+      "object": "ordinal sequence with explicit namespace resolution status",
+      "primary_key": "series_observation_id",
+      "schema": "01-MANIFESTS/schemas/ordinal-series-observation.schema.json"
+    },
+    {
+      "path": "05-OPERATIONS/relations/structural-anatomy-candidates.jsonl",
+      "object": "bounded first-appearance developmental anatomy",
+      "primary_key": "anatomy_id",
+      "schema": "01-MANIFESTS/schemas/structural-anatomy.schema.json"
+    },
+    {
+      "path": "05-OPERATIONS/operators/lifecycle-operators.jsonl",
+      "object": "append-only epistemic lifecycle event",
+      "primary_key": "operator_event_id",
+      "schema": "01-MANIFESTS/schemas/lifecycle-operator.schema.json"
+    },
+    {
+      "path": "05-OPERATIONS/state/epistemic-object-states.jsonl",
+      "object": "six-axis E/V/R/P/L/A state assertion",
+      "primary_key": "state_assertion_id",
+      "schema": "01-MANIFESTS/schemas/epistemic-object-state.schema.json"
+    },
+    {
+      "path": "05-OPERATIONS/hypotheses/2026-08-24-amari-recompilation-topology-seeds.jsonl",
+      "object": "research hypothesis; never a source claim",
+      "primary_key": "hypothesis_id",
+      "schema": "01-MANIFESTS/schemas/architecture-hypothesis-definition.schema.json"
+    },
+    {
+      "path": "04-RECEIPTS/assays/2026-08-24-phase15-authority-recompilation/graph-assay-observations.jsonl",
+      "object": "typed bounded graph assay observation",
+      "primary_key": "observation_id",
+      "schema": "01-MANIFESTS/schemas/graph-assay-observation.schema.json"
+    },
+    {
+      "path": "04-RECEIPTS/assays/2026-08-24-phase15-authority-recompilation/coverage-ledger.jsonl",
+      "object": "research-trail implementation coverage",
+      "primary_key": "trail_id",
+      "schema": "01-MANIFESTS/schemas/coverage-entry.schema.json"
+    }
+  ],
+  "graph_layers": [
+    "HISTORICAL",
+    "CONCEPTUAL",
+    "OPERATIONAL",
+    "NAVIGATIONAL",
+    "MANIFESTATION",
+    "AUTHORITY"
+  ],
+  "provenance_modes": [
+    "explicit-source",
+    "archive-observed",
+    "archive-inferred",
+    "researcher-proposed"
+  ],
+  "non_collapse_invariants": [
+    "work != edition != manifestation != capture",
+    "source assertion != archive inference != researcher hypothesis",
+    "preservation != authority persistence",
+    "theorem label != proof or validation",
+    "unavailable != suppressed",
+    "ordinal observed + namespace unresolved != numbering error"
+  ]
+}

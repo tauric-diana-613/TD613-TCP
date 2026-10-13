@@ -1,0 +1,355 @@
+{
+  "schema": "td613.dollhouse.witness-plan-receipt/v0.1",
+  "agent": "APERTURE",
+  "adapter_status": "BOUNDED_EXTERNAL_AUDIT",
+  "disposition": "PROPOSE",
+  "basis": [
+    "DERIVED_FROM_DECLARED_PLAN_ONLY",
+    "PER_CLAIM_FINDINGS_RETAINED_WITHOUT_EVIDENCE_CLASS_PROMOTION"
+  ],
+  "source_revision": "3ef1ba86701843f7fde2fec29ede2bab038d934b",
+  "source_status": "OPERATOR_DECLARED_UNAUTHENTICATED",
+  "source_revision_authenticated": false,
+  "installed_aperture_identity_changed": false,
+  "claim_verified": false,
+  "claims": [
+    {
+      "claim_id": "local-integrity-gap",
+      "claim_class": "SCOPED_BEHAVIOR",
+      "disposition": "ASK_NOTHING",
+      "basis": [
+        "NO_DECLARED_NEXT_QUESTION_IN_THIS_BOUNDED_PLAN",
+        "PLAN_COMPLETENESS_IS_NOT_CLAIM_VERIFICATION"
+      ],
+      "declaration": {
+        "id": "local-integrity-gap",
+        "claim_class": "SCOPED_BEHAVIOR",
+        "statement": "Inherited v0.1 shape-valid restored records can pass receipt matching and result admission after policy/authority/task mutation.",
+        "extent": "DECLARED_SCOPE_ONLY",
+        "observation_scope": {
+          "description": "Finite local re-entry protocol and exact supplied record; foreign hidden execution remains outside this aperture.",
+          "objects": [
+            "portable-session-v0.1-inspected",
+            "local-custody-v0.2-candidate"
+          ],
+          "bounded": true
+        },
+        "instrument": {
+          "id": "aperture-reentry-source-and-offline-audit",
+          "description": "Source review, Node/WebCrypto hostile counterexamples and proposed independent observation plan."
+        },
+        "evidence_class": "OFFLINE_TEST",
+        "positive_witness": {
+          "description": "Bounded inspected source and finite witnessed counterexample.",
+          "artifact_refs": [
+            "APERTURE_FINDINGS.md#inherited-v01-falsifiers",
+            "blob:ad7c5d67b3a3b2679dd5b857e45ca402f2ed04ff"
+          ]
+        },
+        "hostile_counterexample": {
+          "description": "Explicit distinct compatible histories or mutated-record fixture.",
+          "artifact_refs": [
+            "APERTURE_FINDINGS.md#inherited-v01-falsifiers"
+          ]
+        },
+        "unresolved_alternatives": [],
+        "required_next_observation": null
+      },
+      "evidence_class": "OFFLINE_TEST",
+      "evidence_ceiling": "A finite offline fixture witnesses only its tested inputs and harness; live behavior and external origin remain unmeasured.",
+      "next_evidence_ceiling": null,
+      "declared_target_alternatives": [],
+      "unresolved_beyond_claim_scope": [
+        "UNOBSERVED_CONTEXT_BEHAVIOR_UNRESOLVED"
+      ],
+      "observation_performed": false,
+      "artifact_references_authenticated": false,
+      "claim_verified": false,
+      "authority": {
+        "execution": false,
+        "automatic_observation": false,
+        "automatic_experiment_execution": false,
+        "provider_authority": false,
+        "release_authority": false,
+        "production_mutation": false,
+        "promotion_authority": false,
+        "human_closure_required": true
+      }
+    },
+    {
+      "claim_id": "foreign-enforcement",
+      "claim_class": "SCOPED_POLICY_ENFORCEMENT",
+      "disposition": "PROPOSE",
+      "basis": [
+        "DECLARED_DISCRIMINATING_OBSERVATION_REQUIRES_SEPARATE_HUMAN_APPROVAL"
+      ],
+      "declaration": {
+        "id": "foreign-enforcement",
+        "claim_class": "SCOPED_POLICY_ENFORCEMENT",
+        "statement": "Equal carried policy/task/source/answer commitments support local reference consistency; foreign internal enforcement remains unresolved.",
+        "extent": "DECLARED_SCOPE_ONLY",
+        "observation_scope": {
+          "description": "Finite local re-entry protocol and exact supplied record; foreign hidden execution remains outside this aperture.",
+          "objects": [
+            "portable-session-v0.1-inspected",
+            "local-custody-v0.2-candidate"
+          ],
+          "bounded": true
+        },
+        "instrument": {
+          "id": "aperture-reentry-source-and-offline-audit",
+          "description": "Source review, Node/WebCrypto hostile counterexamples and proposed independent observation plan."
+        },
+        "evidence_class": "OFFLINE_TEST",
+        "positive_witness": {
+          "description": "Bounded inspected source and finite witnessed counterexample.",
+          "artifact_refs": [
+            "APERTURE_FINDINGS.md#field-evidence-matrix"
+          ]
+        },
+        "hostile_counterexample": {
+          "description": "Explicit distinct compatible histories or mutated-record fixture.",
+          "artifact_refs": [
+            "APERTURE_FINDINGS.md#twin-histories-and-discriminating-witnesses"
+          ]
+        },
+        "unresolved_alternatives": [
+          "OUTSIDE_SOURCE_USE_WITH_SAME_ANSWER",
+          "ROOT_POLICY_ECHO_WITH_DIFFERENT_EXECUTION"
+        ],
+        "required_next_observation": {
+          "description": "Acquire an independently qualified, complete execution trace across the relevant source/tool/input and policy-sensitive action boundaries, bound to the exact registered intent and episode.",
+          "observation_scope": {
+            "description": "One registered foreign receiver episode or one qualified trusted custody transaction.",
+            "objects": [
+              "exact-registered-intent",
+              "exact-receiver-episode"
+            ],
+            "bounded": true
+          },
+          "instrument": {
+            "id": "independently-qualified-channel",
+            "description": "Independent collector or trusted custody service with documented identity, acquisition scope and completeness."
+          },
+          "evidence_class": "EMPIRICAL_ACQUISITION",
+          "distinguishes": [
+            "OUTSIDE_SOURCE_USE_WITH_SAME_ANSWER",
+            "ROOT_POLICY_ECHO_WITH_DIFFERENT_EXECUTION"
+          ],
+          "execution": false,
+          "authority": "HUMAN_APPROVAL_REQUIRED"
+        }
+      },
+      "evidence_class": "OFFLINE_TEST",
+      "evidence_ceiling": "A finite offline fixture witnesses only its tested inputs and harness; live behavior and external origin remain unmeasured.",
+      "next_evidence_ceiling": "An empirical acquisition reference requires independent qualification of episode, instrument, custody and comparison frame; this plan authenticates none of them.",
+      "declared_target_alternatives": [
+        "OUTSIDE_SOURCE_USE_WITH_SAME_ANSWER",
+        "ROOT_POLICY_ECHO_WITH_DIFFERENT_EXECUTION"
+      ],
+      "unresolved_beyond_claim_scope": [
+        "UNTESTED_POLICY_OR_PATH_ENFORCEMENT_UNRESOLVED",
+        "PROVIDER_ACKNOWLEDGMENT_ALONE_INSUFFICIENT"
+      ],
+      "observation_performed": false,
+      "artifact_references_authenticated": false,
+      "claim_verified": false,
+      "authority": {
+        "execution": false,
+        "automatic_observation": false,
+        "automatic_experiment_execution": false,
+        "provider_authority": false,
+        "release_authority": false,
+        "production_mutation": false,
+        "promotion_authority": false,
+        "human_closure_required": true
+      }
+    },
+    {
+      "claim_id": "durable-restoration-and-fork",
+      "claim_class": "SCOPED_BEHAVIOR",
+      "disposition": "PROPOSE",
+      "basis": [
+        "DECLARED_DISCRIMINATING_OBSERVATION_REQUIRES_SEPARATE_HUMAN_APPROVAL"
+      ],
+      "declaration": {
+        "id": "durable-restoration-and-fork",
+        "claim_class": "SCOPED_BEHAVIOR",
+        "statement": "Local in-memory custody can govern local admission; an unsigned copied record cannot prove restoration origin or global latest ancestry.",
+        "extent": "DECLARED_SCOPE_ONLY",
+        "observation_scope": {
+          "description": "Finite local re-entry protocol and exact supplied record; foreign hidden execution remains outside this aperture.",
+          "objects": [
+            "portable-session-v0.1-inspected",
+            "local-custody-v0.2-candidate"
+          ],
+          "bounded": true
+        },
+        "instrument": {
+          "id": "aperture-reentry-source-and-offline-audit",
+          "description": "Source review, Node/WebCrypto hostile counterexamples and proposed independent observation plan."
+        },
+        "evidence_class": "OFFLINE_TEST",
+        "positive_witness": {
+          "description": "Bounded inspected source and finite witnessed counterexample.",
+          "artifact_refs": [
+            "APERTURE_FINDINGS.md#what-can-lawfully-become-an-admission-candidate"
+          ]
+        },
+        "hostile_counterexample": {
+          "description": "Explicit distinct compatible histories or mutated-record fixture.",
+          "artifact_refs": [
+            "APERTURE_FINDINGS.md#twin-histories-and-discriminating-witnesses"
+          ]
+        },
+        "unresolved_alternatives": [
+          "FABRICATED_RECOMPUTED_EXPORT",
+          "REPLAYED_OR_FORKED_GLOBAL_HEAD"
+        ],
+        "required_next_observation": {
+          "description": "Acquire a qualified trusted custody-service signature with independent signer identity and atomic current-head/replay CAS for the exact session, intent and nonce. A self-attestation or signature without global head qualification leaves the relevant alternatives open.",
+          "observation_scope": {
+            "description": "One registered foreign receiver episode or one qualified trusted custody transaction.",
+            "objects": [
+              "exact-registered-intent",
+              "exact-receiver-episode"
+            ],
+            "bounded": true
+          },
+          "instrument": {
+            "id": "independently-qualified-channel",
+            "description": "Independent collector or trusted custody service with documented identity, acquisition scope and completeness."
+          },
+          "evidence_class": "EMPIRICAL_ACQUISITION",
+          "distinguishes": [
+            "FABRICATED_RECOMPUTED_EXPORT",
+            "REPLAYED_OR_FORKED_GLOBAL_HEAD"
+          ],
+          "execution": false,
+          "authority": "HUMAN_APPROVAL_REQUIRED"
+        }
+      },
+      "evidence_class": "OFFLINE_TEST",
+      "evidence_ceiling": "A finite offline fixture witnesses only its tested inputs and harness; live behavior and external origin remain unmeasured.",
+      "next_evidence_ceiling": "An empirical acquisition reference requires independent qualification of episode, instrument, custody and comparison frame; this plan authenticates none of them.",
+      "declared_target_alternatives": [
+        "FABRICATED_RECOMPUTED_EXPORT",
+        "REPLAYED_OR_FORKED_GLOBAL_HEAD"
+      ],
+      "unresolved_beyond_claim_scope": [
+        "UNOBSERVED_CONTEXT_BEHAVIOR_UNRESOLVED"
+      ],
+      "observation_performed": false,
+      "artifact_references_authenticated": false,
+      "claim_verified": false,
+      "authority": {
+        "execution": false,
+        "automatic_observation": false,
+        "automatic_experiment_execution": false,
+        "provider_authority": false,
+        "release_authority": false,
+        "production_mutation": false,
+        "promotion_authority": false,
+        "human_closure_required": true
+      }
+    },
+    {
+      "claim_id": "hidden-host-residue",
+      "claim_class": "SCOPED_BEHAVIOR",
+      "disposition": "PROPOSE",
+      "basis": [
+        "DECLARED_DISCRIMINATING_OBSERVATION_REQUIRES_SEPARATE_HUMAN_APPROVAL"
+      ],
+      "declaration": {
+        "id": "hidden-host-residue",
+        "claim_class": "SCOPED_BEHAVIOR",
+        "statement": "Captured returned output supplies no observation of hidden retention, training, memory or unobserved retransmission.",
+        "extent": "DECLARED_SCOPE_ONLY",
+        "observation_scope": {
+          "description": "Finite local re-entry protocol and exact supplied record; foreign hidden execution remains outside this aperture.",
+          "objects": [
+            "portable-session-v0.1-inspected",
+            "local-custody-v0.2-candidate"
+          ],
+          "bounded": true
+        },
+        "instrument": {
+          "id": "aperture-reentry-source-and-offline-audit",
+          "description": "Source review, Node/WebCrypto hostile counterexamples and proposed independent observation plan."
+        },
+        "evidence_class": "OFFLINE_TEST",
+        "positive_witness": {
+          "description": "Bounded inspected source and finite witnessed counterexample.",
+          "artifact_refs": [
+            "APERTURE_FINDINGS.md#field-evidence-matrix"
+          ]
+        },
+        "hostile_counterexample": {
+          "description": "Explicit distinct compatible histories or mutated-record fixture.",
+          "artifact_refs": [
+            "APERTURE_FINDINGS.md#twin-histories-and-discriminating-witnesses"
+          ]
+        },
+        "unresolved_alternatives": [
+          "HIDDEN_RETENTION_WITH_SAME_OUTPUT",
+          "UNOBSERVED_RETRANSMISSION_WITH_SAME_OUTPUT"
+        ],
+        "required_next_observation": {
+          "description": "Acquire separately qualified host-side lifecycle/storage/network telemetry for the exact channels and episode/horizon; document collector trust, completeness and continuous custody.",
+          "observation_scope": {
+            "description": "One registered foreign receiver episode or one qualified trusted custody transaction.",
+            "objects": [
+              "exact-registered-intent",
+              "exact-receiver-episode"
+            ],
+            "bounded": true
+          },
+          "instrument": {
+            "id": "independently-qualified-channel",
+            "description": "Independent collector or trusted custody service with documented identity, acquisition scope and completeness."
+          },
+          "evidence_class": "EMPIRICAL_ACQUISITION",
+          "distinguishes": [
+            "HIDDEN_RETENTION_WITH_SAME_OUTPUT",
+            "UNOBSERVED_RETRANSMISSION_WITH_SAME_OUTPUT"
+          ],
+          "execution": false,
+          "authority": "HUMAN_APPROVAL_REQUIRED"
+        }
+      },
+      "evidence_class": "OFFLINE_TEST",
+      "evidence_ceiling": "A finite offline fixture witnesses only its tested inputs and harness; live behavior and external origin remain unmeasured.",
+      "next_evidence_ceiling": "An empirical acquisition reference requires independent qualification of episode, instrument, custody and comparison frame; this plan authenticates none of them.",
+      "declared_target_alternatives": [
+        "HIDDEN_RETENTION_WITH_SAME_OUTPUT",
+        "UNOBSERVED_RETRANSMISSION_WITH_SAME_OUTPUT"
+      ],
+      "unresolved_beyond_claim_scope": [
+        "UNOBSERVED_CONTEXT_BEHAVIOR_UNRESOLVED"
+      ],
+      "observation_performed": false,
+      "artifact_references_authenticated": false,
+      "claim_verified": false,
+      "authority": {
+        "execution": false,
+        "automatic_observation": false,
+        "automatic_experiment_execution": false,
+        "provider_authority": false,
+        "release_authority": false,
+        "production_mutation": false,
+        "promotion_authority": false,
+        "human_closure_required": true
+      }
+    }
+  ],
+  "authority": {
+    "execution": false,
+    "automatic_observation": false,
+    "automatic_experiment_execution": false,
+    "provider_authority": false,
+    "release_authority": false,
+    "production_mutation": false,
+    "promotion_authority": false,
+    "human_closure_required": true
+  }
+}

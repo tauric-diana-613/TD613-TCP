@@ -1,0 +1,30 @@
+{
+  "id": "ai-smoothed-author-drift",
+  "title": "AI-Smoothed Author Drift",
+  "fixtureClass": "ai-smoothed",
+  "priority": "core",
+  "riskMode": "calibration",
+  "description": "A vivid draft is converted into polished administrative prose. The fixture tests whether smoothness lowers source residue without being mistaken for safety or evidentiary strength.",
+  "inputs": {
+    "protectedBaseline": "I am writing this because the packet still has a pulse. The facts keep knocking from inside the folder, and every clean sentence they want from me feels like another way to turn the bruise into stationery.",
+    "maskReference": "Please review the attached materials. Confirm receipt. Maintain the file for internal tracking.",
+    "messageDraft": "Please keep EXHIBIT-42 attached because the packet still has a pulse, and make sure the bruise of the record does not become stationery.",
+    "protectedOutput": "Please review EXHIBIT-42 and maintain the packet for internal tracking. Confirm receipt and preserve the relevant record materials for review."
+  },
+  "persona": { "personaId": "persona-admin-smooth", "label": "Admin Smooth", "mode": "hostile-pipeline-compression", "history": [] },
+  "expectations": {
+    "escapeVector": {
+      "sourceResidualRisk": { "min": 0.0, "max": 0.9 },
+      "maskFit": { "min": 0.0, "max": 1.0 },
+      "maskDeltaSafe": { "min": -1.0, "max": 1.0 },
+      "semanticFidelity": { "min": 0.25, "max": 1.0 },
+      "belongingWithoutCollapse": { "min": 0.0, "max": 0.9 },
+      "ingestionFriction": { "min": 0.0, "max": 0.45 },
+      "apertureRecaptureRisk": { "min": 0.0, "max": 1.0 }
+    },
+    "controller": { "allowedStates": ["continue", "hold", "restore", "seal"], "preferredState": "restore" },
+    "claimCeiling": { "minLevel": 1, "maxLevel": 6 },
+    "report": { "mustExcludePrivateText": true, "mustIncludeLimitations": true, "mustAvoidForbiddenClaims": true }
+  },
+  "calibrationNotes": ["Smoothness is not safety.", "The harness should allow source reduction while keeping semantic heat loss and claim inflation visible."]
+}

@@ -1,0 +1,534 @@
+{
+  "schema": "td613.pedagogue-design-fixture/v0.1",
+  "design_id": "loom-portable-roundtrip-design-v01",
+  "surface_reference": "Dome-World/Holonomy Loom portable roundtrip candidate",
+  "governance_context": "TD613",
+  "determinism": {
+    "frozenClock": "2026-09-09T00:00:00Z",
+    "idSeed": "loom-portable-roundtrip-design-v01",
+    "idScope": "Dome-World/Holonomy-Loom/portable-roundtrip"
+  },
+  "design_evidence_scope": {
+    "posture": "DECLARED_DESIGN_CANDIDATE",
+    "inspection_base": "8da9705285c90366ff5d67a12472e0ca05d76e79",
+    "baseline": "Declared manual traversal of the existing synthetic runtime contract; the hosted Portable receiver checkbox does not provide this operational route.",
+    "comparison": "Baseline manual return checking versus a locally bound session with automatic return admission. Shared neutral structural weights remain assumptions; no measured usability gain is asserted.",
+    "millipoint_basis": "Neutral fixture assumptions, not measured human comprehension, difficulty or ability.",
+    "gate_limit": "The Design Gate compiles declared route invariants. It does not execute the Dollhouse roundtrip, verify browser controls, establish live host integration, or test the listed hostile returns."
+  },
+  "scene_input": {
+    "scene_kind": "GENERIC",
+    "station_owner": "Dome-World",
+    "source_status": "E1",
+    "observation_status": "UNRESOLVED",
+    "world_state_reference": "loom_portable_roundtrip_design_candidate_v01",
+    "provenance": {
+      "source_references": [
+        "DOLLHOUSE.md",
+        "PEDAGOGUE.md",
+        "app/engine/dollhouse-agent-registry.js",
+        "app/engine/dollhouse-atlas-fadt.js",
+        "app/engine/dollhouse-portable-aia-roundtrip.js",
+        "app/dome-world/holonomy-loom/semantic-field.js",
+        "app/dome-world/holonomy-loom/theater.js",
+        "tests/dollhouse-portable-aia-roundtrip.test.mjs",
+        "PR #1090 / origin/handoff/goose-house-portable-aia-operational-20260909 / docs/research/2026-09-09-GOOSE-HOUSE-PORTABLE-AIA-OPERATIONAL-HANDOFF.md",
+        "app/engine/loom-portable-governor.js",
+        "app/dome-world/holonomy-loom/portable-workbench.js"
+      ],
+      "evidence_basis": [
+        "The inspected runtime exposes admitted-state projection, four bounded synthetic operations, structured returns, and Loom revalidation with Atlas control comparison and finite FADT action-support comparison.",
+        "At the inspection base the theater Portable receiver checkbox changes a presentation/export mode; it does not expose an operational host and return loop.",
+        "The runtime is a synthetic machine contract and does not call a provider. This fixture declares a candidate product route over that contract.",
+        "The baseline and proposed routes use the same neutral structural assumptions. Their burden comparison is a design hypothesis, not observed usability evidence.",
+        "The operator rejected redaction teaching as the principal product. The successor binds a local fictional-origin session, enforces every return, and exposes an explicit freshly revalidated REST action."
+      ],
+      "transformations": [
+        "Show the admitted scene consequence and closed host authority before operation names or receipt schemas.",
+        "Keep receiver selection distinct from the four canonical Pedagogue AIA projections; child, auditor and companion are the bounded Dollhouse receiver vocabulary.",
+        "Expose a deliberate local operation and structured return path whose output remains untrusted through revalidation.",
+        "Keep origin scene, receiver, operation, return and revalidation history inspectable beside human review, rest and exit."
+      ],
+      "station_owners": [
+        "Dome-World"
+      ]
+    },
+    "visible_condition": {
+      "plain_language": "Activate local governance. This receiver can change its presentation while your original rules stay in force. Returns that change those rules are held. Rest remains available.",
+      "surface_reference": "Dome-World/Holonomy Loom portable roundtrip candidate",
+      "now": "Bind the visible local scope and enforce returning operations.",
+      "why": "Presentation changes must not silently change permitted actions.",
+      "exact": "Inspect the retained origin, receiver binding, Atlas comparison, FADT gap, bounded event history and source ceiling."
+    },
+    "available_affordances": [
+      {
+        "action_id": "try_portable_roundtrip",
+        "purpose": "Activate a local governor over a canonical fictional origin; enforce each return and allow an explicit freshly revalidated REST gesture to pause the view and withhold intake.",
+        "authorized_by_station": "Human",
+        "reversible": true
+      }
+    ],
+    "route_topology": {
+      "entry": "Admitted Loom practice scene and visible bounded consequence",
+      "exit": "Rest, return to the retained origin scene, or exit without completing the roundtrip",
+      "same_endpoint_not_same_history": true,
+      "missing_inputs": [
+        "browser execution witness and human comprehension evidence are outside this design fixture"
+      ],
+      "rest_available_at_every_step": true,
+      "exit_available_at_every_step": true,
+      "rest_penalty": false,
+      "steps": [
+        {
+          "step_id": "notice_origin",
+          "label": "See what Loom checked and what the other view cannot do",
+          "phase": "NOTICE",
+          "required_fields": [
+            "origin scene",
+            "bounded consequence",
+            "host authority closed"
+          ],
+          "dependencies": [],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 0,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "choose_receiver",
+          "label": "Activate the local session and choose its receiving view",
+          "phase": "ACT",
+          "required_fields": [
+            "child auditor or companion",
+            "origin binding",
+            "no authority transfer"
+          ],
+          "dependencies": [
+            "notice_origin"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "operate_receiver",
+          "label": "Exercise a bounded operation through the active return gate",
+          "phase": "ACT",
+          "required_fields": [
+            "declared operation",
+            "operation-specific bounded input"
+          ],
+          "dependencies": [
+            "choose_receiver"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "see_untrusted_return",
+          "label": "Retain untrusted candidate separately while automatic admission runs",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "structured return candidate",
+            "origin and receiver history",
+            "host missingness kept separate"
+          ],
+          "dependencies": [
+            "operate_receiver"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "revalidate_return",
+          "label": "The active local governor checks every structured return",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "retained origin state",
+            "structured return candidate"
+          ],
+          "dependencies": [
+            "see_untrusted_return"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "see_decision",
+          "label": "See the control or support lane held, or the unchanged relation admitted",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "PRESENT_TO_HUMAN or HOLD",
+            "control and support comparison",
+            "no action executed"
+          ],
+          "dependencies": [
+            "revalidate_return"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "inspect_exact",
+          "label": "Inspect the exact relation and return receipt if wanted",
+          "phase": "NAME",
+          "required_fields": [
+            "versioned Flow-Core legend and trace",
+            "Atlas control comparison",
+            "FADT union intersection and gap"
+          ],
+          "dependencies": [
+            "see_decision"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "human_rest",
+          "label": "Apply freshly revalidated REST, pause freely, or close the local session",
+          "phase": "REST",
+          "required_fields": [
+            "explicit local pause or rest gesture",
+            "no provider action",
+            "retained route history"
+          ],
+          "dependencies": [
+            "see_decision"
+          ],
+          "legibility_millipoints": 500,
+          "affordance_millipoints": 500,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        }
+      ]
+    },
+    "causal_structure": {
+      "input": "One admitted fictional Loom scene, an explicitly chosen receiver and an allowed bounded operation",
+      "operator": "compileDollhousePortableProjection -> operateDollhousePortableProjection -> createLoomPortableGovernor.receive -> Atlas/FADT admission -> optional explicit local REST",
+      "observable": "Actual local returns are withheld or admitted; the field separately depicts presentation, control and action-support comparisons. Explicit admitted REST pauses the view and holds intake.",
+      "authority": "Human activation binds the local session. Only explicit local REST is actuated; all provider, release, source mutation and deployment authority remains closed.",
+      "equations": [
+        "V != C != P != L",
+        "same governance != same presentation",
+        "PRESENT_TO_HUMAN != release authority",
+        "return != trust transfer"
+      ]
+    },
+    "research_frame": {
+      "question": "Can one consequence-first Loom route make a bounded receiver operation and checked return inspectable while retaining origin state, distinct audit roles, human closure and rest?",
+      "hypothesis": "Placing the admitted consequence before receiver operations and the checked return before technical naming can expose the existing synthetic contract without adding declared structural burden relative to the same manual traversal.",
+      "observable_behavior": [
+        "Before any operation, the surface shows the admitted scene, bounded consequence, missingness and host authority ceiling.",
+        "An explicit receiver change alters presentation while retaining origin control; an explicit operation produces a structured candidate.",
+        "EXPLAIN_STATE, TRACE_FLOWCORE, PROPOSE_ACTION and REPORT_MISSINGNESS remain the only operations; their payload requirements remain distinct.",
+        "Returned candidates show their origin, receiver and operation; model prose and bare glyph strings cannot stand in for a control receipt.",
+        "Revalidation exposes control equality and Flow-Core trace equality separately from action-support equality and proposed-action admission.",
+        "FADT union, intersection and irreducible gap remain inspectable even when the result is HOLD.",
+        "Host-reported missingness remains advisory and separate from origin missingness; PRESENT_TO_HUMAN executes no action and requires human closure.",
+        "Rest and exit remain available before, during and after the optional roundtrip; rest stops new demands and retains the latest consequence and route."
+      ],
+      "alternative_explanations": [
+        "Neutral equal burden assumptions can conceal real navigation costs; only independent interaction evidence can establish actual improvement or comprehension.",
+        "Successful local synthetic operation can result from shared implementation and does not establish operational behavior in a live remote companion.",
+        "A complete static fixture can pass while the browser lacks controls, uses stale origin state or fails to preserve rest."
+      ],
+      "expected_failure_modes": [
+        "The Portable receiver toggle is presented as proof of an operational roundtrip without an operation or returned candidate.",
+        "A changed origin scene or receiver is paired with a stale return and shown as ready for human review.",
+        "Malformed return fields or authority flags bypass validation because the control envelope still matches.",
+        "A green comparison hides a support gap, executes a proposed action, or implies receiver sovereignty.",
+        "Mandatory schema reading precedes consequence, or rest erases history or forces completion."
+      ],
+      "falsifier": [
+        "No UI action reaches the actual projection, operation and revalidation functions despite a claimed working roundtrip.",
+        "A glyph-only, prose-only, malformed or widened-authority return is shown as PRESENT_TO_HUMAN.",
+        "Changing source revision, scene, control, Flow-Core trace, claim ceiling, missingness or lawful support fails to cause the appropriate rejection or HOLD.",
+        "A proposed COPY_CHECKED_MESSAGE outside origin support is admitted, or any proposed action executes from revalidation alone.",
+        "FADT irreducible gap disappears, host missingness becomes origin fact, or the control comparison is substituted for the action-support comparison.",
+        "A receiver operation continues after rest, route history disappears on return, or exit depends on finishing the roundtrip.",
+        "Any UI copy equates a modeled warning with measured fact, packet equality with operational portability, or gate PASS with human comprehension."
+      ],
+      "abstention_conditions": [
+        "There is no admitted origin state or its source binding cannot be retained for revalidation.",
+        "The receiver, operation, return schema or authority ceiling is unsupported or malformed.",
+        "A live remote-host claim is requested without an independently witnessed remote interaction and checked return.",
+        "A comprehension or measured burden claim is requested without independent human interaction evidence."
+      ]
+    },
+    "missingness": [
+      "Human comprehension is unobserved.",
+      "Browser operation and hostile-return behavior require separate execution witnesses.",
+      "Live remote-host integration and pre-ingress secrecy are not established.",
+      "Independent empirical exteriority and Golden Egg evidence closure remain unearned."
+    ],
+    "contradictions": [],
+    "claim_ceiling": {
+      "allowed_claims": [
+        "The fixture declares a complete route over the current bounded synthetic Portable AIA contract.",
+        "The Design Gate can verify declared consequence order, four non-equivalent AIA projections, equal modeled route burden, route history, rest, exit and human closure.",
+        "Atlas control comparison and finite FADT support comparison answer different bounded questions.",
+        "A returned candidate remains untrusted even when PRESENT_TO_HUMAN; host missingness remains advisory.",
+        "Packetization is the carrier; operational portability is the separately witnessed behavior under receiver change."
+      ],
+      "forbidden_claims": [
+        "Design Gate PASS proves the browser or a live ChatGPT companion completed a roundtrip.",
+        "The declared burden values measure a person or prove comprehension, learning or improved usability.",
+        "PRESENT_TO_HUMAN grants release, custody mutation or automatic execution authority.",
+        "Receiver adaptation makes hosts equivalent or transfers TD613 sovereignty.",
+        "An in-thread control boundary establishes pre-ingress secrecy or offline custody.",
+        "A forecast is an observed fact or a modeled warning is a measurement.",
+        "V, C, P and L are interchangeable.",
+        "The five-glyph TD613 ignition set has fixed ordinal positions or canonical meanings supplied by this fixture; it remains separate from established Flow-Core grammar.",
+        "Route memory, formal holonomy or phasonic supermoire comparison proves physical geometry or empirical exteriority.",
+        "A successful portability demonstration reopens Western Horizon or earns Golden Egg credit."
+      ]
+    },
+    "technical_terms_withheld": [
+      "versioned control envelope",
+      "Flow-Core relation trace",
+      "Atlas receiver-relation audit",
+      "Finite Admissibility Descent Theorem",
+      "occupied quotient fibre",
+      "union/intersection gap",
+      "phasonic supermoire comparison"
+    ]
+  },
+  "baseline_route_steps": [
+    {
+      "step_id": "manual_notice",
+      "label": "Read the admitted scene and its consequence in the local harness",
+      "phase": "NOTICE",
+      "required_fields": [
+        "origin scene",
+        "bounded consequence",
+        "host authority closed"
+      ],
+      "dependencies": [],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 0,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "manual_receiver",
+      "label": "Declare a receiver to the projection compiler",
+      "phase": "ACT",
+      "required_fields": [
+        "child auditor or companion",
+        "origin binding",
+        "no authority transfer"
+      ],
+      "dependencies": [
+        "manual_notice"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 1,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "manual_operation",
+      "label": "Supply an allowed operation and its bounded input",
+      "phase": "ACT",
+      "required_fields": [
+        "declared operation",
+        "operation-specific bounded input"
+      ],
+      "dependencies": [
+        "manual_receiver"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "manual_return",
+      "label": "Read the resulting untrusted structured candidate",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": [
+        "structured return candidate",
+        "origin and receiver history",
+        "host missingness kept separate"
+      ],
+      "dependencies": [
+        "manual_operation"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "manual_revalidation",
+      "label": "Invoke Loom revalidation with the retained origin and return",
+      "phase": "ACT",
+      "required_fields": [
+        "retained origin state",
+        "structured return candidate"
+      ],
+      "dependencies": [
+        "manual_return"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 1,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "manual_decision",
+      "label": "Read the bounded revalidation result",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": [
+        "PRESENT_TO_HUMAN or HOLD",
+        "control and support comparison",
+        "no action executed"
+      ],
+      "dependencies": [
+        "manual_revalidation"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "manual_exact",
+      "label": "Inspect the exact relation and audit fields if wanted",
+      "phase": "NAME",
+      "required_fields": [
+        "versioned Flow-Core legend and trace",
+        "Atlas control comparison",
+        "FADT union intersection and gap"
+      ],
+      "dependencies": [
+        "manual_decision"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 1,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "manual_rest",
+      "label": "Stop the manual traversal with its record retained",
+      "phase": "REST",
+      "required_fields": [
+        "human closure remains open",
+        "retained consequence and route history"
+      ],
+      "dependencies": [
+        "manual_decision"
+      ],
+      "legibility_millipoints": 500,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 0,
+      "projection_crossings": 0,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    }
+  ],
+  "action": {
+    "action_id": "try_portable_roundtrip"
+  },
+  "world_delta": {
+    "observation_status": "UNRESOLVED",
+    "causal_trace": [
+      "Declared route: activate a session bound to one admitted fictional origin.",
+      "Declared route: an explicit receiver operation returns through automatic Atlas/FADT checks before result admission.",
+      "Declared route: show changed control and action-support lanes separately; preserve the origin through HOLD and recovery.",
+      "Declared route: explicit freshly checked REST pauses the local view and holds intake until resume; close remains available."
+    ],
+    "losses": [],
+    "missingness": [
+      "This fixture does not execute browser controls or establish human comprehension or a live provider roundtrip."
+    ],
+    "contradictions": [],
+    "unresolved_relations": [
+      "Execution witnesses must independently establish that the exposed route follows the declared contract and rejects hostile returns."
+    ],
+    "glyph_candidates": [],
+    "static_equivalent": {
+      "summary": "Local governance remains active when motion is absent. Rules stay attached through receiver changes; drift is held. An explicit rest gesture pauses the local view and return intake.",
+      "steps": [
+        "activate local scope",
+        "choose receiver operation",
+        "automatic return admission",
+        "inspect preserved rules or exact gap",
+        "explicit rest resume or close"
+      ]
+    }
+  },
+  "name": {
+    "plain_language": "A local governor keeps origin rules in force across receiver operations, admitting only conserved relations and holding drift; the operator can apply a bounded rest consequence.",
+    "glyph_relation": null,
+    "technical_term": "operational Portable AIA roundtrip candidate",
+    "non_equivalence": [
+      "packetization is not operational portability",
+      "same endpoint is not same route history",
+      "same control is not same presentation",
+      "Atlas equality is not FADT support equality",
+      "PRESENT_TO_HUMAN is not trust or release",
+      "Flow-Core grammar is not the undefined five-glyph ignition set"
+    ]
+  },
+  "transfer_context": {
+    "context": {
+      "surface": "Dome-World/Holonomy Loom proposed local reference receiver route",
+      "realization": "Actual local admission and pause behavior over fictional origin state; remote enforcement unwitnessed."
+    },
+    "shared_relation_candidate": "Non-equivalent receivers may operate on one bounded admitted relation while structured returns preserve the origin authority ceiling and require revalidation.",
+    "observable_correspondence": [
+      "Declared child, auditor and companion projections retain one origin control envelope.",
+      "The runtime contract exposes operation, structured return and separate revalidation comparisons."
+    ],
+    "alternative_explanations": [
+      "Shared local implementation can preserve a control envelope without proving behavior in an independent remote host."
+    ],
+    "abstention_conditions": [
+      "The receiver cannot preserve the versioned control grammar or return binding.",
+      "The requested conclusion requires live remote interaction, physical geometry, empirical exteriority or human comprehension evidence."
+    ]
+  }
+}

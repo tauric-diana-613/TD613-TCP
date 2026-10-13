@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.compare/v0.6",
+  "title": "Ash Compare Delta Report",
+  "type": "object",
+  "required": ["schema", "privacy_pressure_delta", "reconstruction_pressure_delta", "linkage_pressure_delta", "claimCeiling"],
+  "properties": {
+    "schema": { "const": "td613.ash.compare/v0.6" },
+    "privacy_pressure_delta": { "type": "object" },
+    "reconstruction_pressure_delta": { "type": "number" },
+    "linkage_pressure_delta": { "type": "number" },
+    "claimCeiling": { "const": "ash-compare-delta-not-legal-redaction-certification" }
+  }
+}

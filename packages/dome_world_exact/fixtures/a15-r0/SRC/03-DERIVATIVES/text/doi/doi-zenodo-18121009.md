@@ -1,0 +1,16 @@
+---
+derivative_id: derivative:f3058a2f363295ed7844fde5
+parent_capture_id: capture:ffe598d15ae14b17f4df88cc
+parent_blob_sha256: c146049f5a758399b806926fa374ddb0ba7814cc4d3798d6de05e3852a7e0ab7
+tool: srcctl-doi-resolver-receipt/1
+source_title: "Systemic Blame in Infrastructure: Correlation Is the Smoke. Causation Is the Fire"
+---
+
+Request URL: https://doi.org/10.5281/zenodo.18121009
+Final URL: https://zenodo.org/records/18121009
+Status: 200
+Request method: GET_LEGACY_CAPTURE
+
+Redirect chain:
+302 https://doi.org/10.5281/zenodo.18121009 -> https://zenodo.org/doi/10.5281/zenodo.18121009
+302 https://zenodo.org/doi/10.5281/zenodo.18121009 -> https://zenodo.org/records/18121009

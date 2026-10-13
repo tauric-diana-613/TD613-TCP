@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.flowcore.physical-scene/v0.1",
+  "title": "Flow-Core physical model and scene package",
+  "$defs": {
+    "nonNegativeInteger": { "type": "integer", "minimum": 0 },
+    "openClosure": {
+      "type": "object",
+      "required": ["status", "closed_by"],
+      "properties": {
+        "status": { "const": "OPEN" },
+        "closed_by": { "type": "null" }
+      },
+      "additionalProperties": false
+    },
+    "physicalModel": {
+      "type": "object",
+      "required": ["schema", "mechanical_ledger", "thermal_ledger", "child_safety", "claim_ceiling", "authority", "closure"],
+      "properties": {
+        "schema": { "const": "td613.flowcore.physical-model/v0.1" },
+        "mechanical_ledger": {
+          "type": "object",
+          "required": [
+            "potential_capacity_millijoules",
+            "lifted_stored_millijoules",
+            "lift_loss_millijoules",
+            "pipe_friction_loss_millijoules",
+            "delivered_work_millijoules",
+            "optional_output_millijoules",
+            "next_reserve_millijoules",
+            "essential_reserve_floor_millijoules",
+            "essential_reserve_protected"
+          ],
+          "properties": {
+            "potential_capacity_millijoules": { "$ref": "#/$defs/nonNegativeInteger" },
+            "lifted_stored_millijoules": { "$ref": "#/$defs/nonNegativeInteger" },
+            "lift_loss_millijoules": { "$ref": "#/$defs/nonNegativeInteger" },
+            "pipe_friction_loss_millijoules": { "$ref": "#/$defs/nonNegativeInteger" },
+            "delivered_work_millijoules": { "$ref": "#/$defs/nonNegativeInteger" },
+            "optional_output_millijoules": { "$ref": "#/$defs/nonNegativeInteger" },
+            "next_reserve_millijoules": { "$ref": "#/$defs/nonNegativeInteger" },
+            "essential_reserve_floor_millijoules": { "$ref": "#/$defs/nonNegativeInteger" },
+            "essential_reserve_protected": { "const": true }
+          }
+        },
+        "thermal_ledger": {
+          "type": "object",
+          "required": ["stored_thermal_energy_millijoules", "converter_present", "thermal_to_mechanical_transfer_millijoules", "mechanically_spendable"],
+          "properties": {
+            "stored_thermal_energy_millijoules": { "$ref": "#/$defs/nonNegativeInteger" },
+            "converter_present": { "const": false },
+            "thermal_to_mechanical_transfer_millijoules": { "const": 0 },
+            "mechanically_spendable": { "const": false }
+          },
+          "additionalProperties": false
+        },
+        "child_safety": {
+          "type": "object",
+          "required": ["participant_input_is_optional_surplus_only", "essential_service_depends_on_participant_input", "essential_reserve_floor_protected", "participant_nonperformance_penalty"],
+          "properties": {
+            "participant_input_is_optional_surplus_only": { "const": true },
+            "essential_service_depends_on_participant_input": { "const": false },
+            "essential_reserve_floor_protected": { "const": true },
+            "participant_nonperformance_penalty": { "const": false }
+          },
+          "additionalProperties": false
+        },
+        "claim_ceiling": { "type": "object" },
+        "authority": {
+          "type": "object",
+          "required": ["model_commands_physical_system", "essential_service_control_authorized", "automatic_station_mutation", "release_authorized", "human_closure_required"],
+          "properties": {
+            "model_commands_physical_system": { "const": false },
+            "essential_service_control_authorized": { "const": false },
+            "automatic_station_mutation": { "const": false },
+            "release_authorized": { "const": false },
+            "human_closure_required": { "const": true }
+          }
+        },
+        "closure": { "$ref": "#/$defs/openClosure" }
+      }
+    }
+  },
+  "type": "object",
+  "required": ["schema", "package_id", "package_digest", "model", "scene", "phase_sequence", "aia_views", "reduced_mobile_frames", "child_safety", "serverless_delta", "persistence_delta", "authority", "closure"],
+  "properties": {
+    "schema": { "const": "td613.flowcore.physical-scene-package/v0.1" },
+    "package_id": { "type": "string", "pattern": "^flowcore_physical_" },
+    "package_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "model": { "$ref": "#/$defs/physicalModel" },
+    "scene": { "type": "object" },
+    "phase_sequence": { "type": "array", "minItems": 5, "maxItems": 5 },
+    "aia_views": {
+      "type": "object",
+      "required": ["EXPERIENTIAL", "CUSTODIAL", "AUDIT", "IMPLEMENTATION"]
+    },
+    "reduced_mobile_frames": {
+      "type": "object",
+      "required": ["EXPERIENTIAL", "CUSTODIAL", "AUDIT", "IMPLEMENTATION"]
+    },
+    "child_safety": { "type": "object" },
+    "serverless_delta": { "const": 0 },
+    "persistence_delta": { "const": 0 },
+    "authority": {
+      "type": "object",
+      "required": ["dome_world_hosts_scene", "flowcore_commands_physical_system", "essential_service_control_authorized", "automatic_ash_action", "release_authorized", "human_closure_required"],
+      "properties": {
+        "dome_world_hosts_scene": { "const": true },
+        "flowcore_commands_physical_system": { "const": false },
+        "essential_service_control_authorized": { "const": false },
+        "automatic_ash_action": { "const": false },
+        "release_authorized": { "const": false },
+        "human_closure_required": { "const": true }
+      }
+    },
+    "closure": { "$ref": "#/$defs/openClosure" }
+  }
+}

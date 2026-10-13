@@ -1,0 +1,174 @@
+html {
+  overflow-x: clip;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  min-inline-size: 0;
+}
+
+body {
+  margin: 0;
+  min-block-size: 100vh;
+  overflow-wrap: anywhere;
+  background: radial-gradient(circle at 20% 0%, rgba(120, 94, 177, 0.22), transparent 34%), #090b14;
+  color: #f3f0ff;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.route-burden {
+  inline-size: min(78rem, calc(100% - 2rem));
+  margin-inline: auto;
+  padding-block: clamp(1rem, 4vw, 3rem);
+}
+
+.route-burden__header,
+.route-burden__controls,
+.route-burden__panel,
+.route-burden__footer,
+.route-burden__live {
+  max-inline-size: 100%;
+  border: 1px solid rgba(243, 240, 255, 0.26);
+  border-radius: 1rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  overflow-wrap: anywhere;
+  background: rgba(9, 11, 20, 0.84);
+}
+
+.route-burden__eyebrow {
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.route-burden__controls,
+.route-burden__footer,
+.route-burden__choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.route-burden__controls > *,
+.route-burden__footer > *,
+.route-burden__choices > * {
+  max-inline-size: 100%;
+}
+
+.route-burden__choice,
+.route-burden__footer a {
+  min-block-size: 44px;
+  max-inline-size: 100%;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: center;
+  text-decoration: none;
+}
+
+.route-burden__choice[aria-pressed="true"] {
+  background: #f3f0ff;
+  color: #090b14;
+}
+
+.route-burden__stage {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-block: 1rem;
+}
+
+.route-burden__route {
+  grid-column: 1 / -1;
+}
+
+.route-burden__step {
+  border-inline-start: 0.25rem solid currentColor;
+  padding-inline-start: 0.9rem;
+  margin-block: 0.85rem;
+}
+
+.route-burden__meter {
+  position: relative;
+  display: grid;
+  min-block-size: 3rem;
+  overflow: hidden;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  place-items: center;
+  isolation: isolate;
+}
+
+.route-burden__meter::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  inline-size: var(--route-burden, 0%);
+  background: currentColor;
+  opacity: 0.2;
+  z-index: -1;
+}
+
+.route-burden__nonclaim {
+  border-inline-start: 0.3rem solid currentColor;
+  padding-inline-start: 0.8rem;
+  font-weight: 700;
+}
+
+.route-burden__inspection {
+  max-inline-size: 100%;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+[data-held="true"] .route-burden__stage {
+  opacity: 0.6;
+}
+
+@media (max-width: 700px) {
+  .route-burden__stage,
+  .route-burden__controls,
+  .route-burden__footer,
+  .route-burden__choices {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .route-burden__stage {
+    display: grid;
+  }
+
+  .route-burden__controls,
+  .route-burden__footer,
+  .route-burden__choices {
+    display: grid;
+    justify-content: stretch;
+  }
+
+  .route-burden__choice,
+  .route-burden__footer a {
+    inline-size: 100%;
+  }
+}
+
+@media (max-width: 390px) {
+  .route-burden {
+    inline-size: min(calc(100% - 1rem), 100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}

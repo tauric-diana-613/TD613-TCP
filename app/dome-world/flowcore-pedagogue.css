@@ -1,0 +1,73 @@
+:root {
+  --flowcore-pedagogue-gap: clamp(0.75rem, 2vw, 1.25rem);
+  --flowcore-pedagogue-radius: 1rem;
+  --flowcore-pedagogue-touch: 44px;
+}
+
+[data-flowcore-pedagogue] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--flowcore-pedagogue-gap);
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+[data-flowcore-pedagogue] .flowcore-pedagogue__channels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: var(--flowcore-pedagogue-gap);
+  min-width: 0;
+}
+
+[data-flowcore-pedagogue] .flowcore-pedagogue__channel {
+  min-width: 0;
+  border: 1px solid currentColor;
+  border-radius: var(--flowcore-pedagogue-radius);
+  padding: 1rem;
+}
+
+[data-flowcore-pedagogue] button,
+[data-flowcore-pedagogue] [role="button"] {
+  min-inline-size: var(--flowcore-pedagogue-touch);
+  min-block-size: var(--flowcore-pedagogue-touch);
+}
+
+[data-flowcore-pedagogue] :focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+
+[data-flowcore-pedagogue] canvas[aria-hidden="true"] + .flowcore-pedagogue__summary {
+  display: block;
+}
+
+@media (max-width: 390px) {
+  [data-flowcore-pedagogue],
+  [data-flowcore-pedagogue] .flowcore-pedagogue__channels {
+    grid-template-columns: minmax(0, 1fr);
+    inline-size: 100%;
+    max-inline-size: 100%;
+  }
+
+  [data-flowcore-pedagogue] .flowcore-pedagogue__channel {
+    inline-size: auto;
+    max-inline-size: 100%;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-flowcore-pedagogue] *,
+  [data-flowcore-pedagogue] *::before,
+  [data-flowcore-pedagogue] *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  [data-flowcore-pedagogue] .flowcore-pedagogue__static-sequence {
+    display: grid;
+  }
+}

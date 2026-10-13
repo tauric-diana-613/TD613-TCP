@@ -1,0 +1,65 @@
+{
+  "assay": "phase-conditioned title transformation controls",
+  "identity_basis": "91 retained Substack-to-Zenodo DOI links",
+  "normalization": "Unicode-folded lowercase alphanumeric token sequence",
+  "monthly_counts": [
+    {
+      "month": "2026-02",
+      "total": 21,
+      "retitled": 0,
+      "same_title": 21
+    },
+    {
+      "month": "2026-03",
+      "total": 27,
+      "retitled": 8,
+      "same_title": 19
+    },
+    {
+      "month": "2026-04",
+      "total": 19,
+      "retitled": 6,
+      "same_title": 13
+    },
+    {
+      "month": "2026-05",
+      "total": 15,
+      "retitled": 2,
+      "same_title": 13
+    },
+    {
+      "month": "2026-06",
+      "total": 5,
+      "retitled": 0,
+      "same_title": 5
+    },
+    {
+      "month": "2026-07",
+      "total": 4,
+      "retitled": 1,
+      "same_title": 3
+    }
+  ],
+  "contrast": {
+    "march_april": {
+      "total": 46,
+      "retitled": 14,
+      "unchanged": 32
+    },
+    "outside_march_april": {
+      "total": 45,
+      "retitled": 3,
+      "unchanged": 42
+    },
+    "odds_ratio": 6.125,
+    "one_sided_greater_p": 0.003443431521719987,
+    "two_sided_p": 0.005985325148125866
+  },
+  "status": "EXPLORATORY_NON_PREREGISTERED_TITLE_LEVEL_ASSOCIATION",
+  "interpretive_limits": [
+    "The comparison is post hoc and does not establish a publishing regime or authorial intent.",
+    "Titles are compared; manifestation bodies are not locally preserved for this test.",
+    "DOI-linked pairs are a selected subset of the publication ecology.",
+    "Month is a coarse proxy for publishing phase."
+  ]
+}

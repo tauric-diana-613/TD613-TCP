@@ -1,0 +1,155 @@
+[
+  {
+    "name": "browser-directors_cut-living_field-desktop.png",
+    "file": "browser/browser-directors_cut-living_field-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6139/app/dome-world/sequence-6-visual-lab.html?direction=directors_cut&jurisdiction=living_field&relation=gathering&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 206184,
+    "observed_at": "2026-10-07T05:23:11.099Z"
+  },
+  {
+    "name": "browser-directors_cut-hold-desktop.png",
+    "file": "browser/browser-directors_cut-hold-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6139/app/dome-world/sequence-6-visual-lab.html?direction=directors_cut&jurisdiction=hold&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 206687,
+    "observed_at": "2026-10-07T05:23:14.186Z"
+  },
+  {
+    "name": "browser-directors_cut-authorization_boundary-desktop.png",
+    "file": "browser/browser-directors_cut-authorization_boundary-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6139/app/dome-world/sequence-6-visual-lab.html?direction=directors_cut&jurisdiction=authorization_boundary&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 208001,
+    "observed_at": "2026-10-07T05:23:18.827Z"
+  },
+  {
+    "name": "browser-directors_cut-receipt_inspection-desktop.png",
+    "file": "browser/browser-directors_cut-receipt_inspection-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6139/app/dome-world/sequence-6-visual-lab.html?direction=directors_cut&jurisdiction=receipt_inspection&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 210348,
+    "observed_at": "2026-10-07T05:23:23.663Z"
+  },
+  {
+    "name": "browser-directors_cut-structural_rest-desktop.png",
+    "file": "browser/browser-directors_cut-structural_rest-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6139/app/dome-world/sequence-6-visual-lab.html?direction=directors_cut&jurisdiction=structural_rest&relation=structural_rest&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 205744,
+    "observed_at": "2026-10-07T05:23:29.490Z"
+  },
+  {
+    "name": "browser-directors_cut-living_field-simulated_390px.png",
+    "file": "browser/browser-directors_cut-living_field-simulated_390px.png",
+    "provenance": "SIMULATED_390PX_BROWSER_CAPTURE",
+    "url": "http://localhost:6139/app/dome-world/sequence-6-visual-lab.html?direction=directors_cut&jurisdiction=living_field&relation=gathering&vp=mobile",
+    "dimensions": "1280x980",
+    "size_bytes": 256258,
+    "observed_at": "2026-10-07T05:23:33.235Z"
+  },
+  {
+    "name": "browser-directors_cut-living_field-reduced_motion.png",
+    "file": "browser/browser-directors_cut-living_field-reduced_motion.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6139/app/dome-world/sequence-6-visual-lab.html?direction=directors_cut&jurisdiction=living_field&relation=gathering&reducedMotion=true&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 205701,
+    "observed_at": "2026-10-07T05:23:38.225Z"
+  },
+  {
+    "name": "browser-journey-loom_origin-desktop.png",
+    "file": "browser/browser-journey-loom_origin-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6140/app/dome-world/sequence-6-journey.html?stage=LOOM_ORIGIN&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 228371,
+    "observed_at": "2026-10-07T06:38:12.188Z",
+    "notes": "Loom Origin active state, 39 carriers gathering field, prompt, selected files"
+  },
+  {
+    "name": "browser-journey-authorization_boundary-desktop.png",
+    "file": "browser/browser-journey-authorization_boundary-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6140/app/dome-world/sequence-6-journey.html?stage=EXPLICIT_OUTBOUND_AUTHORIZATION&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 234365,
+    "observed_at": "2026-10-07T06:38:13.890Z",
+    "notes": "Outbound Authorization Boundary under INV-01..04 with configured receiver"
+  },
+  {
+    "name": "browser-journey-marrowline_continuation-desktop.png",
+    "file": "browser/browser-journey-marrowline_continuation-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6140/app/dome-world/sequence-6-journey.html?stage=MARROWLINE_CONTINUATION&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 230988,
+    "observed_at": "2026-10-07T06:38:15.886Z",
+    "notes": "Marrowline Continuation chamber with model release and predecessor binding"
+  },
+  {
+    "name": "browser-journey-hold-desktop.png",
+    "file": "browser/browser-journey-hold-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6140/app/dome-world/sequence-6-journey.html?stage=HOLD&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 202473,
+    "observed_at": "2026-10-07T06:38:17.689Z",
+    "notes": "HOLD jurisdiction: inspectable evidence deficit and actionable recovery options"
+  },
+  {
+    "name": "browser-journey-returned_candidate-desktop.png",
+    "file": "browser/browser-journey-returned_candidate-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6140/app/dome-world/sequence-6-journey.html?stage=RETURN_REENTRY&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 190171,
+    "observed_at": "2026-10-07T06:38:19.680Z",
+    "notes": "Returned candidate waiting at Loom threshold; receiver local != Loom admission"
+  },
+  {
+    "name": "browser-journey-receipt_inspection-desktop.png",
+    "file": "browser/browser-journey-receipt_inspection-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6140/app/dome-world/sequence-6-journey.html?stage=RECEIPT_INSPECTION&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 189322,
+    "observed_at": "2026-10-07T06:38:21.663Z",
+    "notes": "Receipt Inspection jurisdiction with [OBSERVED], [DERIVED], [HELD] calm monospace"
+  },
+  {
+    "name": "browser-journey-structural_rest-desktop.png",
+    "file": "browser/browser-journey-structural_rest-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6140/app/dome-world/sequence-6-journey.html?stage=STRUCTURAL_REST&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 214455,
+    "observed_at": "2026-10-07T06:38:24.598Z",
+    "notes": "Structural Rest 𝄐 with kinetic obligation resolved and historical records preserved"
+  },
+  {
+    "name": "browser-journey-390px-portrait.png",
+    "file": "browser/browser-journey-390px-portrait.png",
+    "provenance": "SIMULATED_390PX_BROWSER_CAPTURE",
+    "url": "http://localhost:6140/app/dome-world/sequence-6-journey.html?stage=LOOM_ORIGIN&vp=mobile",
+    "dimensions": "390x844",
+    "size_bytes": 51233,
+    "observed_at": "2026-10-07T06:38:26.837Z",
+    "notes": "Simulated 390px mobile viewport: all controls reachable, 39 carriers preserved"
+  },
+  {
+    "name": "browser-journey-reduced_motion-desktop.png",
+    "file": "browser/browser-journey-reduced_motion-desktop.png",
+    "provenance": "BROWSER_VIEWPORT_WITNESS",
+    "url": "http://localhost:6140/app/dome-world/sequence-6-journey.html?stage=LOOM_ORIGIN&reducedMotion=true&vp=desktop",
+    "dimensions": "1280x800",
+    "size_bytes": 235219,
+    "observed_at": "2026-10-07T06:38:29.223Z",
+    "notes": "Reduced motion static calm view: all 39 carriers preserved without animation"
+  }
+]

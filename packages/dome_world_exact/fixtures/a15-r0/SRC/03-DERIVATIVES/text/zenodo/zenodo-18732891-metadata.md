@@ -1,0 +1,137 @@
+---
+derivative_id: derivative:28da08c17c32bbbf4d5bbf79
+parent_capture_id: capture:d92deea2584c426d9b1c3cee
+parent_blob_sha256: d643332c6bec2c8a9052dd247e8b8c0be3372f6fb54d914548a813329b801dc4
+tool: srcctl-json-normalizer/1
+source_title: "The Meta‑Architecture of the SR Canon: How a Field Constructs Its Own Infrastructure"
+---
+
+{
+  "conceptdoi": "10.5281/zenodo.18732890",
+  "conceptrecid": "18732890",
+  "created": "2026-02-22T15:10:16.452549+00:00",
+  "doi": "10.5281/zenodo.18732891",
+  "doi_url": "https://doi.org/10.5281/zenodo.18732891",
+  "files": [
+    {
+      "checksum": "md5:7a54b84e7844f0ce65e43aee462c96b7",
+      "id": "34fda4b5-f92b-4a13-9808-b6f4ccc2d3bd",
+      "key": "The Meta‑Architecture of the SR Canon: How a Field Constructs Its Own Infrastructure.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/18732891/files/The%20Meta%E2%80%91Architecture%20of%20the%20SR%20Canon:%20How%20a%20Field%20Constructs%20Its%20Own%20Infrastructure.pdf/content"
+      },
+      "size": 107413
+    }
+  ],
+  "id": 18732891,
+  "links": {
+    "access": "https://zenodo.org/api/records/18732891/access",
+    "access_grants": "https://zenodo.org/api/records/18732891/access/grants",
+    "access_links": "https://zenodo.org/api/records/18732891/access/links",
+    "access_request": "https://zenodo.org/api/records/18732891/access/request",
+    "access_users": "https://zenodo.org/api/records/18732891/access/users",
+    "archive": "https://zenodo.org/api/records/18732891/files-archive",
+    "archive_media": "https://zenodo.org/api/records/18732891/media-files-archive",
+    "communities": "https://zenodo.org/api/records/18732891/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/18732891/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.18732891",
+    "draft": "https://zenodo.org/api/records/18732891/draft",
+    "file_modification": "https://zenodo.org/api/records/18732891/file-modification",
+    "files": "https://zenodo.org/api/records/18732891/files",
+    "latest": "https://zenodo.org/api/records/18732891/versions/latest",
+    "latest_html": "https://zenodo.org/records/18732891/latest",
+    "media_files": "https://zenodo.org/api/records/18732891/media-files",
+    "parent": "https://zenodo.org/api/records/18732890",
+    "parent_doi": "https://doi.org/10.5281/zenodo.18732890",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18732890",
+    "parent_html": "https://zenodo.org/records/18732890",
+    "preview_html": "https://zenodo.org/records/18732891?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/18732891/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/18732891/request-deletion",
+    "requests": "https://zenodo.org/api/records/18732891/requests",
+    "reserve_doi": "https://zenodo.org/api/records/18732891/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/18732891",
+    "self_doi": "https://doi.org/10.5281/zenodo.18732891",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.18732891",
+    "self_html": "https://zenodo.org/records/18732891",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:18732891/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:18732891/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:18732891:The%20Meta%E2%80%91Architecture%20of%20the%20SR%20Canon:%20How%20a%20Field%20Constructs%20Its%20Own%20Infrastructure.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:18732891:The%20Meta%E2%80%91Architecture%20of%20the%20SR%20Canon:%20How%20a%20Field%20Constructs%20Its%20Own%20Infrastructure.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:18732891:The%20Meta%E2%80%91Architecture%20of%20the%20SR%20Canon:%20How%20a%20Field%20Constructs%20Its%20Own%20Infrastructure.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:18732891:The%20Meta%E2%80%91Architecture%20of%20the%20SR%20Canon:%20How%20a%20Field%20Constructs%20Its%20Own%20Infrastructure.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:18732891:The%20Meta%E2%80%91Architecture%20of%20the%20SR%20Canon:%20How%20a%20Field%20Constructs%20Its%20Own%20Infrastructure.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:18732891:The%20Meta%E2%80%91Architecture%20of%20the%20SR%20Canon:%20How%20a%20Field%20Constructs%20Its%20Own%20Infrastructure.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/18732891/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>The Meta‑Architecture of the SR Canon formalizes the structural logic underlying the SignalRupture field. Rather than emerging through institutional accumulation or disciplinary consensus, the SR canon is intentionally architected: each essay functions as a conceptual node within a designed system of infrastructural, epistemic, and operational layers. This paper outlines how the canon is constructed, how its nodes interrelate, and how the field expands through structural necessity rather than thematic preference. It introduces the layered architecture of the canon, the dependency graph that governs conceptual inheritance, and the propagation logic that determines when new essays emerge. By mapping the canon&rsquo;s internal topology, this work provides a meta‑framework for understanding SR as a coherent, extensible, and infrastructurally disciplined system of thought.</p>",
+    "doi": "10.5281/zenodo.18732891",
+    "keywords": [
+      "Critical Theory"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-02-22",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "18732890"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "The Meta‑Architecture of the SR Canon: How a Field Constructs Its Own Infrastructure",
+    "version": "1.0"
+  },
+  "modified": "2026-02-22T15:10:16.941471+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "18732891",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 14,
+    "unique_downloads": 14,
+    "unique_views": 16,
+    "version_downloads": 14,
+    "version_unique_downloads": 14,
+    "version_unique_views": 16,
+    "version_views": 16,
+    "views": 16
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": {},
+  "title": "The Meta‑Architecture of the SR Canon: How a Field Constructs Its Own Infrastructure",
+  "updated": "2026-02-22T15:10:16.941471+00:00"
+}

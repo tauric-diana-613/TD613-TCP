@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.relation-envelope/v0.1",
+  "title": "TD613 Relation Envelope v0.1",
+  "description": "Local third-object relation among independently valid Ash, Flow-Core, and Aperture receipts. Relation is not identity, custody, causation, co-occurrence, permission, or proof.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema","relation_id","created_at","time_posture","state","assurance_class","references","route","context_nonce","ash_reference","hmac","operator_confirmation","visibility","lineage","open_field_promotion","automatic_relation_creation","automatic_confirmation","automatic_ash_action","prediction_authorized","relation_is_identity","relation_is_causation","relation_is_permission","marrowline_confirmation_authority","relation_digest","does_not_establish","seal"],
+  "properties": {
+    "schema": {"const":"td613.relation-envelope/v0.1"},
+    "relation_id": {"type":"string","pattern":"^rel_[0-9a-f]{20}$"},
+    "created_at": {"type":"string","minLength":1},
+    "time_posture": {"const":"local-clock-not-trusted-time"},
+    "state": {"enum":["PROPOSED","CONFIRMED","REVISED","WITHDRAWN","SUPERSEDED"]},
+    "assurance_class": {"enum":["R0_RECEIPT_REFERENCES_ONLY","R1_ROUTE_SCOPED_ARTIFACT_REFERENCE"]},
+    "references": {
+      "type":"object","additionalProperties":false,
+      "required":["ash_custody_receipt_id","ash_custody_receipt_schema","ash_assurance_class","flowcore_context_receipt_id","flowcore_context_receipt_schema","aperture_round_trip_receipt_id","aperture_round_trip_receipt_schema"],
+      "properties": {
+        "ash_custody_receipt_id":{"type":"string","pattern":"^ashc_[0-9a-f]{20}$"},
+        "ash_custody_receipt_schema":{"const":"td613.ash.custody-receipt/v0.8"},
+        "ash_assurance_class":{"enum":["L0_METADATA_ONLY","L1_BROWSER_LOCAL_ARTIFACT_DIGEST"]},
+        "flowcore_context_receipt_id":{"type":"string","pattern":"^flowctx_[A-Za-z0-9_-]{6,128}$"},
+        "flowcore_context_receipt_schema":{"const":"td613.flowcore.context-receipt/v0.1"},
+        "aperture_round_trip_receipt_id":{"type":"string","pattern":"^aprt_[A-Za-z0-9_-]{6,128}$"},
+        "aperture_round_trip_receipt_schema":{"const":"td613.aperture.round-trip-receipt/v3.0-alpha"}
+      }
+    },
+    "route": {"type":"object","additionalProperties":false,"required":["route_scope","task_intent_route","binding_purpose"],"properties":{"route_scope":{"type":"string","minLength":1},"task_intent_route":{"type":"string","minLength":1},"binding_purpose":{"type":"string","minLength":1}}},
+    "context_nonce": {"type":"string","pattern":"^[A-Za-z0-9_-]{22,}$"},
+    "ash_reference": {"type":["string","null"],"pattern":"^hmac-sha256:[0-9a-f]{64}$"},
+    "hmac": {"type":["object","null"]},
+    "operator_confirmation": {"type":"object","additionalProperties":false,"required":["status","confirmation_receipt_id"],"properties":{"status":{"enum":["UNCONFIRMED","CONFIRMED"]},"confirmation_receipt_id":{"type":["string","null"],"pattern":"^relconf_[0-9a-f]{20}$"}}},
+    "visibility": {"type":"object","additionalProperties":false,"required":["posture","session_mode","server_persistence","public_export"],"properties":{"posture":{"const":"PRIVATE_LOCAL_DEFAULT"},"session_mode":{"enum":["SESSION_MEMORY_ONLY","EXPLICIT_PERSISTENT_LOCAL"]},"server_persistence":{"const":false},"public_export":{"const":false}}},
+    "lineage": {"type":"object","additionalProperties":false,"required":["revision_of","supersedes_relation_id"],"properties":{"revision_of":{"type":["string","null"],"pattern":"^rel_[0-9a-f]{20}$"},"supersedes_relation_id":{"type":["string","null"],"pattern":"^rel_[0-9a-f]{20}$"}}},
+    "open_field_promotion":{"const":false},
+    "automatic_relation_creation":{"const":false},
+    "automatic_confirmation":{"const":false},
+    "automatic_ash_action":{"const":false},
+    "prediction_authorized":{"const":false},
+    "relation_is_identity":{"const":false},
+    "relation_is_causation":{"const":false},
+    "relation_is_permission":{"const":false},
+    "marrowline_confirmation_authority":{"const":false},
+    "relation_digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},
+    "does_not_establish":{"type":"array","items":{"type":"string"},"contains":{"const":"identity"}},
+    "seal":{"const":"⟐"}
+  },
+  "allOf": [
+    {"if":{"properties":{"assurance_class":{"const":"R0_RECEIPT_REFERENCES_ONLY"}}},"then":{"properties":{"ash_reference":{"const":null},"hmac":{"const":null}}}},
+    {"if":{"properties":{"assurance_class":{"const":"R1_ROUTE_SCOPED_ARTIFACT_REFERENCE"}}},"then":{"properties":{"ash_reference":{"type":"string","pattern":"^hmac-sha256:[0-9a-f]{64}$"},"hmac":{"type":"object","additionalProperties":false,"required":["profile","algorithm","key_scope","key_exported","key_extractable","verification"],"properties":{"profile":{"const":"td613.phase5.route-scoped-reference/v0.1"},"algorithm":{"const":"HMAC-SHA-256"},"key_scope":{"const":"single-relation"},"key_exported":{"const":false},"key_extractable":{"const":false},"verification":{"const":"local-key-required"}}}}}}
+  ],
+  "not": {"anyOf":[
+    {"required":["artifact_digest"]},{"required":["artifactDigest"]},{"required":["raw_bytes"]},{"required":["rawBytes"]},{"required":["raw_content"]},{"required":["file_content"]},{"required":["identity_proof"]},{"required":["authorship_proof"]},{"required":["ownership_proof"]},{"required":["permission_proof"]},{"required":["causation_proof"]},{"required":["location_proof"]},{"required":["cooccurrence_proof"]},{"required":["doctrine_writeback"]}
+  ]}
+}

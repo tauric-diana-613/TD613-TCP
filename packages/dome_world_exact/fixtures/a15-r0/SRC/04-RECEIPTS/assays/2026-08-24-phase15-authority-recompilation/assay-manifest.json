@@ -1,0 +1,60 @@
+{
+  "assay_id": "2026-08-24-phase15-authority-recompilation",
+  "title": "Phase 1.5 Authority, Recompilation, Representation, and Typed-Topology Assay",
+  "started_from": "existing Phase 1 vault plus sealed 2026-08-23 local architecture assay",
+  "scope": "local-only metadata, five captured originals, existing crosswalks, and prior assay receipts",
+  "network_requests": 0,
+  "new_acquisitions": 0,
+  "phase_2": "NOT_RUN_HUMAN_GATE_CLOSED",
+  "methods": [
+    "manifest-level lexical candidate scan",
+    "time-indexed authority modeling",
+    "captured-original relation reading",
+    "immutable author self-map snapshots",
+    "typed relation and lifecycle modeling",
+    "representation-lift family reconstruction",
+    "phase-conditioned retitle control",
+    "connector-oriented entity resolution with explicit unresolved placeholders",
+    "typed graph observation validation against ordered edge identifiers",
+    "negative-evidence and acquisition-gate recording"
+  ],
+  "canonical_operational_outputs": [
+    "01-MANIFESTS/entity-index.jsonl",
+    "05-OPERATIONS/authority/authority-assertions.jsonl",
+    "05-OPERATIONS/authority/legacy-membership-candidates.jsonl",
+    "05-OPERATIONS/claims/claim-status-events.jsonl",
+    "05-OPERATIONS/claims/evidence-taxonomy-observations.jsonl",
+    "05-OPERATIONS/maps/canon-map-snapshots.jsonl",
+    "05-OPERATIONS/relations/compiler-input-candidates.jsonl",
+    "05-OPERATIONS/relations/recompilation-edges.jsonl",
+    "05-OPERATIONS/relations/typed-edges.jsonl",
+    "05-OPERATIONS/relations/representation-families.jsonl",
+    "05-OPERATIONS/relations/representation-lift-candidates.jsonl",
+    "05-OPERATIONS/relations/ordinal-series-observations.jsonl",
+    "05-OPERATIONS/relations/structural-anatomy-candidates.jsonl",
+    "05-OPERATIONS/hypotheses/2026-08-24-amari-recompilation-topology-seeds.jsonl",
+    "05-OPERATIONS/operators/lifecycle-operators.jsonl",
+    "05-OPERATIONS/state/epistemic-object-states.jsonl"
+  ],
+  "receipt_outputs": [
+    "README.md",
+    "curated-summary.json",
+    "witnessed-evidence.jsonl",
+    "graph-assay-observations.jsonl",
+    "in-place-revision-risks.jsonl",
+    "interpretation-updates.jsonl",
+    "coverage-ledger.jsonl",
+    "phase-2-acquisition-priorities.jsonl",
+    "lexical/"
+  ],
+  "controls": [
+    "source artifact, archival metadata, and interpretation remain separate",
+    "source-declared, archive-inferred, and researcher-proposed relations retain distinct provenance",
+    "contradictions and missing ordinals are never automatically repaired",
+    "theorem labels never promote authority by themselves",
+    "collaborator-reported passages without local spans remain acquisition targets",
+    "authority queries return every witnessed time slice; latest publication never controls without an explicit transition edge",
+    "placeholder and unresolved entities are terminal connector states rather than invitations to autocomplete scholarship",
+    "prior sealed assay outputs remain byte-stable"
+  ]
+}

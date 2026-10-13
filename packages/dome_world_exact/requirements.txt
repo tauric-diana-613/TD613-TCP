@@ -1,0 +1,12 @@
+# Dependencies for the Dome-World x Aperture x Vector-Substrate bridge package.
+#   pip install -r requirements.txt
+#
+# mpmath  -- required by the residual-learner ENGINE (engine/capacity.py: certified intervals).
+#            The rest of the engine closure (integral_basis, projector, loom, coords_to_minpoly,
+#            invariant_factors, residual_learner) is pure Python stdlib (fractions/int) -- no float
+#            in any exact decision.
+# sympy   -- required by the BRIDGE demos (bridge/*.py): exact Q(tau)/Q(theta) arithmetic.
+# pytest  -- required to RUN the engine tests (engine/test_*.py) and verify_bridge.py Part A.
+mpmath>=1.2
+sympy>=1.11
+pytest>=7.0

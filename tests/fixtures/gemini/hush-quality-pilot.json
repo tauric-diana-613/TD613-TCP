@@ -1,0 +1,9 @@
+{
+  "schema": "td613.hush-custody-pilot-fixtures/v0.1",
+  "fictional": true,
+  "cases": [
+    {"id":"question-and-literals","contract":{"candidateCount":1,"sourceText":"Can we meet at 3:15 PM on Friday to review TD613-613? Please ask Jo whether the quiet room is available before confirming anything. The draft contains three examples, and the second example still needs a source. Keep the meeting tentative until Jo replies. We can review the first example now, but that would not settle the missing source for the second one."}},
+    {"id":"approval-without-release","contract":{"candidateCount":1,"sourceText":"The fictional archive committee approved the draft for internal review, but the chair has not signed it. Approval for review does not authorize publication. Jo may circulate the first page to the two named reviewers. The remaining pages must stay in the draft folder until the chair replies. A reviewer suggested adding another example; the committee has not decided whether to accept that suggestion."}},
+    {"id":"conditional-and-missingness","contract":{"candidateCount":1,"sourceText":"If the room is unavailable, ask Jo for another time. Do not confirm a booking until Jo replies. The calendar currently shows an opening, but nobody has checked whether the projector works. We know that the first rehearsal ended at 4:30 PM. We do not know when the second rehearsal ended. Please preserve that uncertainty when preparing the short update for the fictional planning group."}}
+  ]
+}

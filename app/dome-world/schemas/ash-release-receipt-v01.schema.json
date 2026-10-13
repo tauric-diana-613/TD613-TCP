@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.release-receipt/v0.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "receipt_id",
+    "created_at",
+    "case_id",
+    "draft_id",
+    "draft_digest",
+    "review_reference",
+    "route",
+    "recipient_class",
+    "purpose",
+    "version",
+    "nonce",
+    "operator_gesture",
+    "approval_scope",
+    "recipient_transport",
+    "transmission_performed",
+    "immutable_successor_required_on_change",
+    "observations",
+    "missingness",
+    "alternatives",
+    "open_questions",
+    "operator_notes",
+    "closure",
+    "receipt_digest"
+  ],
+  "properties": {
+    "schema": {
+      "const": "td613.ash.release-receipt/v0.1"
+    },
+    "recipient_transport": {
+      "const": "DEFERRED"
+    },
+    "transmission_performed": {
+      "const": false
+    },
+    "receipt_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "receipt_id": {},
+    "created_at": {},
+    "case_id": {},
+    "draft_id": {},
+    "draft_digest": {},
+    "review_reference": {},
+    "route": {},
+    "recipient_class": {},
+    "purpose": {},
+    "version": {},
+    "nonce": {},
+    "operator_gesture": {},
+    "approval_scope": {},
+    "immutable_successor_required_on_change": {},
+    "observations": {},
+    "missingness": {},
+    "alternatives": {},
+    "open_questions": {},
+    "operator_notes": {},
+    "closure": {}
+  },
+  "additionalProperties": false
+}
