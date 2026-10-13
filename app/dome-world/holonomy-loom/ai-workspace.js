@@ -2,7 +2,7 @@ import { PORTABLE_LOOM_RECEIVER_OUTPUT_CONTRACT, derivePortableLoomSourceContext
 import { inspectPortableLoomReceiverConformance } from '../../engine/portable-loom-receiver-conformance.js';
 import { FIRST_CROSSING_PRACTICE, bindFirstCrossingPractice, checkFirstCrossingPrivacy, createFirstCrossingReturnProof } from './first-crossing-practice.js';
 import { loomTutorialPresentation, loomOpeningPresentation } from './tutorial-membrane.js';
-import { nextFlowcoreChoreography } from './flowcore-choreography.js?v=20261010-viewport-cadence-v1';
+import { nextFlowcoreChoreography } from './flowcore-choreography.js?v=20261013-phase09-v1';
 import { mountReturnedSessionReview } from './returned-session-review.js';
 import { loomWorkspaceTemplate } from './workspace-template.js';
 import { createPortableLoomGateReport, describePortableLoomGateReport } from '../../engine/portable-loom-gate.js';

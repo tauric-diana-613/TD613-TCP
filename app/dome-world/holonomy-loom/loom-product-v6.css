@@ -911,33 +911,116 @@ body:has(#loomAiWorkspace[data-first-crossing="active"]) .loom-topbar a[href*="l
   .loom-topbar .loom-flowcore-panel .loom-flowcore-legend span{font-size:11px}
 }
 
-/* TD613 post-release viewport/cadence correction (human screenshot, 2026-10-10).
-   The top-level Loom introduction is retained; tutorial content belongs inside
-   the first visible viewport when it fits. This does not alter animation time. */
-@media (min-width:761px){
-  #loomAiWorkspace[data-first-crossing="active"] .loom-stage{
-    height:clamp(555px,calc(100dvh - 165px),710px);
-    min-height:0;overflow:hidden;border-bottom:0;padding-bottom:0
-  }
-  #loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing{
-    padding:clamp(30px,4vh,50px) clamp(18px,3vw,34px) clamp(24px,3.5vh,44px)!important;
-    grid-template-rows:max-content minmax(8px,1fr) max-content max-content max-content;
-    row-gap:clamp(8px,1.3vh,14px)
-  }
-  #loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-copy{
-    padding:4px 18px 8px
-  }
-  #loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-answer{
-    min-height:0!important;padding:5px 16px
-  }
-  #loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-actions{
-    min-height:54px
-  }
-  /* A genuine short browser window may need natural scrolling; never crop
-     tutorial gestures merely to maintain a one-screen aesthetic. */
-  @media (max-height:690px){
-    #loomAiWorkspace[data-first-crossing="active"] .loom-stage{
-      height:auto;min-height:560px;overflow:visible
-    }
-  }
+/* Phase 09: one operator control language, a centered tutorial, and a field
+   that keeps its own space. These rules resolve the inherited cascade here;
+   no parallel stylesheet or animation owner is installed. */
+#loomAiWorkspace{
+  --loom-control-line:rgba(181,210,213,.46);
+  --loom-control-surface:linear-gradient(130deg,rgba(26,43,51,.94),rgba(10,19,27,.94));
+  --loom-control-ink:#e9f4f1;
 }
+#loomAiWorkspace[data-first-crossing="active"] .loom-stage{
+  display:grid!important;place-items:center;height:auto;min-height:calc(100svh - 52px);
+  padding:74px 24px!important;border:0;overflow:clip
+}
+#loomAiWorkspace[data-first-crossing="active"] .loom-threshold-layer{
+  position:relative;inset:auto;width:100%;display:grid;place-items:center
+}
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing{
+  position:relative!important;inset:auto!important;transform:none!important;
+  width:min(720px,100%)!important;height:auto!important;min-height:0!important;
+  padding:30px 28px 20px!important;margin:0;
+  display:grid;grid-template-rows:auto auto auto auto auto;gap:22px;
+  border:0;outline:none;background:rgba(6,13,20,.78)!important;border-radius:2px;
+  box-shadow:0 30px 90px rgba(0,0,0,.22);isolation:isolate
+}
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  border-block:1px solid rgba(181,210,213,.22);
+  background:radial-gradient(ellipse at 50% 0,rgba(80,125,135,.1),transparent 64%)
+}
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-copy{
+  grid-row:1;width:100%;padding:0;position:relative
+}
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-copy::before{display:none}
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-copy h2{
+  margin:18px auto 14px;font-size:clamp(30px,3.7vw,48px);line-height:1.08;max-width:19ch
+}
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-copy p{margin:0 auto;max-width:50ch}
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-answer{
+  grid-row:2;position:static!important;transform:none!important;
+  width:100%;min-height:0!important;padding:0!important;margin:0!important;
+  font:400 13px/1.55 var(--sans)!important;color:#bdced7!important
+}
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-objects{
+  grid-row:3;position:static!important;width:100%;margin:0;gap:12px
+}
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-actions{
+  grid-row:4;position:static!important;transform:none!important;width:100%;min-height:0;
+  margin:0;display:flex;justify-content:center
+}
+#loomAiWorkspace[data-first-crossing="active"] .loom-tutorial-proof:not([hidden]){grid-row:3;width:100%;margin:0}
+#loomAiWorkspace[data-first-crossing="active"] .loom-practice-controls{
+  grid-row:5;position:static!important;inset:auto!important;transform:none!important;
+  width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0
+}
+#loomAiWorkspace[data-first-crossing="active"] #loomFirstCrossingPause{
+  position:static!important;transform:none!important;order:2;flex-shrink:0
+}
+#loomAiWorkspace[data-first-crossing="active"] #loomFirstCrossingLeave{
+  position:static!important;transform:none!important;order:1
+}
+#loomAiWorkspace[data-first-crossing="active"] #loomBegin:not([hidden]){
+  position:relative!important;inset:auto!important;transform:none!important;
+  width:min(664px,100%);margin:20px 0 0;min-height:56px
+}
+/* The selection faces and each later gesture share frame, typography, light,
+   and feedback. Glyph-only remix/copy utilities retain their plain identities. */
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-objects button,
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-actions button,
+#loomAiWorkspace .loom-begin,
+#loomAiWorkspace[data-first-crossing="active"][data-first-crossing-step="6"] .loom-begin,
+#loomAiWorkspace .ai-primary,
+#loomAiWorkspace .ai-output-actions button,
+#loomAiWorkspace .loom-reentry-actions button{
+  min-height:56px;padding:14px 22px;border:1px solid var(--loom-control-line);
+  border-radius:2px;clip-path:none;background:var(--loom-control-surface);
+  color:var(--loom-control-ink);font:560 14px/1.4 var(--sans);letter-spacing:.01em;
+  box-shadow:inset 0 1px rgba(230,242,234,.12),0 8px 26px rgba(0,0,0,.18);
+  transition:border-color .16s ease,background-color .16s ease,color .16s ease
+}
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-objects button{min-height:102px;text-align:left}
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-objects button strong{
+  font:560 16px/1.3 var(--sans);letter-spacing:-.015em;margin-top:6px
+}
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-objects button small{font:400 12px/1.45 var(--sans)}
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-actions button{width:100%;max-width:none}
+#loomAiWorkspace :is(.ai-primary,.ai-output-actions button,.loom-reentry-actions button):hover:not(:disabled),
+#loomAiWorkspace[data-first-crossing="active"] :is(.loom-first-crossing-actions button,.loom-first-crossing-objects button):hover:not(:disabled){
+  border-color:#b6efe6;color:#fff;background:linear-gradient(130deg,#203e47,#11242f)
+}
+#loomAiWorkspace :is(.ai-primary,.loom-begin,.ai-output-actions button,.loom-reentry-actions button):focus-visible,
+#loomAiWorkspace[data-first-crossing="active"] :is(.loom-first-crossing-actions button,.loom-first-crossing-objects button):focus-visible{
+  outline:2px solid #b6efe6;outline-offset:4px
+}
+#loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-objects button[aria-pressed="true"]{
+  border-color:#b6efe6;background:linear-gradient(130deg,#173b42,#101e29)
+}
+#loomAiWorkspace .loom-builder-shell{border-radius:2px;border-block:1px solid rgba(181,210,213,.22);background:transparent}
+#loomAiWorkspace .ai-composer>textarea{border:1px solid rgba(181,210,213,.25);border-radius:2px;background:rgba(5,12,19,.52)}
+.loom-topbar .loom-flowcore-legend{gap:4px 12px}
+.loom-topbar .loom-flowcore-legend button{min-width:44px;min-height:44px;vertical-align:middle}
+@media(max-width:760px){
+  #loomAiWorkspace[data-first-crossing="active"] .loom-stage{
+    min-height:calc(100svh - 48px);padding:66px 0!important;overflow:visible
+  }
+  #loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing{padding:24px 14px 16px!important;gap:18px}
+  #loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-copy h2{font-size:clamp(27px,7.4vw,34px)}
+  #loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-objects{gap:10px}
+  #loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-objects button{padding:14px 11px;min-height:112px}
+  #loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-objects button strong{font-size:14px}
+  #loomAiWorkspace[data-first-crossing="active"] .loom-first-crossing-objects button small{font-size:11px}
+  #loomAiWorkspace .loom-builder-shell{padding-inline:16px}
+  #loomAiWorkspace .ai-composer>textarea{padding:12px}
+}
+@media(prefers-reduced-motion:reduce){#loomAiWorkspace button{transition:none!important}}

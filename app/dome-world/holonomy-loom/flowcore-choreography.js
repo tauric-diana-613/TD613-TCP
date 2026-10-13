@@ -22,6 +22,36 @@ export const FLOWCORE_MOTION_FAMILIES = Object.freeze({
 });
 
 const TAU=Math.PI*2,PHI=(1+Math.sqrt(5))/2;
+
+// Arc length of a Gerono lemniscate (the canonical revisit shape). A fixed
+// lookup redistributes phase along the curve: the crossing stays fluent rather
+// than accelerating into a mechanical loop. No clock, event or world state.
+const REVISIT_ARC = (()=>{
+  const table=[0];let length=0,previous=[0,0];
+  for(let i=1;i<=256;i++){
+    const angle=TAU*i/256,point=[Math.sin(angle),.42*Math.sin(2*angle)];
+    length+=Math.hypot(point[0]-previous[0],point[1]-previous[1]);
+    table.push(length);previous=point;
+  }
+  return Object.freeze(table.map(value=>value/length));
+})();
+
+export function projectFlowcoreRevisit({index,count=39,seconds=0,depth='flight-far'}={}){
+  if(!Number.isInteger(index)||index<0||!Number.isInteger(count)||count<1||index>=count||!Number.isFinite(seconds))throw new TypeError('Revisit needs a finite time and bounded carrier coordinate.');
+  const turn=((seconds/18+index/PHI)%1+1)%1;
+  let lo=0,hi=256;
+  while(hi-lo>1){const mid=(lo+hi)>>1;if(REVISIT_ARC[mid]<turn)lo=mid;else hi=mid;}
+  const angle=TAU*(lo+(turn-REVISIT_ARC[lo])/(REVISIT_ARC[hi]-REVISIT_ARC[lo]))/256;
+  const depthGain=depth==='flight-near'?1.24:depth==='flight-mid'?.87:.48;
+  const radius=(190+(index%5)*24)*depthGain;
+  const lane=(index%7)-3;
+  return Object.freeze({
+    x:500+lane*13+radius*Math.sin(angle),
+    y:260+lane*11+radius*.42*Math.sin(2*angle),
+    roll:3*Math.sin(angle),
+    scale:.62+.14*Math.cos(angle),
+  });
+}
 export function projectFlowcoreMotionFamily(familyId,{index,count=39,seconds=0,phase=0,depth='flight-far',x,y}={}){
   const family=FLOWCORE_MOTION_FAMILIES[familyId];
   if(!family)throw new TypeError(`Unknown Flow-Core motion family: ${familyId}`);

@@ -286,11 +286,14 @@ try {
         });
         return {
           background:style.backgroundColor,border_top:style.borderTopWidth,box_shadow:style.boxShadow,
-          width:rect.width,height:rect.height,visible_chrome:visibleChrome,objects:objectStyles
+          width:rect.width,height:rect.height,
+          center_error:Math.abs(rect.left+rect.width/2-innerWidth/2),
+          visible_chrome:visibleChrome,objects:objectStyles
         };
       });
-      record('first crossing: no tutorial card or ordinary Loom chrome overlays the field',
-        firstCrossingVisual.background === 'rgba(0, 0, 0, 0)' &&
+      record('tutorial: centered translucent reading surface keeps the field and ordinary chrome separate',
+        firstCrossingVisual.background === 'rgba(6, 13, 20, 0.78)' &&
+        firstCrossingVisual.width<=720 && firstCrossingVisual.center_error<=1 &&
         firstCrossingVisual.border_top === '0px' &&
         firstCrossingVisual.visible_chrome.length === 0 &&
         firstCrossingVisual.objects.length===3&&
@@ -304,6 +307,9 @@ try {
         await page.locator('#loomFirstCrossingPrivate').evaluate(node=>node.tagName==='DIV'&&!node.hasAttribute('aria-expanded')),
         { text: await page.locator('#loomFirstCrossingPrivate').textContent() });
       const lockedSource=page.locator('[data-first-crossing-item="source"]');
+      const selectionStyle=await page.locator('[data-first-crossing-item="brief"]').evaluate(node=>{
+        const s=getComputedStyle(node);return {font:s.fontFamily,size:s.fontSize,weight:s.fontWeight,radius:s.borderRadius,border:s.borderTopWidth};
+      });
       record('à opens alone; hõt/cōl stays dim and disabled',await lockedSource.isDisabled() &&
         await lockedSource.evaluate(node=>Number(getComputedStyle(node).opacity)<=.4));
       await page.locator('[data-first-crossing-item="brief"]').click();
@@ -346,6 +352,10 @@ try {
         record(`tutorial ${glyph}: distinct illustration retains actual unsent binding`,after.relation==='created_potential'&&after.carriers.length===39&&after.carriers.every(node=>node.relation===relation&&node.evidence==='presentation-only')&&after.carriers.some((node,index)=>node.x!==before.carriers[index].x||node.y!==before.carriers[index].y),{before,after});
         await tutorialComposition(page,`tutorial-${glyph}`);await screenshot(page,`tutorial-step-${step}`);
         await page.locator('#loomFirstCrossingStop').waitFor({state:'visible'});
+        const gestureStyle=await page.locator('#loomFirstCrossingStop').evaluate(node=>{
+          const s=getComputedStyle(node);return {font:s.fontFamily,size:s.fontSize,weight:s.fontWeight,radius:s.borderRadius,border:s.borderTopWidth};
+        });
+        record(`tutorial ${glyph}: gesture matches the selection control language`,JSON.stringify(selectionStyle)===JSON.stringify(gestureStyle),{selectionStyle,gestureStyle});
       }
       await page.locator('#loomTutorialProof summary').click();
       record('tutorial return: fictional receipt binds answer without claiming admission',/OFFLINE_TEST/.test(await page.locator('#loomTutorialProofRecord').textContent())&&/"custody_admitted": false/.test(await page.locator('#loomTutorialProofRecord').textContent()));
@@ -378,7 +388,10 @@ try {
       await persistentGuide.locator('summary').click();
       const copiedGlyphs=['à','米','出','hõt','cōl','上','下','𝄐'];
       for(const glyph of copiedGlyphs) {
-        await persistentGuide.locator('[data-flowcore-copy="'+glyph+'"]').click();
+        const control=persistentGuide.locator('[data-flowcore-copy="'+glyph+'"]');
+        await control.focus();await control.press('Enter');
+        const accessible=await control.evaluate(node=>({label:node.getAttribute('aria-label'),outline:getComputedStyle(node).outlineStyle,width:node.getBoundingClientRect().width,height:node.getBoundingClientRect().height}));
+        record(`Flow-Core ${glyph}: named keyboard copy has visible focus and a 44px target`,accessible.label.startsWith('Copy '+glyph)&&accessible.outline!=='none'&&accessible.width>=44&&accessible.height>=44,accessible);
         await page.waitForFunction(g=>document.querySelector('#loomFlowcoreCopyNotice')?.textContent===g+' Copied!',glyph);
       }
       record('eight plaintext Flow-Core glyphs copy individually on direct gesture',

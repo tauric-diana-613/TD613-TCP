@@ -406,3 +406,18 @@ test('hidden presentation completion and replaced holds cannot restart or rewind
   coordinator.setVisible(true);
   assert.equal(queued.size, 0, 'explicit hidden pause defeats visibility auto-resume');
 });
+
+test('60 Hz frame jitter retains cadence remainder instead of repeatedly halving motion', () => {
+  const { coordinator, advance, queued } = rig({ durationMs: 60000, maxFps: 60 });
+  const frames=[];
+  coordinator.registerPass('cadence',frame=>frames.push(frame));
+  coordinator.setContinuous(true);
+  coordinator.setPacket(packet());
+  // Equal average frame spacing with realistic fractional RAF jitter.
+  for(let n=0;n<120;n++)advance(n%2?17.3:16.03);
+  assert.ok(frames.length>=117, `${frames.length} projections for 120 display frames`);
+  assert.ok(frames.length<=121, 'cadence never invents a second projection in one RAF');
+  assert.equal(queued.size,1);
+  assert.equal(frames.at(-1).motionTimeMs,coordinator.inspect().motionTimeMs);
+  coordinator.destroy();
+});

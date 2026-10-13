@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
 import * as lattice from '../app/dome-world/holonomy-loom/dome-art-lattice.js';
-import { FLOWCORE_CHOREOGRAPHIES, projectFlowcoreMotionFamily } from '../app/dome-world/holonomy-loom/flowcore-choreography.js';
+import { FLOWCORE_CHOREOGRAPHIES, projectFlowcoreMotionFamily, projectFlowcoreRevisit } from '../app/dome-world/holonomy-loom/flowcore-choreography.js';
 
 // Evaluate only the four named pure source functions and their two numerical
 // helpers. Never execute the surrounding application, DOM, clock or network.
@@ -93,4 +93,22 @@ test('fast motion derivative matches canonical centered finite differences throu
           assert.ok(Math.abs(fast[key][dim]-reference[dim])<.000003,
             `Fast analytic finite difference must preserve Dome-Art ${key} axis ${dim}`);
     }
+});
+
+test('the primary 米 trajectory crosses and returns fluently in every depth lane',()=>{
+  for(const depth of ['flight-near','flight-mid','flight-far'])for(let index=0;index<39;index++){
+    const point=t=>projectFlowcoreRevisit({index,seconds:t,depth});
+    const a=point(.613),b=point(18.613);
+    for(const key of ['x','y','roll','scale'])assert.ok(Math.abs(a[key]-b[key])<1e-8);
+    const distances=[];for(let n=0;n<540;n++){
+      const p=point(n/30),q=point((n+1)/30);distances.push(Math.hypot(q.x-p.x,q.y-p.y));
+      assert.ok(p.x>=0&&p.x<=1000&&p.y>=0&&p.y<=520&&p.scale>0);
+    }
+    assert.ok(Math.max(...distances)/Math.min(...distances)<1.06,'arc-length pacing avoids crossing speed spikes');
+  }
+  const center=projectFlowcoreRevisit({index:0,seconds:0,depth:'flight-near'});
+  const crossing=projectFlowcoreRevisit({index:0,seconds:9,depth:'flight-near'});
+  assert.ok(Math.hypot(center.x-crossing.x,center.y-crossing.y)<1e-8,'half cycle returns through the center crossing');
+  const left=projectFlowcoreRevisit({index:0,seconds:13.5}),right=projectFlowcoreRevisit({index:0,seconds:4.5});
+  assert.ok(right.x-center.x>60&&left.x-center.x< -60,'both lobes retain real horizontal extent');
 });

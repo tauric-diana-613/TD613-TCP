@@ -3,7 +3,7 @@ import { AIA_ROUTE_IDS, compileAIAView, verifyAIAInvariants } from '../../engine
 import { compileRouteGraph } from '../../engine/flowcore-route-burden.js';
 import { renderPedagogueScene } from '../flowcore-pedagogue-visual.js';
 import { FLOWCORE_GLYPH_REGISTRY } from '../data/flowcore-glyph-semantics-v01.js';
-import { FLOWCORE_MOTION_FAMILIES, projectFlowcoreMotionFamily } from './flowcore-choreography.js';
+import { FLOWCORE_MOTION_FAMILIES, projectFlowcoreMotionFamily, projectFlowcoreRevisit } from './flowcore-choreography.js';
 import { LOOM_TUTORIAL_OPERATORS } from './tutorial-membrane.js';
 
 /** A projection of client request observations, not a second request engine.
@@ -549,6 +549,20 @@ export function mountLoomInstrumentStateView(root) {
   boundary.textContent='Client observations · provider internals unknown · no custody admission';
   section.append(mode, svg, caption, relation, boundary, details);
   root.replaceChildren(section);
+  // Cache this renderer's own projected attributes, not semantic world state.
+  // The host root remains directly checked: its metadata can be cleared by
+  // the pending/held membrane. SVG identity/geometry has a single owner here.
+  const projectedAttributes=new WeakMap();
+  const setProjectedAttribute=(node,name,value)=>{
+    const text=String(value);
+    if(node===root){if(node.getAttribute(name)!==text)node.setAttribute(name,text);return;}
+    let values=projectedAttributes.get(node);
+    if(values?.[name]===text)return;
+    const first=values===undefined||!Object.hasOwn(values,name);
+    if(!values){values=Object.create(null);projectedAttributes.set(node,values);}
+    values[name]=text;
+    if(!first||node.getAttribute(name)!==text)node.setAttribute(name,text);
+  };
   let current = null, lastFrame = null, destroyed = false, compactMotion = null;
   return Object.freeze({
     update(view, snapshot = {}) {
@@ -572,30 +586,30 @@ export function mountLoomInstrumentStateView(root) {
         filaments.forEach((node,index)=>{node.style.display=compact&&index>=10?'none':'';});
         particles.forEach((node,index)=>{node.style.display=compact&&index>=12?'none':'';});
         // All 39 carriers retain the depth strata; mobile reduces auxiliary lines.
-        svg.setAttribute('viewBox',compact?'200 -220 600 1120':'0 0 1000 520');
+        setProjectedAttribute(svg,'viewBox',compact?'200 -220 600 1120':'0 0 1000 520');
         depth.forEach((node,index)=>{node.style.display=compact&&index>=4?'none':'';});
       }
       const filamentCount = compact ? 10 : filaments.length;
       const particleCount = compact ? 12 : particles.length;
       const flightCount = flightGlyphs.length;
       const depthCount = compact ? 4 : depth.length;
-      root.dataset.clientPhase = view.phase;
-      root.dataset.activeRelation = observedFrame.relation_key ?? 'unobserved';
-      if (illustration) root.dataset.illustratedRelation = illustration.relations.join('//');
+      setProjectedAttribute(root,'data-client-phase',view.phase);
+      setProjectedAttribute(root,'data-active-relation',observedFrame.relation_key ?? 'unobserved');
+      if (illustration) setProjectedAttribute(root,'data-illustrated-relation',illustration.relations.join('//'));
       else delete root.dataset.illustratedRelation;
-      root.dataset.reducedMotion = String(frame.reduced_motion);
+      setProjectedAttribute(root,'data-reduced-motion',String(frame.reduced_motion));
       doc.documentElement.dataset.loomRelation = observedFrame.relation_key ?? 'unobserved';
       setText(mode, view.replay ? 'Replay · recorded route observation; nothing is being sent' : 'Current route observation');
       setText(now, view.copy.now);
       setText(why, view.copy.why);
       setText(glyph, frame.descriptor?.glyph ?? '');
-      glyphGroup.setAttribute('visibility', frame.descriptor ? 'visible' : 'hidden');
+      setProjectedAttribute(glyphGroup,'visibility', frame.descriptor ? 'visible' : 'hidden');
       setText(ghost, glyph.textContent);
       for(const layer of depth)setText(layer,glyph.textContent);
-      glyph.setAttribute('opacity',glyph.textContent==='𝄐'?'0':'1');
-      ghost.setAttribute('opacity',glyph.textContent==='𝄐'?'0':'.32');
-      depthLayer.setAttribute('visibility',glyph.textContent==='𝄐'?'hidden':'visible');
-      restGlyph.setAttribute('visibility',glyph.textContent==='𝄐'?'visible':'hidden');
+      setProjectedAttribute(glyph,'opacity',glyph.textContent==='𝄐'?'0':'1');
+      setProjectedAttribute(ghost,'opacity',glyph.textContent==='𝄐'?'0':'.32');
+      setProjectedAttribute(depthLayer,'visibility',glyph.textContent==='𝄐'?'hidden':'visible');
+      setProjectedAttribute(restGlyph,'visibility',glyph.textContent==='𝄐'?'visible':'hidden');
       // All motion is a projection of the shared client clock and observed
       // relation. No particle, light or cadence claims provider activity.
       const seconds = frame.reduced_motion ? 0 : Number(snapshot.motionTimeMs ?? snapshot.timeMs ?? 0)/1000;
@@ -605,22 +619,22 @@ export function mountLoomInstrumentStateView(root) {
       const ambientChoreography=choreographyScene&&choreographyRelations.length>0;
       // A large center glyph supports the request reading; the distributed
       // carriers own the tutorial's living field rather than a static monogram.
-      glyphGroup.setAttribute('opacity',ambientChoreography?'.38':'1');
+      setProjectedAttribute(glyphGroup,'opacity',ambientChoreography?'.38':'1');
       // A valid family may bend an evidenced workspace route as well. The
       // illustrative eight-symbol score remains confined to the tutorial;
       // workspace carriers continue to name only their current observed relation.
       const requestedFamily=String(choreography?.family??'');
       const motionFamily=choreographyRelations.length>0&&Object.hasOwn(FLOWCORE_MOTION_FAMILIES,requestedFamily)?requestedFamily:null;
-      root.dataset.flowcoreChoreography=motionFamily?String(choreography.id??'ambient'):'evidenced';
-      root.dataset.flowcoreMotionFamily=motionFamily??'canonical-relation';
+      setProjectedAttribute(root,'data-flowcore-choreography',motionFamily?String(choreography.id??'ambient'):'evidenced');
+      setProjectedAttribute(root,'data-flowcore-motion-family',motionFamily??'canonical-relation');
       const breath = frame.reduced_motion ? 0 : Math.sin(seconds*.72);
       const transform = frame.glyph_transform;
-      glyphGroup.setAttribute('transform', `translate(${transform.x} ${transform.y+breath*2}) translate(500 260) scale(${transform.scale}) translate(-500 -260)`);
-      spectrum.setAttribute('gradientTransform',`rotate(${breath*14} .5 .5)`);
-      metal.setAttribute('gradientTransform',`rotate(${breath*8} .5 .5)`);
+      setProjectedAttribute(glyphGroup,'transform', `translate(${transform.x} ${transform.y+breath*2}) translate(500 260) scale(${transform.scale}) translate(-500 -260)`);
+      setProjectedAttribute(spectrum,'gradientTransform',`rotate(${breath*14} .5 .5)`);
+      setProjectedAttribute(metal,'gradientTransform',`rotate(${breath*8} .5 .5)`);
       for(let i=0;i<depthCount;i++){
         const z=(depth.length-i)/depth.length;
-        depth[i].setAttribute('transform',`translate(${z*(9+breath*3)} ${z*(10-breath*2)})`);
+        setProjectedAttribute(depth[i],'transform',`translate(${z*(9+breath*3)} ${z*(10-breath*2)})`);
       }
       // Ambient filaments keep one continuous topology. Time must not swap the
       // whole field's relation every 1.65 seconds without a request event.
@@ -667,8 +681,8 @@ export function mountLoomInstrumentStateView(root) {
         }else{
           path=`M-30 ${y} C270 ${y-18} 730 ${y+18} 1030 ${y}`;
         }
-        filaments[i].setAttribute('d',path);
-        filaments[i].setAttribute('opacity',relationKey==='structural_rest'?(i%7===0?.22:.055):(i%7===0?.58:.12));
+        setProjectedAttribute(filaments[i],'d',path);
+        setProjectedAttribute(filaments[i],'opacity',relationKey==='structural_rest'?(i%7===0?.22:.055):(i%7===0?.58:.12));
       }
 
       for(let i=0;i<orbits.length;i++){
@@ -678,8 +692,8 @@ export function mountLoomInstrumentStateView(root) {
         const rate=rest?0:recurrence?(i%2?-9:9):continuity?(i%2?-1.2:1.2):(i%2?-3:3);
         const squash=continuity?.46:relationKey==='bounded_emergence'?.72:.58;
         const breathe=rest||frame.reduced_motion?0:Math.sin(i+seconds*.18)*.06;
-        orbits[i].setAttribute('opacity',rest?.09:continuity?.32:recurrence?.34:(i===0?.42:.2));
-        orbits[i].setAttribute('transform',`rotate(${i*58+seconds*rate} 500 260) translate(500 260) scale(1 ${squash+breathe}) translate(-500 -260)`);
+        setProjectedAttribute(orbits[i],'opacity',rest?.09:continuity?.32:recurrence?.34:(i===0?.42:.2));
+        setProjectedAttribute(orbits[i],'transform',`rotate(${i*58+seconds*rate} 500 260) translate(500 260) scale(1 ${squash+breathe}) translate(-500 -260)`);
       }
       const particleDirection =
         relationKey==='protected_continuity' ? -1 :
@@ -689,9 +703,9 @@ export function mountLoomInstrumentStateView(root) {
         const particleTime=particleDirection===0 ? 0 : seconds*particleDirection;
         const t=((i/particles.length+particleTime*.016)%1+1)%1;
         const angle=t*Math.PI*2, radius=185+(i%5)*31;
-        particles[i].setAttribute('cx',(500+Math.cos(angle)*radius*1.3).toFixed(2));
-        particles[i].setAttribute('cy',(260+Math.sin(angle)*radius*.48).toFixed(2));
-        particles[i].setAttribute('opacity',(frame.reduced_motion?.3:.23+Math.sin(i+seconds*.4)**2*.52).toFixed(3));
+        setProjectedAttribute(particles[i],'cx',(500+Math.cos(angle)*radius*1.3).toFixed(2));
+        setProjectedAttribute(particles[i],'cy',(260+Math.sin(angle)*radius*.48).toFixed(2));
+        setProjectedAttribute(particles[i],'opacity',(frame.reduced_motion?.3:.23+Math.sin(i+seconds*.4)**2*.52).toFixed(3));
       }
       const evidencedTrail=frame.descriptor ? (view.event_relation_history??[]).filter(item=>item?.glyph&&item?.relation_key) : [];
       for(let i=0;i<flightCount;i++){
@@ -706,17 +720,17 @@ export function mountLoomInstrumentStateView(root) {
         const ambientRelation=illustration ? illustration.relations[i%illustration.relations.length] : !observed&&ambientChoreography
           ? choreographyRelations[i%choreographyRelations.length] : null;
         const visible=Boolean(observed||ambientRelation);
-        if(!visible){setText(node,'');node.setAttribute('visibility','hidden');continue;}
+        if(!visible){setText(node,'');setProjectedAttribute(node,'visibility','hidden');continue;}
         const relationKey=observed?.relation_key??ambientRelation;
         const ambientOnly=!illustration&&!observed&&Boolean(ambientRelation);
         const depthClass=node.getAttribute('class');
         const nearPlane=depthClass==='flight-near';
         const midPlane=depthClass==='flight-mid';
         setText(node,observed?.glyph??view.relations?.[relationKey]?.glyph??'');
-        node.setAttribute('data-flight-relation',relationKey);
-        node.setAttribute('data-flight-evidence',observed?'observed':'presentation-only');
-        node.setAttribute('data-flight-family',motionFamily??'canonical-relation');
-        node.setAttribute('visibility','visible');
+        setProjectedAttribute(node,'data-flight-relation',relationKey);
+        setProjectedAttribute(node,'data-flight-evidence',observed?'observed':'presentation-only');
+        setProjectedAttribute(node,'data-flight-family',motionFamily??'canonical-relation');
+        setProjectedAttribute(node,'visibility','visible');
 
         // Each path follows the canonical relation's graphic/motion grammar.
         // This is presentation of an already-recorded relation, never a claim
@@ -726,8 +740,8 @@ export function mountLoomInstrumentStateView(root) {
           const col=i%7,row=Math.floor(i/7);
           const x=compact ? 240+col*80 : 110+col*130;
           const y=compact ? 40+row*100 : 92+row*112;
-          node.setAttribute('x',String(x));node.setAttribute('y',String(y));
-          node.setAttribute('transform',`rotate(${(col-3)*3} ${x} ${y})`);
+          setProjectedAttribute(node,'x',String(x));setProjectedAttribute(node,'y',String(y));
+          setProjectedAttribute(node,'transform',`rotate(${(col-3)*3} ${x} ${y})`);
           continue;
         }
 
@@ -745,12 +759,9 @@ export function mountLoomInstrumentStateView(root) {
           roll=(1-phase)*22*(i%2?1:-1);
           scale=.42+phase*.58;
         }else if(relationKey==='recurrence'){
-          const orbit=155+(i%7)*38;
-          const angle=phase*Math.PI*2+i*.61;
-          x=500+Math.cos(angle)*orbit*1.45;
-          y=260+Math.sin(angle)*orbit*.58;
-          roll=Math.sin(angle)*14;
-          scale=.48+(Math.sin(angle*2)*.5+.5)*.42;
+          // 米 owns the figure-eight, not an orbit with a tiny loop added on.
+          // Seeded depth lanes and arc-length pacing use the host motion time.
+          ({x,y,roll,scale}=projectFlowcoreRevisit({index:i,count:flightCount,seconds,depth:depthClass}));
         }else if(relationKey==='release'){
           x=500+(phase-.08)*760*(i%2?1:-1);
           y=260+lane*42+Math.sin(phase*Math.PI+i)*34;
@@ -794,7 +805,7 @@ export function mountLoomInstrumentStateView(root) {
           y=260+lane*46;
         }
 
-        if(motionFamily){
+        if(motionFamily && !(relationKey==='recurrence'&&motionFamily==='revisit-lemniscate')){
           const familyMotion=projectFlowcoreMotionFamily(motionFamily,{index:i,count:flightCount,seconds,phase,depth:depthClass,x,y});
           x+=familyMotion.dx;y+=familyMotion.dy;roll+=familyMotion.roll;scale*=familyMotion.scale;opacity*=familyMotion.opacity;
         }
@@ -821,19 +832,19 @@ export function mountLoomInstrumentStateView(root) {
           const smooth=value=>{const t=Math.max(0,Math.min(1,value));return t*t*(3-2*t);};
           opacity*=smooth(phase/.12)*smooth((1-phase)/.12);
         }
-        node.setAttribute('opacity',opacity.toFixed(3));
-        node.setAttribute('x',x.toFixed(2));node.setAttribute('y',y.toFixed(2));
-        node.setAttribute('transform',`translate(${x.toFixed(2)} ${y.toFixed(2)}) rotate(${roll.toFixed(2)}) scale(${scale.toFixed(2)}) translate(${-x.toFixed(2)} ${-y.toFixed(2)})`);
+        setProjectedAttribute(node,'opacity',opacity.toFixed(3));
+        setProjectedAttribute(node,'x',x.toFixed(2));setProjectedAttribute(node,'y',y.toFixed(2));
+        setProjectedAttribute(node,'transform',`translate(${x.toFixed(2)} ${y.toFixed(2)}) rotate(${roll.toFixed(2)}) scale(${scale.toFixed(2)}) translate(${-x.toFixed(2)} ${-y.toFixed(2)})`);
       }
       const practice=snapshot.packet?.scene?.id?.startsWith('first-crossing-')===true;
       const sources=practice ? snapshot.packet.scene.documents??[] : [];
       const requestAndReferenceSelected=view.event.selected_document_ids?.includes('brief')===true
         && view.event.selected_document_ids?.includes('source')===true;
-      sourceLayer.setAttribute('visibility',practice?'visible':'hidden');
+      setProjectedAttribute(sourceLayer,'visibility',practice?'visible':'hidden');
       sourceMarkers.forEach((marker,index)=>{
         const source=sources[index];
-        if(!source){marker.group.setAttribute('visibility','hidden');return;}
-        marker.group.setAttribute('visibility','visible');
+        if(!source){setProjectedAttribute(marker.group,'visibility','hidden');return;}
+        setProjectedAttribute(marker.group,'visibility','visible');
         const selected=view.event.selected_document_ids?.includes(source.id)===true;
         const selectedIndex=view.event.selected_document_ids?.indexOf(source.id)??0;
         const gathering=observedFrame.relation_key==='gathering';
@@ -846,30 +857,30 @@ export function mountLoomInstrumentStateView(root) {
           x=gathering?x+(target-x)*p:target;
           y=ready?300-p*170:260;
         }
-        marker.group.setAttribute('transform',`translate(${x.toFixed(2)} ${y.toFixed(2)})`);
-        marker.group.setAttribute('data-source-id',source.id);
-        marker.group.setAttribute('data-source-local',String(!selected));
-        marker.point.setAttribute('opacity',selected?'1':'.35');
+        setProjectedAttribute(marker.group,'transform',`translate(${x.toFixed(2)} ${y.toFixed(2)})`);
+        setProjectedAttribute(marker.group,'data-source-id',source.id);
+        setProjectedAttribute(marker.group,'data-source-local',String(!selected));
+        setProjectedAttribute(marker.point,'opacity',selected?'1':'.35');
         const combined=selected && requestAndReferenceSelected && (ready || p>.7);
         const sourceName=practice ? ({brief:'Your request',source:'Reference',private:'Private note'}[source.id] ?? source.name) : source.name;
         setText(marker.label,combined?(selectedIndex===0?'Request + reference':''):sourceName);
-        marker.label.setAttribute('font-size',compact?'20':'14');
-        marker.label.setAttribute('x',combined&&selectedIndex===0?'65':'0');
+        setProjectedAttribute(marker.label,'font-size',compact?'20':'14');
+        setProjectedAttribute(marker.label,'x',combined&&selectedIndex===0?'65':'0');
         // Keep the settled count below the primary glyph, while the actual
         // selected points retain their canonical gathering/readiness positions.
-        marker.label.setAttribute('y',combined?(390-y).toFixed(2):'30');
-        marker.label.setAttribute('opacity',combined?'.75':'.85');
+        setProjectedAttribute(marker.label,'y',combined?(390-y).toFixed(2):'30');
+        setProjectedAttribute(marker.label,'opacity',combined?'.75':'.85');
         const protectedLocal=source.id==='private' && view.relations.protected_continuity.evidenced;
-        marker.group.setAttribute('data-source-protected',String(protectedLocal));
-        marker.guard.setAttribute('visibility',protectedLocal?'visible':'hidden');
-        marker.guard.setAttribute('transform',`rotate(${frame.reduced_motion?0:seconds*9})`);
+        setProjectedAttribute(marker.group,'data-source-protected',String(protectedLocal));
+        setProjectedAttribute(marker.guard,'visibility',protectedLocal?'visible':'hidden');
+        setProjectedAttribute(marker.guard,'transform',`rotate(${frame.reduced_motion?0:seconds*9})`);
         // The tutorial explains this protected item with a plain-language note.
         // Its canonical relation remains in the semantic view, carriers and
         // inspection; a second floating cōl label adds no readable consequence.
         setText(marker.continuity,protectedLocal&&!practice?view.relations.protected_continuity.glyph:'');
       });
       setText(title, frame.descriptor ? `${frame.descriptor.label}. ${frame.endpoints.join(' to ')}.` : 'No request relation is established yet.');
-      svg.setAttribute('aria-label', title.textContent);
+      setProjectedAttribute(svg,'aria-label', title.textContent);
       setText(origin, frame.endpoints[0]); setText(destination, frame.endpoints[1]);
       setText(endpoints, frame.endpoints.join(' → '));
       setText(relation, frame.descriptor ? `${frame.descriptor.glyph} · ${frame.descriptor.label}${frame.display_rest_only ? ' · display paused; the request state is unchanged' : ''}` : 'Choose material to establish the next relation.');

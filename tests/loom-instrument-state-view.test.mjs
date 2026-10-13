@@ -387,3 +387,28 @@ test('renderer retains relocated Session nodes, avoids label churn, and clears e
   assert.equal(session.childElementCount, 0, 'renderer cleans up its owned nodes after composition relocates them');
   dom.window.close();
 });
+
+test('unchanged projection attributes stay quiet while all 39 carriers keep their identity and motion',async()=>{
+  const {loomOpeningPresentation}=await import('../app/dome-world/holonomy-loom/tutorial-membrane.js');
+  const {selectFlowcoreChoreography}=await import('../app/dome-world/holonomy-loom/flowcore-choreography.js');
+  const input=packet('prepared',{scene:{id:'first-crossing-phase09'},request_id:null,task_present:false,selected_document_ids:[],shared:0,local:0,presentation:loomOpeningPresentation(selectFlowcoreChoreography(0))});
+  const view=await compile(input);
+  const dom=new JSDOM('<div id="field"></div>'),root=dom.window.document.getElementById('field');
+  const renderer=mountLoomInstrumentStateView(root);
+  const frame=t=>({packet:input,progress:1,motionTimeMs:t,viewport:{width:390,height:844,dpr:1}});
+  renderer.update(view,frame(1000));
+  const carriers=[...root.querySelectorAll('.loom-field-flight text')];
+  const before=carriers.map(node=>[node.textContent,node.dataset.flightRelation,node.getAttribute('transform')]);
+  let sameWrites=0;const original=dom.window.Element.prototype.setAttribute;
+  dom.window.Element.prototype.setAttribute=function(name,value){if(this.getAttribute(name)===String(value))sameWrites++;return original.call(this,name,value)};
+  try{
+    renderer.update(view,frame(2000));
+    assert.equal(carriers.length,39);
+    assert.equal(sameWrites,0,'static identity and quantized projection values must not trigger SVG writes');
+    carriers.forEach((node,index)=>{
+      assert.equal(node.textContent,before[index][0]);assert.equal(node.dataset.flightRelation,before[index][1]);
+      assert.notEqual(node.getAttribute('transform'),before[index][2]);
+      assert.equal(node.dataset.flightEvidence,'presentation-only');
+    });
+  }finally{dom.window.Element.prototype.setAttribute=original;renderer.destroy();dom.window.close();}
+});

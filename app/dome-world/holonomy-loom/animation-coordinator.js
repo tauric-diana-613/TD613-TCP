@@ -169,7 +169,14 @@ export class AnimationCoordinator {
           if ((nextTime === this.#durationMs && this.#timeMs < this.#durationMs) || wall - this.#lastRenderWall >= this.#frameInterval) {
             this.#timeMs = nextTime;
             this.#motionTimeMs = this.#anchorMotionTime + elapsed;
-            this.#lastRenderWall = wall;
+            // Preserve the cadence remainder. Re-anchoring to each actual RAF
+            // timestamp loses fractional frames and can turn a 60 Hz field
+            // into alternating 30/60 Hz motion under ordinary display jitter.
+            // Semantic and motion times still come from this one wall clock.
+            const cadenceElapsed=wall-this.#lastRenderWall;
+            if(cadenceElapsed>=this.#frameInterval){
+              this.#lastRenderWall=wall-(cadenceElapsed%this.#frameInterval);
+            }
             if (nextTime === this.#durationMs && !this.#continuous) this.#playing = false;
             this.#render();
           }
