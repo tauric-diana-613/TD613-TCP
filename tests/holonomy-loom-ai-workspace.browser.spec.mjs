@@ -233,7 +233,7 @@ try {
       assert.equal(await page.locator('#aiRuntime').isVisible(),false,'Demo remains in the builder scene until the operator opens How it works');
       assert.equal(await page.locator('#aiPreparePortable').evaluate(node=>node.classList.contains('ai-primary')),true,'Demo preserves local preparation as the primary route gesture');
       assert.equal(await page.locator('a[href="/dome-world/loom-instrument-lab.html"]').first().isVisible(),true,'Instrument Lab remains independently available during Demo');
-      assert.match(await page.locator('#aiDemoModePanel').innerText(),/New demos will follow/);
+      assert.match(await page.locator('#aiDemoModePanel').innerText(),/Demo uses fictional material\. Choose My work to prepare your own request\./);
       await page.locator('#aiDemoInvitation').click();
       const placeholder=page.locator('#aiProjectChoices button');
       assert.equal(await placeholder.count(),1);assert.equal(await placeholder.isDisabled(),true);assert.match(await placeholder.innerText(),/Demo 1[\s\S]*COMING SOON/);
