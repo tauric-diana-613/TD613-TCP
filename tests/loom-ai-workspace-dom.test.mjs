@@ -93,7 +93,7 @@ test('Loom opens on the human task and local preparation exposes the next route'
   assert.equal(h.calls.length,0,'local Loom preparation makes no provider request');
   assert.equal(h.root.dataset.loomJourney,'ready');
   assert.equal(h.$('#aiResult').hidden,false);
-  assert.match(h.$('#aiAnswer').textContent,/Review the exact content below/i);
+  assert.match(h.$('#aiAnswer').textContent,/Inspect the exact request below before sending/i);
   assert.match(h.$('#aiAnswer').textContent,/Continue in Marrowline when you are ready to send it/i);
   assert.match(h.$('#aiAnswer').textContent,/external AI provider governs how submitted content is stored and retained/i);
   assert.equal(h.$('#aiSessionSummary').hidden,false,'local preparation creates a session root before crossing');
@@ -522,7 +522,7 @@ test('Loom transfer preparation binds locally without HTTP, labels itself truthf
   const h=harness(t);h.load();h.$('#aiPreparePortable').click();await h.settled();
   assert.equal(h.calls.length,0);assert.equal(h.$('#aiResult').hidden,false);
   assert.equal(h.$('#aiResultEyebrow').textContent,'AI REQUEST READY');assert.equal(h.$('#aiResult').getAttribute('aria-label'),'Loom continuation');
-  assert.match(h.$('#aiAnswer').textContent,/Review the exact content below/);
+  assert.match(h.$('#aiAnswer').textContent,/Inspect the exact request below before sending/);
   for(const id of ['aiExport','aiCopy','aiMarrowline'])assert.equal(h.$('#'+id).disabled,false);
   chooseNewRoot(h);h.$('#aiRun').click();await h.settled();assert.equal(h.calls.length,1);
   assert.equal(h.$('#aiResultEyebrow').textContent,'RETURNED THROUGH YOUR LOOM ROUTE');assert.equal(h.$('#aiResult').getAttribute('aria-label'),'AI result');
@@ -530,7 +530,7 @@ test('Loom transfer preparation binds locally without HTTP, labels itself truthf
   chooseNewRoot(h);h.$('#aiPreparePortable').click();await h.settled();
   assert.equal(h.calls.length,1);assert.equal(h.$('#aiResultEyebrow').textContent,'AI REQUEST READY');assert.equal(h.$('.ai-result-unknowns'),null);assert.equal(h.$('.ai-result-next'),null);
   assert.equal(h.$('#aiAnswer').textContent.includes('signed retention amendment'),false);assert.equal(h.$('#aiAnswer').textContent.includes('signed retention schedule'),false);
-  assert.match(h.$('#aiAnswer').textContent,/Review the exact content below/);
+  assert.match(h.$('#aiAnswer').textContent,/Inspect the exact request below before sending/);
 });
 test('unacknowledged new-root preparation and provider test preserve the active lane',async t=>{
   const h=harness(t);h.load();h.$('#aiPreparePortable').click();await h.settled();
