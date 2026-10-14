@@ -1,4 +1,4 @@
-export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledby="loomFieldHeading"><div class="loom-stage-copy"><span class="loom-kicker">YOUR AI FIREWALL</span><h1 id="loomFieldHeading">Loom</h1><p>Keep your rules, evidence, tests, and continuity when working with AI.</p></div><section id="aiRuntime" class="ai-runtime" aria-label="Current Loom route"><p class="mark">CURRENT ROUTE</p>
+export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledby="loomFieldHeading"><div class="loom-stage-copy"><span class="loom-kicker">YOUR AI FIREWALL</span><h1 id="loomFieldHeading">Loom</h1><p>Control your AI instructions, challenge its answers, and keep the evidence of what happened.</p></div><section id="aiRuntime" class="ai-runtime" aria-label="Current Loom route"><p class="mark">CURRENT ROUTE</p>
       <h2 id="aiConsequence" hidden>Your work starts here.</h2>
       <div id="aiRuntimeState" class="ai-runtime-state il-state"></div>
       <div id="aiLivingRoom" hidden aria-hidden="true"></div>
@@ -13,17 +13,17 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
     <div class="loom-motion-view" aria-hidden="true"><span>FLOW-CORE / LIVING FIELD</span><span>𝌋</span></div>
     <div class="loom-first-crossing-copy">
       <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">LOOM / YOUR AI, YOUR TERMS</span><span id="loomTutorialProgress" class="loom-tutorial-progress">Optional guided example</span></div>
-      <h2 id="loomFirstCrossingTitle">Firewall your online life from AI.</h2>
-      <p id="loomFirstCrossingPrompt">Bring your own AI: ChatGPT, Gemini, or another LLM. Carry instructions and source records across sessions, test what comes back, and keep a verifiable history of your work.</p>
+      <h2 id="loomFirstCrossingTitle">Firewall your online life from AI.</h2><p class="loom-power-declaration">STOP GIVING AI THE LAST WORD.</p>
+      <p id="loomFirstCrossingPrompt">Take your rules and evidence into ChatGPT, Gemini, and other LLMs. Challenge answers for missing sources, unauthorized disclosures, and broken continuity. Keep verifiable records of what you sent, tested, and accepted.</p>
     </div>
     <div class="loom-product-entry" aria-label="Use Loom or explore an example">
-      <button type="button" id="loomStartNow" class="loom-product-start">Start using Loom <span aria-hidden="true">↗</span></button>
-      <button type="button" id="loomExploreDemo" class="loom-product-tour" aria-expanded="false" aria-controls="loomFirstCrossingObjects">Explore an example <span aria-hidden="true">↓</span></button>
+      <button type="button" id="loomStartNow" class="loom-product-start">Take control of your AI <span aria-hidden="true">↗</span></button>
+      <button type="button" id="loomExploreDemo" class="loom-product-tour" aria-expanded="false" aria-controls="loomFirstCrossingObjects">See Loom in action <span aria-hidden="true">↓</span></button>
     </div>
     <div class="loom-product-capabilities" aria-label="Loom capabilities">
-      <div><span>CONTROL</span><strong>Give AI your terms.</strong><p>Take your instructions and source list into the next conversation.</p></div>
-      <div><span>CHALLENGE</span><strong>Test the response.</strong><p>Check disclosures, missing evidence, and what the model can actually establish.</p></div>
-      <div><span>CONTINUE</span><strong>Keep your record.</strong><p>Verify receipts, inspect history, and decide what work to accept.</p></div>
+      <div><span>COMMAND</span><strong>Bring your own rules.</strong><p>Carry instructions, sources, and priorities across AI sessions.</p></div>
+      <div><span>INTERROGATE</span><strong>Put answers on trial.</strong><p>Probe for injected instructions, omissions, leaks, and unsupported claims.</p></div>
+      <div><span>ACCOUNTABILITY</span><strong>Demand a record.</strong><p>Audit the returned work, verify receipts, and reject what fails inspection.</p></div>
     </div>
     <details class="loom-flowcore-help">
       <summary>What is Flow-Core runtime?</summary>
@@ -93,12 +93,12 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
 <div class="loom-workspaces">
 <section id="loomBuilder" class="loom-builder" aria-labelledby="loomBuilderTitle">
 <header class="loom-builder-head"><h2 id="loomBuilderTitle">Your task</h2><div class="ai-mode-tabs" role="tablist" aria-label="Loom mode"><button type="button" id="aiPortableMode" role="tab" aria-selected="true" aria-controls="aiPortableModePanel">My work</button><button type="button" id="aiDemoMode" role="tab" aria-selected="false" aria-controls="aiDemoModePanel">Demo</button></div></header>
-<section id="aiPortableModePanel" role="tabpanel" aria-labelledby="aiPortableMode"><p id="aiFirstUseGuide">Describe your work and its rules. Loom prepares a portable session that you can take to your chosen AI and later inspect when it returns.</p></section><section id="aiDemoModePanel" role="tabpanel" aria-labelledby="aiDemoMode" hidden><p>Demo uses fictional material. Choose My work to prepare your own request.</p></section>
+<section id="aiPortableModePanel" role="tabpanel" aria-labelledby="aiPortableMode"><p id="aiFirstUseGuide">Give your AI a job and your own rules. Loom prepares the request with your sources and a verifiable record, so you can inspect what returns.</p></section><section id="aiDemoModePanel" role="tabpanel" aria-labelledby="aiDemoMode" hidden><p>Demo uses fictional material. Choose My work to prepare your own request.</p></section>
 <div id="aiDemoWelcome" hidden><button type="button" id="aiDemoInvitation" aria-expanded="false" aria-controls="aiProjectChoices">Demo 1 · COMING SOON +</button></div>
 <div id="aiProjectChoices" class="ai-projects" aria-label="Demo projects" hidden></div>
 <section id="aiProjectBrief" class="ai-project-brief" aria-label="Project brief" hidden><h3 id="aiBriefTitle"></h3><p id="aiBriefText"></p><p id="aiBriefRoute"></p></section>
 <section class="ai-composer" aria-label="Your Loom task">
-<label id="aiTaskLabel" for="aiTask">Task</label><textarea id="aiTask" maxlength="12000" placeholder="Ask for a decision, an analysis, a plan…" aria-describedby="aiTaskCue"></textarea><p id="aiTaskCue" class="ai-muted">Write the request. You control which sources and instructions cross the firewall.</p>
+<label id="aiTaskLabel" for="aiTask">Task</label><textarea id="aiTask" maxlength="12000" placeholder="Ask for a decision, an analysis, a plan…" aria-describedby="aiTaskCue"></textarea><p id="aiTaskCue" class="ai-muted">Set the question and the rules. Your selected sources and instructions travel with the request.</p>
 <div class="ai-toolbar"><label class="ai-upload">+ Documents<input id="aiUpload" type="file" multiple accept=".txt,.md,.csv,.json" aria-label="Add documents"></label><button type="button" id="loomRulesOpen">AI instructions</button><button type="button" id="loomBoundaryOpen" class="loom-text-action">Privacy</button><button type="button" id="aiNew">Clear task</button></div>
 <p class="ai-file-cue">Selected files are included in the AI request. Unselected files remain in this browser.</p><ul id="aiDocuments" class="ai-documents" aria-label="Document sharing"></ul>
 <section id="aiPortableProjection" class="ai-portable-projection" aria-label="Transfer boundary"><div><span>Included for AI</span><strong id="aiProjectionTravel">Task · 0 documents · AI instructions</strong></div><div><span>Kept in this browser</span><strong id="aiProjectionStay">0 local documents · private checks</strong></div></section>
