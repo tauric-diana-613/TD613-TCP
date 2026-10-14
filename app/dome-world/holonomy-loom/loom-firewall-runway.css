@@ -130,7 +130,7 @@
   max-width:19ch;
   margin:0 0 11px;
   color:#f2faf7;
-  font:740 clamp(34px,5.1vw,67px)/1 "Arial Narrow","Helvetica Neue",Inter,system-ui,sans-serif;
+  font:740 clamp(34px,5.1vw,67px)/1 "Arial Narrow","Helvetica Neue",Inter,-apple-system,system-ui,sans-serif;
   letter-spacing:-.06em;
   text-transform:uppercase;
   text-align:left;
@@ -170,7 +170,7 @@
   text-align:left;
   min-height:72px;
   padding:12px 15px;
-  border:0;
+  border:1px solid transparent;
   border-left:2px solid #9bd5d0;
   border-bottom:1px solid #64898c;
   border-radius:0;
@@ -179,7 +179,7 @@
   opacity:1;
   box-shadow:none;
   clip-path:none;
-  font:620 14px/1.35 var(--sans);
+  font:680 14px/1.35 var(--sans);
 }
 #loomAiWorkspace .loom-first-crossing-objects button strong {
   grid-column:1;
