@@ -301,13 +301,12 @@ try {
           .every(object=>object.visible&&object.width>=44&&object.height>=44)&&
         firstCrossingVisual.objects.find(object=>object.id==='loomFirstCrossingPrivate')?.visible===false,
         firstCrossingVisual);
-      record('first-use AI firewall is visible above the fold, with ChatGPT/Gemini named', 
-        await page.locator('.loom-firewall-theater').evaluate(node => {
-          const r=node.getBoundingClientRect();const style=getComputedStyle(node);
-          return style.display!=='none' && r.width>=280 && r.height>=120 && r.top>=0 && r.bottom<=innerHeight;
-        }) &&
+      record('first-use AI firewall has a clear first action and no invented diamond stage',
+        await page.locator('#loomFirstCrossingTitle').isVisible() &&
+        await page.locator('.loom-boundary-event').isHidden() &&
         /ChatGPT.*Gemini.*LLMs/i.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
-        {stage:await page.locator('.loom-firewall-theater').boundingBox(),prompt:await page.locator('#loomFirstCrossingPrompt').textContent()});
+        {action:await page.locator('[data-first-crossing-item="brief"]').isVisible(),
+         evidence_stage_hidden:await page.locator('.loom-boundary-event').isHidden()});
       await screenshot(page, 'first-crossing-mobile-notice');
       await tutorialComposition(page,'first-crossing-mobile-notice');
       record('first crossing: private note is explanatory rather than an ambiguous control',
@@ -358,14 +357,21 @@ try {
         const before=await fieldObservation(page);await page.waitForTimeout(1100);const after=await fieldObservation(page);
         record(`tutorial ${glyph}: distinct illustration retains actual unsent binding`,after.relation==='created_potential'&&after.carriers.length===39&&after.carriers.every(node=>node.relation===relation&&node.evidence==='presentation-only')&&after.carriers.some((node,index)=>node.x!==before.carriers[index].x||node.y!==before.carriers[index].y),{before,after});
         await tutorialComposition(page,`tutorial-${glyph}`);await screenshot(page,`tutorial-step-${step}`);
-        if(step===4)record('firewall privacy lesson reveals the formerly held local note',
-          await page.locator('#loomFirstCrossingPrivate').isVisible() &&
-          /Held behind the firewall/.test(await page.locator('#loomFirstCrossingPrivate').textContent()),
-          { note: await page.locator('#loomFirstCrossingPrivate').textContent() });
-        if(step===4)record('firewall denies the attempted protected content in its illustration',
-          await page.locator('.loom-firewall-denial').isVisible() &&
-          /BLOCKED/i.test(await page.locator('.loom-firewall-state').textContent()),
-          {blocked:await page.locator('.loom-firewall-denial').textContent()});
+        if(step===3)record('outgoing preview is prepared, not a real provider submission',
+          await page.locator('.loom-boundary-event-outgoing').isVisible() &&
+          /Nothing has been sent/.test(await page.locator('.loom-boundary-event-outgoing').textContent()),
+          { preview: await page.locator('.loom-boundary-event-outgoing').textContent() });
+        if(step===4)record('firewall privacy lesson exposes the exact tested protected term',
+          await page.locator('.loom-boundary-event-denial').isVisible() &&
+          /PRIVATE_PLANNING_NOTE_613/.test(await page.locator('.loom-boundary-event-denial').textContent()),
+          { evidence: await page.locator('.loom-boundary-event-denial').textContent() });
+        if(step===4)record('local gate rejection is visible without a fabricated provider-side event',
+          await page.locator('.loom-boundary-event-stop').isVisible() &&
+          /BLOCKED BEFORE SENDING/.test(await page.locator('.loom-boundary-event-stop').textContent()),
+          {blocked:await page.locator('.loom-boundary-event-stop').textContent()});
+        if(step===5)record('the return is a fictional answer, never a second firewall diagram',
+          await page.locator('#loomTutorialSampleAnswer').isVisible() &&
+          await page.locator('.loom-boundary-event').isHidden());
         await page.locator('#loomFirstCrossingStop').waitFor({state:'visible'});
         const gestureStyle=await page.locator('#loomFirstCrossingStop').evaluate(node=>{
           const s=getComputedStyle(node);return {font:s.fontFamily,size:s.fontSize,weight:s.fontWeight,radius:s.borderRadius,border:s.borderTopWidth};
