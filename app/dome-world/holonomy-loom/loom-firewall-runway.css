@@ -39,11 +39,14 @@
 }
 #loomAiWorkspace .loom-field-flight{
   mix-blend-mode:normal;
-  opacity:1;
+  opacity:.60;
 }
 #loomAiWorkspace .loom-field-glyph{opacity:.78}
 #loomAiWorkspace .loom-field-flight text{paint-order:stroke fill}
-#loomAiWorkspace .loom-first-crossing-copy{order:0;padding:0}
+#loomAiWorkspace .loom-first-crossing-copy{
+  order:0;padding:0;
+  background:radial-gradient(ellipse 68% 78% at 50% 53%,rgba(4,11,18,.68),transparent 91%);
+}
 #loomAiWorkspace .loom-first-crossing-copy::before{
   content:"TD613 / AI FIREWALL";
   margin-bottom:7px;
@@ -61,7 +64,7 @@
 #loomAiWorkspace .loom-first-crossing-copy h2{
   max-width:17ch;
   margin:12px auto 9px;
-  font:670 clamp(47px,5.7vw,82px)/.94 "Arial Narrow","Helvetica Neue",Inter,system-ui,sans-serif;
+  font:670 clamp(47px,5.7vw,82px)/.94 "Arial Narrow","Helvetica Neue",Inter,-apple-system,system-ui,sans-serif;
   letter-spacing:-.068em;
   text-transform:uppercase;
   color:var(--runway-ice);
@@ -209,6 +212,16 @@
 #loomAiWorkspace[data-first-crossing-step="4"] .loom-firewall-carrier-symbol::after{content:"cōl";font-size:21px}
 #loomAiWorkspace[data-first-crossing-step="5"] .loom-firewall-carrier-symbol::after{content:"下"}
 #loomAiWorkspace[data-first-crossing-step="6"] .loom-firewall-carrier-symbol::after{content:"𝄐"}
+
+/* Human-readable evidence ledger stays compact on short screens, rather than
+   hiding the footer while the current 39-carrier consequence completes. */
+#loomAiWorkspace .loom-tutorial-selection{
+  background:rgba(5,15,23,.95);
+  border-left:1px solid rgba(198,239,230,.36);
+}
+#loomAiWorkspace .loom-tutorial-selection dl>div{padding:5px 0}
+#loomAiWorkspace .loom-tutorial-selection>p{padding:7px 0}
+#loomAiWorkspace .loom-tutorial-selection dd{color:#f0f8f5}
 
 /* Model names describe external destinations, never a TD613-only chatbot. */
 #loomAiWorkspace .loom-firewall-header>span:last-child{max-width:46%}
