@@ -1,4 +1,4 @@
-export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledby="loomFieldHeading"><div class="loom-stage-copy"><span class="loom-kicker">YOUR AI WORKSPACE</span><h1 id="loomFieldHeading">Loom</h1><p>Compose the work. Follow the crossing. Review what comes back.</p></div><section id="aiRuntime" class="ai-runtime" aria-label="Current Loom route"><p class="mark">CURRENT ROUTE</p>
+export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledby="loomFieldHeading"><div class="loom-stage-copy"><span class="loom-kicker">YOUR AI FIREWALL</span><h1 id="loomFieldHeading">Loom</h1><p>Firewall your online life from AI. Keep control of what you send and what you accept.</p></div><section id="aiRuntime" class="ai-runtime" aria-label="Current Loom route"><p class="mark">CURRENT ROUTE</p>
       <h2 id="aiConsequence" hidden>Your work starts here.</h2>
       <div id="aiRuntimeState" class="ai-runtime-state il-state"></div>
       <div id="aiLivingRoom" hidden aria-hidden="true"></div>
@@ -12,8 +12,8 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
   <section id="loomFirstCrossing" class="loom-first-crossing" aria-labelledby="loomFirstCrossingTitle" hidden tabindex="-1">
     <div class="loom-first-crossing-copy">
       <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">How Loom works · Demo</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 7 · Choose</span></div>
-      <h2 id="loomFirstCrossingTitle">The firewall between you and your AI.</h2>
-      <p id="loomFirstCrossingPrompt">Choose what AI receives. Check what tries to cross. Challenge the response before accepting it into your work.</p>
+      <h2 id="loomFirstCrossingTitle">Firewall your online life from AI.</h2>
+      <p id="loomFirstCrossingPrompt">Built for ChatGPT, Gemini, and other LLMs. Control what you share, then challenge what comes back.</p>
     </div>
     <details class="loom-flowcore-help">
       <summary>What is Flow-Core runtime?</summary>
@@ -29,22 +29,22 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
       </div>
     </details>
     <div class="loom-firewall-theater" aria-hidden="true">
-      <div class="loom-firewall-header"><span>HUMAN / CONTROL</span><span>AI / RECEIVER</span></div>
+      <div class="loom-firewall-header"><span>YOU / YOUR INFORMATION</span><span>CHATGPT · GEMINI · OTHER LLMS</span></div>
       <div class="loom-firewall-line loom-firewall-line--outbound"></div>
       <div class="loom-firewall-line loom-firewall-line--return"></div>
       <div class="loom-firewall-seam"><span class="loom-firewall-seam-core">◈</span><span class="loom-firewall-seam-foot">LOOM</span></div>
-      <div class="loom-firewall-carrier"><span class="loom-firewall-carrier-symbol">出</span></div>
+      <div class="loom-firewall-carrier"><span class="loom-firewall-carrier-symbol">à</span></div>
       <div class="loom-firewall-denial"><span>×</span><strong>BLOCKED</strong></div>
       <div class="loom-firewall-state">
-        <span class="loom-firewall-state--ready">YOU SET THE TERMS</span>
+        <span class="loom-firewall-state--ready">YOUR INFORMATION / YOUR DECISION</span>
         <span class="loom-firewall-state--outbound">SELECTED MATERIAL ONLY</span>
         <span class="loom-firewall-state--blocked">LOCAL GATE / BLOCKED TEST</span>
         <span class="loom-firewall-state--return">INSPECT THE RETURN</span>
       </div>
     </div>
     <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="Choose the information that may pass through the sample AI firewall">
-      <button type="button" data-first-crossing-item="brief" aria-pressed="false"><strong>Your request</strong><small>Tell AI what you want it to do</small></button>
-      <button type="button" data-first-crossing-item="source" aria-pressed="false"><strong>Your reference</strong><small>Choose which evidence AI may receive</small></button>
+      <button type="button" data-first-crossing-item="brief" aria-pressed="false"><strong>01 / Your request</strong><small>What should the AI do?</small></button>
+      <button type="button" data-first-crossing-item="source" aria-pressed="false"><strong>02 / Your reference</strong><small>Which evidence may it see?</small></button>
       <div id="loomFirstCrossingPrivate" class="loom-first-crossing-private" role="note"><strong>Held behind the firewall</strong><small>Unselected note · stays in this browser</small></div>
     </div>
     <div class="loom-first-crossing-actions">
@@ -72,7 +72,7 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
 </section>
 <section class="loom-builder-shell" aria-label="Loom builder" hidden>
 <div id="loomWorkspaceField" class="loom-workspace-field" aria-label="Current AI request state"></div>
-<header class="loom-intro"><div><h1 id="loomStageHeading">Loom</h1><p>Your AI firewall. Choose exactly what to send, review the rules and evidence traveling with it, and inspect what comes back before accepting it.</p></div><div class="loom-intro-actions"><button type="button" id="loomReturnThreshold" class="loom-text-action">How Loom works</button><button type="button" id="loomToolsOpen" class="loom-text-action">Tools</button></div></header>
+<header class="loom-intro"><div><h1 id="loomStageHeading">Loom</h1><p>Use Loom with ChatGPT, Gemini, and other LLMs. Decide what the model receives. Check what comes back. Your rules and records stay with you.</p></div><div class="loom-intro-actions"><button type="button" id="loomReturnThreshold" class="loom-text-action">How Loom works</button><button type="button" id="loomToolsOpen" class="loom-text-action">Tools</button></div></header>
 <nav class="loom-journey" aria-label="Loom route">
 <button type="button" class="loom-journey-step" id="loomJourneyStep1" data-workspace="build" aria-current="step"><b>1</b><strong>Loom</strong></button><span aria-hidden="true">→</span>
 <button type="button" class="loom-journey-step" id="loomJourneyStep2" data-workspace="crossing" disabled><b>2</b><strong>Marrowline</strong></button><span aria-hidden="true">→</span>
