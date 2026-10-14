@@ -470,6 +470,26 @@ try {
           sceneArrival.controls.loomFirstCrossingLeave.visible&&sceneArrival.controls.loomFirstCrossingLeave.fully_in_view,
         { viewport: posture.viewport, field: fieldGeometry, stage: stageGeometry, skip: sceneArrival.controls.loomFirstCrossingLeave });
       await tutorialComposition(page,`${posture.name}-arrival`);
+      if (posture.name === 'mobile') {
+        // The narrowest supported mobile viewport must not borrow width from
+        // offscreen Flow-Core glyph motion or any fixed-position SVG host.
+        await page.setViewportSize({ width: 320, height: 700 });
+        await nextPaint(page);
+        const field320 = await page.locator('.loom-glyph-field').evaluate(node => {
+          const rect = node.getBoundingClientRect();
+          const host = node.closest('.ai-runtime, .loom-workspace-field')?.getBoundingClientRect();
+          return { left: rect.left, right: rect.right, width: rect.width,
+            host_left: host?.left, host_right: host?.right, host_width: host?.width };
+        });
+        const spill320 = await spill(page);
+        record('narrow mobile 320px: page and SVG host remain viewport-bound',
+          Math.abs(field320.left) <= 1 && Math.abs(field320.right - 320) <= 1 &&
+          Math.abs(field320.host_left) <= 1 && Math.abs(field320.host_right - 320) <= 1 &&
+          spill320.document_width <= 320 && spill320.outside.length === 0,
+          { field: field320, spill: spill320, physical_ios_witness: false });
+        await page.setViewportSize(posture.viewport);
+        await nextPaint(page);
+      }
       await screenshot(page,`${posture.name}-cinematic-arrival`);
       const ingressFont=await page.locator('#loomFirstCrossingTitle').evaluate(node=>getComputedStyle(node).fontFamily);
       await page.evaluate(()=>{window.__LOOM_WITNESS_ROOT_NODE=document.getElementById('aiRuntimeState');});
