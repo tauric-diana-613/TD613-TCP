@@ -40,6 +40,11 @@
   border:0;
   box-shadow:none;
 }
+#loomAiWorkspace .loom-first-crossing[hidden],
+#loomAiWorkspace .loom-builder-shell[hidden],
+#loomAiWorkspace .loom-boundary-event[hidden] {
+  display:none!important;
+}
 #loomAiWorkspace .loom-first-crossing::before,
 #loomAiWorkspace .loom-first-crossing::after {
   display:none;
