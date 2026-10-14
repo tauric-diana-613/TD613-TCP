@@ -299,7 +299,7 @@ try {
         firstCrossingVisual.objects.length===3&&
         firstCrossingVisual.objects.filter(object=>object.id!=='loomFirstCrossingPrivate')
           .every(object=>object.visible&&object.width>=44&&object.height>=44)&&
-        firstCrossingVisual.objects.find(object=>object.id==='loomFirstCrossingPrivate')?.visible===true,
+        firstCrossingVisual.objects.find(object=>object.id==='loomFirstCrossingPrivate')?.visible===false,
         firstCrossingVisual);
       await screenshot(page, 'first-crossing-mobile-notice');
       await tutorialComposition(page,'first-crossing-mobile-notice');
@@ -320,7 +320,7 @@ try {
         await page.locator('#loomAiWorkspace').getAttribute('data-first-crossing-gather')==='complete');
       await lockedSource.click();
       record('first crossing: consequence begins before terminology is named',
-        /Review your selections\.|Share what helps\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
+        /Decide what crosses\.|You choose what gets in\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
         !/That relation is à/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
         { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
       await observeFiniteConsequence(page,'gathering','first-crossing-mobile-gathering');
@@ -340,7 +340,7 @@ try {
       await page.waitForFunction(()=>document.querySelector('#aiRuntimeState')?.dataset?.projectionState==='CURRENT'&&
         document.querySelector('#aiRuntimeState')?.dataset?.activeRelation==='created_potential');
       record('first crossing: readiness consequence begins before 上 is named',
-        /Check complete\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
+        /Check the outgoing request\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
         !/created-potential relation is 上/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
         { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
       await observeFiniteConsequence(page,'created_potential','first-crossing-mobile-readiness');
@@ -351,6 +351,10 @@ try {
         const before=await fieldObservation(page);await page.waitForTimeout(1100);const after=await fieldObservation(page);
         record(`tutorial ${glyph}: distinct illustration retains actual unsent binding`,after.relation==='created_potential'&&after.carriers.length===39&&after.carriers.every(node=>node.relation===relation&&node.evidence==='presentation-only')&&after.carriers.some((node,index)=>node.x!==before.carriers[index].x||node.y!==before.carriers[index].y),{before,after});
         await tutorialComposition(page,`tutorial-${glyph}`);await screenshot(page,`tutorial-step-${step}`);
+        if(step===4)record('firewall privacy lesson reveals the formerly held local note',
+          await page.locator('#loomFirstCrossingPrivate').isVisible() &&
+          /Held behind the firewall/.test(await page.locator('#loomFirstCrossingPrivate').textContent()),
+          { note: await page.locator('#loomFirstCrossingPrivate').textContent() });
         await page.locator('#loomFirstCrossingStop').waitFor({state:'visible'});
         const gestureStyle=await page.locator('#loomFirstCrossingStop').evaluate(node=>{
           const s=getComputedStyle(node);return {font:s.fontFamily,size:s.fontSize,weight:s.fontWeight,radius:s.borderRadius,border:s.borderTopWidth};
@@ -536,7 +540,7 @@ try {
       record(`${posture.name}: keyboard Escape restores Tools opener`, !(await page.locator('#loomTools').evaluate(node => node.open)) && await page.evaluate(() => document.activeElement?.id) === 'loomToolsOpen', { active_element: await page.evaluate(() => document.activeElement?.id) });
       await page.locator('#loomBoundaryOpen').focus(); await page.keyboard.press('Enter');
       const boundary = await page.locator('[data-tool-panel="boundary"]').textContent();
-      record(`${posture.name}: boundary accessible before crossing`, await page.locator('[data-tool-panel="boundary"]').isVisible() && /unselected stay in this browser/.test(boundary) && /Review that content before sending/.test(boundary) && /service’s own privacy and retention policies/.test(boundary), { text: boundary });
+      record(`${posture.name}: boundary accessible before crossing`, await page.locator('[data-tool-panel="boundary"]').isVisible() && /Unselected files stay in this browser/.test(boundary) && /review the outgoing material/.test(boundary) && /external AI provider determines its own retention, memory, and processing/.test(boundary), { text: boundary });
       await page.keyboard.press('Escape');
       await page.locator('#loomRulesOpen').focus(); await page.keyboard.press('Enter');
       const ruleFont = await page.locator('#aiRules').evaluate(node => Number.parseFloat(getComputedStyle(node).fontSize));
