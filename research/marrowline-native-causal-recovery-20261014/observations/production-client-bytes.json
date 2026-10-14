@@ -1,0 +1,55 @@
+{
+  "schema": "td613.marrowline.public-source-observation/v1",
+  "observed_at": "2026-10-14T19:59:17.738210+00:00",
+  "main": "7f28a864da5a2a1af207e55eba7b27bb0ebff2ad",
+  "provider_generation_requests": 0,
+  "files": [
+    {
+      "path": "dome-world/khonapolit-relay.js",
+      "status": 200,
+      "sha256": "c587d611c903037995fb2bf117ce87af5c9a798358c5c83ea2dd9b2f84ec66a5",
+      "expectedSha256": "c587d611c903037995fb2bf117ce87af5c9a798358c5c83ea2dd9b2f84ec66a5",
+      "matches": true
+    },
+    {
+      "path": "dome-world/khonapolit-covenant.js",
+      "status": 200,
+      "sha256": "90a9e93cad516b21c3528cff59ca2e5d11874a6a488ed5dd0876e5b3d3616a2a",
+      "expectedSha256": "90a9e93cad516b21c3528cff59ca2e5d11874a6a488ed5dd0876e5b3d3616a2a",
+      "matches": true
+    },
+    {
+      "path": "dome-world/marrowline-terminal.js",
+      "status": 200,
+      "sha256": "5fb889ad9381d8e2acaeadf913b5bdd36ef3ec40e53d68e786e98b56ac9f560d",
+      "expectedSha256": "5fb889ad9381d8e2acaeadf913b5bdd36ef3ec40e53d68e786e98b56ac9f560d",
+      "matches": true
+    },
+    {
+      "path": "dome-world/marrowline-living-chat.js",
+      "status": 200,
+      "sha256": "c91f10864777c760c57b568c51435cf5c1b8d2869d5c3ce87db8d28ee9868929",
+      "expectedSha256": "c91f10864777c760c57b568c51435cf5c1b8d2869d5c3ce87db8d28ee9868929",
+      "matches": true
+    },
+    {
+      "path": "dome-world/marrowline-terminal.css",
+      "status": 200,
+      "sha256": "9392a66840a5bdca93c35f0334d707392cf6f739c62b15028e6c8c87a27284fa",
+      "expectedSha256": "9392a66840a5bdca93c35f0334d707392cf6f739c62b15028e6c8c87a27284fa",
+      "matches": true
+    },
+    {
+      "path": "dome-world/marrowline-reading-surface.js",
+      "status": 200,
+      "sha256": "bb8bb1ca70ddde01c9451e8c2e906e5def40441465588a99d28c88d9be09eab1",
+      "expectedSha256": "bb8bb1ca70ddde01c9451e8c2e906e5def40441465588a99d28c88d9be09eab1",
+      "matches": true
+    }
+  ],
+  "source": {
+    "schema": "td613.giving.release-source/v1",
+    "source_packet_commit": "94fd8107e4ccb66b757b10979a818936808359d5"
+  },
+  "private_deployment_access": "VERCEL_CONNECTOR_DENIED"
+}

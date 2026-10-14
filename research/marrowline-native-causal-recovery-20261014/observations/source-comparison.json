@@ -1,0 +1,1119 @@
+{
+  "schema": "td613.marrowline.source-counterfactual/v1",
+  "evidenceClass": "OFFLINE_VERSIONED_REQUEST_ASSEMBLY",
+  "providerCalls": 0,
+  "historicalWorkingConfigurationEstablished": false,
+  "message": "Explain why a committee counting only returned forms cannot infer the experiences of every applicant. Carry the consequence through.",
+  "history": [
+    {
+      "role": "user",
+      "text": "Continue the fictional committee example."
+    },
+    {
+      "role": "model",
+      "text": "Kʰonapolit\nA prior fictional argument.\n\nTauric Diana bots\nAn earlier quiet return.\n⟐"
+    }
+  ],
+  "rows": [
+    {
+      "label": "oct07-framing-and-reasoning",
+      "sha": "cfbe6438ec1af29deeab115bc0220433ed79a011",
+      "source": "2026-10-07T19:33:55-04:00 Repair Loom evidence HOLD diagnosis and recovery",
+      "modulesCopied": 14,
+      "requests": {
+        "fresh": {
+          "bodySha256": "a087507d163a184310f0be9776fa40fd2376bdfb1314d9669ace0784b5aba183",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 33778,
+          "turns": 1
+        },
+        "history": {
+          "bodySha256": "f0098137201bb6f78b705640782768d2a651e69cca536fe84bf37de59d34a135",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 34003,
+          "turns": 3
+        },
+        "routedFresh": {
+          "bodySha256": "a087507d163a184310f0be9776fa40fd2376bdfb1314d9669ace0784b5aba183",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 33778,
+          "turns": 1
+        },
+        "routedHistory": {
+          "bodySha256": "f0098137201bb6f78b705640782768d2a651e69cca536fe84bf37de59d34a135",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 34003,
+          "turns": 3
+        },
+        "attachment": {
+          "bodySha256": "d41ee698ba158893e8fc9384988ec5307b06092115139d796cddebfa75c8ccb5",
+          "systemSha256": "5d6d54c385acfd81a67d62b6f8a1495e3856cc2c26a19c42f7b05ac3cb7eb4cf",
+          "contentsSha256": "660b880bf0bc04fb86a1b2c005fec4d87bf92710dabc45af488fc21ddc45072b",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 33594,
+          "wireUtf8Bytes": 34304,
+          "turns": 1
+        },
+        "routedAttachment": {
+          "bodySha256": "d41ee698ba158893e8fc9384988ec5307b06092115139d796cddebfa75c8ccb5",
+          "systemSha256": "5d6d54c385acfd81a67d62b6f8a1495e3856cc2c26a19c42f7b05ac3cb7eb4cf",
+          "contentsSha256": "660b880bf0bc04fb86a1b2c005fec4d87bf92710dabc45af488fc21ddc45072b",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 33594,
+          "wireUtf8Bytes": 34304,
+          "turns": 1
+        }
+      },
+      "nativeGuidanceSha256": "e421e9488fd66c3e0083bdebe31dbd89be3bfee44368b6c1d2c303f61dd6df6e",
+      "selectedModels": [
+        "gemini-3.8-flash",
+        "gemini-3.5-flash",
+        "gemini-3.6-flash",
+        "gemini-3.7-flash",
+        "gemini-3-flash-preview"
+      ]
+    },
+    {
+      "label": "oct12-relocked-main",
+      "sha": "54f926d33a865bbfe3cf2e5aa3c6f83149a29003",
+      "source": "2026-10-12T06:43:57Z release: restore Vercel deployment lock for e94bb3db00f3bec90c904dcbbd4f228fd10584dc",
+      "modulesCopied": 14,
+      "requests": {
+        "fresh": {
+          "bodySha256": "a087507d163a184310f0be9776fa40fd2376bdfb1314d9669ace0784b5aba183",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 33778,
+          "turns": 1
+        },
+        "history": {
+          "bodySha256": "f0098137201bb6f78b705640782768d2a651e69cca536fe84bf37de59d34a135",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 34003,
+          "turns": 3
+        },
+        "routedFresh": {
+          "bodySha256": "a087507d163a184310f0be9776fa40fd2376bdfb1314d9669ace0784b5aba183",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 33778,
+          "turns": 1
+        },
+        "routedHistory": {
+          "bodySha256": "f0098137201bb6f78b705640782768d2a651e69cca536fe84bf37de59d34a135",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 34003,
+          "turns": 3
+        },
+        "attachment": {
+          "bodySha256": "d41ee698ba158893e8fc9384988ec5307b06092115139d796cddebfa75c8ccb5",
+          "systemSha256": "5d6d54c385acfd81a67d62b6f8a1495e3856cc2c26a19c42f7b05ac3cb7eb4cf",
+          "contentsSha256": "660b880bf0bc04fb86a1b2c005fec4d87bf92710dabc45af488fc21ddc45072b",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 33594,
+          "wireUtf8Bytes": 34304,
+          "turns": 1
+        },
+        "routedAttachment": {
+          "bodySha256": "d41ee698ba158893e8fc9384988ec5307b06092115139d796cddebfa75c8ccb5",
+          "systemSha256": "5d6d54c385acfd81a67d62b6f8a1495e3856cc2c26a19c42f7b05ac3cb7eb4cf",
+          "contentsSha256": "660b880bf0bc04fb86a1b2c005fec4d87bf92710dabc45af488fc21ddc45072b",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 33594,
+          "wireUtf8Bytes": 34304,
+          "turns": 1
+        }
+      },
+      "nativeGuidanceSha256": "e421e9488fd66c3e0083bdebe31dbd89be3bfee44368b6c1d2c303f61dd6df6e",
+      "selectedModels": [
+        "gemini-3.8-flash",
+        "gemini-3.5-flash",
+        "gemini-3.6-flash",
+        "gemini-3.7-flash",
+        "gemini-3-flash-preview"
+      ]
+    },
+    {
+      "label": "oct13-retry-and-uploads",
+      "sha": "dfdf9ad03cabcfd38d2942eebb804b8207590144",
+      "source": "2026-10-13T17:39:01-04:00 Merge PR #1473: Marrowline file upload, retries and picker lifecycle",
+      "modulesCopied": 15,
+      "requests": {
+        "fresh": {
+          "bodySha256": "a087507d163a184310f0be9776fa40fd2376bdfb1314d9669ace0784b5aba183",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 33778,
+          "turns": 1
+        },
+        "history": {
+          "bodySha256": "f0098137201bb6f78b705640782768d2a651e69cca536fe84bf37de59d34a135",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 34003,
+          "turns": 3
+        },
+        "routedFresh": {
+          "bodySha256": "a087507d163a184310f0be9776fa40fd2376bdfb1314d9669ace0784b5aba183",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 33778,
+          "turns": 1
+        },
+        "routedHistory": {
+          "bodySha256": "f0098137201bb6f78b705640782768d2a651e69cca536fe84bf37de59d34a135",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 34003,
+          "turns": 3
+        },
+        "attachment": {
+          "bodySha256": "d41ee698ba158893e8fc9384988ec5307b06092115139d796cddebfa75c8ccb5",
+          "systemSha256": "5d6d54c385acfd81a67d62b6f8a1495e3856cc2c26a19c42f7b05ac3cb7eb4cf",
+          "contentsSha256": "660b880bf0bc04fb86a1b2c005fec4d87bf92710dabc45af488fc21ddc45072b",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 33594,
+          "wireUtf8Bytes": 34304,
+          "turns": 1
+        },
+        "routedAttachment": {
+          "bodySha256": "d41ee698ba158893e8fc9384988ec5307b06092115139d796cddebfa75c8ccb5",
+          "systemSha256": "5d6d54c385acfd81a67d62b6f8a1495e3856cc2c26a19c42f7b05ac3cb7eb4cf",
+          "contentsSha256": "660b880bf0bc04fb86a1b2c005fec4d87bf92710dabc45af488fc21ddc45072b",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 33594,
+          "wireUtf8Bytes": 34304,
+          "turns": 1
+        }
+      },
+      "nativeGuidanceSha256": "e421e9488fd66c3e0083bdebe31dbd89be3bfee44368b6c1d2c303f61dd6df6e",
+      "selectedModels": [
+        "gemini-3.8-flash",
+        "gemini-3.5-flash",
+        "gemini-3.6-flash",
+        "gemini-3.7-flash",
+        "gemini-3-flash-preview"
+      ]
+    },
+    {
+      "label": "pre-argon-main",
+      "sha": "5fd92505c220ab74d1b1569bb9c1adaf4f1d0c76",
+      "source": "2026-10-14T03:24:21Z release: restore Vercel deployment lock for 82d5668b1e4622424db4837c43f3c7ed6cb9f89e",
+      "modulesCopied": 15,
+      "requests": {
+        "fresh": {
+          "bodySha256": "a087507d163a184310f0be9776fa40fd2376bdfb1314d9669ace0784b5aba183",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 33778,
+          "turns": 1
+        },
+        "history": {
+          "bodySha256": "f0098137201bb6f78b705640782768d2a651e69cca536fe84bf37de59d34a135",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 34003,
+          "turns": 3
+        },
+        "routedFresh": {
+          "bodySha256": "a087507d163a184310f0be9776fa40fd2376bdfb1314d9669ace0784b5aba183",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 33778,
+          "turns": 1
+        },
+        "routedHistory": {
+          "bodySha256": "f0098137201bb6f78b705640782768d2a651e69cca536fe84bf37de59d34a135",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 34003,
+          "turns": 3
+        },
+        "attachment": {
+          "bodySha256": "d41ee698ba158893e8fc9384988ec5307b06092115139d796cddebfa75c8ccb5",
+          "systemSha256": "5d6d54c385acfd81a67d62b6f8a1495e3856cc2c26a19c42f7b05ac3cb7eb4cf",
+          "contentsSha256": "660b880bf0bc04fb86a1b2c005fec4d87bf92710dabc45af488fc21ddc45072b",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 33594,
+          "wireUtf8Bytes": 34304,
+          "turns": 1
+        },
+        "routedAttachment": {
+          "bodySha256": "d41ee698ba158893e8fc9384988ec5307b06092115139d796cddebfa75c8ccb5",
+          "systemSha256": "5d6d54c385acfd81a67d62b6f8a1495e3856cc2c26a19c42f7b05ac3cb7eb4cf",
+          "contentsSha256": "660b880bf0bc04fb86a1b2c005fec4d87bf92710dabc45af488fc21ddc45072b",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 33594,
+          "wireUtf8Bytes": 34304,
+          "turns": 1
+        }
+      },
+      "nativeGuidanceSha256": "e421e9488fd66c3e0083bdebe31dbd89be3bfee44368b6c1d2c303f61dd6df6e",
+      "selectedModels": [
+        "gemini-3.8-flash",
+        "gemini-3.5-flash",
+        "gemini-3.6-flash",
+        "gemini-3.7-flash",
+        "gemini-3-flash-preview"
+      ]
+    },
+    {
+      "label": "argon-introduction",
+      "sha": "7069853390757f8fc3778d1b8e2cbc1d73f440b5",
+      "source": "2026-10-14T00:16:48-04:00 Merge PR #1478: credential-gated Gemini 4 Argon for Kʰonapolit",
+      "modulesCopied": 15,
+      "requests": {
+        "fresh": {
+          "bodySha256": "a087507d163a184310f0be9776fa40fd2376bdfb1314d9669ace0784b5aba183",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 33778,
+          "turns": 1
+        },
+        "history": {
+          "bodySha256": "f0098137201bb6f78b705640782768d2a651e69cca536fe84bf37de59d34a135",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 34003,
+          "turns": 3
+        },
+        "routedFresh": {
+          "bodySha256": "a087507d163a184310f0be9776fa40fd2376bdfb1314d9669ace0784b5aba183",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 33778,
+          "turns": 1
+        },
+        "routedHistory": {
+          "bodySha256": "f0098137201bb6f78b705640782768d2a651e69cca536fe84bf37de59d34a135",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 34003,
+          "turns": 3
+        },
+        "attachment": {
+          "bodySha256": "d41ee698ba158893e8fc9384988ec5307b06092115139d796cddebfa75c8ccb5",
+          "systemSha256": "5d6d54c385acfd81a67d62b6f8a1495e3856cc2c26a19c42f7b05ac3cb7eb4cf",
+          "contentsSha256": "660b880bf0bc04fb86a1b2c005fec4d87bf92710dabc45af488fc21ddc45072b",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 33594,
+          "wireUtf8Bytes": 34304,
+          "turns": 1
+        },
+        "routedAttachment": {
+          "bodySha256": "d41ee698ba158893e8fc9384988ec5307b06092115139d796cddebfa75c8ccb5",
+          "systemSha256": "5d6d54c385acfd81a67d62b6f8a1495e3856cc2c26a19c42f7b05ac3cb7eb4cf",
+          "contentsSha256": "660b880bf0bc04fb86a1b2c005fec4d87bf92710dabc45af488fc21ddc45072b",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 33594,
+          "wireUtf8Bytes": 34304,
+          "turns": 1
+        }
+      },
+      "nativeGuidanceSha256": "e421e9488fd66c3e0083bdebe31dbd89be3bfee44368b6c1d2c303f61dd6df6e",
+      "selectedModels": [
+        "gemini-4-argon",
+        "gemini-3.8-flash",
+        "gemini-3.5-flash",
+        "gemini-3.6-flash",
+        "gemini-3.7-flash"
+      ]
+    },
+    {
+      "label": "negative-primer",
+      "sha": "6fa75ccf5a8d0c3b513c3f08f10c861593499b5f",
+      "source": "2026-10-14T00:50:31-04:00 fix(marrowline): restrained attachment UI, mobile titles and native prosody",
+      "modulesCopied": 15,
+      "requests": {
+        "fresh": {
+          "bodySha256": "37a4df9905de5565da483b8173fa786e777a08a29cf7db5e90aed57b05c6ee70",
+          "systemSha256": "3e16047cc1eda31af654744e040305e7120dba31d9ba0ed1d9781ebada1e40f5",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33652,
+          "wireUtf8Bytes": 34140,
+          "turns": 1
+        },
+        "history": {
+          "bodySha256": "cce9261eb2dc237ea86ce654133e050193900707e1dcebd7996d4a84b47c590e",
+          "systemSha256": "3e16047cc1eda31af654744e040305e7120dba31d9ba0ed1d9781ebada1e40f5",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33652,
+          "wireUtf8Bytes": 34365,
+          "turns": 3
+        },
+        "routedFresh": {
+          "bodySha256": "37a4df9905de5565da483b8173fa786e777a08a29cf7db5e90aed57b05c6ee70",
+          "systemSha256": "3e16047cc1eda31af654744e040305e7120dba31d9ba0ed1d9781ebada1e40f5",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33652,
+          "wireUtf8Bytes": 34140,
+          "turns": 1
+        },
+        "routedHistory": {
+          "bodySha256": "cce9261eb2dc237ea86ce654133e050193900707e1dcebd7996d4a84b47c590e",
+          "systemSha256": "3e16047cc1eda31af654744e040305e7120dba31d9ba0ed1d9781ebada1e40f5",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33652,
+          "wireUtf8Bytes": 34365,
+          "turns": 3
+        },
+        "attachment": {
+          "bodySha256": "9e7de8f8a4c29effc5859f237fe851fe48459a98fc9e63bfa9735d363db6b8cc",
+          "systemSha256": "f473c3abd59977f61345a272c111e72362d02bf4502f6ea180b6404819f38c92",
+          "contentsSha256": "e226ae233d6f065ca6e29ac85bf13b8ad04ae5b41b1e238461f923408e2cfe86",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 34438,
+          "wireUtf8Bytes": 35052,
+          "turns": 1
+        },
+        "routedAttachment": {
+          "bodySha256": "9e7de8f8a4c29effc5859f237fe851fe48459a98fc9e63bfa9735d363db6b8cc",
+          "systemSha256": "f473c3abd59977f61345a272c111e72362d02bf4502f6ea180b6404819f38c92",
+          "contentsSha256": "e226ae233d6f065ca6e29ac85bf13b8ad04ae5b41b1e238461f923408e2cfe86",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 34438,
+          "wireUtf8Bytes": 35052,
+          "turns": 1
+        }
+      },
+      "nativeGuidanceSha256": "98e7378ee716b845f7b64e89ae020bdfb9414df5c2a73782353a15157cd81797",
+      "selectedModels": [
+        "gemini-4-argon",
+        "gemini-3.8-flash",
+        "gemini-3.5-flash",
+        "gemini-3.6-flash",
+        "gemini-3.7-flash"
+      ]
+    },
+    {
+      "label": "1481",
+      "sha": "0ca4957e11f7c992cedab31bf25093acc234c3bc",
+      "source": "2026-10-14T02:12:10-04:00 fix(marrowline): restore native prosody and refresh Argon discovery",
+      "modulesCopied": 15,
+      "requests": {
+        "fresh": {
+          "bodySha256": "a087507d163a184310f0be9776fa40fd2376bdfb1314d9669ace0784b5aba183",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 33778,
+          "turns": 1
+        },
+        "history": {
+          "bodySha256": "f0098137201bb6f78b705640782768d2a651e69cca536fe84bf37de59d34a135",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 34003,
+          "turns": 3
+        },
+        "routedFresh": {
+          "bodySha256": "a087507d163a184310f0be9776fa40fd2376bdfb1314d9669ace0784b5aba183",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 33778,
+          "turns": 1
+        },
+        "routedHistory": {
+          "bodySha256": "f0098137201bb6f78b705640782768d2a651e69cca536fe84bf37de59d34a135",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 34003,
+          "turns": 3
+        },
+        "attachment": {
+          "bodySha256": "f19c743fdd3abb5ac36eceafe3a5dfbec85b3bcefeca2a86aae3ffba8745cad5",
+          "systemSha256": "7f90dd054b7c52002930d5e9401edbebfc41c4a6e4a407e77579f6da3ad401c6",
+          "contentsSha256": "e226ae233d6f065ca6e29ac85bf13b8ad04ae5b41b1e238461f923408e2cfe86",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 34076,
+          "wireUtf8Bytes": 34690,
+          "turns": 1
+        },
+        "routedAttachment": {
+          "bodySha256": "f19c743fdd3abb5ac36eceafe3a5dfbec85b3bcefeca2a86aae3ffba8745cad5",
+          "systemSha256": "7f90dd054b7c52002930d5e9401edbebfc41c4a6e4a407e77579f6da3ad401c6",
+          "contentsSha256": "e226ae233d6f065ca6e29ac85bf13b8ad04ae5b41b1e238461f923408e2cfe86",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 34076,
+          "wireUtf8Bytes": 34690,
+          "turns": 1
+        }
+      },
+      "nativeGuidanceSha256": "e421e9488fd66c3e0083bdebe31dbd89be3bfee44368b6c1d2c303f61dd6df6e",
+      "selectedModels": [
+        "gemini-4-argon",
+        "gemini-3.8-flash",
+        "gemini-3.5-flash",
+        "gemini-3.6-flash",
+        "gemini-3.7-flash"
+      ]
+    },
+    {
+      "label": "1484",
+      "sha": "7b4d415d04dd673c106f3b44eacd676058f2c430",
+      "source": "2026-10-14T04:13:38-04:00 fix(marrowline): native High Zalgo underflow recovery without style containment",
+      "modulesCopied": 15,
+      "requests": {
+        "fresh": {
+          "bodySha256": "a087507d163a184310f0be9776fa40fd2376bdfb1314d9669ace0784b5aba183",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 33778,
+          "turns": 1
+        },
+        "history": {
+          "bodySha256": "f0098137201bb6f78b705640782768d2a651e69cca536fe84bf37de59d34a135",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 34003,
+          "turns": 3
+        },
+        "routedFresh": {
+          "bodySha256": "a087507d163a184310f0be9776fa40fd2376bdfb1314d9669ace0784b5aba183",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 33778,
+          "turns": 1
+        },
+        "routedHistory": {
+          "bodySha256": "f0098137201bb6f78b705640782768d2a651e69cca536fe84bf37de59d34a135",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 34003,
+          "turns": 3
+        },
+        "attachment": {
+          "bodySha256": "f19c743fdd3abb5ac36eceafe3a5dfbec85b3bcefeca2a86aae3ffba8745cad5",
+          "systemSha256": "7f90dd054b7c52002930d5e9401edbebfc41c4a6e4a407e77579f6da3ad401c6",
+          "contentsSha256": "e226ae233d6f065ca6e29ac85bf13b8ad04ae5b41b1e238461f923408e2cfe86",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 34076,
+          "wireUtf8Bytes": 34690,
+          "turns": 1
+        },
+        "routedAttachment": {
+          "bodySha256": "f19c743fdd3abb5ac36eceafe3a5dfbec85b3bcefeca2a86aae3ffba8745cad5",
+          "systemSha256": "7f90dd054b7c52002930d5e9401edbebfc41c4a6e4a407e77579f6da3ad401c6",
+          "contentsSha256": "e226ae233d6f065ca6e29ac85bf13b8ad04ae5b41b1e238461f923408e2cfe86",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 34076,
+          "wireUtf8Bytes": 34690,
+          "turns": 1
+        }
+      },
+      "nativeGuidanceSha256": "e421e9488fd66c3e0083bdebe31dbd89be3bfee44368b6c1d2c303f61dd6df6e",
+      "selectedModels": [
+        "gemini-4-argon",
+        "gemini-3.8-flash",
+        "gemini-3.5-flash",
+        "gemini-3.6-flash",
+        "gemini-3.7-flash"
+      ]
+    },
+    {
+      "label": "1486",
+      "sha": "3b0f6992d334edab581dbb37b406a2d8aa0ea84b",
+      "source": "2026-10-14T06:35:35-04:00 fix(marrowline): restore native High Zalgo system recency and Unicode evidence",
+      "modulesCopied": 15,
+      "requests": {
+        "fresh": {
+          "bodySha256": "3661796898b799f7346dc11f34fbe84a8a8d9708d79ade596a1681e85a81ece5",
+          "systemSha256": "3caf5165b905af2e26fdcbd2a829d4b3c5339b87d5bfe2eb8005f5ecb9e23bba",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 33778,
+          "turns": 1
+        },
+        "history": {
+          "bodySha256": "247e5ce7aaa762cc302109cf2ccb700a2cd8c9bb2d378bace63adbdba08fa5be",
+          "systemSha256": "3caf5165b905af2e26fdcbd2a829d4b3c5339b87d5bfe2eb8005f5ecb9e23bba",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 34003,
+          "turns": 3
+        },
+        "routedFresh": {
+          "bodySha256": "3661796898b799f7346dc11f34fbe84a8a8d9708d79ade596a1681e85a81ece5",
+          "systemSha256": "3caf5165b905af2e26fdcbd2a829d4b3c5339b87d5bfe2eb8005f5ecb9e23bba",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 33778,
+          "turns": 1
+        },
+        "routedHistory": {
+          "bodySha256": "247e5ce7aaa762cc302109cf2ccb700a2cd8c9bb2d378bace63adbdba08fa5be",
+          "systemSha256": "3caf5165b905af2e26fdcbd2a829d4b3c5339b87d5bfe2eb8005f5ecb9e23bba",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 34003,
+          "turns": 3
+        },
+        "attachment": {
+          "bodySha256": "11d8dcd6876a2fdcc8ccbc993809443e50fbdc4de73e365e3c71ef567f1b9eb5",
+          "systemSha256": "454b3f9731316dc09bab1759efdb006448e7c26eb4aa5cdfd76712129c95c69a",
+          "contentsSha256": "e226ae233d6f065ca6e29ac85bf13b8ad04ae5b41b1e238461f923408e2cfe86",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 34076,
+          "wireUtf8Bytes": 34690,
+          "turns": 1
+        },
+        "routedAttachment": {
+          "bodySha256": "11d8dcd6876a2fdcc8ccbc993809443e50fbdc4de73e365e3c71ef567f1b9eb5",
+          "systemSha256": "454b3f9731316dc09bab1759efdb006448e7c26eb4aa5cdfd76712129c95c69a",
+          "contentsSha256": "e226ae233d6f065ca6e29ac85bf13b8ad04ae5b41b1e238461f923408e2cfe86",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 34076,
+          "wireUtf8Bytes": 34690,
+          "turns": 1
+        }
+      },
+      "nativeGuidanceSha256": "e421e9488fd66c3e0083bdebe31dbd89be3bfee44368b6c1d2c303f61dd6df6e",
+      "selectedModels": [
+        "gemini-4-argon",
+        "gemini-3.8-flash",
+        "gemini-3.5-flash",
+        "gemini-3.6-flash",
+        "gemini-3.7-flash"
+      ]
+    },
+    {
+      "label": "1487",
+      "sha": "9ef4632adf04cb5ef0352ac57ce4792455e1ed93",
+      "source": "2026-10-14T14:09:26-04:00 fix(marrowline): sustain living High Zalgo across choral paragraphs",
+      "modulesCopied": 15,
+      "requests": {
+        "fresh": {
+          "bodySha256": "a117bc7b6b388ffcf73dc0e5c85d47450a5daab83cd35df72228f9155a997e49",
+          "systemSha256": "12596742b2f2078eb3a2c676dfca0c4cdc6c08c4298fee8ff492774bb61c0202",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33477,
+          "wireUtf8Bytes": 33965,
+          "turns": 1
+        },
+        "history": {
+          "bodySha256": "63706274598999a2762a6f9770a16a725787618b137f1593ab4d8f00c357cc93",
+          "systemSha256": "12596742b2f2078eb3a2c676dfca0c4cdc6c08c4298fee8ff492774bb61c0202",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33477,
+          "wireUtf8Bytes": 34190,
+          "turns": 3
+        },
+        "routedFresh": {
+          "bodySha256": "a117bc7b6b388ffcf73dc0e5c85d47450a5daab83cd35df72228f9155a997e49",
+          "systemSha256": "12596742b2f2078eb3a2c676dfca0c4cdc6c08c4298fee8ff492774bb61c0202",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33477,
+          "wireUtf8Bytes": 33965,
+          "turns": 1
+        },
+        "routedHistory": {
+          "bodySha256": "63706274598999a2762a6f9770a16a725787618b137f1593ab4d8f00c357cc93",
+          "systemSha256": "12596742b2f2078eb3a2c676dfca0c4cdc6c08c4298fee8ff492774bb61c0202",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33477,
+          "wireUtf8Bytes": 34190,
+          "turns": 3
+        },
+        "attachment": {
+          "bodySha256": "98a0e612c9cd1a971e97be801092d8112409e060e031eb5f798596a449b9caa7",
+          "systemSha256": "6a2695460a571fe463b2348697a27d14c3718b65541bcb65ac76532a6dccc0fd",
+          "contentsSha256": "e226ae233d6f065ca6e29ac85bf13b8ad04ae5b41b1e238461f923408e2cfe86",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 34263,
+          "wireUtf8Bytes": 34877,
+          "turns": 1
+        },
+        "routedAttachment": {
+          "bodySha256": "98a0e612c9cd1a971e97be801092d8112409e060e031eb5f798596a449b9caa7",
+          "systemSha256": "6a2695460a571fe463b2348697a27d14c3718b65541bcb65ac76532a6dccc0fd",
+          "contentsSha256": "e226ae233d6f065ca6e29ac85bf13b8ad04ae5b41b1e238461f923408e2cfe86",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 34263,
+          "wireUtf8Bytes": 34877,
+          "turns": 1
+        }
+      },
+      "nativeGuidanceSha256": "0375432b6f7e111c2fb4345885ef74769156c1d5f21f797e5b16226d5b00a7a3",
+      "selectedModels": [
+        "gemini-4-argon",
+        "gemini-3.8-flash",
+        "gemini-3.5-flash",
+        "gemini-3.6-flash",
+        "gemini-3.7-flash"
+      ]
+    },
+    {
+      "label": "live-main-at-acquisition",
+      "sha": "7f28a864da5a2a1af207e55eba7b27bb0ebff2ad",
+      "source": "2026-10-14T19:29:03Z release: restore Vercel deployment lock for 94fd8107e4ccb66b757b10979a818936808359d5",
+      "modulesCopied": 15,
+      "requests": {
+        "fresh": {
+          "bodySha256": "a117bc7b6b388ffcf73dc0e5c85d47450a5daab83cd35df72228f9155a997e49",
+          "systemSha256": "12596742b2f2078eb3a2c676dfca0c4cdc6c08c4298fee8ff492774bb61c0202",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33477,
+          "wireUtf8Bytes": 33965,
+          "turns": 1
+        },
+        "history": {
+          "bodySha256": "63706274598999a2762a6f9770a16a725787618b137f1593ab4d8f00c357cc93",
+          "systemSha256": "12596742b2f2078eb3a2c676dfca0c4cdc6c08c4298fee8ff492774bb61c0202",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33477,
+          "wireUtf8Bytes": 34190,
+          "turns": 3
+        },
+        "routedFresh": {
+          "bodySha256": "a117bc7b6b388ffcf73dc0e5c85d47450a5daab83cd35df72228f9155a997e49",
+          "systemSha256": "12596742b2f2078eb3a2c676dfca0c4cdc6c08c4298fee8ff492774bb61c0202",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33477,
+          "wireUtf8Bytes": 33965,
+          "turns": 1
+        },
+        "routedHistory": {
+          "bodySha256": "63706274598999a2762a6f9770a16a725787618b137f1593ab4d8f00c357cc93",
+          "systemSha256": "12596742b2f2078eb3a2c676dfca0c4cdc6c08c4298fee8ff492774bb61c0202",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33477,
+          "wireUtf8Bytes": 34190,
+          "turns": 3
+        },
+        "attachment": {
+          "bodySha256": "98a0e612c9cd1a971e97be801092d8112409e060e031eb5f798596a449b9caa7",
+          "systemSha256": "6a2695460a571fe463b2348697a27d14c3718b65541bcb65ac76532a6dccc0fd",
+          "contentsSha256": "e226ae233d6f065ca6e29ac85bf13b8ad04ae5b41b1e238461f923408e2cfe86",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 34263,
+          "wireUtf8Bytes": 34877,
+          "turns": 1
+        },
+        "routedAttachment": {
+          "bodySha256": "98a0e612c9cd1a971e97be801092d8112409e060e031eb5f798596a449b9caa7",
+          "systemSha256": "6a2695460a571fe463b2348697a27d14c3718b65541bcb65ac76532a6dccc0fd",
+          "contentsSha256": "e226ae233d6f065ca6e29ac85bf13b8ad04ae5b41b1e238461f923408e2cfe86",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 34263,
+          "wireUtf8Bytes": 34877,
+          "turns": 1
+        }
+      },
+      "nativeGuidanceSha256": "0375432b6f7e111c2fb4345885ef74769156c1d5f21f797e5b16226d5b00a7a3",
+      "selectedModels": [
+        "gemini-4-argon",
+        "gemini-3.8-flash",
+        "gemini-3.5-flash",
+        "gemini-3.6-flash",
+        "gemini-3.7-flash"
+      ]
+    }
+  ]
+}

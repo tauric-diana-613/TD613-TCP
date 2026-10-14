@@ -1,0 +1,10 @@
+✔ ↻ resends the exact original file and photo payloads after successful staging clears (285.112959ms)
+✔ ↻ removes the last response from provider context without destroying earlier unrelated conversation (129.266647ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 963.760525

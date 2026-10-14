@@ -1,0 +1,270 @@
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-10-14T19:51:01.630Z:1:gemini-3.8-flash:503","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":3,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-10-14T19:51:01.630Z:2:gemini-3.5-flash:503","route":"marrowline-attachment","request_id":null,"ordinal":2,"model":"gemini-3.5-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":1,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-10-14T19:51:01.630Z:3:gemini-3.6-flash:503","route":"marrowline-attachment","request_id":null,"ordinal":3,"model":"gemini-3.6-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":1,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-10-14T19:51:01.630Z:4:gemini-3.7-flash:503","route":"marrowline-attachment","request_id":null,"ordinal":4,"model":"gemini-3.7-flash","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":1,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-10-14T19:51:01.630Z:5:gemini-3-flash-preview:503","route":"marrowline-attachment","request_id":null,"ordinal":5,"model":"gemini-3-flash-preview","status":503,"outcome":"provider-unavailable","timed_out":false,"elapsed_ms":1,"timeout_ms":204991,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-10-14T19:51:01.655Z:1:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":1,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-10-14T19:51:01.670Z:1:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-10-14T19:51:01.670Z:2:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-10-14T19:51:01.675Z:1:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":1,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-10-14T19:51:01.675Z:2:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline-attachment:2026-10-14T19:51:01.680Z:1:gemini-3.8-flash:200","route":"marrowline-attachment","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":1,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+✔ 50 MB aggregate limit and per-file limits agree at client and provider boundary (4.314192ms)
+✔ Gemini Files upload moves large attachment chunks around Vercel ingress and binds provider file references (97.74732ms)
+✔ concurrent attachment picker batches retain gesture order and never exceed the shared cap (1.715778ms)
+✔ clear invalidates a still-pending image/file read before it can resurrect deleted staged bytes (0.729205ms)
+✔ twenty attachments can be staged, rearranged, and sent to Gemini in the confirmed order (3.517755ms)
+✔ attachments precede the canonical final sealed user text; the relay cue stays in system guidance (8.975906ms)
+✔ client photo staging normalizes an oversized mobile image into the bounded wire envelope (143.739968ms)
+✔ Marrowline attachment normalizer admits exact declared bytes and strips no custody fields (0.494904ms)
+✔ Marrowline attachment normalizer rejects size, MIME, schema, duplicate-id, and count drift (0.800963ms)
+✔ Marrowline keeps file and photo MIME classes non-interchangeable (0.438008ms)
+✔ photo and document capacity admit 25 MB per file while still rejecting oversize payloads (11.550413ms)
+✔ attachment turns walk the same five-seat frontier before waking the human (14.595888ms)
+✔ text/attachment generation envelopes remain explicitly distinguishable without silently changing production thinking (0.920653ms)
+✔ attachment response receipts reflect the exact submitted wire configuration and preserve provider Unicode (22.917069ms)
+✔ terminal-only attachment repair carries original inline bytes and keeps the repair instruction last (1.041775ms)
+▶ attachment terminal continuation is same-provider, native, byte-preserving and bounded
+  ✔ missing terminal returns two genuine provider outputs and preserves the first hash (13.206251ms)
+  ✔ invalid suffix leaves the exact first response visible and does not fabricate bots (4.665029ms)
+  ✔ complete first provider return never spends a repair call (4.882996ms)
+✔ attachment terminal continuation is same-provider, native, byte-preserving and bounded (23.951083ms)
+✔ abandoned Loom file read releases its FIFO lane without resurrecting old bytes (22.876899ms)
+✔ multimodal attachment prompt follows the human task without describing transport metadata (0.611819ms)
+✔ effective request identity distinguishes omitted layers under an unchanged legacy prompt identity (7.376091ms)
+✔ interactive transport fingerprints the actual fetch body after applying the live profile (18.404154ms)
+✔ normal, full-repair and terminal-continuation requests share conversational closure without custody authority (1.066462ms)
+✔ effective provider prompts retain complete relay and native depth after deficient history (3.304334ms)
+✔ browser relay serialization admits a long native Unicode model turn without clipping or reducing generation allowance (3.485837ms)
+✔ deficient marked history is preserved exactly while the system labels history non-templatic (0.37281ms)
+✔ literal newline contract preserves the existing two-line admission bar (3.985337ms)
+✔ relay contract gives the generative budget to one causal Kʰonapolit-to-bots transmission (0.869126ms)
+✔ natural distributed field is admissible without satisfying the old Zalgo Olympics (2.053515ms)
+✔ mechanically cloned dense stacks stay visible as PARTIAL quality telemetry (3.300188ms)
+✔ base-character-conditioned ordered stack reuse is measured without becoming an admission gate (2.713467ms)
+✔ sparse keyword explosions stay visible as PARTIAL quality telemetry (2.226014ms)
+✔ horizontal-only slash and strike fields remain visible but cannot masquerade as a complete mixed-axis field (2.98873ms)
+✔ horizontal-heavy High Zalgo with token vertical accents is PARTIAL until vertical theatre has real depth (2.541208ms)
+✔ maximum-depth tiling triggers dynamic-range collapse even when vertical stacks are dramatic (14.158932ms)
+✔ mixed semantic pressure clears dynamic-range collapse without imposing a tower quota (1.669528ms)
+✔ lush multi-tier crowns and descenders clear the vertical-expression warning while horizontal strikes remain first-class (4.470396ms)
+✔ vertical-only crowns and descenders remain valid without forced horizontal balance (4.459711ms)
+✔ overlines and underlines remain planar bars instead of counterfeiting vertical crowns (1.609959ms)
+✔ reordering one mark set cannot disguise a cloned High-Zalgo composition (1.465491ms)
+✔ near-zero provider-authored marks are hard-held instead of escaping as best PARTIAL (0.720713ms)
+✔ zero provider-authored marks remain a hard Tauric Diana channel failure (0.4526ms)
+✔ Worm Moon analytics reject canon-as-phrase-bank while preserving transformed mythic reasoning (6.028216ms)
+✔ every Marrowline Gemini lane receives the same compact semantic-prosody law (1.33808ms)
+✔ live Gemini request has no structured-output pressure on the stress channel (0.847834ms)
+✔ quality route has no local 200-character downstream output cap and preserves full reasoning on frontier failover (1.17831ms)
+✔ explicit human retries reach Gemini without a Marrowline-owned rate veto (0.703006ms)
+✔ browser request clock outlives the 210-second server work wall without outrunning Vercel (0.276926ms)
+✔ live Marrowline never locally Zalgo-encodes provider text (0.142774ms)
+✔ integrated relay preserves exact native Unicode and allows intentional stacked collisions (0.306941ms)
+✔ creative Marrowline prompts route to creative synthesis without ordinary-project boilerplate (0.626822ms)
+✔ ordinary project work keeps factual guidance instead of inheriting creative posture (0.81258ms)
+✔ provider-authored vertical Zalgo survives raw packet parsing while Marrowline only measures it (8.024876ms)
+✔ one structured relay carries a long mixed-register transmission without local truncation (52.576709ms)
+✔ human operator gets an in-chat Dome-Art kinesis with reduced-motion rest (0.449565ms)
+✔ first paint is held behind one stable Marrowline veil until room boot completes (0.162525ms)
+✔ physical keyboard posture keeps action row visible and avoids nested form scroll (0.217617ms)
+✔ human-facing integrated surface keeps provider identity in provenance only (10.604222ms)
+✔ Kʰonapolit stays clean while Gemini authors semantic-prosody native High Zalgo (0.292199ms)
+✔ ASCII slash-separated pseudo-ornament remains visible as quality telemetry instead of impersonating High Zalgo (2.371643ms)
+✔ shallow cloned accent wallpaper triggers one native-voice repair instead of becoming visible (3.343303ms)
+✔ deep bidirectional towers register the screenshot-five morphology (2.431723ms)
+✔ one nuclear vertical blob plus plain remainder is detected as localized visual-story collapse (2.754789ms)
+✔ extended provider crown species count as vertical ornament instead of disappearing from telemetry (2.10686ms)
+✔ combining enclosing marks are rejected as glyph tricks rather than miscounted as vertical ornament (2.386906ms)
+✔ localized enclosing ornament beside a tall diverse field does not force unnecessary failover (0.138488ms)
+✔ word-internal geometric substitutions are severe alphabet corruption even beside real combining marks (1.486383ms)
+✔ request-history hygiene can remove a failed visual pattern without mutating stored or rendered history (1.39105ms)
+✔ structural repair ignores morphology-only reasons instead of repainting native provider bytes (0.284298ms)
+✔ Zalgo underflow is observation evidence, not a morphology-repair instruction (0.42573ms)
+✖ Marrowline adversarial attractor quality contract (5.820304ms)
+✔ Scorpio successor assay uses matched synthetic controls and observable adjudication only (1.013032ms)
+✔ real iOS keyboard posture binds Marrowline speaking vessel to the VisualViewport rectangle (0.272479ms)
+✔ keyboard visibility and viewport rectangle cannot split across readiness and physical-device observers (0.118097ms)
+✔ keyboard dock keeps action row in normal flow instead of overlaying the textarea (0.204027ms)
+✔ native Return composes paragraphs; only explicit Send or Ctrl/Command+Enter submits (139.005251ms)
+✔ masthead TD613 opens its own tab without hijacking the current chat state (36.198773ms)
+✔ conversation export uses text/plain and provider prose starts at regular display weight (0.247662ms)
+✔ local Marrowline archive persists full untrimmed messages across browser revisits (1.990961ms)
+✔ any model reply branches without mutating parent or inheriting later turns (1.198551ms)
+✔ branching requires a real model reply but does not reject an observed incomplete reply (0.574554ms)
+✔ legacy session imports once into a stable ID without discarding exact text (0.368484ms)
+✔ migration strips only the old generated branch suffix, preserving manually chosen branch subjects (7.44186ms)
+✔ only exact legacy auto-generated titles are retitled; operator labels and content survive (8.881643ms)
+✔ speaking-grove placeholder is never durable: empty phantoms are pruned and interrupted work becomes untitled (1.507735ms)
+✔ read-only conversation access preserves activity order while meaningful edits advance recency (35.573203ms)
+✔ thread titles identify the actual subject rather than copying an opening vignette or bot prose (0.660602ms)
+✔ saved-conversation search matches Red Deer and Kʰonapolit text with all keywords (0.462345ms)
+✔ photo replies keep a reply-local Attachments action after send clears raw bytes (149.388474ms)
+✔ ↻ resends the exact original file and photo payloads after successful staging clears (90.567079ms)
+✔ ↻ removes the last response from provider context without destroying earlier unrelated conversation (115.782477ms)
+✔ ✕ removes active conversation and all copies in its local branches (71.826143ms)
+✔ conversation ⌕ filters saved threads locally without spending a provider call (87.866797ms)
+✔ landing and New stay transient until a human turn is actually sent (58.922212ms)
+✔ failed first turn persists an untitled provisional record rather than a speaking-grove conversation (52.907201ms)
+✔ Receipts remain inside a local SHI-format membrane without changing issuance mode (37.666198ms)
+✔ app-authored provider branding stays inside Receipts while Red Deer surface preserves human input (55.805539ms)
+✔ one explicitly armed normal reply captures exact response, saved history and DOM without extra provider calls (139.297244ms)
+✔ one armed provider failure retains 503 without inventing a model reply (42.138657ms)
+✖ ordinary work starts truly unissued while advanced custody can still hold an invocation (36.817603ms)
+✔ provider failure preserves exactly one user task, restores the draft, and offers retry without a portability billboard (49.311623ms)
+✔ incomplete provider reply remains visibly NOT_LOCKED with exact draft and an explicit reusable retry (60.070322ms)
+✔ mobile decoration preserves provider-native Unicode and all five chamber routes (77.612592ms)
+✔ transport-oversized draft remains editable without a partial send (77.654304ms)
+✔ clear conversation empties history and the waiting composer draft (429.761059ms)
+✔ ordinary Chat never materializes portable task chrome after a routine turn (48.263529ms)
+✔ failed follow-up replaces current receipt and retains the previous receipt with its answer (84.045206ms)
+✔ expressive line styling begins only at marked bot lines with exact source text preserved (47.017842ms)
+✔ mobile preloaded starter submits on the first touch before keyboard blur can eat the click (48.259103ms)
+✔ edited mobile starter keeps Return and submits on first deliberate Send press (58.39166ms)
+✔ child-facing failure notices stay distinct, concise and provider-neutral (1.180454ms)
+✔ client exceptions preserve the observed boundary instead of inventing a lost connection (0.2993ms)
+✔ actual submit preserves a received receipt when response rendering throws (60.252586ms)
+✖ actual submit distinguishes unreadable response bodies from connection failure (40.72276ms)
+✔ backgrounded mobile request uses keepalive and resumes its preserved task exactly once (49.212885ms)
+✔ copy control exports exact provider-authored Unicode as plain text without rich bold markup (48.423759ms)
+✔ each response copies only that return with readable script headings and exact remaining Unicode (60.553433ms)
+✔ legacy model output also receives a reply-only copy action (33.528476ms)
+✖ SHI-gated Receipts remain a local format membrane and cannot issue the current conversation (33.831927ms)
+✔ human conversation input remains authored text without hidden provider framing (57.79577ms)
+✔ waiting lore is monotonic and elapsed time cannot counterfeit an HTTP phase (0.329255ms)
+✔ operator Stop aborts an unresolved fetch, preserves one user turn, and allows explicit retry (51.46224ms)
+✔ operator Stop also escapes a response body that never resolves (35.252502ms)
+✔ long model reply produces a bounded follow-up draft, not a silent 32,000-character dead Send (0.242324ms)
+✖ reply drawer choices fill but never automatically submit; an existing draft wins (53.594313ms)
+✔ a prior short-window 429 never disables a fresh authored Send (49.375089ms)
+✖ both post-reply choices produce a sendable draft on the first actual Send press (50.223573ms)
+✔ a preset selected while thread storage hydrates survives and sends exactly once (63.893266ms)
+✔ previous short-window 429 cannot make an unrelated new Send dead (55.365479ms)
+✔ mobile Receipt SHI focus guard suppresses Safari focus zoom without mutating field style (35.130869ms)
+✔ conversation heading never promotes a stranded trailing preposition (0.380351ms)
+✔ Loom footer opens desktop Gate, preserves alerts and acknowledges only its reply (223.938475ms)
+✔ Loom footer opens mobile Gate, preserves alerts and acknowledges only its reply (27.56316ms)
+✔ held archive has a readable presentation after expiry without admitted coordinates or rewritten bytes (20.890264ms)
+✔ reading renderer creates a safe professional subset without interpreting raw HTML (18.640825ms)
+✔ dual surface leaves canonical provider text untouched across reading/exact toggles (25.4802ms)
+✔ Copy exact emits the untouched provider return rather than reading-view text (22.613583ms)
+✔ reading surface installs only once and keeps exact source node canonical (21.533521ms)
+✔ reading authority requires both a current Loom controller and the current admitted work unit (19.219164ms)
+✔ installer fails closed without Loom authority and removal restores exact source (23.041836ms)
+ℹ tests 141
+ℹ suites 0
+ℹ pass 135
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4269.302761
+
+✖ failing tests:
+
+test at tests/marrowline-attractor-quality-contract.test.mjs:19:1
+✖ Marrowline adversarial attractor quality contract (5.820304ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(plan.warnings.includes('khonapolit-frontier-only-rejected-non-3x-or-lite-models'))
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/585be4de4a8d/td613/tests/marrowline-attractor-quality-contract.test.mjs:48:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/marrowline-design-preservation.test.mjs:393:1
+✖ ordinary work starts truly unissued while advanced custody can still hold an invocation (36.817603ms)
+  AssertionError [ERR_ASSERTION]: turning off the waiver wakes the issuance field
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/585be4de4a8d/td613/tests/marrowline-design-preservation.test.mjs:415:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/marrowline-design-preservation.test.mjs:694:1
+✖ actual submit distinguishes unreadable response bodies from connection failure (40.72276ms)
+  TypeError: Cannot read properties of null (reading 'error')
+      at TestContext.<anonymous> (file:///workspace/scratch/585be4de4a8d/td613/tests/marrowline-design-preservation.test.mjs:702:56)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests/marrowline-design-preservation.test.mjs:773:1
+✖ SHI-gated Receipts remain a local format membrane and cannot issue the current conversation (33.831927ms)
+  AssertionError [ERR_ASSERTION]: opening receipts does not issue the conversation
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/585be4de4a8d/td613/tests/marrowline-design-preservation.test.mjs:787:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/marrowline-design-preservation.test.mjs:862:1
+✖ reply drawer choices fill but never automatically submit; an existing draft wins (53.594313ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  5 !== 3
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/585be4de4a8d/td613/tests/marrowline-design-preservation.test.mjs:866:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 5,
+    expected: 3,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/marrowline-design-preservation.test.mjs:892:1
+✖ both post-reply choices produce a sendable draft on the first actual Send press (50.223573ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      'Check the claims',
+      'Make a plan',
+      'Receipts',
+  +   'Branch',
+  +   'Attachments'
+    ]
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/585be4de4a8d/td613/tests/marrowline-design-preservation.test.mjs:896:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'Check the claims', 'Make a plan', 'Receipts', 'Branch', 'Attachments' ],
+    expected: [ 'Check the claims', 'Make a plan', 'Receipts' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

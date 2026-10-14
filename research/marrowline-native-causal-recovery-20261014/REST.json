@@ -1,0 +1,106 @@
+{
+  "schema": "td613.marrowline.causal-investigation-rest/v1",
+  "state": "HELD_EMPIRICAL_CAUSE",
+  "operator": "Tawanna C. Miller",
+  "main_at_acquisition": "7f28a864da5a2a1af207e55eba7b27bb0ebff2ad",
+  "production_source_packet": "94fd8107e4ccb66b757b10979a818936808359d5",
+  "deployed_runtime_source": "b12c1e8d8d06f1f0aa9da986f463c20eb8a799bd",
+  "prior_reference_main": "459b1085ddb1056f82ecfa5f7b3859af54d71536",
+  "operator_correction": "The degradation began before the Argon change.",
+  "genuinely_working_episode_and_configuration_bound": false,
+  "source_snapshots_completed": 11,
+  "production_runtime_files_changed": 0,
+  "live_provider_generation_requests": 0,
+  "new_gemini_generation_charges_usd": 0,
+  "new_ledger_reservations": 0,
+  "new_release_gestures": 0,
+  "billing_class": "OPERATOR_ATTESTED_PAID_ACCEPTED_FROM_CONTINUITY",
+  "current_credential_matches_registered_key": true,
+  "current_runtime_billing_tier_machine_observation": "UNVERIFIED",
+  "argon_discovered": true,
+  "argon_successful_generation_witness": false,
+  "budget_observation": {
+    "project": "late-glade-40477105",
+    "branch": "br-round-union-b5v3ludi",
+    "total_runs": 28,
+    "active_runs": 0,
+    "marrowline_runs": 0,
+    "statuses": [
+      "CLOSED",
+      "HELD"
+    ],
+    "old_loom_budget_reallocated": false
+  },
+  "unresolved": [
+    "one original degraded provider episode bound to submitted request, served model/version, complete candidate bytes, selected return, stored return and DOM/device observation",
+    "paired fresh/history provider observations with same source, credential, model and envelope",
+    "explicit numerical spend bound and admitted single-call transport for any new paid acquisition"
+  ],
+  "artistic_acceptance": "Independent operator judgment; never inferred from tests or deployment",
+  "failed_1488_status": "CLOSED_UNMERGED; five failed tests; no revival",
+  "earlier_source_extension": {
+    "attempted_snapshots": [
+      "7ea8323db983429507bb0e60b1739386328862db",
+      "a09029f56ae230993eb67fe7fb906fbdbccd26a1"
+    ],
+    "state": "NOT_ACQUIRED",
+    "reason": "partial local Git history triggered unavailable lazy object fetch; no result inferred"
+  },
+  "environment": {
+    "node_runtime": "v24.19.0",
+    "ci_node_version": "22",
+    "python_runtime": "3.12.14"
+  },
+  "file_integrity": [
+    {
+      "path": "observations/focused-regression.txt",
+      "sha256": "b5c9fa7a14663beee640671ed2951d45dfe0ce70f2c2b3c52d4a2260c509f050",
+      "bytes": 21801
+    },
+    {
+      "path": "observations/presentation-baseline.txt",
+      "sha256": "3242d7aa76ac929e1a7bbab8056b97ef9576281c59cab6f4b39d31d1d571d549",
+      "bytes": 23888
+    },
+    {
+      "path": "observations/production-client-bytes.json",
+      "sha256": "a550ce1826fa0e1d2b8dd1dabfbe78611b45dd9c09291a723b5dcc556ee5a0bc",
+      "bytes": 2127
+    },
+    {
+      "path": "observations/production-credential.json",
+      "sha256": "3b803b207e723f1acec626fa8d0f72afdd563cee3e60bc61c7a78d868ff86a5d",
+      "bytes": 729
+    },
+    {
+      "path": "observations/production-readiness.json",
+      "sha256": "c3acd6d79b81d51abde69756c0a4c8162a19e5dd5957bd8dc5fbaffcf6b34ebf",
+      "bytes": 17151
+    },
+    {
+      "path": "observations/production-source.json",
+      "sha256": "4a212f354bfc84f86c6c18fb5a8db2b2f085b775b53fe8a8e62e08bb104b4024",
+      "bytes": 119
+    },
+    {
+      "path": "observations/retry-replacement.txt",
+      "sha256": "4de424aea8cd33592248f6b371706d0089ee900a5506db08005617042d9352d8",
+      "bytes": 342
+    },
+    {
+      "path": "observations/source-comparison.json",
+      "sha256": "96ad9827ad3d7ae9e3a6f466b4ad08c64ca6b8cf52c900b93b456204a1e0a4ff",
+      "bytes": 44694
+    },
+    {
+      "path": "observations/transport-audit.json",
+      "sha256": "be9ee52dc8cdbe28bb37d3ccb6b816ac9005c349a9cc10cfcca4ba5f80e8af35",
+      "bytes": 845
+    },
+    {
+      "path": "observations/transport-contracts.txt",
+      "sha256": "11e83c8207cce6f816bc20966eb7e3dfd4f5610eb5c498a723f47139b3b8906b",
+      "bytes": 11380
+    }
+  ]
+}

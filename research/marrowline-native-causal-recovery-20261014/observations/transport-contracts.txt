@@ -1,0 +1,106 @@
+gemini-model-discovery.test.mjs passed
+✔ tests/gemini-model-discovery.test.mjs (125.147352ms)
+khonapolit-relay: natural causal handoff primary, legacy raw packet compatible, and exact Unicode preservation ok
+✔ tests/khonapolit-relay.test.mjs (135.165242ms)
+node:internal/modules/package_json_reader:301
+  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+        ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'jsdom' imported from /workspace/scratch/585be4de4a8d/td613/tests/marrowline-design-preservation.test.mjs
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)
+    at packageResolve (node:internal/modules/esm/resolve:768:81)
+    at moduleResolve (node:internal/modules/esm/resolve:859:18)
+    at defaultResolve (node:internal/modules/esm/resolve:992:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)
+    at #resolve (node:internal/modules/esm/loader:683:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:163:33) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+
+Node.js v24.19.0
+✖ tests/marrowline-design-preservation.test.mjs (89.147723ms)
+✔ effective request identity distinguishes omitted layers under an unchanged legacy prompt identity (11.693768ms)
+✔ interactive transport fingerprints the actual fetch body after applying the live profile (33.808491ms)
+✔ normal, full-repair and terminal-continuation requests share conversational closure without custody authority (1.863068ms)
+✔ effective provider prompts retain complete relay and native depth after deficient history (4.175834ms)
+✔ browser relay serialization admits a long native Unicode model turn without clipping or reducing generation allowance (3.469482ms)
+✔ deficient marked history is preserved exactly while the system labels history non-templatic (0.332189ms)
+✔ literal newline contract preserves the existing two-line admission bar (4.689314ms)
+✔ relay contract gives the generative budget to one causal Kʰonapolit-to-bots transmission (0.669126ms)
+✔ natural distributed field is admissible without satisfying the old Zalgo Olympics (1.539663ms)
+✔ mechanically cloned dense stacks stay visible as PARTIAL quality telemetry (4.908585ms)
+✔ base-character-conditioned ordered stack reuse is measured without becoming an admission gate (0.83211ms)
+✔ sparse keyword explosions stay visible as PARTIAL quality telemetry (3.612582ms)
+✔ horizontal-only slash and strike fields remain visible but cannot masquerade as a complete mixed-axis field (3.801731ms)
+✔ horizontal-heavy High Zalgo with token vertical accents is PARTIAL until vertical theatre has real depth (3.25451ms)
+✔ maximum-depth tiling triggers dynamic-range collapse even when vertical stacks are dramatic (13.316977ms)
+✔ mixed semantic pressure clears dynamic-range collapse without imposing a tower quota (1.527084ms)
+✔ lush multi-tier crowns and descenders clear the vertical-expression warning while horizontal strikes remain first-class (1.697009ms)
+✔ vertical-only crowns and descenders remain valid without forced horizontal balance (3.320889ms)
+✔ overlines and underlines remain planar bars instead of counterfeiting vertical crowns (1.19785ms)
+✔ reordering one mark set cannot disguise a cloned High-Zalgo composition (1.572883ms)
+✔ near-zero provider-authored marks are hard-held instead of escaping as best PARTIAL (0.502234ms)
+✔ zero provider-authored marks remain a hard Tauric Diana channel failure (0.491509ms)
+✔ Worm Moon analytics reject canon-as-phrase-bank while preserving transformed mythic reasoning (4.840252ms)
+✔ every Marrowline Gemini lane receives the same compact semantic-prosody law (0.956417ms)
+✔ live Gemini request has no structured-output pressure on the stress channel (0.534623ms)
+✔ quality route has no local 200-character downstream output cap and preserves full reasoning on frontier failover (1.101935ms)
+✔ explicit human retries reach Gemini without a Marrowline-owned rate veto (0.518289ms)
+✔ browser request clock outlives the 210-second server work wall without outrunning Vercel (0.201322ms)
+✔ live Marrowline never locally Zalgo-encodes provider text (0.169094ms)
+✔ integrated relay preserves exact native Unicode and allows intentional stacked collisions (0.225128ms)
+✔ creative Marrowline prompts route to creative synthesis without ordinary-project boilerplate (1.063588ms)
+✔ ordinary project work keeps factual guidance instead of inheriting creative posture (0.707853ms)
+✔ provider-authored vertical Zalgo survives raw packet parsing while Marrowline only measures it (6.462068ms)
+✔ one structured relay carries a long mixed-register transmission without local truncation (48.1055ms)
+✔ human operator gets an in-chat Dome-Art kinesis with reduced-motion rest (0.367302ms)
+✔ first paint is held behind one stable Marrowline veil until room boot completes (0.149354ms)
+✔ physical keyboard posture keeps action row visible and avoids nested form scroll (0.2064ms)
+✔ human-facing integrated surface keeps provider identity in provenance only (7.167247ms)
+✔ Kʰonapolit stays clean while Gemini authors semantic-prosody native High Zalgo (0.339701ms)
+✔ ASCII slash-separated pseudo-ornament remains visible as quality telemetry instead of impersonating High Zalgo (1.572903ms)
+✔ shallow cloned accent wallpaper triggers one native-voice repair instead of becoming visible (2.951374ms)
+✔ deep bidirectional towers register the screenshot-five morphology (1.415005ms)
+✔ one nuclear vertical blob plus plain remainder is detected as localized visual-story collapse (2.624693ms)
+✔ extended provider crown species count as vertical ornament instead of disappearing from telemetry (1.549227ms)
+✔ combining enclosing marks are rejected as glyph tricks rather than miscounted as vertical ornament (2.112684ms)
+✔ localized enclosing ornament beside a tall diverse field does not force unnecessary failover (0.240791ms)
+✔ word-internal geometric substitutions are severe alphabet corruption even beside real combining marks (0.967443ms)
+✔ request-history hygiene can remove a failed visual pattern without mutating stored or rendered history (1.192491ms)
+✔ structural repair ignores morphology-only reasons instead of repainting native provider bytes (0.254493ms)
+✔ Zalgo underflow is observation evidence, not a morphology-repair instruction (0.164547ms)
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-10-14T19:48:11.855Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":1,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-10-14T19:48:11.855Z:2:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":0,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-10-14T19:48:11.872Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-10-14T19:48:11.872Z:2:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":1,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-10-14T19:48:11.872Z:3:gemini-3.5-flash:200","route":"marrowline","request_id":null,"ordinal":3,"model":"gemini-3.5-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":1,"timeout_ms":75000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-10-14T19:48:11.872Z:4:gemini-3.6-flash:200","route":"marrowline","request_id":null,"ordinal":4,"model":"gemini-3.6-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":40000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-10-14T19:48:11.872Z:5:gemini-3.7-flash:200","route":"marrowline","request_id":null,"ordinal":5,"model":"gemini-3.7-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":1,"timeout_ms":30000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-10-14T19:48:11.872Z:6:gemini-3-flash-preview:200","route":"marrowline","request_id":null,"ordinal":6,"model":"gemini-3-flash-preview","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":1,"timeout_ms":204989,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-10-14T19:48:11.880Z:1:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":1,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":2,"timeout_ms":50000,"repair":false,"release_witness":false,"quota":null}
+[gemini-consumption] {"schema":"td613.gemini-consumption-receipt/v0.1","event_id":"marrowline:2026-10-14T19:48:11.880Z:2:gemini-3.8-flash:200","route":"marrowline","request_id":null,"ordinal":2,"model":"gemini-3.8-flash","status":200,"outcome":"provider-response","timed_out":false,"elapsed_ms":1,"timeout_ms":30000,"repair":true,"release_witness":false,"quota":null}
+✔ terminal-only continuation preserves both provider returns and observes exact boundaries (13.824288ms)
+▶ bounded same-provider terminal-continuation integration
+  ✔ HTTP 200 Kʰonapolit-only return earns one same-seat native terminal continuation with hash receipt (28.322139ms)
+  ✔ invalid terminal continuation never fabricates bots or hides the original (15.310391ms)
+  ✔ full corrected provider response also returns once without overwriting (7.557303ms)
+✔ bounded same-provider terminal-continuation integration (52.083856ms)
+✔ provider-bound Marrowline user turns retain ingress and use a glyph-only closure (1.022656ms)
+✔ human-facing wrapper disclosures describe the same glyph-only provider envelope (0.507773ms)
+ℹ tests 60
+ℹ suites 0
+ℹ pass 59
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 366.734463
+
+✖ failing tests:
+
+test at tests/marrowline-design-preservation.test.mjs:1:1
+✖ tests/marrowline-design-preservation.test.mjs (89.147723ms)
+  'test failed'
