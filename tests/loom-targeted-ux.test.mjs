@@ -14,6 +14,7 @@ import { LOOM_RETURN_REVIEW_STORAGE_KEY } from '../app/dome-world/holonomy-loom/
 
 const html = fs.readFileSync(new URL('../app/dome-world/holonomy-loom.html', import.meta.url), 'utf8');
 const product = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/loom-product-v6.css', import.meta.url), 'utf8');
+const runway = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/loom-firewall-runway.css', import.meta.url), 'utf8');
 const workspaceSource = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/ai-workspace.js', import.meta.url), 'utf8');
 const runtimeStateSource = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/runtime-state-view.js', import.meta.url), 'utf8');
 const instrumentSource = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/instrument-state-view.js', import.meta.url), 'utf8');
@@ -143,15 +144,28 @@ test('Flow-Core remains a single accessible header guide with eight text-only gl
 
 test('the firewall promise explains outgoing checks, returning review and limits', () => {
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
-  assert.match(doc.querySelector('#loomFirstCrossingTitle').textContent, /firewall between you and your AI/i);
-  assert.match(doc.querySelector('.loom-intro p').textContent, /Your AI firewall/i);
-  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent, /Choose what AI receives/i);
+  assert.match(doc.querySelector('#loomFirstCrossingTitle').textContent, /Firewall your online life from AI/i);
+  assert.match(doc.querySelector('.loom-intro p').textContent, /ChatGPT, Gemini, and other LLMs/i);
+  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent, /ChatGPT, Gemini, and other LLMs/i);
   assert.match(doc.querySelector('#loomReturnWorkspace header').textContent, /before accepting/i);
   assert.match(doc.querySelector('[data-tool-panel="boundary"]').textContent, /external AI provider determines its own retention/i);
-  assert.match(workspaceSource, /title:'Watch Loom block a leak\.'/);
-  assert.match(workspaceSource, /title:'Challenge what comes back\.'/);
-  assert.match(product, /\[data-first-crossing-step="4"\] \.loom-first-crossing-objects \.loom-first-crossing-private/);
+  assert.match(workspaceSource, /title:'Watch the firewall refuse\.'/);
+  assert.match(workspaceSource, /title:'Challenge the AI response\.'/);
+  assert.match(runway, /\[data-first-crossing-step="4"\] \.loom-first-crossing-objects \.loom-first-crossing-private/);
   assert.doesNotMatch(doc.querySelector('#loomFirstCrossingPrompt').textContent, /portable|cryptographic|governance/i);
+});
+
+test('the visible runway has one inert firewall stage and preserves all 39 live carriers', () => {
+  const doc = new JSDOM(loomWorkspaceTemplate).window.document;
+  const stage = doc.querySelector('.loom-firewall-theater');
+  assert.ok(stage, 'firewall has a separate visual plane');
+  assert.equal(stage.getAttribute('aria-hidden'), 'true');
+  assert.match(stage.textContent, /CHATGPT.*GEMINI.*LLMS/i);
+  assert.match(runway, /loom-field-glyph\{opacity:1\}/);
+  assert.match(runway, /data-first-crossing-step="4".*loom-firewall-denial/);
+  assert.match(runway, /data-first-crossing-step="5".*loom-firewall-line--return/);
+  assert.doesNotMatch(runway, /@keyframes|setInterval|requestAnimationFrame|new AnimationCoordinator/);
+  assert.match(html, /loom-firewall-runway\.css\?v=/);
 });
 
 test('à completion, rather than the first tap, gates hõt/cōl', () => {
@@ -183,8 +197,8 @@ test('How Loom works is a recoverable handoff preview with a living Flow-Core re
   assert.match(workspaceSource, /nextFlowcoreChoreography/);
   assert.match(workspaceSource, /flowcore_choreography:firstCrossingChoreography/);
   assert.match(workspaceSource, /coordinator\.setContinuous\(true\)/);
-  assert.match(workspaceSource, /title:'The firewall between you and your AI\.'/);
-  assert.match(workspaceSource, /title:'The final say is yours\.'/);
+  assert.match(workspaceSource, /title:'Firewall your online life from AI\.'/);
+  assert.match(workspaceSource, /title:'Your firewall\. Your call\.'/);
   assert.match(workspaceSource, /Start my own task →/);
   assert.doesNotMatch(workspaceSource, /title:'Prepared is not transmitted\.'/);
   assert.doesNotMatch(workspaceSource, /title:'They gathered\. Nothing crossed\.'/);
