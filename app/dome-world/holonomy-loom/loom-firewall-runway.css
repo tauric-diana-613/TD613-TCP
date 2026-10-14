@@ -313,6 +313,20 @@
   #loomAiWorkspace .loom-practice-controls{padding-top:3px}
   #loomAiWorkspace .loom-practice-controls button{font-size:10px}
 }
+/* On short desktop windows the entire tutorial remains in the first fold.
+   The runway scales as one composition instead of pushing Skip below the edge. */
+@media(min-width:761px) and (max-height:800px){
+  #loomAiWorkspace .loom-stage{padding-block:10px}
+  #loomAiWorkspace .loom-first-crossing{gap:7px}
+  #loomAiWorkspace .loom-first-crossing-copy h2{
+    font-size:clamp(45px,4.2vw,58px);
+    max-width:20ch;
+    margin:8px auto 6px;
+  }
+  #loomAiWorkspace .loom-first-crossing-copy p{font-size:14px;line-height:1.35}
+  #loomAiWorkspace .loom-firewall-theater{height:168px}
+  #loomAiWorkspace .loom-first-crossing-answer{font-size:11px}
+}
 @media(max-width:360px){
   #loomAiWorkspace .loom-stage{padding:10px 12px}
   #loomAiWorkspace .loom-first-crossing-copy h2{font-size:31px;max-width:19ch}
