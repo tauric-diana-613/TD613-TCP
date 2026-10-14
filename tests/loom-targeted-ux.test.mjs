@@ -146,7 +146,7 @@ test('the firewall promise explains outgoing checks, returning review and limits
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
   assert.match(doc.querySelector('#loomFirstCrossingTitle').textContent, /Firewall your online life from AI/i);
   assert.match(doc.querySelector('.loom-intro p').textContent, /ChatGPT, Gemini, and other LLMs/i);
-  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent, /ChatGPT, Gemini, or another LLM/i);
+  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent, /ChatGPT, Gemini, and other LLMs/i);
   assert.match(doc.querySelector('#loomReturnWorkspace header').textContent, /before accepting/i);
   assert.match(doc.querySelector('[data-tool-panel="boundary"]').textContent, /external AI provider determines its own retention/i);
   assert.match(workspaceSource, /title:'Test a safeguard\.'/);
@@ -176,14 +176,14 @@ test('the product starts with governed AI work and an optional rather than manda
   assert.equal((hero.textContent.match(/firewall/gi)||[]).length,1,'the public headline uses the word once');
   assert.ok(doc.querySelector('#loomStartNow'));
   assert.ok(doc.querySelector('#loomExploreDemo'));
-  for (const phrase of ['Give AI your terms.','Test the response.','Keep your record.']) {
+  for (const phrase of ['Bring your own rules.','Put answers on trial.','Demand a record.']) {
     assert.ok(hero.textContent.includes(phrase),phrase);
   }
   assert.match(workspaceSource,/loomStartNow'\)\.addEventListener\('click',\(\)=>openLoomThreshold\(\{skipPractice:true\}\)\)/);
   assert.match(workspaceSource,/root\.dataset\.firstCrossingDemo='expanded'/);
   assert.match(runway,/\.loom-motion-view/);
   assert.match(runway,/mask-image:none!important/);
-  assert.match(runway, /\.loom-first-crossing-copy \{[\s\S]*?background:var\(--runway-surface\)/);
+  assert.match(runway, /\.loom-first-crossing-copy \{[\s\S]*?background:#06131b/);
 });
 
 test('à completion, rather than the first tap, gates hõt/cōl', () => {
@@ -216,7 +216,7 @@ test('How Loom works is a recoverable handoff preview with a living Flow-Core re
   assert.match(workspaceSource, /flowcore_choreography:firstCrossingChoreography/);
   assert.match(workspaceSource, /coordinator\.setContinuous\(true\)/);
   assert.match(workspaceSource, /title:'Firewall your online life from AI\.'/);
-  assert.match(workspaceSource, /title:'Your AI\. Your call\.'/);
+  assert.match(workspaceSource, /title:'Your AI answers to your rules\.'/);
   assert.match(workspaceSource, /Start my own task →/);
   assert.doesNotMatch(workspaceSource, /title:'Prepared is not transmitted\.'/);
   assert.doesNotMatch(workspaceSource, /title:'They gathered\. Nothing crossed\.'/);
