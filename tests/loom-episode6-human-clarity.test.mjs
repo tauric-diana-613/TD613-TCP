@@ -79,7 +79,7 @@ test('Loom human-facing task surface stays provider-neutral and names the active
   assert.doesNotMatch(source, /Select only the files Gemini should receive/);
   assert.ok(doc.querySelector('#aiProjectBrief'));
   assert.equal(doc.querySelector('#aiTask').getAttribute('aria-describedby'), 'aiTaskCue');
-  assert.match(source, /Your task and selected files will be included\. Unselected files stay here\./i);
+  assert.match(source, /Your question, selected sources, and instructions form the outgoing work unit\./i);
   assert.match(source, /Edit this fictional example, then prepare the AI request/i);
   assert.match(source, /optional model test sends the fictional task and selected documents/i);
   assert.equal(dom.window.getComputedStyle(doc.querySelector('#aiTask')).fontSize, '16px');
