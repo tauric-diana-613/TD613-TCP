@@ -119,6 +119,7 @@
 }
 @media(max-width:360px){#loomAiWorkspace .loom-stage{padding:28px 18px}#loomAiWorkspace .loom-first-crossing::before{inset:-36px -18px}#loomAiWorkspace .loom-tutorial-meta{font-size:10px;gap:6px}.loom-topbar nav{gap:4px}.loom-topbar .loom-flowcore-help summary{font-size:10px}}
 @media(max-height:720px){#loomAiWorkspace .loom-stage{padding-block:24px}#loomAiWorkspace .loom-first-crossing{gap:16px}#loomAiWorkspace .loom-first-crossing-copy h2{margin-block:20px 14px}}
+@media(min-width:761px) and (max-height:800px){#loomAiWorkspace .loom-stage{padding-block:24px}#loomAiWorkspace .loom-first-crossing{gap:16px}#loomAiWorkspace .loom-first-crossing-copy h2{margin-block:20px 14px}}
 @media(prefers-reduced-motion:reduce){#loomAiWorkspace button{transition:none}}
 
 /* Shared Flow-Core guide: one text-first explainer, always in the Loom header.
