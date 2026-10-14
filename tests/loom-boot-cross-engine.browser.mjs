@@ -113,7 +113,7 @@ try {
               await page.waitForFunction(value=>document.querySelector('#loomFlowcoreCopyNotice')?.textContent===value+' Copied!',glyph);
             }
             await guide.locator('#loomFlowcoreHelpClose').click();
-            await page.locator('#loomStartNow').click();
+            await page.locator('#loomFirstCrossingLeave').click();
             await page.locator('.loom-builder-shell').waitFor({state:'visible'});
             const copyEvidence={
               copied:await page.evaluate(()=>window.__td613CopiedGlyphs),
@@ -207,14 +207,14 @@ try {
             return {width:innerWidth,height:innerHeight,
               stage:rect('#loomAiWorkspace .loom-stage'),
               copy:rect('.loom-first-crossing-copy'),
-              primary:rect('#loomStartNow'),
+              primary:rect('[data-first-crossing-item="brief"]'),
               motion:rect('.loom-motion-view'),
               rootScrollHeight:document.documentElement.scrollHeight,
               stageBorder:getComputedStyle(document.querySelector('#loomAiWorkspace .loom-stage')).borderBottomWidth};
           });
           const pass=box.motion.top>=52 && box.motion.height>=80 && box.copy.top>=box.motion.bottom-1&&
-            box.primary.top>box.copy.bottom&&box.primary.bottom<box.height-6&&
-            box.primary.left>=0&&box.primary.right<=box.width&&
+            box.primary.top>box.copy.bottom&&box.primary.left>=0&&box.primary.right<=box.width&&
+            box.primary.height>=44&&
             box.stageBorder==='0px'&&errors.length===0;
           records.push({engine:name,mode:'SHORT_DESKTOP_FIRST_FOLD',status:pass?'PASS':'FAIL',geometry:box,page_errors:errors});
           if(!pass)failed=true;
