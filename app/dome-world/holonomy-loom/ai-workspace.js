@@ -358,15 +358,15 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       if(consequenceVisible){
         firstCrossingGatheringPublished=true;
         setFirstCrossingCue('gathering-named',{
-          title:'You choose what gets in.',
-          prompt:'The request and reference are selected. The separate note stays behind the firewall.',
-          answer:'Only selected information belongs in the outgoing request. You can review every part of it before sending.',
+          title:'You decide what AI sees.',
+          prompt:'Your chosen request and reference are together. The unselected note remains on your side of the firewall.',
+          answer:'Review the information before allowing it out. No real request has been sent.',
           action:true
         });
       }else{
         setFirstCrossingCue('gathering-motion',{
-          title:'Decide what crosses.',
-          prompt:'Select the source AI may see. Anything left unselected remains in your browser.',
+          title:'The boundary follows your choices.',
+          prompt:'Loom marks your selected source and keeps the other note outside this request.',
           answer:'Checking the selected request and source…'
         });
       }
@@ -376,8 +376,8 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       if(consequenceVisible){
         firstCrossingReadinessPublished=true;
         setFirstCrossingCue('potential-named',{
-          title:'Inspect before sending.',
-          prompt:'Read the actual request, selected source, and instructions. These are what the receiving AI will get if you send.',
+          title:'Check the outgoing request.',
+          prompt:'Inspect exactly what you are preparing to give an LLM, including the task, evidence, and rules.',
           answer:'Nothing has been sent. A real AI handoff requires a separate action in Marrowline.',
           stop:true
         });
@@ -555,8 +555,8 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     firstCrossingWasAlreadyComplete=true;
     storageWrite(FIRST_CROSSING_KEY,'complete');
     setFirstCrossingCue('complete',{
-      title:'The final say is yours.',
-      prompt:'Set a real request, protect what stays local, and decide what to accept from the AI response.',
+      title:'Your firewall. Your call.',
+      prompt:'Now make your own request for ChatGPT, Gemini, or another LLM. Review what leaves and approve what returns.',
       answer:'Loom checks the parts it can observe; you control the request and approve each admitted return.'
     });
     $('loomBegin').hidden=false;
@@ -604,9 +604,9 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     $('loomFirstCrossingBack').hidden=true;
     firstCrossingChoreography=nextFlowcoreChoreography(firstCrossingChoreography?.id, environment.Math?.random?.() ?? Math.random());
     setFirstCrossingCue('choose',{
-      title:'The firewall between you and your AI.',
-      prompt:'Choose what AI receives. Check what tries to cross. Challenge the response before accepting it into your work.',
-      answer:'Try it: select a request and the reference AI may use. This demo never calls an AI provider.'
+      title:'Firewall your online life from AI.',
+      prompt:'Built for ChatGPT, Gemini, and other LLMs. Control what you share, then challenge what comes back.',
+      answer:'Choose the demo request first, then its source. This example stays in your browser.'
     });
     flowcoreMessage.textContent=firstCrossingChoreography.message;
     $('loomFirstCrossingAction').textContent='Inspect the outgoing request →';
@@ -641,8 +641,8 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       firstCrossingItems.forEach(button=>button.disabled=true);
       $('loomFirstCrossingBack').hidden=false;
       setFirstCrossingCue('gathering-motion',{
-        title:'Decide what crosses.',
-        prompt:'The request and reference are selected. The separate note stays behind the firewall.',
+        title:'The boundary follows your choices.',
+        prompt:'Your chosen request and reference are together. The unselected note remains on your side of the firewall.',
         answer:'Checking the selected request and source…'
       });
       projectFirstCrossing(firstCrossingEvent('prepared'));
@@ -684,9 +684,9 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
 
   function renderFirstCrossingLesson(published=false){
     const lessons={
-      3:{cue:'send',title:'See what leaves.',prompt:'When you approve a real request in Marrowline, the selected task and files cross to the AI service. Unselected files remain here.',answer:'This is an illustration. The demo sends nothing to any AI service.',next:'Test the firewall →'},
-      4:{cue:'privacy',title:'Watch Loom block a leak.',prompt:'Loom just tested a request containing the protected phrase from the local-only note. Its outgoing guard blocked that attempt.',answer:'The guard passed this local test. It cannot control or measure an outside AI provider’s hidden memory.',next:'Challenge the reply →'},
-      5:{cue:'proof',title:'Challenge what comes back.',prompt:'Check the reply against your original request and sources. Look for missing evidence, protected terms, and unsupported claims.',answer:'You decide whether to accept returned work into Loom. This demo answer is fictional and proves no AI execution.',next:'Finish tutorial →'}
+      3:{cue:'send',title:'Take Loom to your LLM.',prompt:'Prepare a request in Loom, then take its copy or export into ChatGPT, Gemini, or another LLM. The model receives what you choose to submit.',answer:'Sending to an external service is a separate action. This demonstration sends nothing.',next:'Test the firewall →'},
+      4:{cue:'privacy',title:'Watch the firewall refuse.',prompt:'The demo tried to push a protected phrase across the boundary. Loom’s local outgoing check blocked that attempt.',answer:'This test verifies a local block. It cannot inspect or control ChatGPT, Gemini, or any other provider’s hidden processing or retention.',next:'Challenge the reply →'},
+      5:{cue:'proof',title:'Challenge the AI response.',prompt:'Bring an answer back for inspection. Compare it with your instructions, evidence, and protected boundaries before accepting it.',answer:'Only you decide what enters the continuing work. This illustrated response is fictional; no LLM was contacted.',next:'Finish tutorial →'}
     };
     const lesson=lessons[firstCrossingStep];
     if(!lesson)return;
