@@ -135,8 +135,8 @@ try {
           await context.close();
         }
       }
-      // 1536px operator desktop regression: the couture typography may not
-      // retain the legacy left:50% after the centering transform is retired.
+      // 1536px operator desktop regression: keep the reading column in the
+      // left half of the viewport and preserve the full-screen Loom field.
       {
         const context = await browser.newContext({ viewport: { width: 1536, height: 960 }, reducedMotion: 'reduce' });
         const page = await context.newPage();
@@ -161,21 +161,23 @@ try {
             const title = document.querySelector('#loomFirstCrossingTitle');
             const prompt = document.querySelector('#loomFirstCrossingPrompt');
             const cards = document.querySelector('#loomFirstCrossingObjects');
+            const field = document.querySelector('#aiRuntimeState .loom-glyph-field');
             const rect = node => { const r=node.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height}; };
             const visible = node => { const x=getComputedStyle(node);return x.display!=='none'&&x.visibility==='visible'; };
-            const c=rect(copy), t=rect(title), p=rect(prompt), o=rect(cards);
-            return {viewport:innerWidth,boot:document.documentElement.dataset.loomBoot,
-              active:root.dataset.firstCrossing,copy:c,title:t,prompt:p,cards:o,
+            const c=rect(copy), t=rect(title), p=rect(prompt), o=rect(cards), f=rect(field);
+            return {viewport:innerWidth,viewport_height:innerHeight,boot:document.documentElement.dataset.loomBoot,
+              active:root.dataset.firstCrossing,copy:c,title:t,prompt:p,cards:o,field:f,
+              carrier_count:document.querySelectorAll('#aiRuntimeState .loom-field-flight text').length,
               copy_visible:visible(copy),title_visible:visible(title),prompt_visible:visible(prompt),
-              copy_left:getComputedStyle(copy).left,copy_transform:getComputedStyle(copy).transform,
-              center_error:Math.abs(c.left+c.width/2-innerWidth/2),
               horizontal_overflow:document.documentElement.scrollWidth-innerWidth};
           });
           const pass = geometry.active==='active'&&geometry.copy_visible&&geometry.title_visible&&geometry.prompt_visible&&
             geometry.copy.left>=0&&geometry.copy.right<=geometry.viewport&&
             geometry.title.left>=0&&geometry.title.right<=geometry.viewport&&
             geometry.prompt.left>=0&&geometry.prompt.right<=geometry.viewport&&
-            geometry.center_error<16&&geometry.horizontal_overflow<=1&&
+            geometry.copy.left<geometry.viewport/3&&geometry.field.left<=1&&geometry.field.top<=1&&
+            geometry.field.right>=geometry.viewport-1&&geometry.field.bottom>=geometry.viewport_height-1&&
+            geometry.carrier_count===39&&geometry.horizontal_overflow<=1&&
             errors.length===0&&externalRequests.length===0;
           records.push({engine:name,mode:'DESKTOP_TUTORIAL_GEOMETRY',status:pass?'PASS':'FAIL',
             geometry,page_errors:errors,external_requests:externalRequests});
@@ -186,9 +188,8 @@ try {
             error:error.message,page_errors:errors,external_requests:externalRequests});
         } finally { await context.close(); }
       }
-      // Operator screenshot: at a realistic short desktop window the tutorial
-      // must keep both choice cards and the skip gesture above the fold.
-      // This is a viewport/paint witness, not a claim about aesthetic approval.
+      // Operator screenshot: at a short desktop window the introductory copy
+      // and first choice stay in the fold while the animation fills the screen.
       {
         const context=await browser.newContext({viewport:{width:1536,height:768},reducedMotion:'reduce'});
         const page=await context.newPage();
@@ -208,11 +209,14 @@ try {
               stage:rect('#loomAiWorkspace .loom-stage'),
               copy:rect('.loom-first-crossing-copy'),
               primary:rect('[data-first-crossing-item="brief"]'),
-              motion:rect('.loom-motion-view'),
+              field:rect('#aiRuntimeState .loom-glyph-field'),
+              carrierCount:document.querySelectorAll('#aiRuntimeState .loom-field-flight text').length,
               rootScrollHeight:document.documentElement.scrollHeight,
               stageBorder:getComputedStyle(document.querySelector('#loomAiWorkspace .loom-stage')).borderBottomWidth};
           });
-          const pass=box.motion.top>=52 && box.motion.height>=80 && box.copy.top>=box.motion.bottom-1&&
+          const pass=box.field.visible&&box.field.left<=1&&box.field.top<=1&&
+            box.field.right>=box.width-1&&box.field.bottom>=box.height-1&&box.carrierCount===39&&
+            box.copy.visible&&box.copy.top>=0&&box.copy.bottom<=box.height&&
             box.primary.top>box.copy.bottom&&box.primary.left>=0&&box.primary.right<=box.width&&
             box.primary.height>=44&&
             box.stageBorder==='0px'&&errors.length===0;
