@@ -707,7 +707,7 @@ try {
   assert.equal(hinted.headers['X-TD613-Browser-Cooldown-Policy'], 'advisory-telemetry-only');
   assert.deepEqual(
     calls,
-    ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview'],
+    ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3-flash-preview'],
     'browser-observed cooldown history must not suppress or reorder the live 3.8-first human retry frontier'
   );
   assert.equal(hinted.payload.receipt.provider.model, 'gemini-3-flash-preview');
@@ -1005,8 +1005,8 @@ try {
   assert.deepEqual(calls, [
     'gemini-3.8-flash',
     'gemini-3.5-flash',
-    'gemini-3.6-flash',
     'gemini-3.7-flash',
+    'gemini-3.6-flash',
     'gemini-3-flash-preview',
     'gemini-3-flash-preview'
   ], 'five distinct transport seats may run, then one same-seat structural seam repair is the only sixth provider request');
