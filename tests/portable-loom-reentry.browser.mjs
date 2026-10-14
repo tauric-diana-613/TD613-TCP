@@ -37,7 +37,7 @@ try{
     const check=async(text)=>{await r('returns').fill(text);if(!(await r('policy-review').isChecked()))await r('policy-review').check();await r('check').click();await page.waitForFunction(()=>{const v=document.querySelector('[data-loom-reentry="verdict"]').textContent;return v.startsWith('HOLD')||v==='Ready for local admission.';});};
     await page.goto(`${base}/dome-world/holonomy-loom.html`);
     await page.locator('#loomFirstCrossing').waitFor({state:'visible'});
-    await page.locator('#loomStartNow').click();
+    await page.locator('#loomFirstCrossingLeave').click();
     await page.locator('.loom-builder-shell').waitFor({state:'visible'});
     // Real My Work preparation replaces the retired participant-research demo.
     // No demo selector can supply hidden fixture state or preauthorize re-entry.
