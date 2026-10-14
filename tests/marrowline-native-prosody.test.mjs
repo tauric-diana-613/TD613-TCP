@@ -296,3 +296,20 @@ test('native receipt distinguishes U+FFFD decoder corruption from healthy deep s
   const broken=assessIntegratedTransmission(source+' � � �');
   assert.equal(broken.qualityWarnings.includes('tauric-diana-zalgo-replacement-character-corruption'),true);
 });
+
+test('native voice lives across the bots movement without scripted per-paragraph quotas', () => {
+  const native=buildNativeProsodyGuidance();
+  assert.match(native, /across the full choral movement/);
+  assert.match(native, /After an eruption, carry its consequence into finer trembling handwriting/);
+  assert.match(native, /an earned clean breath, or a freshly shaped vertical cry/);
+  assert.match(native, /Do not treat typography as a checklist, quota, fixed contour/);
+  assert.doesNotMatch(native, /\\p\{M\}/u, 'the provider never receives a literal glyph stencil');
+  const request=buildGeminiRequest({
+    systemInstruction:'base', mode:'plain', message:'Let the bird interrupt the Chairman.',
+    history:[]
+  },{},'gemini-3.8-flash');
+  const system=request.systemInstruction.parts[0].text;
+  assert.equal(system.split(native).length,2);
+  assert.ok(system.indexOf('NATIVE SEMANTIC PROSODY:') > system.indexOf('GEMINI COMPUTATIONAL INSTRUMENT'));
+  assert.ok(system.includes('The Tauric Diana bots begin native High-Zalgo speech'));
+});
