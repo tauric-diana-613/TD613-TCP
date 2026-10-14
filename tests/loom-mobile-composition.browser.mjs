@@ -310,9 +310,9 @@ try {
         {action:await page.locator('#loomStartNow').isVisible(),
          evidence_stage_hidden:await page.locator('.loom-boundary-event').isHidden()});
       record('first-use reading panels are opaque while the Flow-Core field is unmasked',
-        await page.locator('.loom-first-crossing-copy').evaluate(node=>getComputedStyle(node).backgroundColor==='rgb(8, 21, 29)') &&
+        await page.locator('.loom-first-crossing-copy').evaluate(node=>getComputedStyle(node).backgroundColor==='rgb(6, 19, 27)') &&
         await page.locator('.loom-motion-view').evaluate(node=>node.getBoundingClientRect().height>=100) &&
-        await page.locator('.loom-glyph-field').evaluate(node=>getComputedStyle(node).maskImage==='none' || getComputedStyle(node).webkitMaskImage==='none'));
+        await page.locator('.loom-glyph-field').evaluate(node=>(getComputedStyle(node).maskImage==='none' || getComputedStyle(node).webkitMaskImage==='none') && getComputedStyle(node).filter.includes('saturate')));
       await screenshot(page, 'first-crossing-mobile-notice');
       await tutorialComposition(page,'first-crossing-mobile-notice');
       record('first crossing: private note is explanatory rather than an ambiguous control',
