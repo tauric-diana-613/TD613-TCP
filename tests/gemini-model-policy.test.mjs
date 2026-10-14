@@ -270,3 +270,31 @@ console.log('gemini-model-policy.test.mjs passed');
  const available=resolveGeminiModelPlan({task:'khonapolit-dialogue',at:now,env:{},providerListing:listing(['gemini-4-argon','gemini-3.8-flash','gemini-3.5-flash'])});
  assert.deepEqual(available.callableModels.slice(0,2),['gemini-4-argon','gemini-3.8-flash']);
 }
+
+{
+  // A stale cached discovery can predate Argon entitlement after public launch.
+  // Refresh at most once once its age crosses the bounded five-minute margin.
+  // Publication alone never grants callability.
+  const now = Date.now();
+  const old = Object.freeze({ ok:true,complete:true,status:200,cached:true,
+    models:['gemini-3.8-flash','gemini-3.7-flash','gemini-3.6-flash','gemini-3.5-flash','gemini-3-flash-preview'],
+    observedAt:now-360000,expiresAt:now+240000 });
+  const newListing = Object.freeze({ ok:true,complete:true,status:200,cached:false,
+    models:['gemini-4-argon',...old.models],observedAt:now,expiresAt:now+600000 });
+  let called=0;
+  const resolved=await resolveGeminiProviderPlan({task:'khonapolit-dialogue',
+    env:{GEMINI_API_KEY:'synthetic-key'},listModels:async (_api,options={})=>{
+      called++;if(called===1){assert.equal(options.force,undefined);return old;}
+      assert.equal(options.force,true);return newListing;
+    }});
+  assert.equal(called,2);
+  assert.equal(resolved.callableModels[0],'gemini-4-argon',
+    'only a fresh complete credential listing can promote Argon ahead of 3.8');
+  assert.equal(resolved.providerDiscovery.refreshed?.ok,true);
+  const unchanged=await resolveGeminiProviderPlan({task:'khonapolit-dialogue',
+    env:{GEMINI_API_KEY:'synthetic-key'},listModels:async()=>({
+      ...old,cached:false,observedAt:Date.now(),expiresAt:Date.now()+600000
+    })});
+  assert.equal(unchanged.callableModels.includes('gemini-4-argon'),false,
+    'no Argon generation is issued when the fresh credential list excludes it');
+}

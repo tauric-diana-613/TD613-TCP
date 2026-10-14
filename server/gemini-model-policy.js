@@ -236,7 +236,20 @@ export async function resolveGeminiProviderPlan(options = {}) {
       && Array.isArray(row?.eligibility?.reasons)
       && row.eligibility.reasons.includes('provider-absent')
     ));
-  if (plan.callableModels.length && !khonapolitFrontierPartiallyObserved) return withDiscovery(plan, listing);
+  // A newly released flagship can be absent from a valid but cached model
+  // listing even while every older Flash seat is visible. Reobserve only when
+  // that snapshot is at least five minutes old; the new snapshot's timestamp
+  // restarts the interval. An actual fresh credential listing still governs
+  // eligibility. Never fabricate Argon presence or issue a paid generation
+  // call on the strength of published availability alone.
+  const argonMissingInAgedCache = task === 'khonapolit-dialogue'
+    && listing?.ok === true && listing?.complete === true
+    && listing?.cached === true && Number.isFinite(listing?.observedAt)
+    && Date.now() - listing.observedAt >= 5 * 60 * 1000
+    && plan.rows.some((row) => row.model === 'gemini-4-argon'
+      && row.eligibility?.reasons?.includes('provider-absent'));
+  if (plan.callableModels.length && !khonapolitFrontierPartiallyObserved
+      && !argonMissingInAgedCache) return withDiscovery(plan, listing);
 
   // A serverless isolate may retain a fresh-but-narrow provider listing while its
   // only visible model is locally cooling, or a credential-scoped observation may

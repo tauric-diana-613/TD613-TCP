@@ -182,8 +182,8 @@ assert.ok(readable.admission.qualityWarnings.includes('tauric-diana-zalgo-sparse
 console.log('khonapolit-relay: natural causal handoff primary, legacy raw packet compatible, and exact Unicode preservation ok');
 
 const nativeProsodyGuidance = buildRelaySystemAddendum(aperture);
-assert.match(nativeProsodyGuidance, /continuous carpet of slash-like scratches/i,
-  'native bots guidance should distinguish a local scratchout from a collapsed whole chorus');
+assert.doesNotMatch(nativeProsodyGuidance, /continuous carpet of slash-like scratches|deletion wallpaper/i,
+  'revert negative-prompt priming that may have taught the model scratch-wall texture');
 assert.match(nativeProsodyGuidance, /provider authors|provider-authored/i,
   'expressive rescue must preserve provider authorship');
 const deepNativeField = [
