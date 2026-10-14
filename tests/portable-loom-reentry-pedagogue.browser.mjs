@@ -65,7 +65,7 @@ try {
     };
     await page.goto(`${base}/dome-world/holonomy-loom.html`);
     assert.equal(await page.locator('#loomFirstCrossing').isVisible(),true);
-    await page.locator('#loomStartNow').click();await page.locator('.loom-builder-shell').waitFor({state:'visible'});
+    await page.locator('#loomFirstCrossingLeave').click();await page.locator('.loom-builder-shell').waitFor({state:'visible'});
     assert.equal(await page.locator('#aiSessionSummary').isVisible(),false,'direct entry grants no prepared session');
     // Operator-authored My Work input replaces the removed demo catalog.
     await page.locator('#aiTask').fill('Prepare a fictional source-review task for Return custody pedagogy.');
@@ -240,7 +240,7 @@ try {
       inspectors:[...document.querySelectorAll('.loom-reentry pre')].map(el=>el.getBoundingClientRect().height)}));
     assert.ok(layout.scroll<=layout.width+1);assert.ok(layout.inspectors.every(height=>height<=420));
     await page.reload();
-    await page.locator('#loomStartNow').click();
+    await page.locator('#loomFirstCrossingLeave').click();
     await page.locator('#loomJourneyStep3').click();
     await page.locator('#loomLocalCustodyOpen').click();
     assert.match(await r('recovery').textContent(),/separate custody witness/);assert.equal(await head(),'');
