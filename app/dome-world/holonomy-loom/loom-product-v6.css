@@ -514,4 +514,20 @@
   #loomAiWorkspace .loom-first-crossing-copy p{font-size:14px}
   #loomAiWorkspace .loom-first-crossing{gap:9px}
 }
+
+/* Exact-browser rescue: one button language, one typographic face, one
+   translucent reading surface. Static CSS only; no added animation cadence. */
+#loomAiWorkspace .loom-first-crossing-objects button{
+  font:680 14px/1.35 var(--sans);
+  border-radius:0;
+}
+#loomAiWorkspace .loom-intro h1{
+  font-family:"Arial Narrow","Helvetica Neue",Inter,-apple-system,system-ui,sans-serif;
+}
+#loomAiWorkspace .loom-builder-shell{
+  background-color:rgba(6,13,20,.84);
+  background-image:linear-gradient(108deg,rgba(4,13,20,.36),rgba(5,15,23,.09) 72%,rgba(9,22,31,.1));
+}
+/* END FIREWALL EXACT-BROWSER RESCUE */
+
 /* END FIREWALL RUNWAY */
