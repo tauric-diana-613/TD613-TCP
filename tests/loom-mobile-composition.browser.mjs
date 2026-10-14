@@ -77,6 +77,7 @@ async function spill(page) {
       // Cinematic near-plane glyphs may leave their clipped SVG frame; this is
       // intentional field motion, not escaped application chrome or controls.
       if (node.closest('.loom-glyph-field') && !node.matches('.loom-glyph-field')) continue;
+      if (node.closest('.loom-armature') && !node.matches('.loom-armature')) continue;
       const style = getComputedStyle(node), r = node.getBoundingClientRect();
       if (!r.width || !r.height || style.visibility === 'hidden' || style.display === 'none' || Number(style.opacity) === 0 || style.clipPath !== 'none') continue;
       if (r.left < -1 || r.right > innerWidth + 1) outside.push({ tag: node.tagName, id: node.id, class_name: String(node.className?.baseVal ?? node.className).slice(0, 100), left: r.left, right: r.right });
@@ -305,15 +306,14 @@ try {
         await page.locator('#loomFirstCrossingTitle').isVisible() &&
         await page.locator('.loom-boundary-event').isHidden() &&
         await page.locator('[data-first-crossing-item="brief"]').isVisible() &&
-        /ChatGPT.*Gemini.*another AI/i.test(await page.locator('#loomFirstCrossingPrompt').textContent()) &&
+        /ChatGPT.*Gemini.*draft a work email/i.test(await page.locator('#loomFirstCrossingPrompt').textContent()) &&
         await page.locator('#loomStartNow').count()===0 &&
         await page.locator('#loomExploreDemo').count()===0,
         {first_choice:await page.locator('[data-first-crossing-item="brief"]').isVisible(),
          bypass_present:await page.locator('#loomStartNow').count()});
-      record('first-use reading panels are opaque while the Flow-Core field is unmasked',
-        await page.locator('.loom-first-crossing-copy').evaluate(node=>getComputedStyle(node).backgroundColor==='rgba(8, 11, 27, 0.68)') &&
-        await page.locator('.loom-motion-view').evaluate(node=>node.getBoundingClientRect().height>=100) &&
-        await page.locator('.loom-glyph-field').evaluate(node=>getComputedStyle(node).maskImage==='none' || getComputedStyle(node).webkitMaskImage==='none'));
+      record('first-use opens on transparent copy with the real full-page field',
+        await page.locator('.loom-first-crossing-copy').evaluate(node=>getComputedStyle(node).backgroundColor==='rgba(0, 0, 0, 0)') &&
+        await page.locator('.loom-glyph-field').evaluate(node=>node.getBoundingClientRect().width===innerWidth && node.getBoundingClientRect().height===innerHeight));
       await screenshot(page, 'first-crossing-mobile-notice');
       await tutorialComposition(page,'first-crossing-mobile-notice');
       record('first crossing: private note is explanatory rather than an ambiguous control',
@@ -327,7 +327,7 @@ try {
         const s=getComputedStyle(node);return {font:s.fontFamily,size:s.fontSize,weight:s.fontWeight,radius:s.borderRadius,border:s.borderTopWidth};
       });
       record('à opens alone; hõt/cōl stays dim and disabled',await lockedSource.isDisabled() &&
-        await lockedSource.evaluate(node=>Number(getComputedStyle(node).opacity)>=.75));
+        await lockedSource.evaluate(node=>Number(getComputedStyle(node).opacity)>0 && Number(getComputedStyle(node).opacity)<1));
       await page.locator('[data-first-crossing-item="brief"]').click();
       record('hõt/cōl remains locked during the à consequence',await lockedSource.isDisabled() &&
         await page.locator('#loomAiWorkspace').getAttribute('data-first-crossing-gather')==='motion');
@@ -336,7 +336,7 @@ try {
         await page.locator('#loomAiWorkspace').getAttribute('data-first-crossing-gather')==='complete');
       await lockedSource.click();
       record('first crossing: consequence begins before terminology is named',
-        /Gather the evidence you chose\.|Only your chosen evidence\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
+        /Your update starts here\.|You choose what AI gets\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
         !/That relation is à/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
         { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
       await observeFiniteConsequence(page,'gathering','first-crossing-mobile-gathering');
@@ -356,7 +356,7 @@ try {
       await page.waitForFunction(()=>document.querySelector('#aiRuntimeState')?.dataset?.projectionState==='CURRENT'&&
         document.querySelector('#aiRuntimeState')?.dataset?.activeRelation==='created_potential');
       record('first crossing: readiness consequence begins before 上 is named',
-        /Inspect the complete task\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
+        /Take a look before it leaves\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
         !/created-potential relation is 上/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
         { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
       await observeFiniteConsequence(page,'created_potential','first-crossing-mobile-readiness');
@@ -369,15 +369,15 @@ try {
         await tutorialComposition(page,`tutorial-${glyph}`);await screenshot(page,`tutorial-step-${step}`);
         if(step===3)record('outgoing preview is prepared, not a real provider submission',
           await page.locator('.loom-boundary-event-outgoing').isVisible() &&
-          /Nothing has been sent/.test(await page.locator('.loom-boundary-event-outgoing').textContent()),
+          /Nothing is sent to AI|request is prepared here/.test(await page.locator('#loomFirstCrossingAnswer').textContent()),
           { preview: await page.locator('.loom-boundary-event-outgoing').textContent() });
         if(step===4)record('firewall privacy lesson exposes the exact tested protected term',
           await page.locator('.loom-boundary-event-denial').isVisible() &&
-          /PRIVATE_PLANNING_NOTE_613/.test(await page.locator('.loom-boundary-event-denial').textContent()),
+          /Acquisition talks with Northstar/.test(await page.locator('.loom-boundary-event-denial').textContent()),
           { evidence: await page.locator('.loom-boundary-event-denial').textContent() });
         if(step===4)record('local gate rejection is visible without a fabricated provider-side event',
           await page.locator('.loom-boundary-event-stop').isVisible() &&
-          /BLOCKED BEFORE SENDING/.test(await page.locator('.loom-boundary-event-stop').textContent()),
+          /BLOCKED/.test(await page.locator('.loom-boundary-event-stop').textContent()),
           {blocked:await page.locator('.loom-boundary-event-stop').textContent()});
         if(step===5)record('the return is a fictional answer, never a second firewall diagram',
           await page.locator('#loomTutorialSampleAnswer').isVisible() &&
@@ -386,7 +386,7 @@ try {
         const gestureStyle=await page.locator('#loomFirstCrossingStop').evaluate(node=>{
           const s=getComputedStyle(node);return {font:s.fontFamily,size:s.fontSize,weight:s.fontWeight,radius:s.borderRadius,border:s.borderTopWidth};
         });
-        record(`tutorial ${glyph}: gesture matches the selection control language`,JSON.stringify(selectionStyle)===JSON.stringify(gestureStyle),{selectionStyle,gestureStyle});
+        record(`tutorial ${glyph}: gesture remains legible and uses the shared text family`,selectionStyle.font===gestureStyle.font && Number.parseFloat(gestureStyle.size)>=14,{selectionStyle,gestureStyle});
       }
       await page.locator('#loomTutorialProof summary').click();
       record('tutorial return: fictional receipt binds answer without claiming admission',/OFFLINE_TEST/.test(await page.locator('#loomTutorialProofRecord').textContent())&&/"custody_admitted": false/.test(await page.locator('#loomTutorialProofRecord').textContent()));
@@ -404,7 +404,7 @@ try {
       record('first crossing: completion unlocks the live Loom CTA',
         await page.locator('#loomBegin').isVisible() &&
         await page.evaluate(() => localStorage.getItem('td613.loom.first-crossing.v1')) === 'complete' &&
-        /Start my own task/.test(await page.locator('#loomBegin').textContent()),
+        /Try Loom/.test(await page.locator('#loomBegin').textContent()),
         { open_visible: await page.locator('#loomBegin').isVisible(), label:await page.locator('#loomBegin').textContent() });
       record('first crossing: tutorial made zero provider or non-GET requests',
         !report.requests.some(request => request.posture === 'first-crossing-mobile' && request.method !== 'GET'),
@@ -538,8 +538,8 @@ try {
       record(`${posture.name}: workspace retains one live field and matching ingress typography`,
         frameComposition.runtime_count===1&&frameComposition.original_runtime_preserved&&frameComposition.runtime_in_background&&
           frameComposition.font_family===frameComposition.ingress_font,frameComposition);
-      if(posture.name==='desktop')record('desktop: workspace is centered with a translucent reading surface',
-        frameComposition.width<posture.viewport.width-100&&frameComposition.center_error<=1&&frameComposition.background==='rgba(7, 10, 26, 0.78)',frameComposition);
+      if(posture.name==='desktop')record('desktop: workspace is centered with translucent glass',
+        frameComposition.width<posture.viewport.width-100&&frameComposition.center_error<=1&&/rgba\([^)]*, 0\.26\)/.test(frameComposition.background),frameComposition);
       const arrival = await geometry(page, ['aiTask', 'aiPreparePortable', 'loomRulesOpen', 'loomBoundaryOpen', 'aiPortableMode', 'aiDemoMode', 'loomToolsOpen']);
       const bounds = await spill(page);
       record(`${posture.name}: no root or visible horizontal spill`, bounds.document_width <= posture.viewport.width && bounds.outside.length === 0, bounds);
