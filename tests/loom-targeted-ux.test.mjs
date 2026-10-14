@@ -140,6 +140,20 @@ test('Flow-Core remains a single accessible header guide with eight text-only gl
   assert.match(product, /\.loom-topbar \.loom-flowcore-help\[open\] \.loom-flowcore-panel\{display:block\}/);
 });
 
+
+test('the firewall promise explains outgoing checks, returning review and limits', () => {
+  const doc = new JSDOM(loomWorkspaceTemplate).window.document;
+  assert.match(doc.querySelector('#loomFirstCrossingTitle').textContent, /firewall between you and your AI/i);
+  assert.match(doc.querySelector('.loom-intro p').textContent, /Your AI firewall/i);
+  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent, /Choose what AI receives/i);
+  assert.match(doc.querySelector('#loomReturnWorkspace header').textContent, /before accepting/i);
+  assert.match(doc.querySelector('[data-tool-panel="boundary"]').textContent, /external AI provider determines its own retention/i);
+  assert.match(workspaceSource, /title:'Watch Loom block a leak\.'/);
+  assert.match(workspaceSource, /title:'Challenge what comes back\.'/);
+  assert.match(product, /\[data-first-crossing-step="4"\] \.loom-first-crossing-objects \.loom-first-crossing-private/);
+  assert.doesNotMatch(doc.querySelector('#loomFirstCrossingPrompt').textContent, /portable|cryptographic|governance/i);
+});
+
 test('à completion, rather than the first tap, gates hõt/cōl', () => {
   const template = new JSDOM(loomWorkspaceTemplate).window.document;
   assert.equal(template.querySelectorAll('[data-first-crossing-item]').length,2);
