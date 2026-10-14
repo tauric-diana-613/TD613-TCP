@@ -301,6 +301,13 @@ try {
           .every(object=>object.visible&&object.width>=44&&object.height>=44)&&
         firstCrossingVisual.objects.find(object=>object.id==='loomFirstCrossingPrivate')?.visible===false,
         firstCrossingVisual);
+      record('first-use AI firewall is visible above the fold, with ChatGPT/Gemini named', 
+        await page.locator('.loom-firewall-theater').evaluate(node => {
+          const r=node.getBoundingClientRect();const style=getComputedStyle(node);
+          return style.display!=='none' && r.width>=280 && r.height>=120 && r.top>=0 && r.bottom<=innerHeight;
+        }) &&
+        /ChatGPT.*Gemini.*LLMs/i.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
+        {stage:await page.locator('.loom-firewall-theater').boundingBox(),prompt:await page.locator('#loomFirstCrossingPrompt').textContent()});
       await screenshot(page, 'first-crossing-mobile-notice');
       await tutorialComposition(page,'first-crossing-mobile-notice');
       record('first crossing: private note is explanatory rather than an ambiguous control',
@@ -320,7 +327,7 @@ try {
         await page.locator('#loomAiWorkspace').getAttribute('data-first-crossing-gather')==='complete');
       await lockedSource.click();
       record('first crossing: consequence begins before terminology is named',
-        /Decide what crosses\.|You choose what gets in\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
+        /The boundary follows your choices\.|You decide what AI sees\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
         !/That relation is à/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
         { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
       await observeFiniteConsequence(page,'gathering','first-crossing-mobile-gathering');
@@ -355,6 +362,10 @@ try {
           await page.locator('#loomFirstCrossingPrivate').isVisible() &&
           /Held behind the firewall/.test(await page.locator('#loomFirstCrossingPrivate').textContent()),
           { note: await page.locator('#loomFirstCrossingPrivate').textContent() });
+        if(step===4)record('firewall denies the attempted protected content in its illustration',
+          await page.locator('.loom-firewall-denial').isVisible() &&
+          /BLOCKED/i.test(await page.locator('.loom-firewall-state').textContent()),
+          {blocked:await page.locator('.loom-firewall-denial').textContent()});
         await page.locator('#loomFirstCrossingStop').waitFor({state:'visible'});
         const gestureStyle=await page.locator('#loomFirstCrossingStop').evaluate(node=>{
           const s=getComputedStyle(node);return {font:s.fontFamily,size:s.fontSize,weight:s.fontWeight,radius:s.borderRadius,border:s.borderTopWidth};
