@@ -737,7 +737,7 @@ try {
   assert.equal(allCooling.headers['X-TD613-Browser-Cooldown-Policy'], 'advisory-telemetry-only');
   assert.deepEqual(
     calls,
-    ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.6-flash', 'gemini-3.7-flash', 'gemini-3-flash-preview'],
+    ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3-flash-preview'],
     'browser-local cooldown memory may schedule around individual seats but cannot suppress an explicit human retry when every seat is marked cooling'
   );
   assert.equal(allCooling.payload.receipt.provider.model, 'gemini-3-flash-preview');
