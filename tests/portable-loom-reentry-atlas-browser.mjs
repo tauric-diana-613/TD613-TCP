@@ -115,8 +115,8 @@ try {
 
     await page.goto(`${base}/dome-world/holonomy-loom.html`);
     await page.locator('#loomFirstCrossing').waitFor({ state: 'visible' });
-    assert.equal(await page.locator('#loomStartNow').isVisible(), true, 'first-use offers a visible direct entry');
-    await page.locator('#loomStartNow').click();
+    assert.equal(await page.locator('#loomFirstCrossingLeave').isVisible(), true, 'first-use offers a visible direct entry');
+    await page.locator('#loomFirstCrossingLeave').click();
     await page.locator('.loom-builder-shell').waitFor({ state: 'visible' });
     // Prepare through the real operator-authored route; retired demos carry no state.
     await page.locator('#aiTask').fill('Prepare the fictional atlas custody exercises under one inherited root.');
@@ -196,7 +196,7 @@ try {
     assert.equal(await r('head').textContent(), head);
     assert.equal((await visibleRecord()).custody.pending_excursion, null);
     await page.reload();
-    await page.locator('#loomStartNow').click();
+    await page.locator('#loomFirstCrossingLeave').click();
     await page.locator('.loom-builder-shell').waitFor({ state: 'visible' });
     await openCustody();
     assert.equal(await r('drawer').isVisible(), true);
