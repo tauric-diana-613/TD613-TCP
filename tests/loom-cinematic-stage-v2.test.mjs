@@ -9,7 +9,7 @@ import { compileLoomInstrumentStateView, projectLoomInstrumentStateFrame, mountL
 import { LOOM_TUTORIAL_OPERATORS, loomTutorialPresentation } from '../app/dome-world/holonomy-loom/tutorial-membrane.js';
 
 const html=fs.readFileSync(new URL('../app/dome-world/holonomy-loom.html',import.meta.url),'utf8');
-const product=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/loom-product-v6.css',import.meta.url),'utf8');
+const product=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/loom-couture.css',import.meta.url),'utf8');
 const workspace=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/ai-workspace.js',import.meta.url),'utf8');
 const instrument=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/instrument-state-view.js',import.meta.url),'utf8');
 const template=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/workspace-template.js',import.meta.url),'utf8');
@@ -44,8 +44,8 @@ test('seven tutorial operators have distinct carrier motion without changing act
 });
 
 test('authored Loom composition preserves a cinematic field scene before the builder',()=>{
-  assert.match(html,/loom-product-v6\.css/);
-  assert.doesNotMatch(html,/ai-workspace\.css|reentry-workspace\.css|loom-product-v[34]\.css|ux-repair\.css|cinematic-rescue\.css|dromological-regime\.css|cinematic-stage-v2\.css/);
+  assert.match(html,/loom-couture\.css/);
+  assert.doesNotMatch(html,/ai-workspace\.css|reentry-workspace\.css|loom-product-v[34]\.css|loom-product-v6\.css|loom-firewall-runway\.css|ux-repair\.css|cinematic-rescue\.css|dromological-regime\.css|cinematic-stage-v2\.css/);
   const doc=new JSDOM(loomWorkspaceTemplate).window.document;
   const stage=doc.querySelector('.loom-stage');
   const builderShell=doc.querySelector('.loom-builder-shell');
@@ -57,7 +57,7 @@ test('authored Loom composition preserves a cinematic field scene before the bui
   assert.ok(doc.querySelector('#loomBegin'));
   assert.ok(doc.querySelector('.loom-hero-route'));
   assert.ok(doc.querySelector('dialog#loomTools'));
-  assert.match(product,/#loomAiWorkspace \.loom-stage\{[\s\S]*?height:calc\(100svh - 52px\)/);
+  assert.match(product,/#loomAiWorkspace \.loom-stage\{[\s\S]*?min-height:calc\(100svh - 76px\)/);
 });
 
 test('one coordinator remains the animation owner',()=>{
