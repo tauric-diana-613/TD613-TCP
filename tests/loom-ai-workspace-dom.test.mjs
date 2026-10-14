@@ -84,7 +84,7 @@ test('Loom opens on the human task and local preparation exposes the next route'
   assert.equal(h.$('#aiDemoModePanel').hidden,true);
   // The guide names the next product surface in ordinary language.
   assert.deepEqual([...h.root.querySelectorAll('.loom-journey-step strong')].map(n=>n.textContent),['Loom','Marrowline','Return']);
-  assert.match(h.$('#aiFirstUseGuide').textContent,/Prepare your own task here\. Review privacy before continuing in Marrowline\./i);
+  assert.match(h.$('#aiFirstUseGuide').textContent,/Start with a task\. Add only the files you want AI to receive\./i);
   assert.equal(h.root.dataset.loomJourney,'loom');
 
   h.change('#aiTask','Compare the selected evidence and name what remains missing.');
@@ -95,7 +95,7 @@ test('Loom opens on the human task and local preparation exposes the next route'
   assert.equal(h.$('#aiResult').hidden,false);
   assert.match(h.$('#aiAnswer').textContent,/Review the exact content below/i);
   assert.match(h.$('#aiAnswer').textContent,/Continue in Marrowline when you are ready to send it/i);
-  assert.match(h.$('#aiAnswer').textContent,/AI service’s own privacy and retention policies apply/i);
+  assert.match(h.$('#aiAnswer').textContent,/external AI provider governs how submitted content is stored and retained/i);
   assert.equal(h.$('#aiSessionSummary').hidden,false,'local preparation creates a session root before crossing');
   assert.match(h.$('#aiSessionReceipt').textContent,/td613\.loom\.portable-session-export\/v0\.1/);
   assert.match(h.$('#aiStatus').textContent,/Continue in Marrowline to send it when ready/i);
