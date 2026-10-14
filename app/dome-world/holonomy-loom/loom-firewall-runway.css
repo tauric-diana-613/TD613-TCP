@@ -5,11 +5,11 @@
  * No synthetic model activity, additional animation clock, or fake firewall.
  */
 #loomAiWorkspace {
-  --runway-ink:#e8f4f2;
-  --runway-cyan:#b9f2e9;
-  --runway-gold:#e3c3a2;
-  --runway-surface:#08151d;
-  --runway-surface-alt:#0c1b25;
+  --runway-ink:#f5fcf8;
+  --runway-cyan:#b0ffed;
+  --runway-gold:#f1c39c;
+  --runway-surface:#06131b;
+  --runway-surface-alt:#091b25;
   --runway-line:#56737a;
   --loom-content-width:780px;
 }
@@ -41,22 +41,24 @@
 #loomAiWorkspace .loom-glyph-field {
   -webkit-mask-image:none!important;
   mask-image:none!important;
-  filter:saturate(1.23) brightness(1.25) contrast(1.12);
+  filter:saturate(1.38) brightness(1.50) contrast(1.16);
 }
 #loomAiWorkspace .loom-field-flight {
-  opacity:.97!important;
+  opacity:1!important;
   mix-blend-mode:screen;
 }
-#loomAiWorkspace .loom-field-glyph {opacity:.96!important}
-#loomAiWorkspace .loom-field-flight .flight-far {opacity:.27}
-#loomAiWorkspace .loom-field-flight .flight-mid {opacity:.62}
-#loomAiWorkspace .loom-field-flight .flight-near {opacity:.92}
+#loomAiWorkspace .loom-field-glyph {opacity:1!important}
+#loomAiWorkspace .loom-field-flight .flight-far {opacity:.38}
+#loomAiWorkspace .loom-field-flight .flight-mid {opacity:.78}
+#loomAiWorkspace .loom-field-flight .flight-near {opacity:1}
 #loomAiWorkspace .loom-motion-view {
   order:0;
   position:relative;
-  height:clamp(126px,21svh,230px);
+  height:clamp(185px,28svh,330px);
   margin:0 0 10px;
-  border-bottom:1px solid rgba(185,242,233,.62);
+  border-bottom:2px solid rgba(196,255,240,.88);
+  background:transparent;
+  overflow:hidden;
   pointer-events:none;
 }
 #loomAiWorkspace .loom-motion-view::before {
@@ -64,9 +66,10 @@
   position:absolute;
   bottom:-1px;
   left:0;
-  width:36%;
-  height:2px;
-  background:linear-gradient(90deg,#b9f2e9,transparent);
+  width:61%;
+  height:3px;
+  background:linear-gradient(90deg,#f2caa6 0%,#f5fbf8 22%,#9ef9e3 58%,transparent 100%);
+  box-shadow:0 0 24px rgba(147,245,230,.55);
 }
 #loomAiWorkspace .loom-motion-view span {
   position:absolute;
@@ -82,11 +85,13 @@
   order:1;
   position:relative;
   z-index:2;
-  padding:17px 18px 20px;
+  padding:20px 22px 22px;
   text-align:left;
-  background:var(--runway-surface);
-  border-left:2px solid #c6f2e9;
-  border-top:1px solid #637e83;
+  background:#06131b;
+  border-left:3px solid #b0ffed;
+  border-top:2px solid #e8d0ba;
+  clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,0 100%);
+  box-shadow:none;
 }
 #loomAiWorkspace .loom-first-crossing-copy::before {
   content:"TD613 / LOOM";
@@ -122,6 +127,7 @@
   text-shadow:none;
 }
 #loomAiWorkspace .loom-first-crossing-copy h2::after {display:none}
+#loomAiWorkspace .loom-power-declaration {font:690 clamp(12px,1.8vw,17px)/1.24 var(--sans)!important;letter-spacing:.11em;color:#f1c39c!important;margin:0 0 12px!important;max-width:none!important;}
 #loomAiWorkspace .loom-first-crossing-copy p {
   max-width:65ch;
   margin:0;
@@ -145,14 +151,15 @@
   border:1px solid #8eb7b3;
   border-radius:0;
   color:#edf7f3;
-  background:#0b1c25;
+  background:#071722;
   font:690 13px/1.3 var(--sans);
   cursor:pointer;
 }
 #loomAiWorkspace .loom-product-entry .loom-product-start {
   display:flex;align-items:center;justify-content:space-between;
   color:#041019;
-  background:linear-gradient(108deg,#f4fbf5,#a3dad6);
+  background:linear-gradient(113deg,#fffcf4 2%,#e1f8ef 44%,#a5f1e8 100%);
+  clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%);
   border-color:#e0f6f1;
   letter-spacing:.015em;
 }
@@ -172,7 +179,8 @@
 #loomAiWorkspace .loom-product-capabilities>div {
   min-width:0;
   padding:13px 13px 15px;
-  background:#0a1821;
+  background:#071721;
+  box-shadow:inset 0 1px 0 rgba(226,253,245,.06);
 }
 #loomAiWorkspace .loom-product-capabilities span {
   display:block;
@@ -191,8 +199,8 @@
   color:#d4e1e0;
   font:400 12px/1.42 var(--sans);
 }
-#loomAiWorkspace .loom-flowcore-help {order:4;z-index:2;background:#08151d}
-#loomAiWorkspace .loom-boundary-event {order:5;z-index:2;display:none;width:100%;background:#08151d;padding:12px 16px;border-left:2px solid #8bd9d2;margin:9px 0 0}
+#loomAiWorkspace .loom-flowcore-help {order:4;z-index:2;background:#06131b}
+#loomAiWorkspace .loom-boundary-event {order:5;z-index:2;display:none;width:100%;background:#06131b;padding:12px 16px;border-left:2px solid #8bd9d2;margin:9px 0 0}
 #loomAiWorkspace .loom-boundary-event-outgoing,
 #loomAiWorkspace .loom-boundary-event-denial {display:none}
 #loomAiWorkspace[data-first-crossing-step="3"] .loom-boundary-event,
@@ -318,12 +326,12 @@
 #loomAiWorkspace[data-first-crossing-step="4"] .loom-first-crossing-objects{display:none!important}
 #loomAiWorkspace[data-first-crossing-step="5"] .loom-tutorial-sample-answer {order:7}
 #loomAiWorkspace .loom-builder-shell {
-  background:#08151d;
-  border:1px solid #67898e;
+  background:#06131b;
+  border:1px solid #90c4c1;
 }
 @media(max-width:760px) {
   #loomAiWorkspace .loom-stage {padding:0 16px 28px}
-  #loomAiWorkspace .loom-motion-view {height:clamp(116px,19svh,177px)}
+  #loomAiWorkspace .loom-motion-view {height:clamp(160px,24svh,236px)}
   #loomAiWorkspace .loom-first-crossing-copy {padding:12px 14px 17px}
   #loomAiWorkspace .loom-first-crossing-copy h2 {
     margin:9px 0 12px;
@@ -350,12 +358,12 @@
 }
 @media(max-width:360px) {
   #loomAiWorkspace .loom-stage {padding-inline:12px}
-  #loomAiWorkspace .loom-motion-view {height:115px}
+  #loomAiWorkspace .loom-motion-view {height:140px}
   #loomAiWorkspace .loom-first-crossing-copy h2 {font-size:31px}
   #loomAiWorkspace .loom-product-capabilities>div{grid-template-columns:72px 1fr}
 }
 @media(max-height:740px) {
-  #loomAiWorkspace .loom-motion-view {height:105px}
+  #loomAiWorkspace .loom-motion-view {height:130px}
   #loomAiWorkspace .loom-first-crossing-copy h2 {margin-block:7px}
   #loomAiWorkspace .loom-first-crossing {gap:0}
 }
