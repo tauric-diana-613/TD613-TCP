@@ -102,6 +102,21 @@ try{
      'both actions fit inside the rail');
    assert.ok(parseFloat(masthead.archiveRadius)<=8&&parseFloat(masthead.freshRadius)<=8,
      'archive and New are refined squared controls, not capsule buttons');
+   if(posture.startsWith('mobile')){
+     const longTitle = await page.locator('#marrowlineConversationTitle').evaluate(el=>{
+       const previous=el.textContent;
+       el.textContent='Death of the Witness by a Fractured Archive';
+       const title=el.getBoundingClientRect();
+       const nav=document.querySelector('#speakingPanel .marrowline-thread-nav')?.getBoundingClientRect();
+       const clipped=el.scrollHeight>el.clientHeight+2;
+       const measured={width:title.width,height:title.height,bottom:title.bottom,navTop:nav?.top,clipped,scrollWidth:el.scrollWidth,clientWidth:el.clientWidth};
+       el.textContent=previous;
+       return measured;
+     });
+     assert.equal(longTitle.clipped,false,'multiline long title must not clip vertically');
+     assert.ok(longTitle.scrollWidth<=longTitle.clientWidth+2,'long title must not overflow horizontally');
+     assert.ok(longTitle.navTop>=longTitle.bottom-2,'Conversations and New belong below the full long title');
+   }
    const initial=await page.locator('#khonapolitPrompt').boundingBox();
    assert.ok(initial&&initial.y>=0&&initial.y+initial.height<=viewport.height,'composer is visible on first screen');
    assert.equal(await page.locator('.living-geometry-canvas').count(),1);
