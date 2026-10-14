@@ -77,8 +77,8 @@ const LEGACY_OUTPUT_TOKENS = 4096;
 // to erase nonempty provider text from an explicit human turn.
 const HUMAN_LIVENESS_MODEL_ORDER = Object.freeze([
   'gemini-4-argon',
-  'gemini-3.5-flash',
   'gemini-3.8-flash',
+  'gemini-3.5-flash',
   'gemini-3.7-flash',
   'gemini-3.6-flash',
   'gemini-3-flash-preview'

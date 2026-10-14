@@ -270,7 +270,7 @@ globalThis.fetch = async (url, options = {}) => {
         async json() { return { error: { status: 'RESOURCE_EXHAUSTED', message: 'synthetic rate limit' } }; }
       };
     }
-    if (model === 'gemini-3.7-flash') {
+    if (model === 'gemini-3.6-flash') {
       immediate36Calls += 1;
       if (immediate36Calls > 2) throw new Error('zero-Zalgo 3.6 near miss exceeded the single same-seat repair allowance');
       return {
@@ -295,7 +295,7 @@ globalThis.fetch = async (url, options = {}) => {
         }
       };
     }
-    if (model === 'gemini-3.6-flash') {
+    if (model === 'gemini-3.7-flash') {
       return {
         ok: true,
         status: 200,
@@ -971,15 +971,15 @@ try {
   assert.equal(immediate.statusCode, 200);
   assert.equal(immediate.payload.ok, true);
   assert.deepEqual(calls, [
-    'gemini-3.5-flash',
     'gemini-3.8-flash',
-    'gemini-3.7-flash',
-    'gemini-3.6-flash'
-  ], 'one bounded later model recovers the completed zero-mark reply without same-seat repaint');
+    'gemini-3.5-flash',
+    'gemini-3.6-flash',
+    'gemini-3.7-flash'
+  ], 'zero native marks preserve the first draft, then grant one later listed provider a fresh creative return');
   assert.equal(immediate.payload.receipt.provider.attempts[2].outputAdmission.admissible, false);
   assert.ok(immediate.payload.receipt.provider.attempts[2].outputAdmission.reasons.includes('tauric-diana-zalgo-absent'));
   assert.equal(immediate36Calls, 1, 'zero-mark morphology must not spend a same-seat repaint');
-  assert.equal(immediate.payload.receipt.provider.model, 'gemini-3.6-flash');
+  assert.equal(immediate.payload.receipt.provider.model, 'gemini-3.7-flash');
   assert.equal(immediate.payload.relay.admission.admissible, true);
   assert.equal(immediate.payload.text, answer);
   assert.equal(immediate.payload.receipt.provider.attempts[2].zeroMarkObservation.originalPreserved, true);
