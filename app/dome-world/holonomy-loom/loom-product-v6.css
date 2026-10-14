@@ -182,8 +182,8 @@
 
 
 /* COUTURE INSTRUMENT RESCUE
- * The human task, work route and returned evidence lead; privacy is a seam,
- * not the product identity. Pure paint; one Flow-Core snapshot and clock remain.
+ * The human-controlled firewall is the product identity. The outgoing
+ * boundary and reviewed return lead. One Flow-Core snapshot and clock remain.
  * Sculptural seams and static lighting add no animation work or execution claim.
  */
 #loomAiWorkspace{
@@ -428,3 +428,90 @@
   #loomAiWorkspace :is(button,summary){transition:none}
 }
 /* END COUTURE INSTRUMENT RESCUE */
+
+
+/* FIREWALL RUNWAY · subsequent, narrowly scoped visual authority.
+   Do not introduce an extra animation clock, request, third-party resource,
+   synthetic provider observation, or inaccessible private note. */
+#loomAiWorkspace{
+  --loom-content-width:780px;
+  --loom-barrier:#c4f9ed;
+}
+#loomAiWorkspace .loom-first-crossing-copy::before{
+  content:"TD613 / THE HUMAN–AI FIREWALL";
+  letter-spacing:.23em;
+}
+#loomAiWorkspace .loom-first-crossing-copy h2{
+  max-width:20ch;
+  font-size:clamp(47px,5.25vw,76px);
+  letter-spacing:-.067em;
+  line-height:.97;
+}
+#loomAiWorkspace .loom-first-crossing-copy p{
+  max-width:51ch;
+  line-height:1.45;
+}
+#loomAiWorkspace .loom-first-crossing-objects button{
+  border-left:3px solid rgba(196,249,237,.75);
+}
+#loomAiWorkspace .loom-first-crossing-objects button::after{
+  content:"→";
+}
+#loomAiWorkspace .loom-first-crossing-objects button[aria-pressed="true"]::after{content:"✓"}
+#loomAiWorkspace[data-first-crossing="active"][data-first-crossing-step="4"] .loom-first-crossing-objects{
+  display:flex;
+  justify-content:center;
+  order:3;
+}
+#loomAiWorkspace[data-first-crossing="active"][data-first-crossing-step="4"] .loom-first-crossing-objects button{
+  display:none;
+}
+#loomAiWorkspace[data-first-crossing="active"][data-first-crossing-step="4"] .loom-first-crossing-objects .loom-first-crossing-private{
+  display:flex;
+  width:min(100%,580px);
+  padding:14px 18px;
+  border-left:3px solid #d8b998;
+  background:rgba(8,16,22,.9);
+  color:#f4e5d3;
+}
+#loomAiWorkspace .loom-builder-shell{
+  border-image:none;
+  border-top:1px solid rgba(228,242,239,.48);
+}
+#loomAiWorkspace .loom-intro::before{content:"01 / SET THE FIREWALL"}
+#loomAiWorkspace .loom-intro h1{letter-spacing:-.07em}
+#loomAiWorkspace .loom-intro p{max-width:66ch}
+@media(max-width:760px){
+  #loomAiWorkspace .loom-first-crossing-copy::before{
+    font-size:9px;letter-spacing:.12em;
+  }
+  #loomAiWorkspace .loom-first-crossing-copy h2{
+    font-size:clamp(32px,8.7vw,46px);
+    max-width:21ch;
+    line-height:.99;
+    margin:13px auto 9px;
+  }
+  #loomAiWorkspace .loom-first-crossing-copy p{
+    font-size:14px;
+    max-width:44ch;
+  }
+  #loomAiWorkspace .loom-first-crossing{gap:12px}
+}
+@media(max-width:360px){
+  #loomAiWorkspace .loom-first-crossing-copy h2{
+    font-size:clamp(30px,8.5vw,34px);
+    max-width:22ch;
+  }
+  #loomAiWorkspace .loom-first-crossing-objects button{min-height:64px}
+}
+@media(min-width:761px) and (max-height:800px){
+  #loomAiWorkspace .loom-first-crossing-copy h2{
+    font-size:clamp(43px,4.2vw,62px);
+    max-width:22ch;
+    line-height:.96;
+    margin:7px auto 6px;
+  }
+  #loomAiWorkspace .loom-first-crossing-copy p{font-size:14px}
+  #loomAiWorkspace .loom-first-crossing{gap:9px}
+}
+/* END FIREWALL RUNWAY */
