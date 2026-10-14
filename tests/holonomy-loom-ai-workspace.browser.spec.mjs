@@ -157,8 +157,9 @@ try {
       await page.locator('#aiSessionInspect > summary').click();
       assert.equal(await page.locator('#aiSessionReceipt').isVisible(),false,'exact session contract returns to progressive disclosure after inspection');
       await closeTools();
-      assert.match(await page.locator('#aiAnswer').innerText(),/Preparation does not send them to AI/i);
-      assert.match(await page.locator('#aiAnswer').innerText(),/hidden receiver state and downstream behavior remain outside this local binding/i);
+      assert.match(await page.locator('#aiAnswer').innerText(),/Review the exact content below/i);
+      assert.match(await page.locator('#aiAnswer').innerText(),/Continue in Marrowline when you are ready to send it/i);
+      assert.match(await page.locator('#aiAnswer').innerText(),/AI service.s own privacy and retention policies apply to shared content/i);
 
       assert.equal(await page.locator('#aiExport').isEnabled(),true,'prepared one-hop export stays available without an unrelated authority gate');
       assert.equal(await page.locator('#aiExportSession').isEnabled(),true,'prepared persistent session export stays available');
