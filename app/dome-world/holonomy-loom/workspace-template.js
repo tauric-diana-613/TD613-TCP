@@ -1,4 +1,4 @@
-export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledby="loomFieldHeading"><div class="loom-stage-copy"><span class="loom-kicker">YOUR AI FIREWALL</span><h1 id="loomFieldHeading">Loom</h1><p>Keep your rules, evidence, tests, and continuity when working with AI.</p></div><section id="aiRuntime" class="ai-runtime" aria-label="Current Loom route"><p class="mark">CURRENT ROUTE</p>
+export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledby="loomFieldHeading"><div class="loom-stage-copy"><span class="loom-kicker">YOUR AI FIREWALL</span><h1 id="loomFieldHeading">Loom</h1><p>Make AI answer to you. Set the rules, interrogate the evidence, and control what survives into your next task.</p></div><section id="aiRuntime" class="ai-runtime" aria-label="Current Loom route"><p class="mark">CURRENT ROUTE</p>
       <h2 id="aiConsequence" hidden>Your work starts here.</h2>
       <div id="aiRuntimeState" class="ai-runtime-state il-state"></div>
       <div id="aiLivingRoom" hidden aria-hidden="true"></div>
@@ -14,7 +14,7 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
     <div class="loom-first-crossing-copy">
       <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">THE FIRST CROSSING · LIVE FLOW-CORE</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 7 · Choose</span></div>
       <h2 id="loomFirstCrossingTitle">Firewall your online life from AI.</h2>
-      <p id="loomFirstCrossingPrompt">Use Loom across ChatGPT, Gemini, and other LLMs. Set terms that travel with your work; test answers against your evidence; preserve the record when you continue.</p>
+      <p id="loomFirstCrossingPrompt">Put ChatGPT, Gemini, and other AI models under your rules. Register the evidence they receive. Challenge missing sources, broken instructions, and unsupported claims. Refuse an unverified answer before it enters your work.</p>
     </div>
     <details class="loom-flowcore-help">
       <summary>What is Flow-Core runtime?</summary>
