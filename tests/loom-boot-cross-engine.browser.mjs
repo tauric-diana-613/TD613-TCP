@@ -69,7 +69,7 @@ try {
             const tutorial = document.querySelector('#loomFirstCrossing');
             const failure = document.querySelector('#loomBootFailure');
             const retry = document.querySelector('#loomBootRetry');
-            const stylesheet = [...document.styleSheets].some(sheet => sheet.href?.includes('loom-product-v6.css'));
+            const stylesheet = [...document.styleSheets].some(sheet => sheet.href?.includes('loom-couture.css'));
             const shown = node => {
               if (!node) return false;
               const rect = node.getBoundingClientRect(), style = getComputedStyle(node);
