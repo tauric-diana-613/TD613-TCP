@@ -24,7 +24,7 @@ try {
     await page.route('**/*',route=>{if(route.request().method()!=='GET'||!route.request().url().startsWith(base)){blocked.push(route.request().url());return route.abort();}return route.continue();});
     const open = async()=>{
       await page.goto(`${base}/dome-world/holonomy-loom.html`);
-      await page.locator('#loomStartNow').click();
+      await page.locator('#loomFirstCrossingLeave').click();
       await page.locator('.loom-builder-shell').waitFor({state:'visible'});
     };
     await open();
@@ -60,7 +60,7 @@ try {
     await page.locator('#aiInspectTurnAnswer').click();
     assert.ok(JSON.parse(await page.locator('#aiTurnAnswerTechnical').textContent()).inspection.findings.includes('RECEIPT_ORIGIN_REFERENCE_MISMATCH'));
     await page.locator('#loomToolsClose').click();
-    await page.reload();await page.locator('#loomStartNow').click();
+    await page.reload();await page.locator('#loomFirstCrossingLeave').click();
     assert.equal(await page.locator('#aiInspectTurnAnswer').isDisabled(),true);
     assert.equal(await page.locator('#aiTurnAnswerResult').isVisible(),false);
     assert.equal(await page.locator('#aiTurnAnswerInput').inputValue(),'');
