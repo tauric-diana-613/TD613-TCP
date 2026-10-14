@@ -94,7 +94,7 @@ test('Loom opens on the human task and local preparation exposes the next route'
   assert.equal(h.root.dataset.loomJourney,'ready');
   assert.equal(h.$('#aiResult').hidden,false);
   assert.match(h.$('#aiAnswer').textContent,/Inspect the exact request below before sending/i);
-  assert.match(h.$('#aiAnswer').textContent,/Continue in Marrowline when you are ready to send it/i);
+  assert.match(h.$('#aiAnswer').textContent,/Only your selected material and rules are included/i);
   assert.match(h.$('#aiAnswer').textContent,/external AI provider governs how submitted content is stored and retained/i);
   assert.equal(h.$('#aiSessionSummary').hidden,false,'local preparation creates a session root before crossing');
   assert.match(h.$('#aiSessionReceipt').textContent,/td613\.loom\.portable-session-export\/v0\.1/);
