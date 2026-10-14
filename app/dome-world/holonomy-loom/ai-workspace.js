@@ -358,14 +358,14 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       if(consequenceVisible){
         firstCrossingGatheringPublished=true;
         setFirstCrossingCue('gathering-named',{
-          title:'Only your chosen evidence.'
+          title:'Only your chosen evidence.',
           prompt:'Your chosen request and reference are together. The unselected note remains on your side of the firewall.',
           answer:'Review the information before allowing it out. No real request has been sent.',
           action:true
         });
       }else{
         setFirstCrossingCue('gathering-motion',{
-          title:'Your chosen source is gathering.'
+          title:'Your chosen source is gathering.',
           prompt:'Loom marks your selected source and keeps the other note outside this request.',
           answer:'Checking the selected request and source…'
         });
@@ -641,7 +641,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       firstCrossingItems.forEach(button=>button.disabled=true);
       $('loomFirstCrossingBack').hidden=false;
       setFirstCrossingCue('gathering-motion',{
-        title:'Your chosen source is gathering.'
+        title:'Your chosen source is gathering.',
         prompt:'Your chosen request and reference are together. The unselected note remains on your side of the firewall.',
         answer:'Checking the selected request and source…'
       });
