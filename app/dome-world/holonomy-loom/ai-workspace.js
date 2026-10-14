@@ -201,7 +201,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       'proof-motion':'6 of 7 · Inspect', 'proof-named':'6 of 7 · Inspect',
       'lesson-held':'Review tutorial check', complete:'7 of 7 · Your turn'
     };
-    $('loomTutorialProgress').textContent=cue==='choose' && root.dataset.firstCrossingDemo!=='expanded'?'OPTIONAL / TRY THE EXAMPLE':progress[cue]??'How Loom works';
+    $('loomTutorialProgress').textContent=progress[cue]??'How Loom works';
     $('loomFirstCrossingTitle').textContent=title;
     $('loomFirstCrossingPrompt').textContent=prompt;
     $('loomFirstCrossingAnswer').textContent=answer;
@@ -589,8 +589,6 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     firstCrossingPacket=null;
     firstCrossingSelected=new Set();
     root.dataset.firstCrossing='active';
-    root.dataset.firstCrossingDemo='closed';
-    $('loomExploreDemo').setAttribute('aria-expanded','false');
     $('loomTutorialRequest').textContent=FIRST_CROSSING_PRACTICE.task;
     $('loomTutorialReference').textContent=FIRST_CROSSING_PRACTICE.documents.find(item=>item.id==='source').text.replace(/^Fictional project notes: /,'');
     root.dataset.firstCrossingStep='0';
@@ -1199,14 +1197,6 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
         flowcoreClearTimer=environment.setTimeout(()=>{flowcoreNotice.textContent='';flowcoreClearTimer=null;},360);
       },1540);
     });
-  });
-  $('loomStartNow').addEventListener('click',()=>openLoomThreshold({skipPractice:true}));
-  $('loomExploreDemo').addEventListener('click',()=>{
-    if(root.dataset.firstCrossingStep!=='0')return;
-    root.dataset.firstCrossingDemo='expanded';
-    $('loomExploreDemo').setAttribute('aria-expanded','true');
-    $('loomTutorialProgress').textContent='1 of 7 · CHOOSE';
-    $('loomFirstCrossingObjects').querySelector('[data-first-crossing-item="brief"]')?.focus({preventScroll:true});
   });
   $('loomReplayFirstCrossing').addEventListener('click',()=>{
     if(firstCrossingActive&&firstCrossingReplayMode&&firstCrossingStep<6){restoreThresholdField();return;}
