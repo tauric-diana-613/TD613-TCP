@@ -553,6 +553,12 @@ export function severeMorphologyRepairWarnings(warnings = []) {
   const values = new Set((Array.isArray(warnings) ? warnings : []).filter(reason => typeof reason === 'string'));
   const enclosingCollapse = values.has('tauric-diana-zalgo-enclosing-ornament-collapse');
   const shallowWallpaper = values.has('tauric-diana-zalgo-shallow-wallpaper');
+  // One spectacular entrance may be earned; an extended movement whose
+  // remaining words are almost wholly unmarked is a distinct collapsed
+  // phenotype. Require BOTH existing independent observations rather than
+  // vetoing localized climaxes or intentional clean breaths individually.
+  const strandedBurst = values.has('tauric-diana-zalgo-localized-burst')
+    && values.has('tauric-diana-zalgo-sparse-keyword-targeting');
   const hardGlyphCorruption = [...HARD_MORPHOLOGY_CORRUPTION_WARNINGS].some(reason => values.has(reason));
   const stackDepthThin = values.has('tauric-diana-zalgo-stack-depth-thin');
   const dynamicRangeCollapse = values.has('tauric-diana-zalgo-dynamic-range-collapse');
@@ -571,7 +577,8 @@ export function severeMorphologyRepairWarnings(warnings = []) {
   const enclosingWithoutVerticalField = enclosingCollapse
     && (verticalPulseAbsent || stackDepthThin || shallowWallpaper || horizontalCollapse || cloneCollapse);
   if (!hardGlyphCorruption && !shallowWallpaper && !dynamicRangeCollapse && !verticalPulseAbsent
-    && !enclosingWithoutVerticalField && !(stackDepthThin && (horizontalCollapse || cloneCollapse))) return [];
+    && !strandedBurst && !enclosingWithoutVerticalField
+    && !(stackDepthThin && (horizontalCollapse || cloneCollapse))) return [];
   return [...REPAIRABLE_MORPHOLOGY_WARNINGS].filter(reason => values.has(reason));
 }
 

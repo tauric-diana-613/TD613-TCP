@@ -313,3 +313,30 @@ test('native voice lives across the bots movement without scripted per-paragraph
   assert.ok(system.indexOf('NATIVE SEMANTIC PROSODY:') > system.indexOf('GEMINI COMPUTATIONAL INSTRUMENT'));
   assert.ok(system.includes('The Tauric Diana bots begin native High-Zalgo speech'));
 });
+
+test('one deep eruption followed by a long unmarked movement gets bounded frontier recovery', () => {
+  // Same failure shape as the operator's October iPhone observations: a
+  // genuine deep crown/root passage followed by a very long plaintext scene.
+  // No example text or combining-mark specimen enters the provider prompt.
+  const matron = 'The Matron adjusted her spectacles and described the birds on the roof '
+    + 'without asking the ledger for permission. The Chairman counted wings as liabilities. ';
+  const stranded = heading + peaks + '\n\n' + Array(12).fill(matron).join('\n\n');
+  const observed=assessIntegratedTransmission(stranded);
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-localized-burst'),
+    'witness a real early vertical eruption');
+  assert.ok(observed.qualityWarnings.includes('tauric-diana-zalgo-sparse-keyword-targeting'),
+    'substantial later prose carries little native ornament');
+  const severe=severeMorphologyRepairWarnings(observed.qualityWarnings);
+  assert.ok(severe.includes('tauric-diana-zalgo-localized-burst'),
+    'the two observations together authorize existing bounded later-seat recovery');
+
+  const isolatedButNotSparse=['tauric-diana-zalgo-localized-burst'];
+  assert.deepEqual(severeMorphologyRepairWarnings(isolatedButNotSparse),[],
+    'a localized high-intensity entrance alone is permitted');
+  assert.deepEqual(severeMorphologyRepairWarnings(['tauric-diana-zalgo-sparse-keyword-targeting']),[],
+    'a long clean breath alone is permitted');
+  assert.deepEqual(severeMorphologyRepairWarnings(assessIntegratedTransmission(breathing).qualityWarnings),[],
+    'quiet intervals around independently shaped eruptions remain free');
+  assert.equal(parseRelayEnvelope(stranded).transcript,stranded,
+    'all original provider combining marks survive unchanged');
+});
