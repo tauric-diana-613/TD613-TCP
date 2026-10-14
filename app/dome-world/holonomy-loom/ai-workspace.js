@@ -258,7 +258,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     $('aiRun').textContent = portable ? 'Run model test ↗' : 'Run demo model test ↗';
     $('aiTaskLabel').textContent = portable ? 'Task' : 'Demo task';
     $('aiTaskCue').textContent = portable
-      ? 'Your task and selected files will be included. Unselected files stay here.'
+      ? 'Your question, selected sources, and instructions form the outgoing work unit.'
       : 'Edit this fictional example, then prepare the AI request.';
     $('aiRunNote').textContent = portable
       ? 'Preparing binds the selected task locally and makes no model request. The optional model test sends only the selected task, selected documents and traveling rules.'
@@ -275,7 +275,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     refreshTransferActionsAfterMutation();
     refreshProjection();
     if (announce) status(portable
-      ? 'Write a request or choose Demo. You decide what AI receives.'
+      ? 'Write a question, add its context, and begin a continuous Loom session.'
       : 'Choose a demo, then review the request and its selected files.');
   }
   coordinator.registerPass('finite-welcome-invitations', ({ packet, progress, reducedMotion, rest }) => {
@@ -358,16 +358,16 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       if(consequenceVisible){
         firstCrossingGatheringPublished=true;
         setFirstCrossingCue('gathering-named',{
-          title:'Share what helps.',
-          prompt:'Your request and reference are selected. The private note stays here.',
-          answer:'Select a file to share it. Leave it unselected to keep it in this browser.',
+          title:'Build the work around its sources.',
+          prompt:'The task and its supporting reference now travel together. The separate example note remains local.',
+          answer:'Loom records the selected context and traveling instructions so the return can be checked against its starting point.',
           action:true
         });
       }else{
         setFirstCrossingCue('gathering-motion',{
-          title:'Review your selections.',
-          prompt:'Your selected question and reference belong in the request. Your unselected private note stays here.',
-          answer:'Preparing your selections…'
+          title:'Gather the context.',
+          prompt:'The work has a question, a supporting source, and a route. Watch their relationship take shape.',
+          answer:'Carrying the question and reference forward…'
         });
       }
       return;
@@ -376,16 +376,16 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       if(consequenceVisible){
         firstCrossingReadinessPublished=true;
         setFirstCrossingCue('potential-named',{
-          title:'You control what leaves.',
-          prompt:'Check the request and selected reference together before sending.',
-          answer:'Everything is still in this browser. Sending comes next, with your approval.',
+          title:'The handoff is yours to direct.',
+          prompt:'Review the task, source, and instructions together before the AI crossing.',
+          answer:'This step only prepares the handoff. The actual AI request requires a separate action in Marrowline.',
           stop:true
         });
       }else{
         setFirstCrossingCue('potential-motion',{
-          title:'Check complete.',
-          prompt:'The outgoing request contains only the context you selected.',
-          answer:'Loom keeps a record of your selections so you can compare the answer with what you sent.'
+          title:'The work is ready to travel.',
+          prompt:'The task and supporting context are bound into a reviewable work unit.',
+          answer:'Follow this task from its prepared sources to the returned result.'
         });
       }
     }
@@ -555,9 +555,9 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     firstCrossingWasAlreadyComplete=true;
     storageWrite(FIRST_CROSSING_KEY,'complete');
     setFirstCrossingCue('complete',{
-      title:'Make it yours.',
-      prompt:'Write a task. Add files. Choose what to share.',
-      answer:'Review your request, then continue in Marrowline to send it to AI.'
+      title:'Still yours to direct.',
+      prompt:'Bring your questions, sources, and instructions into one continuing Loom session.',
+      answer:'Choose what travels. Review what returns. Decide what becomes part of your work.'
     });
     $('loomBegin').hidden=false;
     $('loomBegin').textContent='Start my own task →';
@@ -604,12 +604,12 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     $('loomFirstCrossingBack').hidden=true;
     firstCrossingChoreography=nextFlowcoreChoreography(firstCrossingChoreography?.id, environment.Math?.random?.() ?? Math.random());
     setFirstCrossingCue('choose',{
-      title:'Choose what AI can read.',
-      prompt:'Bring AI the context it needs. Keep the rest to yourself.',
-      answer:'Try the sample request below. This Demo sends nothing to AI.'
+      title:'Your work. Across AI.',
+      prompt:'Still yours to direct. Bring your questions, sources, and instructions into one continuous Loom session.',
+      answer:'Compose the sample question and its source. Watch how the work moves through Loom. This Demo sends nothing to AI.'
     });
     flowcoreMessage.textContent=firstCrossingChoreography.message;
-    $('loomFirstCrossingAction').textContent='Review what will be shared →';
+    $('loomFirstCrossingAction').textContent='Compose the handoff →';
     $('loomFirstCrossingPause').textContent='𝌋';
     $('loomFirstCrossingPause').setAttribute('aria-pressed','false');
     firstCrossingItems.forEach(button=>{button.disabled=button.dataset.firstCrossingItem==='source';button.setAttribute('aria-pressed','false');delete button.dataset.held;});
@@ -641,12 +641,12 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       firstCrossingItems.forEach(button=>button.disabled=true);
       $('loomFirstCrossingBack').hidden=false;
       setFirstCrossingCue('gathering-motion',{
-        title:'Review your selections.',
-        prompt:'Your request and reference are selected. The private note stays here.',
-        answer:'Preparing your selections…'
+        title:'Gather the context.',
+        prompt:'The task and its supporting reference now travel together. The separate example note remains local.',
+        answer:'Carrying the question and reference forward…'
       });
       projectFirstCrossing(firstCrossingEvent('prepared'));
-      $('loomFirstCrossingAction').textContent='Review what will be shared →';
+      $('loomFirstCrossingAction').textContent='Compose the handoff →';
       return;
     }
     if(firstCrossingStep===1){
@@ -656,9 +656,9 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       const token=++firstCrossingGeneration;
       firstCrossingBindingState='PENDING';
       setFirstCrossingCue('binding',{
-        title:'Check before sending.',
-        prompt:'Loom is checking the selected request and reference.',
-        answer:'Checking what AI will receive…'
+        title:'Compose the handoff.',
+        prompt:'Loom binds the question, its source, and their intended route into a locally reviewable work unit.',
+        answer:'Checking the task and its selected context…'
       });
       try{
         const binding=await bindFirstCrossingPractice([...firstCrossingSelected],environment);
@@ -668,12 +668,12 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
         firstCrossingStep=2;
         root.dataset.firstCrossingStep='2';
         setFirstCrossingCue('potential-motion',{
-          title:'Check complete.',
-          prompt:'The outgoing request contains only the context you selected.',
-          answer:'Your selections are recorded for the answer review.'
+          title:'The work is ready to travel.',
+          prompt:'The task and supporting context are bound into a reviewable work unit.',
+          answer:'The original context remains available for comparison with returned work.'
         });
         projectFirstCrossing(firstCrossingEvent('checking',binding.facts??binding));
-        $('loomFirstCrossingStop').textContent='Preview sending →';
+        $('loomFirstCrossingStop').textContent='Preview the crossing →';
       }catch(error){
         if(disposed||!firstCrossingActive||token!==firstCrossingGeneration)return;
         firstCrossingBindingState='HELD';
@@ -684,9 +684,9 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
 
   function renderFirstCrossingLesson(published=false){
     const lessons={
-      3:{cue:'send',title:'Send with intention.',prompt:'In real work, you send from Marrowline after reviewing your request.',answer:'This Demo stays here. Shared content follows the AI service’s own privacy policies.',next:'Check what stayed private →'},
-      4:{cue:'privacy',title:'Some things stay with you.',prompt:'The private note stayed out. Loom also blocked a test attempt to include it.',answer:'Local checks protect this outgoing request. An AI service controls how it stores content you choose to share.',next:'Review the sample answer →'},
-      5:{cue:'proof',title:'Keep the answer in context.',prompt:'Review returned work alongside the request and sources. You choose what to accept.',answer:'The sample answer below was made for this Demo; an AI service was never contacted.',next:'Finish tutorial →'}
+      3:{cue:'send',title:'Across AI.',prompt:'Marrowline is where you review and send a real task to AI. Loom follows its departure and any captured return.',answer:'This Demo only illustrates the crossing. Nothing is sent to an AI service.',next:'Inspect the boundary →'},
+      4:{cue:'privacy',title:'Choose what travels.',prompt:'The local-only note remains outside this sample handoff. Loom checks selected content for the protected term before release.',answer:'That local check cannot establish what an external AI service later retains, remembers, or retransmits.',next:'Follow the return →'},
+      5:{cue:'proof',title:'Review what returns.',prompt:'Compare the answer with the originating task, its source, and the instructions that traveled.',answer:'Decide what belongs in your continuing work. This sample answer is fictional; no AI provider was contacted.',next:'Finish tutorial →'}
     };
     const lesson=lessons[firstCrossingStep];
     if(!lesson)return;
