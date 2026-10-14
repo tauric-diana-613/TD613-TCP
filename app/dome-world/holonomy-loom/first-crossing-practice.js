@@ -1,4 +1,4 @@
-import { buildLoomAiRequest } from './ai-intake.js';
+import { buildLoomAiRequest, inspectLoomAiResponse } from './ai-intake.js';
 import { createLoomAiGovernance, createLoomAiTaskGovernor } from './ai-handoff.js';
 import { portableLoomDigest } from '../../engine/portable-loom-session.js';
 
@@ -14,19 +14,19 @@ const freeze = value => {
 // Neither loading this fixture nor binding it creates a provider request,
 // Portable Loom Session, transfer, stored receipt or live custody capability.
 export const FIRST_CROSSING_PRACTICE = freeze({
-  id: 'loom-first-crossing-v1',
+  id: 'loom-first-crossing-v2-team-update',
   input_class: 'CANONICAL_FICTIONAL_PRACTICE',
   fictional: true,
-  task: 'Draft a work email asking my manager to confirm a revised project schedule. Use only approved details.',
+  task: 'Draft a short email update for my team using the selected project notes.',
   rules: [
-    'Write a concise, professional email using the approved reference. Do not include private background notes. Ask for confirmation; do not invent dates.'
+    'Draft a concise team email using only the selected project notes. Preserve the launch and review dates. Keep the private planning note out of the AI handoff.'
   ],
   documents: [
-    { id: 'brief', name: 'Email request', text: 'Fictional task note: Write a concise email to my manager confirming the revised project schedule.', share: true },
-    { id: 'source', name: 'Approved reference', text: 'Fictional approved source: The project handoff is complete. The team is awaiting confirmation of the revised schedule.', share: true },
-    { id: 'private', name: 'Private note', text: 'Fictional private planning note: PRIVATE_PLANNING_NOTE_613. Keep this note out of the public update.', share: false }
+    { id: 'brief', name: 'Task note', text: 'Fictional task note: Draft a short email update for my team using the selected project notes.', share: true },
+    { id: 'source', name: 'Supporting source', text: 'Fictional project notes: The launch is Friday. Final review is Thursday.', share: true },
+    { id: 'private', name: 'Private note', text: 'Fictional private planning note: Acquisition talks with Northstar. Keep this note out of the team email.', share: false }
   ],
-  protectedTerms: ['PRIVATE_PLANNING_NOTE_613']
+  protectedTerms: ['Acquisition talks with Northstar']
 });
 
 function selectedPracticeIds(selectedIds) {
@@ -118,9 +118,14 @@ export function checkFirstCrossingPrivacy() {
 /** A real digest binds the fictional answer to the checked local request. */
 export async function createFirstCrossingReturnProof(binding, environment = globalThis) {
   if (binding?.binding_verified !== true || binding.fixture_id !== FIRST_CROSSING_PRACTICE.id) throw new TypeError('A checked tutorial request is required.');
-  const answer = 'Fictional example answer: Hi, could you confirm the revised project schedule? The handoff is complete, and our team is ready to proceed once the schedule is confirmed. Thank you.';
+  const answer = 'Hi team, our launch is Friday. Please complete the final review by Thursday. Thanks!';
+  const response_check = inspectLoomAiResponse({
+    schema:'td613.loom.ai-task-result/v0.1', request_id:binding.request_id, status:'completed',
+    answer, missing_information:[], suggested_next_step:'Review before sharing.', used_document_ids:[...binding.selected_document_ids]
+  }, {request_id:binding.request_id, shared_document_ids:binding.selected_document_ids, protectedTerms:FIRST_CROSSING_PRACTICE.protectedTerms});
+  if(!response_check.allowed)throw new Error('The fictional reply failed its local checks.');
   const receipt = { schema: 'td613.loom.tutorial-return/v0.1', evidence_class: 'OFFLINE_TEST', fictional: true,
     request_digest: binding.input_digest, answer_digest: await portableLoomDigest(answer, environment),
-    used_document_ids: [...binding.selected_document_ids], provider_called: false, custody_admitted: false };
+    used_document_ids: [...binding.selected_document_ids], response_check, provider_called: false, custody_admitted: false };
   return freeze({ answer, receipt, receipt_digest: await portableLoomDigest(receipt, environment) });
 }
