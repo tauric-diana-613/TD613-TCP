@@ -29,7 +29,7 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
       </div>
     </details>
     <div class="loom-firewall-theater" aria-hidden="true">
-      <div class="loom-firewall-header"><span>YOU / YOUR INFORMATION</span><span>CHATGPT · GEMINI · OTHER LLMS</span></div>
+      <div class="loom-firewall-header"><span>YOU / YOUR INFORMATION</span><span>CHATGPT · GEMINI</span></div>
       <div class="loom-firewall-line loom-firewall-line--outbound"></div>
       <div class="loom-firewall-line loom-firewall-line--return"></div>
       <div class="loom-firewall-seam"><span class="loom-firewall-seam-core">◈</span><span class="loom-firewall-seam-foot">LOOM</span></div>
