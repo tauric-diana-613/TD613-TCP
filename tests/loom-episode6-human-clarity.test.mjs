@@ -82,7 +82,7 @@ test('Loom human-facing task surface stays provider-neutral and names the active
   assert.match(source, /Your question, selected sources, and instructions form the outgoing work unit\./i);
   assert.match(source, /Edit this fictional example, then prepare the AI request/i);
   assert.match(source, /optional model test sends the fictional task and selected documents/i);
-  assert.equal(dom.window.getComputedStyle(doc.querySelector('#aiTask')).fontSize, '16px');
+  assert.equal(dom.window.getComputedStyle(doc.querySelector('#aiTask')).fontSize, '17px');
   assert.match(css, /@media\(max-width:760px\)/);
   assert.match(css, /:focus-visible\{/);
   dom.window.close();
