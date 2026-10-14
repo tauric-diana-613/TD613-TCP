@@ -137,7 +137,7 @@ try{
     await page.waitForFunction(()=>document.querySelector('[data-loom-reentry="turns"]').children.length===2);
     await page.locator('#loomJourneyStep1').click();
     await page.locator('#aiPreparePortable').click();
-    assert.match(await page.locator('#aiStatus').textContent(),/HOLD.*new-root/);
+    assert.match(await page.locator('#aiStatus').textContent(),/Save your current session, then confirm that you want to replace it/i);
     assert.equal(await page.locator('#aiNewRootConfirm').isChecked(),false);assert.equal(await head(),finalHead);
     assert.equal(await page.evaluate(()=>document.activeElement?.id),'aiNewRootNotice');
     await page.locator('#aiNewRootNotice').screenshot({path:`${dir}/${posture}-stale-replacement-hold.png`});
