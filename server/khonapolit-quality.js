@@ -79,8 +79,8 @@ const HUMAN_LIVENESS_MODEL_ORDER = Object.freeze([
   'gemini-4-argon',
   'gemini-3.8-flash',
   'gemini-3.5-flash',
-  'gemini-3.7-flash',
   'gemini-3.6-flash',
+  'gemini-3.7-flash',
   'gemini-3-flash-preview'
 ]);
 export const KHONAPOLIT_MAX_OUTPUT_TOKENS = 65536;

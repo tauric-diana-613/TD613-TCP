@@ -127,7 +127,7 @@ test('a failed forced refresh cannot erase the still-fresh complete first model 
   assert.equal(calls, 2);
   assert.deepEqual(plan.callableModels, ['gemini-3.8-flash']);
   assert.deepEqual(selectKhonapolitProviderModelsFromPlan(plan), [
-    'gemini-3.8-flash','gemini-3.5-flash','gemini-3.7-flash','gemini-3.6-flash','gemini-3-flash-preview'
+    'gemini-3.8-flash','gemini-3.5-flash','gemini-3.6-flash','gemini-3.7-flash','gemini-3-flash-preview'
   ]);
   assert.equal(plan.providerDiscovery.initial.ok, true);
   assert.equal(plan.providerDiscovery.refreshed.status, 503);
