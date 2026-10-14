@@ -555,9 +555,9 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     firstCrossingWasAlreadyComplete=true;
     storageWrite(FIRST_CROSSING_KEY,'complete');
     setFirstCrossingCue('complete',{
-      title:'Your AI. Your call.',
-      prompt:'Work with ChatGPT, Gemini, or another LLM on your terms. Take your rules and sources along, then review what the model actually returns.',
-      answer:'You decide which returned work is accepted. Loom preserves the inspectable trail of what happened.'
+      title:'Your AI answers to your rules.',
+      prompt:'Bring your own model. Carry instructions and evidence from one AI session to another, challenge returned answers, and decide which work earns acceptance.',
+      answer:'Keep the request, the challenge, and the return linked to a reviewable record. Nothing earns admission without your decision.'
     });
     $('loomBegin').hidden=false;
     $('loomBegin').textContent='Start my own task →';
@@ -607,7 +607,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     firstCrossingChoreography=nextFlowcoreChoreography(firstCrossingChoreography?.id, environment.Math?.random?.() ?? Math.random());
     setFirstCrossingCue('choose',{
       title:'Firewall your online life from AI.',
-      prompt:'Bring your own AI: ChatGPT, Gemini, or another LLM. Carry instructions and source records, test what comes back, and keep an inspectable history of your work.',
+      prompt:'Take your rules and evidence into ChatGPT, Gemini, and other LLMs. Challenge answers for missing sources, unauthorized disclosures, and broken continuity. Keep verifiable records of what you sent, tested, and accepted.',
       answer:'Choose the demo request first, then its source. This example stays in your browser.'
     });
     flowcoreMessage.textContent=firstCrossingChoreography.message;
