@@ -305,7 +305,7 @@ try {
         await page.locator('#loomFirstCrossingTitle').isVisible() &&
         await page.locator('.loom-boundary-event').isHidden() &&
         await page.locator('[data-first-crossing-item="brief"]').isVisible() &&
-        /ChatGPT.*Gemini.*AI models/i.test(await page.locator('#loomFirstCrossingPrompt').textContent()) &&
+        /ChatGPT.*Gemini.*another AI/i.test(await page.locator('#loomFirstCrossingPrompt').textContent()) &&
         await page.locator('#loomStartNow').count()===0 &&
         await page.locator('#loomExploreDemo').count()===0,
         {first_choice:await page.locator('[data-first-crossing-item="brief"]').isVisible(),
@@ -538,8 +538,8 @@ try {
       record(`${posture.name}: workspace retains one live field and matching ingress typography`,
         frameComposition.runtime_count===1&&frameComposition.original_runtime_preserved&&frameComposition.runtime_in_background&&
           frameComposition.font_family===frameComposition.ingress_font,frameComposition);
-      if(posture.name==='desktop')record('desktop: workspace is centered with an opaque reading surface',
-        frameComposition.width<posture.viewport.width-100&&frameComposition.center_error<=1&&frameComposition.background==='rgb(8, 21, 29)',frameComposition);
+      if(posture.name==='desktop')record('desktop: workspace is centered with a translucent reading surface',
+        frameComposition.width<posture.viewport.width-100&&frameComposition.center_error<=1&&frameComposition.background==='rgba(7, 10, 26, 0.78)',frameComposition);
       const arrival = await geometry(page, ['aiTask', 'aiPreparePortable', 'loomRulesOpen', 'loomBoundaryOpen', 'aiPortableMode', 'aiDemoMode', 'loomToolsOpen']);
       const bounds = await spill(page);
       record(`${posture.name}: no root or visible horizontal spill`, bounds.document_width <= posture.viewport.width && bounds.outside.length === 0, bounds);
