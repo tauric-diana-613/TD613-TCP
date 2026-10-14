@@ -34,7 +34,7 @@ test('Loom boot binds fresh Phase 09 assets and contains a catchable module fail
   const module = [...doc.querySelectorAll('script[type="module"]')].find(node => node.textContent.includes('ai-workspace.js'));
   assert.match(css.href, /20261013-firewall-couture-v1/);
   assert.ok(module, 'the entrypoint must be an observable dynamic module import');
-  assert.match(module.textContent, /import\('\.\/holonomy-loom\/ai-workspace\.js\?v=20261014-operator-control-v3'\)/);
+  assert.match(module.textContent, /import\('\.\/holonomy-loom\/ai-workspace\.js\?v=20261014-seven-crossings-v1'\)/);
   assert.match(module.textContent, /\.catch\(\(\) => window\.td613LoomBootFailure/);
   assert.equal(doc.querySelectorAll('script[type="module"][src*="20261003"]').length, 0);
 });
@@ -208,9 +208,9 @@ test('How Loom works is a recoverable handoff preview with a living Flow-Core re
   assert.equal(doc.querySelector('#loomFirstCrossingPrivate').tagName, 'DIV', 'private note is explanatory, not a mystery button');
   assert.equal(doc.querySelector('#loomFirstCrossingPause').textContent, '𝌋');
   assert.equal(doc.querySelector('#loomTutorialProgress').textContent, '1 of 7 · Choose');
-  const consumerCopy=doc.querySelector('#loomFirstCrossing').cloneNode(true);
-  consumerCopy.querySelector('.loom-flowcore-help')?.remove();
-  assert.doesNotMatch(consumerCopy.textContent, /First Crossing|private scrap|short brief|public source|locally|packet|Preparation ≠ transmission|Prepared is not transmitted|Nothing crossed/i);
+  const openingClaim=[doc.querySelector('#loomFirstCrossingTitle').textContent,doc.querySelector('#loomFirstCrossingPrompt').textContent].join(' ');
+  assert.doesNotMatch(openingClaim, /private scrap|short brief|public source|locally|packet|Preparation ≠ transmission|Prepared is not transmitted|Nothing crossed/i);
+  assert.match(doc.querySelector('#loomTutorialProgress').textContent,/1 of 7/);
   assert.match(templateSource, /What is Flow-Core runtime\?/);
   for (const glyph of ['à','米','出','hõt','cōl','上','下','𝄐']) assert.ok(templateSource.includes(glyph), `Flow-Core explainer includes ${glyph}`);
   assert.match(workspaceSource, /nextFlowcoreChoreography/);
@@ -419,7 +419,7 @@ test('first use explains private material, remixes presentation, and skips witho
   const privateNote=h.$('#loomFirstCrossingPrivate');
   assert.equal(privateNote.tagName,'DIV');
   assert.equal(privateNote.getAttribute('role'),'note');
-  assert.match(privateNote.textContent,/Kept local/);
+  assert.match(privateNote.textContent,/Excluded from this request/);
   assert.match(privateNote.textContent,/stays in this browser/i);
   assert.equal(privateNote.hasAttribute('aria-pressed'), false);
   const before=h.$('#loomFlowcoreMessage').textContent;
