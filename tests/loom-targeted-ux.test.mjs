@@ -149,22 +149,24 @@ test('the firewall promise explains outgoing checks, returning review and limits
   assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent, /ChatGPT, Gemini, and other LLMs/i);
   assert.match(doc.querySelector('#loomReturnWorkspace header').textContent, /before accepting/i);
   assert.match(doc.querySelector('[data-tool-panel="boundary"]').textContent, /external AI provider determines its own retention/i);
-  assert.match(workspaceSource, /title:'Watch the firewall refuse\.'/);
-  assert.match(workspaceSource, /title:'Challenge the AI response\.'/);
-  assert.match(runway, /\[data-first-crossing-step="4"\] \.loom-first-crossing-objects \.loom-first-crossing-private/);
+  assert.match(workspaceSource, /title:'A protected phrase was stopped\.'/);
+  assert.match(workspaceSource, /title:'Inspect the sample answer\.'/);
+  assert.match(runway, /\[data-first-crossing-step="4"\] \.loom-boundary-event-denial/);
   assert.doesNotMatch(doc.querySelector('#loomFirstCrossingPrompt').textContent, /portable|cryptographic|governance/i);
 });
 
-test('the visible runway has one inert firewall stage and preserves all 39 live carriers', () => {
+test('the seven steps display actual evidence instead of a decorative firewall diagram', () => {
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
-  const stage = doc.querySelector('.loom-firewall-theater');
-  assert.ok(stage, 'firewall has a separate visual plane');
-  assert.equal(stage.getAttribute('aria-hidden'), 'true');
-  assert.match(stage.textContent, /CHATGPT.*GEMINI/i);
-  assert.match(runway, /loom-field-glyph\{opacity:1\}/);
-  assert.match(runway, /data-first-crossing-step="4".*loom-firewall-denial/);
-  assert.match(runway, /data-first-crossing-step="5".*loom-firewall-line--return/);
-  assert.doesNotMatch(runway, /@keyframes|setInterval|requestAnimationFrame|new AnimationCoordinator/);
+  const stage = doc.querySelector('.loom-boundary-event');
+  assert.ok(stage);
+  assert.equal(doc.querySelector('.loom-firewall-theater'), null, 'retire generic diamond and platform diagram');
+  assert.match(stage.textContent, /Only the task and selected reference/i);
+  assert.match(stage.textContent, /PRIVATE_PLANNING_NOTE_613/);
+  assert.match(stage.textContent, /BLOCKED BEFORE SENDING/);
+  assert.match(runway, /data-first-crossing-step="3"\] \.loom-boundary-event-outgoing/);
+  assert.match(runway, /data-first-crossing-step="4"\] \.loom-boundary-event-denial/);
+  assert.match(runway, /data-first-crossing-step="5"\] \.loom-tutorial-sample-answer/);
+  assert.doesNotMatch(runway, /loom-firewall-seam|loom-firewall-theater|@keyframes|setInterval|requestAnimationFrame|new AnimationCoordinator/);
   assert.match(html, /loom-firewall-runway\.css\?v=/);
 });
 
