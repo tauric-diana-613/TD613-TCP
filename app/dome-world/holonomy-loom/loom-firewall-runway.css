@@ -317,6 +317,7 @@
 #loomAiWorkspace[data-first-crossing-step="0"]:not([data-first-crossing-demo="expanded"]) #loomFirstCrossingPause{
   order:0;
 }
+#loomAiWorkspace[data-first-crossing-step]:not([data-first-crossing-step="0"]) .loom-power-declaration {display:none}
 #loomAiWorkspace[data-first-crossing-step]:not([data-first-crossing-step="0"]) .loom-product-entry,
 #loomAiWorkspace[data-first-crossing-step]:not([data-first-crossing-step="0"]) .loom-product-capabilities {display:none}
 #loomAiWorkspace[data-first-crossing-step]:not([data-first-crossing-step="0"]) .loom-motion-view {
