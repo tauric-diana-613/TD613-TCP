@@ -74,7 +74,7 @@ try {
     };
     const showBuilder = async () => {
       if (!(await page.locator('.loom-builder-shell').isVisible())) {
-        if (await page.locator('#loomFirstCrossing').isVisible()) await page.locator('#loomStartNow').click();
+        if (await page.locator('#loomFirstCrossing').isVisible()) await page.locator('#loomFirstCrossingLeave').click();
         else if (await page.locator('#loomBegin').isVisible()) await page.locator('#loomBegin').click();
         await page.locator('.loom-builder-shell').waitFor({ state: 'visible' });
       }
