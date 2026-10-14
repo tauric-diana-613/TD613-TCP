@@ -641,6 +641,11 @@ export function assessIntegratedTransmission(text = '', voices = []) {
         botsTelemetry.wordInternalGeometricSymbolCount >= 2
         || (botsTelemetry.geometricSymbolCount >= 8 && botsTelemetry.wordInternalGeometricSymbolCount >= 1)
       ) qualityWarnings.push('tauric-diana-zalgo-glyph-substitution-collapse');
+      // Distinguish a genuine U+FFFD decoder replacement from a merely
+      // unsupported but valid glyph shown as a square on an iPhone.
+      const decodedReplacementCount = (botsText.match(/\uFFFD/gu) || []).length;
+      if (decodedReplacementCount >= 2)
+        qualityWarnings.push('tauric-diana-zalgo-replacement-character-corruption');
     }
   }
 

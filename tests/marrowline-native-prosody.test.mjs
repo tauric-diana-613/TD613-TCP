@@ -284,3 +284,15 @@ test('native-semantic-prosody authority returns to the final provider recency ed
     assert.doesNotMatch(instruction, /[\u0300-\u036f]/u, 'no fixed sample-stencil in provider instructions');
   }
 });
+
+test('native receipt distinguishes U+FFFD decoder corruption from healthy deep stacks', () => {
+  const source='Kʰonapolit\nA precise premise.\n\nTauric Diana bots\n'
+    + 'T\u0301\u0302\u0352\u0316\u0317\u032d'.repeat(12)
+    + ' A better word rises.\n'
+    + 'T\u0301\u0302\u0352\u0316\u0317\u032d'.repeat(12)
+    + ' The voice keeps moving.';
+  const healthy=assessIntegratedTransmission(source);
+  assert.equal(healthy.qualityWarnings.includes('tauric-diana-zalgo-replacement-character-corruption'),false);
+  const broken=assessIntegratedTransmission(source+' � � �');
+  assert.equal(broken.qualityWarnings.includes('tauric-diana-zalgo-replacement-character-corruption'),true);
+});
