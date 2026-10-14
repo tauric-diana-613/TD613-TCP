@@ -505,6 +505,26 @@ function displayClassification(doc, receipt = null) {
   if (byId(doc, 'metricApertureRoute')) byId(doc, 'metricApertureRoute').textContent = task.primary_route || 'OPEN_FIELD_SPECULATIVE_SYNTHESIS';
   if (byId(doc, 'metricModel')) byId(doc, 'metricModel').textContent = receipt?.provider?.model || '—';
   renderModelRouteReceipt(doc, receipt);
+  // Read-only evidence from the original provider transcript. A screen cannot
+  // demonstrate how many actual above/below Unicode code points were returned.
+  // No locale normalization, repaint, scoring gate or extra provider call.
+  const native = receipt?.relay?.highZalgo || null;
+  const observed = Number.isFinite(native?.combiningMarkCount);
+  const count = key => Math.max(0, Number(native?.[key]) || 0);
+  const axisNode = byId(doc, 'metricNativeZalgoAxes');
+  if (axisNode) axisNode.textContent = observed
+    ? `↑ ${count('verticalAboveLineMarkCount')} · ↓ ${count('verticalBelowLineMarkCount')} · ↔ ${count('planarMarkCount')}`
+    : '—';
+  const rangeNode = byId(doc, 'metricNativeZalgoRange');
+  if (rangeNode) rangeNode.textContent = observed
+    ? `${count('combiningCodePointDiversity')} code points · deepest vertical stack ${count('maxVerticalOrnamentStackDepth')}`
+    : '—';
+  const qualityNode = byId(doc, 'metricNativeZalgoQuality');
+  const warnings = Array.isArray(receipt?.relay?.admission?.qualityWarnings)
+    ? receipt.relay.admission.qualityWarnings : [];
+  if (qualityNode) qualityNode.textContent = observed
+    ? (warnings.length ? warnings.slice(0, 3).join(' · ') : 'No local warning')
+    : '—';
   if (byId(doc, 'metricMode')) byId(doc, 'metricMode').textContent = receipt?.invocation?.mode || '—';
   if (byId(doc, 'metricEgress')) byId(doc, 'metricEgress').textContent = receipt?.apertureEgress?.status || '—';
   if (byId(doc, 'metricKhona')) byId(doc, 'metricKhona').textContent = emergence?.signals?.covenantKeyIntegrity?.status || '—';

@@ -960,3 +960,14 @@ test('conversation heading never promotes a stranded trailing preposition', () =
   const title = deriveMarrowlineConversationTitle('The Death of the Witness by an artist considering archival custody.');
   assert.equal(/\b(?:by|of|with|from|at|as|to)\s*$/i.test(title),false);
 });
+
+test('advanced Receipts report provider-native Zalgo without modifying provider text', () => {
+  const source = readFileSync(new URL('../app/dome-world/marrowline-terminal.js', import.meta.url), 'utf8');
+  assert.match(html, /id="metricNativeZalgoAxes"/);
+  assert.match(html, /id="metricNativeZalgoRange"/);
+  assert.match(html, /id="metricNativeZalgoQuality"/);
+  assert.ok(source.includes('receipt?.relay?.highZalgo'), 'read native field from provider receipt');
+  assert.ok(source.includes('verticalAboveLineMarkCount'));
+  assert.ok(source.includes('verticalBelowLineMarkCount'));
+  assert.ok(source.includes('maxVerticalOrnamentStackDepth'));
+});
