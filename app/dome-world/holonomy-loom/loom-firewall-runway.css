@@ -566,7 +566,7 @@
 /* Post-browser acceptance repair: identical ingress/workspace type, clear
    static glass, and desktop first-fold controls within the viewport. */
 #loomAiWorkspace .loom-intro h1{
-  font-family:"Arial Narrow","Helvetica Neue",Inter,-apple-system,system-ui,sans-serif;
+  font-family:"Arial Narrow","Helvetica Neue",Inter,system-ui,sans-serif;
 }
 #loomAiWorkspace .loom-builder-shell{
   background:rgba(7,10,26,.78);
