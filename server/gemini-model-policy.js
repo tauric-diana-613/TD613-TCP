@@ -18,9 +18,9 @@ const QUALITY_ORDER = Object.freeze([
 const KHONAPOLIT_QUALITY_ORDER = Object.freeze([
   'gemini-4-argon',
   'gemini-3.8-flash',
-  'gemini-3.5-flash',
   'gemini-3.7-flash',
   'gemini-3.6-flash',
+  'gemini-3.5-flash',
   'gemini-3-flash-preview'
 ]);
 
