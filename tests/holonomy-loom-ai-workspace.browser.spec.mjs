@@ -141,7 +141,7 @@ try {
       await page.locator('#aiPreparePortable').click();
       await page.waitForFunction(() => document.querySelector('#aiResult') && !document.querySelector('#aiResult').hidden);
       assert.equal(requests.length,0,'local Loom transfer preparation makes no provider request');
-      assert.equal(await page.locator('#aiResultTitle').innerText(),'AI request ready.');
+      assert.equal(await page.locator('#aiResultTitle').innerText(),'Review what crosses.');
       assert.equal(await page.locator('#loomAiWorkspace').getAttribute('data-loom-journey'),'ready');
       assert.equal(await page.locator('#aiMarrowline').isEnabled(),true,'prepared work can continue to Marrowline without a speculative authority gate');
       assert.equal(await page.locator('#aiExport').isEnabled(),true,'prepared one-hop export is available');
@@ -157,9 +157,9 @@ try {
       await page.locator('#aiSessionInspect > summary').click();
       assert.equal(await page.locator('#aiSessionReceipt').isVisible(),false,'exact session contract returns to progressive disclosure after inspection');
       await closeTools();
-      assert.match(await page.locator('#aiAnswer').innerText(),/Review the exact content below/i);
-      assert.match(await page.locator('#aiAnswer').innerText(),/Continue in Marrowline when you are ready to send it/i);
-      assert.match(await page.locator('#aiAnswer').innerText(),/AI service.s own privacy and retention policies apply to shared content/i);
+      assert.match(await page.locator('#aiAnswer').innerText(),/Inspect the exact request below before sending/i);
+      assert.match(await page.locator('#aiAnswer').innerText(),/Only your selected material and rules are included/i);
+      assert.match(await page.locator('#aiAnswer').innerText(),/external AI provider governs how submitted content is stored and retained/i);
 
       assert.equal(await page.locator('#aiExport').isEnabled(),true,'prepared one-hop export stays available without an unrelated authority gate');
       assert.equal(await page.locator('#aiExportSession').isEnabled(),true,'prepared persistent session export stays available');
