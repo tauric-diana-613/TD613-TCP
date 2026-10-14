@@ -450,9 +450,9 @@ test('selection and readiness publish consequences before naming the Flow-Core r
   // send illustration, privacy egress check, and digest-bound return inspection.
   // Finishing before all three consequences publish must stay forbidden.
   for (const [step, cue, progress] of [
-    [3, 'send-named', '4 of 7 · Sending'],
-    [4, 'privacy-named', '5 of 7 · Privacy'],
-    [5, 'proof-named', '6 of 7 · Answer']
+    [3, 'send-named', '4 of 7 · Preview'],
+    [4, 'privacy-named', '5 of 7 · Local block'],
+    [5, 'proof-named', '6 of 7 · Inspect']
   ]) {
     h.$('#loomFirstCrossingStop').click();
     await until(() => h.root.dataset.firstCrossingStep === String(step)
