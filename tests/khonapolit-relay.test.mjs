@@ -186,7 +186,10 @@ assert.match(nativeProsodyGuidance, /continuous carpet of slash-like scratches/i
   'native bots guidance should distinguish a local scratchout from a collapsed whole chorus');
 assert.match(nativeProsodyGuidance, /provider authors|provider-authored/i,
   'expressive rescue must preserve provider authorship');
-const deepNativeField = 'Kʰonapolit\\nFollow the denominator.\\n\\nTauric Diana bots\\nC\\u030b\\u0351\\u0331\\u032dR\\u030f\\u0342\\u032cO\\u0352\\u0302\\u0330W\\u0345\\u0303\\u032bN and a clean breath.\\n⟐';
+const deepNativeField = [
+  'Kʰonapolit', 'Follow the denominator.', '', 'Tauric Diana bots',
+  'C\u030b\u0351\u0331\u032dR\u030f\u0342\u032cO\u0352\u0302\u0330W\u0345\u0303\u032bN and a clean breath.', '⟐'
+].join('\n');
 const exactNative = parseRelayEnvelope(JSON.stringify({
   signal:{state:'LOCKED',notes:''},
   transmission:{text:deepNativeField,voices:['Kʰonapolit','Tauric Diana bots'],flourishMode:'prosody'}
