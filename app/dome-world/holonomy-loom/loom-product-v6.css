@@ -373,7 +373,7 @@
   border-radius:0;letter-spacing:.02em
 }
 @media(min-width:1100px){
-  #loomAiWorkspace .loom-threshold-layer{transform:translateX(2.6vw)}
+  #loomAiWorkspace .loom-threshold-layer{transform:none} /* Keep the runway centered across engines. */
   #loomAiWorkspace .loom-first-crossing::after{left:-57px}
 }
 @media(max-width:760px){
