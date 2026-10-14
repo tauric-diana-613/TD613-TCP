@@ -240,6 +240,13 @@ body{background:var(--ink);overflow-x:clip}
 @media(prefers-reduced-transparency:reduce){#loomAiWorkspace .loom-first-crossing,#loomAiWorkspace .loom-builder-shell{background:rgba(13,10,23,.92);backdrop-filter:none;-webkit-backdrop-filter:none}}
 @media(prefers-reduced-motion:reduce){#loomAiWorkspace :is(button,.loom-first-crossing){transition:none}#loomAiWorkspace .loom-armature svg{opacity:.65}}
 
+/* The tutorial's viewport-scale Flow-Core SVG stays visible even when the
+   single AnimationCoordinator rests for reduced motion. Explicit visibility
+   prevents an inherited hidden state from swallowing the entire field in a
+   short Chromium desktop viewport. The [hidden] display gate still owns
+   semantic concealment of panels; no secondary clock or repaint is added. */
+#loomAiWorkspace[data-loom-intro="true"] .loom-glyph-field{visibility:visible}
+
 /* Stage one remains the beginning of the complete seven-stage tutorial. */
 #loomAiWorkspace[data-loom-intro="true"] .loom-first-crossing{gap:18px}
 #loomAiWorkspace[data-loom-intro="true"] .loom-first-crossing-objects{width:min(445px,100%)}
