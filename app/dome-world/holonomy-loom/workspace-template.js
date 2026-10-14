@@ -28,6 +28,20 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
         <p id="loomFlowcoreCopyNotice" class="loom-flowcore-copy-notice" role="status" aria-live="polite" aria-atomic="true"></p>
       </div>
     </details>
+    <div class="loom-firewall-theater" aria-hidden="true">
+      <div class="loom-firewall-header"><span>HUMAN / CONTROL</span><span>AI / RECEIVER</span></div>
+      <div class="loom-firewall-line loom-firewall-line--outbound"></div>
+      <div class="loom-firewall-line loom-firewall-line--return"></div>
+      <div class="loom-firewall-seam"><span class="loom-firewall-seam-core">◈</span><span class="loom-firewall-seam-foot">LOOM</span></div>
+      <div class="loom-firewall-carrier"><span class="loom-firewall-carrier-symbol">出</span></div>
+      <div class="loom-firewall-denial"><span>×</span><strong>BLOCKED</strong></div>
+      <div class="loom-firewall-state">
+        <span class="loom-firewall-state--ready">YOU SET THE TERMS</span>
+        <span class="loom-firewall-state--outbound">SELECTED MATERIAL ONLY</span>
+        <span class="loom-firewall-state--blocked">LOCAL GATE / BLOCKED TEST</span>
+        <span class="loom-firewall-state--return">INSPECT THE RETURN</span>
+      </div>
+    </div>
     <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="Choose the information that may pass through the sample AI firewall">
       <button type="button" data-first-crossing-item="brief" aria-pressed="false"><strong>Your request</strong><small>Tell AI what you want it to do</small></button>
       <button type="button" data-first-crossing-item="source" aria-pressed="false"><strong>Your reference</strong><small>Choose which evidence AI may receive</small></button>
