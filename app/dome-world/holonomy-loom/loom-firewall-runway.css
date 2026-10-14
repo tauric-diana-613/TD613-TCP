@@ -562,3 +562,31 @@
 @media(prefers-reduced-motion:reduce){
   #loomAiWorkspace .loom-first-crossing{scroll-behavior:auto}
 }
+
+/* Post-browser acceptance repair: identical ingress/workspace type, clear
+   static glass, and desktop first-fold controls within the viewport. */
+#loomAiWorkspace .loom-intro h1{
+  font-family:"Arial Narrow","Helvetica Neue",Inter,-apple-system,system-ui,sans-serif;
+}
+#loomAiWorkspace .loom-builder-shell{
+  background:rgba(7,10,26,.78);
+  border:1px solid rgba(217,207,240,.36);
+  border-top:1px solid rgba(243,234,255,.62);
+  box-shadow:0 20px 85px rgba(0,0,0,.26);
+}
+@media(min-width:761px){
+  #loomAiWorkspace .loom-stage{padding-top:14px;padding-bottom:12px}
+  #loomAiWorkspace .loom-first-crossing{gap:10px}
+  #loomAiWorkspace .loom-motion-view{height:95px}
+  #loomAiWorkspace .loom-first-crossing-copy{padding:22px 32px}
+  #loomAiWorkspace .loom-first-crossing-copy h2{
+    font-size:clamp(44px,5.8vw,74px);
+    margin-bottom:12px;
+  }
+  #loomAiWorkspace .loom-first-crossing-objects button{
+    min-height:68px;
+    padding:11px 16px;
+  }
+  #loomAiWorkspace .loom-first-crossing-actions button{min-height:50px}
+  #loomAiWorkspace .loom-practice-controls{padding:2px 0 0}
+}
