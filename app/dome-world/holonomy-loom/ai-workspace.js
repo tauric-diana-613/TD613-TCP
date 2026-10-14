@@ -590,7 +590,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     firstCrossingSelected=new Set();
     root.dataset.firstCrossing='active';
     $('loomTutorialRequest').textContent=FIRST_CROSSING_PRACTICE.task;
-    $('loomTutorialReference').textContent=FIRST_CROSSING_PRACTICE.documents.find(item=>item.id==='source').text.replace(/^Fictional project notes: /,'');
+    $('loomTutorialReference').textContent=FIRST_CROSSING_PRACTICE.documents.find(item=>item.id==='source').text.replace(/^Fictional approved source: /,'');
     root.dataset.firstCrossingStep='0';
     $('loomTutorialProof').hidden=true;
     root.dataset.thresholdState='closed';
@@ -605,8 +605,8 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     firstCrossingChoreography=nextFlowcoreChoreography(firstCrossingChoreography?.id, environment.Math?.random?.() ?? Math.random());
     setFirstCrossingCue('choose',{
       title:'Firewall your online life from AI.',
-      prompt:'Put ChatGPT, Gemini, and other AI models under your rules. Register their evidence. Challenge missing sources, broken instructions, and unsupported claims. Refuse an unverified answer before it enters your work.',
-      answer:'Choose the demo request first, then its source. This example stays in your browser.'
+      prompt:'Draft a sensitive work email with ChatGPT, Gemini, or another AI. Choose the approved context, carry your instructions, examine the reply, and decide what enters your work.',
+      answer:'Choose the example email request, then its approved reference. The tutorial stays in your browser.'
     });
     flowcoreMessage.textContent=firstCrossingChoreography.message;
     $('loomFirstCrossingAction').textContent='Inspect the outgoing request →';

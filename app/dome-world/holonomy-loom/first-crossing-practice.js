@@ -17,13 +17,13 @@ export const FIRST_CROSSING_PRACTICE = freeze({
   id: 'loom-first-crossing-v1',
   input_class: 'CANONICAL_FICTIONAL_PRACTICE',
   fictional: true,
-  task: 'Summarize only the selected project notes for a public update.',
+  task: 'Draft a work email asking my manager to confirm a revised project schedule. Use only approved details.',
   rules: [
-    'Use only the selected task note and supporting source. Keep the private note out of the AI handoff.'
+    'Write a concise, professional email using the approved reference. Do not include private background notes. Ask for confirmation; do not invent dates.'
   ],
   documents: [
-    { id: 'brief', name: 'Task note', text: 'Fictional task note: Prepare a short public update from the selected project notes.', share: true },
-    { id: 'source', name: 'Supporting source', text: 'Fictional project notes: The draft is complete. Team review comes next.', share: true },
+    { id: 'brief', name: 'Email request', text: 'Fictional task note: Write a concise email to my manager confirming the revised project schedule.', share: true },
+    { id: 'source', name: 'Approved reference', text: 'Fictional approved source: The project handoff is complete. The team is awaiting confirmation of the revised schedule.', share: true },
     { id: 'private', name: 'Private note', text: 'Fictional private planning note: PRIVATE_PLANNING_NOTE_613. Keep this note out of the public update.', share: false }
   ],
   protectedTerms: ['PRIVATE_PLANNING_NOTE_613']
@@ -118,7 +118,7 @@ export function checkFirstCrossingPrivacy() {
 /** A real digest binds the fictional answer to the checked local request. */
 export async function createFirstCrossingReturnProof(binding, environment = globalThis) {
   if (binding?.binding_verified !== true || binding.fixture_id !== FIRST_CROSSING_PRACTICE.id) throw new TypeError('A checked tutorial request is required.');
-  const answer = 'Fictional example answer: The draft is complete. Team review comes next.';
+  const answer = 'Fictional example answer: Hi, could you confirm the revised project schedule? The handoff is complete, and our team is ready to proceed once the schedule is confirmed. Thank you.';
   const receipt = { schema: 'td613.loom.tutorial-return/v0.1', evidence_class: 'OFFLINE_TEST', fictional: true,
     request_digest: binding.input_digest, answer_digest: await portableLoomDigest(answer, environment),
     used_document_ids: [...binding.selected_document_ids], provider_called: false, custody_admitted: false };

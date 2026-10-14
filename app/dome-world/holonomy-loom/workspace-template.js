@@ -12,9 +12,9 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
   <section id="loomFirstCrossing" class="loom-first-crossing" aria-labelledby="loomFirstCrossingTitle" hidden tabindex="-1">
     <div class="loom-motion-view" aria-hidden="true"><span>FLOW-CORE / LIVING FIELD</span><span>𝌋</span></div>
     <div class="loom-first-crossing-copy">
-      <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">THE FIRST CROSSING · LIVE FLOW-CORE</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 7 · Choose</span></div>
+      <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">LOOM / THE TUTORIAL · LIVING FLOW-CORE</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 7 · Choose</span></div>
       <h2 id="loomFirstCrossingTitle">Firewall your online life from AI.</h2>
-      <p id="loomFirstCrossingPrompt">Put ChatGPT, Gemini, and other AI models under your rules. Register the evidence they receive. Challenge missing sources, broken instructions, and unsupported claims. Refuse an unverified answer before it enters your work.</p>
+      <p id="loomFirstCrossingPrompt">Draft a sensitive work email with ChatGPT, Gemini, or another AI. Choose the approved context, carry your instructions, examine the reply, and decide what enters your work.</p>
     </div>
     <details class="loom-flowcore-help">
       <summary>What is Flow-Core runtime?</summary>
@@ -45,15 +45,15 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
       </div>
     </div>
     <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="Tutorial: choose a request and source">
-      <button type="button" data-first-crossing-item="brief" aria-pressed="false"><strong>01 / Your request</strong><small>What should the AI do?</small></button>
-      <button type="button" data-first-crossing-item="source" aria-pressed="false"><strong>02 / Your reference</strong><small>Which evidence may it see?</small></button>
+      <button type="button" data-first-crossing-item="brief" aria-pressed="false"><strong>01 / Your request</strong><small>Draft a sensitive work email.</small></button>
+      <button type="button" data-first-crossing-item="source" aria-pressed="false"><strong>02 / References</strong><small>Approved details for that email.</small></button>
       <div id="loomFirstCrossingPrivate" class="loom-first-crossing-private" role="note"><strong>Excluded from this request</strong><small>Unselected note · stays in this browser</small></div>
     </div>
     <div class="loom-first-crossing-actions">
       <button type="button" id="loomFirstCrossingAction" hidden>Inspect the outgoing request →</button>
       <button type="button" id="loomFirstCrossingStop" hidden>Finish tutorial →</button>
     </div>
-    <section id="loomTutorialSelection" class="loom-tutorial-selection" aria-label="Selected Demo content" hidden>
+    <section id="loomTutorialSelection" class="loom-tutorial-selection" aria-label="Selected tutorial material" hidden>
       <dl><div><dt>Request</dt><dd id="loomTutorialRequest"></dd></div><div><dt>Reference</dt><dd id="loomTutorialReference"></dd></div></dl>
       <p>Private note <span>Kept in this browser</span></p>
     </section>

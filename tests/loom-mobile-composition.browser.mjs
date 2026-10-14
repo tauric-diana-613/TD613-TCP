@@ -311,7 +311,7 @@ try {
         {first_choice:await page.locator('[data-first-crossing-item="brief"]').isVisible(),
          bypass_present:await page.locator('#loomStartNow').count()});
       record('first-use reading panels are opaque while the Flow-Core field is unmasked',
-        await page.locator('.loom-first-crossing-copy').evaluate(node=>getComputedStyle(node).backgroundColor==='rgb(7, 20, 29)') &&
+        await page.locator('.loom-first-crossing-copy').evaluate(node=>getComputedStyle(node).backgroundColor==='rgba(8, 11, 27, 0.68)') &&
         await page.locator('.loom-motion-view').evaluate(node=>node.getBoundingClientRect().height>=100) &&
         await page.locator('.loom-glyph-field').evaluate(node=>getComputedStyle(node).maskImage==='none' || getComputedStyle(node).webkitMaskImage==='none'));
       await screenshot(page, 'first-crossing-mobile-notice');

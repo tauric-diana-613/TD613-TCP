@@ -355,3 +355,210 @@
 @media(prefers-reduced-motion:reduce){
   #loomAiWorkspace .loom-first-crossing{scroll-behavior:auto}
 }
+
+/* TD613 / COUTURE GLASS · operator-authored recovery, 2026-10-14
+   The 39 Flow-Core carriers remain owned by the original single-clock renderer.
+   This layer changes surfaces, never coordinates, clocks, events or AI authority. */
+#loomAiWorkspace{
+  --runway-ink:#f4f1fa;
+  --runway-cyan:#cceef0;
+  --runway-gold:#d8b6f2;
+  --runway-surface:rgba(7,10,23,.62);
+  --runway-line:rgba(216,206,243,.34);
+  --loom-content-width:840px;
+}
+#loomAiWorkspace .loom-stage{
+  position:relative;
+  isolation:isolate;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-height:calc(100svh - 52px);
+  padding:clamp(20px,4svh,56px) clamp(14px,4vw,58px) 40px;
+  background:transparent;
+  border:0;
+}
+#loomAiWorkspace .ai-runtime{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  background:radial-gradient(ellipse at 70% 16%,rgba(73,41,111,.24),transparent 52%),
+             radial-gradient(ellipse at 16% 82%,rgba(32,82,93,.19),transparent 58%),
+             #03050d;
+  pointer-events:none;
+}
+#loomAiWorkspace .loom-threshold-layer{
+  position:relative;
+  z-index:2;
+  width:min(840px,100%);
+  margin:auto;
+}
+#loomAiWorkspace .loom-first-crossing{
+  width:100%;
+  max-width:840px;
+  gap:clamp(10px,1.8svh,20px);
+  background:transparent;
+  border:0;
+  box-shadow:none;
+}
+#loomAiWorkspace .loom-motion-view{
+  height:clamp(100px,14svh,155px);
+  overflow:visible;
+  border:0;
+  background:none;
+}
+#loomAiWorkspace .loom-motion-view::before{
+  background:linear-gradient(90deg,transparent,rgba(210,187,249,.56),transparent);
+}
+#loomAiWorkspace .loom-motion-view span{
+  color:#ebe0f6;
+  letter-spacing:.24em;
+}
+#loomAiWorkspace .loom-motion-view span:last-child{
+  color:#e8d5fb;
+  font-size:23px;
+}
+#loomAiWorkspace .loom-first-crossing-copy{
+  position:relative;
+  padding:clamp(22px,3.7vw,38px) clamp(22px,5vw,50px);
+  border:1px solid rgba(208,204,233,.42);
+  border-left:2px solid rgba(218,187,248,.88);
+  border-top:1px solid rgba(233,222,250,.7);
+  background:rgba(8,11,27,.68);
+  color:#f4f1fa;
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 21px),calc(100% - 21px) 100%,0 100%);
+  box-shadow:inset 0 1px 0 rgba(248,244,255,.11),0 20px 65px rgba(0,0,0,.26);
+  text-align:left;
+}
+#loomAiWorkspace .loom-tutorial-meta{
+  padding:0 0 13px;
+  border:0;
+  border-bottom:1px solid rgba(215,198,239,.27);
+  color:#d7b8ef;
+  font-size:10px;
+  letter-spacing:.15em;
+  margin:0 0 clamp(17px,2.6svh,28px);
+}
+#loomAiWorkspace .loom-tutorial-meta .loom-threshold-kicker,
+#loomAiWorkspace .loom-tutorial-progress{
+  color:#e2c9f2;
+  padding:0;
+}
+#loomAiWorkspace .loom-first-crossing-copy h2{
+  max-width:16ch;
+  margin:0 0 18px;
+  font:650 clamp(44px,7.1vw,91px)/.91 "Arial Narrow","Helvetica Neue",Inter,system-ui,sans-serif;
+  letter-spacing:-.077em;
+  text-transform:uppercase;
+  text-wrap:balance;
+  color:#fbfaff;
+  text-shadow:0 2px 22px rgba(120,75,157,.14);
+}
+#loomAiWorkspace .loom-first-crossing-copy p{
+  max-width:58ch;
+  color:#e6e5f2;
+  font-size:clamp(15px,1.62vw,18px);
+  line-height:1.52;
+}
+#loomAiWorkspace .loom-first-crossing-answer{
+  padding:11px 16px;
+  border:1px solid rgba(176,192,223,.22);
+  border-left:2px solid rgba(208,185,239,.8);
+  background:rgba(8,12,29,.57);
+  color:#e9e5f3;
+}
+#loomAiWorkspace .loom-first-crossing-objects{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+#loomAiWorkspace .loom-first-crossing-objects button{
+  min-height:80px;
+  padding:16px 18px;
+  border:1px solid rgba(199,199,232,.42);
+  border-left:2px solid #c9a8ee;
+  border-radius:0;
+  background:rgba(13,17,38,.64);
+  color:#f7f3ff;
+}
+#loomAiWorkspace .loom-first-crossing-objects button small{
+  color:#d8d5e9;
+  font-size:13px;
+}
+#loomAiWorkspace .loom-first-crossing-objects button[aria-pressed="true"]{
+  border-color:#e2cbfa;
+  background:rgba(76,49,106,.77);
+}
+#loomAiWorkspace .loom-first-crossing-objects button:disabled{
+  opacity:.75;
+  border-left-color:#85799b;
+}
+#loomAiWorkspace .loom-first-crossing-actions button{
+  min-height:56px;
+  color:#171025;
+  background:linear-gradient(105deg,#f0e4fc,#cfc7ec 72%,#bca5e9);
+  border:1px solid #f5e8ff;
+  box-shadow:inset 0 1px rgba(255,255,255,.58);
+}
+#loomAiWorkspace .loom-first-crossing-actions button:hover:not(:disabled){
+  background:#f4eafd;
+  color:#171025;
+}
+#loomAiWorkspace .loom-boundary-event,
+#loomAiWorkspace .loom-tutorial-selection,
+#loomAiWorkspace .loom-tutorial-sample-answer,
+#loomAiWorkspace .loom-tutorial-proof{
+  border:1px solid rgba(215,200,240,.32);
+  border-left:2px solid #c7abe8;
+  background:rgba(9,13,31,.72);
+}
+#loomAiWorkspace .loom-practice-controls{
+  border-top:1px solid rgba(224,207,244,.26);
+}
+#loomAiWorkspace .loom-practice-controls button{
+  color:#ede5f8;
+}
+#loomAiWorkspace .loom-flowcore-help{
+  background:rgba(7,10,25,.68);
+}
+#loomAiWorkspace button:focus-visible{
+  outline:2px solid #f1cafa;
+  outline-offset:4px;
+}
+@media(max-width:760px){
+  #loomAiWorkspace .loom-stage{
+    min-height:calc(100svh - 52px);
+    padding:15px 13px 28px;
+    justify-content:flex-start;
+  }
+  #loomAiWorkspace .loom-threshold-layer{width:100%}
+  #loomAiWorkspace .loom-first-crossing{gap:10px}
+  #loomAiWorkspace .loom-motion-view{height:clamp(100px,15svh,133px)}
+  #loomAiWorkspace .loom-first-crossing-copy{padding:20px 20px 24px}
+  #loomAiWorkspace .loom-tutorial-meta{
+    letter-spacing:.06em;
+    font-size:9px;
+    gap:6px 12px;
+  }
+  #loomAiWorkspace .loom-first-crossing-copy h2{
+    font-size:clamp(35px,9.2vw,54px);
+    max-width:17ch;
+    letter-spacing:-.075em;
+  }
+  #loomAiWorkspace .loom-first-crossing-copy p{
+    font-size:14px;
+    line-height:1.52;
+  }
+  #loomAiWorkspace .loom-first-crossing-objects{
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+  #loomAiWorkspace .loom-first-crossing-objects button{min-height:62px;padding:12px 16px}
+}
+@media(max-width:360px){
+  #loomAiWorkspace .loom-first-crossing-copy{padding-inline:16px}
+  #loomAiWorkspace .loom-first-crossing-copy h2{font-size:34px}
+}
+@media(prefers-reduced-motion:reduce){
+  #loomAiWorkspace .loom-first-crossing{scroll-behavior:auto}
+}
