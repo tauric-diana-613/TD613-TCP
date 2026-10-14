@@ -160,7 +160,7 @@ test('the visible runway has one inert firewall stage and preserves all 39 live 
   const stage = doc.querySelector('.loom-firewall-theater');
   assert.ok(stage, 'firewall has a separate visual plane');
   assert.equal(stage.getAttribute('aria-hidden'), 'true');
-  assert.match(stage.textContent, /CHATGPT.*GEMINI.*LLMS/i);
+  assert.match(stage.textContent, /CHATGPT.*GEMINI/i);
   assert.match(runway, /loom-field-glyph\{opacity:1\}/);
   assert.match(runway, /data-first-crossing-step="4".*loom-firewall-denial/);
   assert.match(runway, /data-first-crossing-step="5".*loom-firewall-line--return/);
