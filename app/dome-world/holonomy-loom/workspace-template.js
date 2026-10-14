@@ -28,18 +28,19 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
         <p id="loomFlowcoreCopyNotice" class="loom-flowcore-copy-notice" role="status" aria-live="polite" aria-atomic="true"></p>
       </div>
     </details>
-    <div class="loom-firewall-theater" aria-hidden="true">
-      <div class="loom-firewall-header"><span>YOU / YOUR INFORMATION</span><span>CHATGPT · GEMINI</span></div>
-      <div class="loom-firewall-line loom-firewall-line--outbound"></div>
-      <div class="loom-firewall-line loom-firewall-line--return"></div>
-      <div class="loom-firewall-seam"><span class="loom-firewall-seam-core">◈</span><span class="loom-firewall-seam-foot">LOOM</span></div>
-      <div class="loom-firewall-carrier"><span class="loom-firewall-carrier-symbol">à</span></div>
-      <div class="loom-firewall-denial"><span>×</span><strong>BLOCKED</strong></div>
-      <div class="loom-firewall-state">
-        <span class="loom-firewall-state--ready">YOUR INFORMATION / YOUR DECISION</span>
-        <span class="loom-firewall-state--outbound">SELECTED MATERIAL ONLY</span>
-        <span class="loom-firewall-state--blocked">LOCAL GATE / BLOCKED TEST</span>
-        <span class="loom-firewall-state--return">INSPECT THE RETURN</span>
+    <div class="loom-boundary-event" aria-label="Illustrated local firewall outcomes">
+      <div class="loom-boundary-event-outgoing">
+        <span class="loom-boundary-event-kicker">01 / Outgoing · ready for your review</span>
+        <strong>Only the task and selected reference.</strong>
+        <p>A prepared request. Nothing has been sent to an AI service.</p>
+      </div>
+      <div class="loom-boundary-event-denial">
+        <span class="loom-boundary-event-kicker">02 / Protected outgoing test</span>
+        <div class="loom-boundary-event-collision">
+          <code>PRIVATE_PLANNING_NOTE_613</code>
+          <span class="loom-boundary-event-stop">BLOCKED BEFORE SENDING <span aria-hidden="true">×</span></span>
+        </div>
+        <p>The local egress check rejected this fictional protected phrase. No provider was contacted.</p>
       </div>
     </div>
     <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="Choose the information that may pass through the sample AI firewall">
