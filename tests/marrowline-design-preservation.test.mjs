@@ -955,3 +955,8 @@ test('mobile Receipt SHI focus guard suppresses Safari focus zoom without mutati
   input.dispatchEvent(new h.win.Event('blur'));
   assert.equal(viewport.getAttribute('content'), authoredViewport, 'authored viewport policy returns immediately after Receipt SHI focus');
 });
+
+test('conversation heading never promotes a stranded trailing preposition', () => {
+  const title = deriveMarrowlineConversationTitle('The Death of the Witness by an artist considering archival custody.');
+  assert.equal(/\\b(?:by|of|with|from|at|as|to)\\s*$/i.test(title),false);
+});

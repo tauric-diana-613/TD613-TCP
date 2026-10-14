@@ -48,7 +48,7 @@ function subjectOf(clause) {
 function compact(phrase) {
   let title = phrase.split(/\s+/u).filter(Boolean).slice(0, 5).join(' ');
   if (title.length > 44) title = title.slice(0, 44).replace(/\s+\S*$/u, '').trim();
-  title = title.replace(/\s+(?:and|or|with|of|for|in|on|to|the|a|an)$/iu, '')
+  title = title.replace(/\s+(?:and|or|with|of|for|in|on|to|by|from|at|as|between|versus|vs|the|a|an)$/iu, '')
     .replace(/[\s.,;:!?–—-]+$/u, '');
   return title ? title.split(/\s+/u).map((word, i) => {
     const small = word.toLocaleLowerCase('en-US');

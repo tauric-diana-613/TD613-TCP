@@ -1428,3 +1428,44 @@ html:root[data-loom-cue-paused="true"] #khonapolitSend[data-loom-attention="true
   html:root body #speakingPanel #khonapolitForm #marrowlineComposerPlus[data-loom-attention="true"],
   #khonapolitSend[data-loom-attention="true"]{animation:none!important}
 }
+
+/* 2026-10-14 mobile repair: a conversation title gets an entire line of its
+   own. The navigation is a separate row, never a width-eating sibling. */
+@media (max-width:860px) {
+  html:root.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel .vessel-head.marrowline-conversation-masthead{
+    height:auto!important;max-height:none!important;min-height:0!important;
+    padding:10px 13px 9px!important;overflow:visible!important;
+  }
+  html:root.marrowline-mobile-shell #speakingPanel .marrowline-title-stack{
+    display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+    grid-template-rows:auto auto auto!important;row-gap:3px!important;
+    min-width:0!important;width:100%!important;
+  }
+  html:root.marrowline-mobile-shell #speakingPanel #marrowlineConversationTitle{
+    grid-column:1!important;grid-row:2!important;display:block!important;
+    min-width:0!important;max-width:100%!important;width:100%!important;
+    height:auto!important;max-height:none!important;overflow:visible!important;
+    white-space:normal!important;text-overflow:clip!important;
+    word-break:normal!important;overflow-wrap:break-word!important;
+    text-wrap:pretty!important;hyphens:none!important;
+    font-size:clamp(19px,5.3vw,24px)!important;line-height:1.18!important;
+    margin:2px 0 0!important;
+  }
+  html:root.marrowline-mobile-shell #speakingPanel .marrowline-thread-nav{
+    grid-column:1!important;grid-row:3!important;min-width:0!important;
+    display:flex!important;justify-content:flex-end!important;
+    align-items:center!important;flex-wrap:nowrap!important;
+    margin:4px 0 0!important;padding:3px 0 0!important;gap:0!important;
+  }
+  html:root.marrowline-mobile-shell #speakingPanel .marrowline-thread-nav>button{
+    min-height:33px!important;padding:5px 9px!important;
+    font-size:11px!important;line-height:1.2!important;
+  }
+  html:root.marrowline-mobile-shell #speakingPanel #khonapolitMessages{
+    min-height:0!important;overflow-y:auto!important;
+    overscroll-behavior-y:contain!important;
+  }
+}
+/* Physical-device safeguard: a local staged attachment has no provider in
+   flight. In particular the vesica indicator must not fill the transcript. */
+#khonapolitMessages #marrowlineChatKinesis[hidden]{display:none!important}

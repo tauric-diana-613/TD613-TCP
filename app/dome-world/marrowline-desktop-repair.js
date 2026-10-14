@@ -232,7 +232,7 @@ function installUniversalContextPlus(doc, root) {
   const attachmentDrawerTitle = doc.createElement('strong');
   attachmentDrawerTitle.textContent = 'Attachments';
   const attachmentDrawerNote = doc.createElement('span');
-  attachmentDrawerNote.textContent = 'Confirm numbered send order · 20 items maximum · 50 MB combined';
+  attachmentDrawerNote.textContent = 'Drag-free ordering · use ↑ ↓ to arrange';
   attachmentDrawerHead.append(attachmentDrawerTitle, attachmentDrawerNote);
   attachmentDrawer.append(attachmentDrawerHead);
   const attachmentTray = byId(doc, 'marrowlineAttachmentTray');
@@ -249,9 +249,8 @@ function installUniversalContextPlus(doc, root) {
     attachmentButton.dataset.attachmentCount = String(count);
     attachmentButton.hidden = count === 0 || attachmentSubmissionActive;
     attachmentButton.setAttribute('aria-label', count === 1 ? 'Open 1 staged attachment' : `Open ${count} staged attachments`);
-    attachmentDrawerNote.textContent = count === 1
-      ? '1 of 20 staged · arrows set send order · 50 MB combined'
-      : `${count} of 20 staged · arrows set send order · 50 MB combined`;
+    attachmentDrawerTitle.textContent = count === 1 ? '1 attachment' : `${count} attachments`;
+    attachmentDrawerNote.textContent = count > 1 ? 'Use ↑ ↓ to arrange before sending' : 'Ready for your next message';
     if (attachmentButton.hidden) closeAttachmentDrawer();
   };
   const toggleAttachmentDrawer = force => {
@@ -312,7 +311,15 @@ function installUniversalContextPlus(doc, root) {
   photoInput.accept = 'image/*';
   doc.body.append(fileInput, photoInput);
 
-  const setStatus = text => { const node = byId(doc, 'khonapolitTerminalStatus'); if (node) node.textContent = text; };
+  // Status text is for accessibility/receipts, not a giant in-chat progress
+  // card. Staging is local; it must never inherit provider-call "pending".
+  const setStatus = (text, phase = 'prepared') => {
+    const node = byId(doc, 'khonapolitTerminalStatus');
+    if (!node) return;
+    node.dataset.phase = phase;
+    node.dataset.progressStage = phase;
+    node.textContent = text;
+  };
   const close = () => {
     menu.hidden = true;
     plus.setAttribute('aria-expanded', 'false');
@@ -356,7 +363,7 @@ function installUniversalContextPlus(doc, root) {
     root.dispatchEvent?.(new root.CustomEvent('td613:marrowline:attachment-staging-state', {
       detail: { staging: true, kind }
     }));
-    setStatus(kind === 'photo' ? 'PREPARING PHOTO · keep this tab open' : 'PREPARING ATTACHMENT · keep this tab open');
+    setStatus(kind === 'photo' ? 'Preparing photo…' : 'Preparing file…');
     try {
       const state = await stageMarrowlineAttachments(input.files, { kind, environment: root });
       // Safari/iOS photo pickers and ordinary file pickers share one staged
@@ -367,9 +374,13 @@ function installUniversalContextPlus(doc, root) {
       doc.querySelectorAll('.relay-message .reply-attachment-access').forEach(button => {
         button.hidden = !staged;
       });
-      setStatus(`ATTACHMENT${state.count === 1 ? '' : 'S'} STAGED · ${state.count}/20 · numbered order adjustable before Send · 50 MB shared limit`);
+      setStatus(state.count === 1 ? 'Attachment ready' : `${state.count} attachments ready`);
+      // Clear the spurious in-conversation "response in flight" panel that
+      // older local staging inadvertently activated.
+      const waitingCard = byId(doc, 'marrowlineChatKinesis');
+      if (waitingCard?.dataset.phase === 'pending') waitingCard.hidden = true;
     } catch (error) {
-      setStatus(`ATTACHMENT HELD · ${safe(error?.message || error)}`);
+      setStatus(`Attachment could not be added: ${safe(error?.message || error)}`, 'held');
     } finally {
       root.dispatchEvent?.(new root.CustomEvent('td613:marrowline:attachment-staging-state', {
         detail: { staging: false, kind, count: attachmentState().count }

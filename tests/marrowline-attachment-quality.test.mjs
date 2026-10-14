@@ -101,9 +101,9 @@ test('twenty attachments can be staged, rearranged, and sent to Gemini in the co
       { systemInstruction: 'Synthetic system.', mode: 'issued-conjunction', message: 'Review images in order.', history: [] },
       {}, 'gemini-3.8-flash', normalized);
     const wireOrder = request.contents.at(-1).parts
-      .filter(part => typeof part.text === 'string' && part.text.includes('[Operator attachment'))
-      .map(part => part.text.match(/photo-\d+\.png/)[0]);
-    assert.deepEqual(wireOrder, reordered.map(item => item.name));
+      .filter(part => part.inlineData)
+      .map(part => part.inlineData.data);
+    assert.deepEqual(wireOrder, reordered.map(item => item.data_base64));
   } finally { clearMarrowlineAttachments(environment); }
 });
 
@@ -117,9 +117,9 @@ test('attachments precede the canonical final sealed user text; the relay cue st
   };
   const request = buildAttachmentGeminiRequest(packet, {}, 'gemini-3.8-flash', [exact]);
   const parts = request.contents.at(-1).parts;
-  assert.match(parts[0].text, /Operator attachment att_fixture_613: operator-note\.txt/);
-  assert.equal(parts[1].inlineData.mimeType, 'text/plain');
-  assert.equal(parts[1].inlineData.data, exact.data_base64);
+  assert.equal(parts[0].inlineData.mimeType, 'text/plain');
+  assert.equal(parts[0].inlineData.data, exact.data_base64);
+  assert.equal(parts.some(part => typeof part.text === 'string' && /Operator attachment|data_base64|50 MB/.test(part.text)), false, 'internal attachment metadata never enters model-visible prose');
   assert.equal(parts.at(-1).text, frameMarrowlineUserTurn(packet.message));
   const cue = request.systemInstruction.parts[0].text;
   assert.match(cue, /GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION/);
@@ -539,4 +539,18 @@ test('abandoned Loom file read releases its FIFO lane without resurrecting old b
   release();
   await assert.rejects(previous, /cleared before staging completed/);
   assert.deepEqual(getMarrowlineAttachments().map(item => item.name), ['new.txt']);
+});
+
+test('multimodal attachment prompt follows the human task without describing transport metadata', () => {
+  const packet = { message:'Critique the composition and argument of this artwork.', history:[], mode:'issued-conjunction' };
+  const request = buildAttachmentGeminiRequest(packet,{},'gemini-3.8-flash',[attachment({
+    id:'att_screen_613', name:'IMG_1359.jpeg', kind:'photo',mime_type:'image/jpeg',
+    bytes:Buffer.from([0xff,0xd8,0xff,0xd9])
+  })]);
+  const cue = request.systemInstruction.parts[0].text;
+  assert.match(cue,/written Red Deer prompt and ongoing conversation determine the task/);
+  assert.match(cue,/never invent an unseen companion image/);
+  assert.equal(JSON.stringify(request).includes('IMG_1359.jpeg'),false,'do not prime the answer with screenshot filename');
+  assert.equal(request.contents.at(-1).parts.filter(x=>x.inlineData).length,1);
+  assert.equal(request.contents.at(-1).parts.at(-1).text,frameMarrowlineUserTurn(packet.message));
 });

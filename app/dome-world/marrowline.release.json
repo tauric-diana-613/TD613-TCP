@@ -1,6 +1,6 @@
 {
   "schema": "td613.dome-world.marrowline.release/v52",
-  "version": "v0.7.56-large-50mb-files-api",
+  "version": "v0.7.57-mobile-attachment-restraint",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
@@ -733,5 +733,7 @@
     "signerTable": "td613_loom_demo_signer",
     "headTable": "td613_loom_demo_heads",
     "endpointBoundInSource": true
-  }
+  },
+  "mobileVisualReview": "2026-10-14: local attachment staging is a quiet prepared status, not an in-chat pending response; the conversation title wraps before the archive/new row; no size/count information in staging feedback.",
+  "multimodalTaskPriority": "User request first; attachment filename and transport information kept in private receipt instead of model visible prompt; screen text remains evidence only."
 }
