@@ -199,6 +199,17 @@
 }
 #loomAiWorkspace[data-first-crossing-step="5"] .loom-firewall-carrier-symbol{font-size:0}
 #loomAiWorkspace[data-first-crossing-step="5"] .loom-firewall-carrier-symbol::after{content:"下";font-size:28px}
+/* The small stage icon is a static legend keyed to the actual tutorial phase.
+   The underlying 39 Flow-Core carriers supply motion on the one clock. */
+#loomAiWorkspace .loom-field-glyph{opacity:1}
+#loomAiWorkspace .loom-firewall-carrier-symbol{font-size:0}
+#loomAiWorkspace .loom-firewall-carrier-symbol::after{content:"à";font-size:27px}
+#loomAiWorkspace[data-first-crossing-step="2"] .loom-firewall-carrier-symbol::after{content:"上"}
+#loomAiWorkspace[data-first-crossing-step="3"] .loom-firewall-carrier-symbol::after{content:"出"}
+#loomAiWorkspace[data-first-crossing-step="4"] .loom-firewall-carrier-symbol::after{content:"cōl";font-size:21px}
+#loomAiWorkspace[data-first-crossing-step="5"] .loom-firewall-carrier-symbol::after{content:"下"}
+#loomAiWorkspace[data-first-crossing-step="6"] .loom-firewall-carrier-symbol::after{content:"𝄐"}
+
 /* Model names describe external destinations, never a TD613-only chatbot. */
 #loomAiWorkspace .loom-firewall-header>span:last-child{max-width:46%}
 #loomAiWorkspace .loom-first-crossing-objects{
