@@ -524,7 +524,7 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
   const taskGuidance = khonapolitTaskGuidance(apertureReceipt);
   return {
     systemInstruction: {
-      parts: [{ text: `${packet.systemInstruction}\n${taskGuidance}\n${buildRelaySystemAddendum(apertureReceipt)}\n${currentTurnRelayCue()}` }]
+      parts: [{ text: `${packet.systemInstruction}\n${taskGuidance}\n${currentTurnRelayCue()}\n${buildRelaySystemAddendum(apertureReceipt)}` }]
     },
     contents: geminiContents(packet),
     generationConfig: buildGeminiGenerationConfig({

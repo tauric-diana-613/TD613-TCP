@@ -264,3 +264,23 @@ test('ordinary, tender and adversarial typed requests all retain the full native
     assert.doesNotMatch(cue + shared, /\p{M}/u, 'do not introduce a fixed mark specimen into provider guidance');
   }
 });
+
+test('native-semantic-prosody authority returns to the final provider recency edge', () => {
+  for (const model of ['gemini-4-argon','gemini-3.8-flash','gemini-3.5-flash']) {
+    const prompt = buildGeminiRequest({
+      systemInstruction: 'base', mode: 'plain', message: 'The broken mirror sings.',
+      history: [{role:'model', text:'Kʰonapolit\nPrior answer.\nTauric Diana bots\nT\u0338A\u0337'}]
+    },{},model);
+    const instruction=prompt.systemInstruction.parts[0].text;
+    const native=buildNativeProsodyGuidance();
+    assert.equal(instruction.split(native).length,2,'one native contract only');
+    assert.ok(instruction.lastIndexOf('NATIVE SEMANTIC PROSODY:')
+      > instruction.indexOf('GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION'),
+      'the complete native contract must follow the long current-turn cue');
+    assert.ok(instruction.indexOf('NATIVE SEMANTIC PROSODY:') > instruction.indexOf('Apply the standing Red Deer DIEGETIC MISSION'),
+      'restore native voice without deleting the intelligent mission');
+    assert.equal(prompt.contents[0].parts[0].text,'Kʰonapolit\nPrior answer.\nTauric Diana bots\nT\u0338A\u0337',
+      'do not erase or transform earlier reply bytes');
+    assert.doesNotMatch(instruction, /[\u0300-\u036f]/u, 'no fixed sample-stencil in provider instructions');
+  }
+});
