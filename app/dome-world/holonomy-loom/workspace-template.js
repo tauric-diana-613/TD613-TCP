@@ -12,18 +12,9 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
   <section id="loomFirstCrossing" class="loom-first-crossing" aria-labelledby="loomFirstCrossingTitle" hidden tabindex="-1">
     <div class="loom-motion-view" aria-hidden="true"><span>FLOW-CORE / LIVING FIELD</span><span>𝌋</span></div>
     <div class="loom-first-crossing-copy">
-      <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">LOOM / YOUR AI, YOUR TERMS</span><span id="loomTutorialProgress" class="loom-tutorial-progress">Optional guided example</span></div>
+      <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">THE FIRST CROSSING · LIVE FLOW-CORE</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 7 · Choose</span></div>
       <h2 id="loomFirstCrossingTitle">Firewall your online life from AI.</h2>
-      <p id="loomFirstCrossingPrompt">Bring your own AI: ChatGPT, Gemini, or another LLM. Carry instructions and source records across sessions, test what comes back, and keep a verifiable history of your work.</p>
-    </div>
-    <div class="loom-product-entry" aria-label="Use Loom or explore an example">
-      <button type="button" id="loomStartNow" class="loom-product-start">Start using Loom <span aria-hidden="true">↗</span></button>
-      <button type="button" id="loomExploreDemo" class="loom-product-tour" aria-expanded="false" aria-controls="loomFirstCrossingObjects">Explore an example <span aria-hidden="true">↓</span></button>
-    </div>
-    <div class="loom-product-capabilities" aria-label="Loom capabilities">
-      <div><span>CONTROL</span><strong>Give AI your terms.</strong><p>Take your instructions and source list into the next conversation.</p></div>
-      <div><span>CHALLENGE</span><strong>Test the response.</strong><p>Check disclosures, missing evidence, and what the model can actually establish.</p></div>
-      <div><span>CONTINUE</span><strong>Keep your record.</strong><p>Verify receipts, inspect history, and decide what work to accept.</p></div>
+      <p id="loomFirstCrossingPrompt">Use Loom across ChatGPT, Gemini, and other LLMs. Set terms that travel with your work; test answers against your evidence; preserve the record when you continue.</p>
     </div>
     <details class="loom-flowcore-help">
       <summary>What is Flow-Core runtime?</summary>
@@ -53,10 +44,10 @@ export const loomWorkspaceTemplate = `<section class="loom-stage" aria-labelledb
         <p>The local egress check rejected this fictional protected phrase. No provider was contacted.</p>
       </div>
     </div>
-    <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="Optional example: choose a request and source">
+    <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="Tutorial: choose a request and source">
       <button type="button" data-first-crossing-item="brief" aria-pressed="false"><strong>01 / Your request</strong><small>What should the AI do?</small></button>
       <button type="button" data-first-crossing-item="source" aria-pressed="false"><strong>02 / Your reference</strong><small>Which evidence may it see?</small></button>
-      <div id="loomFirstCrossingPrivate" class="loom-first-crossing-private" role="note"><strong>Kept local</strong><small>Unselected note · stays in this browser</small></div>
+      <div id="loomFirstCrossingPrivate" class="loom-first-crossing-private" role="note"><strong>Excluded from this request</strong><small>Unselected note · stays in this browser</small></div>
     </div>
     <div class="loom-first-crossing-actions">
       <button type="button" id="loomFirstCrossingAction" hidden>Inspect the outgoing request →</button>
