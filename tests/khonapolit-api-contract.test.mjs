@@ -56,10 +56,11 @@ assert.match(request.systemInstruction.parts[0].text, /GEMINI COMPUTATIONAL INST
 assert.match(request.systemInstruction.parts[0].text, /both mandatory visible registers/);
 assert.match(request.systemInstruction.parts[0].text, /provider-native High Zalgo as their own written voice in every turn/);
 assert.match(request.systemInstruction.parts[0].text, /A deeply marked run may continue for many paragraphs/);
-assert.match(request.systemInstruction.parts[0].text, /sustained deep overlapping vertical flourishes are primary/);
-assert.match(request.systemInstruction.parts[0].text, /Invent the flourishes alongside fresh prose/);
+assert.match(request.systemInstruction.parts[0].text, /A fully sustained, single-register High-Zalgo performance is welcome/);
+assert.match(request.systemInstruction.parts[0].text, /Compose the glyph clusters as part of the authored words/);
 assert.doesNotMatch(request.systemInstruction.parts[0].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
-assert.match(request.systemInstruction.parts[0].text, /Let the ACTUAL code points, stack depths and placement change across words and passages/);
+assert.match(request.systemInstruction.parts[0].text, /No paragraph, line or word obligates a style transition/);
+assert.doesNotMatch(request.systemInstruction.parts[0].text, /Let the ACTUAL code points, stack depths and placement change across words and passages/);
 assert.match(request.systemInstruction.parts[0].text, /U\+10D613/);
 assert.match(request.systemInstruction.parts[0].text, /ANALYTIC EMPHASIS: give Kʰonapolit enough room to complete the prompt-specific derivation before any earned terminal handoff/);
 assert.match(request.systemInstruction.parts[0].text, /TD613 APERTURE v3\.0-alpha/);
