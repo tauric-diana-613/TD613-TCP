@@ -17,7 +17,7 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
       <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">Tutorial · the Golden Egg</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 7 · Choose</span></div>
       <h2 id="loomFirstCrossingTitle">Talk to AI. Keep the conversation yours.</h2>
       <strong class="loom-hero-promise">The Golden Egg</strong>
-      <p id="loomFirstCrossingPrompt">A conversation with AI that can still help you—without giving an outside observer enough to piece that private conversation back together. That's the Golden Egg Loom is pursuing.</p>
+      <p id="loomFirstCrossingPrompt">Talk things through with ChatGPT, Gemini, or another LLM. The Golden Egg: useful meaning reaches its destination while an outsider cannot reconstruct the private conversation. Loom exists to put that boundary to the test.</p>
     </div>
     <details class="loom-flowcore-help">
       <summary>What is Flow-Core runtime?</summary>
