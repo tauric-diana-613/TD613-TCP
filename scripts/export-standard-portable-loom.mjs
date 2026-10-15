@@ -71,11 +71,11 @@ const files = [
 ];
 const companionBody = await readFile(join(sourceRoot,'scripts/portable-loom-tomography-audit.mjs'),'utf8');
 files.push(['portable-loom-tomography-audit.mjs', companionBody]);
-files.push(['portable-loom-math-contract.json', JSON.stringify(mathContract,null,2)+'\\n']);
-files.push(['tomography/package.json', '{"type":"module"}\\n']);
+files.push(['portable-loom-math-contract.json', JSON.stringify(mathContract,null,2)+'\n']);
+files.push(['tomography/package.json', '{"type":"module"}\n']);
 for (const source of mathSources) files.push(['tomography/'+source.path, source.content]);
 const markdown = files.find(file => file[0]==='portable-loom-standard.md');
-markdown[1] += '\\n## Executable mathematics (local companion)\\n\\nThe exported artifact includes the exact canonical finite-math source, its SHA-256 source manifest, and \`portable-loom-tomography-audit.mjs\`. Run \`node portable-loom-tomography-audit.mjs --self-check\` locally to recompute bounded F_31 transport/holonomy and factorized L/R/J feasible-region fixtures; \`--episode /path/to/episode.json\` checks a separately supplied declared five-surface acquisition without authenticating its exterior origin. The receiver LLM cannot run this local companion by merely promising compliance. This is research math, not live conversation tomography: without observed routes, calibration and matched returns, empirical acquisition stays NOT_RUN.\\n';
+markdown[1] += '\n## Executable mathematics (local companion)\n\nThe exported artifact includes the exact canonical finite-math source, its SHA-256 source manifest, and \`portable-loom-tomography-audit.mjs\`. Run \`node portable-loom-tomography-audit.mjs --self-check\` locally to recompute bounded F_31 transport/holonomy and factorized L/R/J feasible-region fixtures; \`--episode /path/to/episode.json\` checks a separately supplied declared five-surface acquisition without authenticating its exterior origin. The receiver LLM cannot run this local companion by merely promising compliance. This is research math, not live conversation tomography: without observed routes, calibration and matched returns, empirical acquisition stays NOT_RUN.\n';
 await mkdir(destination, { recursive: false });
 const manifest = { schema: 'td613.loom.standard-export-manifest/v0.1', source_revision: revision, created_at: new Date().toISOString(),
   artifact_kind: 'STANDARD_NON_DEMO_PORTABLE_LOOM', session_root_ref: session.root.ref, portable_packet_digest: session.root.packet_digest,
