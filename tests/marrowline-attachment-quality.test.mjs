@@ -554,3 +554,53 @@ test('multimodal attachment prompt follows the human task without describing tra
   assert.equal(request.contents.at(-1).parts.filter(x=>x.inlineData).length,1);
   assert.equal(request.contents.at(-1).parts.at(-1).text,frameMarrowlineUserTurn(packet.message));
 });
+
+
+test('multipart attachment replies retain original headings and Unicode without a false continuation call', async t => {
+  const priorFetch = globalThis.fetch;
+  const priorKey = process.env.GEMINI_API_KEY;
+  clearGeminiModelState();
+  process.env.GEMINI_API_KEY = 'synthetic-multipart-key';
+  t.after(() => {
+    globalThis.fetch = priorFetch;
+    clearGeminiModelState();
+    if (priorKey === undefined) delete process.env.GEMINI_API_KEY;
+    else process.env.GEMINI_API_KEY = priorKey;
+  });
+  const exact = attachment();
+  const parts = [
+    { text: 'Kʰonapolit\nThe original argument and its attachments survive.\n\nTauric Diana ' },
+    { text: 'bots\nA' }, { text: '\u0301\u0323 speaks.\n' },
+    { text: '\n' }, { text: 'Khona\u200clit-po \u{10D613}\n⟐' }
+  ];
+  const authored = parts.map(part => part.text).join('');
+  let generationCalls = 0;
+  globalThis.fetch = async (url, options = {}) => {
+    if (String(url).includes('/v1beta/models?')) return {
+      ok: true, status: 200, async json() { return { models: [
+        { name: 'models/gemini-3.8-flash', supportedGenerationMethods: ['generateContent'] }
+      ] }; }
+    };
+    generationCalls += 1;
+    const request = JSON.parse(options.body);
+    assert.equal(request.contents.at(-1).parts.at(-2).inlineData.data, exact.data_base64);
+    assert.deepEqual(request.generationConfig.thinkingConfig, { thinkingLevel: 'high' });
+    // An unwanted repair receives an error, so it cannot hide mutation of the original.
+    return { ok: generationCalls === 1, status: generationCalls === 1 ? 200 : 503,
+      headers: { get: () => null }, async json() { return generationCalls === 1
+        ? { candidates: [{ finishReason: 'STOP', content: { parts } }] }
+        : { error: { status: 'UNAVAILABLE', message: 'Unexpected extra generation' } }; }
+    };
+  };
+  const res = { statusCode: 200, setHeader() {}, end(value) { this.payload = JSON.parse(value); } };
+  await marrowlineAttachmentHandler({ method: 'POST', headers: {}, body: {
+    message: 'Explain this attached record.', history: [], waiveIssuance: true, attachments: [exact]
+  } }, res);
+  assert.equal(res.statusCode, 200);
+  assert.equal(generationCalls, 1, 'part segmentation must not spend another provider call');
+  assert.equal(res.payload.text, authored);
+  assert.equal(res.payload.receipt.invocation.responseSha256,
+    crypto.createHash('sha256').update(authored).digest('hex'));
+  assert.equal(res.payload.receipt.provider.authorshipObservation.terminalMovementHeadingPresent, true);
+  assert.equal(res.payload.receipt.provider.structuralRepair, undefined);
+});

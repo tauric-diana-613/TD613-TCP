@@ -1,0 +1,26 @@
+{
+  "schema": "td613.marrowline.unicode-transport-audit/v1",
+  "evidenceClass": "SYNTHETIC_OFFLINE_TRANSPORT",
+  "baseCommit": "42f89aed6693f9d70608bc8ccbf3fdf6c57f887f",
+  "testedQualityFileSha256": "db340dae4783d53110dee43c14a4d868ea56f00cc69f7a3373bf1899dd552a73",
+  "providerCalls": 0,
+  "syntheticFetches": 19,
+  "multibyteCutsChecked": 18,
+  "oneByteDelivery": true,
+  "providerEvents": 118,
+  "wireSha256": "fa10de30c2ae192e3a518da121c9d6824098d8bbd2c6dccbc8eb3c7108932a43",
+  "expectedTextSha256": "ced9e2a1cde0e994335a422887ec06aa3543265f1afe2b4315e94d3b03b4a916",
+  "preserved": [
+    "SSE text-event concatenation",
+    "UTF-8 multibyte boundaries",
+    "UTF-16 surrogate halves across events",
+    "thought-part exclusion",
+    "STOP finish witness",
+    "relay transcript",
+    "JSON roundtrip",
+    "DOM textContent",
+    "local thread storage"
+  ],
+  "artisticQualityMeasured": false,
+  "physicalDeviceObserved": false
+}

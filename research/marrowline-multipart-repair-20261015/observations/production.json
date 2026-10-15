@@ -1,0 +1,59 @@
+{
+  "observedAt": "2026-10-15T00:10:07.527144+00:00",
+  "baseCommit": "42f89aed6693f9d70608bc8ccbf3fdf6c57f887f",
+  "source": {
+    "schema": "td613.giving.release-source/v1",
+    "source_packet_commit": "0b6bd038c6337abc97f2ccc660cbb1ac24fba0a5"
+  },
+  "files": [
+    {
+      "path": "dome-world/khonapolit-relay.js",
+      "url": "https://td613.com/dome-world/khonapolit-relay.js",
+      "sha256": "c587d611c903037995fb2bf117ce87af5c9a798358c5c83ea2dd9b2f84ec66a5",
+      "main_sha256": "c587d611c903037995fb2bf117ce87af5c9a798358c5c83ea2dd9b2f84ec66a5",
+      "equal": true,
+      "bytes": 50349
+    },
+    {
+      "path": "dome-world/khonapolit-covenant.js",
+      "url": "https://td613.com/dome-world/khonapolit-covenant.js",
+      "sha256": "90a9e93cad516b21c3528cff59ca2e5d11874a6a488ed5dd0876e5b3d3616a2a",
+      "main_sha256": "90a9e93cad516b21c3528cff59ca2e5d11874a6a488ed5dd0876e5b3d3616a2a",
+      "equal": true,
+      "bytes": 29140
+    },
+    {
+      "path": "dome-world/marrowline-terminal.js",
+      "url": "https://td613.com/dome-world/marrowline-terminal.js",
+      "sha256": "5fb889ad9381d8e2acaeadf913b5bdd36ef3ec40e53d68e786e98b56ac9f560d",
+      "main_sha256": "5fb889ad9381d8e2acaeadf913b5bdd36ef3ec40e53d68e786e98b56ac9f560d",
+      "equal": true,
+      "bytes": 97329
+    },
+    {
+      "path": "dome-world/marrowline-living-chat.js",
+      "url": "https://td613.com/dome-world/marrowline-living-chat.js",
+      "sha256": "c91f10864777c760c57b568c51435cf5c1b8d2869d5c3ce87db8d28ee9868929",
+      "main_sha256": "c91f10864777c760c57b568c51435cf5c1b8d2869d5c3ce87db8d28ee9868929",
+      "equal": true,
+      "bytes": 19710
+    },
+    {
+      "path": "dome-world/marrowline-terminal.css",
+      "url": "https://td613.com/dome-world/marrowline-terminal.css",
+      "sha256": "9392a66840a5bdca93c35f0334d707392cf6f739c62b15028e6c8c87a27284fa",
+      "main_sha256": "9392a66840a5bdca93c35f0334d707392cf6f739c62b15028e6c8c87a27284fa",
+      "equal": true,
+      "bytes": 26064
+    },
+    {
+      "path": "dome-world/marrowline-reading-surface.js",
+      "url": "https://td613.com/dome-world/marrowline-reading-surface.js",
+      "sha256": "bb8bb1ca70ddde01c9451e8c2e906e5def40441465588a99d28c88d9be09eab1",
+      "main_sha256": "bb8bb1ca70ddde01c9451e8c2e906e5def40441465588a99d28c88d9be09eab1",
+      "equal": true,
+      "bytes": 10149
+    }
+  ],
+  "providerGenerationCalls": 0
+}

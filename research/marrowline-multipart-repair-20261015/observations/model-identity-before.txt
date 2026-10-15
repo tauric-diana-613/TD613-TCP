@@ -1,0 +1,30 @@
+✖ provider model identity survives streaming and is never inferred from the requested alias (9.670576ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 244.778178
+
+✖ failing tests:
+
+test at tests/marrowline-emergency-completion.test.mjs:426:1
+✖ provider model identity survives streaming and is never inferred from the requested alias (9.670576ms)
+  AssertionError [ERR_ASSERTION]: the returned version differs from the requested alias
+  + actual - expected
+  
+  + undefined
+  - 'gemini-3.6-flash'
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/585be4de4a8d/marrowline-repair/tests/marrowline-emergency-completion.test.mjs:437:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'gemini-3.6-flash',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

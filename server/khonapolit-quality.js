@@ -688,12 +688,14 @@ export function buildGeminiStructuralRepairRequest(
 }
 
 export function extractGeminiText(payload = {}) {
-  // Keep exact provider whitespace, including a possible leading continuation
-  // separator; no model-authored Unicode or text is cleaned by this boundary.
+  // Parts are transport segments, not paragraph boundaries. Joining with an
+  // invented separator can split a heading or detach marks from their base.
+  // Match streaming extraction: retain every visible text part verbatim and
+  // exclude thought summaries without mutating the original provider payload.
   return (payload?.candidates?.[0]?.content?.parts || [])
-    .map((part) => typeof part?.text === 'string' ? part.text : '')
-    .filter((text) => Boolean(text.trim()))
-    .join('\n\n');
+    .filter((part) => typeof part?.text === 'string' && part.thought !== true)
+    .map((part) => part.text)
+    .join('');
 }
 
 // Bind evidence to the bytes actually sent, after all prompt layers, history,
@@ -731,6 +733,10 @@ export function observeGeminiOutput(payload = {}, model = '', { fallback = false
     : null);
   return Object.freeze({
     submittedRequest: submittedRequestObservation,
+    // Requested names can be provider-side aliases. Carry the actual returned
+    // version when present; never fill absent evidence from the requested ID.
+    ...(typeof payload.modelVersion === 'string' && /^[A-Za-z0-9._/-]{1,128}$/.test(payload.modelVersion)
+      ? { modelVersion: payload.modelVersion } : {}),
     finishReason,
     outputTokenLimitReached: finishReason === 'MAX_TOKENS',
     maxOutputTokens: submittedGenerationConfig?.maxOutputTokens ?? outputBudget(model),
@@ -821,6 +827,7 @@ function mergeGeminiStreamPayload(chunks = []) {
   let text = '';
   let finishReason = null;
   let usageMetadata = null;
+  let modelVersion = null;
   for (const payload of chunks) {
     const candidate = payload?.candidates?.[0] || null;
     for (const part of candidate?.content?.parts || []) {
@@ -828,6 +835,7 @@ function mergeGeminiStreamPayload(chunks = []) {
     }
     if (typeof candidate?.finishReason === 'string' && candidate.finishReason) finishReason = candidate.finishReason;
     if (payload?.usageMetadata && typeof payload.usageMetadata === 'object') usageMetadata = payload.usageMetadata;
+    if (typeof payload?.modelVersion === 'string' && /^[A-Za-z0-9._/-]{1,128}$/.test(payload.modelVersion)) modelVersion = payload.modelVersion;
   }
   const candidate = {
     content: { parts: text ? [{ text }] : [] },
@@ -835,6 +843,7 @@ function mergeGeminiStreamPayload(chunks = []) {
   };
   return {
     candidates: [candidate],
+    ...(modelVersion ? { modelVersion } : {}),
     ...(usageMetadata ? { usageMetadata } : {})
   };
 }
