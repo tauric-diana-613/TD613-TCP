@@ -86,7 +86,10 @@ export function mountLoomPrivacyScienceView(host,{environment=globalThis,getLoca
     for(const [label,row] of [['Without protection',control],['With protection',protectedRoute]]){
       const tr=doc.createElement('tr');
       const view=row.selected_view;
-      for(const value of [label,rounded(view?.total_bits),rounded(view?.additional_bits),rounded(view?.total_recovery),rounded(row.signed_excess_bits),rounded(row.authorized_accuracy)])appendText(doc,tr,'td',value);
+      for(const [index,value] of [label,rounded(view?.total_bits),rounded(view?.additional_bits),rounded(view?.total_recovery),rounded(row.signed_excess_bits),rounded(row.authorized_accuracy)].entries()){
+        const cell=appendText(doc,tr,'td',value);
+        cell.dataset.label=['Finite model','Observed total information','New leakage after baseline','Optimal secret recovery','Signed clue excess','Authorized answer accuracy'][index];
+      }
       table.append(tr);
       if(row.missing_channels.length)appendText(doc,results,'p',label+': missing '+row.missing_channels.join(', ')+'. Full-channel calculation HELD; missing evidence is never treated as zero.');
     }
