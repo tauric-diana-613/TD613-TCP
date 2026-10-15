@@ -1126,3 +1126,46 @@ jobs:
           path: gemini-observation.json
           if-no-files-found: error
           retention-days: 7
+
+  marrowline_raw_sse_once:
+    name: Synthetic Gemini raw SSE upstream custody (single canary #1509)
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.number == 1509 && github.event.pull_request.head.ref == 'research/marrowline-finite-descent-20261015-r1' && github.run_attempt == 1 }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 2
+      - name: Verify one-shot research head
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$(git log -1 --format=%s)" == 'research(marrowline): execute one raw SSE origin witness once' ]]; then
+            echo 'execute=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'execute=false' >> "$GITHUB_OUTPUT"
+            echo 'No paid work for this commit'
+          fi
+      - uses: actions/setup-node@v4
+        if: steps.gate.outputs.execute == 'true'
+        with:
+          node-version: '22'
+      - name: Zero-cost native source parity preflight
+        if: steps.gate.outputs.execute == 'true'
+        run: node research/marrowline-finite-descent-20261015/run-raw-sse-origin.mjs
+      - name: Execute one live synthetic raw SSE witness
+        if: steps.gate.outputs.execute == 'true'
+        env:
+          TD613_RAW_SSE_OUT: ${{ runner.temp }}/td613-raw-sse-private
+        run: node research/marrowline-finite-descent-20261015/run-raw-sse-origin.mjs --execute --ack-paid
+      - uses: actions/upload-artifact@v4
+        if: ${{ always() && steps.gate.outputs.execute == 'true' }}
+        with:
+          name: td613-marrowline-raw-sse-1509
+          path: ${{ runner.temp }}/td613-raw-sse-private
+          retention-days: 1
+          if-no-files-found: ignore
