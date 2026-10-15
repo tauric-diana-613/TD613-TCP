@@ -84,7 +84,7 @@ async function gather(h) {
   h.advance(5500);
   assert.equal(h.ui.inspect().clock.timeMs, 5500);
   assert.equal(h.root.dataset.firstCrossingCue, 'gathering-named');
-  assert.equal(h.$('#loomFirstCrossingAction').hidden, false);
+  assert.equal(h.$('#loomFirstCrossingAction').disabled, false);
   assert.equal(h.frames.size, 1, 'the old gathering packet still has a finite frame to deliver');
 }
 
@@ -94,7 +94,7 @@ async function expectRealReadiness(h) {
   h.advance(5500);
   const event = h.ui.inspect().runtime.view.event;
   assert.equal(h.root.dataset.firstCrossingCue, 'potential-named');
-  assert.equal(h.$('#loomFirstCrossingStop').hidden, false);
+  assert.equal(h.$('#loomFirstCrossingStop').disabled, false);
   assert.equal(event.binding_verified, true);
   assert.deepEqual(event.selected_document_ids, ['brief', 'source']);
   assert.equal(event.local, 1);
@@ -114,7 +114,7 @@ async function finishFullTutorial(h) {
     assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'),null);
     h.advance(5500);
     assert.equal(h.root.dataset.firstCrossingCue,`${cue}-named`);
-    assert.equal(h.$('#loomFirstCrossingStop').hidden,false);
+    assert.equal(h.$('#loomFirstCrossingStop').disabled,false);
     assert.equal(h.ui.inspect().runtime.view.event.outbound_submitted,false);
     assert.equal(h.ui.inspect().runtime.view.event.response_received,false);
   }
@@ -126,9 +126,11 @@ async function finishFullTutorial(h) {
   h.advance(6100);
   assert.equal(h.root.dataset.firstCrossingStep,'6');
   assert.equal(h.$('[data-instrument-active-glyph]').textContent,'𝄐');
-  assert.equal(h.frames.size,0,'Rest settles the shared clock');
-  h.setReducedMotion(true);h.setReducedMotion(false);
-  assert.equal(h.frames.size,0,'changing preferences cannot resume completed Rest');
+  assert.equal(h.frames.size,1,'fictional 𝄐 finale loops on the same animation clock');
+  h.setReducedMotion(true);
+  assert.equal(h.frames.size,0,'reduced motion stops the illustrated frame');
+  h.setReducedMotion(false);
+  assert.equal(h.frames.size,1,'normal motion resumes only the fictional tutorial field');
 }
 
 test('hidden readiness events cannot bind before the current gathering consequence publishes', async t => {
@@ -142,12 +144,12 @@ test('hidden readiness events cannot bind before the current gathering consequen
   await settleGatherUnlock(h);
   h.$('[data-first-crossing-item="source"]').click();
   assert.equal(h.ui.inspect().runtime.status, 'COMPILING');
-  assert.equal(h.$('#loomFirstCrossingAction').hidden, true);
+  assert.equal(h.$('#loomFirstCrossingAction').disabled, true);
   h.$('#loomFirstCrossingAction').click();
   assert.equal(bindings, 0, 'no local binding before current projection publication');
   assert.equal(h.root.dataset.firstCrossingCue, 'gathering-motion');
   await until(() => h.ui.inspect().runtime.status === 'CURRENT', 'gathering projection');
-  assert.equal(h.$('#loomFirstCrossingAction').hidden, true, 'projection alone precedes its finite visible consequence');
+  assert.equal(h.$('#loomFirstCrossingAction').disabled, true, 'projection alone precedes its finite visible consequence');
   h.$('#loomFirstCrossingAction').click();
   assert.equal(bindings, 0, 'no local binding before visible gathering consequence');
   h.advance(5500);
@@ -163,7 +165,7 @@ test('hidden Finish events cannot claim completion before verified readiness pub
   h.$('#loomFirstCrossingAction').click();
   await until(() => h.root.dataset.firstCrossingStep === '2', 'verified local binding');
   assert.equal(h.root.dataset.firstCrossingCue, 'potential-motion');
-  assert.equal(h.$('#loomFirstCrossingStop').hidden, true);
+  assert.equal(h.$('#loomFirstCrossingStop').disabled, true);
   h.$('#loomFirstCrossingStop').click();
   assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), null);
   assert.equal(h.root.dataset.firstCrossingCue, 'potential-motion');
@@ -198,12 +200,12 @@ test('an old gathering frame cannot reopen pending local binding or duplicate it
   h.$('#loomFirstCrossingAction').click();
   await started;
   assert.equal(h.root.dataset.firstCrossingCue, 'binding');
-  assert.equal(h.$('#loomFirstCrossingAction').hidden, true);
+  assert.equal(h.$('#loomFirstCrossingAction').disabled, true);
   h.advance(100);
   assert.equal(h.root.dataset.firstCrossingCue, 'binding', 'the old 87.5% gathering frame must preserve pending preparation');
-  assert.equal(h.$('#loomFirstCrossingTitle').textContent, 'See exactly what would leave your browser.');
-  assert.equal(h.$('#loomFirstCrossingAction').hidden, true);
-  assert.equal(h.$('#loomFirstCrossingStop').hidden, true);
+  assert.equal(h.$('#loomFirstCrossingTitle').textContent, 'See what AI would actually receive.');
+  assert.equal(h.$('#loomFirstCrossingAction').disabled, true);
+  assert.equal(h.$('#loomFirstCrossingStop').disabled, true);
   // Hidden DOM controls can still receive programmatic/re-entrant events. The
   // actual action path must refuse duplication, rather than relying on hiding.
   h.$('#loomFirstCrossingAction').click();
@@ -226,8 +228,8 @@ test('an old gathering frame retains the binding HOLD explanation until an expli
   h.$('#loomFirstCrossingAction').click();
   await until(() => h.root.dataset.firstCrossingCue === 'binding-held', 'local binding failure');
   assert.match(h.$('#loomFirstCrossingPrompt').textContent, /Controlled local digest failure/);
-  assert.equal(h.$('#loomFirstCrossingAction').hidden, false, 'HOLD retains its deliberate retry action');
-  assert.equal(h.$('#loomFirstCrossingStop').hidden, true);
+  assert.equal(h.$('#loomFirstCrossingAction').disabled, false, 'HOLD retains its deliberate retry action');
+  assert.equal(h.$('#loomFirstCrossingStop').disabled, true);
   h.advance(100); h.advance(250);
   assert.equal(h.root.dataset.firstCrossingCue, 'binding-held');
   assert.equal(h.$('#loomFirstCrossingTitle').textContent, 'This review needs attention.');
@@ -238,7 +240,7 @@ test('an old gathering frame retains the binding HOLD explanation until an expli
   h.useCrypto(webcrypto);
   h.$('#loomFirstCrossingAction').click();
   assert.equal(h.root.dataset.firstCrossingCue, 'binding');
-  assert.equal(h.$('#loomFirstCrossingAction').hidden, true);
+  assert.equal(h.$('#loomFirstCrossingAction').disabled, true);
   await expectRealReadiness(h);
 });
 
@@ -250,7 +252,7 @@ test('keyboard focus follows visible tutorial consequences and its final live ac
   h.$('[data-first-crossing-item="source"]').click();
   assert.equal(h.environment.document.activeElement,h.$('#loomFirstCrossing'),'the disappearing selected card hands focus to visible tutorial content');
   await until(()=>h.ui.inspect().runtime.status==='CURRENT','gathering projection');
-  assert.equal(h.$('#loomFirstCrossingAction').hidden,true);
+  assert.equal(h.$('#loomFirstCrossingAction').disabled,true);
   h.advance(5500);
   assert.equal(h.environment.document.activeElement,h.$('#loomFirstCrossingAction'),'published gathering offers the next keyboard action');
   h.$('#loomFirstCrossingAction').click();
@@ -296,7 +298,7 @@ test('a finite tutorial consequence preserves focus deliberately moved to help',
   help.focus();
   await until(()=>h.ui.inspect().runtime.status==='CURRENT','gathering projection');
   h.advance(5500);
-  assert.equal(h.$('#loomFirstCrossingAction').hidden,false);
+  assert.equal(h.$('#loomFirstCrossingAction').disabled,false);
   assert.equal(h.environment.document.activeElement,help,'new action availability must not steal a help-reader’s focus');
   h.advance(100);
   assert.equal(h.environment.document.activeElement,help,'later continuous frames must not repeatedly transfer focus');
@@ -373,16 +375,16 @@ test('remixing an earned tutorial consequence preserves the next action and its 
   h.$('#loomFirstCrossingPause').focus();
   h.$('#loomFirstCrossingPause').click();
   assert.equal(h.root.dataset.firstCrossingCue,'gathering-named');
-  assert.equal(h.$('#loomFirstCrossingAction').hidden,false,'remix cannot withdraw the earned Check action during projection compilation');
+  assert.equal(h.$('#loomFirstCrossingAction').disabled,false,'remix cannot withdraw the earned Check action during projection compilation');
   await until(()=>h.ui.inspect().runtime.status==='CURRENT','remixed gathering projection');
   assert.deepEqual(h.ui.inspect().runtime.view.event,before,'remix changes presentation, never the selected input or evidence event');
-  assert.equal(h.$('#loomFirstCrossingAction').hidden,false);
+  assert.equal(h.$('#loomFirstCrossingAction').disabled,false);
   h.$('#loomFirstCrossingAction').click();
   await expectRealReadiness(h);
   const ready=h.ui.inspect().runtime.view.event;
   h.$('#loomFirstCrossingPause').click();
   assert.equal(h.root.dataset.firstCrossingCue,'potential-named');
-  assert.equal(h.$('#loomFirstCrossingStop').hidden,false,'remix cannot withdraw the earned Finish action');
+  assert.equal(h.$('#loomFirstCrossingStop').disabled,false,'remix cannot withdraw the earned Finish action');
   await until(()=>h.ui.inspect().runtime.status==='CURRENT','remixed readiness projection');
   assert.deepEqual(h.ui.inspect().runtime.view.event,ready);
   assert.equal(h.ui.inspect().session,null);
