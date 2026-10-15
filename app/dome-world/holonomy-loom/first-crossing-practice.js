@@ -17,16 +17,16 @@ export const FIRST_CROSSING_PRACTICE = freeze({
   id: 'loom-first-crossing-v4-private-conversation',
   input_class: 'CANONICAL_FICTIONAL_PRACTICE',
   fictional: true,
-  task: 'Help me think through a difficult personal decision. Use only the context I approved: offer two useful ways to approach it and one question to reflect on. Do not reconstruct the private conversation.',
+  task: 'I'm considering taking a job in another city. Help me weigh the choice using only the context I've shared. Give me two useful ways to think about it and one question to consider.',
   rules: [
-    'Use only the approved question and context. Offer two practical ways forward and one question. Keep the withheld conversation outside the reply; acknowledge any missing context rather than inventing it.'
+    'Use only the question and context I've shared. Suggest two practical ways to weigh the decision and one question to ask myself. Don't invent details about my life or refer to anything outside this request.'
   ],
   documents: [
-    { id: 'brief', name: 'Approved question', text: 'Fictional approved question: I am deciding whether to relocate. I want to weigh new possibilities against the life I have built here.', share: true },
-    { id: 'source', name: 'Approved context', text: 'Fictional approved context: My current community matters to me. The opportunity in the new city may open doors. I have a month before I need to decide.', share: true },
-    { id: 'private', name: 'Private conversation', text: 'Fictional withheld conversation: I cried on the phone with my sister last night about my father. This personal exchange is outside the approved takeaway.', share: false }
+    { id: 'brief', name: 'Approved question', text: 'Fictional question: I'm thinking about taking a job in another city and I'm not sure whether to go.', share: true },
+    { id: 'source', name: 'Approved context', text: 'Fictional context: I have good friends where I live now. The new job could help me grow. I have a month before I need to decide.', share: true },
+    { id: 'private', name: 'Private conversation', text: 'Fictional private conversation: My sister and I argued about the move last night. That conversation isn't part of the request.', share: false }
   ],
-  protectedTerms: ['I cried on the phone with my sister last night']
+  protectedTerms: ['My sister and I argued about the move last night']
 });
 
 function selectedPracticeIds(selectedIds) {
@@ -118,7 +118,7 @@ export function checkFirstCrossingPrivacy() {
 /** A real digest binds the fictional answer to the checked local request. */
 export async function createFirstCrossingReturnProof(binding, environment = globalThis) {
   if (binding?.binding_verified !== true || binding.fixture_id !== FIRST_CROSSING_PRACTICE.id) throw new TypeError('A checked tutorial request is required.');
-  const answer = 'Two approaches: list what moving could make possible, and identify what staying would preserve. Take the month available before deciding. One question: which possibility would you regret never exploring?';
+  const answer = 'You could write down what you'd gain by moving and what you'd miss about staying. You could also talk to someone who has made a similar change. With a month to decide, you have time to explore both. One question: what matters most to you about where you live?';
   const response_check = inspectLoomAiResponse({
     schema:'td613.loom.ai-task-result/v0.1', request_id:binding.request_id, status:'completed',
     answer, missing_information:[], suggested_next_step:'Review before sharing.', used_document_ids:[...binding.selected_document_ids]
