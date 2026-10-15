@@ -13,3 +13,9 @@ Only the operator's thread-long research authorization allows this bounded two-c
 One-shot PR job triggers only if the PR number, branch name, first workflow attempt and the *exact* activation commit subject match. Upon execution, retain synthetic original SSE and returned TD613 JSON for one day as an access-controlled repository artifact, log only derived metrics. Remove the job immediately after evidence acquisition.
 
 𝄐 PREREGISTERED · PAID EVIDENCE HELD ⟐
+
+## Activation
+
+`#405` release of system ablation source `e21af574ad372ef07c9669280545109b5b449954` completed SUCCESS, confirmed in workflow [38789113259](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/38789113259) and sealed issue receipt with exact source/application/stale-rollback guards PASS. Main relock: `4590e89eb1ac57644aeaad0e1a239228c551f558`.
+
+This update is the operator-authorized one-shot trigger for PR #1517. Paid test execution must keep original A/B response bytes and provider SSE, and report how many calls actually happened. No additional run is implied if a provider rejects either response.
