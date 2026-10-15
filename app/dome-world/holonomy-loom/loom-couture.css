@@ -493,3 +493,95 @@ body{background:var(--ink);overflow-x:clip}
     margin-top:10px;padding-top:8px
   }
 }
+
+/* 2026-10-15 operator C+ acceptance repair.
+   The button always occupies the same physical slot through consequence
+   animation. Disabled is the sleeping state, not a deleted DOM element. */
+#loomAiWorkspace:not([data-loom-intro="true"]) .loom-first-crossing-actions{
+  display:grid;
+  align-content:stretch;
+  min-height:70px;
+  margin:8px 0 0;
+  gap:0;
+}
+#loomAiWorkspace:not([data-loom-intro="true"]) .loom-first-crossing-actions button:not([hidden]){
+  display:block;
+  width:100%;
+  min-height:66px;
+  transition:opacity .42s ease,filter .42s ease,background-color .42s ease;
+}
+#loomAiWorkspace .loom-first-crossing-actions button:disabled{
+  opacity:.48 !important;
+  filter:saturate(.68);
+  cursor:wait;
+  pointer-events:none;
+}
+#loomAiWorkspace .loom-first-crossing-actions button:not(:disabled){
+  opacity:1 !important;
+  filter:none;
+  cursor:pointer;
+}
+#loomAiWorkspace .loom-private-continuity-note{
+  display:flex;
+  gap:12px;
+  align-items:baseline;
+  max-width:55ch;
+  margin-top:13px;
+  padding-top:9px;
+  border-top:1px solid rgba(224,204,245,.22);
+  font:400 12px/1.6 var(--sans);
+  color:#dbd1e6;
+}
+#loomAiWorkspace .loom-private-continuity-note strong{
+  flex:0 0 auto;
+  font:500 17px/1.3 "Loom Flow-Core",Georgia,serif;
+  letter-spacing:-.03em;
+  color:#dfbaf4;
+}
+#loomAiWorkspace .loom-first-crossing-objects .loom-first-crossing-private{
+  display:flex !important;
+  flex-direction:column;
+  gap:3px;
+  border-bottom:1px solid rgba(205,191,228,.26);
+  padding:13px 10px;
+  color:#ddc5ea;
+  background:rgba(6,11,29,.56);
+}
+#loomAiWorkspace .loom-first-crossing-private strong{
+  font:500 14px/1.3 var(--sans);
+  letter-spacing:0;
+}
+#loomAiWorkspace .loom-first-crossing-private small{
+  font:400 12px/1.45 var(--sans);
+  color:#cbbfd5;
+}
+#loomAiWorkspace .loom-tutorial-proof:not([open])>:not(summary),
+#loomAiWorkspace .loom-research-proof:not([open])>:not(summary),
+#loomAiWorkspace .loom-research-technical:not([open])>:not(summary),
+#loomAiWorkspace .loom-tutorial-technical:not([open])>:not(summary){
+  display:none !important;
+}
+#loomAiWorkspace .loom-tutorial-proof pre{
+  font:11px/1.55 ui-monospace,SFMono-Regular,monospace;
+  max-height:210px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+#loomAiWorkspace .loom-field-rest-flight{pointer-events:none}
+#loomAiWorkspace .loom-field-rest-flight path{
+  filter:drop-shadow(0 0 5px rgba(230,192,255,.24));
+}
+@media(max-width:600px){
+  #loomAiWorkspace .loom-private-continuity-note{font-size:11px;gap:8px}
+  #loomAiWorkspace .loom-tutorial-selection dl>div{
+    padding:12px 0;
+  }
+  #loomAiWorkspace .loom-tutorial-selection dd{
+    font-size:13px;
+    line-height:1.55;
+  }
+  #loomAiWorkspace:not([data-loom-intro="true"]) .loom-first-crossing-actions{min-height:68px}
+}
+@media(prefers-reduced-motion:reduce){
+  #loomAiWorkspace .loom-first-crossing-actions button{transition:none!important}
+}
