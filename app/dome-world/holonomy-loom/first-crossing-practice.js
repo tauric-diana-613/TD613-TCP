@@ -14,19 +14,19 @@ const freeze = value => {
 // Neither loading this fixture nor binding it creates a provider request,
 // Portable Loom Session, transfer, stored receipt or live custody capability.
 export const FIRST_CROSSING_PRACTICE = freeze({
-  id: 'loom-first-crossing-v3-decision-brief',
+  id: 'loom-first-crossing-v4-private-conversation',
   input_class: 'CANONICAL_FICTIONAL_PRACTICE',
   fictional: true,
-  task: 'Prepare a decision brief for the proposed pilot using the selected project files. Compare options, identify risks, and recommend a next step.',
+  task: 'Help me think through a difficult personal decision. Use only the context I approved: offer two useful ways to approach it and one question to reflect on. Do not reconstruct the private conversation.',
   rules: [
-    'Use only the supplied project files. Compare options, separate estimates from confirmed facts, flag unresolved risks, and explain the recommendation. Never invent missing figures.'
+    'Use only the approved question and context. Offer two practical ways forward and one question. Keep the withheld conversation outside the reply; acknowledge any missing context rather than inventing it.'
   ],
   documents: [
-    { id: 'brief', name: 'Project overview', text: 'Fictional project overview: A pilot could launch in November. Option A uses existing staff and takes six weeks. Option B uses an outside vendor and takes four weeks. Either option requires spending approval.', share: true },
-    { id: 'source', name: 'Budget and risk register', text: 'Fictional budget and risk register: Option A is estimated at $42,000 with moderate integration risk. Option B is estimated at $58,000 but procurement approval is pending. Funding cap is $60,000. Neither delivery date is guaranteed.', share: true },
-    { id: 'private', name: 'Unselected working draft', text: 'Fictional internal working draft: Vendor negotiation ceiling: $75,000. These assumptions have not been approved for the decision brief.', share: false }
+    { id: 'brief', name: 'Approved question', text: 'Fictional approved question: I am deciding whether to relocate. I want to weigh new possibilities against the life I have built here.', share: true },
+    { id: 'source', name: 'Approved context', text: 'Fictional approved context: My current community matters to me. The opportunity in the new city may open doors. I have a month before I need to decide.', share: true },
+    { id: 'private', name: 'Private conversation', text: 'Fictional withheld conversation: I cried on the phone with my sister last night about my father. This personal exchange is outside the approved takeaway.', share: false }
   ],
-  protectedTerms: ['Vendor negotiation ceiling: $75,000']
+  protectedTerms: ['I cried on the phone with my sister last night']
 });
 
 function selectedPracticeIds(selectedIds) {
@@ -34,7 +34,7 @@ function selectedPracticeIds(selectedIds) {
     || !Object.hasOwn(selectedIds, 0) || !Object.hasOwn(selectedIds, 1)
     || selectedIds.some(id => !['brief', 'source'].includes(id))
     || new Set(selectedIds).size !== 2) {
-    throw new TypeError('FIRST_CROSSING_SELECTION_HELD: select exactly the task note and supporting source; keep the private note out of the AI handoff.');
+    throw new TypeError('FIRST_CROSSING_SELECTION_HELD: select the approved question and context; leave the private exchange out of this local handoff.');
   }
   return [...selectedIds].sort();
 }
@@ -118,7 +118,7 @@ export function checkFirstCrossingPrivacy() {
 /** A real digest binds the fictional answer to the checked local request. */
 export async function createFirstCrossingReturnProof(binding, environment = globalThis) {
   if (binding?.binding_verified !== true || binding.fixture_id !== FIRST_CROSSING_PRACTICE.id) throw new TypeError('A checked tutorial request is required.');
-  const answer = 'Decision brief: Option A is estimated at $42,000 over six weeks, with moderate integration risk. Option B is estimated at $58,000 over four weeks, pending procurement approval. Recommend Option A provisionally; verify staff capacity and spending approval before proceeding.';
+  const answer = 'Two approaches: list what moving could make possible, and identify what staying would preserve. Take the month available before deciding. One question: which possibility would you regret never exploring?';
   const response_check = inspectLoomAiResponse({
     schema:'td613.loom.ai-task-result/v0.1', request_id:binding.request_id, status:'completed',
     answer, missing_information:[], suggested_next_step:'Review before sharing.', used_document_ids:[...binding.selected_document_ids]
