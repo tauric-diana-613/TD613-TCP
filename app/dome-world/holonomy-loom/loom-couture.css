@@ -652,3 +652,18 @@ body{background:var(--ink);overflow-x:clip}
   #loomAiWorkspace .loom-evidence-footer{align-items:flex-start;flex-direction:column}
 }
 @media(max-width:360px){#loomAiWorkspace .loom-empirical-evidence{padding:20px 16px}}
+
+/* Keep the tutorial operator controls visible on short iPhone/browser
+   viewports even when the longer explanatory text must scroll.  Retain
+   natural document flow and reachable content; never clip the narrative. */
+#loomAiWorkspace[data-first-crossing="active"] .loom-practice-controls{
+  position:sticky;
+  bottom:calc(12px + env(safe-area-inset-bottom,0px));
+  z-index:25;
+  padding:6px 10px;
+  border:1px solid rgba(221,205,245,.14);
+  border-radius:4px;
+  background:rgba(10,11,23,.91);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
