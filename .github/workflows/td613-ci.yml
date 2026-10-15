@@ -140,6 +140,7 @@ jobs:
           node tests/ash-eviction-retirement.test.mjs
           node tests/tcp-smoke.test.mjs
           node --test tests/loom-observer-channel.test.mjs tests/loom-observer-chamber.test.mjs tests/loom-targeted-ux.test.mjs
+          node --test tests/loom-tutorial-temporal-20261014.test.mjs tests/loom-first-crossing-binding-race.test.mjs
           node --test tests/portable-loom-tomography-export.test.mjs
           node --test tests/marrowline-fire-gate-pedagogue.test.mjs
           node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/loom-observer-chamber-design.json
