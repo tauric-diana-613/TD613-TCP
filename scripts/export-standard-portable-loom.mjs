@@ -101,6 +101,62 @@ if (audit.mathematical_modules_recomputed !== true || audit.empirical_golden_egg
   || audit.feasible_region.joint_realizability !== 'UNMEASURED') {
   throw new Error('Exported tomography companion failed its actual mathematical self-check.');
 }
+// Put the *actual* export-time computation where a receiving LLM can see it.
+// This is a deterministic finite-math fixture report, not a fresh provider or
+// independent empirical observation, and never mints custody authority.
+const receiptName = 'portable-loom-tomography-receipt.json';
+const receipt = {
+  schema: 'td613.loom.portable-tomography-execution-receipt/v0.1',
+  execution_origin: 'EXPORTER_LOCAL_NODE_PROCESS',
+  source_revision: revision,
+  session_root_ref: session.root.ref,
+  math_contract_sha256: createHash('sha256').update(JSON.stringify(mathContract, null, 2) + '\n').digest('hex'),
+  canonical_source_hashes_checked: true,
+  evidence_class: 'LOCALLY_EXECUTED_FINITE_SYNTHETIC_FIXTURE',
+  observer_measurement: 'NOT_RUN',
+  real_route_acquisition: 'NOT_RUN',
+  empirical_promotion_authority: false,
+  self_check_audit: audit
+};
+const receiptBody = JSON.stringify(receipt, null, 2) + '\n';
+const receiptSha256 = createHash('sha256').update(receiptBody).digest('hex');
+await writeFile(join(destination, receiptName), receiptBody, { flag: 'wx' });
+manifest.files.push({ name: receiptName, bytes: Buffer.byteLength(receiptBody), sha256: receiptSha256 });
+artifact.portable_tomography.calculated_fixture_receipt = {
+  schema: receipt.schema,
+  execution_origin: receipt.execution_origin,
+  evidence_class: receipt.evidence_class,
+  status: 'CANONICAL_FINITE_MATH_RECOMPUTED',
+  receipt_file: receiptName,
+  receipt_sha256: receiptSha256,
+  mathematical_result: audit,
+  observer_measurement: 'NOT_RUN',
+  empirical_promotion_authority: false
+};
+const portableJson = JSON.stringify(artifact, null, 2) + '\n';
+await writeFile(join(destination, 'portable-loom-standard.json'), portableJson);
+const originalPrompt = createPortableLoomSessionPrompt({
+  ...artifact,
+  portable_tomography: Object.fromEntries(Object.entries(artifact.portable_tomography).filter(([key]) => key !== 'calculated_fixture_receipt'))
+});
+let readme = await readFile(join(destination, 'portable-loom-standard.md'), 'utf8');
+if (!readme.includes(originalPrompt)) throw new Error('PORTABLE_EXPORT_ACTIVATION_PROMPT_REPLACEMENT_FAILED');
+readme = readme.replace(originalPrompt, createPortableLoomSessionPrompt(artifact));
+readme += '\n## Export-time mathematical execution receipt\n\nThe canonical companion was actually executed by the local Node exporter. The JSON activation includes its bounded synthetic fixture report, and \`' + receiptName + '\` retains the separately hashed execution record. A receiving AI may read and explain these values as an **export-time local result**, not claim it ran the computation. New evidence needs a fresh local \`--episode\` invocation; no receiver reply alone executes or authenticates that procedure.\n';
+await writeFile(join(destination, 'portable-loom-standard.md'), readme);
+for (const [name, body] of [['portable-loom-standard.json',portableJson],['portable-loom-standard.md',readme]]) {
+  const item = manifest.files.find(entry => entry.name === name);
+  if (!item) throw new Error('PORTABLE_EXPORT_MANIFEST_ENTRY_MISSING');
+  item.bytes = Buffer.byteLength(body);
+  item.sha256 = createHash('sha256').update(body).digest('hex');
+}
+// A second invocation checks the receipt against freshly recomputed source math.
+const repeat = JSON.parse(execFileSync(process.execPath,
+  [join(destination,'portable-loom-tomography-audit.mjs'),'--self-check'], { encoding:'utf8', maxBuffer:1024*1024*4 }));
+if (JSON.stringify(repeat) !== JSON.stringify(audit)) throw new Error('PORTABLE_TOMOGRAPHY_EXECUTION_RECEIPT_RECHECK_FAILED');
 manifest.mathematical_companion.status = 'CANONICAL_FINITE_MATH_RECOMPUTED';
+manifest.mathematical_companion.receipt_file = receiptName;
+manifest.mathematical_companion.receipt_sha256 = receiptSha256;
+manifest.basic_export_checks.push('mathematical export-time receipt independently recomputed and embedded in activation');
 await writeFile(join(destination, 'portable-loom-standard-manifest.json'), JSON.stringify(manifest, null, 2) + '\n', { flag: 'wx' });
 process.stdout.write(JSON.stringify({ destination, source_revision: revision, session_root_ref: session.root.ref, files: manifest.files, status: 'EXPORTED_AWAITING_ARTIFACT_ASSAY' }, null, 2) + '\n');
