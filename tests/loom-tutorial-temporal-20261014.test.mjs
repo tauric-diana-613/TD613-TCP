@@ -71,8 +71,8 @@ test('the first screen explains the AI firewall and three actual evidence bounda
   const pitch=doc.querySelector('#loomFirstCrossingPrompt')?.textContent;
   const route=doc.querySelector('.loom-value-route')?.textContent;
   assert.match(title,/Firewall your online life from AI/);
-  assert.match(pitch,/Work with Gemini, ChatGPT, and other LLMs on your terms/);
-  assert.match(pitch,/keep protected information out of the request/);
+  assert.match(pitch,/Use Gemini, ChatGPT, and other LLMs/);
+  assert.match(pitch,/test what the exchange may reveal/);
   assert.match(route,/Inspect the request/);
   assert.match(route,/Protect what stays private/);
   assert.match(route,/Examine the return/);
