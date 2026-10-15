@@ -1126,3 +1126,76 @@ jobs:
           path: gemini-observation.json
           if-no-files-found: error
           retention-days: 7
+
+  marrowline_finite_once:
+    name: Authorized Marrowline finite provider comparison (one-shot #1509)
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.number == 1509 && github.event.pull_request.head.ref == 'research/marrowline-finite-descent-20261015-r1' && github.run_attempt == 1 }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 2
+      - name: Verify one-shot exact commit subject
+        id: one_shot_gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          subject="$(git log -1 --format=%s)"
+          if [[ "$subject" == 'research(marrowline): execute authorized finite provider pair once' ]]; then
+            echo 'allowed=true' >> "$GITHUB_OUTPUT"
+            echo 'One-shot branch, PR number, attempt and commit gate satisfied'
+          else
+            echo 'allowed=false' >> "$GITHUB_OUTPUT"
+            echo 'No paid work: this commit is not the designated one-shot activation'
+          fi
+      - uses: actions/setup-node@v4
+        if: steps.one_shot_gate.outputs.allowed == 'true'
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        if: steps.one_shot_gate.outputs.allowed == 'true'
+        run: npm ci --ignore-scripts
+      - name: Retest exact matched preflight and sealed archive
+        if: steps.one_shot_gate.outputs.allowed == 'true'
+        run: node --test tests/marrowline-finite-descent.test.mjs
+      - name: Run expressly authorized finite two-call Gemini comparison
+        id: paid_pair
+        if: steps.one_shot_gate.outputs.allowed == 'true'
+        shell: bash
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TD613_FINITE_DESCENT_MAX_USD: '0.25'
+          TD613_FINITE_DESCENT_OUT: ${{ runner.temp }}/td613-marrowline-finite-private
+        run: |
+          set -euo pipefail
+          if [[ -z "${GEMINI_API_KEY:-}" ]]; then
+            echo 'HELD: GEMINI_API_KEY secret unavailable; provider calls 0'
+            exit 1
+          fi
+          node research/marrowline-finite-descent-20261015/run-pair.mjs --execute --ack-paid > "$RUNNER_TEMP/td613-finite-summary.json"
+          cat "$RUNNER_TEMP/td613-finite-summary.json"
+      - name: Seal original provider SSE and candidate payloads without public plaintext
+        if: ${{ always() && steps.one_shot_gate.outputs.allowed == 'true' }}
+        shell: bash
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          set -euo pipefail
+          if [[ -d "$RUNNER_TEMP/td613-marrowline-finite-private" ]] && [[ -n "${GEMINI_API_KEY:-}" ]]; then
+            tar czf "$RUNNER_TEMP/td613-finite-private.tar.gz" -C "$RUNNER_TEMP/td613-marrowline-finite-private" .
+            node research/marrowline-finite-descent-20261015/seal-archive.mjs encrypt "$RUNNER_TEMP/td613-finite-private.tar.gz" "$RUNNER_TEMP/td613-finite-private.tar.gz.enc"
+            rm -f "$RUNNER_TEMP/td613-finite-private.tar.gz"
+          else
+            echo 'HELD: no private provider evidence to encrypt'
+          fi
+      - uses: actions/upload-artifact@v4
+        if: ${{ always() && steps.one_shot_gate.outputs.allowed == 'true' }}
+        with:
+          name: marrowline-finite-descent-sealed-once
+          path: ${{ runner.temp }}/td613-finite-private.tar.gz.enc
+          retention-days: 7
+          if-no-files-found: ignore
