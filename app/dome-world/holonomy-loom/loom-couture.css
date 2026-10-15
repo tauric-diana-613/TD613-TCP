@@ -285,3 +285,107 @@ body{background:var(--ink);overflow-x:clip}
 #loomAiWorkspace[data-first-crossing-step="6"] .loom-research-proof {display:block}
 #loomAiWorkspace .loom-research-proof summary {min-height:44px;padding:13px 0;cursor:pointer;font:500 13px/1.5 var(--sans);color:#e1d3f1}
 #loomAiWorkspace .loom-research-proof p {margin:0 0 12px;font:400 12px/1.65 var(--sans);color:#c4bcd0}
+
+
+/* 2026-10-14 · A tutorial state has one readable frame, with a semantically
+   named glyph from the same 39-carrier / single-clock Flow-Core projection.
+   These are static presentation styles; no new timers or CSS keyframes. */
+#loomAiWorkspace .loom-first-crossing-copy p.loom-tutorial-operator-note{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:11px;
+  max-width:100%;
+  margin:18px 0 0;
+  padding:12px 0 0;
+  border-top:1px solid rgba(199,190,220,.23);
+  color:#cbc5d9;
+  font:450 12px/1.45 var(--sans);
+  letter-spacing:.015em;
+}
+#loomAiWorkspace .loom-tutorial-operator-glyph{
+  display:inline-flex;
+  min-width:32px;
+  justify-content:center;
+  color:#d8c5ed;
+  font:400 26px/1.05 "Loom Flow-Core","Noto Sans Symbols 2","Apple Symbols",Georgia,sans-serif;
+  text-shadow:0 0 22px rgba(186,151,221,.3);
+}
+#loomAiWorkspace[data-loom-intro="true"] .loom-tutorial-operator-note{display:none !important}
+#loomAiWorkspace .loom-tutorial-check-summary{
+  display:grid;
+  gap:11px;
+  padding:14px 0;
+  border-bottom:1px solid var(--line);
+}
+#loomAiWorkspace .loom-tutorial-check-summary p{
+  margin:0;
+  padding:0;
+  color:#e0dbe8;
+  font-size:13px;
+  line-height:1.55;
+}
+#loomAiWorkspace .loom-tutorial-check-summary strong{
+  display:block;
+  color:#e9d8f2;
+  font-weight:600;
+  margin-bottom:3px;
+}
+#loomAiWorkspace :is(.loom-tutorial-technical,.loom-research-technical){
+  max-width:100%;
+  border-top:1px solid rgba(199,190,220,.2);
+  margin-top:12px;
+}
+#loomAiWorkspace :is(.loom-tutorial-technical,.loom-research-technical)>summary{
+  min-height:44px;
+  padding:12px 0;
+  cursor:pointer;
+  color:#d5c5e7;
+  font:500 12px/1.4 var(--sans);
+}
+#loomAiWorkspace .loom-tutorial-technical pre{
+  max-width:100%;
+  max-height:260px;
+  margin:6px 0 14px;
+  padding:14px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  overflow:auto;
+}
+#loomAiWorkspace .loom-research-technical p{padding-top:8px}
+@media(max-width:600px){
+  /* Give the timed consequence the same physical reading surface as its
+     pending state. The action can enter without jumping the entire card. */
+  #loomAiWorkspace[data-first-crossing-step="1"] .loom-first-crossing-copy,
+  #loomAiWorkspace[data-first-crossing-step="2"] .loom-first-crossing-copy{
+    min-height:clamp(255px,34svh,325px);
+  }
+  #loomAiWorkspace .loom-tutorial-selection dl>div{
+    display:block;
+    padding:17px 0;
+    border-bottom:1px solid rgba(198,187,219,.14);
+  }
+  #loomAiWorkspace .loom-tutorial-selection dt{
+    display:block;
+    margin-bottom:8px;
+    font-size:11px;
+    line-height:1.45;
+    letter-spacing:.065em;
+    text-transform:uppercase;
+  }
+  #loomAiWorkspace .loom-tutorial-selection dd{
+    display:block;
+    margin:0;
+    font-size:14px;
+    line-height:1.65;
+    overflow-wrap:anywhere;
+  }
+  #loomAiWorkspace .loom-tutorial-selection>p{
+    display:block;
+    line-height:1.6;
+  }
+  #loomAiWorkspace .loom-tutorial-selection>p span{
+    display:block;
+    margin-top:4px;
+  }
+}
