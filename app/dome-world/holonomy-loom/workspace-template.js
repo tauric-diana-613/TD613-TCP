@@ -14,10 +14,10 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
   <section id="loomFirstCrossing" class="loom-first-crossing" aria-labelledby="loomFirstCrossingTitle" hidden tabindex="-1">
     <div class="loom-motion-view" aria-hidden="true"><span>FLOW-CORE / LIVING FIELD</span><span>𝌋</span></div>
     <div class="loom-first-crossing-copy">
-      <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">Tutorial · live Flow-Core</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 7 · Choose</span></div>
-      <h2 id="loomFirstCrossingTitle">You don't have to trust AI to use it.</h2>
-      <strong class="loom-hero-promise">Firewall your online life from AI.</strong>
-      <p id="loomFirstCrossingPrompt">ChatGPT, Gemini, and other LLMs can do the work. Loom lets you choose the material, set the terms, and inspect what returns.</p>
+      <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">Tutorial · the Golden Egg</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 7 · Choose</span></div>
+      <h2 id="loomFirstCrossingTitle">Talk to AI. Keep the conversation yours.</h2>
+      <strong class="loom-hero-promise">The Golden Egg</strong>
+      <p id="loomFirstCrossingPrompt">A conversation with AI that can still help you—without giving an outside observer enough to piece that private conversation back together. That's the Golden Egg Loom is pursuing.</p>
     </div>
     <details class="loom-flowcore-help">
       <summary>What is Flow-Core runtime?</summary>
@@ -34,23 +34,23 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
     </details>
     <div class="loom-boundary-event" aria-label="Fictional outgoing check">
       <div class="loom-boundary-event-outgoing">
-        <span class="loom-boundary-event-kicker">Selected work · ready for your review</span>
-        <strong>The task. The files. Your terms.</strong>
-        <p>Only the documents you selected are included in this fictional handoff.</p>
+        <span class="loom-boundary-event-kicker">Approved meaning · ready for review</span>
+        <strong>A useful question. Only the context you chose.</strong>
+        <p>The private exchange stays outside this fictional request.</p>
       </div>
       <div class="loom-boundary-event-denial">
-        <span class="loom-boundary-event-kicker">Local boundary check · tested</span>
+        <span class="loom-boundary-event-kicker">One local boundary · tested</span>
         <div class="loom-boundary-event-collision">
-          <code>Unselected working draft</code>
+          <code>Withheld conversation</code>
           <span class="loom-boundary-event-stop">HELD LOCALLY</span>
         </div>
-        <p>A deliberate attempt to add an excluded note triggered the local guard. This tutorial sends nothing to an LLM.</p>
+        <p>An excluded phrase triggered a local hold. Outsider reconstruction requires a much broader test than this one check.</p>
       </div>
     </div>
     <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="Tutorial: choose a request and source">
-      <button type="button" data-first-crossing-item="brief" aria-pressed="false"><strong>Prepare a decision brief</strong><small>Compare options. Make the gaps visible.</small></button>
-      <button type="button" data-first-crossing-item="source" aria-pressed="false"><strong>Use the project files</strong><small>Costs, timelines, risks, and decisions.</small></button>
-      <div id="loomFirstCrossingPrivate" class="loom-first-crossing-private" role="note"><strong>Other material</strong><small>Unselected working draft · stays in this browser</small></div>
+      <button type="button" data-first-crossing-item="brief" aria-pressed="false"><strong>Begin a private conversation</strong><small>A personal decision. A useful answer.</small></button>
+      <button type="button" data-first-crossing-item="source" aria-pressed="false"><strong>Choose what may travel</strong><small>An approved question and a little context.</small></button>
+      <div id="loomFirstCrossingPrivate" class="loom-first-crossing-private" role="note"><strong>Private exchange</strong><small>Not part of the permitted handoff</small></div>
     </div>
     <div class="loom-first-crossing-actions">
       <button type="button" id="loomFirstCrossingAction" hidden>Check my request →</button>
@@ -58,9 +58,9 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
     </div>
     <section id="loomTutorialSelection" class="loom-tutorial-selection" aria-label="Selected tutorial content" hidden>
       <dl><div><dt>Request</dt><dd id="loomTutorialRequest"></dd></div><div><dt>Sources</dt><dd id="loomTutorialReference"></dd></div><div><dt>Instructions</dt><dd id="loomTutorialInstructions"></dd></div></dl>
-      <p>Other working draft <span>Not selected for this request</span></p>
+      <p>Private conversation <span>Outside this fictional handoff</span></p>
     </section>
-    <blockquote id="loomTutorialSampleAnswer" class="loom-tutorial-sample-answer" hidden><span>Fictional example · no AI provider called</span><p id="loomTutorialSampleAnswerText"></p></blockquote>
+    <blockquote id="loomTutorialSampleAnswer" class="loom-tutorial-sample-answer" hidden><span>Illustrative return · no AI provider called</span><p id="loomTutorialSampleAnswerText"></p></blockquote>
     <div class="loom-practice-controls">
       <button type="button" id="loomFirstCrossingBack" hidden>← Start over</button>
       <button type="button" id="loomReplayFirstCrossing" class="loom-replay-first-crossing" hidden>Start over</button>
@@ -68,6 +68,7 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
       <button type="button" id="loomFirstCrossingLeave">Skip tutorial →</button>
     </div>
     <p id="loomFirstCrossingAnswer" class="loom-first-crossing-answer" aria-live="polite"></p>
+    <details class="loom-golden-egg-proof" aria-label="Golden Egg research target"><summary>What would count as the Golden Egg?</summary><p>Five measurements, one matched empirical episode: observer leakage (L), intended-structure reconstruction (R), joining synergy (J), measured geometry (G), and observed control and protected returns (C).</p><p>Targets: L ≤ 0.5 bits, R ≤ 0.2, J ≤ 0.1. The geometry and matched returns must be observed, too. This fictional tutorial is not that proof. Provider visibility is a separate boundary.</p></details>
     <p id="loomTutorialWaiting" class="loom-tutorial-waiting" role="status" hidden>Preparing the next step…</p>
     <details id="loomTutorialProof" class="loom-tutorial-proof" hidden><summary>See the checks <span aria-hidden="true">+</span></summary><pre id="loomTutorialProofRecord"></pre><p>Save the request and its checks for review. New returned work still needs your approval in the active Loom session. This tutorial uses a fictional reply.</p></details>
   </section>
