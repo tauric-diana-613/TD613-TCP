@@ -15,8 +15,8 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
     <div class="loom-motion-view" aria-hidden="true"><span>FLOW-CORE / LIVING FIELD</span><span>𝌋</span></div>
     <div class="loom-first-crossing-copy">
       <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">Tutorial · a private conversation</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 7 · Choose</span></div>
-      <h2 id="loomFirstCrossingTitle">Talk to AI. Keep the conversation yours.</h2>
-      <p id="loomFirstCrossingPrompt">A good answer shouldn't expose the conversation behind it. Loom lets you choose what an AI receives, check what comes back, and question what an outsider could figure out.</p>
+      <h2 id="loomFirstCrossingTitle">Have the conversation. Keep your story.</h2>
+      <p id="loomFirstCrossingPrompt">Ask the hard question. Get something useful back. Your whole conversation shouldn't become a puzzle a stranger can solve. Loom is built to test what the trail reveals.</p>
     </div>
     <details class="loom-flowcore-help">
       <summary>What is Flow-Core runtime?</summary>
@@ -33,23 +33,23 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
     </details>
     <div class="loom-boundary-event" aria-label="Fictional outgoing check">
       <div class="loom-boundary-event-outgoing">
-        <span class="loom-boundary-event-kicker">The part you chose to share</span>
-        <strong>Your question. The context you chose.</strong>
-        <p>The rest of the conversation is not part of this request.</p>
+        <span class="loom-boundary-event-kicker">What the AI would receive</span>
+        <strong>A question. Enough context to answer it.</strong>
+        <p>Here is the example request. The bigger test is what someone can work out from it.</p>
       </div>
       <div class="loom-boundary-event-denial">
-        <span class="loom-boundary-event-kicker">One local check</span>
+        <span class="loom-boundary-event-kicker">One clue stopped</span>
         <div class="loom-boundary-event-collision">
           <code>Private conversation</code>
           <span class="loom-boundary-event-stop">HELD LOCALLY</span>
         </div>
-        <p>The local check caught one excluded phrase. That cannot tell us what an outsider might figure out from other clues.</p>
+        <p>That exact phrase was caught. A person could still make guesses from what remains. That's why the whole trail matters.</p>
       </div>
     </div>
     <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="Tutorial: choose a request and source">
-      <button type="button" data-first-crossing-item="brief" aria-pressed="false"><strong>Talk through a personal decision</strong><small>A question you'd actually ask AI.</small></button>
-      <button type="button" data-first-crossing-item="source" aria-pressed="false"><strong>Choose what AI can use</strong><small>Your question and a little context.</small></button>
-      <div id="loomFirstCrossingPrivate" class="loom-first-crossing-private" role="note"><strong>Private exchange</strong><small>Not included in this example request</small></div>
+      <button type="button" data-first-crossing-item="brief" aria-pressed="false"><strong>A conversation worth having</strong><small>A difficult choice. A real reason to ask for help.</small></button>
+      <button type="button" data-first-crossing-item="source" aria-pressed="false"><strong>What the answer needs</strong><small>The details that could actually help.</small></button>
+      <div id="loomFirstCrossingPrivate" class="loom-first-crossing-private" role="note"><strong>Beyond this example</strong><small>Part of the conversation stays out of view</small></div>
     </div>
     <div class="loom-first-crossing-actions">
       <button type="button" id="loomFirstCrossingAction" hidden>Check my request →</button>
@@ -57,7 +57,7 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
     </div>
     <section id="loomTutorialSelection" class="loom-tutorial-selection" aria-label="Selected tutorial content" hidden>
       <dl><div><dt>Request</dt><dd id="loomTutorialRequest"></dd></div><div><dt>Sources</dt><dd id="loomTutorialReference"></dd></div><div><dt>Instructions</dt><dd id="loomTutorialInstructions"></dd></div></dl>
-      <p>Rest of the conversation <span>Not included in this example</span></p>
+      <p>Other conversation <span>Outside this example request</span></p>
     </section>
     <blockquote id="loomTutorialSampleAnswer" class="loom-tutorial-sample-answer" hidden><span>Example reply · no AI provider was called</span><p id="loomTutorialSampleAnswerText"></p></blockquote>
     <div class="loom-practice-controls">
@@ -67,7 +67,7 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
       <button type="button" id="loomFirstCrossingLeave">Skip tutorial →</button>
     </div>
     <p id="loomFirstCrossingAnswer" class="loom-first-crossing-answer" aria-live="polite"></p>
-    <details class="loom-research-proof" aria-label="How would we test conversation privacy?"><summary>What would prove this works?</summary><p>We need to see both outcomes in the same test: a useful answer reaches the person asking, while an outside observer cannot reconstruct the private conversation.</p><p>That means measuring what leaks, what useful information survives, what clues reveal when combined, the measured geometric relationship, and actual protected and control returns. All five belong to one documented comparison. Research targets are L ≤ 0.5 bits, R ≤ 0.2 and J ≤ 0.1, with measured G and observed C.</p><p>This example shows the question. It does not prove the result, and an AI provider can still see what you send to it.</p></details>
+    <details class="loom-research-proof" aria-label="How would we test conversation privacy?"><summary>How would we know?</summary><p>We need both results at once: someone gets a useful answer, and an outside observer cannot piece the protected conversation together.</p><p>One real comparison has to measure what leaks, whether the useful part survives, what separate clues reveal together, the relation between the measured paths, and what actually comes back on both routes. The research targets are L ≤ 0.5 bits, R ≤ 0.2 and J ≤ 0.1, with measured G and observed C.</p><p>This walkthrough is fictional. It cannot settle what an outsider could reconstruct, and an AI provider can see whatever you actually send.</p></details>
     <p id="loomTutorialWaiting" class="loom-tutorial-waiting" role="status" hidden>Preparing the next step…</p>
     <details id="loomTutorialProof" class="loom-tutorial-proof" hidden><summary>See the checks <span aria-hidden="true">+</span></summary><pre id="loomTutorialProofRecord"></pre><p>Save the request and its checks for review. New returned work still needs your approval in the active Loom session. This tutorial uses a fictional reply.</p></details>
   </section>
