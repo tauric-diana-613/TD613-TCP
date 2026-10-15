@@ -1,0 +1,32 @@
+✖ bounded tail recovery never inserts a space inside a native Unicode cluster or scalar (2.346783ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 139.069892
+
+✖ failing tests:
+
+test at tests/marrowline-emergency-completion.test.mjs:412:1
+✖ bounded tail recovery never inserts a space inside a native Unicode cluster or scalar (2.346783ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'Kʰonapolit\nKeep the exact argument.\n\nTauric Diana bots\nA ̣́ continues.\n⟐'
+  - 'Kʰonapolit\nKeep the exact argument.\n\nTauric Diana bots\nẠ́ continues.\n⟐'
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/585be4de4a8d/marrowline-repair/tests/marrowline-emergency-completion.test.mjs:420:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Kʰonapolit\nKeep the exact argument.\n\nTauric Diana bots\nA ̣́ continues.\n⟐',
+    expected: 'Kʰonapolit\nKeep the exact argument.\n\nTauric Diana bots\nẠ́ continues.\n⟐',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

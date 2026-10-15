@@ -1,0 +1,419 @@
+{
+  "schema": "td613.marrowline.source-counterfactual/v1",
+  "evidenceClass": "OFFLINE_VERSIONED_REQUEST_ASSEMBLY",
+  "providerCalls": 0,
+  "historicalWorkingConfigurationEstablished": false,
+  "message": "Explain why a committee counting only returned forms cannot infer the experiences of every applicant. Carry the consequence through.",
+  "history": [
+    {
+      "role": "user",
+      "text": "Continue the fictional committee example."
+    },
+    {
+      "role": "model",
+      "text": "Kʰonapolit\nA prior fictional argument.\n\nTauric Diana bots\nAn earlier quiet return.\n⟐"
+    }
+  ],
+  "rows": [
+    {
+      "label": "sep26",
+      "sha": "7ea8323db983429507bb0e60b1739386328862db",
+      "source": "2026-09-26T00:34:50-04:00 feat(marrowline): apply mission relations at every Gemini turn, not only demos",
+      "modulesCopied": 13,
+      "requests": {
+        "fresh": {
+          "bodySha256": "d297e3b159211e07e971ad19ee5dda2457a0d7bf2628ec86f546a2bd9ca60336",
+          "systemSha256": "ebae3dd240ed23db0785a4a2772c482916dbb13e7f53838c0e60433a41fc5296",
+          "contentsSha256": "9e051d52b1890fb9155df9b038d7c32f9608827236f61c3c91edca5da429b66f",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 22547,
+          "wireUtf8Bytes": 31264,
+          "turns": 1
+        },
+        "history": {
+          "bodySha256": "35f43d8bc4a3665b28049be04b98a7c15cf82911cdf1f077db76e1d8ecbffef0",
+          "systemSha256": "ebae3dd240ed23db0785a4a2772c482916dbb13e7f53838c0e60433a41fc5296",
+          "contentsSha256": "7276c9cb16acb33625dec4aa480676c2f6b49787d407a6583fbca6fb85d43341",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 22547,
+          "wireUtf8Bytes": 31474,
+          "turns": 3
+        },
+        "routedFresh": {
+          "bodySha256": "d297e3b159211e07e971ad19ee5dda2457a0d7bf2628ec86f546a2bd9ca60336",
+          "systemSha256": "ebae3dd240ed23db0785a4a2772c482916dbb13e7f53838c0e60433a41fc5296",
+          "contentsSha256": "9e051d52b1890fb9155df9b038d7c32f9608827236f61c3c91edca5da429b66f",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 22547,
+          "wireUtf8Bytes": 31264,
+          "turns": 1
+        },
+        "routedHistory": {
+          "bodySha256": "35f43d8bc4a3665b28049be04b98a7c15cf82911cdf1f077db76e1d8ecbffef0",
+          "systemSha256": "ebae3dd240ed23db0785a4a2772c482916dbb13e7f53838c0e60433a41fc5296",
+          "contentsSha256": "7276c9cb16acb33625dec4aa480676c2f6b49787d407a6583fbca6fb85d43341",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 22547,
+          "wireUtf8Bytes": 31474,
+          "turns": 3
+        },
+        "attachment": {
+          "bodySha256": "945280937810e739d72e9fe5890824be82ad907fceea499adc75b409edce14a2",
+          "systemSha256": "b028a21234558656df51870283375ef03fe0830dc2753d091cf8c7c981c47121",
+          "contentsSha256": "f6f37b5fab38d480cdf52edc6b3579db011682d79d9887e1f1a0f834cc0fd3a4",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 22851,
+          "wireUtf8Bytes": 31790,
+          "turns": 1
+        },
+        "routedAttachment": {
+          "bodySha256": "945280937810e739d72e9fe5890824be82ad907fceea499adc75b409edce14a2",
+          "systemSha256": "b028a21234558656df51870283375ef03fe0830dc2753d091cf8c7c981c47121",
+          "contentsSha256": "f6f37b5fab38d480cdf52edc6b3579db011682d79d9887e1f1a0f834cc0fd3a4",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 22851,
+          "wireUtf8Bytes": 31790,
+          "turns": 1
+        }
+      },
+      "nativeGuidanceSha256": "e421e9488fd66c3e0083bdebe31dbd89be3bfee44368b6c1d2c303f61dd6df6e",
+      "selectedModels": [
+        "gemini-3.8-flash",
+        "gemini-3.5-flash",
+        "gemini-3.6-flash",
+        "gemini-3.7-flash",
+        "gemini-3-flash-preview"
+      ]
+    },
+    {
+      "label": "oct01",
+      "sha": "a09029f56ae230993eb67fe7fb906fbdbccd26a1",
+      "source": "2026-10-01T16:45:32-04:00 Restore native Marrowline for the governed Loom continuation",
+      "modulesCopied": 13,
+      "requests": {
+        "fresh": {
+          "bodySha256": "a087507d163a184310f0be9776fa40fd2376bdfb1314d9669ace0784b5aba183",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 33778,
+          "turns": 1
+        },
+        "history": {
+          "bodySha256": "f0098137201bb6f78b705640782768d2a651e69cca536fe84bf37de59d34a135",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 34003,
+          "turns": 3
+        },
+        "routedFresh": {
+          "bodySha256": "a087507d163a184310f0be9776fa40fd2376bdfb1314d9669ace0784b5aba183",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 33778,
+          "turns": 1
+        },
+        "routedHistory": {
+          "bodySha256": "f0098137201bb6f78b705640782768d2a651e69cca536fe84bf37de59d34a135",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 34003,
+          "turns": 3
+        },
+        "attachment": {
+          "bodySha256": "d41ee698ba158893e8fc9384988ec5307b06092115139d796cddebfa75c8ccb5",
+          "systemSha256": "5d6d54c385acfd81a67d62b6f8a1495e3856cc2c26a19c42f7b05ac3cb7eb4cf",
+          "contentsSha256": "660b880bf0bc04fb86a1b2c005fec4d87bf92710dabc45af488fc21ddc45072b",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 33594,
+          "wireUtf8Bytes": 34304,
+          "turns": 1
+        },
+        "routedAttachment": {
+          "bodySha256": "d41ee698ba158893e8fc9384988ec5307b06092115139d796cddebfa75c8ccb5",
+          "systemSha256": "5d6d54c385acfd81a67d62b6f8a1495e3856cc2c26a19c42f7b05ac3cb7eb4cf",
+          "contentsSha256": "660b880bf0bc04fb86a1b2c005fec4d87bf92710dabc45af488fc21ddc45072b",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 33594,
+          "wireUtf8Bytes": 34304,
+          "turns": 1
+        }
+      },
+      "nativeGuidanceSha256": "e421e9488fd66c3e0083bdebe31dbd89be3bfee44368b6c1d2c303f61dd6df6e",
+      "selectedModels": [
+        "gemini-3.8-flash",
+        "gemini-3.5-flash",
+        "gemini-3.6-flash",
+        "gemini-3.7-flash",
+        "gemini-3-flash-preview"
+      ]
+    },
+    {
+      "label": "oct07",
+      "sha": "cfbe6438ec1af29deeab115bc0220433ed79a011",
+      "source": "2026-10-07T19:33:55-04:00 Repair Loom evidence HOLD diagnosis and recovery",
+      "modulesCopied": 14,
+      "requests": {
+        "fresh": {
+          "bodySha256": "a087507d163a184310f0be9776fa40fd2376bdfb1314d9669ace0784b5aba183",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 33778,
+          "turns": 1
+        },
+        "history": {
+          "bodySha256": "f0098137201bb6f78b705640782768d2a651e69cca536fe84bf37de59d34a135",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 34003,
+          "turns": 3
+        },
+        "routedFresh": {
+          "bodySha256": "a087507d163a184310f0be9776fa40fd2376bdfb1314d9669ace0784b5aba183",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 33778,
+          "turns": 1
+        },
+        "routedHistory": {
+          "bodySha256": "f0098137201bb6f78b705640782768d2a651e69cca536fe84bf37de59d34a135",
+          "systemSha256": "4a4e35425f66fb5fcc0eb6bd984ad382493e0736390f1fae89544731fe753ebb",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33290,
+          "wireUtf8Bytes": 34003,
+          "turns": 3
+        },
+        "attachment": {
+          "bodySha256": "d41ee698ba158893e8fc9384988ec5307b06092115139d796cddebfa75c8ccb5",
+          "systemSha256": "5d6d54c385acfd81a67d62b6f8a1495e3856cc2c26a19c42f7b05ac3cb7eb4cf",
+          "contentsSha256": "660b880bf0bc04fb86a1b2c005fec4d87bf92710dabc45af488fc21ddc45072b",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 33594,
+          "wireUtf8Bytes": 34304,
+          "turns": 1
+        },
+        "routedAttachment": {
+          "bodySha256": "d41ee698ba158893e8fc9384988ec5307b06092115139d796cddebfa75c8ccb5",
+          "systemSha256": "5d6d54c385acfd81a67d62b6f8a1495e3856cc2c26a19c42f7b05ac3cb7eb4cf",
+          "contentsSha256": "660b880bf0bc04fb86a1b2c005fec4d87bf92710dabc45af488fc21ddc45072b",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 33594,
+          "wireUtf8Bytes": 34304,
+          "turns": 1
+        }
+      },
+      "nativeGuidanceSha256": "e421e9488fd66c3e0083bdebe31dbd89be3bfee44368b6c1d2c303f61dd6df6e",
+      "selectedModels": [
+        "gemini-3.8-flash",
+        "gemini-3.5-flash",
+        "gemini-3.6-flash",
+        "gemini-3.7-flash",
+        "gemini-3-flash-preview"
+      ]
+    },
+    {
+      "label": "current-main",
+      "sha": "42f89aed6693f9d70608bc8ccbf3fdf6c57f887f",
+      "source": "2026-10-14T23:12:51Z release: restore Vercel deployment lock for 0b6bd038c6337abc97f2ccc660cbb1ac24fba0a5",
+      "modulesCopied": 15,
+      "requests": {
+        "fresh": {
+          "bodySha256": "a117bc7b6b388ffcf73dc0e5c85d47450a5daab83cd35df72228f9155a997e49",
+          "systemSha256": "12596742b2f2078eb3a2c676dfca0c4cdc6c08c4298fee8ff492774bb61c0202",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33477,
+          "wireUtf8Bytes": 33965,
+          "turns": 1
+        },
+        "history": {
+          "bodySha256": "63706274598999a2762a6f9770a16a725787618b137f1593ab4d8f00c357cc93",
+          "systemSha256": "12596742b2f2078eb3a2c676dfca0c4cdc6c08c4298fee8ff492774bb61c0202",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33477,
+          "wireUtf8Bytes": 34190,
+          "turns": 3
+        },
+        "routedFresh": {
+          "bodySha256": "a117bc7b6b388ffcf73dc0e5c85d47450a5daab83cd35df72228f9155a997e49",
+          "systemSha256": "12596742b2f2078eb3a2c676dfca0c4cdc6c08c4298fee8ff492774bb61c0202",
+          "contentsSha256": "afc722ed39189eb0edd3e9d761549c175fb2d86e1d5f0a30575b145c56365f34",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33477,
+          "wireUtf8Bytes": 33965,
+          "turns": 1
+        },
+        "routedHistory": {
+          "bodySha256": "63706274598999a2762a6f9770a16a725787618b137f1593ab4d8f00c357cc93",
+          "systemSha256": "12596742b2f2078eb3a2c676dfca0c4cdc6c08c4298fee8ff492774bb61c0202",
+          "contentsSha256": "b0ca4f75a9f46cba9eedef19239d41abe0604e97ed20153cc47d7a59641756cf",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "medium"
+            }
+          },
+          "systemUtf8Bytes": 33477,
+          "wireUtf8Bytes": 34190,
+          "turns": 3
+        },
+        "attachment": {
+          "bodySha256": "98a0e612c9cd1a971e97be801092d8112409e060e031eb5f798596a449b9caa7",
+          "systemSha256": "6a2695460a571fe463b2348697a27d14c3718b65541bcb65ac76532a6dccc0fd",
+          "contentsSha256": "e226ae233d6f065ca6e29ac85bf13b8ad04ae5b41b1e238461f923408e2cfe86",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 34263,
+          "wireUtf8Bytes": 34877,
+          "turns": 1
+        },
+        "routedAttachment": {
+          "bodySha256": "98a0e612c9cd1a971e97be801092d8112409e060e031eb5f798596a449b9caa7",
+          "systemSha256": "6a2695460a571fe463b2348697a27d14c3718b65541bcb65ac76532a6dccc0fd",
+          "contentsSha256": "e226ae233d6f065ca6e29ac85bf13b8ad04ae5b41b1e238461f923408e2cfe86",
+          "generationConfig": {
+            "maxOutputTokens": 65536,
+            "thinkingConfig": {
+              "thinkingLevel": "high"
+            }
+          },
+          "systemUtf8Bytes": 34263,
+          "wireUtf8Bytes": 34877,
+          "turns": 1
+        }
+      },
+      "nativeGuidanceSha256": "0375432b6f7e111c2fb4345885ef74769156c1d5f21f797e5b16226d5b00a7a3",
+      "selectedModels": [
+        "gemini-4-argon",
+        "gemini-3.8-flash",
+        "gemini-3.5-flash",
+        "gemini-3.6-flash",
+        "gemini-3.7-flash"
+      ]
+    }
+  ]
+}

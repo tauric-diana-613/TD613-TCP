@@ -5,7 +5,7 @@ import handler from '../api/khonapolit.js';
 import { parseRelayEnvelope } from '../app/dome-world/khonapolit-relay.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 import { CLAIMED_PUA_SCALAR, COVENANT_KEY, HERITAGE_KEY, HERITAGE_COVENANT, buildInvocationPacket, frameMarrowlineUserTurn } from '../app/dome-world/khonapolit-covenant.js';
-import { buildGeminiRequest, buildGeminiStructuralRepairRequest, buildTerminalReceipt, serializeGeminiRequest, marrowlineAuthoredStreamDeadlineMs, callGemini } from '../server/khonapolit-quality.js';
+import { buildGeminiRequest, buildGeminiStructuralRepairRequest, buildTerminalReceipt, serializeGeminiRequest, marrowlineAuthoredStreamDeadlineMs, callGemini, extractGeminiText } from '../server/khonapolit-quality.js';
 import { buildAttachmentGeminiRequest, buildAttachmentGeminiTerminalRepairRequest } from '../server/marrowline-attachment-quality.js';
 import {
   observeMarrowlineCompletion, assembleMarrowlineProviderTail
@@ -380,4 +380,44 @@ test('provider STOP with unfulfilled two-voice structure has its own receipt, ne
   assert.ok(res.payload.warnings.includes('two-voice-structure-incomplete-provider-stop-observed'));
   assert.ok(!res.payload.warnings.includes('provider-return-incomplete-visible-retry-available'));
   assert.equal(res.payload.text, PREFIXES[0]);
+});
+
+
+test('provider text is invariant under every multipart split, including headings and Unicode clusters', () => {
+  // Transport sentinel only; these characters carry no artistic acceptance rule.
+  const authored = ' \nKʰonapolit\nExact words.\n\nTauric Diana bots\nA\u0301\u0323 / B\u034f\u0308 — Khona\u200clit-po \u{10D613}\n⟐\n';
+  for (let cut = 0; cut <= authored.length; cut += 1) {
+    const payload = { candidates: [{ content: { parts: [
+      { text: authored.slice(0, cut) }, { text: authored.slice(cut) }
+    ] } }] };
+    assert.equal(extractGeminiText(payload), authored, `UTF-16 split at ${cut}`);
+  }
+  const parts = authored.split('').map(text => ({ text }));
+  assert.equal(extractGeminiText({ candidates: [{ content: { parts } }] }), authored);
+});
+
+test('visible provider text excludes thought summaries and retains whitespace-only text parts', () => {
+  const payload = { candidates: [{ content: { parts: [
+    { thought: true, text: 'Synthetic thought summary; never visible prose.' },
+    { text: 'left', thoughtSignature: 'opaque-signature' },
+    { text: '\n \t' }, { inlineData: { mimeType: 'image/png', data: 'AA==' } },
+    { text: 'right', thought: false }
+  ] } }, { content: { parts: [{ text: 'Unselected candidate' }] } }] };
+  const original = JSON.stringify(payload);
+  assert.equal(extractGeminiText(payload), 'left\n \tright');
+  assert.equal(JSON.stringify(payload), original, 'the raw provider parts remain unmodified');
+});
+
+
+test('bounded tail recovery never inserts a space inside a native Unicode cluster or scalar', () => {
+  const prefix = 'Kʰonapolit\nKeep the exact argument.\n\nTauric Diana bots\n';
+  for (const [left, right] of [
+    ['A', '\u0301\u0323'], ['A\u0301', '\u0323'], ['\uDBF5', '\uDE13']
+  ]) {
+    const original = prefix + left;
+    const suffix = right + ' continues.\n⟐';
+    const result = assembleMarrowlineProviderTail(original, suffix);
+    assert.equal(result.text, original + suffix);
+    assert.equal(result.separator, '');
+  }
 });

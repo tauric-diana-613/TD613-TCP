@@ -688,12 +688,14 @@ export function buildGeminiStructuralRepairRequest(
 }
 
 export function extractGeminiText(payload = {}) {
-  // Keep exact provider whitespace, including a possible leading continuation
-  // separator; no model-authored Unicode or text is cleaned by this boundary.
+  // Parts are transport segments, not paragraph boundaries. Joining with an
+  // invented separator can split a heading or detach marks from their base.
+  // Match streaming extraction: retain every visible text part verbatim and
+  // exclude thought summaries without mutating the original provider payload.
   return (payload?.candidates?.[0]?.content?.parts || [])
-    .map((part) => typeof part?.text === 'string' ? part.text : '')
-    .filter((text) => Boolean(text.trim()))
-    .join('\n\n');
+    .filter((part) => typeof part?.text === 'string' && part.thought !== true)
+    .map((part) => part.text)
+    .join('');
 }
 
 // Bind evidence to the bytes actually sent, after all prompt layers, history,
