@@ -57,7 +57,7 @@ test('mobile request reads vertically; raw machine output and research math are 
   assert.ok(technical.contains(record));
   assert.equal(outer.open,false);
   assert.equal(technical.open,false);
-  assert.match(outer.querySelector('.loom-tutorial-check-summary').textContent,/Nothing.*private conversation.*unknown/is);
+  assert.match(outer.querySelector('.loom-tutorial-check-summary').textContent,/entirely in your browser.*unselected conversation.*outsider could reconstruct/is);
   const research=doc.querySelector('.loom-research-proof');
   assert.ok(research.querySelector('.loom-research-technical'));
   assert.equal(research.querySelector('.loom-research-technical').open,false);
@@ -70,13 +70,13 @@ test('the first screen explains the AI firewall and three actual evidence bounda
   const title=doc.querySelector('#loomFirstCrossingTitle')?.textContent;
   const pitch=doc.querySelector('#loomFirstCrossingPrompt')?.textContent;
   const route=doc.querySelector('.loom-value-route')?.textContent;
-  assert.match(title,/Firewall your online life from AI/);
-  assert.match(pitch,/Use Gemini, ChatGPT, and other LLMs/);
-  assert.match(pitch,/test what the exchange may reveal/);
-  assert.match(route,/Inspect the request/);
-  assert.match(route,/Choose what stays here/);
-  assert.match(route,/Examine the return/);
-  assert.match(workspace,/Give AI the context, not your entire history/);
+  assert.match(title,/Make AI behave. Keep your private life yours/);
+  assert.match(pitch,/ChatGPT, Gemini, and other AI models/);
+  assert.match(pitch,/what someone else could infer/);
+  assert.match(route,/Set your AI rules/);
+  assert.match(route,/Control what it sees/);
+  assert.match(route,/Test what comes back/);
+  assert.match(workspace,/Give AI a job, not your life story/);
   assert.match(workspace,/Check AI Request/);
 });
 test('the actual renderer retains tutorial glyphs after finite motion instead of fading away',()=>{
