@@ -12,9 +12,11 @@ Vercel runtime-log retrieval returned 403 Forbidden for the inspected October 14
 
 ## Bounded executable contrast
 
-`run-pair.mjs` constructs the **same** current-source Marrowline system instructions, **same** user contents and **same** generation configuration for both requested models. It deliberately changes only the requested provider model: `gemini-3.8-flash` and `gemini-3.5-flash`. Both request MEDIUM thinking and a 12,288-token output ceiling, rather than production's model-specific LOW fallback setting. The script asserts identical request-field SHA-256 hashes before allowing paid execution.
+`run-pair.mjs` constructs the **same** current-source Marrowline system instructions, **same** user contents and **same** generation configuration for both requested models. It deliberately changes only the requested provider model: `gemini-3.8-flash` and `gemini-3.6-flash`. Both request MEDIUM thinking and a 12,288-token output ceiling, rather than production's model-specific LOW fallback setting. Google's October 8 deprecation routes the old `gemini-3.5-flash` label to 3.6, so the historical October 4 model is **not directly replayed** by this experiment. The script asserts identical request-field SHA-256 hashes before allowing paid execution.
 
 On execution it issues at most **two** Google streamed-generation calls, sequentially, each with a 90-second timeout and no retries or other model seats. It stops before the second call on first-attempt failure. A timeout may still incur provider billing. **No dollar maximum can be guaranteed without a separately verified model-price schedule.** A two-call outcome is a controlled *case*, not a statistically sound success-rate estimate. Provider aliasing remains possible; the returned `modelVersion` is recorded when supplied and never invented.
+
+**Pricing envelope:** Google's published October 2026 standard text rates are $0.75 per million input tokens and $3.75 per million output tokens, including thinking, for both target models. Each request must serialize to at most 85,000 UTF-8 bytes with at most 12,288 requested output tokens. The two-call published-rate upper estimate is **$0.21966** under the simplifying assumption that billed input tokens do not exceed serialized request bytes, and Google charges only these published standard token categories. This is not an API-enforced dollar cap or a billing guarantee: model/version routing, billing overhead, cached/prompt accounting and future price changes must be independently reviewed. Execution additionally requires `TD613_FINITE_DESCENT_MAX_USD=0.25`, which records a human-reviewed envelope but cannot impose a Google-account spend cap. Without an explicit operator-approved spending bound, keep execution HELD.
 
 All original SSE bytes, parsed provider parts, usage, finish state, observed version, prompt fields, server-side morphology and Unicode text are preserved **only in the operator's local output directory**. No raw prompt, original provider output or API credential is committed to GitHub. The provider's original text is never repainted or elected by typography.
 
@@ -24,13 +26,13 @@ All original SSE bytes, parsed provider parts, usage, finish state, observed ver
 
 ### Explicitly paid execution (requires separate reviewed provider spending bound)
 
-    GEMINI_API_KEY=... TD613_FINITE_DESCENT_OUT=/private/episode-dir node research/marrowline-finite-descent-20261015/run-pair.mjs --execute --ack-paid
+    GEMINI_API_KEY=... TD613_FINITE_DESCENT_MAX_USD=0.25 TD613_FINITE_DESCENT_OUT=/private/episode-dir node research/marrowline-finite-descent-20261015/run-pair.mjs --execute --ack-paid
 
 The preflight must show matching system/content/configuration hashes. If the provider rejects a requested alias or thinking configuration, retain that error as an observed boundary and **do not silently choose substitutes**. Do not infer literary success from a PASS morphology status; compare the native text against the operator's plural accepted atlas and review both Kʰonapolit argument and Tauric Diana bots artistic quality.
 
 ## Verdict rules
 
-* Rich 3.5 versus shallow 3.8 under byte-identical request fields: model-conditioned disparity on this one episode, not causal proof of model quality or provider drift.
+* Rich 3.6 versus shallow 3.8 under byte-identical request fields: model-conditioned disparity on this one episode, not causal proof of model quality or provider drift.
 * Both shallow: result fails to rescue native art; follow up with separately preregistered same-model prompt variants if still justified.
 * Both rich: historical failure is not universal; do not infer fixed recovery from one pair.
 * Missing returned `modelVersion`, incomplete stream, provider error or invalid voice structure: record HELD for relevant comparison.
