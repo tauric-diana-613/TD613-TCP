@@ -205,7 +205,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     $('loomFirstCrossingTitle').textContent=title;
     if(cue==='choose' && root.dataset.loomIntro==='true'){
       // Authored headline only: incoming/model text never reaches innerHTML.
-      $('loomFirstCrossingTitle').innerHTML='<span class="loom-headline-line">You wanted an answer.</span> <span class="loom-headline-line"><em>Not an audience.</em></span>';
+      $('loomFirstCrossingTitle').innerHTML='<span class="loom-headline-line">What can AI</span> <span class="loom-headline-line"><em>give away about you?</em></span>';
     }
     $('loomFirstCrossingPrompt').textContent=prompt;
     $('loomFirstCrossingAnswer').textContent=answer;
@@ -615,8 +615,8 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     $('loomFirstCrossingLeave').hidden=false;
     firstCrossingChoreography=nextFlowcoreChoreography(firstCrossingChoreography?.id, environment.Math?.random?.() ?? Math.random());
     setFirstCrossingCue('choose',{
-      title:'You wanted an answer. Not an audience.',
-      prompt:'Ask ChatGPT, Gemini, or another AI for help with something personal. Loom helps you choose what to share, review the answer, and examine what someone else might learn from the exchange.',
+      title:'What can AI give away about you?',
+      prompt:'You ask AI for help. It answers—but the exchange can leave clues about your life. Loom examines what travels, what comes back, and what someone outside the conversation could piece together.',
       answer:'See what one example can show—and what a single check could miss. Nothing is sent to an AI.'
     });
     flowcoreMessage.textContent=firstCrossingChoreography.message;
@@ -697,7 +697,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
   function renderFirstCrossingLesson(published=false){
     const lessons={
       3:{cue:'send',title:'A small piece can say a lot.',prompt:'The model would receive this question and these details. Someone watching a different part of the journey might have other clues. That is why the trail matters.',answer:'Example only. Nothing has been sent to an AI provider.',next:'See what a check catches →'},
-      4:{cue:'privacy',title:'Hiding one phrase proves very little.',prompt:'The local check caught one exact phrase. But clues can hide in what remains: details, patterns, even timing. The harder test asks what an outsider could piece together.',answer:'One local check passed. What a stranger could reconstruct has not been measured.',next:'See the example answer →'},
+      4:{cue:'privacy',title:'The clues add up.',prompt:'The local check catches one excluded phrase. But timing, details, and fragments can tell a larger story when someone combines them. That is the harder privacy test.',answer:'One local hold was observed. What an outsider could reconstruct remains unmeasured.',next:'See the example answer →'},
       5:{cue:'proof',title:'Did the answer help?',prompt:'The example reply offers a way forward without quoting the private exchange. But a useful answer alone cannot tell us what a stranger learned along the way.',answer:'Fictional reply. No AI provider or outside-observer test was involved.',next:'Finish tutorial →'}
     };
     const lesson=lessons[firstCrossingStep];
