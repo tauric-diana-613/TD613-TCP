@@ -6,6 +6,7 @@ import {
 } from '../dome-world/holonomy-loom/ai-handoff-base.js';
 import { inspectLoomAiResponse } from '../dome-world/holonomy-loom/ai-intake.js';
 import { verifyPortableLoomCore } from './portable-loom-core.js';
+import { createPortableLoomGoldenEggKernel } from './portable-loom-golden-egg-kernel.js';
 import { PORTABLE_LOOM_RECEIVER_OUTPUT_GUIDANCE, LEGACY_PORTABLE_LOOM_RECEIVER_OUTPUT_GUIDANCE } from './portable-loom-output.js';
 
 export const PORTABLE_LOOM_SESSION_SCHEMA = 'td613.loom.portable-session/v0.1';
@@ -373,6 +374,7 @@ export async function createPortableLoomSessionExport(sessionInput, packet, envi
       receipt_rule: 'Return a separate loom_session_receipt object with every proceeding-task answer; anchor_work_unit_ref names the last Loom-verified work unit, and the receipt is a receiver declaration until Loom revalidates it.',
       weakening_rule: 'Do not omit, relax, replace, or reinterpret a root rule inside the same v0.1 session.'
     },
+    golden_egg_research: createPortableLoomGoldenEggKernel(),
     challenge_protocol: {
       available: true,
       public_private_split: true,
@@ -403,6 +405,7 @@ export function createPortableLoomSessionPrompt(sessionExport) {
     assembly ? renderPortableLoomReceiverOutputGuidance() : 'For every proceeding-task answer after task/source selection, append a separate loom_session_receipt object containing exactly receiver_turn_contract.receipt_fields: schema, session_root_ref, policy_commitment, anchor_work_unit_ref, turn_index, operator_task, used_document_ids, missing_information and receiver_declaration. Use receipt_schema and the carried root/policy/last verified anchor. turn_index is a positive proceeding-task declaration counter, not authenticated off-platform ancestry. used_document_ids and missing_information must each be arrays of distinct nonempty strings; use [] when empty, never null or a scalar string. Use only origin-registered source IDs and a nonempty receiver_declaration string. If a used source lacks its origin ID, do not invent one: record SOURCE_IDENTIFIER_UNREGISTERED in missing_information and keep source-accounting HOLD. Empty used_document_ids means no declared source use, not unknown identification.',
     'That receipt is a declaration for Loom to revalidate; do not describe the receipt itself as proof of enforcement.',
     'Do not claim that your own acknowledgement proves enforcement, secrecy, retention, training behavior, or hidden memory state.',
+    'The carried golden_egg_research object is a measurement contract, not a privacy credential. It defines the five distinct L/R/J/G/C surfaces and the mathematical requirements for one immutable matched empirical episode. Never fill unmeasured fields using chat text, hashes, stylistic similarity, or synthetic calculations. The finite kernel can calculate conditional information only for declared synthetic distributions; empirical measurements need independent qualified records. A receiver self-report cannot declare the Golden Egg earned.',
     'When a Challenge Receiver packet appears, answer only its declared probes and preserve its exact session/work-unit/policy references.',
     ...(sessionExport.portable_task?.portable_governance?.output_protocol ? ['Gate outputs retain the regular footer plus evidence basis, checked scope and How do I know? 下. A lone 下 requests actual methods and the full carried expert nomenclature: list every portable_task.portable_governance.mechanisms entry with id, conventional_name, td613_historical_name and implementation_scope, keeping catalogue presence separate from execution. The FADT irreducible gap is U minus I, not an intersection-over-union ratio. Without a verifier capability, review visible evidence, report NOT_RUN and provide actionable capture instructions; an optional manual verification destination is separate and has no automatic chat access.'] : []),
     '',
