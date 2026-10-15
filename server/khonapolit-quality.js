@@ -50,6 +50,7 @@ import {
   observeGeminiQuota
 } from './gemini-provider-transport.js';
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
+import { buildCompactWholeFrame } from './marrowline-whole-frame-voice.js';
 import { observeMarrowlineCompletion, assembleMarrowlineProviderTail } from './marrowline-completion.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
@@ -549,6 +550,12 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
 
 // Bounded system-instruction ablation: remove exactly one repeated style paragraph,
 // and ONLY on a gated artificial /api/khonapolit canary. Everything else stays byte-identical.
+export function compactSyntheticWholeFrame(request = {}) {
+  const original = request?.systemInstruction?.parts?.[0]?.text;
+  if (typeof original !== 'string' || !original.includes('GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION:')) throw new Error('WHOLE_FRAME_SOURCE_SHAPE_MISMATCH');
+  return { ...request, systemInstruction: { ...request.systemInstruction, parts: [{ text: buildCompactWholeFrame() }] } };
+}
+
 export function ablateOneSyntheticSystemProsodyParagraph(request = {}) {
   const raw = request?.systemInstruction?.parts?.[0]?.text;
   if (typeof raw !== 'string') throw new Error('PROSODY_ABLATION_SYSTEM_TEXT_ABSENT');
@@ -962,7 +969,7 @@ async function callGemini(
   packet,
   apertureReceipt,
   timeoutMs = PRIMARY_REQUEST_TIMEOUT_MS,
-  { fallback = false, structuralRepair = null, streamGraceMs = 0, wallDeadlineAt = null, captureNativeSse = false, systemProsodyAblation = false } = {}
+  { fallback = false, structuralRepair = null, streamGraceMs = 0, wallDeadlineAt = null, captureNativeSse = false, systemProsodyAblation = false, wholeFrameCompact = false } = {}
 ) {
   const controller = new AbortController();
   const progress = { startedAt: Date.now(), chunkCount: 0, authoredTextChunkCount: 0, firstChunkMs: null, byteCount: 0, parseErrors: 0, streamGraceMs: 0 };
@@ -994,7 +1001,9 @@ async function callGemini(
           { fallback }
         )
       : buildGeminiRequest(packet, apertureReceipt, model, { fallback });
-    const request = systemProsodyAblation ? ablateOneSyntheticSystemProsodyParagraph(fullRequest) : fullRequest;
+    if (systemProsodyAblation && wholeFrameCompact) throw new Error('CONFLICTING_SYNTHETIC_ASSAY_CONDITIONS');
+    const request = wholeFrameCompact ? compactSyntheticWholeFrame(fullRequest)
+      : systemProsodyAblation ? ablateOneSyntheticSystemProsodyParagraph(fullRequest) : fullRequest;
     submittedGenerationConfig = request.generationConfig;
     const wire = serializeGeminiRequest(request, model);
     submittedRequestObservation = wire.observation;
@@ -1051,6 +1060,10 @@ export function allowSyntheticNativeSseWitness({ releaseCanary = false, witnessH
 
 // A valid raw-SSE synthetic canary is a prerequisite: this flag can never
 // change ordinary user generations, uploaded files, or stored history.
+export function allowSyntheticWholeFrameCompact({ nativeSseWitness = false, assayHeader = '', modelHeader = '' } = {}) {
+  return nativeSseWitness === true && assayHeader === 'compact-whole-frame-v1' && modelHeader === 'gemini-3.8-flash';
+}
+
 export function allowSyntheticSystemProsodyAblation({ nativeSseWitness = false, assayHeader = '' } = {}) {
   return nativeSseWitness === true && assayHeader === 'ablate-one-prosody-paragraph';
 }
@@ -1077,6 +1090,7 @@ export default async function handler(req, res) {
       hasGeminiKey: Boolean(process.env.GEMINI_API_KEY),
       nativeSseWitness: 'synthetic-canary-only-v1',
       syntheticProsodyAssay: 'one-system-paragraph-ablation-v1',
+      syntheticWholeFrameAssay: 'compact-whole-frame-v1',
       aperture,
       aperture_egress: apertureEgress,
       relaySchema: KHONAPOLIT_RELAY_SCHEMA,
@@ -1127,6 +1141,11 @@ export default async function handler(req, res) {
     assayHeader: requestHeader(req, 'x-td613-prosody-assay')
   });
   const requestedCanaryModel = requestHeader(req, 'x-td613-canary-model').replace(/^models\//, '');
+  const wholeFrameCompact = allowSyntheticWholeFrameCompact({
+    nativeSseWitness,
+    assayHeader: requestHeader(req, 'x-td613-whole-frame-assay'),
+    modelHeader: requestedCanaryModel
+  });
   const discourseMode = classifyApertureDiscourseMode(packet.message);
   const apertureReceipt = buildApertureV3InvocationReceipt({
     message: packet.message,
@@ -1568,6 +1587,7 @@ export default async function handler(req, res) {
       fallback, streamGraceMs: 0,
       captureNativeSse: nativeSseWitness,
       systemProsodyAblation,
+      wholeFrameCompact,
       wallDeadlineAt: providerWallDeadlineAt
     });
     const providerOutput = observeGeminiOutput(result.payload, model, { fallback, submittedGenerationConfig: result.submittedGenerationConfig, submittedRequestObservation: result.submittedRequestObservation });
