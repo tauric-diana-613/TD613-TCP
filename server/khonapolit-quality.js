@@ -1076,6 +1076,7 @@ export default async function handler(req, res) {
       modelPolicy: plan,
       hasGeminiKey: Boolean(process.env.GEMINI_API_KEY),
       nativeSseWitness: 'synthetic-canary-only-v1',
+      syntheticProsodyAssay: 'one-system-paragraph-ablation-v1',
       aperture,
       aperture_egress: apertureEgress,
       relaySchema: KHONAPOLIT_RELAY_SCHEMA,
