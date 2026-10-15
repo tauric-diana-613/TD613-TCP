@@ -300,13 +300,13 @@ try {
         firstCrossingVisual.objects.length===3&&
         firstCrossingVisual.objects.filter(object=>object.id!=='loomFirstCrossingPrivate')
           .every(object=>object.width>0&&object.height>=44)&&
-        firstCrossingVisual.objects.find(object=>object.id==='loomFirstCrossingPrivate')?.visible===false,
+        firstCrossingVisual.objects.find(object=>object.id==='loomFirstCrossingPrivate')?.visible===true,
         firstCrossingVisual);
       record('seven-step tutorial is the first experience and has no bypass CTA',
         await page.locator('#loomFirstCrossingTitle').isVisible() &&
         await page.locator('.loom-boundary-event').isHidden() &&
         await page.locator('[data-first-crossing-item="brief"]').isVisible() &&
-        /Use Gemini, ChatGPT, and other LLMs.*test what the exchange may reveal/i.test(await page.locator('#loomFirstCrossingPrompt').textContent()) &&
+        /ChatGPT, Gemini, and other AI models.*someone else could infer/i.test(await page.locator('#loomFirstCrossingPrompt').textContent()) &&
         await page.locator('#loomStartNow').count()===0 &&
         await page.locator('#loomExploreDemo').count()===0,
         {first_choice:await page.locator('[data-first-crossing-item="brief"]').isVisible(),
@@ -336,7 +336,7 @@ try {
         await page.locator('#loomAiWorkspace').getAttribute('data-first-crossing-gather')==='complete');
       await lockedSource.click();
       record('first crossing: consequence begins before terminology is named',
-        /Give AI the context, not your entire history\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
+        /Give AI a job, not your life story\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
         !/That relation is à/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
         { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
       await observeFiniteConsequence(page,'gathering','first-crossing-mobile-gathering');
@@ -356,7 +356,7 @@ try {
       await page.waitForFunction(()=>document.querySelector('#aiRuntimeState')?.dataset?.projectionState==='CURRENT'&&
         document.querySelector('#aiRuntimeState')?.dataset?.activeRelation==='created_potential');
       record('first crossing: readiness consequence begins before 上 is named',
-        /See exactly what would leave your browser\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
+        /See what AI would actually receive\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
         !/created-potential relation is 上/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
         { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
       await observeFiniteConsequence(page,'created_potential','first-crossing-mobile-readiness');
@@ -373,11 +373,11 @@ try {
           { preview: await page.locator('.loom-boundary-event-outgoing').textContent() });
         if(step===4)record('firewall boundary lesson identifies the locally held out-of-scope source',
           await page.locator('.loom-boundary-event-denial').isVisible() &&
-          /One excluded phrase/.test(await page.locator('.loom-boundary-event-denial').textContent()),
+          /cōl · unselected private context/.test(await page.locator('.loom-boundary-event-denial').textContent()),
           { evidence: await page.locator('.loom-boundary-event-denial').textContent() });
         if(step===4)record('local gate rejection is visible without a fabricated provider-side event',
           await page.locator('.loom-boundary-event-stop').isVisible() &&
-          /HELD LOCALLY/.test(await page.locator('.loom-boundary-event-stop').textContent()),
+          /NOT PART OF THE EXAMPLE REQUEST/.test(await page.locator('.loom-boundary-event-stop').textContent()),
           {blocked:await page.locator('.loom-boundary-event-stop').textContent()});
         if(step===5)record('the return is a fictional answer, never a second firewall diagram',
           await page.locator('#loomTutorialSampleAnswer').isVisible() &&
@@ -394,8 +394,8 @@ try {
       await page.locator('#loomTutorialProof > summary').click();
       await page.locator('#loomFirstCrossingStop').click();
       await page.waitForFunction(()=>document.querySelector('#aiRuntimeState')?.dataset?.projectionState==='CURRENT');
-      await page.waitForFunction(()=>document.querySelector('#loomAiWorkspace')?.dataset.pendingFrames==='0',null,{timeout:12000});const restA=await fieldObservation(page);await page.waitForTimeout(240);const restB=await fieldObservation(page);
-      record('tutorial finish: 𝄐 settles instead of restarting 上',restB.pending_frames==='0'&&restB.carriers.every((node,index)=>node.relation==='structural_rest'&&node.x===restA.carriers[index].x&&node.y===restA.carriers[index].y),{before:restA,after:restB});
+      await page.waitForFunction(()=>document.querySelector('#loomAiWorkspace')?.dataset.firstCrossingStep==='6' && document.querySelector('#loomAiWorkspace')?.dataset.pendingFrames==='1',null,{timeout:12000});const restA=await fieldObservation(page);await page.waitForTimeout(240);const restB=await fieldObservation(page);
+      record('tutorial finish: fictional 𝄐 stays alive without restarting 上',restB.pending_frames==='1'&&restB.carriers.every(node=>node.relation==='structural_rest')&&restB.carriers.some((node,index)=>node.x!==restA.carriers[index].x||node.y!==restA.carriers[index].y),{before:restA,after:restB});
       const help=page.locator('.loom-flowcore-help');await help.locator('summary').click();
       record('tutorial help: visible 44px close control',await page.locator('#loomFlowcoreHelpClose').isVisible()&&await page.locator('#loomFlowcoreHelpClose').evaluate(node=>node.getBoundingClientRect().width>=44&&node.getBoundingClientRect().height>=44));
       await page.locator('#loomFlowcoreHelpClose').click();
