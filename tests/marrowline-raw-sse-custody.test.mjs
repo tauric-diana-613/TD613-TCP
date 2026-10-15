@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {readFileSync} from 'node:fs';
-import {readGeminiSse, extractGeminiText} from '../server/khonapolit-quality.js';
+import {readGeminiSse, extractGeminiText, allowSyntheticNativeSseWitness} from '../server/khonapolit-quality.js';
 
 const sha = s => createHash('sha256').update(s).digest('hex');
 const mockStream = (raw, step = 11) => {
@@ -53,12 +53,24 @@ test('oversized provider stream retains only digest and is marked incomplete rat
  assert.equal(p.nativeSseEvidence.textEquivalent,true);
 });
 
+test('privacy gate refuses actual user data, history, attachments and unauthenticated header',()=>{
+ const message='In a fictional town, a committee counts only returned forms and concludes that every silent resident is content. Locate the denominator error, pursue its consequence, and complete the connected Kʰonapolit and Tauric Diana bots movements. Let the voices author their own prose and native typography.';
+ const good={releaseCanary:true,witnessHeader:'1',body:{message,history:[],mode:'issued-conjunction',shi:'',waiveIssuance:true}};
+ assert.equal(allowSyntheticNativeSseWitness(good),true);
+ assert.equal(allowSyntheticNativeSseWitness({...good,releaseCanary:false}),false);
+ assert.equal(allowSyntheticNativeSseWitness({...good,witnessHeader:'0'}),false);
+ assert.equal(allowSyntheticNativeSseWitness({...good,body:{...good.body,message:'Real operator prompt'}}),false);
+ assert.equal(allowSyntheticNativeSseWitness({...good,body:{...good.body,history:[{role:'user',text:'Private'}]}}),false);
+ assert.equal(allowSyntheticNativeSseWitness({...good,body:{...good.body,attachments:[{name:'secret.pdf'}]}}),false);
+ assert.equal(allowSyntheticNativeSseWitness({...good,body:{...good.body,waiveIssuance:false}}),false);
+});
+
 test('live code confines raw SSE release to synthetic canary, never to normal chat',()=>{
  const source=readFileSync(new URL('../server/khonapolit-quality.js',import.meta.url),'utf8');
- assert.match(source,/nativeSseWitness = releaseCanary/);
- assert.match(source,/requestHeader\(req, 'x-td613-native-sse-witness'\) === '1'/);
- assert.match(source,/body\.message === NATIVE_SSE_WITNESS_PROMPT/);
- assert.match(source,/Array\.isArray\(body\.history\) && body\.history\.length === 0/);
+ assert.match(source,/nativeSseWitness = allowSyntheticNativeSseWitness/);
+ assert.match(source,/requestHeader\(req, 'x-td613-native-sse-witness'\)/);
+ assert.match(source,/body\?\.message === NATIVE_SSE_WITNESS_PROMPT/);
+ assert.match(source,/Array\.isArray\(body\?\.history\) && body\.history\.length === 0/);
  assert.match(source,/captureNativeSse: nativeSseWitness/);
  assert.match(source,/rawSseBase64: wireOverflow \? null/);
 });
