@@ -51,6 +51,7 @@ import {
 } from './gemini-provider-transport.js';
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 import { buildCompactWholeFrame } from './marrowline-whole-frame-voice.js';
+import { buildSyntheticUnicodeAssayRequest, UNICODE_ASSAY_VARIANTS, UNICODE_ASSAY_MODEL } from './marrowline-unicode-capability-assay.js';
 import { observeMarrowlineCompletion, assembleMarrowlineProviderTail } from './marrowline-completion.js';
 
 export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
@@ -969,7 +970,7 @@ async function callGemini(
   packet,
   apertureReceipt,
   timeoutMs = PRIMARY_REQUEST_TIMEOUT_MS,
-  { fallback = false, structuralRepair = null, streamGraceMs = 0, wallDeadlineAt = null, captureNativeSse = false, systemProsodyAblation = false, wholeFrameCompact = false } = {}
+  { fallback = false, structuralRepair = null, streamGraceMs = 0, wallDeadlineAt = null, captureNativeSse = false, systemProsodyAblation = false, wholeFrameCompact = false, syntheticUnicodeAssay = null } = {}
 ) {
   const controller = new AbortController();
   const progress = { startedAt: Date.now(), chunkCount: 0, authoredTextChunkCount: 0, firstChunkMs: null, byteCount: 0, parseErrors: 0, streamGraceMs: 0 };
@@ -1001,8 +1002,9 @@ async function callGemini(
           { fallback }
         )
       : buildGeminiRequest(packet, apertureReceipt, model, { fallback });
-    if (systemProsodyAblation && wholeFrameCompact) throw new Error('CONFLICTING_SYNTHETIC_ASSAY_CONDITIONS');
-    const request = wholeFrameCompact ? compactSyntheticWholeFrame(fullRequest)
+    if ([systemProsodyAblation, wholeFrameCompact, Boolean(syntheticUnicodeAssay)].filter(Boolean).length > 1) throw new Error('CONFLICTING_SYNTHETIC_ASSAY_CONDITIONS');
+    const request = syntheticUnicodeAssay ? buildSyntheticUnicodeAssayRequest(fullRequest, syntheticUnicodeAssay)
+      : wholeFrameCompact ? compactSyntheticWholeFrame(fullRequest)
       : systemProsodyAblation ? ablateOneSyntheticSystemProsodyParagraph(fullRequest) : fullRequest;
     submittedGenerationConfig = request.generationConfig;
     const wire = serializeGeminiRequest(request, model);
@@ -1060,6 +1062,10 @@ export function allowSyntheticNativeSseWitness({ releaseCanary = false, witnessH
 
 // A valid raw-SSE synthetic canary is a prerequisite: this flag can never
 // change ordinary user generations, uploaded files, or stored history.
+export function allowSyntheticUnicodeAssay({ nativeSseWitness = false, assayHeader = '', modelHeader = '' } = {}) {
+  return nativeSseWitness === true && modelHeader === UNICODE_ASSAY_MODEL && UNICODE_ASSAY_VARIANTS.includes(assayHeader) ? assayHeader : null;
+}
+
 export function allowSyntheticWholeFrameCompact({ nativeSseWitness = false, assayHeader = '', modelHeader = '' } = {}) {
   return nativeSseWitness === true && assayHeader === 'compact-whole-frame-v1' && modelHeader === 'gemini-3.8-flash';
 }
@@ -1091,6 +1097,7 @@ export default async function handler(req, res) {
       nativeSseWitness: 'synthetic-canary-only-v1',
       syntheticProsodyAssay: 'one-system-paragraph-ablation-v1',
       syntheticWholeFrameAssay: 'compact-whole-frame-v1',
+      syntheticUnicodeAssay: 'literal-vs-creative-multistack-v1',
       aperture,
       aperture_egress: apertureEgress,
       relaySchema: KHONAPOLIT_RELAY_SCHEMA,
@@ -1144,6 +1151,11 @@ export default async function handler(req, res) {
   const wholeFrameCompact = allowSyntheticWholeFrameCompact({
     nativeSseWitness,
     assayHeader: requestHeader(req, 'x-td613-whole-frame-assay'),
+    modelHeader: requestedCanaryModel
+  });
+  const syntheticUnicodeAssay = allowSyntheticUnicodeAssay({
+    nativeSseWitness,
+    assayHeader: requestHeader(req, 'x-td613-unicode-assay'),
     modelHeader: requestedCanaryModel
   });
   const discourseMode = classifyApertureDiscourseMode(packet.message);
@@ -1588,6 +1600,7 @@ export default async function handler(req, res) {
       captureNativeSse: nativeSseWitness,
       systemProsodyAblation,
       wholeFrameCompact,
+      syntheticUnicodeAssay,
       wallDeadlineAt: providerWallDeadlineAt
     });
     const providerOutput = observeGeminiOutput(result.payload, model, { fallback, submittedGenerationConfig: result.submittedGenerationConfig, submittedRequestObservation: result.submittedRequestObservation });
