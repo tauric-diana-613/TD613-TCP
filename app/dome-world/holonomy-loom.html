@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#05060a">
   <meta name="td613-holonomy-loom" content="hosted-integration-v0.1">
   <title>Loom · AI Under Your Rules</title>
-  <meta name="description" content="You don't have to trust AI to use it. Loom is your firewall for working with ChatGPT, Gemini, and other LLMs on your terms.">
+  <meta name="description" content="The Golden Egg: a useful AI conversation an outside observer cannot reconstruct. Loom explores how permitted meaning travels without surrendering the whole conversation.">
   <style>
     :root{--ink:#05060a;--panel:#0a0d13;--paper:#f4f2ef;--muted:#9da5b2;--cyan:#8ee8e6;--gold:#efbd83;--line:rgba(165,187,210,.16);--sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;--mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace}
     *{box-sizing:border-box}html,body{min-height:100%;margin:0;background:var(--ink);color:var(--paper)}body{font-family:var(--sans)}
@@ -63,7 +63,7 @@
     window.setTimeout(() => { if (html.dataset.loomBoot === 'loading') fail('START_TIMEOUT'); }, 12000);
   })();
   </script>
-  <link rel="stylesheet" href="./holonomy-loom/loom-couture.css?v=20261014-firewall-v2">
+  <link rel="stylesheet" href="./holonomy-loom/loom-couture.css?v=20261014-golden-egg-v1">
 </head>
 <body>
 <div id="loomBootVeil" role="status">Opening Loom…</div>
@@ -78,7 +78,7 @@
   <section id="loomAiWorkspace" aria-label="Loom workspace"><p>Opening Loom…</p></section>
 </main>
 <script type="module">
-  import('./holonomy-loom/ai-workspace.js?v=20261014-firewall-v2')
+  import('./holonomy-loom/ai-workspace.js?v=20261014-golden-egg-v1')
     .then(() => {
       if (document.documentElement.dataset.loomBoot !== 'ready')
         window.td613LoomBootFailure?.('MODULE_WITHOUT_READY');
