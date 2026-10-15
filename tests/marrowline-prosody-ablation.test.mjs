@@ -39,3 +39,6 @@ test('ordinary request, different synthetic text, uploads or history cannot acti
  assert.equal(allowSyntheticSystemProsodyAblation({nativeSseWitness:allow({...body,attachments:[{name:'private.pdf'}]}),assayHeader:'ablate-one-prosody-paragraph'}),false);
  assert.equal(allowSyntheticSystemProsodyAblation({nativeSseWitness:allow(body),assayHeader:'1'}),false);
 });
+ 
+// Offline whole-instruction-frame counterfactual tests run in the existing protected Marrowline CI lane.
+import './marrowline-whole-frame-contrast.test.mjs';
