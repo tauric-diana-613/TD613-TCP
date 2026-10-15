@@ -201,7 +201,7 @@ test('an old gathering frame cannot reopen pending local binding or duplicate it
   assert.equal(h.$('#loomFirstCrossingAction').hidden, true);
   h.advance(100);
   assert.equal(h.root.dataset.firstCrossingCue, 'binding', 'the old 87.5% gathering frame must preserve pending preparation');
-  assert.equal(h.$('#loomFirstCrossingTitle').textContent, 'Checking the permitted request.');
+  assert.equal(h.$('#loomFirstCrossingTitle').textContent, 'Checking what you selected.');
   assert.equal(h.$('#loomFirstCrossingAction').hidden, true);
   assert.equal(h.$('#loomFirstCrossingStop').hidden, true);
   // Hidden DOM controls can still receive programmatic/re-entrant events. The
