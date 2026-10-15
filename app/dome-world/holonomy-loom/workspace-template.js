@@ -15,8 +15,8 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
     <div class="loom-motion-view" aria-hidden="true"><span>FLOW-CORE / LIVING FIELD</span><span>𝌋</span></div>
     <div class="loom-first-crossing-copy">
       <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">Tutorial · a private conversation</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 7 · Choose</span></div>
-      <h2 id="loomFirstCrossingTitle">You wanted an answer. Not an audience.</h2>
-      <p id="loomFirstCrossingPrompt">Ask ChatGPT, Gemini, or another AI for help with something personal. Loom helps you decide what to share, review the answer, and examine what someone else might learn from the exchange.</p>
+      <h2 id="loomFirstCrossingTitle">What can AI give away about you?</h2>
+      <p id="loomFirstCrossingPrompt">You ask AI for help. It answers—but the exchange can leave clues about your life. Loom examines what travels, what comes back, and what someone outside the conversation could piece together.</p>
     </div>
     <details class="loom-flowcore-help">
       <summary>What is Flow-Core runtime?</summary>
@@ -33,22 +33,22 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
     </details>
     <div class="loom-boundary-event" aria-label="Fictional outgoing check">
       <div class="loom-boundary-event-outgoing">
-        <span class="loom-boundary-event-kicker">What the AI would receive</span>
-        <strong>Your question. Only the context you chose.</strong>
+        <span class="loom-boundary-event-kicker">What this example sends</span>
+        <strong>The question and the details needed to answer.</strong>
         <p>Review the example request before it goes anywhere.</p>
       </div>
       <div class="loom-boundary-event-denial">
-        <span class="loom-boundary-event-kicker">One clue stopped</span>
+        <span class="loom-boundary-event-kicker">One local check</span>
         <div class="loom-boundary-event-collision">
-          <code>Private conversation</code>
+          <code>One excluded phrase</code>
           <span class="loom-boundary-event-stop">HELD LOCALLY</span>
         </div>
-        <p>That exact phrase was caught. A person could still make guesses from what remains. That's why the whole trail matters.</p>
+        <p>The local check held one excluded phrase. It cannot tell us what an outsider might infer from the rest of the exchange.</p>
       </div>
     </div>
     <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="Tutorial: choose a request and source">
-      <button type="button" data-first-crossing-item="brief" aria-pressed="false"><strong>Ask a personal question</strong><small>Talk through a decision that matters.</small></button>
-      <button type="button" data-first-crossing-item="source" aria-pressed="false"><strong>Choose the context</strong><small>Share what's useful for an answer.</small></button>
+      <button type="button" data-first-crossing-item="brief" aria-pressed="false"><strong>A question worth asking</strong><small>Think through a decision that matters.</small></button>
+      <button type="button" data-first-crossing-item="source" aria-pressed="false"><strong>What the answer needs</strong><small>A few facts that could help.</small></button>
       <div id="loomFirstCrossingPrivate" class="loom-first-crossing-private" role="note"><strong>Rest of the conversation</strong><small>Not included in the example request</small></div>
     </div>
     <div class="loom-first-crossing-actions">
