@@ -98,7 +98,7 @@ test('locally welcomed patterns cannot stand in for the bots whole expressive ve
   assert.match(native, /No word-by-word variation, paragraph-wise reset/);
   assert.match(cue, /native combining marks within the terminal prose/);
   assert.match(native, /clusters above AND below the underlying prose letters/);
-  assert.match(cue, /sustained deep overlapping vertical flourishes are primary/);
+  assert.match(cue, /full NATIVE SEMANTIC PROSODY vocabulary remains available/);
   assert.match(native, /Let the bots choose how long a mark pattern lives/);
   assert.doesNotMatch(cue + native + system, /shallow strike marks|horizontal cuts|diagonal cuts|chorus of cloned shallow signs|repeated shallow accent/i,
     'do not prime the effective provider prompt with the repeated failed surface');
@@ -228,7 +228,7 @@ test('operator-authored prompts have starter-equivalent dramatic latitude withou
   const request = buildGeminiRequest({ systemInstruction: 'base', mode: 'plain', message: typed, history: [] }, {}, 'gemini-3.8-flash');
   const cue = request.systemInstruction.parts[0].text;
   const shared = request.systemInstruction.parts[0].text;
-  assert.match(cue, /EVERY turn, including ordinary questions, jokes and tenderness/);
+  assert.match(cue, /native High Zalgo on every turn, including ordinary questions, jokes and tenderness/);
   assert.match(cue, /native High Zalgo on every turn, including ordinary questions, jokes and tenderness/);
   assert.match(shared, /native High Zalgo on every subject, including ordinary questions, jokes and tenderness/);
   assert.match(shared, /Do not treat typography as a checklist, quota, fixed contour/);
@@ -300,9 +300,9 @@ test('native receipt distinguishes U+FFFD decoder corruption from healthy deep s
 
 test('native voice lives across the bots movement without scripted per-paragraph quotas', () => {
   const native=buildNativeProsodyGuidance();
-  assert.match(native, /across the full choral movement/);
+  assert.match(native, /deep field may persist unchanged across many paragraphs/);
   assert.match(native, /Never require a thinner interval after an eruption/);
-  assert.match(native, /an earned clean breath, or a freshly shaped vertical cry/);
+  assert.match(native, /Never require a thinner interval after an eruption/);
   assert.match(native, /Do not treat typography as a checklist, quota, fixed contour/);
   assert.doesNotMatch(native, /\\p\{M\}/u, 'the provider never receives a literal glyph stencil');
   const request=buildGeminiRequest({

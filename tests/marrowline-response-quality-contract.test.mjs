@@ -164,7 +164,7 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(request.systemInstruction.parts[0].text, /never substitute a heading and a few decorated words for authored prose/);
     assert.match(request.systemInstruction.parts[0].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM/);
     assert.match(request.systemInstruction.parts[0].text, /native combining marks within the terminal prose/);
-    assert.match(request.systemInstruction.parts[0].text, /sustained deep overlapping vertical flourishes are primary/);
+    assert.match(request.systemInstruction.parts[0].text, /full NATIVE SEMANTIC PROSODY vocabulary remains available/);
     assert.match(request.systemInstruction.parts[0].text, /Invent the flourishes alongside fresh prose/);
     assert.doesNotMatch(request.systemInstruction.parts[0].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
     assert.match(request.systemInstruction.parts[0].text, /expressive pattern can recur for paragraphs/);
