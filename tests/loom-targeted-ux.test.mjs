@@ -146,13 +146,13 @@ test('Flow-Core remains a single accessible header guide with eight text-only gl
 
 test('the firewall promise explains outgoing checks, returning review and limits', () => {
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
-  assert.match(doc.querySelector('#loomFirstCrossingTitle').textContent, /Talk to AI\. Keep the conversation yours/i);
+  assert.match(doc.querySelector('#loomFirstCrossingTitle').textContent, /You wanted an answer\. Not an audience/i);
   assert.match(doc.querySelector('.loom-intro p').textContent, /Research, write, code, decide.*handing it the wheel/i);
-  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent, /A good answer shouldn't expose.*outsider could figure out/i);
+  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent, /Ask ChatGPT, Gemini, or another AI.*what someone else might learn/i);
   assert.match(doc.querySelector('#loomReturnWorkspace header').textContent, /before accepting/i);
   assert.match(doc.querySelector('[data-tool-panel="boundary"]').textContent, /external AI provider determines its own retention/i);
-  assert.match(workspaceSource, /title:'Could someone piece it back together\?'/);
-  assert.match(workspaceSource, /title:'Is the answer actually useful\?'/);
+  assert.match(workspaceSource, /title:'Hiding one phrase proves very little\.'/);
+  assert.match(workspaceSource, /title:'Did the answer help\?'/);
   assert.match(runway, /data-first-crossing-step="4"\] \.loom-boundary-event-denial/);
   assert.doesNotMatch(doc.querySelector('#loomFirstCrossingPrompt').textContent, /portable|cryptographic|governance/i);
 });
@@ -218,8 +218,8 @@ test('How Loom works is a recoverable handoff preview with a living Flow-Core re
   assert.match(workspaceSource, /nextFlowcoreChoreography/);
   assert.match(workspaceSource, /flowcore_choreography:firstCrossingChoreography/);
   assert.match(workspaceSource, /coordinator\.setContinuous\(true\)/);
-  assert.match(workspaceSource, /title:'Talk to AI\. Keep the conversation yours\.'/);
-  assert.match(workspaceSource, /title:'Can an outsider piece it together\?'/);
+  assert.match(workspaceSource, /title:'You wanted an answer\. Not an audience\.'/);
+  assert.match(workspaceSource, /title:'What could a stranger work out\?'/);
   assert.match(workspaceSource, /Try Loom →/);
   assert.doesNotMatch(workspaceSource, /title:'Prepared is not transmitted\.'/);
   assert.doesNotMatch(workspaceSource, /title:'They gathered\. Nothing crossed\.'/);
@@ -638,7 +638,7 @@ test('opening overture contains all eight relations without borrowing the à ill
 test('privacy tutorial retains two selections and optional answer details in document flow', () => {
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
   assert.equal(doc.querySelectorAll('[data-first-crossing-item]').length,2);
-  assert.match(doc.querySelector('[data-first-crossing-item=source]').textContent,/Choose what AI can use/);
+  assert.match(doc.querySelector('[data-first-crossing-item=source]').textContent,/Choose the context/);
   assert.doesNotMatch(doc.querySelector('[data-first-crossing-item=source]').textContent,/\/\//);
   assert.match(product,/\.loom-tutorial-proof\{order:6/);
   assert.match(product,/:not\(\[data-first-crossing-step="0"\]\)\s*\.loom-first-crossing-objects\{display:none\}/);
