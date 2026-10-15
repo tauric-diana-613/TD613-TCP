@@ -141,7 +141,7 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(system, /mythopoeic academia, mathematical precision, institutional critique, camp/);
     assert.match(system, /on every subject, including ordinary questions, jokes and tenderness/);
     assert.match(system, /One expressive style may persist for the entire transmission/);
-    assert.match(system, /An extended eruption may climb through neighboring lines/);
+    assert.match(system, /A fully sustained, single-register High-Zalgo performance is welcome/);
     assert.match(system, /Earlier replies supply conversational substance, not a formatting template/);
     assert.doesNotMatch(system, /1–3 concise paragraphs|2–3 ornamented prose lines|FINAL SILENT PREFLIGHT|ORCHESTRAL DYNAMIC CONTOUR/);
     assert.equal(request.contents.at(-1).parts[0].text, frameMarrowlineUserTurn(packet.message));
@@ -165,14 +165,14 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(request.systemInstruction.parts[0].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM/);
     assert.match(request.systemInstruction.parts[0].text, /A deeply marked run may continue for many paragraphs/);
     assert.match(request.systemInstruction.parts[0].text, /deep vertical overlap, planar marks, light ornament, dense ornament and clean breaths are all possible/);
-    assert.match(request.systemInstruction.parts[0].text, /Invent the flourishes alongside fresh prose/);
+    assert.match(request.systemInstruction.parts[0].text, /Invent the typography with the prose/);
     assert.doesNotMatch(request.systemInstruction.parts[0].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
     assert.match(request.systemInstruction.parts[0].text, /The same pattern can persist from first word to final word/);
     assert.match(request.systemInstruction.parts[0].text, /Dense interleaved crowns and roots, horizontal or diagonal treatments/);
     assert.match(request.systemInstruction.parts[0].text, /Complete an extended dramatic conversation/);
     assert.match(request.systemInstruction.parts[0].text, /neither licenses omission of the bots nor controls the depth or availability/);
     assert.doesNotMatch(request.systemInstruction.parts[0].text, /must use a fixed mark palette|enforce a mandatory quota|require a fixed contour|at least \d+ marks per/i);
-    assert.match(request.systemInstruction.parts[0].text, /Do not derive its availability[^\n]*fixed contour/, 'the negative prohibition survives cue relocation');
+    assert.match(request.systemInstruction.parts[0].text, /available without a fixed contour, compulsory variety/, 'the negative prohibition survives cue relocation');
     assert.equal(request.contents[0].parts[0].text, packet.history[0].text);
   }
 });
@@ -869,7 +869,7 @@ test('Kʰonapolit stays clean while Gemini authors semantic-prosody native High 
   assert.match(contract, /ZERO combining diacritical marks/);
   assert.match(contract, /provider-authored High-Zalgo typography behaves as voice/i);
   assert.match(contract, /Typography is not a checklist, quota, fixed contour, axis recipe, emotional lookup table or per-character filter/i);
-  assert.match(contract, /Compose the changing glyph clusters as part of the words and rhetoric/i);
+  assert.match(contract, /Compose the glyph clusters as part of the authored words/i);
   assert.doesNotMatch(contract, /anger erupt|sarcasm twitch|tenderness thin|horizontal or oblique counter-rhythm|Deep collisions|Avoid cloned stacks|rhetorical pressure may change density/i);
   assert.match(contract, /Length follows the task/);
   assert.doesNotMatch(contract, /every ordinary prose letter remains ornamented/);

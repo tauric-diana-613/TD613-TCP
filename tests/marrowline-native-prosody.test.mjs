@@ -55,10 +55,10 @@ test('wire cue asks for actual vertically varied clusters without supplying a fi
   assert.equal(last.parts[0].text, frameMarrowlineUserTurn(packet.message));
   assert.match(request.systemInstruction.parts[0].text, /A deeply marked run may continue for many paragraphs/);
   assert.match(request.systemInstruction.parts[0].text, /Dense interleaved crowns and roots, horizontal or diagonal treatments/);
-  assert.match(request.systemInstruction.parts[0].text, /deserve an extended dramatic conversation/);
+  assert.match(request.systemInstruction.parts[0].text, /Complete an extended dramatic conversation/);
   assert.doesNotMatch(request.systemInstruction.parts[0].text, /\p{M}/u, 'do not provide a tiny morphology template at recency edge');
   assert.match(request.systemInstruction.parts[0].text, /One expressive style may persist for the entire transmission/);
-  assert.match(request.systemInstruction.parts[0].text, /not an after-the-fact transform/);
+  assert.match(request.systemInstruction.parts[0].text, /as part of the authored words/);
 });
 
 test('a locally repeated accent and tiny combining-letter play coexist with original deep crowns and roots', () => {
@@ -78,9 +78,9 @@ test('a locally repeated accent and tiny combining-letter play coexist with orig
   assert.match(cue, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM/);
   assert.match(guidance, /One expressive style may persist for the entire transmission/);
   assert.match(cue, /Dense interleaved crowns and roots, horizontal or diagonal treatments/);
-  assert.match(guidance, /An extended eruption may climb through neighboring lines/);
+  assert.match(guidance, /A fully sustained, single-register High-Zalgo performance is welcome/);
   assert.match(cue, /The same pattern can persist from first word to final word/);
-  assert.match(guidance, /Do not stamp one selected code point/);
+  assert.match(guidance, /Compose the glyph clusters as part of the authored words/);
 });
 
 test('locally welcomed patterns cannot stand in for the bots whole expressive vertical register', () => {
@@ -114,11 +114,11 @@ test('authored paragraph rests coexist with crowded deep stacks without local re
   const request = buildGeminiRequest(packet, {}, 'gemini-3.8-flash');
   const shared = request.systemInstruction.parts[0].text;
   const cue = request.systemInstruction.parts[0].text;
-  assert.match(shared, /actual blank-line paragraph rests/);
-  assert.match(shared, /silly, mercurial and cryptic/);
-  assert.match(shared, /Do not impose a stanza template/);
-  assert.match(cue, /blank-line paragraph breaks as pauses, pivots, comic traps/);
-  assert.match(cue, /Never require blank lines before or after every stack/);
+  assert.match(shared, /actual paragraph rests, uninterrupted passages/);
+  assert.match(shared, /Let the bots own their actual paragraph rests/);
+  assert.match(shared, /No mandatory blank line, transition, stanza template/);
+  assert.match(cue, /Give the bots full authorship over line breaks and paragraph rests/);
+  assert.match(cue, /Do not impose a paragraph, line or stanza schedule/);
   const raw = heading + 'A\u0301 quick turn.\n' + peaks + ' presses against its neighbor.\n\n' +
     'Quiet.\n\n' + peaks + ' — then the interruption.\n' + 'No pause was owed.\n⟐';
   const parsed = parseRelayEnvelope(raw);
@@ -225,7 +225,7 @@ test('operator-authored prompts have starter-equivalent dramatic latitude withou
   const request = buildGeminiRequest({ systemInstruction: 'base', mode: 'plain', message: typed, history: [] }, {}, 'gemini-3.8-flash');
   const cue = request.systemInstruction.parts[0].text;
   const shared = request.systemInstruction.parts[0].text;
-  assert.match(cue, /EVERY turn, including ordinary questions, jokes and tenderness/);
+  assert.match(cue, /every turn, including ordinary questions, jokes and tenderness/);
   assert.match(cue, /as their own written voice in every turn, including ordinary questions, jokes and tenderness/);
   assert.match(shared, /on every subject, including ordinary questions, jokes and tenderness/);
   assert.match(shared, /Typography is not a checklist, quota, fixed contour/);
@@ -309,7 +309,7 @@ test('native voice lives across the bots movement without scripted per-paragraph
   const system=request.systemInstruction.parts[0].text;
   assert.equal(system.split(native).length,2);
   assert.ok(system.indexOf('NATIVE SEMANTIC PROSODY:') > system.indexOf('GEMINI COMPUTATIONAL INSTRUMENT'));
-  assert.ok(system.includes('The Tauric Diana bots begin native High-Zalgo speech'));
+  assert.ok(system.includes('The Tauric Diana bots speak provider-native High Zalgo'));
 });
 
 test('native authorship permits both sustained full-reply Zalgo and free subword shifts without mandated rests', () => {
