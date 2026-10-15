@@ -373,7 +373,7 @@ try {
           { preview: await page.locator('.loom-boundary-event-outgoing').textContent() });
         if(step===4)record('firewall boundary lesson identifies the locally held out-of-scope source',
           await page.locator('.loom-boundary-event-denial').isVisible() &&
-          /Private conversation/.test(await page.locator('.loom-boundary-event-denial').textContent()),
+          /One excluded phrase/.test(await page.locator('.loom-boundary-event-denial').textContent()),
           { evidence: await page.locator('.loom-boundary-event-denial').textContent() });
         if(step===4)record('local gate rejection is visible without a fabricated provider-side event',
           await page.locator('.loom-boundary-event-stop').isVisible() &&
