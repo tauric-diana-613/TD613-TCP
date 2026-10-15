@@ -1021,6 +1021,18 @@ async function callGemini(
   }
 }
 
+// Verifiable privacy gate. Raw Gemini SSE may only be returned for this exact
+// artificial sample; even a canary with operator history or personal text is held.
+export function allowSyntheticNativeSseWitness({ releaseCanary = false, witnessHeader = '', body = {} } = {}) {
+  return releaseCanary === true && witnessHeader === '1'
+    && body?.message === NATIVE_SSE_WITNESS_PROMPT
+    && Array.isArray(body?.history) && body.history.length === 0
+    && body?.mode === 'issued-conjunction'
+    && body?.waiveIssuance === true
+    && !body?.shi
+    && !body?.attachments;
+}
+
 export default async function handler(req, res) {
   const apertureEgress = observeTD613ApertureEgress(req?.headers || {});
   let plan = resolveGeminiModelPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
@@ -1083,13 +1095,9 @@ export default async function handler(req, res) {
   const startedAt = Date.now();
   plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
   const releaseCanary = requestHeader(req, 'x-td613-release-canary') === '1';
-  const nativeSseWitness = releaseCanary
-    && requestHeader(req, 'x-td613-native-sse-witness') === '1'
-    && body.message === NATIVE_SSE_WITNESS_PROMPT
-    && Array.isArray(body.history) && body.history.length === 0
-    && body.mode === 'issued-conjunction'
-    && body.waiveIssuance === true
-    && !body.shi;
+  const nativeSseWitness = allowSyntheticNativeSseWitness({
+    releaseCanary, witnessHeader: requestHeader(req, 'x-td613-native-sse-witness'), body
+  });
   const requestedCanaryModel = requestHeader(req, 'x-td613-canary-model').replace(/^models\//, '');
   const discourseMode = classifyApertureDiscourseMode(packet.message);
   const apertureReceipt = buildApertureV3InvocationReceipt({
