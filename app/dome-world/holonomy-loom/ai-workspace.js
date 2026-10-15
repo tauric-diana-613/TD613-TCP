@@ -205,7 +205,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     $('loomFirstCrossingTitle').textContent=title;
     if(cue==='choose' && root.dataset.loomIntro==='true'){
       // Authored headline only: incoming/model text never reaches innerHTML.
-      $('loomFirstCrossingTitle').innerHTML='<span class="loom-headline-line">Private should still mean private.</span> <span class="loom-headline-line"><em>Even with AI.</em></span>';
+      $('loomFirstCrossingTitle').innerHTML='<span class="loom-headline-line">Firewall your online life</span> <span class="loom-headline-line"><em>from AI.</em></span>';
     }
     $('loomFirstCrossingPrompt').textContent=prompt;
     $('loomFirstCrossingAnswer').textContent=answer;
@@ -615,8 +615,8 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     $('loomFirstCrossingLeave').hidden=false;
     firstCrossingChoreography=nextFlowcoreChoreography(firstCrossingChoreography?.id, environment.Math?.random?.() ?? Math.random());
     setFirstCrossingCue('choose',{
-      title:'Private should still mean private. Even with AI.',
-      prompt:'Ask ChatGPT, Gemini, or another LLM something personal. The answer can help, but the trail may reveal more than you meant to share. Loom follows the entire exchange—what goes in, what changes, what comes back, and what an outsider could piece together.',
+      title:'Firewall your online life from AI.',
+      prompt:'You can need ChatGPT, Gemini, or another LLM without giving up your privacy. Loom looks beyond the prompt: what travels, what changes, what comes back, and whether someone outside the conversation could piece it together.',
       answer:'See what one example can show—and what a single check could miss. Nothing is sent to an AI.'
     });
     flowcoreMessage.textContent=firstCrossingChoreography.message;
