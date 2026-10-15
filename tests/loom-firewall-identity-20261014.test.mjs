@@ -16,7 +16,7 @@ const doc=dom.window.document;
 test('the opening speaks plainly about useful AI help and private conversation',()=>{
   assert.match(doc.querySelector('#loomFirstCrossingTitle').textContent,/Firewall your online life from AI/i);
   assert.equal(doc.querySelector('.loom-hero-promise'),null,'no competing marketing headline');
-  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent,/Work with Gemini, ChatGPT, and other LLMs.*wider privacy risks remain visible for review/i);
+  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent,/Use Gemini, ChatGPT, and other LLMs.*test what the exchange may reveal/i);
   assert.doesNotMatch(doc.querySelector('#loomFirstCrossing').textContent,/Golden Egg/i);
   assert.doesNotMatch(doc.querySelector('#loomFirstCrossing').textContent,/draft a work email|Northstar|Acquisition talks/i);
   assert.equal(doc.querySelectorAll('[data-first-crossing-item]').length,2);
