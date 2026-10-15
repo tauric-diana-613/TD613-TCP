@@ -5,6 +5,8 @@ import { JSDOM } from 'jsdom';
 import { loomWorkspaceTemplate } from '../app/dome-world/holonomy-loom/workspace-template.js';
 import { FIRST_CROSSING_PRACTICE, checkFirstCrossingPrivacy } from '../app/dome-world/holonomy-loom/first-crossing-practice.js';
 import { loomOpeningPresentation } from '../app/dome-world/holonomy-loom/tutorial-membrane.js';
+import { createStagedLoomEvidenceView } from '../app/dome-world/holonomy-loom/post-evidence-view.js';
+import { LOOM_POST_EVIDENCE_COPY } from '../app/dome-world/holonomy-loom/post-evidence-copy.js';
 
 const root=new URL('../app/dome-world/holonomy-loom/',import.meta.url);
 const css=fs.readFileSync(new URL('loom-couture.css',root),'utf8');
@@ -73,4 +75,17 @@ test('C+ repair: fermata uses SVG fallback, private glyph is visible, and action
   assert.match(css, /loom-first-crossing-private\{[\s\S]*?display:flex !important/);
   assert.match(tpl.querySelector('.loom-private-continuity-note').textContent,/cōl/);
   assert.doesNotMatch(tpl.querySelector('.loom-boundary-event').textContent,/phrase check|catches|redactor/i);
+});
+
+test('finished five-surface proof artwork is staged, unmounted and incapable of self-promotion',()=>{
+  const root=new JSDOM(loomWorkspaceTemplate).window.document;
+  const section=createStagedLoomEvidenceView(root);
+  assert.equal(section.hidden,true);
+  assert.equal(section.dataset.claimStatus,'STAGED_UNAUTHORIZED');
+  assert.deepEqual([...section.querySelectorAll('[data-surface]')].map(n=>n.dataset.surface),['L','R','J','G','C']);
+  assert.equal(root.querySelector('.loom-empirical-evidence'),null,'proof artwork cannot mount as product without the independent evidence integration');
+  assert.match(section.textContent,/The work held up/i);
+  assert.match(section.textContent,/tested exchange/i);
+  assert.equal(LOOM_POST_EVIDENCE_COPY.activation,'STAGED_NOT_PUBLICLY_AUTHORIZED');
+  assert.doesNotMatch(root.querySelector('#loomFirstCrossing').textContent,/The work held up. The privacy test did too/i);
 });
