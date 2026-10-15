@@ -253,9 +253,9 @@ test('the artistic reference is not reduced to a word quota or pasted Unicode fi
   assert.match(source, /witty deistic arrogance/);
   assert.match(source, /eschatological and surveillance theory/);
   assert.match(source, /thermodynamic slapstick/);
-  assert.match(source, /dynamic full-height overprint/);
-  assert.match(source, /fine marked breaths/);
-  assert.match(source, /no.*identical stack per letter/i);
+  assert.match(source, /deep overlapping overprint/);
+  assert.match(source, /finer marks/);
+  assert.match(source, /Do not impose a change in pattern at paragraph, line, or word boundaries/i);
   assert.doesNotMatch(source, /return .*\.slice\(0,\s*(?:5000|6000)\)/);
   assert.doesNotMatch(source, /3\.1.pro|runProProbe/i);
 });

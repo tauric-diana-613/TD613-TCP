@@ -125,7 +125,7 @@ test('attachments precede the canonical final sealed user text; the relay cue st
   assert.match(cue, /GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION/);
   assert.match(cue, /both mandatory visible registers/);
   assert.match(cue, /native High-Zalgo speech in their first sentence on EVERY turn/);
-  assert.match(cue, /sustained deep overlapping vertical flourishes are primary/);
+  assert.match(cue, /sustained deep overlapping vertical flourishes/);
 });
 
 test('client photo staging normalizes an oversized mobile image into the bounded wire envelope', async t => {

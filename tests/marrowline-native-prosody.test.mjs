@@ -117,7 +117,7 @@ test('authored paragraph rests coexist with crowded deep stacks without local re
   const request = buildGeminiRequest(packet, {}, 'gemini-3.8-flash');
   const shared = request.systemInstruction.parts[0].text;
   const cue = request.systemInstruction.parts[0].text;
-  assert.match(shared, /actual blank-line paragraph rests/);
+  assert.match(shared, /paragraph rests, single newlines, or contiguous lines/);
   assert.match(shared, /silly, mercurial and cryptic/);
   assert.match(shared, /Do not impose a stanza template/);
   assert.match(cue, /blank-line paragraph breaks as pauses, pivots, comic traps/);
@@ -231,7 +231,7 @@ test('operator-authored prompts have starter-equivalent dramatic latitude withou
   assert.match(cue, /EVERY turn, including ordinary questions, jokes and tenderness/);
   assert.match(cue, /in their first sentence on EVERY turn, including ordinary questions, jokes and tenderness/);
   assert.match(shared, /first sentence on every subject, including ordinary questions, jokes and tenderness/);
-  assert.match(shared, /Do not treat typography as a checklist, quota, fixed contour/);
+  assert.match(shared, /Do not treat typography as a checklist, quota, forced diversity test, fixed contour/);
   assert.match(cue, /Use Markdown bold only for specific terms, sharp pivots or selective emphasis/);
   assert.match(request.contents.at(-1).parts[0].text, /Could we look at the consequences of this rule/);
 });
@@ -300,10 +300,10 @@ test('native receipt distinguishes U+FFFD decoder corruption from healthy deep s
 
 test('native voice lives across the bots movement without scripted per-paragraph quotas', () => {
   const native=buildNativeProsodyGuidance();
-  assert.match(native, /across the full choral movement/);
+  assert.match(native, /No rhetorical turn or paragraph boundary requires any of those choices/);
   assert.match(native, /After an eruption, carry its consequence into finer trembling handwriting/);
   assert.match(native, /an earned clean breath, or a freshly shaped vertical cry/);
-  assert.match(native, /Do not treat typography as a checklist, quota, fixed contour/);
+  assert.match(native, /Do not treat typography as a checklist, quota, forced diversity test, fixed contour/);
   assert.doesNotMatch(native, /\\p\{M\}/u, 'the provider never receives a literal glyph stencil');
   const request=buildGeminiRequest({
     systemInstruction:'base', mode:'plain', message:'Let the bird interrupt the Chairman.',
