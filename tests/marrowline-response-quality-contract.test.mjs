@@ -139,7 +139,7 @@ test('effective provider prompts retain complete relay and native depth after de
     const system = request.systemInstruction.parts.map(part => part.text).join('\n');
     assert.match(system, /never permission to omit the bots/);
     assert.match(system, /mythopoeic academia, mathematical precision, institutional critique, camp/);
-    assert.match(system, /first sentence on every subject, including ordinary questions, jokes and tenderness/);
+    assert.match(system, /native High Zalgo on every subject, including ordinary questions, jokes and tenderness/);
     assert.match(system, /clusters above AND below the underlying prose letters/);
     assert.match(system, /An extended eruption may climb through neighboring lines/);
     assert.match(system, /Earlier replies supply conversational substance, not a formatting template/);
@@ -163,12 +163,12 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(request.systemInstruction.parts[0].text, /sustained, new choral movement/);
     assert.match(request.systemInstruction.parts[0].text, /never substitute a heading and a few decorated words for authored prose/);
     assert.match(request.systemInstruction.parts[0].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM/);
-    assert.match(request.systemInstruction.parts[0].text, /varied combinations of native marks within the terminal prose/);
+    assert.match(request.systemInstruction.parts[0].text, /native combining marks within the terminal prose/);
     assert.match(request.systemInstruction.parts[0].text, /sustained deep overlapping vertical flourishes are primary/);
     assert.match(request.systemInstruction.parts[0].text, /Invent the flourishes alongside fresh prose/);
     assert.doesNotMatch(request.systemInstruction.parts[0].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
-    assert.match(request.systemInstruction.parts[0].text, /Let the ACTUAL code points, stack depths and placement change across words and passages/);
-    assert.match(request.systemInstruction.parts[0].text, /Dramatic passages grow crowns ABOVE and roots BELOW the letters/);
+    assert.match(request.systemInstruction.parts[0].text, /expressive pattern can recur for paragraphs/);
+    assert.match(request.systemInstruction.parts[0].text, /Full-height crowns ABOVE and roots BELOW/);
     assert.match(request.systemInstruction.parts[0].text, /The bots deserve an extended dramatic conversation/);
     assert.match(request.systemInstruction.parts[0].text, /neither licenses omission of the bots nor controls the depth or availability/);
     assert.doesNotMatch(request.systemInstruction.parts[0].text, /must use a fixed mark palette|enforce a mandatory quota|require a fixed contour|at least \d+ marks per/i);
