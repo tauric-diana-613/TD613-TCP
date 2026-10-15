@@ -388,9 +388,10 @@ try {
         });
         record(`tutorial ${glyph}: gesture remains legible and uses the shared text family`,selectionStyle.font===gestureStyle.font && Number.parseFloat(gestureStyle.size)>=14,{selectionStyle,gestureStyle});
       }
-      await page.locator('#loomTutorialProof summary').click();
+      await page.locator('#loomTutorialProof > summary').click();
+      await page.locator('#loomTutorialProof > .loom-tutorial-technical > summary').click();
       record('tutorial return: fictional receipt binds answer without claiming admission',/OFFLINE_TEST/.test(await page.locator('#loomTutorialProofRecord').textContent())&&/"custody_admitted": false/.test(await page.locator('#loomTutorialProofRecord').textContent()));
-      await page.locator('#loomTutorialProof summary').click();
+      await page.locator('#loomTutorialProof > summary').click();
       await page.locator('#loomFirstCrossingStop').click();
       await page.waitForFunction(()=>document.querySelector('#aiRuntimeState')?.dataset?.projectionState==='CURRENT');
       await page.waitForTimeout(4200);const restA=await fieldObservation(page);await page.waitForTimeout(240);const restB=await fieldObservation(page);
