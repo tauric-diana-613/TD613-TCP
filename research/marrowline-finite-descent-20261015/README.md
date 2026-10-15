@@ -39,3 +39,13 @@ The preflight must show matching system/content/configuration hashes. If the pro
 * **No automatic production changes, release via #405, paid reruns or aesthetic gate restoration** follow from any of these conditions.
 
 𝄐 Finite archive closed; live empirical attribution remains to be earned. ⟐
+
+## One-shot CI authorization (October 15)
+
+The operator explicitly reaffirmed the thread-long authorization to proceed. The connected GitHub repository has an existing `GEMINI_API_KEY` secret reference inside the normal TD613 Actions workflow; the actual key is neither requested, printed, nor copied through ChatGPT. A PR-only, one-shot CI job may execute on the exact **designated commit subject** `research(marrowline): execute authorized finite provider pair once`, with `github.run_attempt == 1`, the expected head branch, and PR #1509. Subsequent commits and re-runs must not repeat the paid work.
+
+The job invokes the research script with both required flags and `TD613_FINITE_DESCENT_MAX_USD=0.25`; either missing credential or invalid request fingerprints fails before provider transport. An initial provider error stops remaining calls. This envelope is estimated, never asserted as a provider-side spending lock.
+
+A completed run writes its exact original response bytes to an ephemeral runner directory, then archives them with AES-256-GCM using a domain-separated HKDF key derived from the *existing Actions-secret credential*. GitHub receives only the encrypted archive, short-lived (7 days); the unencrypted runner directory is never uploaded. Decryption requires the same credential value later, and rotating the credential without first recovering the archive loses access. The code for encryption/decryption is `seal-archive.mjs`, offline tested with a synthetic credential. The GitHub job prints morphology summaries, usage, model/version and finish information but no response content or secret. Do not treat a GitHub Actions green workflow as provider artistic success: inspect the actual observation and the encrypted native response if available.
+
+All production routes remain unchanged; do not merge the temporary execution job to main. After the finite test, remove the one-shot CI job on this PR branch while preserving the research instrument and derived evidence as separate, authored records.
