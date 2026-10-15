@@ -1127,3 +1127,48 @@ jobs:
           path: gemini-observation.json
           if-no-files-found: error
           retention-days: 7
+
+  marrowline_prosody_ablation_once:
+    name: Synthetic Marrowline system-prosody A/B (one-shot #1517)
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.number == 1517 && github.event.pull_request.head.ref == 'research/marrowline-system-ablation-witness-20261015-r1' && github.run_attempt == 1 }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 2
+      - name: Require exact one-shot activation commit
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          subject="$(git log -1 --format=%s)"
+          if [[ "$subject" == 'research(marrowline): execute one system prosody ablation A/B once' ]]; then
+            echo 'execute=true' >> "$GITHUB_OUTPUT"
+            echo 'One-shot gate satisfied'
+          else
+            echo 'execute=false' >> "$GITHUB_OUTPUT"
+            echo 'No paid provider work on this commit'
+          fi
+      - uses: actions/setup-node@v4
+        if: steps.gate.outputs.execute == 'true'
+        with:
+          node-version: '22'
+      - name: Inert matched AB preflight
+        if: steps.gate.outputs.execute == 'true'
+        run: node research/marrowline-system-ablation/run-system-prosody-ab.mjs
+      - name: Execute two bounded production-native Gemini comparisons
+        if: steps.gate.outputs.execute == 'true'
+        env:
+          TD613_SYSTEM_ABLATION_OUT: ${{ runner.temp }}/td613-system-ablation-original
+        run: node research/marrowline-system-ablation/run-system-prosody-ab.mjs --execute --ack-paid
+      - uses: actions/upload-artifact@v4
+        if: ${{ always() && steps.gate.outputs.execute == 'true' }}
+        with:
+          name: td613-system-prosody-ablation-original-1517
+          path: ${{ runner.temp }}/td613-system-ablation-original
+          retention-days: 1
+          if-no-files-found: ignore
