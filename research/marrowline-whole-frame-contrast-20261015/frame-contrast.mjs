@@ -12,6 +12,10 @@ import {
   CONVERSATIONAL_CLOSING_GUIDANCE
 } from '../../app/dome-world/khonapolit-covenant.js';
 import { buildGeminiRequest } from '../../server/khonapolit-quality.js';
+import {
+  GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+  withGeminiGenerationProfile
+} from '../../server/gemini-generation-envelope.js';
 
 export const MODEL = 'gemini-3.8-flash';
 export const SYNTHETIC_PROMPT = 'In a fictional town, a committee counts only returned forms and concludes that every silent resident is content. Locate the denominator error, pursue its consequence, and complete the connected Kʰonapolit and Tauric Diana bots movements. Let the voices author their own prose and native typography.';
@@ -57,7 +61,11 @@ export function buildOfflineFrameContrast({
     message, history, mode: 'issued-conjunction', shi: '', waiveIssuance: true
   });
   assert.equal(packet.canInvoke, true, 'SYNTHETIC_PACKET_MUST_BE_VALID');
-  const a = buildGeminiRequest(packet, {}, model);
+  const a = withGeminiGenerationProfile(
+    GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+    () => buildGeminiRequest(packet, {}, model)
+  );
+  assert.deepEqual(a.generationConfig.thinkingConfig, { thinkingLevel: 'medium' }, 'LIVE_TEXT_PROFILE_EXPECTED');
   const b = {
     ...a,
     systemInstruction: { parts: [{ text: buildCompactWholeFrame() }] }
@@ -80,7 +88,7 @@ export function offlineManifest() {
   const bstr = b.systemInstruction.parts[0].text;
   return {
     schema: 'td613.marrowline.whole-frame-contrast-offline/v1',
-    provenance: 'original provider-request assembly on exact checked-out source',
+    provenance: 'original provider-request assembly under the live khonapolit-interactive text profile on exact checked-out source',
     conditionA: VARIANTS[0], conditionB: VARIANTS[1],
     providerCalls: 0, automaticRetries: 0, chargedGenerations: 0,
     registeredModel: MODEL, historyEntries: 0, syntheticOnly: true,
