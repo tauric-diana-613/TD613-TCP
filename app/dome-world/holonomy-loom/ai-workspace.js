@@ -199,7 +199,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       'send-motion':'4 of 7 · Preview the handoff', 'send-named':'4 of 7 · Preview the handoff',
       'privacy-motion':'5 of 7 · Check privacy', 'privacy-named':'5 of 7 · Check privacy',
       'proof-motion':'6 of 7 · Check the answer', 'proof-named':'6 of 7 · Check the answer',
-      'lesson-held':'Review tutorial check', complete:'7 of 7 · Move between models'
+      'lesson-held':'Review tutorial check', complete:'7 of 7 · You are in control'
     };
     $('loomTutorialProgress').textContent=progress[cue]??'How Loom works';
     // The illustrated relation stays legible through readiness checks:
@@ -213,7 +213,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
         'Preview sending · demo only',
         'Check what your firewall catches',
         'Inspect the sample answer',
-        'Choose your next AI'
+        'Your review comes first'
       ][firstCrossingStep];
       $('loomTutorialOperatorGlyph').textContent=operator.glyph;
       $('loomTutorialOperatorLabel').textContent=note;
@@ -399,14 +399,14 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
         firstCrossingReadinessPublished=true;
         setFirstCrossingCue('potential-named',{
           title:'See exactly what would leave your browser.',
-          prompt:'Here are the question, selected context, and instructions. Read them before another AI sees them.',
+          prompt:'See the exact question, selected references, and instructions before any material leaves your browser.',
           answer:'Tutorial · this request stays in your browser.',
           stop:true
         });
       }else{
         setFirstCrossingCue('potential-motion',{
           title:'See exactly what would leave your browser.',
-          prompt:'Here are the question, selected context, and instructions. Read them before another AI sees them.',
+          prompt:'See the exact question, selected references, and instructions before any material leaves your browser.',
           answer:'Checking the exact details selected for AI…'
         });
       }
@@ -580,8 +580,8 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     firstCrossingWasAlreadyComplete=true;
     storageWrite(FIRST_CROSSING_KEY,'complete');
     setFirstCrossingCue('complete',{
-      title:'Keep the context. Choose your next AI.',
-      prompt:'Loom helps you carry a checked request to another AI and decide what stays private. A real privacy test must still examine the full exchange.',
+      title:'Stay in control of what AI sees.',
+      prompt:'Loom helps you inspect outgoing information and returned work. A real privacy test must also examine the full exchange and what an observer could infer.',
       answer:'This walkthrough stays in your browser. It cannot prove what an outside observer or AI provider would learn.'
     });
     $('loomBegin').hidden=false;
@@ -634,7 +634,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     firstCrossingChoreography=nextFlowcoreChoreography(firstCrossingChoreography?.id, environment.Math?.random?.() ?? Math.random());
     setFirstCrossingCue('choose',{
       title:'Firewall your online life from AI.',
-      prompt:'Moving from ChatGPT to Gemini should not mean starting over or handing over your entire conversation. Loom helps you carry the useful context, leave the private details behind, and review each reply before continuing.',
+      prompt:'Work with Gemini, ChatGPT, and other LLMs on your terms. Check exactly what you send, keep protected information out of the request, and examine the answer before accepting it. The wider privacy risks remain visible for review.',
       answer:'Try the seven-step demo: select the context, inspect the request, and see how the answer comes back. Nothing is sent to an AI.'
     });
     flowcoreMessage.textContent=firstCrossingChoreography.message;
@@ -687,7 +687,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       firstCrossingBindingState='PENDING';
       setFirstCrossingCue('binding',{
         title:'See exactly what would leave your browser.',
-        prompt:'Here are the question, selected context, and instructions. Read them before another AI sees them.',
+        prompt:'See the exact question, selected references, and instructions before any material leaves your browser.',
         answer:'Checking your selected material…'
       });
       try{
@@ -699,7 +699,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
         root.dataset.firstCrossingStep='2';
         setFirstCrossingCue('potential-motion',{
           title:'See exactly what would leave your browser.',
-          prompt:'Here are the question, selected context, and instructions. Read them before another AI sees them.',
+          prompt:'See the exact question, selected references, and instructions before any material leaves your browser.',
           answer:'Tutorial · this request stays in your browser.'
         });
         projectFirstCrossing(firstCrossingEvent('checking',binding.facts??binding));
@@ -714,9 +714,9 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
 
   function renderFirstCrossingLesson(published=false){
     const lessons={
-      3:{cue:'send',title:'Only what you choose crosses.',prompt:'This preview shows the question and context you selected for ChatGPT, Gemini, or another LLM. The private conversation stays here. Nothing has actually been sent.',answer:'Example only. Nothing has been sent to an AI provider.',next:'米 Revisit privacy →'},
+      3:{cue:'send',title:'Only what you choose crosses.',prompt:'This preview shows what your selected AI request contains. The private conversation stays here. This tutorial sends nothing to an AI provider.',answer:'Example only. Nothing has been sent to an AI provider.',next:'米 Revisit privacy →'},
       4:{cue:'privacy',title:'A phrase check is only the beginning.',prompt:'Loom catches the phrase you chose to protect. But names, dates, and combined clues can reveal other things. A firewall should show you both the protection and its limits.',answer:'The private phrase stayed out of this example. Other possible leaks remain unmeasured.',next:'下 Return proof →'},
-      5:{cue:'proof',title:'Bring the answer back. Read it yourself.',prompt:'Compare the answer with your original request. Check what it used, what it missed, and what you want to carry into your next AI conversation.',answer:'Fictional reply. No AI provider or outside-observer test was involved.',next:'Finish tutorial →'}
+      5:{cue:'proof',title:'Bring the answer back. Read it yourself.',prompt:'Compare the answer with your original request. Check what it used, what it missed, and whether private material appeared in the response.',answer:'Fictional reply. No AI provider or outside-observer test was involved.',next:'Finish tutorial →'}
     };
     const lesson=lessons[firstCrossingStep];
     if(!lesson)return;
