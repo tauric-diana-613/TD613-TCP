@@ -76,3 +76,17 @@ test('compact frame synthetic gate cannot accept other model, real history, priv
 
 // Native multi-layer Unicode capacity controls run in the protected Marrowline validation lane.
 import './marrowline-unicode-capability-assay.test.mjs';
+
+
+test('normal provider request restores above-and-below same-letter native authorship with no forced style schedule',()=>{
+ const original=buildGeminiRequest(context(),{},'gemini-3.8-flash');
+ const system=original.systemInstruction.parts[0].text;
+ assert.ok(system.includes('ABOVE and BELOW the SAME prose letters'));
+ assert.ok(system.includes('without a prewritten specimen or character filter'));
+ assert.ok(system.includes('Neither sameness nor variation is a required pattern'));
+ assert.ok(system.includes('Avoid fixed palettes, recipes, mandatory code-point diversity and prescribed shifts'));
+ assert.equal(original.contents.length,1);
+ assert.equal(original.contents[0].role,'user');
+ assert.ok(original.generationConfig.maxOutputTokens>=65536);
+ assert.equal(system.split('ABOVE and BELOW the SAME prose letters').length,2);
+});
