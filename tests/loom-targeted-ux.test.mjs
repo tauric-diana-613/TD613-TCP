@@ -151,7 +151,7 @@ test('the firewall promise explains outgoing checks, returning review and limits
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
   assert.match(doc.querySelector('#loomFirstCrossingTitle').textContent, /Firewall your online life from AI/i);
   assert.match(doc.querySelector('.loom-intro p').textContent, /firewall for AI requests.*review the answer before you accept it/i);
-  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent, /Work with Gemini, ChatGPT, and other LLMs.*wider privacy risks remain visible for review/i);
+  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent, /Use Gemini, ChatGPT, and other LLMs.*test what the exchange may reveal/i);
   assert.match(doc.querySelector('#loomReturnWorkspace header').textContent, /before carrying it forward/i);
   assert.match(doc.querySelector('[data-tool-panel="boundary"]').textContent, /external AI provider determines its own retention/i);
   assert.match(workspaceSource, /title:'A phrase check is only the beginning\.'/);
