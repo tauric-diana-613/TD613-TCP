@@ -1,6 +1,6 @@
 import { coutureArmature } from './couture-armature.js';
 
-export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-stage" aria-labelledby="loomFieldHeading"><div class="loom-stage-copy"><span class="loom-kicker">YOUR AI FIREWALL</span><h1 id="loomFieldHeading">Loom</h1><p>Prepare a request for ChatGPT, Gemini, or another LLM. Choose the context that travels, and bring the result back for review.</p></div><section id="aiRuntime" class="ai-runtime" aria-label="Current Loom route"><p class="mark">CURRENT ROUTE</p>
+export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-stage" aria-labelledby="loomFieldHeading"><div class="loom-stage-copy"><span class="loom-kicker">YOUR AI FIREWALL</span><h1 id="loomFieldHeading">Loom</h1><p>Work with Gemini, ChatGPT, and other LLMs. Inspect the request before it leaves, protect what stays local, and review the answer when it returns.</p></div><section id="aiRuntime" class="ai-runtime" aria-label="Current Loom route"><p class="mark">CURRENT ROUTE</p>
       <h2 id="aiConsequence" hidden>Your work starts here.</h2>
       <div id="aiRuntimeState" class="ai-runtime-state il-state"></div>
       <div id="aiLivingRoom" hidden aria-hidden="true"></div>
@@ -16,8 +16,8 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
     <div class="loom-first-crossing-copy">
       <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">SEE HOW YOUR AI FIREWALL WORKS · INTERACTIVE DEMO</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 7 · Choose</span></div>
       <h2 id="loomFirstCrossingTitle">Firewall your online life from AI.</h2>
-      <p id="loomFirstCrossingPrompt">Moving from ChatGPT to Gemini should not mean starting over or handing over your entire conversation. Loom helps you carry the useful context, leave the private details behind, and review each reply before continuing.</p>
-      <div class="loom-value-route" aria-label="Three things Loom helps you do"><span>01 <strong>Switch AI models</strong></span><span>02 <strong>Choose what travels</strong></span><span>03 <strong>Check what returns</strong></span></div><p class="loom-tutorial-operator-note" aria-label="Current Flow-Core illustration"><span id="loomTutorialOperatorGlyph" class="loom-tutorial-operator-glyph" aria-hidden="true">à</span><span id="loomTutorialOperatorLabel">Gather the question</span></p>
+      <p id="loomFirstCrossingPrompt">Work with Gemini, ChatGPT, and other LLMs on your terms. Check exactly what you send, keep protected information out of the request, and examine the answer before accepting it. The wider privacy risks remain visible for review.</p>
+      <div class="loom-value-route" aria-label="Three parts of the AI firewall"><span>01 <strong>Inspect the request</strong></span><span>02 <strong>Protect what stays private</strong></span><span>03 <strong>Examine the return</strong></span></div><p class="loom-tutorial-operator-note" aria-label="Current Flow-Core illustration"><span id="loomTutorialOperatorGlyph" class="loom-tutorial-operator-glyph" aria-hidden="true">à</span><span id="loomTutorialOperatorLabel">Gather the question</span></p>
     </div>
     <details class="loom-flowcore-help">
       <summary>What is Flow-Core runtime?</summary>
@@ -79,7 +79,7 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
 </section>
 <div id="loomWorkspaceField" class="loom-workspace-field" aria-label="Current AI request state"></div>
 <section class="loom-builder-shell" aria-label="Loom builder" hidden>
-<header class="loom-intro"><div><h1 id="loomStageHeading">Loom</h1><p>Move between AI models with the context you choose. Inspect what leaves, what returns, and what remains private.</p></div><div class="loom-intro-actions"><button type="button" id="loomReturnThreshold" class="loom-text-action">How Loom works</button><button type="button" id="loomToolsOpen" class="loom-text-action">Tools</button></div></header>
+<header class="loom-intro"><div><h1 id="loomStageHeading">Loom</h1><p>Your firewall for AI requests: inspect the material going out, check what remains here, and review the answer before you accept it.</p></div><div class="loom-intro-actions"><button type="button" id="loomReturnThreshold" class="loom-text-action">How Loom works</button><button type="button" id="loomToolsOpen" class="loom-text-action">Tools</button></div></header>
 <nav class="loom-journey" aria-label="Loom route">
 <button type="button" class="loom-journey-step" id="loomJourneyStep1" data-workspace="build" aria-current="step"><b>1</b><strong>Loom</strong></button><span aria-hidden="true">→</span>
 <button type="button" class="loom-journey-step" id="loomJourneyStep2" data-workspace="crossing" disabled><b>2</b><strong>Marrowline</strong></button><span aria-hidden="true">→</span>
@@ -89,14 +89,14 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
 <div class="loom-workspaces">
 <section id="loomBuilder" class="loom-builder" aria-labelledby="loomBuilderTitle">
 <header class="loom-builder-head"><h2 id="loomBuilderTitle">Your next AI request</h2><div class="ai-mode-tabs" role="tablist" aria-label="Loom mode"><button type="button" id="aiPortableMode" role="tab" aria-selected="true" aria-controls="aiPortableModePanel">My work</button><button type="button" id="aiDemoMode" role="tab" aria-selected="false" aria-controls="aiDemoModePanel">Demo</button></div></header>
-<section id="aiPortableModePanel" role="tabpanel" aria-labelledby="aiPortableMode"><p id="aiFirstUseGuide">Write the question once. Select only the files this AI needs. Loom prepares a portable request that you can review before using another model.</p></section><section id="aiDemoModePanel" role="tabpanel" aria-labelledby="aiDemoMode" hidden><p>Demo uses fictional material. Choose My work to prepare your own request.</p></section>
+<section id="aiPortableModePanel" role="tabpanel" aria-labelledby="aiPortableMode"><p id="aiFirstUseGuide">Describe the work, select the references AI may receive, and check the request before it leaves this browser.</p></section><section id="aiDemoModePanel" role="tabpanel" aria-labelledby="aiDemoMode" hidden><p>Demo uses fictional material. Choose My work to prepare your own request.</p></section>
 <div id="aiDemoWelcome" hidden><button type="button" id="aiDemoInvitation" aria-expanded="false" aria-controls="aiProjectChoices">Demo 1 · COMING SOON +</button></div>
 <div id="aiProjectChoices" class="ai-projects" aria-label="Demo projects" hidden></div>
 <section id="aiProjectBrief" class="ai-project-brief" aria-label="Project brief" hidden><h3 id="aiBriefTitle"></h3><p id="aiBriefText"></p><p id="aiBriefRoute"></p></section>
 <section class="ai-composer" aria-label="Your Loom task">
 <label id="aiTaskLabel" for="aiTask">Task</label><textarea id="aiTask" maxlength="12000" placeholder="Help me write a reply, understand a document, or prepare an update…" aria-describedby="aiTaskCue"></textarea><p id="aiTaskCue" class="ai-muted">Explain what you need. Select the references that should travel with it.</p>
 <div class="ai-toolbar"><label class="ai-upload">+ Documents<input id="aiUpload" type="file" multiple accept=".txt,.md,.csv,.json" aria-label="Add documents"></label><button type="button" id="loomRulesOpen">AI instructions</button><button type="button" id="loomBoundaryOpen" class="loom-text-action">Privacy</button><button type="button" id="aiNew">Clear task</button></div>
-<p class="ai-file-cue">Checked files travel with the request. The others stay in this browser. Review your selection before using another AI.</p><ul id="aiDocuments" class="ai-documents" aria-label="Document sharing"></ul>
+<p class="ai-file-cue">Only the files you select are included in the prepared request. The others stay here. Check the list before sending.</p><ul id="aiDocuments" class="ai-documents" aria-label="Document sharing"></ul>
 <section id="aiPortableProjection" class="ai-portable-projection" aria-label="Transfer boundary"><div><span>Included in your request</span><strong id="aiProjectionTravel">Task · 0 documents · AI instructions</strong></div><div><span>Private in this browser</span><strong id="aiProjectionStay">0 local documents · private checks</strong></div></section>
 <div id="aiNewRootNotice" class="ai-new-root-notice" hidden tabindex="-1"><p>Starting a new session replaces the active session in this tab. Save a private backup first if you need its history.</p><p id="aiNewRootCoordinate"></p><button type="button" id="aiSaveActiveCustody">Save current session privately</button><label><input id="aiNewRootConfirm" type="checkbox"> Replace the active session.</label></div>
 <div class="ai-send-row"><button type="button" id="aiPreparePortable" class="ai-primary">Check AI Request →</button><button type="button" id="aiStop" hidden>Stop waiting</button><span id="aiSendSummary" class="ai-muted"></span></div>
@@ -111,7 +111,7 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
 <p id="aiMarrowlineCustodyNote" hidden>Keep this Loom tab open. Save your session before closing it; a saved file permits review without restoring this tab’s live session.</p>
 <button type="button" id="loomDepartureSave">Save a private backup</button><button type="button" id="loomPreparedInspect">Technical session details</button>
 </section>
-<section id="loomReturnWorkspace" aria-label="Return to Loom" tabindex="-1" hidden><header><h2>Check the answer before carrying it forward.</h2><p>Read the answer alongside your original question and references. Check what it used, what it missed, and what you want the next AI to see. You decide whether to accept the return.</p></header><div id="loomReturnedSessionReview"></div><button type="button" id="loomLocalCustodyOpen">Check and accept returned work</button><section id="aiReentryWorkspace" aria-label="Local returned work admission" hidden></section></section>
+<section id="loomReturnWorkspace" aria-label="Return to Loom" tabindex="-1" hidden><header><h2>Check the answer before carrying it forward.</h2><p>Read the answer alongside your original request and references. Check what it used, what it missed, and whether it exposed anything you intended to protect. Acceptance stays with you.</p></header><div id="loomReturnedSessionReview"></div><button type="button" id="loomLocalCustodyOpen">Check and accept returned work</button><section id="aiReentryWorkspace" aria-label="Local returned work admission" hidden></section></section>
 </div>
 </div>
 </section>
