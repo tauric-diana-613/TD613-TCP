@@ -11,3 +11,7 @@ The script `run-system-prosody-ab.mjs` is already present in main as an inert re
 The goal is an evidentiary system-level intervention, not automatic restoration, stylistic prescription, or a hidden repair to ordinary user conversations. After observing results, retire the one-shot job and preserve an honest case-specific finding.
 
 𝄐 SYSTEM-LEVEL A/B PENDING LIVE ORIGIN RETURN ⟐
+
+## Exact-head activation
+
+#405 exact-source production release for `e21af574ad372ef07c9669280545109b5b449954` independently succeeded, with one deploy and lock relock `4590e89eb1ac57644aeaad0e1a239228c551f558`. Operator authorized proceeding with this bounded, synthetic-only experiment. This commit activates **one** two-condition run via PR #1516, GitHub Actions first attempt, and exact-subject guard; subsequent commits or reruns are not paid execution authority. The original SSE and TD613 response will be retained in a one-day artifact, then the workflow job retired. ⟐
