@@ -205,7 +205,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     $('loomFirstCrossingTitle').textContent=title;
     if(cue==='choose' && root.dataset.loomIntro==='true'){
       // Authored headline only: incoming/model text never reaches innerHTML.
-      $('loomFirstCrossingTitle').innerHTML='<span class="loom-headline-line">Talk to AI.</span> <span class="loom-headline-line"><em>Keep it yours.</em></span>';
+      $('loomFirstCrossingTitle').innerHTML='<span class="loom-headline-line">Talk to AI.</span> <span class="loom-headline-line"><em>Keep the conversation yours.</em></span>';
     }
     $('loomFirstCrossingPrompt').textContent=prompt;
     $('loomFirstCrossingAnswer').textContent=answer;
@@ -350,7 +350,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
         firstCrossingSourceUnlocked=true;
         root.dataset.firstCrossingGather='complete';
         renderFirstCrossingSelection();
-        $('loomFirstCrossingAnswer').textContent='Now choose the context you would allow into a useful answer.';
+        $('loomFirstCrossingAnswer').textContent='Now choose the context you want AI to use.';
       }
       return;
     }
@@ -362,16 +362,16 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       if(consequenceVisible){
         firstCrossingGatheringPublished=true;
         setFirstCrossingCue('gathering-named',{
-          title:'Choose what can travel.',
-          prompt:'The approved question and context form one request. The private conversation stays outside it.',
+          title:'Choose what you want to share.',
+          prompt:'Share the question and context you chose. The rest of the conversation stays out of this request.',
           answer:'Tutorial · review what would be sent.',
           action:true
         });
       }else{
         setFirstCrossingCue('gathering-motion',{
-          title:'The conversation stays yours.',
-          prompt:'Loom gathers only the question and context chosen for this fictional request.',
-          answer:'Gathering the permitted context…'
+          title:'Start with your question.',
+          prompt:'Loom prepares the question and context you chose, without the rest of the conversation.',
+          answer:'Preparing your selected context…'
         });
       }
       return;
@@ -380,15 +380,15 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       if(consequenceVisible){
         firstCrossingReadinessPublished=true;
         setFirstCrossingCue('potential-named',{
-          title:'See exactly what crosses.',
-          prompt:'This is the information the intended receiver would get. The full private exchange is absent from this request.',
+          title:'See what AI would get.',
+          prompt:'Read the question, context, and instructions before anything gets sent.',
           answer:'Tutorial · this request stays in your browser.',
           stop:true
         });
       }else{
         setFirstCrossingCue('potential-motion',{
-          title:'See exactly what crosses.',
-          prompt:'The approved question, context, and rules are ready to inspect.',
+          title:'See what AI would get.',
+          prompt:'Your question, context, and instructions are ready to review.',
           answer:'Preparing your preview…'
         });
       }
@@ -562,9 +562,9 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     firstCrossingWasAlreadyComplete=true;
     storageWrite(FIRST_CROSSING_KEY,'complete');
     setFirstCrossingCue('complete',{
-      title:'The Golden Egg is the test.',
-      prompt:'Useful meaning reaches the intended receiver. An outside observer cannot reconstruct the protected conversation. The Golden Egg requires both in one real, matched episode.',
-      answer:'Five surfaces. One measured journey. Useful meaning for the intended receiver; the private exchange beyond reconstruction by an outsider.'
+      title:'Can an outsider piece it together?',
+      prompt:'Can AI give you a helpful answer without giving an outsider enough clues to reconstruct the private conversation? That is the test Loom is working to meet.',
+      answer:'Both results must be measured together in a real experiment. This fictional walk-through is an illustration, not that proof.'
     });
     $('loomBegin').hidden=false;
     $('loomBegin').textContent='Try Loom →';
@@ -616,8 +616,8 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     firstCrossingChoreography=nextFlowcoreChoreography(firstCrossingChoreography?.id, environment.Math?.random?.() ?? Math.random());
     setFirstCrossingCue('choose',{
       title:'Talk to AI. Keep the conversation yours.',
-      prompt:'ChatGPT, Gemini, and other LLMs can help you think. The Golden Egg: useful meaning survives while an outsider cannot reconstruct the protected conversation. Loom is built to test that boundary.',
-      answer:'A fictional journey: one permitted takeaway, one private exchange. No AI provider is called.'
+      prompt:'A good answer shouldn\'t expose the conversation behind it. Loom lets you choose what an AI receives, check what comes back, and question what an outsider could figure out.',
+      answer:'A fictional conversation, a useful question, and a look at what privacy really requires. Nothing is sent to AI.'
     });
     flowcoreMessage.textContent=firstCrossingChoreography.message;
     $('loomFirstCrossingAction').textContent='Review the request →';
@@ -642,8 +642,8 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       const correct=firstCrossingSelected.has('brief')&&firstCrossingSelected.has('source')&&!firstCrossingSelected.has('private')&&firstCrossingSelected.size===2;
       if(!correct){
         $('loomFirstCrossingAnswer').textContent=firstCrossingSelected.has('private')
-          ? 'The private conversation stays outside this practice request. Choose only the approved material.'
-          : 'Choose the conversation goal and what can be carried forward.';
+          ? 'Leave the private conversation out of this request. Choose only the question and context.'
+          : 'Choose the question and context to begin.';
         return;
       }
       if(firstCrossingItems.includes(environment.document.activeElement))$('loomFirstCrossing').focus?.({preventScroll:true});
@@ -653,9 +653,9 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       firstCrossingItems.forEach(button=>button.disabled=true);
       $('loomFirstCrossingBack').hidden=false;
       setFirstCrossingCue('gathering-motion',{
-        title:'The conversation stays yours.',
-        prompt:'The approved question and context form one request. The private conversation stays outside it.',
-        answer:'Gathering the permitted context…'
+        title:'Start with your question.',
+        prompt:'Share the question and context you chose. The rest of the conversation stays out of this request.',
+        answer:'Preparing your selected context…'
       });
       projectFirstCrossing(firstCrossingEvent('prepared'));
       $('loomFirstCrossingAction').textContent='Review the request →';
@@ -668,9 +668,9 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       const token=++firstCrossingGeneration;
       firstCrossingBindingState='PENDING';
       setFirstCrossingCue('binding',{
-        title:'Checking the permitted request.',
-        prompt:'Loom checks the approved question and context against the local handoff rules.',
-        answer:'Checking the authorized material…'
+        title:'Checking what you selected.',
+        prompt:'Loom checks the question and context you selected before preparing the request.',
+        answer:'Checking your selected material…'
       });
       try{
         const binding=await bindFirstCrossingPractice([...firstCrossingSelected],environment);
@@ -680,8 +680,8 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
         firstCrossingStep=2;
         root.dataset.firstCrossingStep='2';
         setFirstCrossingCue('potential-motion',{
-          title:'See exactly what crosses.',
-          prompt:'The approved question, context, and rules are ready to inspect.',
+          title:'See what AI would get.',
+          prompt:'Your question, context, and instructions are ready to review.',
           answer:'Tutorial · this request stays in your browser.'
         });
         projectFirstCrossing(firstCrossingEvent('checking',binding.facts??binding));
@@ -696,9 +696,9 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
 
   function renderFirstCrossingLesson(published=false){
     const lessons={
-      3:{cue:'send',title:'Useful meaning, not the entire story.',prompt:'Only the approved question and context are prepared for the intended AI. Whatever is actually sent remains visible to that provider; Loom makes no claim of provider blindness.',answer:'This is a fictional handoff. Nothing has been sent to an LLM.',next:'Challenge the boundary →'},
-      4:{cue:'privacy',title:'One hold is not the Golden Egg.',prompt:'The local check holds one excluded phrase. A hostile observer might also learn from clues, combined fragments, timing, or metadata. Reconstruction remains an open empirical question.',answer:'Local hold observed. Whole-conversation leakage was not measured.',next:'Inspect the fictional return →'},
-      5:{cue:'proof',title:'Can the useful part survive?',prompt:'This fictional reply uses the approved context. The Golden Egg asks whether useful meaning survives while an outside observer cannot reconstruct the private conversation.',answer:'Illustrative return · no live provider, adversarial observer measurement, or empirical Golden Egg.',next:'Finish tutorial →'}
+      3:{cue:'send',title:'The whole conversation stays behind.',prompt:'This request contains the question and context you chose. An AI provider would see whatever you send, but the rest of this example conversation is left out.',answer:'This is only a preview. Nothing has been sent to an AI provider.',next:'Test what stays out →'},
+      4:{cue:'privacy',title:'Could someone piece it back together?',prompt:'Loom caught one excluded phrase in this example. But details, combined clues, and even timing can reveal more. This local check cannot answer what an outsider could reconstruct.',answer:'One local check passed. The private conversation has not been tested against an outside observer.',next:'See the example answer →'},
+      5:{cue:'proof',title:'Is the answer actually useful?',prompt:'This sample answer uses only the question and context you chose. Getting a helpful reply matters. So does knowing what an outsider could learn along the way.',answer:'Fictional answer · no AI provider was called, and no outside-observer privacy test took place.',next:'Finish tutorial →'}
     };
     const lesson=lessons[firstCrossingStep];
     if(!lesson)return;
