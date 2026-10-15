@@ -84,3 +84,20 @@ test('production-native khonapolit canary preflight is network-free and bounded'
   assert.notEqual(withoutAck.status,0);
   assert.match(withoutAck.stderr,/PAID_REQUEST_ACKNOWLEDGEMENT_REQUIRED/);
 });
+
+test('same-model A/B preflight changes only the user clause and never calls production', () => {
+ const script=fileURLToPath(new URL('../research/marrowline-finite-descent-20261015/run-same-model-cue.mjs',import.meta.url));
+ const x=spawnSync(process.execPath,[script],{encoding:'utf8',env:safeEnv,timeout:15000});
+ assert.equal(x.status,0,x.stderr);
+ const plan=JSON.parse(x.stdout);
+ assert.equal(plan.preflight,true);
+ assert.equal(plan.countLimit,2);
+ assert.equal(plan.retries,0);
+ assert.equal(plan.model,'gemini-3.8-flash');
+ assert.equal(plan.onlyChangedFactor,'added lower-priority user-message cue');
+ assert.deepEqual(plan.conditions.map(c=>c.name),['A_REPLICATE','B_VERTICAL_CUE']);
+ assert.notEqual(plan.conditions[0].bodySha256,plan.conditions[1].bodySha256);
+ const stop=spawnSync(process.execPath,[script,'--execute'],{encoding:'utf8',env:safeEnv,timeout:15000});
+ assert.notEqual(stop.status,0);
+ assert.match(stop.stderr,/OPERATOR_PAID_ACK_REQUIRED/);
+});
