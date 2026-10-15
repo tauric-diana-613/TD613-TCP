@@ -431,3 +431,35 @@ body{background:var(--ink);overflow-x:clip}
     min-height:clamp(210px,29svh,320px)
   }
 }
+
+
+/* On-screen analytical instrument: finite calculations are never a privacy badge. */
+#loomAiWorkspace .loom-evidence-strip{
+  display:flex;justify-content:space-between;align-items:center;gap:18px;
+  border-block:1px solid rgba(206,219,230,.25);padding:16px 0;margin:8px 0 18px
+}
+#loomAiWorkspace .loom-evidence-strip strong{font:500 13px/1.4 var(--sans);letter-spacing:.02em;color:#f1ebf3}
+#loomAiWorkspace .loom-evidence-strip p{margin:5px 0 0;max-width:58ch;font:400 12px/1.55 var(--sans);color:#d3c8dc}
+#loomAiWorkspace .loom-evidence-strip button{flex-shrink:0;border:1px solid rgba(215,209,242,.5);border-radius:4px;padding:10px 13px;background:transparent;color:#f4eaf4;font:500 12px/1.4 var(--sans);cursor:pointer}
+#loomAiWorkspace .loom-science-intro{max-width:650px;margin:10px 0 0;padding-top:14px;border-top:1px solid rgba(223,219,238,.25)}
+#loomAiWorkspace .loom-science-intro>summary{cursor:pointer;font:500 12px/1.5 var(--sans);color:#d8e8ed}
+#loomAiWorkspace .loom-science-host{max-width:100%;padding:18px 0;color:#ece6f3}
+#loomAiWorkspace .loom-science-host .loom-science-title{font:450 clamp(20px,2.8vw,28px)/1.2 var(--sans);letter-spacing:-.03em}
+#loomAiWorkspace .loom-science-host :is(p,label,legend,td,th){font:400 12px/1.6 var(--sans)}
+#loomAiWorkspace .loom-science-host .loom-science-explanation{max-width:65ch;color:#d6d0dd}
+#loomAiWorkspace .loom-science-host label{display:grid;gap:6px;max-width:420px;margin:14px 0;color:#e7dfed}
+#loomAiWorkspace .loom-science-host select{min-height:42px;width:100%;border:1px solid rgba(205,207,224,.5);border-radius:5px;padding:9px;color:#f2eaf1;background:#171924}
+#loomAiWorkspace .loom-science-host fieldset{display:flex;flex-wrap:wrap;gap:8px 18px;margin:14px 0;padding:12px;border:1px solid rgba(205,207,224,.3)}
+#loomAiWorkspace .loom-science-host fieldset label{display:flex;align-items:center;gap:7px;margin:0}
+#loomAiWorkspace .loom-science-host .loom-science-table{width:100%;border-collapse:collapse;table-layout:auto}
+#loomAiWorkspace .loom-science-host :is(td,th){padding:9px 8px;text-align:left;border-bottom:1px solid rgba(225,213,238,.2);vertical-align:top;overflow-wrap:anywhere}
+#loomAiWorkspace .loom-science-host th{font-size:11px;color:#d8d4df}
+#loomAiWorkspace .loom-science-host .loom-science-results{max-width:100%;overflow-x:auto}
+#loomAiWorkspace .loom-science-host .loom-science-unmeasured{padding:13px 0;border-top:1px solid rgba(225,213,238,.28);color:#eaded6}
+#loomAiWorkspace .loom-science-host pre{max-height:260px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:11px/1.4 monospace}
+@media(max-width:600px){
+  #loomAiWorkspace .loom-evidence-strip{flex-direction:column;align-items:stretch}
+  #loomAiWorkspace .loom-evidence-strip button{align-self:flex-start}
+  #loomAiWorkspace .loom-science-host .loom-science-table{min-width:580px}
+  #loomAiWorkspace .loom-science-intro{max-width:100%}
+}
