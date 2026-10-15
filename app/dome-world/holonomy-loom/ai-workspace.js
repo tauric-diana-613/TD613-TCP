@@ -360,7 +360,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     // Reduced motion settles the finite consequence without a running clock.
     // Returning to motion resumes this live tutorial only; an idle builder or
     // an explicitly still field must keep its existing rest posture.
-    if(!event.matches&&firstCrossingActive&&firstCrossingStep<6&&firstCrossingPacket&&!fieldStill&&!firstCrossingPaused
+    if(!event.matches&&firstCrossingActive&&firstCrossingStep<=6&&firstCrossingPacket&&!fieldStill&&!firstCrossingPaused
       &&firstCrossingPacket.geometry?.rest!==true)coordinator.play();
   };
   reduced.addEventListener('change', motionChange);
