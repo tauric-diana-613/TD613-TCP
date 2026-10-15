@@ -37,7 +37,7 @@ test('all seven Flow-Core tutorial glyphs have a visibly named, fictional state'
   assert.ok(glyph&&label,'glyph and plain-language operation are separately addressable');
   assert.deepEqual(LOOM_TUTORIAL_OPERATORS.map(x=>x.glyph),['à','hõt','上','出','米','下','𝄐']);
   assert.match(workspace,/LOOM_TUTORIAL_OPERATORS\[firstCrossingStep\]/);
-  assert.match(workspace,/Preview sending · demo only/);
+  assert.match(workspace,/Keep your rules with the work/);
   for(let step=0;step<7;step++){
     const presentation=loomTutorialPresentation(step);
     assert.equal(presentation.tutorial_operator.glyph,LOOM_TUTORIAL_OPERATORS[step].glyph);
