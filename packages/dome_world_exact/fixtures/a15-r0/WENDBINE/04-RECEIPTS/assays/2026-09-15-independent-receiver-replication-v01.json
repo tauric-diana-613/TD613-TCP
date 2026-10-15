@@ -1,0 +1,80 @@
+{
+  "schema": "td613.independent-receiver-replication-receipt/v0.1",
+  "date": "2026-09-15",
+  "state": "RECEIPT_BINDING_GREEN_RECORDED_AWAITING_SEAL_VALIDATION",
+  "parent_repairability": {
+    "pull_request": 1141,
+    "receipt_binding_head": "2a7c9ffa2a92227cfca2a25ac6346df0c70e8338",
+    "result": "BOUNDED_ARTIFACT_ONLY_REPAIRABILITY_SUPPORTED"
+  },
+  "question": "Can a separately implemented machine receiver, denied case identity, expected answers, custodian narration, private state, and continuing custodian authority, reproduce the finite six-case repairability classification from the same frozen artifacts?",
+  "maximum_green": "BOUNDED_INDEPENDENT_MACHINE_RECEIVER_REPLICATION_SUPPORTED",
+  "finite_family_size": 6,
+  "independence_membrane": {
+    "reference_evaluator_imported_by_replica": false,
+    "reference_seeder_imported_by_replica": false,
+    "case_identity_received": false,
+    "expected_answer_material_received": false,
+    "custodian_narration_received": false,
+    "continuing_custodian_authority_received": false,
+    "shared_frozen_artifacts_only": true
+  },
+  "observed_result": {
+    "clean_control": "ADMITTED_NO_REPAIR_REQUIRED",
+    "fault_cases": 5,
+    "fault_outcome": "HELD_REPAIR_PROPOSED",
+    "cross_implementation_agreement": "6_OF_6",
+    "repair_executed": false,
+    "authority_transferred": false,
+    "external_host_enforced": false,
+    "replica_repeat_deterministic": true
+  },
+  "right_of_resignation": "OPEN",
+  "safe_return_recovery": "NON_EQUIVALENT",
+  "return_promotion_authority": false,
+  "claim_ceiling": [
+    "GREEN != INDEPENDENT_HUMAN_REPLICATION",
+    "GREEN != EXTERNAL_ORGANIZATIONAL_REPLICATION",
+    "INDEPENDENT_IMPLEMENTATION != INDEPENDENT_ORIGIN",
+    "CROSS_IMPLEMENTATION_AGREEMENT != EXTERNAL_HOST_ENFORCEMENT",
+    "CROSS_IMPLEMENTATION_AGREEMENT != EMPIRICAL_EXTERIORITY",
+    "REPAIR_PROPOSAL != REPAIR_EXECUTION",
+    "REPAIR_PATH != RECOVERY != RETURN",
+    "GREEN != RIGHT_OF_RESIGNATION",
+    "GREEN != CUSTODIAN_INDEPENDENT_RETURN"
+  ],
+  "validation_lineage": [
+    {
+      "head": "f6faef5f562b916059801bf7a25f3397a0f225d3",
+      "run_number": 3377,
+      "run_id": 34927032170,
+      "state": "PREREGISTERED_RED",
+      "meaning": "The test was wired through A15-R0 before the separately implemented replica engine, independent fixture engine, receipt, and operation record existed."
+    },
+    {
+      "head": "a4ea1b35afd53dca2fb179680efc91811dcfa3c4",
+      "run_number": 3378,
+      "run_id": 34929252178,
+      "state": "SCIENTIFIC_GREEN",
+      "meaning": "The replica independently classified the six frozen cases with no case identity or expected-answer material, matched the preregistered expectations and frozen parent evaluator 6/6, rejected forbidden custodian inputs, and preserved OPEN/NON_EQUIVALENT residuals."
+    },
+    {
+      "head": "28f50af9b4754d13d524543ace794ec01f13a3a9",
+      "run_number": 3379,
+      "run_id": 34929376022,
+      "state": "RECEIPT_BINDING_GREEN",
+      "meaning": "The scientific GREEN was written into this receipt and the exact receipt-bearing head passed the same consolidated A15-R0 contract without widening the claim."
+    }
+  ],
+  "scientific_green_head": "a4ea1b35afd53dca2fb179680efc91811dcfa3c4",
+  "scientific_green_run_number": 3378,
+  "scientific_green_run_id": 34929252178,
+  "receipt_binding_head": "28f50af9b4754d13d524543ace794ec01f13a3a9",
+  "receipt_binding_run_number": 3379,
+  "receipt_binding_run_id": 34929376022,
+  "next_stage_if_green": "DOME_WORLD_TOMOGRAPHY_OF_OPEN_RESIDUALS_WITHOUT_RETURN_PROMOTION",
+  "human_closure_required": true,
+  "merge_authority": false,
+  "deployment_authority": false,
+  "seal": "⟐"
+}
