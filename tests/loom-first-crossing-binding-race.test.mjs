@@ -73,7 +73,7 @@ async function settleGatherUnlock(h) {
   h.$('[data-first-crossing-item="brief"]').click();
   assert.equal(h.$('[data-first-crossing-item="source"]').disabled,true);
   await until(() => h.ui.inspect().runtime.status === 'CURRENT', 'à projection');
-  h.advance(4000);
+  h.advance(6000);
   await until(() => h.$('[data-first-crossing-item="source"]').disabled===false
     && h.root.dataset.firstCrossingGather==='complete', 'à completed before hõt/cōl');
 }
@@ -81,8 +81,8 @@ async function gather(h) {
   await settleGatherUnlock(h);
   h.$('[data-first-crossing-item="source"]').click();
   await until(() => h.ui.inspect().runtime.status === 'CURRENT', 'gathering projection');
-  h.advance(3400);
-  assert.equal(h.ui.inspect().clock.timeMs, 3400);
+  h.advance(5500);
+  assert.equal(h.ui.inspect().clock.timeMs, 5500);
   assert.equal(h.root.dataset.firstCrossingCue, 'gathering-named');
   assert.equal(h.$('#loomFirstCrossingAction').hidden, false);
   assert.equal(h.frames.size, 1, 'the old gathering packet still has a finite frame to deliver');
@@ -91,7 +91,7 @@ async function gather(h) {
 async function expectRealReadiness(h) {
   await until(() => h.ui.inspect().runtime.status === 'CURRENT'
     && h.ui.inspect().runtime.view?.event.binding_verified === true, 'verified local binding projection');
-  h.advance(3400);
+  h.advance(5500);
   const event = h.ui.inspect().runtime.view.event;
   assert.equal(h.root.dataset.firstCrossingCue, 'potential-named');
   assert.equal(h.$('#loomFirstCrossingStop').hidden, false);
@@ -112,7 +112,7 @@ async function finishFullTutorial(h) {
     h.$('#loomFirstCrossingStop').click();
     assert.equal(h.root.dataset.firstCrossingStep,String(step),'hidden/reentrant controls cannot skip the visible lesson');
     assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'),null);
-    h.advance(3400);
+    h.advance(5500);
     assert.equal(h.root.dataset.firstCrossingCue,`${cue}-named`);
     assert.equal(h.$('#loomFirstCrossingStop').hidden,false);
     assert.equal(h.ui.inspect().runtime.view.event.outbound_submitted,false);
@@ -123,7 +123,7 @@ async function finishFullTutorial(h) {
   assert.equal(proof.receipt.custody_admitted,false);
   h.$('#loomFirstCrossingStop').click();
   await until(()=>h.ui.inspect().runtime.status==='CURRENT','Rest projection');
-  h.advance(4100);
+  h.advance(6100);
   assert.equal(h.root.dataset.firstCrossingStep,'6');
   assert.equal(h.$('[data-instrument-active-glyph]').textContent,'𝄐');
   assert.equal(h.frames.size,0,'Rest settles the shared clock');
@@ -150,7 +150,7 @@ test('hidden readiness events cannot bind before the current gathering consequen
   assert.equal(h.$('#loomFirstCrossingAction').hidden, true, 'projection alone precedes its finite visible consequence');
   h.$('#loomFirstCrossingAction').click();
   assert.equal(bindings, 0, 'no local binding before visible gathering consequence');
-  h.advance(3400);
+  h.advance(5500);
   assert.equal(h.root.dataset.firstCrossingCue, 'gathering-named');
   h.$('#loomFirstCrossingAction').click();
   await expectRealReadiness(h);
@@ -251,7 +251,7 @@ test('keyboard focus follows visible tutorial consequences and its final live ac
   assert.equal(h.environment.document.activeElement,h.$('#loomFirstCrossing'),'the disappearing selected card hands focus to visible tutorial content');
   await until(()=>h.ui.inspect().runtime.status==='CURRENT','gathering projection');
   assert.equal(h.$('#loomFirstCrossingAction').hidden,true);
-  h.advance(3400);
+  h.advance(5500);
   assert.equal(h.environment.document.activeElement,h.$('#loomFirstCrossingAction'),'published gathering offers the next keyboard action');
   h.$('#loomFirstCrossingAction').click();
   assert.equal(h.environment.document.activeElement,h.$('#loomFirstCrossing'),'pending binding never retains focus on a hidden action');
@@ -295,7 +295,7 @@ test('a finite tutorial consequence preserves focus deliberately moved to help',
   const help=h.$('.loom-flowcore-help summary');
   help.focus();
   await until(()=>h.ui.inspect().runtime.status==='CURRENT','gathering projection');
-  h.advance(3400);
+  h.advance(5500);
   assert.equal(h.$('#loomFirstCrossingAction').hidden,false);
   assert.equal(h.environment.document.activeElement,help,'new action availability must not steal a help-reader’s focus');
   h.advance(100);
