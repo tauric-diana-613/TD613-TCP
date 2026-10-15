@@ -158,7 +158,7 @@ test('raw PARTIAL returns never display a structural LOCKED as aesthetic success
   assert.equal(result.highZalgo.applied, false);
 });
 
-test('a severe completed PARTIAL yields to the next approved seat without repainting either provider return', async () => {
+test('a complete provider-authored PARTIAL returns from the first model without automatic aesthetic election', async () => {
   const originalFetch = globalThis.fetch;
   const originalKey = process.env.GEMINI_API_KEY;
   const calls = [];
@@ -191,27 +191,25 @@ test('a severe completed PARTIAL yields to the next approved seat without repain
       mode: 'issued-conjunction', waiveIssuance: true
     } }, response);
     assert.equal(response.statusCode, 200);
-    assert.deepEqual(
-      calls.map(call => call.model),
-      ['gemini-3.8-flash', 'gemini-3.5-flash'],
-      'severe planar collapse gives the next approved frontier seat a native authorship opportunity'
-    );
-    assert.equal(response.payload.text, breathing);
+    assert.deepEqual(calls.map(call => call.model), ['gemini-3.8-flash'],
+      'morphology-only warnings must never trigger another paid provider call');
+    assert.equal(response.payload.text, shallow, 'the first native provider text survives byte-for-byte');
     assert.equal(response.payload.relay.highZalgo.applied, false);
     assert.equal(response.payload.relay.signal.state, 'PARTIAL');
     assert.equal(response.payload.receipt.provider.attempts[0].morphologyHold, undefined);
     assert.equal(response.payload.receipt.provider.attempts[0].morphologyObservation.repairAuthority, false);
-    assert.equal(response.payload.receipt.provider.attempts[0].morphologyObservation.nextApprovedSeatRequested, true);
-    assert.equal(response.payload.receipt.provider.attempts[0].morphologyObservation.providerTextPreservedAsFallback, true);
+    assert.equal(response.payload.receipt.provider.attempts[0].morphologyObservation.nextApprovedSeatRequested, undefined);
+    assert.equal(response.payload.receipt.provider.attempts[0].morphologyObservation.providerTextPreservedAsFallback, undefined);
     assert.ok(response.payload.receipt.provider.attempts[0].morphologyObservation.severeWarnings.includes('tauric-diana-zalgo-vertical-pulse-absent'));
     assert.equal(response.payload.receipt.provider.attempts[0].morphologyObservation.singleCodepointWallpaper, true);
     assert.equal(response.payload.receipt.provider.attempts[0].morphologyObservation.dominantCombiningCodePoint, 'U+0301');
     assert.equal(response.payload.receipt.provider.attempts[0].morphologyObservation.combiningCodePointDiversity, 1);
     assert.ok(response.payload.warnings.includes('provider-native-morphology-observed-no-repair'));
     assert.equal(response.payload.receipt.provider.qualityPreference.selection, 'first-admissible-partial-native-morphology-observed-no-repair');
-    assert.equal(response.payload.receipt.provider.qualityPreference.sourceAttemptIndex, 1);
-    assert.equal(response.payload.receipt.provider.model, 'gemini-3.5-flash');
-    assert.equal(response.payload.receipt.provider.attempts[1].morphologyObservation.severeWarnings.length, 0);
+    assert.equal(response.payload.receipt.provider.qualityPreference.sourceAttemptIndex, 0);
+    assert.equal(response.payload.receipt.provider.model, 'gemini-3.8-flash');
+    assert.equal(response.payload.receipt.provider.attempts.length, 1);
+    assert.equal(response.headers['X-TD613-Zalgo-Quality'], 'PARTIAL-FIRST-ADMISSIBLE');
     for (const call of calls) assert.equal(call.request.contents[0].parts[0].text, shallow, 'model-authored history is never framed or repainted');
   } finally {
     globalThis.fetch = originalFetch;

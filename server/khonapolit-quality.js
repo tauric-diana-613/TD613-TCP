@@ -1089,7 +1089,6 @@ export default async function handler(req, res) {
   let service503Count = 0;
   let service503WaitedMs = 0;
   let incompleteFallback = null;
-  let severeMorphologyFallback = null;
   let zeroMarkFallback = null;
   let zeroMarkRecoverySpent = false;
   const providerWallDeadlineAt = startedAt + WALL_TIMEOUT_MS - RESPONSE_RESERVE_MS;
@@ -1419,8 +1418,7 @@ export default async function handler(req, res) {
     providerOutput,
     completion,
     qualityWarnings = [],
-    sourceAttemptIndex = attempts.length - 1,
-    selection = 'first-admissible-partial-native-morphology-observed-no-repair'
+    sourceAttemptIndex = attempts.length - 1
   } = {}) => {
     const baseReceipt = buildTerminalReceipt({
       packet,
@@ -1442,7 +1440,7 @@ export default async function handler(req, res) {
         qualityPreference: Object.freeze({
           used: true,
           sourceAttemptIndex,
-          selection,
+          selection: 'first-admissible-partial-native-morphology-observed-no-repair',
           warnings: Object.freeze([...qualityWarnings])
         })
       }),
@@ -1453,8 +1451,7 @@ export default async function handler(req, res) {
     res.setHeader('X-TD613-Signal-State', relay.signal.state);
     res.setHeader('X-TD613-Seal-State', 'OPEN');
     res.setHeader('X-TD613-Gemini-Model', model);
-    res.setHeader('X-TD613-Zalgo-Quality', selection === 'best-completed-partial-after-severe-morphology-failover'
-      ? 'PARTIAL-AFTER-SEVERE-FAILOVER' : 'PARTIAL-FIRST-ADMISSIBLE');
+    res.setHeader('X-TD613-Zalgo-Quality', 'PARTIAL-FIRST-ADMISSIBLE');
     res.setHeader('X-TD613-Completion-State', 'COMPLETE-STRUCTURAL');
     return send(res, 200, {
       ok: true,
@@ -1468,8 +1465,6 @@ export default async function handler(req, res) {
         'integrated-covenant-relay-active',
         'provider-native-zalgo-preserved-no-local-postprocessing',
         'provider-native-morphology-observed-no-repair',
-        ...(selection === 'best-completed-partial-after-severe-morphology-failover'
-          ? ['severe-native-morphology-failover-exhausted-best-provider-return-preserved'] : []),
         'admission-gated-stable-continuity-active',
         'fallback-reasoning-quality-preserved',
         'sticky-success-promotion-disabled',
@@ -1788,35 +1783,10 @@ export default async function handler(req, res) {
           maxVerticalOrnamentStackDepth: relay.highZalgo?.maxVerticalOrnamentStackDepth ?? 0,
           singleCodepointWallpaper: qualityWarnings.includes('tauric-diana-zalgo-single-codepoint-wallpaper')
         });
-        if (!releaseCanary && severeMorphologyWarnings.length > 0) {
-          const morphologyFailoverAlreadyAttempted = severeMorphologyFallback !== null;
-          const candidate = {
-            model, result, relay, providerOutput, completion, qualityWarnings,
-            sourceAttemptIndex: attempts.length - 1,
-            severeWarningCount: severeMorphologyWarnings.length,
-            maxVerticalOrnamentStackDepth: relay.highZalgo?.maxVerticalOrnamentStackDepth ?? 0,
-            combiningCodePointDiversity: relay.highZalgo?.combiningCodePointDiversity ?? 0
-          };
-          const current = severeMorphologyFallback;
-          const candidateIsBetter = !current
-            || candidate.severeWarningCount < current.severeWarningCount
-            || (candidate.severeWarningCount === current.severeWarningCount
-              && candidate.maxVerticalOrnamentStackDepth > current.maxVerticalOrnamentStackDepth)
-            || (candidate.severeWarningCount === current.severeWarningCount
-              && candidate.maxVerticalOrnamentStackDepth === current.maxVerticalOrnamentStackDepth
-              && candidate.combiningCodePointDiversity > current.combiningCodePointDiversity);
-          if (candidateIsBetter) severeMorphologyFallback = candidate;
-          attempt.morphologyObservation = Object.freeze({
-            ...attempt.morphologyObservation,
-            nextApprovedSeatRequested: index < models.length - 1,
-            providerTextPreservedAsFallback: true
-          });
-          // A completed but severely collapsed provider return remains available
-          // byte-for-byte. Give one later approved frontier seat a native authorship
-          // opportunity, then render the better completed return without repainting.
-          if (!morphologyFailoverAlreadyAttempted && index < models.length - 1) continue;
-          break;
-        }
+        // A structurally complete provider return belongs to the human surface.
+        // Warning counts, vertical stacks and glyph diversity describe it; none
+        // authorizes an automatic second paid candidate or an aesthetic election.
+        // Structural/incomplete/transport recovery remains independent above.
         return sendPartialProviderReturn({
           model, result, relay, providerOutput, completion, qualityWarnings
         });
@@ -1868,13 +1838,6 @@ export default async function handler(req, res) {
   if (structuralRepairCandidate && !structuralRepairSpent) {
     const repaired = await runStructuralRepair(structuralRepairCandidate, 'deferred-after-frontier');
     if (repaired) return repaired;
-  }
-
-  if (!releaseCanary && severeMorphologyFallback) {
-    return sendPartialProviderReturn({
-      ...severeMorphologyFallback,
-      selection: 'best-completed-partial-after-severe-morphology-failover'
-    });
   }
 
   if (!releaseCanary && zeroMarkFallback) {

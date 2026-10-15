@@ -667,6 +667,8 @@ test('quality route has no local 200-character downstream output cap and preserv
   assert.doesNotMatch(qualityServer, /provider-authored-morphology-repair-attempted|original-partial-preserved-after-bounded-provider-repair|original-provider-partial-preserved-after-repair-miss/, 'legacy morphology repaint receipts must be gone');
   assert.doesNotMatch(qualityServer, /betterVerticalArchitecturePartial/, 'comparative PARTIAL ranking must not survive the Hush-style first-success restoration');
   assert.doesNotMatch(qualityServer, /vertical-architecture-best-admissible-partial-after-full-frontier/, 'full-frontier PARTIAL selection must not survive');
+  assert.doesNotMatch(qualityServer, /severeMorphologyFallback|nextApprovedSeatRequested|best-completed-partial-after-severe-morphology-failover/,
+    'morphology telemetry cannot elect another provider or rank completed native replies');
   assert.doesNotMatch(qualityServer, /ATTRACTOR_MORPHOLOGY_NOT_ADMITTED/, 'aesthetic morphology must never create a final local HELD diagnostic');
   assert.doesNotMatch(qualityServer, /deferred-after-frontier-morphology/, 'no visual-story repair or beauty contest survives');
   assert.doesNotMatch(qualityServer, /verticalMarkBalance/, 'the old vertical-minus-horizontal selector must not return');
@@ -896,7 +898,7 @@ test('ASCII slash-separated pseudo-ornament remains visible as quality telemetry
   }
 });
 
-test('shallow cloned accent wallpaper triggers one native-voice repair instead of becoming visible', () => {
+test('shallow cloned accent wallpaper is described faithfully without granting repair authority', () => {
   const shallow = 'A\u0301R\u0301I\u0301S\u0301';
   const field = [
     'Kʰonapolit',
