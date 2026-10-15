@@ -564,7 +564,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     setFirstCrossingCue('complete',{
       title:'The Golden Egg is the test.',
       prompt:'Useful meaning reaches the intended receiver. An outside observer cannot reconstruct the protected conversation. The Golden Egg requires both in one real, matched episode.',
-      answer:'Five surfaces. One measured journey. Useful meaning for the intended receiver; the private exchange beyond an outsider's reconstruction.'
+      answer:'Five surfaces. One measured journey. Useful meaning for the intended receiver; the private exchange beyond reconstruction by an outsider.'
     });
     $('loomBegin').hidden=false;
     $('loomBegin').textContent='Try Loom →';
