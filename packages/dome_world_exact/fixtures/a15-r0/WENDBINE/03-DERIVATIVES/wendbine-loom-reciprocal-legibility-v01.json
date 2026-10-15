@@ -1,0 +1,110 @@
+{
+  "schema": "td613.wendbine-loom-reciprocal-legibility-map/v0.1",
+  "date": "2026-09-15",
+  "snapshot_id": "wendbine-public-reddit-48h-20260911T092700Z-v01",
+  "boundary_claims": {
+    "authority_transfer": false,
+    "custody_transfer": false,
+    "human_identity_transfer": false,
+    "raw_graph_union": false
+  },
+  "rows": [
+    {
+      "id": "dependency_route_memory",
+      "crosswalk_id": "dependency_graph_false_donor_control",
+      "wendbine_source_refs": ["reddit:t3_1wc8o05", "reddit:t3_1wch9h8"],
+      "relation_class": "PARTIAL",
+      "state": "REPRESENTED",
+      "loom_surfaces": ["portability_assurance.dependency_edges", "portability_assurance.transitive_inference"],
+      "loom_to_wendbine": "Loom's typed direct-edge evidence and prohibition on unsupported transitive inference can be read in the conventional neighborhood of dependency topology without assigning Wendbine provenance to dependency graphs.",
+      "wendbine_to_loom": "Wendbine dependency language makes Loom route structure more conventionally legible while leaving route memory, authority, and custody as separate questions.",
+      "operator_identity_witness": false,
+      "human_subject_mapping": "NONE"
+    },
+    {
+      "id": "information_flow_boundary",
+      "crosswalk_id": "ifc_noninterference",
+      "wendbine_source_refs": ["reddit:t3_1wc7p1y", "reddit:t3_1wct1he"],
+      "relation_class": "PARTIAL",
+      "state": "REPRESENTED",
+      "loom_surfaces": ["portability_assurance.information_flow", "interaction.required_receiver_checks"],
+      "loom_to_wendbine": "Loom separates packet carriage from receiver enforcement and downstream retransmission control; this is partially legible through information-flow control and noninterference vocabulary.",
+      "wendbine_to_loom": "Wendbine's access-control versus downstream-flow distinction sharpens how Loom states that carriage does not certify foreign enforcement.",
+      "operator_identity_witness": false,
+      "human_subject_mapping": "NONE"
+    },
+    {
+      "id": "source_path_provenance",
+      "crosswalk_id": "source_path_provenance",
+      "wendbine_source_refs": ["reddit:t3_1wcshec", "reddit:t3_1wd77bu"],
+      "relation_class": "PARTIAL",
+      "state": "REPRESENTED",
+      "loom_surfaces": ["portability_assurance.source_provenance", "portability_assurance.path_provenance"],
+      "loom_to_wendbine": "Loom separately records the producer-side input binding and the still-unverified delivery, transformation, enforcement, and consequence path.",
+      "wendbine_to_loom": "Wendbine's source-versus-path provenance distinction supplies ordinary workflow language for Loom's refusal to infer transit history from origin integrity.",
+      "operator_identity_witness": false,
+      "human_subject_mapping": "NONE"
+    },
+    {
+      "id": "system_observation_boundary",
+      "crosswalk_id": "system_observation_boundary",
+      "wendbine_source_refs": ["reddit:t3_1wd6sdm"],
+      "relation_class": "PARTIAL",
+      "state": "REPRESENTED",
+      "loom_surfaces": ["portability_assurance.observation_surface"],
+      "loom_to_wendbine": "Loom's observed/estimated/unknown surface can be translated into the system-boundary versus observation-boundary vocabulary without equating observation with control.",
+      "wendbine_to_loom": "Wendbine makes Loom's unknown foreign receiver and enforcer states legible as an observation-boundary problem rather than an invitation to estimate them into truth.",
+      "operator_identity_witness": false,
+      "human_subject_mapping": "NONE"
+    },
+    {
+      "id": "data_control_plane_boundary",
+      "crosswalk_id": "data_control_plane_boundary",
+      "wendbine_source_refs": ["reddit:t3_1wcuiyl"],
+      "relation_class": "PARTIAL",
+      "state": "REPRESENTED",
+      "loom_surfaces": ["portability_assurance.authority_transferred", "interaction.required_receiver_checks"],
+      "loom_to_wendbine": "Loom carries a packet while explicitly transferring no authority and requiring the receiver not to promote packet data into control authority.",
+      "wendbine_to_loom": "Wendbine's data-plane/control-plane distinction is a conventional translation for Loom's donor-input-versus-control-authority membrane, not a donor grant of governance power.",
+      "operator_identity_witness": false,
+      "human_subject_mapping": "NONE"
+    },
+    {
+      "id": "causal_reconstruction_attribution",
+      "crosswalk_id": "causal_reconstruction_attribution",
+      "wendbine_source_refs": ["reddit:t3_1wd4y18", "reddit:t3_1wd5j3w"],
+      "relation_class": "ANALOGOUS",
+      "state": "REPRESENTED",
+      "loom_surfaces": ["portability_assurance.comparative_evaluation", "portability_assurance.provenance_review"],
+      "loom_to_wendbine": "Loom keeps failure as a study object before attribution and blocks correlation-to-truth promotion; this is analogous to causal reconstruction and attribution discipline.",
+      "wendbine_to_loom": "Wendbine's detection-versus-attribution and event-sequence-versus-causal-sequence distinctions provide a conventional forensic reading of Loom's local comparison and provenance review rules.",
+      "operator_identity_witness": false,
+      "human_subject_mapping": "NONE"
+    },
+    {
+      "id": "right_of_resignation",
+      "crosswalk_id": "typed_trust_revocation",
+      "wendbine_source_refs": ["reddit:t3_1wcrwol", "reddit:t3_1wctq1d"],
+      "relation_class": "OPEN",
+      "state": "HELD_NOT_EXPOSED_IN_PORTABLE_PACKET",
+      "loom_surfaces": [],
+      "loom_to_wendbine": "The current portable Loom packet exposes authority non-transfer but no explicit post-participation revocation or custodian-exit operator; translation therefore stops at an open residual.",
+      "wendbine_to_loom": "Wendbine revocation and scoped trust clarify a neighboring operator family, but they do not by themselves implement TD613's stronger criterion that the route remain useful after custodian exit.",
+      "operator_identity_witness": false,
+      "human_subject_mapping": "NONE"
+    },
+    {
+      "id": "safe_return_recovery",
+      "crosswalk_id": "robustness_recovery",
+      "wendbine_source_refs": ["reddit:t3_1wd7hyx"],
+      "relation_class": "NON_EQUIVALENT",
+      "state": "HELD_REPAIR_PATH_IS_NOT_RECOVERY",
+      "loom_surfaces": ["portability_assurance.provenance_review.repair_path"],
+      "loom_to_wendbine": "Loom currently preserves origin and holds an unverified edge; that is a repair-path posture, not a recovery operator that returns a system toward a validated state.",
+      "wendbine_to_loom": "Wendbine's robustness-versus-recovery split exposes the missing Loom distinction: preserve-and-hold cannot be silently renamed recovery or Return.",
+      "operator_identity_witness": false,
+      "human_subject_mapping": "NONE"
+    }
+  ],
+  "seal": "⟐"
+}
