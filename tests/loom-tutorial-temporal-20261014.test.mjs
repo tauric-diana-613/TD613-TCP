@@ -27,7 +27,7 @@ test('readable tutorial phase is stable when its exact animation clock publishes
   assert.equal(readyPotential.length,1);
   assert.equal(binding.length,1);
   for(const pending of [...potential,...binding]) assert.deepEqual(pending,readyPotential[0]);
-  assert.match(workspace,/snapshot\.progress>=\.82/,'same finite-time readiness gate survives');
+  assert.match(workspace,/snapshot\.progress>=\.9/,'same finite-time readiness gate survives');
   assert.match(workspace,/if\(!firstCrossingGatheringPublished\)return/,'binding remains consequence-gated');
   assert.match(workspace,/if\(\(firstCrossingStep===2&&!firstCrossingReadinessPublished\)/,'return step remains readiness-gated');
 });
@@ -44,7 +44,7 @@ test('all seven Flow-Core tutorial glyphs have a visibly named, fictional state'
     assert.equal(presentation.tutorial_operator.evidence_class,'TUTORIAL_ILLUSTRATION_ONLY');
     assert.equal(presentation.flowcore_choreography.family,LOOM_TUTORIAL_OPERATORS[step].family);
   }
-  assert.match(workspace,/new AnimationCoordinator\(\{ durationMs: 4000/);
+  assert.match(workspace,/new AnimationCoordinator\(\{ durationMs: 6000/);
   assert.doesNotMatch(couture,/@keyframes[^{]*\{/);
 });
 test('mobile request reads vertically; raw machine output and research math are opt-in',()=>{
@@ -62,5 +62,5 @@ test('mobile request reads vertically; raw machine output and research math are 
   assert.ok(research.querySelector('.loom-research-technical'));
   assert.equal(research.querySelector('.loom-research-technical').open,false);
   assert.match(research.querySelector('.loom-research-technical').textContent,/L ≤ 0.5 bits.*R ≤ 0.2.*J ≤ 0.1/);
-  assert.match(html,/temporal-glyphs-v1/);
+  assert.match(html,/visible-cinema-and-copy-v1/);
 });
