@@ -1,4 +1,6 @@
 import test from 'node:test';
+import './portable-loom-golden-egg-kernel.test.mjs';
+import './portable-loom-research-math.test.mjs';
 import assert from 'node:assert/strict';
 import { webcrypto } from 'node:crypto';
 
@@ -228,6 +230,9 @@ test('session export makes proceeding-task governance and receiver-turn receipts
     withheld_document_count: 2
   }, environment);
   const exported = await createPortableLoomSessionExport(first.session, packet, environment);
+  assert.equal(exported.golden_egg_research.status,'HELD_UNMEASURED');
+  assert.equal(exported.golden_egg_research.golden_egg_earned,false);
+  assert.deepEqual(Object.values(exported.golden_egg_research.observation),[null,null,null,null,null]);
   assert.equal(exported.receiver_turn_contract.schema,'td613.loom.portable-session-receiver-turn/v0.1');
   assert.equal(exported.receiver_turn_contract.session_root_ref,first.session.root.ref);
   assert.equal(exported.receiver_turn_contract.current_work_unit_ref,first.work_unit.ref);
@@ -240,6 +245,8 @@ test('session export makes proceeding-task governance and receiver-turn receipts
   const prompt=createPortableLoomSessionPrompt(exported);
   assert.match(prompt,/loom_session_receipt/);
   assert.match(prompt,/receipt is a declaration for Loom to revalidate/);
+  assert.match(prompt,/five distinct L\/R\/J\/G\/C surfaces/i);
+  assert.match(prompt,/Never fill unmeasured fields/i);
   assert.match(prompt,/do not describe the receipt itself as proof/i);
 });
 

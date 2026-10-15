@@ -14,19 +14,19 @@ const freeze = value => {
 // Neither loading this fixture nor binding it creates a provider request,
 // Portable Loom Session, transfer, stored receipt or live custody capability.
 export const FIRST_CROSSING_PRACTICE = freeze({
-  id: 'loom-first-crossing-v3-decision-brief',
+  id: 'loom-first-crossing-v4-private-conversation',
   input_class: 'CANONICAL_FICTIONAL_PRACTICE',
   fictional: true,
-  task: 'Prepare a decision brief for the proposed pilot using the selected project files. Compare options, identify risks, and recommend a next step.',
+  task: "I'm considering taking a job in another city. Help me weigh the choice using only the context I've shared. Give me two useful ways to think about it and one question to consider.",
   rules: [
-    'Use only the supplied project files. Compare options, separate estimates from confirmed facts, flag unresolved risks, and explain the recommendation. Never invent missing figures.'
+    "Use only the question and context I've shared. Suggest two practical ways to weigh the decision and one question to ask myself. Don't invent details about my life or refer to anything outside this request."
   ],
   documents: [
-    { id: 'brief', name: 'Project overview', text: 'Fictional project overview: A pilot could launch in November. Option A uses existing staff and takes six weeks. Option B uses an outside vendor and takes four weeks. Either option requires spending approval.', share: true },
-    { id: 'source', name: 'Budget and risk register', text: 'Fictional budget and risk register: Option A is estimated at $42,000 with moderate integration risk. Option B is estimated at $58,000 but procurement approval is pending. Funding cap is $60,000. Neither delivery date is guaranteed.', share: true },
-    { id: 'private', name: 'Unselected working draft', text: 'Fictional internal working draft: Vendor negotiation ceiling: $75,000. These assumptions have not been approved for the decision brief.', share: false }
+    { id: 'brief', name: 'Approved question', text: "Fictional question: I'm thinking about taking a job in another city and I'm not sure whether to go.", share: true },
+    { id: 'source', name: 'Approved context', text: 'Fictional context: I have good friends where I live now. The new job could help me grow. I have a month before I need to decide.', share: true },
+    { id: 'private', name: 'Private conversation', text: "Fictional private conversation: My sister and I argued about the move last night. That conversation isn't part of the request.", share: false }
   ],
-  protectedTerms: ['Vendor negotiation ceiling: $75,000']
+  protectedTerms: ['My sister and I argued about the move last night']
 });
 
 function selectedPracticeIds(selectedIds) {
@@ -34,7 +34,7 @@ function selectedPracticeIds(selectedIds) {
     || !Object.hasOwn(selectedIds, 0) || !Object.hasOwn(selectedIds, 1)
     || selectedIds.some(id => !['brief', 'source'].includes(id))
     || new Set(selectedIds).size !== 2) {
-    throw new TypeError('FIRST_CROSSING_SELECTION_HELD: select exactly the task note and supporting source; keep the private note out of the AI handoff.');
+    throw new TypeError('FIRST_CROSSING_SELECTION_HELD: select the approved question and context; leave the private exchange out of this local handoff.');
   }
   return [...selectedIds].sort();
 }
@@ -118,7 +118,7 @@ export function checkFirstCrossingPrivacy() {
 /** A real digest binds the fictional answer to the checked local request. */
 export async function createFirstCrossingReturnProof(binding, environment = globalThis) {
   if (binding?.binding_verified !== true || binding.fixture_id !== FIRST_CROSSING_PRACTICE.id) throw new TypeError('A checked tutorial request is required.');
-  const answer = 'Decision brief: Option A is estimated at $42,000 over six weeks, with moderate integration risk. Option B is estimated at $58,000 over four weeks, pending procurement approval. Recommend Option A provisionally; verify staff capacity and spending approval before proceeding.';
+  const answer = "You could write down what you'd gain by moving and what you'd miss about staying. You could also talk to someone who has made a similar change. With a month to decide, you have time to explore both. One question: what matters most to you about where you live?";
   const response_check = inspectLoomAiResponse({
     schema:'td613.loom.ai-task-result/v0.1', request_id:binding.request_id, status:'completed',
     answer, missing_information:[], suggested_next_step:'Review before sharing.', used_document_ids:[...binding.selected_document_ids]

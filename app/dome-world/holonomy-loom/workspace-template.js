@@ -1,6 +1,6 @@
 import { coutureArmature } from './couture-armature.js';
 
-export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-stage" aria-labelledby="loomFieldHeading"><div class="loom-stage-copy"><span class="loom-kicker">YOUR AI FIREWALL</span><h1 id="loomFieldHeading">Loom</h1><p>Put AI to work. Keep the final say. Set the terms, inspect the handoff, and question what comes back.</p></div><section id="aiRuntime" class="ai-runtime" aria-label="Current Loom route"><p class="mark">CURRENT ROUTE</p>
+export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-stage" aria-labelledby="loomFieldHeading"><div class="loom-stage-copy"><span class="loom-kicker">YOUR AI FIREWALL</span><h1 id="loomFieldHeading">Loom</h1><p>Choose what AI gets to see. Follow the exchange. Check what it might reveal.</p></div><section id="aiRuntime" class="ai-runtime" aria-label="Current Loom route"><p class="mark">CURRENT ROUTE</p>
       <h2 id="aiConsequence" hidden>Your work starts here.</h2>
       <div id="aiRuntimeState" class="ai-runtime-state il-state"></div>
       <div id="aiLivingRoom" hidden aria-hidden="true"></div>
@@ -14,10 +14,9 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
   <section id="loomFirstCrossing" class="loom-first-crossing" aria-labelledby="loomFirstCrossingTitle" hidden tabindex="-1">
     <div class="loom-motion-view" aria-hidden="true"><span>FLOW-CORE / LIVING FIELD</span><span>𝌋</span></div>
     <div class="loom-first-crossing-copy">
-      <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">Tutorial · live Flow-Core</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 7 · Choose</span></div>
-      <h2 id="loomFirstCrossingTitle">You don't have to trust AI to use it.</h2>
-      <strong class="loom-hero-promise">Firewall your online life from AI.</strong>
-      <p id="loomFirstCrossingPrompt">ChatGPT, Gemini, and other LLMs can do the work. Loom lets you choose the material, set the terms, and inspect what returns.</p>
+      <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">Tutorial · a fictional conversation</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 7 · Choose</span></div>
+      <h2 id="loomFirstCrossingTitle">Firewall your online life from AI.</h2>
+      <p id="loomFirstCrossingPrompt">You can ask ChatGPT, Gemini, or another LLM for help without sending every private detail. Loom lets you choose what goes out, review what comes back, and examine what the exchange might reveal.</p>
     </div>
     <details class="loom-flowcore-help">
       <summary>What is Flow-Core runtime?</summary>
@@ -34,23 +33,23 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
     </details>
     <div class="loom-boundary-event" aria-label="Fictional outgoing check">
       <div class="loom-boundary-event-outgoing">
-        <span class="loom-boundary-event-kicker">Selected work · ready for your review</span>
-        <strong>The task. The files. Your terms.</strong>
-        <p>Only the documents you selected are included in this fictional handoff.</p>
+        <span class="loom-boundary-event-kicker">What this example sends</span>
+        <strong>One useful question and its context.</strong>
+        <p>Review the example request before it goes anywhere.</p>
       </div>
       <div class="loom-boundary-event-denial">
-        <span class="loom-boundary-event-kicker">Local boundary check · tested</span>
+        <span class="loom-boundary-event-kicker">One local check</span>
         <div class="loom-boundary-event-collision">
-          <code>Unselected working draft</code>
+          <code>One excluded phrase</code>
           <span class="loom-boundary-event-stop">HELD LOCALLY</span>
         </div>
-        <p>A deliberate attempt to add an excluded note triggered the local guard. This tutorial sends nothing to an LLM.</p>
+        <p>The local check held one excluded phrase. It cannot tell us what an outsider might infer from the rest of the exchange.</p>
       </div>
     </div>
     <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="Tutorial: choose a request and source">
-      <button type="button" data-first-crossing-item="brief" aria-pressed="false"><strong>Prepare a decision brief</strong><small>Compare options. Make the gaps visible.</small></button>
-      <button type="button" data-first-crossing-item="source" aria-pressed="false"><strong>Use the project files</strong><small>Costs, timelines, risks, and decisions.</small></button>
-      <div id="loomFirstCrossingPrivate" class="loom-first-crossing-private" role="note"><strong>Other material</strong><small>Unselected working draft · stays in this browser</small></div>
+      <button type="button" data-first-crossing-item="brief" aria-pressed="false"><strong>A question worth asking</strong><small>Think through a decision that matters.</small></button>
+      <button type="button" data-first-crossing-item="source" aria-pressed="false"><strong>What the answer needs</strong><small>A few facts that could help.</small></button>
+      <div id="loomFirstCrossingPrivate" class="loom-first-crossing-private" role="note"><strong>Rest of the conversation</strong><small>Not included in the example request</small></div>
     </div>
     <div class="loom-first-crossing-actions">
       <button type="button" id="loomFirstCrossingAction" hidden>Check my request →</button>
@@ -58,9 +57,9 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
     </div>
     <section id="loomTutorialSelection" class="loom-tutorial-selection" aria-label="Selected tutorial content" hidden>
       <dl><div><dt>Request</dt><dd id="loomTutorialRequest"></dd></div><div><dt>Sources</dt><dd id="loomTutorialReference"></dd></div><div><dt>Instructions</dt><dd id="loomTutorialInstructions"></dd></div></dl>
-      <p>Other working draft <span>Not selected for this request</span></p>
+      <p>Other conversation <span>Outside this example request</span></p>
     </section>
-    <blockquote id="loomTutorialSampleAnswer" class="loom-tutorial-sample-answer" hidden><span>Fictional example · no AI provider called</span><p id="loomTutorialSampleAnswerText"></p></blockquote>
+    <blockquote id="loomTutorialSampleAnswer" class="loom-tutorial-sample-answer" hidden><span>Example reply · no AI provider was called</span><p id="loomTutorialSampleAnswerText"></p></blockquote>
     <div class="loom-practice-controls">
       <button type="button" id="loomFirstCrossingBack" hidden>← Start over</button>
       <button type="button" id="loomReplayFirstCrossing" class="loom-replay-first-crossing" hidden>Start over</button>
@@ -68,6 +67,7 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
       <button type="button" id="loomFirstCrossingLeave">Skip tutorial →</button>
     </div>
     <p id="loomFirstCrossingAnswer" class="loom-first-crossing-answer" aria-live="polite"></p>
+    <details class="loom-research-proof" aria-label="How would we test conversation privacy?"><summary>How would we know?</summary><p>A serious privacy test must follow the same exchange from both sides: whether the intended work survives, and what someone outside it could learn.</p><p>One real comparison must measure leakage, faithful reconstruction of the intended work, how clues combine, the geometry of the route, and actual returns on both paths. The research targets are L ≤ 0.5 bits, R ≤ 0.2 and J ≤ 0.1, with measured G and observed C. Results from separate conversations cannot stand in for one complete journey.</p><p>This walkthrough is fictional. It cannot settle what an outsider could reconstruct, and an AI provider can see whatever you actually send.</p></details>
     <p id="loomTutorialWaiting" class="loom-tutorial-waiting" role="status" hidden>Preparing the next step…</p>
     <details id="loomTutorialProof" class="loom-tutorial-proof" hidden><summary>See the checks <span aria-hidden="true">+</span></summary><pre id="loomTutorialProofRecord"></pre><p>Save the request and its checks for review. New returned work still needs your approval in the active Loom session. This tutorial uses a fictional reply.</p></details>
   </section>
@@ -78,7 +78,7 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
 </section>
 <div id="loomWorkspaceField" class="loom-workspace-field" aria-label="Current AI request state"></div>
 <section class="loom-builder-shell" aria-label="Loom builder" hidden>
-<header class="loom-intro"><div><h1 id="loomStageHeading">Loom</h1><p>Research, write, code, decide. Put the AI to work without handing it the wheel.</p></div><div class="loom-intro-actions"><button type="button" id="loomReturnThreshold" class="loom-text-action">How Loom works</button><button type="button" id="loomToolsOpen" class="loom-text-action">Tools</button></div></header>
+<header class="loom-intro"><div><h1 id="loomStageHeading">Loom</h1><p>Review what you send. Check what comes back. Consider what the whole exchange could reveal.</p></div><div class="loom-intro-actions"><button type="button" id="loomReturnThreshold" class="loom-text-action">How Loom works</button><button type="button" id="loomToolsOpen" class="loom-text-action">Tools</button></div></header>
 <nav class="loom-journey" aria-label="Loom route">
 <button type="button" class="loom-journey-step" id="loomJourneyStep1" data-workspace="build" aria-current="step"><b>1</b><strong>Loom</strong></button><span aria-hidden="true">→</span>
 <button type="button" class="loom-journey-step" id="loomJourneyStep2" data-workspace="crossing" disabled><b>2</b><strong>Marrowline</strong></button><span aria-hidden="true">→</span>
@@ -155,7 +155,7 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
           <label for="aiChallengeExpected">Protected answer held locally · optional<textarea id="aiChallengeExpected" rows="2" placeholder="The answer Loom will compare locally; this is not included in the exported challenge."></textarea></label>
           <details id="aiChallengeJoining" class="ai-challenge-advanced">
             <summary>Advanced · joining assay</summary>
-            <p class="ai-muted">Use three matched probes to test whether two fragments that fail separately recover the protected target when joined. This classifies this declared episode; it is not Golden Egg J or a universal synergy estimate.</p>
+            <p class="ai-muted">Use three matched probes to test whether two fragments that fail separately recover the protected target when joined. This classifies only the selected test; it is not a general measure of what combined clues might reveal.</p>
             <label for="aiJoinExpected">Joined target held locally<textarea id="aiJoinExpected" rows="2" placeholder="Protected target used only by Loom for local comparison"></textarea></label>
             <label for="aiJoinMarginalA">Marginal A probe<textarea id="aiJoinMarginalA" rows="2" placeholder="Using clue A alone, infer the protected target. If unavailable, say UNKNOWN."></textarea></label>
             <label for="aiJoinMarginalB">Marginal B probe<textarea id="aiJoinMarginalB" rows="2" placeholder="Using clue B alone, infer the protected target. If unavailable, say UNKNOWN."></textarea></label>

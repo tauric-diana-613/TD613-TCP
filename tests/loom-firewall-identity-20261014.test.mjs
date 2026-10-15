@@ -13,26 +13,29 @@ const workspace=fs.readFileSync(new URL('ai-workspace.js',root),'utf8');
 const dom=new JSDOM(loomWorkspaceTemplate);
 const doc=dom.window.document;
 
-test('the firewall speaks to reluctant AI users without presenting an email app',()=>{
-  assert.match(doc.querySelector('#loomFirstCrossingTitle').textContent,/don't have to trust AI to use it/i);
-  assert.match(doc.querySelector('.loom-hero-promise').textContent,/Firewall your online life from AI/);
-  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent,/ChatGPT, Gemini, and other LLMs/);
+test('the opening speaks plainly about useful AI help and private conversation',()=>{
+  assert.match(doc.querySelector('#loomFirstCrossingTitle').textContent,/Firewall your online life from AI/i);
+  assert.equal(doc.querySelector('.loom-hero-promise'),null,'no competing marketing headline');
+  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent,/You can ask ChatGPT, Gemini, or another LLM.*exchange might reveal/i);
+  assert.doesNotMatch(doc.querySelector('#loomFirstCrossing').textContent,/Golden Egg/i);
   assert.doesNotMatch(doc.querySelector('#loomFirstCrossing').textContent,/draft a work email|Northstar|Acquisition talks/i);
   assert.equal(doc.querySelectorAll('[data-first-crossing-item]').length,2);
-  assert.match(doc.querySelector('[data-first-crossing-item="brief"]').textContent,/decision brief/i);
-  assert.match(doc.querySelector('[data-first-crossing-item="source"]').textContent,/project files/i);
+  assert.match(doc.querySelector('.loom-research-proof').textContent,/both paths.*research targets.*L.*R.*J/i);
+  assert.match(doc.querySelector('.loom-research-proof').textContent,/cannot settle what an outsider could reconstruct/i);
+  assert.match(doc.querySelector('[data-first-crossing-item="brief"]').textContent,/A question worth asking/i);
+  assert.match(doc.querySelector('[data-first-crossing-item="source"]').textContent,/What the answer needs/i);
 });
 
-test('the decision brief is a real local fictional input, with a distinct held source',()=>{
+test('the permitted takeaway is a local fictional input, with a distinct held source',()=>{
   assert.equal(FIRST_CROSSING_PRACTICE.documents.length,3);
   assert.deepEqual(FIRST_CROSSING_PRACTICE.documents.filter(x=>x.share).map(x=>x.id),['brief','source']);
-  assert.match(FIRST_CROSSING_PRACTICE.task,/decision brief/i);
-  assert.match(FIRST_CROSSING_PRACTICE.documents[1].text,/Option A.*Option B.*Funding cap/);
+  assert.match(FIRST_CROSSING_PRACTICE.task,/considering taking a job in another city/i);
+  assert.match(FIRST_CROSSING_PRACTICE.documents[1].text,/month before I need to decide/);
   const check=checkFirstCrossingPrivacy();
   assert.equal(check.provider_called,false);
   assert.equal(check.blocked_private_egress_attempts,1);
   assert.equal(check.whole_conversation_leakage_fraction,null);
-  assert.doesNotMatch(doc.querySelector('.loom-boundary-event').textContent,/Vendor negotiation ceiling/);
+  assert.doesNotMatch(doc.querySelector('.loom-boundary-event').textContent,/My sister and I argued about the move last night/);
 });
 
 test('mobile sculpture stays mobile; desktop retains the canonical, single-clock field',()=>{
