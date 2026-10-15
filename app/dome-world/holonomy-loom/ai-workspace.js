@@ -205,7 +205,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     $('loomFirstCrossingTitle').textContent=title;
     if(cue==='choose' && root.dataset.loomIntro==='true'){
       // Authored headline only: incoming/model text never reaches innerHTML.
-      $('loomFirstCrossingTitle').innerHTML='<span class="loom-headline-line">Have the conversation.</span> <span class="loom-headline-line"><em>Keep your story.</em></span>';
+      $('loomFirstCrossingTitle').innerHTML='<span class="loom-headline-line">You wanted an answer.</span> <span class="loom-headline-line"><em>Not an audience.</em></span>';
     }
     $('loomFirstCrossingPrompt').textContent=prompt;
     $('loomFirstCrossingAnswer').textContent=answer;
@@ -615,7 +615,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     $('loomFirstCrossingLeave').hidden=false;
     firstCrossingChoreography=nextFlowcoreChoreography(firstCrossingChoreography?.id, environment.Math?.random?.() ?? Math.random());
     setFirstCrossingCue('choose',{
-      title:'Have the conversation. Keep your story.',
+      title:'You wanted an answer. Not an audience.',
       prompt:'Ask the hard question. Get something useful back. Your whole conversation shouldn\'t become a puzzle a stranger can solve. Loom is built to test what the trail reveals.',
       answer:'See what one example can show—and what a single check could miss. Nothing is sent to an AI.'
     });
