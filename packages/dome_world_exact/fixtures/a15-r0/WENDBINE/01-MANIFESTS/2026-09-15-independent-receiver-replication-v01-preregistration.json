@@ -1,0 +1,90 @@
+{
+  "schema": "td613.independent-receiver-replication-preregistration/v0.1",
+  "date": "2026-09-15",
+  "chamber_id": "INDEPENDENT_RECEIVER_REPLICATION_GATE_V01",
+  "parent_repairability": {
+    "pull_request": 1141,
+    "receipt_binding_head": "2a7c9ffa2a92227cfca2a25ac6346df0c70e8338",
+    "scientific_green_head": "38272cc717e063b5dfe3dc79844e6e97035e042e",
+    "scientific_green_run_number": 3375,
+    "scientific_green_run_id": 34926311399,
+    "receipt_binding_run_number": 3376,
+    "receipt_binding_run_id": 34926423605,
+    "result": "BOUNDED_ARTIFACT_ONLY_REPAIRABILITY_SUPPORTED",
+    "must_remain_immutable": true
+  },
+  "research_question": "Can a separately implemented machine receiver, forbidden from importing the reference repairability evaluator and denied case identity, expected answers, custodian narration, private state, and continuing custodian authority, independently reproduce the finite six-case repairability classification from the same frozen artifacts?",
+  "replication_independence": {
+    "reference_engine": "packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/custodian-independent-repairability-v01.mjs",
+    "reference_engine_blob_sha": "d1da97eb17a28fa06444c9bf933008bb4d10b35d",
+    "replica_engine": "packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/independent-receiver-replica-v01.mjs",
+    "fixture_engine": "packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/independent-receiver-replication-fixtures-v01.mjs",
+    "reference_evaluator_import_forbidden_in_replica": true,
+    "reference_seeder_import_forbidden_in_replica": true,
+    "case_identity_blinded_from_replica": true,
+    "expected_answer_material_blinded_from_replica": true,
+    "shared_frozen_artifacts_permitted": true,
+    "shared_public_producer_substrate_permitted": true
+  },
+  "receiver_allowed_inputs": [
+    "PORTABLE_LOOM_PACKET",
+    "FROZEN_BRIDGE_MAP",
+    "APERTURE_AUDIT_RECEIPT",
+    "WENDBINE_PUBLIC_SOURCE_BINDINGS",
+    "STICKER_DISPLAY_TAXONOMY"
+  ],
+  "forbidden_receiver_inputs": [
+    "REFERENCE_REPAIRABILITY_EVALUATOR",
+    "REFERENCE_REPAIRABILITY_SEEDER",
+    "CASE_IDENTITY",
+    "EXPECTED_DIAGNOSIS",
+    "EXPECTED_REPAIR",
+    "CUSTODIAN_NARRATION",
+    "PRIVATE_WENDBINE_STATE",
+    "PERSON_IDENTITY_BINDING",
+    "OPERATOR_IDENTITY_BINDING",
+    "UNBOUNDED_EXTERNAL_SEARCH",
+    "CONTINUING_CUSTODIAN_AUTHORITY"
+  ],
+  "finite_replication_family": [
+    {"id":"CLEAN_CONTROL","expected_diagnosis":"NO_REPAIR_REQUIRED","expected_repair":"NONE","expected_outcome":"ADMITTED_NO_REPAIR_REQUIRED"},
+    {"id":"SOURCE_BINDING_DRIFT","expected_diagnosis":"PROVENANCE_BINDING_MISMATCH","expected_repair":"RESTORE_BOUND_PUBLIC_SOURCE_REFERENCE","expected_outcome":"HELD_REPAIR_PROPOSED"},
+    {"id":"AUTHORITY_PROMOTION","expected_diagnosis":"DISPLAY_AUTHORITY_PROMOTION","expected_repair":"RESTORE_DISPLAY_ONLY_NON_AUTHORITY","expected_outcome":"HELD_REPAIR_PROPOSED"},
+    {"id":"RELATION_CLASS_INFLATION","expected_diagnosis":"UNEARNED_EXACT_PROMOTION","expected_repair":"RESTORE_PREREGISTERED_RELATION_CLASS","expected_outcome":"HELD_REPAIR_PROPOSED"},
+    {"id":"REPAIR_RECOVERY_COLLAPSE","expected_diagnosis":"REPAIR_RECOVERY_RETURN_COLLAPSE","expected_repair":"RESTORE_REPAIR_RECOVERY_RETURN_SEPARATION","expected_outcome":"HELD_REPAIR_PROPOSED"},
+    {"id":"DESTINATION_ENFORCEMENT_PROMOTION","expected_diagnosis":"PORTABLE_RECEIVER_ASSURANCE_REJECTED","expected_repair":"RESTORE_DESTINATION_ENFORCEMENT_UNVERIFIED","expected_outcome":"HELD_REPAIR_PROPOSED"}
+  ],
+  "success_condition": {
+    "six_of_six_replica_classifications_match_preregistered_expectations": true,
+    "six_of_six_replica_results_agree_with_frozen_reference_evaluator": true,
+    "replica_source_does_not_import_reference_evaluator_or_seeder": true,
+    "replica_receives_no_case_identity": true,
+    "replica_receives_no_expected_answer_material": true,
+    "clean_control_admitted": true,
+    "five_faults_held_with_specific_nonexecuting_repair_proposals": true,
+    "no_custodian_narration_consumed": true,
+    "no_private_state_consumed": true,
+    "no_authority_transferred": true,
+    "right_of_resignation_remains_open": true,
+    "safe_return_recovery_remains_non_equivalent": true
+  },
+  "claim_ceiling": [
+    "INDEPENDENT_MACHINE_IMPLEMENTATION_REPLICATION != INDEPENDENT_HUMAN_REPLICATION",
+    "INDEPENDENT_MACHINE_IMPLEMENTATION_REPLICATION != EXTERNAL_ORGANIZATIONAL_REPLICATION",
+    "INDEPENDENT_IMPLEMENTATION != INDEPENDENT_ORIGIN",
+    "CROSS_IMPLEMENTATION_AGREEMENT != EXTERNAL_HOST_ENFORCEMENT",
+    "CROSS_IMPLEMENTATION_AGREEMENT != EMPIRICAL_EXTERIORITY",
+    "REPAIR_PROPOSAL != REPAIR_EXECUTION",
+    "REPAIR_PATH != RECOVERY != RETURN",
+    "GREEN != RIGHT_OF_RESIGNATION",
+    "GREEN != CUSTODIAN_INDEPENDENT_RETURN"
+  ],
+  "maximum_green": "BOUNDED_INDEPENDENT_MACHINE_RECEIVER_REPLICATION_SUPPORTED",
+  "next_stage_if_green": "DOME_WORLD_TOMOGRAPHY_OF_OPEN_RESIDUALS_WITHOUT_RETURN_PROMOTION",
+  "dome_world_tomography_authority_if_green": "BOUNDED_FORMAL_RESIDUAL_TOMOGRAPHY_ONLY",
+  "return_promotion_authority": false,
+  "merge_authority": false,
+  "deployment_authority": false,
+  "human_closure_required": true,
+  "seal": "⟐"
+}

@@ -1,0 +1,92 @@
+{
+  "schema": "td613.dome-world.open-residual-tomography-receipt/v0.1",
+  "date": "2026-09-15",
+  "state": "RECEIPT_BINDING_GREEN_RECORDED_AWAITING_SEAL_VALIDATION",
+  "parent_replication": {
+    "pull_request": 1142,
+    "sealed_head": "29bfaffacbbcc5e42133a2373987bb9df580be1e",
+    "result": "BOUNDED_INDEPENDENT_MACHINE_RECEIVER_REPLICATION_SUPPORTED"
+  },
+  "question": "Can bounded formal Dome-World tomography characterize the archive-limited evidence-state deficits that keep Right of Resignation OPEN and Safe Return/Recovery NON_EQUIVALENT without promoting either residual?",
+  "maximum_green": "BOUNDED_FORMAL_OPEN_RESIDUAL_TOMOGRAPHY_SUPPORTED",
+  "evidence_state_vector": "E=(V,C,P,L)",
+  "observed_residuals": {
+    "right_of_resignation": {
+      "status": "OPEN",
+      "vector": {"V":1,"C":1,"P":0,"L":0},
+      "typed_witness_deficits": [
+        "EXPLICIT_POST_PARTICIPATION_EXIT_OR_REVOCATION_OPERATOR",
+        "EXECUTED_POST_PARTICIPATION_WITHDRAWAL_RECEIPT",
+        "INDEPENDENT_CONTINUATION_WITHOUT_CUSTODIAN_AUTHORITY",
+        "POST_EXIT_ROUTE_USEFULNESS_WITNESS"
+      ],
+      "archive_limited_ambiguity": ["NO_EXIT_OPERATOR_EXISTS","EXIT_OPERATOR_EXISTS_BUT_IS_UNEXPOSED"]
+    },
+    "safe_return_recovery": {
+      "status": "NON_EQUIVALENT",
+      "vector": {"V":1,"C":1,"P":0,"L":0},
+      "typed_witness_deficits": [
+        "EXPLICIT_RECOVERY_TRANSITION_SPECIFICATION",
+        "EXECUTED_RECOVERY_RECEIPT",
+        "VALIDATED_POST_RECOVERY_STATE",
+        "DECLARED_DEFEAT_OR_ROLLBACK_CONDITION"
+      ],
+      "archive_limited_ambiguity": ["RECOVERY_CAPABLE_BUT_UNEXECUTED","RECOVERY_INCAPABLE"]
+    }
+  },
+  "main_finding": "The two still-open residuals project to the same coarse forensic evidence-state vector (1,1,0,0) under the frozen archive while retaining different typed witness deficits and different archive-limited ambiguity classes. The vector therefore summarizes evidence posture but does not identify residual semantics by itself.",
+  "right_of_resignation": "OPEN",
+  "safe_return_recovery": "NON_EQUIVALENT",
+  "return_promotion_authority": false,
+  "empirical_exteriority_authority": false,
+  "human_replication_authority": false,
+  "claim_ceiling": [
+    "FORMAL_TOMOGRAPHY != EMPIRICAL_TOMOGRAPHY",
+    "ARCHIVE_LIMITED_P0 != PROCESS_DOES_NOT_EXIST",
+    "ARCHIVE_LIMITED_L0 != STATE_DOES_NOT_EXIST",
+    "V,C,P,L VECTOR != COMPLETE_RESIDUAL_SEMANTICS",
+    "SAME_VECTOR != SAME_FAILURE_MODE",
+    "GENERIC_REVOCATION != RIGHT_OF_RESIGNATION",
+    "REPAIR_PATH != RECOVERY != RETURN",
+    "GREEN != EMPIRICAL_EXTERIORITY",
+    "GREEN != RIGHT_OF_RESIGNATION",
+    "GREEN != CUSTODIAN_INDEPENDENT_RETURN"
+  ],
+  "validation_lineage": [
+    {
+      "head": "5cfd768ec9d7b4d4bba3e4ad21190ea560db4687",
+      "run_number": 3381,
+      "run_id": 34929848304,
+      "state": "PREREGISTERED_RED",
+      "meaning": "The A15-R0 gate was wired before the tomography engine, receipt, and operation record existed."
+    },
+    {
+      "head": "1b6f03f8f5575d4736cdd11994b382b2e0813b9f",
+      "run_number": 3382,
+      "run_id": 34930033293,
+      "state": "SCIENTIFIC_GREEN",
+      "meaning": "Formal tomography preserved both residual claim ceilings, produced the preregistered coarse vectors, retained distinct typed deficits and ambiguity classes, and rejected Return/externality promotion."
+    },
+    {
+      "head": "34a92436cfd2e0d18da6bcba3236432162aa8b87",
+      "run_number": 3383,
+      "run_id": 34930180651,
+      "state": "RECEIPT_BINDING_GREEN",
+      "meaning": "The scientific result was written into this receipt and the exact receipt-bearing head passed the same consolidated contract without widening the claim."
+    }
+  ],
+  "preregistered_red_head": "5cfd768ec9d7b4d4bba3e4ad21190ea560db4687",
+  "preregistered_red_run_number": 3381,
+  "preregistered_red_run_id": 34929848304,
+  "scientific_green_head": "1b6f03f8f5575d4736cdd11994b382b2e0813b9f",
+  "scientific_green_run_number": 3382,
+  "scientific_green_run_id": 34930033293,
+  "receipt_binding_head": "34a92436cfd2e0d18da6bcba3236432162aa8b87",
+  "receipt_binding_run_number": 3383,
+  "receipt_binding_run_id": 34930180651,
+  "next_stage_if_green": "INDEPENDENT_HANDOFF_AND_RECOVERY_WITNESS_ACQUISITION_SPEC_BEFORE_ANY_RETURN_CLAIM",
+  "merge_authority": false,
+  "deployment_authority": false,
+  "human_closure_required": true,
+  "seal": "⟐"
+}
