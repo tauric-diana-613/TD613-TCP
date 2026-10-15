@@ -29,7 +29,7 @@ export function mountObserverChamber(root) {
         <details><summary>Declared synthetic population</summary><pre id="ocPopulation"></pre></details>
       </details>
     </section>
-    <p class="oc-ceiling">Golden Egg: UNEARNED · Independent empirical acquisition: HELD</p>`;
+    <p class="oc-ceiling">Research result: Not yet demonstrated · Independent testing: Pending</p>`;
   const $ = selector => root.querySelector(selector);
   let result = null;
   for (const item of OBSERVER_CASES) {
