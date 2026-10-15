@@ -647,7 +647,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     firstCrossingChoreography=nextFlowcoreChoreography(firstCrossingChoreography?.id, environment.Math?.random?.() ?? Math.random());
     setFirstCrossingCue('choose',{
       title:'Firewall your online life from AI.',
-      prompt:'Work with Gemini, ChatGPT, and other LLMs on your terms. Check exactly what you send, keep protected information out of the request, and examine the answer before accepting it. The wider privacy risks remain visible for review.',
+      prompt:'Use Gemini, ChatGPT, and other LLMs. Choose what you send, inspect what comes back, and test what the exchange may reveal.',
       answer:'Try the seven-step demo: select the context, inspect the request, and see how the answer comes back. Nothing is sent to an AI.'
     });
     flowcoreMessage.textContent=firstCrossingChoreography.message;
