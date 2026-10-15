@@ -300,7 +300,7 @@ try {
         firstCrossingVisual.objects.length===3&&
         firstCrossingVisual.objects.filter(object=>object.id!=='loomFirstCrossingPrivate')
           .every(object=>object.width>0&&object.height>=44)&&
-        firstCrossingVisual.objects.find(object=>object.id==='loomFirstCrossingPrivate')?.visible===true,
+        firstCrossingVisual.objects.find(object=>object.id==='loomFirstCrossingPrivate')?.visible===false,
         firstCrossingVisual);
       record('seven-step tutorial is the first experience and has no bypass CTA',
         await page.locator('#loomFirstCrossingTitle').isVisible() &&
@@ -314,6 +314,36 @@ try {
       record('first-use opens on transparent copy with the real full-page field',
         await page.locator('.loom-first-crossing-copy').evaluate(node=>getComputedStyle(node).backgroundColor==='rgba(0, 0, 0, 0)') &&
         await page.locator('.loom-glyph-field').evaluate(node=>node.getBoundingClientRect().width===innerWidth && node.getBoundingClientRect().height===innerHeight));
+      const openingScene=await page.evaluate(()=>{
+        const root=document.querySelector('#loomAiWorkspace');
+        const visible=selector=>{
+          const el=document.querySelector(selector),style=el&&getComputedStyle(el);
+          return !!el&&!el.hidden&&style.display!=='none'&&style.visibility!=='hidden'&&el.getBoundingClientRect().height>0;
+        };
+        const first=document.querySelector('[data-first-crossing-item="brief"]').getBoundingClientRect();
+        const controls=document.querySelector('.loom-practice-controls');
+        const controlStyle=getComputedStyle(controls),bounds=controls.getBoundingClientRect();
+        return {
+          step:root.dataset.firstCrossingStep,
+          research_visible:visible('.loom-science-intro'),
+          three_part_route_visible:visible('.loom-value-route'),
+          double_private_note_visible:visible('.loom-private-continuity-note'),
+          withheld_source_note_visible:visible('#loomFirstCrossingPrivate'),
+          outgoing_preview_visible:visible('.loom-boundary-event'),
+          first_choice_y:first.y,first_choice_bottom:first.bottom,
+          viewport_height:innerHeight,
+          control_position:controlStyle.position,
+          control_top:bounds.top,
+          first_choice_occluded:bounds.top<first.bottom&&bounds.bottom>first.top
+        };
+      });
+      record('first-use mobile: only the assignment step is visible, choices are not covered',
+        openingScene.step==='0'&&!openingScene.research_visible&&
+        !openingScene.three_part_route_visible&&!openingScene.double_private_note_visible&&
+        !openingScene.withheld_source_note_visible&&!openingScene.outgoing_preview_visible&&
+        openingScene.control_position==='static'&&!openingScene.first_choice_occluded&&
+        openingScene.first_choice_y>=0&&openingScene.first_choice_y<openingScene.viewport_height,
+        openingScene);
       await screenshot(page, 'first-crossing-mobile-notice');
       await tutorialComposition(page,'first-crossing-mobile-notice');
       record('first crossing: private note is explanatory rather than an ambiguous control',

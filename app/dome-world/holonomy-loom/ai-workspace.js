@@ -240,6 +240,8 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     }
     $('loomFirstCrossingPrompt').textContent=prompt;
     $('loomFirstCrossingAnswer').textContent=answer;
+    // A scientific disclosure belongs to the completed tutorial, never its first scene.
+    $('loomScienceIntro').closest('details').hidden=firstCrossingStep!==6;
     $('loomTutorialSelection').hidden=firstCrossingStep!==2;
     $('loomTutorialSampleAnswer').hidden=firstCrossingStep!==5;
     $('loomTutorialWaiting').hidden=true; // The answer region is the single accessible progress witness.
@@ -657,7 +659,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     setFirstCrossingCue('choose',{
       title:'Make AI behave. Keep your private life yours.',
       prompt:'Put ChatGPT, Gemini, and other AI models to work without handing over your entire life. Loom helps you control what they receive, carry your rules into the conversation, and examine what comes back—including clues someone else could piece together.',
-      answer:'Choose what to share. See what travels with your request. Inspect the reply. This interactive demo stays in your browser.'
+      answer:'Choose the assignment first. The context choice becomes available after the gathering animation. This example stays in your browser.'
     });
     flowcoreMessage.textContent=firstCrossingChoreography.message;
     $('loomFirstCrossingAction').textContent='Check AI Request →';

@@ -697,3 +697,42 @@ body{background:var(--ink);overflow-x:clip}
     padding-top:6px;
   }
 }
+
+/* A first-use tutorial has one visible lesson and reachable native controls.
+   Research, withheld-source detail, and the overview are not opening steps. */
+#loomAiWorkspace .loom-science-intro{display:none}
+#loomAiWorkspace[data-first-crossing-step="6"] .loom-science-intro{display:block}
+#loomAiWorkspace .loom-value-route{display:none!important}
+#loomAiWorkspace .loom-private-continuity-note{display:none}
+#loomAiWorkspace[data-first-crossing-step="4"] .loom-private-continuity-note{display:flex}
+#loomAiWorkspace[data-first-crossing-step="0"] .loom-first-crossing-private{display:none!important}
+#loomAiWorkspace[data-first-crossing="active"] .loom-practice-controls{
+  position:static;bottom:auto;z-index:auto;padding:8px 0;margin:10px 0 0;
+  border:0;border-radius:0;background:transparent;
+  backdrop-filter:none;-webkit-backdrop-filter:none
+}
+#loomAiWorkspace[data-first-crossing-step="0"] .loom-first-crossing-answer{
+  order:2;
+  min-height:0;
+  max-width:46ch;
+  color:#e1d6ef;
+  line-height:1.5
+}
+#loomAiWorkspace[data-first-crossing-step="0"] .loom-first-crossing-actions{display:none!important}
+@media(max-width:600px){
+  #loomAiWorkspace[data-first-crossing-step="0"] .loom-stage{
+    align-content:start;padding:14px 24px 24px
+  }
+  #loomAiWorkspace[data-first-crossing-step="0"] .loom-first-crossing{gap:11px}
+  #loomAiWorkspace[data-first-crossing-step="0"] .loom-tutorial-meta{margin:0 0 13px}
+  #loomAiWorkspace[data-first-crossing-step="0"] .loom-first-crossing-copy h2{
+    font-size:clamp(35px,10vw,44px);line-height:1.03;margin:0 0 14px;
+    font-weight:450;letter-spacing:-.045em
+  }
+  #loomAiWorkspace[data-first-crossing-step="0"] .loom-first-crossing-copy #loomFirstCrossingPrompt{
+    font-size:14px;line-height:1.5;max-width:38ch
+  }
+  #loomAiWorkspace[data-first-crossing-step="0"] .loom-first-crossing-objects button{
+    min-height:64px;padding:10px 0
+  }
+}
