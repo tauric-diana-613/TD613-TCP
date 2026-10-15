@@ -64,3 +64,28 @@ test('mobile request reads vertically; raw machine output and research math are 
   assert.match(research.querySelector('.loom-research-technical').textContent,/L ≤ 0.5 bits.*R ≤ 0.2.*J ≤ 0.1/);
   assert.match(html,/visible-cinema-and-copy-v1/);
 });
+
+
+test('the first screen actually explains cross-model portability and shows its three visible actions',()=>{
+  const title=doc.querySelector('#loomFirstCrossingTitle')?.textContent;
+  const pitch=doc.querySelector('#loomFirstCrossingPrompt')?.textContent;
+  const route=doc.querySelector('.loom-value-route')?.textContent;
+  assert.match(title,/Firewall your online life from AI/);
+  assert.match(pitch,/Moving from ChatGPT to Gemini/);
+  assert.match(pitch,/leave the private details behind/);
+  assert.match(route,/Switch AI models/);
+  assert.match(route,/Choose what travels/);
+  assert.match(route,/Check what returns/);
+  assert.match(workspace,/Give AI the context, not your entire history/);
+  assert.match(workspace,/Check AI Request/);
+});
+test('the actual renderer retains tutorial glyphs after finite motion instead of fading away',()=>{
+  const renderer=fs.readFileSync(new URL('instrument-state-view.js',folder),'utf8');
+  assert.match(renderer,/if\(illustration && finiteTraversal\)/);
+  assert.match(renderer,/frame\.progress-\.76/);
+  assert.match(renderer,/opacity=Math\.max\(opacity,nearPlane/);
+  assert.match(renderer,/length:39/);
+  assert.match(workspace,/durationMs: 6000/);
+  assert.match(workspace,/snapshot\.progress>=\.9/);
+  assert.match(couture,/loom-value-route/);
+});
