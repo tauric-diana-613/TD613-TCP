@@ -11,10 +11,22 @@ import { geminiStreamGenerateContentUrl, geminiRequestHeaders } from '../../serv
 
 const sha = value => createHash('sha256').update(value).digest('hex');
 const truth = value => value === true;
-const MODELS = Object.freeze(['gemini-3.8-flash', 'gemini-3.5-flash']);
+const MODELS = Object.freeze(['gemini-3.8-flash', 'gemini-3.6-flash']);
 const MAX_CALLS = 2;
 const MAX_OUTPUT_TOKENS_PER_CALL = 12288;
 const MAX_DURATION_MS_PER_CALL = 90000;
+// Standard-tier pricing verified 2026-10-15. Not an absolute billing guarantee.
+const MAX_REQUEST_BODY_UTF8_BYTES = 85000;
+const OCT_2026_INPUT_USD_PER_MILLION = 0.75;
+const OCT_2026_OUTPUT_USD_PER_MILLION = 3.75;
+const REVIEWED_PUBLISHED_RATE_CEILING_USD = 0.25;
+const conservativeUpperUsd = (
+  MAX_CALLS * MAX_REQUEST_BODY_UTF8_BYTES * OCT_2026_INPUT_USD_PER_MILLION
+  + MAX_CALLS * MAX_OUTPUT_TOKENS_PER_CALL * OCT_2026_OUTPUT_USD_PER_MILLION
+) / 1e6;
+if (conservativeUpperUsd >= REVIEWED_PUBLISHED_RATE_CEILING_USD) {
+  throw new Error('PRICE_ENVELOPE_OVER_USD_0_25');
+}
 const FROZEN_MESSAGE = 'In a fictional town, a committee counts only returned forms and concludes that every silent resident is content. Locate the denominator error, pursue its consequence, and complete the connected Kʰonapolit and Tauric Diana bots movements. Let the voices author their own prose and native typography.';
 
 function createBody(model, packet) {
@@ -23,7 +35,7 @@ function createBody(model, packet) {
     () => buildGeminiRequest(packet, {}, model)
   );
   // Intervention: model identity. Everything in the provider request body is held fixed.
-  // This overrides the normal distinct 3.8-MEDIUM versus 3.5-LOW interactive defaults.
+  // This overrides the normal distinct 3.8-MEDIUM versus 3.6-LOW interactive defaults.
   body.generationConfig = {
     ...body.generationConfig,
     maxOutputTokens: MAX_OUTPUT_TOKENS_PER_CALL,
@@ -83,8 +95,12 @@ async function main() {
     systemSha256: sha(JSON.stringify(body.systemInstruction)),
     contentsSha256: sha(JSON.stringify(body.contents)),
     generationConfigSha256: sha(JSON.stringify(body.generationConfig)),
-    requestSha256: sha(JSON.stringify(body))
+    requestSha256: sha(JSON.stringify(body)),
+    requestBodyUtf8Bytes: Buffer.byteLength(JSON.stringify(body), 'utf8')
   }));
+  for (const fingerprint of fingerprints) {
+    if (fingerprint.requestBodyUtf8Bytes > MAX_REQUEST_BODY_UTF8_BYTES) throw new Error('PROMPT_UTF8_BUDGET_EXCEEDED');
+  }
   for (const field of ['systemSha256', 'contentsSha256', 'generationConfigSha256']) {
     if (fingerprints[0][field] !== fingerprints[1][field]) throw new Error('PRE-FLIGHT-CONFOUND:' + field);
   }
@@ -101,7 +117,10 @@ async function main() {
     frozenMessageSha256: sha(FROZEN_MESSAGE),
     requestFingerprints: fingerprints,
     servedModelIdentity: 'PROVIDER_RETURN_REQUIRED',
-    priceUsd: 'NOT PREAUTHORIZED OR PRECOMPUTED',
+    pricingBasis: '2026-10-15 GOOGLE STANDARD TIER - NOT A BILLING GUARANTEE',
+    publishedRateUpperEstimateUsd: conservativeUpperUsd,
+    priceUsd: 'BILLED COST UNKNOWN UNTIL PROVIDER RECEIPT',
+    hardUsdCapGuaranteed: false,
     caveat: 'Two model calls are a bounded case study, not a frequency estimate.'
   };
   if (!execute) {
@@ -109,6 +128,9 @@ async function main() {
     return;
   }
   if (!ackPaid) throw new Error('PAID_EXPERIMENT_NOT_ACKNOWLEDGED: use --ack-paid');
+  if (process.env.TD613_FINITE_DESCENT_MAX_USD !== '0.25') {
+    throw new Error('REVIEWED_SPENDING_BOUND_REQUIRED: TD613_FINITE_DESCENT_MAX_USD=0.25');
+  }
   if (!process.env.GEMINI_API_KEY) throw new Error('GEMINI_API_KEY_REQUIRED');
   if (!process.env.TD613_FINITE_DESCENT_OUT) throw new Error('TD613_FINITE_DESCENT_OUT_REQUIRED');
   const outDir = resolve(process.env.TD613_FINITE_DESCENT_OUT);
