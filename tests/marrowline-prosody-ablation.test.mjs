@@ -73,3 +73,6 @@ test('compact frame synthetic gate cannot accept other model, real history, priv
  assert.equal(gate({...body,attachments:[{name:'private.pdf'}]}),false);
  assert.equal(allowSyntheticWholeFrameCompact({nativeSseWitness:false,assayHeader:'compact-whole-frame-v1',modelHeader:'gemini-3.8-flash'}),false);
 });
+
+// Native multi-layer Unicode capacity controls run in the protected Marrowline validation lane.
+import './marrowline-unicode-capability-assay.test.mjs';
