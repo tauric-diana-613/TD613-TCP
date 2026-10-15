@@ -1,6 +1,6 @@
 import { coutureArmature } from './couture-armature.js';
 
-export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-stage" aria-labelledby="loomFieldHeading"><div class="loom-stage-copy"><span class="loom-kicker">YOUR AI FIREWALL</span><h1 id="loomFieldHeading">Loom</h1><p>Put AI to work. Keep the final say. Set the terms, inspect the handoff, and question what comes back.</p></div><section id="aiRuntime" class="ai-runtime" aria-label="Current Loom route"><p class="mark">CURRENT ROUTE</p>
+export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-stage" aria-labelledby="loomFieldHeading"><div class="loom-stage-copy"><span class="loom-kicker">YOUR AI FIREWALL</span><h1 id="loomFieldHeading">Loom</h1><p>The prompt is only the beginning. What matters is the full route—and what someone could learn from the traces it leaves.</p></div><section id="aiRuntime" class="ai-runtime" aria-label="Current Loom route"><p class="mark">CURRENT ROUTE</p>
       <h2 id="aiConsequence" hidden>Your work starts here.</h2>
       <div id="aiRuntimeState" class="ai-runtime-state il-state"></div>
       <div id="aiLivingRoom" hidden aria-hidden="true"></div>
@@ -15,8 +15,8 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
     <div class="loom-motion-view" aria-hidden="true"><span>FLOW-CORE / LIVING FIELD</span><span>𝌋</span></div>
     <div class="loom-first-crossing-copy">
       <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">Tutorial · a private conversation</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 7 · Choose</span></div>
-      <h2 id="loomFirstCrossingTitle">Private should still mean private. Even with AI.</h2>
-      <p id="loomFirstCrossingPrompt">Ask ChatGPT, Gemini, or another LLM something personal. The answer can help, but the trail may reveal more than you meant to share. Loom follows the entire exchange—what goes in, what changes, what comes back, and what an outsider could piece together.</p>
+      <h2 id="loomFirstCrossingTitle">Firewall your online life from AI.</h2>
+      <p id="loomFirstCrossingPrompt">You can need ChatGPT, Gemini, or another LLM without giving up your privacy. Loom looks beyond the prompt: what travels, what changes, what comes back, and whether someone outside the conversation could piece it together.</p>
     </div>
     <details class="loom-flowcore-help">
       <summary>What is Flow-Core runtime?</summary>
