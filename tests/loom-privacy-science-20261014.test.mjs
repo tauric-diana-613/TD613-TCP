@@ -48,6 +48,7 @@ test('real Loom UI exposes scientific calculator in both intro and tools without
   assert.match(root.textContent,/Empirical five-surface measurement: L unmeasured/);
   assert.match(root.textContent,/2 selected file\(s\), 1 withheld file\(s\)/);
   assert.equal(view.inspect().case_id,'parity');
+  assert.doesNotMatch(root.textContent,/Golden Egg|golden_egg/i,'consumer research interface uses visible scientific concepts without internal experiment labels');
   const select=root.querySelector('select');
   select.value='missing';
   select.dispatchEvent(new dom.window.Event('change'));
