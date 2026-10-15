@@ -1,4 +1,4 @@
-import { compileLoomInstrumentStateView, mountLoomInstrumentStateView } from './instrument-state-view.js?v=20261014-firewall-science-v1';
+import { compileLoomInstrumentStateView, mountLoomInstrumentStateView } from './instrument-state-view.js?v=20261015-couture79-v1';
 
 /** The primary request projection. The workspace owns the packet, history and
  * sole AnimationCoordinator; this adapter owns no clock or custody capability.
