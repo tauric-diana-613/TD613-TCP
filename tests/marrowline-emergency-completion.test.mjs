@@ -5,7 +5,7 @@ import handler from '../api/khonapolit.js';
 import { parseRelayEnvelope } from '../app/dome-world/khonapolit-relay.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 import { CLAIMED_PUA_SCALAR, COVENANT_KEY, HERITAGE_KEY, HERITAGE_COVENANT, buildInvocationPacket, frameMarrowlineUserTurn } from '../app/dome-world/khonapolit-covenant.js';
-import { buildGeminiRequest, buildGeminiStructuralRepairRequest, buildTerminalReceipt, serializeGeminiRequest, marrowlineAuthoredStreamDeadlineMs, callGemini, extractGeminiText } from '../server/khonapolit-quality.js';
+import { buildGeminiRequest, buildGeminiStructuralRepairRequest, buildTerminalReceipt, serializeGeminiRequest, marrowlineAuthoredStreamDeadlineMs, callGemini, extractGeminiText, observeGeminiOutput } from '../server/khonapolit-quality.js';
 import { buildAttachmentGeminiRequest, buildAttachmentGeminiTerminalRepairRequest } from '../server/marrowline-attachment-quality.js';
 import {
   observeMarrowlineCompletion, assembleMarrowlineProviderTail
@@ -420,4 +420,25 @@ test('bounded tail recovery never inserts a space inside a native Unicode cluste
     assert.equal(result.text, original + suffix);
     assert.equal(result.separator, '');
   }
+});
+
+
+test('provider model identity survives streaming and is never inferred from the requested alias', async t => {
+  const priorFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = priorFetch; });
+  const authored = 'Kʰonapolit\nAn unchanged argument.\n\nTauric Diana bots\nA\u0301\u0323.\n⟐';
+  globalThis.fetch = async () => new Response('data: ' + JSON.stringify({
+    ...reply(authored), modelVersion: 'gemini-3.6-flash'
+  }) + '\n\n', { headers: { 'content-type': 'text/event-stream' } });
+  const packet = buildInvocationPacket({ message: 'Preserve provider identity.', waiveIssuance: true });
+  const result = await callGemini('gemini-3.5-flash', packet, {}, 1000);
+  const output = observeGeminiOutput(result.payload, 'gemini-3.5-flash', result);
+  assert.equal(result.text, authored);
+  assert.equal(output.modelVersion, 'gemini-3.6-flash', 'the returned version differs from the requested alias');
+  const absent = observeGeminiOutput(reply(authored), 'gemini-3.5-flash');
+  assert.equal(absent.modelVersion, undefined, 'absence remains unobserved');
+  const invalid = observeGeminiOutput({ ...reply(authored), modelVersion: 'model\nprivate prose' }, 'gemini-3.5-flash');
+  assert.equal(invalid.modelVersion, undefined);
+  const unary = observeGeminiOutput({ ...reply(authored), modelVersion: 'gemini-3.8-flash' }, 'gemini-3.7-flash');
+  assert.equal(unary.modelVersion, 'gemini-3.8-flash');
 });

@@ -1,0 +1,114 @@
+{
+  "base": "42f89aed6693f9d70608bc8ccbf3fdf6c57f887f",
+  "providerCalls": 0,
+  "comparisons": [
+    {
+      "model": "gemini-4-argon",
+      "kind": "fresh",
+      "equal": true,
+      "sha256": "82bbb48db48c729ef261774d20181170dada26e468e2bf9361b69140d2062b91"
+    },
+    {
+      "model": "gemini-4-argon",
+      "kind": "history",
+      "equal": true,
+      "sha256": "b06e0b65ccb6dd8568be1e06337a536b357c4cb15cea1230d2ce547b8dae137d"
+    },
+    {
+      "model": "gemini-4-argon",
+      "kind": "attachment",
+      "equal": true,
+      "sha256": "4cc5df26335fa14d3816f4ce01a105abe124ed9eb9eef67e9710fe512d472173"
+    },
+    {
+      "model": "gemini-3.8-flash",
+      "kind": "fresh",
+      "equal": true,
+      "sha256": "82bbb48db48c729ef261774d20181170dada26e468e2bf9361b69140d2062b91"
+    },
+    {
+      "model": "gemini-3.8-flash",
+      "kind": "history",
+      "equal": true,
+      "sha256": "b06e0b65ccb6dd8568be1e06337a536b357c4cb15cea1230d2ce547b8dae137d"
+    },
+    {
+      "model": "gemini-3.8-flash",
+      "kind": "attachment",
+      "equal": true,
+      "sha256": "bcdd5a533c1786e01d808ea02ccf5bf6643547b44d1f0d58bf3fcb37181f79dc"
+    },
+    {
+      "model": "gemini-3.5-flash",
+      "kind": "fresh",
+      "equal": true,
+      "sha256": "aa7ec3e8fa8476be726913acc7db35850a8cc6a55f53b520448b9c37cfd3165d"
+    },
+    {
+      "model": "gemini-3.5-flash",
+      "kind": "history",
+      "equal": true,
+      "sha256": "68a5f9552795dbbbfe7d92f042bd9229fb2532e76b2b851aa149861a1e354f3b"
+    },
+    {
+      "model": "gemini-3.5-flash",
+      "kind": "attachment",
+      "equal": true,
+      "sha256": "bcdd5a533c1786e01d808ea02ccf5bf6643547b44d1f0d58bf3fcb37181f79dc"
+    },
+    {
+      "model": "gemini-3.6-flash",
+      "kind": "fresh",
+      "equal": true,
+      "sha256": "aa7ec3e8fa8476be726913acc7db35850a8cc6a55f53b520448b9c37cfd3165d"
+    },
+    {
+      "model": "gemini-3.6-flash",
+      "kind": "history",
+      "equal": true,
+      "sha256": "68a5f9552795dbbbfe7d92f042bd9229fb2532e76b2b851aa149861a1e354f3b"
+    },
+    {
+      "model": "gemini-3.6-flash",
+      "kind": "attachment",
+      "equal": true,
+      "sha256": "bcdd5a533c1786e01d808ea02ccf5bf6643547b44d1f0d58bf3fcb37181f79dc"
+    },
+    {
+      "model": "gemini-3.7-flash",
+      "kind": "fresh",
+      "equal": true,
+      "sha256": "aa7ec3e8fa8476be726913acc7db35850a8cc6a55f53b520448b9c37cfd3165d"
+    },
+    {
+      "model": "gemini-3.7-flash",
+      "kind": "history",
+      "equal": true,
+      "sha256": "68a5f9552795dbbbfe7d92f042bd9229fb2532e76b2b851aa149861a1e354f3b"
+    },
+    {
+      "model": "gemini-3.7-flash",
+      "kind": "attachment",
+      "equal": true,
+      "sha256": "bcdd5a533c1786e01d808ea02ccf5bf6643547b44d1f0d58bf3fcb37181f79dc"
+    },
+    {
+      "model": "gemini-3-flash-preview",
+      "kind": "fresh",
+      "equal": true,
+      "sha256": "aa7ec3e8fa8476be726913acc7db35850a8cc6a55f53b520448b9c37cfd3165d"
+    },
+    {
+      "model": "gemini-3-flash-preview",
+      "kind": "history",
+      "equal": true,
+      "sha256": "68a5f9552795dbbbfe7d92f042bd9229fb2532e76b2b851aa149861a1e354f3b"
+    },
+    {
+      "model": "gemini-3-flash-preview",
+      "kind": "attachment",
+      "equal": true,
+      "sha256": "bcdd5a533c1786e01d808ea02ccf5bf6643547b44d1f0d58bf3fcb37181f79dc"
+    }
+  ]
+}

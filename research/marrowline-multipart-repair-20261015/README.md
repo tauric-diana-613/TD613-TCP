@@ -23,6 +23,14 @@ These are proven software defects and proven fixes for the stated inputs. Their 
 
 The current production release packet is `0b6bd038c6337abc97f2ccc660cbb1ac24fba0a5`; main's relock is the base SHA above. The GitHub comparison from the earlier audit main `7f28a864da5a2a1af207e55eba7b27bb0ebff2ad` contains only Loom, release-receipt, and Loom-test changes. Six independently downloaded Marrowline client files match the current base. No new Marrowline deployment after the audit was found in main. The operator's report of worsening output remains an independent observation.
 
+## Documented upstream change before Argon
+
+Google's [October 8 release notes](https://ai.google.dev/gemini-api/docs/changelog) and [3.5 model page](https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash) state that `gemini-3.5-flash` requests are automatically routed to `gemini-3.6-flash`, and `gemini-3.7-flash` requests to `gemini-3.8-flash`. Production discovery still lists the old names. TD613's registry calls them current independent models and its receipts previously dropped the provider-returned `modelVersion` in both unary extraction and SSE merging.
+
+This is an identified upstream model-selection change requiring zero TD613 commit, before Argon. It does not by itself establish which backend authored a recent accepted or degraded episode. Text-only 3.8 uses MEDIUM thinking while the requested 3.7 lane uses LOW, so aliasing alone cannot establish equivalent effective requests across all lanes. Attachment lanes use HIGH. No blanket route reorder or retirement is inferred from name equality.
+
+The repair now preserves a valid returned `modelVersion` in the existing output receipt, including through SSE merge. Absent versions stay absent; the requested alias never supplies a fabricated served-model observation. A mock that requests 3.5 and returns version 3.6 fails before this fix and passes afterward. This adds no provider call or raw conversation storage. Live per-episode version evidence remains missing. The broader expressive regression still requires an original provider episode or bounded authorized capture.
+
 ## Earlier source acquisition completed
 
 The previous audit could not acquire all older partial-clone objects. This continuation obtained the missing September 26 attachment module from its immutable GitHub source and verified Git blob `10d4c711b64ee3eebd2cc53ce5682bfd191d7800` before offline replay. The four-snapshot comparison and six constructed requests per snapshot are retained in `observations/earlier-source-comparison.json`.
@@ -36,8 +44,8 @@ The earlier source moves the current-turn cue from a user part into the system a
 
 ## Verification
 
-- Four new tests first failed on the unmodified responsible code: three multipart/visible-text tests and one tail-boundary test. Original logs: `observations/before.txt`, `observations/tail-before.txt`.
-- Focused native-prosody, response-quality, relay, attachment, continuation, completion, model-policy/envelope, router and recency suites: **112/112** after both fixes, `observations/after.txt`.
+- Five new tests first failed on the unmodified responsible code: three multipart/visible-text tests, one tail-boundary test, and one returned-model identity test. Original logs: `observations/before.txt`, `observations/tail-before.txt`, `observations/model-identity-before.txt`.
+- Focused native-prosody, response-quality, relay, attachment, continuation, completion, model-policy/envelope, router and recency suites: **113/113** after both fixes, `observations/after.txt`.
 - Actual client retry/attachment replacement: **2/2**, `observations/retry.txt`.
 - Separate offline stream/JSON/DOM/local-storage audit against the changed quality module: 18 multibyte cuts plus one-byte delivery, 118 SSE events; `observations/transport.json` binds the tested module hash.
 - Local Node: 24.19.0. Exact published-head CI is a separate GitHub observation; local results do not assert its outcome.
