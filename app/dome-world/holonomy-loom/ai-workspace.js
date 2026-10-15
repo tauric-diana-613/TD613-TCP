@@ -564,7 +564,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     setFirstCrossingCue('complete',{
       title:'The Golden Egg is the test.',
       prompt:'Useful meaning reaches the intended receiver. An outside observer cannot reconstruct the protected conversation. The Golden Egg requires both in one real, matched episode.',
-      answer:'Five surfaces. One episode. The empirical Golden Egg remains unearned; this tutorial explains the ambition.'
+      answer:'Five surfaces. One measured journey. Useful meaning for the intended receiver; the private exchange beyond an outsider's reconstruction.'
     });
     $('loomBegin').hidden=false;
     $('loomBegin').textContent='Try Loom →';
@@ -616,7 +616,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     firstCrossingChoreography=nextFlowcoreChoreography(firstCrossingChoreography?.id, environment.Math?.random?.() ?? Math.random());
     setFirstCrossingCue('choose',{
       title:'Talk to AI. Keep the conversation yours.',
-      prompt:'A useful AI conversation an outsider cannot piece back together. That is the Golden Egg Loom is built to pursue.',
+      prompt:'ChatGPT, Gemini, and other LLMs can help you think. The Golden Egg: useful meaning survives while an outsider cannot reconstruct the protected conversation. Loom is built to test that boundary.',
       answer:'A fictional journey: one permitted takeaway, one private exchange. No AI provider is called.'
     });
     flowcoreMessage.textContent=firstCrossingChoreography.message;
