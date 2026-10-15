@@ -28,9 +28,9 @@ export function createPortableLoomGoldenEggKernel() {
       distinct_preregistered_control_and_protected_routes_required: true,
       distinct_observed_matched_returns_required: true,
       thresholds: { leakage_bits_max: 0.5, reconstruction_distance_max: 0.2, joining_synergy_bits_max: 0.1 },
-      L: 'Declared observer leakage over a stated population, baseline and captured horizon; compare baseline I(H;B,K), incremental I(H;Z|B,K), and total I(H;B,K,Z) separately.',
+      L: 'Historical L is observer leakage defined on the preregistered target secret, distribution, observer and measured channel. Total I(H;Z) and conditional I(H;Z|B,K) are different estimands; the latter cannot silently replace historical L.',
       R: 'Distance between intended authorized operation or structure and receiver reconstruction under a registered transform family; never substitute hostile reconstruction of the protected target.',
-      J: 'For two declared trace groups A and B, signed joining excess I(H;A,B|B0,K)-I(H;A|B0,K)-I(H;B|B0,K), with B0 the observer baseline. The sign matters. Pairwise tests cannot exclude higher-order reconstruction.',
+      J: 'Preregister a joining-synergy estimand and observer trace groups. The finite chamber reports a signed excess diagnostic; that diagnostic alone is not the inherited Golden Egg J surface. The sign and higher-order interactions matter.',
       G: 'Preregistered geometric object, empirical measurement map, calibration, uncertainty and independent binding; glyphs and route names are not measurements.',
       C: 'Control and protected returns actually observed on distinct routes under the same comparison frame.'
     },
@@ -38,10 +38,10 @@ export function createPortableLoomGoldenEggKernel() {
       finite_channel_kernel: 'app/dome-world/holonomy-loom/observer-channel.js',
       empirical_episode_evaluator: 'app/engine/dollhouse-claim-lift-runtime.js',
       finite_entropy: 'H(X)=-sum_x p(x) log2 p(x); positive safe-integer masses define the full synthetic law.',
-      conditional_leakage: 'I(H;Z|B,K)=I(H;B,K,Z)-I(H;B,K). Do not treat low additional leakage as low total recoverability.',
+      conditional_leakage: 'I(H;Z|B,K)=I(H;B,K,Z)-I(H;B,K). This proposed baseline refinement is distinct from inherited unconditional L; do not use it as a replacement for the historical threshold without preregistered reconciliation.',
       reconstruction: 'R requires independently specified ground truth and a registered operation-relative distance. Receiver utility and hostile reconstruction are different quantities.',
-      joined_information: 'J is a signed excess, not automatically a nonnegative information-theory score or curvature.',
-      caveats: ['No population distribution means no measured mutual information.', 'Synthetic finite enumeration has zero empirical credit.', 'Marginal or separate-episode passes do not jointly qualify.', 'A matching local digest does not authenticate outside origin or privacy.', 'Provider access to selected inputs is outside any claim of observer blindness.']
+      joined_information: 'Finite signed excess = I(H;A,B|B0,K)-I(H;A|B0,K)-I(H;B|B0,K), where B0 is the stated observer baseline. This synthetic diagnostic is not automatically the empirical J estimand or a curvature.',
+      caveats: ['No population distribution means no measured mutual information.', 'Synthetic finite enumeration has zero empirical credit.', 'Marginal or separate-episode passes do not jointly qualify.', 'The finite chamber signed-excess diagnostic cannot be relabeled as Golden Egg J.', 'Conditional baseline refinement cannot silently replace inherited observer leakage L.', 'A matching local digest does not authenticate outside origin or privacy.', 'Provider access to selected inputs is outside any claim of observer blindness.']
     },
     observation: { L: null, R: null, J: null, G: null, C: null },
     claim_ceiling: 'The kernel defines how evidence could be evaluated. Exporting it proves neither privacy nor a five-surface empirical result.'
