@@ -686,8 +686,8 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       const token=++firstCrossingGeneration;
       firstCrossingBindingState='PENDING';
       setFirstCrossingCue('binding',{
-        title:'Follow the clues.'
-        prompt:'This is the example request. Notice how even a few ordinary details could say a lot about someone.'
+        title:'Follow the clues.',
+        prompt:'This is the example request. Notice how even a few ordinary details could say a lot about someone.',
         answer:'Checking your selected material…'
       });
       try{
@@ -699,7 +699,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
         root.dataset.firstCrossingStep='2';
         setFirstCrossingCue('potential-motion',{
           title:'Follow the clues.',
-          prompt:'This is the example request. Notice how even a few ordinary details could say a lot about someone.'
+          prompt:'This is the example request. Notice how even a few ordinary details could say a lot about someone.',
           answer:'Tutorial · this request stays in your browser.'
         });
         projectFirstCrossing(firstCrossingEvent('checking',binding.facts??binding));
