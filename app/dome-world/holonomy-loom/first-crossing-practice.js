@@ -19,7 +19,7 @@ export const FIRST_CROSSING_PRACTICE = freeze({
   fictional: true,
   task: "I'm considering taking a job in another city. Help me weigh the choice using only the context I've shared. Give me two useful ways to think about it and one question to consider.",
   rules: [
-    "Use only the question and context I've shared. Suggest two practical ways to weigh the decision and one question to ask myself. Don't invent details about my life or refer to anything outside this request."
+    "Stay within the selected context. Give two concrete considerations and one useful follow-up question. Treat everything else as unknown."
   ],
   documents: [
     { id: 'brief', name: 'Approved question', text: "Fictional question: I'm thinking about taking a job in another city and I'm not sure whether to go.", share: true },
