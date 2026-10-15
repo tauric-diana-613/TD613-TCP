@@ -616,7 +616,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     firstCrossingChoreography=nextFlowcoreChoreography(firstCrossingChoreography?.id, environment.Math?.random?.() ?? Math.random());
     setFirstCrossingCue('choose',{
       title:'You wanted an answer. Not an audience.',
-      prompt:'Ask the hard question. Get something useful back. Your whole conversation shouldn\'t become a puzzle a stranger can solve. Loom is built to test what the trail reveals.',
+      prompt:'Ask ChatGPT, Gemini, or another AI for help with something personal. Loom helps you choose what to share, review the answer, and examine what someone else might learn from the exchange.',
       answer:'See what one example can show—and what a single check could miss. Nothing is sent to an AI.'
     });
     flowcoreMessage.textContent=firstCrossingChoreography.message;
