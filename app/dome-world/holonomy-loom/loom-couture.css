@@ -281,7 +281,7 @@ body{background:var(--ink);overflow-x:clip}
 }
 
 /* Golden Egg explanation belongs after the seven-step journey, not over the headline. */
-#loomAiWorkspace .loom-golden-egg-proof {display:none;order:9;max-width:48ch;margin:8px 0 0;padding:0;border:0;border-top:1px solid var(--line);background:transparent}
-#loomAiWorkspace[data-first-crossing-step="6"] .loom-golden-egg-proof {display:block}
-#loomAiWorkspace .loom-golden-egg-proof summary {min-height:44px;padding:13px 0;cursor:pointer;font:500 13px/1.5 var(--sans);color:#e1d3f1}
-#loomAiWorkspace .loom-golden-egg-proof p {margin:0 0 12px;font:400 12px/1.65 var(--sans);color:#c4bcd0}
+#loomAiWorkspace .loom-research-proof {display:none;order:9;max-width:48ch;margin:8px 0 0;padding:0;border:0;border-top:1px solid var(--line);background:transparent}
+#loomAiWorkspace[data-first-crossing-step="6"] .loom-research-proof {display:block}
+#loomAiWorkspace .loom-research-proof summary {min-height:44px;padding:13px 0;cursor:pointer;font:500 13px/1.5 var(--sans);color:#e1d3f1}
+#loomAiWorkspace .loom-research-proof p {margin:0 0 12px;font:400 12px/1.65 var(--sans);color:#c4bcd0}
