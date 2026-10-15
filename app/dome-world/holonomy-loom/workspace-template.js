@@ -15,8 +15,8 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
     <div class="loom-motion-view" aria-hidden="true"><span>FLOW-CORE / LIVING FIELD</span><span>𝌋</span></div>
     <div class="loom-first-crossing-copy">
       <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">Tutorial · a private conversation</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 7 · Choose</span></div>
-      <h2 id="loomFirstCrossingTitle">Have the conversation. Keep your story.</h2>
-      <p id="loomFirstCrossingPrompt">Ask the hard question. Get something useful back. Your whole conversation shouldn't become a puzzle a stranger can solve. Loom is built to test what the trail reveals.</p>
+      <h2 id="loomFirstCrossingTitle">You wanted an answer. Not an audience.</h2>
+      <p id="loomFirstCrossingPrompt">Ask ChatGPT, Gemini, or another AI for help with something personal. Loom helps you decide what to share, review the answer, and examine what someone else might learn from the exchange.</p>
     </div>
     <details class="loom-flowcore-help">
       <summary>What is Flow-Core runtime?</summary>
@@ -34,8 +34,8 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
     <div class="loom-boundary-event" aria-label="Fictional outgoing check">
       <div class="loom-boundary-event-outgoing">
         <span class="loom-boundary-event-kicker">What the AI would receive</span>
-        <strong>A question. Enough context to answer it.</strong>
-        <p>Here is the example request. The bigger test is what someone can work out from it.</p>
+        <strong>Your question. Only the context you chose.</strong>
+        <p>Review the example request before it goes anywhere.</p>
       </div>
       <div class="loom-boundary-event-denial">
         <span class="loom-boundary-event-kicker">One clue stopped</span>
@@ -47,9 +47,9 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
       </div>
     </div>
     <div id="loomFirstCrossingObjects" class="loom-first-crossing-objects" aria-label="Tutorial: choose a request and source">
-      <button type="button" data-first-crossing-item="brief" aria-pressed="false"><strong>A conversation worth having</strong><small>A difficult choice. A real reason to ask for help.</small></button>
-      <button type="button" data-first-crossing-item="source" aria-pressed="false"><strong>What the answer needs</strong><small>The details that could actually help.</small></button>
-      <div id="loomFirstCrossingPrivate" class="loom-first-crossing-private" role="note"><strong>Beyond this example</strong><small>Part of the conversation stays out of view</small></div>
+      <button type="button" data-first-crossing-item="brief" aria-pressed="false"><strong>Ask a personal question</strong><small>Talk through a decision that matters.</small></button>
+      <button type="button" data-first-crossing-item="source" aria-pressed="false"><strong>Choose the context</strong><small>Share what's useful for an answer.</small></button>
+      <div id="loomFirstCrossingPrivate" class="loom-first-crossing-private" role="note"><strong>Rest of the conversation</strong><small>Not included in the example request</small></div>
     </div>
     <div class="loom-first-crossing-actions">
       <button type="button" id="loomFirstCrossingAction" hidden>Check my request →</button>
