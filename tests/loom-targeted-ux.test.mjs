@@ -1,4 +1,6 @@
 import test from 'node:test';
+// Standard Portable Loom must ship independently runnable mathematics, not names alone.
+import './portable-loom-tomography-export.test.mjs';
 // Keep firewall-identity regressions in the mandatory targeted validation shard.
 import './loom-firewall-identity-20261014.test.mjs';
 import assert from 'node:assert/strict';
