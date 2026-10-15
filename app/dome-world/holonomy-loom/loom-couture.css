@@ -463,3 +463,33 @@ body{background:var(--ink);overflow-x:clip}
   #loomAiWorkspace .loom-science-host .loom-science-table{min-width:580px}
   #loomAiWorkspace .loom-science-intro{max-width:100%}
 }
+
+
+/* Preserve useful mobile scientific evidence without sideways data columns. */
+@media(max-width:600px){
+  #loomAiWorkspace .loom-science-host .loom-science-table{
+    display:block;width:100%;min-width:0;max-width:100%;table-layout:fixed
+  }
+  #loomAiWorkspace .loom-science-host .loom-science-table tr{
+    display:grid;grid-template-columns:minmax(0,1fr);margin-bottom:13px;
+    border:1px solid rgba(223,212,236,.25);border-radius:5px
+  }
+  #loomAiWorkspace .loom-science-host .loom-science-table tr:first-child{display:none}
+  #loomAiWorkspace .loom-science-host .loom-science-table td{
+    display:flex;justify-content:space-between;gap:12px;min-width:0;
+    width:100%;white-space:normal;overflow-wrap:anywhere;text-align:right
+  }
+  #loomAiWorkspace .loom-science-host .loom-science-table td::before{
+    content:attr(data-label);display:block;max-width:63%;
+    flex:1 1 auto;text-align:left;color:#d1cbdc
+  }
+  #loomAiWorkspace[data-loom-intro="true"] .loom-stage{
+    padding:16px 24px 12px
+  }
+  #loomAiWorkspace[data-loom-intro="true"] .loom-first-crossing{gap:11px}
+  #loomAiWorkspace[data-loom-intro="true"] .loom-tutorial-meta{margin-bottom:12px}
+  #loomAiWorkspace[data-loom-intro="true"] .loom-first-crossing-copy h2{margin-bottom:14px}
+  #loomAiWorkspace[data-loom-intro="true"] .loom-value-route{
+    margin-top:10px;padding-top:8px
+  }
+}
