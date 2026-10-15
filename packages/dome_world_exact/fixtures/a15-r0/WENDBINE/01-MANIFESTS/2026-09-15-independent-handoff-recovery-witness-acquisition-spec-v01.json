@@ -1,0 +1,97 @@
+{
+  "schema": "td613.independent-handoff-recovery-witness-acquisition-spec/v0.1",
+  "created_at": "2026-09-15T05:31:00Z",
+  "parent_tomography": {
+    "pr": 1143,
+    "sealed_head": "cf6232fe74c2adf319f009ab78942b3aa396f428",
+    "result": "BOUNDED_FORMAL_OPEN_RESIDUAL_TOMOGRAPHY_SUPPORTED"
+  },
+  "scope": "SPECIFICATION_ONLY",
+  "initial_episode_state": "NOT_ACQUIRED",
+  "future_episode_states": [
+    "NOT_ACQUIRED",
+    "HELD",
+    "FAILED",
+    "CANDIDATE"
+  ],
+  "forbidden_future_state": "PROVEN_BY_SPECIFICATION",
+  "allowed_witness_source_classes": [
+    "INDEPENDENT_RECEIVER_OBSERVATION",
+    "SYSTEM_GENERATED_EXECUTION_RECEIPT",
+    "APPEND_ONLY_CUSTODY_RECORD",
+    "POST_STATE_VALIDATION"
+  ],
+  "lanes": {
+    "right_of_resignation": {
+      "parent_state": "OPEN",
+      "required_witness_families": [
+        "EXPLICIT_POST_PARTICIPATION_EXIT_OR_REVOCATION_OPERATOR",
+        "EXECUTED_POST_PARTICIPATION_WITHDRAWAL_RECEIPT",
+        "INDEPENDENT_CONTINUATION_WITHOUT_CUSTODIAN_AUTHORITY",
+        "POST_EXIT_ROUTE_USEFULNESS_WITNESS"
+      ],
+      "defeat_conditions": [
+        "GENERIC_REVOCATION_ONLY",
+        "CUSTODIAN_NARRATION_REQUIRED_AFTER_EXIT",
+        "CONTINUATION_REQUIRES_ORIGINATING_CUSTODIAN_AUTHORITY",
+        "NO_EXECUTED_WITHDRAWAL_RECEIPT"
+      ]
+    },
+    "safe_return_recovery": {
+      "parent_state": "NON_EQUIVALENT",
+      "required_witness_families": [
+        "EXPLICIT_RECOVERY_TRANSITION_SPECIFICATION",
+        "EXECUTED_RECOVERY_RECEIPT",
+        "VALIDATED_POST_RECOVERY_STATE",
+        "DECLARED_DEFEAT_OR_ROLLBACK_CONDITION"
+      ],
+      "defeat_conditions": [
+        "REPAIR_PATH_SUBSTITUTED_FOR_RECOVERY",
+        "NO_EXECUTED_RECOVERY_RECEIPT",
+        "POST_RECOVERY_STATE_UNVALIDATED",
+        "NO_DECLARED_DEFEAT_OR_ROLLBACK_CONDITION"
+      ]
+    }
+  },
+  "episode_contract": {
+    "preregistration_required_before_execution": true,
+    "immutable_episode_id_required": true,
+    "witness_identity_required": true,
+    "witness_source_class_required": true,
+    "observation_time_required": true,
+    "episode_binding_required": true,
+    "custodian_narration_may_satisfy_independent_witness": false,
+    "held_and_failed_episodes_retained": true,
+    "candidate_requires_all_lane_witnesses_and_no_defeat_condition": true,
+    "candidate_is_return": false
+  },
+  "invariants": [
+    "PREREGISTRATION_PRECEDES_EXECUTION",
+    "WITNESS_IDENTITY_AND_SOURCE_CLASS_RECORDED",
+    "CUSTODIAN_NARRATION_IS_NOT_INDEPENDENT_WITNESS",
+    "OBSERVED_WITNESS_MUST_BIND_TO_EPISODE_AND_TIME",
+    "ABSENCE_OF_ADMITTED_WITNESS_IS_NOT_WITNESS_OF_ABSENCE",
+    "FAILED_OR_HELD_EPISODES_REMAIN_RETAINED",
+    "RIGHT_OF_RESIGNATION_LANE_REMAINS_DISTINCT_FROM_RECOVERY_LANE"
+  ],
+  "claims": {
+    "witness_acquired": false,
+    "right_of_resignation_established": false,
+    "recovery_established": false,
+    "return_established": false,
+    "human_replication_established": false,
+    "empirical_exteriority_established": false
+  },
+  "claim_ceiling": [
+    "ACQUISITION_SPECIFICATION != WITNESS_ACQUISITION",
+    "SPEC_COMPLETE != EPISODE_OBSERVED",
+    "GENERIC_REVOCATION != RIGHT_OF_RESIGNATION",
+    "REPAIR_PATH != RECOVERY != RETURN",
+    "CANDIDATE != RETURN",
+    "INDEPENDENT_MACHINE_VALIDATION != INDEPENDENT_HUMAN_EXECUTION",
+    "GREEN != RIGHT_OF_RESIGNATION",
+    "GREEN != RECOVERY",
+    "GREEN != CUSTODIAN_INDEPENDENT_RETURN",
+    "GREEN != EMPIRICAL_EXTERIORITY"
+  ]
+}
