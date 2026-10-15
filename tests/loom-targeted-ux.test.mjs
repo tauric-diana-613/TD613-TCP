@@ -147,8 +147,8 @@ test('Flow-Core remains a single accessible header guide with eight text-only gl
 test('the firewall promise explains outgoing checks, returning review and limits', () => {
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
   assert.match(doc.querySelector('#loomFirstCrossingTitle').textContent, /Firewall your online life from AI/i);
-  assert.match(doc.querySelector('.loom-intro p').textContent, /The prompt shows only one part.*traces could reveal/i);
-  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent, /You can need ChatGPT, Gemini, or another LLM.*outside the conversation could piece it together/i);
+  assert.match(doc.querySelector('.loom-intro p').textContent, /Review what you send.*whole exchange could reveal/i);
+  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent, /You can ask ChatGPT, Gemini, or another LLM.*exchange might reveal/i);
   assert.match(doc.querySelector('#loomReturnWorkspace header').textContent, /before accepting/i);
   assert.match(doc.querySelector('[data-tool-panel="boundary"]').textContent, /external AI provider determines its own retention/i);
   assert.match(workspaceSource, /title:'The clues add up\.'/);
