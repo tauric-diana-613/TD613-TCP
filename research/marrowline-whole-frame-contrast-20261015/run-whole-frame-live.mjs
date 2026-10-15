@@ -106,7 +106,9 @@ async function run(){
   }catch(err){x.held=err?.name||'TRANSPORT_FAILURE';x.message=String(err?.message||'').slice(0,190);}
   episode.observed.push(x);await write();
   const safe={...x};delete safe.submittedRequest;console.log('WHOLE_FRAME_OBSERVATION '+JSON.stringify(safe));
-  if(x.held || x.providerStatus!==200)break;
+  if(x.held || x.providerStatus!==200 || x.outerHttp!==200 || !x.outerApiOk || x.googleFinishReason!=='STOP' || !x.originalWire?.fullCapture || !x.originalWire?.parity || Object.values(x.originalWire.parity).some(v=>v===false)) {
+    episode.held = x.held || 'FIRST_CONDITION_PROVIDER_OR_WIRE_NOT_COMPLETE'; await write(); break;
+  }
   const n=x.usage?.totalTokenCount??0;
   if(n>15000){episode.held='FIRST_RETURN_TOKEN_BUDGET';await write();break;}
  }
