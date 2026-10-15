@@ -1,0 +1,117 @@
+{
+  "schema": "td613.dome-world.open-residual-tomography-preregistration/v0.1",
+  "date": "2026-09-15",
+  "chamber_id": "DOME_WORLD_TOMOGRAPHY_OF_OPEN_RESIDUALS_WITHOUT_RETURN_PROMOTION_V01",
+  "parent_replication": {
+    "pull_request": 1142,
+    "sealed_head": "29bfaffacbbcc5e42133a2373987bb9df580be1e",
+    "scientific_green_head": "a4ea1b35afd53dca2fb179680efc91811dcfa3c4",
+    "scientific_green_run_number": 3378,
+    "scientific_green_run_id": 34929252178,
+    "receipt_binding_head": "28f50af9b4754d13d524543ace794ec01f13a3a9",
+    "receipt_binding_run_number": 3379,
+    "receipt_binding_run_id": 34929376022,
+    "sealed_run_number": 3380,
+    "sealed_run_id": 34929515238,
+    "result": "BOUNDED_INDEPENDENT_MACHINE_RECEIVER_REPLICATION_SUPPORTED",
+    "must_remain_immutable": true
+  },
+  "research_question": "Can bounded formal Dome-World tomography characterize which admitted evidence coordinates and independent witnesses remain missing for Right of Resignation and Safe Return/Recovery, while preserving archive-limited non-identifiability and refusing to promote either residual into Recovery, Return, empirical exteriority, or human independence?",
+  "formal_evidence_state_vector": {
+    "symbol": "E=(V,C,P,L)",
+    "coordinates": {
+      "V": "trace visibility / admitted measurement availability for the residual",
+      "C": "custody or provenance recoverability for the residual evidence path",
+      "P": "admitted process/operator identifiability for the claimed transition",
+      "L": "admitted post-transition state observability or reconstructibility"
+    },
+    "scope": "FORENSIC_ACCOUNTING_VECTOR_NOT_NOVELTY_CLAIM",
+    "zero_semantics": "0 means the required witness is absent from the frozen admitted archive, not that the underlying process or state does not exist outside the archive"
+  },
+  "frozen_residuals": [
+    {
+      "id": "right_of_resignation",
+      "parent_relation_class": "OPEN",
+      "parent_state": "HELD_NOT_EXPOSED_IN_PORTABLE_PACKET",
+      "expected_vector": {"V":1,"C":1,"P":0,"L":0},
+      "required_witness_family": [
+        "EXPLICIT_POST_PARTICIPATION_EXIT_OR_REVOCATION_OPERATOR",
+        "EXECUTED_POST_PARTICIPATION_WITHDRAWAL_RECEIPT",
+        "INDEPENDENT_CONTINUATION_WITHOUT_CUSTODIAN_AUTHORITY",
+        "POST_EXIT_ROUTE_USEFULNESS_WITNESS"
+      ],
+      "archive_limited_ambiguity": [
+        "NO_EXIT_OPERATOR_EXISTS",
+        "EXIT_OPERATOR_EXISTS_BUT_IS_UNEXPOSED"
+      ]
+    },
+    {
+      "id": "safe_return_recovery",
+      "parent_relation_class": "NON_EQUIVALENT",
+      "parent_state": "HELD_REPAIR_PATH_IS_NOT_RECOVERY",
+      "expected_vector": {"V":1,"C":1,"P":0,"L":0},
+      "required_witness_family": [
+        "EXPLICIT_RECOVERY_TRANSITION_SPECIFICATION",
+        "EXECUTED_RECOVERY_RECEIPT",
+        "VALIDATED_POST_RECOVERY_STATE",
+        "DECLARED_DEFEAT_OR_ROLLBACK_CONDITION"
+      ],
+      "archive_limited_ambiguity": [
+        "RECOVERY_CAPABLE_BUT_UNEXECUTED",
+        "RECOVERY_INCAPABLE"
+      ]
+    }
+  ],
+  "preregistered_findings_if_supported": [
+    "BOTH_RESIDUALS_PROJECT_TO_THE_SAME_COARSE_VCPL_VECTOR_UNDER_THE_FROZEN_ARCHIVE",
+    "SAME_COARSE_VECTOR_DOES_NOT_IMPLY_SAME_RESIDUAL_SEMANTICS",
+    "TYPED_WITNESS_DEFICITS_REMAIN_DISTINCT",
+    "ABSENCE_OF_ADMITTED_WITNESS_DOES_NOT_ESTABLISH_ABSENCE_OF_EXTERNAL_PROCESS",
+    "GENERIC_REVOCATION_NEIGHBORHOOD_DOES_NOT_ESTABLISH_POST_PARTICIPATION_EXIT_OPERATOR",
+    "REPAIR_PATH_PRESENCE_DOES_NOT_ESTABLISH_RECOVERY_PROCESS_OR_POST_RECOVERY_STATE"
+  ],
+  "hostile_controls": [
+    "GENERIC_REVOCATION_LABEL_MUST_NOT_FLIP_P",
+    "REPAIR_PATH_MUST_NOT_FLIP_L",
+    "MACHINE_REPLICATION_MUST_NOT_FLIP_HUMAN_INDEPENDENCE",
+    "RECEIPT_CHAIN_MUST_NOT_COUNT_AS_TRANSITION_EXECUTION",
+    "COARSE_VECTOR_EQUALITY_MUST_NOT_COLLAPSE_TYPED_RESIDUAL_IDENTITY",
+    "ABSENCE_OF_WITNESS_MUST_NOT_BECOME_WITNESS_OF_ABSENCE",
+    "FORMAL_TOMOGRAPHY_MUST_NOT_PROMOTE_EMPIRICAL_EXTERIORITY"
+  ],
+  "success_condition": {
+    "two_residuals_tomographed": true,
+    "right_of_resignation_vector": {"V":1,"C":1,"P":0,"L":0},
+    "safe_return_recovery_vector": {"V":1,"C":1,"P":0,"L":0},
+    "typed_deficits_remain_distinct": true,
+    "archive_limited_ambiguity_preserved": true,
+    "right_of_resignation_remains_open": true,
+    "safe_return_recovery_remains_non_equivalent": true,
+    "repair_path_recovery_return_distinction_preserved": true,
+    "empirical_exteriority_promoted": false,
+    "human_replication_promoted": false,
+    "return_promoted": false
+  },
+  "claim_ceiling": [
+    "FORMAL_TOMOGRAPHY != EMPIRICAL_TOMOGRAPHY",
+    "ARCHIVE_LIMITED_P0 != PROCESS_DOES_NOT_EXIST",
+    "ARCHIVE_LIMITED_L0 != STATE_DOES_NOT_EXIST",
+    "V,C,P,L VECTOR != COMPLETE_RESIDUAL_SEMANTICS",
+    "SAME_VECTOR != SAME_FAILURE_MODE",
+    "GENERIC_REVOCATION != RIGHT_OF_RESIGNATION",
+    "REPAIR_PATH != RECOVERY != RETURN",
+    "MACHINE_REPLICATION != INDEPENDENT_HUMAN_REPLICATION",
+    "GREEN != EMPIRICAL_EXTERIORITY",
+    "GREEN != RIGHT_OF_RESIGNATION",
+    "GREEN != CUSTODIAN_INDEPENDENT_RETURN"
+  ],
+  "maximum_green": "BOUNDED_FORMAL_OPEN_RESIDUAL_TOMOGRAPHY_SUPPORTED",
+  "next_stage_if_green": "INDEPENDENT_HANDOFF_AND_RECOVERY_WITNESS_ACQUISITION_SPEC_BEFORE_ANY_RETURN_CLAIM",
+  "return_promotion_authority": false,
+  "empirical_exteriority_authority": false,
+  "human_replication_authority": false,
+  "merge_authority": false,
+  "deployment_authority": false,
+  "human_closure_required": true,
+  "seal": "⟐"
+}
