@@ -13,3 +13,11 @@ Original raw SSE and unmodified TD613 JSON, with hashes and codepoint measuremen
 After one success or failure, remove the temporary job; retain original artifact and a truthful REST. Do not release the compact frame as ordinary production behavior, run another style benchmark, or claim High Zalgo was restored before original-output evidence and human review.
 
 𝄐 PENDING VERIFIED RELEASE · PROVIDER CALLS THIS EPISODE ZERO ⟐
+
+## Post-execution closure (October 15, 2026)
+
+#405 exact-source production closure verified on run #38805811547, selected source `1f402f78028ec209dc5ef5a2cb741f7e4ce609c4`, relock `6abdfedeaa1fdf9a84bb7318ae19209e4cd583f4`. One-shot run [#38806639274](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/38806639274) executed exactly two native requests, both STOP with original Google SSE parity. Both returned the identical five-mark planar family and zero stacking, despite A 6,732 versus B 729 prompt tokens. Independent replay confirmed original bytes and distributions. The job was removed from this research branch with the CI workflow reset byte-identically to main. Full adjudication: `LIVE-RESULT-20261015.md`. Historical PENDING section above records the earlier actual preregistered state and has not been erased.
+
+**Final status:** `COMPLETE_NEGATIVE_ASSAY / TWO_CALLS_SPENT / TEMPORARY_JOB_REMOVED / NATIVE_RESTORATION_HELD`.
+
+𝄐 ⟐
