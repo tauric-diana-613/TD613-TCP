@@ -13,28 +13,29 @@ const workspace=fs.readFileSync(new URL('ai-workspace.js',root),'utf8');
 const dom=new JSDOM(loomWorkspaceTemplate);
 const doc=dom.window.document;
 
-test('the Golden Egg headline distinguishes authorized utility from outsider reconstruction',()=>{
+test('the opening speaks plainly about useful AI help and private conversation',()=>{
   assert.match(doc.querySelector('#loomFirstCrossingTitle').textContent,/Talk to AI\. Keep the conversation yours/i);
-  assert.match(doc.querySelector('.loom-hero-promise').textContent,/The Golden Egg/);
-  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent,/outsider cannot reconstruct.*boundary to the test/i);
+  assert.equal(doc.querySelector('.loom-hero-promise'),null,'no competing marketing headline');
+  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent,/A good answer shouldn't expose.*outsider could figure out/i);
+  assert.doesNotMatch(doc.querySelector('#loomFirstCrossing').textContent,/Golden Egg/i);
   assert.doesNotMatch(doc.querySelector('#loomFirstCrossing').textContent,/draft a work email|Northstar|Acquisition talks/i);
   assert.equal(doc.querySelectorAll('[data-first-crossing-item]').length,2);
-  assert.match(doc.querySelector('.loom-golden-egg-proof').textContent,/observer leakage.*reconstruction.*joining synergy.*measured geometry.*protected returns/i);
-  assert.match(doc.querySelector('.loom-golden-egg-proof').textContent,/not that proof/i);
-  assert.match(doc.querySelector('[data-first-crossing-item="brief"]').textContent,/private conversation/i);
-  assert.match(doc.querySelector('[data-first-crossing-item="source"]').textContent,/what may travel/i);
+  assert.match(doc.querySelector('.loom-research-proof').textContent,/what leaks.*what useful information survives.*clues reveal.*measured geometric relationship.*protected and control returns/i);
+  assert.match(doc.querySelector('.loom-research-proof').textContent,/does not prove the result/i);
+  assert.match(doc.querySelector('[data-first-crossing-item="brief"]').textContent,/Talk through a personal decision/i);
+  assert.match(doc.querySelector('[data-first-crossing-item="source"]').textContent,/Choose what AI can use/i);
 });
 
 test('the permitted takeaway is a local fictional input, with a distinct held source',()=>{
   assert.equal(FIRST_CROSSING_PRACTICE.documents.length,3);
   assert.deepEqual(FIRST_CROSSING_PRACTICE.documents.filter(x=>x.share).map(x=>x.id),['brief','source']);
-  assert.match(FIRST_CROSSING_PRACTICE.task,/difficult personal decision/i);
+  assert.match(FIRST_CROSSING_PRACTICE.task,/considering taking a job in another city/i);
   assert.match(FIRST_CROSSING_PRACTICE.documents[1].text,/month before I need to decide/);
   const check=checkFirstCrossingPrivacy();
   assert.equal(check.provider_called,false);
   assert.equal(check.blocked_private_egress_attempts,1);
   assert.equal(check.whole_conversation_leakage_fraction,null);
-  assert.doesNotMatch(doc.querySelector('.loom-boundary-event').textContent,/I cried on the phone with my sister last night/);
+  assert.doesNotMatch(doc.querySelector('.loom-boundary-event').textContent,/My sister and I argued about the move last night/);
 });
 
 test('mobile sculpture stays mobile; desktop retains the canonical, single-clock field',()=>{
