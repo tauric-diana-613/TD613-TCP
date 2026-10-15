@@ -14,16 +14,16 @@ const dom=new JSDOM(loomWorkspaceTemplate);
 const doc=dom.window.document;
 
 test('the opening speaks plainly about useful AI help and private conversation',()=>{
-  assert.match(doc.querySelector('#loomFirstCrossingTitle').textContent,/Talk to AI\. Keep the conversation yours/i);
+  assert.match(doc.querySelector('#loomFirstCrossingTitle').textContent,/You wanted an answer\. Not an audience/i);
   assert.equal(doc.querySelector('.loom-hero-promise'),null,'no competing marketing headline');
-  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent,/A good answer shouldn't expose.*outsider could figure out/i);
+  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent,/Ask ChatGPT, Gemini, or another AI.*what someone else might learn/i);
   assert.doesNotMatch(doc.querySelector('#loomFirstCrossing').textContent,/Golden Egg/i);
   assert.doesNotMatch(doc.querySelector('#loomFirstCrossing').textContent,/draft a work email|Northstar|Acquisition talks/i);
   assert.equal(doc.querySelectorAll('[data-first-crossing-item]').length,2);
-  assert.match(doc.querySelector('.loom-research-proof').textContent,/what leaks.*what useful information survives.*clues reveal.*measured geometric relationship.*protected and control returns/i);
-  assert.match(doc.querySelector('.loom-research-proof').textContent,/does not prove the result/i);
-  assert.match(doc.querySelector('[data-first-crossing-item="brief"]').textContent,/Talk through a personal decision/i);
-  assert.match(doc.querySelector('[data-first-crossing-item="source"]').textContent,/Choose what AI can use/i);
+  assert.match(doc.querySelector('.loom-research-proof').textContent,/both routes.*research targets.*L.*R.*J/i);
+  assert.match(doc.querySelector('.loom-research-proof').textContent,/cannot settle what an outsider could reconstruct/i);
+  assert.match(doc.querySelector('[data-first-crossing-item="brief"]').textContent,/Ask a personal question/i);
+  assert.match(doc.querySelector('[data-first-crossing-item="source"]').textContent,/Choose the context/i);
 });
 
 test('the permitted takeaway is a local fictional input, with a distinct held source',()=>{
