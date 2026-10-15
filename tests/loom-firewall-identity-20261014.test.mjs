@@ -51,10 +51,26 @@ test('the overture casts all eight glyph relations while emphasizing legible ret
   const presentation=loomOpeningPresentation();
   const slots=presentation.flowcore_choreography.presentation_slots;
   assert.equal(presentation.tutorial_operator,null);
-  assert.equal(slots.length,12);
-  assert.ok(slots.filter(x=>x==='protected_continuity').length>=2);
-  assert.ok(slots.filter(x=>x==='bounded_emergence').length>=2);
-  assert.ok(slots.filter(x=>x==='release').length>=2);
-  assert.ok(slots.filter(x=>x==='structural_rest').length>=2);
+  assert.equal(slots.length,23);
+  assert.ok(slots.filter(x=>x==='protected_continuity').length>=6);
+  assert.ok(slots.filter(x=>x==='bounded_emergence').length>=6);
+  assert.ok(slots.includes('release'));
+  assert.ok(slots.filter(x=>x==='structural_rest').length>=3);
   assert.equal(new Set(presentation.flowcore_choreography.relations).size,8);
+});
+
+test('C+ repair: fermata uses SVG fallback, private glyph is visible, and action sleeps in place',()=>{
+  const renderer=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/instrument-state-view.js',import.meta.url),'utf8');
+  const js=fs.readFileSync(new URL('../app/dome-world/holonomy-loom/ai-workspace.js',import.meta.url),'utf8');
+  const tpl=new JSDOM(loomWorkspaceTemplate).window.document;
+  assert.match(renderer,/restFlightGlyphs=flightGlyphs\.map/);
+  assert.match(renderer,/svgEl\('path',\{d:'M-23 2 Q0 -28 23 2'\}\)/);
+  assert.match(renderer,/illustration&&!frame\.reduced_motion\?seconds\*\.22:0/);
+  assert.match(js,/check\.disabled=!action/);
+  assert.match(js,/finish\.disabled=!stop/);
+  assert.match(js,/coordinator\.setContinuous\(true\); \/\/ fictional tutorial only/);
+  assert.match(css, /loom-first-crossing-actions button:disabled/);
+  assert.match(css, /loom-first-crossing-private\{[\s\S]*?display:flex !important/);
+  assert.match(tpl.querySelector('.loom-private-continuity-note').textContent,/cōl/);
+  assert.doesNotMatch(tpl.querySelector('.loom-boundary-event').textContent,/phrase check|catches|redactor/i);
 });
