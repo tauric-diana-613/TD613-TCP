@@ -146,9 +146,9 @@ test('Flow-Core remains a single accessible header guide with eight text-only gl
 
 test('the firewall promise explains outgoing checks, returning review and limits', () => {
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
-  assert.match(doc.querySelector('#loomFirstCrossingTitle').textContent, /Private should still mean private\. Even with AI/i);
-  assert.match(doc.querySelector('.loom-intro p').textContent, /Research, write, code, decide.*handing it the wheel/i);
-  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent, /Ask ChatGPT, Gemini, or another LLM.*outsider could piece together/i);
+  assert.match(doc.querySelector('#loomFirstCrossingTitle').textContent, /Firewall your online life from AI/i);
+  assert.match(doc.querySelector('.loom-intro p').textContent, /The prompt is only the beginning.*traces it leaves/i);
+  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent, /You can need ChatGPT, Gemini, or another LLM.*outside the conversation could piece it together/i);
   assert.match(doc.querySelector('#loomReturnWorkspace header').textContent, /before accepting/i);
   assert.match(doc.querySelector('[data-tool-panel="boundary"]').textContent, /external AI provider determines its own retention/i);
   assert.match(workspaceSource, /title:'The clues add up\.'/);
@@ -175,7 +175,7 @@ test('the seven steps display actual evidence instead of a decorative firewall d
 test('first use starts the full seven-step crossing with no primary bypass', () => {
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
   const hero=doc.querySelector('#loomFirstCrossing');
-  assert.match(hero.textContent,/Private should still mean private\. Even with AI/);
+  assert.match(hero.textContent,/Firewall your online life from AI/);
   assert.equal(doc.querySelector('#loomStartNow'),null);
   assert.equal(doc.querySelector('#loomExploreDemo'),null);
   assert.equal(doc.querySelector('#loomTutorialProgress').textContent,'1 of 7 · Choose');
@@ -218,7 +218,7 @@ test('How Loom works is a recoverable handoff preview with a living Flow-Core re
   assert.match(workspaceSource, /nextFlowcoreChoreography/);
   assert.match(workspaceSource, /flowcore_choreography:firstCrossingChoreography/);
   assert.match(workspaceSource, /coordinator\.setContinuous\(true\)/);
-  assert.match(workspaceSource, /title:'Private should still mean private\. Even with AI\.'/);
+  assert.match(workspaceSource, /title:'Firewall your online life from AI\.'/);
   assert.match(workspaceSource, /title:'What could a stranger work out\?'/);
   assert.match(workspaceSource, /Try Loom →/);
   assert.doesNotMatch(workspaceSource, /title:'Prepared is not transmitted\.'/);
