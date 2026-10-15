@@ -41,9 +41,16 @@ export function loomOpeningPresentation(score) {
       // Weighted theatrical casting, confined to the fictional ingress. The
       // eight canonical relation IDs remain unchanged and the 39 carriers
       // retain the AnimationCoordinator's one shared clock.
-      presentation_slots: ['recurrence','protected_continuity','bounded_emergence',
-        'release','structural_rest','created_potential','gathering','protected_continuity',
-        'bounded_emergence','release','structural_rest','released_tendency'],
+      presentation_slots: [
+        // Repeated cōl/hõt are intentionally dominant in the 39 fixed carriers.
+        // Rest is part of this unsent overture, never an observed live event.
+        'protected_continuity','bounded_emergence','structural_rest','protected_continuity',
+        'bounded_emergence','gathering','protected_continuity','bounded_emergence',
+        'structural_rest','protected_continuity','bounded_emergence','release',
+        'protected_continuity','bounded_emergence','created_potential','structural_rest',
+        'protected_continuity','bounded_emergence','recurrence','protected_continuity',
+        'bounded_emergence','structural_rest','released_tendency'
+      ],
       evidence_class: 'TUTORIAL_ILLUSTRATION_ONLY'
     }
   };
