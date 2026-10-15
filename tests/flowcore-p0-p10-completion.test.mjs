@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import test from 'node:test';
 
+await import('./td613-flowcore-boundary-role-stratification-v09.test.mjs');
+
 const read = path => fs.readFileSync(path, 'utf8');
 
 const receipts = Object.freeze({

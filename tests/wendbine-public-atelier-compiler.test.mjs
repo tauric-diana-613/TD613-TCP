@@ -11,19 +11,22 @@ const registry=JSON.parse(fs.readFileSync(path.join(root,'01-MANIFESTS/typed-rel
 const relations=registry.relations.map(row=>Object.fromEntries(registry.fields.map((field,index)=>[field,row[index]])));
 const index=JSON.parse(fs.readFileSync(path.join(root,'03-DERIVATIVES/public-reddit-48h/topology-index.v0.1.json'),'utf8'));
 
-assert.equal(profile.schema,'td613.atelier-profile/v0.1');
+assert.equal(profile.schema,'td613.atelier-profile/v0.2');
 assert.equal(profile.atelier_id,'WENDBINE');
 assert.equal(profile.method_version,'td613.atelier-method/v0.1');
 assert.equal(profile.method_pr,1118);
 assert.equal(profile.snapshot_model,'BOUNDED_PUBLIC_STREAM_SNAPSHOT');
+assert.equal(profile.profile_state,'MERGED_PUBLIC_SURFACE_ATELIER_WITH_ACTIVE_RESEARCH_FRONTIER');
+assert.equal(profile.reentry_surface,'99-ADMIN/REENTRY_ATLAS.json');
 assert.equal(profile.private_group_intake,false);
 assert.equal(profile.historical_expansion_before_current_snapshot_inspection,false);
 assert.equal(profile.human_closure_required,true);
 assert.equal(profile.scientific_promotion_authority,false);
 for (const route of ['EXPERIENTIAL','CUSTODIAL','AUDIT','IMPLEMENTATION']) assert.ok(profile.aia_routes.includes(route),`missing synchronized AIA route: ${route}`);
 for (const strength of ['SERIALIZED_PUBLIC_TOPOLOGY','SOURCE_EXPLICIT_VERSION_CORRECTION','PUBLIC_PRIVATE_SURFACE_FIREWALL','TYPED_RELATION_RECONSTRUCTION','HELD_OUT_ARCHITECTURAL_PLACEMENT','SHUFFLE_CONTROL','CONCEPT_LABEL_PERMUTATION','TYPED_EDGE_ABLATION','UNRELATED_POST_DECOY']) assert.ok(profile.distinctive_strengths.includes(strength),`dropped Wendbine strength: ${strength}`);
-assert.equal(profile.held_or_conditional_stages.S5_CONVERGENCE_DIVERGENCE_LINEAGE,'HELD_UNTIL_INTERNAL_PUBLIC_RECONSTRUCTABILITY_ASSAY');
-assert.equal(profile.held_or_conditional_stages.S7_EXTERNAL_SCIENTIFIC_CONFRONTATION,'HELD_UNTIL_CONVENTIONAL_NOMENCLATURE_CROSSWALK');
+assert.ok(profile.active_stages.includes('S7_EXTERNAL_SCIENTIFIC_CONFRONTATION'),'S7 must remain active after the completed nomenclature/literature confrontation.');
+assert.equal(profile.held_or_conditional_stages.S5_CONVERGENCE_DIVERGENCE_LINEAGE,'HELD_UNTIL_SOURCE_BOUND_LINEAGE_QUESTION_REQUIRES_IT');
+assert.equal(profile.held_or_conditional_stages.S7_EXTERNAL_SCIENTIFIC_CONFRONTATION,undefined,'S7 may not remain stale-held after activation.');
 
 assert.equal(meta.snapshot_id,'wendbine-public-reddit-48h-20260911T092700Z-v01');
 assert.equal(meta.coverage.state,'PUBLIC_SEARCH_SNAPSHOT_NOT_EXHAUSTIVE_CENSUS');

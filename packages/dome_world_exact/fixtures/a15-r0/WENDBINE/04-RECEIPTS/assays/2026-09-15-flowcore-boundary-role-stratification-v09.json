@@ -1,0 +1,103 @@
+{
+  "schema": "td613.flowcore-boundary-role-stratification/v0.9",
+  "date": "2026-09-15",
+  "state": "SOURCE_BOUND_SECOND_FAMILY_COLLAPSE_ASSAY_ZERO_NOVELTY_PROMOTION",
+  "question": "Does the v0.7/v0.8 collapse-retention criterion generalize to Flow-Core, and must retained boundaries be typed by the kind of value they actually contribute?",
+  "source_family": "FLOWCORE_CONTEXT_SERIES",
+  "source_paths": [
+    "app/engine/flowcore-context-series.js",
+    "tests/aperture-v31-observatory-contracts.test.mjs",
+    "tests/helpers/phase5-fixtures.mjs"
+  ],
+  "tested_chain": [
+    "FLOWCORE_CONTEXT_RECEIPT",
+    "RECEIPT_ADMISSIBILITY_AUTHORITY_VALIDATION",
+    "ARTIFACT_BLIND_PER_SNAPSHOT_ENTRY_PROJECTION",
+    "CONTEXT_SERIES_AGGREGATION",
+    "CANONICAL_SERIES_DIGEST",
+    "SERIES_VERIFICATION"
+  ],
+  "same_terminal_histories": {
+    "history_a": [
+      {"snapshot_id": "SNAP_A", "status": "OPEN"},
+      {"snapshot_id": "SNAP_B", "status": "ABSTAIN"}
+    ],
+    "history_b": [
+      {"snapshot_id": "SNAP_A", "status": "ABSTAIN"},
+      {"snapshot_id": "SNAP_B", "status": "OPEN"}
+    ],
+    "shared_aggregate": {
+      "status": "PARTIAL",
+      "snapshot_count": 2,
+      "abstention_count": 1,
+      "missing_snapshot_count": 1
+    },
+    "aggregate_terminal_distinguishes_history": false,
+    "entry_sequence_distinguishes_history": true,
+    "bounded_conclusion": "TERMINAL_AGGREGATE_EQUIVALENCE != DIAGNOSTIC_LOCALIZATION_EQUIVALENCE"
+  },
+  "boundary_scorecard": [
+    {
+      "boundary": "RECEIPT_ADMISSIBILITY_AUTHORITY_VALIDATION",
+      "retained": true,
+      "role_credit": ["GOVERNANCE_TYPE_SAFETY"],
+      "scientific_epistemic_operator": false,
+      "witness": "artifact-reference and automatic-action hostile controls are rejected before series construction"
+    },
+    {
+      "boundary": "ARTIFACT_BLIND_PER_SNAPSHOT_ENTRY_PROJECTION",
+      "retained": true,
+      "role_credit": ["GOVERNANCE_PROJECTION", "DATA_MINIMIZATION"],
+      "scientific_epistemic_operator": false,
+      "witness": "entry surface intentionally carries a bounded subset of receipt fields and fixes artifact_reference=null"
+    },
+    {
+      "boundary": "PER_SNAPSHOT_ENTRIES_TO_AGGREGATE_SERIES_STATUS",
+      "retained": true,
+      "role_credit": ["DIAGNOSTIC_LOCALIZATION"],
+      "scientific_epistemic_operator": false,
+      "witness": "two distinct OPEN/ABSTAIN placements collapse to the same PARTIAL aggregate while entries preserve failure location"
+    },
+    {
+      "boundary": "CANONICAL_SERIES_DIGEST_AND_VERIFICATION",
+      "retained": true,
+      "role_credit": ["INTEGRITY_WITNESS", "FORMAL_INVARIANT"],
+      "scientific_epistemic_operator": false,
+      "witness": "untouched series verifies and mutation of retained missingness breaks verification"
+    }
+  ],
+  "counts": {
+    "boundaries_examined": 4,
+    "boundaries_retained": 4,
+    "scientific_epistemic_operators_promoted": 0,
+    "diagnostic_localization_boundaries": 1,
+    "governance_type_safety_boundaries": 1,
+    "governance_projection_boundaries": 1,
+    "integrity_witness_boundaries": 1
+  },
+  "laws": [
+    "SAME_AGGREGATE_STATUS != SAME_CONTEXT_HISTORY",
+    "TERMINAL_AGGREGATE_EQUIVALENCE != DIAGNOSTIC_LOCALIZATION_EQUIVALENCE",
+    "AUTHORITY_GUARD != EPISTEMIC_INFERENCE",
+    "TYPE_SAFETY_VALUE != SCIENTIFIC_OPERATOR_STATUS",
+    "NOT_PROJECTED != NOT_PRESENT_UPSTREAM",
+    "PROJECTION_LOSS != PROOF_OF_SOURCE_ABSENCE",
+    "DIGEST_VERIFIED != EMPIRICALLY_TRUE",
+    "INTEGRITY_WITNESS != EXTERNALITY_WITNESS",
+    "BOUNDARY_RETENTION != SCIENTIFIC_OPERATOR_PROMOTION",
+    "BOUNDARY_VALUE_MUST_BE_ROLE_TYPED"
+  ],
+  "verdict": "GENERALIZE_COLLAPSE_RETENTION_WITH_ROLE_TYPED_BOUNDARY_CREDIT_AND_ZERO_SCIENTIFIC_OPERATOR_PROMOTION_FOR_FLOWCORE_SERIES_CONTROLS",
+  "next_test": "Apply role-typed boundary scoring to a cross-family handoff such as Flow-Core context receipt/series into Aperture round-trip or Phase-5 relation-envelope machinery; test whether preserving both sides adds adjudication value beyond a collapsed handoff object.",
+  "authority": {
+    "scientific_promotion": false,
+    "field_novelty": false,
+    "deployed_llm_architecture_inference": false,
+    "externality_inference": false,
+    "monitoring_or_causal_link_inferred": false,
+    "copying_or_plagiarism_adjudication": false,
+    "deployment": false,
+    "vercel": false,
+    "human_closure_required": true
+  }
+}

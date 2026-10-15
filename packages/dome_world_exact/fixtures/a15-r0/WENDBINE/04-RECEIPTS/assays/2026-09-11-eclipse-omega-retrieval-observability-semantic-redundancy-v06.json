@@ -1,0 +1,92 @@
+{
+  "schema": "td613.eclipse-omega-retrieval-observability-semantic-redundancy-assay/v0.6",
+  "date": "2026-09-11",
+  "state": "SYNTHETIC_CONTROL",
+  "parent": "2026-09-11-ECLIPSE-OMEGA-FOUNDATIONAL-PAPER-SIEVE-V0_5.md",
+  "authority": {
+    "scientific_promotion": false,
+    "external_empirical_claim": false,
+    "deployed_llm_inference": false,
+    "copying_or_plagiarism_adjudication": false,
+    "private_wendbine_material_admitted": false
+  },
+  "operationalization": {
+    "eligible_support_classes": [
+      "A",
+      "B",
+      "C"
+    ],
+    "retrieval_observability_deficit": "1 - distinct_support_classes(selected)/3",
+    "semantic_redundancy": "average pairwise cosine over declared unit vectors; 0 for n<2",
+    "diversity_selector": "greedy relevance - lambda * maximum cosine to selected; lambda=0.5; lexical id tie-break"
+  },
+  "corpus": [
+    {
+      "id": "a1",
+      "support_class": "A",
+      "vector": [1, 0, 0],
+      "relevance": 1.0
+    },
+    {
+      "id": "a2",
+      "support_class": "A",
+      "vector": [1, 0, 0],
+      "relevance": 0.99
+    },
+    {
+      "id": "b1",
+      "support_class": "B",
+      "vector": [0, 1, 0],
+      "relevance": 0.9
+    },
+    {
+      "id": "c1",
+      "support_class": "C",
+      "vector": [0, 0, 1],
+      "relevance": 0.8
+    }
+  ],
+  "expected": {
+    "relevance_only": {
+      "k4": {
+        "ids": ["a1", "a2", "b1", "c1"],
+        "deficit": [0, 1],
+        "semred": [1, 6]
+      },
+      "k2": {
+        "ids": ["a1", "a2"],
+        "deficit": [2, 3],
+        "semred": [1, 1]
+      },
+      "direction": "DEFICIT_UP_REDUNDANCY_UP"
+    },
+    "diversity_aware": {
+      "lambda": 0.5,
+      "k4": {
+        "ids": ["a1", "b1", "c1", "a2"],
+        "deficit": [0, 1],
+        "semred": [1, 6]
+      },
+      "k2": {
+        "ids": ["a1", "b1"],
+        "deficit": [1, 3],
+        "semred": [0, 1]
+      },
+      "direction": "DEFICIT_UP_REDUNDANCY_DOWN"
+    }
+  },
+  "verdicts": [
+    "FOUNDATIONAL_MONOTONICITY_REJECTED_AS_UNIVERSAL",
+    "REDUNDANCY_INFLATION_CAN_OCCUR_UNDER_RELEVANCE_ONLY_CAPACITY_TRUNCATION_IN_DECLARED_SYNTHETIC_FIXTURE",
+    "DIVERSITY_AWARE_SELECTION_BREAKS_OR_REVERSES_THE_RELATION_IN_DECLARED_SYNTHETIC_FIXTURE"
+  ],
+  "laws": [
+    "PROJECT_LABEL != FIELD_NOVELTY",
+    "SEMANTIC_REDUNDANCY != INDEPENDENT_CONFIRMATION",
+    "CAPACITY_PRESSURE != REDUNDANCY_CAUSATION",
+    "RETRIEVAL_OBSERVABILITY_DEFICIT_UP != SEMANTIC_REDUNDANCY_UP_AS_UNIVERSAL_LAW",
+    "REDUNDANCY_SIGNAL != HIDDEN_CAUSE",
+    "TERMINAL_SIMILARITY != STAGE_LOCALIZATION",
+    "SYNTHETIC_POLICY_COUNTEREXAMPLE != DEPLOYED_LLM_MEASUREMENT"
+  ]
+}
