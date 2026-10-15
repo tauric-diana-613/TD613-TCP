@@ -147,7 +147,7 @@ test('Flow-Core remains a single accessible header guide with eight text-only gl
 test('the firewall promise explains outgoing checks, returning review and limits', () => {
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
   assert.match(doc.querySelector('#loomFirstCrossingTitle').textContent, /Firewall your online life from AI/i);
-  assert.match(doc.querySelector('.loom-intro p').textContent, /The prompt is only the beginning.*traces it leaves/i);
+  assert.match(doc.querySelector('.loom-intro p').textContent, /The prompt tells only part of the story.*traces could reveal/i);
   assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent, /You can need ChatGPT, Gemini, or another LLM.*outside the conversation could piece it together/i);
   assert.match(doc.querySelector('#loomReturnWorkspace header').textContent, /before accepting/i);
   assert.match(doc.querySelector('[data-tool-panel="boundary"]').textContent, /external AI provider determines its own retention/i);
@@ -421,7 +421,7 @@ test('first use explains private material, remixes presentation, and skips witho
   const privateNote=h.$('#loomFirstCrossingPrivate');
   assert.equal(privateNote.tagName,'DIV');
   assert.equal(privateNote.getAttribute('role'),'note');
-  assert.match(privateNote.textContent,/Private exchange/);
+  assert.match(privateNote.textContent,/Rest of the conversation/);
   assert.match(privateNote.textContent,/Not included in this example request/i);
   assert.equal(privateNote.hasAttribute('aria-pressed'), false);
   const before=h.$('#loomFlowcoreMessage').textContent;
@@ -638,7 +638,7 @@ test('opening overture contains all eight relations without borrowing the à ill
 test('privacy tutorial retains two selections and optional answer details in document flow', () => {
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
   assert.equal(doc.querySelectorAll('[data-first-crossing-item]').length,2);
-  assert.match(doc.querySelector('[data-first-crossing-item=source]').textContent,/Choose the context/);
+  assert.match(doc.querySelector('[data-first-crossing-item=source]').textContent,/What the answer needs/);
   assert.doesNotMatch(doc.querySelector('[data-first-crossing-item=source]').textContent,/\/\//);
   assert.match(product,/\.loom-tutorial-proof\{order:6/);
   assert.match(product,/:not\(\[data-first-crossing-step="0"\]\)\s*\.loom-first-crossing-objects\{display:none\}/);
