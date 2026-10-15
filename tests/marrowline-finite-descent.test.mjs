@@ -1,0 +1,39 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+
+const script = fileURLToPath(new URL('../research/marrowline-finite-descent-20261015/run-pair.mjs', import.meta.url));
+// Strip credentials from the test process: no synthetic test may spend real provider credits.
+const { GEMINI_API_KEY: _key, TD613_FINITE_DESCENT_MAX_USD: _bound, TD613_FINITE_DESCENT_OUT: _output, ...safeEnv } = process.env;
+const invoke = args => spawnSync(process.execPath, [script, ...args], {
+  encoding: 'utf8', timeout: 20000, env: safeEnv
+});
+
+test('finite descent preflight has two identical provider request fields without generating', () => {
+  const run = invoke([]);
+  assert.equal(run.status, 0, run.stderr);
+  const plan = JSON.parse(run.stdout);
+  assert.equal(plan.sourceOnly, true);
+  assert.equal(plan.expectedProviderCalls, 2);
+  assert.equal(plan.automaticRetries, 0);
+  assert.equal(plan.maxOutputTokensPerCall, 12288);
+  assert.deepEqual(plan.requestFingerprints.map(x => x.requestedModel),
+    ['gemini-3.8-flash', 'gemini-3.6-flash']);
+  for (const field of ['systemSha256', 'contentsSha256', 'generationConfigSha256']) {
+    assert.equal(plan.requestFingerprints[0][field], plan.requestFingerprints[1][field], field);
+  }
+  assert.ok(plan.requestFingerprints.every(x => x.requestBodyUtf8Bytes <= 85000));
+  assert.ok(plan.publishedRateUpperEstimateUsd > 0);
+  assert.ok(plan.publishedRateUpperEstimateUsd < 0.25);
+  assert.equal(plan.hardUsdCapGuaranteed, false);
+});
+
+test('paid execution rejects missing human acknowledgment and reviewed bound before fetch', () => {
+  const noAck = invoke(['--execute']);
+  assert.notEqual(noAck.status, 0);
+  assert.match(noAck.stderr, /PAID_EXPERIMENT_NOT_ACKNOWLEDGED/);
+  const noBound = invoke(['--execute', '--ack-paid']);
+  assert.notEqual(noBound.status, 0);
+  assert.match(noBound.stderr, /REVIEWED_SPENDING_BOUND_REQUIRED/);
+});
