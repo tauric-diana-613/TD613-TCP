@@ -151,7 +151,7 @@ test('the firewall promise explains outgoing checks, returning review and limits
   assert.match(doc.querySelector('#loomFirstCrossingTitle').textContent, /Firewall your online life from AI/i);
   assert.match(doc.querySelector('.loom-intro p').textContent, /firewall for AI requests.*review the answer before you accept it/i);
   assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent, /Work with Gemini, ChatGPT, and other LLMs.*wider privacy risks remain visible for review/i);
-  assert.match(doc.querySelector('#loomReturnWorkspace header').textContent, /before accepting/i);
+  assert.match(doc.querySelector('#loomReturnWorkspace header').textContent, /before carrying it forward/i);
   assert.match(doc.querySelector('[data-tool-panel="boundary"]').textContent, /external AI provider determines its own retention/i);
   assert.match(workspaceSource, /title:'A phrase check is only the beginning\.'/);
   assert.match(workspaceSource, /title:'Bring the answer back\. Read it yourself\.'/);
@@ -472,8 +472,8 @@ test('selection and readiness publish consequences before naming the Flow-Core r
   // Finishing before all three consequences publish must stay forbidden.
   for (const [step, cue, progress] of [
     [3, 'send-named', '4 of 7 · Preview the handoff'],
-    [4, 'privacy-named', '5 of 7 · Test'],
-    [5, 'proof-named', '6 of 7 · Return']
+    [4, 'privacy-named', '5 of 7 · Check privacy'],
+    [5, 'proof-named', '6 of 7 · Check the answer']
   ]) {
     h.$('#loomFirstCrossingStop').click();
     await until(() => h.root.dataset.firstCrossingStep === String(step)
