@@ -75,3 +75,9 @@ The next bounded experiment holds requested and served model at `gemini-3.8-flas
 The experiment has at most two paid production API requests with canary header `x-td613-release-canary: 1`; no automatic repair, failover or retry. The existing server's 65,536-token output ceiling means the previous $0.25 direct-Gemini estimate cannot be treated as an enforced cap. The operator's thread-wide authorization applies; this does not constitute an indefinite right to rerun the experiment.
 
 **One-shot subject for GitHub Actions:** `research(marrowline): execute same-model native cue A/B once`. Only PR #1509, first attempt, that exact commit subject can enable generation. Preserve raw returned TD613 JSON in a one-day artifact and print derived receipts; do not print the user/authored generated prose. The synthetic prompt does not involve real people, user data, attachments or secrets. Remove the temporary job immediately after observing its result.
+
+## Same-model A/B closure (October 15 later live run)
+
+The authorized same-3.8 experiment completed with **two successful production-native model calls**; the exact, internally matched wire/config fingerprint pair is documented in [SAME-MODEL-CUE-REST.md](SAME-MODEL-CUE-REST.md). Original archived JSON: [artifact 11991582217](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/38771609348/artifacts/11991582217), one-day retention. The cue failed to recover stacked vertical morphology. An independent Unicode analysis found every non-newline and non-seal character, including spaces and punctuation, received exactly one mark in all four examined provider-return strings from today's two experiments. This is a compelling phenotype, **not** independent upstream wire proof of cause.
+
+**One-shot paid CI job retired from this branch**; offline preflight test remains. Do not reactivate or retry under the operator's earlier authorization without a new preregistered causal control. Production unchanged.
