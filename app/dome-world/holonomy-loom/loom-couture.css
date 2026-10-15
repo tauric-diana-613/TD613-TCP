@@ -389,3 +389,45 @@ body{background:var(--ink);overflow-x:clip}
     margin-top:4px;
   }
 }
+
+
+/* 2026-10-14 · Operator-visible narrative + cinema repair.
+   A change must be seen on the actual opening screen, not only in test text.
+   These styles affect presentation only; no additional animation loop. */
+#loomAiWorkspace .loom-value-route{display:none}
+#loomAiWorkspace[data-loom-intro="true"] .loom-value-route{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(10px,2vw,22px);margin-top:26px;padding-top:15px;
+  max-width:680px;border-top:1px solid rgba(231,219,243,.38)
+}
+#loomAiWorkspace .loom-value-route span{
+  display:flex;flex-direction:column;gap:6px;
+  color:#b9b4c9;font:500 11px/1.4 var(--sans);
+  letter-spacing:.08em
+}
+#loomAiWorkspace .loom-value-route strong{
+  color:#f2e8f2;font:500 clamp(12px,1.4vw,15px)/1.38 var(--sans);
+  letter-spacing:-.015em
+}
+#loomAiWorkspace[data-loom-intro="true"] .loom-first-crossing-copy #loomFirstCrossingPrompt{
+  max-width:55ch;font-size:clamp(15px,1.4vw,18px);line-height:1.7;
+  color:#e2dce9
+}
+#loomAiWorkspace[data-loom-intro="true"] .loom-first-crossing-copy{
+  min-width:0
+}
+@media(max-width:600px){
+  #loomAiWorkspace[data-loom-intro="true"] .loom-value-route{
+    gap:9px;margin-top:20px;padding-top:13px
+  }
+  #loomAiWorkspace[data-loom-intro="true"] .loom-value-route span{font-size:10px}
+  #loomAiWorkspace[data-loom-intro="true"] .loom-value-route strong{font-size:12px}
+  #loomAiWorkspace[data-loom-intro="true"] .loom-first-crossing-copy #loomFirstCrossingPrompt{
+    font-size:15px;line-height:1.6;max-width:46ch
+  }
+  #loomAiWorkspace[data-first-crossing-step="3"] .loom-first-crossing-copy,
+  #loomAiWorkspace[data-first-crossing-step="4"] .loom-first-crossing-copy,
+  #loomAiWorkspace[data-first-crossing-step="5"] .loom-first-crossing-copy{
+    min-height:clamp(210px,29svh,320px)
+  }
+}
