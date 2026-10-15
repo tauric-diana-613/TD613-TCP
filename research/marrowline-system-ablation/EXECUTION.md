@@ -12,3 +12,5 @@ The operator's continuing thread authorization covers **one** bounded 2-call nat
 **One-shot:** only an exact subject `research(marrowline): execute single-system-paragraph native A/B once` on this PR's head triggers calls. Reruns and subsequent commits are ineligible. Delete temporary paid job after evidence capture; preserve a report, not a production style repair.
 
 𝄐 Paid live response not yet acquired ⟐
+
+Authorized and preregistered exact-head native execution: first attempt only; no additional calls on any continuation head. The control source is already deployed and verified by #405. ⟐
