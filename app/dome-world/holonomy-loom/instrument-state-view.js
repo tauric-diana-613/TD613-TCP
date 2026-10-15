@@ -500,6 +500,19 @@ export function mountLoomInstrumentStateView(root, { fullPage = false } = {}) {
     flightLayer.append(node);return node;
   });
   svg.append(flightLayer);
+  // Vector fallback for U+1D110 (𝄐). iOS Safari's font fallback may omit the
+  // fermata even when Latin and CJK carriers render. These 39 companion forms
+  // inherit the SAME projection and clock; none is a separate animated object.
+  const restFlightLayer=svgEl('g',{class:'loom-field-rest-flight','aria-hidden':'true'});
+  const restFlightGlyphs=flightGlyphs.map(()=>{
+    const mark=svgEl('g',{visibility:'hidden',fill:'none',stroke:'#e5d1f3','stroke-width':3.2,'stroke-linecap':'round'});
+    mark.append(
+      svgEl('path',{d:'M-23 2 Q0 -28 23 2'}),
+      svgEl('circle',{cx:0,cy:9,r:3.8,fill:'#e7f6ee',stroke:'none'})
+    );
+    restFlightLayer.append(mark);return mark;
+  });
+  svg.append(restFlightLayer);
   const glyphGroup = svgEl('g', {class:'loom-field-glyph'});
   const type = {x:500,y:280,'text-anchor':'middle','dominant-baseline':'middle','font-size':172};
   const depthLayer = svgEl('g',{'aria-hidden':'true'});
@@ -508,7 +521,7 @@ export function mountLoomInstrumentStateView(root, { fullPage = false } = {}) {
   const glyph = svgEl('text', {...type,fill:`url(#${uid}-metal)`,stroke:'#eaf6ef','stroke-width':'.35','paint-order':'stroke fill'});
   glyph.setAttribute('data-instrument-active-glyph','');
   const restGlyph = svgEl('g',{fill:'none',stroke:`url(#${uid}-spectrum)`,'stroke-width':4,visibility:'hidden'});
-  restGlyph.append(svgEl('path',{d:'M437 279 A63 63 0 0 1 563 279'}),svgEl('circle',{cx:500,cy:280,r:6,fill:'#e3eee7',stroke:'none'}));
+  restGlyph.append(svgEl('path',{d:'M428 280 Q500 193 572 280'}),svgEl('circle',{cx:500,cy:307,r:8,fill:'#e3eee7',stroke:'none'}));
   glyphGroup.append(depthLayer,ghost,glyph,restGlyph);svg.append(glyphGroup);
   const origin = svgEl('text',{class:'loom-field-route-label',x:150,y:472,'text-anchor':'middle','font-size':12,fill:'#a7b6c6'});
   const destination = svgEl('text',{class:'loom-field-route-label',x:850,y:472,'text-anchor':'middle','font-size':12,fill:'#a7b6c6'});
@@ -633,7 +646,7 @@ export function mountLoomInstrumentStateView(root, { fullPage = false } = {}) {
       const ambientChoreography=choreographyScene&&choreographyRelations.length>0;
       // A large center glyph supports the request reading; the distributed
       // carriers own the tutorial's living field rather than a static monogram.
-      setProjectedAttribute(glyphGroup,'opacity',ambientChoreography?'.38':'1');
+      setProjectedAttribute(glyphGroup,'opacity',illustration?.glyph==='𝄐'?'.94':ambientChoreography?'.56':'1');
       // A valid family may bend an evidenced workspace route as well. The
       // illustrative eight-symbol score remains confined to the tutorial;
       // workspace carriers continue to name only their current observed relation.
@@ -736,7 +749,7 @@ export function mountLoomInstrumentStateView(root, { fullPage = false } = {}) {
         const ambientRelation=illustration ? illustration.relations[i%illustration.relations.length] : !observed&&ambientChoreography
           ? (slots.length?slots[i%slots.length]:choreographyRelations[i%choreographyRelations.length]) : null;
         const visible=Boolean(observed||ambientRelation);
-        if(!visible){setText(node,'');setProjectedAttribute(node,'visibility','hidden');continue;}
+        if(!visible){setText(node,'');setProjectedAttribute(node,'visibility','hidden');setProjectedAttribute(restFlightGlyphs[i],'visibility','hidden');continue;}
         const relationKey=observed?.relation_key??ambientRelation;
         const ambientOnly=!illustration&&!observed&&Boolean(ambientRelation);
         const depthClass=node.getAttribute('class');
@@ -809,13 +822,15 @@ export function mountLoomInstrumentStateView(root, { fullPage = false } = {}) {
           roll=phase*18*(i%2?1:-1);
           scale=.46+phase*.8;
         }else if(relationKey==='structural_rest'){
-          const angle=i*2.3999632297;
-          const radius=110+(i%7)*23;
+          // The final FICTIONAL tutorial tableau continues its quiet orbit;
+          // observed structural rest continues to settle without motion.
+          const angle=i*2.3999632297+(illustration&&!frame.reduced_motion?seconds*.22:0);
+          const radius=110+(i%7)*23+(illustration?16*Math.sin(seconds*.36+i):0);
           x=500+Math.cos(angle)*radius*1.2;
           y=260+Math.sin(angle)*radius*.46+(illustration?(1-phase)*180:0);
           roll=0;
-          scale=.44+(i%5)*.06;
-          opacity=.34;
+          scale=.64+(i%5)*.08;
+          opacity=illustration?.9:.34;
         }else{
           x=-180+phase*1360;
           y=260+lane*46;
@@ -869,6 +884,15 @@ export function mountLoomInstrumentStateView(root, { fullPage = false } = {}) {
         setProjectedAttribute(node,'opacity',opacity.toFixed(3));
         setProjectedAttribute(node,'x',x.toFixed(2));setProjectedAttribute(node,'y',y.toFixed(2));
         setProjectedAttribute(node,'transform',`translate(${x.toFixed(2)} ${y.toFixed(2)}) rotate(${roll.toFixed(2)}) scale(${scale.toFixed(2)}) translate(${-x.toFixed(2)} ${-y.toFixed(2)})`);
+        const restCarrier=restFlightGlyphs[i];
+        const isRest=relationKey==='structural_rest';
+        setProjectedAttribute(node,'visibility',isRest?'hidden':'visible');
+        setProjectedAttribute(restCarrier,'visibility',isRest?'visible':'hidden');
+        if(isRest){
+          const pointScale=scale*Number(node.getAttribute('font-size')??56)/46;
+          setProjectedAttribute(restCarrier,'transform',`translate(${x.toFixed(2)} ${y.toFixed(2)}) rotate(${roll.toFixed(2)}) scale(${pointScale.toFixed(3)})`);
+          setProjectedAttribute(restCarrier,'opacity',String(Math.max(illustration?.38:.2,Math.min(1,opacity))));
+        }
       }
       const practice=snapshot.packet?.scene?.id?.startsWith('first-crossing-')===true;
       const sources=practice ? snapshot.packet.scene.documents??[] : [];
