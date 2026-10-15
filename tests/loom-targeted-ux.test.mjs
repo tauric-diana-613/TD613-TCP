@@ -154,7 +154,7 @@ test('the firewall promise explains outgoing checks, returning review and limits
   assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent, /Use Gemini, ChatGPT, and other LLMs.*test what the exchange may reveal/i);
   assert.match(doc.querySelector('#loomReturnWorkspace header').textContent, /before carrying it forward/i);
   assert.match(doc.querySelector('[data-tool-panel="boundary"]').textContent, /external AI provider determines its own retention/i);
-  assert.match(workspaceSource, /title:'A phrase check is only the beginning\.'/);
+  assert.match(workspaceSource, /title:'What could the other clues reveal\?'/);
   assert.match(workspaceSource, /title:'Bring the answer back\. Read it yourself\.'/);
   assert.match(runway, /data-first-crossing-step="4"\] \.loom-boundary-event-denial/);
   assert.doesNotMatch(doc.querySelector('#loomFirstCrossingPrompt').textContent, /portable|cryptographic|governance/i);
@@ -166,8 +166,8 @@ test('the seven steps display actual evidence instead of a decorative firewall d
   assert.ok(stage);
   assert.equal(doc.querySelector('.loom-firewall-theater'), null, 'retire generic diamond and platform diagram');
   assert.match(stage.textContent, /Your question and only the context it needs/i);
-  assert.match(stage.textContent, /One excluded phrase/);
-  assert.match(stage.textContent, /HELD LOCALLY/);
+  assert.match(stage.textContent, /cōl · unselected private context/);
+  assert.match(stage.textContent, /NOT PART OF THE EXAMPLE REQUEST/);
   assert.match(runway, /data-first-crossing-step="3"\] \.loom-boundary-event-outgoing/);
   assert.match(runway, /data-first-crossing-step="4"\] \.loom-boundary-event-denial/);
   assert.match(runway, /\.loom-tutorial-sample-answer/);
