@@ -691,9 +691,9 @@ test('independent Lab links preserve unsent Loom work by opening another tab wit
 
 
 test('Loom versioned entry loads the actual rewritten template and nested instrument renderer',()=>{
-  assert.match(workspaceSource,/workspace-template\\.js\\?v=20261014-firewall-science-v1/);
-  assert.match(workspaceSource,/runtime-state-view\\.js\\?v=20261014-firewall-science-v1/);
-  assert.match(runtimeModuleSource,/instrument-state-view\\.js\\?v=20261014-firewall-science-v1/);
+  assert.match(workspaceSource,/workspace-template\.js\?v=20261014-firewall-science-v1/);
+  assert.match(workspaceSource,/runtime-state-view\.js\?v=20261014-firewall-science-v1/);
+  assert.match(runtimeModuleSource,/instrument-state-view\.js\?v=20261014-firewall-science-v1/);
   assert.match(templateSource,/Privacy mathematics|loomScienceIntro/);
   assert.match(instrumentSource,/Keep all 39 illustrated carriers/);
 });
