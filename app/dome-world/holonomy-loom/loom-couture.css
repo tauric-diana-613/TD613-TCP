@@ -668,12 +668,32 @@ body{background:var(--ink);overflow-x:clip}
   -webkit-backdrop-filter:blur(12px);
 }
 
-/* Short desktop first fold: keep the opening promise and first choice visible
-   without clipping, compressing other viewport sizes or shrinking the field. */
+/* Short desktop first fold: keep both the promise and first selectable
+   task within 768px, without clipping copy or scaling the background field. */
 @media (min-width:1100px) and (max-height:820px){
+  #loomAiWorkspace[data-loom-intro="true"] .loom-stage{
+    align-content:start;
+    padding-top:18px;
+    padding-bottom:22px;
+  }
+  #loomAiWorkspace[data-loom-intro="true"] .loom-first-crossing{gap:12px}
+  #loomAiWorkspace[data-loom-intro="true"] .loom-tutorial-meta{margin-bottom:12px}
   #loomAiWorkspace[data-loom-intro="true"] .loom-first-crossing-copy h2{
     font-size:72px;
     line-height:.96;
     margin-bottom:12px;
+  }
+  #loomAiWorkspace[data-loom-intro="true"] .loom-first-crossing-copy #loomFirstCrossingPrompt{
+    font-size:15px;
+    line-height:1.5;
+  }
+  #loomAiWorkspace[data-loom-intro="true"] .loom-value-route{
+    margin-top:12px;
+    padding-top:10px;
+  }
+  #loomAiWorkspace[data-loom-intro="true"] .loom-value-route span{gap:3px}
+  #loomAiWorkspace[data-loom-intro="true"] .loom-private-continuity-note{
+    margin-top:7px;
+    padding-top:6px;
   }
 }
