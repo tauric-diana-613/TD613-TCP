@@ -155,7 +155,7 @@ test('the firewall promise explains outgoing checks, returning review and limits
   assert.match(doc.querySelector('#loomReturnWorkspace header').textContent, /before carrying it forward/i);
   assert.match(doc.querySelector('[data-tool-panel="boundary"]').textContent, /external AI provider determines its own retention/i);
   assert.match(workspaceSource, /title:'What could someone piece together\?'/);
-  assert.match(workspaceSource, /title:'Bring the answer back\. Read it yourself\.'/);
+  assert.match(workspaceSource, /title:'An answer is only half the story\.'/);
   assert.match(runway, /data-first-crossing-step="4"\] \.loom-boundary-event-denial/);
   assert.doesNotMatch(doc.querySelector('#loomFirstCrossingPrompt').textContent, /portable|cryptographic|governance/i);
 });
@@ -424,8 +424,8 @@ test('first use explains private material, remixes presentation, and skips witho
   const privateNote=h.$('#loomFirstCrossingPrivate');
   assert.equal(privateNote.tagName,'DIV');
   assert.equal(privateNote.getAttribute('role'),'note');
-  assert.match(privateNote.textContent,/Keep the rest private/);
-  assert.match(privateNote.textContent,/This stays outside the AI request/i);
+  assert.match(privateNote.textContent,/cōl · Not selected/);
+  assert.match(privateNote.textContent,/Your private conversation stays off this request/i);
   assert.equal(privateNote.hasAttribute('aria-pressed'), false);
   const before=h.$('#loomFlowcoreMessage').textContent;
   h.$('#loomFirstCrossingPause').click();
@@ -445,17 +445,17 @@ test('selection and readiness publish consequences before naming the Flow-Core r
   await until(() => h.ui.inspect().runtime.view?.event.shared === 1, 'one-source canonical projection');
   assert.deepEqual(h.ui.inspect().runtime.view.event.selected_document_ids, ['brief']);
   assert.equal(h.ui.inspect().runtime.view.event.binding_verified, false);
-  assert.equal(h.$('#loomFirstCrossingAction').hidden, true, 'one selection cannot create readiness');
+  assert.equal(h.$('#loomFirstCrossingAction').disabled, true, 'one selection cannot create readiness');
   await until(() => !h.$('[data-first-crossing-item="source"]').disabled, 'à completes before evidence selection');
   h.$('[data-first-crossing-item="source"]').click();
-  assert.equal(h.$('#loomFirstCrossingAction').hidden, true, 'new relation stays unnamed while its async projection compiles');
-  await until(() => !h.$('#loomFirstCrossingAction').hidden, 'published gathering consequence');
+  assert.equal(h.$('#loomFirstCrossingAction').disabled, true, 'new relation stays asleep while its async projection compiles');
+  await until(() => !h.$('#loomFirstCrossingAction').disabled, 'published gathering consequence');
   assert.equal(h.ui.inspect().runtime.view.active_relation, 'gathering');
   assert.doesNotMatch(h.$('#loomFirstCrossingPrompt').textContent, /à/, 'consumer copy leads with consequence, not ontology');
   assert.match(h.$('.loom-flowcore-legend').textContent,/à/);
   h.$('#loomFirstCrossingAction').click();
   assert.equal(h.$('#loomFirstCrossingStop').hidden, true, 'binding begins without claiming readiness');
-  await until(() => !h.$('#loomFirstCrossingStop').hidden, 'published readiness after real binding');
+  await until(() => !h.$('#loomFirstCrossingStop').disabled, 'published readiness after real binding');
   const ready = h.ui.inspect().runtime.view;
   assert.equal(ready.active_relation, 'created_potential');
   assert.equal(ready.event.binding_verified, true);
@@ -479,7 +479,7 @@ test('selection and readiness publish consequences before naming the Flow-Core r
     h.$('#loomFirstCrossingStop').click();
     await until(() => h.root.dataset.firstCrossingStep === String(step)
       && h.root.dataset.firstCrossingCue === cue
-      && !h.$('#loomFirstCrossingStop').hidden, `published tutorial stage ${step}`);
+      && !h.$('#loomFirstCrossingStop').disabled, `published tutorial stage ${step}`);
     assert.equal(h.$('#loomTutorialProgress').textContent, progress);
     assert.equal(h.ui.inspect().session, null, 'fictional stages cannot create a live Loom root');
     assert.equal(h.requests.length, 0, 'fictional stages cannot call a provider');
@@ -503,7 +503,7 @@ test('leaving during an async practice binding prevents late completion or scene
   h.$('[data-first-crossing-item="brief"]').click();
   await until(() => !h.$('[data-first-crossing-item="source"]').disabled, 'à completion to unlock hõt/cōl');
   h.$('[data-first-crossing-item="source"]').click();
-  await until(() => !h.$('#loomFirstCrossingAction').hidden, 'gathering');
+  await until(() => !h.$('#loomFirstCrossingAction').disabled, 'gathering');
   let release, entered;
   const blocked = new Promise(resolve => { release = resolve; });
   const started = new Promise(resolve => { entered = resolve; });
@@ -569,7 +569,7 @@ test('completed handoff preview reopens from How it works in one deliberate gest
       h.$('#loomFirstCrossingStop').click();
       await until(() => h.root.dataset.firstCrossingStep === String(step)
         && h.root.dataset.firstCrossingCue === cue
-        && !h.$('#loomFirstCrossingStop').hidden, `published tutorial stage ${step}`);
+        && !h.$('#loomFirstCrossingStop').disabled, `published tutorial stage ${step}`);
     }
     h.$('#loomFirstCrossingStop').click();
     assert.equal(h.root.dataset.firstCrossingCue, 'complete');
