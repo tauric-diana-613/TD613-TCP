@@ -336,7 +336,7 @@ try {
         await page.locator('#loomAiWorkspace').getAttribute('data-first-crossing-gather')==='complete');
       await lockedSource.click();
       record('first crossing: consequence begins before terminology is named',
-        /Start with your question\.|Choose what you want to share\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
+        /A good question is personal\.|What does the answer need\?/.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
         !/That relation is à/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
         { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
       await observeFiniteConsequence(page,'gathering','first-crossing-mobile-gathering');
@@ -356,7 +356,7 @@ try {
       await page.waitForFunction(()=>document.querySelector('#aiRuntimeState')?.dataset?.projectionState==='CURRENT'&&
         document.querySelector('#aiRuntimeState')?.dataset?.activeRelation==='created_potential');
       record('first crossing: readiness consequence begins before 上 is named',
-        /See what AI would get\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
+        /Follow the clues\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
         !/created-potential relation is 上/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
         { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
       await observeFiniteConsequence(page,'created_potential','first-crossing-mobile-readiness');
