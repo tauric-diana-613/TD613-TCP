@@ -16,7 +16,7 @@ const doc=dom.window.document;
 test('the Golden Egg headline distinguishes authorized utility from outsider reconstruction',()=>{
   assert.match(doc.querySelector('#loomFirstCrossingTitle').textContent,/Talk to AI\. Keep the conversation yours/i);
   assert.match(doc.querySelector('.loom-hero-promise').textContent,/The Golden Egg/);
-  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent,/outside observer.*Golden Egg Loom is pursuing/i);
+  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent,/outsider cannot reconstruct.*boundary to the test/i);
   assert.doesNotMatch(doc.querySelector('#loomFirstCrossing').textContent,/draft a work email|Northstar|Acquisition talks/i);
   assert.equal(doc.querySelectorAll('[data-first-crossing-item]').length,2);
   assert.match(doc.querySelector('.loom-golden-egg-proof').textContent,/observer leakage.*reconstruction.*joining synergy.*measured geometry.*protected returns/i);
