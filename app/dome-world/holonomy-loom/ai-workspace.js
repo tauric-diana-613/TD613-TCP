@@ -1,10 +1,10 @@
 import { PORTABLE_LOOM_RECEIVER_OUTPUT_CONTRACT, derivePortableLoomSourceContext } from '../../engine/portable-loom-receiver-output-contract.js';
 import { inspectPortableLoomReceiverConformance } from '../../engine/portable-loom-receiver-conformance.js';
-import { FIRST_CROSSING_PRACTICE, bindFirstCrossingPractice, checkFirstCrossingPrivacy, createFirstCrossingReturnProof } from './first-crossing-practice.js';
-import { LOOM_TUTORIAL_OPERATORS, loomTutorialPresentation, loomOpeningPresentation } from './tutorial-membrane.js';
+import { FIRST_CROSSING_PRACTICE, bindFirstCrossingPractice, checkFirstCrossingPrivacy, createFirstCrossingReturnProof } from './first-crossing-practice.js?v=20261015-couture79-v1';
+import { LOOM_TUTORIAL_OPERATORS, loomTutorialPresentation, loomOpeningPresentation } from './tutorial-membrane.js?v=20261015-couture79-v1';
 import { nextFlowcoreChoreography } from './flowcore-choreography.js?v=20261013-phase09-v1';
 import { mountReturnedSessionReview } from './returned-session-review.js';
-import { loomWorkspaceTemplate } from './workspace-template.js?v=20261014-firewall-science-v1';
+import { loomWorkspaceTemplate } from './workspace-template.js?v=20261015-couture79-v1';
 import { mountLoomPrivacyScienceView } from './privacy-science-view.js';
 import { createPortableLoomGateReport, describePortableLoomGateReport } from '../../engine/portable-loom-gate.js';
 import { createLoomGateDisclosure } from '../loom-gate-disclosure.js';
@@ -13,7 +13,7 @@ import { STANDARD_PORTABLE_LOOM_RULES } from '../../engine/portable-loom-policy.
 import { readLoomDocument, buildLoomAiRequest, inspectLoomAiResponse } from './ai-intake.js';
 import { createLoomAiHandoff, createPortableLoomAiPacket, createCanonicalPortableLoomPacket, createPortableLoomAiPrompt, createLoomAiGovernance, createLoomAiTaskGovernor } from './ai-handoff.js';
 import { assessLoomProjectAnswer } from './ai-project-checks.js';
-import { mountLoomRuntimeStateView } from './runtime-state-view.js?v=20261014-firewall-science-v1';
+import { mountLoomRuntimeStateView } from './runtime-state-view.js?v=20261015-couture79-v1';
 import { renderLoomAiResult } from './ai-result-view.js';
 import { readLoomAiFailure, describeLoomAiFailure } from './ai-failure.js';
 import { AnimationCoordinator } from './animation-coordinator.js';
@@ -224,7 +224,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
         'Leave private details out',
         'Check exactly what travels',
         'Preview sending · demo only',
-        'Check what your firewall catches',
+        'Examine what remains unknown',
         'Inspect the sample answer',
         'Your review comes first'
       ][firstCrossingStep];
@@ -243,8 +243,15 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     $('loomTutorialSelection').hidden=firstCrossingStep!==2;
     $('loomTutorialSampleAnswer').hidden=firstCrossingStep!==5;
     $('loomTutorialWaiting').hidden=true; // The answer region is the single accessible progress witness.
-    check.hidden=!action;
-    finish.hidden=!stop;
+    // One persistent action footprint per scene. The relevant control stays
+    // mounted and disabled while a consequence animates, then wakes in place.
+    const early=firstCrossingStep<=1;
+    check.hidden=!early;
+    finish.hidden=early||firstCrossingStep===6;
+    check.disabled=!action;
+    finish.disabled=!stop;
+    check.setAttribute('aria-disabled',String(!action));
+    finish.setAttribute('aria-disabled',String(!stop));
     const next=action?check:stop?finish:null;
     if(next&&environment.document.activeElement===tutorial)next.focus?.({preventScroll:true});
   }
@@ -604,7 +611,9 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     $('loomFirstCrossingLeave').hidden=true;
     if(firstCrossingPacket){
       firstCrossingPacket={...firstCrossingPacket,scene:{...firstCrossingPacket.scene,id:'first-crossing-complete'},geometry:{...firstCrossingPacket.geometry,rest:false},presentation:loomTutorialPresentation(6)};
-      coordinator.setContinuous(false);
+      // The fictional finale can breathe in a continuous 𝄐 score; this must
+      // never reanimate an observed rest relation in the working Loom.
+      coordinator.setContinuous(true);
       coordinator.setPacket(firstCrossingPacket);
       coordinator.play();
     }
@@ -728,7 +737,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
   function renderFirstCrossingLesson(published=false){
     const lessons={
       3:{cue:'send',title:'Only what you choose crosses.',prompt:'This preview shows what your selected AI request contains. The private conversation stays here. This tutorial sends nothing to an AI provider.',answer:'Example only. Nothing has been sent to an AI provider.',next:'米 Revisit privacy →'},
-      4:{cue:'privacy',title:'A phrase check is only the beginning.',prompt:'Loom catches the phrase you chose to protect. But names, dates, and combined clues can reveal other things. A firewall should show you both the protection and its limits.',answer:'The private phrase stayed out of this example. Other possible leaks remain unmeasured.',next:'下 Return proof →'},
+      4:{cue:'privacy',title:'What could the other clues reveal?',prompt:'The fictional private conversation stays outside this example request. Other details can still reveal more than intended. This walkthrough cannot measure what an observer could infer.',answer:'The private source was excluded from the example. Wider disclosure remains unmeasured.',next:'下 Review the return →'},
       5:{cue:'proof',title:'Bring the answer back. Read it yourself.',prompt:'Compare the answer with your original request. Check what it used, what it missed, and whether private material appeared in the response.',answer:'Fictional reply. No AI provider or outside-observer test was involved.',next:'Finish tutorial →'}
     };
     const lesson=lessons[firstCrossingStep];
@@ -743,7 +752,8 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     const next=firstCrossingStep+1, token=++firstCrossingGeneration;
     firstCrossingLessonPublished=false;
     firstCrossingBindingState='PENDING';
-    $('loomFirstCrossingStop').hidden=true;
+    $('loomFirstCrossingStop').disabled=true;
+    $('loomFirstCrossingStop').setAttribute('aria-disabled','true');
     if(environment.document.activeElement===$('loomFirstCrossingStop'))$('loomFirstCrossing').focus?.({preventScroll:true});
     try{
       if(next===4)checkFirstCrossingPrivacy();
@@ -1197,7 +1207,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     root.dataset.flowcoreChoreography=firstCrossingChoreography.id;
     if(firstCrossingPacket){
       firstCrossingPacket={...firstCrossingPacket,presentation:{...firstCrossingPacket.presentation,...(firstCrossingStep===0?loomOpeningPresentation(firstCrossingChoreography):loomTutorialPresentation(firstCrossingStep,firstCrossingChoreography))}};
-      coordinator.setContinuous(firstCrossingStep!==6);
+      coordinator.setContinuous(true); // fictional tutorial only; preserves one host clock
       coordinator.setPacket(firstCrossingPacket);
       coordinator.play();
     }
