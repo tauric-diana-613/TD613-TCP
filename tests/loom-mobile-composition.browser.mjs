@@ -306,7 +306,7 @@ try {
         await page.locator('#loomFirstCrossingTitle').isVisible() &&
         await page.locator('.loom-boundary-event').isHidden() &&
         await page.locator('[data-first-crossing-item="brief"]').isVisible() &&
-        /ChatGPT, Gemini, and other AI models.*someone else could infer/i.test(await page.locator('#loomFirstCrossingPrompt').textContent()) &&
+        /ChatGPT, Gemini, and other AI models.*clues someone else could piece together/i.test(await page.locator('#loomFirstCrossingPrompt').textContent()) &&
         await page.locator('#loomStartNow').count()===0 &&
         await page.locator('#loomExploreDemo').count()===0,
         {first_choice:await page.locator('[data-first-crossing-item="brief"]').isVisible(),
