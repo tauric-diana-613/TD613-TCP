@@ -491,7 +491,7 @@ test('selection and readiness publish consequences before naming the Flow-Core r
   assert.ok(proof.receipt_digest);
   h.$('#loomFirstCrossingStop').click();
   assert.equal(h.root.dataset.firstCrossingCue, 'complete', 'reduced motion retains deliberate legitimate completion');
-  assert.equal(h.$('#loomTutorialProgress').textContent, '7 of 7 · Your turn');
+  assert.equal(h.$('#loomTutorialProgress').textContent, '7 of 7 · You are in control');
   assert.equal(h.environment.localStorage.getItem('td613.loom.first-crossing.v1'), 'complete');
   assert.equal(h.ui.inspect().session, null);
   assert.equal(h.requests.length, 0);
