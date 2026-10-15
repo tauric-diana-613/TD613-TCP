@@ -306,7 +306,7 @@ try {
         await page.locator('#loomFirstCrossingTitle').isVisible() &&
         await page.locator('.loom-boundary-event').isHidden() &&
         await page.locator('[data-first-crossing-item="brief"]').isVisible() &&
-        /outsider cannot reconstruct.*boundary to the test/i.test(await page.locator('#loomFirstCrossingPrompt').textContent()) &&
+        /A good answer shouldn't expose.*outsider could figure out/i.test(await page.locator('#loomFirstCrossingPrompt').textContent()) &&
         await page.locator('#loomStartNow').count()===0 &&
         await page.locator('#loomExploreDemo').count()===0,
         {first_choice:await page.locator('[data-first-crossing-item="brief"]').isVisible(),
@@ -336,7 +336,7 @@ try {
         await page.locator('#loomAiWorkspace').getAttribute('data-first-crossing-gather')==='complete');
       await lockedSource.click();
       record('first crossing: consequence begins before terminology is named',
-        /The conversation stays yours\.|Choose what can travel\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
+        /Start with your question\.|Choose what you want to share\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
         !/That relation is à/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
         { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
       await observeFiniteConsequence(page,'gathering','first-crossing-mobile-gathering');
@@ -356,7 +356,7 @@ try {
       await page.waitForFunction(()=>document.querySelector('#aiRuntimeState')?.dataset?.projectionState==='CURRENT'&&
         document.querySelector('#aiRuntimeState')?.dataset?.activeRelation==='created_potential');
       record('first crossing: readiness consequence begins before 上 is named',
-        /See exactly what crosses\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
+        /See what AI would get\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
         !/created-potential relation is 上/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
         { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
       await observeFiniteConsequence(page,'created_potential','first-crossing-mobile-readiness');
@@ -369,11 +369,11 @@ try {
         await tutorialComposition(page,`tutorial-${glyph}`);await screenshot(page,`tutorial-step-${step}`);
         if(step===3)record('outgoing preview is prepared, not a real provider submission',
           await page.locator('.loom-boundary-event-outgoing').isVisible() &&
-          /Nothing has been sent to an LLM/.test(await page.locator('#loomFirstCrossingAnswer').textContent()),
+          /Nothing has been sent to an AI provider/.test(await page.locator('#loomFirstCrossingAnswer').textContent()),
           { preview: await page.locator('.loom-boundary-event-outgoing').textContent() });
         if(step===4)record('firewall boundary lesson identifies the locally held out-of-scope source',
           await page.locator('.loom-boundary-event-denial').isVisible() &&
-          /Withheld conversation/.test(await page.locator('.loom-boundary-event-denial').textContent()),
+          /Private conversation/.test(await page.locator('.loom-boundary-event-denial').textContent()),
           { evidence: await page.locator('.loom-boundary-event-denial').textContent() });
         if(step===4)record('local gate rejection is visible without a fabricated provider-side event',
           await page.locator('.loom-boundary-event-stop').isVisible() &&
