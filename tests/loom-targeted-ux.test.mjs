@@ -34,9 +34,9 @@ test('Loom boot binds fresh couture assets and contains a catchable module failu
   const doc = new JSDOM(html).window.document;
   const css = doc.querySelector('link[href*="loom-couture.css"]');
   const module = [...doc.querySelectorAll('script[type="module"]')].find(node => node.textContent.includes('ai-workspace.js'));
-  assert.match(css.href, /20261014-golden-egg-v1/);
+  assert.match(css.href, /20261014-private-conversation-v2/);
   assert.ok(module, 'the entrypoint must be an observable dynamic module import');
-  assert.match(module.textContent, /import\('\.\/holonomy-loom\/ai-workspace\.js\?v=20261014-golden-egg-v1'\)/);
+  assert.match(module.textContent, /import\('\.\/holonomy-loom\/ai-workspace\.js\?v=20261014-private-conversation-v2'\)/);
   assert.match(module.textContent, /\.catch\(\(\) => window\.td613LoomBootFailure/);
   assert.equal(doc.querySelectorAll('script[type="module"][src*="20261003"]').length, 0);
 });
@@ -148,10 +148,10 @@ test('the firewall promise explains outgoing checks, returning review and limits
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
   assert.match(doc.querySelector('#loomFirstCrossingTitle').textContent, /Talk to AI\. Keep the conversation yours/i);
   assert.match(doc.querySelector('.loom-intro p').textContent, /Research, write, code, decide.*handing it the wheel/i);
-  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent, /outsider cannot reconstruct.*boundary to the test/i);
+  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent, /A good answer shouldn't expose.*outsider could figure out/i);
   assert.match(doc.querySelector('#loomReturnWorkspace header').textContent, /before accepting/i);
   assert.match(doc.querySelector('[data-tool-panel="boundary"]').textContent, /external AI provider determines its own retention/i);
-  assert.match(workspaceSource, /title:'One hold is not the Golden Egg\.'/);
+  assert.match(workspaceSource, /title:'Could someone piece it back together\?'/);
   assert.match(workspaceSource, /title:'Can the useful part survive\?'/);
   assert.match(runway, /data-first-crossing-step="4"\] \.loom-boundary-event-denial/);
   assert.doesNotMatch(doc.querySelector('#loomFirstCrossingPrompt').textContent, /portable|cryptographic|governance/i);
@@ -163,7 +163,7 @@ test('the seven steps display actual evidence instead of a decorative firewall d
   assert.ok(stage);
   assert.equal(doc.querySelector('.loom-firewall-theater'), null, 'retire generic diamond and platform diagram');
   assert.match(stage.textContent, /A useful question.*context you chose/i);
-  assert.match(stage.textContent, /Withheld conversation/);
+  assert.match(stage.textContent, /Private conversation/);
   assert.match(stage.textContent, /HELD LOCALLY/);
   assert.match(runway, /data-first-crossing-step="3"\] \.loom-boundary-event-outgoing/);
   assert.match(runway, /data-first-crossing-step="4"\] \.loom-boundary-event-denial/);
@@ -219,7 +219,7 @@ test('How Loom works is a recoverable handoff preview with a living Flow-Core re
   assert.match(workspaceSource, /flowcore_choreography:firstCrossingChoreography/);
   assert.match(workspaceSource, /coordinator\.setContinuous\(true\)/);
   assert.match(workspaceSource, /title:'Talk to AI\. Keep the conversation yours\.'/);
-  assert.match(workspaceSource, /title:'The Golden Egg is the test\.'/);
+  assert.match(workspaceSource, /title:'Can an outsider piece it together\?'/);
   assert.match(workspaceSource, /Try Loom →/);
   assert.doesNotMatch(workspaceSource, /title:'Prepared is not transmitted\.'/);
   assert.doesNotMatch(workspaceSource, /title:'They gathered\. Nothing crossed\.'/);
@@ -422,7 +422,7 @@ test('first use explains private material, remixes presentation, and skips witho
   assert.equal(privateNote.tagName,'DIV');
   assert.equal(privateNote.getAttribute('role'),'note');
   assert.match(privateNote.textContent,/Private exchange/);
-  assert.match(privateNote.textContent,/stays in this browser/i);
+  assert.match(privateNote.textContent,/Not included in this example request/i);
   assert.equal(privateNote.hasAttribute('aria-pressed'), false);
   const before=h.$('#loomFlowcoreMessage').textContent;
   h.$('#loomFirstCrossingPause').click();
