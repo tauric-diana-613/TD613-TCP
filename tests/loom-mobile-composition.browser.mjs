@@ -306,7 +306,7 @@ try {
         await page.locator('#loomFirstCrossingTitle').isVisible() &&
         await page.locator('.loom-boundary-event').isHidden() &&
         await page.locator('[data-first-crossing-item="brief"]').isVisible() &&
-        /outside observer.*Golden Egg Loom is pursuing/i.test(await page.locator('#loomFirstCrossingPrompt').textContent()) &&
+        /outsider cannot reconstruct.*boundary to the test/i.test(await page.locator('#loomFirstCrossingPrompt').textContent()) &&
         await page.locator('#loomStartNow').count()===0 &&
         await page.locator('#loomExploreDemo').count()===0,
         {first_choice:await page.locator('[data-first-crossing-item="brief"]').isVisible(),
