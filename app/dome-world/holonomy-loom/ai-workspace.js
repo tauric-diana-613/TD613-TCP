@@ -205,7 +205,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     $('loomFirstCrossingTitle').textContent=title;
     if(cue==='choose' && root.dataset.loomIntro==='true'){
       // Authored headline only: incoming/model text never reaches innerHTML.
-      $('loomFirstCrossingTitle').innerHTML='<span class="loom-headline-line">Talk to AI.</span> <span class="loom-headline-line"><em>Keep the conversation yours.</em></span>';
+      $('loomFirstCrossingTitle').innerHTML='<span class="loom-headline-line">Have the conversation.</span> <span class="loom-headline-line"><em>Keep your story.</em></span>';
     }
     $('loomFirstCrossingPrompt').textContent=prompt;
     $('loomFirstCrossingAnswer').textContent=answer;
@@ -350,7 +350,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
         firstCrossingSourceUnlocked=true;
         root.dataset.firstCrossingGather='complete';
         renderFirstCrossingSelection();
-        $('loomFirstCrossingAnswer').textContent='Now choose the context you want AI to use.';
+        $('loomFirstCrossingAnswer').textContent='Now see what this example needs to answer.';
       }
       return;
     }
@@ -362,16 +362,16 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       if(consequenceVisible){
         firstCrossingGatheringPublished=true;
         setFirstCrossingCue('gathering-named',{
-          title:'Choose what you want to share.',
-          prompt:'Share the question and context you chose. The rest of the conversation stays out of this request.',
-          answer:'Tutorial · review what would be sent.',
+          title:'What does the answer need?',
+          prompt:'A little context might be enough for a helpful answer. What could someone infer from that little bit?',
+          answer:'This example is ready to inspect.',
           action:true
         });
       }else{
         setFirstCrossingCue('gathering-motion',{
-          title:'Start with your question.',
-          prompt:'Loom prepares the question and context you chose, without the rest of the conversation.',
-          answer:'Preparing your selected context…'
+          title:'A good question is personal.',
+          prompt:'You want help thinking through a move. The example starts with the details an answer would need.',
+          answer:'Putting the example together…'
         });
       }
       return;
@@ -380,15 +380,15 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       if(consequenceVisible){
         firstCrossingReadinessPublished=true;
         setFirstCrossingCue('potential-named',{
-          title:'See what AI would get.',
-          prompt:'Read the question, context, and instructions before anything gets sent.',
+          title:'Follow the clues.',
+          prompt:'This is the example request. Notice how even a few ordinary details could say a lot about someone.',
           answer:'Tutorial · this request stays in your browser.',
           stop:true
         });
       }else{
         setFirstCrossingCue('potential-motion',{
-          title:'See what AI would get.',
-          prompt:'Your question, context, and instructions are ready to review.',
+          title:'Follow the clues.',
+          prompt:'Here is the part of the conversation a model would receive.',
           answer:'Preparing your preview…'
         });
       }
@@ -562,9 +562,9 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     firstCrossingWasAlreadyComplete=true;
     storageWrite(FIRST_CROSSING_KEY,'complete');
     setFirstCrossingCue('complete',{
-      title:'Can an outsider piece it together?',
-      prompt:'Can AI give you a helpful answer without giving an outsider enough clues to reconstruct the private conversation? That is the test Loom is working to meet.',
-      answer:'Both results must be measured together in a real experiment. This fictional walk-through is an illustration, not that proof.'
+      title:'What could a stranger work out?',
+      prompt:'A useful answer matters. So does what another person could guess from the clues left behind. Loom is built around testing both in the same exchange.',
+      answer:'This example starts the question. Proving privacy means testing the whole trail, not just the visible words.'
     });
     $('loomBegin').hidden=false;
     $('loomBegin').textContent='Try Loom →';
@@ -615,9 +615,9 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     $('loomFirstCrossingLeave').hidden=false;
     firstCrossingChoreography=nextFlowcoreChoreography(firstCrossingChoreography?.id, environment.Math?.random?.() ?? Math.random());
     setFirstCrossingCue('choose',{
-      title:'Talk to AI. Keep the conversation yours.',
-      prompt:'A good answer shouldn\'t expose the conversation behind it. Loom lets you choose what an AI receives, check what comes back, and question what an outsider could figure out.',
-      answer:'A fictional conversation, a useful question, and a look at what privacy really requires. Nothing is sent to AI.'
+      title:'Have the conversation. Keep your story.',
+      prompt:'Ask the hard question. Get something useful back. Your whole conversation shouldn\'t become a puzzle a stranger can solve. Loom is built to test what the trail reveals.',
+      answer:'See what one example can show—and what a single check could miss. Nothing is sent to an AI.'
     });
     flowcoreMessage.textContent=firstCrossingChoreography.message;
     $('loomFirstCrossingAction').textContent='Review the request →';
@@ -653,9 +653,9 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       firstCrossingItems.forEach(button=>button.disabled=true);
       $('loomFirstCrossingBack').hidden=false;
       setFirstCrossingCue('gathering-motion',{
-        title:'Start with your question.',
-        prompt:'Share the question and context you chose. The rest of the conversation stays out of this request.',
-        answer:'Preparing your selected context…'
+        title:'A good question is personal.',
+        prompt:'A little context might be enough for a helpful answer. What could someone infer from that little bit?',
+        answer:'Putting the example together…'
       });
       projectFirstCrossing(firstCrossingEvent('prepared'));
       $('loomFirstCrossingAction').textContent='Review the request →';
@@ -680,8 +680,8 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
         firstCrossingStep=2;
         root.dataset.firstCrossingStep='2';
         setFirstCrossingCue('potential-motion',{
-          title:'See what AI would get.',
-          prompt:'Your question, context, and instructions are ready to review.',
+          title:'Follow the clues.',
+          prompt:'Here is the part of the conversation a model would receive.',
           answer:'Tutorial · this request stays in your browser.'
         });
         projectFirstCrossing(firstCrossingEvent('checking',binding.facts??binding));
@@ -696,9 +696,9 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
 
   function renderFirstCrossingLesson(published=false){
     const lessons={
-      3:{cue:'send',title:'The whole conversation stays behind.',prompt:'This request contains the question and context you chose. An AI provider would see whatever you send, but the rest of this example conversation is left out.',answer:'This is only a preview. Nothing has been sent to an AI provider.',next:'Test what stays out →'},
-      4:{cue:'privacy',title:'Could someone piece it back together?',prompt:'Loom caught one excluded phrase in this example. But details, combined clues, and even timing can reveal more. This local check cannot answer what an outsider could reconstruct.',answer:'One local check passed. The private conversation has not been tested against an outside observer.',next:'See the example answer →'},
-      5:{cue:'proof',title:'Is the answer actually useful?',prompt:'This sample answer uses only the question and context you chose. Getting a helpful reply matters. So does knowing what an outsider could learn along the way.',answer:'Fictional answer · no AI provider was called, and no outside-observer privacy test took place.',next:'Finish tutorial →'}
+      3:{cue:'send',title:'A small piece can say a lot.',prompt:'The model would receive this question and these details. Someone watching a different part of the journey might have other clues. That is why the trail matters.',answer:'Example only. Nothing has been sent to an AI provider.',next:'See what a check catches →'},
+      4:{cue:'privacy',title:'Hiding one phrase proves very little.',prompt:'The local check caught one exact phrase. But clues can hide in what remains: details, patterns, even timing. The harder test asks what an outsider could piece together.',answer:'One local check passed. What a stranger could reconstruct has not been measured.',next:'See the example answer →'},
+      5:{cue:'proof',title:'Did the answer help?',prompt:'The example reply offers a way forward without quoting the private exchange. But a useful answer alone cannot tell us what a stranger learned along the way.',answer:'Fictional reply. No AI provider or outside-observer test was involved.',next:'Finish tutorial →'}
     };
     const lesson=lessons[firstCrossingStep];
     if(!lesson)return;
