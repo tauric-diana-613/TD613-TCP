@@ -17,12 +17,20 @@ import {
   CLAIMED_PUA_SCALAR
 } from '../app/dome-world/khonapolit-covenant.js';
 import { buildGeminiRequest } from '../server/khonapolit-quality.js';
+import {
+  GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+  withGeminiGenerationProfile
+} from '../server/gemini-generation-envelope.js';
 
 test('A is the actual full source-built provider request; B differs only in entire systemInstruction', () => {
   const packet = buildInvocationPacket({ message: SYNTHETIC_PROMPT, history: [], mode: 'issued-conjunction', shi: '', waiveIssuance: true });
-  const actual = buildGeminiRequest(packet, {}, MODEL);
+  const actual = withGeminiGenerationProfile(
+    GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+    () => buildGeminiRequest(packet, {}, MODEL)
+  );
   const { a, b } = buildOfflineFrameContrast();
   assert.deepEqual(a, actual, 'never reconstruct or caricature the live A condition');
+  assert.deepEqual(actual.generationConfig.thinkingConfig, {thinkingLevel: 'medium'}, 'live text route profile must be represented');
   assert.deepEqual(b.contents, actual.contents, 'synthetic framed input preserved');
   assert.deepEqual(b.generationConfig, actual.generationConfig, 'same true serving model configuration');
   assert.deepEqual(Object.keys(b).sort(), Object.keys(actual).sort());
