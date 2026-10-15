@@ -23,6 +23,7 @@ const workspaceSource = fs.readFileSync(new URL('../app/dome-world/holonomy-loom
 const runtimeStateSource = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/runtime-state-view.js', import.meta.url), 'utf8');
 const instrumentSource = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/instrument-state-view.js', import.meta.url), 'utf8');
 const templateSource = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/workspace-template.js', import.meta.url), 'utf8');
+const runtimeModuleSource = fs.readFileSync(new URL('../app/dome-world/holonomy-loom/runtime-state-view.js', import.meta.url), 'utf8');
 
 test('Loom loading veil replaces inherited visibility gate that strands WebKit tutorial', () => {
   assert.doesNotMatch(html, /html\[data-loom-boot=["']loading["']\]\s+main\s*\{\s*visibility\s*:\s*hidden/i);
@@ -686,4 +687,13 @@ test('independent Lab links preserve unsent Loom work by opening another tab wit
     assert.ok(link.relList.contains('noreferrer'), 'new Lab tab must not receive referrer information');
     assert.match(link.title, /tab/);
   }
+});
+
+
+test('Loom versioned entry loads the actual rewritten template and nested instrument renderer',()=>{
+  assert.match(workspaceSource,/workspace-template\\.js\\?v=20261014-firewall-science-v1/);
+  assert.match(workspaceSource,/runtime-state-view\\.js\\?v=20261014-firewall-science-v1/);
+  assert.match(runtimeModuleSource,/instrument-state-view\\.js\\?v=20261014-firewall-science-v1/);
+  assert.match(templateSource,/Privacy mathematics|loomScienceIntro/);
+  assert.match(instrumentSource,/Keep all 39 illustrated carriers/);
 });
