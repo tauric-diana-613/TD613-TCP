@@ -667,3 +667,13 @@ body{background:var(--ink);overflow-x:clip}
   backdrop-filter:blur(12px);
   -webkit-backdrop-filter:blur(12px);
 }
+
+/* Short desktop first fold: keep the opening promise and first choice visible
+   without clipping, compressing other viewport sizes or shrinking the field. */
+@media (min-width:1100px) and (max-height:820px){
+  #loomAiWorkspace[data-loom-intro="true"] .loom-first-crossing-copy h2{
+    font-size:72px;
+    line-height:.96;
+    margin-bottom:12px;
+  }
+}
