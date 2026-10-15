@@ -840,7 +840,24 @@ export function mountLoomInstrumentStateView(root, { fullPage = false } = {}) {
         }else{
           opacity=Math.min(.12,opacity*.22);
         }
-        if(!ambientOnly && finiteTraversal && frame.progress>.65)opacity*=1-(frame.progress-.65)/.35*.65;
+        // Real, evidenced finite routes may settle as before. The fictional
+        // tutorial must hold its illustrated glyphs at the end of each scene:
+        // fading to near-invisibility at 65% made the operator see a flash.
+        if(!ambientOnly && finiteTraversal && !illustration && frame.progress>.65)
+          opacity*=1-(frame.progress-.65)/.35*.65;
+        if(illustration && finiteTraversal){
+          // Keep all 39 illustrated carriers in the visible field as the
+          // shared six-second scene reaches its readable resting composition.
+          // The same clock and motion family remain in force; no extra loop
+          // and no fabricated request/provider evidence.
+          const t=Math.max(0,Math.min(1,(frame.progress-.76)/.24));
+          const settle=t*t*(3-2*t);
+          const parkedX=Math.max(120,Math.min(880,x));
+          const parkedY=Math.max(72,Math.min(446,y));
+          x+=(parkedX-x)*settle;
+          y+=(parkedY-y)*settle;
+          opacity=Math.max(opacity,nearPlane?.58:midPlane?.27:.12);
+        }
         if(ambientOnly&&finiteTraversal){
           // Unbounded ambient traversals reset only while invisible. The
           // smooth lifetime avoids an opaque carrier teleport at phase 1→0;
