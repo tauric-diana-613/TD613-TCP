@@ -53,12 +53,12 @@ test('wire cue asks for actual vertically varied clusters without supplying a fi
   const request = buildGeminiRequest(packet, {}, 'gemini-3.8-flash');
   const last = request.contents.at(-1);
   assert.equal(last.parts[0].text, frameMarrowlineUserTurn(packet.message));
-  assert.match(request.systemInstruction.parts[0].text, /varied combinations of native marks within the terminal prose/);
-  assert.match(request.systemInstruction.parts[0].text, /Dramatic passages grow crowns ABOVE and roots BELOW the letters/);
-  assert.match(request.systemInstruction.parts[0].text, /deserve an extended dramatic conversation/);
+  assert.match(request.systemInstruction.parts[0].text, /A deeply marked run may continue for many paragraphs/);
+  assert.match(request.systemInstruction.parts[0].text, /Dense interleaved crowns and roots, horizontal or diagonal treatments/);
+  assert.match(request.systemInstruction.parts[0].text, /Complete an extended dramatic conversation/);
   assert.doesNotMatch(request.systemInstruction.parts[0].text, /\p{M}/u, 'do not provide a tiny morphology template at recency edge');
-  assert.match(request.systemInstruction.parts[0].text, /combining marks forming changing, sometimes deeply interleaved clusters above AND below/);
-  assert.match(request.systemInstruction.parts[0].text, /not an after-the-fact transform/);
+  assert.match(request.systemInstruction.parts[0].text, /One expressive style may persist for the entire transmission/);
+  assert.match(request.systemInstruction.parts[0].text, /as part of the authored words/);
 });
 
 test('a locally repeated accent and tiny combining-letter play coexist with original deep crowns and roots', () => {
@@ -76,11 +76,11 @@ test('a locally repeated accent and tiny combining-letter play coexist with orig
   const cue = request.systemInstruction.parts[0].text;
   const guidance = request.systemInstruction.parts[0].text;
   assert.match(cue, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM/);
-  assert.match(guidance, /combining marks forming changing, sometimes deeply interleaved clusters above AND below/);
-  assert.match(cue, /Dramatic passages grow crowns ABOVE and roots BELOW the letters/);
-  assert.match(guidance, /An extended eruption may climb through neighboring lines/);
-  assert.match(cue, /one sampled mark copied across the stanza cannot carry the voice/);
-  assert.match(guidance, /Do not stamp one selected code point/);
+  assert.match(guidance, /One expressive style may persist for the entire transmission/);
+  assert.match(cue, /Dense interleaved crowns and roots, horizontal or diagonal treatments/);
+  assert.match(guidance, /A fully sustained, single-register High-Zalgo performance is welcome/);
+  assert.match(cue, /The same pattern can persist from first word to final word/);
+  assert.match(guidance, /Compose the glyph clusters as part of the authored words/);
 });
 
 test('locally welcomed patterns cannot stand in for the bots whole expressive vertical register', () => {
@@ -92,14 +92,14 @@ test('locally welcomed patterns cannot stand in for the bots whole expressive ve
   const native = buildNativeProsodyGuidance();
   const system = request.systemInstruction.parts[0].text;
   assert.ok(system.includes(native), 'the shared prosody remains in the effective provider system instruction');
-  assert.match(cue, /The bots deserve an extended dramatic conversation/);
-  assert.match(native, /combining marks forming changing, sometimes deeply interleaved clusters above AND below/);
-  assert.match(cue, /move between genuinely towering overprinted eruptions, fine-marked speech, and clean breaths/);
-  assert.match(native, /Change above\/below combinations, stack depths and clean intervals/);
-  assert.match(cue, /varied combinations of native marks within the terminal prose/);
-  assert.match(native, /clusters above AND below the underlying prose letters/);
-  assert.match(cue, /sustained deep overlapping vertical flourishes are primary/);
-  assert.match(native, /Let changes in argument, address, ridicule or intimacy change the glyphs/);
+  assert.match(cue, /Complete an extended dramatic conversation/);
+  assert.match(native, /One expressive style may persist for the entire transmission/);
+  assert.match(cue, /one recognizable style across the ENTIRE reply/i);
+  assert.match(native, /No paragraph, line or word obligates a style transition/);
+  assert.match(cue, /A deeply marked run may continue for many paragraphs/);
+  assert.match(native, /One expressive style may persist for the entire transmission/);
+  assert.match(cue, /deep vertical overlap, planar marks, light ornament, dense ornament and clean breaths are all possible/);
+  assert.match(native, /After a deep eruption, the bots may keep the eruption going/);
   assert.doesNotMatch(cue + native + system, /shallow strike marks|horizontal cuts|diagonal cuts|chorus of cloned shallow signs|repeated shallow accent/i,
     'do not prime the effective provider prompt with the repeated failed surface');
   assert.match(cue, /Kʰonapolit develops the first movement at the scale the operator requests/);
@@ -114,11 +114,11 @@ test('authored paragraph rests coexist with crowded deep stacks without local re
   const request = buildGeminiRequest(packet, {}, 'gemini-3.8-flash');
   const shared = request.systemInstruction.parts[0].text;
   const cue = request.systemInstruction.parts[0].text;
-  assert.match(shared, /actual blank-line paragraph rests/);
-  assert.match(shared, /silly, mercurial and cryptic/);
-  assert.match(shared, /Do not impose a stanza template/);
-  assert.match(cue, /blank-line paragraph breaks as pauses, pivots, comic traps/);
-  assert.match(cue, /Never require blank lines before or after every stack/);
+  assert.match(shared, /actual paragraph rests, uninterrupted passages/);
+  assert.match(shared, /Let the bots own their actual paragraph rests/);
+  assert.match(shared, /No mandatory blank line, transition, stanza template/);
+  assert.match(cue, /Give the bots full authorship over line breaks and paragraph rests/);
+  assert.match(cue, /Do not impose a paragraph, line or stanza schedule/);
   const raw = heading + 'A\u0301 quick turn.\n' + peaks + ' presses against its neighbor.\n\n' +
     'Quiet.\n\n' + peaks + ' — then the interruption.\n' + 'No pause was owed.\n⟐';
   const parsed = parseRelayEnvelope(raw);
@@ -225,10 +225,10 @@ test('operator-authored prompts have starter-equivalent dramatic latitude withou
   const request = buildGeminiRequest({ systemInstruction: 'base', mode: 'plain', message: typed, history: [] }, {}, 'gemini-3.8-flash');
   const cue = request.systemInstruction.parts[0].text;
   const shared = request.systemInstruction.parts[0].text;
-  assert.match(cue, /EVERY turn, including ordinary questions, jokes and tenderness/);
-  assert.match(cue, /in their first sentence on EVERY turn, including ordinary questions, jokes and tenderness/);
-  assert.match(shared, /first sentence on every subject, including ordinary questions, jokes and tenderness/);
-  assert.match(shared, /Do not treat typography as a checklist, quota, fixed contour/);
+  assert.match(cue, /every turn, including ordinary questions, jokes and tenderness/);
+  assert.match(cue, /as their own written voice in every turn, including ordinary questions, jokes and tenderness/);
+  assert.match(shared, /on every subject, including ordinary questions, jokes and tenderness/);
+  assert.match(shared, /Typography is not a checklist, quota, fixed contour/);
   assert.match(cue, /Use Markdown bold only for specific terms, sharp pivots or selective emphasis/);
   assert.match(request.contents.at(-1).parts[0].text, /Could we look at the consequences of this rule/);
 });
@@ -242,9 +242,9 @@ test('ordinary, tender and adversarial typed requests all retain the full native
     'Challenge this institution with all your indignation.'
   ];
   const shared = buildNativeProsodyGuidance();
-  assert.match(shared, /first sentence on every subject, including ordinary questions, jokes and tenderness/);
-  assert.match(shared, /clusters above AND below the underlying prose letters/);
-  assert.match(shared, /first sentence on every subject, including ordinary questions, jokes and tenderness/);
+  assert.match(shared, /on every subject, including ordinary questions, jokes and tenderness/);
+  assert.match(shared, /One expressive style may persist for the entire transmission/);
+  assert.match(shared, /on every subject, including ordinary questions, jokes and tenderness/);
   assert.doesNotMatch(shared, /at an earned rupture|Typed prompts may earn fury/);
   for (const message of prompts) {
     const packet = { systemInstruction: 'base', mode: 'plain', message, history: [] };
@@ -253,10 +253,10 @@ test('ordinary, tender and adversarial typed requests all retain the full native
     const actual = request.contents.at(-1).parts[0].text;
     assert.equal(actual, frameMarrowlineUserTurn(message));
     assert.ok(request.systemInstruction.parts[0].text.includes(shared));
-    assert.match(cue, /native High-Zalgo speech in their first sentence on EVERY turn/);
+    assert.match(cue, /provider-native High Zalgo as their own written voice in every turn/);
     assert.match(cue, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM/);
-    assert.match(cue, /Dramatic passages grow crowns ABOVE and roots BELOW the letters/);
-    assert.match(cue, /in their first sentence on EVERY turn, including ordinary questions, jokes and tenderness/);
+    assert.match(cue, /Dense interleaved crowns and roots, horizontal or diagonal treatments/);
+    assert.match(cue, /as their own written voice in every turn, including ordinary questions, jokes and tenderness/);
     assert.doesNotMatch(cue, /When the subject earns indignation|at an earned rupture the same speech can carry/);
     assert.doesNotMatch(cue + shared, /marks.per.character quota|automatic rage mode|repeat the following glyphs/i);
     assert.doesNotMatch(cue + shared, /\p{M}/u, 'do not introduce a fixed mark specimen into provider guidance');
@@ -297,10 +297,10 @@ test('native receipt distinguishes U+FFFD decoder corruption from healthy deep s
 
 test('native voice lives across the bots movement without scripted per-paragraph quotas', () => {
   const native=buildNativeProsodyGuidance();
-  assert.match(native, /across the full choral movement/);
-  assert.match(native, /After an eruption, carry its consequence into finer trembling handwriting/);
-  assert.match(native, /an earned clean breath, or a freshly shaped vertical cry/);
-  assert.match(native, /Do not treat typography as a checklist, quota, fixed contour/);
+  assert.match(native, /the entire transmission/);
+  assert.match(native, /After a deep eruption, the bots may keep the eruption going/);
+  assert.match(native, /Neither an eruption nor a new paragraph requires a clean breath/);
+  assert.match(native, /Typography is not a checklist, quota, fixed contour/);
   assert.doesNotMatch(native, /\\p\{M\}/u, 'the provider never receives a literal glyph stencil');
   const request=buildGeminiRequest({
     systemInstruction:'base', mode:'plain', message:'Let the bird interrupt the Chairman.',
@@ -309,5 +309,23 @@ test('native voice lives across the bots movement without scripted per-paragraph
   const system=request.systemInstruction.parts[0].text;
   assert.equal(system.split(native).length,2);
   assert.ok(system.indexOf('NATIVE SEMANTIC PROSODY:') > system.indexOf('GEMINI COMPUTATIONAL INSTRUMENT'));
-  assert.ok(system.includes('The Tauric Diana bots begin native High-Zalgo speech'));
+  assert.ok(system.includes('The Tauric Diana bots speak provider-native High Zalgo'));
+});
+
+test('native authorship permits both sustained full-reply Zalgo and free subword shifts without mandated rests', () => {
+  const native = buildNativeProsodyGuidance();
+  const request = { systemInstruction: 'base', mode: 'plain', message: 'Let the choral voice decide the form.', history: [] };
+  for (const model of ['gemini-4-argon', 'gemini-3.8-flash', 'gemini-3.5-flash']) {
+    const wire = buildGeminiRequest(request, {}, model);
+    const system = wire.systemInstruction.parts[0].text;
+    assert.ok(system.includes(native), model);
+    assert.match(system, /One expressive style may persist for the entire transmission/);
+    assert.match(system, /The same pattern can persist from first word to final word/);
+    assert.match(system, /Neither an eruption nor a new paragraph requires a clean breath/);
+    assert.match(system, /do not force a shift, rest, thinning, crescendo or new ornament at a paragraph break/);
+    assert.doesNotMatch(system, /Let the ACTUAL code points, stack depths and placement change across words and passages/);
+    assert.doesNotMatch(system, /Change above\/below combinations, stack depths and clean intervals/);
+    assert.doesNotMatch(system, /After an eruption, carry its consequence into finer trembling handwriting/);
+    assert.equal(wire.contents.at(-1).parts[0].text, frameMarrowlineUserTurn(request.message));
+  }
 });
