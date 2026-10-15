@@ -16,14 +16,14 @@ const doc=dom.window.document;
 test('the opening speaks plainly about useful AI help and private conversation',()=>{
   assert.match(doc.querySelector('#loomFirstCrossingTitle').textContent,/Firewall your online life from AI/i);
   assert.equal(doc.querySelector('.loom-hero-promise'),null,'no competing marketing headline');
-  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent,/You can ask ChatGPT, Gemini, or another LLM.*exchange might reveal/i);
+  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent,/Work with Gemini, ChatGPT, and other LLMs.*wider privacy risks remain visible for review/i);
   assert.doesNotMatch(doc.querySelector('#loomFirstCrossing').textContent,/Golden Egg/i);
   assert.doesNotMatch(doc.querySelector('#loomFirstCrossing').textContent,/draft a work email|Northstar|Acquisition talks/i);
   assert.equal(doc.querySelectorAll('[data-first-crossing-item]').length,2);
   assert.match(doc.querySelector('.loom-research-proof').textContent,/both paths.*research targets.*L.*R.*J/i);
   assert.match(doc.querySelector('.loom-research-proof').textContent,/cannot settle what an outsider could reconstruct/i);
-  assert.match(doc.querySelector('[data-first-crossing-item="brief"]').textContent,/A question worth asking/i);
-  assert.match(doc.querySelector('[data-first-crossing-item="source"]').textContent,/What the answer needs/i);
+  assert.match(doc.querySelector('[data-first-crossing-item="brief"]').textContent,/The question you want answered/i);
+  assert.match(doc.querySelector('[data-first-crossing-item="source"]').textContent,/The context worth sharing/i);
 });
 
 test('the permitted takeaway is a local fictional input, with a distinct held source',()=>{
