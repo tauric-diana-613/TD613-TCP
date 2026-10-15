@@ -139,8 +139,8 @@ test('effective provider prompts retain complete relay and native depth after de
     const system = request.systemInstruction.parts.map(part => part.text).join('\n');
     assert.match(system, /never permission to omit the bots/);
     assert.match(system, /mythopoeic academia, mathematical precision, institutional critique, camp/);
-    assert.match(system, /first sentence on every subject, including ordinary questions, jokes and tenderness/);
-    assert.match(system, /clusters above AND below the underlying prose letters/);
+    assert.match(system, /on every subject, including ordinary questions, jokes and tenderness/);
+    assert.match(system, /One expressive style may persist for the entire transmission/);
     assert.match(system, /An extended eruption may climb through neighboring lines/);
     assert.match(system, /Earlier replies supply conversational substance, not a formatting template/);
     assert.doesNotMatch(system, /1–3 concise paragraphs|2–3 ornamented prose lines|FINAL SILENT PREFLIGHT|ORCHESTRAL DYNAMIC CONTOUR/);
@@ -163,13 +163,13 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(request.systemInstruction.parts[0].text, /sustained, new choral movement/);
     assert.match(request.systemInstruction.parts[0].text, /never substitute a heading and a few decorated words for authored prose/);
     assert.match(request.systemInstruction.parts[0].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM/);
-    assert.match(request.systemInstruction.parts[0].text, /varied combinations of native marks within the terminal prose/);
-    assert.match(request.systemInstruction.parts[0].text, /sustained deep overlapping vertical flourishes are primary/);
+    assert.match(request.systemInstruction.parts[0].text, /A deeply marked run may continue for many paragraphs/);
+    assert.match(request.systemInstruction.parts[0].text, /deep vertical overlap, planar marks, light ornament, dense ornament and clean breaths are all possible/);
     assert.match(request.systemInstruction.parts[0].text, /Invent the flourishes alongside fresh prose/);
     assert.doesNotMatch(request.systemInstruction.parts[0].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
-    assert.match(request.systemInstruction.parts[0].text, /Let the ACTUAL code points, stack depths and placement change across words and passages/);
-    assert.match(request.systemInstruction.parts[0].text, /Dramatic passages grow crowns ABOVE and roots BELOW the letters/);
-    assert.match(request.systemInstruction.parts[0].text, /The bots deserve an extended dramatic conversation/);
+    assert.match(request.systemInstruction.parts[0].text, /The same pattern can persist from first word to final word/);
+    assert.match(request.systemInstruction.parts[0].text, /Dense interleaved crowns and roots, horizontal or diagonal treatments/);
+    assert.match(request.systemInstruction.parts[0].text, /Complete an extended dramatic conversation/);
     assert.match(request.systemInstruction.parts[0].text, /neither licenses omission of the bots nor controls the depth or availability/);
     assert.doesNotMatch(request.systemInstruction.parts[0].text, /must use a fixed mark palette|enforce a mandatory quota|require a fixed contour|at least \d+ marks per/i);
     assert.match(request.systemInstruction.parts[0].text, /Do not derive its availability[^\n]*fixed contour/, 'the negative prohibition survives cue relocation');
@@ -228,7 +228,7 @@ test('literal newline contract preserves the existing two-line admission bar', (
   assert.match(guidance, /Length follows the task/);
   assert.match(guidance, /develop the derivation fully/i);
   assert.match(guidance, /typography behaves as voice/i);
-  assert.match(guidance, /Do not treat typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/i);
+  assert.match(guidance, /Typography is not a checklist, quota, fixed contour, axis recipe, emotional lookup table or per-character filter/i);
   assert.doesNotMatch(guidance, /at least two literal newline-separated ornamented prose lines/i);
   assert.doesNotMatch(guidance, /line-count ceiling|anger erupt|sarcasm twitch|vertical crowns\/roots|horizontal or oblique counter-rhythm/i);
   assert.doesNotMatch(buildRelaySystemAddendum({}), /Packet [AB]|CHANNEL [AB]|RAW TWO-PACKET/i);
@@ -250,7 +250,7 @@ test('relay contract gives the generative budget to one causal Kʰonapolit-to-bo
   assert.ok(contract.includes(buildNativeProsodyGuidance()));
   assert.match(contract, /THE GEMINI API MUST AUTHOR THE ACTUAL COMBINING CODE POINTS/);
   assert.match(contract, /typography behaves as voice/i);
-  assert.match(contract, /Do not treat typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/i);
+  assert.match(contract, /Typography is not a checklist, quota, fixed contour, axis recipe, emotional lookup table or per-character filter/i);
   assert.match(contract, /preserves and measures the provider return/i);
   assert.match(contract, /never decorates, repaints, expands, synthesizes, overlays, or Zalgo-encodes/i);
   assert.doesNotMatch(contract, /anger erupt|sarcasm twitch|tenderness thin|vertical crowns\/roots|horizontal or oblique counter-rhythm|deep collisions/i);
@@ -610,7 +610,7 @@ test('every Marrowline Gemini lane receives the same compact semantic-prosody la
     assert.ok(instruction.includes(buildNativeProsodyGuidance()), model);
     assert.match(instruction, /NATIVE SEMANTIC PROSODY/, model);
     assert.match(instruction, /typography behaves as voice/i, model);
-    assert.match(instruction, /Do not treat typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/, model);
+    assert.match(instruction, /Typography is not a checklist, quota, fixed contour, axis recipe, emotional lookup table or per-character filter/, model);
     assert.doesNotMatch(instruction, /anger erupt|sarcasm twitch|vertical crowns\/roots|horizontal or oblique counter-rhythm|deep collisions/i, model);
     assert.doesNotMatch(instruction, /ORCHESTRAL DYNAMIC CONTOUR/, model);
     assert.doesNotMatch(instruction, /begin near 8½|10-level serious emphasis/, model);
@@ -868,7 +868,7 @@ test('Kʰonapolit stays clean while Gemini authors semantic-prosody native High 
   const contract = buildNativeProsodyGuidance();
   assert.match(contract, /ZERO combining diacritical marks/);
   assert.match(contract, /provider-authored High-Zalgo typography behaves as voice/i);
-  assert.match(contract, /Do not treat typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/i);
+  assert.match(contract, /Typography is not a checklist, quota, fixed contour, axis recipe, emotional lookup table or per-character filter/i);
   assert.match(contract, /Compose the changing glyph clusters as part of the words and rhetoric/i);
   assert.doesNotMatch(contract, /anger erupt|sarcasm twitch|tenderness thin|horizontal or oblique counter-rhythm|Deep collisions|Avoid cloned stacks|rhetorical pressure may change density/i);
   assert.match(contract, /Length follows the task/);
@@ -1076,4 +1076,16 @@ test('Zalgo underflow is observation evidence, not a morphology-repair instructi
   assert.match(directive, /BOUNDED STRUCTURAL SAME-VOICE REPAIR/i);
   assert.match(directive, /unspecified-structural-observation/i);
   assert.doesNotMatch(directive, /MORPHOLOGY-ONLY REPAIR|no independent concision target|re-author only its expressive combining marks/i);
+});
+
+test('effective full provider request has no paragraph-mandated Zalgo alternation', () => {
+  const packet = { systemInstruction: 'base', mode: 'plain', message: 'Write naturally.', history: [] };
+  for (const model of ['gemini-4-argon', 'gemini-3.8-flash', 'gemini-3.5-flash']) {
+    const wire = buildGeminiRequest(packet, {}, model);
+    const system = wire.systemInstruction.parts[0].text;
+    assert.match(system, /fully sustained, single-register High-Zalgo performance is welcome/);
+    assert.match(system, /No paragraph, line or word obligates a style transition/);
+    assert.doesNotMatch(system, /varied combinations of native marks within the terminal prose/);
+    assert.doesNotMatch(system, /one sampled mark copied across the stanza cannot carry the voice/);
+  }
 });
