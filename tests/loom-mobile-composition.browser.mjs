@@ -306,7 +306,7 @@ try {
         await page.locator('#loomFirstCrossingTitle').isVisible() &&
         await page.locator('.loom-boundary-event').isHidden() &&
         await page.locator('[data-first-crossing-item="brief"]').isVisible() &&
-        /Work with Gemini, ChatGPT, and other LLMs on your terms.*wider privacy risks remain visible for review/i.test(await page.locator('#loomFirstCrossingPrompt').textContent()) &&
+        /Use Gemini, ChatGPT, and other LLMs.*test what the exchange may reveal/i.test(await page.locator('#loomFirstCrossingPrompt').textContent()) &&
         await page.locator('#loomStartNow').count()===0 &&
         await page.locator('#loomExploreDemo').count()===0,
         {first_choice:await page.locator('[data-first-crossing-item="brief"]').isVisible(),
@@ -394,7 +394,7 @@ try {
       await page.locator('#loomTutorialProof > summary').click();
       await page.locator('#loomFirstCrossingStop').click();
       await page.waitForFunction(()=>document.querySelector('#aiRuntimeState')?.dataset?.projectionState==='CURRENT');
-      await page.waitForTimeout(4200);const restA=await fieldObservation(page);await page.waitForTimeout(240);const restB=await fieldObservation(page);
+      await page.waitForFunction(()=>document.querySelector('#loomAiWorkspace')?.dataset.pendingFrames==='0',null,{timeout:12000});const restA=await fieldObservation(page);await page.waitForTimeout(240);const restB=await fieldObservation(page);
       record('tutorial finish: 𝄐 settles instead of restarting 上',restB.pending_frames==='0'&&restB.carriers.every((node,index)=>node.relation==='structural_rest'&&node.x===restA.carriers[index].x&&node.y===restA.carriers[index].y),{before:restA,after:restB});
       const help=page.locator('.loom-flowcore-help');await help.locator('summary').click();
       record('tutorial help: visible 44px close control',await page.locator('#loomFlowcoreHelpClose').isVisible()&&await page.locator('#loomFlowcoreHelpClose').evaluate(node=>node.getBoundingClientRect().width>=44&&node.getBoundingClientRect().height>=44));
@@ -568,7 +568,7 @@ try {
       record(`${posture.name}: keyboard Escape restores Tools opener`, !(await page.locator('#loomTools').evaluate(node => node.open)) && await page.evaluate(() => document.activeElement?.id) === 'loomToolsOpen', { active_element: await page.evaluate(() => document.activeElement?.id) });
       await page.locator('#loomBoundaryOpen').focus(); await page.keyboard.press('Enter');
       const boundary = await page.locator('[data-tool-panel="boundary"]').textContent();
-      record(`${posture.name}: boundary accessible before crossing`, await page.locator('[data-tool-panel="boundary"]').isVisible() && /Unselected files stay in this browser/.test(boundary) && /review the outgoing material/.test(boundary) && /external AI provider determines its own retention, memory, and processing/.test(boundary), { text: boundary });
+      record(`${posture.name}: boundary accessible before crossing`, await page.locator('[data-tool-panel="boundary"]').isVisible() && /Unselected files stay in this browser/.test(boundary) && /You decide which question, sources, and instructions leave this browser/.test(boundary) && /external AI provider determines its own retention, memory, and processing/.test(boundary), { text: boundary });
       await page.keyboard.press('Escape');
       await page.locator('#loomRulesOpen').focus(); await page.keyboard.press('Enter');
       const ruleFont = await page.locator('#aiRules').evaluate(node => Number.parseFloat(getComputedStyle(node).fontSize));
