@@ -152,7 +152,7 @@ test('the firewall promise explains outgoing checks, returning review and limits
   assert.match(doc.querySelector('#loomReturnWorkspace header').textContent, /before accepting/i);
   assert.match(doc.querySelector('[data-tool-panel="boundary"]').textContent, /external AI provider determines its own retention/i);
   assert.match(workspaceSource, /title:'Could someone piece it back together\?'/);
-  assert.match(workspaceSource, /title:'Can the useful part survive\?'/);
+  assert.match(workspaceSource, /title:'Is the answer actually useful\?'/);
   assert.match(runway, /data-first-crossing-step="4"\] \.loom-boundary-event-denial/);
   assert.doesNotMatch(doc.querySelector('#loomFirstCrossingPrompt').textContent, /portable|cryptographic|governance/i);
 });
@@ -162,7 +162,7 @@ test('the seven steps display actual evidence instead of a decorative firewall d
   const stage = doc.querySelector('.loom-boundary-event');
   assert.ok(stage);
   assert.equal(doc.querySelector('.loom-firewall-theater'), null, 'retire generic diamond and platform diagram');
-  assert.match(stage.textContent, /A useful question.*context you chose/i);
+  assert.match(stage.textContent, /Your question.*context you chose/i);
   assert.match(stage.textContent, /Private conversation/);
   assert.match(stage.textContent, /HELD LOCALLY/);
   assert.match(runway, /data-first-crossing-step="3"\] \.loom-boundary-event-outgoing/);
@@ -175,7 +175,7 @@ test('the seven steps display actual evidence instead of a decorative firewall d
 test('first use starts the full seven-step crossing with no primary bypass', () => {
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
   const hero=doc.querySelector('#loomFirstCrossing');
-  assert.match(hero.textContent,/You don't have to trust AI to use it/);
+  assert.match(hero.textContent,/Talk to AI\. Keep the conversation yours/);
   assert.equal(doc.querySelector('#loomStartNow'),null);
   assert.equal(doc.querySelector('#loomExploreDemo'),null);
   assert.equal(doc.querySelector('#loomTutorialProgress').textContent,'1 of 7 · Choose');
@@ -638,7 +638,7 @@ test('opening overture contains all eight relations without borrowing the à ill
 test('privacy tutorial retains two selections and optional answer details in document flow', () => {
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
   assert.equal(doc.querySelectorAll('[data-first-crossing-item]').length,2);
-  assert.match(doc.querySelector('[data-first-crossing-item=source]').textContent,/Choose what may travel/);
+  assert.match(doc.querySelector('[data-first-crossing-item=source]').textContent,/Choose what AI can use/);
   assert.doesNotMatch(doc.querySelector('[data-first-crossing-item=source]').textContent,/\/\//);
   assert.match(product,/\.loom-tutorial-proof\{order:6/);
   assert.match(product,/:not\(\[data-first-crossing-step="0"\]\)\s*\.loom-first-crossing-objects\{display:none\}/);
