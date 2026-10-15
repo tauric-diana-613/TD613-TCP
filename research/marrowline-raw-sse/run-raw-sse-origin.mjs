@@ -63,7 +63,9 @@ async function main(){
     const raw=await result.text();
     await writeFile(resolve(dir,'native-response.original.json'),raw,{mode:0o600});
     const payload=JSON.parse(raw);
-    const attempt=payload.receipt?.provider?.attempts?.[0];
+    // Failed outer API replies carry a top-level attempts array; preserve an
+    // upstream provider witness even when the literary return is incomplete.
+    const attempt=payload.receipt?.provider?.attempts?.[0] ?? payload.attempts?.[0];
     const evidence=attempt?.providerStream?.nativeSseEvidence;
     record.httpStatus=result.status;record.apiResultOk=payload.ok;record.modelVersion=attempt?.output?.modelVersion;
     record.finish=attempt?.output?.finishReason;record.providerAttempts=payload.receipt?.provider?.attempts?.length;
@@ -89,6 +91,7 @@ async function main(){
       morphology:morphology(direct.text)
     };
     record.verify.allMatch=Object.entries(record.verify).filter(([,v])=>typeof v==='boolean').every(([,v])=>v===true);
+    if(!payload.ok && record.verify.allMatch)record.held='UPSTREAM_PARITY_VERIFIED_BUT_PROVIDER_COMPLETION_HELD';
     if(!record.verify.allMatch)record.held='RAW_PROVIDER_TD613_MISMATCH';
   }catch(e){record.held=e?.name||'FETCH_ERROR';record.error=String(e?.message||e).slice(0,180);}
   record.endedAt=new Date().toISOString();await save();
