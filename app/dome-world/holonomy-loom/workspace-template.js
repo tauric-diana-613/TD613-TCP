@@ -16,7 +16,7 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
     <div class="loom-first-crossing-copy">
       <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">SEE HOW YOUR AI FIREWALL WORKS · INTERACTIVE DEMO</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 7 · Choose</span></div>
       <h2 id="loomFirstCrossingTitle">Firewall your online life from AI.</h2>
-      <p id="loomFirstCrossingPrompt">Work with Gemini, ChatGPT, and other LLMs on your terms. Check exactly what you send, keep protected information out of the request, and examine the answer before accepting it. The wider privacy risks remain visible for review.</p>
+      <p id="loomFirstCrossingPrompt">Use Gemini, ChatGPT, and other LLMs. Choose what you send, inspect what comes back, and test what the exchange may reveal.</p>
       <div class="loom-value-route" aria-label="Three parts of the AI firewall"><span>01 <strong>Inspect the request</strong></span><span>02 <strong>Protect what stays private</strong></span><span>03 <strong>Examine the return</strong></span></div><p class="loom-tutorial-operator-note" aria-label="Current Flow-Core illustration"><span id="loomTutorialOperatorGlyph" class="loom-tutorial-operator-glyph" aria-hidden="true">à</span><span id="loomTutorialOperatorLabel">Gather the question</span></p>
     </div>
     <details class="loom-flowcore-help">
