@@ -48,16 +48,16 @@ test('single-codepoint wallpaper is identified as raw provider morphology, not m
   assert.equal(varied.qualityWarnings.includes('tauric-diana-zalgo-single-codepoint-wallpaper'), false);
 });
 
-test('wire cue asks for actual vertically varied clusters without supplying a fixed mark sample', () => {
+test('wire cue permits sustained or varied native High Zalgo without a fixed mark sample', () => {
   const packet = { systemInstruction: 'base', mode: 'plain', message: 'Continue without stamping a single accent.', history: [] };
   const request = buildGeminiRequest(packet, {}, 'gemini-3.8-flash');
   const last = request.contents.at(-1);
   assert.equal(last.parts[0].text, frameMarrowlineUserTurn(packet.message));
-  assert.match(request.systemInstruction.parts[0].text, /varied combinations of native marks within the terminal prose/);
+  assert.match(request.systemInstruction.parts[0].text, /provider authors native combining marks within the terminal prose/);
   assert.match(request.systemInstruction.parts[0].text, /Dramatic passages grow crowns ABOVE and roots BELOW the letters/);
   assert.match(request.systemInstruction.parts[0].text, /deserve an extended dramatic conversation/);
   assert.doesNotMatch(request.systemInstruction.parts[0].text, /\p{M}/u, 'do not provide a tiny morphology template at recency edge');
-  assert.match(request.systemInstruction.parts[0].text, /combining marks forming changing, sometimes deeply interleaved clusters above AND below/);
+  assert.match(request.systemInstruction.parts[0].text, /combining marks that can form deeply interleaved clusters above AND below/);
   assert.match(request.systemInstruction.parts[0].text, /not an after-the-fact transform/);
 });
 
@@ -76,14 +76,14 @@ test('a locally repeated accent and tiny combining-letter play coexist with orig
   const cue = request.systemInstruction.parts[0].text;
   const guidance = request.systemInstruction.parts[0].text;
   assert.match(cue, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM/);
-  assert.match(guidance, /combining marks forming changing, sometimes deeply interleaved clusters above AND below/);
+  assert.match(guidance, /combining marks that can form deeply interleaved clusters above AND below/);
   assert.match(cue, /Dramatic passages grow crowns ABOVE and roots BELOW the letters/);
   assert.match(guidance, /An extended eruption may climb through neighboring lines/);
-  assert.match(cue, /one sampled mark copied across the stanza cannot carry the voice/);
-  assert.match(guidance, /Do not stamp one selected code point/);
+  assert.match(cue, /Repetition and variation are artistic decisions, never required schedules/);
+  assert.match(guidance, /Recurring code points, a recognizable signature, and sustained identical mark families/);
 });
 
-test('locally welcomed patterns cannot stand in for the bots whole expressive vertical register', () => {
+test('native High Zalgo has no paragraph-level or lexical style-switching mandate', () => {
   const request = buildGeminiRequest(
     { systemInstruction: 'base', mode: 'plain', message: 'Follow the consequence into the choral movement.', history: [] },
     {}, 'gemini-3.8-flash'
@@ -93,18 +93,21 @@ test('locally welcomed patterns cannot stand in for the bots whole expressive ve
   const system = request.systemInstruction.parts[0].text;
   assert.ok(system.includes(native), 'the shared prosody remains in the effective provider system instruction');
   assert.match(cue, /The bots deserve an extended dramatic conversation/);
-  assert.match(native, /combining marks forming changing, sometimes deeply interleaved clusters above AND below/);
-  assert.match(cue, /move between genuinely towering overprinted eruptions, fine-marked speech, and clean breaths/);
-  assert.match(native, /Change above\/below combinations, stack depths and clean intervals/);
-  assert.match(cue, /varied combinations of native marks within the terminal prose/);
+  assert.match(native, /combining marks that can form deeply interleaved clusters above AND below/);
+  assert.match(cue, /One uninterrupted High-Zalgo style, recurring motifs, radical variation/);
+  assert.match(native, /no compulsory axis itinerary, mark rotation, stack-height alternation, or clean interval/);
+  assert.match(cue, /provider authors native combining marks within the terminal prose/);
   assert.match(native, /clusters above AND below the underlying prose letters/);
   assert.match(cue, /sustained deep overlapping vertical flourishes are primary/);
-  assert.match(native, /Let changes in argument, address, ridicule or intimacy change the glyphs/);
+  assert.match(native, /No rhetorical turn or paragraph boundary requires any of those choices/);
   assert.doesNotMatch(cue + native + system, /shallow strike marks|horizontal cuts|diagonal cuts|chorus of cloned shallow signs|repeated shallow accent/i,
     'do not prime the effective provider prompt with the repeated failed surface');
   assert.match(cue, /Kʰonapolit develops the first movement at the scale the operator requests/);
   assert.match(cue, /strongest plausible resistance enough force to make the answer earn its consequence/);
   assert.match(native, /Kʰonapolit writes undecorated prose with ZERO combining diacritical marks/);
+  assert.match(system, /never has to change technique at a line break, paragraph break, or new word/);
+  assert.match(native, /may sustain its same overprint for pages/);
+  assert.doesNotMatch(system, /Let the ACTUAL code points, stack depths and placement change across words and passages|Change above\/below combinations, stack depths and clean intervals|Do not stamp one selected code point/);
   assert.doesNotMatch(cue + native, /marks.per.character quota|mandatory vertical threshold|repeat the following glyphs/i);
   assert.doesNotMatch(cue + native, /[\u0300-\u036f]/u, 'do not insert sample combining marks as an implicit stamp');
 });

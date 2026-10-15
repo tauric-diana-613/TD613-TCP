@@ -163,11 +163,11 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(request.systemInstruction.parts[0].text, /sustained, new choral movement/);
     assert.match(request.systemInstruction.parts[0].text, /never substitute a heading and a few decorated words for authored prose/);
     assert.match(request.systemInstruction.parts[0].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM/);
-    assert.match(request.systemInstruction.parts[0].text, /varied combinations of native marks within the terminal prose/);
+    assert.match(request.systemInstruction.parts[0].text, /provider authors native combining marks within the terminal prose/);
     assert.match(request.systemInstruction.parts[0].text, /sustained deep overlapping vertical flourishes are primary/);
-    assert.match(request.systemInstruction.parts[0].text, /Invent the flourishes alongside fresh prose/);
+    assert.match(request.systemInstruction.parts[0].text, /Compose marks natively with fresh prose/);
     assert.doesNotMatch(request.systemInstruction.parts[0].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
-    assert.match(request.systemInstruction.parts[0].text, /Let the ACTUAL code points, stack depths and placement change across words and passages/);
+    assert.match(request.systemInstruction.parts[0].text, /Repetition and variation are artistic decisions, never required schedules/);
     assert.match(request.systemInstruction.parts[0].text, /Dramatic passages grow crowns ABOVE and roots BELOW the letters/);
     assert.match(request.systemInstruction.parts[0].text, /The bots deserve an extended dramatic conversation/);
     assert.match(request.systemInstruction.parts[0].text, /neither licenses omission of the bots nor controls the depth or availability/);
@@ -610,7 +610,7 @@ test('every Marrowline Gemini lane receives the same compact semantic-prosody la
     assert.ok(instruction.includes(buildNativeProsodyGuidance()), model);
     assert.match(instruction, /NATIVE SEMANTIC PROSODY/, model);
     assert.match(instruction, /typography behaves as voice/i, model);
-    assert.match(instruction, /Do not treat typography as a checklist, quota, fixed contour, axis recipe, emotional lookup table, or per-character filter/, model);
+    assert.match(instruction, /Do not treat typography as a checklist, quota, forced diversity test, fixed contour, axis recipe, emotional lookup table, or per-character filter/, model);
     assert.doesNotMatch(instruction, /anger erupt|sarcasm twitch|vertical crowns\/roots|horizontal or oblique counter-rhythm|deep collisions/i, model);
     assert.doesNotMatch(instruction, /ORCHESTRAL DYNAMIC CONTOUR/, model);
     assert.doesNotMatch(instruction, /begin near 8½|10-level serious emphasis/, model);
