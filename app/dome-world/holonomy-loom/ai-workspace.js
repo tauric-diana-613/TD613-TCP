@@ -5,6 +5,7 @@ import { LOOM_TUTORIAL_OPERATORS, loomTutorialPresentation, loomOpeningPresentat
 import { nextFlowcoreChoreography } from './flowcore-choreography.js?v=20261013-phase09-v1';
 import { mountReturnedSessionReview } from './returned-session-review.js';
 import { loomWorkspaceTemplate } from './workspace-template.js';
+import { mountLoomPrivacyScienceView } from './privacy-science-view.js';
 import { createPortableLoomGateReport, describePortableLoomGateReport } from '../../engine/portable-loom-gate.js';
 import { createLoomGateDisclosure } from '../loom-gate-disclosure.js';
 import { portableLoomFooterText } from '../../engine/portable-loom-output.js';
@@ -62,6 +63,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
   environment.document.querySelector('.loom-topbar nav')?.prepend(flowcoreHelp);
   const flowcoreMessage=flowcoreHelp.querySelector('#loomFlowcoreMessage');
   const $ = id => root.querySelector(`#${id}`);
+  const scienceViews=[];
   const lines = id => $(id).value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
   let activeWorkspace = 'build', marrowlineChild = null;
   function openWorkspace(name, {focus=false}={}) {
@@ -80,6 +82,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     const dialog=$('loomTools');
     dialog.querySelectorAll('[data-tool-panel]').forEach(panel=>panel.hidden=panel.dataset.toolPanel!==name);
     dialog.querySelectorAll('[data-tool]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.tool===name)));
+    if(name==='science')scienceViews.forEach(view=>view.refresh());
     if(!dialog.open){if(typeof dialog.showModal==='function')dialog.showModal();else dialog.setAttribute('open','');}
   }
   $('loomToolsOpen').addEventListener('click',()=>openTools());
@@ -98,6 +101,16 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
   let challengeBundle = null, challengeVerification = null, challengeDollhouse = null, turnReceiptVerification = null, challengeVersion = 0;
   let challengeSession = null, challengeWorkUnit = null, locallyAdmitted = false;
   let gateReports = [];
+  const privacyLocalFacts=()=>({
+    selected_files:documents.filter(document=>document.share).length,
+    withheld_files:documents.filter(document=>!document.share).length,
+    session_prepared:Boolean(portableSession),
+    local_return_admitted:locallyAdmitted,
+    gate_report_count:gateReports.length
+  });
+  for(const id of ['loomScienceIntro','loomScienceTools'])
+    scienceViews.push(mountLoomPrivacyScienceView($(id),{environment,getLocalFacts:privacyLocalFacts}));
+  $('loomOpenPrivacyScience').addEventListener('click',()=>openTools('science'));
   const gateDisclosure=createLoomGateDisclosure(environment.document,{id:'loomGateHow',onGate:()=>openTools('challenge')});
   $('loomGateAlerts').after(gateDisclosure.section);
   $('aiCheckLoomGate').addEventListener('click',()=>openTools('challenge'));
