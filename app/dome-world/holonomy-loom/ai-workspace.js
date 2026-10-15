@@ -563,8 +563,8 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     storageWrite(FIRST_CROSSING_KEY,'complete');
     setFirstCrossingCue('complete',{
       title:'What could a stranger work out?',
-      prompt:'A useful answer matters. So does what another person could guess from the clues left behind. Loom is built around testing both in the same exchange.',
-      answer:'This example starts the question. Proving privacy means testing the whole trail, not just the visible words.'
+      prompt:'A good answer could still reveal details you meant to keep private. The real test examines the whole exchange and what an outsider could infer.',
+      answer:'This fictional example cannot establish what an outsider could reconstruct.'
     });
     $('loomBegin').hidden=false;
     $('loomBegin').textContent='Try Loom →';
@@ -616,7 +616,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     firstCrossingChoreography=nextFlowcoreChoreography(firstCrossingChoreography?.id, environment.Math?.random?.() ?? Math.random());
     setFirstCrossingCue('choose',{
       title:'Firewall your online life from AI.',
-      prompt:'You can need ChatGPT, Gemini, or another LLM without giving up your privacy. Loom looks beyond the prompt: what travels, what changes, what comes back, and whether someone outside the conversation could piece it together.',
+      prompt:'You can ask ChatGPT, Gemini, or another LLM for help without sending every private detail. Loom lets you choose what goes out, review what comes back, and examine what the exchange might reveal.',
       answer:'See what one example can show—and what a single check could miss. Nothing is sent to an AI.'
     });
     flowcoreMessage.textContent=firstCrossingChoreography.message;
