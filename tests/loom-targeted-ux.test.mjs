@@ -2,6 +2,7 @@ import test from 'node:test';
 // Keep firewall-identity regressions in the mandatory targeted validation shard.
 import './loom-firewall-identity-20261014.test.mjs';
 import './portable-loom-tomography-export.test.mjs';
+import './loom-privacy-science-20261014.test.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { webcrypto } from 'node:crypto';
