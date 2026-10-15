@@ -15,8 +15,8 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
     <div class="loom-motion-view" aria-hidden="true"><span>FLOW-CORE / LIVING FIELD</span><span>𝌋</span></div>
     <div class="loom-first-crossing-copy">
       <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">Tutorial · a private conversation</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 7 · Choose</span></div>
-      <h2 id="loomFirstCrossingTitle">What can AI give away about you?</h2>
-      <p id="loomFirstCrossingPrompt">You ask AI for help. It answers—but the exchange can leave clues about your life. Loom examines what travels, what comes back, and what someone outside the conversation could piece together.</p>
+      <h2 id="loomFirstCrossingTitle">Private should still mean private. Even with AI.</h2>
+      <p id="loomFirstCrossingPrompt">Ask ChatGPT, Gemini, or another LLM something personal. The answer can help, but the trail may reveal more than you meant to share. Loom follows the entire exchange—what goes in, what changes, what comes back, and what an outsider could piece together.</p>
     </div>
     <details class="loom-flowcore-help">
       <summary>What is Flow-Core runtime?</summary>
@@ -34,7 +34,7 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
     <div class="loom-boundary-event" aria-label="Fictional outgoing check">
       <div class="loom-boundary-event-outgoing">
         <span class="loom-boundary-event-kicker">What this example sends</span>
-        <strong>The question and the details needed to answer.</strong>
+        <strong>One useful question and its context.</strong>
         <p>Review the example request before it goes anywhere.</p>
       </div>
       <div class="loom-boundary-event-denial">
@@ -67,7 +67,7 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
       <button type="button" id="loomFirstCrossingLeave">Skip tutorial →</button>
     </div>
     <p id="loomFirstCrossingAnswer" class="loom-first-crossing-answer" aria-live="polite"></p>
-    <details class="loom-research-proof" aria-label="How would we test conversation privacy?"><summary>How would we know?</summary><p>We need both results at once: someone gets a useful answer, and an outside observer cannot piece the protected conversation together.</p><p>One real comparison has to measure what leaks, whether the useful part survives, what separate clues reveal together, the relation between the measured paths, and what actually comes back on both routes. The research targets are L ≤ 0.5 bits, R ≤ 0.2 and J ≤ 0.1, with measured G and observed C.</p><p>This walkthrough is fictional. It cannot settle what an outsider could reconstruct, and an AI provider can see whatever you actually send.</p></details>
+    <details class="loom-research-proof" aria-label="How would we test conversation privacy?"><summary>How would we know?</summary><p>We need both results at once: someone gets a useful answer, and an outside observer cannot piece the protected conversation together.</p><p>One real comparison must measure leakage, faithful reconstruction of the intended work, how clues combine, the geometry of the route, and actual returns on both paths. The research targets are L ≤ 0.5 bits, R ≤ 0.2 and J ≤ 0.1, with measured G and observed C. Results from separate conversations cannot stand in for one complete journey.</p><p>This walkthrough is fictional. It cannot settle what an outsider could reconstruct, and an AI provider can see whatever you actually send.</p></details>
     <p id="loomTutorialWaiting" class="loom-tutorial-waiting" role="status" hidden>Preparing the next step…</p>
     <details id="loomTutorialProof" class="loom-tutorial-proof" hidden><summary>See the checks <span aria-hidden="true">+</span></summary><pre id="loomTutorialProofRecord"></pre><p>Save the request and its checks for review. New returned work still needs your approval in the active Loom session. This tutorial uses a fictional reply.</p></details>
   </section>
