@@ -1,4 +1,5 @@
 import test from 'node:test';
+import './portable-loom-research-math.test.mjs';
 import assert from 'node:assert/strict';
 import { webcrypto } from 'node:crypto';
 
