@@ -49,12 +49,40 @@ test('standard portable artifact runs exact canonical mathematical companion wit
   assert.equal(math.feasible_region.source_status,'SIMULATED_FACTORIZED_PRODUCT_SPACE');
   assert.equal(math.empirical_golden_egg_earned,false);
   assert.equal(math.observed_real_routes,'NOT_RUN');
+  const receiptBytes = await readFile(join(destination,'portable-loom-tomography-receipt.json'));
+  const executionReceipt = JSON.parse(receiptBytes.toString('utf8'));
+  assert.equal(executionReceipt.execution_origin,'EXPORTER_LOCAL_NODE_PROCESS');
+  assert.equal(executionReceipt.canonical_source_hashes_checked,true);
+  assert.equal(executionReceipt.real_route_acquisition,'NOT_RUN');
+  assert.equal(executionReceipt.empirical_promotion_authority,false);
+  assert.deepEqual(executionReceipt.self_check_audit, math);
+  assert.equal(artifact.portable_tomography.calculated_fixture_receipt.receipt_sha256,sha256(receiptBytes));
+  assert.deepEqual(artifact.portable_tomography.calculated_fixture_receipt.mathematical_result,math);
+  assert.equal(manifest.mathematical_companion.receipt_sha256,sha256(receiptBytes));
+  const activationText=await readFile(join(destination,'portable-loom-standard.md'),'utf8');
+  assert.match(activationText,/A locally executed source-checked tomography report is included/);
+  assert.match(activationText,/export-time locally computed synthetic fixtures/);
+  // A receiver can read a real export-time result, but it cannot promote its
+  // own paraphrase into a fresh empirical computation.
+  assert.equal(artifact.portable_tomography.calculated_fixture_receipt.observer_measurement,'NOT_RUN');
   const episodeFile=join(root,'missing-episode.json');
   await writeFile(episodeFile,'{}\n');
   const evaluation=JSON.parse(execFileSync(process.execPath,[script,'--episode',episodeFile],{encoding:'utf8'}));
   assert.equal(evaluation.empirical_promotion_authority,false);
   assert.equal(evaluation.evaluation.empirical_candidate_qualified,false);
   assert.ok(['HELD','INADMISSIBLE'].includes(evaluation.evaluation.status));
+  // Tampering with the execution receipt must fail before any result is read.
+  const receiptPath=join(destination,'portable-loom-tomography-receipt.json');
+  const originalReceipt=await readFile(receiptPath);
+  try {
+    await writeFile(receiptPath,Buffer.concat([originalReceipt,Buffer.from(' ')]));
+    assert.throws(
+      ()=>execFileSync(process.execPath,[script,'--self-check'],{encoding:'utf8',stdio:['ignore','pipe','pipe']}),
+      error=>String(error.stderr).includes('PORTABLE_TOMOGRAPHY_EXECUTION_RECEIPT_HASH_MISMATCH')
+    );
+  } finally {
+    await writeFile(receiptPath,originalReceipt);
+  }
   // A manifest entry alone never executes or authenticates mathematics.
   // The companion must reject tampered source bytes before module import,
   // including when asked to evaluate a supplied episode.
