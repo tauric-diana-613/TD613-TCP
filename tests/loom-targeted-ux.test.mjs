@@ -148,7 +148,7 @@ test('the firewall promise explains outgoing checks, returning review and limits
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
   assert.match(doc.querySelector('#loomFirstCrossingTitle').textContent, /Talk to AI\. Keep the conversation yours/i);
   assert.match(doc.querySelector('.loom-intro p').textContent, /Research, write, code, decide.*handing it the wheel/i);
-  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent, /outside observer.*Golden Egg Loom is pursuing/i);
+  assert.match(doc.querySelector('#loomFirstCrossingPrompt').textContent, /outsider cannot reconstruct.*boundary to the test/i);
   assert.match(doc.querySelector('#loomReturnWorkspace header').textContent, /before accepting/i);
   assert.match(doc.querySelector('[data-tool-panel="boundary"]').textContent, /external AI provider determines its own retention/i);
   assert.match(workspaceSource, /title:'One hold is not the Golden Egg\.'/);
