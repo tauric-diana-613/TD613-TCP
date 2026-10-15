@@ -1,7 +1,7 @@
 import { PORTABLE_LOOM_RECEIVER_OUTPUT_CONTRACT, derivePortableLoomSourceContext } from '../../engine/portable-loom-receiver-output-contract.js';
 import { inspectPortableLoomReceiverConformance } from '../../engine/portable-loom-receiver-conformance.js';
 import { FIRST_CROSSING_PRACTICE, bindFirstCrossingPractice, checkFirstCrossingPrivacy, createFirstCrossingReturnProof } from './first-crossing-practice.js';
-import { loomTutorialPresentation, loomOpeningPresentation } from './tutorial-membrane.js';
+import { LOOM_TUTORIAL_OPERATORS, loomTutorialPresentation, loomOpeningPresentation } from './tutorial-membrane.js';
 import { nextFlowcoreChoreography } from './flowcore-choreography.js?v=20261013-phase09-v1';
 import { mountReturnedSessionReview } from './returned-session-review.js';
 import { loomWorkspaceTemplate } from './workspace-template.js';
@@ -202,6 +202,24 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       'lesson-held':'Review tutorial check', complete:'7 of 7 · Your turn'
     };
     $('loomTutorialProgress').textContent=progress[cue]??'How Loom works';
+    // The illustrated relation stays legible through readiness checks:
+    // a new button is a consequence, not an entirely new reading frame.
+    const operator=LOOM_TUTORIAL_OPERATORS[firstCrossingStep];
+    if(operator){
+      const note=[
+        'Gather the question',
+        'Review what stays private',
+        'Prepare the request',
+        'Preview sending · nothing sent',
+        'Revisit the local privacy check',
+        'Review the fictional return',
+        'Rest · your turn'
+      ][firstCrossingStep];
+      $('loomTutorialOperatorGlyph').textContent=operator.glyph;
+      $('loomTutorialOperatorLabel').textContent=note;
+      root.dataset.tutorialGlyph=operator.glyph;
+      root.dataset.tutorialMotionFamily=operator.family;
+    }
     $('loomFirstCrossingTitle').textContent=title;
     if(cue==='choose' && root.dataset.loomIntro==='true'){
       // Authored headline only: incoming/model text never reaches innerHTML.
@@ -362,7 +380,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       if(consequenceVisible){
         firstCrossingGatheringPublished=true;
         setFirstCrossingCue('gathering-named',{
-          title:'What does the answer need?',
+          title:'A good question is personal.',
           prompt:'A little context might be enough for a helpful answer. What could someone infer from that little bit?',
           answer:'This example is ready to inspect.',
           action:true
@@ -370,7 +388,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       }else{
         setFirstCrossingCue('gathering-motion',{
           title:'A good question is personal.',
-          prompt:'You want help thinking through a move. The example starts with the details an answer would need.',
+          prompt:'A little context might be enough for a helpful answer. What could someone infer from that little bit?',
           answer:'Putting the example together…'
         });
       }
@@ -388,8 +406,8 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       }else{
         setFirstCrossingCue('potential-motion',{
           title:'Follow the clues.',
-          prompt:'Here is the part of the conversation a model would receive.',
-          answer:'Preparing your preview…'
+          prompt:'This is the example request. Notice how even a few ordinary details could say a lot about someone.',
+          answer:'Checking the example request…'
         });
       }
     }
@@ -668,8 +686,8 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
       const token=++firstCrossingGeneration;
       firstCrossingBindingState='PENDING';
       setFirstCrossingCue('binding',{
-        title:'Checking what you selected.',
-        prompt:'Loom checks the question and context you selected before preparing the request.',
+        title:'Follow the clues.'
+        prompt:'This is the example request. Notice how even a few ordinary details could say a lot about someone.'
         answer:'Checking your selected material…'
       });
       try{
@@ -681,7 +699,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
         root.dataset.firstCrossingStep='2';
         setFirstCrossingCue('potential-motion',{
           title:'Follow the clues.',
-          prompt:'Here is the part of the conversation a model would receive.',
+          prompt:'This is the example request. Notice how even a few ordinary details could say a lot about someone.'
           answer:'Tutorial · this request stays in your browser.'
         });
         projectFirstCrossing(firstCrossingEvent('checking',binding.facts??binding));
