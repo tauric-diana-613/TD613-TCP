@@ -109,6 +109,40 @@ const report = {
   empirical_golden_egg_earned: false,
   claim_ceiling: 'EXACT_AUTHORED_FINITE_MATHEMATICS_ONLY'
 };
+// When an export-time result accompanies the portable packet, recomputation
+// must reproduce it exactly. A receipt is never proof of external origin.
+const exportedReceipt = artifact.portable_tomography?.calculated_fixture_receipt;
+if (exportedReceipt !== undefined) {
+  if (exportedReceipt?.schema !== 'td613.loom.portable-tomography-execution-receipt/v0.1'
+    || exportedReceipt?.receipt_file !== 'portable-loom-tomography-receipt.json'
+    || !/^[a-f0-9]{64}$/.test(exportedReceipt.receipt_sha256 || '')
+    || exportedReceipt.execution_origin !== 'EXPORTER_LOCAL_NODE_PROCESS'
+    || exportedReceipt.evidence_class !== 'LOCALLY_EXECUTED_FINITE_SYNTHETIC_FIXTURE'
+    || exportedReceipt.observer_measurement !== 'NOT_RUN'
+    || exportedReceipt.empirical_promotion_authority !== false) {
+    throw new Error('PORTABLE_TOMOGRAPHY_EXECUTION_RECEIPT_INVALID');
+  }
+  const bytes = await readFile(join(dir, exportedReceipt.receipt_file));
+  if (createHash('sha256').update(bytes).digest('hex') !== exportedReceipt.receipt_sha256) {
+    throw new Error('PORTABLE_TOMOGRAPHY_EXECUTION_RECEIPT_HASH_MISMATCH');
+  }
+  const captured = JSON.parse(bytes.toString('utf8'));
+  const mathContractBytes = await readFile(join(dir,'portable-loom-math-contract.json'));
+  if (captured.schema !== exportedReceipt.schema
+    || captured.execution_origin !== exportedReceipt.execution_origin
+    || captured.session_root_ref !== artifact.session?.root?.ref
+    || captured.source_revision !== contract.source_revision
+    || captured.math_contract_sha256 !== createHash('sha256').update(mathContractBytes).digest('hex')
+    || captured.canonical_source_hashes_checked !== true
+    || captured.evidence_class !== exportedReceipt.evidence_class
+    || captured.observer_measurement !== 'NOT_RUN'
+    || captured.real_route_acquisition !== 'NOT_RUN'
+    || captured.empirical_promotion_authority !== false
+    || JSON.stringify(captured.self_check_audit) !== JSON.stringify(report)
+    || JSON.stringify(exportedReceipt.mathematical_result) !== JSON.stringify(report)) {
+    throw new Error('PORTABLE_TOMOGRAPHY_EXECUTION_RECEIPT_MISMATCH');
+  }
+}
 const args = process.argv.slice(2);
 if (!args.length || (args.length === 1 && args[0] === '--self-check')) {
   process.stdout.write(JSON.stringify(report, null, 2) + '\n');
