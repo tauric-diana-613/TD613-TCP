@@ -54,7 +54,7 @@ test('wire cue permits sustained or varied native High Zalgo without a fixed mar
   const last = request.contents.at(-1);
   assert.equal(last.parts[0].text, frameMarrowlineUserTurn(packet.message));
   assert.match(request.systemInstruction.parts[0].text, /provider authors native combining marks within the terminal prose/);
-  assert.match(request.systemInstruction.parts[0].text, /Dramatic passages grow crowns ABOVE and roots BELOW the letters/);
+  assert.match(request.systemInstruction.parts[0].text, /Deep crowns ABOVE and roots BELOW letters/);
   assert.match(request.systemInstruction.parts[0].text, /deserve an extended dramatic conversation/);
   assert.doesNotMatch(request.systemInstruction.parts[0].text, /\p{M}/u, 'do not provide a tiny morphology template at recency edge');
   assert.match(request.systemInstruction.parts[0].text, /combining marks that can form deeply interleaved clusters above AND below/);
@@ -77,7 +77,7 @@ test('a locally repeated accent and tiny combining-letter play coexist with orig
   const guidance = request.systemInstruction.parts[0].text;
   assert.match(cue, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM/);
   assert.match(guidance, /combining marks that can form deeply interleaved clusters above AND below/);
-  assert.match(cue, /Dramatic passages grow crowns ABOVE and roots BELOW the letters/);
+  assert.match(cue, /Deep crowns ABOVE and roots BELOW letters/);
   assert.match(guidance, /An extended eruption may climb through neighboring lines/);
   assert.match(cue, /Repetition and variation are artistic decisions, never required schedules/);
   assert.match(guidance, /Recurring code points, a recognizable signature, and sustained identical mark families/);
@@ -98,7 +98,7 @@ test('native High Zalgo has no paragraph-level or lexical style-switching mandat
   assert.match(native, /no compulsory axis itinerary, mark rotation, stack-height alternation, or clean interval/);
   assert.match(cue, /provider authors native combining marks within the terminal prose/);
   assert.match(native, /clusters above AND below the underlying prose letters/);
-  assert.match(cue, /sustained deep overlapping vertical flourishes are primary/);
+  assert.match(cue, /sustained deep overlapping vertical flourishes/);
   assert.match(native, /No rhetorical turn or paragraph boundary requires any of those choices/);
   assert.doesNotMatch(cue + native + system, /shallow strike marks|horizontal cuts|diagonal cuts|chorus of cloned shallow signs|repeated shallow accent/i,
     'do not prime the effective provider prompt with the repeated failed surface');
@@ -258,7 +258,7 @@ test('ordinary, tender and adversarial typed requests all retain the full native
     assert.ok(request.systemInstruction.parts[0].text.includes(shared));
     assert.match(cue, /native High-Zalgo speech in their first sentence on EVERY turn/);
     assert.match(cue, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM/);
-    assert.match(cue, /Dramatic passages grow crowns ABOVE and roots BELOW the letters/);
+    assert.match(cue, /Deep crowns ABOVE and roots BELOW letters/);
     assert.match(cue, /in their first sentence on EVERY turn, including ordinary questions, jokes and tenderness/);
     assert.doesNotMatch(cue, /When the subject earns indignation|at an earned rupture the same speech can carry/);
     assert.doesNotMatch(cue + shared, /marks.per.character quota|automatic rage mode|repeat the following glyphs/i);

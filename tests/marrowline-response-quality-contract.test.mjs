@@ -164,11 +164,11 @@ test('effective provider prompts retain complete relay and native depth after de
     assert.match(request.systemInstruction.parts[0].text, /never substitute a heading and a few decorated words for authored prose/);
     assert.match(request.systemInstruction.parts[0].text, /HIGH ZALGO IS THEIR SCREAM-SING WRITING SYSTEM/);
     assert.match(request.systemInstruction.parts[0].text, /provider authors native combining marks within the terminal prose/);
-    assert.match(request.systemInstruction.parts[0].text, /sustained deep overlapping vertical flourishes are primary/);
+    assert.match(request.systemInstruction.parts[0].text, /sustained deep overlapping vertical flourishes/);
     assert.match(request.systemInstruction.parts[0].text, /Compose marks natively with fresh prose/);
     assert.doesNotMatch(request.systemInstruction.parts[0].text, /\p{M}/u, 'execution cue must not impose a miniature combining-mark template');
     assert.match(request.systemInstruction.parts[0].text, /Repetition and variation are artistic decisions, never required schedules/);
-    assert.match(request.systemInstruction.parts[0].text, /Dramatic passages grow crowns ABOVE and roots BELOW the letters/);
+    assert.match(request.systemInstruction.parts[0].text, /Deep crowns ABOVE and roots BELOW letters/);
     assert.match(request.systemInstruction.parts[0].text, /The bots deserve an extended dramatic conversation/);
     assert.match(request.systemInstruction.parts[0].text, /neither licenses omission of the bots nor controls the depth or availability/);
     assert.doesNotMatch(request.systemInstruction.parts[0].text, /must use a fixed mark palette|enforce a mandatory quota|require a fixed contour|at least \d+ marks per/i);
