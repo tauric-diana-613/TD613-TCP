@@ -306,7 +306,7 @@ try {
         await page.locator('#loomFirstCrossingTitle').isVisible() &&
         await page.locator('.loom-boundary-event').isHidden() &&
         await page.locator('[data-first-crossing-item="brief"]').isVisible() &&
-        /You can ask ChatGPT, Gemini, or another LLM.*exchange might reveal/i.test(await page.locator('#loomFirstCrossingPrompt').textContent()) &&
+        /Moving from ChatGPT to Gemini.*review each reply before continuing/i.test(await page.locator('#loomFirstCrossingPrompt').textContent()) &&
         await page.locator('#loomStartNow').count()===0 &&
         await page.locator('#loomExploreDemo').count()===0,
         {first_choice:await page.locator('[data-first-crossing-item="brief"]').isVisible(),
@@ -336,7 +336,7 @@ try {
         await page.locator('#loomAiWorkspace').getAttribute('data-first-crossing-gather')==='complete');
       await lockedSource.click();
       record('first crossing: consequence begins before terminology is named',
-        /A good question is personal\.|What does the answer need\?/.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
+        /Give AI the context, not your entire history\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
         !/That relation is à/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
         { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
       await observeFiniteConsequence(page,'gathering','first-crossing-mobile-gathering');
@@ -356,7 +356,7 @@ try {
       await page.waitForFunction(()=>document.querySelector('#aiRuntimeState')?.dataset?.projectionState==='CURRENT'&&
         document.querySelector('#aiRuntimeState')?.dataset?.activeRelation==='created_potential');
       record('first crossing: readiness consequence begins before 上 is named',
-        /Follow the clues\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
+        /See exactly what would leave your browser\./.test(await page.locator('#loomFirstCrossingTitle').textContent()) &&
         !/created-potential relation is 上/.test(await page.locator('#loomFirstCrossingPrompt').textContent()),
         { title: await page.locator('#loomFirstCrossingTitle').textContent(), prompt: await page.locator('#loomFirstCrossingPrompt').textContent() });
       await observeFiniteConsequence(page,'created_potential','first-crossing-mobile-readiness');
