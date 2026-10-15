@@ -1,0 +1,130 @@
+{
+  "conceptdoi": "10.5281/zenodo.22217893",
+  "conceptrecid": "22217893",
+  "created": "2026-09-01T01:34:04.970960+00:00",
+  "doi": "10.5281/zenodo.22217894",
+  "doi_url": "https://doi.org/10.5281/zenodo.22217894",
+  "files": [
+    {
+      "checksum": "md5:4fe71bedb67280ab85a7ec2ed36e1bf7",
+      "id": "89c24ccf-500c-43d1-89ed-4db441caa40f",
+      "key": "PLANETARY SR XXX — SINGAPORE.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22217894/files/PLANETARY%20SR%20XXX%20%E2%80%94%20SINGAPORE.pdf/content"
+      },
+      "size": 406922
+    }
+  ],
+  "id": 22217894,
+  "links": {
+    "access": "https://zenodo.org/api/records/22217894/access",
+    "access_grants": "https://zenodo.org/api/records/22217894/access/grants",
+    "access_links": "https://zenodo.org/api/records/22217894/access/links",
+    "access_request": "https://zenodo.org/api/records/22217894/access/request",
+    "access_users": "https://zenodo.org/api/records/22217894/access/users",
+    "archive": "https://zenodo.org/api/records/22217894/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22217894/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22217894/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22217894/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22217894",
+    "draft": "https://zenodo.org/api/records/22217894/draft",
+    "file_modification": "https://zenodo.org/api/records/22217894/file-modification",
+    "files": "https://zenodo.org/api/records/22217894/files",
+    "latest": "https://zenodo.org/api/records/22217894/versions/latest",
+    "latest_html": "https://zenodo.org/records/22217894/latest",
+    "media_files": "https://zenodo.org/api/records/22217894/media-files",
+    "parent": "https://zenodo.org/api/records/22217893",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22217893",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22217893",
+    "parent_html": "https://zenodo.org/records/22217893",
+    "preview_html": "https://zenodo.org/records/22217894?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22217894/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22217894/request-deletion",
+    "requests": "https://zenodo.org/api/records/22217894/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22217894/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22217894",
+    "self_doi": "https://doi.org/10.5281/zenodo.22217894",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22217894",
+    "self_html": "https://zenodo.org/records/22217894",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22217894/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22217894/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22217894:PLANETARY%20SR%20XXX%20%E2%80%94%20SINGAPORE.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22217894:PLANETARY%20SR%20XXX%20%E2%80%94%20SINGAPORE.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22217894:PLANETARY%20SR%20XXX%20%E2%80%94%20SINGAPORE.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22217894:PLANETARY%20SR%20XXX%20%E2%80%94%20SINGAPORE.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22217894:PLANETARY%20SR%20XXX%20%E2%80%94%20SINGAPORE.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22217894:PLANETARY%20SR%20XXX%20%E2%80%94%20SINGAPORE.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22217894/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>PLANETARY SR XXX &mdash; SINGAPORE</strong></h1>\n<h2><strong>Description</strong></h2>\n<p><em>Planetary SR XXX &mdash; Singapore</em> analyzes Singapore as a coupled institutional&ndash;population system defined by <strong>hyper‑connected state coordination, import dependence, housing‑system buffering, and digital‑substrate concentration</strong>. The study documents a continuity architecture built on exceptionally coordinated public institutions, compulsory savings, state‑linked enterprises, dense transit, world‑class logistics, and a high‑performing mixed healthcare system. IMF&rsquo;s 2026 consultation reported <em>&ldquo;5.0% growth in 2025 driven by AI‑related exports and domestic demand, moderating to 3.5% in 2026,&rdquo;</em> while SingStat recorded a resident fertility rate of <em>&ldquo;0.87 in 2025,&rdquo;</em> one of the lowest globally. EMA reported that <em>&ldquo;natural gas supplied 93.1% of the electricity fuel mix in H1‑2025,&rdquo;</em> highlighting extreme energy import dependence. Effective access diverges from formal provision across planning areas, town‑council housing geographies, health clusters, and resident/non‑resident population groups, where ageing, migrant‑labour segmentation, housing affordability, and care‑workforce constraints shape conversion. Public housing functions not only as shelter but as a savings, wealth, and social‑policy substrate. Singapore&rsquo;s continuity relies on external redundancy: imported food, energy, labour, and global trade form structural requirements that must be continuously substituted through logistics, reserves, and coordinated state capacity.</p>\n<h2><strong>How it Contributes</strong></h2>\n<p>This study contributes a <strong>distinct continuity topology</strong> to the Planetary SR comparative series by demonstrating how a small city‑state maintains continuity through <strong>exceptional coordination, housing‑system buffering, and external redundancy</strong>, while unresolved pressure propagates into <strong>ageing, fertility decline, migrant‑labour segmentation, energy import dependence, and digital‑substrate concentration</strong>. Singapore strengthens SR fields such as <strong>Systems Propagation Science</strong>, <strong>Infrastructural Political Economy</strong>, <strong>Institutional Cognition</strong>, and <strong>Drift Collapse Field</strong> by showing how fertility/ageing &rarr; labour/care/fiscal pressure, imported energy &rarr; prices/industry, global trade &rarr; export/services cycles, and public housing &rarr; household formation and labour stability operate as named propagation bridges. The paper expands the ATLAS architecture by providing the clearest test of <strong>external redundancy</strong> in the planetary series: a country can possess exceptional domestic institutional capacity while a large share of physical and labour substitution lies outside its borders. Singapore&rsquo;s mechanism is empirically distinguishable through its blend of <em>&ldquo;hyper‑connected state coordination, import dependence, housing‑system buffering, and digital‑substrate concentration,&rdquo;</em>adding a new structural configuration to the planetary series and supplying a critical case for <strong>surface&ndash;substrate divergence</strong>, <strong>unequal insulation</strong>, <strong>reorganization vs restoration</strong>, and <strong>agency‑conditioned response</strong>.</p>",
+    "doi": "10.5281/zenodo.22217894",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Society",
+      "Singapore",
+      "World"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-01",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22217893"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "PLANETARY SR XXX — SINGAPORE: Hyper-Connected State Coordination, Import Dependence, Housing-System Buffering, and Digital-Substrate Concentration",
+    "version": "1.0"
+  },
+  "modified": "2026-09-01T01:34:05.708872+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22217894",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 1,
+    "unique_downloads": 1,
+    "unique_views": 2,
+    "version_downloads": 1,
+    "version_unique_downloads": 1,
+    "version_unique_views": 2,
+    "version_views": 2,
+    "views": 2
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "PLANETARY SR XXX — SINGAPORE: Hyper-Connected State Coordination, Import Dependence, Housing-System Buffering, and Digital-Substrate Concentration",
+  "updated": "2026-09-01T01:34:05.708872+00:00"
+}

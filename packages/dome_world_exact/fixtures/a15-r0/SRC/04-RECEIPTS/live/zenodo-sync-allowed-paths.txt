@@ -1,0 +1,4 @@
+packages/dome_world_exact/fixtures/a15-r0/SRC/01-MANIFESTS/live/
+packages/dome_world_exact/fixtures/a15-r0/SRC/02-ORIGINALS/live/
+packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/live/
+packages/dome_world_exact/fixtures/a15-r0/SRC/04-RECEIPTS/live/
