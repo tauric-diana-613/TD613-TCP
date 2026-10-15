@@ -1,6 +1,6 @@
 import { coutureArmature } from './couture-armature.js';
 
-export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-stage" aria-labelledby="loomFieldHeading"><div class="loom-stage-copy"><span class="loom-kicker">YOUR AI FIREWALL</span><h1 id="loomFieldHeading">Loom</h1><p>The prompt is only the beginning. What matters is the full route—and what someone could learn from the traces it leaves.</p></div><section id="aiRuntime" class="ai-runtime" aria-label="Current Loom route"><p class="mark">CURRENT ROUTE</p>
+export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-stage" aria-labelledby="loomFieldHeading"><div class="loom-stage-copy"><span class="loom-kicker">YOUR AI FIREWALL</span><h1 id="loomFieldHeading">Loom</h1><p>Choose what AI gets to see. Follow the exchange. Check what it might reveal.</p></div><section id="aiRuntime" class="ai-runtime" aria-label="Current Loom route"><p class="mark">CURRENT ROUTE</p>
       <h2 id="aiConsequence" hidden>Your work starts here.</h2>
       <div id="aiRuntimeState" class="ai-runtime-state il-state"></div>
       <div id="aiLivingRoom" hidden aria-hidden="true"></div>
@@ -14,9 +14,9 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
   <section id="loomFirstCrossing" class="loom-first-crossing" aria-labelledby="loomFirstCrossingTitle" hidden tabindex="-1">
     <div class="loom-motion-view" aria-hidden="true"><span>FLOW-CORE / LIVING FIELD</span><span>𝌋</span></div>
     <div class="loom-first-crossing-copy">
-      <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">Tutorial · a private conversation</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 7 · Choose</span></div>
+      <div class="loom-tutorial-meta"><span class="loom-threshold-kicker">Tutorial · a fictional conversation</span><span id="loomTutorialProgress" class="loom-tutorial-progress">1 of 7 · Choose</span></div>
       <h2 id="loomFirstCrossingTitle">Firewall your online life from AI.</h2>
-      <p id="loomFirstCrossingPrompt">You can need ChatGPT, Gemini, or another LLM without giving up your privacy. Loom looks beyond the prompt: what travels, what changes, what comes back, and whether someone outside the conversation could piece it together.</p>
+      <p id="loomFirstCrossingPrompt">You can ask ChatGPT, Gemini, or another LLM for help without sending every private detail. Loom lets you choose what goes out, review what comes back, and examine what the exchange might reveal.</p>
     </div>
     <details class="loom-flowcore-help">
       <summary>What is Flow-Core runtime?</summary>
@@ -67,7 +67,7 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
       <button type="button" id="loomFirstCrossingLeave">Skip tutorial →</button>
     </div>
     <p id="loomFirstCrossingAnswer" class="loom-first-crossing-answer" aria-live="polite"></p>
-    <details class="loom-research-proof" aria-label="How would we test conversation privacy?"><summary>How would we know?</summary><p>We need both results at once: someone gets a useful answer, and an outside observer cannot piece the protected conversation together.</p><p>One real comparison must measure leakage, faithful reconstruction of the intended work, how clues combine, the geometry of the route, and actual returns on both paths. The research targets are L ≤ 0.5 bits, R ≤ 0.2 and J ≤ 0.1, with measured G and observed C. Results from separate conversations cannot stand in for one complete journey.</p><p>This walkthrough is fictional. It cannot settle what an outsider could reconstruct, and an AI provider can see whatever you actually send.</p></details>
+    <details class="loom-research-proof" aria-label="How would we test conversation privacy?"><summary>How would we know?</summary><p>A serious privacy test must follow the same exchange from both sides: whether the intended work survives, and what someone outside it could learn.</p><p>One real comparison must measure leakage, faithful reconstruction of the intended work, how clues combine, the geometry of the route, and actual returns on both paths. The research targets are L ≤ 0.5 bits, R ≤ 0.2 and J ≤ 0.1, with measured G and observed C. Results from separate conversations cannot stand in for one complete journey.</p><p>This walkthrough is fictional. It cannot settle what an outsider could reconstruct, and an AI provider can see whatever you actually send.</p></details>
     <p id="loomTutorialWaiting" class="loom-tutorial-waiting" role="status" hidden>Preparing the next step…</p>
     <details id="loomTutorialProof" class="loom-tutorial-proof" hidden><summary>See the checks <span aria-hidden="true">+</span></summary><pre id="loomTutorialProofRecord"></pre><p>Save the request and its checks for review. New returned work still needs your approval in the active Loom session. This tutorial uses a fictional reply.</p></details>
   </section>
@@ -78,7 +78,7 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
 </section>
 <div id="loomWorkspaceField" class="loom-workspace-field" aria-label="Current AI request state"></div>
 <section class="loom-builder-shell" aria-label="Loom builder" hidden>
-<header class="loom-intro"><div><h1 id="loomStageHeading">Loom</h1><p>The prompt shows only one part. Loom follows the full route—what moves, what returns, and what the traces could reveal.</p></div><div class="loom-intro-actions"><button type="button" id="loomReturnThreshold" class="loom-text-action">How Loom works</button><button type="button" id="loomToolsOpen" class="loom-text-action">Tools</button></div></header>
+<header class="loom-intro"><div><h1 id="loomStageHeading">Loom</h1><p>Review what you send. Check what comes back. Consider what the whole exchange could reveal.</p></div><div class="loom-intro-actions"><button type="button" id="loomReturnThreshold" class="loom-text-action">How Loom works</button><button type="button" id="loomToolsOpen" class="loom-text-action">Tools</button></div></header>
 <nav class="loom-journey" aria-label="Loom route">
 <button type="button" class="loom-journey-step" id="loomJourneyStep1" data-workspace="build" aria-current="step"><b>1</b><strong>Loom</strong></button><span aria-hidden="true">→</span>
 <button type="button" class="loom-journey-step" id="loomJourneyStep2" data-workspace="crossing" disabled><b>2</b><strong>Marrowline</strong></button><span aria-hidden="true">→</span>
