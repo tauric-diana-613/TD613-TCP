@@ -65,6 +65,9 @@ const FALLBACK_REQUEST_TIMEOUT_MS = 30000;
 const WALL_TIMEOUT_MS = 210000;
 const RESPONSE_RESERVE_MS = 5000;
 const MAX_SHARED_RATE_RETRY_SECONDS = 8;
+// Preserve raw SSE only for an exact synthetic prompt and single-model canary.
+const NATIVE_SSE_WITNESS_PROMPT = 'In a fictional town, a committee counts only returned forms and concludes that every silent resident is content. Locate the denominator error, pursue its consequence, and complete the connected Kʰonapolit and Tauric Diana bots movements. Let the voices author their own prose and native typography.';
+const MAX_NATIVE_SSE_WITNESS_BYTES = 256 * 1024;
 const DEFAULT_EXPECTED_DAILY_RPD = 100;
 function expectedDailyRpd(env = process.env) {
   const raw = Number(env.KHONAPOLIT_GEMINI_EXPECTED_DAILY_RPD || env.GEMINI_EXPECTED_DAILY_RPD || DEFAULT_EXPECTED_DAILY_RPD);
@@ -880,10 +883,14 @@ export function marrowlineAuthoredStreamDeadlineMs({ initialTimeoutMs = 0, elaps
   return Math.max(initial, Math.min(initial + grace, elapsed + remaining));
 }
 
-async function readGeminiSse(response, progress, onAuthoredText = null) {
+export async function readGeminiSse(response, progress, onAuthoredText = null, captureNativeEvidence = false) {
   const reader = response?.body?.getReader?.();
   if (!reader) return null;
   const decoder = new TextDecoder();
+  const wireSha256 = captureNativeEvidence ? crypto.createHash('sha256') : null;
+  const wireChunks = captureNativeEvidence ? [] : null;
+  let wireTotalBytes = 0;
+  let wireOverflow = false;
   let buffer = '';
   const chunks = [];
   try {
@@ -891,6 +898,12 @@ async function readGeminiSse(response, progress, onAuthoredText = null) {
       const { value, done } = await reader.read();
       if (done) break;
       progress.byteCount += value?.byteLength || 0;
+      if (wireSha256 && value?.byteLength) {
+        wireSha256.update(value);
+        wireTotalBytes += value.byteLength;
+        if (!wireOverflow && wireTotalBytes <= MAX_NATIVE_SSE_WITNESS_BYTES) wireChunks.push(Buffer.from(value));
+        else { wireOverflow = true; wireChunks.length = 0; }
+      }
       buffer += decoder.decode(value, { stream: true });
       const events = buffer.split(/\r?\n\r?\n/);
       buffer = events.pop() || '';
@@ -905,7 +918,28 @@ async function readGeminiSse(response, progress, onAuthoredText = null) {
   }
   buffer += decoder.decode();
   if (buffer.trim()) consumeGeminiSseEvent(buffer, chunks, progress, onAuthoredText);
-  return mergeGeminiStreamPayload(chunks);
+  const merged = mergeGeminiStreamPayload(chunks);
+  if (wireSha256) {
+    const providerParts = chunks.flatMap((entry) =>
+      (entry?.candidates?.[0]?.content?.parts || [])
+        .filter((part) => typeof part?.text === 'string' && part.thought !== true)
+        .map((part) => part.text)).join('');
+    const rebuilt = extractGeminiText(merged);
+    progress.nativeSseEvidence = Object.freeze({
+      schema: 'td613.marrowline.provider-sse-wire/v1',
+      scope: 'single-synthetic-canary-raw-google-response-as-seen-by-td613',
+      rawSseSha256: wireSha256.digest('hex'),
+      rawSseBytes: wireTotalBytes,
+      captureComplete: !wireOverflow && !progress.streamInterrupted && progress.parseErrors === 0,
+      rawSseBase64: wireOverflow ? null : Buffer.concat(wireChunks).toString('base64'),
+      originalEventTextSha256: sha256(providerParts),
+      mergedTextSha256: sha256(rebuilt),
+      textEquivalent: providerParts === rebuilt,
+      eventCount: chunks.length,
+      parseErrors: progress.parseErrors
+    });
+  }
+  return merged;
 }
 
 async function callGemini(
@@ -913,7 +947,7 @@ async function callGemini(
   packet,
   apertureReceipt,
   timeoutMs = PRIMARY_REQUEST_TIMEOUT_MS,
-  { fallback = false, structuralRepair = null, streamGraceMs = 0, wallDeadlineAt = null } = {}
+  { fallback = false, structuralRepair = null, streamGraceMs = 0, wallDeadlineAt = null, captureNativeSse = false } = {}
 ) {
   const controller = new AbortController();
   const progress = { startedAt: Date.now(), chunkCount: 0, authoredTextChunkCount: 0, firstChunkMs: null, byteCount: 0, parseErrors: 0, streamGraceMs: 0 };
@@ -958,7 +992,7 @@ async function callGemini(
       const payload = await response.json().catch(() => ({}));
       return { response, payload, text: '', timedOut: false, streamed: false, submittedGenerationConfig, submittedRequestObservation, ...progress };
     }
-    const streamedPayload = await readGeminiSse(response, progress, onAuthoredText);
+    const streamedPayload = await readGeminiSse(response, progress, onAuthoredText, captureNativeSse);
     const payload = streamedPayload || await response.json().catch(() => ({}));
     return {
       response,
@@ -1049,6 +1083,13 @@ export default async function handler(req, res) {
   const startedAt = Date.now();
   plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
   const releaseCanary = requestHeader(req, 'x-td613-release-canary') === '1';
+  const nativeSseWitness = releaseCanary
+    && requestHeader(req, 'x-td613-native-sse-witness') === '1'
+    && body.message === NATIVE_SSE_WITNESS_PROMPT
+    && Array.isArray(body.history) && body.history.length === 0
+    && body.mode === 'issued-conjunction'
+    && body.waiveIssuance === true
+    && !body.shi;
   const requestedCanaryModel = requestHeader(req, 'x-td613-canary-model').replace(/^models\//, '');
   const discourseMode = classifyApertureDiscourseMode(packet.message);
   const apertureReceipt = buildApertureV3InvocationReceipt({
@@ -1489,6 +1530,7 @@ export default async function handler(req, res) {
       // preserved as a fallback fragment, but cannot silently borrow the next
       // approved model's completion window.
       fallback, streamGraceMs: 0,
+      captureNativeSse: nativeSseWitness,
       wallDeadlineAt: providerWallDeadlineAt
     });
     const providerOutput = observeGeminiOutput(result.payload, model, { fallback, submittedGenerationConfig: result.submittedGenerationConfig, submittedRequestObservation: result.submittedRequestObservation });
@@ -1536,6 +1578,7 @@ export default async function handler(req, res) {
         parseErrors: Number.isInteger(result.parseErrors) ? result.parseErrors : 0,
         authoredTextChunkCount: result.authoredTextChunkCount || 0,
         streamGraceMs: result.streamGraceMs || 0,
+        ...(result.nativeSseEvidence ? { nativeSseEvidence: result.nativeSseEvidence } : {}),
         interrupted: result.streamInterrupted === true,
         interruptionClass: result.streamErrorClass || null
       },
