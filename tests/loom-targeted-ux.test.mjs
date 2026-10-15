@@ -543,9 +543,9 @@ test('How it works replay preserves an existing real Loom root and prepared expo
   h.$('[data-first-crossing-item="brief"]').click();
   await until(() => !h.$('[data-first-crossing-item="source"]').disabled, 'à completion to unlock hõt/cōl');
   h.$('[data-first-crossing-item="source"]').click();
-  await until(() => !h.$('#loomFirstCrossingAction').hidden, 'replayed gathering');
+  await until(() => !h.$('#loomFirstCrossingAction').disabled, 'replayed gathering');
   h.$('#loomFirstCrossingAction').click();
-  await until(() => !h.$('#loomFirstCrossingStop').hidden, 'replayed actual local binding');
+  await until(() => !h.$('#loomFirstCrossingStop').disabled, 'replayed actual local binding');
   assert.deepEqual(h.ui.inspect().session, originalSession, 'practice creates no replacement root or admitted descendant');
   assert.equal(h.$('#aiSessionReceipt').textContent, originalExport, 'real prepared export remains bound to its original work');
   h.$('#loomFirstCrossingLeave').click();
@@ -562,9 +562,9 @@ test('completed handoff preview reopens from How it works in one deliberate gest
     h.$('[data-first-crossing-item="brief"]').click();
     await until(() => !h.$('[data-first-crossing-item="source"]').disabled, 'à completion on tutorial replay');
     h.$('[data-first-crossing-item="source"]').click();
-    await until(() => !h.$('#loomFirstCrossingAction').hidden, 'published gathering');
+    await until(() => !h.$('#loomFirstCrossingAction').disabled, 'published gathering');
     h.$('#loomFirstCrossingAction').click();
-    await until(() => !h.$('#loomFirstCrossingStop').hidden, 'published local readiness');
+    await until(() => !h.$('#loomFirstCrossingStop').disabled, 'published local readiness');
     for (const [step, cue] of [[3, 'send-named'], [4, 'privacy-named'], [5, 'proof-named']]) {
       h.$('#loomFirstCrossingStop').click();
       await until(() => h.root.dataset.firstCrossingStep === String(step)
@@ -641,7 +641,7 @@ test('opening overture contains all eight relations without borrowing the à ill
 test('privacy tutorial retains two selections and optional answer details in document flow', () => {
   const doc = new JSDOM(loomWorkspaceTemplate).window.document;
   assert.equal(doc.querySelectorAll('[data-first-crossing-item]').length,2);
-  assert.match(doc.querySelector('[data-first-crossing-item=source]').textContent,/The context worth sharing/);
+  assert.match(doc.querySelector('[data-first-crossing-item=source]').textContent,/What the AI needs to know/);
   assert.doesNotMatch(doc.querySelector('[data-first-crossing-item=source]').textContent,/\/\//);
   assert.match(product,/\.loom-tutorial-proof\{order:6/);
   assert.match(product,/:not\(\[data-first-crossing-step="0"\]\)\s*\.loom-first-crossing-objects\{display:none\}/);
