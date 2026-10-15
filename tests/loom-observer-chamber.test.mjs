@@ -36,7 +36,7 @@ test('missing capture is HELD in the visible primary table, with subview scope r
   assert.match(root.querySelector('#ocStatus').textContent, /^HELD/);
   assert.match(root.querySelector('#ocMetrics').textContent, /HELD · missing channel/);
   assert.match(root.querySelector('#ocCapture').textContent, /candidate \/ error/);
-  assert.match(root.textContent, /Golden Egg: UNEARNED/);
+  assert.match(root.textContent, /Research result: Not yet demonstrated/);
 });
 test('every declared case renders, and case change clears stale calculations', () => {
   const { root, choose, run, ui } = harness();
