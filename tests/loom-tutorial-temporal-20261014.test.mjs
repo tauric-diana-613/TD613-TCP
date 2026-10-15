@@ -37,7 +37,7 @@ test('all seven Flow-Core tutorial glyphs have a visibly named, fictional state'
   assert.ok(glyph&&label,'glyph and plain-language operation are separately addressable');
   assert.deepEqual(LOOM_TUTORIAL_OPERATORS.map(x=>x.glyph),['à','hõt','上','出','米','下','𝄐']);
   assert.match(workspace,/LOOM_TUTORIAL_OPERATORS\[firstCrossingStep\]/);
-  assert.match(workspace,/Preview sending · nothing sent/);
+  assert.match(workspace,/Preview sending · demo only/);
   for(let step=0;step<7;step++){
     const presentation=loomTutorialPresentation(step);
     assert.equal(presentation.tutorial_operator.glyph,LOOM_TUTORIAL_OPERATORS[step].glyph);
@@ -66,16 +66,16 @@ test('mobile request reads vertically; raw machine output and research math are 
 });
 
 
-test('the first screen actually explains cross-model portability and shows its three visible actions',()=>{
+test('the first screen explains the AI firewall and three actual evidence boundaries',()=>{
   const title=doc.querySelector('#loomFirstCrossingTitle')?.textContent;
   const pitch=doc.querySelector('#loomFirstCrossingPrompt')?.textContent;
   const route=doc.querySelector('.loom-value-route')?.textContent;
   assert.match(title,/Firewall your online life from AI/);
-  assert.match(pitch,/Moving from ChatGPT to Gemini/);
-  assert.match(pitch,/leave the private details behind/);
-  assert.match(route,/Switch AI models/);
-  assert.match(route,/Choose what travels/);
-  assert.match(route,/Check what returns/);
+  assert.match(pitch,/Work with Gemini, ChatGPT, and other LLMs on your terms/);
+  assert.match(pitch,/keep protected information out of the request/);
+  assert.match(route,/Inspect the request/);
+  assert.match(route,/Protect what stays private/);
+  assert.match(route,/Examine the return/);
   assert.match(workspace,/Give AI the context, not your entire history/);
   assert.match(workspace,/Check AI Request/);
 });
