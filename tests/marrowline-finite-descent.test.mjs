@@ -66,3 +66,21 @@ test('finite descent episode encrypts and decrypts without leaking the key', () 
     assert.notEqual(fail.status,0,'AES-GCM authentication rejects changed ciphertext');
   } finally { rmSync(dir,{recursive:true,force:true}); }
 });
+
+test('production-native khonapolit canary preflight is network-free and bounded', () => {
+  const routeScript = fileURLToPath(new URL('../research/marrowline-finite-descent-20261015/run-khonapolit-canary.mjs', import.meta.url));
+  const run = spawnSync(process.execPath, [routeScript], {encoding:'utf8',env:safeEnv,timeout:15000});
+  assert.equal(run.status,0,run.stderr);
+  const plan=JSON.parse(run.stdout);
+  assert.equal(plan.preflight,true);
+  assert.equal(plan.maxCalls,2);
+  assert.equal(plan.maxTotalRequests,2);
+  assert.equal(plan.retries,0);
+  assert.equal(plan.repairsDisabledByCanaryHeader,true);
+  assert.equal(plan.productionUrl,'https://td613.com/api/khonapolit');
+  assert.deepEqual(plan.models,['gemini-3.8-flash','gemini-3.6-flash']);
+  const withoutAck=spawnSync(process.execPath,[routeScript,'--execute'],
+    {encoding:'utf8',env:safeEnv,timeout:15000});
+  assert.notEqual(withoutAck.status,0);
+  assert.match(withoutAck.stderr,/PAID_REQUEST_ACKNOWLEDGEMENT_REQUIRED/);
+});
