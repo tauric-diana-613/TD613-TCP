@@ -94,14 +94,20 @@ export function mountLoomPrivacyScienceView(host,{environment=globalThis,getLoca
     appendText(doc,results,'p',latest.model_lesson,'loom-science-lesson');
     appendText(doc,results,'p','These values come from enumerating the declared finite probability law. The signed excess is a diagnostic—not the historical joining-synergy J. Answer accuracy is not the authorized-work reconstruction distance R. Conditional leakage is not the historical observer leakage L.','loom-science-scope');
     appendText(doc,results,'p','Empirical five-surface measurement: L unmeasured · R unmeasured · J unmeasured · G unmeasured · C unobserved. A valid comparison requires one immutable episode, continuous custody, a common comparison frame, independently grounded geometry, and actual matched control/protected returns.','loom-science-unmeasured');
+    // Consumer receipt retains every finite numeric result and evidentiary
+    // qualifier without exposing the internal experiment nickname as UI copy.
+    // Canonical internal research/export schemas remain unchanged.
+    const { golden_egg: _internalResearchName, ...finiteCeiling }=out.ceiling;
     machine.textContent=JSON.stringify({
-      schema:latest.schema,synthetic_model:out,
-      five_surface_target:latest.requirements,
+      schema:latest.schema,
+      synthetic_model:{...out,ceiling:{...finiteCeiling,five_surface_qualification:_internalResearchName}},
+      five_surface_target:{...latest.requirements,
+        J:latest.requirements.J.replaceAll('Golden Egg','five-surface')},
       equations:latest.equations,
       thresholds:latest.thresholds,
       empirical_surfaces:latest.measured_surfaces,
       empirical_credit:latest.empirical_credit,
-      golden_egg_earned:latest.golden_egg_earned
+      five_surface_qualified:latest.golden_egg_earned
     },null,2);
   };
   const renderChannels=()=>{
