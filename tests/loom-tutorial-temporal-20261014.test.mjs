@@ -57,12 +57,12 @@ test('mobile request reads vertically; raw machine output and research math are 
   assert.ok(technical.contains(record));
   assert.equal(outer.open,false);
   assert.equal(technical.open,false);
-  assert.match(outer.querySelector('.loom-tutorial-check-summary').textContent,/Nothing.*held.*unknown/is);
+  assert.match(outer.querySelector('.loom-tutorial-check-summary').textContent,/Nothing.*private conversation.*unknown/is);
   const research=doc.querySelector('.loom-research-proof');
   assert.ok(research.querySelector('.loom-research-technical'));
   assert.equal(research.querySelector('.loom-research-technical').open,false);
   assert.match(research.querySelector('.loom-research-technical').textContent,/L ≤ 0.5 bits.*R ≤ 0.2.*J ≤ 0.1/);
-  assert.match(html,/visible-cinema-and-copy-v1/);
+  assert.match(html,/couture79-v1/);
 });
 
 
@@ -74,7 +74,7 @@ test('the first screen explains the AI firewall and three actual evidence bounda
   assert.match(pitch,/Use Gemini, ChatGPT, and other LLMs/);
   assert.match(pitch,/test what the exchange may reveal/);
   assert.match(route,/Inspect the request/);
-  assert.match(route,/Protect what stays private/);
+  assert.match(route,/Choose what stays here/);
   assert.match(route,/Examine the return/);
   assert.match(workspace,/Give AI the context, not your entire history/);
   assert.match(workspace,/Check AI Request/);
