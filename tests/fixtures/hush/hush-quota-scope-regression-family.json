@@ -1,0 +1,108 @@
+{
+  "schema": "td613.hush.quota-scope-regression-family/v0.1",
+  "purpose": "Bounded fixtures for the Hush model-vs-provider quota regression lineage. These are synthetic transport receipts, not empirical provider observations.",
+  "lineage": [
+    {
+      "commit": "1adefa5050c5d55fc3c9255812a05ca9de2500c7",
+      "meaning": "expose provider quota diagnostics in held receipts"
+    },
+    {
+      "commit": "6b5455266bb331af726725373e917d883603daad",
+      "meaning": "stop treating single-model 429 as provider quota exhaustion"
+    },
+    {
+      "commit": "a844d987b033f20ea80a91275a8102d067074cef",
+      "meaning": "rotate strict Gemini models on quota"
+    },
+    {
+      "commit": "f20a9153e4d12bfe12a071743fb57c10dd0461e3",
+      "meaning": "skip quota-blocked models during repair retry"
+    }
+  ],
+  "cases": [
+    {
+      "id": "model-scoped-429",
+      "model": "gemini-3.5-flash",
+      "response": {
+        "status": 429,
+        "retry_after_seconds": 12,
+        "payload": {
+          "error": {
+            "code": 429,
+            "status": "RESOURCE_EXHAUSTED",
+            "message": "Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_requests, limit: 20, model: gemini-3.5-flash",
+            "details": [
+              {
+                "@type": "type.googleapis.com/google.rpc.QuotaFailure",
+                "violations": [
+                  {
+                    "quotaMetric": "generativelanguage.googleapis.com/generate_content_requests",
+                    "quotaId": "GenerateRequestsPerMinutePerModel",
+                    "quotaDimensions": {
+                      "model": "gemini-3.5-flash",
+                      "location": "global"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "expected_scope": "model",
+      "forbidden_claim": "provider_quota_exhausted"
+    },
+    {
+      "id": "shared-project-429",
+      "model": "gemini-3.8-flash",
+      "response": {
+        "status": 429,
+        "retry_after_seconds": 2,
+        "payload": {
+          "error": {
+            "code": 429,
+            "status": "RESOURCE_EXHAUSTED",
+            "message": "Resource exhausted. Please retry in 2s.",
+            "details": [
+              {
+                "@type": "type.googleapis.com/google.rpc.QuotaFailure",
+                "violations": [
+                  {
+                    "quotaMetric": "generativelanguage.googleapis.com/generate_content_requests_per_minute",
+                    "quotaId": "GenerateRequestsPerMinutePerProject",
+                    "quotaDimensions": {
+                      "location": "global"
+                    }
+                  }
+                ]
+              },
+              {
+                "@type": "type.googleapis.com/google.rpc.RetryInfo",
+                "retryDelay": "2s"
+              }
+            ]
+          }
+        }
+      },
+      "expected_scope": "shared",
+      "forbidden_effect": "write identical model-local cooldowns for every Hush seat"
+    },
+    {
+      "id": "ambiguous-429",
+      "model": "gemini-3.8-flash",
+      "response": {
+        "status": 429,
+        "retry_after_seconds": 0,
+        "payload": {
+          "error": {
+            "code": 429,
+            "status": "RESOURCE_EXHAUSTED",
+            "message": "quota"
+          }
+        }
+      },
+      "expected_scope": "unknown",
+      "forbidden_claim": "provider_quota_exhausted"
+    }
+  ]
+}
