@@ -2,6 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { mkdtempSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 const script = fileURLToPath(new URL('../research/marrowline-finite-descent-20261015/run-pair.mjs', import.meta.url));
 // Strip credentials from the test process: no synthetic test may spend real provider credits.
@@ -36,4 +39,30 @@ test('paid execution rejects missing human acknowledgment and reviewed bound bef
   const noBound = invoke(['--execute', '--ack-paid']);
   assert.notEqual(noBound.status, 0);
   assert.match(noBound.stderr, /REVIEWED_SPENDING_BOUND_REQUIRED/);
+});
+
+test('finite descent episode encrypts and decrypts without leaking the key', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'td613-finite-seal-'));
+  try {
+    const input = join(dir, 'original.txt'), sealed = join(dir, 'sealed.enc'), plain = join(dir, 'recovered.txt');
+    const witness = 'test-only\\u0301 provider/native Unicode and exact continuation\\n';
+    const key = 'SYNTHETIC_TEST_KEY_NEVER_REAL_1234567890';
+    writeFileSync(input, witness);
+    const cryptoScript = fileURLToPath(new URL('../research/marrowline-finite-descent-20261015/seal-archive.mjs', import.meta.url));
+    const invokeCrypto = (mode, a, b) => spawnSync(process.execPath,
+      [cryptoScript, mode, a, b], {encoding: 'utf8',env:{...safeEnv,GEMINI_API_KEY:key}});
+    const enc = invokeCrypto('encrypt', input, sealed);
+    assert.equal(enc.status, 0, enc.stderr);
+    const bytes = readFileSync(sealed);
+    assert.equal(bytes.includes(Buffer.from(witness)), false);
+    assert.equal(bytes.includes(Buffer.from(key)), false);
+    const dec = invokeCrypto('decrypt', sealed, plain);
+    assert.equal(dec.status, 0, dec.stderr);
+    assert.equal(readFileSync(plain,'utf8'), witness);
+    bytes[bytes.length-1] ^= 1;
+    const broken=join(dir,'tampered.enc');
+    writeFileSync(broken,bytes);
+    const fail=invokeCrypto('decrypt',broken,join(dir,'tampered.txt'));
+    assert.notEqual(fail.status,0,'AES-GCM authentication rejects changed ciphertext');
+  } finally { rmSync(dir,{recursive:true,force:true}); }
 });
