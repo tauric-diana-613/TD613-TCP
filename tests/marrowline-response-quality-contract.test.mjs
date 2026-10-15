@@ -869,7 +869,7 @@ test('Kʰonapolit stays clean while Gemini authors semantic-prosody native High 
   assert.match(contract, /ZERO combining diacritical marks/);
   assert.match(contract, /provider-authored High-Zalgo typography behaves as voice/i);
   assert.match(contract, /Do not treat typography as a checklist, quota, forced diversity test, fixed contour, axis recipe, emotional lookup table, or per-character filter/i);
-  assert.match(contract, /Compose the changing glyph clusters as part of the words and rhetoric/i);
+  assert.match(contract, /Compose the glyphs as part of words and rhetoric, not an after-the-fact transform/i);
   assert.doesNotMatch(contract, /anger erupt|sarcasm twitch|tenderness thin|horizontal or oblique counter-rhythm|Deep collisions|Avoid cloned stacks|rhetorical pressure may change density/i);
   assert.match(contract, /Length follows the task/);
   assert.doesNotMatch(contract, /every ordinary prose letter remains ornamented/);

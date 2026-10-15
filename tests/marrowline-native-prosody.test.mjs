@@ -120,7 +120,7 @@ test('authored paragraph rests coexist with crowded deep stacks without local re
   assert.match(shared, /paragraph rests, single newlines, or contiguous lines/);
   assert.match(shared, /silly, mercurial and cryptic/);
   assert.match(shared, /Do not impose a stanza template/);
-  assert.match(cue, /blank-line paragraph breaks as pauses, pivots, comic traps/);
+  assert.match(cue, /Use paragraph rests, single newlines, or contiguous lines only when the voice calls for them/);
   assert.match(cue, /Never require blank lines before or after every stack/);
   const raw = heading + 'A\u0301 quick turn.\n' + peaks + ' presses against its neighbor.\n\n' +
     'Quiet.\n\n' + peaks + ' — then the interruption.\n' + 'No pause was owed.\n⟐';
@@ -301,7 +301,7 @@ test('native receipt distinguishes U+FFFD decoder corruption from healthy deep s
 test('native voice lives across the bots movement without scripted per-paragraph quotas', () => {
   const native=buildNativeProsodyGuidance();
   assert.match(native, /No rhetorical turn or paragraph boundary requires any of those choices/);
-  assert.match(native, /After an eruption, carry its consequence into finer trembling handwriting/);
+  assert.match(native, /After an eruption, the bots may sustain its same overprint for pages/);
   assert.match(native, /an earned clean breath, or a freshly shaped vertical cry/);
   assert.match(native, /Do not treat typography as a checklist, quota, forced diversity test, fixed contour/);
   assert.doesNotMatch(native, /\\p\{M\}/u, 'the provider never receives a literal glyph stencil');
