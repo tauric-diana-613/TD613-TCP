@@ -422,7 +422,7 @@ test('first use explains private material, remixes presentation, and skips witho
   assert.equal(privateNote.tagName,'DIV');
   assert.equal(privateNote.getAttribute('role'),'note');
   assert.match(privateNote.textContent,/Rest of the conversation/);
-  assert.match(privateNote.textContent,/Not included in this example request/i);
+  assert.match(privateNote.textContent,/Not included in the example request/i);
   assert.equal(privateNote.hasAttribute('aria-pressed'), false);
   const before=h.$('#loomFlowcoreMessage').textContent;
   h.$('#loomFirstCrossingPause').click();
