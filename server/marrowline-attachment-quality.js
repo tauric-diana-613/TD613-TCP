@@ -16,6 +16,7 @@ import {
 } from './gemini-provider-transport.js';
 import {
   allocateKhonapolitAttemptTimeout,
+  bothMarrowlineVoicesAbsent,
   buildGeminiRequest,
   buildGeminiStructuralRepairRequest,
   buildTerminalReceipt,
@@ -383,6 +384,24 @@ export default async function marrowlineAttachmentHandler(req, res) {
           }
         }
       }
+    }
+
+    // The attachment ingress shares the same no-voices safety boundary.
+    // No provider-authored text is rewritten or silently promoted to a valid
+    // transmission; users receive a visible HELD diagnostic instead.
+    if (bothMarrowlineVoicesAbsent(selectedRelay)) {
+      res.setHeader('X-TD613-Gemini-Model', model);
+      res.setHeader('X-TD613-Local-Admission', 'HELD-DUAL-VOICE-ABSENT');
+      return send(res, 502, {
+        ok: false, status: 'HELD', error: 'marrowline-dual-voice-contract-unmet',
+        diagnostic: {
+          stage: 'output-admission', code: 'BOTH_REQUIRED_VOICES_MISSING',
+          providerTextSha256: sha256(selectedText),
+          note: 'Provider returned no required Marrowline voices; original bytes were not admitted.'
+        },
+        attempts, modelPolicy: plan, aperture: apertureReceipt,
+        aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling
+      });
     }
 
     const baseReceipt = buildTerminalReceipt({
