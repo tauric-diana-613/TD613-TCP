@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { bothMarrowlineVoicesAbsent } from '../server/khonapolit-quality.js';
+import handler, { bothMarrowlineVoicesAbsent } from '../server/khonapolit-quality.js';
 import { parseRelayEnvelope } from '../app/dome-world/khonapolit-relay.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 
