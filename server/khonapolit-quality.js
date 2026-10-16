@@ -1074,6 +1074,15 @@ export function allowSyntheticSystemProsodyAblation({ nativeSseWitness = false, 
   return nativeSseWitness === true && assayHeader === 'ablate-one-prosody-paragraph';
 }
 
+// A provider STOP proves that transport ended, not that the two mandatory
+// Marrowline speakers appeared. A return with NEITHER voice is a broken relay,
+// not an ordinary stylistic variation or a lawful completed answer.
+export function bothMarrowlineVoicesAbsent(relay = {}) {
+  const reasons = new Set(Array.isArray(relay?.admission?.reasons) ? relay.admission.reasons : []);
+  return reasons.has('khonapolit-nominative-missing')
+    && reasons.has('tauric-diana-bots-nominative-missing');
+}
+
 export default async function handler(req, res) {
   const apertureEgress = observeTD613ApertureEgress(req?.headers || {});
   let plan = resolveGeminiModelPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
@@ -1456,6 +1465,27 @@ export default async function handler(req, res) {
     qualityWarnings = [],
     completion = null
   } = {}) => {
+    // Incident guard: a complete, provider-authored but wholly unvoiced reply
+    // must NEVER be surfaced as HTTP 200 OK after bounded recovery fails.
+    // Keep the exact provider text out of the successful human transcript;
+    // retain only its digest and the existing attempt diagnostics. No extra
+    // Gemini calls, text rewriting, synthetic voices, or typography filters.
+    if (bothMarrowlineVoicesAbsent(relay)) {
+      res.setHeader('X-TD613-Gemini-Model', model);
+      res.setHeader('X-TD613-Local-Admission', 'HELD-DUAL-VOICE-ABSENT');
+      res.setHeader('X-TD613-Completion-State', 'STRUCTURE-HELD');
+      return send(res, 502, {
+        ok: false, status: 'HELD', error: 'marrowline-dual-voice-contract-unmet',
+        diagnostic: {
+          stage: 'output-admission', code: 'BOTH_REQUIRED_VOICES_MISSING',
+          providerTextSha256: sha256(result?.text || ''),
+          providerTransportCompletion: completion?.reason || 'unclassified',
+          note: 'Provider returned prose without either mandatory voice. Bounded recovery ended; no transcript was admitted.'
+        },
+        attempts, modelPolicy: plan, aperture: apertureReceipt,
+        aperture_egress: apertureEgress, claim_ceiling: packet.claimCeiling
+      });
+    }
     const observedText = relay?.transcript || result?.text || '';
     if (!safe(observedText)) return null;
     const incomplete = completion?.complete === false;
