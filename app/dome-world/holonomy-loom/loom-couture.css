@@ -502,6 +502,7 @@ body{background:var(--ink);overflow-x:clip}
    source hashing, tomography, and five-surface empirical guardrails.
    Step 0 retains the open editorial headline and lavender serif emphasis. */
 #loomAiWorkspace[data-first-crossing="active"]:not([data-first-crossing-step="0"]) .loom-first-crossing{
+  position:relative;
   align-items:stretch;
   gap:20px;
   width:min(560px,100%);
