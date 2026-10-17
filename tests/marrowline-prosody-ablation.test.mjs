@@ -90,3 +90,6 @@ test('normal provider request restores above-and-below same-letter native author
  assert.ok(original.generationConfig.maxOutputTokens>=65536);
  assert.equal(system.split('ABOVE and BELOW the SAME prose letters').length,2);
 });
+
+// Inert same-creative-task two-voice counterfactual; no provider calls.
+import './marrowline-role-boundary-contrast.test.mjs';
