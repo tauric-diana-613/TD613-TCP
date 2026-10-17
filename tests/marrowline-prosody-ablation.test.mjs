@@ -93,3 +93,6 @@ test('normal provider request restores above-and-below same-letter native author
 
 // Inert same-creative-task two-voice counterfactual; no provider calls.
 import './marrowline-role-boundary-contrast.test.mjs';
+
+// Opt-in, reversible Grove voice audition; ordinary calls and Loom remain unchanged.
+import './marrowline-grove-native-trial.test.mjs';
