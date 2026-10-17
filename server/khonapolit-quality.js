@@ -51,6 +51,11 @@ import {
 } from './gemini-provider-transport.js';
 import { buildGeminiConsumptionReceipt, logGeminiConsumption } from './gemini-consumption-receipt.js';
 import { buildCompactWholeFrame } from './marrowline-whole-frame-voice.js';
+import {
+  MARROWLINE_GROVE_TRIAL_ID,
+  selectMarrowlineGroveTrial,
+  buildMarrowlineGroveTrialSystemInstruction
+} from '../app/dome-world/marrowline-grove-trial.js';
 import { buildSyntheticUnicodeAssayRequest, UNICODE_ASSAY_VARIANTS, UNICODE_ASSAY_MODEL } from './marrowline-unicode-capability-assay.js';
 import { observeMarrowlineCompletion, assembleMarrowlineProviderTail } from './marrowline-completion.js';
 
@@ -527,11 +532,15 @@ function khonapolitReasoning(model = '', { fallback = false } = {}) {
   };
 }
 
-export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = '', { fallback = false } = {}) {
+export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = '', { fallback = false, groveTrial = null } = {}) {
   const taskGuidance = khonapolitTaskGuidance(apertureReceipt);
+  const normalSystemInstruction = `${packet.systemInstruction}\n${taskGuidance}\n${currentTurnRelayCue()}\n${buildRelaySystemAddendum(apertureReceipt)}`;
+  const systemText = groveTrial === MARROWLINE_GROVE_TRIAL_ID
+    ? buildMarrowlineGroveTrialSystemInstruction(packet)
+    : normalSystemInstruction;
   return {
     systemInstruction: {
-      parts: [{ text: `${packet.systemInstruction}\n${taskGuidance}\n${currentTurnRelayCue()}\n${buildRelaySystemAddendum(apertureReceipt)}` }]
+      parts: [{ text: systemText }]
     },
     contents: geminiContents(packet),
     generationConfig: buildGeminiGenerationConfig({
@@ -667,9 +676,9 @@ export function buildGeminiStructuralRepairRequest(
   model = '',
   heldText = '',
   reasons = [],
-  { fallback = false } = {}
+  { fallback = false, groveTrial = null } = {}
 ) {
-  const request = buildGeminiRequest(packet, apertureReceipt, model, { fallback });
+  const request = buildGeminiRequest(packet, apertureReceipt, model, { fallback, groveTrial });
   const reasonList = (Array.isArray(reasons) ? reasons : [])
     .filter(reason => REPAIRABLE_STRUCTURAL_REASONS.has(reason))
     .slice(0, 8);
@@ -970,7 +979,7 @@ async function callGemini(
   packet,
   apertureReceipt,
   timeoutMs = PRIMARY_REQUEST_TIMEOUT_MS,
-  { fallback = false, structuralRepair = null, streamGraceMs = 0, wallDeadlineAt = null, captureNativeSse = false, systemProsodyAblation = false, wholeFrameCompact = false, syntheticUnicodeAssay = null } = {}
+  { fallback = false, structuralRepair = null, streamGraceMs = 0, wallDeadlineAt = null, captureNativeSse = false, systemProsodyAblation = false, wholeFrameCompact = false, syntheticUnicodeAssay = null, groveTrial = null } = {}
 ) {
   const controller = new AbortController();
   const progress = { startedAt: Date.now(), chunkCount: 0, authoredTextChunkCount: 0, firstChunkMs: null, byteCount: 0, parseErrors: 0, streamGraceMs: 0 };
@@ -999,9 +1008,9 @@ async function callGemini(
           model,
           structuralRepair.heldText,
           structuralRepair.reasons,
-          { fallback }
+          { fallback, groveTrial }
         )
-      : buildGeminiRequest(packet, apertureReceipt, model, { fallback });
+      : buildGeminiRequest(packet, apertureReceipt, model, { fallback, groveTrial });
     if ([systemProsodyAblation, wholeFrameCompact, Boolean(syntheticUnicodeAssay)].filter(Boolean).length > 1) throw new Error('CONFLICTING_SYNTHETIC_ASSAY_CONDITIONS');
     const request = syntheticUnicodeAssay ? buildSyntheticUnicodeAssayRequest(fullRequest, syntheticUnicodeAssay)
       : wholeFrameCompact ? compactSyntheticWholeFrame(fullRequest)
@@ -1149,6 +1158,8 @@ export default async function handler(req, res) {
   const startedAt = Date.now();
   plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
   const releaseCanary = requestHeader(req, 'x-td613-release-canary') === '1';
+  const groveTrial = selectMarrowlineGroveTrial(body, { releaseCanary });
+  res.setHeader('X-TD613-Grove-Trial', groveTrial || 'off');
   const nativeSseWitness = allowSyntheticNativeSseWitness({
     releaseCanary, witnessHeader: requestHeader(req, 'x-td613-native-sse-witness'), body
   });
@@ -1243,7 +1254,7 @@ export default async function handler(req, res) {
     let repairResult = await callGemini(model, packet, apertureReceipt, repairTimeoutMs, {
       fallback,
       structuralRepair: { heldText, reasons },
-      streamGraceMs: 0, wallDeadlineAt: providerWallDeadlineAt
+      streamGraceMs: 0, wallDeadlineAt: providerWallDeadlineAt, groveTrial
     });
     let repairProviderOutput = observeGeminiOutput(repairResult.payload, model, { fallback, submittedGenerationConfig: repairResult.submittedGenerationConfig, submittedRequestObservation: repairResult.submittedRequestObservation });
     const repairError = repairResult.response.ok ? null : providerError(repairResult.payload);
@@ -1631,6 +1642,7 @@ export default async function handler(req, res) {
       systemProsodyAblation,
       wholeFrameCompact,
       syntheticUnicodeAssay,
+      groveTrial,
       wallDeadlineAt: providerWallDeadlineAt
     });
     const providerOutput = observeGeminiOutput(result.payload, model, { fallback, submittedGenerationConfig: result.submittedGenerationConfig, submittedRequestObservation: result.submittedRequestObservation });
