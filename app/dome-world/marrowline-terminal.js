@@ -37,6 +37,7 @@ import {
 } from '../engine/aperture-v3-task-intent.js';
 import { classifyMarrowlineRetryWindow } from './marrowline-retry-window.js';
 import { buildMarrowlineEpisodeWitness } from './marrowline-episode-witness.js';
+import { groveTrialFromLocation } from './marrowline-grove-trial.js';
 import {
   currentGeminiDailyBudgetHints,
   ingestGeminiConsumption,
@@ -706,6 +707,15 @@ async function readMarrowlineSourceWindow(root) {
 export function installKhonapolitTerminal(doc = document, root = window) {
   const form = byId(doc, 'khonapolitForm');
   if (!form) return false;
+  const groveTrial = groveTrialFromLocation(root.location);
+  if (groveTrial && !byId(doc, 'marrowlineGroveTrialNotice')) {
+    const notice = doc.createElement('p');
+    notice.id = 'marrowlineGroveTrialNotice';
+    notice.className = 'marrowline-grove-trial-notice';
+    notice.textContent = 'Screaming Grove audition · experimental native voices. Model usage is billed normally. Remove the groveTrial URL option to return to ordinary Marrowline.';
+    if (notice.style) notice.style.cssText = 'margin:0 0 9px;padding:7px 10px;font-size:0.76rem;line-height:1.4;color:inherit;border:1px solid currentColor;border-radius:8px;opacity:.82';
+    form.prepend(notice);
+  }
   const freshLoomArrival = (root.location?.hash || '').startsWith('#loom=') || root.location?.hash === '#loom-demo';
   const state = loadSession(root);
   let threadLibrary = null;
@@ -1267,6 +1277,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       if (witnessThisTurn) sourceBefore = await awaitMarrowlineAbortable(readMarrowlineSourceWindow(root), requestController.signal);
       if (activeRequestCancelRequested) throw new Error('operator-cancelled');
       const requestBody = { message, mode, shi, waiveIssuance, history: compactMarrowlineHistory(state.messages.slice(0, -1)) };
+      if (groveTrial && !loomTransport && attachments.length === 0) requestBody.groveTrial = groveTrial;
       const quotaBudgetHints = currentGeminiDailyBudgetHints(root);
       // Browser history remains visible in the local ledger but no longer carries
       // retry permission into the server. Explicit retries always reach live Gemini.
