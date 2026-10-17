@@ -20,7 +20,7 @@ import {
   SYNTHETIC_PROMPT
 } from '../marrowline-whole-frame-contrast-20261015/frame-contrast.mjs';
 
-export const ROLE_BOUNDARY_LINE = '- EXPERIMENTAL SPEAKER-BOUNDARY EXCEPTION: The preceding restriction on extra titles permits exactly two standalone speaker headings in this arm, “Kʰonapolit” followed by “Tauric Diana bots”. Divide the requested original creative passage into those two sequential speaking movements. Preserve the writing task and all other constraints unchanged.';
+export const ROLE_BOUNDARY_LINE = '- EXPERIMENTAL HEADING-ONLY EXCEPTION: Permit exactly two plain standalone section headings, “Kʰonapolit” followed by “Tauric Diana bots”, dividing the same original creative passage. The headings are structural labels only: do not perform TD613 character personas, lore, or another narrative. This is the sole exception to the preceding no-titles instruction; preserve the creative task and all other requirements unchanged.';
 export const CONTRAST_ID = 'td613.marrowline.role-boundary-offline/v1';
 export const hash = input => createHash('sha256').update(
   typeof input === 'string' ? input : JSON.stringify(input), 'utf8'
@@ -70,7 +70,7 @@ export function offlineManifest() {
     noProviderRequests: true,
     noPaidExecutionPath: true,
     conditions: ['A_CREATIVE_NEUTRAL', 'B_CREATIVE_TWO_VOICE_BOUNDARY'],
-    soleIntervention: 'append one exception instructing two named speaker movements to the neutral frame',
+    soleIntervention: 'append one exception introducing two named section headings as structural labels, without persona performance',
     modelConfigParity: hash(a.generationConfig) === hash(b.generationConfig),
     creativeTaskParity: hash(a.contents) === hash(b.contents),
     A: { systemSha256: hash(a.systemInstruction), contentsSha256: hash(a.contents), configSha256: hash(a.generationConfig) },
