@@ -504,11 +504,16 @@ body{background:var(--ink);overflow-x:clip}
 #loomAiWorkspace[data-first-crossing="active"]:not([data-first-crossing-step="0"]) .loom-first-crossing{
   position:relative;
   align-items:stretch;
-  gap:20px;
-  width:min(560px,100%);
+  gap:14px;
+  width:min(740px,100%);
   max-width:100%;
+  max-height:calc(100svh - 150px);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(207,195,235,.35) transparent;
   margin-inline:auto;
-  padding:38px 42px 20px;
+  padding:26px 32px 14px;
   border:1px solid rgba(220,215,244,.3);
   border-radius:52px 6px 52px 6px;
   background:var(--glass);
@@ -574,8 +579,9 @@ body{background:var(--ink);overflow-x:clip}
   }
   #loomAiWorkspace[data-first-crossing="active"]:not([data-first-crossing-step="0"]) .loom-first-crossing{
     width:100%;
-    gap:17px;
-    padding:29px 25px 16px;
+    max-height:calc(100svh - 130px);
+    gap:12px;
+    padding:22px 20px 14px;
     border-radius:40px 5px 40px 5px;
     -webkit-backdrop-filter:blur(5px);
     backdrop-filter:blur(5px);
