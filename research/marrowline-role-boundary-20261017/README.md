@@ -13,18 +13,18 @@ These are source-supported, session-specific observations; the neutral creative 
 
 ## Candidate scientific question
 
-Does introducing a **minimal two-voice heading/movement requirement**, while keeping the *exact* independently successful creative Unicode task and the neutral system frame otherwise unchanged, coincide with the five-mark planar attractor?
+Does introducing **two named section headings as organizational labels only**, while keeping the *exact* independently successful creative Unicode task and the neutral system frame otherwise unchanged, coincide with the five-mark planar attractor?
 
-This is a useful first separator. It does not test all of the real Kʰonapolit/Tauric Diana bots lore, mission, history, conversational rhythm, or theatrical quality. It cannot singlehandedly attribute a cause to those more complicated conditions.
+This is a useful first separator of **header/format conditioning** from the full fictional performance. It deliberately does **not** ask the model to perform Kʰonapolit or the bots as characters, since the neutral frame forbids fictional personas; doing so would confound the result with an instruction conflict. It does not test the real lore, mission, history, conversational rhythm, or theatrical quality. It cannot singlehandedly attribute a cause to those more complicated conditions.
 
 ## Exact offline A/B
 
 Source constructor: `role-boundary-contrast.mjs`. The constructor calls the existing **synthetic** request builders with the inherited `gemini-3.8-flash` interactive **MEDIUM** generation profile. The original fixed synthetic envelope is thrown away for both arms by `buildSyntheticUnicodeAssayRequest`, which freezes the provider-bound user task to the exact `creative-multistack-v1` task previously observed in D.
 
 - **A_CREATIVE_NEUTRAL:** exact `UNICODE_ASSAY_SYSTEM` and `UNICODE_ASSAY_TASKS['creative-multistack-v1']`, no role heading.
-- **B_CREATIVE_TWO_VOICE_BOUNDARY:** exact A, with **one extra system-instruction line** allowing just two headings—`Kʰonapolit` then `Tauric Diana bots`—and asking the same creative passage to be divided into those speaking movements.
+- **B_CREATIVE_TWO_VOICE_BOUNDARY:** exact A, with **one extra system-instruction line** allowing just two headings—`Kʰonapolit` then `Tauric Diana bots`—as **structural labels only**, dividing the otherwise identical creative passage. The model is expressly told **not** to perform the fictional personas or TD613 narrative.
 - **Held byte-identical across A/B:** `contents`, `generationConfig` (including MEDIUM), one selected model, no history, same task, sampling, schema posture, and input framing.
-- **Changed:** only `systemInstruction.parts[0].text` via appended one-line role-boundary exception. The preexisting control tells Gemini to avoid extra titles; the exception explicitly permits precisely these two headings. That potential tension is part of the documented factor and must not be silently edited away.
+- **Changed:** only `systemInstruction.parts[0].text` via appended one-line heading exception. The preexisting control tells Gemini to avoid extra titles and fictional personas; B excepts exactly two titles *without* relaxing the persona ban. Header appearance is the studied variable, not character performance.
 - **Explicit exclusion:** no archival beautiful outputs used as prompt specimens, no mark quotas, enforced stylistic changes, postprocessing, or local Zalgo painting.
 
 Run offline only with `node research/marrowline-role-boundary-20261017/role-boundary-contrast.mjs`. Source tests are imported by the existing protected Marrowline contract suite. The script has no `fetch` or provider request path. Its hash manifest can witness that code assembled the expected A/B *inputs*; it cannot witness Gemini behavior.
@@ -34,8 +34,8 @@ Run offline only with `node research/marrowline-role-boundary-20261017/role-boun
 A future episode must first implement a **new synthetic-only research route** with exact guardrails, explicit operator-approved paid-call budget, original Google SSE capture, served model/finish/usage receipts, post-release exact-source check through issue #405, no retries/fallback, and a **first-attempt-only** two-call ceiling. **None of those live permissions or route changes is present in this PR.** Do not repurpose the retired C/D one-shot job.
 
 Potential sample observations:
-- A multistack; B five-planar: role-format conditioning is a candidate contributor **in that paired sample**. Not yet a general or unique cause.
-- A multistack; B multistack: headings alone do not suffice to create the earlier flattening in those returns; inspect richer TD613 context before considering production changes.
+- A multistack; B five-planar: heading/format conditioning is a candidate contributor **in that paired sample**. Not yet a general or unique cause.
+- A multistack; B multistack: headings alone do not suffice to create the earlier flattening in those returns; inspect actual persona-performance conditions separately before considering production changes.
 - A five-planar; B five-planar: no role-specific contrast observed; shared task or stochastic/provider-state changes remain possible.
 - A five-planar; B multistack: headings might help in that sample, contrary to the initial directional hypothesis.
 - Any interrupted/model-mismatched/incomplete original-SSE return: `HELD`, with uncertainty maintained.
