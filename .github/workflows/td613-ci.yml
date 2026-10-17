@@ -1095,6 +1095,11 @@ jobs:
         env:
           TD613_LOOM_MOBILE_ARTIFACT_DIR: artifacts/loom-mobile-composition
         run: node tests/loom-mobile-composition.browser.mjs
+      - name: Classic 79 exact-source mobile and desktop browser witness
+        if: steps.layout_scope.outputs.changed == 'true'
+        env:
+          TD613_CLASSIC79_ARTIFACT_DIR: artifacts/loom-classic79-browser
+        run: node tests/loom-classic79.browser.mjs
       - name: Loom first-paint Chromium and WebKit fail-closed boot witness
         if: steps.layout_scope.outputs.changed == 'true'
         run: node tests/loom-boot-cross-engine.browser.mjs
@@ -1115,6 +1120,7 @@ jobs:
             artifacts/loom-instrument-route-browser
             artifacts/loom-native-cutover
             artifacts/loom-mobile-composition
+            artifacts/loom-classic79-browser
 
 
   gemini_observation:
