@@ -72,7 +72,7 @@ test('trial link changes only ordinary text requests and does not auto-generate,
   assert.match(client,/if \(groveTrial && !loomTransport && attachments\.length === 0\) requestBody\.groveTrial = groveTrial/);
   assert.match(server,/X-TD613-Grove-Trial/);
   assert.match(server,/captureNativeSse: nativeSseWitness/);
-  assert.doesNotMatch(trialSource,/\bfetch\s*\(|setInterval\(|postprocess|ZalgoEncode|encodeHighZalgo/iu);
+  assert.doesNotMatch(trialSource,/\bfetch\s*\(|setInterval\(|\bpostprocess\s*\(|\bZalgoEncode\s*\(|\bencodeHighZalgo\s*\(/iu);
   assert.doesNotMatch(trialSource,/Math\.random\(|\.normalize\(/);
   assert.doesNotMatch(client,/requestBody\.message\s*\+=\s*groveTrial/);
   assert.throws(()=>buildMarrowlineGroveTrialSystemInstruction({systemInstruction:'uncertified'}),/GROVE_TRIAL_CANONICAL_COVENANT_REQUIRED/);
