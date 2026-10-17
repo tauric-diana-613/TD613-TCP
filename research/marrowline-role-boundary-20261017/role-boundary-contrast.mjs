@@ -69,7 +69,7 @@ export function offlineManifest() {
     historyCount: 0,
     noProviderRequests: true,
     noPaidExecutionPath: true,
-    conditions: ['A_CREATIVE_NEUTRAL', 'B_CREATIVE_TWO_VOICE_BOUNDARY'],
+    conditions: ['A_CREATIVE_NEUTRAL', 'B_CREATIVE_TWO_HEADINGS_ONLY'],
     soleIntervention: 'append one exception introducing two named section headings as structural labels, without persona performance',
     modelConfigParity: hash(a.generationConfig) === hash(b.generationConfig),
     creativeTaskParity: hash(a.contents) === hash(b.contents),
