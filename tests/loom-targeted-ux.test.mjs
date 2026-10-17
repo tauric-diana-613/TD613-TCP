@@ -37,7 +37,7 @@ test('Loom boot binds fresh couture assets and contains a catchable module failu
   const doc = new JSDOM(html).window.document;
   const css = doc.querySelector('link[href*="loom-couture.css"]');
   const module = [...doc.querySelectorAll('script[type="module"]')].find(node => node.textContent.includes('ai-workspace.js'));
-  assert.match(css.href, /20261015-restoration-v5/);
+  assert.match(css.href, /20261017-79-couture-v1/);
   assert.ok(module, 'the entrypoint must be an observable dynamic module import');
   assert.match(module.textContent, /import\('\.\/holonomy-loom\/ai-workspace\.js\?v=20261017-tutorial-artifact-v1'\)/);
   assert.match(module.textContent, /\.catch\(\(\) => window\.td613LoomBootFailure/);
@@ -596,4 +596,19 @@ test('queued Tools close cannot steal a newer focus choice or a reopened dialog'
   assert.equal(h.environment.document.activeElement,input,'late close preserves focus in a reopened dialog');
   dialog.removeAttribute('open');dialog.dispatchEvent(new h.environment.Event('close'));
   assert.equal(h.environment.document.activeElement,rules,'closed dialog restores opener when focus is stranded inside');
+});
+
+
+test('79%-era Loom couture is restored as a visual skin without resetting functional controller', () => {
+  const i = product.indexOf('/* Operator-rated 79% couture recovery (2026-10-17).');
+  assert.ok(i > 0, 'reviewable historical visual-source boundary');
+  const skin = product.slice(i);
+  assert.match(skin, /:not\(\[data-first-crossing-step="0"\]\) \.loom-first-crossing\{/);
+  assert.match(skin, /background:var\(--glass\)/);
+  assert.match(skin, /border-radius:52px 6px 52px 6px/);
+  assert.match(skin, /linear-gradient\(112deg,#efecf4/);
+  assert.match(skin, /@media\(prefers-reduced-transparency:reduce\)/);
+  assert.match(html, /loom-couture\.css\?v=20261017-79-couture-v1/);
+  // Step 0 retains the independently restored opening and its lavender serif ending.
+  assert.match(product.slice(0, i), /loom-headline-line em/);
 });
