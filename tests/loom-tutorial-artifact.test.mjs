@@ -1,11 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { webcrypto } from 'node:crypto';
-import {
+const {
   FIRST_CROSSING_PRACTICE,
   bindFirstCrossingPractice,
   createFirstCrossingReturnProof
-} from '../app/dome-world/holonomy-loom/first-crossing-practice.js';
+} = await import(process.env.TD613_LOOM_PRESENTATION === 'classic79'
+  ? '../app/dome-world/holonomy-loom/first-crossing-practice-classic79.js'
+  : '../app/dome-world/holonomy-loom/first-crossing-practice.js');
 import {
   createCanonicalPortableLoomPacket,
   inspectPortableLoomReceiverAssurance

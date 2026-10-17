@@ -1,8 +1,9 @@
 /* LOOM · COUTURE / One authoritative product stylesheet.
    Shared controls followed by the page composition. No animated CSS filters. */
 @font-face{font-family:"Loom Flow-Core";src:url("./fonts/flowcore-cjk.woff") format("woff");font-weight:400;font-style:normal;font-display:swap;unicode-range:U+4E0A,U+4E0B,U+51FA,U+7C73}
+@font-face{font-family:"Loom Flow-Core";src:url("./fonts/flowcore-music.woff") format("woff");font-weight:400;font-style:normal;font-display:swap;unicode-range:U+1D110}
 /* Shared product controls and secondary workspaces. */
-:root{--ink:#06090d;--panel:#0b1118;--paper:#eef4f5;--muted:#9baab6;--cyan:#94ede8;--line:#25333e;--sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;--mono:ui-monospace,"SFMono-Regular",Consolas,monospace}
+:root{--ink:#06090d;--panel:#0b1118;--paper:#eef4f5;--muted:#9baab6;--cyan:#94ede8;--line:#25333e;--sans:"Loom Flow-Core",Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;--mono:ui-monospace,"SFMono-Regular",Consolas,monospace}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--ink);color:var(--paper)}body{font:16px/1.5 var(--sans)}button,input,select,textarea,summary{font:inherit;color:inherit}button,a{touch-action:manipulation}button{cursor:pointer}button:disabled{opacity:.4;cursor:not-allowed}a{color:var(--cyan)}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--cyan);outline-offset:4px}::selection{background:#224951}
 .loom-topbar{height:52px;display:flex;justify-content:space-between;align-items:center;padding:0 20px;border-bottom:1px solid var(--line)}.loom-wordmark{font-weight:650;color:var(--paper);text-decoration:none;min-height:44px;display:inline-flex;align-items:center}.loom-topbar nav{display:flex;gap:12px}.loom-topbar nav a{display:flex;align-items:center;min-height:44px;min-width:44px;font-size:13px;text-decoration:none;color:var(--muted)}
 #loomAiWorkspace{max-width:1240px;margin:auto;padding:22px 20px 40px}#loomAiWorkspace *{min-width:0}h1,h2,h3,h4,p{margin:0}h1{font-size:25px;letter-spacing:-.045em;font-weight:620;line-height:1.15}h2{font-size:21px;letter-spacing:-.03em;line-height:1.25}h3{font-size:17px;line-height:1.35}p{color:var(--muted)}.loom-intro{display:flex;justify-content:space-between;align-items:start;gap:12px}.loom-intro p{font-size:14px;max-width:48ch;margin-top:6px}.loom-text-action{border:0;background:none;color:var(--cyan);padding:8px 0;min-height:44px;font-size:13px}.loom-intro .loom-text-action{white-space:nowrap}
@@ -85,7 +86,7 @@
 
 
 /* A full-page field, an open chrome silhouette, and one sheer working surface. */
-:root{--ink:#05060b;--paper:#f3eee6;--muted:#b8b4c7;--cyan:#c4c9ef;--line:rgba(219,215,241,.22);--glass:rgba(14,12,24,.26);--sans:"Helvetica Neue",Arial,sans-serif}
+:root{--ink:#05060b;--paper:#f3eee6;--muted:#b8b4c7;--cyan:#c4c9ef;--line:rgba(219,215,241,.22);--glass:rgba(14,12,24,.26);--sans:"Loom Flow-Core","Helvetica Neue",Arial,sans-serif}
 body{background:var(--ink);overflow-x:clip}
 .loom-topbar{height:76px;padding:0 clamp(24px,4.5vw,80px);border:0;background:transparent}
 .loom-wordmark{font-size:20px;font-weight:500;letter-spacing:.3em;text-transform:uppercase}

@@ -59,6 +59,7 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
     <section id="loomTutorialSelection" class="loom-tutorial-selection" aria-label="Selected tutorial content" hidden>
       <dl><div><dt>Request</dt><dd id="loomTutorialRequest"></dd></div><div><dt>Sources</dt><dd id="loomTutorialReference"></dd></div><div><dt>Instructions</dt><dd id="loomTutorialInstructions"></dd></div></dl>
       <p>Other conversation <span>Outside this example request</span></p>
+      <details id="loomTutorialArtifact" class="loom-tutorial-technical"><summary>Inspect complete portable artifact</summary><pre id="loomTutorialArtifactRecord" tabindex="0" role="region" aria-label="Complete fictional portable artifact"></pre></details>
     </section>
     <blockquote id="loomTutorialSampleAnswer" class="loom-tutorial-sample-answer" hidden><span>Example reply · no AI provider was called</span><p id="loomTutorialSampleAnswerText"></p></blockquote>
     <div class="loom-practice-controls">
@@ -146,7 +147,7 @@ export const loomWorkspaceTemplate = `${coutureArmature}<section class="loom-sta
         </details>
       </section>
 </section>
-<section data-tool-panel="science" class="loom-tool-panel" hidden><div id="loomScienceTools" class="loom-science-host"></div></section>
+<section data-tool-panel="science" class="loom-tool-panel" hidden><div id="loomObserverTools" class="loom-observer-preview"></div><div id="loomScienceTools" class="loom-science-host"></div></section>
 <section data-tool-panel="model" class="loom-model-controls" hidden><h3>Optional model test</h3><p>This explicit action sends the selected task, files and traveling rules to the model route.</p><label for="aiRuntimeProfile">Model test profile</label><select id="aiRuntimeProfile" aria-describedby="aiRuntimeProfileNote"><option value="deep">Deep reasoning request</option><option value="quick">Quick reasoning request</option></select><p id="aiRuntimeProfileNote">Request settings describe this attempt; hidden provider behavior remains unknown.</p><p id="aiRunNote">Preparing locally makes no model request.</p><button type="button" id="aiRun">Run model test ↗</button></section>
       <section id="aiChallengeDrawer" class="loom-tool-panel" data-tool-panel="challenge" hidden>
         <h3 id="loomGate">Check Loom Gate</h3><p>First alerts from captured replies and declared reconstruction attempts. Private targets stay here. Prepare a task first to bind the checks to its session.</p><section id="loomGateAlerts" aria-live="polite"><p>No captured Loom Gate result yet.</p></section>

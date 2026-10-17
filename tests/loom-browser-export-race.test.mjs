@@ -6,7 +6,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { webcrypto } from 'node:crypto';
 import { JSDOM } from 'jsdom';
-import { mountLoomAiWorkspace } from '../app/dome-world/holonomy-loom/ai-workspace.js';
+const { mountLoomAiWorkspace } = await import(process.env.TD613_LOOM_PRESENTATION === 'classic79'
+  ? '../app/dome-world/holonomy-loom/ai-workspace-classic79.js'
+  : '../app/dome-world/holonomy-loom/ai-workspace.js');
 
 function deferred() {
   let resolve, reject;

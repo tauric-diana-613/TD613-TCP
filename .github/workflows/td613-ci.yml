@@ -143,6 +143,8 @@ jobs:
           node --test tests/loom-tutorial-temporal-20261014.test.mjs tests/loom-first-crossing-binding-race.test.mjs tests/loom-tutorial-gesture.test.mjs tests/loom-tutorial-artifact.test.mjs
           node scripts/sync-portable-loom-tomography-assets.mjs --check
           node --test tests/portable-loom-tomography-export.test.mjs tests/portable-loom-browser-package.test.mjs tests/loom-browser-export-race.test.mjs
+          TD613_LOOM_PRESENTATION=classic79 node --test tests/loom-classic79-recovery.test.mjs tests/loom-classic79-integration.test.mjs tests/loom-tutorial-artifact.test.mjs tests/loom-browser-export-race.test.mjs
+          node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/loom-classic79-recovery-design.json
           node --test tests/marrowline-fire-gate-pedagogue.test.mjs
           node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/loom-observer-chamber-design.json
           node tests/release-manifest.test.mjs
@@ -964,7 +966,7 @@ jobs:
       - name: Select bounded layout scope
         id: layout_scope
         run: |
-          if git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" | grep -Eq '^(app/dome-world/marrowline-desktop-repair\.(js|css)|app/dome-world/marrowline\.html|app/dome-world/marrowline-loom-(import(-base)?|demo|pocket)\.js|app/dome-world/marrowline-(terminal|egress-boot|living-chat|reading-surface|loom-footer|loom-gate-continuity)\.(js|css)|app/dome-world/holonomy-loom\.html|app/dome-world/holonomy-loom/(ai-workspace\.(js|css)|(ai-projects|ai-handoff|tutorial-membrane|first-crossing-practice|workspace-template|ai-evidence-review|ai-evidence-diagnostic|vendor-claim-review|retention-claim-review|returned-session-review|reentry-workspace|demo-contract)\.js|instrument-(lab|advisory|state-view)\.(js|css)|runtime-state-view\.js|fixtures/legacy-practice\.html)|app/engine/(portable-loom-(core|gate(-explanation)?|mechanisms|output|receiver-(output-contract|conformance)|policy|session|reentry|challenge)|loom-instrument-(lab|governance)|loom-service-resolution|dollhouse-claim-lift-runtime)\.js|app/dome-world/(loom-gate-disclosure|holonomy-loom-advisory-policy|portable-aia-three-route-invariance)\.(js|css)|server/holonomy-loom-khonapolit-advisory\.js|server/loom-(task|marrowline-task|demo-task|demo-signing|demo-head-store|demo-custody-client)\.js|neon/functions/loom-custody/index\.mjs|api/khonapolit\.js|scripts/(holonomy-loom-instrument-(lab|route)|loom-native-cutover)-browser-witness\.mjs|scripts/marrowline-instrument-layout-witness\.mjs|tests/((portable-loom-output-assembly|loom-vendor-grounding|loom-evidence-recovery|loom-returned-session-review|loom-targeted-ux|portable-loom-reentry-workspace)\.test|marrowline-instrument-panel|marrowline-desktop-repair-contract|marrowline-reading-surface|marrowline-loom-demo(-pedagogue)?|loom-task|loom-ai-workspace-dom|loom-ai-handoff|loom-demo-contract|loom-instrument-(lab|governance|state-view|ui|advisory)\.test|loom-runtime-profiles\.test|loom-service-resolution\.test|dollhouse-claim-lift-runtime\.test)(\.browser)?\.mjs)$'; then
+          if git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" | grep -Eq '^(app/dome-world/holonomy-loom-classic79\.html|app/dome-world/holonomy-loom/[^/]+-classic79\.(js|css)|tests/loom-(classic79[^/]*|browser-package\.browser|browser-export-race\.test|tutorial-artifact\.test)\.mjs|app/dome-world/marrowline-desktop-repair\.(js|css)|app/dome-world/marrowline\.html|app/dome-world/marrowline-loom-(import(-base)?|demo|pocket)\.js|app/dome-world/marrowline-(terminal|egress-boot|living-chat|reading-surface|loom-footer|loom-gate-continuity)\.(js|css)|app/dome-world/holonomy-loom\.html|app/dome-world/holonomy-loom/(ai-workspace\.(js|css)|(ai-projects|ai-handoff|tutorial-membrane|first-crossing-practice|workspace-template|ai-evidence-review|ai-evidence-diagnostic|vendor-claim-review|retention-claim-review|returned-session-review|reentry-workspace|demo-contract)\.js|instrument-(lab|advisory|state-view)\.(js|css)|runtime-state-view\.js|fixtures/legacy-practice\.html)|app/engine/(portable-loom-(core|gate(-explanation)?|mechanisms|output|receiver-(output-contract|conformance)|policy|session|reentry|challenge)|loom-instrument-(lab|governance)|loom-service-resolution|dollhouse-claim-lift-runtime)\.js|app/dome-world/(loom-gate-disclosure|holonomy-loom-advisory-policy|portable-aia-three-route-invariance)\.(js|css)|server/holonomy-loom-khonapolit-advisory\.js|server/loom-(task|marrowline-task|demo-task|demo-signing|demo-head-store|demo-custody-client)\.js|neon/functions/loom-custody/index\.mjs|api/khonapolit\.js|scripts/(holonomy-loom-instrument-(lab|route)|loom-native-cutover)-browser-witness\.mjs|scripts/marrowline-instrument-layout-witness\.mjs|tests/((portable-loom-output-assembly|loom-vendor-grounding|loom-evidence-recovery|loom-returned-session-review|loom-targeted-ux|portable-loom-reentry-workspace)\.test|marrowline-instrument-panel|marrowline-desktop-repair-contract|marrowline-reading-surface|marrowline-loom-demo(-pedagogue)?|loom-task|loom-ai-workspace-dom|loom-ai-handoff|loom-demo-contract|loom-instrument-(lab|governance|state-view|ui|advisory)\.test|loom-runtime-profiles\.test|loom-service-resolution\.test|dollhouse-claim-lift-runtime\.test)(\.browser)?\.mjs)$'; then
             echo 'changed=true' >> "$GITHUB_OUTPUT"
           fi
       - uses: actions/setup-node@v4
@@ -1045,6 +1047,12 @@ jobs:
         env:
           TD613_ARTIFACT_DIR: artifacts/loom-browser-package
         run: node tests/loom-browser-package.browser.mjs
+      - name: Recovered Classic 79 complete browser tomography package
+        if: steps.layout_scope.outputs.changed == 'true'
+        env:
+          TD613_LOOM_PRESENTATION: classic79
+          TD613_ARTIFACT_DIR: artifacts/loom-classic79-package
+        run: node tests/loom-browser-package.browser.mjs
       - name: Portable Loom output assembly desktop and 390px witness
         if: steps.layout_scope.outputs.changed == 'true'
         env:
@@ -1095,7 +1103,7 @@ jobs:
         env:
           TD613_LOOM_MOBILE_ARTIFACT_DIR: artifacts/loom-mobile-composition
         run: node tests/loom-mobile-composition.browser.mjs
-      - name: Classic 79 exact-source mobile and desktop browser witness
+      - name: Classic 79 historical composition and protected-interaction witness
         if: steps.layout_scope.outputs.changed == 'true'
         env:
           TD613_CLASSIC79_ARTIFACT_DIR: artifacts/loom-classic79-browser
@@ -1121,6 +1129,7 @@ jobs:
             artifacts/loom-native-cutover
             artifacts/loom-mobile-composition
             artifacts/loom-classic79-browser
+            artifacts/loom-classic79-package
 
 
   gemini_observation:

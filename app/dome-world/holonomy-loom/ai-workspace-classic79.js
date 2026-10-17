@@ -1,12 +1,13 @@
 import { buildPortableLoomBrowserPackage } from '../../engine/portable-loom-browser-package.js?v=20261017-browser-math-v1';
 import { PORTABLE_LOOM_RECEIVER_OUTPUT_CONTRACT, derivePortableLoomSourceContext } from '../../engine/portable-loom-receiver-output-contract.js';
 import { inspectPortableLoomReceiverConformance } from '../../engine/portable-loom-receiver-conformance.js';
-import { FIRST_CROSSING_PRACTICE, bindFirstCrossingPractice, checkFirstCrossingPrivacy, createFirstCrossingReturnProof } from './first-crossing-practice-classic79.js';
+import { FIRST_CROSSING_PRACTICE, bindFirstCrossingPractice, checkFirstCrossingPrivacy, createFirstCrossingReturnProof } from './first-crossing-practice-classic79.js?v=20261017-classic79-artifact-v1';
 import { LOOM_TUTORIAL_OPERATORS, loomTutorialPresentation, loomOpeningPresentation } from './tutorial-membrane-classic79.js';
 import { nextFlowcoreChoreography } from './flowcore-choreography.js?v=20261013-phase09-v1';
 import { mountReturnedSessionReview } from './returned-session-review.js';
-import { loomWorkspaceTemplate } from './workspace-template-classic79.js?v=20261014-firewall-science-v1';
+import { loomWorkspaceTemplate } from './workspace-template-classic79.js?v=20261017-classic79-functional-v1';
 import { mountLoomPrivacyScienceView } from './privacy-science-view-classic79.js';
+import { mountLoomObserverPreview } from './privacy-science-view.js?v=20261015-restoration-v5';
 import { createPortableLoomGateReport, describePortableLoomGateReport } from '../../engine/portable-loom-gate.js';
 import { createLoomGateDisclosure } from '../loom-gate-disclosure.js';
 import { portableLoomFooterText } from '../../engine/portable-loom-output.js';
@@ -17,7 +18,7 @@ import { assessLoomProjectAnswer } from './ai-project-checks.js';
 import { mountLoomRuntimeStateView } from './runtime-state-view-classic79.js?v=20261014-firewall-science-v1';
 import { renderLoomAiResult } from './ai-result-view.js';
 import { readLoomAiFailure, describeLoomAiFailure } from './ai-failure.js';
-import { AnimationCoordinator } from './animation-coordinator-classic79.js';
+import { AnimationCoordinator } from './animation-coordinator.js';
 import { ingestGeminiConsumption } from '../../gemini-consumption-ledger.js';
 import { mountPortableLoomReentryWorkspace } from './reentry-workspace.js';
 import { exportLoomDemoOrigin } from './demo-contract.js';
@@ -87,13 +88,21 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     });
     if(focus){const target=name==='build'?$('aiTask'):name==='crossing'?$('aiResult'):$('loomReturnWorkspace');target.focus?.({preventScroll:true});target.scrollIntoView?.({block:'nearest',behavior:'auto'});}
   }
+  let toolsReturnFocus=null;
   function openTools(name='rules') {
+    if(!$('loomTools').open)toolsReturnFocus=environment.document.activeElement;
     const dialog=$('loomTools');
     dialog.querySelectorAll('[data-tool-panel]').forEach(panel=>panel.hidden=panel.dataset.toolPanel!==name);
     dialog.querySelectorAll('[data-tool]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.tool===name)));
     if(name==='science')scienceViews.forEach(view=>view.refresh());
     if(!dialog.open){if(typeof dialog.showModal==='function')dialog.showModal();else dialog.setAttribute('open','');}
   }
+  $('loomTools').addEventListener('close',()=>{
+    const dialog=$('loomTools'),active=environment.document.activeElement;
+    // A queued close cannot steal a newer focus choice or close a reopened route.
+    if(dialog.open)return;
+    if(!active||active===environment.document.body||dialog.contains(active))toolsReturnFocus?.focus?.({preventScroll:true});
+  });
   $('loomToolsOpen').addEventListener('click',()=>openTools());
   $('loomRulesOpen').addEventListener('click',()=>openTools('rules'));
   $('loomBoundaryOpen').addEventListener('click',()=>openTools('boundary'));
@@ -120,6 +129,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
   });
   for(const id of ['loomScienceIntro','loomScienceTools'])
     scienceViews.push(mountLoomPrivacyScienceView($(id),{environment,getLocalFacts:privacyLocalFacts}));
+  scienceViews.push(mountLoomObserverPreview($('loomObserverTools'),{environment}));
   $('loomOpenPrivacyScience').addEventListener('click',()=>openTools('science'));
   const gateDisclosure=createLoomGateDisclosure(environment.document,{id:'loomGateHow',onGate:()=>openTools('challenge')});
   $('loomGateAlerts').after(gateDisclosure.section);
@@ -202,6 +212,32 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
   const thresholdStage = root.querySelector('.loom-stage');
   const builderShell = root.querySelector('.loom-builder-shell');
   const firstCrossingItems = [...root.querySelectorAll('[data-first-crossing-item]')];
+  // A native multi-click sequence remains one tutorial gesture even when its
+  // first click changes the scene or exposes another control under the pointer.
+  // A new click series or fresh key press is admitted immediately; no reading
+  // delay is inferred from animation duration or elapsed wall time.
+  let tutorialPointerSeries=false,heldTutorialKey=null;
+  const inTutorial=event=>firstCrossingActive&&Boolean(event.target?.closest?.('#loomFirstCrossing'));
+  const tutorialClick=event=>{
+    if(disposed)return;
+    const inside=inTutorial(event);
+    if(event.detail>1&&(inside||tutorialPointerSeries)){
+      event.preventDefault();event.stopImmediatePropagation();return;
+    }
+    tutorialPointerSeries=event.detail===1&&inside;
+  };
+  const tutorialKeydown=event=>{
+    if(disposed||!['Enter',' ','Spacebar'].includes(event.key))return;
+    const inside=inTutorial(event);
+    if(event.repeat&&(inside||heldTutorialKey===event.key)){
+      event.preventDefault();event.stopImmediatePropagation();return;
+    }
+    if(!event.repeat)heldTutorialKey=inside?event.key:null;
+  };
+  const tutorialKeyup=event=>{if(event.key===heldTutorialKey)heldTutorialKey=null;};
+  root.addEventListener('click',tutorialClick,true);
+  root.addEventListener('keydown',tutorialKeydown,true);
+  environment.document.addEventListener('keyup',tutorialKeyup,true);
   function setFirstCrossingCue(cue,{title,prompt,answer,action=false,stop=false}){
     if(root.dataset.firstCrossingCue===cue)return;
     const tutorial=$('loomFirstCrossing'),check=$('loomFirstCrossingAction'),finish=$('loomFirstCrossingStop');
@@ -251,6 +287,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     $('loomFirstCrossingPrompt').textContent=prompt;
     $('loomFirstCrossingAnswer').textContent=answer;
     $('loomTutorialSelection').hidden=firstCrossingStep!==2;
+    if(firstCrossingStep!==2)$('loomTutorialArtifact').open=false;
     $('loomTutorialSampleAnswer').hidden=firstCrossingStep!==5;
     $('loomTutorialWaiting').hidden=true; // The answer region is the single accessible progress witness.
     check.hidden=!action;
@@ -643,6 +680,8 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     $('loomTutorialReference').textContent=FIRST_CROSSING_PRACTICE.documents.find(item=>item.id==='source').text.replace(/^Fictional approved context: /,'');
     $('loomTutorialInstructions').textContent=FIRST_CROSSING_PRACTICE.rules.join('\n');
     root.dataset.firstCrossingStep='0';
+    $('loomTutorialArtifact').open=false;
+    $('loomTutorialArtifactRecord').textContent='';
     $('loomTutorialProof').hidden=true;
     root.dataset.thresholdState='closed';
     thresholdStage.hidden=false;
@@ -725,7 +764,9 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
           prompt:'See the exact question, selected references, and instructions before any material leaves your browser.',
           answer:'Tutorial · this request stays in your browser.'
         });
-        projectFirstCrossing(firstCrossingEvent('checking',binding.facts??binding));
+        const {portable_artifact:artifact,...bindingFacts}=binding;
+        $('loomTutorialArtifactRecord').textContent=JSON.stringify(artifact,null,2);
+        projectFirstCrossing(firstCrossingEvent('checking',binding.facts??bindingFacts));
         $('loomFirstCrossingStop').textContent='出 Send request · demo →';
       }catch(error){
         if(disposed||!firstCrossingActive||token!==firstCrossingGeneration)return;
@@ -1357,7 +1398,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
   if(environment.location?.hash==='#loomGate'){openLoomThreshold();openTools('challenge');}
   visibility();
   environment.document.documentElement.dataset.loomBoot='ready';
-  const dispose=()=>{disposed=true;cancelSessionBundle();if(flowcoreCopyTimer!==null)environment.clearTimeout(flowcoreCopyTimer);if(flowcoreClearTimer!==null)environment.clearTimeout(flowcoreClearTimer);clearThresholdTimers();stageObserver?.disconnect();returnedReview.dispose();marrowlineChild=null;reentry.dispose();if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();runtime.dispose();coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);delete environment.document.documentElement.dataset.loomJourney;delete environment.document.documentElement.dataset.loomFlowPhase;};
+  const dispose=()=>{disposed=true;root.removeEventListener('click',tutorialClick,true);root.removeEventListener('keydown',tutorialKeydown,true);environment.document.removeEventListener('keyup',tutorialKeyup,true);cancelSessionBundle();if(flowcoreCopyTimer!==null)environment.clearTimeout(flowcoreCopyTimer);if(flowcoreClearTimer!==null)environment.clearTimeout(flowcoreClearTimer);clearThresholdTimers();stageObserver?.disconnect();returnedReview.dispose();marrowlineChild=null;reentry.dispose();if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();runtime.dispose();coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);delete environment.document.documentElement.dataset.loomJourney;delete environment.document.documentElement.dataset.loomFlowPhase;};
   environment.addEventListener('pagehide',dispose,{once:true});return {dispose,inspect:()=>({mode:workspaceMode,session:portableSession?inspectPortableLoomSession(portableSession):null,turn_receipt:turnReceiptVerification?{status:turnReceiptVerification.status,ref:turnReceiptVerification.ref}:null,challenge:challengeVerification?{status:challengeVerification.status,ref:challengeVerification.ref}:null,events:[...events],clock:coordinator.inspect(),replay:{index:replayIndex,count:sceneHistory.length},runtime:runtime.inspect(),geometry:null})};
 }
 if(typeof document!=='undefined')mountLoomAiWorkspace(document.querySelector('#loomAiWorkspace'));

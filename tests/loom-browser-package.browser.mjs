@@ -12,6 +12,9 @@ import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { chromium } from 'playwright';
 
+const classic = process.env.TD613_LOOM_PRESENTATION === 'classic79';
+const entry = classic ? 'holonomy-loom-classic79.html' : 'holonomy-loom.html';
+const suffix = classic ? '-classic79' : '';
 const sha = value => createHash('sha256').update(value).digest('hex');
 const checkout = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
 const dir = path.resolve(process.env.TD613_ARTIFACT_DIR || 'artifacts/loom-browser-package');
@@ -38,7 +41,7 @@ const privateKey = 'PRIVATE-CHALLENGE-ANSWER-KEY-613-DO-NOT-EXPORT';
 const privateCanary = 'PRIVATE-EXACT-CANARY-613-DO-NOT-EXPORT';
 const task = 'Draft a public brief for a fictional free music workshop using only the selected public source.';
 const report = {
-  schema: 'td613.loom.browser-package-witness/v0.1', status: 'HELD',
+  schema: 'td613.loom.browser-package-witness/v0.1', status: 'HELD', presentation: classic ? 'classic79' : 'current',
   context: local ? 'LOCAL_CHROMIUM_REAL_UI_AND_WORKER' : 'PRODUCTION_CHROMIUM_REAL_UI_AND_WORKER',
   source_sha: process.env.TD613_SOURCE_HEAD || checkout, checkout_sha: checkout,
   working_tree_dirty: Boolean(execFileSync('git', ['status', '--porcelain', '--untracked-files=no'], { encoding: 'utf8' }).trim()),
@@ -46,7 +49,7 @@ const report = {
   physical_device_observed: false, human_comprehension_measured: false,
   provider_calls: 0, blocked_post_requests: [], runtime_errors: [], checks: [], failures: []
 };
-for (const file of ['app/dome-world/holonomy-loom.html', 'app/dome-world/holonomy-loom/workspace-template.js', 'app/dome-world/holonomy-loom/ai-workspace.js', 'app/engine/portable-loom-browser-package.js', 'app/engine/portable-loom-tomography-assets.js']) {
+for (const file of [`app/dome-world/${entry}`, `app/dome-world/holonomy-loom/workspace-template${suffix}.js`, `app/dome-world/holonomy-loom/ai-workspace${suffix}.js`, 'app/engine/portable-loom-browser-package.js', 'app/engine/portable-loom-tomography-assets.js']) {
   report.source_hashes[file] = sha(await fs.readFile(file));
 }
 
@@ -154,7 +157,7 @@ try {
       return value;
     };
     try {
-      const loaded = await page.goto(base + '/dome-world/holonomy-loom.html', { waitUntil: 'networkidle' });
+      const loaded = await page.goto(base + '/dome-world/' + entry, { waitUntil: 'networkidle' });
       assert.equal(loaded.status(), 200);
       await page.waitForSelector('html[data-loom-boot="ready"]');
       await page.locator('#loomFirstCrossingLeave').waitFor({ state: 'visible' });

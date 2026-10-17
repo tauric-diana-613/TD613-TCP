@@ -33,3 +33,17 @@ test('Classic 79 does not mutate the canonical Loom UI or its current science mo
   assert.match(js, /buildPortableLoomBrowserPackage\(base|prepareSessionBundle\(base/);
   assert.doesNotMatch(js, /downloadJson\('loom-portable-session\.json',portableSessionExport\)/);
 });
+
+// Exact baseline digests allow the declared font and inspection adapters only;
+// unrelated aesthetic drift must receive a new operator decision.
+test('historical CSS and template survive the declared functional adapters', () => {
+  const digest = value => createHash('sha256').update(value).digest('hex');
+  const historicalCss = css
+    .replace(/@font-face\{font-family:"Loom Flow-Core";src:url\("\.\/fonts\/flowcore-music\.woff"\)[^\n]*\n/, '')
+    .replaceAll('--sans:"Loom Flow-Core",', '--sans:');
+  assert.equal(digest(historicalCss), '430220a226e24a7760efd1a5ea752bdff122c9eac86bb7fb72ed5aff5219c0e0');
+  const historicalTemplate = template
+    .replace(/\n      <details id="loomTutorialArtifact"[^\n]+<\/details>/, '')
+    .replace('<div id="loomObserverTools" class="loom-observer-preview"></div>', '');
+  assert.equal(digest(historicalTemplate), '62fd3ebda60a72a119145c7d245652ed768a556e2e9c4617a251835c082dea79');
+});
