@@ -28,7 +28,7 @@ test('Marrowline creative baseline reproduces the previously successful D provid
   assert.ok(!a.contents[0].parts[0].text.includes('Tauric Diana bots'));
 });
 
-test('one appended system line introduces only two voice headings, without specimen, quota, or Zalgo rewriting', () => {
+test('one appended system line introduces structural headings without personas, specimens, quotas or repaint', () => {
   const { a, b } = buildOfflineRoleBoundaryContrast();
   const prefix = a.systemInstruction.parts[0].text + '\n';
   assert.equal(b.systemInstruction.parts[0].text, prefix + ROLE_BOUNDARY_LINE);
@@ -38,6 +38,8 @@ test('one appended system line introduces only two voice headings, without speci
   assert.deepEqual(Object.keys(a).sort(), Object.keys(b).sort());
   assert.equal((ROLE_BOUNDARY_LINE.match(/Kʰonapolit/g) || []).length, 1);
   assert.equal((ROLE_BOUNDARY_LINE.match(/Tauric Diana bots/g) || []).length, 1);
+  assert.match(ROLE_BOUNDARY_LINE, /structural labels only/i);
+  assert.match(ROLE_BOUNDARY_LINE, /do not perform TD613 character personas/i);
   assert.doesNotMatch(ROLE_BOUNDARY_LINE, /quota|stencil|minimum marks|copy the specimen|postprocess|forced rotation/i);
 });
 
