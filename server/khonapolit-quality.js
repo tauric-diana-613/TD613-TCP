@@ -1887,6 +1887,14 @@ export default async function handler(req, res) {
       // erase it merely because the local style telemetry dislikes the return.
       if (!relay.admission?.admissible) {
         const reasons = Array.isArray(relay.admission?.reasons) ? [...relay.admission.reasons] : [];
+        // A completed, authentically authored stronger first result survives a
+        // later fall-through that lost a required voice. Historical-only.
+        if (isHistoricalGrove && historicalMorphologyFallback) {
+          return sendPartialProviderReturn({
+            ...historicalMorphologyFallback,
+            selection: 'historical-best-completed-native-morphology'
+          });
+        }
         // Only a completed whole-field native-mark failure warrants another
         // approved author. Fine/local marks in a short poetic passage remain
         // untouched; five different human references are not a style template.
