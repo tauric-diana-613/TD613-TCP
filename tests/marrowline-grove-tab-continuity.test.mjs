@@ -95,4 +95,16 @@ test('browser composer binds the exact tab mode to text-only requests, offers Ex
   assert.match(source,/if \(groveTrial && !loomTransport && attachments\.length === 0\) requestBody\.groveTrial = groveTrial/);
   assert.match(source,/groveExit\.disabled = true/);
   assert.match(source,/groveExit\.disabled = false/);
+  assert.match(source,/lastConfirmedGroveMode = payload\?\.grove_trial\?\.id/);
+  assert.match(source,/SERVER MODE MISMATCH/);
+  assert.match(source,/groveTrial && !loomTransport && attachments\.length === 0/);
+});
+
+test('plain-h server always exposes explicit ordinary, historical or unresolved route identity without editing provider text', () => {
+  const source = readFileSync(new URL('../server/khonapolit-quality.js',import.meta.url),'utf8');
+  assert.match(source,/id: groveTrial \|\| 'off'/);
+  assert.match(source,/id: 'unresolved', active: false/);
+  assert.match(source,/grove_trial: observedExperiment/);
+  assert.match(source,/receipt: \{ \.\.\.payload\.receipt, grove_trial: observedExperiment \}/);
+  assert.match(source,/res\.setHeader\('X-TD613-Grove-Trial', groveTrial \|\| 'off'\)/);
 });
