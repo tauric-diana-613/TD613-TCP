@@ -471,20 +471,25 @@ function send(res, status, payload, extraHeaders = {}) {
   const geminiConsumption = buildGeminiConsumptionReceipt({ route: 'marrowline', attempts });
   // The historical trial must identify itself in *every* response receipt, even
   // on a HELD/502 failure. Header-only flags were not recoverable from the UI.
-  const experiment = res.__td613GroveTrial || null;
-  const observedExperiment = experiment ? Object.freeze({
+  // A missing groove-trial key used to look identical to a stripped flag.
+  // Every route now records an explicit runtime selection, including failed
+  // ordinary calls and early failures before the selector was reached.
+  const experiment = res.__td613GroveTrial || Object.freeze({
+    id: 'unresolved', active: false, variant: 'selection-not-reached'
+  });
+  const observedExperiment = Object.freeze({
     ...experiment,
     attempt_models: attempts.map(attempt => attempt.model),
     provider_reported_versions: attempts.map(attempt => attempt.output?.modelVersion ?? null),
     local_admission: payload?.relay?.admission?.quality || (status >= 400 ? 'HELD' : 'UNCLASSIFIED')
-  }) : null;
-  const taggedPayload = experiment ? {
+  });
+  const taggedPayload = {
     ...payload,
     grove_trial: observedExperiment,
     ...(payload?.receipt ? {
       receipt: { ...payload.receipt, grove_trial: observedExperiment }
     } : {})
-  } : payload;
+  };
   const body = geminiConsumption.call_count
     ? { ...taggedPayload, gemini_consumption: geminiConsumption }
     : taggedPayload;
@@ -1190,6 +1195,12 @@ export default async function handler(req, res) {
   plan = await resolveGeminiProviderPlan({ task: 'khonapolit-dialogue', maxModels: 8 });
   const releaseCanary = requestHeader(req, 'x-td613-release-canary') === '1';
   const groveTrial = selectMarrowlineGroveTrial(body, { releaseCanary });
+  res.__td613GroveTrial = Object.freeze({
+    id: groveTrial || 'off',
+    active: Boolean(groveTrial),
+    variant: groveTrial ? 'explicit-operator-trial' : 'ordinary-marrowline',
+    selection: groveTrial ? 'request-body-opt-in' : 'no-valid-trial-requested'
+  });
   res.setHeader('X-TD613-Grove-Trial', groveTrial || 'off');
   const nativeSseWitness = allowSyntheticNativeSseWitness({
     releaseCanary, witnessHeader: requestHeader(req, 'x-td613-native-sse-witness'), body
