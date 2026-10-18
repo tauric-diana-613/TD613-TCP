@@ -24,6 +24,67 @@ export function groveTrialFromLocation(location = {}) {
   }
 }
 
+// A Grove audition is an explicit per-tab operator choice, never a global
+// provider preference. An exact URL token opts in; an explicit invalid/off
+// token clears the choice. Returning through site navigation may recover the
+// choice only from this tab's sessionStorage, never from old model history.
+export const MARROWLINE_GROVE_TRIAL_TAB_KEY = 'td613.marrowline.grove-trial.tab/v1';
+const recognizedGroveTrial = trial => [MARROWLINE_GROVE_TRIAL_ID, MARROWLINE_HISTORICAL_TRIAL_ID].includes(trial)
+  ? trial : null;
+
+export function resolveMarrowlineGroveTrialTab(location = {}, storage = null) {
+  let query;
+  try { query = new URLSearchParams(String(location?.search || '')); }
+  catch { return Object.freeze({ id: null, source: 'invalid-url', persistence: 'unavailable' }); }
+  if (query.has('groveTrial')) {
+    const id = recognizedGroveTrial(query.get('groveTrial'));
+    let persistence = 'unavailable';
+    try {
+      if (id) storage?.setItem?.(MARROWLINE_GROVE_TRIAL_TAB_KEY, id);
+      else storage?.removeItem?.(MARROWLINE_GROVE_TRIAL_TAB_KEY);
+      if (storage) persistence = 'tab-session';
+    } catch {}
+    return Object.freeze({ id, source: id ? 'url-opt-in' : 'explicit-off', persistence });
+  }
+  let stored = null;
+  try { stored = storage?.getItem?.(MARROWLINE_GROVE_TRIAL_TAB_KEY); } catch {}
+  const id = recognizedGroveTrial(stored);
+  if (!id && stored != null) {
+    try { storage?.removeItem?.(MARROWLINE_GROVE_TRIAL_TAB_KEY); } catch {}
+  }
+  return Object.freeze({ id, source: id ? 'tab-session' : 'ordinary', persistence: id ? 'tab-session' : 'none' });
+}
+
+// Make restored tab state inspectable in the URL without reloading or sending
+// anything. Never alter a non-Marrowline pathname, Loom hash or other query.
+export function exposeRestoredMarrowlineGroveTrial(root = {}, resolution = {}) {
+  if (!resolution?.id || resolution?.source !== 'tab-session') return false;
+  try {
+    const location = root.location || {};
+    if (!/\/marrowline\.html$/.test(String(location.pathname || ''))) return false;
+    const query = new URLSearchParams(String(location.search || ''));
+    if (query.has('groveTrial')) return false;
+    query.set('groveTrial', resolution.id);
+    const href = String(location.pathname) + '?' + query.toString() + String(location.hash || '');
+    root.history?.replaceState?.(root.history.state, '', href);
+    return typeof root.history?.replaceState === 'function';
+  } catch { return false; }
+}
+
+export function exitMarrowlineGroveTrial(root = {}) {
+  try { root.sessionStorage?.removeItem?.(MARROWLINE_GROVE_TRIAL_TAB_KEY); } catch {}
+  try {
+    const location = root.location || {};
+    const query = new URLSearchParams(String(location.search || ''));
+    if (!query.has('groveTrial')) return true;
+    query.delete('groveTrial');
+    const search = query.toString();
+    root.history?.replaceState?.(root.history.state, '',
+      String(location.pathname || '') + (search ? '?' + search : '') + String(location.hash || ''));
+  } catch { return false; }
+  return true;
+}
+
 // The Oct 15 original-Google-SSE positive creative control succeeded with
 // direct above/below multilingual combining-mark guidance *without* a specimen.
 // Test whether a more direct native-writing brief, after the existing TD613
