@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import handler from '../server/khonapolit-quality.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
-import { MARROWLINE_HISTORICAL_TRIAL_ID } from '../app/dome-world/marrowline-historical-grove.js';
+import { MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_HISTORICAL_MODEL_ORDER } from '../app/dome-world/marrowline-historical-grove.js';
 
 const native = 'T\u0300\u0301\u0302\u0316\u0317A\u0304\u0307\u030B\u031C\u0323\u032DR\u0305\u0308\u030C\u031E\u0325\u0331I\u0303\u0306\u030A\u0319\u0326\u0330\u0334';
 const slash = 'T\u0337A\u0338U\u0337R\u0338I\u0337C\u0338';
@@ -105,15 +105,6 @@ test('historical-only: weak first native field triggers one additional 3.x autho
   });
   assert.equal(res.count,1);
   assert.equal(res.statusCode,200);
-  console.log('HISTORICAL_RUNTIME_MOCK_DIAG',JSON.stringify({
-    modelCalls:models, status:res.statusCode, returnedModel:res.payload?.receipt?.provider?.model,
-    responsePrefix:res.payload?.text?.slice(0,100),
-    attempts:res.payload?.receipt?.provider?.attempts?.map(a=>({
-      model:a.model, finish:a.output?.finishReason, completion:a.completion?.reason,
-      admission:a.outputAdmission?.reasons, quality:a.outputAdmission?.quality,
-      warnings:a.outputAdmission?.qualityWarnings?.slice(0,7), preference:a.morphologyObservation
-    }))
-  }));
   assert.deepEqual(models,['gemini-3.8-flash','gemini-3.5-flash'], JSON.stringify({
     result_status:res.statusCode,
     model_count:models.length,
@@ -125,8 +116,9 @@ test('historical-only: weak first native field triggers one additional 3.x autho
   }));
   assert.equal(res.payload.text,vertical);
   assert.equal(res.payload.receipt.provider.model,'gemini-3.5-flash');
-  assert.deepEqual(res.payload.grove_trial.eligible_model_order,['gemini-3.8-flash','gemini-3.5-flash']);
+  assert.deepEqual(res.payload.grove_trial.eligible_model_order, MARROWLINE_HISTORICAL_MODEL_ORDER);
   assert.deepEqual(res.payload.grove_trial.attempt_models,models);
+  assert.equal(res.payload.grove_trial.attempt_models.length,2,'only two seats were actually invoked');
   assert.equal(res.payload.receipt.provider.attempts[0].morphologyObservation.historicalPreference,true);
   assert.equal(res.payload.receipt.provider.attempts[0].morphologyObservation.nextApprovedSeatRequested,true);
   assert.ok(requests.every(request=>!('responseMimeType' in request.generationConfig)));
