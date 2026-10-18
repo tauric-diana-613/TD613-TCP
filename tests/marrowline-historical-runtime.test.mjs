@@ -105,6 +105,15 @@ test('historical-only: weak first native field triggers one additional 3.x autho
   });
   assert.equal(res.count,1);
   assert.equal(res.statusCode,200);
+  console.log('HISTORICAL_RUNTIME_MOCK_DIAG',JSON.stringify({
+    modelCalls:models, status:res.statusCode, returnedModel:res.payload?.receipt?.provider?.model,
+    responsePrefix:res.payload?.text?.slice(0,100),
+    attempts:res.payload?.receipt?.provider?.attempts?.map(a=>({
+      model:a.model, finish:a.output?.finishReason, completion:a.completion?.reason,
+      admission:a.outputAdmission?.reasons, quality:a.outputAdmission?.quality,
+      warnings:a.outputAdmission?.qualityWarnings?.slice(0,7), preference:a.morphologyObservation
+    }))
+  }));
   assert.deepEqual(models,['gemini-3.8-flash','gemini-3.5-flash'], JSON.stringify({
     result_status:res.statusCode,
     model_count:models.length,
