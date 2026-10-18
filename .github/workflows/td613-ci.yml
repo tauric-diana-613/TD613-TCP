@@ -186,7 +186,7 @@ jobs:
         run: |
           node --check server/khonapolit-quality.js
           node --check app/dome-world/khonapolit-relay.js
-          node --test tests/khonapolit-api-contract.test.mjs tests/marrowline-editorial-relay.test.mjs tests/marrowline-instrument-relay-contract.test.mjs tests/marrowline-dual-voice-boundary.test.mjs tests/marrowline-historical-grove-rest.test.mjs tests/marrowline-historical-runtime.test.mjs
+          node --test tests/khonapolit-api-contract.test.mjs tests/marrowline-editorial-relay.test.mjs tests/marrowline-instrument-relay-contract.test.mjs tests/marrowline-dual-voice-boundary.test.mjs tests/marrowline-historical-grove-rest.test.mjs tests/marrowline-historical-runtime.test.mjs tests/marrowline-grove-tab-continuity.test.mjs
           python -m pip install --disable-pip-version-check Pillow
           python -m unittest discover -s docs/research/2026-09-24-native-prosody-atlas -p 'test_*.py' -v
           python docs/research/2026-09-24-native-prosody-atlas/verify_probe3.py
