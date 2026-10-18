@@ -37,7 +37,11 @@ import {
 } from '../engine/aperture-v3-task-intent.js';
 import { classifyMarrowlineRetryWindow } from './marrowline-retry-window.js';
 import { buildMarrowlineEpisodeWitness } from './marrowline-episode-witness.js';
-import { groveTrialFromLocation } from './marrowline-grove-trial.js';
+import {
+  resolveMarrowlineGroveTrialTab,
+  exposeRestoredMarrowlineGroveTrial,
+  exitMarrowlineGroveTrial
+} from './marrowline-grove-trial.js';
 import { MARROWLINE_HISTORICAL_TRIAL_ID } from './marrowline-historical-grove.js';
 import {
   currentGeminiDailyBudgetHints,
@@ -708,17 +712,40 @@ async function readMarrowlineSourceWindow(root) {
 export function installKhonapolitTerminal(doc = document, root = window) {
   const form = byId(doc, 'khonapolitForm');
   if (!form) return false;
-  const groveTrial = groveTrialFromLocation(root.location);
-  if (groveTrial && !byId(doc, 'marrowlineGroveTrialNotice')) {
-    const notice = doc.createElement('p');
-    notice.id = 'marrowlineGroveTrialNotice';
-    notice.className = 'marrowline-grove-trial-notice';
-    notice.textContent = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID
-      ? 'Screaming Grove historical-runtime audition · October 2 voice, model frontier and response handling. Up to five Gemini 3.x models, plus one bounded structural repair; normal provider charges apply. Remove groveTrial to leave the experiment.'
-      : 'Screaming Grove audition · experimental native voices. Model usage is billed normally. Remove the groveTrial URL option to return to ordinary Marrowline.';
-    if (notice.style) notice.style.cssText = 'margin:0 0 9px;padding:7px 10px;font-size:0.76rem;line-height:1.4;color:inherit;border:1px solid currentColor;border-radius:8px;opacity:.82';
-    form.prepend(notice);
-  }
+  const initialGroveResolution = resolveMarrowlineGroveTrialTab(root.location, root.sessionStorage);
+  exposeRestoredMarrowlineGroveTrial(root, initialGroveResolution);
+  let groveTrial = initialGroveResolution.id;
+  // Both lanes identify themselves visibly; code identity is not artistic proof.
+  const groveNotice = doc.createElement('div');
+  groveNotice.id = 'marrowlineGroveTrialNotice';
+  groveNotice.className = 'marrowline-grove-trial-notice';
+  groveNotice.setAttribute('role', 'status');
+  groveNotice.setAttribute('aria-live', 'polite');
+  if (groveNotice.style) groveNotice.style.cssText = 'display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 5px;padding:3px 7px;font-size:0.72rem;line-height:1.3;opacity:.88';
+  const groveModeText = doc.createElement('span');
+  const groveExit = doc.createElement('button');
+  groveExit.type = 'button';
+  groveExit.textContent = 'Exit trial';
+  groveExit.setAttribute('aria-label', 'Exit Grove trial and use ordinary Marrowline');
+  if (groveExit.style) groveExit.style.cssText = 'font:inherit;padding:2px 8px;border:1px solid currentColor;border-radius:999px;background:transparent;color:inherit;cursor:pointer';
+  const renderGroveMode = () => {
+    groveNotice.dataset.groveTrial = groveTrial || 'off';
+    groveModeText.textContent = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID
+      ? 'Grove · HISTORICAL TRIAL ON · 3.x frontier · text-only · provider charges apply'
+      : groveTrial
+        ? 'Grove · NATIVE-VOICE TRIAL ON · text-only · provider charges apply'
+        : 'Grove trial OFF · ordinary Marrowline (Argon-first)';
+    groveExit.hidden = !groveTrial;
+  };
+  groveExit.addEventListener('click', () => {
+    if (requestInFlight) return;
+    exitMarrowlineGroveTrial(root);
+    groveTrial = null;
+    renderGroveMode();
+  });
+  groveNotice.append(groveModeText, groveExit);
+  form.prepend(groveNotice);
+  renderGroveMode();
   const freshLoomArrival = (root.location?.hash || '').startsWith('#loom=') || root.location?.hash === '#loom-demo';
   const state = loadSession(root);
   let threadLibrary = null;
@@ -1198,6 +1225,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     const requestController = new AbortController();
     activeRequestController = requestController;
     setSendControlState(true);
+    groveExit.disabled = true;
     root.dispatchEvent?.(new root.CustomEvent('td613:marrowline:attachment-submission-state', {
       detail: { sending: true, count: attachments.length }
     }));
@@ -1251,6 +1279,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
           'Operator cancelled before network dispatch; task preserved for an explicit retry');
       }
       setSendControlState(false);
+      groveExit.disabled = false;
       root.dispatchEvent?.(new root.CustomEvent('td613:marrowline:attachment-submission-state', {
         detail: { sending: false, count: getMarrowlineAttachments().length }
       }));
@@ -1496,6 +1525,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       const cancelledByOperator = activeRequestCancelRequested;
       activeRequestCancelRequested = false;
       setSendControlState(false);
+      groveExit.disabled = false;
       root.dispatchEvent?.(new root.CustomEvent('td613:marrowline:attachment-submission-state', {
         detail: { sending: false, count: getMarrowlineAttachments().length }
       }));
