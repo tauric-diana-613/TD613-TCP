@@ -134,6 +134,8 @@ test('ordinary route stays isolated: neither-voice replies are still held by the
   });
   assert.equal(res.statusCode,502);
   assert.equal(res.payload.error,'marrowline-dual-voice-contract-unmet');
-  assert.equal(res.payload.grove_trial,undefined);
+  assert.equal(res.payload.grove_trial.id,'off');
+  assert.equal(res.payload.grove_trial.active,false);
+  assert.equal(res.payload.grove_trial.variant,'ordinary-marrowline');
   assert.ok(models.length>=1);
 });
