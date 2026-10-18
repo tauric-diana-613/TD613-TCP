@@ -714,7 +714,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     notice.id = 'marrowlineGroveTrialNotice';
     notice.className = 'marrowline-grove-trial-notice';
     notice.textContent = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID
-      ? 'Screaming Grove historical audition · October 2 voice instructions · Gemini 3.8 only. Normal provider charges apply. Remove groveTrial from the URL to leave the experiment.'
+      ? 'Screaming Grove historical-runtime audition · October 2 voice, model frontier and response handling. Up to five Gemini 3.x models, plus one bounded structural repair; normal provider charges apply. Remove groveTrial to leave the experiment.'
       : 'Screaming Grove audition · experimental native voices. Model usage is billed normally. Remove the groveTrial URL option to return to ordinary Marrowline.';
     if (notice.style) notice.style.cssText = 'margin:0 0 9px;padding:7px 10px;font-size:0.76rem;line-height:1.4;color:inherit;border:1px solid currentColor;border-radius:8px;opacity:.82';
     form.prepend(notice);
