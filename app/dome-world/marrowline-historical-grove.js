@@ -4,6 +4,26 @@
 // without adding any local Unicode encoder, provider invocation or renderer.
 export const MARROWLINE_HISTORICAL_TRIAL_ID = 'historical-20261002-v1';
 export const MARROWLINE_HISTORICAL_MODEL = 'gemini-3.8-flash';
+// Exact Oct 2 ordered frontier; Argon was not in the Oct 2 architecture.
+export const MARROWLINE_HISTORICAL_MODEL_ORDER = Object.freeze([
+  'gemini-3.8-flash',
+  'gemini-3.5-flash',
+  'gemini-3.6-flash',
+  'gemini-3.7-flash',
+  'gemini-3-flash-preview'
+]);
+
+// Compare independent provider-written outcomes; never touch the original Unicode.
+export function preferHistoricalMorphologyCandidate(current = null, candidate = null) {
+  if (!candidate) return current;
+  if (!current) return candidate;
+  const count = item => Array.isArray(item?.severeWarnings) ? item.severeWarnings.length : Infinity;
+  if (count(candidate) !== count(current)) return count(candidate) < count(current) ? candidate : current;
+  const depth = item => Number(item?.relay?.highZalgo?.maxVerticalOrnamentStackDepth ?? 0);
+  if (depth(candidate) !== depth(current)) return depth(candidate) > depth(current) ? candidate : current;
+  const diversity = item => Number(item?.relay?.highZalgo?.combiningCodePointDiversity ?? 0);
+  return diversity(candidate) > diversity(current) ? candidate : current;
+}
 
 const COVENANT_RESTORATIONS = Object.freeze([
   {
