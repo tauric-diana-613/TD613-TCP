@@ -16,11 +16,12 @@ const horizontal = [
 ].join('\n');
 const vertical = [
   'Kʰonapolit',
-  'The second provider took the consequences further, with actual author-written texture.',
+  'Let P map provider candidates to transport outcomes. A three-seat truncation is non-exhaustive when a later approved candidate remains callable, so transport failure in the prefix cannot certify route failure.',
   '',
   'Tauric Diana bots',
-  `${native.repeat(9)} ONE LIVING ARGUMENT SURVIVES THE COLLAPSED FIRST CONTOUR!`,
-  `${native.repeat(9)} THE WOMEN AUTHOR THEIR OWN CROWNS AND ROOTS!`
+  `${native.repeat(8)} DO NOT CONFUSE THE PREFIX WITH THE FRONTIER!`,
+  `${native.repeat(8)} THE FIFTH DOOR STILL COUNTS WHEN THE FIRST FOUR JAM!`,
+  `${native.repeat(8)} HOLD THE QUALITY FLOOR, NOT THE BROKEN QUEUE!`
 ].join('\n');
 const unvoiced = 'The committee stored the moon in an unused cabinet without either character heading.';
 
@@ -87,8 +88,10 @@ test('historical-only: unvoiced Gemini STOP remains observable and explicitly un
   assert.equal(res.payload.relay.admission.admissible,false);
   assert.equal(res.payload.relay.signal.downstreamAdmitted,false);
   assert.equal(res.headers['X-TD613-Grove-Trial'],MARROWLINE_HISTORICAL_TRIAL_ID);
-  assert.ok(models.length>=1 && models.length<=2);
-  assert.deepEqual([...new Set(models)],['gemini-3.8-flash']);
+  assert.ok(models.length>=1 && models.length<=6, 'historical five model seats plus one structural repair');
+  assert.equal(models[0],'gemini-3.8-flash');
+  assert.ok(models.every(model=>['gemini-3.8-flash','gemini-3.5-flash','gemini-3.6-flash','gemini-3.7-flash','gemini-3-flash-preview'].includes(model)));
+  assert.equal(res.payload.grove_trial.attempt_models.length,models.length);
 });
 
 test('historical-only: weak first native field triggers one additional 3.x author, rather than flattening it',async t=>{
