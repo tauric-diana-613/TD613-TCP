@@ -34,7 +34,10 @@ function makeResponse() {
 }
 function modelPayload(text) {
   return {
-    candidates: [{ finishReason:'STOP', content:{parts:[{ text }]} }],
+    candidates: [{ finishReason:'STOP', content:{parts:[{ text: JSON.stringify({
+      signal:{state:'LOCKED',notes:'synthetic offline historical trial'},
+      transmission:{text,voices:['Kʰonapolit','Tauric Diana bots'],flourishMode:'provider-native'}
+    }) }]} }],
     usageMetadata:{promptTokenCount:150,candidatesTokenCount:150,thoughtsTokenCount:30,totalTokenCount:330}
   };
 }
@@ -102,7 +105,15 @@ test('historical-only: weak first native field triggers one additional 3.x autho
   });
   assert.equal(res.count,1);
   assert.equal(res.statusCode,200);
-  assert.deepEqual(models,['gemini-3.8-flash','gemini-3.5-flash']);
+  assert.deepEqual(models,['gemini-3.8-flash','gemini-3.5-flash'], JSON.stringify({
+    result_status:res.statusCode,
+    model_count:models.length,
+    output_text:res.payload?.text?.slice(0,200),
+    admission:res.payload?.receipt?.provider?.attempts?.map(a=>({
+      model:a.model,completion:a.completion?.reason,admission:a.outputAdmission?.reasons,
+      quality:a.outputAdmission?.quality,warnings:a.outputAdmission?.qualityWarnings
+    }))
+  }));
   assert.equal(res.payload.text,vertical);
   assert.equal(res.payload.receipt.provider.model,'gemini-3.5-flash');
   assert.deepEqual(res.payload.grove_trial.eligible_model_order,['gemini-3.8-flash','gemini-3.5-flash']);
