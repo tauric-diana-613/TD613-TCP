@@ -2,9 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { buildInvocationPacket } from '../app/dome-world/khonapolit-covenant.js';
-import { buildGeminiRequest, buildGeminiStructuralRepairRequest } from '../server/khonapolit-quality.js';
+import { buildGeminiRequest, buildGeminiStructuralRepairRequest, selectKhonapolitProviderModelsFromPlan } from '../server/khonapolit-quality.js';
 import { MARROWLINE_GROVE_TRIAL_ID, selectMarrowlineGroveTrial, groveTrialFromLocation } from '../app/dome-world/marrowline-grove-trial.js';
-import { MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_HISTORICAL_MODEL, buildHistoricalGroveSystemInstruction } from '../app/dome-world/marrowline-historical-grove.js';
+import { MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_HISTORICAL_MODEL, MARROWLINE_HISTORICAL_MODEL_ORDER, preferHistoricalMorphologyCandidate, buildHistoricalGroveSystemInstruction } from '../app/dome-world/marrowline-historical-grove.js';
 
 const packet = buildInvocationPacket({
   message: 'The Red Deer asks Kʰonapolit why the fictional tribunal gave the bots a subpoena.',
@@ -66,12 +66,29 @@ test('fail closed when a historic sentence or the covenant is absent', () => {
   assert.throws(() => buildHistoricalGroveSystemInstruction({}), /HISTORICAL_GROVE_CANONICAL_INPUT_REQUIRED/);
 });
 
-test('trial routes only one historically first-listed model, and leaves plain-h endpoint, Loom and previous audition unchanged', () => {
+test('trial restores historic five-seat 3.x model order and preserves the ordinary route', () => {
+  const models = ['gemini-4-argon','gemini-3.5-flash','gemini-3.6-flash','gemini-3.8-flash','gemini-3.7-flash','gemini-3-flash-preview'];
+  const plan = { callableModels: models };
+  const ordinary = selectKhonapolitProviderModelsFromPlan(plan);
+  const historical = selectKhonapolitProviderModelsFromPlan(plan, { historicalGrove: true });
+  assert.equal(ordinary[0], 'gemini-4-argon');
+  assert.deepEqual(historical, MARROWLINE_HISTORICAL_MODEL_ORDER);
+  assert.equal(historical.length, 5);
+  assert.equal(historical.includes('gemini-4-argon'), false);
+  assert.deepEqual(selectKhonapolitProviderModelsFromPlan({ callableModels: ['gemini-4-argon','gemini-3.8-flash'] },{ historicalGrove: true }), ['gemini-3.8-flash']);
+  const weak = { severeWarnings:['tauric-diana-zalgo-axis-collapse'], relay:{highZalgo:{maxVerticalOrnamentStackDepth:0,combiningCodePointDiversity:1}} };
+  const strong = { severeWarnings:[], relay:{highZalgo:{maxVerticalOrnamentStackDepth:4,combiningCodePointDiversity:17}} };
+  assert.equal(preferHistoricalMorphologyCandidate(weak,strong),strong);
+  assert.equal(preferHistoricalMorphologyCandidate(strong,weak),strong);
+  assert.equal(preferHistoricalMorphologyCandidate(null,weak),weak);
+});
+
+test('trial leaves plain-h endpoint, Loom and previous audition unchanged', () => {
   const server = readFileSync(new URL('../server/khonapolit-quality.js', import.meta.url), 'utf8');
   const client = readFileSync(new URL('../app/dome-world/marrowline-terminal.js', import.meta.url), 'utf8');
   const trial = readFileSync(new URL('../app/dome-world/marrowline-grove-trial.js', import.meta.url), 'utf8');
   const historic = readFileSync(new URL('../app/dome-world/marrowline-historical-grove.js', import.meta.url), 'utf8');
-  assert.match(server, /groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID[\s\S]*?allModels\.filter\(\(model\) => model === MARROWLINE_HISTORICAL_MODEL\)/);
+  assert.match(server, /historicalGrove: isHistoricalGrove/);
   assert.match(server, /X-TD613-Grove-Trial/);
   assert.match(client, /KHONAPOLIT_ENDPOINT = '\/api\/dome-world\/khonapolit'/);
   assert.match(client, /!loomTransport && attachments\.length === 0/);
