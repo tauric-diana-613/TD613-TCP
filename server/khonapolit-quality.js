@@ -54,6 +54,8 @@ import { buildCompactWholeFrame } from './marrowline-whole-frame-voice.js';
 import {
   MARROWLINE_HISTORICAL_TRIAL_ID,
   MARROWLINE_HISTORICAL_MODEL,
+  MARROWLINE_HISTORICAL_MODEL_ORDER,
+  preferHistoricalMorphologyCandidate,
   buildHistoricalGroveSystemInstruction
 } from '../app/dome-world/marrowline-historical-grove.js';
 import {
@@ -289,15 +291,15 @@ export function khonapolitTaskGuidance(apertureReceipt = {}) {
   return ORDINARY_PROJECT_GUIDANCE;
 }
 
-export function selectKhonapolitProviderModels(callableModels = []) {
+export function selectKhonapolitProviderModels(callableModels = [], { modelOrder = HUMAN_LIVENESS_MODEL_ORDER } = {}) {
   const available = [...new Set((Array.isArray(callableModels) ? callableModels : [])
     .map((model) => String(model || '').replace(/^models\//, '').trim())
     .filter(Boolean)
-    .filter((model) => HUMAN_LIVENESS_MODEL_ORDER.includes(model))
+    .filter((model) => modelOrder.includes(model))
     .filter((model) => !/lite/i.test(model)))];
   if (!available.length) return [];
   const selected = [];
-  for (const model of HUMAN_LIVENESS_MODEL_ORDER) {
+  for (const model of modelOrder) {
     if (selected.length >= KHONAPOLIT_MAX_PROVIDER_CALLS) break;
     if (available.includes(model) && !selected.includes(model)) selected.push(model);
   }
@@ -308,7 +310,8 @@ export function selectKhonapolitProviderModels(callableModels = []) {
   return selected;
 }
 
-export function selectKhonapolitProviderModelsFromPlan(plan = {}) {
+export function selectKhonapolitProviderModelsFromPlan(plan = {}, { historicalGrove = false } = {}) {
+  const modelOrder = historicalGrove ? MARROWLINE_HISTORICAL_MODEL_ORDER : HUMAN_LIVENESS_MODEL_ORDER;
   const rows = Array.isArray(plan?.rows) ? plan.rows : [];
   const callable = Array.isArray(plan?.callableModels) ? plan.callableModels : [];
   const coolingEligible = rows
@@ -347,10 +350,10 @@ export function selectKhonapolitProviderModelsFromPlan(plan = {}) {
   // These probes remain last and only when the sole reason is missing discovery;
   // disabled, retired, specialized, Lite and pre-3.x routes stay excluded.
   const orderedGroups = [
-    selectKhonapolitProviderModels(callable),
-    selectKhonapolitProviderModels(coolingEligible),
-    selectKhonapolitProviderModels(providerAbsentCurrent),
-    selectKhonapolitProviderModels(discoveryUnwitnessedCurrent)
+    selectKhonapolitProviderModels(callable, { modelOrder }),
+    selectKhonapolitProviderModels(coolingEligible, { modelOrder }),
+    selectKhonapolitProviderModels(providerAbsentCurrent, { modelOrder }),
+    selectKhonapolitProviderModels(discoveryUnwitnessedCurrent, { modelOrder })
   ];
   const selected = [];
   for (const group of orderedGroups) {
@@ -466,9 +469,25 @@ function send(res, status, payload, extraHeaders = {}) {
       ? payload.attempts
       : [];
   const geminiConsumption = buildGeminiConsumptionReceipt({ route: 'marrowline', attempts });
+  // The historical trial must identify itself in *every* response receipt, even
+  // on a HELD/502 failure. Header-only flags were not recoverable from the UI.
+  const experiment = res.__td613GroveTrial || null;
+  const observedExperiment = experiment ? Object.freeze({
+    ...experiment,
+    attempt_models: attempts.map(attempt => attempt.model),
+    provider_reported_versions: attempts.map(attempt => attempt.output?.modelVersion ?? null),
+    local_admission: payload?.relay?.admission?.quality || (status >= 400 ? 'HELD' : 'UNCLASSIFIED')
+  }) : null;
+  const taggedPayload = experiment ? {
+    ...payload,
+    grove_trial: observedExperiment,
+    ...(payload?.receipt ? {
+      receipt: { ...payload.receipt, grove_trial: observedExperiment }
+    } : {})
+  } : payload;
   const body = geminiConsumption.call_count
-    ? { ...payload, gemini_consumption: geminiConsumption }
-    : payload;
+    ? { ...taggedPayload, gemini_consumption: geminiConsumption }
+    : taggedPayload;
   if (geminiConsumption.call_count) logGeminiConsumption(geminiConsumption);
   res.statusCode = status;
   for (const [name, value] of Object.entries(extraHeaders)) res.setHeader(name, value);
@@ -1204,7 +1223,8 @@ export default async function handler(req, res) {
   const attempts = [];
   const clientQuotaCooldown = clientQuotaCooldownHints(body);
   const clientQuotaBudget = clientQuotaBudgetHints(body);
-  const providerModels = selectKhonapolitProviderModelsFromPlan(plan);
+  const isHistoricalGrove = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID;
+  const providerModels = selectKhonapolitProviderModelsFromPlan(plan, { historicalGrove: isHistoricalGrove });
   // Browser-local quota/cooldown history is receipt evidence only. It cannot
   // reorder or suppress the settled human provider frontier. 3.8 remains first;
   // live Gemini transport decides whether that seat can answer this turn.
@@ -1221,10 +1241,20 @@ export default async function handler(req, res) {
   const canaryModel = requestedCanaryModel && allModels.includes(requestedCanaryModel)
     ? requestedCanaryModel
     : allModels[0] || null;
-  const models = releaseCanary ? (canaryModel ? [canaryModel] : [])
-    : groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID
-      ? allModels.filter((model) => model === MARROWLINE_HISTORICAL_MODEL)
-      : allModels;
+  const models = releaseCanary ? (canaryModel ? [canaryModel] : []) : allModels;
+  // Only operator-selected research turns have a historical frontier. Do not
+  // invent calls for absent/unapproved models or exceed the ordinary 5+1 cap.
+  if (isHistoricalGrove) {
+    res.__td613GroveTrial = Object.freeze({
+      id: MARROWLINE_HISTORICAL_TRIAL_ID,
+      source_commit: 'ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a',
+      variant: 'historical-runtime-20261018',
+      requested_model_order: [...MARROWLINE_HISTORICAL_MODEL_ORDER],
+      eligible_model_order: [...models],
+      admission_policy: 'unvoiced-provider-return-visible-but-not-admitted',
+      typography_policy: 'provider-native-with-historical-preference'
+    });
+  }
   const routeModelCount = Math.max(1, providerModels.length);
   let structuralRepairCandidate = null;
   let structuralRepairSpent = false;
@@ -1234,6 +1264,8 @@ export default async function handler(req, res) {
   let incompleteFallback = null;
   let zeroMarkFallback = null;
   let zeroMarkRecoverySpent = false;
+  let historicalMorphologyFallback = null;
+  let historicalMorphologyFallbackSpent = false;
   const providerWallDeadlineAt = startedAt + WALL_TIMEOUT_MS - RESPONSE_RESERVE_MS;
   const completionOf = (result, output, text = result.text) => observeMarrowlineCompletion(
     // Natural text and legacy JSON envelopes must use the same visible response.
@@ -1496,7 +1528,7 @@ export default async function handler(req, res) {
     // Keep the exact provider text out of the successful human transcript;
     // retain only its digest and the existing attempt diagnostics. No extra
     // Gemini calls, text rewriting, synthetic voices, or typography filters.
-    if (bothMarrowlineVoicesAbsent(relay)) {
+    if (bothMarrowlineVoicesAbsent(relay) && !isHistoricalGrove) {
       res.setHeader('X-TD613-Gemini-Model', model);
       res.setHeader('X-TD613-Local-Admission', 'HELD-DUAL-VOICE-ABSENT');
       res.setHeader('X-TD613-Completion-State', 'STRUCTURE-HELD');
@@ -1953,6 +1985,28 @@ export default async function handler(req, res) {
           maxVerticalOrnamentStackDepth: relay.highZalgo?.maxVerticalOrnamentStackDepth ?? 0,
           singleCodepointWallpaper: qualityWarnings.includes('tauric-diana-zalgo-single-codepoint-wallpaper')
         });
+        if (isHistoricalGrove && severeMorphologyWarnings.length > 0) {
+          const candidate = {
+            model, result, relay, providerOutput, completion, qualityWarnings,
+            severeWarnings: severeMorphologyWarnings,
+            sourceAttemptIndex: attempts.length - 1
+          };
+          historicalMorphologyFallback = preferHistoricalMorphologyCandidate(historicalMorphologyFallback, candidate);
+          const nextSeat = !historicalMorphologyFallbackSpent && index < models.length - 1;
+          attempt.morphologyObservation = Object.freeze({
+            ...attempt.morphologyObservation,
+            historicalPreference: true, nextApprovedSeatRequested: nextSeat,
+            originalProviderTextPreserved: true
+          });
+          if (nextSeat) {
+            historicalMorphologyFallbackSpent = true;
+            continue;
+          }
+          return sendPartialProviderReturn({
+            ...historicalMorphologyFallback,
+            selection: 'historical-best-completed-native-morphology'
+          });
+        }
         // A structurally complete provider return belongs to the human surface.
         // Warning counts, vertical stacks and glyph diversity describe it; none
         // authorizes an automatic second paid candidate or an aesthetic election.
@@ -2010,6 +2064,12 @@ export default async function handler(req, res) {
     if (repaired) return repaired;
   }
 
+  if (!releaseCanary && historicalMorphologyFallback) {
+    return sendPartialProviderReturn({
+      ...historicalMorphologyFallback,
+      selection: 'historical-best-completed-native-morphology'
+    });
+  }
   if (!releaseCanary && zeroMarkFallback) {
     return sendObservedProviderReturn({
       ...zeroMarkFallback, observation: 'zero-native-marks-after-bounded-frontier-opportunity',
