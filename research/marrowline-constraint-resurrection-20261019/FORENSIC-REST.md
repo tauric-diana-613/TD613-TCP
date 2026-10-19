@@ -97,6 +97,20 @@ Search both system and RECENCY-edge instructions rather than searching only pres
 
 **Why not blame Argon?** The operator reports it works in Gemini High/Medium/Low and did work in Marrowline recently; a separate 3.8 control also establishes native multi-stack capability. This audit has observed several local instruction/selection defects and no falsifying provider-side Argon incapacity.
 
+## F07 — Aesthetic telemetry can penalize an intentionally sustained performance (confirmed conditional source conflict)
+
+[`app/dome-world/khonapolit-relay.js`, lines ~603–632](https://github.com/tauric-diana-613/TD613-TCP/blob/main/app/dome-world/khonapolit-relay.js#L603-L632) still emits warnings including:
+
+- `tauric-diana-zalgo-localized-burst` for some long responses containing a real extreme vertical cluster but narrow/barely repeated marked coverage.
+- `tauric-diana-zalgo-dynamic-range-collapse` for a highly sustained, almost wall-to-wall, very deep vertical field (among other thresholds: leaping vertical clusters / eligible bases ≥0.72, deep vertical share ≥0.72, fine vertical share ≤0.10).
+- `tauric-diana-zalgo-monoculture` when enough marks exist but diversity/stack-height variation falls below specified thresholds.
+
+[`server/khonapolit-quality.js`, lines ~627–650](https://github.com/tauric-diana-613/TD613-TCP/blob/main/server/khonapolit-quality.js#L627-L650) treats `dynamic-range-collapse` as a **standalone severe** warning. The `localized-burst` warning by itself **does not** trigger the severe fallback; if a separate severe condition exists, it can be included in the `severeWarnings` list that the historical candidate comparator counts. `monoculture` alone likewise does not necessarily authorize later-seat election.
+
+**Deterministic implication:** a legitimately authored, extensively overprinted single-register performance can trip `dynamic-range-collapse`, which on the restored historical branch is enough to seek a later provider result and rank it. Likewise a beautiful localized burst may count *against* an answer when another severe warning has opened the historical election. Neither result requires a local Unicode rewrite. Whether these conditions occurred on the operator's actual affected prompts remains unobserved.
+
+**Why this matters:** the prose instructions allow sustained native High Zalgo and spontaneous localized eruptions, while the historical route's scoring logic can demote precisely such formal features under specified numeric thresholds. This strengthens the source-level conflict but remains **a conditional code path, not a proved live-root cause**.
+
 ## Closure
 
 - GitHub research-only markdown; no product code, test fixtures, workflows, or lockfiles changed.
