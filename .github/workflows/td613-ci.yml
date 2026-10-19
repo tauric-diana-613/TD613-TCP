@@ -1164,13 +1164,49 @@ jobs:
           retention-days: 7
 
 
-  marrowline_d_thinking_original_once:
-    name: Marrowline D original-SSE MEDIUM HIGH (one-shot, gated)
+
+  marrowline_d_thinking_activation_scope:
+    name: Marrowline D research one-shot activation (no credentials)
     if: >-
       github.event_name == 'pull_request' &&
+      github.event.pull_request.number == 1554 &&
       github.event.pull_request.head.ref == 'research/marrowline-d-thinking-live-once-20261019' &&
       github.event.pull_request.head.repo.full_name == 'tauric-diana-613/TD613-TCP' &&
       github.actor == 'tauric-diana-613' &&
+      github.run_attempt == 1
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      execute: ${{ steps.gate.outputs.execute }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Gate exact single activated research commit
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$(git rev-parse HEAD)" != '${{ github.event.pull_request.head.sha }}' ]]; then
+            echo 'GITHUB_EXACT_HEAD_MISMATCH'; exit 1
+          fi
+          subject="$(git log -1 --format=%s)"
+          if [[ "$subject" == 'research(marrowline): execute D thinking original SSE once' ]]; then
+            echo 'execute=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'execute=false' >> "$GITHUB_OUTPUT"
+            echo 'Dormant research: no credential environment or paid provider request.'
+          fi
+
+  marrowline_d_thinking_original_once:
+    name: Marrowline D original-SSE MEDIUM HIGH (one-shot, gated)
+    needs: marrowline_d_thinking_activation_scope
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.number == 1554 &&
+      needs.marrowline_d_thinking_activation_scope.outputs.execute == 'true' &&
       github.run_attempt == 1
     runs-on: ubuntu-latest
     environment: gemini-observation
@@ -1182,29 +1218,14 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
-      - name: Gate exact single activated research commit
-        id: gate
-        shell: bash
-        run: |
-          set -euo pipefail
-          subject="$(git log -1 --format=%s)"
-          if [[ "$subject" == 'research(marrowline): execute D thinking original SSE once' ]]; then
-            echo 'execute=true' >> "$GITHUB_OUTPUT"
-          else
-            echo 'execute=false' >> "$GITHUB_OUTPUT"
-            echo 'Research job dormant: no paid provider request.'
-          fi
       - uses: actions/setup-node@v4
-        if: steps.gate.outputs.execute == 'true'
         with:
           node-version: '24'
       - name: Validate original D request isolation without network
-        if: steps.gate.outputs.execute == 'true'
         run: |
           node --test tests/marrowline-d-thinking-isolation.test.mjs tests/marrowline-d-thinking-live-once.test.mjs
           node research/marrowline-d-thinking-isolation-20261019/live-once.mjs
       - name: Execute exactly one MEDIUM/HIGH original-SSE pair
-        if: steps.gate.outputs.execute == 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           TD613_D_THINKING_AUTHORIZE: D_TWO_CALLS_ONCE
@@ -1212,7 +1233,7 @@ jobs:
           TD613_D_THINKING_OUT: ${{ runner.temp }}/td613-d-thinking-original
         run: node research/marrowline-d-thinking-isolation-20261019/live-once.mjs --execute --ack-paid
       - name: Preserve synthetic original-provider evidence for adjudication
-        if: always() && steps.gate.outputs.execute == 'true'
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: td613-d-thinking-original-sse-${{ github.event.pull_request.head.sha }}
