@@ -8,6 +8,10 @@ export const APERTURE_DISCOURSE_MODES = Object.freeze(['GENERAL', 'LEGAL', 'SPEC
 
 const CREATIVE_FORM = /\b(story|stories|poem|poetry|scene|fiction|myth|mythology|lullaby|lyrics?|screenplay|script|dialogue|monologue|prose|narrative|fairy\s*tale|fable)\b/i;
 const CREATIVE_ACTION = /\b(tell|write|compose|create|draft|invent|imagine|continue|rewrite|retell|narrate|author|make)\b/i;
+// An imperative to stage a *named dramatic form* requests fiction even when
+// it omits the words "write a scene". Do not infer creative intent from a
+// generic staged deployment, legal filing, or forensic audit.
+const EXPLICIT_STAGED_FICTION = /^\s*(?:stage|dramatize|play\s+out)\b[\s\S]{0,420}\b(?:farce|scene|dialogue|theatrical\s+performance|fictional\s+reunion)\b/i;
 const LEGAL_CUE = /\b(legal|law|lawsuit|statute|regulation|case\s+law|court|contract|attorney|jurisdiction|complaint|motion|brief)\b/i;
 const RUNTIME_CUE = /\b(runtime|stack\s*trace|traceback|http\s+status|api\s+error|deployment|build\s+failure|ci\s+failure|debug|diagnos(?:e|is|tic))\b/i;
 const SPECULATIVE_CUE = /\b(hypothetical|speculat(?:e|ion|ive)|what\s+if|theor(?:y|ize)|possibilit(?:y|ies)|counterfactual)\b/i;
@@ -21,6 +25,7 @@ export function classifyApertureDiscourseMode(message = '') {
   const text = String(message || '').trim();
   if (!text) return 'GENERAL';
   if (CREATIVE_FORM.test(text) && CREATIVE_ACTION.test(text)) return 'CREATIVE';
+  if (EXPLICIT_STAGED_FICTION.test(text)) return 'CREATIVE';
   if (/\bcreative\s+(?:writing|piece|response|work)\b/i.test(text)) return 'CREATIVE';
   if (LEGAL_CUE.test(text)) return 'LEGAL';
   if (RUNTIME_CUE.test(text)) return 'TECHNICAL_RUNTIME';
