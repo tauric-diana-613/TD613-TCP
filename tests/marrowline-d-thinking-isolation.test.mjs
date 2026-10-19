@@ -13,7 +13,7 @@ import {
 const gitBlobSha1 = relativePath => {
   const bytes = readFileSync(new URL(relativePath, import.meta.url));
   return createHash('sha1').update(Buffer.concat([
-    Buffer.from(`blob ${bytes.length}\\0`), bytes
+    Buffer.from(`blob ${bytes.length}`), Buffer.from([0]), bytes
   ])).digest('hex');
 };
 
