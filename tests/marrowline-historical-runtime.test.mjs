@@ -130,7 +130,7 @@ test('restored voice: complete planar Argon text survives untouched instead of t
   assert.deepEqual(models,['gemini-4-argon'], 'completed PARTIAL stays on its first provider, regardless of ornate later candidates');
   assert.equal(res.payload.text,horizontal, 'all original code points and paragraphs survive byte-for-byte');
   assert.equal(res.payload.receipt.provider.model,'gemini-4-argon');
-  assert.equal(res.payload.grove_trial.variant,'restored-voice-argon-frontier-20261019');
+  assert.equal(res.payload.grove_trial.variant,'restored-voice-argon-frontier-noncompulsory-prosody-20261019');
   assert.deepEqual(res.payload.grove_trial.requested_model_order,MARROWLINE_RESTORED_MODEL_ORDER);
   assert.deepEqual(res.payload.grove_trial.attempt_models,models);
   assert.ok(res.payload.receipt.provider.attempts[0].morphologyObservation.severeWarnings.length > 0);
