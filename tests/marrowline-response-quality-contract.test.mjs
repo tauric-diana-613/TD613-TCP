@@ -182,9 +182,9 @@ test('browser preserves failed model receipts locally but excludes explicitly un
   const failed = 'Maybe take a break from Reddit and try offline hobbies.';
   const localArchive = [
     {role:'user', text:'First theatrical request.'},
-    {role:'model', text:accepted, relay:{signal:{downstreamAdmitted:true}}},
+    {role:'model', text:accepted, relay:{signal:{downstreamAdmitted:true},parts:[{id:'khonapolit',label:'Kʰonapolit ∴ Tauric Diana bots',present:true,text:accepted}]}},
     {role:'user', text:'A second request for the absurd tribunal.'},
-    {role:'model', text:failed, relay:{signal:{downstreamAdmitted:false}}, receipt:{status:'MODEL_STRUCTURE_INCOMPLETE'}},
+    {role:'model', text:failed, relay:{signal:{downstreamAdmitted:false},parts:[{id:'khonapolit',label:'Kʰonapolit ∴ Tauric Diana bots',present:true,text:failed}]}, receipt:{status:'MODEL_STRUCTURE_INCOMPLETE'}},
     {role:'user', text:'Continue the fictional argument.'}
   ];
   const original = structuredClone(localArchive);
@@ -201,9 +201,9 @@ test('browser preserves failed model receipts locally but excludes explicitly un
 });
 
 test('legacy and valid native model turns survive the history filter while ten-entry bound applies after exclusion', () => {
-  const valid = {role:'model',text:'Kʰonapolit\\nCausality.\\nTauric Diana bots\\nH\\u0300\\u0316',relay:{signal:{downstreamAdmitted:true}}};
+  const valid = {role:'model',text:'Kʰonapolit\\nCausality.\\nTauric Diana bots\\nH\\u0300\\u0316',relay:{signal:{downstreamAdmitted:true},parts:[{id:'khonapolit',label:'Kʰonapolit ∴ Tauric Diana bots',present:true,text:'Causality.'}]}};
   const legacy = {role:'model',text:'Original archived reply, admission status not recorded.'};
-  const rejected = {role:'model',text:'A fake concern reply.',relay:{signal:{downstreamAdmitted:false}}};
+  const rejected = {role:'model',text:'A fake concern reply.',relay:{signal:{downstreamAdmitted:false},parts:[{id:'khonapolit',label:'Kʰonapolit ∴ Tauric Diana bots',present:true,text:'A fake concern reply.'}]}};
   const messages = [{role:'user',text:'Older kept message.'},valid,legacy,rejected];
   for(let i=0;i<8;i++)messages.push({role:'user',text:'Human turn '+i});
   const providerHistory = compactMarrowlineHistory(messages);
