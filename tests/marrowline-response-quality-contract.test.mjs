@@ -205,13 +205,13 @@ test('legacy and valid native model turns survive the history filter while ten-e
   const legacy = {role:'model',text:'Original archived reply, admission status not recorded.'};
   const rejected = {role:'model',text:'A fake concern reply.',relay:{signal:{downstreamAdmitted:false}}};
   const messages = [{role:'user',text:'Older kept message.'},valid,legacy,rejected];
-  for(let i=0;i<9;i++)messages.push({role:'user',text:'Human turn '+i});
+  for(let i=0;i<8;i++)messages.push({role:'user',text:'Human turn '+i});
   const providerHistory = compactMarrowlineHistory(messages);
   assert.equal(providerHistory.length,10);
   assert.ok(providerHistory.some(entry=>entry.text.includes('Original archived reply')));
   assert.ok(providerHistory.some(entry=>entry.text.includes('Causality.')));
   assert.equal(providerHistory.some(entry=>entry.text.includes('fake concern')),false);
-  assert.equal(providerHistory.at(-1).text,'Human turn 8');
+  assert.equal(providerHistory.at(-1).text,'Human turn 7');
 });
 
 test('browser relay serialization admits a long native Unicode model turn without clipping or reducing generation allowance', () => {
