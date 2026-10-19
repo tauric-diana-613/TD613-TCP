@@ -24,11 +24,13 @@ export function groveTrialFromLocation(location = {}) {
   }
 }
 
-// A Grove audition is an explicit per-tab operator choice, never a global
-// provider preference. An exact URL token opts in; an explicit invalid/off
-// token clears the choice. Returning through site navigation may recover the
-// choice only from this tab's sessionStorage, never from old model history.
+// Operator-authorized October 2 recovery: historical source behavior is the
+// default for Marrowline's text-only web composer, not an unconditional API
+// default. Explicit URL modes and per-tab OFF override the restoration.
+// The server continues to verify exact request mode; Loom/attachments and
+// direct API callers keep their own governance and admission contracts.
 export const MARROWLINE_GROVE_TRIAL_TAB_KEY = 'td613.marrowline.grove-trial.tab/v1';
+const GROVE_TAB_EXPLICIT_OFF = 'off';
 const recognizedGroveTrial = trial => [MARROWLINE_GROVE_TRIAL_ID, MARROWLINE_HISTORICAL_TRIAL_ID].includes(trial)
   ? trial : null;
 
@@ -41,24 +43,31 @@ export function resolveMarrowlineGroveTrialTab(location = {}, storage = null) {
     let persistence = 'unavailable';
     try {
       if (id) storage?.setItem?.(MARROWLINE_GROVE_TRIAL_TAB_KEY, id);
-      else storage?.removeItem?.(MARROWLINE_GROVE_TRIAL_TAB_KEY);
+      else storage?.setItem?.(MARROWLINE_GROVE_TRIAL_TAB_KEY, GROVE_TAB_EXPLICIT_OFF);
       if (storage) persistence = 'tab-session';
     } catch {}
     return Object.freeze({ id, source: id ? 'url-opt-in' : 'explicit-off', persistence });
   }
   let stored = null;
   try { stored = storage?.getItem?.(MARROWLINE_GROVE_TRIAL_TAB_KEY); } catch {}
+  if (stored === GROVE_TAB_EXPLICIT_OFF)
+    return Object.freeze({ id: null, source: 'explicit-off', persistence: 'tab-session' });
   const id = recognizedGroveTrial(stored);
-  if (!id && stored != null) {
-    try { storage?.removeItem?.(MARROWLINE_GROVE_TRIAL_TAB_KEY); } catch {}
-  }
-  return Object.freeze({ id, source: id ? 'tab-session' : 'ordinary', persistence: id ? 'tab-session' : 'none' });
+  if (id) return Object.freeze({ id, source: 'tab-session', persistence: 'tab-session' });
+  // A fresh tab enters the archived October 2 behavior until explicitly exited.
+  // Persist this choice only within the current tab and surface its URL marker.
+  let persistence = 'unavailable';
+  try {
+    storage?.setItem?.(MARROWLINE_GROVE_TRIAL_TAB_KEY, MARROWLINE_HISTORICAL_TRIAL_ID);
+    if (storage) persistence = 'tab-session';
+  } catch {}
+  return Object.freeze({ id: MARROWLINE_HISTORICAL_TRIAL_ID, source: 'restored-default', persistence });
 }
 
 // Make restored tab state inspectable in the URL without reloading or sending
 // anything. Never alter a non-Marrowline pathname, Loom hash or other query.
 export function exposeRestoredMarrowlineGroveTrial(root = {}, resolution = {}) {
-  if (!resolution?.id || resolution?.source !== 'tab-session') return false;
+  if (!resolution?.id || !['tab-session', 'restored-default'].includes(resolution?.source)) return false;
   try {
     const location = root.location || {};
     if (!/\/marrowline\.html$/.test(String(location.pathname || ''))) return false;
@@ -72,7 +81,7 @@ export function exposeRestoredMarrowlineGroveTrial(root = {}, resolution = {}) {
 }
 
 export function exitMarrowlineGroveTrial(root = {}) {
-  try { root.sessionStorage?.removeItem?.(MARROWLINE_GROVE_TRIAL_TAB_KEY); } catch {}
+  try { root.sessionStorage?.setItem?.(MARROWLINE_GROVE_TRIAL_TAB_KEY, GROVE_TAB_EXPLICIT_OFF); } catch {}
   try {
     const location = root.location || {};
     const query = new URLSearchParams(String(location.search || ''));
