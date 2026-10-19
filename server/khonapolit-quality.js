@@ -56,6 +56,7 @@ import {
   MARROWLINE_HISTORICAL_MODEL,
   MARROWLINE_HISTORICAL_MODEL_ORDER,
   MARROWLINE_RESTORED_MODEL_ORDER,
+  MARROWLINE_RESTORED_PROSODY_PROFILE,
   buildHistoricalGroveSystemInstruction
 } from '../app/dome-world/marrowline-historical-grove.js';
 import {
@@ -573,7 +574,8 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
       packetSystemInstruction: packet.systemInstruction,
       taskGuidance,
       relayAddendum: buildRelaySystemAddendum(apertureReceipt),
-      relayCue: currentTurnRelayCue()
+      relayCue: currentTurnRelayCue(),
+      nativeProsodyFreedom: true
     })
     : groveTrial === MARROWLINE_GROVE_TRIAL_ID
       ? buildMarrowlineGroveTrialSystemInstruction(packet)
@@ -1269,7 +1271,8 @@ export default async function handler(req, res) {
       requested_model_order: [...MARROWLINE_RESTORED_MODEL_ORDER],
       eligible_model_order: [...models],
       admission_policy: 'both-voices-absent-held-after-bounded-recovery',
-      typography_policy: 'provider-native-morphology-observation-only'
+      typography_policy: 'provider-native-morphology-observation-only',
+      native_prosody_profile: MARROWLINE_RESTORED_PROSODY_PROFILE
     });
   }
   const routeModelCount = Math.max(1, providerModels.length);
