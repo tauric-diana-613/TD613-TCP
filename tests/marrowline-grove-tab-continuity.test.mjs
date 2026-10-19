@@ -96,15 +96,15 @@ test('October 2 voice remains normal text-only default, with independent tabs an
   assert.equal(resolveMarrowlineGroveTrialTab(root('https://td613.com/app/dome-world/marrowline.html',one).location,one).id,MARROWLINE_HISTORICAL_TRIAL_ID);
 });
 
-test('browser composer transmits restored voice without the oversized trial bar, preserves optional diagnostics and Loom boundaries', () => {
+test('browser composer sends restored voice silently and preserves receipt/model evidence and Loom boundaries', () => {
   const source=readFileSync(new URL('../app/dome-world/marrowline-terminal.js',import.meta.url),'utf8');
-  assert.match(source,/const groveTrial = initialGroveResolution\\.id/);
-  assert.match(source,/if \\(groveTrial && !loomTransport && attachments\\.length === 0\\) requestBody\\.groveTrial = groveTrial/);
-  assert.doesNotMatch(source,/marrowlineGroveTrialNotice|Exit trial|groveExit|renderGroveMode/);
-  assert.doesNotMatch(source,/exposeRestoredMarrowlineGroveTrial\\(root, initialGroveResolution\\)/);
-  assert.match(source,/receivedReceipt = payload\\?\\.receipt \\|\\| null/);
-  assert.match(source,/ingestGeminiConsumption/);
-  assert.match(source,/const payload = loomTransport \\? transportPayload\\.native_reply : transportPayload/);
+  assert.ok(source.includes('const groveTrial = initialGroveResolution.id'));
+  assert.ok(source.includes('if (groveTrial && !loomTransport && attachments.length === 0) requestBody.groveTrial = groveTrial'));
+  assert.ok(source.includes('receivedReceipt = payload?.receipt || null'));
+  assert.ok(source.includes('ingestGeminiConsumption'));
+  assert.ok(source.includes('const payload = loomTransport ? transportPayload.native_reply : transportPayload'));
+  assert.ok(!/marrowlineGroveTrialNotice|Exit trial|groveExit|renderGroveMode/.test(source));
+  assert.ok(!source.includes('exposeRestoredMarrowlineGroveTrial(root, initialGroveResolution)'));
 });
 
 test('plain-h server always exposes explicit ordinary, historical or unresolved route identity without editing provider text', () => {
