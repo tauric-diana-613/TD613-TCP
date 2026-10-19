@@ -1142,7 +1142,7 @@ jobs:
       github.ref == 'refs/heads/main' &&
       github.actor == 'tauric-diana-613' &&
       github.run_attempt == 1 &&
-      github.event.head_commit.message == 'research(marrowline): execute order-balanced D0 D1 once on main'
+      startsWith(github.event.head_commit.message, 'research(marrowline): execute order-balanced D0 D1 once on main')
     runs-on: ubuntu-latest
     permissions:
       contents: read
