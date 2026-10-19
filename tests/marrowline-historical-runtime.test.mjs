@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import handler from '../server/khonapolit-quality.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
-import { MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_HISTORICAL_MODEL_ORDER } from '../app/dome-world/marrowline-historical-grove.js';
+import { MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_RESTORED_MODEL_ORDER } from '../app/dome-world/marrowline-historical-grove.js';
 
 const native = 'T\u0300\u0301\u0302\u0316\u0317A\u0304\u0307\u030B\u031C\u0323\u032DR\u0305\u0308\u030C\u031E\u0325\u0331I\u0303\u0306\u030A\u0319\u0326\u0330\u0334';
 const slash = 'T\u0337A\u0338U\u0337R\u0338I\u0337C\u0338';
@@ -77,9 +77,9 @@ async function runMock(t, {available, choose, trial=true, requestIp='203.0.113.2
   return {res,models,requests};
 }
 
-test('historical-only: unvoiced Gemini STOP remains observable and explicitly unadmitted, with trial receipt',async t=>{
+test('restored voice: unvoiced Gemini STOP is observable and not a false clinical or PAUSED event',async t=>{
   const {res,models}=await runMock(t,{
-    available:['gemini-3.8-flash'],
+    available:['gemini-4-argon','gemini-3.8-flash'],
     choose:()=>unvoiced
   });
   assert.equal(res.count,1);
@@ -92,20 +92,21 @@ test('historical-only: unvoiced Gemini STOP remains observable and explicitly un
   assert.equal(res.payload.relay.signal.downstreamAdmitted,false);
   assert.equal(res.headers['X-TD613-Grove-Trial'],MARROWLINE_HISTORICAL_TRIAL_ID);
   assert.ok(models.length>=1 && models.length<=6, 'historical five model seats plus one structural repair');
-  assert.equal(models[0],'gemini-3.8-flash');
-  assert.ok(models.every(model=>['gemini-3.8-flash','gemini-3.5-flash','gemini-3.6-flash','gemini-3.7-flash','gemini-3-flash-preview'].includes(model)));
+  assert.equal(models[0],'gemini-4-argon');
+  assert.ok(models.every(model=>MARROWLINE_RESTORED_MODEL_ORDER.includes(model)));
+  assert.equal(res.payload.grove_trial.variant,'restored-voice-argon-frontier-20261019');
   assert.equal(res.payload.grove_trial.attempt_models.length,models.length);
 });
 
-test('historical-only: weak first native field triggers one additional 3.x author, rather than flattening it',async t=>{
+test('restored voice: planar Argon field gives one native 3.8 author the same original-byte opportunity',async t=>{
   const {res,models,requests}=await runMock(t,{
     available:['gemini-3.8-flash','gemini-3.5-flash','gemini-4-argon'],
     requestIp:'203.0.113.243',
-    choose:model=>model==='gemini-3.8-flash'?horizontal:vertical
+    choose:model=>model==='gemini-4-argon'?horizontal:vertical
   });
   assert.equal(res.count,1);
   assert.equal(res.statusCode,200);
-  assert.deepEqual(models,['gemini-3.8-flash','gemini-3.5-flash'], JSON.stringify({
+  assert.deepEqual(models,['gemini-4-argon','gemini-3.8-flash'], JSON.stringify({
     result_status:res.statusCode,
     model_count:models.length,
     output_text:res.payload?.text?.slice(0,200),
@@ -115,8 +116,9 @@ test('historical-only: weak first native field triggers one additional 3.x autho
     }))
   }));
   assert.equal(res.payload.text,vertical);
-  assert.equal(res.payload.receipt.provider.model,'gemini-3.5-flash');
-  assert.deepEqual(res.payload.grove_trial.eligible_model_order, MARROWLINE_HISTORICAL_MODEL_ORDER);
+  assert.equal(res.payload.receipt.provider.model,'gemini-3.8-flash');
+  assert.deepEqual(res.payload.grove_trial.requested_model_order, MARROWLINE_RESTORED_MODEL_ORDER);
+  assert.deepEqual(res.payload.grove_trial.eligible_model_order, ['gemini-4-argon','gemini-3.8-flash','gemini-3.5-flash']);
   assert.deepEqual(res.payload.grove_trial.attempt_models,models);
   assert.equal(res.payload.grove_trial.attempt_models.length,2,'only two seats were actually invoked');
   assert.equal(res.payload.receipt.provider.attempts[0].morphologyObservation.historicalPreference,true);
