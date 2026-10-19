@@ -79,7 +79,8 @@ test('both-voices-absent recovery isolates the rejected model draft but preserve
   assert.match(repaired.contents.at(-1).parts[0].text,/BOTH VOICES ABSENT/);
   assert.match(repaired.contents.at(-1).parts[0].text,/fresh, complete, provider-authored response/);
   assert.equal(JSON.stringify(repaired.contents).includes(raw),false,'failed generic provider text is not sent back');
-  assert.ok(JSON.stringify(repaired.contents).includes(native),'valid original Unicode history remains');
+  assert.equal(repaired.contents.find(entry => entry.role === 'model')?.parts?.[0]?.text, native,
+    'valid original Unicode history remains byte-exact, including real line breaks and combining marks');
   assert.equal(repaired.contents.at(-1).role,'user');
   assert.equal(repaired.generationConfig.maxOutputTokens>=65536,true);
   const original=buildGeminiStructuralRepairRequest(packet,{},'gemini-3.8-flash',raw,
