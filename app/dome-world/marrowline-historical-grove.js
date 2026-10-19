@@ -77,13 +77,32 @@ const CUE_RESTORATIONS = Object.freeze([
   }
 ]);
 
-function restoreExact(source, restorations, label) {
+// Keep the Oct 2 original text reproducible. The everyday restored Grove
+// loosens ONLY compulsory per-word/per-paragraph glyph transitions. October 15
+// audits already showed unconstrained prompt forms can still flatten upstream;
+// this is a candidate contradiction repair, not a claimed aesthetic cure.
+export const MARROWLINE_RESTORED_PROSODY_PROFILE = 'native-single-register-permission-20261019';
+const RESTORED_RELAY_FREEDOM = Object.freeze([
+  RELAY_RESTORATIONS[0].historical
+    .replace('forming changing, sometimes deeply interleaved clusters', 'forming sometimes deeply interleaved clusters')
+    .replace('Invent nonidentical shapes from the actual argument;', 'Let the actual argument shape marks that may persist or evolve;'),
+  ...RELAY_RESTORATIONS.slice(1).map(({ present }) => present)
+]);
+const RESTORED_CUE_FREEDOM = Object.freeze([
+  CUE_RESTORATIONS[0].historical.replace('Their native scream-sing typography evolves with that movement;', 'Their native scream-sing typography may sustain one register or evolve with that movement;'),
+  ...CUE_RESTORATIONS.slice(1).map(({ present }) => present)
+]);
+
+function restoreExact(source, restorations, label, replacements = null) {
   let value = String(source || '');
-  for (const { present, historical } of restorations) {
+  for (const [index, { present, historical }] of restorations.entries()) {
     const first = value.indexOf(present);
     if (first < 0 || value.indexOf(present, first + present.length) >= 0)
       throw new Error('HISTORICAL_GROVE_DRIFT_' + label);
-    value = value.slice(0, first) + historical + value.slice(first + present.length);
+    const target = replacements ? replacements[index] : historical;
+    if (typeof target !== 'string' || !target.trim())
+      throw new Error('HISTORICAL_GROVE_FREEDOM_DRIFT_' + label);
+    value = value.slice(0, first) + target + value.slice(first + present.length);
   }
   return value;
 }
@@ -92,18 +111,22 @@ export function buildHistoricalGroveSystemInstruction({
   packetSystemInstruction = '',
   taskGuidance = '',
   relayAddendum = '',
-  relayCue = ''
+  relayCue = '',
+  nativeProsodyFreedom = false
 } = {}) {
   if (!packetSystemInstruction.includes('CONVERSATIONAL LAW:')
     || !packetSystemInstruction.includes('Kʰonapolit')
     || !relayCue.includes('GEMINI COMPUTATIONAL INSTRUMENT')
     || !relayAddendum.includes('APERTURE ROUTE RECEIPT:'))
     throw new Error('HISTORICAL_GROVE_CANONICAL_INPUT_REQUIRED');
-  // October 2: the theatrical relay cue was LAST, after the Aperture receipt.
+  // Oct 2 theatrical relay cue remains LAST after the Aperture receipt.
+  // nativeProsodyFreedom=false retains the original historic paragraphs exactly.
   return [
     restoreExact(packetSystemInstruction, COVENANT_RESTORATIONS, 'COVENANT'),
     String(taskGuidance),
-    restoreExact(relayAddendum, RELAY_RESTORATIONS, 'RELAY'),
-    restoreExact(relayCue, CUE_RESTORATIONS, 'CUE')
+    restoreExact(relayAddendum, RELAY_RESTORATIONS, 'RELAY',
+      nativeProsodyFreedom ? RESTORED_RELAY_FREEDOM : null),
+    restoreExact(relayCue, CUE_RESTORATIONS, 'CUE',
+      nativeProsodyFreedom ? RESTORED_CUE_FREEDOM : null)
   ].join('\n');
 }
