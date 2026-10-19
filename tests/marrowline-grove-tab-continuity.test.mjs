@@ -59,17 +59,19 @@ test('tab-only opt-in survives a return through Dome-World navigation and become
   assert.equal(resolveMarrowlineGroveTrialTab(returned.location,storage).id,MARROWLINE_HISTORICAL_TRIAL_ID);
 });
 
-test('explicit off and unknown flags clear per-tab trial; they must never fall back to historical mode', () => {
+test('explicit off is a deliberate URL diagnostic; stale sticky off from the retired Exit bar is healed', () => {
   for(const off of ['off','', 'historical-20261003-v1']) {
     const storage=tab({[MARROWLINE_GROVE_TRIAL_TAB_KEY]:MARROWLINE_HISTORICAL_TRIAL_ID});
     const page=root('https://td613.com/app/dome-world/marrowline.html?groveTrial='+off,storage);
     const choice=resolveMarrowlineGroveTrialTab(page.location,storage);
     assert.equal(choice.id,null);
     assert.equal(choice.source,'explicit-off');
-    assert.equal(storage.getItem(MARROWLINE_GROVE_TRIAL_TAB_KEY),'off');
     const returned=root('https://td613.com/app/dome-world/marrowline.html',storage);
-    assert.equal(resolveMarrowlineGroveTrialTab(returned.location,storage).id,null);
+    assert.equal(resolveMarrowlineGroveTrialTab(returned.location,storage).id,MARROWLINE_HISTORICAL_TRIAL_ID);
   }
+  const oldExit=tab({[MARROWLINE_GROVE_TRIAL_TAB_KEY]:'off'});
+  const returned=root('https://td613.com/app/dome-world/marrowline.html',oldExit);
+  assert.equal(resolveMarrowlineGroveTrialTab(returned.location,oldExit).id,MARROWLINE_HISTORICAL_TRIAL_ID);
 });
 
 test('operator can explicitly exit trial and preserve other query parameters and hash', () => {
@@ -78,38 +80,31 @@ test('operator can explicitly exit trial and preserve other query parameters and
   assert.equal(exitMarrowlineGroveTrial(page),true);
   assert.equal(page.writes.at(-1).uri,'/app/dome-world/marrowline.html?foo=bar#chat');
   assert.equal(storage.getItem(MARROWLINE_GROVE_TRIAL_TAB_KEY),'off');
-  assert.equal(resolveMarrowlineGroveTrialTab(page.location,storage).id,null);
+  assert.equal(resolveMarrowlineGroveTrialTab(page.location,storage).id,MARROWLINE_HISTORICAL_TRIAL_ID);
 });
 
-test('October 2 historical behavior is the new text-composer default, opt-out is tab-local and durable', () => {
+test('October 2 voice remains normal text-only default, with independent tabs and no forced trial URL', () => {
   const one=tab(),two=tab();
   const first=root('https://td613.com/app/dome-world/marrowline.html?foo=bar#chat',one);
   const restored=resolveMarrowlineGroveTrialTab(first.location,one);
   assert.deepEqual(restored,{id:MARROWLINE_HISTORICAL_TRIAL_ID,source:'restored-default',persistence:'tab-session'});
   assert.equal(one.getItem(MARROWLINE_GROVE_TRIAL_TAB_KEY),MARROWLINE_HISTORICAL_TRIAL_ID);
-  assert.equal(exposeRestoredMarrowlineGroveTrial(first,restored),true);
-  assert.equal(first.writes[0].uri,'/app/dome-world/marrowline.html?foo=bar&groveTrial=historical-20261002-v1#chat');
-  // A separate fresh tab independently receives the restored default.
+  assert.equal(first.writes.length,0,'ordinary visits are not required to carry experiment query parameters');
   assert.equal(resolveMarrowlineGroveTrialTab(root('https://td613.com/app/dome-world/marrowline.html',two).location,two).id,MARROWLINE_HISTORICAL_TRIAL_ID);
-  // An explicit per-tab opt-out survives reloads; it never changes another tab.
-  const off=root('https://td613.com/app/dome-world/marrowline.html?groveTrial=off',one);
-  assert.equal(resolveMarrowlineGroveTrialTab(off.location,one).id,null);
-  assert.equal(resolveMarrowlineGroveTrialTab(root('https://td613.com/app/dome-world/marrowline.html',one).location,one).id,null);
-  assert.equal(resolveMarrowlineGroveTrialTab(root('https://td613.com/app/dome-world/marrowline.html',two).location,two).id,MARROWLINE_HISTORICAL_TRIAL_ID);
-  assert.equal(exposeRestoredMarrowlineGroveTrial(root('https://td613.com/other.html',two),{id:MARROWLINE_HISTORICAL_TRIAL_ID,source:'tab-session'}),false);
+  const diagnostic=root('https://td613.com/app/dome-world/marrowline.html?groveTrial=off',one);
+  assert.equal(resolveMarrowlineGroveTrialTab(diagnostic.location,one).id,null);
+  assert.equal(resolveMarrowlineGroveTrialTab(root('https://td613.com/app/dome-world/marrowline.html',one).location,one).id,MARROWLINE_HISTORICAL_TRIAL_ID);
 });
 
-test('browser composer binds the exact tab mode to text-only requests, offers Exit, and does not override Loom', () => {
+test('browser composer transmits restored voice without the oversized trial bar, preserves optional diagnostics and Loom boundaries', () => {
   const source=readFileSync(new URL('../app/dome-world/marrowline-terminal.js',import.meta.url),'utf8');
-  assert.match(source,/let groveTrial = initialGroveResolution\.id/);
-  assert.match(source,/groveNotice\.dataset\.groveTrial = groveTrial \|\| 'off'/);
-  assert.match(source,/exitMarrowlineGroveTrial\(root\)/);
-  assert.match(source,/if \(groveTrial && !loomTransport && attachments\.length === 0\) requestBody\.groveTrial = groveTrial/);
-  assert.match(source,/groveExit\.disabled = true/);
-  assert.match(source,/groveExit\.disabled = false/);
-  assert.match(source,/lastConfirmedGroveMode = payload\?\.grove_trial\?\.id/);
-  assert.match(source,/SERVER MODE MISMATCH/);
-  assert.match(source,/groveTrial && !loomTransport && attachments\.length === 0/);
+  assert.match(source,/const groveTrial = initialGroveResolution\\.id/);
+  assert.match(source,/if \\(groveTrial && !loomTransport && attachments\\.length === 0\\) requestBody\\.groveTrial = groveTrial/);
+  assert.doesNotMatch(source,/marrowlineGroveTrialNotice|Exit trial|groveExit|renderGroveMode/);
+  assert.doesNotMatch(source,/exposeRestoredMarrowlineGroveTrial\\(root, initialGroveResolution\\)/);
+  assert.match(source,/receivedReceipt = payload\\?\\.receipt \\|\\| null/);
+  assert.match(source,/ingestGeminiConsumption/);
+  assert.match(source,/const payload = loomTransport \\? transportPayload\\.native_reply : transportPayload/);
 });
 
 test('plain-h server always exposes explicit ordinary, historical or unresolved route identity without editing provider text', () => {
