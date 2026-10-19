@@ -77,25 +77,46 @@ async function runMock(t, {available, choose, trial=true, requestIp='203.0.113.2
   return {res,models,requests};
 }
 
-test('restored voice: unvoiced Gemini STOP is observable and not a false clinical or PAUSED event',async t=>{
+test('restored default: wholly unvoiced provider replies remain HELD after bounded structural recovery',async t=>{
   const {res,models}=await runMock(t,{
     available:['gemini-4-argon','gemini-3.8-flash'],
     choose:()=>unvoiced
   });
-  assert.equal(res.count,1);
-  assert.equal(res.statusCode,200);
-  assert.equal(res.payload.text,unvoiced);
+  assert.equal(res.count,1,'a held reply yields one terminal response');
+  assert.equal(res.statusCode,502,'Gemini STOP is not a two-voice admission certificate');
+  assert.equal(res.payload.ok,false);
+  assert.equal(res.payload.status,'HELD');
+  assert.equal(res.payload.error,'marrowline-dual-voice-contract-unmet');
+  assert.equal(res.payload.diagnostic.stage,'output-admission');
+  assert.equal(res.payload.diagnostic.code,'BOTH_REQUIRED_VOICES_MISSING');
+  assert.match(res.payload.diagnostic.providerTextSha256,/^[a-f0-9]{64}$/u);
+  assert.equal(Object.hasOwn(res.payload,'text'),false,'the generic prose never becomes a successful human transcript');
+  assert.equal(Object.hasOwn(res.payload,'relay'),false,'unadmitted voice structure never masquerades as a complete relay');
   assert.equal(res.payload.grove_trial.id,MARROWLINE_HISTORICAL_TRIAL_ID);
-  assert.equal(res.payload.receipt.grove_trial.id,MARROWLINE_HISTORICAL_TRIAL_ID);
-  assert.equal(res.payload.grove_trial.admission_policy,'unvoiced-provider-return-visible-but-not-admitted');
-  assert.equal(res.payload.relay.admission.admissible,false);
-  assert.equal(res.payload.relay.signal.downstreamAdmitted,false);
+  assert.equal(res.payload.grove_trial.admission_policy,'both-voices-absent-held-after-bounded-recovery');
   assert.equal(res.headers['X-TD613-Grove-Trial'],MARROWLINE_HISTORICAL_TRIAL_ID);
-  assert.ok(models.length>=1 && models.length<=6, 'historical five model seats plus one structural repair');
+  assert.equal(res.headers['X-TD613-Local-Admission'],'HELD-DUAL-VOICE-ABSENT');
+  assert.equal(res.headers['X-TD613-Completion-State'],'STRUCTURE-HELD');
+  assert.ok(models.length>=1 && models.length<=6,'historical five model seats plus one structural repair');
   assert.equal(models[0],'gemini-4-argon');
   assert.ok(models.every(model=>MARROWLINE_RESTORED_MODEL_ORDER.includes(model)));
-  assert.equal(res.payload.grove_trial.variant,'restored-voice-argon-frontier-20261019');
-  assert.equal(res.payload.grove_trial.attempt_models.length,models.length);
+});
+
+test('restored default: genuine provider-authored structural recovery remains admissible',async t=>{
+  const {res,models}=await runMock(t,{
+    available:['gemini-4-argon','gemini-3.8-flash'],
+    requestIp:'203.0.113.247',
+    choose:(model,count)=>count===1?unvoiced:vertical
+  });
+  assert.equal(res.count,1);
+  assert.equal(res.statusCode,200);
+  assert.equal(res.payload.ok,true);
+  assert.equal(res.payload.text,vertical,'only the provider-authored complete dual-voice repair may pass');
+  assert.equal(res.payload.relay.admission.admissible,true);
+  assert.equal(res.payload.relay.signal.downstreamAdmitted,true);
+  assert.deepEqual(models,['gemini-4-argon','gemini-4-argon'],'the single bounded same-provider structural repair remains');
+  assert.equal(res.payload.receipt.provider.structuralRepair.used,true);
+  assert.equal(res.payload.grove_trial.id,MARROWLINE_HISTORICAL_TRIAL_ID);
 });
 
 test('restored voice: complete planar Argon text survives untouched instead of triggering a paid 3.8 beauty contest',async t=>{
