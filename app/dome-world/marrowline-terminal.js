@@ -38,9 +38,7 @@ import {
 import { classifyMarrowlineRetryWindow } from './marrowline-retry-window.js';
 import { buildMarrowlineEpisodeWitness } from './marrowline-episode-witness.js';
 import {
-  resolveMarrowlineGroveTrialTab,
-  exposeRestoredMarrowlineGroveTrial,
-  exitMarrowlineGroveTrial
+  resolveMarrowlineGroveTrialTab
 } from './marrowline-grove-trial.js';
 import { MARROWLINE_HISTORICAL_TRIAL_ID } from './marrowline-historical-grove.js';
 import {
@@ -715,50 +713,9 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   let groveTabStorage = null;
   try { groveTabStorage = root.sessionStorage || null; } catch {}
   const initialGroveResolution = resolveMarrowlineGroveTrialTab(root.location, groveTabStorage);
-  exposeRestoredMarrowlineGroveTrial(root, initialGroveResolution);
-  let groveTrial = initialGroveResolution.id;
-  // Both lanes identify themselves visibly; code identity is not artistic proof.
-  const groveNotice = doc.createElement('div');
-  groveNotice.id = 'marrowlineGroveTrialNotice';
-  groveNotice.className = 'marrowline-grove-trial-notice';
-  groveNotice.setAttribute('role', 'status');
-  groveNotice.setAttribute('aria-live', 'polite');
-  if (groveNotice.style) groveNotice.style.cssText = 'display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 5px;padding:3px 7px;font-size:0.72rem;line-height:1.3;opacity:.88';
-  const groveModeText = doc.createElement('span');
-  const groveExit = doc.createElement('button');
-  groveExit.type = 'button';
-  groveExit.textContent = 'Exit trial';
-  groveExit.setAttribute('aria-label', 'Exit Grove trial and use ordinary Marrowline');
-  if (groveExit.style) groveExit.style.cssText = 'font:inherit;padding:2px 8px;border:1px solid currentColor;border-radius:999px;background:transparent;color:inherit;cursor:pointer';
-  let lastConfirmedGroveMode = null;
-  const renderGroveMode = () => {
-    groveNotice.dataset.groveTrial = groveTrial || 'off';
-    groveModeText.textContent = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID
-      ? 'Marrowline · OCT 2 RESTORED · 3.x voice · text-only · provider charges apply'
-      : groveTrial
-        ? 'Grove · NATIVE-VOICE TRIAL ON · text-only · provider charges apply'
-        : 'Grove trial OFF · ordinary Marrowline (Argon-first)';
-    const expected = groveTrial || 'off';
-    groveNotice.dataset.serverConfirmedMode = lastConfirmedGroveMode || 'unobserved';
-    if (lastConfirmedGroveMode) {
-      groveModeText.textContent += lastConfirmedGroveMode === expected
-        ? ' · server matched'
-        : ' · SERVER MODE MISMATCH: ' + lastConfirmedGroveMode;
-    } else if (groveTrial) {
-      groveModeText.textContent += ' · server not yet witnessed';
-    }
-    groveExit.hidden = !groveTrial;
-  };
-  groveExit.addEventListener('click', () => {
-    if (requestInFlight) return;
-    exitMarrowlineGroveTrial(root);
-    groveTrial = null;
-    lastConfirmedGroveMode = null;
-    renderGroveMode();
-  });
-  groveNotice.append(groveModeText, groveExit);
-  form.prepend(groveNotice);
-  renderGroveMode();
+  // The restored October 2 voice is ordinary text-only Marrowline rather
+  // than a user-visible trial. Retain server mode/served model in the receipt.
+  const groveTrial = initialGroveResolution.id;
   const freshLoomArrival = (root.location?.hash || '').startsWith('#loom=') || root.location?.hash === '#loom-demo';
   const state = loadSession(root);
   let threadLibrary = null;
@@ -1238,7 +1195,6 @@ export function installKhonapolitTerminal(doc = document, root = window) {
     const requestController = new AbortController();
     activeRequestController = requestController;
     setSendControlState(true);
-    groveExit.disabled = true;
     root.dispatchEvent?.(new root.CustomEvent('td613:marrowline:attachment-submission-state', {
       detail: { sending: true, count: attachments.length }
     }));
@@ -1292,7 +1248,6 @@ export function installKhonapolitTerminal(doc = document, root = window) {
           'Operator cancelled before network dispatch; task preserved for an explicit retry');
       }
       setSendControlState(false);
-      groveExit.disabled = false;
       root.dispatchEvent?.(new root.CustomEvent('td613:marrowline:attachment-submission-state', {
         detail: { sending: false, count: getMarrowlineAttachments().length }
       }));
@@ -1398,10 +1353,6 @@ export function installKhonapolitTerminal(doc = document, root = window) {
         'Marrowline HTTP response observed; body still unread and completion unverified');
       const transportPayload = await awaitMarrowlineAbortable(response.json(), requestController.signal);
       const payload = loomTransport ? transportPayload.native_reply : transportPayload;
-      if (!loomTransport) {
-        lastConfirmedGroveMode = payload?.grove_trial?.id || payload?.receipt?.grove_trial?.id || 'unwitnessed';
-        renderGroveMode();
-      }
       if (activeRequestCancelRequested) throw new Error('operator-cancelled');
       requestStage = 'response-processing';
       if (status) status.dataset.progressStage = 'body-received';
@@ -1542,7 +1493,6 @@ export function installKhonapolitTerminal(doc = document, root = window) {
       const cancelledByOperator = activeRequestCancelRequested;
       activeRequestCancelRequested = false;
       setSendControlState(false);
-      groveExit.disabled = false;
       root.dispatchEvent?.(new root.CustomEvent('td613:marrowline:attachment-submission-state', {
         detail: { sending: false, count: getMarrowlineAttachments().length }
       }));
