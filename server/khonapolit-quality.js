@@ -1265,7 +1265,7 @@ export default async function handler(req, res) {
       variant: 'restored-voice-argon-frontier-20261019',
       requested_model_order: [...MARROWLINE_RESTORED_MODEL_ORDER],
       eligible_model_order: [...models],
-      admission_policy: 'unvoiced-provider-return-visible-but-not-admitted',
+      admission_policy: 'both-voices-absent-held-after-bounded-recovery',
       typography_policy: 'provider-native-morphology-observation-only'
     });
   }
@@ -1540,7 +1540,9 @@ export default async function handler(req, res) {
     // Keep the exact provider text out of the successful human transcript;
     // retain only its digest and the existing attempt diagnostics. No extra
     // Gemini calls, text rewriting, synthetic voices, or typography filters.
-    if (bothMarrowlineVoicesAbsent(relay) && !isHistoricalGrove) {
+    // Enforce identically for ordinary and historically restored browser ingress:
+    // restored voice is now the default, not an exception to voice custody.
+    if (bothMarrowlineVoicesAbsent(relay)) {
       res.setHeader('X-TD613-Gemini-Model', model);
       res.setHeader('X-TD613-Local-Admission', 'HELD-DUAL-VOICE-ABSENT');
       res.setHeader('X-TD613-Completion-State', 'STRUCTURE-HELD');
