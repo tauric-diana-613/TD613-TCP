@@ -21,13 +21,17 @@ GEMINI_API_KEY=your_key_here
 GEMINI_ROUTING_MODE=quality-first
 ```
 
-Blank model overrides use the repository-wide pinned text order:
+Blank model overrides use the repository-wide pinned Hush quality order:
 
 ```text
+gemini-3.8-flash
+gemini-3.7-flash
+gemini-3.6-flash
 gemini-3.5-flash
 gemini-3-flash-preview
-gemini-3.1-flash-lite
 ```
+
+The browser-facing Hush model label remains `auto-quality`; the server resolves the actual eligible model from this current 3.x quality family. Lite models are not part of the default Hush transform lane.
 
 The first eligible high-quality model is tried first. A fallback is used only after failure, timeout, quota pressure, or temporary cooldown. A successful fallback is not promoted above higher-quality models on later requests.
 
