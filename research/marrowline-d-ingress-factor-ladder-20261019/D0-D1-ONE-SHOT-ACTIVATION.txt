@@ -1,0 +1,9 @@
+TD613 · D0 D1 original SSE first-attempt activation
+PR: #1557
+Authorization: at most two credential-scoped Gemini 3.8 Flash MEDIUM direct streaming calls.
+Conditions: frozen original Oct 15 creative D0 request vs Marrowline ingress-only D1.
+Hard prerequisites: exact PR head; first workflow attempt; account actor and source repo match; static constitutional/release contracts SUCCESS; no automatic retry or fallback.
+This file and its commit title are research activation markers, not production release authority.
+No changes to normal Marrowline, Vercel or the model-configuration baseline.
+𝄐 EXACT_PREREGISTERED_ACTIVATION · ONE_ATTEMPT_ONLY
+Sealed ⟐
