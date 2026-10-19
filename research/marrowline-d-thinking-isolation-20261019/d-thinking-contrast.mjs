@@ -43,6 +43,11 @@ export function buildDThinkingContrast() {
   const { thinkingConfig: mediumThinking, ...mediumRest } = medium.generationConfig;
   const { thinkingConfig: highThinking, ...highRest } = high.generationConfig;
   assert.deepEqual(mediumRest, highRest, 'no token, sampling or schema drift');
+  assert.deepEqual(
+    { ...medium, generationConfig: mediumRest },
+    { ...high, generationConfig: highRest },
+    'full provider-request object must be identical after removing only thinkingConfig'
+  );
   assert.notDeepEqual(mediumThinking, highThinking, 'thinking level is sole A/B intervention');
 
   return Object.freeze({ medium, high, model: MODEL });
