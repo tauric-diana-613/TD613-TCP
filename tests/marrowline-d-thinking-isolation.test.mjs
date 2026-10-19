@@ -47,14 +47,15 @@ test('October 15 successful D control is reproduced byte-exactly for both 3.8 th
   assert.equal(Object.hasOwn(high.generationConfig, 'responseMimeType'), false);
 });
 
-test('restored Grove is not byte-comparable to neutral D even when the user submits D words', () => {
+test('actual interactive Grove matches D MEDIUM setting but not D contents or system', () => {
   const observation = describeRestoredVersusD();
   assert.equal(observation.sameModel, true);
   assert.equal(observation.sameUserContents, false);
   assert.equal(observation.sameSystemFrame, false);
-  assert.equal(observation.sameGenerationConfigAsDMedium, false);
-  assert.equal(observation.sameGenerationConfigAsDHigh, true);
-  assert.deepEqual(observation.restoredThinking, { thinkingLevel: 'high' });
+  assert.equal(observation.actualEntrypointProfile, 'khonapolit-interactive');
+  assert.equal(observation.sameGenerationConfigAsDMedium, true);
+  assert.equal(observation.sameGenerationConfigAsDHigh, false);
+  assert.deepEqual(observation.restoredThinking, { thinkingLevel: 'medium' });
   assert.deepEqual(observation.DThinking, { thinkingLevel: 'medium' });
 });
 
