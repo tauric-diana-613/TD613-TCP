@@ -63,8 +63,8 @@ test('actual wrapped Marrowline text entrypoint differs from D in frame but agre
 test('HTTP entrypoint actually installs the interactive profile for ordinary text requests', () => {
   const entry = readFileSync(new URL('../api/khonapolit.js', import.meta.url), 'utf8');
   const envelope = readFileSync(new URL('../server/gemini-generation-envelope.js', import.meta.url), 'utf8');
-  assert.match(entry, /return withGeminiGenerationProfile\\(\\s*GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,/);
-  assert.match(envelope, /id === 'gemini-3\\.8-flash'\\) requestedLevel = 'medium'/);
+  assert.match(entry, /return withGeminiGenerationProfile\(\s*GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,/);
+  assert.match(envelope, /id === 'gemini-3\.8-flash'\) requestedLevel = 'medium'/);
 });
 
 test('D thinking study is offline only and reports no provider-output restoration', () => {
