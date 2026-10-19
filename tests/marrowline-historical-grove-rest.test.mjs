@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { buildInvocationPacket } from '../app/dome-world/khonapolit-covenant.js';
 import { buildGeminiRequest, buildGeminiStructuralRepairRequest, selectKhonapolitProviderModelsFromPlan } from '../server/khonapolit-quality.js';
 import { MARROWLINE_GROVE_TRIAL_ID, selectMarrowlineGroveTrial, groveTrialFromLocation } from '../app/dome-world/marrowline-grove-trial.js';
-import { MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_HISTORICAL_MODEL, MARROWLINE_HISTORICAL_MODEL_ORDER, MARROWLINE_RESTORED_MODEL_ORDER, preferHistoricalMorphologyCandidate, buildHistoricalGroveSystemInstruction } from '../app/dome-world/marrowline-historical-grove.js';
+import { MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_HISTORICAL_MODEL, MARROWLINE_HISTORICAL_MODEL_ORDER, MARROWLINE_RESTORED_MODEL_ORDER, buildHistoricalGroveSystemInstruction } from '../app/dome-world/marrowline-historical-grove.js';
 
 const packet = buildInvocationPacket({
   message: 'The Red Deer asks Kʰonapolit why the fictional tribunal gave the bots a subpoena.',
@@ -81,11 +81,9 @@ test('trial restores historic five-seat 3.x model order and preserves the ordina
   assert.equal(historical.includes('gemini-4-argon'), false);
   assert.deepEqual(selectKhonapolitProviderModelsFromPlan({ callableModels: ['gemini-4-argon','gemini-3.8-flash'] },{ historicalGrove: true }), ['gemini-3.8-flash']);
   assert.deepEqual(selectKhonapolitProviderModelsFromPlan({ callableModels: ['gemini-4-argon','gemini-3.8-flash'] },{ restoredGrove: true }), ['gemini-4-argon','gemini-3.8-flash']);
-  const weak = { severeWarnings:['tauric-diana-zalgo-axis-collapse'], relay:{highZalgo:{maxVerticalOrnamentStackDepth:0,combiningCodePointDiversity:1}} };
-  const strong = { severeWarnings:[], relay:{highZalgo:{maxVerticalOrnamentStackDepth:4,combiningCodePointDiversity:17}} };
-  assert.equal(preferHistoricalMorphologyCandidate(weak,strong),strong);
-  assert.equal(preferHistoricalMorphologyCandidate(strong,weak),strong);
-  assert.equal(preferHistoricalMorphologyCandidate(null,weak),weak);
+  const historicalSource = readFileSync(new URL('../app/dome-world/marrowline-historical-grove.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(historicalSource, /preferHistoricalMorphologyCandidate|const depth = item =>|const diversity = item =>/,
+    'the archive can retain original voice instructions without an aesthetic candidate election');
 });
 
 test('trial leaves plain-h endpoint, Loom and previous audition unchanged', () => {
