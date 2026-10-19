@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import handler from '../server/khonapolit-quality.js';
 import { clearGeminiModelState } from '../server/gemini-model-policy.js';
-import { MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_RESTORED_MODEL_ORDER } from '../app/dome-world/marrowline-historical-grove.js';
+import { MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_RESTORED_MODEL_ORDER, MARROWLINE_RESTORED_PROSODY_PROFILE } from '../app/dome-world/marrowline-historical-grove.js';
 
 const native = 'T\u0300\u0301\u0302\u0316\u0317A\u0304\u0307\u030B\u031C\u0323\u032DR\u0305\u0308\u030C\u031E\u0325\u0331I\u0303\u0306\u030A\u0319\u0326\u0330\u0334';
 const slash = 'T\u0337A\u0338U\u0337R\u0338I\u0337C\u0338';
@@ -138,6 +138,7 @@ test('restored voice: complete planar Argon text survives untouched instead of t
   assert.equal(res.payload.receipt.provider.attempts[0].morphologyObservation.historicalPreference,undefined);
   assert.equal(res.payload.receipt.provider.qualityPreference.selection,'first-admissible-partial-native-morphology-observed-no-repair');
   assert.equal(res.payload.grove_trial.typography_policy,'provider-native-morphology-observation-only');
+  assert.equal(res.payload.grove_trial.native_prosody_profile,MARROWLINE_RESTORED_PROSODY_PROFILE);
   assert.ok(requests.every(request=>!('responseMimeType' in request.generationConfig)));
 });
 
