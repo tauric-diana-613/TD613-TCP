@@ -100,6 +100,9 @@ import './marrowline-d-ingress-factor-ladder.test.mjs';
 // A main-only, exact-head, first-attempt original-SSE two-call instrument; offline tests only.
 import './marrowline-d0-d1-original-sse-once.test.mjs';
 
+// Empirical follow-up: ABBA original SSE request isolation, source-only in ordinary CI.
+import './marrowline-d0d1-balanced-four.test.mjs';
+
 // Actual /api/khonapolit route is MEDIUM, unlike unprofiled synthetic HIGH constructor.
 import './marrowline-interactive-d-profile-parity.test.mjs';
 
