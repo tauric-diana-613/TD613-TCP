@@ -177,6 +177,43 @@ test('effective provider prompts retain complete relay and native depth after de
   }
 });
 
+test('browser preserves failed model receipts locally but excludes explicitly unadmitted text from next Gemini context', () => {
+  const accepted = 'Kʰonapolit\nAn admissible argument.\n\nTauric Diana bots\nT\\u0300H\\u0316E';
+  const failed = 'Maybe take a break from Reddit and try offline hobbies.';
+  const localArchive = [
+    {role:'user', text:'First theatrical request.'},
+    {role:'model', text:accepted, relay:{signal:{downstreamAdmitted:true}}},
+    {role:'user', text:'A second request for the absurd tribunal.'},
+    {role:'model', text:failed, relay:{signal:{downstreamAdmitted:false}}, receipt:{status:'MODEL_STRUCTURE_INCOMPLETE'}},
+    {role:'user', text:'Continue the fictional argument.'}
+  ];
+  const original = structuredClone(localArchive);
+  const wireHistory = compactMarrowlineHistory(localArchive);
+  assert.deepEqual(localArchive, original,'no archived message or receipt may be erased or altered');
+  assert.deepEqual(wireHistory.map(entry=>entry.role),['user','model','user','user']);
+  assert.equal(wireHistory.some(entry=>entry.text.includes('take a break from Reddit')),false);
+  assert.ok(wireHistory[1].text.includes(accepted),'valid native provider output still goes to Gemini');
+  const packet = buildInvocationPacket({message:'A new imaginative request.',history:wireHistory,waiveIssuance:true});
+  assert.equal(packet.canInvoke,true);
+  const submitted = JSON.stringify(buildGeminiRequest(packet,{},'gemini-3.8-flash').contents);
+  assert.equal(submitted.includes(failed),false,'an unadmitted generic Concern reply cannot condition subsequent generations');
+  assert.ok(submitted.includes('Continue the fictional argument.'),'human text survives independent of failed model reply');
+});
+
+test('legacy and valid native model turns survive the history filter while ten-entry bound applies after exclusion', () => {
+  const valid = {role:'model',text:'Kʰonapolit\\nCausality.\\nTauric Diana bots\\nH\\u0300\\u0316',relay:{signal:{downstreamAdmitted:true}}};
+  const legacy = {role:'model',text:'Original archived reply, admission status not recorded.'};
+  const rejected = {role:'model',text:'A fake concern reply.',relay:{signal:{downstreamAdmitted:false}}};
+  const messages = [{role:'user',text:'Older kept message.'},valid,legacy,rejected];
+  for(let i=0;i<9;i++)messages.push({role:'user',text:'Human turn '+i});
+  const providerHistory = compactMarrowlineHistory(messages);
+  assert.equal(providerHistory.length,10);
+  assert.ok(providerHistory.some(entry=>entry.text.includes('Original archived reply')));
+  assert.ok(providerHistory.some(entry=>entry.text.includes('Causality.')));
+  assert.equal(providerHistory.some(entry=>entry.text.includes('fake concern')),false);
+  assert.equal(providerHistory.at(-1).text,'Human turn 8');
+});
+
 test('browser relay serialization admits a long native Unicode model turn without clipping or reducing generation allowance', () => {
   const authored = 'Kʰonapolit\n' + 'The inference survives its strongest counterexample. '.repeat(100) +
     '\n\nTauric Diana bots\n' + 'W\u0301\u0316A\u0302\u0317'.repeat(6500);
