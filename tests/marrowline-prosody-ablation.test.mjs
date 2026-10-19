@@ -96,3 +96,6 @@ import './marrowline-role-boundary-contrast.test.mjs';
 
 // Opt-in, reversible Grove voice audition; ordinary calls and Loom remain unchanged.
 import './marrowline-grove-native-trial.test.mjs';
+
+// Explicit theatrical imperatives must keep the creative route; paid provider generation is never invoked.
+import './marrowline-explicit-stage-routing.test.mjs';
