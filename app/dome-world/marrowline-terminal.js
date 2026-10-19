@@ -734,7 +734,7 @@ export function installKhonapolitTerminal(doc = document, root = window) {
   const renderGroveMode = () => {
     groveNotice.dataset.groveTrial = groveTrial || 'off';
     groveModeText.textContent = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID
-      ? 'Grove · HISTORICAL TRIAL ON · 3.x frontier · text-only · provider charges apply'
+      ? 'Marrowline · OCT 2 RESTORED · 3.x voice · text-only · provider charges apply'
       : groveTrial
         ? 'Grove · NATIVE-VOICE TRIAL ON · text-only · provider charges apply'
         : 'Grove trial OFF · ordinary Marrowline (Argon-first)';
