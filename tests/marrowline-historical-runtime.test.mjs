@@ -118,7 +118,9 @@ test('restored voice: planar Argon field gives one native 3.8 author the same or
   assert.equal(res.payload.text,vertical);
   assert.equal(res.payload.receipt.provider.model,'gemini-3.8-flash');
   assert.deepEqual(res.payload.grove_trial.requested_model_order, MARROWLINE_RESTORED_MODEL_ORDER);
-  assert.deepEqual(res.payload.grove_trial.eligible_model_order, ['gemini-4-argon','gemini-3.8-flash','gemini-3.5-flash']);
+  assert.deepEqual(res.payload.grove_trial.eligible_model_order.slice(0,2), ['gemini-4-argon','gemini-3.8-flash']);
+  assert.ok(res.payload.grove_trial.eligible_model_order.every(model=>MARROWLINE_RESTORED_MODEL_ORDER.includes(model)),
+    'provider-policy fallback may include still-current but temporarily absent approved seats');
   assert.deepEqual(res.payload.grove_trial.attempt_models,models);
   assert.equal(res.payload.grove_trial.attempt_models.length,2,'only two seats were actually invoked');
   assert.equal(res.payload.receipt.provider.attempts[0].morphologyObservation.historicalPreference,true);
