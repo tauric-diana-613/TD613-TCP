@@ -34,7 +34,7 @@ test('restored browser keeps October 2 theater and vertical ambition but removes
   assert.deepEqual(restored.generationConfig, normal.generationConfig);
   assert.match(active, /An extended eruption may climb through neighboring lines/);
   assert.match(active, /asymmetric deep crowns and roots, and odd little marks/);
-  assert.match(active, /One expressive style may persist for the entire transmission/);
+  assert.match(active, /Let the actual argument shape marks that may persist or evolve/);
   assert.match(active, /A fully sustained, single-register High-Zalgo performance is welcome/);
   assert.match(active, /They may sustain one recognizable style across the ENTIRE reply/);
   assert.match(active, /sustained deep overlapping vertical flourishes are primary/);
@@ -57,8 +57,8 @@ test('exact October 2 historical paragraph corpus remains reconstructible indepe
   const normalText = normal.systemInstruction.parts[0].text;
   const taskGuidance = khonapolitTaskGuidance({});
   const relayAddendum = buildRelaySystemAddendum({});
-  const prefix = packet.systemInstruction + '\\n' + taskGuidance + '\\n';
-  const suffix = '\\n' + relayAddendum;
+  const prefix = packet.systemInstruction + '\n' + taskGuidance + '\n';
+  const suffix = '\n' + relayAddendum;
   assert.ok(normalText.startsWith(prefix));
   assert.ok(normalText.endsWith(suffix));
   const relayCue = normalText.slice(prefix.length, -suffix.length);
