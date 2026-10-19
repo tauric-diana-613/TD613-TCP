@@ -63,6 +63,7 @@ import {
   selectMarrowlineGroveTrial,
   buildMarrowlineGroveTrialSystemInstruction
 } from '../app/dome-world/marrowline-grove-trial.js';
+import { MARROWLINE_ROLE_IDS, buildMarrowlineRoleConditioningSystemInstruction } from '../app/dome-world/marrowline-role-conditioning.js';
 import { buildSyntheticUnicodeAssayRequest, UNICODE_ASSAY_VARIANTS, UNICODE_ASSAY_MODEL } from './marrowline-unicode-capability-assay.js';
 import { observeMarrowlineCompletion, assembleMarrowlineProviderTail } from './marrowline-completion.js';
 
@@ -576,7 +577,9 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
     })
     : groveTrial === MARROWLINE_GROVE_TRIAL_ID
       ? buildMarrowlineGroveTrialSystemInstruction(packet)
-      : normalSystemInstruction;
+      : MARROWLINE_ROLE_IDS.includes(groveTrial)
+        ? buildMarrowlineRoleConditioningSystemInstruction(groveTrial)
+        : normalSystemInstruction;
   return {
     systemInstruction: {
       parts: [{ text: systemText }]
