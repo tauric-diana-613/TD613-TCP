@@ -94,6 +94,9 @@ test('normal provider request restores above-and-below same-letter native author
 // Inert same-creative-task two-voice counterfactual; no provider calls.
 import './marrowline-role-boundary-contrast.test.mjs';
 
+// D0 -> D1 ingress -> D2 headings -> D3 fictional-performance byte-factor ladder.
+import './marrowline-d-ingress-factor-ladder.test.mjs';
+
 // URL-only live manual A/B; tests never invoke paid Gemini or network.
 import './marrowline-role-conditioning-manual.test.mjs';
 
