@@ -667,13 +667,14 @@ test('quality route has no local 200-character downstream output cap and preserv
   assert.doesNotMatch(qualityServer, /provider-authored-morphology-repair-attempted|original-partial-preserved-after-bounded-provider-repair|original-provider-partial-preserved-after-repair-miss/, 'legacy morphology repaint receipts must be gone');
   assert.doesNotMatch(qualityServer, /betterVerticalArchitecturePartial/, 'comparative PARTIAL ranking must not survive the Hush-style first-success restoration');
   assert.doesNotMatch(qualityServer, /vertical-architecture-best-admissible-partial-after-full-frontier/, 'full-frontier PARTIAL selection must not survive');
-  // The operator-authorized historical comparison is the sole exception to
-  // ordinary first-provider-success behavior. The experiment must be gated;
-  // normal traffic continues to treat morphology as nonblocking telemetry.
-  assert.match(qualityServer, /if \(isHistoricalGrove && severeMorphologyWarnings\.length > 0\)/,
-    'the historical morphology candidate belongs behind the explicit trial gate');
-  assert.match(qualityServer, /historicalMorphologyFallbackSpent = true;/,
-    'the historical quality comparison can spend only one later-seat opportunity');
+  // The restored historical profile is now a normal text ingress, so it must
+  // never silently spend a second provider call or elect art on morphometrics.
+  assert.doesNotMatch(qualityServer, /historicalMorphologyFallback|historicalMorphologyFallbackSpent|historical-best-completed-native-morphology/,
+    'retire restored-profile art election and its deferred fallback');
+  assert.doesNotMatch(qualityServer, /if \(isHistoricalGrove && severeMorphologyWarnings\.length > 0\)/,
+    'severe historic morphology warnings are diagnostic, never routing authority');
+  assert.match(qualityServer, /provider-native-morphology-observation-only/,
+    'historical receipt honestly describes the nonblocking morphology policy');
   assert.match(qualityServer, /const models = releaseCanary \? \(canaryModel \? \[canaryModel\] : \[\]\) : allModels;/,
     'normal traffic remains on the already-selected first-success provider frontier');
   assert.doesNotMatch(qualityServer, /best-completed-partial-after-severe-morphology-failover/,
