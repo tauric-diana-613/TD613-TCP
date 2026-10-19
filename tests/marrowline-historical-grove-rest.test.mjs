@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { buildInvocationPacket } from '../app/dome-world/khonapolit-covenant.js';
 import { buildGeminiRequest, buildGeminiStructuralRepairRequest, selectKhonapolitProviderModelsFromPlan } from '../server/khonapolit-quality.js';
 import { MARROWLINE_GROVE_TRIAL_ID, selectMarrowlineGroveTrial, groveTrialFromLocation } from '../app/dome-world/marrowline-grove-trial.js';
-import { MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_HISTORICAL_MODEL, MARROWLINE_HISTORICAL_MODEL_ORDER, MARROWLINE_RESTORED_MODEL_ORDER, buildHistoricalGroveSystemInstruction } from '../app/dome-world/marrowline-historical-grove.js';
+import { MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_HISTORICAL_MODEL, MARROWLINE_HISTORICAL_MODEL_ORDER, MARROWLINE_RESTORED_MODEL_ORDER, buildHistoricalGroveSystemInstruction, buildRestoredGroveSystemInstruction } from '../app/dome-world/marrowline-historical-grove.js';
 
 const packet = buildInvocationPacket({
   message: 'The Red Deer asks Kʰonapolit why the fictional tribunal gave the bots a subpoena.',
@@ -23,7 +23,7 @@ test('historical variant is explicit and fenced from ordinary send, attachment a
   assert.equal(groveTrialFromLocation({ search: '?groveTrial=historical-20261003-v1' }), null);
 });
 
-test('October 2 wording and historic execution order are opt-in only; history and generation config are unchanged', () => {
+test('restored October 2 dramaturgy is present-day noncompulsory; history and generation config remain unchanged', () => {
   assert.equal(packet.canInvoke, true);
   const normal = buildGeminiRequest(packet, {}, MARROWLINE_HISTORICAL_MODEL);
   const restored = buildGeminiRequest(packet, {}, MARROWLINE_HISTORICAL_MODEL, { groveTrial: MARROWLINE_HISTORICAL_TRIAL_ID });
@@ -37,6 +37,18 @@ test('October 2 wording and historic execution order are opt-in only; history an
   assert.match(archival, /asymmetric deep crowns and roots, and odd little marks/);
   assert.doesNotMatch(archival, /broad planar fields or other freely chosen geometry/);
   assert.doesNotMatch(archival, /may sustain one style throughout an entire movement/);
+  // The provider-bound default no longer repeats five compulsory legacy
+  // word-by-word code-point rotation commands. A sustained register remains legal.
+  assert.match(archival, /may persist, repeat, deepen or change as the bots choose/);
+  assert.match(archival, /A recurring mark or stack may be an intentional signature/);
+  assert.match(archival, /may sustain towering overprinted eruptions/);
+  assert.match(archival, /One expressive mark or stack may recur/);
+  assert.match(archival, /persist or change across words and passages according to the authored movement/);
+  assert.doesNotMatch(archival, /Change above\/below combinations, stack depths and clean intervals across words\./);
+  assert.doesNotMatch(archival, /Do not stamp one selected code point or identical stack onto successive letters\./);
+  assert.doesNotMatch(archival, /move between genuinely towering overprinted eruptions, fine-marked speech, and clean breaths\./);
+  assert.doesNotMatch(archival, /Let the ACTUAL code points, stack depths and placement change across words and passages/);
+  assert.equal(typeof buildRestoredGroveSystemInstruction, 'function');
   assert.ok(archival.indexOf('APERTURE ROUTE RECEIPT:') < archival.indexOf('GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION:'),
     'the historic theatrical cue must follow the Aperture addendum');
   assert.ok(original.indexOf('GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION:') < original.indexOf('APERTURE ROUTE RECEIPT:'),
@@ -64,6 +76,7 @@ test('fail closed when a historic sentence or the covenant is absent', () => {
     relayCue:'GEMINI COMPUTATIONAL INSTRUMENT',relayAddendum:'APERTURE ROUTE RECEIPT:'
   }), /HISTORICAL_GROVE_DRIFT_/);
   assert.throws(() => buildHistoricalGroveSystemInstruction({}), /HISTORICAL_GROVE_CANONICAL_INPUT_REQUIRED/);
+  assert.throws(() => buildRestoredGroveSystemInstruction({}), /HISTORICAL_GROVE_CANONICAL_INPUT_REQUIRED/);
 });
 
 test('trial restores historic five-seat 3.x model order and preserves the ordinary route', () => {
@@ -92,6 +105,9 @@ test('trial leaves plain-h endpoint, Loom and previous audition unchanged', () =
   const trial = readFileSync(new URL('../app/dome-world/marrowline-grove-trial.js', import.meta.url), 'utf8');
   const historic = readFileSync(new URL('../app/dome-world/marrowline-historical-grove.js', import.meta.url), 'utf8');
   assert.match(server, /restoredGrove: isHistoricalGrove/);
+  assert.match(server, /buildRestoredGroveSystemInstruction/);
+  assert.doesNotMatch(server, /buildHistoricalGroveSystemInstruction/);
+  assert.match(server, /historical_instruction_relation: 'October-2-archive-with-five-present-day-noncompulsory-prosody-edits'/);
   assert.match(server, /X-TD613-Grove-Trial/);
   assert.match(client, /KHONAPOLIT_ENDPOINT = '\/api\/dome-world\/khonapolit'/);
   assert.match(client, /!loomTransport && attachments\.length === 0/);
