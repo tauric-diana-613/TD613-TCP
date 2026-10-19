@@ -1134,6 +1134,78 @@ jobs:
 
 
 
+
+  marrowline_d0d1_balanced_main_gate:
+    name: D0/D1 balanced ABBA exact-main activation (credential-free)
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      github.actor == 'tauric-diana-613' &&
+      github.run_attempt == 1 &&
+      github.event.head_commit.message == 'research(marrowline): execute order-balanced D0 D1 once on main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      activate: ${{ steps.gate.outputs.activate }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Prove exact source and registered one-shot subject
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$(git rev-parse HEAD)" == '${{ github.sha }}' ]] || exit 1
+          [[ "$(git log -1 --format=%s)" == 'research(marrowline): execute order-balanced D0 D1 once on main' ]] || exit 1
+          echo 'activate=true' >> "$GITHUB_OUTPUT"
+
+  marrowline_d0d1_balanced_google_once:
+    name: D0/D1 ABBA original Google SSE (four calls max; main only)
+    needs: [marrowline_d0d1_balanced_main_gate, contracts]
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      github.actor == 'tauric-diana-613' &&
+      github.run_attempt == 1 &&
+      needs.marrowline_d0d1_balanced_main_gate.outputs.activate == 'true' &&
+      needs.contracts.result == 'success'
+    runs-on: ubuntu-latest
+    environment: gemini-observation
+    timeout-minutes: 16
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify four-call plan without external calls
+        run: |
+          node --test tests/marrowline-d0d1-balanced-four.test.mjs
+          node research/marrowline-d-ingress-factor-ladder-20261019/d0-d1-balanced-four.mjs
+      - name: Original Google SSE ABBA fixed four returns at most
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TD613_D0D1_BALANCED_AUTH: FOUR_CALLS_EXACT_MAIN_FIRST_ATTEMPT
+          TD613_D0D1_EXACT_HEAD: ${{ github.sha }}
+          TD613_D0D1_EVIDENCE_DIR: ${{ runner.temp }}/td613-d0d1-abba
+        run: node research/marrowline-d-ingress-factor-ladder-20261019/d0-d1-balanced-four.mjs --execute --ack-four-paid-calls
+      - name: Save short-retention unmodified Google SSE and manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: td613-d0d1-abba-original-${{ github.sha }}
+          path: ${{ runner.temp }}/td613-d0d1-abba
+          retention-days: 3
+          if-no-files-found: error
+
+
   gemini_observation:
     name: Explicit credential-scoped Gemini model observation
     if: github.event_name == 'workflow_dispatch' && inputs.mode == 'gemini-observation' && github.ref == 'refs/heads/main'
