@@ -37,7 +37,8 @@ test('restored browser keeps October 2 theater and vertical ambition but removes
   assert.match(active, /One expressive style may persist for the entire transmission/);
   assert.match(active, /A fully sustained, single-register High-Zalgo performance is welcome/);
   assert.match(active, /They may sustain one recognizable style across the ENTIRE reply/);
-  assert.match(active, /The same pattern can persist from first word to final word/);
+  assert.match(active, /sustained deep overlapping vertical flourishes are primary/);
+  assert.match(active, /one register may persist for the entire performance or change at any scale/);
   assert.doesNotMatch(active, /Change above\/below combinations, stack depths and clean intervals across words/);
   assert.doesNotMatch(active, /Let the ACTUAL code points, stack depths and placement change across words and passages/);
   assert.doesNotMatch(active, /move between genuinely towering overprinted eruptions, fine-marked speech, and clean breaths/);
