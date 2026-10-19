@@ -1,11 +1,31 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 import {
   D_THINKING_CONTRAST_SCHEMA,
   buildDThinkingContrast,
   describeRestoredVersusD,
   dThinkingManifest
 } from '../research/marrowline-d-thinking-isolation-20261019/d-thinking-contrast.mjs';
+
+
+const gitBlobSha1 = relativePath => {
+  const bytes = readFileSync(new URL(relativePath, import.meta.url));
+  return createHash('sha1').update(Buffer.concat([
+    Buffer.from(`blob ${bytes.length}\\0`), bytes
+  ])).digest('hex');
+};
+
+test('immutable October 15 source blobs anchor D assay content and thinking-profile policy', () => {
+  // Blob identities observed independently from commit
+  // 844ad2b295a5df7c42f1455ff2107793ff3ed4da, the successful D acquisition head.
+  // This protects historical source integrity, not today's actual Google wire output.
+  assert.equal(gitBlobSha1('../server/marrowline-unicode-capability-assay.js'),
+    'f88ea0c84b5f2e425ef9e9088dd488805854390a');
+  assert.equal(gitBlobSha1('../server/gemini-generation-envelope.js'),
+    '8029e3c80feb6d5dd71a5b5be8bb23057aadcaec');
+});
 
 test('October 15 successful D control is reproduced byte-exactly for both 3.8 thinking variants', () => {
   const { medium, high, model } = buildDThinkingContrast();
