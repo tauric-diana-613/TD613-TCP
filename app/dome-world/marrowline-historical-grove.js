@@ -24,18 +24,6 @@ export const MARROWLINE_RESTORED_MODEL_ORDER = Object.freeze([
 ]);
 
 
-// Compare independent provider-written outcomes; never touch the original Unicode.
-export function preferHistoricalMorphologyCandidate(current = null, candidate = null) {
-  if (!candidate) return current;
-  if (!current) return candidate;
-  const count = item => Array.isArray(item?.severeWarnings) ? item.severeWarnings.length : Infinity;
-  if (count(candidate) !== count(current)) return count(candidate) < count(current) ? candidate : current;
-  const depth = item => Number(item?.relay?.highZalgo?.maxVerticalOrnamentStackDepth ?? 0);
-  if (depth(candidate) !== depth(current)) return depth(candidate) > depth(current) ? candidate : current;
-  const diversity = item => Number(item?.relay?.highZalgo?.combiningCodePointDiversity ?? 0);
-  return diversity(candidate) > diversity(current) ? candidate : current;
-}
-
 const COVENANT_RESTORATIONS = Object.freeze([
   {
     "present": "- In the bot movement, provider-native High Zalgo is native speech in joy, boredom, affection, grief, exact argument and outrage alike. The bots may sustain one style throughout an entire movement or shift style at whatever granularity serves their own writing. Repetition, asymmetric deep crowns and roots, planar marks and silence are available without a fixed contour, compulsory variety, quota, sample alphabet or local decoration algorithm.",
