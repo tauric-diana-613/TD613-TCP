@@ -62,7 +62,7 @@ test('ordinary provider-only lore response with neither voice is held after exis
 
 test('both-voices-absent recovery isolates the rejected model draft but preserves the original user and prior good native history', () => {
   const raw = 'Maybe leave this fictional forum and find a new hobby.';
-  const native = 'Kʰonapolit\\nThe real prior claim.\\nTauric Diana bots\\nQ\\u0300\\u0316';
+  const native = ['Kʰonapolit','The real prior claim.','Tauric Diana bots','Q̖̀'].join('\n');
   const packet = buildInvocationPacket({
     message: 'Stage the absurd fictional hearing on a missing denominator.',
     history: [{ role:'user',text:'Remember the disputed fraction.' }, { role:'model',text:native }],
