@@ -97,6 +97,9 @@ import './marrowline-role-boundary-contrast.test.mjs';
 // URL-only live manual A/B; tests never invoke paid Gemini or network.
 import './marrowline-role-conditioning-manual.test.mjs';
 
+// Offline exact D-creative baseline versus 3.8 HIGH with just thinkingConfig changed.
+import './marrowline-d-thinking-isolation.test.mjs';
+
 // Opt-in, reversible Grove voice audition; ordinary calls and Loom remain unchanged.
 import './marrowline-grove-native-trial.test.mjs';
 
