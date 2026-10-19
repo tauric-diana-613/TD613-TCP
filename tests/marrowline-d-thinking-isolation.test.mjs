@@ -47,15 +47,24 @@ test('October 15 successful D control is reproduced byte-exactly for both 3.8 th
   assert.equal(Object.hasOwn(high.generationConfig, 'responseMimeType'), false);
 });
 
-test('restored Grove is not byte-comparable to neutral D even when the user submits D words', () => {
+test('actual wrapped Marrowline text entrypoint differs from D in frame but agrees on MEDIUM thinking', () => {
   const observation = describeRestoredVersusD();
   assert.equal(observation.sameModel, true);
   assert.equal(observation.sameUserContents, false);
   assert.equal(observation.sameSystemFrame, false);
-  assert.equal(observation.sameGenerationConfigAsDMedium, false);
-  assert.equal(observation.sameGenerationConfigAsDHigh, true);
-  assert.deepEqual(observation.restoredThinking, { thinkingLevel: 'high' });
+  assert.equal(observation.sameGenerationConfigAsDMedium, true);
+  assert.equal(observation.sameGenerationConfigAsDHigh, false);
+  assert.equal(observation.actualEntrypointProfile, 'khonapolit-interactive');
+  assert.equal(observation.unprofiledHighIsProduction, false);
+  assert.deepEqual(observation.restoredThinking, { thinkingLevel: 'medium' });
   assert.deepEqual(observation.DThinking, { thinkingLevel: 'medium' });
+});
+
+test('HTTP entrypoint actually installs the interactive profile for ordinary text requests', () => {
+  const entry = readFileSync(new URL('../api/khonapolit.js', import.meta.url), 'utf8');
+  const envelope = readFileSync(new URL('../server/gemini-generation-envelope.js', import.meta.url), 'utf8');
+  assert.match(entry, /return withGeminiGenerationProfile\(\s*GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,/);
+  assert.match(envelope, /id === 'gemini-3\.8-flash'\) requestedLevel = 'medium'/);
 });
 
 test('D thinking study is offline only and reports no provider-output restoration', () => {
@@ -64,6 +73,8 @@ test('D thinking study is offline only and reports no provider-output restoratio
   assert.equal(packet.status, 'OFFLINE_INPUT_ISOLATION_ONLY');
   assert.equal(packet.noProviderRequests, true);
   assert.equal(packet.sourceContentsIdentical, true);
+  assert.equal(packet.restoredVersusD.sameGenerationConfigAsDMedium, true);
+  assert.equal(packet.restoredVersusD.unprofiledHighIsProduction, false);
   assert.equal(packet.sourceSystemIdentical, true);
   assert.notEqual(packet.A.generationSha256, packet.B.generationSha256);
   assert.equal(packet.A.systemSha256, packet.B.systemSha256);
