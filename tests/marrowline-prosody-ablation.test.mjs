@@ -97,6 +97,9 @@ import './marrowline-role-boundary-contrast.test.mjs';
 // Four-stage D0 original → ingress → headings → character-performance source ladder.
 import './marrowline-d-ingress-factor-ladder.test.mjs';
 
+// Actual /api/khonapolit route is MEDIUM, unlike unprofiled synthetic HIGH constructor.
+import './marrowline-interactive-d-profile-parity.test.mjs';
+
 // URL-only live manual A/B; tests never invoke paid Gemini or network.
 import './marrowline-role-conditioning-manual.test.mjs';
 
