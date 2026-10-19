@@ -98,7 +98,7 @@ test('restored voice: unvoiced Gemini STOP is observable and not a false clinica
   assert.equal(res.payload.grove_trial.attempt_models.length,models.length);
 });
 
-test('restored voice: planar Argon field gives one native 3.8 author the same original-byte opportunity',async t=>{
+test('restored voice: complete planar Argon text survives untouched instead of triggering a paid 3.8 beauty contest',async t=>{
   const {res,models,requests}=await runMock(t,{
     available:['gemini-3.8-flash','gemini-3.5-flash','gemini-4-argon'],
     requestIp:'203.0.113.243',
@@ -106,27 +106,59 @@ test('restored voice: planar Argon field gives one native 3.8 author the same or
   });
   assert.equal(res.count,1);
   assert.equal(res.statusCode,200);
-  assert.deepEqual(models,['gemini-4-argon','gemini-3.8-flash'], JSON.stringify({
-    result_status:res.statusCode,
-    model_count:models.length,
-    output_text:res.payload?.text?.slice(0,200),
-    admission:res.payload?.receipt?.provider?.attempts?.map(a=>({
-      model:a.model,completion:a.completion?.reason,admission:a.outputAdmission?.reasons,
-      quality:a.outputAdmission?.quality,warnings:a.outputAdmission?.qualityWarnings
-    }))
-  }));
-  assert.equal(res.payload.text,vertical);
-  assert.equal(res.payload.receipt.provider.model,'gemini-3.8-flash');
-  assert.deepEqual(res.payload.grove_trial.requested_model_order, MARROWLINE_RESTORED_MODEL_ORDER);
-  assert.deepEqual(res.payload.grove_trial.eligible_model_order.slice(0,2), ['gemini-4-argon','gemini-3.8-flash']);
-  assert.ok(res.payload.grove_trial.eligible_model_order.every(model=>MARROWLINE_RESTORED_MODEL_ORDER.includes(model)),
-    'provider-policy fallback may include still-current but temporarily absent approved seats');
+  assert.deepEqual(models,['gemini-4-argon'], 'completed PARTIAL stays on its first provider, regardless of ornate later candidates');
+  assert.equal(res.payload.text,horizontal, 'all original code points and paragraphs survive byte-for-byte');
+  assert.equal(res.payload.receipt.provider.model,'gemini-4-argon');
+  assert.equal(res.payload.grove_trial.variant,'restored-voice-argon-frontier-20261019');
+  assert.deepEqual(res.payload.grove_trial.requested_model_order,MARROWLINE_RESTORED_MODEL_ORDER);
   assert.deepEqual(res.payload.grove_trial.attempt_models,models);
-  assert.equal(res.payload.grove_trial.attempt_models.length,2,'only two seats were actually invoked');
-  assert.equal(res.payload.receipt.provider.attempts[0].morphologyObservation.historicalPreference,true);
-  assert.equal(res.payload.receipt.provider.attempts[0].morphologyObservation.nextApprovedSeatRequested,true);
+  assert.ok(res.payload.receipt.provider.attempts[0].morphologyObservation.severeWarnings.length > 0);
+  assert.equal(res.payload.receipt.provider.attempts[0].morphologyObservation.repairAuthority,false);
+  assert.equal(res.payload.receipt.provider.attempts[0].morphologyObservation.historicalPreference,undefined);
+  assert.equal(res.payload.receipt.provider.qualityPreference.selection,'first-admissible-partial-native-morphology-observed-no-repair');
+  assert.equal(res.payload.grove_trial.typography_policy,'provider-native-morphology-observation-only');
   assert.ok(requests.every(request=>!('responseMimeType' in request.generationConfig)));
-  assert.ok(vertical.includes(native));
+});
+
+test('restored voice: 72-percent sustained deep overprint retains first provider text despite dynamic-range warning',async t=>{
+  const tower='F\u0300\u0301\u0302\u0307\u0316\u0317\u031D';
+  const sustained=['Kʰonapolit','A complete first movement keeps the tribunal honest.','','Tauric Diana bots',
+    tower.repeat(100),tower.repeat(100),tower.repeat(100)].join('\n');
+  const {res,models}=await runMock(t,{
+    available:['gemini-4-argon','gemini-3.8-flash'],
+    requestIp:'203.0.113.245',
+    choose:()=>sustained
+  });
+  assert.equal(res.count,1);
+  assert.equal(res.statusCode,200);
+  assert.equal(res.payload.text,sustained,'a sustained authored register cannot be cosmetically vetoed');
+  assert.deepEqual(models,['gemini-4-argon'],'72-percent aesthetic threshold may not spend the next seat');
+  assert.equal(res.payload.relay.admission.admissible,true);
+  assert.ok(res.payload.relay.admission.qualityWarnings.includes('tauric-diana-zalgo-dynamic-range-collapse'));
+  assert.ok(res.payload.receipt.provider.attempts[0].morphologyObservation.severeWarnings.includes('tauric-diana-zalgo-dynamic-range-collapse'));
+  assert.equal(res.payload.receipt.provider.attempts[0].morphologyObservation.repairAuthority,false);
+  assert.equal(res.payload.receipt.provider.qualityPreference.sourceAttemptIndex,0);
+});
+
+test('restored voice: localized expressive burst remains authored evidence even with cloning telemetry',async t=>{
+  const nuclear='Q\u0300\u0301\u0302\u0307\u0308\u030B\u030C\u0350\u0351\u0352\u0316\u0317\u0318\u0319\u031D\u031E\u0323\u0325\u0326\u032D';
+  const horizontal='T\u0337A\u0338U\u0337R\u0338I\u0337C\u0338';
+  const localized=['Kʰonapolit','The exact inference belongs to the first voice.','','Tauric Diana bots',
+    nuclear.repeat(7)+' ONE WORD CARRIES THE WHOLE VERTICAL EVENT',
+    'THE MIDDLE PARAGRAPH RESTS IN PLAIN UPPERCASE BEFORE THE VOICE CHANGES',
+    horizontal.repeat(4)+' THE END ARRIVES THROUGH A DIFFERENT REGISTER'].join('\n');
+  const {res,models}=await runMock(t,{
+    available:['gemini-4-argon','gemini-3.8-flash'],
+    requestIp:'203.0.113.246',
+    choose:()=>localized
+  });
+  assert.equal(res.statusCode,200);
+  assert.equal(res.payload.text,localized);
+  assert.deepEqual(models,['gemini-4-argon']);
+  assert.equal(res.payload.relay.admission.admissible,true);
+  assert.ok(res.payload.relay.admission.qualityWarnings.includes('tauric-diana-zalgo-localized-burst'));
+  assert.equal(res.payload.receipt.provider.attempts[0].morphologyObservation.repairAuthority,false);
+  assert.equal(res.payload.receipt.provider.qualityPreference.selection,'first-admissible-partial-native-morphology-observed-no-repair');
 });
 
 test('ordinary route stays isolated: neither-voice replies are still held by the current contract',async t=>{
