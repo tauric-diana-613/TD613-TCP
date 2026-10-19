@@ -2,9 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { buildInvocationPacket } from '../app/dome-world/khonapolit-covenant.js';
-import { buildGeminiRequest, buildGeminiStructuralRepairRequest, selectKhonapolitProviderModelsFromPlan } from '../server/khonapolit-quality.js';
+import { buildGeminiRequest, buildGeminiStructuralRepairRequest, selectKhonapolitProviderModelsFromPlan, khonapolitTaskGuidance } from '../server/khonapolit-quality.js';
+import { buildRelaySystemAddendum } from '../app/dome-world/khonapolit-relay.js';
 import { MARROWLINE_GROVE_TRIAL_ID, selectMarrowlineGroveTrial, groveTrialFromLocation } from '../app/dome-world/marrowline-grove-trial.js';
-import { MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_HISTORICAL_MODEL, MARROWLINE_HISTORICAL_MODEL_ORDER, MARROWLINE_RESTORED_MODEL_ORDER, buildHistoricalGroveSystemInstruction } from '../app/dome-world/marrowline-historical-grove.js';
+import { MARROWLINE_HISTORICAL_TRIAL_ID, MARROWLINE_HISTORICAL_MODEL, MARROWLINE_HISTORICAL_MODEL_ORDER, MARROWLINE_RESTORED_MODEL_ORDER, MARROWLINE_RESTORED_PROSODY_PROFILE, buildHistoricalGroveSystemInstruction } from '../app/dome-world/marrowline-historical-grove.js';
 
 const packet = buildInvocationPacket({
   message: 'The Red Deer asks Kʰonapolit why the fictional tribunal gave the bots a subpoena.',
@@ -23,28 +24,57 @@ test('historical variant is explicit and fenced from ordinary send, attachment a
   assert.equal(groveTrialFromLocation({ search: '?groveTrial=historical-20261003-v1' }), null);
 });
 
-test('October 2 wording and historic execution order are opt-in only; history and generation config are unchanged', () => {
+test('restored browser keeps October 2 theater and vertical ambition but removes compulsory mark rotation', () => {
   assert.equal(packet.canInvoke, true);
   const normal = buildGeminiRequest(packet, {}, MARROWLINE_HISTORICAL_MODEL);
   const restored = buildGeminiRequest(packet, {}, MARROWLINE_HISTORICAL_MODEL, { groveTrial: MARROWLINE_HISTORICAL_TRIAL_ID });
   const original = normal.systemInstruction.parts[0].text;
-  const archival = restored.systemInstruction.parts[0].text;
+  const active = restored.systemInstruction.parts[0].text;
   assert.deepEqual(restored.contents, normal.contents);
   assert.deepEqual(restored.generationConfig, normal.generationConfig);
-  assert.match(archival, /An extended eruption may climb through neighboring lines/);
-  assert.match(archival, /sustained deep overlapping vertical flourishes are primary/);
-  assert.match(archival, /A repeated single exotic accent on every letter is a failed flat texture/);
-  assert.match(archival, /asymmetric deep crowns and roots, and odd little marks/);
-  assert.doesNotMatch(archival, /broad planar fields or other freely chosen geometry/);
-  assert.doesNotMatch(archival, /may sustain one style throughout an entire movement/);
-  assert.ok(archival.indexOf('APERTURE ROUTE RECEIPT:') < archival.indexOf('GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION:'),
-    'the historic theatrical cue must follow the Aperture addendum');
+  assert.match(active, /An extended eruption may climb through neighboring lines/);
+  assert.match(active, /asymmetric deep crowns and roots, and odd little marks/);
+  assert.match(active, /One expressive style may persist for the entire transmission/);
+  assert.match(active, /A fully sustained, single-register High-Zalgo performance is welcome/);
+  assert.match(active, /They may sustain one recognizable style across the ENTIRE reply/);
+  assert.match(active, /The same pattern can persist from first word to final word/);
+  assert.doesNotMatch(active, /Change above\/below combinations, stack depths and clean intervals across words/);
+  assert.doesNotMatch(active, /Let the ACTUAL code points, stack depths and placement change across words and passages/);
+  assert.doesNotMatch(active, /move between genuinely towering overprinted eruptions, fine-marked speech, and clean breaths/);
+  assert.doesNotMatch(active, /Do not stamp one selected code point or identical stack onto successive letters/);
+  assert.ok(active.indexOf('APERTURE ROUTE RECEIPT:') < active.indexOf('GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION:'),
+    'keep October 2 theatrical cue ordering');
   assert.ok(original.indexOf('GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION:') < original.indexOf('APERTURE ROUTE RECEIPT:'),
-    'the untouched production order remains today’s original');
-  assert.match(original, /broad planar fields or other freely chosen geometry/);
+    'ordinary unselected path stays unchanged');
   assert.equal(restored.generationConfig.responseMimeType, undefined);
   assert.equal(restored.generationConfig.responseSchema, undefined);
   assert.deepEqual(buildGeminiRequest(packet, {}, MARROWLINE_HISTORICAL_MODEL, { groveTrial: 'wrong-id' }), normal);
+});
+
+test('exact October 2 historical paragraph corpus remains reconstructible independently of relaxed default', () => {
+  const normal = buildGeminiRequest(packet, {}, MARROWLINE_HISTORICAL_MODEL);
+  const normalText = normal.systemInstruction.parts[0].text;
+  const taskGuidance = khonapolitTaskGuidance({});
+  const relayAddendum = buildRelaySystemAddendum({});
+  const prefix = packet.systemInstruction + '\\n' + taskGuidance + '\\n';
+  const suffix = '\\n' + relayAddendum;
+  assert.ok(normalText.startsWith(prefix));
+  assert.ok(normalText.endsWith(suffix));
+  const relayCue = normalText.slice(prefix.length, -suffix.length);
+  const historical = buildHistoricalGroveSystemInstruction({
+    packetSystemInstruction: packet.systemInstruction, taskGuidance, relayAddendum, relayCue
+  });
+  const current = buildHistoricalGroveSystemInstruction({
+    packetSystemInstruction: packet.systemInstruction, taskGuidance, relayAddendum, relayCue,
+    nativeProsodyFreedom: true
+  });
+  assert.match(historical, /Change above\/below combinations, stack depths and clean intervals across words/);
+  assert.match(historical, /Let the ACTUAL code points, stack depths and placement change across words and passages/);
+  assert.match(historical, /A repeated single exotic accent on every letter is a failed flat texture/);
+  assert.doesNotMatch(historical, /One expressive style may persist for the entire transmission/);
+  assert.ok(current.includes(MARROWLINE_RESTORED_PROSODY_PROFILE) === false, 'variant identity is receipt metadata, not provider text');
+  assert.equal(current, buildGeminiRequest(packet, {}, MARROWLINE_HISTORICAL_MODEL,
+    { groveTrial: MARROWLINE_HISTORICAL_TRIAL_ID }).systemInstruction.parts[0].text);
 });
 
 test('restoration retains exact provider authored bytes in original history and structural repair', () => {
