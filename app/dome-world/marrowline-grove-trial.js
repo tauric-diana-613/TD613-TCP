@@ -24,11 +24,10 @@ export function groveTrialFromLocation(location = {}) {
   }
 }
 
-// Operator-authorized October 2 recovery: historical source behavior is the
-// default for Marrowline's text-only web composer, not an unconditional API
-// default. Explicit URL modes and per-tab OFF override the restoration.
-// The server continues to verify exact request mode; Loom/attachments and
-// direct API callers keep their own governance and admission contracts.
+// The restored voice is ordinary text-only Marrowline; the URL may still
+// explicitly opt into another test or select off for technical diagnosis.
+// Retire the former Exit Trial's sticky off marker without erasing other
+// tab-specific explicit model experiments. Direct API / Loom remain distinct.
 export const MARROWLINE_GROVE_TRIAL_TAB_KEY = 'td613.marrowline.grove-trial.tab/v1';
 const GROVE_TAB_EXPLICIT_OFF = 'off';
 const recognizedGroveTrial = trial => [MARROWLINE_GROVE_TRIAL_ID, MARROWLINE_HISTORICAL_TRIAL_ID].includes(trial)
@@ -50,12 +49,15 @@ export function resolveMarrowlineGroveTrialTab(location = {}, storage = null) {
   }
   let stored = null;
   try { stored = storage?.getItem?.(MARROWLINE_GROVE_TRIAL_TAB_KEY); } catch {}
-  if (stored === GROVE_TAB_EXPLICIT_OFF)
-    return Object.freeze({ id: null, source: 'explicit-off', persistence: 'tab-session' });
+  // Older versions wrote sticky `off` when someone tapped Exit Trial. That
+  // action is gone; do not strand an existing user on the failing Argon-only
+  // voice instructions after the upgrade. Explicit URL `?groveTrial=off`
+  // still selects ordinary diagnostics for that page.
   const id = recognizedGroveTrial(stored);
   if (id) return Object.freeze({ id, source: 'tab-session', persistence: 'tab-session' });
-  // A fresh tab enters the archived October 2 behavior until explicitly exited.
-  // Persist this choice only within the current tab and surface its URL marker.
+  // The restored profile is the normal browser text-composer profile. Store
+  // only a continuity marker; the visual trial bar and forced URL marker are
+  // retired, while the server receipt still names the actual delivered mode.
   let persistence = 'unavailable';
   try {
     storage?.setItem?.(MARROWLINE_GROVE_TRIAL_TAB_KEY, MARROWLINE_HISTORICAL_TRIAL_ID);
