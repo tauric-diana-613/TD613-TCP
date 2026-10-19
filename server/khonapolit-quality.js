@@ -64,6 +64,7 @@ import {
   buildMarrowlineGroveTrialSystemInstruction
 } from '../app/dome-world/marrowline-grove-trial.js';
 import { MARROWLINE_ROLE_IDS, buildMarrowlineRoleConditioningSystemInstruction } from '../app/dome-world/marrowline-role-conditioning.js';
+import { MARROWLINE_AUTONOMOUS_REGISTER_ID, buildAutonomousRegisterSystemInstruction } from '../app/dome-world/marrowline-autonomous-register.js';
 import { buildSyntheticUnicodeAssayRequest, UNICODE_ASSAY_VARIANTS, UNICODE_ASSAY_MODEL } from './marrowline-unicode-capability-assay.js';
 import { observeMarrowlineCompletion, assembleMarrowlineProviderTail } from './marrowline-completion.js';
 
@@ -575,6 +576,13 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
       relayAddendum: buildRelaySystemAddendum(apertureReceipt),
       relayCue: currentTurnRelayCue()
     })
+    : groveTrial === MARROWLINE_AUTONOMOUS_REGISTER_ID
+      ? buildAutonomousRegisterSystemInstruction({
+        packetSystemInstruction: packet.systemInstruction,
+        taskGuidance,
+        relayAddendum: buildRelaySystemAddendum(apertureReceipt),
+        relayCue: currentTurnRelayCue()
+      })
     : groveTrial === MARROWLINE_GROVE_TRIAL_ID
       ? buildMarrowlineGroveTrialSystemInstruction(packet)
       : MARROWLINE_ROLE_IDS.includes(groveTrial)
@@ -1240,7 +1248,8 @@ export default async function handler(req, res) {
   const attempts = [];
   const clientQuotaCooldown = clientQuotaCooldownHints(body);
   const clientQuotaBudget = clientQuotaBudgetHints(body);
-  const isHistoricalGrove = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID;
+  const autonomousRegisterTrial = groveTrial === MARROWLINE_AUTONOMOUS_REGISTER_ID;
+  const isHistoricalGrove = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID || autonomousRegisterTrial;
   const providerModels = selectKhonapolitProviderModelsFromPlan(plan, { restoredGrove: isHistoricalGrove });
   // Browser-local quota/cooldown history is receipt evidence only. It cannot
   // reorder or suppress the settled human provider frontier. 3.8 remains first;
@@ -1263,9 +1272,9 @@ export default async function handler(req, res) {
   // present-day frontier; no invented model IDs or unapproved paid calls.
   if (isHistoricalGrove) {
     res.__td613GroveTrial = Object.freeze({
-      id: MARROWLINE_HISTORICAL_TRIAL_ID,
+      id: groveTrial,
       source_commit: 'ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a',
-      variant: 'restored-voice-argon-frontier-20261019',
+      variant: autonomousRegisterTrial ? 'restored-voice-autonomous-register-opt-in-20261019' : 'restored-voice-argon-frontier-20261019',
       requested_model_order: [...MARROWLINE_RESTORED_MODEL_ORDER],
       eligible_model_order: [...models],
       admission_policy: 'both-voices-absent-held-after-bounded-recovery',
