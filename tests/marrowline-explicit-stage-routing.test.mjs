@@ -60,5 +60,5 @@ test('creative classification changes only the authorized provider system route,
 
 test('the targeted routing repair has no paid test harness or glyph postprocessor', () => {
   const aperture = readFileSync(new URL('../app/engine/aperture-v3-task-intent.js', import.meta.url), 'utf8');
-  assert.doesNotMatch(aperture, /\\bfetch\\s*\\(|https?\\.request\\s*\\(|(?:ZalgoEncode|highZalgoEncode)\\s*\\(/);
+  assert.doesNotMatch(aperture, /\bfetch\s*\(|https?\.request\s*\(|(?:ZalgoEncode|highZalgoEncode)\s*\(/);
 });
