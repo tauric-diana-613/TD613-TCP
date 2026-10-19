@@ -1132,6 +1132,82 @@ jobs:
             artifacts/loom-classic79-package
 
 
+
+  marrowline_d0d1_activation_preflight:
+    name: D0/D1 original-SSE one-shot gate (credential-free)
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.number == 1557 &&
+      github.event.pull_request.head.ref == 'research/marrowline-d-ingress-original-sse-once-20261019' &&
+      github.event.pull_request.head.repo.full_name == 'tauric-diana-613/TD613-TCP' &&
+      github.actor == 'tauric-diana-613' &&
+      github.run_attempt == 1
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      execute: ${{ steps.gate.outputs.execute }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Only exact single activation subject authorizes provider work
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$(git rev-parse HEAD)" == '${{ github.event.pull_request.head.sha }}' ]] || exit 1
+          if [[ "$(git log -1 --format=%s)" == 'research(marrowline): execute D0 D1 original SSE once' ]]; then
+            echo 'execute=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'execute=false' >> "$GITHUB_OUTPUT"
+            echo 'This research head is dormant. Zero paid requests.'
+          fi
+
+  marrowline_d0d1_original_once:
+    name: D0/D1 original Google SSE (two calls at most)
+    needs: [marrowline_d0d1_activation_preflight, contracts]
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.number == 1557 &&
+      github.run_attempt == 1 &&
+      needs.marrowline_d0d1_activation_preflight.outputs.execute == 'true' &&
+      needs.contracts.result == 'success'
+    runs-on: ubuntu-latest
+    environment: gemini-observation
+    timeout-minutes: 8
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Revalidate frozen D0/D1 requests before calling Google
+        run: |
+          node --test tests/marrowline-d0-d1-original-sse-once.test.mjs
+          node research/marrowline-d-ingress-factor-ladder-20261019/d0-d1-original-sse-once.mjs
+      - name: Acquire original Google SSE D0 then D1, maximum two requests
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TD613_D0D1_AUTH: D0D1_EXACT_HEAD_ONCE
+          TD613_D0D1_EXACT_HEAD: ${{ github.event.pull_request.head.sha }}
+          TD613_D0D1_EVIDENCE_DIR: ${{ runner.temp }}/td613-d0d1-original-sse
+        run: node research/marrowline-d-ingress-factor-ladder-20261019/d0-d1-original-sse-once.mjs --execute --ack-two-paid-calls
+      - name: Preserve short-retention original provider evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: td613-marrowline-d0d1-original-sse-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/td613-d0d1-original-sse
+          retention-days: 1
+          if-no-files-found: error
+
+
   gemini_observation:
     name: Explicit credential-scoped Gemini model observation
     if: github.event_name == 'workflow_dispatch' && inputs.mode == 'gemini-observation' && github.ref == 'refs/heads/main'
