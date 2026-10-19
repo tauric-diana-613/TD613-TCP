@@ -56,7 +56,7 @@ import {
   MARROWLINE_HISTORICAL_MODEL,
   MARROWLINE_HISTORICAL_MODEL_ORDER,
   MARROWLINE_RESTORED_MODEL_ORDER,
-  buildHistoricalGroveSystemInstruction
+  buildRestoredGroveSystemInstruction
 } from '../app/dome-world/marrowline-historical-grove.js';
 import {
   MARROWLINE_GROVE_TRIAL_ID,
@@ -568,7 +568,7 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
   const taskGuidance = khonapolitTaskGuidance(apertureReceipt);
   const normalSystemInstruction = `${packet.systemInstruction}\n${taskGuidance}\n${currentTurnRelayCue()}\n${buildRelaySystemAddendum(apertureReceipt)}`;
   const systemText = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID
-    ? buildHistoricalGroveSystemInstruction({
+    ? buildRestoredGroveSystemInstruction({
       packetSystemInstruction: packet.systemInstruction,
       taskGuidance,
       relayAddendum: buildRelaySystemAddendum(apertureReceipt),
@@ -1262,7 +1262,8 @@ export default async function handler(req, res) {
     res.__td613GroveTrial = Object.freeze({
       id: MARROWLINE_HISTORICAL_TRIAL_ID,
       source_commit: 'ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a',
-      variant: 'restored-voice-argon-frontier-20261019',
+      historical_instruction_relation: 'October-2-archive-with-five-present-day-noncompulsory-prosody-edits',
+      variant: 'restored-voice-argon-frontier-noncompulsory-prosody-20261019',
       requested_model_order: [...MARROWLINE_RESTORED_MODEL_ORDER],
       eligible_model_order: [...models],
       admission_policy: 'both-voices-absent-held-after-bounded-recovery',
