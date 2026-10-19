@@ -56,7 +56,6 @@ import {
   MARROWLINE_HISTORICAL_MODEL,
   MARROWLINE_HISTORICAL_MODEL_ORDER,
   MARROWLINE_RESTORED_MODEL_ORDER,
-  preferHistoricalMorphologyCandidate,
   buildHistoricalGroveSystemInstruction
 } from '../app/dome-world/marrowline-historical-grove.js';
 import {
@@ -1267,7 +1266,7 @@ export default async function handler(req, res) {
       requested_model_order: [...MARROWLINE_RESTORED_MODEL_ORDER],
       eligible_model_order: [...models],
       admission_policy: 'unvoiced-provider-return-visible-but-not-admitted',
-      typography_policy: 'provider-native-with-historical-preference'
+      typography_policy: 'provider-native-morphology-observation-only'
     });
   }
   const routeModelCount = Math.max(1, providerModels.length);
@@ -1279,8 +1278,6 @@ export default async function handler(req, res) {
   let incompleteFallback = null;
   let zeroMarkFallback = null;
   let zeroMarkRecoverySpent = false;
-  let historicalMorphologyFallback = null;
-  let historicalMorphologyFallbackSpent = false;
   const providerWallDeadlineAt = startedAt + WALL_TIMEOUT_MS - RESPONSE_RESERVE_MS;
   const completionOf = (result, output, text = result.text) => observeMarrowlineCompletion(
     // Natural text and legacy JSON envelopes must use the same visible response.
@@ -1902,14 +1899,6 @@ export default async function handler(req, res) {
       // erase it merely because the local style telemetry dislikes the return.
       if (!relay.admission?.admissible) {
         const reasons = Array.isArray(relay.admission?.reasons) ? [...relay.admission.reasons] : [];
-        // A completed, authentically authored stronger first result survives a
-        // later fall-through that lost a required voice. Historical-only.
-        if (isHistoricalGrove && historicalMorphologyFallback) {
-          return sendPartialProviderReturn({
-            ...historicalMorphologyFallback,
-            selection: 'historical-best-completed-native-morphology'
-          });
-        }
         // Only a completed whole-field native-mark failure warrants another
         // approved author. Fine/local marks in a short poetic passage remain
         // untouched; five different human references are not a style template.
@@ -2008,31 +1997,9 @@ export default async function handler(req, res) {
           maxVerticalOrnamentStackDepth: relay.highZalgo?.maxVerticalOrnamentStackDepth ?? 0,
           singleCodepointWallpaper: qualityWarnings.includes('tauric-diana-zalgo-single-codepoint-wallpaper')
         });
-        if (isHistoricalGrove && severeMorphologyWarnings.length > 0) {
-          const candidate = {
-            model, result, relay, providerOutput, completion, qualityWarnings,
-            severeWarnings: severeMorphologyWarnings,
-            sourceAttemptIndex: attempts.length - 1
-          };
-          historicalMorphologyFallback = preferHistoricalMorphologyCandidate(historicalMorphologyFallback, candidate);
-          const nextSeat = !historicalMorphologyFallbackSpent && index < models.length - 1;
-          attempt.morphologyObservation = Object.freeze({
-            ...attempt.morphologyObservation,
-            historicalPreference: true, nextApprovedSeatRequested: nextSeat,
-            originalProviderTextPreserved: true
-          });
-          if (nextSeat) {
-            historicalMorphologyFallbackSpent = true;
-            continue;
-          }
-          return sendPartialProviderReturn({
-            ...historicalMorphologyFallback,
-            selection: 'historical-best-completed-native-morphology'
-          });
-        }
-        // A structurally complete provider return belongs to the human surface.
-        // Warning counts, vertical stacks and glyph diversity describe it; none
-        // authorizes an automatic second paid candidate or an aesthetic election.
+        // A structurally complete native return belongs to the human surface,
+        // including the restored historical voice. Warnings and stack thresholds
+        // are observation-only: no second paid seat, no aesthetic election.
         // Structural/incomplete/transport recovery remains independent above.
         return sendPartialProviderReturn({
           model, result, relay, providerOutput, completion, qualityWarnings
@@ -2087,12 +2054,6 @@ export default async function handler(req, res) {
     if (repaired) return repaired;
   }
 
-  if (!releaseCanary && historicalMorphologyFallback) {
-    return sendPartialProviderReturn({
-      ...historicalMorphologyFallback,
-      selection: 'historical-best-completed-native-morphology'
-    });
-  }
   if (!releaseCanary && zeroMarkFallback) {
     return sendObservedProviderReturn({
       ...zeroMarkFallback, observation: 'zero-native-marks-after-bounded-frontier-opportunity',
