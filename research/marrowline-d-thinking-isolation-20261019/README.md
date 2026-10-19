@@ -15,6 +15,12 @@ The active browser's restored historical Grove uses a different system frame, a 
 - Validate `model`, `contents`, `systemInstruction`, output allowance, sampling omissions, response schema and other `generationConfig` fields. **The only difference is `thinkingLevel: medium → high`.**
 - The countercontrol builds the currently restored Grove around identical literal D user words and demonstrates that, even then, `contents` differ by Marrowline ingress wrapping, the system differs by mission/voices/covenant, and the thinking config differs. This is a measured source-property distinction, not empirical proof of a model's response.
 
+## Independent October 15 source-custody crosscheck
+
+The acquisition head `844ad2b295a5df7c42f1455ff2107793ff3ed4da` and current main have byte-identical Git blobs for the **frozen creative assay text** (`server/marrowline-unicode-capability-assay.js`, blob `f88ea0c84b5f2e425ef9e9088dd488805854390a`) and **thinking-profile policy** (`server/gemini-generation-envelope.js`, blob `8029e3c80feb6d5dd71a5b5be8bb23057aadcaec`). The protected test calculates their real Git-blob SHA-1 from repository bytes, independent of both A/B request objects.
+
+`server/khonapolit-quality.js` changed after acquisition, including today's #1552 bounded recovery repair. Consequently the frozen component identities **do not** independently establish byte-for-byte equality of complete October 15 provider-wire requests and today's HTTP serialization. The MEDIUM/HIGH *pair* is source-matched by the existing full-object assertions. Full original-wire parity would require inspecting the retained acquisition request envelope separately. No new native provider result or restoration claim follows from these two source-blob checks.
+
 Implementation: `d-thinking-contrast.mjs`; protected tests: `tests/marrowline-d-thinking-isolation.test.mjs` imported into the existing Marrowline prosody lane.
 
 ## How to interpret a future separately authorized live pair
