@@ -12,6 +12,17 @@ export const MARROWLINE_HISTORICAL_MODEL_ORDER = Object.freeze([
   'gemini-3.7-flash',
   'gemini-3-flash-preview'
 ]);
+// October 2 instructions, CURRENT approved model frontier. Do not relabel this
+// as the historical October 2 model set: Argon did not exist in that episode.
+// Prefer authenticated Argon, then the best approved 3.x text-only fallbacks.
+export const MARROWLINE_RESTORED_MODEL_ORDER = Object.freeze([
+  'gemini-4-argon',
+  'gemini-3.8-flash',
+  'gemini-3.6-flash',
+  'gemini-3.7-flash',
+  'gemini-3.5-flash'
+]);
+
 
 // Compare independent provider-written outcomes; never touch the original Unicode.
 export function preferHistoricalMorphologyCandidate(current = null, candidate = null) {
