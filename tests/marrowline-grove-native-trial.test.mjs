@@ -69,9 +69,10 @@ test('trial link changes only ordinary text requests and does not auto-generate,
   const server=readFileSync(new URL('../server/khonapolit-quality.js',import.meta.url),'utf8');
   const trialSource=readFileSync(new URL('../app/dome-world/marrowline-grove-trial.js',import.meta.url),'utf8');
   assert.match(client,/resolveMarrowlineGroveTrialTab\(root\.location, groveTabStorage\)/);
-  assert.match(client,/exposeRestoredMarrowlineGroveTrial\(root, initialGroveResolution\)/);
-  assert.match(client,/let groveTrial = initialGroveResolution\.id/);
-  assert.match(client,/exitMarrowlineGroveTrial\(root\)/);
+  assert.ok(client.includes('const groveTrial = initialGroveResolution.id'));
+  assert.ok(!client.includes('exposeRestoredMarrowlineGroveTrial(root, initialGroveResolution)'));
+  assert.ok(!client.includes('exitMarrowlineGroveTrial(root)'));
+  assert.ok(!client.includes('marrowlineGroveTrialNotice'));
   assert.match(client,/if \(groveTrial && !loomTransport && attachments\.length === 0\) requestBody\.groveTrial = groveTrial/);
   assert.match(server,/X-TD613-Grove-Trial/);
   assert.match(server,/captureNativeSse: nativeSseWitness/);
