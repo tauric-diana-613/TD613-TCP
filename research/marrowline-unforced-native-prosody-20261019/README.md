@@ -1,7 +1,7 @@
 # TD613 · Marrowline restored-native prosody permission candidate
 
 **Date:** 2026-10-19 · **Scope:** source-level provider-instruction correction · **No paid Gemini calls**  
-**Source base:** #1544 production relock `96ac33aab60f9194a02588588d4bbda3ea42289d`  
+**Integrated source base:** `4347c0ffed8bd5b000c9341e271573233adfcf7d`, inclusive of #1544 production relock and the newer distinct role-conditioning manual A/B research route. That separate route is preserved byte-for-byte in the server; no research-arm crossover or new provider call is introduced by this patch.  
 **Status:** SOURCE_CANDIDATE / PROVIDER_CAUSAL_EFFECT_HELD / HUMAN_TRIAL_NOT_YET_OBSERVED
 
 ## Problem and evidence ceiling
