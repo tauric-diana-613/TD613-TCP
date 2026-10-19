@@ -49,10 +49,10 @@ export function releaseInheritedRegisterCompulsion(historicalSystemInstruction =
   if (!next.includes('GEMINI COMPUTATIONAL INSTRUMENT — CURRENT-TURN RELAY EXECUTION:')
       || !next.includes('APERTURE ROUTE RECEIPT:'))
     throw new Error('AUTONOMOUS_REGISTER_HISTORICAL_FRAME_REQUIRED');
-  for (const { inherited, autonomous } of INHERITED_COMPULSION_RELEASES) {
+  for (const [index, { inherited, autonomous }] of INHERITED_COMPULSION_RELEASES.entries()) {
     const first = next.indexOf(inherited);
     if (first < 0 || next.indexOf(inherited, first + inherited.length) !== -1)
-      throw new Error('AUTONOMOUS_REGISTER_INHERITED_CLAUSE_DRIFT');
+      throw new Error('AUTONOMOUS_REGISTER_INHERITED_CLAUSE_DRIFT_' + (index + 1));
     next = next.slice(0, first) + autonomous + next.slice(first + inherited.length);
   }
   return next;
