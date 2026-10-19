@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { buildInvocationPacket } from '../../app/dome-world/khonapolit-covenant.js';
 import { buildGeminiRequest } from '../../server/khonapolit-quality.js';
+import { withGeminiGenerationProfile, GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE } from '../../server/gemini-generation-envelope.js';
 import { buildSyntheticUnicodeAssayRequest, UNICODE_ASSAY_TASKS } from '../../server/marrowline-unicode-capability-assay.js';
 import { buildOfflineRoleBoundaryContrast } from '../marrowline-role-boundary-20261017/role-boundary-contrast.mjs';
 import { MODEL, SYNTHETIC_PROMPT } from '../marrowline-whole-frame-contrast-20261015/frame-contrast.mjs';
@@ -17,8 +18,9 @@ export function buildDThinkingContrast() {
   // role-boundary source-only comparison, so no creative task gets retold.
   const medium = buildOfflineRoleBoundaryContrast().a;
 
-  // B starts with the *unprofiled* production request builder: ordinary
-  // Marrowline 3.8 requests HIGH, not the earlier synthetic interactive MEDIUM.
+  // B intentionally starts with the *unprofiled* request constructor and asks HIGH.
+  // This is a synthetic intervention, NOT the ordinary /api/khonapolit route:
+  // that entrypoint wraps 3.8 in the interactive profile and submits MEDIUM.
   // The existing synthetic assay transformation changes only the system/task
   // to exact D bytes; it leaves original generationConfig untouched.
   const packet = buildInvocationPacket({
@@ -53,10 +55,10 @@ export function buildDThinkingContrast() {
   return Object.freeze({ medium, high, model: MODEL });
 }
 
-// Countercontrol: even if the same original D task is typed into normal
-// Marrowline, the restored profile is NOT a matched D task. It carries the
-// user ingress/seal and multi-layer fictional system frame. Never attribute
-// D-vs-live differences to one role/persona sentence.
+// Countercontrol: the actual text entrypoint wraps khonapolitHandler in
+// khonapolit-interactive, changing the requested 3.8 HIGH to MEDIUM.
+// Its user ingress and multi-layer fictional system frame STILL differ from D.
+// A synthetic unprofiled HIGH request must not be called ordinary production.
 export function describeRestoredVersusD() {
   const { medium, high, model } = buildDThinkingContrast();
   const packet = buildInvocationPacket({
@@ -65,11 +67,15 @@ export function describeRestoredVersusD() {
     mode: 'issued-conjunction',
     waiveIssuance: true
   });
-  const restored = buildGeminiRequest(packet, {}, model, {
-    groveTrial: 'historical-20261002-v1'
-  });
+  const restored = withGeminiGenerationProfile(
+    GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+    () => buildGeminiRequest(packet, {}, model, {
+      groveTrial: 'historical-20261002-v1'
+    })
+  );
   return Object.freeze({
     sameModel: true,
+    actualEntrypointProfile: GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
     sameUserContents: digest(restored.contents) === digest(medium.contents),
     sameSystemFrame: digest(restored.systemInstruction) === digest(medium.systemInstruction),
     sameGenerationConfigAsDMedium: digest(restored.generationConfig) === digest(medium.generationConfig),
@@ -94,7 +100,7 @@ export function dThinkingManifest() {
     A: { systemSha256: digest(medium.systemInstruction), contentsSha256: digest(medium.contents), generationSha256: digest(medium.generationConfig) },
     B: { systemSha256: digest(high.systemInstruction), contentsSha256: digest(high.contents), generationSha256: digest(high.generationConfig) },
     restoredVersusD: describeRestoredVersusD(),
-    limitation: 'No Gemini call; a matched source request does not show an output or establish the cause of the observed five-mark morphology.'
+    limitation: 'The MEDIUM/HIGH pair is a synthetic unprofiled comparison, NOT a production discrepancy: actual /api/khonapolit interactive 3.8 requests MEDIUM. No Gemini call or causal/artistic result.'
   });
 }
 
