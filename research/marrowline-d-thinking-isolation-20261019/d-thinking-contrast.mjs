@@ -4,6 +4,10 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { buildInvocationPacket } from '../../app/dome-world/khonapolit-covenant.js';
 import { buildGeminiRequest } from '../../server/khonapolit-quality.js';
+import {
+  GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+  withGeminiGenerationProfile
+} from '../../server/gemini-generation-envelope.js';
 import { buildSyntheticUnicodeAssayRequest, UNICODE_ASSAY_TASKS } from '../../server/marrowline-unicode-capability-assay.js';
 import { buildOfflineRoleBoundaryContrast } from '../marrowline-role-boundary-20261017/role-boundary-contrast.mjs';
 import { MODEL, SYNTHETIC_PROMPT } from '../marrowline-whole-frame-contrast-20261015/frame-contrast.mjs';
@@ -17,10 +21,10 @@ export function buildDThinkingContrast() {
   // role-boundary source-only comparison, so no creative task gets retold.
   const medium = buildOfflineRoleBoundaryContrast().a;
 
-  // B starts with the *unprofiled* production request builder: ordinary
-  // Marrowline 3.8 requests HIGH, not the earlier synthetic interactive MEDIUM.
-  // The existing synthetic assay transformation changes only the system/task
-  // to exact D bytes; it leaves original generationConfig untouched.
+  // B is a purely counterfactual UNPROFILED HIGH control. This is NOT the
+  // ordinary browser/HTTP route: api/khonapolit.js wraps the actual text
+  // handler in khonapolit-interactive, mapping 3.8 HIGH -> MEDIUM.
+  // The synthetic assay changes only system/task, retaining config for B.
   const packet = buildInvocationPacket({
     message: SYNTHETIC_PROMPT,
     history: [],
@@ -65,15 +69,22 @@ export function describeRestoredVersusD() {
     mode: 'issued-conjunction',
     waiveIssuance: true
   });
-  const restored = buildGeminiRequest(packet, {}, model, {
-    groveTrial: 'historical-20261002-v1'
-  });
+  // Match the actual /api/khonapolit text entrypoint rather than calling
+  // the inner builder outside its AsyncLocalStorage profile.
+  const restored = withGeminiGenerationProfile(
+    GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+    () => buildGeminiRequest(packet, {}, model, {
+      groveTrial: 'historical-20261002-v1'
+    })
+  );
   return Object.freeze({
     sameModel: true,
     sameUserContents: digest(restored.contents) === digest(medium.contents),
     sameSystemFrame: digest(restored.systemInstruction) === digest(medium.systemInstruction),
     sameGenerationConfigAsDMedium: digest(restored.generationConfig) === digest(medium.generationConfig),
     sameGenerationConfigAsDHigh: digest(restored.generationConfig) === digest(high.generationConfig),
+    actualEntrypointProfile: GEMINI_GENERATION_PROFILE_KHONAPOLIT_INTERACTIVE,
+    unprofiledHighIsProduction: false,
     restoredThinking: restored.generationConfig.thinkingConfig,
     DThinking: medium.generationConfig.thinkingConfig
   });
@@ -88,13 +99,13 @@ export function dThinkingManifest() {
     model,
     conditionA: 'D_CREATIVE_ORIGINAL_MEDIUM',
     conditionB: 'D_CREATIVE_ORIGINAL_HIGH',
-    soleIntervention: 'generationConfig.thinkingConfig.thinkingLevel: medium -> high',
+    soleIntervention: 'COUNTERFACTUAL UNPROFILED HIGH ONLY: generationConfig.thinkingConfig.thinkingLevel medium -> high; not the actual browser request',
     sourceContentsIdentical: digest(medium.contents) === digest(high.contents),
     sourceSystemIdentical: digest(medium.systemInstruction) === digest(high.systemInstruction),
     A: { systemSha256: digest(medium.systemInstruction), contentsSha256: digest(medium.contents), generationSha256: digest(medium.generationConfig) },
     B: { systemSha256: digest(high.systemInstruction), contentsSha256: digest(high.contents), generationSha256: digest(high.generationConfig) },
     restoredVersusD: describeRestoredVersusD(),
-    limitation: 'No Gemini call; a matched source request does not show an output or establish the cause of the observed five-mark morphology.'
+    limitation: 'No Gemini call. Actual text API applies the khonapolit-interactive profile: its 3.8 thinking is MEDIUM, identical to D, so this counterfactual HIGH branch does not explain ordinary Marrowline slash-only morphology.'
   });
 }
 
