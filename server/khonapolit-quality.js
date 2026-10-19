@@ -55,6 +55,7 @@ import {
   MARROWLINE_HISTORICAL_TRIAL_ID,
   MARROWLINE_HISTORICAL_MODEL,
   MARROWLINE_HISTORICAL_MODEL_ORDER,
+  MARROWLINE_RESTORED_MODEL_ORDER,
   preferHistoricalMorphologyCandidate,
   buildHistoricalGroveSystemInstruction
 } from '../app/dome-world/marrowline-historical-grove.js';
@@ -310,8 +311,11 @@ export function selectKhonapolitProviderModels(callableModels = [], { modelOrder
   return selected;
 }
 
-export function selectKhonapolitProviderModelsFromPlan(plan = {}, { historicalGrove = false } = {}) {
-  const modelOrder = historicalGrove ? MARROWLINE_HISTORICAL_MODEL_ORDER : HUMAN_LIVENESS_MODEL_ORDER;
+export function selectKhonapolitProviderModelsFromPlan(plan = {}, { historicalGrove = false, restoredGrove = false } = {}) {
+  // Historical mode preserves the actual old frontier for research. Restored
+  // production keeps historical instructions but admits the current Argon seat.
+  const modelOrder = restoredGrove ? MARROWLINE_RESTORED_MODEL_ORDER
+    : historicalGrove ? MARROWLINE_HISTORICAL_MODEL_ORDER : HUMAN_LIVENESS_MODEL_ORDER;
   const rows = Array.isArray(plan?.rows) ? plan.rows : [];
   const callable = Array.isArray(plan?.callableModels) ? plan.callableModels : [];
   const coolingEligible = rows
@@ -1235,7 +1239,7 @@ export default async function handler(req, res) {
   const clientQuotaCooldown = clientQuotaCooldownHints(body);
   const clientQuotaBudget = clientQuotaBudgetHints(body);
   const isHistoricalGrove = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID;
-  const providerModels = selectKhonapolitProviderModelsFromPlan(plan, { historicalGrove: isHistoricalGrove });
+  const providerModels = selectKhonapolitProviderModelsFromPlan(plan, { restoredGrove: isHistoricalGrove });
   // Browser-local quota/cooldown history is receipt evidence only. It cannot
   // reorder or suppress the settled human provider frontier. 3.8 remains first;
   // live Gemini transport decides whether that seat can answer this turn.
@@ -1253,14 +1257,14 @@ export default async function handler(req, res) {
     ? requestedCanaryModel
     : allModels[0] || null;
   const models = releaseCanary ? (canaryModel ? [canaryModel] : []) : allModels;
-  // Only operator-selected research turns have a historical frontier. Do not
-  // invent calls for absent/unapproved models or exceed the ordinary 5+1 cap.
+  // The restored voice is requested by browser text-only ingress, with a
+  // present-day frontier; no invented model IDs or unapproved paid calls.
   if (isHistoricalGrove) {
     res.__td613GroveTrial = Object.freeze({
       id: MARROWLINE_HISTORICAL_TRIAL_ID,
       source_commit: 'ffb98ac0050c99b07aef59ac3d200d8bee2e7e3a',
-      variant: 'historical-runtime-20261018',
-      requested_model_order: [...MARROWLINE_HISTORICAL_MODEL_ORDER],
+      variant: 'restored-voice-argon-frontier-20261019',
+      requested_model_order: [...MARROWLINE_RESTORED_MODEL_ORDER],
       eligible_model_order: [...models],
       admission_policy: 'unvoiced-provider-return-visible-but-not-admitted',
       typography_policy: 'provider-native-with-historical-preference'
