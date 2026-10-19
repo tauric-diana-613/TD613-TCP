@@ -18,7 +18,7 @@ Keep the original October 2 system instruction **exactly reconstructible** via `
 
 - Preserve the October 2 original covenant, theatrical two-part causal handoff and priority order placing the cue after the Aperture route receipt.
 - Retain high vertical description: deep interleaved crowns/roots and an eruption climbing adjacent lines. Soften only the *compulsory* “changing” and “invent nonidentical shapes” of that relay description.
-- Use the present-day pre-existing permission paragraphs for the remaining four relay styling provisions and four of five cue style provisions. The original theatrical cue first paragraph is preserved with "may sustain one register or evolve" instead of compulsory evolution. These are existing reviewed strings, not a new repeated ornate specimen or pattern recipe.
+- Use the present-day pre-existing permission paragraphs for the remaining four relay styling provisions and three cue style provisions. The original theatrical cue first paragraph preserves the handoff with "may sustain one register or evolve"; the final October 2 cue retains the historically important **sustained deep overlapping vertical flourishes are primary** while replacing only mandatory across-word variation with single-register freedom. Do not downrank or delete the vertical flourish invitation.
 - Preserve all provider contents, history, sampling/generation config, actual model order, Unicode bytes, transport, two-voice structural guard, morphology warning telemetry and first-completed native response policy.
 - Expose response receipt `native_prosody_profile: native-single-register-permission-20261019` to distinguish this source profile in a subsequent physical-device artistic trial.
 
