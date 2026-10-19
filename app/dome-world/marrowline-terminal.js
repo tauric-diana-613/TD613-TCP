@@ -621,9 +621,17 @@ function installComposerGrowth(doc) {
   prompt.addEventListener('input', resize);
 }
 export function compactMarrowlineHistory(messages = []) {
-  // The same presentation-backed serialization used by browser preflight and
-  // the actual request; model part labels count toward the aggregate budget.
-  return messages.slice(-10).map((entry) => ({ role: entry.role, text: entryText(entry) })).filter((entry) => entry.text);
+  // Presentation/archive custody is independent of what conditions the next
+  // provider generation. A previously displayed but explicitly UNADMITTED
+  // model reply must never become a Gemini model-history exemplar. Keep that
+  // reply and its receipts in the saved local conversation; omit it ONLY from
+  // the provider-bound history and the corresponding preflight budget.
+  // Legacy entries without an admission observation retain prior behavior.
+  return messages.filter((entry) => entry?.role !== 'model'
+    || entry?.relay?.signal?.downstreamAdmitted !== false)
+    .slice(-10)
+    .map((entry) => ({ role: entry.role, text: entryText(entry) }))
+    .filter((entry) => entry.text);
 }
 function ensureOriginControls(doc) {
   const menu = doc.querySelector('.conversation-action-menu');
