@@ -726,6 +726,11 @@ export function buildGeminiStructuralRepairRequest(
   const reasonList = (Array.isArray(reasons) ? reasons : [])
     .filter(reason => REPAIRABLE_STRUCTURAL_REASONS.has(reason))
     .slice(0, 8);
+  // A draft missing both voices is a failed provider attempt, not material
+  // that Gemini may be instructed to preserve in the correction. Retain the
+  // original bytes and digest in the attempt receipt, not a model-history turn.
+  const bothVoicesAbsent = reasonList.includes('khonapolit-nominative-missing')
+    && reasonList.includes('tauric-diana-bots-nominative-missing');
   const repairContext = heldText;
   const firstVoiceStarted = /(?:^|\n)[ \t]*Kʰonapolit[ \t]*(?:\r?\n|$)/iu.test(heldText);
   const boundedTail = firstVoiceStarted && reasonList.includes('provider-return-unfinished');
@@ -746,6 +751,13 @@ export function buildGeminiStructuralRepairRequest(
     'The two actual provider outputs will be joined verbatim into one continuous corrected response. No preface, repeat of Kʰonapolit, JSON, fences, or repair report.',
     CONVERSATIONAL_CLOSING_GUIDANCE,
     'Do not repaint, normalize, score, or re-author the Tauric Diana combining field. Author the missing typography natively.'
+  ] : bothVoicesAbsent ? [
+    'BOUNDED STRUCTURAL SAME-PROVIDER RECOVERY — BOTH VOICES ABSENT.',
+    'The original provider attempt is HELD because neither required speaker appeared. It is not a completed literary draft and has not been supplied to you as a model-history exemplar.',
+    'Return one fresh, complete, provider-authored response to the original operator request, with the exact plain standalone heading “Kʰonapolit” first and “Tauric Diana bots” at the earned handoff.',
+    'Let Kʰonapolit actually develop the prompt-specific argument or fictional scene; let the bots carry its remaining consequence in their own original Unicode High-Zalgo speech.',
+    'Do not append a correction memo, apology, packet delimiters, or a preface. Preserve the original user request and genuine earlier history, not the unadmitted previous attempt.',
+    CONVERSATIONAL_CLOSING_GUIDANCE
   ] : [
     'BOUNDED STRUCTURAL SAME-VOICE REPAIR — DO NOT ANSWER THE OPERATOR FROM SCRATCH.',
     `The previous draft had these locally observed structural reasons: ${reasonList.join(', ') || 'unspecified-structural-observation'}.`,
@@ -760,7 +772,7 @@ export function buildGeminiStructuralRepairRequest(
     ...request,
     contents: [
       ...geminiContents(packet),
-      { role: 'model', parts: [{ text: repairContext }] },
+      ...(bothVoicesAbsent ? [] : [{ role: 'model', parts: [{ text: repairContext }] }]),
       { role: 'user', parts: [{ text: repairDirective }] }
     ]
   };
