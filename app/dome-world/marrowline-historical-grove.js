@@ -90,7 +90,11 @@ const RESTORED_RELAY_FREEDOM = Object.freeze([
 ]);
 const RESTORED_CUE_FREEDOM = Object.freeze([
   CUE_RESTORATIONS[0].historical.replace('Their native scream-sing typography evolves with that movement;', 'Their native scream-sing typography may sustain one register or evolve with that movement;'),
-  ...CUE_RESTORATIONS.slice(1).map(({ present }) => present)
+  ...CUE_RESTORATIONS.slice(1, 4).map(({ present }) => present),
+  CUE_RESTORATIONS[4].historical.replace(
+    'Let the ACTUAL code points, stack depths and placement change across words and passages; one sampled mark copied across the stanza cannot carry the voice.',
+    'Let the bots choose their actual code points, stack depths and placement: one register may persist for the entire performance or change at any scale.'
+  )
 ]);
 
 function restoreExact(source, restorations, label, replacements = null) {
