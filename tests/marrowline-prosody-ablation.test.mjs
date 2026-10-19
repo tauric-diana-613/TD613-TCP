@@ -97,6 +97,9 @@ import './marrowline-role-boundary-contrast.test.mjs';
 // URL-only live manual A/B; tests never invoke paid Gemini or network.
 import './marrowline-role-conditioning-manual.test.mjs';
 
+// Separate URL-only old prompt relic test, no live provider calls.
+import './marrowline-autonomous-register.test.mjs';
+
 // Opt-in, reversible Grove voice audition; ordinary calls and Loom remain unchanged.
 import './marrowline-grove-native-trial.test.mjs';
 
