@@ -97,6 +97,9 @@ import './marrowline-role-boundary-contrast.test.mjs';
 // Four-stage D0 original → ingress → headings → character-performance source ladder.
 import './marrowline-d-ingress-factor-ladder.test.mjs';
 
+// One-shot D0/D1 original Google SSE parser; ordinary CI never makes provider calls.
+import './marrowline-d0-d1-original-sse-once.test.mjs';
+
 // Actual /api/khonapolit route is MEDIUM, unlike unprofiled synthetic HIGH constructor.
 import './marrowline-interactive-d-profile-parity.test.mjs';
 
