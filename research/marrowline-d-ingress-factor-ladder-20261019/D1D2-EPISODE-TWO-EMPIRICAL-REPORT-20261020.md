@@ -64,10 +64,10 @@ Signed response-level stack-share differences, **in percentage points**. Negativ
 
 | Block | Fixed chronological order | SECTION − D1 | NAMED − SECTION | D2 − NAMED |
 |---:|---|---:|---:|---:|
-| 1 | D1 → SECTION → NAMED → D2 | -95.85% | 0.00% | 0.00% |
-| 2 | SECTION → D2 → D1 → NAMED | -11.62% | 0.00% | 0.00% |
-| 3 | NAMED → D1 → D2 → SECTION | -83.49% | -16.51% | 0.00% |
-| 4 | D2 → NAMED → SECTION → D1 | -100.00% | 0.00% | 0.00% |
+| 1 | D1 → SECTION → NAMED → D2 | -95.85 pp | 0.00 pp | 0.00 pp |
+| 2 | SECTION → D2 → D1 → NAMED | -11.62 pp | 0.00 pp | 0.00 pp |
+| 3 | NAMED → D1 → D2 → SECTION | -83.49 pp | -16.51 pp | 0.00 pp |
+| 4 | D2 → NAMED → SECTION → D1 | -100.00 pp | 0.00 pp | 0.00 pp |
 
 - `SECTION−D1` is negative **4/4 blocks** (from −11.62 to −100 percentage points): a replicated finite-episode association under the frozen request family.
 - `NAMED−SECTION` is negative in one block (−16.51 pp), zero in the other three; mean differences reflect the SECTION floor in those blocks.
