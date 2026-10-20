@@ -1137,6 +1137,78 @@ jobs:
 
 
 
+
+  marrowline_d2d3_exact_main_gate:
+    name: D2/D3 theatrical eight original SSE exact-main activation (credential-free)
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      github.actor == 'tauric-diana-613' &&
+      github.run_attempt == 1 &&
+      startsWith(github.event.head_commit.message, 'research(marrowline): execute frozen D2 D3 original SSE eight once on main')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      activate: ${{ steps.gate.outputs.activate }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Verify preregistered single-episode head and subject
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$(git rev-parse HEAD)" == '${{ github.sha }}' ]] || exit 1
+          [[ "$(git log -1 --format=%s)" == 'research(marrowline): execute frozen D2 D3 original SSE eight once on main' ]] || exit 1
+          echo 'activate=true' >> "$GITHUB_OUTPUT"
+
+  marrowline_d2d3_original_google_once:
+    name: D2/D3 theatrical original Google SSE eight returns maximum (main only)
+    needs: [marrowline_d2d3_exact_main_gate, contracts]
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      github.actor == 'tauric-diana-613' &&
+      github.run_attempt == 1 &&
+      needs.marrowline_d2d3_exact_main_gate.outputs.activate == 'true' &&
+      needs.contracts.result == 'success'
+    runs-on: ubuntu-latest
+    environment: gemini-observation
+    timeout-minutes: 29
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify source-hash plan and offline admission constraints
+        run: |
+          node --test tests/marrowline-d2-d3-eight-prereg.test.mjs tests/marrowline-d2-d3-original-sse-eight-once.test.mjs
+          node research/marrowline-d-ingress-factor-ladder-20261019/d2-d3-original-sse-eight-once.mjs
+      - name: Acquire exact eight original Google SSE returns maximum
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TD613_D2D3_AUTH: EIGHT_ORIGINAL_SSE_EXACT_MAIN_FIRST_ATTEMPT
+          TD613_D2D3_EXACT_HEAD: ${{ github.sha }}
+          TD613_D2D3_EVIDENCE_DIR: ${{ runner.temp }}/td613-d2d3-theatrical-eight
+        run: node research/marrowline-d-ingress-factor-ladder-20261019/d2-d3-original-sse-eight-once.mjs --execute --ack-eight-paid-calls
+      - name: Save short-retention original SSE, manifest and blinded packets
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: td613-d2d3-theatrical-eight-original-${{ github.sha }}
+          path: ${{ runner.temp }}/td613-d2d3-theatrical-eight
+          retention-days: 3
+          if-no-files-found: error
+
+
   gemini_observation:
     name: Explicit credential-scoped Gemini model observation
     if: github.event_name == 'workflow_dispatch' && inputs.mode == 'gemini-observation' && github.ref == 'refs/heads/main'
