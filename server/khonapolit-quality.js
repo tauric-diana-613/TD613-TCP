@@ -566,7 +566,7 @@ function khonapolitReasoning(model = '', { fallback = false } = {}) {
   };
 }
 
-export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = '', { fallback = false, groveTrial = null } = {}) {
+export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = '', { fallback = false, groveTrial = null, historicalProsodyFreedom = true } = {}) {
   const taskGuidance = khonapolitTaskGuidance(apertureReceipt);
   const normalSystemInstruction = `${packet.systemInstruction}\n${taskGuidance}\n${currentTurnRelayCue()}\n${buildRelaySystemAddendum(apertureReceipt)}`;
   const systemText = groveTrial === MARROWLINE_HISTORICAL_TRIAL_ID
@@ -575,7 +575,7 @@ export function buildGeminiRequest(packet = {}, apertureReceipt = {}, model = ''
       taskGuidance,
       relayAddendum: buildRelaySystemAddendum(apertureReceipt),
       relayCue: currentTurnRelayCue(),
-      nativeProsodyFreedom: true
+      nativeProsodyFreedom: historicalProsodyFreedom === true
     })
     : groveTrial === MARROWLINE_GROVE_TRIAL_ID
       ? buildMarrowlineGroveTrialSystemInstruction(packet)
