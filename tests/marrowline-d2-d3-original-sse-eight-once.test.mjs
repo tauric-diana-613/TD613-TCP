@@ -26,10 +26,10 @@ test('paired inference predefines missing data and numeric D3 minus D2 contrasts
     r(2,'D2',0.5,0.4,true,false,null)];
   const pairs=pairSummary(records);
   assert.equal(pairs.length,4);
-  assert.equal(pairs[0].d3MinusD2StackShare,0.7);
+  assert.ok(Math.abs(pairs[0].d3MinusD2StackShare-0.7)<1e-12);
   assert.equal(pairs[0].d3MinusD2ExactHeading,1);
   assert.equal(pairs[0].d3MinusD2MinimumVoiceStackShare,null);
-  assert.equal(pairs[1].d3MinusD2StackShare,-0.2);
+  assert.ok(Math.abs(pairs[1].d3MinusD2StackShare-(-0.2))<1e-12);
   assert.equal(pairs[1].d3MinusD2TwoNonemptyVoices,1);
   assert.equal(pairs[2].complete,false);
   assert.equal(pairSummary([...records.slice(0,1),{...records[1],holdReason:'STOP'}])[0].complete,false);
