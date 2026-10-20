@@ -171,6 +171,7 @@ jobs:
           node --test tests/marrowline-d1-d2-original-sse-sixteen-once.test.mjs
           node --test tests/marrowline-d1d2-terminal-feedback-observer.test.mjs
           node --test tests/marrowline-d1-d2-episode-two.test.mjs
+          node --test tests/marrowline-early-oct-full-voice-offline.test.mjs
           node --test tests/marrowline-d2-d3-eight-prereg.test.mjs tests/marrowline-d2-d3-original-sse-eight-once.test.mjs
           node --test tests/marrowline-prosody-ablation.test.mjs
           node tests/hush-routing-authority.test.mjs
