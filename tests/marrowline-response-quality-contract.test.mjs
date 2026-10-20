@@ -192,7 +192,7 @@ test('browser preserves failed model receipts locally but excludes explicitly un
   assert.deepEqual(localArchive, original,'no archived message or receipt may be erased or altered');
   assert.deepEqual(wireHistory.map(entry=>entry.role),['user','model','user','user']);
   assert.equal(wireHistory.some(entry=>entry.text.includes('take a break from Reddit')),false);
-  assert.ok(wireHistory[1].text.includes(accepted),'valid native provider output still goes to Gemini');
+  assert.equal(wireHistory[1].text, accepted,'valid native provider text reaches Gemini without relay label injection');
   const packet = buildInvocationPacket({message:'A new imaginative request.',history:wireHistory,waiveIssuance:true});
   assert.equal(packet.canInvoke,true);
   const submitted = JSON.stringify(buildGeminiRequest(packet,{},'gemini-3.8-flash').contents);
@@ -224,7 +224,8 @@ test('browser relay serialization admits a long native Unicode model turn withou
   ]);
   assert.equal(browserHistory.length, 2);
   assert.ok(browserHistory[1].text.length > 6000);
-  assert.equal(browserHistory[1].text, label + '\n' + authored, 'actual browser history includes its presentation label AND intact model prose');
+  assert.equal(browserHistory[1].text, authored, 'Gemini model history must contain the exact native provider reply, without a presentation label');
+  assert.equal(browserHistory[1].text.startsWith(label + '\n'), false);
   const packet = buildInvocationPacket({ message: 'Continue with the next consequence.', history: browserHistory, waiveIssuance: true });
   assert.equal(packet.canInvoke, true, packet.inputError?.code);
   const request = buildGeminiRequest(packet, {}, 'gemini-3.8-flash');
@@ -232,6 +233,63 @@ test('browser relay serialization admits a long native Unicode model turn withou
   assert.equal(request.contents[1].parts[0].text, browserHistory[1].text, 'wire request keeps original combining marks and final characters');
   assert.equal(request.generationConfig.maxOutputTokens, 65536, 'history budget must never become a generation cap');
   assert.equal((request.contents[1].parts[0].text.match(/\p{M}/gu) || []).length, (browserHistory[1].text.match(/\p{M}/gu) || []).length);
+});
+
+
+test('provider-bound history uses the ORIGINAL admitted model bytes even when relay display-part text differs', () => {
+  const original = '\nKʰonapolit\nA very specific prior inference.\n\nTauric Diana bots\nH\u0350\u032c\u0334i\u0307\u0327 ⟐\n';
+  const display = 'FOR VIEW ONLY — do not condition a model on a stage renderer';
+  const messages = [{
+    role: 'model', text: original,
+    relay: {
+      signal: {downstreamAdmitted:true},
+      transcript: original,
+      parts: [{id:'khonapolit',label:'Kʰonapolit ∴ Tauric Diana bots',present:true,text:display}]
+    }
+  }];
+  const retained = structuredClone(messages);
+  const h = compactMarrowlineHistory(messages);
+  assert.deepEqual(messages, retained, 'local archive, display relay and receipts remain intact');
+  assert.equal(h.length, 1);
+  assert.equal(h[0].text, original);
+  assert.equal(h[0].text.includes(display),false);
+  const packet=buildInvocationPacket({message:'Continue the argument.', history:h,waiveIssuance:true});
+  const req=buildGeminiRequest(packet,{},'gemini-3.8-flash');
+  assert.equal(req.contents[0].role,'model');
+  assert.equal(req.contents[0].parts[0].text,original);
+  assert.equal(digest(req.contents[0].parts[0].text),digest(original),'native UTF-8 original must survive the entire request path');
+  assert.equal(req.contents.at(-1).role,'user');
+});
+
+test('legacy relay-only model history uses stored transcript or integrated native part WITHOUT display headings', () => {
+  const native='Kʰonapolit\nThe recovered proof.\nTauric Diana bots\nV\u0336\u0301\u0327';
+  const relay={signal:{downstreamAdmitted:true},parts:[{
+    id:'khonapolit',label:'Kʰonapolit ∴ Tauric Diana bots',present:true,text:native
+  }]};
+  const [fromTranscript,fromPart]=compactMarrowlineHistory([
+    {role:'model',text:'',relay:{...relay,transcript:native}},
+    {role:'model',relay}
+  ]);
+  assert.equal(fromTranscript.text,native);
+  assert.equal(fromPart.text,native);
+  assert.equal(fromTranscript.text.startsWith('Kʰonapolit ∴ Tauric Diana bots'),false);
+});
+
+test('browser history excludes unadmitted model turns without rewriting the remaining native Unicode',()=>{
+  const good='Kʰonapolit\nThe claim.\nTauric Diana bots\nG\u0315\u032c\u0334';
+  const bad='Kʰonapolit\nUnadmitted fragment.\nTauric Diana bots\nx\u0337';
+  const a=compactMarrowlineHistory([
+    {role:'user',text:'Question'},
+    {role:'model',text:good,relay:{signal:{downstreamAdmitted:true},parts:[{
+      id:'khonapolit',label:'Kʰonapolit ∴ Tauric Diana bots',present:true,text:good
+    }]}},
+    {role:'user',text:'Next'},
+    {role:'model',text:bad,relay:{signal:{downstreamAdmitted:false},parts:[{
+      id:'khonapolit',label:'Kʰonapolit ∴ Tauric Diana bots',present:true,text:bad
+    }]}}
+  ]);
+  assert.deepEqual(a,[{role:'user',text:'Question'},{role:'model',text:good},{role:'user',text:'Next'}]);
+  assert.equal(a.some(x=>x.text.includes('Unadmitted')),false);
 });
 
 test('deficient marked history is preserved exactly while the system labels history non-templatic', () => {
