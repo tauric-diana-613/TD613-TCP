@@ -620,17 +620,26 @@ function installComposerGrowth(doc) {
   const resize = () => { prompt.style.height = 'auto'; prompt.style.height = `${Math.min(Math.max(prompt.scrollHeight, 90), Math.round(doc.defaultView.innerHeight * .34))}px`; };
   prompt.addEventListener('input', resize);
 }
+function providerHistoryText(entry = {}) {
+  // Gemini must see the native provider response, not the display relay's
+  // synthetic stage headings and presentation-only labels. A stored original
+  // model text is the only available source witness for model-role history.
+  // Never reconstruct missing original bytes from renderer-facing relay.parts.
+  return entry.role === 'model'
+    ? (typeof entry.text === 'string' ? entry.text : '')
+    : entryText(entry);
+}
 export function compactMarrowlineHistory(messages = []) {
-  // Presentation/archive custody is independent of what conditions the next
-  // provider generation. A previously displayed but explicitly UNADMITTED
-  // model reply must never become a Gemini model-history exemplar. Keep that
-  // reply and its receipts in the saved local conversation; omit it ONLY from
-  // the provider-bound history and the corresponding preflight budget.
-  // Legacy entries without an admission observation retain prior behavior.
+  // The displayed/saved ledger is immutable here. Only admitted prior model
+  // returns with original provider text may condition subsequent Gemini turns.
+  // Legacy model entries whose admission status is unknown remain eligible if
+  // their original native text is present. Exclude known unadmitted model turns
+  // and model turns lacking original text BEFORE the ten-entry history budget.
   return messages.filter((entry) => entry?.role !== 'model'
-    || entry?.relay?.signal?.downstreamAdmitted !== false)
+    || (entry?.relay?.signal?.downstreamAdmitted !== false
+      && typeof entry.text === 'string' && entry.text.length > 0))
     .slice(-10)
-    .map((entry) => ({ role: entry.role, text: entryText(entry) }))
+    .map((entry) => ({ role: entry.role, text: providerHistoryText(entry) }))
     .filter((entry) => entry.text);
 }
 function ensureOriginControls(doc) {

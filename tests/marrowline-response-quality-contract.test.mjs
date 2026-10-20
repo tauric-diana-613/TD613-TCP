@@ -224,7 +224,8 @@ test('browser relay serialization admits a long native Unicode model turn withou
   ]);
   assert.equal(browserHistory.length, 2);
   assert.ok(browserHistory[1].text.length > 6000);
-  assert.equal(browserHistory[1].text, label + '\n' + authored, 'actual browser history includes its presentation label AND intact model prose');
+  assert.equal(browserHistory[1].text, authored, 'provider-bound history must preserve exactly the model-authored native reply, excluding display labels');
+  assert.equal(browserHistory[1].text.startsWith(label + '\n'), false);
   const packet = buildInvocationPacket({ message: 'Continue with the next consequence.', history: browserHistory, waiveIssuance: true });
   assert.equal(packet.canInvoke, true, packet.inputError?.code);
   const request = buildGeminiRequest(packet, {}, 'gemini-3.8-flash');
@@ -232,6 +233,56 @@ test('browser relay serialization admits a long native Unicode model turn withou
   assert.equal(request.contents[1].parts[0].text, browserHistory[1].text, 'wire request keeps original combining marks and final characters');
   assert.equal(request.generationConfig.maxOutputTokens, 65536, 'history budget must never become a generation cap');
   assert.equal((request.contents[1].parts[0].text.match(/\p{M}/gu) || []).length, (browserHistory[1].text.match(/\p{M}/gu) || []).length);
+});
+
+test('provider history uses byte-faithful native model text while UI relay labels and archive stay separate', () => {
+  const providerOriginal = '\nKʰonapolit\nA strictly bounded inference.\n\nTauric Diana bots\nW\u0304\u0323e\u0336 SING.\n⟐\n';
+  const displayTag = 'Kʰonapolit ∴ Tauric Diana bots';
+  const entry = {role:'model', text:providerOriginal, relay:{
+    signal:{downstreamAdmitted:true},parts:[
+      {id:'khonapolit',label:displayTag,present:true,text:'A strictly bounded inference.'},
+      {id:'tauric-diana',label:'The chorus renders',present:true,text:'W\u0304\u0323e\u0336 SING.'}
+    ]
+  }, receipt:{id:'historical-proof'}};
+  const saved=structuredClone(entry);
+  const history=compactMarrowlineHistory([{role:'user',text:'Earlier turn.'},entry]);
+  assert.deepEqual(entry,saved,'archived original and display relay must remain byte-for-byte unmodified');
+  assert.deepEqual(history,[{role:'user',text:'Earlier turn.'},{role:'model',text:providerOriginal}]);
+  assert.equal(history[1].text.includes(displayTag),false);
+  assert.equal(history[1].text.endsWith('\n'),true);
+  assert.equal(history[1].text.startsWith('\n'),true);
+  const packet=buildInvocationPacket({message:'Develop the consequence.',history,waiveIssuance:true});
+  const submitted=buildGeminiRequest(packet,{},'gemini-3.8-flash');
+  assert.equal(submitted.contents[1].parts[0].text,providerOriginal,
+    'Gemini model-role history must exactly match provider-authored Unicode and whitespace');
+});
+test('historical display-only relay cannot impersonate a previous model utterance', () => {
+  const displayOnly={role:'model',relay:{
+    signal:{downstreamAdmitted:true},parts:[{id:'khonapolit',label:'Kʰonapolit ∴ Tauric Diana bots',present:true,text:'Synthesized presentation line.'}]
+  }};
+  const emptyOriginal={role:'model',text:'',relay:{parts:[{id:'bots',label:'Styled Stage',present:true,text:'Unverified'}]}};
+  const saved=structuredClone([displayOnly,emptyOriginal]);
+  const history=compactMarrowlineHistory([
+    {role:'user',text:'One'},displayOnly,{role:'user',text:'Two'},emptyOriginal,
+    {role:'model',text:'Original verified model text.'}
+  ]);
+  assert.deepEqual(history,[
+    {role:'user',text:'One'},{role:'user',text:'Two'},
+    {role:'model',text:'Original verified model text.'}
+  ]);
+  assert.deepEqual([displayOnly,emptyOriginal],saved,'provider filtering must never delete displayed or archived messages');
+});
+test('ten-entry budget counts only admitted native model texts after filtering and keeps user turns', () => {
+  const messages=[{role:'user',text:'Zero'},{role:'model',text:'Original old'}];
+  messages.push({role:'model',relay:{parts:[{id:'bots',label:'Display only',present:true,text:'Not actually saved'}]}});
+  messages.push({role:'model',text:'Rejected original',relay:{signal:{downstreamAdmitted:false}}});
+  for(let i=0;i<8;i++)messages.push({role:'user',text:'User '+i});
+  const result=compactMarrowlineHistory(messages);
+  assert.equal(result.length,10);
+  assert.deepEqual(result[0],{role:'user',text:'Zero'});
+  assert.deepEqual(result[1],{role:'model',text:'Original old'});
+  assert.equal(result.some(e=>/Rejected|Display only|Not actually saved/.test(e.text)),false);
+  assert.deepEqual(result.at(-1),{role:'user',text:'User 7'});
 });
 
 test('deficient marked history is preserved exactly while the system labels history non-templatic', () => {
