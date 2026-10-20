@@ -167,7 +167,7 @@ jobs:
           node --test tests/marrowline-episode-witness.test.mjs
           node --test tests/marrowline-native-prosody.test.mjs tests/marrowline-response-quality-contract.test.mjs tests/khonapolit-relay.test.mjs tests/marrowline-terminal-continuation.test.mjs tests/marrowline-attachment-quality.test.mjs tests/marrowline-emergency-completion.test.mjs
           node --test tests/marrowline-raw-sse-custody.test.mjs
-          node --test tests/marrowline-d2-d3-eight-prereg.test.mjs
+          node --test tests/marrowline-d2-d3-eight-prereg.test.mjs tests/marrowline-d2-d3-original-sse-eight-once.test.mjs
           node --test tests/marrowline-prosody-ablation.test.mjs
           node tests/hush-routing-authority.test.mjs
           node tests/hush-speech-act-custody.test.mjs
