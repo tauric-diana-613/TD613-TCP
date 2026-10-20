@@ -170,6 +170,7 @@ jobs:
           node --test tests/marrowline-d1-d2-boundary-factor-prereg.test.mjs
           node --test tests/marrowline-d1-d2-original-sse-sixteen-once.test.mjs
           node --test tests/marrowline-d1d2-terminal-feedback-observer.test.mjs
+          node --test tests/marrowline-d1-d2-episode-two.test.mjs
           node --test tests/marrowline-d2-d3-eight-prereg.test.mjs tests/marrowline-d2-d3-original-sse-eight-once.test.mjs
           node --test tests/marrowline-prosody-ablation.test.mjs
           node tests/hush-routing-authority.test.mjs
@@ -1279,6 +1280,76 @@ jobs:
         with:
           name: td613-d1d2-boundary-sixteen-original-${{ github.sha }}
           path: ${{ runner.temp }}/td613-d1d2-boundary-sixteen
+          retention-days: 3
+          if-no-files-found: error
+
+  marrowline_d1d2_ep2_exact_main_gate:
+    name: D1/D2 fresh sixteen SSE episode two exact-main activation (credential-free)
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      github.actor == 'tauric-diana-613' &&
+      github.run_attempt == 1 &&
+      startsWith(github.event.head_commit.message, 'research(marrowline): execute D1 D2 original SSE episode two once on main')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      activate: ${{ steps.gate.outputs.activate }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Verify source SHA and exact one-time subject
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$(git rev-parse HEAD)" == '${{ github.sha }}' ]] || exit 1
+          [[ "$(git log -1 --format=%s)" == 'research(marrowline): execute D1 D2 original SSE episode two once on main' ]] || exit 1
+          echo 'activate=true' >> "$GITHUB_OUTPUT"
+
+  marrowline_d1d2_ep2_original_google_once:
+    name: D1/D2 fresh sixteen Google SSE episode two maximum (main only)
+    needs: [marrowline_d1d2_ep2_exact_main_gate, contracts]
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      github.actor == 'tauric-diana-613' &&
+      github.run_attempt == 1 &&
+      needs.marrowline_d1d2_ep2_exact_main_gate.outputs.activate == 'true' &&
+      needs.contracts.result == 'success'
+    runs-on: ubuntu-latest
+    environment: gemini-observation
+    timeout-minutes: 58
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify frozen sources, original request hashes and terminal-feedback contracts
+        run: |
+          node --test tests/marrowline-d1-d2-boundary-factor-prereg.test.mjs tests/marrowline-d1-d2-original-sse-sixteen-once.test.mjs tests/marrowline-d1d2-terminal-feedback-observer.test.mjs tests/marrowline-d1-d2-episode-two.test.mjs
+          node research/marrowline-d-ingress-factor-ladder-20261019/d1-d2-original-sse-episode-two.mjs
+      - name: Acquire fresh original Google SSE, sixteen calls maximum, no retries
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TD613_D1D2_EP2_AUTH: D1D2_EPISODE_TWO_EXACT_MAIN_FIRST_ATTEMPT
+          TD613_D1D2_EP2_EXACT_HEAD: ${{ github.sha }}
+          TD613_D1D2_EP2_EVIDENCE_DIR: ${{ runner.temp }}/td613-d1d2-episode-two
+        run: node research/marrowline-d-ingress-factor-ladder-20261019/d1-d2-original-sse-episode-two.mjs --execute --ack-new-episode-sixteen-paid-calls
+      - name: Preserve original SSE streams, manifest and sealed blind key
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: td613-d1d2-episode-two-original-${{ github.sha }}
+          path: ${{ runner.temp }}/td613-d1d2-episode-two
           retention-days: 3
           if-no-files-found: error
 
