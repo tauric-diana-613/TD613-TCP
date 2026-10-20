@@ -176,6 +176,7 @@ jobs:
           node --test tests/marrowline-original-sse-voice-onset-audit.test.mjs
           node --test tests/marrowline-historical-reference-depth.test.mjs
           node --test tests/marrowline-historical-prosody-freedom-pair.test.mjs
+          node --test tests/marrowline-prosody-eight-original-sse-once.test.mjs
           node --test tests/marrowline-d2-d3-eight-prereg.test.mjs tests/marrowline-d2-d3-original-sse-eight-once.test.mjs
           node --test tests/marrowline-prosody-ablation.test.mjs
           node tests/hush-routing-authority.test.mjs
@@ -1425,6 +1426,76 @@ jobs:
         with:
           name: td613-marowline-full-voice-twelve-original-${{ github.sha }}
           path: ${{ runner.temp }}/td613-full-voice-twelve
+          retention-days: 3
+          if-no-files-found: error
+
+  marrowline_prosody_eight_exact_main_gate:
+    name: Marrowline eight original SSE exact-main activation (credential-free)
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      github.actor == 'tauric-diana-613' &&
+      github.run_attempt == 1 &&
+      startsWith(github.event.head_commit.message, 'research(marrowline): execute prosody freedom eight original SSE once on main')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      activate: ${{ steps.gate.outputs.activate }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Verify exact SHA and unique source subject
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$(git rev-parse HEAD)" == '${{ github.sha }}' ]] || exit 1
+          [[ "$(git log -1 --format=%s)" == 'research(marrowline): execute prosody freedom eight original SSE once on main' ]] || exit 1
+          echo 'activate=true' >> "$GITHUB_OUTPUT"
+
+  marrowline_prosody_eight_original_google_once:
+    name: Marrowline historical prosody eight original Google SSE max
+    needs: [marrowline_prosody_eight_exact_main_gate, contracts]
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      github.actor == 'tauric-diana-613' &&
+      github.run_attempt == 1 &&
+      needs.marrowline_prosody_eight_exact_main_gate.outputs.activate == 'true' &&
+      needs.contracts.result == 'success'
+    runs-on: ubuntu-latest
+    environment: gemini-observation
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify unchanged source and historical pair byte hashes
+        run: |
+          node --test tests/marrowline-historical-prosody-freedom-pair.test.mjs tests/marrowline-prosody-eight-original-sse-once.test.mjs
+          node research/marrowline-early-oct-full-voice-20261020/prosody-pair-original-sse-eight-once.mjs
+      - name: Acquire original Google SSE up to eight returns, stop on first incomplete
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TD613_PROSODY_PAIR_EIGHT_AUTH: MARROWLINE_PROSODY_PAIR_EIGHT_FIRST_MAIN_ATTEMPT
+          TD613_PROSODY_PAIR_EIGHT_EXACT_HEAD: ${{ github.sha }}
+          TD613_PROSODY_PAIR_EIGHT_EVIDENCE_DIR: ${{ runner.temp }}/td613-prosody-pair-eight
+        run: node research/marrowline-early-oct-full-voice-20261020/prosody-pair-original-sse-eight-once.mjs --execute --ack-eight-paid-calls
+      - name: Preserve original Google SSE, manifest, and sealed blind key
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: td613-prosody-pair-eight-original-${{ github.sha }}
+          path: ${{ runner.temp }}/td613-prosody-pair-eight
           retention-days: 3
           if-no-files-found: error
 
