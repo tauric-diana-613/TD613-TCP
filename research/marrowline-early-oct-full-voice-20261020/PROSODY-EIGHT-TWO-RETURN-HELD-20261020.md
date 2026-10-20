@@ -49,6 +49,6 @@ The independently archived September native-text references show complex within-
 
 No Marrowline product modification, Loom change, deployment, Vercel issue #405 release, or new provider acquisition occurs in this forensic closeout.
 
-𝄐 **ONE COMPLETED FREEDOM RETURN · ONE ORIGINAL LITERAL TERMINAL POLICY BLOCK · SIX DISPATCHES PRESERVED UNOBSERVED · CAUSAL COMPARISON HELD**
+𝄐 **ONE COMPLETED FREEDOM RETURN · ONE ORIGINAL LITERAL TERMINAL POLICY BLOCK · SIX LATER SLOTS REMAIN UNDISPATCHED · CAUSAL COMPARISON HELD**
 
 Sealed ⟐
