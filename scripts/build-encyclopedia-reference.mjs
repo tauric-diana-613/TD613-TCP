@@ -56,7 +56,7 @@ html=html.slice(0,insert)+block+html.slice(insert);
 const runtime=await readFile(new URL('./encyclopedia-intake.cjs',import.meta.url),'utf8')+'\n'+await readFile(new URL('./encyclopedia-reference-runtime.js',import.meta.url),'utf8');
 const runtimeBlock='<!-- TD613_REFERENCE_RUNTIME_BEGIN -->\n<script>\n'+runtime+'\n</script>\n<!-- TD613_REFERENCE_RUNTIME_END -->\n';
 const researchAddendumMarker='<!-- TD613_RESEARCH_ADDENDUM_20261023_BEGIN -->';
-html=html.includes(researchAddendumMarker)?html.replace(researchAddendumMarker,()=>runtimeBlock+researchAddendumMarker):html.replace('</body>',()=>runtimeBlock+'</body>');
+html=html.includes(researchAddendumMarker)?html.replace('\n\n'+researchAddendumMarker,'\n'+researchAddendumMarker).replace(researchAddendumMarker,()=>runtimeBlock+'\n'+researchAddendumMarker):html.replace('</body>',()=>runtimeBlock+'</body>');
 const terms={};for(const r of records){const text=[r.id,r.label,...r.aliases,JSON.stringify(r.record),JSON.stringify(r.supplement)].join(' ').normalize('NFKC').toLowerCase().replace(/[–—‐‑]/g,'-');for(const term of new Set(text.match(/[\p{L}\p{N}_]+(?:-[\p{L}\p{N}_]+)*/gu)||[])){terms[term]??=[];terms[term].push(r.id)}}
 const incoming=Object.fromEntries(records.map(r=>[r.id,[]]));for(const r of records)for(const e of r.links)incoming[e.target].push({source:r.id,type:e.type});
 const root=new URL('../app/encyclopedia/',import.meta.url);
