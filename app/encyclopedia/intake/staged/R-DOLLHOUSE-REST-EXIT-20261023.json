@@ -1,0 +1,49 @@
+{
+  "schema": "td613.research-intake/v1",
+  "recorded_at": "2026-10-23T05:31:22.248Z",
+  "author": "Assistant-prepared under contemporaneous TD613 operator instruction",
+  "human_request_ref": "2026-10-23 operator-direct chat instruction: correct Encyclopedia, validate all laboratory proposals, restore ambiance and log REST investigation",
+  "visibility": "public",
+  "record_id": "R-DOLLHOUSE-REST-EXIT-20261023",
+  "kind": "source_note",
+  "title": "Dollhouse REST bounded adversarial review and offline engineering rest",
+  "family": "Dollhouse / source-level adversarial verification",
+  "body": "REST-08 through REST-12-EXIT were incrementally reviewed against draft PR #1583 with specific source-level findings: false repair transition, caller-declared acquisition, untrusted concern injection, public symmetric keys, caller-provided trust registry, insufficient observation binding, Ed25519 public-key repair, mock-signed synthetic empirical overclaim, fabricated and transplanted verifier records, and untrusted live-custody flag. Exit commit a172b2b8cd21ec9a4b3fa0e4befb73d5ddcaa46b makes positive empirical credit unavailable in the offline orchestrator, fails closed on omitted/conflicting direct receipt observations, and binds verification records to a declared decision context. Early REST-01 through REST-07 are known as prior program history, but exact individual first-party source witnesses are not independently established in this entry. The PR remains draft and unmerged; an offline engineering rest for the narrowly inspected defects is compatible with absence of independent human exteriority or Golden Egg attainment.",
+  "sources": [
+    {
+      "source_id": "PR1583-REST-COMMIT",
+      "kind": "github",
+      "locator": "https://github.com/tauric-diana-613/TD613-TCP/commit/a172b2b8cd21ec9a4b3fa0e4befb73d5ddcaa46b",
+      "source_commit": "a172b2b8cd21ec9a4b3fa0e4befb73d5ddcaa46b",
+      "capture_status": "CITED_ONLY"
+    },
+    {
+      "source_id": "PR1583-REVIEW",
+      "kind": "github",
+      "locator": "https://github.com/tauric-diana-613/TD613-TCP/pull/1583",
+      "capture_status": "CITED_ONLY"
+    }
+  ],
+  "evidence": {
+    "disposition": "ADJUDICATION_RECORDED",
+    "adjudication_ref": "https://github.com/tauric-diana-613/TD613-TCP/pull/1583#issuecomment-6356793515",
+    "earned_claim": "Reviewed exact source-level exit implementation and hostile test construction; deliberately bounded offline engineering rest.",
+    "claim_ceiling": "Source-level corrections only; 239 passed/1 skipped is a supplied local ledger and cancelled CI does not establish complete release green. No external empirical, human comprehension, physical-device, provider-enforcement or Golden Egg proof.",
+    "missing_evidence": [
+      "Independent externally acquired same-episode witness with continuous custody.",
+      "Exact independently verified earliest REST-01..07 source chronology.",
+      "Independent external signers and corresponding actual source captures.",
+      "Completed exact-head source CI for research PR #1583 before any merge."
+    ]
+  },
+  "relations": [
+    {
+      "type": "qualifies",
+      "target": "G-188"
+    },
+    {
+      "type": "qualifies",
+      "target": "G-205"
+    }
+  ]
+}
