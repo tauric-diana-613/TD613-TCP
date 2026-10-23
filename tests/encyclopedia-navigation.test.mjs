@@ -36,13 +36,13 @@ for(const mobile of [false,true])test(`reading journey with ${mobile?'mobile':'d
  try{
   await click('.main-nav [data-view="lexicon"]');
   assert.equal(d.querySelectorAll('[data-select-term]').length,100);
-  assert.match(d.getElementById('lexiconPaginationTop').textContent,/1–100 of 532/);
-  assert.match(d.getElementById('lexiconPagination').textContent,/1–100 of 532/);
+  assert.match(d.getElementById('lexiconPaginationTop').textContent,/1–100 of 533/);
+  assert.match(d.getElementById('lexiconPagination').textContent,/1–100 of 533/);
   await click('#lexiconPaginationTop [data-page-number="2"]');
   assert.equal(d.querySelector('[data-select-term]').dataset.selectTerm,'G-101');
   await change('lexiconPageSize','50');
   assert.equal(d.querySelectorAll('[data-select-term]').length,50);
-  assert.match(d.getElementById('lexiconPagination').textContent,/101–150 of 532/);
+  assert.match(d.getElementById('lexiconPagination').textContent,/101–150 of 533/);
   await change('lexiconPageSize','100');
   w.scrollTo({top:2400});
   await click('[data-select-term="G-150"]');
@@ -121,7 +121,7 @@ test('retained instruments, evidence inventories and collection still execute',a
   const before=f.d.getElementById('engineResults').textContent;await f.click('[data-fadt-row="0"][data-fadt-bit="2"]');
   assert.notEqual(f.d.getElementById('engineResults').textContent,before);
   await f.click('[data-formula-filter="bridged"]');assert.match(f.d.getElementById('formulaSummary').textContent,/21 entries/);
-  await f.click('[data-view="evidence"]');await f.click('[data-evidence-kind="labs"]');assert.match(f.d.getElementById('evidenceSummary').textContent,/46 of 46/);
+  await f.click('[data-view="evidence"]');await f.click('[data-evidence-kind="labs"]');assert.match(f.d.getElementById('evidenceSummary').textContent,/343 of 343/);
   await f.click('[data-evidence-kind="burdens"]');assert.match(f.d.getElementById('evidenceSummary').textContent,/37 of 37/);
   await f.click('[data-view="sources"]');await f.click('[data-source-kind="pdf"]');assert.match(f.d.getElementById('sourceSummary').textContent,/7 of 7/);
   await f.click('[data-source-kind="contract"]');assert.match(f.d.getElementById('sourceSummary').textContent,/40 of 40/);
