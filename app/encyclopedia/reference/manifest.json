@@ -3556,7 +3556,7 @@
     "admit": "node scripts/admit-encyclopedia-record.cjs proposal.json --human-review-ref exact-review-reference",
     "semantics": "Preparation is read-only and PROPOSED. Source-index accession requires separately declared human review. Public merge/deployment and scientific adjudication retain their own authority. Private input cannot enter public accession output."
   },
-  "artifact_html_sha256": "068866188ffc12d10ba7bb0de3ef5e3089aa7d05c11e2c75f3fd9f241acc6878",
+  "artifact_html_sha256": "ed5707326dc9ed5a97d0fc917504bb0706fc807b39ddc6ae77ed344fd85d5824",
   "paths": {
     "directory": "reference/directory.json",
     "graph": "reference/graph.json",
