@@ -6,6 +6,8 @@ Standalone entry: script#td613-reference-manifest, then script#td613-reference-d
 
 This is a generated retrieval mirror of Research Edition 1.4, not new scientific evidence.
 
+Supplemental 2026-10-23 research/ambiance/REST ledger (separate from canonical records): /encyclopedia/research/2026-10-23-addendum.json. Standalone: script#td613-research-addendum-20261023 and window.TD613ResearchAddendum. The 279 candidates are source-indexed proposals, not 279 new empirically established results.
+
 1. Resolve the current Git SHA or deployment receipt independently. Read manifest.json for edition identity, corpus hash, facets, typed-edge semantics and unresolved references.
 2. For an ID, fetch reference/records/{ID}.json directly. Source IDs use SRC-{original source key}. Every record retains its original object, canonical JSON pointer, explicit aliases, sources, evidence class and claim ceiling. Absent fields stay null.
 3. For a concept, normalize NFKC/lowercase, tokenize Unicode words, read the term shard selected by the first character codepoint in hexadecimal (listed in manifest.term_shards). Intersect candidate IDs for AND queries, union for OR, then apply manifest facets. Read only the candidate records. Quoted phrases and exclusions can then be evaluated on their full text.
