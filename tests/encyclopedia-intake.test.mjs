@@ -38,3 +38,26 @@ test('staging preserves exact bytes; admission holds private/tampered input and 
   const exported=await readFile(join(temp,'app/encyclopedia/index.html'),'utf8');assert(exported.includes('Fictional revision; prior failure retained'));assert(exported.includes('Fictional intake transport fixture'));
  }finally{await rm(temp,{recursive:true,force:true})}
 });
+
+test('2026-10-23 public research addendum: all candidate IDs retained, intake staging bounded, no automatic admission',async()=>{
+ const root=join(here,'../app/encyclopedia'),names=['R-DOME-AMBIANCE-20261023','R-ENCYCLOPEDIA-LAB-279-20261023','R-DOLLHOUSE-REST-EXIT-20261023'];
+ const temp=await mkdtemp(join(tmpdir(),'td613-research-staging-'));
+ try{
+  const annex=JSON.parse(await readFile(join(root,'research/2026-10-23-proposal-and-rest-addendum.json'),'utf8'));
+  const candidateIds=annex.coverage.all_candidate_ids_csv.split(',');
+  assert.equal(candidateIds.length,279);assert.equal(new Set(candidateIds).size,279);
+  assert.equal(annex.adoption.explicit_bridge_ids.length,21);
+  assert.equal(annex.programs.length,16);
+  assert.equal(annex.aia.verified_status,'ALREADY_CORRECTED_IN_RESEARCH_EDITION_1.4');
+  for(const id of names){
+   const src=join(root,'intake/staged',id+'.json'),raw=await readFile(src,'utf8'),r=intake.inspect(raw,schema);
+   assert.equal(r.valid,true,JSON.stringify(r.errors));assert.equal(r.record.record_id,id);
+   const proposed=join(temp,id+'.proposal.json'),run=spawnSync(process.execPath,[join(scripts,'stage-encyclopedia-record.cjs'),src,proposed],{encoding:'utf8'});
+   assert.equal(run.status,0,run.stderr);
+   const packet=JSON.parse(await readFile(proposed,'utf8'));
+   assert.equal(packet.disposition,'PROPOSED');
+   assert.equal(packet.original_json,raw);
+   assert.match(packet.authority,/human review.*separate/i);
+  }
+ }finally{await rm(temp,{recursive:true,force:true})}
+});
