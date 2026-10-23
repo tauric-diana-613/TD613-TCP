@@ -126,7 +126,26 @@
     "SRC-EPI_CUSTODIAL_PDF",
     "APT-39",
     "LINEAGE-02",
-    "LINEAGE-03"
+    "LINEAGE-03",
+    "R-DOLLHOUSE-REST-EXIT-20261023",
+    "R-ENCYCLOPEDIA-LAB-279-20261023",
+    "ASSESS-G-002",
+    "PROGRAM-P01",
+    "PROGRAM-P02",
+    "PROGRAM-P03",
+    "PROGRAM-P04",
+    "PROGRAM-P05",
+    "PROGRAM-P06",
+    "PROGRAM-P07",
+    "PROGRAM-P08",
+    "PROGRAM-P09",
+    "PROGRAM-P10",
+    "PROGRAM-P11",
+    "PROGRAM-P12",
+    "PROGRAM-P13",
+    "PROGRAM-P14",
+    "PROGRAM-P15",
+    "PROGRAM-P16"
   ],
   "whether": [
     "G-006",
@@ -165,7 +184,8 @@
     "LAB-22",
     "H-17",
     "SRC-EPI_CUSTODIAL_PDF",
-    "PDF-EPI_CUSTODIAL_PDF"
+    "PDF-EPI_CUSTODIAL_PDF",
+    "R-DOLLHOUSE-REST-EXIT-20261023"
   ],
   "whose": [
     "G-009",
@@ -227,7 +247,9 @@
     "SRC-EPI_CUSTODIAL_PDF",
     "APT-30",
     "APT-35",
-    "LINEAGE-08"
+    "LINEAGE-08",
+    "R-ENCYCLOPEDIA-LAB-279-20261023",
+    "ASSESS-G-454"
   ],
   "waves": [
     "G-012",
@@ -285,7 +307,10 @@
     "LAB-32",
     "X-10",
     "X-21",
-    "SRC-EPI_CUSTODIAL_PDF"
+    "SRC-EPI_CUSTODIAL_PDF",
+    "R-DOLLHOUSE-REST-EXIT-20261023",
+    "ASSESS-M-16",
+    "ASSESS-M-18"
   ],
   "western": [
     "G-018",
@@ -311,7 +336,8 @@
     "G-324",
     "G-428",
     "LAB-27",
-    "X-10"
+    "X-10",
+    "ASSESS-X-10"
   ],
   "which": [
     "G-020",
@@ -399,7 +425,9 @@
     "G-308",
     "G-487",
     "G-525",
-    "H-31"
+    "H-31",
+    "ASSESS-G-080",
+    "ASSESS-G-191"
   ],
   "where": [
     "G-048",
@@ -430,7 +458,8 @@
     "G-341",
     "M-22",
     "LAB-06",
-    "SRC-WEDDING"
+    "SRC-WEDDING",
+    "ASSESS-G-063"
   ],
   "would": [
     "G-059",
@@ -471,7 +500,9 @@
     "H-27",
     "SRC-ZEN_SR_P1",
     "SRC-ZEN_SR_P3",
-    "LINEAGE-06"
+    "LINEAGE-06",
+    "R-DOLLHOUSE-REST-EXIT-20261023",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ],
   "w_": [
     "G-068"
@@ -500,7 +531,8 @@
     "SRC-SR_UF_PDF",
     "SRC-EPI_CUSTODIAL_PDF",
     "SRC-EPI_POSTWEB_PDF",
-    "SRC-EPI_DIAGNOSTICS_PDF"
+    "SRC-EPI_DIAGNOSTICS_PDF",
+    "ASSESS-G-247"
   ],
   "w": [
     "G-079",
@@ -555,7 +587,8 @@
   ],
   "weakest-boundary": [
     "G-164",
-    "LAB-11"
+    "LAB-11",
+    "ASSESS-G-164"
   ],
   "worst-declared-boundary": [
     "G-164"
@@ -583,7 +616,8 @@
     "G-440",
     "G-441",
     "G-442",
-    "APT-33"
+    "APT-33",
+    "ASSESS-G-440"
   ],
   "widow": [
     "G-181"
@@ -592,7 +626,8 @@
     "G-181"
   ],
   "woven": [
-    "G-182"
+    "G-182",
+    "ASSESS-G-182"
   ],
   "wear": [
     "G-182"
@@ -654,10 +689,12 @@
   ],
   "wendbine": [
     "G-332",
-    "SRC-NOVEL"
+    "SRC-NOVEL",
+    "ASSESS-G-332"
   ],
   "word": [
-    "G-346"
+    "G-346",
+    "R-DOME-AMBIANCE-20261023"
   ],
   "wrappers": [
     "G-397",
@@ -736,5 +773,11 @@
   ],
   "wideningmodes": [
     "APT-09"
+  ],
+  "weather": [
+    "R-DOME-AMBIANCE-20261023"
+  ],
+  "w_t": [
+    "R-DOME-AMBIANCE-20261023"
   ]
 }

@@ -16,7 +16,8 @@
     "X-23",
     "X-25",
     "H-10",
-    "H-37"
+    "H-37",
+    "ASSESS-G-340"
   ],
   "joining": [
     "G-065",
@@ -25,7 +26,8 @@
     "G-209",
     "G-325",
     "G-447",
-    "X-23"
+    "X-23",
+    "ASSESS-X-23"
   ],
   "j": [
     "G-068",
@@ -98,7 +100,8 @@
     "SRC-AP32_ROUTING",
     "SRC-AP32_RECEIPT",
     "SRC-AP32_DOCTRINE",
-    "SRC-SR_SRC_SEAL"
+    "SRC-SR_SRC_SEAL",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ],
   "jurisdiction": [
     "G-240",

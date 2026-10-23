@@ -8,7 +8,8 @@
     "G-103",
     "G-360",
     "M-03",
-    "X-17"
+    "X-17",
+    "ASSESS-G-004"
   ],
   "category": [
     "G-001",
@@ -591,7 +592,8 @@
     "SRC-SR_P1_PDF",
     "SRC-SR_P2_PDF",
     "SRC-SR_P3_PDF",
-    "SRC-SR_UF_PDF"
+    "SRC-SR_UF_PDF",
+    "R-DOME-AMBIANCE-20261023"
   ],
   "commercial": [
     "G-001",
@@ -1016,7 +1018,10 @@
     "SRC-EPI_CUSTODIAL_PDF",
     "SRC-EPI_POSTWEB_PDF",
     "SRC-EPI_DIAGNOSTICS_PDF",
-    "EDITION"
+    "EDITION",
+    "R-DOME-AMBIANCE-20261023",
+    "R-DOLLHOUSE-REST-EXIT-20261023",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ],
   "conditions": [
     "G-001",
@@ -1296,7 +1301,10 @@
     "G-291",
     "G-340",
     "G-450",
-    "H-28"
+    "H-28",
+    "R-DOME-AMBIANCE-20261023",
+    "R-DOLLHOUSE-REST-EXIT-20261023",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ],
   "containment": [
     "G-002",
@@ -1305,7 +1313,8 @@
     "G-289",
     "G-373",
     "SRC-EPI_CUSTODIAL_PDF",
-    "SRC-EPI_POSTWEB_PDF"
+    "SRC-EPI_POSTWEB_PDF",
+    "ASSESS-G-002"
   ],
   "class": [
     "G-002",
@@ -1321,7 +1330,286 @@
     "G-320",
     "G-446",
     "M-03",
-    "APT-27"
+    "APT-27",
+    "ASSESS-F-31",
+    "ASSESS-F-32",
+    "ASSESS-F-33",
+    "ASSESS-F-34",
+    "ASSESS-F-35",
+    "ASSESS-F-36",
+    "ASSESS-G-001",
+    "ASSESS-G-002",
+    "ASSESS-G-004",
+    "ASSESS-G-005",
+    "ASSESS-G-006",
+    "ASSESS-G-008",
+    "ASSESS-G-009",
+    "ASSESS-G-010",
+    "ASSESS-G-012",
+    "ASSESS-G-015",
+    "ASSESS-G-017",
+    "ASSESS-G-020",
+    "ASSESS-G-022",
+    "ASSESS-G-023",
+    "ASSESS-G-026",
+    "ASSESS-G-034",
+    "ASSESS-G-035",
+    "ASSESS-G-044",
+    "ASSESS-G-047",
+    "ASSESS-G-048",
+    "ASSESS-G-053",
+    "ASSESS-G-054",
+    "ASSESS-G-061",
+    "ASSESS-G-063",
+    "ASSESS-G-068",
+    "ASSESS-G-071",
+    "ASSESS-G-076",
+    "ASSESS-G-077",
+    "ASSESS-G-078",
+    "ASSESS-G-079",
+    "ASSESS-G-080",
+    "ASSESS-G-081",
+    "ASSESS-G-082",
+    "ASSESS-G-083",
+    "ASSESS-G-084",
+    "ASSESS-G-089",
+    "ASSESS-G-091",
+    "ASSESS-G-097",
+    "ASSESS-G-099",
+    "ASSESS-G-100",
+    "ASSESS-G-101",
+    "ASSESS-G-102",
+    "ASSESS-G-103",
+    "ASSESS-G-105",
+    "ASSESS-G-106",
+    "ASSESS-G-107",
+    "ASSESS-G-108",
+    "ASSESS-G-109",
+    "ASSESS-G-110",
+    "ASSESS-G-111",
+    "ASSESS-G-112",
+    "ASSESS-G-114",
+    "ASSESS-G-115",
+    "ASSESS-G-116",
+    "ASSESS-G-123",
+    "ASSESS-G-144",
+    "ASSESS-G-147",
+    "ASSESS-G-151",
+    "ASSESS-G-164",
+    "ASSESS-G-172",
+    "ASSESS-G-182",
+    "ASSESS-G-185",
+    "ASSESS-G-187",
+    "ASSESS-G-190",
+    "ASSESS-G-191",
+    "ASSESS-G-194",
+    "ASSESS-G-205",
+    "ASSESS-G-218",
+    "ASSESS-G-230",
+    "ASSESS-G-232",
+    "ASSESS-G-237",
+    "ASSESS-G-242",
+    "ASSESS-G-244",
+    "ASSESS-G-245",
+    "ASSESS-G-246",
+    "ASSESS-G-247",
+    "ASSESS-G-248",
+    "ASSESS-G-249",
+    "ASSESS-G-250",
+    "ASSESS-G-251",
+    "ASSESS-G-254",
+    "ASSESS-G-255",
+    "ASSESS-G-256",
+    "ASSESS-G-260",
+    "ASSESS-G-263",
+    "ASSESS-G-264",
+    "ASSESS-G-267",
+    "ASSESS-G-268",
+    "ASSESS-G-280",
+    "ASSESS-G-282",
+    "ASSESS-G-283",
+    "ASSESS-G-284",
+    "ASSESS-G-285",
+    "ASSESS-G-288",
+    "ASSESS-G-291",
+    "ASSESS-G-292",
+    "ASSESS-G-295",
+    "ASSESS-G-298",
+    "ASSESS-G-299",
+    "ASSESS-G-300",
+    "ASSESS-G-313",
+    "ASSESS-G-332",
+    "ASSESS-G-337",
+    "ASSESS-G-338",
+    "ASSESS-G-340",
+    "ASSESS-G-342",
+    "ASSESS-G-343",
+    "ASSESS-G-344",
+    "ASSESS-G-380",
+    "ASSESS-G-384",
+    "ASSESS-G-393",
+    "ASSESS-G-394",
+    "ASSESS-G-396",
+    "ASSESS-G-403",
+    "ASSESS-G-409",
+    "ASSESS-G-418",
+    "ASSESS-G-423",
+    "ASSESS-G-425",
+    "ASSESS-G-426",
+    "ASSESS-G-427",
+    "ASSESS-G-429",
+    "ASSESS-G-430",
+    "ASSESS-G-431",
+    "ASSESS-G-433",
+    "ASSESS-G-434",
+    "ASSESS-G-440",
+    "ASSESS-G-443",
+    "ASSESS-G-449",
+    "ASSESS-G-450",
+    "ASSESS-G-454",
+    "ASSESS-G-464",
+    "ASSESS-G-467",
+    "ASSESS-G-468",
+    "ASSESS-G-469",
+    "ASSESS-G-470",
+    "ASSESS-G-471",
+    "ASSESS-G-472",
+    "ASSESS-G-474",
+    "ASSESS-G-475",
+    "ASSESS-G-478",
+    "ASSESS-G-484",
+    "ASSESS-G-485",
+    "ASSESS-G-488",
+    "ASSESS-G-489",
+    "ASSESS-G-491",
+    "ASSESS-G-493",
+    "ASSESS-G-495",
+    "ASSESS-G-498",
+    "ASSESS-G-500",
+    "ASSESS-G-501",
+    "ASSESS-G-502",
+    "ASSESS-G-503",
+    "ASSESS-G-504",
+    "ASSESS-G-505",
+    "ASSESS-G-506",
+    "ASSESS-G-507",
+    "ASSESS-G-510",
+    "ASSESS-G-511",
+    "ASSESS-G-517",
+    "ASSESS-G-518",
+    "ASSESS-G-522",
+    "ASSESS-G-524",
+    "ASSESS-G-530",
+    "ASSESS-G-531",
+    "ASSESS-G-532",
+    "ASSESS-H-01",
+    "ASSESS-H-02",
+    "ASSESS-H-03",
+    "ASSESS-H-04",
+    "ASSESS-H-05",
+    "ASSESS-H-06",
+    "ASSESS-H-07",
+    "ASSESS-H-08",
+    "ASSESS-H-09",
+    "ASSESS-H-10",
+    "ASSESS-H-11",
+    "ASSESS-H-12",
+    "ASSESS-H-13",
+    "ASSESS-H-14",
+    "ASSESS-H-15",
+    "ASSESS-H-16",
+    "ASSESS-H-17",
+    "ASSESS-H-18",
+    "ASSESS-H-19",
+    "ASSESS-H-20",
+    "ASSESS-H-21",
+    "ASSESS-H-22",
+    "ASSESS-H-23",
+    "ASSESS-H-24",
+    "ASSESS-H-25",
+    "ASSESS-H-26",
+    "ASSESS-H-27",
+    "ASSESS-H-28",
+    "ASSESS-H-29",
+    "ASSESS-H-30",
+    "ASSESS-H-31",
+    "ASSESS-H-32",
+    "ASSESS-H-33",
+    "ASSESS-H-34",
+    "ASSESS-H-35",
+    "ASSESS-H-36",
+    "ASSESS-H-37",
+    "ASSESS-M-01",
+    "ASSESS-M-02",
+    "ASSESS-M-03",
+    "ASSESS-M-04",
+    "ASSESS-M-05",
+    "ASSESS-M-06",
+    "ASSESS-M-07",
+    "ASSESS-M-08",
+    "ASSESS-M-09",
+    "ASSESS-M-10",
+    "ASSESS-M-11",
+    "ASSESS-M-12",
+    "ASSESS-M-13",
+    "ASSESS-M-14",
+    "ASSESS-M-15",
+    "ASSESS-M-16",
+    "ASSESS-M-17",
+    "ASSESS-M-18",
+    "ASSESS-M-19",
+    "ASSESS-M-20",
+    "ASSESS-M-21",
+    "ASSESS-M-22",
+    "ASSESS-M-23",
+    "ASSESS-M-24",
+    "ASSESS-M-25",
+    "ASSESS-M-26",
+    "ASSESS-M-27",
+    "ASSESS-M-28",
+    "ASSESS-M-29",
+    "ASSESS-M-30",
+    "ASSESS-M-37",
+    "ASSESS-M-38",
+    "ASSESS-M-39",
+    "ASSESS-M-40",
+    "ASSESS-M-41",
+    "ASSESS-M-42",
+    "ASSESS-M-43",
+    "ASSESS-M-44",
+    "ASSESS-M-45",
+    "ASSESS-M-46",
+    "ASSESS-M-47",
+    "ASSESS-M-48",
+    "ASSESS-M-49",
+    "ASSESS-X-01",
+    "ASSESS-X-02",
+    "ASSESS-X-03",
+    "ASSESS-X-04",
+    "ASSESS-X-05",
+    "ASSESS-X-06",
+    "ASSESS-X-07",
+    "ASSESS-X-08",
+    "ASSESS-X-09",
+    "ASSESS-X-10",
+    "ASSESS-X-11",
+    "ASSESS-X-12",
+    "ASSESS-X-13",
+    "ASSESS-X-14",
+    "ASSESS-X-15",
+    "ASSESS-X-16",
+    "ASSESS-X-17",
+    "ASSESS-X-18",
+    "ASSESS-X-19",
+    "ASSESS-X-20",
+    "ASSESS-X-21",
+    "ASSESS-X-22",
+    "ASSESS-X-23",
+    "ASSESS-X-24",
+    "ASSESS-X-25",
+    "ASSESS-X-26",
+    "ASSESS-X-27",
+    "ASSESS-X-28"
   ],
   "certified": [
     "G-002",
@@ -1360,7 +1648,8 @@
     "G-345",
     "G-358",
     "G-414",
-    "LAB-04"
+    "LAB-04",
+    "R-DOLLHOUSE-REST-EXIT-20261023"
   ],
   "candidate": [
     "G-004",
@@ -1392,7 +1681,10 @@
     "H-24",
     "H-33",
     "SRC-GE",
-    "SRC-PORT_JOURNEY"
+    "SRC-PORT_JOURNEY",
+    "R-ENCYCLOPEDIA-LAB-279-20261023",
+    "ASSESS-G-218",
+    "ASSESS-G-237"
   ],
   "constraints": [
     "G-004",
@@ -1422,7 +1714,8 @@
     "SRC-EPI_CUSTODIAL_PDF"
   ],
   "candidate-set": [
-    "G-005"
+    "G-005",
+    "ASSESS-G-005"
   ],
   "c_κ": [
     "G-005",
@@ -1499,7 +1792,9 @@
     "M-01",
     "M-06",
     "F-36",
-    "SRC-EPI_DIAGNOSTICS_PDF"
+    "SRC-EPI_DIAGNOSTICS_PDF",
+    "ASSESS-G-474",
+    "ASSESS-M-06"
   ],
   "coexist": [
     "G-006",
@@ -1527,7 +1822,8 @@
     "X-03",
     "X-26",
     "X-28",
-    "H-02"
+    "H-02",
+    "ASSESS-G-530"
   ],
   "credit": [
     "G-007",
@@ -1539,7 +1835,8 @@
     "SRC-EPI_CUSTODIAL_PDF",
     "SRC-EPI_POSTWEB_PDF",
     "SRC-EPI_DIAGNOSTICS_PDF",
-    "EDITION"
+    "EDITION",
+    "R-DOLLHOUSE-REST-EXIT-20261023"
   ],
   "claiming": [
     "G-008",
@@ -1555,7 +1852,8 @@
     "G-315",
     "G-493",
     "M-13",
-    "LAB-01"
+    "LAB-01",
+    "ASSESS-M-13"
   ],
   "controlled": [
     "G-009",
@@ -1571,7 +1869,9 @@
     "G-464",
     "G-481",
     "G-485",
-    "SRC-EX_COLD"
+    "SRC-EX_COLD",
+    "ASSESS-G-009",
+    "ASSESS-G-485"
   ],
   "conditioned": [
     "G-009",
@@ -1605,7 +1905,10 @@
     "G-493",
     "LAB-36",
     "H-06",
-    "SRC-EPI_CUSTODIAL_PDF"
+    "SRC-EPI_CUSTODIAL_PDF",
+    "R-DOME-AMBIANCE-20261023",
+    "R-DOLLHOUSE-REST-EXIT-20261023",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ],
   "c": [
     "G-011",
@@ -1639,7 +1942,9 @@
     "SRC-EPI_CUSTODIAL_PDF",
     "SRC-EPI_POSTWEB_PDF",
     "SRC-EPI_DIAGNOSTICS_PDF",
-    "LINEAGE-11"
+    "LINEAGE-11",
+    "ASSESS-G-396",
+    "ASSESS-H-12"
   ],
   "certain": [
     "G-011",
@@ -1762,7 +2067,8 @@
     "G-087",
     "G-225",
     "G-494",
-    "H-09"
+    "H-09",
+    "R-DOLLHOUSE-REST-EXIT-20261023"
   ],
   "conventions": [
     "G-012",
@@ -1798,7 +2104,10 @@
     "LAB-46",
     "X-16",
     "H-11",
-    "H-14"
+    "H-14",
+    "R-ENCYCLOPEDIA-LAB-279-20261023",
+    "ASSESS-G-251",
+    "ASSESS-M-22"
   ],
   "cos": [
     "G-012",
@@ -1830,7 +2139,11 @@
     "SRC-PHY",
     "APT-15",
     "APT-38",
-    "APT-39"
+    "APT-39",
+    "R-DOME-AMBIANCE-20261023",
+    "ASSESS-H-08",
+    "ASSESS-H-34",
+    "ASSESS-M-15"
   ],
   "checks": [
     "G-012",
@@ -1845,7 +2158,8 @@
     "G-374",
     "LAB-23",
     "X-07",
-    "SRC-DROMO"
+    "SRC-DROMO",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ],
   "collapsing": [
     "G-013",
@@ -1896,7 +2210,9 @@
     "SRC-SR_SRC_P1",
     "SRC-SR_SRC_P2",
     "SRC-SR_SRC_P3",
-    "SRC-SR_SRC_SEAL"
+    "SRC-SR_SRC_SEAL",
+    "R-DOLLHOUSE-REST-EXIT-20261023",
+    "ASSESS-X-03"
   ],
   "controls": [
     "G-014",
@@ -1923,7 +2239,8 @@
     "SRC-HUSH"
   ],
   "concern": [
-    "G-014"
+    "G-014",
+    "R-DOLLHOUSE-REST-EXIT-20261023"
   ],
   "consistent": [
     "G-015"
@@ -1983,7 +2300,8 @@
     "X-26",
     "X-27",
     "X-28",
-    "EDITION"
+    "EDITION",
+    "ASSESS-G-495"
   ],
   "constant": [
     "G-015"
@@ -1994,7 +2312,9 @@
     "G-191",
     "G-194",
     "G-245",
-    "M-17"
+    "M-17",
+    "ASSESS-G-194",
+    "ASSESS-M-17"
   ],
   "closure": [
     "G-016",
@@ -2015,7 +2335,9 @@
     "SRC-P2",
     "SRC-AP32_DROMO",
     "SRC-AP32_ER",
-    "APT-01"
+    "APT-01",
+    "ASSESS-G-026",
+    "ASSESS-M-03"
   ],
   "continuations": [
     "G-016"
@@ -2089,7 +2411,8 @@
     "G-343",
     "G-434",
     "SRC-P2",
-    "SRC-PED_SPINE"
+    "SRC-PED_SPINE",
+    "ASSESS-G-020"
   ],
   "crease": [
     "G-020",
@@ -2150,7 +2473,8 @@
     "X-22",
     "X-25",
     "SRC-DROMO",
-    "LINEAGE-04"
+    "LINEAGE-04",
+    "ASSESS-G-034"
   ],
   "censoring": [
     "G-023",
@@ -2173,7 +2497,8 @@
     "G-047",
     "G-068",
     "G-082",
-    "G-313"
+    "G-313",
+    "R-DOLLHOUSE-REST-EXIT-20261023"
   ],
   "co-location": [
     "G-025"
@@ -2189,7 +2514,8 @@
     "G-026",
     "G-089",
     "G-333",
-    "M-03"
+    "M-03",
+    "R-DOLLHOUSE-REST-EXIT-20261023"
   ],
   "classification": [
     "G-026",
@@ -2211,7 +2537,286 @@
     "M-03",
     "LAB-32",
     "SRC-AP32_DROMO",
-    "APT-08"
+    "APT-08",
+    "ASSESS-F-31",
+    "ASSESS-F-32",
+    "ASSESS-F-33",
+    "ASSESS-F-34",
+    "ASSESS-F-35",
+    "ASSESS-F-36",
+    "ASSESS-G-001",
+    "ASSESS-G-002",
+    "ASSESS-G-004",
+    "ASSESS-G-005",
+    "ASSESS-G-006",
+    "ASSESS-G-008",
+    "ASSESS-G-009",
+    "ASSESS-G-010",
+    "ASSESS-G-012",
+    "ASSESS-G-015",
+    "ASSESS-G-017",
+    "ASSESS-G-020",
+    "ASSESS-G-022",
+    "ASSESS-G-023",
+    "ASSESS-G-026",
+    "ASSESS-G-034",
+    "ASSESS-G-035",
+    "ASSESS-G-044",
+    "ASSESS-G-047",
+    "ASSESS-G-048",
+    "ASSESS-G-053",
+    "ASSESS-G-054",
+    "ASSESS-G-061",
+    "ASSESS-G-063",
+    "ASSESS-G-068",
+    "ASSESS-G-071",
+    "ASSESS-G-076",
+    "ASSESS-G-077",
+    "ASSESS-G-078",
+    "ASSESS-G-079",
+    "ASSESS-G-080",
+    "ASSESS-G-081",
+    "ASSESS-G-082",
+    "ASSESS-G-083",
+    "ASSESS-G-084",
+    "ASSESS-G-089",
+    "ASSESS-G-091",
+    "ASSESS-G-097",
+    "ASSESS-G-099",
+    "ASSESS-G-100",
+    "ASSESS-G-101",
+    "ASSESS-G-102",
+    "ASSESS-G-103",
+    "ASSESS-G-105",
+    "ASSESS-G-106",
+    "ASSESS-G-107",
+    "ASSESS-G-108",
+    "ASSESS-G-109",
+    "ASSESS-G-110",
+    "ASSESS-G-111",
+    "ASSESS-G-112",
+    "ASSESS-G-114",
+    "ASSESS-G-115",
+    "ASSESS-G-116",
+    "ASSESS-G-123",
+    "ASSESS-G-144",
+    "ASSESS-G-147",
+    "ASSESS-G-151",
+    "ASSESS-G-164",
+    "ASSESS-G-172",
+    "ASSESS-G-182",
+    "ASSESS-G-185",
+    "ASSESS-G-187",
+    "ASSESS-G-190",
+    "ASSESS-G-191",
+    "ASSESS-G-194",
+    "ASSESS-G-205",
+    "ASSESS-G-218",
+    "ASSESS-G-230",
+    "ASSESS-G-232",
+    "ASSESS-G-237",
+    "ASSESS-G-242",
+    "ASSESS-G-244",
+    "ASSESS-G-245",
+    "ASSESS-G-246",
+    "ASSESS-G-247",
+    "ASSESS-G-248",
+    "ASSESS-G-249",
+    "ASSESS-G-250",
+    "ASSESS-G-251",
+    "ASSESS-G-254",
+    "ASSESS-G-255",
+    "ASSESS-G-256",
+    "ASSESS-G-260",
+    "ASSESS-G-263",
+    "ASSESS-G-264",
+    "ASSESS-G-267",
+    "ASSESS-G-268",
+    "ASSESS-G-280",
+    "ASSESS-G-282",
+    "ASSESS-G-283",
+    "ASSESS-G-284",
+    "ASSESS-G-285",
+    "ASSESS-G-288",
+    "ASSESS-G-291",
+    "ASSESS-G-292",
+    "ASSESS-G-295",
+    "ASSESS-G-298",
+    "ASSESS-G-299",
+    "ASSESS-G-300",
+    "ASSESS-G-313",
+    "ASSESS-G-332",
+    "ASSESS-G-337",
+    "ASSESS-G-338",
+    "ASSESS-G-340",
+    "ASSESS-G-342",
+    "ASSESS-G-343",
+    "ASSESS-G-344",
+    "ASSESS-G-380",
+    "ASSESS-G-384",
+    "ASSESS-G-393",
+    "ASSESS-G-394",
+    "ASSESS-G-396",
+    "ASSESS-G-403",
+    "ASSESS-G-409",
+    "ASSESS-G-418",
+    "ASSESS-G-423",
+    "ASSESS-G-425",
+    "ASSESS-G-426",
+    "ASSESS-G-427",
+    "ASSESS-G-429",
+    "ASSESS-G-430",
+    "ASSESS-G-431",
+    "ASSESS-G-433",
+    "ASSESS-G-434",
+    "ASSESS-G-440",
+    "ASSESS-G-443",
+    "ASSESS-G-449",
+    "ASSESS-G-450",
+    "ASSESS-G-454",
+    "ASSESS-G-464",
+    "ASSESS-G-467",
+    "ASSESS-G-468",
+    "ASSESS-G-469",
+    "ASSESS-G-470",
+    "ASSESS-G-471",
+    "ASSESS-G-472",
+    "ASSESS-G-474",
+    "ASSESS-G-475",
+    "ASSESS-G-478",
+    "ASSESS-G-484",
+    "ASSESS-G-485",
+    "ASSESS-G-488",
+    "ASSESS-G-489",
+    "ASSESS-G-491",
+    "ASSESS-G-493",
+    "ASSESS-G-495",
+    "ASSESS-G-498",
+    "ASSESS-G-500",
+    "ASSESS-G-501",
+    "ASSESS-G-502",
+    "ASSESS-G-503",
+    "ASSESS-G-504",
+    "ASSESS-G-505",
+    "ASSESS-G-506",
+    "ASSESS-G-507",
+    "ASSESS-G-510",
+    "ASSESS-G-511",
+    "ASSESS-G-517",
+    "ASSESS-G-518",
+    "ASSESS-G-522",
+    "ASSESS-G-524",
+    "ASSESS-G-530",
+    "ASSESS-G-531",
+    "ASSESS-G-532",
+    "ASSESS-H-01",
+    "ASSESS-H-02",
+    "ASSESS-H-03",
+    "ASSESS-H-04",
+    "ASSESS-H-05",
+    "ASSESS-H-06",
+    "ASSESS-H-07",
+    "ASSESS-H-08",
+    "ASSESS-H-09",
+    "ASSESS-H-10",
+    "ASSESS-H-11",
+    "ASSESS-H-12",
+    "ASSESS-H-13",
+    "ASSESS-H-14",
+    "ASSESS-H-15",
+    "ASSESS-H-16",
+    "ASSESS-H-17",
+    "ASSESS-H-18",
+    "ASSESS-H-19",
+    "ASSESS-H-20",
+    "ASSESS-H-21",
+    "ASSESS-H-22",
+    "ASSESS-H-23",
+    "ASSESS-H-24",
+    "ASSESS-H-25",
+    "ASSESS-H-26",
+    "ASSESS-H-27",
+    "ASSESS-H-28",
+    "ASSESS-H-29",
+    "ASSESS-H-30",
+    "ASSESS-H-31",
+    "ASSESS-H-32",
+    "ASSESS-H-33",
+    "ASSESS-H-34",
+    "ASSESS-H-35",
+    "ASSESS-H-36",
+    "ASSESS-H-37",
+    "ASSESS-M-01",
+    "ASSESS-M-02",
+    "ASSESS-M-03",
+    "ASSESS-M-04",
+    "ASSESS-M-05",
+    "ASSESS-M-06",
+    "ASSESS-M-07",
+    "ASSESS-M-08",
+    "ASSESS-M-09",
+    "ASSESS-M-10",
+    "ASSESS-M-11",
+    "ASSESS-M-12",
+    "ASSESS-M-13",
+    "ASSESS-M-14",
+    "ASSESS-M-15",
+    "ASSESS-M-16",
+    "ASSESS-M-17",
+    "ASSESS-M-18",
+    "ASSESS-M-19",
+    "ASSESS-M-20",
+    "ASSESS-M-21",
+    "ASSESS-M-22",
+    "ASSESS-M-23",
+    "ASSESS-M-24",
+    "ASSESS-M-25",
+    "ASSESS-M-26",
+    "ASSESS-M-27",
+    "ASSESS-M-28",
+    "ASSESS-M-29",
+    "ASSESS-M-30",
+    "ASSESS-M-37",
+    "ASSESS-M-38",
+    "ASSESS-M-39",
+    "ASSESS-M-40",
+    "ASSESS-M-41",
+    "ASSESS-M-42",
+    "ASSESS-M-43",
+    "ASSESS-M-44",
+    "ASSESS-M-45",
+    "ASSESS-M-46",
+    "ASSESS-M-47",
+    "ASSESS-M-48",
+    "ASSESS-M-49",
+    "ASSESS-X-01",
+    "ASSESS-X-02",
+    "ASSESS-X-03",
+    "ASSESS-X-04",
+    "ASSESS-X-05",
+    "ASSESS-X-06",
+    "ASSESS-X-07",
+    "ASSESS-X-08",
+    "ASSESS-X-09",
+    "ASSESS-X-10",
+    "ASSESS-X-11",
+    "ASSESS-X-12",
+    "ASSESS-X-13",
+    "ASSESS-X-14",
+    "ASSESS-X-15",
+    "ASSESS-X-16",
+    "ASSESS-X-17",
+    "ASSESS-X-18",
+    "ASSESS-X-19",
+    "ASSESS-X-20",
+    "ASSESS-X-21",
+    "ASSESS-X-22",
+    "ASSESS-X-23",
+    "ASSESS-X-24",
+    "ASSESS-X-25",
+    "ASSESS-X-26",
+    "ASSESS-X-27",
+    "ASSESS-X-28"
   ],
   "contrasted": [
     "G-029"
@@ -2303,7 +2908,8 @@
     "G-306",
     "SRC-PED_SPINE",
     "SRC-PR416",
-    "SRC-EPI_CUSTODIAL_PDF"
+    "SRC-EPI_CUSTODIAL_PDF",
+    "ASSESS-G-242"
   ],
   "cheap": [
     "G-037"
@@ -2326,7 +2932,8 @@
   "changed": [
     "G-039",
     "G-146",
-    "G-313"
+    "G-313",
+    "ASSESS-G-313"
   ],
   "change": [
     "G-041",
@@ -2341,7 +2948,8 @@
     "G-210",
     "G-521",
     "LAB-43",
-    "LINEAGE-07"
+    "LINEAGE-07",
+    "R-DOME-AMBIANCE-20261023"
   ],
   "contaminating": [
     "G-042"
@@ -2389,7 +2997,9 @@
     "PDF-SR_P1_PDF",
     "PDF-SR_P2_PDF",
     "PDF-SR_P3_PDF",
-    "PDF-SR_UF_PDF"
+    "PDF-SR_UF_PDF",
+    "R-ENCYCLOPEDIA-LAB-279-20261023",
+    "ASSESS-G-246"
   ],
   "changing": [
     "G-044",
@@ -2403,7 +3013,9 @@
     "G-339",
     "G-433",
     "G-477",
-    "SRC-AIA_SPEC"
+    "SRC-AIA_SPEC",
+    "R-DOME-AMBIANCE-20261023",
+    "ASSESS-G-433"
   ],
   "constitute": [
     "G-045",
@@ -2413,7 +3025,8 @@
   "cross-provider": [
     "G-045",
     "G-156",
-    "G-267"
+    "G-267",
+    "ASSESS-G-267"
   ],
   "correlated": [
     "G-047"
@@ -2463,7 +3076,9 @@
     "SRC-ZEN_SR_FRAME",
     "SRC-ZEN_SR_P1",
     "SRC-ZEN_SR_P2",
-    "SRC-ZEN_SR_P3"
+    "SRC-ZEN_SR_P3",
+    "R-DOLLHOUSE-REST-EXIT-20261023",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ],
   "confidence": [
     "G-055",
@@ -2583,7 +3198,10 @@
     "H-12",
     "SRC-EX_COLD",
     "SRC-SR_SRC_ENTRY",
-    "APT-17"
+    "APT-17",
+    "ASSESS-G-250",
+    "ASSESS-H-03",
+    "ASSESS-X-05"
   ],
   "counterfactual": [
     "G-064",
@@ -2652,7 +3270,10 @@
     "M-21",
     "LAB-41",
     "X-27",
-    "SRC-SR_P3_TEXT"
+    "SRC-SR_P3_TEXT",
+    "R-ENCYCLOPEDIA-LAB-279-20261023",
+    "ASSESS-G-475",
+    "ASSESS-G-531"
   ],
   "clue": [
     "G-071"
@@ -2667,7 +3288,8 @@
     "G-082",
     "G-085",
     "H-08",
-    "SRC-PHASON"
+    "SRC-PHASON",
+    "ASSESS-G-079"
   ],
   "calculations": [
     "G-078"
@@ -2695,7 +3317,8 @@
   "correctly": [
     "G-080",
     "G-338",
-    "LAB-12"
+    "LAB-12",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ],
   "crosses": [
     "G-080"
@@ -2708,7 +3331,8 @@
     "G-086",
     "G-220",
     "G-482",
-    "G-484"
+    "G-484",
+    "R-DOLLHOUSE-REST-EXIT-20261023"
   ],
   "confirm": [
     "G-081",
@@ -2734,7 +3358,8 @@
   ],
   "cupola": [
     "G-087",
-    "H-09"
+    "H-09",
+    "ASSESS-H-09"
   ],
   "correspondence": [
     "G-087",
@@ -2827,7 +3452,8 @@
     "M-11",
     "H-29",
     "SRC-ZEN_SR_FRAME",
-    "SRC-SR_SRC_RESOLVER"
+    "SRC-SR_SRC_RESOLVER",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ],
   "crucial": [
     "G-096"
@@ -2850,7 +3476,9 @@
     "H-27",
     "H-30",
     "H-34",
-    "SRC-PORT_EXP"
+    "SRC-PORT_EXP",
+    "R-DOME-AMBIANCE-20261023",
+    "ASSESS-G-242"
   ],
   "canonical": [
     "G-099",
@@ -2868,7 +3496,8 @@
     "SRC-EPI_DIAGNOSTICS_PDF",
     "APT-06",
     "APT-12",
-    "APT-28"
+    "APT-28",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ],
   "conversation-origin": [
     "G-099"
@@ -2885,7 +3514,8 @@
     "M-21",
     "SRC-EPI_CUSTODIAL_PDF",
     "SRC-EPI_POSTWEB_PDF",
-    "SRC-EPI_DIAGNOSTICS_PDF"
+    "SRC-EPI_DIAGNOSTICS_PDF",
+    "ASSESS-G-431"
   ],
   "calling": [
     "G-099"
@@ -2935,14 +3565,19 @@
     "G-110",
     "G-357",
     "M-11",
-    "H-01"
+    "H-01",
+    "ASSESS-G-110",
+    "ASSESS-H-01",
+    "ASSESS-M-11"
   ],
   "conflict": [
     "G-110"
   ],
   "cardinality": [
     "G-112",
-    "G-115"
+    "G-115",
+    "ASSESS-G-112",
+    "ASSESS-G-115"
   ],
   "cardinality-only": [
     "G-112"
@@ -3029,11 +3664,14 @@
     "G-174",
     "G-317",
     "LAB-07",
-    "X-04"
+    "X-04",
+    "R-ENCYCLOPEDIA-LAB-279-20261023",
+    "ASSESS-X-04"
   ],
   "coded": [
     "G-122",
-    "G-531"
+    "G-531",
+    "ASSESS-G-531"
   ],
   "carrier": [
     "G-122"
@@ -3068,7 +3706,8 @@
     "LAB-03",
     "X-24",
     "SRC-P2",
-    "APT-15"
+    "APT-15",
+    "ASSESS-G-396"
   ],
   "collecting": [
     "G-134"
@@ -3142,7 +3781,9 @@
     "G-356",
     "M-37",
     "SRC-EPI_POSTWEB_PDF",
-    "SRC-EPI_DIAGNOSTICS_PDF"
+    "SRC-EPI_DIAGNOSTICS_PDF",
+    "R-DOME-AMBIANCE-20261023",
+    "ASSESS-M-37"
   ],
   "cease": [
     "G-157"
@@ -3188,7 +3829,9 @@
     "X-03",
     "H-19",
     "SRC-PED_SPINE",
-    "SRC-DOLLHOUSE"
+    "SRC-DOLLHOUSE",
+    "R-DOLLHOUSE-REST-EXIT-20261023",
+    "ASSESS-H-19"
   ],
   "certifying": [
     "G-166"
@@ -3245,7 +3888,8 @@
     "SRC-SR_P2_PDF",
     "SRC-SR_P3_PDF",
     "SRC-SR_UF_PDF",
-    "PDF-SR_P3_PDF"
+    "PDF-SR_P3_PDF",
+    "ASSESS-G-260"
   ],
   "cōl-box": [
     "G-177"
@@ -3265,7 +3909,8 @@
   "communal": [
     "G-181",
     "G-182",
-    "SRC-TWINPDF"
+    "SRC-TWINPDF",
+    "ASSESS-G-182"
   ],
   "compost": [
     "G-183"
@@ -3351,7 +3996,8 @@
   ],
   "continuous": [
     "G-206",
-    "G-356"
+    "G-356",
+    "R-DOLLHOUSE-REST-EXIT-20261023"
   ],
   "combined": [
     "G-209",
@@ -3384,7 +4030,8 @@
     "G-222",
     "G-253",
     "G-263",
-    "G-341"
+    "G-341",
+    "ASSESS-G-263"
   ],
   "copying": [
     "G-222",
@@ -3396,7 +4043,10 @@
     "G-257",
     "G-269",
     "X-03",
-    "H-01"
+    "H-01",
+    "R-DOME-AMBIANCE-20261023",
+    "R-DOLLHOUSE-REST-EXIT-20261023",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ],
   "checked-in": [
     "G-223"
@@ -3415,7 +4065,8 @@
   "challenge": [
     "G-225",
     "G-230",
-    "SRC-NOVEL"
+    "SRC-NOVEL",
+    "ASSESS-G-230"
   ],
   "catalogue": [
     "G-227",
@@ -3449,7 +4100,8 @@
   "commit": [
     "G-234",
     "G-314",
-    "SRC-EPI_CUSTODIAL_PDF"
+    "SRC-EPI_CUSTODIAL_PDF",
+    "R-DOLLHOUSE-REST-EXIT-20261023"
   ],
   "classic": [
     "G-234",
@@ -3465,7 +4117,8 @@
     "G-235",
     "G-428",
     "G-473",
-    "M-47"
+    "M-47",
+    "ASSESS-M-47"
   ],
   "choppy": [
     "G-236"
@@ -3488,7 +4141,8 @@
     "G-260",
     "LAB-25",
     "X-14",
-    "H-14"
+    "H-14",
+    "ASSESS-G-248"
   ],
   "counterparts": [
     "G-250"
@@ -3504,7 +4158,8 @@
   "clean": [
     "G-252",
     "G-263",
-    "LAB-25"
+    "LAB-25",
+    "ASSESS-G-263"
   ],
   "consumer-chat": [
     "G-252"
@@ -3538,7 +4193,8 @@
     "SRC-EX_PRIV"
   ],
   "confounders": [
-    "G-263"
+    "G-263",
+    "ASSESS-G-263"
   ],
   "carry-over": [
     "G-263"
@@ -3586,7 +4242,8 @@
     "G-292",
     "G-340",
     "G-520",
-    "SRC-P2"
+    "SRC-P2",
+    "ASSESS-G-292"
   ],
   "creased": [
     "G-282"
@@ -3614,7 +4271,8 @@
     "SRC-EPI_CUSTODIAL_PDF",
     "SRC-EPI_POSTWEB_PDF",
     "SRC-EPI_DIAGNOSTICS_PDF",
-    "EDITION"
+    "EDITION",
+    "ASSESS-H-28"
   ],
   "consent": [
     "G-289",
@@ -3632,7 +4290,9 @@
   ],
   "concordance": [
     "G-295",
-    "G-343"
+    "G-343",
+    "ASSESS-G-295",
+    "ASSESS-G-343"
   ],
   "coverage": [
     "G-295"
@@ -3647,7 +4307,287 @@
     "G-301"
   ],
   "catalog": [
-    "G-311"
+    "G-311",
+    "R-ENCYCLOPEDIA-LAB-279-20261023",
+    "ASSESS-F-31",
+    "ASSESS-F-32",
+    "ASSESS-F-33",
+    "ASSESS-F-34",
+    "ASSESS-F-35",
+    "ASSESS-F-36",
+    "ASSESS-G-001",
+    "ASSESS-G-002",
+    "ASSESS-G-004",
+    "ASSESS-G-005",
+    "ASSESS-G-006",
+    "ASSESS-G-008",
+    "ASSESS-G-009",
+    "ASSESS-G-010",
+    "ASSESS-G-012",
+    "ASSESS-G-015",
+    "ASSESS-G-017",
+    "ASSESS-G-020",
+    "ASSESS-G-022",
+    "ASSESS-G-023",
+    "ASSESS-G-026",
+    "ASSESS-G-034",
+    "ASSESS-G-035",
+    "ASSESS-G-047",
+    "ASSESS-G-048",
+    "ASSESS-G-053",
+    "ASSESS-G-054",
+    "ASSESS-G-061",
+    "ASSESS-G-063",
+    "ASSESS-G-076",
+    "ASSESS-G-077",
+    "ASSESS-G-078",
+    "ASSESS-G-079",
+    "ASSESS-G-080",
+    "ASSESS-G-081",
+    "ASSESS-G-082",
+    "ASSESS-G-083",
+    "ASSESS-G-089",
+    "ASSESS-G-091",
+    "ASSESS-G-097",
+    "ASSESS-G-100",
+    "ASSESS-G-101",
+    "ASSESS-G-102",
+    "ASSESS-G-103",
+    "ASSESS-G-105",
+    "ASSESS-G-106",
+    "ASSESS-G-107",
+    "ASSESS-G-108",
+    "ASSESS-G-109",
+    "ASSESS-G-110",
+    "ASSESS-G-111",
+    "ASSESS-G-112",
+    "ASSESS-G-114",
+    "ASSESS-G-115",
+    "ASSESS-G-116",
+    "ASSESS-G-123",
+    "ASSESS-G-144",
+    "ASSESS-G-147",
+    "ASSESS-G-151",
+    "ASSESS-G-164",
+    "ASSESS-G-172",
+    "ASSESS-G-182",
+    "ASSESS-G-185",
+    "ASSESS-G-190",
+    "ASSESS-G-191",
+    "ASSESS-G-194",
+    "ASSESS-G-205",
+    "ASSESS-G-218",
+    "ASSESS-G-230",
+    "ASSESS-G-232",
+    "ASSESS-G-237",
+    "ASSESS-G-242",
+    "ASSESS-G-244",
+    "ASSESS-G-245",
+    "ASSESS-G-246",
+    "ASSESS-G-247",
+    "ASSESS-G-248",
+    "ASSESS-G-249",
+    "ASSESS-G-250",
+    "ASSESS-G-251",
+    "ASSESS-G-254",
+    "ASSESS-G-255",
+    "ASSESS-G-256",
+    "ASSESS-G-260",
+    "ASSESS-G-263",
+    "ASSESS-G-264",
+    "ASSESS-G-267",
+    "ASSESS-G-268",
+    "ASSESS-G-280",
+    "ASSESS-G-282",
+    "ASSESS-G-283",
+    "ASSESS-G-284",
+    "ASSESS-G-285",
+    "ASSESS-G-288",
+    "ASSESS-G-295",
+    "ASSESS-G-298",
+    "ASSESS-G-299",
+    "ASSESS-G-300",
+    "ASSESS-G-313",
+    "ASSESS-G-332",
+    "ASSESS-G-337",
+    "ASSESS-G-338",
+    "ASSESS-G-340",
+    "ASSESS-G-342",
+    "ASSESS-G-343",
+    "ASSESS-G-344",
+    "ASSESS-G-380",
+    "ASSESS-G-384",
+    "ASSESS-G-393",
+    "ASSESS-G-394",
+    "ASSESS-G-396",
+    "ASSESS-G-403",
+    "ASSESS-G-409",
+    "ASSESS-G-418",
+    "ASSESS-G-423",
+    "ASSESS-G-425",
+    "ASSESS-G-426",
+    "ASSESS-G-427",
+    "ASSESS-G-429",
+    "ASSESS-G-430",
+    "ASSESS-G-431",
+    "ASSESS-G-433",
+    "ASSESS-G-434",
+    "ASSESS-G-440",
+    "ASSESS-G-443",
+    "ASSESS-G-449",
+    "ASSESS-G-450",
+    "ASSESS-G-454",
+    "ASSESS-G-464",
+    "ASSESS-G-467",
+    "ASSESS-G-468",
+    "ASSESS-G-469",
+    "ASSESS-G-470",
+    "ASSESS-G-471",
+    "ASSESS-G-472",
+    "ASSESS-G-474",
+    "ASSESS-G-475",
+    "ASSESS-G-478",
+    "ASSESS-G-484",
+    "ASSESS-G-485",
+    "ASSESS-G-488",
+    "ASSESS-G-489",
+    "ASSESS-G-491",
+    "ASSESS-G-495",
+    "ASSESS-G-498",
+    "ASSESS-G-500",
+    "ASSESS-G-501",
+    "ASSESS-G-502",
+    "ASSESS-G-510",
+    "ASSESS-G-511",
+    "ASSESS-G-517",
+    "ASSESS-G-522",
+    "ASSESS-G-530",
+    "ASSESS-G-531",
+    "ASSESS-G-532",
+    "ASSESS-H-01",
+    "ASSESS-H-02",
+    "ASSESS-H-03",
+    "ASSESS-H-04",
+    "ASSESS-H-05",
+    "ASSESS-H-06",
+    "ASSESS-H-07",
+    "ASSESS-H-08",
+    "ASSESS-H-09",
+    "ASSESS-H-10",
+    "ASSESS-H-11",
+    "ASSESS-H-12",
+    "ASSESS-H-13",
+    "ASSESS-H-14",
+    "ASSESS-H-15",
+    "ASSESS-H-16",
+    "ASSESS-H-17",
+    "ASSESS-H-18",
+    "ASSESS-H-19",
+    "ASSESS-H-20",
+    "ASSESS-H-21",
+    "ASSESS-H-22",
+    "ASSESS-H-23",
+    "ASSESS-H-24",
+    "ASSESS-H-25",
+    "ASSESS-H-26",
+    "ASSESS-H-27",
+    "ASSESS-H-28",
+    "ASSESS-H-29",
+    "ASSESS-H-30",
+    "ASSESS-H-31",
+    "ASSESS-H-32",
+    "ASSESS-H-33",
+    "ASSESS-H-34",
+    "ASSESS-H-35",
+    "ASSESS-H-36",
+    "ASSESS-H-37",
+    "ASSESS-M-01",
+    "ASSESS-M-02",
+    "ASSESS-M-03",
+    "ASSESS-M-04",
+    "ASSESS-M-05",
+    "ASSESS-M-06",
+    "ASSESS-M-07",
+    "ASSESS-M-08",
+    "ASSESS-M-09",
+    "ASSESS-M-10",
+    "ASSESS-M-11",
+    "ASSESS-M-12",
+    "ASSESS-M-13",
+    "ASSESS-M-14",
+    "ASSESS-M-15",
+    "ASSESS-M-16",
+    "ASSESS-M-17",
+    "ASSESS-M-18",
+    "ASSESS-M-19",
+    "ASSESS-M-20",
+    "ASSESS-M-21",
+    "ASSESS-M-22",
+    "ASSESS-M-23",
+    "ASSESS-M-24",
+    "ASSESS-M-25",
+    "ASSESS-M-26",
+    "ASSESS-M-27",
+    "ASSESS-M-28",
+    "ASSESS-M-29",
+    "ASSESS-M-30",
+    "ASSESS-M-37",
+    "ASSESS-M-38",
+    "ASSESS-M-39",
+    "ASSESS-M-40",
+    "ASSESS-M-41",
+    "ASSESS-M-42",
+    "ASSESS-M-43",
+    "ASSESS-M-44",
+    "ASSESS-M-45",
+    "ASSESS-M-46",
+    "ASSESS-M-47",
+    "ASSESS-M-48",
+    "ASSESS-M-49",
+    "ASSESS-X-01",
+    "ASSESS-X-02",
+    "ASSESS-X-03",
+    "ASSESS-X-04",
+    "ASSESS-X-05",
+    "ASSESS-X-06",
+    "ASSESS-X-07",
+    "ASSESS-X-08",
+    "ASSESS-X-09",
+    "ASSESS-X-10",
+    "ASSESS-X-11",
+    "ASSESS-X-12",
+    "ASSESS-X-13",
+    "ASSESS-X-14",
+    "ASSESS-X-15",
+    "ASSESS-X-16",
+    "ASSESS-X-17",
+    "ASSESS-X-18",
+    "ASSESS-X-19",
+    "ASSESS-X-20",
+    "ASSESS-X-21",
+    "ASSESS-X-22",
+    "ASSESS-X-23",
+    "ASSESS-X-24",
+    "ASSESS-X-25",
+    "ASSESS-X-26",
+    "ASSESS-X-27",
+    "ASSESS-X-28",
+    "PROGRAM-P01",
+    "PROGRAM-P02",
+    "PROGRAM-P03",
+    "PROGRAM-P04",
+    "PROGRAM-P05",
+    "PROGRAM-P06",
+    "PROGRAM-P07",
+    "PROGRAM-P08",
+    "PROGRAM-P09",
+    "PROGRAM-P10",
+    "PROGRAM-P11",
+    "PROGRAM-P12",
+    "PROGRAM-P13",
+    "PROGRAM-P14",
+    "PROGRAM-P15",
+    "PROGRAM-P16"
   ],
   "copies": [
     "G-311",
@@ -3668,7 +4608,8 @@
     "SRC-EPI_CUSTODIAL_PDF"
   ],
   "conflicting": [
-    "G-328"
+    "G-328",
+    "R-DOLLHOUSE-REST-EXIT-20261023"
   ],
   "collision-matrix": [
     "G-331"
@@ -3687,7 +4628,8 @@
     "LAB-22",
     "X-27",
     "H-14",
-    "H-35"
+    "H-35",
+    "ASSESS-H-14"
   ],
   "choices": [
     "G-344",
@@ -3763,7 +4705,8 @@
     "G-365",
     "G-366",
     "G-403",
-    "H-24"
+    "H-24",
+    "ASSESS-G-403"
   ],
   "contested": [
     "G-362",
@@ -3800,12 +4743,15 @@
     "M-30",
     "LAB-30",
     "X-20",
-    "H-26"
+    "H-26",
+    "ASSESS-M-30"
   ],
   "candidature": [
     "G-372",
     "G-394",
-    "M-29"
+    "M-29",
+    "ASSESS-G-394",
+    "ASSESS-M-29"
   ],
   "chains": [
     "G-374",
@@ -3840,7 +4786,9 @@
   ],
   "conjunction": [
     "G-394",
-    "M-29"
+    "M-29",
+    "ASSESS-G-394",
+    "ASSESS-M-29"
   ],
   "classifications": [
     "G-396",
@@ -3895,7 +4843,15 @@
     "PDF-SR_UF_PDF",
     "LINEAGE-01",
     "LINEAGE-07",
-    "LINEAGE-09"
+    "LINEAGE-09",
+    "ASSESS-F-34",
+    "ASSESS-F-35",
+    "ASSESS-G-464",
+    "ASSESS-G-470",
+    "ASSESS-G-478",
+    "ASSESS-G-495",
+    "ASSESS-G-531",
+    "ASSESS-X-27"
   ],
   "costs": [
     "G-419",
@@ -3913,7 +4869,9 @@
   "coupled-agent": [
     "G-429",
     "M-27",
-    "H-27"
+    "H-27",
+    "ASSESS-G-429",
+    "ASSESS-M-27"
   ],
   "centralized": [
     "G-430",
@@ -3925,7 +4883,8 @@
   "captures": [
     "G-433",
     "H-36",
-    "SRC-SR_SRC_RESOLVER"
+    "SRC-SR_SRC_RESOLVER",
+    "R-DOLLHOUSE-REST-EXIT-20261023"
   ],
   "collaborative": [
     "G-436",
@@ -3976,7 +4935,8 @@
     "G-473"
   ],
   "clock-endpoint": [
-    "G-478"
+    "G-478",
+    "ASSESS-G-478"
   ],
   "confers": [
     "G-480"
@@ -3985,11 +4945,13 @@
     "G-484"
   ],
   "curve": [
-    "G-488"
+    "G-488",
+    "ASSESS-G-488"
   ],
   "confirmed": [
     "G-494",
-    "G-500"
+    "G-500",
+    "ASSESS-G-500"
   ],
   "cutoff": [
     "G-496"
@@ -4034,7 +4996,8 @@
     "G-511",
     "G-515",
     "LAB-34",
-    "X-26"
+    "X-26",
+    "ASSESS-X-26"
   ],
   "counted": [
     "G-519"
@@ -4093,7 +5056,8 @@
     "M-05"
   ],
   "completed": [
-    "M-05"
+    "M-05",
+    "R-DOLLHOUSE-REST-EXIT-20261023"
   ],
   "counts": [
     "M-13",
@@ -4101,7 +5065,8 @@
     "EDITION"
   ],
   "characterization": [
-    "M-23"
+    "M-23",
+    "ASSESS-M-23"
   ],
   "cand": [
     "M-29"
@@ -4129,7 +5094,8 @@
   ],
   "corrections": [
     "X-13",
-    "EDITION"
+    "EDITION",
+    "R-DOLLHOUSE-REST-EXIT-20261023"
   ],
   "cites": [
     "H-06"
@@ -4216,7 +5182,10 @@
     "SRC-SR_SRC_ENTRY",
     "SRC-SR_SRC_RESOLVER",
     "SRC-SR_SRC_README",
-    "SRC-AIA_SPEC"
+    "SRC-AIA_SPEC",
+    "R-DOME-AMBIANCE-20261023",
+    "R-DOLLHOUSE-REST-EXIT-20261023",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ],
   "cradle": [
     "SRC-APERTURE",
@@ -4235,7 +5204,8 @@
     "SRC-DOME"
   ],
   "ceilings": [
-    "SRC-BASELINE"
+    "SRC-BASELINE",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ],
   "confirms": [
     "SRC-SR_P2_MAP"
@@ -4282,7 +5252,8 @@
     "SRC-EPI_DIAGNOSTICS_PDF"
   ],
   "cultural": [
-    "SRC-EPI_DIAGNOSTICS_PDF"
+    "SRC-EPI_DIAGNOSTICS_PDF",
+    "R-DOME-AMBIANCE-20261023"
   ],
   "collapsed": [
     "SRC-EPI_DIAGNOSTICS_PDF"
@@ -4364,12 +5335,50 @@
     "EDITION"
   ],
   "crosswalk": [
-    "EDITION"
+    "EDITION",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ],
   "callouts": [
     "EDITION"
   ],
   "crosswalks": [
     "EDITION"
+  ],
+  "cognitive": [
+    "R-DOME-AMBIANCE-20261023"
+  ],
+  "currently": [
+    "R-DOME-AMBIANCE-20261023"
+  ],
+  "capture_status": [
+    "R-DOME-AMBIANCE-20261023",
+    "R-DOLLHOUSE-REST-EXIT-20261023",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
+  ],
+  "cited_only": [
+    "R-DOME-AMBIANCE-20261023",
+    "R-DOLLHOUSE-REST-EXIT-20261023",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
+  ],
+  "caller-declared": [
+    "R-DOLLHOUSE-REST-EXIT-20261023"
+  ],
+  "caller-provided": [
+    "R-DOLLHOUSE-REST-EXIT-20261023"
+  ],
+  "cancelled": [
+    "R-DOLLHOUSE-REST-EXIT-20261023"
+  ],
+  "ci": [
+    "R-DOLLHOUSE-REST-EXIT-20261023"
+  ],
+  "comprehension": [
+    "R-DOLLHOUSE-REST-EXIT-20261023"
+  ],
+  "candidates": [
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
+  ],
+  "category-specific": [
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ]
 }

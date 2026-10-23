@@ -57,7 +57,12 @@
     "APT-08",
     "LINEAGE-06",
     "LINEAGE-11",
-    "EDITION"
+    "EDITION",
+    "R-DOME-AMBIANCE-20261023",
+    "R-DOLLHOUSE-REST-EXIT-20261023",
+    "R-ENCYCLOPEDIA-LAB-279-20261023",
+    "ASSESS-G-291",
+    "ASSESS-G-340"
   ],
   "10": [
     "LAB-12",
@@ -122,7 +127,8 @@
   "16": [
     "G-215",
     "LAB-18",
-    "APT-11"
+    "APT-11",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ],
   "17": [
     "SRC-CLASSIC"
@@ -143,6 +149,9 @@
   ],
   "133": [
     "SRC-EX_COLD"
+  ],
+  "165": [
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ],
   "192": [
     "G-397",
@@ -192,6 +201,9 @@
     "G-234",
     "LAB-21",
     "SRC-CLASSIC"
+  ],
+  "1583": [
+    "R-DOLLHOUSE-REST-EXIT-20261023"
   ],
   "1588": [
     "APT-30"
@@ -295,5 +307,23 @@
   ],
   "1d6962c7604d6d9a226792cd5813f36bafcbae853420af5dd065aea80afd6567": [
     "APT-40"
+  ],
+  "16-program": [
+    "PROGRAM-P01",
+    "PROGRAM-P02",
+    "PROGRAM-P03",
+    "PROGRAM-P04",
+    "PROGRAM-P05",
+    "PROGRAM-P06",
+    "PROGRAM-P07",
+    "PROGRAM-P08",
+    "PROGRAM-P09",
+    "PROGRAM-P10",
+    "PROGRAM-P11",
+    "PROGRAM-P12",
+    "PROGRAM-P13",
+    "PROGRAM-P14",
+    "PROGRAM-P15",
+    "PROGRAM-P16"
   ]
 }

@@ -27,10 +27,19 @@
     "APT-38",
     "APT-40",
     "PDF-EPI_CUSTODIAL_PDF",
-    "PDF-EPI_DIAGNOSTICS_PDF"
+    "PDF-EPI_DIAGNOSTICS_PDF",
+    "R-ENCYCLOPEDIA-LAB-279-20261023",
+    "ASSESS-G-291",
+    "ASSESS-G-292",
+    "ASSESS-G-340"
   ],
   "30": [
     "APT-39"
+  ],
+  "31": [
+    "R-DOME-AMBIANCE-20261023",
+    "R-DOLLHOUSE-REST-EXIT-20261023",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ],
   "32": [
     "LAB-23",
@@ -40,7 +49,8 @@
     "EDITION"
   ],
   "37": [
-    "EDITION"
+    "EDITION",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ],
   "38": [
     "APT-06"

@@ -32,7 +32,8 @@
     "G-450",
     "G-452",
     "F-35",
-    "SRC-EPI_CUSTODIAL_PDF"
+    "SRC-EPI_CUSTODIAL_PDF",
+    "ASSESS-G-450"
   ],
   "b": [
     "G-001",
@@ -42,7 +43,8 @@
     "G-396",
     "G-498",
     "M-15",
-    "M-22"
+    "M-22",
+    "ASSESS-G-396"
   ],
   "bridged": [
     "G-001",
@@ -205,7 +207,8 @@
     "SRC-PR416",
     "SRC-EPI_CUSTODIAL_PDF",
     "SRC-EPI_DIAGNOSTICS_PDF",
-    "APT-17"
+    "APT-17",
+    "R-DOLLHOUSE-REST-EXIT-20261023"
   ],
   "budget": [
     "G-004",
@@ -261,7 +264,11 @@
     "X-13",
     "SRC-FADT",
     "SRC-PR1092",
-    "APT-07"
+    "APT-07",
+    "R-DOME-AMBIANCE-20261023",
+    "R-DOLLHOUSE-REST-EXIT-20261023",
+    "R-ENCYCLOPEDIA-LAB-279-20261023",
+    "ASSESS-M-21"
   ],
   "by": [
     "G-009",
@@ -452,7 +459,8 @@
     "H-14",
     "H-16",
     "SRC-EPI_CUSTODIAL_PDF",
-    "SRC-EPI_POSTWEB_PDF"
+    "SRC-EPI_POSTWEB_PDF",
+    "R-DOLLHOUSE-REST-EXIT-20261023"
   ],
   "becomes": [
     "G-043",
@@ -489,7 +497,9 @@
     "SRC-EPI_CUSTODIAL_PDF",
     "SRC-EPI_POSTWEB_PDF",
     "SRC-EPI_DIAGNOSTICS_PDF",
-    "PDF-EPI_CUSTODIAL_PDF"
+    "PDF-EPI_CUSTODIAL_PDF",
+    "ASSESS-G-280",
+    "ASSESS-G-530"
   ],
   "best": [
     "G-064",
@@ -603,7 +613,10 @@
     "SRC-AP32_RECEIPT",
     "APT-13",
     "APT-14",
-    "APT-26"
+    "APT-26",
+    "R-ENCYCLOPEDIA-LAB-279-20261023",
+    "ASSESS-H-23",
+    "ASSESS-H-37"
   ],
   "bar": [
     "G-101",
@@ -630,7 +643,8 @@
     "G-185",
     "G-325",
     "G-359",
-    "H-02"
+    "H-02",
+    "ASSESS-G-185"
   ],
   "bits": [
     "G-115",
@@ -656,7 +670,8 @@
     "G-139",
     "G-210",
     "G-334",
-    "SRC-SR_SRC_SEAL"
+    "SRC-SR_SRC_SEAL",
+    "R-DOLLHOUSE-REST-EXIT-20261023"
   ],
   "bare": [
     "G-143"
@@ -717,7 +732,8 @@
     "H-03",
     "H-17",
     "SRC-OBSERV",
-    "SRC-ER2013"
+    "SRC-ER2013",
+    "R-DOME-AMBIANCE-20261023"
   ],
   "byte-identical": [
     "G-190"
@@ -784,7 +800,8 @@
     "PDF-SR_UF_PDF",
     "PDF-EPI_CUSTODIAL_PDF",
     "PDF-EPI_POSTWEB_PDF",
-    "PDF-EPI_DIAGNOSTICS_PDF"
+    "PDF-EPI_DIAGNOSTICS_PDF",
+    "ASSESS-H-36"
   ],
   "blinded": [
     "G-219"
@@ -859,7 +876,8 @@
     "G-274",
     "G-493",
     "G-510",
-    "SRC-EX_PRIV"
+    "SRC-EX_PRIV",
+    "ASSESS-G-510"
   ],
   "bespoke": [
     "G-289"
@@ -884,7 +902,8 @@
     "G-386"
   ],
   "benefit": [
-    "G-340"
+    "G-340",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ],
   "barelli-galanis": [
     "G-344",
@@ -894,7 +913,8 @@
     "G-355",
     "LAB-35",
     "H-23",
-    "SRC-AP32_ER"
+    "SRC-AP32_ER",
+    "ASSESS-G-344"
   ],
   "beliefs": [
     "G-345",
@@ -925,7 +945,8 @@
     "G-397",
     "LAB-30",
     "H-25",
-    "H-26"
+    "H-26",
+    "ASSESS-H-26"
   ],
   "barrier": [
     "G-381"
@@ -949,7 +970,8 @@
     "SRC-ZEN_SR_P1",
     "SRC-ZEN_SR_P2",
     "SRC-ZEN_SR_P3",
-    "SRC-SR_P2_MAP"
+    "SRC-SR_P2_MAP",
+    "ASSESS-G-433"
   ],
   "beta": [
     "G-429",
@@ -988,7 +1010,8 @@
     "G-499"
   ],
   "basic": [
-    "M-04"
+    "M-04",
+    "ASSESS-M-04"
   ],
   "bounces": [
     "LAB-01"
@@ -1042,7 +1065,9 @@
     "SRC-SR_SRC_ENTRY",
     "SRC-SR_SRC_RESOLVER",
     "SRC-SR_SRC_README",
-    "SRC-AIA_SPEC"
+    "SRC-AIA_SPEC",
+    "R-DOME-AMBIANCE-20261023",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ],
   "brier": [
     "LAB-44"
@@ -1097,7 +1122,10 @@
   "body": [
     "SRC-EPI_CUSTODIAL_PDF",
     "SRC-EPI_POSTWEB_PDF",
-    "SRC-EPI_DIAGNOSTICS_PDF"
+    "SRC-EPI_DIAGNOSTICS_PDF",
+    "R-DOME-AMBIANCE-20261023",
+    "R-DOLLHOUSE-REST-EXIT-20261023",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ],
   "broken": [
     "SRC-EPI_CUSTODIAL_PDF",
@@ -1142,5 +1170,8 @@
   ],
   "base_repository_commit": [
     "EDITION"
+  ],
+  "binds": [
+    "R-DOLLHOUSE-REST-EXIT-20261023"
   ]
 }

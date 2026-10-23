@@ -50,7 +50,8 @@
     "G-454",
     "G-455",
     "SRC-AP32_DROMO",
-    "SRC-AP32_DOCTRINE"
+    "SRC-AP32_DOCTRINE",
+    "ASSESS-G-255"
   ],
   "ker": [
     "G-010"
@@ -90,7 +91,8 @@
     "G-279",
     "G-338",
     "M-12",
-    "X-08"
+    "X-08",
+    "R-DOLLHOUSE-REST-EXIT-20261023"
   ],
   "knew": [
     "G-041"
@@ -161,11 +163,13 @@
     "M-07",
     "M-09",
     "M-10",
-    "M-11"
+    "M-11",
+    "ASSESS-G-103"
   ],
   "keys": [
     "G-156",
-    "G-272"
+    "G-272",
+    "R-DOLLHOUSE-REST-EXIT-20261023"
   ],
   "key": [
     "G-158",
@@ -431,7 +435,10 @@
     "SRC-AIA_SPEC",
     "SRC-EPI_CUSTODIAL_PDF",
     "SRC-EPI_POSTWEB_PDF",
-    "SRC-EPI_DIAGNOSTICS_PDF"
+    "SRC-EPI_DIAGNOSTICS_PDF",
+    "R-DOME-AMBIANCE-20261023",
+    "R-DOLLHOUSE-REST-EXIT-20261023",
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ],
   "kv": [
     "SRC-EX_CACHE"

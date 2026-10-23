@@ -25,7 +25,10 @@
     "G-100",
     "M-21",
     "LAB-28",
-    "H-05"
+    "H-05",
+    "ASSESS-G-099",
+    "ASSESS-H-05",
+    "ASSESS-M-21"
   ],
   "zero-credit": [
     "G-172"
@@ -99,7 +102,11 @@
     "PDF-EPI_CUSTODIAL_PDF",
     "PDF-EPI_POSTWEB_PDF",
     "PDF-EPI_DIAGNOSTICS_PDF",
-    "LINEAGE-02"
+    "LINEAGE-02",
+    "ASSESS-G-299",
+    "ASSESS-G-418",
+    "ASSESS-H-21",
+    "ASSESS-X-21"
   ],
   "zen_sr_frame": [
     "G-416",
@@ -134,7 +141,8 @@
     "SRC-ZEN_SR_P3"
   ],
   "zone": [
-    "G-449"
+    "G-449",
+    "ASSESS-G-449"
   ],
   "z_": [
     "M-20"
@@ -150,5 +158,8 @@
   ],
   "zenodo-20076616-file-0": [
     "SRC-SR_SRC_P3"
+  ],
+  "zip": [
+    "R-ENCYCLOPEDIA-LAB-279-20261023"
   ]
 }
