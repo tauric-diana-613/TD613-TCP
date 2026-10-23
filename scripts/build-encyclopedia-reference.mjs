@@ -24,6 +24,8 @@ for(const [i,r] of audit.attached_contract_manifest.all_embedded_json_contracts.
 for(const [i,r] of audit.uploaded_primary_pdf_inventory.entries())add('PDF-'+(r.source_key||i+1),'pdf',r,'/uploaded_primary_pdf_inventory/'+i);
 for(const [i,r] of audit.research_lineage_notes.entries())add('LINEAGE-'+String(i+1).padStart(2,'0'),'lineage_note',{text:r},'/research_lineage_notes/'+i,String(r));
 add('EDITION','edition',audit.metadata,'/metadata','Edition metadata');
+const originalResearchCount=records.length;
+if(originalResearchCount!==843)throw new Error('Canonical research inventory changed: '+originalResearchCount);
 const admittedDir=new URL('../app/encyclopedia/intake/admitted/',import.meta.url);
 for(const name of (await readdir(admittedDir).catch(error=>{if(error.code==='ENOENT')return [];throw error})).sort()){
  if(!name.endsWith('.json'))continue;
@@ -38,7 +40,7 @@ const researchAddendum=JSON.parse(await readFile(new URL('../app/encyclopedia/re
 const stagedPaths=['R-DOME-AMBIANCE-20261023','R-DOLLHOUSE-REST-EXIT-20261023','R-ENCYCLOPEDIA-LAB-279-20261023'];
 const staged=await Promise.all(stagedPaths.map(async id=>JSON.parse(await readFile(new URL('../app/encyclopedia/intake/staged/'+id+'.json',import.meta.url),'utf8'))));
 const baseCount=records.length;
-if(baseCount!==843)throw new Error('Original research record inventory changed: '+baseCount);
+// Reviewed test fixtures and future admitted records are preserved before staged accessions.
 records.push(...buildResearchAccessionRecords({staged,addendum:researchAddendum,originals:records}));
 const newCount=records.length-baseCount;
 if(newCount!==298)throw new Error('Indexed accession inventory mismatch: '+newCount);
