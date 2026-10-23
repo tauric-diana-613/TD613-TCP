@@ -1,0 +1,49 @@
+{
+  "schema": "td613.research-intake/v1",
+  "recorded_at": "2026-10-23T05:31:22.248Z",
+  "author": "Assistant-prepared under contemporaneous TD613 operator instruction",
+  "human_request_ref": "2026-10-23 operator-direct chat instruction: correct Encyclopedia, validate all laboratory proposals, restore ambiance and log REST investigation",
+  "visibility": "public",
+  "record_id": "R-DOME-AMBIANCE-20261023",
+  "kind": "concept",
+  "title": "Dome-World Ambiance — model-local cognitive weather, bounded numerically",
+  "family": "Dome-World / Flow-Core",
+  "aliases": [
+    "ambience",
+    "local cognitive weather",
+    "Dome Weather",
+    "local section ambiance"
+  ],
+  "body": "The currently implemented Dome-World describes itself as an ambiance-mediated cognitive weather runtime. The Weather view reports fold density, storm risk, humidity and visibility; local rooms maintain separate ambient sections. The modeled relation a_r in A(U_r) and gluing disagreement delta_rs apply to declared local overlaps; W_t aggregates modeled local sections and discrepancies, not a global ontological reconstruction. The Encyclopedia 1.4 source inventory omitted the word ambiance; this source-grounded correction restores the concept in an additive research addendum. It makes no claims about external physical meteorology, third-party LLM telemetry, cultural authorship or measured universal truth.",
+  "sources": [
+    {
+      "source_id": "DOME-WORLD-WEATHER-MAIN-55F512",
+      "kind": "github",
+      "locator": "https://github.com/tauric-diana-613/TD613-TCP/blob/55f51298a12c977b99ac4594fb5c1da494a491ed/app/dome-world/index.html",
+      "source_commit": "55f51298a12c977b99ac4594fb5c1da494a491ed",
+      "capture_status": "CITED_ONLY"
+    },
+    {
+      "source_id": "DOME-WORLD-RECEIPT-DOCTRINE",
+      "kind": "github",
+      "locator": "https://github.com/tauric-diana-613/TD613-TCP/blob/55f51298a12c977b99ac4594fb5c1da494a491ed/docs/DOME_WORLD_FLOW_CORE.md",
+      "source_commit": "55f51298a12c977b99ac4594fb5c1da494a491ed",
+      "capture_status": "CITED_ONLY"
+    }
+  ],
+  "evidence": {
+    "disposition": "SPECIFIED",
+    "earned_claim": "Source code documents and renders bounded in-app modeled ambiance readouts and equations; source-level existence of the measurement model established.",
+    "claim_ceiling": "Modeled and locally measured software weather, not physical meteorology, total field truth, provider enforcement or external-origin proof.",
+    "missing_evidence": [
+      "No independent physical atmospheric sensor calibration claimed.",
+      "No external AI/provider behavior inferred from local modeled readings."
+    ]
+  },
+  "relations": [
+    {
+      "type": "qualifies",
+      "target": "G-144"
+    }
+  ]
+}
