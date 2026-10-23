@@ -16,4 +16,5 @@ This is a generated retrieval mirror of Research Edition 1.4, not new scientific
 
 843 generated records; source payload SHA-256 ff0c98f564c9157f22b8603a20ddefa3ca13d843b17bdfb7e2a495408a49b4c9.
 Source records can point to private Library artifacts or missing measurements; a locator alone grants no access or observation credit.
+Research addendum (source-bounded, indexed separately): /encyclopedia/research/2026-10-23-proposal-and-rest-addendum.json. Standalone script#td613-research-addendum-20261023. It covers 279 laboratory candidate IDs, modeled Dome-World ambiance and the REST review sequence; this is not a new empirical observation or a human-reviewed accession.
 Rebuild/check: node scripts/build-encyclopedia-reference.mjs [--check]
