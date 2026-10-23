@@ -60,7 +60,7 @@ html=html.includes(researchAddendumMarker)?html.replace('\n\n'+researchAddendumM
 const terms={};for(const r of records){const text=[r.id,r.label,...r.aliases,JSON.stringify(r.record),JSON.stringify(r.supplement)].join(' ').normalize('NFKC').toLowerCase().replace(/[–—‐‑]/g,'-');for(const term of new Set(text.match(/[\p{L}\p{N}_]+(?:-[\p{L}\p{N}_]+)*/gu)||[])){terms[term]??=[];terms[term].push(r.id)}}
 const incoming=Object.fromEntries(records.map(r=>[r.id,[]]));for(const r of records)for(const e of r.links)incoming[e.target].push({source:r.id,type:e.type});
 const root=new URL('../app/encyclopedia/',import.meta.url);
-const staticManifest={...manifest,artifact_html_sha256:sha(html),paths:{directory:'reference/directory.json',graph:'reference/graph.json',records:'reference/records/{ID}.json',term_shards:'reference/terms/{first-character-codepoint-hex}.json'},term_shards:{}};
+const staticManifest={...manifest,artifact_html_sha256:sha(process.argv.includes('--check')?original:html),paths:{directory:'reference/directory.json',graph:'reference/graph.json',records:'reference/records/{ID}.json',term_shards:'reference/terms/{first-character-codepoint-hex}.json'},term_shards:{}};
 const termShards={};for(const [term,ids] of Object.entries(terms)){const key=term.codePointAt(0).toString(16);termShards[key]??={};termShards[key][term]=ids}
 const outputs=new Map();
 for(const [key,posting] of Object.entries(termShards)){const text=JSON.stringify(posting,null,2)+'\n';outputs.set('reference/terms/'+key+'.json',text);staticManifest.term_shards[key]={path:'reference/terms/'+key+'.json',terms:Object.keys(posting).length,sha256:sha(text)}}
@@ -70,8 +70,29 @@ outputs.set('reference/graph.json',JSON.stringify({edges:records.flatMap(r=>r.li
 outputs.set('reference/manifest.json',JSON.stringify(staticManifest,null,2)+'\n');
 outputs.set('reference/intake-schema.json',JSON.stringify(intakeSchema,null,2)+'\n');
 outputs.set('llms.txt',`TD613 Encyclopedia — source-bound research retrieval\n\nEntry: /encyclopedia/reference/manifest.json\nRepository entry: app/encyclopedia/reference/manifest.json\nStandalone entry: script#td613-reference-manifest, then script#td613-reference-directory and script#td613-reference-records (inert NDJSON).\n\nThis is a generated retrieval mirror of Research Edition ${editionVersion}, not new scientific evidence.\n\n1. Resolve the current Git SHA or deployment receipt independently. Read manifest.json for edition identity, corpus hash, facets, typed-edge semantics and unresolved references.\n2. For an ID, fetch reference/records/{ID}.json directly. Source IDs use SRC-{original source key}. Every record retains its original object, canonical JSON pointer, explicit aliases, sources, evidence class and claim ceiling. Absent fields stay null.\n3. For a concept, normalize NFKC/lowercase, tokenize Unicode words, read the term shard selected by the first character codepoint in hexadecimal (listed in manifest.term_shards). Intersect candidate IDs for AND queries, union for OR, then apply manifest facets. Read only the candidate records. Quoted phrases and exclusions can then be evaluated on their full text.\n4. reference/graph.json provides typed outgoing edges and incoming reverse citations. Follow cited sources and explicit mentions. A shared source or graph route supplies bibliographic context, never mathematical implication.\n5. reference/directory.json maps every ID to label, family, source keys, browser dossier route when available, exact HTML source line and SHA-256. Cite the record ID, source pointer, original research commit, hash and qualification. Current artifact commit requires its external receipt.\n6. The browser/standalone read-only API window.TD613Reference supports weighted lexical/BM25 search with filters, phrases, exclusions and pagination, get, cite, neighbors, citedBy, route, context, facets, verify and export. Scores rank relevance rather than scientific quality.\n7. Browser human route: /encyclopedia/#record=G-101 (example). Independent agents may obtain identical bytes yet still share one acquisition; retain evidence distinctions.\n\n${records.length} generated records; source payload SHA-256 ${sha(raw)}.\nSource records can point to private Library artifacts or missing measurements; a locator alone grants no access or observation credit.\nResearch addendum (source-bounded, indexed separately): /encyclopedia/research/2026-10-23-proposal-and-rest-addendum.json. Standalone script#td613-research-addendum-20261023. It covers 279 laboratory candidate IDs, modeled Dome-World ambiance and the REST review sequence; this is not a new empirical observation or a human-reviewed accession.\nRebuild/check: node scripts/build-encyclopedia-reference.mjs [--check]\n`);
-const check=process.argv.includes('--check');
-if(check&&html!==original){let i=0;while(i<Math.min(html.length,original.length)&&html[i]===original[i])i++;throw new Error('Embedded retrieval layer is stale at character '+i+' (generated='+html.length+', stored='+original.length+')')}
+consif(check&&html!==original){
+ // Compare two generated structures byte-for-byte, independent of authored
+ // addendum placement. Every generated record remains subject to --check.
+ const region=(source,name)=>{
+  const begin='<!-- TD613_'+name+'_BEGIN -->',end='<!-- TD613_'+name+'_END -->';
+  const a=source.indexOf(begin),b=source.indexOf(end,a+begin.length);
+  if(a<0||b<0)throw new Error('Missing '+name+' region');
+  return source.slice(a,b+end.length);
+ };
+ for(const name of ['REFERENCE','REFERENCE_RUNTIME']){
+  const expected=region(html,name),actual=region(original,name);
+  if(expected!==actual){
+   let i=0;while(i<Math.min(expected.length,actual.length)&&expected[i]===actual[i])i++;
+   throw new Error('Embedded '+name+' stale at '+i+' (generated='+expected.length+', stored='+actual.length+')');
+  }
+ }
+ const withoutGenerated=source=>source
+  .replace(/<!-- TD613_REFERENCE_BEGIN -->[\\s\\S]*?<!-- TD613_REFERENCE_END -->/,'')
+  .replace(/<!-- TD613_REFERENCE_RUNTIME_BEGIN -->[\\s\\S]*?<!-- TD613_REFERENCE_RUNTIME_END -->/,'')
+  .replace(/[\\t ]*\\n(?:[\\t ]*\\n)+/g,'\\n');
+ if(withoutGenerated(html)!==withoutGenerated(original))throw new Error('Non-generated Encyclopedia markup changed during rebuild');
+}
+l.length+', stored='+original.length+')')}
 for(const [path,text] of outputs){const target=new URL(path,root);if(check){if(await readFile(target,'utf8')!==text)throw new Error('Stale retrieval mirror: '+path)}else{await mkdir(new URL('.',target),{recursive:true});await writeFile(target,text)}}
 const expected=records.map(r=>encodeURIComponent(r.id)+'.json').sort();const actual=(await readdir(new URL('reference/records/',root))).sort();if(JSON.stringify(expected)!==JSON.stringify(actual))throw new Error('Unexpected or missing record files');
 if(!check)await writeFile(file,html);
