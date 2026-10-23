@@ -1,0 +1,47 @@
+{
+  "schema": "td613.research-intake/v1",
+  "recorded_at": "2026-10-23T05:31:22.248Z",
+  "author": "Assistant-prepared under contemporaneous TD613 operator instruction",
+  "human_request_ref": "2026-10-23 operator-direct chat instruction: correct Encyclopedia, validate all laboratory proposals, restore ambiance and log REST investigation",
+  "visibility": "public",
+  "record_id": "R-ENCYCLOPEDIA-LAB-279-20261023",
+  "kind": "source_note",
+  "title": "Complete Encyclopedia Lab proposal selection and disposition — 279 preserved IDs",
+  "family": "Research lineage / mathematical candidate audit",
+  "body": "Retain every one of the 279 laboratory candidates from the supplied frozen Edition 1.3 lab package: 165 glossary, 49 formula, 28 crosswalk, 37 unresolved questions. Retain 16 proposed experimental programs and all 21 explicit mathematical bridge identifiers, with category-specific claim ceilings. 8 finite mathematical checks reproduced in the lab are offline examples, not empirical LLM/provider or Golden Egg observations. The complete ID-preserving ledger is in /encyclopedia/research/2026-10-23-proposal-and-rest-addendum.json. Source ownership for externally published SignalRupture material is retained. Canonical Research Edition 1.4 contains 843 records and already correctly defines AIA G-144 as Anisotropic Information Architecture. This source note records catalog comparison and dispositions without promoting any of the untested proposals.",
+  "sources": [
+    {
+      "source_id": "OPERATOR-LAB-PACKAGE-20261023",
+      "kind": "artifact",
+      "locator": "Operator-supplied TD613_Lab_Package ZIP in 2026-10-23 conversation; nonpublic original attachment",
+      "capture_status": "OPERATOR_SUPPLIED"
+    },
+    {
+      "source_id": "PUBLIC-ENCYCLOPEDIA-ED14",
+      "kind": "github",
+      "locator": "https://github.com/tauric-diana-613/TD613-TCP/blob/55f51298a12c977b99ac4594fb5c1da494a491ed/app/encyclopedia/index.html",
+      "source_commit": "55f51298a12c977b99ac4594fb5c1da494a491ed",
+      "capture_status": "CITED_ONLY"
+    }
+  ],
+  "evidence": {
+    "disposition": "OFFLINE_EXECUTED",
+    "earned_claim": "Finite catalog comparison preserves the complete selected set of 279 IDs; eight bounded mathematical fixtures were reproduced.",
+    "claim_ceiling": "Selection, finite computation and mathematical research proposals only; no 279 instantiated experiments, real LLM-state identification, privacy benefit or independent empirical acquisition.",
+    "missing_evidence": [
+      "Many proposals lack preregistered experiments and measured independent episodes.",
+      "Empirical privacy and provider enforcement remain unobserved.",
+      "No model forecast or epistemicide detector validated."
+    ]
+  },
+  "relations": [
+    {
+      "type": "extends",
+      "target": "G-260"
+    },
+    {
+      "type": "qualifies",
+      "target": "G-144"
+    }
+  ]
+}
