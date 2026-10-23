@@ -50,3 +50,46 @@
   async function prepareImport(input){const text=typeof input==='string'?input:JSON.stringify(input,null,2),report=window.TD613Intake.inspect(text,intakeSchema);if(report.record&&byId.has(report.record.record_id)){report.errors.push('Record ID already exists; revisions require a fresh ID.');report.valid=false}if(!report.valid)return clone(report);const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));return clone({schema:'td613.research-proposal/v1',disposition:'PROPOSED',input_sha256:[...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,'0')).join(''),original_json:text,record:report.record,authority:report.authority,publication_eligible:report.publication_eligible})}
   window.TD613Reference=Object.freeze({schema:manifest.schema,manifest:()=>clone(manifest),search,get:id=>byId.has(id)?clone(byId.get(id)):null,cite,neighbors,route,context,citedBy:id=>clone(incoming.get(id)||[]),facets:()=>clone(manifest.facets),verify,prepareImport,intakeSchema:()=>clone(intakeSchema),export:()=>clone({manifest,directory,records,intakeSchema})});
 })();
+
+
+// TD613 unified research view adapter. Preserves 843 canonical records and
+// presents separately typed accession records in the original reader sections.
+// Research status and source provenance are retained from the machine record.
+(() => {
+ 'use strict';
+ if (!window.TD613Reference || typeof BY_ID==='undefined' || typeof SEARCH_RECORDS==='undefined') return;
+ const rows=window.TD613Reference.export().records.filter(r=>r.id.startsWith('R-')||r.id.startsWith('ASSESS-')||r.id.startsWith('PROGRAM-'));
+ for(const r of rows){
+  if(BY_ID.has(r.id))continue;
+  const research=r.record||{};
+  const title=r.label||research.title||r.id;
+  const limit=r.claim_ceiling||'Consult the source record for limitations.';
+  const sources=Array.isArray(research.sources)?research.sources.filter(v=>typeof v==='string'):[];
+  if(r.kind==='glossary'){
+   const term={id:r.id,term:title,category:r.family,status:r.status||'SOURCE_STAGED',description:[research.body,limit].filter(Boolean).join('\\n\\n'),sources};
+   GLOSSARY_LIST.push(term);
+   BY_ID.set(r.id,{type:'glossary',item:term});
+  }else{
+   const item={id:r.id,title,evidence_class:r.evidence_class,status:r.status,
+    finding:research.body||research.description||'Research inventory and status note; original source record remains authoritative.',
+    description:research.body||research.description||'Research inventory and status note.',
+    ceiling:limit,sources};
+   LABS_LIST.push(item);
+   BY_ID.set(r.id,{type:'labs',item});
+  }
+  const e=BY_ID.get(r.id);
+  SEARCH_RECORDS.push({id:r.id,...e,hay:JSON.stringify({record:r.record,supplement:r.supplement,label:r.label}).normalize('NFKC').toLowerCase()});
+ }
+ const lexiconStat=document.querySelector('.stat-btn[data-view="lexicon"] .stat-value');
+ if(lexiconStat)lexiconStat.textContent=String(GLOSSARY_LIST.length);
+ const lexIntro=document.querySelector('#view-lexicon .intro');
+ if(lexIntro)lexIntro.textContent=GLOSSARY_LIST.length+' annotated concepts and source-grounded accessions. Each finding retains its scope, status and original sources.';
+ const labsTab=document.querySelector('[data-evidence-kind="labs"]');
+ if(labsTab)labsTab.textContent='Research records '+LABS_LIST.length;
+ const evidenceCaption=document.querySelector('#view-evidence .intro');
+ if(evidenceCaption)evidenceCaption.textContent='Inspect research crosswalks, laboratory results, individually indexed proposal assessments, accession notes and unresolved questions. The source-level qualifications remain intact.';
+ if(typeof UI!=='undefined'){
+  if(UI.view==='lexicon'&&typeof renderLexicon==='function')renderLexicon();
+  if(UI.view==='evidence'&&typeof renderEvidence==='function')renderEvidence();
+ }
+})();
