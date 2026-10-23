@@ -11,11 +11,16 @@ const context={document:{getElementById:id=>({textContent:data(id)}),addEventLis
 vm.runInNewContext(await readFile(new URL('../scripts/encyclopedia-intake.cjs',import.meta.url),'utf8')+'\n'+await readFile(new URL('../scripts/encyclopedia-reference-runtime.js',import.meta.url),'utf8'),context);
 const api=context.window.TD613Reference;
 test('every bot record binds exact original content, a finite source line, and an identical small-file mirror',async()=>{
- assert.equal(records.length,843);assert.equal(new Set(records.map(r=>r.id)).size,records.length);
+ assert.equal(records.length,1141);assert.equal(new Set(records.map(r=>r.id)).size,records.length);
+ const historical=records.slice(0,843),accessions=records.slice(843);
+ assert.equal(historical.length,843);assert.equal(accessions.length,298);
+ assert(accessions.every(r=>r.origin.json_pointer===null),'new accessions must not pretend to be canonical Edition 1.4 entries');
  const sourceLines=html.split('\n');
  for(const [i,r] of records.entries()){
-  const original=r.origin.json_pointer.split('/').slice(1).reduce((value,key)=>value[key.replace(/~1/g,'/').replace(/~0/g,'~')],audit);
-  assert.equal(JSON.stringify(r.kind==='lineage_note'?r.record.text:r.record),JSON.stringify(original),r.id);
+  if(i<843){
+   const original=r.origin.json_pointer.split('/').slice(1).reduce((value,key)=>value[key.replace(/~1/g,'/').replace(/~0/g,'~')],audit);
+   assert.equal(JSON.stringify(r.kind==='lineage_note'?r.record.text:r.record),JSON.stringify(original),r.id);
+  }
   assert.equal(sourceLines[directory[i].html_line-1],JSON.stringify(r).replace(/</g,'\\u003c'),r.id+' line');
   assert.equal(sha(JSON.stringify(r).replace(/</g,'\\u003c')),directory[i].record_sha256,r.id+' hash');
   assert.equal((await readFile(new URL(directory[i].record_path,root),'utf8')).trim(),sourceLines[directory[i].html_line-1]);
@@ -48,14 +53,14 @@ test('reverse citations and bounded paths retain typed links without manufacturi
  assert(packet.records[0].citation.record_sha256);
 });
 test('all integrity checks execute and caller mutation cannot rewrite the reference store',async()=>{
- const report=await api.verify();assert.equal(report.verified,843);assert.equal(report.mismatches.length,0);
+ const report=await api.verify();assert.equal(report.verified,1141);assert.equal(report.mismatches.length,0);
  const r=api.get('G-101');r.record.term='overwritten';assert.notEqual(api.get('G-101').record.term,'overwritten');
 });
 test('standalone bot intake prepares exact bytes for human review without changing the index',async()=>{
  const input={schema:'td613.research-intake/v1',record_id:'R-REFERENCE-TEST',kind:'concept',title:'Fictional concept intake fixture',recorded_at:'2026-10-22T22:00:00Z',author:'Software test',human_request_ref:'synthetic-fixture-only',visibility:'private',body:'A software fixture, carrying zero research credit.',sources:[{source_id:'fixture',kind:'artifact',locator:'test:fixture',capture_status:'OPERATOR_SUPPLIED'}],evidence:{disposition:'CONCEPTUAL',earned_claim:'Input staging works.',claim_ceiling:'Fictional software test only.',missing_evidence:['No external event acquired.']}};
  const text=JSON.stringify(input,null,3)+'\n',proposal=await api.prepareImport(text);
  assert.equal(proposal.disposition,'PROPOSED');assert.equal(proposal.original_json,text);assert.equal(proposal.input_sha256,sha(text));assert.equal(proposal.publication_eligible,false);
- assert.equal(api.get(input.record_id),null);assert.equal(api.manifest().record_count,843);
+ assert.equal(api.get(input.record_id),null);assert.equal(api.manifest().record_count,1141);
  assert.equal((await api.prepareImport('null')).valid,false);
 });
 test('current edition carries direct theory sources and distinct contribution evidence',()=>{
