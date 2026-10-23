@@ -1,0 +1,38 @@
+name: Encyclopedia candidate-index build (bounded PR branch)
+on:
+  push:
+    branches:
+      - docs/encyclopedia-ambiance-research-20261023
+permissions:
+  contents: write
+jobs:
+  regenerate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Rebuild index without rewriting original research payload
+        run: node scripts/build-encyclopedia-reference.mjs
+      - name: Verify generated mirror and integrated accessions
+        run: |
+          node scripts/build-encyclopedia-reference.mjs --check
+          node --test tests/encyclopedia-integrated-accessions.test.mjs
+          node --test tests/encyclopedia-intake.test.mjs
+      - name: Commit generated mirror to same review branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/encyclopedia/index.html app/encyclopedia/llms.txt app/encyclopedia/reference/
+          if git diff --cached --quiet; then
+            echo "Generated mirror unchanged."
+            exit 0
+          fi
+          git commit -m "build(encyclopedia): index ambiance, REST and all 279 research assessments"
+          git push origin HEAD:refs/heads/docs/encyclopedia-ambiance-research-20261023
