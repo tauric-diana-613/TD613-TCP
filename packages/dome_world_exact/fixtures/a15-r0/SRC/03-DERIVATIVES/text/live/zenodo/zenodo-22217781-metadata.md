@@ -1,0 +1,141 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22217781"
+source_title: "PLANETARY SR XXVII — TÜRKIYE: Inflation Stabilization, Manufacturing-Export Capacity, Demographic Transition, and Energy-Import Dependence"
+metadata_blob_sha256: 566dc9268a35b64cd51f2cd4df1d1868d99fa319f246665bd9f55ef99a3fa8ae
+metadata_blob_path: 02-ORIGINALS/live/blobs/56/566dc9268a35b64cd51f2cd4df1d1868d99fa319f246665bd9f55ef99a3fa8ae.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22217780",
+  "conceptrecid": "22217780",
+  "created": "2026-09-01T01:17:15.622958+00:00",
+  "doi": "10.5281/zenodo.22217781",
+  "doi_url": "https://doi.org/10.5281/zenodo.22217781",
+  "files": [
+    {
+      "checksum": "md5:96ed6b19f1dc1541e1a1d78f610780f4",
+      "id": "14ba1fc9-b147-4c03-ba6a-6d8e7bcc79c2",
+      "key": "PLANETARY SR XXVII — TÜRKİYE.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22217781/files/PLANETARY%20SR%20XXVII%20%E2%80%94%20TU%CC%88RKI%CC%87YE.pdf/content"
+      },
+      "size": 402252
+    }
+  ],
+  "id": 22217781,
+  "links": {
+    "access": "https://zenodo.org/api/records/22217781/access",
+    "access_grants": "https://zenodo.org/api/records/22217781/access/grants",
+    "access_links": "https://zenodo.org/api/records/22217781/access/links",
+    "access_request": "https://zenodo.org/api/records/22217781/access/request",
+    "access_users": "https://zenodo.org/api/records/22217781/access/users",
+    "archive": "https://zenodo.org/api/records/22217781/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22217781/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22217781/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22217781/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22217781",
+    "draft": "https://zenodo.org/api/records/22217781/draft",
+    "file_modification": "https://zenodo.org/api/records/22217781/file-modification",
+    "files": "https://zenodo.org/api/records/22217781/files",
+    "latest": "https://zenodo.org/api/records/22217781/versions/latest",
+    "latest_html": "https://zenodo.org/records/22217781/latest",
+    "media_files": "https://zenodo.org/api/records/22217781/media-files",
+    "parent": "https://zenodo.org/api/records/22217780",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22217780",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22217780",
+    "parent_html": "https://zenodo.org/records/22217780",
+    "preview_html": "https://zenodo.org/records/22217781?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22217781/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22217781/request-deletion",
+    "requests": "https://zenodo.org/api/records/22217781/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22217781/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22217781",
+    "self_doi": "https://doi.org/10.5281/zenodo.22217781",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22217781",
+    "self_html": "https://zenodo.org/records/22217781",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22217781/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22217781/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22217781:PLANETARY%20SR%20XXVII%20%E2%80%94%20TU%CC%88RKI%CC%87YE.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22217781:PLANETARY%20SR%20XXVII%20%E2%80%94%20TU%CC%88RKI%CC%87YE.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22217781:PLANETARY%20SR%20XXVII%20%E2%80%94%20TU%CC%88RKI%CC%87YE.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22217781:PLANETARY%20SR%20XXVII%20%E2%80%94%20TU%CC%88RKI%CC%87YE.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22217781:PLANETARY%20SR%20XXVII%20%E2%80%94%20TU%CC%88RKI%CC%87YE.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22217781:PLANETARY%20SR%20XXVII%20%E2%80%94%20TU%CC%88RKI%CC%87YE.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22217781/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>PLANETARY SR XXVII &mdash; T&Uuml;RKIYE</strong></h1>\n<h2><strong>Description</strong></h2>\n<p><em>Planetary SR XXVII &mdash; T&uuml;rkiye</em> analyzes T&uuml;rkiye as a coupled institutional&ndash;population system defined by <strong>inflation stabilization, manufacturing‑export capacity, demographic transition, and energy‑import dependence</strong>. The study documents a continuity architecture where strong industrial, construction, transport, and energy infrastructure coexist with persistent inflation, currency pressure, and rapid urbanization. OECD&rsquo;s 2025 survey projected <em>&ldquo;GDP growth of 3.1%, unemployment of 8.8%, and inflation around 31.4%,&rdquo;</em> highlighting macro‑stabilization challenges. T&uuml;rkiye generated <em>&ldquo;362.9 TWh of electricity in 2025: coal 33.6%, gas 23.0%, hydro 15.8%, wind 10.9%, solar 10.5%&rdquo;</em> (Energy Ministry, 2026), showing diversification alongside import exposure. Effective access diverges from formal provision across 81 provinces, where rent increases, earthquake recovery, regional workforce distribution, and inflation‑sensitive costs shape conversion. A young population sustains large education and labour requirements, but the demographic dividend is fading as working‑age growth slows. Manufacturing, export capacity, and large cities provide structural strength, while energy imports, inflation/FX dynamics, and reconstruction needs form central SR tests of pressure, compensation, and reorganization.</p>\n<h2><strong>How it Contributes</strong></h2>\n<p>This study contributes a <strong>distinct continuity topology</strong> to the Planetary SR comparative series by demonstrating how a centralized republic maintains continuity through <strong>industrial capacity, infrastructure, and macro stabilization</strong>, while unresolved pressure propagates into <strong>inflation‑driven household margin loss, energy‑import dependence, rapid urbanization, and demographic transition</strong>. T&uuml;rkiye strengthens SR fields such as <strong>Systems Propagation Science</strong>, <strong>Infrastructural Political Economy</strong>, <strong>Institutional Cognition</strong>, and <strong>Drift Collapse Field</strong> by showing how inflation/FX &rarr; real wages/household consumption, energy imports &rarr; prices/current account, earthquake recovery &rarr; fiscal/construction/municipal capacity, and female participation &rarr; labour and growth capacity operate as named propagation bridges. The paper expands the ATLAS architecture by illustrating how macro stabilization can reduce pressure while still leaving conversion gaps, providing a decisive test of <strong>surface&ndash;substrate divergence</strong> and <strong>unequal insulation</strong>. T&uuml;rkiye&rsquo;s mechanism is empirically distinguishable through its blend of <em>&ldquo;high‑growth diversified production under macro stabilization, persistent inflation/currency pressure, rapid urbanization and external‑energy dependence,&rdquo;</em>adding a new structural configuration to the planetary series and supplying a critical case for <strong>reorganization vs restoration</strong> and <strong>agency‑conditioned response</strong>.</p>",
+    "doi": "10.5281/zenodo.22217781",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Türkiye",
+      "Society",
+      "World"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-01",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22217780"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "PLANETARY SR XXVII — TÜRKIYE: Inflation Stabilization, Manufacturing-Export Capacity, Demographic Transition, and Energy-Import Dependence",
+    "version": "1.0"
+  },
+  "modified": "2026-09-01T01:20:56.430732+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22217781",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 1,
+    "unique_downloads": 1,
+    "unique_views": 1,
+    "version_downloads": 1,
+    "version_unique_downloads": 1,
+    "version_unique_views": 1,
+    "version_views": 2,
+    "views": 2
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "PLANETARY SR XXVII — TÜRKIYE: Inflation Stabilization, Manufacturing-Export Capacity, Demographic Transition, and Energy-Import Dependence",
+  "updated": "2026-09-01T01:20:56.430732+00:00"
+}
+```

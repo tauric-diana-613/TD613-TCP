@@ -1,0 +1,141 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22211363"
+source_title: "PLANETARY SR XIX — NEW ZEALAND: Small-System Public Buffering, Geographic Isolation, Housing Burden, and Renewable-Electricity Resilience"
+metadata_blob_sha256: d3a533319024e0ea65824e3ac982548a3a1176ca4cafd3a5103ccc4d5457c755
+metadata_blob_path: 02-ORIGINALS/live/blobs/d3/d3a533319024e0ea65824e3ac982548a3a1176ca4cafd3a5103ccc4d5457c755.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22211362",
+  "conceptrecid": "22211362",
+  "created": "2026-08-31T16:25:10.489355+00:00",
+  "doi": "10.5281/zenodo.22211363",
+  "doi_url": "https://doi.org/10.5281/zenodo.22211363",
+  "files": [
+    {
+      "checksum": "md5:013f8513c23e0b817c2383a1a4ee0a35",
+      "id": "afc285ca-88c2-47ba-99e1-8d7b167b2267",
+      "key": "PLANETARY SR XIX — NEW ZEALAND.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22211363/files/PLANETARY%20SR%20XIX%20%E2%80%94%20NEW%20ZEALAND.pdf/content"
+      },
+      "size": 399743
+    }
+  ],
+  "id": 22211363,
+  "links": {
+    "access": "https://zenodo.org/api/records/22211363/access",
+    "access_grants": "https://zenodo.org/api/records/22211363/access/grants",
+    "access_links": "https://zenodo.org/api/records/22211363/access/links",
+    "access_request": "https://zenodo.org/api/records/22211363/access/request",
+    "access_users": "https://zenodo.org/api/records/22211363/access/users",
+    "archive": "https://zenodo.org/api/records/22211363/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22211363/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22211363/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22211363/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22211363",
+    "draft": "https://zenodo.org/api/records/22211363/draft",
+    "file_modification": "https://zenodo.org/api/records/22211363/file-modification",
+    "files": "https://zenodo.org/api/records/22211363/files",
+    "latest": "https://zenodo.org/api/records/22211363/versions/latest",
+    "latest_html": "https://zenodo.org/records/22211363/latest",
+    "media_files": "https://zenodo.org/api/records/22211363/media-files",
+    "parent": "https://zenodo.org/api/records/22211362",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22211362",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22211362",
+    "parent_html": "https://zenodo.org/records/22211362",
+    "preview_html": "https://zenodo.org/records/22211363?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22211363/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22211363/request-deletion",
+    "requests": "https://zenodo.org/api/records/22211363/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22211363/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22211363",
+    "self_doi": "https://doi.org/10.5281/zenodo.22211363",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22211363",
+    "self_html": "https://zenodo.org/records/22211363",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22211363/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22211363/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22211363:PLANETARY%20SR%20XIX%20%E2%80%94%20NEW%20ZEALAND.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22211363:PLANETARY%20SR%20XIX%20%E2%80%94%20NEW%20ZEALAND.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22211363:PLANETARY%20SR%20XIX%20%E2%80%94%20NEW%20ZEALAND.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22211363:PLANETARY%20SR%20XIX%20%E2%80%94%20NEW%20ZEALAND.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22211363:PLANETARY%20SR%20XIX%20%E2%80%94%20NEW%20ZEALAND.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22211363:PLANETARY%20SR%20XIX%20%E2%80%94%20NEW%20ZEALAND.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22211363/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>PLANETARY SR XIX &mdash; NEW ZEALAND</strong></h1>\n<h2><strong>Description</strong></h2>\n<p><em>Planetary SR XIX &mdash; New Zealand</em> analyzes New Zealand as a coupled institutional&ndash;population system characterized by <strong>small‑system public buffering, geographic isolation, housing‑margin pressure, and renewable‑electricity resilience</strong>. The study documents a continuity architecture built on universal public services, strong central institutions, and exceptionally high renewable electricity&mdash;<em>&ldquo;44.14 TWh in 2025 with 88.5% from renewable sources&rdquo;</em>&mdash;while identifying structural pressures including <em>&ldquo;household debt around 159% of disposable income&rdquo;</em>, elevated debt‑service costs, housing affordability constraints, rural access gaps, and Māori/Pasifika inequities. Migration materially shapes short‑run labour supply and population growth, but simultaneously increases near‑term requirements in housing, health, education, and local administrative systems. New Zealand&rsquo;s geographic isolation and limited scale constrain substitution, making household margin, local service capacity, and renewable‑system reliability central to continuity under rising requirements.</p>\n<h2><strong>How it Contributes</strong></h2>\n<p>This study contributes a <strong>distinct continuity topology</strong> to the Planetary SR comparative series by demonstrating how a small, high‑capacity welfare state maintains stability through renewable‑electricity insulation and public‑institutional buffering while transferring unresolved pressure downward into households, workers, and local systems. New Zealand strengthens SR fields such as <strong>Planetary Pressure Ecology</strong>, <strong>Institutional Reflex Science</strong>, <strong>Drift Mechanics</strong>, and <strong>Systems Propagation Science</strong> by showing how housing/debt dynamics, migration‑driven service load, rural access gaps, and small‑system scale interact across territorial authorities, district health geographies, and Māori/iwi‑relevant population contexts. The document provides high‑resolution evidence for compensated continuity, unequal insulation, surface&ndash;substrate divergence, and reorganization, and expands the ATLAS architecture by illustrating how renewable‑electricity abundance can coexist with household‑margin erosion and geographic‑scale constraints. New Zealand&rsquo;s mechanism is empirically distinguishable through its blend of <em>&ldquo;small open high‑capacity welfare economy with renewable electricity, high household housing/debt exposure and strong external trade/migration dependence,&rdquo;</em> adding a new structural configuration to the planetary SR series.</p>",
+    "doi": "10.5281/zenodo.22211363",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "New Zeland",
+      "Society",
+      "World"
+    ],
+    "language": "eng",
+    "publication_date": "2026-08-31",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22211362"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "PLANETARY SR XIX — NEW ZEALAND: Small-System Public Buffering, Geographic Isolation, Housing Burden, and Renewable-Electricity Resilience",
+    "version": "1.0"
+  },
+  "modified": "2026-08-31T16:25:10.835129+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22211363",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 2,
+    "unique_downloads": 2,
+    "unique_views": 6,
+    "version_downloads": 2,
+    "version_unique_downloads": 2,
+    "version_unique_views": 6,
+    "version_views": 7,
+    "views": 7
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "PLANETARY SR XIX — NEW ZEALAND: Small-System Public Buffering, Geographic Isolation, Housing Burden, and Renewable-Electricity Resilience",
+  "updated": "2026-08-31T16:25:10.835129+00:00"
+}
+```

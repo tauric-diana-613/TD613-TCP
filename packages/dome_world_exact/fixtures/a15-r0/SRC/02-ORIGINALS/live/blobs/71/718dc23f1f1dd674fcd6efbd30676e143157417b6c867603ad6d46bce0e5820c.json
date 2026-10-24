@@ -1,0 +1,132 @@
+{
+  "conceptdoi": "10.5281/zenodo.22545933",
+  "conceptrecid": "22545933",
+  "created": "2026-09-06T16:51:00.900945+00:00",
+  "doi": "10.5281/zenodo.22545934",
+  "doi_url": "https://doi.org/10.5281/zenodo.22545934",
+  "files": [
+    {
+      "checksum": "md5:2f4e1fd7bb5ecf4c161aadabef97a9d4",
+      "id": "cf4db51b-7f56-4622-8f97-d71b0fb15ba6",
+      "key": "ATLAS XXIV — THE PLANETARY ATLAS SYNTHESIS.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22545934/files/ATLAS%20XXIV%20%E2%80%94%20THE%20PLANETARY%20ATLAS%20SYNTHESIS.pdf/content"
+      },
+      "size": 235425
+    }
+  ],
+  "id": 22545934,
+  "links": {
+    "access": "https://zenodo.org/api/records/22545934/access",
+    "access_grants": "https://zenodo.org/api/records/22545934/access/grants",
+    "access_links": "https://zenodo.org/api/records/22545934/access/links",
+    "access_request": "https://zenodo.org/api/records/22545934/access/request",
+    "access_users": "https://zenodo.org/api/records/22545934/access/users",
+    "archive": "https://zenodo.org/api/records/22545934/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22545934/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22545934/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22545934/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22545934",
+    "draft": "https://zenodo.org/api/records/22545934/draft",
+    "file_modification": "https://zenodo.org/api/records/22545934/file-modification",
+    "files": "https://zenodo.org/api/records/22545934/files",
+    "latest": "https://zenodo.org/api/records/22545934/versions/latest",
+    "latest_html": "https://zenodo.org/records/22545934/latest",
+    "media_files": "https://zenodo.org/api/records/22545934/media-files",
+    "parent": "https://zenodo.org/api/records/22545933",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22545933",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22545933",
+    "parent_html": "https://zenodo.org/records/22545933",
+    "preview_html": "https://zenodo.org/records/22545934?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22545934/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22545934/request-deletion",
+    "requests": "https://zenodo.org/api/records/22545934/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22545934/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22545934",
+    "self_doi": "https://doi.org/10.5281/zenodo.22545934",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22545934",
+    "self_html": "https://zenodo.org/records/22545934",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22545934/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22545934/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22545934:ATLAS%20XXIV%20%E2%80%94%20THE%20PLANETARY%20ATLAS%20SYNTHESIS.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22545934:ATLAS%20XXIV%20%E2%80%94%20THE%20PLANETARY%20ATLAS%20SYNTHESIS.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22545934:ATLAS%20XXIV%20%E2%80%94%20THE%20PLANETARY%20ATLAS%20SYNTHESIS.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22545934:ATLAS%20XXIV%20%E2%80%94%20THE%20PLANETARY%20ATLAS%20SYNTHESIS.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22545934:ATLAS%20XXIV%20%E2%80%94%20THE%20PLANETARY%20ATLAS%20SYNTHESIS.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22545934:ATLAS%20XXIV%20%E2%80%94%20THE%20PLANETARY%20ATLAS%20SYNTHESIS.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22545934/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>ATLAS XXIV &mdash; THE PLANETARY ATLAS SYNTHESIS</strong></h1>\n<p><strong>Developmental Lock‑In, Restoration Pathways, and a Conditional 2026&ndash;2031 Research Forecast</strong></p>\n<h2><strong>Description</strong></h2>\n<p><strong>ATLAS XXIV &mdash; THE PLANETARY ATLAS SYNTHESIS</strong> evaluates a bounded and falsifiable proposition: the synthesis adjudicates whether developmental lock‑in is a recurrent cross‑country mechanism, a bounded family of mechanisms, or an overgeneralization. Forecasts are conditional tests of observed pathways, never declarations of inevitability. The manuscript does not treat countries as essences, does not equate commodity dependence or foreign participation with extraction, and does not infer constraint from specialization alone. Instead, it specifies the causal, temporal, and distributional conditions under which external pressure, low domestic retention, uncompensated labour and ecological burdens, weakened substitution, and constrained agency can reproduce asymmetric dependence across diverse regional and sectoral contexts.</p>\n<p>The manuscript formalizes the SR developmental pathway using five core variables: domestically retained and broadly usable value (R); unremediated labour, ecological, fiscal, and institutional burdens (B); substitution and recovery capacity (S); dependence on external markets, finance, technology, or infrastructure (D); and executable bargaining and policy agency (A). These variables are linked to renewed externalization (X) through an explicit dynamic representation. ATLAS XXIV establishes exclusion rules against overclaiming, defines rival mechanisms for each hypothesis, and sets evidence grades (E0&ndash;E6) that govern permissible inference.</p>\n<p>The synthesis introduces a planetary migration causation framework, treating migration as a relational outcome rather than a self‑contained border event. It specifies when external structures&mdash;extraction, ecological burden, conflict exposure, policy constraint, or suppressed domestic value retention&mdash;may contribute to later migration, and when migration produces reciprocal capability gains. Anti‑migrant discrimination is recorded as independently impermissible but not automatically diagnostic of lock‑in.</p>\n<p>Measurement architecture is fully specified. Variables include cross‑regional retained‑value trajectories, upgrading and substitution transitions, bargaining and executable agency, household and labour‑buffer pressure, ecological and fiscal restoration, forecast calibration and error, debt service and currency exposure, ownership and profit repatriation, technology and data control, logistics and gateway power, essential‑goods dependence, and pressure return paths across migration, ecology, supply, and public finance. Every variable must carry source provenance, definition, unit, coverage, transformation code, uncertainty, and missingness rules. ATLAS XXIV is time‑bounded, mechanism‑driven, and explicitly revisable. It is designed for public‑interest analysis, resilience evaluation, and restoration‑oriented policy assessment.</p>\n<div>\n</div>\n<h2><strong>How It Contributes</strong></h2>\n<p><strong>1. Planetary causal architecture</strong><br>ATLAS XXIV integrates the twenty‑four‑paper ATLAS corpus into a single comparative mechanism system. It converts regional findings into cross‑country hypotheses, establishes a planetary measurement architecture, and defines the inference ceiling for all ATLAS claims. It prevents regional overgeneralization and ensures that every pathway remains separately testable.</p>\n<p><strong>2. Formalization of the developmental lock‑in mechanism family</strong><br>The manuscript provides the first planetary‑level adjudication of the developmental lock‑in hypothesis. It distinguishes recurrent mechanisms from regional variants, negative cases, and overgeneralizations. Lock‑in becomes a conditional, falsifiable family of mechanisms rather than a universal law.</p>\n<p><strong>3. Integration of migration, ecology, technology, logistics, and essential‑goods dependence</strong><br>ATLAS XXIV embeds migration causation, ecological burden, technological sovereignty, gateway power, and essential‑goods dependence directly into the developmental pathway. It specifies how pressure can be displaced and later return through supply shocks, ecological depletion, displacement, public expenditure, or reduced demand. This prevents narrow commodity‑centric interpretations and establishes a multi‑system causal architecture.</p>\n<p><strong>4. Evidence discipline and inference ceiling</strong><br>The manuscript defines the evidence ladder (E0&ndash;E6) for the entire ATLAS corpus and sets the inference ceiling: no integrated ATLAS causal claim reaches E3 or above until temporal order, mediation, rival‑model performance, and robustness are demonstrated through a claim&ndash;evidence registry. No forecast reaches E6 until prospectively scored against a frozen baseline. This ensures scientific integrity and prevents premature global claims.</p>\n<p><strong>5. Restoration architecture and planetary forecast protocol</strong><br>ATLAS XXIV defines restoration as evidence‑selected intervention, country and sector specificity, public forecast scoring, and a living restoration register through 2031. It establishes the planetary restoration gates: additional retained capability, fair distribution, ecological and human restoration, and reduced exposure to coercive dependency. This anchors SR&rsquo;s ethical purpose: increasing societies&rsquo; ability to retain gains, govern essential systems, absorb shocks fairly, and choose their developmental path.</p>",
+    "doi": "10.5281/zenodo.22545934",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "World",
+      "Governance",
+      "Governments",
+      "Society",
+      "Economics"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-06",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22545933"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "ATLAS XXIV THE PLANETARY ATLAS SYNTHESIS Developmental Lock-In, Restoration Pathways, and a Conditional 2026–2031 Research Forecast",
+    "version": "1.0"
+  },
+  "modified": "2026-09-06T16:51:01.370797+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22545934",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 2,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 2,
+    "version_views": 2,
+    "views": 2
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "ATLAS XXIV THE PLANETARY ATLAS SYNTHESIS Developmental Lock-In, Restoration Pathways, and a Conditional 2026–2031 Research Forecast",
+  "updated": "2026-09-06T16:51:01.370797+00:00"
+}
