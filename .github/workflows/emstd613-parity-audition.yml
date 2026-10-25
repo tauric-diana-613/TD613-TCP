@@ -1,0 +1,42 @@
+name: EMSTD613 Four-Atelier Experimental Parity (Research Only)
+
+on:
+  push:
+    branches:
+      - research/emstd613-four-atelier-parity-audition-20261025
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bounded-parity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Execute exact-head Em parity negative controls
+        run: node tests/emstd613-four-atelier-parity-audition.test.mjs
+      - name: Execute universal v0.2 reference synthetic controls
+        run: node tests/atelier-method-v02-universal-seed.test.mjs
+      - name: Execute source-bound Em 44-interface overlay controls
+        run: node tests/emstd613-universal-v02-overlay.test.mjs
+      - name: Execute common parity resolver and topology controls
+        run: node tests/atelier-method-v02-parity-operators.test.mjs
+      - name: Exercise real Em Work and hash-verified literal source sieve
+        run: node tests/emstd613-native-parity-v02.test.mjs
+      - name: Exercise Em-native 53-contextual-role semantic polycompilation
+        run: node tests/emstd613-semantic-polycompiler-v02.test.mjs
+      - name: Exercise generic source-anchored mechanism counterexamples
+        run: node tests/atelier-method-v02-mechanism-discrimination.test.mjs
+      - name: Exercise native Em Algedonic equation interpretation and false-twin tests
+        run: node tests/emstd613-mechanism-discrimination-v02.test.mjs
+      - name: Exercise common prospective commitment chronology safeguards
+        run: node tests/atelier-method-v02-prospective-controls.test.mjs
+      - name: Execute read-only Em corpus capability inspector
+        run: node packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/em-atelier-parity.mjs --status
