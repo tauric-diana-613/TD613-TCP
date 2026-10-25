@@ -1,4 +1,6 @@
 import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import {bindExactSourceSpan,discriminateMechanisms} from '../packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-mechanism-discrimination-v02.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { DEFAULT_PARENT,createEmptyAtelier,preview }
@@ -81,6 +83,37 @@ try{
    operator_delta_refs:[],alternative_explanation:'Same token, no operator established',
    claim_ceiling:'NO_DONOR_ORIGIN'}]});
  assert.equal(prior.counts.NEITHER,1);
+
+ // An empty shell can execute bounded formal counterexample discrimination
+ // on IN-MEMORY test evidence, without admission, attribution or scientific truth.
+ const sentence='A hypothetical error is setpoint minus measured value; no empirical claim follows.';
+ const digest=createHash('sha256').update(sentence).digest('hex');
+ const a=bindExactSourceSpan({snapshot_id:snapshot,source_file_id:'trial:A',
+  source_locator:'synthetic:equation',full_text:sentence,
+  start_char:0,end_char:sentence.length,derivative_sha256:digest,source_parent_sha256:digest});
+ const aid=a.source_file_id+':'+a.start_char+':'+a.end_char;
+ const bare=(id,kind,source_relation)=>({
+  id,label:id,source_relation,operator:{kind},input_fields:['setpoint','measured'],
+  source_anchor_ids:source_relation==='SOURCE_FORMULATION_PROPOSED'?[aid]:[],
+  prediction_scope:'SYNTHETIC_ONLY',falsifier:'Finite wrong-prediction case',
+  prior_art_state:'UNASSESSED',prior_art_refs:[]
+ });
+ const tested=discriminateMechanisms({
+  snapshot_id:snapshot,anchors:[a],
+  hypotheses:[bare('minus','DIFFERENCE','SOURCE_FORMULATION_PROPOSED'),
+   bare('plus','SUM','ANALYST_FORMALIZATION'),
+   bare('null','UNSPECIFIED','NULL_ALTERNATIVE')],
+  cases:[{case_id:'positive',inputs:{setpoint:8,measured:3},
+   observed:5,observation_basis:'SYNTHETIC'},
+  {case_id:'negative',inputs:{setpoint:1,measured:6},
+   observed:-5,observation_basis:'SYNTHETIC'}],
+  observation_origin:'SYNTHETIC_FORMULA_CONSISTENCY'
+ });
+ assert.deepEqual(tested.compatible_model_ids,['minus']);
+ assert.equal(tested.independent_empirical_validation,false);
+ assert.equal(tested.universal_theory_validated,false);
+ assert.equal(tested.novelty_validated,false);
+
 
  const contextual=assemblePolycompiler({
   snapshot_id:snapshot,seal_id:'SYNTHETIC_EPISODE',
