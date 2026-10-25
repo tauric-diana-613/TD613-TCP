@@ -1,0 +1,29 @@
+name: Universal Atelier v0.2 Research Seed
+
+on:
+  push:
+    branches:
+      - research/atelier-universal-v02-seed-20261025
+  pull_request:
+    branches:
+      - research/atelier-method-v01-20260911
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Candidate full-inventory and hostile synthetic controls
+        run: node tests/atelier-method-v02-universal-seed.test.mjs
+      - name: Dry-run empty Atilla-Ozy example (no files created)
+        run: node packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-scaffold-v02.mjs --id ATILLA_OZY --label "Atilla & Ozy"
