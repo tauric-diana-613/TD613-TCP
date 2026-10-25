@@ -1,0 +1,21 @@
+* text=auto
+*.md text eol=lf
+*.json text eol=lf
+*.jsonl text eol=lf
+*.txt text eol=lf
+*.csv text eol=lf
+*.pdf binary
+*.doc binary
+*.docx binary
+*.ppt binary
+*.pptx binary
+*.xls binary
+*.xlsx binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.zip binary
+
+# Original handoff bytes are content-addressed; never normalize them as text.
+02-ORIGINALS/emstd613lineage/** -text
