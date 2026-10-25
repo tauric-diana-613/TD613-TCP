@@ -7,7 +7,7 @@ import { METHOD,validateProfile,stageOrderAssay }
  from '../packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-core-v02.mjs';
 import { compileSourceBoundTopology,makeHeldoutView,reconstructionControlBattery,
  polycompilationConservation,adjudicateConservationRegister,preregisterThreeStratum,
- nomenclatureOperatorCrosswalk,motifCandidateSieve,independentEvidenceSupport }
+ nomenclatureOperatorCrosswalk,motifCandidateSieve,independentEvidenceSupport,scoreForeignDonorFourCell }
  from '../packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-parity-operators-v02.mjs';
 
 const id='PARITY_SANDBOX_EMPTY';
@@ -80,6 +80,18 @@ try{
    operator_delta_refs:[],alternative_explanation:'Same token, no operator established',
    claim_ceiling:'NO_DONOR_ORIGIN'}]});
  assert.equal(prior.counts.NEITHER,1);
+
+ const plan={schema:'td613.atelier-foreign-donor-factorial/v0.2-candidate',
+  id:'EMPTY_TRIAL_BLINDED',state:'PREREGISTERED_NOT_EXECUTED',matched_frame:'FIXED_SYNTHETIC_FRAME'};
+ const contrasts=scoreForeignDonorFourCell({plan,observations:[
+  {cell:'C00',score:0,witness_id:'synthetic-00',matched_frame:'FIXED_SYNTHETIC_FRAME',blinded:true},
+  {cell:'C01',score:1,witness_id:'synthetic-01',matched_frame:'FIXED_SYNTHETIC_FRAME',blinded:true},
+  {cell:'C10',score:1,witness_id:'synthetic-10',matched_frame:'FIXED_SYNTHETIC_FRAME',blinded:true},
+  {cell:'C11',score:2,witness_id:'synthetic-11',matched_frame:'FIXED_SYNTHETIC_FRAME',blinded:true}
+ ]});
+ assert.equal(contrasts.contrasts.interaction,0);
+ assert.equal(contrasts.source_transfer_authority,false);
+
  const typed=adjudicateConservationRegister({snapshot_id:snapshot,seal_id:'SYNTHETIC_EPISODE',rows:[
   {compiler_conservation_observation_id:'trial:conserve1',atelier_snapshot_id:snapshot,
     seal_epoch_binding:'RESOLVE_MATCHED_CURRENT_SEAL',input_id:'trial:A',output_id:'trial:B',
