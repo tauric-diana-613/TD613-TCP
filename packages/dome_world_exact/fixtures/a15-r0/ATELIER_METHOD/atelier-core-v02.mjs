@@ -154,6 +154,70 @@ export function findingViews(finding){
     IMPLEMENTATION:{...invariant,record_type:finding.record_type??'RESEARCH_PACKET'}
   };
 }
+
+
+/**
+ * Wendbine-derived finite stage-order sensitivity ASSAY. The caller supplies
+ * fully observable, pure state transformations and a terminal register.
+ * This can detect order effects and endpoint-equivalent prefixes; it does
+ * not uniquely identify hidden implementation order or novel mathematics.
+ */
+export function stageOrderAssay({operators,inputs,register,canonical_order}){
+  check(isPlain(operators)&&typeof register==='function','STAGE_OPERATORS_REQUIRED');
+  const labels=Object.keys(operators);
+  check(labels.length>=2&&labels.length<=5&&unique(labels),'STAGE_COUNT_OUT_OF_BOUND');
+  check(labels.every(x=>typeof operators[x]==='function'),'STAGE_OPERATOR_NOT_FUNCTION');
+  check(Array.isArray(inputs)&&inputs.length>0&&inputs.length<=30,'STAGE_INPUT_BOUNDS');
+  check(Array.isArray(canonical_order)&&canonical_order.length===labels.length&&unique(canonical_order)
+    &&canonical_order.every(x=>labels.includes(x)),'CANONICAL_ORDER_INVALID');
+  const perms=arr=>arr.length===0?[[]]:arr.flatMap((x,i)=>perms(arr.filter((_,j)=>j!==i)).map(rest=>[x,...rest]));
+  const rows=perms(labels).map(order=>{
+    const signatures=[],firstStages=[];
+    for(const value of inputs){
+      let state=structuredClone(value);
+      for(let i=0;i<order.length;i++){
+        state=operators[order[i]](structuredClone(state));
+        check(isPlain(state),'STAGE_OUTPUT_MUST_BE_OBJECT');
+        if(i===0)firstStages.push(structuredClone(state));
+      }
+      signatures.push(JSON.stringify(register(structuredClone(state))));
+    }
+    return {order,terminal_signature:JSON.stringify(signatures),first_stage_witnesses:firstStages};
+  });
+  const bySignature=new Map();
+  for(const row of rows){
+    if(!bySignature.has(row.terminal_signature))bySignature.set(row.terminal_signature,[]);
+    bySignature.get(row.terminal_signature).push(row.order.join('>'));
+  }
+  const canon=rows.find(x=>x.order.join('>')===canonical_order.join('>'));
+  const classMembers=bySignature.get(canon.terminal_signature);
+  const witnessDifferent=rows.filter(x=>x.terminal_signature===canon.terminal_signature&&
+    JSON.stringify(x.first_stage_witnesses)!==JSON.stringify(canon.first_stage_witnesses)).map(x=>x.order);
+  return {schema:'td613.atelier-stage-order-assay/v0.2-candidate',
+    prefix_permutations:rows.length,terminal_equivalence_classes:bySignature.size,
+    canonical_order,canonical_terminal_equivalence_size:classMembers.length,
+    terminally_equivalent_orderings:classMembers,intermediate_witness_distinguishable:witnessDifferent,
+    claim_ceiling:'FINITE_SUPPLIED_OPERATOR_MODEL_ONLY_NO_HIDDEN_STAGE_IDENTIFICATION_OR_NOVELTY'};
+}
+
+/** Wendbine foreign-donor architecture×style 2×2 preregistration. */
+export function factorialForeignDonorPlan({id,source_snapshot,receiver_snapshot,
+  architecture_control,style_control,unrelated_decoy,matched_frame}){
+  for(const x of [id,source_snapshot,receiver_snapshot,architecture_control,style_control,unrelated_decoy,matched_frame])
+    check(string(x),'FOREIGN_DONOR_CONTROL_NOT_PREREGISTERED');
+  return {schema:'td613.atelier-foreign-donor-factorial/v0.2-candidate',
+    id,source_snapshot,receiver_snapshot,architecture_control,style_control,
+    unrelated_decoy,matched_frame,
+    cells:[
+      {cell:'C00',architecture:'BASELINE',style:'BASELINE'},
+      {cell:'C01',architecture:'BASELINE',style:'SOURCE_STYLE'},
+      {cell:'C10',architecture:'SOURCE_ARCHITECTURE',style:'BASELINE'},
+      {cell:'C11',architecture:'SOURCE_ARCHITECTURE',style:'SOURCE_STYLE'}
+    ],state:'PREREGISTERED_NOT_EXECUTED',outcomes:[],
+    prohibited:['DONOR_AUTHORITY_TRANSFER','SOURCE_AUTHORSHIP_TRANSFER','STYLE_AS_CAUSAL_ARCHITECTURE_PROOF'],
+    claim_ceiling:'DESIGN_ONLY_NO_TRANSFER_NOVELTY_OR_PERSONAL_INTENT_ESTABLISHED'};
+}
+
 export function recognitionPathway({source_id,public_locator,consenting_participants=[],requested_action='OBSERVE'}={}){
   check(string(source_id)&&string(public_locator),'PUBLIC_SOURCE_WITNESS_REQUIRED');
   check(requested_action==='OBSERVE','NO_TARGETED_CONTACT_OR_DISCLOSURE_FROM_ATELIER');
