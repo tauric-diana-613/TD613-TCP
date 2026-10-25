@@ -162,3 +162,68 @@ export function independentEvidenceSupport(rows){
   verdict:unknown.length?'INDEPENDENCE_UNRESOLVED':'KNOWN_ANCESTRY_COLLAPSED',
   claim_ceiling:'SAME_ANCESTOR_NOT_INDEPENDENT_NO_UNOBSERVED_ANCESTRY_INFERENCE'};
 }
+
+
+/** Em-derived Work/manifestation resolution, without human-gated identity collapse. */
+export function resolveWorkManifestations({work_id,works,manifestations,source_rows,epoch}){
+ guard(str(work_id)&&str(epoch),'WORK_ID_AND_EPOCH_REQUIRED');
+ guard(Array.isArray(works)&&Array.isArray(manifestations)&&Array.isArray(source_rows),'WORK_INPUTS_REQUIRED');
+ const work=works.find(w=>w.work_id===work_id);
+ if(!work)return {work_id,status:'UNRESOLVED_WORK',epoch,claim_ceiling:'NO_WORK_ID_MATCH'};
+ guard(!works.some(w=>w!==work&&w.work_id===work_id),'DUPLICATE_WORK_ID');
+ const sources=new Map(source_rows.map(s=>[s.source_file_id,s]));
+ guard(sources.size===source_rows.length,'DUPLICATE_SOURCE_FILE_ID');
+ const rows=manifestations.filter(x=>x.work_id===work_id).map(x=>{
+  guard(sources.has(x.source_file_id),'WORK_MANIFESTATION_SOURCE_MISSING');
+  return {...x,source_descriptor:{
+    source_file_id:x.source_file_id,
+    sha256:sources.get(x.source_file_id).sha256,
+    media_type:sources.get(x.source_file_id).media_type,
+    original_filename:sources.get(x.source_file_id).original_filename
+  }};
+ });
+ const workSourceIds=work.manifestation_source_file_ids;
+ guard(Array.isArray(workSourceIds),'WORK_MANIFESTATION_LIST_MISSING');
+ guard(workSourceIds.every(s=>rows.some(x=>x.source_file_id===s)),'WORK_SOURCE_ID_NOT_LINKED');
+ const humanGated=work.human_gate_required===true||rows.some(x=>x.human_gate_required===true);
+ const uncertain=humanGated||rows.some(x=>x.identity_status==='SAME_WORK_SUPPORTED');
+ return {work_id,epoch,status:'RESOLVED_OPERATIONAL_WORK',
+   identity_status:work.identity_status??'UNSPECIFIED',human_gate_required:humanGated,
+   manifestation_ids:rows.map(x=>x.source_file_id),manifestations:rows,
+   independent_work_contribution_interval:uncertain?
+    [work.minimum_independent_work_contribution??1,work.maximum_independent_work_contribution??rows.length]:[1,1],
+   claim_ceiling:uncertain?'OPERATIONAL_GROUPING_SUPPORTED_IDENTITY_UNRESOLVED':'SOURCE_MANIFESTATION_GROUP_ONLY',
+   authorship:work.authorship??'UNRESOLVED',
+   claim_equivalence_across_manifestations:false};
+}
+
+/**
+ * Source-explicit MOTIF CANDIDATES ONLY. Counts lexical occurrences in the
+ * supplied source excerpts; does not read a hidden corpus, create a ledger,
+ * infer a mechanism, decode a metaphor, or adjudicate authorship.
+ */
+export function motifCandidateSieve({snapshot_id,source_spans,terms}){
+ guard(str(snapshot_id)&&Array.isArray(source_spans)&&Array.isArray(terms),'MOTIF_INPUT_INVALID');
+ guard(terms.length>0&&terms.length<=150&&terms.every(str),'MOTIF_TERMS_REQUIRED');
+ const norm=s=>s.normalize('NFKC').toLocaleLowerCase('en-US');
+ const targets=sorted([...new Set(terms.map(norm))]);
+ const rows=[],seen=new Set();
+ for(const s of source_spans){
+  guard(str(s.source_id)&&str(s.source_locator)&&typeof s.text==='string','MOTIF_SOURCE_LOCATOR_REQUIRED');
+  guard(!seen.has(s.source_id+'::'+s.source_locator),'DUPLICATE_SPAN');
+  seen.add(s.source_id+'::'+s.source_locator);
+  const span=norm(s.text);
+  for(const term of targets){
+    let count=0,from=0,at=-1;
+    while((at=span.indexOf(term,from))>=0){count++;from=at+term.length;if(count>100000)throw Error('MOTIF_COUNT_CAP')}
+    if(count)rows.push({term,source_id:s.source_id,source_locator:s.source_locator,
+      occurrences:count,work_id:s.work_id??null,work_identity_status:s.work_identity_status??'UNRESOLVED',
+      status:'LITERAL_STRING_OBSERVATION_ONLY',evidence_class:'ARCHIVE_OBSERVATION'});
+  }
+ }
+ return {schema:'td613.atelier-motif-candidates/v0.2',snapshot_id,terms:targets,
+   observations:rows,
+   summary:targets.map(t=>({term:t,source_span_count:rows.filter(r=>r.term===t).length,
+     occurrences:rows.filter(r=>r.term===t).reduce((n,r)=>n+r.occurrences,0)})),
+   claim_ceiling:'LEXICAL_CANDIDATES_ONLY_NO_MECHANISM_IDENTITY_GENEALOGY_OR_NOVELTY'};
+}
