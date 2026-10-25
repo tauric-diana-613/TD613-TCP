@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { compileSourceBoundTopology, makeHeldoutView, scoreHeldoutPlacement,
   resolveSourceEntity, polycompilationConservation, independentEvidenceSupport,
-  readRegisteredRows,resolveWorkManifestations,motifCandidateSieve,reconstructionControlBattery,nomenclatureOperatorCrosswalk } from '../packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-parity-operators-v02.mjs';
+  readRegisteredRows,resolveWorkManifestations,motifCandidateSieve,reconstructionControlBattery,nomenclatureOperatorCrosswalk,scoreForeignDonorFourCell,extractVerbatimClaimCandidates } from '../packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-parity-operators-v02.mjs';
 
 const epoch={snapshot_id:'fixed-20261025',seal_id:'synthetic-seal'};
 const resolver=[
@@ -165,5 +165,30 @@ assert.throws(()=>nomenclatureOperatorCrosswalk({source_snapshot:'S',receiver_sn
   id:'unwitnessed',subject:'x',source_locator:'s',receiver_baseline_locator:'r',proposed_term:'a',
   proposes_better_name:true,proposes_better_operator:false,conventional_prior_refs:[],operator_delta_refs:[],
   alternative_explanation:'existing',claim_ceiling:'low'}]}),/ORDINARY_TERM_UNGROUNDED/);
+
+
+const text='The state requires a distinct witness. Inference cannot prove the source. Mechanism remains unresolved.';
+const snippets=extractVerbatimClaimCandidates({snapshot_id:'SYNTHETIC',source_id:'case-A',
+ source_locator:'synthetic:document',text,max_candidates:8});
+assert.ok(snippets.candidate_count>=2);
+assert.ok(snippets.claim_candidates.every(x=>x.source_text_copied_into_packet===false));
+assert.ok(snippets.claim_candidates.every(x=>/^[a-f0-9]{64}$/.test(x.verbatim_utf8_sha256)));
+assert.ok(snippets.claim_candidates.every(x=>text.slice(x.start_char,x.end_char).length===x.verbatim_character_length));
+const factorPlan={schema:'td613.atelier-foreign-donor-factorial/v0.2-candidate',id:'synthetic-factor',
+ state:'PREREGISTERED_NOT_EXECUTED',matched_frame:'CONTROL_FIXED'};
+const cells=[
+ {cell:'C00',score:1,witness_id:'w00',matched_frame:'CONTROL_FIXED',blinded:true},
+ {cell:'C01',score:2,witness_id:'w01',matched_frame:'CONTROL_FIXED',blinded:true},
+ {cell:'C10',score:3,witness_id:'w10',matched_frame:'CONTROL_FIXED',blinded:true},
+ {cell:'C11',score:5,witness_id:'w11',matched_frame:'CONTROL_FIXED',blinded:true}
+];
+const contrasts=scoreForeignDonorFourCell({plan:factorPlan,observations:cells});
+assert.equal(contrasts.contrasts.architecture_main_effect,2.5);
+assert.equal(contrasts.contrasts.style_main_effect,1.5);
+assert.equal(contrasts.contrasts.interaction,1);
+assert.equal(contrasts.source_authorship_attribution,false);
+assert.equal(contrasts.causal_identifiability,'UNESTABLISHED_BY_DESCRIPTIVE_CONTRASTS');
+assert.throws(()=>scoreForeignDonorFourCell({plan:factorPlan,
+ observations:cells.map((x,i)=>i===3?{...x,blinded:false}:x)}),/DONOR_EVALUATION_NOT_BLINDED/);
 
 console.log('Atelier parity operators synthetic suite: SRC exact-epoch resolver, role conservation, Wendbine-type compiler, withheld target leakage controls, independence deflation passed.');
