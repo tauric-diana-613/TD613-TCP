@@ -23,6 +23,10 @@ assert.equal(status.capabilities.length,COMMON_CAPABILITIES.length);
 assert.equal(status.capabilities.find(x=>x.name==='TYPED_MULTIPLEX_TOPOLOGY').state,'NOT_GENERATED');
 assert.equal(status.capabilities.find(x=>x.name==='SOURCE_CUSTODY_AND_DELTA_SYNC').state,'BOUNDED_HISTORICAL_INTAKE_ONLY');
 assert.equal(status.authority.scientific_promotion,false);
+assert.equal(status.src_compositional_fidelity,'NOT_TESTED');
+assert.equal(status.full_functional_parity,'NOT_EARNED');
+assert.equal(status.capabilities.find(x=>x.name==='FOUR_RECEIVER_AIA_PROJECTIONS').state,'FOUR_AIA_PACKET_PROJECTIONS_ONLY');
+assert.equal(status.capabilities.find(x=>x.name==='ATELIER_INTERCHANGE_PACKET').state,'PACKET_SHAPE_VALIDATOR_ONLY');
 
 const shared=JSON.parse(fs.readFileSync(path.resolve(EM_ROOT,'../ATELIER_METHOD/atelier-method-v0.1.json'),'utf8'));
 const profile=JSON.parse(fs.readFileSync(path.join(EM_ROOT,'ATELIER_PROFILE.json'),'utf8'));
@@ -108,4 +112,4 @@ assert.throws(()=>stageSourceIntake({
   media_type:'text/markdown',provenance_basis:'stated',
   parent_epoch:'X',rights_state:'UNKNOWN'
 }),/INTAKE_RIGHTS_UNRESOLVED/);
-console.log('EM four-Atelier bounded audition: corpus/identity, shared kernel, 4 AIA packet routes, and hostile negative controls passed. Full source sync/sieves/held-out parity remains HELD.');
+console.log('Em bounded scaffold assertions completed: registry, common kernel, 4 packet projections, and synthetic hostile checks. SRC compositional fidelity NOT TESTED; full parity NOT EARNED.');
