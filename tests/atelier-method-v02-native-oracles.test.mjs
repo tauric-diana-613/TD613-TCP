@@ -10,7 +10,7 @@ import path from 'node:path';
 import { spawnSync,execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { resolveSourceEntity,compileSourceBoundTopology,readRegisteredRows,
-  makeHeldoutView } from '../packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-parity-operators-v02.mjs';
+  makeHeldoutView,reconstructionControlBattery } from '../packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-parity-operators-v02.mjs';
 const repo=process.cwd(),root='packages/dome_world_exact/fixtures/a15-r0';
 const src=path.join(repo,root,'SRC');
 const current=JSON.parse(fs.readFileSync(path.join(src,'04-RECEIPTS/phase2/current-seal.json'),'utf8'));
@@ -89,6 +89,19 @@ assert.equal(view.heldout_source_id_not_in_topology,true);
 assert.equal(view.remaining_sources.length,32);
 assert.ok(view.remaining_relations.every(x=>x.source_id!==target));
 assert.equal(view.terminal_state,'HELDOUT_VIEW_ONLY_NO_PREDICTION_MADE');
+const controls=reconstructionControlBattery({
+ view,preregistration:{
+  state:'PREREGISTERED_NOT_EXECUTED',
+  target_ids:[target],controls:['C0','C1','C2','C3','C4']
+ },seed:613
+});
+assert.equal(controls.C0.compiled.source_count,32);
+assert.equal(controls.C1.publication_time_precision,'DAY_ONLY');
+assert.equal(controls.C1.serial_order_credit,'NOT_IDENTIFIABLE_FROM_DAY_BUCKETS');
+assert.equal(controls.C2.compiled.concept_count,controls.C0.compiled.concept_count);
+assert.equal(controls.C3.compiled.typed_relation_count,0);
+assert.equal(controls.C4.state,'HELD_DECOY_NOT_PREREGISTERED');
+assert.equal(controls.source_target_leakage,false);
 assert.equal(meta.scope.private_google_group_admitted,false);
 assert.equal(meta.rights.full_post_bodies_copied,false);
 console.log('NATIVE ORACLES PASS: SRC exact-seal source resolver agrees with source-native Python; Wendbine 33/191/146/143/43 topology matches original compiler; EchoCore held-out view excludes target without invented reconstruction.');
