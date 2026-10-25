@@ -10,7 +10,7 @@ import path from 'node:path';
 import { spawnSync,execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { resolveSourceEntity,compileSourceBoundTopology,readRegisteredRows,
-  makeHeldoutView,reconstructionControlBattery,nomenclatureOperatorCrosswalk } from '../packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-parity-operators-v02.mjs';
+  makeHeldoutView,reconstructionControlBattery,nomenclatureOperatorCrosswalk,adjudicateConservationRegister,preregisterThreeStratum } from '../packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-parity-operators-v02.mjs';
 const repo=process.cwd(),root='packages/dome_world_exact/fixtures/a15-r0';
 const src=path.join(repo,root,'SRC');
 const current=JSON.parse(fs.readFileSync(path.join(src,'04-RECEIPTS/phase2/current-seal.json'),'utf8'));
@@ -137,6 +137,36 @@ assert.deepEqual(bridge.counts,historical.crosswalk_summary && {
 });
 assert.equal(bridge.external_prior_art_verified_by_runner,false);
 assert.equal(bridge.scientific_promotion,false);
+// SRC native conservation observations retain original candidate/witness
+// classifications; the portable interface must not invent new significance.
+const conservation=readRegisteredRows(src,'05-OPERATIONS/phase2/compiler-conservation-observations.jsonl');
+const receipt=adjudicateConservationRegister({
+ snapshot_id:current.atelier_snapshot_id,seal_id:current.seal_id,rows:conservation
+});
+assert.equal(receipt.count,conservation.length);
+assert.ok(receipt.count>4);
+assert.ok(receipt.status_counts.WITNESSED>0);
+assert.ok(receipt.status_counts.CANDIDATE>0);
+for(const row of conservation){
+ const mapped=receipt.observations.find(x=>x.id===row.compiler_conservation_observation_id);
+ assert.ok(mapped);
+ assert.equal(mapped.status,row.adjudication_status);
+ assert.deepEqual(mapped.dimensions,row.dimensions);
+ assert.deepEqual(mapped.origin_witnesses,row.evidence_ids);
+ assert.equal(mapped.input_id,row.input_id);
+ assert.equal(mapped.output_id,row.output_id);
+ if(row.adjudication_status!=='WITNESSED')assert.match(mapped.resulting_claim_ceiling,/NO_IDENTITY_OR_LINEAGE_PROMOTION/);
+}
+const prospective=preregisterThreeStratum({
+ snapshot_id:current.atelier_snapshot_id,epoch_seal:current.seal_id,
+ targets:['SOURCE_BOUND_TARGET_PLACEHOLDER'],
+ matched_budget:'FIXED_TOKEN_AND_EVIDENCE_UNITS',blind_seed_commitment:'PRE_COMMITTED_IN_FUTURE',
+ control_specification:'TOPIC_TEMPLATE_LABEL_LEAKAGE_CHRONOLOGY_NEGATIVES'
+});
+assert.equal(prospective.subsets.length,7);
+assert.ok(prospective.subsets.includes('FNG'));
+assert.ok(Object.values(prospective.statuses).every(x=>x==='NOT_EXECUTED'));
+assert.match(prospective.claim_ceiling,/PROSPECTIVE_ONLY/);
 assert.equal(meta.scope.private_google_group_admitted,false);
 assert.equal(meta.rights.full_post_bodies_copied,false);
 console.log('NATIVE ORACLES PASS: SRC exact-seal source resolver agrees with source-native Python; Wendbine 33/191/146/143/43 topology matches original compiler; EchoCore held-out view excludes target without invented reconstruction.');
