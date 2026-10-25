@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { compileSourceBoundTopology, makeHeldoutView, scoreHeldoutPlacement,
   resolveSourceEntity, polycompilationConservation, independentEvidenceSupport,
-  readRegisteredRows } from '../packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-parity-operators-v02.mjs';
+  readRegisteredRows,resolveWorkManifestations,motifCandidateSieve } from '../packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-parity-operators-v02.mjs';
 
 const epoch={snapshot_id:'fixed-20261025',seal_id:'synthetic-seal'};
 const resolver=[
@@ -84,4 +84,37 @@ assert.equal(grouped.verdict,'INDEPENDENCE_UNRESOLVED');
 assert.deepEqual(grouped.independence_unresolved_evidence_ids,['e4']);
 assert.equal(grouped.independently_counted_families.find(x=>x.ancestor_id==='work:A').evidence_ids.length,2);
 assert.equal(readRegisteredRows instanceof Function,true);
+
+const work=resolveWorkManifestations({
+ work_id:'emwork_test',epoch:'EM_FIXED',works:[{
+  work_id:'emwork_test',identity_status:'SAME_WORK_SUPPORTED',human_gate_required:true,
+  minimum_independent_work_contribution:1,maximum_independent_work_contribution:2,
+  manifestation_source_file_ids:['emsrc1','emsrc2'],authorship:'UNRESOLVED'
+ }],
+ manifestations:[
+  {source_file_id:'emsrc1',work_id:'emwork_test',identity_status:'SAME_WORK_SUPPORTED',human_gate_required:true},
+  {source_file_id:'emsrc2',work_id:'emwork_test',identity_status:'SAME_WORK_SUPPORTED',human_gate_required:true}
+ ],
+ source_rows:[
+  {source_file_id:'emsrc1',sha256:'a'.repeat(64),media_type:'application/pdf',original_filename:'x.pdf'},
+  {source_file_id:'emsrc2',sha256:'b'.repeat(64),media_type:'text/markdown',original_filename:'x.md'}
+ ]
+});
+assert.equal(work.status,'RESOLVED_OPERATIONAL_WORK');
+assert.deepEqual(work.independent_work_contribution_interval,[1,2]);
+assert.equal(work.claim_equivalence_across_manifestations,false);
+assert.equal(work.human_gate_required,true);
+assert.equal(work.manifestations.length,2);
+assert.equal(resolveWorkManifestations({
+ work_id:'missing',epoch:'T',works:[],manifestations:[],source_rows:[]}).status,'UNRESOLVED_WORK');
+const motifs=motifCandidateSieve({snapshot_id:'EM_FIXED',terms:['Vibephysics','holonomy'],
+ source_spans:[
+  {source_id:'emsrc1',source_locator:'synthetic:paragraph1',work_id:'workX',work_identity_status:'SAME_WORK_SUPPORTED',text:'Vibephysics and holonomy. VIBEPHYSICS!'},
+  {source_id:'emsrc2',source_locator:'synthetic:paragraph2',work_id:'workX',work_identity_status:'SAME_WORK_SUPPORTED',text:'holonomy'}
+ ]});
+assert.deepEqual(motifs.summary.find(x=>x.term==='vibephysics').occurrences,2);
+assert.equal(motifs.summary.find(x=>x.term==='holonomy').source_span_count,2);
+assert.equal(motifs.observations.every(x=>x.status==='LITERAL_STRING_OBSERVATION_ONLY'),true);
+assert.match(motifs.claim_ceiling,/NO_MECHANISM_IDENTITY/);
+
 console.log('Atelier parity operators synthetic suite: SRC exact-epoch resolver, role conservation, Wendbine-type compiler, withheld target leakage controls, independence deflation passed.');
