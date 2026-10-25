@@ -4,6 +4,7 @@
  * The operators admit typed SOURCE observations supplied by an origin-specific adapter.
  */
 import fs from 'node:fs';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 
 const guard=(ok,why)=>{if(!ok)throw Error(why)};
@@ -399,4 +400,47 @@ export function preregisterThreeStratum({snapshot_id,epoch_seal,targets,matched_
   statuses:Object.fromEntries(subsets.map(s=>[s,'NOT_EXECUTED'])),
   hypothesis:'FULL_COMBINATION_RECOVERS_PREREGISTERED_RELATION_BEYOND_SINGLETONS_AND_PAIRS',
   claim_ceiling:'PROSPECTIVE_ONLY_NO_SYNERGY_OR_TOMOGRAPHY_PROVEN'};
+}
+
+
+/**
+ * Conservative claim *candidate* extraction from exact-source text. The
+ * candidate is a located, hashed, verbatim textual string; no logical truth,
+ * scientific mechanism, authorship, originality or historical lineage is inferred.
+ * The text itself is not returned to avoid propagating restricted source bytes.
+ */
+export function extractVerbatimClaimCandidates({snapshot_id,source_id,source_locator,work_id=null,
+  work_identity_status='UNRESOLVED',text,max_candidates=12}){
+ guard(str(snapshot_id)&&str(source_id)&&str(source_locator)&&typeof text==='string',
+  'CLAIM_SOURCE_INVALID');
+ guard(Number.isSafeInteger(max_candidates)&&max_candidates>=1&&max_candidates<=50,'CLAIM_LIMIT_INVALID');
+ const cue=/\b(is|are|means|defines|requires|therefore|if|must|can|proposes|claims|demonstrates|implies|results|suggests|constitutes|depends)\b/i;
+ const rows=[],seen=new Set();
+ const matcher=/[^.!?\n]{30,600}[.!?]/gu;
+ let match;
+ while((match=matcher.exec(text))!==null&&rows.length<max_candidates){
+  const span=match[0];if(!cue.test(span))continue;
+  const left=span.length-span.trimStart().length;
+  const start=match.index+left;
+  const exact=span.trim();
+  const end=start+exact.length;
+  const digest=Buffer.from(exact,'utf8');
+  const key=source_id+':'+start+':'+end;
+  if(seen.has(key))continue;seen.add(key);
+  rows.push({
+   candidate_id:'claim:'+source_id+':'+start+':'+end,
+   source_id,source_locator,work_id,work_identity_status,
+   start_char:start,end_char:end,verbatim_utf8_sha256:(createHash('sha256').update(digest).digest('hex')),
+   verbatim_character_length:exact.length,
+   evidence_class:'ARCHIVE_OBSERVATION',
+   source_text_copied_into_packet:false,
+   candidate_state:'TEXTUAL_CLAIM_CANDIDATE_NOT_TRUTH_ADJUDICATION',
+   claim_ceiling:'SOURCE_VERBATIM_CANDIDATE_ONLY_NO_MECHANISM_GENEALOGY_CAUSATION_OR_NOVELTY'
+  });
+ }
+ return {schema:'td613.atelier-source-claim-candidates/v0.2',snapshot_id,source_id,
+  source_locator,claim_candidates:rows,candidate_count:rows.length,
+  candidate_rule:'DETERMINISTIC_SENTENCE_SEGMENT_WITH_EXPLICIT_ASSERTION_CUE',
+  status:'EXTRACTED_CANDIDATES_NOT_ADJUDICATED',
+  claim_ceiling:'NO_SCIENTIFIC_TRUTH_AUTHORSHIP_OR_GENEALOGY_ESTABLISHED'};
 }
