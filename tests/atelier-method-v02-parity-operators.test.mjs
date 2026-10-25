@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { compileSourceBoundTopology, makeHeldoutView, scoreHeldoutPlacement,
   resolveSourceEntity, polycompilationConservation, independentEvidenceSupport,
-  readRegisteredRows,resolveWorkManifestations,motifCandidateSieve } from '../packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-parity-operators-v02.mjs';
+  readRegisteredRows,resolveWorkManifestations,motifCandidateSieve,reconstructionControlBattery } from '../packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-parity-operators-v02.mjs';
 
 const epoch={snapshot_id:'fixed-20261025',seal_id:'synthetic-seal'};
 const resolver=[
@@ -116,5 +116,28 @@ assert.deepEqual(motifs.summary.find(x=>x.term==='vibephysics').occurrences,2);
 assert.equal(motifs.summary.find(x=>x.term==='holonomy').source_span_count,2);
 assert.equal(motifs.observations.every(x=>x.status==='LITERAL_STRING_OBSERVATION_ONLY'),true);
 assert.match(motifs.claim_ceiling,/NO_MECHANISM_IDENTITY/);
+
+
+const viewWithDayPrecision=makeHeldoutView({source_rows:source_rows.map(s=>({...s,time_precision:'DAY'})),
+ relation_rows,target_id:'s2',snapshot_id:'fixed-20261025'});
+const controlPlan={state:'PREREGISTERED_NOT_EXECUTED',target_ids:['s2'],controls:['C0','C1','C2','C3','C4']};
+const battery=reconstructionControlBattery({view:viewWithDayPrecision,preregistration:controlPlan,seed:613});
+assert.equal(battery.C0.compiled.source_count,2);
+assert.equal(battery.C1.publication_time_precision,'DAY_ONLY');
+assert.equal(battery.C1.serial_order_credit,'NOT_IDENTIFIABLE_FROM_DAY_BUCKETS');
+assert.equal(battery.C2.compiled.concept_count,battery.C0.compiled.concept_count);
+assert.equal(battery.C2.semantic_label_credit,'WITHHELD');
+assert.equal(battery.C3.compiled.typed_relation_count,0);
+assert.equal(battery.C4.state,'HELD_DECOY_NOT_PREREGISTERED');
+assert.equal(battery.source_target_leakage,false);
+assert.throws(()=>reconstructionControlBattery({view:viewWithDayPrecision,
+ preregistration:{state:'AFTER_SCORING',target_ids:['s2']}}),/TARGET_NOT_PREREGISTERED/);
+assert.throws(()=>reconstructionControlBattery({view:viewWithDayPrecision,
+ preregistration:controlPlan,decoy:{preregistered:false,source:{source_id:'decoy',snapshot_id:'fixed-20261025'}}}),/DECOY_NOT_BOUND/);
+const activated=reconstructionControlBattery({view:viewWithDayPrecision,preregistration:controlPlan,
+ decoy:{preregistered:true,independent_source_witness:'DECLARED_PREREG_EXTERNAL_REF',
+  source:{source_id:'decoy',snapshot_id:'fixed-20261025',declared_concepts:['unrelated_concept'],time_precision:'DAY'}}});
+assert.equal(activated.C4.state,'EXECUTED_PREREGISTERED_UNRELATED_DECOY');
+assert.equal(activated.C4.compiled.source_count,3);
 
 console.log('Atelier parity operators synthetic suite: SRC exact-epoch resolver, role conservation, Wendbine-type compiler, withheld target leakage controls, independence deflation passed.');
