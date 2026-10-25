@@ -28,7 +28,8 @@ export function blankProfile(id,{display_name=id,source_policy='OPERATOR_APPROVE
     source_policy,source_count:0,work_count:0,epoch:'UNINITIALIZED',
     native_graphs:[],rights_state:'NOT_YET_ASSESSED',
     modules:Object.fromEntries(METHOD.required_capability_ids.map(id=>[id,{
-      interface_available:true,implementation_state:'HELD_MISSING_IMPLEMENTATION',
+      interface_declared:true,callable_available:id==='STAGE_ORDER_PERMUTATION_IDENTIFIABILITY',
+      implementation_state:id==='STAGE_ORDER_PERMUTATION_IDENTIFIABILITY'?'IMPLEMENTED_TESTED':'HELD_MISSING_IMPLEMENTATION',
       corpus_execution:'NOT_TESTED',finding_count:0
     }])),
     routes:[...METHOD.routes],
@@ -49,11 +50,15 @@ export function validateProfile(profile,method=METHOD){
   check(Object.keys(profile.modules).length===method.required_capability_ids.length,'MODULE_COUNT_MISMATCH');
   for(const key of method.required_capability_ids){
     const state=profile.modules[key];
-    check(isPlain(state)&&state.interface_available===true,'MISSING_MODULE_INTERFACE:'+key);
+    check(isPlain(state)&&state.interface_declared===true,'MISSING_MODULE_INTERFACE:'+key);
+    check(typeof state.callable_available==='boolean','CALLABLE_AVAILABILITY_UNDECLARED:'+key);
+    if(state.callable_available)check(state.implementation_state==='IMPLEMENTED_TESTED','CALLABLE_MODULE_NOT_TESTED:'+key);
     check(method.capability_statuses.includes(state.implementation_state),'BAD_MODULE_IMPLEMENTATION:'+key);
     check(method.capability_statuses.includes(state.corpus_execution),'BAD_MODULE_EXECUTION:'+key);
     check(Number.isInteger(state.finding_count)&&state.finding_count>=0,'BAD_FINDING_COUNT:'+key);
   }
+  const finiteModule=profile.modules.STAGE_ORDER_PERMUTATION_IDENTIFIABILITY;
+  check(finiteModule.callable_available===true&&finiteModule.implementation_state==='IMPLEMENTED_TESTED','STAGE_ORDER_COMMON_RUNTIME_MISSING');
   check(JSON.stringify(profile.routes)===JSON.stringify(method.routes),'FOUR_ROUTES_MISMATCH');
   check(profile.consent_and_contact?.outbound_contact_authorized===false,'UNAUTHORIZED_OUTBOUND_CONTACT');
   check(!profile.consent_and_contact?.public_recognition_route_enabled,'RECOGNITION_DEFAULT_MUST_BE_DORMANT');
