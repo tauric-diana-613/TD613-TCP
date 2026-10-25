@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {emRegistry} from '../packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/em-native-parity-v02.mjs';
-import {algedonicControlEquationWitness,runNativeAlgedonicMechanismSpecimen}
+import {algedonicControlEquationWitness,runNativeAlgedonicMechanismSpecimen,runNativeOscillatorFragmentSpecimen}
  from '../packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/em-mechanism-discrimination-v02.mjs';
 
 const reg=emRegistry();
@@ -39,4 +39,19 @@ assert.equal(gates.mechanism_theory_ceiling,'SOURCE_FORMULA_FINITE_ALGEBRA_ONLY'
 assert.equal(reg.meta.registry_states.mechanisms,'NOT_GENERATED');
 assert.equal(reg.meta.registry_states.claims,'NOT_GENERATED');
 assert.equal(reg.meta.registry_states.relations,'NOT_GENERATED');
+
+const oscillator=runNativeOscillatorFragmentSpecimen();
+assert.equal(oscillator.candidate.status,'HELD_EXCERPT_INSUFFICIENT');
+assert.equal(oscillator.candidate.formulation_supplied,false);
+assert.equal(oscillator.candidate.prediction_supplied,false);
+assert.equal(oscillator.candidate.falsifier_supplied,false);
+assert.ok(oscillator.candidate.missing_requirements.includes('TYPED_EXECUTABLE_OPERATOR_NOT_IN_ADMITTED_EXCERPT'));
+assert.ok(oscillator.candidate.missing_requirements.includes('INDEPENDENT_OPERATOR_IDENTITY_WITNESS_NOT_SUPPLIED'));
+assert.equal(oscillator.candidate.conceptual_value_not_denied,true);
+assert.equal(oscillator.candidate.full_source_conclusion,false);
+assert.equal(oscillator.manuscript_is_mathematically_empty,'NOT_CLAIMED');
+assert.equal(oscillator.archive_writes,0);
+assert.equal(oscillator.candidate.novelty_validated,false);
+assert.equal(oscillator.candidate.theory_unification_validated,false);
+
 console.log('Em real source equation witness and four signed-error synthetic cases: bounded source formula survives additive and absolute-value false twins; prior art/source identity/unified theory HELD; no canonical registry writes.');
