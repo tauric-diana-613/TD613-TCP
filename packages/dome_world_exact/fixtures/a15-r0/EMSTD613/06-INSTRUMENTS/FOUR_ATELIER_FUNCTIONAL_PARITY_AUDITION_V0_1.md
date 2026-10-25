@@ -8,6 +8,16 @@
 **Wendbine source:** PR #1116, merged with bounded public-topology compiler.  
 **This audition does not modify SRC, Wendbine, #1118, #962, or main.** It introduces a review branch *on top of* #962.
 
+## Mandatory companion gate · SRC high-fidelity compositional parity
+
+**Read [SRC_COMPOSITIONAL_FIDELITY_GATE_V0_1.md](SRC_COMPOSITIONAL_FIDELITY_GATE_V0_1.md) before interpreting any result of this flat capability inventory.** The ten-row checklist is a *minimal inventory*, not a valid proof of SRC-level research equivalence.
+
+SRC's higher-order scientific methods include seal-pinned multi-platform evidence multiplicity, Work/edition/manifestation/capture identity, five query-conditioned canonical sufficiency questions, formal/experiential/temporal/governance navigation, typed representational polycompilation, domain-conditioned identity invariants, genealogy after reclassification, non-lifting relation composition, deferred semantic-address resolution, and prospectively specified three-stratum reconstruction controls. These are **interacting operations**, not merely ten independent checkboxes.
+
+The current prototype exports four **packet-shaped AIA projections only**. Its offline source stage has **no real sync**, its graph compiler is **structural grouping on supplied edges**, and no SRC oracle assay has been executed on matching or cross-platform source witnesses.
+
+**Required separate verdicts:** contract parity; compositional parity; corpus applicability / evidence limits. No claim of full parity until each has independently grounded and reviewed receipts.
+
 ## 0. Meaning of “functional parity”
 
 - **Same available operations and output contracts**, subject to lawful corpus/evidence limits.
