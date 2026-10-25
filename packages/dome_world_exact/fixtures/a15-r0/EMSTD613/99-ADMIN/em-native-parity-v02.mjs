@@ -7,7 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-import { readRegisteredRows,resolveWorkManifestations,motifCandidateSieve,independentEvidenceSupport }
+import { readRegisteredRows,resolveWorkManifestations,motifCandidateSieve,independentEvidenceSupport,extractVerbatimClaimCandidates }
   from '../../ATELIER_METHOD/atelier-parity-operators-v02.mjs';
 const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const guard=(x,y)=>{if(!x)throw Error(y)};
@@ -72,5 +72,54 @@ export function queryNativeEmMotifs({source_ids,terms,max_sources=5}){
    spans.map(s=>({evidence_id:s.source_id,source_id:s.source_id,ancestor_id:
     s.work_identity_status==='SAME_WORK_CONFIRMED'?s.work_id:null}))),
   claim_ceiling:'LEXICAL_COUNTS_NO_WORK_IDENTITY_PROMOTION_NO_MECHANISM_GENEALOGY_NOVELTY'
+ };
+}
+
+
+/**
+ * Reads at most four EXISTING, SHA-verified Em source derivatives and produces
+ * an ephemeral source-linked research packet. Claims are verbatim candidates;
+ * lexical motifs are not mechanisms. Full mechanism/lineage adjudication stays
+ * HELD until falsifiable source-bound operator/independent ancestry analyses.
+ */
+export function emSourceBoundCandidateDossier({source_ids,terms,max_claims_per_source=8}){
+ guard(Array.isArray(source_ids)&&source_ids.length>0&&source_ids.length<=4,
+  'DOSSIER_SOURCE_BOUNDS');
+ guard(new Set(source_ids).size===source_ids.length,'DOSSIER_SOURCE_DUPLICATE');
+ guard(Array.isArray(terms)&&terms.length>0,'DOSSIER_MOTIF_TERMS_REQUIRED');
+ const reg=emRegistry();
+ const sources=new Map(reg.source_rows.map(s=>[s.source_file_id,s]));
+ const derivatives=new Map(reg.derivatives.map(d=>[d.source_file_id,d]));
+ const manifest=new Map(reg.manifestations.map(m=>[m.source_file_id,m]));
+ const excerpts=[],claims=[];
+ for(const source_id of source_ids){
+  const s=sources.get(source_id),d=derivatives.get(source_id);
+  guard(s&&d&&d.extraction_status==='EXTRACTED_NATIVE_TEXT'&&d.derivative_relative_path,
+   'DOSSIER_NATIVE_TEXT_NOT_REGISTERED');
+  guard(d.parent_sha256===s.sha256,'DOSSIER_PARENT_HASH_MISMATCH');
+  const bytes=fs.readFileSync(safe(d.derivative_relative_path));
+  guard(SHA(bytes)===d.derivative_sha256,'DOSSIER_DERIVATIVE_HASH_MISMATCH');
+  const text=bytes.toString('utf8'),m=manifest.get(source_id);
+  const bound={snapshot_id:'EM_PR962_NATIVE_REGISTERED_CUSTODY',
+    source_id,source_locator:d.derivative_relative_path,
+    work_id:m?.work_id??null,
+    work_identity_status:m?.identity_status??'UNRESOLVED'};
+  claims.push(extractVerbatimClaimCandidates({...bound,text,max_candidates:max_claims_per_source}));
+  excerpts.push({...bound,text});
+ }
+ const motifs=motifCandidateSieve({snapshot_id:'EM_PR962_NATIVE_REGISTERED_CUSTODY',
+  source_spans:excerpts,terms});
+ return {
+  schema:'td613.em-native-provisional-ledgers/v0.2',
+  source_ids,source_count:source_ids.length,
+  source_integrity:'ALL_EXCERPTS_SHA256_MATCH_REGISTERED_NATIVE_DERIVATIVES',
+  claim_candidate_ledger:claims.flatMap(c=>c.claim_candidates),
+  motif_candidate_ledger:motifs.observations,
+  mechanism_ledger:{status:'HELD_NO_VERIFIED_OPERATOR_OR_FALSIFIER',entries:[]},
+  genealogy_ledger:{status:'HELD_NO_INDEPENDENT_DIRECTIONAL_LINEAGE_WITNESS',entries:[]},
+  attribution:'SOURCE_PROVENANCE_UNCHANGED',
+  source_text_copied_into_packet:false,
+  saved_to_canonical_Em_registry:false,
+  claim_ceiling:'SOURCE_TEXT_CANDIDATES_ONLY_NO_APPROVED_CLAIM_MECHANISM_GENEALOGY_OR_UNIFIED_THEORY'
  };
 }
