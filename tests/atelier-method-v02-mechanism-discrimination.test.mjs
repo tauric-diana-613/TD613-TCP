@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {bindExactSourceSpan,discriminateMechanisms,executeBoundedOperator}
+import {bindExactSourceSpan,discriminateMechanisms,executeBoundedOperator,stageFragmentaryTheory}
  from '../packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-mechanism-discrimination-v02.mjs';
 
 const sha=s=>createHash('sha256').update(s).digest('hex');
@@ -64,4 +64,21 @@ assert.equal(nonunique.result_classification,'OBSERVATIONALLY_NONUNIQUE_COMPATIB
 assert.throws(()=>discriminateMechanisms({snapshot_id:'SYNTH_EPOCH',anchors:[anchor],
  hypotheses:[diff,{...sum,prior_art_state:'SOURCE_ATTRIBUTES_CONVENTIONAL_FAMILY'},nullModel],
  cases,observation_origin:'SYNTHETIC_FORMULA_CONSISTENCY'}),/CONVENTIONAL_PRIOR_ART_UNSOURCED/);
+
+const creative=stageFragmentaryTheory({snapshot_id:'SYNTH_EPOCH',anchor,
+ proposed_question:'Does the narrated boundary have an operational meaning?',
+ objects:['occupants','room'],variables:[],known_reference_terms:[]});
+assert.equal(creative.status,'HELD_EXCERPT_INSUFFICIENT');
+assert.ok(creative.missing_requirements.includes('TYPED_EXECUTABLE_OPERATOR_NOT_IN_ADMITTED_EXCERPT'));
+assert.equal(creative.conceptual_value_not_denied,true);
+assert.equal(creative.full_source_conclusion,false);
+assert.equal(creative.novelty_validated,false);
+const specified=stageFragmentaryTheory({snapshot_id:'SYNTH_EPOCH',anchor,
+ proposed_question:'Does the declared finite operator predict outcomes?',
+ objects:['x','y'],variables:['x','y'],operator_specification:'SUBTRACT',
+ prediction_specification:'x-y',falsifier_specification:'A counterexample to x-y',
+ operator_identity_witness:'SYNTHETIC_SYMBOLIC_CANDIDATE'});
+assert.equal(specified.status,'CANDIDATE_SPECIFIED_AWAITING_EXTERNAL_ADJUDICATION');
+assert.equal(specified.theory_unification_validated,false);
+
 console.log('Universal source-anchored mechanism discrimination: typed difference/add/absolute/null, real hash checks, observational nonuniqueness, false twins, prior-art abstention and no empirical promotion: PASS.');
