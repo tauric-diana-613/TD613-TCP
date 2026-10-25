@@ -54,7 +54,7 @@ const result=compileSourceBoundTopology({snapshot_id:'fixed-20261025',source_row
 assert.equal(result.source_count,3);
 assert.equal(result.concept_count,4);
 assert.equal(result.typed_relation_count,3);
-assert.equal(result.cooccurrence_count,2);
+assert.equal(result.cooccurrence_count,1); // Only operator/state occurs in two distinct source rows.
 assert.equal(result.recurrent_concepts.length,3);
 assert.equal(result.typed_graph_counts.G_O,1);
 const withheld=makeHeldoutView({source_rows,relation_rows,target_id:'s2',snapshot_id:'fixed-20261025'});
