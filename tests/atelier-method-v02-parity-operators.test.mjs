@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { compileSourceBoundTopology, makeHeldoutView, scoreHeldoutPlacement,
   resolveSourceEntity, polycompilationConservation, independentEvidenceSupport,
-  readRegisteredRows,resolveWorkManifestations,motifCandidateSieve,reconstructionControlBattery } from '../packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-parity-operators-v02.mjs';
+  readRegisteredRows,resolveWorkManifestations,motifCandidateSieve,reconstructionControlBattery,nomenclatureOperatorCrosswalk } from '../packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-parity-operators-v02.mjs';
 
 const epoch={snapshot_id:'fixed-20261025',seal_id:'synthetic-seal'};
 const resolver=[
@@ -139,5 +139,31 @@ const activated=reconstructionControlBattery({view:viewWithDayPrecision,preregis
   source:{source_id:'decoy',snapshot_id:'fixed-20261025',declared_concepts:['unrelated_concept'],time_precision:'DAY'}}});
 assert.equal(activated.C4.state,'EXECUTED_PREREGISTERED_UNRELATED_DECOY');
 assert.equal(activated.C4.compiled.source_count,3);
+
+
+const crosswalk=nomenclatureOperatorCrosswalk({
+ source_snapshot:'SOURCE_FROZEN',receiver_snapshot:'RECEIVER_PRE_DONOR',
+ rows:[
+  {id:'n',subject:'observation',source_locator:'source:n',receiver_baseline_locator:'base:n',
+   proposed_term:'observability',proposes_better_name:true,proposes_better_operator:false,
+   conventional_prior_refs:['textbook:n'],operator_delta_refs:[],alternative_explanation:'Known term, receiver benefit only',
+   claim_ceiling:'BETTER_NAME_ONLY'},
+  {id:'o',subject:'return',source_locator:'source:o',receiver_baseline_locator:'base:o',
+   proposed_term:'recovery',proposes_better_name:false,proposes_better_operator:true,
+   conventional_prior_refs:[],operator_delta_refs:['source:o','base:o'],
+   operator_before:'indiscriminate rollback',operator_after:'selective rollback',alternative_explanation:'ordinary engineering',
+   claim_ceiling:'BETTER_OPERATOR_RELATIVE_TO_RECEIVER_ONLY'},
+  {id:'r',subject:'unbound',source_locator:'source:r',receiver_baseline_locator:'base:r',
+   proposed_term:'private term',proposes_better_name:false,proposes_better_operator:false,
+   conventional_prior_refs:[],operator_delta_refs:[],alternative_explanation:'no operator witness',
+   rejection_reason:'No lawful nomenclature import',claim_ceiling:'REJECT_NAMING'}
+ ]});
+assert.deepEqual(crosswalk.counts,{BETTER_NAME:1,BETTER_OPERATOR:1,BOTH:0,NEITHER:0,REJECTED:1});
+assert.equal(crosswalk.external_prior_art_verified_by_runner,false);
+assert.equal(crosswalk.scientific_promotion,false);
+assert.throws(()=>nomenclatureOperatorCrosswalk({source_snapshot:'S',receiver_snapshot:'R',rows:[{
+  id:'unwitnessed',subject:'x',source_locator:'s',receiver_baseline_locator:'r',proposed_term:'a',
+  proposes_better_name:true,proposes_better_operator:false,conventional_prior_refs:[],operator_delta_refs:[],
+  alternative_explanation:'existing',claim_ceiling:'low'}]}),/ORDINARY_TERM_UNGROUNDED/);
 
 console.log('Atelier parity operators synthetic suite: SRC exact-epoch resolver, role conservation, Wendbine-type compiler, withheld target leakage controls, independence deflation passed.');
