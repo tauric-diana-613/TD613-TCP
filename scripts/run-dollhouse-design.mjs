@@ -10,6 +10,7 @@
  *   --seed, -s <seed>          Intellectual seed / core inquiry
  *   --medium, -m <medium>      Output medium (VISUAL, MOTION, SCHOLARLY, THEORETICAL, PRODUCT, HYBRID)
  *   --instrument, -i <inst>    Selectable instrument (repeatable: PHASONIC_COUNTERPOINT, CARO_INSTITUTIONAL_RECONSTRUCTION, etc.)
+ *   --deliverable-count <n>    Operator-requested number of finished artifacts (default 1)
  *   --input <path>             Path to full JSON commission specification
  *   --output, -o <path>        Path to write the resulting design receipt
  *   --audit                    Request advisory /dollhouse-audit check
@@ -33,6 +34,7 @@ Options:
   --medium, -m <medium>      Output medium: VISUAL, MOTION, SCHOLARLY, THEORETICAL, PRODUCT, HYBRID (default: SCHOLARLY)
   --instrument, -i <inst>    Selectable instrument (repeatable; if omitted, contextually inferred from seed; defaults to PHASONIC_COUNTERPOINT if ambiguous)
                              Available: ${Object.keys(AVAILABLE_INSTRUMENTS).join(', ')}
+  --deliverable-count <n>    Requested finished artifacts (default 1; internal alternatives do not count)
   --input <path>             Path to JSON commission file (or "-" for stdin)
   --stdin                    Read full JSON commission from standard input stream
   --output, -o <path>        Path to write return receipt (.json)
@@ -51,6 +53,7 @@ async function main() {
 
   let seed = null;
   let medium = 'SCHOLARLY';
+  let deliverableCount = 1;
   let instruments = [];
   let inputPath = null;
   let outputPath = null;
@@ -66,6 +69,8 @@ async function main() {
       medium = args[++i];
     } else if (arg === '--instrument' || arg === '-i') {
       instruments.push(args[++i]);
+    } else if (arg === '--deliverable-count') {
+      deliverableCount = Number(args[++i]);
     } else if (arg === '--input') {
       inputPath = args[++i];
     } else if (arg === '--stdin') {
@@ -103,6 +108,7 @@ async function main() {
     commissionInput = {
       seed,
       medium,
+      deliverable_count: deliverableCount,
       instruments: instruments.length > 0 ? instruments : undefined,
       scientific_audit_requested: audit
     };
@@ -122,6 +128,7 @@ async function main() {
       console.log(`SEED:                 ${receipt.seed}`);
       console.log(`MEDIUM:               ${receipt.medium}`);
       console.log(`INSTRUMENTS:          ${receipt.selected_instruments.join(', ')}`);
+      console.log(`FINAL DELIVERABLES:   ${receipt.output_contract.requested_deliverables} (operator-defined; default 1)`);
       console.log('\n--- CANDIDATE PROPOSITIONS ---');
       receipt.candidates.forEach((c, idx) => {
         console.log(`[Candidate ${idx === 0 ? 'A' : 'B'}: ${c.concept_title}] (${c.governing_instrument})`);
@@ -133,7 +140,7 @@ async function main() {
       receipt.primary_materialization.operative_verbs.forEach(v => {
         console.log(`  • ${v.verb.padEnd(14)}: ${v.action}`);
       });
-      console.log('\n--- REFRACTIVE COUNTERFACTUAL ---');
+      console.log('\n--- INTERNAL REFRACTION (NOT A DELIVERABLE) ---');
       console.log(`Mutated Parameter:    ${receipt.refractive_variant.mutated_parameter}`);
       console.log(`Formal Consequence:   ${receipt.refractive_variant.formal_consequence}`);
       console.log('\n--- GOVERNANCE & AUTHORITY ---');
