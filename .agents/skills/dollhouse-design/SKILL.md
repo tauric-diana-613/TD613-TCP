@@ -21,7 +21,7 @@ In the Antigravity pairing environment, `/dollhouse-design` is invoked natively 
 3. **Instruction Loading:** The agent loads `SKILL.md` and relevant references (`authoring-cycle.md`, `selectable-instruments.md`).
 4. **Conductor Dispatch:** The agent executes the deterministic conductor via programmatic API (`runDollhouseDesignCycle`) or CLI runner (`scripts/run-dollhouse-design.mjs`).
 5. **Receipt Ingress:** The conductor emits a frozen, validated return receipt (`td613.dollhouse-design.return-receipt/v0.2`).
-6. **Creative Materialization:** The generative author consumes the receipt directives and materializes both Candidate A (primary) and Candidate B / Refraction (counterfactual).
+6. **Creative Materialization:** The generative author uses the internal candidate/refraction analysis to materialize exactly the number of final artifacts the operator commissioned (one by default). A second candidate never authorizes a second deliverable.
 
 ---
 
@@ -42,10 +42,21 @@ COMMISSION
 2. **Select Instruments:** Choose from the library of available formal traditions (D₃/φ Counterpoint is selectable, never compulsory). If omitted, inferred contextually via `THEMATIC_CLUSTERS`.
 3. **Generate Alternatives:** Propagate the problem into at least two structurally non-equivalent formal candidates before committing to layout.
 4. **Compose:** Apply the five generative verbs (Propagation, Compression, Coupling, Transition, Stabilization).
-5. **Materialize:** Generate real, executable artifacts (HTML, CSS, manuscripts, mathematical models) rather than descriptive outlines.
-6. **Refract:** Mutate exactly one governing formal decision to construct a competing counterfactual variant.
-7. **Compare:** Evaluate what was gained, what survived, and what was lost between the primary realization and its refraction.
-8. **Return:** Deliver the inspectable artifact, its refractive counterpart, and concise creative rationales to the human operator for final selection and closure.
+5. **Materialize:** Generate the commissioned number of real, executable artifacts (HTML, CSS, manuscripts, mathematical models), rather than descriptive outlines. Default: exactly one.
+6. **Refract:** Explore a competing counterfactual internally to challenge the design. Do not export this study as another artifact unless the operator explicitly requests a separate variant.
+7. **Compare:** Evaluate internally what changed or survived in the refraction; use that comparison to improve the commissioned work.
+8. **Return:** Deliver exactly the requested number of finished artifacts. A refraction, alternative, receipt, or bonus visual mode must not become an extra deliverable without explicit operator instruction. Human selection and closure remain sovereign.
+
+---
+
+## Operator-Defined Deliverable Cardinality — Binding Output Contract
+
+- **Default: one finished deliverable per commission.** A commission may specify `deliverable_count` as a positive integer; only the operator's explicit request may increase that count.
+- `Candidate A`, `Candidate B`, refractive counterfactuals, comparison notes, and conductor receipts are **internal design scaffolding, not final artifacts**. Their presence in the JSON receipt must never be interpreted as a file-production obligation.
+- The conductor emits `output_contract.requested_deliverables`; the creative author MUST honor that value. If one artifact was requested, return one coherent finished work, **not** two files, two bundled variants, or an unsolicited primary/refraction toggle.
+- Refraction may inform revisions and falsification. Do not add a second mode to the finished artifact merely to preserve the refraction. Multiple versions or modes are allowed only when the commission explicitly asks for them.
+- **Historical blind A/B evaluation exception:** An experimental protocol may explicitly require matching paired outputs from both arms. That obligation is confined to that experiment and must never become the reusable skill default.
+- Receipts, logs, and test results may be retained internally for inspection without being counted or delivered as extra creative products.
 
 ---
 
@@ -149,8 +160,9 @@ const result = await runDollhouseDesignCycle({
   scientific_audit_requested: false
 });
 
-console.log(result.primary_materialization);
-console.log(result.refractive_variant);
+console.log(result.output_contract); // binding requested output count
+console.log(result.primary_materialization); // planned composition; not yet a created file
+// result.refractive_variant is internal analysis, not an additional commissioned file
 ```
 
 ---
@@ -189,13 +201,14 @@ When invoking `/dollhouse-design` natively in Antigravity or via CLI runner, the
       "summary": "<concise-summary-of-reference>"
     }
   ],
+  "deliverable_count": 1,
   "scientific_audit_requested": false
 }
 ```
 
 - If `instruments` is omitted, the conductor infers instruments contextually from seed semantics.
 - If `historical_references` are supplied, all binding references are retrieved and fully ingested. If any binding reference cannot be resolved at the declared revision, the cycle fails closed (`ReferenceError`).
-- Downstream creative materialization consumes the resulting return receipt and produces dual structurally distinct candidates (Primary and Refraction) under `OPEN_FIELD_CREATIVE_SYNTHESIS`.
+- Downstream creative materialization consumes the receipt and produces **exactly `output_contract.requested_deliverables` finished artifacts** (one by default) under `OPEN_FIELD_CREATIVE_SYNTHESIS`. Candidate A/B and the refractive study are design reasoning, never mandatory additional files.
 
 ---
 
