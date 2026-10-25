@@ -38,7 +38,7 @@ jobs:
       - name: Fetch exact Em PR #1604 for native-corpus comparator
         run: |
           git fetch --no-tags --depth=1 origin refs/pull/1604/head
-          test "$(git rev-parse FETCH_HEAD)" = "1243023d56c1939d25c9525706b91be416320381"
+          test "$(git rev-parse FETCH_HEAD)" = "8992d789c79738e06337ad41baaa7e4b471e2c48"
           git worktree add --detach "$RUNNER_TEMP/atelier-em-pr1604" FETCH_HEAD
       - name: Execute native Em source and shared-operator tests (isolated worktree)
         run: |
@@ -47,6 +47,7 @@ jobs:
           node tests/emstd613-four-atelier-parity-audition.test.mjs
           node tests/emstd613-universal-v02-overlay.test.mjs
           node tests/emstd613-native-parity-v02.test.mjs
+          node tests/emstd613-semantic-polycompiler-v02.test.mjs
       - name: Instantiate and exercise a disposable empty Atelier on synthetic research specimens
         run: node tests/atelier-method-v02-blank-integration.test.mjs
       - name: Dry-run empty Atilla-Ozy example (no files created)
