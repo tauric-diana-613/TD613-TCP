@@ -710,8 +710,14 @@ export function normalizeCommission(raw = {}) {
     });
   }));
 
+  const requestedDeliverables = raw.deliverable_count === undefined ? 1 : raw.deliverable_count;
+  if (!Number.isSafeInteger(requestedDeliverables) || requestedDeliverables < 1) {
+    throw new TypeError('Commission "deliverable_count" must be a positive safe integer; default is 1');
+  }
+
   return Object.freeze({
     commission_id: String(raw.commission_id || `COMM-${sha256(seed).slice(0, 8)}`),
+    deliverable_count: requestedDeliverables,
     seed,
     medium,
     human_coordinates: humanCoordinates,
@@ -815,14 +821,15 @@ export async function runDollhouseDesignCycle(commissionInput = {}, options = {}
     mutation_description: mutationDescription,
     formal_consequence: formalConsequence,
     material_difference: materialDifference,
-    instruction_trace: instructionTrace
+    instruction_trace: instructionTrace,
+    status: 'INTERNAL_COMPARATIVE_DESIGN_STUDY_NOT_A_DELIVERABLE'
   };
 
   // 5. COMPARE (What survived, what changed, open decisions)
   const comparativeAnalysis = {
     shared_invariants: [
-      `The core intellectual seed ("${commission.seed}") is held invariant across both realizations`,
-      `Both variants inhabit the declared medium: ${commission.medium}`,
+      `The core intellectual seed ("${commission.seed}") is held invariant across internal design alternatives`,
+      `Internal studies inhabit the declared medium: ${commission.medium}`,
       'No scalar utility score or automatic aesthetic crown is applied'
     ],
     divergent_qualities: [
@@ -841,7 +848,7 @@ export async function runDollhouseDesignCycle(commissionInput = {}, options = {}
     },
     open_aesthetic_questions: [
       `Does the materialization of [${mutatedParameter}] successfully alter the observer's understanding of the seed?`,
-      'Should the refractive variant be preserved as an independent counterpart or kept as development scaffolding?'
+      'Which counterfactual insights improve the commissioned work without creating unauthorized outputs?'
     ]
   };
 
@@ -904,6 +911,15 @@ export async function runDollhouseDesignCycle(commissionInput = {}, options = {}
     medium: commission.medium,
     human_coordinates: commission.human_coordinates,
     selected_instruments: commission.instruments,
+    output_contract: {
+      requested_deliverables: commission.deliverable_count,
+      cardinality_authority: 'OPERATOR_COMMISSION_ONLY',
+      default_deliverables: 1,
+      candidates_are_internal_scaffolding: true,
+      refraction_is_internal_scaffolding: true,
+      additional_files_or_visual_modes_authorized: false,
+      instruction: 'Materialize and return exactly the commissioned number of coherent finished artifacts; do not deliver Candidate B, refraction, receipts, or bonus modes as separate artifacts unless the operator specifically requests them.'
+    },
     historical_references: resolvedReferences,
     candidates: [candidateA, candidateB],
     primary_materialization: primaryMaterialization,
