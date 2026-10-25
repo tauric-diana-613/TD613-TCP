@@ -32,6 +32,10 @@ jobs:
         run: node tests/emstd613-native-parity-v02.test.mjs
       - name: Exercise Em-native 53-contextual-role semantic polycompilation
         run: node tests/emstd613-semantic-polycompiler-v02.test.mjs
+      - name: Exercise generic source-anchored mechanism counterexamples
+        run: node tests/atelier-method-v02-mechanism-discrimination.test.mjs
+      - name: Exercise native Em Algedonic equation interpretation and false-twin tests
+        run: node tests/emstd613-mechanism-discrimination-v02.test.mjs
       - name: Exercise common prospective commitment chronology safeguards
         run: node tests/atelier-method-v02-prospective-controls.test.mjs
       - name: Execute read-only Em corpus capability inspector
