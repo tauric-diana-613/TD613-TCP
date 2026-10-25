@@ -917,7 +917,7 @@ export async function runDollhouseDesignCycle(commissionInput = {}, options = {}
       default_deliverables: 1,
       candidates_are_internal_scaffolding: true,
       refraction_is_internal_scaffolding: true,
-      additional_files_or_visual_modes_authorized: false,
+      unrequested_extra_files_or_modes_authorized: false,
       instruction: 'Materialize and return exactly the commissioned number of coherent finished artifacts; do not deliver Candidate B, refraction, receipts, or bonus modes as separate artifacts unless the operator specifically requests them.'
     },
     historical_references: resolvedReferences,
