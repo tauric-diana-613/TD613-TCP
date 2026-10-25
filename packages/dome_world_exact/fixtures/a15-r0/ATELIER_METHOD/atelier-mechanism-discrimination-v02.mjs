@@ -150,3 +150,47 @@ export function discriminateMechanisms({snapshot_id,anchors,hypotheses,cases,
   human_adjudication_required:true,
   claim_ceiling:'SOURCE_ANCHORED_FINITE_FORMULA_DISCRIMINATION_ONLY_NOT_EMPIRICAL_CONTROL_OR_UNIFIED_THEORY'};
 }
+
+
+/**
+ * Treat unconventional mathematical/literary language as a source-grounded
+ * candidate research question. Do not force numerical evaluation where the
+ * inspected span lacks typed operands and an executable operator.
+ * Missingness is LOCAL TO THE EXCERPT, never a verdict on the entire work.
+ */
+export function stageFragmentaryTheory({snapshot_id,anchor,proposed_question,
+  objects=[],variables=[],operator_specification=null,
+  falsifier_specification=null,prediction_specification=null,
+  known_reference_terms=[],operator_identity_witness=null}){
+ validateAnchor(anchor,snapshot_id);
+ guard(str(proposed_question)&&Array.isArray(objects)&&objects.every(str)&&
+  Array.isArray(variables)&&variables.every(str),'THEORY_CANDIDATE_FIELDS');
+ guard(Array.isArray(known_reference_terms)&&known_reference_terms.every(str),'REFERENCE_TERMS_INVALID');
+ if(operator_specification!==null)guard(str(operator_specification),'OPERATOR_SPECIFICATION_INVALID');
+ if(falsifier_specification!==null)guard(str(falsifier_specification),'FALSIFIER_SPECIFICATION_INVALID');
+ if(prediction_specification!==null)guard(str(prediction_specification),'PREDICTION_SPECIFICATION_INVALID');
+ const missing=[];
+ if(!operator_specification)missing.push('TYPED_EXECUTABLE_OPERATOR_NOT_IN_ADMITTED_EXCERPT');
+ if(!prediction_specification)missing.push('DISCRIMINATING_PREDICTION_NOT_IN_ADMITTED_EXCERPT');
+ if(!falsifier_specification)missing.push('FALSIFIER_NOT_IN_ADMITTED_EXCERPT');
+ if(!operator_identity_witness)missing.push('INDEPENDENT_OPERATOR_IDENTITY_WITNESS_NOT_SUPPLIED');
+ const readiness=missing.length?'HELD_EXCERPT_INSUFFICIENT':'CANDIDATE_SPECIFIED_AWAITING_EXTERNAL_ADJUDICATION';
+ return {
+  schema:'td613.atelier-fragmentary-theory/v0.2',snapshot_id,
+  source_ref:{source_file_id:anchor.source_file_id,source_locator:anchor.source_locator,
+   start_char:anchor.start_char,end_char:anchor.end_char,
+   source_span_utf8_sha256:anchor.source_span_utf8_sha256},
+  proposed_question,objects:[...objects],variables:[...variables],known_reference_terms:[...known_reference_terms],
+  formulation_supplied:!!operator_specification,prediction_supplied:!!prediction_specification,
+  falsifier_supplied:!!falsifier_specification,
+  operator_identity_witness_supplied:!!operator_identity_witness,
+  missing_requirements:missing,status:readiness,
+  alternatives:['LITERARY_OR_ONTOLOGICAL_METAPHOR','CONVENTIONAL_DISCIPLINARY_ANALOGY',
+   'UNDEFINED_OPERATOR','POTENTIALLY_FORMALIZABLE_CANDIDATE'],
+  excerpt_scope_only:true,full_source_conclusion:false,
+  conceptual_value_not_denied:true,novelty_validated:false,
+  theory_unification_validated:false,
+  next_high_information_test:'READ_AND_MAP_THE_FULL_WORK; IDENTIFY_SOURCE_FORMAL_OPERATOR_FALSIFIER_AND_PRIOR_ART',
+  claim_ceiling:'BOUNDED_FRAGMENT_CREATIVE_THEORY_CANDIDATE_NO_SCIENTIFIC_PROMOTION'
+ };
+}
