@@ -27,6 +27,8 @@ jobs:
         run: node tests/atelier-method-v02-universal-seed.test.mjs
       - name: Execute shared SRC + Wendbine derived parity operations
         run: node tests/atelier-method-v02-parity-operators.test.mjs
+      - name: Prospective Wendbine-style commitment and chronology non-bootstrap hostile tests
+        run: node tests/atelier-method-v02-prospective-controls.test.mjs
       - name: SRC native 27-pass semantic polycompiler and hostile non-lifting controls
         run: node tests/atelier-method-v02-semantic-polycompiler.test.mjs
       - name: Fetch unmodified Wendbine PR #1116 witness (research only)
