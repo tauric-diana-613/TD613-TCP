@@ -227,3 +227,58 @@ export function motifCandidateSieve({snapshot_id,source_spans,terms}){
      occurrences:rows.filter(r=>r.term===t).reduce((n,r)=>n+r.occurrences,0)})),
    claim_ceiling:'LEXICAL_CANDIDATES_ONLY_NO_MECHANISM_IDENTITY_GENEALOGY_OR_NOVELTY'};
 }
+
+
+/**
+ * Wendbine C0-C4 bounded negative controls on a frozen leave-one-out view.
+ * No target-post content or metadata enters the predictor. C4 never executes
+ * without a separately witnessed, preregistered unrelated decoy.
+ */
+export function reconstructionControlBattery({view,preregistration,seed=613,decoy=null}){
+ guard(view?.target_hidden===true&&view.heldout_source_id_not_in_topology,'TARGET_NOT_WITHHELD');
+ guard(preregistration?.state==='PREREGISTERED_NOT_EXECUTED'&&
+  Array.isArray(preregistration.target_ids)&&preregistration.target_ids.includes(view.target_id),'TARGET_NOT_PREREGISTERED');
+ guard(Number.isSafeInteger(seed),'SEED_REQUIRED');
+ const base=view.remaining_sources.map(x=>({...x,declared_concepts:[...(x.declared_concepts??[])]}));
+ const rel=view.remaining_relations.map(x=>({...x}));
+ const snapshot=view.topology.snapshot_id;
+ let n=seed>>>0;
+ const rnd=()=>{n=(Math.imul(n,1664525)+1013904223)>>>0;return n/4294967296};
+ const shuffled=base.slice();
+ for(let i=shuffled.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]]}
+ const labels=sorted([...new Set(base.flatMap(x=>x.declared_concepts))]);
+ const perm=labels.slice();for(let i=perm.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[perm[i],perm[j]]=[perm[j],perm[i]]}
+ // Avoid an identity permutation when there are multiple labels and the random
+ // draw yields one. Preserve one-to-one labels, even for extremely small fixtures.
+ if(labels.length>1&&labels.every((x,i)=>x===perm[i]))perm.push(perm.shift());
+ const map=new Map(labels.map((x,i)=>[x,perm[i]]));
+ const relabeled=base.map(x=>({...x,declared_concepts:x.declared_concepts.map(t=>map.get(t)??t)}));
+ const relabelEdges=rel.map(e=>({...e,from:map.get(e.from)??e.from,to:map.get(e.to)??e.to}));
+ const make=(sr,rr)=>compileSourceBoundTopology({snapshot_id:snapshot,source_rows:sr,relation_rows:rr,allow_empty:true});
+ const precision=base.every(x=>x.time_precision==='DAY')?'DAY_ONLY':'MIXED_OR_UNKNOWN';
+ const C0={state:'EXECUTED_STRUCTURAL_CONTROL',compiled:make(base,rel)};
+ const C1={state:'EXECUTED_ORDER_SHUFFLE',compiled:make(shuffled,rel),
+  publication_time_precision:precision,
+  serial_order_credit:precision==='DAY_ONLY'?'NOT_IDENTIFIABLE_FROM_DAY_BUCKETS':'UNADJUDICATED'};
+ const C2={state:'EXECUTED_LABEL_PERMUTATION',compiled:make(relabeled,relabelEdges),
+  label_count:labels.length,semantic_label_credit:'WITHHELD'};
+ const C3={state:'EXECUTED_TYPED_EDGE_ABLATION',compiled:make(base,[]),
+  graph_family_credit:'WITHHELD'};
+ let C4={state:'HELD_DECOY_NOT_PREREGISTERED',compiled:null};
+ if(decoy!==null){
+  guard(preregistration.controls.includes('C4')&&
+   decoy.preregistered===true&&decoy.source?.snapshot_id===snapshot&&
+   str(decoy.source?.source_id)&&decoy.source.source_id!==view.target_id&&
+   !base.some(x=>x.source_id===decoy.source.source_id),'DECOY_NOT_BOUND');
+  guard(str(decoy.independent_source_witness),'DECOY_INDEPENDENT_WITNESS_REQUIRED');
+  C4={state:'EXECUTED_PREREGISTERED_UNRELATED_DECOY',
+   compiled:make([...base,decoy.source],rel),independent_source_witness:decoy.independent_source_witness};
+ }
+ return {
+  schema:'td613.atelier-heldout-controls/v0.2',target_id:view.target_id,snapshot_id:snapshot,
+  C0,C1,C2,C3,C4,
+  source_target_leakage:false,
+  decision:'CONTROLS_COMPILED_NO_HELDOUT_RECONSTRUCTION_SCORE_OR_AUTHOR_INTENT',
+  preregistration_authority:'DECLARATION_ONLY_EXTERNAL_TIME_WITNESS_NOT_VERIFIED'
+ };
+}
