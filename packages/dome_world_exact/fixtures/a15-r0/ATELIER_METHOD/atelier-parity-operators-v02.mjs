@@ -329,3 +329,74 @@ export function nomenclatureOperatorCrosswalk({source_snapshot,receiver_snapshot
   external_prior_art_verified_by_runner:false,
   scientific_promotion:false};
 }
+
+
+/**
+ * SRC compiler-conservation register assay. Imports only preexisting
+ * source-bound observations, never silently promoting an inferred transform.
+ * Dimensions remain source-specific: PRESERVED vs CHANGED/UNKNOWN remain typed.
+ */
+export function adjudicateConservationRegister({snapshot_id,seal_id,rows,known_evidence_ids=null}){
+ guard(str(snapshot_id)&&str(seal_id)&&Array.isArray(rows),'CONSERVATION_EPOCH_OR_ROWS_MISSING');
+ const seen=new Set(),byStatus={},dimensions={},receipt=[];
+ const allowed=['WITNESSED','CANDIDATE','UNRESOLVED'];
+ for(const row of rows){
+  guard(str(row.compiler_conservation_observation_id)&&!seen.has(row.compiler_conservation_observation_id),
+   'CONSERVATION_ID_COLLISION');
+  seen.add(row.compiler_conservation_observation_id);
+  guard(row.atelier_snapshot_id===snapshot_id&&row.seal_epoch_binding==='RESOLVE_MATCHED_CURRENT_SEAL',
+   'CONSERVATION_EPOCH_MISMATCH');
+  guard(allowed.includes(row.adjudication_status),'CONSERVATION_STATUS_UNKNOWN');
+  guard(str(row.input_id)&&str(row.output_id)&&str(row.compiler_or_transform_id),
+   'CONSERVATION_ORIGIN_DESTINATION_MISSING');
+  guard(row.dimensions&&typeof row.dimensions==='object'&&
+   ['semantic_core','scope','causality','falsifiers','caveats','variables','universality'].every(x=>str(row.dimensions[x])),
+   'CONSERVATION_DIMENSIONS_MISSING');
+  guard(Array.isArray(row.evidence_ids)&&row.evidence_ids.length>0,'CONSERVATION_EVIDENCE_MISSING');
+  if(known_evidence_ids)guard(row.evidence_ids.every(x=>known_evidence_ids.has(x)),
+   'CONSERVATION_UNREGISTERED_WITNESS');
+  guard(str(row.interpretive_limit),'CONSERVATION_INTERPRETIVE_LIMIT_MISSING');
+  const status=row.adjudication_status;
+  byStatus[status]=(byStatus[status]??0)+1;
+  for(const [dimension,value] of Object.entries(row.dimensions)){
+    dimensions[dimension]??={};
+    dimensions[dimension][value]=(dimensions[dimension][value]??0)+1;
+  }
+  receipt.push({
+   id:row.compiler_conservation_observation_id,
+   input_id:row.input_id,output_id:row.output_id,transform:row.compiler_or_transform_id,
+   origin_witnesses:[...row.evidence_ids],dimensions:{...row.dimensions},
+   status,interpretive_limit:row.interpretive_limit,
+   resulting_claim_ceiling:status==='WITNESSED'?
+    'SOURCE_WITNESSED_TRANSFORMATION_CLASSIFICATION_NOT_EXTERNAL_PROOF':
+    'CANDIDATE_OR_UNRESOLVED_NO_IDENTITY_OR_LINEAGE_PROMOTION'
+  });
+ }
+ return {schema:'td613.atelier-conservation-register/v0.2',
+  epoch:{snapshot_id,seal_id},
+  count:rows.length,status_counts:byStatus,dimension_counts:dimensions,
+  observations:receipt,
+  authority:'SOURCE_RESEARCH_RECEIPT_REPLAY_NOT_FRESH_SCIENTIFIC_REPLICATION'};
+}
+
+/**
+ * Structured three-stratum pre-registration: every nonempty subset of
+ * {F,N,G}; no experiment is run or synergy inferred from a plan alone.
+ */
+export function preregisterThreeStratum({snapshot_id,epoch_seal,targets,matched_budget,blind_seed_commitment,
+ control_specification}){
+ guard(str(snapshot_id)&&str(epoch_seal)&&Array.isArray(targets)&&targets.length>0,
+  'THREE_STRATUM_EPOCH_TARGET_MISSING');
+ guard(str(matched_budget)&&str(blind_seed_commitment)&&str(control_specification),
+  'THREE_STRATUM_CONTROLS_MISSING');
+ const strata=['F','N','G'];
+ const subsets=[];
+ for(let mask=1;mask<8;mask++)subsets.push(strata.filter((_,i)=>mask&(1<<i)).join(''));
+ guard(new Set(targets).size===targets.length,'DUPLICATE_PREREG_TARGET');
+ return {schema:'td613.atelier-three-stratum-plan/v0.2',
+  snapshot_id,epoch_seal,targets:[...targets],matched_budget,blind_seed_commitment,
+  control_specification,subsets,
+  statuses:Object.fromEntries(subsets.map(s=>[s,'NOT_EXECUTED'])),
+  hypothesis:'FULL_COMBINATION_RECOVERS_PREREGISTERED_RELATION_BEYOND_SINGLETONS_AND_PAIRS',
+  claim_ceiling:'PROSPECTIVE_ONLY_NO_SYNERGY_OR_TOMOGRAPHY_PROVEN'};
+}
