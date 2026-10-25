@@ -4,7 +4,7 @@ import path from 'node:path';
 import {
   EM_ROOT, REQUIRED_ROUTES, COMMON_CAPABILITIES, inspectEmCorpus,
   validateInterchange, compileAiaViews, compileTypedGraph, withdrawSource,
-  makeBlurbHypothesis
+  makeBlurbHypothesis, stageSourceIntake
 } from '../packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/em-atelier-parity.mjs';
 
 const status=inspectEmCorpus();
@@ -92,4 +92,20 @@ assert.throws(()=>compileTypedGraph([{...graphs.CONCEPTUAL[0],source_refs:[]}],s
 assert.throws(()=>compileTypedGraph([{...graphs.GENEALOGICAL[0],authority_state:'SCIENTIFICALLY_CERTIFIED'}],status.source_ids),/EDGE_AUTHORITY_TRANSFER/);
 assert.throws(()=>compileTypedGraph([{...graphs.GENEALOGICAL[0],evidence_class:'CAUSAL_PROOF'}],status.source_ids),/INVALID_EDGE_EVIDENCE_CLASS/);
 assert.throws(()=>compileTypedGraph([{...graphs.CONCEPTUAL[0],source_refs:['unknown']}],status.source_ids),/UNKNOWN_EDGE_SOURCE/);
+
+const intake=stageSourceIntake({
+  bytes:new TextEncoder().encode('SYNTHETIC_STAGE_ONLY'),
+  original_filename:'synthetic.md',media_type:'text/markdown',
+  provenance_basis:'SYNTHETIC_HUMAN_SUPPLIED_TEST',
+  rights_state:'PRIVATE_RETAIN_ONLY',parent_epoch:'TEST_FIXED_EPOCH'
+});
+assert.equal(intake.state,'STAGED_UNADMITTED');
+assert.equal(intake.public_export_permitted,false);
+assert.equal(intake.accession_authorized,false);
+assert.match(intake.sha256,/^[a-f0-9]{64}$/);
+assert.throws(()=>stageSourceIntake({
+  bytes:new TextEncoder().encode('private'),original_filename:'x.md',
+  media_type:'text/markdown',provenance_basis:'stated',
+  parent_epoch:'X',rights_state:'UNKNOWN'
+}),/INTAKE_RIGHTS_UNRESOLVED/);
 console.log('EM four-Atelier bounded audition: corpus/identity, shared kernel, 4 AIA packet routes, and hostile negative controls passed. Full source sync/sieves/held-out parity remains HELD.');
