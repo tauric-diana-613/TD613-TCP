@@ -282,3 +282,50 @@ export function reconstructionControlBattery({view,preregistration,seed=613,deco
   preregistration_authority:'DECLARATION_ONLY_EXTERNAL_TIME_WITNESS_NOT_VERIFIED'
  };
 }
+
+
+/**
+ * Wendbine-style SOURCE-BOUND nomenclature/operator crosswalk.
+ * Ordinary terminology and operator changes require separate witnessed bases.
+ * Novelty and provenance are never returned as discoveries by this function.
+ * The reviewer submits an explicit frozen source/receiver comparison.
+ */
+export function nomenclatureOperatorCrosswalk({source_snapshot,receiver_snapshot,rows}){
+ guard(str(source_snapshot)&&str(receiver_snapshot)&&Array.isArray(rows),'CROSSWALK_INPUTS');
+ const out=[],seen=new Set();
+ for(const r of rows){
+  guard(str(r.id)&&!seen.has(r.id),'CROSSWALK_DUPLICATE_OR_MISSING_ID');seen.add(r.id);
+  guard(str(r.source_locator)&&str(r.receiver_baseline_locator),'CROSSWALK_SOURCE_BASES_MISSING');
+  guard(str(r.subject)&&str(r.proposed_term),'CROSSWALK_SUBJECT_OR_TERM');
+  guard(typeof r.proposes_better_name==='boolean'&&typeof r.proposes_better_operator==='boolean',
+   'CROSSWALK_DIMENSIONS_UNDECLARED');
+  guard(Array.isArray(r.conventional_prior_refs)&&Array.isArray(r.operator_delta_refs),
+   'CROSSWALK_REFS_MISSING');
+  guard(str(r.alternative_explanation)&&str(r.claim_ceiling),'CROSSWALK_ALTERNATIVES_REQUIRED');
+  const name=r.proposes_better_name,operator=r.proposes_better_operator;
+  if(name)guard(r.conventional_prior_refs.length>0&&r.conventional_prior_refs.every(str),
+    'ORDINARY_TERM_UNGROUNDED');
+  if(operator)guard(r.operator_delta_refs.length>0&&r.operator_delta_refs.every(str)&&
+    str(r.operator_before)&&str(r.operator_after)&&r.operator_before!==r.operator_after,
+    'OPERATOR_DELTA_UNGROUNDED');
+  // Classification is conditional on the supplied evidence bindings; it is
+  // not an automatic validation of external references or scholarly priority.
+  let outcome=name&&operator?'BOTH':name?'BETTER_NAME':operator?'BETTER_OPERATOR':'NEITHER';
+  if(r.rejection_reason){
+   guard(str(r.rejection_reason),'REJECTION_REASON_INVALID');outcome='REJECTED';
+  }
+  out.push({id:r.id,subject:r.subject,proposed_term:r.proposed_term,outcome,
+   source_locator:r.source_locator,receiver_baseline_locator:r.receiver_baseline_locator,
+   prior_refs:[...r.conventional_prior_refs],operator_delta_refs:[...r.operator_delta_refs],
+   alternative_explanation:r.alternative_explanation,
+   claim_ceiling:r.claim_ceiling,
+   status:'REVIEWER_DECLARED_SOURCE_CONDITIONED_CLASSIFICATION'});
+ }
+ const counts=Object.fromEntries(['BETTER_NAME','BETTER_OPERATOR','BOTH','NEITHER','REJECTED'].map(s=>[s,out.filter(x=>x.outcome===s).length]));
+ return {schema:'td613.atelier-nomenclature-crosswalk/v0.2',
+  source_snapshot,receiver_snapshot,rows:out,counts,
+  disclaimer:'CONVENTIONAL_NAME_NOT_DONOR_ORIGIN_LOCAL_OPERATOR_REFINEMENT_NOT_GENERAL_NOVELTY',
+  adjudication:'CONDITIONAL_SOURCE_BOUND_HUMAN_REVIEW_REQUIRED',
+  external_prior_art_verified_by_runner:false,
+  scientific_promotion:false};
+}
